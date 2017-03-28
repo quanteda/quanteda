@@ -243,34 +243,21 @@ summary.textmodel_wordfish_fitted <- function(object, ...) {
     invisible(results)
 }
 
+#' @rdname textmodel-internal
+#' @export
+setMethod("coef", signature(object = "textmodel_wordfish_fitted"),
+          function(object, ...) list(coef_feature = object@beta,
+                                     coef_feature_se = NULL,
+                                     coef_document = object@theta,
+                                     coef_document_se = object@se.theta,
+                                     coef_feature_offset = object@psi,
+                                     coef_document_offset = object@alpha)
+)
 
-# @rdname textmodel_wordfish
-# @export
-# @method print textmodel_wordfish_predicted
-# print.textmodel_wordfish_predicted <- function(x, ...) {
-#     cat("Predicted textmodel of type: wordfish\n\n")
-#     #cat("Call:\n\t")
-#     #print(object$call)
-#     
-#     x <- x@textfish
-#     
-#     ## options if a wordscores object 
-#     ## (and no, it's not very object-oriented!)
-#     names(x)[which(names(x)=="textscore_raw")] <- "textscore"
-#     names(x)[which(names(x)=="textscore_raw_se")] <- "LBG se"
-#     names(x)[which(names(x)=="textscore_raw_lo")] <- "ci lo"
-#     names(x)[which(names(x)=="textscore_raw_hi")] <- "ci hi"
-#     names(x)[which(names(x)=="textscore_mv")] <- "MV rescaled"
-#     names(x)[which(names(x)=="textscore_lbg")] <- "LBG rescaled"
-#     names(x)[which(names(x)=="textscore_lbg_lo")] <- "LBG lo"
-#     names(x)[which(names(x)=="textscore_lbg_hi")] <- "LBG hi"
-#     # pare down the output if rescaling has been specified
-#     if (any(c("LBG rescaled", "MV rescaled") %in% names(x)))
-#         x$ci.lo <- x$ci.hi <- NULL
-#     
-#     print(round(as.data.frame(x), 4))
-#     cat("\n")
-# }
+#' @rdname textmodel-internal
+#' @export
+setMethod("coefficients", signature(object = "textmodel_wordfish_fitted"),
+          function(object, ...) coef(object, ...))
 
 
 

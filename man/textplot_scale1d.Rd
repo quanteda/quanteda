@@ -49,28 +49,39 @@ y-axis, with feature names replacing plotting points with some being chosen
 by the user to be highlighted).
 }
 \examples{
-## wordfish
-wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
-
-# plot estimated document positions
+ie_dfm <- dfm(data_corpus_irishbudget2010)
 doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
                 1, paste, collapse = " ")
+
+## wordscores
+refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
+ws <- textmodel(ie_dfm, refscores, model="wordscores", smooth = 1)
+pred <- predict(ws)
+# plot estimated word positions
+textplot_scale1d(pred, margin = "features", 
+                 highlighted = c("minister", "have", "our", "budget"))
+# plot estimated document positions
+textplot_scale1d(pred, margin = "documents",
+                 doclabels = doclab,
+                 groups = docvars(data_corpus_irishbudget2010, "party"))
+
+## wordfish
+wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
+# plot estimated document positions
 textplot_scale1d(wfm, doclabels = doclab)
 textplot_scale1d(wfm, doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
-
 # plot estimated word positions
 textplot_scale1d(wfm, margin = "features", 
                  highlighted = c("government", "global", "children", 
                                  "bank", "economy", "the", "citizenship",
                                  "productivity", "deficit"))
 }
-\references{
-Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
-  for Estimating Time-Series Party Positions from Texts." \emph{American 
-  Journal of Political Science} 52(3):705-772.
+\seealso{
+\code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
+  \code{\link{coef.textmodel}}
 }
 \author{
-Kenneth Benoit, Stefan Mueller, and Adam Obeng
+Kenneth Benoit, Stefan Müller, and Adam Obeng
 }
 \keyword{textplot}
