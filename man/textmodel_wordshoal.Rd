@@ -58,8 +58,8 @@ aggregate(theta ~ party.name, data = fitdf, mean)
 }
 }
 \references{
-Benjamin E Lauderdale and Alexander Herzog.  2016. "A Scaling Model 
-  for Estimating Time-Series Party Positions from Texts." \emph{Political Analysis}.
+Benjamin E. Lauderdale and Alexander Herzog.  (forthcoming) "Measuring 
+   Political Positions from Legislative Speech." \emph{Political Analysis}.
 }
 \author{
 Benjamin Lauderdale and Kenneth Benoit

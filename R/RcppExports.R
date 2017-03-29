@@ -93,3 +93,4 @@ wordfishcpp_mt <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS
     .Call('quanteda_wordfishcpp_mt', PACKAGE = 'quanteda', wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor)
 }
 
+

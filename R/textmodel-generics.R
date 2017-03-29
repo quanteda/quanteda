@@ -6,6 +6,12 @@
 ### summary, etc. are now more specific and defined in the model-specific
 ### R files (see textmodel-wordscoresS4.R.
 
+#' internal functions for textmodel objects
+#' 
+#' Internal function documentation for textmodel objects.
+#' @name textmodel-internal
+#' @keywords internal 
+NULL
 
 #' the fitted textmodel classes
 #' 
@@ -153,4 +159,25 @@ setMethod("textmodel", signature(x = "formula", y="missing", data="dfm", model =
                                  which(featnames(data) %in% names(mf))], 
                             y, model = model, ...)
               })
+
+#' extract text model coefficients
+#' 
+#' Extract text model coefficients for documents and features, in a manner similar to \link{coef} and \link{coefficients}.
+#' (\code{coefficients} is an alias for \link{coef}.)
+#' @param object a fitted or predicted text model object whose coefficients will be extracted
+#' @param ... unused
+#' @name coef.textmodel
+#' @return 
+#' Returns a list of named numeric vectors with the following elements:
+#' \describe{
+#' \item{\code{coef_feature}}{coefficients estimated for each feature}
+#' \item{\code{coef_feature_se}}{standard errors estimated for each feature-level point estimate}
+#' \item{\code{coef_document}}{coefficients estimated for each document}
+#' \item{\code{coef_document_se}}{standard errors estimated for each document-level point estimate}
+#' \item{\code{coef_document_offset}}{a document-level offset for applicable models}
+#' \item{\code{coef_feature_offset}}{a feature-level offset for applicable models}
+#' }
+#' An element that is not applicable for a particular object class will be \code{NULL}, 
+#' for instance \code{coef_documents} has no meaning for a fitted wordscores object.
+NULL 
 
