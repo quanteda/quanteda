@@ -11,6 +11,7 @@ To test the performance of calculation applying on dense dfm matrix versus on sp
 ```{r}
 require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
 ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
+<<<<<<< HEAD
 wfm_sparse <- function(x){
     options(mt = FALSE)
     textmodel_wordfish(ie2010dfm, dir = c(6,5))
@@ -22,6 +23,11 @@ wfm_sparse_mt <- function(x){
 microbenchmark::microbenchmark(
     wfm_sparse_mt = wfm_sparse_mt(ie2010dfm), 
     wfm_sparse = wfm_sparse(ie2010dfm),
+=======
+microbenchmark::microbenchmark(
+    wfm_mt = textmodel_wordfish(ie2010dfm, dir = c(6,5), mt = TRUE), 
+    wfm_sparse = textmodel_wordfish(ie2010dfm, dir = c(6,5),  mt = FALSE), 
+>>>>>>> e0e7f8daed03b9e10b298f3d107588b27fdfe20e
     wfm_dense = textmodel_wordfish(ie2010dfm, dir = c(6,5), sparse = FALSE),
     times=20, unit = 'relative')
 ```

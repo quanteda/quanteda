@@ -336,20 +336,3 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// wordfishcpp_dense
-Rcpp::List wordfishcpp_dense(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor, bool abs_err);
-RcppExport SEXP quanteda_wordfishcpp_dense(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP, SEXP abs_errSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type wfm(wfmSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type dir(dirSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type priors(priorsSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type disp(dispSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type dispfloor(dispfloorSEXP);
-    Rcpp::traits::input_parameter< bool >::type abs_err(abs_errSEXP);
-    rcpp_result_gen = Rcpp::wrap(wordfishcpp_dense(wfm, dir, priors, tol, disp, dispfloor, abs_err));
-    return rcpp_result_gen;
-END_RCPP
-}
