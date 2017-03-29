@@ -153,9 +153,9 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
 #' tokens_remove(tokenize(txt, removePunct = TRUE), stopwords("english"))
 #' 
 #' ## example for collocations
-#' (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
-#' removeFeatures(myCollocs, stopwords("english"))
-#' removeFeatures(myCollocs, stopwords("english"), pos = 2)
+#' # (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
+#' # removeFeatures(myCollocs, stopwords("english"))
+#' # removeFeatures(myCollocs, stopwords("english"), pos = 2)
 #' }
 tokens_remove <- function(x, features, valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, verbose = getOption("verbose")) {

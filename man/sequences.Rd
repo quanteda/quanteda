@@ -4,8 +4,8 @@
 \alias{sequences}
 \title{find variable-length collocations with filtering}
 \usage{
-sequences(x, features, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, min_count = 2, max_length = 5, nested = TRUE,
+sequences(x, features = "*", valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, min_count = 2, max_size = 5, nested = TRUE,
   ordered = FALSE)
 }
 \arguments{
@@ -22,7 +22,7 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{min_count}{minimum frequency of sequences for which parameters are estimated}
 
-\item{max_length}{maxium length of sequences which are collected}
+\item{max_size}{maxium length of sequences which are collected}
 
 \item{nested}{if true, collect all the subsequences of a longer sequence as separate entities.
 e.g. in a sequence of capitalized words "United States Congress", "States Congress" is considered 
@@ -36,24 +36,6 @@ This function automatically identifies contiguous collocations consisting of
 variable-length term sequences whose frequency is unlikey to have occurred by
 chance.  The algorithm is based on Blaheta and Johnson's "Unsupervised 
 Learning of Multi-Word Verbs".
-}
-\examples{
-toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
-toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-
-# extracting multi-part proper nouns (capitalized terms)
-seqs <- sequences(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
-head(seqs, 10)
-
-# more efficient when applied to the same tokens object 
-toks_comp <- tokens_compound(toks, seqs)
-toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
-
-# types can be any words
-seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
-                   min_count = 2, ordered = TRUE)
-head(seqs2, 10)
-
 }
 \references{
 Blaheta, D., & Johnson, M. (2001). 

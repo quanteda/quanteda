@@ -171,14 +171,7 @@ sequence2list <- function(sequences) {
     if (is.dictionary(sequences)) {
         sequences <- stringi::stri_split_fixed(unlist(sequences, use.names = FALSE), " ")
     } else if (is.collocations(sequences)) {
-        word1 <- word2 <- word3 <- NULL
-        # sort by word3 so that trigrams will be processed before bigrams
-        data.table::setorder(sequences, -word3, word1)
-        # concatenate the words                               
-        word123 <- sequences[, list(word1, word2, word3)]
-        sequences <- unlist(apply(word123, 1, list), recursive = FALSE)
-        sequences <- lapply(sequences, unname)
-        sequences <- lapply(sequences, function(y) y[y != ""])
+        sequences <- stringi::stri_split_fixed(rownames(sequences), " ")
     } else if (is.list(sequences) | is.character(sequences)) {
         sequences <- lapply(sequences, function(y) as.character(tokens(y, what = "fastestword")))
     } else {

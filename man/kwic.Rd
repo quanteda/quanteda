@@ -3,6 +3,7 @@
 \name{kwic}
 \alias{kwic}
 \alias{is.kwic}
+\alias{as.kwic}
 \alias{as.tokens.kwic}
 \title{locate keywords-in-context}
 \usage{
@@ -10,6 +11,8 @@ kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, ...)
 
 is.kwic(x)
+
+as.kwic(x)
 
 \method{as.tokens}{kwic}(x)
 }
@@ -45,6 +48,10 @@ the source text and the word index number within the source text.  (Not the
 line number, since the text may or may not be segmented using end-of-line 
 delimiters.)
 }
+\details{
+\code{as.kwic} is a temporary function to convert a "kwic2" to a standard 
+"kwic" object.
+}
 \examples{
 head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))
 head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex"))
@@ -57,6 +64,21 @@ kwic(data_corpus_inaugural, "war against", valuetype = "regex")
 mykwic <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(mykwic)
 is.kwic("Not a kwic")
+# as.kwic examples
+txt <- c("This is a test",
+         "This is it.",
+         "What is in a train?",
+         "Is it a question?",
+         "Sometimes you don't know if this is it.",
+         "Is it a bird or a plane or is it a train?")
+
+toks <- tokens(txt)
+(kwOld <- kwic(toks, "is it", new = FALSE))
+(kwNew <- kwic(toks, "is it", new = TRUE))
+\dontrun{
+# this breaks - need to harmonize print methods
+as.kwic(kwNew)
+}
 }
 \author{
 Kenneth Benoit and Kohei Watanabe

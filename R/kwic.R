@@ -71,7 +71,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     
     valuetype <- match.arg(valuetype)
     keywords <- vector2list(keywords)
-
+    
     # add document names if none
     if (is.null(names(x))) {
         names(x) <- paste("text", 1:length(x), sep="")
@@ -106,6 +106,34 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
 is.kwic <- function(x) {
     ifelse("kwic" %in% class(x), TRUE, FALSE)
 }
+
+#' @rdname kwic
+#' @details \code{as.kwic} is a temporary function to convert a "kwic2" to a standard 
+#' "kwic" object.
+#' @export
+#' @examples 
+#' # as.kwic examples
+#' txt <- c("This is a test",
+#'          "This is it.",
+#'          "What is in a train?",
+#'          "Is it a question?",
+#'          "Sometimes you don't know if this is it.",
+#'          "Is it a bird or a plane or is it a train?")
+#' 
+#' toks <- tokens(txt)
+#' (kwOld <- kwic(toks, "is it", new = FALSE))
+#' (kwNew <- kwic(toks, "is it", new = TRUE))
+#' \dontrun{
+#' # this breaks - need to harmonize print methods
+#' as.kwic(kwNew)
+#' }
+as.kwic <- function(x) {
+    # strip "kwic2" from class list
+    if (class(x)[1] == "kwic_old" & is.kwic(x))
+        class(x) <- class(x)[-1]
+    x
+}
+
 
 #' @method print kwic
 #' @noRd
@@ -142,3 +170,4 @@ as.tokens.kwic <- function(x) {
     class(toks) <- c("tokens", "tokenizedTexts")
     return(toks)
 }
+
