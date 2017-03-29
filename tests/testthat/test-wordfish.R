@@ -139,7 +139,5 @@ test_that("for wordfish, coef and coefficients are the same", {
     expect_equal(coef(wfm), coefficients(wfm))
 })
 
-=======
 # reset the global setting
 .onAttach()
->>>>>>> Add more tests for wordfish
