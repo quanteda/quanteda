@@ -51,7 +51,7 @@ test_that("textmodel-wordfish (sparse) works as expected on another dataset", {
     expect_gt(cc, 0.99)
 })
 
-test_that("textmodel-wordfish works for quasipoisson as expected: dense vs sparse vs sparse+mt", {
+test_that("textmodel-wordfish works for quasipoisson - feature as expected: dense vs sparse vs sparse+mt", {
     ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
     wfm_d <- textmodel_wordfish(ie2010dfm, dir = c(6,5), sparse = FALSE,
                                  dispersion = "quasipoisson", dispersionFloor = 0)
@@ -69,6 +69,23 @@ test_that("textmodel-wordfish works for quasipoisson as expected: dense vs spars
     
 })
 
+test_that("textmodel-wordfish works for quasipoisson - overall as expected: dense vs sparse vs sparse+mt", {
+    ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
+    wfm_d <- textmodel_wordfish(ie2010dfm, dir = c(6,5), sparse = FALSE,
+                                dispersion = "quasipoisson", dispersionLevel = "overall")
+    options(mt = TRUE)
+    wfm_mt <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
+                                 dispersion = "quasipoisson", dispersionLevel = "overall")
+    cc<-cor(wfm_d@theta, wfm_mt@theta)
+    expect_gt(cc, 0.99)
+    
+    options(mt = FALSE)
+    wfm_s <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
+                                dispersion = "quasipoisson", dispersionLevel = "overall")
+    cc<-cor(wfm_d@theta, wfm_s@theta)
+    expect_gt(cc, 0.99)
+    
+})
 
 test_that("print/show/summary method works as expected", {
     ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
