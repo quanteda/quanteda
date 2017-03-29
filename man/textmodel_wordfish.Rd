@@ -7,8 +7,8 @@
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
   dispersionLevel = c("feature", "overall"), dispersionFloor = 0,
-  sparse = TRUE, mt = TRUE, abs_err = FALSE, svd_sparse = TRUE,
-  residual_floor = 0.5)
+  sparse = TRUE, mt = getOption("mt"), abs_err = FALSE,
+  svd_sparse = TRUE, residual_floor = 0.5)
 }
 \arguments{
 \item{data}{the dfm on which the model will be fit}
