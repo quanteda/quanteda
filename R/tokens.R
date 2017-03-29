@@ -546,8 +546,7 @@ tokens_word <- function(txt, what, removeNumbers, removePunct, removeSymbols, re
     return(tok)
 }
 
-tokens_sentence <- function(txt, what, removeNumbers, removePunct, removeSymbols, removeSeparators, 
-                            removeTwitter, removeHyphens, removeURL, verbose){
+tokens_sentence <- function(txt, what, verbose){
     
     if (verbose) catm("...separating into sentences.\n")
     
@@ -573,8 +572,8 @@ tokens_sentence <- function(txt, what, removeNumbers, removePunct, removeSymbols
     return(tok)
 }
 
-tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbols, removeSeparators, 
-                             removeTwitter, removeHyphens, removeURL, verbose){
+tokens_character <- function(txt, what, removePunct, removeSymbols, removeSeparators, 
+                             verbose){
     
     # note: does not implement removeNumbers
     tok <- stringi::stri_split_boundaries(txt, type = "character")
