@@ -546,8 +546,11 @@ tokens_word <- function(txt, what, removeNumbers, removePunct, removeSymbols, re
     return(tok)
 }
 
-tokens_sentence <- function(txt, what, verbose){
+tokens_sentence <- function(txt, what, removeNumbers, removePunct, removeSymbols, removeSeparators, 
+                            removeTwitter, removeHyphens, removeURL, verbose){
     
+    if (removeNumbers || removePunct || removeSymbols || removeTwitter || removeHyphens || removeURL) 
+        warning("removeNumbers, removePunct, removeSymbols, removeTwitter, removeHyphens or removeURL is not used for \"sentence\" segmentation")
     if (verbose) catm("...separating into sentences.\n")
     
     # Replace . delimiter from common title abbreviations, with _pd_
@@ -572,8 +575,10 @@ tokens_sentence <- function(txt, what, verbose){
     return(tok)
 }
 
-tokens_character <- function(txt, what, removePunct, removeSymbols, removeSeparators, 
-                             verbose){
+tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbols, removeSeparators, 
+                             removeTwitter, removeHyphens, removeURL, verbose){
+    if (removeNumbers || removeTwitter || removeHyphens || removeURL) 
+        warning("removeNumbers, removeTwitter, removeHyphens or removeURL is not used for \"character\" tokenization")
     
     # note: does not implement removeNumbers
     tok <- stringi::stri_split_boundaries(txt, type = "character")
