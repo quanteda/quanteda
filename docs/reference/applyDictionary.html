@@ -88,14 +88,10 @@ object.</p>
     <pre><span class='fu'>applyDictionary</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for tokens</span>
-<span class='fu'>applyDictionary</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+<span class='fu'>applyDictionary</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for tokenizedTexts</span>
-<span class='fu'>applyDictionary</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+<span class='fu'>applyDictionary</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for dfm</span>
 <span class='fu'>applyDictionary</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
@@ -113,10 +109,6 @@ object.</p>
       <dd>if <code>TRUE</code>, remove all features not in dictionary, 
 otherwise, replace values in dictionary with keys while leaving other 
 features unaffected</dd>
-      <dt>valuetype</dt>
-      <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
-&quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions;
-or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</dd>
       <dt>case_insensitive</dt>
       <dd>ignore the case of dictionary values if <code>TRUE</code></dd>
       <dt>capkeys</dt>
@@ -345,7 +337,8 @@ uppercase to distinguish them from other features</dd>
 #&gt; 
 #&gt; 2017-Trump :
 #&gt; [1] &quot;country&quot; &quot;country&quot;
-#&gt; </div></pre>
+#&gt; </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

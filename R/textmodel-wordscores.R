@@ -121,8 +121,8 @@ textmodel_wordscores <- function(data, scores,
 #' @rdname textmodel-internal
 #' @param object a fitted Wordscores textmodel
 #' @param level probability level for confidence interval width
-#' @param rescaling \code{none} for "raw" scores; \code{lbg} for LBG (2003) 
-#'   rescaling; or \code{mv} for the rescaling proposed by Martin and Vanberg 
+#' @param rescaling \code{"none"} for "raw" scores; \code{"lbg"} for LBG (2003) 
+#'   rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg 
 #'   (2007).  (Note to authors: Provide full details here in documentation.)
 #' @param newdata dfm on which prediction should be made
 #' @param ... additional arguments passed to other functions
@@ -142,11 +142,13 @@ textmodel_wordscores <- function(data, scores,
 #' @keywords internal textmodel
 #' @export
 #' @importFrom stats qnorm median sd
-predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling = "none", 
-                               level=0.95, verbose = getOption("verbose"), ...) {    
-    if (length(list(...))>0) 
+predict.textmodel_wordscores_fitted <- 
+    function(object, newdata=NULL, rescaling = c("none", "lbg", "mv"), 
+             level=0.95, verbose = getOption("verbose"), ...) {    
+    if (length(list(...)) > 0) 
         stop("Arguments:", names(list(...)), "not supported.\n")
-    rescaling <- match.arg(rescaling, c("none", "lbg", "mv"), several.ok=TRUE)
+    
+    rescaling <- match.arg(rescaling)
     
     if (!is.null(newdata))
         data <- newdata
@@ -193,7 +195,7 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
             (max(object@y, na.rm=TRUE) - min(object@y, na.rm=TRUE)) /
             (textscore_raw[upperIndex] - textscore_raw[lowerIndex]) +
             min(object@y, na.rm=TRUE)
-        result$textscore_mv <- textscore_mv
+        result$textscore_mv <- as.numeric(textscore_mv)
     } 
     
     if ("lbg" %in% rescaling) {
@@ -216,7 +218,12 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
     }
     
     new("textmodel_wordscores_predicted", rescaling = rescaling,
-        newdata = newdata, textscores = result)
+        newdata = newdata, 
+        textscores = result,
+        x = object@x,
+        Sw = object@Sw,
+        y = object@y,
+        call = object@call)
 }
 
 
@@ -321,4 +328,43 @@ print.textmodel_wordscores_predicted <- function(x, ...) {
 }
 
 
+#' @rdname textmodel-internal
+#' @export
+setMethod("coef", signature(object = "textmodel_wordscores_fitted"),
+          function(object, ...) list(coef_feature = object@Sw,
+                                     coef_feature_se = NULL,
+                                     coef_document = NULL,
+                                     coef_document_se = NULL)
+)
 
+#' @rdname textmodel-internal
+#' @export
+setMethod("coefficients", signature(object = "textmodel_wordscores_fitted"),
+          function(object, ...) coef(object, ...))
+
+#' @rdname textmodel-internal
+#' @export
+setMethod("coef", signature(object = "textmodel_wordscores_predicted"),
+          function(object, ...) {
+              if ("textscore_mv" %in% names(object@textscores)) {
+                  coef_document <- object@textscores$textscore_mv
+                  coef_document_se <- NULL
+              } else if ("textscore_lbg" %in% names(object@textscores)) {
+                  coef_document <- object@textscores$textscore_lbg
+                  coef_document_se <- (object@textscores$textscore_lbg - object@textscores$textscore_lbg_lo) / 1.96
+              } else {
+                  coef_document <- object@textscores$textscore_raw
+                  coef_document_se <- object@textscores$textscore_raw_se
+              }
+              
+              list(coef_feature = object@Sw,
+                   coef_feature_se = NULL,
+                   coef_document = coef_document,
+                   coef_document_se = coef_document_se)
+          }
+)
+
+#' @rdname textmodel-internal
+#' @export
+setMethod("coefficients", signature(object = "textmodel_wordscores_predicted"),
+          function(object, ...) coef(object, ...))

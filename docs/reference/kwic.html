@@ -89,11 +89,12 @@ delimiters.)</p>
     
 
     <pre><span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>keywords</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>, <span class='kw'>new</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='fu'>is.kwic</span>(<span class='no'>x</span>)
 
-<span class='fu'>as.kwic</span>(<span class='no'>x</span>)</pre>
+<span class='co'># S3 method for kwic</span>
+<span class='fu'><a href='as.tokens.html'>as.tokens</a></span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -114,11 +115,6 @@ or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.htm
       <dt>...</dt>
       <dd>additional arguments passed to <a href='tokens.html'>tokens</a>, for applicable 
 object types</dd>
-      <dt>new</dt>
-      <dd>logical; if <code>TRUE</code> use the newer <code>kwic</code>, if <code>FALSE</code>
-then call <code><a href='kwic_old.html'>kwic_old</a></code>.  Once the full
-testing of the newer kwic method is complete and the transition
-declared successful, we will delete this option and delete <code>kwic_old</code>.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -128,11 +124,6 @@ declared successful, we will delete this option and delete <code>kwic_old</code>
   before (<code>contextPre</code>), the keyword in its original format
   (<code>keyword</code>, preserving case and attached punctuation), and the context
   after (<code>contextPost</code>).</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>as.kwic</code> is a temporary function to convert a &quot;kwic2&quot; to a standard 
-&quot;kwic&quot; object.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -155,6 +146,7 @@ declared successful, we will delete this option and delete <code>kwic_old</code>
 #&gt; [1817-Monroe, 3444]               and as a | security | against foreign dangers
 #&gt; [1825-Adams, 1373]           that the best | security | for the beneficence    
 #&gt; [1825-Adams, 1445]        that the firmest | security | of peace is            </div><div class='input'>
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_char_inaugural</span>)
 <span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"war against"</span>)</div><div class='output co'>#&gt;                                                                        
 #&gt; [1857-Buchanan, 2933:2934]  advantage of the fortune of | war against |
 #&gt; [1901-McKinley, 2284:2285]          . We are not waging | war against |
@@ -185,29 +177,7 @@ declared successful, we will delete this option and delete <code>kwic_old</code>
 #&gt; [1933-Roosevelt, 1851:1852] | the emergency, as great                    
 #&gt; [1977-Carter, 927:928]      | poverty, ignorance, and                    </div><div class='input'>
 <span class='no'>mykwic</span> <span class='kw'>&lt;-</span> <span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"provident*"</span>)
-<span class='fu'>is.kwic</span>(<span class='no'>mykwic</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is.kwic</span>(<span class='st'>"Not a kwic"</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='co'># as.kwic examples</span>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"This is a test"</span>,
-         <span class='st'>"This is it."</span>,
-         <span class='st'>"What is in a train?"</span>,
-         <span class='st'>"Is it a question?"</span>,
-         <span class='st'>"Sometimes you don't know if this is it."</span>,
-         <span class='st'>"Is it a bird or a plane or is it a train?"</span>)
-
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>)
-(<span class='no'>kwOld</span> <span class='kw'>&lt;-</span> <span class='fu'>kwic</span>(<span class='no'>toks</span>, <span class='st'>"is it"</span>, <span class='kw'>new</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt;                             contextPre keyword         contextPost
-#&gt;  [text2, 2:3]                   This [   is it ]                  
-#&gt;  [text4, 1:2]                        [   Is it ] a question?      
-#&gt;  [text5, 7:8] you don&#39;t know if this [   is it ]                  
-#&gt;  [text6, 1:2]                        [   Is it ] a bird or a plane
-#&gt; [text6, 9:10]     bird or a plane or [   is it ] a train?         </div><div class='input'>(<span class='no'>kwNew</span> <span class='kw'>&lt;-</span> <span class='fu'>kwic</span>(<span class='no'>toks</span>, <span class='st'>"is it"</span>, <span class='kw'>new</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt;                                                                 
-#&gt; [text2, 2:3]                    This | is it | .                
-#&gt; [text4, 1:2]                         | Is it | a question?      
-#&gt; [text5, 7:8]  you don&#39;t know if this | is it | .                
-#&gt; [text6, 1:2]                         | Is it | a bird or a plane
-#&gt; [text6, 9:10]     bird or a plane or | is it | a train?         </div><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># # this breaks - need to harmonize print methods</span>
-<span class='co'># as.kwic(kwNew)</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+<span class='fu'>is.kwic</span>(<span class='no'>mykwic</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is.kwic</span>(<span class='st'>"Not a kwic"</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -215,8 +185,6 @@ declared successful, we will delete this option and delete <code>kwic_old</code>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

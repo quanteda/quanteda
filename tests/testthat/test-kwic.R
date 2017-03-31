@@ -32,7 +32,7 @@ test_that("test kwic general", {
     testkwic <- kwic(paste(LETTERS, collapse=' '), 'D')
     
     dtf <- data.frame(
-        docname = factor('text1'),
+        docname = c('text1'),
         from = 4L,
         to = 4L,
         pre = 'A B C',
@@ -57,7 +57,7 @@ test_that("test kwic on first token", {
     expect_that(
         data.frame(testkwic),
         equals(data.frame(
-            docname = factor('text1'),
+            docname = c('text1'),
             from = 1L,
             to = 1L,
             pre = '',
@@ -74,7 +74,7 @@ test_that("test kwic on last token", {
     expect_that(
         data.frame(testkwic),
         equals(data.frame(
-            docname = factor('text1'),
+            docname = c('text1'),
             from = 26L,
             to = 26L,
             pre = 'U V W X Y',
@@ -91,7 +91,7 @@ test_that("test kwic on two tokens", {
     expect_that(
         data.frame(testkwic),
         equals(data.frame(
-            docname = factor('text1'),
+            docname = c('text1'),
             from = 4L,
             to = 5L,
             pre = 'A B C',
@@ -116,7 +116,7 @@ test_that("test kwic on multiple texts", {
     expect_that(
         data.frame(testkwic),
         equals(data.frame(
-            docname = factor('text2'),
+            docname = c('text2'),
             from = 1L,
             to = 1L,
             pre = '',
@@ -135,7 +135,7 @@ test_that("test kwic with multiple matches", {
     expect_that(
         data.frame(testkwic),
         equals(data.frame(
-            docname = factor(c('text1', 'text1')),
+            docname = c(c('text1', 'text1')),
             from = c(1L, 27L),
             to = c(1L, 27L),
             pre = c('', 'V W X Y Z'),
@@ -151,7 +151,7 @@ test_that("test kwic with multiple matches, where one is the last (fixed bug)", 
     expect_that(
         data.frame(testkwic),
         equals(data.frame(
-            docname = factor(c('text1', 'text1')),
+            docname = c(c('text1', 'text1')),
             from = c(4L, 6L),
             to = c(4L, 6L),
             pre = c('what does the', 'what does the fox say'),
@@ -240,10 +240,4 @@ test_that("print method works as expected", {
     
     testkwic <- kwic('what does the fox say fox', 'foox')
     expect_null(print(testkwic))
-})
-
-test_that("print method (kwic_old) works as expected", {
-    testkwic <- kwic('what does the fox say fox', 'fox')
-    expect_output(print(testkwic), "*\\[*fox*\\]*")
-    expect_output(print(testkwic), "\\[text1, 4\\]*")
 })

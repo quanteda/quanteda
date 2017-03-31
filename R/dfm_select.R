@@ -35,14 +35,20 @@
 #'   \code{\link{dfm_trim}}.
 #' @return A \link{dfm} or \link{fcm} object, after the feature selection has been applied.
 #'   
-#'   When \code{features} is a \link{dfm} object and \code{padding} is \code{TRUE} , 
+#'   When \code{features} is a \link{dfm} object and \code{padding} is \code{TRUE}, 
 #'   then the returned object will be identical in its feature set to the dfm 
 #'   supplied as the \code{features} argument. This means that any features in 
 #'   \code{x} not in \code{features} will be discarded, and that any features in 
 #'   found in the dfm supplied as \code{features} but not found in \code{x} will 
-#'   be added with all zero counts.  This is useful when you have trained a model 
+#'   be added with all zero counts.  Because selecting on a dfm is designed to produce 
+#'   a selected dfm with an exact feature match, when \code{features} is
+#'   a \link{dfm} object, then the following settings are always used: 
+#'   \code{padding = TRUE}, 
+#'   \code{case_insensitive = FALSE}, and \code{valuetype = "fixed"}.
+#'   
+#'   Selecting on a \link{dfm} is useful when you have trained a model 
 #'   on one dfm, and need to project this onto a test set whose features must be 
-#'   identical.  See examples.
+#'   identical.  It is also used in \code{\link{bootstrap_dfm}}.  See examples.
 #' @export
 #' @keywords dfm
 #' @examples 
@@ -63,9 +69,9 @@
 #' dfm_select(myDfm, min_nchar = 5)
 #' 
 #' # selecting on a dfm
-#' txts <- c("This is text one", "This is text two", "This is text three")
-#' (dfm1 <- dfm(txts[1:2], verbose = FALSE))
-#' (dfm2 <- dfm(txts[2:3], verbose = FALSE))
+#' txts <- c("This is text one", "The second text", "This is text three")
+#' (dfm1 <- dfm(txts[1:2]))
+#' (dfm2 <- dfm(txts[2:3]))
 #' (dfm3 <- dfm_select(dfm1, dfm2, valuetype = "fixed", padding = TRUE, verbose = TRUE))
 #' setequal(featnames(dfm2), featnames(dfm3))
 #' 
@@ -95,13 +101,16 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     attrs_org <- attributes(x)
     types <- featnames(x)
     labels <- docnames(x)
+    features_was_dfm <- FALSE
     
     # select features based on "features" pattern
     if (!is.null(features)) {
         # special handling if features is a dfm
         if (is.dfm(features)) {
+            features_was_dfm <- TRUE
             features <- featnames(features)
-            valuetype <- 'fixed'
+            valuetype <- "fixed"
+            padding <- TRUE
             case_insensitive <- FALSE
         }
         features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
@@ -193,16 +202,21 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     if (verbose) {
         catm("dfm_select ", ifelse(selection=="keep", "kept", "removed"), " ", 
              format(length(features_id), big.mark=","),
-             " feature", ifelse(length(features_id) > 1, "s", ""), " in ",
+             " feature", ifelse(length(features_id) != 1, "s", ""), " in ",
              format(length(documents_id), big.mark=","),
-             " documents", ifelse(length(documents_id) > 1, "s", ""),
-             " padding 0s for ",
+             " document", ifelse(length(documents_id) != 1, "s", ""),
+             ", padding 0s for ",
              format(length(types_add), big.mark=","), 
-             " feature", ifelse(length(types_add) > 1, "s", ""), " and ",
+             " feature", ifelse(length(types_add) != 1, "s", ""), " and ",
              format(length(labels_add), big.mark=","),
-             " document", ifelse(length(labels_add) > 1, "s", ".\n"),
+             " document", ifelse(length(labels_add) != 1, "s", ".\n"),
              sep = "")
     } 
+    
+    # sort features into original order if features was a dfm
+    if (features_was_dfm) {
+        x <- x[, features]
+    }
     
     return(x)
 }

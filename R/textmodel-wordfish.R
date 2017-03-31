@@ -56,6 +56,12 @@ setClass("textmodel_wordfish_predicted",
 #'   terms with rare term or document frequencies that appear to be severely 
 #'   underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 #'   "quasipoisson"}.
+#' @param sparse specifies whether the \code{"dfm"} is coerced to dense
+#' @param abs_err specifies how the convergence is considered
+#' @param svd_sparse uses svd to initialize the starting values of theta, 
+#'   only applies when \code{sparse = TRUE}
+#' @param residual_floor specifies the threshold for residual matrix when 
+#'   calculating the svds, only applies when \code{sparse = TRUE}
 #' @return An object of class textmodel_fitted_wordfish.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
@@ -78,7 +84,7 @@ setClass("textmodel_wordfish_predicted",
 #'   Lowe, Will and Kenneth Benoit. 2013. "Validating Estimates of Latent Traits
 #'   from Textual Data Using Human Judgment as a Benchmark." \emph{Political Analysis}
 #'   21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
-#' @author Benjamin Lauderdale and Kenneth Benoit
+#' @author Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit
 #' @examples
 #' textmodel_wordfish(data_dfm_LBGexample, dir = c(1,5))
 #' 
@@ -108,7 +114,11 @@ setClass("textmodel_wordfish_predicted",
 textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 
                                dispersion = c("poisson", "quasipoisson"), 
                                dispersionLevel = c("feature", "overall"),
-                               dispersionFloor = 0) {
+                               dispersionFloor = 0,
+                               sparse = TRUE,
+                               abs_err = FALSE,
+                               svd_sparse = TRUE,
+                               residual_floor = 0.5) {
     
     dispersion <- match.arg(dispersion)
     dispersionLevel <- match.arg(dispersionLevel)
@@ -154,8 +164,11 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
         stop("Illegal option combination.")
 
     # catm("disp = ", disp, "\n")
-    
-    wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor)
+    if (sparse == TRUE){
+        wfresult <- wordfishcpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err, svd_sparse, residual_floor)
+    } else{
+        wfresult <- wordfishcpp_dense(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err)
+    }
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
     new("textmodel_wordfish_fitted", 
@@ -165,12 +178,12 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
         dir = dir,
         dispersion = dispersion,
         priors = priors,
-        theta = wfresult$theta,
-        beta = wfresult$beta,
+        theta = as.numeric(wfresult$theta),
+        beta = as.numeric(wfresult$beta),
         psi = as.numeric(wfresult$psi),
         alpha = as.numeric(wfresult$alpha),
         phi = as.numeric(wfresult$phi),
-        se.theta = wfresult$thetaSE ,
+        se.theta = as.numeric(wfresult$thetaSE) ,
         call = match.call())
 }
 
@@ -230,34 +243,21 @@ summary.textmodel_wordfish_fitted <- function(object, ...) {
     invisible(results)
 }
 
+#' @rdname textmodel-internal
+#' @export
+setMethod("coef", signature(object = "textmodel_wordfish_fitted"),
+          function(object, ...) list(coef_feature = object@beta,
+                                     coef_feature_se = NULL,
+                                     coef_document = object@theta,
+                                     coef_document_se = object@se.theta,
+                                     coef_feature_offset = object@psi,
+                                     coef_document_offset = object@alpha)
+)
 
-# @rdname textmodel_wordfish
-# @export
-# @method print textmodel_wordfish_predicted
-# print.textmodel_wordfish_predicted <- function(x, ...) {
-#     cat("Predicted textmodel of type: wordfish\n\n")
-#     #cat("Call:\n\t")
-#     #print(object$call)
-#     
-#     x <- x@textfish
-#     
-#     ## options if a wordscores object 
-#     ## (and no, it's not very object-oriented!)
-#     names(x)[which(names(x)=="textscore_raw")] <- "textscore"
-#     names(x)[which(names(x)=="textscore_raw_se")] <- "LBG se"
-#     names(x)[which(names(x)=="textscore_raw_lo")] <- "ci lo"
-#     names(x)[which(names(x)=="textscore_raw_hi")] <- "ci hi"
-#     names(x)[which(names(x)=="textscore_mv")] <- "MV rescaled"
-#     names(x)[which(names(x)=="textscore_lbg")] <- "LBG rescaled"
-#     names(x)[which(names(x)=="textscore_lbg_lo")] <- "LBG lo"
-#     names(x)[which(names(x)=="textscore_lbg_hi")] <- "LBG hi"
-#     # pare down the output if rescaling has been specified
-#     if (any(c("LBG rescaled", "MV rescaled") %in% names(x)))
-#         x$ci.lo <- x$ci.hi <- NULL
-#     
-#     print(round(as.data.frame(x), 4))
-#     cat("\n")
-# }
+#' @rdname textmodel-internal
+#' @export
+setMethod("coefficients", signature(object = "textmodel_wordfish_fitted"),
+          function(object, ...) coef(object, ...))
 
 
 

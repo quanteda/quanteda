@@ -6,7 +6,9 @@
 \usage{
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
-  dispersionLevel = c("feature", "overall"), dispersionFloor = 0)
+  dispersionLevel = c("feature", "overall"), dispersionFloor = 0,
+  sparse = TRUE, abs_err = FALSE, svd_sparse = TRUE,
+  residual_floor = 0.5)
 }
 \arguments{
 \item{data}{the dfm on which the model will be fit}
@@ -37,6 +39,16 @@ in the quasi-Poisson model.  Used to minimize the distorting effect of
 terms with rare term or document frequencies that appear to be severely 
 underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 "quasipoisson"}.}
+
+\item{sparse}{specifies whether the \code{"dfm"} is coerced to dense}
+
+\item{abs_err}{specifies how the convergence is considered}
+
+\item{svd_sparse}{uses svd to initialize the starting values of theta, 
+only applies when \code{sparse = TRUE}}
+
+\item{residual_floor}{specifies the threshold for residual matrix when 
+calculating the svds, only applies when \code{sparse = TRUE}}
 }
 \value{
 An object of class textmodel_fitted_wordfish.  This is a list 
@@ -97,5 +109,5 @@ Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model
   21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
 }
 \author{
-Benjamin Lauderdale and Kenneth Benoit
+Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit
 }

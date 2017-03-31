@@ -57,7 +57,7 @@ dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE))
 dict_fix <- dictionary(list(country = "united states", 
                        law = c('law', 'constitution'), 
                        freedom = c('freedom', 'liberty'))) 
-dfm(applyDictionary(toks, dict_fix, valuetype='fixed'))
+# dfm(applyDictionary(toks, dict_fix, valuetype='fixed'))
 dfm(tokens_lookup(toks, dict_fix, valuetype='fixed'))
 
 # hierarchical dictionary example
