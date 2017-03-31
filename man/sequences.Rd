@@ -20,22 +20,25 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 
-\item{min_count}{minimum frequency of sequences for which parameters are estimated}
+\item{min_count}{minimum frequency of sequences for which parameters are 
+estimated}
 
 \item{max_size}{maxium length of sequences which are collected}
 
-\item{nested}{if true, collect all the subsequences of a longer sequence as separate entities.
-e.g. in a sequence of capitalized words "United States Congress", "States Congress" is considered 
-as a subsequence. But "United States" is not a subsequence because it is followed by "Congress".}
+\item{nested}{if \code{TRUE}, collect all the subsequences of a longer
+sequence as separate entities. e.g. in a sequence of capitalized words
+"United States Congress", "States Congress" is considered as a subsequence.
+But "United States" is not a subsequence because it is followed by
+"Congress".}
 
-\item{ordered}{if true, use the Blaheta-Johnson method that distinguishs between 
-the order of words, and tends to promote rare sequences.}
+\item{ordered}{if true, use the Blaheta-Johnson method that distinguishes 
+between the order of words, and tends to promote rare sequences.}
 }
 \description{
-This function automatically identifies contiguous collocations consisting of
-variable-length term sequences whose frequency is unlikey to have occurred by
-chance.  The algorithm is based on Blaheta and Johnson's "Unsupervised 
-Learning of Multi-Word Verbs".
+This function automatically identifies contiguous collocations consisting of 
+variable-length term sequences whose frequency is unlikely to have occurred 
+by chance.  The algorithm is based on Blaheta and Johnson's (2001) 
+"Unsupervised Learning of Multi-Word Verbs".
 }
 \references{
 Blaheta, D., & Johnson, M. (2001). 

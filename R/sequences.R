@@ -1,22 +1,24 @@
 #' find variable-length collocations with filtering
 #' 
-#' This function automatically identifies contiguous collocations consisting of
-#' variable-length term sequences whose frequency is unlikey to have occurred by
-#' chance.  The algorithm is based on Blaheta and Johnson's "Unsupervised 
-#' Learning of Multi-Word Verbs".
+#' This function automatically identifies contiguous collocations consisting of 
+#' variable-length term sequences whose frequency is unlikely to have occurred 
+#' by chance.  The algorithm is based on Blaheta and Johnson's (2001) 
+#' "Unsupervised Learning of Multi-Word Verbs".
 #' @param x a \link{tokens} object
 #' @param features a regular expression for filtering the features to be located
 #'   in sequences
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
-#' @param min_count minimum frequency of sequences for which parameters are estimated
+#' @param min_count minimum frequency of sequences for which parameters are 
+#'   estimated
 #' @param max_size maxium length of sequences which are collected
-#' @param nested if true, collect all the subsequences of a longer sequence as separate entities.
-#'   e.g. in a sequence of capitalized words "United States Congress", "States Congress" is considered 
-#'   as a subsequence. But "United States" is not a subsequence because it is followed by "Congress".
-#' @param ordered if true, use the Blaheta-Johnson method that distinguishs between 
-#'   the order of words, and tends to promote rare sequences. 
-#' 
+#' @param nested if \code{TRUE}, collect all the subsequences of a longer
+#'   sequence as separate entities. e.g. in a sequence of capitalized words
+#'   "United States Congress", "States Congress" is considered as a subsequence.
+#'   But "United States" is not a subsequence because it is followed by
+#'   "Congress".
+#' @param ordered if true, use the Blaheta-Johnson method that distinguishes 
+#'   between the order of words, and tends to promote rare sequences.
 #' @keywords collocations
 #' @author Kohei Watanabe
 #' @references Blaheta, D., & Johnson, M. (2001). 
