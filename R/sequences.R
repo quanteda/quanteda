@@ -25,6 +25,27 @@
 #'   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
 #'    learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
 #'   Computational Extraction, Analysis and Exploitation of Collocations.
+#' @examples 
+#' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
+#' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
+#' 
+#' # extracting multi-part proper nouns (capitalized terms)
+#' seqs <- sequences(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
+#' head(seqs, 10)
+#' 
+#' # more efficient when applied to the same tokens object 
+#' toks_comp <- tokens_compound(toks, seqs)
+#' toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
+#' 
+#' # types can be any words
+#' seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
+#'                    min_count = 2, ordered = TRUE)
+#'                    
+#' head(seqs2, 10)
+#' 
+#' # convert to tokens object
+#' as.tokens(seqs2)
+#' 
 #' @export
 sequences <- function(x, features = "*", 
                       valuetype = c("glob", "regex", "fixed"),
