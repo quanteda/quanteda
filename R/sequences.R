@@ -56,7 +56,7 @@ sequences.tokens <- function(x, features = "*",
     
     result <- qatd_cpp_sequences(x, features_id, min_count, max_size, nested, ordered)
     rownames(result) <- unlist(stringi::stri_c_list(lapply(attr(result, 'ids'), function(y) types[y]), sep=' '), use.names = FALSE)
-    class(result) <- c("collocations", 'data.frame')
+    class(result) <- c("sequences", 'data.frame')
     
     result <- result[result$count >= min_count,]
     result$z <- result$lambda / result$sigma
@@ -66,3 +66,27 @@ sequences.tokens <- function(x, features = "*",
     
     return(result)
 }
+
+
+#' @method "[" sequences
+#' @export
+#' @noRd
+"[.sequences" <- function(x, i, ...) {
+    x <- as.data.frame(x)[i,]
+    attr(x, 'ids') <- attr(x, 'ids')[i]
+    class(x) <- c("sequences", 'data.frame')
+    return(x)
+}
+
+#' @export
+#' @method as.tokens sequences
+#' @noRd 
+as.tokens.sequences <- function(x) {
+    toks <- attr(x, 'ids')
+    attr(toks, 'types') <- attr(x, 'types')
+    class(toks) <- c("tokens", "tokenizedTexts")
+    return(toks)
+}
+
+
+
