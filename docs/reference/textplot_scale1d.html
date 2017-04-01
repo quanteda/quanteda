@@ -129,27 +129,36 @@ applies if <code>margin = &quot;features&quot;</code></dd>
 
     <p>a <span class="pkg">ggplot2</span> object</p>
     
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Jonathan Slapin and Sven-Oliver Proksch.  2008. &quot;A Scaling Model 
-  for Estimating Time-Series Party Positions from Texts.&quot; <em>American 
-  Journal of Political Science</em> 52(3):705-772.</p>
+    <p><code><a href='textmodel_wordfish.html'>textmodel_wordfish</a></code>, <code><a href='textmodel_wordscores.html'>textmodel_wordscores</a></code>, 
+  <code><a href='coef.textmodel.html'>coef.textmodel</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## wordfish</span>
-<span class='no'>wfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_wordfish.html'>textmodel_wordfish</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
-
-<span class='co'># plot estimated document positions</span>
+    <pre class="examples"><div class='input'><span class='no'>ie_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>)
 <span class='no'>doclab</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='fu'>c</span>(<span class='st'>"name"</span>, <span class='st'>"party"</span>)),
                 <span class='fl'>1</span>, <span class='no'>paste</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>" "</span>)
-<span class='fu'>textplot_scale1d</span>(<span class='no'>wfm</span>, <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='no'>doclab</span>)</div><img src='textplot_scale1d-2.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>textplot_scale1d</span>(<span class='no'>wfm</span>, <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='no'>doclab</span>,
-                 <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='st'>"party"</span>))</div><img src='textplot_scale1d-4.png' alt='' width='540' height='400' /><div class='input'>
+
+<span class='co'>## wordscores</span>
+<span class='no'>refscores</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fu'>rep</span>(<span class='fl'>NA</span>, <span class='fl'>4</span>), -<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fu'>rep</span>(<span class='fl'>NA</span>, <span class='fl'>8</span>))
+<span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel.html'>textmodel</a></span>(<span class='no'>ie_dfm</span>, <span class='no'>refscores</span>, <span class='kw'>model</span><span class='kw'>=</span><span class='st'>"wordscores"</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>pred</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>ws</span>)
 <span class='co'># plot estimated word positions</span>
+<span class='fu'>textplot_scale1d</span>(<span class='no'>pred</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>,
+                 <span class='kw'>highlighted</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"minister"</span>, <span class='st'>"have"</span>, <span class='st'>"our"</span>, <span class='st'>"budget"</span>))</div><img src='textplot_scale1d-2.png' alt='' width='540' height='400' /><div class='input'><span class='co'># plot estimated document positions</span>
+<span class='fu'>textplot_scale1d</span>(<span class='no'>pred</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>,
+                 <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='no'>doclab</span>,
+                 <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='st'>"party"</span>))</div><img src='textplot_scale1d-4.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'>## wordfish</span>
+<span class='no'>wfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_wordfish.html'>textmodel_wordfish</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
+<span class='co'># plot estimated document positions</span>
+<span class='fu'>textplot_scale1d</span>(<span class='no'>wfm</span>, <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='no'>doclab</span>)</div><img src='textplot_scale1d-6.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>textplot_scale1d</span>(<span class='no'>wfm</span>, <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='no'>doclab</span>,
+                 <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='st'>"party"</span>))</div><img src='textplot_scale1d-8.png' alt='' width='540' height='400' /><div class='input'><span class='co'># plot estimated word positions</span>
 <span class='fu'>textplot_scale1d</span>(<span class='no'>wfm</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>,
                  <span class='kw'>highlighted</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"government"</span>, <span class='st'>"global"</span>, <span class='st'>"children"</span>,
                                  <span class='st'>"bank"</span>, <span class='st'>"economy"</span>, <span class='st'>"the"</span>, <span class='st'>"citizenship"</span>,
-                                 <span class='st'>"productivity"</span>, <span class='st'>"deficit"</span>))</div><img src='textplot_scale1d-6.png' alt='' width='540' height='400' /></pre>
+                                 <span class='st'>"productivity"</span>, <span class='st'>"deficit"</span>))</div><img src='textplot_scale1d-10.png' alt='' width='540' height='400' /></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -158,14 +167,14 @@ applies if <code>margin = &quot;features&quot;</code></dd>
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#references">References</a></li>
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
 
     <h2>Author</h2>
     
-Kenneth Benoit, Stefan Mueller, and Adam Obeng
+Kenneth Benoit, Stefan Müller, and Adam Obeng
 
   </div>
 </div>

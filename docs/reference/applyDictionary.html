@@ -154,8 +154,9 @@ uppercase to distinguish them from other features</dd>
 #&gt; [1797-Adams, 1721:1722]    , and a conscientious determination  
 #&gt; [1797-Adams, 2487:2488]    , I entertain no doubt               
 #&gt; [1805-Jefferson, 441:442]  ? These contributions enable us      </div><div class='input'><span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>))
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'>applyDictionary</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)
-<span class='no'>toks2</span></div><div class='output co'>#&gt; tokens from 58 documents.
+<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'>applyDictionary</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;applyDictionary.tokens&#39; is deprecated.</span>
+#&gt; <span class='warning'>Use &#39;tokens_lookup&#39; instead.</span>
+#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='input'><span class='no'>toks2</span></div><div class='output co'>#&gt; tokens from 58 documents.
 #&gt; 1789-Washington :
 #&gt; [1] &quot;country&quot; &quot;country&quot;
 #&gt; 

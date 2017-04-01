@@ -318,12 +318,9 @@ microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "wo
 ```
 
     ## Unit: relative
-    ##        expr      min       lq    mean   median       uq       max neval
-    ##    q_tokens 1.105108 1.164258 1.11832 1.118052 1.156324 0.9681471    20
-    ##  tokenizers 1.000000 1.000000 1.00000 1.000000 1.000000 1.0000000    20
-    ##  cld
-    ##    a
-    ##    a
+    ##        expr      min       lq     mean   median     uq      max neval cld
+    ##    q_tokens 1.113394 1.151655 1.011951 1.181671 1.1453 1.034183    20   a
+    ##  tokenizers 1.000000 1.000000 1.000000 1.000000 1.0000 1.000000    20   a
 
 ### fasterword
 
@@ -335,9 +332,12 @@ microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "fa
 ```
 
     ## Unit: relative
-    ##        expr      min       lq     mean   median       uq     max neval cld
-    ##    q_tokens 1.000000 1.000000 1.000000 1.000000 1.000000 1.00000    20  a 
-    ##  tokenizers 2.410693 2.140916 2.418863 2.078901 2.048608 6.87982    20   b
+    ##        expr      min       lq     mean  median       uq       max neval
+    ##    q_tokens 1.000000 1.000000 1.000000 1.00000 1.000000 1.0000000    20
+    ##  tokenizers 2.414585 2.416669 1.790437 2.32905 2.282059 0.3718116    20
+    ##  cld
+    ##   a 
+    ##    b
 
 ### fastestword
 
@@ -349,12 +349,9 @@ microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "fa
 ```
 
     ## Unit: relative
-    ##        expr      min       lq     mean   median       uq      max neval
-    ##    q_tokens 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20
-    ##  tokenizers 3.346552 3.298714 2.924473 2.984952 2.560084 2.619707    20
-    ##  cld
-    ##   a 
-    ##    b
+    ##        expr      min       lq     mean   median       uq     max neval cld
+    ##    q_tokens 1.000000 1.000000 1.000000 1.000000 1.000000 1.00000    20  a 
+    ##  tokenizers 3.284143 3.166933 2.910481 3.114876 2.694776 2.49728    20   b
 
 ### character
 
@@ -366,7 +363,7 @@ microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "ch
 
     ## Unit: relative
     ##        expr      min       lq     mean   median       uq      max neval
-    ##    q_tokens 1.324672 1.354467 1.569866 1.371468 1.469847 1.167919    20
+    ##    q_tokens 1.331736 1.393622 1.667613 1.417263 2.081324 1.251048    20
     ##  tokenizers 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20
     ##  cld
     ##    b
@@ -381,6 +378,6 @@ microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "se
 ```
 
     ## Unit: relative
-    ##        expr     min       lq    mean   median       uq      max neval cld
-    ##    q_tokens 1.72892 1.806512 1.76372 1.771886 1.750814 1.739032    20   b
-    ##  tokenizers 1.00000 1.000000 1.00000 1.000000 1.000000 1.000000    20  a
+    ##        expr      min      lq     mean   median       uq      max neval cld
+    ##    q_tokens 1.694068 1.74924 1.716618 1.707902 1.699087 1.700511    20   b
+    ##  tokenizers 1.000000 1.00000 1.000000 1.000000 1.000000 1.000000    20  a

@@ -10,13 +10,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r eval=TRUE}
+```{r eval=TRUE, message = FALSE}
 library(quanteda)
 ```
 
-At the moment, two quanteda objects, `dfm` and `kwic` have custom plot methods: `dfm` is plotted as a wordcloud, `kwic` as a lexical dispersion plot. There are also other plots of interest which can be made with the standard R techniques.
+This vignette walks through various plot options available in **quanteda** through the `textplot_*` functions.
 
-# 1. Wordcloud 
+## 1. Wordcloud 
 
 Plotting a `dfm` object will create a wordcloud using the `wordcloud` pacakge.
 
@@ -41,11 +41,11 @@ textplot_wordcloud(inaugDfm, min.freq = 10,
      colors = c('red', 'pink', 'green', 'purple', 'orange', 'blue'))
 ```
 
-# 2. Lexical dispersion plot
+## 2. Lexical dispersion plot
 
 Plotting a `kwic` object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text.  We call these "x-ray" plots due to their similarity to the data produced by [Amazon's "x-ray" feature for Kindle books](https://en.wikipedia.org/wiki/X-Ray_(Amazon_Kindle)).
 
-```{r eval=TRUE, fig.width=8, fig.height=3}
+```{r eval=TRUE, fig.width=8, fig.height=4}
 textplot_xray(kwic(data_corpus_inaugural[40:57], "american"))
 ```
 
@@ -60,7 +60,7 @@ textplot_xray(
 
 If you're only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.
 
-```{r eval=TRUE, fig.width=8, fig.height=1.5}
+```{r eval=TRUE, fig.width=8, fig.height=1.25}
 mobydickCorpus <- corpus(data_char_mobydick)
 
 textplot_xray(
@@ -82,7 +82,7 @@ textplot_xray(
 
 In this case, the texts may not have the same length, so the tokens that don't exist in a particular text are shaded in grey.
 
-## Modifying lexical dispersion plots
+### Modifying lexical dispersion plots
 
 The object returned is a ggplot object, which can be modified using ggplot:
 
@@ -99,7 +99,7 @@ g + aes(color = keyword) + scale_color_manual(values = c('blue', 'red', 'green')
 ```
 
 
-# 3. Frequency plots
+## 3. Frequency plots
 
 
 You can plot the frequency of the top features in a text using `topfeatures`.
@@ -150,3 +150,83 @@ relFreq <- data.frame(list(
 ggplot(relFreq) + geom_point(aes(x=document,y=frequency)) +
     theme(axis.text.x = element_text(angle=90, hjust=1))
 ```
+
+## 4. Plot fitted scaling models
+
+You can also plot fitted Wordscores (Laver et al., 2003) or Wordfish scaling models (Proksch and Slapin, 2008). To use the following functions, currently you need to download the development version of **quanteda**.
+
+```{r eval=FALSE}
+# devtools packaged required to install quanteda from Github 
+devtools::install_github("kbenoit/quanteda") 
+require(quanteda)
+```
+
+### 4.1 Wordscores
+
+Wordscores is a scaling procedure for estimating policy positions or scores (Laver et al., 2003). Known scores are assigned to so called reference texts in order to infer the positions of new documents ("virgin texts"). You can plot the position of words (features) against the logged term frequency, or the position of the documents.
+
+```{r eval=TRUE, fig.width=8, fig.height=6}
+# Transform corpus to dfm
+ie_dfm <- dfm(data_corpus_irishbudget2010, verbose=FALSE)
+
+# Set reference scores
+refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
+
+# Predict Wordscores model
+ws <- textmodel(ie_dfm, refscores, model="wordscores", smooth = 1)
+
+# Get predictions
+pred <- predict(ws)
+
+# Plot estimated word positions (highlight words and print them in red)
+textplot_scale1d(pred, margin = "features", 
+                 highlighted = c("minister", "have", "our", "budget"), 
+                 highlighted_color = "red")
+
+# Set document labels for y-axis
+doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
+                1, paste, collapse = " ")
+
+# Plot estimated document positions and group by "party" variable
+textplot_scale1d(pred, margin = "documents",
+                 doclabels = doclab,
+                 groups = docvars(data_corpus_irishbudget2010, "party"))
+
+# Plot estimated document positions using the LBG transformation and group by "party" variable
+
+pred_lbg <- predict(ws, rescaling = "lbg")
+
+textplot_scale1d(pred_lbg, margin = "documents",
+                 doclabels = doclab,
+                 groups = docvars(data_corpus_irishbudget2010, "party"))
+```
+
+### 4.2 Wordfish
+
+Wordfish is a Poisson scaling model that estimates one-dimension document positions using maximum likelihood (Slapin and Proksch, 2008). Both the estimated position of words and the positions of the documents can be plotted. 
+
+```{r eval=TRUE, fig.width=8, fig.height=6}
+# Estimate Wordfish model
+wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
+
+# Plot estimated word positions
+textplot_scale1d(wfm, margin = "features", 
+                 highlighted = c("government", "global", "children", 
+                                 "bank", "economy", "the", "citizenship",
+                                 "productivity", "deficit"), 
+                 highlighted_color = "red")
+
+# Plot estimated document positions
+textplot_scale1d(wfm, doclabels = doclab,
+                 groups = docvars(data_corpus_irishbudget2010, "party"))
+```
+
+## References
+
+Laver, Michael, Kenneth Benoit, and John Garry. 2003. "Extracting Policy Positions from Political Texts Using Words as Data." _American Political Science Review_ 97(2):311-331.
+
+Slapin, Jonathan, and Sven-Oliver Proksch. 2008. "A Scaling Model for Estimating Time-Series Party Positions from Texts." _American Journal of Political Science_ 52(3):705-772.
+
+## Acknowledgements
+
+Thanks to Adam Obeng for writing most of this vignette, and Stefan Müller for adding and updating the section on scaling plots.

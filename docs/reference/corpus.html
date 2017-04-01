@@ -199,7 +199,7 @@ require the texts to be extracted.</dd>
 #&gt;        Labour   296    703        29       Labour
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Sat Mar 25 19:51:49 2017
+#&gt; Created: Sat Apr  1 08:47:22 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'>
 <span class='fu'>corpus</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>data_corpus_irishbudget2010</span>))</div><div class='output co'>#&gt; Corpus consisting of 14 documents and 0 docvars.</div><div class='input'>
@@ -345,7 +345,7 @@ require the texts to be extracted.</dd>
 #&gt;       &lt;NA&gt;
 #&gt; 
 #&gt; Source:  Converted from tm VCorpus &#39;crude&#39;
-#&gt; Created: Sat Mar 25 19:51:49 2017
+#&gt; Created: Sat Apr  1 08:47:22 2017
 #&gt; Notes:   
 #&gt; 
 #&gt; Corpus consisting of 50 documents, showing 5 documents.
@@ -376,21 +376,21 @@ require the texts to be extracted.</dd>
 #&gt;     YES      TRAIN TRAINING-SET  5611    usa   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt;
 #&gt; 
 #&gt; Source:  Converted from tm VCorpus &#39;acq&#39;
-#&gt; Created: Sat Mar 25 19:51:49 2017
+#&gt; Created: Sat Apr  1 08:47:22 2017
 #&gt; Notes:   
 #&gt; 
 #&gt; Corpus consisting of 9 documents.
 #&gt; 
 #&gt;          Text Types Tokens Sentences author       datetimestamp description
-#&gt;   1981-Reagan   904   2798       128   &lt;NA&gt; 2017-03-25 19:51:49        &lt;NA&gt;
-#&gt;   1985-Reagan   925   2935       123   &lt;NA&gt; 2017-03-25 19:51:49        &lt;NA&gt;
-#&gt;     1989-Bush   795   2683       141   &lt;NA&gt; 2017-03-25 19:51:49        &lt;NA&gt;
-#&gt;  1993-Clinton   644   1837        81   &lt;NA&gt; 2017-03-25 19:51:49        &lt;NA&gt;
-#&gt;  1997-Clinton   773   2451       111   &lt;NA&gt; 2017-03-25 19:51:49        &lt;NA&gt;
-#&gt;     2001-Bush   622   1810        97   &lt;NA&gt; 2017-03-25 19:51:49        &lt;NA&gt;
-#&gt;     2005-Bush   772   2325       100   &lt;NA&gt; 2017-03-25 19:51:49        &lt;NA&gt;
-#&gt;    2009-Obama   939   2729       110   &lt;NA&gt; 2017-03-25 19:51:49        &lt;NA&gt;
-#&gt;    2013-Obama   814   2335        88   &lt;NA&gt; 2017-03-25 19:51:49        &lt;NA&gt;
+#&gt;   1981-Reagan   904   2798       128   &lt;NA&gt; 2017-04-01 07:47:22        &lt;NA&gt;
+#&gt;   1985-Reagan   925   2935       123   &lt;NA&gt; 2017-04-01 07:47:22        &lt;NA&gt;
+#&gt;     1989-Bush   795   2683       141   &lt;NA&gt; 2017-04-01 07:47:22        &lt;NA&gt;
+#&gt;  1993-Clinton   644   1837        81   &lt;NA&gt; 2017-04-01 07:47:22        &lt;NA&gt;
+#&gt;  1997-Clinton   773   2451       111   &lt;NA&gt; 2017-04-01 07:47:22        &lt;NA&gt;
+#&gt;     2001-Bush   622   1810        97   &lt;NA&gt; 2017-04-01 07:47:22        &lt;NA&gt;
+#&gt;     2005-Bush   772   2325       100   &lt;NA&gt; 2017-04-01 07:47:22        &lt;NA&gt;
+#&gt;    2009-Obama   939   2729       110   &lt;NA&gt; 2017-04-01 07:47:22        &lt;NA&gt;
+#&gt;    2013-Obama   814   2335        88   &lt;NA&gt; 2017-04-01 07:47:22        &lt;NA&gt;
 #&gt;  heading id language origin
 #&gt;     &lt;NA&gt;  1       en   &lt;NA&gt;
 #&gt;     &lt;NA&gt;  2       en   &lt;NA&gt;
@@ -403,7 +403,7 @@ require the texts to be extracted.</dd>
 #&gt;     &lt;NA&gt;  9       en   &lt;NA&gt;
 #&gt; 
 #&gt; Source:  Converted from tm VCorpus &#39;tmCorp&#39;
-#&gt; Created: Sat Mar 25 19:51:49 2017
+#&gt; Created: Sat Apr  1 08:47:22 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'>
 <span class='co'># construct a corpus from a data.frame</span>
@@ -430,45 +430,45 @@ require the texts to be extracted.</dd>
 #&gt;  fromDf_6     6      6         1             c         6
 #&gt; 
 #&gt; Source:  From a data.frame called mydf.
-#&gt; Created: Sat Mar 25 19:51:49 2017
+#&gt; Created: Sat Apr  1 08:47:22 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'>
 <span class='co'># construct a corpus from a kwic object</span>
 <span class='no'>mykwic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"southern"</span>)
 <span class='fu'>summary</span>(<span class='fu'>corpus</span>(<span class='no'>mykwic</span>))</div><div class='output co'>#&gt; Corpus consisting of 28 documents.
 #&gt; 
-#&gt;         Text Types Tokens Sentences         docname position  keyword context
-#&gt;    text1.pre     5      5         1      1797-Adams     1807 southern     pre
-#&gt;    text2.pre     4      5         1      1825-Adams     2434 southern     pre
-#&gt;    text3.pre     4      5         1    1861-Lincoln       98 Southern     pre
-#&gt;    text4.pre     5      5         1    1865-Lincoln      283 southern     pre
-#&gt;    text5.pre     5      5         1      1877-Hayes      378 Southern     pre
-#&gt;    text6.pre     5      5         1      1877-Hayes      956 Southern     pre
-#&gt;    text7.pre     5      5         1      1877-Hayes     1250 Southern     pre
-#&gt;    text8.pre     5      5         1   1881-Garfield     1007 Southern     pre
-#&gt;    text9.pre     4      5         1       1909-Taft     4029 Southern     pre
-#&gt;   text10.pre     5      5         1       1909-Taft     4230 Southern     pre
-#&gt;   text11.pre     5      5         1       1909-Taft     4350 Southern     pre
-#&gt;   text12.pre     5      5         1       1909-Taft     4537 Southern     pre
-#&gt;   text13.pre     5      5         1       1909-Taft     4597 Southern     pre
-#&gt;   text14.pre     5      5         1 1953-Eisenhower     1226 southern     pre
-#&gt;   text1.post     5      5         1      1797-Adams     1807 southern    post
-#&gt;   text2.post     5      5         1      1825-Adams     2434 southern    post
-#&gt;   text3.post     5      5         1    1861-Lincoln       98 Southern    post
-#&gt;   text4.post     5      5         2    1865-Lincoln      283 southern    post
-#&gt;   text5.post     5      5         2      1877-Hayes      378 Southern    post
-#&gt;   text6.post     5      5         1      1877-Hayes      956 Southern    post
-#&gt;   text7.post     5      5         1      1877-Hayes     1250 Southern    post
-#&gt;   text8.post     5      5         2   1881-Garfield     1007 Southern    post
-#&gt;   text9.post     5      5         2       1909-Taft     4029 Southern    post
-#&gt;  text10.post     5      5         1       1909-Taft     4230 Southern    post
-#&gt;  text11.post     5      5         1       1909-Taft     4350 Southern    post
-#&gt;  text12.post     5      5         1       1909-Taft     4537 Southern    post
-#&gt;  text13.post     5      5         1       1909-Taft     4597 Southern    post
-#&gt;  text14.post     5      5         1 1953-Eisenhower     1226 southern    post
+#&gt;         Text Types Tokens Sentences         docname from   to  keyword context
+#&gt;    text1.pre     5      5         1      1797-Adams 1807 1807 southern     pre
+#&gt;    text2.pre     4      5         1      1825-Adams 2434 2434 southern     pre
+#&gt;    text3.pre     4      5         1    1861-Lincoln   98   98 Southern     pre
+#&gt;    text4.pre     5      5         1    1865-Lincoln  283  283 southern     pre
+#&gt;    text5.pre     5      5         1      1877-Hayes  378  378 Southern     pre
+#&gt;    text6.pre     5      5         1      1877-Hayes  956  956 Southern     pre
+#&gt;    text7.pre     5      5         1      1877-Hayes 1250 1250 Southern     pre
+#&gt;    text8.pre     5      5         1   1881-Garfield 1007 1007 Southern     pre
+#&gt;    text9.pre     4      5         1       1909-Taft 4029 4029 Southern     pre
+#&gt;   text10.pre     5      5         1       1909-Taft 4230 4230 Southern     pre
+#&gt;   text11.pre     5      5         1       1909-Taft 4350 4350 Southern     pre
+#&gt;   text12.pre     5      5         1       1909-Taft 4537 4537 Southern     pre
+#&gt;   text13.pre     5      5         1       1909-Taft 4597 4597 Southern     pre
+#&gt;   text14.pre     5      5         1 1953-Eisenhower 1226 1226 southern     pre
+#&gt;   text1.post     5      5         1      1797-Adams 1807 1807 southern    post
+#&gt;   text2.post     5      5         1      1825-Adams 2434 2434 southern    post
+#&gt;   text3.post     5      5         1    1861-Lincoln   98   98 Southern    post
+#&gt;   text4.post     5      5         2    1865-Lincoln  283  283 southern    post
+#&gt;   text5.post     5      5         2      1877-Hayes  378  378 Southern    post
+#&gt;   text6.post     5      5         1      1877-Hayes  956  956 Southern    post
+#&gt;   text7.post     5      5         1      1877-Hayes 1250 1250 Southern    post
+#&gt;   text8.post     5      5         2   1881-Garfield 1007 1007 Southern    post
+#&gt;   text9.post     5      5         2       1909-Taft 4029 4029 Southern    post
+#&gt;  text10.post     5      5         1       1909-Taft 4230 4230 Southern    post
+#&gt;  text11.post     5      5         1       1909-Taft 4350 4350 Southern    post
+#&gt;  text12.post     5      5         1       1909-Taft 4537 4537 Southern    post
+#&gt;  text13.post     5      5         1       1909-Taft 4597 4597 Southern    post
+#&gt;  text14.post     5      5         1 1953-Eisenhower 1226 1226 southern    post
 #&gt; 
 #&gt; Source:  Corpus created from kwic(x, keywords = &quot;southern&quot;)
-#&gt; Created: Sat Mar 25 19:51:49 2017
+#&gt; Created: Sat Apr  1 08:47:23 2017
 #&gt; Notes:   
 #&gt; </div></pre>
   </div>

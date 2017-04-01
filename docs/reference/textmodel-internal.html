@@ -82,6 +82,8 @@
 
     
     <p>Internal function documentation for textmodel objects.</p>
+
+    <p>Internal function documentation for textmodel objects.</p>
     
 
     <pre><span class='co'># S3 method for textmodel_wordfish_fitted</span>
@@ -93,9 +95,16 @@
 <span class='co'># S4 method for textmodel_wordfish_predicted</span>
 <span class='fu'>show</span>(<span class='no'>object</span>)
 
+<span class='co'># S4 method for textmodel_wordfish_fitted</span>
+<span class='fu'>coef</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for textmodel_wordfish_fitted</span>
+<span class='fu'>coefficients</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+
 <span class='co'># S3 method for textmodel_wordscores_fitted</span>
 <span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"none"</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"verbose"</span>), <span class='no'>...</span>)
+  <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"lbg"</span>, <span class='st'>"mv"</span>), <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"verbose"</span>), <span class='no'>...</span>)
 
 <span class='co'># S3 method for textmodel_wordscores_fitted</span>
 <span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>30L</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
@@ -105,6 +114,18 @@
 
 <span class='co'># S4 method for textmodel_wordscores_predicted</span>
 <span class='fu'>show</span>(<span class='no'>object</span>)
+
+<span class='co'># S4 method for textmodel_wordscores_fitted</span>
+<span class='fu'>coef</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for textmodel_wordscores_fitted</span>
+<span class='fu'>coefficients</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for textmodel_wordscores_predicted</span>
+<span class='fu'>coef</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for textmodel_wordscores_predicted</span>
+<span class='fu'>coefficients</span>(<span class='no'>object</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for textmodel_wordshoal_fitted</span>
 <span class='fu'>print</span>(<span class='no'>x</span>, <span class='no'>...</span>)
@@ -128,8 +149,8 @@
       <dt>newdata</dt>
       <dd>dfm on which prediction should be made</dd>
       <dt>rescaling</dt>
-      <dd><code>none</code> for &quot;raw&quot; scores; <code>lbg</code> for LBG (2003) 
-rescaling; or <code>mv</code> for the rescaling proposed by Martin and Vanberg 
+      <dd><code>&quot;none&quot;</code> for &quot;raw&quot; scores; <code>&quot;lbg&quot;</code> for LBG (2003) 
+rescaling; or <code>&quot;mv&quot;</code> for the rescaling proposed by Martin and Vanberg 
 (2007).  (Note to authors: Provide full details here in documentation.)</dd>
       <dt>level</dt>
       <dd>probability level for confidence interval width</dd>
