@@ -83,7 +83,7 @@ tokens_compound.tokens <- function(x, sequences,
         }
     } else {
         #cat("Use regex2id\n")
-        seqs <- sequence2list(rownames(sequences))
+        seqs <- sequence2list(sequences)
         seqs <- seqs[lengths(seqs) > 1] # drop single words
         seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
     }
