@@ -2,11 +2,14 @@
 % Please edit documentation in R/sequences.R
 \name{sequences}
 \alias{sequences}
+\alias{is.sequences}
 \title{find variable-length collocations with filtering}
 \usage{
 sequences(x, features = "*", valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, min_count = 2, max_size = 5, nested = TRUE,
   ordered = FALSE)
+
+is.sequences(x)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
@@ -34,11 +37,37 @@ But "United States" is not a subsequence because it is followed by
 \item{ordered}{if true, use the Blaheta-Johnson method that distinguishes 
 between the order of words, and tends to promote rare sequences.}
 }
+\value{
+\code{sequences} returns \code{TRUE} if the object is of class
+  sequences, \code{FALSE} otherwise.
+}
 \description{
 This function automatically identifies contiguous collocations consisting of 
 variable-length term sequences whose frequency is unlikely to have occurred 
 by chance.  The algorithm is based on Blaheta and Johnson's (2001) 
 "Unsupervised Learning of Multi-Word Verbs".
+}
+\examples{
+toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
+toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
+
+# extracting multi-part proper nouns (capitalized terms)
+seqs <- sequences(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
+head(seqs, 10)
+
+# more efficient when applied to the same tokens object 
+toks_comp <- tokens_compound(toks, seqs)
+toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
+
+# types can be any words
+seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
+                   min_count = 2, ordered = TRUE)
+                   
+head(seqs2, 10)
+
+# convert to tokens object
+as.tokens(seqs2)
+
 }
 \references{
 Blaheta, D., & Johnson, M. (2001). 

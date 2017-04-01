@@ -109,5 +109,13 @@ as.tokens.sequences <- function(x) {
     return(toks)
 }
 
+#' @rdname sequences
+#' @export
+#' @return \code{sequences} returns \code{TRUE} if the object is of class
+#'   sequences, \code{FALSE} otherwise.
+is.sequences <- function(x) {
+    ifelse("sequences" %in% class(x), TRUE, FALSE)
+}
+
 
 
