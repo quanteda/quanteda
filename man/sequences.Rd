@@ -2,11 +2,14 @@
 % Please edit documentation in R/sequences.R
 \name{sequences}
 \alias{sequences}
+\alias{is.sequences}
 \title{find variable-length collocations with filtering}
 \usage{
 sequences(x, features = "*", valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, min_count = 2, max_size = 5, nested = TRUE,
   ordered = FALSE)
+
+is.sequences(x)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
@@ -33,6 +36,10 @@ But "United States" is not a subsequence because it is followed by
 
 \item{ordered}{if true, use the Blaheta-Johnson method that distinguishes 
 between the order of words, and tends to promote rare sequences.}
+}
+\value{
+\code{sequences} returns \code{TRUE} if the object is of class
+  sequences, \code{FALSE} otherwise.
 }
 \description{
 This function automatically identifies contiguous collocations consisting of 
