@@ -87,7 +87,9 @@ one-dimensional document positions using conditional maximum likelihood.</p>
 
     <pre><span class='fu'>textmodel_wordfish</span>(<span class='no'>data</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>Inf</span>, <span class='fl'>Inf</span>, <span class='fl'>3</span>, <span class='fl'>1</span>),
   <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1e-06</span>, <span class='fl'>1e-08</span>), <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"poisson"</span>, <span class='st'>"quasipoisson"</span>),
-  <span class='kw'>dispersionLevel</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"feature"</span>, <span class='st'>"overall"</span>), <span class='kw'>dispersionFloor</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
+  <span class='kw'>dispersionLevel</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"feature"</span>, <span class='st'>"overall"</span>), <span class='kw'>dispersionFloor</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>abs_err</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>svd_sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>residual_floor</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -120,6 +122,16 @@ in the quasi-Poisson model.  Used to minimize the distorting effect of
 terms with rare term or document frequencies that appear to be severely 
 underdispersed.  Default is 0, but this only applies if <code>dispersion = 
 &quot;quasipoisson&quot;</code>.</dd>
+      <dt>sparse</dt>
+      <dd>specifies whether the <code>&quot;dfm&quot;</code> is coerced to dense</dd>
+      <dt>abs_err</dt>
+      <dd>specifies how the convergence is considered</dd>
+      <dt>svd_sparse</dt>
+      <dd>uses svd to initialize the starting values of theta, 
+only applies when <code>sparse = TRUE</code></dd>
+      <dt>residual_floor</dt>
+      <dd>specifies the threshold for residual matrix when 
+calculating the svds, only applies when <code>sparse = TRUE</code></dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -154,25 +166,25 @@ underdispersed.  Default is 0, but this only applies if <code>dispersion =
 #&gt; Estimated document positions:
 #&gt; 
 #&gt;   Documents       theta         SE       lower       upper
-#&gt; 1        R1 -1.29056981 0.01448422 -1.31895889 -1.26218074
-#&gt; 2        R2 -0.61643907 0.01059613 -0.63720748 -0.59567065
-#&gt; 3        R3  0.03350982 0.01085375  0.01223647  0.05478318
-#&gt; 4        R4  0.70961244 0.01214106  0.68581597  0.73340892
-#&gt; 5        R5  1.52333687 0.01744178  1.48915098  1.55752276
-#&gt; 6        V1 -0.35945025 0.01070073 -0.38042368 -0.33847683
+#&gt; 1        R1 -1.29155113 0.01450459 -1.31998013 -1.26312213
+#&gt; 2        R2 -0.61629592 0.01061247 -0.63709636 -0.59549548
+#&gt; 3        R3  0.03431078 0.01085587  0.01303328  0.05558829
+#&gt; 4        R4  0.70995751 0.01212683  0.68618892  0.73372609
+#&gt; 5        R5  1.52250729 0.01741995  1.48836418  1.55665039
+#&gt; 6        V1 -0.35892853 0.01071309 -0.37992619 -0.33793087
 #&gt; 
 #&gt; Estimated feature scores: showing first 30 beta-hats for features
 #&gt; 
 #&gt;           A           B           C           D           E           F 
-#&gt;  -8.4452617  -9.3002556 -11.2580501 -12.3643578 -13.3323903 -13.2373464 
+#&gt;  -8.4392704  -9.2914593 -11.2444303 -12.3486003 -13.3149105 -13.2180167 
 #&gt;           G           H           I           J           K           L 
-#&gt; -13.4867108 -12.3588189 -11.5848271 -10.4239011  -9.2561345  -8.1485428 
+#&gt; -13.4665196 -12.3392233 -11.5662042 -10.4070574  -9.2412224  -8.1354779 
 #&gt;           M           N           O           P           Q           R 
-#&gt;  -6.9820863  -5.8782223  -4.7955288  -3.5739210  -2.5522985  -1.3458753 
+#&gt;  -6.9710011  -5.8689151  -4.7877759  -3.5677039  -2.5471639  -1.3418545 
 #&gt;           S           T           U           V           W           X 
-#&gt;  -0.2889734   0.7696623   1.9353486   2.9295159   4.1021898   5.0019413 
+#&gt;  -0.2855032   0.7731067   1.9392648   2.9340387   4.1076563   5.0083465 
 #&gt;           Y           Z          ZA          ZB          ZC          ZD 
-#&gt;   5.9373363   6.8722030   7.7519960   8.7447725   9.6708363  10.4464336 </div><div class='input'>
+#&gt;   5.9450536   6.8813261   7.7624218   8.7566700   9.6840038  10.4605091 </div><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># ie2010dfm &lt;- dfm(data_corpus_irishbudget2010, verbose = FALSE)</span>
 <span class='co'># (wfm1 &lt;- textmodel_wordfish(ie2010dfm, dir = c(6,5)))</span>
@@ -213,7 +225,7 @@ underdispersed.  Default is 0, but this only applies if <code>dispersion =
 
     <h2>Author</h2>
     
-Benjamin Lauderdale and Kenneth Benoit
+Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit
 
   </div>
 </div>

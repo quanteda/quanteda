@@ -109,7 +109,7 @@ inline List recompile(Texts texts, Types types){
     }
     
     // dev::stop_timer("Dictionary lookup", timer);
-    ListOf<IntegerVector> texts_list = Rcpp::wrap(texts);
+    Tokens texts_list = Rcpp::wrap(texts);
     texts_list.attr("padding") = (bool)flags_used[0];
     texts_list.attr("types") = encode(types_new);
     return texts_list;

@@ -89,13 +89,13 @@ inaugDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/df
 <h1 class="hasAnchor">
 <html><body><a href="#lexical-dispersion-plot" class="anchor"> </a></body></html>2. Lexical dispersion plot</h1>
 <p>Plotting a <code>kwic</code> object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text. We call these “x-ray” plots due to their similarity to the data produced by <a href="https://en.wikipedia.org/wiki/X-Ray_(Amazon_Kindle)">Amazon’s “x-ray” feature for Kindle books</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/textplot_xray.html">textplot_xray</a></span>(<span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"american"</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/textplot_xray.html">textplot_xray</a></span>(<span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">40</span>:<span class="dv">57</span>], <span class="st">"american"</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-5-1.png" width="768"></p>
 <p>You can also pass multiple kwic objects to <code>plot</code> to compare the dispersion of different terms:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/textplot_xray.html">textplot_xray</a></span>(
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"american"</span>),
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"people"</span>),
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"communist"</span>)
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">40</span>:<span class="dv">57</span>], <span class="st">"american"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">40</span>:<span class="dv">57</span>], <span class="st">"people"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">40</span>:<span class="dv">57</span>], <span class="st">"communist"</span>)
 )</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
 <p>If you’re only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.</p>
@@ -108,9 +108,9 @@ inaugDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/df
 <p><img src="plotting_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 <p>You might also have noticed that the x-axis scale is the absolute token index for single texts and relative token index when multiple texts are being compared. If you prefer, you can specify that you want an absolute scale:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/textplot_xray.html">textplot_xray</a></span>(
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"american"</span>),
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"people"</span>),
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"communist"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">40</span>:<span class="dv">57</span>], <span class="st">"american"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">40</span>:<span class="dv">57</span>], <span class="st">"people"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">40</span>:<span class="dv">57</span>], <span class="st">"communist"</span>),
      <span class="dt">scale =</span> <span class="st">'absolute'</span>
 )</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
@@ -122,9 +122,9 @@ inaugDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/df
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw">theme_set</span>(<span class="kw">theme_bw</span>())
 g &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textplot_xray.html">textplot_xray</a></span>(
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"american"</span>),
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"people"</span>),
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"communist"</span>)
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">40</span>:<span class="dv">57</span>], <span class="st">"american"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">40</span>:<span class="dv">57</span>], <span class="st">"people"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">40</span>:<span class="dv">57</span>], <span class="st">"communist"</span>)
 )
 g +<span class="st"> </span><span class="kw">aes</span>(<span class="dt">color =</span> keyword) +<span class="st"> </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">'blue'</span>, <span class="st">'red'</span>, <span class="st">'green'</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>

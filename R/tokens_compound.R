@@ -44,9 +44,10 @@
 #' tokens_compound(toks, myDict)
 #'
 #' # with collocations
-#' collocs <- collocations("capital gains taxes are worse than inheritance taxes", size = 2:3)
-#' toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
-#' tokens_compound(toks, collocs)
+#' #cols <- textstat_collocations("capital gains taxes are worse than inheritance taxes", 
+#' #                              size = 2, min_count = 1)
+#' #toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
+#' #tokens_compound(toks, cols)
 tokens_compound <- function(x, sequences,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                     case_insensitive = TRUE, join = FALSE) {
@@ -65,22 +66,30 @@ tokens_compound.tokens <- function(x, sequences,
     if (!is.tokens(x))
         stop("x must be a tokens object")
     
-    sequences <- sequence2list(sequences)
-    seqs <- as.list(sequences)
-    seqs <- seqs[lengths(seqs) > 1] # drop single words
-    
-    # Do nothing if no sequence is given
-    if (!length(seqs))
-        return(x)
-    
     valuetype <- match.arg(valuetype)
-    attrs <- attributes(x)
+
+    names_org <- names(x)
+    attrs_org <- attributes(x)
     types <- types(x)
     
-    seqs_id <- regex2id(seqs, types, valuetype, case_insensitive)
-    if(length(seqs_id) == 0) return(x) # do nothing
-    x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
-    attributes(x, FALSE) <- attrs
+    if (is.collocations(sequences)) {
+        if (identical(attr(sequences, 'types'), types)) {
+            #cat("Skip regex2id\n")
+            seqs_ids <- attr(sequences, 'ids')
+        } else { 
+            #cat("Use regex2id\n")
+            seqs <- sequence2list(sequences)
+            seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
+        }
+    } else {
+        #cat("Use regex2id\n")
+        seqs <- sequence2list(sequences)
+        seqs <- seqs[lengths(seqs) > 1] # drop single words
+        seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
+    }
+    if(length(seqs_ids) == 0) return(x) # do nothing
+    x <- qatd_cpp_tokens_compound(x, seqs_ids, types, concatenator, join)
+    attributes(x, FALSE) <- attrs_org
     attr(x, "concatenator") <- concatenator
     return(x)
 }
