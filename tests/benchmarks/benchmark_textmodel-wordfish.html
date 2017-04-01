@@ -10,7 +10,6 @@
 
 
 
-<meta name="date" content="2017-12-03" />
 
 <title>textmodel-wordfish benchmarks</title>
 
@@ -129,18 +128,14 @@ $(document).ready(function () {
 <pre><code>## quanteda version 0.9.9.42</code></pre>
 <pre><code>## Using 7 of 8 cores for parallel computing</code></pre>
 <pre class="r"><code>ie2010dfm &lt;- dfm(data_corpus_irishbudget2010, verbose = FALSE)
-<<<<<<< HEAD
-
 wfm_sparse &lt;- function(x){
     options(mt = FALSE)
     textmodel_wordfish(ie2010dfm, dir = c(6,5))
 }
-
 wfm_sparse_mt &lt;- function(x){
     options(mt = TRUE)
     textmodel_wordfish(ie2010dfm, dir = c(6,5))
 }
-
 microbenchmark::microbenchmark(
     wfm_sparse_mt = wfm_sparse_mt(ie2010dfm), 
     wfm_sparse = wfm_sparse(ie2010dfm),
@@ -149,20 +144,12 @@ microbenchmark::microbenchmark(
 <pre><code>## Unit: relative
 ##           expr      min       lq     mean   median       uq      max neval
 ##  wfm_sparse_mt 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20
-##     wfm_sparse 3.252537 3.249923 3.239196 3.242327 3.242805 3.140675    20
-##      wfm_dense 3.765690 3.764365 3.754770 3.763023 3.761724 3.632270    20</code></pre>
-=======
-microbenchmark::microbenchmark(
-    wfm_mt = textmodel_wordfish(ie2010dfm, dir = c(6,5), mt = TRUE), 
-    wfm_sparse = textmodel_wordfish(ie2010dfm, dir = c(6,5),  mt = FALSE), 
-    wfm_dense = textmodel_wordfish(ie2010dfm, dir = c(6,5), sparse = FALSE),
-    times=20, unit = 'relative')</code></pre>
-<pre><code>## Unit: relative
-##        expr      min       lq     mean   median       uq      max neval
-##      wfm_mt 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20
-##  wfm_sparse 3.220474 3.201734 3.205917 3.197928 3.201404 3.282915    20
-##   wfm_dense 3.738846 3.741970 3.737090 3.740751 3.740002 3.703965    20</code></pre>
->>>>>>> e0e7f8daed03b9e10b298f3d107588b27fdfe20e
+##     wfm_sparse 1.767750 1.809988 1.815693 1.820302 1.848642 1.650149    20
+##      wfm_dense 2.575512 2.634387 2.618963 2.633660 2.640833 2.385670    20
+##  cld
+##  a  
+##   b 
+##    c</code></pre>
 </div>
 
 
