@@ -72,13 +72,13 @@ tokens_compound.tokens <- function(x, sequences,
     attrs_org <- attributes(x)
     types <- types(x)
     
-    if (is.collocations(sequences)) {
+    if (is.sequences(sequences)) {
         if (identical(attr(sequences, 'types'), types)) {
             #cat("Skip regex2id\n")
             seqs_ids <- attr(sequences, 'ids')
         } else { 
             #cat("Use regex2id\n")
-            seqs <- sequence2list(sequences)
+            seqs <- sequence2list(rownames(sequences))
             seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
         }
     } else {
