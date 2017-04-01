@@ -32,4 +32,21 @@ test_that("test that nested arguement is working", {
     
 })
 
+test_that("test that sequences works with tokens_compound", {
+    
+    toks <- tokens('E E a b c E E G G f E E f f G G')
+    seqs <- sequences(toks, "^[A-Z]$", valuetype="regex", case_insensitive = FALSE,
+                      min_count = 1, nested = FALSE, ordered = FALSE)
+    
+    # seqs have the same types
+    expect_equivalent(as.list(tokens_compound(toks, seqs, join = FALSE)),
+                      list(c("E_E", "a", "b", "c", "E_E_G_G", "E_E", "G_G", "f", "E_E", "f", "f", "G_G")))
+    
+    # seqs have different types
+    attr(seqs, 'types') <- ''
+    expect_equivalent(as.list(tokens_compound(toks, seqs, join = FALSE)),
+                      list(c("E_E", "a", "b", "c", "E_E_G_G", "E_E", "G_G", "f", "E_E", "f", "f", "G_G")))
+    
+})
+
 
