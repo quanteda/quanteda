@@ -142,14 +142,13 @@ setMethod("show", "dictionary",
 #' @importFrom stats setNames
 #' @importFrom tools file_ext
 #' @export
-dictionary <- function(..., file = NULL, format = NULL, 
+dictionary <- function(x, file = NULL, format = NULL, 
                        concatenator = " ", 
                        tolower = TRUE, encoding = "") {
-  # these allow implicit list construction through ...
-  x <- list(...)
-  if (length(x)==1) 
+
+  if (length(x) == 1) 
       x <- as.list(x[[1]])
-  if (!is.null(x) & !is.list(x))
+  if (!is.null(x) && !is.list(x))
     stop("Dictionaries must be named lists or lists of named lists.")
 
   formats <- c(cat = "wordstat", dic = "LIWC", ykd = "yoshikoder", lcd = "yoshikoder", 
