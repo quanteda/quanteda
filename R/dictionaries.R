@@ -188,7 +188,6 @@ dictionary <- function(..., file = NULL, format = NULL,
 }
 
 
-
 #  Flatten a hierarchical dictionary into a list of character vectors
 # 
 #  Converts a hierarchical dictionary (a named list of named lists, ending in character
@@ -266,8 +265,8 @@ is.dictionary <- function(x) {
 
 # Import a Lexicoder dictionary
 #' dict <- read_dict_lexicoder('/home/kohei/Documents/Dictionary/Lexicoder/LSDaug2015/LSD2015.lc3')
-
-read_dict_lexicoder <- function(path){
+read_dict_lexicoder <- function(path) {
+    
     lines <- stringi::stri_read_lines(path, encoding = 'utf-8')
     lines <- stringi::stri_enc_toutf8(lines)
     lines <- stringi::stri_trim_both(lines)
@@ -283,7 +282,6 @@ read_dict_lexicoder <- function(path){
 # Import a Wordstat dictionary
 #' dict <- readWStatDict2('/home/kohei/Documents/Dictionary/Wordstat/ROGET.CAT', 'utf-8')
 #' dict <- readWStatDict2('/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.CAT', 'iso-8859-1')
-
 read_dict_wordstat <- function(path, encoding= 'auto') {
     
     lines <- stringi::stri_read_lines(path, encoding = encoding)
@@ -323,7 +321,6 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     lines_value <- stringi::stri_replace_all_regex(lines_value, '^(.+)?\t', '') # for safety
     values_ids <- stringi::stri_extract_all_regex(lines_value, '\\d+')
     
-    
     dict <- split(rep(values, lengths(values_ids)), as.factor(unlist(values_ids, use.names = FALSE)))
     dict <- dict[order(as.numeric(names(dict)))]
     names(dict) <- keys[match(names(dict), keys_id)]
@@ -334,26 +331,23 @@ read_dict_liwc <- function(path, encoding = 'auto') {
 # Import a Yoshikoder dictionary
 # dict <- read_dict_yoshikoder('/home/kohei/Documents/Dictionary/Yoshikoder/laver-garry-ajps.ykd')
 read_dict_yoshikoder <- function(path){
-    if (!requireNamespace("XML", quietly = TRUE))
-        stop("You must have package XML installed to parse Yoshikoder dictionary files.")
-
-    nodesToList <- function(node, dict = list()){
-        nodes <- XML::xpathSApply(node, "cnode")
-        if (length(nodes)) {
-            for (i in seq_along(nodes)) {
-                key <- XML::xmlGetAttr(nodes[[i]], name="name")
-                dict[[key]] <- nodesToList(nodes[[i]], dict[[key]])
-            }
-        } else {
-            dict <- unname(XML::xpathSApply(node, "pnode/@name"))
-        }
-        return(dict)
-    }
     
     xml <- XML::xmlParse(path)
     root <- XML::xpathSApply(xml, "/dictionary/cnode")
-    dict <- nodesToList(root[[1]])
+    dict <- nodes2list(root[[1]])
     return(dict)
 }
 
-dict <- read_dict_yoshikoder('/home/kohei/Documents/Dictionary/Yoshikoder/laver-garry-ajps.ykd')
+# Internal function for read_dict_yoshikoder
+nodes2list <- function(node, dict = list()){
+    nodes <- XML::xpathSApply(node, "cnode")
+    if (length(nodes)) {
+        for (i in seq_along(nodes)) {
+            key <- XML::xmlGetAttr(nodes[[i]], name="name")
+            dict[[key]] <- nodes2list(nodes[[i]], dict[[key]])
+        }
+    } else {
+        dict <- unname(XML::xpathSApply(node, "pnode/@name"))
+    }
+    return(dict)
+}
