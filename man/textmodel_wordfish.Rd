@@ -7,7 +7,7 @@
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
   dispersionLevel = c("feature", "overall"), dispersionFloor = 0,
-  sparse = TRUE, mt = getOption("mt"), abs_err = FALSE,
+  sparse = TRUE, threads = quanteda_options("threads"), abs_err = FALSE,
   svd_sparse = TRUE, residual_floor = 0.5)
 }
 \arguments{
@@ -42,7 +42,8 @@ underdispersed.  Default is 0, but this only applies if \code{dispersion =
 
 \item{sparse}{specifies whether the \code{"dfm"} is coerced to dense}
 
-\item{mt}{specifies whether multi-thread is used}
+\item{threads}{specifies the number of threads to use; set to 1 to override
+the package settings and use a serial version of the function}
 
 \item{abs_err}{specifies how the convergence is considered}
 
@@ -53,7 +54,7 @@ only applies when \code{sparse = TRUE}}
 calculating the svds, only applies when \code{sparse = TRUE}}
 }
 \value{
-An object of class textmodel_fitted_wordfish.  This is a list 
+An object of class \code{textmodel_fitted_wordfish}.  This is a list 
   containing: \item{dir}{global identification of the dimension} 
   \item{theta}{estimated document positions} \item{alpha}{estimated document 
   fixed effects} \item{beta}{estimated feature marginal effects} 
