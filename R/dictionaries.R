@@ -155,6 +155,8 @@ dictionary <- function(x, file = NULL, format = NULL,
                  lc3 = "lexicoder", yml = "YAML")
     
     if (!is.null(file)) {
+        if (!file.exists(file))
+            stop(paste("File does not exist", file))
         if (is.null(format)) {
             ext <- file_ext(file)
             if (ext %in% names(formats)) {
