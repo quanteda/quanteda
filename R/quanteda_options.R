@@ -72,6 +72,7 @@ quanteda_options <- function(..., reset = FALSE) {
                 return(getOption("quanteda_threads"))
             } else {
                 options(quanteda_threads = value)
+                RcppParallel::setThreadOptions(value)
             }
         
         } else if (key == "verbose") {
