@@ -12,6 +12,7 @@
 * Redesigned `textmodel_scale1d` now produces sorted and grouped document positions for fitted wordfish models, and produces a ggplot2 plot object.
 * `textmodel_wordfish()` now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values.  This also dramatically improves performance in computing this model.  (#482, #124)
 * The speed of `kwic()` is now dramatically improved, and also returns an indexed set of tokens that makes subsequent commands on a kwic class object much faster. (#603)
+* Package options (for verbose, threads) can now be set or queried using `quanteda_options()`.
 
 ### Behaviour changes 
 
