@@ -80,9 +80,8 @@ setMethod("show", "dictionary",
 #' LIWC format works with 
 #' all currently available dictionary files supplied as part of the LIWC 2001, 
 #' 2007, and 2015 software (see References).
-#' @param ... a named list of character vector dictionary entries, including \link{valuetype} pattern
-#'  matches, and including multi-word expressions separated by \code{concatenator}.  The argument 
-#'  may be an explicit list or named set of elements that can be turned into a list.  See examples.
+#' @param x a named list of character vector dictionary entries, including \link{valuetype} pattern
+#'  matches, and including multi-word expressions separated by \code{concatenator}.  See examples.
 #'  This argument may be omitted if the dictionary is read from \code{file}.
 #' @param file file identifier for a foreign dictionary
 #' @param format character identifier for the format of the foreign dictionary. 
@@ -144,46 +143,44 @@ setMethod("show", "dictionary",
 #' @export
 dictionary <- function(x, file = NULL, format = NULL, 
                        concatenator = " ", 
-                       tolower = TRUE, encoding = "") {
+                       tolower = TRUE, encoding = "auto") {
 
-  if (length(x) == 1) 
-      x <- as.list(x[[1]])
-  if (!is.null(x) && !is.list(x))
-    stop("Dictionaries must be named lists or lists of named lists.")
-
-  formats <- c(cat = "wordstat", dic = "LIWC", ykd = "yoshikoder", lcd = "yoshikoder", 
-               lc3 = "lexicoder", yml = "YAML")
-  
-  if (!is.null(file)) {
-
-      if (is.null(format)) {
-          ext <- file_ext(file)
-          if (ext %in% names(formats)) {
-              format <- formats[[ext]]
-          }
-          else {
-              stop(paste("Unknown dictionary file extension", ext))
-          }
-      }
-      else {
-          format <- match.arg(format, formats)
-      }
-
-      if (format == "wordstat") {
-          x <- read_dict_wordstat(file, encoding)
-      } else if (format == "LIWC") {
-          x <- read_dict_liwc(file, encoding)
-      } else if (format == "yoshikoder") {
-          x <- read_dict_yoshikoder(file)
-      } else if (format == "lexicoder") {
-          x <- read_dict_lexicoder(file)
-      } else if (format == "YAML") {
-          x <- yaml::yaml.load_file(file, as.named.list = TRUE)
-      }
-      if (tolower)
-          x <- lapply(x, stringi::stri_trans_tolower)
-  }
-  new("dictionary", x, format = format, file = file, concatenator = concatenator)
+    if (!missing(x)) {
+        if (!is.list(x)) {
+            stop("Dictionaries must be named lists or lists of named lists.")
+        }
+    }
+    
+    formats <- c(cat = "wordstat", dic = "LIWC", ykd = "yoshikoder", lcd = "yoshikoder", 
+                 lc3 = "lexicoder", yml = "YAML")
+    
+    if (!is.null(file)) {
+        if (is.null(format)) {
+            ext <- file_ext(file)
+            if (ext %in% names(formats)) {
+                format <- formats[[ext]]
+            } else {
+                stop(paste("Unknown dictionary file extension", ext))
+            }
+        } else {
+            format <- match.arg(format, formats)
+        }
+        
+        if (format == "wordstat") {
+            x <- read_dict_wordstat(file, encoding)
+        } else if (format == "LIWC") {
+            x <- read_dict_liwc(file, encoding)
+        } else if (format == "yoshikoder") {
+            x <- read_dict_yoshikoder(file)
+        } else if (format == "lexicoder") {
+            x <- read_dict_lexicoder(file)
+        } else if (format == "YAML") {
+            x <- yaml::yaml.load_file(file, as.named.list = TRUE)
+        }
+        if (tolower)
+            x <- lapply(x, stringi::stri_trans_tolower)
+    }
+    new("dictionary", x, format = format, file = file, concatenator = concatenator)
 }
 
 
@@ -279,9 +276,9 @@ read_dict_lexicoder <- function(path) {
 }
 
 # Import a Wordstat dictionary
-#' dict <- readWStatDict2('/home/kohei/Documents/Dictionary/Wordstat/ROGET.CAT', 'utf-8')
-#' dict <- readWStatDict2('/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.CAT', 'iso-8859-1')
-read_dict_wordstat <- function(path, encoding= 'auto') {
+#' dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat', 'utf-8')
+#' dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat', 'iso-8859-1')
+read_dict_wordstat <- function(path, encoding = 'auto') {
     
     lines <- stringi::stri_read_lines(path, encoding = encoding)
     lines <- stringi::stri_enc_toutf8(lines)

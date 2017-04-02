@@ -2,12 +2,12 @@
 % Please edit documentation in R/dictionaries.R
 \name{read_dict_wordstat}
 \alias{read_dict_wordstat}
-\title{dict <- readWStatDict2('/home/kohei/Documents/Dictionary/Wordstat/ROGET.CAT', 'utf-8')
-dict <- readWStatDict2('/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.CAT', 'iso-8859-1')}
+\title{dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat', 'utf-8')
+dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat', 'iso-8859-1')}
 \usage{
 read_dict_wordstat(path, encoding = "auto")
 }
 \description{
-dict <- readWStatDict2('/home/kohei/Documents/Dictionary/Wordstat/ROGET.CAT', 'utf-8')
-dict <- readWStatDict2('/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.CAT', 'iso-8859-1')
+dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat', 'utf-8')
+dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat', 'iso-8859-1')
 }

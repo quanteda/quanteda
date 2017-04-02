@@ -4,13 +4,12 @@
 \alias{dictionary}
 \title{create a dictionary}
 \usage{
-dictionary(..., file = NULL, format = NULL, concatenator = " ",
-  tolower = TRUE, encoding = "")
+dictionary(x, file = NULL, format = NULL, concatenator = " ",
+  tolower = TRUE, encoding = "auto")
 }
 \arguments{
-\item{...}{a named list of character vector dictionary entries, including \link{valuetype} pattern
-matches, and including multi-word expressions separated by \code{concatenator}.  The argument 
-may be an explicit list or named set of elements that can be turned into a list.  See examples.
+\item{x}{a named list of character vector dictionary entries, including \link{valuetype} pattern
+matches, and including multi-word expressions separated by \code{concatenator}.  See examples.
 This argument may be omitted if the dictionary is read from \code{file}.}
 
 \item{file}{file identifier for a foreign dictionary}
