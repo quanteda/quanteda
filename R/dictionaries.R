@@ -331,21 +331,21 @@ read_dict_liwc <- function(path, encoding = 'auto') {
 read_dict_yoshikoder <- function(path){
     
     xml <- XML::xmlParse(path)
-    root <- XML::xpathSApply(xml, "/dictionary/cnode")
+    root <- XML::xpathSApply(xml, "/dictionary")
     dict <- nodes2list(root[[1]])
     return(dict)
 }
 
 # Internal function for read_dict_yoshikoder
 nodes2list <- function(node, dict = list()){
-    nodes <- XML::xpathSApply(node, "cnode")
+    nodes <- XML::xpathSApply(node, "/cnode")
     if (length(nodes)) {
         for (i in seq_along(nodes)) {
             key <- XML::xmlGetAttr(nodes[[i]], name="name")
             dict[[key]] <- nodes2list(nodes[[i]], dict[[key]])
         }
     } else {
-        dict <- unname(XML::xpathSApply(node, "pnode/@name"))
+        dict <- unname(XML::xpathSApply(node, "/pnode/@name"))
     }
     return(dict)
 }
