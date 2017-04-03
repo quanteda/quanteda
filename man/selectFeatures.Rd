@@ -86,8 +86,8 @@ This function selects features based on their labels.  To select
 \examples{
 \dontrun{## performance comparisons
 data(SOTUCorpus, package = "quantedaData")
-toks <- tokenize(SOTUCorpus, removePunct = TRUE)
-# toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removePunct = TRUE)
+toks <- tokenize(SOTUCorpus, remove_punct = TRUE)
+# toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), remove_punct = TRUE)
 # head to head, old v. new
 system.time(selectFeaturesOLD(toks, stopwords("english"), "remove", verbose = FALSE))
 system.time(selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE))
@@ -118,7 +118,7 @@ microbenchmark::microbenchmark(
 
 ## with simple examples
 toks <- tokenize(c("This is a sentence.", "This is a second sentence."), 
-                 removePunct = TRUE)
+                 remove_punct = TRUE)
 selectFeatures(toks, c("is", "a", "this"), selection = "remove", 
                 valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)
 

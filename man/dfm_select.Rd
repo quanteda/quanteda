@@ -121,7 +121,7 @@ tmpdfm
 dfm_remove(tmpdfm, stopwords("english"))
 toks <- tokens(c("this contains lots of stopwords",
                  "no if, and, or but about it: lots"),
-               removePunct = TRUE)
+               remove_punct = TRUE)
 tmpfcm <- fcm(toks)
 tmpfcm
 fcm_remove(tmpfcm, stopwords("english"))

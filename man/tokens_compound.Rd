@@ -44,7 +44,7 @@ subsequently as single tokens, for instance in constructing a \link{dfm}.
 \examples{
 mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
              "New York City has raised taxes: an income tax and inheritance taxes.")
-mytoks <- tokens(mytexts, removePunct = TRUE)
+mytoks <- tokens(mytexts, remove_punct = TRUE)
 
 # for lists of sequence elements
 myseqs <- list(c("tax"), c("income", "tax"), c("capital", "gains", "tax"), c("inheritance", "tax"))

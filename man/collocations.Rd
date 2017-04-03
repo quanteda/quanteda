@@ -61,16 +61,16 @@ txt <- c("This is software testing: looking for (word) pairs!
          This [is] a software testing again. For.",
          "Here: this is more Software Testing, looking again for word pairs.")
 collocations(txt, punctuation = "dontspan") # default
-collocations(txt, punctuation = "dontspan", removePunct = TRUE)  # includes "testing looking"
-collocations(txt, punctuation = "ignore", removePunct = TRUE)    # same as previous 
-collocations(txt, punctuation = "include", removePunct = FALSE)  # keep punctuation as tokens
+collocations(txt, punctuation = "dontspan", remove_punct = TRUE)  # includes "testing looking"
+collocations(txt, punctuation = "ignore", remove_punct = TRUE)    # same as previous 
+collocations(txt, punctuation = "include", remove_punct = FALSE)  # keep punctuation as tokens
 
 collocations(txt, size = 2:3)
 removeFeatures(collocations(txt, size = 2:3), stopwords("english"))
 
 collocations("@textasdata We really, really love the #quanteda package - thanks!!")
 collocations("@textasdata We really, really love the #quanteda package - thanks!!",
-              removeTwitter = TRUE)
+              remove_twitter = TRUE)
 
 collocations(data_char_inaugural[49:57], n = 10)
 collocations(data_char_inaugural[49:57], method = "all", n = 10)

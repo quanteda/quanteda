@@ -53,7 +53,7 @@ txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my co
                    execute the functions of its Chief Magistrate.",
          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
                    the high sense I entertain of this distinguished honor.")
-tokens_remove(tokens(txt, removePunct = TRUE), stopwords("english"))
+tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 
 \dontshow{
 ## for tokenized texts 
@@ -61,7 +61,7 @@ txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my co
                    execute the functions of its Chief Magistrate.",
          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
                    the high sense I entertain of this distinguished honor.")
-tokens_remove(tokenize(txt, removePunct = TRUE), stopwords("english"))
+tokens_remove(tokenize(txt, remove_punct = TRUE), stopwords("english"))
 
 ## example for collocations
 (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
