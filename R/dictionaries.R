@@ -186,11 +186,9 @@ dictionary <- function(..., file = NULL, format = NULL,
             x <- yaml::yaml.load_file(file, as.named.list = TRUE)
         }
     }
-    
-    validate_dictionary(x) # run validation before lowercasing
-    if (tolower)
-        x <- lowercase_dictionary(x)
     dict <- new("dictionary", x, format = format, file = file, concatenator = concatenator)
+    if (tolower)
+        dict <- lowercase_dictionary(dict)
     return(dict)
 }
 
@@ -248,7 +246,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key = '', dict_f
             dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], entry)
         }
     }
-    attributes(dict_flat) <- attributes(dict)
+    attributes(dict_flat, FALSE) <- attributes(dict)
     return(dict_flat)
 }
 
@@ -260,17 +258,18 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key = '', dict_f
 #                           SUBKEY6 = list(SUBKEY8 = c("L"))))
 # lowercase_dictionary(hdict)
 
-lowercase_dictionary <- function(dict, dict_lower = list()) {
+lowercase_dictionary <- function(dict) {
 
     if (is.list(dict)) {
         for (key in names(dict)) {
-            dict_lower[[key]] <- lowercase_dictionary(dict[[key]], dict_lower[[key]])
+            dict[[key]] <- lowercase_dictionary(dict[[key]])
         }
     } else {
-        dict_lower <- stringi::stri_trans_tolower(dict)
+        dict <- stringi::stri_trans_tolower(dict)
     }
-    return(dict_lower)
+    return(dict)
 }
+
 
 #' check if an object is a dictionary
 #' 
@@ -291,8 +290,8 @@ read_dict_lexicoder <- function(path) {
     lines <- stringi::stri_enc_toutf8(lines)
     lines <- stringi::stri_trim_both(lines)
     lines_yaml <- ifelse(stringi::stri_detect_regex(lines, '^\\+'),
-                         stringi::stri_replace_all_regex(lines, '^+(\\w+)$', '"$1":'),
-                         stringi::stri_replace_all_regex(lines, '^(\\w+)$', ' - "$1"'))
+                         stringi::stri_replace_all_regex(lines, '^+(.+)$', '"$1":'),
+                         stringi::stri_replace_all_regex(lines, '^(.+)$', ' - "$1"'))
     lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '[[:control:]]', '') # clean
     yaml <- paste0(lines_yaml, collapse = '\n')
     dict <- yaml::yaml.load(yaml, as.named.list = TRUE)
@@ -308,8 +307,8 @@ read_dict_wordstat <- function(path, encoding = 'auto') {
     lines <- stringi::stri_enc_toutf8(lines)
     lines <- stringi::stri_trim_right(lines)
     lines_yaml <- ifelse(stringi::stri_detect_regex(lines, ' \\(\\d\\)$'),
-                         stringi::stri_replace_all_regex(lines, '^(\\t*)(\\w+) \\(\\d\\)$', '$1- "$2"'),
-                         stringi::stri_replace_all_regex(lines, '^(\\t*)(\\w+)$', '$1"$2": '))
+                         stringi::stri_replace_all_regex(lines, '^(\\t*)(.+) \\(\\d\\)$', '$1- "$2"'),
+                         stringi::stri_replace_all_regex(lines, '^(\\t*)(.+)$', '$1"$2": '))
     
     lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '\t', ' ')
     lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '[[:control:]]', '') # clean
@@ -331,11 +330,11 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     lines_key <- lines[(sections[1] + 1):(sections[2] - 1)]
     lines_value <- lines[(sections[2] + 1):(length(lines))]
     
-    keys <- stringi::stri_extract_last_regex(lines_key, '\\w+')
+    keys <- stringi::stri_extract_last_regex(lines_key, '[^\t]+')
     keys_id <- stringi::stri_extract_first_regex(lines_key, '\\d+')
     
-    values <- stringi::stri_extract_first_regex(lines_value, '\\w+')
-    lines_value <- stringi::stri_replace_first_regex(lines_value, '\\w+\t', '') # for safety
+    values <- stringi::stri_extract_first_regex(lines_value, '[^\t]+')
+    lines_value <- stringi::stri_replace_first_regex(lines_value, '[^\t]+\t', '') # for safety
     values_ids <- stringi::stri_extract_all_regex(lines_value, '\\d+')
     
     keys <- stringi::stri_replace_all_regex(keys, '[[:control:]]', '') # clean
@@ -360,7 +359,7 @@ read_dict_yoshikoder <- function(path){
 
 # Internal function for read_dict_yoshikoder
 nodes2list <- function(node, dict = list()){
-    nodes <- XML::xpathSApply(node, "cnode")
+    nodes <- XML::xpathSApply(node, "cnode/cnode")
     if (length(nodes)) {
         for (i in seq_along(nodes)) {
             key <- XML::xmlGetAttr(nodes[[i]], name="name")
