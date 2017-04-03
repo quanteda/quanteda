@@ -339,7 +339,7 @@ test_that("remove_punct and remove_twitter interact correctly, #607", {
     )
     expect_warning(
         tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = TRUE),
-        "remove_twitter reset to TRUE when remove_punct = FALSE"
+        "remove_twitter reset to FALSE when remove_punct = FALSE"
     )
 })
 
