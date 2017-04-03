@@ -5,7 +5,7 @@
 \title{detect collocations from text}
 \usage{
 collocations(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2,
-  n = NULL, toLower = TRUE, punctuation = c("dontspan", "ignore",
+  n = NULL, tolower = TRUE, punctuation = c("dontspan", "ignore",
   "include"), ...)
 }
 \arguments{
@@ -31,7 +31,7 @@ coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
 \item{n}{the number of collocations to return, sorted in descending order of 
 the requested statistic, or \eqn{G^2} if none is specified.}
 
-\item{toLower}{convert collocations to lower case if \code{TRUE} (default)}
+\item{tolower}{convert collocations to lower case if \code{TRUE} (default)}
 
 \item{punctuation}{how to handle tokens separated by punctuation characters.  Options are:
 \describe{

@@ -36,7 +36,7 @@ NULL
 #'   \item{\code{include}}{do not treat punctuation characters specially, meaning that collocations will include
 #'   punctuation characters as tokens}
 #'   }
-#' @param toLower convert collocations to lower case if \code{TRUE} (default)
+#' @param tolower convert collocations to lower case if \code{TRUE} (default)
 #' @param ... additional parameters passed to \code{\link{tokens}}
 #' @return a collocations class object: a specially classed data.table consisting 
 #'   of collocations, their frequencies, and the computed association measure(s).
@@ -68,7 +68,7 @@ NULL
 #' collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
 #' collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
 collocations <- function(x,  method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
-                         n = NULL, toLower = TRUE, 
+                         n = NULL, tolower = TRUE, 
                          punctuation = c("dontspan", "ignore", "include"), ...) {
 #     addedArgs <- names(list(...))
 #     if (length(addedArgs) && any(!(addedArgs %in% names(formals(getS3method("tokenize", "character"))))))
@@ -89,7 +89,7 @@ wLASTGREPpenn <- "-lrb-_.*"
 #' @noRd
 #' @export
 collocations.corpus <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
-                                n = NULL, toLower = TRUE, 
+                                n = NULL, tolower = TRUE, 
                                 punctuation = c("dontspan", "ignore", "include"), ...) {
     collocations(texts(x), method = method, size = size, n = n, punctuation = punctuation, ...)
 }
@@ -98,10 +98,10 @@ collocations.corpus <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"
 #' @noRd
 #' @export    
 collocations.character <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
-                                   n = NULL, toLower = TRUE, 
+                                   n = NULL, tolower = TRUE, 
                                    punctuation = c("dontspan", "ignore", "include"), ...) {
     method <- match.arg(method)
-    x <- tokens((if (toLower) char_tolower(x) else x), hash = FALSE, ...)
+    x <- tokens((if (tolower) char_tolower(x) else x), hash = FALSE, ...)
     collocations(x, method = method, size = size , n = n, punctuation = punctuation)
 }
 
@@ -116,7 +116,7 @@ collocations.tokens <- function(x, ...) {
 #' @noRd
 #' @export    
 collocations.tokenizedTexts <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
-                                        n = NULL, toLower = FALSE,
+                                        n = NULL, tolower = FALSE,
                                         punctuation = c("dontspan", "ignore", "include"), ...) {
 
     punctuation <- match.arg(punctuation)
