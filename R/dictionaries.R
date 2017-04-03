@@ -23,7 +23,7 @@ setValidity("dictionary", function(object) {
 
 # Internal function to chekc if dictionary eintries are all chracters
 validate_dictionary <- function(dict){
-    
+
     if (is.null(names(dict))) {
         stop("dictionary elements must be named")
     }
@@ -80,8 +80,9 @@ setMethod("show", "dictionary",
 #' LIWC format works with 
 #' all currently available dictionary files supplied as part of the LIWC 2001, 
 #' 2007, and 2015 software (see References).
-#' @param x a named list of character vector dictionary entries, including \link{valuetype} pattern
-#'  matches, and including multi-word expressions separated by \code{concatenator}.  See examples.
+#' @param ... a named list of character vector dictionary entries, including \link{valuetype} pattern
+#'  matches, and including multi-word expressions separated by \code{concatenator}.  The argument 
+#'  may be an explicit list or named set of elements that can be turned into a list.  See examples.
 #'  This argument may be omitted if the dictionary is read from \code{file}.
 #' @param file file identifier for a foreign dictionary
 #' @param format character identifier for the format of the foreign dictionary. 
@@ -141,20 +142,27 @@ setMethod("show", "dictionary",
 #' @importFrom stats setNames
 #' @importFrom tools file_ext
 #' @export
-dictionary <- function(x, file = NULL, format = NULL, 
+dictionary <- function(..., file = NULL, format = NULL, 
                        concatenator = " ", 
                        tolower = TRUE, encoding = "auto") {
-
-    if (!missing(x)) {
-        if (!is.list(x)) {
+    
+    if (is.null(file)) {
+        x <- list(...)
+        
+        if (length(x) == 1 && is.list(x[[1]]) && is.null(names(x))) {
+            x <- x[[1]]
+        } else {
+            x <- x[sapply(x, function(x) is.character(x) || is.list(x))]
+        }
+        if (!is.null(x) && !is.list(x)) {
             stop("Dictionaries must be named lists or lists of named lists.")
         }
-    }
-    
-    formats <- c(cat = "wordstat", dic = "LIWC", ykd = "yoshikoder", lcd = "yoshikoder", 
-                 lc3 = "lexicoder", yml = "YAML")
-    
-    if (!is.null(file)) {
+        
+    } else { 
+        
+        formats <- c(cat = "wordstat", dic = "LIWC", ykd = "yoshikoder", lcd = "yoshikoder", 
+                     lc3 = "lexicoder", yml = "YAML")
+        
         if (!file.exists(file))
             stop(paste("File does not exist", file))
         if (is.null(format)) {
@@ -179,10 +187,12 @@ dictionary <- function(x, file = NULL, format = NULL,
         } else if (format == "YAML") {
             x <- yaml::yaml.load_file(file, as.named.list = TRUE)
         }
-        if (tolower)
-            x <- lapply(x, stringi::stri_trans_tolower)
     }
-    new("dictionary", x, format = format, file = file, concatenator = concatenator)
+    
+    dict <- new("dictionary", x, format = format, file = file, concatenator = concatenator)
+    if (tolower)
+        x <- lowercase_dictionary(x)
+    return(dict)
 }
 
 
@@ -250,6 +260,25 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key = '', dict_f
     return(dict_flat)
 }
 
+# hdict <- list(KEY1 = list(SUBKEY1 = c("A", "B"),
+#                           SUBKEY2 = c("C", "D")),
+#               KEY2 = list(SUBKEY3 = c("E", "F"),
+#                           SUBKEY4 = c("G", "F", "I")),
+#               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J", "K")),
+#                           SUBKEY6 = list(SUBKEY8 = c("L"))))
+# lowercase_dictionary(hdict)
+
+lowercase_dictionary <- function(entry, dict = list()) {
+    if (is.list(entry)) {
+        for (key in names(entry)) {
+            dict[[key]] <- lowercase_dictionary(entry[[key]], dict[[key]])
+        }
+    } else {
+        dict <- stringi::stri_trans_tolower(entry)
+    }
+    return(dict)
+}
+
 #' check if an object is a dictionary
 #' 
 #' Return \code{TRUE} if an object is a \pkg{quanteda} \link{dictionary}.
@@ -269,8 +298,8 @@ read_dict_lexicoder <- function(path) {
     lines <- stringi::stri_enc_toutf8(lines)
     lines <- stringi::stri_trim_both(lines)
     lines_yaml <- ifelse(stringi::stri_detect_regex(lines, '^\\+'),
-                         stringi::stri_replace_all_regex(lines, '^+(.+)$', '"$1":'),
-                         stringi::stri_replace_all_regex(lines, '^(.+)$', ' - "$1"'))
+                         stringi::stri_replace_all_regex(lines, '^+(\\w+)$', '"$1":'),
+                         stringi::stri_replace_all_regex(lines, '^(\\w+)$', ' - "$1"'))
     lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '[[:control:]]', '') # clean
     yaml <- paste0(lines_yaml, collapse = '\n')
     dict <- yaml::yaml.load(yaml, as.named.list = TRUE)
@@ -286,8 +315,8 @@ read_dict_wordstat <- function(path, encoding = 'auto') {
     lines <- stringi::stri_enc_toutf8(lines)
     lines <- stringi::stri_trim_right(lines)
     lines_yaml <- ifelse(stringi::stri_detect_regex(lines, ' \\(\\d\\)$'),
-                         stringi::stri_replace_all_regex(lines, '^(\\t*)(.+) \\(\\d\\)$', '$1- "$2"'),
-                         stringi::stri_replace_all_regex(lines, '^(\\t*)(.+)$', '$1"$2": '))
+                         stringi::stri_replace_all_regex(lines, '^(\\t*)(\\w+) \\(\\d\\)$', '$1- "$2"'),
+                         stringi::stri_replace_all_regex(lines, '^(\\t*)(\\w+)$', '$1"$2": '))
     
     lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '\t', ' ')
     lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '[[:control:]]', '') # clean
@@ -306,18 +335,18 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     lines <- lines[lines != '']
     
     sections <- which(lines == '%')
-    print(sections)
     lines_key <- lines[(sections[1] + 1):(sections[2] - 1)]
     lines_value <- lines[(sections[2] + 1):(length(lines))]
     
-    keys_id <- stringi::stri_extract_first_regex(lines_key, '[^\t]+')
-    keys <- stringi::stri_extract_last_regex(lines_key, '[^\t]+')
-    keys <- stringi::stri_replace_all_regex(keys, '[[:control:]]', '') # clean
+    keys <- stringi::stri_extract_last_regex(lines_key, '\\w+')
+    keys_id <- stringi::stri_extract_first_regex(lines_key, '\\d+')
     
-    values <- stringi::stri_extract_first_regex(lines_value, '[^\t]+')
-    values <- stringi::stri_replace_all_regex(values, '[[:control:]]', '') # clean
-    lines_value <- stringi::stri_replace_all_regex(lines_value, '^(.+)?\t', '') # for safety
+    values <- stringi::stri_extract_first_regex(lines_value, '\\w+')
+    lines_value <- stringi::stri_replace_first_regex(lines_value, '\\w+\t', '') # for safety
     values_ids <- stringi::stri_extract_all_regex(lines_value, '\\d+')
+    
+    keys <- stringi::stri_replace_all_regex(keys, '[[:control:]]', '') # clean
+    values <- stringi::stri_replace_all_regex(values, '[[:control:]]', '') # clean
     
     dict <- split(rep(values, lengths(values_ids)), as.factor(unlist(values_ids, use.names = FALSE)))
     dict <- dict[order(as.numeric(names(dict)))]
