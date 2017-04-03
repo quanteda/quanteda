@@ -33,7 +33,7 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #' @examples 
 #' ## with simple examples
 #' toks <- tokens(c("This is a sentence.", "This is a second sentence."), 
-#'                  removePunct = TRUE)
+#'                  remove_punct = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = FALSE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", padding = FALSE)
@@ -46,7 +46,7 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #' \dontshow{
 #' ## with simple examples
 #' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), 
-#'                  removePunct = TRUE)
+#'                  remove_punct = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", 
 #'               valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)
 #' 
@@ -142,7 +142,7 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
 #'                    execute the functions of its Chief Magistrate.",
 #'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
 #'                    the high sense I entertain of this distinguished honor.")
-#' tokens_remove(tokens(txt, removePunct = TRUE), stopwords("english"))
+#' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #'
 #' \dontshow{
 #' ## for tokenized texts 
@@ -150,7 +150,7 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
 #'                    execute the functions of its Chief Magistrate.",
 #'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
 #'                    the high sense I entertain of this distinguished honor.")
-#' tokens_remove(tokenize(txt, removePunct = TRUE), stopwords("english"))
+#' tokens_remove(tokenize(txt, remove_punct = TRUE), stopwords("english"))
 #' 
 #' ## example for collocations
 #' (myCollocs <- collocations(data_char_inaugural[1:3], n=20))

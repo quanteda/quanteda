@@ -199,10 +199,10 @@ sequence2list <- function(sequences) {
 #' @examples 
 #' fn <- function(remove_numbers = TRUE, ...) {
 #'     args <- as.list(match.call())
-#'     remove_numbers <- quanteda:::deprecate_argument("removeNumbers", "remove_numbers", args)
+#'     remove_numbers <- quanteda:::deprecate_argument("remove_numbers", "remove_numbers", args)
 #'     cat("remove_numbers =", remove_numbers, "\n")
 #' }
-#' fn(removeNumbers = FALSE)
+#' fn(remove_numbers = FALSE)
 #' fn(remove_numbers = FALSE)
 deprecate_argument <- function(old, new, args){
     if (!is.null(args[[old]])) {

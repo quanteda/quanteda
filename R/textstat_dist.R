@@ -10,7 +10,7 @@
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
 #' presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 
-#'                remove = stopwords("english"), stem = TRUE, removePunct = TRUE)
+#'                remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
 #'                
 #' # distances for documents 
 #' (d1 <- textstat_dist(presDfm, margin = "documents"))
@@ -127,8 +127,8 @@ textstat_dist.dfm <- function(x, selection = NULL, n = NULL,
 #' require(tm)
 #' data("crude")
 #' crude <- tm_map(crude, content_transformer(tolower))
-#' crude <- tm_map(crude, removePunctuation)
-#' crude <- tm_map(crude, removeNumbers)
+#' crude <- tm_map(crude, remove_punctuation)
+#' crude <- tm_map(crude, remove_numbers)
 #' crude <- tm_map(crude, stemDocument)
 #' tdm <- TermDocumentMatrix(crude)
 #' findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
