@@ -62,7 +62,9 @@ setClass("textmodel_wordfish_predicted",
 #'   only applies when \code{sparse = TRUE}
 #' @param residual_floor specifies the threshold for residual matrix when 
 #'   calculating the svds, only applies when \code{sparse = TRUE}
-#' @return An object of class textmodel_fitted_wordfish.  This is a list 
+#' @param threads specifies the number of threads to use; set to 1 to override
+#'   the package settings and use a serial version of the function
+#' @return An object of class \code{textmodel_fitted_wordfish}.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
 #'   fixed effects} \item{beta}{estimated feature marginal effects} 
@@ -115,7 +117,8 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
                                dispersion = c("poisson", "quasipoisson"), 
                                dispersionLevel = c("feature", "overall"),
                                dispersionFloor = 0,
-                               sparse = TRUE,
+                               sparse = TRUE, 
+                               threads = quanteda_options("threads"),
                                abs_err = FALSE,
                                svd_sparse = TRUE,
                                residual_floor = 0.5) {
@@ -165,7 +168,11 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
 
     # catm("disp = ", disp, "\n")
     if (sparse == TRUE){
-        wfresult <- wordfishcpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err, svd_sparse, residual_floor)
+        if (threads == 1){
+            wfresult <- wordfishcpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err, svd_sparse, residual_floor)
+        } else {
+            wfresult <- wordfishcpp_mt(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err, svd_sparse, residual_floor)
+        }
     } else{
         wfresult <- wordfishcpp_dense(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err)
     }

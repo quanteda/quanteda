@@ -39,7 +39,7 @@
 
 \method{predict}{textmodel_wordscores_fitted}(object, newdata = NULL,
   rescaling = c("none", "lbg", "mv"), level = 0.95,
-  verbose = getOption("verbose"), ...)
+  verbose = quanteda_options("verbose"), ...)
 
 \method{print}{textmodel_wordscores_fitted}(x, n = 30L, digits = 2, ...)
 

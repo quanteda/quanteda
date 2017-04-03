@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.9.9-42
+Version: 0.9.9-43
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -92,6 +92,7 @@ Collate:
     'phrases.R'
     'plots-deprecated.R'
     'quanteda.R'
+    'quanteda_options.R'
     'readtext-methods.R'
     'regex2fixed.R'
     'resample.R'

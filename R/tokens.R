@@ -163,7 +163,7 @@ tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", 
                     concatenator = "_",
                     simplify = FALSE,
                     hash = TRUE,
-                    verbose = getOption("verbose"),
+                    verbose = quanteda_options("verbose"),
                     include_docvars = TRUE,
                     ...) {
     UseMethod("tokens")
@@ -198,7 +198,6 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     remove_twitter <- deprecate_argument('removeTwitter', 'remove_twitter', args)
     remove_hyphens <- deprecate_argument('removeHyphens', 'remove_hyphens', args)
     remove_url <- deprecate_argument('removeURL', 'remove_url', args)
-    
     
     what <- match.arg(what)
     names_org <- names(x)

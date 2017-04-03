@@ -18,13 +18,13 @@
 #' txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
 #'          texttwo = "Premiere phrase.  Deuxieme phrase.")
 #' bootstrap_dfm(txt, n = 3)         
-bootstrap_dfm <- function(x, n = 10, ..., verbose = getOption("verbose")) {
+bootstrap_dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     UseMethod("bootstrap_dfm")
 }
 
 #' @noRd
 #' @export
-bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = getOption("verbose")) {
+bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
 
     if (verbose) 
         message("Bootstrapping the corpus to create multiple dfm objects...")
@@ -55,7 +55,7 @@ bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = getOption("verbose"))
 
 #' @noRd
 #' @export
-bootstrap_dfm.character <- function(x, n = 10, ..., verbose = getOption("verbose")) {
+bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     bootstrap_dfm(corpus(x), n = n, ..., verbose = verbose)
 }
 
