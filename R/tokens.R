@@ -187,6 +187,11 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     
     # deprecate older versions of the arguments
     args <- as.list(match.call())
+    # get the arguments that match the old function calls
+    args <- args[stringi::stri_detect_regex(names(args), "^remove")]
+    # get any values of the arguments from the parent environment
+    args <- lapply(args, function(a) eval(a, enclos = parent.frame()))
+    # translate old into new
     remove_numbers <- deprecate_argument("removeNumbers", "remove_numbers", args)
     remove_punct <- deprecate_argument("removePunct", "remove_punct", args)
     remove_symbols <- deprecate_argument("removeSymbols", "remove_symbols", args)
