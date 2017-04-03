@@ -187,13 +187,13 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     
     # deprecate older versions of the arguments
     args <- as.list(match.call())
-    remove_numbers <- deprecate_argument("removeXNumbers", "remove_numbers", args)
-    remove_punct <- deprecate_argument("removeXPunct", "remove_punct", args)
-    remove_symbols <- deprecate_argument("removeXSymbols", "remove_symbols", args)
-    remove_separators <- deprecate_argument("removeXSeparators", "remove_separators", args)
-    remove_twitter <- deprecate_argument("removeXTwitter", "remove_twitter", args)
-    remove_hyphens <- deprecate_argument("removeXHyphens", "remove_hyphens", args)
-    remove_url <- deprecate_argument("removeXURL", "remove_url", args)
+    remove_numbers <- deprecate_argument("removeNumbers", "remove_numbers", args)
+    remove_punct <- deprecate_argument("removePunct", "remove_punct", args)
+    remove_symbols <- deprecate_argument("removeSymbols", "remove_symbols", args)
+    remove_separators <- deprecate_argument("removeSeparators", "remove_separators", args)
+    remove_twitter <- deprecate_argument("removeTwitter", "remove_twitter", args)
+    remove_hyphens <- deprecate_argument("removeHyphens", "remove_hyphens", args)
+    remove_url <- deprecate_argument("removeURL", "remove_url", args)
     
     what <- match.arg(what)
     names_org <- names(x)
