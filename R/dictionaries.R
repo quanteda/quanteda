@@ -148,7 +148,6 @@ dictionary <- function(..., file = NULL, format = NULL,
     
     if (is.null(file)) {
         x <- list(...)
-        
         if (length(x) == 1 && is.list(x[[1]]) && is.null(names(x))) {
             x <- x[[1]]
         } else {
@@ -157,7 +156,6 @@ dictionary <- function(..., file = NULL, format = NULL,
         if (!is.null(x) && !is.list(x)) {
             stop("Dictionaries must be named lists or lists of named lists.")
         }
-        
     } else { 
         
         formats <- c(cat = "wordstat", dic = "LIWC", ykd = "yoshikoder", lcd = "yoshikoder", 
@@ -191,7 +189,8 @@ dictionary <- function(..., file = NULL, format = NULL,
     
     dict <- new("dictionary", x, format = format, file = file, concatenator = concatenator)
     if (tolower)
-        x <- lowercase_dictionary(x)
+        dict <- lowercase_dictionary(dict)
+    
     return(dict)
 }
 
@@ -256,7 +255,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key = '', dict_f
             dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], entry)
         }
     }
-    attributes(dict_flat, FALSE) <- attributes(dict)
+    attributes(dict_flat) <- attributes(dict)
     return(dict_flat)
 }
 
@@ -266,17 +265,23 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key = '', dict_f
 #                           SUBKEY4 = c("G", "F", "I")),
 #               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J", "K")),
 #                           SUBKEY6 = list(SUBKEY8 = c("L"))))
+# class(hdict) <- c('dictionary', class(hdict))
 # lowercase_dictionary(hdict)
 
-lowercase_dictionary <- function(entry, dict = list()) {
-    if (is.list(entry)) {
-        for (key in names(entry)) {
-            dict[[key]] <- lowercase_dictionary(entry[[key]], dict[[key]])
+lowercase_dictionary <- function(dict, dict_lower = list()) {
+    
+    if(!length(dict_lower))
+        root = TRUE
+    if (is.list(dict)) {
+        for (key in names(dict)) {
+            dict_lower[[key]] <- lowercase_dictionary(dict[[key]], dict_lower[[key]])
         }
     } else {
-        dict <- stringi::stri_trans_tolower(entry)
+        dict_lower <- stringi::stri_trans_tolower(dict)
     }
-    return(dict)
+    if (root)
+        attributes(dict_lower, FALSE) <- attributes(dict)
+    return(dict_lower)
 }
 
 #' check if an object is a dictionary
@@ -291,7 +296,7 @@ is.dictionary <- function(x) {
 
 
 # Import a Lexicoder dictionary
-#' dict <- read_dict_lexicoder('/home/kohei/Documents/Dictionary/Lexicoder/LSDaug2015/LSD2015.lc3')
+# dict <- read_dict_lexicoder('/home/kohei/Documents/Dictionary/Lexicoder/LSDaug2015/LSD2015.lc3')
 read_dict_lexicoder <- function(path) {
     
     lines <- stringi::stri_read_lines(path, encoding = 'utf-8')
@@ -307,8 +312,8 @@ read_dict_lexicoder <- function(path) {
 }
 
 # Import a Wordstat dictionary
-#' dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat', 'utf-8')
-#' dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat', 'iso-8859-1')
+# dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat', 'utf-8')
+# dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat', 'iso-8859-1')
 read_dict_wordstat <- function(path, encoding = 'auto') {
     
     lines <- stringi::stri_read_lines(path, encoding = encoding)
