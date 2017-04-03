@@ -49,14 +49,12 @@ test_that("dictionary constructor works with YAML format", {
 
 test_that("dictionary constructor works with LIWC format", {
     expect_equivalent(dictionary(file = "../data/dictionaries/mary.dic"),
-                      dictionary("A_CATEGORY" = c("lamb", "little", "more"),
-                                 "ANOTHER_CATEGORY" = c("had", "mary")))
+                      marydict)
 })
 
 test_that("dictionary constructor works with Lexicoder format", {
-    expect_equivalent(dictionary(file = "../data/dictionaries/mary.lcd", tolower = FALSE),
-                      dictionary("A category" = c("more", "lamb", "little"),
-                                 "Another category" = c("had", "mary")))
+    expect_equivalent(dictionary(file = "../data/dictionaries/mary.lcd"),
+                      marydict)
 })
 
 test_that("read a dictionary with NA as a key", {
