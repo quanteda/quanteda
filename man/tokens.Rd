@@ -9,8 +9,8 @@ tokens(x, what = c("word", "sentence", "character", "fastestword",
   remove_symbols = FALSE, remove_separators = TRUE,
   remove_twitter = FALSE, remove_hyphens = FALSE, remove_url = FALSE,
   ngrams = 1L, skip = 0L, concatenator = "_", simplify = FALSE,
-  hash = TRUE, verbose = getOption("verbose"), include_docvars = TRUE,
-  ...)
+  hash = TRUE, verbose = quanteda_options("verbose"),
+  include_docvars = TRUE, ...)
 }
 \arguments{
 \item{x}{a character or \link{corpus} object to be tokenized}
@@ -71,9 +71,6 @@ different from the default of 1.  See \code{\link{tokens_skipgrams}}.}
 \item{concatenator}{character to use in concatenating \emph{n}-grams, default
 is "\code{_}", which is recommended since this is included in the regular 
 expression and Unicode definitions of "word" characters}
-
-\item{simplify}{no longer active: `tokens()` always returns a tokens object, 
-whose basic structure is a list (even for a single document)}
 
 \item{hash}{if \code{TRUE} (default), return a hashed tokens object, 
 otherwise, return a classic \code{tokenizedTexts} object.  (This will be 

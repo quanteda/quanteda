@@ -52,8 +52,6 @@
 #' @param concatenator character to use in concatenating \emph{n}-grams, default
 #'   is "\code{_}", which is recommended since this is included in the regular 
 #'   expression and Unicode definitions of "word" characters
-#' @param simplify no longer active: `tokens()` always returns a tokens object, 
-#'   whose basic structure is a list (even for a single document)
 #' @param hash if \code{TRUE} (default), return a hashed tokens object, 
 #'   otherwise, return a classic \code{tokenizedTexts} object.  (This will be 
 #'   phased out soon in coming versions.)
@@ -161,7 +159,6 @@ tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", 
                     ngrams = 1L,
                     skip = 0L,
                     concatenator = "_",
-                    simplify = FALSE,
                     hash = TRUE,
                     verbose = quanteda_options("verbose"),
                     include_docvars = TRUE,
@@ -183,7 +180,6 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
                              ngrams = 1L,
                              skip = 0L,
                              concatenator = "_",
-                             simplify = FALSE,
                              hash = TRUE,
                              verbose = getOption("verbose"),  
                              include_docvars = TRUE, 
@@ -203,12 +199,15 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     names_org <- names(x)
     attrs_org <- attributes(x)
     
-    if (simplify)
-        warning("simplify no longer available")
-    
-    if (length(added_args <- list(...)))
+    # warn about unused arguments
+    if (length(added_args <- list(...)) & 
+        !all(names(added_args) %in% paste0("remove", c("Numbers", "Punct", "Symbols", "Separators", "Twitter", "Hyphens", "URL", "simplify")))) {
         warning("Argument", ifelse(length(added_args) > 1, "s ", " "), names(added_args), " not used.", sep = "")
-    
+    }
+
+    # deprecate "simplify"
+    if ("simplify" %in% names(added_args)) warning("simplify no longer available")
+
     if (!is.integer(ngrams)) ngrams <- as.integer(ngrams)
     
     if (verbose) catm("Starting tokenization...\n")
@@ -284,17 +283,6 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     attr(result, 'padding') <- FALSE
     
     return(result)
-}
-
-deprecate_argument <- function(old, new, args){
-    if (!is.null(args[[old]])) {
-        #warning("argument \"", old, "\" is deprecated: use \"", new , "\" instead.", call. = FALSE)
-        return(args[[old]])
-    } else if (!is.null(args[[new]])) {
-        return(args[[new]])
-    } else {
-        return(formals('tokens')[[new]])
-    }
 }
 
 
