@@ -192,3 +192,25 @@ sequence2list <- function(sequences) {
 }
 
 
+#' issue warning for deprecrated function arguments
+#' 
+#' Sets a new argument name to an older one, and issues a deprecation warning.
+#' @keywords internal
+#' @examples 
+#' fn <- function(remove_numbers = TRUE, ...) {
+#'     args <- as.list(match.call())
+#'     remove_numbers <- quanteda:::deprecate_argument("removeNumbers", "remove_numbers", args)
+#'     cat("remove_numbers =", remove_numbers, "\n")
+#' }
+#' fn(removeNumbers = FALSE)
+#' fn(remove_numbers = FALSE)
+deprecate_argument <- function(old, new, args){
+    if (!is.null(args[[old]])) {
+        warning("argument \"", old, "\" is deprecated: use \"", new , "\" instead.", call. = FALSE)
+        return(args[[old]])
+    } else if (!is.null(args[[new]])) {
+        return(args[[new]])
+    } else {
+        return(formals('tokens')[[new]])
+    }
+}
