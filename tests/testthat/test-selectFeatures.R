@@ -32,7 +32,7 @@ test_that("test that selectFeatures.collocations", {
 })
 
 test_that("case_insensitive works as expected", {
-    myCollocs <- collocations(data_char_inaugural[1:3], n=20, toLower = F)
+    myCollocs <- collocations(data_char_inaugural[1:3], n=20, tolower = F)
     selected <- data.frame(selectFeatures(myCollocs, stopwords("english"), case_insensitive = F, "remove"))
     
     expect_false(
