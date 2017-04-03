@@ -87,7 +87,7 @@ test_that("deprecate_arguments works as expected", {
 test_that("deprecate arguments works with values from parent frame", {
     fn <- function(remove_numbers = TRUE, ...) {
         args <- as.list(match.call())
-        args <- lapply(args, function(a) eval(a, parent.frame()))
+        args <- lapply(args, function(a) eval(a, enclos = parent.frame()))
         remove_numbers <- quanteda:::deprecate_argument("removeNumbers", "remove_numbers", args)
         cat("remove_numbers =", remove_numbers, "\n")
     }
