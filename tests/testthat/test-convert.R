@@ -3,7 +3,7 @@ context("test convert function and shortcuts")
 
 mytexts <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
              text2 = "New York City has raised a taxes: an income tax and a sales tax.")
-d <- dfm(mytexts, removePunct = TRUE)
+d <- dfm(mytexts, remove_punct = TRUE)
 
 test_that("test STM package converter", {
     skip_if_not_installed("stm")
@@ -21,7 +21,7 @@ test_that("test tm package converter", {
     skip_if_not_installed("tm")
     dtmq <- convert(d[, order(featnames(d))], to = "tm")
     dtmtm <- tm::DocumentTermMatrix(tm::VCorpus(tm::VectorSource(char_tolower(mytexts))),
-                                    control = list(removePunctuation = TRUE,
+                                    control = list(remove_punctuation = TRUE,
                                                    wordLengths = c(1, Inf)))
     ## FAILS
     # expect_equivalent(dtmq, dfmtm)

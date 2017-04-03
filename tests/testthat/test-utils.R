@@ -52,12 +52,12 @@ test_that("sequence2list works as expected", {
 test_that("deprecate_arguments works as expected", {
     fn <- function(remove_numbers = TRUE, ...) {
         args <- as.list(match.call())
-        remove_numbers <- quanteda:::deprecate_argument("removeNumbers", "remove_numbers", args)
+        remove_numbers <- quanteda:::deprecate_argument("remove_numbers", "remove_numbers", args)
         cat("remove_numbers =", remove_numbers, "\n")
     }
     expect_warning(
-        fn(removeNumbers = FALSE),
-        "argument \"removeNumbers\" is deprecated: use \"remove_numbers\" instead."
+        fn(remove_numbers = FALSE),
+        "argument \"remove_numbers\" is deprecated: use \"remove_numbers\" instead."
     )
     expect_output(
         fn(remove_numbers = FALSE),
@@ -70,12 +70,12 @@ test_that("deprecate_arguments works as expected", {
         c("This", "punctuation")
     )
     expect_identical(
-        as.character(tokens(c(d1 = "This: punctuation"), removePunct = TRUE)),
+        as.character(tokens(c(d1 = "This: punctuation"), remove_punct = TRUE)),
         as.character(tokens(c(d1 = "This: punctuation"), remove_punct = TRUE))
     )
     expect_warning(
-        as.character(tokens(c(d1 = "This: punctuation"), removePunct = TRUE)),
-        "argument \"removePunct\" is deprecated: use \"remove_punct\" instead."
+        as.character(tokens(c(d1 = "This: punctuation"), remove_punct = TRUE)),
+        "argument \"remove_punct\" is deprecated: use \"remove_punct\" instead."
     )    
     expect_warning(
         tokens(c(d1 = "This: punctuation"), notanargument = TRUE),
