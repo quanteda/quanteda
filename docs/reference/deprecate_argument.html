@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • quanteda</title>
+<title>issue warning for deprecrated function arguments — deprecate_argument • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -34,7 +34,7 @@
   </head>
 
   <body>
-    <div class="container template-vignette-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -74,23 +74,34 @@
       
       </header>
 
-      <div class="page-header">
-  <h1>Vignette reference <small>version&nbsp;0.9.9-44</small></h1>
-</div>
-
-<div class="row">
-  <div class="col-md-9">
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <ul>
-        <li><a href="pkgdown_only/design.html">quanteda Structure and Design</a></li>
-        <li><a href="pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a></li>
-        <li><a href="pkgdown_only/plotting.html">Plotting with quanteda</a></li>
-        <li><a href="quickstart.html">Getting Started with quanteda</a></li>
-      </ul>
+      <div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>issue warning for deprecrated function arguments</h1>
     </div>
+
+    
+    <p>Sets a new argument name to an older one, and issues a deprecation warning.</p>
+    
+
+    <pre><span class='fu'>deprecate_argument</span>(<span class='no'>old</span>, <span class='no'>new</span>, <span class='no'>args</span>)</pre>
+        
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>) {
+    <span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'>as.list</span>(<span class='fu'>match.call</span>())
+    <span class='no'>remove_numbers</span> <span class='kw'>&lt;-</span> <span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>deprecate_argument</span>(<span class='st'>"remove_numbers"</span>, <span class='st'>"remove_numbers"</span>, <span class='no'>args</span>)
+    <span class='fu'>cat</span>(<span class='st'>"remove_numbers ="</span>, <span class='no'>remove_numbers</span>, <span class='st'>"\n"</span>)
+}
+<span class='fu'>fn</span>(<span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: argument &quot;remove_numbers&quot; is deprecated: use &quot;remove_numbers&quot; instead.</span></div><div class='output co'>#&gt; remove_numbers = FALSE </div><div class='input'><span class='fu'>fn</span>(<span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: argument &quot;remove_numbers&quot; is deprecated: use &quot;remove_numbers&quot; instead.</span></div><div class='output co'>#&gt; remove_numbers = FALSE </div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
   </div>
 </div>
 

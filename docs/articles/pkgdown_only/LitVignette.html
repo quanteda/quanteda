@@ -127,7 +127,7 @@ novel.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_cha
 novel.lower.v &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>(novel.v)</code></pre></div>
 <p><strong>quanteda</strong>’s <code>tokens</code> function splits the text into words, with many options available for which characters should be preserved, and which should be used to define word boundaries. The default behaviour works similarly to splitting on the regular expression for word boundary (<code>\W</code>), but does not treat apostrophes as word boundaries. This means that <em>’s</em> and <em>’t</em> are not treated as whole words from possessive forms and contractions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># tokenize</span>
-moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(novel.lower.v, <span class="dt">removePunct =</span> <span class="ot">TRUE</span>))
+moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(novel.lower.v, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>))
 <span class="kw">length</span>(moby.word.v)</code></pre></div>
 <pre><code>## [1] 210000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">total.length &lt;-<span class="st"> </span><span class="kw">length</span>(moby.word.v)
@@ -163,14 +163,14 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(total.whale.hits &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"^whale('s){0,1}$"</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>)))</code></pre></div>
 <pre><code>## [1] 1150</code></pre>
 <p>What fraction of the total words in the novel are ‘whale’?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">total.whale.hits /<span class="st"> </span><span class="kw"><a href="../../reference/ntoken.html">ntoken</a></span>(novel.lower.v, <span class="dt">removePunct=</span><span class="ot">TRUE</span>)  </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">total.whale.hits /<span class="st"> </span><span class="kw"><a href="../../reference/ntoken.html">ntoken</a></span>(novel.lower.v, <span class="dt">remove_punct=</span><span class="ot">TRUE</span>)  </code></pre></div>
 <pre><code>##  Moby_Dick 
 ## 0.00547619</code></pre>
 <p>Calculating the size of the vocabulary – includes possessive forms.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total unique words</span>
 <span class="kw">length</span>(<span class="kw">unique</span>(moby.word.v))</code></pre></div>
 <pre><code>## [1] 17299</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(<span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>(novel.v), <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(<span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>(novel.v), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Moby_Dick 
 ##     18525</code></pre>
 <p>To quickly sort the word types by their frequency, we can use the <code>dfm</code> command to create a matrix of counts of each word type – a document-frequency matrix. In this case there is only one document, the entire book.</p>
@@ -381,7 +381,7 @@ yfit &lt;-<span class="st"> </span>yfit *<span class="st"> </span><span class="k
 numWords &lt;-<span class="st"> </span><span class="kw">length</span>(firstChap[firstChap &gt;<span class="st"> </span><span class="dv">0</span>])
 <span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,])/numWords</code></pre></div>
 <pre><code>## [1] 3.02659</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,])/<span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(chaptersCorp[<span class="dv">1</span>], <span class="dt">removePunct=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,])/<span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(chaptersCorp[<span class="dv">1</span>], <span class="dt">remove_punct=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Moby_Dick.1 
 ##     2.88326</code></pre>
 </div>

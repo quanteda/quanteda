@@ -94,7 +94,7 @@ indexes.</p>
   <span class='st'>"LIW"</span>, <span class='st'>"nWS"</span>, <span class='st'>"nWS.2"</span>, <span class='st'>"nWS.3"</span>, <span class='st'>"nWS.4"</span>, <span class='st'>"RIX"</span>, <span class='st'>"Scrabble"</span>, <span class='st'>"SMOG"</span>, <span class='st'>"SMOG.C"</span>,
   <span class='st'>"SMOG.simple"</span>,      <span class='st'>"SMOG.de"</span>, <span class='st'>"Spache"</span>, <span class='st'>"Spache.old"</span>, <span class='st'>"Strain"</span>,
   <span class='st'>"Traenkle.Bailer"</span>, <span class='st'>"Traenkle.Bailer.2"</span>, <span class='st'>"Wheeler.Smith"</span>, <span class='st'>"meanSentenceLength"</span>,
-  <span class='st'>"meanWordSyllables"</span>), <span class='kw'>removeHyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+  <span class='st'>"meanWordSyllables"</span>), <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -102,7 +102,7 @@ indexes.</p>
       <dd>a character or <a href='corpus.html'>corpus</a> object containing the texts</dd>
       <dt>measure</dt>
       <dd>character vector defining the readability measure to calculate</dd>
-      <dt>removeHyphens</dt>
+      <dt>remove_hyphens</dt>
       <dd>if <code>TRUE</code>, treat constituent words in hyphenated as
 separate terms, for purposes of computing word lengths, e.g.
 &quot;decision-making&quot; as two terms of lengths 8 and 6 characters respectively,

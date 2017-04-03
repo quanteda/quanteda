@@ -185,7 +185,7 @@ uk2010immigCorpus
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/* on x86_64 by kbenoit
-## Created: Sat Apr  1 08:47:17 2017
+## Created: Mon Apr  3 19:19:21 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 <span class="co"># key words in context for "deport", 3 words of context</span>
@@ -198,7 +198,7 @@ uk2010immigCorpus
 
 <span class="co"># create a dfm, removing stopwords</span>
 mydfm &lt;-<span class="st"> </span><span class="kw"><a href="reference/dfm.html">dfm</a></span>(uk2010immigCorpus, <span class="dt">remove =</span> <span class="kw">c</span>(<span class="st">"will"</span>, <span class="kw"><a href="reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)),
-             <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
+             <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 mydfm
 ## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).
 

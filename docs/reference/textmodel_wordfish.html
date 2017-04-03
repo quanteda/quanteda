@@ -87,9 +87,9 @@ one-dimensional document positions using conditional maximum likelihood.</p>
 
     <pre><span class='fu'>textmodel_wordfish</span>(<span class='no'>data</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>Inf</span>, <span class='fl'>Inf</span>, <span class='fl'>3</span>, <span class='fl'>1</span>),
   <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1e-06</span>, <span class='fl'>1e-08</span>), <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"poisson"</span>, <span class='st'>"quasipoisson"</span>),
-  <span class='kw'>dispersionLevel</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"feature"</span>, <span class='st'>"overall"</span>), <span class='kw'>dispersionFloor</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>abs_err</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>svd_sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>residual_floor</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
+  <span class='kw'>dispersion_level</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"feature"</span>, <span class='st'>"overall"</span>), <span class='kw'>dispersion_floor</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>threads</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"threads"</span>), <span class='kw'>abs_err</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>svd_sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>residual_floor</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -112,11 +112,11 @@ document-level, then feature-level parameters).</dd>
       <dd>sets whether a quasi-poisson quasi-likelihood should be 
 used based on a single dispersion parameter (<code>&quot;poisson&quot;</code>), or 
 quasi-Poisson (<code>&quot;quasipoisson&quot;</code>)</dd>
-      <dt>dispersionLevel</dt>
+      <dt>dispersion_level</dt>
       <dd>sets the unit level for the dispersion parameter, 
 options are <code>&quot;feature&quot;</code> for term-level variances, or <code>&quot;overall&quot;</code> 
 for a single dispersion parameter</dd>
-      <dt>dispersionFloor</dt>
+      <dt>dispersion_floor</dt>
       <dd>constraint for the minimal underdispersion multiplier 
 in the quasi-Poisson model.  Used to minimize the distorting effect of 
 terms with rare term or document frequencies that appear to be severely 
@@ -124,6 +124,9 @@ underdispersed.  Default is 0, but this only applies if <code>dispersion =
 &quot;quasipoisson&quot;</code>.</dd>
       <dt>sparse</dt>
       <dd>specifies whether the <code>&quot;dfm&quot;</code> is coerced to dense</dd>
+      <dt>threads</dt>
+      <dd>specifies the number of threads to use; set to 1 to override
+the package settings and use a serial version of the function</dd>
       <dt>abs_err</dt>
       <dd>specifies how the convergence is considered</dd>
       <dt>svd_sparse</dt>
@@ -136,7 +139,7 @@ calculating the svds, only applies when <code>sparse = TRUE</code></dd>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class textmodel_fitted_wordfish.  This is a list 
+    <p>An object of class <code>textmodel_fitted_wordfish</code>.  This is a list 
   containing:</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -189,9 +192,9 @@ calculating the svds, only applies when <code>sparse = TRUE</code></dd>
 <span class='co'># ie2010dfm &lt;- dfm(data_corpus_irishbudget2010, verbose = FALSE)</span>
 <span class='co'># (wfm1 &lt;- textmodel_wordfish(ie2010dfm, dir = c(6,5)))</span>
 <span class='co'># (wfm2a &lt;- textmodel_wordfish(ie2010dfm, dir = c(6,5), </span>
-<span class='co'>#                              dispersion = "quasipoisson", dispersionFloor = 0))</span>
+<span class='co'>#                              dispersion = "quasipoisson", dispersion_floor = 0))</span>
 <span class='co'># (wfm2b &lt;- textmodel_wordfish(ie2010dfm, dir = c(6,5), </span>
-<span class='co'>#                              dispersion = "quasipoisson", dispersionFloor = .5))</span>
+<span class='co'>#                              dispersion = "quasipoisson", dispersion_floor = .5))</span>
 <span class='co'># plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",</span>
 <span class='co'>#      xlim = c(0, 1.0), ylim = c(0, 1.0))</span>
 <span class='co'># plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",</span>
