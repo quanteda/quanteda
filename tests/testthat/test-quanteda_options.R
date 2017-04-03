@@ -30,7 +30,7 @@ test_that("quanteda_options works correctly to set options", {
         getOption("quanteda_verbose")
     )
     
-    quanteda_options(threads = TRUE)
+    quanteda_options(threads = 2)
     expect_equal(
         quanteda_options("threads"),
         getOption("quanteda_threads")
