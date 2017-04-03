@@ -121,7 +121,7 @@ setClass("fcm",
 #' # from tokens
 #' txt <- c("The quick brown fox jumped over the lazy dog.",
 #'          "The dog jumped and ate the fox.")
-#' toks <- tokens(char_tolower(txt), removePunct = TRUE)
+#' toks <- tokens(char_tolower(txt), remove_punct = TRUE)
 #' fcm(toks, context = "document")
 #' fcm(toks, context = "window", window = 3)
 fcm <- function(x, context = c("document", "window"), 

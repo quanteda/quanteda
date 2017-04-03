@@ -9,14 +9,14 @@
 #' x <- dfm(tokens(c("this contains lots of stopwords",
 #'                   "no if, and, or but about it: lots",
 #'                   "and a third document is it"),
-#'                 removePunct = TRUE))
+#'                 remove_punct = TRUE))
 #' x[1:2, ]
 #' x[1:2, 1:5]
 #' 
 #' # fcm subsetting
 #' y <- fcm(tokens(c("this contains lots of stopwords",
 #'                   "no if, and, or but about it: lots"),
-#'                 removePunct = TRUE))
+#'                 remove_punct = TRUE))
 #' y[1:3, ]
 #' y[4:5, 1:5]
 setMethod("[", 

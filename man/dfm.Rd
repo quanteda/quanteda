@@ -19,7 +19,7 @@ dfm(x, tolower = TRUE, stem = FALSE, select = NULL, remove = NULL,
 keep, while excluding all others.  This can be used in lieu of a dictionary
 if there are only specific features that a user wishes to keep. To extract 
 only Twitter usernames, for example, set \code{select = "@*"} and make 
-sure that \code{removeTwitter = FALSE} as an additional argument passed to 
+sure that \code{remove_twitter = FALSE} as an additional argument passed to 
 \link{tokenize}.  Note: \code{select = "^@\\\w+\\\b"} would be the regular
 expression version of this matching pattern.  The pattern matching type 
 will be set by \code{valuetype}.}
@@ -112,11 +112,11 @@ testCorpus <- corpus(testText)
 # note: "also" is not in the default stopwords("english")
 featnames(dfm(testCorpus, select = stopwords("english")))
 # for ngrams
-featnames(dfm(testCorpus, ngrams = 2, select = stopwords("english"), removePunct = TRUE))
-featnames(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), removePunct = TRUE))
+featnames(dfm(testCorpus, ngrams = 2, select = stopwords("english"), remove_punct = TRUE))
+featnames(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), remove_punct = TRUE))
 
 # removing stopwords before constructing ngrams
-tokensAll <- tokens(char_tolower(testText), removePunct = TRUE)
+tokensAll <- tokens(char_tolower(testText), remove_punct = TRUE)
 tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
 tokensNgramsNoStopwords <- tokens_ngrams(tokensNoStopwords, 2)
 featnames(dfm(tokensNgramsNoStopwords, verbose = FALSE))
@@ -129,8 +129,8 @@ dfm(testCorpus, select = "s$", valuetype = "regex", verbose = FALSE)
 testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-dfm(testTweets, select = "#*", removeTwitter = FALSE)  # keep only hashtags
-dfm(testTweets, select = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
+dfm(testTweets, select = "#*", remove_twitter = FALSE)  # keep only hashtags
+dfm(testTweets, select = "^#.*$", valuetype = "regex", remove_twitter = FALSE)
 
 # for a dfm
 dfm1 <- dfm(data_corpus_irishbudget2010)

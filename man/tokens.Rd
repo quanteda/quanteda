@@ -5,10 +5,10 @@
 \title{tokenize a set of texts}
 \usage{
 tokens(x, what = c("word", "sentence", "character", "fastestword",
-  "fasterword"), removeNumbers = FALSE, removePunct = FALSE,
-  removeSymbols = FALSE, removeSeparators = TRUE, removeTwitter = FALSE,
-  removeHyphens = FALSE, removeURL = FALSE, ngrams = 1L, skip = 0L,
-  concatenator = "_", simplify = FALSE, hash = TRUE,
+  "fasterword"), remove_numbers = FALSE, remove_punct = FALSE,
+  remove_symbols = FALSE, remove_separators = TRUE,
+  remove_twitter = FALSE, remove_hyphens = FALSE, remove_url = FALSE,
+  ngrams = 1L, skip = 0L, concatenator = "_", hash = TRUE,
   verbose = quanteda_options("verbose"), include_docvars = TRUE, ...)
 }
 \arguments{
@@ -27,34 +27,34 @@ calls \code{\link[stringi]{stri_split_fixed}(x, " ")}}
 exceptions in English such as "Prof. Plum killed Mrs. Peacock." (but far 
 from perfect).} }}
 
-\item{removeNumbers}{remove tokens that consist only of numbers, but not 
+\item{remove_numbers}{remove tokens that consist only of numbers, but not 
 words that start with digits, e.g. \code{2day}}
 
-\item{removePunct}{if \code{TRUE}, remove all characters in the Unicode 
+\item{remove_punct}{if \code{TRUE}, remove all characters in the Unicode 
 "Punctuation" [P] class}
 
-\item{removeSymbols}{if \code{TRUE}, remove all characters in the Unicode 
+\item{remove_symbols}{if \code{TRUE}, remove all characters in the Unicode 
 "Symbol" [S] class}
 
-\item{removeSeparators}{remove Separators and separator characters (spaces 
+\item{remove_separators}{remove Separators and separator characters (spaces 
 and variations of spaces, plus tab, newlines, and anything else in the 
-Unicode "separator" category) when \code{removePunct=FALSE}.  Only 
+Unicode "separator" category) when \code{remove_punct=FALSE}.  Only 
 applicable for \code{what = "character"} (when you probably want it to be 
 \code{FALSE}) and for \code{what = "word"} (when you probably want it to be
 \code{TRUE}).  Note that if \code{what = "word"} and you set 
-\code{removePunct = TRUE}, then \code{removeSeparators} has no effect.  Use
+\code{remove_punct = TRUE}, then \code{remove_separators} has no effect.  Use
 carefully.}
 
-\item{removeTwitter}{remove Twitter characters \code{@} and \code{#}; set to
+\item{remove_twitter}{remove Twitter characters \code{@} and \code{#}; set to
 \code{TRUE} if you wish to eliminate these.}
 
-\item{removeHyphens}{if \code{TRUE}, split words that are connected by 
+\item{remove_hyphens}{if \code{TRUE}, split words that are connected by 
 hyphenation and hyphenation-like characters in between words, e.g. 
 \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is 
 \code{FALSE} to preserve such words as is, with the hyphens.  Only applies 
 if \code{what = "word"}.}
 
-\item{removeURL}{if \code{TRUE}, find and eliminate URLs beginning with 
+\item{remove_url}{if \code{TRUE}, find and eliminate URLs beginning with 
 http(s) -- see section "Dealing with URLs".}
 
 \item{ngrams}{integer vector of the \emph{n} for \emph{n}-grams, defaulting 
@@ -70,9 +70,6 @@ different from the default of 1.  See \code{\link{tokens_skipgrams}}.}
 \item{concatenator}{character to use in concatenating \emph{n}-grams, default
 is "\code{_}", which is recommended since this is included in the regular 
 expression and Unicode definitions of "word" characters}
-
-\item{simplify}{no longer active: `tokens()` always returns a tokens object, 
-whose basic structure is a list (even for a single document)}
 
 \item{hash}{if \code{TRUE} (default), return a hashed tokens object, 
 otherwise, return a classic \code{tokenizedTexts} object.  (This will be 
@@ -107,7 +104,7 @@ The tokenizer is designed to be fast and flexible as well as to
  URLs are tricky to tokenize, because they contain
   a number of symbols and punctuation characters.  If you wish to remove 
   these, as most people do, and your text contains URLs, then you should set 
-  \code{what = "fasterword"} and \code{removeURL = TRUE}.  If you wish to 
+  \code{what = "fasterword"} and \code{remove_url = TRUE}.  If you wish to 
   keep the URLs, but do not want them mangled, then your options are more 
   limited, since removing punctuation and symbols will also remove them from 
   URLs.  We are working on improving this behaviour.
@@ -120,45 +117,45 @@ txt <- c(doc1 = "This is a sample: of tokens.",
          doc2 = "Another sentence, to demonstrate how tokens works.")
 tokens(txt)
 # removing punctuation marks and lowecasing texts
-tokens(char_tolower(txt), removePunct = TRUE)
+tokens(char_tolower(txt), remove_punct = TRUE)
 # keeping versus removing hyphens
-tokens("quanteda data objects are auto-loading.", removePunct = TRUE)
-tokens("quanteda data objects are auto-loading.", removePunct = TRUE, removeHyphens = TRUE)
+tokens("quanteda data objects are auto-loading.", remove_punct = TRUE)
+tokens("quanteda data objects are auto-loading.", remove_punct = TRUE, remove_hyphens = TRUE)
 # keeping versus removing symbols
-tokens("<tags> and other + symbols.", removeSymbols = FALSE)
-tokens("<tags> and other + symbols.", removeSymbols = TRUE)
-tokens("<tags> and other + symbols.", removeSymbols = FALSE, what = "fasterword")
-tokens("<tags> and other + symbols.", removeSymbols = TRUE, what = "fasterword")
+tokens("<tags> and other + symbols.", remove_symbols = FALSE)
+tokens("<tags> and other + symbols.", remove_symbols = TRUE)
+tokens("<tags> and other + symbols.", remove_symbols = FALSE, what = "fasterword")
+tokens("<tags> and other + symbols.", remove_symbols = TRUE, what = "fasterword")
 
 ## examples with URLs - hardly perfect!
 txt <- "Repo https://githib.com/kbenoit/quanteda, and www.stackoverflow.com."
-tokens(txt, removeURL = TRUE, removePunct = TRUE)
-tokens(txt, removeURL = FALSE, removePunct = TRUE)
-tokens(txt, removeURL = FALSE, removePunct = TRUE, what = "fasterword")
-tokens(txt, removeURL = FALSE, removePunct = FALSE, what = "fasterword")
+tokens(txt, remove_url = TRUE, remove_punct = TRUE)
+tokens(txt, remove_url = FALSE, remove_punct = TRUE)
+tokens(txt, remove_url = FALSE, remove_punct = TRUE, what = "fasterword")
+tokens(txt, remove_url = FALSE, remove_punct = FALSE, what = "fasterword")
 
 
 ## MORE COMPARISONS
 txt <- "#textanalysis is MY <3 4U @myhandle gr8 #stuff :-)"
-tokens(txt, removePunct = TRUE)
-tokens(txt, removePunct = TRUE, removeTwitter = TRUE)
-#tokens("great website http://textasdata.com", removeURL = FALSE)
-#tokens("great website http://textasdata.com", removeURL = TRUE)
+tokens(txt, remove_punct = TRUE)
+tokens(txt, remove_punct = TRUE, remove_twitter = TRUE)
+#tokens("great website http://textasdata.com", remove_url = FALSE)
+#tokens("great website http://textasdata.com", remove_url = TRUE)
 
 txt <- c(text1="This is $10 in 999 different ways,\\n up and down; left and right!", 
          text2="@kenbenoit working: on #quanteda 2day\\t4ever, http://textasdata.com?page=123.")
 tokens(txt, verbose = TRUE)
-tokens(txt, removeNumbers = TRUE, removePunct = TRUE)
-tokens(txt, removeNumbers = FALSE, removePunct = TRUE)
-tokens(txt, removeNumbers = TRUE, removePunct = FALSE)
-tokens(txt, removeNumbers = FALSE, removePunct = FALSE)
-tokens(txt, removeNumbers = FALSE, removePunct = FALSE, removeSeparators = FALSE)
-tokens(txt, removeNumbers = TRUE, removePunct = TRUE, removeURL = TRUE)
+tokens(txt, remove_numbers = TRUE, remove_punct = TRUE)
+tokens(txt, remove_numbers = FALSE, remove_punct = TRUE)
+tokens(txt, remove_numbers = TRUE, remove_punct = FALSE)
+tokens(txt, remove_numbers = FALSE, remove_punct = FALSE)
+tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
+tokens(txt, remove_numbers = TRUE, remove_punct = TRUE, remove_url = TRUE)
 
 # character level
 tokens("Great website: http://textasdata.com?page=123.", what = "character")
 tokens("Great website: http://textasdata.com?page=123.", what = "character", 
-         removeSeparators = FALSE)
+         remove_separators = FALSE)
 
 # sentence level         
 tokens(c("Kurt Vongeut said; only assholes use semi-colons.", 
@@ -172,15 +169,15 @@ tokens(data_char_inaugural[c(2,40)], what = "sentence")
 txt <- char_tolower(c(mytext1 = "This is a short test sentence.",
                       mytext2 = "Short.",
                       mytext3 = "Short, shorter, and shortest."))
-tokens(txt, removePunct = TRUE)
-### removeFeatures(tokens(txt, removePunct = TRUE), stopwords("english"))
+tokens(txt, remove_punct = TRUE)
+### removeFeatures(tokens(txt, remove_punct = TRUE), stopwords("english"))
 
 # ngram tokenization
-### tokens(txt, removePunct = TRUE, ngrams = 2)
-### tokens(txt, removePunct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
-### tokens(txt, removePunct = TRUE, ngrams = 1:2)
+### tokens(txt, remove_punct = TRUE, ngrams = 2)
+### tokens(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
+### tokens(txt, remove_punct = TRUE, ngrams = 1:2)
 # removing features from ngram tokens
-### removeFeatures(tokens(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
+### removeFeatures(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
 }
 \seealso{
 \code{\link{tokens_ngrams}}, \code{\link{tokens_skipgrams}}

@@ -63,8 +63,8 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
 #' @examples 
 #' \dontrun{## performance comparisons
 #' data(SOTUCorpus, package = "quantedaData")
-#' toks <- tokenize(SOTUCorpus, removePunct = TRUE)
-#' # toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removePunct = TRUE)
+#' toks <- tokenize(SOTUCorpus, remove_punct = TRUE)
+#' # toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), remove_punct = TRUE)
 #' # head to head, old v. new
 #' system.time(selectFeaturesOLD(toks, stopwords("english"), "remove", verbose = FALSE))
 #' system.time(selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE))
@@ -95,7 +95,7 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
 #' 
 #' ## with simple examples
 #' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), 
-#'                  removePunct = TRUE)
+#'                  remove_punct = TRUE)
 #' selectFeatures(toks, c("is", "a", "this"), selection = "remove", 
 #'                 valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)
 #' 
@@ -257,10 +257,10 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
 #'                    execute the functions of its Chief Magistrate.",
 #'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
 #'                    the high sense I entertain of this distinguished honor.")
-#' removeFeatures(tokenize(txt, removePunct = TRUE), stopwords("english"))
+#' removeFeatures(tokenize(txt, remove_punct = TRUE), stopwords("english"))
 #' 
 #' itText <- tokenize("Ecco alcuni di testo contenente le parole che vogliamo rimuovere.", 
-#'                    removePunct = TRUE)
+#'                    remove_punct = TRUE)
 #' removeFeatures(itText, stopwords("italian"), case_insensitive = TRUE)
 #' 
 #' ## example for dfm objects

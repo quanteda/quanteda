@@ -4,7 +4,7 @@
 #' @format character vector with one element
 #' @keywords data
 #' @examples
-#' tokenize(data_char_sampletext, removePunct = TRUE)
+#' tokenize(data_char_sampletext, remove_punct = TRUE)
 "data_char_sampletext"
 
 #' text of Herman Melville's Moby Dick

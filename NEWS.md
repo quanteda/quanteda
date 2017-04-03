@@ -19,7 +19,8 @@
 * `docvars()` now permits direct access to "metadoc" fields (starting with `_`, e.g. `_document`)
 * `metadoc()` now returns a vector instead of a data.frame for a single variable, similar to `docvars()`
 * Most `verbose` options now take the default from `getOption("verbose")` rather than fixing the value in the function signatures. (#577)
-* `textstat_dist()` and `textstat_simil()` now return a matrix if a `selection` argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection. 
+* `textstat_dist()` and `textstat_simil()` now return a matrix if a `selection` argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection.
+* All remaining camelCase arguments are gone.  For commonly used ones, such as those in `tokens()`, the old arguments (e.g. `removePunct`) still produce the same behaviour but with a deprecation warning.
 
 ### Bug fixes
 

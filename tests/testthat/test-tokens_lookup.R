@@ -7,7 +7,7 @@ txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacif
          d4 = "We need Manchester Unity in the Federal Republic of Germany today.",
          d5 = "United statehood is a good state.",
          d6 = "luv the united states XXOO!")
-toks <- tokens(txt, removePunct = TRUE)
+toks <- tokens(txt, remove_punct = TRUE)
 
 test_that("multi-word dictionary keys are counted correctly", {
     
@@ -81,7 +81,7 @@ test_that("multi-word dictionary behavior is not sensitive to the order of dicti
     
     txt <- c(d1 = "The United States is a country.", 
              d2 = "Arsenal v Manchester United, states the announcer.")
-    toks <- tokens(txt, removePunct = TRUE)
+    toks <- tokens(txt, remove_punct = TRUE)
     dict1 <- dictionary(list(Countries = c("United States"),
                              team = c("Manchester United", "Arsenal")))
     dict2 <- dictionary(list(team = c("Arsenal", "Manchester United"),
@@ -146,7 +146,7 @@ test_that("non-exclusive lookup is working",{
     
     toks <- tokens(c(d1 = "Mexico signed a new libertarian law with Canada.",
                      d2 = "Let freedom ring in the United States!"),
-                   removePunct = TRUE)
+                   remove_punct = TRUE)
     dict <- dictionary(list(country = c("united states", "mexico", "canada"), 
                             "law words" = c('law*', 'constitution'), 
                             freedom = c('free', "freedom", 'libertarian'),
@@ -170,8 +170,8 @@ test_that("multi-word dictionary behavior is not affected by padding", {
     
     toks <- tokens(c(d1 = "Mexico signed a new libertarian law with Canada.",
                      d2 = "Let freedom ring in the United States!"),
-                   removePunct = TRUE)
-    toks <- tokens(txt, removePunct = TRUE)
+                   remove_punct = TRUE)
+    toks <- tokens(txt, remove_punct = TRUE)
     toks2 <- tokens_remove(toks, stopwords('english'), padding = TRUE)
     dict <- dictionary(list(country = c("united states", "mexico", "canada"), 
                             "law words" = c('law*', 'constitution'), 
