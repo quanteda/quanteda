@@ -1,7 +1,7 @@
 Package: quanteda
 Version: 0.9.9-44
 Title: Quantitative Analysis of Textual Data
-Description: A fast, flexible toolset for for the management, processing, and
+Description: A fast, flexible framework for for the management, processing, and
     quantitative analysis of textual data in R.
 Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     c("aut", "cre", "cph")), 
@@ -24,13 +24,12 @@ Imports:
     wordcloud,
     Rcpp,
     RcppParallel,
-    RcppArmadillo (>= 0.7.600.1.0),
     ca,
     stringi,
     fastmatch,
     ggplot2 (>= 2.2.0),
     yaml
-LinkingTo: Rcpp, RcppParallel, RcppArmadillo
+LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0),
 Suggests:
     knitr,
     rmarkdown,
@@ -44,7 +43,7 @@ Suggests:
     RColorBrewer,
     xtable,
     DT
-URL: http://github.com/kbenoit/quanteda
+URL: http://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
