@@ -204,6 +204,12 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     names_org <- names(x)
     attrs_org <- attributes(x)
     
+    # disable remove_twitter if remove_punct = FALSE
+    if (!remove_punct & remove_twitter) {
+        remove_twitter <- FALSE
+        warning("remove_twitter reset to TRUE when remove_punct = FALSE")
+    }
+    
     # warn about unused arguments
     if (length(added_args <- list(...)) & 
         !all(names(added_args) %in% paste0("remove", c("Numbers", "Punct", "Symbols", "Separators", "Twitter", "Hyphens", "URL", "simplify")))) {
@@ -286,7 +292,11 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     attr(result, "ngrams") <- ngrams
     attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
     attr(result, 'padding') <- FALSE
-    
+
+    # issue #607: remove @ # only if not part of Twitter names
+    if (remove_punct & !remove_twitter)
+        result <- tokens_remove(result, "^#+$|^@+$", valuetype = "regex")
+
     return(result)
 }
 
