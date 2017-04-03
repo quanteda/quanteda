@@ -25,7 +25,8 @@
 #' @param remove_symbols if \code{TRUE}, remove all characters in the Unicode 
 #'   "Symbol" [S] class
 #' @param remove_twitter remove Twitter characters \code{@@} and \code{#}; set to
-#'   \code{TRUE} if you wish to eliminate these.
+#'   \code{TRUE} if you wish to eliminate these.  Note that this will always be set 
+#'   to \code{FALSE} if \code{remove_punct = FALSE}.
 #' @param remove_url if \code{TRUE}, find and eliminate URLs beginning with 
 #'   http(s) -- see section "Dealing with URLs".
 #' @param remove_hyphens if \code{TRUE}, split words that are connected by 
@@ -207,7 +208,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     # disable remove_twitter if remove_punct = FALSE
     if (!remove_punct & remove_twitter) {
         remove_twitter <- FALSE
-        warning("remove_twitter reset to TRUE when remove_punct = FALSE")
+        warning("remove_twitter reset to FALSE when remove_punct = FALSE")
     }
     
     # warn about unused arguments

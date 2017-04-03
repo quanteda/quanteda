@@ -46,7 +46,8 @@ applicable for \code{what = "character"} (when you probably want it to be
 carefully.}
 
 \item{remove_twitter}{remove Twitter characters \code{@} and \code{#}; set to
-\code{TRUE} if you wish to eliminate these.}
+\code{TRUE} if you wish to eliminate these.  Note that this will always be set 
+to \code{FALSE} if \code{remove_punct = FALSE}.}
 
 \item{remove_hyphens}{if \code{TRUE}, split words that are connected by 
 hyphenation and hyphenation-like characters in between words, e.g. 
