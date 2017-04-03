@@ -187,10 +187,10 @@ dictionary <- function(..., file = NULL, format = NULL,
         }
     }
     
-    dict <- new("dictionary", x, format = format, file = file, concatenator = concatenator)
+    validate_dictionary(x) # run validation before lowercasing
     if (tolower)
-        dict <- lowercase_dictionary(dict)
-    
+        x <- lowercase_dictionary(x)
+    dict <- new("dictionary", x, format = format, file = file, concatenator = concatenator)
     return(dict)
 }
 
@@ -230,8 +230,7 @@ dictionary <- function(..., file = NULL, format = NULL,
 #  flatten_dictionary(hdict, 1:2)
 
 flatten_dictionary <- function(dict, levels = 1:100, level = 1, key = '', dict_flat = list()) {
-    #cat("-------------------\n")
-    #cat("level:", level, "\n")
+
     for (name in names(dict)) {
         entry <- dict[[name]]
         if (level %in% levels) {    
@@ -243,15 +242,9 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key = '', dict_f
         } else {
             key_entry <- key
         }
-        #cat("key:", key, "\n")
-        #cat("key_entry:", key_entry, "\n")
         if (is.list(entry)) {
-            #cat("List:\n")
-            #print(entry)
             dict_flat <- flatten_dictionary(entry, levels, level + 1, key_entry, dict_flat)
         } else {
-            #cat("Vector:\n")
-            #print(entry)
             dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], entry)
         }
     }
@@ -265,13 +258,10 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key = '', dict_f
 #                           SUBKEY4 = c("G", "F", "I")),
 #               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J", "K")),
 #                           SUBKEY6 = list(SUBKEY8 = c("L"))))
-# class(hdict) <- c('dictionary', class(hdict))
 # lowercase_dictionary(hdict)
 
 lowercase_dictionary <- function(dict, dict_lower = list()) {
-    
-    if(!length(dict_lower))
-        root = TRUE
+
     if (is.list(dict)) {
         for (key in names(dict)) {
             dict_lower[[key]] <- lowercase_dictionary(dict[[key]], dict_lower[[key]])
@@ -279,8 +269,6 @@ lowercase_dictionary <- function(dict, dict_lower = list()) {
     } else {
         dict_lower <- stringi::stri_trans_tolower(dict)
     }
-    if (root)
-        attributes(dict_lower, FALSE) <- attributes(dict)
     return(dict_lower)
 }
 
