@@ -16,6 +16,7 @@ knitr::opts_chunk$set(collapse = TRUE,
                       comment = "##")
 ```
 
+This vignette provides a basic overview of **quanteda**'s features and capabilities.  For additional vignettes, see the [articles at quanteda.io](http://quanteda.io/articles/index.html).  
 
 # Introduction
 

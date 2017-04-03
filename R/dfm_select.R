@@ -81,7 +81,7 @@ dfm_select <- function(x, features = NULL, documents = NULL,
                        case_insensitive = TRUE,
                        min_nchar = 1, max_nchar = 63,
                        padding = FALSE,
-                       verbose = getOption("verbose"), ...) {
+                       verbose = quanteda_options("verbose"), ...) {
     UseMethod("dfm_select")
 }
 
@@ -94,7 +94,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
                             case_insensitive = TRUE,
                             min_nchar = 1, max_nchar = 63,
                             padding = FALSE,
-                            verbose = getOption("verbose"), ...) {
+                            verbose = quanteda_options("verbose"), ...) {
     
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)

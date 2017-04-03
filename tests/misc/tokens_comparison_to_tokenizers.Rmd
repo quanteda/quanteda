@@ -1,0 +1,164 @@
+---
+title: "tokens() comparison to the *tokenizers* package"
+author: Haiyan Wang and Kenneth Benoit
+date: March 24, 2017
+output:
+  md_document:
+    variant: markdown_github
+---
+
+
+To demonstrate the functionality of `tokens()` that removes or keeps some special characters/symbols. Test on: 
+
+```{r echo = FALSE}
+require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+require(tokenizers, quietly = TRUE, warn.conflicts = FALSE)
+```
+
+```{r}
+poetry <- paste0("I wandered lonely as a cloud,\n",
+                 "That floats on high o'er vales and hills.\n",
+                 "They stretched in never-ending line.\n",
+                 "Tossing their heads in sprightly @LSE and tell us what makes you feel #partofLSE.\n",
+                 "\n",
+                 "1 $100 £1000 2000+. \n",
+                 "Prof. Plum kills Mrs. Peacock. \n",
+                 "4u @ http://www.github.com\n")
+```
+
+## Word tokenization
+
+Feature comparison:
+
+|                       | **quanteda** | **tokenizers** | Notes |
+|-----------------------|--------------|----------------|-------|
+| Numbers: Remove       | `tokens(x, removeNumbers = TRUE)` | n/a   |       |
+| Twitter symbols: Keep | `tokens(x, removeTwitter = FALSE)`| n/a               |       |
+| Punctuation: Remove   | `tokens(x, removePunct = TRUE)` | `tokenize_words(x)`               |       |
+|Separators: Keep| `tokens(x, removeSeparators = T, removePunct = FALSE)` |  n/a | removePunct = FALSE|
+| Hyphens: Keep         | `tokens(x, removeHyphens = FALSE)`| n/a               |       |
+| Hyphens: Remove       |  `tokens(x, removeHyphens = TRUE)`| `tokenize_words(x)`               |       |
+| URLs: Remove          |  `tokens(x, removeURL = TRUE)`|n/a        |       |
+| Lowcase               |  `tokens(char_tolower(x))`|`tokenize_words(x, lowcase = TRUE)`              |       |
+| stopwords          |  `removeFeatures(tokens(x, what=”word”, removePunct = T), Stopwords(“english”))`| `tokenize_words(x,stopwords = stopwords(“en”))`|       |
+
+
+### Preserve words with hyphens
+
+```{r}
+tokens("They stretched in never-ending line.\n", what = "word", removePunct = TRUE, removeHyphens = FALSE)
+tokenize_words("They stretched in never-ending line.\n")
+```
+
+### Eliminate URLs beginning with "http(s)" 
+
+```{r}
+tokens("4u http://www.github.com\n", what = "word", removePunct = TRUE, removeURL = TRUE)
+tokenize_words("4u http://www.github.com\n")
+```
+
+### Preserve Twitter characters @ and \#
+
+```{r}
+tokens("in sprightly @LSE and tell us what makes you feel #partofLSE\n", what = "word", removePunct = TRUE, removeTwitter = FALSE)
+tokenize_words("in sprightly @LSE and tell us what makes you feel #partofLSE\n")
+```
+
+### Remove numbers but preserve words starting with digits
+
+```{r}
+tokens(c("1 $100 £1000 2000+ \n", "4u http://www.github.com\n"), what = "word", removePunct = TRUE, removeNumbers = TRUE)
+tokenize_words(c("1 $100 £1000 2000+ \n", "4u http://www.github.com\n"))
+```
+
+### Keep Separators in the Unicode "Separator" [Z] class 
+
+```{r}
+tokens("1 $ 100 £1000 2000+ wow!\n", what = "word", removePunct = FALSE, removeSeparators = FALSE)
+tokenize_words("1 $ 100 £1000 2000+ wow!\n")
+```
+
+## Character tokenization
+
+Feature comparison:
+
+|                       | **quanteda** | **tokenizers** | Notes |
+|-----------------------|--------------|----------------|-------|
+| Punctuation: Remove   | `tokens(x, what = "character", removePunct = TRUE)` | `tokenize_characters(x, strip_non_alphanum = TRUE)`|       |
+| Separators: Keep      | `tokens(x, removeSeparators = FALSE)` |  n/a |       |
+| Symbol: Remove        | `tokens(x, removeSymbols = TRUE)`| n/a               |       |
+
+
+### Remove Symbols in the Unicode "Symbol" [S] class
+
+```{r}
+tokens("1 $ 100 £1000 2000+ wow!", what = "character", removePunct = TRUE, removeSymbols = TRUE)
+tokenize_characters("1 $ 100 £1000 2000+ wow!", strip_non_alphanum = TRUE)
+```
+
+### Keep Separators in the Unicode "Separator" [Z] class 
+
+```{r}
+tokens("1 $ 100 £1000 2000+ wow!\n", what = "character", removeSeparators = FALSE)
+tokenize_characters("1 $ 100 £1000 2000+ wow!\n")
+```
+
+## Sentence tokenization
+
+Feature comparison:
+
+|                       | **quanteda** | **tokenizers** | Notes |
+|-----------------------|--------------|----------------|-------|
+| Handle exceptions: Mr.| `tokens(x, what = "sentence")` | n/a   |       |
+
+### Sentence segmenter handles some exceptions in English
+
+```{r}
+tokens(poetry, what = "sentence")
+tokenize_sentences(poetry)
+```
+
+## Performance benchmarks
+
+### Word 
+
+```{r}
+microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "word", hash = FALSE,                  
+                                                 removeSeparators = FALSE, removeTwitter = TRUE),
+                               tokenizers = tokenize_words(data_char_inaugural), 
+                               times = 20, unit = "relative")
+```
+
+### fasterword 
+
+```{r}
+microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "fasterword", hash = FALSE,     
+                                                 removeSeparators = FALSE, removeTwitter = TRUE),
+                               tokenizers = tokenize_words(data_char_inaugural), 
+                               times = 20, unit = "relative")
+```
+
+### fastestword
+
+```{r}
+microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "fastestword", hash = FALSE, 
+                                                 removeSeparators = FALSE, removeTwitter = TRUE),
+                               tokenizers = tokenize_words(data_char_inaugural), 
+                               times = 20, unit = "relative")
+```
+
+### character
+
+```{r}
+microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "character", hash = FALSE, removeSeparators = FALSE),
+                                tokenizers = tokenize_characters(data_char_inaugural), 
+                                times = 20, unit = "relative")
+```
+
+### sentence
+
+```{r}
+microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "sentence", hash = FALSE),
+                                tokenizers = tokenize_sentences(data_char_inaugural), 
+                                times = 20, unit = "relative")
+```

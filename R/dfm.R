@@ -129,7 +129,7 @@ dfm <- function(x,
                 dictionary = NULL,
                 valuetype = c("glob", "regex", "fixed"), 
                 groups = NULL, 
-                verbose = getOption("verbose"), 
+                verbose = quanteda_options("verbose"), 
                 ...) {
 
     UseMethod("dfm")
@@ -148,7 +148,7 @@ dfm.character <- function(x,
                 dictionary = NULL,
                 valuetype = c("glob", "regex", "fixed"), 
                 groups = NULL, 
-                verbose = getOption("verbose"), 
+                verbose = quanteda_options("verbose"), 
                 ...) {
     startTime <- proc.time()
     valuetype <- match.arg(valuetype)
@@ -181,7 +181,7 @@ dfm.corpus <- function(x, tolower = TRUE,
                        dictionary = NULL,
                        valuetype = c("glob", "regex", "fixed"), 
                        groups = NULL, 
-                       verbose = getOption("verbose"), ...) {
+                       verbose = quanteda_options("verbose"), ...) {
     if (verbose)
         catm("Creating a dfm from a corpus ...\n")
     
@@ -222,7 +222,7 @@ dfm.tokenizedTexts <- function(x,
                                dictionary = NULL,
                                valuetype = c("glob", "regex", "fixed"), 
                                groups = NULL, 
-                               verbose = getOption("verbose"), 
+                               verbose = quanteda_options("verbose"), 
                                ...) {
 
     valuetype <- match.arg(valuetype)
@@ -291,7 +291,7 @@ dfm.dfm <- function(x,
                     dictionary = NULL,
                     valuetype = c("glob", "regex", "fixed"), 
                     groups = NULL, 
-                    verbose = getOption("verbose"), 
+                    verbose = quanteda_options("verbose"), 
                     ...) {
 
     valuetype <- match.arg(valuetype)

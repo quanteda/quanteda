@@ -62,7 +62,9 @@ setClass("textmodel_wordfish_predicted",
 #'   only applies when \code{sparse = TRUE}
 #' @param residual_floor specifies the threshold for residual matrix when 
 #'   calculating the svds, only applies when \code{sparse = TRUE}
-#' @return An object of class textmodel_fitted_wordfish.  This is a list 
+#' @param threads specifies the number of threads to use; set to 1 to override
+#'   the package settings and use a serial version of the function
+#' @return An object of class \code{textmodel_fitted_wordfish}.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
 #'   fixed effects} \item{beta}{estimated feature marginal effects} 
@@ -115,7 +117,8 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
                                dispersion = c("poisson", "quasipoisson"), 
                                dispersionLevel = c("feature", "overall"),
                                dispersionFloor = 0,
-                               sparse = TRUE,
+                               sparse = TRUE, 
+                               threads = quanteda_options("threads"),
                                abs_err = FALSE,
                                svd_sparse = TRUE,
                                residual_floor = 0.5) {
@@ -165,7 +168,11 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
 
     # catm("disp = ", disp, "\n")
     if (sparse == TRUE){
-        wfresult <- wordfishcpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err, svd_sparse, residual_floor)
+        if (threads == 1){
+            wfresult <- wordfishcpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err, svd_sparse, residual_floor)
+        } else {
+            wfresult <- wordfishcpp_mt(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err, svd_sparse, residual_floor)
+        }
     } else{
         wfresult <- wordfishcpp_dense(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err)
     }
@@ -243,34 +250,21 @@ summary.textmodel_wordfish_fitted <- function(object, ...) {
     invisible(results)
 }
 
+#' @rdname textmodel-internal
+#' @export
+setMethod("coef", signature(object = "textmodel_wordfish_fitted"),
+          function(object, ...) list(coef_feature = object@beta,
+                                     coef_feature_se = NULL,
+                                     coef_document = object@theta,
+                                     coef_document_se = object@se.theta,
+                                     coef_feature_offset = object@psi,
+                                     coef_document_offset = object@alpha)
+)
 
-# @rdname textmodel_wordfish
-# @export
-# @method print textmodel_wordfish_predicted
-# print.textmodel_wordfish_predicted <- function(x, ...) {
-#     cat("Predicted textmodel of type: wordfish\n\n")
-#     #cat("Call:\n\t")
-#     #print(object$call)
-#     
-#     x <- x@textfish
-#     
-#     ## options if a wordscores object 
-#     ## (and no, it's not very object-oriented!)
-#     names(x)[which(names(x)=="textscore_raw")] <- "textscore"
-#     names(x)[which(names(x)=="textscore_raw_se")] <- "LBG se"
-#     names(x)[which(names(x)=="textscore_raw_lo")] <- "ci lo"
-#     names(x)[which(names(x)=="textscore_raw_hi")] <- "ci hi"
-#     names(x)[which(names(x)=="textscore_mv")] <- "MV rescaled"
-#     names(x)[which(names(x)=="textscore_lbg")] <- "LBG rescaled"
-#     names(x)[which(names(x)=="textscore_lbg_lo")] <- "LBG lo"
-#     names(x)[which(names(x)=="textscore_lbg_hi")] <- "LBG hi"
-#     # pare down the output if rescaling has been specified
-#     if (any(c("LBG rescaled", "MV rescaled") %in% names(x)))
-#         x$ci.lo <- x$ci.hi <- NULL
-#     
-#     print(round(as.data.frame(x), 4))
-#     cat("\n")
-# }
+#' @rdname textmodel-internal
+#' @export
+setMethod("coefficients", signature(object = "textmodel_wordfish_fitted"),
+          function(object, ...) coef(object, ...))
 
 
 

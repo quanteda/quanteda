@@ -9,7 +9,7 @@ tokens(x, what = c("word", "sentence", "character", "fastestword",
   removeSymbols = FALSE, removeSeparators = TRUE, removeTwitter = FALSE,
   removeHyphens = FALSE, removeURL = FALSE, ngrams = 1L, skip = 0L,
   concatenator = "_", simplify = FALSE, hash = TRUE,
-  verbose = getOption("verbose"), include_docvars = TRUE, ...)
+  verbose = quanteda_options("verbose"), include_docvars = TRUE, ...)
 }
 \arguments{
 \item{x}{a character or \link{corpus} object to be tokenized}
