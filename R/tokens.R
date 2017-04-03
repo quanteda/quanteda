@@ -163,7 +163,7 @@ tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", 
                     concatenator = "_",
                     simplify = FALSE,
                     hash = TRUE,
-                    verbose = getOption("verbose"),
+                    verbose = quanteda_options("verbose"),
                     include_docvars = TRUE,
                     ...) {
     UseMethod("tokens")
@@ -185,7 +185,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
                              concatenator = "_",
                              simplify = FALSE,
                              hash = TRUE,
-                             verbose = getOption("verbose"), ..., 
+                             verbose = quanteda_options("verbose"), ..., 
                              include_docvars = TRUE) {
     
     what <- match.arg(what)

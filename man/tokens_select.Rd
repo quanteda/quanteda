@@ -7,11 +7,11 @@
 \usage{
 tokens_select(x, features, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  padding = FALSE, verbose = getOption("verbose"))
+  padding = FALSE, verbose = quanteda_options("verbose"))
 
 tokens_remove(x, features, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, padding = FALSE,
-  verbose = getOption("verbose"))
+  verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be selected}

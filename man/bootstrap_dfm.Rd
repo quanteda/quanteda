@@ -4,7 +4,7 @@
 \alias{bootstrap_dfm}
 \title{bootstrap a dfm}
 \usage{
-bootstrap_dfm(x, n = 10, ..., verbose = getOption("verbose"))
+bootstrap_dfm(x, n = 10, ..., verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{a character or \link{corpus} object}
