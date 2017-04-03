@@ -102,7 +102,7 @@ Additional functions have been defined for **quanteda** objects that are [very s
 
 2. **A corpus should be capable of holding additional objects that will be associated with the corpus, such as dictionaries, stopword, and phrase lists.**  These will be named objects, that can be invoked when using (for instance) `dfm()`.  This allows a corpus to contain all of the additional objects that would normally be associated with it, rather than requiring a set of separate, extra-corpus objects.
 
-3. **Objects should record histories of the operations applied to them.** This is for purposes of analytic transparency.  A tokens object and a dfm object, for instance, should have settings that record the processing options applied to the texts or corpus from which they were created.  These provide a record of what was done to the text, and where it came from.  Examples are `tokens_tolower`, `dfm_wordstem`, and settings such as `removeTwitter`.  They also include any objects used in feature selection, such as dictionaries or stopword lists.
+3. **Objects should record histories of the operations applied to them.** This is for purposes of analytic transparency.  A tokens object and a dfm object, for instance, should have settings that record the processing options applied to the texts or corpus from which they were created.  These provide a record of what was done to the text, and where it came from.  Examples are `tokens_tolower`, `dfm_wordstem`, and settings such as `remove_twitter`.  They also include any objects used in feature selection, such as dictionaries or stopword lists.
 
 4. **A dfm should always be a  *documents* (or document groups) in rows by *features* in columns.**  Period.
 
@@ -134,12 +134,12 @@ Additional functions have been defined for **quanteda** objects that are [very s
     
     By defining the broad class of tokens we wish to extract, in this step we also apply rules that will keep or ignore elements such as punctuation or digits, or special aggregations of word and other characters that make up URLS, Twitter tags, or currency-prefixed digits.  This will involve adding the following options to `tokenize`:
     *   `removeDigits`
-    *   `removePunct`
+    *   `remove_punct`
     *   `removeAdditional`
-    *   `removeTwitter`
-    *   `removeURL`
+    *   `remove_twitter`
+    *   `remove_url`
 
-    **By default**, `tokens()` extracts word tokens, and only `removeSeparators` is `TRUE`, meaning that `tokens()` will return a list including punctuation as tokens.  This follows a philosophy of minimal intervention, and one requiring that additional decisions be made explicit by the user when invoking `tokenize()`.  Note that in the `dfm()` method described below, however, we do turn on all of these options except `removeTwitter`, which is by default `FALSE`.
+    **By default**, `tokens()` extracts word tokens, and only `remove_separators` is `TRUE`, meaning that `tokens()` will return a list including punctuation as tokens.  This follows a philosophy of minimal intervention, and one requiring that additional decisions be made explicit by the user when invoking `tokenize()`.  Note that in the `dfm()` method described below, however, we do turn on all of these options except `remove_twitter`, which is by default `FALSE`.
 
     For converting to lowercase, it is actually *faster* to perform this step *before* tokenization, but logically it falls under the next workflow step.  However for efficiency, `*_tolower()` functions are defined for:
     *   a character vector

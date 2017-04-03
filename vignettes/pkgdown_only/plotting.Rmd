@@ -22,7 +22,7 @@ Plotting a `dfm` object will create a wordcloud using the `wordcloud` pacakge.
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
 # Create a dfm from a somewhat smaller corpus
-inaugDfm <- dfm(data_corpus_inaugural[0:10], remove = stopwords('english'), removePunct = TRUE)
+inaugDfm <- dfm(data_corpus_inaugural[0:10], remove = stopwords('english'), remove_punct = TRUE)
 # Some words will not fit on a plot this size, so suppress those warings
 textplot_wordcloud(dfm_trim(inaugDfm, min_count = 10, verbose = FALSE))
 ```
@@ -31,7 +31,7 @@ You can also plot a "comparison cloud", but this can only be done with fewer tha
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
 compDfm <- dfm(corpus_subset(data_corpus_inaugural, President %in% c("Washington", "Jefferson", "Madison")),
-               groups = "President", remove = stopwords("english"), removePunct = TRUE)
+               groups = "President", remove = stopwords("english"), remove_punct = TRUE)
 textplot_wordcloud(dfm_trim(compDfm, min_count = 5, verbose = FALSE), comparison = TRUE)
 ```
 
