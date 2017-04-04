@@ -36,30 +36,28 @@ validate_dictionary <- function(dict){
         entry <- dict[[i]]
         is_category <- sapply(entry, is.list)
         category <- entry[is_category]
-        word <- unlist(entry[!is_category], use.names = FALSE)
-        
-        if (length(category)) {
-            validate_dictionary(category)
+        if (any(is_category)) {
+            validate_dictionary(entry[is_category])
         }
+        word <- unlist(entry[!is_category], use.names = FALSE)
         if (any(!is.character(word))) {
-            word_error <- word[!is.character(unlist(word, use.names = FALSE))]
+            word_error <- word[!is.character(word)]
             stop("non-character entries found: ", word_error)
         }
     }
 }
 
 # Internal function to print dictionary
-print_dictionary <- function(dict, level = 1){
+print_dictionary <- function(entry, level = 1){
     
-    for (i in seq_along(dict)) {
-        entry <- dict[[i]]
-        if (is.list(entry)) {
-            cat(rep('  ', level - 1), "- ", names(dict[i]), ':\n', sep = "")
-            print_dictionary(entry, level + 1)
-        } else {
-            cat(rep('  ', level - 1), "- ", names(dict[i]) , ": ", paste(entry, collapse = ", "), "\n", sep = "")
-        }   
+    is_category <- sapply(entry, is.list)
+    category <- entry[is_category]
+    word <- unlist(entry[!is_category], use.names = FALSE)
+    for (i in seq_along(category)) {
+        cat(rep('  ', level - 1), "- ", names(category[i]), ':\n', sep = "")
+        print_dictionary(category[[i]], level + 1)
     }
+    cat(rep('  ', level - 1), "- ", paste(word, collapse = ", "), "\n", sep = "")
 }
 
 
@@ -262,13 +260,13 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
 # lowercase_dictionary(hdict)
 
 lowercase_dictionary <- function(dict) {
-
-    if (is.list(dict)) {
-        for (key in names(dict)) {
-            dict[[key]] <- lowercase_dictionary(dict[[key]])
+    
+    for (i in seq_along(dict)) {
+        if (is.list(dict[[i]])) {
+            dict[[i]] <- lowercase_dictionary(dict[[i]])
+        } else {
+            dict[[i]] <- stringi::stri_trans_tolower(dict[[i]])
         }
-    } else {
-        dict <- stringi::stri_trans_tolower(dict)
     }
     return(dict)
 }
@@ -322,22 +320,23 @@ read_dict_wordstat <- function(path, encoding = 'auto') {
     return(dict)
 }
 
+# Internal functin for read_dict_wordstat
 compress_dictionary <- function(entry, omit = TRUE, dict = list()) {
     if (omit) {
         for (i in seq_along(entry)) {
-            dict[[names(entry[i])]] <- compress_dictionary(entry[[i]], FALSE)
+            key <- names(entry[i])
+            #if (!is.null(key) && key != '') {
+            if (is.list(entry[i])) {
+                dict[[key]] <- compress_dictionary(entry[[i]], FALSE)
+            }
         }
     } else {
         is_category <- sapply(entry, is.list)
-        if (any(!is_category)) {
-            dict[[1]] <- unlist(entry[!is_category], use.names = FALSE)
+        category <- entry[is_category]
+        for (i in seq_along(category)) {
+            dict <- compress_dictionary(category[[i]], TRUE, dict)
         }
-        if (any(is_category)) {
-            category <- entry[is_category]
-            for (i in seq_along(category)) {
-                dict <- compress_dictionary(category[[i]], TRUE, dict)
-            }
-        }
+        dict[[length(dict) + 1]] <- unlist(entry[!is_category], use.names = FALSE)
     }
     return(dict)
 }
