@@ -23,7 +23,7 @@ setValidity("dictionary", function(object) {
 
 # Internal function to chekc if dictionary eintries are all chracters
 validate_dictionary <- function(dict){
-
+    
     if (is.null(names(dict))) {
         stop("dictionary elements must be named")
     }
@@ -34,14 +34,17 @@ validate_dictionary <- function(dict){
     
     for (i in seq_along(dict)) {
         entry <- dict[[i]]
-        if (is.list(entry)) {
-            validate_dictionary(entry)
-        } else {
-            if (any(!is.character(entry))) {
-                nonchar <- entry[!is.character(entry)]
-                stop("non-character entries found: ", nonchar)
-            }
-        }   
+        is_category <- sapply(entry, is.list)
+        category <- entry[is_category]
+        word <- unlist(entry[!is_category], use.names = FALSE)
+        
+        if (length(category)) {
+            validate_dictionary(category)
+        }
+        if (any(!is.character(word))) {
+            word_error <- word[!is.character(unlist(word, use.names = FALSE))]
+            stop("non-character entries found: ", word_error)
+        }
     }
 }
 
@@ -227,28 +230,28 @@ dictionary <- function(..., file = NULL, format = NULL,
 #  flatten_dictionary(hdict, 2)
 #  flatten_dictionary(hdict, 1:2)
 
-flatten_dictionary <- function(dict, levels = 1:100, level = 1, key = '', dict_flat = list()) {
-
-    for (name in names(dict)) {
-        entry <- dict[[name]]
-        if (level %in% levels) {    
-            if (key != '') {
-                key_entry <- paste(key, name, sep = '.')
+flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '', dict_flat = list()) {
+    
+    for (i in seq_along(dict)) {
+        key <- names(dict[i])
+        entry <- dict[[i]]
+        if (level %in% levels) {
+            if (key_parent != '' && key != '') {
+                key_entry <- paste(key_parent, key, sep = '.')
             } else {
-                key_entry <- name
+                key_entry <- key
             }
         } else {
-            key_entry <- key
+            key_entry <- key_parent
         }
-        if (is.list(entry)) {
-            dict_flat <- flatten_dictionary(entry, levels, level + 1, key_entry, dict_flat)
-        } else {
-            dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], entry)
-        }
+        is_category <- sapply(entry, is.list)
+        dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], unlist(entry[!is_category], use.names = FALSE))
+        dict_flat <- flatten_dictionary(entry[is_category], levels, level + 1, key_entry, dict_flat)
     }
     attributes(dict_flat, FALSE) <- attributes(dict)
     return(dict_flat)
 }
+
 
 # hdict <- list(KEY1 = list(SUBKEY1 = c("A", "B"),
 #                           SUBKEY2 = c("C", "D")),
@@ -299,6 +302,7 @@ read_dict_lexicoder <- function(path) {
 }
 
 # Import a Wordstat dictionary
+# dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/LaverGarry.txt', 'utf-8')
 # dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat', 'utf-8')
 # dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat', 'iso-8859-1')
 read_dict_wordstat <- function(path, encoding = 'auto') {
@@ -308,14 +312,36 @@ read_dict_wordstat <- function(path, encoding = 'auto') {
     lines <- stringi::stri_trim_right(lines)
     lines_yaml <- ifelse(stringi::stri_detect_regex(lines, ' \\(\\d\\)$'),
                          stringi::stri_replace_all_regex(lines, '^(\\t*)(.+) \\(\\d\\)$', '$1- "$2"'),
-                         stringi::stri_replace_all_regex(lines, '^(\\t*)(.+)$', '$1"$2": '))
+                         stringi::stri_replace_all_regex(lines, '^(\\t*)(.+)$', '$1- "$2": '))
     
-    lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '\t', ' ')
+    lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '\t', '  ') # needs two spaces
     lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '[[:control:]]', '') # clean
     yaml <- paste0(lines_yaml, collapse = '\n')
     dict <- yaml::yaml.load(yaml, as.named.list = TRUE)
+    dict <- compress_dictionary(dict, FALSE)
     return(dict)
 }
+
+compress_dictionary <- function(entry, omit = TRUE, dict = list()) {
+    if (omit) {
+        for (i in seq_along(entry)) {
+            dict[[names(entry[i])]] <- compress_dictionary(entry[[i]], FALSE)
+        }
+    } else {
+        is_category <- sapply(entry, is.list)
+        if (any(!is_category)) {
+            dict[[1]] <- unlist(entry[!is_category], use.names = FALSE)
+        }
+        if (any(is_category)) {
+            category <- entry[is_category]
+            for (i in seq_along(category)) {
+                dict <- compress_dictionary(category[[i]], TRUE, dict)
+            }
+        }
+    }
+    return(dict)
+}
+
 
 # Import a LIWC-formatted dictionary
 # read_dict_liwc('/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')
