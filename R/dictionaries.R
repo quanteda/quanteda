@@ -29,20 +29,22 @@ validate_dictionary <- function(dict){
     }
     if (any(names(dict) == "")) {
         unnamed <- dict[which(names(dict) == "")]
-        stop("unnamed dictionary entry: ", unnamed)
+        stop("unnamed dictionary entry: ", unlist(unnamed, use.names = FALSE))
     }
     
     for (i in seq_along(dict)) {
         entry <- dict[[i]]
         is_category <- sapply(entry, is.list)
-        category <- entry[is_category]
-        if (any(is_category)) {
-            validate_dictionary(entry[is_category])
+        if (any(!is_category)) {
+            word <- unlist(entry[!is_category], use.names = FALSE)
+            if (any(!is.character(word))) {
+                word_error <- word[!is.character(word)]
+                stop("non-character entries found: ", word_error)
+            }
         }
-        word <- unlist(entry[!is_category], use.names = FALSE)
-        if (any(!is.character(word))) {
-            word_error <- word[!is.character(word)]
-            stop("non-character entries found: ", word_error)
+        if (any(is_category)) {
+            category <- entry[is_category]
+            validate_dictionary(category)
         }
     }
 }
@@ -57,7 +59,9 @@ print_dictionary <- function(entry, level = 1){
         cat(rep('  ', level - 1), "- ", names(category[i]), ':\n', sep = "")
         print_dictionary(category[[i]], level + 1)
     }
-    cat(rep('  ', level - 1), "- ", paste(word, collapse = ", "), "\n", sep = "")
+    if (length(word)) {
+        cat(rep('  ', level - 1), "- ", paste(word, collapse = ", "), "\n", sep = "")
+    }
 }
 
 
@@ -157,6 +161,11 @@ dictionary <- function(..., file = NULL, format = NULL,
         if (!is.null(x) && !is.list(x)) {
             stop("Dictionaries must be named lists or lists of named lists.")
         }
+        if (is.dictionary(x)) {
+            return(x)
+        } else {
+            x <- list2dictionary(x)
+        }
     } else { 
         
         formats <- c(cat = "wordstat", dic = "LIWC", ykd = "yoshikoder", lcd = "yoshikoder", 
@@ -177,6 +186,7 @@ dictionary <- function(..., file = NULL, format = NULL,
         
         if (format == "wordstat") {
             x <- read_dict_wordstat(file, encoding)
+            print(x)
         } else if (format == "LIWC") {
             x <- read_dict_liwc(file, encoding)
         } else if (format == "yoshikoder") {
@@ -185,6 +195,7 @@ dictionary <- function(..., file = NULL, format = NULL,
             x <- read_dict_lexicoder(file)
         } else if (format == "YAML") {
             x <- yaml::yaml.load_file(file, as.named.list = TRUE)
+            x <- list2dictionary(x)
         }
     }
     dict <- new("dictionary", x, format = format, file = file, concatenator = concatenator)
@@ -250,7 +261,8 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
     return(dict_flat)
 }
 
-
+# Internal function to lowercase dictionary entries
+#
 # hdict <- list(KEY1 = list(SUBKEY1 = c("A", "B"),
 #                           SUBKEY2 = c("C", "D")),
 #               KEY2 = list(SUBKEY3 = c("E", "F"),
@@ -258,7 +270,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
 #               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J", "K")),
 #                           SUBKEY6 = list(SUBKEY8 = c("L"))))
 # lowercase_dictionary(hdict)
-
+#
 lowercase_dictionary <- function(dict) {
     
     for (i in seq_along(dict)) {
@@ -266,6 +278,18 @@ lowercase_dictionary <- function(dict) {
             dict[[i]] <- lowercase_dictionary(dict[[i]])
         } else {
             dict[[i]] <- stringi::stri_trans_tolower(dict[[i]])
+        }
+    }
+    return(dict)
+}
+
+# Internal function to convert a list to a dictionary
+list2dictionary <- function(dict){
+    for (i in seq_along(dict)) {
+        if (is.list(dict[[i]])) {
+            dict[[i]] = list2dictionary(dict[[i]])
+        } else {
+            dict[[i]] = list(dict[[i]])
         }
     }
     return(dict)
@@ -282,7 +306,6 @@ is.dictionary <- function(x) {
 }
 
 
-
 # Import a Lexicoder dictionary
 # dict <- read_dict_lexicoder('/home/kohei/Documents/Dictionary/Lexicoder/LSDaug2015/LSD2015.lc3')
 read_dict_lexicoder <- function(path) {
@@ -296,6 +319,7 @@ read_dict_lexicoder <- function(path) {
     lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '[[:control:]]', '') # clean
     yaml <- paste0(lines_yaml, collapse = '\n')
     dict <- yaml::yaml.load(yaml, as.named.list = TRUE)
+    dict <- list2dictionary(dict)
     return(dict)
 }
 
@@ -316,25 +340,24 @@ read_dict_wordstat <- function(path, encoding = 'auto') {
     lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '[[:control:]]', '') # clean
     yaml <- paste0(lines_yaml, collapse = '\n')
     dict <- yaml::yaml.load(yaml, as.named.list = TRUE)
-    dict <- compress_dictionary(dict, FALSE)
+    dict <- list2dictionary_wordstat(dict, FALSE)
     return(dict)
 }
 
 # Internal functin for read_dict_wordstat
-compress_dictionary <- function(entry, omit = TRUE, dict = list()) {
+list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
     if (omit) {
         for (i in seq_along(entry)) {
             key <- names(entry[i])
-            #if (!is.null(key) && key != '') {
             if (is.list(entry[i])) {
-                dict[[key]] <- compress_dictionary(entry[[i]], FALSE)
+                dict[[key]] <- list2dictionary_wordstat(entry[[i]], FALSE)
             }
         }
     } else {
         is_category <- sapply(entry, is.list)
         category <- entry[is_category]
         for (i in seq_along(category)) {
-            dict <- compress_dictionary(category[[i]], TRUE, dict)
+            dict <- list2dictionary_wordstat(category[[i]], TRUE, dict)
         }
         dict[[length(dict) + 1]] <- unlist(entry[!is_category], use.names = FALSE)
     }
@@ -368,6 +391,7 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     dict <- split(rep(values, lengths(values_ids)), as.factor(unlist(values_ids, use.names = FALSE)))
     dict <- dict[order(as.numeric(names(dict)))]
     names(dict) <- keys[match(names(dict), keys_id)]
+    dict <- list2dictionary(dict)
     return(dict)
     
 }
@@ -379,6 +403,7 @@ read_dict_yoshikoder <- function(path){
     xml <- XML::xmlParse(path)
     root <- XML::xpathSApply(xml, "/dictionary")
     dict <- nodes2list(root[[1]])
+    dict <- list2dictionary(dict)
     return(dict)
 }
 
