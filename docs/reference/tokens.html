@@ -85,11 +85,11 @@
     
 
     <pre><span class='fu'>tokens</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"word"</span>, <span class='st'>"sentence"</span>, <span class='st'>"character"</span>, <span class='st'>"fastestword"</span>,
-  <span class='st'>"fasterword"</span>), <span class='kw'>removeNumbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>removeSymbols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removeSeparators</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>removeTwitter</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>removeHyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removeURL</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0L</span>,
-  <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hash</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"verbose"</span>), <span class='kw'>include_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+  <span class='st'>"fasterword"</span>), <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_separators</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>remove_twitter</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>, <span class='kw'>hash</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>), <span class='kw'>include_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -110,34 +110,34 @@ calls <code><a href='http://www.rdocumentation.org/packages/stringi/topics/stri_
 exceptions in English such as &quot;Prof. Plum killed Mrs. Peacock.&quot; (but far 
 from perfect).</dd> </dl>
 </dd>
-      <dt>removeNumbers</dt>
+      <dt>remove_numbers</dt>
       <dd>remove tokens that consist only of numbers, but not 
 words that start with digits, e.g. <code>2day</code></dd>
-      <dt>removePunct</dt>
+      <dt>remove_punct</dt>
       <dd>if <code>TRUE</code>, remove all characters in the Unicode 
 &quot;Punctuation&quot; [P] class</dd>
-      <dt>removeSymbols</dt>
+      <dt>remove_symbols</dt>
       <dd>if <code>TRUE</code>, remove all characters in the Unicode 
 &quot;Symbol&quot; [S] class</dd>
-      <dt>removeSeparators</dt>
+      <dt>remove_separators</dt>
       <dd>remove Separators and separator characters (spaces 
 and variations of spaces, plus tab, newlines, and anything else in the 
-Unicode &quot;separator&quot; category) when <code>removePunct=FALSE</code>.  Only 
+Unicode &quot;separator&quot; category) when <code>remove_punct=FALSE</code>.  Only 
 applicable for <code>what = &quot;character&quot;</code> (when you probably want it to be 
 <code>FALSE</code>) and for <code>what = &quot;word&quot;</code> (when you probably want it to be
 <code>TRUE</code>).  Note that if <code>what = &quot;word&quot;</code> and you set 
-<code>removePunct = TRUE</code>, then <code>removeSeparators</code> has no effect.  Use
+<code>remove_punct = TRUE</code>, then <code>remove_separators</code> has no effect.  Use
 carefully.</dd>
-      <dt>removeTwitter</dt>
+      <dt>remove_twitter</dt>
       <dd>remove Twitter characters <code>@</code> and <code>#</code>; set to
 <code>TRUE</code> if you wish to eliminate these.</dd>
-      <dt>removeHyphens</dt>
+      <dt>remove_hyphens</dt>
       <dd>if <code>TRUE</code>, split words that are connected by 
 hyphenation and hyphenation-like characters in between words, e.g. 
 <code>&quot;self-storage&quot;</code> becomes <code>c(&quot;self&quot;, &quot;storage&quot;)</code>.  Default is 
 <code>FALSE</code> to preserve such words as is, with the hyphens.  Only applies 
 if <code>what = &quot;word&quot;</code>.</dd>
-      <dt>removeURL</dt>
+      <dt>remove_url</dt>
       <dd>if <code>TRUE</code>, find and eliminate URLs beginning with 
 http(s) -- see section &quot;Dealing with URLs&quot;.</dd>
       <dt>ngrams</dt>
@@ -154,9 +154,6 @@ different from the default of 1.  See <code><a href='tokens_ngrams.html'>tokens_
       <dd>character to use in concatenating <em>n</em>-grams, default
 is &quot;<code>_</code>&quot;, which is recommended since this is included in the regular 
 expression and Unicode definitions of &quot;word&quot; characters</dd>
-      <dt>simplify</dt>
-      <dd>no longer active: `tokens()` always returns a tokens object, 
-whose basic structure is a list (even for a single document)</dd>
       <dt>hash</dt>
       <dd>if <code>TRUE</code> (default), return a hashed tokens object, 
 otherwise, return a classic <code>tokenizedTexts</code> object.  (This will be 
@@ -192,7 +189,7 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
     <p>URLs are tricky to tokenize, because they contain
   a number of symbols and punctuation characters.  If you wish to remove 
   these, as most people do, and your text contains URLs, then you should set 
-  <code>what = &quot;fasterword&quot;</code> and <code>removeURL = TRUE</code>.  If you wish to 
+  <code>what = &quot;fasterword&quot;</code> and <code>remove_url = TRUE</code>.  If you wish to 
   keep the URLs, but do not want them mangled, then your options are more 
   limited, since removing punctuation and symbols will also remove them from 
   URLs.  We are working on improving this behaviour.</p>
@@ -214,7 +211,7 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 #&gt; [1] &quot;Another&quot;     &quot;sentence&quot;    &quot;,&quot;           &quot;to&quot;          &quot;demonstrate&quot;
 #&gt; [6] &quot;how&quot;         &quot;tokens&quot;      &quot;works&quot;       &quot;.&quot;          
 #&gt; </div><div class='input'><span class='co'># removing punctuation marks and lowecasing texts</span>
-<span class='fu'>tokens</span>(<span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='no'>txt</span>), <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens</span>(<span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='no'>txt</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; doc1 :
 #&gt; [1] &quot;this&quot;   &quot;is&quot;     &quot;a&quot;      &quot;sample&quot; &quot;of&quot;     &quot;tokens&quot;
 #&gt; 
@@ -222,42 +219,42 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 #&gt; [1] &quot;another&quot;     &quot;sentence&quot;    &quot;to&quot;          &quot;demonstrate&quot; &quot;how&quot;        
 #&gt; [6] &quot;tokens&quot;      &quot;works&quot;      
 #&gt; </div><div class='input'><span class='co'># keeping versus removing hyphens</span>
-<span class='fu'>tokens</span>(<span class='st'>"quanteda data objects are auto-loading."</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens</span>(<span class='st'>"quanteda data objects are auto-loading."</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;quanteda&quot;     &quot;data&quot;         &quot;objects&quot;      &quot;are&quot;          &quot;auto-loading&quot;
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"quanteda data objects are auto-loading."</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>removeHyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"quanteda data objects are auto-loading."</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;quanteda&quot; &quot;data&quot;     &quot;objects&quot;  &quot;are&quot;      &quot;auto&quot;     &quot;loading&quot; 
 #&gt; </div><div class='input'><span class='co'># keeping versus removing symbols</span>
-<span class='fu'>tokens</span>(<span class='st'>"&lt;tags&gt; and other + symbols."</span>, <span class='kw'>removeSymbols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens</span>(<span class='st'>"&lt;tags&gt; and other + symbols."</span>, <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;&lt;&quot;       &quot;tags&quot;    &quot;&gt;&quot;       &quot;and&quot;     &quot;other&quot;   &quot;+&quot;       &quot;symbols&quot;
 #&gt; [8] &quot;.&quot;      
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"&lt;tags&gt; and other + symbols."</span>, <span class='kw'>removeSymbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"&lt;tags&gt; and other + symbols."</span>, <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;tags&quot;    &quot;and&quot;     &quot;other&quot;   &quot;symbols&quot;
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"&lt;tags&gt; and other + symbols."</span>, <span class='kw'>removeSymbols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"&lt;tags&gt; and other + symbols."</span>, <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;&lt;tags&gt;&quot;   &quot;and&quot;      &quot;other&quot;    &quot;+&quot;        &quot;symbols.&quot;
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"&lt;tags&gt; and other + symbols."</span>, <span class='kw'>removeSymbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"&lt;tags&gt; and other + symbols."</span>, <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;tags&quot;     &quot;and&quot;      &quot;other&quot;    &quot;symbols.&quot;
 #&gt; </div><div class='input'>
 <span class='co'>## examples with URLs - hardly perfect!</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"Repo https://githib.com/kbenoit/quanteda, and www.stackoverflow.com."</span>
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removeURL</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;Repo&quot;                  &quot;and&quot;                   &quot;www.stackoverflow.com&quot;
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removeURL</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;Repo&quot;                  &quot;https&quot;                 &quot;githib.com&quot;           
 #&gt; [4] &quot;kbenoit&quot;               &quot;quanteda&quot;              &quot;and&quot;                  
 #&gt; [7] &quot;www.stackoverflow.com&quot;
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removeURL</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;Repo&quot;                          &quot;httpsgithibcomkbenoitquanteda&quot;
 #&gt; [3] &quot;and&quot;                           &quot;wwwstackoverflowcom&quot;          
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removeURL</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;Repo&quot;                                
 #&gt; [2] &quot;https://githib.com/kbenoit/quanteda,&quot;
@@ -267,20 +264,20 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 
 <span class='co'>## MORE COMPARISONS</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"#textanalysis is MY &lt;3 4U @myhandle gr8 #stuff :-)"</span>
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;#textanalysis&quot; &quot;is&quot;            &quot;MY&quot;            &quot;3&quot;            
 #&gt; [5] &quot;4U&quot;            &quot;@myhandle&quot;     &quot;gr8&quot;           &quot;#stuff&quot;       
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>removeTwitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_twitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;textanalysis&quot; &quot;is&quot;           &quot;MY&quot;           &quot;3&quot;            &quot;4U&quot;          
 #&gt; [6] &quot;myhandle&quot;     &quot;gr8&quot;          &quot;stuff&quot;       
-#&gt; </div><div class='input'><span class='co'>#tokens("great website http://textasdata.com", removeURL = FALSE)</span>
-<span class='co'>#tokens("great website http://textasdata.com", removeURL = TRUE)</span>
+#&gt; </div><div class='input'><span class='co'>#tokens("great website http://textasdata.com", remove_url = FALSE)</span>
+<span class='co'>#tokens("great website http://textasdata.com", remove_url = TRUE)</span>
 
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>text1</span><span class='kw'>=</span><span class='st'>"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
          <span class='kw'>text2</span><span class='kw'>=</span><span class='st'>"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span>)
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...tokenizing 1 of 1 blocks</span></div><div class='output co'>#&gt; <span class='message'>...replacing Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...serializing tokens </span></div><div class='output co'>#&gt; <span class='message'>31 unique types</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.00199999999998113 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...tokenizing 1 of 1 blocks</span></div><div class='output co'>#&gt; <span class='message'>...replacing Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...serializing tokens </span></div><div class='output co'>#&gt; <span class='message'>31 unique types</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.00199999999995271 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;10&quot;        &quot;in&quot;        &quot;999&quot;      
 #&gt;  [7] &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;     
@@ -292,7 +289,7 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 #&gt;  [9] &quot;http&quot;           &quot;:&quot;              &quot;/&quot;              &quot;/&quot;             
 #&gt; [13] &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;             
 #&gt; [17] &quot;123&quot;            &quot;.&quot;             
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removeNumbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;in&quot;        &quot;different&quot; &quot;ways&quot;      &quot;up&quot;       
 #&gt;  [7] &quot;and&quot;       &quot;down&quot;      &quot;left&quot;      &quot;and&quot;       &quot;right&quot;    
@@ -301,7 +298,7 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 #&gt; [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;on&quot;             &quot;#quanteda&quot;     
 #&gt; [5] &quot;2day&quot;           &quot;4ever&quot;          &quot;http&quot;           &quot;textasdata.com&quot;
 #&gt; [9] &quot;page&quot;          
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removeNumbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;10&quot;        &quot;in&quot;        &quot;999&quot;       &quot;different&quot;
 #&gt;  [7] &quot;ways&quot;      &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;left&quot;      &quot;and&quot;      
@@ -311,7 +308,7 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 #&gt;  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;on&quot;             &quot;#quanteda&quot;     
 #&gt;  [5] &quot;2day&quot;           &quot;4ever&quot;          &quot;http&quot;           &quot;textasdata.com&quot;
 #&gt;  [9] &quot;page&quot;           &quot;123&quot;           
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removeNumbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;in&quot;        &quot;different&quot; &quot;ways&quot;     
 #&gt;  [7] &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;;&quot;         &quot;left&quot;     
@@ -323,7 +320,7 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 #&gt;  [9] &quot;http&quot;           &quot;:&quot;              &quot;/&quot;              &quot;/&quot;             
 #&gt; [13] &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;             
 #&gt; [17] &quot;.&quot;             
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removeNumbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;10&quot;        &quot;in&quot;        &quot;999&quot;      
 #&gt;  [7] &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;     
@@ -335,7 +332,7 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 #&gt;  [9] &quot;http&quot;           &quot;:&quot;              &quot;/&quot;              &quot;/&quot;             
 #&gt; [13] &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;             
 #&gt; [17] &quot;123&quot;            &quot;.&quot;             
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removeNumbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removeSeparators</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_separators</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] &quot;This&quot;      &quot; &quot;         &quot;is&quot;        &quot; &quot;         &quot;$&quot;         &quot;10&quot;       
 #&gt;  [7] &quot; &quot;         &quot;in&quot;        &quot; &quot;         &quot;999&quot;       &quot; &quot;         &quot;different&quot;
@@ -350,7 +347,7 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 #&gt; [13] &quot;,&quot;              &quot; &quot;              &quot;http&quot;           &quot;:&quot;             
 #&gt; [17] &quot;/&quot;              &quot;/&quot;              &quot;textasdata.com&quot; &quot;?&quot;             
 #&gt; [21] &quot;page&quot;           &quot;=&quot;              &quot;123&quot;            &quot;.&quot;             
-#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removeNumbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>removeURL</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;in&quot;        &quot;different&quot; &quot;ways&quot;      &quot;up&quot;       
 #&gt;  [7] &quot;and&quot;       &quot;down&quot;      &quot;left&quot;      &quot;and&quot;       &quot;right&quot;    
@@ -366,7 +363,7 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 #&gt; [20] &quot;/&quot; &quot;t&quot; &quot;e&quot; &quot;x&quot; &quot;t&quot; &quot;a&quot; &quot;s&quot; &quot;d&quot; &quot;a&quot; &quot;t&quot; &quot;a&quot; &quot;.&quot; &quot;c&quot; &quot;o&quot; &quot;m&quot; &quot;?&quot; &quot;p&quot; &quot;a&quot; &quot;g&quot;
 #&gt; [39] &quot;e&quot; &quot;=&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;.&quot;
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"Great website: http://textasdata.com?page=123."</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"character"</span>,
-         <span class='kw'>removeSeparators</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+         <span class='kw'>remove_separators</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt;  [1] &quot;G&quot; &quot;r&quot; &quot;e&quot; &quot;a&quot; &quot;t&quot; &quot; &quot; &quot;w&quot; &quot;e&quot; &quot;b&quot; &quot;s&quot; &quot;i&quot; &quot;t&quot; &quot;e&quot; &quot;:&quot; &quot; &quot; &quot;h&quot; &quot;t&quot; &quot;t&quot; &quot;p&quot;
 #&gt; [20] &quot;:&quot; &quot;/&quot; &quot;/&quot; &quot;t&quot; &quot;e&quot; &quot;x&quot; &quot;t&quot; &quot;a&quot; &quot;s&quot; &quot;d&quot; &quot;a&quot; &quot;t&quot; &quot;a&quot; &quot;.&quot; &quot;c&quot; &quot;o&quot; &quot;m&quot; &quot;?&quot; &quot;p&quot;
@@ -428,7 +425,7 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'>c</span>(<span class='kw'>mytext1</span> <span class='kw'>=</span> <span class='st'>"This is a short test sentence."</span>,
                       <span class='kw'>mytext2</span> <span class='kw'>=</span> <span class='st'>"Short."</span>,
                       <span class='kw'>mytext3</span> <span class='kw'>=</span> <span class='st'>"Short, shorter, and shortest."</span>))
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
+<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
 #&gt; mytext1 :
 #&gt; [1] &quot;this&quot;     &quot;is&quot;       &quot;a&quot;        &quot;short&quot;    &quot;test&quot;     &quot;sentence&quot;
 #&gt; 
@@ -437,14 +434,14 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 #&gt; 
 #&gt; mytext3 :
 #&gt; [1] &quot;short&quot;    &quot;shorter&quot;  &quot;and&quot;      &quot;shortest&quot;
-#&gt; </div><div class='input'><span class='co'>### removeFeatures(tokens(txt, removePunct = TRUE), stopwords("english"))</span>
+#&gt; </div><div class='input'><span class='co'>### removeFeatures(tokens(txt, remove_punct = TRUE), stopwords("english"))</span>
 
 <span class='co'># ngram tokenization</span>
-<span class='co'>### tokens(txt, removePunct = TRUE, ngrams = 2)</span>
-<span class='co'>### tokens(txt, removePunct = TRUE, ngrams = 2, skip = 1, concatenator = " ")</span>
-<span class='co'>### tokens(txt, removePunct = TRUE, ngrams = 1:2)</span>
+<span class='co'>### tokens(txt, remove_punct = TRUE, ngrams = 2)</span>
+<span class='co'>### tokens(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")</span>
+<span class='co'>### tokens(txt, remove_punct = TRUE, ngrams = 1:2)</span>
 <span class='co'># removing features from ngram tokens</span>
-<span class='co'>### removeFeatures(tokens(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))</span></div></pre>
+<span class='co'>### removeFeatures(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

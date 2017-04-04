@@ -6,9 +6,9 @@
 \usage{
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
-  dispersionLevel = c("feature", "overall"), dispersionFloor = 0,
-  sparse = TRUE, abs_err = FALSE, svd_sparse = TRUE,
-  residual_floor = 0.5)
+  dispersion_level = c("feature", "overall"), dispersion_floor = 0,
+  sparse = TRUE, threads = quanteda_options("threads"), abs_err = FALSE,
+  svd_sparse = TRUE, residual_floor = 0.5)
 }
 \arguments{
 \item{data}{the dfm on which the model will be fit}
@@ -30,17 +30,20 @@ document-level, then feature-level parameters).}
 used based on a single dispersion parameter (\code{"poisson"}), or 
 quasi-Poisson (\code{"quasipoisson"})}
 
-\item{dispersionLevel}{sets the unit level for the dispersion parameter, 
+\item{dispersion_level}{sets the unit level for the dispersion parameter, 
 options are \code{"feature"} for term-level variances, or \code{"overall"} 
 for a single dispersion parameter}
 
-\item{dispersionFloor}{constraint for the minimal underdispersion multiplier 
+\item{dispersion_floor}{constraint for the minimal underdispersion multiplier 
 in the quasi-Poisson model.  Used to minimize the distorting effect of 
 terms with rare term or document frequencies that appear to be severely 
 underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 "quasipoisson"}.}
 
 \item{sparse}{specifies whether the \code{"dfm"} is coerced to dense}
+
+\item{threads}{specifies the number of threads to use; set to 1 to override
+the package settings and use a serial version of the function}
 
 \item{abs_err}{specifies how the convergence is considered}
 
@@ -51,7 +54,7 @@ only applies when \code{sparse = TRUE}}
 calculating the svds, only applies when \code{sparse = TRUE}}
 }
 \value{
-An object of class textmodel_fitted_wordfish.  This is a list 
+An object of class \code{textmodel_fitted_wordfish}.  This is a list 
   containing: \item{dir}{global identification of the dimension} 
   \item{theta}{estimated document positions} \item{alpha}{estimated document 
   fixed effects} \item{beta}{estimated feature marginal effects} 
@@ -80,9 +83,9 @@ textmodel_wordfish(data_dfm_LBGexample, dir = c(1,5))
 ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 (wfm1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
 (wfm2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
-                             dispersion = "quasipoisson", dispersionFloor = 0))
+                             dispersion = "quasipoisson", dispersion_floor = 0))
 (wfm2b <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
-                             dispersion = "quasipoisson", dispersionFloor = .5))
+                             dispersion = "quasipoisson", dispersion_floor = .5))
 plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
      xlim = c(0, 1.0), ylim = c(0, 1.0))
 plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",

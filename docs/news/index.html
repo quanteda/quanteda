@@ -104,6 +104,7 @@
 <li>
 <code><a href="../reference/textmodel_wordfish.html">textmodel_wordfish()</a></code> now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values. This also dramatically improves performance in computing this model. (#482, #124)</li>
 <li>The speed of <code><a href="../reference/kwic.html">kwic()</a></code> is now dramatically improved, and also returns an indexed set of tokens that makes subsequent commands on a kwic class object much faster. (#603)</li>
+<li>Package options (for verbose, threads) can now be set or queried using <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>.</li>
 </ul>
 </div>
 <div id="behaviour-changes" class="section level3">
@@ -118,6 +119,7 @@
 <li>Most <code>verbose</code> options now take the default from <code>getOption("verbose")</code> rather than fixing the value in the function signatures. (#577)</li>
 <li>
 <code><a href="../reference/textstat_dist.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_dist.html">textstat_simil()</a></code> now return a matrix if a <code>selection</code> argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection.</li>
+<li>All remaining camelCase arguments are gone. For commonly used ones, such as those in <code><a href="../reference/tokens.html">tokens()</a></code>, the old arguments (e.g. <code>removePunct</code>) still produce the same behaviour but with a deprecation warning.</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">

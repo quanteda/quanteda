@@ -6,7 +6,7 @@ test_that("test fcm indexing", {
     
     x <- fcm(tokens(c("this contains lots of stopwords",
                       "no if, and, or but about it: lots"),
-                    removePunct = TRUE))
+                    remove_punct = TRUE))
     expect_equivalent(
         as.matrix(x[1:3, 1:3]),
         matrix(c(0, 0, 0, 1, 0, 0, 1, 1, 0), nrow = 3)

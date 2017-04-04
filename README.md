@@ -137,7 +137,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Sat Apr  1 08:47:16 2017
+## Created: Mon Apr  3 19:19:17 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -150,7 +150,7 @@ kwic(uk2010immigCorpus, "deport", 3)
 
 # create a dfm, removing stopwords
 mydfm <- dfm(uk2010immigCorpus, remove = c("will", stopwords("english")),
-             removePunct = TRUE)
+             remove_punct = TRUE)
 mydfm
 ## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).
 

@@ -214,7 +214,7 @@ named <code>docs</code> and <code>features</code> respectively.</dd>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"this contains lots of stopwords"</span>,
                   <span class='st'>"no if, and, or but about it: lots"</span>,
                   <span class='st'>"and a third document is it"</span>),
-                <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+                <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 <span class='no'>x</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, ]</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 16 features (59.4% sparse).
 #&gt; 2 x 16 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
@@ -233,7 +233,7 @@ named <code>docs</code> and <code>features</code> respectively.</dd>
 <span class='co'># fcm subsetting</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"this contains lots of stopwords"</span>,
                   <span class='st'>"no if, and, or but about it: lots"</span>),
-                <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+                <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 <span class='no'>y</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 12 features.
 #&gt; 3 x 12 sparse Matrix of class &quot;fcm&quot;
 #&gt;           features

@@ -8,8 +8,8 @@ test_that("character wordstem test to test testing.", {
 test_that("can wordstem dfms with zero features and zero docs", {
     
     # zero feature documents
-    dfm1 <- dfm(c("one", "0"), stem = TRUE, removeNumbers = TRUE)
-    dfm2 <- dfm(c("one", "!!"), stem = TRUE, removePunct = TRUE)
+    dfm1 <- dfm(c("one", "0"), stem = TRUE, remove_numbers = TRUE)
+    dfm2 <- dfm(c("one", "!!"), stem = TRUE, remove_punct = TRUE)
     expect_equal(ndoc(dfm1), ndoc(dfm2), 2)
     
     # features with zero docfreq

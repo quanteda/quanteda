@@ -53,7 +53,7 @@ myfcm <- fcm(tokens("A D a C E a d F e B A C E D"),
 
 txt <- c("The fox JUMPED over the dog.",
          "The dog jumped over the fox.")
-toks <- tokens(txt, removePunct = TRUE)
+toks <- tokens(txt, remove_punct = TRUE)
 myfcm <- fcm(toks, context = "document")
 colnames(myfcm) <- rownames(myfcm) <- tolower(colnames(myfcm))
 colnames(myfcm)[5] <- rownames(myfcm)[5] <- "fox"

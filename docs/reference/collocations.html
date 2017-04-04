@@ -89,7 +89,7 @@ be collocations.</p>
     
 
     <pre><span class='fu'>collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lr"</span>, <span class='st'>"chi2"</span>, <span class='st'>"pmi"</span>, <span class='st'>"dice"</span>, <span class='st'>"all"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"dontspan"</span>, <span class='st'>"ignore"</span>,
+  <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"dontspan"</span>, <span class='st'>"ignore"</span>,
   <span class='st'>"include"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -118,7 +118,7 @@ coefficient, computed as \(n_{11}/n_{1.} + n_{.1}\)</dd>
       <dt>n</dt>
       <dd>the number of collocations to return, sorted in descending order of 
 the requested statistic, or \(G^2\) if none is specified.</dd>
-      <dt>toLower</dt>
+      <dt>tolower</dt>
       <dd>convert collocations to lower case if <code>TRUE</code> (default)</dd>
       <dt>punctuation</dt>
       <dd>how to handle tokens separated by punctuation characters.  Options are:
@@ -167,7 +167,7 @@ punctuation characters as tokens</dd>
 #&gt;  9:     more software           1  3.662248
 #&gt; 10:  looking    again           1  2.079135
 #&gt; 11:  looking      for           1  2.079135
-#&gt; 12:       is software           1  1.186636</div><div class='input'><span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"dontspan"</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)  <span class='co'># includes "testing looking"</span></div><div class='output co'>#&gt;        word1    word2 word3 count        G2
+#&gt; 12:       is software           1  1.186636</div><div class='input'><span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"dontspan"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)  <span class='co'># includes "testing looking"</span></div><div class='output co'>#&gt;        word1    word2 word3 count        G2
 #&gt;  1: software  testing           3 18.836933
 #&gt;  2:     this       is           3 18.836933
 #&gt;  3:     word    pairs           2 14.258811
@@ -183,7 +183,7 @@ punctuation characters as tokens</dd>
 #&gt; 13:    pairs     this           1  3.089015
 #&gt; 14:  looking      for           1  2.125876
 #&gt; 15:  testing    again           1  2.125876
-#&gt; 16:       is software           1  1.249721</div><div class='input'><span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"ignore"</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)    <span class='co'># same as previous </span></div><div class='output co'>#&gt;        word1    word2 word3 count        G2
+#&gt; 16:       is software           1  1.249721</div><div class='input'><span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"ignore"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)    <span class='co'># same as previous </span></div><div class='output co'>#&gt;        word1    word2 word3 count        G2
 #&gt;  1: software  testing           3 18.836933
 #&gt;  2:     this       is           3 18.836933
 #&gt;  3:     word    pairs           2 14.258811
@@ -199,7 +199,7 @@ punctuation characters as tokens</dd>
 #&gt; 13:    pairs     this           1  3.089015
 #&gt; 14:  looking      for           1  2.125876
 #&gt; 15:  testing    again           1  2.125876
-#&gt; 16:       is software           1  1.249721</div><div class='input'><span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"include"</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)  <span class='co'># keep punctuation as tokens</span></div><div class='output co'>#&gt;        word1    word2 word3 count        G2
+#&gt; 16:       is software           1  1.249721</div><div class='input'><span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"include"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)  <span class='co'># keep punctuation as tokens</span></div><div class='output co'>#&gt;        word1    word2 word3 count        G2
 #&gt;  1: software  testing           3 20.990510
 #&gt;  2:        ]        a           1  9.248623
 #&gt;  3:     this       is           2  8.089577
@@ -266,7 +266,7 @@ punctuation characters as tokens</dd>
 #&gt; 4:      really      love           1 5.406735
 #&gt; 5:         the #quanteda           1 5.406735
 #&gt; 6:          we    really           1 5.406735</div><div class='input'><span class='fu'>collocations</span>(<span class='st'>"@textasdata We really, really love the #quanteda package - thanks!!"</span>,
-              <span class='kw'>removeTwitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;         word1   word2 word3 count       G2
+              <span class='kw'>remove_twitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;         word1   word2 word3 count       G2
 #&gt; 1:       love     the           1 5.004024
 #&gt; 2:   quanteda package           1 5.004024
 #&gt; 3:     really    love           1 5.004024

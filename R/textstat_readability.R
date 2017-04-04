@@ -7,7 +7,7 @@
 #' @param drop  if \code{TRUE}, the result is returned as a numeric vector if
 #'   only a single measure is requested; otherwise, a data.frame is returned
 #'   with each column consisting of a requested measure.
-#' @param removeHyphens if \code{TRUE}, treat constituent words in hyphenated as
+#' @param remove_hyphens if \code{TRUE}, treat constituent words in hyphenated as
 #'   separate terms, for purposes of computing word lengths, e.g.
 #'   "decision-making" as two terms of lengths 8 and 6 characters respectively,
 #'   rather than as a single word of 15 characters
@@ -43,7 +43,7 @@ textstat_readability <- function(x,
                                     "Spache", "Spache.old", "Strain",
                                     "Traenkle.Bailer", "Traenkle.Bailer.2",
                                     "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
-                        removeHyphens = TRUE,
+                        remove_hyphens = TRUE,
                         drop = TRUE, ...) {
     UseMethod("textstat_readability")
 }
@@ -65,9 +65,9 @@ textstat_readability.corpus <- function(x,
                                            "Spache", "Spache.old", "Strain",
                                            "Traenkle.Bailer", "Traenkle.Bailer.2",
                                            "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
-                               removeHyphens = TRUE,
+                               remove_hyphens = TRUE,
                                drop = TRUE, ...) {
-    textstat_readability(texts(x), measure, removeHyphens, drop, ...)
+    textstat_readability(texts(x), measure, remove_hyphens, drop, ...)
 }
 
 
@@ -88,7 +88,7 @@ textstat_readability.character <- function(x,
                                                  "Spache", "Spache.old", "Strain",
                                                  "Traenkle.Bailer", "Traenkle.Bailer.2",
                                                  "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
-                                  removeHyphens = TRUE,
+                                  remove_hyphens = TRUE,
                                   drop = TRUE, ...) {
 
     addedArgs <- names(list(...))
@@ -138,7 +138,7 @@ textstat_readability.character <- function(x,
 
     # get the word length and syllable info for use in computing quantities
     x <- char_tolower(x)
-    tokenizedWords <- tokens(x, removePunct = TRUE, removeHyphens = removeHyphens)
+    tokenizedWords <- tokens(x, remove_punct = TRUE, remove_hyphens = remove_hyphens)
 
     # number of syllables
     tmpSyll <- nsyllable(tokenizedWords)
@@ -343,7 +343,7 @@ textstat_readability.character <- function(x,
     }
 
     #     if (any(c("all", "TRI") %in% measure)) {
-    #         Ptn <- lengths(tokenize(x, removePunct = FALSE)) - lengths(tokenizedWords)
+    #         Ptn <- lengths(tokenize(x, remove_punct = FALSE)) - lengths(tokenizedWords)
     #         Frg <- NA  # foreign words -- cannot compute without a dictionary
     #         textFeatures[, TRI := (0.449 * W_1Sy) - (2.467 * Ptn) - (0.937 * Frg) - 14.417]
     #     }

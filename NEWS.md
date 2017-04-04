@@ -12,13 +12,15 @@
 * Redesigned `textmodel_scale1d` now produces sorted and grouped document positions for fitted wordfish models, and produces a ggplot2 plot object.
 * `textmodel_wordfish()` now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values.  This also dramatically improves performance in computing this model.  (#482, #124)
 * The speed of `kwic()` is now dramatically improved, and also returns an indexed set of tokens that makes subsequent commands on a kwic class object much faster. (#603)
+* Package options (for verbose, threads) can now be set or queried using `quanteda_options()`.
 
 ### Behaviour changes 
 
 * `docvars()` now permits direct access to "metadoc" fields (starting with `_`, e.g. `_document`)
 * `metadoc()` now returns a vector instead of a data.frame for a single variable, similar to `docvars()`
 * Most `verbose` options now take the default from `getOption("verbose")` rather than fixing the value in the function signatures. (#577)
-* `textstat_dist()` and `textstat_simil()` now return a matrix if a `selection` argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection. 
+* `textstat_dist()` and `textstat_simil()` now return a matrix if a `selection` argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection.
+* All remaining camelCase arguments are gone.  For commonly used ones, such as those in `tokens()`, the old arguments (e.g. `removePunct`) still produce the same behaviour but with a deprecation warning.
 
 ### Bug fixes
 
