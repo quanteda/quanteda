@@ -317,3 +317,29 @@ test_that("remove_url works as expected", {
     )
 })
 
+test_that("remove_punct and remove_twitter interact correctly, #607", {
+    txt <- "they: #stretched, @ @@ in,, a # ## never-ending @line."
+    expect_equal(
+        as.character(tokens(txt, what = "word", remove_punct = TRUE, remove_twitter = TRUE)),
+        c("they", "stretched", "in", "a", "never-ending", "line")
+    )    
+    expect_equal(
+        as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = FALSE)),
+        c("they", ":", "#stretched", ",", "@", "@@", "in", ",", ",", "a", "#", "##", "never", "-", "ending", "@line", ".")
+    )    
+    # this is #607
+    expect_equal(
+        as.character(tokens(txt, what = "word", remove_punct = TRUE, remove_twitter = FALSE)),
+        c("they", "#stretched", "in", "a", "never-ending", "@line")
+    )
+    # remove_twitter should be inactive if remove_punct is FALSE
+    expect_equal(
+        as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = TRUE)),
+        as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = FALSE))
+    )
+    expect_warning(
+        tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = TRUE),
+        "remove_twitter reset to FALSE when remove_punct = FALSE"
+    )
+})
+

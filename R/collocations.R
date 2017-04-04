@@ -70,9 +70,6 @@ NULL
 collocations <- function(x,  method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
                          n = NULL, tolower = TRUE, 
                          punctuation = c("dontspan", "ignore", "include"), ...) {
-#     addedArgs <- names(list(...))
-#     if (length(addedArgs) && any(!(addedArgs %in% names(formals(getS3method("tokenize", "character"))))))
-#         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), addedArgs, " not used.", sep = "", noBreaks. = TRUE)
     UseMethod("collocations")
 }
  
@@ -101,7 +98,7 @@ collocations.character <- function(x, method = c("lr", "chi2", "pmi", "dice", "a
                                    n = NULL, tolower = TRUE, 
                                    punctuation = c("dontspan", "ignore", "include"), ...) {
     method <- match.arg(method)
-    x <- tokens((if (tolower) char_tolower(x) else x), hash = FALSE, ...)
+    x <- tokens((if (tolower) char_tolower(x) else x), ...)
     collocations(x, method = method, size = size , n = n, punctuation = punctuation)
 }
 
