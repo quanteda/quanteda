@@ -24,11 +24,11 @@ setValidity("dictionary", function(object) {
 validate_dictionary <- function(dict){
     
     if (is.null(names(dict))) {
-        stop("dictionary elements must be named: ", dict)
+        stop("Dictionary elements must be named: ", dict)
     }
     if (any(names(dict) == "")) {
         unnamed <- dict[which(names(dict) == "")]
-        stop("unnamed dictionary entry: ", unlist(unnamed, use.names = FALSE))
+        stop("Unnamed dictionary entry: ", unlist(unnamed, use.names = FALSE))
     }
     
     for (i in seq_along(dict)) {
@@ -38,7 +38,7 @@ validate_dictionary <- function(dict){
             word <- unlist(entry[!is_category], use.names = FALSE)
             if (any(!is.character(word))) {
                 word_error <- word[!is.character(word)]
-                stop("non-character entries found: ", word_error)
+                stop("Non-character entries found: ", word_error)
             }
         }
         if (any(is_category)) {
@@ -49,7 +49,7 @@ validate_dictionary <- function(dict){
 }
 
 # Internal function to print dictionary
-print_dictionary <- function(entry, level = 1){
+print_dictionary <- function(entry, level = 1) {
     if (!length(entry)) return()
     is_category <- sapply(entry, is.list)
     category <- entry[is_category]
@@ -172,13 +172,13 @@ dictionary <- function(..., file = NULL, format = NULL,
                      lc3 = "lexicoder", yml = "YAML")
         
         if (!file.exists(file))
-            stop(paste("File does not exist", file))
+            stop("File does not exist: ", file)
         if (is.null(format)) {
             ext <- stringi::stri_trans_tolower(file_ext(file))
             if (ext %in% names(formats)) {
                 format <- formats[[ext]]
             } else {
-                stop(paste("Unknown dictionary file extension", ext))
+                stop("Unknown dictionary file extension: ", ext)
             }
         } else {
             format <- match.arg(format, formats)
@@ -284,7 +284,7 @@ lowercase_dictionary <- function(dict) {
 }
 
 # Internal function to convert a list to a dictionary
-list2dictionary <- function(dict){
+list2dictionary <- function(dict) {
     for (i in seq_along(dict)) {
         if (is.list(dict[[i]])) {
             dict[[i]] = list2dictionary(dict[[i]])
