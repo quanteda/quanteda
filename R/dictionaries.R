@@ -289,7 +289,7 @@ list2dictionary <- function(dict){
         if (is.list(dict[[i]])) {
             dict[[i]] = list2dictionary(dict[[i]])
         } else {
-            dict[[i]] = list(dict[[i]])
+            dict[[i]] = list(stringi::stri_enc_toutf8(dict[[i]]))
         }
     }
     return(dict)
@@ -437,7 +437,9 @@ nodes2list <- function(node, dict = list()){
 #' cat(yaml, file = '/home/kohei/Documents/Dictionary/LaverGarry.yaml')
 #' }
 as.yaml <- function(x) {
-    yaml::as.yaml(simplify_dictionary(x, TRUE), indent.mapping.sequence = TRUE)
+    yaml <- yaml::as.yaml(simplify_dictionary(x, TRUE), indent.mapping.sequence = TRUE)
+    yaml <- stringi::stri_enc_toutf8(yaml)
+    return(yaml)
 }
 
 # Internal function for as.yaml to simplify dictionary objects
