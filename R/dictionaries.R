@@ -174,7 +174,7 @@ dictionary <- function(..., file = NULL, format = NULL,
         if (!file.exists(file))
             stop(paste("File does not exist", file))
         if (is.null(format)) {
-            ext <- file_ext(file)
+            ext <- stringi::stri_trans_tolower(file_ext(file))
             if (ext %in% names(formats)) {
                 format <- formats[[ext]]
             } else {
