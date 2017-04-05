@@ -310,7 +310,6 @@ is.dictionary <- function(x) {
 read_dict_lexicoder <- function(path) {
     
     lines <- stringi::stri_read_lines(path, encoding = 'utf-8') # Lexicoder 3.0 is always UTF-8
-    lines <- stringi::stri_enc_toutf8(lines)
     lines <- stringi::stri_trim_both(lines)
     lines_yaml <- ifelse(stringi::stri_detect_regex(lines, '^\\+'),
                          stringi::stri_replace_all_regex(lines, '^+(.+)$', '"$1":'),
@@ -329,7 +328,6 @@ read_dict_lexicoder <- function(path) {
 read_dict_wordstat <- function(path, encoding = 'auto') {
     
     lines <- stringi::stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
-    lines <- stringi::stri_enc_toutf8(lines)
     lines <- stringi::stri_trim_right(lines)
     lines_yaml <- ifelse(stringi::stri_detect_regex(lines, ' \\(\\d\\)$'),
                          stringi::stri_replace_all_regex(lines, '^(\\t*)(.+) \\(\\d\\)$', '$1- "$2"'),
@@ -369,7 +367,6 @@ list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
 read_dict_liwc <- function(path, encoding = 'auto') {
     
     lines <- stringi::stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
-    lines <- stringi::stri_enc_toutf8(lines)
     lines <- stringi::stri_trim_both(lines)
     lines <- lines[lines != '']
     
