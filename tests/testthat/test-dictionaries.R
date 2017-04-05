@@ -1,22 +1,22 @@
 context("dictionary construction")
 
 test_that("dictionary constructors fail if all elements unnamed: explicit", {
-    expect_error(dictionary(list(c("a", "b"), "C")),
-                 "dictionary elements must be named")
-    expect_error(dictionary(list(first =  c("a", "b"), "C")),
-                 "unnamed dictionary entry: C")
+    expect_error(dictionary(list(c("a", "b"), "c")),
+                 "Dictionary elements must be named: a b c")
+    expect_error(dictionary(list(first =  c("a", "b"), "c")),
+                 "Unnamed dictionary entry: c")
 })
 
 test_that("dictionary constructors fail if all elements unnamed: implicit", {
-    expect_error(dictionary(c("a", "b"), "C"),
-                 "dictionary elements must be named")
-    expect_error(dictionary(first =  c("a", "b"), "C"),
-                 "unnamed dictionary entry: C")
+    expect_error(dictionary(c("a", "b"), "c"),
+                 "Dictionary elements must be named: a b c")
+    expect_error(dictionary(first =  c("a", "b"), "c"),
+                 "Unnamed dictionary entry: c")
 })
 
 test_that("dictionary constructors fail if a value is numeric", {
     expect_error(dictionary(list(first =  c("a", "b"), second = 2016)),
-                 "non-character entries found: 2016")
+                 "Non-character entries found: 2016")
 })
 
 test_that("dictionary constructor works on list explicitly or implicitly", {

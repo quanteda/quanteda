@@ -24,7 +24,8 @@ setValidity("dictionary", function(object) {
 validate_dictionary <- function(dict){
     
     if (is.null(names(dict))) {
-        stop("Dictionary elements must be named: ", dict)
+        stop("Dictionary elements must be named: ", 
+             paste(unlist(dict, recursive = TRUE), collapse = ' '))
     }
     if (any(names(dict) == "")) {
         unnamed <- dict[which(names(dict) == "")]
