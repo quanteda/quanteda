@@ -62,6 +62,10 @@ test_that("read a dictionary with NA as a key", {
     expect_true("NA" %in% names(testdict$SOUTH))
 })
 
+test_that("as.yaml is working", {
+    expect_equivalent(as.yaml(marydict),
+                      'A CATEGORY:\n  - more\n  - lamb\n  - little\nANOTHER CATEGORY:\n  - had\n  - mary\n')
+})
 
 test_that("dictionary works with different encoding", {
     suppressWarnings({

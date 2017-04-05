@@ -20,12 +20,11 @@ setValidity("dictionary", function(object) {
     validate_dictionary(object)
 })
 
-
 # Internal function to chekc if dictionary eintries are all chracters
 validate_dictionary <- function(dict){
     
     if (is.null(names(dict))) {
-        stop("dictionary elements must be named")
+        stop("dictionary elements must be named: ", dict)
     }
     if (any(names(dict) == "")) {
         unnamed <- dict[which(names(dict) == "")]
@@ -416,3 +415,43 @@ nodes2list <- function(node, dict = list()){
     }
     return(dict)
 }
+
+
+#' convert quanteda dictionary objects to the YAML format
+#' 
+#' Converts a \pkg{quanteda} dictionary object constructed by the 
+#' \link{dictionary} function into the YAML format. The YAML 
+#' files can be editied in text editors and imported into 
+#' \pkg{quanteda} again.
+#' @param x dictionary object
+#' @return \code{as.yaml} returns a dictionary in the YAML format
+#' @export
+#' @examples
+#' \dontrun{
+#' dict <- dictionary(file = '/home/kohei/Documents/Dictionary/LaverGarry.txt', format = 'wordstat')
+#' yaml <- as.yaml(dict)
+#' cat(yaml, file = '/home/kohei/Documents/Dictionary/LaverGarry.yaml')
+#' }
+as.yaml <- function(x) {
+    yaml::as.yaml(simplify_dictionary(x, TRUE), indent.mapping.sequence = TRUE)
+}
+
+# Internal function for as.yaml to simplify dictionary object
+simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
+    if (omit) {
+        dict <- simplify_dictionary(entry, FALSE)
+    } else {
+        is_category <- sapply(entry, is.list)
+        category <- entry[is_category]
+        if (any(is_category)) {
+            for (i in seq_along(category)) {
+                dict[[names(category[i])]] <- simplify_dictionary(category[[i]], TRUE, dict)
+            }
+            dict[['__']] <- unlist(entry[!is_category], use.names = FALSE)
+        } else {
+            dict <- unlist(entry, use.names = FALSE)
+        }
+    }
+    return(dict)
+}
+
