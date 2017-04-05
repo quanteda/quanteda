@@ -68,24 +68,25 @@ test_that("as.yaml is working", {
 })
 
 test_that("dictionary works with different encoding", {
-    suppressWarnings({
-        
-        # works without specifying encoding
-        expect_equivalent(dictionary(file = "../data/dictionaries/iso-8859-1.cat", tolower = FALSE),
-                          dictionary(list('LATIN' = c('B', 'C', 'D'), 'NON-LATIN' = c('Bh', 'Ch', 'Dh')), tolower = FALSE))
-        expect_equivalent(dictionary(file = "../data/dictionaries/windows-1252.cat", tolower = FALSE),
-                          dictionary(list('LATIN' = c('S', 'Z', 'Y'), 'NON-LATIN' = c('Š', 'Ž', 'Ÿ')), tolower = FALSE))
-        
-        # works if encoding is specified
-        expect_equivalent(dictionary(file = "../data/dictionaries/iso-8859-2.cat", encoding = 'iso-8859-2', tolower = FALSE),
-                          dictionary(list('LATIN' = c('C', 'D', 'E'), 'NON-LATIN' = c('Č', 'Ď', 'Ě')), tolower = FALSE))
-        expect_equivalent(dictionary(file = "../data/dictionaries/iso-8859-14.cat", encoding = 'iso-8859-14', tolower = FALSE),
-                          dictionary(list('LATIN' = c('B', 'C', 'D'), 'NON-LATIN' = c('Ḃ', 'Ċ', 'Ḋ')), tolower = FALSE))
-        expect_equivalent(dictionary(file = "../data/dictionaries/shift-jis.cat", encoding = 'shift-jis', tolower = FALSE),
-                          dictionary(list('LATIN' = c('A', 'I', 'U'), 'NON-LATIN' = c('あ', 'い', 'う')), tolower = FALSE))
-        expect_equivalent(dictionary(file = "../data/dictionaries/euc-jp.cat", encoding = 'euc-jp', tolower = FALSE),
-                          dictionary(list('LATIN' = c('A', 'I', 'U'), 'NON-LATIN' = c('あ', 'い', 'う')), tolower = FALSE))
-    })
+  skip_on_os("windows")
+  suppressWarnings({
+    
+    # works without specifying encoding
+    expect_equivalent(dictionary(file = "../data/dictionaries/iso-8859-1.cat", tolower = FALSE),
+                      dictionary(list('LATIN' = c('B', 'C', 'D'), 'NON-LATIN' = c('Bh', 'Ch', 'Dh')), tolower = FALSE))
+    expect_equivalent(dictionary(file = "../data/dictionaries/windows-1252.cat", tolower = FALSE),
+                      dictionary(list('LATIN' = c('S', 'Z', 'Y'), 'NON-LATIN' = c('Š', 'Ž', 'Ÿ')), tolower = FALSE))
+    
+    # works if encoding is specified
+    expect_equivalent(dictionary(file = "../data/dictionaries/iso-8859-2.cat", encoding = 'iso-8859-2', tolower = FALSE),
+                      dictionary(list('LATIN' = c('C', 'D', 'E'), 'NON-LATIN' = c('Č', 'Ď', 'Ě')), tolower = FALSE))
+    expect_equivalent(dictionary(file = "../data/dictionaries/iso-8859-14.cat", encoding = 'iso-8859-14', tolower = FALSE),
+                      dictionary(list('LATIN' = c('B', 'C', 'D'), 'NON-LATIN' = c('Ḃ', 'Ċ', 'Ḋ')), tolower = FALSE))
+    expect_equivalent(dictionary(file = "../data/dictionaries/shift-jis.cat", encoding = 'shift-jis', tolower = FALSE),
+                      dictionary(list('LATIN' = c('A', 'I', 'U'), 'NON-LATIN' = c('あ', 'い', 'う')), tolower = FALSE))
+    expect_equivalent(dictionary(file = "../data/dictionaries/euc-jp.cat", encoding = 'euc-jp', tolower = FALSE),
+                      dictionary(list('LATIN' = c('A', 'I', 'U'), 'NON-LATIN' = c('あ', 'い', 'う')), tolower = FALSE))
+  })
 })
 
 test_that("tolower is working", {
