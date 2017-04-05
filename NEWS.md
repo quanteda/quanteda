@@ -32,6 +32,7 @@
 * Fixed a bug crashing corpus constructors for character vectors with duplicated names (the cause of #580).
 * Fixed a bug in the behaviour for `dfm_select(x, features)` when `features` was a dfm, that failed to produce the intended featnames matches for the output dfm.
 * Fixed a bug in `corpus_segment(x, what = "tags")` when a document contained a whitespace just before a tag, at the beginning of the file, or ended with a tag followed by no text (#618).
+* Fixed some problems with dictionary construction and reading some dictionary formats (#454, #455, #459).
 
 
 ## Changes since v0.9.9-17
