@@ -59,6 +59,7 @@ form a single token.  This prevents tokenization of the phrases during
 subsequent processing by eliminating the whitespace delimiter.
 }
 \examples{
+\dontrun{
 mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
              "New York City has raised a taxes: an income tax and a sales tax.")
 mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
@@ -68,11 +69,13 @@ dfm(cw, verbose=FALSE)
 # when used as a dictionary for dfm creation
 mydfm2 <- dfm(cw, dictionary = dictionary(lapply(mydict, function(x) gsub(" ", "_", x))))
 mydfm2
+
 # to pick up "taxes" in the second text, set valuetype = "regex"
 mydfm3 <- dfm(cw, dictionary = dictionary(lapply(mydict, phrasetotoken, mydict)),
               valuetype = "regex")
 mydfm3
 ## one more token counted for "tax" than before
+}
 # using a dictionary to pre-process multi-word expressions
 myDict <- dictionary(list(negative = c("bad* word*", "negative", "awful text"),
                           postiive = c("good stuff", "like? th??")))
