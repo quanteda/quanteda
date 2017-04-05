@@ -50,7 +50,7 @@ validate_dictionary <- function(dict){
 
 # Internal function to print dictionary
 print_dictionary <- function(entry, level = 1){
-    
+    if (!length(entry)) return()
     is_category <- sapply(entry, is.list)
     category <- entry[is_category]
     word <- unlist(entry[!is_category], use.names = FALSE)
@@ -243,6 +243,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
     for (i in seq_along(dict)) {
         key <- names(dict[i])
         entry <- dict[[i]]
+        if (!length(entry)) next
         if (level %in% levels) {
             if (key_parent != '' && key != '') {
                 key_entry <- paste(key_parent, key, sep = '.')
@@ -351,12 +352,14 @@ list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
             }
         }
     } else {
-        is_category <- sapply(entry, is.list)
-        category <- entry[is_category]
-        for (i in seq_along(category)) {
-            dict <- list2dictionary_wordstat(category[[i]], TRUE, dict)
+        if (length(entry)) {
+            is_category <- sapply(entry, is.list)
+            category <- entry[is_category]
+            for (i in seq_along(category)) {
+                dict <- list2dictionary_wordstat(category[[i]], TRUE, dict)
+            }
+            dict[[length(dict) + 1]] <- unlist(entry[!is_category], use.names = FALSE)
         }
-        dict[[length(dict) + 1]] <- unlist(entry[!is_category], use.names = FALSE)
     }
     return(dict)
 }
@@ -442,15 +445,17 @@ simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
     if (omit) {
         dict <- simplify_dictionary(entry, FALSE)
     } else {
-        is_category <- sapply(entry, is.list)
-        category <- entry[is_category]
-        if (any(is_category)) {
-            for (i in seq_along(category)) {
-                dict[[names(category[i])]] <- simplify_dictionary(category[[i]], TRUE, dict)
+        if (length(entry)) {
+            is_category <- sapply(entry, is.list)
+            category <- entry[is_category]
+            if (any(is_category)) {
+                for (i in seq_along(category)) {
+                    dict[[names(category[i])]] <- simplify_dictionary(category[[i]], TRUE, dict)
+                }
+                dict[['__']] <- unlist(entry[!is_category], use.names = FALSE)
+            } else {
+                dict <- unlist(entry, use.names = FALSE)
             }
-            dict[['__']] <- unlist(entry[!is_category], use.names = FALSE)
-        } else {
-            dict <- unlist(entry, use.names = FALSE)
         }
     }
     return(dict)
