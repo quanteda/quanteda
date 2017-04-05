@@ -40,7 +40,7 @@ test_that("sequence2list works as expected", {
                  target)
     # dictionary
     expect_equal(quanteda:::sequence2list(dictionary(list(country = c("United States"), 
-                                                          institution = c("Congress", "feder* gov*")))),
+                                                          institution = c("Congress", "feder* gov*")), tolower = FALSE)),
                  target)
     # collocations
     collocs <- collocations(tokens(c("United States", "Congress", "federal government")))

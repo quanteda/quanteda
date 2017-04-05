@@ -28,8 +28,9 @@ Imports:
     stringi,
     fastmatch,
     ggplot2 (>= 2.2.0),
+    XML,
     yaml
-LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0),
+LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     knitr,
     rmarkdown,
@@ -38,7 +39,6 @@ Suggests:
     topicmodels,
     tm (>= 0.6),
     slam,
-    XML,
     testthat,
     RColorBrewer,
     xtable,
@@ -48,7 +48,7 @@ Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
-Collate: 
+Collate:
     'RcppExports.R'
     'View.R'
     'bootstrap_dfm.R'
