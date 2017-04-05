@@ -116,7 +116,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
         features_id <- unlist(regex2id(features, types, valuetype, case_insensitive), use.names = FALSE)
         features_id <- sort(features_id) # keep the original column order
-        
+
     } else {
         if (selection == "keep")
             features_id <- seq_len(nfeature(x))
@@ -125,9 +125,15 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     }
     
     if (!padding) {
+        
         # select features based on character length
-        features_id <- intersect(features_id, which(stringi::stri_length(types) >= min_nchar & 
-                                                    stringi::stri_length(types) <= max_nchar))
+        if (selection == "keep") {
+            features_id <- intersect(features_id, which(stringi::stri_length(types) >= min_nchar & 
+                                                        stringi::stri_length(types) <= max_nchar))
+        } else {
+            features_id <- union(features_id, which(stringi::stri_length(types) < min_nchar | 
+                                                    stringi::stri_length(types) > max_nchar))
+        }
     }
     
     # select documents based on "documents" pattern
@@ -188,6 +194,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             }
         }
     } else {
+
         if (length(features_id) == nfeature(x) || length(documents_id) == ndoc(x)) {
             x <- NULL    
         } else if(!length(features_id)) {
