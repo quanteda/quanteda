@@ -173,8 +173,8 @@ features, for instance if a window of adjacency needs to be computed.</dd>
     <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># ## performance comparisons</span>
 <span class='co'># data(SOTUCorpus, package = "quantedaData")</span>
-<span class='co'># toks &lt;- tokenize(SOTUCorpus, removePunct = TRUE)</span>
-<span class='co'># # toks &lt;- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removePunct = TRUE)</span>
+<span class='co'># toks &lt;- tokenize(SOTUCorpus, remove_punct = TRUE)</span>
+<span class='co'># # toks &lt;- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), remove_punct = TRUE)</span>
 <span class='co'># # head to head, old v. new</span>
 <span class='co'># system.time(selectFeaturesOLD(toks, stopwords("english"), "remove", verbose = FALSE))</span>
 <span class='co'># system.time(selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE))</span>
@@ -205,7 +205,7 @@ features, for instance if a window of adjacency needs to be computed.</dd>
 
 <span class='co'>## with simple examples</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='fu'>c</span>(<span class='st'>"This is a sentence."</span>, <span class='st'>"This is a second sentence."</span>),
-                 <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+                 <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>,
                 <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
 #&gt; Component 1 :

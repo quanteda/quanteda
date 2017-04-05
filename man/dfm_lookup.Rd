@@ -6,7 +6,7 @@
 \usage{
 dfm_lookup(x, dictionary, levels = 1:5, exclusive = TRUE,
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  capkeys = !exclusive, verbose = getOption("verbose"))
+  capkeys = !exclusive, verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{the dfm to which the dictionary will be applied}

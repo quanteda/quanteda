@@ -133,7 +133,7 @@ in <code>sequences</code> have been replaced by  compound &quot;tokens&quot; joi
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mytexts</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"The new law included a capital gains tax, and an inheritance tax."</span>,
              <span class='st'>"New York City has raised taxes: an income tax and inheritance taxes."</span>)
-<span class='no'>mytoks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>mytexts</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>mytoks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>mytexts</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># for lists of sequence elements</span>
 <span class='no'>myseqs</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>"tax"</span>), <span class='fu'>c</span>(<span class='st'>"income"</span>, <span class='st'>"tax"</span>), <span class='fu'>c</span>(<span class='st'>"capital"</span>, <span class='st'>"gains"</span>, <span class='st'>"tax"</span>), <span class='fu'>c</span>(<span class='st'>"inheritance"</span>, <span class='st'>"tax"</span>))
@@ -200,15 +200,10 @@ in <code>sequences</code> have been replaced by  compound &quot;tokens&quot; joi
 #&gt; [11] &quot;too&quot;        &quot;.&quot;         
 #&gt; </div><div class='input'>
 <span class='co'># with collocations</span>
-<span class='no'>collocs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='collocations.html'>collocations</a></span>(<span class='st'>"capital gains taxes are worse than inheritance taxes"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>)
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"The new law included capital gains taxes and inheritance taxes."</span>)
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='no'>collocs</span>)</div><div class='output co'>#&gt; tokens from 1 document.
-#&gt; Component 1 :
-#&gt;  [1] &quot;The&quot;                 &quot;new&quot;                 &quot;law&quot;                
-#&gt;  [4] &quot;included&quot;            &quot;capital_gains_taxes&quot; &quot;capital_gains&quot;      
-#&gt;  [7] &quot;gains_taxes&quot;         &quot;and&quot;                 &quot;inheritance_taxes&quot;  
-#&gt; [10] &quot;.&quot;                  
-#&gt; </div></pre>
+<span class='co'>#cols &lt;- textstat_collocations("capital gains taxes are worse than inheritance taxes", </span>
+<span class='co'>#                              size = 2, min_count = 1)</span>
+<span class='co'>#toks &lt;- tokens("The new law included capital gains taxes and inheritance taxes.")</span>
+<span class='co'>#tokens_compound(toks, cols)</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -152,7 +152,7 @@ Only applies to <code>toLower</code>.</dd>
 #&gt; &quot;england and france are members of NATO and UNESCO&quot; 
 #&gt;                                               text2 
 #&gt;                    &quot;NASA sent a rocket into space.&quot; </div><div class='input'>
-<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='no'>test1</span>, <span class='kw'>removePunct</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='no'>test1</span>, <span class='kw'>remove_punct</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='fu'>toLower</span>(<span class='no'>test2</span>)</div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
 #&gt; text1 :
 #&gt; [1] &quot;england&quot; &quot;and&quot;     &quot;france&quot;  &quot;are&quot;     &quot;members&quot; &quot;of&quot;      &quot;nato&quot;   
@@ -176,7 +176,7 @@ Only applies to <code>toLower</code>.</dd>
 #&gt; &quot;ENGLAND AND FRANCE ARE MEMBERS OF NATO AND UNESCO&quot; 
 #&gt;                                               text2 
 #&gt;                    &quot;NASA SENT A ROCKET INTO SPACE.&quot; </div><div class='input'>
-<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='no'>test1</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='no'>test1</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'>toUpper</span>(<span class='no'>test2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;toUpper.character&#39; is deprecated.</span>
 #&gt; <span class='warning'>Use &#39;char_toupper&#39; instead.</span>
 #&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;toUpper.character&#39; is deprecated.</span>

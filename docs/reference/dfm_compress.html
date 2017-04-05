@@ -149,7 +149,7 @@ context.</p>
 
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"The fox JUMPED over the dog."</span>,
          <span class='st'>"The dog jumped over the fox."</span>)
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)
 <span class='fu'>colnames</span>(<span class='no'>myfcm</span>) <span class='kw'>&lt;-</span> <span class='fu'>rownames</span>(<span class='no'>myfcm</span>) <span class='kw'>&lt;-</span> <span class='fu'>tolower</span>(<span class='fu'>colnames</span>(<span class='no'>myfcm</span>))
 <span class='fu'>colnames</span>(<span class='no'>myfcm</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='fu'>rownames</span>(<span class='no'>myfcm</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='st'>"fox"</span>

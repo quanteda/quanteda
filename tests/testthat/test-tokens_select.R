@@ -69,7 +69,7 @@ test_that("test that tokens_select is working", {
 
 test_that("tokens_select with padding = TRUE is working", {
     toks <- tokens(c(txt1 = "This is a sentence.", txt2 = "This is a second sentence."), 
-                   removePunct = TRUE)
+                   remove_punct = TRUE)
     toks_list <- as.list(tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = TRUE))
     expect_equal(toks_list$txt1[4], "")
     expect_equal(toks_list$txt2[4:5], c("", ""))                 

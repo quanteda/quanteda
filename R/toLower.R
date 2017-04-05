@@ -19,7 +19,7 @@
 #' toLower(test1)
 #' toLower(test1, keep_acronyms = TRUE)
 #' 
-#' test2 <- tokenize(test1, removePunct=TRUE)
+#' test2 <- tokenize(test1, remove_punct=TRUE)
 #' toLower(test2)
 #' toLower(test2, keep_acronyms = TRUE)
 #' }
@@ -80,7 +80,7 @@ toLower.corpus <- function(x, ...) {
 #'            text2 = "NASA sent a rocket into space.")
 #' toUpper(test1)
 #' 
-#' test2 <- tokenize(test1, removePunct = TRUE)
+#' test2 <- tokenize(test1, remove_punct = TRUE)
 #' toUpper(test2)
 #' }
 toUpper <- function(x, ...) {

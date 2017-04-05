@@ -144,7 +144,7 @@ textmodel_wordscores <- function(data, scores,
 #' @importFrom stats qnorm median sd
 predict.textmodel_wordscores_fitted <- 
     function(object, newdata=NULL, rescaling = c("none", "lbg", "mv"), 
-             level=0.95, verbose = getOption("verbose"), ...) {    
+             level=0.95, verbose = quanteda_options("verbose"), ...) {    
     if (length(list(...)) > 0) 
         stop("Arguments:", names(list(...)), "not supported.\n")
     

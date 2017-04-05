@@ -87,7 +87,7 @@ novel.lower.v <- char_tolower(novel.v)
 
 ```{r}
 # tokenize
-moby.word.v <- as.character(tokens(novel.lower.v, removePunct = TRUE))
+moby.word.v <- as.character(tokens(novel.lower.v, remove_punct = TRUE))
 length(moby.word.v)
 total.length <- length(moby.word.v)
 str(moby.word.v)
@@ -120,7 +120,7 @@ nrow(kwic(novel.lower.v, "whale*")) # includes words like 'whalemen'
 
 What fraction of the total words in the novel are 'whale'?
 ```{r}
-total.whale.hits / ntoken(novel.lower.v, removePunct=TRUE)  
+total.whale.hits / ntoken(novel.lower.v, remove_punct=TRUE)  
 ```
 
 
@@ -128,7 +128,7 @@ Calculating the size of the vocabulary -- includes possessive forms.
 ```{r}
 # total unique words
 length(unique(moby.word.v))
-ntype(char_tolower(novel.v), removePunct = TRUE)
+ntype(char_tolower(novel.v), remove_punct = TRUE)
 ```
 
 
@@ -271,7 +271,7 @@ The mean word frequency for a particular chapter can be calculated simply with t
 firstChap <- as.matrix(chapDfm[1,])
 numWords <- length(firstChap[firstChap > 0])
 sum(chapDfm[1,])/numWords
-sum(chapDfm[1,])/ntype(chaptersCorp[1], removePunct=TRUE)
+sum(chapDfm[1,])/ntype(chaptersCorp[1], remove_punct=TRUE)
 ```
 
 ## 6.3 Extracting Word Usage Means

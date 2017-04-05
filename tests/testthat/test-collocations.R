@@ -132,7 +132,7 @@ test_that("test that collocations includes punctuation if punctuation = 'include
 test_that("test that collocations span punctuation, but not texts, if punctuation is removed.", {
     actual_collocations <- data.frame(
         collocations(
-            tokenize(c('This is a test.', 'This also, a test.'), removePunct = TRUE), punctuation = "ignore"
+            tokenize(c('This is a test.', 'This also, a test.'), remove_punct = TRUE), punctuation = "ignore"
         )
     )
     #  Never span texts

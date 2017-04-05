@@ -33,7 +33,7 @@ novel.lower.v <- char_tolower(novel.v)
 
 ## ------------------------------------------------------------------------
 # tokenize
-moby.word.v <- as.character(tokens(novel.lower.v, removePunct = TRUE))
+moby.word.v <- as.character(tokens(novel.lower.v, remove_punct = TRUE))
 length(moby.word.v)
 total.length <- length(moby.word.v)
 str(moby.word.v)
@@ -57,12 +57,12 @@ nrow(kwic(novel.lower.v, "whale*")) # includes words like 'whalemen'
 (total.whale.hits <- nrow(kwic(novel.lower.v, "^whale('s){0,1}$", valuetype = 'regex')))
 
 ## ------------------------------------------------------------------------
-total.whale.hits / ntoken(novel.lower.v, removePunct=TRUE)  
+total.whale.hits / ntoken(novel.lower.v, remove_punct=TRUE)  
 
 ## ------------------------------------------------------------------------
 # total unique words
 length(unique(moby.word.v))
-ntype(char_tolower(novel.v), removePunct = TRUE)
+ntype(char_tolower(novel.v), remove_punct = TRUE)
 
 ## ----eval=TRUE-----------------------------------------------------------
 # ten most frequent words
@@ -147,7 +147,7 @@ cor.test(wf, af)
 firstChap <- as.matrix(chapDfm[1,])
 numWords <- length(firstChap[firstChap > 0])
 sum(chapDfm[1,])/numWords
-sum(chapDfm[1,])/ntype(chaptersCorp[1], removePunct=TRUE)
+sum(chapDfm[1,])/ntype(chaptersCorp[1], remove_punct=TRUE)
 
 ## ------------------------------------------------------------------------
 chapMeans <- Matrix::rowMeans(chapDfm)

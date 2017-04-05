@@ -40,7 +40,7 @@ set of tokens.
 }
 \examples{
 toks <- tokenize(c("This is some example text from me.", "More of the example text."), 
-                 removePunct = TRUE)
+                 remove_punct = TRUE)
 selectFeaturesOLD(toks, stopwords("english"), "remove")
 selectFeaturesOLD(toks, "ex", "keep", valuetype = "regex")
 }

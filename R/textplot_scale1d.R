@@ -41,9 +41,9 @@
 #' refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 #' ws <- textmodel(ie_dfm, refscores, model="wordscores", smooth = 1)
 #' pred <- predict(ws)
-#' # plot estimated word positions
+#' \donttest{# plot estimated word positions
 #' textplot_scale1d(pred, margin = "features", 
-#'                  highlighted = c("minister", "have", "our", "budget"))
+#'                  highlighted = c("minister", "have", "our", "budget"))}
 #' # plot estimated document positions
 #' textplot_scale1d(pred, margin = "documents",
 #'                  doclabels = doclab,
@@ -55,11 +55,11 @@
 #' textplot_scale1d(wfm, doclabels = doclab)
 #' textplot_scale1d(wfm, doclabels = doclab,
 #'                  groups = docvars(data_corpus_irishbudget2010, "party"))
-#' # plot estimated word positions
+#' \donttest{# plot estimated word positions
 #' textplot_scale1d(wfm, margin = "features", 
 #'                  highlighted = c("government", "global", "children", 
 #'                                  "bank", "economy", "the", "citizenship",
-#'                                  "productivity", "deficit"))
+#'                                  "productivity", "deficit"))}
 textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels = NULL, 
                              sort = TRUE, groups = NULL, 
                              highlighted = NULL, alpha = 0.7, 

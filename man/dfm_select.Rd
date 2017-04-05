@@ -10,7 +10,7 @@
 dfm_select(x, features = NULL, documents = NULL, selection = c("keep",
   "remove"), valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, min_nchar = 1, max_nchar = 63,
-  padding = FALSE, verbose = getOption("verbose"), ...)
+  padding = FALSE, verbose = quanteda_options("verbose"), ...)
 
 dfm_remove(x, features = NULL, documents = NULL, ...)
 
@@ -121,7 +121,7 @@ tmpdfm
 dfm_remove(tmpdfm, stopwords("english"))
 toks <- tokens(c("this contains lots of stopwords",
                  "no if, and, or but about it: lots"),
-               removePunct = TRUE)
+               remove_punct = TRUE)
 tmpfcm <- fcm(toks)
 tmpfcm
 fcm_remove(tmpfcm, stopwords("english"))

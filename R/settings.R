@@ -9,7 +9,7 @@ SETTINGS_OPTIONS <- c("stopwords",
                       "delimiter_paragraph",
                       "clean_tolower",
                       "clean_removeDigits",
-                      "clean_removePunct",
+                      "clean_remove_punct",
                       "unitsoriginal",
                       "units") 
 DEFAULT_DELIM_SENTENCE <- ".!?"
@@ -97,7 +97,7 @@ settingsInitialize <- function() {
                          delimiter_paragraph=DEFAULT_DELIM_PARAGRAPH,
                          clean_tolower=TRUE,
                          clean_removeDigits=TRUE,
-                         clean_removePunct=TRUE,
+                         clean_remove_punct=TRUE,
                          units="documents",
                          unitsoriginal="documents")
     class(tempsettings) <- c("settings", class(tempsettings))
@@ -143,8 +143,8 @@ settingsGet <- function(corp, match.call.list) {
         assign("stopwords", settings(corp, "stopwords"), callingenv)
     if (is.null(match.call.list$removeDigits))
         assign("removeDigits", settings(corp, "clean_removeDigits"), callingenv)
-    if (is.null(match.call.list$removePunct))
-        assign("removePunct", settings(corp, "clean_removePunct"), callingenv)
+    if (is.null(match.call.list$remove_punct))
+        assign("remove_punct", settings(corp, "clean_remove_punct"), callingenv)
     if (is.null(match.call.list$lower))
         assign("lower", settings(corp, "clean_tolower"), callingenv)
     if (is.null(match.call.list$collocations))
@@ -152,6 +152,6 @@ settingsGet <- function(corp, match.call.list) {
 }
     
 # clean=TRUE,
-# removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
+# removeDigits=TRUE, remove_punct=TRUE, lower=TRUE,                          
 # addto=NULL
 

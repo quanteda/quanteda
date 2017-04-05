@@ -81,15 +81,17 @@
     </div>
 
     
-    <p>This function automatically identifies contiguous collocations consisting of
-variable-length term sequences whose frequency is unlikey to have occurred by
-chance.  The algorithm is based on Blaheta and Johnson&#39;s &quot;Unsupervised 
-Learning of Multi-Word Verbs&quot;.</p>
+    <p>This function automatically identifies contiguous collocations consisting of 
+variable-length term sequences whose frequency is unlikely to have occurred 
+by chance.  The algorithm is based on Blaheta and Johnson&#39;s (2001) 
+&quot;Unsupervised Learning of Multi-Word Verbs&quot;.</p>
     
 
-    <pre><span class='fu'>sequences</span>(<span class='no'>x</span>, <span class='no'>features</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_length</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>nested</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre><span class='fu'>sequences</span>(<span class='no'>x</span>, <span class='kw'>features</span> <span class='kw'>=</span> <span class='st'>"*"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_size</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>nested</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>is.sequences</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -105,17 +107,25 @@ or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.htm
       <dt>case_insensitive</dt>
       <dd>ignore case when matching, if <code>TRUE</code></dd>
       <dt>min_count</dt>
-      <dd>minimum frequency of sequences for which parameters are estimated</dd>
-      <dt>max_length</dt>
+      <dd>minimum frequency of sequences for which parameters are 
+estimated</dd>
+      <dt>max_size</dt>
       <dd>maxium length of sequences which are collected</dd>
       <dt>nested</dt>
-      <dd>if true, collect all the subsequences of a longer sequence as separate entities.
-e.g. in a sequence of capitalized words &quot;United States Congress&quot;, &quot;States Congress&quot; is considered 
-as a subsequence. But &quot;United States&quot; is not a subsequence because it is followed by &quot;Congress&quot;.</dd>
+      <dd>if <code>TRUE</code>, collect all the subsequences of a longer
+sequence as separate entities. e.g. in a sequence of capitalized words
+&quot;United States Congress&quot;, &quot;States Congress&quot; is considered as a subsequence.
+But &quot;United States&quot; is not a subsequence because it is followed by
+&quot;Congress&quot;.</dd>
       <dt>ordered</dt>
-      <dd>if true, use the Blaheta-Johnson method that distinguishs between 
-the order of words, and tends to promote rare sequences.</dd>
+      <dd>if true, use the Blaheta-Johnson method that distinguishes 
+between the order of words, and tends to promote rare sequences.</dd>
     </dl>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>sequences</code> returns <code>TRUE</code> if the object is of class
+  sequences, <code>FALSE</code> otherwise.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -149,6 +159,7 @@ the order of words, and tends to promote rare sequences.</dd>
 <span class='co'># types can be any words</span>
 <span class='no'>seqs2</span> <span class='kw'>&lt;-</span> <span class='fu'>sequences</span>(<span class='no'>toks</span>, <span class='st'>"^([a-z]+)$"</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
                    <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
 <span class='fu'>head</span>(<span class='no'>seqs2</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;                        lambda    sigma count        z p
 #&gt; fellow citizens      55.46514 1.015421    55 54.62278 0
 #&gt; years ago            55.27680 1.035780    24 53.36732 0
@@ -160,6 +171,3866 @@ the order of words, and tends to promote rare sequences.</dd>
 #&gt; good faith           48.93755 1.078625     7 45.37030 0
 #&gt; religious liberty    50.67227 1.123021     6 45.12140 0
 #&gt; public money         47.22302 1.049822     8 44.98191 0</div><div class='input'>
+<span class='co'># convert to tokens object</span>
+<span class='fu'><a href='as.tokens.html'>as.tokens</a></span>(<span class='no'>seqs2</span>)</div><div class='output co'>#&gt; tokens from 1286 documents.
+#&gt; Component 1 :
+#&gt; [1] &quot;fellow&quot;   &quot;citizens&quot;
+#&gt; 
+#&gt; Component 2 :
+#&gt; [1] &quot;years&quot; &quot;ago&quot;  
+#&gt; 
+#&gt; Component 3 :
+#&gt; [1] &quot;four&quot;  &quot;years&quot;
+#&gt; 
+#&gt; Component 4 :
+#&gt; [1] &quot;one&quot;     &quot;another&quot;
+#&gt; 
+#&gt; Component 5 :
+#&gt; [1] &quot;go&quot;      &quot;forward&quot;
+#&gt; 
+#&gt; Component 6 :
+#&gt; [1] &quot;every&quot;   &quot;citizen&quot;
+#&gt; 
+#&gt; Component 7 :
+#&gt; [1] &quot;executive&quot;  &quot;department&quot;
+#&gt; 
+#&gt; Component 8 :
+#&gt; [1] &quot;good&quot;  &quot;faith&quot;
+#&gt; 
+#&gt; Component 9 :
+#&gt; [1] &quot;religious&quot; &quot;liberty&quot;  
+#&gt; 
+#&gt; Component 10 :
+#&gt; [1] &quot;public&quot; &quot;money&quot; 
+#&gt; 
+#&gt; Component 11 :
+#&gt; [1] &quot;naval&quot; &quot;force&quot;
+#&gt; 
+#&gt; Component 12 :
+#&gt; [1] &quot;domestic&quot;     &quot;institutions&quot;
+#&gt; 
+#&gt; Component 13 :
+#&gt; [1] &quot;free&quot;       &quot;government&quot;
+#&gt; 
+#&gt; Component 14 :
+#&gt; [1] &quot;free&quot;   &quot;people&quot;
+#&gt; 
+#&gt; Component 15 :
+#&gt; [1] &quot;whole&quot;   &quot;country&quot;
+#&gt; 
+#&gt; Component 16 :
+#&gt; [1] &quot;upon&quot; &quot;us&quot;  
+#&gt; 
+#&gt; Component 17 :
+#&gt; [1] &quot;move&quot;    &quot;forward&quot;
+#&gt; 
+#&gt; Component 18 :
+#&gt; [1] &quot;common&quot; &quot;good&quot;  
+#&gt; 
+#&gt; Component 19 :
+#&gt; [1] &quot;passed&quot; &quot;away&quot;  
+#&gt; 
+#&gt; Component 20 :
+#&gt; [1] &quot;civil&quot;   &quot;service&quot;
+#&gt; 
+#&gt; Component 21 :
+#&gt; [1] &quot;human&quot;   &quot;dignity&quot;
+#&gt; 
+#&gt; Component 22 :
+#&gt; [1] &quot;free&quot;    &quot;nations&quot;
+#&gt; 
+#&gt; Component 23 :
+#&gt; [1] &quot;great&quot;  &quot;nation&quot;
+#&gt; 
+#&gt; Component 24 :
+#&gt; [1] &quot;good&quot; &quot;will&quot;
+#&gt; 
+#&gt; Component 25 :
+#&gt; [1] &quot;good&quot;    &quot;feeling&quot;
+#&gt; 
+#&gt; Component 26 :
+#&gt; [1] &quot;public&quot;  &quot;service&quot;
+#&gt; 
+#&gt; Component 27 :
+#&gt; [1] &quot;among&quot; &quot;us&quot;   
+#&gt; 
+#&gt; Component 28 :
+#&gt; [1] &quot;called&quot; &quot;upon&quot;  
+#&gt; 
+#&gt; Component 29 :
+#&gt; [1] &quot;powerful&quot; &quot;nation&quot;  
+#&gt; 
+#&gt; Component 30 :
+#&gt; [1] &quot;every&quot; &quot;man&quot;  
+#&gt; 
+#&gt; Component 31 :
+#&gt; [1] &quot;popular&quot; &quot;will&quot;   
+#&gt; 
+#&gt; Component 32 :
+#&gt; [1] &quot;can&quot;   &quot;never&quot;
+#&gt; 
+#&gt; Component 33 :
+#&gt; [1] &quot;shall&quot;    &quot;endeavor&quot;
+#&gt; 
+#&gt; Component 34 :
+#&gt; [1] &quot;free&quot;         &quot;institutions&quot;
+#&gt; 
+#&gt; Component 35 :
+#&gt; [1] &quot;will&quot; &quot;make&quot;
+#&gt; 
+#&gt; Component 36 :
+#&gt; [1] &quot;human&quot; &quot;life&quot; 
+#&gt; 
+#&gt; Component 37 :
+#&gt; [1] &quot;free&quot; &quot;men&quot; 
+#&gt; 
+#&gt; Component 38 :
+#&gt; [1] &quot;human&quot;   &quot;freedom&quot;
+#&gt; 
+#&gt; Component 39 :
+#&gt; [1] &quot;may&quot;  &quot;well&quot;
+#&gt; 
+#&gt; Component 40 :
+#&gt; [1] &quot;human&quot;  &quot;rights&quot;
+#&gt; 
+#&gt; Component 41 :
+#&gt; [1] &quot;can&quot;  &quot;make&quot;
+#&gt; 
+#&gt; Component 42 :
+#&gt; [1] &quot;highest&quot; &quot;degree&quot; 
+#&gt; 
+#&gt; Component 43 :
+#&gt; [1] &quot;equal&quot;  &quot;rights&quot;
+#&gt; 
+#&gt; Component 44 :
+#&gt; [1] &quot;will&quot;   &quot;always&quot;
+#&gt; 
+#&gt; Component 45 :
+#&gt; [1] &quot;let&quot; &quot;us&quot; 
+#&gt; 
+#&gt; Component 46 :
+#&gt; [1] &quot;local&quot;      &quot;government&quot;
+#&gt; 
+#&gt; Component 47 :
+#&gt; [1] &quot;best&quot;    &quot;efforts&quot;
+#&gt; 
+#&gt; Component 48 :
+#&gt; [1] &quot;new&quot;   &quot;world&quot;
+#&gt; 
+#&gt; Component 49 :
+#&gt; [1] &quot;foreign&quot; &quot;powers&quot; 
+#&gt; 
+#&gt; Component 50 :
+#&gt; [1] &quot;general&quot; &quot;welfare&quot;
+#&gt; 
+#&gt; Component 51 :
+#&gt; [1] &quot;forward&quot;  &quot;together&quot;
+#&gt; 
+#&gt; Component 52 :
+#&gt; [1] &quot;material&quot; &quot;things&quot;  
+#&gt; 
+#&gt; Component 53 :
+#&gt; [1] &quot;foreign&quot; &quot;policy&quot; 
+#&gt; 
+#&gt; Component 54 :
+#&gt; [1] &quot;government&quot; &quot;can&quot;       
+#&gt; 
+#&gt; Component 55 :
+#&gt; [1] &quot;must&quot; &quot;act&quot; 
+#&gt; 
+#&gt; Component 56 :
+#&gt; [1] &quot;called&quot; &quot;forth&quot; 
+#&gt; 
+#&gt; Component 57 :
+#&gt; [1] &quot;four&quot;  &quot;years&quot; &quot;ago&quot;  
+#&gt; 
+#&gt; Component 58 :
+#&gt; [1] &quot;made&quot; &quot;us&quot;  
+#&gt; 
+#&gt; Component 59 :
+#&gt; [1] &quot;make&quot;  &quot;every&quot;
+#&gt; 
+#&gt; Component 60 :
+#&gt; [1] &quot;business&quot;  &quot;interests&quot;
+#&gt; 
+#&gt; Component 61 :
+#&gt; [1] &quot;will&quot; &quot;work&quot;
+#&gt; 
+#&gt; Component 62 :
+#&gt; [1] &quot;every&quot; &quot;one&quot;  
+#&gt; 
+#&gt; Component 63 :
+#&gt; [1] &quot;must&quot; &quot;go&quot;  
+#&gt; 
+#&gt; Component 64 :
+#&gt; [1] &quot;highest&quot;    &quot;importance&quot;
+#&gt; 
+#&gt; Component 65 :
+#&gt; [1] &quot;high&quot;   &quot;office&quot;
+#&gt; 
+#&gt; Component 66 :
+#&gt; [1] &quot;just&quot;   &quot;rights&quot;
+#&gt; 
+#&gt; Component 67 :
+#&gt; [1] &quot;us&quot;  &quot;now&quot;
+#&gt; 
+#&gt; Component 68 :
+#&gt; [1] &quot;free&quot;        &quot;governments&quot;
+#&gt; 
+#&gt; Component 69 :
+#&gt; [1] &quot;left&quot; &quot;us&quot;  
+#&gt; 
+#&gt; Component 70 :
+#&gt; [1] &quot;shall&quot; &quot;make&quot; 
+#&gt; 
+#&gt; Component 71 :
+#&gt; [1] &quot;patriotic&quot; &quot;citizens&quot; 
+#&gt; 
+#&gt; Component 72 :
+#&gt; [1] &quot;every&quot;  &quot;nation&quot;
+#&gt; 
+#&gt; Component 73 :
+#&gt; [1] &quot;will&quot;  &quot;never&quot;
+#&gt; 
+#&gt; Component 74 :
+#&gt; [1] &quot;people&quot; &quot;will&quot;  
+#&gt; 
+#&gt; Component 75 :
+#&gt; [1] &quot;government&quot; &quot;must&quot;      
+#&gt; 
+#&gt; Component 76 :
+#&gt; [1] &quot;people&quot; &quot;can&quot;   
+#&gt; 
+#&gt; Component 77 :
+#&gt; [1] &quot;political&quot; &quot;party&quot;    
+#&gt; 
+#&gt; Component 78 :
+#&gt; [1] &quot;two&quot;   &quot;years&quot;
+#&gt; 
+#&gt; Component 79 :
+#&gt; [1] &quot;made&quot;  &quot;great&quot;
+#&gt; 
+#&gt; Component 80 :
+#&gt; [1] &quot;will&quot;  &quot;bring&quot;
+#&gt; 
+#&gt; Component 81 :
+#&gt; [1] &quot;local&quot;       &quot;governments&quot;
+#&gt; 
+#&gt; Component 82 :
+#&gt; [1] &quot;shall&quot; &quot;take&quot; 
+#&gt; 
+#&gt; Component 83 :
+#&gt; [1] &quot;must&quot; &quot;show&quot;
+#&gt; 
+#&gt; Component 84 :
+#&gt; [1] &quot;shall&quot;  &quot;secure&quot;
+#&gt; 
+#&gt; Component 85 :
+#&gt; [1] &quot;beloved&quot; &quot;country&quot;
+#&gt; 
+#&gt; Component 86 :
+#&gt; [1] &quot;will&quot; &quot;give&quot;
+#&gt; 
+#&gt; Component 87 :
+#&gt; [1] &quot;solemn&quot; &quot;oath&quot;  
+#&gt; 
+#&gt; Component 88 :
+#&gt; [1] &quot;new&quot;        &quot;government&quot;
+#&gt; 
+#&gt; Component 89 :
+#&gt; [1] &quot;will&quot; &quot;bear&quot;
+#&gt; 
+#&gt; Component 90 :
+#&gt; [1] &quot;every&quot;      &quot;department&quot;
+#&gt; 
+#&gt; Component 91 :
+#&gt; [1] &quot;will&quot; &quot;soon&quot;
+#&gt; 
+#&gt; Component 92 :
+#&gt; [1] &quot;past&quot;  &quot;four&quot;  &quot;years&quot;
+#&gt; 
+#&gt; Component 93 :
+#&gt; [1] &quot;can&quot;  &quot;help&quot;
+#&gt; 
+#&gt; Component 94 :
+#&gt; [1] &quot;greatest&quot; &quot;progress&quot;
+#&gt; 
+#&gt; Component 95 :
+#&gt; [1] &quot;honest&quot; &quot;men&quot;   
+#&gt; 
+#&gt; Component 96 :
+#&gt; [1] &quot;foreign&quot; &quot;nations&quot;
+#&gt; 
+#&gt; Component 97 :
+#&gt; [1] &quot;life&quot; &quot;will&quot;
+#&gt; 
+#&gt; Component 98 :
+#&gt; [1] &quot;every&quot;  &quot;effort&quot;
+#&gt; 
+#&gt; Component 99 :
+#&gt; [1] &quot;individual&quot; &quot;freedom&quot;   
+#&gt; 
+#&gt; Component 100 :
+#&gt; [1] &quot;public&quot;   &quot;interest&quot;
+#&gt; 
+#&gt; Component 101 :
+#&gt; [1] &quot;political&quot; &quot;parties&quot;  
+#&gt; 
+#&gt; Component 102 :
+#&gt; [1] &quot;free&quot;  &quot;trade&quot;
+#&gt; 
+#&gt; Component 103 :
+#&gt; [1] &quot;fundamental&quot; &quot;law&quot;        
+#&gt; 
+#&gt; Component 104 :
+#&gt; [1] &quot;country&quot; &quot;can&quot;    
+#&gt; 
+#&gt; Component 105 :
+#&gt; [1] &quot;lasting&quot; &quot;peace&quot;  
+#&gt; 
+#&gt; Component 106 :
+#&gt; [1] &quot;earnest&quot; &quot;desire&quot; 
+#&gt; 
+#&gt; Component 107 :
+#&gt; [1] &quot;business&quot;   &quot;conditions&quot;
+#&gt; 
+#&gt; Component 108 :
+#&gt; [1] &quot;peace&quot; &quot;among&quot;
+#&gt; 
+#&gt; Component 109 :
+#&gt; [1] &quot;every&quot;      &quot;generation&quot;
+#&gt; 
+#&gt; Component 110 :
+#&gt; [1] &quot;shall&quot; &quot;stand&quot;
+#&gt; 
+#&gt; Component 111 :
+#&gt; [1] &quot;social&quot; &quot;order&quot; 
+#&gt; 
+#&gt; Component 112 :
+#&gt; [1] &quot;will&quot; &quot;act&quot; 
+#&gt; 
+#&gt; Component 113 :
+#&gt; [1] &quot;will&quot; &quot;meet&quot;
+#&gt; 
+#&gt; Component 114 :
+#&gt; [1] &quot;future&quot;      &quot;generations&quot;
+#&gt; 
+#&gt; Component 115 :
+#&gt; [1] &quot;great&quot;   &quot;objects&quot;
+#&gt; 
+#&gt; Component 116 :
+#&gt; [1] &quot;just&quot;  &quot;taken&quot;
+#&gt; 
+#&gt; Component 117 :
+#&gt; [1] &quot;first&quot; &quot;time&quot; 
+#&gt; 
+#&gt; Component 118 :
+#&gt; [1] &quot;man&quot; &quot;can&quot;
+#&gt; 
+#&gt; Component 119 :
+#&gt; [1] &quot;foreign&quot; &quot;power&quot;  
+#&gt; 
+#&gt; Component 120 :
+#&gt; [1] &quot;nation&quot; &quot;will&quot;  
+#&gt; 
+#&gt; Component 121 :
+#&gt; [1] &quot;years&quot; &quot;since&quot;
+#&gt; 
+#&gt; Component 122 :
+#&gt; [1] &quot;freedom&quot; &quot;will&quot;   
+#&gt; 
+#&gt; Component 123 :
+#&gt; [1] &quot;public&quot; &quot;debt&quot;  
+#&gt; 
+#&gt; Component 124 :
+#&gt; [1] &quot;free&quot;     &quot;exercise&quot;
+#&gt; 
+#&gt; Component 125 :
+#&gt; [1] &quot;national&quot; &quot;life&quot;    
+#&gt; 
+#&gt; Component 126 :
+#&gt; [1] &quot;effective&quot;    &quot;organization&quot;
+#&gt; 
+#&gt; Component 127 :
+#&gt; [1] &quot;will&quot;    &quot;require&quot;
+#&gt; 
+#&gt; Component 128 :
+#&gt; [1] &quot;foreign&quot; &quot;affairs&quot;
+#&gt; 
+#&gt; Component 129 :
+#&gt; [1] &quot;created&quot; &quot;equal&quot;  
+#&gt; 
+#&gt; Component 130 :
+#&gt; [1] &quot;executive&quot;   &quot;departments&quot;
+#&gt; 
+#&gt; Component 131 :
+#&gt; [1] &quot;long&quot; &quot;run&quot; 
+#&gt; 
+#&gt; Component 132 :
+#&gt; [1] &quot;public&quot;  &quot;revenue&quot;
+#&gt; 
+#&gt; Component 133 :
+#&gt; [1] &quot;government&quot; &quot;alone&quot;     
+#&gt; 
+#&gt; Component 134 :
+#&gt; [1] &quot;among&quot;   &quot;nations&quot;
+#&gt; 
+#&gt; Component 135 :
+#&gt; [1] &quot;revenue&quot; &quot;laws&quot;   
+#&gt; 
+#&gt; Component 136 :
+#&gt; [1] &quot;will&quot; &quot;go&quot;  
+#&gt; 
+#&gt; Component 137 :
+#&gt; [1] &quot;public&quot; &quot;good&quot;  
+#&gt; 
+#&gt; Component 138 :
+#&gt; [1] &quot;may&quot;  &quot;take&quot;
+#&gt; 
+#&gt; Component 139 :
+#&gt; [1] &quot;civilized&quot; &quot;world&quot;    
+#&gt; 
+#&gt; Component 140 :
+#&gt; [1] &quot;complete&quot;    &quot;sovereignty&quot;
+#&gt; 
+#&gt; Component 141 :
+#&gt; [1] &quot;common&quot;  &quot;defense&quot;
+#&gt; 
+#&gt; Component 142 :
+#&gt; [1] &quot;best&quot;      &quot;interests&quot;
+#&gt; 
+#&gt; Component 143 :
+#&gt; [1] &quot;two&quot;   &quot;years&quot; &quot;ago&quot;  
+#&gt; 
+#&gt; Component 144 :
+#&gt; [1] &quot;rights&quot; &quot;must&quot;  
+#&gt; 
+#&gt; Component 145 :
+#&gt; [1] &quot;true&quot;   &quot;spirit&quot;
+#&gt; 
+#&gt; Component 146 :
+#&gt; [1] &quot;sacred&quot; &quot;trust&quot; 
+#&gt; 
+#&gt; Component 147 :
+#&gt; [1] &quot;go&quot;       &quot;forward&quot;  &quot;together&quot;
+#&gt; 
+#&gt; Component 148 :
+#&gt; [1] &quot;present&quot; &quot;day&quot;    
+#&gt; 
+#&gt; Component 149 :
+#&gt; [1] &quot;natural&quot;   &quot;resources&quot;
+#&gt; 
+#&gt; Component 150 :
+#&gt; [1] &quot;national&quot; &quot;debt&quot;    
+#&gt; 
+#&gt; Component 151 :
+#&gt; [1] &quot;new&quot;              &quot;responsibilities&quot;
+#&gt; 
+#&gt; Component 152 :
+#&gt; [1] &quot;must&quot;   &quot;depend&quot;
+#&gt; 
+#&gt; Component 153 :
+#&gt; [1] &quot;legislative&quot; &quot;body&quot;       
+#&gt; 
+#&gt; Component 154 :
+#&gt; [1] &quot;civil&quot; &quot;war&quot;  
+#&gt; 
+#&gt; Component 155 :
+#&gt; [1] &quot;can&quot;   &quot;stand&quot;
+#&gt; 
+#&gt; Component 156 :
+#&gt; [1] &quot;work&quot;     &quot;together&quot;
+#&gt; 
+#&gt; Component 157 :
+#&gt; [1] &quot;will&quot;  &quot;stand&quot;
+#&gt; 
+#&gt; Component 158 :
+#&gt; [1] &quot;public&quot;   &quot;officers&quot;
+#&gt; 
+#&gt; Component 159 :
+#&gt; [1] &quot;great&quot; &quot;good&quot; 
+#&gt; 
+#&gt; Component 160 :
+#&gt; [1] &quot;bring&quot; &quot;back&quot; 
+#&gt; 
+#&gt; Component 161 :
+#&gt; [1] &quot;internal&quot; &quot;taxes&quot;   
+#&gt; 
+#&gt; Component 162 :
+#&gt; [1] &quot;friendly&quot;    &quot;intercourse&quot;
+#&gt; 
+#&gt; Component 163 :
+#&gt; [1] &quot;high&quot;  &quot;trust&quot;
+#&gt; 
+#&gt; Component 164 :
+#&gt; [1] &quot;common&quot;  &quot;country&quot;
+#&gt; 
+#&gt; Component 165 :
+#&gt; [1] &quot;far&quot;    &quot;beyond&quot;
+#&gt; 
+#&gt; Component 166 :
+#&gt; [1] &quot;given&quot; &quot;us&quot;   
+#&gt; 
+#&gt; Component 167 :
+#&gt; [1] &quot;every&quot;    &quot;interest&quot;
+#&gt; 
+#&gt; Component 168 :
+#&gt; [1] &quot;can&quot;  &quot;ever&quot;
+#&gt; 
+#&gt; Component 169 :
+#&gt; [1] &quot;nothing&quot; &quot;less&quot;   
+#&gt; 
+#&gt; Component 170 :
+#&gt; [1] &quot;republican&quot;   &quot;institutions&quot;
+#&gt; 
+#&gt; Component 171 :
+#&gt; [1] &quot;will&quot; &quot;ever&quot;
+#&gt; 
+#&gt; Component 172 :
+#&gt; [1] &quot;great&quot;            &quot;responsibilities&quot;
+#&gt; 
+#&gt; Component 173 :
+#&gt; [1] &quot;children&quot; &quot;will&quot;    
+#&gt; 
+#&gt; Component 174 :
+#&gt; [1] &quot;great&quot;  &quot;powers&quot;
+#&gt; 
+#&gt; Component 175 :
+#&gt; [1] &quot;human&quot; &quot;mind&quot; 
+#&gt; 
+#&gt; Component 176 :
+#&gt; [1] &quot;preserve&quot; &quot;peace&quot;   
+#&gt; 
+#&gt; Component 177 :
+#&gt; [1] &quot;will&quot; &quot;show&quot;
+#&gt; 
+#&gt; Component 178 :
+#&gt; [1] &quot;whole&quot;  &quot;people&quot;
+#&gt; 
+#&gt; Component 179 :
+#&gt; [1] &quot;might&quot; &quot;say&quot;  
+#&gt; 
+#&gt; Component 180 :
+#&gt; [1] &quot;two&quot;       &quot;centuries&quot; &quot;ago&quot;      
+#&gt; 
+#&gt; Component 181 :
+#&gt; [1] &quot;whole&quot; &quot;world&quot;
+#&gt; 
+#&gt; Component 182 :
+#&gt; [1] &quot;late&quot; &quot;war&quot; 
+#&gt; 
+#&gt; Component 183 :
+#&gt; [1] &quot;greatest&quot; &quot;number&quot;  
+#&gt; 
+#&gt; Component 184 :
+#&gt; [1] &quot;just&quot;       &quot;principles&quot;
+#&gt; 
+#&gt; Component 185 :
+#&gt; [1] &quot;make&quot; &quot;us&quot;  
+#&gt; 
+#&gt; Component 186 :
+#&gt; [1] &quot;new&quot; &quot;era&quot;
+#&gt; 
+#&gt; Component 187 :
+#&gt; [1] &quot;sacred&quot; &quot;duty&quot;  
+#&gt; 
+#&gt; Component 188 :
+#&gt; [1] &quot;labor&quot; &quot;may&quot;  
+#&gt; 
+#&gt; Component 189 :
+#&gt; [1] &quot;last&quot;  &quot;four&quot;  &quot;years&quot;
+#&gt; 
+#&gt; Component 190 :
+#&gt; [1] &quot;solemn&quot; &quot;duty&quot;  
+#&gt; 
+#&gt; Component 191 :
+#&gt; [1] &quot;race&quot;    &quot;feeling&quot;
+#&gt; 
+#&gt; Component 192 :
+#&gt; [1] &quot;civil&quot;  &quot;rights&quot;
+#&gt; 
+#&gt; Component 193 :
+#&gt; [1] &quot;recent&quot;   &quot;election&quot;
+#&gt; 
+#&gt; Component 194 :
+#&gt; [1] &quot;good&quot;       &quot;government&quot;
+#&gt; 
+#&gt; Component 195 :
+#&gt; [1] &quot;strong&quot; &quot;enough&quot;
+#&gt; 
+#&gt; Component 196 :
+#&gt; [1] &quot;stand&quot;    &quot;together&quot;
+#&gt; 
+#&gt; Component 197 :
+#&gt; [1] &quot;may&quot;     &quot;receive&quot;
+#&gt; 
+#&gt; Component 198 :
+#&gt; [1] &quot;new&quot;   &quot;order&quot;
+#&gt; 
+#&gt; Component 199 :
+#&gt; [1] &quot;high&quot;   &quot;degree&quot;
+#&gt; 
+#&gt; Component 200 :
+#&gt; [1] &quot;will&quot;  &quot;bring&quot; &quot;back&quot; 
+#&gt; 
+#&gt; Component 201 :
+#&gt; [1] &quot;citizens&quot; &quot;will&quot;    
+#&gt; 
+#&gt; Component 202 :
+#&gt; [1] &quot;go&quot;    &quot;forth&quot;
+#&gt; 
+#&gt; Component 203 :
+#&gt; [1] &quot;oath&quot;       &quot;prescribed&quot;
+#&gt; 
+#&gt; Component 204 :
+#&gt; [1] &quot;look&quot;    &quot;forward&quot;
+#&gt; 
+#&gt; Component 205 :
+#&gt; [1] &quot;public&quot;  &quot;opinion&quot;
+#&gt; 
+#&gt; Component 206 :
+#&gt; [1] &quot;executive&quot; &quot;office&quot;   
+#&gt; 
+#&gt; Component 207 :
+#&gt; [1] &quot;justice&quot; &quot;will&quot;   
+#&gt; 
+#&gt; Component 208 :
+#&gt; [1] &quot;high&quot;   &quot;duties&quot;
+#&gt; 
+#&gt; Component 209 :
+#&gt; [1] &quot;best&quot;  &quot;means&quot;
+#&gt; 
+#&gt; Component 210 :
+#&gt; [1] &quot;solemn&quot;     &quot;obligation&quot;
+#&gt; 
+#&gt; Component 211 :
+#&gt; [1] &quot;firm&quot;   &quot;belief&quot;
+#&gt; 
+#&gt; Component 212 :
+#&gt; [1] &quot;go&quot;   &quot;away&quot;
+#&gt; 
+#&gt; Component 213 :
+#&gt; [1] &quot;greatest&quot; &quot;good&quot;    
+#&gt; 
+#&gt; Component 214 :
+#&gt; [1] &quot;us&quot;      &quot;go&quot;      &quot;forward&quot;
+#&gt; 
+#&gt; Component 215 :
+#&gt; [1] &quot;will&quot;     &quot;continue&quot;
+#&gt; 
+#&gt; Component 216 :
+#&gt; [1] &quot;can&quot;    &quot;afford&quot;
+#&gt; 
+#&gt; Component 217 :
+#&gt; [1] &quot;men&quot;        &quot;everywhere&quot;
+#&gt; 
+#&gt; Component 218 :
+#&gt; [1] &quot;common&quot; &quot;sense&quot; 
+#&gt; 
+#&gt; Component 219 :
+#&gt; [1] &quot;better&quot; &quot;life&quot;  
+#&gt; 
+#&gt; Component 220 :
+#&gt; [1] &quot;one&quot;    &quot;nation&quot;
+#&gt; 
+#&gt; Component 221 :
+#&gt; [1] &quot;good&quot;  &quot;sense&quot;
+#&gt; 
+#&gt; Component 222 :
+#&gt; [1] &quot;world&quot; &quot;trade&quot;
+#&gt; 
+#&gt; Component 223 :
+#&gt; [1] &quot;tariff&quot; &quot;bill&quot;  
+#&gt; 
+#&gt; Component 224 :
+#&gt; [1] &quot;might&quot;  &quot;become&quot;
+#&gt; 
+#&gt; Component 225 :
+#&gt; [1] &quot;maintain&quot; &quot;peace&quot;   
+#&gt; 
+#&gt; Component 226 :
+#&gt; [1] &quot;twenty&quot; &quot;years&quot; 
+#&gt; 
+#&gt; Component 227 :
+#&gt; [1] &quot;responsible&quot; &quot;duties&quot;     
+#&gt; 
+#&gt; Component 228 :
+#&gt; [1] &quot;regular&quot; &quot;session&quot;
+#&gt; 
+#&gt; Component 229 :
+#&gt; [1] &quot;every&quot; &quot;day&quot;  
+#&gt; 
+#&gt; Component 230 :
+#&gt; [1] &quot;promote&quot; &quot;peace&quot;  
+#&gt; 
+#&gt; Component 231 :
+#&gt; [1] &quot;confidently&quot; &quot;expect&quot;     
+#&gt; 
+#&gt; Component 232 :
+#&gt; [1] &quot;can&quot;  &quot;know&quot;
+#&gt; 
+#&gt; Component 233 :
+#&gt; [1] &quot;extraordinary&quot; &quot;session&quot;      
+#&gt; 
+#&gt; Component 234 :
+#&gt; [1] &quot;business&quot; &quot;methods&quot; 
+#&gt; 
+#&gt; Component 235 :
+#&gt; [1] &quot;local&quot;        &quot;institutions&quot;
+#&gt; 
+#&gt; Component 236 :
+#&gt; [1] &quot;home&quot;      &quot;interests&quot;
+#&gt; 
+#&gt; Component 237 :
+#&gt; [1] &quot;benign&quot;    &quot;influence&quot;
+#&gt; 
+#&gt; Component 238 :
+#&gt; [1] &quot;independent&quot; &quot;nations&quot;    
+#&gt; 
+#&gt; Component 239 :
+#&gt; [1] &quot;expressly&quot; &quot;say&quot;      
+#&gt; 
+#&gt; Component 240 :
+#&gt; [1] &quot;national&quot; &quot;honor&quot;   
+#&gt; 
+#&gt; Component 241 :
+#&gt; [1] &quot;free&quot;    &quot;peoples&quot;
+#&gt; 
+#&gt; Component 242 :
+#&gt; [1] &quot;public&quot;  &quot;affairs&quot;
+#&gt; 
+#&gt; Component 243 :
+#&gt; [1] &quot;firm&quot;     &quot;reliance&quot;
+#&gt; 
+#&gt; Component 244 :
+#&gt; [1] &quot;personal&quot;       &quot;responsibility&quot;
+#&gt; 
+#&gt; Component 245 :
+#&gt; [1] &quot;day&quot;     &quot;forward&quot;
+#&gt; 
+#&gt; Component 246 :
+#&gt; [1] &quot;every&quot; &quot;part&quot; 
+#&gt; 
+#&gt; Component 247 :
+#&gt; [1] &quot;whole&quot; &quot;body&quot; 
+#&gt; 
+#&gt; Component 248 :
+#&gt; [1] &quot;equal&quot;      &quot;protection&quot;
+#&gt; 
+#&gt; Component 249 :
+#&gt; [1] &quot;political&quot;    &quot;institutions&quot;
+#&gt; 
+#&gt; Component 250 :
+#&gt; [1] &quot;material&quot; &quot;well&quot;    
+#&gt; 
+#&gt; Component 251 :
+#&gt; [1] &quot;great&quot;  &quot;weight&quot;
+#&gt; 
+#&gt; Component 252 :
+#&gt; [1] &quot;domestic&quot; &quot;affairs&quot; 
+#&gt; 
+#&gt; Component 253 :
+#&gt; [1] &quot;permanent&quot; &quot;peace&quot;    
+#&gt; 
+#&gt; Component 254 :
+#&gt; [1] &quot;health&quot; &quot;care&quot;  
+#&gt; 
+#&gt; Component 255 :
+#&gt; [1] &quot;great&quot;     &quot;political&quot; &quot;parties&quot;  
+#&gt; 
+#&gt; Component 256 :
+#&gt; [1] &quot;human&quot;    &quot;progress&quot;
+#&gt; 
+#&gt; Component 257 :
+#&gt; [1] &quot;moral&quot; &quot;sense&quot;
+#&gt; 
+#&gt; Component 258 :
+#&gt; [1] &quot;shall&quot;  &quot;strive&quot;
+#&gt; 
+#&gt; Component 259 :
+#&gt; [1] &quot;will&quot; &quot;come&quot;
+#&gt; 
+#&gt; Component 260 :
+#&gt; [1] &quot;better&quot; &quot;way&quot;   
+#&gt; 
+#&gt; Component 261 :
+#&gt; [1] &quot;power&quot;  &quot;except&quot;
+#&gt; 
+#&gt; Component 262 :
+#&gt; [1] &quot;foreign&quot; &quot;trade&quot;  
+#&gt; 
+#&gt; Component 263 :
+#&gt; [1] &quot;one&quot;    &quot;people&quot;
+#&gt; 
+#&gt; Component 264 :
+#&gt; [1] &quot;five&quot;  &quot;years&quot; &quot;ago&quot;  
+#&gt; 
+#&gt; Component 265 :
+#&gt; [1] &quot;live&quot;     &quot;together&quot;
+#&gt; 
+#&gt; Component 266 :
+#&gt; [1] &quot;placed&quot; &quot;upon&quot;  
+#&gt; 
+#&gt; Component 267 :
+#&gt; [1] &quot;national&quot; &quot;security&quot;
+#&gt; 
+#&gt; Component 268 :
+#&gt; [1] &quot;practical&quot;      &quot;administration&quot;
+#&gt; 
+#&gt; Component 269 :
+#&gt; [1] &quot;constitutional&quot; &quot;power&quot;         
+#&gt; 
+#&gt; Component 270 :
+#&gt; [1] &quot;first&quot; &quot;came&quot; 
+#&gt; 
+#&gt; Component 271 :
+#&gt; [1] &quot;domestic&quot; &quot;policy&quot;  
+#&gt; 
+#&gt; Component 272 :
+#&gt; [1] &quot;one&quot; &quot;day&quot;
+#&gt; 
+#&gt; Component 273 :
+#&gt; [1] &quot;liberty&quot;    &quot;throughout&quot;
+#&gt; 
+#&gt; Component 274 :
+#&gt; [1] &quot;many&quot;  &quot;years&quot;
+#&gt; 
+#&gt; Component 275 :
+#&gt; [1] &quot;necessary&quot; &quot;purposes&quot; 
+#&gt; 
+#&gt; Component 276 :
+#&gt; [1] &quot;high&quot;     &quot;purposes&quot;
+#&gt; 
+#&gt; Component 277 :
+#&gt; [1] &quot;us&quot;    &quot;begin&quot;
+#&gt; 
+#&gt; Component 278 :
+#&gt; [1] &quot;rests&quot; &quot;upon&quot; 
+#&gt; 
+#&gt; Component 279 :
+#&gt; [1] &quot;whole&quot;   &quot;subject&quot;
+#&gt; 
+#&gt; Component 280 :
+#&gt; [1] &quot;new&quot;    &quot;spirit&quot;
+#&gt; 
+#&gt; Component 281 :
+#&gt; [1] &quot;great&quot;     &quot;interests&quot;
+#&gt; 
+#&gt; Component 282 :
+#&gt; [1] &quot;better&quot; &quot;use&quot;   
+#&gt; 
+#&gt; Component 283 :
+#&gt; [1] &quot;national&quot;    &quot;sovereignty&quot;
+#&gt; 
+#&gt; Component 284 :
+#&gt; [1] &quot;general&quot;    &quot;principles&quot;
+#&gt; 
+#&gt; Component 285 :
+#&gt; [1] &quot;high&quot;  &quot;sense&quot;
+#&gt; 
+#&gt; Component 286 :
+#&gt; [1] &quot;constitutional&quot; &quot;right&quot;         
+#&gt; 
+#&gt; Component 287 :
+#&gt; [1] &quot;vital&quot;     &quot;interests&quot;
+#&gt; 
+#&gt; Component 288 :
+#&gt; [1] &quot;public&quot; &quot;office&quot;
+#&gt; 
+#&gt; Component 289 :
+#&gt; [1] &quot;best&quot; &quot;way&quot; 
+#&gt; 
+#&gt; Component 290 :
+#&gt; [1] &quot;new&quot;     &quot;promise&quot;
+#&gt; 
+#&gt; Component 291 :
+#&gt; [1] &quot;distinguished&quot; &quot;men&quot;          
+#&gt; 
+#&gt; Component 292 :
+#&gt; [1] &quot;must&quot; &quot;keep&quot;
+#&gt; 
+#&gt; Component 293 :
+#&gt; [1] &quot;revenue&quot; &quot;shall&quot;  
+#&gt; 
+#&gt; Component 294 :
+#&gt; [1] &quot;whole&quot;  &quot;system&quot;
+#&gt; 
+#&gt; Component 295 :
+#&gt; [1] &quot;good&quot;    &quot;opinion&quot;
+#&gt; 
+#&gt; Component 296 :
+#&gt; [1] &quot;public&quot;    &quot;necessity&quot;
+#&gt; 
+#&gt; Component 297 :
+#&gt; [1] &quot;just&quot;   &quot;powers&quot;
+#&gt; 
+#&gt; Component 298 :
+#&gt; [1] &quot;public&quot;    &quot;sentiment&quot;
+#&gt; 
+#&gt; Component 299 :
+#&gt; [1] &quot;next&quot;  &quot;four&quot;  &quot;years&quot;
+#&gt; 
+#&gt; Component 300 :
+#&gt; [1] &quot;force&quot;      &quot;sufficient&quot;
+#&gt; 
+#&gt; Component 301 :
+#&gt; [1] &quot;foreign&quot; &quot;nation&quot; 
+#&gt; 
+#&gt; Component 302 :
+#&gt; [1] &quot;coordinate&quot; &quot;branches&quot;  
+#&gt; 
+#&gt; Component 303 :
+#&gt; [1] &quot;high&quot;  &quot;place&quot;
+#&gt; 
+#&gt; Component 304 :
+#&gt; [1] &quot;common&quot;   &quot;interest&quot;
+#&gt; 
+#&gt; Component 305 :
+#&gt; [1] &quot;interest&quot; &quot;depends&quot; 
+#&gt; 
+#&gt; Component 306 :
+#&gt; [1] &quot;will&quot; &quot;lead&quot;
+#&gt; 
+#&gt; Component 307 :
+#&gt; [1] &quot;oath&quot;  &quot;taken&quot;
+#&gt; 
+#&gt; Component 308 :
+#&gt; [1] &quot;times&quot;   &quot;greater&quot;
+#&gt; 
+#&gt; Component 309 :
+#&gt; [1] &quot;national&quot; &quot;pride&quot;   
+#&gt; 
+#&gt; Component 310 :
+#&gt; [1] &quot;know&quot; &quot;now&quot; 
+#&gt; 
+#&gt; Component 311 :
+#&gt; [1] &quot;great&quot; &quot;body&quot; 
+#&gt; 
+#&gt; Component 312 :
+#&gt; [1] &quot;two&quot;       &quot;great&quot;     &quot;political&quot; &quot;parties&quot;  
+#&gt; 
+#&gt; Component 313 :
+#&gt; [1] &quot;may&quot;   &quot;exist&quot;
+#&gt; 
+#&gt; Component 314 :
+#&gt; [1] &quot;political&quot; &quot;family&quot;   
+#&gt; 
+#&gt; Component 315 :
+#&gt; [1] &quot;national&quot; &quot;militia&quot; 
+#&gt; 
+#&gt; Component 316 :
+#&gt; [1] &quot;us&quot;    &quot;still&quot;
+#&gt; 
+#&gt; Component 317 :
+#&gt; [1] &quot;honest&quot;     &quot;friendship&quot;
+#&gt; 
+#&gt; Component 318 :
+#&gt; [1] &quot;great&quot;  &quot;people&quot;
+#&gt; 
+#&gt; Component 319 :
+#&gt; [1] &quot;domestic&quot; &quot;concerns&quot;
+#&gt; 
+#&gt; Component 320 :
+#&gt; [1] &quot;single&quot;     &quot;individual&quot;
+#&gt; 
+#&gt; Component 321 :
+#&gt; [1] &quot;look&quot; &quot;back&quot;
+#&gt; 
+#&gt; Component 322 :
+#&gt; [1] &quot;must&quot;  &quot;carry&quot;
+#&gt; 
+#&gt; Component 323 :
+#&gt; [1] &quot;legitimate&quot; &quot;exercise&quot;  
+#&gt; 
+#&gt; Component 324 :
+#&gt; [1] &quot;political&quot; &quot;rights&quot;   
+#&gt; 
+#&gt; Component 325 :
+#&gt; [1] &quot;gave&quot; &quot;us&quot;  
+#&gt; 
+#&gt; Component 326 :
+#&gt; [1] &quot;naval&quot;    &quot;officers&quot;
+#&gt; 
+#&gt; Component 327 :
+#&gt; [1] &quot;eminent&quot; &quot;degree&quot; 
+#&gt; 
+#&gt; Component 328 :
+#&gt; [1] &quot;representative&quot; &quot;democracy&quot;     
+#&gt; 
+#&gt; Component 329 :
+#&gt; [1] &quot;existing&quot;   &quot;conditions&quot;
+#&gt; 
+#&gt; Component 330 :
+#&gt; [1] &quot;executive&quot; &quot;branch&quot;   
+#&gt; 
+#&gt; Component 331 :
+#&gt; [1] &quot;remain&quot; &quot;free&quot;  
+#&gt; 
+#&gt; Component 332 :
+#&gt; [1] &quot;however&quot; &quot;far&quot;    
+#&gt; 
+#&gt; Component 333 :
+#&gt; [1] &quot;large&quot;   &quot;measure&quot;
+#&gt; 
+#&gt; Component 334 :
+#&gt; [1] &quot;must&quot;     &quot;continue&quot;
+#&gt; 
+#&gt; Component 335 :
+#&gt; [1] &quot;little&quot; &quot;less&quot;  
+#&gt; 
+#&gt; Component 336 :
+#&gt; [1] &quot;higher&quot; &quot;degree&quot;
+#&gt; 
+#&gt; Component 337 :
+#&gt; [1] &quot;century&quot; &quot;ago&quot;    
+#&gt; 
+#&gt; Component 338 :
+#&gt; [1] &quot;official&quot; &quot;act&quot;     
+#&gt; 
+#&gt; Component 339 :
+#&gt; [1] &quot;democracy&quot; &quot;alone&quot;    
+#&gt; 
+#&gt; Component 340 :
+#&gt; [1] &quot;one&quot;   &quot;party&quot;
+#&gt; 
+#&gt; Component 341 :
+#&gt; [1] &quot;armed&quot; &quot;force&quot;
+#&gt; 
+#&gt; Component 342 :
+#&gt; [1] &quot;national&quot; &quot;interest&quot;
+#&gt; 
+#&gt; Component 343 :
+#&gt; [1] &quot;shall&quot;    &quot;continue&quot;
+#&gt; 
+#&gt; Component 344 :
+#&gt; [1] &quot;human&quot;  &quot;spirit&quot;
+#&gt; 
+#&gt; Component 345 :
+#&gt; [1] &quot;common&quot;  &quot;purpose&quot;
+#&gt; 
+#&gt; Component 346 :
+#&gt; [1] &quot;political&quot; &quot;system&quot;   
+#&gt; 
+#&gt; Component 347 :
+#&gt; [1] &quot;local&quot;      &quot;advantages&quot;
+#&gt; 
+#&gt; Component 348 :
+#&gt; [1] &quot;public&quot;  &quot;welfare&quot;
+#&gt; 
+#&gt; Component 349 :
+#&gt; [1] &quot;peaceful&quot; &quot;world&quot;   
+#&gt; 
+#&gt; Component 350 :
+#&gt; [1] &quot;beneficent&quot; &quot;purposes&quot;  
+#&gt; 
+#&gt; Component 351 :
+#&gt; [1] &quot;times&quot;  &quot;change&quot;
+#&gt; 
+#&gt; Component 352 :
+#&gt; [1] &quot;public&quot; &quot;trust&quot; 
+#&gt; 
+#&gt; Component 353 :
+#&gt; [1] &quot;will&quot;   &quot;endure&quot;
+#&gt; 
+#&gt; Component 354 :
+#&gt; [1] &quot;growing&quot; &quot;economy&quot;
+#&gt; 
+#&gt; Component 355 :
+#&gt; [1] &quot;domestic&quot; &quot;safety&quot;  
+#&gt; 
+#&gt; Component 356 :
+#&gt; [1] &quot;single&quot; &quot;day&quot;   
+#&gt; 
+#&gt; Component 357 :
+#&gt; [1] &quot;mighty&quot; &quot;force&quot; 
+#&gt; 
+#&gt; Component 358 :
+#&gt; [1] &quot;complete&quot;   &quot;protection&quot;
+#&gt; 
+#&gt; Component 359 :
+#&gt; [1] &quot;citizens&quot;   &quot;everywhere&quot;
+#&gt; 
+#&gt; Component 360 :
+#&gt; [1] &quot;strict&quot;  &quot;economy&quot;
+#&gt; 
+#&gt; Component 361 :
+#&gt; [1] &quot;legislative&quot; &quot;powers&quot;     
+#&gt; 
+#&gt; Component 362 :
+#&gt; [1] &quot;one&quot;  &quot;side&quot;
+#&gt; 
+#&gt; Component 363 :
+#&gt; [1] &quot;chief&quot;     &quot;executive&quot; &quot;office&quot;   
+#&gt; 
+#&gt; Component 364 :
+#&gt; [1] &quot;productive&quot; &quot;work&quot;      
+#&gt; 
+#&gt; Component 365 :
+#&gt; [1] &quot;moral&quot;  &quot;duties&quot;
+#&gt; 
+#&gt; Component 366 :
+#&gt; [1] &quot;secure&quot; &quot;peace&quot; 
+#&gt; 
+#&gt; Component 367 :
+#&gt; [1] &quot;now&quot;    &quot;living&quot;
+#&gt; 
+#&gt; Component 368 :
+#&gt; [1] &quot;powers&quot;  &quot;granted&quot;
+#&gt; 
+#&gt; Component 369 :
+#&gt; [1] &quot;home&quot; &quot;life&quot;
+#&gt; 
+#&gt; Component 370 :
+#&gt; [1] &quot;deep&quot;     &quot;interest&quot;
+#&gt; 
+#&gt; Component 371 :
+#&gt; [1] &quot;passed&quot; &quot;since&quot; 
+#&gt; 
+#&gt; Component 372 :
+#&gt; [1] &quot;personal&quot; &quot;rights&quot;  
+#&gt; 
+#&gt; Component 373 :
+#&gt; [1] &quot;war&quot;    &quot;abroad&quot;
+#&gt; 
+#&gt; Component 374 :
+#&gt; [1] &quot;religious&quot; &quot;freedom&quot;  
+#&gt; 
+#&gt; Component 375 :
+#&gt; [1] &quot;useful&quot;      &quot;enterprises&quot;
+#&gt; 
+#&gt; Component 376 :
+#&gt; [1] &quot;economic&quot; &quot;need&quot;    
+#&gt; 
+#&gt; Component 377 :
+#&gt; [1] &quot;profound&quot; &quot;sense&quot;   
+#&gt; 
+#&gt; Component 378 :
+#&gt; [1] &quot;existing&quot; &quot;law&quot;     
+#&gt; 
+#&gt; Component 379 :
+#&gt; [1] &quot;modern&quot;  &quot;weapons&quot;
+#&gt; 
+#&gt; Component 380 :
+#&gt; [1] &quot;progress&quot; &quot;since&quot;   
+#&gt; 
+#&gt; Component 381 :
+#&gt; [1] &quot;fellow&quot; &quot;men&quot;   
+#&gt; 
+#&gt; Component 382 :
+#&gt; [1] &quot;different&quot; &quot;race&quot;     
+#&gt; 
+#&gt; Component 383 :
+#&gt; [1] &quot;peace&quot;   &quot;among&quot;   &quot;nations&quot;
+#&gt; 
+#&gt; Component 384 :
+#&gt; [1] &quot;local&quot;    &quot;interest&quot;
+#&gt; 
+#&gt; Component 385 :
+#&gt; [1] &quot;moral&quot;    &quot;strength&quot;
+#&gt; 
+#&gt; Component 386 :
+#&gt; [1] &quot;moral&quot;     &quot;influence&quot;
+#&gt; 
+#&gt; Component 387 :
+#&gt; [1] &quot;simple&quot; &quot;things&quot;
+#&gt; 
+#&gt; Component 388 :
+#&gt; [1] &quot;mutual&quot;    &quot;interests&quot;
+#&gt; 
+#&gt; Component 389 :
+#&gt; [1] &quot;greatest&quot; &quot;things&quot;  
+#&gt; 
+#&gt; Component 390 :
+#&gt; [1] &quot;practical&quot;  &quot;importance&quot;
+#&gt; 
+#&gt; Component 391 :
+#&gt; [1] &quot;private&quot;   &quot;interests&quot;
+#&gt; 
+#&gt; Component 392 :
+#&gt; [1] &quot;late&quot;     &quot;election&quot;
+#&gt; 
+#&gt; Component 393 :
+#&gt; [1] &quot;full&quot;    &quot;measure&quot;
+#&gt; 
+#&gt; Component 394 :
+#&gt; [1] &quot;executive&quot; &quot;functions&quot;
+#&gt; 
+#&gt; Component 395 :
+#&gt; [1] &quot;might&quot; &quot;arise&quot;
+#&gt; 
+#&gt; Component 396 :
+#&gt; [1] &quot;us&quot;    &quot;go&quot;    &quot;forth&quot;
+#&gt; 
+#&gt; Component 397 :
+#&gt; [1] &quot;international&quot; &quot;law&quot;          
+#&gt; 
+#&gt; Component 398 :
+#&gt; [1] &quot;take&quot; &quot;care&quot;
+#&gt; 
+#&gt; Component 399 :
+#&gt; [1] &quot;lasting&quot; &quot;welfare&quot;
+#&gt; 
+#&gt; Component 400 :
+#&gt; [1] &quot;tax&quot;    &quot;system&quot;
+#&gt; 
+#&gt; Component 401 :
+#&gt; [1] &quot;must&quot;  &quot;bring&quot;
+#&gt; 
+#&gt; Component 402 :
+#&gt; [1] &quot;restore&quot; &quot;peace&quot;  
+#&gt; 
+#&gt; Component 403 :
+#&gt; [1] &quot;local&quot;     &quot;interests&quot;
+#&gt; 
+#&gt; Component 404 :
+#&gt; [1] &quot;long&quot; &quot;live&quot;
+#&gt; 
+#&gt; Component 405 :
+#&gt; [1] &quot;law&quot;         &quot;enforcement&quot;
+#&gt; 
+#&gt; Component 406 :
+#&gt; [1] &quot;liberty&quot; &quot;secured&quot;
+#&gt; 
+#&gt; Component 407 :
+#&gt; [1] &quot;done&quot; &quot;much&quot;
+#&gt; 
+#&gt; Component 408 :
+#&gt; [1] &quot;restore&quot; &quot;harmony&quot;
+#&gt; 
+#&gt; Component 409 :
+#&gt; [1] &quot;common&quot;     &quot;enterprise&quot;
+#&gt; 
+#&gt; Component 410 :
+#&gt; [1] &quot;sound&quot;      &quot;discretion&quot;
+#&gt; 
+#&gt; Component 411 :
+#&gt; [1] &quot;let&quot;   &quot;us&quot;    &quot;go&quot;    &quot;forth&quot;
+#&gt; 
+#&gt; Component 412 :
+#&gt; [1] &quot;industrial&quot; &quot;life&quot;      
+#&gt; 
+#&gt; Component 413 :
+#&gt; [1] &quot;highest&quot;   &quot;interests&quot;
+#&gt; 
+#&gt; Component 414 :
+#&gt; [1] &quot;public&quot; &quot;health&quot;
+#&gt; 
+#&gt; Component 415 :
+#&gt; [1] &quot;tax&quot;    &quot;burden&quot;
+#&gt; 
+#&gt; Component 416 :
+#&gt; [1] &quot;better&quot;     &quot;calculated&quot;
+#&gt; 
+#&gt; Component 417 :
+#&gt; [1] &quot;past&quot;       &quot;experience&quot;
+#&gt; 
+#&gt; Component 418 :
+#&gt; [1] &quot;oath&quot;  &quot;today&quot;
+#&gt; 
+#&gt; Component 419 :
+#&gt; [1] &quot;important&quot; &quot;work&quot;     
+#&gt; 
+#&gt; Component 420 :
+#&gt; [1] &quot;constitutional&quot; &quot;means&quot;         
+#&gt; 
+#&gt; Component 421 :
+#&gt; [1] &quot;social&quot;      &quot;intercourse&quot;
+#&gt; 
+#&gt; Component 422 :
+#&gt; [1] &quot;making&quot; &quot;power&quot; 
+#&gt; 
+#&gt; Component 423 :
+#&gt; [1] &quot;second&quot; &quot;term&quot;  
+#&gt; 
+#&gt; Component 424 :
+#&gt; [1] &quot;ordinary&quot;      &quot;circumstances&quot;
+#&gt; 
+#&gt; Component 425 :
+#&gt; [1] &quot;middle&quot; &quot;class&quot; 
+#&gt; 
+#&gt; Component 426 :
+#&gt; [1] &quot;prosperous&quot; &quot;times&quot;     
+#&gt; 
+#&gt; Component 427 :
+#&gt; [1] &quot;universal&quot; &quot;education&quot;
+#&gt; 
+#&gt; Component 428 :
+#&gt; [1] &quot;common&quot;  &quot;welfare&quot;
+#&gt; 
+#&gt; Component 429 :
+#&gt; [1] &quot;long&quot;    &quot;history&quot;
+#&gt; 
+#&gt; Component 430 :
+#&gt; [1] &quot;one&quot;     &quot;hundred&quot;
+#&gt; 
+#&gt; Component 431 :
+#&gt; [1] &quot;come&quot;   &quot;within&quot;
+#&gt; 
+#&gt; Component 432 :
+#&gt; [1] &quot;successful&quot; &quot;experiment&quot;
+#&gt; 
+#&gt; Component 433 :
+#&gt; [1] &quot;judicial&quot; &quot;branches&quot;
+#&gt; 
+#&gt; Component 434 :
+#&gt; [1] &quot;present&quot; &quot;office&quot; 
+#&gt; 
+#&gt; Component 435 :
+#&gt; [1] &quot;give&quot; &quot;us&quot;  
+#&gt; 
+#&gt; Component 436 :
+#&gt; [1] &quot;moral&quot;     &quot;principle&quot;
+#&gt; 
+#&gt; Component 437 :
+#&gt; [1] &quot;great&quot; &quot;evil&quot; 
+#&gt; 
+#&gt; Component 438 :
+#&gt; [1] &quot;things&quot; &quot;first&quot; 
+#&gt; 
+#&gt; Component 439 :
+#&gt; [1] &quot;let&quot;   &quot;us&quot;    &quot;begin&quot; &quot;anew&quot; 
+#&gt; 
+#&gt; Component 440 :
+#&gt; [1] &quot;upon&quot;     &quot;occasion&quot;
+#&gt; 
+#&gt; Component 441 :
+#&gt; [1] &quot;means&quot;  &quot;within&quot;
+#&gt; 
+#&gt; Component 442 :
+#&gt; [1] &quot;full&quot;  &quot;force&quot;
+#&gt; 
+#&gt; Component 443 :
+#&gt; [1] &quot;human&quot;        &quot;institutions&quot;
+#&gt; 
+#&gt; Component 444 :
+#&gt; [1] &quot;task&quot;  &quot;means&quot;
+#&gt; 
+#&gt; Component 445 :
+#&gt; [1] &quot;limited&quot; &quot;period&quot; 
+#&gt; 
+#&gt; Component 446 :
+#&gt; [1] &quot;full&quot;          &quot;consideration&quot;
+#&gt; 
+#&gt; Component 447 :
+#&gt; [1] &quot;individual&quot; &quot;men&quot;       
+#&gt; 
+#&gt; Component 448 :
+#&gt; [1] &quot;much&quot;      &quot;disturbed&quot;
+#&gt; 
+#&gt; Component 449 :
+#&gt; [1] &quot;us&quot;  &quot;ask&quot;
+#&gt; 
+#&gt; Component 450 :
+#&gt; [1] &quot;us&quot;    &quot;build&quot;
+#&gt; 
+#&gt; Component 451 :
+#&gt; [1] &quot;look&quot;   &quot;within&quot;
+#&gt; 
+#&gt; Component 452 :
+#&gt; [1] &quot;safety&quot; &quot;abroad&quot;
+#&gt; 
+#&gt; Component 453 :
+#&gt; [1] &quot;mutual&quot;     &quot;concession&quot;
+#&gt; 
+#&gt; Component 454 :
+#&gt; [1] &quot;also&quot;   &quot;passed&quot;
+#&gt; 
+#&gt; Component 455 :
+#&gt; [1] &quot;purpose&quot; &quot;today&quot;  
+#&gt; 
+#&gt; Component 456 :
+#&gt; [1] &quot;constitutional&quot; &quot;law&quot;           
+#&gt; 
+#&gt; Component 457 :
+#&gt; [1] &quot;human&quot;   &quot;history&quot;
+#&gt; 
+#&gt; Component 458 :
+#&gt; [1] &quot;international&quot; &quot;controversies&quot;
+#&gt; 
+#&gt; Component 459 :
+#&gt; [1] &quot;will&quot;   &quot;remain&quot;
+#&gt; 
+#&gt; Component 460 :
+#&gt; [1] &quot;perfect&quot; &quot;union&quot;  
+#&gt; 
+#&gt; Component 461 :
+#&gt; [1] &quot;great&quot; &quot;trust&quot;
+#&gt; 
+#&gt; Component 462 :
+#&gt; [1] &quot;independent&quot; &quot;state&quot;      
+#&gt; 
+#&gt; Component 463 :
+#&gt; [1] &quot;local&quot;       &quot;communities&quot;
+#&gt; 
+#&gt; Component 464 :
+#&gt; [1] &quot;present&quot; &quot;crisis&quot; 
+#&gt; 
+#&gt; Component 465 :
+#&gt; [1] &quot;domestic&quot;     &quot;tranquillity&quot;
+#&gt; 
+#&gt; Component 466 :
+#&gt; [1] &quot;sacred&quot; &quot;oath&quot;  
+#&gt; 
+#&gt; Component 467 :
+#&gt; [1] &quot;equal&quot; &quot;right&quot;
+#&gt; 
+#&gt; Component 468 :
+#&gt; [1] &quot;many&quot;        &quot;generations&quot;
+#&gt; 
+#&gt; Component 469 :
+#&gt; [1] &quot;regular&quot; &quot;force&quot;  
+#&gt; 
+#&gt; Component 470 :
+#&gt; [1] &quot;future&quot; &quot;time&quot;  
+#&gt; 
+#&gt; Component 471 :
+#&gt; [1] &quot;will&quot; &quot;go&quot;   &quot;away&quot;
+#&gt; 
+#&gt; Component 472 :
+#&gt; [1] &quot;efficient&quot;      &quot;administration&quot;
+#&gt; 
+#&gt; Component 473 :
+#&gt; [1] &quot;shall&quot; &quot;need&quot; 
+#&gt; 
+#&gt; Component 474 :
+#&gt; [1] &quot;common&quot; &quot;rights&quot;
+#&gt; 
+#&gt; Component 475 :
+#&gt; [1] &quot;single&quot;   &quot;instance&quot;
+#&gt; 
+#&gt; Component 476 :
+#&gt; [1] &quot;patriotic&quot; &quot;men&quot;      
+#&gt; 
+#&gt; Component 477 :
+#&gt; [1] &quot;nuclear&quot; &quot;weapons&quot;
+#&gt; 
+#&gt; Component 478 :
+#&gt; [1] &quot;new&quot;  &quot;life&quot;
+#&gt; 
+#&gt; Component 479 :
+#&gt; [1] &quot;must&quot; &quot;give&quot;
+#&gt; 
+#&gt; Component 480 :
+#&gt; [1] &quot;centuries&quot; &quot;ago&quot;      
+#&gt; 
+#&gt; Component 481 :
+#&gt; [1] &quot;two&quot;       &quot;centuries&quot;
+#&gt; 
+#&gt; Component 482 :
+#&gt; [1] &quot;civilized&quot; &quot;nations&quot;  
+#&gt; 
+#&gt; Component 483 :
+#&gt; [1] &quot;like&quot;   &quot;manner&quot;
+#&gt; 
+#&gt; Component 484 :
+#&gt; [1] &quot;ever&quot;  &quot;since&quot;
+#&gt; 
+#&gt; Component 485 :
+#&gt; [1] &quot;another&quot; &quot;people&quot; 
+#&gt; 
+#&gt; Component 486 :
+#&gt; [1] &quot;limited&quot; &quot;powers&quot; 
+#&gt; 
+#&gt; Component 487 :
+#&gt; [1] &quot;common&quot; &quot;effort&quot;
+#&gt; 
+#&gt; Component 488 :
+#&gt; [1] &quot;young&quot;  &quot;nation&quot;
+#&gt; 
+#&gt; Component 489 :
+#&gt; [1] &quot;civil&quot; &quot;power&quot;
+#&gt; 
+#&gt; Component 490 :
+#&gt; [1] &quot;private&quot;   &quot;character&quot;
+#&gt; 
+#&gt; Component 491 :
+#&gt; [1] &quot;human&quot;   &quot;liberty&quot;
+#&gt; 
+#&gt; Component 492 :
+#&gt; [1] &quot;principles&quot; &quot;upon&quot;      
+#&gt; 
+#&gt; Component 493 :
+#&gt; [1] &quot;republican&quot; &quot;principle&quot; 
+#&gt; 
+#&gt; Component 494 :
+#&gt; [1] &quot;economic&quot; &quot;system&quot;  
+#&gt; 
+#&gt; Component 495 :
+#&gt; [1] &quot;general&quot;   &quot;principle&quot;
+#&gt; 
+#&gt; Component 496 :
+#&gt; [1] &quot;permanent&quot; &quot;condition&quot;
+#&gt; 
+#&gt; Component 497 :
+#&gt; [1] &quot;foreign&quot;   &quot;countries&quot;
+#&gt; 
+#&gt; Component 498 :
+#&gt; [1] &quot;establish&quot; &quot;justice&quot;  
+#&gt; 
+#&gt; Component 499 :
+#&gt; [1] &quot;free&quot;    &quot;society&quot;
+#&gt; 
+#&gt; Component 500 :
+#&gt; [1] &quot;just&quot;  &quot;sense&quot;
+#&gt; 
+#&gt; Component 501 :
+#&gt; [1] &quot;abiding&quot;  &quot;citizens&quot;
+#&gt; 
+#&gt; Component 502 :
+#&gt; [1] &quot;present&quot;    &quot;importance&quot;
+#&gt; 
+#&gt; Component 503 :
+#&gt; [1] &quot;shall&quot; &quot;leave&quot;
+#&gt; 
+#&gt; Component 504 :
+#&gt; [1] &quot;found&quot;     &quot;necessary&quot;
+#&gt; 
+#&gt; Component 505 :
+#&gt; [1] &quot;public&quot; &quot;policy&quot;
+#&gt; 
+#&gt; Component 506 :
+#&gt; [1] &quot;just&quot;   &quot;policy&quot;
+#&gt; 
+#&gt; Component 507 :
+#&gt; [1] &quot;democratic&quot; &quot;principles&quot;
+#&gt; 
+#&gt; Component 508 :
+#&gt; [1] &quot;commercial&quot; &quot;nations&quot;   
+#&gt; 
+#&gt; Component 509 :
+#&gt; [1] &quot;sincere&quot; &quot;desire&quot; 
+#&gt; 
+#&gt; Component 510 :
+#&gt; [1] &quot;extraordinary&quot; &quot;events&quot;       
+#&gt; 
+#&gt; Component 511 :
+#&gt; [1] &quot;require&quot; &quot;us&quot;     
+#&gt; 
+#&gt; Component 512 :
+#&gt; [1] &quot;right&quot; &quot;now&quot;  
+#&gt; 
+#&gt; Component 513 :
+#&gt; [1] &quot;us&quot;   &quot;free&quot;
+#&gt; 
+#&gt; Component 514 :
+#&gt; [1] &quot;cultivate&quot; &quot;peace&quot;    
+#&gt; 
+#&gt; Component 515 :
+#&gt; [1] &quot;fellow&quot;     &quot;countrymen&quot;
+#&gt; 
+#&gt; Component 516 :
+#&gt; [1] &quot;shall&quot; &quot;look&quot; 
+#&gt; 
+#&gt; Component 517 :
+#&gt; [1] &quot;distinct&quot;    &quot;communities&quot;
+#&gt; 
+#&gt; Component 518 :
+#&gt; [1] &quot;years&quot; &quot;hence&quot;
+#&gt; 
+#&gt; Component 519 :
+#&gt; [1] &quot;second&quot; &quot;time&quot;  
+#&gt; 
+#&gt; Component 520 :
+#&gt; [1] &quot;normal&quot;  &quot;balance&quot;
+#&gt; 
+#&gt; Component 521 :
+#&gt; [1] &quot;national&quot; &quot;history&quot; 
+#&gt; 
+#&gt; Component 522 :
+#&gt; [1] &quot;national&quot; &quot;capital&quot; 
+#&gt; 
+#&gt; Component 523 :
+#&gt; [1] &quot;arise&quot;      &quot;concerning&quot;
+#&gt; 
+#&gt; Component 524 :
+#&gt; [1] &quot;will&quot;  &quot;build&quot;
+#&gt; 
+#&gt; Component 525 :
+#&gt; [1] &quot;best&quot;   &quot;powers&quot;
+#&gt; 
+#&gt; Component 526 :
+#&gt; [1] &quot;fifteenth&quot; &quot;amendment&quot;
+#&gt; 
+#&gt; Component 527 :
+#&gt; [1] &quot;fair&quot; &quot;play&quot;
+#&gt; 
+#&gt; Component 528 :
+#&gt; [1] &quot;will&quot;       &quot;faithfully&quot; &quot;execute&quot;   
+#&gt; 
+#&gt; Component 529 :
+#&gt; [1] &quot;public&quot;       &quot;expenditures&quot;
+#&gt; 
+#&gt; Component 530 :
+#&gt; [1] &quot;great&quot;  &quot;object&quot;
+#&gt; 
+#&gt; Component 531 :
+#&gt; [1] &quot;constant&quot; &quot;effort&quot;  
+#&gt; 
+#&gt; Component 532 :
+#&gt; [1] &quot;whole&quot;      &quot;population&quot;
+#&gt; 
+#&gt; Component 533 :
+#&gt; [1] &quot;heavy&quot;   &quot;burdens&quot;
+#&gt; 
+#&gt; Component 534 :
+#&gt; [1] &quot;illustrious&quot; &quot;men&quot;        
+#&gt; 
+#&gt; Component 535 :
+#&gt; [1] &quot;arduous&quot; &quot;duties&quot; 
+#&gt; 
+#&gt; Component 536 :
+#&gt; [1] &quot;exact&quot;   &quot;justice&quot;
+#&gt; 
+#&gt; Component 537 :
+#&gt; [1] &quot;will&quot;  &quot;guide&quot;
+#&gt; 
+#&gt; Component 538 :
+#&gt; [1] &quot;upon&quot;       &quot;principles&quot;
+#&gt; 
+#&gt; Component 539 :
+#&gt; [1] &quot;vital&quot;     &quot;principle&quot;
+#&gt; 
+#&gt; Component 540 :
+#&gt; [1] &quot;influence&quot; &quot;among&quot;    
+#&gt; 
+#&gt; Component 541 :
+#&gt; [1] &quot;sufficient&quot; &quot;time&quot;      
+#&gt; 
+#&gt; Component 542 :
+#&gt; [1] &quot;high&quot;    &quot;destiny&quot;
+#&gt; 
+#&gt; Component 543 :
+#&gt; [1] &quot;us&quot;       &quot;together&quot;
+#&gt; 
+#&gt; Component 544 :
+#&gt; [1] &quot;constituted&quot; &quot;authorities&quot;
+#&gt; 
+#&gt; Component 545 :
+#&gt; [1] &quot;good&quot;    &quot;offices&quot;
+#&gt; 
+#&gt; Component 546 :
+#&gt; [1] &quot;party&quot;      &quot;government&quot;
+#&gt; 
+#&gt; Component 547 :
+#&gt; [1] &quot;national&quot; &quot;faith&quot;   
+#&gt; 
+#&gt; Component 548 :
+#&gt; [1] &quot;every&quot;    &quot;instance&quot;
+#&gt; 
+#&gt; Component 549 :
+#&gt; [1] &quot;bind&quot;     &quot;together&quot;
+#&gt; 
+#&gt; Component 550 :
+#&gt; [1] &quot;constitutional&quot; &quot;authority&quot;     
+#&gt; 
+#&gt; Component 551 :
+#&gt; [1] &quot;every&quot;   &quot;patriot&quot;
+#&gt; 
+#&gt; Component 552 :
+#&gt; [1] &quot;law&quot;  &quot;upon&quot;
+#&gt; 
+#&gt; Component 553 :
+#&gt; [1] &quot;common&quot;  &quot;destiny&quot;
+#&gt; 
+#&gt; Component 554 :
+#&gt; [1] &quot;national&quot; &quot;objects&quot; 
+#&gt; 
+#&gt; Component 555 :
+#&gt; [1] &quot;greater&quot;  &quot;security&quot;
+#&gt; 
+#&gt; Component 556 :
+#&gt; [1] &quot;republican&quot; &quot;government&quot;
+#&gt; 
+#&gt; Component 557 :
+#&gt; [1] &quot;foreign&quot; &quot;dangers&quot;
+#&gt; 
+#&gt; Component 558 :
+#&gt; [1] &quot;national&quot; &quot;strength&quot;
+#&gt; 
+#&gt; Component 559 :
+#&gt; [1] &quot;people&quot; &quot;depend&quot;
+#&gt; 
+#&gt; Component 560 :
+#&gt; [1] &quot;us&quot;    &quot;begin&quot; &quot;anew&quot; 
+#&gt; 
+#&gt; Component 561 :
+#&gt; [1] &quot;common&quot;    &quot;sentiment&quot;
+#&gt; 
+#&gt; Component 562 :
+#&gt; [1] &quot;let&quot;   &quot;us&quot;    &quot;build&quot;
+#&gt; 
+#&gt; Component 563 :
+#&gt; [1] &quot;greater&quot; &quot;part&quot;   
+#&gt; 
+#&gt; Component 564 :
+#&gt; [1] &quot;necessary&quot; &quot;work&quot;     
+#&gt; 
+#&gt; Component 565 :
+#&gt; [1] &quot;discriminating&quot; &quot;duties&quot;        
+#&gt; 
+#&gt; Component 566 :
+#&gt; [1] &quot;financial&quot; &quot;condition&quot;
+#&gt; 
+#&gt; Component 567 :
+#&gt; [1] &quot;present&quot;   &quot;situation&quot;
+#&gt; 
+#&gt; Component 568 :
+#&gt; [1] &quot;let&quot;   &quot;us&quot;    &quot;begin&quot;
+#&gt; 
+#&gt; Component 569 :
+#&gt; [1] &quot;one&quot;        &quot;individual&quot;
+#&gt; 
+#&gt; Component 570 :
+#&gt; [1] &quot;world&quot; &quot;peace&quot;
+#&gt; 
+#&gt; Component 571 :
+#&gt; [1] &quot;free&quot;   &quot;nation&quot;
+#&gt; 
+#&gt; Component 572 :
+#&gt; [1] &quot;two&quot;    &quot;metals&quot;
+#&gt; 
+#&gt; Component 573 :
+#&gt; [1] &quot;let&quot;      &quot;us&quot;       &quot;remember&quot;
+#&gt; 
+#&gt; Component 574 :
+#&gt; [1] &quot;legal&quot;          &quot;administration&quot;
+#&gt; 
+#&gt; Component 575 :
+#&gt; [1] &quot;upon&quot; &quot;none&quot;
+#&gt; 
+#&gt; Component 576 :
+#&gt; [1] &quot;best&quot;    &quot;promote&quot;
+#&gt; 
+#&gt; Component 577 :
+#&gt; [1] &quot;now&quot;  &quot;take&quot;
+#&gt; 
+#&gt; Component 578 :
+#&gt; [1] &quot;now&quot;   &quot;stand&quot;
+#&gt; 
+#&gt; Component 579 :
+#&gt; [1] &quot;general&quot;    &quot;prosperity&quot;
+#&gt; 
+#&gt; Component 580 :
+#&gt; [1] &quot;just&quot;    &quot;demands&quot;
+#&gt; 
+#&gt; Component 581 :
+#&gt; [1] &quot;law&quot;  &quot;can&quot;  &quot;ever&quot;
+#&gt; 
+#&gt; Component 582 :
+#&gt; [1] &quot;acting&quot; &quot;within&quot;
+#&gt; 
+#&gt; Component 583 :
+#&gt; [1] &quot;deemed&quot;    &quot;necessary&quot;
+#&gt; 
+#&gt; Component 584 :
+#&gt; [1] &quot;generous&quot; &quot;people&quot;  
+#&gt; 
+#&gt; Component 585 :
+#&gt; [1] &quot;great&quot;  &quot;wealth&quot;
+#&gt; 
+#&gt; Component 586 :
+#&gt; [1] &quot;purpose&quot; &quot;will&quot;   
+#&gt; 
+#&gt; Component 587 :
+#&gt; [1] &quot;without&quot; &quot;war&quot;    
+#&gt; 
+#&gt; Component 588 :
+#&gt; [1] &quot;first&quot; &quot;place&quot;
+#&gt; 
+#&gt; Component 589 :
+#&gt; [1] &quot;organic&quot; &quot;law&quot;    
+#&gt; 
+#&gt; Component 590 :
+#&gt; [1] &quot;friendly&quot;  &quot;relations&quot;
+#&gt; 
+#&gt; Component 591 :
+#&gt; [1] &quot;many&quot;     &quot;respects&quot;
+#&gt; 
+#&gt; Component 592 :
+#&gt; [1] &quot;five&quot;  &quot;years&quot; &quot;hence&quot;
+#&gt; 
+#&gt; Component 593 :
+#&gt; [1] &quot;full&quot;       &quot;confidence&quot;
+#&gt; 
+#&gt; Component 594 :
+#&gt; [1] &quot;people&quot; &quot;find&quot;  
+#&gt; 
+#&gt; Component 595 :
+#&gt; [1] &quot;sole&quot;    &quot;purpose&quot;
+#&gt; 
+#&gt; Component 596 :
+#&gt; [1] &quot;present&quot; &quot;state&quot;  
+#&gt; 
+#&gt; Component 597 :
+#&gt; [1] &quot;administrative&quot; &quot;policy&quot;        
+#&gt; 
+#&gt; Component 598 :
+#&gt; [1] &quot;make&quot; &quot;laws&quot;
+#&gt; 
+#&gt; Component 599 :
+#&gt; [1] &quot;earthly&quot; &quot;hopes&quot;  
+#&gt; 
+#&gt; Component 600 :
+#&gt; [1] &quot;political&quot; &quot;action&quot;   
+#&gt; 
+#&gt; Component 601 :
+#&gt; [1] &quot;create&quot; &quot;new&quot;    &quot;jobs&quot;  
+#&gt; 
+#&gt; Component 602 :
+#&gt; [1] &quot;mutual&quot;  &quot;respect&quot;
+#&gt; 
+#&gt; Component 603 :
+#&gt; [1] &quot;judgment&quot; &quot;may&quot;     
+#&gt; 
+#&gt; Component 604 :
+#&gt; [1] &quot;justice&quot; &quot;may&quot;    
+#&gt; 
+#&gt; Component 605 :
+#&gt; [1] &quot;national&quot; &quot;defense&quot; 
+#&gt; 
+#&gt; Component 606 :
+#&gt; [1] &quot;national&quot;     &quot;independence&quot;
+#&gt; 
+#&gt; Component 607 :
+#&gt; [1] &quot;cherish&quot; &quot;peace&quot;  
+#&gt; 
+#&gt; Component 608 :
+#&gt; [1] &quot;will&quot; &quot;find&quot;
+#&gt; 
+#&gt; Component 609 :
+#&gt; [1] &quot;whose&quot; &quot;hands&quot;
+#&gt; 
+#&gt; Component 610 :
+#&gt; [1] &quot;interstate&quot; &quot;commerce&quot;   &quot;railroads&quot; 
+#&gt; 
+#&gt; Component 611 :
+#&gt; [1] &quot;present&quot;   &quot;condition&quot;
+#&gt; 
+#&gt; Component 612 :
+#&gt; [1] &quot;citizen&quot; &quot;may&quot;    
+#&gt; 
+#&gt; Component 613 :
+#&gt; [1] &quot;human&quot;  &quot;nature&quot;
+#&gt; 
+#&gt; Component 614 :
+#&gt; [1] &quot;entire&quot;     &quot;confidence&quot;
+#&gt; 
+#&gt; Component 615 :
+#&gt; [1] &quot;major&quot;   &quot;purpose&quot;
+#&gt; 
+#&gt; Component 616 :
+#&gt; [1] &quot;beloved&quot; &quot;land&quot;   
+#&gt; 
+#&gt; Component 617 :
+#&gt; [1] &quot;trust&quot;   &quot;imposed&quot; &quot;upon&quot;   
+#&gt; 
+#&gt; Component 618 :
+#&gt; [1] &quot;law&quot; &quot;may&quot;
+#&gt; 
+#&gt; Component 619 :
+#&gt; [1] &quot;now&quot;    &quot;making&quot;
+#&gt; 
+#&gt; Component 620 :
+#&gt; [1] &quot;policy&quot; &quot;will&quot;  
+#&gt; 
+#&gt; Component 621 :
+#&gt; [1] &quot;fair&quot;       &quot;equivalent&quot;
+#&gt; 
+#&gt; Component 622 :
+#&gt; [1] &quot;entirely&quot;   &quot;consistent&quot;
+#&gt; 
+#&gt; Component 623 :
+#&gt; [1] &quot;home&quot;     &quot;industry&quot;
+#&gt; 
+#&gt; Component 624 :
+#&gt; [1] &quot;new&quot;        &quot;generation&quot;
+#&gt; 
+#&gt; Component 625 :
+#&gt; [1] &quot;standing&quot; &quot;armies&quot;  
+#&gt; 
+#&gt; Component 626 :
+#&gt; [1] &quot;still&quot;   &quot;believe&quot;
+#&gt; 
+#&gt; Component 627 :
+#&gt; [1] &quot;plainly&quot; &quot;written&quot;
+#&gt; 
+#&gt; Component 628 :
+#&gt; [1] &quot;high&quot;    &quot;purpose&quot;
+#&gt; 
+#&gt; Component 629 :
+#&gt; [1] &quot;equal&quot;       &quot;opportunity&quot;
+#&gt; 
+#&gt; Component 630 :
+#&gt; [1] &quot;new&quot;  &quot;ones&quot;
+#&gt; 
+#&gt; Component 631 :
+#&gt; [1] &quot;precious&quot; &quot;gift&quot;    
+#&gt; 
+#&gt; Component 632 :
+#&gt; [1] &quot;things&quot; &quot;may&quot;   
+#&gt; 
+#&gt; Component 633 :
+#&gt; [1] &quot;may&quot;  &quot;come&quot;
+#&gt; 
+#&gt; Component 634 :
+#&gt; [1] &quot;negro&quot; &quot;race&quot; 
+#&gt; 
+#&gt; Component 635 :
+#&gt; [1] &quot;will&quot;   &quot;never&quot;  &quot;forget&quot;
+#&gt; 
+#&gt; Component 636 :
+#&gt; [1] &quot;national&quot;  &quot;authority&quot;
+#&gt; 
+#&gt; Component 637 :
+#&gt; [1] &quot;without&quot; &quot;success&quot;
+#&gt; 
+#&gt; Component 638 :
+#&gt; [1] &quot;new&quot; &quot;day&quot;
+#&gt; 
+#&gt; Component 639 :
+#&gt; [1] &quot;will&quot; &quot;live&quot;
+#&gt; 
+#&gt; Component 640 :
+#&gt; [1] &quot;will&quot;    &quot;receive&quot;
+#&gt; 
+#&gt; Component 641 :
+#&gt; [1] &quot;will&quot;   &quot;secure&quot;
+#&gt; 
+#&gt; Component 642 :
+#&gt; [1] &quot;public&quot;   &quot;interest&quot; &quot;depends&quot; 
+#&gt; 
+#&gt; Component 643 :
+#&gt; [1] &quot;political&quot; &quot;power&quot;    
+#&gt; 
+#&gt; Component 644 :
+#&gt; [1] &quot;us&quot;      &quot;resolve&quot;
+#&gt; 
+#&gt; Component 645 :
+#&gt; [1] &quot;genuine&quot; &quot;spirit&quot; 
+#&gt; 
+#&gt; Component 646 :
+#&gt; [1] &quot;may&quot; &quot;go&quot; 
+#&gt; 
+#&gt; Component 647 :
+#&gt; [1] &quot;national&quot;       &quot;administration&quot;
+#&gt; 
+#&gt; Component 648 :
+#&gt; [1] &quot;national&quot;  &quot;resources&quot;
+#&gt; 
+#&gt; Component 649 :
+#&gt; [1] &quot;distinguished&quot; &quot;predecessor&quot;  
+#&gt; 
+#&gt; Component 650 :
+#&gt; [1] &quot;must&quot; &quot;rest&quot; &quot;upon&quot;
+#&gt; 
+#&gt; Component 651 :
+#&gt; [1] &quot;political&quot; &quot;condition&quot;
+#&gt; 
+#&gt; Component 652 :
+#&gt; [1] &quot;new&quot;     &quot;century&quot;
+#&gt; 
+#&gt; Component 653 :
+#&gt; [1] &quot;distant&quot; &quot;future&quot; 
+#&gt; 
+#&gt; Component 654 :
+#&gt; [1] &quot;appointing&quot; &quot;power&quot;     
+#&gt; 
+#&gt; Component 655 :
+#&gt; [1] &quot;public&quot;   &quot;servants&quot;
+#&gt; 
+#&gt; Component 656 :
+#&gt; [1] &quot;old&quot;      &quot;policies&quot;
+#&gt; 
+#&gt; Component 657 :
+#&gt; [1] &quot;election&quot; &quot;laws&quot;    
+#&gt; 
+#&gt; Component 658 :
+#&gt; [1] &quot;may&quot;     &quot;require&quot;
+#&gt; 
+#&gt; Component 659 :
+#&gt; [1] &quot;blood&quot; &quot;drawn&quot;
+#&gt; 
+#&gt; Component 660 :
+#&gt; [1] &quot;local&quot; &quot;self&quot; 
+#&gt; 
+#&gt; Component 661 :
+#&gt; [1] &quot;military&quot; &quot;force&quot;   
+#&gt; 
+#&gt; Component 662 :
+#&gt; [1] &quot;one&quot;  &quot;time&quot;
+#&gt; 
+#&gt; Component 663 :
+#&gt; [1] &quot;must&quot; &quot;live&quot;
+#&gt; 
+#&gt; Component 664 :
+#&gt; [1] &quot;shall&quot; &quot;count&quot; &quot;upon&quot; 
+#&gt; 
+#&gt; Component 665 :
+#&gt; [1] &quot;people&quot; &quot;desire&quot;
+#&gt; 
+#&gt; Component 666 :
+#&gt; [1] &quot;us&quot;   &quot;make&quot;
+#&gt; 
+#&gt; Component 667 :
+#&gt; [1] &quot;turning&quot; &quot;away&quot;   
+#&gt; 
+#&gt; Component 668 :
+#&gt; [1] &quot;us&quot;   &quot;well&quot;
+#&gt; 
+#&gt; Component 669 :
+#&gt; [1] &quot;laws&quot;    &quot;enacted&quot;
+#&gt; 
+#&gt; Component 670 :
+#&gt; [1] &quot;new&quot;   &quot;sense&quot;
+#&gt; 
+#&gt; Component 671 :
+#&gt; [1] &quot;slave&quot; &quot;trade&quot;
+#&gt; 
+#&gt; Component 672 :
+#&gt; [1] &quot;never&quot; &quot;can&quot;  
+#&gt; 
+#&gt; Component 673 :
+#&gt; [1] &quot;sacred&quot; &quot;fire&quot;  
+#&gt; 
+#&gt; Component 674 :
+#&gt; [1] &quot;may&quot;         &quot;confidently&quot; &quot;expect&quot;     
+#&gt; 
+#&gt; Component 675 :
+#&gt; [1] &quot;public&quot; &quot;order&quot; 
+#&gt; 
+#&gt; Component 676 :
+#&gt; [1] &quot;peaceful&quot;   &quot;settlement&quot;
+#&gt; 
+#&gt; Component 677 :
+#&gt; [1] &quot;must&quot;   &quot;follow&quot;
+#&gt; 
+#&gt; Component 678 :
+#&gt; [1] &quot;will&quot;   &quot;strive&quot;
+#&gt; 
+#&gt; Component 679 :
+#&gt; [1] &quot;may&quot;    &quot;appear&quot;
+#&gt; 
+#&gt; Component 680 :
+#&gt; [1] &quot;one&quot;     &quot;section&quot;
+#&gt; 
+#&gt; Component 681 :
+#&gt; [1] &quot;country&quot; &quot;upon&quot;   
+#&gt; 
+#&gt; Component 682 :
+#&gt; [1] &quot;insure&quot;       &quot;domestic&quot;     &quot;tranquillity&quot;
+#&gt; 
+#&gt; Component 683 :
+#&gt; [1] &quot;exclusive&quot; &quot;metallic&quot;  &quot;currency&quot; 
+#&gt; 
+#&gt; Component 684 :
+#&gt; [1] &quot;brought&quot; &quot;upon&quot;    &quot;us&quot;     
+#&gt; 
+#&gt; Component 685 :
+#&gt; [1] &quot;shall&quot;   &quot;receive&quot;
+#&gt; 
+#&gt; Component 686 :
+#&gt; [1] &quot;vast&quot;   &quot;amount&quot;
+#&gt; 
+#&gt; Component 687 :
+#&gt; [1] &quot;essential&quot; &quot;democracy&quot;
+#&gt; 
+#&gt; Component 688 :
+#&gt; [1] &quot;people&quot;  &quot;demands&quot;
+#&gt; 
+#&gt; Component 689 :
+#&gt; [1] &quot;foreign&quot; &quot;slave&quot;   &quot;trade&quot;  
+#&gt; 
+#&gt; Component 690 :
+#&gt; [1] &quot;let&quot;     &quot;us&quot;      &quot;resolve&quot;
+#&gt; 
+#&gt; Component 691 :
+#&gt; [1] &quot;can&quot;  &quot;give&quot;
+#&gt; 
+#&gt; Component 692 :
+#&gt; [1] &quot;public&quot;   &quot;revenues&quot;
+#&gt; 
+#&gt; Component 693 :
+#&gt; [1] &quot;public&quot; &quot;mind&quot;  
+#&gt; 
+#&gt; Component 694 :
+#&gt; [1] &quot;new&quot;     &quot;weapons&quot;
+#&gt; 
+#&gt; Component 695 :
+#&gt; [1] &quot;public&quot; &quot;credit&quot;
+#&gt; 
+#&gt; Component 696 :
+#&gt; [1] &quot;public&quot;       &quot;tranquillity&quot;
+#&gt; 
+#&gt; Component 697 :
+#&gt; [1] &quot;shall&quot; &quot;seek&quot; 
+#&gt; 
+#&gt; Component 698 :
+#&gt; [1] &quot;blessed&quot; &quot;land&quot;   
+#&gt; 
+#&gt; Component 699 :
+#&gt; [1] &quot;can&quot;  &quot;feel&quot;
+#&gt; 
+#&gt; Component 700 :
+#&gt; [1] &quot;highest&quot;   &quot;standards&quot;
+#&gt; 
+#&gt; Component 701 :
+#&gt; [1] &quot;deeply&quot;    &quot;impressed&quot;
+#&gt; 
+#&gt; Component 702 :
+#&gt; [1] &quot;judgment&quot; &quot;upon&quot;    
+#&gt; 
+#&gt; Component 703 :
+#&gt; [1] &quot;taking&quot; &quot;time&quot;  
+#&gt; 
+#&gt; Component 704 :
+#&gt; [1] &quot;must&quot; &quot;care&quot;
+#&gt; 
+#&gt; Component 705 :
+#&gt; [1] &quot;business&quot; &quot;can&quot;     
+#&gt; 
+#&gt; Component 706 :
+#&gt; [1] &quot;new&quot;       &quot;beginning&quot;
+#&gt; 
+#&gt; Component 707 :
+#&gt; [1] &quot;two&quot;       &quot;countries&quot;
+#&gt; 
+#&gt; Component 708 :
+#&gt; [1] &quot;domestic&quot; &quot;slavery&quot; 
+#&gt; 
+#&gt; Component 709 :
+#&gt; [1] &quot;public&quot; &quot;debts&quot; 
+#&gt; 
+#&gt; Component 710 :
+#&gt; [1] &quot;best&quot; &quot;hope&quot;
+#&gt; 
+#&gt; Component 711 :
+#&gt; [1] &quot;must&quot;   &quot;change&quot;
+#&gt; 
+#&gt; Component 712 :
+#&gt; [1] &quot;will&quot;   &quot;defend&quot;
+#&gt; 
+#&gt; Component 713 :
+#&gt; [1] &quot;may&quot;  &quot;call&quot;
+#&gt; 
+#&gt; Component 714 :
+#&gt; [1] &quot;great&quot; &quot;honor&quot;
+#&gt; 
+#&gt; Component 715 :
+#&gt; [1] &quot;great&quot; &quot;army&quot; 
+#&gt; 
+#&gt; Component 716 :
+#&gt; [1] &quot;great&quot;      &quot;experiment&quot;
+#&gt; 
+#&gt; Component 717 :
+#&gt; [1] &quot;requires&quot; &quot;us&quot;      
+#&gt; 
+#&gt; Component 718 :
+#&gt; [1] &quot;public&quot; &quot;place&quot; 
+#&gt; 
+#&gt; Component 719 :
+#&gt; [1] &quot;new&quot;  &quot;land&quot;
+#&gt; 
+#&gt; Component 720 :
+#&gt; [1] &quot;look&quot; &quot;upon&quot;
+#&gt; 
+#&gt; Component 721 :
+#&gt; [1] &quot;rest&quot; &quot;upon&quot;
+#&gt; 
+#&gt; Component 722 :
+#&gt; [1] &quot;enter&quot; &quot;upon&quot; 
+#&gt; 
+#&gt; Component 723 :
+#&gt; [1] &quot;reserved&quot; &quot;rights&quot;  
+#&gt; 
+#&gt; Component 724 :
+#&gt; [1] &quot;reserved&quot; &quot;powers&quot;  
+#&gt; 
+#&gt; Component 725 :
+#&gt; [1] &quot;essential&quot;  &quot;principles&quot;
+#&gt; 
+#&gt; Component 726 :
+#&gt; [1] &quot;new&quot; &quot;age&quot;
+#&gt; 
+#&gt; Component 727 :
+#&gt; [1] &quot;effect&quot; &quot;upon&quot;  
+#&gt; 
+#&gt; Component 728 :
+#&gt; [1] &quot;put&quot;  &quot;upon&quot;
+#&gt; 
+#&gt; Component 729 :
+#&gt; [1] &quot;foreign&quot;   &quot;relations&quot;
+#&gt; 
+#&gt; Component 730 :
+#&gt; [1] &quot;must&quot;  &quot;never&quot;
+#&gt; 
+#&gt; Component 731 :
+#&gt; [1] &quot;might&quot;    &quot;endanger&quot;
+#&gt; 
+#&gt; Component 732 :
+#&gt; [1] &quot;great&quot;      &quot;importance&quot;
+#&gt; 
+#&gt; Component 733 :
+#&gt; [1] &quot;sufficient&quot; &quot;cause&quot;     
+#&gt; 
+#&gt; Component 734 :
+#&gt; [1] &quot;great&quot;          &quot;responsibility&quot;
+#&gt; 
+#&gt; Component 735 :
+#&gt; [1] &quot;may&quot;      &quot;continue&quot;
+#&gt; 
+#&gt; Component 736 :
+#&gt; [1] &quot;well&quot;  &quot;known&quot;
+#&gt; 
+#&gt; Component 737 :
+#&gt; [1] &quot;alone&quot;  &quot;can&quot;    &quot;supply&quot;
+#&gt; 
+#&gt; Component 738 :
+#&gt; [1] &quot;equal&quot; &quot;terms&quot;
+#&gt; 
+#&gt; Component 739 :
+#&gt; [1] &quot;public&quot;     &quot;prosperity&quot;
+#&gt; 
+#&gt; Component 740 :
+#&gt; [1] &quot;new&quot;            &quot;administration&quot;
+#&gt; 
+#&gt; Component 741 :
+#&gt; [1] &quot;commercial&quot; &quot;relations&quot; 
+#&gt; 
+#&gt; Component 742 :
+#&gt; [1] &quot;great&quot;   &quot;nations&quot;
+#&gt; 
+#&gt; Component 743 :
+#&gt; [1] &quot;hard&quot; &quot;work&quot;
+#&gt; 
+#&gt; Component 744 :
+#&gt; [1] &quot;must&quot; &quot;face&quot;
+#&gt; 
+#&gt; Component 745 :
+#&gt; [1] &quot;us&quot;    &quot;today&quot;
+#&gt; 
+#&gt; Component 746 :
+#&gt; [1] &quot;first&quot;  &quot;things&quot; &quot;first&quot; 
+#&gt; 
+#&gt; Component 747 :
+#&gt; [1] &quot;earliest&quot;    &quot;practicable&quot; &quot;period&quot;     
+#&gt; 
+#&gt; Component 748 :
+#&gt; [1] &quot;full&quot;  &quot;share&quot;
+#&gt; 
+#&gt; Component 749 :
+#&gt; [1] &quot;must&quot; &quot;see&quot; 
+#&gt; 
+#&gt; Component 750 :
+#&gt; [1] &quot;great&quot;  &quot;family&quot;
+#&gt; 
+#&gt; Component 751 :
+#&gt; [1] &quot;new&quot;        &quot;confidence&quot;
+#&gt; 
+#&gt; Component 752 :
+#&gt; [1] &quot;great&quot;    &quot;struggle&quot;
+#&gt; 
+#&gt; Component 753 :
+#&gt; [1] &quot;great&quot;  &quot;extent&quot;
+#&gt; 
+#&gt; Component 754 :
+#&gt; [1] &quot;can&quot;   &quot;build&quot;
+#&gt; 
+#&gt; Component 755 :
+#&gt; [1] &quot;great&quot;  &quot;system&quot;
+#&gt; 
+#&gt; Component 756 :
+#&gt; [1] &quot;can&quot;    &quot;enable&quot;
+#&gt; 
+#&gt; Component 757 :
+#&gt; [1] &quot;can&quot;  &quot;join&quot;
+#&gt; 
+#&gt; Component 758 :
+#&gt; [1] &quot;every&quot;     &quot;continent&quot;
+#&gt; 
+#&gt; Component 759 :
+#&gt; [1] &quot;wealth&quot; &quot;can&quot;   
+#&gt; 
+#&gt; Component 760 :
+#&gt; [1] &quot;representative&quot; &quot;government&quot;    
+#&gt; 
+#&gt; Component 761 :
+#&gt; [1] &quot;every&quot; &quot;child&quot;
+#&gt; 
+#&gt; Component 762 :
+#&gt; [1] &quot;every&quot;  &quot;agency&quot;
+#&gt; 
+#&gt; Component 763 :
+#&gt; [1] &quot;fifty&quot; &quot;years&quot;
+#&gt; 
+#&gt; Component 764 :
+#&gt; [1] &quot;great&quot;     &quot;advantage&quot;
+#&gt; 
+#&gt; Component 765 :
+#&gt; [1] &quot;great&quot;     &quot;diversity&quot;
+#&gt; 
+#&gt; Component 766 :
+#&gt; [1] &quot;honorable&quot; &quot;peace&quot;    
+#&gt; 
+#&gt; Component 767 :
+#&gt; [1] &quot;others&quot; &quot;will&quot;  
+#&gt; 
+#&gt; Component 768 :
+#&gt; [1] &quot;interests&quot; &quot;will&quot;     
+#&gt; 
+#&gt; Component 769 :
+#&gt; [1] &quot;determined&quot; &quot;upon&quot;      
+#&gt; 
+#&gt; Component 770 :
+#&gt; [1] &quot;new&quot;  &quot;jobs&quot;
+#&gt; 
+#&gt; Component 771 :
+#&gt; [1] &quot;many&quot;      &quot;thousands&quot;
+#&gt; 
+#&gt; Component 772 :
+#&gt; [1] &quot;many&quot; &quot;ways&quot;
+#&gt; 
+#&gt; Component 773 :
+#&gt; [1] &quot;directly&quot; &quot;upon&quot;    
+#&gt; 
+#&gt; Component 774 :
+#&gt; [1] &quot;great&quot; &quot;land&quot; 
+#&gt; 
+#&gt; Component 775 :
+#&gt; [1] &quot;us&quot;     &quot;onward&quot;
+#&gt; 
+#&gt; Component 776 :
+#&gt; [1] &quot;imposed&quot; &quot;upon&quot;   
+#&gt; 
+#&gt; Component 777 :
+#&gt; [1] &quot;sovereign&quot; &quot;power&quot;    
+#&gt; 
+#&gt; Component 778 :
+#&gt; [1] &quot;eighteenth&quot; &quot;amendment&quot; 
+#&gt; 
+#&gt; Component 779 :
+#&gt; [1] &quot;faithfully&quot; &quot;execute&quot;   
+#&gt; 
+#&gt; Component 780 :
+#&gt; [1] &quot;human&quot; &quot;heart&quot;
+#&gt; 
+#&gt; Component 781 :
+#&gt; [1] &quot;land&quot; &quot;rich&quot;
+#&gt; 
+#&gt; Component 782 :
+#&gt; [1] &quot;great&quot;      &quot;prosperity&quot;
+#&gt; 
+#&gt; Component 783 :
+#&gt; [1] &quot;eight&quot; &quot;years&quot;
+#&gt; 
+#&gt; Component 784 :
+#&gt; [1] &quot;left&quot;   &quot;behind&quot;
+#&gt; 
+#&gt; Component 785 :
+#&gt; [1] &quot;continue&quot; &quot;forever&quot; 
+#&gt; 
+#&gt; Component 786 :
+#&gt; [1] &quot;us&quot;       &quot;remember&quot;
+#&gt; 
+#&gt; Component 787 :
+#&gt; [1] &quot;strictly&quot; &quot;observed&quot;
+#&gt; 
+#&gt; Component 788 :
+#&gt; [1] &quot;interstate&quot; &quot;railroads&quot; 
+#&gt; 
+#&gt; Component 789 :
+#&gt; [1] &quot;amply&quot;      &quot;sufficient&quot;
+#&gt; 
+#&gt; Component 790 :
+#&gt; [1] &quot;just&quot;  &quot;cause&quot;
+#&gt; 
+#&gt; Component 791 :
+#&gt; [1] &quot;must&quot;   &quot;choose&quot;
+#&gt; 
+#&gt; Component 792 :
+#&gt; [1] &quot;extended&quot;  &quot;territory&quot;
+#&gt; 
+#&gt; Component 793 :
+#&gt; [1] &quot;productive&quot; &quot;member&quot;    
+#&gt; 
+#&gt; Component 794 :
+#&gt; [1] &quot;four&quot;    &quot;major&quot;   &quot;courses&quot;
+#&gt; 
+#&gt; Component 795 :
+#&gt; [1] &quot;protective&quot; &quot;tariff&quot;    
+#&gt; 
+#&gt; Component 796 :
+#&gt; [1] &quot;permit&quot; &quot;us&quot;    
+#&gt; 
+#&gt; Component 797 :
+#&gt; [1] &quot;service&quot; &quot;reform&quot; 
+#&gt; 
+#&gt; Component 798 :
+#&gt; [1] &quot;mighty&quot; &quot;past&quot;  
+#&gt; 
+#&gt; Component 799 :
+#&gt; [1] &quot;every&quot; &quot;power&quot;
+#&gt; 
+#&gt; Component 800 :
+#&gt; [1] &quot;precious&quot;    &quot;inheritance&quot;
+#&gt; 
+#&gt; Component 801 :
+#&gt; [1] &quot;fraternal&quot; &quot;feeling&quot;  
+#&gt; 
+#&gt; Component 802 :
+#&gt; [1] &quot;right&quot;     &quot;direction&quot;
+#&gt; 
+#&gt; Component 803 :
+#&gt; [1] &quot;obligation&quot; &quot;resting&quot;   
+#&gt; 
+#&gt; Component 804 :
+#&gt; [1] &quot;first&quot;   &quot;regular&quot; &quot;session&quot;
+#&gt; 
+#&gt; Component 805 :
+#&gt; [1] &quot;came&quot;  &quot;forth&quot;
+#&gt; 
+#&gt; Component 806 :
+#&gt; [1] &quot;will&quot; &quot;also&quot;
+#&gt; 
+#&gt; Component 807 :
+#&gt; [1] &quot;profitable&quot; &quot;trade&quot;     
+#&gt; 
+#&gt; Component 808 :
+#&gt; [1] &quot;higher&quot;    &quot;standards&quot;
+#&gt; 
+#&gt; Component 809 :
+#&gt; [1] &quot;strict&quot;         &quot;accountability&quot;
+#&gt; 
+#&gt; Component 810 :
+#&gt; [1] &quot;imperatively&quot; &quot;demand&quot;      
+#&gt; 
+#&gt; Component 811 :
+#&gt; [1] &quot;strict&quot;    &quot;adherence&quot;
+#&gt; 
+#&gt; Component 812 :
+#&gt; [1] &quot;turning&quot; &quot;back&quot;   
+#&gt; 
+#&gt; Component 813 :
+#&gt; [1] &quot;must&quot;    &quot;realize&quot;
+#&gt; 
+#&gt; Component 814 :
+#&gt; [1] &quot;free&quot;    &quot;schools&quot;
+#&gt; 
+#&gt; Component 815 :
+#&gt; [1] &quot;various&quot; &quot;parts&quot;  
+#&gt; 
+#&gt; Component 816 :
+#&gt; [1] &quot;greatly&quot;   &quot;increased&quot;
+#&gt; 
+#&gt; Component 817 :
+#&gt; [1] &quot;ardent&quot;     &quot;patriotism&quot;
+#&gt; 
+#&gt; Component 818 :
+#&gt; [1] &quot;given&quot; &quot;birth&quot;
+#&gt; 
+#&gt; Component 819 :
+#&gt; [1] &quot;looking&quot; &quot;forward&quot;
+#&gt; 
+#&gt; Component 820 :
+#&gt; [1] &quot;can&quot;    &quot;hardly&quot;
+#&gt; 
+#&gt; Component 821 :
+#&gt; [1] &quot;can&quot;  &quot;gain&quot;
+#&gt; 
+#&gt; Component 822 :
+#&gt; [1] &quot;legislative&quot; &quot;branch&quot;     
+#&gt; 
+#&gt; Component 823 :
+#&gt; [1] &quot;whole&quot;          &quot;constitutional&quot; &quot;vigor&quot;         
+#&gt; 
+#&gt; Component 824 :
+#&gt; [1] &quot;national&quot;  &quot;existence&quot;
+#&gt; 
+#&gt; Component 825 :
+#&gt; [1] &quot;popular&quot; &quot;branch&quot; 
+#&gt; 
+#&gt; Component 826 :
+#&gt; [1] &quot;will&quot;   &quot;demand&quot;
+#&gt; 
+#&gt; Component 827 :
+#&gt; [1] &quot;large&quot;   &quot;portion&quot;
+#&gt; 
+#&gt; Component 828 :
+#&gt; [1] &quot;peaceful&quot;    &quot;competition&quot;
+#&gt; 
+#&gt; Component 829 :
+#&gt; [1] &quot;great&quot;   &quot;purpose&quot;
+#&gt; 
+#&gt; Component 830 :
+#&gt; [1] &quot;respective&quot; &quot;spheres&quot;   
+#&gt; 
+#&gt; Component 831 :
+#&gt; [1] &quot;mutual&quot;     &quot;dependence&quot;
+#&gt; 
+#&gt; Component 832 :
+#&gt; [1] &quot;every&quot;  &quot;dollar&quot;
+#&gt; 
+#&gt; Component 833 :
+#&gt; [1] &quot;confidently&quot; &quot;believe&quot;    
+#&gt; 
+#&gt; Component 834 :
+#&gt; [1] &quot;practicable&quot; &quot;period&quot;     
+#&gt; 
+#&gt; Component 835 :
+#&gt; [1] &quot;internal&quot;    &quot;improvement&quot;
+#&gt; 
+#&gt; Component 836 :
+#&gt; [1] &quot;born&quot;  &quot;equal&quot;
+#&gt; 
+#&gt; Component 837 :
+#&gt; [1] &quot;former&quot;   &quot;occasion&quot;
+#&gt; 
+#&gt; Component 838 :
+#&gt; [1] &quot;will&quot;    &quot;present&quot;
+#&gt; 
+#&gt; Component 839 :
+#&gt; [1] &quot;permanent&quot; &quot;provision&quot;
+#&gt; 
+#&gt; Component 840 :
+#&gt; [1] &quot;slightest&quot;    &quot;interference&quot;
+#&gt; 
+#&gt; Component 841 :
+#&gt; [1] &quot;agricultural&quot; &quot;products&quot;    
+#&gt; 
+#&gt; Component 842 :
+#&gt; [1] &quot;noble&quot; &quot;idea&quot; 
+#&gt; 
+#&gt; Component 843 :
+#&gt; [1] &quot;practical&quot; &quot;plans&quot;    
+#&gt; 
+#&gt; Component 844 :
+#&gt; [1] &quot;practical&quot; &quot;operation&quot;
+#&gt; 
+#&gt; Component 845 :
+#&gt; [1] &quot;expect&quot; &quot;others&quot;
+#&gt; 
+#&gt; Component 846 :
+#&gt; [1] &quot;free&quot;       &quot;expression&quot;
+#&gt; 
+#&gt; Component 847 :
+#&gt; [1] &quot;vigorous&quot;    &quot;enforcement&quot;
+#&gt; 
+#&gt; Component 848 :
+#&gt; [1] &quot;support&quot; &quot;armies&quot; 
+#&gt; 
+#&gt; Component 849 :
+#&gt; [1] &quot;potent&quot;    &quot;influence&quot;
+#&gt; 
+#&gt; Component 850 :
+#&gt; [1] &quot;commerce&quot;  &quot;railroads&quot;
+#&gt; 
+#&gt; Component 851 :
+#&gt; [1] &quot;greatly&quot;  &quot;increase&quot;
+#&gt; 
+#&gt; Component 852 :
+#&gt; [1] &quot;spiritual&quot; &quot;strength&quot; 
+#&gt; 
+#&gt; Component 853 :
+#&gt; [1] &quot;leave&quot;  &quot;behind&quot;
+#&gt; 
+#&gt; Component 854 :
+#&gt; [1] &quot;immediate&quot;   &quot;predecessor&quot;
+#&gt; 
+#&gt; Component 855 :
+#&gt; [1] &quot;divided&quot; &quot;world&quot;  
+#&gt; 
+#&gt; Component 856 :
+#&gt; [1] &quot;feel&quot;    &quot;assured&quot;
+#&gt; 
+#&gt; Component 857 :
+#&gt; [1] &quot;offensive&quot; &quot;warfare&quot;  
+#&gt; 
+#&gt; Component 858 :
+#&gt; [1] &quot;bad&quot;   &quot;faith&quot;
+#&gt; 
+#&gt; Component 859 :
+#&gt; [1] &quot;every&quot;   &quot;section&quot;
+#&gt; 
+#&gt; Component 860 :
+#&gt; [1] &quot;domestic&quot; &quot;industry&quot;
+#&gt; 
+#&gt; Component 861 :
+#&gt; [1] &quot;carrying&quot; &quot;trade&quot;   
+#&gt; 
+#&gt; Component 862 :
+#&gt; [1] &quot;turning&quot; &quot;point&quot;  
+#&gt; 
+#&gt; Component 863 :
+#&gt; [1] &quot;reasonable&quot; &quot;cause&quot;     
+#&gt; 
+#&gt; Component 864 :
+#&gt; [1] &quot;different&quot; &quot;parts&quot;    
+#&gt; 
+#&gt; Component 865 :
+#&gt; [1] &quot;rigid&quot;   &quot;economy&quot;
+#&gt; 
+#&gt; Component 866 :
+#&gt; [1] &quot;beyond&quot;     &quot;definition&quot;
+#&gt; 
+#&gt; Component 867 :
+#&gt; [1] &quot;local&quot;     &quot;prejudice&quot;
+#&gt; 
+#&gt; Component 868 :
+#&gt; [1] &quot;respectively&quot; &quot;claim&quot;       
+#&gt; 
+#&gt; Component 869 :
+#&gt; [1] &quot;will&quot;   &quot;change&quot;
+#&gt; 
+#&gt; Component 870 :
+#&gt; [1] &quot;territorial&quot; &quot;limits&quot;     
+#&gt; 
+#&gt; Component 871 :
+#&gt; [1] &quot;enduring&quot; &quot;ideals&quot;  
+#&gt; 
+#&gt; Component 872 :
+#&gt; [1] &quot;geographical&quot; &quot;lines&quot;       
+#&gt; 
+#&gt; Component 873 :
+#&gt; [1] &quot;difficult&quot; &quot;task&quot;     
+#&gt; 
+#&gt; Component 874 :
+#&gt; [1] &quot;one&quot;     &quot;portion&quot;
+#&gt; 
+#&gt; Component 875 :
+#&gt; [1] &quot;tasks&quot; &quot;set&quot;  
+#&gt; 
+#&gt; Component 876 :
+#&gt; [1] &quot;second&quot;  &quot;century&quot;
+#&gt; 
+#&gt; Component 877 :
+#&gt; [1] &quot;early&quot;  &quot;period&quot;
+#&gt; 
+#&gt; Component 878 :
+#&gt; [1] &quot;generous&quot;      &quot;encouragement&quot;
+#&gt; 
+#&gt; Component 879 :
+#&gt; [1] &quot;war&quot;    &quot;rather&quot;
+#&gt; 
+#&gt; Component 880 :
+#&gt; [1] &quot;depend&quot; &quot;upon&quot;  
+#&gt; 
+#&gt; Component 881 :
+#&gt; [1] &quot;rightful&quot; &quot;place&quot;   
+#&gt; 
+#&gt; Component 882 :
+#&gt; [1] &quot;favored&quot; &quot;land&quot;   
+#&gt; 
+#&gt; Component 883 :
+#&gt; [1] &quot;elective&quot;    &quot;governments&quot;
+#&gt; 
+#&gt; Component 884 :
+#&gt; [1] &quot;job&quot;  &quot;done&quot;
+#&gt; 
+#&gt; Component 885 :
+#&gt; [1] &quot;kept&quot; &quot;pace&quot;
+#&gt; 
+#&gt; Component 886 :
+#&gt; [1] &quot;liberal&quot; &quot;support&quot;
+#&gt; 
+#&gt; Component 887 :
+#&gt; [1] &quot;inhabitants&quot; &quot;thereof&quot;    
+#&gt; 
+#&gt; Component 888 :
+#&gt; [1] &quot;long&quot; &quot;will&quot;
+#&gt; 
+#&gt; Component 889 :
+#&gt; [1] &quot;clearly&quot;   &quot;delegated&quot;
+#&gt; 
+#&gt; Component 890 :
+#&gt; [1] &quot;partisan&quot; &quot;service&quot; 
+#&gt; 
+#&gt; Component 891 :
+#&gt; [1] &quot;fair&quot;   &quot;chance&quot;
+#&gt; 
+#&gt; Component 892 :
+#&gt; [1] &quot;peaceful&quot; &quot;transfer&quot;
+#&gt; 
+#&gt; Component 893 :
+#&gt; [1] &quot;conflicting&quot; &quot;interests&quot;  
+#&gt; 
+#&gt; Component 894 :
+#&gt; [1] &quot;will&quot; &quot;turn&quot;
+#&gt; 
+#&gt; Component 895 :
+#&gt; [1] &quot;paramount&quot; &quot;duty&quot;     
+#&gt; 
+#&gt; Component 896 :
+#&gt; [1] &quot;harmonious&quot; &quot;action&quot;    
+#&gt; 
+#&gt; Component 897 :
+#&gt; [1] &quot;monetary&quot; &quot;system&quot;  
+#&gt; 
+#&gt; Component 898 :
+#&gt; [1] &quot;perfect&quot;  &quot;equality&quot;
+#&gt; 
+#&gt; Component 899 :
+#&gt; [1] &quot;essential&quot;  &quot;importance&quot;
+#&gt; 
+#&gt; Component 900 :
+#&gt; [1] &quot;well&quot;       &quot;understood&quot;
+#&gt; 
+#&gt; Component 901 :
+#&gt; [1] &quot;well&quot;    &quot;adapted&quot;
+#&gt; 
+#&gt; Component 902 :
+#&gt; [1] &quot;even&quot;    &quot;imagine&quot;
+#&gt; 
+#&gt; Component 903 :
+#&gt; [1] &quot;will&quot; &quot;rest&quot;
+#&gt; 
+#&gt; Component 904 :
+#&gt; [1] &quot;peculiar&quot;      &quot;circumstances&quot;
+#&gt; 
+#&gt; Component 905 :
+#&gt; [1] &quot;one&quot;    &quot;branch&quot;
+#&gt; 
+#&gt; Component 906 :
+#&gt; [1] &quot;sanguine&quot;     &quot;expectations&quot;
+#&gt; 
+#&gt; Component 907 :
+#&gt; [1] &quot;major&quot;   &quot;courses&quot;
+#&gt; 
+#&gt; Component 908 :
+#&gt; [1] &quot;fair&quot;         &quot;construction&quot;
+#&gt; 
+#&gt; Component 909 :
+#&gt; [1] &quot;will&quot;    &quot;prevent&quot;
+#&gt; 
+#&gt; Component 910 :
+#&gt; [1] &quot;will&quot;    &quot;promote&quot;
+#&gt; 
+#&gt; Component 911 :
+#&gt; [1] &quot;fair&quot;   &quot;return&quot;
+#&gt; 
+#&gt; Component 912 :
+#&gt; [1] &quot;supreme&quot;    &quot;importance&quot;
+#&gt; 
+#&gt; Component 913 :
+#&gt; [1] &quot;settled&quot; &quot;policy&quot; 
+#&gt; 
+#&gt; Component 914 :
+#&gt; [1] &quot;constitutional&quot; &quot;vigor&quot;         
+#&gt; 
+#&gt; Component 915 :
+#&gt; [1] &quot;earth&quot;    &quot;together&quot;
+#&gt; 
+#&gt; Component 916 :
+#&gt; [1] &quot;mother&quot;  &quot;country&quot;
+#&gt; 
+#&gt; Component 917 :
+#&gt; [1] &quot;due&quot;    &quot;regard&quot;
+#&gt; 
+#&gt; Component 918 :
+#&gt; [1] &quot;republican&quot; &quot;form&quot;      
+#&gt; 
+#&gt; Component 919 :
+#&gt; [1] &quot;narrow&quot;    &quot;interests&quot;
+#&gt; 
+#&gt; Component 920 :
+#&gt; [1] &quot;sectional&quot;  &quot;jealousies&quot;
+#&gt; 
+#&gt; Component 921 :
+#&gt; [1] &quot;civil&quot; &quot;list&quot; 
+#&gt; 
+#&gt; Component 922 :
+#&gt; [1] &quot;preceding&quot; &quot;term&quot;     
+#&gt; 
+#&gt; Component 923 :
+#&gt; [1] &quot;enable&quot; &quot;us&quot;    
+#&gt; 
+#&gt; Component 924 :
+#&gt; [1] &quot;fair&quot;        &quot;opportunity&quot;
+#&gt; 
+#&gt; Component 925 :
+#&gt; [1] &quot;international&quot; &quot;obligations&quot;  
+#&gt; 
+#&gt; Component 926 :
+#&gt; [1] &quot;constitutional&quot; &quot;sanction&quot;      
+#&gt; 
+#&gt; Component 927 :
+#&gt; [1] &quot;every&quot;  &quot;reason&quot;
+#&gt; 
+#&gt; Component 928 :
+#&gt; [1] &quot;become&quot;   &quot;involved&quot;
+#&gt; 
+#&gt; Component 929 :
+#&gt; [1] &quot;walk&quot;   &quot;humbly&quot;
+#&gt; 
+#&gt; Component 930 :
+#&gt; [1] &quot;troubled&quot; &quot;world&quot;   
+#&gt; 
+#&gt; Component 931 :
+#&gt; [1] &quot;destiny&quot; &quot;lies&quot;   
+#&gt; 
+#&gt; Component 932 :
+#&gt; [1] &quot;industrial&quot;   &quot;combinations&quot;
+#&gt; 
+#&gt; Component 933 :
+#&gt; [1] &quot;industrial&quot; &quot;centers&quot;   
+#&gt; 
+#&gt; Component 934 :
+#&gt; [1] &quot;military&quot; &quot;strength&quot;
+#&gt; 
+#&gt; Component 935 :
+#&gt; [1] &quot;whole&quot;     &quot;structure&quot;
+#&gt; 
+#&gt; Component 936 :
+#&gt; [1] &quot;whole&quot; &quot;coast&quot;
+#&gt; 
+#&gt; Component 937 :
+#&gt; [1] &quot;peculiar&quot; &quot;interest&quot;
+#&gt; 
+#&gt; Component 938 :
+#&gt; [1] &quot;economic&quot; &quot;recovery&quot;
+#&gt; 
+#&gt; Component 939 :
+#&gt; [1] &quot;clear&quot;  &quot;course&quot;
+#&gt; 
+#&gt; Component 940 :
+#&gt; [1] &quot;old&quot;   &quot;dream&quot;
+#&gt; 
+#&gt; Component 941 :
+#&gt; [1] &quot;old&quot;  &quot;ways&quot;
+#&gt; 
+#&gt; Component 942 :
+#&gt; [1] &quot;ordered&quot; &quot;liberty&quot;
+#&gt; 
+#&gt; Component 943 :
+#&gt; [1] &quot;never&quot; &quot;will&quot; 
+#&gt; 
+#&gt; Component 944 :
+#&gt; [1] &quot;crucial&quot; &quot;things&quot; 
+#&gt; 
+#&gt; Component 945 :
+#&gt; [1] &quot;overwhelming&quot; &quot;force&quot;       
+#&gt; 
+#&gt; Component 946 :
+#&gt; [1] &quot;founding&quot;  &quot;documents&quot;
+#&gt; 
+#&gt; Component 947 :
+#&gt; [1] &quot;already&quot; &quot;begun&quot;  
+#&gt; 
+#&gt; Component 948 :
+#&gt; [1] &quot;essential&quot; &quot;interests&quot;
+#&gt; 
+#&gt; Component 949 :
+#&gt; [1] &quot;new&quot;    &quot;breeze&quot;
+#&gt; 
+#&gt; Component 950 :
+#&gt; [1] &quot;early&quot; &quot;life&quot; 
+#&gt; 
+#&gt; Component 951 :
+#&gt; [1] &quot;party&quot;  &quot;strife&quot;
+#&gt; 
+#&gt; Component 952 :
+#&gt; [1] &quot;highest&quot;    &quot;conception&quot;
+#&gt; 
+#&gt; Component 953 :
+#&gt; [1] &quot;inalienable&quot; &quot;rights&quot;     
+#&gt; 
+#&gt; Component 954 :
+#&gt; [1] &quot;moral&quot;   &quot;climate&quot;
+#&gt; 
+#&gt; Component 955 :
+#&gt; [1] &quot;full&quot;      &quot;knowledge&quot;
+#&gt; 
+#&gt; Component 956 :
+#&gt; [1] &quot;international&quot; &quot;relations&quot;    
+#&gt; 
+#&gt; Component 957 :
+#&gt; [1] &quot;power&quot;  &quot;vested&quot;
+#&gt; 
+#&gt; Component 958 :
+#&gt; [1] &quot;old&quot;         &quot;foundations&quot;
+#&gt; 
+#&gt; Component 959 :
+#&gt; [1] &quot;supreme&quot;   &quot;authority&quot;
+#&gt; 
+#&gt; Component 960 :
+#&gt; [1] &quot;foreign&quot; &quot;birth&quot;  
+#&gt; 
+#&gt; Component 961 :
+#&gt; [1] &quot;specie&quot; &quot;basis&quot; 
+#&gt; 
+#&gt; Component 962 :
+#&gt; [1] &quot;took&quot;  &quot;place&quot;
+#&gt; 
+#&gt; Component 963 :
+#&gt; [1] &quot;incidental&quot; &quot;protection&quot;
+#&gt; 
+#&gt; Component 964 :
+#&gt; [1] &quot;belligerent&quot; &quot;powers&quot;     
+#&gt; 
+#&gt; Component 965 :
+#&gt; [1] &quot;full&quot;  &quot;proof&quot;
+#&gt; 
+#&gt; Component 966 :
+#&gt; [1] &quot;high&quot;    &quot;resolve&quot;
+#&gt; 
+#&gt; Component 967 :
+#&gt; [1] &quot;efforts&quot; &quot;will&quot;   
+#&gt; 
+#&gt; Component 968 :
+#&gt; [1] &quot;education&quot; &quot;will&quot;     
+#&gt; 
+#&gt; Component 969 :
+#&gt; [1] &quot;specie&quot;   &quot;payments&quot;
+#&gt; 
+#&gt; Component 970 :
+#&gt; [1] &quot;fervent&quot;       &quot;supplications&quot;
+#&gt; 
+#&gt; Component 971 :
+#&gt; [1] &quot;entangling&quot; &quot;alliances&quot; 
+#&gt; 
+#&gt; Component 972 :
+#&gt; [1] &quot;extra&quot;   &quot;session&quot;
+#&gt; 
+#&gt; Component 973 :
+#&gt; [1] &quot;foreign&quot; &quot;markets&quot;
+#&gt; 
+#&gt; Component 974 :
+#&gt; [1] &quot;foreign&quot;  &quot;invasion&quot;
+#&gt; 
+#&gt; Component 975 :
+#&gt; [1] &quot;righteous&quot; &quot;people&quot;   
+#&gt; 
+#&gt; Component 976 :
+#&gt; [1] &quot;make&quot;  &quot;known&quot;
+#&gt; 
+#&gt; Component 977 :
+#&gt; [1] &quot;settled&quot; &quot;purpose&quot;
+#&gt; 
+#&gt; Component 978 :
+#&gt; [1] &quot;fervently&quot; &quot;hope&quot;     
+#&gt; 
+#&gt; Component 979 :
+#&gt; [1] &quot;long&quot;    &quot;delayed&quot;
+#&gt; 
+#&gt; Component 980 :
+#&gt; [1] &quot;promises&quot; &quot;made&quot;    
+#&gt; 
+#&gt; Component 981 :
+#&gt; [1] &quot;foreign&quot; &quot;lands&quot;  
+#&gt; 
+#&gt; Component 982 :
+#&gt; [1] &quot;good&quot;   &quot;reason&quot;
+#&gt; 
+#&gt; Component 983 :
+#&gt; [1] &quot;faithfully&quot; &quot;executed&quot;  
+#&gt; 
+#&gt; Component 984 :
+#&gt; [1] &quot;absolutely&quot; &quot;necessary&quot; 
+#&gt; 
+#&gt; Component 985 :
+#&gt; [1] &quot;begin&quot; &quot;anew&quot; 
+#&gt; 
+#&gt; Component 986 :
+#&gt; [1] &quot;may&quot;  &quot;hope&quot;
+#&gt; 
+#&gt; Component 987 :
+#&gt; [1] &quot;learn&quot;    &quot;together&quot;
+#&gt; 
+#&gt; Component 988 :
+#&gt; [1] &quot;foreign&quot;    &quot;aggression&quot;
+#&gt; 
+#&gt; Component 989 :
+#&gt; [1] &quot;good&quot;      &quot;knowledge&quot;
+#&gt; 
+#&gt; Component 990 :
+#&gt; [1] &quot;must&quot; &quot;play&quot;
+#&gt; 
+#&gt; Component 991 :
+#&gt; [1] &quot;best&quot;   &quot;chance&quot;
+#&gt; 
+#&gt; Component 992 :
+#&gt; [1] &quot;human&quot;        &quot;relationship&quot;
+#&gt; 
+#&gt; Component 993 :
+#&gt; [1] &quot;better&quot; &quot;angels&quot;
+#&gt; 
+#&gt; Component 994 :
+#&gt; [1] &quot;distinguished&quot; &quot;guests&quot;       
+#&gt; 
+#&gt; Component 995 :
+#&gt; [1] &quot;best&quot;     &quot;guaranty&quot;
+#&gt; 
+#&gt; Component 996 :
+#&gt; [1] &quot;upon&quot;  &quot;earth&quot;
+#&gt; 
+#&gt; Component 997 :
+#&gt; [1] &quot;hard&quot;    &quot;choices&quot;
+#&gt; 
+#&gt; Component 998 :
+#&gt; [1] &quot;coming&quot; &quot;years&quot; 
+#&gt; 
+#&gt; Component 999 :
+#&gt; [1] &quot;first&quot;   &quot;century&quot;
+#&gt; 
+#&gt; Component 1000 :
+#&gt; [1] &quot;veto&quot;  &quot;power&quot;
+#&gt; 
+#&gt; Component 1001 :
+#&gt; [1] &quot;earth&quot; &quot;shall&quot;
+#&gt; 
+#&gt; Component 1002 :
+#&gt; [1] &quot;fullest&quot;    &quot;confidence&quot;
+#&gt; 
+#&gt; Component 1003 :
+#&gt; [1] &quot;will&quot;  &quot;carry&quot;
+#&gt; 
+#&gt; Component 1004 :
+#&gt; [1] &quot;world&quot;    &quot;recovery&quot;
+#&gt; 
+#&gt; Component 1005 :
+#&gt; [1] &quot;great&quot; &quot;mass&quot; 
+#&gt; 
+#&gt; Component 1006 :
+#&gt; [1] &quot;can&quot;     &quot;succeed&quot;
+#&gt; 
+#&gt; Component 1007 :
+#&gt; [1] &quot;must&quot;  &quot;learn&quot;
+#&gt; 
+#&gt; Component 1008 :
+#&gt; [1] &quot;high&quot;    &quot;treason&quot;
+#&gt; 
+#&gt; Component 1009 :
+#&gt; [1] &quot;many&quot;  &quot;lands&quot;
+#&gt; 
+#&gt; Component 1010 :
+#&gt; [1] &quot;best&quot;    &quot;thought&quot;
+#&gt; 
+#&gt; Component 1011 :
+#&gt; [1] &quot;common&quot; &quot;weal&quot;  
+#&gt; 
+#&gt; Component 1012 :
+#&gt; [1] &quot;settled&quot; &quot;now&quot;    
+#&gt; 
+#&gt; Component 1013 :
+#&gt; [1] &quot;happy&quot;  &quot;people&quot;
+#&gt; 
+#&gt; Component 1014 :
+#&gt; [1] &quot;long&quot;       &quot;remembered&quot;
+#&gt; 
+#&gt; Component 1015 :
+#&gt; [1] &quot;free&quot;      &quot;enjoyment&quot;
+#&gt; 
+#&gt; Component 1016 :
+#&gt; [1] &quot;every&quot;   &quot;portion&quot;
+#&gt; 
+#&gt; Component 1017 :
+#&gt; [1] &quot;will&quot;      &quot;certainly&quot;
+#&gt; 
+#&gt; Component 1018 :
+#&gt; [1] &quot;free&quot;    &quot;markets&quot;
+#&gt; 
+#&gt; Component 1019 :
+#&gt; [1] &quot;first&quot;        &quot;inauguration&quot;
+#&gt; 
+#&gt; Component 1020 :
+#&gt; [1] &quot;best&quot;  &quot;serve&quot;
+#&gt; 
+#&gt; Component 1021 :
+#&gt; [1] &quot;best&quot;   &quot;suited&quot;
+#&gt; 
+#&gt; Component 1022 :
+#&gt; [1] &quot;present&quot; &quot;course&quot; 
+#&gt; 
+#&gt; Component 1023 :
+#&gt; [1] &quot;never&quot;  &quot;forget&quot;
+#&gt; 
+#&gt; Component 1024 :
+#&gt; [1] &quot;never&quot; &quot;seen&quot; 
+#&gt; 
+#&gt; Component 1025 :
+#&gt; [1] &quot;free&quot;    &quot;thought&quot;
+#&gt; 
+#&gt; Component 1026 :
+#&gt; [1] &quot;without&quot; &quot;fear&quot;   
+#&gt; 
+#&gt; Component 1027 :
+#&gt; [1] &quot;depends&quot; &quot;upon&quot;   
+#&gt; 
+#&gt; Component 1028 :
+#&gt; [1] &quot;new&quot;  &quot;hope&quot;
+#&gt; 
+#&gt; Component 1029 :
+#&gt; [1] &quot;sincerely&quot; &quot;hope&quot;     
+#&gt; 
+#&gt; Component 1030 :
+#&gt; [1] &quot;satisfying&quot; &quot;life&quot;      
+#&gt; 
+#&gt; Component 1031 :
+#&gt; [1] &quot;unite&quot; &quot;us&quot;   
+#&gt; 
+#&gt; Component 1032 :
+#&gt; [1] &quot;around&quot; &quot;us&quot;    
+#&gt; 
+#&gt; Component 1033 :
+#&gt; [1] &quot;whose&quot;  &quot;coming&quot;
+#&gt; 
+#&gt; Component 1034 :
+#&gt; [1] &quot;whose&quot; &quot;names&quot;
+#&gt; 
+#&gt; Component 1035 :
+#&gt; [1] &quot;people&quot;  &quot;pledged&quot;
+#&gt; 
+#&gt; Component 1036 :
+#&gt; [1] &quot;now&quot;   &quot;enjoy&quot;
+#&gt; 
+#&gt; Component 1037 :
+#&gt; [1] &quot;without&quot; &quot;regard&quot; 
+#&gt; 
+#&gt; Component 1038 :
+#&gt; [1] &quot;now&quot;      &quot;animates&quot;
+#&gt; 
+#&gt; Component 1039 :
+#&gt; [1] &quot;now&quot;     &quot;working&quot;
+#&gt; 
+#&gt; Component 1040 :
+#&gt; [1] &quot;now&quot; &quot;pay&quot;
+#&gt; 
+#&gt; Component 1041 :
+#&gt; [1] &quot;one&quot;   &quot;heart&quot;
+#&gt; 
+#&gt; Component 1042 :
+#&gt; [1] &quot;new&quot;  &quot;ways&quot;
+#&gt; 
+#&gt; Component 1043 :
+#&gt; [1] &quot;public&quot;     &quot;employment&quot;
+#&gt; 
+#&gt; Component 1044 :
+#&gt; [1] &quot;public&quot; &quot;works&quot; 
+#&gt; 
+#&gt; Component 1045 :
+#&gt; [1] &quot;new&quot;      &quot;policies&quot;
+#&gt; 
+#&gt; Component 1046 :
+#&gt; [1] &quot;new&quot;     &quot;meaning&quot;
+#&gt; 
+#&gt; Component 1047 :
+#&gt; [1] &quot;public&quot;      &quot;expenditure&quot;
+#&gt; 
+#&gt; Component 1048 :
+#&gt; [1] &quot;public&quot;    &quot;employees&quot;
+#&gt; 
+#&gt; Component 1049 :
+#&gt; [1] &quot;one&quot;  &quot;hand&quot;
+#&gt; 
+#&gt; Component 1050 :
+#&gt; [1] &quot;foreign&quot; &quot;foe&quot;    
+#&gt; 
+#&gt; Component 1051 :
+#&gt; [1] &quot;people&quot;   &quot;governed&quot;
+#&gt; 
+#&gt; Component 1052 :
+#&gt; [1] &quot;obligations&quot; &quot;must&quot;       
+#&gt; 
+#&gt; Component 1053 :
+#&gt; [1] &quot;now&quot;  &quot;read&quot;
+#&gt; 
+#&gt; Component 1054 :
+#&gt; [1] &quot;public&quot; &quot;lands&quot; 
+#&gt; 
+#&gt; Component 1055 :
+#&gt; [1] &quot;us&quot;    &quot;renew&quot;
+#&gt; 
+#&gt; Component 1056 :
+#&gt; [1] &quot;us&quot;     &quot;invoke&quot;
+#&gt; 
+#&gt; Component 1057 :
+#&gt; [1] &quot;reverently&quot; &quot;invoke&quot;    
+#&gt; 
+#&gt; Component 1058 :
+#&gt; [1] &quot;aboriginal&quot; &quot;neighbors&quot; 
+#&gt; 
+#&gt; Component 1059 :
+#&gt; [1] &quot;thorough&quot;    &quot;examination&quot;
+#&gt; 
+#&gt; Component 1060 :
+#&gt; [1] &quot;within&quot; &quot;reach&quot; 
+#&gt; 
+#&gt; Component 1061 :
+#&gt; [1] &quot;express&quot; &quot;grant&quot;  
+#&gt; 
+#&gt; Component 1062 :
+#&gt; [1] &quot;considered&quot; &quot;remedies&quot;  
+#&gt; 
+#&gt; Component 1063 :
+#&gt; [1] &quot;lawless&quot;  &quot;invasion&quot;
+#&gt; 
+#&gt; Component 1064 :
+#&gt; [1] &quot;honored&quot; &quot;custom&quot; 
+#&gt; 
+#&gt; Component 1065 :
+#&gt; [1] &quot;capital&quot;  &quot;invested&quot;
+#&gt; 
+#&gt; Component 1066 :
+#&gt; [1] &quot;fervent&quot; &quot;prayers&quot;
+#&gt; 
+#&gt; Component 1067 :
+#&gt; [1] &quot;paper&quot;    &quot;currency&quot;
+#&gt; 
+#&gt; Component 1068 :
+#&gt; [1] &quot;express&quot;    &quot;provisions&quot;
+#&gt; 
+#&gt; Component 1069 :
+#&gt; [1] &quot;federal&quot;      &quot;jurisdiction&quot;
+#&gt; 
+#&gt; Component 1070 :
+#&gt; [1] &quot;public&quot;    &quot;attention&quot;
+#&gt; 
+#&gt; Component 1071 :
+#&gt; [1] &quot;forever&quot; &quot;upward&quot; 
+#&gt; 
+#&gt; Component 1072 :
+#&gt; [1] &quot;fruitful&quot; &quot;source&quot;  
+#&gt; 
+#&gt; Component 1073 :
+#&gt; [1] &quot;fervent&quot; &quot;prayer&quot; 
+#&gt; 
+#&gt; Component 1074 :
+#&gt; [1] &quot;new&quot;        &quot;millennium&quot;
+#&gt; 
+#&gt; Component 1075 :
+#&gt; [1] &quot;will&quot;   &quot;govern&quot;
+#&gt; 
+#&gt; Component 1076 :
+#&gt; [1] &quot;will&quot;   &quot;define&quot;
+#&gt; 
+#&gt; Component 1077 :
+#&gt; [1] &quot;will&quot;   &quot;permit&quot;
+#&gt; 
+#&gt; Component 1078 :
+#&gt; [1] &quot;must&quot;   &quot;answer&quot;
+#&gt; 
+#&gt; Component 1079 :
+#&gt; [1] &quot;ultimate&quot; &quot;goal&quot;    
+#&gt; 
+#&gt; Component 1080 :
+#&gt; [1] &quot;shall&quot;   &quot;perform&quot;
+#&gt; 
+#&gt; Component 1081 :
+#&gt; [1] &quot;count&quot; &quot;upon&quot; 
+#&gt; 
+#&gt; Component 1082 :
+#&gt; [1] &quot;shall&quot;  &quot;answer&quot;
+#&gt; 
+#&gt; Component 1083 :
+#&gt; [1] &quot;will&quot; &quot;fail&quot;
+#&gt; 
+#&gt; Component 1084 :
+#&gt; [1] &quot;must&quot;   &quot;result&quot;
+#&gt; 
+#&gt; Component 1085 :
+#&gt; [1] &quot;relative&quot; &quot;value&quot;   
+#&gt; 
+#&gt; Component 1086 :
+#&gt; [1] &quot;grateful&quot;  &quot;reverence&quot;
+#&gt; 
+#&gt; Component 1087 :
+#&gt; [1] &quot;inestimable&quot; &quot;value&quot;      
+#&gt; 
+#&gt; Component 1088 :
+#&gt; [1] &quot;sure&quot;     &quot;guaranty&quot;
+#&gt; 
+#&gt; Component 1089 :
+#&gt; [1] &quot;must&quot;    &quot;protect&quot;
+#&gt; 
+#&gt; Component 1090 :
+#&gt; [1] &quot;short&quot; &quot;span&quot; 
+#&gt; 
+#&gt; Component 1091 :
+#&gt; [1] &quot;us&quot;      &quot;instead&quot;
+#&gt; 
+#&gt; Component 1092 :
+#&gt; [1] &quot;must&quot;  &quot;share&quot;
+#&gt; 
+#&gt; Component 1093 :
+#&gt; [1] &quot;must&quot; &quot;pay&quot; 
+#&gt; 
+#&gt; Component 1094 :
+#&gt; [1] &quot;cause&quot;  &quot;larger&quot;
+#&gt; 
+#&gt; Component 1095 :
+#&gt; [1] &quot;everything&quot; &quot;dear&quot;      
+#&gt; 
+#&gt; Component 1096 :
+#&gt; [1] &quot;ardent&quot; &quot;love&quot;  
+#&gt; 
+#&gt; Component 1097 :
+#&gt; [1] &quot;ending&quot;  &quot;tyranny&quot;
+#&gt; 
+#&gt; Component 1098 :
+#&gt; [1] &quot;electoral&quot; &quot;vote&quot;     
+#&gt; 
+#&gt; Component 1099 :
+#&gt; [1] &quot;declare&quot; &quot;void&quot;   
+#&gt; 
+#&gt; Component 1100 :
+#&gt; [1] &quot;love&quot;  &quot;mercy&quot;
+#&gt; 
+#&gt; Component 1101 :
+#&gt; [1] &quot;issue&quot;       &quot;injunctions&quot;
+#&gt; 
+#&gt; Component 1102 :
+#&gt; [1] &quot;onward&quot; &quot;march&quot; 
+#&gt; 
+#&gt; Component 1103 :
+#&gt; [1] &quot;neighboring&quot; &quot;seas&quot;       
+#&gt; 
+#&gt; Component 1104 :
+#&gt; [1] &quot;related&quot;  &quot;agencies&quot;
+#&gt; 
+#&gt; Component 1105 :
+#&gt; [1] &quot;orderly&quot;  &quot;transfer&quot;
+#&gt; 
+#&gt; Component 1106 :
+#&gt; [1] &quot;propose&quot;    &quot;amendments&quot;
+#&gt; 
+#&gt; Component 1107 :
+#&gt; [1] &quot;know&quot;  &quot;aught&quot;
+#&gt; 
+#&gt; Component 1108 :
+#&gt; [1] &quot;illustrious&quot;  &quot;predecessors&quot;
+#&gt; 
+#&gt; Component 1109 :
+#&gt; [1] &quot;daily&quot; &quot;lives&quot;
+#&gt; 
+#&gt; Component 1110 :
+#&gt; [1] &quot;surest&quot;   &quot;guaranty&quot;
+#&gt; 
+#&gt; Component 1111 :
+#&gt; [1] &quot;emancipated&quot; &quot;race&quot;       
+#&gt; 
+#&gt; Component 1112 :
+#&gt; [1] &quot;must&quot; &quot;rule&quot;
+#&gt; 
+#&gt; Component 1113 :
+#&gt; [1] &quot;great&quot;  &quot;rivers&quot;
+#&gt; 
+#&gt; Component 1114 :
+#&gt; [1] &quot;great&quot;   &quot;anxiety&quot;
+#&gt; 
+#&gt; Component 1115 :
+#&gt; [1] &quot;close&quot;   &quot;friends&quot;
+#&gt; 
+#&gt; Component 1116 :
+#&gt; [1] &quot;original&quot; &quot;thirteen&quot;
+#&gt; 
+#&gt; Component 1117 :
+#&gt; [1] &quot;pristine&quot; &quot;health&quot;  
+#&gt; 
+#&gt; Component 1118 :
+#&gt; [1] &quot;illegal&quot; &quot;liquor&quot; 
+#&gt; 
+#&gt; Component 1119 :
+#&gt; [1] &quot;former&quot;  &quot;masters&quot;
+#&gt; 
+#&gt; Component 1120 :
+#&gt; [1] &quot;sacredly&quot;  &quot;protected&quot;
+#&gt; 
+#&gt; Component 1121 :
+#&gt; [1] &quot;can&quot;   &quot;reach&quot;
+#&gt; 
+#&gt; Component 1122 :
+#&gt; [1] &quot;fixed&quot;         &quot;determination&quot;
+#&gt; 
+#&gt; Component 1123 :
+#&gt; [1] &quot;ultimate&quot;    &quot;citizenship&quot;
+#&gt; 
+#&gt; Component 1124 :
+#&gt; [1] &quot;years&quot; &quot;later&quot;
+#&gt; 
+#&gt; Component 1125 :
+#&gt; [1] &quot;great&quot;    &quot;conflict&quot;
+#&gt; 
+#&gt; Component 1126 :
+#&gt; [1] &quot;lock&quot; &quot;type&quot;
+#&gt; 
+#&gt; Component 1127 :
+#&gt; [1] &quot;inland&quot;    &quot;frontiers&quot;
+#&gt; 
+#&gt; Component 1128 :
+#&gt; [1] &quot;fertile&quot; &quot;soil&quot;   
+#&gt; 
+#&gt; Component 1129 :
+#&gt; [1] &quot;cordial&quot;     &quot;cooperation&quot;
+#&gt; 
+#&gt; Component 1130 :
+#&gt; [1] &quot;financial&quot; &quot;panic&quot;    
+#&gt; 
+#&gt; Component 1131 :
+#&gt; [1] &quot;disputed&quot; &quot;points&quot;  
+#&gt; 
+#&gt; Component 1132 :
+#&gt; [1] &quot;republican&quot; &quot;model&quot;     
+#&gt; 
+#&gt; Component 1133 :
+#&gt; [1] &quot;can&quot;   &quot;agree&quot;
+#&gt; 
+#&gt; Component 1134 :
+#&gt; [1] &quot;can&quot;        &quot;contribute&quot;
+#&gt; 
+#&gt; Component 1135 :
+#&gt; [1] &quot;great&quot;     &quot;essential&quot;
+#&gt; 
+#&gt; Component 1136 :
+#&gt; [1] &quot;every&quot;  &quot;motive&quot;
+#&gt; 
+#&gt; Component 1137 :
+#&gt; [1] &quot;every&quot;    &quot;resource&quot;
+#&gt; 
+#&gt; Component 1138 :
+#&gt; [1] &quot;humble&quot;    &quot;abilities&quot;
+#&gt; 
+#&gt; Component 1139 :
+#&gt; [1] &quot;can&quot;  &quot;fail&quot;
+#&gt; 
+#&gt; Component 1140 :
+#&gt; [1] &quot;every&quot;   &quot;process&quot;
+#&gt; 
+#&gt; Component 1141 :
+#&gt; [1] &quot;immediate&quot;       &quot;representatives&quot;
+#&gt; 
+#&gt; Component 1142 :
+#&gt; [1] &quot;fostering&quot; &quot;care&quot;     
+#&gt; 
+#&gt; Component 1143 :
+#&gt; [1] &quot;great&quot; &quot;value&quot;
+#&gt; 
+#&gt; Component 1144 :
+#&gt; [1] &quot;great&quot;        &quot;satisfaction&quot;
+#&gt; 
+#&gt; Component 1145 :
+#&gt; [1] &quot;ballot&quot; &quot;box&quot;   
+#&gt; 
+#&gt; Component 1146 :
+#&gt; [1] &quot;assembled&quot;  &quot;countrymen&quot;
+#&gt; 
+#&gt; Component 1147 :
+#&gt; [1] &quot;merchant&quot; &quot;marine&quot;  
+#&gt; 
+#&gt; Component 1148 :
+#&gt; [1] &quot;false&quot;      &quot;philosophy&quot;
+#&gt; 
+#&gt; Component 1149 :
+#&gt; [1] &quot;peculiar&quot;     &quot;satisfaction&quot;
+#&gt; 
+#&gt; Component 1150 :
+#&gt; [1] &quot;every&quot;  &quot;member&quot;
+#&gt; 
+#&gt; Component 1151 :
+#&gt; [1] &quot;without&quot;   &quot;impairing&quot;
+#&gt; 
+#&gt; Component 1152 :
+#&gt; [1] &quot;based&quot; &quot;upon&quot; 
+#&gt; 
+#&gt; Component 1153 :
+#&gt; [1] &quot;every&quot;  &quot;branch&quot;
+#&gt; 
+#&gt; Component 1154 :
+#&gt; [1] &quot;distant&quot; &quot;points&quot; 
+#&gt; 
+#&gt; Component 1155 :
+#&gt; [1] &quot;intimately&quot; &quot;connected&quot; 
+#&gt; 
+#&gt; Component 1156 :
+#&gt; [1] &quot;give&quot;     &quot;firmness&quot;
+#&gt; 
+#&gt; Component 1157 :
+#&gt; [1] &quot;give&quot;      &quot;testimony&quot;
+#&gt; 
+#&gt; Component 1158 :
+#&gt; [1] &quot;alike&quot; &quot;upon&quot; 
+#&gt; 
+#&gt; Component 1159 :
+#&gt; [1] &quot;act&quot;     &quot;greatly&quot;
+#&gt; 
+#&gt; Component 1160 :
+#&gt; [1] &quot;stand&quot; &quot;firm&quot; 
+#&gt; 
+#&gt; Component 1161 :
+#&gt; [1] &quot;military&quot; &quot;alliance&quot;
+#&gt; 
+#&gt; Component 1162 :
+#&gt; [1] &quot;military&quot; &quot;road&quot;    
+#&gt; 
+#&gt; Component 1163 :
+#&gt; [1] &quot;shall&quot; &quot;deal&quot; 
+#&gt; 
+#&gt; Component 1164 :
+#&gt; [1] &quot;settled&quot; &quot;upon&quot;   
+#&gt; 
+#&gt; Component 1165 :
+#&gt; [1] &quot;military&quot; &quot;science&quot; 
+#&gt; 
+#&gt; Component 1166 :
+#&gt; [1] &quot;last&quot; &quot;week&quot;
+#&gt; 
+#&gt; Component 1167 :
+#&gt; [1] &quot;offered&quot; &quot;hand&quot;   
+#&gt; 
+#&gt; Component 1168 :
+#&gt; [1] &quot;quite&quot;    &quot;possible&quot;
+#&gt; 
+#&gt; Component 1169 :
+#&gt; [1] &quot;promised&quot; &quot;land&quot;    
+#&gt; 
+#&gt; Component 1170 :
+#&gt; [1] &quot;great&quot; &quot;task&quot; 
+#&gt; 
+#&gt; Component 1171 :
+#&gt; [1] &quot;great&quot;    &quot;increase&quot;
+#&gt; 
+#&gt; Component 1172 :
+#&gt; [1] &quot;fair&quot;    &quot;dealing&quot;
+#&gt; 
+#&gt; Component 1173 :
+#&gt; [1] &quot;confidence&quot; &quot;upon&quot;      
+#&gt; 
+#&gt; Component 1174 :
+#&gt; [1] &quot;domestic&quot;    &quot;concernment&quot;
+#&gt; 
+#&gt; Component 1175 :
+#&gt; [1] &quot;faithful&quot;   &quot;observance&quot;
+#&gt; 
+#&gt; Component 1176 :
+#&gt; [1] &quot;faithful&quot;    &quot;performance&quot;
+#&gt; 
+#&gt; Component 1177 :
+#&gt; [1] &quot;faithful&quot;    &quot;application&quot;
+#&gt; 
+#&gt; Component 1178 :
+#&gt; [1] &quot;heretofore&quot; &quot;given&quot;     
+#&gt; 
+#&gt; Component 1179 :
+#&gt; [1] &quot;technical&quot; &quot;knowledge&quot;
+#&gt; 
+#&gt; Component 1180 :
+#&gt; [1] &quot;yet&quot;    &quot;unborn&quot;
+#&gt; 
+#&gt; Component 1181 :
+#&gt; [1] &quot;great&quot; &quot;deal&quot; 
+#&gt; 
+#&gt; Component 1182 :
+#&gt; [1] &quot;great&quot;     &quot;emergency&quot;
+#&gt; 
+#&gt; Component 1183 :
+#&gt; [1] &quot;can&quot;    &quot;supply&quot;
+#&gt; 
+#&gt; Component 1184 :
+#&gt; [1] &quot;can&quot;     &quot;deliver&quot;
+#&gt; 
+#&gt; Component 1185 :
+#&gt; [1] &quot;can&quot;         &quot;demonstrate&quot;
+#&gt; 
+#&gt; Component 1186 :
+#&gt; [1] &quot;involve&quot; &quot;us&quot;     
+#&gt; 
+#&gt; Component 1187 :
+#&gt; [1] &quot;incoming&quot;       &quot;administration&quot;
+#&gt; 
+#&gt; Component 1188 :
+#&gt; [1] &quot;unalienable&quot; &quot;rights&quot;     
+#&gt; 
+#&gt; Component 1189 :
+#&gt; [1] &quot;every&quot;        &quot;circumstance&quot;
+#&gt; 
+#&gt; Component 1190 :
+#&gt; [1] &quot;defensive&quot; &quot;war&quot;      
+#&gt; 
+#&gt; Component 1191 :
+#&gt; [1] &quot;insist&quot; &quot;upon&quot;  
+#&gt; 
+#&gt; Component 1192 :
+#&gt; [1] &quot;happy&quot; &quot;form&quot; 
+#&gt; 
+#&gt; Component 1193 :
+#&gt; [1] &quot;laid&quot; &quot;upon&quot;
+#&gt; 
+#&gt; Component 1194 :
+#&gt; [1] &quot;impose&quot; &quot;upon&quot;  
+#&gt; 
+#&gt; Component 1195 :
+#&gt; [1] &quot;relying&quot; &quot;upon&quot;   
+#&gt; 
+#&gt; Component 1196 :
+#&gt; [1] &quot;enjoins&quot; &quot;upon&quot;   
+#&gt; 
+#&gt; Component 1197 :
+#&gt; [1] &quot;imposes&quot; &quot;upon&quot;   
+#&gt; 
+#&gt; Component 1198 :
+#&gt; [1] &quot;negative&quot; &quot;upon&quot;    
+#&gt; 
+#&gt; Component 1199 :
+#&gt; [1] &quot;inexorable&quot; &quot;laws&quot;      
+#&gt; 
+#&gt; Component 1200 :
+#&gt; [1] &quot;better&quot;  &quot;housing&quot;
+#&gt; 
+#&gt; Component 1201 :
+#&gt; [1] &quot;ever&quot;    &quot;devised&quot;
+#&gt; 
+#&gt; Component 1202 :
+#&gt; [1] &quot;teach&quot; &quot;us&quot;   
+#&gt; 
+#&gt; Component 1203 :
+#&gt; [1] &quot;new&quot;        &quot;engagement&quot;
+#&gt; 
+#&gt; Component 1204 :
+#&gt; [1] &quot;blessed&quot; &quot;us&quot;     
+#&gt; 
+#&gt; Component 1205 :
+#&gt; [1] &quot;await&quot; &quot;us&quot;   
+#&gt; 
+#&gt; Component 1206 :
+#&gt; [1] &quot;expressed&quot; &quot;will&quot;     
+#&gt; 
+#&gt; Component 1207 :
+#&gt; [1] &quot;faithful&quot; &quot;regard&quot;  
+#&gt; 
+#&gt; Component 1208 :
+#&gt; [1] &quot;discriminations&quot; &quot;within&quot;         
+#&gt; 
+#&gt; Component 1209 :
+#&gt; [1] &quot;tribes&quot; &quot;within&quot;
+#&gt; 
+#&gt; Component 1210 :
+#&gt; [1] &quot;object&quot; &quot;will&quot;  
+#&gt; 
+#&gt; Component 1211 :
+#&gt; [1] &quot;foreign&quot;  &quot;articles&quot;
+#&gt; 
+#&gt; Component 1212 :
+#&gt; [1] &quot;good&quot;    &quot;fortune&quot;
+#&gt; 
+#&gt; Component 1213 :
+#&gt; [1] &quot;best&quot;   &quot;fitted&quot;
+#&gt; 
+#&gt; Component 1214 :
+#&gt; [1] &quot;will&quot; &quot;try&quot; 
+#&gt; 
+#&gt; Component 1215 :
+#&gt; [1] &quot;will&quot;    &quot;achieve&quot;
+#&gt; 
+#&gt; Component 1216 :
+#&gt; [1] &quot;will&quot;   &quot;extend&quot;
+#&gt; 
+#&gt; Component 1217 :
+#&gt; [1] &quot;declining&quot; &quot;years&quot;    
+#&gt; 
+#&gt; Component 1218 :
+#&gt; [1] &quot;ten&quot;   &quot;years&quot;
+#&gt; 
+#&gt; Component 1219 :
+#&gt; [1] &quot;forty&quot; &quot;years&quot;
+#&gt; 
+#&gt; Component 1220 :
+#&gt; [1] &quot;purchasing&quot; &quot;power&quot;     
+#&gt; 
+#&gt; Component 1221 :
+#&gt; [1] &quot;transferring&quot; &quot;power&quot;       
+#&gt; 
+#&gt; Component 1222 :
+#&gt; [1] &quot;will&quot;  &quot;reach&quot;
+#&gt; 
+#&gt; Component 1223 :
+#&gt; [1] &quot;enemy&quot; &quot;will&quot; 
+#&gt; 
+#&gt; Component 1224 :
+#&gt; [1] &quot;will&quot;      &quot;celebrate&quot;
+#&gt; 
+#&gt; Component 1225 :
+#&gt; [1] &quot;will&quot;    &quot;sustain&quot;
+#&gt; 
+#&gt; Component 1226 :
+#&gt; [1] &quot;advance&quot; &quot;toward&quot; 
+#&gt; 
+#&gt; Component 1227 :
+#&gt; [1] &quot;free&quot;   &quot;speech&quot;
+#&gt; 
+#&gt; Component 1228 :
+#&gt; [1] &quot;whose&quot;    &quot;goodness&quot;
+#&gt; 
+#&gt; Component 1229 :
+#&gt; [1] &quot;equality&quot; &quot;among&quot;   
+#&gt; 
+#&gt; Component 1230 :
+#&gt; [1] &quot;will&quot;  &quot;fight&quot;
+#&gt; 
+#&gt; Component 1231 :
+#&gt; [1] &quot;will&quot; &quot;get&quot; 
+#&gt; 
+#&gt; Component 1232 :
+#&gt; [1] &quot;will&quot;   &quot;gather&quot;
+#&gt; 
+#&gt; Component 1233 :
+#&gt; [1] &quot;will&quot;   &quot;thrive&quot;
+#&gt; 
+#&gt; Component 1234 :
+#&gt; [1] &quot;rely&quot; &quot;upon&quot;
+#&gt; 
+#&gt; Component 1235 :
+#&gt; [1] &quot;platform&quot; &quot;upon&quot;    
+#&gt; 
+#&gt; Component 1236 :
+#&gt; [1] &quot;without&quot;  &quot;breaking&quot;
+#&gt; 
+#&gt; Component 1237 :
+#&gt; [1] &quot;without&quot;  &quot;imposing&quot;
+#&gt; 
+#&gt; Component 1238 :
+#&gt; [1] &quot;post&quot;     &quot;assigned&quot;
+#&gt; 
+#&gt; Component 1239 :
+#&gt; [1] &quot;mechanic&quot; &quot;arts&quot;    
+#&gt; 
+#&gt; Component 1240 :
+#&gt; [1] &quot;inaugural&quot; &quot;address&quot;  
+#&gt; 
+#&gt; Component 1241 :
+#&gt; [1] &quot;enabled&quot; &quot;us&quot;     
+#&gt; 
+#&gt; Component 1242 :
+#&gt; [1] &quot;taught&quot; &quot;us&quot;    
+#&gt; 
+#&gt; Component 1243 :
+#&gt; [1] &quot;uniform&quot;  &quot;practice&quot;
+#&gt; 
+#&gt; Component 1244 :
+#&gt; [1] &quot;rapid&quot;   &quot;transit&quot;
+#&gt; 
+#&gt; Component 1245 :
+#&gt; [1] &quot;metallic&quot; &quot;currency&quot;
+#&gt; 
+#&gt; Component 1246 :
+#&gt; [1] &quot;raw&quot;       &quot;materials&quot;
+#&gt; 
+#&gt; Component 1247 :
+#&gt; [1] &quot;ill&quot;     &quot;adapted&quot;
+#&gt; 
+#&gt; Component 1248 :
+#&gt; [1] &quot;silent&quot; &quot;prayer&quot;
+#&gt; 
+#&gt; Component 1249 :
+#&gt; [1] &quot;cleaner&quot;     &quot;environment&quot;
+#&gt; 
+#&gt; Component 1250 :
+#&gt; [1] &quot;coast&quot;    &quot;defenses&quot;
+#&gt; 
+#&gt; Component 1251 :
+#&gt; [1] &quot;fugitive&quot; &quot;slaves&quot;  
+#&gt; 
+#&gt; Component 1252 :
+#&gt; [1] &quot;elective&quot;  &quot;franchise&quot;
+#&gt; 
+#&gt; Component 1253 :
+#&gt; [1] &quot;overruling&quot; &quot;providence&quot;
+#&gt; 
+#&gt; Component 1254 :
+#&gt; [1] &quot;whether&quot; &quot;native&quot; 
+#&gt; 
+#&gt; Component 1255 :
+#&gt; [1] &quot;heretofore&quot;  &quot;experienced&quot;
+#&gt; 
+#&gt; Component 1256 :
+#&gt; [1] &quot;doubted&quot; &quot;whether&quot;
+#&gt; 
+#&gt; Component 1257 :
+#&gt; [1] &quot;peculiar&quot; &quot;felicity&quot;
+#&gt; 
+#&gt; Component 1258 :
+#&gt; [1] &quot;new&quot;        &quot;structures&quot;
+#&gt; 
+#&gt; Component 1259 :
+#&gt; [1] &quot;new&quot;   &quot;level&quot;
+#&gt; 
+#&gt; Component 1260 :
+#&gt; [1] &quot;public&quot; &quot;domain&quot;
+#&gt; 
+#&gt; Component 1261 :
+#&gt; [1] &quot;must&quot;   &quot;adjust&quot;
+#&gt; 
+#&gt; Component 1262 :
+#&gt; [1] &quot;shall&quot; &quot;deem&quot; 
+#&gt; 
+#&gt; Component 1263 :
+#&gt; [1] &quot;great&quot;         &quot;possibilities&quot;
+#&gt; 
+#&gt; Component 1264 :
+#&gt; [1] &quot;can&quot;    &quot;summon&quot;
+#&gt; 
+#&gt; Component 1265 :
+#&gt; [1] &quot;can&quot;    &quot;bestow&quot;
+#&gt; 
+#&gt; Component 1266 :
+#&gt; [1] &quot;can&quot;        &quot;compensate&quot;
+#&gt; 
+#&gt; Component 1267 :
+#&gt; [1] &quot;every&quot; &quot;kind&quot; 
+#&gt; 
+#&gt; Component 1268 :
+#&gt; [1] &quot;every&quot; &quot;boy&quot;  
+#&gt; 
+#&gt; Component 1269 :
+#&gt; [1] &quot;every&quot;  &quot;corner&quot;
+#&gt; 
+#&gt; Component 1270 :
+#&gt; [1] &quot;every&quot; &quot;soul&quot; 
+#&gt; 
+#&gt; Component 1271 :
+#&gt; [1] &quot;entered&quot; &quot;upon&quot;   
+#&gt; 
+#&gt; Component 1272 :
+#&gt; [1] &quot;resting&quot; &quot;upon&quot;   
+#&gt; 
+#&gt; Component 1273 :
+#&gt; [1] &quot;impressed&quot; &quot;upon&quot;     
+#&gt; 
+#&gt; Component 1274 :
+#&gt; [1] &quot;demands&quot; &quot;upon&quot;   
+#&gt; 
+#&gt; Component 1275 :
+#&gt; [1] &quot;entering&quot; &quot;upon&quot;    
+#&gt; 
+#&gt; Component 1276 :
+#&gt; [1] &quot;conferred&quot; &quot;upon&quot;     
+#&gt; 
+#&gt; Component 1277 :
+#&gt; [1] &quot;tells&quot; &quot;us&quot;   
+#&gt; 
+#&gt; Component 1278 :
+#&gt; [1] &quot;compel&quot; &quot;us&quot;    
+#&gt; 
+#&gt; Component 1279 :
+#&gt; [1] &quot;admonish&quot; &quot;us&quot;      
+#&gt; 
+#&gt; Component 1280 :
+#&gt; [1] &quot;expose&quot; &quot;us&quot;    
+#&gt; 
+#&gt; Component 1281 :
+#&gt; [1] &quot;worth&quot;     &quot;defending&quot;
+#&gt; 
+#&gt; Component 1282 :
+#&gt; [1] &quot;reverend&quot; &quot;clergy&quot;  
+#&gt; 
+#&gt; Component 1283 :
+#&gt; [1] &quot;potential&quot;   &quot;adversaries&quot;
+#&gt; 
+#&gt; Component 1284 :
+#&gt; [1] &quot;antirepublican&quot; &quot;tendencies&quot;    
+#&gt; 
+#&gt; Component 1285 :
+#&gt; [1] &quot;sheet&quot;  &quot;anchor&quot;
+#&gt; 
+#&gt; Component 1286 :
+#&gt; [1] &quot;will&quot;    &quot;enforce&quot;
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -167,6 +4038,8 @@ the order of words, and tends to promote rare sequences.</dd>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#references">References</a></li>
       
       <li><a href="#examples">Examples</a></li>

@@ -48,10 +48,10 @@ setClass("textmodel_wordfish_predicted",
 #' @param dispersion sets whether a quasi-poisson quasi-likelihood should be 
 #'   used based on a single dispersion parameter (\code{"poisson"}), or 
 #'   quasi-Poisson (\code{"quasipoisson"})
-#' @param dispersionLevel sets the unit level for the dispersion parameter, 
+#' @param dispersion_level sets the unit level for the dispersion parameter, 
 #'   options are \code{"feature"} for term-level variances, or \code{"overall"} 
 #'   for a single dispersion parameter
-#' @param dispersionFloor constraint for the minimal underdispersion multiplier 
+#' @param dispersion_floor constraint for the minimal underdispersion multiplier 
 #'   in the quasi-Poisson model.  Used to minimize the distorting effect of 
 #'   terms with rare term or document frequencies that appear to be severely 
 #'   underdispersed.  Default is 0, but this only applies if \code{dispersion = 
@@ -62,7 +62,9 @@ setClass("textmodel_wordfish_predicted",
 #'   only applies when \code{sparse = TRUE}
 #' @param residual_floor specifies the threshold for residual matrix when 
 #'   calculating the svds, only applies when \code{sparse = TRUE}
-#' @return An object of class textmodel_fitted_wordfish.  This is a list 
+#' @param threads specifies the number of threads to use; set to 1 to override
+#'   the package settings and use a serial version of the function
+#' @return An object of class \code{textmodel_fitted_wordfish}.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
 #'   fixed effects} \item{beta}{estimated feature marginal effects} 
@@ -92,9 +94,9 @@ setClass("textmodel_wordfish_predicted",
 #' ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 #' (wfm1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
 #' (wfm2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
-#'                              dispersion = "quasipoisson", dispersionFloor = 0))
+#'                              dispersion = "quasipoisson", dispersion_floor = 0))
 #' (wfm2b <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
-#'                              dispersion = "quasipoisson", dispersionFloor = .5))
+#'                              dispersion = "quasipoisson", dispersion_floor = .5))
 #' plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
 #'      xlim = c(0, 1.0), ylim = c(0, 1.0))
 #' plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
@@ -113,15 +115,16 @@ setClass("textmodel_wordfish_predicted",
 #' @export
 textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 
                                dispersion = c("poisson", "quasipoisson"), 
-                               dispersionLevel = c("feature", "overall"),
-                               dispersionFloor = 0,
-                               sparse = TRUE,
+                               dispersion_level = c("feature", "overall"),
+                               dispersion_floor = 0,
+                               sparse = TRUE, 
+                               threads = quanteda_options("threads"),
                                abs_err = FALSE,
                                svd_sparse = TRUE,
                                residual_floor = 0.5) {
     
     dispersion <- match.arg(dispersion)
-    dispersionLevel <- match.arg(dispersionLevel)
+    dispersion_level <- match.arg(dispersion_level)
     
     # check that no rows or columns are all zero
     zeroLengthDocs <- which(ntoken(data) == 0)
@@ -143,11 +146,11 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
         stop("tol requires 2 elements")
     if (!is.numeric(priors) | !is.numeric(tol))
         stop("priors and tol must be numeric")
-    if (dispersionFloor < 0 | dispersionFloor > 1.0)
-        stop("dispersionFloor must be between 0 and 1.0")
+    if (dispersion_floor < 0 | dispersion_floor > 1.0)
+        stop("dispersion_floor must be between 0 and 1.0")
     
-    if (dispersion == "poisson" & dispersionFloor != 0)
-        warning("dispersionFloor argument ignored for poisson")
+    if (dispersion == "poisson" & dispersion_floor != 0)
+        warning("dispersion_floor argument ignored for poisson")
     
 #     if (length(addedArgs <- list(...)))
 #         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
@@ -156,18 +159,22 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     # 1 = Poisson, 2 = quasi-Poisson, overall dispersion, 
     # 3 = quasi-Poisson, term dispersion, 4 = quasi-Poisson, term dispersion w/floor
     if (dispersion == "poisson") disp <- 1L
-    else if (dispersion == "quasipoisson" & dispersionLevel == "overall") disp <- 2L
-    else if (dispersion == "quasipoisson" & dispersionLevel == "feature") {
-        if (dispersionFloor) disp <- 4L
+    else if (dispersion == "quasipoisson" & dispersion_level == "overall") disp <- 2L
+    else if (dispersion == "quasipoisson" & dispersion_level == "feature") {
+        if (dispersion_floor) disp <- 4L
         else disp <- 3L
     } else
         stop("Illegal option combination.")
 
     # catm("disp = ", disp, "\n")
     if (sparse == TRUE){
-        wfresult <- wordfishcpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err, svd_sparse, residual_floor)
+        if (threads == 1){
+            wfresult <- wordfishcpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
+        } else {
+            wfresult <- wordfishcpp_mt(data, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
+        }
     } else{
-        wfresult <- wordfishcpp_dense(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err)
+        wfresult <- wordfishcpp_dense(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err)
     }
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
