@@ -5,7 +5,7 @@
 \title{create a dictionary}
 \usage{
 dictionary(..., file = NULL, format = NULL, concatenator = " ",
-  toLower = TRUE, encoding = "")
+  tolower = TRUE, encoding = "auto")
 }
 \arguments{
 \item{...}{a named list of character vector dictionary entries, including \link{valuetype} pattern
@@ -28,7 +28,7 @@ by Lexicoder} \item{\code{"YAML"}}{the standard YAML format}}}
 This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
 a single space \code{" "}.}
 
-\item{toLower}{if \code{TRUE}, convert all dictionary values to lowercase}
+\item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase}
 
 \item{encoding}{additional optional encoding value for reading in imported 
 dictionaries. This uses the \link{iconv} labels for encoding.  See the 

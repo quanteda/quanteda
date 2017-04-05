@@ -114,6 +114,10 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     if (!is.tokens(x))
         stop("x must be a tokens object")
     
+    if (is.dictionary(features)) {
+        features <- unlist(features, use.names = FALSE)
+    }
+    
     features <- vector2list(features)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)

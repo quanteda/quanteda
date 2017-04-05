@@ -14,7 +14,7 @@ test_that("multi-word dictionary keys are counted correctly", {
     dict_mw_fixed <- dictionary(list(Countries = c("United States", "Federal Republic of Germany"),
                                      oceans = c("Atlantic Ocean", "Pacific Ocean"),
                                      Institutions = c("federal government", "Supreme Court"),
-                                     team = c("Manchester United", "Arsenal")))
+                                     team = c("Manchester United", "Arsenal")), tolower = FALSE)
     tokens_case_asis <- 
         tokens_lookup(toks, dict_mw_fixed, valuetype = "fixed", case_insensitive = FALSE)
     
@@ -38,7 +38,7 @@ test_that("multi-word dictionary keys are counted correctly", {
     dict_mw_glob <- dictionary(list(Countries = c("United States", "Federal * of *"),
                                     oceans = c("* Ocean"),
                                     Institutions = c("federal gover*", "Supreme Court"),
-                                    team = c("Manchester *", "Arsenal")))
+                                    team = c("Manchester *", "Arsenal")), tolower = FALSE)
     tokens_case_asis_glob <- 
         tokens_lookup(toks, dict_mw_glob, valuetype = "glob", case_insensitive = FALSE)
     
@@ -54,7 +54,7 @@ test_that("entirely single-word dictionary keys are counted correctly", {
     dict_sw_fixed <- dictionary(list(Countries = c("States", "Germany"),
                                      oceans = c("Atlantic", "Pacific"),
                                      Institutions = c("government", "Court"),
-                                     team = c("Manchester", "Arsenal")))    
+                                     team = c("Manchester", "Arsenal")), tolower = FALSE)    
     
     tokens_case_asis <- 
         tokens_lookup(toks, dict_sw_fixed, valuetype = "fixed", case_insensitive = FALSE)
@@ -114,7 +114,7 @@ test_that("#388 issue about overlapping key values is resolved: glob matches", {
     dict_glob <- dictionary(list(Countries = c("Stat*"),
                                  oceans = c("*ic"),
                                  gameconsoles = c("?box", "Nintendo*"),
-                                 swords = "*s"))
+                                 swords = "*s"), tolower = FALSE)
     
     expect_equal(as.list(tokens_lookup(toks, dict_glob, valuetype = "glob")),
                  list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
@@ -131,7 +131,7 @@ test_that("#388 issue about overlapping key values is resolved: regex matches", 
     dict_regex <- dictionary(list(Countries = c("Stat.*$"),
                                   oceans = c("[A-Z][a-z]+ic"),
                                   gameconsoles = c("Xbox"),
-                                  swords = "s$"))
+                                  swords = "s$"), tolower = FALSE)
     
     expect_equal(as.list(tokens_lookup(toks, dict_regex, valuetype = "regex")),
                  list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
@@ -195,7 +195,7 @@ test_that("#459 apply a hierarchical dictionary", {
         oceans = c("Atlantic", "Pacific")),
         'other'=list(
             gameconsoles = c("Xbox", "Nintendo"),
-            swords = c("States"))))
+            swords = c("States"))), tolower = FALSE)
     
     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", levels=1)),
                  list(d1 = c("geo", "other", "geo", "geo"),
