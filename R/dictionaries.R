@@ -163,6 +163,7 @@ dictionary <- function(..., file = NULL, format = NULL,
         if (is.dictionary(x)) {
             return(x)
         } else {
+            # a dictionary is a list of lists in the new implementation
             x <- list2dictionary(x)
         }
     } else { 
@@ -436,7 +437,7 @@ as.yaml <- function(x) {
     yaml::as.yaml(simplify_dictionary(x, TRUE), indent.mapping.sequence = TRUE)
 }
 
-# Internal function for as.yaml to simplify dictionary object
+# Internal function for as.yaml to simplify dictionary objects
 simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
     if (omit) {
         dict <- simplify_dictionary(entry, FALSE)
