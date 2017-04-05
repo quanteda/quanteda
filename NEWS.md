@@ -13,6 +13,7 @@
 * `textmodel_wordfish()` now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values.  This also dramatically improves performance in computing this model.  (#482, #124)
 * The speed of `kwic()` is now dramatically improved, and also returns an indexed set of tokens that makes subsequent commands on a kwic class object much faster. (#603)
 * Package options (for verbose, threads) can now be set or queried using `quanteda_options()`.
+* Improved performance and better documentation for `corpus_segment()`. (#634)
 
 ### Behaviour changes 
 
@@ -31,7 +32,8 @@
 * `dfm_select` now works correctly for ngram features (#589).
 * Fixed a bug crashing corpus constructors for character vectors with duplicated names (the cause of #580).
 * Fixed a bug in the behaviour for `dfm_select(x, features)` when `features` was a dfm, that failed to produce the intended featnames matches for the output dfm.
-* Fixed a bug in `corpus_segment(x, what = "tags")` when a document contained a whitespace just before a tag, at the beginning of the file, or ended with a tag followed by no text (#618).
+
+* Fixed a bug in `corpus_segment(x, what = "tags")` when a document contained a whitespace just before a tag, at the beginning of the file, or ended with a tag followed by no text (#618, #634).
 * Fixed some problems with dictionary construction and reading some dictionary formats (#454, #455, #459).
 
 
