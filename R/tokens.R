@@ -277,7 +277,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         class(result) <- c("tokens", "tokenizedTexts")
         types(result) <- attr(result_blocks[[length(result_blocks)]], 'types') # last block has all the types
     } else {
-        class(result) <- "tokenizedTexts"
+        class(result) <- c("tokenizedTexts", "list")
     }  
     if (!identical(ngrams, 1L)) {
         if (verbose) catm("...creating ngrams\n")
@@ -295,8 +295,13 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     attr(result, 'padding') <- FALSE
 
     # issue #607: remove @ # only if not part of Twitter names
-    if (remove_punct & !remove_twitter)
-        result <- tokens_remove(result, "^#+$|^@+$", valuetype = "regex")
+    if (remove_punct & !remove_twitter) {
+        if (hash) {
+            result <- tokens_remove(result, "^#+$|^@+$", valuetype = "regex")
+        } else {
+            result <- suppressWarnings(removeFeatures(result, "^#+$|^@+$", valuetype = "regex"))
+        }
+    }
 
     return(result)
 }
