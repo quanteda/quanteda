@@ -144,17 +144,6 @@ test_that("corpus_segment works for end tag, test 2", {
     expect_equal(summ["text2.4", "Tokens"], 0)
 })
 
-test_that("corpus_segment works for end tag, test 2", {
-    testCorpus <- corpus(c("First line\n##INTRO This is the introduction.
-                           ##DOC1 This is the first document.  Second sentence in Doc 1.
-                           ##DOC3 Third document starts here.  End of third document.",
-                           "##INTRO Document ##NUMBER Two starts before ##NUMBER Three. ##END"))
-    testCorpusSeg <- corpus_segment(testCorpus, "tags")
-    summ <- summary(testCorpusSeg, verbose = FALSE)
-    expect_equal(summ["text2.4", "tag"], "##END")
-    expect_equal(summ["text2.4", "Tokens"], 0)
-})
-
 test_that("char_segment works with blank before tag", {
     txt <- c("\n##INTRO This is the introduction.
                         ##DOC1 This is the first document.  Second sentence in Doc 1.
