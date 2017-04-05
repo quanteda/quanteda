@@ -278,7 +278,9 @@ lowercase_dictionary <- function(dict) {
         if (is.list(dict[[i]])) {
             dict[[i]] <- lowercase_dictionary(dict[[i]])
         } else {
-            dict[[i]] <- stringi::stri_trans_tolower(dict[[i]])
+            if (is.character(dict[[i]])) {
+                dict[[i]] <- stringi::stri_trans_tolower(dict[[i]])
+            }
         }
     }
     return(dict)
@@ -290,7 +292,11 @@ list2dictionary <- function(dict) {
         if (is.list(dict[[i]])) {
             dict[[i]] = list2dictionary(dict[[i]])
         } else {
-            dict[[i]] = list(stringi::stri_enc_toutf8(dict[[i]]))
+            if (is.character(dict[[i]])) {
+                dict[[i]] = list(stringi::stri_enc_toutf8(dict[[i]]))
+            } else {
+                dict[[i]] = list(dict[[i]])
+            }
         }
     }
     return(dict)
