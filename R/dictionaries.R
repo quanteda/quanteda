@@ -186,7 +186,6 @@ dictionary <- function(..., file = NULL, format = NULL,
         
         if (format == "wordstat") {
             x <- read_dict_wordstat(file, encoding)
-            print(x)
         } else if (format == "LIWC") {
             x <- read_dict_liwc(file, encoding)
         } else if (format == "yoshikoder") {
