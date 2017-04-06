@@ -1,5 +1,4 @@
 #include <RcppArmadillo.h>
-#include <RcppParallel.h>
 #include "quanteda.h"
 using namespace quanteda;
 
