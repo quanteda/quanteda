@@ -201,7 +201,7 @@ ntype.tokens <- function(x, ...) {
 #' count the number of sentences
 #' 
 #' Return the count of sentences in a corpus or character object.
-#' @param x texts or \link{corpus} whose sentences will be counted
+#' @param x a character or \link{corpus} whose sentences will be counted
 #' @param ... additional arguments passed to \code{\link{tokens}}
 #' @note \code{nsentence()} relies on the boundaries definitions in the
 #'   \pkg{stringi} package (see \link[stringi]{stri_opts_brkiter}).  It does not
@@ -226,14 +226,21 @@ nsentence.character <- function(x, ...) {
     upcase <- try(any(stringi::stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
     if (!is.logical(upcase)) {
         # warning("Input text contains non-UTF-8 characters.")
-    }
-    else if (!upcase)
+    } else if (!upcase)
         warning("nsentence() does not correctly count sentences in all lower-cased text")
-    lengths(tokenize(x, what = "sentence", ...))
+    lengths(tokens(x, what = "sentence", ...))
 }
 
 #' @noRd
 #' @export
 nsentence.corpus <- function(x, ...) {
     nsentence(texts(x), ...)
+}
+
+#' @noRd
+#' @export
+nsentence.tokens <- function(x, ...) {
+    if (attr(x, "what") != "sentence")
+        stop("nsentence on a tokens object only works if what = \"sentence\"")
+    return(lengths(x))
 }

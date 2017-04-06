@@ -14,6 +14,8 @@
 * The speed of `kwic()` is now dramatically improved, and also returns an indexed set of tokens that makes subsequent commands on a kwic class object much faster. (#603)
 * Package options (for verbose, threads) can now be set or queried using `quanteda_options()`.
 * Improved performance and better documentation for `corpus_segment()`. (#634)
+* Added functions `corpus_trimsentences()` and `char_trimsentences()` to remove sentences from a corpus or character object, based on token length or pattern matching.
+* Added options to `textstat_readability()`: `min_sentence_length` and `max_sentence_length`. (#632)
 
 ### Behaviour changes 
 
