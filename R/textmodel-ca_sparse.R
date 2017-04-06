@@ -5,24 +5,30 @@
 #' @param obj the dfm on which the model will be fit
 #' @param smooth a smoothing parameter for word counts; defaults to zero.
 #' @param nd  Number of dimensions to be included (default: NA)
+#' @param method specified the truncated svd function; set to choose between \pkg{rsvd}(default) and \pkg{RSpectra}
 #' @param threads specifies the number of threads to use; set to 1 to override
 #'   the package settings and use a serial version of the function
-#' @param residual_floor specifies the threshold for residual matrix when 
-#'   calculating the svds (default: 0.5)
+#' @param residual_floor specifies the threshold for residual matrix for 
+#'   calculating the truncated svd (default: 0.5)
+
 #' @author Kenneth Benoit and Haiyan Wang
 #' @references Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in R, with two- and three-dimensional graphics: 
 #' The ca package. \emph{Journal of Statistical Software}, 20 (3), \url{http://www.jstatsoft.org/v20/i03/}
+#' 
+#' Erichson, N. Benjamin, et al.(2016) Randomized matrix decompositions using R. arXiv preprint arXiv:1608.02148 .
 #' @examples 
 #' ieDfm <- dfm(data_corpus_irishbudget2010)
 #' wca <- textmodel_ca_sparse(ieDfm)
 #' summary(wca) 
 #' @export
 textmodel_ca_sparse <- function(obj, smooth = 0, nd = NA, 
+                                method = c("rsvd", "RSpectra"),
                                 threads = quanteda_options("threads"),
                                 residual_floor = 0.5) {
     if (!is(obj, "dfm"))
         stop("supplied data must be a dfm object.")
     obj <- obj + smooth  # smooth by the specified amount
+    method <- match.arg(method)
     
     I  <- dim(obj)[1] ; J <- dim(obj)[2]
     rn <- dimnames(obj)[[1]]
@@ -30,7 +36,8 @@ textmodel_ca_sparse <- function(obj, smooth = 0, nd = NA,
 
     # default value of rank k
     if (is.na(nd)){
-        nd <- max(floor(min(I, J)/4), 1)  
+        #nd <- max(floor(min(I, J)/4), 1)  
+        nd <- max(floor(3*log(min(I, J))), 1) 
     } else {
         nd.max <- min(dim(obj)) - 1
         if (nd > nd.max ) nd <- nd.max
@@ -49,6 +56,11 @@ textmodel_ca_sparse <- function(obj, smooth = 0, nd = NA,
     #S      <- (P - eP) / sqrt(eP)
     S <- cacpp(P, threads, residual_floor/n)
     
+    if (method == "rsvd"){
+        dec <- rsvd::rsvd(S, nd)   
+    } else {
+        dec <- RSpectra::svds(S, nd)
+    }
     chimat <- S^2 * n
     dec    <- RSpectra::svds(S, nd)
     sv     <- dec$d[1:nd]

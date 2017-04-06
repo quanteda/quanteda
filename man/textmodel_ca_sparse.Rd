@@ -4,8 +4,8 @@
 \alias{textmodel_ca_sparse}
 \title{correspondence analysis of a document-feature matrix}
 \usage{
-textmodel_ca_sparse(obj, smooth = 0, nd = NA,
-  threads = quanteda_options("threads"), residual_floor = 0.5)
+textmodel_ca_sparse(obj, smooth = 0, nd = NA, method = c("rsvd",
+  "RSpectra"), threads = quanteda_options("threads"), residual_floor = 0.5)
 }
 \arguments{
 \item{obj}{the dfm on which the model will be fit}
@@ -14,11 +14,13 @@ textmodel_ca_sparse(obj, smooth = 0, nd = NA,
 
 \item{nd}{Number of dimensions to be included (default: NA)}
 
+\item{method}{specified the truncated svd function; set to choose between \pkg{rsvd}(default) and \pkg{RSpectra}}
+
 \item{threads}{specifies the number of threads to use; set to 1 to override
 the package settings and use a serial version of the function}
 
-\item{residual_floor}{specifies the threshold for residual matrix when 
-calculating the svds (default: 0.5)}
+\item{residual_floor}{specifies the threshold for residual matrix for 
+calculating the truncated svd (default: 0.5)}
 }
 \description{
 \code{textmodel_ca_sparse} implements correspondence analysis scaling on a
@@ -32,6 +34,8 @@ summary(wca)
 \references{
 Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in R, with two- and three-dimensional graphics: 
 The ca package. \emph{Journal of Statistical Software}, 20 (3), \url{http://www.jstatsoft.org/v20/i03/}
+
+Erichson, N. Benjamin, et al.(2016) Randomized matrix decompositions using R. arXiv preprint arXiv:1608.02148 .
 }
 \author{
 Kenneth Benoit and Haiyan Wang
