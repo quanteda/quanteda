@@ -171,11 +171,13 @@ sparsity <- function(x) {
     (1 - length(x@x) / prod(dim(x)))
 }
 
-
-#' @noRd
+#' enable relational operators to be use with dfm
+#' @rdname dfm-internal
+#' @param e1 a dfm
+#' @param e2 a numeric value to compare with values in a dfm
 #' @export
 setMethod("Compare", c("dfmSparse", "numeric"), function(e1, e2) {
-    callGeneric(as(e1, "dgCMatrix"), e2)
+    as(callGeneric(as(e1, "dgCMatrix"), e2), "lgCMatrix")
 })
 
 
