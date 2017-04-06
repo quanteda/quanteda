@@ -5,7 +5,8 @@
 \title{correspondence analysis of a document-feature matrix}
 \usage{
 textmodel_ca_sparse(obj, smooth = 0, nd = NA, method = c("rsvd",
-  "RSpectra"), threads = quanteda_options("threads"), residual_floor = 0.5)
+  "RSpectra"), mt = FALSE, threads = quanteda_options("threads"),
+  residual_floor = 0.5)
 }
 \arguments{
 \item{obj}{the dfm on which the model will be fit}
@@ -16,6 +17,8 @@ textmodel_ca_sparse(obj, smooth = 0, nd = NA, method = c("rsvd",
 
 \item{method}{specified the truncated svd function; set to choose between \pkg{rsvd}(default) and \pkg{RSpectra}}
 
+\item{mt}{set it to TRUE for a very large dfm to avoid the coercing of the dfm to dense}
+
 \item{threads}{specifies the number of threads to use; set to 1 to override
 the package settings and use a serial version of the function}
 
@@ -24,7 +27,7 @@ calculating the truncated svd (default: 0.5)}
 }
 \description{
 \code{textmodel_ca_sparse} implements correspondence analysis scaling on a
-\link{dfm}.  The method is a sparse version of function \link[ca]{ca} in the \pkg{ca} package.
+\link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca} in the \pkg{ca} package.
 }
 \examples{
 ieDfm <- dfm(data_corpus_irishbudget2010)

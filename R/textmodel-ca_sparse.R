@@ -1,11 +1,12 @@
 #' correspondence analysis of a document-feature matrix
 #' 
 #' \code{textmodel_ca_sparse} implements correspondence analysis scaling on a
-#' \link{dfm}.  The method is a sparse version of function \link[ca]{ca} in the \pkg{ca} package.
+#' \link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca} in the \pkg{ca} package.
 #' @param obj the dfm on which the model will be fit
 #' @param smooth a smoothing parameter for word counts; defaults to zero.
 #' @param nd  Number of dimensions to be included (default: NA)
 #' @param method specified the truncated svd function; set to choose between \pkg{rsvd}(default) and \pkg{RSpectra}
+#' @param mt set it to TRUE for a very large dfm to avoid the coercing of the dfm to dense 
 #' @param threads specifies the number of threads to use; set to 1 to override
 #'   the package settings and use a serial version of the function
 #' @param residual_floor specifies the threshold for residual matrix for 
@@ -23,6 +24,7 @@
 #' @export
 textmodel_ca_sparse <- function(obj, smooth = 0, nd = NA, 
                                 method = c("rsvd", "RSpectra"),
+                                mt = FALSE,
                                 threads = quanteda_options("threads"),
                                 residual_floor = 0.5) {
     if (!is(obj, "dfm"))
@@ -50,11 +52,16 @@ textmodel_ca_sparse <- function(obj, smooth = 0, nd = NA,
     cm <- colSums(P)
    
     # SVD:
-    #eP     <- rm %*% t(cm)
-    #eP <- Matrix::tcrossprod(rm, cm)
-    #eN     <- eP * n
-    #S      <- (P - eP) / sqrt(eP)
-    S <- cacpp(P, threads, residual_floor/n)
+    if (mt == TRUE){
+        # c++ function to keep the residual matrix sparse
+        S <- cacpp(P, threads, residual_floor/n)
+    } else {
+        # generally fast for a not-so-large dfm
+        eP <- Matrix::tcrossprod(rm, cm)
+        S      <- (P - eP) / sqrt(eP)
+    }
+    
+    
     
     if (method == "rsvd"){
         dec <- rsvd::rsvd(S, nd)   
