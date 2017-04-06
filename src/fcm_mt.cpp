@@ -27,13 +27,6 @@ struct equal_pair {
 };
 
 typedef std::unordered_set<std::pair<unsigned int, unsigned int>, hash_pair, equal_pair> SetPair;
-#if QUANTEDA_USE_TBB
-    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
-    typedef tbb::concurrent_vector<Triplet> Triplets;
-#else
-    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
-    typedef std::vector<Triplet> Triplets;
-#endif   
 
 // find out if a pair of token exists in a document
 bool exist(const unsigned int &x, const unsigned int &y,
