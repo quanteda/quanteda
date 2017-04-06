@@ -5,7 +5,7 @@ ie2010dfm <- dfm(data_corpus_irishbudget2010)
 test_that("textmodel-ca (rsvd) works as expected as ca::ca", {
     skip_if_not_installed("ca")
     wca <- ca::ca(as.matrix(ie2010dfm))
-    wtca <- textmodel_ca_sparse(ie2010dfm)
+    wtca <- textmodel_ca(ie2010dfm)
     expect_equal(wca$rowmass, wtca$rowmass, tolerance = 1e-6)
     expect_equal(wca$colmass, wtca$colmass, tolerance = 1e-6)
     
@@ -15,7 +15,7 @@ test_that("textmodel-ca (rsvd) works as expected as ca::ca", {
 test_that("textmodel-ca (RSpectra) works as expected as ca::ca", {
     skip_if_not_installed("ca")
     wca <- ca::ca(as.matrix(ie2010dfm))
-    wtca <- textmodel_ca_sparse(ie2010dfm, method = "RSpectra")
+    wtca <- textmodel_ca(ie2010dfm, method = "RSpectra")
     expect_equal(wca$rowmass, wtca$rowmass, tolerance = 1e-6)
     expect_equal(wca$colmass, wtca$colmass, tolerance = 1e-6)
     
@@ -25,7 +25,7 @@ test_that("textmodel-ca (RSpectra) works as expected as ca::ca", {
 test_that("textmodel-ca works as expected as ca::ca : use mt", {
     skip_if_not_installed("ca")
     wca <- ca::ca(as.matrix(ie2010dfm))
-    wtca <- textmodel_ca_sparse(ie2010dfm, mt = TRUE)
+    wtca <- textmodel_ca(ie2010dfm, mt = TRUE)
     expect_equal(wca$rowmass, wtca$rowmass, tolerance = 1e-6)
     expect_equal(wca$colmass, wtca$colmass, tolerance = 1e-6)
     
@@ -34,7 +34,7 @@ test_that("textmodel-ca works as expected as ca::ca : use mt", {
 test_that("textmodel-ca (sparse) works as expected as ca::ca: for given number of dimension", {
     skip_if_not_installed("ca")
     wca <- ca::ca(as.matrix(ie2010dfm))
-    wtca <- textmodel_ca_sparse(ie2010dfm, nd = 10)
+    wtca <- textmodel_ca(ie2010dfm, nd = 10)
     expect_equal(wca$rowmass, wtca$rowmass, tolerance = 1e-6)
     expect_equal(wca$colmass, wtca$colmass, tolerance = 1e-6)
     
@@ -44,7 +44,7 @@ test_that("textmodel-ca (sparse) works as expected as ca::ca: for given number o
 test_that("textmodel-ca (sparse) generates a ca::ca: object, which can call other functions from ca package", {
     skip_if_not_installed("ca")
     wca <- ca::ca(smoke)
-    wtca <- textmodel_ca_sparse(as.dfm(smoke), nd=5)
+    wtca <- textmodel_ca(as.dfm(smoke), nd=5)
     expect_equal(wca$rowmass, wtca$rowmass, tolerance = 1e-6)
     
     # plot method

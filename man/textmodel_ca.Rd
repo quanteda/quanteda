@@ -4,24 +4,41 @@
 \alias{textmodel_ca}
 \title{correspondence analysis of a document-feature matrix}
 \usage{
-textmodel_ca(data, smooth = 0, ...)
+textmodel_ca(obj, smooth = 0, nd = NA, method = c("rsvd", "RSpectra"),
+  mt = FALSE, threads = quanteda_options("threads"), residual_floor = 0.5)
 }
 \arguments{
-\item{data}{the dfm on which the model will be fit}
+\item{obj}{the dfm on which the model will be fit}
 
 \item{smooth}{a smoothing parameter for word counts; defaults to zero.}
 
-\item{...}{additional arguments passed to \link[ca]{ca.matrix}}
+\item{nd}{Number of dimensions to be included (default: NA)}
+
+\item{method}{specified the truncated svd function; set to choose between \pkg{rsvd}(default) and \pkg{RSpectra}}
+
+\item{mt}{set it to TRUE for a very large dfm to avoid the coercing of the dfm to dense}
+
+\item{threads}{specifies the number of threads to use; set to 1 to override
+the package settings and use a serial version of the function}
+
+\item{residual_floor}{specifies the threshold for residual matrix for 
+calculating the truncated svd (default: 0.5)}
 }
 \description{
-\code{textmodel_ca} implements correspondence analysis scaling on a
-\link{dfm}.  Currently the method is a wrapper to \link[ca]{ca.matrix} in the \pkg{ca} package.
+\code{textmodel-ca} implements correspondence analysis scaling on a
+\link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca} in the \pkg{ca} package.
 }
 \examples{
 ieDfm <- dfm(data_corpus_irishbudget2010)
 wca <- textmodel_ca(ieDfm)
 summary(wca) 
 }
+\references{
+Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in R, with two- and three-dimensional graphics: 
+The ca package. \emph{Journal of Statistical Software}, 20 (3), \url{http://www.jstatsoft.org/v20/i03/}
+
+Erichson, N. Benjamin, et al.(2016) Randomized matrix decompositions using R. arXiv preprint arXiv:1608.02148 .
+}
 \author{
-Kenneth Benoit
+Kenneth Benoit and Haiyan Wang
 }
