@@ -4,13 +4,21 @@
 #' indexes.
 #' @param x a character or \link{corpus} object containing the texts
 #' @param measure character vector defining the readability measure to calculate
-#' @param drop  if \code{TRUE}, the result is returned as a numeric vector if
-#'   only a single measure is requested; otherwise, a data.frame is returned
-#'   with each column consisting of a requested measure.
 #' @param remove_hyphens if \code{TRUE}, treat constituent words in hyphenated as
 #'   separate terms, for purposes of computing word lengths, e.g.
 #'   "decision-making" as two terms of lengths 8 and 6 characters respectively,
 #'   rather than as a single word of 15 characters
+#' @param min_sentence_length,max_sentence_length set the minimum and maximum 
+#'   sentence lengths (in tokens, excluding punctuation) to include in the
+#'   computation of readability.  This makes it easy to exclude "sentences" that
+#'   may not really be sentences, such as section titles, table elements, and 
+#'   other cruft that might be in the texts following conversion.
+#'   
+#'   For finer-grained control, consider filtering sentences prior first, 
+#'   including through pattern-matching, using \code{\link{corpus_trimsentences}}.
+#' @param drop  if \code{TRUE}, the result is returned as a numeric vector if
+#'   only a single measure is requested; otherwise, a data.frame is returned
+#'   with each column consisting of a requested measure.
 #' @param ... not used
 #' @author Kenneth Benoit, re-engineered from the function of the same name by
 #'   Meik Michalke in the \pkg{koRpus} package.
@@ -44,6 +52,8 @@ textstat_readability <- function(x,
                                     "Traenkle.Bailer", "Traenkle.Bailer.2",
                                     "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
                         remove_hyphens = TRUE,
+                        min_sentence_length = 1, 
+                        max_sentence_length = 10000,
                         drop = TRUE, ...) {
     UseMethod("textstat_readability")
 }
@@ -66,8 +76,11 @@ textstat_readability.corpus <- function(x,
                                            "Traenkle.Bailer", "Traenkle.Bailer.2",
                                            "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
                                remove_hyphens = TRUE,
+                               min_sentence_length = 1, 
+                               max_sentence_length = 10000,
                                drop = TRUE, ...) {
-    textstat_readability(texts(x), measure, remove_hyphens, drop, ...)
+    textstat_readability(texts(x), measure, remove_hyphens,
+                         min_sentence_length, max_sentence_length, drop, ...)
 }
 
 
@@ -89,6 +102,8 @@ textstat_readability.character <- function(x,
                                                  "Traenkle.Bailer", "Traenkle.Bailer.2",
                                                  "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
                                   remove_hyphens = TRUE,
+                                  min_sentence_length = 1, 
+                                  max_sentence_length = 10000,
                                   drop = TRUE, ...) {
 
     addedArgs <- names(list(...))
@@ -133,6 +148,12 @@ textstat_readability.character <- function(x,
     if (is.null(names(x)))
         names(x) <- paste0("text", seq_along(x))
 
+    if (!missing(min_sentence_length) | !missing(max_sentence_length)) {
+        x <- char_trimsentences(x, 
+                                min_length = min_sentence_length,
+                                max_length = max_sentence_length)
+    }
+    
     # get sentence lengths - BEFORE lower-casing
     St <- nsentence(x)
 

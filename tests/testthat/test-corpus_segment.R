@@ -166,10 +166,11 @@ test_that("corpus_segment works with use_docvars T or F", {
     corp <- corpus(c(d1 = "##TEST One two ##TEST2 Three",
                      d2 = "##TEST3 Four"),
                    docvars = data.frame(test = c("A", "B"), stringsAsFactors = FALSE))
-    summ <- summary(corpus_segment(corp, what = "tags"))
+    summ <- summary(corpus_segment(corp, what = "tags"), verbose = FALSE)
     expect_equal(summ$test, c("A", "A", "B"))
     
-    summ <- summary(corpus_segment(corp, what = "tags", use_docvars = FALSE))
+    summ <- summary(corpus_segment(corp, what = "tags", use_docvars = FALSE), 
+                    verbose = FALSE)
     expect_equal(names(summ), c("Text", "Types", "Tokens", "Sentences", "tag"))
 })
 

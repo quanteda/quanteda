@@ -3,7 +3,7 @@ Purpose of this document
 
 To demonstrate the functionality of `tokens()` that removes or keeps some special characters/symbols. Test on:
 
-    ## quanteda version 0.9.9.45
+    ## quanteda version 0.9.9.46
 
     ## Using 7 of 8 cores for parallel computing
 
@@ -339,16 +339,16 @@ microbenchmark::microbenchmark(quanteda_word = tokens(data_char_inaugural, what 
 ```
 
     ## Unit: relative
-    ##              expr       min        lq     mean   median       uq      max
-    ##     quanteda_word 1.3111336 1.3167288 1.317703 1.316557 1.328200 1.310493
-    ##   quanteda_faster 1.0000000 1.0000000 1.000000 1.000000 1.000000 1.000000
-    ##  quanteda_fastest 0.9581739 0.9983004 1.219317 1.012794 1.049090 3.654207
-    ##        tokenizers 1.2879339 1.3243397 1.277266 1.279322 1.229943 1.261172
+    ##              expr      min       lq     mean   median       uq      max
+    ##     quanteda_word 1.461936 1.414002 1.382356 1.418028 1.346022 1.346857
+    ##   quanteda_faster 1.019215 1.006582 1.196936 1.082528 1.053209 3.730061
+    ##  quanteda_fastest 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000
+    ##        tokenizers 1.383286 1.346535 1.396568 1.352006 1.333180 2.335378
     ##  neval cld
-    ##     20   a
-    ##     20   a
-    ##     20   a
-    ##     20   a
+    ##     20   b
+    ##     20  ab
+    ##     20  a 
+    ##     20   b
 
 ### characters
 
@@ -361,12 +361,9 @@ microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "ch
 ```
 
     ## Unit: relative
-    ##        expr      min       lq     mean   median       uq      max neval
-    ##    q_tokens 6.612255 7.456689 7.606318 7.950968 7.540119 8.362242    20
-    ##  tokenizers 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20
-    ##  cld
-    ##    b
-    ##   a
+    ##        expr      min      lq     mean   median       uq      max neval cld
+    ##    q_tokens 6.390694 7.92606 7.288993 7.796654 7.553724 3.475955    20   b
+    ##  tokenizers 1.000000 1.00000 1.000000 1.000000 1.000000 1.000000    20  a
 
 ### sentence
 
@@ -378,7 +375,7 @@ microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "se
 
     ## Unit: relative
     ##        expr      min       lq     mean   median       uq      max neval
-    ##    q_tokens 1.877804 1.847079 1.739107 1.706105 1.653021 1.682684    20
+    ##    q_tokens 1.724788 1.721986 1.701442 1.705192 1.684045 1.582381    20
     ##  tokenizers 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20
     ##  cld
     ##    b
@@ -387,86 +384,7 @@ microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "se
 Wishlist
 --------
 
-1.  `tokenize_sentences()`: Add an exception list, similar to stopwords, that could be used for exceptions to sentence segmentation. For instance:
-
-    ``` r
-        # Replace . delimiter from common title abbreviations, with _pd_
-        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM", "St", "etc")
-        findregex <- paste0("\\b(", exceptions, ")\\.")
-        txt <- stri_replace_all_regex(txt, findregex, "$1_pd_", vectorize_all = FALSE)
-
-        ## Remove newline chars 
-        txt <- lapply(txt, stringi::stri_replace_all_fixed, "\n", " ")
-
-        ## Perform the tokenization
-        tok <- stringi::stri_split_boundaries(txt, type = "sentence")
-
-        ## Cleaning
-        tok <- lapply(tok, function(x){
-            x <- x[which(x != "")] # remove any "sentences" that were completely blanked out
-            x <- stringi::stri_trim_right(x) # trim trailing spaces
-            x <- stri_replace_all_fixed(x, "_pd_", ".") # replace the non-full-stop "." characters
-            return(x)
-        } )
-    ```
-
-2.  Need to be able to preserve intra-word hyphens, e.g.
-
-    ``` r
-    tokenize_words("Keep co-operate as one word.", split_hyphenated = FALSE)
-    [[1]]
-    [1] "keep"    "co-operate" "as"      "one"     "word"
-    ```
-
-3.  Need an option for preserving Twitter characters, e.g.
-
-    ``` r
-    # currently
-    tokenize_words("@kenbenoit loves #rstats!")
-    ```
-
-        ## [[1]]
-        ## [1] "kenbenoit" "loves"     "rstats"
-
-    ``` r
-    # want this
-    tokens("@kenbenoit loves #rstats!", remove_punct = TRUE, remove_twitter = FALSE)
-    ```
-
-        ## tokens from 1 document.
-        ## Component 1 :
-        ## [1] "@kenbenoit" "loves"      "#rstats"
-
-    We do this through a somewhat expensive process of substitute, tokenize, replace.
-
-4.  Would like an option to keep intra-token separators.
-
-    ``` r
-    # currently
-    tokenize_words("one\ttwo\n  three four")
-    ```
-
-        ## [[1]]
-        ## [1] "one"   "two"   "three" "four"
-
-    ``` r
-    # want this
-    tokens("one\ttwo\n  three four", remove_separators = TRUE)
-    ```
-
-        ## tokens from 1 document.
-        ## Component 1 :
-        ## [1] "one"   "two"   "three" "four"
-
-    ``` r
-    tokens("one\ttwo\n  three four", remove_separators = FALSE)
-    ```
-
-        ## tokens from 1 document.
-        ## Component 1 :
-        ## [1] "one"   "\t"    "two"   "\n"    " "     " "     "three" " "     "four"
-
-5.  Would like an option to preserve punctuation.
+1.  Would like an option to preserve punctuation.
 
     ``` r
     txt <- "Hey: Y, M, C, A!!"
@@ -494,7 +412,88 @@ Wishlist
         ## Component 1 :
         ##  [1] "Hey" ":"   "Y"   ","   "M"   ","   "C"   ","   "A"   "!"   "!"
 
-6.  Need URL handling
+2.  Need an option for preserving Twitter characters, e.g.
+
+    ``` r
+    # currently
+    tokenize_words("@kenbenoit loves #rstats!")
+    ```
+
+        ## [[1]]
+        ## [1] "kenbenoit" "loves"     "rstats"
+
+    ``` r
+    # want this
+    tokens("@kenbenoit loves #rstats!", remove_punct = TRUE, remove_twitter = FALSE)
+    ```
+
+        ## tokens from 1 document.
+        ## Component 1 :
+        ## [1] "@kenbenoit" "loves"      "#rstats"
+
+    We do this through a somewhat expensive process of substitute, tokenize, replace. It might be faster to segment without removing punctuation first, and then remove puctuation except words starting with `#` or `@`.
+
+3.  We'd like to be able to preserve intra-word hyphens, e.g.
+
+    ``` r
+    tokenize_words("Keep co-operate as one word.", split_hyphenated = FALSE)
+    [[1]]
+    [1] "keep"    "co-operate" "as"      "one"     "word"
+    ```
+
+4.  We would like an option to keep intra-token separators.
+
+    ``` r
+    # currently
+    tokenize_words("one\ttwo\n  three four")
+    ```
+
+        ## [[1]]
+        ## [1] "one"   "two"   "three" "four"
+
+    ``` r
+    # want this
+    tokens("one\ttwo\n  three four", remove_separators = TRUE)
+    ```
+
+        ## tokens from 1 document.
+        ## Component 1 :
+        ## [1] "one"   "two"   "three" "four"
+
+    ``` r
+    tokens("one\ttwo\n  three four", remove_separators = FALSE)
+    ```
+
+        ## tokens from 1 document.
+        ## Component 1 :
+        ## [1] "one"   "\t"    "two"   "\n"    " "     " "     "three" " "     "four"
+
+    Why? If move to a structure where a corpus is an indexed set of tokens, then to reconstruct the texts we need the original spaces, including knowing what was a `" "`, versus `"\n"`, etc.
+
+5.  `tokenize_sentences()`: Add an exception list, similar to stopwords, that could be used for exceptions to sentence segmentation. For instance:
+
+    ``` r
+        # Replace . delimiter from common title abbreviations, with _pd_
+        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM", "St", "etc")
+        findregex <- paste0("\\b(", exceptions, ")\\.")
+        txt <- stri_replace_all_regex(txt, findregex, "$1_pd_", vectorize_all = FALSE)
+
+        ## Remove newline chars 
+        txt <- lapply(txt, stringi::stri_replace_all_fixed, "\n", " ")
+
+        ## Perform the tokenization
+        tok <- stringi::stri_split_boundaries(txt, type = "sentence")
+
+        ## Cleaning
+        tok <- lapply(tok, function(x){
+            x <- x[which(x != "")] # remove any "sentences" that were completely blanked out
+            x <- stringi::stri_trim_right(x) # trim trailing spaces
+            x <- stri_replace_all_fixed(x, "_pd_", ".") # replace the non-full-stop "." characters
+            return(x)
+        } )
+    ```
+
+6.  Some URL handling would be nice
 
     ``` r
     txt <- "The URL is http://textworkshop17.ropensci.org#schedule."
@@ -507,6 +506,8 @@ Wishlist
     [1] "The"            "URL"            "is"
     [4] "http://textworkshop17.ropensci.org#schedule"
     ```
+
+    Tweets, for instance, are replete with URLs.
 
 Other observations
 ------------------

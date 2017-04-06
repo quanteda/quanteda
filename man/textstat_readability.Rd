@@ -13,7 +13,8 @@ textstat_readability(x, measure = c("all", "ARI", "ARI.simple", "Bormuth",
   "LIW", "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", "Scrabble", "SMOG", "SMOG.C",
   "SMOG.simple",      "SMOG.de", "Spache", "Spache.old", "Strain",
   "Traenkle.Bailer", "Traenkle.Bailer.2", "Wheeler.Smith", "meanSentenceLength",
-  "meanWordSyllables"), remove_hyphens = TRUE, drop = TRUE, ...)
+  "meanWordSyllables"), remove_hyphens = TRUE, min_sentence_length = 1,
+  max_sentence_length = 10000, drop = TRUE, ...)
 }
 \arguments{
 \item{x}{a character or \link{corpus} object containing the texts}
@@ -24,6 +25,15 @@ textstat_readability(x, measure = c("all", "ARI", "ARI.simple", "Bormuth",
 separate terms, for purposes of computing word lengths, e.g.
 "decision-making" as two terms of lengths 8 and 6 characters respectively,
 rather than as a single word of 15 characters}
+
+\item{min_sentence_length, max_sentence_length}{set the minimum and maximum 
+sentence lengths (in tokens, excluding punctuation) to include in the
+computation of readability.  This makes it easy to exclude "sentences" that
+may not really be sentences, such as section titles, table elements, and 
+other cruft that might be in the texts following conversion.
+
+For finer-grained control, consider filtering sentences prior first, 
+including through pattern-matching, using \code{\link{corpus_trimsentences}}.}
 
 \item{drop}{if \code{TRUE}, the result is returned as a numeric vector if
 only a single measure is requested; otherwise, a data.frame is returned
