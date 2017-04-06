@@ -25,6 +25,7 @@ Imports:
     Rcpp,
     RcppParallel,
     ca,
+    rsvd,
     RSpectra,
     stringi,
     fastmatch,
