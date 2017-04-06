@@ -6,6 +6,19 @@
 
 using namespace Rcpp;
 
+// cacpp
+arma::sp_mat cacpp(const arma::sp_mat& objm, unsigned int threads, const double residual_floor);
+RcppExport SEXP quanteda_cacpp(SEXP objmSEXP, SEXP threadsSEXP, SEXP residual_floorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type objm(objmSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type threads(threadsSEXP);
+    Rcpp::traits::input_parameter< const double >::type residual_floor(residual_floorSEXP);
+    rcpp_result_gen = Rcpp::wrap(cacpp(objm, threads, residual_floor));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_ManhattanPara_cpp
 NumericMatrix qatd_ManhattanPara_cpp(const arma::sp_mat& A, const int margin);
 RcppExport SEXP quanteda_qatd_ManhattanPara_cpp(SEXP ASEXP, SEXP marginSEXP) {
@@ -281,6 +294,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// wordfishcpp
+Rcpp::List wordfishcpp(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS, bool svd_on, double residual_floor);
+RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP, SEXP ABSSEXP, SEXP svd_onSEXP, SEXP residual_floorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type wfm(wfmSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type dirvec(dirvecSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type priorvec(priorvecSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type tolvec(tolvecSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type disptype(disptypeSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type dispmin(dispminSEXP);
+    Rcpp::traits::input_parameter< bool >::type ABS(ABSSEXP);
+    Rcpp::traits::input_parameter< bool >::type svd_on(svd_onSEXP);
+    Rcpp::traits::input_parameter< double >::type residual_floor(residual_floorSEXP);
+    rcpp_result_gen = Rcpp::wrap(wordfishcpp(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor));
+    return rcpp_result_gen;
+END_RCPP
+}
 // wordfishcpp_dense
 Rcpp::List wordfishcpp_dense(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor, bool abs_err);
 RcppExport SEXP quanteda_wordfishcpp_dense(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP, SEXP abs_errSEXP) {
@@ -314,25 +346,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type svd_sparse(svd_sparseSEXP);
     Rcpp::traits::input_parameter< double >::type residual_floor(residual_floorSEXP);
     rcpp_result_gen = Rcpp::wrap(wordfishcpp_mt(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor));
-    return rcpp_result_gen;
-END_RCPP
-}
-// wordfishcpp
-Rcpp::List wordfishcpp(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS, bool svd_on, double residual_floor);
-RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP, SEXP ABSSEXP, SEXP svd_onSEXP, SEXP residual_floorSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::sp_mat& >::type wfm(wfmSEXP);
-    Rcpp::traits::input_parameter< IntegerVector& >::type dirvec(dirvecSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type priorvec(priorvecSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type tolvec(tolvecSEXP);
-    Rcpp::traits::input_parameter< IntegerVector& >::type disptype(disptypeSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type dispmin(dispminSEXP);
-    Rcpp::traits::input_parameter< bool >::type ABS(ABSSEXP);
-    Rcpp::traits::input_parameter< bool >::type svd_on(svd_onSEXP);
-    Rcpp::traits::input_parameter< double >::type residual_floor(residual_floorSEXP);
-    rcpp_result_gen = Rcpp::wrap(wordfishcpp(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor));
     return rcpp_result_gen;
 END_RCPP
 }

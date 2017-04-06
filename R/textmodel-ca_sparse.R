@@ -5,6 +5,10 @@
 #' @param obj the dfm on which the model will be fit
 #' @param smooth a smoothing parameter for word counts; defaults to zero.
 #' @param nd  Number of dimensions to be included (default: NA)
+#' @param threads specifies the number of threads to use; set to 1 to override
+#'   the package settings and use a serial version of the function
+#' @param residual_floor specifies the threshold for residual matrix when 
+#'   calculating the svds (default: 0.5)
 #' @author Kenneth Benoit and Haiyan Wang
 #' @references Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in R, with two- and three-dimensional graphics: 
 #' The ca package. \emph{Journal of Statistical Software}, 20 (3), \url{http://www.jstatsoft.org/v20/i03/}
@@ -13,7 +17,9 @@
 #' wca <- textmodel_ca_sparse(ieDfm)
 #' summary(wca) 
 #' @export
-textmodel_ca_sparse <- function(obj, smooth = 0, nd = NA) {
+textmodel_ca_sparse <- function(obj, smooth = 0, nd = NA, 
+                                threads = quanteda_options("threads"),
+                                residual_floor = 0.5) {
     if (!is(obj, "dfm"))
         stop("supplied data must be a dfm object.")
     obj <- obj + smooth  # smooth by the specified amount
@@ -33,15 +39,15 @@ textmodel_ca_sparse <- function(obj, smooth = 0, nd = NA) {
     
     # Init:
     n <- sum(obj) ; P <- obj/n
-    #rm <- apply(P, 1, sum) ; cm <- apply(P, 2, sum)
     rm <- rowSums(P) 
     cm <- colSums(P)
    
     # SVD:
     #eP     <- rm %*% t(cm)
-    eP <- Matrix::tcrossprod(rm, cm)
-    eN     <- eP * n
-    S      <- (P - eP) / sqrt(eP)
+    #eP <- Matrix::tcrossprod(rm, cm)
+    #eN     <- eP * n
+    #S      <- (P - eP) / sqrt(eP)
+    S <- cacpp(P, threads, residual_floor/n)
     
     chimat <- S^2 * n
     dec    <- RSpectra::svds(S, nd)
