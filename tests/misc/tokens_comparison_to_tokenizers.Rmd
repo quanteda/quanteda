@@ -166,7 +166,48 @@ microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "se
 
 ## Wishlist
 
-1. `tokenize_sentences()`:  Add an exception list, similar to stopwords, that could be used for exceptions to sentence segmentation.  For instance:
+1. Would like an option to preserve punctuation.
+
+    ```{r}
+    txt <- "Hey: Y, M, C, A!!"
+    # currently
+    tokenize_words(txt, lowercase = FALSE)
+    # want this
+    tokens(txt, remove_punct = TRUE)
+    tokens(txt, remove_punct = FALSE)
+    ``` 
+
+2. Need an option for preserving Twitter characters, e.g.
+
+    ```{r}
+    # currently
+    tokenize_words("@kenbenoit loves #rstats!")
+    # want this
+    tokens("@kenbenoit loves #rstats!", remove_punct = TRUE, remove_twitter = FALSE)
+    ```
+    We do this through a somewhat expensive process of substitute, tokenize, replace.  It might be faster to segment without removing punctuation first, and then remove puctuation except words starting with `#` or `@`.
+ 
+3. We'd like to be able to preserve intra-word hyphens, e.g.
+
+    ```{r, eval = FALSE}
+    tokenize_words("Keep co-operate as one word.", split_hyphenated = FALSE)
+    [[1]]
+    [1] "keep"    "co-operate" "as"      "one"     "word"
+    ```
+    
+   
+4. We would like an option to keep intra-token separators.
+
+    ```{r}
+    # currently
+    tokenize_words("one\ttwo\n  three four")
+    # want this
+    tokens("one\ttwo\n  three four", remove_separators = TRUE)
+    tokens("one\ttwo\n  three four", remove_separators = FALSE)
+    ``` 
+    Why?  If move to a structure where a corpus is an indexed set of tokens, then to reconstruct the texts we need the original spaces, including knowing what was a `" "`, versus `"\n"`, etc.
+
+5. `tokenize_sentences()`:  Add an exception list, similar to stopwords, that could be used for exceptions to sentence segmentation.  For instance:
 
     ```{r, eval = FALSE}
         # Replace . delimiter from common title abbreviations, with _pd_
@@ -189,45 +230,7 @@ microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "se
         } )
     ```
     
-2. Need to be able to preserve intra-word hyphens, e.g.
-
-    ```{r, eval = FALSE}
-    tokenize_words("Keep co-operate as one word.", split_hyphenated = FALSE)
-    [[1]]
-    [1] "keep"    "co-operate" "as"      "one"     "word"
-    ```
-    
-3. Need an option for preserving Twitter characters, e.g.
-
-    ```{r}
-    # currently
-    tokenize_words("@kenbenoit loves #rstats!")
-    # want this
-    tokens("@kenbenoit loves #rstats!", remove_punct = TRUE, remove_twitter = FALSE)
-    ```
-    We do this through a somewhat expensive process of substitute, tokenize, replace.
-    
-4. Would like an option to keep intra-token separators.
-
-    ```{r}
-    # currently
-    tokenize_words("one\ttwo\n  three four")
-    # want this
-    tokens("one\ttwo\n  three four", remove_separators = TRUE)
-    tokens("one\ttwo\n  three four", remove_separators = FALSE)
-    ``` 
-    
-5. Would like an option to preserve punctuation.
-
-    ```{r}
-    txt <- "Hey: Y, M, C, A!!"
-    # currently
-    tokenize_words(txt, lowercase = FALSE)
-    # want this
-    tokens(txt, remove_punct = TRUE)
-    tokens(txt, remove_punct = FALSE)
-    ``` 
-6. Need URL handling
+6. Some URL handling would be nice
 
     ```{r, eval = FALSE}
     txt <- "The URL is http://textworkshop17.ropensci.org#schedule."
@@ -240,6 +243,8 @@ microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "se
     [1] "The"            "URL"            "is"
     [4] "http://textworkshop17.ropensci.org#schedule"
     ``` 
+
+    Tweets, for instance, are replete with URLs.
 
 ## Other observations
 
