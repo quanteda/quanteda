@@ -21,3 +21,18 @@ test_that("textmodel-ca (sparse) works as expected as ca::ca: for given number o
     
     expect_equal(wca$sv[1:length(wtca$sv)], wtca$sv, tolerance = 1e-6)
 })
+
+test_that("textmodel-ca (sparse) generates a ca::ca: object, which can call other functions from ca package", {
+    skip_if_not_installed("ca")
+    wca <- ca::ca(smoke)
+    wtca <- textmodel_ca_sparse(as.dfm(smoke), nd=5)
+    expect_equal(wca$rowmass, wtca$rowmass, tolerance = 1e-6)
+    
+    # plot method
+    p <- ca::plot.ca(wtca)
+    expect_equal(dimnames(p$rows)[[2]][1], "Dim1")
+    
+    # summary method
+    s <- summary(wtca)
+    expect_equal(attr(s, "class"), "summary.ca")
+})
