@@ -171,3 +171,11 @@ sparsity <- function(x) {
     (1 - length(x@x) / prod(dim(x)))
 }
 
+
+#' @noRd
+#' @export
+setMethod("Compare", c("dfmSparse", "numeric"), function(e1, e2) {
+    callGeneric(as(e1, "dgCMatrix"), e2)
+})
+
+

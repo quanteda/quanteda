@@ -394,3 +394,19 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
     )
 })
 
+
+test_that("dfm works with relational operators", {
+    testdfm <- dfm(c("This is an example.", "This is a second example."))
+    testdfm == 0
+    testdfm >= 0
+    testdfm <= 0
+    testdfm < 0
+    testdfm < 1
+    testdfm > 0
+    testdfm > 1
+    testdfm > -1
+    testdfm < -1
+})
+
+
+
