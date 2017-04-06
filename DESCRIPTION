@@ -24,7 +24,6 @@ Imports:
     wordcloud,
     Rcpp,
     RcppParallel,
-    ca,
     rsvd,
     RSpectra,
     stringi,
@@ -106,7 +105,6 @@ Collate:
     'stopwords.R'
     'textmodel-NB.R'
     'textmodel-ca.R'
-    'textmodel-ca_sparse.R'
     'textmodel-generics.R'
     'textmodel-internal.R'
     'textmodel-wordfish.R'
