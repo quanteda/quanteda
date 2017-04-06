@@ -1,11 +1,11 @@
-
-// includes from the plugin
 #include <RcppArmadillo.h>
-#include <RcppParallel.h>
+#include "quanteda.h"
+using namespace quanteda;
 //#include <ctime>
 using namespace RcppParallel;
 using namespace Rcpp;
 using namespace arma;
+
 //# define RESIDUALS_LIM 0.5
 # define NUMSVD 1
 # define OUTERITER 100
@@ -16,14 +16,6 @@ using namespace arma;
 #define ARMA_64BIT_WORD
 #endif
 
-
-#if QUANTEDA_USE_TBB
-typedef std::tuple<unsigned int, unsigned int, double> Triplet;
-typedef tbb::concurrent_vector<Triplet> Triplets;
-#else
-typedef std::tuple<unsigned int, unsigned int, double> Triplet;
-typedef std::vector<Triplet> Triplets;
-#endif  
 
 //find the principle elements for the sparse residual matrix
 void create_residual(const std::size_t row_num, const arma::sp_mat& wfm, const arma::colvec &rsum, const arma::rowvec &csum, const double &asum,
@@ -51,7 +43,9 @@ struct Residual : public Worker {
     
     //constructor
     Residual(const arma::sp_mat& wfm, const arma::colvec &rsum, const arma::rowvec &csum, const double asum,
-             const double residual_floor, const std::size_t K, Triplets &residual_tri);
+             const double residual_floor, const std::size_t K, Triplets &residual_tri):
+        wfm(wfm), rsum(rsum), csum(csum), asum(asum), residual_floor(residual_floor), K(K), residual_tri(residual_tri) {}
+
     
     void operator() (std::size_t begin, std::size_t end) {
         for (std::size_t i = begin; i < end; i++) {
@@ -351,12 +345,14 @@ Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVecto
         Triplets residual_tri;
         residual_tri.reserve(N*K);
     #if QUANTEDA_USE_TBB
-        Residual residual(cwfm, rsum, csum, asum, residual_floor, K, residual_tri);
+        Residual residual(wfm, rsum, csum, asum, residual_floor, K, residual_tri);
         parallelFor(0, N, residual);
+        //Rcout<<"used TBB"<<std::endl;
     #else        
         for (std::size_t i = 0; i < N; i++) {
             create_residual(i, wfm, rsum, csum, asum, residual_floor, K, residual_tri);
         }
+        //Rcout<<"not use TBB"<<std::endl;
     #endif
         // Convert to Rcpp objects
         std::size_t mat_size = residual_tri.size();
@@ -370,18 +366,7 @@ Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVecto
         
         // constract the sparse matrix
         arma::sp_mat C(index_mat, w_values, N, K);
-        
-        // for (std::size_t i=0; i < N; i++){
-        //     for (std::size_t k=0; k < K; k++){
-        //         double residual = (wfm(i,k) - rsum(i) * csum(k) / asum) / sqrt(rsum(i) * csum(k) / asum);
-        //         //Rprintf("%d: %f2\\n",k,residual);
-        //         if (fabs(residual) > residual_floor) C(i,k) = residual;
-        //     }
-        // }
-        //std::clock_t end = clock();
-        //double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-        //Rcout<<"parallel elapsed_secs = "<<elapsed_secs<<std::endl;
-        // Singular Value Decomposition of Chi-Sq Residuals
+
         const int svdk = NUMSVD;
         arma::mat U(N, svdk);
         arma::vec s(svdk);
