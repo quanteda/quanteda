@@ -11,7 +11,7 @@ setClass("textmodel_ca_fitted",
 
 #' correspondence analysis of a document-feature matrix
 #' 
-#' \code{textmodel-ca} implements correspondence analysis scaling on a
+#' \code{textmodel_ca} implements correspondence analysis scaling on a
 #' \link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca} in 
 #' the \pkg{ca} package.
 #' @param x the dfm on which the model will be fit
@@ -29,10 +29,9 @@ setClass("textmodel_ca_fitted",
 #' @references Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in R, with two- and three-dimensional graphics: 
 #' The ca package. \emph{Journal of Statistical Software}, 20 (3), \url{http://www.jstatsoft.org/v20/i03/}
 #' 
-#' Erichson, N. Benjamin, et al.(2016) Randomized matrix decompositions using R. arXiv preprint arXiv:1608.02148 .
-#' @details Randomized matrix decompostion (\pkg{rsvd}) is applied to enable the fast computation of the SVD. 
-#' @note Setting \link{threads} larger than 1 (when sparse = TRUE) will trigger multiple threads computation, which retains sparsity of all involved 
-#' matrices.It might not help the speed unless you have a very big \link{dfm}.   
+#' @details \link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to enable the fast computation of the SVD. 
+#' @note Setting threads larger than 1 (when sparse = TRUE) will trigger multiple threads computation, which retains sparsity of all involved 
+#' matrices. It might not help the speed unless you have a very big \link{dfm}.   
 #' @examples 
 #' ieDfm <- dfm(data_corpus_irishbudget2010)
 #' wca <- textmodel_ca(ieDfm)
