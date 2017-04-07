@@ -136,26 +136,22 @@ ie2010dfm_dense &lt;- as.matrix(ie2010dfm)
 microbenchmark::microbenchmark(
     ca = ca::ca(ie2010dfm_dense), 
     ca_rsvd = textmodel_ca(ie2010dfm),
-    ca_RSpectra = textmodel_ca(ie2010dfm, method = &quot;RSpectra&quot;),
     times=10, unit = 'relative')</code></pre>
 <pre><code>## Unit: relative
-##         expr      min       lq     mean   median       uq      max neval
-##           ca 1.650235 1.667597 2.880274 1.660679 6.473861 2.886421    10
-##      ca_rsvd 1.766702 1.805268 1.963917 1.692515 1.607766 2.921918    10
-##  ca_RSpectra 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    10</code></pre>
+##     expr      min       lq     mean   median       uq      max neval
+##       ca 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    10
+##  ca_rsvd 1.135592 1.151815 1.666197 1.087833 4.312074 1.239828    10</code></pre>
 <pre class="r"><code>data(SOTUCorpus, package = &quot;quantedaData&quot;)
 SOTUdfm &lt;- dfm(SOTUCorpus)
 SOTUdfm_dense &lt;- as.matrix(SOTUdfm)
 microbenchmark::microbenchmark(
     ca = ca::ca(SOTUdfm_dense), 
     ca_rsvd = textmodel_ca(SOTUdfm),
-    ca_RSpectra = textmodel_ca(SOTUdfm, method = &quot;RSpectra&quot;),
     times=10, unit = 'relative')</code></pre>
 <pre><code>## Unit: relative
-##         expr      min       lq     mean   median       uq      max neval
-##           ca 1.564828 1.529189 1.506036 1.452959 1.484305 1.536917    10
-##      ca_rsvd 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    10
-##  ca_RSpectra 1.394907 1.379049 1.335662 1.302344 1.294085 1.362914    10</code></pre>
+##     expr      min       lq     mean   median       uq      max neval
+##       ca 1.466692 1.512302 1.511196 1.500509 1.497641 1.577675    10
+##  ca_rsvd 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    10</code></pre>
 </div>
 
 

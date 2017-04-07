@@ -19,7 +19,6 @@ ie2010dfm_dense <- as.matrix(ie2010dfm)
 microbenchmark::microbenchmark(
     ca = ca::ca(ie2010dfm_dense), 
     ca_rsvd = textmodel_ca(ie2010dfm),
-    ca_RSpectra = textmodel_ca(ie2010dfm, method = "RSpectra"),
     times=10, unit = 'relative')
 ```
 
@@ -30,7 +29,6 @@ SOTUdfm_dense <- as.matrix(SOTUdfm)
 microbenchmark::microbenchmark(
     ca = ca::ca(SOTUdfm_dense), 
     ca_rsvd = textmodel_ca(SOTUdfm),
-    ca_RSpectra = textmodel_ca(SOTUdfm, method = "RSpectra"),
     times=10, unit = 'relative')
 ```
 
