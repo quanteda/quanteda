@@ -2,20 +2,11 @@
 #' @keywords internal textmodel
 #' @export
 setClass("textmodel_ca_fitted",
-         slots = c(priors = "numeric", 
-                   tol = "numeric",
-                   dir = "numeric",
-                   theta = "numeric",
-                   beta = "numeric",
-                   psi = "numeric",
-                   alpha = "numeric",
-                   phi = "numeric",
-                   docs = "character",
-                   features = "character",
-                   sigma = "numeric",
-                   ll = "numeric",
-                   dispersion = "character",
-                   se.theta = "numeric"),
+         slots = c(smooth = "numeric", 
+                   nd = "numeric",
+                   sparse = "logical",
+                   threads = "numeric",
+                   residual_floor = "numeric"),
          contains = "textmodel_fitted")
 
 #' correspondence analysis of a document-feature matrix
@@ -29,10 +20,10 @@ setClass("textmodel_ca_fitted",
 #'   default) then the maximum possible dimensions are included.
 #' @param sparse retains the sparsity if set to TRUE
 #' @param threads specifies the number of threads to be used; set to 1 to use a serial version of the function. 
-#' Only applies to when sparse = TRUE.
+#' Only applies when sparse = TRUE.
 #' @param residual_floor specifies the threshold for the residual matrix for 
 #'   calculating the truncated svd.Larger value will reduce memory and time cost but 
-#'   might sacrify the accuracy. Only applies to when sparse = TRUE
+#'   might sacrify the accuracy. Only applies when sparse = TRUE
 
 #' @author Kenneth Benoit and Haiyan Wang
 #' @references Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in R, with two- and three-dimensional graphics: 
@@ -54,6 +45,8 @@ textmodel_ca <- function(x, smooth = 0, nd = NA,
     UseMethod("textmodel_ca")
 }
 
+#' @noRd
+#' @export
 textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
                              sparse = FALSE,
                              threads = 1,
@@ -77,7 +70,8 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
     nd0 <- nd
     
     # Init:
-    n <- sum(x) ; P <- x/n
+    n <- sum(x) 
+    P <- x/n
     rm <- rowSums(P) 
     cm <- colSums(P)
     
@@ -144,7 +138,7 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
              colcoord   = gam, 
              colsup     = logical(0),
              call       = match.call())
-    class(ca_model) <- c("fittedtextmodel", "ca", "list")
+    class(ca_model) <- c("textmodel_ca_fitted", "ca", "list")
     return(ca_model)  
 }
 

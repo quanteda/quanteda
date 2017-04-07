@@ -22,7 +22,7 @@ using namespace arma;
 
 //find the principle elements for the sparse residual matrix
 void create_residual_ca(std::size_t row_num, const arma::sp_mat& objm, const arma::colvec &rsum, const arma::rowvec &csum,
-                     const double residual_floor, const std::size_t K, Triplets &residual_tri)
+                        const double residual_floor, const std::size_t K, Triplets &residual_tri)
 {
     for (std::size_t k = 0; k < K; k++){
         double residual = (objm(row_num, k) - rsum(row_num) * csum(k)) / sqrt(rsum(row_num) * csum(k) );
@@ -57,7 +57,7 @@ struct Res : public Worker {
 // [[Rcpp::export]]
 
 arma::sp_mat cacpp(const arma::sp_mat &objm, unsigned int threads, const double residual_floor){
-
+    
     const std::size_t N = objm.n_rows;
     const std::size_t K = objm.n_cols;
     
@@ -69,7 +69,7 @@ arma::sp_mat cacpp(const arma::sp_mat &objm, unsigned int threads, const double 
     //create the residual matrix
     Triplets residual_tri;
     residual_tri.reserve(N*K);
-    if (threads == 1){  // retain the spasity without using mt to save space
+    if (threads == 1){
         for (std::size_t i = 0; i < N; i++) {
             create_residual_ca(i, objm, rsum, csum, residual_floor, K, residual_tri);
         }
@@ -83,7 +83,7 @@ arma::sp_mat cacpp(const arma::sp_mat &objm, unsigned int threads, const double 
             create_residual_ca(i, objm, rsum, csum, residual_floor, K, residual_tri);
         }
 #endif
-   }
+    }
     
     // Convert to Rcpp objects
     std::size_t mat_size = residual_tri.size();
@@ -99,3 +99,12 @@ arma::sp_mat cacpp(const arma::sp_mat &objm, unsigned int threads, const double 
     arma::sp_mat spm(index_mat, w_values, N, K);
     return spm;
 }
+
+/***R
+smoke<-matrix(c(4,2,3,2, 4,5,7,4,25,10,12,4,18,24,33,13,10,6,7,2), nrow = 5, ncol = 4, byrow = T)
+threads = 7
+residual_floor = 0.1
+n = 195
+P <- as.dfm(smoke)/n
+cacpp(P, threads, residual_floor/sqrt(n))
+*/
