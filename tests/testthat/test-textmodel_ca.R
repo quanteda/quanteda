@@ -96,3 +96,21 @@ test_that("textmodel-ca(sparse) works as expected on another dataset", {
 #     s <- summary(wtca)
 #     expect_equal(attr(s, "class"), "summary.ca")
 # })
+
+test_that("ca coefficients methods work", {
+    camodel <- textmodel_ca(data_dfm_LBGexample)
+    expect_equal(coef(camodel), coefficients(camodel))
+    expect_equal(
+        coef(camodel, doc_dim = 2)$coef_document,
+        camodel$rowcoord[, 2]
+    )
+})
+
+test_that("ca textplot_scale1d method works", {
+    camodel <- textmodel_ca(data_dfm_LBGexample)
+    textplot_scale1d(camodel, margin = "document")
+    expect_error(
+        textplot_scale1d(camodel, margin = "features"),
+        "textplot_scale1d for features not implemented for CA models"
+    )
+})
