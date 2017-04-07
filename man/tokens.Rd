@@ -13,7 +13,7 @@ tokens(x, what = c("word", "sentence", "character", "fastestword",
   ngrams = 1L, skip = 0L, concatenator = "_", hash = TRUE,
   verbose = quanteda_options("verbose"), include_docvars = TRUE, ...)
 
-\method{+}{tokens}(t1, t2)
+\method{+}{tokens}(c1, c2)
 
 \method{c}{tokens}(..., recursive = FALSE)
 }
@@ -90,11 +90,11 @@ the tokens object.  Only applies when tokenizing \link{corpus} objects.}
 
 \item{...}{additional arguments not used}
 
-\item{recursive}{logical used by `c()` method, always set to `FALSE`}
-
 \item{c1}{tokens one to be added}
 
 \item{c2}{tokens two to be added}
+
+\item{recursive}{logical used by `c()` method, always set to `FALSE`}
 }
 \value{
 \pkg{quanteda} \code{tokens} class object, by default a hashed list 
@@ -193,11 +193,7 @@ tokens(txt, remove_punct = TRUE)
 ### removeFeatures(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
 toks1 <- tokens(data_corpus_inaugural[1:5])
 toks2 <- tokens(data_corpus_inaugural[21:25])
-
 toks3 <- toks1 + toks2
-
-expect_equal(as.list(toks3[1:5]), as.list(toks1))
-expect_equal(as.list(toks3[6:10]), as.list(toks2))
 
 
 toks1 <- tokens(data_corpus_inaugural[1:5])

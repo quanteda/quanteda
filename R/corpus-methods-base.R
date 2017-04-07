@@ -177,7 +177,7 @@ c.corpus <- function(..., recursive = FALSE) {
     if (length(x) == 2) return(result)
     for (i in 3:length(x))
         result <- result + x[[i]]
-    metacorpus(result, "source") <- paste0("Concatenation by c.corpus(", names(dots), ")")
+    metacorpus(result, "source") <- paste0("Concatenation by c.corpus(", names(x), ")")
     return(result)
 }
 

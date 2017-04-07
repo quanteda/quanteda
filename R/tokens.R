@@ -761,23 +761,19 @@ types.tokens <- function(x) {
 #' @examples 
 #' toks1 <- tokens(data_corpus_inaugural[1:5])
 #' toks2 <- tokens(data_corpus_inaugural[21:25])
-#' 
 #' toks3 <- toks1 + toks2
 #' 
-#' expect_equal(as.list(toks3[1:5]), as.list(toks1))
-#' expect_equal(as.list(toks3[6:10]), as.list(toks2))
-#' 
 #' @export
-`+.tokens` <- function(t1, t2) {
-    types2 <- types(t2)
-    types1 <- types(t1)
-    t2 <- unclass(t2)
-    t1 <- unclass(t1)
-    t2 <- lapply(t2, function(x, y) x + y, length(types1)) # shift IDs
-    t1 <- c(t1, t2)
-    class(t1) <- c('tokens', 'tokenizedTexts')
-    types(t1) <- c(types1, types2)
-    tokens_hashed_recompile(t1)
+`+.tokens` <- function(c1, c2) {
+    types2 <- types(c2)
+    types1 <- types(c1)
+    c2 <- unclass(c2)
+    c1 <- unclass(c1)
+    c2 <- lapply(c2, function(x, y) x + y, length(types1)) # shift IDs
+    c1 <- c(c1, c2)
+    class(c1) <- c('tokens', 'tokenizedTexts')
+    types(c1) <- c(types1, types2)
+    tokens_hashed_recompile(c1)
 }
 
 #' @rdname tokens
