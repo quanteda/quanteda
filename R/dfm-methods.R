@@ -171,3 +171,21 @@ sparsity <- function(x) {
     (1 - length(x@x) / prod(dim(x)))
 }
 
+#' internal functions for dfm objects
+#' 
+#' Internal function documentation for \link{dfm} objects.
+#' @name dfm-internal
+#' @keywords dfm internal
+NULL
+
+#' The \code{Compare} methods enable relational operators to be use with dfm. 
+#' Relational operations on a dfm with a numeric will return a
+#' \link[Matrix]{dgCMatrix-class} object.
+#' @rdname dfm-internal
+#' @param e1 a \link{dfm}
+#' @param e2 a numeric value to compare with values in a dfm
+#' @export
+#' @seealso \link{Comparison} operators
+setMethod("Compare", c("dfmSparse", "numeric"), function(e1, e2) {
+    as(callGeneric(as(e1, "dgCMatrix"), e2), "lgCMatrix")
+})

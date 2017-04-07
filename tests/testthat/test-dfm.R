@@ -394,3 +394,19 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
     )
 })
 
+
+test_that("dfm works with relational operators", {
+    testdfm <- dfm(c("This is an example.", "This is a second example."))
+    expect_is(testdfm == 0, "lgCMatrix")
+    expect_is(testdfm >= 0, "lgCMatrix")
+    expect_is(testdfm <= 0, "lgCMatrix")
+    expect_is(testdfm < 0, "lgCMatrix")
+    expect_is(testdfm < 1, "lgCMatrix")
+    expect_is(testdfm > 0, "lgCMatrix")
+    expect_is(testdfm > 1, "lgCMatrix")
+    expect_is(testdfm > -1, "lgCMatrix")
+    expect_is(testdfm < -1, "lgCMatrix")
+})
+
+
+
