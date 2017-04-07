@@ -127,7 +127,7 @@ $(document).ready(function () {
 <p>To test the performance of calculation applying on dense dfm matrix versus on sparse dfm matrix.</p>
 <p>For a relatively larger dataset, ramdomized svd achieves a substantial speedup</p>
 <pre class="r"><code>require(quanteda, quietly = TRUE, warn.conflicts = FALSE)</code></pre>
-<pre><code>## quanteda version 0.9.9.45</code></pre>
+<pre><code>## quanteda version 0.9.9.46</code></pre>
 <pre><code>## Using 7 of 8 cores for parallel computing</code></pre>
 <pre class="r"><code>ie2010dfm &lt;- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 
@@ -135,27 +135,27 @@ ie2010dfm_dense &lt;- as.matrix(ie2010dfm)
 
 microbenchmark::microbenchmark(
     ca = ca::ca(ie2010dfm_dense), 
-    ca_rsvd = textmodel_ca_sparse(ie2010dfm),
-    ca_RSpectra = textmodel_ca_sparse(ie2010dfm, method = &quot;RSpectra&quot;),
+    ca_rsvd = textmodel_ca(ie2010dfm),
+    ca_RSpectra = textmodel_ca(ie2010dfm, method = &quot;RSpectra&quot;),
     times=10, unit = 'relative')</code></pre>
 <pre><code>## Unit: relative
-##         expr      min       lq      mean   median       uq       max neval
-##           ca 1.623297 1.497650 1.2478289 1.575202 1.440086 1.0880095    10
-##      ca_rsvd 1.719533 1.608557 0.9614093 1.652409 1.437960 0.2823098    10
-##  ca_RSpectra 1.000000 1.000000 1.0000000 1.000000 1.000000 1.0000000    10</code></pre>
+##         expr      min       lq     mean   median       uq      max neval
+##           ca 1.650235 1.667597 2.880274 1.660679 6.473861 2.886421    10
+##      ca_rsvd 1.766702 1.805268 1.963917 1.692515 1.607766 2.921918    10
+##  ca_RSpectra 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    10</code></pre>
 <pre class="r"><code>data(SOTUCorpus, package = &quot;quantedaData&quot;)
 SOTUdfm &lt;- dfm(SOTUCorpus)
 SOTUdfm_dense &lt;- as.matrix(SOTUdfm)
 microbenchmark::microbenchmark(
     ca = ca::ca(SOTUdfm_dense), 
-    ca_rsvd = textmodel_ca_sparse(SOTUdfm),
-    ca_RSpectra = textmodel_ca_sparse(SOTUdfm, method = &quot;RSpectra&quot;),
+    ca_rsvd = textmodel_ca(SOTUdfm),
+    ca_RSpectra = textmodel_ca(SOTUdfm, method = &quot;RSpectra&quot;),
     times=10, unit = 'relative')</code></pre>
 <pre><code>## Unit: relative
 ##         expr      min       lq     mean   median       uq      max neval
-##           ca 1.513969 1.435354 1.432978 1.442668 1.423119 1.351500    10
+##           ca 1.564828 1.529189 1.506036 1.452959 1.484305 1.536917    10
 ##      ca_rsvd 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    10
-##  ca_RSpectra 1.380456 1.298549 1.288866 1.292010 1.289793 1.193418    10</code></pre>
+##  ca_RSpectra 1.394907 1.379049 1.335662 1.302344 1.294085 1.362914    10</code></pre>
 </div>
 
 
