@@ -25,7 +25,6 @@ Imports:
     Rcpp,
     RcppParallel,
     rsvd,
-    RSpectra,
     stringi,
     fastmatch,
     ggplot2 (>= 2.2.0),
