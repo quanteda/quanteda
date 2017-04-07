@@ -29,7 +29,8 @@ test_that("textmodel-ca works as expected as ca::ca : use mt", {
     expect_equal(wca$rowmass, wtca$rowmass, tolerance = 1e-6)
     expect_equal(wca$colmass, wtca$colmass, tolerance = 1e-6)
     
-    expect_equal(wca$sv[1:length(wtca$sv)], wtca$sv, tolerance = 1e-6)
+    cc <- cor(wca$sv[1:length(wtca$sv)], wtca$sv)
+    expect_gt(cc, 0.99)
 })
 
 test_that("textmodel-ca works as expected as ca::ca: for given number of dimension", {
@@ -42,6 +43,17 @@ test_that("textmodel-ca works as expected as ca::ca: for given number of dimensi
     expect_equal(wca$sv[1:length(wtca$sv)], wtca$sv, tolerance = 1e-6)
 })
 
+test_that("textmodel-ca(sparse) works as expected on another dataset", {
+    usdfm <- dfm(data_corpus_inaugural, verbose = FALSE)
+    skip_if_not_installed("ca")
+    wca <- ca::ca(as.matrix(usdfm))
+    wtca <- textmodel_ca(usdfm, mt = TRUE)
+    expect_equal(wca$rowmass, wtca$rowmass, tolerance = 1e-6)
+    expect_equal(wca$colmass, wtca$colmass, tolerance = 1e-6)
+    
+    cc <- cor(wca$sv[1:length(wtca$sv)], wtca$sv)
+    expect_gt(cc, 0.99)
+})
 # test_that("textmodel-ca generates a ca::ca: object, which can call other functions from ca package", {
 #     skip_if_not_installed("ca")
 #     wca <- ca::ca(smoke)
