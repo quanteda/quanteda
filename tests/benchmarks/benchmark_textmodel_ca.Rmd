@@ -6,9 +6,7 @@ output: html_document
 
 ### Test: quanteda::textmodel-ca 
 
-To test the performance of calculation applying on dense dfm matrix versus on sparse dfm matrix.
-
-For a relatively larger dataset, ramdomized svd achieves a substantial speedup
+To test the performance of calculation applying on dense dfm matrix versus on sparse dfm matrix (with truncated svd).
 
 ```{r}
 require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
@@ -18,7 +16,7 @@ ie2010dfm_dense <- as.matrix(ie2010dfm)
 
 microbenchmark::microbenchmark(
     ca = ca::ca(ie2010dfm_dense), 
-    ca_rsvd = textmodel_ca(ie2010dfm),
+    ca_textmodel = textmodel_ca(ie2010dfm),
     times=10, unit = 'relative')
 ```
 
@@ -28,7 +26,7 @@ SOTUdfm <- dfm(SOTUCorpus)
 SOTUdfm_dense <- as.matrix(SOTUdfm)
 microbenchmark::microbenchmark(
     ca = ca::ca(SOTUdfm_dense), 
-    ca_rsvd = textmodel_ca(SOTUdfm),
+    ca_textmodel = textmodel_ca(SOTUdfm),
     times=10, unit = 'relative')
 ```
 

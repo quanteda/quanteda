@@ -124,8 +124,7 @@ $(document).ready(function () {
 
 <div id="test-quantedatextmodel-ca" class="section level3">
 <h3>Test: quanteda::textmodel-ca</h3>
-<p>To test the performance of calculation applying on dense dfm matrix versus on sparse dfm matrix.</p>
-<p>For a relatively larger dataset, ramdomized svd achieves a substantial speedup</p>
+<p>To test the performance of calculation applying on dense dfm matrix versus on sparse dfm matrix (with truncated svd).</p>
 <pre class="r"><code>require(quanteda, quietly = TRUE, warn.conflicts = FALSE)</code></pre>
 <pre><code>## quanteda version 0.9.9.46</code></pre>
 <pre><code>## Using 7 of 8 cores for parallel computing</code></pre>
@@ -135,23 +134,23 @@ ie2010dfm_dense &lt;- as.matrix(ie2010dfm)
 
 microbenchmark::microbenchmark(
     ca = ca::ca(ie2010dfm_dense), 
-    ca_rsvd = textmodel_ca(ie2010dfm),
+    ca_textmodel = textmodel_ca(ie2010dfm),
     times=10, unit = 'relative')</code></pre>
 <pre><code>## Unit: relative
-##     expr      min       lq     mean   median       uq      max neval
-##       ca 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    10
-##  ca_rsvd 1.135592 1.151815 1.666197 1.087833 4.312074 1.239828    10</code></pre>
+##          expr      min       lq     mean   median       uq      max neval
+##            ca 1.842227 1.675758 1.354429 1.758322 1.731018 1.100471    10
+##  ca_textmodel 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    10</code></pre>
 <pre class="r"><code>data(SOTUCorpus, package = &quot;quantedaData&quot;)
 SOTUdfm &lt;- dfm(SOTUCorpus)
 SOTUdfm_dense &lt;- as.matrix(SOTUdfm)
 microbenchmark::microbenchmark(
     ca = ca::ca(SOTUdfm_dense), 
-    ca_rsvd = textmodel_ca(SOTUdfm),
+    ca_textmodel = textmodel_ca(SOTUdfm),
     times=10, unit = 'relative')</code></pre>
 <pre><code>## Unit: relative
-##     expr      min       lq     mean   median       uq      max neval
-##       ca 1.466692 1.512302 1.511196 1.500509 1.497641 1.577675    10
-##  ca_rsvd 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    10</code></pre>
+##          expr      min       lq   mean   median       uq      max neval
+##            ca 1.902012 1.805813 1.7407 1.742105 1.702073 1.576118    10
+##  ca_textmodel 1.000000 1.000000 1.0000 1.000000 1.000000 1.000000    10</code></pre>
 </div>
 
 
