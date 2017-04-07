@@ -29,15 +29,14 @@ setClass("textmodel_wordscores_predicted",
 #' 
 #' \code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003) 
 #' wordscores method for scaling of a single dimension.
-#' @param data the dfm on which the model will be fit.  Does not need to contain
-#'   only the training documents, since the index of these will be matched 
-#'   automatically.
-#' @param scores vector of training scores associated with each document 
-#'   identified in \code{refData}
+#' @param x the \link{dfm} on which the model will be trained
+#' @param y vector of training scores associated with each document 
+#'   in \code{x}
 #' @param smooth a smoothing parameter for word counts; defaults to zero for the
 #'   to match the LBG (2003) method.
-#' @param scale classic LBG linear posterior weighted word class differences, or
-#'   logit scale of log posterior differences
+#' @param scale scale on which to score the words; \code{"linear"} for classic 
+#'   LBG linear posterior weighted word class differences, or \code{"logit"}
+#'   for log posterior differences
 #' @details Fitting a \code{textmodel_wordscores} results in an object of class 
 #'   \code{textmodel_wordscores_fitted} containing the following slots:
 #' @slot scale \code{linear} or \code{logit}, according to the value of 
@@ -72,9 +71,11 @@ setClass("textmodel_wordscores_predicted",
 #'   Interpreting Political Text." Political Analysis 16(1): 93-100.
 #' @seealso \code{\link{predict.textmodel_wordscores_fitted}}
 #' @export
-textmodel_wordscores <- function(data, scores,
-                                 scale=c("linear", "logit"), smooth=0) {
+textmodel_wordscores <- function(x, y,
+                                 scale = c("linear", "logit"), smooth = 0) {
     scale <- match.arg(scale)
+    data <- x
+    scores <- y
     
     if (nrow(data) < 2)
         stop("wordscores model requires at least two training documents.")

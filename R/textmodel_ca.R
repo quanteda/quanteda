@@ -47,33 +47,40 @@ setClass("textmodel_ca_fitted",
 #' wca <- textmodel_ca(ieDfm)
 #' summary(wca) 
 #' @export
-textmodel_ca <- function(obj, smooth = 0, nd = NA,
-                                sparse = FALSE,
-                                threads = 1,
-                                residual_floor = 0.1) {
-    if (!is(obj, "dfm"))
-        stop("supplied data must be a dfm object.")
-    obj <- obj + smooth  # smooth by the specified amount
+textmodel_ca <- function(x, smooth = 0, nd = NA,
+                         sparse = FALSE,
+                         threads = 1,
+                         residual_floor = 0.1) {
+    UseMethod("textmodel_ca")
+}
 
-    I  <- dim(obj)[1] ; J <- dim(obj)[2]
-    rn <- dimnames(obj)[[1]]
-    cn <- dimnames(obj)[[2]]
+textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
+                             sparse = FALSE,
+                             threads = 1,
+                             residual_floor = 0.1) {
 
+    x <- x + smooth  # smooth by the specified amount
+    
+    I <- dim(x)[1] 
+    J <- dim(x)[2]
+    rn <- dimnames(x)[[1]]
+    cn <- dimnames(x)[[2]]
+    
     # default value of rank k
     if (is.na(nd)){
         #nd <- max(floor(min(I, J)/4), 1)  
         nd <- max(floor(3*log(min(I, J))), 1) 
     } else {
-        nd.max <- min(dim(obj)) - 1
+        nd.max <- min(dim(x)) - 1
         if (nd > nd.max ) nd <- nd.max
     }
     nd0 <- nd
     
     # Init:
-    n <- sum(obj) ; P <- obj/n
+    n <- sum(x) ; P <- x/n
     rm <- rowSums(P) 
     cm <- colSums(P)
-   
+    
     # SVD:
     if (sparse == FALSE){
         # generally fast for a not-so-large dfm
@@ -83,7 +90,7 @@ textmodel_ca <- function(obj, smooth = 0, nd = NA,
         # c++ function to keep the residual matrix sparse
         S <- cacpp(P, threads, residual_floor/sqrt(n))
     }
-
+    
     dec <- rsvd::rsvd(S, nd)   
     chimat <- S^2 * n
     dec    <- RSpectra::svds(S, nd)
@@ -97,7 +104,7 @@ textmodel_ca <- function(obj, smooth = 0, nd = NA,
     totin <- sum(ev)
     rin <- rowSums(S^2)
     cin <- colSums(S^2)
-
+    
     # chidist
     rachidist <- sqrt(rin / rm)
     cachidist <- sqrt(cin / cm)
@@ -141,3 +148,19 @@ textmodel_ca <- function(obj, smooth = 0, nd = NA,
     return(ca_model)  
 }
 
+#' @rdname textmodel-internal
+#' @param doc_dim,feat_dim the document and feature dimension scores to be 
+#'   extracted as coefficients
+#' @export
+setMethod("coef", signature(object = "textmodel_ca_fitted"),
+          function(object, doc_dim = 1, feat_dim = 1, ...) 
+              list(coef_feature = object$colcoord[, feat_dim],
+                   coef_feature_se = rep(NA, length(object$colnames)),
+                   coef_document = object$rowcoord[, doc_dim],
+                   coef_document_se = rep(NA, length(object$rownames)))
+)
+
+#' @rdname textmodel-internal
+#' @export
+setMethod("coefficients", signature(object = "textmodel_ca_fitted"),
+          function(object, ...) coef(object, ...))
