@@ -54,7 +54,7 @@ textmodel_ca <- function(obj, smooth = 0, nd = NA,
     # SVD:
     if (mt == TRUE){
         # c++ function to keep the residual matrix sparse
-        S <- cacpp(P, threads, residual_floor/n)
+        S <- cacpp(P, threads, residual_floor/sqrt(n))
     } else {
         # generally fast for a not-so-large dfm
         eP <- Matrix::tcrossprod(rm, cm)
