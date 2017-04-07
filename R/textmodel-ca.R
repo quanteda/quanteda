@@ -5,33 +5,34 @@
 #' @param obj the dfm on which the model will be fit
 #' @param smooth a smoothing parameter for word counts; defaults to zero.
 #' @param nd  Number of dimensions to be included (default: NA)
-#' @param method specified the truncated svd function; set to choose between \pkg{rsvd}(default) and \pkg{RSpectra}
-#' @param mt set it to TRUE for a very large dfm to avoid the coercing of the dfm to dense 
-#' @param threads specifies the number of threads to use; set to 1 to override
-#'   the package settings and use a serial version of the function
-#' @param residual_floor specifies the threshold for residual matrix for 
-#'   calculating the truncated svd (default: 0.5)
+#' @param sparse retains the sparsity if set to TRUE
+#' @param threads specifies the number of threads to be used; set to 1 to use a serial version of the function. 
+#' Only applies to when sparse = TRUE.
+#' @param residual_floor specifies the threshold for the residual matrix for 
+#'   calculating the truncated svd.Larger value will reduce memory and time cost but 
+#'   might sacrify the accuracy. Only applies to when sparse = TRUE
 
 #' @author Kenneth Benoit and Haiyan Wang
 #' @references Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in R, with two- and three-dimensional graphics: 
 #' The ca package. \emph{Journal of Statistical Software}, 20 (3), \url{http://www.jstatsoft.org/v20/i03/}
 #' 
 #' Erichson, N. Benjamin, et al.(2016) Randomized matrix decompositions using R. arXiv preprint arXiv:1608.02148 .
+#' @details Randomized matrix decompostion (\pkg{rsvd}) is applied to enable the fast computation of the SVD. 
+#' @note Setting \link{threads} larger than 1 (when sparse = TRUE) will trigger multiple threads computation, which retains sparsity of all involved 
+#' matrices.It might not help the speed unless you have a very big \link{dfm}.   
 #' @examples 
 #' ieDfm <- dfm(data_corpus_irishbudget2010)
 #' wca <- textmodel_ca(ieDfm)
 #' summary(wca) 
 #' @export
-textmodel_ca <- function(obj, smooth = 0, nd = NA, 
-                                method = c("rsvd", "RSpectra"),
-                                mt = FALSE,
-                                threads = quanteda_options("threads"),
-                                residual_floor = 0.5) {
+textmodel_ca <- function(obj, smooth = 0, nd = NA,
+                                sparse = FALSE,
+                                threads = 1,
+                                residual_floor = 0.1) {
     if (!is(obj, "dfm"))
         stop("supplied data must be a dfm object.")
     obj <- obj + smooth  # smooth by the specified amount
-    method <- match.arg(method)
-    
+
     I  <- dim(obj)[1] ; J <- dim(obj)[2]
     rn <- dimnames(obj)[[1]]
     cn <- dimnames(obj)[[2]]
@@ -52,22 +53,16 @@ textmodel_ca <- function(obj, smooth = 0, nd = NA,
     cm <- colSums(P)
    
     # SVD:
-    if (mt == TRUE){
-        # c++ function to keep the residual matrix sparse
-        S <- cacpp(P, threads, residual_floor/sqrt(n))
-    } else {
+    if (sparse == FALSE){
         # generally fast for a not-so-large dfm
         eP <- Matrix::tcrossprod(rm, cm)
         S      <- (P - eP) / sqrt(eP)
-    }
-    
-    
-    
-    if (method == "rsvd"){
-        dec <- rsvd::rsvd(S, nd)   
     } else {
-        dec <- RSpectra::svds(S, nd)
+        # c++ function to keep the residual matrix sparse
+        S <- cacpp(P, threads, residual_floor/sqrt(n))
     }
+
+    dec <- rsvd::rsvd(S, nd)   
     chimat <- S^2 * n
     dec    <- RSpectra::svds(S, nd)
     sv     <- dec$d[1:nd]

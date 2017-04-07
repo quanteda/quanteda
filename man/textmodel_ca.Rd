@@ -4,8 +4,8 @@
 \alias{textmodel_ca}
 \title{correspondence analysis of a document-feature matrix}
 \usage{
-textmodel_ca(obj, smooth = 0, nd = NA, method = c("rsvd", "RSpectra"),
-  mt = FALSE, threads = quanteda_options("threads"), residual_floor = 0.5)
+textmodel_ca(obj, smooth = 0, nd = NA, sparse = FALSE, threads = 1,
+  residual_floor = 0.1)
 }
 \arguments{
 \item{obj}{the dfm on which the model will be fit}
@@ -14,19 +14,25 @@ textmodel_ca(obj, smooth = 0, nd = NA, method = c("rsvd", "RSpectra"),
 
 \item{nd}{Number of dimensions to be included (default: NA)}
 
-\item{method}{specified the truncated svd function; set to choose between \pkg{rsvd}(default) and \pkg{RSpectra}}
+\item{sparse}{retains the sparsity if set to TRUE}
 
-\item{mt}{set it to TRUE for a very large dfm to avoid the coercing of the dfm to dense}
+\item{threads}{specifies the number of threads to be used; set to 1 to use a serial version of the function. 
+Only applies to when sparse = TRUE.}
 
-\item{threads}{specifies the number of threads to use; set to 1 to override
-the package settings and use a serial version of the function}
-
-\item{residual_floor}{specifies the threshold for residual matrix for 
-calculating the truncated svd (default: 0.5)}
+\item{residual_floor}{specifies the threshold for the residual matrix for 
+calculating the truncated svd.Larger numbers will reduce memory and time cost but 
+might reduce the accuracy. Only applies to when sparse = TRUE}
 }
 \description{
 \code{textmodel-ca} implements correspondence analysis scaling on a
 \link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca} in the \pkg{ca} package.
+}
+\details{
+Randomized matrix decompostion (\pkg{rsvd}) is applied to enable the fast computation of the SVD.
+}
+\note{
+Setting \link{threads} larger than 1 (when sparse = TRUE) will trigger multiple threads computation, which retains sparsity of all involved 
+matrices.It might not help the speed unless you have a very big \link{dfm}.
 }
 \examples{
 ieDfm <- dfm(data_corpus_irishbudget2010)
