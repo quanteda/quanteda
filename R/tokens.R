@@ -755,4 +755,49 @@ types.tokens <- function(x) {
 }
 
 
+#' @rdname tokens
+#' @param c1 tokens one to be added
+#' @param c2 tokens two to be added
+#' @examples 
+#' toks1 <- tokens(data_corpus_inaugural[1:5])
+#' toks2 <- tokens(data_corpus_inaugural[21:25])
+#' 
+#' toks3 <- toks1 + toks2
+#' 
+#' expect_equal(as.list(toks3[1:5]), as.list(toks1))
+#' expect_equal(as.list(toks3[6:10]), as.list(toks2))
+#' 
+#' @export
+`+.tokens` <- function(t1, t2) {
+    types2 <- types(t2)
+    types1 <- types(t1)
+    t2 <- unclass(t2)
+    t1 <- unclass(t1)
+    t2 <- lapply(t2, function(x, y) x + y, length(types1)) # shift IDs
+    t1 <- c(t1, t2)
+    class(t1) <- c('tokens', 'tokenizedTexts')
+    types(t1) <- c(types1, types2)
+    tokens_hashed_recompile(t1)
+}
+
+#' @rdname tokens
+#' @param recursive logical used by `c()` method, always set to `FALSE`
+#' @examples 
+#' 
+#' toks1 <- tokens(data_corpus_inaugural[1:5])
+#' toks2 <- tokens(data_corpus_inaugural[21:25])
+#' toks3 <- tokens(data_corpus_inaugural[41:45])
+#' summary(c(toks1, toks2, toks3))
+#' 
+#' @export
+c.tokens <- function(..., recursive = FALSE) {
+    x <- list(...)
+    if (length(x) == 1) return(x[[1]])
+    result <- x[[1]] + x[[2]]
+    if (length(x) == 2) return(result)
+    for (i in 3:length(x))
+        result <- result + x[[i]]
+    return(result)
+}
+
 

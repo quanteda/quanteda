@@ -343,3 +343,26 @@ test_that("remove_punct and remove_twitter interact correctly, #607", {
     )
 })
 
+test_that("+ operator works with tokens", {
+    
+    toks1 <- tokens(data_corpus_inaugural[1:5])
+    toks2 <- tokens(data_corpus_inaugural[21:25])
+    toks3 <- toks1 + toks2
+    expect_equal(ndoc(toks3), 10)
+    expect_equal(as.list(toks3[1:5]), as.list(toks1))
+    expect_equal(as.list(toks3[6:10]), as.list(toks2))
+    
+})
+
+test_that("c() works with tokens", {
+
+    toks1 <- tokens(data_corpus_inaugural[1:5])
+    toks2 <- tokens(data_corpus_inaugural[21:25])
+    toks3 <- tokens(data_corpus_inaugural[41:45])
+    toks4 <- c(toks1, toks2, toks3)
+    expect_equal(ndoc(toks4), 15)
+    expect_equal(as.list(toks4[1:5]), as.list(toks1))
+    expect_equal(as.list(toks4[6:10]), as.list(toks2))
+    expect_equal(as.list(toks4[11:15]), as.list(toks3))
+    
+})
