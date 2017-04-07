@@ -51,7 +51,7 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
                              sparse = FALSE,
                              threads = 1,
                              residual_floor = 0.1) {
-
+    
     x <- x + smooth  # smooth by the specified amount
     
     I <- dim(x)[1] 
@@ -79,15 +79,17 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
     if (sparse == FALSE){
         # generally fast for a not-so-large dfm
         eP <- Matrix::tcrossprod(rm, cm)
-        S      <- (P - eP) / sqrt(eP)
+        S  <- (P - eP) / sqrt(eP)
     } else {
         # c++ function to keep the residual matrix sparse
         S <- cacpp(P, threads, residual_floor/sqrt(n))
     }
     
-    dec <- rsvd::rsvd(S, nd)   
+    #dec <- rsvd::rsvd(S, nd)   #rsvd is not as stable as RSpectra
+    
+    dec <- RSpectra::svds(S, nd)   
+    
     chimat <- S^2 * n
-    dec    <- RSpectra::svds(S, nd)
     sv     <- dec$d[1:nd]
     u      <- dec$u
     v      <- dec$v
