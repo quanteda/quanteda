@@ -1,10 +1,32 @@
+#' @rdname textmodel-internal
+#' @keywords internal textmodel
+#' @export
+setClass("textmodel_ca_fitted",
+         slots = c(priors = "numeric", 
+                   tol = "numeric",
+                   dir = "numeric",
+                   theta = "numeric",
+                   beta = "numeric",
+                   psi = "numeric",
+                   alpha = "numeric",
+                   phi = "numeric",
+                   docs = "character",
+                   features = "character",
+                   sigma = "numeric",
+                   ll = "numeric",
+                   dispersion = "character",
+                   se.theta = "numeric"),
+         contains = "textmodel_fitted")
+
 #' correspondence analysis of a document-feature matrix
 #' 
 #' \code{textmodel-ca} implements correspondence analysis scaling on a
-#' \link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca} in the \pkg{ca} package.
-#' @param obj the dfm on which the model will be fit
+#' \link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca} in 
+#' the \pkg{ca} package.
+#' @param x the dfm on which the model will be fit
 #' @param smooth a smoothing parameter for word counts; defaults to zero.
-#' @param nd  Number of dimensions to be included (default: NA)
+#' @param nd  Number of dimensions to be included in output; if \code{NA} (the 
+#'   default) then the maximum possible dimensions are included.
 #' @param sparse retains the sparsity if set to TRUE
 #' @param threads specifies the number of threads to be used; set to 1 to use a serial version of the function. 
 #' Only applies to when sparse = TRUE.
