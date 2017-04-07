@@ -46,7 +46,7 @@ test_that("print/show/summary method works as expected", {
     
     # summary method
     expect_output(summary(wfm_mt), "[ ]*theta[ ]*SE[ ]*lower")
-    expect_output(summary(wfm_mt), "Call:\n\ttextmodel_wordfish\\(data = ie2010dfm, dir = c\\(6, 5\\), sparse = TRUE\\)")
+    expect_output(summary(wfm_mt), "Call:\n\ttextmodel_wordfish\\(x = ie2010dfm, dir = c\\(6, 5\\), sparse = TRUE\\)")
     expect_output(summary(wfm_mt), "Estimated document positions:")
     
     # sparse but not mt
@@ -61,7 +61,7 @@ test_that("print/show/summary method works as expected", {
     
     # summary method
     expect_output(summary(wfm_s), "[ ]*theta[ ]*SE[ ]*lower")
-    expect_output(summary(wfm_s), "Call:\n\ttextmodel_wordfish\\(data = ie2010dfm, dir = c\\(6, 5\\), sparse = TRUE\\)")
+    expect_output(summary(wfm_s), "Call:\n\ttextmodel_wordfish\\(x = ie2010dfm, dir = c\\(6, 5\\), sparse = TRUE\\)")
     expect_output(summary(wfm_s), "Estimated document positions:")
 })
 
