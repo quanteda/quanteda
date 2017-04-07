@@ -13,7 +13,7 @@ tokens(x, what = c("word", "sentence", "character", "fastestword",
   ngrams = 1L, skip = 0L, concatenator = "_", hash = TRUE,
   verbose = quanteda_options("verbose"), include_docvars = TRUE, ...)
 
-\method{+}{tokens}(c1, c2)
+\method{+}{tokens}(t1, t2)
 
 \method{c}{tokens}(..., recursive = FALSE)
 }
@@ -90,9 +90,9 @@ the tokens object.  Only applies when tokenizing \link{corpus} objects.}
 
 \item{...}{additional arguments not used}
 
-\item{c1}{tokens one to be added}
+\item{t1}{tokens one to be added}
 
-\item{c2}{tokens two to be added}
+\item{t2}{tokens two to be added}
 
 \item{recursive}{logical used by `c()` method, always set to `FALSE`}
 }
