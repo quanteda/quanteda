@@ -345,24 +345,46 @@ test_that("remove_punct and remove_twitter interact correctly, #607", {
 
 test_that("+ operator works with tokens", {
     
-    toks1 <- tokens(data_corpus_inaugural[1:5])
-    toks2 <- tokens(data_corpus_inaugural[21:25])
-    toks3 <- toks1 + toks2
-    expect_equal(ndoc(toks3), 10)
-    expect_equal(as.list(toks3[1:5]), as.list(toks1))
-    expect_equal(as.list(toks3[6:10]), as.list(toks2))
+    txt1 <- c(d1 = "This is sample document one.",
+              d2 = "Here is the second sample document.")
+    txt2 <- c(d3 = "And the third document.")
     
+    toks_added <- tokens(txt1) + tokens(txt2)
+    expect_equal(ntype(toks_added), length(attr(toks_added, "types")))
+    expect_equal(ndoc(toks_added), 3)
+    
+    ## THIS BEHAVIOUR SHOULD NOT DUPLICATE DOCUMENT NAMES - SEE TEST EXPECTATIONS
+    txt3 <- c(d1 = "new words")
+    toks_added2 <- tokens(txt1) + tokens(txt3)
+    expect_equal(ntype(toks_added2), length(attr(toks_added2, "types")))
+    expect_equal(
+        toks_added2[[1]],
+        c("This", "is", "sample", "document", "one", ".", "new", "words")       
+    )
+    expect_equal(ndoc(toks_added2), 2)
+
 })
 
 test_that("c() works with tokens", {
 
-    toks1 <- tokens(data_corpus_inaugural[1:5])
-    toks2 <- tokens(data_corpus_inaugural[21:25])
-    toks3 <- tokens(data_corpus_inaugural[41:45])
-    toks4 <- c(toks1, toks2, toks3)
-    expect_equal(ndoc(toks4), 15)
-    expect_equal(as.list(toks4[1:5]), as.list(toks1))
-    expect_equal(as.list(toks4[6:10]), as.list(toks2))
-    expect_equal(as.list(toks4[11:15]), as.list(toks3))
+    txt1 <- c(d1 = "This is sample document one.",
+              d2 = "Here is the second sample document.")
+    txt2 <- c(d3 = "And the third document.")
+    txt3 <- c(d4 = "new words")
+    txt4 <- c(d1 = "newer wordz")
     
+    expect_equal(
+        c(tokens(txt1), tokens(txt2)),
+        tokens(txt1) + tokens(txt2)
+    )
+    
+    expect_equal(
+        c(tokens(txt1), tokens(txt2), tokens(txt3)),
+        tokens(txt1) + tokens(txt2) + tokens(txt3)
+    )
+    
+    expect_equal(
+        ndoc(c(tokens(txt1), tokens(txt4))),
+        2
+    )
 })
