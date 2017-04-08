@@ -388,3 +388,19 @@ test_that("c() works with tokens", {
         2
     )
 })
+
+test_that("docvars are erased for tokens added", {
+    mycorpus1 <- corpus(c(d1 = "This is sample document one.",
+                          d2 = "Here is the second sample document."), 
+                        docvars = data.frame(dvar1 = c("A", "B")))
+    txt2 <- c(d3 = "And the third document.")
+    expect_equal(
+        docvars(tokens(mycorpus1)),
+        data.frame(dvar1 = c("A", "B"))
+    )
+    expect_equal(
+        docvars(tokens(mycorpus1) + tokens(txt2)),
+        data.frame()
+    )
+    
+})
