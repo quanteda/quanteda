@@ -69,10 +69,14 @@ String text(Text &tokens,
     
     String text_("");
     if (tokens.size() > 0) {
-        for (std::size_t j = 0; j < tokens.size(); j++) {
-            if (tokens[j] == 0) continue;
-            text_ += " ";
-            text_ += types_[tokens[j] - 1];
+        if (tokens[0] != 0) {
+            text_ += types_[tokens[0] - 1];
+        }
+        for (std::size_t j = 1; j < tokens.size(); j++) {
+            if (tokens[j] != 0) {
+                text_ += " ";
+                text_ += types_[tokens[j] - 1];
+            }
         }
         text_.set_encoding(CE_UTF8);
     }
