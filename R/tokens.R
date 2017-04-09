@@ -765,6 +765,9 @@ types.tokens <- function(x) {
 #' 
 #' @export
 `+.tokens` <- function(t1, t2) {
+    if (length(intersect(docnames(t1), docnames(t2))))
+        stop('Document names are duplicated')
+    docvars(t1) <- docvars(t2) <- NULL
     types2 <- types(t2)
     types1 <- types(t1)
     t2 <- unclass(t2)

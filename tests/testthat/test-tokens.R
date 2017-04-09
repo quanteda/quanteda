@@ -383,24 +383,22 @@ test_that("c() works with tokens", {
         tokens(txt1) + tokens(txt2) + tokens(txt3)
     )
     
-    expect_equal(
+    expect_error(
         ndoc(c(tokens(txt1), tokens(txt4))),
-        2
+        'Document names are duplicated'
     )
 })
 
 test_that("docvars are erased for tokens added", {
-    mycorpus1 <- corpus(c(d1 = "This is sample document one.",
-                          d2 = "Here is the second sample document."), 
-                        docvars = data.frame(dvar1 = c("A", "B")))
-    txt2 <- c(d3 = "And the third document.")
-    expect_equal(
-        docvars(tokens(mycorpus1)),
-        data.frame(dvar1 = c("A", "B"))
+    mycorpus <- corpus(c(d1 = "This is sample document one.",
+                         d2 = "Here is the second sample document."), 
+                        docvars = data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2)))
+    expect_equivalent(
+        docvars(tokens(mycorpus, include_docvars = TRUE)),
+        data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2))
     )
-    expect_equal(
-        docvars(tokens(mycorpus1) + tokens(txt2)),
+    expect_equivalent(
+        docvars(tokens(mycorpus) + tokens("And the third document.")),
         data.frame()
     )
-    
 })
