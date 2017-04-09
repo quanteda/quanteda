@@ -33,7 +33,7 @@ docvars.corpus <- function(x, field = NULL) {
 #' @export
 docvars.tokens <- function(x, field = NULL) {
     check_fields(x, field)
-    dvars <- attr(x, "docvars")[, , drop = FALSE]
+    dvars <- attr(x, "docvars")
     if (is.null(field))
         dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
     get_docvars(dvars, field)    
@@ -43,7 +43,7 @@ docvars.tokens <- function(x, field = NULL) {
 #' @export
 docvars.dfm <- function(x, field = NULL) {
     check_fields(x, field)
-    dvars <- x@docvars[, , drop = FALSE]
+    dvars <- x@docvars
     if (is.null(field))
         dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
     get_docvars(dvars, field)    
