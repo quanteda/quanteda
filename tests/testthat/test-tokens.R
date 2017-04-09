@@ -370,8 +370,8 @@ test_that("c() works with tokens", {
     txt1 <- c(d1 = "This is sample document one.",
               d2 = "Here is the second sample document.")
     txt2 <- c(d3 = "And the third document.")
-    txt3 <- c(d4 = "new words")
-    txt4 <- c(d1 = "newer wordz")
+    txt3 <- c(d4 = "This is sample document 4.")
+    txt4 <- c(d1 = "This is sample document five!")
     
     expect_equal(
         c(tokens(txt1), tokens(txt2)),
@@ -384,7 +384,7 @@ test_that("c() works with tokens", {
     )
     
     expect_error(
-        ndoc(c(tokens(txt1), tokens(txt4))),
+        c(tokens(txt1), tokens(txt4)),
         'Document names are duplicated'
     )
 })
@@ -398,7 +398,7 @@ test_that("docvars are erased for tokens added", {
         data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2))
     )
     expect_equivalent(
-        docvars(tokens(mycorpus) + tokens("And the third document.")),
+        docvars(tokens(mycorpus) + tokens("And the third sample document.")),
         data.frame()
     )
 })
