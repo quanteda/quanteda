@@ -352,16 +352,6 @@ test_that("+ operator works with tokens", {
     toks_added <- tokens(txt1) + tokens(txt2)
     expect_equal(ntype(toks_added), length(attr(toks_added, "types")))
     expect_equal(ndoc(toks_added), 3)
-    
-    ## THIS BEHAVIOUR SHOULD NOT DUPLICATE DOCUMENT NAMES - SEE TEST EXPECTATIONS
-    txt3 <- c(d1 = "new words")
-    toks_added2 <- tokens(txt1) + tokens(txt3)
-    expect_equal(ntype(toks_added2), length(attr(toks_added2, "types")))
-    expect_equal(
-        toks_added2[[1]],
-        c("This", "is", "sample", "document", "one", ".", "new", "words")       
-    )
-    expect_equal(ndoc(toks_added2), 2)
 
 })
 
