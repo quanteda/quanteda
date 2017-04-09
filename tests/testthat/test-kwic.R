@@ -241,3 +241,6 @@ test_that("print method works as expected", {
     testkwic <- kwic('what does the fox say fox', 'foox')
     expect_null(print(testkwic))
 })
+
+
+
