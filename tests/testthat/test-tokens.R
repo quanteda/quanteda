@@ -343,3 +343,52 @@ test_that("remove_punct and remove_twitter interact correctly, #607", {
     )
 })
 
+test_that("+ operator works with tokens", {
+    
+    txt1 <- c(d1 = "This is sample document one.",
+              d2 = "Here is the second sample document.")
+    txt2 <- c(d3 = "And the third document.")
+    
+    toks_added <- tokens(txt1) + tokens(txt2)
+    expect_equal(ntype(toks_added), length(attr(toks_added, "types")))
+    expect_equal(ndoc(toks_added), 3)
+
+})
+
+test_that("c() works with tokens", {
+
+    txt1 <- c(d1 = "This is sample document one.",
+              d2 = "Here is the second sample document.")
+    txt2 <- c(d3 = "And the third document.")
+    txt3 <- c(d4 = "This is sample document 4.")
+    txt4 <- c(d1 = "This is sample document five!")
+    
+    expect_equal(
+        c(tokens(txt1), tokens(txt2)),
+        tokens(txt1) + tokens(txt2)
+    )
+    
+    expect_equal(
+        c(tokens(txt1), tokens(txt2), tokens(txt3)),
+        tokens(txt1) + tokens(txt2) + tokens(txt3)
+    )
+    
+    expect_error(
+        c(tokens(txt1), tokens(txt4)),
+        'Document names are duplicated'
+    )
+})
+
+test_that("docvars are erased for tokens added", {
+    mycorpus <- corpus(c(d1 = "This is sample document one.",
+                         d2 = "Here is the second sample document."), 
+                        docvars = data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2)))
+    expect_equivalent(
+        docvars(tokens(mycorpus, include_docvars = TRUE)),
+        data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2))
+    )
+    expect_equivalent(
+        docvars(tokens(mycorpus) + tokens("And the third sample document.")),
+        data.frame()
+    )
+})
