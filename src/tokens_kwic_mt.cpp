@@ -170,8 +170,8 @@ DataFrame qatd_cpp_kwic(const List &texts_,
                                           _["keyword"] = coxs_target_,
                                           _["post"]    = coxs_post_,
                                           _["stringsAsFactors"] = false);
-    output_.attr("ids") = recompile(contexts, types);
-    output_.attr("docs") = documents_;
+    output_.attr("tokens") = recompile(contexts, types);
+    output_.attr("docid") = documents_;
     return output_;
 }
 

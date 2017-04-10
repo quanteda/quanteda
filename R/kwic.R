@@ -136,10 +136,10 @@ print.kwic <- function(x, ...) {
 #' @export
 #' @method as.tokens kwic
 as.tokens.kwic <- function(x) {
-    result <- attr(x, 'ids')
+    result <- attr(x, 'tokens')
     names(result) <- x$docname
     class(result) <- c("tokens", "tokenizedTexts")
-    attr(result, 'docs') <- attr(x, 'docs')
+    docvars(result) <- data.frame(docid = attr(x, 'docid'))
     attr(result, 'concatenator') <- attr(x, 'concatenator')
     return(result)
 }
