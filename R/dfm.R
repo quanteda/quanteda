@@ -162,9 +162,9 @@ dfm.character <- function(x,
     }
     
     if (verbose) catm("   ... tokenizing\n")
-    tokenizedTexts <- tokens(x, ...)
+    temp <- tokens(x, ...)
 
-    dfm(tokenizedTexts, verbose = verbose, tolower = FALSE, stem = stem, 
+    dfm(temp, verbose = verbose, tolower = FALSE, stem = stem, 
         remove = remove, select = select,
         thesaurus = thesaurus, dictionary = dictionary, valuetype = valuetype, 
         start_time = start_time)
@@ -192,13 +192,13 @@ dfm.corpus <- function(x, tolower = TRUE,
                  ifelse(length(groupsLab) == 1, "", "s"), ": ", 
                  paste(groupsLab, collapse=", "), "\n", sep="")
         if (verbose) catm("   ... tokenizing grouped texts\n")
-        tokenizedTexts <- tokens(texts(x, groups = groups), ...)
+        temp <- tokens(texts(x, groups = groups), ...)
     } else {
         if (verbose) catm("   ... tokenizing texts\n")
-        tokenizedTexts <- tokens(x, ...)
+        temp <- tokens(x, ...)
     }
     
-    dfm(tokenizedTexts, 
+    dfm(temp, 
         tolower = tolower,
         stem = stem,
         select = select,
@@ -269,6 +269,7 @@ dfm.tokenizedTexts <- function(x,
     result@skip <- as.integer(attr(x, "skip"))
     result@concatenator <- attr(x, "concatenator")
     result@docvars <- attr(x, "docvars")
+    
     if (is.null(result@docvars)) {
         result@docvars <- data.frame()
     }

@@ -52,10 +52,11 @@ docvars.dfm <- function(x, field = NULL) {
 ## internal function to return the docvars for all docvars functions
 get_docvars <- function(dvars, field = NULL) {
     if (is.null(field)) {
-        if (length(dvars) == 0)
+        if (is.null(dvars)) {
             return(data.frame())
-        else
+        } else {
             return(dvars)
+        }
     } else {
         return(dvars[, field, drop = TRUE])
     }

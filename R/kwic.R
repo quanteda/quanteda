@@ -139,8 +139,7 @@ as.tokens.kwic <- function(x) {
     result <- attr(x, 'ids')
     names(result) <- x$docname
     class(result) <- c("tokens", "tokenizedTexts")
-    docvars(result) <- data.frame()
-    attr(result, 'docs') <- attr(x, 'docs') # we might not need this if names are original document names
+    attr(result, 'docs') <- attr(x, 'docs')
     attr(result, 'concatenator') <- attr(x, 'concatenator')
     return(result)
 }
