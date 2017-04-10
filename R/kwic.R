@@ -137,7 +137,6 @@ print.kwic <- function(x, ...) {
 as.tokens.kwic <- function(x) {
     toks <- attr(x, 'ids')
     names(toks) <- x$docname
-    #attr(toks, 'types') <- attr(x, 'types')
     attr(toks, 'docs') <- attr(x, 'docs') # we might not need this if names are original document names
     class(toks) <- c("tokens", "tokenizedTexts")
     return(toks)
