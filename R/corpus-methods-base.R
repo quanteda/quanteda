@@ -171,13 +171,13 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
 #' summary(c(corpus1, corpus2, corpus3))
 #' @export
 c.corpus <- function(..., recursive = FALSE) {
-    dots <- list(...)
-    if (length(dots) == 1) return(dots[[1]])
-    result <- dots[[1]] + dots[[2]]
-    if (length(dots) == 2) return(result)
-    for (i in 3:length(dots))
-        result <- result + dots[[i]]
-    metacorpus(result, "source") <- paste0("Concatenation by c.corpus(", names(dots), ")")
+    x <- list(...)
+    if (length(x) == 1) return(x[[1]])
+    result <- x[[1]] + x[[2]]
+    if (length(x) == 2) return(result)
+    for (i in 3:length(x))
+        result <- result + x[[i]]
+    metacorpus(result, "source") <- paste0("Concatenation by c.corpus(", names(x), ")")
     return(result)
 }
 
