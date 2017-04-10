@@ -315,8 +315,7 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     if (include_docvars) {
         docvars(result) <- documents(x)[, which(names(documents(x)) != "texts"), drop = FALSE]
     } else {
-        docvars(result) <- data.frame(matrix(nrow = ndoc(result), ncol = 1)[, -1, drop = FALSE],
-                                      row.names = docnames(result))
+        docvars(result) <- data.frame()
     }
     return(result)
 }

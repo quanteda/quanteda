@@ -256,6 +256,12 @@ test_that("as.tokens is working", {
     testtoks <- as.tokens(testkwic)
     expect_equivalent(as.list(testtoks),
                       list(c("the", "fox", "say"), c("say", "fox")))
+    
+    testdfm <- dfm(testtoks)
+    expect_equivalent(as.vector(testdfm[1,]),
+                      c(1, 1, 1))
+    expect_equivalent(as.vector(testdfm[2,]),
+                      c(0, 1, 1))
 })
 
 

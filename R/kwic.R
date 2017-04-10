@@ -83,6 +83,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     #result$docname <- as.factor(result$docname)
     
     # add attributes for kwic object
+    attr(result, 'concatenator') <- attr(x, 'concatenator')
     attr(result, "ntoken")  <- ntoken(x)
     attr(result, "valuetype") <- valuetype
     attr(result, "keywords") <- sapply(keywords, paste, collapse = " ")
@@ -135,9 +136,11 @@ print.kwic <- function(x, ...) {
 #' @export
 #' @method as.tokens kwic
 as.tokens.kwic <- function(x) {
-    toks <- attr(x, 'ids')
-    names(toks) <- x$docname
-    attr(toks, 'docs') <- attr(x, 'docs') # we might not need this if names are original document names
-    class(toks) <- c("tokens", "tokenizedTexts")
-    return(toks)
+    result <- attr(x, 'ids')
+    names(result) <- x$docname
+    class(result) <- c("tokens", "tokenizedTexts")
+    docvars(result) <- data.frame()
+    attr(result, 'docs') <- attr(x, 'docs') # we might not need this if names are original document names
+    attr(result, 'concatenator') <- attr(x, 'concatenator')
+    return(result)
 }
