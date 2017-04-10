@@ -251,5 +251,12 @@ test_that("kwic works with padding", {
     
 })
 
+test_that("as.tokens is working", {
+    testkwic <- kwic('what does the fox say fox', 'fox', window = 1)
+    testtoks <- as.tokens(testkwic)
+    expect_equivalent(as.list(testtoks),
+                      list(c("the", "fox", "say"), c("say", "fox")))
+})
+
 
 
