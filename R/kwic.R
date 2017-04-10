@@ -115,7 +115,13 @@ print.kwic <- function(x, ...) {
     if (!nrow(x)) {
         print(NULL)
     } else {
+        if (all(x$from == x$to)) {
+            labels <- stringi::stri_c("[", x$docname, ", ", x$from, "]")
+        } else {
+            labels <- stringi::stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
+        }
         kwic <- data.frame(
+            label = labels,
             pre = format(stringi::stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify="right"),
             s1 = rep('|', nrow(x)),
             keyword = format(x$keyword, justify="centre"),
@@ -123,12 +129,7 @@ print.kwic <- function(x, ...) {
             post = format(stringi::stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify="left")
         )
         colnames(kwic) <- NULL
-        if (all(x$from == x$to)) {
-            rownames(kwic) <- stringi::stri_c("[", x$docname, ", ", x$from, "]")
-        } else {
-            rownames(kwic) <- stringi::stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
-        }
-        print(kwic)
+        print(kwic, row.names = FALSE)
     }
 }
 
