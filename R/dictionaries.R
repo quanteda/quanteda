@@ -75,7 +75,12 @@ print_dictionary <- function(entry, level = 1) {
 #' @export
 setMethod("show", "dictionary", 
           function(object) {
-              cat("Dictionary object with", length(unlist(object)), "key entries.\n")
+              levs <- ifelse((depth <- dictionary_depth(object)) > 1, " primary", "")
+              nkeys <- length(names(object))
+              cat("Dictionary object with ", nkeys, levs, " key entr", 
+                  ifelse(nkeys == 1, "y", "ies"), sep = "")
+              if (levs != "") cat(" and ", depth, " nested levels", sep = "")
+              cat(".\n")
               print_dictionary(object)
           })
 
@@ -493,3 +498,14 @@ simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
     return(dict)
 }
 
+# return the nested depth of a dictionary
+# a dictionary with no nesting would have a depth of 1
+dictionary_depth <- function(this, thisdepth = -1) {
+    # http://stackoverflow.com/a/13433689/1270695
+    this <- unclass(this)
+    if (!is.list(this)) {
+        return(thisdepth)
+    } else {
+        return(max(unlist(lapply(this, dictionary_depth, thisdepth = thisdepth + 1))))    
+    }
+}

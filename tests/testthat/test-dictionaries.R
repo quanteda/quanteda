@@ -107,12 +107,61 @@ test_that("tolower is working", {
                  unlist(dict_lower, use.names = FALSE))
 })
 
-test_that("extractor for dictionary objects works", {
+test_that("indexing for dictionary objects works", {
     testdict <- dictionary(file = "../data/dictionaries/laver-garry.cat")
     expect_true(is.dictionary(testdict[1:2]))
     expect_equal(names(testdict[1]), 'CULTURE')
     expect_equal(names(testdict[[1]][1]), 'CULTURE-HIGH')
     expect_equal(names(testdict[2]), 'ECONOMY')
     expect_equal(names(testdict[[2]][1]), '+STATE+')
+    
+    expect_output(
+        print(testdict),
+        "Dictionary object with 9 primary key entries and 2 nested levels"
+    )
+    expect_output(
+        print(testdict[1]),
+        "Dictionary object with 1 primary key entry and 2 nested levels"
+    )
+})
+
+test_that("indexing for dictionary keys works", {
+    dict <- dictionary(one = c("a", "b"), two = c("c", "d"))
+    expect_is(dict[1], "dictionary")
+    expect_equal(
+        dict[1],
+        dictionary(one = c("a", "b"))
+    )
+
+    ## BROKEN
+    # expect_equal(
+    #     dict[[1]],
+    #     c("a", "b")
+    # )
+
+    expect_output(
+        print(dict),
+        "Dictionary object with 2 key entries\\."
+    )
+    expect_output(
+        print(dict[1]),
+        "Dictionary object with 1 key entry\\."
+    )
+})
+
+
+test_that("dictionary_depth works correctly", {
+    dict1 <- dictionary(one = c("a", "b"), two = c("c", "d"))
+    expect_equal(quanteda:::dictionary_depth(dict1), 1)
+    
+    dict2 <- dictionary(one = c("a", "b"), 
+                        two = list(sub1 = c("c", "d"),
+                                   sub2 = c("e", "f")))
+    expect_equal(quanteda:::dictionary_depth(dict2), 2)
+    
+    expect_output(
+        print(dict2),
+        "Dictionary object with 2 primary key entries and 2 nested levels\\."
+    )
 })
 
