@@ -29,7 +29,8 @@ validate_dictionary <- function(dict){
     }
     if (any(names(dict) == "")) {
         unnamed <- dict[which(names(dict) == "")]
-        stop("Unnamed dictionary entry: ", unlist(unnamed, use.names = FALSE))
+        stop("Unnamed dictionary entry: ", 
+             paste(unlist(unnamed, use.names = FALSE), collapse = ' '))
     }
     
     for (i in seq_along(dict)) {
@@ -79,15 +80,27 @@ setMethod("show", "dictionary",
           })
 
 #' Extractor for dictionary objects
-#' @param object the dictionary to be printed
+#' @param object the dictionary to be extracted
+#' @param i index for entries
 #' @rdname dictionary-class
 #' @export
 setMethod("[",
           signature = c("dictionary", i = "index"),
           function(x, i) {
-              new("dictionary", unclass(x)[i], 
-                  format = attr(x, 'format'), file = attr(x, 'file'), concatenator = attr(x, 'concatenator'))
+              new("dictionary", unclass(x)[i], format = x@format, file = x@file, concatenator = x@concatenator)
         })
+
+#' Extractor for dictionary objects
+#' @param object the dictionary to be extracted
+#' @param i index for entries
+#' @rdname dictionary-class
+#' @export
+setMethod("[[",
+          signature = c("dictionary", i = "index"),
+          function(x, i) {
+              is_category <- sapply(unclass(x)[[i]], is.list)
+              new("dictionary", unclass(x)[[i]][is_category], format = x@format, file = x@file, concatenator = x@concatenator)
+          })
 
 #' create a dictionary
 #' 
@@ -156,8 +169,6 @@ setMethod("[",
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
 #' head(dfm(data_char_inaugural, dictionary = mfdict))}
-#' @importFrom stats setNames
-#' @importFrom tools file_ext
 #' @export
 dictionary <- function(..., file = NULL, format = NULL, 
                        concatenator = " ", 
@@ -187,7 +198,7 @@ dictionary <- function(..., file = NULL, format = NULL,
         if (!file.exists(file))
             stop("File does not exist: ", file)
         if (is.null(format)) {
-            ext <- stringi::stri_trans_tolower(file_ext(file))
+            ext <- stringi::stri_trans_tolower(tools::file_ext(file))
             if (ext %in% names(formats)) {
                 format <- formats[[ext]]
             } else {

@@ -5,19 +5,30 @@
 \alias{dictionary-class}
 \alias{show,dictionary-method}
 \alias{[,dictionary,index,ANY,ANY-method}
+\alias{[[,dictionary,index-method}
 \title{print a dictionary object}
 \usage{
 \S4method{show}{dictionary}(object)
 
 \S4method{[}{dictionary,index,ANY,ANY}(x, i)
+
+\S4method{[[}{dictionary,index}(x, i)
 }
 \arguments{
 \item{object}{the dictionary to be printed}
 
-\item{object}{the dictionary to be printed}
+\item{i}{index for entries}
+
+\item{object}{the dictionary to be extracted}
+
+\item{object}{the dictionary to be extracted}
+
+\item{i}{index for entries}
 }
 \description{
 Print/show method for dictionary objects.
+
+Extractor for dictionary objects
 
 Extractor for dictionary objects
 }
