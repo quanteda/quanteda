@@ -12,7 +12,7 @@ setClassUnion("charNULL", c("character", "NULL"))
 #' @slot format dictionary format (if imported)
 #' @slot file file from which a dictionary was read (if imported)
 setClass("dictionary", contains = c("list"),
-         slots = c(concatenator = "character", format = "charNULL", file = "charNULL"),
+         slots = c(concatenator = "character", format = "charNULL", file = "charNULL", names = 'character'),
          prototype = prototype(concatenator = " ", format = NULL, file = NULL))
 
 setValidity("dictionary", function(object) {
@@ -85,12 +85,8 @@ setMethod("show", "dictionary",
 setMethod("[",
           signature = c("dictionary", i = "index"),
           function(x, i) {
-              x <- unclass(x)
-              dict <- list()
-              for (key in names(x)[i]) {
-                  dict[key] <- list(x[[key]])
-              }
-              new("dictionary", dict, attr(x, 'format'), attr(x, 'file'), attr(x, 'concatenator'))
+              new("dictionary", unclass(x)[i], 
+                  format = attr(x, 'format'), file = attr(x, 'file'), concatenator = attr(x, 'concatenator'))
         })
 
 #' create a dictionary
