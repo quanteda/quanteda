@@ -12,7 +12,7 @@ setClassUnion("charNULL", c("character", "NULL"))
 #' @slot format dictionary format (if imported)
 #' @slot file file from which a dictionary was read (if imported)
 setClass("dictionary", contains = c("list"),
-         slots = c(concatenator = "character", format = "charNULL", file = "charNULL", names = 'character'),
+         slots = c(concatenator = "character", format = "charNULL", file = "charNULL"),
          prototype = prototype(concatenator = " ", format = NULL, file = NULL))
 
 setValidity("dictionary", function(object) {
