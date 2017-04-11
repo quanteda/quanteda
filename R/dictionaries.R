@@ -52,6 +52,7 @@ validate_dictionary <- function(dict){
 # Internal function to print dictionary
 print_dictionary <- function(entry, level = 1) {
     if (!length(entry)) return()
+    entry <- unclass(entry)
     is_category <- sapply(entry, is.list)
     category <- entry[is_category]
     word <- unlist(entry[!is_category], use.names = FALSE)
@@ -76,6 +77,21 @@ setMethod("show", "dictionary",
               cat("Dictionary object with", length(unlist(object)), "key entries.\n")
               print_dictionary(object)
           })
+
+#' Extractor for dictionary objects
+#' @param object the dictionary to be printed
+#' @rdname dictionary-class
+#' @export
+setMethod("[",
+          signature = c("dictionary", i = "index", j = "missing", drop = "missing"),
+          function(x, i, j, ..., drop = FALSE) {
+              x <- unclass(x)
+              dict <- list()
+              for (key in names(x)[i]) {
+                  dict[key] <- list(x[[key]])
+              }
+              new("dictionary", dict, attr(x, 'format'), attr(x, 'file'), attr(x, 'concatenator'))
+        })
 
 #' create a dictionary
 #' 

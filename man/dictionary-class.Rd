@@ -4,15 +4,22 @@
 \name{dictionary-class}
 \alias{dictionary-class}
 \alias{show,dictionary-method}
+\alias{[,dictionary,index,missing,missing-method}
 \title{print a dictionary object}
 \usage{
 \S4method{show}{dictionary}(object)
+
+\S4method{[}{dictionary,index,missing,missing}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
+\item{object}{the dictionary to be printed}
+
 \item{object}{the dictionary to be printed}
 }
 \description{
 Print/show method for dictionary objects.
+
+Extractor for dictionary objects
 }
 \section{Slots}{
 
