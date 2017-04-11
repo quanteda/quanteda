@@ -107,3 +107,10 @@ test_that("tolower is working", {
                  unlist(dict_lower, use.names = FALSE))
 })
 
+test_that("extractor for dictionary objects works", {
+    testdict <- dictionary(file = "../data/dictionaries/laver-garry.cat")
+    expect_true(is.dictionary(testdict[1:2]))
+    expect_equal(names(testdict[1]), 'CULTURE')
+    expect_equal(names(testdict[2]), 'ECONOMY')
+})
+
