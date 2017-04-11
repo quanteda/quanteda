@@ -22,7 +22,7 @@ setValidity("dictionary", function(object) {
 
 # Internal function to chekc if dictionary eintries are all chracters
 validate_dictionary <- function(dict){
-    
+    dict <- unclass(dict)
     if (is.null(names(dict))) {
         stop("Dictionary elements must be named: ", 
              paste(unlist(dict, recursive = TRUE), collapse = ' '))
@@ -51,8 +51,8 @@ validate_dictionary <- function(dict){
 
 # Internal function to print dictionary
 print_dictionary <- function(entry, level = 1) {
-    if (!length(entry)) return()
     entry <- unclass(entry)
+    if (!length(entry)) return()
     is_category <- sapply(entry, is.list)
     category <- entry[is_category]
     word <- unlist(entry[!is_category], use.names = FALSE)
@@ -83,8 +83,8 @@ setMethod("show", "dictionary",
 #' @rdname dictionary-class
 #' @export
 setMethod("[",
-          signature = c("dictionary", i = "index", j = "missing", drop = "missing"),
-          function(x, i, j, ..., drop = FALSE) {
+          signature = c("dictionary", i = "index"),
+          function(x, i) {
               x <- unclass(x)
               dict <- list()
               for (key in names(x)[i]) {
@@ -214,10 +214,9 @@ dictionary <- function(..., file = NULL, format = NULL,
             x <- list2dictionary(x)
         }
     }
-    dict <- new("dictionary", x, format = format, file = file, concatenator = concatenator)
     if (tolower)
-        dict <- lowercase_dictionary(dict)
-    return(dict)
+        x <- lowercase_dictionary(x)
+    new("dictionary", x, format = format, file = file, concatenator = concatenator)
 }
 
 
@@ -274,7 +273,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
         dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], unlist(entry[!is_category], use.names = FALSE))
         dict_flat <- flatten_dictionary(entry[is_category], levels, level + 1, key_entry, dict_flat)
     }
-    attributes(dict_flat, FALSE) <- attributes(dict)
+    attributes(dict_flat) <- attributes(dict)
     return(dict_flat)
 }
 
@@ -467,6 +466,7 @@ as.yaml <- function(x) {
 
 # Internal function for as.yaml to simplify dictionary objects
 simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
+    entry <- unclass(entry)
     if (omit) {
         dict <- simplify_dictionary(entry, FALSE)
     } else {

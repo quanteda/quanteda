@@ -4,12 +4,12 @@
 \name{dictionary-class}
 \alias{dictionary-class}
 \alias{show,dictionary-method}
-\alias{[,dictionary,index,missing,missing-method}
+\alias{[,dictionary,index,ANY,ANY-method}
 \title{print a dictionary object}
 \usage{
 \S4method{show}{dictionary}(object)
 
-\S4method{[}{dictionary,index,missing,missing}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dictionary,index,ANY,ANY}(x, i)
 }
 \arguments{
 \item{object}{the dictionary to be printed}
