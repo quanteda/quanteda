@@ -167,7 +167,6 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "t
             stopifnot(nrow(docvars)==length(x))
             documents <- cbind(documents, docvars)
         } 
-    } else {
     }
     
     # initialize results corpus

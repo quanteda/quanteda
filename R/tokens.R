@@ -313,10 +313,10 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     result <- tokens(texts(x), ...)
     if (include_docvars) {
-        docvars(result) <- documents(x)[, which(names(documents(x)) != "texts"), drop = FALSE]
-    } else {
-        docvars(result) <- data.frame(matrix(nrow = ndoc(result), ncol = 1)[, -1, drop = FALSE],
-                                      row.names = docnames(result))
+        dvars <- documents(x)[, which(names(documents(x)) != "texts"), drop = FALSE]
+        if (length(dvars)) {
+            docvars(result) <- dvars
+        }
     }
     return(result)
 }
@@ -475,7 +475,7 @@ print.tokens <- function(x, ...) {
 "[.tokens" <- function(x, i, ...) {
     tokens <- unclass(x)[i]
     if (is.data.frame(attr(x, "docvars"))) {
-        attr(tokens, "docvars") <- attr(x, "docvars")[i,]
+        attr(tokens, "docvars") <- attr(x, "docvars")[i,,drop = FALSE]
     }
     if (length(tokens) == 1 && is.null(tokens[[1]])) return(tokens)
     attributes(tokens, FALSE) <- attributes(x)

@@ -241,3 +241,28 @@ test_that("print method works as expected", {
     testkwic <- kwic('what does the fox say fox', 'foox')
     expect_null(print(testkwic))
 })
+
+
+test_that("kwic works with padding", {
+    testtoks <- tokens('what does the fox say cat')
+    expect_output(print(kwic(tokens_remove(testtoks, c('what', 'the'), padding = TRUE), 'fox')),
+                  '\\[text1, 4\\]  does \\| fox \\| say cat')
+    expect_null(print(kwic(tokens_remove(testtoks, '*', padding = TRUE), 'fox')))
+    
+})
+
+test_that("as.tokens is working", {
+    testkwic <- kwic('what does the fox say fox', 'fox', window = 1)
+    testtoks <- as.tokens(testkwic)
+    expect_equivalent(as.list(testtoks),
+                      list(c("the", "fox", "say"), c("say", "fox")))
+    
+    testdfm <- dfm(testtoks)
+    expect_equivalent(as.vector(testdfm[1,]),
+                      c(1, 1, 1))
+    expect_equivalent(as.vector(testdfm[2,]),
+                      c(0, 1, 1))
+})
+
+
+

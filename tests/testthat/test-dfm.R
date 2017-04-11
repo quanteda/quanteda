@@ -22,7 +22,6 @@ txt <- tokenize(char_tolower(c("My Christmas was ruined by your opposition tax p
 
 dfm(txt, dictionary = mydict, verbose = TRUE)
 dfm(txt, thesaurus = mydict, verbose = TRUE)
-dfm(txt, dictionary = mydict, verbose = TRUE, codeType = "old")
 dfm(txt, thesaurus = mydict, verbose = TRUE)
 
 (txtDfm <- dfm(txt, verbose = FALSE))
@@ -33,9 +32,7 @@ dfm_lookup(txtDfm, mydict, exclusive = FALSE, valuetype = "glob", verbose = FALS
 inaugTextsTokenized <- tokenize(char_tolower(inaugTexts[1:10]), remove_punct = TRUE)
 # microbenchmark::microbenchmark(
 #     dfm(inaugTextsTokenized, verbose = FALSE),
-#     dfm(inaugTextsTokenized, verbose = FALSE, codeType = "old"),
 #     dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE),
-#     dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE, codeType = "old")
 # )
 
 ## need to be carefully inspected!
@@ -53,7 +50,7 @@ myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           country = c("United_States", "Sweden")))
 myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
                "Does the United_States or Sweden have more progressive taxation?"),
-             remove = stopwords("english"), removePunct = TRUE, tolower = FALSE,
+             remove = stopwords("english"), remove_punct = TRUE, tolower = FALSE,
              verbose = FALSE)
 myDfm
 # glob format
