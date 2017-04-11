@@ -273,7 +273,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
         dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], unlist(entry[!is_category], use.names = FALSE))
         dict_flat <- flatten_dictionary(entry[is_category], levels, level + 1, key_entry, dict_flat)
     }
-    attributes(dict_flat) <- attributes(dict)
+    attributes(dict_flat, FALSE) <- attributes(dict)
     return(dict_flat)
 }
 
