@@ -57,12 +57,12 @@ print_dictionary <- function(entry, level = 1) {
     is_category <- sapply(entry, is.list)
     category <- entry[is_category]
     word <- unlist(entry[!is_category], use.names = FALSE)
+    if (length(word)) {
+        cat(rep('  ', level - 1), "- ", paste(word, collapse = ", "), "\n", sep = "")
+    }
     for (i in seq_along(category)) {
         cat(rep('  ', level - 1), "- ", names(category[i]), ':\n', sep = "")
         print_dictionary(category[[i]], level + 1)
-    }
-    if (length(word)) {
-        cat(rep('  ', level - 1), "- ", paste(word, collapse = ", "), "\n", sep = "")
     }
 }
 
