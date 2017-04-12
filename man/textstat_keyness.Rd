@@ -24,7 +24,7 @@ of the measure, otherwise leave in original feature order}
 }
 \value{
 a data.frame of computed statistics and associated p-values, where the features 
-scored name each row.  
+scored name each row, and the number of occurrences for both the target and reference groups.  
   For \code{measure = "chi2"} this is the chi-squared value, signed 
   positively if the observed value in the target exceeds its expected value; 
   for \code{measure = "exact"} this is the estimate of the odds ratio; for 

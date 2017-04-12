@@ -23,7 +23,7 @@
 #'   Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and Coincidence", 
 #'   \emph{Computational Linguistics}, Vol 19, No. 1, pp. 61-74.
 #' @return a data.frame of computed statistics and associated p-values, where the features 
-#' scored name each row.  
+#' scored name each row, and the number of occurrences for both the target and reference groups.  
 #'   For \code{measure = "chi2"} this is the chi-squared value, signed 
 #'   positively if the observed value in the target exceeds its expected value; 
 #'   for \code{measure = "exact"} this is the estimate of the odds ratio; for 
@@ -90,6 +90,8 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
     if (sort)
         keywords <- keywords[order(keywords[, 1], decreasing = TRUE), ]
     
+    names(keywords)[which(names(keywords) == "target")] <- "n_target"
+    names(keywords)[which(names(keywords) == "reference")] <- "n_reference"
     return(keywords)
 }
 
@@ -115,6 +117,7 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
 #'   
 #'   
 keyness_chi2_dt <- function(x) {
+    
     a <- b <- c <- d <- N <- E <- chi2 <- p <- NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
@@ -122,17 +125,20 @@ keyness_chi2_dt <- function(x) {
                      a = as.numeric(x[1, ]),
                      b = as.numeric(x[2, ]))
     dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
-    dt[, N := (a + b + c + d)]
+    dt[, N := (a+b+c+d)]
     dt[, E := (a+b)*(a+c) / N]
     # compute using the direct formula - see link above (adds sign)
     dt[, chi2 := (N * (abs(a*d - b*c) - N/2)^2) / ((a+b)*(c+d)*(a+c)*(b+d)) * 
                  ifelse(a > E, 1, -1)]
+
     # compute p-values
     dt[, p := 1 - stats::pchisq(abs(chi2), 1)]
 
     result <- as.data.frame(dt[, list(chi2, p)])
     rownames(result) <- dt$feature
-    result
+    result$target = as.vector(x[1,])
+    result$reference = as.vector(x[2,])
+    return(result)
 }
     
 #' @rdname keyness
@@ -155,11 +161,14 @@ keyness_chi2_stats <- function(x) {
              p = unname(chi$p.value))
     }
     sums <- rowSums(x)
-    as.data.frame(
+    result <- as.data.frame(
         do.call(rbind, apply(x, 2, function(y) keyness(as.numeric(y[1]), 
                                                        as.numeric(y[2]), 
                                                        sums[1], sums[2])))
     )
+    result$target = as.vector(x[1,])
+    result$reference = as.vector(x[2,])
+    return(result)
 }
 
 
@@ -172,13 +181,16 @@ keyness_chi2_stats <- function(x) {
 #' quanteda:::keyness_exact(mydfm)
 keyness_exact <- function(x) {
     sums <- rowSums(x)
-    as.data.frame(
+    result <- as.data.frame(
         do.call(rbind, 
                 apply(x, 2, function(y) { 
-                      et <- stats::fisher.test(matrix(c(as.numeric(y), as.numeric(sums - y)), nrow = 2))
-                      data.frame(or = as.numeric(et$estimate), p = et$p.value)
+                    et <- stats::fisher.test(matrix(c(as.numeric(y), as.numeric(sums - y)), nrow = 2))
+                    data.frame(or = as.numeric(et$estimate), p = et$p.value)
                 }))
     )
+    result$target = as.vector(x[1,])
+    result$reference = as.vector(x[2,])
+    return(result)
 }
 
 
@@ -229,7 +241,9 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
     
     result <- as.data.frame(dt[, list(G, p)])
     rownames(result) <- dt$feature
-    result
+    result$target = as.vector(x[1,])
+    result$reference = as.vector(x[2,])
+    return(result)
 }
 
 
