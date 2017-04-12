@@ -78,13 +78,6 @@
 #'                country = "states"))
 #' dfm(corpus_post1900inaug, dictionary = mydict)
 #' 
-#' # with the thesaurus feature
-#' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
-#'              "New York City has raised a taxes: an income tax and a sales tax.")
-#' mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
-#' dfm(phrasetotoken(mytexts, mydict), thesaurus = lapply(mydict, function(x) gsub("\\s", "_", x)))
-#' # pick up "taxes" with "tax" as a regex
-#' dfm(phrasetotoken(mytexts, mydict), thesaurus = list(anytax = "tax"), valuetype = "regex")
 #' 
 #' # removing stopwords
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with

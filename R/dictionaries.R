@@ -22,14 +22,15 @@ setValidity("dictionary", function(object) {
 
 # Internal function to chekc if dictionary eintries are all chracters
 validate_dictionary <- function(dict){
-    
+    dict <- unclass(dict)
     if (is.null(names(dict))) {
         stop("Dictionary elements must be named: ", 
              paste(unlist(dict, recursive = TRUE), collapse = ' '))
     }
     if (any(names(dict) == "")) {
         unnamed <- dict[which(names(dict) == "")]
-        stop("Unnamed dictionary entry: ", unlist(unnamed, use.names = FALSE))
+        stop("Unnamed dictionary entry: ", 
+             paste(unlist(unnamed, use.names = FALSE), collapse = ' '))
     }
     
     for (i in seq_along(dict)) {
@@ -51,16 +52,17 @@ validate_dictionary <- function(dict){
 
 # Internal function to print dictionary
 print_dictionary <- function(entry, level = 1) {
+    entry <- unclass(entry)
     if (!length(entry)) return()
     is_category <- sapply(entry, is.list)
     category <- entry[is_category]
     word <- unlist(entry[!is_category], use.names = FALSE)
+    if (length(word)) {
+        cat(rep('  ', level - 1), "- ", paste(word, collapse = ", "), "\n", sep = "")
+    }
     for (i in seq_along(category)) {
         cat(rep('  ', level - 1), "- ", names(category[i]), ':\n', sep = "")
         print_dictionary(category[[i]], level + 1)
-    }
-    if (length(word)) {
-        cat(rep('  ', level - 1), "- ", paste(word, collapse = ", "), "\n", sep = "")
     }
 }
 
@@ -73,8 +75,46 @@ print_dictionary <- function(entry, level = 1) {
 #' @export
 setMethod("show", "dictionary", 
           function(object) {
-              cat("Dictionary object with", length(unlist(object)), "key entries.\n")
+              levs <- ifelse((depth <- dictionary_depth(object)) > 1, " primary", "")
+              nkeys <- length(names(object))
+              cat("Dictionary object with ", nkeys, levs, " key entr", 
+                  ifelse(nkeys == 1, "y", "ies"), sep = "")
+              if (levs != "") cat(" and ", depth, " nested levels", sep = "")
+              cat(".\n")
               print_dictionary(object)
+          })
+
+#' Extractor for dictionary objects
+#' @param object the dictionary to be extracted
+#' @param i index for entries
+#' @rdname dictionary-class
+#' @export
+setMethod("[",
+          signature = c("dictionary", i = "index"),
+          function(x, i) {
+              new("dictionary", unclass(x)[i], format = x@format, file = x@file, concatenator = x@concatenator)
+        })
+
+#' Extractor for dictionary objects
+#' @param object the dictionary to be extracted
+#' @param i index for entries
+#' @rdname dictionary-class
+#' @export
+setMethod("[[",
+          signature = c("dictionary", i = "index"),
+          function(x, i) {
+              is_category <- sapply(unclass(x)[[i]], is.list)
+              new("dictionary", unclass(x)[[i]][is_category], format = x@format, file = x@file, concatenator = x@concatenator)
+          })
+
+#' Coerce a dictionary object into a list
+#' @param object the dictionary to be coerced
+#' @rdname dictionary-class
+#' @export
+setMethod("as.list",
+          signature = c("dictionary"),
+          function(x) {
+              simplify_dictionary(x)
           })
 
 #' create a dictionary
@@ -144,8 +184,6 @@ setMethod("show", "dictionary",
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
 #' head(dfm(data_char_inaugural, dictionary = mfdict))}
-#' @importFrom stats setNames
-#' @importFrom tools file_ext
 #' @export
 dictionary <- function(..., file = NULL, format = NULL, 
                        concatenator = " ", 
@@ -175,7 +213,7 @@ dictionary <- function(..., file = NULL, format = NULL,
         if (!file.exists(file))
             stop("File does not exist: ", file)
         if (is.null(format)) {
-            ext <- stringi::stri_trans_tolower(file_ext(file))
+            ext <- stringi::stri_trans_tolower(tools::file_ext(file))
             if (ext %in% names(formats)) {
                 format <- formats[[ext]]
             } else {
@@ -198,10 +236,9 @@ dictionary <- function(..., file = NULL, format = NULL,
             x <- list2dictionary(x)
         }
     }
-    dict <- new("dictionary", x, format = format, file = file, concatenator = concatenator)
     if (tolower)
-        dict <- lowercase_dictionary(dict)
-    return(dict)
+        x <- lowercase_dictionary(x)
+    new("dictionary", x, format = format, file = file, concatenator = concatenator)
 }
 
 
@@ -240,7 +277,7 @@ dictionary <- function(..., file = NULL, format = NULL,
 #  flatten_dictionary(hdict, 1:2)
 
 flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '', dict_flat = list()) {
-    
+    dict <- unclass(dict)
     for (i in seq_along(dict)) {
         key <- names(dict[i])
         entry <- dict[[i]]
@@ -273,7 +310,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
 # lowercase_dictionary(hdict)
 #
 lowercase_dictionary <- function(dict) {
-    
+    dict <- unclass(dict)
     for (i in seq_along(dict)) {
         if (is.list(dict[[i]])) {
             dict[[i]] <- lowercase_dictionary(dict[[i]])
@@ -427,7 +464,6 @@ nodes2list <- function(node, dict = list()){
     return(dict)
 }
 
-
 #' convert quanteda dictionary objects to the YAML format
 #' 
 #' Converts a \pkg{quanteda} dictionary object constructed by the 
@@ -449,8 +485,10 @@ as.yaml <- function(x) {
     return(yaml)
 }
 
+
 # Internal function for as.yaml to simplify dictionary objects
 simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
+    entry <- unclass(entry)
     if (omit) {
         dict <- simplify_dictionary(entry, FALSE)
     } else {
@@ -470,3 +508,14 @@ simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
     return(dict)
 }
 
+# return the nested depth of a dictionary
+# a dictionary with no nesting would have a depth of 1
+dictionary_depth <- function(this, thisdepth = -1) {
+    # http://stackoverflow.com/a/13433689/1270695
+    this <- unclass(this)
+    if (!is.list(this)) {
+        return(thisdepth)
+    } else {
+        return(max(unlist(lapply(this, dictionary_depth, thisdepth = thisdepth + 1))))    
+    }
+}
