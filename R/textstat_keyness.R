@@ -23,7 +23,7 @@
 #'   Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and Coincidence", 
 #'   \emph{Computational Linguistics}, Vol 19, No. 1, pp. 61-74.
 #' @return a data.frame of computed statistics and associated p-values, where the features 
-#' scored name each row.  
+#' scored name each row, and the number of occurrences for both the target and reference groups.  
 #'   For \code{measure = "chi2"} this is the chi-squared value, signed 
 #'   positively if the observed value in the target exceeds its expected value; 
 #'   for \code{measure = "exact"} this is the estimate of the odds ratio; for 
@@ -90,6 +90,8 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
     if (sort)
         keywords <- keywords[order(keywords[, 1], decreasing = TRUE), ]
     
+    names(keywords)[which(names(keywords) == "target")] <- "n_target"
+    names(keywords)[which(names(keywords) == "reference")] <- "n_reference"
     return(keywords)
 }
 
