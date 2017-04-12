@@ -107,6 +107,16 @@ setMethod("[[",
               new("dictionary", unclass(x)[[i]][is_category], format = x@format, file = x@file, concatenator = x@concatenator)
           })
 
+#' Coerce a dictionary object into a list
+#' @param object the dictionary to be coerced
+#' @rdname dictionary-class
+#' @export
+setMethod("as.list",
+          signature = c("dictionary"),
+          function(x) {
+              simplify_dictionary(x)
+          })
+
 #' create a dictionary
 #' 
 #' Create a \pkg{quanteda} dictionary class object, either from a list or by importing from a 
@@ -454,7 +464,6 @@ nodes2list <- function(node, dict = list()){
     return(dict)
 }
 
-
 #' convert quanteda dictionary objects to the YAML format
 #' 
 #' Converts a \pkg{quanteda} dictionary object constructed by the 
@@ -475,6 +484,7 @@ as.yaml <- function(x) {
     yaml <- stringi::stri_enc_toutf8(yaml)
     return(yaml)
 }
+
 
 # Internal function for as.yaml to simplify dictionary objects
 simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {

@@ -133,12 +133,6 @@ test_that("indexing for dictionary keys works", {
         dictionary(one = c("a", "b"))
     )
 
-    ## BROKEN
-    # expect_equal(
-    #     dict[[1]],
-    #     c("a", "b")
-    # )
-
     expect_output(
         print(dict),
         "Dictionary object with 2 key entries\\."
@@ -162,6 +156,19 @@ test_that("dictionary_depth works correctly", {
     expect_output(
         print(dict2),
         "Dictionary object with 2 primary key entries and 2 nested levels\\."
+    )
+})
+
+test_that("as.list is working", {
+    
+    dict <- dictionary(one = c("a", "b"), two = c("c", "d"))
+    expect_equal(
+        as.list(dict),
+        list(one = c("a", "b"), two = c("c", "d"))
+    )
+    expect_equal(
+        as.list(dict)[[1]],
+        c("a", "b")
     )
 })
 
