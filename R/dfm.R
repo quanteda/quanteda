@@ -78,13 +78,6 @@
 #'                country = "states"))
 #' dfm(corpus_post1900inaug, dictionary = mydict)
 #' 
-#' # with the thesaurus feature
-#' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
-#'              "New York City has raised a taxes: an income tax and a sales tax.")
-#' mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
-#' dfm(phrasetotoken(mytexts, mydict), thesaurus = lapply(mydict, function(x) gsub("\\s", "_", x)))
-#' # pick up "taxes" with "tax" as a regex
-#' dfm(phrasetotoken(mytexts, mydict), thesaurus = list(anytax = "tax"), valuetype = "regex")
 #' 
 #' # removing stopwords
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
@@ -150,7 +143,7 @@ dfm.character <- function(x,
                 groups = NULL, 
                 verbose = quanteda_options("verbose"), 
                 ...) {
-    startTime <- proc.time()
+    start_time <- proc.time()
     valuetype <- match.arg(valuetype)
     
     if (verbose && grepl("^dfm\\.character", sys.calls()[2]))
@@ -162,12 +155,12 @@ dfm.character <- function(x,
     }
     
     if (verbose) catm("   ... tokenizing\n")
-    tokenizedTexts <- tokens(x, ...)
+    temp <- tokens(x, ...)
 
-    dfm(tokenizedTexts, verbose = verbose, tolower = FALSE, stem = stem, 
+    dfm(temp, verbose = verbose, tolower = FALSE, stem = stem, 
         remove = remove, select = select,
         thesaurus = thesaurus, dictionary = dictionary, valuetype = valuetype, 
-        startTime = startTime)
+        start_time = start_time)
 }
 
 
@@ -192,13 +185,13 @@ dfm.corpus <- function(x, tolower = TRUE,
                  ifelse(length(groupsLab) == 1, "", "s"), ": ", 
                  paste(groupsLab, collapse=", "), "\n", sep="")
         if (verbose) catm("   ... tokenizing grouped texts\n")
-        tokenizedTexts <- tokens(texts(x, groups = groups), ...)
+        temp <- tokens(texts(x, groups = groups), ...)
     } else {
         if (verbose) catm("   ... tokenizing texts\n")
-        tokenizedTexts <- tokens(x, ...)
+        temp <- tokens(x, ...)
     }
     
-    dfm(tokenizedTexts, 
+    dfm(temp, 
         tolower = tolower,
         stem = stem,
         select = select,
@@ -227,11 +220,11 @@ dfm.tokenizedTexts <- function(x,
 
     valuetype <- match.arg(valuetype)
     dots <- list(...)
-    if (length(dots) && any(!(names(dots)) %in% c("startTime", "codeType", names(formals(tokens)))))
+    if (length(dots) && any(!(names(dots)) %in% c("start_time", names(formals(tokens)))))
         warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", sep = "", noBreaks. = TRUE)
     
-    startTime <- proc.time()
-    if ("startTime" %in% names(dots)) startTime <- dots$startTime
+    start_time <- proc.time()
+    if ("start_time" %in% names(dots)) start_time <- dots$start_time
     
     if (verbose & stri_startswith_fixed(sys.calls()[2], "dfm.token"))
         catm("Creating a dfm from a", class(x)[1], "object ...\n")
@@ -262,19 +255,19 @@ dfm.tokenizedTexts <- function(x,
     }
         
     # compile the dfm
-    dfmresult <- compile_dfm(x, verbose = verbose)
+    result <- compile_dfm(x, verbose = verbose)
     
     # copy attributes
-    dfmresult@ngrams <- as.integer(attr(x, "ngrams"))
-    dfmresult@skip <- as.integer(attr(x, "skip"))
-    dfmresult@concatenator <- attr(x, "concatenator")
-    dfmresult@docvars <- attr(x, "docvars")
-    if (is.null(dfmresult@docvars)) {
-        dfmresult@docvars <- data.frame(matrix(nrow = ndoc(dfmresult), ncol = 1)[, -1, drop = FALSE],
-                                        row.names = docnames(dfmresult))
+    result@ngrams <- as.integer(attr(x, "ngrams"))
+    result@skip <- as.integer(attr(x, "skip"))
+    result@concatenator <- attr(x, "concatenator")
+    result@docvars <- attr(x, "docvars")
+    
+    if (is.null(result@docvars)) {
+        result@docvars <- data.frame()
     }
     
-    dfm(dfmresult, tolower = FALSE, stem = stem, select = select, remove = remove, thesaurus = thesaurus,
+    dfm(result, tolower = FALSE, stem = stem, select = select, remove = remove, thesaurus = thesaurus,
         dictionary = dictionary, valuetype = valuetype, groups = groups, verbose = verbose, ...)
 }
 
@@ -296,11 +289,11 @@ dfm.dfm <- function(x,
 
     valuetype <- match.arg(valuetype)
     dots <- list(...)
-    if (length(dots) && any(!(names(dots)) %in% c("startTime", "codeType", names(formals(tokens)))))
+    if (length(dots) && any(!(names(dots)) %in% c("start_time", names(formals(tokens)))))
         warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", sep = "", noBreaks. = TRUE)
     
-    startTime <- proc.time()
-    if ("startTime" %in% names(dots)) startTime <- dots$startTime
+    start_time <- proc.time()
+    if ("start_time" %in% names(dots)) start_time <- dots$start_time
     
     if (verbose & stri_startswith_fixed(sys.calls()[2], "dfm.dfm"))
         catm("Creating a dfm from a", class(x)[1], "object ...\n")
@@ -364,9 +357,9 @@ dfm.dfm <- function(x,
         catm("   ... created a", paste(format(dim(x), big.mark=",", trim = TRUE), 
                                        collapse=" x "), 
              "sparse dfm\n   ... complete. \nElapsed time:", 
-             format((proc.time() - startTime)[3], digits = 3),
+             format((proc.time() - start_time)[3], digits = 3),
              "seconds.\n")
-    x
+    return(x)
 }
 
 

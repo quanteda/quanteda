@@ -12,7 +12,7 @@ as.tokens(x)
 
 \method{as.tokens}{list}(x)
 
-\method{as.list}{tokens}(x, ...)
+as.list.tokens(x, ...)
 
 \method{as.character}{tokens}(x, use.names = FALSE, ...)
 

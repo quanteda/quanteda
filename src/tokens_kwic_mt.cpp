@@ -64,6 +64,26 @@ struct range_mt : public Worker{
 };
 
 
+String text(Text &tokens, 
+            const CharacterVector &types_) {
+    
+    String text_("");
+    if (tokens.size() > 0) {
+        if (tokens[0] != 0) {
+            text_ += types_[tokens[0] - 1];
+        }
+        for (std::size_t j = 1; j < tokens.size(); j++) {
+            if (tokens[j] != 0) {
+                text_ += " ";
+                text_ += types_[tokens[j] - 1];
+            }
+        }
+        text_.set_encoding(CE_UTF8);
+    }
+    return text_;
+} 
+
+
 /* 
  * This funciton generate generates keyword-in-contexts. 
  * The number of threads is set by RcppParallel::setThreadOptions()
@@ -135,9 +155,9 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             
             pos_from_[j] = targets[i].first + 1;
             pos_to_[j] = targets[i].second + 1;
-            coxs_pre_[j] = get_text(cox_pre, types_);
-            coxs_target_[j] = get_text(cox_target, types_);
-            coxs_post_[j] = get_text(cox_post, types_);
+            coxs_pre_[j] = text(cox_pre, types_);
+            coxs_target_[j] = text(cox_target, types_);
+            coxs_post_[j] = text(cox_post, types_);
             coxs_name_[j] = names_[h];
             j++;
         }
@@ -150,8 +170,8 @@ DataFrame qatd_cpp_kwic(const List &texts_,
                                           _["keyword"] = coxs_target_,
                                           _["post"]    = coxs_post_,
                                           _["stringsAsFactors"] = false);
-    output_.attr("ids") = recompile(contexts, types);
-    output_.attr("docs") = documents_;
+    output_.attr("tokens") = recompile(contexts, types);
+    output_.attr("docid") = documents_;
     return output_;
 }
 

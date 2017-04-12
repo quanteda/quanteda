@@ -16,6 +16,7 @@
 * Improved performance and better documentation for `corpus_segment()`. (#634)
 * Added functions `corpus_trimsentences()` and `char_trimsentences()` to remove sentences from a corpus or character object, based on token length or pattern matching.
 * Added options to `textstat_readability()`: `min_sentence_length` and `max_sentence_length`. (#632)
+* Indexing now works for dictionaries, for slicing out keys and values (`[`), or accessing values directly (`[[`).  (#651)
 
 ### Behaviour changes 
 
@@ -24,6 +25,7 @@
 * Most `verbose` options now take the default from `getOption("verbose")` rather than fixing the value in the function signatures. (#577)
 * `textstat_dist()` and `textstat_simil()` now return a matrix if a `selection` argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection.
 * All remaining camelCase arguments are gone.  For commonly used ones, such as those in `tokens()`, the old arguments (e.g. `removePunct`) still produce the same behaviour but with a deprecation warning.
+* Added `n_target` and `n_reference` columns to `textstat_keyness()` to return counts for each category being compared for keyness.
 
 ### Bug fixes
 
