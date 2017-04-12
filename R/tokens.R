@@ -355,6 +355,7 @@ as.tokens.tokenizedTexts <- function(x) {
 #' @param ... unused
 #' @return \code{as.list} returns a simple list of characters from a
 #'   \link{tokens} object
+#' @method as.list tokens
 #' @export
 as.list.tokens <- function(x, ...) {
     result <- as.tokenizedTexts(x)
