@@ -27,10 +27,10 @@ struct ManhattanDistance : public Worker {
             arma::colvec aa = amat.col(i) + arma::zeros<arma::colvec>(ncol);
             for (std::size_t j = i+1; j < nrow; j++) {
                 arma::colvec bb = amat.col(j) - aa;
-                rmat(j,i) = sum(fabs(bb));
+                rmat(j,i) = sum(abs(bb));
                 
                 // Using iterator is slower
-                // arma::sp_mat diff = fabs(amat.col(j) - amat.col(i));
+                // arma::sp_mat diff = abs(amat.col(j) - amat.col(i));
                 // double  dist = 0;
                 // for(arma::sp_mat::const_iterator it_i = diff.begin(); it_i != diff.end(); ++it_i){
                 //     dist += *it_i;
@@ -62,7 +62,7 @@ struct ManhattanDistance2 : public Worker {
             arma::colvec aa = amat.col(i) + arma::zeros<arma::colvec>(ncol);
             for (std::size_t j = 0; j < nrow; j++) {
                 arma::colvec bb = bmat.col(j) - aa;
-                rmat(i,j) = sum(fabs(bb));
+                rmat(i,j) = sum(abs(bb));
                 //Rcpp::Rcout<<j<<std::endl;
             }
         }
@@ -128,7 +128,7 @@ struct MaximumDistance : public Worker {
             arma::colvec aa = amat.col(i) + arma::zeros<arma::colvec>(ncol);
             for (std::size_t j = i+1; j < nrow; j++) {
                 arma::colvec bb = amat.col(j) - aa;
-                rmat(j,i) = max(fabs(bb));
+                rmat(j,i) = max(abs(bb));
                 //Rcpp::Rcout<<j<<std::endl;
             }
         }
@@ -155,7 +155,7 @@ struct MaximumDistance2 : public Worker {
             arma::colvec aa = amat.col(i) + arma::zeros<arma::colvec>(ncol);
             for (std::size_t j = 0; j < nrow; j++) {
                 arma::colvec bb = bmat.col(j) - aa;
-                rmat(i,j) = max(fabs(bb));
+                rmat(i,j) = max(abs(bb));
                 //Rcpp::Rcout<<j<<std::endl;
             }
         }
@@ -221,8 +221,8 @@ struct CanberraDistance : public Worker {
         for (std::size_t i = begin; i < end; i++) {
             arma::colvec aa = amat.col(i) + arma::zeros<arma::colvec>(ncol);
             for (std::size_t j = i+1; j < nrow; j++) {
-                arma::vec denom = fabs(amat.col(j) + aa);
-                arma::colvec bb = fabs(amat.col(j) - aa)/denom;
+                arma::vec denom = abs(amat.col(j) + aa);
+                arma::colvec bb = abs(amat.col(j) - aa)/denom;
                 bb.replace(arma::datum::nan, 0);
                 arma::vec non_zeros = nonzeros(denom);
                 rmat(j,i) = (double)sum(bb) * (double)ncol/(double)non_zeros.n_elem;
@@ -250,8 +250,8 @@ struct CanberraDistance2 : public Worker {
         for (std::size_t i = begin; i < end; i++) {
             arma::colvec aa = amat.col(i) + arma::zeros<arma::colvec>(ncol);
             for (std::size_t j = 0; j < nrow; j++) {
-                arma::vec denom = fabs(bmat.col(j) + aa); 
-                arma::colvec bb = fabs(bmat.col(j) - aa)/denom;
+                arma::vec denom = abs(bmat.col(j) + aa); 
+                arma::colvec bb = abs(bmat.col(j) - aa)/denom;
                 bb.replace(arma::datum::nan, 0);
                 arma::vec non_zeros = nonzeros(denom);
                 rmat(i,j) = (double)(sum(bb) * ncol)/(double)non_zeros.n_elem;
@@ -320,13 +320,13 @@ struct MinkowskiDistance : public Worker {
         for (std::size_t i = begin; i < end; i++) {
             //arma::colvec aa = amat.col(i) + arma::zeros<arma::colvec>(ncol);
             for (std::size_t j = i+1; j < nrow; j++) {
-                //arma::colvec diff = pow(fabs(amat.col(j) - aa), p);
+                //arma::colvec diff = pow(abs(amat.col(j) - aa), p);
                 //rmat(j,i) = pow(sum(diff), 1/p);
                 
                 
                 //use sp_mat iterator - it will skip the zero element
                 //This method is faster than converting to dense vector and conducting pow() operation.
-                arma::sp_mat diff = fabs(amat.col(j) - amat.col(i));
+                arma::sp_mat diff = abs(amat.col(j) - amat.col(i));
                 double  dist = 0;
                 for(arma::sp_mat::const_iterator it_i = diff.begin(); it_i != diff.end(); ++it_i){
                     dist += pow(*it_i, p);
@@ -356,7 +356,7 @@ struct MinkowskiDistance2 : public Worker {
         for (std::size_t i = begin; i < end; i++) {
             arma::colvec aa = amat.col(i) + arma::zeros<arma::colvec>(ncol);
             for (std::size_t j = 0; j < nrow; j++) {
-                arma::sp_mat diff = fabs(amat.col(i) - bmat.col(j));
+                arma::sp_mat diff = abs(amat.col(i) - bmat.col(j));
                 double  dist = 0;
                 for(arma::sp_mat::const_iterator it_i = diff.begin(); it_i != diff.end(); ++it_i){
                     dist += pow(*it_i, p);
