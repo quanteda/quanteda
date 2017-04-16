@@ -26,7 +26,7 @@ Second paragraph is this one!  Here is the third sentence.",
 
 No there is another.")
     mycorp <- corpus(txt, docvars = data.frame(title = c("doc1", "doc2")))
-    cseg <- corpus_segment(mycorp, "paragraphs", delimiter = "paragraph*")
+    cseg <- corpus_segment(mycorp, "other", delimiter = "paragraph*")
     expect_equal(as.character(cseg)[2], c(d1.2 = "is this one!  Here is the third sentence."))
 })
 
@@ -96,14 +96,14 @@ test_that("char_segment works for tags", {
 })
 
 test_that("char_segment works for glob customized tags", {
-    txt <- c("##INTRO This is the introduction. 
-                           ##DOC1 This is the first document.  
+    txt <- c("INTRO: This is the introduction. 
+                           DOC1: This is the first document.  
                            Second sentence in Doc 1.  
-                           ##DOC3 Third document starts here.  
+                           DOC3: Third document starts here.  
                            End of third document.",
-             "##INTRO Document ##NUMBER Two starts before ##NUMBER Three.")
-    testCharSeg <- char_segment(txt, "tags", delimiter = "document*", valuetype = "glob")
-    expect_equal(testCharSeg[4], ".")
+             "INTRO: Document NUMBER: Two starts before NUMBER: Three.")
+    testCharSeg <- char_segment(txt, "tags", delimiter = "*:", valuetype = "glob")
+    expect_equal(testCharSeg[4], "Three.")
 })
 
 test_that("char_segment tokens works", {
@@ -150,7 +150,7 @@ test_that("char_segment works with blank before tag", {
                            ##DOC3 Third document starts here.  End of third document.",
                            "##INTRO Document ##NUMBER Two starts before ##NUMBER Three.")
     testSeg <- char_segment(txt, "tags")
-    expect_equal(testSeg[7], "Three.")
+    expect_equal(testSeg[6], "Three.")
 })
 
 test_that("char_segment works for end tag", {
@@ -171,29 +171,15 @@ test_that("corpus_segment works with use_docvars T or F", {
     
     summ <- summary(corpus_segment(corp, what = "tags", use_docvars = FALSE), 
                     verbose = FALSE)
-    expect_equal(names(summ), c("Text", "Types", "Tokens", "Sentences", "tag"))
+    expect_equal(names(summ), c("Text", "Types", "Tokens", "Sentences", "tag", "docid"))
 })
 
-test_that("get_delimiter works as expected", {
-    expect_equal(
-        quanteda:::get_delimiter("notachoice", NULL, "regex"),
-        NULL
-    )
-    expect_equal(
-        quanteda:::get_delimiter("paragraphs", NULL, "regex"),
-        "\\n{2}"
-    )
-    expect_equal(
-        quanteda:::get_delimiter("tags", NULL, "regex"),
-        "##\\w+\\b"
-    )
-    expect_warning(
-        quanteda:::get_delimiter("tokens", " ", "regex"),
-        "delimiter is not used for tokens"
-    )
-    expect_error(
-        quanteda:::get_delimiter("other", NULL, "regex"),
-        "For type other, you must supply a delimiter value"
-    )
+test_that("char_segment works with Japanese texts", {
     
+    txt <- "日本語の終止符は.ではない。しかし、最近は．が使われることある。"
+    expect_equal(char_segment(txt, what = 'sentences'),
+                 c("日本語の終止符は.", "ではない。", "しかし、最近は．", "が使われることある。"))
+    
+    expect_equal(char_segment(txt, what = 'other', delimiter = '。'),
+                 c("日本語の終止符は.ではない", "しかし、最近は．が使われることある"))
 })
