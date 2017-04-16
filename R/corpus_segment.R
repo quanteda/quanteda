@@ -94,78 +94,32 @@ corpus_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tag
 #' @noRd
 #' @rdname corpus_segment
 #' @export    
-corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
+corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens", "other"), 
                                   delimiter = NULL,
                                   valuetype = c("regex", "fixed", "glob"),
                                   use_docvars = TRUE, 
                            ...) {
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
-    delimiter <- get_delimiter(what, delimiter, valuetype)
     
-    # automatically detect and override valuetype
-    if (!is.null(delimiter) && gsub("[*?]|\\w|\\s", "", delimiter) != "" & valuetype != "regex") {
-        warning("delimiter looks like it contains a regex", noBreaks. = TRUE)
-    } else if (valuetype == "glob") {
-        # treat as fixed if no glob characters detected
-        if (!sum(stringi::stri_detect_charclass(delimiter, c("[*?]"))))
-            valuetype <- "fixed"
-        else {
-            features <- vapply(delimiter, utils::glob2rx, character(1), USE.NAMES = FALSE)
-            valuetype <- "regex"
-        }
-    }
-    
-    # trim any leading blanks
-    texts(x) <- stringi::stri_trim_left(texts(x))
-    # add a blank to the end, in case the last part is a tag
-    texts(x) <- paste0(texts(x), " ")
+    temp <- segment_texts(texts(x), what, delimiter, valuetype, ...)
 
-    # get tags, if any
-    if (what == "tags") {
-        if (valuetype == "regex") {
-            tags <- stringi::stri_extract_all_regex(texts(x), delimiter)
-        } else if (valuetype == "fixed") {
-            tags <- stringi::stri_extract_all_fixed(texts(x), delimiter)
-        }
-        # paste a temp tag to the beginning of every text, to be removed later
-        temptag <- paste0(tags[[1]][1], "xyyzzz")
-        texts(x) <- paste(temptag, texts(x))
-        tags <- lapply(tags, function(t) c(temptag, t))
-    }
-    
-    # get the text following the tags
-    segTxt <- lapply(texts(x), function(y) 
-        unname(char_segment(y, what, delimiter, valuetype = valuetype, ...)))
-
-    # to make names doc1.1, doc1.2, doc2.1, ...
-    names(segTxt) <- paste0(names(segTxt), ".")
-
-    # remove the dummy tags and texts
-    if (what == "tags") {
-        segTxt <- lapply(segTxt, "[", -1)
-        tags <- lapply(tags, "[", -1)
-    }
-        
-    # create the new corpus
     # get the relevant function call
-    thecalls <- as.character(sys.calls())
-    thecall <- thecalls[stri_detect_regex(thecalls, "segment\\.corpus")]
-    newCorpus <- 
-        corpus(unlist(segTxt), metacorpus = list(source = metacorpus(x, "source"),
-                                                 notes = thecall))
+    commands <- as.character(sys.calls())
+    commands <- commands[stri_detect_regex(commands, "segment\\.corpus")]
     
-    # add the tags as docvars
-    if (what == "tags") {
-        docvars(newCorpus, "tag") <- unlist(tags, use.names = FALSE)
-    }
-    
+    # create the new corpus
+    result <- corpus(unlist(temp, use.names = FALSE), metacorpus = list(source = metacorpus(x, "source"),
+                                                                        notes = commands))
     # add repeated versions of remaining docvars
     if (use_docvars && !is.null(docvars(x))) {
-        newCorpus[[names(docvars(x))]] <- lapply(docvars(x), rep, lengths(segTxt))
+        result[[names(docvars(x))]] <- docvars(x)[attr(temp, 'docid'),,drop = FALSE]
     }
-
-    newCorpus
+    if (what == 'tags') {
+        docvars(result, 'tag') <- names(temp)
+    }
+    docvars(result, 'docid') <- attr(temp, 'docid')
+    return(result)
 }
 
 
@@ -197,69 +151,83 @@ char_segment <- function(x,
         
 #' @noRd
 #' @export
-char_segment.character <- 
-    function(x, 
-             what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
-             delimiter = NULL,
-             valuetype = c("regex", "fixed", "glob"),
-             use_docvars = TRUE, 
-             ...) {
+char_segment.character <- function(x, 
+                                   what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
+                                   delimiter = NULL,
+                                   valuetype = c("regex", "fixed", "glob"),
+                                   use_docvars = TRUE, 
+                                   ...) {
         
     if (!all(is.character(x)))
         stop("x must be of character type")
     
     what <- match.arg(what)
-    delimiter <- get_delimiter(what, delimiter, valuetype)
-
     valuetype <- match.arg(valuetype)
+    
+    result <- segment_texts(x, what, delimiter, valuetype, ...)
+    attributes(result) <- NULL
+    return(result)
+}
+
+# internal function for char_segment and corpus_segment
+segment_texts <- function(x, what, delimiter, valuetype, ...){
+    
+    if (what %in% c('tokens', 'sentences')) {
+        if (!is.null(delimiter))
+            warning("delimiter is only used for 'other'")
+        delimiter <- NULL
+    } else if (what == 'paragraphs') {
+        if (!is.null(delimiter)) 
+            warning("delimiter is only used for 'other'")
+        delimiter <- "\\n{2}"
+        valuetype <- "regex"
+    } else if (what == 'other') {
+        if (is.null(delimiter))
+            stop("You must supply a delimiter value for 'other'")
+    }
+
     if (valuetype == "glob") {
         # treat as fixed if no glob characters detected
-        if (!sum(stringi::stri_detect_charclass(delimiter, c("[*?]"))))
+        if (!any(stringi::stri_detect_charclass(delimiter, c("[*?]"))))
             valuetype <- "fixed"
         else {
-            features <- vapply(delimiter, utils::glob2rx, character(1), USE.NAMES = FALSE)
+            delimiter <- paste0(utils::glob2rx(delimiter), collapse = '|')
             valuetype <- "regex"
         }
     }
     
-    if (!is.null(names(x)))
-        names(x) <- paste0(names(x), ".")
-    
     if (what == "tokens") {
-        return(as.character(tokens(x, ...), use.names = TRUE))
+        temp <- tokens_word(x, ...)
     } else if (what == "sentences") {
-        return(as.character(tokens(x, what = "sentence", ...), use.names = TRUE))
+        temp <- tokens_sentence(x, ...)
+    } else if (what == 'tags') {
+        temp <- stringi::stri_replace_all_regex(x, "(##\\w+\\b)", "\v$1") # insert contrl character
+        temp <- stringi::stri_split_fixed(temp, pattern = "\v", omit_empty = TRUE)
     } else {
         if (valuetype == "fixed") {
-            result <- stringi::stri_split_fixed(x, pattern = delimiter, omit_empty = TRUE)
+            temp <- stringi::stri_split_fixed(x, pattern = delimiter, omit_empty = TRUE)
         } else {
-            result <- stringi::stri_split_regex(x, pattern = delimiter, omit_empty = TRUE)
+            temp <- stringi::stri_split_regex(x, pattern = delimiter, omit_empty = TRUE)
         }
-        result <- lapply(result, stringi::stri_trim_both)
-        names(result) <- names(x)
-        result <- unlist(result)
-        return(result)
     }
+    
+    docid <- rep(seq_along(x), lengths(temp))
+    result <- unlist(temp, use.names = FALSE)
+    if (what == 'tags') {
+        # to make names ##INTRO, ##DOC1, #DOC2 ...
+        tags <- stringi::stri_extract_first_regex(result, "(##\\w+\\b)")
+        result <- stringi::stri_replace_first_fixed(result, tags, '')
+        result <- stringi::stri_trim_both(result)
+        names(result) <- tags
+    } else {
+        # to make names doc1.1, doc1.2, doc2.1, ...
+        result <- stringi::stri_trim_both(result)
+        names(result) <- paste0(rep(names(x), lengths(temp)), ".", unlist(lapply(lengths(temp), seq_len)))
+    }
+    attr(result,'docid') <- docid
+    return(result)
 }
 
-get_delimiter <- function(what, 
-                          delimiter = NULL, 
-                          valuetype) {
-    if (!is.null(delimiter)) {
-        if (whichin <- (what %in% (whichtypes <- c("tokens", "sentences")))) {
-            warning("delimiter is not used for ", whichtypes[which(whichin)])
-            delimiter <- NULL
-        }
-    } else {
-        if (what == "other")
-            stop("For type other, you must supply a delimiter value.")
-        delimiter <- switch(what, 
-                            paragraphs = "\\n{2}",
-                            tags = "##\\w+\\b", 
-                            NULL)
-    }
-    delimiter
-}
 
 #' segment: deprecated function
 #' 
