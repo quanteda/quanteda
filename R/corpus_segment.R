@@ -227,6 +227,7 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
         }
     }
 
+
     result <- unlist(temp, use.names = FALSE)
     if (what == 'tags') {
         tag <- stringi::stri_extract_first_regex(result, delimiter)

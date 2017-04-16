@@ -1,5 +1,5 @@
 
-setClassUnion("charNULL", c("character", "NULL"))
+setClassUnion("character/NULL", c("character", "NULL"))
 
 #' @rdname dictionary-class
 #' @export
@@ -12,7 +12,7 @@ setClassUnion("charNULL", c("character", "NULL"))
 #' @slot format dictionary format (if imported)
 #' @slot file file from which a dictionary was read (if imported)
 setClass("dictionary", contains = c("list"),
-         slots = c(concatenator = "character", format = "charNULL", file = "charNULL"),
+         slots = c(concatenator = "character/NULL", format = "character/NULL", file = "character/NULL"),
          prototype = prototype(concatenator = " ", format = NULL, file = NULL))
 
 setValidity("dictionary", function(object) {
@@ -32,7 +32,13 @@ validate_dictionary <- function(dict){
         stop("Unnamed dictionary entry: ", 
              paste(unlist(unnamed, use.names = FALSE), collapse = ' '))
     }
-    
+    if (is.null(dict@concatenator) || dict@concatenator == '') {
+        stop("Concatenator cannot be null or an empty string")
+    }
+    check_entries(dict)
+}
+
+check_entries <- function (dict) {
     for (i in seq_along(dict)) {
         entry <- dict[[i]]
         is_category <- sapply(entry, is.list)
@@ -45,10 +51,10 @@ validate_dictionary <- function(dict){
         }
         if (any(is_category)) {
             category <- entry[is_category]
-            validate_dictionary(category)
+            check_entries(category)
         }
     }
-}
+} 
 
 # Internal function to print dictionary
 print_dictionary <- function(entry, level = 1) {
