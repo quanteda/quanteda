@@ -176,6 +176,7 @@ test_that("corpus_segment works with use_docvars T or F", {
 
 test_that("char_segment works with Japanese texts", {
     
+    skip_on_os("windows")
     txt <- "日本語の終止符は.ではない。しかし、最近は．が使われることある。"
     expect_equal(char_segment(txt, what = 'sentences'),
                  c("日本語の終止符は.", "ではない。", "しかし、最近は．", "が使われることある。"))
