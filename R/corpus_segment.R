@@ -166,14 +166,21 @@ char_segment.character <- function(x,
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
     
+    names_org <- names(x)
+    
     # normalize EOL
     x <- stringi::stri_replace_all_regex(x, "\\r\\n", "\n") # Windows
     x <- stringi::stri_replace_all_regex(x, "\\r", "\n") # Old Macintosh
     
+    names(x) <- names_org
+    
     result <- segment_texts(x, what, delimiter, valuetype, ...)
+    result <- result[result!='']
+    
     attr(result, 'tag') <- NULL
     attr(result, 'docid') <- NULL
-    result <- result[result!='']
+    attr(result, 'segid') <- NULL
+    
     return(result)
 }
 
@@ -183,7 +190,7 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
     names_org <- names(x)
     
     if (what %in% c('tokens', 'sentences')) {
-        if (!is.null(delimiter)) warning("delimiter is only used for 'tags' or other'")
+        if (!is.null(delimiter)) warning("delimiter is only used for 'paragraphs', 'tags' or 'other'")
         delimiter <- NULL
     } else if (what == 'paragraphs') {
         if (is.null(delimiter)) {
@@ -192,7 +199,7 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
         }
     } else if (what == 'tags') {
         if (is.null(delimiter)) {
-            delimiter <- "(##\\w+\\b)"
+            delimiter <- "(##\\w+\\b)" # parentheses are for back reference
             valuetype <- "regex"
         }
     } else if (what == 'other') {
@@ -206,10 +213,9 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
         if (!any(stringi::stri_detect_charclass(delimiter, c("[*?]")))) {
             valuetype <- "fixed"
         } else {
-            regex <- delimiter
-            regex <- stringi::stri_replace_all_fixed(regex, '*', '(.\\S*?)')
+            regex <- quanteda:::escape_regex(delimiter)
+            regex <- stringi::stri_replace_all_fixed(regex, '*', '(.\\S*)')
             regex <- stringi::stri_replace_all_fixed(regex, '?', '(.\\S)')
-            regex <- paste0('(\\s|\\b)', regex, '(\\s|\\b)')
             delimiter <- paste0(regex, collapse = '|')
             valuetype <- "regex"
         }
@@ -220,7 +226,7 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
     } else if (what == "sentences") {
         temp <- quanteda:::tokens_sentence(x, ...)
     } else if (what == 'tags') {
-        temp <- stringi::stri_replace_all_regex(x, delimiter, "\v$0") # insert contrl character
+        temp <- stringi::stri_replace_all_regex(x, delimiter, "\v$0") # insert control character
         temp <- stringi::stri_split_fixed(temp, pattern = "\v", omit_empty = TRUE)
         # remove elements to be empty
         temp <- lapply(temp, function(x) x[stringi::stri_replace_first_regex(x, '^\\s+$', '') != ''])
@@ -233,20 +239,25 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
     }
 
     result <- unlist(temp, use.names = FALSE)
-    result <- stringi::stri_trim_both(result)
     
     if (what == 'tags') {
         tag <- stringi::stri_extract_first_regex(result, delimiter)
         result <- stringi::stri_replace_first_fixed(result, tag, '')
+        result <- stringi::stri_trim_both(result)
         attr(result,'tag') <- tag
+    } else {
+        result <- stringi::stri_trim_both(result)
     }
     
-    attr(result,'docid') <- rep(seq_along(x), lengths(temp))
-    attr(result,'segid') <- lengths(temp)
+    n_segment <- lengths(temp)
+    attr(result,'docid') <- rep(seq_along(x), n_segment)
     
+    id_segment <- unlist(lapply(n_segment, seq_len), use.names = FALSE)
+    attr(result,'segid') <- id_segment
+
     if (!is.null(names_org)) {
         # to make names doc1.1, doc1.2, doc2.1, ...
-        names(result) <- paste0(rep(names_org, lengths(temp)), ".", unlist(lapply(lengths(temp), seq_len)))
+        names(result) <- paste0(rep(names_org, n_segment), ".", id_segment)
     }
     
     return(result)

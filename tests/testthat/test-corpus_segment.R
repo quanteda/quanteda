@@ -103,7 +103,18 @@ test_that("char_segment works for glob customized tags", {
                            End of third document.",
              "INTRO: Document NUMBER: Two starts before NUMBER: Three.")
     testCharSeg <- char_segment(txt, "tags", delimiter = "*:", valuetype = "glob")
-    expect_equal(testCharSeg[4], "Three.")
+    expect_equal(testCharSeg[6], "Three.")
+})
+
+test_that("char_segment works for glob customized tags, test 2", {
+    txt <- c("[INTRO] This is the introduction. 
+                           [DOC1] This is the first document.  
+                           Second sentence in Doc 1.  
+                           [DOC3] Third document starts here.  
+                           End of third document.",
+             "[INTRO] Document [NUMBER] Two starts before [NUMBER] Three.")
+    testCharSeg <- char_segment(txt, "tags", delimiter = "[*]", valuetype = "glob")
+    expect_equal(testCharSeg[6], "Three.")
 })
 
 test_that("char_segment tokens works", {
@@ -171,7 +182,7 @@ test_that("corpus_segment works with use_docvars T or F", {
     
     summ <- summary(corpus_segment(corp, what = "tags", use_docvars = FALSE), 
                     verbose = FALSE)
-    expect_equal(names(summ), c("Text", "Types", "Tokens", "Sentences", "tag", "docid"))
+    expect_equal(names(summ), c("Text", "Types", "Tokens", "Sentences", "tag"))
 })
 
 test_that("char_segment works with Japanese texts", {
