@@ -188,6 +188,10 @@ test_that("get_delimiter works as expected", {
         "##\\w+\\b"
     )
     expect_warning(
+        quanteda:::get_delimiter("sentences", " ", "regex"),
+        "delimiter is not used for sentences"
+    )
+    expect_warning(
         quanteda:::get_delimiter("tokens", " ", "regex"),
         "delimiter is not used for tokens"
     )
@@ -195,5 +199,13 @@ test_that("get_delimiter works as expected", {
         quanteda:::get_delimiter("other", NULL, "regex"),
         "For type other, you must supply a delimiter value"
     )
+
+})
+
+test_that("char_segment works with delimiter option", {
+    expect_is(char_segment(data_char_sampletext, what = "sentences"), "character")
+    expect_equal(length(char_segment(data_char_sampletext, what = "sentences")), 15)
+    
+    char_segment(data_char_sampletext, what = "sentences", delimiter = "\\.  ")
     
 })

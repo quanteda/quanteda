@@ -1,0 +1,33 @@
+---
+title: "textmodel-ca benchmarks"
+date: "06/04/2017"
+output: html_document
+---
+
+### Test: quanteda::textmodel-ca 
+
+To test the performance of calculation applying on dense dfm matrix versus on sparse dfm matrix (with truncated svd).
+
+```{r}
+require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
+
+ie2010dfm_dense <- as.matrix(ie2010dfm)
+
+microbenchmark::microbenchmark(
+    ca = ca::ca(ie2010dfm_dense), 
+    ca_textmodel = textmodel_ca(ie2010dfm),
+    times=10, unit = 'relative')
+```
+
+```{r}
+data(SOTUCorpus, package = "quantedaData")
+SOTUdfm <- dfm(SOTUCorpus)
+SOTUdfm_dense <- as.matrix(SOTUdfm)
+microbenchmark::microbenchmark(
+    ca = ca::ca(SOTUdfm_dense), 
+    ca_textmodel = textmodel_ca(SOTUdfm),
+    times=10, unit = 'relative')
+```
+
+    

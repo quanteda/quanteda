@@ -39,7 +39,8 @@ a \pkg{ggplot2} object
 }
 \description{
 Plot the results of a fitted scaling model, from (e.g.) a predicted 
-\link{textmodel_wordscores} model or a fitted \link{textmodel_wordfish}
+\link{textmodel_wordscores} model or a fitted \link{textmodel_wordfish} 
+or \link{textmodel_ca}
 model. Either document or feature parameters may be plotted: an ideal
 point-style plot (estimated document position plus confidence interval on the
 x-axis, document labels on the y-axis) with optional renaming and sorting, or

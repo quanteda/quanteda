@@ -34,7 +34,7 @@ setClass("textmodel_wordfish_predicted",
 #' one-dimensional document positions using conditional maximum likelihood.
 #' @importFrom Rcpp evalCpp
 #' @useDynLib quanteda
-#' @param data the dfm on which the model will be fit
+#' @param x the dfm on which the model will be fit
 #' @param dir set global identification by specifying the indexes for a pair of 
 #'   documents such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.
 #' @param priors prior precisions for the estimated parameters \eqn{\alpha_i}, 
@@ -71,7 +71,7 @@ setClass("textmodel_wordfish_predicted",
 #'   \item{psi}{estimated word fixed effects} \item{docs}{document labels} 
 #'   \item{features}{feature labels} \item{sigma}{regularization parameter for 
 #'   betas in Poisson form} \item{ll}{log likelihood at convergence} 
-#'   \item{se.theta}{standard errors for theta-hats} \item{data}{dfm to which 
+#'   \item{se.theta}{standard errors for theta-hats} \item{x}{dfm to which 
 #'   the model was fit}
 #' @details The returns match those of Will Lowe's R implementation of 
 #'   \code{wordfish} (see the austin package), except that here we have renamed 
@@ -113,7 +113,7 @@ setClass("textmodel_wordfish_predicted",
 #'     cor(wfm1@theta, wfmodelAustin$theta)
 #' }}
 #' @export
-textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 
+textmodel_wordfish <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 
                                dispersion = c("poisson", "quasipoisson"), 
                                dispersion_level = c("feature", "overall"),
                                dispersion_floor = 0,
@@ -127,15 +127,15 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     dispersion_level <- match.arg(dispersion_level)
     
     # check that no rows or columns are all zero
-    zeroLengthDocs <- which(ntoken(data) == 0)
+    zeroLengthDocs <- which(ntoken(x) == 0)
     if (length(zeroLengthDocs)) {
-        catm("Note: removed the following zero-token documents:", docnames(data)[zeroLengthDocs], "\n")
-        data <- data[-zeroLengthDocs, ]
+        catm("Note: removed the following zero-token documents:", docnames(x)[zeroLengthDocs], "\n")
+        x <- x[-zeroLengthDocs, ]
     }
-    zeroLengthFeatures <- which(docfreq(data) == 0)
+    zeroLengthFeatures <- which(docfreq(x) == 0)
     if (length(zeroLengthFeatures)) {
-        catm("Note: removed the following zero-count features:", featnames(data)[zeroLengthFeatures], "\n")
-        data <- data[, -zeroLengthFeatures]
+        catm("Note: removed the following zero-count features:", featnames(x)[zeroLengthFeatures], "\n")
+        x <- x[, -zeroLengthFeatures]
     }
     if (length(zeroLengthDocs) | length(zeroLengthFeatures)) catm("\n")
 
@@ -169,19 +169,19 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     # catm("disp = ", disp, "\n")
     if (sparse == TRUE){
         if (threads == 1){
-            wfresult <- wordfishcpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
+            wfresult <- wordfishcpp(x, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
         } else {
-            wfresult <- wordfishcpp_mt(data, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
+            wfresult <- wordfishcpp_mt(x, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
         }
     } else{
-        wfresult <- wordfishcpp_dense(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err)
+        wfresult <- wordfishcpp_dense(as.matrix(x), as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err)
     }
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
     new("textmodel_wordfish_fitted", 
-        x = data,
-        docs = docnames(data), 
-        features = featnames(data),
+        x = x,
+        docs = docnames(x), 
+        features = featnames(x),
         dir = dir,
         dispersion = dispersion,
         priors = priors,
