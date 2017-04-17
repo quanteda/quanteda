@@ -153,18 +153,12 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     features_add <- documents_add <- character() # avoid error in verbose message
     
     if (selection == "keep") {
-
-        # select features and documents
-        print(features_id)
-        print(documents_id)
+    
         if (length(features_id) && length(documents_id)) {
-            print('here1')
             temp <- x[documents_id, features_id]
         } else if (length(features_id)) {
-            print('here2')
             temp <- x[0, features_id]
         } else if (length(documents_id)) {
-            print('here3')
             temp <- x[documents_id, 0]
         } else {
             temp <- x[0, 0]
