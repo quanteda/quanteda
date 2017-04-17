@@ -18,28 +18,32 @@ NULL
 #' @keywords dfm
 setMethod("print", signature(x = "dfm"), 
           function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...) {
-              if (show.summary) {
-                  cat("Document-feature matrix of: ",
-                      format(ndoc(x), , big.mark=","), " document",
-                      ifelse(ndoc(x)>1 | ndoc(x)==0, "s, ", ", "),
-                      format(nfeature(x), big.mark=","), " feature",
-                      ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
-                      ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-                      " (", format(sparsity(x)*100, digits = 3),
-                      "% sparse).\n", sep="")
-              }
-              if (show.settings) {
-                  cat("Settings: TO BE IMPLEMENTED.")
-              }
-              if (show.values | (nrow(x) <= ndoc & ncol(x) <= nfeature)) {
-                  if (is(x, "sparseMatrix"))
-                      Matrix::printSpMatrix2(x[1:min(ndoc, ndoc(x)), 1:min(nfeature, nfeature(x))], 
-                                         col.names=TRUE, zero.print=0, ...)
-                  else if (is(x, "denseMatrix")) {
-                      getMethod("show", "denseMatrix")(x, ...)
-                  } else {
-                      print(as.matrix(x))
+              if (length(x) > 0) {
+                  if (show.summary) {
+                      cat("Document-feature matrix of: ",
+                          format(ndoc(x), , big.mark=","), " document",
+                          ifelse(ndoc(x)>1 | ndoc(x)==0, "s, ", ", "),
+                          format(nfeature(x), big.mark=","), " feature",
+                          ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
+                          ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
+                          " (", format(sparsity(x)*100, digits = 3),
+                          "% sparse).\n", sep="")
                   }
+                  if (show.settings) {
+                      cat("Settings: TO BE IMPLEMENTED.")
+                  }
+                  if (show.values | (nrow(x) <= ndoc & ncol(x) <= nfeature)) {
+                      if (is(x, "sparseMatrix"))
+                          Matrix::printSpMatrix2(x[1:min(ndoc, ndoc(x)), 1:min(nfeature, nfeature(x))], 
+                                             col.names=TRUE, zero.print=0, ...)
+                      else if (is(x, "denseMatrix")) {
+                          getMethod("show", "denseMatrix")(x, ...)
+                      } else {
+                          print(as.matrix(x))
+                      }
+                  }
+              } else{
+                  print(NULL)
               }
           })
 
