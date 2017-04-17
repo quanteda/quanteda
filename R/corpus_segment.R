@@ -119,7 +119,8 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
     if (what == 'tags') {
         docvars(result, 'tag') <- attr(temp, 'tag')
     }
-    docvars(result, 'docid') <- attr(temp, 'docid')
+    docvars(result, '_docid') <- attr(temp, 'docid')
+    docvars(result, '_segid') <- attr(temp, 'segid')
     return(result)
 }
 
@@ -165,6 +166,10 @@ char_segment.character <- function(x,
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
     
+    # normalize EOL
+    x <- stringi::stri_replace_all_regex(x, "\\r\\n", "\n") # Windows
+    x <- stringi::stri_replace_all_regex(x, "\\r", "\n") # Old Macintosh
+    
     result <- segment_texts(x, what, delimiter, valuetype, ...)
     attr(result, 'tag') <- NULL
     attr(result, 'docid') <- NULL
@@ -181,9 +186,10 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
         if (!is.null(delimiter)) warning("delimiter is only used for 'tags' or other'")
         delimiter <- NULL
     } else if (what == 'paragraphs') {
-        if (!is.null(delimiter)) warning("delimiter is only used for 'tags' or 'other'")
-        delimiter <- "\\r\\n\\r\\n|\\n\\n" # Windows (\r\n) and other systems (\n)
-        valuetype <- "regex"
+        if (is.null(delimiter)) {
+            delimiter <- "\\n\\n"
+            valuetype <- "regex"
+        }
     } else if (what == 'tags') {
         if (is.null(delimiter)) {
             delimiter <- "(##\\w+\\b)"
@@ -200,9 +206,10 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
         if (!any(stringi::stri_detect_charclass(delimiter, c("[*?]")))) {
             valuetype <- "fixed"
         } else {
-            regex <- utils::glob2rx(delimiter)
-            regex <- stringi::stri_replace_first_fixed(regex, '^', '(\\s|\\b)')
-            regex <- stringi::stri_replace_last_fixed(regex, '$', '(\\s|\\b)')
+            regex <- delimiter
+            regex <- stringi::stri_replace_all_fixed(regex, '*', '(.\\S*?)')
+            regex <- stringi::stri_replace_all_fixed(regex, '?', '(.\\S)')
+            regex <- paste0('(\\s|\\b)', regex, '(\\s|\\b)')
             delimiter <- paste0(regex, collapse = '|')
             valuetype <- "regex"
         }
@@ -216,9 +223,7 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
         temp <- stringi::stri_replace_all_regex(x, delimiter, "\v$0") # insert contrl character
         temp <- stringi::stri_split_fixed(temp, pattern = "\v", omit_empty = TRUE)
         # remove elements to be empty
-        temp <- lapply(temp, function(x) x[stringi::stri_replace_first_regex(x, '\\s', '') != ''])
-        #temp <- lapply(temp, function(x) x[stringi::stri_replace_first_regex(x, '\\s', '') != '' & 
-        #                                   stringi::stri_replace_first_regex(x, delimiter, '') != ''])
+        temp <- lapply(temp, function(x) x[stringi::stri_replace_first_regex(x, '^\\s+$', '') != ''])
     } else {
         if (valuetype == "fixed") {
             temp <- stringi::stri_split_fixed(x, pattern = delimiter, omit_empty = TRUE)
@@ -227,23 +232,21 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
         }
     }
 
-
     result <- unlist(temp, use.names = FALSE)
+    result <- stringi::stri_trim_both(result)
+    
     if (what == 'tags') {
         tag <- stringi::stri_extract_first_regex(result, delimiter)
         result <- stringi::stri_replace_first_fixed(result, tag, '')
+        attr(result,'tag') <- tag
     }
     
-    result <- stringi::stri_trim_both(result)
     attr(result,'docid') <- rep(seq_along(x), lengths(temp))
+    attr(result,'segid') <- lengths(temp)
     
     if (!is.null(names_org)) {
         # to make names doc1.1, doc1.2, doc2.1, ...
         names(result) <- paste0(rep(names_org, lengths(temp)), ".", unlist(lapply(lengths(temp), seq_len)))
-    }
-    
-    if (what == 'tags') {
-        attr(result,'tag') <- tag
     }
     
     return(result)
