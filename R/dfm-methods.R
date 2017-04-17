@@ -35,7 +35,11 @@ featnames.NULL <- function(x) {
 #' @export
 #' @noRd
 featnames.dfm <- function(x) {
-    colnames(x)
+    if (is.null(colnames(x))) {
+        character()
+    } else {
+        colnames(x)
+    }
 }
 
 #' deprecated function name for featnames
@@ -51,7 +55,11 @@ features <- function(x) {
 #' @noRd
 #' @export
 docnames.dfm <- function(x) {
-    rownames(x)
+    if (is.null(rownames(x))) {
+        character()
+    } else {
+        rownames(x)
+    }
 }
 
 #' @noRd
