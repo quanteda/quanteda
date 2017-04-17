@@ -20,7 +20,7 @@
 #' @export
 #' @keywords textstat
 #' @examples
-#' \donotrun{
+#' \dontrun{
 #' txts <- c("This is software testing: looking for (word) pairs!  
 #'            This [is] a software testing again. For.",
 #'           "Here: this is more Software Testing, looking again for word pairs.")
@@ -95,33 +95,33 @@ textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "di
 #
 
 
-#' @rdname collocations
-#' @export
-#' @return \code{is.collocation} returns \code{TRUE} if the object is of class
-#'   collocations, \code{FALSE} otherwise.
-is.collocations <- function(x) {
-    "collocations" %in% class(x)
-}
+#' #' @rdname collocations
+#' #' @export
+#' #' @return \code{is.collocation} returns \code{TRUE} if the object is of class
+#' #'   collocations, \code{FALSE} otherwise.
+#' is.collocations <- function(x) {
+#'     "collocations" %in% class(x)
+#' }
 
 
-#' @method "[" collocations
-#' @export
-#' @noRd
-"[.collocations" <- function(x, i, ...) {
-    x <- as.data.frame(x)[i,]
-    attr(x, 'ids') <- attr(x, 'ids')[i]
-    class(x) <- c("collocations", 'data.frame')
-    return(x)
-}
-
-#' @export
-#' @method as.tokens collocations
-#' @noRd
-as.tokens.collocations <- function(x) {
-    toks <- attr(x, 'ids')
-    attr(toks, 'types') <- attr(x, 'types')
-    class(toks) <- c("tokens", "tokenizedTexts")
-    return(toks)
-}
+#' #' @method "[" collocations
+#' #' @export
+#' #' @noRd
+#' "[.collocations" <- function(x, i, ...) {
+#'     x <- as.data.frame(x)[i,]
+#'     attr(x, 'ids') <- attr(x, 'ids')[i]
+#'     class(x) <- c("collocations", 'data.frame')
+#'     return(x)
+#' }
+#' 
+#' #' @export
+#' #' @method as.tokens collocations
+#' #' @noRd
+#' as.tokens.collocations <- function(x) {
+#'     toks <- attr(x, 'ids')
+#'     attr(toks, 'types') <- attr(x, 'types')
+#'     class(toks) <- c("tokens", "tokenizedTexts")
+#'     return(toks)
+#' }
 
 

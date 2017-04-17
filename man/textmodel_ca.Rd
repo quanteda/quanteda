@@ -25,7 +25,7 @@ calculating the truncated svd.Larger value will reduce memory and time cost but
 might sacrify the accuracy. Only applies when sparse = TRUE}
 }
 \description{
-\code{textmodel-ca} implements correspondence analysis scaling on a
+\code{textmodel_ca} implements correspondence analysis scaling on a
 \link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca} in 
 the \pkg{ca} package.
 }

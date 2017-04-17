@@ -39,21 +39,6 @@ NULL
 #'   Minnesota.
 #' @seealso \link{tokens_ngrams}
 #' @author Kenneth Benoit
-
-
-wFIRSTGREP <- "[])};:,.?!$\u2014]"
-wMIDDLEGREP <- "[][({)};:,.?!\u2014]"
-wLASTGREP <- "[][^({]"
-containsPunct <- NULL
-
-wFIRSTGREPpenn <- "([,:.]|''|``|-rrb-)_.*"
-wMIDDLEGREPpenn <- "([,:.]|''|``|-[lr]rb-)_.*"
-wLASTGREPpenn <- "-lrb-_.*"
-
-    
-#' @rdname collocations
-#' @noRd
-#' @export    
 collocations2 <- function(x, method = c("lr", "chi2", "pmi", "dice"), 
                                 features = "*", 
                                 valuetype = c("glob", "regex", "fixed"),

@@ -21,6 +21,7 @@ Identify and score collocations from a corpus, character, or tokens object,
 with targeted selection.
 }
 \examples{
+\dontrun{
 txts <- c("This is software testing: looking for (word) pairs!  
            This [is] a software testing again. For.",
           "Here: this is more Software Testing, looking again for word pairs.")
@@ -48,5 +49,7 @@ toks_comp <- tokens_compound(toks, seqs)
 seqs2 <- textstat_collocations(toks, "bj", "^([a-z]+)$", valuetype="regex", 
                                case_insensitive = FALSE, min_count = 2, ordered = TRUE)
 head(seqs2, 10)
+
+}
 }
 \keyword{textstat}
