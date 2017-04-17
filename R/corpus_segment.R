@@ -214,8 +214,8 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
             valuetype <- "fixed"
         } else {
             regex <- quanteda:::escape_regex(delimiter)
-            regex <- stringi::stri_replace_all_fixed(regex, '*', '(.\\S*)')
-            regex <- stringi::stri_replace_all_fixed(regex, '?', '(.\\S)')
+            regex <- stringi::stri_replace_all_fixed(regex, '*', '(\\S*)')
+            regex <- stringi::stri_replace_all_fixed(regex, '?', '(\\S)')
             delimiter <- paste0(regex, collapse = '|')
             valuetype <- "regex"
         }
