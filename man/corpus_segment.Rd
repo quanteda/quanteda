@@ -101,10 +101,10 @@ Does not currently record document segments if segmenting a multi-text
 ## segmenting a corpus
 
 testCorpus <- 
-corpus(c("##INTRO This is the introduction.
-          ##DOC1 This is the first document.  Second sentence in Doc 1.
-          ##DOC3 Third document starts here.  End of third document.",
-         "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
+    corpus(c("##INTRO This is the introduction.
+              ##DOC1 This is the first document.  Second sentence in Doc 1.
+              ##DOC3 Third document starts here.  End of third document.",
+             "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
 # add a docvar
 testCorpus[["serialno"]] <- paste0("textSerial", 1:ndoc(testCorpus))
 testCorpusSeg <- corpus_segment(testCorpus, "tags")
