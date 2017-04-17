@@ -242,11 +242,9 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
             result_temp <- tokens_word(blocks[[i]], what, remove_numbers, remove_punct, remove_symbols, 
                                        remove_separators, remove_twitter, remove_hyphens, remove_url, verbose)
         } else if (what == "character") {
-            result_temp <- tokens_character(blocks[[i]], what, remove_numbers, remove_punct, remove_symbols, 
-                                            remove_separators, remove_twitter, remove_hyphens, remove_url, verbose)
+            result_temp <- tokens_character(blocks[[i]],remove_punct, remove_symbols, remove_separators, verbose)
         } else if (what == "sentence") {
-            result_temp <- tokens_sentence(blocks[[i]], what, remove_numbers, remove_punct, remove_symbols, 
-                                           remove_separators, remove_twitter, remove_hyphens, remove_url, verbose)
+            result_temp <- tokens_sentence(blocks[[i]], verbose)
         } else {
             stop(what, " not implemented in tokens().")
         }
@@ -525,8 +523,16 @@ docnames.tokens <- function(x) {
 ## ============== INTERNAL FUNCTIONS =======================================
 ##
 
-tokens_word <- function(txt, what, remove_numbers, remove_punct, remove_symbols, remove_separators, 
-                        remove_twitter, remove_hyphens, remove_url, verbose){
+tokens_word <- function(txt, 
+                        what = 'word', 
+                        remove_numbers = FALSE, 
+                        remove_punct = FALSE, 
+                        remove_symbols = FALSE, 
+                        remove_separators = TRUE, 
+                        remove_twitter = FALSE, 
+                        remove_hyphens = FALSE, 
+                        remove_url = FALSE, 
+                        verbose = FALSE){
     
     # to preserve intra-word hyphens, replace with _hy_
     if (!remove_hyphens & remove_punct)
@@ -579,11 +585,8 @@ tokens_word <- function(txt, what, remove_numbers, remove_punct, remove_symbols,
     return(tok)
 }
 
-tokens_sentence <- function(txt, what, remove_numbers, remove_punct, remove_symbols, remove_separators, 
-                            remove_twitter, remove_hyphens, remove_url, verbose){
+tokens_sentence <- function(txt, verbose = FALSE){
     
-    if (remove_numbers || remove_punct || remove_symbols || remove_twitter || remove_hyphens || remove_url) 
-        warning("remove_numbers, remove_punct, remove_symbols, remove_twitter, remove_hyphens or remove_url is not used for \"sentence\" segmentation")
     if (verbose) catm("...separating into sentences.\n")
     
     # Replace . delimiter from common title abbreviations, with _pd_
@@ -608,10 +611,11 @@ tokens_sentence <- function(txt, what, remove_numbers, remove_punct, remove_symb
     return(tok)
 }
 
-tokens_character <- function(txt, what, remove_numbers, remove_punct, remove_symbols, remove_separators, 
-                             remove_twitter, remove_hyphens, remove_url, verbose){
-    if (remove_numbers || remove_twitter || remove_hyphens || remove_url) 
-        warning("remove_numbers, remove_twitter, remove_hyphens or remove_url is not used for \"character\" tokenization")
+tokens_character <- function(txt, 
+                             remove_punct = FALSE, 
+                             remove_symbols = FALSE, 
+                             remove_separators = FALSE, 
+                             verbose = FALSE){
     
     # note: does not implement remove_numbers
     tok <- stringi::stri_split_boundaries(txt, type = "character")
