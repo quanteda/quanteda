@@ -169,8 +169,8 @@ char_segment.character <- function(x,
     names_org <- names(x)
     
     # normalize EOL
-    x <- stringi::stri_replace_all_regex(x, "\\r\\n", "\n") # Windows
-    x <- stringi::stri_replace_all_regex(x, "\\r", "\n") # Old Macintosh
+    x <- stringi::stri_replace_all_fixed(x, "\r\n", "\n") # Windows
+    x <- stringi::stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     names(x) <- names_org
     

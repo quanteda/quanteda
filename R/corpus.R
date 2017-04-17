@@ -135,8 +135,8 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "t
     x <- stringi::stri_replace_all_regex(x, "\\p{Pd}", "-")
     
     # normalize EOL
-    x <- stringi::stri_replace_all_regex(x, "\\r\\n", "\n") # Windows
-    x <- stringi::stri_replace_all_regex(x, "\\r", "\n") # Old Macintosh
+    x <- stringi::stri_replace_all_fixed(x, "\r\n", "\n") # Windows
+    x <- stringi::stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     # name the texts vector
     if (!is.null(docnames)) {
