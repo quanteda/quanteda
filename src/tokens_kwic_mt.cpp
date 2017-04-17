@@ -128,7 +128,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     }
     
     Texts contexts(len);
-    IntegerVector documents_(len);
+    IntegerVector documents_(len), segments_(len);
     IntegerVector pos_from_(len), pos_to_(len);
     CharacterVector coxs_name_(len), coxs_pre_(len), coxs_target_(len), coxs_post_(len);
     
@@ -147,6 +147,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
             contexts[j] = context;
             documents_[j] = (int)h + 1;
+            segments_[j] = (int)i + 1;
             
             // Save as strings
             Text cox_pre(tokens.begin() + std::max(0, from), tokens.begin() + targets[i].first);
@@ -172,6 +173,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
                                           _["stringsAsFactors"] = false);
     output_.attr("tokens") = recompile(contexts, types);
     output_.attr("docid") = documents_;
+    output_.attr("segid") = segments_;
     return output_;
 }
 
