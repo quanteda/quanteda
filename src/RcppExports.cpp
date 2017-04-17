@@ -6,6 +6,19 @@
 
 using namespace Rcpp;
 
+// cacpp
+arma::sp_mat cacpp(const arma::sp_mat& objm, unsigned int threads, const double residual_floor);
+RcppExport SEXP quanteda_cacpp(SEXP objmSEXP, SEXP threadsSEXP, SEXP residual_floorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type objm(objmSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type threads(threadsSEXP);
+    Rcpp::traits::input_parameter< const double >::type residual_floor(residual_floorSEXP);
+    rcpp_result_gen = Rcpp::wrap(cacpp(objm, threads, residual_floor));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_ManhattanPara_cpp
 NumericMatrix qatd_ManhattanPara_cpp(const arma::sp_mat& A, const int margin);
 RcppExport SEXP quanteda_qatd_ManhattanPara_cpp(SEXP ASEXP, SEXP marginSEXP) {
