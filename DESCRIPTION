@@ -24,7 +24,7 @@ Imports:
     wordcloud,
     Rcpp,
     RcppParallel,
-    ca,
+    RSpectra,
     stringi,
     fastmatch,
     ggplot2 (>= 2.2.0),
@@ -102,13 +102,13 @@ Collate:
     'settings.R'
     'similarity.R'
     'stopwords.R'
-    'textmodel-NB.R'
-    'textmodel-ca.R'
     'textmodel-generics.R'
     'textmodel-internal.R'
-    'textmodel-wordfish.R'
-    'textmodel-wordscores.R'
-    'textmodel-wordshoal.R'
+    'textmodel_NB.R'
+    'textmodel_ca.R'
+    'textmodel_wordfish.R'
+    'textmodel_wordscores.R'
+    'textmodel_wordshoal.R'
     'textplot_scale1d.R'
     'textplot_wordcloud.R'
     'textplot_xray.R'
