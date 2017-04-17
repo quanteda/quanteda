@@ -246,7 +246,7 @@ get_delimiter <- function(what,
                           delimiter = NULL, 
                           valuetype) {
     if (!is.null(delimiter)) {
-        if (whichin <- (what %in% (whichtypes <- c("tokens", "sentences")))) {
+        if (any(whichin <- ((whichtypes <- c("tokens", "sentences")) %in% what))) {
             warning("delimiter is not used for ", whichtypes[which(whichin)])
             delimiter <- NULL
         }

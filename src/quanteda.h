@@ -168,6 +168,15 @@ namespace quanteda{
         std::reverse(std::begin(spans), std::end(spans));
         return spans;
     }
+
+// These typedefs are used in fcm_mt, ca, wordfish_mt
+#if QUANTEDA_USE_TBB
+    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
+    typedef tbb::concurrent_vector<Triplet> Triplets;
+#else
+    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
+    typedef std::vector<Triplet> Triplets;
+#endif
 }
 
 #endif
