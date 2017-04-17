@@ -20,6 +20,7 @@
 #' @export
 #' @keywords textstat
 #' @examples
+#' \donotrun{
 #' txts <- c("This is software testing: looking for (word) pairs!  
 #'            This [is] a software testing again. For.",
 #'           "Here: this is more Software Testing, looking again for word pairs.")
@@ -47,6 +48,8 @@
 #' seqs2 <- textstat_collocations(toks, "bj", "^([a-z]+)$", valuetype="regex", 
 #'                                case_insensitive = FALSE, min_count = 2, ordered = TRUE)
 #' head(seqs2, 10)
+#' 
+#' }
 textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj"), ...) {
     UseMethod("textstat_collocations")
 }
