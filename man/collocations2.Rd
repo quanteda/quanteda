@@ -62,3 +62,5 @@ McInnes, B T. 2004. "Extending the Log Likelihood Measure to
 \author{
 Kenneth Benoit
 }
+\keyword{collocations}
+\keyword{internal}

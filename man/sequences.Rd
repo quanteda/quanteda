@@ -79,3 +79,4 @@ Blaheta, D., & Johnson, M. (2001).
 Kohei Watanabe
 }
 \keyword{collocations}
+\keyword{internal}
