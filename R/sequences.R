@@ -19,7 +19,7 @@
 #'   "Congress".
 #' @param ordered if true, use the Blaheta-Johnson method that distinguishes 
 #'   between the order of words, and tends to promote rare sequences.
-#' @keywords collocations
+#' @keywords collocations internal
 #' @author Kohei Watanabe
 #' @references Blaheta, D., & Johnson, M. (2001). 
 #'   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised

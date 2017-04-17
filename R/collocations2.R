@@ -39,6 +39,7 @@ NULL
 #'   Minnesota.
 #' @seealso \link{tokens_ngrams}
 #' @author Kenneth Benoit
+#' @keywords collocations internal
 collocations2 <- function(x, method = c("lr", "chi2", "pmi", "dice"), 
                                 features = "*", 
                                 valuetype = c("glob", "regex", "fixed"),
