@@ -78,8 +78,11 @@ textstat_collocations.tokenizedTexts <- function(x, method = c("lr", "chi2", "pm
     method <- match.arg(method)
     textstat_collocations(as.tokens(x), method = method, ...)
 }
+
+check if an object is collocations object
 }
 \examples{
+\dontrun{
 txt <- c("This is software testing: looking for (word) pairs!  
          This [is] a software testing again. For.",
          "Here: this is more Software Testing, looking again for word pairs.")
@@ -99,6 +102,7 @@ collocations(data_char_inaugural[49:57], n = 10)
 collocations(data_char_inaugural[49:57], method = "all", n = 10)
 collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
 collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
+}
 }
 \references{
 McInnes, B T. 2004. "Extending the Log Likelihood Measure to 

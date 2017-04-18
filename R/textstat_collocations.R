@@ -1,12 +1,3 @@
-# @param target the document index (numeric, character or logical) identifying the 
-#   document forming the "target" for computing keyness; all other documents' 
-#   feature frequencies will be combined for use as a reference
-# @param measure (signed) association measure to be used for computing keyness.
-#   Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
-#   \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
-#   \eqn{G} statistic with Yates correction.
-
-
 #' calculate collocation statistics
 #' 
 #' Identify and score collocations from a corpus, character, or tokens object, 
@@ -113,7 +104,7 @@ textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "di
 #' 
 #
 
-
+#' check if an object is collocations object
 #' @rdname collocations
 #' @export
 #' @return \code{is.collocation} returns \code{TRUE} if the object is of class
@@ -133,7 +124,6 @@ is.collocations <- function(x) {
     return(x)
 }
 
-#' 
 #' @export
 #' @method as.tokens collocations
 #' @noRd

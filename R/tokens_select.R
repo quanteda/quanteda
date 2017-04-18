@@ -148,19 +148,6 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
 #'                    the high sense I entertain of this distinguished honor.")
 #' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #'
-#' \dontshow{
-#' ## for tokenized texts 
-#' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
-#'                    execute the functions of its Chief Magistrate.",
-#'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
-#'                    the high sense I entertain of this distinguished honor.")
-#' tokens_remove(tokenize(txt, remove_punct = TRUE), stopwords("english"))
-#' 
-#' ## example for collocations
-#' (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
-#' removeFeatures(myCollocs, stopwords("english"))
-#' removeFeatures(myCollocs, stopwords("english"), pos = 2)
-#' }
 tokens_remove <- function(x, features, valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
     UseMethod("tokens_remove")
