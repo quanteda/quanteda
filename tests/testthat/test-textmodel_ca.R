@@ -24,7 +24,7 @@ test_that("textmodel-ca (rsvd) works as expected as ca::ca", {
 test_that("textmodel-ca works as expected as ca::ca : use mt", {
     skip_if_not_installed("ca")
     wca <- ca::ca(as.matrix(ie2010dfm))
-    wtca <- textmodel_ca(ie2010dfm, threads = 7, sparse = TRUE)
+    wtca <- textmodel_ca(ie2010dfm, threads = 2, sparse = TRUE)
     
     expect_gt(cor(wca$rowdist, wtca$rowdist), 0.99)
     expect_gt(cor(wca$coldist, wtca$coldist), 0.99)
@@ -65,7 +65,7 @@ test_that("textmodel-ca(sparse) works as expected on another dataset", {
     usdfm <- dfm(data_corpus_inaugural, verbose = FALSE)
     skip_if_not_installed("ca")
     wca <- ca::ca(as.matrix(usdfm))
-    wtca <- textmodel_ca(usdfm, threads = 7, sparse = TRUE)
+    wtca <- textmodel_ca(usdfm, threads = 2, sparse = TRUE)
     
     expect_gt(cor(wca$rowdist, wtca$rowdist), 0.99)
     expect_gt(cor(wca$coldist, wtca$coldist), 0.99)
