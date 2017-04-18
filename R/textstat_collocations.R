@@ -37,9 +37,9 @@
 #' @export
 #' @keywords textstat collocations experimental
 #' @examples
-#' txts <- c("quanteda is a package for quantitative text analysis.", 
-#'           "Quantitative text analysis is a rapidly growing field.", 
-#'           "The population is rapidly growing.")
+#' txts <- c("quanteda is a package for quantitative text analysis", 
+#'           "quantitative text analysis is a rapidly growing field", 
+#'           "The population is rapidly growing")
 #' toks <- tokens(txts)
 #' textstat_collocations(toks, method = "lr")
 #' textstat_collocations(toks, method = "lr", min_count = 1)
@@ -58,7 +58,6 @@
 #' # compounding tokens is more efficient when applied to the same tokens object 
 #' toks_comp <- tokens_compound(toks2, seqs)
 textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj"), 
-                                  case_insensitive = TRUE, 
                                   max_size = 3,
                                   min_count = 2, 
                                   ...) {
@@ -68,7 +67,6 @@ textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "b
 #' @noRd
 #' @export
 textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj"), 
-                                         case_insensitive = TRUE, 
                                          max_size = 3,
                                          min_count = 2, 
                                          ...) {

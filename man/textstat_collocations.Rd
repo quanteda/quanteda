@@ -6,7 +6,7 @@
 \title{calculate collocation statistics}
 \usage{
 textstat_collocations(x, method = c("lr", "chi2", "pmi", "dice", "bj"),
-  case_insensitive = TRUE, max_size = 3, min_count = 2, ...)
+  max_size = 3, min_count = 2, ...)
 
 is.collocations(x)
 }
@@ -28,8 +28,6 @@ coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
 \item{\code{"bj"}}{Blaheta and Johnson's method (called through 
 \code{\link{sequences}})} }}
 
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
-
 \item{max_size}{numeric argument representing the maximum length of the collocations
 to be scored.  The maximum size is currently 3 for all
 methods except \code{"bj"}, which has a maximum size of 5.}
@@ -38,6 +36,8 @@ methods except \code{"bj"}, which has a maximum size of 5.}
 
 \item{...}{additional arguments passed to \code{\link{collocations2}} for the
 first four methods, or to  \code{\link{sequences}} for \code{method = "bj"}}
+
+\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 }
 \value{
 \code{is.collocation} returns \code{TRUE} if the object is of class
@@ -71,9 +71,9 @@ This function is under active development, and we aim to improve both its operat
 efficiency in the next release of \pkg{quanteda}.
 }
 \examples{
-txts <- c("quanteda is a package for quantitative text analysis.", 
-          "Quantitative text analysis is a rapidly growing field.", 
-          "The population is rapidly growing.")
+txts <- c("quanteda is a package for quantitative text analysis", 
+          "quantitative text analysis is a rapidly growing field", 
+          "The population is rapidly growing")
 toks <- tokens(txts)
 textstat_collocations(toks, method = "lr")
 textstat_collocations(toks, method = "lr", min_count = 1)
