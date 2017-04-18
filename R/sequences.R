@@ -76,13 +76,12 @@ sequences.tokens <- function(x, features = "*",
     features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
     
     result <- qatd_cpp_sequences(x, features_id, types, min_count, max_size, nested, ordered)
-    class(result) <- c("sequences", 'data.frame')
-    
     result <- result[result$count >= min_count,]
     result$z <- result$lambda / result$sigma
     result$p <- 1 - stats::pnorm(result$z)
     result <- result[order(result$z, decreasing = TRUE),]
     attr(result, 'types') <- types
+    class(result) <- c("sequences", 'data.frame')
     
     return(result)
 }
