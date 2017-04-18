@@ -84,7 +84,7 @@ This function selects features based on their labels.  To select
   \code{\link{trim}}.
 }
 \examples{
-\dontrun{## performance comparisons
+\dontrun{
 data(SOTUCorpus, package = "quantedaData")
 toks <- tokenize(SOTUCorpus, remove_punct = TRUE)
 # toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), remove_punct = TRUE)
@@ -114,7 +114,7 @@ microbenchmark::microbenchmark(
     pre = dfm(selectFeaturesOLD(toks, stopwords("english"), "remove"), verbose = FALSE),
     post = dfm(toks, remove = stopwords("english"), verbose = FALSE),
     times = 5, unit = "relative")
-}
+
 
 ## with simple examples
 toks <- tokenize(c("This is a sentence.", "This is a second sentence."), 
@@ -140,6 +140,8 @@ selectFeatures(toks, stopwords("english"), "keep")
 selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)
 selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)
 selectFeatures(tokenize(data_char_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
+}
+\dontrun{
 toksh <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
 feats <- c("this", "sample", "is")
 # keeping features
@@ -152,11 +154,13 @@ selectFeatures(toksh, feats, selection = "remove")
 selectFeatures(toksh, feats, selection = "remove", padding = TRUE)
 selectFeatures(toksh, feats, selection = "remove", case_insensitive = FALSE)
 selectFeatures(toksh, feats, selection = "remove", padding = TRUE, case_insensitive = FALSE)
+}
  
-
+\dontrun{
 ## example for collocations
 (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
 selectFeatures(myCollocs, stopwords("english"), "remove")
+}
 }
 \seealso{
 \code{\link{removeFeatures}}, \code{\link{dfm_trim}}
