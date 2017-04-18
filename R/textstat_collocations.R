@@ -17,7 +17,6 @@
 #'   coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
 #'   \item{\code{"bj"}}{Blaheta and Johnson's method (called through 
 #'   \code{\link{sequences}})} }
-#' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param max_size numeric argument representing the maximum length of the collocations
 #'   to be scored.  The maximum size is currently 3 for all
 #'   methods except \code{"bj"}, which has a maximum size of 5.
@@ -72,7 +71,7 @@ textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "di
                                          ...) {
     method <- match.arg(method)
     if (method == 'bj') {
-        result <- sequences(x, case_insensitive = case_insensitive, min_count = min_count, max_size = max_size, ...)
+        result <- sequences(x, min_count = min_count, max_size = max_size, ...)
     } else {
         if (missing(max_size)) {
             max_size <- 2:3 
@@ -81,7 +80,7 @@ textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "di
         } else {
             max_size <- 2:max_size
         }
-        result <- collocations2(x, method = method, case_insensitive = case_insensitive, 
+        result <- collocations2(x, method = method,  
                                 size = max_size, min_count = min_count, ...)
     }
     rownames(result) <- seq_len(nrow(result))

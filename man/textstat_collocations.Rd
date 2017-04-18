@@ -36,8 +36,6 @@ methods except \code{"bj"}, which has a maximum size of 5.}
 
 \item{...}{additional arguments passed to \code{\link{collocations2}} for the
 first four methods, or to  \code{\link{sequences}} for \code{method = "bj"}}
-
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 }
 \value{
 \code{is.collocation} returns \code{TRUE} if the object is of class
