@@ -105,7 +105,9 @@ tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "rem
 #' 
 #' # With multiple words
 #' tokens_select(toks, list(c('President', '*')), "keep")
+#' tokens_select(toks, 'President *', "keep") # simplified form
 #' tokens_select(toks, list(c('*', 'crisis')), "keep")
+#' tokens_select(toks, '* crisis', "keep") # simplified form
 
 tokens_select.tokens <- function(x, features, selection = c("keep", "remove"), 
                                  valuetype = c("glob", "regex", "fixed"),
