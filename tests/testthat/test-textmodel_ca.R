@@ -114,3 +114,13 @@ test_that("ca textplot_scale1d method works", {
         "textplot_scale1d for features not implemented for CA models"
     )
 })
+
+test_that("ca sparse = FALSE with threads > 1 issues warning", {
+    camodel <- textmodel_ca(data_dfm_LBGexample)
+    textplot_scale1d(camodel, margin = "document")
+    expect_error(
+        textplot_scale1d(camodel, margin = "features"),
+        "textplot_scale1d for features not implemented for CA models"
+    )
+})
+
