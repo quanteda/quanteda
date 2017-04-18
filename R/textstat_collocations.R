@@ -113,13 +113,13 @@ textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "di
 #
 
 
-#' #' @rdname collocations
-#' #' @export
-#' #' @return \code{is.collocation} returns \code{TRUE} if the object is of class
-#' #'   collocations, \code{FALSE} otherwise.
-#' is.collocations <- function(x) {
-#'     "collocations" %in% class(x)
-#' }
+#' @rdname collocations
+#' @export
+#' @return \code{is.collocation} returns \code{TRUE} if the object is of class
+#'   collocations, \code{FALSE} otherwise.
+is.collocations <- function(x) {
+    "collocations" %in% class(x)
+}
 
 
 #' #' @method "[" collocations
@@ -132,14 +132,14 @@ textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "di
 #'     return(x)
 #' }
 #' 
-#' #' @export
-#' #' @method as.tokens collocations
-#' #' @noRd
-#' as.tokens.collocations <- function(x) {
-#'     toks <- attr(x, 'ids')
-#'     attr(toks, 'types') <- attr(x, 'types')
-#'     class(toks) <- c("tokens", "tokenizedTexts")
-#'     return(toks)
-#' }
+#' @export
+#' @method as.tokens collocations
+#' @noRd
+as.tokens.collocations <- function(x) {
+    toks <- attr(x, 'tokens')
+    attr(toks, 'types') <- attr(x, 'types')
+    class(toks) <- c("tokens", "tokenizedTexts")
+    return(toks)
+}
 
 

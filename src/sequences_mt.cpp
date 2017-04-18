@@ -252,7 +252,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                                           _["lambda"] = as<NumericVector>(wrap(ls)),
                                           _["sigma"] = as<NumericVector>(wrap(ss)),
                                           _["count"] = as<IntegerVector>(wrap(cs)));
-    output_.attr("ids") = as<Tokens>(wrap(seqs));
+    output_.attr("tokens") = as<Tokens>(wrap(seqs));
     return output_;
 }
 
