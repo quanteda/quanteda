@@ -81,6 +81,7 @@ textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "di
     } else {
         result <- quanteda:::collocations2(x, method = method, ...)
     }
+    rownames(result) <- seq_len(nrow(result))
     class(result) <- c("collocations", 'data.frame')
     return(result)
 }
