@@ -173,7 +173,7 @@ sequence2list <- function(sequences) {
     } else if (is.collocations(sequences)) {
         result <- stringi::stri_split_fixed(sequences$collocation, " ")
     } else if (is.character(sequences)) {
-        result <- quanteda:::tokens_word(sequences, "fastestword")
+        result <- tokens_word(sequences, "fastestword")
     } else if (is.tokens(sequences)) {
         result <- as.list(sequences)
     } else if (is.list(sequences)) {
