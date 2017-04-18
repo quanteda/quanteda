@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -85,7 +80,7 @@
 one-dimensional document positions using conditional maximum likelihood.</p>
     
 
-    <pre><span class='fu'>textmodel_wordfish</span>(<span class='no'>data</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>Inf</span>, <span class='fl'>Inf</span>, <span class='fl'>3</span>, <span class='fl'>1</span>),
+    <pre><span class='fu'>textmodel_wordfish</span>(<span class='no'>x</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>Inf</span>, <span class='fl'>Inf</span>, <span class='fl'>3</span>, <span class='fl'>1</span>),
   <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1e-06</span>, <span class='fl'>1e-08</span>), <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"poisson"</span>, <span class='st'>"quasipoisson"</span>),
   <span class='kw'>dispersion_level</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"feature"</span>, <span class='st'>"overall"</span>), <span class='kw'>dispersion_floor</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>threads</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"threads"</span>), <span class='kw'>abs_err</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -93,7 +88,7 @@ one-dimensional document positions using conditional maximum likelihood.</p>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>data</dt>
+      <dt>x</dt>
       <dd>the dfm on which the model will be fit</dd>
       <dt>dir</dt>
       <dd>set global identification by specifying the indexes for a pair of 
@@ -164,7 +159,7 @@ calculating the svds, only applies when <code>sparse = TRUE</code></dd>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>textmodel_wordfish</span>(<span class='no'>data_dfm_LBGexample</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>5</span>))</div><div class='output co'>#&gt; Fitted wordfish model:
 #&gt; Call:
-#&gt; 	textmodel_wordfish(data = data_dfm_LBGexample, dir = c(1, 5))
+#&gt; 	textmodel_wordfish(x = data_dfm_LBGexample, dir = c(1, 5))
 #&gt; 
 #&gt; Estimated document positions:
 #&gt; 

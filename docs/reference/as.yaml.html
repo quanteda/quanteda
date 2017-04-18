@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>print a dist_selection object — print.dist_selection • quanteda</title>
+<title>convert quanteda dictionary objects to the YAML format — as.yaml • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -72,22 +72,45 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>print a dist_selection object</h1>
+    <h1>convert quanteda dictionary objects to the YAML format</h1>
     </div>
 
     
-    <p>Print method for a dist_selection object, to make it appear as a data.frame.</p>
+    <p>Converts a <span class="pkg">quanteda</span> dictionary object constructed by the 
+<a href='dictionary.html'>dictionary</a> function into the YAML format. The YAML 
+files can be editied in text editors and imported into 
+<span class="pkg">quanteda</span> again.</p>
     
 
-    <pre><span class='co'># S3 method for dist_selection</span>
-<span class='fu'>print</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
-        
+    <pre><span class='fu'>as.yaml</span>(<span class='no'>x</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <dl class="dl-horizontal">
+      <dt>x</dt>
+      <dd>dictionary object</dd>
+    </dl>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p><code>as.yaml</code> returns a dictionary in the YAML format</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
+<span class='co'># dict &lt;- dictionary(file = '/home/kohei/Documents/Dictionary/LaverGarry.txt', format = 'wordstat')</span>
+<span class='co'># yaml &lt;- as.yaml(dict)</span>
+<span class='co'># cat(yaml, file = '/home/kohei/Documents/Dictionary/LaverGarry.yaml')</span>
+<span class='co'>## ---------------------------------------------</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -96,6 +96,7 @@ reference:
   contents:
     - dictionary
     - is.dictionary
+    - as.yaml
 - title: Phrase discovery functions
   desc: Functions for exploring and detecting keywords and phrases.
   contents:

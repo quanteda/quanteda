@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -157,8 +152,8 @@ dictionary.</p>
 #&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         0          0       1        0       0
-#&gt;   text2         0          0       1        0       0</div><div class='input'>
+#&gt;   text1         1          1       1        0       0
+#&gt;   text2         0          0       1        0       2</div><div class='input'>
 <span class='co'># regex v. glob format: note that "united_states" is a regex match for "tax*"</span>
 <span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
 #&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
@@ -181,8 +176,8 @@ dictionary.</p>
 #&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         0          0       0        0       0
-#&gt;   text2         0          0       0        0       0</div></pre>
+#&gt;   text1         1          1       0        0       0
+#&gt;   text2         0          0       0        0       2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

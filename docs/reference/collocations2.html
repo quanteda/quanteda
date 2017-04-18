@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>detect collocations from text — collocations • quanteda</title>
+<title>detect collocations from text — collocations2 • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -83,9 +83,9 @@ default (<code>spanPunct = FALSE</code>)  as adjacent and hence are not eligible
 be collocations.</p>
     
 
-    <pre><span class='fu'>collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lr"</span>, <span class='st'>"chi2"</span>, <span class='st'>"pmi"</span>, <span class='st'>"dice"</span>, <span class='st'>"all"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"dontspan"</span>, <span class='st'>"ignore"</span>,
-  <span class='st'>"include"</span>), <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>collocations2</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lr"</span>, <span class='st'>"chi2"</span>, <span class='st'>"pmi"</span>, <span class='st'>"dice"</span>), <span class='kw'>features</span> <span class='kw'>=</span> <span class='st'>"*"</span>,
+  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -106,26 +106,20 @@ score, computed as log \(n_{11}/m_{11}\)</dd> <dt><code>&quot;dice&quot;</code><
 coefficient, computed as \(n_{11}/n_{1.} + n_{.1}\)</dd> 
 <dt><code>&quot;all&quot;</code></dt><dd>returns all of the above</dd> </dl>
 </dd>
+      <dt>features</dt>
+      <dd>features to be selected for collocations</dd>
+      <dt>valuetype</dt>
+      <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
+&quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions;
+or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</dd>
+      <dt>case_insensitive</dt>
+      <dd>ignore the case when matching features if <code>TRUE</code></dd>
+      <dt>min_count</dt>
+      <dd>exclude collocations below this count</dd>
       <dt>size</dt>
       <dd>length of the collocation.  Only bigram (<code>n=2</code>) and trigram 
 (<code>n=3</code>) collocations are currently implemented.  Can be <code>c(2,3)</code>
 (or <code>2:3</code>) to return both bi- and tri-gram collocations.</dd>
-      <dt>n</dt>
-      <dd>the number of collocations to return, sorted in descending order of 
-the requested statistic, or \(G^2\) if none is specified.</dd>
-      <dt>tolower</dt>
-      <dd>convert collocations to lower case if <code>TRUE</code> (default)</dd>
-      <dt>punctuation</dt>
-      <dd>how to handle tokens separated by punctuation characters.  Options are:
-<dl class='dl-horizontal'>
-<dt><code>dontspan</code></dt><dd>do not form collocations from tokens separated by punctuation characters (default)</dd>
-<dt><code>ignore</code></dt><dd>ignore punctuation characters when forming collocations, meaning that collocations will 
-include those separated by punctuation characters in the text.  The punctuation characters themselves are not
-returned.</dd>
-<dt><code>include</code></dt><dd>do not treat punctuation characters specially, meaning that collocations will include
-punctuation characters as tokens</dd>
-</dl>
-</dd>
       <dt>...</dt>
       <dd>additional parameters passed to <code><a href='tokens.html'>tokens</a></code></dd>
     </dl>
@@ -146,28 +140,6 @@ punctuation characters as tokens</dd>
     <p><a href='tokens_ngrams.html'>tokens_ngrams</a></p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># txt &lt;- c("This is software testing: looking for (word) pairs!  </span>
-<span class='co'>#          This [is] a software testing again. For.",</span>
-<span class='co'>#          "Here: this is more Software Testing, looking again for word pairs.")</span>
-<span class='co'># collocations(txt, punctuation = "dontspan") # default</span>
-<span class='co'># collocations(txt, punctuation = "dontspan", remove_punct = TRUE)  # includes "testing looking"</span>
-<span class='co'># collocations(txt, punctuation = "ignore", remove_punct = TRUE)    # same as previous </span>
-<span class='co'># collocations(txt, punctuation = "include", remove_punct = FALSE)  # keep punctuation as tokens</span>
-<span class='co'># </span>
-<span class='co'># collocations(txt, size = 2:3)</span>
-<span class='co'># removeFeatures(collocations(txt, size = 2:3), stopwords("english"))</span>
-<span class='co'># </span>
-<span class='co'># collocations("@textasdata We really, really love the #quanteda package - thanks!!")</span>
-<span class='co'># collocations("@textasdata We really, really love the #quanteda package - thanks!!",</span>
-<span class='co'>#               remove_twitter = TRUE)</span>
-<span class='co'># </span>
-<span class='co'># collocations(data_char_inaugural[49:57], n = 10)</span>
-<span class='co'># collocations(data_char_inaugural[49:57], method = "all", n = 10)</span>
-<span class='co'># collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)</span>
-<span class='co'># collocations(corpus_subset(data_corpus_inaugural, Year&gt;1980), method = "pmi", size = 3, n = 10)</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -179,9 +151,7 @@ punctuation characters as tokens</dd>
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
     <h2>Author</h2>
     

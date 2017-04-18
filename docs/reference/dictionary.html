@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -90,7 +85,7 @@ all currently available dictionary files supplied as part of the LIWC 2001,
     
 
     <pre><span class='fu'>dictionary</span>(<span class='no'>...</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
-  <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
+  <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"auto"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -116,7 +111,7 @@ by Lexicoder</dd> <dt><code>&quot;YAML&quot;</code></dt><dd>the standard YAML fo
       <dd>the character in between multi-word dictionary values. 
 This defaults to <code>&quot;_&quot;</code> except LIWC-formatted files, which defaults to 
 a single space <code>&quot; &quot;</code>.</dd>
-      <dt>toLower</dt>
+      <dt>tolower</dt>
       <dd>if <code>TRUE</code>, convert all dictionary values to lowercase</dd>
       <dt>encoding</dt>
       <dd>additional optional encoding value for reading in imported 

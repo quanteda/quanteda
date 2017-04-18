@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -86,7 +81,13 @@
     <p>Internal function documentation for textmodel objects.</p>
     
 
-    <pre><span class='co'># S3 method for textmodel_wordfish_fitted</span>
+    <pre><span class='co'># S4 method for textmodel_ca_fitted</span>
+<span class='fu'>coef</span>(<span class='no'>object</span>, <span class='kw'>doc_dim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>feat_dim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for textmodel_ca_fitted</span>
+<span class='fu'>coefficients</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for textmodel_wordfish_fitted</span>
 <span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>30L</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for textmodel_wordfish_fitted</span>
@@ -138,14 +139,17 @@
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
+      <dt>object</dt>
+      <dd>wordfish fitted or predicted object to be shown</dd>
+      <dt>doc_dim, feat_dim</dt>
+      <dd>the document and feature dimension scores to be 
+extracted as coefficients</dd>
+      <dt>...</dt>
+      <dd>additional arguments passed to <code>print</code></dd>
       <dt>x</dt>
       <dd>for print method, the object to be printed</dd>
       <dt>n</dt>
       <dd>max rows of dfm to print</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to <code>print</code></dd>
-      <dt>object</dt>
-      <dd>wordfish fitted or predicted object to be shown</dd>
       <dt>newdata</dt>
       <dd>dfm on which prediction should be made</dd>
       <dt>rescaling</dt>

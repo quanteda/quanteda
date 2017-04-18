@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -140,20 +135,20 @@ uppercase to distinguish them from other features</dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
-<span class='fu'>head</span>(<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>toks</span>, <span class='st'>"united states"</span>))</div><div class='output co'>#&gt;                                                                             
-#&gt; [1789-Washington, 436:437]            of the people of the | United States |
-#&gt; [1789-Washington, 532:533]          more than those of the | United States |
-#&gt; [1797-Adams, 525:526]          saw the Constitution of the | United States |
-#&gt; [1797-Adams, 1721:1722]         to the Constitution of the | United States |
-#&gt; [1797-Adams, 2487:2488]    support the Constitution of the | United States |
-#&gt; [1805-Jefferson, 441:442]        sees a taxgatherer of the | United States |
-#&gt;                                                                 
-#&gt; [1789-Washington, 436:437] a Government instituted by themselves
-#&gt; [1789-Washington, 532:533] . Every step by which                
-#&gt; [1797-Adams, 525:526]      in a foreign country.                
-#&gt; [1797-Adams, 1721:1722]    , and a conscientious determination  
-#&gt; [1797-Adams, 2487:2488]    , I entertain no doubt               
-#&gt; [1805-Jefferson, 441:442]  ? These contributions enable us      </div><div class='input'><span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>))
+<span class='fu'>head</span>(<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>toks</span>, <span class='st'>"united states"</span>))</div><div class='output co'>#&gt;                                                                              
+#&gt;  [1789-Washington, 436:437]            of the people of the | United States |
+#&gt;  [1789-Washington, 532:533]          more than those of the | United States |
+#&gt;       [1797-Adams, 525:526]     saw the Constitution of the | United States |
+#&gt;     [1797-Adams, 1721:1722]      to the Constitution of the | United States |
+#&gt;     [1797-Adams, 2487:2488] support the Constitution of the | United States |
+#&gt;   [1805-Jefferson, 441:442]       sees a taxgatherer of the | United States |
+#&gt;                                       
+#&gt;  a Government instituted by themselves
+#&gt;  . Every step by which                
+#&gt;  in a foreign country.                
+#&gt;  , and a conscientious determination  
+#&gt;  , I entertain no doubt               
+#&gt;  ? These contributions enable us      </div><div class='input'><span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>))
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'>applyDictionary</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;applyDictionary.tokens&#39; is deprecated.</span>
 #&gt; <span class='warning'>Use &#39;tokens_lookup&#39; instead.</span>
 #&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='input'><span class='no'>toks2</span></div><div class='output co'>#&gt; tokens from 58 documents.

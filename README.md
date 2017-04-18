@@ -137,16 +137,16 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Mon Apr  3 19:19:17 2017
+## Created: Tue Apr 18 17:25:50 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
 kwic(uk2010immigCorpus, "deport", 3)
-##                                                                    
-## [BNP, 159]         The BNP will | deport | all foreigners convicted
-## [BNP, 1970]                . 2. | Deport | all illegal immigrants  
-## [BNP, 1976] immigrants We shall | deport | all illegal immigrants  
-## [BNP, 2621]  Criminals We shall | deport | all criminal entrants
+##                                                                     
+##   [BNP, 159]        The BNP will | deport | all foreigners convicted
+##  [BNP, 1970]                . 2. | Deport | all illegal immigrants  
+##  [BNP, 1976] immigrants We shall | deport | all illegal immigrants  
+##  [BNP, 2621]  Criminals We shall | deport | all criminal entrants
 
 # create a dfm, removing stopwords
 mydfm <- dfm(uk2010immigCorpus, remove = c("will", stopwords("english")),

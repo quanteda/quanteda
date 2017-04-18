@@ -38,14 +38,7 @@
   <a href="../../news/index.html">News</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -111,10 +104,10 @@ metadata.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_
 <p>To trim the extra text at the end of the Gutenburg version of the text, we can use the keyword-in-context (<code>kwic</code>) function to view the contexts around the word ‘orphan’, which we know should occur at the end of the book.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># verify that "orphan" is the end of the novel</span>
 <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"orphan"</span>)</code></pre></div>
-<pre><code>##                                                            
-## [Moby_Dick, 260460] children, only found another | orphan |
-##                                                 
-## [Moby_Dick, 260460] . End of Project Gutenberg's</code></pre>
+<pre><code>##                                                             
+##  [Moby_Dick, 260460] children, only found another | orphan |
+##                              
+##  . End of Project Gutenberg's</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># extract the novel -- a better way</span>
 novel.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_char_mobydick, endMetadataIndex, 
                      <span class="kw">regexec</span>(<span class="st">"End of Project Gutenberg's Moby Dick."</span>, data_char_mobydick)[[<span class="dv">1</span>]]-<span class="dv">1</span>)</code></pre></div>
@@ -269,13 +262,20 @@ mobyDfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="s
 <html><body><a href="#identifying-chapter-breaks" class="anchor"> </a></body></html>Identifying chapter breaks</h2>
 <p>Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a <code>corpus</code> object to hold the texts. Initially, we make a single-document corpus, and then use the <code>char_segment</code> function to split this by the string which specifies the chapter breaks.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.v, <span class="st">'chapter'</span>))</code></pre></div>
-<pre><code>##                                                                           
-## [Moby_Dick, 1]                             | CHAPTER | 1. Loomings. Call  
-## [Moby_Dick, 2621]         hill in the air. | CHAPTER | 2. The Carpet-     
-## [Moby_Dick, 4355]         Spouter" may be. | CHAPTER | 3. The Spouter-    
-## [Moby_Dick, 11416]      better in my life. | CHAPTER | 4. The Counterpane.
-## [Moby_Dick, 13363] like a marshal's baton. | CHAPTER | 5. Breakfast. I    
-## [Moby_Dick, 14249]       out for a stroll. | CHAPTER | 6. The Street.</code></pre>
+<pre><code>##                                                        
+##      [Moby_Dick, 1]                         | CHAPTER |
+##   [Moby_Dick, 2621]        hill in the air. | CHAPTER |
+##   [Moby_Dick, 4355]        Spouter" may be. | CHAPTER |
+##  [Moby_Dick, 11416]      better in my life. | CHAPTER |
+##  [Moby_Dick, 13363] like a marshal's baton. | CHAPTER |
+##  [Moby_Dick, 14249]       out for a stroll. | CHAPTER |
+##                     
+##  1. Loomings. Call  
+##  2. The Carpet-     
+##  3. The Spouter-    
+##  4. The Counterpane.
+##  5. Breakfast. I    
+##  6. The Street.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chaptersVec &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw"><a href="../../reference/corpus_segment.html">char_segment</a></span>(novel.v, <span class="dt">what =</span> <span class="st">'other'</span>, <span class="dt">delimiter =</span> <span class="st">"CHAPTER</span><span class="ch">\\</span><span class="st">s</span><span class="ch">\\</span><span class="st">d"</span>, <span class="dt">perl =</span> <span class="ot">TRUE</span>))
 chaptersLowerVec &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>(chaptersVec)
 chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(chaptersVec)</code></pre></div>

@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -94,7 +89,7 @@ delimiters.)</p>
 <span class='fu'>is.kwic</span>(<span class='no'>x</span>)
 
 <span class='co'># S3 method for kwic</span>
-<span class='fu'><a href='as.tokens.html'>as.tokens</a></span>(<span class='no'>x</span>)</pre>
+<span class='fu'><a href='as.tokens.collocations.html'>as.tokens</a></span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -127,55 +122,62 @@ object types</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_char_inaugural</span>, <span class='st'>"secure*"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>))</div><div class='output co'>#&gt;                                                                      
-#&gt; [1797-Adams, 479]       welfare, and | secure  | the blessings of    
-#&gt; [1797-Adams, 1517]      nations, and | secured | immortal glory with 
-#&gt; [1805-Jefferson, 2368]   , and shall | secure  | to you the          
-#&gt; [1817-Monroe, 1765]    cherished. To | secure  | us against these    
-#&gt; [1817-Monroe, 1825]    defense as to | secure  | our cities and      
-#&gt; [1817-Monroe, 3026]         I can to | secure  | economy and fidelity</div><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_char_inaugural</span>, <span class='st'>"secur"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt;                                                                              
-#&gt; [1789-Washington, 1499] government for the | security | of their union       
-#&gt; [1797-Adams, 479]             welfare, and |  secure  | the blessings of     
-#&gt; [1797-Adams, 1517]            nations, and | secured  | immortal glory with  
-#&gt; [1805-Jefferson, 2368]         , and shall |  secure  | to you the           
-#&gt; [1813-Madison, 321]           seas and the | security | of an important      
-#&gt; [1817-Monroe, 1620]          may form some | security | against these dangers</div><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_char_inaugural</span>, <span class='st'>"security"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>))</div><div class='output co'>#&gt;                                                                                
-#&gt; [1789-Washington, 1499] government for the | security | of their union         
-#&gt; [1813-Madison, 321]           seas and the | security | of an important        
-#&gt; [1817-Monroe, 1620]          may form some | security | against these dangers  
-#&gt; [1817-Monroe, 3444]               and as a | security | against foreign dangers
-#&gt; [1825-Adams, 1373]           that the best | security | for the beneficence    
-#&gt; [1825-Adams, 1445]        that the firmest | security | of peace is            </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_char_inaugural</span>, <span class='st'>"secure*"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>))</div><div class='output co'>#&gt;                                                                       
+#&gt;       [1797-Adams, 479]  welfare, and | secure  | the blessings of    
+#&gt;      [1797-Adams, 1517]  nations, and | secured | immortal glory with 
+#&gt;  [1805-Jefferson, 2368]   , and shall | secure  | to you the          
+#&gt;     [1817-Monroe, 1765] cherished. To | secure  | us against these    
+#&gt;     [1817-Monroe, 1825] defense as to | secure  | our cities and      
+#&gt;     [1817-Monroe, 3026]      I can to | secure  | economy and fidelity</div><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_char_inaugural</span>, <span class='st'>"secur"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt;                                                                               
+#&gt;  [1789-Washington, 1499] government for the | security | of their union       
+#&gt;        [1797-Adams, 479]       welfare, and |  secure  | the blessings of     
+#&gt;       [1797-Adams, 1517]       nations, and | secured  | immortal glory with  
+#&gt;   [1805-Jefferson, 2368]        , and shall |  secure  | to you the           
+#&gt;      [1813-Madison, 321]       seas and the | security | of an important      
+#&gt;      [1817-Monroe, 1620]      may form some | security | against these dangers</div><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_char_inaugural</span>, <span class='st'>"security"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>))</div><div class='output co'>#&gt;                                                         
+#&gt;  [1789-Washington, 1499] government for the | security |
+#&gt;      [1813-Madison, 321]       seas and the | security |
+#&gt;      [1817-Monroe, 1620]      may form some | security |
+#&gt;      [1817-Monroe, 3444]           and as a | security |
+#&gt;       [1825-Adams, 1373]      that the best | security |
+#&gt;       [1825-Adams, 1445]   that the firmest | security |
+#&gt;                         
+#&gt;  of their union         
+#&gt;  of an important        
+#&gt;  against these dangers  
+#&gt;  against foreign dangers
+#&gt;  for the beneficence    
+#&gt;  of peace is            </div><div class='input'>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_char_inaugural</span>)
-<span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"war against"</span>)</div><div class='output co'>#&gt;                                                                        
-#&gt; [1857-Buchanan, 2933:2934]  advantage of the fortune of | war against |
-#&gt; [1901-McKinley, 2284:2285]          . We are not waging | war against |
-#&gt; [1901-McKinley, 2299:2300]   portion of them are making | war against |
-#&gt; [1901-McKinley, 2413:2414]     used when those who make | war against |
-#&gt; [1933-Roosevelt, 1851:1852]   Executive power to wage a | war against |
-#&gt;                                                              
-#&gt; [1857-Buchanan, 2933:2934]  a sister republic, we            
-#&gt; [1901-McKinley, 2284:2285]  the inhabitants of the Philippine
-#&gt; [1901-McKinley, 2299:2300]  the United States. By            
-#&gt; [1901-McKinley, 2413:2414]  us shall make it no              
-#&gt; [1933-Roosevelt, 1851:1852] the emergency, as great          </div><div class='input'><span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"war against"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)</div><div class='output co'>#&gt;                                                                                
-#&gt; [1801-Jefferson, 1277:1278] domestic concerns and the surest | bulwarks against
-#&gt; [1845-Polk, 692:693]        domestic concerns and the surest | bulwark against 
-#&gt; [1857-Buchanan, 2933:2934]       advantage of the fortune of |   war against   
-#&gt; [1901-McKinley, 2284:2285]               . We are not waging |   war against   
-#&gt; [1901-McKinley, 2299:2300]        portion of them are making |   war against   
-#&gt; [1901-McKinley, 2413:2414]          used when those who make |   war against   
-#&gt; [1933-Roosevelt, 1851:1852]        Executive power to wage a |   war against   
-#&gt; [1977-Carter, 927:928]                 and we will fight our |   wars against  
-#&gt;                                                                          
-#&gt; [1801-Jefferson, 1277:1278] | antirepublican tendencies; the preservation
-#&gt; [1845-Polk, 692:693]        | antirepublican tendencies,&quot; and            
-#&gt; [1857-Buchanan, 2933:2934]  | a sister republic, we                      
-#&gt; [1901-McKinley, 2284:2285]  | the inhabitants of the Philippine          
-#&gt; [1901-McKinley, 2299:2300]  | the United States. By                      
-#&gt; [1901-McKinley, 2413:2414]  | us shall make it no                        
-#&gt; [1933-Roosevelt, 1851:1852] | the emergency, as great                    
-#&gt; [1977-Carter, 927:928]      | poverty, ignorance, and                    </div><div class='input'>
+<span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"war against"</span>)</div><div class='output co'>#&gt;                                                                         
+#&gt;   [1857-Buchanan, 2933:2934] advantage of the fortune of | war against |
+#&gt;   [1901-McKinley, 2284:2285]         . We are not waging | war against |
+#&gt;   [1901-McKinley, 2299:2300]  portion of them are making | war against |
+#&gt;   [1901-McKinley, 2413:2414]    used when those who make | war against |
+#&gt;  [1933-Roosevelt, 1851:1852]   Executive power to wage a | war against |
+#&gt;                                   
+#&gt;  a sister republic, we            
+#&gt;  the inhabitants of the Philippine
+#&gt;  the United States. By            
+#&gt;  us shall make it no              
+#&gt;  the emergency, as great          </div><div class='input'><span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"war against"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)</div><div class='output co'>#&gt;                                                                
+#&gt;  [1801-Jefferson, 1277:1278] domestic concerns and the surest |
+#&gt;         [1845-Polk, 692:693] domestic concerns and the surest |
+#&gt;   [1857-Buchanan, 2933:2934]      advantage of the fortune of |
+#&gt;   [1901-McKinley, 2284:2285]              . We are not waging |
+#&gt;   [1901-McKinley, 2299:2300]       portion of them are making |
+#&gt;   [1901-McKinley, 2413:2414]         used when those who make |
+#&gt;  [1933-Roosevelt, 1851:1852]        Executive power to wage a |
+#&gt;       [1977-Carter, 927:928]            and we will fight our |
+#&gt;                                                                
+#&gt;  bulwarks against | antirepublican tendencies; the preservation
+#&gt;  bulwark against  | antirepublican tendencies,&quot; and            
+#&gt;    war against    | a sister republic, we                      
+#&gt;    war against    | the inhabitants of the Philippine          
+#&gt;    war against    | the United States. By                      
+#&gt;    war against    | us shall make it no                        
+#&gt;    war against    | the emergency, as great                    
+#&gt;    wars against   | poverty, ignorance, and                    </div><div class='input'>
 <span class='no'>mykwic</span> <span class='kw'>&lt;-</span> <span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"provident*"</span>)
 <span class='fu'>is.kwic</span>(<span class='no'>mykwic</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is.kwic</span>(<span class='st'>"Not a kwic"</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>

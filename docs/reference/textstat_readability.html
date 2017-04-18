@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -94,7 +89,8 @@ indexes.</p>
   <span class='st'>"LIW"</span>, <span class='st'>"nWS"</span>, <span class='st'>"nWS.2"</span>, <span class='st'>"nWS.3"</span>, <span class='st'>"nWS.4"</span>, <span class='st'>"RIX"</span>, <span class='st'>"Scrabble"</span>, <span class='st'>"SMOG"</span>, <span class='st'>"SMOG.C"</span>,
   <span class='st'>"SMOG.simple"</span>,      <span class='st'>"SMOG.de"</span>, <span class='st'>"Spache"</span>, <span class='st'>"Spache.old"</span>, <span class='st'>"Strain"</span>,
   <span class='st'>"Traenkle.Bailer"</span>, <span class='st'>"Traenkle.Bailer.2"</span>, <span class='st'>"Wheeler.Smith"</span>, <span class='st'>"meanSentenceLength"</span>,
-  <span class='st'>"meanWordSyllables"</span>), <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+  <span class='st'>"meanWordSyllables"</span>), <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>min_sentence_length</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>max_sentence_length</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -107,6 +103,15 @@ indexes.</p>
 separate terms, for purposes of computing word lengths, e.g.
 &quot;decision-making&quot; as two terms of lengths 8 and 6 characters respectively,
 rather than as a single word of 15 characters</dd>
+      <dt>min_sentence_length, max_sentence_length</dt>
+      <dd>set the minimum and maximum 
+sentence lengths (in tokens, excluding punctuation) to include in the
+computation of readability.  This makes it easy to exclude &quot;sentences&quot; that
+may not really be sentences, such as section titles, table elements, and 
+other cruft that might be in the texts following conversion.
+
+For finer-grained control, consider filtering sentences prior first, 
+including through pattern-matching, using <code><a href='corpus_trimsentences.html'>corpus_trimsentences</a></code>.</dd>
       <dt>drop</dt>
       <dd>if <code>TRUE</code>, the result is returned as a numeric vector if
 only a single measure is requested; otherwise, a data.frame is returned
@@ -166,7 +171,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK               -0.72               0.72               0.72
 #&gt; Danielson.Bryan              -0.85               0.85               0.85
 #&gt; Danielson.Bryan.2             0.81              -0.81              -0.81
-#&gt; Dickes.Steiwer                0.24              -0.24              -0.24
+#&gt; Dickes.Steiwer                0.23              -0.23              -0.23
 #&gt; DRP                          -0.73               0.73               0.73
 #&gt; ELF                          -0.81               0.81               0.81
 #&gt; Farr.Jenkins.Paterson         0.73              -0.73              -0.73
@@ -202,9 +207,9 @@ with each column consisting of a requested measure.</dd>
 #&gt; Bormuth.GP                        -0.04          -0.34  0.93  0.90
 #&gt; Coleman                            0.89           0.14 -0.48 -0.61
 #&gt; Coleman.C2                         0.79           0.25 -0.69 -0.79
-#&gt; Coleman.Liau                       0.81           0.24 -0.73 -0.81
-#&gt; Coleman.Liau.grade                -0.81          -0.24  0.73  0.81
-#&gt; Coleman.Liau.short                -0.81          -0.24  0.73  0.81
+#&gt; Coleman.Liau                       0.81           0.23 -0.73 -0.81
+#&gt; Coleman.Liau.grade                -0.81          -0.23  0.73  0.81
+#&gt; Coleman.Liau.short                -0.81          -0.23  0.73  0.81
 #&gt; Dale.Chall                         0.18           0.41 -1.00 -0.98
 #&gt; Dale.Chall.old                    -0.18          -0.41  1.00  0.98
 #&gt; Dale.Chall.PSK                    -0.18          -0.41  1.00  0.98
@@ -371,7 +376,7 @@ with each column consisting of a requested measure.</dd>
 #&gt;      1969-Nixon      1973-Nixon     1977-Carter     1981-Reagan     1985-Reagan 
 #&gt;        9.235663       12.288965       11.670742        9.798608       10.420294 
 #&gt;       1989-Bush    1993-Clinton    1997-Clinton       2001-Bush       2005-Bush 
-#&gt;        7.147029       10.374204        9.828863        8.918201       10.954613 
+#&gt;        7.147029       10.374204        9.828863        8.918201       11.036277 
 #&gt;      2009-Obama      2013-Obama      2017-Trump 
 #&gt;       10.229426       11.734767        9.163084 </div><div class='input'><span class='no'>inaugReadability</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"all"</span>)
 <span class='fu'>round</span>(<span class='fu'>cor</span>(<span class='no'>inaugReadability</span>), <span class='fl'>2</span>)</div><div class='output co'>#&gt;                         ARI ARI.simple Bormuth Bormuth.GP Coleman Coleman.C2
@@ -411,7 +416,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK               -0.72               0.72               0.72
 #&gt; Danielson.Bryan              -0.85               0.85               0.85
 #&gt; Danielson.Bryan.2             0.81              -0.81              -0.81
-#&gt; Dickes.Steiwer                0.24              -0.24              -0.24
+#&gt; Dickes.Steiwer                0.23              -0.23              -0.23
 #&gt; DRP                          -0.73               0.73               0.73
 #&gt; ELF                          -0.81               0.81               0.81
 #&gt; Farr.Jenkins.Paterson         0.73              -0.73              -0.73
@@ -447,9 +452,9 @@ with each column consisting of a requested measure.</dd>
 #&gt; Bormuth.GP                        -0.04          -0.34  0.93  0.90
 #&gt; Coleman                            0.89           0.14 -0.48 -0.61
 #&gt; Coleman.C2                         0.79           0.25 -0.69 -0.79
-#&gt; Coleman.Liau                       0.81           0.24 -0.73 -0.81
-#&gt; Coleman.Liau.grade                -0.81          -0.24  0.73  0.81
-#&gt; Coleman.Liau.short                -0.81          -0.24  0.73  0.81
+#&gt; Coleman.Liau                       0.81           0.23 -0.73 -0.81
+#&gt; Coleman.Liau.grade                -0.81          -0.23  0.73  0.81
+#&gt; Coleman.Liau.short                -0.81          -0.23  0.73  0.81
 #&gt; Dale.Chall                         0.18           0.41 -1.00 -0.98
 #&gt; Dale.Chall.old                    -0.18          -0.41  1.00  0.98
 #&gt; Dale.Chall.PSK                    -0.18          -0.41  1.00  0.98

@@ -38,14 +38,7 @@
   <a href="news/index.html">News</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -185,16 +178,16 @@ uk2010immigCorpus
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/* on x86_64 by kbenoit
-## Created: Mon Apr  3 19:19:21 2017
+## Created: Tue Apr 18 17:25:52 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 <span class="co"># key words in context for "deport", 3 words of context</span>
 <span class="kw"><a href="reference/kwic.html">kwic</a></span>(uk2010immigCorpus, <span class="st">"deport"</span>, <span class="dv">3</span>)
-##                                                                    
-## [BNP, 159]         The BNP will | deport | all foreigners convicted
-## [BNP, 1970]                . 2. | Deport | all illegal immigrants  
-## [BNP, 1976] immigrants We shall | deport | all illegal immigrants  
-## [BNP, 2621]  Criminals We shall | deport | all criminal entrants
+##                                                                     
+##   [BNP, 159]        The BNP will | deport | all foreigners convicted
+##  [BNP, 1970]                . 2. | Deport | all illegal immigrants  
+##  [BNP, 1976] immigrants We shall | deport | all illegal immigrants  
+##  [BNP, 2621]  Criminals We shall | deport | all criminal entrants
 
 <span class="co"># create a dfm, removing stopwords</span>
 mydfm &lt;-<span class="st"> </span><span class="kw"><a href="reference/dfm.html">dfm</a></span>(uk2010immigCorpus, <span class="dt">remove =</span> <span class="kw">c</span>(<span class="st">"will"</span>, <span class="kw"><a href="reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)),
@@ -237,8 +230,6 @@ mydfm
     <h2>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cran.r-project.org/package=quanteda">https://​cran.r-project.org/​package=quanteda</a>
-</li>
-<li>Browse source code at <br><a href="http://github.com/kbenoit/quanteda">http://​github.com/​kbenoit/​quanteda</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/kbenoit/quanteda/issues">https://​github.com/​kbenoit/​quanteda/​issues</a>
 </li>

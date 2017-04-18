@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>print a dist_selection object — print.dist_selection • quanteda</title>
+<title>internal functions for dfm objects — dfm-internal • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -72,22 +72,41 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>print a dist_selection object</h1>
+    <h1>internal functions for dfm objects</h1>
     </div>
 
     
-    <p>Print method for a dist_selection object, to make it appear as a data.frame.</p>
+    <p>Internal function documentation for <a href='dfm.html'>dfm</a> objects.</p>
+
+    <p>The <code>Compare</code> methods enable relational operators to be use with dfm. 
+Relational operations on a dfm with a numeric will return a
+<a href='http://www.rdocumentation.org/packages/Matrix/topics/dgCMatrix-class'>dgCMatrix-class</a> object.</p>
     
 
-    <pre><span class='co'># S3 method for dist_selection</span>
-<span class='fu'>print</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
-        
+    <pre><span class='co'># S4 method for dfmSparse,numeric</span>
+<span class='fu'>Compare</span>(<span class='no'>e1</span>, <span class='no'>e2</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <dl class="dl-horizontal">
+      <dt>e1</dt>
+      <dd>a <a href='dfm.html'>dfm</a></dd>
+      <dt>e2</dt>
+      <dd>a numeric value to compare with values in a dfm</dd>
+    </dl>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Comparison operators</p>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

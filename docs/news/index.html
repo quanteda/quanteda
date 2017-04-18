@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -105,6 +100,11 @@
 <code><a href="../reference/textmodel_wordfish.html">textmodel_wordfish()</a></code> now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values. This also dramatically improves performance in computing this model. (#482, #124)</li>
 <li>The speed of <code><a href="../reference/kwic.html">kwic()</a></code> is now dramatically improved, and also returns an indexed set of tokens that makes subsequent commands on a kwic class object much faster. (#603)</li>
 <li>Package options (for verbose, threads) can now be set or queried using <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>.</li>
+<li>Improved performance and better documentation for <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code>. (#634)</li>
+<li>Added functions <code><a href="../reference/corpus_trimsentences.html">corpus_trimsentences()</a></code> and <code><a href="../reference/corpus_trimsentences.html">char_trimsentences()</a></code> to remove sentences from a corpus or character object, based on token length or pattern matching.</li>
+<li>Added options to <code><a href="../reference/textstat_readability.html">textstat_readability()</a></code>: <code>min_sentence_length</code> and <code>max_sentence_length</code>. (#632)</li>
+<li>Indexing now works for dictionaries, for slicing out keys and values (<code>[</code>), or accessing values directly (<code>[[</code>). (#651)</li>
+<li>Began the consolidation of collocation detection and scoring into a new function <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, which combines the existing <code><a href="../reference/collocations.html">collocations()</a></code> and <code><a href="../reference/sequences.html">sequences()</a></code> functions. (#434) Collocations now behave as sequences for other functions (such as <code><a href="../reference/tokens_compound.html">tokens_compound()</a></code>) and have a greatly improved performance for such uses.</li>
 </ul>
 </div>
 <div id="behaviour-changes" class="section level3">
@@ -120,6 +120,7 @@
 <li>
 <code><a href="../reference/textstat_dist.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_dist.html">textstat_simil()</a></code> now return a matrix if a <code>selection</code> argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection.</li>
 <li>All remaining camelCase arguments are gone. For commonly used ones, such as those in <code><a href="../reference/tokens.html">tokens()</a></code>, the old arguments (e.g. <code>removePunct</code>) still produce the same behaviour but with a deprecation warning.</li>
+<li>Added <code>n_target</code> and <code>n_reference</code> columns to <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code> to return counts for each category being compared for keyness.</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">
@@ -135,7 +136,8 @@
 <code>dfm_select</code> now works correctly for ngram features (#589).</li>
 <li>Fixed a bug crashing corpus constructors for character vectors with duplicated names (the cause of #580).</li>
 <li>Fixed a bug in the behaviour for <code><a href="../reference/dfm_select.html">dfm_select(x, features)</a></code> when <code>features</code> was a dfm, that failed to produce the intended featnames matches for the output dfm.</li>
-<li>Fixed a bug in <code><a href="../reference/corpus_segment.html">corpus_segment(x, what = "tags")</a></code> when a document contained a whitespace just before a tag, at the beginning of the file, or ended with a tag followed by no text (#618).</li>
+<li>Fixed a bug in <code><a href="../reference/corpus_segment.html">corpus_segment(x, what = "tags")</a></code> when a document contained a whitespace just before a tag, at the beginning of the file, or ended with a tag followed by no text (#618, #634).</li>
+<li>Fixed some problems with dictionary construction and reading some dictionary formats (#454, #455, #459).</li>
 </ul>
 </div>
 </div>
