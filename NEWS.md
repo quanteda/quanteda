@@ -17,6 +17,7 @@
 * Added functions `corpus_trimsentences()` and `char_trimsentences()` to remove sentences from a corpus or character object, based on token length or pattern matching.
 * Added options to `textstat_readability()`: `min_sentence_length` and `max_sentence_length`. (#632)
 * Indexing now works for dictionaries, for slicing out keys and values (`[`), or accessing values directly (`[[`).  (#651)
+* Began the consolidation of collocation detection and scoring into a new function `textstat_collocations()`, which combines the existing `collocations()` and `sequences()` functions.  (#434)  Collocations now behave as sequences for other functions (such as `tokens_compound()`) and have a greatly improved performance for such uses.
 
 ### Behaviour changes 
 
