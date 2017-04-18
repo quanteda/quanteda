@@ -71,20 +71,16 @@ collocations2 <- function(x, method = c("lr", "chi2", "pmi", "dice"),
         stop("Only bigram and trigram collocations implemented so far.")
     
     coll <- NULL
-    if (size == 2) {
-        coll <- collocations_bigram(x, method, features_id, 2, ...)
-    } else if (size == 3) {
-        coll <- collocations_trigram(x, method, features_id, 3, ...)
-        # if (is.null(coll)) 
-        #     coll <- collocations3(x, method, features_id, 3, ...)
-        # else {
-        #     coll <- rbind(coll, collocations3(x, method, features_id, 3, ...))
-        #     #class(coll) <- c("collocations", class(coll))
-        # }
+    for (s in size) {
+        if (s == 2) {
+            coll <- rbind(coll, collocations_bigram(x, method, features_id, 2, ...))
+        } else if (s == 3) {
+            coll <- rbind(coll, collocations_trigram(x, method, features_id, 3, ...))
+        }
     }
+    
     # remove any "collocations" containing the dummy token, return
     word1 <- word2 <- word3 <- NULL
-    
     temp <- coll[word1 != DUMMY_TOKEN & word2 != DUMMY_TOKEN & word3 != DUMMY_TOKEN]
     
     # temporary coversion for textstats_collocations ---------------------------
