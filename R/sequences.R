@@ -19,7 +19,7 @@
 #'   "Congress".
 #' @param ordered if true, use the Blaheta-Johnson method that distinguishes 
 #'   between the order of words, and tends to promote rare sequences.
-#' @keywords collocations
+#' @keywords collocations internal
 #' @author Kohei Watanabe
 #' @references Blaheta, D., & Johnson, M. (2001). 
 #'   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
@@ -75,15 +75,13 @@ sequences.tokens <- function(x, features = "*",
     features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
     features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
     
-    result <- qatd_cpp_sequences(x, features_id, min_count, max_size, nested, ordered)
-    rownames(result) <- unlist(stringi::stri_c_list(lapply(attr(result, 'ids'), function(y) types[y]), sep=' '), use.names = FALSE)
-    class(result) <- c("sequences", 'data.frame')
-    
+    result <- qatd_cpp_sequences(x, features_id, types, min_count, max_size, nested, ordered)
     result <- result[result$count >= min_count,]
     result$z <- result$lambda / result$sigma
     result$p <- 1 - stats::pnorm(result$z)
     result <- result[order(result$z, decreasing = TRUE),]
     attr(result, 'types') <- types
+    class(result) <- c("sequences", 'data.frame')
     
     return(result)
 }
@@ -103,7 +101,7 @@ sequences.tokens <- function(x, features = "*",
 #' @method as.tokens sequences
 #' @noRd 
 as.tokens.sequences <- function(x) {
-    toks <- attr(x, 'ids')
+    toks <- attr(x, 'tokens')
     attr(toks, 'types') <- attr(x, 'types')
     class(toks) <- c("tokens", "tokenizedTexts")
     return(toks)

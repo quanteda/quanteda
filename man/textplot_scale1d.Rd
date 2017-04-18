@@ -39,7 +39,8 @@ a \pkg{ggplot2} object
 }
 \description{
 Plot the results of a fitted scaling model, from (e.g.) a predicted 
-\link{textmodel_wordscores} model or a fitted \link{textmodel_wordfish}
+\link{textmodel_wordscores} model or a fitted \link{textmodel_wordfish} 
+or \link{textmodel_ca}
 model. Either document or feature parameters may be plotted: an ideal
 point-style plot (estimated document position plus confidence interval on the
 x-axis, document labels on the y-axis) with optional renaming and sorting, or
@@ -57,9 +58,9 @@ doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")),
 refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 ws <- textmodel(ie_dfm, refscores, model="wordscores", smooth = 1)
 pred <- predict(ws)
-# plot estimated word positions
+\donttest{# plot estimated word positions
 textplot_scale1d(pred, margin = "features", 
-                 highlighted = c("minister", "have", "our", "budget"))
+                 highlighted = c("minister", "have", "our", "budget"))}
 # plot estimated document positions
 textplot_scale1d(pred, margin = "documents",
                  doclabels = doclab,
@@ -71,11 +72,11 @@ wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
 textplot_scale1d(wfm, doclabels = doclab)
 textplot_scale1d(wfm, doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
-# plot estimated word positions
+\donttest{# plot estimated word positions
 textplot_scale1d(wfm, margin = "features", 
                  highlighted = c("government", "global", "children", 
                                  "bank", "economy", "the", "citizenship",
-                                 "productivity", "deficit"))
+                                 "productivity", "deficit"))}
 }
 \seealso{
 \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 

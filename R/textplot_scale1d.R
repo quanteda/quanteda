@@ -1,7 +1,8 @@
 #' plot a fitted scaling model
 #' 
 #' Plot the results of a fitted scaling model, from (e.g.) a predicted 
-#' \link{textmodel_wordscores} model or a fitted \link{textmodel_wordfish}
+#' \link{textmodel_wordscores} model or a fitted \link{textmodel_wordfish} 
+#' or \link{textmodel_ca}
 #' model. Either document or feature parameters may be plotted: an ideal
 #' point-style plot (estimated document position plus confidence interval on the
 #' x-axis, document labels on the y-axis) with optional renaming and sorting, or
@@ -41,9 +42,9 @@
 #' refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 #' ws <- textmodel(ie_dfm, refscores, model="wordscores", smooth = 1)
 #' pred <- predict(ws)
-#' # plot estimated word positions
+#' \donttest{# plot estimated word positions
 #' textplot_scale1d(pred, margin = "features", 
-#'                  highlighted = c("minister", "have", "our", "budget"))
+#'                  highlighted = c("minister", "have", "our", "budget"))}
 #' # plot estimated document positions
 #' textplot_scale1d(pred, margin = "documents",
 #'                  doclabels = doclab,
@@ -55,11 +56,11 @@
 #' textplot_scale1d(wfm, doclabels = doclab)
 #' textplot_scale1d(wfm, doclabels = doclab,
 #'                  groups = docvars(data_corpus_irishbudget2010, "party"))
-#' # plot estimated word positions
+#' \donttest{# plot estimated word positions
 #' textplot_scale1d(wfm, margin = "features", 
 #'                  highlighted = c("government", "global", "children", 
 #'                                  "bank", "economy", "the", "citizenship",
-#'                                  "productivity", "deficit"))
+#'                                  "productivity", "deficit"))}
 textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels = NULL, 
                              sort = TRUE, groups = NULL, 
                              highlighted = NULL, alpha = 0.7, 
@@ -129,6 +130,32 @@ textplot_scale1d.textmodel_wordscores_predicted <- function(x,
             xlab("Word score") +
             ylab("log(term frequency)") 
     } 
+    apply_theme(p)
+}
+
+#' @noRd
+#' @importFrom stats reorder aggregate
+#' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
+#' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
+#' @importFrom ggplot2 facet_grid element_line
+#' @export
+textplot_scale1d.textmodel_ca_fitted <- function(x, 
+                                                    margin = c("documents", "features"), 
+                                                    doclabels = NULL, 
+                                                    sort = TRUE, groups = NULL, 
+                                                    highlighted = NULL, alpha = 0.7, 
+                                                    highlighted_color = "black") {
+    margin <- match.arg(margin)
+    if (is.null(doclabels)) doclabels <- x$rownames
+    
+    if (margin == "documents") {
+        p <- textplot_scale1d_documents(coef(x)$coef_document, coef(x)$coef_document_se, 
+                                        doclabels = doclabels, sort = sort, groups = groups) +
+            ylab("Document position")
+        
+    } else {
+        stop("textplot_scale1d for features not implemented for CA models")
+    }
     apply_theme(p)
 }
 

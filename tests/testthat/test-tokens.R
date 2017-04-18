@@ -24,8 +24,8 @@ test_that("tokens_wordstem works as expected for tokens_hashed", {
 
     txt <- c(one = "Eating eater eaters eats ate.",
              two = "Taxing taxes taxed my tax return.")
-    toks <- tokenize(char_tolower(txt), removePunct = TRUE)
-    toksh <- tokens(char_tolower(txt), removePunct = TRUE)
+    toks <- tokenize(char_tolower(txt), remove_punct = TRUE)
+    toksh <- tokens(char_tolower(txt), remove_punct = TRUE)
     classic <- tokens_wordstem(toks)
     hashed <- tokens_wordstem(toksh)
     expect_equivalent(classic, as.tokenizedTexts(hashed))
@@ -34,8 +34,8 @@ test_that("tokens_wordstem works as expected for tokens_hashed", {
 test_that("ngrams works as expected for tokens_hashed", {
     txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),
              two = "A B C D E")
-    toks <- tokenize(txt, removePunct = TRUE)
-    toksh <- tokens(txt, removePunct = TRUE)
+    toks <- tokenize(txt, remove_punct = TRUE)
+    toksh <- tokens(txt, remove_punct = TRUE)
     classic <- tokens_ngrams(toks, n = 2:3)
     hashed <- as.tokenizedTexts(tokens_ngrams(toksh, n = 2:3))
     # testthat::expect_equivalent(as.list(classic),
@@ -199,15 +199,15 @@ test_that("longer features longer than documents do not crash (#447)", {
 
 test_that("tokens works as expected for what = \"character\"", {
     expect_equal(
-        as.character(tokens("one, two three.", what = "character", removeSeparators = TRUE)),
+        as.character(tokens("one, two three.", what = "character", remove_separators = TRUE)),
         c("o", "n", "e", ",", "t", "w", "o", "t", "h", "r", "e", "e", ".")
     )
     expect_equal(
-        as.character(tokens("one, two three.", what = "character", removeSeparators = FALSE)),
+        as.character(tokens("one, two three.", what = "character", remove_separators = FALSE)),
         c("o", "n", "e", ",", " ", "t", "w", "o", " ", "t", "h", "r", "e", "e", ".")
     )
     expect_equal(
-        as.character(tokens("one, two three.", what = "character", removePunct = TRUE)),
+        as.character(tokens("one, two three.", what = "character", remove_punct = TRUE)),
         c("o", "n", "e", "t", "w", "o", "t", "h", "r", "e", "e")
     )
 })
@@ -234,7 +234,7 @@ test_that("types attribute is a character vector", {
 
 
 #' \dontrun{
-#' tokens2 <- tokenize(head(inaugTexts, 10), removePunct=TRUE)
+#' tokens2 <- tokenize(head(inaugTexts, 10), remove_punct=TRUE)
 #' tokens2_hashed <- hashTokens(tokens2)
 #' 
 #' profvis::profvis({
@@ -300,20 +300,95 @@ test_that("types attribute is a character vector", {
 #'}
 
 
-test_that("removeURL works as expected", {
+test_that("remove_url works as expected", {
     txt <- c("The URL was http://t.co/something.",
              "The URL was http://quanteda.io",
              "https://github.com/kbenoit/quanteda/issue/1 is another URL")
-    toks <- tokens(txt, removeURL = TRUE)
+    toks <- tokens(txt, remove_url = TRUE)
     expect_equal(
         as.list(toks),
         list(c("The", "URL", "was"), c("The", "URL", "was"), c("is", "another", "URL"))
     )
 
-    toks2 <- tokenize(txt, removeURL = TRUE)
+    toks2 <- tokenize(txt, remove_url = TRUE)
     expect_equivalent(
         as.list(toks2),
         list(c("The", "URL", "was"), c("The", "URL", "was"), c("is", "another", "URL"))
     )
 })
 
+test_that("remove_punct and remove_twitter interact correctly, #607", {
+    txt <- "they: #stretched, @ @@ in,, a # ## never-ending @line."
+    expect_equal(
+        as.character(tokens(txt, what = "word", remove_punct = TRUE, remove_twitter = TRUE)),
+        c("they", "stretched", "in", "a", "never-ending", "line")
+    )    
+    expect_equal(
+        as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = FALSE)),
+        c("they", ":", "#stretched", ",", "@", "@@", "in", ",", ",", "a", "#", "##", "never", "-", "ending", "@line", ".")
+    )    
+    # this is #607
+    expect_equal(
+        as.character(tokens(txt, what = "word", remove_punct = TRUE, remove_twitter = FALSE)),
+        c("they", "#stretched", "in", "a", "never-ending", "@line")
+    )
+    # remove_twitter should be inactive if remove_punct is FALSE
+    expect_equal(
+        as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = TRUE)),
+        as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = FALSE))
+    )
+    expect_warning(
+        tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = TRUE),
+        "remove_twitter reset to FALSE when remove_punct = FALSE"
+    )
+})
+
+test_that("+ operator works with tokens", {
+    
+    txt1 <- c(d1 = "This is sample document one.",
+              d2 = "Here is the second sample document.")
+    txt2 <- c(d3 = "And the third document.")
+    
+    toks_added <- tokens(txt1) + tokens(txt2)
+    expect_equal(ntype(toks_added), length(attr(toks_added, "types")))
+    expect_equal(ndoc(toks_added), 3)
+
+})
+
+test_that("c() works with tokens", {
+
+    txt1 <- c(d1 = "This is sample document one.",
+              d2 = "Here is the second sample document.")
+    txt2 <- c(d3 = "And the third document.")
+    txt3 <- c(d4 = "This is sample document 4.")
+    txt4 <- c(d1 = "This is sample document five!")
+    
+    expect_equal(
+        c(tokens(txt1), tokens(txt2)),
+        tokens(txt1) + tokens(txt2)
+    )
+    
+    expect_equal(
+        c(tokens(txt1), tokens(txt2), tokens(txt3)),
+        tokens(txt1) + tokens(txt2) + tokens(txt3)
+    )
+    
+    expect_error(
+        c(tokens(txt1), tokens(txt4)),
+        'Document names are duplicated'
+    )
+})
+
+test_that("docvars are erased for tokens added", {
+    mycorpus <- corpus(c(d1 = "This is sample document one.",
+                         d2 = "Here is the second sample document."), 
+                        docvars = data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2)))
+    expect_equivalent(
+        docvars(tokens(mycorpus, include_docvars = TRUE)),
+        data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2))
+    )
+    expect_equivalent(
+        docvars(tokens(mycorpus) + tokens("And the third sample document.")),
+        data.frame()
+    )
+})

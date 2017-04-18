@@ -2,6 +2,7 @@ reference:
 - title: Package-level
   contents:
     - quanteda
+    - quanteda_options
 - title: Data
   desc: Built-in data objects.
   contents:
@@ -95,6 +96,7 @@ reference:
   contents:
     - dictionary
     - is.dictionary
+    - as.yaml
 - title: Phrase discovery functions
   desc: Functions for exploring and detecting keywords and phrases.
   contents:
@@ -115,6 +117,7 @@ reference:
     - textmodel_wordfish
     - textmodel_wordscores
     - textmodel_wordshoal
+    - coef.textmodel
 - title: Utility functions
   desc: R-like functions to return counts and object information.
   contents:

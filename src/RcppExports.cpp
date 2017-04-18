@@ -6,6 +6,19 @@
 
 using namespace Rcpp;
 
+// cacpp
+arma::sp_mat cacpp(const arma::sp_mat& objm, unsigned int threads, const double residual_floor);
+RcppExport SEXP quanteda_cacpp(SEXP objmSEXP, SEXP threadsSEXP, SEXP residual_floorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type objm(objmSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type threads(threadsSEXP);
+    Rcpp::traits::input_parameter< const double >::type residual_floor(residual_floorSEXP);
+    rcpp_result_gen = Rcpp::wrap(cacpp(objm, threads, residual_floor));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_ManhattanPara_cpp
 NumericMatrix qatd_ManhattanPara_cpp(const arma::sp_mat& A, const int margin);
 RcppExport SEXP quanteda_qatd_ManhattanPara_cpp(SEXP ASEXP, SEXP marginSEXP) {
@@ -127,18 +140,19 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_sequences
-DataFrame qatd_cpp_sequences(const List& texts_, const IntegerVector& words_, const unsigned int count_min, unsigned int len_max, bool nested, bool ordered);
-RcppExport SEXP quanteda_qatd_cpp_sequences(SEXP texts_SEXP, SEXP words_SEXP, SEXP count_minSEXP, SEXP len_maxSEXP, SEXP nestedSEXP, SEXP orderedSEXP) {
+DataFrame qatd_cpp_sequences(const List& texts_, const IntegerVector& words_, const CharacterVector& types_, const unsigned int count_min, unsigned int len_max, bool nested, bool ordered);
+RcppExport SEXP quanteda_qatd_cpp_sequences(SEXP texts_SEXP, SEXP words_SEXP, SEXP types_SEXP, SEXP count_minSEXP, SEXP len_maxSEXP, SEXP nestedSEXP, SEXP orderedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type words_(words_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
     Rcpp::traits::input_parameter< const unsigned int >::type count_min(count_minSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type len_max(len_maxSEXP);
     Rcpp::traits::input_parameter< bool >::type nested(nestedSEXP);
     Rcpp::traits::input_parameter< bool >::type ordered(orderedSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_sequences(texts_, words_, count_min, len_max, nested, ordered));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_sequences(texts_, words_, types_, count_min, len_max, nested, ordered));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -193,6 +193,7 @@ struct estimate_mt : public Worker{
 // [[Rcpp::export]]
 DataFrame qatd_cpp_sequences(const List &texts_,
                              const IntegerVector &words_,
+                             const CharacterVector &types_,
                              const unsigned int count_min,
                              unsigned int len_max,
                              bool nested,
@@ -241,10 +242,18 @@ DataFrame qatd_cpp_sequences(const List &texts_,
 #endif
     //dev::stop_timer("Estimate", timer);
     
-    DataFrame output_ = DataFrame::create(_["lambda"] = as<NumericVector>(wrap(ls)),
+    // Convert sequences from integer to character
+    CharacterVector seqs_(seqs.size());
+    for (std::size_t i = 0; i < seqs.size(); i++) {
+        seqs_[i] = join(seqs[i], types_, " ");
+    }
+    
+    DataFrame output_ = DataFrame::create(_["collocation"] = seqs_,
+                                          _["lambda"] = as<NumericVector>(wrap(ls)),
                                           _["sigma"] = as<NumericVector>(wrap(ss)),
-                                          _["count"] = as<IntegerVector>(wrap(cs)));
-    output_.attr("ids") = as<Tokens>(wrap(seqs));
+                                          _["count"] = as<IntegerVector>(wrap(cs)),
+                                          _["stringsAsFactors"] = false);
+    output_.attr("tokens") = as<Tokens>(wrap(seqs));
     return output_;
 }
 
@@ -256,17 +265,9 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 types <- unique(as.character(toks))
 types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
  
-out2 <- qatd_cpp_sequences(toks, match(types_upper, types), 1, 2, TRUE, TRUE)
-# out2$sequence <- lapply(out2$sequence, function(x) types[x])
-# out2$str <- stringi::stri_c_list(out2$sequence, '_')
-# out2$sequence <- NULL
-# out2
-# 
+out2 <- qatd_cpp_sequences(toks, match(types_upper, types), types, 1, 2, TRUE, TRUE)
 # out2$z <- out2$lambda / out2$sigma
 # out2$p <- 1 - stats::pnorm(out2$z)
-
-
-
 
 
 */

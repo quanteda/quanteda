@@ -63,7 +63,7 @@ If you want to compute similarity on a "normalized" dfm object
 \examples{
 # create a dfm from inaugural addresses from Reagan onwards
 presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 
-               remove = stopwords("english"), stem = TRUE, removePunct = TRUE)
+               remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
                
 # distances for documents 
 (d1 <- textstat_dist(presDfm, margin = "documents"))

@@ -56,7 +56,7 @@ syllables <- function(x, ...) {
 #' # tokens
 #' txt <- c(doc1 = "This is an example sentence.",
 #'          doc2 = "Another of two sample sentences.")
-#' nsyllable(tokens(txt, removePunct = TRUE))
+#' nsyllable(tokens(txt, remove_punct = TRUE))
 #' # punctuation is not counted
 #' nsyllable(tokens(txt), use.names = TRUE)
 nsyllable <- function(x, syllable_dictionary = quanteda::data_int_syllables, use.names = FALSE) {

@@ -33,7 +33,7 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #' @examples 
 #' ## with simple examples
 #' toks <- tokens(c("This is a sentence.", "This is a second sentence."), 
-#'                  removePunct = TRUE)
+#'                  remove_punct = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = FALSE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", padding = FALSE)
@@ -46,7 +46,7 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #' \dontshow{
 #' ## with simple examples
 #' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), 
-#'                  removePunct = TRUE)
+#'                  remove_punct = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", 
 #'               valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)
 #' 
@@ -105,7 +105,9 @@ tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "rem
 #' 
 #' # With multiple words
 #' tokens_select(toks, list(c('President', '*')), "keep")
+#' tokens_select(toks, 'President *', "keep") # simplified form
 #' tokens_select(toks, list(c('*', 'crisis')), "keep")
+#' tokens_select(toks, '* crisis', "keep") # simplified form
 
 tokens_select.tokens <- function(x, features, selection = c("keep", "remove"), 
                                  valuetype = c("glob", "regex", "fixed"),
@@ -113,6 +115,10 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     
     if (!is.tokens(x))
         stop("x must be a tokens object")
+    
+    if (is.dictionary(features)) {
+        features <- unlist(features, use.names = FALSE)
+    }
     
     features <- vector2list(features)
     selection <- match.arg(selection)
@@ -142,21 +148,8 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
 #'                    execute the functions of its Chief Magistrate.",
 #'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
 #'                    the high sense I entertain of this distinguished honor.")
-#' tokens_remove(tokens(txt, removePunct = TRUE), stopwords("english"))
+#' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #'
-#' \dontshow{
-#' ## for tokenized texts 
-#' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
-#'                    execute the functions of its Chief Magistrate.",
-#'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
-#'                    the high sense I entertain of this distinguished honor.")
-#' tokens_remove(tokenize(txt, removePunct = TRUE), stopwords("english"))
-#' 
-#' ## example for collocations
-#' (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
-#' removeFeatures(myCollocs, stopwords("english"))
-#' removeFeatures(myCollocs, stopwords("english"), pos = 2)
-#' }
 tokens_remove <- function(x, features, valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
     UseMethod("tokens_remove")

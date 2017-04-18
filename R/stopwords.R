@@ -57,7 +57,7 @@
 #' head(stopwords("SMART"))
 #' 
 #' # adding to the built-in stopword list
-#' toks <- tokenize("The judge will sentence Mr. Adams to nine years in prison", removePunct = TRUE)
+#' toks <- tokenize("The judge will sentence Mr. Adams to nine years in prison", remove_punct = TRUE)
 #' removeFeatures(toks, c(stopwords("english"), "will", "mr", "nine"))
 stopwords <- function(kind = "english") {
     if (!(kind %in% names(quanteda::data_char_stopwords)))

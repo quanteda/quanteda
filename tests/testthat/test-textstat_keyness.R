@@ -206,4 +206,19 @@ test_that("basic textstat_keyness lr works on two rows", {
                  letters[1:8])
 })
 
+test_that("textstat_keyness returns raw frequency counts", {
+    mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
+                   d2 = "a a b c c d d d d e f h"))
+    
+    expect_equivalent(textstat_keyness(mydfm, measure = "chi2")[featnames(mydfm),c(3,4)], 
+                      as.data.frame(t(mydfm)))
+    
+    expect_equivalent(textstat_keyness(mydfm, measure = "exact")[featnames(mydfm),c(3,4)], 
+                      as.data.frame(t(mydfm)))
+    
+    expect_equivalent(textstat_keyness(mydfm, measure = "lr")[featnames(mydfm),c(3,4)], 
+                      as.data.frame(t(mydfm)))
+    
+})
+
 

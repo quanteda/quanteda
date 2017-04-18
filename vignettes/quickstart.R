@@ -95,16 +95,16 @@ metacorpus(data_corpus_inaugural)
 txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!", 
          text2 = "@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
 tokenize(txt)
-tokenize(txt, removeNumbers = TRUE, removePunct = TRUE)
-tokenize(txt, removeNumbers = FALSE, removePunct = TRUE)
-tokenize(txt, removeNumbers = TRUE, removePunct = FALSE)
-tokenize(txt, removeNumbers = FALSE, removePunct = FALSE)
-tokenize(txt, removeNumbers = FALSE, removePunct = FALSE, removeSeparators = FALSE)
+tokenize(txt, remove_numbers = TRUE, remove_punct = TRUE)
+tokenize(txt, remove_numbers = FALSE, remove_punct = TRUE)
+tokenize(txt, remove_numbers = TRUE, remove_punct = FALSE)
+tokenize(txt, remove_numbers = FALSE, remove_punct = FALSE)
+tokenize(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 tokenize("Great website: http://textasdata.com?page=123.", what = "character")
 tokenize("Great website: http://textasdata.com?page=123.", what = "character", 
-         removeSeparators = FALSE)
+         remove_separators = FALSE)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # sentence level         
@@ -122,7 +122,7 @@ myDfm[, 1:5]
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # make a dfm, removing stopwords and applying stemming
-myStemMat <- dfm(myCorpus, remove = stopwords("english"), stem = TRUE, removePunct = TRUE)
+myStemMat <- dfm(myCorpus, remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
 myStemMat[, 1:5]
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -132,7 +132,7 @@ head(stopwords("arabic"), 10)
 
 ## ----warning=FALSE, fig.width = 8, fig.height = 8-----------------------------------------------------------------------------------------------------------------------------------------------------
 mydfm <- dfm(data_char_ukimmig2010, remove = c("will", stopwords("english")), 
-             removePunct = TRUE)
+             remove_punct = TRUE)
 mydfm
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", remove = stopwords("english"), removePunct = TRUE)
+byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", remove = stopwords("english"), remove_punct = TRUE)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 sort(byPartyDfm)[, 1:10]
@@ -174,7 +174,7 @@ byPresMat
 ## ----fig.width = 6------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), 
                remove = stopwords("english"),
-               stem = TRUE, removePunct = TRUE)
+               stem = TRUE, remove_punct = TRUE)
 obamaSimil <- textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
                              margin = "documents", method = "cosine")
 dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
@@ -182,7 +182,7 @@ dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
 ## ---- fig.width = 10, fig.height = 7, eval = FALSE----------------------------------------------------------------------------------------------------------------------------------------------------
 #  data(SOTUCorpus, package="quantedaData")
 #  presDfm <- dfm(corpus_subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
-#                 remove = stopwords("english"), removePunct = TRUE)
+#                 remove = stopwords("english"), remove_punct = TRUE)
 #  presDfm <- dfm_trim(presDfm, min_count=5, min_docfreq=3)
 #  # hierarchical clustering - get distances on normalized dfm
 #  presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))

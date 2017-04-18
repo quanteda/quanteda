@@ -170,3 +170,44 @@ test_that("creating tokens and dfms with empty docvars", {
     
 })
 
+test_that("tokens works works with one docvar", {
+    docv1 <- data.frame(dvar1 = c("A", "B"))
+    mycorpus1 <- corpus(c(d1 = "This is sample document one.",
+                          d2 = "Here is the second sample document."), 
+                        docvars = docv1)
+    toks1 <- tokens(mycorpus1, include_docvars = TRUE)
+    expect_equivalent(docvars(toks1), docv1)
+})
+
+
+test_that("tokens works works with two docvars", {
+    docv2 <- data.frame(dvar1 = c("A", "B"),
+                        dvar2 = c(1, 2))
+    mycorpus2 <- corpus(c(d1 = "This is sample document one.",
+                          d2 = "Here is the second sample document."), 
+                        docvars = docv2)
+    toks2 <- tokens(mycorpus2, include_docvars = TRUE)
+    expect_equivalent(docvars(toks2), docv2)
+})
+
+test_that("dfm works works with one docvar", {
+    docv1 <- data.frame(dvar1 = c("A", "B"))
+    mycorpus1 <- corpus(c(d1 = "This is sample document one.",
+                          d2 = "Here is the second sample document."), 
+                        docvars = docv1)
+    dfm1 <- dfm(mycorpus1, include_docvars = TRUE)
+    expect_equivalent(docvars(dfm1), docv1)
+})
+
+
+test_that("dfm works works with two docvars", {
+    docv2 <- data.frame(dvar1 = c("A", "B"),
+                        dvar2 = c(1, 2))
+    mycorpus2 <- corpus(c(d1 = "This is sample document one.",
+                          d2 = "Here is the second sample document."), 
+                        docvars = docv2)
+    dfm2 <- dfm(mycorpus2, include_docvars = TRUE)
+    expect_equivalent(docvars(dfm2), docv2)
+})
+
+

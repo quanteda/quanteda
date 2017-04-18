@@ -83,6 +83,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     #result$docname <- as.factor(result$docname)
     
     # add attributes for kwic object
+    attr(result, 'concatenator') <- attr(x, 'concatenator')
     attr(result, "ntoken")  <- ntoken(x)
     attr(result, "valuetype") <- valuetype
     attr(result, "keywords") <- sapply(keywords, paste, collapse = " ")
@@ -114,7 +115,13 @@ print.kwic <- function(x, ...) {
     if (!nrow(x)) {
         print(NULL)
     } else {
+        if (all(x$from == x$to)) {
+            labels <- stringi::stri_c("[", x$docname, ", ", x$from, "]")
+        } else {
+            labels <- stringi::stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
+        }
         kwic <- data.frame(
+            label = labels,
             pre = format(stringi::stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify="right"),
             s1 = rep('|', nrow(x)),
             keyword = format(x$keyword, justify="centre"),
@@ -122,12 +129,7 @@ print.kwic <- function(x, ...) {
             post = format(stringi::stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify="left")
         )
         colnames(kwic) <- NULL
-        if (all(x$from == x$to)) {
-            rownames(kwic) <- stringi::stri_c("[", x$docname, ", ", x$from, "]")
-        } else {
-            rownames(kwic) <- stringi::stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
-        }
-        print(kwic)
+        print(kwic, row.names = FALSE)
     }
 }
 
@@ -135,10 +137,11 @@ print.kwic <- function(x, ...) {
 #' @export
 #' @method as.tokens kwic
 as.tokens.kwic <- function(x) {
-    toks <- attr(x, 'ids')
-    names(toks) <- x$docname
-    attr(toks, 'types') <- attr(x, 'types')
-    attr(toks, 'docs') <- attr(x, 'docs') # we might not need this if names are original document names
-    class(toks) <- c("tokens", "tokenizedTexts")
-    return(toks)
+    result <- attr(x, 'tokens')
+    names(result) <- x$docname
+    class(result) <- c("tokens", "tokenizedTexts")
+    docvars(result) <- data.frame('_docid' = attr(x, 'docid'),
+                                  '_segid' = attr(x, 'segid'))
+    attr(result, 'concatenator') <- attr(x, 'concatenator')
+    return(result)
 }

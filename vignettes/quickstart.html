@@ -240,7 +240,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw">corpus</span>(data_char_
 ##   1805-Jefferson   804   2381        45
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Sat Apr  1 08:45:28 2017
+## Created: Sat Apr 15 14:32:25 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>substring()</code> function to extract characters from a name – in this case, the name of the character vector <code>data_char_inaugural</code>. This works using our fixed starting and ending positions with <code>substring()</code> because these names are a very regular format of <code>YYYY-PresidentName</code>.</p>
@@ -257,7 +257,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw">corpus</span>(data_char_
 ##   1805-Jefferson   804   2381        45  Jefferson 1805
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Sat Apr  1 08:45:28 2017
+## Created: Sat Apr 15 14:32:25 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">metadoc</span>(myCorpus, <span class="st">&quot;language&quot;</span>) &lt;-<span class="st"> &quot;english&quot;</span>
@@ -279,7 +279,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw">corpus</span>(data_char_
 ##  data_char_inaugural_5
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Sat Apr  1 08:45:28 2017
+## Created: Sat Apr 15 14:32:25 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>&quot;english&quot;</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code>ndoc()</code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -475,7 +475,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2013-Obama   814   2335        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Sat Apr  1 08:45:29 2017
+## Created: Sat Apr 15 14:32:26 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -513,32 +513,32 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <p>The <code>kwic</code> function (KeyWord In Context) performs a search for a word and allows us to view the contexts in which it occurs:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">width =</span> <span class="dv">200</span>)
 <span class="kw">kwic</span>(data_corpus_inaugural, <span class="st">&quot;terror&quot;</span>)
-##                                                                                                      
-## [1797-Adams, 1327]                 fraud or violence, by | terror | , intrigue, or venality          
-## [1933-Roosevelt, 112] nameless, unreasoning, unjustified | terror | which paralyzes needed efforts to
-## [1941-Roosevelt, 289]      seemed frozen by a fatalistic | terror | , we proved that this            
-## [1961-Kennedy, 868]      alter that uncertain balance of | terror | that stays the hand of           
-## [1981-Reagan, 821]        freeing all Americans from the | terror | of runaway living costs.         
-## [1997-Clinton, 1055]         They fuel the fanaticism of | terror | . And they torment the           
-## [1997-Clinton, 1655]   maintain a strong defense against | terror | and destruction. Our children    
-## [2009-Obama, 1646]        advance their aims by inducing | terror | and slaughtering innocents, we
+##                                                                                                       
+##     [1797-Adams, 1327]              fraud or violence, by | terror | , intrigue, or venality          
+##  [1933-Roosevelt, 112] nameless, unreasoning, unjustified | terror | which paralyzes needed efforts to
+##  [1941-Roosevelt, 289]      seemed frozen by a fatalistic | terror | , we proved that this            
+##    [1961-Kennedy, 868]    alter that uncertain balance of | terror | that stays the hand of           
+##     [1981-Reagan, 821]     freeing all Americans from the | terror | of runaway living costs.         
+##   [1997-Clinton, 1055]        They fuel the fanaticism of | terror | . And they torment the           
+##   [1997-Clinton, 1655]  maintain a strong defense against | terror | and destruction. Our children    
+##     [2009-Obama, 1646]     advance their aims by inducing | terror | and slaughtering innocents, we
 <span class="kw">kwic</span>(data_corpus_inaugural, <span class="st">&quot;terror&quot;</span>, <span class="dt">valuetype =</span> <span class="st">&quot;regex&quot;</span>)
-##                                                                                                              
-## [1797-Adams, 1327]                      fraud or violence, by |  terror   | , intrigue, or venality          
-## [1933-Roosevelt, 112]      nameless, unreasoning, unjustified |  terror   | which paralyzes needed efforts to
-## [1941-Roosevelt, 289]           seemed frozen by a fatalistic |  terror   | , we proved that this            
-## [1961-Kennedy, 868]           alter that uncertain balance of |  terror   | that stays the hand of           
-## [1961-Kennedy, 992]                 of science instead of its |  terrors  | . Together let us explore        
-## [1981-Reagan, 821]             freeing all Americans from the |  terror   | of runaway living costs.         
-## [1981-Reagan, 2204]          understood by those who practice | terrorism | and prey upon their neighbors    
-## [1997-Clinton, 1055]              They fuel the fanaticism of |  terror   | . And they torment the           
-## [1997-Clinton, 1655]        maintain a strong defense against |  terror   | and destruction. Our children    
-## [2009-Obama, 1646]             advance their aims by inducing |  terror   | and slaughtering innocents, we   
-## [2017-Trump, 1119]    civilized world against radical Islamic | terrorism | , which we will eradicate
+##                                                                                                               
+##     [1797-Adams, 1327]                   fraud or violence, by |  terror   | , intrigue, or venality          
+##  [1933-Roosevelt, 112]      nameless, unreasoning, unjustified |  terror   | which paralyzes needed efforts to
+##  [1941-Roosevelt, 289]           seemed frozen by a fatalistic |  terror   | , we proved that this            
+##    [1961-Kennedy, 868]         alter that uncertain balance of |  terror   | that stays the hand of           
+##    [1961-Kennedy, 992]               of science instead of its |  terrors  | . Together let us explore        
+##     [1981-Reagan, 821]          freeing all Americans from the |  terror   | of runaway living costs.         
+##    [1981-Reagan, 2204]        understood by those who practice | terrorism | and prey upon their neighbors    
+##   [1997-Clinton, 1055]             They fuel the fanaticism of |  terror   | . And they torment the           
+##   [1997-Clinton, 1655]       maintain a strong defense against |  terror   | and destruction. Our children    
+##     [2009-Obama, 1646]          advance their aims by inducing |  terror   | and slaughtering innocents, we   
+##     [2017-Trump, 1119] civilized world against radical Islamic | terrorism | , which we will eradicate
 <span class="kw">kwic</span>(data_corpus_inaugural, <span class="st">&quot;communist*&quot;</span>)
-##                                                                                             
-## [1949-Truman, 838]  the actions resulting from the | Communist  | philosophy are a threat to
-## [1961-Kennedy, 519]             -- not because the | Communists | may be doing it,</code></pre></div>
+##                                                                                              
+##   [1949-Truman, 838] the actions resulting from the | Communist  | philosophy are a threat to
+##  [1961-Kennedy, 519]             -- not because the | Communists | may be doing it,</code></pre></div>
 <p>In the above summary, <code>Year</code> and <code>President</code> are variables associated with each document. We can access such variables with the <code>docvars()</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># inspect the document-level variables</span>
 <span class="kw">head</span>(<span class="kw">docvars</span>(data_corpus_inaugural))
@@ -584,21 +584,21 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ## text2 :
 ##  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;:&quot;              &quot;on&quot;             &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;,&quot;              &quot;http&quot;           &quot;:&quot;              &quot;/&quot;             
 ## [12] &quot;/&quot;              &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;              &quot;123&quot;            &quot;.&quot;
-<span class="kw">tokenize</span>(txt, <span class="dt">removeNumbers =</span> <span class="ot">TRUE</span>, <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
+<span class="kw">tokenize</span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 ## tokenizedTexts from 2 documents.
 ## text1 :
 ##  [1] &quot;This&quot;      &quot;is&quot;        &quot;in&quot;        &quot;different&quot; &quot;ways&quot;      &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;left&quot;      &quot;and&quot;       &quot;right&quot;    
 ## 
 ## text2 :
 ## [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;on&quot;             &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;http&quot;           &quot;textasdata.com&quot; &quot;page&quot;
-<span class="kw">tokenize</span>(txt, <span class="dt">removeNumbers =</span> <span class="ot">FALSE</span>, <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
+<span class="kw">tokenize</span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 ## tokenizedTexts from 2 documents.
 ## text1 :
 ##  [1] &quot;This&quot;      &quot;is&quot;        &quot;10&quot;        &quot;in&quot;        &quot;999&quot;       &quot;different&quot; &quot;ways&quot;      &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;left&quot;      &quot;and&quot;       &quot;right&quot;    
 ## 
 ## text2 :
 ##  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;on&quot;             &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;http&quot;           &quot;textasdata.com&quot; &quot;page&quot;           &quot;123&quot;
-<span class="kw">tokenize</span>(txt, <span class="dt">removeNumbers =</span> <span class="ot">TRUE</span>, <span class="dt">removePunct =</span> <span class="ot">FALSE</span>)
+<span class="kw">tokenize</span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)
 ## tokenizedTexts from 2 documents.
 ## text1 :
 ##  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;in&quot;        &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;;&quot;         &quot;left&quot;      &quot;and&quot;       &quot;right&quot;     &quot;!&quot;        
@@ -606,7 +606,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ## text2 :
 ##  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;:&quot;              &quot;on&quot;             &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;,&quot;              &quot;http&quot;           &quot;:&quot;              &quot;/&quot;             
 ## [12] &quot;/&quot;              &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;              &quot;.&quot;
-<span class="kw">tokenize</span>(txt, <span class="dt">removeNumbers =</span> <span class="ot">FALSE</span>, <span class="dt">removePunct =</span> <span class="ot">FALSE</span>)
+<span class="kw">tokenize</span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)
 ## tokenizedTexts from 2 documents.
 ## text1 :
 ##  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;10&quot;        &quot;in&quot;        &quot;999&quot;       &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;;&quot;         &quot;left&quot;      &quot;and&quot;       &quot;right&quot;    
@@ -615,7 +615,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ## text2 :
 ##  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;:&quot;              &quot;on&quot;             &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;,&quot;              &quot;http&quot;           &quot;:&quot;              &quot;/&quot;             
 ## [12] &quot;/&quot;              &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;              &quot;123&quot;            &quot;.&quot;
-<span class="kw">tokenize</span>(txt, <span class="dt">removeNumbers =</span> <span class="ot">FALSE</span>, <span class="dt">removePunct =</span> <span class="ot">FALSE</span>, <span class="dt">removeSeparators =</span> <span class="ot">FALSE</span>)
+<span class="kw">tokenize</span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>, <span class="dt">remove_separators =</span> <span class="ot">FALSE</span>)
 ## tokenizedTexts from 2 documents.
 ## text1 :
 ##  [1] &quot;This&quot;      &quot; &quot;         &quot;is&quot;        &quot; &quot;         &quot;$&quot;         &quot;10&quot;        &quot; &quot;         &quot;in&quot;        &quot; &quot;         &quot;999&quot;       &quot; &quot;         &quot;different&quot; &quot; &quot;         &quot;ways&quot;      &quot;,&quot;         &quot;\n&quot;       
@@ -631,7 +631,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ## Component 1 :
 ##  [1] &quot;G&quot; &quot;r&quot; &quot;e&quot; &quot;a&quot; &quot;t&quot; &quot;w&quot; &quot;e&quot; &quot;b&quot; &quot;s&quot; &quot;i&quot; &quot;t&quot; &quot;e&quot; &quot;:&quot; &quot;h&quot; &quot;t&quot; &quot;t&quot; &quot;p&quot; &quot;:&quot; &quot;/&quot; &quot;/&quot; &quot;t&quot; &quot;e&quot; &quot;x&quot; &quot;t&quot; &quot;a&quot; &quot;s&quot; &quot;d&quot; &quot;a&quot; &quot;t&quot; &quot;a&quot; &quot;.&quot; &quot;c&quot; &quot;o&quot; &quot;m&quot; &quot;?&quot; &quot;p&quot; &quot;a&quot; &quot;g&quot; &quot;e&quot; &quot;=&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;.&quot;
 <span class="kw">tokenize</span>(<span class="st">&quot;Great website: http://textasdata.com?page=123.&quot;</span>, <span class="dt">what =</span> <span class="st">&quot;character&quot;</span>, 
-         <span class="dt">removeSeparators =</span> <span class="ot">FALSE</span>)
+         <span class="dt">remove_separators =</span> <span class="ot">FALSE</span>)
 ## tokenizedTexts from 1 document.
 ## Component 1 :
 ##  [1] &quot;G&quot; &quot;r&quot; &quot;e&quot; &quot;a&quot; &quot;t&quot; &quot; &quot; &quot;w&quot; &quot;e&quot; &quot;b&quot; &quot;s&quot; &quot;i&quot; &quot;t&quot; &quot;e&quot; &quot;:&quot; &quot; &quot; &quot;h&quot; &quot;t&quot; &quot;t&quot; &quot;p&quot; &quot;:&quot; &quot;/&quot; &quot;/&quot; &quot;t&quot; &quot;e&quot; &quot;x&quot; &quot;t&quot; &quot;a&quot; &quot;s&quot; &quot;d&quot; &quot;a&quot; &quot;t&quot; &quot;a&quot; &quot;.&quot; &quot;c&quot; &quot;o&quot; &quot;m&quot; &quot;?&quot; &quot;p&quot; &quot;a&quot; &quot;g&quot; &quot;e&quot; &quot;=&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;.&quot;</code></pre></div>
@@ -672,7 +672,7 @@ myDfm[, <span class="dv">1</span>:<span class="dv">5</span>]
 ##   2017-Trump    1      1        4  96     4</code></pre></div>
 <p>Other options for a <code>dfm()</code> include removing stopwords, and stemming the tokens.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make a dfm, removing stopwords and applying stemming</span>
-myStemMat &lt;-<span class="st"> </span><span class="kw">dfm</span>(myCorpus, <span class="dt">remove =</span> <span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
+myStemMat &lt;-<span class="st"> </span><span class="kw">dfm</span>(myCorpus, <span class="dt">remove =</span> <span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 myStemMat[, <span class="dv">1</span>:<span class="dv">5</span>]
 ## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
 ## 7 x 5 sparse Matrix of class &quot;dfmSparse&quot;
@@ -697,7 +697,7 @@ myStemMat[, <span class="dv">1</span>:<span class="dv">5</span>]
 <h3>Viewing the document-frequency matrix</h3>
 <p>The dfm can be inspected in the Enviroment pane in RStudio, or by calling R’s <code>View</code> function. Calling <code>plot</code> on a dfm will display a wordcloud using the <a href="link.">wordcloud package</a></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw">dfm</span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw">c</span>(<span class="st">&quot;will&quot;</span>, <span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>)), 
-             <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
+             <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 mydfm
 ## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre></div>
 <p>To access a list of the most frequently occurring features, we can use <code>topfeatures()</code>:</p>
@@ -720,7 +720,7 @@ mydfm
 <div id="grouping-documents-by-document-variable" class="section level3">
 <h3>Grouping documents by document variable</h3>
 <p>Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw">dfm</span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">&quot;party&quot;</span>, <span class="dt">remove =</span> <span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw">dfm</span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">&quot;party&quot;</span>, <span class="dt">remove =</span> <span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>We can sort this dfm, and inspect it:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sort</span>(byPartyDfm)[, <span class="dv">1</span>:<span class="dv">10</span>]
 ## Warning: 'sort.dfm' is deprecated.
@@ -773,7 +773,7 @@ liwcdfm[, <span class="dv">1</span>:<span class="dv">10</span>]</code></pre></di
 <h2>Similarities between texts</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw">dfm</span>(<span class="kw">corpus_subset</span>(data_corpus_inaugural, Year&gt;<span class="dv">1980</span>), 
                <span class="dt">remove =</span> <span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>),
-               <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
+               <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 obamaSimil &lt;-<span class="st"> </span><span class="kw">textstat_simil</span>(presDfm, <span class="kw">c</span>(<span class="st">&quot;2009-Obama&quot;</span> , <span class="st">&quot;2013-Obama&quot;</span>), <span class="dt">n =</span> <span class="ot">NULL</span>, 
                              <span class="dt">margin =</span> <span class="st">&quot;documents&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;cosine&quot;</span>)
 <span class="kw">dotchart</span>(<span class="kw">as.list</span>(obamaSimil)$<span class="st">&quot;2009-Obama&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Cosine similarity&quot;</span>)</code></pre></div>
@@ -781,7 +781,7 @@ obamaSimil &lt;-<span class="st"> </span><span class="kw">textstat_simil</span>(
 <p>We can use these distances to plot a dendrogram, clustering presidents:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(SOTUCorpus, <span class="dt">package=</span><span class="st">&quot;quantedaData&quot;</span>)
 presDfm &lt;-<span class="st"> </span><span class="kw">dfm</span>(<span class="kw">corpus_subset</span>(SOTUCorpus, Date &gt;<span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;1960-01-01&quot;</span>)), <span class="dt">verbose =</span> <span class="ot">FALSE</span>, <span class="dt">stem =</span> <span class="ot">TRUE</span>,
-               <span class="dt">remove =</span> <span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
+               <span class="dt">remove =</span> <span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 presDfm &lt;-<span class="st"> </span><span class="kw">dfm_trim</span>(presDfm, <span class="dt">min_count=</span><span class="dv">5</span>, <span class="dt">min_docfreq=</span><span class="dv">3</span>)
 <span class="co"># hierarchical clustering - get distances on normalized dfm</span>
 presDistMat &lt;-<span class="st"> </span><span class="kw">dist</span>(<span class="kw">as.matrix</span>(<span class="kw">weight</span>(presDfm, <span class="st">&quot;relFreq&quot;</span>)))
@@ -844,9 +844,9 @@ if (<span class="kw">require</span>(topicmodels)) {
 ## 
 ##     dtm2ldaformat, ldaformat2dtm
 ##      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF
-## [1,]         20         7         18         6        9        1           4          12           8        16             2         13          10           3
-## [2,]         17         2          5        11       19       16           2          15          12        17             9         10           2          10
-## [3,]         16         8         19        16       14        2          16          16          10        14            20          2          13           2</code></pre></div>
+## [1,]         11        19         10        17        3       14           7           9           5        20            16          5          12           4
+## [2,]          1        12          6         8       18       20          16          13          14         2            18         12          18          15
+## [3,]          2        16          2        20       20       16          12          20          13        13            11         16          16          16</code></pre></div>
 </div>
 </div>
 

@@ -21,7 +21,7 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
     tcm <- tcm[order(rownames(tcm)), order(colnames(tcm))]
     tcm[lower.tri(tcm,diag = FALSE)] <- 0
     
-    toks <- tokenize(char_tolower(txt), removePunct = TRUE)
+    toks <- tokenize(char_tolower(txt), remove_punct = TRUE)
     fcm <- fcm(toks, context = "window", count = "weighted", window = 3)
     fcm <- fcm_sort(fcm)
     diag(fcm) <- 0
@@ -242,7 +242,7 @@ test_that("window = 3",{
 test_that("fcm.dfm works same as fcm.tokens", {
     txt <- c("The quick brown fox jumped over the lazy dog.",
              "The dog jumped and ate the fox.")
-    toks <- tokens(char_tolower(txt), removePunct = TRUE)
+    toks <- tokens(char_tolower(txt), remove_punct = TRUE)
     expect_equal(fcm(toks, context = "document"),
                  fcm(dfm(toks), context = "document"))
 })
@@ -250,7 +250,7 @@ test_that("fcm.dfm works same as fcm.tokens", {
 test_that("fcm.dfm only works for context = \"document\"", {
     txt <- c("The quick brown fox jumped over the lazy dog.",
              "The dog jumped and ate the fox.")
-    toks <- tokens(char_tolower(txt), removePunct = TRUE)
+    toks <- tokens(char_tolower(txt), remove_punct = TRUE)
     expect_error(fcm(dfm(toks), context = "window"),
                  "fcm.dfm only works on context = \"document\"")
 })
@@ -258,7 +258,7 @@ test_that("fcm.dfm only works for context = \"document\"", {
 test_that("fcm.dfm does works for context = \"document\" with weighed counts", {
     txt <- c("The quick brown fox jumped over the lazy dog.",
              "The dog jumped and ate the fox.")
-    toks <- tokens(char_tolower(txt), removePunct = TRUE)
+    toks <- tokens(char_tolower(txt), remove_punct = TRUE)
     expect_error(fcm(dfm(toks), context = "document", count = "weighted"),
                  "Cannot have weighted counts with context = \"document\"")
 })
@@ -267,8 +267,8 @@ test_that("fcm works as expected for tokens_hashed", {
     
     txt <- c("The quick brown fox jumped over the lazy dog.",
              "The dog jumped and ate the fox.")
-    toks <- tokenize(char_tolower(txt), removePunct = TRUE)
-    toksh <- tokens(char_tolower(txt), removePunct = TRUE)
+    toks <- tokenize(char_tolower(txt), remove_punct = TRUE)
+    toksh <- tokens(char_tolower(txt), remove_punct = TRUE)
     classic <- fcm(toks, context = "window", window = 3)
     hashed <- fcm(toksh, context = "window", window = 3)
     expect_equivalent(classic, hashed)

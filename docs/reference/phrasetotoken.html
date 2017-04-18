@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -140,36 +135,23 @@ or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.htm
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mytexts</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"The new law included a capital gains tax, and an inheritance tax."</span>,
-             <span class='st'>"New York City has raised a taxes: an income tax and a sales tax."</span>)
-<span class='no'>mydict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>tax</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"tax"</span>, <span class='st'>"income tax"</span>, <span class='st'>"capital gains tax"</span>, <span class='st'>"inheritance tax"</span>)))
-(<span class='no'>cw</span> <span class='kw'>&lt;-</span> <span class='fu'>phrasetotoken</span>(<span class='no'>mytexts</span>, <span class='no'>mydict</span>))</div><div class='output co'>#&gt; [1] &quot;The new law included a capital_gains_tax, and an inheritance_tax.&quot;
-#&gt; [2] &quot;New York City has raised a taxes: an income_tax and a sales tax.&quot; </div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>cw</span>, <span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 20 features (37.5% sparse).
-#&gt; 2 x 20 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;        features
-#&gt; docs    the new law included a capital_gains_tax , and an inheritance_tax .
-#&gt;   text1   1   1   1        1 1                 1 1   1  1               1 1
-#&gt;   text2   0   1   0        0 2                 0 0   1  1               0 1
-#&gt;        features
-#&gt; docs    york city has raised taxes : income_tax sales tax
-#&gt;   text1    0    0   0      0     0 0          0     0   0
-#&gt;   text2    1    1   1      1     1 1          1     1   1</div><div class='input'>
-<span class='co'># when used as a dictionary for dfm creation</span>
-<span class='no'>mydfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>cw</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>lapply</span>(<span class='no'>mydict</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>gsub</span>(<span class='st'>" "</span>, <span class='st'>"_"</span>, <span class='no'>x</span>))))
-<span class='no'>mydfm2</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 1 feature (0% sparse).
-#&gt; 2 x 1 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;        features
-#&gt; docs    tax
-#&gt;   text1   2
-#&gt;   text2   2</div><div class='input'><span class='co'># to pick up "taxes" in the second text, set valuetype = "regex"</span>
-<span class='no'>mydfm3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>cw</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>lapply</span>(<span class='no'>mydict</span>, <span class='no'>phrasetotoken</span>, <span class='no'>mydict</span>)),
-              <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)
-<span class='no'>mydfm3</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 1 feature (0% sparse).
-#&gt; 2 x 1 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;        features
-#&gt; docs    tax
-#&gt;   text1   2
-#&gt;   text2   3</div><div class='input'><span class='co'>## one more token counted for "tax" than before</span>
+    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
+<span class='co'># mytexts &lt;- c("The new law included a capital gains tax, and an inheritance tax.",</span>
+<span class='co'>#              "New York City has raised a taxes: an income tax and a sales tax.")</span>
+<span class='co'># mydict &lt;- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))</span>
+<span class='co'># (cw &lt;- phrasetotoken(mytexts, mydict))</span>
+<span class='co'># dfm(cw, verbose=FALSE)</span>
+<span class='co'># </span>
+<span class='co'># # when used as a dictionary for dfm creation</span>
+<span class='co'># mydfm2 &lt;- dfm(cw, dictionary = dictionary(lapply(mydict, function(x) gsub(" ", "_", x))))</span>
+<span class='co'># mydfm2</span>
+<span class='co'># </span>
+<span class='co'># # to pick up "taxes" in the second text, set valuetype = "regex"</span>
+<span class='co'># mydfm3 &lt;- dfm(cw, dictionary = dictionary(lapply(mydict, phrasetotoken, mydict)),</span>
+<span class='co'>#               valuetype = "regex")</span>
+<span class='co'># mydfm3</span>
+<span class='co'># ## one more token counted for "tax" than before</span>
+<span class='co'>## ---------------------------------------------</span>
 <span class='co'># using a dictionary to pre-process multi-word expressions</span>
 <span class='no'>myDict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>negative</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"bad* word*"</span>, <span class='st'>"negative"</span>, <span class='st'>"awful text"</span>),
                           <span class='kw'>postiive</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"good stuff"</span>, <span class='st'>"like? th??"</span>)))

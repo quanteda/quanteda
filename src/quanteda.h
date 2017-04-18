@@ -44,7 +44,10 @@ namespace quanteda{
     typedef std::vector<double> DoubleParams;
 #endif    
     
-    inline String join(CharacterVector &tokens_, String &delim_){
+
+    inline String join(CharacterVector &tokens_, 
+                       const String delim_ = " "){
+        
         if (tokens_.size() == 0) return "";
         String token_ = tokens_[0];
         for (unsigned int i = 1; i < (unsigned int)tokens_.size(); i++) {
@@ -55,7 +58,8 @@ namespace quanteda{
         return token_;
     }
     
-    inline std::string join(std::vector< std::string > &tokens, std::string &delim){
+    inline std::string join(std::vector<std::string> &tokens, 
+                            const std::string delim = " "){
         if (tokens.size() == 0) return "";
         std::string token = tokens[0];
         for (std::size_t i = 1; i < tokens.size(); i++) {
@@ -64,28 +68,31 @@ namespace quanteda{
         return token;
     }
     
-    inline String get_text(Text &tokens, const CharacterVector types_) {
+    inline String join(std::vector<unsigned int> &tokens, 
+                       CharacterVector types_, 
+                       const String delim_ = " ") {
         
-        if (tokens.size() == 0) {
-            return "";
-        } else {
-            String text_ = types_[tokens[0] - 1];
-            for (std::size_t j = 1; j < tokens.size(); j++) {
-                if (tokens[j] == 0) continue;
-                text_ += " ";
-                text_ += types_[tokens[j] - 1];
+        String token_("");
+        if (tokens.size() > 0) {
+            if (tokens[0] != 0) {
+                token_ += types_[tokens[0] - 1];
             }
-            text_.set_encoding(CE_UTF8);
-            return text_;
+            for (std::size_t j = 1; j < tokens.size(); j++) {
+                if (tokens[j] != 0) {
+                    token_ += delim_;
+                    token_ += types_[tokens[j] - 1];
+                }
+            }
+            token_.set_encoding(CE_UTF8);
         }
-    } 
+        return token_;
+    }
     
-
     inline bool has_na(IntegerVector vec_) {
         for (unsigned int i = 0; i < (unsigned int)vec_.size(); ++i) {
             if (vec_[i] == NA_INTEGER) return true;
         }
-       return false;
+        return false;
     }
     
     /* 
@@ -185,6 +192,15 @@ namespace quanteda{
         std::reverse(std::begin(spans), std::end(spans));
         return spans;
     }
+
+// These typedefs are used in fcm_mt, ca, wordfish_mt
+#if QUANTEDA_USE_TBB
+    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
+    typedef tbb::concurrent_vector<Triplet> Triplets;
+#else
+    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
+    typedef std::vector<Triplet> Triplets;
+#endif
 }
 
 #endif

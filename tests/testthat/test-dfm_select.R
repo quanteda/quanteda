@@ -27,16 +27,16 @@ test_that("test dfm_select, fixed", {
         c("BBB", "Aaaa")
     )
     expect_equal(
-        featnames(dfm_select(testdfm, c("aaaa", "bbb", "cc"), selection = "remove", valuetype = "fixed", min_nchar = 3, verbose = FALSE)),
-        c("a", "B", "c", "D", "e", "cc")
+        featnames(dfm_select(testdfm, c("bbb"), selection = "remove", valuetype = "fixed", min_nchar = 3, verbose = FALSE)),
+        c("Aaaa")
     )
     expect_equal(
         featnames(dfm_select(testdfm, c("aaaa", "bbb", "cc"), selection = "keep", valuetype = "fixed", min_nchar = 3, max_nchar = 3, verbose = FALSE)),
         c("BBB")
     )
     expect_equal(
-        featnames(dfm_select(testdfm, c("aaaa", "bbb", "cc"), selection = "remove", valuetype = "fixed", min_nchar = 3, max_nchar = 3, verbose = FALSE)),
-        c('a', 'B', 'c', 'D', 'e', 'Aaaa', 'cc')
+        featnames(dfm_select(testdfm, c("bbb"), selection = "remove", valuetype = "fixed", min_nchar = 3, max_nchar = 3, verbose = FALSE)),
+        character()
     )
 })
 
@@ -64,7 +64,7 @@ test_that("test dfm_select, glob", {
     )
     expect_equal(
         featnames(dfm_select(testdfm, feats, selection = "remove", valuetype = "glob", min_nchar = 3, verbose = FALSE)),
-        c("a", "B", "c", "D", 'e', 'cc')
+        character()
     )
 })
 
@@ -76,7 +76,7 @@ test_that("test dfm_select, regex", {
     )
     expect_equal(
         featnames(dfm_select(testdfm, feats, selection = "remove", valuetype = "regex", verbose = FALSE)),
-        NULL
+        character()
     )
     expect_equal(
         featnames(dfm_select(testdfm, feats, selection = "keep", valuetype = "regex", case_insensitive = FALSE, verbose = FALSE)),
@@ -92,12 +92,12 @@ test_that("test dfm_select, regex", {
     )
     expect_equal(
         featnames(dfm_select(testdfm, feats, selection = "remove", valuetype = "regex", min_nchar = 3, verbose = FALSE)),
-        c("a", "B", "c", "D", "e", "cc")
+        character()
     )
 })
 
 test_that("glob works if results in no features", {
-    expect_equal(featnames(dfm_select(testdfm, "notthere")), NULL)
+    expect_equal(featnames(dfm_select(testdfm, "notthere")), character())
 })
 
 test_that("featnames.NULL, docnames.NULL works as expected", {
@@ -110,12 +110,12 @@ test_that("selection that is out of bounds", {
     
     expect_equal(
         featnames(dfm_select(testdfm, selection = "keep", min_nchar = 5)),
-        NULL
-    )             
+        character()
+    )      
 
     expect_equal(
         featnames(dfm_select(testdfm, selection = "remove", min_nchar = 5)),
-        featnames(testdfm)
+        character()
     )
 
     # some tests for docnames and featnames
@@ -182,16 +182,16 @@ test_that("test dfm_select with features from a dfm,  fixed", {
              doc3 = "Aaaa BBB cc")
     testdfm <- dfm(txt, tolower = FALSE)  
     expect_equal(
-        colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), case_insensitive = TRUE)),
+        colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), case_insensitive = TRUE, min_nchar = 1)),
         c(a = 2, b = 0, c = 2)
     )
     expect_equal(
-        colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), case_insensitive = FALSE)),
+        colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), case_insensitive = FALSE, min_nchar = 1)),
         c(a = 2, b = 0, c = 2)
     )
     
     expect_equal(
-        colSums(dfm_select(testdfm, dfm(c("a", "b", "c")))),
+        colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), min_nchar = 1)),
         c(a=2, b = 0, c=2)
     )
 })
@@ -204,5 +204,37 @@ test_that("dfm_select returns equal feature sets", {
     dfm3 <- dfm_select(dfm1, dfm2)
     expect_true(setequal(featnames(dfm2), featnames(dfm3)))
 })
+
+test_that("dfm_select removes padding", {
+    
+    txts <- c(d1 = "This is text one", d2 = "The second text", d3 = "This is text three")
+    toks <- tokens(txts)
+    toks <- tokens_remove(toks, stopwords(), padding = TRUE)
+    testdfm <- dfm(toks)
+    expect_true('' %in% featnames(testdfm))
+    testdfm <- dfm_remove(dfm(toks), '')
+    expect_false('' %in% featnames(testdfm))
+    
+})
+
+test_that("dfm_select raises warning when padding = TRUE but not valuetype = fixed", {
+    
+  expect_warning(dfm_select(testdfm, c('z', 'd', 'e'), padding = TRUE),
+                 "padding is used only when valuetype is 'fixed'")
+    
+})
+
+test_that("dfm_select return empty dfm when not maching features", {
+    
+    expect_equal(dim(dfm_select(testdfm, features = c('x', 'y', 'z'), documents = 'doc4')),
+                 c(0, 0))
+    
+    expect_equal(print(dfm_select(testdfm, features = c('x', 'y', 'z'))),
+                 NULL)
+})
+
+
+
+
 
 
