@@ -49,6 +49,7 @@ NULL
 #' @author Kenneth Benoit
 #' @keywords collocations internal
 #' @examples
+#' \dontrun{
 #' txt <- c("This is software testing: looking for (word) pairs!  
 #'          This [is] a software testing again. For.",
 #'          "Here: this is more Software Testing, looking again for word pairs.")
@@ -68,6 +69,7 @@ NULL
 #' collocations(data_char_inaugural[49:57], method = "all", n = 10)
 #' collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
 #' collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
+#' }
 collocations <- function(x,  method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
                          n = NULL, tolower = TRUE, 
                          punctuation = c("dontspan", "ignore", "include"), ...) {
