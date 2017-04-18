@@ -123,15 +123,16 @@ is.collocations <- function(x) {
 }
 
 
-#' #' @method "[" collocations
-#' #' @export
-#' #' @noRd
-#' "[.collocations" <- function(x, i, ...) {
-#'     x <- as.data.frame(x)[i,]
-#'     attr(x, 'ids') <- attr(x, 'ids')[i]
-#'     class(x) <- c("collocations", 'data.frame')
-#'     return(x)
-#' }
+#' @method "[" collocations
+#' @export
+#' @noRd
+"[.collocations" <- function(x, i, ...) {
+    x <- as.data.frame(x)[i,]
+    attr(x, 'tokens') <- attr(x, 'tokens')[i]
+    class(x) <- c("collocations", 'data.frame')
+    return(x)
+}
+
 #' 
 #' @export
 #' @method as.tokens collocations
