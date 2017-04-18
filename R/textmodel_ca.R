@@ -77,6 +77,10 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
     # SVD:
     if (sparse == FALSE){
         # generally fast for a not-so-large dfm
+        if (threads > 1){
+            threads <- 1
+            warning("threads reset to 1 when sparse = FALSE", call. = FALSE)
+        }
         eP <- Matrix::tcrossprod(rm, cm)
         S  <- (P - eP) / sqrt(eP)
     } else {

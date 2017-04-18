@@ -8,6 +8,7 @@ Check these declarations against the C/Fortran source code.
 */
 
 /* .Call calls */
+extern SEXP quanteda_cacpp(SEXP, SEXP, SEXP);
 extern SEXP quanteda_qatd_CanberraPara_cpp(SEXP, SEXP);
 extern SEXP quanteda_qatd_CanberraPara_cpp2(SEXP, SEXP, SEXP);
 extern SEXP quanteda_qatd_cpp_chars_remove(SEXP, SEXP);
@@ -33,6 +34,7 @@ extern SEXP quanteda_wordfishcpp_dense(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)
 extern SEXP quanteda_wordfishcpp_mt(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
+    {"quanteda_cacpp",                     (DL_FUNC) &quanteda_cacpp,                     3},
     {"quanteda_qatd_CanberraPara_cpp",     (DL_FUNC) &quanteda_qatd_CanberraPara_cpp,     2},
     {"quanteda_qatd_CanberraPara_cpp2",    (DL_FUNC) &quanteda_qatd_CanberraPara_cpp2,    3},
     {"quanteda_qatd_cpp_chars_remove",     (DL_FUNC) &quanteda_qatd_cpp_chars_remove,     2},

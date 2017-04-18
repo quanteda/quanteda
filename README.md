@@ -11,10 +11,29 @@ This version of the package is a transitional release prior to v1.0. It includes
 About the package
 -----------------
 
-An R package for managing and analyzing text, created by [Kenneth Benoit](kbenoit@lse.ac.uk) in collaboration with a team of core [contributors](https://github.com/kbenoit/quanteda/graphs/contributors): [Kohei Watanabe](https://github.com/koheiw), [Paul Nulty](https://github.com/pnulty), [Adam Obeng](https://github.com/adamobeng), [Haiyan Wang](https://github.com/HaiyanLW), [Ben Lauderdale](https://github.com/lauderdale), and [Will Lowe](https://github.com/conjugateprior).
+An R package for managing and analyzing text, created by [Kenneth Benoit](http://kenbenoit.net) in collaboration with a team of core [contributors](https://github.com/kbenoit/quanteda/graphs/contributors): [Kohei Watanabe](https://github.com/koheiw), [Paul Nulty](https://github.com/pnulty), [Adam Obeng](https://github.com/adamobeng), [Haiyan Wang](https://github.com/HaiyanLW), [Ben Lauderdale](https://github.com/lauderdale), and [Will Lowe](https://github.com/conjugateprior).
 Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 For more details, see the [**package website**](http://quanteda.io).
+
+How to cite the package:
+
+
+    To cite package 'quanteda' in publications please use the
+    following:
+
+      Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
+      Textual Data".  R package version: 0.9.9-48.
+      http://quanteda.io.
+
+    A BibTeX entry for LaTeX users is
+
+      @Manual{,
+        title = {quanteda: Quantitative Analysis of Textual Data},
+        author = {Kenneth Benoit and Paul Nulty and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
+        note = {R package version 0.9.9-48},
+        url = {http://quanteda.io},
+      }
 
 ### Leave feedback
 
@@ -137,7 +156,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Tue Apr 18 17:25:50 2017
+## Created: Tue Apr 18 19:08:59 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context

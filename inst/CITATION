@@ -1,18 +1,26 @@
-citHeader("To cite package 'quanteda' in publications please use the following.")
+citHeader("To cite package 'quanteda' in publications please use the following:")
 
 if (!exists("meta") || is.null(meta)) 
     meta <- packageDescription("quanteda")
+year <- substring(meta$Date, 1, 4)
+note <- paste("R package version", meta$Version)
+url <- "http://quanteda.io"
 
 citEntry(entry = "Manual",
          title = "quanteda: Quantitative Analysis of Textual Data",
          author = personList(as.person("Kenneth Benoit"),
-                             as.person("Paul Nulty")),                            
-         year = (year <- substring(meta$Date, 1, 4)),
-         note = (note <- paste("R package version", meta$Version)),
-         url = "https://github.com/kbenoit/quanteda",
-         
+                             as.person("Kohei Watanabe"),
+                             as.person("Paul Nulty"),
+                             as.person("Adam Obeng"),
+                             as.person("Haiyan Wang"),
+                             as.person("Benjamin Lauderdale"),
+                             as.person("Will Lowe")),
+         year = year,
+         note = note,
+         url = url,
          textVersion = 
-             sprintf("Benoit, Kenneth and Paul Nulty.  (%s).  \"quanteda: Quantitative Analysis of 
-                     Textual Data\".  R package version: %s.  URL https://github.com/kbenoit/quanteda", 
-                     year, meta$Version)
+             paste0("Benoit, Kenneth et. al. (", year, 
+                    ").  \"quanteda: Quantitative Analysis of Textual Data\".  R package version: ", 
+                    meta$Version, ".  ", url, ".")
 )
+
