@@ -165,7 +165,6 @@ char_segment.character <- function(x,
     
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
-    
     names_org <- names(x)
     
     # normalize EOL
@@ -173,7 +172,6 @@ char_segment.character <- function(x,
     x <- stringi::stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     names(x) <- names_org
-    
     result <- segment_texts(x, what, delimiter, valuetype, ...)
     result <- result[result!='']
     
