@@ -13,3 +13,14 @@ test_that("readability count is ok", {
     expect_equal(round(textstat_readability("The cat in the hat ate breakfast.", "Flesch")), c(text1 = 103))
     expect_equal(textstat_readability("The cat in the hat ate breakfast.", "FOG"), c(text1 = 2.8))
 })
+
+test_that("readability works with sentence length filtering", {
+    txt <- c("PAGE 1. This is a single sentence.  Short sentence. Three word sentence.",
+             "PAGE 2. Very short! Shorter.",
+             "Very long sentence, with multiple parts, separated by commas.  PAGE 3.")
+    rdb <- textstat_readability(txt)
+    expect_equal(round(rdb$meanSentenceLength, 2), c(3, 1.67, 5.50))
+    
+    rdb2 <- textstat_readability(txt, min_sentence_length = 3)
+    expect_equal(round(rdb2$meanSentenceLength, 2), c(4, 9))
+})

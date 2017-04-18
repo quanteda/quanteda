@@ -12,6 +12,6 @@ data_char_sampletext
 This is a long paragraph (2,914 characters) of text taken from an Irish budget speech by Joe Higgins.
 }
 \examples{
-tokenize(data_char_sampletext, removePunct = TRUE)
+tokenize(data_char_sampletext, remove_punct = TRUE)
 }
 \keyword{data}

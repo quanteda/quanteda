@@ -20,19 +20,16 @@ How to cite the package:
 
 
     To cite package 'quanteda' in publications please use the
-    following:
+    following.
 
-      Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
-      Textual Data".  R package version: 0.9.9-39.  URL
-      https://github.com/kbenoit/quanteda.
 
     A BibTeX entry for LaTeX users is
 
       @Manual{,
         title = {quanteda: Quantitative Analysis of Textual Data},
-        author = {Kenneth Benoit and Paul Nulty and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
-        note = {R package version 0.9.9-39},
-        url = {http://quanteda.io},
+        author = {Kenneth Benoit and Paul Nulty},
+        note = {R package version 0.9.9-48},
+        url = {https://github.com/kbenoit/quanteda},
       }
 
 ### Leave feedback
@@ -133,7 +130,7 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.39
+## quanteda version 0.9.9.48
 ## Using 7 of 8 cores for parallel computing
 ## 
 ## Attaching package: 'quanteda'
@@ -163,20 +160,20 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Fri Mar 24 09:03:55 2017
+## Created: Tue Apr 18 18:54:30 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
 kwic(uk2010immigCorpus, "deport", 3)
-##                                                                         
-## [BNP, 159:159]          The BNP will | deport | all foreigners convicted
-## [BNP, 1970:1970]                . 2. | Deport | all illegal immigrants  
-## [BNP, 1976:1976] immigrants We shall | deport | all illegal immigrants  
-## [BNP, 2621:2621]  Criminals We shall | deport | all criminal entrants
+##                                                                     
+##   [BNP, 159]        The BNP will | deport | all foreigners convicted
+##  [BNP, 1970]                . 2. | Deport | all illegal immigrants  
+##  [BNP, 1976] immigrants We shall | deport | all illegal immigrants  
+##  [BNP, 2621]  Criminals We shall | deport | all criminal entrants
 
 # create a dfm, removing stopwords
 mydfm <- dfm(uk2010immigCorpus, remove = c("will", stopwords("english")),
-             removePunct = TRUE)
+             remove_punct = TRUE)
 mydfm
 ## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).
 

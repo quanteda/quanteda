@@ -5,7 +5,7 @@
 \title{detect collocations from text}
 \usage{
 collocations(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2,
-  n = NULL, toLower = TRUE, punctuation = c("dontspan", "ignore",
+  n = NULL, tolower = TRUE, punctuation = c("dontspan", "ignore",
   "include"), ...)
 }
 \arguments{
@@ -31,7 +31,7 @@ coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
 \item{n}{the number of collocations to return, sorted in descending order of 
 the requested statistic, or \eqn{G^2} if none is specified.}
 
-\item{toLower}{convert collocations to lower case if \code{TRUE} (default)}
+\item{tolower}{convert collocations to lower case if \code{TRUE} (default)}
 
 \item{punctuation}{how to handle tokens separated by punctuation characters.  Options are:
 \describe{
@@ -57,25 +57,27 @@ default (\code{spanPunct = FALSE})  as adjacent and hence are not eligible to
 be collocations.
 }
 \examples{
+\dontrun{
 txt <- c("This is software testing: looking for (word) pairs!  
          This [is] a software testing again. For.",
          "Here: this is more Software Testing, looking again for word pairs.")
 collocations(txt, punctuation = "dontspan") # default
-collocations(txt, punctuation = "dontspan", removePunct = TRUE)  # includes "testing looking"
-collocations(txt, punctuation = "ignore", removePunct = TRUE)    # same as previous 
-collocations(txt, punctuation = "include", removePunct = FALSE)  # keep punctuation as tokens
+collocations(txt, punctuation = "dontspan", remove_punct = TRUE)  # includes "testing looking"
+collocations(txt, punctuation = "ignore", remove_punct = TRUE)    # same as previous 
+collocations(txt, punctuation = "include", remove_punct = FALSE)  # keep punctuation as tokens
 
 collocations(txt, size = 2:3)
 removeFeatures(collocations(txt, size = 2:3), stopwords("english"))
 
 collocations("@textasdata We really, really love the #quanteda package - thanks!!")
 collocations("@textasdata We really, really love the #quanteda package - thanks!!",
-              removeTwitter = TRUE)
+              remove_twitter = TRUE)
 
 collocations(data_char_inaugural[49:57], n = 10)
 collocations(data_char_inaugural[49:57], method = "all", n = 10)
 collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
 collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
+}
 }
 \references{
 McInnes, B T. 2004. "Extending the Log Likelihood Measure to 
@@ -88,3 +90,5 @@ McInnes, B T. 2004. "Extending the Log Likelihood Measure to
 \author{
 Kenneth Benoit
 }
+\keyword{collocations}
+\keyword{internal}

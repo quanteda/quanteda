@@ -11,7 +11,7 @@ selectFeaturesOLD <- function(x, ...) UseMethod("selectFeaturesOLD")
 #' @export
 #' @examples
 #' toks <- tokenize(c("This is some example text from me.", "More of the example text."), 
-#'                  removePunct = TRUE)
+#'                  remove_punct = TRUE)
 #' selectFeaturesOLD(toks, stopwords("english"), "remove")
 #' selectFeaturesOLD(toks, "ex", "keep", valuetype = "regex")
 selectFeaturesOLD.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 

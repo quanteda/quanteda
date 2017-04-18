@@ -1,7 +1,8 @@
 #' plot a fitted scaling model
 #' 
 #' Plot the results of a fitted scaling model, from (e.g.) a predicted 
-#' \link{textmodel_wordscores} model or a fitted \link{textmodel_wordfish}
+#' \link{textmodel_wordscores} model or a fitted \link{textmodel_wordfish} 
+#' or \link{textmodel_ca}
 #' model. Either document or feature parameters may be plotted: an ideal
 #' point-style plot (estimated document position plus confidence interval on the
 #' x-axis, document labels on the y-axis) with optional renaming and sorting, or
@@ -28,30 +29,42 @@
 #'   applies if \code{margin = "features"}
 #' @return a \pkg{ggplot2} object
 #' @export
-#' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
-#'   for Estimating Time-Series Party Positions from Texts." \emph{American 
-#'   Journal of Political Science} 52(3):705-772.
-#' @author Kenneth Benoit, Stefan Mueller, and Adam Obeng
+#' @author Kenneth Benoit, Stefan Müller, and Adam Obeng
+#' @seealso \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
+#'   \code{\link{coef.textmodel}}
 #' @keywords textplot
 #' @examples
-#' ## wordfish
-#' wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
-#' 
-#' # plot estimated document positions
+#' ie_dfm <- dfm(data_corpus_irishbudget2010)
 #' doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
 #'                 1, paste, collapse = " ")
+#' 
+#' ## wordscores
+#' refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
+#' ws <- textmodel(ie_dfm, refscores, model="wordscores", smooth = 1)
+#' pred <- predict(ws)
+#' \donttest{# plot estimated word positions
+#' textplot_scale1d(pred, margin = "features", 
+#'                  highlighted = c("minister", "have", "our", "budget"))}
+#' # plot estimated document positions
+#' textplot_scale1d(pred, margin = "documents",
+#'                  doclabels = doclab,
+#'                  groups = docvars(data_corpus_irishbudget2010, "party"))
+#'
+#' ## wordfish
+#' wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
+#' # plot estimated document positions
 #' textplot_scale1d(wfm, doclabels = doclab)
 #' textplot_scale1d(wfm, doclabels = doclab,
 #'                  groups = docvars(data_corpus_irishbudget2010, "party"))
-#' 
-#' # plot estimated word positions
+#' \donttest{# plot estimated word positions
 #' textplot_scale1d(wfm, margin = "features", 
 #'                  highlighted = c("government", "global", "children", 
 #'                                  "bank", "economy", "the", "citizenship",
-#'                                  "productivity", "deficit"))
+#'                                  "productivity", "deficit"))}
 textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels = NULL, 
-                              sort = TRUE, groups = NULL, highlighted = NULL, alpha = 0.7, 
-                              highlighted_color = "black") {
+                             sort = TRUE, groups = NULL, 
+                             highlighted = NULL, alpha = 0.7, 
+                             highlighted_color = "black") {
     UseMethod("textplot_scale1d")
 }
 
@@ -61,67 +74,156 @@ textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels =
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
 #' @importFrom ggplot2 facet_grid element_line
 #' @export
-textplot_scale1d.textmodel_wordfish_fitted <- 
-    function(x, margin = c("documents", "features"), doclabels = NULL, 
-             sort = TRUE, groups = NULL, highlighted = NULL, alpha = 0.7, 
-             highlighted_color = "black") {
-        
+textplot_scale1d.textmodel_wordfish_fitted <-  function(x, 
+                                                        margin = c("documents", "features"), 
+                                                        doclabels = NULL, 
+                                                        sort = TRUE, groups = NULL, 
+                                                        highlighted = NULL, alpha = 0.7, 
+                                                        highlighted_color = "black") {
     margin <- match.arg(margin)
+    if (is.null(doclabels)) doclabels <- x@docs
     
     if (margin == "documents") {
-        n <- length(x@theta)
-        if (is.null(doclabels)) 
-            doclabels <- x@docs
-        stopifnot(length(doclabels) == n)
-        
-        if (sort & !is.null(groups)) {
-            temp_medians <- aggregate(x@theta, list(groups), median, na.rm = TRUE)
-            groups <- factor(groups, levels = temp_medians[order(temp_medians$x, decreasing = TRUE), 1])
-        }
-        
-        theta <- lower <- upper <- NULL
-        results <- data.frame(doclabels = doclabels, 
-                              theta = x@theta, 
-                              lower = x@theta - 1.96 * x@se.theta, 
-                              upper = x@theta + 1.96 * x@se.theta)
-        if (!is.null(groups))
-            results$groups <- groups
+        p <- textplot_scale1d_documents(coef(x)$coef_document, coef(x)$coef_document_se, 
+                                        doclabels = doclabels, sort = sort, groups = groups) +
+            ylab("Estimated theta")
+    } else if (margin == "features") {
+        p <- textplot_scale1d_features(coef(x)$coef_feature, 
+                                       weight = coef(x)$coef_feature_offset, 
+                                       featlabels = x@features,
+                                       highlighted = highlighted, alpha = alpha,
+                                       highlighted_color = highlighted_color) +
+            xlab("Estimated beta") +
+            ylab("Estimated psi")
+    } 
+    apply_theme(p)
+} 
 
-        p <- if (sort) {
-            ggplot(data = results, aes(x = reorder(doclabels, theta), y = theta))
-        } else {
-            ggplot(data = results, aes(x = doclabels, y = theta))
-        }
-        p <- p + 
-            coord_flip() + 
-            { if (!is.null(groups))
-                facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free") } +       
-            geom_pointrange(aes(ymin = lower, ymax = upper), lwd = .25, fatten = .4) + 
-            geom_point(size = 1) +
-            ylab("Estimated theta") + 
-            xlab(NULL)
+     
+#' @noRd
+#' @importFrom stats reorder aggregate
+#' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
+#' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
+#' @importFrom ggplot2 facet_grid element_line
+#' @export
+textplot_scale1d.textmodel_wordscores_predicted <- function(x, 
+                                                            margin = c("documents", "features"), 
+                                                            doclabels = NULL, 
+                                                            sort = TRUE, groups = NULL, 
+                                                            highlighted = NULL, alpha = 0.7, 
+                                                            highlighted_color = "black") {
+    margin <- match.arg(margin)
+    if (is.null(doclabels)) doclabels <- docnames(x@newdata)
+    
+    if (margin == "documents") {
+        p <- textplot_scale1d_documents(coef(x)$coef_document, coef(x)$coef_document_se, 
+                                        doclabels = doclabels, sort = sort, groups = groups) +
+            
+              ylab("Document position")
         
+    } else if (margin == "features") {
+        p <- textplot_scale1d_features(x@Sw, 
+                                       weight = log(colSums(x@x[, names(x@Sw)])),
+                                       featlabels = featnames(x@x[, names(x@Sw)]),
+                                       highlighted = highlighted, alpha = alpha,
+                                       highlighted_color = highlighted_color) +
+            xlab("Word score") +
+            ylab("log(term frequency)") 
+    } 
+    apply_theme(p)
+}
 
+#' @noRd
+#' @importFrom stats reorder aggregate
+#' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
+#' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
+#' @importFrom ggplot2 facet_grid element_line
+#' @export
+textplot_scale1d.textmodel_ca_fitted <- function(x, 
+                                                    margin = c("documents", "features"), 
+                                                    doclabels = NULL, 
+                                                    sort = TRUE, groups = NULL, 
+                                                    highlighted = NULL, alpha = 0.7, 
+                                                    highlighted_color = "black") {
+    margin <- match.arg(margin)
+    if (is.null(doclabels)) doclabels <- x$rownames
+    
+    if (margin == "documents") {
+        p <- textplot_scale1d_documents(coef(x)$coef_document, coef(x)$coef_document_se, 
+                                        doclabels = doclabels, sort = sort, groups = groups) +
+            ylab("Document position")
+        
     } else {
-        beta <- psi <- feature <- NULL
-        results <- data.frame(feature = x@features, 
-                              psi = x@psi,
-                              beta = x@beta)
-        p <- 
-            ggplot(data = results,
-                            aes(x = beta, y = psi, label = feature)) + 
-            geom_text(colour = "grey70") +
-            geom_text(aes(beta, psi, label = feature), 
-                      data = results[results$feature %in% highlighted,],
-                      color = highlighted_color) +
-            xlab("Beta") +
-            ylab("Psi") + 
-            theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+        stop("textplot_scale1d for features not implemented for CA models")
+    }
+    apply_theme(p)
+}
+
+
+##
+## internal function to plot document scaling
+##
+textplot_scale1d_documents <- function(x, se, doclabels, sort = TRUE, groups = NULL) {
+
+    if (!is.null(doclabels))
+        stopifnot(length(doclabels) == length(x))
+    
+    if (sort & !is.null(groups)) {
+        temp_medians <- aggregate(x, list(groups), median, na.rm = TRUE)
+        groups <- factor(groups, levels = temp_medians[order(temp_medians$x, decreasing = TRUE), 1])
     }
     
-    # apply a minimal theme
+    theta <- lower <- upper <- NULL
+    results <- data.frame(doclabels = doclabels, 
+                          theta = x, 
+                          lower = x - 1.96 * se, 
+                          upper = x + 1.96 * se)
+    if (!is.null(groups))
+        results$groups <- groups
+    
+    p <- if (sort) {
+        ggplot(data = results, aes(x = reorder(doclabels, theta), y = theta))
+    } else {
+        ggplot(data = results, aes(x = doclabels, y = theta))
+    }
+    
     p <- p + 
-        theme_bw() + 
+        coord_flip() + 
+        { if (!is.null(groups))
+            facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free") } +       
+        geom_pointrange(aes(ymin = lower, ymax = upper), lwd = .25, fatten = .4) + 
+        geom_point(size = 1) +
+        xlab(NULL)
+    p
+}
+
+##
+## internal function to plot document scaling
+##
+textplot_scale1d_features <- function(x, weight, featlabels,
+                                      highlighted = NULL, alpha = 0.7, 
+                                      highlighted_color = "black") {
+        
+    beta <- psi <- feature <- NULL
+    results <- data.frame(feature = featlabels, 
+                          psi = weight,
+                          beta = x)
+    p <- ggplot(data = results, aes(x = beta, y = psi, label = feature)) + 
+        geom_text(colour = "grey70") +
+        geom_text(aes(beta, psi, label = feature), 
+                  data = results[results$feature %in% highlighted,],
+                  color = highlighted_color) +
+        xlab("Beta") +
+        ylab("Psi") + 
+        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+    p
+}
+
+##
+## common minimal B&W theme
+##
+apply_theme <- function(p) {
+    p + theme_bw() + 
         theme(panel.background = ggplot2::element_blank(),
               panel.grid.major.x = element_blank(),
               panel.grid.minor.x = element_blank(), 
@@ -131,8 +233,4 @@ textplot_scale1d.textmodel_wordfish_fitted <-
               axis.ticks.y = element_blank(), 
               # panel.spacing = grid::unit(0.1, "lines"),
               panel.grid.major.y = element_line(linetype = "dotted"))
-    
-    suppressMessages(p)
 }
-
-

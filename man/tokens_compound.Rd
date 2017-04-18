@@ -44,7 +44,7 @@ subsequently as single tokens, for instance in constructing a \link{dfm}.
 \examples{
 mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
              "New York City has raised taxes: an income tax and inheritance taxes.")
-mytoks <- tokens(mytexts, removePunct = TRUE)
+mytoks <- tokens(mytexts, remove_punct = TRUE)
 
 # for lists of sequence elements
 myseqs <- list(c("tax"), c("income", "tax"), c("capital", "gains", "tax"), c("inheritance", "tax"))
@@ -66,9 +66,10 @@ toks <- tokens(c(txt1 = "I liked this, when we can use bad words, in awful text.
 tokens_compound(toks, myDict)
 
 # with collocations
-collocs <- collocations("capital gains taxes are worse than inheritance taxes", size = 2:3)
-toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
-tokens_compound(toks, collocs)
+#cols <- textstat_collocations("capital gains taxes are worse than inheritance taxes", 
+#                              size = 2, min_count = 1)
+#toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
+#tokens_compound(toks, cols)
 }
 \author{
 Kenneth Benoit (R) and Kohei Watanabe (C++)

@@ -7,7 +7,7 @@
 tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
   "fixed"), concatenator = " ", case_insensitive = TRUE,
   capkeys = !exclusive, exclusive = TRUE, multiword = TRUE,
-  verbose = getOption("verbose"))
+  verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}
@@ -57,7 +57,7 @@ dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE))
 dict_fix <- dictionary(list(country = "united states", 
                        law = c('law', 'constitution'), 
                        freedom = c('freedom', 'liberty'))) 
-dfm(applyDictionary(toks, dict_fix, valuetype='fixed'))
+# dfm(applyDictionary(toks, dict_fix, valuetype='fixed'))
 dfm(tokens_lookup(toks, dict_fix, valuetype='fixed'))
 
 # hierarchical dictionary example

@@ -1,7 +1,7 @@
 Package: quanteda
-Version: 0.9.9-40
+Version: 0.9.9-48
 Title: Quantitative Analysis of Textual Data
-Description: A fast, flexible toolset for for the management, processing, and
+Description: A fast, flexible framework for for the management, processing, and
     quantitative analysis of textual data in R.
 Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     c("aut", "cre", "cph")), 
@@ -24,13 +24,13 @@ Imports:
     wordcloud,
     Rcpp,
     RcppParallel,
-    RcppArmadillo (>= 0.7.600.1.0),
-    ca,
+    RSpectra,
     stringi,
     fastmatch,
     ggplot2 (>= 2.2.0),
+    XML,
     yaml
-LinkingTo: Rcpp, RcppParallel, RcppArmadillo
+LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     knitr,
     rmarkdown,
@@ -39,12 +39,11 @@ Suggests:
     topicmodels,
     tm (>= 0.6),
     slam,
-    XML,
     testthat,
     RColorBrewer,
     xtable,
     DT
-URL: http://github.com/kbenoit/quanteda
+URL: http://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
@@ -57,6 +56,7 @@ Collate:
     'dictionaries.R'
     'corpus.R'
     'collocations.R'
+    'collocations2.R'
     'convert.R'
     'corpus-deprecated.R'
     'corpus-methods-base.R'
@@ -65,6 +65,7 @@ Collate:
     'corpus_sample.R'
     'corpus_segment.R'
     'corpus_subset.R'
+    'corpus_trimsentences.R'
     'corpuszip.R'
     'data-deprecated.R'
     'data-documentation.R'
@@ -86,13 +87,13 @@ Collate:
     'fcm.R'
     'joinTokens-deprecated.R'
     'kwic.R'
-    'kwic_old.R'
     'nfunctions.R'
     'nscrabble.R'
     'nsyllable.R'
     'phrases.R'
     'plots-deprecated.R'
     'quanteda.R'
+    'quanteda_options.R'
     'readtext-methods.R'
     'regex2fixed.R'
     'resample.R'
@@ -102,21 +103,22 @@ Collate:
     'settings.R'
     'similarity.R'
     'stopwords.R'
-    'textmodel-NB.R'
-    'textmodel-ca.R'
     'textmodel-generics.R'
     'textmodel-internal.R'
-    'textmodel-wordfish.R'
-    'textmodel-wordscores.R'
-    'textmodel-wordshoal.R'
+    'textmodel_NB.R'
+    'textmodel_ca.R'
+    'textmodel_wordfish.R'
+    'textmodel_wordscores.R'
+    'textmodel_wordshoal.R'
     'textplot_scale1d.R'
     'textplot_wordcloud.R'
     'textplot_xray.R'
     'textstat-deprecated.R'
-    'textstat-lexdiv.R'
-    'textstat-readability.R'
+    'textstat_collocations.R'
     'textstat_dist.R'
     'textstat_keyness.R'
+    'textstat_lexdiv.R'
+    'textstat_readability.R'
     'textstat_simil.R'
     'toLower.R'
     'tokenize.R'

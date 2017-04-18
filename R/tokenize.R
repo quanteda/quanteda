@@ -34,28 +34,28 @@ tokenize <- function(x, ...) {
 #'   \item{\code{"sentence"}}{sentence segmenter, smart enough to handle some 
 #'   exceptions in English such as "Prof. Plum killed Mrs. Peacock." (but far 
 #'   from perfect).} }
-#' @param removeNumbers remove tokens that consist only of numbers, but not 
+#' @param remove_numbers remove tokens that consist only of numbers, but not 
 #'   words that start with digits, e.g. \code{2day}
-#' @param removePunct if \code{TRUE}, remove all characters in the Unicode 
+#' @param remove_punct if \code{TRUE}, remove all characters in the Unicode 
 #'   "Punctuation" [P] class
-#' @param removeSymbols if \code{TRUE}, remove all characters in the Unicode 
+#' @param remove_symbols if \code{TRUE}, remove all characters in the Unicode 
 #'   "Symbol" [S] class
-#' @param removeTwitter remove Twitter characters \code{@@} and \code{#}; set to
+#' @param remove_twitter remove Twitter characters \code{@@} and \code{#}; set to
 #'   \code{TRUE} if you wish to eliminate these.
-#' @param removeURL if \code{TRUE}, find and eliminate URLs beginning with
+#' @param remove_url if \code{TRUE}, find and eliminate URLs beginning with
 #'   http(s) -- see section "Dealing with URLs".
-#' @param removeHyphens if \code{TRUE}, split words that are connected by 
+#' @param remove_hyphens if \code{TRUE}, split words that are connected by 
 #'   hyphenation and hyphenation-like characters in between words, e.g. 
 #'   \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is 
 #'   \code{FALSE} to preserve such words as is, with the hyphens.  Only applies 
 #'   if \code{what = "word"}.
-#' @param removeSeparators remove Separators and separator characters (spaces 
+#' @param remove_separators remove Separators and separator characters (spaces 
 #'   and variations of spaces, plus tab, newlines, and anything else in the 
-#'   Unicode "separator" category) when \code{removePunct=FALSE}.  Only 
+#'   Unicode "separator" category) when \code{remove_punct=FALSE}.  Only 
 #'   applicable for \code{what = "character"} (when you probably want it to be 
 #'   \code{FALSE}) and for \code{what = "word"} (when you probably want it to be
 #'   \code{TRUE}).  Note that if \code{what = "word"} and you set 
-#'   \code{removePunct = TRUE}, then \code{removeSeparators} has no effect.  Use
+#'   \code{remove_punct = TRUE}, then \code{remove_separators} has no effect.  Use
 #'   carefully.
 #' @param ngrams integer vector of the \emph{n} for \emph{n}-grams, defaulting 
 #'   to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for 
@@ -86,7 +86,7 @@ tokenize <- function(x, ...) {
 #' @section Dealing with URLs: URLs are tricky to tokenize, because they contain
 #'   a number of symbols and punctuation characters.  If you wish to remove 
 #'   these, as most people do, and your text contains URLs, then you should set
-#'   \code{what = "fasterword"} and \code{removeURL = TRUE}.  If you wish to
+#'   \code{what = "fasterword"} and \code{remove_url = TRUE}.  If you wish to
 #'   keep the URLs, but do not want them mangled, then your options are more
 #'   limited, since removing punctuation and symbols will also remove them from
 #'   URLs.  We are working on improving this behaviour.
@@ -103,47 +103,47 @@ tokenize <- function(x, ...) {
 #' head(tokenize(data_char_inaugural[57], simplify = TRUE), 10)
 #' 
 #' # removing punctuation marks and lowecasing texts
-#' head(tokenize(char_tolower(data_char_inaugural[57]), simplify = TRUE, removePunct = TRUE), 30)
+#' head(tokenize(char_tolower(data_char_inaugural[57]), simplify = TRUE, remove_punct = TRUE), 30)
 #' # keeping case and punctuation
 #' head(tokenize(data_char_inaugural[57], simplify = TRUE), 30)
 #' # keeping versus removing hyphens
-#' tokenize("quanteda data objects are auto-loading.", removePunct = TRUE)
-#' tokenize("quanteda data objects are auto-loading.", removePunct = TRUE, removeHyphens = TRUE)
+#' tokenize("quanteda data objects are auto-loading.", remove_punct = TRUE)
+#' tokenize("quanteda data objects are auto-loading.", remove_punct = TRUE, remove_hyphens = TRUE)
 #' # keeping versus removing symbols
-#' tokenize("<tags> and other + symbols.", removeSymbols = FALSE)
-#' tokenize("<tags> and other + symbols.", removeSymbols = TRUE)
-#' tokenize("<tags> and other + symbols.", removeSymbols = FALSE, what = "fasterword")
-#' tokenize("<tags> and other + symbols.", removeSymbols = TRUE, what = "fasterword")
+#' tokenize("<tags> and other + symbols.", remove_symbols = FALSE)
+#' tokenize("<tags> and other + symbols.", remove_symbols = TRUE)
+#' tokenize("<tags> and other + symbols.", remove_symbols = FALSE, what = "fasterword")
+#' tokenize("<tags> and other + symbols.", remove_symbols = TRUE, what = "fasterword")
 #' 
 #' ## examples with URLs - hardly perfect!
 #' txt <- "Repo https://githib.com/kbenoit/quanteda, and www.stackoverflow.com."
-#' tokenize(txt, removeURL = TRUE, removePunct = TRUE)
-#' tokenize(txt, removeURL = FALSE, removePunct = TRUE)
-#' tokenize(txt, removeURL = FALSE, removePunct = TRUE, what = "fasterword")
-#' tokenize(txt, removeURL = FALSE, removePunct = FALSE, what = "fasterword")
+#' tokenize(txt, remove_url = TRUE, remove_punct = TRUE)
+#' tokenize(txt, remove_url = FALSE, remove_punct = TRUE)
+#' tokenize(txt, remove_url = FALSE, remove_punct = TRUE, what = "fasterword")
+#' tokenize(txt, remove_url = FALSE, remove_punct = FALSE, what = "fasterword")
 #' 
 #' 
 #' ## MORE COMPARISONS
 #' txt <- "#textanalysis is MY <3 4U @@myhandle gr8 #stuff :-)"
-#' tokenize(txt, removePunct = TRUE)
-#' tokenize(txt, removePunct = TRUE, removeTwitter = TRUE)
-#' #tokenize("great website http://textasdata.com", removeURL = FALSE)
-#' #tokenize("great website http://textasdata.com", removeURL = TRUE)
+#' tokenize(txt, remove_punct = TRUE)
+#' tokenize(txt, remove_punct = TRUE, remove_twitter = TRUE)
+#' #tokenize("great website http://textasdata.com", remove_url = FALSE)
+#' #tokenize("great website http://textasdata.com", remove_url = TRUE)
 #' 
 #' txt <- c(text1="This is $10 in 999 different ways,\n up and down; left and right!", 
 #'          text2="@@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
 #' tokenize(txt, verbose = TRUE)
-#' tokenize(txt, removeNumbers = TRUE, removePunct = TRUE)
-#' tokenize(txt, removeNumbers = FALSE, removePunct = TRUE)
-#' tokenize(txt, removeNumbers = TRUE, removePunct = FALSE)
-#' tokenize(txt, removeNumbers = FALSE, removePunct = FALSE)
-#' tokenize(txt, removeNumbers = FALSE, removePunct = FALSE, removeSeparators = FALSE)
-#' tokenize(txt, removeNumbers = TRUE, removePunct = TRUE, removeURL = TRUE)
+#' tokenize(txt, remove_numbers = TRUE, remove_punct = TRUE)
+#' tokenize(txt, remove_numbers = FALSE, remove_punct = TRUE)
+#' tokenize(txt, remove_numbers = TRUE, remove_punct = FALSE)
+#' tokenize(txt, remove_numbers = FALSE, remove_punct = FALSE)
+#' tokenize(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
+#' tokenize(txt, remove_numbers = TRUE, remove_punct = TRUE, remove_url = TRUE)
 #' 
 #' # character level
 #' tokenize("Great website: http://textasdata.com?page=123.", what = "character")
 #' tokenize("Great website: http://textasdata.com?page=123.", what = "character", 
-#'          removeSeparators = FALSE)
+#'          remove_separators = FALSE)
 #' 
 #' # sentence level         
 #' tokenize(c("Kurt Vongeut said; only assholes use semi-colons.", 
@@ -157,23 +157,23 @@ tokenize <- function(x, ...) {
 #' txt <- char_tolower(c(mytext1 = "This is a short test sentence.",
 #'                       mytext2 = "Short.",
 #'                       mytext3 = "Short, shorter, and shortest."))
-#' tokenize(txt, removePunct = TRUE)
-#' removeFeatures(tokenize(txt, removePunct = TRUE), stopwords("english"))
+#' tokenize(txt, remove_punct = TRUE)
+#' removeFeatures(tokenize(txt, remove_punct = TRUE), stopwords("english"))
 #' 
 #' # ngram tokenization
-#' tokenize(txt, removePunct = TRUE, ngrams = 2)
-#' tokenize(txt, removePunct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
-#' tokenize(txt, removePunct = TRUE, ngrams = 1:2)
+#' tokenize(txt, remove_punct = TRUE, ngrams = 2)
+#' tokenize(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
+#' tokenize(txt, remove_punct = TRUE, ngrams = 1:2)
 #' # removing features from ngram tokens
-#' removeFeatures(tokenize(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
+#' removeFeatures(tokenize(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
 tokenize.character <- function(x, what=c("word", "sentence", "character", "fastestword", "fasterword"),
-                               removeNumbers = FALSE,
-                               removePunct = FALSE,
-                               removeSymbols = FALSE,
-                               removeSeparators = TRUE,
-                               removeTwitter = FALSE,
-                               removeHyphens = FALSE,
-                               removeURL = FALSE,
+                               remove_numbers = FALSE,
+                               remove_punct = FALSE,
+                               remove_symbols = FALSE,
+                               remove_separators = TRUE,
+                               remove_twitter = FALSE,
+                               remove_hyphens = FALSE,
+                               remove_url = FALSE,
                                ngrams = 1L,
                                skip = 0L,
                                concatenator = "_",
@@ -191,7 +191,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
     if (verbose) catm("Starting tokenization...\n")
     result <- x
     
-    if (removeTwitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
+    if (remove_twitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
         if (verbose) catm("  ...preserving Twitter characters (#, @)")
         startTimeClean <- proc.time()
         result <- stringi::stri_replace_all_fixed(result, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
@@ -204,25 +204,25 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
     if (grepl("word$", what)) {
         
         # to preserve intra-word hyphens, replace with _hy_
-        if (!removeHyphens & removePunct)
+        if (!remove_hyphens & remove_punct)
             result <- stri_replace_all_regex(result, "(\\b)[\\p{Pd}](\\b)", "$1_hy_$2")
-        else if (removeHyphens)
+        else if (remove_hyphens)
             result <- stri_replace_all_regex(result, "(\\b)[\\p{Pd}](\\b)", "$1 $2")
         
-        if (removeURL) {
-            if (verbose & removeURL) catm(", removing URLs")
+        if (remove_url) {
+            if (verbose & remove_url) catm(", removing URLs")
             URLREGEX <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
             result <- stri_replace_all_regex(result, URLREGEX, "")
         }
 
         if (what == "fasterword" | what == "fastestword") {
         
-            if (verbose & removeNumbers==TRUE) catm(", removing numbers")
-            if (verbose & removePunct==TRUE) catm(", removing punctuation")
-            if (verbose & removeSymbols==TRUE) catm(", removing symbols")
-            regexToEliminate <- paste(ifelse(removeNumbers, "\\b\\d+\\b", ""),
-                                      ifelse(removePunct, paste0("(?![", ifelse(removeTwitter, "_", "@#_"),  "])[\\p{P}]"), ""),
-                                      ifelse(removeSymbols, "[\\p{S}]", ""),
+            if (verbose & remove_numbers==TRUE) catm(", removing numbers")
+            if (verbose & remove_punct==TRUE) catm(", removing punctuation")
+            if (verbose & remove_symbols==TRUE) catm(", removing symbols")
+            regexToEliminate <- paste(ifelse(remove_numbers, "\\b\\d+\\b", ""),
+                                      ifelse(remove_punct, paste0("(?![", ifelse(remove_twitter, "_", "@#_"),  "])[\\p{P}]"), ""),
+                                      ifelse(remove_symbols, "[\\p{S}]", ""),
                                       sep = "|")
             # catm("\n..", regexToEliminate, "..\n", sep = "")
             regexToEliminate <- gsub("^\\|+", "", regexToEliminate)
@@ -231,47 +231,47 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
             if (gsub("|", "", regexToEliminate, fixed = TRUE) != "")
                 result <- stri_replace_all_regex(result, regexToEliminate, "")
             
-            if (verbose & removePunct==TRUE) catm(", ", what, " tokenizing", sep="")
+            if (verbose & remove_punct==TRUE) catm(", ", what, " tokenizing", sep="")
             if (what=="fastestword")
                 result <- stringi::stri_split_fixed(result, " ")
             else if (what=="fasterword")
                 result <- stringi::stri_split_charclass(result, "\\p{WHITE_SPACE}")
             result <- lapply(result, function(x) x <- x[which(x != "")])
             
-            # if (removeURL)
+            # if (remove_url)
             #     result <- lapply(result, function(x) x <- x[-which(substring(x, 1, 4) == "http")])
 
         } else {
             result <- stringi::stri_split_boundaries(result, 
                                                      type = "word", 
-                                                     skip_word_none = (removePunct | removeSymbols), # this is what obliterates currency symbols, Twitter tags, and URLs
-                                                     skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
+                                                     skip_word_none = (remove_punct | remove_symbols), # this is what obliterates currency symbols, Twitter tags, and URLs
+                                                     skip_word_number = remove_numbers) # but does not remove 4u, 2day, etc.
             # remove separators if option is TRUE
-            if (removeSeparators & !removePunct) {
+            if (remove_separators & !remove_punct) {
                 if (verbose) catm("\n  ...removing separators.")
                 result <- lapply(result, function(x) x[!stri_detect_regex(x, "^\\s$")])
             }
         }
         
         # put hyphens back the fast way
-        if (!removeHyphens & removePunct)
+        if (!remove_hyphens & remove_punct)
             result <- lapply(result, stri_replace_all_fixed, "_hy_", "-")
 
     } else if (what == "character") {
         
-        # note: does not implement removeNumbers
+        # note: does not implement remove_numbers
         result <- stringi::stri_split_boundaries(result, type = "character")
-        if (removePunct) {
+        if (remove_punct) {
             if (verbose) catm("   ...removing punctuation.\n")
             result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{P}]", "")
             result <- lapply(result, function(x) x <- x[which(x != "")])
         } 
-        if (removeSymbols) {
+        if (remove_symbols) {
             if (verbose) catm("   ...removing symbols.\n")
             result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{S}]", "")
             result <- lapply(result, function(x) x <- x[which(x != "")])
         } 
-        if (removeSeparators) {
+        if (remove_separators) {
             if (verbose) catm("   ...removing separators.\n")
             result <- lapply(result, function(x) x[!stringi::stri_detect_regex(x, "^\\p{Z}$")])
         }
@@ -304,7 +304,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
 
     if (verbose) catm("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
     
-    if (removeTwitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
+    if (remove_twitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
         if (verbose) catm("  ...replacing Twitter characters (#, @)")
         startTimeClean <- proc.time()
         result <- lapply(result, stringi::stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)

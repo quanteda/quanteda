@@ -7,7 +7,7 @@
 \title{locate keywords-in-context}
 \usage{
 kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, ..., new = TRUE)
+  case_insensitive = TRUE, ...)
 
 is.kwic(x)
 
@@ -30,11 +30,6 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{...}{additional arguments passed to \link{tokens}, for applicable 
 object types}
-
-\item{new}{logical; if \code{TRUE} use the newer \code{kwic}, if \code{FALSE}
-then call \code{\link{kwic_old}}.  Once the full
-testing of the newer \link{kwic} method is complete and the transition
-declared successful, we will delete this option and delete \code{kwic_old}.}
 }
 \value{
 A kwic object classed data.frame, with the document name 
@@ -54,14 +49,9 @@ delimiters.)
 head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))
 head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex"))
 head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
-\dontrun{
+
 toks <- tokens(data_char_inaugural)
-microbenchmark::microbenchmark(
-   kwic(toks, "the", window = 3, valuetype = "fixed"),
-   kwic(toks, "the", window = 3, valuetype = "fixed"))
-}
 kwic(data_corpus_inaugural, "war against")
-kwic(data_corpus_inaugural, "war against", new = FALSE)
 kwic(data_corpus_inaugural, "war against", valuetype = "regex")
 
 mykwic <- kwic(data_corpus_inaugural, "provident*")

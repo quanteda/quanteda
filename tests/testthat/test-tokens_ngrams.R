@@ -117,7 +117,7 @@ test_that("test `tokens_ngrams` on skipgrams", {
 # test_that("test there is not competition between the thread", {
 #     txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),
 #              two = "A B C D E")
-#     toks <- tokens(txt, removePunct = TRUE)
+#     toks <- tokens(txt, remove_punct = TRUE)
 #     
 #     for(k in 1:1000) {
 #         out <- tokens_ngrams(toks, n = 2:3)

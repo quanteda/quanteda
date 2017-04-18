@@ -7,7 +7,7 @@
 nsentence(x, ...)
 }
 \arguments{
-\item{x}{texts or \link{corpus} whose sentences will be counted}
+\item{x}{a character or \link{corpus} whose sentences will be counted}
 
 \item{...}{additional arguments passed to \code{\link{tokens}}}
 }

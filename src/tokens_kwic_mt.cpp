@@ -26,15 +26,15 @@ Targets range(Text tokens,
     }
     
     Targets targets;
-    size_t last = tokens_pos.size() - 1;
     size_t start, end;
-    for (size_t k = 0; k <= tokens_pos.size(); k++) {
+    size_t last = tokens_pos.size() - 1;
+    for (size_t k = 0; k < tokens_pos.size(); k++) {
         if ((k == 0 || tokens_pos[k - 1] == 0) && tokens_pos[k] == 1) {
             start = k;
             //Rcout << "starts " << start << "\n";
         }
-        if (tokens_pos[k - 1] == 1 && (k > last || tokens_pos[k] == 0)) {
-            end = k - 1;
+        if (tokens_pos[k] == 1 && (k == last || tokens_pos[k + 1] == 0)) {
+            end = k;
             //Rcout << "ends " << end << "\n";
             targets.push_back(make_pair(start, end));
         }
@@ -101,14 +101,14 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     }
 #endif
     
-    // Get total number including of sub-elements
+    // Get total number of matches
     std::size_t len = 0;
     for (std::size_t h = 0; h < output.size(); h++) {
         len += output[h].size();
     }
     
     Texts contexts(len);
-    IntegerVector documents_(len);
+    IntegerVector documents_(len), segments_(len);
     IntegerVector pos_from_(len), pos_to_(len);
     CharacterVector coxs_name_(len), coxs_pre_(len), coxs_target_(len), coxs_post_(len);
     
@@ -127,6 +127,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
             contexts[j] = context;
             documents_[j] = (int)h + 1;
+            segments_[j] = (int)i + 1;
             
             // Save as strings
             Text cox_pre(tokens.begin() + std::max(0, from), tokens.begin() + targets[i].first);
@@ -134,10 +135,10 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             Text cox_post(tokens.begin() + targets[i].second + 1, tokens.begin() + std::min(to, last) + 1);
             
             pos_from_[j] = targets[i].first + 1;
-            pos_to_[j] = targets[i].second + 1;
-            coxs_pre_[j] = get_text(cox_pre, types_);
-            coxs_target_[j] = get_text(cox_target, types_);
-            coxs_post_[j] = get_text(cox_post, types_);
+            pos_to_[j] = targets[i].second + 1; 
+            coxs_pre_[j] = join(cox_pre, types_); 
+            coxs_target_[j] = join(cox_target, types_);
+            coxs_post_[j] = join(cox_post, types_);
             coxs_name_[j] = names_[h];
             j++;
         }
@@ -150,10 +151,9 @@ DataFrame qatd_cpp_kwic(const List &texts_,
                                           _["keyword"] = coxs_target_,
                                           _["post"]    = coxs_post_,
                                           _["stringsAsFactors"] = false);
-    
-    output_.attr("ids") = as<Tokens>(wrap(contexts));
-    output_.attr("docs") = documents_;
-    output_.attr("types") = types_;
+    output_.attr("tokens") = recompile(contexts, types);
+    output_.attr("docid") = documents_;
+    output_.attr("segid") = segments_;
     return output_;
 }
 

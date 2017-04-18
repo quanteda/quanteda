@@ -22,7 +22,7 @@
 #' @examples
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
 #'              "New York City has raised taxes: an income tax and inheritance taxes.")
-#' mytoks <- tokens(mytexts, removePunct = TRUE)
+#' mytoks <- tokens(mytexts, remove_punct = TRUE)
 #' 
 #' # for lists of sequence elements
 #' myseqs <- list(c("tax"), c("income", "tax"), c("capital", "gains", "tax"), c("inheritance", "tax"))
@@ -44,9 +44,10 @@
 #' tokens_compound(toks, myDict)
 #'
 #' # with collocations
-#' collocs <- collocations("capital gains taxes are worse than inheritance taxes", size = 2:3)
-#' toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
-#' tokens_compound(toks, collocs)
+#' #cols <- textstat_collocations("capital gains taxes are worse than inheritance taxes", 
+#' #                              size = 2, min_count = 1)
+#' #toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
+#' #tokens_compound(toks, cols)
 tokens_compound <- function(x, sequences,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                     case_insensitive = TRUE, join = FALSE) {
@@ -71,13 +72,13 @@ tokens_compound.tokens <- function(x, sequences,
     attrs_org <- attributes(x)
     types <- types(x)
     
-    if ('collocation_new' %in% class(sequences)) {
+    if (is.sequences(sequences) || is.collocations(sequences)) {
         if (identical(attr(sequences, 'types'), types)) {
             #cat("Skip regex2id\n")
-            seqs_ids <- attr(sequences, 'ids')
+            seqs_ids <- attr(sequences, 'tokens')
         } else { 
             #cat("Use regex2id\n")
-            seqs <- sequence2list(rownames(sequences))
+            seqs <- sequence2list(sequences$collocation)
             seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
         }
     } else {

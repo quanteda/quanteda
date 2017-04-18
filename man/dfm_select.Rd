@@ -10,7 +10,7 @@
 dfm_select(x, features = NULL, documents = NULL, selection = c("keep",
   "remove"), valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, min_nchar = 1, max_nchar = 63,
-  padding = FALSE, verbose = getOption("verbose"), ...)
+  padding = FALSE, verbose = quanteda_options("verbose"), ...)
 
 dfm_remove(x, features = NULL, documents = NULL, ...)
 
@@ -59,14 +59,20 @@ removed}
 \value{
 A \link{dfm} or \link{fcm} object, after the feature selection has been applied.
   
-  When \code{features} is a \link{dfm} object and \code{padding} is \code{TRUE} , 
+  When \code{features} is a \link{dfm} object and \code{padding} is \code{TRUE}, 
   then the returned object will be identical in its feature set to the dfm 
   supplied as the \code{features} argument. This means that any features in 
   \code{x} not in \code{features} will be discarded, and that any features in 
   found in the dfm supplied as \code{features} but not found in \code{x} will 
-  be added with all zero counts.  This is useful when you have trained a model 
+  be added with all zero counts.  Because selecting on a dfm is designed to produce 
+  a selected dfm with an exact feature match, when \code{features} is
+  a \link{dfm} object, then the following settings are always used: 
+  \code{padding = TRUE}, 
+  \code{case_insensitive = FALSE}, and \code{valuetype = "fixed"}.
+  
+  Selecting on a \link{dfm} is useful when you have trained a model 
   on one dfm, and need to project this onto a test set whose features must be 
-  identical.  See examples.
+  identical.  It is also used in \code{\link{bootstrap_dfm}}.  See examples.
 }
 \description{
 This function selects or discards features from a \link{dfm} or \link{fcm}, based on a 
@@ -102,9 +108,9 @@ dfm_select(myDfm, stopwords("english"), selection = "remove", valuetype = "fixed
 dfm_select(myDfm, min_nchar = 5)
 
 # selecting on a dfm
-txts <- c("This is text one", "This is text two", "This is text three")
-(dfm1 <- dfm(txts[1:2], verbose = FALSE))
-(dfm2 <- dfm(txts[2:3], verbose = FALSE))
+txts <- c("This is text one", "The second text", "This is text three")
+(dfm1 <- dfm(txts[1:2]))
+(dfm2 <- dfm(txts[2:3]))
 (dfm3 <- dfm_select(dfm1, dfm2, valuetype = "fixed", padding = TRUE, verbose = TRUE))
 setequal(featnames(dfm2), featnames(dfm3))
 
@@ -115,7 +121,7 @@ tmpdfm
 dfm_remove(tmpdfm, stopwords("english"))
 toks <- tokens(c("this contains lots of stopwords",
                  "no if, and, or but about it: lots"),
-               removePunct = TRUE)
+               remove_punct = TRUE)
 tmpfcm <- fcm(toks)
 tmpfcm
 fcm_remove(tmpfcm, stopwords("english"))

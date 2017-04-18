@@ -27,5 +27,8 @@ __MACOSX
 ^tests/misc/
 ^css/
 ^cran-comments\.md$
+^vignettes/pkgdown_only/
+
+
 
 

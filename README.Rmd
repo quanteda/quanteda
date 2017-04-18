@@ -219,7 +219,7 @@ kwic(uk2010immigCorpus, "deport", 3)
 
 # create a dfm, removing stopwords
 mydfm <- dfm(uk2010immigCorpus, remove = c("will", stopwords("english")),
-             removePunct = TRUE)
+             remove_punct = TRUE)
 mydfm
 
 topfeatures(mydfm, 20)  # 20 top words

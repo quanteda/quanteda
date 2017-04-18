@@ -1,0 +1,257 @@
+---
+title: "tokens() comparison to the *tokenizers* package"
+author: Haiyan Wang and Kenneth Benoit
+date: March 24, 2017
+output:
+  md_document:
+    variant: markdown_github
+---
+
+## Purpose of this document
+
+To demonstrate the functionality of `tokens()` that removes or keeps some special characters/symbols. Test on: 
+
+```{r echo = FALSE}
+require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+require(tokenizers, quietly = TRUE, warn.conflicts = FALSE)
+```
+
+```{r}
+poetry <- paste0("I wandered lonely as a cloud,\n",
+                 "That floats on high o'er vales and hills.\n",
+                 "They stretched in never-ending line.\n",
+                 "Tossing their heads in sprightly @LSE and tell us what makes you feel #partofLSE.\n",
+                 "\n",
+                 "1 $100 £1000 2000+. \n",
+                 "Prof. Plum kills Mrs. Peacock. \n",
+                 "4u @ http://www.github.com\n")
+```
+
+## Word tokenization
+
+Feature comparison:
+
+|                       | **quanteda** | **tokenizers** | Notes |
+|-----------------------|--------------|----------------|-------|
+| Numbers: Remove       | `tokens(x, remove_numbers = TRUE)` | n/a   |       |
+| Twitter symbols: Keep | `tokens(x, remove_twitter = FALSE)`| n/a               |       |
+| Punctuation: Remove   | `tokens(x, remove_punct = TRUE)` | `tokenize_words(x)`               |       |
+| Separators: Keep      | `tokens(x, remove_separators = TRUE, remove_punct = FALSE)` |  n/a | remove_punct = FALSE|
+| Hyphens: Keep         | `tokens(x, remove_hyphens = FALSE)`| n/a               |       |
+| Hyphens: Remove       | `tokens(x, remove_hyphens = TRUE)`| `tokenize_words(x)`               |       |
+| urls: Remove          | `tokens(x, remove_url = TRUE)`|n/a        |       |
+| Lowcase               | `tokens(char_tolower(x))`|`tokenize_words(x, lowcase = TRUE)`              |       |
+| stopwords             |  `tokens_remove(tokens(x, what = "word"", remove_punct = TRUE), stopwords("english""))`| `tokenize_words(x, stopwords = stopwords("en""))`|       |
+
+
+### Preserve words with hyphens
+
+```{r}
+tokens("They stretched in never-ending line.\n", what = "word", remove_Punct = TRUE, remove_hyphens = FALSE)
+tokenize_words("They stretched in never-ending line.\n")
+```
+
+### Eliminate urls beginning with "http(s)" 
+
+```{r}
+tokens("4u http://www.github.com\n", what = "word", remove_punct = TRUE, remove_url = TRUE)
+tokenize_words("4u http://www.github.com\n")
+```
+
+### Preserve Twitter characters @ and \#
+
+```{r}
+txt <- "in sprightly @LSE and tell us what makes you feel #partofLSE\n"
+tokens(txt, what = "word", remove_punct = TRUE, remove_twitter = FALSE)
+tokenize_words(txt)
+```
+
+### Remove numbers but preserve words starting with digits
+
+```{r}
+txt <- c("1 $100 £1000 2000+ \n", "4u http://www.github.com\n")
+tokens(txt, what = "word", remove_punct = TRUE, remove_numbers = TRUE)
+tokenize_words(txt)
+```
+
+### Keep Separators in the Unicode "Separator" [Z] class 
+
+```{r}
+txt <- "1 $ 100 £1000 2000+ wow!\n"
+tokens(txt, what = "word", remove_punct = FALSE, remove_separators = FALSE)
+tokenize_words(txt)
+```
+
+## Character tokenization
+
+Feature comparison:
+
+|                       | **quanteda** | **tokenizers** | Notes |
+|-----------------------|--------------|----------------|-------|
+| Punctuation: Remove   | `tokens(x, what = "character", remove_punct = TRUE)` | `tokenize_characters(x, strip_non_alphanum = TRUE)`|       |
+| Separators: Keep      | `tokens(x, remove_separators = FALSE)` |  n/a |       |
+| Symbols: Remove        | `tokens(x, remove_symbols = TRUE)`| n/a               |       |
+
+
+### Remove Symbols in the Unicode "Symbol" [S] class
+
+```{r}
+txt <- "1 $ 100 £1000 2000+ wow!"
+tokens(txt, what = "character", remove_punct = TRUE, remove_symbols = TRUE)
+tokenize_characters(txt, strip_non_alphanum = TRUE)
+```
+
+### Keep Separators in the Unicode "Separator" [Z] class 
+
+```{r}
+txt <- "1 $ 100 £1000 2000+ wow!\n"
+tokens(txt, what = "character", remove_separators = FALSE)
+tokenize_characters(txt)
+```
+
+## Sentence tokenization
+
+Feature comparison:
+
+|                       | **quanteda** | **tokenizers** | Notes |
+|-----------------------|--------------|----------------|-------|
+| Handle exceptions: Mr.| `tokens(x, what = "sentence")` | n/a   |       |
+
+### Sentence segmenter handles some exceptions in English
+
+```{r}
+tokens(poetry, what = "sentence")
+tokenize_sentences(poetry)
+```
+
+## Performance benchmarks
+
+### words 
+
+```{r}
+microbenchmark::microbenchmark(quanteda_word = tokens(data_char_inaugural, what = "word", hash = FALSE,                  
+                                                      remove_punct = TRUE, 
+                                                      remove_twitter = TRUE, 
+                                                      remove_hyphens = TRUE),
+                               quanteda_faster = tokens(data_char_inaugural, what = "fasterword", hash = FALSE,                  
+                                                      remove_punct = TRUE, 
+                                                      remove_twitter = TRUE, 
+                                                      remove_hyphens = TRUE),
+                               quanteda_fastest = tokens(data_char_inaugural, what = "fasterword", hash = FALSE,
+                                                      remove_punct = TRUE, 
+                                                      remove_twitter = TRUE, 
+                                                      remove_hyphens = TRUE),
+                               tokenizers = tokenize_words(data_char_inaugural), 
+                               times = 20, unit = "relative")
+```
+
+
+### characters
+
+```{r}
+microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "character", 
+                                                 remove_separators = TRUE,
+                                                 remove_punct = TRUE, hash = FALSE),
+                                tokenizers = tokenize_characters(data_char_inaugural), 
+                                times = 20, unit = "relative")
+```
+
+### sentence
+
+```{r}
+microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "sentence", hash = FALSE),
+                                tokenizers = tokenize_sentences(data_char_inaugural), 
+                                times = 20, unit = "relative")
+```
+
+## Wishlist
+
+1. Would like an option to preserve punctuation.
+
+    ```{r}
+    txt <- "Hey: Y, M, C, A!!"
+    # currently
+    tokenize_words(txt, lowercase = FALSE)
+    # want this
+    tokens(txt, remove_punct = TRUE)
+    tokens(txt, remove_punct = FALSE)
+    ``` 
+
+2. Need an option for preserving Twitter characters, e.g.
+
+    ```{r}
+    # currently
+    tokenize_words("@kenbenoit loves #rstats!")
+    # want this
+    tokens("@kenbenoit loves #rstats!", remove_punct = TRUE, remove_twitter = FALSE)
+    ```
+    We do this through a somewhat expensive process of substitute, tokenize, replace.  It might be faster to segment without removing punctuation first, and then remove puctuation except words starting with `#` or `@`.
+ 
+3. We'd like to be able to preserve intra-word hyphens, e.g.
+
+    ```{r, eval = FALSE}
+    tokenize_words("Keep co-operate as one word.", split_hyphenated = FALSE)
+    [[1]]
+    [1] "keep"    "co-operate" "as"      "one"     "word"
+    ```
+    
+   
+4. We would like an option to keep intra-token separators.
+
+    ```{r}
+    # currently
+    tokenize_words("one\ttwo\n  three four")
+    # want this
+    tokens("one\ttwo\n  three four", remove_separators = TRUE)
+    tokens("one\ttwo\n  three four", remove_separators = FALSE)
+    ``` 
+    Why?  If move to a structure where a corpus is an indexed set of tokens, then to reconstruct the texts we need the original spaces, including knowing what was a `" "`, versus `"\n"`, etc.
+
+5. `tokenize_sentences()`:  Add an exception list, similar to stopwords, that could be used for exceptions to sentence segmentation.  For instance:
+
+    ```{r, eval = FALSE}
+        # Replace . delimiter from common title abbreviations, with _pd_
+        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM", "St", "etc")
+        findregex <- paste0("\\b(", exceptions, ")\\.")
+        txt <- stri_replace_all_regex(txt, findregex, "$1_pd_", vectorize_all = FALSE)
+        
+        ## Remove newline chars 
+        txt <- lapply(txt, stringi::stri_replace_all_fixed, "\n", " ")
+        
+        ## Perform the tokenization
+        tok <- stringi::stri_split_boundaries(txt, type = "sentence")
+        
+        ## Cleaning
+        tok <- lapply(tok, function(x){
+            x <- x[which(x != "")] # remove any "sentences" that were completely blanked out
+            x <- stringi::stri_trim_right(x) # trim trailing spaces
+            x <- stri_replace_all_fixed(x, "_pd_", ".") # replace the non-full-stop "." characters
+            return(x)
+        } )
+    ```
+    
+6. Some URL handling would be nice
+
+    ```{r, eval = FALSE}
+    txt <- "The URL is http://textworkshop17.ropensci.org#schedule."
+    # want this
+    tokenize_words(txt, lowercase = FALSE, strip_url = TRUE)
+    [[1]]
+    [1] "The"            "URL"            "is"
+    tokenize_words(txt, lowercase = FALSE, strip_url = FALSE)
+    [[1]]
+    [1] "The"            "URL"            "is"
+    [4] "http://textworkshop17.ropensci.org#schedule"
+    ``` 
+
+    Tweets, for instance, are replete with URLs.
+
+## Other observations
+
+* **On stopwords:**  Our view in the **quanteda** world is that stopword removal is a separate function from tokenization.  Stopword removal is a form of token selection, after the core activity of identifyin and segmenting tokens.
+
+* **On lowercase:**  Likewise we view this as a transformation of the tokens, which is a separate issue.
+
+We're not hung up on either issue however!
+
+

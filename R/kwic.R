@@ -14,10 +14,6 @@
 #' @param case_insensitive match without respect to case if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokens}, for applicable 
 #'   object types
-#' @param new logical; if \code{TRUE} use the newer \code{kwic}, if \code{FALSE}
-#' then call \code{\link{kwic_old}}.  Once the full
-#' testing of the newer \link{kwic} method is complete and the transition
-#' declared successful, we will delete this option and delete \code{kwic_old}.
 #' @return A kwic object classed data.frame, with the document name 
 #'   (\code{docname}), the token index position (\code{position}), the context
 #'   before (\code{contextPre}), the keyword in its original format
@@ -29,36 +25,27 @@
 #' head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))
 #' head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex"))
 #' head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
-#' \dontrun{
+#' 
 #' toks <- tokens(data_char_inaugural)
-#' microbenchmark::microbenchmark(
-#'    kwic(toks, "the", window = 3, valuetype = "fixed"),
-#'    kwic(toks, "the", window = 3, valuetype = "fixed"))
-#' }
 #' kwic(data_corpus_inaugural, "war against")
-#' kwic(data_corpus_inaugural, "war against", new = FALSE)
 #' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
 #' 
-kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
-    if (new) {    
-        UseMethod("kwic")
-    } else {
-        UseMethod("kwic_old")
-    }
+kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    UseMethod("kwic")
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export
-kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
-    kwic(tokens(x, ...), keywords, window, valuetype, case_insensitive, new = TRUE)
+kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    kwic(tokens(x, ...), keywords, window, valuetype, case_insensitive)
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
-    kwic(texts(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
+kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    kwic(texts(x), keywords, window, valuetype, case_insensitive, ...)
 }
 
 #' @rdname kwic
@@ -77,7 +64,7 @@ kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 #' kwic(toks, c("is", "a"), valuetype = "fixed")
 #' kwic(toks, list("is", "a", c("is", "it")), valuetype = "fixed")
 #' @export 
-kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
+kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     
     if (!is.tokens(x))
         stop("x must be a tokens object")
@@ -93,12 +80,10 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     types <- types(x)
     keywords_id <- regex2id(keywords, types, valuetype, case_insensitive, FALSE)
     result <- qatd_cpp_kwic(x, types, keywords_id, window)
-    result$docname <- as.factor(result$docname)
-    
-    if (!nrow(result)) 
-        return(NULL)
+    #result$docname <- as.factor(result$docname)
     
     # add attributes for kwic object
+    attr(result, 'concatenator') <- attr(x, 'concatenator')
     attr(result, "ntoken")  <- ntoken(x)
     attr(result, "valuetype") <- valuetype
     attr(result, "keywords") <- sapply(keywords, paste, collapse = " ")
@@ -109,8 +94,8 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
-    kwic(as.tokens(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
+kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    kwic(as.tokens(x), keywords, window, valuetype, case_insensitive, ...)
 }
 
 #' @rdname kwic
@@ -127,30 +112,36 @@ is.kwic <- function(x) {
 #' @noRd
 #' @export
 print.kwic <- function(x, ...) {
-    if (!length(x)) {
+    if (!nrow(x)) {
         print(NULL)
-        return()
+    } else {
+        if (all(x$from == x$to)) {
+            labels <- stringi::stri_c("[", x$docname, ", ", x$from, "]")
+        } else {
+            labels <- stringi::stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
+        }
+        kwic <- data.frame(
+            label = labels,
+            pre = format(stringi::stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify="right"),
+            s1 = rep('|', nrow(x)),
+            keyword = format(x$keyword, justify="centre"),
+            s2 = rep('|', nrow(x)),
+            post = format(stringi::stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify="left")
+        )
+        colnames(kwic) <- NULL
+        print(kwic, row.names = FALSE)
     }
-    kwic <- data.frame(
-        pre = format(stringi::stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify="right"),
-        s1 = rep('|', nrow(x)),
-        keyword = format(x$keyword, justify="centre"),
-        s2 = rep('|', nrow(x)),
-        post = format(stringi::stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify="left")
-    )
-    colnames(kwic) <- NULL
-    rownames(kwic) <- stringi::stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
-    print(kwic)
 }
 
 #' @rdname kwic
 #' @export
 #' @method as.tokens kwic
 as.tokens.kwic <- function(x) {
-    toks <- attr(x, 'ids')
-    names(toks) <- x$docname
-    attr(toks, 'types') <- attr(x, 'types')
-    attr(toks, 'docs') <- attr(x, 'docs') # we might not need this if names are original document names
-    class(toks) <- c("tokens", "tokenizedTexts")
-    return(toks)
+    result <- attr(x, 'tokens')
+    names(result) <- x$docname
+    class(result) <- c("tokens", "tokenizedTexts")
+    docvars(result) <- data.frame('_docid' = attr(x, 'docid'),
+                                  '_segid' = attr(x, 'segid'))
+    attr(result, 'concatenator') <- attr(x, 'concatenator')
+    return(result)
 }

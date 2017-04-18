@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -82,15 +77,40 @@
 
     
     <p>Print/show method for dictionary objects.</p>
+
+    <p>Extractor for dictionary objects</p>
+
+    <p>Extractor for dictionary objects</p>
+
+    <p>Coerce a dictionary object into a list</p>
     
 
-    <pre><span class='co'># S4 method for dictionary</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)</pre>
+    <pre># S4 method for dictionary
+show(object)
+
+# S4 method for dictionary,index,ANY,ANY
+[(x, i)
+
+# S4 method for dictionary,index
+[[(x, i)
+
+# S4 method for dictionary
+as.list(x)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>object</dt>
       <dd>the dictionary to be printed</dd>
+      <dt>i</dt>
+      <dd>index for entries</dd>
+      <dt>object</dt>
+      <dd>the dictionary to be extracted</dd>
+      <dt>object</dt>
+      <dd>the dictionary to be extracted</dd>
+      <dt>i</dt>
+      <dd>index for entries</dd>
+      <dt>object</dt>
+      <dd>the dictionary to be coerced</dd>
     </dl>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>

@@ -64,7 +64,7 @@ test1 <- c(text1 = "England and France are members of NATO and UNESCO",
 toLower(test1)
 toLower(test1, keep_acronyms = TRUE)
 
-test2 <- tokenize(test1, removePunct=TRUE)
+test2 <- tokenize(test1, remove_punct=TRUE)
 toLower(test2)
 toLower(test2, keep_acronyms = TRUE)
 }
@@ -73,7 +73,7 @@ test1 <- c(text1 = "England and France are members of NATO and UNESCO",
            text2 = "NASA sent a rocket into space.")
 toUpper(test1)
 
-test2 <- tokenize(test1, removePunct = TRUE)
+test2 <- tokenize(test1, remove_punct = TRUE)
 toUpper(test2)
 }
 }

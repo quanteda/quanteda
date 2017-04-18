@@ -6,37 +6,36 @@
 \title{segment texts into component elements}
 \usage{
 corpus_segment(x, what = c("sentences", "paragraphs", "tokens", "tags",
-  "other"), delimiter = switch(what, paragraphs = "\\\\n{2}", tags =
-  "##\\\\w+\\\\b", NULL), valuetype = c("regex", "fixed", "glob"),
+  "other"), delimiter = NULL, valuetype = c("regex", "fixed", "glob"),
   use_docvars = TRUE, ...)
 
 char_segment(x, what = c("sentences", "paragraphs", "tokens", "tags",
-  "other"), delimiter = switch(what, paragraphs = "\\\\n{2}", tags =
-  "##\\\\w+\\\\b", NULL), valuetype = c("regex", "fixed", "glob"),
+  "other"), delimiter = NULL, valuetype = c("regex", "fixed", "glob"),
   use_docvars = TRUE, ...)
 }
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}
 
-\item{what}{unit of segmentation.  Current options are \code{"tokens"} 
-(default), \code{"sentences"}, \code{"paragraphs"}, \code{"tags"}, and 
-\code{"other"}.  Segmenting on \code{other} allows segmentation of a text 
-on any user-defined value, and must be accompanied by the \code{delimiter} 
-argument.  Segmenting on \code{tags} performs the same function but 
+\item{what}{unit of segmentation.  Current options are
+\code{"sentences"} (default), \code{"paragraphs"}, \code{"tokens"}, 
+\code{"tags"}, and \code{"other"}.
+
+Segmenting on \code{"other"} allows segmentation of a text on any 
+user-defined value, and must be accompanied by the \code{delimiter} 
+argument.  Segmenting on \code{"tags"} performs the same function but 
 preserves the tags as a document variable in the segmented corpus.}
 
 \item{delimiter}{delimiter defined as a \code{\link{regex}} for 
-segmentation; only relevant for \code{what = "paragraphs"} (where the
-default is two newlines) and \code{what = "tags"} (where the default is a
-tag preceded by two pound or "hash" signs \code{##}).  Delimiter has no
-effect for segmentation into tokens or sentences}
+segmentation; only relevant for \code{what = "paragraphs"} (where the 
+default is two newlines), \code{"tags"} (where the default is a tag 
+preceded by two pound or "hash" signs \code{##}), and \code{"other"}.}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
-\item{use_docvars}{(for corpus objects) if \code{TRUE}, repeat the docvar
-values for each segmented text; if \code{FALSE}, drop the docvars in the
+\item{use_docvars}{(for corpus objects only) if \code{TRUE}, repeat the docvar 
+values for each segmented text; if \code{FALSE}, drop the docvars in the 
 segmented corpus. Dropping the docvars might be useful in order to conserve
 space or if these are not desired for the segmented corpus.}
 
@@ -44,7 +43,10 @@ space or if these are not desired for the segmented corpus.}
 \code{what = "tokens"} is used}
 }
 \value{
-A corpus of segmented texts.
+\code{corpus_segment} returns a corpus of segmented texts, with a 
+  \code{tag} docvar if \code{what = "tags"}.
+
+\code{corpus_segment} returns a character vector of segmented texts
 }
 \description{
 Segment corpus text(s) or a character vector into tokens, sentences, 
@@ -55,7 +57,7 @@ or based on a user defined "tag" pattern.  See details.
 }
 \details{
 Tokens are delimited by separators.  For tokens and sentences, these
-are determined by the tokenizer behaviour in \code{\link{tokens}}.
+  are determined by the tokenizer behaviour in \code{\link{tokens}}.
   
   For paragraphs, the default is two carriage returns, although this could be
   changed to a single carriage return by changing the value of 
@@ -69,11 +71,40 @@ are determined by the tokenizer behaviour in \code{\link{tokens}}.
 Does not currently record document segments if segmenting a multi-text 
   corpus into smaller units. For this, use \link{corpus_reshape} instead.
 }
+\section{Using delimiters}{
+
+  One of the most common uses for \code{corpus_segment} is to 
+  partition a corpus into sub-documents using tags.  By default, the tag 
+  value is any word that begins with a double "hash" sign and is followed by 
+  a whitespace.  This can be modified but be careful to use the syntax for
+  the trailing word boundary (\code{\\\\b})
+  
+  The default values for \code{delimiter} are, according to valuetype:
+  \describe{
+  \item{paragraphs}{\code{"\\\\n{2}"}, \link[=regex]{regular expression} 
+    meaning two newlines.  If you wish to define a paragaph as a single 
+    newline, change the 2 to a 1.}
+  \item{tags}{\code{"##\\\\w+\\\\b"}, a \link[=regex]{regular expression} 
+    meaning two "hash" characters followed by any number of word characters
+    followed by a word boundary (a whitespace or the end of the text).}
+  \item{other}{No default; user must supply one.}
+  \item{tokens, sentences}{Delimiters do not apply to these, and a warning
+    will be issued if you attempt to supply one.}
+  }
+  
+  Delimiters may be defined for different \link[=valuetype]{valuetypes} 
+  but these may produce unexpected results, for example the lack of the
+  ability in a "glob" expression to define the word boundaries.
+}
+
 \examples{
-testCorpus <- corpus(c("##INTRO This is the introduction.
-                        ##DOC1 This is the first document.  Second sentence in Doc 1.
-                        ##DOC3 Third document starts here.  End of third document.",
-                       "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
+## segmenting a corpus
+
+testCorpus <- 
+corpus(c("##INTRO This is the introduction.
+          ##DOC1 This is the first document.  Second sentence in Doc 1.
+          ##DOC3 Third document starts here.  End of third document.",
+         "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
 # add a docvar
 testCorpus[["serialno"]] <- paste0("textSerial", 1:ndoc(testCorpus))
 testCorpusSeg <- corpus_segment(testCorpus, "tags")
@@ -82,6 +113,8 @@ texts(testCorpusSeg)
 # segment a corpus into sentences
 segmentedCorpus <- corpus_segment(corpus(data_char_ukimmig2010), "sentences")
 summary(segmentedCorpus)
+
+## segmenting a character object
 
 # same as tokenize()
 identical(as.character(tokens(data_char_ukimmig2010)), 
@@ -93,6 +126,12 @@ char_segment(data_char_ukimmig2010[3:4], "paragraphs")
 # segment a text into sentences
 segmentedChar <- char_segment(data_char_ukimmig2010, "sentences")
 segmentedChar[3]
+}
+\seealso{
+\code{\link{corpus_reshape}}, \code{\link{tokens}}
+}
+\author{
+Kenneth Benoit
 }
 \keyword{character}
 \keyword{corpus}

@@ -33,7 +33,7 @@
 #' dict_fix <- dictionary(list(country = "united states", 
 #'                        law = c('law', 'constitution'), 
 #'                        freedom = c('freedom', 'liberty'))) 
-#' dfm(applyDictionary(toks, dict_fix, valuetype='fixed'))
+#' # dfm(applyDictionary(toks, dict_fix, valuetype='fixed'))
 #' dfm(tokens_lookup(toks, dict_fix, valuetype='fixed'))
 #' 
 #' # hierarchical dictionary example
@@ -61,7 +61,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           exclusive = TRUE,
 #                          overlap = FALSE,
                           multiword = TRUE,
-                          verbose = getOption("verbose")) {
+                          verbose = quanteda_options("verbose")) {
     UseMethod("tokens_lookup")    
 }
 
@@ -74,7 +74,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           capkeys = !exclusive,
                           exclusive = TRUE,
                           multiword = TRUE,
-                          verbose = getOption("verbose")) {
+                          verbose = quanteda_options("verbose")) {
 
     if (!is.tokens(x))
         stop("x must be a tokens object")
