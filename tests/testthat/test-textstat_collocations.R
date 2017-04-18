@@ -2,8 +2,8 @@ context('test textstat_collocations.R')
 
 test_that("test that collocations do not span texts", {
     toks <- tokens(c('this is a test', 'this also a test'))
-    cols <- rbind(textstat_collocations(toks, size = 2, min_count = 1),
-                  textstat_collocations(toks, size = 3, min_count = 1))
+    cols <- rbind(textstat_collocations(toks, max_size = 2, min_count = 1),
+                  textstat_collocations(toks, max_size = 3, min_count = 1))
     
     expect_false('test this' %in% cols$collocation)
     expect_false('test this also' %in% cols$collocation)
@@ -12,7 +12,7 @@ test_that("test that collocations do not span texts", {
 
 test_that("test that collocations only include selected features", {
     toks <- tokens(c('This is a Twitter post to @someone on #something.'), what = 'fastest')
-    cols <- textstat_collocations(toks, 'lr', features = "^([a-z]+)$", valuetype = 'regex', min_count = 1, size = 2)
+    cols <- textstat_collocations(toks, 'lr', features = "^([a-z]+)$", valuetype = 'regex', min_count = 1, max_size = 2)
     
     expect_true('This is' %in% cols$collocation)
     expect_true('a Twitter' %in% cols$collocation)

@@ -2,12 +2,16 @@
 % Please edit documentation in R/textstat_collocations.R
 \name{textstat_collocations}
 \alias{textstat_collocations}
+\alias{is.collocations}
 \title{calculate collocation statistics}
 \usage{
-textstat_collocations(x, method = c("lr", "chi2", "pmi", "dice", "bj"), ...)
+textstat_collocations(x, method = c("lr", "chi2", "pmi", "dice", "bj"),
+  case_insensitive = TRUE, max_size = 3, min_count = 2, ...)
+
+is.collocations(x)
 }
 \arguments{
-\item{x}{a character, \link{corpus}, or \link{tokens} object to be mined for
+\item{x}{a character, \link{corpus}, or \link{tokens} object to be mined for 
 collocations}
 
 \item{method}{association measure for detecting collocations.  Let \eqn{i} 
@@ -24,52 +28,77 @@ coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
 \item{\code{"bj"}}{Blaheta and Johnson's method (called through 
 \code{\link{sequences}})} }}
 
-\item{...}{additional arguments passed to \code{\link{collocations}} for the first four
-methods, or to  \code{\link{sequences}} for \code{method = "bj"}}
+\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+
+\item{max_size}{numeric argument representing the maximum length of the collocations
+to be scored.  The maximum size is currently 3 for all
+methods except \code{"bj"}, which has a maximum size of 5.}
+
+\item{min_count}{minimum frequency of collocations that will be scored}
+
+\item{...}{additional arguments passed to \code{\link{collocations2}} for the
+first four methods, or to  \code{\link{sequences}} for \code{method = "bj"}}
+}
+\value{
+\code{is.collocation} returns \code{TRUE} if the object is of class
+  \code{collocations}, \code{FALSE} otherwise.
 }
 \description{
 Identify and score collocations from a corpus, character, or tokens object, 
 with targeted selection.
+
+#' @rdname textstat_collocations
+#' @noRd
+#' @export    
+textstat_collocations.character <- function(x, method = c("lr", "chi2", "pmi", "dice", "bj"), ...) {
+    method <- match.arg(method)
+    textstat_collocations(tokens(x), method = method, ...)
+}
+}
+\details{
+#' @rdname textstat_collocations
+#' @noRd
+#' @export    
+textstat_collocations.tokenizedTexts <- function(x, method = c("lr", "chi2", "pmi", "dice", "bj"), ...) {
+    method <- match.arg(method)
+    textstat_collocations(as.tokens(x), method = method, ...)
+}
+
+check if an object is collocations object
+}
+\note{
+This function is under active development, and we aim to improve both its operation and 
+efficiency in the next release of \pkg{quanteda}.
 }
 \examples{
-\dontrun{
-txts <- c("This is software testing: looking for (word) pairs!  
-           This [is] a software testing again. For.",
-          "Here: this is more Software Testing, looking again for word pairs.")
+txts <- c("quanteda is a package for quantitative text analysis.", 
+          "Quantitative text analysis is a rapidly growing field.", 
+          "The population is rapidly growing.")
 toks <- tokens(txts)
 textstat_collocations(toks, method = "lr")
-textstat_collocations(toks, method = "lr", size = 3, min_count = 2)
-textstat_collocations(toks, method = "lr", size = 3, min_count = 1)
-(cols <- textstat_collocations(toks, method = "lr", "^([a-z]+)$", 
-                               valuetype = "regex", min_count = 1))
+textstat_collocations(toks, method = "lr", min_count = 1)
+textstat_collocations(toks, method = "lr", max_size = 3, min_count = 1)
+(cols <- textstat_collocations(toks, method = "lr", max_size = 3, min_count = 2))
 as.tokens(cols)
 
-toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
-toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-
 # extracting multi-part proper nouns (capitalized terms)
-seqs <- textstat_collocations(toks, method = "bj", 
+toks2 <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
+toks2 <- tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
+seqs <- textstat_collocations(toks2, method = "bj", 
                               features = "^([A-Z][a-z\\\\-]{2,})", 
                               valuetype = "regex", case_insensitive = FALSE)
 head(seqs, 10)
 
-# more efficient when applied to the same tokens object 
-toks_comp <- tokens_compound(toks, seqs)
-
-# types can be any words
-seqs2 <- textstat_collocations(toks, "bj", "^([a-z]+)$", valuetype="regex", 
-                               case_insensitive = FALSE, min_count = 2, ordered = TRUE)
-head(seqs2, 10)
-
-}
+# compounding tokens is more efficient when applied to the same tokens object 
+toks_comp <- tokens_compound(toks2, seqs)
 }
 \references{
 Blaheta, D., & Johnson, M. (2001). 
   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
    learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
-  Computational Extraction, Analysis and Exploitation of Collocations. 
+  Computational Extraction, Analysis and Exploitation of Collocations.
   
-  McInnes, B T. 2004. "Extending the Log Likelihood Measure to Improve
+  McInnes, B T. 2004. "Extending the Log Likelihood Measure to Improve 
   Collocation Identification."  M.Sc. Thesis, University of Minnesota.
 }
 \keyword{collocations}

@@ -2,7 +2,7 @@
 #' 
 #' Identify and score collocations from a corpus, character, or tokens object, 
 #' with targeted selection.
-#' @param x a character, \link{corpus}, or \link{tokens} object to be mined for
+#' @param x a character, \link{corpus}, or \link{tokens} object to be mined for 
 #'   collocations
 #' @param method association measure for detecting collocations.  Let \eqn{i} 
 #'   index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to 
@@ -17,60 +17,74 @@
 #'   coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
 #'   \item{\code{"bj"}}{Blaheta and Johnson's method (called through 
 #'   \code{\link{sequences}})} }
-#' @param ... additional arguments passed to \code{\link{collocations}} for the first four
-#'    methods, or to  \code{\link{sequences}} for \code{method = "bj"}
+#' @param case_insensitive ignore case when matching, if \code{TRUE}
+#' @param max_size numeric argument representing the maximum length of the collocations
+#'   to be scored.  The maximum size is currently 3 for all
+#'   methods except \code{"bj"}, which has a maximum size of 5.
+#' @param min_count minimum frequency of collocations that will be scored
+#' @param ... additional arguments passed to \code{\link{collocations2}} for the
+#'   first four methods, or to  \code{\link{sequences}} for \code{method = "bj"}
 #' @references Blaheta, D., & Johnson, M. (2001). 
 #'   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
 #'    learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
-#'   Computational Extraction, Analysis and Exploitation of Collocations. 
+#'   Computational Extraction, Analysis and Exploitation of Collocations.
 #'   
-#'   McInnes, B T. 2004. "Extending the Log Likelihood Measure to Improve
+#'   McInnes, B T. 2004. "Extending the Log Likelihood Measure to Improve 
 #'   Collocation Identification."  M.Sc. Thesis, University of Minnesota.
+#' @note 
+#' This function is under active development, and we aim to improve both its operation and 
+#' efficiency in the next release of \pkg{quanteda}.
 #' @export
 #' @keywords textstat collocations experimental
 #' @examples
-#' \dontrun{
-#' txts <- c("This is software testing: looking for (word) pairs!  
-#'            This [is] a software testing again. For.",
-#'           "Here: this is more Software Testing, looking again for word pairs.")
+#' txts <- c("quanteda is a package for quantitative text analysis.", 
+#'           "Quantitative text analysis is a rapidly growing field.", 
+#'           "The population is rapidly growing.")
 #' toks <- tokens(txts)
 #' textstat_collocations(toks, method = "lr")
-#' textstat_collocations(toks, method = "lr", size = 3, min_count = 2)
-#' textstat_collocations(toks, method = "lr", size = 3, min_count = 1)
-#' (cols <- textstat_collocations(toks, method = "lr", "^([a-z]+)$", 
-#'                                valuetype = "regex", min_count = 1))
+#' textstat_collocations(toks, method = "lr", min_count = 1)
+#' textstat_collocations(toks, method = "lr", max_size = 3, min_count = 1)
+#' (cols <- textstat_collocations(toks, method = "lr", max_size = 3, min_count = 2))
 #' as.tokens(cols)
 #' 
-#' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
-#' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-#' 
 #' # extracting multi-part proper nouns (capitalized terms)
-#' seqs <- textstat_collocations(toks, method = "bj", 
+#' toks2 <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
+#' toks2 <- tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
+#' seqs <- textstat_collocations(toks2, method = "bj", 
 #'                               features = "^([A-Z][a-z\\-]{2,})", 
 #'                               valuetype = "regex", case_insensitive = FALSE)
 #' head(seqs, 10)
 #' 
-#' # more efficient when applied to the same tokens object 
-#' toks_comp <- tokens_compound(toks, seqs)
-#' 
-#' # types can be any words
-#' seqs2 <- textstat_collocations(toks, "bj", "^([a-z]+)$", valuetype="regex", 
-#'                                case_insensitive = FALSE, min_count = 2, ordered = TRUE)
-#' head(seqs2, 10)
-#' 
-#' }
-textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj"), ...) {
+#' # compounding tokens is more efficient when applied to the same tokens object 
+#' toks_comp <- tokens_compound(toks2, seqs)
+textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj"), 
+                                  case_insensitive = TRUE, 
+                                  max_size = 3,
+                                  min_count = 2, 
+                                  ...) {
     UseMethod("textstat_collocations")
 }
 
 #' @noRd
 #' @export
-textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj"), ...) {
+textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj"), 
+                                         case_insensitive = TRUE, 
+                                         max_size = 3,
+                                         min_count = 2, 
+                                         ...) {
     method <- match.arg(method)
     if (method == 'bj') {
-        result <- sequences(x, ...)
+        result <- sequences(x, case_insensitive = case_insensitive, min_count = min_count, max_size = max_size, ...)
     } else {
-        result <- quanteda:::collocations2(x, method = method, ...)
+        if (missing(max_size)) {
+            max_size <- 2:3 
+        } else if (!all(max_size %in% 2:3)) {
+            stop("for method ", method, " max_size can only be 2, 3, or 2:3")
+        } else {
+            max_size <- 2:max_size
+        }
+        result <- collocations2(x, method = method, case_insensitive = case_insensitive, 
+                                size = max_size, min_count = min_count, ...)
     }
     rownames(result) <- seq_len(nrow(result))
     class(result) <- c("collocations", 'data.frame')
@@ -105,10 +119,11 @@ textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "di
 #
 
 #' check if an object is collocations object
-#' @rdname collocations
+#' @rdname textstat_collocations
+#' @aliases is.collocations
 #' @export
 #' @return \code{is.collocation} returns \code{TRUE} if the object is of class
-#'   collocations, \code{FALSE} otherwise.
+#'   \code{collocations}, \code{FALSE} otherwise.
 is.collocations <- function(x) {
     "collocations" %in% class(x)
 }
@@ -126,7 +141,7 @@ is.collocations <- function(x) {
 
 #' @export
 #' @method as.tokens collocations
-#' @noRd
+#' @rdname as.tokens
 as.tokens.collocations <- function(x) {
     toks <- attr(x, 'tokens')
     attr(toks, 'types') <- attr(x, 'types')
