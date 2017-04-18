@@ -169,26 +169,23 @@ sequence2list <- function(sequences) {
     
     # convert the input into a simple, unnamed list of split characters
     if (is.dictionary(sequences)) {
-        sequences <- stringi::stri_split_fixed(unlist(sequences, use.names = FALSE), " ")
+        result <- stringi::stri_split_fixed(unlist(sequences, use.names = FALSE), " ")
     } else if (is.collocations(sequences)) {
-        word1 <- word2 <- word3 <- NULL
-        # sort by word3 so that trigrams will be processed before bigrams
-        data.table::setorder(sequences, -word3, word1)
-        # concatenate the words                               
-        word123 <- sequences[, list(word1, word2, word3)]
-        sequences <- unlist(apply(word123, 1, list), recursive = FALSE)
-        sequences <- lapply(sequences, unname)
-        sequences <- lapply(sequences, function(y) y[y != ""])
-    } else if (is.list(sequences) | is.character(sequences)) {
-        sequences <- lapply(sequences, function(y) as.character(tokens(y, what = "fastestword")))
+        result <- stringi::stri_split_fixed(sequences$collocation, " ")
+    } else if (is.character(sequences)) {
+        result <- quanteda:::tokens_word(sequences, "fastestword")
+    } else if (is.tokens(sequences)) {
+        result <- as.list(sequences)
+    } else if (is.list(sequences)) {
+        result <- sequences
     } else {
         stop("sequences must be a character vector, a list of character elements, a dictionary, or collocations")
     }
     
     # make sure the resulting list is all character
-    if (!all(is.character(unlist(sequences, use.names = FALSE))))
+    if (!all(is.character(unlist(result, use.names = FALSE))))
         stop("sequences must be a list of character elements or a dictionary")
-    return(as.list(sequences))
+    return(as.list(result))
 }
 
 
