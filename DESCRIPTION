@@ -42,7 +42,8 @@ Suggests:
     testthat,
     RColorBrewer,
     xtable,
-    DT
+    DT,
+    ca
 URL: http://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
