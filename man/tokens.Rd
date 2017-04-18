@@ -2,8 +2,6 @@
 % Please edit documentation in R/tokens.R
 \name{tokens}
 \alias{tokens}
-\alias{+.tokens}
-\alias{c.tokens}
 \title{tokenize a set of texts}
 \usage{
 tokens(x, what = c("word", "sentence", "character", "fastestword",
@@ -12,10 +10,6 @@ tokens(x, what = c("word", "sentence", "character", "fastestword",
   remove_twitter = FALSE, remove_hyphens = FALSE, remove_url = FALSE,
   ngrams = 1L, skip = 0L, concatenator = "_", hash = TRUE,
   verbose = quanteda_options("verbose"), include_docvars = TRUE, ...)
-
-\method{+}{tokens}(t1, t2)
-
-\method{c}{tokens}(..., recursive = FALSE)
 }
 \arguments{
 \item{x}{a character or \link{corpus} object to be tokenized}
@@ -89,12 +83,6 @@ default}
 the tokens object.  Only applies when tokenizing \link{corpus} objects.}
 
 \item{...}{additional arguments not used}
-
-\item{t1}{tokens one to be added}
-
-\item{t2}{tokens two to be added}
-
-\item{recursive}{logical used by `c()` method, always set to `FALSE`}
 }
 \value{
 \pkg{quanteda} \code{tokens} class object, by default a hashed list 
@@ -191,16 +179,6 @@ tokens(txt, remove_punct = TRUE)
 ### tokens(txt, remove_punct = TRUE, ngrams = 1:2)
 # removing features from ngram tokens
 ### removeFeatures(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
-toks1 <- tokens(data_corpus_inaugural[1:5])
-toks2 <- tokens(data_corpus_inaugural[21:25])
-toks3 <- toks1 + toks2
-
-
-toks1 <- tokens(data_corpus_inaugural[1:5])
-toks2 <- tokens(data_corpus_inaugural[21:25])
-toks3 <- tokens(data_corpus_inaugural[41:45])
-summary(c(toks1, toks2, toks3))
-
 }
 \seealso{
 \code{\link{tokens_ngrams}}, \code{\link{tokens_skipgrams}}
