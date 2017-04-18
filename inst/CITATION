@@ -9,7 +9,6 @@ url <- "http://quanteda.io"
 citEntry(entry = "Manual",
          title = "quanteda: Quantitative Analysis of Textual Data",
          author = personList(as.person("Kenneth Benoit"),
-                             as.person("Paul Nulty"),
                              as.person("Kohei Watanabe"),
                              as.person("Paul Nulty"),
                              as.person("Adam Obeng"),

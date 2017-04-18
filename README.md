@@ -20,16 +20,19 @@ How to cite the package:
 
 
     To cite package 'quanteda' in publications please use the
-    following.
+    following:
 
+      Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
+      Textual Data".  R package version: 0.9.9-48.
+      http://quanteda.io.
 
     A BibTeX entry for LaTeX users is
 
       @Manual{,
         title = {quanteda: Quantitative Analysis of Textual Data},
-        author = {Kenneth Benoit and Paul Nulty},
+        author = {Kenneth Benoit and Paul Nulty and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
         note = {R package version 0.9.9-48},
-        url = {https://github.com/kbenoit/quanteda},
+        url = {http://quanteda.io},
       }
 
 ### Leave feedback
@@ -160,7 +163,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Tue Apr 18 18:54:30 2017
+## Created: Tue Apr 18 19:07:20 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
