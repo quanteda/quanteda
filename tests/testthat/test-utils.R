@@ -43,7 +43,7 @@ test_that("sequence2list works as expected", {
                                                           institution = c("Congress", "feder* gov*")), tolower = FALSE)),
                  target)
     # collocations
-    collocs <- textstat_collocations(tokens(c("United States", "Congress", "federal government")))
+    collocs <- textstat_collocations(tokens(c("United States", "Congress", "federal government")), min_count = 1)
     expect_equal(quanteda:::sequence2list(collocs),
                  list(c("United", "States"), c("federal", "government")))
 })
