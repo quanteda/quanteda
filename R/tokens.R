@@ -760,7 +760,7 @@ types.tokens <- function(x) {
 }
 
 
-#' @rdname tokens
+#' @rdname as.tokens
 #' @param t1 tokens one to be added
 #' @param t2 tokens two to be added
 #' @examples 
@@ -784,7 +784,7 @@ types.tokens <- function(x) {
     tokens_hashed_recompile(t1)
 }
 
-#' @rdname tokens
+#' @rdname as.tokens
 #' @param recursive logical used by `c()` method, always set to `FALSE`
 #' @examples 
 #' 

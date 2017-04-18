@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -89,13 +84,11 @@ or based on a user defined &quot;tag&quot; pattern.  See details.</p>
     
 
     <pre><span class='fu'>corpus_segment</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"tokens"</span>, <span class='st'>"tags"</span>,
-  <span class='st'>"other"</span>), <span class='kw'>delimiter</span> <span class='kw'>=</span> <span class='fu'>switch</span>(<span class='no'>what</span>, <span class='kw'>paragraphs</span> <span class='kw'>=</span> <span class='st'>"\\n{2}"</span>, <span class='kw'>tags</span> <span class='kw'>=</span>
-  <span class='st'>"##\\w+\\b"</span>, <span class='kw'>NULL</span>), <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"regex"</span>, <span class='st'>"fixed"</span>, <span class='st'>"glob"</span>),
+  <span class='st'>"other"</span>), <span class='kw'>delimiter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"regex"</span>, <span class='st'>"fixed"</span>, <span class='st'>"glob"</span>),
   <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='fu'>char_segment</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"tokens"</span>, <span class='st'>"tags"</span>,
-  <span class='st'>"other"</span>), <span class='kw'>delimiter</span> <span class='kw'>=</span> <span class='fu'>switch</span>(<span class='no'>what</span>, <span class='kw'>paragraphs</span> <span class='kw'>=</span> <span class='st'>"\\n{2}"</span>, <span class='kw'>tags</span> <span class='kw'>=</span>
-  <span class='st'>"##\\w+\\b"</span>, <span class='kw'>NULL</span>), <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"regex"</span>, <span class='st'>"fixed"</span>, <span class='st'>"glob"</span>),
+  <span class='st'>"other"</span>), <span class='kw'>delimiter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"regex"</span>, <span class='st'>"fixed"</span>, <span class='st'>"glob"</span>),
   <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -103,25 +96,26 @@ or based on a user defined &quot;tag&quot; pattern.  See details.</p>
       <dt>x</dt>
       <dd>character or <a href='corpus.html'>corpus</a> object whose texts will be segmented</dd>
       <dt>what</dt>
-      <dd>unit of segmentation.  Current options are <code>&quot;tokens&quot;</code> 
-(default), <code>&quot;sentences&quot;</code>, <code>&quot;paragraphs&quot;</code>, <code>&quot;tags&quot;</code>, and 
-<code>&quot;other&quot;</code>.  Segmenting on <code>other</code> allows segmentation of a text 
-on any user-defined value, and must be accompanied by the <code>delimiter</code> 
-argument.  Segmenting on <code>tags</code> performs the same function but 
+      <dd>unit of segmentation.  Current options are
+<code>&quot;sentences&quot;</code> (default), <code>&quot;paragraphs&quot;</code>, <code>&quot;tokens&quot;</code>, 
+<code>&quot;tags&quot;</code>, and <code>&quot;other&quot;</code>.
+
+Segmenting on <code>&quot;other&quot;</code> allows segmentation of a text on any 
+user-defined value, and must be accompanied by the <code>delimiter</code> 
+argument.  Segmenting on <code>&quot;tags&quot;</code> performs the same function but 
 preserves the tags as a document variable in the segmented corpus.</dd>
       <dt>delimiter</dt>
       <dd>delimiter defined as a <code>regex</code> for 
-segmentation; only relevant for <code>what = &quot;paragraphs&quot;</code> (where the
-default is two newlines) and <code>what = &quot;tags&quot;</code> (where the default is a
-tag preceded by two pound or &quot;hash&quot; signs <code>##</code>).  Delimiter has no
-effect for segmentation into tokens or sentences</dd>
+segmentation; only relevant for <code>what = &quot;paragraphs&quot;</code> (where the 
+default is two newlines), <code>&quot;tags&quot;</code> (where the default is a tag 
+preceded by two pound or &quot;hash&quot; signs <code>##</code>), and <code>&quot;other&quot;</code>.</dd>
       <dt>valuetype</dt>
       <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
 &quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions;
 or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</dd>
       <dt>use_docvars</dt>
-      <dd>(for corpus objects) if <code>TRUE</code>, repeat the docvar
-values for each segmented text; if <code>FALSE</code>, drop the docvars in the
+      <dd>(for corpus objects only) if <code>TRUE</code>, repeat the docvar 
+values for each segmented text; if <code>FALSE</code>, drop the docvars in the 
 segmented corpus. Dropping the docvars might be useful in order to conserve
 space or if these are not desired for the segmented corpus.</dd>
       <dt>...</dt>
@@ -131,12 +125,14 @@ space or if these are not desired for the segmented corpus.</dd>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A corpus of segmented texts.</p>
+    <p><code>corpus_segment</code> returns a corpus of segmented texts, with a 
+  <code>tag</code> docvar if <code>what = &quot;tags&quot;</code>.</p>
+    <p><code>corpus_segment</code> returns a character vector of segmented texts</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Tokens are delimited by separators.  For tokens and sentences, these
-are determined by the tokenizer behaviour in <code><a href='tokens.html'>tokens</a></code>.</p>
+  are determined by the tokenizer behaviour in <code><a href='tokens.html'>tokens</a></code>.</p>
     <p>For paragraphs, the default is two carriage returns, although this could be
   changed to a single carriage return by changing the value of 
   <code>delimiter</code> to <code>&quot;\\n{1}&quot;</code> which is the R version of the 
@@ -150,28 +146,59 @@ are determined by the tokenizer behaviour in <code><a href='tokens.html'>tokens<
     <p>Does not currently record document segments if segmenting a multi-text 
   corpus into smaller units. For this, use <a href='corpus_reshape.html'>corpus_reshape</a> instead.</p>
     
+    <h2 class="hasAnchor" id="using-delimiters"><a class="anchor" href="#using-delimiters"></a>Using delimiters</h2>
+
+    <p></p>
+    <p>One of the most common uses for <code>corpus_segment</code> is to 
+  partition a corpus into sub-documents using tags.  By default, the tag 
+  value is any word that begins with a double &quot;hash&quot; sign and is followed by 
+  a whitespace.  This can be modified but be careful to use the syntax for
+  the trailing word boundary (<code>\\b</code>)</p>
+    <p>The default values for <code>delimiter</code> are, according to valuetype:
+  <dl class='dl-horizontal'>
+  <dt>paragraphs</dt><dd><code>&quot;\\n{2}&quot;</code>, regular expression 
+    meaning two newlines.  If you wish to define a paragaph as a single 
+    newline, change the 2 to a 1.</dd>
+  <dt>tags</dt><dd><code>&quot;##\\w+\\b&quot;</code>, a regular expression 
+    meaning two &quot;hash&quot; characters followed by any number of word characters
+    followed by a word boundary (a whitespace or the end of the text).</dd>
+  <dt>other</dt><dd>No default; user must supply one.</dd>
+  <dt>tokens, sentences</dt><dd>Delimiters do not apply to these, and a warning
+    will be issued if you attempt to supply one.</dd>
+  </dl></p>
+    <p>Delimiters may be defined for different <a href='valuetype.html'>valuetypes</a> 
+  but these may produce unexpected results, for example the lack of the
+  ability in a &quot;glob&quot; expression to define the word boundaries.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='corpus_reshape.html'>corpus_reshape</a></code>, <code><a href='tokens.html'>tokens</a></code></p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>testCorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'>c</span>(<span class='st'>"##INTRO This is the introduction.
-                        ##DOC1 This is the first document.  Second sentence in Doc 1.
-                        ##DOC3 Third document starts here.  End of third document."</span>,
-                       <span class='st'>"##INTRO Document ##NUMBER Two starts before ##NUMBER Three."</span>))
+    <pre class="examples"><div class='input'><span class='co'>## segmenting a corpus</span>
+
+<span class='no'>testCorpus</span> <span class='kw'>&lt;-</span>
+<span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'>c</span>(<span class='st'>"##INTRO This is the introduction.
+          ##DOC1 This is the first document.  Second sentence in Doc 1.
+          ##DOC3 Third document starts here.  End of third document."</span>,
+         <span class='st'>"##INTRO Document ##NUMBER Two starts before ##NUMBER Three."</span>))
 <span class='co'># add a docvar</span>
 <span class='no'>testCorpus</span><span class='kw'>[[</span><span class='st'>"serialno"</span>]] <span class='kw'>&lt;-</span> <span class='fu'>paste0</span>(<span class='st'>"textSerial"</span>, <span class='fl'>1</span>:<span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>testCorpus</span>))
 <span class='no'>testCorpusSeg</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>testCorpus</span>, <span class='st'>"tags"</span>)
 <span class='fu'>summary</span>(<span class='no'>testCorpusSeg</span>)</div><div class='output co'>#&gt; Corpus consisting of 6 documents.
 #&gt; 
-#&gt;     Text Types Tokens Sentences      tag    serialno
-#&gt;  text1.1     5      5         1  ##INTRO textSerial1
-#&gt;  text1.2    11     12         2   ##DOC1 textSerial1
-#&gt;  text1.3     8     10         2   ##DOC3 textSerial1
-#&gt;  text2.1     1      1         1  ##INTRO textSerial2
-#&gt;  text2.2     3      3         1 ##NUMBER textSerial2
-#&gt;  text2.3     2      2         1 ##NUMBER textSerial2
+#&gt;     Text Types Tokens Sentences    serialno      tag
+#&gt;  text1.1     5      5         1 textSerial1  ##INTRO
+#&gt;  text1.2    11     12         2 textSerial1   ##DOC1
+#&gt;  text1.3     8     10         2 textSerial1   ##DOC3
+#&gt;  text2.1     1      1         1 textSerial2  ##INTRO
+#&gt;  text2.2     3      3         1 textSerial2 ##NUMBER
+#&gt;  text2.3     2      2         1 textSerial2 ##NUMBER
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Apr  3 19:19:31 2017
-#&gt; Notes:   corpus_segment(corpus_segment.corpus)corpus_segment(testCorpus)corpus_segment(tags)
+#&gt; Created: Tue Apr 18 17:25:57 2017
+#&gt; Notes:   corpus_segment.corpus(testCorpus, &quot;tags&quot;)
 #&gt; </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>testCorpusSeg</span>)</div><div class='output co'>#&gt;                                                  text1.1 
 #&gt;                              &quot;This is the introduction.&quot; 
 #&gt;                                                  text1.2 
@@ -290,9 +317,11 @@ are determined by the tokenizer behaviour in <code><a href='tokens.html'>tokens<
 #&gt;  Conservative.8    16     16         1
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Apr  3 19:19:32 2017
-#&gt; Notes:   corpus_segment(corpus_segment.corpus)corpus_segment(corpus(data_char_ukimmig2010))corpus_segment(sentences)
+#&gt; Created: Tue Apr 18 17:25:57 2017
+#&gt; Notes:   corpus_segment.corpus(corpus(data_char_ukimmig2010), &quot;sentences&quot;)
 #&gt; </div><div class='input'>
+<span class='co'>## segmenting a character object</span>
+
 <span class='co'># same as tokenize()</span>
 <span class='fu'>identical</span>(<span class='fu'>as.character</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_char_ukimmig2010</span>)),
           <span class='fu'>as.character</span>(<span class='fu'>char_segment</span>(<span class='no'>data_char_ukimmig2010</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"tokens"</span>)))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
@@ -362,9 +391,17 @@ are determined by the tokenizer behaviour in <code><a href='tokens.html'>tokens<
       <li><a href="#details">Details</a></li>
 
       <li><a href="#note">Note</a></li>
+
+      <li><a href="#using-delimiters">Using delimiters</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
+
+    <h2>Author</h2>
+    
+Kenneth Benoit
 
   </div>
 </div>

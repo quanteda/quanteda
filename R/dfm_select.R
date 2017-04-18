@@ -212,7 +212,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
              format(length(documents_add), big.mark=","), 
              " feature", ifelse(length(features_add) != 1, "s", ""), " and ",
              format(length(documents_add), big.mark=","),
-             " document", ifelse(length(documents_add) != 1, "s", ".\n"),
+             " document", ifelse(length(documents_add) != 1, "s", ""), ".\n",
              sep = "")
     } 
     

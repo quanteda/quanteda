@@ -64,26 +64,6 @@ struct range_mt : public Worker{
 };
 
 
-String text(Text &tokens, 
-            const CharacterVector &types_) {
-    
-    String text_("");
-    if (tokens.size() > 0) {
-        if (tokens[0] != 0) {
-            text_ += types_[tokens[0] - 1];
-        }
-        for (std::size_t j = 1; j < tokens.size(); j++) {
-            if (tokens[j] != 0) {
-                text_ += " ";
-                text_ += types_[tokens[j] - 1];
-            }
-        }
-        text_.set_encoding(CE_UTF8);
-    }
-    return text_;
-} 
-
-
 /* 
  * This funciton generate generates keyword-in-contexts. 
  * The number of threads is set by RcppParallel::setThreadOptions()
@@ -155,10 +135,10 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             Text cox_post(tokens.begin() + targets[i].second + 1, tokens.begin() + std::min(to, last) + 1);
             
             pos_from_[j] = targets[i].first + 1;
-            pos_to_[j] = targets[i].second + 1;
-            coxs_pre_[j] = text(cox_pre, types_);
-            coxs_target_[j] = text(cox_target, types_);
-            coxs_post_[j] = text(cox_post, types_);
+            pos_to_[j] = targets[i].second + 1; 
+            coxs_pre_[j] = join(cox_pre, types_); 
+            coxs_target_[j] = join(cox_target, types_);
+            coxs_post_[j] = join(cox_post, types_);
             coxs_name_[j] = names_[h];
             j++;
         }

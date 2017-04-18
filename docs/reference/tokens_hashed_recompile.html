@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -208,39 +203,35 @@ R-based method</dd>
 #&gt; attr(,&quot;concatenator&quot;)
 #&gt; [1] &quot;&quot;
 #&gt; attr(,&quot;dictionary&quot;)
-#&gt; $test
+#&gt; attr(,&quot;dictionary&quot;)$test
 #&gt; [1] &quot;one&quot;   &quot;three&quot;
 #&gt; 
-#&gt; attr(,&quot;concatenator&quot;)
+#&gt; attr(,&quot;dictionary&quot;)attr(,&quot;concatenator&quot;)
 #&gt; [1] &quot; &quot;
-#&gt; attr(,&quot;format&quot;)
+#&gt; attr(,&quot;dictionary&quot;)attr(,&quot;format&quot;)
 #&gt; `\001NULL\001`
-#&gt; attr(,&quot;file&quot;)
-#&gt; `\001NULL\001`
-#&gt; attr(,&quot;class&quot;)
-#&gt; [1] &quot;dictionary&quot;
-#&gt; attr(,&quot;class&quot;)attr(,&quot;package&quot;)
-#&gt; [1] &quot;quanteda&quot;</div><div class='input'>
+#&gt; attr(,&quot;dictionary&quot;)attr(,&quot;file&quot;)
+#&gt; `\001NULL\001`</div><div class='input'>
 <span class='co'># empty pads</span>
 <span class='fu'>unclass</span>(<span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks3</span>, <span class='no'>dict</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; integer(0)
+#&gt; [1] 1 2
 #&gt; 
 #&gt; attr(,&quot;padding&quot;)
 #&gt; [1] FALSE
 #&gt; attr(,&quot;types&quot;)
-#&gt; character(0)
+#&gt; [1] &quot;One&quot;   &quot;three&quot;
 #&gt; attr(,&quot;what&quot;)
 #&gt; [1] &quot;word&quot;
 #&gt; attr(,&quot;ngrams&quot;)
 #&gt; [1] 1
 #&gt; attr(,&quot;concatenator&quot;)
 #&gt; [1] &quot;&quot;</div><div class='input'><span class='fu'>unclass</span>(<span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks3</span>, <span class='no'>dict</span>, <span class='kw'>pad</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; [1] 0 0 0 0 0
+#&gt; [1] 1 0 2 0 0
 #&gt; 
 #&gt; attr(,&quot;padding&quot;)
 #&gt; [1] TRUE
 #&gt; attr(,&quot;types&quot;)
-#&gt; character(0)
+#&gt; [1] &quot;One&quot;   &quot;three&quot;
 #&gt; attr(,&quot;what&quot;)
 #&gt; [1] &quot;word&quot;
 #&gt; attr(,&quot;ngrams&quot;)

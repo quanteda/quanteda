@@ -60,12 +60,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -85,20 +80,19 @@
 wordscores method for scaling of a single dimension.</p>
     
 
-    <pre><span class='fu'>textmodel_wordscores</span>(<span class='no'>data</span>, <span class='no'>scores</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"linear"</span>, <span class='st'>"logit"</span>), <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
+    <pre><span class='fu'>textmodel_wordscores</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"linear"</span>, <span class='st'>"logit"</span>), <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>data</dt>
-      <dd>the dfm on which the model will be fit.  Does not need to contain
-only the training documents, since the index of these will be matched 
-automatically.</dd>
-      <dt>scores</dt>
+      <dt>x</dt>
+      <dd>the <a href='dfm.html'>dfm</a> on which the model will be trained</dd>
+      <dt>y</dt>
       <dd>vector of training scores associated with each document 
-identified in <code>refData</code></dd>
+in <code>x</code></dd>
       <dt>scale</dt>
-      <dd>classic LBG linear posterior weighted word class differences, or
-logit scale of log posterior differences</dd>
+      <dd>scale on which to score the words; <code>&quot;linear&quot;</code> for classic 
+LBG linear posterior weighted word class differences, or <code>&quot;logit&quot;</code>
+for log posterior differences</dd>
       <dt>smooth</dt>
       <dd>a smoothing parameter for word counts; defaults to zero for the
 to match the LBG (2003) method.</dd>
@@ -146,7 +140,7 @@ to match the LBG (2003) method.</dd>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>(<span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_LBGexample</span>, <span class='fu'>c</span>(<span class='fu'>seq</span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; Fitted wordscores model:
 #&gt; Call:
-#&gt; 	textmodel_wordscores(data = data_dfm_LBGexample, scores = c(seq(-1.5, 
+#&gt; 	textmodel_wordscores(x = data_dfm_LBGexample, y = c(seq(-1.5, 
 #&gt;     1.5, 0.75), NA))
 #&gt; 
 #&gt; Reference documents and reference scores:
@@ -199,7 +193,7 @@ to match the LBG (2003) method.</dd>
 <span class='co'># same as:</span>
 (<span class='no'>ws2</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_LBGexample</span>, <span class='fu'>c</span>(<span class='fu'>seq</span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; Fitted wordscores model:
 #&gt; Call:
-#&gt; 	textmodel_wordscores(data = data_dfm_LBGexample, scores = c(seq(-1.5, 
+#&gt; 	textmodel_wordscores(x = data_dfm_LBGexample, y = c(seq(-1.5, 
 #&gt;     1.5, 0.75), NA))
 #&gt; 
 #&gt; Reference documents and reference scores:

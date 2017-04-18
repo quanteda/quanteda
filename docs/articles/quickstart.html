@@ -38,14 +38,7 @@
   <a href="../news/index.html">News</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="http://github.com/kbenoit/quanteda">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -206,7 +199,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 ##   1805-Jefferson   804   2381        45
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Mon Apr  3 19:21:28 2017
+## Created: Tue Apr 18 17:27:48 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>substring()</code> function to extract characters from a name – in this case, the name of the character vector <code>data_char_inaugural</code>. This works using our fixed starting and ending positions with <code>substring()</code> because these names are a very regular format of <code>YYYY-PresidentName</code>.</p>
@@ -223,7 +216,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 ##   1805-Jefferson   804   2381        45  Jefferson 1805
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Mon Apr  3 19:21:28 2017
+## Created: Tue Apr 18 17:27:48 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -245,7 +238,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 ##  data_char_inaugural_5
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Mon Apr  3 19:21:28 2017
+## Created: Tue Apr 18 17:27:48 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -445,7 +438,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2013-Obama   814   2335        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Mon Apr  3 19:21:29 2017
+## Created: Tue Apr 18 17:27:48 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -485,32 +478,32 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <p>The <code>kwic</code> function (KeyWord In Context) performs a search for a word and allows us to view the contexts in which it occurs:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">width =</span> <span class="dv">200</span>)
 <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>)
-##                                                                                                      
-## [1797-Adams, 1327]                 fraud or violence, by | terror | , intrigue, or venality          
-## [1933-Roosevelt, 112] nameless, unreasoning, unjustified | terror | which paralyzes needed efforts to
-## [1941-Roosevelt, 289]      seemed frozen by a fatalistic | terror | , we proved that this            
-## [1961-Kennedy, 868]      alter that uncertain balance of | terror | that stays the hand of           
-## [1981-Reagan, 821]        freeing all Americans from the | terror | of runaway living costs.         
-## [1997-Clinton, 1055]         They fuel the fanaticism of | terror | . And they torment the           
-## [1997-Clinton, 1655]   maintain a strong defense against | terror | and destruction. Our children    
-## [2009-Obama, 1646]        advance their aims by inducing | terror | and slaughtering innocents, we
+##                                                                                                       
+##     [1797-Adams, 1327]              fraud or violence, by | terror | , intrigue, or venality          
+##  [1933-Roosevelt, 112] nameless, unreasoning, unjustified | terror | which paralyzes needed efforts to
+##  [1941-Roosevelt, 289]      seemed frozen by a fatalistic | terror | , we proved that this            
+##    [1961-Kennedy, 868]    alter that uncertain balance of | terror | that stays the hand of           
+##     [1981-Reagan, 821]     freeing all Americans from the | terror | of runaway living costs.         
+##   [1997-Clinton, 1055]        They fuel the fanaticism of | terror | . And they torment the           
+##   [1997-Clinton, 1655]  maintain a strong defense against | terror | and destruction. Our children    
+##     [2009-Obama, 1646]     advance their aims by inducing | terror | and slaughtering innocents, we
 <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)
-##                                                                                                              
-## [1797-Adams, 1327]                      fraud or violence, by |  terror   | , intrigue, or venality          
-## [1933-Roosevelt, 112]      nameless, unreasoning, unjustified |  terror   | which paralyzes needed efforts to
-## [1941-Roosevelt, 289]           seemed frozen by a fatalistic |  terror   | , we proved that this            
-## [1961-Kennedy, 868]           alter that uncertain balance of |  terror   | that stays the hand of           
-## [1961-Kennedy, 992]                 of science instead of its |  terrors  | . Together let us explore        
-## [1981-Reagan, 821]             freeing all Americans from the |  terror   | of runaway living costs.         
-## [1981-Reagan, 2204]          understood by those who practice | terrorism | and prey upon their neighbors    
-## [1997-Clinton, 1055]              They fuel the fanaticism of |  terror   | . And they torment the           
-## [1997-Clinton, 1655]        maintain a strong defense against |  terror   | and destruction. Our children    
-## [2009-Obama, 1646]             advance their aims by inducing |  terror   | and slaughtering innocents, we   
-## [2017-Trump, 1119]    civilized world against radical Islamic | terrorism | , which we will eradicate
+##                                                                                                               
+##     [1797-Adams, 1327]                   fraud or violence, by |  terror   | , intrigue, or venality          
+##  [1933-Roosevelt, 112]      nameless, unreasoning, unjustified |  terror   | which paralyzes needed efforts to
+##  [1941-Roosevelt, 289]           seemed frozen by a fatalistic |  terror   | , we proved that this            
+##    [1961-Kennedy, 868]         alter that uncertain balance of |  terror   | that stays the hand of           
+##    [1961-Kennedy, 992]               of science instead of its |  terrors  | . Together let us explore        
+##     [1981-Reagan, 821]          freeing all Americans from the |  terror   | of runaway living costs.         
+##    [1981-Reagan, 2204]        understood by those who practice | terrorism | and prey upon their neighbors    
+##   [1997-Clinton, 1055]             They fuel the fanaticism of |  terror   | . And they torment the           
+##   [1997-Clinton, 1655]       maintain a strong defense against |  terror   | and destruction. Our children    
+##     [2009-Obama, 1646]          advance their aims by inducing |  terror   | and slaughtering innocents, we   
+##     [2017-Trump, 1119] civilized world against radical Islamic | terrorism | , which we will eradicate
 <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"communist*"</span>)
-##                                                                                             
-## [1949-Truman, 838]  the actions resulting from the | Communist  | philosophy are a threat to
-## [1961-Kennedy, 519]             -- not because the | Communists | may be doing it,</code></pre></div>
+##                                                                                              
+##   [1949-Truman, 838] the actions resulting from the | Communist  | philosophy are a threat to
+##  [1961-Kennedy, 519]             -- not because the | Communists | may be doing it,</code></pre></div>
 <p>In the above summary, <code>Year</code> and <code>President</code> are variables associated with each document. We can access such variables with the <code><a href="../reference/docvars.html">docvars()</a></code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># inspect the document-level variables</span>
 <span class="kw">head</span>(<span class="kw"><a href="../reference/docvars.html">docvars</a></span>(data_corpus_inaugural))
@@ -819,10 +812,11 @@ if (<span class="kw">require</span>(topicmodels)) {
     <span class="kw">get_terms</span>(myLDAfit20, <span class="dv">5</span>)
     <span class="kw">topics</span>(myLDAfit20, <span class="dv">3</span>)
 }
+## Loading required package: topicmodels
 ##      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF
-## [1,]          3        10         11         9       15        1          20          12          18        13            13         16           4           7
-## [2,]         19        13         14         2        8        6           4          18          17        14            19         14          17          18
-## [3,]          5         4         17        19       11       18          13          16          14         2             3          4          16          16</code></pre></div>
+## [1,]         13         3          7        10       11        5          17           8           4        12            12         18           9          19
+## [2,]         15         6         20        16        1        2           6          14          14        20            15          1          14           9
+## [3,]         10         4          1         6        6        4           4           4          20         1            11         20          20           4</code></pre></div>
 </div>
 </div>
 </div>

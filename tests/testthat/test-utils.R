@@ -33,7 +33,7 @@ test_that("sequence2list works as expected", {
     expect_equal(quanteda:::sequence2list(c("United States", "Congress", "feder* gov*")),
                  target)
     # list
-    expect_equal(quanteda:::sequence2list(as.list(c("United States", "Congress", "feder* gov*"))),
+    expect_equal(quanteda:::sequence2list(list(c("United", "States"), c("Congress"), c("feder*", "gov*"))),
                  target)
     # tokens
     expect_equal(quanteda:::sequence2list(tokens(c("United States", "Congress", "feder* gov*"), what = "fasterword")),
@@ -43,7 +43,7 @@ test_that("sequence2list works as expected", {
                                                           institution = c("Congress", "feder* gov*")), tolower = FALSE)),
                  target)
     # collocations
-    collocs <- collocations(tokens(c("United States", "Congress", "federal government")))
+    collocs <- textstat_collocations(tokens(c("United States", "Congress", "federal government")), min_count = 1)
     expect_equal(quanteda:::sequence2list(collocs),
                  list(c("United", "States"), c("federal", "government")))
 })

@@ -165,7 +165,6 @@ char_segment.character <- function(x,
     
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
-    
     names_org <- names(x)
     
     # normalize EOL
@@ -173,7 +172,6 @@ char_segment.character <- function(x,
     x <- stringi::stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     names(x) <- names_org
-    
     result <- segment_texts(x, what, delimiter, valuetype, ...)
     result <- result[result!='']
     
@@ -213,7 +211,7 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
         if (!any(stringi::stri_detect_charclass(delimiter, c("[*?]")))) {
             valuetype <- "fixed"
         } else {
-            regex <- quanteda:::escape_regex(delimiter)
+            regex <- escape_regex(delimiter)
             regex <- stringi::stri_replace_all_fixed(regex, '*', '(\\S*)')
             regex <- stringi::stri_replace_all_fixed(regex, '?', '(\\S)')
             delimiter <- paste0(regex, collapse = '|')
@@ -222,9 +220,9 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
     }
     
     if (what == "tokens") {
-        temp <- quanteda:::tokens_word(x, ...)
+        temp <- tokens_word(x, ...)
     } else if (what == "sentences") {
-        temp <- quanteda:::tokens_sentence(x, ...)
+        temp <- tokens_sentence(x, ...)
     } else if (what == 'tags') {
         temp <- stringi::stri_replace_all_regex(x, delimiter, "\v$0") # insert control character
         temp <- stringi::stri_split_fixed(temp, pattern = "\v", omit_empty = TRUE)

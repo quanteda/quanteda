@@ -47,7 +47,9 @@ NULL
 #'   Minnesota.
 #' @seealso \link{tokens_ngrams}
 #' @author Kenneth Benoit
+#' @keywords collocations internal
 #' @examples
+#' \dontrun{
 #' txt <- c("This is software testing: looking for (word) pairs!  
 #'          This [is] a software testing again. For.",
 #'          "Here: this is more Software Testing, looking again for word pairs.")
@@ -67,6 +69,7 @@ NULL
 #' collocations(data_char_inaugural[49:57], method = "all", n = 10)
 #' collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
 #' collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
+#' }
 collocations <- function(x,  method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
                          n = NULL, tolower = TRUE, 
                          punctuation = c("dontspan", "ignore", "include"), ...) {
@@ -128,12 +131,12 @@ collocations.tokenizedTexts <- function(x, method = c("lr", "chi2", "pmi", "dice
     
     coll <- NULL
     if (2 %in% size)
-        coll <- collocations2(x, method, 2, n, punctuation = punctuation)
+        coll <- collocations_bigram_old(x, method, 2, n, punctuation = punctuation)
     if (3 %in% size) {
         if (is.null(coll)) 
-            coll <- collocations3(x, method, 3, n, punctuation = punctuation, ...)
+            coll <- collocations_trigram_old(x, method, 3, n, punctuation = punctuation, ...)
         else {
-            coll <- rbind(coll, collocations3(x, method, 3, n, punctuation = punctuation, ...))
+            coll <- rbind(coll, collocations_trigram_old(x, method, 3, n, punctuation = punctuation, ...))
             class(coll) <- c("collocations", class(coll))
         }
     }
@@ -143,7 +146,7 @@ collocations.tokenizedTexts <- function(x, method = c("lr", "chi2", "pmi", "dice
 }
 
 
-collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=3, n=NULL, 
+collocations_trigram_old <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=3, n=NULL, 
                           punctuation =  c("dontspan", "ignore", "include"), ...) {
     method <- match.arg(method)
     
@@ -182,7 +185,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     w1Table <- wordpairs[, sum(count), by=w1]
     setnames(w1Table, "V1", "c1")
     setkey(w1Table, w1)
-    # eliminate any duplicates in w1 - see note above in collocations2
+    # eliminate any duplicates in w1 - see note above in collocations_bigram_old
     dups <- which(duplicated(w1Table[,w1]))
     if (length(dups)) {
         catm("  ...NOTE: dropping duplicates in word1:", w1Table[dups, w1], "\n")
@@ -197,7 +200,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     setnames(w2Table, "V1", "c2")
     setkey(w2Table, w2)
     setkey(allTable, w2)
-    # eliminate any duplicates in w2 - see note above in collocations2
+    # eliminate any duplicates in w2 - see note above in collocations_bigram_old
     dups <- which(duplicated(w2Table[,w2]))
     if (length(dups)) {
         catm("  ...NOTE: dropping duplicates in word2:", w2Table[dups, w2], "\n")
@@ -212,7 +215,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     setnames(w3Table, "V1", "c3")
     setkey(w3Table, w3)
     setkey(allTable2, w3)
-    # eliminate any duplicates in w3 - see note above in collocations2
+    # eliminate any duplicates in w3 - see note above in collocations_bigram_old
     dups <- which(duplicated(w3Table[,w3]))
     if (length(dups)) {
         catm("  ...NOTE: dropping duplicates in word3:", w3Table[dups, w3], "\n")
@@ -227,7 +230,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     setnames(w12Table, "V1", "c12")
     setkey(w12Table, w1, w2)
     setkey(allTable3, w1, w2)
-#     # eliminate any duplicates in w3 - see note above in collocations2
+#     # eliminate any duplicates in w3 - see note above in collocations_bigram_old
 #     dups <- which(duplicated(w12Table[, w1, w2]))
 #     if (length(dups)) {
 #         catm("  ...NOTE: dropping duplicates in word1,2: ... \n", w12Table[dups, w1, w2], "\n")
@@ -378,7 +381,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
 
 
 
-collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), 
+collocations_bigram_old <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), 
                           size=2, n=NULL, 
                           punctuation =  c("dontspan", "ignore", "include"), ...) {
     
@@ -536,13 +539,13 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
     df[1:ifelse(is.null(n), nrow(df), n), ]
 }
 
-#' check if an object is collocations type
-#' 
-#' Return \code{TRUE} if an object was constructed by \link{collocations}.
-#' @param x any object
-#' @export
-#' @keywords collocations
-is.collocations <- function(x) {
-    class(x)[1] == "collocations" 
-}
+#' #' check if an object is collocations type
+#' #' 
+#' #' Return \code{TRUE} if an object was constructed by \link{collocations}.
+#' #' @param x any object
+#' #' @export
+#' #' @keywords collocations
+#' is.collocations <- function(x) {
+#'     class(x)[1] == "collocations" 
+#' }
 

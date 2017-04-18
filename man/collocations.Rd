@@ -57,6 +57,7 @@ default (\code{spanPunct = FALSE})  as adjacent and hence are not eligible to
 be collocations.
 }
 \examples{
+\dontrun{
 txt <- c("This is software testing: looking for (word) pairs!  
          This [is] a software testing again. For.",
          "Here: this is more Software Testing, looking again for word pairs.")
@@ -77,6 +78,7 @@ collocations(data_char_inaugural[49:57], method = "all", n = 10)
 collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
 collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
 }
+}
 \references{
 McInnes, B T. 2004. "Extending the Log Likelihood Measure to 
   Improve Collocation Identification."  M.Sc. Thesis, University of 
@@ -88,3 +90,5 @@ McInnes, B T. 2004. "Extending the Log Likelihood Measure to
 \author{
 Kenneth Benoit
 }
+\keyword{collocations}
+\keyword{internal}
