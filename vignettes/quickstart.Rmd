@@ -40,7 +40,7 @@ libraries for Unicode text handling, **quanteda** pays special attention to fast
 implementation of Unicode and the handling of text in any character set, following conversion
 internally to UTF-8.
 
-**quanteda** is built for efficiency and speed, through its design around three infrastructures: the **string** package for text processing, the **data.table** package for indexing large documents efficiently, and the **Matrix** package for sparse matrix objects.  If you can fit it into memory, **quanteda** will handle it quickly.  (And eventually, we will make it possible to process objects even larger than available memory.)
+**quanteda** is built for efficiency and speed, through its design around three infrastructures: the **stringi** package for text processing, the **data.table** package for indexing large documents efficiently, and the **Matrix** package for sparse matrix objects.  If you can fit it into memory, **quanteda** will handle it quickly.  (And eventually, we will make it possible to process objects even larger than available memory.)
 
 **quanteda** is principally designed to allow users a fast and convenient method to go from 
 a corpus of texts to a selected matrix of documents by features, after defining what 
