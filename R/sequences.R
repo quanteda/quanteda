@@ -101,7 +101,7 @@ sequences.tokens <- function(x, features = "*",
 #' @method as.tokens sequences
 #' @noRd 
 as.tokens.sequences <- function(x) {
-    toks <- attr(x, 'ids')
+    toks <- attr(x, 'tokens')
     attr(toks, 'types') <- attr(x, 'types')
     class(toks) <- c("tokens", "tokenizedTexts")
     return(toks)
