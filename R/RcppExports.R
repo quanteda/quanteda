@@ -41,8 +41,8 @@ qatd_cpp_fcm <- function(texts_, n_types, count, window, weights, ordered, tri, 
     .Call('quanteda_qatd_cpp_fcm', PACKAGE = 'quanteda', texts_, n_types, count, window, weights, ordered, tri, nvec)
 }
 
-qatd_cpp_sequences <- function(texts_, words_, count_min, len_max, nested, ordered = FALSE) {
-    .Call('quanteda_qatd_cpp_sequences', PACKAGE = 'quanteda', texts_, words_, count_min, len_max, nested, ordered)
+qatd_cpp_sequences <- function(texts_, words_, types_, count_min, len_max, nested, ordered = FALSE) {
+    .Call('quanteda_qatd_cpp_sequences', PACKAGE = 'quanteda', texts_, words_, types_, count_min, len_max, nested, ordered)
 }
 
 qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {
