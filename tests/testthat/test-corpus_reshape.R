@@ -49,3 +49,17 @@ test_that("corpus_reshape works to paragraphs and back", {
     expect_equal(docvars(mycorpus),
                  docvars(mycorpus_unshaped))
 })
+
+test_that("corpus_reshape works with empty documents, issue #670", {
+    mycorpus <- corpus(c(textone = "This is a paragraph.\n\nAnother paragraph.\n\nYet paragraph.", 
+                         texttwo = "Premiere phrase.\n\nDeuxieme phrase.",
+                         textthree = ""), 
+                       docvars = data.frame(country=c("UK", "USA", "Japan"), year=c(1990, 2000, 2010)),
+                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+    mycorpus_reshaped <- corpus_reshape(mycorpus, to = "paragraphs")
+    mycorpus_unshaped <- corpus_reshape(mycorpus_reshaped, to = "documents")
+    expect_equal(texts(mycorpus)[1:2],
+                 texts(mycorpus_unshaped))
+    expect_equal(docvars(mycorpus)[1:2,],
+                 docvars(mycorpus_unshaped))
+})
