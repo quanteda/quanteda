@@ -31,7 +31,7 @@ docnames(data_corpus_irishbudget2010)
 docnames(tokens(data_char_ukimmig2010))
 
 # query the document names of a dfm
-docnames(dfm(data_char_inaugural[1:5]))
+docnames(dfm(data_corpus_inaugural[1:5]))
 
 # reassign the document names of the inaugural speech corpus
 docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")
