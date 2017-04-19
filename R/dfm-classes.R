@@ -164,7 +164,7 @@ setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
 #' @method as.matrix dfm
 #' @examples
 #' # coercion to matrix
-#' mydfm <- dfm(data_char_inaugural)
+#' mydfm <- dfm(data_corpus_inaugural)
 #' str(as.matrix(mydfm))
 #' 
 as.matrix.dfm <- function(x, ...) {
@@ -183,7 +183,7 @@ as.matrix.dfm <- function(x, ...) {
 #' @export
 #' @examples
 #' # coercion to a data.frame
-#' inaugDfm <- dfm(data_char_inaugural[1:5])
+#' inaugDfm <- dfm(data_corpus_inaugural[1:5])
 #' as.data.frame(inaugDfm[, 1:10])
 #' as.data.frame(inaugDfm[, 1:10], row.names = FALSE)
 as.data.frame.dfm <- function(x, row.names = NULL, optional = FALSE , ...) {

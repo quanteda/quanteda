@@ -2,7 +2,7 @@ context('test textstat_simil.R')
 # correlation
 test_that("test textstat_simil method = \"correlation\" against proxy simil(): documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     corQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, method = "correlation", margin = "documents"))[,"1981-Reagan"], 6), decreasing = TRUE)
@@ -14,7 +14,7 @@ test_that("test textstat_simil method = \"correlation\" against proxy simil(): d
 
 test_that("test textstat_simil method = \"correlation\" against base cor(): features (allow selection)", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     corQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "union", method = "correlation", margin = "features"))[,"union"], 6), decreasing = TRUE)
     corStats <- sort(round(cor(as.matrix(presDfm))[, "union"], 6), decreasing = TRUE)
@@ -24,7 +24,7 @@ test_that("test textstat_simil method = \"correlation\" against base cor(): feat
 # cosine
 test_that("test textstat_simil method = \"cosine\" against proxy simil(): features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     cosQuanteda <- round(as.matrix(textstat_simil(presDfm, method = "cosine", margin = "features"))[,"soviet"], 2)
@@ -41,7 +41,7 @@ test_that("test textstat_simil method = \"cosine\" against proxy simil(): featur
 
 test_that("test textstat_simil method = \"cosine\" against proxy simil(): documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     cosQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, method = "cosine", margin = "documents"))[,"1981-Reagan"], 6), decreasing = TRUE)
@@ -52,7 +52,7 @@ test_that("test textstat_simil method = \"cosine\" against proxy simil(): docume
 # jaccard - binary
 test_that("test textstat_simil method = \"jaccard\" against proxy::simil(): documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     jacQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "jaccard", margin = "documents", diag= FALSE, upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
@@ -64,7 +64,7 @@ test_that("test textstat_simil method = \"jaccard\" against proxy::simil(): docu
 
 test_that("test textstat_simil method = \"jaccard\" against proxy::simil(): features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     jacQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "jaccard", margin = "features"))[,"soviet"], 2)
@@ -87,7 +87,7 @@ test_that("test textstat_simil method = \"jaccard\" against proxy::simil(): feat
 # ejaccard - real-valued data
 test_that("test textstat_simil method = \"ejaccard\" against proxy::simil(): documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     ejacQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "eJaccard", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
@@ -99,7 +99,7 @@ test_that("test textstat_simil method = \"ejaccard\" against proxy::simil(): doc
 
 test_that("test textstat_simil method = \"ejaccard\" against proxy::simil(): features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     ejacQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "eJaccard", margin = "features"))[,"soviet"], 2)
@@ -122,7 +122,7 @@ test_that("test textstat_simil method = \"ejaccard\" against proxy::simil(): fea
 # dice -binary
 test_that("test textstat_simil method = \"dice\" against proxy::simil(): documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     diceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "dice", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
@@ -139,7 +139,7 @@ test_that("test textstat_simil method = \"dice\" against proxy::simil(): documen
 
 test_that("test textstat_simil method = \"dice\" against proxy::simil(): features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     diceQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "dice", margin = "features"))[,"soviet"], 2)
@@ -156,7 +156,7 @@ test_that("test textstat_simil method = \"dice\" against proxy::simil(): feature
 # edice -real valued data
 test_that("test textstat_simil method = \"edice\" against proxy::simil(): documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     ediceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "eDice", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
@@ -173,7 +173,7 @@ test_that("test textstat_simil method = \"edice\" against proxy::simil(): docume
 
 test_that("test textstat_simil method = \"edice\" against proxy::simil(): features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     ediceQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "eDice", margin = "features"))[,"soviet"], 2)
@@ -190,7 +190,7 @@ test_that("test textstat_simil method = \"edice\" against proxy::simil(): featur
 # simple matching coefficient
 test_that("test textstat_simil method = \"simple matching\" against proxy::simil(): documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     smcQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "simple matching", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
@@ -207,7 +207,7 @@ test_that("test textstat_simil method = \"simple matching\" against proxy::simil
 
 test_that("test textstat_simil method = \"simple matching\" against proxy::simil(): features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     smcQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "simple matching", margin = "features"))[,"soviet"], 2)
@@ -224,7 +224,7 @@ test_that("test textstat_simil method = \"simple matching\" against proxy::simil
 # Hamann similarity (Hamman similarity in proxy::dist)
 test_that("test textstat_simil method = \"hamann\" against proxy::simil(): documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     hamnQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "hamann", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
@@ -241,7 +241,7 @@ test_that("test textstat_simil method = \"hamann\" against proxy::simil(): docum
 
 test_that("test textstat_simil method = \"hamann\" against proxy::simil(): features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     hamnQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "hamann", margin = "features"))[,"soviet"], 2)
@@ -258,7 +258,7 @@ test_that("test textstat_simil method = \"hamann\" against proxy::simil(): featu
 # Faith similarity 
 test_that("test textstat_simil method = \"faith\" against proxy::simil(): documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     faithQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "faith", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
@@ -270,7 +270,7 @@ test_that("test textstat_simil method = \"faith\" against proxy::simil(): docume
 
 test_that("test textstat_simil method = \"faith\" against proxy::simil(): features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     faithQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "faith", margin = "features"))[,"soviet"], 2)
@@ -303,14 +303,14 @@ test_that("as.matrix.simil works as expected",{
 })
 
 test_that("textstat_simil stops as expected for methods not supported",{
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     expect_error(textstat_simil(presDfm, method = "Yule"), 
                  "The metric is not currently supported by quanteda, please use other packages such as proxy::dist\\(\\)\\/simil\\(\\).")
 })
 
 test_that("textstat_simil stops as expected for wrong selections",{
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     expect_error(textstat_simil(presDfm, 5), 
                  "'selection' should be character or character vector of document names or feature labels.")
@@ -324,7 +324,7 @@ test_that("textstat_simil stops as expected for wrong selections",{
 
 test_that("test textstat_simil works as expected for 'n' is not NULL", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     cosQuanteda <- round(as.matrix(suppressWarnings(textstat_simil(presDfm, method = "cosine", n=5, margin = "documents")))[,"1981-Reagan"], 6)

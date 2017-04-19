@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.9.9-48
+Version: 0.9.9-49
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible framework for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -137,4 +137,4 @@ Collate:
     'zzz.R'
 RcppModules: ngramMaker
 RoxygenNote: 6.0.1
-SystemRequirements: C++11,GNU make
+SystemRequirements: C++11

@@ -20,7 +20,7 @@ tokens_compound(x, sequences, concatenator = "_", valuetype = c("glob",
 making up the multi-word sequences.  The default \code{_} is highly 
 recommended since it will not be removed during normal cleaning and 
 tokenization (while nearly all other punctuation characters, at least those
-in the Unicode punctuation class [P] will be removed.}
+in the Unicode punctuation class [P] will be removed).}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;

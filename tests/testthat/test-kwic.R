@@ -163,7 +163,7 @@ test_that("test kwic with multiple matches, where one is the last (fixed bug)", 
 })
 
 
-txt <- data_char_inaugural["2005-Bush"]
+txt <- data_corpus_inaugural["2005-Bush"]
 
 test_that("test that kwic works for glob types", {
     kwicGlob <- kwic(txt, "secur*", window = 3, valuetype = "glob", case_insensitive = TRUE)
@@ -196,13 +196,13 @@ test_that("test that kwic works for regex types", {
 })
 
 test_that("test that kwic works for fixed types", {
-    kwicFixed <- kwic(inaugTexts, "security", window = 3, valuetype = "fixed", case_insensitive = TRUE)
+    kwicFixed <- kwic(data_corpus_inaugural, "security", window = 3, valuetype = "fixed", case_insensitive = TRUE)
     expect_true(
         setequal(c("security", "Security"),
                  unique(kwicFixed$keyword))
     )
     
-    kwicFixed <- kwic(inaugTexts, "security", window = 3, valuetype = "fixed", case_insensitive = FALSE)
+    kwicFixed <- kwic(data_corpus_inaugural, "security", window = 3, valuetype = "fixed", case_insensitive = FALSE)
     expect_true(
         setequal(c("security"),
                  unique(kwicFixed$keyword))

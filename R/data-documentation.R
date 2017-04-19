@@ -7,16 +7,6 @@
 #' tokenize(data_char_sampletext, remove_punct = TRUE)
 "data_char_sampletext"
 
-#' text of Herman Melville's Moby Dick
-#' 
-#' Named character object of the ASCII text of Herman Melville's
-#'  \emph{Moby Dick}, EBook no. 2701.
-#' @source Project Gutenberg, \url{http://www.gutenberg.org}
-#' @keywords data
-#' @examples
-#' summary(data_char_mobydick)
-"data_char_mobydick"
-
 #' immigration-related sections of 2010 UK party manifestos
 #' 
 #' Extracts from the election manifestos of 9 UK political parties from 2010, related
@@ -26,7 +16,7 @@
 #' @examples
 #' data_corpus_ukimmig2010 <- 
 #'     corpus(data_char_ukimmig2010, 
-#'            docvars = data.frame(party = names(ukimmigTexts)))
+#'            docvars = data.frame(party = names(data_char_ukimmig2010)))
 #' metadoc(data_corpus_ukimmig2010, "language") <- "english"
 #' summary(data_corpus_ukimmig2010, showmeta = TRUE)
 "data_char_ukimmig2010"
@@ -102,14 +92,4 @@ NULL
 #' @keywords data
 "data_corpus_inaugural"
 
-
-#' @rdname data_corpus_inaugural
-#' @details \code{data_char_inaugural} is the character vector of US presidential inaugaration speeches
-#' @examples
-#' # working with the character vector only
-#' str(data_char_inaugural)
-#' head(docvars(data_corpus_inaugural), 10)
-#' mycorpus <- corpus(data_char_inaugural)
-#' @keywords data
-"data_char_inaugural"
 
