@@ -114,7 +114,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             padding <- TRUE
             case_insensitive <- FALSE
         }
-        features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
+        features <- features2vector(features)
         features_id <- unlist(regex2id(features, featnames(x), valuetype, case_insensitive), use.names = FALSE)
         if (!is.null(features_id)) features_id <- sort(features_id) # keep the original column order
 

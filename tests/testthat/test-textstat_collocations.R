@@ -22,7 +22,7 @@ test_that("test that collocations only include selected features", {
 })
 
 test_that("test that collocations and sequences are counting the same features", {
-    toks <- tokens(data_char_inaugural, remove_punct = TRUE)
+    toks <- tokens(data_corpus_inaugural, remove_punct = TRUE)
     toks <- tokens_remove(toks, stopwords(), padding = TRUE)
     seqs <- textstat_collocations(toks, method = 'bj', max_size = 2)
     cols <- textstat_collocations(toks, method = 'lr', max_size = 2)
@@ -32,7 +32,7 @@ test_that("test that collocations and sequences are counting the same features",
 
 test_that("test that extractor works with collocation", {
     
-    toks <- tokens(data_char_inaugural, remove_punct = TRUE)
+    toks <- tokens(data_corpus_inaugural, remove_punct = TRUE)
     toks <- tokens_remove(toks, stopwords(), padding = TRUE)
     cols <- textstat_collocations(toks, method = 'lr', max_size = 2)
     cols <- cols[1:5,]

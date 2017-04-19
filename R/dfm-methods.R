@@ -11,7 +11,7 @@
 #' @param x the dfm whose features will be extracted
 #' @return character vector of the features
 #' @examples
-#' inaugDfm <- dfm(data_char_inaugural, verbose = FALSE)
+#' inaugDfm <- dfm(data_corpus_inaugural, verbose = FALSE)
 #' 
 #' # first 50 features (in original text order)
 #' head(featnames(inaugDfm), 50)

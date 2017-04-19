@@ -122,19 +122,19 @@ object types</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_char_inaugural</span>, <span class='st'>"secure*"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>))</div><div class='output co'>#&gt;                                                                       
+    <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"secure*"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>))</div><div class='output co'>#&gt;                                                                       
 #&gt;       [1797-Adams, 479]  welfare, and | secure  | the blessings of    
 #&gt;      [1797-Adams, 1517]  nations, and | secured | immortal glory with 
 #&gt;  [1805-Jefferson, 2368]   , and shall | secure  | to you the          
 #&gt;     [1817-Monroe, 1765] cherished. To | secure  | us against these    
 #&gt;     [1817-Monroe, 1825] defense as to | secure  | our cities and      
-#&gt;     [1817-Monroe, 3026]      I can to | secure  | economy and fidelity</div><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_char_inaugural</span>, <span class='st'>"secur"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt;                                                                               
+#&gt;     [1817-Monroe, 3026]      I can to | secure  | economy and fidelity</div><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"secur"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt;                                                                               
 #&gt;  [1789-Washington, 1499] government for the | security | of their union       
 #&gt;        [1797-Adams, 479]       welfare, and |  secure  | the blessings of     
 #&gt;       [1797-Adams, 1517]       nations, and | secured  | immortal glory with  
 #&gt;   [1805-Jefferson, 2368]        , and shall |  secure  | to you the           
 #&gt;      [1813-Madison, 321]       seas and the | security | of an important      
-#&gt;      [1817-Monroe, 1620]      may form some | security | against these dangers</div><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_char_inaugural</span>, <span class='st'>"security"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>))</div><div class='output co'>#&gt;                                                         
+#&gt;      [1817-Monroe, 1620]      may form some | security | against these dangers</div><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"security"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>))</div><div class='output co'>#&gt;                                                         
 #&gt;  [1789-Washington, 1499] government for the | security |
 #&gt;      [1813-Madison, 321]       seas and the | security |
 #&gt;      [1817-Monroe, 1620]      may form some | security |
@@ -148,7 +148,7 @@ object types</dd>
 #&gt;  against foreign dangers
 #&gt;  for the beneficence    
 #&gt;  of peace is            </div><div class='input'>
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_char_inaugural</span>)
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
 <span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"war against"</span>)</div><div class='output co'>#&gt;                                                                         
 #&gt;   [1857-Buchanan, 2933:2934] advantage of the fortune of | war against |
 #&gt;   [1901-McKinley, 2284:2285]         . We are not waging | war against |

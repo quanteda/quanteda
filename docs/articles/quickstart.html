@@ -64,7 +64,7 @@
 <p>An R package for managing and analyzing text.</p>
 <p><strong>quanteda</strong> makes it easy to manage texts in the form of a corpus, defined as a collection of texts that includes document-level variables specific to each text, as well as meta-data for documents and for the collection as a whole. <strong>quanteda</strong> includes tools to make it easy and fast to manuipulate the texts in a corpus, by performing the most common natural language processing tasks simply and quickly, such as tokenizing, stemming, or forming ngrams. <strong>quanteda</strong>’s functions for tokenizing texts and forming multiple tokenized documents into a <em>document-feature matrix</em> are both extremely fast and extremely simple to use. <strong>quanteda</strong> can segment texts easily by words, paragraphs, sentences, or even user-supplied delimiters and tags.</p>
 <p>Built on the text processing functions in the <strong>stringi</strong> package, which is in turn built on C++ implementation of the <a href="http://www.icu-project.org/">ICU</a> libraries for Unicode text handling, <strong>quanteda</strong> pays special attention to fast and correct implementation of Unicode and the handling of text in any character set, following conversion internally to UTF-8.</p>
-<p><strong>quanteda</strong> is built for efficiency and speed, through its design around three infrastructures: the <strong>string</strong> package for text processing, the <strong>data.table</strong> package for indexing large documents efficiently, and the <strong>Matrix</strong> package for sparse matrix objects. If you can fit it into memory, <strong>quanteda</strong> will handle it quickly. (And eventually, we will make it possible to process objects even larger than available memory.)</p>
+<p><strong>quanteda</strong> is built for efficiency and speed, through its design around three infrastructures: the <strong>stringi</strong> package for text processing, the <strong>data.table</strong> package for indexing large documents efficiently, and the <strong>Matrix</strong> package for sparse matrix objects. If you can fit it into memory, <strong>quanteda</strong> will handle it quickly. (And eventually, we will make it possible to process objects even larger than available memory.)</p>
 <p><strong>quanteda</strong> is principally designed to allow users a fast and convenient method to go from a corpus of texts to a selected matrix of documents by features, after defining what the documents and features. The package makes it easy to redefine documents, for instance by splitting them into sentences or paragraphs, or by tags, as well as to group them into larger documents by document variables, or to subset them based on logical conditions or combinations of document variables. The package also implements common NLP feature selection functions, such as removing stopwords and stemming in numerous languages, selecting words found in dictionaries, treating words as equivalent based on a user-defined “thesaurus”, and trimming and weighting features based on document frequency, feature frequency, and related measures such as <em>tf-idf</em>.</p>
 </div>
 <div id="quanteda-features" class="section level1">
@@ -183,62 +183,75 @@
 <h3 class="hasAnchor">
 <html><body><a href="#example-building-a-corpus-from-a-character-vector" class="anchor"> </a></body></html>Example: building a corpus from a character vector</h3>
 <p>The simplest case is to create a corpus from a vector of texts already in memory in R. This gives the advanced R user complete flexbility with his or her choice of text inputs, as there are almost endless ways to get a vector of texts into R.</p>
-<p>If we already have the texts in this form, we can call the corpus constructor function directly. We can demonstrate this on the built-in character vector of 57 US president inaugural speeches called <code>data_char_inaugural</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(data_char_inaugural)  <span class="co"># this gives us some information about the object</span>
-##  Named chr [1:58] "Fellow-Citizens of the Senate and of the House of Representatives:\n\nAmong the vicissitudes incident to life no event could ha"| __truncated__ ...
-##  - attr(*, "names")= chr [1:58] "1789-Washington" "1793-Washington" "1797-Adams" "1801-Jefferson" ...
-myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_inaugural)  <span class="co"># build the corpus</span>
-<span class="kw">summary</span>(myCorpus, <span class="dt">n =</span> <span class="dv">5</span>)
-## Corpus consisting of 58 documents, showing 5 documents.
+<p>If we already have the texts in this form, we can call the corpus constructor function directly. We can demonstrate this on the built-in character object of the texts about immigration policy extracted from the 2010 election manifestos of the UK political parties (called <code>data_char_ukimmig2010</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># build a new corpus from the texts</span>
+<span class="kw">summary</span>(myCorpus)
+## Corpus consisting of 9 documents.
 ## 
-##             Text Types Tokens Sentences
-##  1789-Washington   626   1540        23
-##  1793-Washington    96    147         4
-##       1797-Adams   826   2584        37
-##   1801-Jefferson   716   1935        41
-##   1805-Jefferson   804   2381        45
+##          Text Types Tokens Sentences
+##           BNP  1126   3330        88
+##     Coalition   144    268         4
+##  Conservative   252    503        15
+##        Greens   325    687        21
+##        Labour   296    703        29
+##        LibDem   257    499        14
+##            PC    80    118         5
+##           SNP    90    136         4
+##          UKIP   346    739        27
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Tue Apr 18 17:27:48 2017
+## Created: Wed Apr 19 13:17:49 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
-<p>We can do this using the R’s <code>substring()</code> function to extract characters from a name – in this case, the name of the character vector <code>data_char_inaugural</code>. This works using our fixed starting and ending positions with <code>substring()</code> because these names are a very regular format of <code>YYYY-PresidentName</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"President"</span>) &lt;-<span class="st"> </span><span class="kw">substring</span>(<span class="kw">names</span>(data_char_inaugural), <span class="dv">6</span>)
-<span class="kw"><a href="../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">substring</span>(<span class="kw">names</span>(data_char_inaugural), <span class="dv">1</span>, <span class="dv">4</span>))
-<span class="kw">summary</span>(myCorpus, <span class="dt">n=</span><span class="dv">5</span>)
-## Corpus consisting of 58 documents, showing 5 documents.
+<p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Party"</span>) &lt;-<span class="st"> </span><span class="kw">names</span>(data_char_ukimmig2010)
+<span class="kw"><a href="../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="dv">2010</span>
+<span class="kw">summary</span>(myCorpus)
+## Corpus consisting of 9 documents.
 ## 
-##             Text Types Tokens Sentences  President Year
-##  1789-Washington   626   1540        23 Washington 1789
-##  1793-Washington    96    147         4 Washington 1793
-##       1797-Adams   826   2584        37      Adams 1797
-##   1801-Jefferson   716   1935        41  Jefferson 1801
-##   1805-Jefferson   804   2381        45  Jefferson 1805
+##          Text Types Tokens Sentences        Party Year
+##           BNP  1126   3330        88          BNP 2010
+##     Coalition   144    268         4    Coalition 2010
+##  Conservative   252    503        15 Conservative 2010
+##        Greens   325    687        21       Greens 2010
+##        Labour   296    703        29       Labour 2010
+##        LibDem   257    499        14       LibDem 2010
+##            PC    80    118         5           PC 2010
+##           SNP    90    136         4          SNP 2010
+##          UKIP   346    739        27         UKIP 2010
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Tue Apr 18 17:27:48 2017
+## Created: Wed Apr 19 13:17:49 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
-<span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_inaugural"</span>, <span class="dv">1</span>:<span class="kw"><a href="../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)
-<span class="kw">summary</span>(myCorpus, <span class="dt">n =</span> <span class="dv">5</span>, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)
-## Corpus consisting of 58 documents, showing 5 documents.
+<span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="dv">1</span>:<span class="kw"><a href="../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)
+<span class="kw">summary</span>(myCorpus, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)
+## Corpus consisting of 9 documents.
 ## 
-##             Text Types Tokens Sentences  President Year _language
-##  1789-Washington   626   1540        23 Washington 1789   english
-##  1793-Washington    96    147         4 Washington 1793   english
-##       1797-Adams   826   2584        37      Adams 1797   english
-##   1801-Jefferson   716   1935        41  Jefferson 1801   english
-##   1805-Jefferson   804   2381        45  Jefferson 1805   english
-##             _docsource
-##  data_char_inaugural_1
-##  data_char_inaugural_2
-##  data_char_inaugural_3
-##  data_char_inaugural_4
-##  data_char_inaugural_5
+##          Text Types Tokens Sentences        Party Year _language
+##           BNP  1126   3330        88          BNP 2010   english
+##     Coalition   144    268         4    Coalition 2010   english
+##  Conservative   252    503        15 Conservative 2010   english
+##        Greens   325    687        21       Greens 2010   english
+##        Labour   296    703        29       Labour 2010   english
+##        LibDem   257    499        14       LibDem 2010   english
+##            PC    80    118         5           PC 2010   english
+##           SNP    90    136         4          SNP 2010   english
+##          UKIP   346    739        27         UKIP 2010   english
+##               _docsource
+##  data_char_ukimmig2010_1
+##  data_char_ukimmig2010_2
+##  data_char_ukimmig2010_3
+##  data_char_ukimmig2010_4
+##  data_char_ukimmig2010_5
+##  data_char_ukimmig2010_6
+##  data_char_ukimmig2010_7
+##  data_char_ukimmig2010_8
+##  data_char_ukimmig2010_9
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Tue Apr 18 17:27:48 2017
+## Created: Wed Apr 19 13:17:49 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -415,15 +428,15 @@ tokenInfo[<span class="kw">which.max</span>(tokenInfo$Tokens),]
 <html><body><a href="#adding-two-corpus-objects-together" class="anchor"> </a></body></html>Adding two corpus objects together</h3>
 <p>The <code>+</code> operator provides a simple method for concatenating two corpus objects. If they contain different sets of document-level variables, these will be stitched together in a fashion that guarantees that no information is lost. Corpus-level medata data is also concatenated.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
-mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_inaugural[<span class="dv">1</span>:<span class="dv">5</span>], <span class="dt">note =</span> <span class="st">"First five inaug speeches."</span>)
-## Warning in corpus.character(data_char_inaugural[1:5], note = "First five
+mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span>:<span class="dv">5</span>], <span class="dt">note =</span> <span class="st">"First five inaug speeches."</span>)
+## Warning in corpus.character(data_corpus_inaugural[1:5], note = "First five
 ## inaug speeches."): Argument note not used.
-mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_inaugural[<span class="dv">53</span>:<span class="dv">57</span>], <span class="dt">note =</span> <span class="st">"Last five inaug speeches."</span>)
-## Warning in corpus.character(data_char_inaugural[53:57], note = "Last five
+mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span>:<span class="dv">58</span>], <span class="dt">note =</span> <span class="st">"Last five inaug speeches."</span>)
+## Warning in corpus.character(data_corpus_inaugural[53:58], note = "Last five
 ## inaug speeches."): Argument note not used.
 mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>mycorpus2
 <span class="kw">summary</span>(mycorpus3)
-## Corpus consisting of 10 documents.
+## Corpus consisting of 11 documents.
 ## 
 ##             Text Types Tokens Sentences
 ##  1789-Washington   626   1540        23
@@ -436,9 +449,10 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##        2005-Bush   772   2325       100
 ##       2009-Obama   939   2729       110
 ##       2013-Obama   814   2335        88
+##       2017-Trump   582   1662        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Tue Apr 18 17:27:48 2017
+## Created: Wed Apr 19 13:17:49 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -733,7 +747,7 @@ byPresMat
 <p>The constructor function <code><a href="../reference/dictionary.html">dictionary()</a></code> also works with two common “foreign” dictionary formats: the LIWC and Provalis Research’s Wordstat format. For instance, we can load the LIWC and apply this to the Presidential inaugural speech corpus:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,
                        <span class="dt">format =</span> <span class="st">"LIWC"</span>)
-liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_char_inaugural[<span class="dv">52</span>:<span class="dv">57</span>], <span class="dt">dictionary =</span> liwcdict, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
+liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span>:<span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
 liwcdfm[, <span class="dv">1</span>:<span class="dv">10</span>]</code></pre></div>
 </div>
 </div>
@@ -814,9 +828,9 @@ if (<span class="kw">require</span>(topicmodels)) {
 }
 ## Loading required package: topicmodels
 ##      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF
-## [1,]         13         3          7        10       11        5          17           8           4        12            12         18           9          19
-## [2,]         15         6         20        16        1        2           6          14          14        20            15          1          14           9
-## [3,]         10         4          1         6        6        4           4           4          20         1            11         20          20           4</code></pre></div>
+## [1,]         15         3          9        12       17       13          14           6           1         8             1         16          10           4
+## [2,]         11        19         17        11        5        8           7           7          19         7            11          7          19          18
+## [3,]         20         8          5        17        2       10          10           8           7        19            18         10           7           8</code></pre></div>
 </div>
 </div>
 </div>

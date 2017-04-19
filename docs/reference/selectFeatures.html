@@ -214,13 +214,12 @@ features, for instance if a window of adjacency needs to be computed.</dd>
 <span class='co'>#                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)</span>
 <span class='co'># </span>
 <span class='co'># # with longer texts</span>
-<span class='co'># txts &lt;- data_char_inaugural[1:2]</span>
-<span class='co'># toks &lt;- tokenize(txts)</span>
+<span class='co'># toks &lt;- tokenize(data_corpus_inaugural[1:2])</span>
 <span class='co'># selectFeatures(toks, stopwords("english"), "remove")</span>
 <span class='co'># selectFeatures(toks, stopwords("english"), "keep")</span>
 <span class='co'># selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)</span>
 <span class='co'># selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)</span>
-<span class='co'># selectFeatures(tokenize(data_char_inaugural[2]), stopwords("english"), "remove", padding = TRUE)</span>
+<span class='co'># selectFeatures(tokenize(data_corpus_inaugural[2]), stopwords("english"), "remove", padding = TRUE)</span>
 <span class='co'>## ---------------------------------------------</span>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># toksh &lt;- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))</span>
@@ -239,7 +238,7 @@ features, for instance if a window of adjacency needs to be computed.</dd>
 
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># ## example for collocations</span>
-<span class='co'># (myCollocs &lt;- collocations(data_char_inaugural[1:3], n=20))</span>
+<span class='co'># (myCollocs &lt;- collocations(data_corpus_inaugural[1:3], n=20))</span>
 <span class='co'># selectFeatures(myCollocs, stopwords("english"), "remove")</span>
 <span class='co'>## ---------------------------------------------</span></div></pre>
   </div>

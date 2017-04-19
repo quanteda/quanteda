@@ -6,12 +6,16 @@
 #' to form a single "token".  This ensures that the sequences will be processed
 #' subsequently as single tokens, for instance in constructing a \link{dfm}.
 #' @param x an input \link{tokens} object
-#' @inheritParams sequence2list
+#' @param sequences the input sequence, one of: \itemize{ \item{character vector,
+#'   }{whose elements will be split on whitespace;} \item{list of characters,
+#'   }{consisting of a list of token patterns, separated by white space}; 
+#'   \item{\link{tokens} object;} \item{\link{dictionary} object}{;} 
+#'   \item{\link{collocations} object.}{} }
 #' @param concatenator the concatenation character that will connect the words 
 #'   making up the multi-word sequences.  The default \code{_} is highly 
 #'   recommended since it will not be removed during normal cleaning and 
 #'   tokenization (while nearly all other punctuation characters, at least those
-#'   in the Unicode punctuation class [P] will be removed.
+#'   in the Unicode punctuation class [P] will be removed).
 #' @inheritParams valuetype
 #' @param case_insensitive logical; if \code{TRUE}, ignore case when matching
 #' @param join logical; if \code{TRUE}, join overlapped compounds
@@ -78,12 +82,12 @@ tokens_compound.tokens <- function(x, sequences,
             seqs_ids <- attr(sequences, 'tokens')
         } else { 
             #cat("Use regex2id\n")
-            seqs <- sequence2list(sequences$collocation)
+            seqs <- features2list(sequences$collocation)
             seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
         }
     } else {
         #cat("Use regex2id\n")
-        seqs <- sequence2list(sequences)
+        seqs <- features2list(sequences)
         seqs <- seqs[lengths(seqs) > 1] # drop single words
         seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
     }

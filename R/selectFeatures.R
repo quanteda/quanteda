@@ -110,13 +110,12 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
 #'                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
 #' 
 #' # with longer texts
-#' txts <- data_char_inaugural[1:2]
-#' toks <- tokenize(txts)
+#' toks <- tokenize(data_corpus_inaugural[1:2])
 #' selectFeatures(toks, stopwords("english"), "remove")
 #' selectFeatures(toks, stopwords("english"), "keep")
 #' selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)
 #' selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)
-#' selectFeatures(tokenize(data_char_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
+#' selectFeatures(tokenize(data_corpus_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
 #' }
 selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                            valuetype = c("glob", "regex", "fixed"),
@@ -156,7 +155,7 @@ selectFeatures.tokens <- function(x, features, selection = c("keep", "remove"),
 #' @examples  
 #' \dontrun{
 #' ## example for collocations
-#' (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
+#' (myCollocs <- collocations(data_corpus_inaugural[1:3], n=20))
 #' selectFeatures(myCollocs, stopwords("english"), "remove")
 #' }
 #' @export
@@ -272,7 +271,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
 #' removeFeatures(mydfm, stopwords("english"))
 #' 
 #' ## example for collocations
-#' (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
+#' (myCollocs <- collocations(data_corpus_inaugural[1:3], n=20))
 #' removeFeatures(myCollocs, stopwords("english"))
 #' removeFeatures(myCollocs, stopwords("english"), pos = 2)
 #' }
@@ -288,7 +287,7 @@ removeFeatures <- function(x, features, ...) {
 # @rdname selectFeatures
 # @examples
 # ## example for collocations
-# (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
+# (myCollocs <- collocations(data_corpus_inaugural[1:3], n=20))
 # selectFeatures(myCollocs, stopwords("english"), "remove")
 # @export
 selectFeatures_collocations <- function(x, features, selection = c("keep", "remove"), 

@@ -40,7 +40,7 @@ compress(mat, margin = "features")
 compress(mat)
 
 # no effect if no compression needed
-compress(dfm(data_char_inaugural, verbose = FALSE))
+compress(dfm(data_corpus_inaugural, verbose = FALSE))
 }
 }
 \keyword{deprecated}
