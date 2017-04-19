@@ -16,7 +16,6 @@ Depends:
     R (>= 3.2.2),
     methods
 Imports:
-    methods,
     utils,
     stats,
     Matrix (>= 1.2),
