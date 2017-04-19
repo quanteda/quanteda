@@ -155,7 +155,7 @@ code <- function(texts){
 
 #' convert various input as features to a simple list
 #' 
-#' Convert a sequence into a simple list, for input as a sequence in e.g. 
+#' Convert various input as features into a simple list, for input as a sequence in e.g. 
 #' \code{\link{tokens_compound}}.
 #' @param features the input features, one of: \itemize{ \item{character vector,
 #'   }{whose elements will be split on whitespace;} \item{list of characters,
@@ -190,7 +190,9 @@ features2list <- function(features) {
     return(as.list(result))
 }
 
-#' convert various input as features to a vector for fucntions that 
+#' convert various input as features to a vector
+#' 
+#' Convert various input as features to a vector for fucntions that 
 #' do not support multi-word features e.g.
 #' \code{\link{dfm_select}, \link{sequences}, \link{collocations}}.
 #' @inheritParams features2list

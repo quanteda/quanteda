@@ -18,7 +18,7 @@ an unnamed list of features, with each element of the list a
   character vector with the split sequence.
 }
 \description{
-Convert a sequence into a simple list, for input as a sequence in e.g. 
+Convert various input as features into a simple list, for input as a sequence in e.g. 
 \code{\link{tokens_compound}}.
 }
 \keyword{internal}

@@ -2,9 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{features2vector}
 \alias{features2vector}
-\title{convert various input as features to a vector for fucntions that 
-do not support multi-word features e.g.
-\code{\link{dfm_select}, \link{sequences}, \link{collocations}}.}
+\title{convert various input as features to a vector}
 \usage{
 features2vector(features)
 }
@@ -19,7 +17,7 @@ features2vector(features)
 an unnamed vector of features
 }
 \description{
-convert various input as features to a vector for fucntions that 
+Convert various input as features to a vector for fucntions that 
 do not support multi-word features e.g.
 \code{\link{dfm_select}, \link{sequences}, \link{collocations}}.
 }
