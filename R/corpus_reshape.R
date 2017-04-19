@@ -84,23 +84,3 @@ changeunits <- function(...) {
     .Deprecated("corpus_reshape")
     UseMethod("corpus_reshape")
 }
-
-
-# helper function: rep method for a repeat a data.frame
-# Example:
-# rep(data.frame(one = 1:2, two = c("a", "b")), 2)
-# ## $one
-# ## [1] 1 2
-# ## 
-# ## $two
-# ## [1] a b
-# ## Levels: a b
-# ## 
-# ## $one
-# ## 
-# ## [1] 1 2
-# ## $two
-# ## [1] a b
-# ## Levels: a b
-rep.data.frame <- function(x, ...)
-    as.data.frame(lapply(x, rep, ...))
