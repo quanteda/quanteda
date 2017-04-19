@@ -136,4 +136,4 @@ Collate:
     'zzz.R'
 RcppModules: ngramMaker
 RoxygenNote: 6.0.1
-SystemRequirements: C++11,GNU make
+SystemRequirements: C++11
