@@ -6,7 +6,7 @@
 #' to form a single "token".  This ensures that the sequences will be processed
 #' subsequently as single tokens, for instance in constructing a \link{dfm}.
 #' @param x an input \link{tokens} object
-#' @inheritParams sequence2list
+#' @inheritParams features2list
 #' @param concatenator the concatenation character that will connect the words 
 #'   making up the multi-word sequences.  The default \code{_} is highly 
 #'   recommended since it will not be removed during normal cleaning and 
@@ -78,12 +78,12 @@ tokens_compound.tokens <- function(x, sequences,
             seqs_ids <- attr(sequences, 'tokens')
         } else { 
             #cat("Use regex2id\n")
-            seqs <- sequence2list(sequences$collocation)
+            seqs <- features2list(sequences$collocation)
             seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
         }
     } else {
         #cat("Use regex2id\n")
-        seqs <- sequence2list(sequences)
+        seqs <- features2list(sequences)
         seqs <- seqs[lengths(seqs) > 1] # drop single words
         seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
     }

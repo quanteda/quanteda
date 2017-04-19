@@ -10,12 +10,6 @@ tokens_compound(x, sequences, concatenator = "_", valuetype = c("glob",
 \arguments{
 \item{x}{an input \link{tokens} object}
 
-\item{sequences}{the input sequence, one of: \itemize{ \item{character vector,
-}{whose elements will be split on whitespace;} \item{list of characters,
-}{consisting of a list of token patterns, separated by white space}; 
-\item{\link{tokens} object;} \item{\link{dictionary} object}{;} 
-\item{\link{collocations} object.}{} }}
-
 \item{concatenator}{the concatenation character that will connect the words 
 making up the multi-word sequences.  The default \code{_} is highly 
 recommended since it will not be removed during normal cleaning and 
