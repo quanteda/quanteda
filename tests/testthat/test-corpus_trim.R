@@ -1,6 +1,6 @@
 context("test trim functions")
 
-test_that("corpus_trimsentences works", {
+test_that("corpus_trim works", {
     txt <- c("PAGE 1. This is a single sentence.  Short sentence. Three word sentence.",
              "PAGE 2. Very short! Shorter.",
              "Very long sentence, with multiple parts, separated by commas.  PAGE 3.")
@@ -19,7 +19,7 @@ test_that("corpus_trimsentences works", {
 
 })
 
-test_that("char_trimsentences works", {
+test_that("char_trim works", {
     txt <- c(d1 = "PAGE 1. This is a single sentence.  Short sentence. Three word sentence.",
              d2 = "PAGE 2. Very short! Shorter.",
              d3 = "Very long sentence, with multiple parts, separated by commas.  PAGE 3.")
