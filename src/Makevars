@@ -1,6 +1,3 @@
-PKG_LIBS = $(BLAS_LIBS) $(LAPACK_LIBS) # $(FLIBS)
+PKG_LIBS = $(BLAS_LIBS) $(LAPACK_LIBS) # $(FLIBS) `$(R_HOME)/bin/Rscript -e "RcppParallel::RcppParallelLibs()"`
 PKG_CPPFLAGS = -I.
 CXX_STD = CXX11
-PKG_LIBS += $(shell ${R_HOME}/bin/Rscript -e "RcppParallel::RcppParallelLibs()")
-CC=ccache gcc
-CXX=ccache g++
