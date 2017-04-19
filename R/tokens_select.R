@@ -114,17 +114,13 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     if (!is.tokens(x))
         stop("x must be a tokens object")
     
-    if (is.dictionary(features)) {
-        features <- unlist(features, use.names = FALSE)
-    }
     
-    features <- vector2list(features)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     
     types <- types(x)
-    features <- as.list(features)
+    features <- features2list(features)
     features_id <- regex2id(features, types, valuetype, case_insensitive)
     
     if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index

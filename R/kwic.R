@@ -70,7 +70,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
         stop("x must be a tokens object")
     
     valuetype <- match.arg(valuetype)
-    keywords <- vector2list(keywords)
+    keywords <- features2list(keywords)
 
     # add document names if none
     if (is.null(names(x))) {
