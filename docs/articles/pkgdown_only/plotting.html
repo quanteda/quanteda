@@ -92,7 +92,8 @@ inaugDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference
 )</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
 <p>If you’re only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mobydickCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_char_mobydick)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mobydick, <span class="dt">package =</span> <span class="st">"tokenizers"</span>)
+data_char_mobydick &lt;-<span class="st"> </span>mobydick
 
 <span class="kw"><a href="../../reference/textplot_xray.html">textplot_xray</a></span>(
     <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"whale"</span>),
