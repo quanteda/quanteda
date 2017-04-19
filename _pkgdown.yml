@@ -6,10 +6,8 @@ reference:
 - title: Data
   desc: Built-in data objects.
   contents:
-    - data_char_mobydick
     - data_char_sampletext
     - data_char_ukimmig2010
-    - data_char_inaugural
     - data_corpus_inaugural
     - data_corpus_irishbudget2010
     - data_dfm_LBGexample

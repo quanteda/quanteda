@@ -9,17 +9,10 @@
 \alias{inaugCorpus}
 \alias{LBGexample}
 \alias{exampleString}
+\alias{data_char_inaugural}
+\alias{data_char_mobydick}
 \title{datasets with deprecated or defunct names}
 \format{See the specific object documentation for the renamed objects.}
-\usage{
-ukimmigTexts
-
-ie2010Corpus
-
-inaugTexts
-
-inaugCorpus
-}
 \description{
 These are datasets that have been renamed but that have been
   temporarily retained for backward compatibility, or that have been renamed
@@ -27,16 +20,19 @@ These are datasets that have been renamed but that have been
   the deprecated functions will become defunct in future versions.
 }
 \details{
-\code{ukimmigTexts} is deprecated; please use 
+\code{ukimmigTexts} is defunct; please use 
   \code{data_char_ukimmigration} instead.
 
-\code{ie2010Corpus} is deprecated; please use 
+\code{ie2010Corpus} is defunct; please use 
   \code{data_corpus_irishbudget2010}
 
-\code{inaugTexts} is deprecated; please use
-  \code{data_char_inaugural} instead.
+\code{inaugTexts} is defunct; please use
+  \code{data_corpus_inaugural} instead.
 
-\code{inaugCorpus} is deprecated; please use 
+\code{data_char_inaugural} is defunct; please use
+  \code{data_corpus_inaugural} instead.
+
+\code{inaugCorpus} is defunct; please use 
   \code{data_corpus_inaugural} instead.
 
 \code{LBGexample} is defunct; please use 
@@ -44,7 +40,12 @@ These are datasets that have been renamed but that have been
 
 \code{exampleString} is defunct; please use 
   \code{data_char_sampletext} instead.
+
+\code{data_char_inaugural} is defunct; please use
+  \code{data_corpus_inaugural} instead.
+
+\code{data_char_mobydick} is defunct; please use
+  \code{data(mobydick, package = "tokenizers")} instead.
 }
-\keyword{datasets}
 \keyword{deprecated}
 \keyword{internal}
