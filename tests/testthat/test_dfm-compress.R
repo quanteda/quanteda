@@ -21,7 +21,7 @@ test_that("dfm_compress: simple test", {
 
 
 test_that("dfm_compress: no effect if no compression needed", {
-    compactdfm <- dfm(data_char_inaugural[1:5], tolower = TRUE, verbose = FALSE)
+    compactdfm <- dfm(data_corpus_inaugural[1:5], tolower = TRUE, verbose = FALSE)
     expect_equal(dim(compactdfm), dim(dfm_compress(compactdfm)))
 })
 
