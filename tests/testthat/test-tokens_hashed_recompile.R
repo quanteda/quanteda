@@ -154,7 +154,7 @@ test_that("tokens_hashed_recompile: flag use of padding even when it does not re
 
 test_that("non-ascii types are UTF8 encoded", {
     toks <- list(c(1:3))
-    toks <- qatd_cpp_tokens_recompile(toks, c('あ', 'い', 'う', 'え', 'お'))
+    toks <- quanteda:::qatd_cpp_tokens_recompile(toks, c('あ', 'い', 'う', 'え', 'お'))
     expect_equal(Encoding(attr(toks, 'types')), rep('UTF-8', 3))
 })
 
