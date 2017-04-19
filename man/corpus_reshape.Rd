@@ -11,7 +11,7 @@ corpus_reshape(x, to = c("sentences", "paragraphs", "documents"), ...)
 
 \item{to}{new document units in which the corpus will be recast}
 
-\item{...}{not used}
+\item{...}{additonal arguments passed to \link{corpus_segment}}
 }
 \value{
 A corpus object with the documents defined as the new units,

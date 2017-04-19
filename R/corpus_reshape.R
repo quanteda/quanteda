@@ -7,7 +7,7 @@
 #' to sentences, and then back to documents (possibly after modifying the sentences).
 #' @param x corpus whose document units will be reshaped
 #' @param to new document units in which the corpus will be recast
-#' @param ... not used
+#' @param ... additonal arguments passed to \link{corpus_segment} 
 #' @return A corpus object with the documents defined as the new units,
 #'   including document-level meta-data identifying the original documents.
 #' @examples
