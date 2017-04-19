@@ -19,3 +19,7 @@
     }
 
 }
+
+.onUnload <- function (libpath) {
+    library.dynam.unload("quanteda", libpath)
+}
