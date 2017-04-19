@@ -5,7 +5,7 @@
 # }
 # 
 # test_that("test that selectFeatures.collocations", {
-#     myCollocs <- collocations(data_char_inaugural[1:3], n=20)
+#     myCollocs <- collocations(data_corpus_inaugural[1:3], n=20)
 #     selected <- data.frame(selectFeatures(myCollocs, stopwords("english"), "remove"))
 #     
 #     expect_false(
@@ -32,7 +32,7 @@
 # })
 # 
 # test_that("case_insensitive works as expected", {
-#     myCollocs <- collocations(data_char_inaugural[1:3], n=20, tolower = F)
+#     myCollocs <- collocations(data_corpus_inaugural[1:3], n=20, tolower = F)
 #     selected <- data.frame(selectFeatures(myCollocs, stopwords("english"), case_insensitive = F, "remove"))
 #     
 #     expect_false(
@@ -48,13 +48,13 @@
 # })
 # 
 # test_that("test that selectFeatures.collocations give expected message when verbose is True", {
-#     myCollocs <- collocations(data_char_inaugural[1:3], n=20)
+#     myCollocs <- collocations(data_corpus_inaugural[1:3], n=20)
 #     expect_message(selectFeatures(myCollocs, stopwords("english"), "remove", verbose = T),
 #                    "Removed 15 \\(75%\\) of 20 collocations containing one of 174 stopwords.")
 # })
 # 
 # test_that("test that selectFeatures.collocations give expected error messages", {
-#     myCollocs <- collocations(data_char_inaugural[1:3], n=20)
+#     myCollocs <- collocations(data_corpus_inaugural[1:3], n=20)
 #     expect_error(selectFeatures(myCollocs, stopwords("english"), "keep"),
 #                    "keep not currently supported for selectFeatures.collocations")
 #     

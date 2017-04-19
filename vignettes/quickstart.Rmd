@@ -184,31 +184,28 @@ The corpus constructor command `corpus()` works directly on:
 The simplest case is to create a corpus from a vector of texts already in memory in R.  This gives the advanced R user complete flexbility with his or her choice of text inputs, as there are almost endless
 ways to get a vector of texts into R.
 
-If we already have the texts in this form, we can call the corpus constructor function directly.  We can demonstrate this on the built-in character vector of 57 US president inaugural speeches called `data_char_inaugural`.
+If we already have the texts in this form, we can call the corpus constructor function directly.  We can demonstrate this on the built-in character object of the texts about immigration policy extracted from the 2010 election manifestos of the UK political parties (called `data_char_ukimmig2010`).
 
 ```{r}
-str(data_char_inaugural)  # this gives us some information about the object
-myCorpus <- corpus(data_char_inaugural)  # build the corpus
-summary(myCorpus, n = 5)
+myCorpus <- corpus(data_char_ukimmig2010)  # build a new corpus from the texts
+summary(myCorpus)
 ```
 
 If we wanted, we could add some document-level variables -- what quanteda calls `docvars` -- to this corpus.
 
-We can do this using the R's `substring()` function to extract characters from a name -- in this case, the 
-name of the character vector `data_char_inaugural`.  This works using our fixed starting and ending positions with
-`substring()` because these names are a very regular format of `YYYY-PresidentName`.
+We can do this using the R's `names()` function to get the names of the character vector `data_char_ukimmig2010`, and assign this to a document variable (`docvar`).
 ```{r}
-docvars(myCorpus, "President") <- substring(names(data_char_inaugural), 6)
-docvars(myCorpus, "Year") <- as.integer(substring(names(data_char_inaugural), 1, 4))
-summary(myCorpus, n=5)
+docvars(myCorpus, "Party") <- names(data_char_ukimmig2010)
+docvars(myCorpus, "Year") <- 2010
+summary(myCorpus)
 ```
 
 If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also 
 add those to our corpus.
 ```{r}
 metadoc(myCorpus, "language") <- "english"
-metadoc(myCorpus, "docsource")  <- paste("data_char_inaugural", 1:ndoc(myCorpus), sep = "_")
-summary(myCorpus, n = 5, showmeta = TRUE)
+metadoc(myCorpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(myCorpus), sep = "_")
+summary(myCorpus, showmeta = TRUE)
 ```
 
 The last command, `metadoc`, allows you to define your own document meta-data fields.  Note that in assiging just the single value of `"english"`, R has recycled the value until it matches the number of documents in the corpus.  In creating
@@ -296,8 +293,8 @@ that no information is lost.  Corpus-level medata data is also concatenated.
 
 ```{r}
 library(quanteda)
-mycorpus1 <- corpus(data_char_inaugural[1:5], note = "First five inaug speeches.")
-mycorpus2 <- corpus(data_char_inaugural[53:57], note = "Last five inaug speeches.")
+mycorpus1 <- corpus(data_corpus_inaugural[1:5], note = "First five inaug speeches.")
+mycorpus2 <- corpus(data_corpus_inaugural[53:58], note = "Last five inaug speeches.")
 mycorpus3 <- mycorpus1 + mycorpus2
 summary(mycorpus3)
 ```
@@ -494,7 +491,7 @@ LIWC and Provalis Research's Wordstat format.  For instance, we can load the LIW
 ```{r, eval = FALSE}
 liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
                        format = "LIWC")
-liwcdfm <- dfm(data_char_inaugural[52:57], dictionary = liwcdict, verbose = FALSE)
+liwcdfm <- dfm(data_corpus_inaugural[52:58], dictionary = liwcdict, verbose = FALSE)
 liwcdfm[, 1:10]
 ```
 

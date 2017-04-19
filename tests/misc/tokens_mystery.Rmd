@@ -15,8 +15,8 @@ require(quanteda)
 ## Compare
 
 ```{r}
-toks_old <- tokenize(char_tolower(data_char_inaugural[c(2, 40)]), removePunct = TRUE)
-toks_new <- tokens(char_tolower(data_char_inaugural[c(2, 40)]), removePunct = TRUE)
+toks_old <- tokenize(char_tolower(data_corpus_inaugural[c(2, 40)]), removePunct = TRUE)
+toks_new <- tokens(char_tolower(data_corpus_inaugural[c(2, 40)]), removePunct = TRUE)
 ```
 
 Hashed version is definitely smaller:

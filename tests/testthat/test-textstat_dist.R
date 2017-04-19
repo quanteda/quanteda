@@ -3,7 +3,7 @@ context('test textstat_dist.R')
 # euclidean 
 test_that("test textstat_dist method = \"euclidean\" against proxy dist() and stats dist(): features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     eucQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet", method = "euclidean", margin = "features"))[,"soviet"], 2)
     eucQuanteda <- eucQuanteda[order(names(eucQuanteda))]
@@ -18,7 +18,7 @@ test_that("test textstat_dist method = \"euclidean\" against proxy dist() and st
 
 test_that("test textstat_dist method = \"Euclidean\" against proxy dist() and stats dist(): documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     eucQuanteda <- sort(round(as.matrix(textstat_dist(presDfm, method = "euclidean", margin = "documents"))[,"1981-Reagan"], 6), decreasing = FALSE)
@@ -37,7 +37,7 @@ test_that("test textstat_dist method = \"Euclidean\" against proxy dist() and st
 # eucProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "Chi-squared", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
 test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Dist(): features", {
     skip_if_not_installed("ExPosition")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     chiQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet", method = "Chisquared", margin = "features"))[,"soviet"], 2)
     chiQuanteda <- chiQuanteda[order(names(chiQuanteda))]
@@ -53,7 +53,7 @@ test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Di
 
 test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Dist(): documents", {
     skip_if_not_installed("ExPosition")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     chiQuanteda <- sort(round(as.matrix(textstat_dist(presDfm, method = "Chisquared", margin = "documents"))[,"1981-Reagan"], 6), decreasing = FALSE)
@@ -86,7 +86,7 @@ test_that("test textstat_dist method = \"Kullback-Leibler\" against proxy dist()
 # Manhattan distance
 test_that("test textstat_dist method = \"manhattan\" against proxy dist() : documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     manQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "manhattan", margin = "documents")), 2)
     manProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "manhattan", diag = FALSE, upper = FALSE)), 2)
@@ -95,7 +95,7 @@ test_that("test textstat_dist method = \"manhattan\" against proxy dist() : docu
 
 test_that("test textstat_dist method = \"manhattan\" against proxy dist() : features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     manQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "manhattan", margin = "features"))[,"soviet"], 2)
     manQuanteda <- manQuanteda[order(names(manQuanteda))]
@@ -110,7 +110,7 @@ test_that("test textstat_dist method = \"manhattan\" against proxy dist() : feat
 # Maximum/Supremum distance
 test_that("test textstat_dist method = \"Maximum\" against proxy dist() : documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     maxQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "maximum", margin = "documents")), 2)
     maxProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "maximum", diag = FALSE, upper = FALSE)), 2)
@@ -119,7 +119,7 @@ test_that("test textstat_dist method = \"Maximum\" against proxy dist() : docume
 
 test_that("test textstat_dist method = \"Maximum\" against proxy dist() : features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     maxQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "maximum", margin = "features"))[,"soviet"], 2)
     maxQuanteda <- maxQuanteda[order(names(maxQuanteda))]
@@ -136,7 +136,7 @@ test_that("test textstat_dist method = \"Canberra\" against proxy dist() : docum
     
     skip_if_not_installed("proxy")
     skip_on_os("solaris")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     canQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "canberra", margin = "documents")), 2)
     canProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "canberra", diag = FALSE, upper = FALSE)), 2)
@@ -145,7 +145,7 @@ test_that("test textstat_dist method = \"Canberra\" against proxy dist() : docum
 
 test_that("test textstat_dist method = \"Canberra\" against proxy dist() : features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980 & Year < 2017), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980 & Year < 2017), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     canQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "canberra", margin = "features"))[,"soviet"], 2)
     canQuanteda <- canQuanteda[order(names(canQuanteda))]
@@ -160,7 +160,7 @@ test_that("test textstat_dist method = \"Canberra\" against proxy dist() : featu
 # Minkowski distance
 test_that("test textstat_dist method = \"Minkowski\" against proxy dist() : documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     minkQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "minkowski", margin = "documents", p = 3)), 2)
     minkProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "minkowski", diag = FALSE, upper = FALSE, p=3)), 2)
@@ -169,7 +169,7 @@ test_that("test textstat_dist method = \"Minkowski\" against proxy dist() : docu
 
 test_that("test textstat_dist method = \"Canberra\" against proxy dist() : features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     minkQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "minkowski", margin = "features", p = 4))[,"soviet"], 2)
     minkQuanteda <- minkQuanteda[order(names(minkQuanteda))]
@@ -183,7 +183,7 @@ test_that("test textstat_dist method = \"Canberra\" against proxy dist() : featu
 
 # Hamming distance
 test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distance: documents", {
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     hammingQuanteda <- sort(as.matrix(textstat_dist(presDfm, "1981-Reagan", method = "hamming", margin = "documents", upper = TRUE))[,"1981-Reagan"], decreasing = FALSE)
@@ -200,7 +200,7 @@ test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distan
 
 test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distance: features", {
     skip_if_not_installed("e1071")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     hammingQuanteda <- textstat_dist(presDfm, "soviet", method = "hamming", margin = "features")[,"soviet"]
@@ -216,7 +216,7 @@ test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distan
 
 test_that("test textstat_dist method = \"binary\" against proxy::simil(): features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     jacQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet", method = "binary", margin = "features"))[,"soviet"], 2)
@@ -231,7 +231,7 @@ test_that("test textstat_dist method = \"binary\" against proxy::simil(): featur
 })
 
 test_that("as.list.dist works as expected",{
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     ddist <- textstat_dist(presDfm, method = "hamming")
     ddist_list <- as.list(ddist)
@@ -240,7 +240,7 @@ test_that("as.list.dist works as expected",{
 })
 
 test_that("as.list.dist.selection works as expected",{
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     ddist_list <- as.list(textstat_dist(presDfm, c("2017-Trump", "2013-Obama"), margin = "documents"))
     expect_null(ddist_list$'1985-Reagan')
@@ -248,14 +248,14 @@ test_that("as.list.dist.selection works as expected",{
 })
 
 test_that("textstat_dist stops as expected for methods not supported",{
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     expect_error(textstat_dist(presDfm, method = "Yule"), 
                  "The metric is not currently supported by quanteda, please use other packages such as proxy::dist\\(\\)\\/simil\\(\\).")
 })
 
 test_that("textstat_dist stops as expected for wrong selections",{
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     expect_error(textstat_dist(presDfm, 5), 
                  "'selection' should be character or character vector of document names or feature labels.")

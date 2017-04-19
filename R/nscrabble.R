@@ -13,7 +13,7 @@
 #'   letters.  Lower-casing is unnecessary.
 #' @examples
 #' nscrabble(c("muzjiks", "excellency"))
-#' nscrabble(data_char_inaugural[1:5], mean)
+#' nscrabble(data_corpus_inaugural[1:5], mean)
 #' @export
 nscrabble <- function(x, FUN = sum) {
     UseMethod("nscrabble")

@@ -134,7 +134,7 @@ context.</p>
 #&gt;   text1 3 5 1
 #&gt;   text2 1 2 2</div><div class='input'>
 <span class='co'># no effect if no compression needed</span>
-<span class='no'>compactdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_char_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>compactdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
 <span class='fu'>dim</span>(<span class='no'>compactdfm</span>)</div><div class='output co'>#&gt; [1]    5 1947</div><div class='input'><span class='fu'>dim</span>(<span class='fu'>dfm_compress</span>(<span class='no'>compactdfm</span>))</div><div class='output co'>#&gt; [1]    5 1947</div><div class='input'>
 <span class='co'># compress an fcm</span>
 <span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"A D a C E a d F e B A C E D"</span>),

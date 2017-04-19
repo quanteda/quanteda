@@ -129,19 +129,19 @@ tokenize_sentences(poetry)
 ### words 
 
 ```{r}
-microbenchmark::microbenchmark(quanteda_word = tokens(data_char_inaugural, what = "word", hash = FALSE,                  
+microbenchmark::microbenchmark(quanteda_word = tokens(data_corpus_inaugural, what = "word", hash = FALSE,                  
                                                       remove_punct = TRUE, 
                                                       remove_twitter = TRUE, 
                                                       remove_hyphens = TRUE),
-                               quanteda_faster = tokens(data_char_inaugural, what = "fasterword", hash = FALSE,                  
+                               quanteda_faster = tokens(data_corpus_inaugural, what = "fasterword", hash = FALSE,                  
                                                       remove_punct = TRUE, 
                                                       remove_twitter = TRUE, 
                                                       remove_hyphens = TRUE),
-                               quanteda_fastest = tokens(data_char_inaugural, what = "fasterword", hash = FALSE,
+                               quanteda_fastest = tokens(data_corpus_inaugural, what = "fasterword", hash = FALSE,
                                                       remove_punct = TRUE, 
                                                       remove_twitter = TRUE, 
                                                       remove_hyphens = TRUE),
-                               tokenizers = tokenize_words(data_char_inaugural), 
+                               tokenizers = tokenize_words(data_corpus_inaugural), 
                                times = 20, unit = "relative")
 ```
 
@@ -149,18 +149,18 @@ microbenchmark::microbenchmark(quanteda_word = tokens(data_char_inaugural, what 
 ### characters
 
 ```{r}
-microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "character", 
+microbenchmark::microbenchmark(q_tokens = tokens(data_corpus_inaugural, what = "character", 
                                                  remove_separators = TRUE,
                                                  remove_punct = TRUE, hash = FALSE),
-                                tokenizers = tokenize_characters(data_char_inaugural), 
+                                tokenizers = tokenize_characters(data_corpus_inaugural), 
                                 times = 20, unit = "relative")
 ```
 
 ### sentence
 
 ```{r}
-microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "sentence", hash = FALSE),
-                                tokenizers = tokenize_sentences(data_char_inaugural), 
+microbenchmark::microbenchmark(q_tokens = tokens(data_corpus_inaugural, what = "sentence", hash = FALSE),
+                                tokenizers = tokenize_sentences(data_corpus_inaugural), 
                                 times = 20, unit = "relative")
 ```
 
