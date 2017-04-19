@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.9.9-49
+Version: 0.9.9-50
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible framework for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -13,7 +13,8 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb") )
 License: GPL-3
 Depends:
-    R (>= 3.2.2)
+    R (>= 3.2.2),
+    methods
 Imports:
     methods,
     utils,
