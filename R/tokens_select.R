@@ -61,13 +61,12 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #'                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
 #' 
 #' # with longer texts
-#' txts <- data_char_inaugural[1:2]
-#' toks <- tokenize(txts)
+#' toks <- tokenize(data_corpus_inaugural[1:2])
 #' tokens_select(toks, stopwords("english"), "remove")
 #' tokens_select(toks, stopwords("english"), "keep")
 #' tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 #' tokens_select(toks, stopwords("english"), "keep", padding = TRUE)
-#' tokens_select(tokenize(data_char_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
+#' tokens_select(tokenize(data_corpus_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
 #' }
 tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                          valuetype = c("glob", "regex", "fixed"),
@@ -96,8 +95,7 @@ tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "rem
 #' tokens_select(toksh, feats, selection = "remove", padding = TRUE, case_insensitive = FALSE)
 #' 
 #' # With longer texts
-#' txts <- data_char_inaugural
-#' toks <- tokens(txts)
+#' toks <- tokens(data_corpus_inaugural)
 #' tokens_select(toks, stopwords("english"), "remove")
 #' tokens_select(toks, stopwords("english"), "keep")
 #' tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
