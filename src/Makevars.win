@@ -1,4 +1,5 @@
-PKG_LIBS = $(BLAS_LIBS) $(LAPACK_LIBS) # $(FLIBS) `$(R_HOME)/bin${R_ARCH_BIN}/Rscript.exe \
-              -e "RcppParallel::RcppParallelLibs()"`
+PKG_LIBS = $(BLAS_LIBS) $(LAPACK_LIBS) # $(FLIBS) 
 CXX_STD = CXX11
-PKG_CXXFLAGS = -DRCPP_PARALLEL_USE_TBB=1
+PKG_CXXFLAGS += -DRCPP_PARALLEL_USE_TBB=1
+PKG_LIBS += `$(R_HOME)/bin${R_ARCH_BIN}/Rscript.exe \
+              -e "RcppParallel::RcppParallelLibs()"`
