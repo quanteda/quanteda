@@ -114,11 +114,11 @@ test_that("metadoc works with selection", {
     expect_equal(metadoc(mycorpus_reshaped, "document"),
                  c("textone", "textone", "textone", "texttwo", "texttwo"))
     expect_equal(
-        metadoc(mycorpus_reshaped, c("document", "serialno")),
+        metadoc(mycorpus_reshaped, c("document", "segid")),
         data.frame("_document" = c("textone", "textone", "textone", "texttwo", "texttwo"),
-                   "_serialno" = c(1, 2, 3, 1, 2),
+                   "_segid" = c(1, 2, 3, 1, 2),
                    check.names = FALSE, stringsAsFactors = FALSE,
-                   row.names = c(paste0("textone", 1:3), paste0("texttwo", 1:2)))
+                   row.names = c(paste0("textone.", 1:3), paste0("texttwo.", 1:2)))
     )
 }) 
 
