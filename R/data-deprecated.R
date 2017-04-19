@@ -23,9 +23,9 @@ NULL
 NULL
 
 #' @rdname data-deprecated
-#' @name inaugTexts
-#' @details \code{inaugTexts} is defunct; please use
-#'   \code{data_corpus_inaugural} instead.
+#' @details \code{inaugTexts} is deprecated; please use
+#'   \code{data_char_inaugural} instead.
+"inaugTexts"
 
 #' @rdname data-deprecated
 #' @name data_char_inaugural
