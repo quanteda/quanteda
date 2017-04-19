@@ -24,7 +24,7 @@
 #' dfm_compress(mat)
 #' 
 #' # no effect if no compression needed
-#' compactdfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
+#' compactdfm <- dfm(data_corpus_inaugural[1:5])
 #' dim(compactdfm)
 #' dim(dfm_compress(compactdfm))
 #' 

@@ -85,7 +85,7 @@ test_that("test plot.kwic keeps order of keywords passed", {
 })
 
 test_that("test textplot_wordcloud works for wordfish fitted models", {
-    expect_silent(textplot_wordcloud(dfm(inaugCorpus[1:5]), min.freq = 10))
+    expect_silent(textplot_wordcloud(dfm(data_corpus_inaugural[1:5]), min.freq = 10))
 })
 
 test_that("test textplot_scale1d wordfish in the most basic way", {

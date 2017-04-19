@@ -79,7 +79,7 @@ str <- c("apple is better than banana", "banana banana apple much better")
 dfm_weight(mydfm, weights = c(apple = 5, banana = 3, much = 0.5))
 
 \dontshow{
-testdfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
+testdfm <- dfm(data_corpus_inaugural[1:5])
 for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
     testw <- dfm_weight(testdfm, w)
     cat("\\n\\n=== weight() TEST for:", w, "; class:", class(testw), "\\n")

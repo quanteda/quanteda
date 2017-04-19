@@ -73,7 +73,7 @@
 #' @keywords corpus
 #' @examples
 #' # create a corpus from texts
-#' corpus(data_char_inaugural)
+#' corpus(data_char_ukimmig2010)
 #' 
 #' # create a corpus from texts and assign meta-data and document variables
 #' summary(corpus(data_char_ukimmig2010, 
@@ -90,7 +90,7 @@
 #'     data(acq, package = "tm")
 #'     summary(corpus(acq), 5, showmeta=TRUE)
 #'     
-#'     tmCorp <- tm::VCorpus(tm::VectorSource(data_char_inaugural[49:57]))
+#'     tmCorp <- tm::VCorpus(tm::VectorSource(data_char_ukimmig2010))
 #'     quantCorp <- corpus(tmCorp)
 #'     summary(quantCorp)
 #' }

@@ -65,11 +65,11 @@ dfm(mycorpus, dictionary = mydict2)
 # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
 lgdict <- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
                      format = "wordstat")
-head(dfm(data_char_inaugural, dictionary=lgdict))
+head(dfm(data_corpus_inaugural, dictionary = lgdict))
 
 # import a LIWC formatted dictionary from http://www.moralfoundations.org
 mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
-head(dfm(data_char_inaugural, dictionary = mfdict))}
+head(dfm(data_corpus_inaugural, dictionary = mfdict))}
 }
 \references{
 Wordstat dictionaries page, from Provalis Research 

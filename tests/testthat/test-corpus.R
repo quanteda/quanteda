@@ -77,7 +77,7 @@ test_that("test c.corpus", {
 
 test_that("test corpus constructors works for kwic", {
     
-    kwiccorpus <- corpus(kwic(inaugTexts, "christmas"))
+    kwiccorpus <- corpus(kwic(data_corpus_inaugural, "christmas"))
     expect_that(kwiccorpus, is_a("corpus"))
     expect_equal(sort(names(docvars(kwiccorpus))),
                  c("context", "docname", "from", "keyword", "to"))
@@ -86,7 +86,7 @@ test_that("test corpus constructors works for kwic", {
 
 test_that("test corpus constructors works for character", {
 
-    expect_that(corpus(inaugTexts), is_a("corpus"))
+    expect_that(corpus(data_char_ukimmig2010), is_a("corpus"))
 
 })
 
@@ -146,9 +146,9 @@ test_that("test corpus constructor works for tm objects", {
 
 test_that("test corpus constructor works for VCorpus with one document (#445)", {
     skip_if_not_installed("tm")
-    tmCorpus_length1 <- tm::VCorpus(tm::VectorSource(data_char_inaugural[1]))
+    tmCorpus_length1 <- tm::VCorpus(tm::VectorSource(data_corpus_inaugural[1]))
     expect_silent(qcorpus <- corpus(tmCorpus_length1))
-    expect_equal(texts(qcorpus)[1], data_char_inaugural[1])
+    expect_equal(texts(qcorpus)[1], data_corpus_inaugural[1])
 })
 
 test_that("corpus_subset works", {

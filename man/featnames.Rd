@@ -17,7 +17,7 @@ Get the features from a document-feature matrix, which are stored as the
 column names of the \link{dfm} object.
 }
 \examples{
-inaugDfm <- dfm(data_char_inaugural, verbose = FALSE)
+inaugDfm <- dfm(data_corpus_inaugural, verbose = FALSE)
 
 # first 50 features (in original text order)
 head(featnames(inaugDfm), 50)

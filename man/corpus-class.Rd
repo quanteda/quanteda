@@ -84,9 +84,9 @@ The \code{+} operator for a corpus object will combine two corpus
 \examples{
 
 # concatenate corpus objects
-corpus1 <- corpus(data_char_inaugural[1:2])
-corpus2 <- corpus(data_char_inaugural[3:4])
-corpus3 <- corpus_subset(data_corpus_inaugural, President == "Obama")
+corpus1 <- corpus(data_char_ukimmig2010[1:2])
+corpus2 <- corpus(data_char_ukimmig2010[3:4])
+corpus3 <- corpus(data_char_ukimmig2010[5:6])
 summary(c(corpus1, corpus2, corpus3))
 
 # ways to index corpus elements

@@ -73,9 +73,9 @@ collocations("@textasdata We really, really love the #quanteda package - thanks!
 collocations("@textasdata We really, really love the #quanteda package - thanks!!",
               remove_twitter = TRUE)
 
-collocations(data_char_inaugural[49:57], n = 10)
-collocations(data_char_inaugural[49:57], method = "all", n = 10)
-collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
+collocations(data_corpus_inaugural[49:57], n = 10)
+collocations(data_corpus_inaugural[49:57], method = "all", n = 10)
+collocations(data_corpus_inaugural[49:57], method = "chi2", size = 3, n = 10)
 collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
 }
 }
