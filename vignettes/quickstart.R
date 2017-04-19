@@ -6,19 +6,18 @@ knitr::opts_chunk$set(collapse = TRUE,
 require(quanteda)
 
 ## ------------------------------------------------------------------------
-str(data_char_inaugural)  # this gives us some information about the object
-myCorpus <- corpus(data_char_inaugural)  # build the corpus
-summary(myCorpus, n = 5)
+myCorpus <- corpus(data_char_ukimmig2010)  # build a new corpus from the texts
+summary(myCorpus)
 
 ## ------------------------------------------------------------------------
-docvars(myCorpus, "President") <- substring(names(data_char_inaugural), 6)
-docvars(myCorpus, "Year") <- as.integer(substring(names(data_char_inaugural), 1, 4))
-summary(myCorpus, n=5)
+docvars(myCorpus, "Party") <- names(data_char_ukimmig2010)
+docvars(myCorpus, "Year") <- 2010
+summary(myCorpus)
 
 ## ------------------------------------------------------------------------
 metadoc(myCorpus, "language") <- "english"
-metadoc(myCorpus, "docsource")  <- paste("data_char_inaugural", 1:ndoc(myCorpus), sep = "_")
-summary(myCorpus, n = 5, showmeta = TRUE)
+metadoc(myCorpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(myCorpus), sep = "_")
+summary(myCorpus, showmeta = TRUE)
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  require(readtext)
@@ -69,8 +68,8 @@ tokenInfo[which.max(tokenInfo$Tokens),]
 
 ## ------------------------------------------------------------------------
 library(quanteda)
-mycorpus1 <- corpus(data_char_inaugural[1:5], note = "First five inaug speeches.")
-mycorpus2 <- corpus(data_char_inaugural[53:57], note = "Last five inaug speeches.")
+mycorpus1 <- corpus(data_corpus_inaugural[1:5], note = "First five inaug speeches.")
+mycorpus2 <- corpus(data_corpus_inaugural[53:58], note = "Last five inaug speeches.")
 mycorpus3 <- mycorpus1 + mycorpus2
 summary(mycorpus3)
 
@@ -168,7 +167,7 @@ byPresMat
 ## ---- eval = FALSE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #  liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
 #                         format = "LIWC")
-#  liwcdfm <- dfm(data_char_inaugural[52:57], dictionary = liwcdict, verbose = FALSE)
+#  liwcdfm <- dfm(data_corpus_inaugural[52:58], dictionary = liwcdict, verbose = FALSE)
 #  liwcdfm[, 1:10]
 
 ## ----fig.width = 6------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

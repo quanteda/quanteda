@@ -38,7 +38,9 @@ The code below scans and splits the text of Moby Dick from Project Gutenberg, as
 ```{r eval=TRUE}
 require(quanteda)
 
-## read the text as a single file
+## read the text of Moby Dick from the tokenizers package
+data(mobydick, package = "tokenizers")
+data_char_mobydick <- mobydick
 summary(data_char_mobydick)
 
 ## alternative method:
