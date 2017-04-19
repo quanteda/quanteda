@@ -111,6 +111,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
     # create the new corpus
     result <- corpus(temp, metacorpus = list(source = metacorpus(x, "source"),
                                              notes = commands))
+    settings(result, "units") <- what
     
     # add repeated versions of remaining docvars
     if (use_docvars && !is.null(docvars(x))) {
@@ -119,8 +120,10 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
     if (what == 'tags') {
         docvars(result, 'tag') <- attr(temp, 'tag')
     }
+    docvars(result, '_document') <- attr(temp, 'document')
     docvars(result, '_docid') <- attr(temp, 'docid')
     docvars(result, '_segid') <- attr(temp, 'segid')
+    
     return(result)
 }
 
@@ -176,6 +179,7 @@ char_segment.character <- function(x,
     result <- result[result!='']
     
     attr(result, 'tag') <- NULL
+    attr(result, 'document') <- NULL
     attr(result, 'docid') <- NULL
     attr(result, 'segid') <- NULL
     
@@ -248,6 +252,7 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
     }
     
     n_segment <- lengths(temp)
+    attr(result, 'document') <- rep(names_org, n_segment)
     attr(result,'docid') <- rep(seq_along(x), n_segment)
     
     id_segment <- unlist(lapply(n_segment, seq_len), use.names = FALSE)

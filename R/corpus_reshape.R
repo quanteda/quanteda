@@ -34,74 +34,42 @@ corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), ..
     
 #' @noRd
 #' @rdname corpus_reshape
-#' @importFrom data.table data.table setnames
 #' @export
 corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
     
-    document <- NULL
-    
-    if (as.character(match.call()[[1]]) == "changeunits")
-        .Deprecated("corpus_reshape")
-    
     to <- match.arg(to)
     
-    if (length(addedArgs <- names(list(...))))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    
     if (to == "documents") {
-        if (settings(x, "unitsoriginal") != "documents" & !(settings(x, "units") %in% c("sentences")))
-            stop("reshape to documents only goes from sentences to documents")
-        
-        if (settings(x, "units") == "paragraphs") {
-            spacer <- "\n\n"
-        } else {
-            spacer <- "  "
-        }
-        
-        # reshape into original documents, replace the original text
-        docs <- data.table(x$documents)
-        setnames(docs, "_document", "document")
-        # take just first value of every (repeated) docvar
-        docs <- docs[, lapply(.SD, function(x) x[1]), by = document]
-        # concatenate texts
-        docs[, texts := texts(x, groups = metadoc(x, "document"), spacer = spacer)]
-        
-        # make the text "empty" if it contains only spaces
-        docs[stringi::stri_detect_regex(texts, "^\\s+$"), texts := ""]
-        
-        # remove reshape fields
-        docs[, "_serialno" := NULL]
-        
-        newcorpus <- x
-        newcorpus$documents <- as.data.frame(docs[, -which(names(docs) == "document"), with = FALSE])
-        rownames(newcorpus$documents) <- docs$document
-    
-    } else {
-        
-        # make the new corpus
-        segmentedTexts <- lapply(texts(x), char_segment, what = to)
-        lengthSegments <- vapply(segmentedTexts, length, integer(1))
-        newcorpus <- corpus(unlist(segmentedTexts))
-        # repeat the docvars and existing document metadata
-        docvars(newcorpus, names(docvars(x))) <- as.data.frame(lapply(docvars(x), rep, lengthSegments))
-        docvars(newcorpus, names(metadoc(x))) <- as.data.frame(lapply(metadoc(x), rep, lengthSegments))
-        # add original document name as metadata
-        metadoc(newcorpus, "document") <- rep(names(segmentedTexts), lengthSegments)
-        # give a serial number (within document) to each sentence
-        sentenceid <- lapply(lengthSegments, function(n) seq(from=1, to=n))
-        metadoc(newcorpus, "serialno") <- unlist(sentenceid, use.names=FALSE)
-    
-    }
-    
-    # copy settings and corpus metadata
-    newcorpus$settings <- x$settings
-    newcorpus$metadata <- x$metadata
+        if (settings(x, 'units') %in% c('sentences', 'paragraphs')) {
+            
+            docid <- docvars(x, '_docid')
+            segid <- docvars(x, '_segid')
+            
+            if (settings(x, 'units') == 'sentences') {
+                texts <- stringi::stri_join_list(split(texts(x), factor(docid)), sep = "  ")
+            } else {
+                texts <- stringi::stri_join_list(split(texts(x), factor(docid)), sep = "\n\n")
+            }
 
-    # modify settings flag for corpus_reshape info
-    settings(newcorpus, "unitsoriginal") <- settings(newcorpus, "units")
-    settings(newcorpus, "units") <- to
-    
-    newcorpus
+            temp <- corpus(texts, 
+                           docnames = docvars(x, '_document')[!duplicated(docid)],
+                           docvars = docvars(x)[!duplicated(docid),,drop = FALSE])
+
+            settings(temp, 'units') <- "documents"
+            result <- temp
+        } else {
+            stop("reshape to documents only goes from sentences or paragraphs")
+        }
+    } else if (to %in% c("sentences", "paragraphs")) {
+        if (settings(x, 'units') == 'documents') {
+            result <- corpus_segment(x, what = to, ...)
+        } else {
+            stop("reshape to sentences or paragraphs only goes from documents")
+        }
+    } else {
+        stop("reshape to", to, "is not supported")
+    }
+    return (result)
 }
 
 
