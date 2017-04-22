@@ -12,7 +12,7 @@
 #'   variable name using the \code{text_field} argument.  Other variables are 
 #'   imported as document-level meta-data.
 #' \item a \link{kwic} object constructed by \code{\link{kwic}}.
-#' \item a \pkg{tm} \link[tm]{VCorpus} class  object, with the fixed metadata 
+#' \item a \pkg{tm} \link[tm]{Corpus} class  object, with the fixed metadata 
 #'   fields imported as document-level metadata. Corpus-level metadata is not 
 #'   currently imported.
 #' } 
@@ -289,22 +289,26 @@ corpus.kwic <- function(x, docnames = NULL, docvars = NULL, text_field = "text",
 #' @noRd
 #' @keywords corpus
 #' @export
-corpus.VCorpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
+corpus.Corpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
     
     if (!missing(docvars))
         stop("docvars are assigned automatically for tm::VCorpus objects")
     if (!missing(text_field))
         stop("text_field is not applicable for this class of input")
 
-    # extract the content (texts)
-    texts <- sapply(x$content, "[[", "content")
-    # paste together texts if they appear to be vectors
-    if (any(lengths(texts) > 1))
-        texts <- vapply(texts, paste, character(1), collapse = " ")
-    
     # special handling for VCorpus meta-data
-    metad <- data.frame(do.call(rbind, (lapply(x$content, "[[", "meta"))),
+    if (inherits(x, what = "VCorpus")) {
+        metad <- data.frame(do.call(rbind, (lapply(x$content, "[[", "meta"))),
                         stringsAsFactors = FALSE, row.names = NULL)
+        # extract the content (texts)
+        texts <- sapply(x$content, "[[", "content")
+        # paste together texts if they appear to be vectors
+        if (any(lengths(texts) > 1))
+            texts <- vapply(texts, paste, character(1), collapse = " ")
+    } else if (inherits(x, what = "SimpleCorpus")) {
+        texts <- x$content
+        metad <- x$dmeta
+    }
     makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
     datetimestampIndex <- which(names(metad) == "datetimestamp")
     metad[, -datetimestampIndex] <- apply(metad[, -datetimestampIndex], 2, makechar)
