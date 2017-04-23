@@ -12,9 +12,10 @@
 #'   variable name using the \code{text_field} argument.  Other variables are 
 #'   imported as document-level meta-data.
 #' \item a \link{kwic} object constructed by \code{\link{kwic}}.
-#' \item a \pkg{tm} \link[tm]{Corpus} class  object, with the fixed metadata 
-#'   fields imported as document-level metadata. Corpus-level metadata is not 
-#'   currently imported.
+#' \item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object, 
+#'   with the fixed metadata 
+#'   fields imported as \link{docvars} and corpus-level metadata imported
+#'   as \link{metacorpus} information.
 #' } 
 #' @param x a valid corpus source object
 #' @param docnames Names to be assigned to the texts, defaults to the names of 
@@ -308,19 +309,21 @@ corpus.Corpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text
     } else if (inherits(x, what = "SimpleCorpus")) {
         texts <- x$content
         metad <- x$dmeta
+    } else {
+        stop("Cannot construct a corpus from this tm ", class(x)[1], " object")
     }
     makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
     datetimestampIndex <- which(names(metad) == "datetimestamp")
     metad[, -datetimestampIndex] <- apply(metad[, -datetimestampIndex], 2, makechar)
     if (length(datetimestampIndex))
         metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
-    # give them the underscore character required
-    # names(metad) <- paste("_", names(metad), sep="")
+
+    # corpus-level meta-data
+    if (is.null(metacorpus)) 
+        metacorpus <- x$meta
+    metacorpus <- c(metacorpus, 
+                    list(source = paste("Converted from tm VCorpus \'", deparse(substitute(x)), "\'", sep="")))
     
-    metacorpus <- c(metacorpus, list(source = paste("Converted from tm VCorpus \'", deparse(substitute(x)), "\'", sep="")))
-    
-    # using docvars inappropriately here but they show up as docmeta given 
-    # the _ in the variable names
     corpus(texts, docvars = metad, metacorpus = metacorpus, compress = compress, ...)
 }
 

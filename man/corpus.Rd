@@ -55,9 +55,10 @@ sources are:
   variable name using the \code{text_field} argument.  Other variables are 
   imported as document-level meta-data.
 \item a \link{kwic} object constructed by \code{\link{kwic}}.
-\item a \pkg{tm} \link[tm]{Corpus} class  object, with the fixed metadata 
-  fields imported as document-level metadata. Corpus-level metadata is not 
-  currently imported.
+\item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object, 
+  with the fixed metadata 
+  fields imported as \link{docvars} and corpus-level metadata imported
+  as \link{metacorpus} information.
 }
 }
 \details{
