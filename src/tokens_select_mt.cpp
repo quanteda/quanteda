@@ -56,32 +56,31 @@ Text remove_token(Text tokens,
 
 struct select_mt : public Worker{
     
-    Texts &input;
-    Texts &output;
+    Texts &texts;
     const std::vector<std::size_t> &spans;
     const SetNgrams &set_words;
     const int &mode;
     const bool &padding;
     
     // Constructor
-    select_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, 
+    select_mt(Texts &texts_, const std::vector<std::size_t> &spans_, 
               const SetNgrams &set_words_, const int &mode_, const bool &padding_):
-              input(input_), output(output_), spans(spans_), set_words(set_words_), mode(mode_), padding(padding_) {}
+              texts(texts_), spans(spans_), set_words(set_words_), mode(mode_), padding(padding_) {}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         if (mode == 1) {
             for (std::size_t h = begin; h < end; h++) {
-                output[h] = keep_token(input[h], spans, set_words, padding);
+                texts[h] = keep_token(texts[h], spans, set_words, padding);
             }
         } else if(mode == 2) {
             for (std::size_t h = begin; h < end; h++) {
-                output[h] = remove_token(input[h], spans, set_words, padding);
+                texts[h] = remove_token(texts[h], spans, set_words, padding);
             }
         } else {
             for (std::size_t h = begin; h < end; h++) {
-                output[h] = input[h];
+                texts[h] = texts[h];
             }
         }
     }
@@ -106,35 +105,34 @@ List qatd_cpp_tokens_select(const List &texts_,
                             int mode,
                             bool padding){
     
-    Texts input = Rcpp::as<Texts>(texts_);
+    Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
     
     SetNgrams set_words;
     std::vector<std::size_t> spans = register_ngrams(words_, set_words);
     
     // dev::Timer timer;
-    Texts output(input.size());
     // dev::start_timer("Token select", timer);
 #if QUANTEDA_USE_TBB
-    select_mt select_mt(input, output, spans, set_words, mode, padding);
-    parallelFor(0, input.size(), select_mt);
+    select_mt select_mt(texts, spans, set_words, mode, padding);
+    parallelFor(0, texts.size(), select_mt);
 #else
     if (mode == 1) {
-        for (std::size_t h = 0; h < input.size(); h++) {
-            output[h] = keep_token(input[h], spans, set_words, padding);
+        for (std::size_t h = 0; h < texts.size(); h++) {
+            texts[h] = keep_token(texts[h], spans, set_words, padding);
         }
     } else if(mode == 2) {
-        for (std::size_t h = 0; h < input.size(); h++) {
-            output[h] = remove_token(input[h], spans, set_words, padding);
+        for (std::size_t h = 0; h < texts.size(); h++) {
+            texts[h] = remove_token(texts[h], spans, set_words, padding);
         }
     } else {
-        for (std::size_t h = 0; h < input.size(); h++){
-            output[h] = input[h];
+        for (std::size_t h = 0; h < texts.size(); h++){
+            texts[h] = texts[h];
         }
     }
 #endif
     // dev::stop_timer("Token select", timer);
-    return recompile(output, types);
+    return recompile(texts, types);
 }
 
 /***R

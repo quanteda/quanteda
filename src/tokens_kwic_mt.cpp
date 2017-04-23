@@ -44,21 +44,21 @@ Targets range(Text tokens,
 
 struct range_mt : public Worker{
     
-    Texts &input;
+    Texts &texts;
     std::vector<Targets> &temp;
     const std::vector<std::size_t> &spans;
     const SetNgrams &set_words;
     
     // Constructor
-    range_mt(Texts &input_, std::vector<Targets> &temp_,
+    range_mt(Texts &texts_, std::vector<Targets> &temp_,
              const std::vector<std::size_t> &spans_, const SetNgrams &set_words_):
-        input(input_), temp(temp_), spans(spans_), set_words(set_words_){}
+             texts(texts_), temp(temp_), spans(spans_), set_words(set_words_){}
     
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++){
-            temp[h] = range(input[h], spans, set_words);
+            temp[h] = range(texts[h], spans, set_words);
         }
     }
 };
@@ -81,7 +81,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
                         const List &words_,
                         unsigned int window){
     
-    Texts input = Rcpp::as<Texts>(texts_);
+    Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as< Types >(types_);
     CharacterVector names_ = texts_.attr("names");
     
@@ -89,22 +89,22 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     std::vector<std::size_t> spans = register_ngrams(words_, set_words);
     
     // dev::Timer timer;
-    std::vector<Targets> output(input.size());
+    std::vector<Targets> temp(texts.size());
     
     // dev::start_timer("Dictionary detect", timer);
 #if QUANTEDA_USE_TBB
-    range_mt range_mt(input, output, spans, set_words);
-    parallelFor(0, input.size(), range_mt);
+    range_mt range_mt(texts, temp, spans, set_words);
+    parallelFor(0, texts.size(), range_mt);
 #else
-    for (std::size_t h = 0; h < input.size(); h++) {
-        output[h] = range(input[h], spans, set_words);
+    for (std::size_t h = 0; h < texts.size(); h++) {
+        temp[h] = range(texts[h], spans, set_words);
     }
 #endif
     
     // Get total number of matches
     std::size_t len = 0;
-    for (std::size_t h = 0; h < output.size(); h++) {
-        len += output[h].size();
+    for (std::size_t h = 0; h < temp.size(); h++) {
+        len += temp[h].size();
     }
     
     Texts contexts(len);
@@ -113,10 +113,10 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     CharacterVector coxs_name_(len), coxs_pre_(len), coxs_target_(len), coxs_post_(len);
     
     std::size_t j = 0;
-    for (std::size_t h = 0; h < output.size(); h++) {
-        Targets targets = output[h];
+    for (std::size_t h = 0; h < temp.size(); h++) {
+        Targets targets = temp[h];
         if (targets.size() == 0) continue;
-        Text tokens = input[h];
+        Text tokens = texts[h];
         int last = (int)tokens.size() - 1;
         for (size_t i = 0; i < targets.size(); i++) {
             int from = targets[i].first - window;
@@ -144,17 +144,17 @@ DataFrame qatd_cpp_kwic(const List &texts_,
         }
     }
     
-    DataFrame output_ = DataFrame::create(_["docname"] = coxs_name_,
-                                          _["from"]    = pos_from_,
-                                          _["to"]      = pos_to_,
-                                          _["pre"]     = coxs_pre_,
-                                          _["keyword"] = coxs_target_,
-                                          _["post"]    = coxs_post_,
-                                          _["stringsAsFactors"] = false);
-    output_.attr("tokens") = recompile(contexts, types);
-    output_.attr("docid") = documents_;
-    output_.attr("segid") = segments_;
-    return output_;
+    DataFrame kwic_ = DataFrame::create(_["docname"] = coxs_name_,
+                                        _["from"]    = pos_from_,
+                                        _["to"]      = pos_to_,
+                                        _["pre"]     = coxs_pre_,
+                                        _["keyword"] = coxs_target_,
+                                        _["post"]    = coxs_post_,
+                                        _["stringsAsFactors"] = false);
+    kwic_.attr("tokens") = recompile(contexts, types);
+    kwic_.attr("docid") = documents_;
+    kwic_.attr("segid") = segments_;
+    return kwic_;
 }
 
 
