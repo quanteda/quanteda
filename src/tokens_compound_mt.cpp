@@ -190,7 +190,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
     // dev::Timer timer;
     // dev::start_timer("Token compound", timer);
 #if QUANTEDA_USE_TBB
-    compound_mt compound_mt(texts, texts, spans, join, map_comps, id_comp);
+    compound_mt compound_mt(texts, spans, join, map_comps, id_comp);
     parallelFor(0, texts.size(), compound_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
