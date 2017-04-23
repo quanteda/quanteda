@@ -133,15 +133,37 @@ test_that("test corpus constructors works for data.frame", {
 
 test_that("test corpus constructor works for tm objects", {
     skip_if_not_installed("tm")
+    require(tm)
+    
+    # VCorpus
     data(crude, package = "tm")    # load in a tm example VCorpus
     mytmCorpus <- corpus(crude)
-    
     expect_equal(substring(texts(mytmCorpus)[1], 1, 21),
                  c("reut-00001.xml"  = "Diamond Shamrock Corp"))
     
     data(acq, package = "tm")
     mytmCorpus2 <- corpus(acq)
     expect_equal(dim(docvars(mytmCorpus2)), c(50,15))
+    
+    # SimpleCorpus
+    txt <- system.file("texts", "txt", package = "tm")
+    mytmCorpus3 <- SimpleCorpus(DirSource(txt, encoding = "UTF-8"),
+                                control = list(language = "lat"))
+    qcorpus3 <- corpus(mytmCorpus3)
+    expect_equal(content(mytmCorpus3), texts(qcorpus3))
+    expect_equal(unclass(meta(mytmCorpus3, type = "corpus")[1]),
+                 metacorpus(qcorpus3)[names(meta(mytmCorpus3, type = "corpus"))])
+    
+    # any other type
+    mytmCorpus4 <- mytmCorpus3
+    class(mytmCorpus4)[1] <- "OtherCorpus"
+    expect_error(
+        corpus(mytmCorpus4),
+        "Cannot construct a corpus from this tm OtherCorpus object"
+    )
+    
+    detach("package:tm", unload = TRUE)
+    detach("package:NLP", unload = TRUE)
 })
 
 test_that("test corpus constructor works for VCorpus with one document (#445)", {
