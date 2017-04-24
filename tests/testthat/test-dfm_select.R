@@ -128,7 +128,7 @@ test_that("longer selection than longer than features that exist (related to #44
     feat <- c('b', 'c', 'd', 'e', 'f', 'g')
     # bugs in C++ needs repeated tests
     expect_message(dfm_select(dfmtest, feat, verbose = TRUE),
-                   "dfm_select kept 4 features in 2 documents*")
+                   "dfm_select kept 4 features and 2 documents*")
     expect_equivalent(
         as.matrix(dfm_select(dfmtest, feat)),
         matrix(c(1, 1, 0, 1, 0, 1, 0, 1), nrow = 2)
