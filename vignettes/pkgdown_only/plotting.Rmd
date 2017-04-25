@@ -222,9 +222,32 @@ textplot_scale1d(wfm, doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 ```
 
+### 4.3 Correspondence Analysis
+
+You can also plot the estimated document positions of a correspodence analysis (Nenadic and Greenacre 2007).
+
+```{r}
+# Transform corpus to dfm
+ie_dfm <- dfm(data_corpus_irishbudget2010)
+
+# Run correspondence analysis on dfm
+wca <- textmodel_ca(ie_dfm)
+
+# Create doclabels for y-axis
+doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
+                1, paste, collapse = " ")
+
+# Plot estimated positions and group by party
+textplot_scale1d(wca, margin = "documents",
+                 doclabels = doclab,
+                 groups = docvars(data_corpus_irishbudget2010, "party"))
+```
+
 ## References
 
 Laver, Michael, Kenneth Benoit, and John Garry. 2003. "Extracting Policy Positions from Political Texts Using Words as Data." _American Political Science Review_ 97(2):311-331.
+
+Nenadic, Oleg, and Michael Greenacre. 2007. "Correspondence analysis in R, with two- and three-dimensional graphics: The ca package." _Journal of Statistical Software_ 20(3): 1-13. URL: http://www.jstatsoft.org/v20/i03/.
 
 Slapin, Jonathan, and Sven-Oliver Proksch. 2008. "A Scaling Model for Estimating Time-Series Party Positions from Texts." _American Journal of Political Science_ 52(3):705-772.
 
