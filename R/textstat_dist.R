@@ -22,7 +22,7 @@
 #' (d2 <- textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents"))
 #' as.list(d1)
 #' 
-textstat_dist <- function(x, selection = NULL, n = NULL, 
+textstat_dist <- function(x, selection = NULL, 
                           margin = c("documents", "features"),
                           method = "euclidean",
                           upper = FALSE, diag = FALSE, p = 2) {
@@ -31,7 +31,7 @@ textstat_dist <- function(x, selection = NULL, n = NULL,
     
 #' @noRd
 #' @export
-textstat_dist.dfm <- function(x, selection = NULL, n = NULL, 
+textstat_dist.dfm <- function(x, selection = NULL, 
                           margin = c("documents", "features"),
                           method = "euclidean",
                           upper = FALSE, diag = FALSE, p = 2) {
@@ -78,12 +78,6 @@ textstat_dist.dfm <- function(x, selection = NULL, n = NULL,
         #                      j = rep(seq_len(ncol(temp)), each = nrow(temp)),
         #                      x = as.vector(temp), dims = c(length(names), length(names)),
         #                      dimnames = list(names, names))
-    }
-    
-    
-    if (!is.null(n)) {
-        n <- min(n, nrow(nrow(temp)))
-        temp <- temp[seq_len(n), , drop = FALSE]
     }
     
     # create a new dist object
