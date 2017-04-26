@@ -1,5 +1,6 @@
 ---
 title: "Plotting with quanteda"
+author: Kenneth Benoit, Adam Obeng, and Stefan Müller
 output: 
   rmarkdown::html_vignette:
     css: mystyle.css
@@ -251,6 +252,3 @@ Nenadic, Oleg, and Michael Greenacre. 2007. "Correspondence analysis in R, with 
 
 Slapin, Jonathan, and Sven-Oliver Proksch. 2008. "A Scaling Model for Estimating Time-Series Party Positions from Texts." _American Journal of Political Science_ 52(3):705-772.
 
-## Acknowledgements
-
-Thanks to Adam Obeng for writing most of this vignette, and Stefan Müller for adding and updating the section on scaling plots.
