@@ -100,7 +100,7 @@ summary(corpus(data_char_ukimmig2010,
 corpus(texts(data_corpus_irishbudget2010))
 
 # import a tm VCorpus
-if ("tm" \%in\% rownames(installed.packages())) {
+if (requireNamespace("tm")) {
     data(crude, package = "tm")    # load in a tm example VCorpus
     mytmCorpus <- corpus(crude)
     summary(mytmCorpus, showmeta=TRUE)
