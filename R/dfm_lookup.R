@@ -101,9 +101,10 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     } else {
         result <- cbind(x[,unlist(entries_id) * -1], temp)
     }
+
     attr(result, "what") <- "dictionary"
     attr(result, "dictionary") <- dictionary
-    
+    attributes(result, FALSE) <- attributes(x)
     return(result)
 }
 
