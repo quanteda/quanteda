@@ -82,11 +82,13 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     result <- qatd_cpp_kwic(x, types, keywords_id, window)
     #result$docname <- as.factor(result$docname)
     
-    # add attributes for kwic object
-    attr(result, 'concatenator') <- attr(x, 'concatenator')
-    attr(result, "ntoken")  <- ntoken(x)
+    # attributes for tokens object
+    attributes(attr(result, "tokens"), FALSE)  <- attributes(x)
+    
+    # attributes for kwic object
     attr(result, "valuetype") <- valuetype
     attr(result, "keywords") <- sapply(keywords, paste, collapse = " ")
+    attributes(result, FALSE)  <- attributes(x)
     class(result) <- c("kwic", "data.frame")
     return(result)
 }
@@ -139,9 +141,7 @@ print.kwic <- function(x, ...) {
 as.tokens.kwic <- function(x) {
     result <- attr(x, 'tokens')
     names(result) <- x$docname
-    class(result) <- c("tokens", "tokenizedTexts")
     docvars(result) <- data.frame('_docid' = attr(x, 'docid'),
                                   '_segid' = attr(x, 'segid'))
-    attr(result, 'concatenator') <- attr(x, 'concatenator')
     return(result)
 }
