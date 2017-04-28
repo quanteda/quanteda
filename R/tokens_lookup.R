@@ -101,7 +101,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         
         # Substitute dictionary's concatenator with tokens' concatenator 
         if (concatenator != attr(dictionary, 'concatenator'))
-            entries <- stringi::stri_replace_all_fixed(entries, attr(dictionary, 'concatenator'), concatenator)
+            entries <- stri_replace_all_fixed(entries, attr(dictionary, 'concatenator'), concatenator)
         
         # Separate entries by concatenator
         if (multiword) {
@@ -121,12 +121,12 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         keys <- names(dictionary)
     }
     if (exclusive) {
-        x <- qatd_cpp_tokens_lookup(x, keys, entries_id, keys_id, FALSE)
+        result <- qatd_cpp_tokens_lookup(x, keys, entries_id, keys_id, FALSE)
     } else {
-        x <- qatd_cpp_tokens_match(x, c(types, keys), entries_id, keys_id + length(types), FALSE)
+        result <- qatd_cpp_tokens_match(x, c(types, keys), entries_id, keys_id + length(types), FALSE)
     }
-    attributes(x, FALSE) <- attrs
-    attr(x, "what") <- "dictionary"
-    attr(x, "dictionary") <- dictionary
-    return(x)
+    attributes(result, FALSE) <- attrs
+    attr(result, "what") <- "dictionary"
+    attr(result, "dictionary") <- dictionary
+    return(result)
 }
