@@ -94,8 +94,8 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     
     temp <- x[,unlist(entries_id, use.names = FALSE)]
     colnames(temp) <- keys[keys_id]
-    temp <- dfm_compress(temp, 'features')
-    temp <- dfm_select(temp, keys, NULL, valuetype = 'fixed', padding = TRUE)
+    temp <- dfm_compress(temp, margin = 'features')
+    temp <- dfm_select(temp, features = keys, valuetype = 'fixed', padding = TRUE)
     temp <- temp[,intersect(keys, colnames(temp))]
     
     if (exclusive) {
