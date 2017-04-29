@@ -92,7 +92,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
         keys <- names(dictionary)
     }
     
-    temp <- x[,unlist(entries_id)]
+    temp <- x[,unlist(entries_id, use.names = FALSE)]
     colnames(temp) <- keys[keys_id]
     temp <- dfm_compress(temp, 'features')
     temp <- dfm_select(temp, keys, NULL, valuetype = 'fixed', padding = TRUE)
