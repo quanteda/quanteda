@@ -96,12 +96,11 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     colnames(temp) <- keys[keys_id]
     temp <- dfm_compress(temp, margin = 'features')
     temp <- dfm_select(temp, features = keys, valuetype = 'fixed', padding = TRUE)
-    temp <- temp[,intersect(keys, colnames(temp))]
     
     if (exclusive) {
-        result <- temp
+        result <- temp[,keys]
     } else {
-        result <- cbind(x[,unlist(entries_id) * -1], temp)
+        result <- cbind(x[,unlist(entries_id) * -1], temp[,keys])
     }
 
     attr(result, "what") <- "dictionary"
