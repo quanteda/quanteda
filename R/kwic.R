@@ -86,6 +86,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     attributes(attr(result, "tokens"), FALSE)  <- attributes(x)
     
     # attributes for kwic object
+    attr(result, "ntoken") <- ntoken(x)
     attr(result, "valuetype") <- valuetype
     attr(result, "keywords") <- sapply(keywords, paste, collapse = " ")
     attributes(result, FALSE)  <- attributes(x)
