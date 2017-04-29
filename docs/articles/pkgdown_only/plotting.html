@@ -51,6 +51,7 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>Plotting with quanteda</h1>
+                        <h4 class="author">Kenneth Benoit, Adam Obeng, and Stefan Müller</h4>
             
           </div>
 
@@ -251,17 +252,34 @@ wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/text
                  <span class="dt">groups =</span> <span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-15-2.png" width="768"></p>
 </div>
+<div id="correspondence-analysis" class="section level3">
+<h3 class="hasAnchor">
+<html><body><a href="#correspondence-analysis" class="anchor"> </a></body></html>4.3 Correspondence Analysis</h3>
+<p>You can also plot the estimated document positions of a correspodence analysis (Nenadic and Greenacre 2007).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Transform corpus to dfm</span>
+ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)
+
+<span class="co"># Run correspondence analysis on dfm</span>
+wca &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textmodel_ca.html">textmodel_ca</a></span>(ie_dfm)
+
+<span class="co"># Create doclabels for y-axis</span>
+doclab &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="kw">c</span>(<span class="st">"name"</span>, <span class="st">"party"</span>)), 
+                <span class="dv">1</span>, paste, <span class="dt">collapse =</span> <span class="st">" "</span>)
+
+<span class="co"># Plot estimated positions and group by party</span>
+<span class="kw"><a href="../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(wca, <span class="dt">margin =</span> <span class="st">"documents"</span>,
+                 <span class="dt">doclabels =</span> doclab,
+                 <span class="dt">groups =</span> <span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</code></pre></div>
+<pre><code>## Warning: Removed 14 rows containing missing values (geom_pointrange).</code></pre>
+<p><img src="plotting_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
+</div>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
 <html><body><a href="#references" class="anchor"> </a></body></html>References</h2>
 <p>Laver, Michael, Kenneth Benoit, and John Garry. 2003. “Extracting Policy Positions from Political Texts Using Words as Data.” <em>American Political Science Review</em> 97(2):311-331.</p>
+<p>Nenadic, Oleg, and Michael Greenacre. 2007. “Correspondence analysis in R, with two- and three-dimensional graphics: The ca package.” <em>Journal of Statistical Software</em> 20(3): 1-13. URL: <a href="http://www.jstatsoft.org/v20/i03/" class="uri">http://www.jstatsoft.org/v20/i03/</a>.</p>
 <p>Slapin, Jonathan, and Sven-Oliver Proksch. 2008. “A Scaling Model for Estimating Time-Series Party Positions from Texts.” <em>American Journal of Political Science</em> 52(3):705-772.</p>
-</div>
-<div id="acknowledgements" class="section level2">
-<h2 class="hasAnchor">
-<html><body><a href="#acknowledgements" class="anchor"> </a></body></html>Acknowledgements</h2>
-<p>Thanks to Adam Obeng for writing most of this vignette, and Stefan Müller for adding and updating the section on scaling plots.</p>
 </div>
 </div>
   </div>
@@ -275,7 +293,6 @@ wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/text
       <li><a href="#frequency-plots">3. Frequency plots</a></li>
       <li><a href="#plot-fitted-scaling-models">4. Plot fitted scaling models</a></li>
       <li><a href="#references">References</a></li>
-      <li><a href="#acknowledgements">Acknowledgements</a></li>
       </ul>
 </div>
       </div>

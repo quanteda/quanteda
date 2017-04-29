@@ -144,7 +144,7 @@
 <p>Once constructed, a <strong>quanteda</strong> “dfm”" can be easily passed to other text-analysis packages for additional analysis of topic models or scaling, such as:</p>
 <ul>
 <li><p>topic models (including converters for direct use with the <strong>topicmodels</strong>, <strong>LDA</strong>, and <strong>stm</strong> packages)</p></li>
-<li><p>document scaling (using <strong>quanteda</strong>’s own functions for the “wordfish” and “Wordscores” models, direct use with the <strong>ca</strong> package for correspondence analysis, or scaling with the <strong>austin</strong> package)</p></li>
+<li><p>document scaling using <strong>quanteda</strong>’s own functions for the “wordfish” and “Wordscores” models, and a sparse method for correspondence analysis</p></li>
 <li><p>document classification methods, using (for example) Naive Bayes, k-nearest neighbour, or Support Vector Machines</p></li>
 <li><p>more sophisticated machine learning through a variety of other packages that take matrix or matrix-like inputs.</p></li>
 <li><p>graphical analysis, including word clouds and strip plots for selected themes or words.</p></li>
@@ -200,7 +200,7 @@
 ##          UKIP   346    739        27
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Wed Apr 19 13:17:49 2017
+## Created: Wed Apr 26 10:42:50 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -221,7 +221,7 @@
 ##          UKIP   346    739        27         UKIP 2010
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Wed Apr 19 13:17:49 2017
+## Created: Wed Apr 26 10:42:50 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -251,7 +251,7 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Wed Apr 19 13:17:49 2017
+## Created: Wed Apr 26 10:42:50 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -452,7 +452,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2017-Trump   582   1662        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Wed Apr 19 13:17:49 2017
+## Created: Wed Apr 26 10:42:50 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -552,12 +552,12 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <div id="tokenizing-texts" class="section level2">
 <h2 class="hasAnchor">
 <html><body><a href="#tokenizing-texts" class="anchor"> </a></body></html>Tokenizing texts</h2>
-<p>To simply tokenize a text, quanteda provides a powerful command called <code><a href="../reference/tokenize.html">tokenize()</a></code>. This produces an intermediate object, consisting of a list of tokens in the form of character vectors, where each element of the list corresponds to an input document.</p>
-<p><code><a href="../reference/tokenize.html">tokenize()</a></code> is deliberately conservative, meaning that it does not remove anything from the text unless told to do so.</p>
+<p>To simply tokenize a text, quanteda provides a powerful command called <code><a href="../reference/tokens.html">tokens()</a></code>. This produces an intermediate object, consisting of a list of tokens in the form of character vectors, where each element of the list corresponds to an input document.</p>
+<p><code><a href="../reference/tokens.html">tokens()</a></code> is deliberately conservative, meaning that it does not remove anything from the text unless told to do so.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">text1 =</span> <span class="st">"This is $10 in 999 different ways,</span><span class="ch">\n</span><span class="st"> up and down; left and right!"</span>, 
          <span class="dt">text2 =</span> <span class="st">"@kenbenoit working: on #quanteda 2day</span><span class="ch">\t</span><span class="st">4ever, http://textasdata.com?page=123."</span>)
-<span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(txt)
-## tokenizedTexts from 2 documents.
+<span class="kw"><a href="../reference/tokens.html">tokens</a></span>(txt)
+## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "10"        "in"        "999"       "different" "ways"      ","         "up"        "and"       "down"      ";"         "left"      "and"       "right"    
 ## [17] "!"        
@@ -565,30 +565,30 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ## text2 :
 ##  [1] "@kenbenoit"     "working"        ":"              "on"             "#quanteda"      "2day"           "4ever"          ","              "http"           ":"              "/"             
 ## [12] "/"              "textasdata.com" "?"              "page"           "="              "123"            "."
-<span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
-## tokenizedTexts from 2 documents.
+<span class="kw"><a href="../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "in"        "different" "ways"      "up"        "and"       "down"      "left"      "and"       "right"    
 ## 
 ## text2 :
 ## [1] "@kenbenoit"     "working"        "on"             "#quanteda"      "2day"           "4ever"          "http"           "textasdata.com" "page"
-<span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
-## tokenizedTexts from 2 documents.
+<span class="kw"><a href="../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "10"        "in"        "999"       "different" "ways"      "up"        "and"       "down"      "left"      "and"       "right"    
 ## 
 ## text2 :
 ##  [1] "@kenbenoit"     "working"        "on"             "#quanteda"      "2day"           "4ever"          "http"           "textasdata.com" "page"           "123"
-<span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)
-## tokenizedTexts from 2 documents.
+<span class="kw"><a href="../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)
+## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "in"        "different" "ways"      ","         "up"        "and"       "down"      ";"         "left"      "and"       "right"     "!"        
 ## 
 ## text2 :
 ##  [1] "@kenbenoit"     "working"        ":"              "on"             "#quanteda"      "2day"           "4ever"          ","              "http"           ":"              "/"             
 ## [12] "/"              "textasdata.com" "?"              "page"           "="              "."
-<span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)
-## tokenizedTexts from 2 documents.
+<span class="kw"><a href="../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)
+## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "10"        "in"        "999"       "different" "ways"      ","         "up"        "and"       "down"      ";"         "left"      "and"       "right"    
 ## [17] "!"        
@@ -596,8 +596,8 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ## text2 :
 ##  [1] "@kenbenoit"     "working"        ":"              "on"             "#quanteda"      "2day"           "4ever"          ","              "http"           ":"              "/"             
 ## [12] "/"              "textasdata.com" "?"              "page"           "="              "123"            "."
-<span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>, <span class="dt">remove_separators =</span> <span class="ot">FALSE</span>)
-## tokenizedTexts from 2 documents.
+<span class="kw"><a href="../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>, <span class="dt">remove_separators =</span> <span class="ot">FALSE</span>)
+## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      " "         "is"        " "         "$"         "10"        " "         "in"        " "         "999"       " "         "different" " "         "ways"      ","         "\n"       
 ## [17] " "         "up"        " "         "and"       " "         "down"      ";"         " "         "left"      " "         "and"       " "         "right"     "!"        
@@ -607,22 +607,22 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ## [12] "4ever"          ","              " "              "http"           ":"              "/"              "/"              "textasdata.com" "?"              "page"           "="             
 ## [23] "123"            "."</code></pre></div>
 <p>We also have the option to tokenize characters:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>)
-## tokenizedTexts from 1 document.
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/tokens.html">tokens</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>)
+## tokens from 1 document.
 ## Component 1 :
 ##  [1] "G" "r" "e" "a" "t" "w" "e" "b" "s" "i" "t" "e" ":" "h" "t" "t" "p" ":" "/" "/" "t" "e" "x" "t" "a" "s" "d" "a" "t" "a" "." "c" "o" "m" "?" "p" "a" "g" "e" "=" "1" "2" "3" "."
-<span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>, 
+<span class="kw"><a href="../reference/tokens.html">tokens</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>, 
          <span class="dt">remove_separators =</span> <span class="ot">FALSE</span>)
-## tokenizedTexts from 1 document.
+## tokens from 1 document.
 ## Component 1 :
 ##  [1] "G" "r" "e" "a" "t" " " "w" "e" "b" "s" "i" "t" "e" ":" " " "h" "t" "t" "p" ":" "/" "/" "t" "e" "x" "t" "a" "s" "d" "a" "t" "a" "." "c" "o" "m" "?" "p" "a" "g" "e" "=" "1" "2" "3" "."</code></pre></div>
 <p>and sentences:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># sentence level         </span>
-<span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(<span class="kw">c</span>(<span class="st">"Kurt Vongeut said; only assholes use semi-colons."</span>, 
+<span class="kw"><a href="../reference/tokens.html">tokens</a></span>(<span class="kw">c</span>(<span class="st">"Kurt Vongeut said; only assholes use semi-colons."</span>, 
            <span class="st">"Today is Thursday in Canberra:  It is yesterday in London."</span>, 
            <span class="st">"En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"</span>), 
           <span class="dt">what =</span> <span class="st">"sentence"</span>)
-## tokenizedTexts from 3 documents.
+## tokens from 3 documents.
 ## Component 1 :
 ## [1] "Kurt Vongeut said; only assholes use semi-colons."
 ## 
@@ -635,7 +635,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <div id="constructing-a-document-frequency-matrix" class="section level2">
 <h2 class="hasAnchor">
 <html><body><a href="#constructing-a-document-frequency-matrix" class="anchor"> </a></body></html>Constructing a document-frequency matrix</h2>
-<p>Tokenizing texts is an intermediate option, and most users will want to skip straight to constructing a document-feature matrix. For this, we have a Swiss-army knife function, called <code><a href="../reference/dfm.html">dfm()</a></code>, which performs tokenization and tabulates the extracted features into a matrix of documents by features. Unlike the conservative approach taken by <code><a href="../reference/tokenize.html">tokenize()</a></code>, the <code><a href="../reference/dfm.html">dfm()</a></code> function applies certain options by default, such as <code><a href="../reference/toLower.html">toLower()</a></code> – a separate function for lower-casing texts – and removes punctuation. All of the options to <code><a href="../reference/tokenize.html">tokenize()</a></code> can be passed to <code><a href="../reference/dfm.html">dfm()</a></code>, however.</p>
+<p>Tokenizing texts is an intermediate option, and most users will want to skip straight to constructing a document-feature matrix. For this, we have a Swiss-army knife function, called <code><a href="../reference/dfm.html">dfm()</a></code>, which performs tokenization and tabulates the extracted features into a matrix of documents by features. Unlike the conservative approach taken by <code><a href="../reference/tokens.html">tokens()</a></code>, the <code><a href="../reference/dfm.html">dfm()</a></code> function applies certain options by default, such as <code><a href="../reference/toLower.html">toLower()</a></code> – a separate function for lower-casing texts – and removes punctuation. All of the options to <code><a href="../reference/tokens.html">tokens()</a></code> can be passed to <code><a href="../reference/dfm.html">dfm()</a></code>, however.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year &gt;<span class="st"> </span><span class="dv">1990</span>)
 
 <span class="co"># make a dfm</span>
@@ -689,16 +689,12 @@ mydfm
 ##          66          37          35          29          28          27          27          21          20          19          17          17          17          16          14          14 
 ##         bnp     illegal        work     percent 
 ##          13          13          13          12</code></pre></div>
-<p>Plotting a word cloud is done using <code><a href="../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>, for a <code>dfm</code> class object:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">20</span>)
-<span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(<span class="kw"><a href="../reference/dfm_trim.html">dfm_trim</a></span>(mydfm, <span class="dt">min_count =</span> <span class="dv">6</span>))</code></pre></div>
-<p><img src="quickstart_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
-<p>The <code><a href="../reference/plot-deprecated.html">plot.dfm()</a></code> method passes arguments through to <code>wordcloud()</code> from the <strong>wordcloud</strong> package, and can prettify the plot using the same arguments:</p>
+<p>Plotting a word cloud is done using <code><a href="../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>, for a <code>dfm</code> class object. This function passes arguments through to <code>wordcloud()</code> from the <strong>wordcloud</strong> package, and can prettify the plot using the same arguments:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">100</span>)
 <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
                    <span class="dt">rot.per =</span> .<span class="dv">25</span>, 
                    <span class="dt">colors =</span> RColorBrewer::<span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
-<p><img src="quickstart_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
+<p><img src="quickstart_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
 </div>
 <div id="grouping-documents-by-document-variable" class="section level3">
 <h3 class="hasAnchor">
@@ -763,62 +759,92 @@ liwcdfm[, <span class="dv">1</span>:<span class="dv">10</span>]</code></pre></di
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textstat_dist.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), <span class="dt">n =</span> <span class="ot">NULL</span>, 
                              <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)
-<span class="kw">dotchart</span>(<span class="kw">as.list</span>(obamaSimil)$<span class="st">"2009-Obama"</span>, <span class="dt">xlab =</span> <span class="st">"Cosine similarity"</span>)</code></pre></div>
-<p><img src="quickstart_files/figure-html/unnamed-chunk-30-1.png" width="576"></p>
+obamaSimil
+##              2009-Obama 2013-Obama
+## 2009-Obama    1.0000000  0.7144178
+## 2013-Obama    0.7144178  1.0000000
+## 1981-Reagan   0.6726373  0.6822342
+## 1985-Reagan   0.6669281  0.6844686
+## 1989-Bush     0.6687192  0.6257466
+## 1993-Clinton  0.6288108  0.6278986
+## 1997-Clinton  0.6954614  0.6826705
+## 2001-Bush     0.6529447  0.6656213
+## 2005-Bush     0.5766800  0.6292757
+## 2017-Trump    0.5867729  0.5796322
+<span class="co"># dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")</span></code></pre></div>
 <p>We can use these distances to plot a dendrogram, clustering presidents:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(SOTUCorpus, <span class="dt">package=</span><span class="st">"quantedaData"</span>)
-presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(SOTUCorpus, Date &gt;<span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1960-01-01"</span>)), <span class="dt">verbose =</span> <span class="ot">FALSE</span>, <span class="dt">stem =</span> <span class="ot">TRUE</span>,
-               <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
-presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count=</span><span class="dv">5</span>, <span class="dt">min_docfreq=</span><span class="dv">3</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_SOTU, <span class="dt">package=</span><span class="st">"quantedaData"</span>)
+presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date &gt;<span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
+               <span class="dt">verbose =</span> <span class="ot">FALSE</span>, <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
+               <span class="dt">remove =</span> <span class="kw">c</span>(<span class="st">"will"</span>, <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)))
+presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
 <span class="co"># hierarchical clustering - get distances on normalized dfm</span>
-presDistMat &lt;-<span class="st"> </span><span class="kw">dist</span>(<span class="kw">as.matrix</span>(<span class="kw"><a href="../reference/weight.html">weight</a></span>(presDfm, <span class="st">"relFreq"</span>)))
+presDistMat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textstat_dist.html">textstat_dist</a></span>(<span class="kw"><a href="../reference/dfm_weight.html">dfm_weight</a></span>(presDfm, <span class="st">"relFreq"</span>))
 <span class="co"># hiarchical clustering the distance object</span>
 presCluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(presDistMat)
 <span class="co"># label with document names</span>
 presCluster$labels &lt;-<span class="st"> </span><span class="kw"><a href="../reference/docnames.html">docnames</a></span>(presDfm)
 <span class="co"># plot as a dendrogram</span>
 <span class="kw">plot</span>(presCluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</code></pre></div>
-<p><img src="images/prescluster.png" alt="Presidential Cluster Dendrogram" style="width: 780px;"></p>
+<p>(try it!)</p>
 <p>We can also look at term similarities:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/similarity.html">similarity</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>, <span class="dt">n =</span> <span class="dv">10</span>)
-## Warning: 'similarity' is deprecated.
-## Use 'textstat_simil' instead.
-## See help("Deprecated")
-<span class="kw">print</span>(sim, <span class="dt">digits =</span> <span class="dv">2</span>)
-## similarity Matrix:
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textstat_dist.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>, <span class="dt">n =</span> <span class="dv">10</span>)
+<span class="kw">as.list</span>(sim)
 ## $fair
-##   economi     begin jefferson    author     faith      call   struggl      best     creat    courag 
-##      0.91      0.91      0.90      0.89      0.89      0.86      0.85      0.84      0.83      0.83 
-## 
-## $terror
-##    potenti  adversari commonplac     miracl     racial     bounti     martin      dream      polit   guarante 
-##       0.90       0.90       0.89       0.89       0.89       0.89       0.89       0.86       0.85       0.85 
+##      vice    presid     senat     chief    health  hatfield    justic    terror        mr 
+## 0.7745967 0.6142951 0.5753560 0.5270463 0.5163978 0.5163978 0.4103913 0.4082483 0.2636353 
 ## 
 ## $health
-##    shape  generat    wrong   common knowledg   planet     task   demand      eye    defin 
-##     0.90     0.90     0.89     0.89     0.89     0.88     0.87     0.87     0.87     0.86</code></pre></div>
+##     justic       fair     terror     presid       vice      chief         mr      senat   hatfield 
+## 0.52981294 0.51639778 0.42163702 0.39652579 0.33333333 0.27216553 0.09724333 0.00000000 0.00000000 
+## 
+## $terror
+##  hatfield    presid    health      vice      fair     chief        mr     senat    justic 
+## 0.6324555 0.5015699 0.4216370 0.4216370 0.4082483 0.3872983 0.2767594 0.2348881 0.2094270</code></pre></div>
 </div>
 <div id="scaling-document-positions" class="section level2">
 <h2 class="hasAnchor">
 <html><body><a href="#scaling-document-positions" class="anchor"> </a></body></html>Scaling document positions</h2>
-<p>We have a lot of development work to do on the <code><a href="../reference/textmodel.html">textmodel()</a></code> function, but here is a demonstration of unsupervised document scaling comparing the “wordfish” model to scaling from correspondence analysis:</p>
+<p>We have a lot of development work to do on the <code><a href="../reference/textmodel.html">textmodel()</a></code> function, but here is a demonstration of unsupervised document scaling comparing the “wordfish” model:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make prettier document names</span>
-<span class="kw"><a href="../reference/docnames.html">docnames</a></span>(data_corpus_irishbudget2010) &lt;-<span class="st"> </span>
-<span class="st">    </span><span class="kw">paste</span>(<span class="kw"><a href="../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"name"</span>), <span class="kw"><a href="../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))
-ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
-wf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textmodel.html">textmodel</a></span>(ieDfm, <span class="dt">model =</span> <span class="st">"wordfish"</span>, <span class="dt">dir=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))
-wca &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textmodel.html">textmodel</a></span>(ieDfm, <span class="dt">model =</span> <span class="st">"ca"</span>)
-<span class="co"># plot the results</span>
-<span class="kw">plot</span>(wf@theta, -<span class="dv">1</span>*wca$rowcoord[,<span class="dv">1</span>], 
-     <span class="dt">xlab=</span><span class="st">"Wordfish theta-hat"</span>, <span class="dt">ylab=</span><span class="st">"CA dim 1 coordinate"</span>, <span class="dt">pch=</span><span class="dv">19</span>)
-<span class="kw">text</span>(wf@theta, -<span class="dv">1</span>*wca$rowcoord[,<span class="dv">1</span>], <span class="kw"><a href="../reference/docnames.html">docnames</a></span>(ieDfm), <span class="dt">cex=</span>.<span class="dv">8</span>, <span class="dt">pos=</span><span class="dv">1</span>)
-<span class="kw">abline</span>(<span class="kw">lm</span>(-<span class="dv">1</span>*wca$rowcoord[,<span class="dv">1</span>] ~<span class="st"> </span>wf@theta), <span class="dt">col=</span><span class="st">"grey50"</span>, <span class="dt">lty=</span><span class="st">"dotted"</span>)</code></pre></div>
-<p><img src="quickstart_files/figure-html/unnamed-chunk-33-1.png" width="576"></p>
+ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)
+<span class="kw"><a href="../reference/textmodel.html">textmodel</a></span>(ieDfm, <span class="dt">model =</span> <span class="st">"wordfish"</span>, <span class="dt">dir=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))
+## Fitted wordfish model:
+## Call:
+##  textmodel_wordfish(x = x, dir = ..1)
+## 
+## Estimated document positions:
+## 
+##                                Documents      theta         SE       lower       upper
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8268036 0.02020113  1.78720939  1.86639781
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5855453 0.02767752 -0.63979326 -0.53129738
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.0696093 0.01556654 -1.10011977 -1.03909892
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1141058 0.02791284 -0.16881502 -0.05939668
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7742535 0.02354795  1.72809951  1.82040749
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7016675 0.02613599 -0.75289405 -0.65044099
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4967371 0.04081043 -0.57672554 -0.41674864
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5438955 0.02931964 -0.60136202 -0.48642903
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -1.0104557 0.03669246 -1.08237288 -0.93853843
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9879423 0.03741468 -1.06127505 -0.91460950
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1913710 0.07324285  1.04781505  1.33492703
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1500193 0.06254512  0.02743087  0.27260773
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7196468 0.07340590  0.57577127  0.86352238
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1521357 0.03644625 -0.22357033 -0.08070102
+## 
+## Estimated feature scores: showing first 30 beta-hats for features
+## 
+##            when               i       presented             the   supplementary          budget              to            this           house            last           april               , 
+##     -0.15058982      0.34726053      0.36922895      0.21628040      1.09099461      0.05829019      0.33579912      0.26839752      0.14935164      0.25353066     -0.13851438      0.30630139 
+##            said              we           could            work             our             way         through          period              of          severe        economic        distress 
+##     -0.77779200      0.43921107     -0.59703182      0.54219872      0.70824736      0.29607747      0.62274642      0.51835687      0.30095010      1.25529502      0.44375418      1.83470247 
+##               .           today             can          report            that notwithstanding 
+##      0.23398491      0.14174074      0.32480755      0.65459489      0.04184343      1.83470247</code></pre></div>
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
 <html><body><a href="#topic-models" class="anchor"> </a></body></html>Topic models</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">verbose =</span> <span class="ot">FALSE</span>, 
+<p><strong>quanteda</strong> makes it very easy to fit topic models as well, e.g.:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010,
                 <span class="dt">remove =</span> <span class="kw">c</span>(<span class="st">"will"</span>, <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)))
 
 if (<span class="kw">require</span>(topicmodels)) {
@@ -826,11 +852,18 @@ if (<span class="kw">require</span>(topicmodels)) {
     <span class="kw">get_terms</span>(myLDAfit20, <span class="dv">5</span>)
     <span class="kw">topics</span>(myLDAfit20, <span class="dv">3</span>)
 }
-## Loading required package: topicmodels
-##      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF
-## [1,]         15         3          9        12       17       13          14           6           1         8             1         16          10           4
-## [2,]         11        19         17        11        5        8           7           7          19         7            11          7          19          18
-## [3,]         20         8          5        17        2       10          10           8           7        19            18         10           7           8</code></pre></div>
+##      2010_BUDGET_01_Brian_Lenihan_FF 2010_BUDGET_02_Richard_Bruton_FG 2010_BUDGET_03_Joan_Burton_LAB 2010_BUDGET_04_Arthur_Morgan_SF 2010_BUDGET_05_Brian_Cowen_FF 2010_BUDGET_06_Enda_Kenny_FG
+## [1,]                               1                                4                              7                              11                            12                            6
+## [2,]                              10                                3                             16                              19                            17                            3
+## [3,]                              17                               14                              9                              15                            10                            2
+##      2010_BUDGET_07_Kieran_ODonnell_FG 2010_BUDGET_08_Eamon_Gilmore_LAB 2010_BUDGET_09_Michael_Higgins_LAB 2010_BUDGET_10_Ruairi_Quinn_LAB 2010_BUDGET_11_John_Gormley_Green
+## [1,]                                20                                5                                  2                              14                                14
+## [2,]                                13                               13                                  9                               9                                17
+## [3,]                                 2                               14                                 15                              17                                10
+##      2010_BUDGET_12_Eamon_Ryan_Green 2010_BUDGET_13_Ciaran_Cuffe_Green 2010_BUDGET_14_Caoimhghin_OCaolain_SF
+## [1,]                              20                                 2                                    18
+## [2,]                               4                                 4                                     8
+## [3,]                              14                                12                                    14</code></pre></div>
 </div>
 </div>
 </div>

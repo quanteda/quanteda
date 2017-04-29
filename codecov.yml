@@ -24,3 +24,9 @@ parsers:
       method: false
   javascript:
     enable_partials: false
+ignore:
+  - "data"
+  - "demo"
+  - "tests"
+  - "vignettes"
+

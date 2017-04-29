@@ -1,5 +1,12 @@
 # quanteda 0.9.9
 
+## Changes since v0.9.9-50
+
+### New features
+
+* Corpus construction using `corpus()` now works for a `tm::SimpleCorpus` object. (#680)
+
+
 ## Changes since v0.9.9-24
 
 ### New features

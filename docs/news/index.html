@@ -80,12 +80,23 @@
     <div id="quanteda-0-9-9" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quanteda-0-9-9" class="anchor"> </a>quanteda 0.9.9</h1>
-<div id="changes-since-v0-9-9-24" class="section level2">
+<div id="changes-since-v0-9-9-50" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-since-v0-9-9-24" class="anchor"> </a>Changes since v0.9.9-24</h2>
+<a href="#changes-since-v0-9-9-50" class="anchor"> </a>Changes since v0.9.9-50</h2>
 <div id="new-features" class="section level3">
 <h3 class="hasAnchor">
 <a href="#new-features" class="anchor"> </a>New features</h3>
+<ul>
+<li>Corpus construction using <code><a href="../reference/corpus.html">corpus()</a></code> now works for a <code>tm::SimpleCorpus</code> object. (#680)</li>
+</ul>
+</div>
+</div>
+<div id="changes-since-v0-9-9-24" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-since-v0-9-9-24" class="anchor"> </a>Changes since v0.9.9-24</h2>
+<div id="new-features-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-features-1" class="anchor"> </a>New features</h3>
 <ul>
 <li>
 <code><a href="../reference/corpus_reshape.html">corpus_reshape()</a></code> can now go from sentences and paragraph units back to documents.</li>
@@ -144,9 +155,9 @@
 <div id="changes-since-v0-9-9-17" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-since-v0-9-9-17" class="anchor"> </a>Changes since v0.9.9-17</h2>
-<div id="new-features-1" class="section level3">
+<div id="new-features-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-1" class="anchor"> </a>New features</h3>
+<a href="#new-features-2" class="anchor"> </a>New features</h3>
 <ul>
 <li>
 <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code> now returns a data.frame with p-values as well as the test statistic, and rownames containing the feature. This is more consistent with the other textstat functions.</li>
@@ -188,9 +199,9 @@
 <li>Fixed a bug in <code>textmodel_NB</code> that caused the class priors <code>Pc</code> to be refactored alphabetically instead of in the order of assignment (#471), also affecting predicted classes (#476).</li>
 </ul>
 </div>
-<div id="new-features-2" class="section level3">
+<div id="new-features-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-2" class="anchor"> </a>New features</h3>
+<a href="#new-features-3" class="anchor"> </a>New features</h3>
 <ul>
 <li>New textstat function <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code> discovers words that occur at differential rates between partitions of a dfm (using chi-squared, Fisher’s exact test, and the G^2 likelihood ratio test to measure the strength of associations).<br>
 </li>
@@ -667,9 +678,9 @@
     <div id="quanteda-0-9-8" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quanteda-0-9-8" class="anchor"> </a>quanteda 0.9.8</h1>
-<div id="new-features-3" class="section level2">
+<div id="new-features-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-3" class="anchor"> </a>New Features</h2>
+<a href="#new-features-4" class="anchor"> </a>New Features</h2>
 <ul>
 <li>Improved the performance of <code><a href="../reference/selectFeatures.html">selectFeatures.tokenizedTexts()</a></code>.<br>
 </li>
