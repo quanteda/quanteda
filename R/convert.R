@@ -29,7 +29,6 @@
 #' @note There also exist a variety of converter shortcut commands, designed to 
 #' mimic the idioms of the packages into whose format they convert.  
 #' See \link{convert-wrappers} for details.
-#' @importFrom utils installed.packages
 #' @export
 #' @examples
 #' mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1970)
@@ -150,9 +149,9 @@ dfm2austinformat <- function(d) {
 
 ## convert to tm format
 dfm2tmformat <- function(x, weighting = tm::weightTf) {
-    if (!("tm" %in% installed.packages()[, "Package"])) 
+    if (!requireNamespace("tm")) 
         stop("You must install the tm package installed for this conversion.")
-    if (!("slam" %in% installed.packages()[, "Package"]))
+    if (!requireNamespace("slam"))
         stop("You must install the slam package installed for this conversion.")
     sl <- slam::as.simple_triplet_matrix(x)
     td <- tm::as.DocumentTermMatrix(sl, weighting = weighting)
@@ -198,7 +197,7 @@ as.DocumentTermMatrix <- function(x, ...) {
 dfm2ldaformat <- function(x) {
     if (!is.dfm(x))
         stop("x must be a dfm class object")
-    if (!("tm" %in% installed.packages()[, "Package"]))
+    if (!requireNamespace("tm"))
         stop("You must install the slam package installed for this conversion.")
     tmDTM <- dfm2tmformat(x)
     return(dtm2ldaformat(tmDTM))
@@ -207,7 +206,7 @@ dfm2ldaformat <- function(x) {
 
 ## from the package topicmodels
 dtm2ldaformat <- function (x, omit_empty = TRUE) {
-    if (!("slam" %in% installed.packages()[, "Package"]))
+    if (!requireNamespace("slam"))
         stop("You must install the slam package installed for this conversion.")
     
     split.matrix <- function(x, f, drop = FALSE, ...) lapply(split(seq_len(ncol(x)), 
@@ -243,9 +242,9 @@ quantedaformat2dtm <- function(x) {
 }
 
 ldaformat2dtm <- function (documents, vocab, omit_empty = TRUE) {
-    if (!("tm" %in% installed.packages()[, "Package"]))
+    if (!requireNamespace("tm"))
         stop("You must install the tm package installed for this conversion.")
-    if (!("slam" %in% installed.packages()[, "Package"]))
+    if (!requireNamespace("slam"))
         stop("You must install the slam package installed for this conversion.")
     
     stm <- slam::simple_triplet_matrix(i = rep(seq_along(documents), vapply(documents, ncol, integer(1))), 

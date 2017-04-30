@@ -289,7 +289,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     names(result) <- names_org # stri_* destroys names, so put them back
     attr(result, "what") <- what
     attr(result, "ngrams") <- ngrams
-    attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
+    attr(result, "concatenator") <- concatenator
     attr(result, 'padding') <- FALSE
 
     # issue #607: remove @ # only if not part of Twitter names
@@ -337,7 +337,7 @@ as.tokens.list <- function(x) {
     result <- tokens_hash(x)
     attr(result, "what") <- "word"
     attr(result, "ngrams") <- 1L
-    attr(result, "concatenator") <- ""
+    attr(result, "concatenator") <- "_"
     attr(result, 'padding') <- FALSE
     class(result)[2] <- "tokenizedTexts"
     result

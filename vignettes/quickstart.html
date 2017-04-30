@@ -4,7 +4,9 @@
 
 <head>
 
-<meta charset="utf-8">
+
+<meta charset="utf-8" />
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -241,7 +243,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##          UKIP   346    739        27
 ## 
 ## Source:  /home/kohei/packages/quanteda/vignettes/* on x86_64 by kohei
+
 ## Created: Sun Apr 23 08:50:38 2017
+
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -262,7 +266,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##          UKIP   346    739        27         UKIP 2010
 ## 
 ## Source:  /home/kohei/packages/quanteda/vignettes/* on x86_64 by kohei
+
 ## Created: Sun Apr 23 08:50:38 2017
+
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">metadoc</span>(myCorpus, <span class="st">&quot;language&quot;</span>) &lt;-<span class="st"> &quot;english&quot;</span>
@@ -292,7 +298,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /home/kohei/packages/quanteda/vignettes/* on x86_64 by kohei
-## Created: Sun Apr 23 08:50:38 2017
+
+## Created: Sat Apr 29 01:39:41 2017
+
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>&quot;english&quot;</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code>ndoc()</code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -489,7 +497,9 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2017-Trump   582   1662        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Sun Apr 23 08:50:38 2017
+
+## Created: Sat Apr 29 01:39:43 2017
+
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -758,6 +768,7 @@ mydfm
 <p>We can use the dictionary when making the dfm:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPresMat &lt;-<span class="st"> </span><span class="kw">dfm</span>(recentCorpus, <span class="dt">dictionary =</span> myDict)
 byPresMat
+
 ## Document-feature matrix of: 7 documents, 2 features (0% sparse).
 ## 7 x 2 sparse Matrix of class &quot;dfmSparse&quot;
 ##               features
@@ -878,6 +889,7 @@ if (<span class="kw">require</span>(topicmodels)) {
     <span class="kw">topics</span>(myLDAfit20, <span class="dv">3</span>)
 }
 ## Loading required package: topicmodels
+
 ## 
 ## Attaching package: 'topicmodels'
 ## The following objects are masked from 'package:quanteda':
@@ -895,7 +907,8 @@ if (<span class="kw">require</span>(topicmodels)) {
 ## [1,]                              10                                 4                                     8
 ## [2,]                               3                                 3                                    19
 ## [3,]                              12                                12                                    12</code></pre></div>
-</div>
+=======
+## Warning in library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE, : there is no package called 'topicmodels'</code></pre></div>
 </div>
 
 

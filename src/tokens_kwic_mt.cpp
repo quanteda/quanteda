@@ -144,17 +144,22 @@ DataFrame qatd_cpp_kwic(const List &texts_,
         }
     }
     
-    DataFrame kwic_ = DataFrame::create(_["docname"] = coxs_name_,
-                                        _["from"]    = pos_from_,
-                                        _["to"]      = pos_to_,
-                                        _["pre"]     = coxs_pre_,
-                                        _["keyword"] = coxs_target_,
-                                        _["post"]    = coxs_post_,
-                                        _["stringsAsFactors"] = false);
-    kwic_.attr("tokens") = recompile(contexts, types);
-    kwic_.attr("docid") = documents_;
-    kwic_.attr("segid") = segments_;
-    return kwic_;
+
+    Tokens tokens_ = recompile(contexts, types);
+    tokens_.attr("names") = coxs_name_;
+    
+    DataFrame output_ = DataFrame::create(_["docname"] = coxs_name_,
+                                          _["from"]    = pos_from_,
+                                          _["to"]      = pos_to_,
+                                          _["pre"]     = coxs_pre_,
+                                          _["keyword"] = coxs_target_,
+                                          _["post"]    = coxs_post_,
+                                          _["stringsAsFactors"] = false);
+    
+    output_.attr("tokens") = tokens_;
+    output_.attr("docid") = documents_;
+    output_.attr("segid") = segments_;
+    return output_;
 }
 
 
