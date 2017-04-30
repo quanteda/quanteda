@@ -59,63 +59,54 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
     
+    dictionary <- flatten_dictionary(dictionary, levels)
+    valuetype <- match.arg(valuetype)
+    attrs <- attributes(x)
+    
     # cannot/should not apply dictionaries with multi-word keys to a dfm
-    if (any(stringi::stri_detect_fixed(unlist(dictionary, use.names = FALSE), attr(dictionary, 'concatenator'))) &&
+    if (any(stri_detect_fixed(unlist(dictionary, use.names = FALSE), attr(dictionary, 'concatenator'))) &&
         x@ngrams == 1) {
         stop("dfm_lookup not currently implemented for ngrams > 1 and multi-word dictionary values")
     }
     
-    dictionary <- flatten_dictionary(dictionary, levels)
-    valuetype <- match.arg(valuetype)
-
-    if (verbose) catm("applying a dictionary consisting of ", length(dictionary), " key", 
-                      ifelse(length(dictionary) > 1, "s", ""), "\n", sep="")
+    # Generate all combinations of type IDs
+    entries_id <- list()
+    keys_id <- c()
+    types <- featnames(x)
     
-    # convert wildcards to regular expressions (if needed)
-    if (valuetype == "glob") {
-        dictionary <- lapply(dictionary, utils::glob2rx)
-        # because glob2rx doesn't get closing parens
-        dictionary <- lapply(dictionary, function(y) gsub("\\)", "\\\\\\)", y))
-    } # else if (valuetype == "fixed")
-    # dictionary <- lapply(dictionary, function(x) paste0("^", x, "$"))
+    index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
+    if (verbose) 
+        catm("applying a dictionary consisting of ", length(dictionary), " key", 
+             ifelse(length(dictionary) > 1, "s", ""), "\n", sep="")
     
-    newDocIndex <- rep(seq_len(nrow(x)), length(dictionary))
-    newFeatures <- names(dictionary)
-    uniqueFeatures <- featnames(x)
-    newFeatureIndexList <- lapply(dictionary, function(x) {
-        # ind <- grep(paste(x, collapse = "|"), uniqueFeatures, ignore.case = case_insensitive)
-        if (valuetype == "fixed") {
-            if (case_insensitive)  
-                ind <- which(char_tolower(uniqueFeatures) %in% (char_tolower(x)))
-            else ind <- which(uniqueFeatures %in% x)
-        }
-        else ind <- which(stringi::stri_detect_regex(uniqueFeatures, paste(x, collapse = "|"), case_insensitive = case_insensitive))
-        if (length(ind) == 0)
-            return(NULL)
-        else 
-            return(ind)
-    })
-    if (capkeys) newFeatures <- stringi::stri_trans_toupper(newFeatures)
-    newFeatureCountsList <- lapply(newFeatureIndexList,
-                                   function(i) {
-                                       if (!is.null(i)) 
-                                           rowSums(x[, i])
-                                       else 
-                                           rep(0, nrow(x))
-                                   })
-    dfmresult2 <- new("dfmSparse", sparseMatrix(i = newDocIndex,
-                                                j = rep(seq_along(dictionary), each = ndoc(x)),
-                                                x = unlist(newFeatureCountsList),
-                                                dimnames=list(docs = docnames(x), 
-                                                              features = newFeatures)))
-    if (!exclusive) {
-        if (!all(is.null(keyIndex <- unlist(newFeatureIndexList, use.names = FALSE))))
-            dfmresult2 <- cbind(x[, -keyIndex], dfmresult2)
-        else
-            dfmresult2 <- cbind(x, dfmresult2)
+    for (h in seq_along(dictionary)) {
+        entries <- dictionary[[h]]
+        entries_temp <- regex2id(as.list(entries), types, valuetype, case_insensitive, index)
+        entries_id <- c(entries_id, entries_temp)
+        keys_id <- c(keys_id, rep(h, length(entries_temp)))
     }
     
-    dfmresult2
+    if (capkeys) {
+        keys <- char_toupper(names(dictionary))
+    } else {
+        keys <- names(dictionary)
+    }
+    
+    temp <- x[,unlist(entries_id, use.names = FALSE)]
+    colnames(temp) <- keys[keys_id]
+    temp <- dfm_compress(temp, margin = 'features')
+    temp <- dfm_select(temp, features = keys, valuetype = 'fixed', padding = TRUE)
+    
+    if (exclusive) {
+        result <- temp[,keys]
+    } else {
+        result <- cbind(x[,unlist(entries_id) * -1], temp[,keys])
+    }
+
+    attr(result, "what") <- "dictionary"
+    attr(result, "dictionary") <- dictionary
+    attributes(result, FALSE) <- attributes(x)
+    return(result)
 }
 
 

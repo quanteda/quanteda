@@ -34,7 +34,7 @@ struct recompile_mt : public Worker{
     }
 };
 
-inline List recompile(Texts texts, Types types){
+inline Tokens recompile(Texts texts, Types types){
     
 
     VecIds ids_new(types.size() + 1);
