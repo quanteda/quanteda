@@ -4,7 +4,9 @@
 
 <head>
 
+
 <meta charset="utf-8" />
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -241,7 +243,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##          UKIP   346    739        27
 ## 
 ## Source:  /home/kohei/packages/quanteda/vignettes/* on x86_64 by kohei
-## Created: Sat Apr 29 01:39:41 2017
+
+## Created: Sun Apr 23 08:50:38 2017
+
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -262,7 +266,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##          UKIP   346    739        27         UKIP 2010
 ## 
 ## Source:  /home/kohei/packages/quanteda/vignettes/* on x86_64 by kohei
-## Created: Sat Apr 29 01:39:41 2017
+
+## Created: Sun Apr 23 08:50:38 2017
+
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">metadoc</span>(myCorpus, <span class="st">&quot;language&quot;</span>) &lt;-<span class="st"> &quot;english&quot;</span>
@@ -292,7 +298,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /home/kohei/packages/quanteda/vignettes/* on x86_64 by kohei
+
 ## Created: Sat Apr 29 01:39:41 2017
+
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>&quot;english&quot;</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code>ndoc()</code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -489,7 +497,9 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2017-Trump   582   1662        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
+
 ## Created: Sat Apr 29 01:39:43 2017
+
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -758,7 +768,8 @@ mydfm
 <p>We can use the dictionary when making the dfm:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPresMat &lt;-<span class="st"> </span><span class="kw">dfm</span>(recentCorpus, <span class="dt">dictionary =</span> myDict)
 byPresMat
-## Document-feature matrix of: 7 documents, 2 features (14.3% sparse).
+
+## Document-feature matrix of: 7 documents, 2 features (0% sparse).
 ## 7 x 2 sparse Matrix of class &quot;dfmSparse&quot;
 ##               features
 ## docs           terror economy
@@ -860,7 +871,7 @@ ieDfm &lt;-<span class="st"> </span><span class="kw">dfm</span>(data_corpus_iris
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the   supplementary          budget              to            this           house            last           april               , 
-##     -0.15058982      0.34726053      0.36922895      0.21628040      1.09099461      0.05829019      0.33579912      0.26839752      0.14935164      0.25353066     -0.13851438      0.30630139 
+##     -0.15058982      0.34726053      0.36922895      0.21628040      1.09099461      0.05829019      0.33579913      0.26839752      0.14935164      0.25353066     -0.13851438      0.30630139 
 ##            said              we           could            work             our             way         through          period              of          severe        economic        distress 
 ##     -0.77779200      0.43921107     -0.59703182      0.54219872      0.70824736      0.29607747      0.62274642      0.51835687      0.30095010      1.25529502      0.44375418      1.83470247 
 ##               .           today             can          report            that notwithstanding 
@@ -878,8 +889,26 @@ if (<span class="kw">require</span>(topicmodels)) {
     <span class="kw">topics</span>(myLDAfit20, <span class="dv">3</span>)
 }
 ## Loading required package: topicmodels
+
+## 
+## Attaching package: 'topicmodels'
+## The following objects are masked from 'package:quanteda':
+## 
+##     dtm2ldaformat, ldaformat2dtm
+##      2010_BUDGET_01_Brian_Lenihan_FF 2010_BUDGET_02_Richard_Bruton_FG 2010_BUDGET_03_Joan_Burton_LAB 2010_BUDGET_04_Arthur_Morgan_SF 2010_BUDGET_05_Brian_Cowen_FF 2010_BUDGET_06_Enda_Kenny_FG
+## [1,]                              15                                5                             14                               1                            17                            9
+## [2,]                               2                               18                             11                              13                             7                           16
+## [3,]                               3                               12                              3                               3                            19                            4
+##      2010_BUDGET_07_Kieran_ODonnell_FG 2010_BUDGET_08_Eamon_Gilmore_LAB 2010_BUDGET_09_Michael_Higgins_LAB 2010_BUDGET_10_Ruairi_Quinn_LAB 2010_BUDGET_11_John_Gormley_Green
+## [1,]                                16                                6                                 20                              20                                12
+## [2,]                                12                                4                                  9                              11                                 7
+## [3,]                                 4                               10                                  1                               7                                17
+##      2010_BUDGET_12_Eamon_Ryan_Green 2010_BUDGET_13_Ciaran_Cuffe_Green 2010_BUDGET_14_Caoimhghin_OCaolain_SF
+## [1,]                              10                                 4                                     8
+## [2,]                               3                                 3                                    19
+## [3,]                              12                                12                                    12</code></pre></div>
+=======
 ## Warning in library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE, : there is no package called 'topicmodels'</code></pre></div>
-</div>
 </div>
 
 

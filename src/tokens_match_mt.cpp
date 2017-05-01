@@ -56,22 +56,20 @@ Text match(Text tokens,
 
 struct match_mt : public Worker{
     
-    Texts &input;
-    Texts &output;
+    Texts &texts;
     const std::vector<std::size_t> &spans;
     const bool &overlap;
     const MapNgrams &map_words;
     
     // Constructor
-    match_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, 
-             const bool &overlap_, MapNgrams &map_words_):
-        input(input_), output(output_), spans(spans_), overlap(overlap_), map_words(map_words_) {}
+    match_mt(Texts &texts_, const std::vector<std::size_t> &spans_, const bool &overlap_, MapNgrams &map_words_):
+             texts(texts_), spans(spans_), overlap(overlap_), map_words(map_words_) {}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
-            output[h] = match(input[h], spans, overlap, map_words);
+            texts[h] = match(texts[h], spans, overlap, map_words);
         }
     }
 };
@@ -95,25 +93,24 @@ List qatd_cpp_tokens_match(const List &texts_,
                            const IntegerVector &ids_,
                            const bool &overlap){
     
-    Texts input = Rcpp::as<Texts>(texts_);
+    Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
 
     MapNgrams map_words;
     std::vector<std::size_t> spans = register_ngrams(words_, ids_, map_words);
 
     // dev::Timer timer;
-    Texts output(input.size());
     // dev::start_timer("Token match", timer);
 #if QUANTEDA_USE_TBB
-    match_mt match_mt(input, output, spans, overlap, map_words);
-    parallelFor(0, input.size(), match_mt);
+    match_mt match_mt(texts, spans, overlap, map_words);
+    parallelFor(0, texts.size(), match_mt);
 #else
-    for (std::size_t h = 0; h < input.size(); h++) {
-        output[h] = match(input[h], spans, overlap, map_words);
+    for (std::size_t h = 0; h < texts.size(); h++) {
+        texts[h] = match(texts[h], spans, overlap, map_words);
     }
 #endif
     // dev::stop_timer("Token match", timer);
-    return recompile(output, types);
+    return recompile(texts, types);
 }
 
 /***R
