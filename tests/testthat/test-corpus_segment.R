@@ -193,5 +193,5 @@ test_that("char_segment works with Japanese texts", {
                  c("日本語の終止符は.", "ではない。", "しかし、最近は．", "が使われることある。"))
     
     expect_equal(char_segment(txt, what = 'other', delimiter = '。'),
-                 c("日本語の終止符は.ではない", "しかし、最近は．が使われることある"))
+                 c("日本語の終止符は.ではない。", "しかし、最近は．が使われることある。"))
 })

@@ -176,8 +176,8 @@ char_segment.character <- function(x,
     names_org <- names(x)
     
     # normalize EOL
-    x <- stringi::stri_replace_all_fixed(x, "\r\n", "\n") # Windows
-    x <- stringi::stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
+    x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
+    x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     names(x) <- names_org
     result <- segment_texts(x, what, delimiter, valuetype, omit_empty, ...)
@@ -206,7 +206,7 @@ segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
         }
     } else if (what == 'tags') {
         if (is.null(delimiter)) {
-            delimiter <- "(##\\w+\\b)" # parentheses are for back reference
+            delimiter <- "##\\w+\\b"
             valuetype <- "regex"
         }
     } else if (what == 'other') {
@@ -217,12 +217,12 @@ segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
 
     if (valuetype == "glob") {
         # treat as fixed if no glob characters detected
-        if (!any(stringi::stri_detect_charclass(delimiter, c("[*?]")))) {
+        if (!any(stri_detect_charclass(delimiter, c("[*?]")))) {
             valuetype <- "fixed"
         } else {
             regex <- escape_regex(delimiter)
-            regex <- stringi::stri_replace_all_fixed(regex, '*', '(\\S*)')
-            regex <- stringi::stri_replace_all_fixed(regex, '?', '(\\S)')
+            regex <- stri_replace_all_fixed(regex, '*', '(\\S*)')
+            regex <- stri_replace_all_fixed(regex, '?', '(\\S)')
             delimiter <- paste0(regex, collapse = '|')
             valuetype <- "regex"
         }
@@ -233,27 +233,29 @@ segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
     } else if (what == "sentences") {
         temp <- tokens_sentence(x, ...)
     } else if (what == 'tags') {
-        temp <- stringi::stri_replace_all_regex(x, delimiter, "\v$0") # insert control character
-        temp <- stringi::stri_split_fixed(temp, pattern = "\v", omit_empty = omit_empty)
+        temp <- stri_replace_all_regex(x, delimiter, "\UF0000$0") # insert control character
+        temp <- stri_split_fixed(temp, pattern = "\UF0000", omit_empty = omit_empty)
         # remove elements to be empty
-        temp <- lapply(temp, function(x) x[stringi::stri_replace_first_regex(x, '^\\s+$', '') != ''])
+        temp <- lapply(temp, function(x) x[stri_replace_first_regex(x, '^\\s+$', '') != ''])
     } else {
         if (valuetype == "fixed") {
-            temp <- stringi::stri_split_fixed(x, pattern = delimiter, omit_empty = omit_empty)
+            temp <- stri_replace_all_fixed(x, delimiter, paste0(delimiter, "\UF0000", collapse = ''))
+            temp <- stri_split_fixed(x, pattern = "\UF0000", omit_empty = omit_empty)
         } else {
-            temp <- stringi::stri_split_regex(x, pattern = delimiter, omit_empty = omit_empty)
+            temp <- stri_replace_all_regex(x, delimiter, "$0\UF0000")
+            temp <- stri_split_fixed(temp, pattern = "\UF0000", omit_empty = omit_empty)
         }
     }
 
     result <- unlist(temp, use.names = FALSE)
     
     if (what == 'tags') {
-        tag <- stringi::stri_extract_first_regex(result, delimiter)
-        result <- stringi::stri_replace_first_fixed(result, tag, '')
-        result <- stringi::stri_trim_both(result)
+        tag <- stri_extract_first_regex(result, delimiter)
+        result <- stri_replace_first_fixed(result, tag, '')
+        result <- stri_trim_both(result)
         attr(result,'tag') <- tag
     } else {
-        result <- stringi::stri_trim_both(result)
+        result <- stri_trim_both(result)
     }
     
     n_segment <- lengths(temp)
