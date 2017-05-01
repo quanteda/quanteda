@@ -1,5 +1,6 @@
 //#include "dev.h"
 #include "quanteda.h"
+#include "recompile.h"
 using namespace quanteda;
 
 Text detect(Text tokens, 
@@ -25,20 +26,19 @@ Text detect(Text tokens,
 
 struct detect_mt : public Worker{
     
-    Texts &input;
-    Texts &output;
+    Texts &texts;
     const std::vector<std::size_t> &spans;
     const SetNgrams &set_words;
     
     // Constructor
-    detect_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, const SetNgrams &set_words_):
-              input(input_), output(output_), spans(spans_), set_words(set_words_){}
+    detect_mt(Texts &texts_, const std::vector<std::size_t> &spans_, const SetNgrams &set_words_):
+              texts(texts_), spans(spans_), set_words(set_words_){}
     
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++){
-            output[h] = detect(input[h], spans, set_words);
+            texts[h] = detect(texts[h], spans, set_words);
         }
     }
 };
@@ -59,25 +59,24 @@ struct detect_mt : public Worker{
 List qatd_cpp_tokens_detect(const List &texts_, 
                             const List &words_){
     
-    Texts input = Rcpp::as<Texts>(texts_);
+    Texts texts = Rcpp::as<Texts>(texts_);
 
     SetNgrams set_words;
     std::vector<std::size_t> spans = register_ngrams(words_, set_words);
     
     // dev::Timer timer;
-    Texts output(input.size());
     // dev::start_timer("Dictionary detect", timer);
 #if QUANTEDA_USE_TBB
-    detect_mt detect_mt(input, output, spans, set_words);
-    parallelFor(0, input.size(), detect_mt);
+    detect_mt detect_mt(texts, spans, set_words);
+    parallelFor(0, texts.size(), detect_mt);
 #else
-    for (std::size_t h = 0; h < input.size(); h++) {
-        output[h] = detect(input[h], spans, set_words);
+    for (std::size_t h = 0; h < texts.size(); h++) {
+        texts[h] = detect(texts[h], spans, set_words);
     }
 #endif
     // dev::stop_timer("Dictionary detect", timer);
-    ListOf<IntegerVector> output_ = Rcpp::wrap(output);
-    return output_;
+    Types types = {"TRUE", "FALSE"};
+    return recompile(texts, types);
 }
 
 /***R

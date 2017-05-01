@@ -31,20 +31,19 @@ Text replace(Text tokens,
 
 struct replace_mt : public Worker{
     
-    Texts &input;
-    Texts &output;
+    Texts &texts;
     const std::vector<std::size_t> &spans;
     const MapNgrams &map_words;
     
     // Constructor
-    replace_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, const MapNgrams &map_words_):
-              input(input_), output(output_), spans(spans_), map_words(map_words_) {}
+    replace_mt(Texts &texts_, const std::vector<std::size_t> &spans_, const MapNgrams &map_words_):
+               texts(texts_),  spans(spans_), map_words(map_words_) {}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
-            output[h] = replace(input[h], spans, map_words);
+            texts[h] = replace(texts[h], spans, map_words);
         }
     }
 };
@@ -66,25 +65,24 @@ List qatd_cpp_tokens_replace(const List &texts_,
                              const List &words_,
                              const IntegerVector &ids_){
     
-    Texts input = Rcpp::as<Texts>(texts_);
+    Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
 
     MapNgrams map_words;
     std::vector<std::size_t> spans = register_ngrams(words_, ids_, map_words);
     
     // dev::Timer timer;
-    Texts output(input.size());
     // dev::start_timer("Token replace", timer);
 #if QUANTEDA_USE_TBB
-    replace_mt replace_mt(input, output, spans, map_words);
-    parallelFor(0, input.size(), replace_mt);
+    replace_mt replace_mt(texts, spans, map_words);
+    parallelFor(0, texts.size(), replace_mt);
 #else
-    for (std::size_t h = 0; h < input.size(); h++) {
-        output[h] = replace(input[h], spans, map_words);
+    for (std::size_t h = 0; h < texts.size(); h++) {
+        texts[h] = replace(texts[h], spans, map_words);
     }
 #endif
     // dev::stop_timer("Token replace", timer);
-    return recompile(output, types);
+    return recompile(texts, types);
 }
 
 /***R

@@ -63,23 +63,22 @@ Text lookup(Text tokens,
 
 struct lookup_mt : public Worker{
     
-    Texts &input;
-    Texts &output;
+    Texts &texts;
     const std::vector<std::size_t> &spans;
     const unsigned int &id_max;
     const bool &overlap;
     const MultiMapNgrams &map_keys;
     
     // Constructor
-    lookup_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, const unsigned int &id_max_,
+    lookup_mt(Texts &texts_, const std::vector<std::size_t> &spans_, const unsigned int &id_max_,
               const bool &overlap_, const MultiMapNgrams &map_keys_):
-        input(input_), output(output_), spans(spans_), id_max(id_max_), overlap(overlap_), map_keys(map_keys_){}
+              texts(texts_), spans(spans_), id_max(id_max_), overlap(overlap_), map_keys(map_keys_){}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
-            output[h] = lookup(input[h], spans, id_max, overlap, map_keys);
+            texts[h] = lookup(texts[h], spans, id_max, overlap, map_keys);
         }
     }
 };
@@ -104,7 +103,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
                             const IntegerVector &ids_,
                             const bool overlap){
     
-    Texts input = Rcpp::as<Texts>(texts_);
+    Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
     const unsigned int id_max = Rcpp::max(ids_);
     
@@ -121,18 +120,17 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     std::reverse(std::begin(spans), std::end(spans));
     
     // dev::Timer timer;
-    Texts output(input.size());
     // dev::start_timer("Dictionary lookup", timer);
 #if QUANTEDA_USE_TBB
-    lookup_mt lookup_mt(input, output, spans, id_max, overlap, map_keys);
-    parallelFor(0, input.size(), lookup_mt);
+    lookup_mt lookup_mt(texts, spans, id_max, overlap, map_keys);
+    parallelFor(0, texts.size(), lookup_mt);
 #else
-    for (std::size_t h = 0; h < input.size(); h++) {
-        output[h] = lookup(input[h], spans, id_max, overlap, map_keys);
+    for (std::size_t h = 0; h < texts.size(); h++) {
+        texts[h] = lookup(texts[h], spans, id_max, overlap, map_keys);
     }
 #endif
     // dev::stop_timer("Dictionary lookup", timer);
-    return recompile(output, types);
+    return recompile(texts, types);
 }
 
 /***R

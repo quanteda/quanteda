@@ -96,21 +96,20 @@ Text skipgram(const Text &tokens,
 
 struct skipgram_mt : public Worker{
     
-    Texts &input;
-    Texts &output;
+    Texts &texts;
     const std::vector<unsigned int> &ns;
     const std::vector<unsigned int> &skips;
     MapNgrams &map_ngram;
     IdNgram &id_ngram;
     
-    skipgram_mt(Texts &input_, Texts &output_, const std::vector<unsigned int> &ns_, const std::vector<unsigned int> &skips_, 
+    skipgram_mt(Texts &texts_, const std::vector<unsigned int> &ns_, const std::vector<unsigned int> &skips_, 
                 MapNgrams &map_ngram_, IdNgram &id_ngram_):
-                input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_), id_ngram(id_ngram_){}
+                texts(texts_), ns(ns_), skips(skips_), map_ngram(map_ngram_), id_ngram(id_ngram_){}
     
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
-            output[h] = skipgram(input[h], ns, skips, map_ngram, id_ngram);
+            texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
         }
     }
 };
@@ -171,13 +170,13 @@ struct type_mt : public Worker{
 */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_ngrams(const List texts_,
+List qatd_cpp_tokens_ngrams(const List &texts_,
                             const CharacterVector types_,
                             const String delim_,
                             const IntegerVector ns_,
                             const IntegerVector skips_) {
     
-    Texts input = Rcpp::as< Texts >(texts_);
+    Texts texts = Rcpp::as< Texts >(texts_);
     Types types = Rcpp::as< Types >(types_);
     std::string delim = delim_;
     std::vector<unsigned int> ns = Rcpp::as< std::vector<unsigned int> >(ns_);
@@ -188,15 +187,14 @@ List qatd_cpp_tokens_ngrams(const List texts_,
 
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);
-    Texts output(input.size());
 #if QUANTEDA_USE_TBB
     IdNgram id_ngram(1);
-    skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram, id_ngram);
-    parallelFor(0, input.size(), skipgram_mt);
+    skipgram_mt skipgram_mt(texts, ns, skips, map_ngram, id_ngram);
+    parallelFor(0, texts.size(), skipgram_mt);
 #else
     IdNgram id_ngram = 1;
-    for (std::size_t h = 0; h < input.size(); h++) {
-        output[h] = skipgram(input[h], ns, skips, map_ngram, id_ngram);
+    for (std::size_t h = 0; h < texts.size(); h++) {
+        texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
     }
 #endif
      //dev::stop_timer("Ngram generation", timer);
@@ -219,7 +217,7 @@ List qatd_cpp_tokens_ngrams(const List texts_,
     }
 #endif
     //dev::stop_timer("Token generation", timer);
-    return recompile(output, types_ngram);
+    return recompile(texts, types_ngram);
 }
 
 
