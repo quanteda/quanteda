@@ -74,14 +74,13 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     keys_id <- c()
     types <- featnames(x)
     
-    index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
     if (verbose) 
         catm("applying a dictionary consisting of ", length(dictionary), " key", 
              ifelse(length(dictionary) > 1, "s", ""), "\n", sep="")
     
     for (h in seq_along(dictionary)) {
         entries <- dictionary[[h]]
-        entries_temp <- regex2id(as.list(entries), types, valuetype, case_insensitive, index)
+        entries_temp <- regex2id(as.list(entries), types, valuetype, case_insensitive, FALSE)
         entries_id <- c(entries_id, entries_temp)
         keys_id <- c(keys_id, rep(h, length(entries_temp)))
     }
