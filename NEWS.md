@@ -6,6 +6,10 @@
 
 * Corpus construction using `corpus()` now works for a `tm::SimpleCorpus` object. (#680)
 
+### Bug fixes and stability enhancements
+
+* dfm_lookup() behaves more robustly on different platforms, especially for keys whose values match no features (#704).
+
 
 ## Changes since v0.9.9-24
 
