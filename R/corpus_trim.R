@@ -4,7 +4,7 @@
 #' specified length.
 #' @param x \link{corpus} or character object whose sentences will be selected.
 #' @param what units of triming, sentences or paragraphs
-#' @param min_ntok,max_ntok minimum and maximum lengths in word tokens 
+#' @param min_ntoken,max_ntoken minimum and maximum lengths in word tokens 
 #'   (excluding punctuation)
 #' @param exclude_pattern a \pkg{stringi} regular expression whose match (at the
 #'   sentence level) will be used to exclude sentences
@@ -25,31 +25,31 @@
 #' texts(mycorp)
 #' 
 #' # exclude sentences shorter than 3 tokens
-#' texts(corpus_trim(mycorp, min_ntok = 3))
+#' texts(corpus_trim(mycorp, min_ntoken = 3))
 #' # exclude sentences that start with "PAGE <digit(s)>"
 #' texts(corpus_trim(mycorp, exclude_pattern = "^PAGE \\d+"))
 #' 
 #' # on a character
-#' char_trim(txt, min_ntok = 3)
+#' char_trim(txt, min_ntoken = 3)
 corpus_trim <- function(x, what = c("sentences", "paragraphs"),
-                        min_ntok = 1, max_ntok = NULL, exclude_pattern = NULL) {
+                        min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL) {
     UseMethod("corpus_trim")
 }
 
 #' @noRd
 #' @export
 corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs"),
-                               min_ntok = 1, max_ntok = NULL, exclude_pattern = NULL) {
+                               min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL) {
     
     what <- match.arg(what)
-    if(is.null(max_ntok)) max_ntok <- 1e10 
+    if(is.null(max_ntoken)) max_ntoken <- 1e10 
     
     # segment corpus
     temp <- corpus_reshape(x, to = "sentences")
     
     # exclude based on lengths
     length <- ntoken(temp, remove_punct = TRUE)
-    temp <- corpus_subset(temp, length >= min_ntok & length <= max_ntok)
+    temp <- corpus_subset(temp, length >= min_ntoken & length <= max_ntoken)
     
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
@@ -64,16 +64,16 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs"),
 #' @rdname corpus_trim
 #' @export
 #' @examples
-#' char_trim(txt, "sentences", min_ntok = 3)
+#' char_trim(txt, "sentences", min_ntoken = 3)
 #' char_trim(txt, "sentences", exclude_pattern = "sentence\\.")
 char_trim <- function(x, what = c("sentences", "paragraphs"), 
-                      min_ntok = 1, max_ntok = NULL, exclude_pattern = NULL) {
+                      min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL) {
     UseMethod("char_trim")
 }
 
 #' @noRd
 #' @export
 char_trim.character <- function(x, what = c("sentences", "paragraphs"), 
-                                min_ntok = 1, max_ntok = NULL, exclude_pattern = NULL) {
-    texts(corpus_trim(corpus(x), what, min_ntok, max_ntok, exclude_pattern))
+                                min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL) {
+    texts(corpus_trim(corpus(x), what, min_ntoken, max_ntoken, exclude_pattern))
 }

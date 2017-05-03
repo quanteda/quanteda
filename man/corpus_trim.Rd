@@ -5,18 +5,18 @@
 \alias{char_trim}
 \title{remove sentences based on their token lengths or a pattern match}
 \usage{
-corpus_trim(x, what = c("sentences", "paragraphs"), min_ntok = 1,
-  max_ntok = NULL, exclude_pattern = NULL)
+corpus_trim(x, what = c("sentences", "paragraphs"), min_ntoken = 1,
+  max_ntoken = NULL, exclude_pattern = NULL)
 
-char_trim(x, what = c("sentences", "paragraphs"), min_ntok = 1,
-  max_ntok = NULL, exclude_pattern = NULL)
+char_trim(x, what = c("sentences", "paragraphs"), min_ntoken = 1,
+  max_ntoken = NULL, exclude_pattern = NULL)
 }
 \arguments{
 \item{x}{\link{corpus} or character object whose sentences will be selected.}
 
 \item{what}{units of triming, sentences or paragraphs}
 
-\item{min_ntok, max_ntok}{minimum and maximum lengths in word tokens 
+\item{min_ntoken, max_ntoken}{minimum and maximum lengths in word tokens 
 (excluding punctuation)}
 
 \item{exclude_pattern}{a \pkg{stringi} regular expression whose match (at the
@@ -44,13 +44,13 @@ mycorp <- corpus(txt, docvars = data.frame(serial = 1:3))
 texts(mycorp)
 
 # exclude sentences shorter than 3 tokens
-texts(corpus_trim(mycorp, min_ntok = 3))
+texts(corpus_trim(mycorp, min_ntoken = 3))
 # exclude sentences that start with "PAGE <digit(s)>"
 texts(corpus_trim(mycorp, exclude_pattern = "^PAGE \\\\d+"))
 
 # on a character
-char_trim(txt, min_ntok = 3)
-char_trim(txt, "sentences", min_ntok = 3)
+char_trim(txt, min_ntoken = 3)
+char_trim(txt, "sentences", min_ntoken = 3)
 char_trim(txt, "sentences", exclude_pattern = "sentence\\\\.")
 }
 \keyword{experimental}
