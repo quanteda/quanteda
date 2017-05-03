@@ -306,7 +306,7 @@ test_that("textstat_simil stops as expected for methods not supported",{
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     expect_error(textstat_simil(presDfm, method = "Yule"), 
-                 "The metric is not currently supported by quanteda, please use other packages such as proxy::dist\\(\\)\\/simil\\(\\).")
+    "Yule is not implemented; consider trying proxy::simil\\(\\)")
 })
 
 test_that("textstat_simil stops as expected for wrong selections",{
