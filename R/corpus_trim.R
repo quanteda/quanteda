@@ -3,7 +3,8 @@
 #' Removes sentences from a corpus or a character vector shorter than a 
 #' specified length.
 #' @param x \link{corpus} or character object whose sentences will be selected.
-#' @param what units of triming, sentences or paragraphs
+#' @param what units of triming, \code{"sentences"} or \code{"paragraphs"}, or
+#'   \code{"documents"}
 #' @param min_ntoken,max_ntoken minimum and maximum lengths in word tokens 
 #'   (excluding punctuation)
 #' @param exclude_pattern a \pkg{stringi} regular expression whose match (at the
@@ -31,21 +32,25 @@
 #' 
 #' # on a character
 #' char_trim(txt, min_ntoken = 3)
-corpus_trim <- function(x, what = c("sentences", "paragraphs"),
+corpus_trim <- function(x, what = c("sentences", "paragraphs", "documents"),
                         min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL) {
     UseMethod("corpus_trim")
 }
 
 #' @noRd
 #' @export
-corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs"),
+corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents"),
                                min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL) {
     
     what <- match.arg(what)
-    if(is.null(max_ntoken)) max_ntoken <- 1e10 
+    if (is.null(max_ntoken)) max_ntoken <- 1e10 
     
     # segment corpus
-    temp <- corpus_reshape(x, to = "sentences")
+    if (what != "documents") {
+        temp <- corpus_reshape(x, to = what)
+    } else {
+        temp <- x
+    }
     
     # exclude based on lengths
     length <- ntoken(temp, remove_punct = TRUE)
@@ -55,7 +60,12 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs"),
     if (!is.null(exclude_pattern)) {
         temp <- corpus_subset(temp, !stri_detect_regex(texts(temp), exclude_pattern))
     }
-    result <- corpus_reshape(temp, to = "document")
+    
+    if (what != "documents") {
+        result <- corpus_reshape(temp, to = "documents")
+    } else {
+        result <- temp
+    }
     
     return(result)
 }
