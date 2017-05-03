@@ -252,7 +252,7 @@ test_that("textstat_dist stops as expected for methods not supported",{
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     expect_error(textstat_dist(presDfm, method = "Yule"), 
-                 "The metric is not currently supported by quanteda, please use other packages such as proxy::dist\\(\\)\\/simil\\(\\).")
+                 "Yule is not implemented; consider trying proxy::dist\\(\\)")
 })
 
 test_that("textstat_dist stops as expected for wrong selections",{
@@ -266,16 +266,6 @@ test_that("textstat_dist stops as expected for wrong selections",{
     expect_error(textstat_dist(presDfm, margin = "features", "Obamaa"), 
                  "The features specified by 'selection' do not exist.")
     
-})
-
-test_that("test textstat_dist works as expected for 'n' is not NULL", {
-    skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
-                   stem = TRUE, verbose = FALSE)
-    
-    cosQuanteda <- round(as.matrix(suppressWarnings(textstat_dist(presDfm, method = "euclidean", n=5, margin = "documents")))[,"1981-Reagan"], 6)
-    cosProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "euclidean", by_rows = TRUE, diag = TRUE))[, "1981-Reagan"], 6)
-    expect_equal(cosQuanteda, cosProxy[1:5])
 })
 
 test_that("as.dist on a dist returns a dist", {

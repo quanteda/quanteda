@@ -8,7 +8,8 @@
 
 ### Bug fixes and stability enhancements
 
-* dfm_lookup() behaves more robustly on different platforms, especially for keys whose values match no features (#704).
+* `dfm_lookup()` behaves more robustly on different platforms, especially for keys whose values match no features (#704).
+* `textstat_simil()` and `textstat_dist()` no longer take the `n` argument, as this was not sorting features in correct order.
 
 
 ## Changes since v0.9.9-24
