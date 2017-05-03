@@ -5,11 +5,11 @@
 \alias{textstat_simil}
 \title{Similarity and distance computation between documents or features}
 \usage{
-textstat_dist(x, selection = NULL, n = NULL, margin = c("documents",
-  "features"), method = "euclidean", upper = FALSE, diag = FALSE, p = 2)
+textstat_dist(x, selection = NULL, margin = c("documents", "features"),
+  method = "euclidean", upper = FALSE, diag = FALSE, p = 2)
 
-textstat_simil(x, selection = NULL, n = NULL, margin = c("documents",
-  "features"), method = "correlation", upper = FALSE, diag = FALSE)
+textstat_simil(x, selection = NULL, margin = c("documents", "features"),
+  method = "correlation", upper = FALSE, diag = FALSE)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -17,11 +17,6 @@ textstat_simil(x, selection = NULL, n = NULL, margin = c("documents",
 \item{selection}{character vector of document names or feature labels from
 \code{x}.  A \code{"dist"} object is returned if selection is \code{NULL}, 
 otherwise, a matrix is returned.}
-
-\item{n}{the top \code{n} highest-ranking items will be returned.  If n is 
-\code{NULL}, return all items.  Useful if the output object will be coerced
-into a list, for instance if the top \code{n} most similar features to a
-target feature is desired.  (See examples.)}
 
 \item{margin}{identifies the margin of the dfm on which similarity or 
 difference will be computed:  \code{documents} for documents or 
@@ -86,9 +81,10 @@ textstat_simil(presDfm, "2017-Trump", method = "cosine", margin = "documents")
 textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 
 # compute some term similarities
-(s2 <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
-                      margin = "features", n = 8))
-as.list(s2)
+s2 <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
+                      margin = "features")
+head(as.matrix(s2), 10)
+as.list(s2, n = 8)
 
 }
 \seealso{

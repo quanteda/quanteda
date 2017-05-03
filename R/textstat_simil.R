@@ -19,10 +19,6 @@
 #' @param selection character vector of document names or feature labels from
 #'   \code{x}.  A \code{"dist"} object is returned if selection is \code{NULL}, 
 #'   otherwise, a matrix is returned.
-#' @param n the top \code{n} highest-ranking items will be returned.  If n is 
-#'   \code{NULL}, return all items.  Useful if the output object will be coerced
-#'   into a list, for instance if the top \code{n} most similar features to a
-#'   target feature is desired.  (See examples.)
 #' @param margin identifies the margin of the dfm on which similarity or 
 #'   difference will be computed:  \code{documents} for documents or 
 #'   \code{features} for word/term features.
@@ -54,11 +50,12 @@
 #' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 #' 
 #' # compute some term similarities
-#' (s2 <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
-#'                       margin = "features", n = 8))
-#' as.list(s2)
+#' s2 <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
+#'                       margin = "features")
+#' head(as.matrix(s2), 10)
+#' as.list(s2, n = 8)
 #' 
-textstat_simil <- function(x, selection = NULL, n = NULL,
+textstat_simil <- function(x, selection = NULL,
                            margin = c("documents", "features"),
                            method = "correlation", 
                            upper  = FALSE, diag = FALSE) {
@@ -67,7 +64,7 @@ textstat_simil <- function(x, selection = NULL, n = NULL,
     
 #' @noRd
 #' @export    
-textstat_simil.dfm <- function(x, selection = NULL, n = NULL,
+textstat_simil.dfm <- function(x, selection = NULL,
                           margin = c("documents", "features"),
                           method = "correlation", 
                           upper  = FALSE, diag = FALSE) {
@@ -97,7 +94,7 @@ textstat_simil.dfm <- function(x, selection = NULL, n = NULL,
         if (method == "simple matching") method <- "smc"
         temp <- get(paste0(method, "_sparse"))(x, y, margin = ifelse(margin == "documents", 1, 2))
     } else {
-        stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
+        stop(method, " is not implemented; consider trying proxy::simil().")
     }
     
     # convert NaNs to NA
@@ -106,11 +103,6 @@ textstat_simil.dfm <- function(x, selection = NULL, n = NULL,
     if (!is.null(selection)) {
         names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
         temp <- temp[names, , drop = FALSE] # sort for as.dist()
-    }
-    
-    if (!is.null(n)) {
-        n <- min(n, nrow(nrow(temp)))
-        temp <- temp[seq_len(n), , drop = FALSE]
     }
     
     # create a new dist object
