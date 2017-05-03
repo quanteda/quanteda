@@ -9,9 +9,6 @@
 #'   (excluding punctuation)
 #' @param exclude_pattern a \pkg{stringi} regular expression whose match (at the
 #'   sentence level) will be used to exclude sentences
-#' @param return_tokens if \code{TRUE}, return tokens object of sentences after
-#'   trimming, otherwise return the input object type with the trimmed sentences
-#'   removed.
 #' @return a \link{corpus} or character vector equal in length to the input, or
 #'   a tokenized set of sentences if .  If the input was a corpus, then the all
 #'   docvars and metadata are preserved.  For documents whose sentences have
@@ -30,8 +27,6 @@
 #' # exclude sentences that start with "PAGE <digit(s)>"
 #' texts(corpus_trim(mycorp, exclude_pattern = "^PAGE \\d+"))
 #' 
-#' # on a character
-#' char_trim(txt, min_ntoken = 3)
 corpus_trim <- function(x, what = c("sentences", "paragraphs", "documents"),
                         min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL) {
     UseMethod("corpus_trim")
@@ -75,17 +70,19 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
 #' @keywords character
 #' @export
 #' @examples
+#' # trimming character objects
 #' char_trim(txt, "sentences", min_ntoken = 3)
 #' char_trim(txt, "sentences", exclude_pattern = "sentence\\.")
-char_trim <- function(x, what = c("sentences", "paragraphs"), 
+char_trim <- function(x, what = c("sentences", "paragraphs", "documents"), 
                       min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL) {
     UseMethod("char_trim")
 }
 
 #' @noRd
 #' @export
-char_trim.character <- function(x, what = c("sentences", "paragraphs"), 
+char_trim.character <- function(x, what = c("sentences", "paragraphs", "documents"), 
                                 min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL) {
+    what <- match.arg(what)
     texts(corpus_trim(corpus(x), what, min_ntoken, max_ntoken, exclude_pattern))
 }
 

@@ -8,8 +8,8 @@
 corpus_trim(x, what = c("sentences", "paragraphs", "documents"),
   min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL)
 
-char_trim(x, what = c("sentences", "paragraphs"), min_ntoken = 1,
-  max_ntoken = NULL, exclude_pattern = NULL)
+char_trim(x, what = c("sentences", "paragraphs", "documents"),
+  min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL)
 }
 \arguments{
 \item{x}{\link{corpus} or character object whose sentences will be selected.}
@@ -22,10 +22,6 @@ char_trim(x, what = c("sentences", "paragraphs"), min_ntoken = 1,
 
 \item{exclude_pattern}{a \pkg{stringi} regular expression whose match (at the
 sentence level) will be used to exclude sentences}
-
-\item{return_tokens}{if \code{TRUE}, return tokens object of sentences after
-trimming, otherwise return the input object type with the trimmed sentences
-removed.}
 }
 \value{
 a \link{corpus} or character vector equal in length to the input, or
@@ -49,8 +45,7 @@ texts(corpus_trim(mycorp, min_ntoken = 3))
 # exclude sentences that start with "PAGE <digit(s)>"
 texts(corpus_trim(mycorp, exclude_pattern = "^PAGE \\\\d+"))
 
-# on a character
-char_trim(txt, min_ntoken = 3)
+# trimming character objects
 char_trim(txt, "sentences", min_ntoken = 3)
 char_trim(txt, "sentences", exclude_pattern = "sentence\\\\.")
 }
