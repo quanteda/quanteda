@@ -28,7 +28,7 @@ A dfm object with number of documents or features equal to \code{size}, drawn
 Sample randomly from a dfm object, from documents or features.
 }
 \examples{
-myDfm <- dfm(data_char_inaugural[1:10], verbose = FALSE)
+myDfm <- dfm(data_corpus_inaugural[1:10])
 dfm_sample(myDfm)[, 1:10]
 dfm_sample(myDfm, replace = TRUE)[, 1:10]
 dfm_sample(myDfm, what = "features")[1:10, ]

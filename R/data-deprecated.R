@@ -11,14 +11,16 @@
 NULL
 
 #' @rdname data-deprecated
-#' @details \code{ukimmigTexts} is deprecated; please use 
+#' @name ukimmigTexts
+#' @details \code{ukimmigTexts} is defunct; please use 
 #'   \code{data_char_ukimmigration} instead.
-"ukimmigTexts"
+NULL
 
 #' @rdname data-deprecated
-#' @details \code{ie2010Corpus} is deprecated; please use 
+#' @name ie2010Corpus
+#' @details \code{ie2010Corpus} is defunct; please use 
 #'   \code{data_corpus_irishbudget2010} 
-"ie2010Corpus"
+NULL
 
 #' @rdname data-deprecated
 #' @details \code{inaugTexts} is deprecated; please use
@@ -26,9 +28,16 @@ NULL
 "inaugTexts"
 
 #' @rdname data-deprecated
-#' @details \code{inaugCorpus} is deprecated; please use 
+#' @name data_char_inaugural
+#' @details \code{data_char_inaugural} is defunct; please use
 #'   \code{data_corpus_inaugural} instead.
-"inaugCorpus"
+NULL
+
+#' @rdname data-deprecated
+#' @name inaugCorpus
+#' @details \code{inaugCorpus} is defunct; please use 
+#'   \code{data_corpus_inaugural} instead.
+NULL
 
 #' @name LBGexample
 #' @rdname data-deprecated
@@ -41,6 +50,19 @@ NULL
 #' @details \code{exampleString} is defunct; please use 
 #'   \code{data_char_sampletext} instead.
 NULL
+
+#' @name data_char_inaugural
+#' @rdname data-deprecated
+#' @details \code{data_char_inaugural} is defunct; please use
+#'   \code{data_corpus_inaugural} instead.
+NULL
+
+#' @name data_char_mobydick
+#' @rdname data-deprecated
+#' @details \code{data_char_mobydick} is defunct; please use
+#'   \code{data(mobydick, package = "tokenizers")} instead.
+NULL
+
 
 
 

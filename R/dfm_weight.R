@@ -58,7 +58,7 @@
 #' dfm_weight(mydfm, weights = c(apple = 5, banana = 3, much = 0.5))
 #' 
 #' \dontshow{
-#' testdfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
+#' testdfm <- dfm(data_corpus_inaugural[1:5])
 #' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
 #'     testw <- dfm_weight(testdfm, w)
 #'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
@@ -153,7 +153,7 @@ dfm_smooth <- function(x, smoothing = 1) {
 #' @keywords internal weighting dfm
 #' @export
 #' @examples 
-#' mydfm <- dfm(data_char_inaugural[1:2], verbose = FALSE)
+#' mydfm <- dfm(data_corpus_inaugural[1:2])
 #' docfreq(mydfm[, 1:20])
 #' 
 #' # replication of worked example from

@@ -132,11 +132,11 @@ tokens_ngrams(toks2, n = 2, skip = 1, concatenator = " ")
 tokens_ngrams(toks2, n = 3, skip = 0:1, concatenator = " ")
 
 # mine bigrams
-collocs2 <- collocations(inaugTexts, size = 2, method = "all")
+collocs2 <- collocations(data_corpus_inaugural, size = 2, method = "all")
 head(collocs2, 20)
 
 # mine trigrams
-collocs3 <- collocations(inaugTexts, size = 3, method = "all")
+collocs3 <- collocations(data_corpus_inaugural, size = 3, method = "all")
 head(collocs3, 20)
 
 # remove parts of speech and inspect

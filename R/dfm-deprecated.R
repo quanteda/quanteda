@@ -31,7 +31,7 @@ compress <- function(x, ...)  {
 #' compress(mat)
 #' 
 #' # no effect if no compression needed
-#' compress(dfm(data_char_inaugural, verbose = FALSE))
+#' compress(dfm(data_corpus_inaugural, verbose = FALSE))
 #' }
 #' @export
 compress.dfm <- function(x, margin = c("both", "documents", "features"), ...) {

@@ -22,11 +22,11 @@
 #' @author Kenneth Benoit and Kohei Watanabe
 #' @export
 #' @examples
-#' head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))
-#' head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex"))
-#' head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
+#' head(kwic(data_corpus_inaugural, "secure*", window = 3, valuetype = "glob"))
+#' head(kwic(data_corpus_inaugural, "secur", window = 3, valuetype = "regex"))
+#' head(kwic(data_corpus_inaugural, "security", window = 3, valuetype = "fixed"))
 #' 
-#' toks <- tokens(data_char_inaugural)
+#' toks <- tokens(data_corpus_inaugural)
 #' kwic(data_corpus_inaugural, "war against")
 #' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
 #' 
@@ -70,7 +70,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
         stop("x must be a tokens object")
     
     valuetype <- match.arg(valuetype)
-    keywords <- vector2list(keywords)
+    keywords <- features2list(keywords)
 
     # add document names if none
     if (is.null(names(x))) {
@@ -82,11 +82,14 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     result <- qatd_cpp_kwic(x, types, keywords_id, window)
     #result$docname <- as.factor(result$docname)
     
-    # add attributes for kwic object
-    attr(result, 'concatenator') <- attr(x, 'concatenator')
-    attr(result, "ntoken")  <- ntoken(x)
+    # attributes for tokens object
+    attributes(attr(result, "tokens"), FALSE)  <- attributes(x)
+    
+    # attributes for kwic object
+    attr(result, "ntoken") <- ntoken(x)
     attr(result, "valuetype") <- valuetype
     attr(result, "keywords") <- sapply(keywords, paste, collapse = " ")
+    attributes(result, FALSE)  <- attributes(x)
     class(result) <- c("kwic", "data.frame")
     return(result)
 }
@@ -139,9 +142,7 @@ print.kwic <- function(x, ...) {
 as.tokens.kwic <- function(x) {
     result <- attr(x, 'tokens')
     names(result) <- x$docname
-    class(result) <- c("tokens", "tokenizedTexts")
     docvars(result) <- data.frame('_docid' = attr(x, 'docid'),
                                   '_segid' = attr(x, 'segid'))
-    attr(result, 'concatenator') <- attr(x, 'concatenator')
     return(result)
 }

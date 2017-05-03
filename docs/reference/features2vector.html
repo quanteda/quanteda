@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>datasets with deprecated or defunct names — data-deprecated • quanteda</title>
+<title>convert various input as features to a vector — features2vector • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -72,52 +72,46 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>datasets with deprecated or defunct names</h1>
+    <h1>convert various input as features to a vector</h1>
     </div>
 
     
-    <p>These are datasets that have been renamed but that have been
-  temporarily retained for backward compatibility, or that have been renamed
-  and the old names removed. Please change your code to use the new names, as
-  the deprecated functions will become defunct in future versions.</p>
+    <p>Convert various input as features to a vector for fucntions that 
+do not support multi-word features e.g.
+<code><a href='dfm_select.html'>dfm_select</a>, <a href='sequences.html'>sequences</a>, <a href='collocations.html'>collocations</a></code>.</p>
     
 
-    <pre><span class='no'>inaugTexts</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>See the specific object documentation for the renamed objects.</p>
+    <pre><span class='fu'>features2vector</span>(<span class='no'>features</span>)</pre>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <dl class="dl-horizontal">
+      <dt>features</dt>
+      <dd>the input features, one of: <ul>
+<li>character vector,
+whose elements will be split on whitespace; </li>
+<li>list of characters,
+consisting of a list of token patterns, separated by white space; 
+</li>
+<li><a href='tokens.html'>tokens</a> object; </li>
+<li><a href='dictionary.html'>dictionary</a> object; 
+</li>
+<li><a href='collocations.html'>collocations</a> object. </li>
+</ul>
+</dd>
+    </dl>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>ukimmigTexts</code> is defunct; please use 
-  <code>data_char_ukimmigration</code> instead.</p>
-    <p><code>ie2010Corpus</code> is defunct; please use 
-  <code>data_corpus_irishbudget2010</code></p>
-    <p><code>inaugTexts</code> is deprecated; please use
-  <code>data_char_inaugural</code> instead.</p>
-    <p><code>data_char_inaugural</code> is defunct; please use
-  <code>data_corpus_inaugural</code> instead.</p>
-    <p><code>inaugCorpus</code> is defunct; please use 
-  <code>data_corpus_inaugural</code> instead.</p>
-    <p><code>LBGexample</code> is defunct; please use 
-  <code>data_dfm_LBGexample</code> instead.</p>
-    <p><code>exampleString</code> is defunct; please use 
-  <code>data_char_sampletext</code> instead.</p>
-    <p><code>data_char_inaugural</code> is defunct; please use
-  <code>data_corpus_inaugural</code> instead.</p>
-    <p><code>data_char_mobydick</code> is defunct; please use
-  <code>data(mobydick, package = &quot;tokenizers&quot;)</code> instead.</p>
+    <p>an unnamed vector of features</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#details">Details</a></li>
+      <li><a href="#value">Value</a></li>
           </ul>
 
   </div>

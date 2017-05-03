@@ -81,18 +81,20 @@
 <p>The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(quanteda)
 
-## read the text as a single file
+## read the text of Moby Dick from the tokenizers package
+<span class="kw">data</span>(mobydick, <span class="dt">package =</span> <span class="st">"tokenizers"</span>)
+data_char_mobydick &lt;-<span class="st"> </span>mobydick
 <span class="kw">summary</span>(data_char_mobydick)</code></pre></div>
-<pre><code>##        Text Types Tokens Sentences
-## 1 Moby_Dick 20019 264074     10020</code></pre>
+<pre><code>##       Text Types Tokens Sentences
+## 1 mobydick 20020 286182     28979</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## alternative method:
 <span class="co"># require(readtext)</span>
 <span class="co"># data_char_mobydick &lt;- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))</span></code></pre></div>
 <p>The <code><a href="../../reference/textfile.html">textfile()</a></code> loads the text and places inside a structured, intermediate object known as a <code>corpusSource</code> object. We see this by outputting it to the global environment, as above.</p>
 <p>We can access the text from a <code>corpusSource</code> object (and also, as we will see, a <code>corpus</code> class object), using the <code><a href="../../reference/texts.html">texts()</a></code> method. Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel. We do this using the <code>substring()</code> function, which shows the 1st through the 75th characters of the texts of our new object <code>mobydicktf</code>. Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substring</span>(data_char_mobydick, <span class="dv">1</span>, <span class="dv">75</span>)</code></pre></div>
-<pre><code>##                                                                      Moby_Dick 
-## "The Project Gutenberg EBook of Moby Dick; or The Whale, by Herman Melville\n"</code></pre>
+<pre><code>##                                                                     mobydick 
+## "﻿The Project Gutenberg EBook of Moby Dick; or The Whale, by Herman Melville"</code></pre>
 </div>
 <div id="separate-content-from-metadata" class="section level2">
 <h2 class="hasAnchor">
@@ -104,10 +106,8 @@ metadata.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_
 <p>To trim the extra text at the end of the Gutenburg version of the text, we can use the keyword-in-context (<code>kwic</code>) function to view the contexts around the word ‘orphan’, which we know should occur at the end of the book.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># verify that "orphan" is the end of the novel</span>
 <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"orphan"</span>)</code></pre></div>
-<pre><code>##                                                             
-##  [Moby_Dick, 260460] children, only found another | orphan |
-##                              
-##  . End of Project Gutenberg's</code></pre>
+<pre><code>##                                                                          
+##  [mobydick, 282201] , only found another\r\n | orphan | .\r\n\r\n\r\n\r\n</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># extract the novel -- a better way</span>
 novel.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_char_mobydick, endMetadataIndex, 
                      <span class="kw">regexec</span>(<span class="st">"End of Project Gutenberg's Moby Dick."</span>, data_char_mobydick)[[<span class="dv">1</span>]]-<span class="dv">1</span>)</code></pre></div>
@@ -157,27 +157,27 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<
 <pre><code>## [1] 1150</code></pre>
 <p>What fraction of the total words in the novel are ‘whale’?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">total.whale.hits /<span class="st"> </span><span class="kw"><a href="../../reference/ntoken.html">ntoken</a></span>(novel.lower.v, <span class="dt">remove_punct=</span><span class="ot">TRUE</span>)  </code></pre></div>
-<pre><code>##  Moby_Dick 
+<pre><code>##   mobydick 
 ## 0.00547619</code></pre>
 <p>Calculating the size of the vocabulary – includes possessive forms.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total unique words</span>
 <span class="kw">length</span>(<span class="kw">unique</span>(moby.word.v))</code></pre></div>
-<pre><code>## [1] 17299</code></pre>
+<pre><code>## [1] 17300</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(<span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>(novel.v), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## Moby_Dick 
-##     18525</code></pre>
+<pre><code>## mobydick 
+##    18525</code></pre>
 <p>To quickly sort the word types by their frequency, we can use the <code>dfm</code> command to create a matrix of counts of each word type – a document-frequency matrix. In this case there is only one document, the entire book.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ten most frequent words</span>
 mobyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(novel.lower.v)
 mobyDfm[, <span class="st">"whale"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
 ## 1 x 1 sparse Matrix of class "dfmSparse"
-##            features
-## docs        whale
-##   Moby_Dick  1030</code></pre>
+##           features
+## docs       whale
+##   mobydick  1030</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mobyDfm)</code></pre></div>
-<pre><code>##     ,   the     .    of   and     -     a    to     ;    in 
-## 18923 14175  7370  6469  6325  5741  4622  4539  4143  4078</code></pre>
+<pre><code>##  \r\n     ,   the     .    of   and     -     a    to     ; 
+## 21212 18923 14175  7370  6469  6325  5741  4622  4539  4143</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mobyDfm, <span class="dv">100</span>), <span class="dt">log =</span> <span class="st">"y"</span>, <span class="dt">cex =</span> .<span class="dv">6</span>, <span class="dt">ylab =</span> <span class="st">"Term frequency"</span>)</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 </div>
@@ -193,25 +193,25 @@ mobyDfm[, <span class="st">"whale"</span>]</code></pre></div>
 mobyDfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 4 features (0% sparse).
 ## 1 x 4 sparse Matrix of class "dfmSparse"
-##            features
-## docs          he she  him her
-##   Moby_Dick 1758 112 1058 330</code></pre>
+##           features
+## docs         he she  him her
+##   mobydick 1758 112 1058 330</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mobyDfm[, <span class="st">"her"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
 ## 1 x 1 sparse Matrix of class "dfmSparse"
-##            features
-## docs        her
-##   Moby_Dick 330</code></pre>
+##           features
+## docs       her
+##   mobydick 330</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mobyDfm[, <span class="st">"him"</span>]/mobyDfm[, <span class="st">"her"</span>]</code></pre></div>
 <pre><code>## 1 x 1 Matrix of class "dgeMatrix"
-##            features
-## docs             him
-##   Moby_Dick 3.206061</code></pre>
+##           features
+## docs            him
+##   mobydick 3.206061</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mobyDfm[, <span class="st">"he"</span>]/mobyDfm[, <span class="st">"she"</span>]</code></pre></div>
 <pre><code>## 1 x 1 Matrix of class "dgeMatrix"
-##            features
-## docs              he
-##   Moby_Dick 15.69643</code></pre>
+##           features
+## docs             he
+##   mobydick 15.69643</code></pre>
 </div>
 <div id="recycling" class="section level2">
 <h2 class="hasAnchor">
@@ -223,9 +223,9 @@ mobyDfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mobyDfmPct[, <span class="st">"the"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
 ## 1 x 1 sparse Matrix of class "dfmSparse"
-##            features
-## docs             the
-##   Moby_Dick 5.549183</code></pre>
+##           features
+## docs           the
+##   mobydick 5.12371</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mobyDfmPct), <span class="dt">type=</span><span class="st">"b"</span>,
      <span class="dt">xlab=</span><span class="st">"Top Ten Words"</span>, <span class="dt">ylab=</span><span class="st">"Percentage of Full Text"</span>, <span class="dt">xaxt =</span><span class="st">"n"</span>)
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">labels =</span> <span class="kw">names</span>(<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mobyDfmPct)))</code></pre></div>
@@ -262,20 +262,13 @@ mobyDfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="s
 <html><body><a href="#identifying-chapter-breaks" class="anchor"> </a></body></html>Identifying chapter breaks</h2>
 <p>Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a <code>corpus</code> object to hold the texts. Initially, we make a single-document corpus, and then use the <code>char_segment</code> function to split this by the string which specifies the chapter breaks.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.v, <span class="st">'chapter'</span>))</code></pre></div>
-<pre><code>##                                                        
-##      [Moby_Dick, 1]                         | CHAPTER |
-##   [Moby_Dick, 2621]        hill in the air. | CHAPTER |
-##   [Moby_Dick, 4355]        Spouter" may be. | CHAPTER |
-##  [Moby_Dick, 11416]      better in my life. | CHAPTER |
-##  [Moby_Dick, 13363] like a marshal's baton. | CHAPTER |
-##  [Moby_Dick, 14249]       out for a stroll. | CHAPTER |
-##                     
-##  1. Loomings. Call  
-##  2. The Carpet-     
-##  3. The Spouter-    
-##  4. The Counterpane.
-##  5. Breakfast. I    
-##  6. The Street.</code></pre>
+<pre><code>##                                                                     
+##      [mobydick, 1]                   | CHAPTER | 1. Loomings.\r\n   
+##   [mobydick, 2828] .\r\n\r\n\r\n\r\n | CHAPTER | 2. The Carpet-     
+##   [mobydick, 4694] .\r\n\r\n\r\n\r\n | CHAPTER | 3. The Spouter-    
+##  [mobydick, 12322] .\r\n\r\n\r\n\r\n | CHAPTER | 4. The Counterpane.
+##  [mobydick, 14415] .\r\n\r\n\r\n\r\n | CHAPTER | 5. Breakfast.\r\n  
+##  [mobydick, 15378] .\r\n\r\n\r\n\r\n | CHAPTER | 6. The Street.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chaptersVec &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw"><a href="../../reference/corpus_segment.html">char_segment</a></span>(novel.v, <span class="dt">what =</span> <span class="st">'other'</span>, <span class="dt">delimiter =</span> <span class="st">"CHAPTER</span><span class="ch">\\</span><span class="st">s</span><span class="ch">\\</span><span class="st">d"</span>, <span class="dt">perl =</span> <span class="ot">TRUE</span>))
 chaptersLowerVec &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>(chaptersVec)
 chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(chaptersVec)</code></pre></div>
@@ -301,22 +294,14 @@ chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../refer
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(relDfm)</code></pre></div>
 <pre><code>## Document-feature matrix of: 136 documents, 17,211 features (96.4% sparse).
 ## (showing first 6 documents and first 6 features)
-##              features
-## docs                 .  loomings       call        me    ishmael
-##   Moby_Dick.1 3.132162 0.0381971 0.03819710 0.9549274 0.07639419
-##   Moby_Dick.2 2.713626 0.0000000 0.00000000 0.3464203 0.23094688
-##   Moby_Dick.3 3.244086 0.0000000 0.01416631 0.6516504 0.00000000
-##   Moby_Dick.4 2.724936 0.0000000 0.00000000 0.9768638 0.00000000
-##   Moby_Dick.5 3.167421 0.0000000 0.00000000 0.1131222 0.00000000
-##   Moby_Dick.6 4.166667 0.0000000 0.00000000 0.1016260 0.00000000
-##              features
-## docs                some
-##   Moby_Dick.1 0.42016807
-##   Moby_Dick.2 0.05773672
-##   Moby_Dick.3 0.24082731
-##   Moby_Dick.4 0.05141388
-##   Moby_Dick.5 0.22624434
-##   Moby_Dick.6 0.10162602</code></pre>
+##             features
+## docs                .  loomings       call        me    ishmael       some
+##   mobydick.1 3.132162 0.0381971 0.03819710 0.9549274 0.07639419 0.42016807
+##   mobydick.2 2.713626 0.0000000 0.00000000 0.3464203 0.23094688 0.05773672
+##   mobydick.3 3.244086 0.0000000 0.01416631 0.6516504 0.00000000 0.24082731
+##   mobydick.4 2.724936 0.0000000 0.00000000 0.9768638 0.00000000 0.05141388
+##   mobydick.5 3.167421 0.0000000 0.00000000 0.1131222 0.00000000 0.22624434
+##   mobydick.6 4.166667 0.0000000 0.00000000 0.1016260 0.00000000 0.10162602</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">barplot</span>(<span class="kw">as.numeric</span>(relDfm[, <span class="st">'whale'</span>]))</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">barplot</span>(<span class="kw">as.numeric</span>(relDfm[, <span class="st">'ahab'</span>]))</code></pre></div>
@@ -382,8 +367,8 @@ numWords &lt;-<span class="st"> </span><span class="kw">length</span>(firstChap[
 <span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,])/numWords</code></pre></div>
 <pre><code>## [1] 3.02659</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,])/<span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(chaptersCorp[<span class="dv">1</span>], <span class="dt">remove_punct=</span><span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## Moby_Dick.1 
-##     2.88326</code></pre>
+<pre><code>## mobydick.1 
+##    2.88326</code></pre>
 </div>
 <div id="extracting-word-usage-means" class="section level2">
 <h2 class="hasAnchor">

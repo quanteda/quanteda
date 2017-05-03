@@ -25,11 +25,11 @@ Methods for coercing a \link{dfm} object to a matrix or data.frame object.
 }
 \examples{
 # coercion to matrix
-mydfm <- dfm(data_char_inaugural)
+mydfm <- dfm(data_corpus_inaugural)
 str(as.matrix(mydfm))
 
 # coercion to a data.frame
-inaugDfm <- dfm(data_char_inaugural[1:5])
+inaugDfm <- dfm(data_corpus_inaugural[1:5])
 as.data.frame(inaugDfm[, 1:10])
 as.data.frame(inaugDfm[, 1:10], row.names = FALSE)
 }

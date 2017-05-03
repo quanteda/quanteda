@@ -142,19 +142,19 @@ making the methods available for this object type available to this object.
 
 \examples{
 # same for character vectors and for lists
-tokensFromChar <- tokenize(data_char_inaugural[1:3])
+tokensFromChar <- tokenize(data_corpus_inaugural[1:3])
 tokensFromCorp <- tokenize(corpus_subset(data_corpus_inaugural, Year<1798))
 identical(tokensFromChar, tokensFromCorp)
 str(tokensFromChar)
 # returned as a list
-head(tokenize(data_char_inaugural[57])[[1]], 10)
+head(tokenize(data_corpus_inaugural[57])[[1]], 10)
 # returned as a character vector using simplify=TRUE
-head(tokenize(data_char_inaugural[57], simplify = TRUE), 10)
+head(tokenize(data_corpus_inaugural[57], simplify = TRUE), 10)
 
 # removing punctuation marks and lowecasing texts
-head(tokenize(char_tolower(data_char_inaugural[57]), simplify = TRUE, remove_punct = TRUE), 30)
+head(tokenize(char_tolower(data_corpus_inaugural[57]), simplify = TRUE, remove_punct = TRUE), 30)
 # keeping case and punctuation
-head(tokenize(data_char_inaugural[57], simplify = TRUE), 30)
+head(tokenize(data_corpus_inaugural[57], simplify = TRUE), 30)
 # keeping versus removing hyphens
 tokenize("quanteda data objects are auto-loading.", remove_punct = TRUE)
 tokenize("quanteda data objects are auto-loading.", remove_punct = TRUE, remove_hyphens = TRUE)
@@ -200,7 +200,7 @@ tokenize(c("Kurt Vongeut said; only assholes use semi-colons.",
            "Today is Thursday in Canberra:  \\nIt is yesterday in London.",
            "To be?  Or\\nnot to be?"), 
           what = "sentence")
-tokenize(data_char_inaugural[c(2,40)], what = "sentence", simplify = TRUE)
+tokenize(data_corpus_inaugural[c(2,40)], what = "sentence", simplify = TRUE)
 
 # removing features (stopwords) from tokenized texts
 txt <- char_tolower(c(mytext1 = "This is a short test sentence.",

@@ -23,7 +23,7 @@ Get the count of tokens (total features) or types (unique tokens).
 }
 \details{
 The precise definition of "tokens" for objects not yet tokenized (e.g.
-\link{character} or \link{corpus} objects can be controlled through optional
+\link{character} or \link{corpus} objects) can be controlled through optional
 arguments passed to \code{\link{tokens}} through \code{...}.
 
 For \link{dfm} objects, \code{ntype} will only return the count of features

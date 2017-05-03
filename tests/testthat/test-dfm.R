@@ -29,7 +29,9 @@ dfm_lookup(txtDfm, mydict, valuetype = "glob")
 dfm_lookup(txtDfm, mydict, exclusive = FALSE, valuetype = "glob", verbose = FALSE) 
 
 
-inaugTextsTokenized <- tokenize(char_tolower(inaugTexts[1:10]), remove_punct = TRUE)
+inaugTextsTokenized <- tokens(data_corpus_inaugural, remove_punct = TRUE)
+inaugTextsTokenized <- tokens_tolower(inaugTextsTokenized)
+
 # microbenchmark::microbenchmark(
 #     dfm(inaugTextsTokenized, verbose = FALSE),
 #     dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE),
@@ -39,7 +41,7 @@ inaugTextsTokenized <- tokenize(char_tolower(inaugTexts[1:10]), remove_punct = T
 txt <- "The tall brown trees with pretty leaves in its branches."
 dfm(txt)
 dfm(txt, stem = TRUE)
-dfm(txt, remove = stopwords("english"))  
+dfm(txt, remove = stopwords("english"))
 dfm(txt, stem = TRUE, remove = stopwords("english"))
 
 
@@ -330,12 +332,12 @@ test_that("dfm-methods works as expected", {
 })
 
 test_that("dfm_sample works as expected",{
-    myDfm <- dfm(data_char_inaugural[1:10], verbose = FALSE)
+    myDfm <- dfm(data_corpus_inaugural[1:10], verbose = FALSE)
     expect_error(dfm_sample(myDfm, what="documents", size = 20),
                   "size cannot exceed the number of documents \\(10\\)")
     expect_error(dfm_sample(myDfm, what="features", size = 3500),
                  "size cannot exceed the number of features \\(3358\\)")
-    expect_error(dfm_sample(data_char_inaugural[1:10]),
+    expect_error(dfm_sample(data_corpus_inaugural[1:10]),
                  "x must be a dfm object")
 })
 
@@ -406,4 +408,14 @@ test_that("dfm works with relational operators", {
 })
 
 
+test_that("dfm's document counts in verbose message is correct", {
+    txt <- c(d1 = "a b c d e f g x y z",
+             d2 = "a c d x z",
+             d3 = "x y",
+             d4 = "f g")
+    expect_message(dfm(txt, remove = c('a', 'f'), verbose = TRUE),
+                   'removed 2 features and 0 documents')
+    expect_message(dfm(txt, select = c('a', 'f'), verbose = TRUE),
+                   'kept 2 features and 4 documents')
+})
 

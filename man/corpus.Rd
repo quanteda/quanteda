@@ -55,9 +55,10 @@ sources are:
   variable name using the \code{text_field} argument.  Other variables are 
   imported as document-level meta-data.
 \item a \link{kwic} object constructed by \code{\link{kwic}}.
-\item a \pkg{tm} \link[tm]{VCorpus} class  object, with the fixed metadata 
-  fields imported as document-level metadata. Corpus-level metadata is not 
-  currently imported.
+\item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object, 
+  with the fixed metadata 
+  fields imported as \link{docvars} and corpus-level metadata imported
+  as \link{metacorpus} information.
 }
 }
 \details{
@@ -90,7 +91,7 @@ The texts and document variables of corpus objects can also be
 
 \examples{
 # create a corpus from texts
-corpus(data_char_inaugural)
+corpus(data_char_ukimmig2010)
 
 # create a corpus from texts and assign meta-data and document variables
 summary(corpus(data_char_ukimmig2010, 
@@ -99,7 +100,7 @@ summary(corpus(data_char_ukimmig2010,
 corpus(texts(data_corpus_irishbudget2010))
 
 # import a tm VCorpus
-if ("tm" \%in\% rownames(installed.packages())) {
+if (requireNamespace("tm")) {
     data(crude, package = "tm")    # load in a tm example VCorpus
     mytmCorpus <- corpus(crude)
     summary(mytmCorpus, showmeta=TRUE)
@@ -107,7 +108,7 @@ if ("tm" \%in\% rownames(installed.packages())) {
     data(acq, package = "tm")
     summary(corpus(acq), 5, showmeta=TRUE)
     
-    tmCorp <- tm::VCorpus(tm::VectorSource(data_char_inaugural[49:57]))
+    tmCorp <- tm::VCorpus(tm::VectorSource(data_char_ukimmig2010))
     quantCorp <- corpus(tmCorp)
     summary(quantCorp)
 }

@@ -121,26 +121,25 @@ Text match_comp(Text tokens,
 
 struct compound_mt : public Worker{
     
-    Texts &input;
-    Texts &output;
+    Texts &texts;
     const std::vector<std::size_t> &spans;
     const bool &join;
     MapNgrams &map_comps;
     IdNgram &id_comp;
     
     // Constructor
-    compound_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, 
+    compound_mt(Texts &texts_, const std::vector<std::size_t> &spans_, 
                 const bool &join_, MapNgrams &map_comps_, IdNgram &id_comp_):
-                input(input_), output(output_), spans(spans_), join(join_), map_comps(map_comps_), id_comp(id_comp_) {}
+                texts(texts_), spans(spans_), join(join_), map_comps(map_comps_), id_comp(id_comp_) {}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
             if (join) {
-                output[h] = join_comp(input[h], spans, map_comps, id_comp);
+                texts[h] = join_comp(texts[h], spans, map_comps, id_comp);
             } else {
-                output[h] = match_comp(input[h], spans, true, map_comps);
+                texts[h] = match_comp(texts[h], spans, true, map_comps);
             }
         }
     }
@@ -165,7 +164,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
                               const String &delim_,
                               const bool &join){
     
-    Texts input = Rcpp::as<Texts>(texts_);
+    Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
     std::string delim = delim_;
 
@@ -189,17 +188,16 @@ List qatd_cpp_tokens_compound(const List &texts_,
     std::reverse(std::begin(spans), std::end(spans));
     
     // dev::Timer timer;
-    Texts output(input.size());
     // dev::start_timer("Token compound", timer);
 #if QUANTEDA_USE_TBB
-    compound_mt compound_mt(input, output, spans, join, map_comps, id_comp);
-    parallelFor(0, input.size(), compound_mt);
+    compound_mt compound_mt(texts, spans, join, map_comps, id_comp);
+    parallelFor(0, texts.size(), compound_mt);
 #else
-    for (std::size_t h = 0; h < input.size(); h++) {
+    for (std::size_t h = 0; h < texts.size(); h++) {
         if (join) {
-            output[h] = join_comp(input[h], spans, map_comps, id_comp);
+            texts[h] = join_comp(texts[h], spans, map_comps, id_comp);
         } else {
-            output[h] = match_comp(input[h], spans, true, map_comps);
+            texts[h] = match_comp(texts[h], spans, true, map_comps);
         }
     }
 #endif
@@ -227,7 +225,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
     types.insert(types.end(), types_comp.begin(), types_comp.end());
     
     // dev::stop_timer("Token compound", timer);
-    return recompile(output, types);
+    return recompile(texts, types);
 }
 
 /***R

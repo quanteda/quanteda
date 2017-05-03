@@ -114,7 +114,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             padding <- TRUE
             case_insensitive <- FALSE
         }
-        features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
+        features <- features2vector(features)
         features_id <- unlist(regex2id(features, featnames(x), valuetype, case_insensitive), use.names = FALSE)
         if (!is.null(features_id)) features_id <- sort(features_id) # keep the original column order
 
@@ -205,7 +205,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     if (verbose) {
         catm("dfm_select ", ifelse(selection=="keep", "kept", "removed"), " ", 
              format(length(features_id), big.mark=","),
-             " feature", ifelse(length(features_id) != 1, "s", ""), " in ",
+             " feature", ifelse(length(features_id) != 1, "s", ""), " and ",
              format(length(documents_id), big.mark=","),
              " document", ifelse(length(documents_id) != 1, "s", ""),
              ", padding 0s for ",

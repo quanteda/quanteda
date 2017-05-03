@@ -41,14 +41,14 @@ test_that("#459 apply a hierarchical dictionary to a dfm", {
     expect_equal(
         as.matrix(dfm_lookup(testdfm, dict, valuetype = "fixed", levels = 1:2)),
         matrix(c(1, 1, 2, 0, 0, 0, 1, 1), ncol = 4, 
-               dimnames = list(docs = c("d1", "d2"), features = c("geo.Countries", "geo.oceans", "other.gameconsoles", "other.swords")))
+               dimnames = list(c("d1", "d2"), c("geo.Countries", "geo.oceans", "other.gameconsoles", "other.swords")))
     )
 
 
     expect_equal(
         as.matrix(dfm_lookup(testdfm, dict, valuetype = "fixed", levels = 2)),
         matrix(c(1, 1, 2, 0, 0, 0, 1, 1), ncol = 4, 
-               dimnames = list(docs = c("d1", "d2"), features = c("Countries", "oceans", "gameconsoles", "swords")))
+               dimnames = list(c("d1", "d2"), c("Countries", "oceans", "gameconsoles", "swords")))
     )
 
 })
@@ -81,3 +81,27 @@ test_that("dfm_lookup raises error when dictionary has multi-word entries", {
                  "dfm_lookup not currently implemented for .* multi-word dictionary values")
 })
 
+test_that("dfm_lookup works with tokens created by kwic, issue #697", {
+    toks <- as.tokens(kwic(tokens(data_corpus_inaugural[1:5]), 'america'))
+    dict <- dictionary(list(awords = "a*",
+                            bwords = "b*",
+                            cwords = "c*"))
+    testdfm <- dfm(toks)
+    expect_equal(featnames(dfm_lookup(testdfm, dictionary = dict)),
+                 c("awords", "bwords", "cwords"))
+})
+
+test_that("dfm_lookup works with multi-word keys, issue #704", {
+    
+    dict <- dictionary(list('en'=list('foreign policy' = 'foreign', 'domestic politics' = 'domestic')))
+    testdfm <- dfm(data_corpus_inaugural[1:5])
+    expect_equal(featnames(dfm_lookup(testdfm, dict)),
+                 c("en.foreign policy", "en.domestic politics"))
+    
+})
+
+test_that("dfm_lookup return dfm even if no matches, issue #704", {
+    dict <- dictionary(list('en'=list('foreign policy' = 'aaaaa', 'domestic politics' = 'bbbbb')))
+    testdfm <- dfm(data_corpus_inaugural[1:5])
+    expect_true(is.dfm(dfm_lookup(testdfm, dict)))
+})

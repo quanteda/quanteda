@@ -28,11 +28,11 @@ View.default <- function(x, title) {
 #' View(dfm(data_char_ukimmig2010))
 #' }
 View.kwic <- function(x, title) {
-    if ("DT" %in% installed.packages()[, "Package"]) {
+    if (requireNamespace("DT")) {
         DT::datatable(x, options = list(pageLength = 20), rownames = FALSE,
                       class = "display",
                       colnames = c("document", "position", "pre", "keyword", "post"))    
-    } else if ("xtable" %in% installed.packages()[, "Package"]) {
+    } else if (requireNamespace("xtable")) {
         filename <- tempfile(, fileext = ".html")
         temp_xtable <- xtable::xtable(x)
         print(temp_xtable, type = "html", sanitize.text.function = identity, file = filename,
