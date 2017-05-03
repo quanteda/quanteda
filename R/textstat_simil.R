@@ -50,8 +50,9 @@
 #' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 #' 
 #' # compute some term similarities
-#' (s2 <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
-#'                       margin = "features"))
+#' s2 <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
+#'                       margin = "features")
+#' head(as.matrix(s2), 10)
 #' as.list(s2, n = 8)
 #' 
 textstat_simil <- function(x, selection = NULL,
