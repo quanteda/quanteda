@@ -150,8 +150,8 @@ textstat_readability.character <- function(x,
 
     if (!missing(min_sentence_length) | !missing(max_sentence_length)) {
         x <- char_trim(x, 'sentences',
-                       min_ntok = min_sentence_length,
-                       max_ntok = max_sentence_length)
+                       min_ntoken = min_sentence_length,
+                       max_ntoken = max_sentence_length)
     }
     
     # get sentence lengths - BEFORE lower-casing
