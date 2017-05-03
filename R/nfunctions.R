@@ -176,7 +176,7 @@ ntype.corpus <- function(x, ...) {
 #' @export
 ntype.dfm <- function(x, ...) {
     ## only returns total NON-ZERO COUNT types
-    sum(colSums(x) > 0)
+    rowSums(x > 0)
 }
 
 #' @noRd
