@@ -162,6 +162,7 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
 
     # return a data.frame of the measures
     results <- as.data.frame(results)
+    if (nrow(results) == 1) drop = FALSE
     results <- results[, measure, drop = drop]
     if (!is.vector(results) & !("all" %in% measure)) {
         row.names(results) <- docnames(x)
