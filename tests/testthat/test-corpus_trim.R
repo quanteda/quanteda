@@ -24,6 +24,7 @@ test_that("corpus_trim works", {
 })
 
 test_that("corpus_trim returns empty corpus when appropriate", {
+    mycorp <- corpus(txt, docvars = data.frame(serial = 1:3))
     tmp <- corpus_trim(mycorp, 'documents', min_ntoken = 50)
     expect_equal(ndoc(tmp), 0)
     expect_is(tmp, "corpus")
