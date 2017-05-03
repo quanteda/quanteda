@@ -68,7 +68,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
         if (method == "binary") method = "jaccard"
         temp <- get(paste0(method, "_sparse"))(x, y, margin = m)
     } else {
-        stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
+        stop(method, " is not implemented; consider trying proxy::dist().")
     }
     
     if (!is.null(selection)) {

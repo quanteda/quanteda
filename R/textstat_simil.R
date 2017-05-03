@@ -52,7 +52,7 @@
 #' # compute some term similarities
 #' (s2 <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
 #'                       margin = "features"))
-#' as.list(s2)
+#' as.list(s2, n = 8)
 #' 
 textstat_simil <- function(x, selection = NULL,
                            margin = c("documents", "features"),
@@ -93,7 +93,7 @@ textstat_simil.dfm <- function(x, selection = NULL,
         if (method == "simple matching") method <- "smc"
         temp <- get(paste0(method, "_sparse"))(x, y, margin = ifelse(margin == "documents", 1, 2))
     } else {
-        stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
+        stop(method, " is not implemented; consider trying proxy::simil().")
     }
     
     # convert NaNs to NA
