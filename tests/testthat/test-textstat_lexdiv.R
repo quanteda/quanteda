@@ -64,3 +64,12 @@ test_that("textstat_lexdiv Maas works correct", {
         round(textstat_lexdiv(mydfm, "Maas")$Maas[1], 6)
     )
 })
+
+test_that("textstat_lexdiv works with a single document dfm (#706)", {
+    mytxt <- "one one two one one two one"
+    mydfm <- dfm(mytxt)
+    expect_equal(
+        round(textstat_lexdiv(mydfm, c("TTR", "C")), 3),
+        data.frame(TTR = 0.286, C = 0.356, row.names = "text1")
+    )
+})
