@@ -227,19 +227,17 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     time_start <- proc.time()
     
     # Split x into smaller blocks to reducre peak memory consumption
-    blocks <- split(x, ceiling(seq_along(x) / 10000))
-    result_blocks <- list()
-    for (i in seq_along(blocks)) {
+    x <- split(x, ceiling(seq_along(x) / 10000))
+    for (i in seq_along(x)) {
         
-        if (verbose) catm("...tokenizing", i, "of" , length(blocks), "blocks\n")
-        
+        if (verbose) catm("...tokenizing", i, "of" , length(x), "blocks\n")
         if (what %in% c("word", "fastestword", "fasterword")) {
-            result_temp <- tokens_word(blocks[[i]], what, remove_numbers, remove_punct, remove_symbols, 
-                                       remove_separators, remove_twitter, remove_hyphens, remove_url, verbose)
+            temp <- tokens_word(x[[i]], what, remove_numbers, remove_punct, remove_symbols, 
+                                  remove_separators, remove_twitter, remove_hyphens, remove_url, verbose)
         } else if (what == "character") {
-            result_temp <- tokens_character(blocks[[i]],remove_punct, remove_symbols, remove_separators, verbose)
+            temp <- tokens_character(x[[i]],remove_punct, remove_symbols, remove_separators, verbose)
         } else if (what == "sentence") {
-            result_temp <- tokens_sentence(blocks[[i]], verbose)
+            temp <- tokens_sentence(x[[i]], verbose)
         } else {
             stop(what, " not implemented in tokens().")
         }
@@ -248,22 +246,22 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         if (hash == TRUE) {
             if (verbose) catm("...serializing tokens ")
             if (i == 1) {
-                result_blocks[[i]] <- tokens_hash(result_temp)
+                x[[i]] <- tokens_hash(temp)
             } else {
-                result_blocks[[i]] <- tokens_hash(result_temp, attr(result_blocks[[i - 1]], 'types'))
+                x[[i]] <- tokens_hash(temp, attr(x[[i - 1]], 'types'))
             }
-            if (verbose) catm(length(attr(result_blocks[[i]], 'types')), 'unique types\n')
+            if (verbose) catm(length(attr(x[[i]], 'types')), 'unique types\n')
         } else {
-            result_blocks[[i]] <- result_temp
+            x[[i]] <- temp
         }
     }
     
     # Put all the blocked results togather
-    result <- unlist(result_blocks, recursive = FALSE)
+    result <- unlist(x, recursive = FALSE)
     
     if (hash == TRUE){
         class(result) <- c("tokens", "tokenizedTexts")
-        types(result) <- attr(result_blocks[[length(result_blocks)]], 'types') # last block has all the types
+        types(result) <- attr(x[[length(x)]], 'types') # last block has all the types
     } else {
         class(result) <- c("tokenizedTexts", "list")
     }  
@@ -276,7 +274,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n")
     }
     
-    names(result) <- names_org # stri_* destroys names, so put them back
+    names(result) <- names_org
     attr(result, "what") <- what
     attr(result, "ngrams") <- ngrams
     attr(result, "concatenator") <- concatenator
@@ -284,11 +282,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     
     # issue #607: remove @ # only if not part of Twitter names
     if (remove_punct & !remove_twitter) {
-        if (hash) {
-            result <- tokens_remove(result, "^#+$|^@+$", valuetype = "regex")
-        } else {
-            result <- suppressWarnings(removeFeatures(result, "^#+$|^@+$", valuetype = "regex"))
-        }
+        result <- tokens_remove(result, "^#+$|^@+$", valuetype = "regex")
     }
     
     return(result)
