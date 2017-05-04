@@ -321,3 +321,16 @@ test_that("docvars are erased for tokens added", {
         data.frame()
     )
 })
+
+test_that("what = character works with @ and #, issue #637", {
+    
+    expect_equal(as.list(tokens("This: is, a @test! #tag", what = "character", remove_punct = FALSE)),
+                 list(c("T", "h", "i", "s", ":", "i", "s", ",", 
+                        "a", "@", "t", "e", "s", "t", "!", "#", "t", "a", "g")))
+                      
+    expect_equal(as.list(tokens("This: is, a @test! #tag", what = "character", remove_punct = TRUE)),
+                 list(c("T", "h", "i", "s", "i", "s", 
+                        "a", "t", "e", "s", "t", "t", "a", "g")))
+
+})
+    
