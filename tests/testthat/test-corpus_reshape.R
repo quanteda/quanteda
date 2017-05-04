@@ -6,7 +6,7 @@ test_that("corpus_reshape works for sentences", {
                        docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
                        metacorpus = list(notes = "Example showing how corpus_reshape() works."))
     mycorpus_reshaped <- corpus_reshape(mycorpus, to = "sentences")
-    expect_equal(as.character(mycorpus_reshaped)[4], c(texttwo1 = "Premiere phrase."))
+    expect_equal(as.character(mycorpus_reshaped)[4], c(texttwo.1 = "Premiere phrase."))
     expect_equal(docvars(mycorpus_reshaped, "country"), factor(c("UK", "UK", "UK", "USA", "USA")))
 })
 
@@ -21,7 +21,7 @@ No there is another."),
     mycorpus_reshaped <- corpus_reshape(mycorpus, to = "paragraphs")
     
     expect_equal(as.character(mycorpus_reshaped)[4],
-                 c(d22 = "No there is another."))
+                 c(d2.2 = "No there is another."))
 })
 
 test_that("corpus_reshape works to sentences and back", {
@@ -43,6 +43,20 @@ test_that("corpus_reshape works to paragraphs and back", {
                        docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
                        metacorpus = list(notes = "Example showing how corpus_reshape() works."))
     mycorpus_reshaped <- corpus_reshape(mycorpus, to = "paragraphs")
+    mycorpus_unshaped <- corpus_reshape(mycorpus_reshaped, to = "documents")
+    expect_equal(texts(mycorpus),
+                 texts(mycorpus_unshaped))
+    expect_equal(docvars(mycorpus),
+                 docvars(mycorpus_unshaped))
+})
+
+test_that("corpus_reshape works with empty documents, issue #670", {
+    mycorpus <- corpus(c(textone = "This is a paragraph.\n\nAnother paragraph.\n\nYet paragraph.", 
+                         texttwo = "Premiere phrase.\n\nDeuxieme phrase.",
+                         textthree = ""), 
+                       docvars = data.frame(country=c("UK", "USA", "Japan"), year=c(1990, 2000, 2010)),
+                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+    mycorpus_reshaped <- corpus_reshape(mycorpus, to = "paragraphs", omit_empty = FALSE)
     mycorpus_unshaped <- corpus_reshape(mycorpus_reshaped, to = "documents")
     expect_equal(texts(mycorpus),
                  texts(mycorpus_unshaped))

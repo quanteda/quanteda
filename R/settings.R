@@ -8,9 +8,8 @@ SETTINGS_OPTIONS <- c("stopwords",
                       "delimiter_sentence",
                       "delimiter_paragraph",
                       "clean_tolower",
-                      "clean_removeDigits",
+                      "clean_remove_digits",
                       "clean_remove_punct",
-                      "unitsoriginal",
                       "units") 
 DEFAULT_DELIM_SENTENCE <- ".!?"
 DEFAULT_DELIM_WORD <- " "
@@ -96,10 +95,9 @@ settingsInitialize <- function() {
                          delimiter_sentence=DEFAULT_DELIM_SENTENCE,
                          delimiter_paragraph=DEFAULT_DELIM_PARAGRAPH,
                          clean_tolower=TRUE,
-                         clean_removeDigits=TRUE,
+                         clean_remove_digits=TRUE,
                          clean_remove_punct=TRUE,
-                         units="documents",
-                         unitsoriginal="documents")
+                         units="documents")
     class(tempsettings) <- c("settings", class(tempsettings))
     tempsettings
 }
@@ -141,8 +139,8 @@ settingsGet <- function(corp, match.call.list) {
         assign("stem", settings(corp, "stem"), callingenv)   
     if (is.null(match.call.list$stopwords))
         assign("stopwords", settings(corp, "stopwords"), callingenv)
-    if (is.null(match.call.list$removeDigits))
-        assign("removeDigits", settings(corp, "clean_removeDigits"), callingenv)
+    if (is.null(match.call.list$remove_digits))
+        assign("remove_digits", settings(corp, "clean_remove_digits"), callingenv)
     if (is.null(match.call.list$remove_punct))
         assign("remove_punct", settings(corp, "clean_remove_punct"), callingenv)
     if (is.null(match.call.list$lower))
@@ -150,8 +148,5 @@ settingsGet <- function(corp, match.call.list) {
     if (is.null(match.call.list$collocations))
         assign("collocations", settings(corp, "collocations"), callingenv)
 }
-    
-# clean=TRUE,
-# removeDigits=TRUE, remove_punct=TRUE, lower=TRUE,                          
-# addto=NULL
+
 

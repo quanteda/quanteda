@@ -1,5 +1,5 @@
 
-setClassUnion("character/NULL", c("character", "NULL"))
+setClassUnion("character_NULL", c("character", "NULL"))
 
 #' @rdname dictionary-class
 #' @export
@@ -12,7 +12,7 @@ setClassUnion("character/NULL", c("character", "NULL"))
 #' @slot format dictionary format (if imported)
 #' @slot file file from which a dictionary was read (if imported)
 setClass("dictionary", contains = c("list"),
-         slots = c(concatenator = "character/NULL", format = "character/NULL", file = "character/NULL"),
+         slots = c(concatenator = "character_NULL", format = "character_NULL", file = "character_NULL"),
          prototype = prototype(concatenator = " ", format = NULL, file = NULL))
 
 setValidity("dictionary", function(object) {
