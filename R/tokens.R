@@ -226,7 +226,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     
     if (remove_twitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
         if (verbose) catm("...preserving Twitter characters (#, @)\n")
-        x <- stringi::stri_replace_all_fixed(x, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
+        x <- stringi::stri_replace_all_fixed(x, c("#", "@"), c("\UE001", "\UE002"), vectorize_all = FALSE)
     }
     
     time_start <- proc.time()
@@ -251,7 +251,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         
         if (remove_twitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
             if (verbose) catm("...replacing Twitter characters (#, @)\n")
-            result_temp <- lapply(result_temp, stringi::stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
+            result_temp <- lapply(result_temp, stringi::stri_replace_all_fixed, c("\UE001", "\UE002"), c("#", "@"), vectorize_all = FALSE)
         }
         
         # Hash the tokens
