@@ -233,17 +233,17 @@ segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
     } else if (what == "sentences") {
         temp <- tokens_sentence(x, ...)
     } else if (what == 'tags') {
-        temp <- stri_replace_all_regex(x, delimiter, "\UF0000$0") # insert control character
-        temp <- stri_split_fixed(temp, pattern = "\UF0000", omit_empty = omit_empty)
+        temp <- stri_replace_all_regex(x, delimiter, "\UE000$0") # insert PUA character
+        temp <- stri_split_fixed(temp, pattern = "\UE000", omit_empty = omit_empty)
         # remove elements to be empty
         temp <- lapply(temp, function(x) x[stri_replace_first_regex(x, '^\\s+$', '') != ''])
     } else {
         if (valuetype == "fixed") {
-            temp <- stri_replace_all_fixed(x, delimiter, paste0(delimiter, "\UF0000", collapse = ''))
-            temp <- stri_split_fixed(x, pattern = "\UF0000", omit_empty = omit_empty)
+            temp <- stri_replace_all_fixed(x, delimiter, paste0(delimiter, "\UE000", collapse = ''))
+            temp <- stri_split_fixed(x, pattern = "\UE000", omit_empty = omit_empty)
         } else {
-            temp <- stri_replace_all_regex(x, delimiter, "$0\UF0000")
-            temp <- stri_split_fixed(temp, pattern = "\UF0000", omit_empty = omit_empty)
+            temp <- stri_replace_all_regex(x, delimiter, "$0\UE000")
+            temp <- stri_split_fixed(temp, pattern = "\UE000", omit_empty = omit_empty)
         }
     }
 
