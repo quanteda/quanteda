@@ -216,18 +216,13 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         !all(names(added_args) %in% paste0("remove", c("Numbers", "Punct", "Symbols", "Separators", "Twitter", "Hyphens", "URL", "simplify")))) {
         warning("Argument", ifelse(length(added_args) > 1, "s ", " "), names(added_args), " not used.", sep = "")
     }
-
+    
     # deprecate "simplify"
     if ("simplify" %in% names(added_args)) warning("simplify no longer available")
-
+    
     if (!is.integer(ngrams)) ngrams <- as.integer(ngrams)
     
     if (verbose) catm("Starting tokenization...\n")
-    
-    if (remove_twitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
-        if (verbose) catm("...preserving Twitter characters (#, @)\n")
-        x <- stringi::stri_replace_all_fixed(x, c("#", "@"), c("\UE001", "\UE002"), vectorize_all = FALSE)
-    }
     
     time_start <- proc.time()
     
@@ -247,11 +242,6 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
             result_temp <- tokens_sentence(blocks[[i]], verbose)
         } else {
             stop(what, " not implemented in tokens().")
-        }
-        
-        if (remove_twitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
-            if (verbose) catm("...replacing Twitter characters (#, @)\n")
-            result_temp <- lapply(result_temp, stringi::stri_replace_all_fixed, c("\UE001", "\UE002"), c("#", "@"), vectorize_all = FALSE)
         }
         
         # Hash the tokens
@@ -291,7 +281,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     attr(result, "ngrams") <- ngrams
     attr(result, "concatenator") <- concatenator
     attr(result, 'padding') <- FALSE
-
+    
     # issue #607: remove @ # only if not part of Twitter names
     if (remove_punct & !remove_twitter) {
         if (hash) {
@@ -300,7 +290,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
             result <- suppressWarnings(removeFeatures(result, "^#+$|^@+$", valuetype = "regex"))
         }
     }
-
+    
     return(result)
 }
 
@@ -426,7 +416,7 @@ tokens_hash <- function(x, types_reserved, ...) {
     
     # Restore and add additional attributes
     attributes(tokens) <- attributes(x)
-    attr(tokens, "types") <- stringi::stri_trans_nfc(types) # unicode normalization
+    attr(tokens, "types") <- stri_trans_nfc(types) # unicode normalization
     class(tokens) <- c("tokens", class(x))
     return(tokens)
 }
@@ -562,19 +552,32 @@ tokens_word <- function(txt,
         
         if (verbose & remove_punct==TRUE) catm(", ", what, " tokenizing", sep="")
         if (what=="fastestword")
-            tok <- stringi::stri_split_fixed(txt, " ")
+            tok <- stri_split_fixed(txt, " ")
         else if (what=="fasterword")
-            tok <- stringi::stri_split_charclass(txt, "\\p{WHITE_SPACE}")
-
+            tok <- stri_split_charclass(txt, "\\p{WHITE_SPACE}")
+        
     } else {
-        tok <- stringi::stri_split_boundaries(txt, 
-                                              type = "word", 
-                                              skip_word_none = (remove_punct | remove_symbols), # this is what obliterates currency symbols, Twitter tags, and URLs
-                                              skip_word_number = remove_numbers) # but does not remove 4u, 2day, etc.
+        
+        if (remove_twitter == FALSE) {
+            if (verbose) catm("...preserving Twitter characters (#, @)\n")
+            txt <- stri_replace_all_fixed(txt, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
+        }
+        
+        tok <- stri_split_boundaries(txt, 
+                                     type = "word", 
+                                     skip_word_none = (remove_punct | remove_symbols), # this is what obliterates currency symbols, Twitter tags, and URLs
+                                     skip_word_number = remove_numbers) # but does not remove 4u, 2day, etc.
+        
         # Remove separators if option is TRUE
         if (remove_separators & !remove_punct) {
             tok <- lapply(tok, function(x) x[!stri_detect_regex(x, "^\\s$")])
         }
+        
+        if (remove_twitter == FALSE) {
+            if (verbose) catm("...replacing Twitter characters (#, @)\n")
+            tok <- lapply(tok, stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
+        }
+        
     }
     
     # Put hyphens back the fast way
@@ -595,15 +598,15 @@ tokens_sentence <- function(txt, verbose = FALSE){
     txt <- stri_replace_all_regex(txt, findregex, "$1_pd_", vectorize_all = FALSE)
     
     ## Remove newline chars 
-    txt <- lapply(txt, stringi::stri_replace_all_fixed, "\n", " ")
+    txt <- lapply(txt,stri_replace_all_fixed, "\n", " ")
     
     ## Perform the tokenization
-    tok <- stringi::stri_split_boundaries(txt, type = "sentence")
+    tok <- stri_split_boundaries(txt, type = "sentence")
     
     ## Cleaning
     tok <- lapply(tok, function(x){
         x <- x[which(x != "")] # remove any "sentences" that were completely blanked out
-        x <- stringi::stri_trim_right(x) # trim trailing spaces
+        x <- stri_trim_right(x) # trim trailing spaces
         x <- stri_replace_all_fixed(x, "_pd_", ".") # replace the non-full-stop "." characters
         return(x)
     } )
@@ -618,11 +621,11 @@ tokens_character <- function(txt,
                              verbose = FALSE){
     
     # note: does not implement remove_numbers
-    tok <- stringi::stri_split_boundaries(txt, type = "character")
+    tok <- stri_split_boundaries(txt, type = "character")
     if (remove_punct) {
         if (verbose) catm("...removing punctuation.\n")
         tok <- lapply(tok, function(x){
-            x <- stringi::stri_replace_all_charclass(x, "[\\p{P}]", "")
+            x <- stri_replace_all_charclass(x, "[\\p{P}]", "")
             x <- x[which(x != "")]
             return(x)    
         })
@@ -630,7 +633,7 @@ tokens_character <- function(txt,
     if (remove_symbols) {
         if (verbose) catm("...removing symbols.\n")
         tok <- lapply(tok, function(x){
-            x <- stringi::stri_replace_all_charclass(x, "[\\p{S}]", "")
+            x <- stri_replace_all_charclass(x, "[\\p{S}]", "")
             x <- x[which(x != "")]
             return(x)    
         })
@@ -638,7 +641,7 @@ tokens_character <- function(txt,
     if (remove_separators) {
         if (verbose) catm("...removing separators.\n")
         tok <- lapply(tok, function(x){
-            x <- stringi::stri_subset_regex(x, "^\\p{Z}$", negate = TRUE)
+            x <- stri_subset_regex(x, "^\\p{Z}$", negate = TRUE)
             x <- x[which(x != "")]
             return(x)    
         })

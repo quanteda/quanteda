@@ -251,7 +251,7 @@ test_that("remove_punct and remove_twitter interact correctly, #607", {
     expect_equal(
         as.character(tokens(txt, what = "word", remove_punct = TRUE, remove_twitter = TRUE)),
         c("they", "stretched", "in", "a", "never-ending", "line")
-    )    
+    )
     expect_equal(
         as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = FALSE)),
         c("they", ":", "#stretched", ",", "@", "@@", "in", ",", ",", "a", "#", "##", "never", "-", "ending", "@line", ".")
