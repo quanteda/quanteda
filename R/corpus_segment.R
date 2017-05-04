@@ -223,7 +223,7 @@ segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
             regex <- escape_regex(delimiter)
             regex <- stri_replace_all_fixed(regex, '*', '(\\S*)')
             regex <- stri_replace_all_fixed(regex, '?', '(\\S)')
-            delimiter <- paste0(regex, collapse = '|')
+            delimiter <- stri_c(regex, collapse = '|')
             valuetype <- "regex"
         }
     }
@@ -239,7 +239,7 @@ segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
         temp <- lapply(temp, function(x) x[stri_replace_first_regex(x, '^\\s+$', '') != ''])
     } else {
         if (valuetype == "fixed") {
-            temp <- stri_replace_all_fixed(x, delimiter, paste0(delimiter, "\UE000", collapse = ''))
+            temp <- stri_replace_all_fixed(x, delimiter, stri_c(delimiter, "\UE000"))
             temp <- stri_split_fixed(x, pattern = "\UE000", omit_empty = omit_empty)
         } else {
             temp <- stri_replace_all_regex(x, delimiter, "$0\UE000")
@@ -267,7 +267,7 @@ segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
 
     if (!is.null(names_org)) {
         # to make names doc1.1, doc1.2, doc2.1, ...
-        names(result) <- paste0(rep(names_org, n_segment), ".", id_segment)
+        names(result) <- stri_c(rep(names_org, n_segment), ".", id_segment)
     }
     
     return(result)
