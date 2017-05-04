@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>remove sentences based on their token lengths or a pattern match — corpus_trimsentences • quanteda</title>
+<title>remove sentences based on their token lengths or a pattern match — corpus_trim • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -80,26 +80,25 @@
 specified length.</p>
     
 
-    <pre><span class='fu'>corpus_trimsentences</span>(<span class='no'>x</span>, <span class='kw'>min_length</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_length</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
-  <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>return_tokens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre><span class='fu'>corpus_trim</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>),
+  <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_ntoken</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>char_trimsentences</span>(<span class='no'>x</span>, <span class='kw'>min_length</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_length</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
-  <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>char_trim</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>),
+  <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_ntoken</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
       <dd><a href='corpus.html'>corpus</a> or character object whose sentences will be selected.</dd>
-      <dt>min_length, max_length</dt>
+      <dt>what</dt>
+      <dd>units of triming, <code>&quot;sentences&quot;</code> or <code>&quot;paragraphs&quot;</code>, or
+<code>&quot;documents&quot;</code></dd>
+      <dt>min_ntoken, max_ntoken</dt>
       <dd>minimum and maximum lengths in word tokens 
 (excluding punctuation)</dd>
       <dt>exclude_pattern</dt>
       <dd>a <span class="pkg">stringi</span> regular expression whose match (at the
 sentence level) will be used to exclude sentences</dd>
-      <dt>return_tokens</dt>
-      <dd>if <code>TRUE</code>, return tokens object of sentences after
-trimming, otherwise return the input object type with the trimmed sentences
-removed.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -108,11 +107,6 @@ removed.</dd>
   a tokenized set of sentences if .  If the input was a corpus, then the all
   docvars and metadata are preserved.  For documents whose sentences have
   been removed entirely, a null string (<code>&quot;&quot;</code>) will be returned.</p>
-    
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>This function has been superceded by <code><a href='corpus_trim.html'>corpus_trim</a></code>; use that
-  function instead.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -127,29 +121,10 @@ removed.</dd>
 #&gt;                                                                      text3 
 #&gt;   &quot;Very long sentence, with multiple parts, separated by commas.  PAGE 3.&quot; </div><div class='input'>
 <span class='co'># exclude sentences shorter than 3 tokens</span>
-<span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_trimsentences</span>(<span class='no'>mycorp</span>, <span class='kw'>min_length</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='output co'>#&gt;                                                           text1 
-#&gt;              &quot;This is a single sentence.  Three word sentence.&quot; 
-#&gt;                                                           text3 
-#&gt; &quot;Very long sentence, with multiple parts, separated by commas.&quot; </div><div class='input'><span class='co'># exclude sentences that start with "PAGE &lt;digit(s)&gt;"</span>
-<span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_trimsentences</span>(<span class='no'>mycorp</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='st'>"^PAGE \\d+"</span>))</div><div class='output co'>#&gt;                                                               text1 
-#&gt; &quot;This is a single sentence.  Short sentence.  Three word sentence.&quot; 
-#&gt;                                                               text2 
-#&gt;                                             &quot;Very short!  Shorter.&quot; 
-#&gt;                                                               text3 
-#&gt;     &quot;Very long sentence, with multiple parts, separated by commas.&quot; </div><div class='input'>
-<span class='co'># on a character</span>
-<span class='fu'>char_trimsentences</span>(<span class='no'>txt</span>, <span class='kw'>min_length</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;                                                           text1 
-#&gt;              &quot;This is a single sentence.  Three word sentence.&quot; 
-#&gt;                                                           text3 
-#&gt; &quot;Very long sentence, with multiple parts, separated by commas.&quot; </div><div class='input'><span class='fu'>char_trimsentences</span>(<span class='no'>txt</span>, <span class='kw'>min_length</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;                                                           text1 
-#&gt;              &quot;This is a single sentence.  Three word sentence.&quot; 
-#&gt;                                                           text3 
-#&gt; &quot;Very long sentence, with multiple parts, separated by commas.&quot; </div><div class='input'><span class='fu'>char_trimsentences</span>(<span class='no'>txt</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='st'>"sentence\\."</span>)</div><div class='output co'>#&gt;                                                                    text1 
-#&gt;                                                                &quot;PAGE 1.&quot; 
-#&gt;                                                                    text2 
-#&gt;                                         &quot;PAGE 2.  Very short!  Shorter.&quot; 
-#&gt;                                                                    text3 
-#&gt; &quot;Very long sentence, with multiple parts, separated by commas.  PAGE 3.&quot; </div></pre>
+<span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_trim</span>(<span class='no'>mycorp</span>, <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='output co'>#&gt; <span class='error'>Error in texts(corpus_trim(mycorp, min_ntoken = 3)): could not find function &quot;corpus_trim&quot;</span></div><div class='input'><span class='co'># exclude sentences that start with "PAGE &lt;digit(s)&gt;"</span>
+<span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_trim</span>(<span class='no'>mycorp</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='st'>"^PAGE \\d+"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in texts(corpus_trim(mycorp, exclude_pattern = &quot;^PAGE \\d+&quot;)): could not find function &quot;corpus_trim&quot;</span></div><div class='input'>
+<span class='co'># trimming character objects</span>
+<span class='fu'>char_trim</span>(<span class='no'>txt</span>, <span class='st'>"sentences"</span>, <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): could not find function &quot;char_trim&quot;</span></div><div class='input'><span class='fu'>char_trim</span>(<span class='no'>txt</span>, <span class='st'>"sentences"</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='st'>"sentence\\."</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): could not find function &quot;char_trim&quot;</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -157,8 +132,6 @@ removed.</dd>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#note">Note</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

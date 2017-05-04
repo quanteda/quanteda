@@ -195,12 +195,12 @@ require the texts to be extracted.</dd>
 #&gt;        Labour   296    703        29       Labour
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Wed Apr 26 10:41:27 2017
+#&gt; Created: Thu May  4 08:36:48 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'>
 <span class='fu'>corpus</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>data_corpus_irishbudget2010</span>))</div><div class='output co'>#&gt; Corpus consisting of 14 documents and 0 docvars.</div><div class='input'>
 <span class='co'># import a tm VCorpus</span>
-<span class='kw'>if</span> (<span class='st'>"tm"</span> <span class='kw'>%in%</span> <span class='fu'>rownames</span>(<span class='fu'>installed.packages</span>())) {
+<span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"tm"</span>)) {
     <span class='fu'>data</span>(<span class='no'>crude</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)    <span class='co'># load in a tm example VCorpus</span>
     <span class='no'>mytmCorpus</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus</span>(<span class='no'>crude</span>)
     <span class='fu'>summary</span>(<span class='no'>mytmCorpus</span>, <span class='kw'>showmeta</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
@@ -341,7 +341,7 @@ require the texts to be extracted.</dd>
 #&gt;       &lt;NA&gt;
 #&gt; 
 #&gt; Source:  Converted from tm VCorpus &#39;crude&#39;
-#&gt; Created: Wed Apr 26 10:41:27 2017
+#&gt; Created: Thu May  4 08:36:48 2017
 #&gt; Notes:   
 #&gt; 
 #&gt; Corpus consisting of 50 documents, showing 5 documents.
@@ -372,21 +372,21 @@ require the texts to be extracted.</dd>
 #&gt;     YES      TRAIN TRAINING-SET  5611    usa   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt;
 #&gt; 
 #&gt; Source:  Converted from tm VCorpus &#39;acq&#39;
-#&gt; Created: Wed Apr 26 10:41:27 2017
+#&gt; Created: Thu May  4 08:36:48 2017
 #&gt; Notes:   
 #&gt; 
 #&gt; Corpus consisting of 9 documents.
 #&gt; 
 #&gt;          Text Types Tokens Sentences author       datetimestamp description
-#&gt;           BNP  1126   3330        88   &lt;NA&gt; 2017-04-26 09:41:27        &lt;NA&gt;
-#&gt;     Coalition   144    268         4   &lt;NA&gt; 2017-04-26 09:41:27        &lt;NA&gt;
-#&gt;  Conservative   252    503        15   &lt;NA&gt; 2017-04-26 09:41:27        &lt;NA&gt;
-#&gt;        Greens   325    687        21   &lt;NA&gt; 2017-04-26 09:41:27        &lt;NA&gt;
-#&gt;        Labour   296    703        29   &lt;NA&gt; 2017-04-26 09:41:27        &lt;NA&gt;
-#&gt;        LibDem   257    499        14   &lt;NA&gt; 2017-04-26 09:41:27        &lt;NA&gt;
-#&gt;            PC    80    118         5   &lt;NA&gt; 2017-04-26 09:41:27        &lt;NA&gt;
-#&gt;           SNP    90    136         4   &lt;NA&gt; 2017-04-26 09:41:27        &lt;NA&gt;
-#&gt;          UKIP   346    739        27   &lt;NA&gt; 2017-04-26 09:41:27        &lt;NA&gt;
+#&gt;           BNP  1126   3330        88   &lt;NA&gt; 2017-05-04 07:36:48        &lt;NA&gt;
+#&gt;     Coalition   144    268         4   &lt;NA&gt; 2017-05-04 07:36:48        &lt;NA&gt;
+#&gt;  Conservative   252    503        15   &lt;NA&gt; 2017-05-04 07:36:48        &lt;NA&gt;
+#&gt;        Greens   325    687        21   &lt;NA&gt; 2017-05-04 07:36:48        &lt;NA&gt;
+#&gt;        Labour   296    703        29   &lt;NA&gt; 2017-05-04 07:36:48        &lt;NA&gt;
+#&gt;        LibDem   257    499        14   &lt;NA&gt; 2017-05-04 07:36:48        &lt;NA&gt;
+#&gt;            PC    80    118         5   &lt;NA&gt; 2017-05-04 07:36:48        &lt;NA&gt;
+#&gt;           SNP    90    136         4   &lt;NA&gt; 2017-05-04 07:36:48        &lt;NA&gt;
+#&gt;          UKIP   346    739        27   &lt;NA&gt; 2017-05-04 07:36:48        &lt;NA&gt;
 #&gt;  heading id language origin
 #&gt;     &lt;NA&gt;  1       en   &lt;NA&gt;
 #&gt;     &lt;NA&gt;  2       en   &lt;NA&gt;
@@ -399,7 +399,7 @@ require the texts to be extracted.</dd>
 #&gt;     &lt;NA&gt;  9       en   &lt;NA&gt;
 #&gt; 
 #&gt; Source:  Converted from tm VCorpus &#39;tmCorp&#39;
-#&gt; Created: Wed Apr 26 10:41:27 2017
+#&gt; Created: Thu May  4 08:36:48 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'>
 <span class='co'># construct a corpus from a data.frame</span>
@@ -426,7 +426,7 @@ require the texts to be extracted.</dd>
 #&gt;  fromDf_6     6      6         1             c         6
 #&gt; 
 #&gt; Source:  From a data.frame called mydf.
-#&gt; Created: Wed Apr 26 10:41:27 2017
+#&gt; Created: Thu May  4 08:36:48 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'>
 <span class='co'># construct a corpus from a kwic object</span>
@@ -464,7 +464,7 @@ require the texts to be extracted.</dd>
 #&gt;  text14.post     5      5         1 1953-Eisenhower 1226 1226 southern    post
 #&gt; 
 #&gt; Source:  Corpus created from kwic(x, keywords = &quot;southern&quot;)
-#&gt; Created: Wed Apr 26 10:41:28 2017
+#&gt; Created: Thu May  4 08:36:49 2017
 #&gt; Notes:   
 #&gt; </div></pre>
   </div>

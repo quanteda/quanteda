@@ -93,21 +93,21 @@ metacorpus(data_corpus_inaugural)
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!", 
          text2 = "@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
-tokenize(txt)
-tokenize(txt, remove_numbers = TRUE, remove_punct = TRUE)
-tokenize(txt, remove_numbers = FALSE, remove_punct = TRUE)
-tokenize(txt, remove_numbers = TRUE, remove_punct = FALSE)
-tokenize(txt, remove_numbers = FALSE, remove_punct = FALSE)
-tokenize(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
+tokens(txt)
+tokens(txt, remove_numbers = TRUE, remove_punct = TRUE)
+tokens(txt, remove_numbers = FALSE, remove_punct = TRUE)
+tokens(txt, remove_numbers = TRUE, remove_punct = FALSE)
+tokens(txt, remove_numbers = FALSE, remove_punct = FALSE)
+tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-tokenize("Great website: http://textasdata.com?page=123.", what = "character")
-tokenize("Great website: http://textasdata.com?page=123.", what = "character", 
+tokens("Great website: http://textasdata.com?page=123.", what = "character")
+tokens("Great website: http://textasdata.com?page=123.", what = "character", 
          remove_separators = FALSE)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # sentence level         
-tokenize(c("Kurt Vongeut said; only assholes use semi-colons.", 
+tokens(c("Kurt Vongeut said; only assholes use semi-colons.", 
            "Today is Thursday in Canberra:  It is yesterday in London.", 
            "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"), 
           what = "sentence")
@@ -136,10 +136,6 @@ mydfm
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 topfeatures(mydfm, 20)  # 20 top words
-
-## ----warning = FALSE, fig.width = 7, fig.height = 7---------------------------------------------------------------------------------------------------------------------------------------------------
-set.seed(20)
-textplot_wordcloud(dfm_trim(mydfm, min_count = 6))
 
 ## ----warning=FALSE, fig.width = 7, fig.height = 7-----------------------------------------------------------------------------------------------------------------------------------------------------
 set.seed(100)
@@ -174,17 +170,19 @@ byPresMat
 presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), 
                remove = stopwords("english"),
                stem = TRUE, remove_punct = TRUE)
-obamaSimil <- textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
+obamaSimil <- textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), 
                              margin = "documents", method = "cosine")
-dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
+obamaSimil
+# dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
 
 ## ---- fig.width = 10, fig.height = 7, eval = FALSE----------------------------------------------------------------------------------------------------------------------------------------------------
-#  data(SOTUCorpus, package="quantedaData")
-#  presDfm <- dfm(corpus_subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
-#                 remove = stopwords("english"), remove_punct = TRUE)
-#  presDfm <- dfm_trim(presDfm, min_count=5, min_docfreq=3)
+#  data(data_corpus_SOTU, package="quantedaData")
+#  presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")),
+#                 verbose = FALSE, stem = TRUE, remove_punct = TRUE,
+#                 remove = c("will", stopwords("english")))
+#  presDfm <- dfm_trim(presDfm, min_count = 5, min_docfreq = 3)
 #  # hierarchical clustering - get distances on normalized dfm
-#  presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))
+#  presDistMat <- textstat_dist(dfm_weight(presDfm, "relFreq"))
 #  # hiarchical clustering the distance object
 #  presCluster <- hclust(presDistMat)
 #  # label with document names
@@ -193,24 +191,16 @@ dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
 #  plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sim <- similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features", n = 10)
-print(sim, digits = 2)
-
-## ----fig.width = 6, fig.height = 6--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# make prettier document names
-docnames(data_corpus_irishbudget2010) <- 
-    paste(docvars(data_corpus_irishbudget2010, "name"), docvars(data_corpus_irishbudget2010, "party"))
-ieDfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
-wf <- textmodel(ieDfm, model = "wordfish", dir=c(2,1))
-wca <- textmodel(ieDfm, model = "ca")
-# plot the results
-plot(wf@theta, -1*wca$rowcoord[,1], 
-     xlab="Wordfish theta-hat", ylab="CA dim 1 coordinate", pch=19)
-text(wf@theta, -1*wca$rowcoord[,1], docnames(ieDfm), cex=.8, pos=1)
-abline(lm(-1*wca$rowcoord[,1] ~ wf@theta), col="grey50", lty="dotted")
+sim <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
+as.list(sim)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-quantdfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE, 
+# make prettier document names
+ieDfm <- dfm(data_corpus_irishbudget2010)
+textmodel(ieDfm, model = "wordfish", dir=c(2,1))
+
+## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+quantdfm <- dfm(data_corpus_irishbudget2010,
                 remove = c("will", stopwords("english")))
 
 if (require(topicmodels)) {

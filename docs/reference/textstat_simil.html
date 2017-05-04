@@ -82,11 +82,11 @@ documents or features from a <code><a href='dfm.html'>dfm</a></code> and return 
 selected).</p>
     
 
-    <pre><span class='fu'>textstat_dist</span>(<span class='no'>x</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>,
-  <span class='st'>"features"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"euclidean"</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+    <pre><span class='fu'>textstat_dist</span>(<span class='no'>x</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>),
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"euclidean"</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
-<span class='fu'>textstat_simil</span>(<span class='no'>x</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>,
-  <span class='st'>"features"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"correlation"</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>textstat_simil</span>(<span class='no'>x</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>),
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"correlation"</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -96,11 +96,6 @@ selected).</p>
       <dd>character vector of document names or feature labels from
 <code>x</code>.  A <code>&quot;dist&quot;</code> object is returned if selection is <code>NULL</code>, 
 otherwise, a matrix is returned.</dd>
-      <dt>n</dt>
-      <dd>the top <code>n</code> highest-ranking items will be returned.  If n is 
-<code>NULL</code>, return all items.  Useful if the output object will be coerced
-into a list, for instance if the top <code>n</code> most similar features to a
-target feature is desired.  (See examples.)</dd>
       <dt>margin</dt>
       <dd>identifies the margin of the dfm on which similarity or 
 difference will be computed:  <code>documents</code> for documents or 
@@ -307,26 +302,29 @@ matrix is recorded</dd>
 #&gt; 2005-Bush     0.5005582  0.5689492
 #&gt; 2017-Trump    0.5389326  0.5327830</div><div class='input'>
 <span class='co'># compute some term similarities</span>
-(<span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>,
-                      <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>8</span>))</div><div class='output co'>#&gt;              fair    health    terror
-#&gt; fair    1.0000000 0.7559289 0.1543033
-#&gt; health  0.7559289 1.0000000 0.5443311
-#&gt; terror  0.1543033 0.5443311 1.0000000
-#&gt; fellow  0.4265617 0.7181848 0.6701663
-#&gt; citizen 0.6787417 0.7144508 0.4966330
-#&gt; today   0.6265515 0.8288497 0.5986661
-#&gt; celebr  0.4472136 0.6761234 0.4830459
-#&gt; mysteri 0.2672612 0.2357023 0.2886751</div><div class='input'><span class='fu'>as.list</span>(<span class='no'>s2</span>)</div><div class='output co'>#&gt; $fair
-#&gt;    health   citizen     today    celebr    fellow   mysteri    terror 
-#&gt; 0.7559289 0.6787417 0.6265515 0.4472136 0.4265617 0.2672612 0.1543033 
+<span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>,
+                      <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>)
+<span class='fu'>head</span>(<span class='fu'>as.matrix</span>(<span class='no'>s2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;               fair    health     terror
+#&gt; fair     1.0000000 0.7559289 0.15430335
+#&gt; health   0.7559289 1.0000000 0.54433105
+#&gt; terror   0.1543033 0.5443311 1.00000000
+#&gt; fellow   0.4265617 0.7181848 0.67016625
+#&gt; citizen  0.6787417 0.7144508 0.49663296
+#&gt; today    0.6265515 0.8288497 0.59866609
+#&gt; celebr   0.4472136 0.6761234 0.48304589
+#&gt; mysteri  0.2672612 0.2357023 0.28867513
+#&gt; american 0.5665941 0.7335861 0.67709711
+#&gt; renew    0.5041842 0.4850713 0.09901475</div><div class='input'><span class='fu'>as.list</span>(<span class='no'>s2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>8</span>)</div><div class='output co'>#&gt; $fair
+#&gt;   continu    purpos    travel    failur      lead     begin    courag      call 
+#&gt; 1.0000000 0.9636241 0.9561829 0.9449112 0.9166985 0.9091373 0.9091373 0.8971226 
 #&gt; 
 #&gt; $health
-#&gt;     today      fair    fellow   citizen    celebr    terror   mysteri 
-#&gt; 0.8288497 0.7559289 0.7181848 0.7144508 0.6761234 0.5443311 0.2357023 
+#&gt;       can      work     faith       see    danger   generat     stand       end 
+#&gt; 0.9950372 0.9602106 0.9578949 0.9456109 0.9428090 0.9404079 0.9315943 0.9238116 
 #&gt; 
 #&gt; $terror
-#&gt;    fellow     today    health   citizen    celebr   mysteri      fair 
-#&gt; 0.6701663 0.5986661 0.5443311 0.4966330 0.4830459 0.2886751 0.1543033 
+#&gt;       big   shutter   destroy      rich       yes     offic     bridg   potenti 
+#&gt; 0.9525793 0.9428090 0.9428090 0.9428090 0.9365858 0.9258201 0.9258201 0.9128709 
 #&gt; </div><div class='input'>
 </div></pre>
   </div>

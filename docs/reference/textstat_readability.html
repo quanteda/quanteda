@@ -111,7 +111,7 @@ may not really be sentences, such as section titles, table elements, and
 other cruft that might be in the texts following conversion.
 
 For finer-grained control, consider filtering sentences prior first, 
-including through pattern-matching, using <code><a href='corpus_trimsentences.html'>corpus_trimsentences</a></code>.</dd>
+including through pattern-matching, using <code><a href='corpus_trim.html'>corpus_trim</a></code>.</dd>
       <dt>drop</dt>
       <dd>if <code>TRUE</code>, the result is returned as a numeric vector if
 only a single measure is requested; otherwise, a data.frame is returned
@@ -149,7 +149,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK         0.99       0.99   -1.00       0.93   -0.47      -0.68
 #&gt; Danielson.Bryan        1.00       1.00   -0.98       0.88   -0.63      -0.81
 #&gt; Danielson.Bryan.2     -0.31      -0.31    0.19      -0.04    0.89       0.79
-#&gt; Dickes.Steiwer        -0.39      -0.39    0.41      -0.34    0.14       0.25
+#&gt; Dickes.Steiwer        -1.00      -1.00    1.00      -0.91    0.54       0.74
 #&gt; DRP                    0.99       0.99   -1.00       0.93   -0.48      -0.69
 #&gt; ELF                    1.00       1.00   -0.99       0.90   -0.61      -0.79
 #&gt; Farr.Jenkins.Paterson -0.99      -0.99    1.00      -0.93    0.48       0.69
@@ -171,7 +171,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK               -0.72               0.72               0.72
 #&gt; Danielson.Bryan              -0.85               0.85               0.85
 #&gt; Danielson.Bryan.2             0.81              -0.81              -0.81
-#&gt; Dickes.Steiwer                0.23              -0.23              -0.23
+#&gt; Dickes.Steiwer                0.78              -0.78              -0.78
 #&gt; DRP                          -0.73               0.73               0.73
 #&gt; ELF                          -0.81               0.81               0.81
 #&gt; Farr.Jenkins.Paterson         0.73              -0.73              -0.73
@@ -193,7 +193,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK             -1.00           1.00           1.00            0.98
 #&gt; Danielson.Bryan            -0.98           0.98           0.98            1.00
 #&gt; Danielson.Bryan.2           0.18          -0.18          -0.18           -0.38
-#&gt; Dickes.Steiwer              0.41          -0.41          -0.41           -0.38
+#&gt; Dickes.Steiwer              1.00          -1.00          -1.00           -0.99
 #&gt; DRP                        -1.00           1.00           1.00            0.98
 #&gt; ELF                        -0.98           0.98           0.98            1.00
 #&gt; Farr.Jenkins.Paterson       1.00          -1.00          -1.00           -0.98
@@ -201,27 +201,27 @@ with each column consisting of a requested measure.</dd>
 #&gt; Flesch.PSK                 -0.96           0.96           0.96            0.99
 #&gt; Flesch.Kincaid             -0.98           0.98           0.98            1.00
 #&gt;                       Danielson.Bryan.2 Dickes.Steiwer   DRP   ELF
-#&gt; ARI                               -0.31          -0.39  0.99  1.00
-#&gt; ARI.simple                        -0.31          -0.39  0.99  1.00
-#&gt; Bormuth                            0.19           0.41 -1.00 -0.99
-#&gt; Bormuth.GP                        -0.04          -0.34  0.93  0.90
-#&gt; Coleman                            0.89           0.14 -0.48 -0.61
-#&gt; Coleman.C2                         0.79           0.25 -0.69 -0.79
-#&gt; Coleman.Liau                       0.81           0.23 -0.73 -0.81
-#&gt; Coleman.Liau.grade                -0.81          -0.23  0.73  0.81
-#&gt; Coleman.Liau.short                -0.81          -0.23  0.73  0.81
-#&gt; Dale.Chall                         0.18           0.41 -1.00 -0.98
-#&gt; Dale.Chall.old                    -0.18          -0.41  1.00  0.98
-#&gt; Dale.Chall.PSK                    -0.18          -0.41  1.00  0.98
-#&gt; Danielson.Bryan                   -0.38          -0.38  0.98  1.00
-#&gt; Danielson.Bryan.2                  1.00           0.00 -0.19 -0.33
-#&gt; Dickes.Steiwer                     0.00           1.00 -0.41 -0.39
-#&gt; DRP                               -0.19          -0.41  1.00  0.99
-#&gt; ELF                               -0.33          -0.39  0.99  1.00
-#&gt; Farr.Jenkins.Paterson              0.18           0.41 -1.00 -0.99
-#&gt; Flesch                             0.52           0.37 -0.93 -0.97
-#&gt; Flesch.PSK                        -0.45          -0.38  0.96  0.99
-#&gt; Flesch.Kincaid                    -0.34          -0.40  0.99  1.00
+#&gt; ARI                               -0.31          -1.00  0.99  1.00
+#&gt; ARI.simple                        -0.31          -1.00  0.99  1.00
+#&gt; Bormuth                            0.19           1.00 -1.00 -0.99
+#&gt; Bormuth.GP                        -0.04          -0.91  0.93  0.90
+#&gt; Coleman                            0.89           0.54 -0.48 -0.61
+#&gt; Coleman.C2                         0.79           0.74 -0.69 -0.79
+#&gt; Coleman.Liau                       0.81           0.78 -0.73 -0.81
+#&gt; Coleman.Liau.grade                -0.81          -0.78  0.73  0.81
+#&gt; Coleman.Liau.short                -0.81          -0.78  0.73  0.81
+#&gt; Dale.Chall                         0.18           1.00 -1.00 -0.98
+#&gt; Dale.Chall.old                    -0.18          -1.00  1.00  0.98
+#&gt; Dale.Chall.PSK                    -0.18          -1.00  1.00  0.98
+#&gt; Danielson.Bryan                   -0.38          -0.99  0.98  1.00
+#&gt; Danielson.Bryan.2                  1.00           0.26 -0.19 -0.33
+#&gt; Dickes.Steiwer                     0.26           1.00 -1.00 -0.99
+#&gt; DRP                               -0.19          -1.00  1.00  0.99
+#&gt; ELF                               -0.33          -0.99  0.99  1.00
+#&gt; Farr.Jenkins.Paterson              0.18           1.00 -1.00 -0.99
+#&gt; Flesch                             0.52           0.96 -0.93 -0.97
+#&gt; Flesch.PSK                        -0.45          -0.98  0.96  0.99
+#&gt; Flesch.Kincaid                    -0.34          -1.00  0.99  1.00
 #&gt;                       Farr.Jenkins.Paterson Flesch Flesch.PSK Flesch.Kincaid
 #&gt; ARI                                   -0.99  -0.97       0.99           1.00
 #&gt; ARI.simple                            -0.99  -0.97       0.98           1.00
@@ -237,7 +237,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK                        -1.00  -0.93       0.96           0.98
 #&gt; Danielson.Bryan                       -0.98  -0.98       0.99           1.00
 #&gt; Danielson.Bryan.2                      0.18   0.52      -0.45          -0.34
-#&gt; Dickes.Steiwer                         0.41   0.37      -0.38          -0.40
+#&gt; Dickes.Steiwer                         1.00   0.96      -0.98          -1.00
 #&gt; DRP                                   -1.00  -0.93       0.96           0.99
 #&gt; ELF                                   -0.99  -0.97       0.99           1.00
 #&gt; Farr.Jenkins.Paterson                  1.00   0.93      -0.96          -0.99
@@ -259,7 +259,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK         0.98    1.00    0.46    0.47        0.47  1.00
 #&gt; Danielson.Bryan        1.00    0.99    0.51    0.63        0.63  0.99
 #&gt; Danielson.Bryan.2     -0.37   -0.26   -0.38   -0.89       -0.89 -0.25
-#&gt; Dickes.Steiwer        -0.42   -0.41    0.12   -0.14       -0.14 -0.40
+#&gt; Dickes.Steiwer        -0.99   -1.00   -0.47   -0.54       -0.54 -1.00
 #&gt; DRP                    0.98    1.00    0.46    0.48        0.48  1.00
 #&gt; ELF                    0.99    0.99    0.51    0.61        0.61  0.99
 #&gt; Farr.Jenkins.Paterson -0.98   -1.00   -0.46   -0.48       -0.48 -1.00
@@ -281,7 +281,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK                 0.84  0.98  0.93  0.94  0.96  0.98  0.98
 #&gt; Danielson.Bryan                0.89  1.00  0.98  0.99  0.99  1.00  1.00
 #&gt; Danielson.Bryan.2             -0.49 -0.38 -0.51 -0.49 -0.44 -0.37 -0.36
-#&gt; Dickes.Steiwer                -0.53 -0.40 -0.39 -0.40 -0.42 -0.42 -0.40
+#&gt; Dickes.Steiwer                -0.86 -0.99 -0.96 -0.96 -0.98 -0.99 -0.99
 #&gt; DRP                            0.84  0.98  0.94  0.94  0.96  0.98  0.98
 #&gt; ELF                            0.88  1.00  0.98  0.98  0.99  0.99  1.00
 #&gt; Farr.Jenkins.Paterson         -0.84 -0.98 -0.94 -0.94 -0.96 -0.98 -0.98
@@ -303,7 +303,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK            0.04  0.94   0.94        0.94    0.94   1.00
 #&gt; Danielson.Bryan          -0.04  0.98   0.99        0.98    0.98   0.98
 #&gt; Danielson.Bryan.2         0.32 -0.48  -0.47       -0.48   -0.48  -0.18
-#&gt; Dickes.Steiwer           -0.46 -0.42  -0.42       -0.42   -0.42  -0.41
+#&gt; Dickes.Steiwer           -0.01 -0.96  -0.96       -0.96   -0.96  -1.00
 #&gt; DRP                       0.03  0.94   0.94        0.94    0.94   1.00
 #&gt; ELF                      -0.04  0.98   0.98        0.98    0.98   0.98
 #&gt; Farr.Jenkins.Paterson    -0.03 -0.94  -0.94       -0.94   -0.94  -1.00
@@ -325,7 +325,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK              1.00   1.00           -1.00             -0.66
 #&gt; Danielson.Bryan             0.98   0.99           -0.99             -0.80
 #&gt; Danielson.Bryan.2          -0.18  -0.26            0.27              0.85
-#&gt; Dickes.Steiwer             -0.41  -0.40            0.40              0.18
+#&gt; Dickes.Steiwer             -1.00  -1.00            1.00              0.72
 #&gt; DRP                         1.00   1.00           -1.00             -0.67
 #&gt; ELF                         0.98   1.00           -0.99             -0.76
 #&gt; Farr.Jenkins.Paterson      -1.00  -1.00            1.00              0.66
@@ -347,7 +347,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK                 0.98               1.00              0.58
 #&gt; Danielson.Bryan                1.00               0.98              0.73
 #&gt; Danielson.Bryan.2             -0.33              -0.18             -0.88
-#&gt; Dickes.Steiwer                -0.39              -0.41             -0.22
+#&gt; Dickes.Steiwer                -0.99              -1.00             -0.64
 #&gt; DRP                            0.99               1.00              0.58
 #&gt; ELF                            1.00               0.98              0.70
 #&gt; Farr.Jenkins.Paterson         -0.99              -1.00             -0.58
@@ -394,7 +394,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK         0.99       0.99   -1.00       0.93   -0.47      -0.68
 #&gt; Danielson.Bryan        1.00       1.00   -0.98       0.88   -0.63      -0.81
 #&gt; Danielson.Bryan.2     -0.31      -0.31    0.19      -0.04    0.89       0.79
-#&gt; Dickes.Steiwer        -0.39      -0.39    0.41      -0.34    0.14       0.25
+#&gt; Dickes.Steiwer        -1.00      -1.00    1.00      -0.91    0.54       0.74
 #&gt; DRP                    0.99       0.99   -1.00       0.93   -0.48      -0.69
 #&gt; ELF                    1.00       1.00   -0.99       0.90   -0.61      -0.79
 #&gt; Farr.Jenkins.Paterson -0.99      -0.99    1.00      -0.93    0.48       0.69
@@ -416,7 +416,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK               -0.72               0.72               0.72
 #&gt; Danielson.Bryan              -0.85               0.85               0.85
 #&gt; Danielson.Bryan.2             0.81              -0.81              -0.81
-#&gt; Dickes.Steiwer                0.23              -0.23              -0.23
+#&gt; Dickes.Steiwer                0.78              -0.78              -0.78
 #&gt; DRP                          -0.73               0.73               0.73
 #&gt; ELF                          -0.81               0.81               0.81
 #&gt; Farr.Jenkins.Paterson         0.73              -0.73              -0.73
@@ -438,7 +438,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK             -1.00           1.00           1.00            0.98
 #&gt; Danielson.Bryan            -0.98           0.98           0.98            1.00
 #&gt; Danielson.Bryan.2           0.18          -0.18          -0.18           -0.38
-#&gt; Dickes.Steiwer              0.41          -0.41          -0.41           -0.38
+#&gt; Dickes.Steiwer              1.00          -1.00          -1.00           -0.99
 #&gt; DRP                        -1.00           1.00           1.00            0.98
 #&gt; ELF                        -0.98           0.98           0.98            1.00
 #&gt; Farr.Jenkins.Paterson       1.00          -1.00          -1.00           -0.98
@@ -446,27 +446,27 @@ with each column consisting of a requested measure.</dd>
 #&gt; Flesch.PSK                 -0.96           0.96           0.96            0.99
 #&gt; Flesch.Kincaid             -0.98           0.98           0.98            1.00
 #&gt;                       Danielson.Bryan.2 Dickes.Steiwer   DRP   ELF
-#&gt; ARI                               -0.31          -0.39  0.99  1.00
-#&gt; ARI.simple                        -0.31          -0.39  0.99  1.00
-#&gt; Bormuth                            0.19           0.41 -1.00 -0.99
-#&gt; Bormuth.GP                        -0.04          -0.34  0.93  0.90
-#&gt; Coleman                            0.89           0.14 -0.48 -0.61
-#&gt; Coleman.C2                         0.79           0.25 -0.69 -0.79
-#&gt; Coleman.Liau                       0.81           0.23 -0.73 -0.81
-#&gt; Coleman.Liau.grade                -0.81          -0.23  0.73  0.81
-#&gt; Coleman.Liau.short                -0.81          -0.23  0.73  0.81
-#&gt; Dale.Chall                         0.18           0.41 -1.00 -0.98
-#&gt; Dale.Chall.old                    -0.18          -0.41  1.00  0.98
-#&gt; Dale.Chall.PSK                    -0.18          -0.41  1.00  0.98
-#&gt; Danielson.Bryan                   -0.38          -0.38  0.98  1.00
-#&gt; Danielson.Bryan.2                  1.00           0.00 -0.19 -0.33
-#&gt; Dickes.Steiwer                     0.00           1.00 -0.41 -0.39
-#&gt; DRP                               -0.19          -0.41  1.00  0.99
-#&gt; ELF                               -0.33          -0.39  0.99  1.00
-#&gt; Farr.Jenkins.Paterson              0.18           0.41 -1.00 -0.99
-#&gt; Flesch                             0.52           0.37 -0.93 -0.97
-#&gt; Flesch.PSK                        -0.45          -0.38  0.96  0.99
-#&gt; Flesch.Kincaid                    -0.34          -0.40  0.99  1.00
+#&gt; ARI                               -0.31          -1.00  0.99  1.00
+#&gt; ARI.simple                        -0.31          -1.00  0.99  1.00
+#&gt; Bormuth                            0.19           1.00 -1.00 -0.99
+#&gt; Bormuth.GP                        -0.04          -0.91  0.93  0.90
+#&gt; Coleman                            0.89           0.54 -0.48 -0.61
+#&gt; Coleman.C2                         0.79           0.74 -0.69 -0.79
+#&gt; Coleman.Liau                       0.81           0.78 -0.73 -0.81
+#&gt; Coleman.Liau.grade                -0.81          -0.78  0.73  0.81
+#&gt; Coleman.Liau.short                -0.81          -0.78  0.73  0.81
+#&gt; Dale.Chall                         0.18           1.00 -1.00 -0.98
+#&gt; Dale.Chall.old                    -0.18          -1.00  1.00  0.98
+#&gt; Dale.Chall.PSK                    -0.18          -1.00  1.00  0.98
+#&gt; Danielson.Bryan                   -0.38          -0.99  0.98  1.00
+#&gt; Danielson.Bryan.2                  1.00           0.26 -0.19 -0.33
+#&gt; Dickes.Steiwer                     0.26           1.00 -1.00 -0.99
+#&gt; DRP                               -0.19          -1.00  1.00  0.99
+#&gt; ELF                               -0.33          -0.99  0.99  1.00
+#&gt; Farr.Jenkins.Paterson              0.18           1.00 -1.00 -0.99
+#&gt; Flesch                             0.52           0.96 -0.93 -0.97
+#&gt; Flesch.PSK                        -0.45          -0.98  0.96  0.99
+#&gt; Flesch.Kincaid                    -0.34          -1.00  0.99  1.00
 #&gt;                       Farr.Jenkins.Paterson Flesch Flesch.PSK Flesch.Kincaid
 #&gt; ARI                                   -0.99  -0.97       0.99           1.00
 #&gt; ARI.simple                            -0.99  -0.97       0.98           1.00
@@ -482,7 +482,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK                        -1.00  -0.93       0.96           0.98
 #&gt; Danielson.Bryan                       -0.98  -0.98       0.99           1.00
 #&gt; Danielson.Bryan.2                      0.18   0.52      -0.45          -0.34
-#&gt; Dickes.Steiwer                         0.41   0.37      -0.38          -0.40
+#&gt; Dickes.Steiwer                         1.00   0.96      -0.98          -1.00
 #&gt; DRP                                   -1.00  -0.93       0.96           0.99
 #&gt; ELF                                   -0.99  -0.97       0.99           1.00
 #&gt; Farr.Jenkins.Paterson                  1.00   0.93      -0.96          -0.99
@@ -504,7 +504,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK         0.98    1.00    0.46    0.47        0.47  1.00
 #&gt; Danielson.Bryan        1.00    0.99    0.51    0.63        0.63  0.99
 #&gt; Danielson.Bryan.2     -0.37   -0.26   -0.38   -0.89       -0.89 -0.25
-#&gt; Dickes.Steiwer        -0.42   -0.41    0.12   -0.14       -0.14 -0.40
+#&gt; Dickes.Steiwer        -0.99   -1.00   -0.47   -0.54       -0.54 -1.00
 #&gt; DRP                    0.98    1.00    0.46    0.48        0.48  1.00
 #&gt; ELF                    0.99    0.99    0.51    0.61        0.61  0.99
 #&gt; Farr.Jenkins.Paterson -0.98   -1.00   -0.46   -0.48       -0.48 -1.00
@@ -526,7 +526,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK                 0.84  0.98  0.93  0.94  0.96  0.98  0.98
 #&gt; Danielson.Bryan                0.89  1.00  0.98  0.99  0.99  1.00  1.00
 #&gt; Danielson.Bryan.2             -0.49 -0.38 -0.51 -0.49 -0.44 -0.37 -0.36
-#&gt; Dickes.Steiwer                -0.53 -0.40 -0.39 -0.40 -0.42 -0.42 -0.40
+#&gt; Dickes.Steiwer                -0.86 -0.99 -0.96 -0.96 -0.98 -0.99 -0.99
 #&gt; DRP                            0.84  0.98  0.94  0.94  0.96  0.98  0.98
 #&gt; ELF                            0.88  1.00  0.98  0.98  0.99  0.99  1.00
 #&gt; Farr.Jenkins.Paterson         -0.84 -0.98 -0.94 -0.94 -0.96 -0.98 -0.98
@@ -548,7 +548,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK            0.04  0.94   0.94        0.94    0.94   1.00
 #&gt; Danielson.Bryan          -0.04  0.98   0.99        0.98    0.98   0.98
 #&gt; Danielson.Bryan.2         0.32 -0.48  -0.47       -0.48   -0.48  -0.18
-#&gt; Dickes.Steiwer           -0.46 -0.42  -0.42       -0.42   -0.42  -0.41
+#&gt; Dickes.Steiwer           -0.01 -0.96  -0.96       -0.96   -0.96  -1.00
 #&gt; DRP                       0.03  0.94   0.94        0.94    0.94   1.00
 #&gt; ELF                      -0.04  0.98   0.98        0.98    0.98   0.98
 #&gt; Farr.Jenkins.Paterson    -0.03 -0.94  -0.94       -0.94   -0.94  -1.00
@@ -570,7 +570,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK              1.00   1.00           -1.00             -0.66
 #&gt; Danielson.Bryan             0.98   0.99           -0.99             -0.80
 #&gt; Danielson.Bryan.2          -0.18  -0.26            0.27              0.85
-#&gt; Dickes.Steiwer             -0.41  -0.40            0.40              0.18
+#&gt; Dickes.Steiwer             -1.00  -1.00            1.00              0.72
 #&gt; DRP                         1.00   1.00           -1.00             -0.67
 #&gt; ELF                         0.98   1.00           -0.99             -0.76
 #&gt; Farr.Jenkins.Paterson      -1.00  -1.00            1.00              0.66
@@ -592,7 +592,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK                 0.98               1.00              0.58
 #&gt; Danielson.Bryan                1.00               0.98              0.73
 #&gt; Danielson.Bryan.2             -0.33              -0.18             -0.88
-#&gt; Dickes.Steiwer                -0.39              -0.41             -0.22
+#&gt; Dickes.Steiwer                -0.99              -1.00             -0.64
 #&gt; DRP                            0.99               1.00              0.58
 #&gt; ELF                            1.00               0.98              0.70
 #&gt; Farr.Jenkins.Paterson         -0.99              -1.00             -0.58

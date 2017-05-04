@@ -88,6 +88,21 @@
 <a href="#new-features" class="anchor"> </a>New features</h3>
 <ul>
 <li>Corpus construction using <code><a href="../reference/corpus.html">corpus()</a></code> now works for a <code>tm::SimpleCorpus</code> object. (#680)</li>
+<li>Added <code><a href="../reference/corpus_trim.html">corpus_trim()</a></code> and <code><a href="../reference/corpus_trim.html">char_trim()</a></code> functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.</li>
+</ul>
+</div>
+<div id="bug-fixes-and-stability-enhancements" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bug-fixes-and-stability-enhancements" class="anchor"> </a>Bug fixes and stability enhancements</h3>
+<ul>
+<li>
+<code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code> behaves more robustly on different platforms, especially for keys whose values match no features (#704).</li>
+<li>
+<code><a href="../reference/textstat_dist.html">textstat_simil()</a></code> and <code><a href="../reference/textstat_dist.html">textstat_dist()</a></code> no longer take the <code>n</code> argument, as this was not sorting features in correct order.</li>
+<li>Fixed failure of <code><a href="../reference/tokens.html">tokens(x, what = "character")</a></code> when <code>x</code> included Twitter characters <code>@</code> and <code>#</code> (#637).</li>
+<li>Fixed bug #707 where <code>ntype.dfm()</code> produced an incorrect result.</li>
+<li>Fixed bug #706 where <code><a href="../reference/textstat_lexdiv.html">textstat_lexdiv()</a></code> was returning incorrect results for single-document dfm objects.</li>
+<li>Improved the robustness of <code><a href="../reference/corpus_reshape.html">corpus_reshape()</a></code>.</li>
 </ul>
 </div>
 </div>

@@ -200,7 +200,7 @@
 ##          UKIP   346    739        27
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Wed Apr 26 10:42:50 2017
+## Created: Thu May  4 08:38:08 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -221,7 +221,7 @@
 ##          UKIP   346    739        27         UKIP 2010
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Wed Apr 26 10:42:50 2017
+## Created: Thu May  4 08:38:08 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -251,7 +251,7 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Wed Apr 26 10:42:50 2017
+## Created: Thu May  4 08:38:08 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -452,7 +452,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2017-Trump   582   1662        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Wed Apr 26 10:42:50 2017
+## Created: Thu May  4 08:38:09 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -729,7 +729,7 @@ mydfm
 <p>We can use the dictionary when making the dfm:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)
 byPresMat
-## Document-feature matrix of: 7 documents, 2 features (0% sparse).
+## Document-feature matrix of: 7 documents, 2 features (14.3% sparse).
 ## 7 x 2 sparse Matrix of class "dfmSparse"
 ##               features
 ## docs           terror economy
@@ -757,7 +757,7 @@ liwcdfm[, <span class="dv">1</span>:<span class="dv">10</span>]</code></pre></di
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year&gt;<span class="dv">1980</span>), 
                <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>),
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
-obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textstat_dist.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), <span class="dt">n =</span> <span class="ot">NULL</span>, 
+obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textstat_dist.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), 
                              <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)
 obamaSimil
 ##              2009-Obama 2013-Obama
@@ -788,19 +788,448 @@ presCluster$labels &lt;-<span class="st"> </span><span class="kw"><a href="../re
 <span class="kw">plot</span>(presCluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</code></pre></div>
 <p>(try it!)</p>
 <p>We can also look at term similarities:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textstat_dist.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>, <span class="dt">n =</span> <span class="dv">10</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textstat_dist.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)
 <span class="kw">as.list</span>(sim)
 ## $fair
-##      vice    presid     senat     chief    health  hatfield    justic    terror        mr 
-## 0.7745967 0.6142951 0.5753560 0.5270463 0.5163978 0.5163978 0.4103913 0.4082483 0.2636353 
+##       economi         begin     jefferson        author         faith          call       struggl          best         creat        courag           god         pledg       compass          much 
+##     0.9080252     0.9075951     0.8981462     0.8944272     0.8866586     0.8608285     0.8451543     0.8366600     0.8347300     0.8326664     0.8321715     0.8292884     0.8280787     0.8235321 
+##        social          alli        believ         order        danger       continu        failur          full         limit          well           tax        govern            us          side 
+##     0.8215838     0.8215838     0.8194652     0.8164966     0.8164966     0.8150876     0.8082904     0.8082904     0.8082904     0.8064778     0.8007572     0.7975845     0.7958402     0.7877264 
+##      opportun        beyond        travel         stand          vice        suffer         howev          size       chariti          hold        prayer          peac        econom       preserv 
+##     0.7807201     0.7784989     0.7784989     0.7751702     0.7745967     0.7745967     0.7745967     0.7745967     0.7745967     0.7745967     0.7706746     0.7665050     0.7640574     0.7640574 
+##          meet         bless         among        weapon          take         earth           yet         thoma        almost        republ          cost          sign        troubl        declin 
+##     0.7640574     0.7603565     0.7537347     0.7532436     0.7527727     0.7460038     0.7458699     0.7453560     0.7453560     0.7453560     0.7453560     0.7453560     0.7453560     0.7453560 
+##          rest        intend          agre          upon          must           now          mani           way          time         think         assur          fall           aim       deficit 
+##     0.7453560     0.7453560     0.7453560     0.7447932     0.7431854     0.7404361     0.7404361     0.7395219     0.7380203     0.7378648     0.7378648     0.7378648     0.7378648     0.7348469 
+##      threaten        growth          ever        system         carri       digniti        o'neil         occas        inflat      unemploy          pace          bear       concern        ethnic 
+##     0.7333333     0.7333333     0.7324670     0.7319251     0.7315635     0.7313103     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967 
+##       barrier          core        revers        genius        church      prioriti        unborn       arsenal        utmost          john    accomplish       servant     enterpris      virginia 
+##     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967     0.7302967 
+##         wrote          abus          lead         place          year       histori         feder       program       poverti       product        resolv          pass          work          fail 
+##     0.7302967     0.7302967     0.7229569     0.7197275     0.7191465     0.7174922     0.7171372     0.7161149     0.7161149     0.7089176     0.7089176     0.7084919     0.7041796     0.7006490 
+##        defens      interest       societi      individu        purpos         polit          race           pay          ride          slow      independ        worthi         trust      confront 
+##     0.7006490     0.6982972     0.6956656     0.6956083     0.6956083     0.6940221     0.6928203     0.6928203     0.6928203     0.6928203     0.6928203     0.6928203     0.6900656     0.6900656 
+##          show          fill          play        import         peopl        nation       respons        return          sick          said          find      american         reduc          valu 
+##     0.6885304     0.6885304     0.6885304     0.6885304     0.6875214     0.6868957     0.6842257     0.6831301     0.6831301     0.6831301     0.6831301     0.6816212     0.6803091     0.6791622 
+##         never        declar       citizen        demand         small          deep           act        number          told       support         storm           can      strength         power 
+##     0.6781327     0.6761234     0.6743403     0.6713171     0.6712486     0.6708204     0.6708204     0.6708204     0.6708204     0.6694387     0.6694387     0.6690667     0.6675920     0.6658003 
+##      sacrific         today          done      principl       present        restor          kill          away      progress         futur         spend        person        solemn         bound 
+##     0.6582806     0.6568567     0.6555623     0.6546537     0.6531973     0.6531973     0.6531973     0.6515838     0.6507914     0.6506000     0.6459752     0.6454972     0.6454972     0.6454972 
+##     strongest        histor         georg         spoke         liber          poor        safeti         doubt          step          earn           let          just        commit         simpl 
+##     0.6454972     0.6454972     0.6454972     0.6454972     0.6454972     0.6454972     0.6454972     0.6454972     0.6445034     0.6445034     0.6421476     0.6390922     0.6390097     0.6390097 
+##          road         world          will         endur           man           two         reach          bush         decis         month          line         short          fate        mutual 
+##     0.6390097     0.6368885     0.6368304     0.6367145     0.6330542     0.6324555     0.6324555     0.6324555     0.6324555     0.6324555     0.6324555     0.6324555     0.6324555     0.6324555 
+##          west            go         found          hero          live          know           law         chanc      children        remain          last        answer        direct     technolog 
+##     0.6324555     0.6303152     0.6292532     0.6282809     0.6281206     0.6270544     0.6262243     0.6262243     0.6260475     0.6233023     0.6233023     0.6227992     0.6227992     0.6227992 
+##         blood          life         capac         young        effort        presid          oath         state         group          goal         price         share        famili        togeth 
+##     0.6227992     0.6225318     0.6210590     0.6199304     0.6196773     0.6142951     0.6110101     0.6090002     0.6085806     0.6085806     0.6085806     0.6076436     0.6048584     0.6030227 
+##          look         decad        energi        strive           tri        common          hear        servic          keep          seek      reverend           goe          cast       collect 
+##     0.6028606     0.6024641     0.6024641     0.6024641     0.6024641     0.6024641     0.6024641     0.6024641     0.6000000     0.5976143     0.5962848     0.5962848     0.5962848     0.5962848 
+##        whatev         manag        capabl        around         grown     establish       unleash          self         aspir        negoti         yield          knew           cut          bond 
+##     0.5962848     0.5962848     0.5962848     0.5962848     0.5962848     0.5962848     0.5962848     0.5962848     0.5962848     0.5962848     0.5962848     0.5962848     0.5962848     0.5962848 
+##         begun        domest       conduct       conquer        uphold          rage           one       greater      determin          rais         shall         civil          help        tradit 
+##     0.5962848     0.5962848     0.5962848     0.5962848     0.5962848     0.5962848     0.5958582     0.5933661     0.5923489     0.5923489     0.5923489     0.5901689     0.5884899     0.5855400 
+##           men          feed          held         allow      destruct         renew           war        father          hope          past         whose         shown        remind        depend 
+##     0.5855400     0.5855400     0.5855400     0.5855400     0.5855400     0.5846883     0.5843065     0.5843065     0.5806832     0.5797509     0.5797509     0.5773503     0.5773503     0.5773503 
+##       inaugur          hill          kind         local    birthright         drive         music       heritag         spare         senat         great         labor        provid           end 
+##     0.5773503     0.5773503     0.5773503     0.5773503     0.5773503     0.5773503     0.5773503     0.5773503     0.5773503     0.5753560     0.5731973     0.5728919     0.5728919     0.5720776 
+##       victori        affirm         speak        public         still       forward           put         secur         stori         build          noth          born          gift        though 
+##     0.5715476     0.5715476     0.5680376     0.5680376     0.5677923     0.5645345     0.5634362     0.5590654     0.5543479     0.5532833     0.5520524     0.5520524     0.5520524     0.5520524 
+##     communiti          make         crisi         human        fellow          alon       increas       process          busi         worst        borrow          week      boundari        patrol 
+##     0.5518193     0.5505978     0.5504819     0.5499644     0.5490214     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226 
+##        except      recognit        reserv       command        heroic         quiet        balanc         decid    strengthen       forbear      shoulder         humil       dignifi         river 
+##     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226 
+##     arlington          paid       earlier           lie          fame        repres        bestow     horseback           raw             4        wherev          took         equip        dramat 
+##     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226 
+##        modern          tide     overwhelm        hungri       treasur          debt           due      unfortun        origin        awesom         waver      research        missil        nowher 
+##     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226 
+##         youth          snow        valley        affect        expect          lest     conscienc         grace      grandest         delay          wind       serious          soil       respect 
+##     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226 
+##         cynic       medicar        mistak         favor     substitut      stranger       respond          lend        search         basic       subject         swift          turn        moment 
+##     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5477226     0.5471885     0.5449493 
+##        follow       nuclear          need       journey        spirit         happi         thank           arm         birth       problem         everi         chang          long         equal 
+##     0.5449493     0.5445101     0.5422177     0.5417527     0.5402955     0.5383819     0.5370862     0.5333333     0.5333333     0.5313689     0.5308530     0.5307228     0.5296409     0.5289437 
+##         chief           els        realiz     adversari           met          hall        invest        school         ambit           bad         stake         women       generat       america 
+##     0.5270463     0.5270463     0.5270463     0.5270463     0.5270463     0.5270463     0.5270463     0.5270463     0.5270463     0.5270463     0.5270463     0.5270463     0.5258738     0.5258685 
+##          face          grow           say         might          care       destroy          back        achiev        requir       freedom        health      hatfield        mondal         baker 
+##     0.5222330     0.5217492     0.5217492     0.5217492     0.5217492     0.5217492     0.5209237     0.5196152     0.5196152     0.5164553     0.5163978     0.5163978     0.5163978     0.5163978 
+##        moomaw        occurr        routin         uniqu        realli  every-4-year        normal       transit         degre       bulwark       afflict       proport       longest       distort 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##         penal        thrift         crush   fixed-incom          alik       shatter           idl        indign        burden          kept          pile       mortgag     temporari       conveni 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##         trend       tremend        upheav        period misunderstand         sever       bastion         tempt       complex      self-rul          elit      superior        someon         equit 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##         singl       neglect       section          food          mine         teach    profession industrialist      shopkeep         clerk         cabbi     truckdriv         breed       healthi 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##         vigor     discrimin       runaway         reviv     inventori         check       consent        intent          curb      distinct       smother        foster         stifl        extent 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##         avail       coincid      parallel    proportion     intervent        intrus        result   unnecessari        excess          loom       creativ          gate       counter  entrepreneur 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##     voluntari           art       address        makeup    countrymen       suffici        theori     unequivoc        emphat     paraphras       winston      churchil      dissolut         ahead 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##        propos         remov     roadblock       various         level        measur          inch          feet          mile      reawaken         giant       lighten         punit           eve 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##            dr        joseph        warren  massachusett       despair      exemplar        beacon         match      benefici   sovereignti          sale       surrend misunderstood       misjudg 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##       prevail        formid       practic          prey           ten        deepli         vista          mall        shrine      monument revolutionari        infant    nationhood         eloqu 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##          pool        column       whoever       heroism       potomac         shore         slope      cemeteri           row         white        marker         david          tini      fraction 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##       belleau          wood        argonn         omaha         beach       salerno       halfway     guadalcan        tarawa          pork          chop        chosin     reservoir         hundr 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##          rice         paddi         jungl        barber          shop          1917         franc       rainbow       western     battalion         heavi     artilleri         diari       flyleaf 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##      therefor         cheer       treptow       perform          deed        mathia        burger       presenc        absent        stenni         gilli     louisiana        silent         adequ 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##          50th         stood        wilder            13            60            50          gone           cri          moon        stress         glori   present-day      backward        proper 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##        machin          1980         ultim          rate        employ       vibrant        robust         climb        restat         freed          grip        sincer       meaning        reduct 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##       develop          warm      sunlight          pois        golden          gain     two-parti    republican        boston        lawyer          adam       planter         rival          1800 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##         later        soften         anger        letter   reestablish          1826   anniversari           die        fourth          juli       exchang        sunset         beset       valuabl 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##           oar      harmless          rode   well-intent         error         futil         chase         bloat     prescript       reelect          1984        vindic            25      straight 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##        incent entrepreneuri      interfer      simplifi         least       emancip          tear      distress     literatur        poetri         dynam      unbroken       brought        reckon 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##         staff        submit         freez         desir   unconstitut       alreadi         handl     fundament        upgrad        infirm   disadvantag        instal       hearten   brotherhood 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##         hesit         abund         utter       fervent         scorn       buildup        offens       legitim       discuss        elimin        either        resort        retali         logic 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##       recours        approv        shield       militar     demilitar        render       obsolet           rid      fourfold     hemispher      worldwid self-determin       inalien    staunchest 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##       inflict        lightn     transcend        ribbon        unfurl        symbol         insid       general          knee          lone        darken        ponder         alamo      encourag 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##       settler          sing          song        unknow     big-heart        tender      knowledg          rare          gore       contest    slave-hold          went       fallibl         grand 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##    insignific         enact          halt          rock           sea          seed          root        inborn           225        hidden        onward          deal        forgiv        appear 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##      undermin        permit        tactic          chao        inspir       condemn        apathi       prevent         recov      momentum         invit          mass        horror         arrog 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##       aggress    compassion      unworthi          view         fault      prolifer      diminish        mentor        pastor      synagogu         mosqu         wound       jericho     scapegoat 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##        option         civic       uncount       unhonor       comfort       spectat          miss     statesman         angel     whirlwind       accumul         theme          tire        finish 
+##     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978     0.5163978 
+##           day           see      maintain          task           ago       million          love          made        member        deserv          safe          voic       revolut          rich 
+##     0.5113674     0.5101128     0.5070926     0.5070926     0.5063697     0.5061711     0.5042195     0.5041008     0.5012804     0.5012804     0.5012804     0.5012804     0.5012804     0.5012804 
+##       special        soviet         union      greatest           use         ideal          less      ceremoni           ill          heal          save         child         front        memori 
+##     0.5009794     0.5009794     0.5003702     0.4969040     0.4969040     0.4949747     0.4902811     0.4898979     0.4898979     0.4898979     0.4898979     0.4898979     0.4898979     0.4898979 
+##       countri        cultur    understood          dark        reward          sinc        afford        embrac          hard          duti         enemi          open        threat         creed 
+##     0.4885428     0.4879500     0.4879500     0.4879500     0.4879500     0.4879500     0.4879500     0.4879500     0.4879500     0.4838867     0.4830459     0.4830459     0.4830459     0.4794633 
+##          come          caus        toward          also         right         bring      challeng      neighbor       capitol         light         shape          unit         other          left 
+##     0.4760952     0.4746929     0.4738791     0.4738791     0.4737378     0.4724995     0.4679096     0.4670994     0.4670994     0.4670994     0.4670994     0.4670994     0.4669240     0.4666667 
+##         start         sound        cooper      guarante     administr         grant        reluct      conflict           led       lincoln       willing          serv          dare         elect 
+##     0.4666667     0.4666667     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802 
+##          area       allianc       possibl          echo       possess       depress         wrong      generous          risk          idea        matter         readi         final          name 
+##     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802     0.4618802     0.4610625     0.4564355     0.4564355     0.4564355     0.4564355 
+##      prejudic        decent           era      question          join        belong       sometim       prosper          mean     democraci     constitut           eye        rather        inevit 
+##     0.4564355     0.4564355     0.4564355     0.4564355     0.4564355     0.4564355     0.4557327     0.4554200     0.4511788     0.4507489     0.4472136     0.4472136     0.4472136     0.4472136 
+##         ensur          firm      magnific         flame          star        welcom           aid         enjoy        reborn    presidenti          send          bold          next        corner 
+##     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136 
+##        spoken       instead          cold          forg         dedic          wait         battl          easi        unfold       fascism          wage         remak       persist        contin 
+##     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136 
+##        temper          gave        replac          plan         claim          lose         petti   distinguish         guest        vulner        exampl          weak         pursu         dream 
+##     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4472136     0.4459799 
+##           ask        confid           may       charact      tomorrow       loyalti         forev          hour    throughout        better           old         taken         cross       reflect 
+##     0.4428074     0.4383570     0.4369902     0.4364358     0.4303315     0.4303315     0.4303315     0.4296689     0.4296689     0.4289960     0.4276995     0.4260064     0.4216370     0.4216370 
+##      democrat        lesson      stronger       ancient          seiz         brave 
+##     0.4216370     0.4216370     0.4216370     0.4216370     0.4216370     0.4216370 
+##  [ reached getOption("max.print") -- omitted 1289 entries ]
 ## 
 ## $health
-##     justic       fair     terror     presid       vice      chief         mr      senat   hatfield 
-## 0.52981294 0.51639778 0.42163702 0.39652579 0.33333333 0.27216553 0.09724333 0.00000000 0.00000000 
+##        shape      generat        wrong       common     knowledg       planet         task       demand          eye        defin         forc       danger        child        choos         fear 
+##    0.9045340    0.8971180    0.8944272    0.8888889    0.8888889    0.8819171    0.8728716    0.8666667    0.8660254    0.8642416    0.8641586    0.8432740    0.8432740    0.8432740    0.8432740 
+##       extend         true      without         long       advanc       servic      commerc        vital        power       deserv         less        everi         busi        endur       spirit 
+##    0.8432740    0.8432740    0.8432740    0.8357109    0.8340577    0.8333333    0.8333333    0.8333333    0.8326837    0.8320503    0.8307472    0.8255091    0.8249579    0.8219949    0.8206099 
+##       reform       school        ambit          bad        brave        humbl          can         face          law       travel          set         gift     interest         just        storm 
+##    0.8198916    0.8164966    0.8164966    0.8164966    0.8164966    0.8164966    0.8097763    0.8090398    0.8084521    0.8040303    0.8040303    0.8017837    0.7888106    0.7875615    0.7856742 
+##          end          see         play       measur        forth      respons         give         care      instead      fascism         wage        remak        break       temper        globe 
+##    0.7795794    0.7782896    0.7777778    0.7777778    0.7777778    0.7773318    0.7715167    0.7698004    0.7698004    0.7698004    0.7698004    0.7698004    0.7698004    0.7698004    0.7698004 
+##         role         plan       colleg         lose       narrow        petti         rage         weak        recal       surviv         evid         life         also         even        build 
+##    0.7698004    0.7698004    0.7698004    0.7698004    0.7698004    0.7698004    0.7698004    0.7698004    0.7698004    0.7698004    0.7698004    0.7687422    0.7647191    0.7647191    0.7619048 
+##         know         find    communism   understood       afford        choic       failur         serv         race      possess     timeless       winter       imagin     reaffirm        settl 
+##    0.7619048    0.7559289    0.7559289    0.7559289    0.7559289    0.7537784    0.7453560    0.7453560    0.7453560    0.7453560    0.7453560    0.7453560    0.7453560    0.7453560    0.7453560 
+##      qualiti       courag         last      america       nation         hour          ill         hatr       someth        toler         real          way          may        still        faith 
+##    0.7453560    0.7442084    0.7427814    0.7420462    0.7404170    0.7396003    0.7378648    0.7378648    0.7378648    0.7378648    0.7378648    0.7377372    0.7377372    0.7330167    0.7325897 
+##         oath        ideal         duti       confid        carri       purpos        futur      prosper         born       threat       gather        enemi        trust         meet         valu 
+##    0.7324670    0.7302967    0.7288109    0.7276069    0.7222222    0.7184212    0.7139329    0.7139329    0.7126966    0.7126966    0.7126966    0.7126966    0.7126966    0.7123956    0.7123956 
+##        crisi         work         must          era        quiet     question         join         road        depth       weaken      univers     profound      foundat          saw         sacr 
+##    0.7106691    0.7087836    0.7074720    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068 
+##         toil         asid    conscienc      convict     scriptur      smaller         roll         fuel    everywher        stain       legaci         farm        grace     grandest         wind 
+##    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068 
+##      serious         soil      respect        cynic        favor     stranger       search      subject        swift         mark      distant      violenc        woman        maker        emerg 
+##    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068 
+##       prefer        grudg      dissent       defeat      darkest       prepar         judg       consid         flow      inhabit     document      network          sap         lash      faction 
+##    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068 
+##      unmatch       surest       reject       precis    uncertain       answer       defens        blood      journey       promis          war        today         guid        truth        birth 
+##    0.7071068    0.7071068    0.7071068    0.7071068    0.7071068    0.7035265    0.7035265    0.7035265    0.6993997    0.6985355    0.6963106    0.6889986    0.6885304    0.6885304    0.6885304 
+##        pledg     determin        shall         come        small       remain          met     stronger        often        water        habit         seiz  citizenship         read     precious 
+##    0.6882472    0.6882472    0.6882472    0.6869464    0.6808829    0.6808829    0.6804138    0.6804138    0.6804138    0.6804138    0.6804138    0.6804138    0.6804138    0.6804138    0.6804138 
+##          run      abandon        sourc         test           us         well      charact     challeng         time       rather       vision         grow         mind       depend       effort 
+##    0.6804138    0.6804138    0.6804138    0.6804138    0.6793359    0.6767530    0.6761234    0.6751356    0.6739176    0.6735753    0.6735753    0.6735753    0.6708204    0.6708204    0.6666667 
+##      chariti         mall        ultim         warm        retir      alreadi         poor        doubt         path       parent         lost    difficult         sure         bind        sight 
+##    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667 
+##     ancestor   forty-four       amidst        cloud       simpli        midst    far-reach      consequ        greed    irrespons         shed        indic         data      statist          nag 
+##    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667 
+##        lower       easili         span     grievanc         fals     recrimin     worn-out        dogma      strangl     childish         nobl    god-given     shortcut  faint-heart       leisur 
+##    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667 
+##      pleasur     risk-tak         doer   things'som       obscur          rug         pack    sweatshop         whip         plow       fought      concord   gettysburg     normandi          khe 
+##    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667 
+##         sahn       sacrif         till   undiminish          pat      unpleas         pick         dust          lay       electr         grid        digit        wield          sun    transform 
+##    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667 
+##        scale      suggest       necess        shift      beneath        stale     argument       consum        appli         wise       expand         spin        gross         abil         rout 
+##    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667 
+##        peril        scarc        draft      charter       expedi       villag         tank       sturdi       entitl        pleas         eman    restraint       keeper         iraq    hard-earn 
+##    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667 
+##  afghanistan       former          foe     tireless       lessen      specter       apolog        induc    slaughter        innoc      outlast    patchwork    christian       muslim          jew 
+##    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667 
+##       hindus   non-believ      languag         tast       bitter        swill       segreg      someday        tribe      dissolv        usher          sow        blame        cling      corrupt 
+##    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667 
+##       deceit       silenc     unclench     alongsid        clean      nourish        starv       plenti     indiffer       outsid       regard     gratitud      far-off       desert      whisper 
+##    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667 
+##     guardian       embodi         leve     selfless    firefight     stairway        smoke       nurtur   instrument      honesti       curios         glad      satisfi        sixti      restaur 
+##    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667 
+##      remembr      coldest         band        huddl      campfir          ici       outcom        virtu        alarm      current       falter          fix        deliv     children       celebr 
+##    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6666667    0.6585528    0.6575959 
+##      citizen        stand          now      greater       fellow          let     american       father          new        women        polit          big         said    necessari        offic 
+##    0.6573689    0.6543303    0.6500112    0.6481812    0.6471502    0.6405979    0.6391355    0.6382847    0.6353298    0.6350529    0.6324555    0.6324555    0.6299408    0.6299408    0.6299408 
+##         feed         hard       embrac        bridg         pass         alon         home         noth       longer         call       across         seek        world          yet   understand 
+##    0.6299408    0.6299408    0.6299408    0.6299408    0.6288281    0.6285394    0.6255432    0.6236096    0.6236096    0.6210344    0.6181151    0.6172134    0.6143020    0.6127634    0.6117753 
+##       toward        peopl        light         fail     proclaim    communiti       public         lead        bless         live       cooper       achiev         full     conflict        grate 
+##    0.6117753    0.6056471    0.6030227    0.6030227    0.6030227    0.6027963    0.6000000    0.6000000    0.5975054    0.5975054    0.5962848    0.5962848    0.5962848    0.5962848    0.5962848 
+##      willing      possibl          har        skill       scienc        drawn         will         upon         make         move   strengthen          far          age       decent       resolv 
+##    0.5962848    0.5962848    0.5962848    0.5962848    0.5962848    0.5962848    0.5956353    0.5952291    0.5923489    0.5896920    0.5892557    0.5892557    0.5892557    0.5892557    0.5883484 
+##          men       person       declar         rule        found         cost      collect      societi        manag       inevit       declin        might         firm         knew          cut 
+##    0.5879447    0.5833333    0.5819144    0.5819144    0.5802589    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503 
+##   presidenti         bold         next       domest         forg         base      resourc      whether       unfold      chapter       uphold       global         cure      persist       contin 
+##    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503 
+##         gave      shutter       replac        avoid        claim  distinguish        guest       vulner       exampl        pursu     hardship          job      forward       famili        alway 
+##    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5773503    0.5739640    0.5726371    0.5726371    0.5726371 
+##        civil      liberti      economi        chanc         caus         peac     principl        anoth        creed         hope        happi         show          die        forev       market 
+##    0.5714286    0.5669596    0.5659165    0.5659165    0.5656854    0.5654593    0.5634362    0.5570860    0.5570860    0.5561985    0.5560384    0.5555556    0.5555556    0.5555556    0.5555556 
+##      founder      mission        equal        labor   throughout      revolut       leader        chang         word       moment         year          god          act         bush        month 
+##    0.5555556    0.5555556    0.5548265    0.5547002    0.5547002    0.5547002    0.5547002    0.5533986    0.5530409    0.5527708    0.5512459    0.5496566    0.5452753    0.5443311    0.5443311 
+##         line        short        whose        reach       mutual        relat         west      ancient        sworn        built        oblig        stake       belief         came        honor 
+##    0.5443311    0.5443311    0.5443311    0.5443311    0.5443311    0.5443311    0.5443311    0.5443311    0.5443311    0.5443311    0.5443311    0.5443311    0.5443311    0.5388159    0.5388159 
+##      histori         unit         mani         rais      success       though         need        secur       justic        order       worker        learn         sake         reli       differ 
+##    0.5362664    0.5360202    0.5353034    0.5353034    0.5345225    0.5345225    0.5333333    0.5318160    0.5298129    0.5270463    0.5270463    0.5270463    0.5270463    0.5270463    0.5238095 
+##     sacrific       requir         fair          old         take          ask       accept        watch         ever    democraci         land      countri        never       cultur     opportun 
+##    0.5229764    0.5217492    0.5163978    0.5153471    0.5144958    0.5144958    0.5091751    0.5091751    0.5091751    0.5091751    0.5087056    0.5080687    0.5050763    0.5039526    0.5039526 
+##       fortun         dark         wave       reward         anew          edg         rise         feel      destini       immigr         idea      patriot    technolog        began         lift 
+##    0.5039526    0.5039526    0.5039526    0.5039526    0.5039526    0.5039526    0.5039526    0.5039526    0.5039526    0.5039526    0.5036554    0.5025189    0.5025189    0.5025189    0.5025189 
+##       chosen        clear       solemn      transit         deni        bound        singl         size        shore       invent        given        liber       safeti        march         hold 
+##    0.5025189    0.5025189    0.5000000    0.5000000    0.5000000    0.5000000    0.5000000    0.5000000    0.5000000    0.5000000    0.5000000    0.5000000    0.5000000    0.5000000    0.5000000 
+##        along      freedom      digniti        right       defend       togeth        earth         free       author          say         deep        debat        creat       better        uniti 
+##    0.5000000    0.4975679    0.4969040    0.4950990    0.4931970    0.4930493    0.4815434    0.4815144    0.4811252    0.4811252    0.4811252    0.4811252    0.4789475    0.4747127    0.4714045 
+##         week         bear       patrol     recognit        decid       commit      forbear        humil      dignifi        river    arlington      earlier          lie         fame       bestow 
+##    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045 
+##          raw    enterpris         tide       hungri     prejudic        waver       missil         snow       ground       broken       reveal          sum          car      account      prudent 
+##    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045 
+##      discord         soon         fist       effect     reinvent        plagu     competit       urgent       harder       devast      fractur        crise        engin        sleep       expect 
+##    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045 
+##         dawn     privileg    yesterday       abroad      environ       shrink         lest    diplomaci       whenev       recogn       ennobl        weari          joy      slaveri        minor 
+##    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045 
+##    limitless        touch       taught      reclaim      pretens       crippl      succumb       region        broad         girl        natur     particip      patienc        delay         imag 
+##    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045 
+##   background      medicar       mistak       prison    substitut     hopeless      respond         lend       privat        basic        etern       durabl       victim       dollar     flourish 
+##    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045    0.4714045 
+##       fallen        refus      horizon          day        great        speak      sustain         voic     congress        bring        young     strength     greatest      tyranni        shown 
+##    0.4714045    0.4714045    0.4714045    0.4685095    0.4673650    0.4666667    0.4622502    0.4622502    0.4576043    0.4574957    0.4573296    0.4536092    0.4490502    0.4490502    0.4472136 
+##        divis     independ      inaugur          led      allianc      pursuit      depress        quest         vote       bright       decenc     generous     standard        treat        spare 
+##    0.4472136    0.4472136    0.4472136    0.4472136    0.4472136    0.4472136    0.4472136    0.4472136    0.4472136    0.4472136    0.4472136    0.4472136    0.4472136    0.4472136    0.4472136 
+##         risk       attack         done        cours      centuri       suffer       energi          tri         fill      succeed        middl       thrive      soldier          yes         good 
+##    0.4472136    0.4472136    0.4454354    0.4454354    0.4444738    0.4444444    0.4444444    0.4444444    0.4444444    0.4444444    0.4444444    0.4444444    0.4444444    0.4409586    0.4385290 
+##        other        human         mean         like          one        renew         keep       fulfil         soul       terror       restor        drift       poster         21st       affirm 
+##    0.4383973    0.4369237    0.4368520    0.4339630    0.4335770    0.4313311    0.4303315    0.4303315    0.4264014    0.4216370    0.4216370    0.4216370    0.4216370    0.4216370    0.4216370 
+##          wit     institut      million       rememb       wealth        thank        decis          els         fate    adversari     democrat       invest      deepest         king      certain 
+##    0.4216370    0.4216370    0.4200840    0.4190790    0.4170288    0.4160251    0.4082483    0.4082483    0.4082483    0.4082483    0.4082483    0.4082483    0.4082483    0.4082483    0.4082483 
+##       larger        ocean        becam     constant      clinton        pride      capitol       direct       follow       perman      triumph        class       presid       govern        place 
+##    0.4082483    0.4082483    0.4082483    0.4082483    0.4082483    0.4082483    0.4020151    0.4020151    0.4020151    0.4020151    0.4020151    0.4020151    0.3965258    0.3943445    0.3931079 
+##        state        taken         fire      complet    constitut         cast       street       around         sign      highest       intend     magnific        thoma        flame       welcom 
+##    0.3931079    0.3928371    0.3928371    0.3922323    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002 
+##        enjoy         bond        begun       corner       spoken      conduct         agre         cold        dedic       behalf       heaven        assum         walk      exercis        battl 
+##    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002 
+##         easi       forget         near       wisdom      realiti        ignor          use         help       enough       tradit       return         held        whole         sens      control 
+##    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3849002    0.3798686    0.3785166    0.3779645    0.3779645    0.3779645    0.3779645    0.3779645    0.3779645 
+##     destruct       divers         tell      continu         side         safe         earn      program      poverti        capit       friend       strong         best      protect        capac 
+##    0.3779645    0.3779645    0.3779645    0.3713907    0.3698001    0.3698001    0.3698001    0.3698001    0.3698001    0.3698001    0.3682298    0.3611576    0.3600411    0.3585686    0.3563483 
+##       border         seem       social       balanc        readi         alli        simpl        final         name        union        begin     threaten          arm      problem        heart 
+##    0.3563483    0.3553345    0.3535534    0.3535534    0.3535534    0.3535534    0.3535534    0.3535534    0.3535534    0.3478328    0.3471704    0.3442652    0.3442652    0.3429972    0.3419184 
+##         vice        decad         hear        teach    strongest       import        match       strive        spoke         bodi       wonder          rob     encourag       oldest  predecessor 
+##    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333 
+## half-centuri    steadfast       shadow      sunshin      unrival      inherit     stagnant        inequ         news       slowli         boat    broadcast    instantan    tobillion     communic 
+##    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333 
+##        mobil        magic   livelihood        shake          abl       compet     bankrupt         abid         erod       shaken      fearsom     restless       muster    construct       pillar 
+##    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333 
+##         envi     deadlock       season       massiv       wander        revit      intrigu       calcul       maneuv        posit        worri        sweat         pave        shout     advantag 
+##    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333 
+##     franklin    roosevelt   experiment        stabl      collaps       animos       engulf       intern         defi      persian         gulf      somalia    testament       rejoic     unmistak 
+##    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333 
+##     undertak    reconnect         torn         inde        reded       myriad       upward    disciplin      well-do        faint  mountaintop        guard         20th     prospect         18th 
+##    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333 
+##         19th      abolish           aw      turmoil       explod         onto        stage    mightiest        unriv        split         atom       explor       comput    microchip       deepen 
+##    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333 
+##      wellspr      african        circl        third        coast      conserv       inform      perfect      tragedi      exhilar 
+##    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333    0.3333333 
+##  [ reached getOption("max.print") -- omitted 1289 entries ]
 ## 
 ## $terror
-##  hatfield    presid    health      vice      fair     chief        mr     senat    justic 
-## 0.6324555 0.5015699 0.4216370 0.4216370 0.4082483 0.3872983 0.2767594 0.2348881 0.2094270</code></pre></div>
+##        potenti      adversari     commonplac         miracl         racial         bounti         martin          dream          polit       guarante           solv          grate           open 
+##      0.9036961      0.9036961      0.8944272      0.8944272      0.8944272      0.8944272      0.8944272      0.8624394      0.8500000      0.8485281      0.8485281      0.8485281      0.8451543 
+##          solut          whose         cultur       maintain           upon           educ           told        factori        product       industri          match           mall           land 
+##      0.8432740      0.8391464      0.8366600      0.8280787      0.8253073      0.8215838      0.8215838      0.8164966      0.8062258      0.7980239      0.7905694      0.7905694      0.7874008 
+##     strengthen            far          cross         realiz             go       children         answer        problem          decad        loyalti       strength            eye         street 
+##      0.7826238      0.7826238      0.7745967      0.7745967      0.7719754      0.7667485      0.7627701      0.7592566      0.7378648      0.7378648      0.7315635      0.7302967      0.7302967 
+##           grow        unleash            tie        highest       magnific          flame        shutter       greatest           will         enough         within         fortun     understood 
+##      0.7302967      0.7302967      0.7302967      0.7302967      0.7302967      0.7302967      0.7302967      0.7302967      0.7202643      0.7181848      0.7171372      0.7171372      0.7171372 
+##            yes          offic          bridg            let           full      administr         remind           kind        sustain          labor            end            big        special 
+##      0.7171372      0.7171372      0.7171372      0.7149700      0.7071068      0.7071068      0.7071068      0.7071068      0.7016464      0.7016464      0.7006490      0.7000000      0.6902685 
+##          chanc             us         govern           face            new       opportun           noth           born           gift           back          group          price       gracious 
+##      0.6902685      0.6870845      0.6858647      0.6822423      0.6780677      0.6772962      0.6761234      0.6761234      0.6761234      0.6755280      0.6708204      0.6708204      0.6708204 
+##         miseri           week         patrol       recognit            era         balanc          decid          readi        forbear          humil        dignifi          river      arlington 
+##      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204 
+##        earlier            lie           fame        convict     millennium         affair         center        smaller           hire           roll         behind           gang           fuel 
+##      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204 
+##      everywher          stain         legaci        airport           farm        benefit           armi          plain         nation          class           hero         wealth          pledg 
+##      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6708204      0.6697505      0.6674238      0.6668859      0.6593805      0.6529286 
+##          shall           come           live           last          small          assur           fate         welfar    citizenship           read       precious         fellow        centuri 
+##      0.6529286      0.6516946      0.6478211      0.6459422      0.6459422      0.6454972      0.6454972      0.6454972      0.6454972      0.6454972      0.6454972      0.6431759      0.6397674 
+##         around          never         promis          futur         achiev           give       american       hatfield         mondal          baker         moomaw         occurr         routin 
+##      0.6390097      0.6388766      0.6381449      0.6374553      0.6363961      0.6343350      0.6326997      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##          uniqu         realli   every-4-year         normal        transit          degre        bulwark        afflict        proport        longest        distort          penal         thrift 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##          crush    fixed-incom           alik        shatter            idl         indign           deni         burden           kept           pile        mortgag      temporari        conveni 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##          trend        tremend         upheav         period  misunderstand          sever        bastion          tempt        complex       self-rul           elit       superior         someon 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##          equit        neglect        section           food           mine          teach     profession  industrialist       shopkeep          clerk          cabbi      truckdriv          breed 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##        healthi          vigor      discrimin        runaway          reviv           play      inventori          check        consent         intent           curb         demand       distinct 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##        smother         foster          stifl         energi         extent          avail        coincid       parallel     proportion      intervent         intrus         result    unnecessari 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##         excess           loom        creativ           gate        counter   entrepreneur      voluntari            art        address         makeup     countrymen        suffici         theori 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##      unequivoc         emphat      paraphras        winston       churchil       dissolut      strongest          ahead         propos          remov      roadblock        various          level 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##           inch           feet           mile       reawaken          giant        lighten          punit            eve             dr         joseph         warren   massachusett        despair 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##       exemplar         beacon       benefici    sovereignti           sale        surrend  misunderstood        misjudg        prevail         formid        practic           prey       thousand 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##         deepli          vista         shrine       monument  revolutionari         infant     nationhood          eloqu           pool         column        whoever        heroism        potomac 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##          shore          slope       cemeteri            row         marker          david           tini       fraction          spoke        belleau           wood         argonn          omaha 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##          beach        salerno        halfway      guadalcan         tarawa           pork           chop         chosin      reservoir          hundr           rice          paddi          jungl 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##         barber           shop           1917          franc        rainbow        western            tri      battalion          heavi      artilleri           bodi          diari        flyleaf 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##       therefor          cheer        treptow        perform           deed          sight           20th       prospect           18th           19th        abolish             aw        turmoil 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##         explod           onto          stage      mightiest          unriv          split           atom         explor         comput      microchip         deepen        wellspr        african 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##          circl          third          coast        conserv         inform        perfect        tragedi        exhilar      indispens        cleaner         destin           bend          safer 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##         record        flexibl       everyday        preemin           lock          divid           curs       contempt          cloak         religi        fanatic        torment         obsess 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##           hate         impuls           lurk        overcom         textur        godsend       approach         outlin       internet         mystic        provinc      physicist   encyclopedia 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+## schoolchildren      scientist          decod      blueprint         hostil           camp   dictatorship        surpass        bloodsh        resound         sought          prize          ignit 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##          spark            boy      classroom        librari        kitchen           tabl       laughter          shoot           sell         anymor        medicin       hardwork         chemic 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##         biolog           port          innov       grandpar  grandchildren        fortifi         majest         louder            din         regain    thirty-four        prophet         luther 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##      ceaseless         redeem         extrem   partisanship         deplor         repair         breach         cardin      bernardin           wast       acrimoni           wide          belov 
+##      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555      0.6324555 
+##         height         summit            job       individu           meet            one         spirit           ever            now           side     throughout          everi         worker 
+##      0.6324555      0.6324555      0.6282809      0.6247580      0.6238503      0.6236252      0.6227992      0.6210590      0.6166548      0.6139406      0.6139406      0.6058305      0.6000000 
+##            ill          parti           save         extend          order        present          front         spread           21st        destini         return        prosper           said 
+##      0.6000000      0.6000000      0.6000000      0.6000000      0.6000000      0.6000000      0.6000000      0.6000000      0.6000000      0.5976143      0.5976143      0.5976143      0.5976143 
+##           held           take           home         famili       confront          capac          cours       interest          build          today         across          power          stand 
+##      0.5976143      0.5965588      0.5934424      0.5926378      0.5916080      0.5916080      0.5916080      0.5879747      0.5872801      0.5866013      0.5863955      0.5860943      0.5842374 
+##          reach           away           even           long        million        economi          peopl           time            man          great         beyond        patriot       neighbor 
+##      0.5809475      0.5803810      0.5803810      0.5766000      0.5756497      0.5752237      0.5745673      0.5731964      0.5730699      0.5727009      0.5720776      0.5720776      0.5720776 
+##          shape           work          bless         cooper            pay          grant           slow         depend         worthi         reluct       conflict        inaugur            led 
+##      0.5720776      0.5700877      0.5668434      0.5656854      0.5656854      0.5656854      0.5656854      0.5656854      0.5656854      0.5656854      0.5656854      0.5656854      0.5656854 
+##        lincoln           hill        willing            har          quest         bright         decenc            can           less        greater          becom           join       prejudic 
+##      0.5656854      0.5656854      0.5656854      0.5656854      0.5656854      0.5656854      0.5656854      0.5633623      0.5629400      0.5590170      0.5590170      0.5590170      0.5590170 
+##          world        struggl            put        collect          manag      establish         inevit         declin          might           firm          impos         intend           citi 
+##      0.5558806      0.5520524      0.5520524      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226 
+##           issu     presidenti           next           forg           form          trade        chapter         forget          globe           role           near           plan         colleg 
+##      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226 
+##           lose         narrow          petti         wisdom        realiti         rather         vision            day         believ          crisi            may           just        america 
+##      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5477226      0.5454824      0.5404193      0.5393599      0.5352015      0.5336761      0.5317196 
+##          among         suffer       tomorrow         import         strive            ten           drug       knowledg          middl         thrive           much         provid           alon 
+##      0.5275044      0.5270463      0.5270463      0.5270463      0.5270463      0.5270463      0.5270463      0.5270463      0.5270463      0.5270463      0.5262348      0.5262348      0.5217492 
+##        preserv         togeth           bush          decis          month           line          short           fall         produc        reflect            get         mutual           west 
+##      0.5198752      0.5169843      0.5163978      0.5163978      0.5163978      0.5163978      0.5163978      0.5163978      0.5163978      0.5163978      0.5163978      0.5163978      0.5163978 
+##            win       stronger        certain          water          built          humbl          women          creat           look           mani     understand        success         longer 
+##      0.5163978      0.5163978      0.5163978      0.5163978      0.5163978      0.5163978      0.5163978      0.5111657      0.5111657      0.5078334      0.5078334      0.5070926      0.5070926 
+##         gather         effort            age         presid       ceremoni           heal         restor         memori          child          choos           fear           real            yet 
+##      0.5070926      0.5059644      0.5031153      0.5015699      0.5000000      0.5000000      0.5000000      0.5000000      0.5000000      0.5000000      0.5000000      0.5000000      0.4982729 
+##           life          share          divis         strong          earth          begin           well           keep           make            use         higher           sick           feed 
+##      0.4972452      0.4961389      0.4949747      0.4949015      0.4949015      0.4940322      0.4938648      0.4898979      0.4870246      0.4868645      0.4780914      0.4780914      0.4780914 
+##          whole           sens            edg         planet         system          faith         moment       transfer         action          began           lift            set          state 
+##      0.4780914      0.4780914      0.4780914      0.4780914      0.4780914      0.4778095      0.4767313      0.4767313      0.4767313      0.4767313      0.4767313      0.4767313      0.4746445 
+##          carri           size        chariti         histor         beauti          white          howev         invent            rob          retir        alreadi          close         parent 
+##      0.4743416      0.4743416      0.4743416      0.4743416      0.4743416      0.4743416      0.4743416      0.4743416      0.4743416      0.4743416      0.4743416      0.4743416      0.4743416 
+##           sure           bind        commerc          along            god       challeng          anoth           must           valu          first          happi           cost        instead 
+##      0.4743416      0.4743416      0.4743416      0.4743416      0.4740455      0.4719399      0.4697762      0.4688974      0.4678877      0.4662524      0.4615663      0.4564355      0.4564355 
+##        citizen            see            old            way          think            two           past         school         differ          taken        support         o'neil          occas 
+##      0.4550849      0.4543695      0.4539797      0.4528628      0.4518481      0.4518481      0.4518481      0.4518481      0.4517540      0.4472136      0.4472136      0.4472136      0.4472136 
+##        process           busi          worst         inflat          elder       unemploy           pace         borrow           bear        concern       boundari         ethnic         object 
+##      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136 
+##        barrier        bigotri           core         except         revers         reserv         genius          unwil        command         heroic         church       prioriti      compromis 
+##      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136 
+##         unborn        arsenal            fit       shoulder        abraham            add           paid           town         messag        written         utmost           aliv         remark 
+##      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136 
+##           tool         target        noblest         mighti            air          apart          await         bicker        connect         window         scourg          plagu        fractur 
+##      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136 
+##          sleep           dawn        environ        slaveri          minor      limitless          touch         taught        reclaim        pretens         crippl        succumb         region 
+##      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136 
+##          broad           girl          natur       particip        patienc         dollar       flourish         fallen          refus        horizon        forward          alway          speak 
+##      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4472136      0.4444783      0.4444783      0.4427189 
+##          heart         father            war           seek         deserv        revolut          capit           call       sacrific          young        whether          shown          limit 
+##      0.4423259      0.4403855      0.4403855      0.4391550      0.4385290      0.4385290      0.4385290      0.4341216      0.4341216      0.4338609      0.4260064      0.4242641      0.4242641 
+##         failur           race        possess       timeless          wrong      forgotten           done         health           vice           stop         measur         common        succeed 
+##      0.4242641      0.4242641      0.4242641      0.4242641      0.4242641      0.4242641      0.4225771      0.4216370      0.4216370      0.4216370      0.4216370      0.4216370      0.4216370 
+##          forth        founder        mission         econom          endur        protect           mean         declar           year            say           left           fair         growth 
+##      0.4216370      0.4216370      0.4216370      0.4159002      0.4159002      0.4157609      0.4144342      0.4140393      0.4128614      0.4107919      0.4082483      0.4082483      0.4082483 
+##          place           seem        respons        deficit         danger        victori          fight          learn           true       progress            men         advanc          thank 
+##      0.4068381      0.4045199      0.4022409      0.4000000      0.4000000      0.4000000      0.4000000      0.4000000      0.4000000      0.3985267      0.3984095      0.3956283      0.3946761 
+##        histori         courag       question          feder          chief           high            aim          relat       mountain           move          ocean          becam       constant 
+##      0.3931227      0.3922323      0.3913119      0.3903600      0.3872983      0.3872983      0.3872983      0.3872983      0.3872983      0.3872983      0.3872983      0.3872983      0.3872983 
+##        journey           know            tax         follow         defens          choic        triumph         public          union         better           oath          defin       congress 
+##      0.3841367      0.3839909      0.3837613      0.3813850      0.3813850      0.3813850      0.3813850      0.3794733      0.3771236      0.3752933      0.3741657      0.3726780      0.3721042 
+##        everyon           hand           like         weapon           hope       reverend      constitut         almost         republ            goe           cast         whatev         capabl 
+##      0.3721042      0.3708099      0.3705241      0.3690125      0.3670652      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484 
+##           sign          grown         troubl         number           self           rest          ensur          aspir         negoti          thoma           star          enjoy           bond 
+##      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484 
+##        destroy           cold         heaven          assum         global           cure         contin           gave         replac          avoid          claim         exampl          pursu 
+##      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484      0.3651484 
+##       hardship          equal         celebr         toward           word           free           help     friendship           find           four           dark         reward        control 
+##      0.3651484      0.3643993      0.3639127      0.3627381      0.3607042      0.3606353      0.3603750      0.3585686      0.3585686      0.3585686      0.3585686      0.3585686      0.3585686 
+##          crime           rise           tell         immigr         reform         remain           hour           rich           need      democraci          watch           made          renew 
+##      0.3585686      0.3585686      0.3585686      0.3585686      0.3535534      0.3523321      0.3508232      0.3508232      0.3478505      0.3450328      0.3450328      0.3429972      0.3409972 
+##           came         rememb          trust         threat         border           forc          human         matter          quiet          simpl           road            act           good 
+##      0.3407771      0.3407771      0.3380617      0.3380617      0.3380617      0.3375700      0.3367830      0.3354102      0.3354102      0.3354102      0.3354102      0.3347193      0.3328201 
+##        countri          found           part           guid           care           unit         solemn         person          bound           hear          georg     washington         wonder 
+##      0.3324112      0.3302891      0.3299832      0.3265986      0.3195048      0.3178209      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278 
+##          march          forev       ancestor     forty-four         amidst          cloud         simpli          midst      far-reach        consequ          greed      irrespons           shed 
+##      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278 
+##          indic           data        statist            nag          lower         easili           span       grievanc           fals       recrimin       worn-out          dogma        strangl 
+##      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278 
+##       childish           nobl      god-given       shortcut    faint-heart         leisur        pleasur       risk-tak           doer     things'som         obscur            rug           pack 
+##      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278 
+##      sweatshop           whip           plow         fought        concord     gettysburg       normandi            khe           sahn         sacrif           till     undiminish            pat 
+##      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278 
+##        unpleas           pick           dust            lay         electr           grid          digit          wield            sun      transform          scale        suggest         necess 
+##      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278 
+##          shift        beneath          stale       argument         consum          appli           wise         expand           spin          gross           abil           rout 
+##      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278      0.3162278 
+##  [ reached getOption("max.print") -- omitted 1289 entries ]</code></pre></div>
 </div>
 <div id="scaling-document-positions" class="section level2">
 <h2 class="hasAnchor">
@@ -834,7 +1263,7 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.h
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the   supplementary          budget              to            this           house            last           april               , 
-##     -0.15058982      0.34726053      0.36922895      0.21628040      1.09099461      0.05829019      0.33579912      0.26839752      0.14935164      0.25353066     -0.13851438      0.30630139 
+##     -0.15058982      0.34726053      0.36922895      0.21628040      1.09099461      0.05829019      0.33579913      0.26839752      0.14935164      0.25353066     -0.13851438      0.30630139 
 ##            said              we           could            work             our             way         through          period              of          severe        economic        distress 
 ##     -0.77779200      0.43921107     -0.59703182      0.54219872      0.70824736      0.29607747      0.62274642      0.51835687      0.30095010      1.25529502      0.44375418      1.83470247 
 ##               .           today             can          report            that notwithstanding 
@@ -853,17 +1282,17 @@ if (<span class="kw">require</span>(topicmodels)) {
     <span class="kw">topics</span>(myLDAfit20, <span class="dv">3</span>)
 }
 ##      2010_BUDGET_01_Brian_Lenihan_FF 2010_BUDGET_02_Richard_Bruton_FG 2010_BUDGET_03_Joan_Burton_LAB 2010_BUDGET_04_Arthur_Morgan_SF 2010_BUDGET_05_Brian_Cowen_FF 2010_BUDGET_06_Enda_Kenny_FG
-## [1,]                               1                                4                              7                              11                            12                            6
-## [2,]                              10                                3                             16                              19                            17                            3
-## [3,]                              17                               14                              9                              15                            10                            2
+## [1,]                              15                                4                              1                               8                            13                           16
+## [2,]                              11                                3                              9                              18                             7                           14
+## [3,]                              19                               17                             20                              20                             1                           10
 ##      2010_BUDGET_07_Kieran_ODonnell_FG 2010_BUDGET_08_Eamon_Gilmore_LAB 2010_BUDGET_09_Michael_Higgins_LAB 2010_BUDGET_10_Ruairi_Quinn_LAB 2010_BUDGET_11_John_Gormley_Green
-## [1,]                                20                                5                                  2                              14                                14
-## [2,]                                13                               13                                  9                               9                                17
-## [3,]                                 2                               14                                 15                              17                                10
+## [1,]                                12                                2                                 10                              12                                 3
+## [2,]                                 3                               10                                 14                              14                                17
+## [3,]                                20                                3                                 18                              18                                15
 ##      2010_BUDGET_12_Eamon_Ryan_Green 2010_BUDGET_13_Ciaran_Cuffe_Green 2010_BUDGET_14_Caoimhghin_OCaolain_SF
-## [1,]                              20                                 2                                    18
-## [2,]                               4                                 4                                     8
-## [3,]                              14                                12                                    14</code></pre></div>
+## [1,]                              20                                17                                     6
+## [2,]                               7                                14                                     5
+## [3,]                              14                                20                                     3</code></pre></div>
 </div>
 </div>
 </div>

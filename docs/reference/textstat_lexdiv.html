@@ -173,51 +173,51 @@ with each column consisting of a requested measure.</dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-(<span class='no'>results</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='fu'>c</span>(<span class='st'>"CTTR"</span>, <span class='st'>"TTR"</span>, <span class='st'>"U"</span>)))</div><div class='output co'>#&gt;                  CTTR      TTR          U
-#&gt; 1981-Reagan  43.29842 1.157613 -186.91243
-#&gt; 1985-Reagan  42.27581 1.103578 -280.92307
-#&gt; 1989-Bush    44.21663 1.207231 -143.72662
-#&gt; 1993-Clinton 53.43691 1.763201  -43.25754
-#&gt; 1997-Clinton 46.26199 1.321501  -94.88620
-#&gt; 2001-Bush    53.83400 1.789503  -41.99094
-#&gt; 2005-Bush    47.49900 1.393118  -78.70659
-#&gt; 2009-Obama   43.84239 1.186882 -158.66860
-#&gt; 2013-Obama   47.39718 1.387152  -79.82713
-#&gt; 2017-Trump   56.17983 1.948857  -35.79428</div><div class='input'><span class='fu'>cor</span>(<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"all"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt;             TTR         C         R      CTTR         U         S Maas lgV0
-#&gt; TTR   1.0000000 0.9987134 0.9994190 0.9994190 0.8356166 0.9989957   NA   NA
-#&gt; C     0.9987134 1.0000000 0.9998613 0.9998613 0.8594013 0.9999825   NA   NA
-#&gt; R     0.9994190 0.9998613 1.0000000 1.0000000 0.8517330 0.9999423   NA   NA
-#&gt; CTTR  0.9994190 0.9998613 1.0000000 1.0000000 0.8517330 0.9999423   NA   NA
-#&gt; U     0.8356166 0.8594013 0.8517330 0.8517330 1.0000000 0.8567293   NA   NA
-#&gt; S     0.9989957 0.9999825 0.9999423 0.9999423 0.8567293 1.0000000   NA   NA
-#&gt; Maas         NA        NA        NA        NA        NA        NA    1   NA
-#&gt; lgV0         NA        NA        NA        NA        NA        NA   NA    1
-#&gt; lgeV0        NA        NA        NA        NA        NA        NA   NA   NA
-#&gt;       lgeV0
-#&gt; TTR      NA
-#&gt; C        NA
-#&gt; R        NA
-#&gt; CTTR     NA
-#&gt; U        NA
-#&gt; S        NA
-#&gt; Maas     NA
-#&gt; lgV0     NA
-#&gt; lgeV0     1</div><div class='input'>
+(<span class='no'>results</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='fu'>c</span>(<span class='st'>"CTTR"</span>, <span class='st'>"TTR"</span>, <span class='st'>"U"</span>)))</div><div class='output co'>#&gt;                   CTTR       TTR        U
+#&gt; 1981-Reagan  11.389397 0.3045032 23.00653
+#&gt; 1985-Reagan  11.433654 0.2984668 22.89890
+#&gt; 1989-Bush    10.320398 0.2817741 21.36968
+#&gt; 1993-Clinton  9.997768 0.3298857 22.12126
+#&gt; 1997-Clinton 10.369313 0.2962056 21.74016
+#&gt; 2001-Bush     9.855993 0.3276243 21.89836
+#&gt; 2005-Bush    10.763898 0.3156989 22.63270
+#&gt; 2009-Obama   12.195736 0.3301576 24.53073
+#&gt; 2013-Obama   11.501755 0.3366167 23.99284
+#&gt; 2017-Trump    9.487610 0.3291215 21.49093</div><div class='input'><span class='fu'>cor</span>(<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"all"</span>))</div><div class='output co'>#&gt;                TTR          C            R         CTTR          U          S
+#&gt; TTR    1.000000000  0.8655675  0.008768591  0.008768591  0.4254944  0.5371925
+#&gt; C      0.865567451  1.0000000  0.507609571  0.507609571  0.8204234  0.8872298
+#&gt; R      0.008768591  0.5076096  1.000000000  1.000000000  0.9079934  0.8469615
+#&gt; CTTR   0.008768591  0.5076096  1.000000000  1.000000000  0.9079934  0.8469615
+#&gt; U      0.425494404  0.8204234  0.907993408  0.907993408  1.0000000  0.9908749
+#&gt; S      0.537192509  0.8872298  0.846961549  0.846961549  0.9908749  1.0000000
+#&gt; Maas  -0.423120302 -0.8196286 -0.908918583 -0.908918583 -0.9995478 -0.9914058
+#&gt; lgV0   0.200103122  0.6631489  0.981055543  0.981055543  0.9717025  0.9332928
+#&gt; lgeV0  0.200103122  0.6631489  0.981055543  0.981055543  0.9717025  0.9332928
+#&gt;             Maas       lgV0      lgeV0
+#&gt; TTR   -0.4231203  0.2001031  0.2001031
+#&gt; C     -0.8196286  0.6631489  0.6631489
+#&gt; R     -0.9089186  0.9810555  0.9810555
+#&gt; CTTR  -0.9089186  0.9810555  0.9810555
+#&gt; U     -0.9995478  0.9717025  0.9717025
+#&gt; S     -0.9914058  0.9332928  0.9332928
+#&gt; Maas   1.0000000 -0.9722186 -0.9722186
+#&gt; lgV0  -0.9722186  1.0000000  1.0000000
+#&gt; lgeV0 -0.9722186  1.0000000  1.0000000</div><div class='input'>
 <span class='co'># with different settings of drop</span>
 <span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 1997-Clinton    2001-Bush 
-#&gt;     1.157613     1.103578     1.207231     1.763201     1.321501     1.789503 
+#&gt;    0.3045032    0.2984668    0.2817741    0.3298857    0.2962056    0.3276243 
 #&gt;    2005-Bush   2009-Obama   2013-Obama   2017-Trump 
-#&gt;     1.393118     1.186882     1.387152     1.948857 </div><div class='input'><span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;                   TTR
-#&gt; 1981-Reagan  1.157613
-#&gt; 1985-Reagan  1.103578
-#&gt; 1989-Bush    1.207231
-#&gt; 1993-Clinton 1.763201
-#&gt; 1997-Clinton 1.321501
-#&gt; 2001-Bush    1.789503
-#&gt; 2005-Bush    1.393118
-#&gt; 2009-Obama   1.186882
-#&gt; 2013-Obama   1.387152
-#&gt; 2017-Trump   1.948857</div></pre>
+#&gt;    0.3156989    0.3301576    0.3366167    0.3291215 </div><div class='input'><span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;                    TTR
+#&gt; 1981-Reagan  0.3045032
+#&gt; 1985-Reagan  0.2984668
+#&gt; 1989-Bush    0.2817741
+#&gt; 1993-Clinton 0.3298857
+#&gt; 1997-Clinton 0.2962056
+#&gt; 2001-Bush    0.3276243
+#&gt; 2005-Bush    0.3156989
+#&gt; 2009-Obama   0.3301576
+#&gt; 2013-Obama   0.3366167
+#&gt; 2017-Trump   0.3291215</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
