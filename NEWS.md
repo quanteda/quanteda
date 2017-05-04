@@ -5,12 +5,16 @@
 ### New features
 
 * Corpus construction using `corpus()` now works for a `tm::SimpleCorpus` object. (#680)
+* Added `corpus_trim()` and `char_trim()` functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.
 
 ### Bug fixes and stability enhancements
 
 * `dfm_lookup()` behaves more robustly on different platforms, especially for keys whose values match no features (#704).
 * `textstat_simil()` and `textstat_dist()` no longer take the `n` argument, as this was not sorting features in correct order.
-
+* Fixed failure of `tokens(x, what = "character")` when `x` included Twitter characters `@` and `#` (#637).
+* Fixed bug #707 where `ntype.dfm()` produced an incorrect result.
+* Fixed bug #706 where `textstat_lexdiv()` was returning incorrect results for single-document dfm objects.
+* Improved the robustness of `corpus_reshape()`.
 
 ## Changes since v0.9.9-24
 
