@@ -10,8 +10,8 @@ test_that("readability works: basic", {
 })
 
 test_that("readability count is ok", {
-    expect_equal(round(textstat_readability("The cat in the hat ate breakfast.", "Flesch")), c(text1 = 103))
-    expect_equal(textstat_readability("The cat in the hat ate breakfast.", "FOG"), c(text1 = 2.8))
+    expect_equivalent(round(textstat_readability("The cat in the hat ate breakfast.", "Flesch")), 103)
+    expect_equivalent(textstat_readability("The cat in the hat ate breakfast.", "FOG"), 2.8)
 })
 
 test_that("readability works with sentence length filtering", {
