@@ -251,7 +251,7 @@ test_that("remove_punct and remove_twitter interact correctly, #607", {
     expect_equal(
         as.character(tokens(txt, what = "word", remove_punct = TRUE, remove_twitter = TRUE)),
         c("they", "stretched", "in", "a", "never-ending", "line")
-    )    
+    )
     expect_equal(
         as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = FALSE)),
         c("they", ":", "#stretched", ",", "@", "@@", "in", ",", ",", "a", "#", "##", "never", "-", "ending", "@line", ".")
@@ -321,3 +321,16 @@ test_that("docvars are erased for tokens added", {
         data.frame()
     )
 })
+
+test_that("what = character works with @ and #, issue #637", {
+    
+    expect_equal(as.list(tokens("This: is, a @test! #tag", what = "character", remove_punct = FALSE)),
+                 list(c("T", "h", "i", "s", ":", "i", "s", ",", 
+                        "a", "@", "t", "e", "s", "t", "!", "#", "t", "a", "g")))
+                      
+    expect_equal(as.list(tokens("This: is, a @test! #tag", what = "character", remove_punct = TRUE)),
+                 list(c("T", "h", "i", "s", "i", "s", 
+                        "a", "t", "e", "s", "t", "t", "a", "g")))
+
+})
+    
