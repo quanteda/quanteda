@@ -19,6 +19,7 @@
 #'   default is two newlines), \code{"tags"} (where the default is a tag 
 #'   preceded by two pound or "hash" signs \code{##}), and \code{"other"}.
 #' @inheritParams valuetype
+#' @param omit_empty if \code{TRUE}, empty texts are removed 
 #' @param use_docvars (for corpus objects only) if \code{TRUE}, repeat the docvar 
 #'   values for each segmented text; if \code{FALSE}, drop the docvars in the 
 #'   segmented corpus. Dropping the docvars might be useful in order to conserve
@@ -86,6 +87,7 @@
 corpus_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                            delimiter = NULL,
                            valuetype = c("regex", "fixed", "glob"),
+                           omit_empty = TRUE,
                            use_docvars = TRUE, 
                            ...) {
     UseMethod("corpus_segment")
@@ -97,12 +99,13 @@ corpus_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tag
 corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                                   delimiter = NULL,
                                   valuetype = c("regex", "fixed", "glob"),
+                                  omit_empty = TRUE,
                                   use_docvars = TRUE, 
                            ...) {
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
     
-    temp <- segment_texts(texts(x), what, delimiter, valuetype, ...)
+    temp <- segment_texts(texts(x), what, delimiter, valuetype, omit_empty, ...)
 
     # get the relevant function call
     commands <- as.character(sys.calls())
@@ -111,6 +114,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
     # create the new corpus
     result <- corpus(temp, metacorpus = list(source = metacorpus(x, "source"),
                                              notes = commands))
+    settings(result, "units") <- what
     
     # add repeated versions of remaining docvars
     if (use_docvars && !is.null(docvars(x))) {
@@ -119,8 +123,10 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
     if (what == 'tags') {
         docvars(result, 'tag') <- attr(temp, 'tag')
     }
+    docvars(result, '_document') <- attr(temp, 'document')
     docvars(result, '_docid') <- attr(temp, 'docid')
     docvars(result, '_segid') <- attr(temp, 'segid')
+    
     return(result)
 }
 
@@ -146,6 +152,7 @@ char_segment <- function(x,
                          what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                          delimiter = NULL,
                          valuetype = c("regex", "fixed", "glob"),
+                         omit_empty = TRUE,
                          use_docvars = TRUE, 
                          ...) {
     UseMethod("char_segment")
@@ -157,6 +164,7 @@ char_segment.character <- function(x,
                                    what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                                    delimiter = NULL,
                                    valuetype = c("regex", "fixed", "glob"),
+                                   omit_empty = TRUE,
                                    use_docvars = TRUE, 
                                    ...) {
         
@@ -168,14 +176,15 @@ char_segment.character <- function(x,
     names_org <- names(x)
     
     # normalize EOL
-    x <- stringi::stri_replace_all_fixed(x, "\r\n", "\n") # Windows
-    x <- stringi::stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
+    x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
+    x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     names(x) <- names_org
-    result <- segment_texts(x, what, delimiter, valuetype, ...)
+    result <- segment_texts(x, what, delimiter, valuetype, omit_empty, ...)
     result <- result[result!='']
     
     attr(result, 'tag') <- NULL
+    attr(result, 'document') <- NULL
     attr(result, 'docid') <- NULL
     attr(result, 'segid') <- NULL
     
@@ -183,7 +192,7 @@ char_segment.character <- function(x,
 }
 
 # internal function for char_segment and corpus_segment
-segment_texts <- function(x, what, delimiter, valuetype, ...){
+segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
     
     names_org <- names(x)
     
@@ -197,7 +206,7 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
         }
     } else if (what == 'tags') {
         if (is.null(delimiter)) {
-            delimiter <- "(##\\w+\\b)" # parentheses are for back reference
+            delimiter <- "##\\w+\\b"
             valuetype <- "regex"
         }
     } else if (what == 'other') {
@@ -208,13 +217,13 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
 
     if (valuetype == "glob") {
         # treat as fixed if no glob characters detected
-        if (!any(stringi::stri_detect_charclass(delimiter, c("[*?]")))) {
+        if (!any(stri_detect_charclass(delimiter, c("[*?]")))) {
             valuetype <- "fixed"
         } else {
             regex <- escape_regex(delimiter)
-            regex <- stringi::stri_replace_all_fixed(regex, '*', '(\\S*)')
-            regex <- stringi::stri_replace_all_fixed(regex, '?', '(\\S)')
-            delimiter <- paste0(regex, collapse = '|')
+            regex <- stri_replace_all_fixed(regex, '*', '(\\S*)')
+            regex <- stri_replace_all_fixed(regex, '?', '(\\S)')
+            delimiter <- stri_c(regex, collapse = '|')
             valuetype <- "regex"
         }
     }
@@ -224,30 +233,33 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
     } else if (what == "sentences") {
         temp <- tokens_sentence(x, ...)
     } else if (what == 'tags') {
-        temp <- stringi::stri_replace_all_regex(x, delimiter, "\v$0") # insert control character
-        temp <- stringi::stri_split_fixed(temp, pattern = "\v", omit_empty = TRUE)
+        temp <- stri_replace_all_regex(x, delimiter, "\UE000$0") # insert PUA character
+        temp <- stri_split_fixed(temp, pattern = "\UE000", omit_empty = omit_empty)
         # remove elements to be empty
-        temp <- lapply(temp, function(x) x[stringi::stri_replace_first_regex(x, '^\\s+$', '') != ''])
+        temp <- lapply(temp, function(x) x[stri_replace_first_regex(x, '^\\s+$', '') != ''])
     } else {
         if (valuetype == "fixed") {
-            temp <- stringi::stri_split_fixed(x, pattern = delimiter, omit_empty = TRUE)
+            temp <- stri_replace_all_fixed(x, delimiter, stri_c(delimiter, "\UE000"))
+            temp <- stri_split_fixed(x, pattern = "\UE000", omit_empty = omit_empty)
         } else {
-            temp <- stringi::stri_split_regex(x, pattern = delimiter, omit_empty = TRUE)
+            temp <- stri_replace_all_regex(x, delimiter, "$0\UE000")
+            temp <- stri_split_fixed(temp, pattern = "\UE000", omit_empty = omit_empty)
         }
     }
 
     result <- unlist(temp, use.names = FALSE)
     
     if (what == 'tags') {
-        tag <- stringi::stri_extract_first_regex(result, delimiter)
-        result <- stringi::stri_replace_first_fixed(result, tag, '')
-        result <- stringi::stri_trim_both(result)
+        tag <- stri_extract_first_regex(result, delimiter)
+        result <- stri_replace_first_fixed(result, tag, '')
+        result <- stri_trim_both(result)
         attr(result,'tag') <- tag
     } else {
-        result <- stringi::stri_trim_both(result)
+        result <- stri_trim_both(result)
     }
     
     n_segment <- lengths(temp)
+    attr(result, 'document') <- rep(names_org, n_segment)
     attr(result,'docid') <- rep(seq_along(x), n_segment)
     
     id_segment <- unlist(lapply(n_segment, seq_len), use.names = FALSE)
@@ -255,7 +267,7 @@ segment_texts <- function(x, what, delimiter, valuetype, ...){
 
     if (!is.null(names_org)) {
         # to make names doc1.1, doc1.2, doc2.1, ...
-        names(result) <- paste0(rep(names_org, n_segment), ".", id_segment)
+        names(result) <- stri_c(rep(names_org, n_segment), ".", id_segment)
     }
     
     return(result)

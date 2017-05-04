@@ -15,7 +15,7 @@
 #'   other cruft that might be in the texts following conversion.
 #'   
 #'   For finer-grained control, consider filtering sentences prior first, 
-#'   including through pattern-matching, using \code{\link{corpus_trimsentences}}.
+#'   including through pattern-matching, using \code{\link{corpus_trim}}.
 #' @param drop  if \code{TRUE}, the result is returned as a numeric vector if
 #'   only a single measure is requested; otherwise, a data.frame is returned
 #'   with each column consisting of a requested measure.
@@ -149,9 +149,9 @@ textstat_readability.character <- function(x,
         names(x) <- paste0("text", seq_along(x))
 
     if (!missing(min_sentence_length) | !missing(max_sentence_length)) {
-        x <- char_trimsentences(x, 
-                                min_length = min_sentence_length,
-                                max_length = max_sentence_length)
+        x <- char_trim(x, 'sentences',
+                       min_ntoken = min_sentence_length,
+                       max_ntoken = max_sentence_length)
     }
     
     # get sentence lengths - BEFORE lower-casing

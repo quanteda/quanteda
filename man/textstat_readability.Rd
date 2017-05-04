@@ -33,7 +33,7 @@ may not really be sentences, such as section titles, table elements, and
 other cruft that might be in the texts following conversion.
 
 For finer-grained control, consider filtering sentences prior first, 
-including through pattern-matching, using \code{\link{corpus_trimsentences}}.}
+including through pattern-matching, using \code{\link{corpus_trim}}.}
 
 \item{drop}{if \code{TRUE}, the result is returned as a numeric vector if
 only a single measure is requested; otherwise, a data.frame is returned

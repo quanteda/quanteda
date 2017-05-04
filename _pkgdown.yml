@@ -14,11 +14,7 @@ reference:
 - title: Corpus functions
   desc: Functions for constructing and manipulating corpus class objects.
   contents:
-    - corpus
-    - corpus_reshape
-    - corpus_sample
-    - corpus_segment
-    - corpus_subset
+    - starts_with("corpus")
     - metacorpus
     - docvars
     - metacorpus
@@ -126,8 +122,7 @@ reference:
     - nsyllable
     - ntoken
     - ntype
-    - docnames
-    - docnames<-
+    - starts_with("docnames")
     - featnames
     - stopwords
 - title: Miscellaneous functions
