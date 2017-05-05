@@ -80,3 +80,7 @@ test_that("test stm converter: zero-count feature", {
     expect_warning(convert(mydfm, to = "stm"), "zero-count features: feat2")
 })
 
+test_that("test stm converter: when dfm is 0% sparse", {
+    stmdfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "stm")
+    expect_equal(length(stmdfm$documents), 3)
+})
