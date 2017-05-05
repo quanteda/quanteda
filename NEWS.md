@@ -15,6 +15,7 @@
 * Fixed bug #707 where `ntype.dfm()` produced an incorrect result.
 * Fixed bug #706 where `textstat_lexdiv()` was returning incorrect results for single-document dfm objects.
 * Improved the robustness of `corpus_reshape()`.
+* `print`, and `head`, and `tail` methods for `dfm` are more robust (#684).
 
 ## Changes since v0.9.9-24
 
