@@ -265,6 +265,10 @@ dfm2stmformat <- function(data, meta) {
     # find out which documents are not empty
     non_empty_docs <- which(rowSums(data) != 0)
     
+    # find out which documents are empty
+    empty_docs <- which(rowSums(data) == 0)
+    if (length(empty_docs) > 0) warning("Dropped empty document(s): ", paste0(names(empty_docs), collapse=", "))
+    
     # convert counts to STM documents format
     documents <- ijv.to.doc(data[non_empty_docs, ]@i+1, data[non_empty_docs, ]@j+1, data[non_empty_docs, ]@x) 
     names(documents) <- rownames(data)[non_empty_docs]
