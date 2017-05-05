@@ -6,10 +6,12 @@
 NULL
 
 #' @param x the dfm to be printed
-#' @param show.values print the dfm as a matrix or array (if resampled).
+#' @param show.values print the dfm values; if called explicitly this will print
+#'   all values, overriding \code{ndoc} and \code{nfeature}.
 #' @param show.settings print the settings used to create the dfm.  See 
 #'   \link{settings}.
-#' @param show.summary print a brief summary indicating the number of documents and features
+#' @param show.summary print a brief summary indicating the number of documents
+#'   and features
 #' @param ndoc max number of documents to print
 #' @param nfeature max number of features to print
 #' @param ... further arguments passed to or from other methods
@@ -18,32 +20,48 @@ NULL
 #' @keywords dfm
 setMethod("print", signature(x = "dfm"), 
           function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...) {
-              if (length(x) > 0) {
-                  if (show.summary) {
-                      cat("Document-feature matrix of: ",
-                          format(ndoc(x), , big.mark=","), " document",
-                          ifelse(ndoc(x)>1 | ndoc(x)==0, "s, ", ", "),
-                          format(nfeature(x), big.mark=","), " feature",
-                          ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
-                          ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-                          " (", format(sparsity(x)*100, digits = 3),
-                          "% sparse).\n", sep="")
-                  }
-                  if (show.settings) {
-                      cat("Settings: TO BE IMPLEMENTED.")
-                  }
-                  if (show.values | (nrow(x) <= ndoc & ncol(x) <= nfeature)) {
-                      if (is(x, "sparseMatrix"))
-                          Matrix::printSpMatrix2(x[1:min(ndoc, ndoc(x)), 1:min(nfeature, nfeature(x))], 
-                                             col.names=TRUE, zero.print=0, ...)
-                      else if (is(x, "denseMatrix")) {
-                          getMethod("show", "denseMatrix")(x, ...)
-                      } else {
-                          print(as.matrix(x))
-                      }
-                  }
-              } else{
+              
+              if (!length(x)) {
                   print(NULL)
+                  return()
+              } 
+
+              if (show.summary) {
+                  cat("Document-feature matrix of: ",
+                      format(ndoc(x), , big.mark=","), " document",
+                      ifelse(ndoc(x)>1 | ndoc(x)==0, "s, ", ", "),
+                      format(nfeature(x), big.mark=","), " feature",
+                      ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
+                      ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
+                      " (", format(sparsity(x)*100, digits = 3),
+                      "% sparse).\n", sep="")
+              }
+              
+              if (show.settings) {
+                  cat("Settings: TO BE IMPLEMENTED.")
+              }
+              
+              if (show.values == TRUE) {
+                  ndoc <- nrow(x)
+                  nfeature <- ncol(x)
+              } else if (missing(show.values)) {
+                  if (nrow(x) <= ndoc & ncol(x) <= nfeature) {
+                      ndoc <- nrow(x)
+                      nfeature <- ncol(x)
+                      show.values <- TRUE
+                  } else {
+                      show.values <- FALSE
+                  }
+              }
+              
+              if (show.values)
+                  if (is(x, "sparseMatrix"))
+                      Matrix::printSpMatrix2(x[1:ndoc, 1:nfeature], 
+                                             col.names=TRUE, zero.print=0, ...)
+              else if (is(x, "denseMatrix")) {
+                  getMethod("show", "denseMatrix")(x[1:ndoc, 1:nfeature], ...)
+              } else {
+                  print(as.matrix(x[1:ndoc, 1:nfeature]))
               }
           })
 
