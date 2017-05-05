@@ -13,7 +13,7 @@
 * `textstat_simil()` and `textstat_dist()` no longer take the `n` argument, as this was not sorting features in correct order.
 * Fixed failure of `tokens(x, what = "character")` when `x` included Twitter characters `@` and `#` (#637).
 * Fixed bug #707 where `ntype.dfm()` produced an incorrect result.
-* Fixed bug #706 where `textstat_lexdiv()` was returning incorrect results for single-document dfm objects.
+* Fixed bug #706 where `textstat_readability()` and `textstat_lexdiv()` for single-document returns when `drop = TRUE`.
 * Improved the robustness of `corpus_reshape()`.
 * `print`, and `head`, and `tail` methods for `dfm` are more robust (#684).
 
