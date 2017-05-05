@@ -47,3 +47,34 @@ test_that("readability works as koRpus", {
     expect_equal(round(q_rdb$Flesch, 2), round(k_rdb@Flesch$RE, 2))
     expect_equal(round(q_rdb$SMOG, 2), round(k_rdb@SMOG$grade, 2))
 })
+
+test_that("readability(x, drop) works", {
+    txt1 <- "The cat in the hat was intelligent."
+    expect_equal(
+        dim(textstat_readability(txt1, c("Flesch", "Flesch.Kincaid"), drop = TRUE)), 
+        c(1, 2)
+    )
+    expect_equal(
+        dim(textstat_readability(txt1, c("Flesch", "Flesch.Kincaid"), drop = FALSE)), 
+        c(1, 2)
+    )
+    
+    txt2 <- c(txt1, "The cat in the hat was charming.")
+    expect_equal(
+        dim(textstat_readability(txt2, c("Flesch", "Flesch.Kincaid"), drop = TRUE)), 
+        c(2, 2)
+    )
+    expect_equal(
+        dim(textstat_readability(txt2, c("Flesch", "Flesch.Kincaid"), drop = FALSE)), 
+        c(2, 2)
+    )
+    expect_equal(
+        dim(textstat_readability(txt2, c("Flesch"), drop = TRUE)),
+        NULL
+    )
+    expect_equal(
+        dim(textstat_readability(txt2, c("Flesch"), drop = FALSE)),
+        c(2, 1)
+    )
+})
+
