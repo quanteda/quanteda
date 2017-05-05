@@ -22,12 +22,14 @@
 \arguments{
 \item{x}{the dfm to be printed}
 
-\item{show.values}{print the dfm as a matrix or array (if resampled).}
+\item{show.values}{print the dfm values; if called explicitly this will print
+all values, overriding \code{ndoc} and \code{nfeature}.}
 
 \item{show.settings}{print the settings used to create the dfm.  See 
 \link{settings}.}
 
-\item{show.summary}{print a brief summary indicating the number of documents and features}
+\item{show.summary}{print a brief summary indicating the number of documents
+and features}
 
 \item{ndoc}{max number of documents to print}
 
