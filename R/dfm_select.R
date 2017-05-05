@@ -119,24 +119,10 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         features_id <- unlist(regex2id(features, featnames(x), valuetype, case_insensitive), use.names = FALSE)
         if (!is.null(features_id)) features_id <- sort(features_id) # keep the original column order
     } else {
-        features_id <- NULL
-    }
-    
-    if (selection == "keep") {
-        features_keep <- seq_len(nfeature(x))
-    } else {
-        features_keep <- setdiff(features_keep, features_id)
-    }
-    
-    if (!padding) {
-        
-        # select features based on character length
         if (selection == "keep") {
-            features_keep <- intersect(features_keep, which(stri_length(featnames(x)) >= min_nchar & 
-                                                            stri_length(featnames(x)) <= max_nchar))
+            features_id <- seq_len(nfeature(x))
         } else {
-            features_keep <- union(features_keep, which(stri_length(featnames(x)) < min_nchar | 
-                                                        stri_length(featnames(x)) > max_nchar))
+            features_id <- NULL
         }
     }
     
@@ -147,22 +133,32 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         documents_id <- unlist(regex2id(documents, docnames(x), valuetype, case_insensitive), use.names = FALSE)
         if (!is.null(documents_id)) documents_id <- sort(documents_id) # keep the original row order
     } else {
-        documents_id <- NULL
+        if (selection == "keep") {
+            documents_id <- seq_len(ndoc(x))
+        } else {
+            documents_id <- NULL
+        }
     }
     
     if (selection == "keep") {
-        documents_keep <- seq_len(ndoc(x))
+        features_keep <- features_id
+        documents_keep <- documents_id
     } else {
-        documents_keep <- setdiff(seq_len(ndoc(x)), documents_id)
+        features_keep <- setdiff(features_keep, features_id)
+        documents_keep <- setdiff(documents_keep, documents_id)
     }
     
-    features_add <- documents_add <- character() # avoid error in verbose message
+    # select features based on feature length
+    if (!padding) {
+        features_keep <- intersect(features_keep, which(stri_length(featnames(x)) >= min_nchar & 
+                                                        stri_length(featnames(x)) <= max_nchar))
+    }
     
     if (!length(features_keep)) features_keep <- 0
     if (!length(documents_keep)) documents_keep <- 0
-    print(documents_keep)
-    print(features_keep)
     temp <- x[documents_keep, features_keep]    
+    
+    features_add <- documents_add <- character() # avoid error in verbose message
     
     if (valuetype == 'fixed' && padding) {
     

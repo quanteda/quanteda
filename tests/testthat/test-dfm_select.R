@@ -233,6 +233,17 @@ test_that("dfm_select return empty dfm when not maching features", {
                  NULL)
 })
 
+test_that("dfm_remove works even when it does not remove anything, issue 711", {
+  
+    txts <- c(d1 = "This is text one", d2 = "The second text", d3 = "This is text three")
+    testdfm <- dfm(txts)
+    
+    expect_silent(dfm_remove(testdfm, c('xxx', 'yyy', 'x y')))
+    expect_equal(featnames(dfm_remove(testdfm, c('xxx', 'yyy', 'x y'))),
+                 featnames(testdfm))
+
+})
+
 
 
 
