@@ -419,3 +419,31 @@ test_that("dfm's document counts in verbose message is correct", {
                    'kept 2 features and 4 documents')
 })
 
+test_that("dfm print works with options as expected", {
+    tmp <- dfm(data_corpus_irishbudget2010)
+    expect_output(
+        head(tmp),
+        "Document-feature matrix of: 14 documents, 5,058 features.*\\(showing first 6 documents and first 6 features\\)"
+    )
+    expect_output(
+        head(tmp[1:5, 1:5]),
+        "Document-feature matrix of: 5 documents, 5 features.*\\(showing first 5 documents and first 5 features\\)"
+    )
+    expect_output(
+        print(tmp[1:5, 1:5]),
+        "Document-feature matrix of: 5 documents, 5 features.*5 x 5 sparse Matrix"
+    )
+    expect_output(
+        print(tmp[1:5, 1:5], show.values = FALSE),
+        "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\)\\.$"
+    )
+    expect_output(
+        print(tmp[1:3, 1:3], ndoc = 2, nfeature = 2, show.values = TRUE),
+        "^Document-feature matrix of: 3 documents, 3 features.*3 x 3 sparse Matrix"
+    )
+    expect_output(
+        print(tmp[1:5, 1:5], show.summary = FALSE),
+        "^5 x 5 sparse Matrix"
+    )
+})
+
