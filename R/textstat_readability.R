@@ -379,7 +379,6 @@ textstat_readability.character <- function(x,
     # return a data.frame of the indexes
     tempIndex <- which(names(textFeatures) == "Wlt3Sy")
     textFeatures <- as.data.frame(textFeatures)
-    if (nrow(textFeatures) == 1) drop = FALSE
     ret <- textFeatures[, (tempIndex+1) : ncol(textFeatures), drop = drop]
     if (!is.vector(ret) & !("all" %in% measure)) {
         row.names(ret) <- textFeatures$textID
