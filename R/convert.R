@@ -292,7 +292,7 @@ ijv.to.doc <- function(i, j, v) {
     index <- lapply(index, as.integer)
     count <- split(v, i)
     count <- lapply(count, as.integer)
-    mapply(rbind, index, count)
+    mapply(rbind, index, count, SIMPLIFY = FALSE)
 }
 
 #' convert a dfm to an lsa "textmatrix"
