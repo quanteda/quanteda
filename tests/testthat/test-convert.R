@@ -72,4 +72,11 @@ test_that("test stm converter: zero-count document", {
     expect_warning(convert(mydfm, to = "stm"), "Dropped empty document\\(s\\): doc3")
 })
 
+test_that("test stm converter: zero-count feature", {
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             1, 0, 0, 0, 
+                             1, 0, 3, 4), byrow = TRUE, nrow = 4))
+    expect_warning(convert(mydfm, to = "stm"), "zero-count features: feat2")
+})
 
