@@ -113,4 +113,17 @@ test_that("fcm works on tokens containing padding", {
     expect_equal(featnames(fcm(toks)), c("", "a", "c", "d", "f", "g"))
 })
 
+test_that("tokens_remove works regardless when features are overlapped, issue #711", {
+    
+    toks <- tokens("one two three four")
+    expect_equivalent(as.list(tokens_remove(toks, features = c("one", "two", "three"))),
+                      list('four'))
+    expect_equivalent(as.list(tokens_remove(toks, features = c("one", "two three"))),
+                      list('four'))
+    expect_equivalent(as.list(tokens_remove(toks, features = c("one two", "two three"))),
+                      list('four'))
+    expect_equivalent(as.list(tokens_remove(toks, features = c("one two", "two three four"))),
+                      list(character()))
+})
+
 
