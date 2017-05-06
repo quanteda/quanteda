@@ -17,6 +17,41 @@ test_that("test STM package converter", {
     expect_equivalent(dSTM$vocab, tP$vocab)
 })
 
+test_that("test STM package converter with metadata", {
+    skip_if_not_installed("stm")
+    skip_if_not_installed("tm")
+    dv <- data.frame(myvar = c("A", "B"), row.names = names(mytexts))
+    mycorpus <- corpus(mytexts, docvars = dv)
+    dm <- dfm(mycorpus, remove_punct = TRUE)
+    dSTM <- convert(dm, to = "stm")
+    tP <- stm::textProcessor(mytexts, removestopwords = FALSE, 
+                             stem = FALSE, wordLengths = c(1, Inf))
+    expect_equivalent(dSTM$documents[1], tP$documents[1])
+    expect_equivalent(dSTM$documents[2], tP$documents[2])
+    expect_equivalent(dSTM$vocab, tP$vocab)
+    expect_identical(dSTM$meta, dv)
+})
+
+test_that("test STM package converter with metadata w/zero-count document", {
+    skip_if_not_installed("stm")
+    skip_if_not_installed("tm")
+    mytexts2 <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
+                  text2 = ";",  # this will become empty
+                  text3 = "New York City has raised a taxes: an income tax and a sales tax.")
+    dv <- data.frame(myvar = c("A", "B", "C"), row.names = names(mytexts2))
+    mycorpus <- corpus(mytexts2, docvars = dv)
+    dm <- dfm(mycorpus, remove_punct = TRUE)
+    expect_true(ntoken(dm)[2] == 0)
+    
+    dSTM <- convert(dm, to = "stm")
+    tP <- stm::textProcessor(mytexts, removestopwords = FALSE, 
+                             stem = FALSE, wordLengths = c(1, Inf))
+    expect_equivalent(dSTM$documents[1], tP$documents[1])
+    expect_equivalent(dSTM$documents[2], tP$documents[2])
+    expect_equivalent(dSTM$vocab, tP$vocab)
+    expect_identical(dSTM$meta, dv[-2, , drop = FALSE])
+})
+
 test_that("test tm package converter", {
     skip_if_not_installed("tm")
     dtmq <- convert(d[, order(featnames(d))], to = "tm")

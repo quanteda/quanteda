@@ -258,6 +258,9 @@ ldaformat2dtm <- function (documents, vocab, omit_empty = TRUE) {
 }
 
 dfm2stmformat <- function(data, meta) {
+    # get docvars (if any)
+    dvars <- docvars(data)
+        
     # sort features into alphabetical order
     data <- data[, order(featnames(data))]
     data <- as(data, "dgTMatrix")
@@ -277,9 +280,13 @@ dfm2stmformat <- function(data, meta) {
     documents <- ijv.to.doc(data[non_empty_docs, ]@i+1, data[non_empty_docs, ]@j+1, data[non_empty_docs, ]@x) 
     names(documents) <- rownames(data)[non_empty_docs]
     
-    # select docvars for non-empty docs
-    if (!is.null(meta))
+    # select docvars for non-empty docs or from dfm
+    # meta takes priority over built-in docvars
+    if (!is.null(meta)) {
         meta <- meta[non_empty_docs, , drop = FALSE]
+    } else if (length(dvars)) {
+        meta <- dvars[non_empty_docs, , drop = FALSE]
+    }
     
     # return the object
     list(documents = documents, vocab = colnames(data), meta = meta)
