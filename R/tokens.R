@@ -710,7 +710,7 @@ tokens_hashed_recompile <- function(x, method = c("C++", "R")) {
         return(x)
     }
     
-    index_unique <- unique(unlist(x, use.names = FALSE))
+    index_unique <- unique(unlist(unclass(x), use.names = FALSE))
     padding <- (index_unique == 0)
     attrs_input$padding <- any(padding) # add padding flag
     index_unique <- index_unique[!padding] # exclude padding
