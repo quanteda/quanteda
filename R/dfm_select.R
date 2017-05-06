@@ -105,6 +105,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         warning("padding is used only when valuetype is 'fixed'")
     
     # select features based on "features" pattern
+    features_keep <- seq_len(nfeature(x))
     if (!is.null(features)) {
         # special handling if features is a dfm
         if (is.dfm(features)) {
@@ -114,32 +115,21 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             padding <- TRUE
             case_insensitive <- FALSE
         }
-        features <- features2vector(features)
+        features <- features2vector(as.list(features))
         features_id <- unlist(regex2id(features, featnames(x), valuetype, case_insensitive), use.names = FALSE)
         if (!is.null(features_id)) features_id <- sort(features_id) # keep the original column order
-
     } else {
-        if (selection == "keep")
-            features_id <- seq_len(nfeature(x))
-        else
-            features_id <- NULL
-    }
-    
-    if (!padding) {
-        
-        # select features based on character length
         if (selection == "keep") {
-            features_id <- intersect(features_id, which(stringi::stri_length(featnames(x)) >= min_nchar & 
-                                                        stringi::stri_length(featnames(x)) <= max_nchar))
+            features_id <- seq_len(nfeature(x))
         } else {
-            features_id <- union(features_id, which(stringi::stri_length(featnames(x)) < min_nchar | 
-                                                    stringi::stri_length(featnames(x)) > max_nchar))
+            features_id <- NULL
         }
     }
     
     # select documents based on "documents" pattern
+    documents_keep <- seq_len(ndoc(x))
     if (!is.null(documents)){
-        documents <- unlist(documents, use.names = FALSE) # this funciton does not accpet list
+        documents <- unlist(documents, use.names = FALSE) # this funciton does not accept list
         documents_id <- unlist(regex2id(documents, docnames(x), valuetype, case_insensitive), use.names = FALSE)
         if (!is.null(documents_id)) documents_id <- sort(documents_id) # keep the original row order
     } else {
@@ -150,58 +140,53 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         }
     }
     
+    if (selection == "keep") {
+        features_keep <- features_id
+        documents_keep <- documents_id
+    } else {
+        features_keep <- setdiff(features_keep, features_id)
+        documents_keep <- setdiff(documents_keep, documents_id)
+    }
+    
+    # select features based on feature length
+    if (!padding) {
+        features_keep <- intersect(features_keep, which(stri_length(featnames(x)) >= min_nchar & 
+                                                        stri_length(featnames(x)) <= max_nchar))
+    }
+    
+    if (!length(features_keep)) features_keep <- 0
+    if (!length(documents_keep)) documents_keep <- 0
+    temp <- x[documents_keep, features_keep]    
+    
     features_add <- documents_add <- character() # avoid error in verbose message
     
-    if (selection == "keep") {
+    if (valuetype == 'fixed' && padding) {
     
-        if (length(features_id) && length(documents_id)) {
-            temp <- x[documents_id, features_id]
-        } else if (length(features_id)) {
-            temp <- x[0, features_id]
-        } else if (length(documents_id)) {
-            temp <- x[documents_id, 0]
-        } else {
-            temp <- x[0, 0]
+        # add non-existent features
+        features_add <- setdiff(features, featnames(temp))
+        if (length(features_add)) {
+            pad_feature <- sparseMatrix(i = NULL, j = NULL, 
+                                        dims = c(ndoc(temp), length(features_add)), 
+                                        dimnames = list(docnames(temp), features_add))
+            temp <- new("dfmSparse", Matrix::cbind2(temp, pad_feature))
         }
-        
-        if (valuetype == 'fixed' && padding) {
-        
-            # add non-existent features
-            features_add <- setdiff(features, featnames(temp))
-            if (length(features_add)) {
-                pad_feature <- sparseMatrix(i = NULL, j = NULL, 
-                                            dims = c(ndoc(temp), length(features_add)), 
-                                            dimnames = list(docnames(temp), features_add))
-                temp <- new("dfmSparse", Matrix::cbind2(temp, pad_feature))
-            }
 
-            # add non-existent documents
-            documents_add <- setdiff(documents, docnames(temp))
-            if (length(documents_add)) {
-                pad_document <- sparseMatrix(i = NULL, j = NULL, 
-                                             dims = c(length(documents_add), nfeature(temp)), 
-                                             dimnames = list(documents_add, featnames(temp)))
-                temp <- new("dfmSparse", Matrix::rbind2(temp, pad_document))
-            }
-        }
-        
-        if (is_dfm) {
-            result <- temp[,features] # sort features into original order
-        } else {
-            result <- temp
-        }
-    
-    } else if (selection == 'remove') {
-
-        if(!length(features_id)) {
-            result <- x[documents_id * -1,]
-        } else if(!length(documents_id)) {
-            result <- x[, features_id * -1]
-        } else {
-            result <- x[documents_id * -1, features_id * -1]
+        # add non-existent documents
+        documents_add <- setdiff(documents, docnames(temp))
+        if (length(documents_add)) {
+            pad_document <- sparseMatrix(i = NULL, j = NULL, 
+                                         dims = c(length(documents_add), nfeature(temp)), 
+                                         dimnames = list(documents_add, featnames(temp)))
+            temp <- new("dfmSparse", Matrix::rbind2(temp, pad_document))
         }
     }
- 
+    
+    if (is_dfm) {
+        result <- temp[,features] # sort features into original order
+    } else {
+        result <- temp
+    }
+    
     if (verbose) {
         catm("dfm_select ", ifelse(selection=="keep", "kept", "removed"), " ", 
              format(length(features_id), big.mark=","),

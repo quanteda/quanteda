@@ -1,5 +1,5 @@
-//#include "dev.h"
 #include "quanteda.h"
+//#include "dev.h"
 #include "recompile.h"
 using namespace quanteda;
 
@@ -11,9 +11,13 @@ Text keep_token(Text tokens,
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     unsigned int filler = UINT_MAX; // use upper limit as a filler
-    Text tokens_copy(tokens.size(), filler);
+    
+    bool match = false;
+    Text tokens_copy(tokens.size());
     if (padding) {
         std::fill(tokens_copy.begin(), tokens_copy.end(), 0);
+    } else {
+        std::fill(tokens_copy.begin(), tokens_copy.end(), filler);
     }
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -21,11 +25,18 @@ Text keep_token(Text tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = set_words.find(ngram);
             if (it != set_words.end()) {
+                match = true;
                 std::copy(ngram.begin(), ngram.end(), tokens_copy.begin() + i);
             }
         }
     }
-    if (!padding) tokens_copy.erase(std::remove(tokens_copy.begin(), tokens_copy.end(), filler), tokens_copy.end());
+    if (match) {
+        if (!padding) {
+            tokens_copy.erase(std::remove(tokens_copy.begin(), tokens_copy.end(), filler), tokens_copy.end());
+        }
+    } else {
+        tokens_copy = {};
+    }
     return tokens_copy;
 }
 
@@ -36,7 +47,8 @@ Text remove_token(Text tokens,
 
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
-    unsigned int filler = std::numeric_limits<unsigned int>::max(); // use upper limit as a filler
+    unsigned int filler = UINT_MAX; // use upper limit as a filler
+    Text tokens_copy = tokens;
     bool match = false;
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -45,13 +57,18 @@ Text remove_token(Text tokens,
             auto it = set_words.find(ngram);
             if (it != set_words.end()) {
                 match = true;
-                std::fill(tokens.begin() + i, tokens.begin() + i + span, filler);
-                if (padding) tokens[i] = 0;
+                if (padding) {
+                    std::fill(tokens_copy.begin() + i, tokens_copy.begin() + i + span, 0);
+                } else {
+                    std::fill(tokens_copy.begin() + i, tokens_copy.begin() + i + span, filler);
+                }
             }
         }
     }
-    if (match) tokens.erase(std::remove(tokens.begin(), tokens.end(), filler), tokens.end());
-    return tokens;
+    if (match && !padding) {
+        tokens_copy.erase(std::remove(tokens_copy.begin(), tokens_copy.end(), filler), tokens_copy.end());
+    }
+    return tokens_copy;
 }
 
 struct select_mt : public Worker{
@@ -136,11 +153,11 @@ List qatd_cpp_tokens_select(const List &texts_,
 }
 
 /***R
-
-toks <- list(rep(1:10, 10000), rep(5:15, 10000))
+toks <- list(rep(1:10, 1))
+#toks <- list(rep(1:10, 1), rep(5:15, 1))
 #dict <- as.list(1:100000)
 dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-qatd_cpp_tokens_select(toks, dict, 1, TRUE)
+qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE)
 
 
 
