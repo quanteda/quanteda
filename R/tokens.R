@@ -324,7 +324,7 @@ as.tokens.list <- function(x) {
     attr(result, "concatenator") <- "_"
     attr(result, 'padding') <- FALSE
     class(result)[2] <- "tokenizedTexts"
-    result
+    return(result)
 }
 
 #' @export
@@ -343,7 +343,17 @@ as.list.tokens <- function(x, ...) {
     result <- as.tokenizedTexts(x)
     attributes(result) <- NULL
     names(result) <- names(x)
-    result
+    return(result)
+}
+
+#' @rdname unlist
+#' @param ... passed to unlist()
+#' @return \code{unlist} returns a simple vector of characters from a
+#'   \link{tokens} object
+#' @method unlist tokens
+#' @export
+unlist.tokens <- function(x, ...) {
+    unlist(as.list(x), ...)
 }
 
 #' @rdname as.tokens
