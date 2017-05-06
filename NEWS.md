@@ -6,6 +6,7 @@
 
 * Corpus construction using `corpus()` now works for a `tm::SimpleCorpus` object. (#680)
 * Added `corpus_trim()` and `char_trim()` functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.
+* Conversion of a dfm to an stm object now passes docvars through in the `$meta` of the return object.
 
 ### Bug fixes and stability enhancements
 
@@ -16,6 +17,7 @@
 * Fixed bug #706 where `textstat_readability()` and `textstat_lexdiv()` for single-document returns when `drop = TRUE`.
 * Improved the robustness of `corpus_reshape()`.
 * `print`, and `head`, and `tail` methods for `dfm` are more robust (#684).
+* Fixed bug in `convert(x, to = "stm")` caused by zero-count documents and zero-count features in a dfm (#699, #700, #701).  This also removes docvar rows from `$meta` when this is passed through the dfm, for zero-count documents.
 
 ## Changes since v0.9.9-24
 

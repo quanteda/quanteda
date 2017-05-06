@@ -258,6 +258,9 @@ ldaformat2dtm <- function (documents, vocab, omit_empty = TRUE) {
 }
 
 dfm2stmformat <- function(data, meta) {
+    # get docvars (if any)
+    dvars <- docvars(data)
+        
     # sort features into alphabetical order
     data <- data[, order(featnames(data))]
     data <- as(data, "dgTMatrix")
@@ -265,13 +268,25 @@ dfm2stmformat <- function(data, meta) {
     # find out which documents are not empty
     non_empty_docs <- which(rowSums(data) != 0)
     
+    # find out which documents are empty
+    empty_docs <- which(rowSums(data) == 0)
+    if (length(empty_docs) > 0) warning("Dropped empty document(s): ", paste0(names(empty_docs), collapse=", "))
+    
+    # find out which feature are empty across all documents
+    empty_feats <- which(colSums(data) == 0)
+    if (length(empty_feats) > 0) warning("zero-count features: ", paste0(names(empty_feats), collapse=", "))
+    
     # convert counts to STM documents format
     documents <- ijv.to.doc(data[non_empty_docs, ]@i+1, data[non_empty_docs, ]@j+1, data[non_empty_docs, ]@x) 
     names(documents) <- rownames(data)[non_empty_docs]
     
-    # select docvars for non-empty docs
-    if (!is.null(meta))
+    # select docvars for non-empty docs or from dfm
+    # meta takes priority over built-in docvars
+    if (!is.null(meta)) {
         meta <- meta[non_empty_docs, , drop = FALSE]
+    } else if (length(dvars)) {
+        meta <- dvars[non_empty_docs, , drop = FALSE]
+    }
     
     # return the object
     list(documents = documents, vocab = colnames(data), meta = meta)
@@ -284,7 +299,7 @@ ijv.to.doc <- function(i, j, v) {
     index <- lapply(index, as.integer)
     count <- split(v, i)
     count <- lapply(count, as.integer)
-    mapply(rbind, index, count)
+    mapply(rbind, index, count, SIMPLIFY = FALSE)
 }
 
 #' convert a dfm to an lsa "textmatrix"
