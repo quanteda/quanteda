@@ -18,6 +18,7 @@
 * Improved the robustness of `corpus_reshape()`.
 * `print`, and `head`, and `tail` methods for `dfm` are more robust (#684).
 * Fixed bug in `convert(x, to = "stm")` caused by zero-count documents and zero-count features in a dfm (#699, #700, #701).  This also removes docvar rows from `$meta` when this is passed through the dfm, for zero-count documents.
+* Corrected broken handling of nested Yoshikoder dictionaries in `dictionary()`. (#722)
 
 ## Changes since v0.9.9-24
 

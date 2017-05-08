@@ -304,13 +304,15 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
 }
 
 
-#' coercion and checking functions for tokens objects
+#' coercion, checking, and combining functions for tokens objects
 #' 
-#' Coerce a list of character elements to a quanteda \link{tokens} object, or check whether 
-#' an object is a \link{tokens} object.
-#' @param x list of character elements
+#' Coercion functions to and from \link{tokens} objects, checks for whether an
+#' object is a \link{tokens} object, and functions to combine \link{tokens}
+#' objects.
+#' @param x object to be coerced or checked
 #' @return \code{as.tokens} returns a quanteda \link{tokens} object
 #' @export
+#' @rdname as.tokens
 as.tokens <- function(x) {
     UseMethod("as.tokens")
 }
@@ -328,13 +330,22 @@ as.tokens.list <- function(x) {
 }
 
 #' @export
+#' @method as.tokens collocations
+#' @rdname as.tokens
+as.tokens.collocations <- function(x) {
+    toks <- attr(x, 'tokens')
+    attr(toks, 'types') <- attr(x, 'types')
+    class(toks) <- c("tokens", "tokenizedTexts")
+    return(toks)
+}
+
+#' @export
 #' @noRd
 as.tokens.tokenizedTexts <- function(x) {
     NextMethod("as.tokens")
 }
 
 #' @rdname as.tokens
-#' @param ... unused
 #' @return \code{as.list} returns a simple list of characters from a
 #'   \link{tokens} object
 #' @method as.list tokens
@@ -346,19 +357,20 @@ as.list.tokens <- function(x, ...) {
     return(result)
 }
 
-#' @rdname unlist
-#' @param ... passed to unlist()
-#' @return \code{unlist} returns a simple vector of characters from a
+#' @rdname as.tokens
+#' @return \code{unlist} returns a simple vector of characters from a 
 #'   \link{tokens} object
+#' @param recursive a required argument for \link{unlist} but inapplicable to
+#'   \link{tokens} objects
 #' @method unlist tokens
 #' @export
-unlist.tokens <- function(x, ...) {
-    unlist(as.list(x), ...)
+unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
+    unlist(as.list(x), use.names = use.names)
 }
 
 #' @rdname as.tokens
 #' @param use.names logical; preserve names if \code{TRUE}.  For
-#'   \code{as.character} only.
+#'   \code{as.character} and \code{unlist} only.
 #' @return \code{as.character} returns a character vector from a 
 #'   \link{tokens} object
 #' @export
@@ -770,10 +782,14 @@ types.tokens <- function(x) {
 #' @rdname as.tokens
 #' @param t1 tokens one to be added
 #' @param t2 tokens two to be added
+#' @return \code{c(...)} and \code{+} return a tokens object whose documents
+#'   have been added as a single sequence of documents.
 #' @examples 
-#' toks1 <- tokens(data_corpus_inaugural[1:5])
-#' toks2 <- tokens(data_corpus_inaugural[21:25])
-#' toks3 <- toks1 + toks2
+#' # combining tokens
+#' toks1 <- tokens(c("a b c d e", "f g h"))
+#' toks2 <- tokens(c("1 2 3"))
+#' toks1 + toks2
+#' c(toks1, toks2)
 #' 
 #' @export
 `+.tokens` <- function(t1, t2) {
@@ -792,16 +808,9 @@ types.tokens <- function(x) {
 }
 
 #' @rdname as.tokens
-#' @param recursive logical used by `c()` method, always set to `FALSE`
-#' @examples 
-#' 
-#' toks1 <- tokens(data_corpus_inaugural[1:5])
-#' toks2 <- tokens(data_corpus_inaugural[21:25])
-#' toks3 <- tokens(data_corpus_inaugural[41:45])
-#' summary(c(toks1, toks2, toks3))
-#' 
+#' @param ... for \link{c.tokens} only, \link{tokens} objects to be concatenated
 #' @export
-c.tokens <- function(..., recursive = FALSE) {
+c.tokens <- function(...) {
     x <- list(...)
     if (length(x) == 1) return(x[[1]])
     result <- x[[1]] + x[[2]]

@@ -166,6 +166,7 @@ setMethod("as.list",
 #'   Lexicoder format, \url{http://www.lexicoder.com}
 #'   
 #' @seealso \link{dfm}
+#' @import stringi
 #' @examples
 #' mycorpus <- corpus_subset(data_corpus_inaugural, Year>1900)
 #' mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
@@ -219,7 +220,7 @@ dictionary <- function(..., file = NULL, format = NULL,
         if (!file.exists(file))
             stop("File does not exist: ", file)
         if (is.null(format)) {
-            ext <- stringi::stri_trans_tolower(tools::file_ext(file))
+            ext <- stri_trans_tolower(tools::file_ext(file))
             if (ext %in% names(formats)) {
                 format <- formats[[ext]]
             } else {
@@ -322,7 +323,7 @@ lowercase_dictionary <- function(dict) {
             dict[[i]] <- lowercase_dictionary(dict[[i]])
         } else {
             if (is.character(dict[[i]])) {
-                dict[[i]] <- stringi::stri_trans_tolower(dict[[i]])
+                dict[[i]] <- stri_trans_tolower(dict[[i]])
             }
         }
     }
@@ -336,7 +337,7 @@ list2dictionary <- function(dict) {
             dict[[i]] = list2dictionary(dict[[i]])
         } else {
             if (is.character(dict[[i]])) {
-                dict[[i]] = list(stringi::stri_enc_toutf8(dict[[i]]))
+                dict[[i]] = list(stri_enc_toutf8(dict[[i]]))
             } else {
                 dict[[i]] = list(dict[[i]])
             }
@@ -360,12 +361,12 @@ is.dictionary <- function(x) {
 # dict <- read_dict_lexicoder('/home/kohei/Documents/Dictionary/Lexicoder/LSDaug2015/LSD2015.lc3')
 read_dict_lexicoder <- function(path) {
     
-    lines <- stringi::stri_read_lines(path, encoding = 'utf-8') # Lexicoder 3.0 is always UTF-8
-    lines <- stringi::stri_trim_both(lines)
-    lines_yaml <- ifelse(stringi::stri_detect_regex(lines, '^\\+'),
-                         stringi::stri_replace_all_regex(lines, '^+(.+)$', '"$1":'),
-                         stringi::stri_replace_all_regex(lines, '^(.+)$', ' - "$1"'))
-    lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '[[:control:]]', '') # clean
+    lines <- stri_read_lines(path, encoding = 'utf-8') # Lexicoder 3.0 is always UTF-8
+    lines <- stri_trim_both(lines)
+    lines_yaml <- ifelse(stri_detect_regex(lines, '^\\+'),
+                         stri_replace_all_regex(lines, '^+(.+)$', '"$1":'),
+                         stri_replace_all_regex(lines, '^(.+)$', ' - "$1"'))
+    lines_yaml <- stri_replace_all_regex(lines_yaml, '[[:control:]]', '') # clean
     yaml <- paste0(lines_yaml, collapse = '\n')
     dict <- yaml::yaml.load(yaml, as.named.list = TRUE)
     dict <- list2dictionary(dict)
@@ -378,14 +379,14 @@ read_dict_lexicoder <- function(path) {
 # dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat', 'iso-8859-1')
 read_dict_wordstat <- function(path, encoding = 'auto') {
     
-    lines <- stringi::stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
-    lines <- stringi::stri_trim_right(lines)
-    lines_yaml <- ifelse(stringi::stri_detect_regex(lines, ' \\(\\d\\)$'),
-                         stringi::stri_replace_all_regex(lines, '^(\\t*)(.+) \\(\\d\\)$', '$1- "$2"'),
-                         stringi::stri_replace_all_regex(lines, '^(\\t*)(.+)$', '$1- "$2": '))
+    lines <- stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
+    lines <- stri_trim_right(lines)
+    lines_yaml <- ifelse(stri_detect_regex(lines, ' \\(\\d\\)$'),
+                         stri_replace_all_regex(lines, '^(\\t*)(.+) \\(\\d\\)$', '$1- "$2"'),
+                         stri_replace_all_regex(lines, '^(\\t*)(.+)$', '$1- "$2": '))
     
-    lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '\t', '  ') # needs two spaces
-    lines_yaml <- stringi::stri_replace_all_regex(lines_yaml, '[[:control:]]', '') # clean
+    lines_yaml <- stri_replace_all_regex(lines_yaml, '\t', '  ') # needs two spaces
+    lines_yaml <- stri_replace_all_regex(lines_yaml, '[[:control:]]', '') # clean
     yaml <- paste0(lines_yaml, collapse = '\n')
     dict <- yaml::yaml.load(yaml, as.named.list = TRUE)
     dict <- list2dictionary_wordstat(dict, FALSE)
@@ -419,23 +420,23 @@ list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
 # read_dict_liwc('/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')
 read_dict_liwc <- function(path, encoding = 'auto') {
     
-    lines <- stringi::stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
-    lines <- stringi::stri_trim_both(lines)
+    lines <- stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
+    lines <- stri_trim_both(lines)
     lines <- lines[lines != '']
     
     sections <- which(lines == '%')
     lines_key <- lines[(sections[1] + 1):(sections[2] - 1)]
     lines_value <- lines[(sections[2] + 1):(length(lines))]
     
-    keys <- stringi::stri_extract_last_regex(lines_key, '[^\t]+')
-    keys_id <- stringi::stri_extract_first_regex(lines_key, '\\d+')
+    keys <- stri_extract_last_regex(lines_key, '[^\t]+')
+    keys_id <- stri_extract_first_regex(lines_key, '\\d+')
     
-    values <- stringi::stri_extract_first_regex(lines_value, '[^\t]+')
-    lines_value <- stringi::stri_replace_first_regex(lines_value, '[^\t]+\t', '') # for safety
-    values_ids <- stringi::stri_extract_all_regex(lines_value, '\\d+')
+    values <- stri_extract_first_regex(lines_value, '[^\t]+')
+    lines_value <- stri_replace_first_regex(lines_value, '[^\t]+\t', '') # for safety
+    values_ids <- stri_extract_all_regex(lines_value, '\\d+')
     
-    keys <- stringi::stri_replace_all_regex(keys, '[[:control:]]', '') # clean
-    values <- stringi::stri_replace_all_regex(values, '[[:control:]]', '') # clean
+    keys <- stri_replace_all_regex(keys, '[[:control:]]', '') # clean
+    values <- stri_replace_all_regex(values, '[[:control:]]', '') # clean
     
     dict <- split(rep(values, lengths(values_ids)), as.factor(unlist(values_ids, use.names = FALSE)))
     dict <- dict[order(as.numeric(names(dict)))]
@@ -450,7 +451,7 @@ read_dict_liwc <- function(path, encoding = 'auto') {
 read_dict_yoshikoder <- function(path){
     
     xml <- XML::xmlParse(path)
-    root <- XML::xpathSApply(xml, "/dictionary")
+    root <- XML::xpathSApply(xml, "/dictionary/cnode")
     dict <- nodes2list(root[[1]])
     dict <- list2dictionary(dict)
     return(dict)
@@ -458,10 +459,10 @@ read_dict_yoshikoder <- function(path){
 
 # Internal function for read_dict_yoshikoder
 nodes2list <- function(node, dict = list()){
-    nodes <- XML::xpathSApply(node, "cnode/cnode")
+    nodes <- XML::xpathSApply(node, "cnode")
     if (length(nodes)) {
         for (i in seq_along(nodes)) {
-            key <- XML::xmlGetAttr(nodes[[i]], name="name")
+            key <- XML::xmlGetAttr(nodes[[i]], name = "name")
             dict[[key]] <- nodes2list(nodes[[i]], dict[[key]])
         }
     } else {
@@ -487,7 +488,7 @@ nodes2list <- function(node, dict = list()){
 #' }
 as.yaml <- function(x) {
     yaml <- yaml::as.yaml(simplify_dictionary(x, TRUE), indent.mapping.sequence = TRUE)
-    yaml <- stringi::stri_enc_toutf8(yaml)
+    yaml <- stri_enc_toutf8(yaml)
     return(yaml)
 }
 
