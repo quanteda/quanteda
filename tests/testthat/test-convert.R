@@ -43,7 +43,7 @@ test_that("test STM package converter with metadata w/zero-count document", {
     dm <- dfm(mycorpus, remove_punct = TRUE)
     expect_true(ntoken(dm)[2] == 0)
     
-    dSTM <- convert(dm, to = "stm")
+    dSTM <- suppressWarnings(convert(dm, to = "stm"))
     tP <- stm::textProcessor(mytexts, removestopwords = FALSE, 
                              stem = FALSE, wordLengths = c(1, Inf))
     expect_equivalent(dSTM$documents[1], tP$documents[1])
@@ -113,6 +113,10 @@ test_that("test stm converter: zero-count feature", {
                              1, 0, 0, 0, 
                              1, 0, 3, 4), byrow = TRUE, nrow = 4))
     expect_warning(convert(mydfm, to = "stm"), "zero-count features: feat2")
+    
+    require(stm)
+    stm_model <- stm(documents = stmdfm$documents, vocab = stmdfm$vocab, K=3)
+    expect_output(print(stm_model), "A topic model with 3 topics")
 })
 
 test_that("test stm converter: when dfm is 0% sparse", {
