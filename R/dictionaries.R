@@ -458,10 +458,10 @@ read_dict_yoshikoder <- function(path){
 
 # Internal function for read_dict_yoshikoder
 nodes2list <- function(node, dict = list()){
-    nodes <- XML::xpathSApply(node, "cnode/cnode")
+    nodes <- XML::xpathSApply(node, "cnode")
     if (length(nodes)) {
         for (i in seq_along(nodes)) {
-            key <- XML::xmlGetAttr(nodes[[i]], name="name")
+            key <- XML::xmlGetAttr(nodes[[i]], name = "name")
             dict[[key]] <- nodes2list(nodes[[i]], dict[[key]])
         }
     } else {

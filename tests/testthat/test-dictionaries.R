@@ -181,3 +181,11 @@ test_that("error if empty concatenator is given", {
                  'Concatenator cannot be null or an empty string')
 })
 
+test_that("dictionary woks with the Yoshicoder format", {
+    testdict <- dictionary(file = "../data/dictionaries/laver-garry.ykd")
+    expect_equal(names(testdict[[1]]), 
+                 c("Economy", "Institutions", "Values", "Law and Order", "Environment", 
+                   "Culture", "Groups", "Rural", "Urban"))
+    
+})    
+
