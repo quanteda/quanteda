@@ -166,6 +166,7 @@ setMethod("as.list",
 #'   Lexicoder format, \url{http://www.lexicoder.com}
 #'   
 #' @seealso \link{dfm}
+#' @import stringi
 #' @examples
 #' mycorpus <- corpus_subset(data_corpus_inaugural, Year>1900)
 #' mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
