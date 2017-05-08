@@ -10,10 +10,7 @@
 \alias{is.tokens}
 \alias{+.tokens}
 \alias{c.tokens}
-\title{coercion, checking, and combining functions for tokens objects
-  
-Coercion functions to and from \link{tokens} objects, checks for whether an object is a \link{tokens} object, and functions to combine
-\link{tokens} objects.}
+\title{coercion, checking, and combining functions for tokens objects}
 \usage{
 as.tokens(x)
 
@@ -23,7 +20,7 @@ as.tokens(x)
 
 \method{as.list}{tokens}(x, ...)
 
-\method{unlist}{tokens}(x, use.names = TRUE)
+\method{unlist}{tokens}(x, recursive = FALSE, use.names = TRUE)
 
 \method{as.character}{tokens}(x, use.names = FALSE, ...)
 
@@ -34,7 +31,12 @@ is.tokens(x)
 \method{c}{tokens}(...)
 }
 \arguments{
+\item{x}{object to be coerced or checked}
+
 \item{...}{for \link{c.tokens} only, \link{tokens} objects to be concatenated}
+
+\item{recursive}{a required argument for \link{unlist} but inapplicable to
+\link{tokens} objects}
 
 \item{use.names}{logical; preserve names if \code{TRUE}.  For
 \code{as.character} and \code{unlist} only.}
@@ -42,8 +44,6 @@ is.tokens(x)
 \item{t1}{tokens one to be added}
 
 \item{t2}{tokens two to be added}
-
-\item{object}{to be coerced or checked}
 }
 \value{
 \code{as.tokens} returns a quanteda \link{tokens} object
@@ -64,10 +64,9 @@ is.tokens(x)
   have been added as a single sequence of documents.
 }
 \description{
-coercion, checking, and combining functions for tokens objects
-  
-Coercion functions to and from \link{tokens} objects, checks for whether an object is a \link{tokens} object, and functions to combine
-\link{tokens} objects.
+Coercion functions to and from \link{tokens} objects, checks for whether an
+object is a \link{tokens} object, and functions to combine \link{tokens}
+objects.
 }
 \examples{
 # combining tokens

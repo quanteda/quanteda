@@ -305,10 +305,11 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
 
 
 #' coercion, checking, and combining functions for tokens objects
-#'   
-#' Coercion functions to and from \link{tokens} objects, checks for whether an object is a \link{tokens} object, and functions to combine
-#' \link{tokens} objects.
-#' @param object to be coerced or checked
+#' 
+#' Coercion functions to and from \link{tokens} objects, checks for whether an
+#' object is a \link{tokens} object, and functions to combine \link{tokens}
+#' objects.
+#' @param x object to be coerced or checked
 #' @return \code{as.tokens} returns a quanteda \link{tokens} object
 #' @export
 #' @rdname as.tokens
@@ -359,9 +360,11 @@ as.list.tokens <- function(x, ...) {
 #' @rdname as.tokens
 #' @return \code{unlist} returns a simple vector of characters from a 
 #'   \link{tokens} object
+#' @param recursive a required argument for \link{unlist} but inapplicable to
+#'   \link{tokens} objects
 #' @method unlist tokens
 #' @export
-unlist.tokens <- function(x, use.names = TRUE) {
+unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
     unlist(as.list(x), use.names = use.names)
 }
 
