@@ -450,7 +450,7 @@ read_dict_liwc <- function(path, encoding = 'auto') {
 read_dict_yoshikoder <- function(path){
     
     xml <- XML::xmlParse(path)
-    root <- XML::xpathSApply(xml, "/dictionary")
+    root <- XML::xpathSApply(xml, "/dictionary/cnode")
     dict <- nodes2list(root[[1]])
     dict <- list2dictionary(dict)
     return(dict)
