@@ -113,7 +113,7 @@ test_that("test stm converter: zero-count feature", {
                              1, 0, 0, 0, 
                              1, 0, 3, 4), byrow = TRUE, nrow = 4))
     expect_warning(convert(mydfm, to = "stm"), "zero-count features: feat2")
-   
+    
     skip_if_not_installed("stm")
     require(stm)
     stm_model <- stm(documents = stmdfm$documents, vocab = stmdfm$vocab, K=3)
@@ -124,3 +124,28 @@ test_that("test stm converter: when dfm is 0% sparse", {
     stmdfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "stm")
     expect_equal(length(stmdfm$documents), 3)
 })
+
+test_that("lsa converter works under extreme situations", {
+    skip_if_not_installed("lsa")
+    #zero-count document
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             0, 0, 0, 0, 
+                             1, 2, 3, 4), byrow = TRUE, nrow = 4))
+    # lsa handles empty docs with a warning message 
+    expect_warning(lsalsa <- lsa::lsa(convert(mydfm, to = "lsa")), "there are singular values which are zero")
+    expect_equal(class(lsalsa), "LSAspace")  
+    
+    #zero-count feature
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             1, 0, 0, 0, 
+                             1, 0, 3, 4), byrow = TRUE, nrow = 4))
+    expect_warning(lsalsa <- lsa::lsa(convert(mydfm, to = "lsa")), "there are singular values which are zero")
+    expect_equal(class(lsalsa), "LSAspace") 
+    
+    #when dfm is 0% sparse
+    lsadfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "lsa")
+    expect_equal(class(suppressWarnings(lsa(lsadfm))), "LSAspace") 
+})
+
