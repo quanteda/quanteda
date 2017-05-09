@@ -135,7 +135,7 @@ test_that("lsa converter works under extreme situations", {
     expect_warning(lsalsa <- lsa::lsa(convert(mydfm, to = "lsa")), "there are singular values which are zero")
     expect_equal(class(lsalsa), "LSAspace")  
     
-    #zero-count feature
+    #zero-count feature:
     mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
                              0, 0, 1, 2, 
                              1, 0, 0, 0, 
@@ -158,7 +158,7 @@ test_that("topicmodels converter works under extreme situations", {
     motifresult <- LDA(convert(mydfm, to = "topicmodels"), k = 3)
     expect_equivalent(class(motifresult), "LDA_VEM")  
     
-    #zero-count feature
+    #zero-count feature:topicmodels takes the input matrix correctly, just it shouldn't return feat2 as topic words
     mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
                              0, 0, 1, 2, 
                              1, 0, 0, 0, 
@@ -170,4 +170,34 @@ test_that("topicmodels converter works under extreme situations", {
     motifdfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "topicmodels")
     motifresult <- LDA(motifdfm, 3)
     expect_equivalent(class(motifresult), "LDA_VEM")
+})
+
+test_that("lda converter works under extreme situations", {
+    skip_if_not_installed("lda")
+    #zero-count document
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             0, 0, 0, 0, 
+                             1, 2, 3, 4), byrow = TRUE, nrow = 4))
+    ldadfm <- convert(mydfm, to = "lda")
+    ldaresult <- lda.collapsed.gibbs.sampler(ldadfm$documents, 5, ldadfm$vocab, 25, 0.1, 0.1, compute.log.likelihood=TRUE)
+    top_words <- top.topic.words(ldaresult$topics, 4, by.score=TRUE)
+    expect_equal(dim(top_words), c(4,5))
+    
+    #zero-count feature: lda takes the input matrix correctly, just it shouldn't return feat2 as topic words
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             1, 0, 0, 0, 
+                             1, 0, 3, 4), byrow = TRUE, nrow = 4))
+    ldadfm <- convert(mydfm, to = "lda")
+    ldaresult <- lda.collapsed.gibbs.sampler(ldadfm$documents, 5, ldadfm$vocab, 25, 0.1, 0.1, compute.log.likelihood=TRUE)
+    top_words <- top.topic.words(ldaresult$topics, 5, by.score=TRUE)
+    expect_equal(dim(top_words), c(5,5))
+    
+    #when dfm is 0% sparse
+    motifdfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "lda")
+    ldadfm <- convert(mydfm, to = "lda")
+    ldaresult <- lda.collapsed.gibbs.sampler(ldadfm$documents, 5, ldadfm$vocab, 25, 0.1, 0.1, compute.log.likelihood=TRUE)
+    top_words <- top.topic.words(ldaresult$topics, 5, by.score=TRUE)
+    expect_equal(dim(top_words), c(5,5))
 })
