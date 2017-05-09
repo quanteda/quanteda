@@ -43,7 +43,7 @@ test_that("test STM package converter with metadata w/zero-count document", {
     dm <- dfm(mycorpus, remove_punct = TRUE)
     expect_true(ntoken(dm)[2] == 0)
     
-    dSTM <- convert(dm, to = "stm")
+    dSTM <- suppressWarnings(convert(dm, to = "stm"))
     tP <- stm::textProcessor(mytexts, removestopwords = FALSE, 
                              stem = FALSE, wordLengths = c(1, Inf))
     expect_equivalent(dSTM$documents[1], tP$documents[1])
@@ -99,23 +99,132 @@ test_that("test lsa converter", {
     
 })
 
-test_that("test stm converter: zero-count document", {
+test_that("test stm converter: under extreme situations ", {
+    #zero-count document
     mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
                              0, 0, 1, 2, 
                              0, 0, 0, 0, 
                              1, 2, 3, 4), byrow = TRUE, nrow = 4))
     expect_warning(convert(mydfm, to = "stm"), "Dropped empty document\\(s\\): doc3")
-})
 
-test_that("test stm converter: zero-count feature", {
+    #zero-count feature
     mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
                              0, 0, 1, 2, 
                              1, 0, 0, 0, 
                              1, 0, 3, 4), byrow = TRUE, nrow = 4))
-    expect_warning(convert(mydfm, to = "stm"), "zero-count features: feat2")
-})
-
-test_that("test stm converter: when dfm is 0% sparse", {
+    expect_warning(stmdfm<-convert(mydfm, to = "stm"), "zero-count features: feat2")
+    
+    skip_if_not_installed("stm")
+    require(stm)
+    stm_model <- stm(documents = stmdfm$documents, vocab = stmdfm$vocab, K=3)
+    expect_output(print(stm_model), "A topic model with 3 topics")
+    
+    #when dfm is 0% sparse
     stmdfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "stm")
     expect_equal(length(stmdfm$documents), 3)
+})
+
+test_that("lsa converter works under extreme situations", {
+    skip_if_not_installed("lsa")
+    require(lsa)
+    #zero-count document
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             0, 0, 0, 0, 
+                             1, 2, 3, 4), byrow = TRUE, nrow = 4))
+    # lsa handles empty docs with a warning message 
+    expect_warning(lsalsa <- lsa::lsa(convert(mydfm, to = "lsa")), "there are singular values which are zero")
+    expect_equal(class(lsalsa), "LSAspace")  
+    
+    #zero-count feature:
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             1, 0, 0, 0, 
+                             1, 0, 3, 4), byrow = TRUE, nrow = 4))
+    expect_warning(lsalsa <- lsa::lsa(convert(mydfm, to = "lsa")), "there are singular values which are zero")
+    expect_equal(class(lsalsa), "LSAspace") 
+    
+    #when dfm is 0% sparse
+    lsadfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "lsa")
+    expect_equal(suppressWarnings(class(lsa(lsadfm))), "LSAspace") 
+})
+
+test_that("topicmodels converter works under extreme situations", {
+    skip_if_not_installed("topicmodels")
+    require(topicmodels)
+    #zero-count document
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             0, 0, 0, 0, 
+                             1, 2, 3, 4), byrow = TRUE, nrow = 4))
+    motifresult <- LDA(convert(mydfm, to = "topicmodels"), k = 3)
+    expect_equivalent(class(motifresult), "LDA_VEM")  
+    
+    #zero-count feature:topicmodels takes the input matrix correctly, just it shouldn't return feat2 as topic words
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             1, 0, 0, 0, 
+                             1, 0, 3, 4), byrow = TRUE, nrow = 4))
+    motifresult <- LDA(convert(mydfm, to = "topicmodels"), k = 3)
+    expect_equivalent(class(motifresult), "LDA_VEM") 
+    
+    #when dfm is 0% sparse
+    motifdfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "topicmodels")
+    motifresult <- LDA(motifdfm, 3)
+    expect_equivalent(class(motifresult), "LDA_VEM")
+})
+
+test_that("lda converter works under extreme situations", {
+    skip_if_not_installed("lda")
+    require(lda)
+    #zero-count document
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             0, 0, 0, 0, 
+                             1, 2, 3, 4), byrow = TRUE, nrow = 4))
+    ldadfm <- convert(mydfm, to = "lda")
+    ldaresult <- lda.collapsed.gibbs.sampler(ldadfm$documents, 5, ldadfm$vocab, 25, 0.1, 0.1, compute.log.likelihood=TRUE)
+    top_words <- top.topic.words(ldaresult$topics, 4, by.score=TRUE)
+    expect_equal(dim(top_words), c(4,5))
+    
+    #zero-count feature: lda takes the input matrix correctly, just it shouldn't return feat2 as topic words
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             1, 0, 0, 0, 
+                             1, 0, 3, 4), byrow = TRUE, nrow = 4))
+    ldadfm <- convert(mydfm, to = "lda")
+    ldaresult <- lda.collapsed.gibbs.sampler(ldadfm$documents, 5, ldadfm$vocab, 25, 0.1, 0.1, compute.log.likelihood=TRUE)
+    top_words <- top.topic.words(ldaresult$topics, 5, by.score=TRUE)
+    expect_equal(dim(top_words), c(5,5))
+    
+    #when dfm is 0% sparse
+    motifdfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "lda")
+    ldadfm <- convert(mydfm, to = "lda")
+    ldaresult <- lda.collapsed.gibbs.sampler(ldadfm$documents, 5, ldadfm$vocab, 25, 0.1, 0.1, compute.log.likelihood=TRUE)
+    top_words <- top.topic.words(ldaresult$topics, 5, by.score=TRUE)
+    expect_equal(dim(top_words), c(5,5))
+})
+
+test_that("tm converter works under extreme situations", {
+    skip_if_not_installed("tm")
+    #zero-count document
+    amatrix <- matrix(c(1, 0, 2, 0, 
+                        0, 0, 1, 2, 
+                        0, 0, 0, 0, 
+                        1, 2, 3, 4), byrow = TRUE, nrow = 4)
+    tmdfm <- convert(as.dfm(amatrix), to = "tm")
+    expect_equivalent(tm::inspect(tmdfm[,]), amatrix)
+    
+    #zero-count feature:
+    bmatrix <- matrix(c(1, 0, 2, 0, 
+                        0, 0, 1, 2, 
+                        1, 0, 0, 0, 
+                        1, 0, 3, 4), byrow = TRUE, nrow = 4)
+    tmdfm <- convert(as.dfm(bmatrix), to = "tm")
+    expect_equivalent(tm::inspect(tmdfm[,]), bmatrix)
+    
+    #when dfm is 0% sparse
+    cmatrix <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)
+    tmdfm <- convert(as.dfm(cmatrix), to = "tm")
+    expect_equivalent(tm::inspect(tmdfm[,]), cmatrix)
 })

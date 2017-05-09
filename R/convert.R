@@ -267,6 +267,7 @@ dfm2stmformat <- function(data, meta) {
     
     # find out which documents are not empty
     non_empty_docs <- which(rowSums(data) != 0)
+    non_empty_feats <- which(colSums(data) != 0)
     
     # find out which documents are empty
     empty_docs <- which(rowSums(data) == 0)
@@ -277,7 +278,7 @@ dfm2stmformat <- function(data, meta) {
     if (length(empty_feats) > 0) warning("zero-count features: ", paste0(names(empty_feats), collapse=", "))
     
     # convert counts to STM documents format
-    documents <- ijv.to.doc(data[non_empty_docs, ]@i+1, data[non_empty_docs, ]@j+1, data[non_empty_docs, ]@x) 
+    documents <- ijv.to.doc(data[non_empty_docs, non_empty_feats]@i+1, data[non_empty_docs, non_empty_feats]@j+1, data[non_empty_docs, non_empty_feats]@x) 
     names(documents) <- rownames(data)[non_empty_docs]
     
     # select docvars for non-empty docs or from dfm
@@ -289,7 +290,7 @@ dfm2stmformat <- function(data, meta) {
     }
     
     # return the object
-    list(documents = documents, vocab = colnames(data), meta = meta)
+    list(documents = documents, vocab = colnames(data)[non_empty_feats], meta = meta)
 }
 
 
