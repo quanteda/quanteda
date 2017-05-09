@@ -145,5 +145,29 @@ test_that("lsa converter works under extreme situations", {
     
     #when dfm is 0% sparse
     lsadfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "lsa")
-    expect_equal(class(lsa(lsadfm)), "LSAspace") 
+    expect_equal(suppressWarnings(class(lsa(lsadfm))), "LSAspace") 
+})
+
+test_that("topicmodels converter works under extreme situations", {
+    skip_if_not_installed("topicmodels")
+    #zero-count document
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             0, 0, 0, 0, 
+                             1, 2, 3, 4), byrow = TRUE, nrow = 4))
+    motifresult <- LDA(convert(mydfm, to = "topicmodels"), k = 3)
+    expect_equivalent(class(motifresult), "LDA_VEM")  
+    
+    #zero-count feature
+    mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
+                             0, 0, 1, 2, 
+                             1, 0, 0, 0, 
+                             1, 0, 3, 4), byrow = TRUE, nrow = 4))
+    motifresult <- LDA(convert(mydfm, to = "topicmodels"), k = 3)
+    expect_equivalent(class(motifresult), "LDA_VEM") 
+    
+    #when dfm is 0% sparse
+    motifdfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "topicmodels")
+    motifresult <- LDA(motifdfm, 3)
+    expect_equivalent(class(motifresult), "LDA_VEM")
 })
