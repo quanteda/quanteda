@@ -99,28 +99,27 @@ test_that("test lsa converter", {
     
 })
 
-test_that("test stm converter: zero-count document", {
+test_that("test stm converter: under extreme situations ", {
+    #zero-count document
     mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
                              0, 0, 1, 2, 
                              0, 0, 0, 0, 
                              1, 2, 3, 4), byrow = TRUE, nrow = 4))
     expect_warning(convert(mydfm, to = "stm"), "Dropped empty document\\(s\\): doc3")
-})
 
-test_that("test stm converter: zero-count feature", {
+    #zero-count feature
     mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
                              0, 0, 1, 2, 
                              1, 0, 0, 0, 
                              1, 0, 3, 4), byrow = TRUE, nrow = 4))
-    expect_warning(convert(mydfm, to = "stm"), "zero-count features: feat2")
+    expect_warning(stmdfm<-convert(mydfm, to = "stm"), "zero-count features: feat2")
     
     skip_if_not_installed("stm")
     require(stm)
     stm_model <- stm(documents = stmdfm$documents, vocab = stmdfm$vocab, K=3)
     expect_output(print(stm_model), "A topic model with 3 topics")
-})
-
-test_that("test stm converter: when dfm is 0% sparse", {
+    
+    #when dfm is 0% sparse
     stmdfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "stm")
     expect_equal(length(stmdfm$documents), 3)
 })
@@ -146,6 +145,5 @@ test_that("lsa converter works under extreme situations", {
     
     #when dfm is 0% sparse
     lsadfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "lsa")
-    expect_equal(class(suppressWarnings(lsa(lsadfm))), "LSAspace") 
+    expect_equal(class(lsa(lsadfm)), "LSAspace") 
 })
-
