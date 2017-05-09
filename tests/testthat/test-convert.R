@@ -126,6 +126,7 @@ test_that("test stm converter: under extreme situations ", {
 
 test_that("lsa converter works under extreme situations", {
     skip_if_not_installed("lsa")
+    require(lsa)
     #zero-count document
     mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
                              0, 0, 1, 2, 
@@ -150,6 +151,7 @@ test_that("lsa converter works under extreme situations", {
 
 test_that("topicmodels converter works under extreme situations", {
     skip_if_not_installed("topicmodels")
+    require(topicmodels)
     #zero-count document
     mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
                              0, 0, 1, 2, 
@@ -174,6 +176,7 @@ test_that("topicmodels converter works under extreme situations", {
 
 test_that("lda converter works under extreme situations", {
     skip_if_not_installed("lda")
+    require(lda)
     #zero-count document
     mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
                              0, 0, 1, 2, 
@@ -200,4 +203,28 @@ test_that("lda converter works under extreme situations", {
     ldaresult <- lda.collapsed.gibbs.sampler(ldadfm$documents, 5, ldadfm$vocab, 25, 0.1, 0.1, compute.log.likelihood=TRUE)
     top_words <- top.topic.words(ldaresult$topics, 5, by.score=TRUE)
     expect_equal(dim(top_words), c(5,5))
+})
+
+test_that("tm converter works under extreme situations", {
+    skip_if_not_installed("tm")
+    #zero-count document
+    amatrix <- matrix(c(1, 0, 2, 0, 
+                        0, 0, 1, 2, 
+                        0, 0, 0, 0, 
+                        1, 2, 3, 4), byrow = TRUE, nrow = 4)
+    tmdfm <- convert(as.dfm(amatrix), to = "tm")
+    expect_equivalent(tm::inspect(tmdfm[,]), amatrix)
+    
+    #zero-count feature:
+    bmatrix <- matrix(c(1, 0, 2, 0, 
+                        0, 0, 1, 2, 
+                        1, 0, 0, 0, 
+                        1, 0, 3, 4), byrow = TRUE, nrow = 4)
+    tmdfm <- convert(as.dfm(bmatrix), to = "tm")
+    expect_equivalent(tm::inspect(tmdfm[,]), bmatrix)
+    
+    #when dfm is 0% sparse
+    cmatrix <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)
+    tmdfm <- convert(as.dfm(cmatrix), to = "tm")
+    expect_equivalent(tm::inspect(tmdfm[,]), cmatrix)
 })
