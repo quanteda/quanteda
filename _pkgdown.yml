@@ -54,6 +54,7 @@ reference:
   contents:
     - dfm
     - dfm_compress
+    - dfm_group
     - dfm_lookup
     - dfm_sample
     - dfm_remove

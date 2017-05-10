@@ -171,12 +171,12 @@ removed</dd>
 <span class='no'>mydict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>countries</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"United_States"</span>, <span class='st'>"Sweden"</span>, <span class='st'>"France"</span>),
                           <span class='kw'>wordsEndingInY</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"by"</span>, <span class='st'>"my"</span>),
                           <span class='kw'>notintext</span> <span class='kw'>=</span> <span class='st'>"blahblah"</span>))
-<span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='no'>mydict</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (50% sparse).
+<span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='no'>mydict</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: pkgdown::build_site() does not support multi-word features</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (50% sparse).
 #&gt; 2 x 4 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    My by United_States Sweden
 #&gt;   text1  1  1             0      0
-#&gt;   text2  0  0             1      1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='no'>mydict</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 1 feature (50% sparse).
+#&gt;   text2  0  0             1      1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='no'>mydict</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: pkgdown::build_site() does not support multi-word features</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 1 feature (50% sparse).
 #&gt; 2 x 1 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    by

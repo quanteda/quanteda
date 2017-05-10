@@ -1,11 +1,11 @@
-#' compress a dfm or fcm by combining identical dimension elements
+#' recombine a dfm or fcm by combining identical dimension elements
 #' 
-#' "Compresses" a \link{dfm} or \link{fcm} whose dimension names are the same,
-#' for either documents or features.  This may happen, for instance, if features
-#' are made equivalent through application of a thesaurus.  It may also occur
-#' after lower-casing or stemming the features of a dfm, but this should only be
-#' done in very rare cases (approaching never: it's better to do this
-#' \emph{before} constructing the dfm.)  It could also be needed after a 
+#' "Compresses" or groups a \link{dfm} or \link{fcm} whose dimension names are
+#' the same, for either documents or features.  This may happen, for instance,
+#' if features are made equivalent through application of a thesaurus.  It may
+#' also occur after lower-casing or stemming the features of a dfm, but this
+#' should only be done in very rare cases (approaching never: it's better to do
+#' this \emph{before} constructing the dfm.)  It could also be needed after a 
 #' \code{\link{cbind.dfm}} or \code{\link{rbind.dfm}} operation.
 #' 
 #' @param x input object, a \link{dfm} or \link{fcm}
@@ -13,10 +13,15 @@
 #'   \code{"documents"}, \code{"features"}, or \code{"both"} (default).  For fcm
 #'   objects, \code{"documents"} has no effect.
 #' @param ... additional arguments passed from generic to specific methods
+#' @return \code{dfm_compress} returns a \link{dfm} whose dimensions have been
+#'   recombined by summing the cells across identical dimension names
+#'   (\link{docnames} or \link{featnames}).  The \link{docvars} will be
+#'   preserved for combining by features but not when documents are combined.
 #' @export
 #' @examples 
-#' mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
-#'              dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
+#' # dfm_compress examples
+#' mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE),
+#'              dfm("A C C C C C", tolower = FALSE))
 #' colnames(mat) <- char_tolower(featnames(mat))
 #' mat
 #' dfm_compress(mat, margin = "documents")
@@ -35,53 +40,92 @@ dfm_compress <- function(x, margin = c("both", "documents", "features")) {
 #' @noRd
 #' @export
 dfm_compress.dfmSparse <- function(x, margin = c("both", "documents", "features")) {
-
     margin <- match.arg(margin)
-    
-    uniquednames <- unique(rownames(x))
-    uniquefnames <- unique(colnames(x))
-    if (length(uniquednames) == nrow(x) & length(uniquefnames) == ncol(x)) 
-        return(x)
-    
-    # add 1 since stored from 0, but constructor requires indexing from 1
-    new_i <- x@i + 1
-    new_j <- as(x, "dgTMatrix")@j + 1
-    
-    allZeroFeatures <- match(names(which(colSums(x)==0)), uniquefnames)
-    allZeroDocs <- match(names(which(rowSums(x)==0)), uniquednames)
-    
-    # combine documents
-    if (margin %in% c("both", "documents") & length(uniquednames) < nrow(x))
-        new_i <- match(rownames(x), uniquednames)[new_i]
-    else
-        uniquednames <- rownames(x)
-    
-    # combine features
-    if (margin %in% c("both", "features") & length(uniquefnames) < ncol(x))
-        new_j <- match(colnames(x), uniquefnames)[new_j]
-    else
-        uniquefnames <- colnames(x)
-    
-    if (nf <- length(allZeroFeatures)) {
-        new_i <- c(new_i, rep(1, nf))
-        new_j <- c(new_j, allZeroFeatures)
+    if (margin == 'documents') {
+        result <- group_dfm(x, NULL, docnames(x))
+    } else if (margin == 'features') {
+        result <- group_dfm(x, featnames(x), NULL)
+    } else {
+        result <- group_dfm(x, featnames(x), docnames(x))
     }
-    
-    if (nd <- length(allZeroDocs)) {
-        new_i <- c(new_i, allZeroDocs)
-        new_j <- c(new_j, rep(1, nd))
-    }
+    return(result)
+}
 
-    new("dfmSparse", sparseMatrix(i = new_i, j = new_j, 
-                                  x = c(x@x, rep(0, length(allZeroFeatures)), rep(0, length(allZeroDocs))),
-                                  dimnames = list(docs = uniquednames, features = uniquefnames)),
-        settings = x@settings,
-        weightTf = x@weightTf,
-        weightDf = x@weightDf,
-        smooth = x@smooth,
-        ngrams = x@ngrams,
-        concatenator = x@concatenator)
-} 
+#' @rdname dfm_compress
+#' @description \code{dfm_group} allows combining dfm documents by a grouping 
+#'   variable, which can also be one of the \link{docvars} attached to the dfm.  This is
+#'   identical in functionality to using the \code{"groups"} argument in
+#'   \code{\link{dfm}}.
+#' @param groups either: a character vector containing the names of document 
+#'   variables to be used for grouping; or a factor or object that can be 
+#'   coerced into a factor equal in length or rows to the number of documents
+#' @return \code{dfm_group} returns a \link{dfm} whose documents are equal to
+#'   the unique group combinations, and whose cell values are the sums of the
+#'   previous values summed by group.  This currently erases any docvars in the dfm.
+#' @export
+#' @examples
+#' # dfm_group examples
+#' mycorpus <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"), 
+#'                    docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
+#' mydfm <- dfm(mycorpus)
+#' dfm_group(mydfm, groups = "grp")
+#' dfm_group(mydfm, groups = c(1, 1, 2, 2))
+#' 
+#' # equivalent
+#' dfm(mydfm, groups = "grp")
+#' dfm(mydfm, groups = c(1, 1, 2, 2))
+dfm_group <- function(x, groups = NULL) {
+    dfm(x, groups = groups, tolower = FALSE)
+}
+
+
+#
+# internal code to perform dfm compression and grouping
+# on features and/or documents
+group_dfm <- function(x, features = NULL, documents = NULL) {
+    
+    if (is.null(features) && is.null(documents)) {
+        return(x)
+    }
+    
+    temp <- as(x, "dgTMatrix")
+    
+    if (is.null(features)) {
+        features_unique <- temp@Dimnames[[2]]
+        j_new <- temp@j + 1
+    } else {
+        features_unique <- unique(features)
+        features_index <- match(features, features_unique)
+        j_new <- features_index[temp@j + 1]
+        docvars_new <- docvars(x)
+    }
+    if (is.null(documents)) {
+        documents_unique <- temp@Dimnames[[1]]
+        i_new <- temp@i + 1
+    } else {
+        documents_unique <- unique(documents)
+        documents_index <- match(documents, documents_unique)
+        i_new <- documents_index[temp@i + 1]
+        docvars_new <- data.frame()
+    }
+    x_new <- temp@x
+    dims <- c(length(documents_unique), length(features_unique))
+    dimnames <- list(docs = as.character(documents_unique), 
+                     features = as.character(features_unique))
+    
+    result <- new("dfmSparse", 
+                  sparseMatrix(i = i_new, j = j_new, x = x_new, dims = dims, dimnames = dimnames),
+                  settings = x@settings,
+                  weightTf = x@weightTf,
+                  weightDf = x@weightDf,
+                  smooth = x@smooth,
+                  ngrams = x@ngrams,
+                  skip = x@skip,
+                  concatenator = x@concatenator,
+                  docvars = docvars_new)
+    
+    return(result)
+}
 
 #' @noRd
 #' @export
@@ -102,7 +146,9 @@ dfm_compress.dfmDense <- function(x, ...) {
                      weightDf = x@weightDf,
                      smooth = x@smooth,
                      ngrams = x@ngrams,
-                     concatenator = x@concatenator),
+                     skip = x@skip,
+                     concatenator = x@concatenator,
+                     docvars = x@docvars),
                  ...)
 }                 
 
@@ -125,8 +171,8 @@ dfm_compress.dfmDense <- function(x, ...) {
 dfm_tolower <- function(x) {
     if (!is.dfm(x))
         stop("dfm_tolower requires x to be a dfm object")
-    colnames(x) <- stringi::stri_trans_tolower(colnames(x))
-    dfm_compress(x)
+    colnames(x) <- stri_trans_tolower(colnames(x))
+    dfm_compress(x, margin = "features")
 }
 
 #' @rdname dfm_tolower
@@ -135,8 +181,8 @@ dfm_tolower <- function(x) {
 dfm_toupper <- function(x) {
     if (!is.dfm(x))
         stop("dfm_toupper requires x to be a dfm object")
-    colnames(x) <- stringi::stri_trans_toupper(colnames(x))
-    dfm_compress(x)
+    colnames(x) <- stri_trans_toupper(colnames(x))
+    dfm_compress(x, margin = "features")
 }
 
 
@@ -164,7 +210,7 @@ dfm_sort <- function(x, decreasing = TRUE,
     if (!is.dfm(x))
         stop("dfm_sort requires x to be a dfm object")
     margin <- match.arg(margin)
-    class_xorig <- class(x)
+    class_org <- class(x)
     if (margin=="features") {
         x <- x[, order(colSums(x), decreasing=decreasing)]
     } else if (margin=="documents") {
@@ -173,7 +219,7 @@ dfm_sort <- function(x, decreasing = TRUE,
         x <- x[order(rowSums(x), decreasing=decreasing),
                order(colSums(x), decreasing=decreasing)]
     }
-    class(x) <- class_xorig
+    class(x) <- class_org
     return(x)
 }
 

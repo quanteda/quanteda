@@ -304,8 +304,13 @@ dfm.dfm <- function(x,
     }
     
     if (!is.null(groups)) {
-        if (length(groups) != ndoc(x)) 
-            stop("groups not equal in length to the number of documents in x")
+        if (is.character(groups) & all(groups %in% names(docvars(x)))) {
+            groups <- as.factor(interaction(docvars(x)[, groups], drop = TRUE))
+        } else {
+            if (length(groups) != ndoc(x))
+                stop("groups must name docvars or provide data matching the documents in x")
+            groups <- as.factor(groups)
+        }
         if (verbose)
             catm("   ... grouping texts\n") 
         rownames(x) <- groups
@@ -380,10 +385,6 @@ compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
                       format(length(x), big.mark=","), " document",
                       ifelse(length(x) > 1, "s", ""), "\n", sep="")
     nTokens <- lengths(x)
-    # find out which documents have zero feature counts
-    emptyDocs <- which(nTokens == 0)
-    # add docIndex positions for any zero-token docs; no effect if emptyDocs is empty
-    docIndex <- c(rep(seq_along(nTokens), nTokens), emptyDocs)
     
     # index features
     if (verbose) catm("   ... indexing features: ")
@@ -396,23 +397,18 @@ compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
     totalfeatures <- length(uniqueFeatures)
     if (verbose) catm(format(totalfeatures, big.mark=","), " feature type",
                       ifelse(totalfeatures > 1, "s", ""), "\n", sep="")
+    
+    docIndex <- c(rep(seq_along(nTokens), nTokens))
     featureIndex <- match(allFeatures, uniqueFeatures)
-    # add an arbitrary "feature" for empty docs
-    if (length(emptyDocs)) {
-        featureIndex <- c(featureIndex, rep(length(uniqueFeatures)+1, length(emptyDocs)))
-        uniqueFeatures <- c(uniqueFeatures, "__TEMPFEATURE__")
-    }
-    
+
     # make the dfm
-    dfmresult <- sparseMatrix(i = docIndex, 
-                              j = featureIndex, 
-                              x = 1L, 
-                              dimnames = list(docs = names(x), 
-                                              features = uniqueFeatures))
-    # remove dummy feature if needed
-    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
-    
-    new("dfmSparse", dfmresult)
+    temp <- sparseMatrix(i = docIndex, 
+                         j = featureIndex, 
+                         x = 1L, 
+                         dims = c(length(x), length(uniqueFeatures)),
+                         dimnames = list(docs = names(x), 
+                                      features = uniqueFeatures))
+    new("dfmSparse", temp)
 }
 
 compile_dfm.tokens <- function(x, verbose = TRUE) {
@@ -431,30 +427,20 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
     types <- types(x)
     x <- unclass(x)
     
-    # Special handling for empty documents
-    empty <- which(lengths(x) == 0)
-    if (length(empty)) {
-        # Add an arbitrary "feature" for empty docs
-        x[empty] <- length(types) + 1
-        types <- c(types, "__TEMPFEATURE__") 
-    }
-    
-    # Shift index for padding, if any
+    # shift index for padding, if any
     index <- unlist(x, use.names = FALSE)
     if (attr(x, 'padding')) {
         types <- c("", types)
         index <- index + 1
     }
     
-    result <- t(Matrix::sparseMatrix(i = index, 
-                                     p = cumsum(c(1, lengths(x))) - 1, 
-                                     x = 1L, 
-                                     dimnames = list(features = as.character(types), 
-                                                     docs = names(x))))
-    # Remove dummy feature if needed
-    if (length(empty)) result <- result[, -ncol(result), drop = FALSE]
-    # gc() # Release memory
-    new("dfmSparse", result)
+    temp <- t(sparseMatrix(i = index, 
+                           p = cumsum(c(1, lengths(x))) - 1, 
+                           x = 1L, 
+                           dims = c(length(types), length(names(x))),
+                           dimnames = list(features = as.character(types), 
+                                           docs = names(x))))
+    new("dfmSparse", temp)
 }
 
 

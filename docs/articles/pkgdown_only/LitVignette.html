@@ -292,16 +292,16 @@ chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../refer
 ## Use 'dfm_weight' instead.
 ## See help("Deprecated")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(relDfm)</code></pre></div>
-<pre><code>## Document-feature matrix of: 136 documents, 17,211 features (96.4% sparse).
+<pre><code>## Document-feature matrix of: 137 documents, 17,211 features (96.4% sparse).
 ## (showing first 6 documents and first 6 features)
 ##             features
-## docs                .  loomings       call        me    ishmael       some
-##   mobydick.1 3.132162 0.0381971 0.03819710 0.9549274 0.07639419 0.42016807
-##   mobydick.2 2.713626 0.0000000 0.00000000 0.3464203 0.23094688 0.05773672
-##   mobydick.3 3.244086 0.0000000 0.01416631 0.6516504 0.00000000 0.24082731
-##   mobydick.4 2.724936 0.0000000 0.00000000 0.9768638 0.00000000 0.05141388
-##   mobydick.5 3.167421 0.0000000 0.00000000 0.1131222 0.00000000 0.22624434
-##   mobydick.6 4.166667 0.0000000 0.00000000 0.1016260 0.00000000 0.10162602</code></pre>
+## docs             chapter  1        .   loomings       call        me
+##   mobydick.1 50.00000000 50 0.000000 0.00000000 0.00000000 0.0000000
+##   mobydick.2  0.03816794  0 3.129771 0.03816794 0.03816794 0.9541985
+##   mobydick.3  0.05767013  0 2.710496 0.00000000 0.00000000 0.3460208
+##   mobydick.4  0.01416230  0 3.243167 0.00000000 0.01416230 0.6514658
+##   mobydick.5  0.05136107  0 2.722137 0.00000000 0.00000000 0.9758603
+##   mobydick.6  0.11286682  0 3.160271 0.00000000 0.00000000 0.1128668</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">barplot</span>(<span class="kw">as.numeric</span>(relDfm[, <span class="st">'whale'</span>]))</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">barplot</span>(<span class="kw">as.numeric</span>(relDfm[, <span class="st">'ahab'</span>]))</code></pre></div>
@@ -318,12 +318,12 @@ chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../refer
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wf &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(relDfm[, <span class="st">'whale'</span>])
 af &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(relDfm[, <span class="st">'ahab'</span>])
 <span class="kw">cor</span>(wf, af)</code></pre></div>
-<pre><code>## [1] -0.2461294</code></pre>
+<pre><code>## [1] -0.2402552</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waDfm &lt;-<span class="st"> </span><span class="kw">cbind</span>(relDfm[, <span class="st">'whale'</span>], relDfm[, <span class="st">'ahab'</span>])
 <span class="kw">cor</span>(<span class="kw">as.matrix</span>(waDfm))</code></pre></div>
 <pre><code>##            whale       ahab
-## whale  1.0000000 -0.2461294
-## ahab  -0.2461294  1.0000000</code></pre>
+## whale  1.0000000 -0.2402552
+## ahab  -0.2402552  1.0000000</code></pre>
 <p>With the ahab frequency and whale frequency vectors extracted from the dfm, it is easy to calculate the significance of the correlation.</p>
 </div>
 <div id="random-sampling" class="section level2">
@@ -346,13 +346,13 @@ yfit &lt;-<span class="st"> </span>yfit *<span class="st"> </span><span class="k
 ##  Pearson's product-moment correlation
 ## 
 ## data:  wf and af
-## t = -2.9396, df = 134, p-value = 0.003872
+## t = -2.8757, df = 135, p-value = 0.004686
 ## alternative hypothesis: true correlation is not equal to 0
 ## 95 percent confidence interval:
-##  -0.39797358 -0.08115908
+##  -0.3921685 -0.0755854
 ## sample estimates:
 ##        cor 
-## -0.2461294</code></pre>
+## -0.2402552</code></pre>
 </div>
 </div>
 <div id="measures-of-lexical-variety" class="section level1">
@@ -365,10 +365,10 @@ yfit &lt;-<span class="st"> </span>yfit *<span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">firstChap &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(chapDfm[<span class="dv">1</span>,])
 numWords &lt;-<span class="st"> </span><span class="kw">length</span>(firstChap[firstChap &gt;<span class="st"> </span><span class="dv">0</span>])
 <span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,])/numWords</code></pre></div>
-<pre><code>## [1] 3.02659</code></pre>
+<pre><code>## [1] 1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,])/<span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(chaptersCorp[<span class="dv">1</span>], <span class="dt">remove_punct=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## mobydick.1 
-##    2.88326</code></pre>
+##          1</code></pre>
 </div>
 <div id="extracting-word-usage-means" class="section level2">
 <h2 class="hasAnchor">
