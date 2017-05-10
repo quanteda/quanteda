@@ -210,7 +210,7 @@ dfm_sort <- function(x, decreasing = TRUE,
     if (!is.dfm(x))
         stop("dfm_sort requires x to be a dfm object")
     margin <- match.arg(margin)
-    class_xorig <- class(x)
+    class_org <- class(x)
     if (margin=="features") {
         x <- x[, order(colSums(x), decreasing=decreasing)]
     } else if (margin=="documents") {
@@ -219,7 +219,7 @@ dfm_sort <- function(x, decreasing = TRUE,
         x <- x[order(rowSums(x), decreasing=decreasing),
                order(colSums(x), decreasing=decreasing)]
     }
-    class(x) <- class_xorig
+    class(x) <- class_org
     return(x)
 }
 
