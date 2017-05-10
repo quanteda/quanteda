@@ -41,13 +41,14 @@ dfm_compress <- function(x, margin = c("both", "documents", "features")) {
 #' @export
 dfm_compress.dfmSparse <- function(x, margin = c("both", "documents", "features")) {
     margin <- match.arg(margin)
-    if (margin %in% c("features", "both") & any(duplicated(featnames(x)))) {
-        x <- group_dfm(x, 'features', featnames(x))
-    } 
-    if (margin %in% c("documents", "both") & any(duplicated(docnames(x)))) {
-        x <- group_dfm(x, 'documents', docnames(x))
-    } 
-    return(x)
+    if (margin == 'documents') {
+        result <- group_dfm(x, NULL, docnames(x))
+    } else if (margin == 'features') {
+        result <- group_dfm(x, featnames(x), NULL)
+    } else {
+        result <- group_dfm(x, featnames(x), docnames(x))
+    }
+    return(result)
 }
 
 #' @rdname dfm_compress
@@ -81,29 +82,36 @@ dfm_group <- function(x, groups = NULL) {
 #
 # internal code to perform dfm compression and grouping
 # on features and/or documents
-#
-group_dfm <- function(x, margin, groups) {
+group_dfm <- function(x, features = NULL, documents = NULL) {
     
-    groups_unique <- unique(groups)
-    groups_index <- match(groups, groups_unique)
+    if (is.null(features) && is.null(documents)) {
+        return(x)
+    }
     
     temp <- as(x, "dgTMatrix")
-    if (margin == 'documents') {
-        i_new <- groups_index[temp@i + 1]
+    
+    if (is.null(features)) {
+        features_unique <- temp@Dimnames[[2]]
         j_new <- temp@j + 1
-        x_new <- temp@x
-        dims <- c(length(groups_unique), temp@Dim[2])
-        dimnames <- list(docs = as.character(groups_unique), features = temp@Dimnames[[2]])
-        docv <- data.frame()
-
-    } else if (margin == 'features') {
-        i_new <- temp@i + 1
-        j_new <- groups_index[temp@j + 1]
-        x_new <- temp@x
-        dims <- c(temp@Dim[1], length(groups_unique))
-        dimnames <- list(docs = temp@Dimnames[[1]], features = as.character(groups_unique))
-        docv <- docvars(x)
+    } else {
+        features_unique <- unique(features)
+        features_index <- match(features, features_unique)
+        j_new <- features_index[temp@j + 1]
+        docvars_new <- docvars(x)
     }
+    if (is.null(documents)) {
+        documents_unique <- temp@Dimnames[[1]]
+        i_new <- temp@i + 1
+    } else {
+        documents_unique <- unique(documents)
+        documents_index <- match(documents, documents_unique)
+        i_new <- documents_index[temp@i + 1]
+        docvars_new <- data.frame()
+    }
+    x_new <- temp@x
+    dims <- c(length(documents_unique), length(features_unique))
+    dimnames <- list(docs = as.character(documents_unique), 
+                     features = as.character(features_unique))
     
     result <- new("dfmSparse", 
                   sparseMatrix(i = i_new, j = j_new, x = x_new, dims = dims, dimnames = dimnames),
@@ -113,8 +121,8 @@ group_dfm <- function(x, margin, groups) {
                   smooth = x@smooth,
                   ngrams = x@ngrams,
                   concatenator = x@concatenator,
-                  docvars = docv)
-
+                  docvars = docvars_new)
+    
     return(result)
 }
 
