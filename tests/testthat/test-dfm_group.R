@@ -32,3 +32,13 @@ test_that("dfm_group works with empty documents", {
                dimnames = list(c('doc1', 'doc2'), c('a', 'b', 'c', 'd')))
     )
 })
+
+test_that("dfm_group works with docvars", {
+    mycorpus <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
+                       docvars = data.frame(grp = c(1, 1, 2, 2)))
+    mydfm <- dfm(mycorpus)
+    expect_equal(
+        colSums(dfm_group(mydfm, groups = "grp")),
+        colSums(mydfm)
+    )
+})
