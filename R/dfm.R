@@ -304,8 +304,13 @@ dfm.dfm <- function(x,
     }
     
     if (!is.null(groups)) {
-        if (length(groups) != ndoc(x)) 
-            stop("groups not equal in length to the number of documents in x")
+        if (is.character(groups) & all(groups %in% names(docvars(x)))) {
+            groups <- as.factor(interaction(docvars(x)[, groups], drop = TRUE))
+        } else {
+            if (length(groups) != ndoc(x))
+                stop("groups must name docvars or provide data matching the documents in x")
+            groups <- as.factor(groups)
+        }
         if (verbose)
             catm("   ... grouping texts\n") 
         rownames(x) <- groups
