@@ -300,29 +300,29 @@ test_that("dfm print works as expected", {
     expect_output(tail(testdfm, 1),
                   "Document-feature matrix of: 14 documents, 5,058 features.*showing last document and last 6 features.*")
 })
-# 
-# test_that("dfm.dfm works as expected", {
-#     testdfm <- dfm(data_corpus_irishbudget2010, tolower = TRUE)
-#     expect_identical(testdfm, dfm(testdfm, tolower = FALSE))
-#     expect_identical(testdfm, dfm(testdfm, tolower = TRUE))
-#     groupeddfm <- dfm(testdfm, 
-#                       groups =  ifelse(docvars(data_corpus_irishbudget2010, "party") %in% c("FF", "Green"), "Govt", "Opposition"),
-#                       tolower = FALSE)
-#     expect_identical(colSums(groupeddfm), colSums(groupeddfm))
-#     expect_identical(docnames(groupeddfm), c("Govt", "Opposition"))
-#     expect_identical(testdfm, dfm(testdfm))
-# 
-#     dict <- dictionary(articles = c("the", "a", "an"),
-#                        preps = c("of", "for", "in"))
-#     expect_identical(
-#         dfm(data_corpus_irishbudget2010, dictionary = dict),
-#             dfm(testdfm, dictionary = dict)
-#     )
-#     expect_identical(
-#         dfm(data_corpus_irishbudget2010, stem = TRUE),
-#         dfm(testdfm, stem = TRUE)
-#     )
-# })
+
+test_that("dfm.dfm works as expected", {
+    testdfm <- dfm(data_corpus_irishbudget2010, tolower = TRUE)
+    expect_identical(testdfm, dfm(testdfm, tolower = FALSE))
+    expect_identical(testdfm, dfm(testdfm, tolower = TRUE))
+    groupeddfm <- dfm(testdfm,
+                      groups =  ifelse(docvars(data_corpus_irishbudget2010, "party") %in% c("FF", "Green"), "Govt", "Opposition"),
+                      tolower = FALSE)
+    expect_identical(colSums(groupeddfm), colSums(groupeddfm))
+    expect_identical(docnames(groupeddfm), c("Govt", "Opposition"))
+    expect_identical(testdfm, dfm(testdfm))
+
+    dict <- dictionary(articles = c("the", "a", "an"),
+                       preps = c("of", "for", "in"))
+    expect_identical(
+        dfm(data_corpus_irishbudget2010, dictionary = dict),
+            dfm(testdfm, dictionary = dict)
+    )
+    expect_identical(
+        dfm(data_corpus_irishbudget2010, stem = TRUE),
+        dfm(testdfm, stem = TRUE)
+    )
+})
 
 test_that("dfm-methods works as expected", {
     mydfm <- dfm(c("This is a test", "This is also a test", "This is an odd test"))
