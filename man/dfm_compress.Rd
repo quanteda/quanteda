@@ -2,10 +2,13 @@
 % Please edit documentation in R/dfm_compress.R, R/fcm-methods.R
 \name{dfm_compress}
 \alias{dfm_compress}
+\alias{dfm_group}
 \alias{fcm_compress}
 \title{compress a dfm or fcm by combining identical dimension elements}
 \usage{
 dfm_compress(x, margin = c("both", "documents", "features"))
+
+dfm_group(x, groups)
 
 fcm_compress(x)
 }
@@ -15,6 +18,8 @@ fcm_compress(x)
 \item{margin}{character indicating on which margin to compress a dfm, either 
 \code{"documents"}, \code{"features"}, or \code{"both"} (default).  For fcm
 objects, \code{"documents"} has no effect.}
+
+\item{groups}{numeric or character vector indicating groups of documents.}
 
 \item{...}{additional arguments passed from generic to specific methods}
 }
@@ -26,6 +31,8 @@ after lower-casing or stemming the features of a dfm, but this should only be
 done in very rare cases (approaching never: it's better to do this
 \emph{before} constructing the dfm.)  It could also be needed after a 
 \code{\link{cbind.dfm}} or \code{\link{rbind.dfm}} operation.
+
+group documents
 }
 \note{
 \code{fcm_compress} works only when the \link{fcm} was created with a document
@@ -45,6 +52,8 @@ compactdfm <- dfm(data_corpus_inaugural[1:5])
 dim(compactdfm)
 dim(dfm_compress(compactdfm))
 
+inaugdfm <- dfm(data_corpus_inaugural)
+dim(dfm_group(inaugdfm, docvars(inaugdfm, 'President')))
 # compress an fcm
 myfcm <- fcm(tokens("A D a C E a d F e B A C E D"), 
              context = "window", window = 3)
