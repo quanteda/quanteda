@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>compress a dfm or fcm by combining identical dimension elements — dfm_compress • quanteda</title>
+<title>recombine a dfm or fcm by combining identical dimension elements — dfm_compress • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -72,20 +72,27 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>compress a dfm or fcm by combining identical dimension elements</h1>
+    <h1>recombine a dfm or fcm by combining identical dimension elements</h1>
     </div>
 
     
-    <p>&quot;Compresses&quot; a <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a> whose dimension names are the same,
-for either documents or features.  This may happen, for instance, if features
-are made equivalent through application of a thesaurus.  It may also occur
-after lower-casing or stemming the features of a dfm, but this should only be
-done in very rare cases (approaching never: it&#39;s better to do this
-<em>before</em> constructing the dfm.)  It could also be needed after a 
+    <p>&quot;Compresses&quot; or groups a <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a> whose dimension names are
+the same, for either documents or features.  This may happen, for instance,
+if features are made equivalent through application of a thesaurus.  It may
+also occur after lower-casing or stemming the features of a dfm, but this
+should only be done in very rare cases (approaching never: it&#39;s better to do
+this <em>before</em> constructing the dfm.)  It could also be needed after a 
 <code><a href='cbind.dfm.html'>cbind.dfm</a></code> or <code><a href='cbind.dfm.html'>rbind.dfm</a></code> operation.</p>
+
+    <p><code>dfm_group</code> allows combining dfm documents by a grouping 
+  variable, which can also be one of the <a href='docvars.html'>docvars</a> attached to the dfm.  This is
+  identical in functionality to using the <code>&quot;groups&quot;</code> argument in
+  <code><a href='dfm.html'>dfm</a></code>.</p>
     
 
     <pre><span class='fu'>dfm_compress</span>(<span class='no'>x</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"both"</span>, <span class='st'>"documents"</span>, <span class='st'>"features"</span>))
+
+<span class='fu'>dfm_group</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>fcm_compress</span>(<span class='no'>x</span>)</pre>
     
@@ -97,9 +104,23 @@ done in very rare cases (approaching never: it&#39;s better to do this
       <dd>character indicating on which margin to compress a dfm, either 
 <code>&quot;documents&quot;</code>, <code>&quot;features&quot;</code>, or <code>&quot;both&quot;</code> (default).  For fcm
 objects, <code>&quot;documents&quot;</code> has no effect.</dd>
+      <dt>groups</dt>
+      <dd>either: a character vector containing the names of document 
+variables to be used for grouping; or a factor or object that can be 
+coerced into a factor equal in length or rows to the number of documents</dd>
       <dt>...</dt>
       <dd>additional arguments passed from generic to specific methods</dd>
     </dl>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>dfm_compress</code> returns a <a href='dfm.html'>dfm</a> whose dimensions have been
+  recombined by summing the cells across identical dimension names
+  (<a href='docnames.html'>docnames</a> or <a href='featnames.html'>featnames</a>).  The <a href='docvars.html'>docvars</a> will be
+  preserved for combining by features but not when documents are combined.</p>
+    <p><code>dfm_group</code> returns a <a href='dfm.html'>dfm</a> whose documents are equal to
+  the unique group combinations, and whose cell values are the sums of the
+  previous values summed by group.  This currently erases any docvars in the dfm.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -108,8 +129,9 @@ context.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mat</span> <span class='kw'>&lt;-</span> <span class='fu'>rbind</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='st'>"b A A"</span>, <span class='st'>"C C a b B"</span>), <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
-             <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"A C C C C C"</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; </div><div class='input'><span class='fu'>colnames</span>(<span class='no'>mat</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>mat</span>))
+    <pre class="examples"><div class='input'><span class='co'># dfm_compress examples</span>
+<span class='no'>mat</span> <span class='kw'>&lt;-</span> <span class='fu'>rbind</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='st'>"b A A"</span>, <span class='st'>"C C a b B"</span>), <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
+             <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"A C C C C C"</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; </div><div class='input'><span class='fu'>colnames</span>(<span class='no'>mat</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>mat</span>))
 <span class='no'>mat</span></div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 5 features (46.7% sparse).
 #&gt; 3 x 5 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
@@ -136,7 +158,33 @@ context.</p>
 <span class='co'># no effect if no compression needed</span>
 <span class='no'>compactdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
 <span class='fu'>dim</span>(<span class='no'>compactdfm</span>)</div><div class='output co'>#&gt; [1]    5 1947</div><div class='input'><span class='fu'>dim</span>(<span class='fu'>dfm_compress</span>(<span class='no'>compactdfm</span>))</div><div class='output co'>#&gt; [1]    5 1947</div><div class='input'>
-<span class='co'># compress an fcm</span>
+<span class='co'># dfm_group examples</span>
+<span class='no'>mycorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'>c</span>(<span class='st'>"a a b"</span>, <span class='st'>"a b c c"</span>, <span class='st'>"a c d d"</span>, <span class='st'>"a c c d"</span>),
+                   <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"grp1"</span>, <span class='st'>"grp1"</span>, <span class='st'>"grp2"</span>, <span class='st'>"grp2"</span>)))
+<span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>)
+<span class='fu'>dfm_group</span>(<span class='no'>mydfm</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25% sparse).
+#&gt; 2 x 4 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt;       features
+#&gt; docs   a b c d
+#&gt;   grp1 3 2 2 0
+#&gt;   grp2 2 0 3 3</div><div class='input'><span class='fu'>dfm_group</span>(<span class='no'>mydfm</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25% sparse).
+#&gt; 2 x 4 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt;     features
+#&gt; docs a b c d
+#&gt;    1 3 2 2 0
+#&gt;    2 2 0 3 3</div><div class='input'>
+<span class='co'># equivalent</span>
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mydfm</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25% sparse).
+#&gt; 2 x 4 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt;       features
+#&gt; docs   a b c d
+#&gt;   grp1 3 2 2 0
+#&gt;   grp2 2 0 3 3</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mydfm</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25% sparse).
+#&gt; 2 x 4 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt;     features
+#&gt; docs a b c d
+#&gt;    1 3 2 2 0
+#&gt;    2 2 0 3 3</div><div class='input'><span class='co'># compress an fcm</span>
 <span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"A D a C E a d F e B A C E D"</span>),
              <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 <span class='co'>## this will produce an error:</span>
@@ -172,6 +220,8 @@ context.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#note">Note</a></li>
       
       <li><a href="#examples">Examples</a></li>

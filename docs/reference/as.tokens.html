@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>coercion and checking functions for tokens objects — as.tokens.collocations • quanteda</title>
+<title>coercion, checking, and combining functions for tokens objects — as.tokens • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -72,24 +72,28 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>coercion and checking functions for tokens objects</h1>
+    <h1>coercion, checking, and combining functions for tokens objects</h1>
     </div>
 
     
-    <p>Coerce a list of character elements to a quanteda <a href='tokens.html'>tokens</a> object, or check whether 
-an object is a <a href='tokens.html'>tokens</a> object.</p>
+    <p>Coercion functions to and from <a href='tokens.html'>tokens</a> objects, checks for whether an
+object is a <a href='tokens.html'>tokens</a> object, and functions to combine <a href='tokens.html'>tokens</a>
+objects.</p>
     
 
-    <pre># S3 method for collocations
-as.tokens(x)
-
-as.tokens(x)
+    <pre>as.tokens(x)
 
 # S3 method for list
 as.tokens(x)
 
+# S3 method for collocations
+as.tokens(x)
+
 # S3 method for tokens
 as.list(x, ...)
+
+# S3 method for tokens
+unlist(x, recursive = FALSE, use.names = TRUE)
 
 # S3 method for tokens
 as.character(x, use.names = FALSE, ...)
@@ -100,23 +104,24 @@ is.tokens(x)
 +(t1, t2)
 
 # S3 method for tokens
-c(..., recursive = FALSE)</pre>
+c(...)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>list of character elements</dd>
+      <dd>object to be coerced or checked</dd>
       <dt>...</dt>
-      <dd>unused</dd>
+      <dd>for c.tokens only, <a href='tokens.html'>tokens</a> objects to be concatenated</dd>
+      <dt>recursive</dt>
+      <dd>a required argument for unlist but inapplicable to
+<a href='tokens.html'>tokens</a> objects</dd>
       <dt>use.names</dt>
       <dd>logical; preserve names if <code>TRUE</code>.  For
-<code>as.character</code> only.</dd>
+<code>as.character</code> and <code>unlist</code> only.</dd>
       <dt>t1</dt>
       <dd>tokens one to be added</dd>
       <dt>t2</dt>
       <dd>tokens two to be added</dd>
-      <dt>recursive</dt>
-      <dd>logical used by `c()` method, always set to `FALSE`</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -124,37 +129,39 @@ c(..., recursive = FALSE)</pre>
     <p><code>as.tokens</code> returns a quanteda <a href='tokens.html'>tokens</a> object</p>
     <p><code>as.list</code> returns a simple list of characters from a
   <a href='tokens.html'>tokens</a> object</p>
+    <p><code>unlist</code> returns a simple vector of characters from a 
+  <a href='tokens.html'>tokens</a> object</p>
     <p><code>as.character</code> returns a character vector from a 
   <a href='tokens.html'>tokens</a> object</p>
     <p><code>is.tokens</code> returns <code>TRUE</code> if the object is of class
   tokens, <code>FALSE</code> otherwise.</p>
+    <p><code>c(...)</code> and <code>+</code> return a tokens object whose documents
+  have been added as a single sequence of documents.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>21</span>:<span class='fl'>25</span>])
-<span class='no'>toks3</span> <span class='kw'>&lt;-</span> <span class='no'>toks1</span> + <span class='no'>toks2</span>
-
-
-<span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>21</span>:<span class='fl'>25</span>])
-<span class='no'>toks3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>41</span>:<span class='fl'>45</span>])
-<span class='fu'>summary</span>(<span class='fu'>c</span>(<span class='no'>toks1</span>, <span class='no'>toks2</span>, <span class='no'>toks3</span>))</div><div class='output co'>#&gt;                 Length Class  Mode     
-#&gt; 1789-Washington 1540   -none- character
-#&gt; 1793-Washington  147   -none- character
-#&gt; 1797-Adams      2584   -none- character
-#&gt; 1801-Jefferson  1935   -none- character
-#&gt; 1805-Jefferson  2381   -none- character
-#&gt; 1869-Grant      1243   -none- character
-#&gt; 1873-Grant      1479   -none- character
-#&gt; 1877-Hayes      2730   -none- character
-#&gt; 1881-Garfield   3240   -none- character
-#&gt; 1885-Cleveland  1828   -none- character
-#&gt; 1949-Truman     2531   -none- character
-#&gt; 1953-Eisenhower 2765   -none- character
-#&gt; 1957-Eisenhower 1933   -none- character
-#&gt; 1961-Kennedy    1568   -none- character
-#&gt; 1965-Johnson    1725   -none- character</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='co'># combining tokens</span>
+<span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"a b c d e"</span>, <span class='st'>"f g h"</span>))
+<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"1 2 3"</span>))
+<span class='no'>toks1</span> + <span class='no'>toks2</span></div><div class='output co'>#&gt; tokens from 3 documents.
+#&gt; Component 1 :
+#&gt; [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;
+#&gt; 
+#&gt; Component 2 :
+#&gt; [1] &quot;f&quot; &quot;g&quot; &quot;h&quot;
+#&gt; 
+#&gt; Component 3 :
+#&gt; [1] &quot;1&quot; &quot;2&quot; &quot;3&quot;
+#&gt; </div><div class='input'><span class='fu'>c</span>(<span class='no'>toks1</span>, <span class='no'>toks2</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
+#&gt; Component 1 :
+#&gt; [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;
+#&gt; 
+#&gt; Component 2 :
+#&gt; [1] &quot;f&quot; &quot;g&quot; &quot;h&quot;
+#&gt; 
+#&gt; Component 3 :
+#&gt; [1] &quot;1&quot; &quot;2&quot; &quot;3&quot;
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

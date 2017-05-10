@@ -111,15 +111,6 @@ matrix)</dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='no'>data_dfm_LBGexample</span>[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
-#&gt; 6 x 6 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;     features
-#&gt; docs  E  F   G   H   I   J
-#&gt;   R1 45 78 115 146 158 146
-#&gt;   R2  0  2   3  10  22  45
-#&gt;   R3  0  0   0   0   0   0
-#&gt;   R4  0  0   0   0   0   0
-#&gt;   R5  0  0   0   0   0   0
-#&gt;   V1  0  0   0   2   3  10
 #&gt; (showing first 6 documents and first 6 features)
 #&gt;     features
 #&gt; docs  E  F   G   H   I   J
@@ -129,15 +120,6 @@ matrix)</dd>
 #&gt;   R4  0  0   0   0   0   0
 #&gt;   R5  0  0   0   0   0   0
 #&gt;   V1  0  0   0   2   3  10</div><div class='input'><span class='fu'>head</span>(<span class='fu'>tfidf</span>(<span class='no'>data_dfm_LBGexample</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
-#&gt; 6 x 6 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;     features
-#&gt; docs        E          F         G        H        I        J
-#&gt;   R1 35.01681 37.2154579 54.868944 43.95038 47.56274 43.95038
-#&gt;   R2  0        0.9542425  1.431364  3.01030  6.62266 13.54635
-#&gt;   R3  0        0          0         0        0        0      
-#&gt;   R4  0        0          0         0        0        0      
-#&gt;   R5  0        0          0         0        0        0      
-#&gt;   V1  0        0          0         0.60206  0.90309  3.01030
 #&gt; (showing first 6 documents and first 6 features)
 #&gt;     features
 #&gt; docs        E          F         G        H        I        J
@@ -148,15 +130,6 @@ matrix)</dd>
 #&gt;   R5  0.00000  0.0000000  0.000000  0.00000  0.00000  0.00000
 #&gt;   V1  0.00000  0.0000000  0.000000  0.60206  0.90309  3.01030</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>data_dfm_LBGexample</span>)[<span class='fl'>5</span>:<span class='fl'>15</span>]</div><div class='output co'>#&gt; E F G H I J K L M N O 
 #&gt; 1 2 2 3 3 3 4 4 4 4 4 </div><div class='input'><span class='fu'>head</span>(<span class='fu'><a href='tf.html'>tf</a></span>(<span class='no'>data_dfm_LBGexample</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
-#&gt; 6 x 6 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;     features
-#&gt; docs  E  F   G   H   I   J
-#&gt;   R1 45 78 115 146 158 146
-#&gt;   R2  0  2   3  10  22  45
-#&gt;   R3  0  0   0   0   0   0
-#&gt;   R4  0  0   0   0   0   0
-#&gt;   R5  0  0   0   0   0   0
-#&gt;   V1  0  0   0   2   3  10
 #&gt; (showing first 6 documents and first 6 features)
 #&gt;     features
 #&gt; docs  E  F   G   H   I   J
