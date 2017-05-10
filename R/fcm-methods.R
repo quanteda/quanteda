@@ -26,8 +26,8 @@ fcm_compress <- function(x) {
     
     uniquednames <- unique(rownames(x))
     uniquefnames <- unique(colnames(x))
-    if (length(uniquednames) == nrow(x) & length(uniquefnames) == ncol(x)) 
-        return(x)
+    if (length(uniquednames) == nrow(x) | length(uniquefnames) == ncol(x)) 
+        stop("Features in row and in column are not same.")
     
     # add 1 since stored from 0, but constructor requires indexing from 1
     new_i <- x@i + 1
