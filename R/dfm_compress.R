@@ -1,11 +1,11 @@
-#' compress a dfm or fcm by combining identical dimension elements
+#' recombine a dfm or fcm by combining identical dimension elements
 #' 
-#' "Compresses" a \link{dfm} or \link{fcm} whose dimension names are the same,
-#' for either documents or features.  This may happen, for instance, if features
-#' are made equivalent through application of a thesaurus.  It may also occur
-#' after lower-casing or stemming the features of a dfm, but this should only be
-#' done in very rare cases (approaching never: it's better to do this
-#' \emph{before} constructing the dfm.)  It could also be needed after a 
+#' "Compresses" or groups a \link{dfm} or \link{fcm} whose dimension names are
+#' the same, for either documents or features.  This may happen, for instance,
+#' if features are made equivalent through application of a thesaurus.  It may
+#' also occur after lower-casing or stemming the features of a dfm, but this
+#' should only be done in very rare cases (approaching never: it's better to do
+#' this \emph{before} constructing the dfm.)  It could also be needed after a 
 #' \code{\link{cbind.dfm}} or \code{\link{rbind.dfm}} operation.
 #' 
 #' @param x input object, a \link{dfm} or \link{fcm}
@@ -13,10 +13,15 @@
 #'   \code{"documents"}, \code{"features"}, or \code{"both"} (default).  For fcm
 #'   objects, \code{"documents"} has no effect.
 #' @param ... additional arguments passed from generic to specific methods
+#' @return \code{dfm_compress} returns a \link{dfm} whose dimensions have been
+#'   recombined by summing the cells across identical dimension names
+#'   (\link{docnames} or \link{featnames}).  The \link{docvars} will be
+#'   preserved for combining by features but not when documents are combined.
 #' @export
 #' @examples 
-#' mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
-#'              dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
+#' # dfm_compress examples
+#' mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE),
+#'              dfm("A C C C C C", tolower = FALSE))
 #' colnames(mat) <- char_tolower(featnames(mat))
 #' mat
 #' dfm_compress(mat, margin = "documents")
@@ -35,39 +40,48 @@ dfm_compress <- function(x, margin = c("both", "documents", "features")) {
 #' @noRd
 #' @export
 dfm_compress.dfmSparse <- function(x, margin = c("both", "documents", "features")) {
-
     margin <- match.arg(margin)
-    if (margin == 'documents') {
-        result <- group_dfm(x, 'documents', docnames(x))
-    } else if (margin == 'features') {
-        result <- group_dfm(x, 'features', featnames(x))
-    } else {
-        temp <- group_dfm(x, 'documents', docnames(x))
-        result <- group_dfm(temp, 'features', featnames(temp))
-    }
-    return(result)
+    if (margin %in% c("features", "both") & any(duplicated(featnames(x)))) {
+        x <- group_dfm(x, 'features', featnames(x))
+    } 
+    if (margin %in% c("documents", "both") & any(duplicated(docnames(x)))) {
+        x <- group_dfm(x, 'documents', docnames(x))
+    } 
+    return(x)
 }
 
-#' group documents
 #' @rdname dfm_compress
-#' @param groups numeric or character vector indicating groups of documents. 
+#' @description \code{dfm_group} allows combining dfm documents by a grouping 
+#'   variable, which can also be one of the \link{docvars} attached to the dfm.  This is
+#'   identical in functionality to using the \code{"groups"} argument in
+#'   \code{\link{dfm}}.
+#' @param groups either: a character vector containing the names of document 
+#'   variables to be used for grouping; or a factor or object that can be 
+#'   coerced into a factor equal in length or rows to the number of documents
+#' @return \code{dfm_group} returns a \link{dfm} whose documents are equal to
+#'   the unique group combinations, and whose cell values are the sums of the
+#'   previous values summed by group.  This currently erases any docvars in the dfm.
 #' @export
 #' @examples
-#' inaugdfm <- dfm(data_corpus_inaugural)
-#' dim(dfm_group(inaugdfm, docvars(inaugdfm, 'President')))
-dfm_group <- function(x, groups) {
-    UseMethod("dfm_group")
+#' # dfm_group examples
+#' mycorpus <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"), 
+#'                    docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
+#' mydfm <- dfm(mycorpus)
+#' dfm_group(mydfm, groups = "grp")
+#' dfm_group(mydfm, groups = c(1, 1, 2, 2))
+#' 
+#' # equivalent
+#' dfm(mydfm, groups = "grp")
+#' dfm(mydfm, groups = c(1, 1, 2, 2))
+dfm_group <- function(x, groups = NULL) {
+    dfm(x, groups = groups, tolower = FALSE)
 }
 
-#' @noRd
-#' @export
-dfm_group.dfmSparse <- function(x, groups) {
-    if (ndoc(x) != length(groups)) {
-        stop("the length of 'groups' is different from the number of documents")
-    }
-    group_dfm(x, 'documents', groups)
-}
 
+#
+# internal code to perform dfm compression and grouping
+# on features and/or documents
+#
 group_dfm <- function(x, margin, groups) {
     
     groups_unique <- unique(groups)
@@ -80,13 +94,15 @@ group_dfm <- function(x, margin, groups) {
         x_new <- temp@x
         dims <- c(length(groups_unique), temp@Dim[2])
         dimnames <- list(docs = as.character(groups_unique), features = temp@Dimnames[[2]])
-        
+        docv <- data.frame()
+
     } else if (margin == 'features') {
         i_new <- temp@i + 1
         j_new <- groups_index[temp@j + 1]
         x_new <- temp@x
         dims <- c(temp@Dim[1], length(groups_unique))
         dimnames <- list(docs = temp@Dimnames[[1]], features = as.character(groups_unique))
+        docv <- docvars(x)
     }
     
     result <- new("dfmSparse", 
@@ -96,8 +112,9 @@ group_dfm <- function(x, margin, groups) {
                   weightDf = x@weightDf,
                   smooth = x@smooth,
                   ngrams = x@ngrams,
-                  concatenator = x@concatenator)
-    
+                  concatenator = x@concatenator,
+                  docvars = docv)
+
     return(result)
 }
 
