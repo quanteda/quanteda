@@ -7,6 +7,7 @@
 * Corpus construction using `corpus()` now works for a `tm::SimpleCorpus` object. (#680)
 * Added `corpus_trim()` and `char_trim()` functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.
 * Conversion of a dfm to an stm object now passes docvars through in the `$meta` of the return object.
+* New `dfm_group(x, groups = )` command, a convenience wrapper around `dfm.dfm(x, groups = )` (#725).
 
 ### Bug fixes and stability enhancements
 
@@ -19,6 +20,7 @@
 * `print`, and `head`, and `tail` methods for `dfm` are more robust (#684).
 * Fixed bug in `convert(x, to = "stm")` caused by zero-count documents and zero-count features in a dfm (#699, #700, #701).  This also removes docvar rows from `$meta` when this is passed through the dfm, for zero-count documents.
 * Corrected broken handling of nested Yoshikoder dictionaries in `dictionary()`. (#722)
+* `dfm_compress` now preserves a dfm's docvars if collapsing only on the features margin, which means that `dfm_tolower()` and `dfm_toupper()` no longer remove the docvars.
 
 ## Changes since v0.9.9-24
 
