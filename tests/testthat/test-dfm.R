@@ -305,7 +305,7 @@ test_that("dfm.dfm works as expected", {
     testdfm <- dfm(data_corpus_irishbudget2010, tolower = TRUE)
     expect_identical(testdfm, dfm(testdfm, tolower = FALSE))
     expect_identical(testdfm, dfm(testdfm, tolower = TRUE))
-    groupeddfm <- dfm(testdfm, 
+    groupeddfm <- dfm(testdfm,
                       groups =  ifelse(docvars(data_corpus_irishbudget2010, "party") %in% c("FF", "Green"), "Govt", "Opposition"),
                       tolower = FALSE)
     expect_identical(colSums(groupeddfm), colSums(groupeddfm))

@@ -148,12 +148,12 @@ sub-document units such as sentences, for instance by specifying <code>by =
 <span class='no'>doccorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'>c</span>(<span class='kw'>one</span> <span class='kw'>=</span> <span class='st'>"Sentence one.  Sentence two.  Third sentence."</span>,
                       <span class='kw'>two</span> <span class='kw'>=</span> <span class='st'>"First sentence, doc2.  Second sentence, doc2."</span>))
 <span class='no'>sentcorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_reshape.html'>corpus_reshape</a></span>(<span class='no'>doccorpus</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"sentences"</span>)
-<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>sentcorpus</span>)</div><div class='output co'>#&gt;                     one1                     one2                     one3 
+<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>sentcorpus</span>)</div><div class='output co'>#&gt;                    one.1                    one.2                    one.3 
 #&gt;          &quot;Sentence one.&quot;          &quot;Sentence two.&quot;        &quot;Third sentence.&quot; 
-#&gt;                     two1                     two2 
-#&gt;  &quot;First sentence, doc2.&quot; &quot;Second sentence, doc2.&quot; </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_sample</span>(<span class='no'>sentcorpus</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"document"</span>))</div><div class='output co'>#&gt;                     one2                     one3                     one1 
+#&gt;                    two.1                    two.2 
+#&gt;  &quot;First sentence, doc2.&quot; &quot;Second sentence, doc2.&quot; </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_sample</span>(<span class='no'>sentcorpus</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"document"</span>))</div><div class='output co'>#&gt;                    one.2                    one.3                    one.1 
 #&gt;          &quot;Sentence two.&quot;        &quot;Third sentence.&quot;          &quot;Sentence one.&quot; 
-#&gt;                     two2                     two1 
+#&gt;                    two.2                    two.1 
 #&gt; &quot;Second sentence, doc2.&quot;  &quot;First sentence, doc2.&quot; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

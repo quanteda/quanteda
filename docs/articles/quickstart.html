@@ -200,7 +200,7 @@
 ##          UKIP   346    739        27
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Thu May  4 08:38:08 2017
+## Created: Wed May 10 11:08:37 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -221,7 +221,7 @@
 ##          UKIP   346    739        27         UKIP 2010
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Thu May  4 08:38:08 2017
+## Created: Wed May 10 11:08:37 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -251,7 +251,7 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Thu May  4 08:38:08 2017
+## Created: Wed May 10 11:08:37 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -452,7 +452,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2017-Trump   582   1662        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Thu May  4 08:38:09 2017
+## Created: Wed May 10 11:08:38 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -1263,9 +1263,9 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.h
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the   supplementary          budget              to            this           house            last           april               , 
-##     -0.15058982      0.34726053      0.36922895      0.21628040      1.09099461      0.05829019      0.33579913      0.26839752      0.14935164      0.25353066     -0.13851438      0.30630139 
+##     -0.15058982      0.34726053      0.36922895      0.21628040      1.09099461      0.05829019      0.33579912      0.26839752      0.14935164      0.25353066     -0.13851438      0.30630139 
 ##            said              we           could            work             our             way         through          period              of          severe        economic        distress 
-##     -0.77779200      0.43921107     -0.59703182      0.54219872      0.70824736      0.29607747      0.62274642      0.51835687      0.30095010      1.25529502      0.44375418      1.83470247 
+##     -0.77779200      0.43921107     -0.59703182      0.54219871      0.70824736      0.29607747      0.62274642      0.51835687      0.30095010      1.25529502      0.44375418      1.83470247 
 ##               .           today             can          report            that notwithstanding 
 ##      0.23398491      0.14174074      0.32480755      0.65459489      0.04184343      1.83470247</code></pre></div>
 </div>
@@ -1282,17 +1282,17 @@ if (<span class="kw">require</span>(topicmodels)) {
     <span class="kw">topics</span>(myLDAfit20, <span class="dv">3</span>)
 }
 ##      2010_BUDGET_01_Brian_Lenihan_FF 2010_BUDGET_02_Richard_Bruton_FG 2010_BUDGET_03_Joan_Burton_LAB 2010_BUDGET_04_Arthur_Morgan_SF 2010_BUDGET_05_Brian_Cowen_FF 2010_BUDGET_06_Enda_Kenny_FG
-## [1,]                              15                                4                              1                               8                            13                           16
-## [2,]                              11                                3                              9                              18                             7                           14
-## [3,]                              19                               17                             20                              20                             1                           10
+## [1,]                              12                                5                             18                               9                             3                            6
+## [2,]                               8                                1                             15                              13                            15                           14
+## [3,]                              16                               19                             20                              14                            14                            1
 ##      2010_BUDGET_07_Kieran_ODonnell_FG 2010_BUDGET_08_Eamon_Gilmore_LAB 2010_BUDGET_09_Michael_Higgins_LAB 2010_BUDGET_10_Ruairi_Quinn_LAB 2010_BUDGET_11_John_Gormley_Green
-## [1,]                                12                                2                                 10                              12                                 3
-## [2,]                                 3                               10                                 14                              14                                17
-## [3,]                                20                                3                                 18                              18                                15
+## [1,]                                10                               20                                  2                              11                                19
+## [2,]                                19                                7                                 13                              14                                13
+## [3,]                                11                               11                                  1                              13                                15
 ##      2010_BUDGET_12_Eamon_Ryan_Green 2010_BUDGET_13_Ciaran_Cuffe_Green 2010_BUDGET_14_Caoimhghin_OCaolain_SF
-## [1,]                              20                                17                                     6
-## [2,]                               7                                14                                     5
-## [3,]                              14                                20                                     3</code></pre></div>
+## [1,]                              17                                 1                                     4
+## [2,]                               1                                13                                    11
+## [3,]                              13                                19                                     2</code></pre></div>
 </div>
 </div>
 </div>

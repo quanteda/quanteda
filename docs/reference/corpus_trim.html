@@ -121,10 +121,26 @@ sentence level) will be used to exclude sentences</dd>
 #&gt;                                                                      text3 
 #&gt;   &quot;Very long sentence, with multiple parts, separated by commas.  PAGE 3.&quot; </div><div class='input'>
 <span class='co'># exclude sentences shorter than 3 tokens</span>
-<span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_trim</span>(<span class='no'>mycorp</span>, <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='output co'>#&gt; <span class='error'>Error in texts(corpus_trim(mycorp, min_ntoken = 3)): could not find function &quot;corpus_trim&quot;</span></div><div class='input'><span class='co'># exclude sentences that start with "PAGE &lt;digit(s)&gt;"</span>
-<span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_trim</span>(<span class='no'>mycorp</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='st'>"^PAGE \\d+"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in texts(corpus_trim(mycorp, exclude_pattern = &quot;^PAGE \\d+&quot;)): could not find function &quot;corpus_trim&quot;</span></div><div class='input'>
+<span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_trim</span>(<span class='no'>mycorp</span>, <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='output co'>#&gt;                                                           text1 
+#&gt;              &quot;This is a single sentence.  Three word sentence.&quot; 
+#&gt;                                                           text3 
+#&gt; &quot;Very long sentence, with multiple parts, separated by commas.&quot; </div><div class='input'><span class='co'># exclude sentences that start with "PAGE &lt;digit(s)&gt;"</span>
+<span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_trim</span>(<span class='no'>mycorp</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='st'>"^PAGE \\d+"</span>))</div><div class='output co'>#&gt;                                                               text1 
+#&gt; &quot;This is a single sentence.  Short sentence.  Three word sentence.&quot; 
+#&gt;                                                               text2 
+#&gt;                                             &quot;Very short!  Shorter.&quot; 
+#&gt;                                                               text3 
+#&gt;     &quot;Very long sentence, with multiple parts, separated by commas.&quot; </div><div class='input'>
 <span class='co'># trimming character objects</span>
-<span class='fu'>char_trim</span>(<span class='no'>txt</span>, <span class='st'>"sentences"</span>, <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): could not find function &quot;char_trim&quot;</span></div><div class='input'><span class='fu'>char_trim</span>(<span class='no'>txt</span>, <span class='st'>"sentences"</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='st'>"sentence\\."</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): could not find function &quot;char_trim&quot;</span></div></pre>
+<span class='fu'>char_trim</span>(<span class='no'>txt</span>, <span class='st'>"sentences"</span>, <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;                                                           text1 
+#&gt;              &quot;This is a single sentence.  Three word sentence.&quot; 
+#&gt;                                                           text3 
+#&gt; &quot;Very long sentence, with multiple parts, separated by commas.&quot; </div><div class='input'><span class='fu'>char_trim</span>(<span class='no'>txt</span>, <span class='st'>"sentences"</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='st'>"sentence\\."</span>)</div><div class='output co'>#&gt;                                                                    text1 
+#&gt;                                                                &quot;PAGE 1.&quot; 
+#&gt;                                                                    text2 
+#&gt;                                         &quot;PAGE 2.  Very short!  Shorter.&quot; 
+#&gt;                                                                    text3 
+#&gt; &quot;Very long sentence, with multiple parts, separated by commas.  PAGE 3.&quot; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
