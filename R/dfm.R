@@ -405,7 +405,7 @@ compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
     temp <- sparseMatrix(i = docIndex, 
                          j = featureIndex, 
                          x = 1L, 
-                         dim = c(length(x), length(uniqueFeatures)),
+                         dims = c(length(x), length(uniqueFeatures)),
                          dimnames = list(docs = names(x), 
                                       features = uniqueFeatures))
     new("dfmSparse", temp)
@@ -437,7 +437,7 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
     temp <- t(sparseMatrix(i = index, 
                            p = cumsum(c(1, lengths(x))) - 1, 
                            x = 1L, 
-                           dim = c(length(types), length(names(x))),
+                           dims = c(length(types), length(names(x))),
                            dimnames = list(features = as.character(types), 
                                            docs = names(x))))
     new("dfmSparse", temp)

@@ -120,6 +120,7 @@ group_dfm <- function(x, features = NULL, documents = NULL) {
                   weightDf = x@weightDf,
                   smooth = x@smooth,
                   ngrams = x@ngrams,
+                  skip = x@skip,
                   concatenator = x@concatenator,
                   docvars = docvars_new)
     
@@ -145,7 +146,9 @@ dfm_compress.dfmDense <- function(x, ...) {
                      weightDf = x@weightDf,
                      smooth = x@smooth,
                      ngrams = x@ngrams,
-                     concatenator = x@concatenator),
+                     skip = x@skip,
+                     concatenator = x@concatenator,
+                     docvars = x@docvars),
                  ...)
 }                 
 
