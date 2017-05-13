@@ -21,6 +21,7 @@
 * Fixed bug in `convert(x, to = "stm")` caused by zero-count documents and zero-count features in a dfm (#699, #700, #701).  This also removes docvar rows from `$meta` when this is passed through the dfm, for zero-count documents.
 * Corrected broken handling of nested Yoshikoder dictionaries in `dictionary()`. (#722)
 * `dfm_compress` now preserves a dfm's docvars if collapsing only on the features margin, which means that `dfm_tolower()` and `dfm_toupper()` no longer remove the docvars.
+* `fcm_compress()` now retains the fcm class, and generates and error when an asymmetric compression is attempted (#728).
 
 ## Changes since v0.9.9-24
 
