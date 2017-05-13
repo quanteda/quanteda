@@ -26,8 +26,8 @@ fcm_compress <- function(x) {
     
     uniquednames <- unique(rownames(x))
     uniquefnames <- unique(colnames(x))
-    if (length(uniquednames) == nrow(x) & length(uniquefnames) == ncol(x)) 
-        return(x)
+    if (length(uniquednames) == nrow(x) | length(uniquefnames) == ncol(x)) 
+        stop("Features in row and in column are not same.")
     
     # add 1 since stored from 0, but constructor requires indexing from 1
     new_i <- x@i + 1
@@ -48,10 +48,14 @@ fcm_compress <- function(x) {
         new_j <- c(new_j, allZeroFeatures)
     }
     
+    new_fcm <- sparseMatrix(i = new_i, j = new_j, 
+                            x = c(x@x, rep(0, length(allZeroFeatures))),
+                            dimnames = list(docs = uniquednames, features = uniquefnames))
+    
+    if (x@tri) new_fcm <- as(Matrix::triu(new_fcm), "dgCMatrix")
+    
     result <- 
-        new("fcm", sparseMatrix(i = new_i, j = new_j, 
-                                  x = c(x@x, rep(0, length(allZeroFeatures))),
-                                  dimnames = list(docs = uniquednames, features = uniquefnames)),
+        new("fcm", new_fcm,
         settings = x@settings,
         weightTf = x@weightTf,
         weightDf = x@weightDf,
@@ -59,8 +63,6 @@ fcm_compress <- function(x) {
         ngrams = x@ngrams,
         concatenator = x@concatenator,
         context = x@context, window = x@window, weights = x@weights, tri = x@tri)
-
-    if (x@tri) Matrix::triu(result) else result
 } 
 
 

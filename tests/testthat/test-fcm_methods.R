@@ -172,5 +172,15 @@ test_that("test fcm_select with features from a dfm,  fixed", {
     )
 })
 
+test_that("test fcm_compress stops if features are changed only in on dimension", {
+    myfcm <- fcm(tokens(c("b A A d", "C C a b B e")), context = "document")
+    myfcm@Dimnames[[1]] <- tolower(myfcm@Dimnames[[1]])
+    expect_error(fcm_compress(myfcm))
+})
 
-
+test_that("test fcm_compress retains class", {
+    myfcm <- fcm(tokens(c("b A A d", "C C a b B e")), context = "document")
+    colnames(myfcm) <- rownames(myfcm) <- tolower(colnames(myfcm))
+    newfcm <- fcm_compress(myfcm)
+    expect_equivalent(class(newfcm), "fcm")
+})
