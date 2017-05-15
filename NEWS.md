@@ -8,6 +8,7 @@
 * Added `corpus_trim()` and `char_trim()` functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.
 * Conversion of a dfm to an stm object now passes docvars through in the `$meta` of the return object.
 * New `dfm_group(x, groups = )` command, a convenience wrapper around `dfm.dfm(x, groups = )` (#725).
+* Methods for extending quanteda functions to readtext objects updated to match CRAN release of readtext package.
 
 ### Bug fixes and stability enhancements
 
