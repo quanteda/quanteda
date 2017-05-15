@@ -2,13 +2,28 @@
 % Please edit documentation in R/corpus.R
 \name{corpus}
 \alias{corpus}
+\alias{corpus.character}
+\alias{corpus.data.frame}
+\alias{corpus.kwic}
+\alias{corpus.Corpus}
 \title{construct a corpus object}
 \usage{
-corpus(x, docnames = NULL, docvars = NULL, text_field = "text",
+corpus(x, ...)
+
+\method{corpus}{character}(x, docnames = NULL, docvars = NULL,
   metacorpus = NULL, compress = FALSE, ...)
+
+\method{corpus}{data.frame}(x, docid_field = "doc_id", text_field = "text",
+  metacorpus = NULL, compress = FALSE, ...)
+
+\method{corpus}{kwic}(x, ...)
+
+\method{corpus}{Corpus}(x, metacorpus = NULL, compress = FALSE, ...)
 }
 \arguments{
 \item{x}{a valid corpus source object}
+
+\item{...}{not used directly}
 
 \item{docnames}{Names to be assigned to the texts.  Defaults to the names of 
 the character vector (if any); \code{doc_id} for a data.frame; the document
@@ -18,14 +33,9 @@ length to the number of documents.  If none of these are round, then
 
 \item{docvars}{A data frame of attributes that is associated with each text.}
 
-\item{text_field}{the character name or numeric index of the source \code{data.frame}
-indicating the variable to be read in as text, which must be a character vector.
-All other variables in the data.frame will be imported as docvars.  This argument 
-is only used for \code{data.frame} objects (including those created by \pkg{readtext}).}
-
-\item{metacorpus}{a named list containing additional (character) information to be added to the
-corpus as corpus-level metadata.  Special fields recognized in the \code{\link{summary.corpus}}
-are: 
+\item{metacorpus}{a named list containing additional (character) information
+  to be added to the corpus as corpus-level metadata.  Special fields
+  recognized in the \code{\link{summary.corpus}} are:
 \itemize{
 \item{\code{source }}{a description of the source of the texts, used for 
   referencing;}
@@ -34,16 +44,25 @@ are:
   to do lists, etc.}
 }}
 
-\item{compress}{logical; if \code{TRUE}, compress the texts in memory using gzip compression.
-This significantly reduces the size of the corpus in memory, but will slow down operations that
-require the texts to be extracted.}
+\item{compress}{logical; if \code{TRUE}, compress the texts in memory using
+gzip compression. This significantly reduces the size of the corpus in
+memory, but will slow down operations that require the texts to be
+extracted.}
 
-\item{...}{not used directly}
+\item{docid_field}{name of the data.frame variable containing the document
+identifier; defaults to \code{doc_id} but if this is not found, will use
+the row.names of the data.frame if these are assigned}
+
+\item{text_field}{the character name or numeric index of the source
+\code{data.frame} indicating the variable to be read in as text, which must
+be a character vector. All other variables in the data.frame will be
+imported as docvars.  This argument is only used for \code{data.frame}
+objects (including those created by \pkg{readtext}).}
 }
 \value{
-A \link{corpus-class} class object containing the original texts, document-level 
-  variables, document-level metadata, corpus-level metadata, and default 
-  settings for subsequent processing of the corpus.
+A \link{corpus-class} class object containing the original texts,
+  document-level variables, document-level metadata, corpus-level metadata,
+  and default settings for subsequent processing of the corpus.
 }
 \description{
 Creates a corpus object from available sources.  The currently available  
@@ -51,12 +70,11 @@ sources are:
 \itemize{ 
 \item a \link{character} vector, consisting of one document per element; if 
   the elements are named, these names will be used as document names.
-\item a readtext object, from the \pkg{readtext} package 
-  (which is a specially constructed data.frame)
-\item a \link{data.frame}, whose default variable containing the document is 
-  character vector named \code{text}, although this can be set to any other
-  variable name using the \code{text_field} argument.  Other variables are 
-  imported as document-level meta-data.
+\item a \link{data.frame}, whose default document id is a variable identified
+by \code{docid_field}; the text of the document is a variable identified by
+\code{textid_field}; and other variables are imported as document-level
+meta-data.  This matches the format of data.frames constructed by the the
+\pkg{readtext} package.
 \item a \link{kwic} object constructed by \code{\link{kwic}}.
 \item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object, 
   with the fixed metadata 
@@ -82,13 +100,12 @@ The texts and document variables of corpus objects can also be
   For details, see \link{corpus-class}.
 }
 \section{A warning on accessing corpus elements}{
-
-  A corpus currently 
-  consists of an S3 specially classed list of elements, but \strong{you should not 
+ A corpus currently consists
+  of an S3 specially classed list of elements, but \strong{you should not 
   access these elements directly}. Use the extractor and replacement 
-  functions instead, or else your code is not only going to be uglier, but
-  also likely to break should the internal structure of a corpus object
-  change (as it inevitably will as we continue to develop the package,
+  functions instead, or else your code is not only going to be uglier, but 
+  also likely to break should the internal structure of a corpus object 
+  change (as it inevitably will as we continue to develop the package, 
   including moving corpus objects to the S4 class system).
 }
 

@@ -5,12 +5,11 @@
 #' \itemize{ 
 #' \item a \link{character} vector, consisting of one document per element; if 
 #'   the elements are named, these names will be used as document names.
-#' \item a readtext object, from the \pkg{readtext} package 
-#'   (which is a specially constructed data.frame)
-#' \item a \link{data.frame}, whose default variable containing the document is 
-#'   character vector named \code{text}, although this can be set to any other
-#'   variable name using the \code{text_field} argument.  Other variables are 
-#'   imported as document-level meta-data.
+#' \item a \link{data.frame}, whose default document id is a variable identified
+#' by \code{docid_field}; the text of the document is a variable identified by
+#' \code{textid_field}; and other variables are imported as document-level
+#' meta-data.  This matches the format of data.frames constructed by the the
+#' \pkg{readtext} package.
 #' \item a \link{kwic} object constructed by \code{\link{kwic}}.
 #' \item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object, 
 #'   with the fixed metadata 
@@ -24,13 +23,14 @@
 #'   length to the number of documents.  If none of these are round, then 
 #'   "text1", "text2", etc. are assigned automatically.
 #' @param docvars A data frame of attributes that is associated with each text.
-#' @param text_field the character name or numeric index of the source \code{data.frame}
-#'   indicating the variable to be read in as text, which must be a character vector.
-#'   All other variables in the data.frame will be imported as docvars.  This argument 
-#'   is only used for \code{data.frame} objects (including those created by \pkg{readtext}).
-#' @param metacorpus a named list containing additional (character) information to be added to the
-#' corpus as corpus-level metadata.  Special fields recognized in the \code{\link{summary.corpus}}
-#' are: 
+#' @param text_field the character name or numeric index of the source
+#'   \code{data.frame} indicating the variable to be read in as text, which must
+#'   be a character vector. All other variables in the data.frame will be
+#'   imported as docvars.  This argument is only used for \code{data.frame}
+#'   objects (including those created by \pkg{readtext}).
+#' @param metacorpus a named list containing additional (character) information
+#'   to be added to the corpus as corpus-level metadata.  Special fields
+#'   recognized in the \code{\link{summary.corpus}} are:
 #' \itemize{
 #' \item{\code{source }}{a description of the source of the texts, used for 
 #'   referencing;}
@@ -38,20 +38,20 @@
 #' \item{\code{notes }}{any additional information about who created the text, warnings, 
 #'   to do lists, etc.}
 #' }
-#' @param compress logical; if \code{TRUE}, compress the texts in memory using gzip compression.
-#' This significantly reduces the size of the corpus in memory, but will slow down operations that
-#' require the texts to be extracted.
+#' @param compress logical; if \code{TRUE}, compress the texts in memory using
+#'   gzip compression. This significantly reduces the size of the corpus in
+#'   memory, but will slow down operations that require the texts to be
+#'   extracted.
 #' @param ... not used directly
-#' @return A \link{corpus-class} class object containing the original texts, document-level 
-#'   variables, document-level metadata, corpus-level metadata, and default 
-#'   settings for subsequent processing of the corpus.  
-#' @section A warning on accessing corpus elements:
-#'   A corpus currently 
-#'   consists of an S3 specially classed list of elements, but \strong{you should not 
+#' @return A \link{corpus-class} class object containing the original texts,
+#'   document-level variables, document-level metadata, corpus-level metadata,
+#'   and default settings for subsequent processing of the corpus.
+#' @section A warning on accessing corpus elements: A corpus currently consists
+#'   of an S3 specially classed list of elements, but \strong{you should not 
 #'   access these elements directly}. Use the extractor and replacement 
-#'   functions instead, or else your code is not only going to be uglier, but
-#'   also likely to break should the internal structure of a corpus object
-#'   change (as it inevitably will as we continue to develop the package,
+#'   functions instead, or else your code is not only going to be uglier, but 
+#'   also likely to break should the internal structure of a corpus object 
+#'   change (as it inevitably will as we continue to develop the package, 
 #'   including moving corpus objects to the S4 class system).
 #' @seealso \link{corpus-class}, \code{\link{docvars}}, \code{\link{metadoc}}, 
 #'   \code{\link{metacorpus}}, 
@@ -112,17 +112,13 @@
 #' # construct a corpus from a kwic object
 #' mykwic <- kwic(data_corpus_inaugural, "southern")
 #' summary(corpus(mykwic))
-corpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
+corpus <- function(x, ...) {
     UseMethod("corpus")
 }
 
 #' @rdname corpus
-#' @noRd
 #' @export
-corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
-    if (!missing(text_field))
-        stop("text_field is not applicable for this class of input")
-    
+corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NULL, compress = FALSE, ...) {
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
@@ -144,7 +140,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "t
     
     # name the texts vector
     if (!is.null(docnames)) {
-        stopifnot(length(docnames)==length(x))
+        stopifnot(length(docnames) == length(x))
         names(x) <- docnames
     } else if (is.null(x_names)) {
         names(x) <- paste("text", seq_along(x), sep="")
@@ -215,15 +211,23 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "t
 }
 
 #' @rdname corpus
-#' @noRd
+#' @param docid_field name of the data.frame variable containing the document
+#'   identifier; defaults to \code{doc_id} but if this is not found, will use
+#'   the row.names of the data.frame if these are assigned
 #' @keywords corpus
+#' @method corpus data.frame
 #' @export
-corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
-
+corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
+    
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+    
+    docnames <- docid_field
+    
     x <- as.data.frame(x)
         
     args <- list(...)
-    if (!missing(docvars))
+    if ("docvars" %in% names(args))
         stop("docvars are assigned automatically for data.frames")
     
     if (is.character(text_field)) {
@@ -238,23 +242,21 @@ corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "
     }
 
     docnamesi <- integer()
-    # if user-supplied docnames, check length and use if ok
-    if (!missing(docnames)) {
-        if (length(docnames) != nrow(x))
-            stop("user-supplied docnames must be the same as the number of documents")
-    } else {
-        # otherwise use doc_id
-        if (is.null(docnames)) {
-            if ("doc_id" %in% names(x)) {
-                docnames <- x[["doc_id"]]
-                docnamesi <- which(names(x) == "doc_id")
-            # otherwise use rownames
-            } else if (!identical(row.names(x), as.character(seq_len(nrow(x))))) {
-                docnames <- row.names(x)
-            }
-        }
+    if (is.numeric(docnames)) {
+        docnames <- names(docnames)[docnames]
     }
-    # if none of those were true, docnames remains NULL
+    
+    if (length(docnames) > 1) 
+        stop("docid_field must refer to a single column")
+    
+    if (docnames %in% names(x)) {
+        docnamesi <- which(names(x) == docnames)
+        docnames <- x[[docnames]]
+    } else if (!identical(row.names(x), as.character(seq_len(nrow(x))))) {
+        docnames <- row.names(x)
+    } else {
+        docnames <- NULL
+    }
     
     if (length(text_fieldi) != 1)
         stop("only one text_field may be specified")
@@ -268,34 +270,28 @@ corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "
     corpus(x[, text_fieldi], 
            docvars = x[, -c(text_fieldi, docnamesi), drop = FALSE],
            docnames = docnames, 
-           metacorpus = metacorpus, compress = compress, ...)
+           metacorpus = metacorpus, compress = compress)
 }
 
 
 #' @rdname corpus
-#' @noRd
 #' @keywords corpus
 #' @export
-corpus.kwic <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
-    
-    if (compress)
-        warning("compress not yet implemented for corpus.kwic")
-    if (!missing(docvars))
-        stop("docvars are assigned automatically for kwic objects")
-    if (!missing(text_field))
-        stop("text_field is not applicable for this class of input")
+corpus.kwic <- function(x, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
     class(x) <- "data.frame"
     
     # convert docnames to a factor, as in original kwic
     x$docname <- factor(x$docname)
     
-    result <- corpus(x, text_field = "pre", ...)
+    result <- corpus(x, text_field = "pre")
     result[["post"]] <- NULL
     result[["context"]] <- "pre"
     docnames(result) <- paste0(docnames(result), ".pre")
 
-    tempCorp <- corpus(x, text_field = "post", ...)
+    tempCorp <- corpus(x, text_field = "post")
     tempCorp[["pre"]] <- NULL
     tempCorp[["context"]] <- "post"
     docnames(tempCorp) <- paste0(docnames(tempCorp), ".post")
@@ -304,21 +300,17 @@ corpus.kwic <- function(x, docnames = NULL, docvars = NULL, text_field = "text",
     metacorpus(result, "source") <- paste0("Corpus created from kwic(x, keywords = \"", 
                                            paste(attr(x, "keywords"), collapse = ", "),
                                            "\")")
-
     result
 }
 
 #' @rdname corpus
-#' @noRd
 #' @keywords corpus
 #' @export
-corpus.Corpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
+corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
     
-    if (!missing(docvars))
-        stop("docvars are assigned automatically for tm::VCorpus objects")
-    if (!missing(text_field))
-        stop("text_field is not applicable for this class of input")
-
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+    
     # special handling for VCorpus meta-data
     if (inherits(x, what = "VCorpus")) {
         metad <- data.frame(do.call(rbind, (lapply(x$content, "[[", "meta"))),
@@ -346,7 +338,7 @@ corpus.Corpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text
     metacorpus <- c(metacorpus, 
                     list(source = paste("Converted from tm VCorpus \'", deparse(substitute(x)), "\'", sep="")))
     
-    corpus(texts, docvars = metad, metacorpus = metacorpus, compress = compress, ...)
+    corpus(texts, docvars = metad, metacorpus = metacorpus, compress = compress)
 }
 
 
