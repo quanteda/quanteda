@@ -18,8 +18,11 @@
 #'   as \link{metacorpus} information.
 #' } 
 #' @param x a valid corpus source object
-#' @param docnames Names to be assigned to the texts, defaults to the names of 
-#'   the character vector (if any), otherwise assigns "text1", "text2", etc.
+#' @param docnames Names to be assigned to the texts.  Defaults to the names of 
+#'   the character vector (if any); \code{doc_id} for a data.frame; the document
+#'   names in a \pkg{tm} corpus; or a vector of user-supplied labels equal in 
+#'   length to the number of documents.  If none of these are round, then 
+#'   "text1", "text2", etc. are assigned automatically.
 #' @param docvars A data frame of attributes that is associated with each text.
 #' @param text_field the character name or numeric index of the source \code{data.frame}
 #'   indicating the variable to be read in as text, which must be a character vector.
@@ -234,6 +237,25 @@ corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "
         stop("text_field must be a character (variable name) or numeric index")
     }
 
+    docnamesi <- integer()
+    # if user-supplied docnames, check length and use if ok
+    if (!missing(docnames)) {
+        if (length(docnames) != nrow(x))
+            stop("user-supplied docnames must be the same as the number of documents")
+    } else {
+        # otherwise use doc_id
+        if (is.null(docnames)) {
+            if ("doc_id" %in% names(x)) {
+                docnames <- x[["doc_id"]]
+                docnamesi <- which(names(x) == "doc_id")
+            # otherwise use rownames
+            } else if (!identical(row.names(x), as.character(seq_len(nrow(x))))) {
+                docnames <- row.names(x)
+            }
+        }
+    }
+    # if none of those were true, docnames remains NULL
+    
     if (length(text_fieldi) != 1)
         stop("only one text_field may be specified")
 
@@ -244,8 +266,8 @@ corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "
         stop("text_field must refer to a character mode column")
     
     corpus(x[, text_fieldi], 
-           docvars = x[, -text_fieldi, drop = FALSE],
-           docnames = if (!identical(row.names(x), as.character(seq_len(nrow(x))))) row.names(x) else NULL, 
+           docvars = x[, -c(text_fieldi, docnamesi), drop = FALSE],
+           docnames = docnames, 
            metacorpus = metacorpus, compress = compress, ...)
 }
 

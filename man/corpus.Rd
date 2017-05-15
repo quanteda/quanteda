@@ -10,8 +10,11 @@ corpus(x, docnames = NULL, docvars = NULL, text_field = "text",
 \arguments{
 \item{x}{a valid corpus source object}
 
-\item{docnames}{Names to be assigned to the texts, defaults to the names of 
-the character vector (if any), otherwise assigns "text1", "text2", etc.}
+\item{docnames}{Names to be assigned to the texts.  Defaults to the names of 
+the character vector (if any); \code{doc_id} for a data.frame; the document
+names in a \pkg{tm} corpus; or a vector of user-supplied labels equal in 
+length to the number of documents.  If none of these are round, then 
+"text1", "text2", etc. are assigned automatically.}
 
 \item{docvars}{A data frame of attributes that is associated with each text.}
 
