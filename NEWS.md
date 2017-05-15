@@ -9,6 +9,7 @@
 * Conversion of a dfm to an stm object now passes docvars through in the `$meta` of the return object.
 * New `dfm_group(x, groups = )` command, a convenience wrapper around `dfm.dfm(x, groups = )` (#725).
 * Methods for extending quanteda functions to readtext objects updated to match CRAN release of readtext package.
+* Corpus constructor methods for data.frame objects now conform to the "text interchange format" for corpus data.frames, automatically recognizing `doc_id` and `text` fields, which also provides interoperability with the **readtext** package.  corpus construction methods are now more explicitly tailored to input object classes.
 
 ### Bug fixes and stability enhancements
 
