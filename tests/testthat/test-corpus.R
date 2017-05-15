@@ -116,15 +116,15 @@ test_that("test corpus constructors works for data.frame", {
     expect_equal(corpus(mydf, text_field = "some_text"),
                  corpus(mydf3))
     
-    expect_equal(
-        docnames(corpus(mydf3, docnames = paste0("d", 1:6))),
-        c("d1", "d2", "d3", "d4", "d5", "d6")
+    expect_error(
+        corpus(mydf3, docid_field = paste0("d", 1:6)),
+        "docid_field must refer to a single column"
     )
     
-    expect_error(
-        corpus(mydf3, docnames = paste0("d", 1:5)),
-        "user-supplied docnames must be the same as the number of documents"
-    )
+    # expect_error(
+    #     corpus(mydf3, docnames = paste0("d", 1:5)),
+    #     "user-supplied docnames must be the same as the number of documents"
+    # )
     
     expect_equal(corpus(mydf, text_field = "some_text"),
                  corpus(mydf, text_field = 3))
