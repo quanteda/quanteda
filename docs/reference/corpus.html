@@ -82,13 +82,11 @@ sources are:
 <li> a character vector, consisting of one document per element; if 
   the elements are named, these names will be used as document names.
 </li>
-<li> a readtext object, from the <span class="pkg">readtext</span> package 
-  (which is a specially constructed data.frame)
-</li>
-<li> a data.frame, whose default variable containing the document is 
-  character vector named <code>text</code>, although this can be set to any other
-  variable name using the <code>text_field</code> argument.  Other variables are 
-  imported as document-level meta-data.
+<li> a data.frame, whose default document id is a variable identified
+by <code>docid_field</code>; the text of the document is a variable identified by
+<code>textid_field</code>; and other variables are imported as document-level
+meta-data.  This matches the format of data.frames constructed by the the
+<span class="pkg">readtext</span> package.
 </li>
 <li> a <a href='kwic.html'>kwic</a> object constructed by <code><a href='kwic.html'>kwic</a></code>.
 </li>
@@ -100,27 +98,40 @@ sources are:
 </ul></p>
     
 
-    <pre><span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='kw'>docnames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>text_field</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
-  <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for character</span>
+<span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='kw'>docnames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for data.frame</span>
+<span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='kw'>docid_field</span> <span class='kw'>=</span> <span class='st'>"doc_id"</span>, <span class='kw'>text_field</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
+  <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for kwic</span>
+<span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for Corpus</span>
+<span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
       <dd>a valid corpus source object</dd>
+      <dt>...</dt>
+      <dd>not used directly</dd>
       <dt>docnames</dt>
-      <dd>Names to be assigned to the texts, defaults to the names of 
-the character vector (if any), otherwise assigns &quot;text1&quot;, &quot;text2&quot;, etc.</dd>
+      <dd>Names to be assigned to the texts.  Defaults to the names of 
+the character vector (if any); <code>doc_id</code> for a data.frame; the document
+names in a <span class="pkg">tm</span> corpus; or a vector of user-supplied labels equal in 
+length to the number of documents.  If none of these are round, then 
+&quot;text1&quot;, &quot;text2&quot;, etc. are assigned automatically.</dd>
       <dt>docvars</dt>
       <dd>A data frame of attributes that is associated with each text.</dd>
-      <dt>text_field</dt>
-      <dd>the character name or numeric index of the source <code>data.frame</code>
-indicating the variable to be read in as text, which must be a character vector.
-All other variables in the data.frame will be imported as docvars.  This argument 
-is only used for <code>data.frame</code> objects (including those created by <span class="pkg">readtext</span>).</dd>
       <dt>metacorpus</dt>
-      <dd>a named list containing additional (character) information to be added to the
-corpus as corpus-level metadata.  Special fields recognized in the <code><a href='summary.character.html'>summary.corpus</a></code>
-are: 
+      <dd>a named list containing additional (character) information
+  to be added to the corpus as corpus-level metadata.  Special fields
+  recognized in the <code><a href='summary.character.html'>summary.corpus</a></code> are:
 <ul>
 <li><code>source </code>a description of the source of the texts, used for 
   referencing;
@@ -133,18 +144,27 @@ are:
 </ul>
 </dd>
       <dt>compress</dt>
-      <dd>logical; if <code>TRUE</code>, compress the texts in memory using gzip compression.
-This significantly reduces the size of the corpus in memory, but will slow down operations that
-require the texts to be extracted.</dd>
-      <dt>...</dt>
-      <dd>not used directly</dd>
+      <dd>logical; if <code>TRUE</code>, compress the texts in memory using
+gzip compression. This significantly reduces the size of the corpus in
+memory, but will slow down operations that require the texts to be
+extracted.</dd>
+      <dt>docid_field</dt>
+      <dd>name of the data.frame variable containing the document
+identifier; defaults to <code>doc_id</code> but if this is not found, will use
+the row.names of the data.frame if these are assigned</dd>
+      <dt>text_field</dt>
+      <dd>the character name or numeric index of the source
+<code>data.frame</code> indicating the variable to be read in as text, which must
+be a character vector. All other variables in the data.frame will be
+imported as docvars.  This argument is only used for <code>data.frame</code>
+objects (including those created by <span class="pkg">readtext</span>).</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <a href='corpus-class.html'>corpus-class</a> class object containing the original texts, document-level 
-  variables, document-level metadata, corpus-level metadata, and default 
-  settings for subsequent processing of the corpus.</p>
+    <p>A <a href='corpus-class.html'>corpus-class</a> class object containing the original texts,
+  document-level variables, document-level metadata, corpus-level metadata,
+  and default settings for subsequent processing of the corpus.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -163,13 +183,12 @@ require the texts to be extracted.</dd>
     
     <h2 class="hasAnchor" id="a-warning-on-accessing-corpus-elements"><a class="anchor" href="#a-warning-on-accessing-corpus-elements"></a>A warning on accessing corpus elements</h2>
 
-    <p></p>
-    <p>A corpus currently 
-  consists of an S3 specially classed list of elements, but <strong>you should not 
+    <p>A corpus currently consists
+  of an S3 specially classed list of elements, but <strong>you should not 
   access these elements directly</strong>. Use the extractor and replacement 
-  functions instead, or else your code is not only going to be uglier, but
-  also likely to break should the internal structure of a corpus object
-  change (as it inevitably will as we continue to develop the package,
+  functions instead, or else your code is not only going to be uglier, but 
+  also likely to break should the internal structure of a corpus object 
+  change (as it inevitably will as we continue to develop the package, 
   including moving corpus objects to the S4 class system).</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -195,7 +214,7 @@ require the texts to be extracted.</dd>
 #&gt;        Labour   296    703        29       Labour
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Wed May 10 11:07:27 2017
+#&gt; Created: Tue May 16 20:59:43 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'>
 <span class='fu'>corpus</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>data_corpus_irishbudget2010</span>))</div><div class='output co'>#&gt; Corpus consisting of 14 documents and 0 docvars.</div><div class='input'>
@@ -341,7 +360,7 @@ require the texts to be extracted.</dd>
 #&gt;       &lt;NA&gt;
 #&gt; 
 #&gt; Source:  Converted from tm VCorpus &#39;crude&#39;
-#&gt; Created: Wed May 10 11:07:27 2017
+#&gt; Created: Tue May 16 20:59:43 2017
 #&gt; Notes:   
 #&gt; 
 #&gt; Corpus consisting of 50 documents, showing 5 documents.
@@ -372,21 +391,21 @@ require the texts to be extracted.</dd>
 #&gt;     YES      TRAIN TRAINING-SET  5611    usa   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt;
 #&gt; 
 #&gt; Source:  Converted from tm VCorpus &#39;acq&#39;
-#&gt; Created: Wed May 10 11:07:27 2017
+#&gt; Created: Tue May 16 20:59:43 2017
 #&gt; Notes:   
 #&gt; 
 #&gt; Corpus consisting of 9 documents.
 #&gt; 
 #&gt;          Text Types Tokens Sentences author       datetimestamp description
-#&gt;           BNP  1126   3330        88   &lt;NA&gt; 2017-05-10 10:07:27        &lt;NA&gt;
-#&gt;     Coalition   144    268         4   &lt;NA&gt; 2017-05-10 10:07:27        &lt;NA&gt;
-#&gt;  Conservative   252    503        15   &lt;NA&gt; 2017-05-10 10:07:27        &lt;NA&gt;
-#&gt;        Greens   325    687        21   &lt;NA&gt; 2017-05-10 10:07:27        &lt;NA&gt;
-#&gt;        Labour   296    703        29   &lt;NA&gt; 2017-05-10 10:07:27        &lt;NA&gt;
-#&gt;        LibDem   257    499        14   &lt;NA&gt; 2017-05-10 10:07:27        &lt;NA&gt;
-#&gt;            PC    80    118         5   &lt;NA&gt; 2017-05-10 10:07:27        &lt;NA&gt;
-#&gt;           SNP    90    136         4   &lt;NA&gt; 2017-05-10 10:07:27        &lt;NA&gt;
-#&gt;          UKIP   346    739        27   &lt;NA&gt; 2017-05-10 10:07:27        &lt;NA&gt;
+#&gt;           BNP  1126   3330        88   &lt;NA&gt; 2017-05-16 19:59:43        &lt;NA&gt;
+#&gt;     Coalition   144    268         4   &lt;NA&gt; 2017-05-16 19:59:43        &lt;NA&gt;
+#&gt;  Conservative   252    503        15   &lt;NA&gt; 2017-05-16 19:59:43        &lt;NA&gt;
+#&gt;        Greens   325    687        21   &lt;NA&gt; 2017-05-16 19:59:43        &lt;NA&gt;
+#&gt;        Labour   296    703        29   &lt;NA&gt; 2017-05-16 19:59:43        &lt;NA&gt;
+#&gt;        LibDem   257    499        14   &lt;NA&gt; 2017-05-16 19:59:43        &lt;NA&gt;
+#&gt;            PC    80    118         5   &lt;NA&gt; 2017-05-16 19:59:43        &lt;NA&gt;
+#&gt;           SNP    90    136         4   &lt;NA&gt; 2017-05-16 19:59:43        &lt;NA&gt;
+#&gt;          UKIP   346    739        27   &lt;NA&gt; 2017-05-16 19:59:43        &lt;NA&gt;
 #&gt;  heading id language origin
 #&gt;     &lt;NA&gt;  1       en   &lt;NA&gt;
 #&gt;     &lt;NA&gt;  2       en   &lt;NA&gt;
@@ -399,7 +418,7 @@ require the texts to be extracted.</dd>
 #&gt;     &lt;NA&gt;  9       en   &lt;NA&gt;
 #&gt; 
 #&gt; Source:  Converted from tm VCorpus &#39;tmCorp&#39;
-#&gt; Created: Wed May 10 11:07:27 2017
+#&gt; Created: Tue May 16 20:59:43 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'>
 <span class='co'># construct a corpus from a data.frame</span>
@@ -426,7 +445,7 @@ require the texts to be extracted.</dd>
 #&gt;  fromDf_6     6      6         1             c         6
 #&gt; 
 #&gt; Source:  From a data.frame called mydf.
-#&gt; Created: Wed May 10 11:07:27 2017
+#&gt; Created: Tue May 16 20:59:43 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'>
 <span class='co'># construct a corpus from a kwic object</span>
@@ -464,7 +483,7 @@ require the texts to be extracted.</dd>
 #&gt;  text14.post     5      5         1 1953-Eisenhower 1226 1226 southern    post
 #&gt; 
 #&gt; Source:  Corpus created from kwic(x, keywords = &quot;southern&quot;)
-#&gt; Created: Wed May 10 11:07:27 2017
+#&gt; Created: Tue May 16 20:59:43 2017
 #&gt; Notes:   
 #&gt; </div></pre>
   </div>

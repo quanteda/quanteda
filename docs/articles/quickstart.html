@@ -200,7 +200,7 @@
 ##          UKIP   346    739        27
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Wed May 10 11:08:37 2017
+## Created: Tue May 16 21:00:54 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -221,7 +221,7 @@
 ##          UKIP   346    739        27         UKIP 2010
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Wed May 10 11:08:37 2017
+## Created: Tue May 16 21:00:54 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -251,7 +251,7 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Wed May 10 11:08:37 2017
+## Created: Tue May 16 21:00:54 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -452,7 +452,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2017-Trump   582   1662        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Wed May 10 11:08:38 2017
+## Created: Tue May 16 21:00:54 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -1258,7 +1258,7 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.h
 ## 11     2010_BUDGET_11_John_Gormley_Green  1.1913710 0.07324285  1.04781505  1.33492703
 ## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1500193 0.06254512  0.02743087  0.27260773
 ## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7196468 0.07340590  0.57577127  0.86352238
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1521357 0.03644625 -0.22357033 -0.08070102
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1521357 0.03644625 -0.22357033 -0.08070101
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
@@ -1282,17 +1282,17 @@ if (<span class="kw">require</span>(topicmodels)) {
     <span class="kw">topics</span>(myLDAfit20, <span class="dv">3</span>)
 }
 ##      2010_BUDGET_01_Brian_Lenihan_FF 2010_BUDGET_02_Richard_Bruton_FG 2010_BUDGET_03_Joan_Burton_LAB 2010_BUDGET_04_Arthur_Morgan_SF 2010_BUDGET_05_Brian_Cowen_FF 2010_BUDGET_06_Enda_Kenny_FG
-## [1,]                              12                                5                             18                               9                             3                            6
-## [2,]                               8                                1                             15                              13                            15                           14
-## [3,]                              16                               19                             20                              14                            14                            1
+## [1,]                               9                                2                             14                              15                            17                           11
+## [2,]                               4                               16                              8                              10                             6                            6
+## [3,]                               6                                3                             12                               6                            12                           16
 ##      2010_BUDGET_07_Kieran_ODonnell_FG 2010_BUDGET_08_Eamon_Gilmore_LAB 2010_BUDGET_09_Michael_Higgins_LAB 2010_BUDGET_10_Ruairi_Quinn_LAB 2010_BUDGET_11_John_Gormley_Green
-## [1,]                                10                               20                                  2                              11                                19
-## [2,]                                19                                7                                 13                              14                                13
-## [3,]                                11                               11                                  1                              13                                15
+## [1,]                                18                               19                                  5                               6                                16
+## [2,]                                16                                7                                  7                              14                                 4
+## [3,]                                 6                                3                                  3                               8                                 9
 ##      2010_BUDGET_12_Eamon_Ryan_Green 2010_BUDGET_13_Ciaran_Cuffe_Green 2010_BUDGET_14_Caoimhghin_OCaolain_SF
-## [1,]                              17                                 1                                     4
-## [2,]                               1                                13                                    11
-## [3,]                              13                                19                                     2</code></pre></div>
+## [1,]                               1                                 3                                    13
+## [2,]                               3                                16                                    20
+## [3,]                               8                                 1                                     3</code></pre></div>
 </div>
 </div>
 </div>

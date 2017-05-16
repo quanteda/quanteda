@@ -91,6 +91,8 @@
 <li>Added <code><a href="../reference/corpus_trim.html">corpus_trim()</a></code> and <code><a href="../reference/corpus_trim.html">char_trim()</a></code> functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.</li>
 <li>Conversion of a dfm to an stm object now passes docvars through in the <code>$meta</code> of the return object.</li>
 <li>New <code><a href="../reference/dfm_compress.html">dfm_group(x, groups = )</a></code> command, a convenience wrapper around <code>dfm.dfm(x, groups = )</code> (#725).</li>
+<li>Methods for extending quanteda functions to readtext objects updated to match CRAN release of readtext package.</li>
+<li>Corpus constructor methods for data.frame objects now conform to the “text interchange format” for corpus data.frames, automatically recognizing <code>doc_id</code> and <code>text</code> fields, which also provides interoperability with the <strong>readtext</strong> package. corpus construction methods are now more explicitly tailored to input object classes.</li>
 </ul>
 </div>
 <div id="bug-fixes-and-stability-enhancements" class="section level3">
@@ -111,6 +113,8 @@
 <li>Corrected broken handling of nested Yoshikoder dictionaries in <code><a href="../reference/dictionary.html">dictionary()</a></code>. (#722)</li>
 <li>
 <code>dfm_compress</code> now preserves a dfm’s docvars if collapsing only on the features margin, which means that <code><a href="../reference/dfm_tolower.html">dfm_tolower()</a></code> and <code><a href="../reference/dfm_tolower.html">dfm_toupper()</a></code> no longer remove the docvars.</li>
+<li>
+<code><a href="../reference/dfm_compress.html">fcm_compress()</a></code> now retains the fcm class, and generates and error when an asymmetric compression is attempted (#728).</li>
 </ul>
 </div>
 </div>
