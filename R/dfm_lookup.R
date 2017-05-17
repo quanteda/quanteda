@@ -102,7 +102,11 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
             result <- cbind(x[,unlist(entries_id) * -1], temp[,keys])
         }
     } else {
-        result <- x[,0] # dfm without features
+        if (exclusive) {
+            result <- x[,0] # dfm without features
+        } else {
+            result <- x
+        }
     }
     attr(result, "what") <- "dictionary"
     attr(result, "dictionary") <- dictionary
