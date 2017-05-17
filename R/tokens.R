@@ -81,7 +81,7 @@
 #'   See the examples below.
 #' @return \pkg{quanteda} \code{tokens} class object, by default a hashed list 
 #'   of integers corresponding to a vector of types.
-#' @seealso \code{\link{tokens_ngrams}}, \code{\link{tokens_skipgrams}}
+#' @seealso \code{\link{tokens_ngrams}}, \code{\link{tokens_skipgrams}}, \code{\link{as.list.tokens}}
 #' @keywords tokens
 #' @examples
 #' txt <- c(doc1 = "This is a sample: of tokens.",

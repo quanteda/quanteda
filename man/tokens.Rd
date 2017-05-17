@@ -181,6 +181,6 @@ tokens(txt, remove_punct = TRUE)
 ### removeFeatures(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
 }
 \seealso{
-\code{\link{tokens_ngrams}}, \code{\link{tokens_skipgrams}}
+\code{\link{tokens_ngrams}}, \code{\link{tokens_skipgrams}}, \code{\link{as.list.tokens}}
 }
 \keyword{tokens}
