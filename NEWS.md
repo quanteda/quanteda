@@ -25,6 +25,7 @@
 * `dfm_compress` now preserves a dfm's docvars if collapsing only on the features margin, which means that `dfm_tolower()` and `dfm_toupper()` no longer remove the docvars.
 * `fcm_compress()` now retains the fcm class, and generates and error when an asymmetric compression is attempted (#728).
 * `textstat_collocations()` now returns the collocations as character, not as a factor (#736)
+* Fixed a bug in `dfm_lookup(x, exclusive = FALSE)` wherein an empty dfm ws returned with there was no no match (#116).
 
 ## Changes since v0.9.9-24
 
