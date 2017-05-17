@@ -105,3 +105,9 @@ test_that("dfm_lookup return dfm even if no matches, issue #704", {
     testdfm <- dfm(data_corpus_inaugural[1:5])
     expect_true(is.dfm(dfm_lookup(testdfm, dict)))
 })
+
+test_that("dfm_lookup return all features even if no matches when exclusive = FALSE, issue #116", {
+    dict <- dictionary(list('en'=list('foreign policy' = 'aaaaa', 'domestic politics' = 'bbbbb')))
+    testdfm <- dfm(data_corpus_inaugural[1:5])
+    expect_equivalent(testdfm, dfm_lookup(testdfm, dict, exclusive = FALSE))
+})
