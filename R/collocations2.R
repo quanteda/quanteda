@@ -90,9 +90,11 @@ collocations2 <- function(x, method = c("lr", "chi2", "pmi", "dice"),
 
     result <- data.frame(collocation = stringi::stri_c_list(lapply(ids, function(x) types[x]), sep = ' '), temp[,c(4, 5)],
                          stringsAsFactors = FALSE)
+    
     class(result) <- c("collocations", 'data.frame')
     attr(result, 'tokens') <- ids
     attr(result, 'types') <- types
+    result <- result[order(result[,3], decreasing = TRUE),]
     result <- result[result$count >= min_count,]
     
     return(result)
