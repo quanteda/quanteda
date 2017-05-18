@@ -158,7 +158,7 @@ dfm_smooth <- function(x, smoothing = 1) {
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-#' wikiDfm <- new("dfmSparse", 
+#' wikiDfm <- new("dfm", 
 #'                Matrix::Matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
 #'                               byrow = TRUE, nrow = 2,  
 #'                               dimnames = list(docs = c("document1", "document2"),
@@ -199,7 +199,7 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
         result <- rep(1, nfeature(x))
         
     } else if (scheme == "count") {
-        if (is(x, "dfmSparse")) {
+        if (is(x, "dfm")) {
             tx <- t(x)
             featfactor <- factor(tx@i, 0:(nfeature(x)-1), labels = featnames(x))
             result <- as.integer(table(featfactor[tx@x > threshold]))
@@ -254,7 +254,7 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-#' (wikiDfm <- new("dfmSparse", 
+#' (wikiDfm <- new("dfm", 
 #'                 Matrix::Matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
 #'                    byrow = TRUE, nrow = 2,  
 #'                    dimnames = list(docs = c("document1", "document2"), 
@@ -333,14 +333,14 @@ tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augm
         
     } else if (scheme == "prop") {
         div <- rowSums(x)
-        if (is(x, "dfmSparse"))
+        if (is(x, "dfm"))
             x@x <- x@x / div[x@i+1]
         else
             x <- x / div
         
     } else if (scheme == "propmax") {
         div <- maxtf(x)
-        if (is(x, "dfmSparse"))
+        if (is(x, "dfm"))
             x@x <- x@x / div[x@i+1]
         else 
             x <- x / div
@@ -355,7 +355,7 @@ tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augm
         
     } else if (scheme == "augmented") {
         maxtf <- maxtf(x)
-        if (is(x, "dfmSparse"))
+        if (is(x, "dfm"))
             x@x <- K + (1 - K) * x@x / maxtf[x@i+1]
         else
             x <- K + (1 - K) * x / maxtf
@@ -363,7 +363,7 @@ tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augm
         
     } else if (scheme == "logave") {
         meantf <- Matrix::rowMeans(x)
-        if (is(x, "dfmSparse"))
+        if (is(x, "dfm"))
             x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i+1], base))
         else
             x <- (1 + log(x, base)) / (1 + log(meantf, base))
@@ -380,10 +380,10 @@ tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augm
 
 
 ## internal function to get maximum term frequency by document
-## only applies to CsparseMatrix formats (dfmSparse)
+## only applies to CsparseMatrix formats (dfm)
 setGeneric("maxtf", function(x) standardGeneric("maxtf"))
 
-setMethod("maxtf", signature(x = "dfmSparse"), definition = function(x) {
+setMethod("maxtf", signature(x = "dfm"), definition = function(x) {
     freq <- doc <- V1 <- NULL 
 #    dt <- data.table(doc = t(x)@i, freq = x@x)
     dt <- data.table(doc = x@i, freq = x@x)
@@ -392,8 +392,8 @@ setMethod("maxtf", signature(x = "dfmSparse"), definition = function(x) {
     # sapply(split(x@x, x@i), max)
 })
 
-setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
-    apply(x, 1, max)
-})
+# setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
+#     apply(x, 1, max)
+# })
 
 

@@ -6,11 +6,11 @@
 NULL
 
 #' @param x the dfm to be printed
-#' @param show.values print the dfm values; if called explicitly this will print
+#' @param show_values print the dfm values; if called explicitly this will print
 #'   all values, overriding \code{ndoc} and \code{nfeature}.
-#' @param show.settings print the settings used to create the dfm.  See 
+#' @param show_settings print the settings used to create the dfm.  See 
 #'   \link{settings}.
-#' @param show.summary print a brief summary indicating the number of documents
+#' @param show_summary print a brief summary indicating the number of documents
 #'   and features
 #' @param ndoc max number of documents to print
 #' @param nfeature max number of features to print
@@ -19,49 +19,45 @@ NULL
 #' @rdname print.dfm
 #' @keywords dfm
 setMethod("print", signature(x = "dfm"), 
-          function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...) {
+          function(x, show_values = FALSE, show_settings = FALSE, show_summary = TRUE, 
+                   ndoc = 20L, nfeature = 20L, ...) {
               
               if (!length(x)) {
                   print(NULL)
                   return()
               } 
-
-              if (show.summary) {
+              
+              if (show_summary) {
                   cat("Document-feature matrix of: ",
-                      format(ndoc(x), , big.mark=","), " document",
-                      ifelse(ndoc(x)>1 | ndoc(x)==0, "s, ", ", "),
-                      format(nfeature(x), big.mark=","), " feature",
-                      ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
-                      ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-                      " (", format(sparsity(x)*100, digits = 3),
-                      "% sparse).\n", sep="")
+                      format(ndoc(x), big.mark = ","), " document",
+                      ifelse(ndoc(x) > 1 | ndoc(x) == 0, "s, ", ", "),
+                      format(nfeature(x), big.mark = ","), " feature",
+                      ifelse(nfeature(x) > 1 | nfeature(x) == 0, "s", ""),
+                      ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep = ""), ""),
+                      " (", format(sparsity(x) * 100, digits = 3),
+                      "% sparse).\n", sep = "")
               }
               
-              if (show.settings) {
-                  cat("Settings: TO BE IMPLEMENTED.")
+              if (show_settings) {
+                  cat("Settings: not yet implimented.")
               }
               
-              if (show.values == TRUE) {
+              if (show_values == TRUE) {
                   ndoc <- nrow(x)
                   nfeature <- ncol(x)
-              } else if (missing(show.values)) {
+              } else if (missing(show_values)) {
                   if (nrow(x) <= ndoc & ncol(x) <= nfeature) {
                       ndoc <- nrow(x)
                       nfeature <- ncol(x)
-                      show.values <- TRUE
+                      show_values <- TRUE
                   } else {
-                      show.values <- FALSE
+                      show_values <- FALSE
                   }
               }
               
-              if (show.values)
-                  if (is(x, "sparseMatrix"))
-                      Matrix::printSpMatrix2(x[1:ndoc, 1:nfeature], 
-                                             col.names=TRUE, zero.print=0, ...)
-              else if (is(x, "denseMatrix")) {
-                  getMethod("show", "denseMatrix")(x[1:ndoc, 1:nfeature], ...)
-              } else {
-                  print(as.matrix(x[1:ndoc, 1:nfeature]))
+              if (show_values) {
+                  Matrix::printSpMatrix2(x[seq_len(ndoc), seq_len(nfeature)], 
+                                         col.names = TRUE, zero.print = 0, ...)
               }
           })
 
@@ -94,13 +90,13 @@ setMethod("show", signature(object = "dfm"), function(object) print(object))
 #' tail(myDfm, nfeature = 4)
 head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    print(x, show.values = FALSE)
+        warning("Argument", ifelse(length(addedArgs) > 1, "s ", " "), names(addedArgs), " not used.", sep = "")
+    print(x, show_values = FALSE)
     cat("(showing first ", 
-        ifelse(min(ndoc(x), n)==1, "", paste0(min(ndoc(x), n), " ")), 
-        "document", ifelse(min(ndoc(x), n)==1, "", "s"), 
-        " and first ", ifelse(min(nfeature, nfeature(x))==1, "", paste0(min(nfeature, nfeature(x)), " ")), 
-        "feature", ifelse(min(nfeature, nfeature(x))==1, "", "s"), ")\n", sep = "")
+        ifelse(min(ndoc(x), n) == 1, "", paste0(min(ndoc(x), n), " ")), 
+        "document", ifelse(min(ndoc(x), n) == 1, "", "s"), 
+        " and first ", ifelse(min(nfeature, nfeature(x)) == 1, "", paste0(min(nfeature, nfeature(x)), " ")), 
+        "feature", ifelse(min(nfeature, nfeature(x)) == 1, "", "s"), ")\n", sep = "")
     print(head(as.matrix(x[, 1:min(nfeature(x), nfeature)]), n))
     return(invisible(x[1:min(ndoc(x), n), 1:min(nfeature(x), nfeature)]))
 }
@@ -111,13 +107,13 @@ head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
 #' @export
 tail.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    print(x, show.values = FALSE)
+        warning("Argument", ifelse(length(addedArgs) > 1, "s ", " "), names(addedArgs), " not used.", sep = "")
+    print(x, show_values = FALSE)
     cat("(showing last ", 
-        ifelse(min(ndoc(x), n)==1, "", paste0(min(ndoc(x), n), " ")), 
-        "document", ifelse(min(ndoc(x), n)==1, "", "s"), 
-        " and last ", ifelse(min(nfeature, nfeature(x))==1, "", paste0(min(nfeature, nfeature(x)), " ")), 
-        "feature", ifelse(min(nfeature, nfeature(x))==1, "", "s"), ")\n", sep = "")
+        ifelse(min(ndoc(x), n) == 1, "", paste0(min(ndoc(x), n), " ")), 
+        "document", ifelse(min(ndoc(x), n) == 1, "", "s"), 
+        " and last ", ifelse(min(nfeature, nfeature(x)) == 1, "", paste0(min(nfeature, nfeature(x)), " ")), 
+        "feature", ifelse(min(nfeature, nfeature(x)) == 1, "", "s"), ")\n", sep = "")
     print(tail(as.matrix(x[, 1:min(nfeature(x), nfeature)]), n))
     return(invisible(x[max(ndoc(x) - n + 1, 1) : ndoc(x), 1:min(nfeature(x), nfeature)]))
 }

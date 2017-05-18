@@ -9,26 +9,26 @@
 \alias{show,fcm-method}
 \title{print a dfm object}
 \usage{
-\S4method{print}{dfm}(x, show.values = FALSE, show.settings = FALSE,
-  show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...)
+\S4method{print}{dfm}(x, show_values = FALSE, show_settings = FALSE,
+  show_summary = TRUE, ndoc = 20L, nfeature = 20L, ...)
 
 \S4method{show}{dfm}(object)
 
-\S4method{print}{fcm}(x, show.values = FALSE, show.settings = FALSE,
-  show.summary = TRUE, nfeature = 20L, ...)
+\S4method{print}{fcm}(x, show_values = FALSE, show_settings = FALSE,
+  show_summary = TRUE, nfeature = 20L, ...)
 
 \S4method{show}{fcm}(object)
 }
 \arguments{
 \item{x}{the dfm to be printed}
 
-\item{show.values}{print the dfm values; if called explicitly this will print
+\item{show_values}{print the dfm values; if called explicitly this will print
 all values, overriding \code{ndoc} and \code{nfeature}.}
 
-\item{show.settings}{print the settings used to create the dfm.  See 
+\item{show_settings}{print the settings used to create the dfm.  See 
 \link{settings}.}
 
-\item{show.summary}{print a brief summary indicating the number of documents
+\item{show_summary}{print a brief summary indicating the number of documents
 and features}
 
 \item{ndoc}{max number of documents to print}

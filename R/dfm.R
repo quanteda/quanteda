@@ -408,7 +408,7 @@ compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
                          dims = c(length(x), length(uniqueFeatures)),
                          dimnames = list(docs = names(x), 
                                       features = uniqueFeatures))
-    new("dfmSparse", temp)
+    new("dfm", temp)
 }
 
 compile_dfm.tokens <- function(x, verbose = TRUE) {
@@ -440,7 +440,7 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
                            dims = c(length(types), length(names(x))),
                            dimnames = list(features = as.character(types), 
                                            docs = names(x))))
-    new("dfmSparse", temp)
+    new("dfm", temp)
 }
 
 

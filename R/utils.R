@@ -1,7 +1,7 @@
 # @rdname catm
 # make temporary files and directories in a more reasonable way than tempfile()
 # or tempdir(): here, the filename is different each time you call mktemp()
-mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
+mktemp <- function(prefix = 'tmp.', base_path = NULL, directory = FALSE) {
     #  Create a randomly-named temporary file or directory, sort of like
     #  https://www.mktemp.org/manual.html
     if (is.null(base_path))
@@ -9,11 +9,11 @@ mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
     
     alphanumeric <- c(0:9, LETTERS, letters)
     
-    filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
+    filename <- paste0(sample(alphanumeric, 10, replace = TRUE), collapse='')
     filename <- paste0(prefix, filename)
     filename <- file.path(base_path, filename)
     while (file.exists(filename) || dir.exists(filename)) {
-        filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
+        filename <- paste0(sample(alphanumeric, 10, replace = TRUE), collapse='')
         filename <- paste0(prefix, filename)
         filename <- file.path(base_path, filename)
     }
@@ -32,7 +32,7 @@ mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
 # @rdname catm
 # messages() with some of the same syntax as cat(): takes a sep argument and
 # does not append a newline by default
-catm <- function(..., sep = " ", appendLF = F) {
+catm <- function(..., sep = " ", appendLF = FALSE) {
     message(paste(..., sep = sep), appendLF = appendLF)
 }
 
@@ -40,14 +40,14 @@ catm <- function(..., sep = " ", appendLF = F) {
 ## reassign the slots to an S4 dfm-like object
 ## necessary when some operation from the Matrix class obliterates them
 ## Ken B
-reassign_slots <- function(x_new, x_orig, exceptions = NULL) {
-    snames <- slotNames(x_orig)
-    snames <- snames[!snames %in% 
-                         c("Dim", "Dimnames", "i", "p", "x", "factors", exceptions)]
-    for (s in snames) {
-        slot(x_new, s) <- slot(x_orig, s)
+reassign_slots <- function(x_new, x_org, exceptions = NULL) {
+    names_slot <- slotNames(x_org)
+    exceptions <- c("Dim", "Dimnames", "i", "p", "x", "factors", exceptions)
+    names_slot <- names_slot[!names_slot %in% exceptions]
+    for (name_slot in names_slot) {
+        slot(x_new, name_slot) <- slot(x_org, name_slot)
     }
-    x_new
+    return(x_new)
 }
 
 
@@ -83,12 +83,12 @@ reassign_slots <- function(x_new, x_orig, exceptions = NULL) {
 # 
 # texts_random(5, 10, seed=1234, characters = LETTERS)
 
-texts_random <- function(n_doc=10, 
-                         n_word=100, 
-                         len_word=5, 
-                         n_type=1000, 
-                         fast=FALSE, 
-                         code=FALSE,
+texts_random <- function(n_doc = 10, 
+                         n_word = 100, 
+                         len_word = 5, 
+                         n_type = 1000, 
+                         fast = FALSE, 
+                         code = FALSE,
                          seed, characters){
     
     if(!missing(seed)) set.seed(seed)

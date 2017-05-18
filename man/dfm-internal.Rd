@@ -3,10 +3,10 @@
 \docType{methods}
 \name{dfm-internal}
 \alias{dfm-internal}
-\alias{Compare,dfmSparse,numeric-method}
+\alias{Compare,dfm,numeric-method}
 \title{internal functions for dfm objects}
 \usage{
-\S4method{Compare}{dfmSparse,numeric}(e1, e2)
+\S4method{Compare}{dfm,numeric}(e1, e2)
 }
 \arguments{
 \item{e1}{a \link{dfm}}

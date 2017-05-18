@@ -19,9 +19,10 @@
 #' @name fcm-class
 #' @keywords internal
 setClass("fcm",
-         slots = c(context = "character", window = "integer", count = "character", weights = "numeric", ordered = "logical", tri = "logical"),
+         slots = c(context = "character", window = "integer", count = "character", 
+                   weights = "numeric", ordered = "logical", tri = "logical"),
          # prototype = list(Dimnames = list(contexts = NULL, features = NULL)),
-         contains = c("dfm", "dgCMatrix"))
+         contains = c("dfm"))
 
 
 #' create a feature co-occurrence matrix
@@ -149,11 +150,11 @@ fcm.corpus <- function(x, ...) {
 #' @import Matrix
 #' @export
 fcm.dfm <- function(x, context = c("document", "window"), 
-                               count = c("frequency", "boolean", "weighted"),
-                               window = 5L,
-                               weights = 1L,
-                               ordered = FALSE,
-                               span_sentence = TRUE, tri = TRUE, ...) {
+                    count = c("frequency", "boolean", "weighted"),
+                    window = 5L,
+                    weights = 1L,
+                    ordered = FALSE,
+                    span_sentence = TRUE, tri = TRUE, ...) {
 
     context <- match.arg(context)
     count <- match.arg(count)
@@ -258,9 +259,9 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
 #' @rdname print.dfm
 #' @export
 setMethod("print", signature(x = "fcm"), 
-          function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, nfeature = 20L, ...) {
+          function(x, show_values = FALSE, show_settings = FALSE, show_summary = TRUE, nfeature = 20L, ...) {
               ndoc <- nfeature
-              if (show.summary) {
+              if (show_summary) {
                   cat("Feature co-occurrence matrix of: ",
                       format(ndoc(x), big.mark = ","), " by ",
                       # ifelse(ndoc(x) > 1 | ndoc(x) == 0, "s, ", ", "),
@@ -269,10 +270,10 @@ setMethod("print", signature(x = "fcm"),
                       ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep = ""), ""),
                       ".\n", sep = "")
               }
-              if (show.settings) {
+              if (show_settings) {
                   cat("Settings: TO BE IMPLEMENTED.")
               }
-              if (show.values | (nrow(x) <= ndoc & ncol(x) <= nfeature)) {
+              if (show_values | (nrow(x) <= ndoc & ncol(x) <= nfeature)) {
                   Matrix::printSpMatrix2(x[1:min(ndoc, ndoc(x)), 1:min(nfeature, nfeature(x))], 
                                          col.names = TRUE, 
                                          zero.print = ifelse(x@tri, ".", 0), ...)
