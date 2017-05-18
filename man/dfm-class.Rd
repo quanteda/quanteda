@@ -3,63 +3,32 @@
 \docType{class}
 \name{dfm-class}
 \alias{dfm-class}
-\alias{dfmSparse-class}
-\alias{dfmDense-class}
-\alias{t,dfmDense-method}
-\alias{t,dfmSparse-method}
-\alias{colSums,dfmSparse-method}
-\alias{rowSums,dfmSparse-method}
-\alias{colMeans,dfmSparse-method}
-\alias{rowMeans,dfmSparse-method}
-\alias{+,dfmSparse,numeric-method}
-\alias{+,numeric,dfmSparse-method}
-\alias{+,dfmDense,numeric-method}
-\alias{+,numeric,dfmDense-method}
-\alias{[,dfm,index,index,missing-method}
-\alias{[,dfm,index,index,logical-method}
-\alias{[,dfm,missing,missing,missing-method}
-\alias{[,dfm,missing,missing,logical-method}
-\alias{[,dfm,index,missing,missing-method}
-\alias{[,dfm,index,missing,logical-method}
-\alias{[,dfm,missing,index,missing-method}
-\alias{[,dfm,missing,index,logical-method}
+\alias{t,dfm-method}
+\alias{colSums,dfm-method}
+\alias{rowSums,dfm-method}
+\alias{colMeans,dfm-method}
+\alias{rowMeans,dfm-method}
+\alias{+,dfm,numeric-method}
+\alias{+,numeric,dfm-method}
+\alias{[,dfm,index_logical_missing,index_logical_missing,missing-method}
 \title{Virtual class "dfm" for a document-feature matrix}
 \usage{
-\S4method{t}{dfmDense}(x)
+\S4method{t}{dfm}(x)
 
-\S4method{t}{dfmSparse}(x)
+\S4method{colSums}{dfm}(x, na.rm = FALSE, dims = 1L, ...)
 
-\S4method{colSums}{dfmSparse}(x, na.rm = FALSE, dims = 1L, ...)
+\S4method{rowSums}{dfm}(x, na.rm = FALSE, dims = 1L, ...)
 
-\S4method{rowSums}{dfmSparse}(x, na.rm = FALSE, dims = 1L, ...)
+\S4method{colMeans}{dfm}(x, na.rm = FALSE, dims = 1L, ...)
 
-\S4method{colMeans}{dfmSparse}(x, na.rm = FALSE, dims = 1L, ...)
+\S4method{rowMeans}{dfm}(x, na.rm = FALSE, dims = 1L, ...)
 
-\S4method{rowMeans}{dfmSparse}(x, na.rm = FALSE, dims = 1L, ...)
+\S4method{+}{dfm,numeric}(e1, e2)
 
-\S4method{+}{dfmSparse,numeric}(e1, e2)
+\S4method{+}{numeric,dfm}(e1, e2)
 
-\S4method{+}{numeric,dfmSparse}(e1, e2)
-
-\S4method{+}{dfmDense,numeric}(e1, e2)
-
-\S4method{+}{numeric,dfmDense}(e1, e2)
-
-\S4method{[}{dfm,index,index,missing}(x, i, j, ..., drop = FALSE)
-
-\S4method{[}{dfm,index,index,logical}(x, i, j, ..., drop = FALSE)
-
-\S4method{[}{dfm,missing,missing,missing}(x, i, j, ..., drop = FALSE)
-
-\S4method{[}{dfm,missing,missing,logical}(x, i, j, ..., drop = FALSE)
-
-\S4method{[}{dfm,index,missing,missing}(x, i, j, ..., drop = FALSE)
-
-\S4method{[}{dfm,index,missing,logical}(x, i, j, ..., drop = FALSE)
-
-\S4method{[}{dfm,missing,index,missing}(x, i, j, ..., drop = FALSE)
-
-\S4method{[}{dfm,missing,index,logical}(x, i, j, ..., drop = FALSE)
+\S4method{[}{dfm,index_logical_missing,index_logical_missing,missing}(x, i, j,
+  drop)
 }
 \arguments{
 \item{x}{the dfm object}
@@ -83,34 +52,7 @@ the calculations}
 }
 \description{
 The dfm class of object is a type of \link[Matrix]{Matrix-class}
-  object with additional slots, described below.  \pkg{quanteda} uses two 
-  subclasses of the \code{dfm} class, depending on whether the object can be 
-  represented by a sparse matrix, in which case it is a \code{dfmSparse} 
-  class object, or if dense, then a \code{dfmDense} object.  See Details.
-}
-\details{
-The \code{dfm} class is a virtual class that will contain one of two
-  subclasses for containing the cell counts of document-feature matrixes: 
-  \code{dfmSparse} or \code{dfmDense}.
-
-The \code{dfmSparse} class is a sparse matrix version of
-  \code{dfm-class}, inheriting \link[Matrix]{dgCMatrix-class} from the
-  \pkg{Matrix} package.  It is the default object type created when feature
-  counts are the object of interest, as typical text-based feature counts
-  tend contain many zeroes.  As long as subsequent transformations of the dfm
-  preserve cells with zero counts, the dfm should remain sparse.
-  
-  When the \pkg{Matrix} package implements sparse integer matrixes, we will
-  switch the default object class to this object type, as integers are 4
-  bytes each (compared to the current numeric double type requiring 8 bytes
-  per cell.)
-
-The \code{dfmDense} class is a sparse matrix version of \code{dfm-class}, 
-inheriting \link[Matrix]{dgeMatrix-class} from the \pkg{Matrix} package.  dfm objects that
-are converted through weighting or other transformations into cells without zeroes will 
-be automatically converted to the dfmDense class.  This will necessarily be a much larger sized
-object than one of \code{dfmSparse} class, because each cell is recorded as a numeric (double) type
-requiring 8 bytes of storage.
+  object with additional slots, described below.
 }
 \section{Slots}{
 
@@ -139,6 +81,8 @@ x <- dfm(tokens(c("this contains lots of stopwords",
                 remove_punct = TRUE))
 x[1:2, ]
 x[1:2, 1:5]
+x[c(TRUE, TRUE, FALSE),]
+x[c(TRUE, TRUE, FALSE), c(rep(TRUE, 5), rep(FALSE, 11))]
 
 # fcm subsetting
 y <- fcm(tokens(c("this contains lots of stopwords",

@@ -281,7 +281,7 @@ test_that("fcm print works as expected", {
                   "^Feature co-occurrence matrix of: 6 by 6 features.")
     expect_output(print(testfcm[1:5, 1:5]),
                   "^Feature co-occurrence matrix of: 5 by 5 features.")
-    expect_output(print(testfcm, show.settings=T),
+    expect_output(print(testfcm, show_settings = TRUE),
                   "Settings: TO BE IMPLEMENTED")
     expect_output(show(testfcm),
                   "^Feature co-occurrence matrix of: 6 by 6 features.")

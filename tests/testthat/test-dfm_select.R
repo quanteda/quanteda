@@ -244,6 +244,17 @@ test_that("dfm_remove works even when it does not remove anything, issue 711", {
 
 })
 
+test_that("subsetting of dfm by ineteger and logical vectors are equivalent", {
+    txts <- c("this contains lots of stopwords",
+              "no if, and, or but about it: lots",
+              "and a third document is it")
+    x <- dfm(tokens(txts, remove_punct = TRUE))
+    expect_equal(x[1:2, ], 
+                 x[c(TRUE, TRUE, FALSE),])
+    expect_equal(x[1:2, 1:5], 
+                 x[c(TRUE, TRUE, FALSE), c(rep(TRUE, 5), rep(FALSE, 11))])
+})
+
 
 
 

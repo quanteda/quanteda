@@ -45,6 +45,6 @@ View.kwic <- function(x, title) {
 
 #' @rdname View
 #' @export
-View.dfmSparse <- function(x, title) {
+View.dfm <- function(x, title) {
     mget('View', as.environment('package:utils'))[[1]](x)
 }

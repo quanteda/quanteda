@@ -128,7 +128,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #' findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
 #' 
 #' # in quanteda
-#' quantedaDfm <- new("dfmSparse", Matrix::Matrix(t(as.matrix(tdm))))
+#' quantedaDfm <- new("dfm", Matrix::Matrix(t(as.matrix(tdm))))
 #' as.list(textstat_simil(quantedaDfm, c("oil", "opec", "xyz"), margin = "features", n = 14))
 #' 
 #' # in base R

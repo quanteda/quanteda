@@ -39,7 +39,7 @@ dfm_compress <- function(x, margin = c("both", "documents", "features")) {
     
 #' @noRd
 #' @export
-dfm_compress.dfmSparse <- function(x, margin = c("both", "documents", "features")) {
+dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
     margin <- match.arg(margin)
     if (margin == 'documents') {
         result <- group_dfm(x, NULL, docnames(x))
@@ -113,7 +113,7 @@ group_dfm <- function(x, features = NULL, documents = NULL) {
     dimnames <- list(docs = as.character(documents_unique), 
                      features = as.character(features_unique))
     
-    result <- new("dfmSparse", 
+    result <- new("dfm", 
                   sparseMatrix(i = i_new, j = j_new, x = x_new, dims = dims, dimnames = dimnames),
                   settings = x@settings,
                   weightTf = x@weightTf,
@@ -126,32 +126,6 @@ group_dfm <- function(x, features = NULL, documents = NULL) {
     
     return(result)
 }
-
-#' @noRd
-#' @export
-#' @examples 
-#' # for dfmDense
-#' mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
-#'              dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
-#' matd <- dfm_smooth(mat)
-#' colnames(matd) <- char_tolower(featnames(mat))
-#' matd
-#' dfm_compress(matd, margin = "documents")
-#' dfm_compress(matd, margin = "features")
-#' dfm_compress(matd)
-dfm_compress.dfmDense <- function(x, ...) {
-    dfm_compress(new("dfmSparse", Matrix::Matrix(as.matrix(x), sparse = TRUE),
-                     settings = x@settings,
-                     weightTf = x@weightTf,
-                     weightDf = x@weightDf,
-                     smooth = x@smooth,
-                     ngrams = x@ngrams,
-                     skip = x@skip,
-                     concatenator = x@concatenator,
-                     docvars = x@docvars),
-                 ...)
-}                 
-
 
 #' convert the case of the features of a dfm and combine
 #' 

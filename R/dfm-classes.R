@@ -4,16 +4,12 @@
 ## Ken Benoit
 ####################################################################
 
-setClassUnion("dframe", members = c("data.frame", "NULL"))
+setClassUnion("data.frame_NULL", members = c("data.frame", "NULL"))
 
 #' Virtual class "dfm" for a document-feature matrix
 #' 
 #' @description The dfm class of object is a type of \link[Matrix]{Matrix-class}
-#'   object with additional slots, described below.  \pkg{quanteda} uses two 
-#'   subclasses of the \code{dfm} class, depending on whether the object can be 
-#'   represented by a sparse matrix, in which case it is a \code{dfmSparse} 
-#'   class object, or if dense, then a \code{dfmDense} object.  See Details.
-#'   
+#'   object with additional slots, described below.   
 #' @slot settings settings that govern corpus handling and subsequent downstream
 #'   operations, including the settings used to clean and tokenize the texts, 
 #'   and to create the dfm.  See \code{\link{settings}}.
@@ -25,9 +21,6 @@ setClassUnion("dframe", members = c("data.frame", "NULL"))
 #'   either the \code{\link{smooth}} or the \code{\link{weight}} methods.
 #' @slot Dimnames  These are inherited from \link[Matrix]{Matrix-class} but are 
 #'   named \code{docs} and \code{features} respectively.
-#' @details The \code{dfm} class is a virtual class that will contain one of two
-#'   subclasses for containing the cell counts of document-feature matrixes: 
-#'   \code{dfmSparse} or \code{dfmDense}.
 #' @seealso \link{dfm}
 #' @export
 #' @import methods
@@ -37,7 +30,7 @@ setClassUnion("dframe", members = c("data.frame", "NULL"))
 setClass("dfm",
          slots = c(settings = "list", weightTf = "list", weightDf = "list", smooth = "numeric",
                    ngrams = "integer", skip = "integer", concatenator = "character", 
-                   docvars = "dframe"),
+                   docvars = "data.frame_NULL"),
          prototype = list(settings = list(NULL),
                           Dim = integer(2), 
                           Dimnames = list(docs=NULL, features=NULL),
@@ -47,43 +40,7 @@ setClass("dfm",
                           ngrams = 1L,
                           skip = 0L,
                           concatenator = ""),
-         contains = "Matrix")
-
-#' @rdname dfm-class
-#' @details The \code{dfmSparse} class is a sparse matrix version of
-#'   \code{dfm-class}, inheriting \link[Matrix]{dgCMatrix-class} from the
-#'   \pkg{Matrix} package.  It is the default object type created when feature
-#'   counts are the object of interest, as typical text-based feature counts
-#'   tend contain many zeroes.  As long as subsequent transformations of the dfm
-#'   preserve cells with zero counts, the dfm should remain sparse.
-#'   
-#'   When the \pkg{Matrix} package implements sparse integer matrixes, we will
-#'   switch the default object class to this object type, as integers are 4
-#'   bytes each (compared to the current numeric double type requiring 8 bytes
-#'   per cell.)
-#' @export
-setClass("dfmSparse",
-         contains = c("dfm", "dgCMatrix"))
-
-#' @rdname dfm-class
-#' @details The \code{dfmDense} class is a sparse matrix version of \code{dfm-class}, 
-#' inheriting \link[Matrix]{dgeMatrix-class} from the \pkg{Matrix} package.  dfm objects that
-#' are converted through weighting or other transformations into cells without zeroes will 
-#' be automatically converted to the dfmDense class.  This will necessarily be a much larger sized
-#' object than one of \code{dfmSparse} class, because each cell is recorded as a numeric (double) type
-#' requiring 8 bytes of storage.
-#' @export
-setClass("dfmDense",
-         contains = c("dfm", "dgeMatrix"))
-
-
-# S4 Method for the S4 class dense/weighted dfm
-#' @export
-#' @rdname dfm-class
-setMethod("t", signature(x = "dfmDense"), definition = 
-              function(x) {
-                  getMethod("t", "dgeMatrix")(x)
-              }) #getMethod("t", "dgeMatrix"))
+         contains = "dgCMatrix")
 
 
 ## S4 Method for the S3 class dense dfm
@@ -91,68 +48,55 @@ setMethod("t", signature(x = "dfmDense"), definition =
 #' @param x the dfm object
 #' @rdname dfm-class 
 setMethod("t",
-          signature = (x = "dfmSparse"),
-          definition = function(x) {
-              new("dfmSparse", getMethod("t", "dgCMatrix")(x))
-          })
+          signature = (x = "dfm"),
+          function(x) callNextMethod())
 
 
 
-#' @method colSums dfmSparse
+#' @method colSums dfm
 #' @rdname dfm-class
 #' @param na.rm if \code{TRUE}, omit missing values (including \code{NaN}) from
 #'   the calculations
 #' @param dims ignored
 #' @export
 setMethod("colSums", 
-          signature = (x = "dfmSparse"),
+          signature = ("dfm"),
           function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
 
-#' @method rowSums dfmSparse
+#' @method rowSums dfm
 #' @rdname dfm-class
 #' @export
 setMethod("rowSums", 
-          signature = (x = "dfmSparse"),
+          signature = ("dfm"),
           function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
 
 
-#' @method colMeans dfmSparse
+#' @method colMeans dfm
 #' @rdname dfm-class
 #' @export
 setMethod("colMeans", 
-          signature = (x = "dfmSparse"),
+          signature = ("dfm"),
           function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
 
-#' @method rowSums dfmSparse
+#' @method rowSums dfm
 #' @rdname dfm-class
 #' @export
 setMethod("rowMeans", 
-          signature = (x = "dfmSparse"),
+          signature = ("dfm"),
           function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
 
 #' @param e1 first quantity in "+" operation for dfm
 #' @param e2 second quantity in "+" operation for dfm
 #' @rdname dfm-class
-setMethod("+", signature(e1 = "dfmSparse", e2 = "numeric"),
+setMethod("+", signature(e1 = "dfm", e2 = "numeric"),
           function(e1, e2) {
-              as(as(e1, "Matrix") + e2, ifelse(e2==0, "dfmSparse", "dfmDense"))
+              as(as(e1, "Matrix") + e2, "dfm")
           })       
 #' @rdname dfm-class
-setMethod("+", signature(e1 = "numeric", e2 = "dfmSparse"),
+setMethod("+", signature(e1 = "numeric", e2 = "dfm"),
           function(e1, e2) {
-              as(e1 + as(e2, "Matrix"), ifelse(e1==0, "dfmSparse", "dfmDense"))
+              as(e1 + as(e2, "Matrix"), "dfm")
           })  
-#' @rdname dfm-class
-setMethod("+", signature(e1 = "dfmDense", e2 = "numeric"),
-          function(e1, e2) {
-              as(as(e1, "Matrix") + e2, "dfmDense")
-          })
-#' @rdname dfm-class
-setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
-          function(e1, e2) {
-              as(e1 + as(e2, "Matrix"), "dfmDense")
-          })
-
 
 #' coerce a dfm to a matrix or data.frame
 #' 
@@ -232,10 +176,10 @@ cbind.dfm <- function(...) {
             result <- Matrix::cbind2(result, y)
     }
     names(dimnames(result)) <- c("docs", "features")
-    new("dfmSparse", result)
+    new("dfm", result)
 }
 
-# setMethod("cbind", signature(x = "dfmSparse", y = "dfmSparse"), function(x, y, ...) {
+# setMethod("cbind", signature(x = "dfm", y = "dfm"), function(x, y, ...) {
 #     getMethod("cbind", "dgCMatrix")(x, y, ...)
 # })
 #     
@@ -284,7 +228,7 @@ rbind2.dfm <- function(x, y) {
     y_names <- featnames(y)
 
       if (identical(x_names, y_names)) {
-          return(new("dfmSparse", Matrix::rbind2(x, y)))
+          return(new("dfm", Matrix::rbind2(x, y)))
       }
 
     common_names <- intersect(x_names, y_names)
@@ -304,17 +248,17 @@ rbind2.dfm <- function(x, y) {
                 x[, only_x_names]
     )
     empty_ycols <- Matrix::sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), 
-                length(only_y_names)), dimnames = list(NULL, only_y_names))
+                   length(only_y_names)), dimnames = list(NULL, only_y_names))
 
     empty_xcols <- Matrix::sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(y), 
-                    length(only_x_names)), dimnames = list(NULL, only_x_names))
+                   length(only_x_names)), dimnames = list(NULL, only_x_names))
 
     y_with_xcols <- Matrix::cbind2(
                 y[, common_names],
                 empty_xcols
             )
 
-    new_dfm <- new("dfmSparse", Matrix::rbind2(
+    new_dfm <- new("dfm", Matrix::rbind2(
         Matrix::cbind2( xcols, empty_ycols),
         Matrix::cbind2( y_with_xcols, y[, only_y_names])
     ))

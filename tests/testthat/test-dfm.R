@@ -147,7 +147,7 @@ test_that("test rbind.dfm with the same columns", {
     )
     expect_that(
         rbind(dfm1, dfm1),
-        is_a('dfmSparse')
+        is_a('dfm')
     )
 
 })
@@ -173,7 +173,7 @@ test_that("test rbind.dfm with different columns", {
 
     expect_that(
         rbind(dfm1, dfm2),
-        is_a('dfmSparse')
+        is_a('dfm')
     )
 
 })
@@ -197,7 +197,7 @@ test_that("test rbind.dfm with different columns, three args and repeated words"
 
     expect_that(
         rbind(dfm1, dfm2, dfm3),
-        is_a('dfmSparse')
+        is_a('dfm')
     )
 
 })
@@ -211,7 +211,7 @@ test_that("test rbind.dfm with a single argument returns the same dfm", {
     )
     expect_that(
         rbind(dfm(fox, remove_punct = TRUE)),
-        is_a('dfmSparse')
+        is_a('dfm')
     )
 })
 
@@ -434,15 +434,15 @@ test_that("dfm print works with options as expected", {
         "Document-feature matrix of: 5 documents, 5 features.*5 x 5 sparse Matrix"
     )
     expect_output(
-        print(tmp[1:5, 1:5], show.values = FALSE),
+        print(tmp[1:5, 1:5], show_values = FALSE),
         "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\)\\.$"
     )
     expect_output(
-        print(tmp[1:3, 1:3], ndoc = 2, nfeature = 2, show.values = TRUE),
+        print(tmp[1:3, 1:3], ndoc = 2, nfeature = 2, show_values = TRUE),
         "^Document-feature matrix of: 3 documents, 3 features.*3 x 3 sparse Matrix"
     )
     expect_output(
-        print(tmp[1:5, 1:5], show.summary = FALSE),
+        print(tmp[1:5, 1:5], show_summary = FALSE),
         "^5 x 5 sparse Matrix"
     )
 })

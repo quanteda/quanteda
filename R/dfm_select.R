@@ -168,7 +168,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             pad_feature <- sparseMatrix(i = NULL, j = NULL, 
                                         dims = c(ndoc(temp), length(features_add)), 
                                         dimnames = list(docnames(temp), features_add))
-            temp <- new("dfmSparse", Matrix::cbind2(temp, pad_feature))
+            temp <- new("dfm", Matrix::cbind2(temp, pad_feature))
         }
 
         # add non-existent documents
@@ -177,7 +177,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             pad_document <- sparseMatrix(i = NULL, j = NULL, 
                                          dims = c(length(documents_add), nfeature(temp)), 
                                          dimnames = list(documents_add, featnames(temp)))
-            temp <- new("dfmSparse", Matrix::rbind2(temp, pad_document))
+            temp <- new("dfm", Matrix::rbind2(temp, pad_document))
         }
     }
     

@@ -67,7 +67,7 @@ compress.dfm <- function(x, margin = c("both", "documents", "features"), ...) {
         new_j <- c(new_j, allZeroFeatures)
     }
     
-    new("dfmSparse", sparseMatrix(i = new_i, j = new_j, 
+    new("dfm", sparseMatrix(i = new_i, j = new_j, 
                                   x = c(x@x, rep(0, length(allZeroFeatures))),
                                   dimnames = list(docs = uniquednames, features = uniquefnames)),
         settings = x@settings,

@@ -4,7 +4,7 @@
 \alias{View}
 \alias{View.default}
 \alias{View.kwic}
-\alias{View.dfmSparse}
+\alias{View.dfm}
 \title{View methods for quanteda}
 \usage{
 View(x, title)
@@ -13,7 +13,7 @@ View(x, title)
 
 \method{View}{kwic}(x, title)
 
-\method{View}{dfmSparse}(x, title)
+\method{View}{dfm}(x, title)
 }
 \arguments{
 \item{x}{an R object which can be coerced to a data frame with non-zero numbers of rows and columns}

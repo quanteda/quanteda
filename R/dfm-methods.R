@@ -88,7 +88,7 @@ is.dfm <- function(x) {
 as.dfm <- function(x) {
     if (!any((c("matrix", "data.frame") %in% class(x))))
         stop("as.dfm only applicable to matrix(-like) objects.")
-    new("dfmSparse", Matrix(as.matrix(x), 
+    new("dfm", Matrix(as.matrix(x), 
                             sparse = TRUE,
                             dimnames = list(docs = if (is.null(rownames(x))) paste0("doc", seq_len(nrow(x))) else rownames(x),
                                             features = if (is.null(colnames(x))) paste0("feat", seq_len(ncol(x))) else colnames(x)) 
@@ -194,6 +194,6 @@ NULL
 #' @param e2 a numeric value to compare with values in a dfm
 #' @export
 #' @seealso \link{Comparison} operators
-setMethod("Compare", c("dfmSparse", "numeric"), function(e1, e2) {
+setMethod("Compare", c("dfm", "numeric"), function(e1, e2) {
     as(callGeneric(as(e1, "dgCMatrix"), e2), "lgCMatrix")
 })
