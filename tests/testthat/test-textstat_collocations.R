@@ -38,4 +38,13 @@ test_that("test that extractor works with collocation", {
     cols <- cols[1:5,]
     expect_equal(nrow(cols), length(as.tokens(cols)))
     
-})    
+})
+
+test_that("bigrams and trigrams are all sorted correctly, issue #385", {
+    
+    toks <- tokens(data_corpus_inaugural, remove_punct = TRUE)
+    toks <- tokens_remove(toks, stopwords(), padding = TRUE)
+    cols <- textstat_collocations(toks, method = 'lr', max_size = 3)
+    expect_equal(order(cols$G2, decreasing = TRUE), seq_len(nrow(cols)))
+    
+})

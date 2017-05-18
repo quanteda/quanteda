@@ -88,11 +88,15 @@ collocations2 <- function(x, method = c("lr", "chi2", "pmi", "dice"),
     ids <- apply(temp[,c(1:3)], 1, as.list)
     ids <- lapply(ids, function(x) as.integer(x[x != '']))
 
-    result <- data.frame(collocation = stringi::stri_c_list(lapply(ids, function(x) types[x]), sep = ' '), temp[,c(4, 5)],
+    result <- data.frame(collocation = stri_c_list(lapply(ids, function(x) types[x]), sep = ' '), 
+                         length = lengths(ids),
+                         temp[,c(4, 5)],
                          stringsAsFactors = FALSE)
+    
     class(result) <- c("collocations", 'data.frame')
     attr(result, 'tokens') <- ids
     attr(result, 'types') <- types
+    result <- result[order(result[,4], decreasing = TRUE),]
     result <- result[result$count >= min_count,]
     
     return(result)
@@ -112,7 +116,7 @@ collocations_trigram <- function(x, method = c("lr", "chi2", "pmi", "dice"),
     
     # remove punctuation if called for
     # if (punctuation == "ignore") {
-    #     t <- t[!stringi::stri_detect_regex(t, "^\\p{P}$")]
+    #     t <- t[!stri_detect_regex(t, "^\\p{P}$")]
     # }
 
     # create a data.table of all adjacent bigrams
@@ -123,9 +127,9 @@ collocations_trigram <- function(x, method = c("lr", "chi2", "pmi", "dice"),
     
     # # eliminate non-adjacent words
     # if (punctuation == "dontspan") {
-    #     wordpairs <- wordpairs[!(stringi::stri_detect_regex(w1, "^\\p{P}$") | 
-    #                              stringi::stri_detect_regex(w2, "^\\p{P}$") |
-    #                              stringi::stri_detect_regex(w3, "^\\p{P}$"))]
+    #     wordpairs <- wordpairs[!(stri_detect_regex(w1, "^\\p{P}$") | 
+    #                              stri_detect_regex(w2, "^\\p{P}$") |
+    #                              stri_detect_regex(w3, "^\\p{P}$"))]
     # }
     wordpairs <- wordpairs[w1 %in% features & w2 %in% features & w3 %in% features]
     
@@ -350,7 +354,7 @@ collocations_bigram <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"
     
     # remove punctuation if called for
     # if (punctuation == "ignore") {
-    #     t <- t[!stringi::stri_detect_regex(t, "^[\\p{P}\\p{S}]$")]
+    #     t <- t[!stri_detect_regex(t, "^[\\p{P}\\p{S}]$")]
     # }
 
     # create a data.table of all adjacent bigrams
@@ -360,8 +364,8 @@ collocations_bigram <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"
     
     # eliminate non-adjacent words (where a blank is in a pair)
     # if (punctuation == "dontspan") {
-    #     wordpairs <- wordpairs[!(stringi::stri_detect_regex(w1, "^[\\p{P}\\p{S}]$") | 
-    #                              stringi::stri_detect_regex(w2, "^[\\p{P}\\p{S}]$"))]
+    #     wordpairs <- wordpairs[!(stri_detect_regex(w1, "^[\\p{P}\\p{S}]$") | 
+    #                              stri_detect_regex(w2, "^[\\p{P}\\p{S}]$"))]
     # }
     wordpairs <- wordpairs[w1 %in% features & w2 %in% features]
     

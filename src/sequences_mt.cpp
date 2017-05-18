@@ -220,12 +220,14 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     // Separate map keys and values
     std::size_t len = counts_seq.size();
     VecNgrams seqs;
-    IntParams cs;
+    IntParams cs, ns;
     seqs.reserve(len);
     cs.reserve(len);
+    ns.reserve(len);
     for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
         seqs.push_back(it->first);
         cs.push_back(it->second);
+        ns.push_back(it->first.size());
     }
     
     // Estimate significance of the sequences
@@ -249,9 +251,10 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     }
     
     DataFrame output_ = DataFrame::create(_["collocation"] = seqs_,
+                                          _["count"] = as<IntegerVector>(wrap(cs)),
+                                          _["length"] = as<NumericVector>(wrap(ns)),
                                           _["lambda"] = as<NumericVector>(wrap(ls)),
                                           _["sigma"] = as<NumericVector>(wrap(ss)),
-                                          _["count"] = as<IntegerVector>(wrap(cs)),
                                           _["stringsAsFactors"] = false);
     output_.attr("tokens") = as<Tokens>(wrap(seqs));
     return output_;
