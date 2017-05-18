@@ -129,9 +129,7 @@ is.collocations <- function(x) {
 #' @method "[" collocations
 #' @export
 #' @noRd
-"[.collocations" <- function(x, i, j, ...) {
-    if (missing(i)) i <- seq_len(nrow(x))
-    if (missing(j)) j <- seq_len(ncol(x))
+"[.collocations" <- function(x, i = TRUE, j = TRUE, ...) {
     toks <- attr(x, 'tokens')
     x <- as.data.frame(x)[i, j, ...]
     attr(x, 'tokens') <- toks[i]
