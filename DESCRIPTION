@@ -103,6 +103,7 @@ Collate:
     'sequences.R'
     'settings.R'
     'similarity.R'
+    'spacyr-methods.R'
     'stopwords.R'
     'textmodel-generics.R'
     'textmodel-internal.R'
