@@ -5,7 +5,7 @@
 \title{create a dictionary}
 \usage{
 dictionary(..., file = NULL, format = NULL, concatenator = " ",
-  tolower = TRUE, encoding = "auto")
+  tolower = TRUE, encoding = "unknown")
 }
 \arguments{
 \item{...}{a named list of character vector dictionary entries, including \link{valuetype} pattern

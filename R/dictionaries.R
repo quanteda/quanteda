@@ -194,7 +194,7 @@ setMethod("as.list",
 #' @export
 dictionary <- function(..., file = NULL, format = NULL, 
                        concatenator = " ", 
-                       tolower = TRUE, encoding = "auto") {
+                       tolower = TRUE, encoding = "unknown") {
     
     if (is.null(file)) {
         x <- list(...)
@@ -361,7 +361,8 @@ is.dictionary <- function(x) {
 # dict <- read_dict_lexicoder('/home/kohei/Documents/Dictionary/Lexicoder/LSDaug2015/LSD2015.lc3')
 read_dict_lexicoder <- function(path) {
     
-    lines <- stri_read_lines(path, encoding = 'utf-8') # Lexicoder 3.0 is always UTF-8
+    #lines <- stri_read_lines(path, encoding = 'utf-8') # Lexicoder 3.0 is always UTF-8
+    lines <- readLines(path)
     lines <- stri_trim_both(lines)
     lines_yaml <- ifelse(stri_detect_regex(lines, '^\\+'),
                          stri_replace_all_regex(lines, '^+(.+)$', '"$1":'),
@@ -377,9 +378,10 @@ read_dict_lexicoder <- function(path) {
 # dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/LaverGarry.txt', 'utf-8')
 # dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat', 'utf-8')
 # dict <- read_dict_wordstat('/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat', 'iso-8859-1')
-read_dict_wordstat <- function(path, encoding = 'auto') {
+read_dict_wordstat <- function(path, encoding = 'unknown') {
     
-    lines <- stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
+    #lines <- stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
+    lines <- readLines(path, encoding = encoding)
     lines <- stri_trim_right(lines)
     lines_yaml <- ifelse(stri_detect_regex(lines, ' \\(\\d\\)$'),
                          stri_replace_all_regex(lines, '^(\\t*)(.+) \\(\\d\\)$', '$1- "$2"'),
@@ -418,9 +420,10 @@ list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
 
 # Import a LIWC-formatted dictionary
 # read_dict_liwc('/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')
-read_dict_liwc <- function(path, encoding = 'auto') {
+read_dict_liwc <- function(path, encoding = 'unknown') {
     
-    lines <- stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
+    #lines <- stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
+    lines <- readLines(path, encoding = encoding)
     lines <- stri_trim_both(lines)
     lines <- lines[lines != '']
     
