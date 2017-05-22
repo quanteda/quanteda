@@ -26,6 +26,7 @@
 * `fcm_compress()` now retains the fcm class, and generates and error when an asymmetric compression is attempted (#728).
 * `textstat_collocations()` now returns the collocations as character, not as a factor (#736)
 * Fixed a bug in `dfm_lookup(x, exclusive = FALSE)` wherein an empty dfm ws returned with there was no no match (#116).
+* Argument passing through `dfm()` to `tokens()` is now robust, and preserves variables defined in the calling environment (#721).
 
 ## Changes since v0.9.9-24
 
