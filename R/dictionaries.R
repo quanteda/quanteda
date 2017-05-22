@@ -337,7 +337,8 @@ list2dictionary <- function(dict) {
             dict[[i]] = list2dictionary(dict[[i]])
         } else {
             if (is.character(dict[[i]])) {
-                dict[[i]] = list(stri_enc_toutf8(dict[[i]]))
+                #dict[[i]] = list(stri_enc_toutf8(dict[[i]]))
+                dict[[i]] = list(dict[[i]])
             } else {
                 dict[[i]] = list(dict[[i]])
             }
