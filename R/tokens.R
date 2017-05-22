@@ -186,20 +186,17 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
                              include_docvars = TRUE, 
                              ...) {
     
-    # deprecate older versions of the arguments
-    args <- as.list(match.call())
-    # get the arguments that match the old function calls
-    args <- args[stringi::stri_detect_regex(names(args), "^remove")]
-    # get any values of the arguments from the parent environment
-    args <- lapply(args, function(a) eval(a, enclos = parent.frame()))
-    # translate old into new
-    remove_numbers <- deprecate_argument("removeNumbers", "remove_numbers", args)
-    remove_punct <- deprecate_argument("removePunct", "remove_punct", args)
-    remove_symbols <- deprecate_argument("removeSymbols", "remove_symbols", args)
-    remove_separators <- deprecate_argument("removeSeparators", "remove_separators", args)
-    remove_twitter <- deprecate_argument("removeTwitter", "remove_twitter", args)
-    remove_hyphens <- deprecate_argument("removeHyphens", "remove_hyphens", args)
-    remove_url <- deprecate_argument("removeURL", "remove_url", args)
+    # trap older arguments, issue a warning, and call with correct arguments
+    thecall <- as.list(match.call())[-1]
+    oldargindex <- 
+        stringi::stri_detect_regex(names(thecall), 
+                                   "remove(Numbers|Punct|Symbols|Separators|Twitter|Hyphens|URL)$")
+    if (any(oldargindex)) {
+        warning(names(thecall)[oldargindex], " is deprecated; use ",
+                tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex])), " instead")
+        names(thecall)[oldargindex] <- tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex]))
+        return(do.call(tokens, thecall))
+    }
     
     what <- match.arg(what)
     names_org <- names(x)
