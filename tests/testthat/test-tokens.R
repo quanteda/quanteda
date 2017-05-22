@@ -342,4 +342,50 @@ test_that("unlist retuns character vector, issue #716", {
                  c("aaa", "bbb", "cccc", "aaa", "bbb", "dddd"))
 })
 
+
+test_that("deprecated tokens arguments still work", {
+
+    expect_warning(
+        tokens("This contains 99 numbers.", removeNumbers = TRUE),
+        "removeNumbers is deprecated"
+    )
+    
+    # for tokens
+    expect_identical(
+        as.character(tokens(c(d1 = "This: punctuation"), remove_punct = TRUE)),
+        c("This", "punctuation")
+    )
+    expect_identical(
+        as.character(tokens(c(d1 = "This: punctuation"), remove_punct = TRUE)),
+        as.character(tokens(c(d1 = "This: punctuation"), removePunct = TRUE))
+    )
+    expect_warning(
+        tokens(c(d1 = "This: punctuation"), notanargument = TRUE),
+        "Argument notanargument not used"
+    )
+    
+})
+
+test_that("tokens arguments works with values from parent frame (#721)", {
+    expect_identical(
+        tokens("This contains 99 numbers.", remove_numbers = T),
+        tokens("This contains 99 numbers.", remove_numbers = TRUE),
+    )
+    
+    expect_identical(
+        dfm("This contains 99 numbers.", remove_numbers = T),
+        dfm("This contains 99 numbers.", remove_numbers = TRUE),
+    )
+
+    val <- FALSE
+    expect_identical(
+        tokens("This contains 99 numbers.", remove_numbers = val),
+        tokens("This contains 99 numbers.", remove_numbers = F),
+    )
+    expect_identical(
+        dfm("This contains 99 numbers.", remove_numbers = val),
+        dfm("This contains 99 numbers.", remove_numbers = F),
+    )
+})
+
     
