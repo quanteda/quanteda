@@ -36,7 +36,7 @@ int match_bit_ordered2(const std::vector<unsigned int> &tokens1,
 }
 
 // unigram subtuples from B&J algorithm
-double sigma_uni(const std::vector<double> &counts, const int ntokens){
+double sigma_uni(const std::vector<double> &counts, const std::size_t ntokens){
     double s = 0.0;
     s += std::pow(ntokens - 1, 2) / counts[0];
     for (std::size_t b = 0; b < ntokens; b++) {
@@ -46,7 +46,7 @@ double sigma_uni(const std::vector<double> &counts, const int ntokens){
     return std::sqrt(s);
 }
 
-double lambda_uni(const std::vector<double> &counts, const int ntokens){
+double lambda_uni(const std::vector<double> &counts, const std::size_t ntokens){
     double l = 0.0;
     l += std::log(counts[0]) * (ntokens - 1); // c0
     for (std::size_t b = 0; b < ntokens; b++) {  //c(b), #(b)=1
@@ -56,8 +56,8 @@ double lambda_uni(const std::vector<double> &counts, const int ntokens){
     return l;
 }
 
-int bitCount(std::size_t n) {  // count the number of '1' bit
-    int counter = 0;
+std::size_t bitCount(std::size_t n) {  // count the number of '1' bit
+    std::size_t counter = 0;
     while(n) {
         counter += n % 2;
         n >>= 1;
@@ -71,19 +71,19 @@ double sigma_all(const std::vector<double> &counts){
     double s = 0.0;
     
     for (std::size_t b = 0; b < n; b++) {
-        s += 1.0 / counts[n];
+        s += 1.0 / counts[b];
     }
     
     return std::sqrt(s);
 }
 
-double lambda_all(const std::vector<double> &counts, const int ntokens){
+double lambda_all(const std::vector<double> &counts, const std::size_t ntokens){
     const std::size_t n = counts.size();
     
     double l = 0.0;
 
     for (std::size_t b = 0; b < n; b++) {  //c(b), #(b)=1
-        l += std::pow(-1, ntokens - bitCount(n)) * std::log(counts[b]);
+        l += std::pow(-1, ntokens - bitCount(b)) * std::log(counts[b]);
     }
 
     return l;
@@ -293,10 +293,11 @@ DataFrame qatd_cpp_sequences2(const List &texts_,
 
 toks <- tokens(data_corpus_inaugural)
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-types <- unique(as.character(toks))
-types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
 
-out2 <- qatd_cpp_sequences2(toks, types, 1, 2, TRUE, TRUE)
+toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
+types <- unique(as.character(toks))
+out2 <- qatd_cpp_sequences2(toks, types, 1, 2, "unigram",TRUE, FALSE)
+out3 <- qatd_cpp_sequences2(toks, types, 1, 2, "all_subtuples",TRUE, FALSE)
 # out2$z <- out2$lambda / out2$sigma
 # out2$p <- 1 - stats::pnorm(out2$z)
 
