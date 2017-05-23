@@ -36,10 +36,9 @@ setClass("textmodel_wordshoal_predicted",
 #' document group for each document
 #' @param authors the name of a variable in the document variables for data giving the 
 #' author of each document
-#' @param dir set global identification by specifying the indexes for a pair of 
-#'   authors such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.
-#' @param tol tolerance for convergence.  A convergence 
-#'   threshold for the log-posterior of the model.
+#' @param tol lower bound for convergence tolerance in wordfish, and for the log-posterior 
+#'   of the wordshoal model
+#' @param ... additional arguments passed to \code{\link{textmodel_wordfish}}
 #' @return An object of class textmodel_fitted_wordshoal.  This is a list 
 #'   containing: \item{tol}{log-posterior tolerance used in fitting} 
 #'   \item{dir}{global identification of the dimension} 
@@ -53,30 +52,31 @@ setClass("textmodel_wordshoal_predicted",
 #' @references Benjamin E. Lauderdale and Alexander Herzog.  (forthcoming) "Measuring 
 #'    Political Positions from Legislative Speech." \emph{Political Analysis}.
 #' @author Benjamin Lauderdale and Kenneth Benoit
+#' @seealso \code{\link{textmodel_wordfish}}
 #' @keywords textmodel experimental
 #' @examples
 #' \dontrun{
 #' data(data_corpus_irish30, package = "quantedaData")
 #' iedfm <- dfm(data_corpus_irish30, remove_punct = TRUE)
 #' wordshoalfit <- 
-#'     textmodel_wordshoal(iedfm, dir = c(7,1),
-#'                         groups = docvars(ie30corpus, "debateID"), 
-#'                         authors = docvars(ie30corpus, "member.name"))
+#'     textmodel_wordshoal(iedfm, 
+#'                         groups = docvars(data_corpus_irish30, "debateID"), 
+#'                         authors = docvars(data_corpus_irish30, "member.name"))
 #' fitdf <- merge(as.data.frame(summary(wordshoalfit)),
-#'                docvars(ie30corpus), 
-#'                by.x="row.names", by.y="member.name")
-#' fitdf <- subset(fitdf,!duplicated(memberID))
+#'                docvars(data_corpus_irish30), 
+#'                by.x = "row.names", by.y = "member.name")
+#' fitdf <- subset(fitdf, !duplicated(memberID))
 #' aggregate(theta ~ party.name, data = fitdf, mean)
 #' }
 #' @importFrom stats dgamma dnorm
 #' @export
-textmodel_wordshoal <- function(x, groups, authors, dir = c(1,2), tol = 1e-3) {
+textmodel_wordshoal <- function(x, groups, authors, tol = 1e-3, ...) {
     UseMethod("textmodel_wordshoal")
 }
 
 #' @noRd
 #' @export
-textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3) {
+textmodel_wordshoal.dfm <- function(x, groups, authors, tol = 1e-3, ...) {
     
     startTime <- proc.time()
     
@@ -111,7 +111,7 @@ textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3
         
         # Run wordfish on document group
         # wfresult <- wordfishcpp(as.matrix(groupdfm), c(1, 2), c(0, 0, 1/9, 1), c(1e-2, 1e-4), 1L, 0L)
-        wfresult <- textmodel_wordfish(groupdfm, tol = c(tol, 1e-8))
+        wfresult <- textmodel_wordfish(groupdfm, tol = c(tol, 1e-8), ...)
         
         # Save the results
         # psi[groups == levels(groups)[j]] <- wfresult$theta
