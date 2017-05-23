@@ -5,7 +5,6 @@
 #' by chance.  The algorithm is based on Blaheta and Johnson's (2001) 
 #' "Unsupervised Learning of Multi-Word Verbs".
 #' @param x a \link{tokens} object
-#' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param min_count minimum frequency of sequences for which parameters are 
 #'   estimated
 #' @param max_size maxium length of sequences which are collected
@@ -27,7 +26,7 @@
 #' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 #' 
 #' # extracting multi-part proper nouns (capitalized terms)
-#' seqs <- sequences(toks, case_insensitive = FALSE)
+#' seqs <- sequences(toks)
 #' head(seqs, 10)
 #' 
 #' # more efficient when applied to the same tokens object 
@@ -35,8 +34,7 @@
 #' toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
 #' 
 #' # types can be any words
-#' seqs2 <- sequences(toks, case_insensitive = FALSE, 
-#'                    min_count = 2, ordered = TRUE)
+#' seqs2 <- sequences(toks, min_count = 2, ordered = TRUE)
 #'                    
 #' head(seqs2, 10)
 #' 
@@ -45,7 +43,6 @@
 #' 
 #' @export
 sequences2 <- function(x, 
-                      case_insensitive = TRUE, 
                       min_count = 2, 
                       max_size = 5, 
                       nested = TRUE, ordered = FALSE) {
@@ -57,8 +54,7 @@ sequences2 <- function(x,
 #' @rdname sequences
 #' @noRd
 #' @export
-sequences2.tokens <- function(x, 
-                             case_insensitive = TRUE, 
+sequences2.tokens <- function(x,
                              min_count = 2, 
                              max_size= 5, 
                              nested=TRUE, ordered=FALSE) {
