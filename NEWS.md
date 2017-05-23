@@ -27,6 +27,7 @@
 * `textstat_collocations()` now returns the collocations as character, not as a factor (#736)
 * Fixed a bug in `dfm_lookup(x, exclusive = FALSE)` wherein an empty dfm ws returned with there was no no match (#116).
 * Argument passing through `dfm()` to `tokens()` is now robust, and preserves variables defined in the calling environment (#721).
+* Fixed issues related to dictionaries failing when applying `str()`, `names()`, or other indexing operations, which started happening on Linux and Windows platforms following the CRAN move to 3.4.0. (#744)
 
 ## Changes since v0.9.9-24
 
