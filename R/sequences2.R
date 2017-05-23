@@ -25,22 +25,13 @@
 #' @examples 
 #' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"), remove_punct=TRUE)
 #' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-#' toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
+#' toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", 
+#'                      case_insensitive = FALSE, padding = TRUE)
 #' # extracting multi-part proper nouns (capitalized terms)
 #' seqs <- sequences2(toks)
 #' head(seqs, 10)
-#' 
-#' # more efficient when applied to the same tokens object 
-#' toks_comp <- tokens_compound(toks, seqs)
-#' toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
-#' 
-#' # types can be any words
-#' seqs2 <- sequences2(toks, min_count = 2, ordered = TRUE)
-#'                    
-#' head(seqs2, 10)
-#' 
-#' # convert to tokens object
-#' as.tokens(seqs2)
+
+
 #' 
 #' @export
 sequences2 <- function(x, 
