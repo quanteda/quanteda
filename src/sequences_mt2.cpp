@@ -11,11 +11,10 @@ int match_bit2(const std::vector<unsigned int> &tokens1,
     
     std::size_t len1 = tokens1.size();
     std::size_t len2 = tokens2.size();
-    long bit = 0;
+    int bit = 0;
     for (std::size_t i = 0; i < len1 && i < len2; i++) {
-        bit += (long)(tokens1[i] == tokens2[i]); // value in bit does not depend on positions
+        if (tokens1[i] == tokens2[i]) bit += std::pow(2, i); // position dependent
     }
-    bit += (long)(len1 >= len2); // for trailing space 
     return bit;
 }
 
@@ -148,6 +147,7 @@ void estimate2(std::size_t i,
         }
         counts_bit[bit] += cs[j];
     }
+    counts_bit[std::pow(2, n)-1]  += cs[i] - 1;  // c(2^n-1) += number of itself  
     ss[i] = sigma2(counts_bit);
     ls[i] = lambda2(counts_bit);
 }
