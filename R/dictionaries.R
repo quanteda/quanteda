@@ -1,5 +1,5 @@
 
-setClassUnion("character_NULL", c("character", "NULL"))
+# setClassUnion("character_NULL", c("character", "NULL"))
 
 #' @rdname dictionary-class
 #' @export
@@ -9,13 +9,11 @@ setClassUnion("character_NULL", c("character", "NULL"))
 #'   consisting of a pattern match
 #' @slot concatenator character object specifying space between multi-word
 #'   values
-#' @slot format dictionary format (if imported)
-#' @slot file file from which a dictionary was read (if imported)
-setClass("dictionary", contains = c("list"),
-         slots = c(concatenator = "character_NULL", format = "character_NULL", file = "character_NULL"),
-         prototype = prototype(concatenator = " ", format = NULL, file = NULL))
+setClass("dictionary2", contains = "list",
+         slots = c(concatenator = "character"),
+         prototype = prototype(concatenator = " "))
 
-setValidity("dictionary", function(object) {
+setValidity("dictionary2", function(object) {
     # does every element have a name? simply needs to pass
     validate_dictionary(object)
 })
@@ -24,12 +22,12 @@ setValidity("dictionary", function(object) {
 validate_dictionary <- function(dict){
     dict <- unclass(dict)
     if (is.null(names(dict))) {
-        stop("Dictionary elements must be named: ", 
+        stop("Dictionary elements must be named: ",
              paste(unlist(dict, recursive = TRUE), collapse = ' '))
     }
     if (any(names(dict) == "")) {
         unnamed <- dict[which(names(dict) == "")]
-        stop("Unnamed dictionary entry: ", 
+        stop("Unnamed dictionary entry: ",
              paste(unlist(unnamed, use.names = FALSE), collapse = ' '))
     }
     if (is.null(dict@concatenator) || dict@concatenator == '') {
@@ -79,7 +77,7 @@ print_dictionary <- function(entry, level = 1) {
 #' @param object the dictionary to be printed
 #' @rdname dictionary-class
 #' @export
-setMethod("show", "dictionary", 
+setMethod("show", "dictionary2", 
           function(object) {
               levs <- ifelse((depth <- dictionary_depth(object)) > 1, " primary", "")
               nkeys <- length(names(object))
@@ -96,9 +94,9 @@ setMethod("show", "dictionary",
 #' @rdname dictionary-class
 #' @export
 setMethod("[",
-          signature = c("dictionary", i = "index"),
+          signature = c("dictionary2", i = "index"),
           function(x, i) {
-              new("dictionary", unclass(x)[i], format = x@format, file = x@file, concatenator = x@concatenator)
+              new("dictionary2", unclass(x)[i], concatenator = x@concatenator)
         })
 
 #' Extractor for dictionary objects
@@ -107,10 +105,10 @@ setMethod("[",
 #' @rdname dictionary-class
 #' @export
 setMethod("[[",
-          signature = c("dictionary", i = "index"),
+          signature = c("dictionary2", i = "index"),
           function(x, i) {
               is_category <- sapply(unclass(x)[[i]], is.list)
-              new("dictionary", unclass(x)[[i]][is_category], format = x@format, file = x@file, concatenator = x@concatenator)
+              new("dictionary2", unclass(x)[[i]][is_category], concatenator = x@concatenator)
           })
 
 #' Coerce a dictionary object into a list
@@ -118,7 +116,7 @@ setMethod("[[",
 #' @rdname dictionary-class
 #' @export
 setMethod("as.list",
-          signature = c("dictionary"),
+          signature = c("dictionary2"),
           function(x) {
               simplify_dictionary(x)
           })
@@ -245,7 +243,7 @@ dictionary <- function(..., file = NULL, format = NULL,
     }
     if (tolower)
         x <- lowercase_dictionary(x)
-    new("dictionary", x, format = format, file = file, concatenator = concatenator)
+    new("dictionary2", x, concatenator = concatenator)
 }
 
 
@@ -353,7 +351,7 @@ list2dictionary <- function(dict) {
 #' @param x any object
 #' @export
 is.dictionary <- function(x) {
-    is(x, "dictionary")
+    is(x, "dictionary2")
 }
 
 
