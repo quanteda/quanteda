@@ -11,5 +11,15 @@ test_that("test nsentence", {
     )
 })
 
-
-    
+test_that("test ntype with dfm (#748)", {
+    d <- dfm(c(doc1 = "one two three",
+               doc2 = "one one one"))
+    expect_equal(
+        ntype(d),
+        c(doc1 = 3, doc2 = 1)
+    )
+    expect_equal(
+        ntoken(d),
+        c(doc1 = 3, doc2 = 3)
+    )
+})
