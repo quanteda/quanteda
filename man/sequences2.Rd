@@ -4,8 +4,8 @@
 \alias{sequences2}
 \title{find variable-length collocations with filtering}
 \usage{
-sequences2(x, min_count = 2, max_size = 5, nested = TRUE,
-  ordered = FALSE)
+sequences2(x, min_count = 2, max_size = 5, method = c("unigram",
+  "all_subtuples"), nested = TRUE, ordered = FALSE)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
@@ -14,6 +14,8 @@ sequences2(x, min_count = 2, max_size = 5, nested = TRUE,
 estimated}
 
 \item{max_size}{maxium length of sequences which are collected}
+
+\item{method}{default is "unigram" and option is "all_subtuples"}
 
 \item{nested}{if \code{TRUE}, collect all the subsequences of a longer
 sequence as separate entities. e.g. in a sequence of capitalized words
@@ -31,24 +33,13 @@ by chance.  The algorithm is based on Blaheta and Johnson's (2001)
 "Unsupervised Learning of Multi-Word Verbs".
 }
 \examples{
-toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
+toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"), remove_punct=TRUE)
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-
+toks <- tokens_select(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", 
+                     case_insensitive = FALSE, padding = TRUE)
 # extracting multi-part proper nouns (capitalized terms)
-seqs <- sequences(toks)
+seqs <- sequences2(toks)
 head(seqs, 10)
-
-# more efficient when applied to the same tokens object 
-toks_comp <- tokens_compound(toks, seqs)
-toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
-
-# types can be any words
-seqs2 <- sequences(toks, min_count = 2, ordered = TRUE)
-                   
-head(seqs2, 10)
-
-# convert to tokens object
-as.tokens(seqs2)
 
 }
 \references{

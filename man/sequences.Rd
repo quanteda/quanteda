@@ -3,7 +3,7 @@
 \name{sequences}
 \alias{sequences}
 \alias{is.sequences}
-\alias{is.sequences}
+\alias{is.sequences2}
 \title{find variable-length collocations with filtering}
 \usage{
 sequences(x, features = "*", valuetype = c("glob", "regex", "fixed"),
@@ -12,7 +12,7 @@ sequences(x, features = "*", valuetype = c("glob", "regex", "fixed"),
 
 is.sequences(x)
 
-is.sequences(x)
+is.sequences2(x)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
