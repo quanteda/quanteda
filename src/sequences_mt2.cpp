@@ -36,7 +36,7 @@ int match_bit_ordered2(const std::vector<unsigned int> &tokens1,
     return bit;
 }
 
-double sigma2(const std::vector<long> &counts){
+double sigma2(const std::vector<double> &counts){
     
     const std::size_t n = counts.size();
     const double base = n - 1;
@@ -50,7 +50,7 @@ double sigma2(const std::vector<long> &counts){
     return std::sqrt(s);
 }
 
-double lambda2(const std::vector<long> &counts){
+double lambda2(const std::vector<double> &counts){
     
     const std::size_t n = counts.size();
     
@@ -130,11 +130,11 @@ void estimate2(std::size_t i,
     std::size_t n = seqs[i].size();
     if (n == 1) return; // ignore single words
     if (cs[i] < count_min) return;
-    std::vector<long> counts_bit;
+    std::vector<double> counts_bit;
     if (ordered) {
-        counts_bit.resize(std::pow(2, n + 1), 1); // add one smoothing
+        counts_bit.resize(std::pow(2, n + 1), 0.5); // use 1/2 as smoothing
     } else {
-        counts_bit.resize(n + 1, 1); // add one smoothing
+        counts_bit.resize(std::pow(2, n), 0.5); // use 1/2 as smoothing
     }
     for (std::size_t j = 0; j < seqs.size(); j++) {
         if (i == j) continue; // do not compare with itself
@@ -146,7 +146,7 @@ void estimate2(std::size_t i,
         } else {
             bit = match_bit2(seqs[i], seqs[j]);
         }
-        counts_bit[bit] += cs[i];
+        counts_bit[bit] += cs[j];
     }
     ss[i] = sigma2(counts_bit);
     ls[i] = lambda2(counts_bit);
