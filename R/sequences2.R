@@ -63,7 +63,7 @@ sequences2.tokens <- function(x,
     
     types <- types(x)
  
-    result <- qatd_cpp_sequences(x, types, min_count, max_size, nested, ordered)
+    result <- qatd_cpp_sequences2(x, types, min_count, max_size, nested, ordered)
     result <- result[result$count >= min_count,]
     result$z <- result$lambda / result$sigma
     result$p <- 1 - stats::pnorm(result$z)

@@ -261,7 +261,7 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 types <- unique(as.character(toks))
 types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
 
-out2 <- qatd_cpp_sequences(toks, match(types_upper, types), types, 1, 2, TRUE, TRUE)
+out2 <- qatd_cpp_sequences2(toks, match(types_upper, types), types, 1, 2, TRUE, TRUE)
 # out2$z <- out2$lambda / out2$sigma
 # out2$p <- 1 - stats::pnorm(out2$z)
 
