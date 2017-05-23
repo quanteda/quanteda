@@ -8,6 +8,7 @@
 #' @param min_count minimum frequency of sequences for which parameters are 
 #'   estimated
 #' @param max_size maxium length of sequences which are collected
+#' @param method default is "unigram" and option is "all_subtuples"
 #' @param nested if \code{TRUE}, collect all the subsequences of a longer
 #'   sequence as separate entities. e.g. in a sequence of capitalized words
 #'   "United States Congress", "States Congress" is considered as a subsequence.
@@ -22,11 +23,11 @@
 #'    learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
 #'   Computational Extraction, Analysis and Exploitation of Collocations.
 #' @examples 
-#' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
+#' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"), remove_punct=TRUE)
 #' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-#' 
+#' toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
 #' # extracting multi-part proper nouns (capitalized terms)
-#' seqs <- sequences(toks)
+#' seqs <- sequences2(toks)
 #' head(seqs, 10)
 #' 
 #' # more efficient when applied to the same tokens object 
@@ -34,7 +35,7 @@
 #' toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
 #' 
 #' # types can be any words
-#' seqs2 <- sequences(toks, min_count = 2, ordered = TRUE)
+#' seqs2 <- sequences2(toks, min_count = 2, ordered = TRUE)
 #'                    
 #' head(seqs2, 10)
 #' 
@@ -44,14 +45,15 @@
 #' @export
 sequences2 <- function(x, 
                       min_count = 2, 
-                      max_size = 5, 
+                      max_size = 5,
+                      method = c("unigram", "all_subtuples"),
                       nested = TRUE, ordered = FALSE) {
     
     # .Deprecated('textstat_collocations')
-    UseMethod("sequences")
+    UseMethod("sequences2")
 }
 
-#' @rdname sequences
+#' @rdname sequences2
 #' @noRd
 #' @export
 sequences2.tokens <- function(x,
@@ -70,26 +72,26 @@ sequences2.tokens <- function(x,
     result$p <- 1 - stats::pnorm(result$z)
     result <- result[order(result$z, decreasing = TRUE),]
     attr(result, 'types') <- types
-    class(result) <- c("sequences", 'data.frame')
+    class(result) <- c("sequences2", 'data.frame')
     
     return(result)
 }
 
 
-#' @method "[" sequences
+#' @method "[" sequences2
 #' @export
 #' @noRd
-"[.sequences" <- function(x, i, ...) {
+"[.sequences2" <- function(x, i, ...) {
     x <- as.data.frame(x)[i,]
     attr(x, 'ids') <- attr(x, 'ids')[i]
-    class(x) <- c("sequences", 'data.frame')
+    class(x) <- c("sequences2", 'data.frame')
     return(x)
 }
 
 #' @export
-#' @method as.tokens sequences
+#' @method as.tokens sequences2
 #' @noRd 
-as.tokens.sequences <- function(x) {
+as.tokens.sequences2 <- function(x) {
     toks <- attr(x, 'tokens')
     attr(toks, 'types') <- attr(x, 'types')
     class(toks) <- c("tokens", "tokenizedTexts")
@@ -100,8 +102,8 @@ as.tokens.sequences <- function(x) {
 #' @export
 #' @return \code{sequences} returns \code{TRUE} if the object is of class
 #'   sequences, \code{FALSE} otherwise.
-is.sequences <- function(x) {
-    ifelse("sequences" %in% class(x), TRUE, FALSE)
+is.sequences2 <- function(x) {
+    ifelse("sequences2" %in% class(x), TRUE, FALSE)
 }
 
 
