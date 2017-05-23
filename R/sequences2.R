@@ -5,8 +5,6 @@
 #' by chance.  The algorithm is based on Blaheta and Johnson's (2001) 
 #' "Unsupervised Learning of Multi-Word Verbs".
 #' @param x a \link{tokens} object
-#' @param features a regular expression for filtering the features to be located
-#'   in sequences
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param min_count minimum frequency of sequences for which parameters are 
 #'   estimated
@@ -29,7 +27,7 @@
 #' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 #' 
 #' # extracting multi-part proper nouns (capitalized terms)
-#' seqs <- sequences(toks, "^([A-Z][a-z\\-]{2,})", case_insensitive = FALSE)
+#' seqs <- sequences(toks, case_insensitive = FALSE)
 #' head(seqs, 10)
 #' 
 #' # more efficient when applied to the same tokens object 
@@ -37,7 +35,7 @@
 #' toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
 #' 
 #' # types can be any words
-#' seqs2 <- sequences(toks, "^([a-z]+)$", case_insensitive = FALSE, 
+#' seqs2 <- sequences(toks, case_insensitive = FALSE, 
 #'                    min_count = 2, ordered = TRUE)
 #'                    
 #' head(seqs2, 10)
@@ -46,8 +44,7 @@
 #' as.tokens(seqs2)
 #' 
 #' @export
-sequences2 <- function(x, features = "*", 
-                    
+sequences2 <- function(x, 
                       case_insensitive = TRUE, 
                       min_count = 2, 
                       max_size = 5, 
@@ -60,8 +57,7 @@ sequences2 <- function(x, features = "*",
 #' @rdname sequences
 #' @noRd
 #' @export
-sequences2.tokens <- function(x, features = "*", 
-                             
+sequences2.tokens <- function(x, 
                              case_insensitive = TRUE, 
                              min_count = 2, 
                              max_size= 5, 
@@ -70,10 +66,8 @@ sequences2.tokens <- function(x, features = "*",
     attrs_org <- attributes(x)
     
     types <- types(x)
-    features <- features2vector(features)
-    features_id <- unlist(regex2id(features, types, case_insensitive, FALSE), use.names = FALSE)
-    
-    result <- qatd_cpp_sequences(x, features_id, types, min_count, max_size, nested, ordered)
+ 
+    result <- qatd_cpp_sequences(x, types, min_count, max_size, nested, ordered)
     result <- result[result$count >= min_count,]
     result$z <- result$lambda / result$sigma
     result$p <- 1 - stats::pnorm(result$z)
