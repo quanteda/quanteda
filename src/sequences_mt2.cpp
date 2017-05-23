@@ -56,6 +56,38 @@ double lambda_uni(const std::vector<double> &counts, const int ntokens){
     return l;
 }
 
+int bitCount(std::size_t n) {  // count the number of '1' bit
+    int counter = 0;
+    while(n) {
+        counter += n % 2;
+        n >>= 1;
+    }
+    return counter;
+}
+
+// all subtuples from B&J algorithm
+double sigma_all(const std::vector<double> &counts){
+    const std::size_t n = counts.size();
+    double s = 0.0;
+    
+    for (std::size_t b = 0; b < n; b++) {
+        s += 1.0 / counts[n];
+    }
+    
+    return std::sqrt(s);
+}
+
+double lambda_all(const std::vector<double> &counts, const int ntokens){
+    const std::size_t n = counts.size();
+    
+    double l = 0.0;
+
+    for (std::size_t b = 0; b < n; b++) {  //c(b), #(b)=1
+        l += std::pow(-1, ntokens - bitCount(n)) * std::log(counts[b]);
+    }
+
+    return l;
+}
 void count2(Text text,
            MapNgrams &counts_seq,
            const unsigned int &len_max,
@@ -117,6 +149,7 @@ void estimate2(std::size_t i,
               IntParams &cs, 
               DoubleParams &ss, 
               DoubleParams &ls, 
+              const String &method,
               const int &count_min,
               const bool &ordered){
     
@@ -142,8 +175,13 @@ void estimate2(std::size_t i,
         counts_bit[bit] += cs[j];
     }
     counts_bit[std::pow(2, n)-1]  += cs[i] - 1;  // c(2^n-1) += number of itself  
-    ss[i] = sigma_uni(counts_bit, n);
-    ls[i] = lambda_uni(counts_bit, n);
+    if (method == "unigram"){
+        ss[i] = sigma_uni(counts_bit, n);
+        ls[i] = lambda_uni(counts_bit, n);
+    } else {
+        ss[i] = sigma_all(counts_bit);
+        ls[i] = lambda_all(counts_bit, n);
+    }
 }
 
 struct estimate_mt2 : public Worker{
@@ -152,18 +190,19 @@ struct estimate_mt2 : public Worker{
     IntParams &cs;
     DoubleParams &ss;
     DoubleParams &ls;
+    const String &method;
     const unsigned int &count_min;
     const bool &ordered;
     
     // Constructor
-    estimate_mt2(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, 
+    estimate_mt2(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, const String &method,
                 const unsigned int &count_min_, const bool &ordered_):
-        seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_), 
+        seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), method(method), count_min(count_min_), 
         ordered(ordered_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimate2(i, seqs, cs, ss, ls, count_min, ordered);
+            estimate2(i, seqs, cs, ss, ls, method, count_min, ordered);
         }
     }
 };
@@ -178,6 +217,7 @@ struct estimate_mt2 : public Worker{
 * @param count_min sequences appear less than this are ignores
 * @param nested if true, subsequences are also collected
 * @param ordered if true, use the Blaheta-Johnson method
+* @param method 
 */
 
 // [[Rcpp::export]]
@@ -185,6 +225,7 @@ DataFrame qatd_cpp_sequences2(const List &texts_,
                              const CharacterVector &types_,
                              const unsigned int count_min,
                              unsigned int len_max,
+                             const String &method,
                              bool nested,
                              bool ordered = false){
     
@@ -212,9 +253,9 @@ DataFrame qatd_cpp_sequences2(const List &texts_,
     cs.reserve(len);
     ns.reserve(len);
     for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
-        seqs.push_back(it->first);
-        cs.push_back(it->second);
-        ns.push_back(it->first.size());
+        seqs.push_back(it -> first);
+        cs.push_back(it -> second);
+        ns.push_back(it -> first.size());
     }
     
     // Estimate significance of the sequences
@@ -222,11 +263,11 @@ DataFrame qatd_cpp_sequences2(const List &texts_,
     DoubleParams ls(len);
     //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-    estimate_mt2 estimate_mt(seqs, cs, ss, ls, count_min, ordered);
+    estimate_mt2 estimate_mt(seqs, cs, ss, ls, method, count_min, ordered);
     parallelFor(0, seqs.size(), estimate_mt);
 #else
     for (std::size_t i = 0; i < seqs.size(); i++) {
-        estimate2(i, seqs, cs, ss, ls, count_min, ordered);
+        estimate2(i, seqs, cs, ss, ls, method, count_min, ordered);
     }
 #endif
     //dev::stop_timer("Estimate", timer);

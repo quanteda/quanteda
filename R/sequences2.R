@@ -56,14 +56,15 @@ sequences2 <- function(x,
 #' @export
 sequences2.tokens <- function(x,
                              min_count = 2, 
-                             max_size= 5, 
-                             nested=TRUE, ordered=FALSE) {
+                             max_size = 5,
+                             method = c("unigram", "all_subtuples"),
+                             nested = TRUE, ordered=FALSE) {
     
     attrs_org <- attributes(x)
-    
+    methodtype = match.arg(method)
     types <- types(x)
  
-    result <- qatd_cpp_sequences2(x, types, min_count, max_size, nested, ordered)
+    result <- qatd_cpp_sequences2(x, types, min_count, max_size, methodtype, nested, ordered)
     result <- result[result$count >= min_count,]
     result$z <- result$lambda / result$sigma
     result$p <- 1 - stats::pnorm(result$z)
