@@ -6,7 +6,7 @@ using namespace quanteda;
 * This funciton is a orignal function by Watanabe, K (2016).
 * The distribution of the match bit is more dense, tending to promote frequent sequences.
 */
-int match_bit(const std::vector<unsigned int> &tokens1, 
+int match_bit2(const std::vector<unsigned int> &tokens1, 
               const std::vector<unsigned int> &tokens2){
     
     std::size_t len1 = tokens1.size();
@@ -23,7 +23,7 @@ int match_bit(const std::vector<unsigned int> &tokens1,
 * This funciton is from Blaheta, D., & Johnson, M. (2001). 
 * The distribution of the match bit is more sparse than in match_bit(), tending to promote rare sequences.
 */
-int match_bit_ordered(const std::vector<unsigned int> &tokens1, 
+int match_bit_ordered2(const std::vector<unsigned int> &tokens1, 
                       const std::vector<unsigned int> &tokens2){
     
     std::size_t len1 = tokens1.size();
@@ -36,7 +36,7 @@ int match_bit_ordered(const std::vector<unsigned int> &tokens1,
     return bit;
 }
 
-double sigma(const std::vector<long> &counts){
+double sigma2(const std::vector<long> &counts){
     
     const std::size_t n = counts.size();
     const double base = n - 1;
@@ -50,7 +50,7 @@ double sigma(const std::vector<long> &counts){
     return std::sqrt(s);
 }
 
-double lambda(const std::vector<long> &counts){
+double lambda2(const std::vector<long> &counts){
     
     const std::size_t n = counts.size();
     
@@ -63,7 +63,7 @@ double lambda(const std::vector<long> &counts){
     return l;
 }
 
-void count(Text text,
+void count2(Text text,
            MapNgrams &counts_seq,
            const unsigned int &len_max,
            const bool &nested){
@@ -100,7 +100,7 @@ void count(Text text,
     }
 }
 
-struct count_mt : public Worker{
+struct count_mt2 : public Worker{
     
     Texts texts;
     MapNgrams &counts_seq;
@@ -108,18 +108,18 @@ struct count_mt : public Worker{
     const bool &nested;
     
     
-    count_mt(Texts texts_, MapNgrams &counts_seq_, 
+    count_mt2(Texts texts_, MapNgrams &counts_seq_, 
              const unsigned int &len_max_, const bool &nested_):
         texts(texts_), counts_seq(counts_seq_), len_max(len_max_), nested(nested_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
-            count(texts[h], counts_seq, len_max, nested);
+            count2(texts[h], counts_seq, len_max, nested);
         }
     }
 };
 
-void estimate(std::size_t i,
+void estimate2(std::size_t i,
               VecNgrams &seqs,
               IntParams &cs, 
               DoubleParams &ss, 
@@ -142,17 +142,17 @@ void estimate(std::size_t i,
         
         int bit;
         if (ordered) {
-            bit = match_bit_ordered(seqs[i], seqs[j]);
+            bit = match_bit_ordered2(seqs[i], seqs[j]);
         } else {
-            bit = match_bit(seqs[i], seqs[j]);
+            bit = match_bit2(seqs[i], seqs[j]);
         }
         counts_bit[bit] += cs[i];
     }
-    ss[i] = sigma(counts_bit);
-    ls[i] = lambda(counts_bit);
+    ss[i] = sigma2(counts_bit);
+    ls[i] = lambda2(counts_bit);
 }
 
-struct estimate_mt : public Worker{
+struct estimate_mt2 : public Worker{
     
     VecNgrams &seqs;
     IntParams &cs;
@@ -162,14 +162,14 @@ struct estimate_mt : public Worker{
     const bool &ordered;
     
     // Constructor
-    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, 
+    estimate_mt2(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, 
                 const unsigned int &count_min_, const bool &ordered_):
         seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_), 
         ordered(ordered_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimate(i, seqs, cs, ss, ls, count_min, ordered);
+            estimate2(i, seqs, cs, ss, ls, count_min, ordered);
         }
     }
 };
@@ -201,11 +201,11 @@ DataFrame qatd_cpp_sequences2(const List &texts_,
     //dev::Timer timer;
     //dev::start_timer("Count", timer);
 #if QUANTEDA_USE_TBB
-    count_mt count_mt(texts, counts_seq, len_max, nested);
+    count_mt2 count_mt(texts, counts_seq, len_max, nested);
     parallelFor(0, texts.size(), count_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        count(texts[h], counts_seq, len_max, nested);
+        count2(texts[h], counts_seq, len_max, nested);
     }
 #endif
     //dev::stop_timer("Count", timer);
@@ -228,11 +228,11 @@ DataFrame qatd_cpp_sequences2(const List &texts_,
     DoubleParams ls(len);
     //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-    estimate_mt estimate_mt(seqs, cs, ss, ls, count_min, ordered);
+    estimate_mt2 estimate_mt(seqs, cs, ss, ls, count_min, ordered);
     parallelFor(0, seqs.size(), estimate_mt);
 #else
     for (std::size_t i = 0; i < seqs.size(); i++) {
-        estimate(i, seqs, cs, ss, ls, count_min, ordered);
+        estimate2(i, seqs, cs, ss, ls, count_min, ordered);
     }
 #endif
     //dev::stop_timer("Estimate", timer);
@@ -261,7 +261,7 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 types <- unique(as.character(toks))
 types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
 
-out2 <- qatd_cpp_sequences2(toks, match(types_upper, types), types, 1, 2, TRUE, TRUE)
+out2 <- qatd_cpp_sequences2(toks, types, 1, 2, TRUE, TRUE)
 # out2$z <- out2$lambda / out2$sigma
 # out2$p <- 1 - stats::pnorm(out2$z)
 
