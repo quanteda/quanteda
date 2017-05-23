@@ -35,30 +35,24 @@ int match_bit_ordered2(const std::vector<unsigned int> &tokens1,
     return bit;
 }
 
-double sigma2(const std::vector<double> &counts){
-    
-    const std::size_t n = counts.size();
-    const double base = n - 1;
-    
+// unigram subtuples from B&J algorithm
+double sigma_uni(const std::vector<double> &counts, const int ntokens){
     double s = 0.0;
-    s += std::pow(base, 2) / counts[0];
-    for (std::size_t b = 1; b < n - 1; b++) {
-        s += 1.0 / counts[b];
+    s += std::pow(ntokens - 1, 2) / counts[0];
+    for (std::size_t b = 0; b < ntokens; b++) {
+        s += 1.0 / counts[std::pow(2, b)];
     }
-    s += 1.0 / counts[n - 1];
+    s += 1.0 / counts[std::pow(2, ntokens) - 1];
     return std::sqrt(s);
 }
 
-double lambda2(const std::vector<double> &counts){
-    
-    const std::size_t n = counts.size();
-    
+double lambda_uni(const std::vector<double> &counts, const int ntokens){
     double l = 0.0;
-    l += std::log(counts[0]) * n - 1;
-    for (std::size_t b = 1; b < n - 1; b++) {
-        l -= std::log(counts[b]);
+    l += std::log(counts[0]) * (ntokens - 1); // c0
+    for (std::size_t b = 0; b < ntokens; b++) {  //c(b), #(b)=1
+        l -= std::log(counts[std::pow(2, b)]);
     }
-    l += std::log(counts[n - 1]);
+    l += std::log(counts[std::pow(2, ntokens) - 1]); //c(2^n-1)
     return l;
 }
 
@@ -130,11 +124,11 @@ void estimate2(std::size_t i,
     if (n == 1) return; // ignore single words
     if (cs[i] < count_min) return;
     std::vector<double> counts_bit;
-    if (ordered) {
-        counts_bit.resize(std::pow(2, n + 1), 0.5); // use 1/2 as smoothing
-    } else {
+    //if (ordered) {
+      //  counts_bit.resize(std::pow(2, n), 0.5); // use 1/2 as smoothing, t
+    //} else {
         counts_bit.resize(std::pow(2, n), 0.5); // use 1/2 as smoothing
-    }
+    //}
     for (std::size_t j = 0; j < seqs.size(); j++) {
         if (i == j) continue; // do not compare with itself
         //if(ns[j] < count_min) continue; // this is different from the old vesion
@@ -148,8 +142,8 @@ void estimate2(std::size_t i,
         counts_bit[bit] += cs[j];
     }
     counts_bit[std::pow(2, n)-1]  += cs[i] - 1;  // c(2^n-1) += number of itself  
-    ss[i] = sigma2(counts_bit);
-    ls[i] = lambda2(counts_bit);
+    ss[i] = sigma_uni(counts_bit, n);
+    ls[i] = lambda_uni(counts_bit, n);
 }
 
 struct estimate_mt2 : public Worker{
