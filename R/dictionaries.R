@@ -1,5 +1,5 @@
 
-setClassUnion("character_NULL", c("character", "NULL"))
+# setClassUnion("character_NULL", c("character", "NULL"))
 
 #' @rdname dictionary-class
 #' @export
@@ -11,32 +11,35 @@ setClassUnion("character_NULL", c("character", "NULL"))
 #'   values
 #' @slot format dictionary format (if imported)
 #' @slot file file from which a dictionary was read (if imported)
-setClass("dictionary", contains = c("list"),
-         slots = c(concatenator = "character_NULL", format = "character_NULL", file = "character_NULL"),
-         prototype = prototype(concatenator = " ", format = NULL, file = NULL))
+setClass("dictionary", 
+         contains = "list",
+         slots = c(concatenator = "character", 
+                   format = "character", 
+                   file = "character"),
+         prototype = prototype(concatenator = " ", format = "", file = ""))
 
-setValidity("dictionary", function(object) {
-    # does every element have a name? simply needs to pass
-    validate_dictionary(object)
-})
+# setValidity("dictionary", function(object) {
+#     # does every element have a name? simply needs to pass
+#     validate_dictionary(object)
+# })
 
-# Internal function to chekc if dictionary eintries are all chracters
-validate_dictionary <- function(dict){
-    dict <- unclass(dict)
-    if (is.null(names(dict))) {
-        stop("Dictionary elements must be named: ", 
-             paste(unlist(dict, recursive = TRUE), collapse = ' '))
-    }
-    if (any(names(dict) == "")) {
-        unnamed <- dict[which(names(dict) == "")]
-        stop("Unnamed dictionary entry: ", 
-             paste(unlist(unnamed, use.names = FALSE), collapse = ' '))
-    }
-    if (is.null(dict@concatenator) || dict@concatenator == '') {
-        stop("Concatenator cannot be null or an empty string")
-    }
-    check_entries(dict)
-}
+# # Internal function to chekc if dictionary eintries are all chracters
+# validate_dictionary <- function(dict){
+#     dict <- unclass(dict)
+#     if (is.null(names(dict))) {
+#         stop("Dictionary elements must be named: ", 
+#              paste(unlist(dict, recursive = TRUE), collapse = ' '))
+#     }
+#     if (any(names(dict) == "")) {
+#         unnamed <- dict[which(names(dict) == "")]
+#         stop("Unnamed dictionary entry: ", 
+#              paste(unlist(unnamed, use.names = FALSE), collapse = ' '))
+#     }
+#     if (is.null(dict@concatenator) || dict@concatenator == '') {
+#         stop("Concatenator cannot be null or an empty string")
+#     }
+#     check_entries(dict)
+# }
 
 check_entries <- function (dict) {
     for (i in seq_along(dict)) {
@@ -56,39 +59,39 @@ check_entries <- function (dict) {
     }
 } 
 
-# Internal function to print dictionary
-print_dictionary <- function(entry, level = 1) {
-    entry <- unclass(entry)
-    if (!length(entry)) return()
-    is_category <- sapply(entry, is.list)
-    category <- entry[is_category]
-    word <- unlist(entry[!is_category], use.names = FALSE)
-    if (length(word)) {
-        cat(rep('  ', level - 1), "- ", paste(word, collapse = ", "), "\n", sep = "")
-    }
-    for (i in seq_along(category)) {
-        cat(rep('  ', level - 1), "- ", names(category[i]), ':\n', sep = "")
-        print_dictionary(category[[i]], level + 1)
-    }
-}
-
-
-#' print a dictionary object
+#' # Internal function to print dictionary
+#' print_dictionary <- function(entry, level = 1) {
+#'     entry <- unclass(entry)
+#'     if (!length(entry)) return()
+#'     is_category <- sapply(entry, is.list)
+#'     category <- entry[is_category]
+#'     word <- unlist(entry[!is_category], use.names = FALSE)
+#'     if (length(word)) {
+#'         cat(rep('  ', level - 1), "- ", paste(word, collapse = ", "), "\n", sep = "")
+#'     }
+#'     for (i in seq_along(category)) {
+#'         cat(rep('  ', level - 1), "- ", names(category[i]), ':\n', sep = "")
+#'         print_dictionary(category[[i]], level + 1)
+#'     }
+#' }
 #' 
-#' Print/show method for dictionary objects.
-#' @param object the dictionary to be printed
-#' @rdname dictionary-class
-#' @export
-setMethod("show", "dictionary", 
-          function(object) {
-              levs <- ifelse((depth <- dictionary_depth(object)) > 1, " primary", "")
-              nkeys <- length(names(object))
-              cat("Dictionary object with ", nkeys, levs, " key entr", 
-                  ifelse(nkeys == 1, "y", "ies"), sep = "")
-              if (levs != "") cat(" and ", depth, " nested levels", sep = "")
-              cat(".\n")
-              print_dictionary(object)
-          })
+#' 
+#' #' print a dictionary object
+#' #' 
+#' #' Print/show method for dictionary objects.
+#' #' @param object the dictionary to be printed
+#' #' @rdname dictionary-class
+#' #' @export
+#' setMethod("show", "dictionary", 
+#'           function(object) {
+#'               levs <- ifelse((depth <- dictionary_depth(object)) > 1, " primary", "")
+#'               nkeys <- length(as.list(object))
+#'               cat("Dictionary object with ", nkeys, levs, " key entr", 
+#'                   ifelse(nkeys == 1, "y", "ies"), sep = "")
+#'               if (levs != "") cat(" and ", depth, " nested levels", sep = "")
+#'               cat(".\n")
+#'               print_dictionary(object)
+#'           })
 
 #' Extractor for dictionary objects
 #' @param object the dictionary to be extracted
@@ -112,6 +115,28 @@ setMethod("[[",
               is_category <- sapply(unclass(x)[[i]], is.list)
               new("dictionary", unclass(x)[[i]][is_category], format = x@format, file = x@file, concatenator = x@concatenator)
           })
+
+#' Extractor for dictionary objects
+#' @param object the dictionary to be extracted
+#' @param i index for entries
+#' @rdname dictionary-class
+#' @export
+setMethod("names",
+          signature = c("dictionary"),
+          function(x) {
+            names(unclass(x))
+          })
+
+#' #' Extractor for dictionary objects
+#' #' @param object the dictionary to be extracted
+#' #' @param name name of the dictionary key
+#' #' @rdname dictionary-class
+#' #' @export
+#' setMethod("$",
+#'           signature = c("dictionary", name = "index"),
+#'           function(x, name) {
+#'               x[[name, exact = FALSE]]
+#'           })
 
 #' Coerce a dictionary object into a list
 #' @param object the dictionary to be coerced

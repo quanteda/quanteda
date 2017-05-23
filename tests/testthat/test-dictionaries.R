@@ -59,7 +59,7 @@ test_that("dictionary constructor works with Lexicoder format", {
 
 test_that("read a dictionary with NA as a key", {
     testdict <- dictionary(file = "../data/dictionaries/issue-459.cat")
-    expect_true("NA" %in% names(testdict$SOUTH))
+    expect_true("NA" %in% names(testdict[["SOUTH"]]))
 })
 
 test_that("as.yaml is working", {
