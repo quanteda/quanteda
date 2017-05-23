@@ -3,26 +3,42 @@
 \docType{class}
 \name{dictionary-class}
 \alias{dictionary-class}
-\alias{show,dictionary-method}
 \alias{[,dictionary,index,ANY,ANY-method}
 \alias{[[,dictionary,index-method}
+\alias{names,dictionary-method}
 \alias{as.list,dictionary-method}
-\title{print a dictionary object}
+\title{# Internal function to print dictionary
+print_dictionary <- function(entry, level = 1) {
+    entry <- unclass(entry)
+    if (!length(entry)) return()
+    is_category <- sapply(entry, is.list)
+    category <- entry[is_category]
+    word <- unlist(entry[!is_category], use.names = FALSE)
+    if (length(word)) {
+        cat(rep('  ', level - 1), "- ", paste(word, collapse = ", "), "\n", sep = "")
+    }
+    for (i in seq_along(category)) {
+        cat(rep('  ', level - 1), "- ", names(category[i]), ':\n', sep = "")
+        print_dictionary(category[[i]], level + 1)
+    }
+}}
 \usage{
-\S4method{show}{dictionary}(object)
-
 \S4method{[}{dictionary,index,ANY,ANY}(x, i)
 
 \S4method{[[}{dictionary,index}(x, i)
 
+\S4method{names}{dictionary}(x)
+
 \S4method{as.list}{dictionary}(x)
 }
 \arguments{
-\item{object}{the dictionary to be printed}
-
 \item{i}{index for entries}
 
 \item{object}{the dictionary to be extracted}
+
+\item{object}{the dictionary to be extracted}
+
+\item{i}{index for entries}
 
 \item{object}{the dictionary to be extracted}
 
@@ -31,12 +47,38 @@
 \item{object}{the dictionary to be coerced}
 }
 \description{
-Print/show method for dictionary objects.
-
+#' print a dictionary object
+#' 
+#' Print/show method for dictionary objects.
+#' @param object the dictionary to be printed
+#' @rdname dictionary-class
+#' @export
+setMethod("show", "dictionary", 
+          function(object) {
+              levs <- ifelse((depth <- dictionary_depth(object)) > 1, " primary", "")
+              nkeys <- length(as.list(object))
+              cat("Dictionary object with ", nkeys, levs, " key entr", 
+                  ifelse(nkeys == 1, "y", "ies"), sep = "")
+              if (levs != "") cat(" and ", depth, " nested levels", sep = "")
+              cat(".\n")
+              print_dictionary(object)
+          })
 Extractor for dictionary objects
 
 Extractor for dictionary objects
 
+Extractor for dictionary objects
+
+#' Extractor for dictionary objects
+#' @param object the dictionary to be extracted
+#' @param name name of the dictionary key
+#' @rdname dictionary-class
+#' @export
+setMethod("$",
+          signature = c("dictionary", name = "index"),
+          function(x, name) {
+              x[[name, exact = FALSE]]
+          })
 Coerce a dictionary object into a list
 }
 \section{Slots}{
