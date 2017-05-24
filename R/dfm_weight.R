@@ -70,15 +70,19 @@
 dfm_weight <- function(x, 
                        type = c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"),
                        weights = NULL) {
-    if (!is.dfm(x))
-        stop("x must be a dfm object")
-    
+    UseMethod("dfm_weight")
+}
+
+
+dfm_weight <- function(x, 
+                       type = c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"),
+                       weights = NULL) {
     # for numeric weights
     if (!is.null(weights)) {
-        if (!missing(type))
-            warning("type is ignored when numeric weights are supplied")
-        if (any(!(matchedWeights <- names(weights) %in% featnames(x)))) {
-            warning("ignoring", names(weights)[matchedWeights], ", not a feature match")
+        if (!missing(type)) warning("type is ignored when numeric weights are supplied")
+        if (any(l <- sum(!(matchedWeights <- names(weights) %in% featnames(x))))) {
+            warning("dfm_weight(): ignoring ", format(l, big.mark=","), " unmatched weight feature", 
+                    ifelse(l==1, "", "s"), noBreaks. = TRUE, call. = FALSE)
             weights <- weights[matchedWeights]
         }
         
