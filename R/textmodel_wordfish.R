@@ -33,7 +33,6 @@ setClass("textmodel_wordfish_predicted",
 #' Estimate Slapin and Proksch's (2008) "wordfish" Poisson scaling model of 
 #' one-dimensional document positions using conditional maximum likelihood.
 #' @importFrom Rcpp evalCpp
-#' @useDynLib quanteda
 #' @param x the dfm on which the model will be fit
 #' @param dir set global identification by specifying the indexes for a pair of 
 #'   documents such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.
