@@ -49,7 +49,8 @@ test_that("dictionary constructor works with YAML format", {
 
 test_that("dictionary constructor works with LIWC format", {
     expect_equivalent(dictionary(file = "../data/dictionaries/mary.dic"),
-                      marydict)
+                      dictionary(list(A_CATEGORY = c("lamb", "little", "more"),
+                                      ANOTHER_CATEGORY = c("had", "mary"))))
 })
 
 test_that("dictionary constructor works with Lexicoder format", {
