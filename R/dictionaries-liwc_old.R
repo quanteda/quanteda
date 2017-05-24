@@ -63,7 +63,7 @@ read_dict_liwc_old <- function(path, encoding = "auto", toLower = FALSE) {
     ## clean up irregular dictionary files
     # remove any repeated \t
     catlist <- gsub("\t\t+", "\t", catlist)
-    # remove any spaced before a \t
+    # remove any spaces before a \t
     catlist <- gsub(" +\t", "\t", catlist)
     # replace any blanks that should be \t with \t (e.g. in Moral Foundations dictionary)
     catlist <- gsub("(\\d+) +(\\d+)", "\\1\t\\2", catlist)
