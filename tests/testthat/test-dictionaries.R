@@ -141,6 +141,14 @@ test_that("indexing for dictionary keys works", {
         print(dict[1]),
         "Dictionary object with 1 key entry\\."
     )
+    
+    testdict <- dictionary(file = "../data/dictionaries/issue-459.cat")
+    expect_identical(
+        testdict[["SOUTH"]],
+        testdict$SOUTH
+    )
+    
+    
 })
 
 

@@ -96,7 +96,8 @@ setMethod("show", "dictionary2",
 setMethod("[",
           signature = c("dictionary2", i = "index"),
           function(x, i) {
-              new("dictionary2", unclass(x)[i], concatenator = x@concatenator)
+              is_category <- sapply(as.list(x)[i], function(y) !is.null(y))
+              dictionary(as.list(x)[i][is_category], concatenator = x@concatenator)
         })
 
 #' Extractor for dictionary objects
@@ -107,9 +108,21 @@ setMethod("[",
 setMethod("[[",
           signature = c("dictionary2", i = "index"),
           function(x, i) {
-              is_category <- sapply(unclass(x)[[i]], is.list)
-              new("dictionary2", unclass(x)[[i]][is_category], concatenator = x@concatenator)
+              # browser()
+              # is_category <- sapply(as.list(x)[[i]], is.list)
+              if (is.list(as.list(x)[[i]])) {
+                  as.list(x)[[i]]
+              } else {
+                  dictionary(as.list(x)[[i]][is_category], concatenator = x@concatenator)
+              }
           })
+
+#' @rdname dictionary-class
+#' @param name the dictionary key
+#' @export
+`$.dictionary2` <- function(x, name) {
+    x[[name]]
+}
 
 #' Coerce a dictionary object into a list
 #' @param object the dictionary to be coerced
