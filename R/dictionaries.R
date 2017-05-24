@@ -108,12 +108,10 @@ setMethod("[",
 setMethod("[[",
           signature = c("dictionary2", i = "index"),
           function(x, i) {
-              # browser()
-              # is_category <- sapply(as.list(x)[[i]], is.list)
-              if (is.list(as.list(x)[[i]])) {
+              if (!is.list(as.list(x)[[i]])) {
                   as.list(x)[[i]]
               } else {
-                  dictionary(as.list(x)[[i]][is_category], concatenator = x@concatenator)
+                  dictionary(as.list(x)[[i]], concatenator = x@concatenator)
               }
           })
 
@@ -245,6 +243,7 @@ dictionary <- function(..., file = NULL, format = NULL,
             x <- read_dict_wordstat(file, encoding)
         } else if (format == "LIWC") {
             x <- read_dict_liwc(file, encoding)
+            # x <- read_dict_liwc_old(file, enc = encoding)
         } else if (format == "yoshikoder") {
             x <- read_dict_yoshikoder(file)
         } else if (format == "lexicoder") {
