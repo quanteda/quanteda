@@ -427,7 +427,11 @@ list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
 
 
 # Import a LIWC-formatted dictionary
-# read_dict_liwc('/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')
+# read_dict_liwc('/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')        # WORKS
+# dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English.dic")      # WORKS
+# dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2015_English_Flat.dic") # WORKS
+# dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic")       # FAILS
+# dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English080730.dic") # FAILS
 read_dict_liwc <- function(path, encoding = 'auto') {
     
     lines <- stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
