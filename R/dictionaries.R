@@ -243,7 +243,7 @@ dictionary <- function(..., file = NULL, format = NULL,
             x <- read_dict_wordstat(file, encoding)
         } else if (format == "LIWC") {
             # x <- read_dict_liwc(file, encoding)
-            x <- list2dictionary(read_dict_liwc_old(file, enc = encoding))
+            x <- list2dictionary(read_dict_liwc_old(file, encoding))
         } else if (format == "yoshikoder") {
             x <- read_dict_yoshikoder(file)
         } else if (format == "lexicoder") {
