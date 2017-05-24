@@ -38,8 +38,8 @@ read_dict_liwc_old <- function(path, encoding = "auto", toLower = FALSE) {
     # extract the category guide
     guide <- d[2:(guideRowEnd-1)]
     
-    guide <- data.frame(do.call(rbind, tokenize(guide)), stringsAsFactors = FALSE)
-    colnames(guide) <- c('catNum', 'catName' )
+    guide <- data.frame(do.call(rbind, as.list(tokens(guide))), stringsAsFactors = FALSE)
+    colnames(guide) <- c('catNum', 'catName')
     guide$catNum <- as.integer(guide$catNum)
     
     # initialize the dictionary as list of NAs
@@ -70,10 +70,12 @@ read_dict_liwc_old <- function(path, encoding = "auto", toLower = FALSE) {
     # remove any \t only lines or empty lines
     if (length(blanklines <- grep("^\\s*$", catlist))) 
         catlist <- catlist[-blanklines]
+    # remove spaces before and after
+    catlist <- stri_trim_both(catlist)
     
     catlist <- strsplit(catlist, "\t")
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
-    catlist[, 2:ncol(catlist)] <- sapply(catlist[, 2:ncol(catlist)], as.integer)
+    suppressWarnings(catlist[, 2:ncol(catlist)] <- sapply(catlist[, 2:ncol(catlist)], as.integer))
     names(catlist)[1] <- "category"
     if (toLower) catlist$category <- char_tolower(catlist$category)
     # remove any blank rows
