@@ -69,6 +69,7 @@ double lambda_all(const std::vector<double> &counts, const std::size_t ntokens){
 }
 void count2(Text text,
            MapNgrams &counts_seq,
+           const unsigned int &len_min,
            const unsigned int &len_max,
            const bool &nested){
     
@@ -93,7 +94,8 @@ void count2(Text text,
                 tokens_seq.push_back(token);
             } else {
                 //Rcout << "Not match: " <<  token << "\n";
-                if (tokens_seq.size() > 1) {
+                //only collect sequences that the size of it >= len_min
+                if (tokens_seq.size() >= len_min) {  
                     counts_seq[tokens_seq]++;
                 }
                 tokens_seq.clear();
@@ -108,17 +110,18 @@ struct count_mt2 : public Worker{
     
     Texts texts;
     MapNgrams &counts_seq;
+    const unsigned int &len_min;
     const unsigned int &len_max;
     const bool &nested;
     
     
-    count_mt2(Texts texts_, MapNgrams &counts_seq_, 
+    count_mt2(Texts texts_, MapNgrams &counts_seq_, const unsigned int &len_min_,
              const unsigned int &len_max_, const bool &nested_):
-        texts(texts_), counts_seq(counts_seq_), len_max(len_max_), nested(nested_) {}
+        texts(texts_), counts_seq(counts_seq_), len_min(len_min_), len_max(len_max_), nested(nested_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
-            count2(texts[h], counts_seq, len_max, nested);
+            count2(texts[h], counts_seq, len_min, len_max, nested);
         }
     }
 };
@@ -191,6 +194,7 @@ struct estimate_mt2 : public Worker{
 DataFrame qatd_cpp_sequences2(const List &texts_,
                              const CharacterVector &types_,
                              const unsigned int count_min,
+                             unsigned int len_min,
                              unsigned int len_max,
                              const String &method,
                              bool nested){
@@ -202,11 +206,11 @@ DataFrame qatd_cpp_sequences2(const List &texts_,
     //dev::Timer timer;
     //dev::start_timer("Count", timer);
 #if QUANTEDA_USE_TBB
-    count_mt2 count_mt(texts, counts_seq, len_max, nested);
+    count_mt2 count_mt(texts, counts_seq, len_min, len_max, nested);
     parallelFor(0, texts.size(), count_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        count2(texts[h], counts_seq, len_max, nested);
+        count2(texts[h], counts_seq, len_min, len_max, nested);
     }
 #endif
     //dev::stop_timer("Count", timer);
@@ -262,8 +266,9 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 
 toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
 types <- unique(as.character(toks))
-out2 <- qatd_cpp_sequences2(toks, types, 1, 2, "unigram",TRUE)
-out3 <- qatd_cpp_sequences2(toks, types, 1, 2, "all_subtuples",TRUE)
+out2 <- qatd_cpp_sequences2(toks, types, 1, 2, 2, "unigram",TRUE)
+out3 <- qatd_cpp_sequences2(toks, types, 1, 2, 2, "all_subtuples",TRUE)
+out4 <- qatd_cpp_sequences2(toks, types, 1, 2, 3, "unigram",TRUE)
 # out2$z <- out2$lambda / out2$sigma
 # out2$p <- 1 - stats::pnorm(out2$z)
 
