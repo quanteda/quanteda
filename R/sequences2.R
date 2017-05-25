@@ -1,4 +1,4 @@
-#' find variable-length collocations with filtering
+#' Find variable-length collocations 
 #' 
 #' This function automatically identifies contiguous collocations consisting of 
 #' variable-length term sequences whose frequency is unlikely to have occurred 
@@ -8,7 +8,7 @@
 #' @param min_count minimum frequency of sequences for which parameters are 
 #'   estimated
 #' @param min_size minimum length of sequences which are collected  
-#' @param max_size maxium length of sequences which are collected
+#' @param max_size maximum length of sequences which are collected
 #' @param method default is "unigram" and option is "all_subtuples"
 #' @param nested if \code{TRUE}, collect all the subsequences of a longer
 #'   sequence as separate entities. e.g. in a sequence of capitalized words
