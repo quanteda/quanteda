@@ -30,15 +30,13 @@
 #' # extracting multi-part proper nouns (capitalized terms)
 #' seqs <- sequences2(toks)
 #' head(seqs, 10)
-
-
 #' 
 #' @export
 sequences2 <- function(x, 
-                      min_count = 2, 
-                      max_size = 5,
-                      method = c("unigram", "all_subtuples"),
-                      nested = TRUE, ordered = FALSE) {
+                       min_count = 2, 
+                       max_size = 5,
+                       method = c("unigram", "all_subtuples"),
+                       nested = TRUE, ordered = FALSE) {
     
     # .Deprecated('textstat_collocations')
     UseMethod("sequences2")
@@ -48,15 +46,15 @@ sequences2 <- function(x,
 #' @noRd
 #' @export
 sequences2.tokens <- function(x,
-                             min_count = 2, 
-                             max_size = 5,
-                             method = c("unigram", "all_subtuples"),
-                             nested = TRUE, ordered=FALSE) {
+                              min_count = 2, 
+                              max_size = 5,
+                              method = c("unigram", "all_subtuples"),
+                              nested = TRUE, ordered=FALSE) {
     
     attrs_org <- attributes(x)
     methodtype = match.arg(method)
     types <- types(x)
- 
+    
     result <- qatd_cpp_sequences2(x, types, min_count, max_size, methodtype, nested, ordered)
     result <- result[result$count >= min_count,]
     result$z <- result$lambda / result$sigma
@@ -67,7 +65,6 @@ sequences2.tokens <- function(x,
     
     return(result)
 }
-
 
 #' @method "[" sequences2
 #' @export
@@ -96,6 +93,3 @@ as.tokens.sequences2 <- function(x) {
 is.sequences2 <- function(x) {
     ifelse("sequences2" %in% class(x), TRUE, FALSE)
 }
-
-
-
