@@ -77,7 +77,6 @@ textstat_collocations(toks, method = "lr")
 textstat_collocations(toks, method = "lr", min_count = 1)
 textstat_collocations(toks, method = "lr", max_size = 3, min_count = 1)
 (cols <- textstat_collocations(toks, method = "lr", max_size = 3, min_count = 2))
-as.tokens(cols)
 
 # extracting multi-part proper nouns (capitalized terms)
 toks2 <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
