@@ -32,18 +32,6 @@ test_that("test that nested argument is working", {
     
 })
 
-test_that("test that argument 'min_size', 'max_size'", {
-    
-    toks <- tokens('E E a b c E E G G G f E E f f G G')
-    toks <- tokens_select(toks, "^[A-Z]$", valuetype="regex", 
-                         case_insensitive = FALSE, padding = TRUE)
-    seqs <- sequences2(toks, min_count = 1)
-    expect_equal(seqs$collocation, c('G G', 'E E', 'E E G G G', 'G G G', 'E G G G'))
-
-    seqs <- sequences2(toks, min_count = 1, min_size = 3, max_size = 4)
-    expect_equal(seqs$collocation, c('E G G G', 'E E G G', 'G G G'))
-})
-
 test_that("test that sequences works with tokens_compound", {
     
     toks <- tokens('E E a b c E E G G f E E f f G G')
