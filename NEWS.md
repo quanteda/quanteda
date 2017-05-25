@@ -28,6 +28,8 @@
 * Fixed a bug in `dfm_lookup(x, exclusive = FALSE)` wherein an empty dfm ws returned with there was no no match (#116).
 * Argument passing through `dfm()` to `tokens()` is now robust, and preserves variables defined in the calling environment (#721).
 * Fixed issues related to dictionaries failing when applying `str()`, `names()`, or other indexing operations, which started happening on Linux and Windows platforms following the CRAN move to 3.4.0. (#744)
+* Dictionary import using the LIWC format is more robust to improperly formatted input files (#685).
+* Weights applied using `dfm_weight()` now print friendlier error messages when the weight vector contains features not found in the dfm.  See [this Stack Overflow question](https://stackoverflow.com/questions/44132313/can-the-anew-dictionary-be-used-for-sentiment-analysis-in-quanteda/) for the use case that sparked this improvement.
 
 ## Changes since v0.9.9-24
 
