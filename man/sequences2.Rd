@@ -2,7 +2,7 @@
 % Please edit documentation in R/sequences2.R
 \name{sequences2}
 \alias{sequences2}
-\title{find variable-length collocations with filtering}
+\title{Find variable-length collocations}
 \usage{
 sequences2(x, min_count = 2, min_size = 2, max_size = 5,
   method = c("unigram", "all_subtuples"), nested = TRUE)
@@ -15,7 +15,7 @@ estimated}
 
 \item{min_size}{minimum length of sequences which are collected}
 
-\item{max_size}{maxium length of sequences which are collected}
+\item{max_size}{maximum length of sequences which are collected}
 
 \item{method}{default is "unigram" and option is "all_subtuples"}
 
