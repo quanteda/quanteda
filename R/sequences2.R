@@ -14,8 +14,6 @@
 #'   "United States Congress", "States Congress" is considered as a subsequence.
 #'   But "United States" is not a subsequence because it is followed by
 #'   "Congress".
-#' @param ordered if true, use the Blaheta-Johnson method that distinguishes 
-#'   between the order of words, and tends to promote rare sequences.
 #' @keywords collocations internal
 #' @author Kohei Watanabe
 #' @references Blaheta, D., & Johnson, M. (2001). 
@@ -36,7 +34,7 @@ sequences2 <- function(x,
                        min_count = 2, 
                        max_size = 5,
                        method = c("unigram", "all_subtuples"),
-                       nested = TRUE, ordered = FALSE) {
+                       nested = TRUE) {
     
     # .Deprecated('textstat_collocations')
     UseMethod("sequences2")
@@ -49,13 +47,13 @@ sequences2.tokens <- function(x,
                               min_count = 2, 
                               max_size = 5,
                               method = c("unigram", "all_subtuples"),
-                              nested = TRUE, ordered=FALSE) {
+                              nested = TRUE) {
     
     attrs_org <- attributes(x)
     methodtype = match.arg(method)
     types <- types(x)
     
-    result <- qatd_cpp_sequences2(x, types, min_count, max_size, methodtype, nested, ordered)
+    result <- qatd_cpp_sequences2(x, types, min_count, max_size, methodtype, nested)
     result <- result[result$count >= min_count,]
     result$z <- result$lambda / result$sigma
     result$p <- 1 - stats::pnorm(result$z)

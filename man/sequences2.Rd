@@ -5,7 +5,7 @@
 \title{find variable-length collocations with filtering}
 \usage{
 sequences2(x, min_count = 2, max_size = 5, method = c("unigram",
-  "all_subtuples"), nested = TRUE, ordered = FALSE)
+  "all_subtuples"), nested = TRUE)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
@@ -22,9 +22,6 @@ sequence as separate entities. e.g. in a sequence of capitalized words
 "United States Congress", "States Congress" is considered as a subsequence.
 But "United States" is not a subsequence because it is followed by
 "Congress".}
-
-\item{ordered}{if true, use the Blaheta-Johnson method that distinguishes 
-between the order of words, and tends to promote rare sequences.}
 }
 \description{
 This function automatically identifies contiguous collocations consisting of 

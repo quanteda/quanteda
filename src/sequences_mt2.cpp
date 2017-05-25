@@ -2,10 +2,6 @@
 #include "quanteda.h"
 using namespace quanteda;
 
-/* 
-* This funciton is a orignal function by Watanabe, K (2016).
-* The distribution of the match bit is more dense, tending to promote frequent sequences.
-*/
 int match_bit2(const std::vector<unsigned int> &tokens1, 
               const std::vector<unsigned int> &tokens2){
     
@@ -15,23 +11,6 @@ int match_bit2(const std::vector<unsigned int> &tokens1,
     for (std::size_t i = 0; i < len1 && i < len2; i++) {
         if (tokens1[i] == tokens2[i]) bit += std::pow(2, i); // position dependent
     }
-    return bit;
-}
-
-/* 
-* This funciton is from Blaheta, D., & Johnson, M. (2001). 
-* The distribution of the match bit is more sparse than in match_bit(), tending to promote rare sequences.
-*/
-int match_bit_ordered2(const std::vector<unsigned int> &tokens1, 
-                      const std::vector<unsigned int> &tokens2){
-    
-    std::size_t len1 = tokens1.size();
-    std::size_t len2 = tokens2.size();
-    long bit = 0;
-    for (std::size_t i = 0; i < len1 && i < len2; i++) {
-        bit += (long)(tokens1[i] == tokens2[i]) * std::pow(2, i); // value in bit depends on positions
-    }
-    bit += (long)(len1 >= len2) * std::pow(2, len1); // for trailing space 
     return bit;
 }
 
@@ -150,28 +129,19 @@ void estimate2(std::size_t i,
               DoubleParams &ss, 
               DoubleParams &ls, 
               const String &method,
-              const int &count_min,
-              const bool &ordered){
+              const int &count_min){
     
     std::size_t n = seqs[i].size();
     if (n == 1) return; // ignore single words
     if (cs[i] < count_min) return;
     std::vector<double> counts_bit;
-    //if (ordered) {
-      //  counts_bit.resize(std::pow(2, n), 0.5); // use 1/2 as smoothing, t
-    //} else {
-        counts_bit.resize(std::pow(2, n), 0.5); // use 1/2 as smoothing
-    //}
+    counts_bit.resize(std::pow(2, n), 0.5); // use 1/2 as smoothing
     for (std::size_t j = 0; j < seqs.size(); j++) {
         if (i == j) continue; // do not compare with itself
         //if(ns[j] < count_min) continue; // this is different from the old vesion
         
         int bit;
-        if (ordered) {
-            bit = match_bit_ordered2(seqs[i], seqs[j]);
-        } else {
-            bit = match_bit2(seqs[i], seqs[j]);
-        }
+        bit = match_bit2(seqs[i], seqs[j]);
         counts_bit[bit] += cs[j];
     }
     counts_bit[std::pow(2, n)-1]  += cs[i] - 1;  // c(2^n-1) += number of itself  
@@ -192,17 +162,15 @@ struct estimate_mt2 : public Worker{
     DoubleParams &ls;
     const String &method;
     const unsigned int &count_min;
-    const bool &ordered;
-    
+
     // Constructor
     estimate_mt2(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, const String &method,
-                const unsigned int &count_min_, const bool &ordered_):
-        seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), method(method), count_min(count_min_), 
-        ordered(ordered_) {}
+                const unsigned int &count_min_):
+        seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), method(method), count_min(count_min_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimate2(i, seqs, cs, ss, ls, method, count_min, ordered);
+            estimate2(i, seqs, cs, ss, ls, method, count_min);
         }
     }
 };
@@ -216,7 +184,6 @@ struct estimate_mt2 : public Worker{
 * @param texts_ tokens ojbect
 * @param count_min sequences appear less than this are ignores
 * @param nested if true, subsequences are also collected
-* @param ordered if true, use the Blaheta-Johnson method
 * @param method 
 */
 
@@ -226,8 +193,7 @@ DataFrame qatd_cpp_sequences2(const List &texts_,
                              const unsigned int count_min,
                              unsigned int len_max,
                              const String &method,
-                             bool nested,
-                             bool ordered = false){
+                             bool nested){
     
     Texts texts = as<Texts>(texts_);
 
@@ -263,11 +229,11 @@ DataFrame qatd_cpp_sequences2(const List &texts_,
     DoubleParams ls(len);
     //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-    estimate_mt2 estimate_mt(seqs, cs, ss, ls, method, count_min, ordered);
+    estimate_mt2 estimate_mt(seqs, cs, ss, ls, method, count_min);
     parallelFor(0, seqs.size(), estimate_mt);
 #else
     for (std::size_t i = 0; i < seqs.size(); i++) {
-        estimate2(i, seqs, cs, ss, ls, method, count_min, ordered);
+        estimate2(i, seqs, cs, ss, ls, method, count_min);
     }
 #endif
     //dev::stop_timer("Estimate", timer);
@@ -296,8 +262,8 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 
 toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
 types <- unique(as.character(toks))
-out2 <- qatd_cpp_sequences2(toks, types, 1, 2, "unigram",TRUE, FALSE)
-out3 <- qatd_cpp_sequences2(toks, types, 1, 2, "all_subtuples",TRUE, FALSE)
+out2 <- qatd_cpp_sequences2(toks, types, 1, 2, "unigram",TRUE)
+out3 <- qatd_cpp_sequences2(toks, types, 1, 2, "all_subtuples",TRUE)
 # out2$z <- out2$lambda / out2$sigma
 # out2$p <- 1 - stats::pnorm(out2$z)
 
