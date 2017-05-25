@@ -96,7 +96,8 @@ setMethod("show", "dictionary2",
 setMethod("[",
           signature = c("dictionary2", i = "index"),
           function(x, i) {
-              new("dictionary2", unclass(x)[i], concatenator = x@concatenator)
+              is_category <- sapply(as.list(x)[i], function(y) !is.null(y))
+              dictionary(as.list(x)[i][is_category], concatenator = x@concatenator)
         })
 
 #' Extractor for dictionary objects
@@ -107,9 +108,19 @@ setMethod("[",
 setMethod("[[",
           signature = c("dictionary2", i = "index"),
           function(x, i) {
-              is_category <- sapply(unclass(x)[[i]], is.list)
-              new("dictionary2", unclass(x)[[i]][is_category], concatenator = x@concatenator)
+              if (!is.list(as.list(x)[[i]])) {
+                  as.list(x)[[i]]
+              } else {
+                  dictionary(as.list(x)[[i]], concatenator = x@concatenator)
+              }
           })
+
+#' @rdname dictionary-class
+#' @param name the dictionary key
+#' @export
+`$.dictionary2` <- function(x, name) {
+    x[[name]]
+}
 
 #' Coerce a dictionary object into a list
 #' @param object the dictionary to be coerced
@@ -231,7 +242,8 @@ dictionary <- function(..., file = NULL, format = NULL,
         if (format == "wordstat") {
             x <- read_dict_wordstat(file, encoding)
         } else if (format == "LIWC") {
-            x <- read_dict_liwc(file, encoding)
+            # x <- read_dict_liwc(file, encoding)
+            x <- list2dictionary(read_dict_liwc_old(file, encoding))
         } else if (format == "yoshikoder") {
             x <- read_dict_yoshikoder(file)
         } else if (format == "lexicoder") {
@@ -415,7 +427,11 @@ list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
 
 
 # Import a LIWC-formatted dictionary
-# read_dict_liwc('/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')
+# read_dict_liwc('/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')        # WORKS
+# dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English.dic")      # WORKS
+# dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2015_English_Flat.dic") # WORKS
+# dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic")       # FAILS
+# dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English080730.dic") # FAILS
 read_dict_liwc <- function(path, encoding = 'auto') {
     
     lines <- stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')

@@ -30,7 +30,6 @@ setClass("textmodel_wordshoal_predicted",
 #' positions, and then the positions from a particular author are scaled across groups
 #' using a second-level linear factor model, using conditional maximum likelihood.
 #' @importFrom Rcpp evalCpp
-#' @useDynLib quanteda
 #' @param x the \link{dfm} from which the model will be fit
 #' @param groups the name of a variable in the document variables for data giving the 
 #' document group for each document

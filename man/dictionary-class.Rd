@@ -6,6 +6,7 @@
 \alias{show,dictionary2-method}
 \alias{[,dictionary2,index,ANY,ANY-method}
 \alias{[[,dictionary2,index-method}
+\alias{$.dictionary2}
 \alias{as.list,dictionary2-method}
 \title{print a dictionary object}
 \usage{
@@ -15,12 +16,16 @@
 
 \S4method{[[}{dictionary2,index}(x, i)
 
+\method{$}{dictionary2}(x, name)
+
 \S4method{as.list}{dictionary2}(x)
 }
 \arguments{
 \item{object}{the dictionary to be printed}
 
 \item{i}{index for entries}
+
+\item{name}{the dictionary key}
 
 \item{object}{the dictionary to be extracted}
 
