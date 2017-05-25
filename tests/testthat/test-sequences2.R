@@ -81,3 +81,13 @@ test_that("as.tokens.sequences function",{
     expect_equal(length(tokens), 4)
     expect_equal(class(tokens), c("tokens", "tokenizedTexts"))
 })
+
+test_that("is.sequences function",{
+    toks <- tokens('E E a b c E E G G f E E f f G G')
+    toks <- tokens_select(toks, "^[A-Z]$", valuetype="regex", 
+                          case_insensitive = FALSE, padding = TRUE)
+    seqs <- sequences2(toks, min_count = 1)
+    
+    expect_false(is.sequences(toks))
+    expect_true(is.sequences(seqs))
+})
