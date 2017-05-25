@@ -65,25 +65,25 @@ sequences2.tokens <- function(x,
     result$p <- 1 - stats::pnorm(result$z)
     result <- result[order(result$z, decreasing = TRUE),]
     attr(result, 'types') <- types
-    class(result) <- c("sequences2", 'data.frame')
+    class(result) <- c("sequences", 'data.frame')
     
     return(result)
 }
 
-#' @method "[" sequences2
+#' @method "[" sequences
 #' @export
 #' @noRd
-"[.sequences2" <- function(x, i, ...) {
+"[.sequences" <- function(x, i, ...) {
     x <- as.data.frame(x)[i,]
     attr(x, 'ids') <- attr(x, 'ids')[i]
-    class(x) <- c("sequences2", 'data.frame')
+    class(x) <- c("sequences", 'data.frame')
     return(x)
 }
 
 #' @export
-#' @method as.tokens sequences2
+#' @method as.tokens sequences
 #' @noRd 
-as.tokens.sequences2 <- function(x) {
+as.tokens.sequences <- function(x) {
     toks <- attr(x, 'tokens')
     attr(toks, 'types') <- attr(x, 'types')
     class(toks) <- c("tokens", "tokenizedTexts")
@@ -94,6 +94,6 @@ as.tokens.sequences2 <- function(x) {
 #' @export
 #' @return \code{sequences} returns \code{TRUE} if the object is of class
 #'   sequences, \code{FALSE} otherwise.
-is.sequences2 <- function(x) {
-    ifelse("sequences2" %in% class(x), TRUE, FALSE)
+is.sequences <- function(x) {
+    ifelse("sequences" %in% class(x), TRUE, FALSE)
 }
