@@ -4,14 +4,16 @@
 \alias{sequences2}
 \title{find variable-length collocations with filtering}
 \usage{
-sequences2(x, min_count = 2, max_size = 5, method = c("unigram",
-  "all_subtuples"), nested = TRUE)
+sequences2(x, min_count = 2, min_size = 2, max_size = 5,
+  method = c("unigram", "all_subtuples"), nested = TRUE)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
 
 \item{min_count}{minimum frequency of sequences for which parameters are 
 estimated}
+
+\item{min_size}{minimum length of sequences which are collected}
 
 \item{max_size}{maxium length of sequences which are collected}
 
@@ -32,12 +34,15 @@ by chance.  The algorithm is based on Blaheta and Johnson's (2001)
 \examples{
 toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"), remove_punct=TRUE)
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
+# extracting multi-part proper nouns (capitalized terms)
 toks <- tokens_select(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", 
                      case_insensitive = FALSE, padding = TRUE)
-# extracting multi-part proper nouns (capitalized terms)
+
 seqs <- sequences2(toks)
 head(seqs, 10)
-
+# to return only trigrams
+seqs <- sequences2(toks, min_size = 3, max_size = 3)
+head(seqs, 10)
 }
 \references{
 Blaheta, D., & Johnson, M. (2001). 
