@@ -178,21 +178,20 @@ downstream objects.
 
     The following packages work well with or extend **quanteda** and we recommend that you also install them:
     
-    *  [**readtext**](https://github.com/kbenoit/readtext):  For reading text data into R.
+    *  [**readtext**](https://github.com/kbenoit/readtext):  An easy way to read text data into R, from almost any input format.
     
-        ```{r eval = FALSE}
-        devtools::install_github("kbenoit/readtext")
-        ```
+    *  [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library, including part-of-speech tagging, entity recognition, and dependency parsing.
 
     *  [**quantedaData**](https://github.com/kbenoit/quantedaData): Additional textual data for use with **quanteda**.
 
         ```{r eval = FALSE}
         devtools::install_github("kbenoit/quantedaData")
         ```
-        
-    *  [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library.
-
     *  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): An R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
+    
+        ```{r eval = FALSE}
+        devtools::install_github("kbenoit/LIWCalike")
+        ```
     
         
 ## Getting Started

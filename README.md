@@ -107,11 +107,9 @@ How to Install
 
     The following packages work well with or extend **quanteda** and we recommend that you also install them:
 
-    -   [**readtext**](https://github.com/kbenoit/readtext): For reading text data into R.
+    -   [**readtext**](https://github.com/kbenoit/readtext): An easy way to read text data into R, from almost any input format.
 
-        ``` r
-        devtools::install_github("kbenoit/readtext")
-        ```
+    -   [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library, including part-of-speech tagging, entity recognition, and dependency parsing.
 
     -   [**quantedaData**](https://github.com/kbenoit/quantedaData): Additional textual data for use with **quanteda**.
 
@@ -119,9 +117,11 @@ How to Install
         devtools::install_github("kbenoit/quantedaData")
         ```
 
-    -   [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library.
-
     -   [**LIWCalike**](https://github.com/kbenoit/LIWCalike): An R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
+
+        ``` r
+        devtools::install_github("kbenoit/LIWCalike")
+        ```
 
 Getting Started
 ---------------
@@ -163,7 +163,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Thu May 25 06:51:30 2017
+## Created: Thu May 25 07:00:17 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
