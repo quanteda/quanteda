@@ -1,6 +1,8 @@
 # implement default options
 QUANTEDA_OPTION_LIST <- list(quanteda_threads = 1L,
-                             quanteda_verbose = FALSE)
+                             quanteda_verbose = FALSE,
+                             quanteda_print_dfm_ndoc = 20L,
+                             quanteda_print_dfm_nfeature = 20L)
 
 #' get or set package options for quanteda
 #' 
@@ -31,6 +33,7 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = 1L,
 #' quanteda_options(verbose = FALSE)
 #' quanteda_options("verbose" = FALSE)
 #' quanteda_options("threads")
+#' quanteda_options(print_dfm_ndoc = 50L)
 #' \dontrun{
 #' quanteda_options(reset = TRUE) 
 #' }
@@ -46,6 +49,8 @@ quanteda_options <- function(..., reset = FALSE) {
         #########################
         options(quanteda_threads = 1L)
         options(quanteda_verbose = FALSE)
+        options(quanteda_print_dfm_ndoc = 20L)
+        options(quanteda_print_dfm_nfeature = 20L)
         
         return(invisible(TRUE))
     }
@@ -81,7 +86,21 @@ quanteda_options <- function(..., reset = FALSE) {
             } else {
                 options(quanteda_verbose = value)
             }
-
+        
+        } else if (key == "print_dfm_ndoc"){
+            if (is.na(value)) {
+                return(getOption("quanteda_print_dfm_ndoc"))
+            } else {
+                options(quanteda_print_dfm_ndoc = value)
+            }
+        
+        } else if (key == "print_dfm_nfeature"){
+            if (is.na(value)) {
+                return(getOption("quanteda_print_dfm_nfeature"))
+            } else {
+                options(quanteda_print_dfm_nfeature = value)
+            }
+        
         } else {
             stop(key, " is not a valid quanteda option")
         }
