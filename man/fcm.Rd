@@ -17,7 +17,7 @@ the feature co-occurrence matrix}
 \code{"document"} for co-occurrence counts within document; \code{"window"}
 for co-occurrence within a defined window of words, which requires a 
 postive integer value for \code{window}.  Note: if \code{x} is a dfm object, then
-\code{context} can only be \code{"windows"}.}
+\code{context} can only be \code{"document"}.}
 
 \item{count}{how to count co-occurrences:
 \describe{
