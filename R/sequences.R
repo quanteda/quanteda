@@ -87,33 +87,33 @@ sequences.tokens <- function(x, features = "*",
 }
 
 
-#' @method "[" sequences
-#' @export
-#' @noRd
-"[.sequences" <- function(x, i, ...) {
-    x <- as.data.frame(x)[i,]
-    attr(x, 'ids') <- attr(x, 'ids')[i]
-    class(x) <- c("sequences", 'data.frame')
-    return(x)
-}
-
-#' @export
-#' @method as.tokens sequences
-#' @noRd 
-as.tokens.sequences <- function(x) {
-    toks <- attr(x, 'tokens')
-    attr(toks, 'types') <- attr(x, 'types')
-    class(toks) <- c("tokens", "tokenizedTexts")
-    return(toks)
-}
-
-#' @rdname sequences
-#' @export
-#' @return \code{sequences} returns \code{TRUE} if the object is of class
-#'   sequences, \code{FALSE} otherwise.
-is.sequences <- function(x) {
-    ifelse("sequences" %in% class(x), TRUE, FALSE)
-}
-
+#' #' @method "[" sequences
+#' #' @export
+#' #' @noRd
+#' "[.sequences" <- function(x, i, ...) {
+#'     x <- as.data.frame(x)[i,]
+#'     attr(x, 'ids') <- attr(x, 'ids')[i]
+#'     class(x) <- c("sequences", 'data.frame')
+#'     return(x)
+#' }
+#' 
+#' #' @export
+#' #' @method as.tokens sequences
+#' #' @noRd 
+#' as.tokens.sequences <- function(x) {
+#'     toks <- attr(x, 'tokens')
+#'     attr(toks, 'types') <- attr(x, 'types')
+#'     class(toks) <- c("tokens", "tokenizedTexts")
+#'     return(toks)
+#' }
+#' 
+#' #' @rdname sequences
+#' #' @export
+#' #' @return \code{sequences} returns \code{TRUE} if the object is of class
+#' #'   sequences, \code{FALSE} otherwise.
+#' is.sequences <- function(x) {
+#'     ifelse("sequences" %in% class(x), TRUE, FALSE)
+#' }
+#' 
 
 
