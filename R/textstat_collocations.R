@@ -17,6 +17,7 @@
 #'   coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
 #'   \item{\code{"bj"}}{Blaheta and Johnson's method (called through 
 #'   \code{\link{sequences}})} }
+#' @param min_size minimum length of sequences which are collected  
 #' @param max_size numeric argument representing the maximum length of the collocations
 #'   to be scored.  The maximum size is currently 3 for all
 #'   methods except \code{"bj"}, which has a maximum size of 5.
@@ -48,14 +49,15 @@
 #' # extracting multi-part proper nouns (capitalized terms)
 #' toks2 <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
 #' toks2 <- tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
-#' seqs <- textstat_collocations(toks2, method = "bj", 
-#'                               features = "^([A-Z][a-z\\-]{2,})", 
-#'                               valuetype = "regex", case_insensitive = FALSE)
+#' toks2 <- tokens_select(toks2, "^([A-Z][a-z\\-]{2,})", valuetype="regex", 
+#'                      case_insensitive = FALSE, padding = TRUE)
+#' seqs <- textstat_collocations(toks2, method = "bj")
 #' head(seqs, 10)
 #' 
 #' # compounding tokens is more efficient when applied to the same tokens object 
 #' toks_comp <- tokens_compound(toks2, seqs)
 textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj"), 
+                                  min_size = 2,
                                   max_size = 3,
                                   min_count = 2, 
                                   ...) {
@@ -65,12 +67,13 @@ textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "b
 #' @noRd
 #' @export
 textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj"), 
+                                         min_size = 2,
                                          max_size = 3,
                                          min_count = 2, 
                                          ...) {
     method <- match.arg(method)
     if (method == 'bj') {
-        result <- sequences(x, min_count = min_count, max_size = max_size, ...)
+        result <- sequences(x, min_count = min_count, min_size = min_size, max_size = max_size, ...)
     } else {
         if (missing(max_size)) {
             max_size <- 2:3 
