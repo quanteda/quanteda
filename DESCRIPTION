@@ -102,7 +102,7 @@ Collate:
     'selectFeatures-old.R'
     'selectFeatures.R'
     'sequences.R'
-    'sequences2.R'
+    'sequences_old.R'
     'settings.R'
     'similarity.R'
     'spacyr-methods.R'
