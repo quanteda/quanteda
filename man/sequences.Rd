@@ -3,14 +3,11 @@
 \name{sequences}
 \alias{sequences}
 \alias{is.sequences}
-\alias{is.sequences}
 \title{find variable-length collocations with filtering}
 \usage{
 sequences(x, features = "*", valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, min_count = 2, max_size = 5, nested = TRUE,
   ordered = FALSE)
-
-is.sequences(x)
 
 is.sequences(x)
 }
@@ -41,9 +38,6 @@ But "United States" is not a subsequence because it is followed by
 between the order of words, and tends to promote rare sequences.}
 }
 \value{
-\code{sequences} returns \code{TRUE} if the object is of class
-  sequences, \code{FALSE} otherwise.
-
 \code{sequences} returns \code{TRUE} if the object is of class
   sequences, \code{FALSE} otherwise.
 }
