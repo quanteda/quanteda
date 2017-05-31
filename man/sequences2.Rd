@@ -51,7 +51,7 @@ Blaheta, D., & Johnson, M. (2001).
   Computational Extraction, Analysis and Exploitation of Collocations.
 }
 \author{
-Kohei Watanabe
+Kohei Watanabe and Haiyan Wang
 }
 \keyword{collocations}
 \keyword{internal}

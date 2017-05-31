@@ -16,7 +16,7 @@
 #'   But "United States" is not a subsequence because it is followed by
 #'   "Congress".
 #' @keywords collocations internal
-#' @author Kohei Watanabe
+#' @author Kohei Watanabe and Haiyan Wang
 #' @references Blaheta, D., & Johnson, M. (2001). 
 #'   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
 #'    learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
