@@ -38,6 +38,7 @@ quanteda_options()
 quanteda_options(verbose = FALSE)
 quanteda_options("verbose" = FALSE)
 quanteda_options("threads")
+quanteda_options(print_dfm_ndoc = 50L)
 \dontrun{
 quanteda_options(reset = TRUE) 
 }
