@@ -19,7 +19,9 @@ NULL
 #' @rdname print.dfm
 #' @keywords dfm
 setMethod("print", signature(x = "dfm"), 
-          function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...) {
+          function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, 
+                   ndoc = getOption("quanteda_print_dfm_ndoc"), 
+                   nfeature = getOption("quanteda_print_dfm_nfeature"), ...) {
               
               if (!length(x)) {
                   print(NULL)

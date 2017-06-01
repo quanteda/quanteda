@@ -10,7 +10,8 @@
 \title{print a dfm object}
 \usage{
 \S4method{print}{dfm}(x, show.values = FALSE, show.settings = FALSE,
-  show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...)
+  show.summary = TRUE, ndoc = getOption("quanteda_print_dfm_ndoc"),
+  nfeature = getOption("quanteda_print_dfm_nfeature"), ...)
 
 \S4method{show}{dfm}(object)
 
