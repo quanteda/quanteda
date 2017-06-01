@@ -47,13 +47,9 @@ setMethod("print", signature(x = "dfm"),
                   ndoc <- nrow(x)
                   nfeature <- ncol(x)
               } else if (missing(show.values)) {
-                  if (nrow(x) <= ndoc & ncol(x) <= nfeature) {
-                      ndoc <- nrow(x)
-                      nfeature <- ncol(x)
-                      show.values <- TRUE
-                  } else {
-                      show.values <- FALSE
-                  }
+                  show.values <- TRUE
+                  ndoc <- min(nrow(x), ndoc)
+                  nfeature <- min(ncol(x), nfeature)
               }
               
               if (show.values)
