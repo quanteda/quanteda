@@ -421,3 +421,13 @@ test_that("dfm print works with options as expected", {
     )
 })
 
+#test for issue-756: global dfm print option
+test_that("dfm print works as expected", {
+    testdfm <- dfm(data_corpus_irishbudget2010)
+    quanteda_options(print_dfm_ndoc = 10L)
+    quanteda_options(print_dfm_nfeature = 12L)
+
+    expect_output(print(testdfm),
+                  "Document-feature matrix of: 14 documents, 5,058 features \\(80.9% sparse\\)..10 x 12 sparse Matrix of class \"dfmSparse\"")
+    
+})
