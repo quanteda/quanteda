@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.9.9-65
+Version: 0.9.10
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible framework for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -102,6 +102,7 @@ Collate:
     'selectFeatures-old.R'
     'selectFeatures.R'
     'sequences.R'
+    'sequences_old.R'
     'settings.R'
     'similarity.R'
     'spacyr-methods.R'
