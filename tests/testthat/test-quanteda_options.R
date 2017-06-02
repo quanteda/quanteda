@@ -38,16 +38,16 @@ test_that("quanteda_options works correctly to set options", {
         getOption("quanteda_threads")
     )
     
-    quanteda_options(print_dfm_ndoc = 50L)
+    quanteda_options(print_dfm_max_ndoc = 50L)
     expect_equal(
-        quanteda_options("print_dfm_ndoc"),
-        getOption("quanteda_print_dfm_ndoc")
+        quanteda_options("print_dfm_max_ndoc"),
+        getOption("quanteda_print_dfm_max_ndoc")
     )
     
-    quanteda_options(print_dfm_nfeature = 50L)
+    quanteda_options(print_dfm_max_nfeature = 50L)
     expect_equal(
-        quanteda_options("print_dfm_nfeature"),
-        getOption("quanteda_print_dfm_nfeature")
+        quanteda_options("print_dfm_max_nfeature"),
+        getOption("quanteda_print_dfm_max_nfeature")
     )
 })
 
