@@ -10,8 +10,8 @@
 \title{print a dfm object}
 \usage{
 \S4method{print}{dfm}(x, show.values = FALSE, show.settings = FALSE,
-  show.summary = TRUE, ndoc = getOption("quanteda_print_dfm_ndoc"),
-  nfeature = getOption("quanteda_print_dfm_nfeature"), ...)
+  show.summary = TRUE, ndoc = getOption("quanteda_print_dfm_max_ndoc"),
+  nfeature = getOption("quanteda_print_dfm_max_nfeature"), ...)
 
 \S4method{show}{dfm}(object)
 
@@ -32,9 +32,9 @@ all values, overriding \code{ndoc} and \code{nfeature}.}
 \item{show.summary}{print a brief summary indicating the number of documents
 and features}
 
-\item{ndoc}{max number of documents to print}
+\item{ndoc}{max number of documents to print; default is from the \code{quanteda_print_dfm_max_ndoc} setting}
 
-\item{nfeature}{max number of features to print}
+\item{nfeature}{max number of features to print; ; default is from the \code{quanteda_print_dfm_max_nfeature} setting}
 
 \item{...}{further arguments passed to or from other methods}
 
@@ -42,6 +42,9 @@ and features}
 }
 \description{
 print methods for document-feature matrices
+}
+\seealso{
+\code{\link{quanteda_options}}
 }
 \keyword{dfm}
 \keyword{internal}

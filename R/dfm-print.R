@@ -12,16 +12,17 @@ NULL
 #'   \link{settings}.
 #' @param show.summary print a brief summary indicating the number of documents
 #'   and features
-#' @param ndoc max number of documents to print
-#' @param nfeature max number of features to print
+#' @param ndoc max number of documents to print; default is from the \code{quanteda_print_dfm_max_ndoc} setting
+#' @param nfeature max number of features to print; ; default is from the \code{quanteda_print_dfm_max_nfeature} setting
 #' @param ... further arguments passed to or from other methods
+#' @seealso \code{\link{quanteda_options}}
 #' @export
 #' @rdname print.dfm
 #' @keywords dfm
 setMethod("print", signature(x = "dfm"), 
           function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, 
-                   ndoc = getOption("quanteda_print_dfm_ndoc"), 
-                   nfeature = getOption("quanteda_print_dfm_nfeature"), ...) {
+                   ndoc = getOption("quanteda_print_dfm_max_ndoc"), 
+                   nfeature = getOption("quanteda_print_dfm_max_nfeature"), ...) {
               
               if (!length(x)) {
                   print(NULL)
@@ -43,15 +44,23 @@ setMethod("print", signature(x = "dfm"),
                   cat("Settings: TO BE IMPLEMENTED.")
               }
               
-              if (show.values == TRUE) {
+              
+              if (show.values == TRUE) {          
+                  # if show.values is set to TRUE, show full matrix
                   ndoc <- nrow(x)
                   nfeature <- ncol(x)
-              } else if (missing(show.values)) {
-                  show.values <- TRUE
-                  ndoc <- min(nrow(x), ndoc)
-                  nfeature <- min(ncol(x), nfeature)
+              } else if (missing(show.values)) {  
+                  if (nrow(x) <= ndoc & ncol(x) <= nfeature) {
+                      # use TRUE default but limit dimensions
+                      ndoc <- nrow(x)
+                      nfeature <- ncol(x)
+                      show.values <- TRUE
+                  } else {
+                      # turn off display if > dimensions
+                      show.values <- FALSE        
+                  }                      
               }
-              
+
               if (show.values)
                   if (is(x, "sparseMatrix"))
                       Matrix::printSpMatrix2(x[1:ndoc, 1:nfeature], 
