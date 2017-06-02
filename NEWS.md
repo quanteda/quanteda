@@ -11,6 +11,7 @@
     - Added new argument to `sequences()`: `min_size` to allow collocation returns of size between `min_size` and `max_size`.
     - Added new argument to `textstat_collocations()`: `min_size`, which is used when `method = "bj_uni"` and `method = "bj_all"`.
    This function is still under development and likely to change further.
+*  Added new `quanteda_options` that affect the maximum documents and features displayed by the dfm print method (#756).
     
 
 ### Behaviour changes
@@ -23,7 +24,6 @@
 ### Bug fixes and stability enhancements
 
 *  For `sequences()`: Corrected the word matching, and lambda and sigma calculation methods for `unigram subtuples` algorithm in `sequences_mt.cpp`, and consequently the p-values on the bigrams are correct. 
-
 
 
 ## Changes since v0.9.9-50

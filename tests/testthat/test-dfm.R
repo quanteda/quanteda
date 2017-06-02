@@ -394,7 +394,7 @@ test_that("dfm's document counts in verbose message is correct", {
 })
 
 test_that("dfm print works with options as expected", {
-    tmp <- dfm(data_corpus_irishbudget2010)
+    tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE)
     expect_output(
         head(tmp),
         "Document-feature matrix of: 14 documents, 5,058 features.*\\(showing first 6 documents and first 6 features\\)"
@@ -416,8 +416,24 @@ test_that("dfm print works with options as expected", {
         "^Document-feature matrix of: 3 documents, 3 features.*3 x 3 sparse Matrix"
     )
     expect_output(
+        print(tmp[1:3, 1:3], ndoc = 2, nfeature = 2),
+        "^Document-feature matrix of: 3 documents, 3 features \\(22.2% sparse\\)\\.$"
+    )
+    expect_output(
         print(tmp[1:5, 1:5], show.summary = FALSE),
         "^5 x 5 sparse Matrix"
+    )
+
+    # with options (#756)
+    quanteda_options(print_dfm_max_ndoc = 22L)
+    quanteda_options(print_dfm_max_nfeature = 22L)
+    expect_output(
+        print(tmp),
+        "Document-feature matrix of: 14 documents, 5,058 features \\(80.9% sparse\\)\\.$"
+    )
+    expect_output(
+        print(tmp[, 1:21]),
+        "Document-feature matrix of: 14 documents, 21 features \\(20.4% sparse\\)\\..*14 x 21 sparse Matrix"
     )
 })
 
