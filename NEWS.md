@@ -1,5 +1,31 @@
 # quanteda 0.9.9
 
+## Changes since v0.9.9-65
+
+### New features
+
+*  Improvements to `sequences()` and the `textstat_collocations()` which calls it:
+    - Implemented `all_subtuples` collocation method based on Blaheta and Johnson's (2001) in `sequences()`(#753)
+    - Added new argument to `sequences()`: `method = c("unigram", "all_subtuples")` to apply unigram subtuples and all subtuples algorithm. 
+    - Added new methods to argument `method` in `textstat_collocations()`: `method = c(...,"bj_uni", "bj_all")` to apply unigram subtuples and all subtuples algorithm. 
+    - Added new argument to `sequences()`: `min_size` to allow collocation returns of size between `min_size` and `max_size`.
+    - Added new argument to `textstat_collocations()`: `min_size`, which is used when `method = "bj_uni"` and `method = "bj_all"`.
+   This function is still under development and likely to change further.
+*  Added new `quanteda_options` that affect the maximum documents and features displayed by the dfm print method (#756).
+    
+
+### Behaviour changes
+
+*  For `sequences()`:
+   - Removed arguments from `sequences()`: `features`, `case_insensitive` and `valuetype`, the function can be fully replaced by `tokens_select()`.
+   - Removed arguments from `sequences()`: `ordered`.
+
+
+### Bug fixes and stability enhancements
+
+*  For `sequences()`: Corrected the word matching, and lambda and sigma calculation methods for `unigram subtuples` algorithm in `sequences_mt.cpp`, and consequently the p-values on the bigrams are correct. 
+
+
 ## Changes since v0.9.9-50
 
 ### New features
