@@ -202,8 +202,8 @@ predict.textmodel_wordscores_fitted <-
     if ("lbg" %in% rescaling) {
         SDr <- stats::sd(object@y, na.rm=TRUE)
         Sv <- mean(textscore_raw, na.rm=TRUE)
-        SDv <- ifelse(length(textscore_raw)<2, 0, stats::sd(textscore_raw))
-        mult <- ifelse(SDv==0, 0, SDr/SDv)
+        SDv <- if (length(textscore_raw) < 2L) 0 else stats::sd(textscore_raw)
+        mult <- if (SDv == 0) 0 else SDr/SDv
         textscore_lbg <- (textscore_raw - Sv) * mult + Sv
         # borrowed the next few lines from https://github.com/conjugateprior/austin
         if (mult == 0) {

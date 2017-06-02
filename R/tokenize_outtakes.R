@@ -6,9 +6,7 @@ ngram <- function(tokens, n = 2, concatenator = "_", include.all = FALSE) {
         return(NULL)
     
     # start with lower ngrams, or just the specified size if include.all = FALSE
-    start <- ifelse(include.all, 
-                    1, 
-                    ifelse(length(tokens) < n, 1, n))
+    start <- if (include.all || length(tokens < n)) 1 else n 
     
     # set max size of ngram at max length of tokens
     end <- ifelse(length(tokens) < n, length(tokens), n)

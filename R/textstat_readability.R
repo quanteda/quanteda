@@ -108,7 +108,7 @@ textstat_readability.character <- function(x,
 
     addedArgs <- names(list(...))
     if (length(addedArgs))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), addedArgs, " not used.", sep = "", noBreaks. = TRUE)
+        warning("Argument", if (length(addedArgs) > 1L) "s " else " ", addedArgs, " not used.", sep = "", noBreaks. = TRUE)
 
     # check that all measures are legal values
     validMeasures <- c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",

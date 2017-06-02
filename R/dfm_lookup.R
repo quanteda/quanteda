@@ -76,7 +76,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     
     if (verbose) 
         catm("applying a dictionary consisting of ", length(dictionary), " key", 
-             ifelse(length(dictionary) > 1, "s", ""), "\n", sep="")
+             if (length(dictionary) > 1L) "s" else "", "\n", sep="")
     
     for (h in seq_along(dictionary)) {
         entries <- dictionary[[h]]

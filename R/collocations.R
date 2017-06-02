@@ -376,7 +376,7 @@ collocations_trigram_old <- function(x, method=c("lr", "chi2", "pmi", "dice", "a
     }
 
     class(dt) <- c("collocations", class(dt))
-    dt[1:ifelse(is.null(n), nrow(dt), n), ]
+    dt[seq_len(if (is.null(n)) nrow(dt) else n), ]
 }
 
 
@@ -536,7 +536,7 @@ collocations_bigram_old <- function(x, method=c("lr", "chi2", "pmi", "dice", "al
     #df[, word1 := factor(word1, levels = seq_along(tlevels), labels = tlevels)]
     #df[, word2 := factor(word2, levels = seq_along(tlevels), labels = tlevels)]
     class(df) <- c("collocations", class(df))
-    df[1:ifelse(is.null(n), nrow(df), n), ]
+    df[seq_len(if (is.null(n)) nrow(df) else n), ]
 }
 
 #' #' check if an object is collocations type

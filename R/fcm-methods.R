@@ -214,11 +214,11 @@ fcm_select <- function(x, features = NULL, selection = c("keep", "remove"),
         }
         
         if (verbose & !features_from_dfm) 
-            catm(ifelse(selection=="keep", "kept", "removed"), " ", 
+            catm(if (selection == "keep") "kept" else "removed", " ", 
                  format(length(featIndex), big.mark=","),
-                 " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
+                 " feature", if (length(featIndex) > 1L || length(featIndex) == 0L) "s" else "",
                  ", from ", length(features), " supplied (", originalvaluetype, ") feature type",
-                 ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
+                 if (length(features) > 1L || length(featIndex) == 0L) "s" else "",
                  "\n", sep = "")
         
         # pad the zeros if features was a dfm, return in same feature order as original dfm

@@ -92,7 +92,7 @@ textstat_simil.dfm <- function(x, selection = NULL,
     
     if (method %in% vecMethod) {
         if (method == "simple matching") method <- "smc"
-        temp <- get(paste0(method, "_sparse"))(x, y, margin = ifelse(margin == "documents", 1, 2))
+        temp <- get(paste0(method, "_sparse"))(x, y, margin = if (margin == "documents") 1 else 2)
     } else {
         stop(method, " is not implemented; consider trying proxy::simil().")
     }
@@ -118,7 +118,7 @@ textstat_simil.dfm <- function(x, selection = NULL,
             attr(result,"Labels") <- rownames(result)
         else if(!is.null(colnames(result)))
             attr(result,"Labels") <- colnames(result)
-        attr(result, "Size") <- ifelse(margin == "documents", nrow(result), ncol(result))
+        attr(result, "Size") <- if (margin == "documents") nrow(result) else ncol(result)
         attr(result, "method") <- method
         attr(result, "call") <- match.call()
         class(result) <- c("dist_selection")
@@ -164,7 +164,7 @@ correlation_sparse <- function(x, y = NULL, margin = 1) {
     muX <- if (margin == 2) colMeans(x) else rowMeans(x)
     
     if (!is.null(y)) {
-        stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
+        stopifnot(if (margin == 2) nrow(x) == nrow(y) else ncol(x) == ncol(y))
         muY <- if (margin == 2) colMeans(y) else rowMeans(y)
         covmat <- (as.matrix(cpFun(x,y)) - n * tcrossprod(muX, muY)) / (n-1)
         sdvecX <- sqrt((marginSums(x^2) - n * muX^2) / (n-1))

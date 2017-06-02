@@ -55,7 +55,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
         y <- NULL
     }
     
-    m <- ifelse(margin == "documents", 1, 2)
+    m <- if (margin == "documents") 1 else 2
     
     methods1 <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")
     methods2 <- c("jaccard", "binary", "eJaccard", "simple matching")
@@ -92,7 +92,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
             attr(result,"Labels") <- rownames(result)
         else if(!is.null(colnames(result)))
             attr(result,"Labels") <- colnames(result)
-        attr(result, "Size") <- ifelse(margin == "documents", nrow(result), ncol(result))
+        attr(result, "Size") <- if (margin == "documents") nrow(result) else ncol(result)
         attr(result, "method") <- method
         attr(result, "call") <- match.call()
         class(result) <- c("dist_selection")
@@ -243,7 +243,7 @@ euclidean_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     n <- if (margin == 2) ncol(x) else nrow(x)
     
     if (!is.null(y)) {
-        stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
+        stopifnot(if (margin == 2) nrow(x) == nrow(y) else ncol(x) == ncol(y))
         an <- marginSums(x^2)
         bn <- marginSums(y^2)
         
@@ -318,7 +318,7 @@ Chisquared_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     }
     
     if (!is.null(y)) {
-        stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
+        stopifnot(if (margin == 2) nrow(x) == nrow(y) else ncol(x) == ncol(y))
         colNm <- marginNames(y)
         # aveProfile is same as that for x 
         if (margin == 1 ) {
@@ -360,7 +360,7 @@ Chisquared2_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     n <- if (margin == 2) ncol(x) else nrow(x)
     
     if (!is.null(y)) {
-        stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
+        stopifnot(if (margin == 2) nrow(x) == nrow(y) else ncol(x) == ncol(y))
         an <- marginSums(x^2)
         bn <- marginSums(y^2)
         

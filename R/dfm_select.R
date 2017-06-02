@@ -188,16 +188,16 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     }
     
     if (verbose) {
-        catm("dfm_select ", ifelse(selection=="keep", "kept", "removed"), " ", 
+        catm("dfm_select ", if (selection == "keep") "kept" else "removed", " ", 
              format(length(features_id), big.mark=","),
-             " feature", ifelse(length(features_id) != 1, "s", ""), " and ",
+             " feature", if (length(features_id) != 1L) "s" else "", " and ",
              format(length(documents_id), big.mark=","),
-             " document", ifelse(length(documents_id) != 1, "s", ""),
+             " document", if (length(documents_id) != 1L) "s" else "",
              ", padding 0s for ",
              format(length(documents_add), big.mark=","), 
-             " feature", ifelse(length(features_add) != 1, "s", ""), " and ",
+             " feature", if (length(features_add) != 1L) "s" else "", " and ",
              format(length(documents_add), big.mark=","),
-             " document", ifelse(length(documents_add) != 1, "s", ""), ".\n",
+             " document", if (length(documents_add) != 1L) "s" else "", ".\n",
              sep = "")
     } 
     

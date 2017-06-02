@@ -31,7 +31,7 @@ corpus_subset.corpus <- function(x, subset, select, ...) {
         .Deprecated("corpus_subset")
     
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+        warning("Argument", if (length(addedArgs) > 1L) "s " else " ", names(addedArgs), " not used.", sep = "")
     r <- if (missing(subset)) {
         rep_len(TRUE, nrow(documents(x)))
     } else {

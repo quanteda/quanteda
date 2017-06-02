@@ -79,10 +79,10 @@ print_dictionary <- function(entry, level = 1) {
 #' @export
 setMethod("show", "dictionary2", 
           function(object) {
-              levs <- ifelse((depth <- dictionary_depth(object)) > 1, " primary", "")
+              levs <- if ((depth <- dictionary_depth(object)) > 1L) " primary" else ""
               nkeys <- length(names(object))
               cat("Dictionary object with ", nkeys, levs, " key entr", 
-                  ifelse(nkeys == 1, "y", "ies"), sep = "")
+                  if (nkeys == 1L) "y" else "ies", sep = "")
               if (levs != "") cat(" and ", depth, " nested levels", sep = "")
               cat(".\n")
               print_dictionary(object)

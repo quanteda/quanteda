@@ -69,7 +69,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "
                                   "matrix", "data.frame"), docvars = NULL, ...) {
     to <- match.arg(to)
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+        warning("Argument", if (length(addedArgs) > 1L) "s " else " ", names(addedArgs), " not used.", sep = "")
     
     if (!is.null(docvars)) {
         if (!is.data.frame(docvars))

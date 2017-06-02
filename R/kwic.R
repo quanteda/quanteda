@@ -107,9 +107,7 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
 #' mykwic <- kwic(data_corpus_inaugural, "provident*")
 #' is.kwic(mykwic)
 #' is.kwic("Not a kwic")
-is.kwic <- function(x) {
-    ifelse("kwic" %in% class(x), TRUE, FALSE)
-}
+is.kwic <- function(x) "kwic" %in% class(x)
 
 #' @method print kwic
 #' @noRd
