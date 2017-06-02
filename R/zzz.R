@@ -19,8 +19,8 @@
     }
     
     # set dfm print arguments
-    quanteda_options(print_dfm_ndoc = 20L)
-    quanteda_options(print_dfm_nfeature = 20L)
+    quanteda_options(print_dfm_max_ndoc = 20L)
+    quanteda_options(print_dfm_max_nfeature = 20L)
 }
 
 .onUnload <- function (libpath) {

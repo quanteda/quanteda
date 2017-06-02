@@ -1,8 +1,8 @@
 # implement default options
 QUANTEDA_OPTION_LIST <- list(quanteda_threads = 1L,
                              quanteda_verbose = FALSE,
-                             quanteda_print_dfm_ndoc = 20L,
-                             quanteda_print_dfm_nfeature = 20L)
+                             quanteda_print_dfm_max_ndoc = 20L,
+                             quanteda_print_dfm_max_nfeature = 20L)
 
 #' get or set package options for quanteda
 #' 
@@ -17,6 +17,10 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = 1L,
 #'    for all functions with a \code{verbose} argument}
 #' \item{\code{threads}}{integer; specifies the number of threads to use in
 #'    use this as the setting in all functions that uee parallelization}
+#' \item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
+#'    to display when using the defaults for printing a dfm}
+#' \item{\code{print_dfm_max_nfeature}}{integer; specifies the number of features
+#'    to display when using the defaults for printing a dfm}
 #' }
 #' @return 
 #'   When called using a \code{key = value} pair (where \code{key} can be a label or 
@@ -33,7 +37,7 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = 1L,
 #' quanteda_options(verbose = FALSE)
 #' quanteda_options("verbose" = FALSE)
 #' quanteda_options("threads")
-#' quanteda_options(print_dfm_ndoc = 50L)
+#' quanteda_options(print_dfm_max_ndoc = 50L)
 #' \dontrun{
 #' quanteda_options(reset = TRUE) 
 #' }
@@ -49,8 +53,8 @@ quanteda_options <- function(..., reset = FALSE) {
         #########################
         options(quanteda_threads = 1L)
         options(quanteda_verbose = FALSE)
-        options(quanteda_print_dfm_ndoc = 20L)
-        options(quanteda_print_dfm_nfeature = 20L)
+        options(quanteda_print_dfm_max_ndoc = 20L)
+        options(quanteda_print_dfm_max_nfeature = 20L)
         
         return(invisible(TRUE))
     }
@@ -87,18 +91,18 @@ quanteda_options <- function(..., reset = FALSE) {
                 options(quanteda_verbose = value)
             }
         
-        } else if (key == "print_dfm_ndoc"){
+        } else if (key == "print_dfm_max_ndoc"){
             if (is.na(value)) {
-                return(getOption("quanteda_print_dfm_ndoc"))
+                return(getOption("quanteda_print_dfm_max_ndoc"))
             } else {
-                options(quanteda_print_dfm_ndoc = value)
+                options(quanteda_print_dfm_max_ndoc = value)
             }
         
-        } else if (key == "print_dfm_nfeature"){
+        } else if (key == "print_dfm_max_nfeature"){
             if (is.na(value)) {
-                return(getOption("quanteda_print_dfm_nfeature"))
+                return(getOption("quanteda_print_dfm_max_nfeature"))
             } else {
-                options(quanteda_print_dfm_nfeature = value)
+                options(quanteda_print_dfm_max_nfeature = value)
             }
         
         } else {

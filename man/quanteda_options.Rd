@@ -31,6 +31,10 @@ Currently available options are:
    for all functions with a \code{verbose} argument}
 \item{\code{threads}}{integer; specifies the number of threads to use in
    use this as the setting in all functions that uee parallelization}
+\item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
+   to display when using the defaults for printing a dfm}
+\item{\code{print_dfm_max_nfeature}}{integer; specifies the number of features
+   to display when using the defaults for printing a dfm}
 }
 }
 \examples{
@@ -38,7 +42,7 @@ quanteda_options()
 quanteda_options(verbose = FALSE)
 quanteda_options("verbose" = FALSE)
 quanteda_options("threads")
-quanteda_options(print_dfm_ndoc = 50L)
+quanteda_options(print_dfm_max_ndoc = 50L)
 \dontrun{
 quanteda_options(reset = TRUE) 
 }
