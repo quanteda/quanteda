@@ -428,11 +428,11 @@ test_that("dfm print works with options as expected", {
     quanteda_options(print_dfm_max_ndoc = 22L)
     quanteda_options(print_dfm_max_nfeature = 22L)
     expect_output(
-        print(testdfm),
+        print(tmp),
         "Document-feature matrix of: 14 documents, 5,058 features \\(80.9% sparse\\)\\.$"
     )
     expect_output(
-        print(testdfm[, 1:21]),
+        print(tmp[, 1:21]),
         "Document-feature matrix of: 14 documents, 21 features \\(20.4% sparse\\)\\..*14 x 21 sparse Matrix"
     )
 })
