@@ -3,39 +3,30 @@
 \name{sequences}
 \alias{sequences}
 \alias{is.sequences}
-\title{find variable-length collocations with filtering}
+\title{Find variable-length collocations}
 \usage{
-sequences(x, features = "*", valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, min_count = 2, max_size = 5, nested = TRUE,
-  ordered = FALSE)
+sequences(x, min_count = 2, min_size = 2, max_size = 5,
+  method = c("unigram", "all_subtuples"), nested = TRUE)
 
 is.sequences(x)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
 
-\item{features}{a regular expression for filtering the features to be located
-in sequences}
-
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
-
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
-
 \item{min_count}{minimum frequency of sequences for which parameters are 
 estimated}
 
-\item{max_size}{maxium length of sequences which are collected}
+\item{min_size}{minimum length of sequences which are collected}
+
+\item{max_size}{maximum length of sequences which are collected}
+
+\item{method}{default is "unigram" and option is "all_subtuples"}
 
 \item{nested}{if \code{TRUE}, collect all the subsequences of a longer
 sequence as separate entities. e.g. in a sequence of capitalized words
 "United States Congress", "States Congress" is considered as a subsequence.
 But "United States" is not a subsequence because it is followed by
 "Congress".}
-
-\item{ordered}{if true, use the Blaheta-Johnson method that distinguishes 
-between the order of words, and tends to promote rare sequences.}
 }
 \value{
 \code{sequences} returns \code{TRUE} if the object is of class
@@ -48,26 +39,17 @@ by chance.  The algorithm is based on Blaheta and Johnson's (2001)
 "Unsupervised Learning of Multi-Word Verbs".
 }
 \examples{
-toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
+toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"), remove_punct=TRUE)
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-
 # extracting multi-part proper nouns (capitalized terms)
-seqs <- sequences(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
+toks <- tokens_select(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", 
+                     case_insensitive = FALSE, padding = TRUE)
+
+seqs <- sequences(toks)
 head(seqs, 10)
-
-# more efficient when applied to the same tokens object 
-toks_comp <- tokens_compound(toks, seqs)
-toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
-
-# types can be any words
-seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
-                   min_count = 2, ordered = TRUE)
-                   
-head(seqs2, 10)
-
-# convert to tokens object
-as.tokens(seqs2)
-
+# to return only trigrams
+seqs <- sequences(toks, min_size = 3, max_size = 3)
+head(seqs, 10)
 }
 \references{
 Blaheta, D., & Johnson, M. (2001). 
@@ -76,7 +58,7 @@ Blaheta, D., & Johnson, M. (2001).
   Computational Extraction, Analysis and Exploitation of Collocations.
 }
 \author{
-Kohei Watanabe
+Kohei Watanabe and Haiyan Wang
 }
 \keyword{collocations}
 \keyword{internal}

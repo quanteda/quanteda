@@ -7,8 +7,8 @@ test_that("quanteda_options initialize works correctly", {
         quanteda_options(),
         list(threads = getOption("quanteda_threads"),
              verbose = getOption("quanteda_verbose"),
-             print_dfm_ndoc = getOption("quanteda_print_dfm_ndoc"),
-             print_dfm_nfeature = getOption("quanteda_print_dfm_nfeature"))
+             print_dfm_max_ndoc = getOption("quanteda_print_dfm_max_ndoc"),
+             print_dfm_max_nfeature = getOption("quanteda_print_dfm_max_nfeature"))
     )
 })
 
