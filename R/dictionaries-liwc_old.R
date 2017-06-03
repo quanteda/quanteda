@@ -25,7 +25,7 @@ read_dict_liwc_old <- function(path, encoding = "auto", toLower = FALSE) {
     oflines <- grep("<of>", d)
     if (length(oflines)) {
         catm("note: ", length(oflines), " term",
-             ifelse(length(oflines)>1, "s", ""), 
+             if (length(oflines) > 1L) "s" else "", 
              " ignored because contains unsupported <of> tag\n", sep = "")
         d <- d[-oflines]
     }

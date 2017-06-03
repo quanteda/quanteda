@@ -179,7 +179,7 @@ dfm.corpus <- function(x, tolower = TRUE,
         catm("Creating a dfm from a corpus ...\n")
     
     if (!is.null(groups)) {
-        groupsLab <- ifelse(is.factor(groups), deparse(substitute(groups)), groups)
+        groupsLab <- if (is.factor(groups)) deparse(substitute(groups)) else groups
         if (verbose) 
             catm("   ... grouping texts by variable", 
                  ifelse(length(groupsLab) == 1, "", "s"), ": ", 

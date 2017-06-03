@@ -32,10 +32,10 @@ setMethod("print", signature(x = "dfm"),
               if (show.summary) {
                   cat("Document-feature matrix of: ",
                       format(ndoc(x), , big.mark=","), " document",
-                      ifelse(ndoc(x)>1 | ndoc(x)==0, "s, ", ", "),
+                      if (ndoc(x) > 1L || ndoc(x) == 0L) "s, " else ", ",
                       format(nfeature(x), big.mark=","), " feature",
-                      ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
-                      ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
+                      if (nfeature(x) > 1L || nfeature(x) == 0L) "s" else "",
+                      if (is.resampled(x)) paste(", ", nresample(x), " resamples", sep="") else "",
                       " (", format(sparsity(x)*100, digits = 3),
                       "% sparse).\n", sep="")
               }

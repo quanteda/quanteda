@@ -12,10 +12,10 @@ NULL
 #' @method print corpus
 print.corpus <- function(x, ...) {
     cat("Corpus consisting of ", format(ndoc(x), big.mark=","), " document",
-        ifelse(ndoc(x)>1, "s", ""), sep = "")
+        if (ndoc(x) > 1L) "s" else "", sep = "")
     if (!is.null(docvars(x))) 
         cat(" and ", format(ncol(docvars(x)), big.mark=","), " docvar", 
-            ifelse(ncol(docvars(x)) == 1, "", "s"), "", sep="")
+            if (ncol(docvars(x)) > 1L) "s" else "", sep="")
     if (is.corpuszip(x)) {
         cat(" (compressed ", 100 - round(x$compression_rate, 1), "%)", sep = "")
     }

@@ -265,8 +265,8 @@ setMethod("print", signature(x = "fcm"),
                       format(ndoc(x), big.mark = ","), " by ",
                       # ifelse(ndoc(x) > 1 | ndoc(x) == 0, "s, ", ", "),
                       format(nfeature(x), big.mark = ","), " feature",
-                      ifelse(nfeature(x) > 1 | nfeature(x) == 0, "s", ""),
-                      ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep = ""), ""),
+                      if (nfeature(x) != 1L) "s" else "",
+                      if (is.resampled(x)) paste(", ", nresample(x), " resamples", sep = "") else "",
                       ".\n", sep = "")
               }
               if (show.settings) {
@@ -275,7 +275,7 @@ setMethod("print", signature(x = "fcm"),
               if (show.values | (nrow(x) <= ndoc & ncol(x) <= nfeature)) {
                   Matrix::printSpMatrix2(x[1:min(ndoc, ndoc(x)), 1:min(nfeature, nfeature(x))], 
                                          col.names = TRUE, 
-                                         zero.print = ifelse(x@tri, ".", 0), ...)
+                                         zero.print = if (x@tri) "." else 0, ...)
               }
           })
 

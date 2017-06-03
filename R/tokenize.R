@@ -184,7 +184,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
     what <- match.arg(what)
 
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+        warning("Argument", if (length(addedArgs) > 1L) "s " else " ", names(addedArgs), " not used.", sep = "")
 
     if (!is.integer(ngrams)) ngrams <- as.integer(ngrams)
     
@@ -217,12 +217,12 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
 
         if (what == "fasterword" | what == "fastestword") {
         
-            if (verbose & remove_numbers==TRUE) catm(", removing numbers")
-            if (verbose & remove_punct==TRUE) catm(", removing punctuation")
-            if (verbose & remove_symbols==TRUE) catm(", removing symbols")
-            regexToEliminate <- paste(ifelse(remove_numbers, "\\b\\d+\\b", ""),
-                                      ifelse(remove_punct, paste0("(?![", ifelse(remove_twitter, "_", "@#_"),  "])[\\p{P}]"), ""),
-                                      ifelse(remove_symbols, "[\\p{S}]", ""),
+            if (verbose && remove_numbers) catm(", removing numbers")
+            if (verbose && remove_punct) catm(", removing punctuation")
+            if (verbose && remove_symbols) catm(", removing symbols")
+            regexToEliminate <- paste(if (remove_numbers) "\\b\\d+\\b" else "",
+                                      if (remove_punct) paste0("(?![", if (remove_twitter) "_" else "@#_", "])[\\p{P}]") else "",
+                                      if (remove_symbols) "[\\p{S}]" else "",
                                       sep = "|")
             # catm("\n..", regexToEliminate, "..\n", sep = "")
             regexToEliminate <- gsub("^\\|+", "", regexToEliminate)

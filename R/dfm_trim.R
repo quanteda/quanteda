@@ -132,13 +132,13 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
     if (verbose & length(c(featIndexMinCount, featIndexMaxCount))) {
         if (length(featIndexMinCount)) {
             catm("  - fewer than ", messageMinCount, min_count, " time",
-                 ifelse(min_count != 1, "s", ""), ": ", 
+                 if (min_count != 1L) "s" else "", ": ", 
                  format(length(featIndexMinCount), big.mark = ","), 
                  sep = "", appendLF = TRUE)
         }
         if (length(featIndexMaxCount)) {
             catm("  - more than ", messageMaxCount, max_count2, " time",
-                 ifelse(max_count2 != 1, "s", ""), ": ", 
+                 if (max_count2 != 1L) "s" else "", ": ", 
                  format(length(featIndexMaxCount), big.mark = ","), 
                  sep = "", appendLF = TRUE)
         }

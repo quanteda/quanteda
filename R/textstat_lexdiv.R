@@ -110,7 +110,7 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
 
     addedArgs <- names(list(...))
     if (length(addedArgs))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), addedArgs, " not used.", sep = "", noBreaks. = TRUE)
+        warning("Argument", if (length(addedArgs) > 1L) "s " else " ", addedArgs, " not used.", sep = "", noBreaks. = TRUE)
 
     TTR <- C <- R <- CTTR <- U <- S <- Maas <- lgV0 <- lgeV0 <- NULL
     

@@ -15,7 +15,7 @@
 #' tokens_toupper(toks)
 tokens_tolower <- function(x, ...) {
     originally_tokenizedTexts <- 
-        ifelse(class(x)[1] == "tokenizedTexts", TRUE, FALSE)
+        class(x)[1L] == "tokenizedTexts"
     if (originally_tokenizedTexts) {
         x <- as.tokens(x)
     }
@@ -36,7 +36,7 @@ tokens_tolower <- function(x, ...) {
 #' @export
 tokens_toupper <- function(x, ...) {
     originally_tokenizedTexts <- 
-        ifelse(class(x)[1] == "tokenizedTexts", TRUE, FALSE)
+        class(x)[1L] == "tokenizedTexts"
     if (originally_tokenizedTexts) {
         x <- as.tokens(x)
     }

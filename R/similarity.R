@@ -96,13 +96,13 @@ setMethod("similarity",
                } else xSelect <- NULL
 
                if (method == "cosine") {
-                   similmatrix <- cosine_sparse(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+                   similmatrix <- cosine_sparse(x, xSelect, margin = if (margin == "documents") 1L else 2L)
                } else if (method == "correlation") {
-                   similmatrix <- correlation_sparse(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+                   similmatrix <- correlation_sparse(x, xSelect, margin = if (margin == "documents") 1L else 2L)
                } else {
                    # use proxy::simil() for all other methods
                    similmatrix <- as.matrix(proxy::simil(as.matrix(x), as.matrix(xSelect), method = method, 
-                                                         by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
+                                                         by_rows = margin != "features"), diag = 1)
                }
                
                # rounding

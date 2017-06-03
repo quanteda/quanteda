@@ -211,7 +211,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     # warn about unused arguments
     if (length(added_args <- list(...)) & 
         !all(names(added_args) %in% paste0("remove", c("Numbers", "Punct", "Symbols", "Separators", "Twitter", "Hyphens", "URL", "simplify")))) {
-        warning("Argument", ifelse(length(added_args) > 1, "s ", " "), names(added_args), " not used.", sep = "")
+        warning("Argument", if (length(added_args) > 1L) "s " else " ", names(added_args), " not used.", sep = "")
     }
     
     # deprecate "simplify"
@@ -379,9 +379,7 @@ as.character.tokens <- function(x, use.names = FALSE, ...) {
 #' @export
 #' @return \code{is.tokens} returns \code{TRUE} if the object is of class
 #'   tokens, \code{FALSE} otherwise.
-is.tokens <- function(x) {
-    ifelse("tokens" %in% class(x), TRUE, FALSE)
-}
+is.tokens <- function(x) "tokens" %in% class(x)
 
 
 
@@ -459,7 +457,7 @@ as.tokenizedTexts.tokens <- function(x, ...) {
 #' @noRd
 print.tokens <- function(x, ...) {
     cat(class(x)[1], " from ", ndoc(x), " document", 
-        ifelse(ndoc(x) > 1, "s", ""), ".\n", sep = "")
+        if (ndoc(x) > 1L) "s" else "", ".\n", sep = "")
     types <- c("", types(x))
     x <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding 
     class(x) <- "listof"
@@ -549,11 +547,11 @@ tokens_word <- function(txt,
         txt <- stri_replace_all_regex(txt, URLREGEX, "")
     }
     
-    if (what == "fasterword" | what == "fastestword") {
+    if (what %in% c("fasterword", "fastestword")) {
         
-        regexToEliminate <- paste(ifelse(remove_numbers, "\\b\\d+\\b", ""),
-                                  ifelse(remove_punct, paste0("(?![", ifelse(remove_twitter, "_", "@#_"),  "])[\\p{P}]"), ""),
-                                  ifelse(remove_symbols, "[\\p{S}]", ""),
+        regexToEliminate <- paste(if (remove_numbers) "\\b\\d+\\b" else "",
+                                  if (remove_punct) paste0("(?![", if (remove_twitter) "_" else "@#_",  "])[\\p{P}]") else "",
+                                  if (remove_symbols) "[\\p{S}]" else "",
                                   sep = "|")
         
         # catm("\n..", regexToEliminate, "..\n", sep = "")

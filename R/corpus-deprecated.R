@@ -17,7 +17,7 @@ sample <- function(x, size, replace = FALSE, prob = NULL, ...) {
 #' @rdname sample
 sample.default <- function(x, size, replace = FALSE, prob = NULL, ...) {
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+        warning("Argument", if (length(addedArgs) > 1L) "s " else " ", names(addedArgs), " not used.", sep = "")
     base::sample(x, size, replace, prob)
 }
 
