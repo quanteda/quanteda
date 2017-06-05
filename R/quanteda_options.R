@@ -51,10 +51,22 @@ quanteda_options <- function(..., reset = FALSE) {
         #########################
         ## HARD-CODED DEFAULTS ##
         #########################
-        options(quanteda_threads = 1L)
+        # set verbose
         options(quanteda_verbose = FALSE)
+        
+        # set dfm print format
         options(quanteda_print_dfm_max_ndoc = 20L)
         options(quanteda_print_dfm_max_nfeature = 20L)
+        
+        # set threads
+        threads <- RcppParallel::defaultNumThreads()
+        if (threads == 1) {
+            packageStartupMessage("Disabling parallel computing")
+            quanteda_options(threads = 1)
+        } else {
+            packageStartupMessage("Using ", threads - 1, " of ", threads, " cores for parallel computing")
+            quanteda_options(threads = threads - 1)
+        }
         
         return(invisible(TRUE))
     }
