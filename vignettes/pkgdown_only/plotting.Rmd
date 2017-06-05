@@ -62,8 +62,8 @@ textplot_xray(
 If you're only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.
 
 ```{r eval=TRUE, fig.width=8, fig.height=1.25}
-data(mobydick, package = "tokenizers")
-data_char_mobydick <- mobydick
+require(readtext)
+data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
 
 textplot_xray(
     kwic(data_char_mobydick, "whale"),
