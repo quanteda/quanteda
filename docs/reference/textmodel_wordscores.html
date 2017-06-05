@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -76,27 +78,36 @@
     </div>
 
     
-    <p><code>textmodel_wordscores</code> implements Laver, Benoit and Garry&#39;s (2003) 
+    <p><code>textmodel_wordscores</code> implements Laver, Benoit and Garry's (2003) 
 wordscores method for scaling of a single dimension.</p>
     
 
-    <pre><span class='fu'>textmodel_wordscores</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"linear"</span>, <span class='st'>"logit"</span>), <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
+    <pre class="usage"><span class='fu'>textmodel_wordscores</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"linear"</span>, <span class='st'>"logit"</span>), <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>the <a href='dfm.html'>dfm</a> on which the model will be trained</dd>
-      <dt>y</dt>
-      <dd>vector of training scores associated with each document 
-in <code>x</code></dd>
-      <dt>scale</dt>
-      <dd>scale on which to score the words; <code>&quot;linear&quot;</code> for classic 
-LBG linear posterior weighted word class differences, or <code>&quot;logit&quot;</code>
-for log posterior differences</dd>
-      <dt>smooth</dt>
-      <dd>a smoothing parameter for word counts; defaults to zero for the
-to match the LBG (2003) method.</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>the <a href='dfm.html'>dfm</a> on which the model will be trained</p></td>
+    </tr>
+    <tr>
+      <th>y</th>
+      <td><p>vector of training scores associated with each document 
+in <code>x</code></p></td>
+    </tr>
+    <tr>
+      <th>scale</th>
+      <td><p>scale on which to score the words; <code>"linear"</code> for classic 
+LBG linear posterior weighted word class differences, or <code>"logit"</code>
+for log posterior differences</p></td>
+    </tr>
+    <tr>
+      <th>smooth</th>
+      <td><p>a smoothing parameter for word counts; defaults to zero for the
+to match the LBG (2003) method.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -105,16 +116,16 @@ to match the LBG (2003) method.</dd>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-    <p></p>
-    <p><dl class='dl-horizontal'>
-<dt><code>scale</code></dt><dd><code>linear</code> or <code>logit</code>, according to the value of 
-<code>scale</code></dd></p>
-    <p><dt><code>Sw</code></dt><dd>the scores computed for each word in the training set</dd></p>
-    <p><dt><code>x</code></dt><dd>the dfm on which the wordscores model was called</dd></p>
-    <p><dt><code>y</code></dt><dd>the reference scores</dd></p>
-    <p><dt><code>call</code></dt><dd>the function call that fitted the model</dd></p>
-    <p><dt><code>method</code></dt><dd>takes a value of <code>wordscores</code> for this model</dd>
-</dl></p>
+    
+    <dl class='dl-horizontal'>
+<dt><code>scale</code></dt><dd><p><code>linear</code> or <code>logit</code>, according to the value of 
+<code>scale</code></p></dd>
+    <dt><code>Sw</code></dt><dd><p>the scores computed for each word in the training set</p></dd>
+    <dt><code>x</code></dt><dd><p>the dfm on which the wordscores model was called</p></dd>
+    <dt><code>y</code></dt><dd><p>the reference scores</p></dd>
+    <dt><code>call</code></dt><dd><p>the function call that fitted the model</p></dd>
+    <dt><code>method</code></dt><dd><p>takes a value of <code>wordscores</code> for this model</p></dd>
+</dl>
     
     <h2 class="hasAnchor" id="predict-methods"><a class="anchor" href="#predict-methods"></a>Predict Methods</h2>
 
@@ -125,12 +136,12 @@ to match the LBG (2003) method.</dd>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
-  &quot;Extracting Policy Positions From Political Texts Using Words as Data.&quot; 
-  American Political Science Review 97(02): 311-31</p>
-    <p>Beauchamp, N. 2012. &quot;Using Text to Scale Legislatures with Uninformative 
-  Voting.&quot; New York University Mimeo.</p>
-    <p>Martin, L W, and G Vanberg. 2007. &quot;A Robust Transformation Procedure for 
-  Interpreting Political Text.&quot; Political Analysis 16(1): 93-100.</p>
+  "Extracting Policy Positions From Political Texts Using Words as Data." 
+  American Political Science Review 97(02): 311-31
+    Beauchamp, N. 2012. "Using Text to Scale Legislatures with Uninformative 
+  Voting." New York University Mimeo.
+    Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for 
+  Interpreting Political Text." Political Analysis 16(1): 93-100.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -138,91 +149,10 @@ to match the LBG (2003) method.</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_LBGexample</span>, <span class='fu'>c</span>(<span class='fu'>seq</span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; Fitted wordscores model:
-#&gt; Call:
-#&gt; 	textmodel_wordscores(x = data_dfm_LBGexample, y = c(seq(-1.5, 
-#&gt;     1.5, 0.75), NA))
-#&gt; 
-#&gt; Reference documents and reference scores:
-#&gt; 
-#&gt;  Documents Ref scores
-#&gt;         R1      -1.50
-#&gt;         R2      -0.75
-#&gt;         R3       0.00
-#&gt;         R4       0.75
-#&gt;         R5       1.50
-#&gt;         V1          .
-#&gt; 
-#&gt; Word scores: showing first 30 scored features
-#&gt; 
-#&gt;     A     B     C     D     E     F     G     H     I     J     K     L     M 
-#&gt; -1.50 -1.50 -1.50 -1.50 -1.50 -1.48 -1.48 -1.45 -1.41 -1.32 -1.18 -1.04 -0.88 
-#&gt;     N     O     P     Q     R     S     T     U     V     W     X     Y     Z 
-#&gt; -0.75 -0.62 -0.45 -0.30 -0.13  0.00  0.13  0.30  0.45  0.62  0.75  0.88  1.04 
-#&gt;    ZA    ZB    ZC    ZD 
-#&gt;  1.18  1.32  1.41  1.45 </div><div class='input'>
-<span class='fu'>predict</span>(<span class='no'>ws</span>)</div><div class='output co'>#&gt; Predicted textmodel of type: wordscores
-#&gt; 
-#&gt;    textscore LBG se   ci lo   ci hi
-#&gt; R1   -1.3179 0.0067 -1.3311 -1.3048
-#&gt; R2   -0.7396 0.0114 -0.7620 -0.7172
-#&gt; R3    0.0000 0.0120 -0.0235  0.0235
-#&gt; R4    0.7396 0.0114  0.7172  0.7620
-#&gt; R5    1.3179 0.0067  1.3048  1.3311
-#&gt; V1   -0.4481 0.0119 -0.4714 -0.4247
-#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"mv"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
-#&gt; <span class='warning'>More than two reference scores found with MV rescaling; using only min, max values.</span></div><div class='output co'>#&gt; Predicted textmodel of type: wordscores
-#&gt; 
-#&gt;    textscore LBG se   ci lo   ci hi MV rescaled
-#&gt; R1   -1.3179 0.0067 -1.3311 -1.3048     -1.5000
-#&gt; R2   -0.7396 0.0114 -0.7620 -0.7172     -0.8417
-#&gt; R3    0.0000 0.0120 -0.0235  0.0235      0.0000
-#&gt; R4    0.7396 0.0114  0.7172  0.7620      0.8417
-#&gt; R5    1.3179 0.0067  1.3048  1.3311      1.5000
-#&gt; V1   -0.4481 0.0119 -0.4714 -0.4247     -0.5100
-#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"lbg"</span>)</div><div class='output co'>#&gt; Predicted textmodel of type: wordscores
-#&gt; 
-#&gt;    textscore LBG se   ci lo   ci hi LBG rescaled  LBG lo  LBG hi
-#&gt; R1   -1.3179 0.0067 -1.3311 -1.3048      -1.5897 -1.6057 -1.5737
-#&gt; R2   -0.7396 0.0114 -0.7620 -0.7172      -0.8849 -0.9122 -0.8576
-#&gt; R3    0.0000 0.0120 -0.0235  0.0235       0.0163 -0.0124  0.0450
-#&gt; R4    0.7396 0.0114  0.7172  0.7620       0.9175  0.8902  0.9448
-#&gt; R5    1.3179 0.0067  1.3048  1.3311       1.6223  1.6063  1.6383
-#&gt; V1   -0.4481 0.0119 -0.4714 -0.4247      -0.5297 -0.5581 -0.5013
-#&gt; </div><div class='input'>
+    <pre class="examples"><div class='input'>(<span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_LBGexample</span>, <span class='fu'>c</span>(<span class='fu'>seq</span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>predict</span>(<span class='no'>ws</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(ws): object 'ws' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"mv"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(ws, rescaling = "mv"): object 'ws' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"lbg"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(ws, rescaling = "lbg"): object 'ws' not found</span></div><div class='input'>
 <span class='co'># same as:</span>
-(<span class='no'>ws2</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_LBGexample</span>, <span class='fu'>c</span>(<span class='fu'>seq</span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; Fitted wordscores model:
-#&gt; Call:
-#&gt; 	textmodel_wordscores(x = data_dfm_LBGexample, y = c(seq(-1.5, 
-#&gt;     1.5, 0.75), NA))
-#&gt; 
-#&gt; Reference documents and reference scores:
-#&gt; 
-#&gt;  Documents Ref scores
-#&gt;         R1      -1.50
-#&gt;         R2      -0.75
-#&gt;         R3       0.00
-#&gt;         R4       0.75
-#&gt;         R5       1.50
-#&gt;         V1          .
-#&gt; 
-#&gt; Word scores: showing first 30 scored features
-#&gt; 
-#&gt;     A     B     C     D     E     F     G     H     I     J     K     L     M 
-#&gt; -1.50 -1.50 -1.50 -1.50 -1.50 -1.48 -1.48 -1.45 -1.41 -1.32 -1.18 -1.04 -0.88 
-#&gt;     N     O     P     Q     R     S     T     U     V     W     X     Y     Z 
-#&gt; -0.75 -0.62 -0.45 -0.30 -0.13  0.00  0.13  0.30  0.45  0.62  0.75  0.88  1.04 
-#&gt;    ZA    ZB    ZC    ZD 
-#&gt;  1.18  1.32  1.41  1.45 </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws2</span>)</div><div class='output co'>#&gt; Predicted textmodel of type: wordscores
-#&gt; 
-#&gt;    textscore LBG se   ci lo   ci hi
-#&gt; R1   -1.3179 0.0067 -1.3311 -1.3048
-#&gt; R2   -0.7396 0.0114 -0.7620 -0.7172
-#&gt; R3    0.0000 0.0120 -0.0235  0.0235
-#&gt; R4    0.7396 0.0114  0.7172  0.7620
-#&gt; R5    1.3179 0.0067  1.3048  1.3311
-#&gt; V1   -0.4481 0.0119 -0.4714 -0.4247
-#&gt; </div></pre>
+(<span class='no'>ws2</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_LBGexample</span>, <span class='fu'>c</span>(<span class='fu'>seq</span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(ws2): object 'ws2' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

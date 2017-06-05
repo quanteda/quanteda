@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>deprecated textstat names — deprecated-textstat • quanteda</title>
+<title>extensions of methods defind in the quanteda package — spacyr-methods • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -74,30 +74,58 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>deprecated textstat names</h1>
+    <h1>extensions of methods defind in the quanteda package</h1>
     </div>
 
     
-    <p>Deprecated `textstat_` function names.</p>
+    <p>Extensions to quanteda functions.  You must have attached <span class="pkg">quanteda</span> for these
+to work.</p>
     
 
-    <pre class="usage"><span class='fu'>lexdiv</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>the <code>spacyr_parsed</code> object returned by <code>spacy_parse</code></p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>unused</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-<span class='fu'>readability</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
-        
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>lexdiv</code> is the deprecated; use <code><a href='textstat_lexdiv.html'>textstat_lexdiv</a></code> instead.
-    <code>readability</code> is the deprecated; use <code><a href='textstat_readability.html'>textstat_readability</a></code> instead.</p>
+    <p><code>docnames(x)</code> returns the document names
+    <code>ndoc(x)</code> returns the number of documents
+    <code>ntoken(x, ...)</code> returns the number of tokens by document
+    <code>ntype(x, ...)</code> returns the number of types (unique tokens) by document</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='fu'>require</span>(<span class='no'>spacyr</span>)
+  <span class='fu'>spacy_initialize</span>()
+  <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"And now, now, now for something completely different."</span>,
+           <span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"Jack and Jill are children."</span>)
+  <span class='no'>parsed</span> <span class='kw'>&lt;-</span> <span class='fu'>spacy_parse</span>(<span class='no'>txt</span>)
+  <span class='fu'><a href='ntoken.html'>ntype</a></span>(<span class='no'>parsed</span>)
+  <span class='fu'><a href='ntoken.html'>ntoken</a></span>(<span class='no'>parsed</span>)
+  <span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>parsed</span>)
+  <span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>parsed</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
-          </ul>
+      <li><a href="#usage">Usage</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

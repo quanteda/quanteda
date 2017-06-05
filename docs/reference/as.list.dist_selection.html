@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -77,25 +79,34 @@
 
     
     <p>Coerce a dist_selection matrix into a list of selected terms and tarhet terms in
-descending order.  Can be used after calling <code><a href='textstat_dist.html'>textstat_simil</a></code> or
-<code><a href='textstat_dist.html'>textstat_dist</a></code> when selection is not NULL</p>
+descending order.  Can be used after calling <code><a href='textstat_simil.html'>textstat_simil</a></code> or
+<code><a href='textstat_simil.html'>textstat_dist</a></code> when selection is not NULL</p>
     
 
-    <pre><span class='co'># S3 method for dist_selection</span>
+    <pre class="usage"><span class='co'># S3 method for dist_selection</span>
 <span class='fu'>as.list</span>(<span class='no'>x</span>, <span class='kw'>sorted</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>dist_selection class object</dd>
-      <dt>sorted</dt>
-      <dd>sort results in descending order if <code>TRUE</code></dd>
-      <dt>n</dt>
-      <dd>the top <code>n</code> highest-ranking items will be returned.  If n is 
-<code>NULL</code>, return all items.</dd>
-      <dt>...</dt>
-      <dd>unused</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>dist_selection class object</p></td>
+    </tr>
+    <tr>
+      <th>sorted</th>
+      <td><p>sort results in descending order if <code>TRUE</code></p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>the top <code>n</code> highest-ranking items will be returned.  If n is 
+<code>NULL</code>, return all items.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>unused</p></td>
+    </tr>
+    </table>
     
 
   </div>

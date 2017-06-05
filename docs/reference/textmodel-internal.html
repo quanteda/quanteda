@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -77,11 +79,10 @@
 
     
     <p>Internal function documentation for textmodel objects.</p>
-
-    <p>Internal function documentation for textmodel objects.</p>
+<p>Internal function documentation for textmodel objects.</p>
     
 
-    <pre><span class='co'># S4 method for textmodel_ca_fitted</span>
+    <pre class="usage"><span class='co'># S4 method for textmodel_ca_fitted</span>
 <span class='fu'>coef</span>(<span class='no'>object</span>, <span class='kw'>doc_dim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>feat_dim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for textmodel_ca_fitted</span>
@@ -138,43 +139,76 @@
 <span class='fu'>show</span>(<span class='no'>object</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>object</dt>
-      <dd>wordfish fitted or predicted object to be shown</dd>
-      <dt>doc_dim, feat_dim</dt>
-      <dd>the document and feature dimension scores to be 
-extracted as coefficients</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to <code>print</code></dd>
-      <dt>x</dt>
-      <dd>for print method, the object to be printed</dd>
-      <dt>n</dt>
-      <dd>max rows of dfm to print</dd>
-      <dt>newdata</dt>
-      <dd>dfm on which prediction should be made</dd>
-      <dt>rescaling</dt>
-      <dd><code>&quot;none&quot;</code> for &quot;raw&quot; scores; <code>&quot;lbg&quot;</code> for LBG (2003) 
-rescaling; or <code>&quot;mv&quot;</code> for the rescaling proposed by Martin and Vanberg 
-(2007).  (Note to authors: Provide full details here in documentation.)</dd>
-      <dt>level</dt>
-      <dd>probability level for confidence interval width</dd>
-      <dt>verbose</dt>
-      <dd>If <code>TRUE</code>, output status messages</dd>
-      <dt>digits</dt>
-      <dd>number of decimal places to print for print methods</dd>
-      <dt>object</dt>
-      <dd>a fitted Wordscores textmodel</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to other functions</dd>
-      <dt>x</dt>
-      <dd>for print method, the object to be printed</dd>
-      <dt>n</dt>
-      <dd>max rows of dfm to print</dd>
-      <dt>x</dt>
-      <dd>for print method, the object to be printed</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to <code>print</code></dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>wordfish fitted or predicted object to be shown</p></td>
+    </tr>
+    <tr>
+      <th>doc_dim, feat_dim</th>
+      <td><p>the document and feature dimension scores to be 
+extracted as coefficients</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to <code>print</code></p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>for print method, the object to be printed</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>max rows of dfm to print</p></td>
+    </tr>
+    <tr>
+      <th>newdata</th>
+      <td><p>dfm on which prediction should be made</p></td>
+    </tr>
+    <tr>
+      <th>rescaling</th>
+      <td><p><code>"none"</code> for "raw" scores; <code>"lbg"</code> for LBG (2003) 
+rescaling; or <code>"mv"</code> for the rescaling proposed by Martin and Vanberg 
+(2007).  (Note to authors: Provide full details here in documentation.)</p></td>
+    </tr>
+    <tr>
+      <th>level</th>
+      <td><p>probability level for confidence interval width</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>If <code>TRUE</code>, output status messages</p></td>
+    </tr>
+    <tr>
+      <th>digits</th>
+      <td><p>number of decimal places to print for print methods</p></td>
+    </tr>
+    <tr>
+      <th>object</th>
+      <td><p>a fitted Wordscores textmodel</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to other functions</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>for print method, the object to be printed</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>max rows of dfm to print</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>for print method, the object to be printed</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to <code>print</code></p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -188,10 +222,10 @@ rescaling; or <code>&quot;mv&quot;</code> for the rescaling proposed by Martin a
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
-&quot;Extracting Policy Positions From Political Texts Using Words as Data.&quot; 
+"Extracting Policy Positions From Political Texts Using Words as Data." 
 <em>American Political Science Review</em> 97(02): 311-31.</p>
-    <p>Martin, L W, and G Vanberg. 2007. &quot;A Robust Transformation Procedure for
-Interpreting Political Text.&quot; <em>Political Analysis</em> 16(1): 93-100.</p>
+<p>Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for
+Interpreting Political Text." <em>Political Analysis</em> 16(1): 93-100.</p>
     
 
   </div>

@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,17 +81,24 @@
     <p>Creates a hashed object of tokens, called by <code><a href='tokens.html'>tokens</a></code>.</p>
     
 
-    <pre><span class='fu'>tokens_hash</span>(<span class='no'>x</span>, <span class='no'>types_reserved</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>tokens_hash</span>(<span class='no'>x</span>, <span class='no'>types_reserved</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a source of tokenizedText</dd>
-      <dt>...</dt>
-      <dd>additional arguments</dd>
-      <dt>types</dt>
-      <dd>optional pre-existing types for mapping of tokens</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a source of tokenizedText</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments</p></td>
+    </tr>
+    <tr>
+      <th>types</th>
+      <td><p>optional pre-existing types for mapping of tokens</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -117,26 +126,26 @@
 <span class='no'>toksHashed</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_hash</span>(<span class='no'>toks</span>)
 <span class='no'>toksHashed</span></div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; doc1 :
-#&gt; [1] &quot;the&quot;    &quot;quick&quot;  &quot;brown&quot;  &quot;fox&quot;    &quot;jumped&quot; &quot;over&quot;   &quot;the&quot;    &quot;lazy&quot;  
-#&gt; [9] &quot;dog&quot;   
+#&gt; [1] "the"    "quick"  "brown"  "fox"    "jumped" "over"   "the"    "lazy"  
+#&gt; [9] "dog"   
 #&gt; 
 #&gt; doc2 :
-#&gt; [1] &quot;the&quot;    &quot;dog&quot;    &quot;jumped&quot; &quot;and&quot;    &quot;ate&quot;    &quot;the&quot;    &quot;fox&quot;   
+#&gt; [1] "the"    "dog"    "jumped" "and"    "ate"    "the"    "fox"   
 #&gt; </div><div class='input'><span class='co'># returned as a list</span>
 <span class='fu'>as.list</span>(<span class='no'>toksHashed</span>)</div><div class='output co'>#&gt; $doc1
-#&gt; [1] &quot;the&quot;    &quot;quick&quot;  &quot;brown&quot;  &quot;fox&quot;    &quot;jumped&quot; &quot;over&quot;   &quot;the&quot;    &quot;lazy&quot;  
-#&gt; [9] &quot;dog&quot;   
+#&gt; [1] "the"    "quick"  "brown"  "fox"    "jumped" "over"   "the"    "lazy"  
+#&gt; [9] "dog"   
 #&gt; 
 #&gt; $doc2
-#&gt; [1] &quot;the&quot;    &quot;dog&quot;    &quot;jumped&quot; &quot;and&quot;    &quot;ate&quot;    &quot;the&quot;    &quot;fox&quot;   
+#&gt; [1] "the"    "dog"    "jumped" "and"    "ate"    "the"    "fox"   
 #&gt; </div><div class='input'><span class='co'># returned as a tokenized Text</span>
 <span class='fu'><a href='tokenize.html'>as.tokenizedTexts</a></span>(<span class='no'>toksHashed</span>)</div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
 #&gt; doc1 :
-#&gt; [1] &quot;the&quot;    &quot;quick&quot;  &quot;brown&quot;  &quot;fox&quot;    &quot;jumped&quot; &quot;over&quot;   &quot;the&quot;    &quot;lazy&quot;  
-#&gt; [9] &quot;dog&quot;   
+#&gt; [1] "the"    "quick"  "brown"  "fox"    "jumped" "over"   "the"    "lazy"  
+#&gt; [9] "dog"   
 #&gt; 
 #&gt; doc2 :
-#&gt; [1] &quot;the&quot;    &quot;dog&quot;    &quot;jumped&quot; &quot;and&quot;    &quot;ate&quot;    &quot;the&quot;    &quot;fox&quot;   
+#&gt; [1] "the"    "dog"    "jumped" "and"    "ate"    "the"    "fox"   
 #&gt; </div><div class='input'>
 <span class='co'># change case</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_hash</span>(<span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='fu'>c</span>(<span class='kw'>one</span> <span class='kw'>=</span> <span class='st'>"a b c d A B C D"</span>,

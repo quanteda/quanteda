@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -76,136 +78,145 @@
     </div>
 
     
-    <p>Estimate Slapin and Proksch&#39;s (2008) &quot;wordfish&quot; Poisson scaling model of 
+    <p>Estimate Slapin and Proksch's (2008) "wordfish" Poisson scaling model of 
 one-dimensional document positions using conditional maximum likelihood.</p>
     
 
-    <pre><span class='fu'>textmodel_wordfish</span>(<span class='no'>x</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>Inf</span>, <span class='fl'>Inf</span>, <span class='fl'>3</span>, <span class='fl'>1</span>),
+    <pre class="usage"><span class='fu'>textmodel_wordfish</span>(<span class='no'>x</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>Inf</span>, <span class='fl'>Inf</span>, <span class='fl'>3</span>, <span class='fl'>1</span>),
   <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1e-06</span>, <span class='fl'>1e-08</span>), <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"poisson"</span>, <span class='st'>"quasipoisson"</span>),
   <span class='kw'>dispersion_level</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"feature"</span>, <span class='st'>"overall"</span>), <span class='kw'>dispersion_floor</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>threads</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"threads"</span>), <span class='kw'>abs_err</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>svd_sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>residual_floor</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>the dfm on which the model will be fit</dd>
-      <dt>dir</dt>
-      <dd>set global identification by specifying the indexes for a pair of 
-documents such that \(\hat{\theta}_{dir[1]} &lt; \hat{\theta}_{dir[2]}\).</dd>
-      <dt>priors</dt>
-      <dd>prior precisions for the estimated parameters \(\alpha_i\), 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>the dfm on which the model will be fit</p></td>
+    </tr>
+    <tr>
+      <th>dir</th>
+      <td><p>set global identification by specifying the indexes for a pair of 
+documents such that \(\hat{\theta}_{dir[1]} &lt; \hat{\theta}_{dir[2]}\).</p></td>
+    </tr>
+    <tr>
+      <th>priors</th>
+      <td><p>prior precisions for the estimated parameters \(\alpha_i\), 
 \(\psi_j\), \(\beta_j\), and \(\theta_i\), where \(i\) indexes 
-documents and \(j\) indexes features</dd>
-      <dt>tol</dt>
-      <dd>tolerances for convergence.  The first value is a convergence 
+documents and \(j\) indexes features</p></td>
+    </tr>
+    <tr>
+      <th>tol</th>
+      <td><p>tolerances for convergence.  The first value is a convergence 
 threshold for the log-posterior of the model, the second value is the 
 tolerance in the difference in parameter values from the iterative 
 conditional maximum likelihood (from conditionally estimating 
-document-level, then feature-level parameters).</dd>
-      <dt>dispersion</dt>
-      <dd>sets whether a quasi-poisson quasi-likelihood should be 
-used based on a single dispersion parameter (<code>&quot;poisson&quot;</code>), or 
-quasi-Poisson (<code>&quot;quasipoisson&quot;</code>)</dd>
-      <dt>dispersion_level</dt>
-      <dd>sets the unit level for the dispersion parameter, 
-options are <code>&quot;feature&quot;</code> for term-level variances, or <code>&quot;overall&quot;</code> 
-for a single dispersion parameter</dd>
-      <dt>dispersion_floor</dt>
-      <dd>constraint for the minimal underdispersion multiplier 
+document-level, then feature-level parameters).</p></td>
+    </tr>
+    <tr>
+      <th>dispersion</th>
+      <td><p>sets whether a quasi-poisson quasi-likelihood should be 
+used based on a single dispersion parameter (<code>"poisson"</code>), or 
+quasi-Poisson (<code>"quasipoisson"</code>)</p></td>
+    </tr>
+    <tr>
+      <th>dispersion_level</th>
+      <td><p>sets the unit level for the dispersion parameter, 
+options are <code>"feature"</code> for term-level variances, or <code>"overall"</code> 
+for a single dispersion parameter</p></td>
+    </tr>
+    <tr>
+      <th>dispersion_floor</th>
+      <td><p>constraint for the minimal underdispersion multiplier 
 in the quasi-Poisson model.  Used to minimize the distorting effect of 
 terms with rare term or document frequencies that appear to be severely 
 underdispersed.  Default is 0, but this only applies if <code>dispersion = 
-&quot;quasipoisson&quot;</code>.</dd>
-      <dt>sparse</dt>
-      <dd>specifies whether the <code>&quot;dfm&quot;</code> is coerced to dense</dd>
-      <dt>threads</dt>
-      <dd>specifies the number of threads to use; set to 1 to override
-the package settings and use a serial version of the function</dd>
-      <dt>abs_err</dt>
-      <dd>specifies how the convergence is considered</dd>
-      <dt>svd_sparse</dt>
-      <dd>uses svd to initialize the starting values of theta, 
-only applies when <code>sparse = TRUE</code></dd>
-      <dt>residual_floor</dt>
-      <dd>specifies the threshold for residual matrix when 
-calculating the svds, only applies when <code>sparse = TRUE</code></dd>
-    </dl>
+"quasipoisson"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>sparse</th>
+      <td><p>specifies whether the <code>"dfm"</code> is coerced to dense</p></td>
+    </tr>
+    <tr>
+      <th>threads</th>
+      <td><p>specifies the number of threads to use; set to 1 to override
+the package settings and use a serial version of the function</p></td>
+    </tr>
+    <tr>
+      <th>abs_err</th>
+      <td><p>specifies how the convergence is considered</p></td>
+    </tr>
+    <tr>
+      <th>svd_sparse</th>
+      <td><p>uses svd to initialize the starting values of theta, 
+only applies when <code>sparse = TRUE</code></p></td>
+    </tr>
+    <tr>
+      <th>residual_floor</th>
+      <td><p>specifies the threshold for residual matrix when 
+calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code>textmodel_fitted_wordfish</code>.  This is a list 
   containing:</p>
+<dt>dir</dt><dd><p>global identification of the dimension</p></dd> 
+  <dt>theta</dt><dd><p>estimated document positions</p></dd> <dt>alpha</dt><dd><p>estimated document 
+  fixed effects</p></dd> <dt>beta</dt><dd><p>estimated feature marginal effects</p></dd> 
+  <dt>psi</dt><dd><p>estimated word fixed effects</p></dd> <dt>docs</dt><dd><p>document labels</p></dd> 
+  <dt>features</dt><dd><p>feature labels</p></dd> <dt>sigma</dt><dd><p>regularization parameter for 
+  betas in Poisson form</p></dd> <dt>ll</dt><dd><p>log likelihood at convergence</p></dd> 
+  <dt>se.theta</dt><dd><p>standard errors for theta-hats</p></dd> <dt>x</dt><dd><p>dfm to which 
+  the model was fit</p></dd>
+
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The returns match those of Will Lowe&#39;s R implementation of 
+    <p>The returns match those of Will Lowe's R implementation of 
   <code>wordfish</code> (see the austin package), except that here we have renamed 
   <code>words</code> to be <code>features</code>.  (This return list may change.)  We 
-  have also followed the practice begun with Slapin and Proksch&#39;s early 
+  have also followed the practice begun with Slapin and Proksch's early 
   implementation of the model that used a regularization parameter of 
   se\((\sigma) = 3\), through the third element in <code>priors</code>.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Jonathan Slapin and Sven-Oliver Proksch.  2008. &quot;A Scaling Model 
-  for Estimating Time-Series Party Positions from Texts.&quot; <em>American 
-  Journal of Political Science</em> 52(3):705-772.</p>
-    <p>Lowe, Will and Kenneth Benoit. 2013. &quot;Validating Estimates of Latent Traits
-  from Textual Data Using Human Judgment as a Benchmark.&quot; <em>Political Analysis</em>
+    <p>Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
+  for Estimating Time-Series Party Positions from Texts." <em>American 
+  Journal of Political Science</em> 52(3):705-772.
+    Lowe, Will and Kenneth Benoit. 2013. "Validating Estimates of Latent Traits
+  from Textual Data Using Human Judgment as a Benchmark." <em>Political Analysis</em>
   21(3), 298-313. <a href = 'http://doi.org/10.1093/pan/mpt002'>http://doi.org/10.1093/pan/mpt002</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>textmodel_wordfish</span>(<span class='no'>data_dfm_LBGexample</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>5</span>))</div><div class='output co'>#&gt; Fitted wordfish model:
-#&gt; Call:
-#&gt; 	textmodel_wordfish(x = data_dfm_LBGexample, dir = c(1, 5))
-#&gt; 
-#&gt; Estimated document positions:
-#&gt; 
-#&gt;   Documents       theta         SE       lower       upper
-#&gt; 1        R1 -1.29155113 0.01450459 -1.31998013 -1.26312213
-#&gt; 2        R2 -0.61629592 0.01061247 -0.63709636 -0.59549548
-#&gt; 3        R3  0.03431078 0.01085587  0.01303328  0.05558829
-#&gt; 4        R4  0.70995751 0.01212683  0.68618892  0.73372609
-#&gt; 5        R5  1.52250729 0.01741995  1.48836418  1.55665039
-#&gt; 6        V1 -0.35892853 0.01071309 -0.37992619 -0.33793087
-#&gt; 
-#&gt; Estimated feature scores: showing first 30 beta-hats for features
-#&gt; 
-#&gt;           A           B           C           D           E           F 
-#&gt;  -8.4392704  -9.2914593 -11.2444303 -12.3486003 -13.3149105 -13.2180167 
-#&gt;           G           H           I           J           K           L 
-#&gt; -13.4665196 -12.3392233 -11.5662042 -10.4070574  -9.2412224  -8.1354779 
-#&gt;           M           N           O           P           Q           R 
-#&gt;  -6.9710011  -5.8689151  -4.7877759  -3.5677039  -2.5471639  -1.3418545 
-#&gt;           S           T           U           V           W           X 
-#&gt;  -0.2855032   0.7731067   1.9392648   2.9340387   4.1076563   5.0083465 
-#&gt;           Y           Z          ZA          ZB          ZC          ZD 
-#&gt;   5.9450536   6.8813261   7.7624218   8.7566700   9.6840038  10.4605091 </div><div class='input'>
-<span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># ie2010dfm &lt;- dfm(data_corpus_irishbudget2010, verbose = FALSE)</span>
-<span class='co'># (wfm1 &lt;- textmodel_wordfish(ie2010dfm, dir = c(6,5)))</span>
-<span class='co'># (wfm2a &lt;- textmodel_wordfish(ie2010dfm, dir = c(6,5), </span>
-<span class='co'>#                              dispersion = "quasipoisson", dispersion_floor = 0))</span>
-<span class='co'># (wfm2b &lt;- textmodel_wordfish(ie2010dfm, dir = c(6,5), </span>
-<span class='co'>#                              dispersion = "quasipoisson", dispersion_floor = .5))</span>
-<span class='co'># plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",</span>
-<span class='co'>#      xlim = c(0, 1.0), ylim = c(0, 1.0))</span>
-<span class='co'># plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",</span>
-<span class='co'>#      xlim = c(0, 1.0), ylim = c(0, 1.0), type = "n")</span>
-<span class='co'># underdispersedTerms &lt;- sample(which(wfm2a@phi &lt; 1.0), 5)</span>
-<span class='co'># which(featnames(ie2010dfm) %in% names(topfeatures(ie2010dfm, 20)))</span>
-<span class='co'># text(wfm2a@phi, wfm2b@phi, wfm2a@features, </span>
-<span class='co'>#      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "grey90")</span>
-<span class='co'># text(wfm2a@phi[underdispersedTerms], wfm2b@phi[underdispersedTerms], </span>
-<span class='co'>#      wfm2a@features[underdispersedTerms], </span>
-<span class='co'>#      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "black")</span>
-<span class='co'># if (require(austin)) {</span>
-<span class='co'>#     wfmodelAustin &lt;- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))</span>
-<span class='co'>#     cor(wfm1@theta, wfmodelAustin$theta)</span>
-<span class='co'># }</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>textmodel_wordfish</span>(<span class='no'>data_dfm_LBGexample</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>5</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>not_run</span>({
+  <span class='no'>ie2010dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  (<span class='no'>wfm1</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>)))
+  (<span class='no'>wfm2a</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>),
+                               <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='st'>"quasipoisson"</span>, <span class='kw'>dispersion_floor</span> <span class='kw'>=</span> <span class='fl'>0</span>))
+  (<span class='no'>wfm2b</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>),
+                               <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='st'>"quasipoisson"</span>, <span class='kw'>dispersion_floor</span> <span class='kw'>=</span> <span class='fl'>.5</span>))
+  <span class='fu'>plot</span>(<span class='no'>wfm2a</span>@<span class='kw'>phi</span>, <span class='no'>wfm2b</span>@<span class='kw'>phi</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Min underdispersion = 0"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Min underdispersion = .5"</span>,
+       <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>))
+  <span class='fu'>plot</span>(<span class='no'>wfm2a</span>@<span class='kw'>phi</span>, <span class='no'>wfm2b</span>@<span class='kw'>phi</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Min underdispersion = 0"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Min underdispersion = .5"</span>,
+       <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>)
+  <span class='no'>underdispersedTerms</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample.html'>sample</a></span>(<span class='fu'>which</span>(<span class='no'>wfm2a</span>@<span class='kw'>phi</span> <span class='kw'>&lt;</span> <span class='fl'>1.0</span>), <span class='fl'>5</span>)
+  <span class='fu'>which</span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>ie2010dfm</span>) <span class='kw'>%in%</span> <span class='fu'>names</span>(<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>ie2010dfm</span>, <span class='fl'>20</span>)))
+  <span class='fu'>text</span>(<span class='no'>wfm2a</span>@<span class='kw'>phi</span>, <span class='no'>wfm2b</span>@<span class='kw'>phi</span>, <span class='no'>wfm2a</span>@<span class='kw'>features</span>,
+       <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.8</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey90"</span>)
+  <span class='fu'>text</span>(<span class='no'>wfm2a</span>@<span class='kw'>phi</span>[<span class='no'>underdispersedTerms</span>], <span class='no'>wfm2b</span>@<span class='kw'>phi</span>[<span class='no'>underdispersedTerms</span>],
+       <span class='no'>wfm2a</span>@<span class='kw'>features</span>[<span class='no'>underdispersedTerms</span>],
+       <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.8</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>)
+  <span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>austin</span>)) {
+      <span class='no'>wfmodelAustin</span> <span class='kw'>&lt;-</span> <span class='kw'>austin</span><span class='kw'>::</span><span class='fu'>wordfish</span>(<span class='kw'>quanteda</span><span class='kw'>::</span><span class='fu'><a href='convert-wrappers.html'>as.wfm</a></span>(<span class='no'>ie2010dfm</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
+      <span class='fu'>cor</span>(<span class='no'>wfm1</span>@<span class='kw'>theta</span>, <span class='no'>wfmodelAustin</span>$<span class='no'>theta</span>)
+  }
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

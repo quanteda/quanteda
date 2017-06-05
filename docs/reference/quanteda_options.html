@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,34 +81,43 @@
     <p>Get or set global options affecting functions across <span class="pkg">quatneda</span>.</p>
     
 
-    <pre><span class='fu'>quanteda_options</span>(<span class='no'>...</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>quanteda_options</span>(<span class='no'>...</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>...</dt>
-      <dd>options to be set, as key-value pair, same as <code>options</code></dd>
-      <dt>reset</dt>
-      <dd>logical; if <code>TRUE</code>, reset all <span class="pkg">quanteda</span> options to their 
-default values</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p>options to be set, as key-value pair, same as <code>options</code></p></td>
+    </tr>
+    <tr>
+      <th>reset</th>
+      <td><p>logical; if <code>TRUE</code>, reset all <span class="pkg">quanteda</span> options to their 
+default values</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>When called using a <code>key = value</code> pair (where <code>key</code> can be a label or 
   quoted character name)), the option is set and <code>TRUE</code> is returned invisibly.</p>
-    <p>When called with no arguments, a named list of the package options is returned.</p>
-    <p>When called with <code>reset = TRUE</code> as an argument, all arguments are options 
+<p>When called with no arguments, a named list of the package options is returned.
+  
+  When called with <code>reset = TRUE</code> as an argument, all arguments are options 
   are reset to their default values, and <code>TRUE</code> is returned invisibly.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Currently available options are:
-<dl class='dl-horizontal'>
-<dt><code>verbose</code></dt><dd>logical; if <code>TRUE</code> then use this as the default
-   for all functions with a <code>verbose</code> argument</dd>
-<dt><code>threads</code></dt><dd>integer; specifies the number of threads to use in
-   use this as the setting in all functions that uee parallelization</dd>
-</dl></p>
+    <p>Currently available options are:</p><dl class='dl-horizontal'>
+<dt><code>verbose</code></dt><dd><p>logical; if <code>TRUE</code> then use this as the default
+   for all functions with a <code>verbose</code> argument</p></dd>
+<dt><code>threads</code></dt><dd><p>integer; specifies the number of threads to use in
+   use this as the setting in all functions that uee parallelization</p></dd>
+<dt><code>print_dfm_max_ndoc</code></dt><dd><p>integer; specifies the number of documents
+   to display when using the defaults for printing a dfm</p></dd>
+<dt><code>print_dfm_max_nfeature</code></dt><dd><p>integer; specifies the number of features
+   to display when using the defaults for printing a dfm</p></dd>
+</dl>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -115,11 +126,18 @@ default values</dd>
 #&gt; 
 #&gt; $verbose
 #&gt; [1] FALSE
+#&gt; 
+#&gt; $print_dfm_max_ndoc
+#&gt; [1] 20
+#&gt; 
+#&gt; $print_dfm_max_nfeature
+#&gt; [1] 20
 #&gt; </div><div class='input'><span class='fu'>quanteda_options</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>quanteda_options</span>(<span class='st'>"verbose"</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>quanteda_options</span>(<span class='st'>"threads"</span>)</div><div class='output co'>#&gt; [1] 7</div><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># quanteda_options(reset = TRUE) </span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+<span class='fu'>quanteda_options</span>(<span class='st'>"threads"</span>)</div><div class='output co'>#&gt; [1] 7</div><div class='input'><span class='fu'>quanteda_options</span>(<span class='kw'>print_dfm_max_ndoc</span> <span class='kw'>=</span> <span class='fl'>50L</span>)
+<span class='fu'>not_run</span>({
+  <span class='fu'>quanteda_options</span>(<span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

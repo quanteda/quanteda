@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -80,32 +82,39 @@
   words, the syllable count is exact and looked up from the CMU pronunciation
   dictionary, from the default syllable dictionary <code>data_int_syllables</code>. 
   For any word not in the dictionary, the syllable count is estimated by 
-  counting vowel clusters.</p>
+  counting vowel clusters.
 
-    <p><code>data_int_syllables</code> is a quanteda-supplied data object consisting of a 
+    <code>data_int_syllables</code> is a quanteda-supplied data object consisting of a 
   named numeric vector of syllable counts for the words used as names.  This 
   is the default object used to count English syllables.  This object that 
   can be accessed directly, but we strongly encourage you to access it only 
   through the <code>nsyllable()</code> wrapper function.</p>
     
 
-    <pre><span class='fu'>nsyllable</span>(<span class='no'>x</span>, <span class='kw'>syllable_dictionary</span> <span class='kw'>=</span> <span class='kw'>quanteda</span><span class='kw'>::</span><span class='no'>data_int_syllables</span>,
+    <pre class="usage"><span class='fu'>nsyllable</span>(<span class='no'>x</span>, <span class='kw'>syllable_dictionary</span> <span class='kw'>=</span> <span class='kw'>quanteda</span><span class='kw'>::</span><span class='no'>data_int_syllables</span>,
   <span class='kw'>use.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>character vector or <code>tokens</code> object  whose 
-syllables will be counted</dd>
-      <dt>syllable_dictionary</dt>
-      <dd>optional named integer vector of syllable counts where 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>character vector or <code>tokens</code> object  whose 
+syllables will be counted</p></td>
+    </tr>
+    <tr>
+      <th>syllable_dictionary</th>
+      <td><p>optional named integer vector of syllable counts where 
 the names are lower case tokens.  When set to <code>NULL</code> (default), then 
 the function will use the quanteda data object <code>data_int_syllables</code>, an 
-English pronunciation dictionary from CMU.</dd>
-      <dt>use.names</dt>
-      <dd>logical; if <code>TRUE</code>, assign the tokens as the names of 
-the syllable count vector</dd>
-    </dl>
+English pronunciation dictionary from CMU.</p></td>
+    </tr>
+    <tr>
+      <th>use.names</th>
+      <td><p>logical; if <code>TRUE</code>, assign the tokens as the names of 
+the syllable count vector</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 

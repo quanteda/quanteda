@@ -37,15 +37,8 @@ Moby Dick: Descriptive analysis
 The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.  
 ```{r eval=TRUE}
 require(quanteda)
-
-## read the text of Moby Dick from the tokenizers package
-data(mobydick, package = "tokenizers")
-data_char_mobydick <- mobydick
-summary(data_char_mobydick)
-
-## alternative method:
-# require(readtext)
-# data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
+require(readtext)
+data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
 ```
 
 The `textfile()` loads the text and places inside a structured, intermediate object known as a `corpusSource` object.  We see this by outputting it to the global environment, as above.

@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,7 +81,7 @@
     <p>Functions with deprecated names for plotting quanteda objects.</p>
     
 
-    <pre><span class='co'># S3 method for dfm</span>
+    <pre class="usage"><span class='co'># S3 method for dfm</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for kwic</span>
@@ -89,20 +91,25 @@
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>object to be plotted</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to the new function</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>object to be plotted</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to the new function</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>plot.dfm</code> is the deprecated method to produce a word cloud from 
-a dfm; use <code><a href='textplot_wordcloud.html'>textplot_wordcloud</a></code> instead.</p>
-    <p><code>plot.kwic</code> is the deprecated method to produce a dispersion
-plot from a <a href='kwic.html'>kwic</a> object; use <code><a href='textplot_xray.html'>textplot_xray</a></code> instead.</p>
-    <p><code>plot.textmodel_wordfish_fitted</code> is the deprecated method to
+a dfm; use <code><a href='textplot_wordcloud.html'>textplot_wordcloud</a></code> instead.
+    <code>plot.kwic</code> is the deprecated method to produce a dispersion
+plot from a <a href='kwic.html'>kwic</a> object; use <code><a href='textplot_xray.html'>textplot_xray</a></code> instead.
+    <code>plot.textmodel_wordfish_fitted</code> is the deprecated method to
   produce a scale plot with error bars for a fitted wordfish text model object;
   <code><a href='textplot_scale1d.html'>textplot_scale1d</a></code> instead.</p>
     

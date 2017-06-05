@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -82,26 +84,37 @@ terms of maximum frequencies.  Setting a combination of minimum and maximum
 frequencies will select features based on a range.</p>
     
 
-    <pre><span class='fu'>dfm_trim</span>(<span class='no'>x</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>dfm_trim</span>(<span class='no'>x</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a <a href='dfm.html'>dfm</a> object</dd>
-      <dt>min_count, max_count</dt>
-      <dd>minimum/maximum count or fraction of features across all documents,
-below/above which features will be removed</dd>
-      <dt>min_docfreq, max_docfreq</dt>
-      <dd>minimum/maximum number or fraction of documents in which a feature
-appears, below/above which features will be removed</dd>
-      <dt>sparsity</dt>
-      <dd>equivalent to 1 - min_docfreq, included for comparison with
-<span class="pkg">tm</span></dd>
-      <dt>verbose</dt>
-      <dd>print messages</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <a href='dfm.html'>dfm</a> object</p></td>
+    </tr>
+    <tr>
+      <th>min_count, max_count</th>
+      <td><p>minimum/maximum count or fraction of features across all documents,
+below/above which features will be removed</p></td>
+    </tr>
+    <tr>
+      <th>min_docfreq, max_docfreq</th>
+      <td><p>minimum/maximum number or fraction of documents in which a feature
+appears, below/above which features will be removed</p></td>
+    </tr>
+    <tr>
+      <th>sparsity</th>
+      <td><p>equivalent to 1 - min_docfreq, included for comparison with
+<span class="pkg">tm</span></p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>print messages</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -124,26 +137,26 @@ appears, below/above which features will be removed</dd>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>(<span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,947 features (69.5% sparse).</div><div class='input'>
 <span class='co'># keep only words occuring &gt;=10 times and in &gt;=2 docs</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.1% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># keep only words occuring &gt;=10 times and in at least 0.4 of the documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.1% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># keep only words occuring &lt;=10 times and in &lt;=2 docs</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,675 features (76.5% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># keep only words occuring &lt;=10 times and in at most 3/4 of the documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,798 features (74% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># keep only words occuring at least 0.01 times and in &gt;=2 documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>.01</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 58 features (8.28% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>.01</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># keep only words occuring 5 times in 1000, and in 2 of 5 of documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.1% sparse).</div><div class='input'>
-<span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># # compare to removeSparseTerms from the tm package </span>
-<span class='co'># if (require(tm)) {</span>
-<span class='co'>#     (tmdtm &lt;- convert(myDfm, "tm"))</span>
-<span class='co'>#     removeSparseTerms(tmdtm, 0.7)</span>
-<span class='co'>#     dfm_trim(td, min_docfreq = 0.3)</span>
-<span class='co'>#     dfm_trim(td, sparsity = 0.7)</span>
-<span class='co'># }</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>not_run</span>({
+  <span class='co'># compare to removeSparseTerms from the tm package </span>
+  <span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>tm</span>)) {
+      (<span class='no'>tmdtm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>myDfm</span>, <span class='st'>"tm"</span>))
+      <span class='fu'>removeSparseTerms</span>(<span class='no'>tmdtm</span>, <span class='fl'>0.7</span>)
+      <span class='fu'>dfm_trim</span>(<span class='no'>td</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
+      <span class='fu'>dfm_trim</span>(<span class='no'>td</span>, <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
+  }
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -161,7 +174,7 @@ appears, below/above which features will be removed</dd>
 
     <h2>Author</h2>
     
-Ken Benoit and Paul Nulty, with some inspiration from Will Lowe&#39;s
+Ken Benoit and Paul Nulty, with some inspiration from Will Lowe's
   (see <code>trim</code> from the <code>austin</code> package)
 
   </div>

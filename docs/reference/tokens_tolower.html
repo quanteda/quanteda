@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -80,18 +82,23 @@
 <a href='tokens.html'>tokens</a> object and reindex the types.</p>
     
 
-    <pre><span class='fu'>tokens_tolower</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>tokens_tolower</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='fu'>tokens_toupper</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a <a href='tokens.html'>tokens</a> object</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to <code><a href='char_tolower.html'>char_tolower</a></code>
-(currently this is limited to <code>keep_acronyms</code>)</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <a href='tokens.html'>tokens</a> object</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to <code><a href='char_tolower.html'>char_tolower</a></code>
+(currently this is limited to <code>keep_acronyms</code>)</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -103,16 +110,16 @@
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='kw'>txt1</span> <span class='kw'>=</span> <span class='st'>"b A A"</span>, <span class='kw'>txt2</span> <span class='kw'>=</span> <span class='st'>"C C a b B"</span>))
 <span class='fu'>tokens_tolower</span>(<span class='no'>toks</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; txt1 :
-#&gt; [1] &quot;b&quot; &quot;a&quot; &quot;a&quot;
+#&gt; [1] "b" "a" "a"
 #&gt; 
 #&gt; txt2 :
-#&gt; [1] &quot;c&quot; &quot;c&quot; &quot;a&quot; &quot;b&quot; &quot;b&quot;
+#&gt; [1] "c" "c" "a" "b" "b"
 #&gt; </div><div class='input'><span class='fu'>tokens_toupper</span>(<span class='no'>toks</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; txt1 :
-#&gt; [1] &quot;B&quot; &quot;A&quot; &quot;A&quot;
+#&gt; [1] "B" "A" "A"
 #&gt; 
 #&gt; txt2 :
-#&gt; [1] &quot;C&quot; &quot;C&quot; &quot;A&quot; &quot;B&quot; &quot;B&quot;
+#&gt; [1] "C" "C" "A" "B" "B"
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

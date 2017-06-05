@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -80,18 +82,21 @@
 to the proportion of cells that have zero counts.</p>
     
 
-    <pre><span class='fu'>sparsity</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>sparsity</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>the document-feature matrix</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>the document-feature matrix</p></td>
+    </tr>
+    </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>inaug_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>sparsity</span>(<span class='no'>inaug_dfm</span>)</div><div class='output co'>#&gt; [1] 0.9164731</div><div class='input'><span class='fu'>sparsity</span>(<span class='fu'><a href='dfm_trim.html'>dfm_trim</a></span>(<span class='no'>inaug_dfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>5</span>))</div><div class='output co'>#&gt; [1] 0.7824598</div></pre>
+<span class='fu'>sparsity</span>(<span class='no'>inaug_dfm</span>)</div><div class='output co'>#&gt; [1] 0.9164731</div><div class='input'><span class='fu'>sparsity</span>(<span class='fu'><a href='dfm_trim.html'>dfm_trim</a></span>(<span class='no'>inaug_dfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>5</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -88,38 +90,55 @@ y-axis, with feature names replacing plotting points with some being chosen
 by the user to be highlighted).</p>
     
 
-    <pre><span class='fu'>textplot_scale1d</span>(<span class='no'>x</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>), <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>textplot_scale1d</span>(<span class='no'>x</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>), <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>highlighted</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
   <span class='kw'>highlighted_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>the fitted or predicted scaling model object to be plotted</dd>
-      <dt>margin</dt>
-      <dd><code>&quot;documents&quot;</code> to plot estimated document scores (the
-default) or <code>&quot;features&quot;</code> to plot estimated feature scores by a measure
-of relative frequency</dd>
-      <dt>doclabels</dt>
-      <dd>a vector of names for document; if left NULL (the default), 
-docnames will be used</dd>
-      <dt>sort</dt>
-      <dd>if <code>TRUE</code> (the default), order points from low to high 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>the fitted or predicted scaling model object to be plotted</p></td>
+    </tr>
+    <tr>
+      <th>margin</th>
+      <td><p><code>"documents"</code> to plot estimated document scores (the
+default) or <code>"features"</code> to plot estimated feature scores by a measure
+of relative frequency</p></td>
+    </tr>
+    <tr>
+      <th>doclabels</th>
+      <td><p>a vector of names for document; if left NULL (the default), 
+docnames will be used</p></td>
+    </tr>
+    <tr>
+      <th>sort</th>
+      <td><p>if <code>TRUE</code> (the default), order points from low to high 
 score. If a vector, order according to these values from low to high. Only 
-applies when <code>margin = &quot;documents&quot;</code>.</dd>
-      <dt>groups</dt>
-      <dd>optional grouping variable for sorting categories of the documents.
-Only applies when <code>margin = &quot;documents&quot;</code>.</dd>
-      <dt>highlighted</dt>
-      <dd>a vector of feature names to draw attention to in a 
-feature plot; only applies if <code>margin = &quot;features&quot;</code></dd>
-      <dt>alpha</dt>
-      <dd>A number between 0 and 1 (default 0.5) representing the level of
+applies when <code>margin = "documents"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>groups</th>
+      <td><p>optional grouping variable for sorting categories of the documents.
+Only applies when <code>margin = "documents"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>highlighted</th>
+      <td><p>a vector of feature names to draw attention to in a 
+feature plot; only applies if <code>margin = "features"</code></p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>A number between 0 and 1 (default 0.5) representing the level of
 alpha transparency used to overplot feature names in a feature plot; only 
-applies if <code>margin = &quot;features&quot;</code></dd>
-      <dt>highlighted_color</dt>
-      <dd>color for highlighted terms in <code>highlighted</code></dd>
-    </dl>
+applies if <code>margin = "features"</code></p></td>
+    </tr>
+    <tr>
+      <th>highlighted_color</th>
+      <td><p>color for highlighted terms in <code>highlighted</code></p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -132,35 +151,35 @@ applies if <code>margin = &quot;features&quot;</code></dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># ie_dfm &lt;- dfm(data_corpus_irishbudget2010)</span>
-<span class='co'># doclab &lt;- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), </span>
-<span class='co'>#                 1, paste, collapse = " ")</span>
-<span class='co'># </span>
-<span class='co'># ## wordscores</span>
-<span class='co'># refscores &lt;- c(rep(NA, 4), -1, 1, rep(NA, 8))</span>
-<span class='co'># ws &lt;- textmodel(ie_dfm, refscores, model="wordscores", smooth = 1)</span>
-<span class='co'># pred &lt;- predict(ws)</span>
-<span class='co'># # plot estimated word positions</span>
-<span class='co'># textplot_scale1d(pred, margin = "features", </span>
-<span class='co'>#                  highlighted = c("minister", "have", "our", "budget"))</span>
-<span class='co'># # plot estimated document positions</span>
-<span class='co'># textplot_scale1d(pred, margin = "documents",</span>
-<span class='co'>#                  doclabels = doclab,</span>
-<span class='co'>#                  groups = docvars(data_corpus_irishbudget2010, "party"))</span>
-<span class='co'># </span>
-<span class='co'># ## wordfish</span>
-<span class='co'># wfm &lt;- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))</span>
-<span class='co'># # plot estimated document positions</span>
-<span class='co'># textplot_scale1d(wfm, doclabels = doclab)</span>
-<span class='co'># textplot_scale1d(wfm, doclabels = doclab,</span>
-<span class='co'>#                  groups = docvars(data_corpus_irishbudget2010, "party"))</span>
-<span class='co'># # plot estimated word positions</span>
-<span class='co'># textplot_scale1d(wfm, margin = "features", </span>
-<span class='co'>#                  highlighted = c("government", "global", "children", </span>
-<span class='co'>#                                  "bank", "economy", "the", "citizenship",</span>
-<span class='co'>#                                  "productivity", "deficit")) </span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='no'>ie_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>)
+  <span class='no'>doclab</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='fu'>c</span>(<span class='st'>"name"</span>, <span class='st'>"party"</span>)),
+                  <span class='fl'>1</span>, <span class='no'>paste</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>" "</span>)
+
+  <span class='co'>## wordscores</span>
+  <span class='no'>refscores</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fu'>rep</span>(<span class='fl'>NA</span>, <span class='fl'>4</span>), -<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fu'>rep</span>(<span class='fl'>NA</span>, <span class='fl'>8</span>))
+  <span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel.html'>textmodel</a></span>(<span class='no'>ie_dfm</span>, <span class='no'>refscores</span>, <span class='kw'>model</span><span class='kw'>=</span><span class='st'>"wordscores"</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+  <span class='no'>pred</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>ws</span>)
+  <span class='co'># plot estimated word positions</span>
+  <span class='fu'>textplot_scale1d</span>(<span class='no'>pred</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>,
+                   <span class='kw'>highlighted</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"minister"</span>, <span class='st'>"have"</span>, <span class='st'>"our"</span>, <span class='st'>"budget"</span>))
+  <span class='co'># plot estimated document positions</span>
+  <span class='fu'>textplot_scale1d</span>(<span class='no'>pred</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>,
+                   <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='no'>doclab</span>,
+                   <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='st'>"party"</span>))
+
+  <span class='co'>## wordfish</span>
+  <span class='no'>wfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_wordfish.html'>textmodel_wordfish</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
+  <span class='co'># plot estimated document positions</span>
+  <span class='fu'>textplot_scale1d</span>(<span class='no'>wfm</span>, <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='no'>doclab</span>)
+  <span class='fu'>textplot_scale1d</span>(<span class='no'>wfm</span>, <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='no'>doclab</span>,
+                   <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='st'>"party"</span>))
+  <span class='co'># plot estimated word positions</span>
+  <span class='fu'>textplot_scale1d</span>(<span class='no'>wfm</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>,
+                   <span class='kw'>highlighted</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"government"</span>, <span class='st'>"global"</span>, <span class='st'>"children"</span>,
+                                   <span class='st'>"bank"</span>, <span class='st'>"economy"</span>, <span class='st'>"the"</span>, <span class='st'>"citizenship"</span>,
+                                   <span class='st'>"productivity"</span>, <span class='st'>"deficit"</span>))
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

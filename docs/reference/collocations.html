@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -83,52 +85,64 @@ default (<code>spanPunct = FALSE</code>)  as adjacent and hence are not eligible
 be collocations.</p>
     
 
-    <pre><span class='fu'>collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lr"</span>, <span class='st'>"chi2"</span>, <span class='st'>"pmi"</span>, <span class='st'>"dice"</span>, <span class='st'>"all"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+    <pre class="usage"><span class='fu'>collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lr"</span>, <span class='st'>"chi2"</span>, <span class='st'>"pmi"</span>, <span class='st'>"dice"</span>, <span class='st'>"all"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"dontspan"</span>, <span class='st'>"ignore"</span>,
   <span class='st'>"include"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a character, <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a> object</dd>
-      <dt>method</dt>
-      <dd>association measure for detecting collocations.  Let \(i\) 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a character, <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a> object</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>association measure for detecting collocations.  Let \(i\) 
 index documents, and \(j\) index features, \(n_{ij}\) refers to 
 observed counts, and \(m_{ij}\) the expected counts in a collocations 
 frequency table of dimensions \((J - size + 1)^2\). Available measures 
-are computed as: <dl class='dl-horizontal'>
-<dt><code>&quot;lr&quot;</code></dt><dd>The likelihood ratio 
+are computed as:</p><dl class='dl-horizontal'>
+<dt><code>"lr"</code></dt><dd><p>The likelihood ratio 
 statistic \(G^2\), computed as: $$2 * \sum_i \sum_j ( n_{ij} * log 
-\frac{n_{ij}}{m_{ij}} )$$ </dd> <dt><code>&quot;chi2&quot;</code></dt><dd>Pearson&#39;s \(\chi^2\) 
+\frac{n_{ij}}{m_{ij}} )$$</p></dd> <dt><code>"chi2"</code></dt><dd><p>Pearson's \(\chi^2\) 
 statistic, computed as: $$\sum_i \sum_j \frac{(n_{ij} - 
-m_{ij})^2}{m_{ij}}$$ </dd> <dt><code>&quot;pmi&quot;</code></dt><dd>point-wise mutual information 
-score, computed as log \(n_{11}/m_{11}\)</dd> <dt><code>&quot;dice&quot;</code></dt><dd>the Dice 
-coefficient, computed as \(n_{11}/n_{1.} + n_{.1}\)</dd> 
-<dt><code>&quot;all&quot;</code></dt><dd>returns all of the above</dd> </dl>
-</dd>
-      <dt>size</dt>
-      <dd>length of the collocation.  Only bigram (<code>n=2</code>) and trigram 
+m_{ij})^2}{m_{ij}}$$</p></dd> <dt><code>"pmi"</code></dt><dd><p>point-wise mutual information 
+score, computed as log \(n_{11}/m_{11}\)</p></dd> <dt><code>"dice"</code></dt><dd><p>the Dice 
+coefficient, computed as \(n_{11}/n_{1.} + n_{.1}\)</p></dd> 
+<dt><code>"all"</code></dt><dd><p>returns all of the above</p></dd> </dl></td>
+    </tr>
+    <tr>
+      <th>size</th>
+      <td><p>length of the collocation.  Only bigram (<code>n=2</code>) and trigram 
 (<code>n=3</code>) collocations are currently implemented.  Can be <code>c(2,3)</code>
-(or <code>2:3</code>) to return both bi- and tri-gram collocations.</dd>
-      <dt>n</dt>
-      <dd>the number of collocations to return, sorted in descending order of 
-the requested statistic, or \(G^2\) if none is specified.</dd>
-      <dt>tolower</dt>
-      <dd>convert collocations to lower case if <code>TRUE</code> (default)</dd>
-      <dt>punctuation</dt>
-      <dd>how to handle tokens separated by punctuation characters.  Options are:
-<dl class='dl-horizontal'>
-<dt><code>dontspan</code></dt><dd>do not form collocations from tokens separated by punctuation characters (default)</dd>
-<dt><code>ignore</code></dt><dd>ignore punctuation characters when forming collocations, meaning that collocations will 
+(or <code>2:3</code>) to return both bi- and tri-gram collocations.</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>the number of collocations to return, sorted in descending order of 
+the requested statistic, or \(G^2\) if none is specified.</p></td>
+    </tr>
+    <tr>
+      <th>tolower</th>
+      <td><p>convert collocations to lower case if <code>TRUE</code> (default)</p></td>
+    </tr>
+    <tr>
+      <th>punctuation</th>
+      <td><p>how to handle tokens separated by punctuation characters.  Options are:</p><dl class='dl-horizontal'>
+<dt><code>dontspan</code></dt><dd><p>do not form collocations from tokens separated by punctuation characters (default)</p></dd>
+<dt><code>ignore</code></dt><dd><p>ignore punctuation characters when forming collocations, meaning that collocations will 
 include those separated by punctuation characters in the text.  The punctuation characters themselves are not
-returned.</dd>
-<dt><code>include</code></dt><dd>do not treat punctuation characters specially, meaning that collocations will include
-punctuation characters as tokens</dd>
-</dl>
-</dd>
-      <dt>...</dt>
-      <dd>additional parameters passed to <code><a href='tokens.html'>tokens</a></code></dd>
-    </dl>
+returned.</p></dd>
+<dt><code>include</code></dt><dd><p>do not treat punctuation characters specially, meaning that collocations will include
+punctuation characters as tokens</p></dd>
+</dl></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional parameters passed to <code><a href='tokens.html'>tokens</a></code></p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -137,8 +151,8 @@ punctuation characters as tokens</dd>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>McInnes, B T. 2004. &quot;Extending the Log Likelihood Measure to 
-  Improve Collocation Identification.&quot;  M.Sc. Thesis, University of 
+    <p>McInnes, B T. 2004. "Extending the Log Likelihood Measure to 
+  Improve Collocation Identification."  M.Sc. Thesis, University of 
   Minnesota.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -147,27 +161,27 @@ punctuation characters as tokens</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># txt &lt;- c("This is software testing: looking for (word) pairs!  </span>
-<span class='co'>#          This [is] a software testing again. For.",</span>
-<span class='co'>#          "Here: this is more Software Testing, looking again for word pairs.")</span>
-<span class='co'># collocations(txt, punctuation = "dontspan") # default</span>
-<span class='co'># collocations(txt, punctuation = "dontspan", remove_punct = TRUE)  # includes "testing looking"</span>
-<span class='co'># collocations(txt, punctuation = "ignore", remove_punct = TRUE)    # same as previous </span>
-<span class='co'># collocations(txt, punctuation = "include", remove_punct = FALSE)  # keep punctuation as tokens</span>
-<span class='co'># </span>
-<span class='co'># collocations(txt, size = 2:3)</span>
-<span class='co'># removeFeatures(collocations(txt, size = 2:3), stopwords("english"))</span>
-<span class='co'># </span>
-<span class='co'># collocations("@textasdata We really, really love the #quanteda package - thanks!!")</span>
-<span class='co'># collocations("@textasdata We really, really love the #quanteda package - thanks!!",</span>
-<span class='co'>#               remove_twitter = TRUE)</span>
-<span class='co'># </span>
-<span class='co'># collocations(data_corpus_inaugural[49:57], n = 10)</span>
-<span class='co'># collocations(data_corpus_inaugural[49:57], method = "all", n = 10)</span>
-<span class='co'># collocations(data_corpus_inaugural[49:57], method = "chi2", size = 3, n = 10)</span>
-<span class='co'># collocations(corpus_subset(data_corpus_inaugural, Year&gt;1980), method = "pmi", size = 3, n = 10)</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"This is software testing: looking for (word) pairs!  
+           This [is] a software testing again. For."</span>,
+           <span class='st'>"Here: this is more Software Testing, looking again for word pairs."</span>)
+  <span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"dontspan"</span>) <span class='co'># default</span>
+  <span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"dontspan"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)  <span class='co'># includes "testing looking"</span>
+  <span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"ignore"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)    <span class='co'># same as previous </span>
+  <span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"include"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)  <span class='co'># keep punctuation as tokens</span>
+
+  <span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>)
+  <span class='fu'><a href='removeFeatures.html'>removeFeatures</a></span>(<span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>), <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
+
+  <span class='fu'>collocations</span>(<span class='st'>"@textasdata We really, really love the #quanteda package - thanks!!"</span>)
+  <span class='fu'>collocations</span>(<span class='st'>"@textasdata We really, really love the #quanteda package - thanks!!"</span>,
+                <span class='kw'>remove_twitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+  <span class='fu'>collocations</span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>49</span>:<span class='fl'>57</span>], <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+  <span class='fu'>collocations</span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>49</span>:<span class='fl'>57</span>], <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+  <span class='fu'>collocations</span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>49</span>:<span class='fl'>57</span>], <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"chi2"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+  <span class='fu'>collocations</span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>1980</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pmi"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

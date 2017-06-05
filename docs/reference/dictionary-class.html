@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>print a dictionary object — dictionary-class • quanteda</title>
+<title>print a dictionary object — dictionary2-class • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -77,54 +79,69 @@
 
     
     <p>Print/show method for dictionary objects.</p>
-
-    <p>Extractor for dictionary objects</p>
-
-    <p>Extractor for dictionary objects</p>
-
-    <p>Coerce a dictionary object into a list</p>
+<p>Extractor for dictionary objects</p>
+<p>Extractor for dictionary objects</p>
+<p>Coerce a dictionary object into a list</p>
     
 
-    <pre># S4 method for dictionary
+    <pre class="usage"># S4 method for dictionary2
 show(object)
 
-# S4 method for dictionary,index,ANY,ANY
+# S4 method for dictionary2,index,ANY,ANY
 [(x, i)
 
-# S4 method for dictionary,index
+# S4 method for dictionary2,index
 [[(x, i)
 
-# S4 method for dictionary
+# S3 method for dictionary2
+$(x, name)
+
+# S4 method for dictionary2
 as.list(x)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>object</dt>
-      <dd>the dictionary to be printed</dd>
-      <dt>i</dt>
-      <dd>index for entries</dd>
-      <dt>object</dt>
-      <dd>the dictionary to be extracted</dd>
-      <dt>object</dt>
-      <dd>the dictionary to be extracted</dd>
-      <dt>i</dt>
-      <dd>index for entries</dd>
-      <dt>object</dt>
-      <dd>the dictionary to be coerced</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>the dictionary to be printed</p></td>
+    </tr>
+    <tr>
+      <th>i</th>
+      <td><p>index for entries</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>the dictionary key</p></td>
+    </tr>
+    <tr>
+      <th>object</th>
+      <td><p>the dictionary to be extracted</p></td>
+    </tr>
+    <tr>
+      <th>object</th>
+      <td><p>the dictionary to be extracted</p></td>
+    </tr>
+    <tr>
+      <th>i</th>
+      <td><p>index for entries</p></td>
+    </tr>
+    <tr>
+      <th>object</th>
+      <td><p>the dictionary to be coerced</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-    <p></p>
-    <p><dl class='dl-horizontal'>
-<dt><code>.Data</code></dt><dd>named list of mode character, where each element name is a
-dictionary &quot;key&quot; and each element is one or more dictionary entry &quot;values&quot;
-consisting of a pattern match</dd></p>
-    <p><dt><code>concatenator</code></dt><dd>character object specifying space between multi-word
-values</dd></p>
-    <p><dt><code>format</code></dt><dd>dictionary format (if imported)</dd></p>
-    <p><dt><code>file</code></dt><dd>file from which a dictionary was read (if imported)</dd>
-</dl></p>
+    
+    <dl class='dl-horizontal'>
+<dt><code>.Data</code></dt><dd><p>named list of mode character, where each element name is a
+dictionary "key" and each element is one or more dictionary entry "values"
+consisting of a pattern match</p></dd>
+    <dt><code>concatenator</code></dt><dd><p>character object specifying space between multi-word
+values</p></dd>
+</dl>
     
 
   </div>

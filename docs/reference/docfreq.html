@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -83,36 +85,53 @@ threshold is  zero, meaning that any feature occuring at least once in a
 document will be counted.)</p>
     
 
-    <pre><span class='fu'>docfreq</span>(<span class='no'>x</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"inverse"</span>, <span class='st'>"inversemax"</span>, <span class='st'>"inverseprob"</span>,
+    <pre class="usage"><span class='fu'>docfreq</span>(<span class='no'>x</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"inverse"</span>, <span class='st'>"inversemax"</span>, <span class='st'>"inverseprob"</span>,
   <span class='st'>"unary"</span>), <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='kw'>USE.NAMES</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a <a href='dfm.html'>dfm</a></dd>
-      <dt>scheme</dt>
-      <dd>type of document frequency weighting</dd>
-      <dt>smoothing</dt>
-      <dd>added to the quotient before taking the logarithm</dd>
-      <dt>k</dt>
-      <dd>added to the denominator in the &quot;inverse&quot; weighting types, to 
-prevent a zero document count for a term</dd>
-      <dt>base</dt>
-      <dd>the base with respect to which logarithms in the inverse document
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <a href='dfm.html'>dfm</a></p></td>
+    </tr>
+    <tr>
+      <th>scheme</th>
+      <td><p>type of document frequency weighting</p></td>
+    </tr>
+    <tr>
+      <th>smoothing</th>
+      <td><p>added to the quotient before taking the logarithm</p></td>
+    </tr>
+    <tr>
+      <th>k</th>
+      <td><p>added to the denominator in the "inverse" weighting types, to 
+prevent a zero document count for a term</p></td>
+    </tr>
+    <tr>
+      <th>base</th>
+      <td><p>the base with respect to which logarithms in the inverse document
 frequency weightings are computed; default is 10 (see Manning, 
-  Raghavan, and Schutze 2008, p123).</dd>
-      <dt>threshold</dt>
-      <dd>numeric value of the threshold <em>above which</em> a feature 
+  Raghavan, and Schutze 2008, p123).</p></td>
+    </tr>
+    <tr>
+      <th>threshold</th>
+      <td><p>numeric value of the threshold <em>above which</em> a feature 
 will considered in the computation of document frequency.  The default is 
-0, meaning that a feature&#39;s document frequency will be the number of 
-documents in which it occurs greater than zero times.</dd>
-      <dt>USE.NAMES</dt>
-      <dd>logical; if <code>TRUE</code> attach feature labels as names of 
-the resulting numeric vector</dd>
-      <dt>...</dt>
-      <dd>not used</dd>
-    </dl>
+0, meaning that a feature's document frequency will be the number of 
+documents in which it occurs greater than zero times.</p></td>
+    </tr>
+    <tr>
+      <th>USE.NAMES</th>
+      <td><p>logical; if <code>TRUE</code> attach feature labels as names of 
+the resulting numeric vector</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>not used</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -126,14 +145,7 @@ the resulting numeric vector</dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>2</span>])
-<span class='fu'>docfreq</span>(<span class='no'>mydfm</span>[, <span class='fl'>1</span>:<span class='fl'>20</span>])</div><div class='output co'>#&gt;          fellow               -        citizens              of             the 
-#&gt;               2               1               2               2               2 
-#&gt;          senate             and           house representatives               : 
-#&gt;               1               2               1               1               2 
-#&gt;           among    vicissitudes        incident              to            life 
-#&gt;               1               1               1               2               1 
-#&gt;              no           event           could            have          filled 
-#&gt;               1               1               1               2               1 </div><div class='input'>
+<span class='fu'>docfreq</span>(<span class='no'>mydfm</span>[, <span class='fl'>1</span>:<span class='fl'>20</span>])</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'>
 <span class='co'># replication of worked example from</span>
 <span class='co'># https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf</span>
 <span class='no'>wikiDfm</span> <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"dfmSparse"</span>,
@@ -144,17 +156,12 @@ the resulting numeric vector</dd>
                                                            <span class='st'>"another"</span>, <span class='st'>"example"</span>)),
                               <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 <span class='no'>wikiDfm</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
-#&gt; 2 x 6 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 2 x 6 sparse Matrix of class "dfmSparse"
 #&gt;            features
 #&gt; docs        this is a sample another example
 #&gt;   document1    1  1 2      1       0       0
-#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt; 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt;      this        is         a    sample   another   example 
-#&gt; 0.2218487 0.2218487 0.3010300 0.3010300 0.3010300 0.3010300 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"unary"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       1       1       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inversemax"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt; 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverseprob"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       0       0       0       0       0       0 </div></pre>
+#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"unary"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt;       1       1       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inversemax"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverseprob"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

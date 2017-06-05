@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -80,21 +82,30 @@
 document-feature matrices.  See also <code><a href='weight.html'>weight</a></code>.</p>
     
 
-    <pre><span class='fu'>tfidf</span>(<span class='no'>x</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>tfidf</span>(<span class='no'>x</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>object for which idf or tf-idf will be computed (a document-feature 
-matrix)</dd>
-      <dt>normalize</dt>
-      <dd>if <code>TRUE</code>, use relative term frequency</dd>
-      <dt>scheme</dt>
-      <dd>scheme for <code><a href='docfreq.html'>docfreq</a></code></dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to <code><a href='docfreq.html'>docfreq</a></code> when calling
-<code>tfidf</code></dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>object for which idf or tf-idf will be computed (a document-feature 
+matrix)</p></td>
+    </tr>
+    <tr>
+      <th>normalize</th>
+      <td><p>if <code>TRUE</code>, use relative term frequency</p></td>
+    </tr>
+    <tr>
+      <th>scheme</th>
+      <td><p>scheme for <code><a href='docfreq.html'>docfreq</a></code></p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to <code><a href='docfreq.html'>docfreq</a></code> when calling
+<code>tfidf</code></p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -119,17 +130,7 @@ matrix)</dd>
 #&gt;   R3  0  0   0   0   0   0
 #&gt;   R4  0  0   0   0   0   0
 #&gt;   R5  0  0   0   0   0   0
-#&gt;   V1  0  0   0   2   3  10</div><div class='input'><span class='fu'>head</span>(<span class='fu'>tfidf</span>(<span class='no'>data_dfm_LBGexample</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
-#&gt; (showing first 6 documents and first 6 features)
-#&gt;     features
-#&gt; docs        E          F         G        H        I        J
-#&gt;   R1 35.01681 37.2154579 54.868944 43.95038 47.56274 43.95038
-#&gt;   R2  0.00000  0.9542425  1.431364  3.01030  6.62266 13.54635
-#&gt;   R3  0.00000  0.0000000  0.000000  0.00000  0.00000  0.00000
-#&gt;   R4  0.00000  0.0000000  0.000000  0.00000  0.00000  0.00000
-#&gt;   R5  0.00000  0.0000000  0.000000  0.00000  0.00000  0.00000
-#&gt;   V1  0.00000  0.0000000  0.000000  0.60206  0.90309  3.01030</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>data_dfm_LBGexample</span>)[<span class='fl'>5</span>:<span class='fl'>15</span>]</div><div class='output co'>#&gt; E F G H I J K L M N O 
-#&gt; 1 2 2 3 3 3 4 4 4 4 4 </div><div class='input'><span class='fu'>head</span>(<span class='fu'><a href='tf.html'>tf</a></span>(<span class='no'>data_dfm_LBGexample</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
+#&gt;   V1  0  0   0   2   3  10</div><div class='input'><span class='fu'>head</span>(<span class='fu'>tfidf</span>(<span class='no'>data_dfm_LBGexample</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>data_dfm_LBGexample</span>)[<span class='fl'>5</span>:<span class='fl'>15</span>]</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>head</span>(<span class='fu'><a href='tf.html'>tf</a></span>(<span class='no'>data_dfm_LBGexample</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
 #&gt; (showing first 6 documents and first 6 features)
 #&gt;     features
 #&gt; docs  E  F   G   H   I   J
@@ -147,17 +148,11 @@ matrix)</dd>
                    <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>docs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"document1"</span>, <span class='st'>"document2"</span>),
                      <span class='kw'>features</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>, <span class='st'>"another"</span>,
                                   <span class='st'>"example"</span>)), <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
-#&gt; 2 x 6 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 2 x 6 sparse Matrix of class "dfmSparse"
 #&gt;            features
 #&gt; docs        this is a sample another example
 #&gt;   document1    1  1 2      1       0       0
-#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>wikiDfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>tfidf</span>(<span class='no'>wikiDfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
-#&gt; 2 x 6 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;            features
-#&gt; docs        this is       a  sample another example
-#&gt;   document1    0  0 0.60206 0.30103 0       0      
-#&gt;   document2    0  0 0       0       0.60206 0.90309</div></pre>
+#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>wikiDfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>tfidf</span>(<span class='no'>wikiDfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

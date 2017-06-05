@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -76,11 +78,11 @@
     </div>
 
     
-    <p>Internal function used in textstat_keyness.  Computes \(chi^2\) with Yates&#39;
+    <p>Internal function used in textstat_keyness.  Computes \(chi^2\) with Yates'
 continuity correction for 2x2 tables.</p>
     
 
-    <pre><span class='fu'>keyness_chi2_dt</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>keyness_chi2_dt</span>(<span class='no'>x</span>)
 
 <span class='fu'>keyness_chi2_stats</span>(<span class='no'>x</span>)
 
@@ -89,13 +91,18 @@ continuity correction for 2x2 tables.</p>
 <span class='fu'>keyness_lr</span>(<span class='no'>x</span>, <span class='kw'>correction</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"Yates"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a <a href='dfm.html'>dfm</a> object</dd>
-      <dt>correction</dt>
-      <dd>if <code>&quot;Yates&quot;</code> implement the Yates correction for 2x2 
-tables, no correction if <code>&quot;none&quot;</code></dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <a href='dfm.html'>dfm</a> object</p></td>
+    </tr>
+    <tr>
+      <th>correction</th>
+      <td><p>if <code>"Yates"</code> implement the Yates correction for 2x2 
+tables, no correction if <code>"none"</code></p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -104,18 +111,18 @@ tables, no correction if <code>&quot;none&quot;</code></dd>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>keyness_chi2_dt</code> uses vectorized computation from data.table
-objects.</p>
-    <p><code>keyness_chi2_stats</code> uses element-by-element application of
-<a href='http://www.rdocumentation.org/packages/stats/topics/chisq.test'>chisq.test</a>.</p>
-    <p><code>keyness_exact</code> computes Fisher&#39;s exact using element-by-element 
-application of <a href='http://www.rdocumentation.org/packages/stats/topics/fisher.test'>fisher.test</a>, returning the odds ratio.</p>
-    <p><code>keyness_lr</code> computes the \(G^2\) likelihood ratio statistic
+objects.
+    <code>keyness_chi2_stats</code> uses element-by-element application of
+<a href='http://www.rdocumentation.org/packages/stats/topics/chisq.test'>chisq.test</a>.
+    <code>keyness_exact</code> computes Fisher's exact using element-by-element 
+application of <a href='http://www.rdocumentation.org/packages/stats/topics/fisher.test'>fisher.test</a>, returning the odds ratio.
+    <code>keyness_lr</code> computes the \(G^2\) likelihood ratio statistic
   using vectorized computation</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p><a href = 'https://en.wikipedia.org/wiki/Yates&#39;s_correction_for_continuity'>https://en.wikipedia.org/wiki/Yates&#39;s_correction_for_continuity</a></p>
-    <p><a href = 'http://influentialpoints.com/Training/g-likelihood_ratio_test.htm'>http://influentialpoints.com/Training/g-likelihood_ratio_test.htm</a></p>
+    <p><a href = 'https://en.wikipedia.org/wiki/Yates's_correction_for_continuity'>https://en.wikipedia.org/wiki/Yates's_correction_for_continuity</a>
+    <a href = 'http://influentialpoints.com/Training/g-likelihood_ratio_test.htm'>http://influentialpoints.com/Training/g-likelihood_ratio_test.htm</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -129,23 +136,7 @@ application of <a href='http://www.rdocumentation.org/packages/stats/topics/fish
 #&gt; e -0.23758624 0.6259549      1         1
 #&gt; f -0.23758624 0.6259549      1         1
 #&gt; g  0.03173144 0.8586184      1         0
-#&gt; h  0.10251697 0.7488298      2         1</div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_chi2_stats</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;            chi2         p target reference
-#&gt; a  1.626059e-31         1      3         2
-#&gt; b  6.775245e-32         1      2         1
-#&gt; c     0.4672984 0.4942327      6         2
-#&gt; d     -2.040247 0.1531848      1         4
-#&gt; e -2.242191e-32         1      1         1
-#&gt; f -2.242191e-32         1      1         1
-#&gt; g   2.20717e-31         1      1         0
-#&gt; h  6.775245e-32         1      2         1</div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_exact</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;          or         p target reference
-#&gt; a 1.0689130 1.0000000      3         2
-#&gt; b 1.4480473 1.0000000      2         1
-#&gt; c 2.6375984 0.4083471      6         2
-#&gt; d 0.1347360 0.1296366      1         4
-#&gt; e 0.6966446 1.0000000      1         1
-#&gt; f 0.6966446 1.0000000      1         1
-#&gt; g       Inf 1.0000000      1         0
-#&gt; h 1.4480473 1.0000000      2         1</div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_lr</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;              G          p target reference
+#&gt; h  0.10251697 0.7488298      2         1</div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_chi2_stats</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_exact</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_lr</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;              G          p target reference
 #&gt; a  0.004751409 0.94504497      3         2
 #&gt; b  0.091241894 0.76260424      2         1
 #&gt; c  1.274238010 0.25897314      6         2

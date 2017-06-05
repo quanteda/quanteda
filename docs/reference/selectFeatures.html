@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -83,7 +85,7 @@ or text-based object, or to select only features from a list of regular
 expression.</p>
     
 
-    <pre><span class='fu'>selectFeatures</span>(<span class='no'>x</span>, <span class='no'>features</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>selectFeatures</span>(<span class='no'>x</span>, <span class='no'>features</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for dfm</span>
 <span class='fu'>selectFeatures</span>(<span class='no'>x</span>, <span class='no'>features</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
@@ -107,45 +109,67 @@ expression.</p>
   <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>pos</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>object whose features will be selected</dd>
-      <dt>features</dt>
-      <dd>one of: a character vector of features to be selected, a 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>object whose features will be selected</p></td>
+    </tr>
+    <tr>
+      <th>features</th>
+      <td><p>one of: a character vector of features to be selected, a 
 <a href='dfm.html'>dfm</a> whose features will be used for selection, or a dictionary class
 object whose values (not keys) will provide the features to be selected. 
-For <a href='dfm.html'>dfm</a> objects, see details in the Value section below.</dd>
-      <dt>...</dt>
-      <dd>supplementary arguments passed to the underlying functions in 
+For <a href='dfm.html'>dfm</a> objects, see details in the Value section below.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>supplementary arguments passed to the underlying functions in 
 <code><a href='http://www.rdocumentation.org/packages/stringi/topics/stri_detect'>stri_detect_regex</a></code>.  (This is how 
-<code>case_insensitive</code> is passed, but you may wish to pass others.)</dd>
-      <dt>selection</dt>
-      <dd>whether to keep or remove the features</dd>
-      <dt>valuetype</dt>
-      <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
-&quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions;
-or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</dd>
-      <dt>case_insensitive</dt>
-      <dd>ignore the case of dictionary values if <code>TRUE</code></dd>
-      <dt>verbose</dt>
-      <dd>if <code>TRUE</code> print message about how many features were 
-removed</dd>
-      <dt>padding</dt>
-      <dd>(only for <code>tokenizedTexts</code> objects) if <code>TRUE</code>, leave
+<code>case_insensitive</code> is passed, but you may wish to pass others.)</p></td>
+    </tr>
+    <tr>
+      <th>selection</th>
+      <td><p>whether to keep or remove the features</p></td>
+    </tr>
+    <tr>
+      <th>valuetype</th>
+      <td><p>how to interpret keyword expressions: <code>"glob"</code> for 
+"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
+or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+    </tr>
+    <tr>
+      <th>case_insensitive</th>
+      <td><p>ignore the case of dictionary values if <code>TRUE</code></p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>if <code>TRUE</code> print message about how many features were 
+removed</p></td>
+    </tr>
+    <tr>
+      <th>padding</th>
+      <td><p>(only for <code>tokenizedTexts</code> objects) if <code>TRUE</code>, leave
 an empty string where the removed tokens previously existed.  This is
 useful if a positional match is needed between the pre- and post-selected
-features, for instance if a window of adjacency needs to be computed.</dd>
-      <dt>indexing</dt>
-      <dd>use dfm-based index to efficiently process large tokenizedTexts object</dd>
-      <dt>pos</dt>
-      <dd>indexes of word position if called on collocations: remove if word
-<code>pos</code> is a stopword</dd>
-    </dl>
+features, for instance if a window of adjacency needs to be computed.</p></td>
+    </tr>
+    <tr>
+      <th>indexing</th>
+      <td><p>use dfm-based index to efficiently process large tokenizedTexts object</p></td>
+    </tr>
+    <tr>
+      <th>pos</th>
+      <td><p>indexes of word position if called on collocations: remove if word
+<code>pos</code> is a stopword</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dfm after the feature selection has been applied.</p>
-    <p>When <code>features</code> is a <a href='dfm.html'>dfm</a> object, then the returned object
+    <p>A dfm after the feature selection has been applied.
+  
+  When <code>features</code> is a <a href='dfm.html'>dfm</a> object, then the returned object
   will be identical in its feature set to the dfm supplied as the
   <code>features</code> argument.  This means that any features in <code>x</code> not in
   <code>features</code> will be discarded, and that any features in found in the
@@ -165,82 +189,82 @@ features, for instance if a window of adjacency needs to be computed.</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># data(SOTUCorpus, package = "quantedaData")</span>
-<span class='co'># toks &lt;- tokenize(SOTUCorpus, remove_punct = TRUE)</span>
-<span class='co'># # toks &lt;- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), remove_punct = TRUE)</span>
-<span class='co'># # head to head, old v. new</span>
-<span class='co'># system.time(selectFeaturesOLD(toks, stopwords("english"), "remove", verbose = FALSE))</span>
-<span class='co'># system.time(selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE))</span>
-<span class='co'># system.time(selectFeaturesOLD(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"))</span>
-<span class='co'># system.time(selectFeatures(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"))</span>
-<span class='co'># microbenchmark::microbenchmark(</span>
-<span class='co'>#     old = selectFeaturesOLD(toks, stopwords("english"), "remove", verbose = FALSE),</span>
-<span class='co'>#     new = selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE),</span>
-<span class='co'>#     times = 5, unit = "relative")</span>
-<span class='co'># microbenchmark::microbenchmark(</span>
-<span class='co'>#     new = selectFeaturesOLD(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"),</span>
-<span class='co'>#     old = selectFeatures(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"),</span>
-<span class='co'>#     times = 2, unit = "relative")</span>
-<span class='co'>#     </span>
-<span class='co'># types &lt;- unique(unlist(toks))</span>
-<span class='co'># numbers &lt;- types[stringi::stri_detect_regex(types, '[0-9]')]</span>
-<span class='co'># microbenchmark::microbenchmark(</span>
-<span class='co'>#     new = selectFeaturesOLD(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),</span>
-<span class='co'>#     old = selectFeatures(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),</span>
-<span class='co'>#     times = 2, unit = "relative")  </span>
-<span class='co'>#     </span>
-<span class='co'># # removing tokens before dfm, versus after</span>
-<span class='co'># microbenchmark::microbenchmark(</span>
-<span class='co'>#     pre = dfm(selectFeaturesOLD(toks, stopwords("english"), "remove"), verbose = FALSE),</span>
-<span class='co'>#     post = dfm(toks, remove = stopwords("english"), verbose = FALSE),</span>
-<span class='co'>#     times = 5, unit = "relative")</span>
-<span class='co'># </span>
-<span class='co'># </span>
-<span class='co'># ## with simple examples</span>
-<span class='co'># toks &lt;- tokenize(c("This is a sentence.", "This is a second sentence."), </span>
-<span class='co'>#                  remove_punct = TRUE)</span>
-<span class='co'># selectFeatures(toks, c("is", "a", "this"), selection = "remove", </span>
-<span class='co'>#                 valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)</span>
-<span class='co'># </span>
-<span class='co'># # how case_insensitive works</span>
-<span class='co'># selectFeatures(toks, c("is", "a", "this"), selection = "remove", </span>
-<span class='co'>#                valuetype = "fixed", padding = TRUE, case_insensitive = FALSE)</span>
-<span class='co'># selectFeatures(toks, c("is", "a", "this"), selection = "remove", </span>
-<span class='co'>#                valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)</span>
-<span class='co'># selectFeatures(toks, c("is", "a", "this"), selection = "remove", </span>
-<span class='co'>#                valuetype = "glob", padding = TRUE, case_insensitive = TRUE)</span>
-<span class='co'># selectFeatures(toks, c("is", "a", "this"), selection = "remove", </span>
-<span class='co'>#                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)</span>
-<span class='co'># </span>
-<span class='co'># # with longer texts</span>
-<span class='co'># toks &lt;- tokenize(data_corpus_inaugural[1:2])</span>
-<span class='co'># selectFeatures(toks, stopwords("english"), "remove")</span>
-<span class='co'># selectFeatures(toks, stopwords("english"), "keep")</span>
-<span class='co'># selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)</span>
-<span class='co'># selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)</span>
-<span class='co'># selectFeatures(tokenize(data_corpus_inaugural[2]), stopwords("english"), "remove", padding = TRUE)</span>
-<span class='co'>## ---------------------------------------------</span>
-<span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># toksh &lt;- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))</span>
-<span class='co'># feats &lt;- c("this", "sample", "is")</span>
-<span class='co'># # keeping features</span>
-<span class='co'># selectFeatures(toksh, feats, selection = "keep")</span>
-<span class='co'># selectFeatures(toksh, feats, selection = "keep", padding = TRUE)</span>
-<span class='co'># selectFeatures(toksh, feats, selection = "keep", case_insensitive = FALSE)</span>
-<span class='co'># selectFeatures(toksh, feats, selection = "keep", padding = TRUE, case_insensitive = FALSE)</span>
-<span class='co'># # removing features</span>
-<span class='co'># selectFeatures(toksh, feats, selection = "remove")</span>
-<span class='co'># selectFeatures(toksh, feats, selection = "remove", padding = TRUE)</span>
-<span class='co'># selectFeatures(toksh, feats, selection = "remove", case_insensitive = FALSE)</span>
-<span class='co'># selectFeatures(toksh, feats, selection = "remove", padding = TRUE, case_insensitive = FALSE)</span>
-<span class='co'>## ---------------------------------------------</span>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='fu'>data</span>(<span class='no'>SOTUCorpus</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"quantedaData"</span>)
+  <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='no'>SOTUCorpus</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='co'># toks &lt;- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), remove_punct = TRUE)</span>
+  <span class='co'># head to head, old v. new</span>
+  <span class='fu'>system.time</span>(<span class='fu'><a href='selectFeaturesOLD.html'>selectFeaturesOLD</a></span>(<span class='no'>toks</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))
+  <span class='fu'>system.time</span>(<span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))
+  <span class='fu'>system.time</span>(<span class='fu'><a href='selectFeaturesOLD.html'>selectFeaturesOLD</a></span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"and"</span>, <span class='st'>"of"</span>), <span class='st'>"remove"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))
+  <span class='fu'>system.time</span>(<span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"and"</span>, <span class='st'>"of"</span>), <span class='st'>"remove"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))
+  <span class='kw'>microbenchmark</span><span class='kw'>::</span><span class='fu'>microbenchmark</span>(
+      <span class='kw'>old</span> <span class='kw'>=</span> <span class='fu'><a href='selectFeaturesOLD.html'>selectFeaturesOLD</a></span>(<span class='no'>toks</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
+      <span class='kw'>new</span> <span class='kw'>=</span> <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
+      <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"relative"</span>)
+  <span class='kw'>microbenchmark</span><span class='kw'>::</span><span class='fu'>microbenchmark</span>(
+      <span class='kw'>new</span> <span class='kw'>=</span> <span class='fu'><a href='selectFeaturesOLD.html'>selectFeaturesOLD</a></span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"and"</span>, <span class='st'>"of"</span>), <span class='st'>"remove"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>),
+      <span class='kw'>old</span> <span class='kw'>=</span> <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"and"</span>, <span class='st'>"of"</span>), <span class='st'>"remove"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>),
+      <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"relative"</span>)
 
-<span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># ## example for collocations</span>
-<span class='co'># (myCollocs &lt;- collocations(data_corpus_inaugural[1:3], n=20))</span>
-<span class='co'># selectFeatures(myCollocs, stopwords("english"), "remove")</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+  <span class='no'>types</span> <span class='kw'>&lt;-</span> <span class='fu'>unique</span>(<span class='fu'>unlist</span>(<span class='no'>toks</span>))
+  <span class='no'>numbers</span> <span class='kw'>&lt;-</span> <span class='no'>types</span>[<span class='kw'>stringi</span><span class='kw'>::</span><span class='fu'>stri_detect_regex</span>(<span class='no'>types</span>, <span class='st'>'[0-9]'</span>)]
+  <span class='kw'>microbenchmark</span><span class='kw'>::</span><span class='fu'>microbenchmark</span>(
+      <span class='kw'>new</span> <span class='kw'>=</span> <span class='fu'><a href='selectFeaturesOLD.html'>selectFeaturesOLD</a></span>(<span class='no'>toks</span>, <span class='no'>numbers</span>, <span class='st'>"remove"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>),
+      <span class='kw'>old</span> <span class='kw'>=</span> <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='no'>numbers</span>, <span class='st'>"remove"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>),
+      <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"relative"</span>)
+
+  <span class='co'># removing tokens before dfm, versus after</span>
+  <span class='kw'>microbenchmark</span><span class='kw'>::</span><span class='fu'>microbenchmark</span>(
+      <span class='kw'>pre</span> <span class='kw'>=</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='selectFeaturesOLD.html'>selectFeaturesOLD</a></span>(<span class='no'>toks</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
+      <span class='kw'>post</span> <span class='kw'>=</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>toks</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
+      <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"relative"</span>)
+
+
+  <span class='co'>## with simple examples</span>
+  <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='fu'>c</span>(<span class='st'>"This is a sentence."</span>, <span class='st'>"This is a second sentence."</span>),
+                   <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>,
+                  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+  <span class='co'># how case_insensitive works</span>
+  <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>,
+                 <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>,
+                 <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>,
+                 <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>,
+                 <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+  <span class='co'># with longer texts</span>
+  <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>2</span>])
+  <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"keep"</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toks</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"keep"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'>selectFeatures</span>(<span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>2</span>]), <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+})
+<span class='fu'>not_run</span>({
+  <span class='no'>toksh</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"This is a SAMPLE text"</span>, <span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"this sample text is better"</span>))
+  <span class='no'>feats</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"this"</span>, <span class='st'>"sample"</span>, <span class='st'>"is"</span>)
+  <span class='co'># keeping features</span>
+  <span class='fu'>selectFeatures</span>(<span class='no'>toksh</span>, <span class='no'>feats</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toksh</span>, <span class='no'>feats</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toksh</span>, <span class='no'>feats</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toksh</span>, <span class='no'>feats</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='co'># removing features</span>
+  <span class='fu'>selectFeatures</span>(<span class='no'>toksh</span>, <span class='no'>feats</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toksh</span>, <span class='no'>feats</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toksh</span>, <span class='no'>feats</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='fu'>selectFeatures</span>(<span class='no'>toksh</span>, <span class='no'>feats</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+})
+
+<span class='fu'>not_run</span>({
+  <span class='co'>## example for collocations</span>
+  (<span class='no'>myCollocs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='collocations.html'>collocations</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>n</span><span class='kw'>=</span><span class='fl'>20</span>))
+  <span class='fu'>selectFeatures</span>(<span class='no'>myCollocs</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

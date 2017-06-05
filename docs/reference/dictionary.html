@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -84,40 +86,51 @@ all currently available dictionary files supplied as part of the LIWC 2001,
 2007, and 2015 software (see References).</p>
     
 
-    <pre><span class='fu'>dictionary</span>(<span class='no'>...</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
+    <pre class="usage"><span class='fu'>dictionary</span>(<span class='no'>...</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
   <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"auto"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>...</dt>
-      <dd>a named list of character vector dictionary entries, including <a href='valuetype.html'>valuetype</a> pattern
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p>a named list of character vector dictionary entries, including <a href='valuetype.html'>valuetype</a> pattern
 matches, and including multi-word expressions separated by <code>concatenator</code>.  The argument 
 may be an explicit list or named set of elements that can be turned into a list.  See examples.
-This argument may be omitted if the dictionary is read from <code>file</code>.</dd>
-      <dt>file</dt>
-      <dd>file identifier for a foreign dictionary</dd>
-      <dt>format</dt>
-      <dd>character identifier for the format of the foreign dictionary. 
-If not supplied, the format is guessed from the dictionary file&#39;s
+This argument may be omitted if the dictionary is read from <code>file</code>.</p></td>
+    </tr>
+    <tr>
+      <th>file</th>
+      <td><p>file identifier for a foreign dictionary</p></td>
+    </tr>
+    <tr>
+      <th>format</th>
+      <td><p>character identifier for the format of the foreign dictionary. 
+If not supplied, the format is guessed from the dictionary file's
 extension.
-Available options are: <dl class='dl-horizontal'>
-<dt><code>&quot;wordstat&quot;</code></dt><dd>format used by 
-Provalis Research&#39;s Wordstat software</dd> <dt><code>&quot;LIWC&quot;</code></dt><dd>format used by 
-the Linguistic Inquiry and Word Count software</dd> <dt><code>&quot;yoshikoder&quot;</code></dt><dd>
-format used by Yoshikoder software</dd> <dt><code>&quot;lexicoder&quot;</code></dt><dd>format used
-by Lexicoder</dd> <dt><code>&quot;YAML&quot;</code></dt><dd>the standard YAML format</dd></dl>
-</dd>
-      <dt>concatenator</dt>
-      <dd>the character in between multi-word dictionary values. 
-This defaults to <code>&quot;_&quot;</code> except LIWC-formatted files, which defaults to 
-a single space <code>&quot; &quot;</code>.</dd>
-      <dt>tolower</dt>
-      <dd>if <code>TRUE</code>, convert all dictionary values to lowercase</dd>
-      <dt>encoding</dt>
-      <dd>additional optional encoding value for reading in imported 
+Available options are:</p><dl class='dl-horizontal'>
+<dt><code>"wordstat"</code></dt><dd><p>format used by 
+Provalis Research's Wordstat software</p></dd> <dt><code>"LIWC"</code></dt><dd><p>format used by 
+the Linguistic Inquiry and Word Count software</p></dd> <dt><code>"yoshikoder"</code></dt><dd><p>format used by Yoshikoder software</p></dd> <dt><code>"lexicoder"</code></dt><dd><p>format used
+by Lexicoder</p></dd> <dt><code>"YAML"</code></dt><dd><p>the standard YAML format</p></dd></dl></td>
+    </tr>
+    <tr>
+      <th>concatenator</th>
+      <td><p>the character in between multi-word dictionary values. 
+This defaults to <code>"_"</code> except LIWC-formatted files, which defaults to 
+a single space <code>" "</code>.</p></td>
+    </tr>
+    <tr>
+      <th>tolower</th>
+      <td><p>if <code>TRUE</code>, convert all dictionary values to lowercase</p></td>
+    </tr>
+    <tr>
+      <th>encoding</th>
+      <td><p>additional optional encoding value for reading in imported 
 dictionaries. This uses the iconv labels for encoding.  See the 
-&quot;Encoding&quot; section of the help for file.</dd>
-    </dl>
+"Encoding" section of the help for file.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -127,13 +140,13 @@ dictionaries. This uses the iconv labels for encoding.  See the
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Wordstat dictionaries page, from Provalis Research 
-  <a href = 'http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/'>http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/</a>.</p>
-    <p>Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., &amp; Booth, R.J. 
+  <a href = 'http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/'>http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/</a>.
+    Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., &amp; Booth, R.J. 
   (2007). The development and psychometric properties of LIWC2007. [Software 
-  manual]. Austin, TX (<a href = 'www.liwc.net'>www.liwc.net</a>).</p>
-    <p>Yoshikoder page, from Will Lowe 
-  <a href = 'http://conjugateprior.org/software/yoshikoder/'>http://conjugateprior.org/software/yoshikoder/</a>.</p>
-    <p>Lexicoder format, <a href = 'http://www.lexicoder.com'>http://www.lexicoder.com</a></p>
+  manual]. Austin, TX (<a href = 'www.liwc.net'>www.liwc.net</a>).
+    Yoshikoder page, from Will Lowe 
+  <a href = 'http://conjugateprior.org/software/yoshikoder/'>http://conjugateprior.org/software/yoshikoder/</a>.
+    Lexicoder format, <a href = 'http://www.lexicoder.com'>http://www.lexicoder.com</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -161,16 +174,16 @@ dictionaries. This uses the iconv labels for encoding.  See the
 <span class='no'>mydict2</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>christmas</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Christmas"</span>, <span class='st'>"Santa"</span>, <span class='st'>"holiday"</span>),
                       <span class='kw'>opposition</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Opposition"</span>, <span class='st'>"reject"</span>, <span class='st'>"notincorpus"</span>))
 <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mydict2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 30 documents, 2 features (81.7% sparse).</div><div class='input'>
-<span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf</span>
-<span class='co'># lgdict &lt;- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",</span>
-<span class='co'>#                      format = "wordstat")</span>
-<span class='co'># head(dfm(data_corpus_inaugural, dictionary = lgdict))</span>
-<span class='co'># </span>
-<span class='co'># # import a LIWC formatted dictionary from http://www.moralfoundations.org</span>
-<span class='co'># mfdict &lt;- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")</span>
-<span class='co'># head(dfm(data_corpus_inaugural, dictionary = mfdict))</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+<span class='fu'>not_run</span>({
+  <span class='co'># import the Laver-Garry dictionary from http://bit.ly/1FH2nvf</span>
+  <span class='no'>lgdict</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat"</span>,
+                       <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"wordstat"</span>)
+  <span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>lgdict</span>))
+
+  <span class='co'># import a LIWC formatted dictionary from http://www.moralfoundations.org</span>
+  <span class='no'>mfdict</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"http://ow.ly/VMRkL"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"LIWC"</span>)
+  <span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mfdict</span>))
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,24 +81,32 @@
     <p>Get or set the document-level meta-data.</p>
     
 
-    <pre><span class='fu'>metadoc</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>metadoc</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>metadoc</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span></pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a <a href='corpus.html'>corpus</a> object</dd>
-      <dt>field</dt>
-      <dd>character, the name of the metadata field(s) to be queried or set</dd>
-      <dt>value</dt>
-      <dd>the new value of the new meta-data field</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <a href='corpus.html'>corpus</a> object</p></td>
+    </tr>
+    <tr>
+      <th>field</th>
+      <td><p>character, the name of the metadata field(s) to be queried or set</p></td>
+    </tr>
+    <tr>
+      <th>value</th>
+      <td><p>the new value of the new meta-data field</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>For <code>texts</code>, a character vector of the texts in the corpus.</p>
-    <p>For <code>texts &lt;-</code>, the corpus with the updated texts.</p>
+    <p>For <code>texts</code>, a character vector of the texts in the corpus.
+  
+  For <code>texts &lt;-</code>, the corpus with the updated texts.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 

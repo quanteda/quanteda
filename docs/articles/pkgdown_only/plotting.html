@@ -9,7 +9,7 @@
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
-<script src="../../jquery.sticky-kit.min.js"></script><script src="../../pkgdown.js"></script><!-- mathjax --><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../../jquery.sticky-kit.min.js"></script><script src="../../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -62,7 +62,7 @@
 <p>This vignette walks through various plot options available in <strong>quanteda</strong> through the <code>textplot_*</code> functions.</p>
 <div id="wordcloud" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#wordcloud" class="anchor"> </a></body></html>1. Wordcloud</h2>
+<a href="#wordcloud" class="anchor"></a>1. Wordcloud</h2>
 <p>Plotting a <code>dfm</code> object will create a wordcloud using the <code>wordcloud</code> pacakge.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a dfm from a somewhat smaller corpus</span>
 inaugDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">0</span>:<span class="dv">10</span>], <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">'english'</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
@@ -81,7 +81,7 @@ inaugDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference
 </div>
 <div id="lexical-dispersion-plot" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#lexical-dispersion-plot" class="anchor"> </a></body></html>2. Lexical dispersion plot</h2>
+<a href="#lexical-dispersion-plot" class="anchor"></a>2. Lexical dispersion plot</h2>
 <p>Plotting a <code>kwic</code> object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text. We call these “x-ray” plots due to their similarity to the data produced by <a href="https://en.wikipedia.org/wiki/X-Ray_(Amazon_Kindle)">Amazon’s “x-ray” feature for Kindle books</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/textplot_xray.html">textplot_xray</a></span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">40</span>:<span class="dv">57</span>], <span class="st">"american"</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-5-1.png" width="768"></p>
@@ -93,8 +93,9 @@ inaugDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference
 )</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
 <p>If you’re only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mobydick, <span class="dt">package =</span> <span class="st">"tokenizers"</span>)
-data_char_mobydick &lt;-<span class="st"> </span>mobydick
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(readtext)</code></pre></div>
+<pre><code>## Loading required package: readtext</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/texts.html">texts</a></span>(<span class="kw">readtext</span>(<span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span>))
 
 <span class="kw"><a href="../../reference/textplot_xray.html">textplot_xray</a></span>(
     <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"whale"</span>),
@@ -112,7 +113,7 @@ data_char_mobydick &lt;-<span class="st"> </span>mobydick
 <p>In this case, the texts may not have the same length, so the tokens that don’t exist in a particular text are shaded in grey.</p>
 <div id="modifying-lexical-dispersion-plots" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#modifying-lexical-dispersion-plots" class="anchor"> </a></body></html>Modifying lexical dispersion plots</h3>
+<a href="#modifying-lexical-dispersion-plots" class="anchor"></a>Modifying lexical dispersion plots</h3>
 <p>The object returned is a ggplot object, which can be modified using ggplot:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw">theme_set</span>(<span class="kw">theme_bw</span>())
@@ -127,7 +128,7 @@ g +<span class="st"> </span><span class="kw">aes</span>(<span class="dt">color =
 </div>
 <div id="frequency-plots" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#frequency-plots" class="anchor"> </a></body></html>3. Frequency plots</h2>
+<a href="#frequency-plots" class="anchor"></a>3. Frequency plots</h2>
 <p>You can plot the frequency of the top features in a text using <code>topfeatures</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inaugFeatures &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(inaugDfm, <span class="dv">100</span>)
 
@@ -189,14 +190,14 @@ topDf$term &lt;-<span class="st"> </span><span class="kw">with</span>(topDf, <sp
 </div>
 <div id="plot-fitted-scaling-models" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#plot-fitted-scaling-models" class="anchor"> </a></body></html>4. Plot fitted scaling models</h2>
+<a href="#plot-fitted-scaling-models" class="anchor"></a>4. Plot fitted scaling models</h2>
 <p>You can also plot fitted Wordscores (Laver et al., 2003) or Wordfish scaling models (Proksch and Slapin, 2008). To use the following functions, currently you need to download the development version of <strong>quanteda</strong>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># devtools packaged required to install quanteda from Github </span>
 devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quanteda"</span>) 
 <span class="kw">require</span>(quanteda)</code></pre></div>
 <div id="wordscores" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#wordscores" class="anchor"> </a></body></html>4.1 Wordscores</h3>
+<a href="#wordscores" class="anchor"></a>4.1 Wordscores</h3>
 <p>Wordscores is a scaling procedure for estimating policy positions or scores (Laver et al., 2003). Known scores are assigned to so called reference texts in order to infer the positions of new documents (“virgin texts”). You can plot the position of words (features) against the logged term frequency, or the position of the documents.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Transform corpus to dfm</span>
 ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">verbose=</span><span class="ot">FALSE</span>)
@@ -235,7 +236,7 @@ pred_lbg &lt;-<span class="st"> </span><span class="kw">predict</span>(ws, <span
 </div>
 <div id="wordfish" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#wordfish" class="anchor"> </a></body></html>4.2 Wordfish</h3>
+<a href="#wordfish" class="anchor"></a>4.2 Wordfish</h3>
 <p>Wordfish is a Poisson scaling model that estimates one-dimension document positions using maximum likelihood (Slapin and Proksch, 2008). Both the estimated position of words and the positions of the documents can be plotted.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Estimate Wordfish model</span>
 wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010), <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">6</span>,<span class="dv">5</span>))
@@ -254,7 +255,7 @@ wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/text
 </div>
 <div id="correspondence-analysis" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#correspondence-analysis" class="anchor"> </a></body></html>4.3 Correspondence Analysis</h3>
+<a href="#correspondence-analysis" class="anchor"></a>4.3 Correspondence Analysis</h3>
 <p>You can also plot the estimated document positions of a correspodence analysis (Nenadic and Greenacre 2007).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Transform corpus to dfm</span>
 ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)
@@ -276,7 +277,7 @@ doclab &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#references" class="anchor"> </a></body></html>References</h2>
+<a href="#references" class="anchor"></a>References</h2>
 <p>Laver, Michael, Kenneth Benoit, and John Garry. 2003. “Extracting Policy Positions from Political Texts Using Words as Data.” <em>American Political Science Review</em> 97(2):311-331.</p>
 <p>Nenadic, Oleg, and Michael Greenacre. 2007. “Correspondence analysis in R, with two- and three-dimensional graphics: The ca package.” <em>Journal of Statistical Software</em> 20(3): 1-13. URL: <a href="http://www.jstatsoft.org/v20/i03/" class="uri">http://www.jstatsoft.org/v20/i03/</a>.</p>
 <p>Slapin, Jonathan, and Sven-Oliver Proksch. 2008. “A Scaling Model for Estimating Time-Series Party Positions from Texts.” <em>American Journal of Political Science</em> 52(3):705-772.</p>

@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -77,22 +79,26 @@
 
     
     <p>Internal function documentation for <a href='dfm.html'>dfm</a> objects.</p>
-
-    <p>The <code>Compare</code> methods enable relational operators to be use with dfm. 
+<p>The <code>Compare</code> methods enable relational operators to be use with dfm. 
 Relational operations on a dfm with a numeric will return a
 <a href='http://www.rdocumentation.org/packages/Matrix/topics/dgCMatrix-class'>dgCMatrix-class</a> object.</p>
     
 
-    <pre><span class='co'># S4 method for dfmSparse,numeric</span>
+    <pre class="usage"><span class='co'># S4 method for dfmSparse,numeric</span>
 <span class='fu'>Compare</span>(<span class='no'>e1</span>, <span class='no'>e2</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>e1</dt>
-      <dd>a <a href='dfm.html'>dfm</a></dd>
-      <dt>e2</dt>
-      <dd>a numeric value to compare with values in a dfm</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>e1</th>
+      <td><p>a <a href='dfm.html'>dfm</a></p></td>
+    </tr>
+    <tr>
+      <th>e2</th>
+      <td><p>a numeric value to compare with values in a dfm</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

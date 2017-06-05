@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -78,34 +80,34 @@
     
     <p>A set of functions for creating and managing text corpora, extracting
 features from text corpora, and analyzing those features using quantitative
-methods.</p>
+methods.
 
-    <p><span class="pkg">quanteda</span> makes it easy to manage texts in the form of a corpus,
+    <span class="pkg">quanteda</span> makes it easy to manage texts in the form of a corpus,
   defined as a collection of texts that includes document-level variables
   specific to each text, as well as meta-data for documents and for the
   collection as a whole. <span class="pkg">quanteda</span> includes tools to make it easy and
   fast to manuipulate the texts in a corpus, by performing the most common
   natural language processing tasks simply and quickly, such as tokenizing,
-  stemming, or forming ngrams. <span class="pkg">quanteda</span>&#39;s functions for tokenizing
+  stemming, or forming ngrams. <span class="pkg">quanteda</span>'s functions for tokenizing
   texts and forming multiple tokenized documents into a document-feature
   matrix are both extremely fast and extremely simple to use.
   <span class="pkg">quanteda</span> can segment texts easily by words, paragraphs, sentences,
-  or even user-supplied delimiters and tags.</p>
+  or even user-supplied delimiters and tags.
 
-    <p>Built on the text processing functions in the <span class="pkg">stringi</span> package, which
+    Built on the text processing functions in the <span class="pkg">stringi</span> package, which
   is in turn built on C++ implementation of the ICU libraries for Unicode
   text handling, <span class="pkg">quanteda</span> pays special attention to fast and correct
-  implementation of Unicode and the handling of text in any character set.</p>
+  implementation of Unicode and the handling of text in any character set.
 
-    <p><span class="pkg">quanteda</span> is built for efficiency and speed, through its design
+    <span class="pkg">quanteda</span> is built for efficiency and speed, through its design
   around three infrastructures: the <span class="pkg">stringi</span> package for text
   processing, the <span class="pkg">data.table</span> package for indexing large documents
   efficiently, and the <span class="pkg">Matrix</span> package for sparse matrix objects. If you
   can fit it into memory, <span class="pkg">quanteda</span> will handle it quickly. (And
   eventually, we will make it possible to process objects even larger than
-  available memory.)</p>
+  available memory.)
 
-    <p><span class="pkg">quanteda</span> is principally designed to allow users a fast and
+    <span class="pkg">quanteda</span> is principally designed to allow users a fast and
   convenient method to go from a corpus of texts to a selected matrix of
   documents by features, after defining what the documents and features. The
   package makes it easy to redefine documents, for instance by splitting them
@@ -115,49 +117,41 @@ methods.</p>
   implements common NLP feature selection functions, such as removing
   stopwords and stemming in numerous languages, selecting words found in
   dictionaries, treating words as equivalent based on a user-defined
-  &quot;thesaurus&quot;, and trimming and weighting features based on document
-  frequency, feature frequency, and related measures such as tf-idf.</p>
+  "thesaurus", and trimming and weighting features based on document
+  frequency, feature frequency, and related measures such as tf-idf.
 
-    <p>Once constructed, a <span class="pkg">quanteda</span> &quot;<a href='dfm.html'>dfm</a>&quot;&quot; can be easily analyzed using
-  either <span class="pkg">quanteda</span>&#39;s built-in tools for scaling document positions,
+    Once constructed, a <span class="pkg">quanteda</span> "<a href='dfm.html'>dfm</a>"" can be easily analyzed using
+  either <span class="pkg">quanteda</span>'s built-in tools for scaling document positions,
   or used with a number of other text analytic tools, such as: topic models
   (including converters for direct use with the topicmodels, LDA, and stm
-  packages) document scaling (using <span class="pkg">quanteda</span>&#39;s own functions for the
-  &quot;wordfish&quot; and &quot;Wordscores&quot; models, direct use with the ca package for
+  packages) document scaling (using <span class="pkg">quanteda</span>'s own functions for the
+  "wordfish" and "Wordscores" models, direct use with the ca package for
   correspondence analysis, or scaling with the austin package) machine
   learning through a variety of other packages that take matrix or
-  matrix-like inputs.</p>
+  matrix-like inputs.
 
-    <p>Additional features of <span class="pkg">quanteda</span> include: <ul>
-<li>the ability to explore texts using <a href='kwic.html'>key-words-in-context</a>;
-  </li>
-<li>fast computation of a variety of <a href='textstat_readability.html'>readability indexes</a>;
-  </li>
-<li>fast computation of a variety of <a href='textstat_lexdiv.html'>lexical diversity measures</a>;
-  </li>
-<li>quick computation of word or document <a href='similarity.html'>similarities</a>, for clustering or to compute distances for other purposes; and
-  </li>
-<li>a comprehensive suite of <a href='summary.character.html'>descriptive statistics on text</a> such as the number of sentences, words, characters, or
-  syllables per document.
-  </li>
-</ul></p>
+    Additional features of <span class="pkg">quanteda</span> include:</p><ul>
+<li><p>the ability to explore texts using <a href='kwic.html'>key-words-in-context</a>;</p></li>
+<li><p>fast computation of a variety of <a href='textstat_readability.html'>readability indexes</a>;</p></li>
+<li><p>fast computation of a variety of <a href='textstat_lexdiv.html'>lexical diversity measures</a>;</p></li>
+<li><p>quick computation of word or document <a href='similarity.html'>similarities</a>, for clustering or to compute distances for other purposes; and</p></li>
+<li><p>a comprehensive suite of <a href='summary.corpus.html'>descriptive statistics on text</a> such as the number of sentences, words, characters, or
+  syllables per document.</p></li>
+</ul>
     
 
         
     <h2 class="hasAnchor" id="source-code-and-additional-information"><a class="anchor" href="#source-code-and-additional-information"></a>Source code and additional information</h2>
 
-    <p></p>
+    
     <p><a href = 'http://github.com/kbenoit/quanteda'>http://github.com/kbenoit/quanteda</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Useful links:
-<ul>
-<li> <a href = 'http://quanteda.io'>http://quanteda.io</a>
-  </li>
-<li> Report bugs at <a href = 'https://github.com/kbenoit/quanteda/issues'>https://github.com/kbenoit/quanteda/issues</a>
-</li>
-</ul></p>
+    <p>Useful links:</p><ul>
+<li><p><a href = 'http://quanteda.io'>http://quanteda.io</a></p></li>
+<li><p>Report bugs at <a href = 'https://github.com/kbenoit/quanteda/issues'>https://github.com/kbenoit/quanteda/issues</a></p></li>
+</ul>
     
 
   </div>
@@ -176,20 +170,13 @@ methods.</p>
 
 Other contributors:
 <ul>
-<li> Kohei Watanabe <a href='mailto:watanabe.kohei@gmail.com'>watanabe.kohei@gmail.com</a> [contributor]
-  </li>
-<li> Paul Nulty <a href='mailto:paul.nulty@gmail.com'>paul.nulty@gmail.com</a> [contributor]
-  </li>
-<li> Adam Obeng <a href='mailto:quanteda@binaryeagle.com'>quanteda@binaryeagle.com</a> [contributor]
-  </li>
-<li> Haiyan Wang <a href='mailto:h.wang52@lse.ac.uk'>h.wang52@lse.ac.uk</a> [contributor]
-  </li>
-<li> Benjamin Lauderdale <a href='mailto:B.E.lauderdale@lse.ac.uk'>B.E.lauderdale@lse.ac.uk</a> [contributor]
-  </li>
-<li> Will Lowe <a href='mailto:wlowe@princeton.edu'>wlowe@princeton.edu</a> [contributor]
-</li>
+<li><p>Kohei Watanabe <a href='mailto:watanabe.kohei@gmail.com'>watanabe.kohei@gmail.com</a> [contributor]</p></li>
+<li><p>Paul Nulty <a href='mailto:paul.nulty@gmail.com'>paul.nulty@gmail.com</a> [contributor]</p></li>
+<li><p>Adam Obeng <a href='mailto:quanteda@binaryeagle.com'>quanteda@binaryeagle.com</a> [contributor]</p></li>
+<li><p>Haiyan Wang <a href='mailto:h.wang52@lse.ac.uk'>h.wang52@lse.ac.uk</a> [contributor]</p></li>
+<li><p>Benjamin Lauderdale <a href='mailto:B.E.lauderdale@lse.ac.uk'>B.E.lauderdale@lse.ac.uk</a> [contributor]</p></li>
+<li><p>Will Lowe <a href='mailto:wlowe@princeton.edu'>wlowe@princeton.edu</a> [contributor]</p></li>
 </ul>
-
 
 
   </div>

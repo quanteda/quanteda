@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -82,34 +84,43 @@ length and the skip lengths take vectors of arguments to form multiple
 lengths or skips in one pass.  Implemented in C++ for efficiency.</p>
     
 
-    <pre><span class='fu'>tokens_ngrams</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2L</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>)
+    <pre class="usage"><span class='fu'>tokens_ngrams</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2L</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>)
 
 <span class='fu'>char_ngrams</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2L</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>)
 
 <span class='fu'>tokens_skipgrams</span>(<span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>skip</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a tokens object, or a character vector, or a list of characters</dd>
-      <dt>n</dt>
-      <dd>integer vector specifying the number of elements to be concatenated 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a tokens object, or a character vector, or a list of characters</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>integer vector specifying the number of elements to be concatenated 
 in each ngram.  Each element of this vector will define a $n$ in the 
-$n$-gram(s) that are produced.</dd>
-      <dt>skip</dt>
-      <dd>integer vector specifying the adjacency skip size for tokens 
+$n$-gram(s) that are produced.</p></td>
+    </tr>
+    <tr>
+      <th>skip</th>
+      <td><p>integer vector specifying the adjacency skip size for tokens 
 forming the ngrams, default is 0 for only immediately neighbouring words. 
 For <code>skipgrams</code>, <code>skip</code> can be a vector of integers, as the 
-&quot;classic&quot; approach to forming skip-grams is to set skip = \(k\) where 
+"classic" approach to forming skip-grams is to set skip = \(k\) where 
 \(k\) is the distance for which \(k\) or fewer skips are used to 
-construct the \(n\)-gram.  Thus a &quot;4-skip-n-gram&quot; defined as <code>skip =
+construct the \(n\)-gram.  Thus a "4-skip-n-gram" defined as <code>skip =
 0:4</code> produces results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0
 skips (where 0 skips are typical n-grams formed from adjacent words).  See 
-Guthrie et al (2006).</dd>
-      <dt>concatenator</dt>
-      <dd>character for combining words, default is <code>_</code> 
-(underscore) character</dd>
-    </dl>
+Guthrie et al (2006).</p></td>
+    </tr>
+    <tr>
+      <th>concatenator</th>
+      <td><p>character for combining words, default is <code>_</code> 
+(underscore) character</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -122,8 +133,8 @@ Guthrie et al (2006).</dd>
     <p>Normally, these functions will be called through 
   <code><a href='tokens.html'>tokens</a>(x, ngrams = , ...)</code>, but these functions are provided 
   in case a user wants to perform lower-level ngram construction on tokenized
-  texts.</p>
-    <p><code>tokens_skipgrams</code> is a wrapper to <code><a href='ngrams.html'>ngrams</a></code> that requires 
+  texts.
+    <code>tokens_skipgrams</code> is a wrapper to <code><a href='ngrams.html'>ngrams</a></code> that requires 
   arguments to be supplied for both <code>n</code> and <code>skip</code>.  For
   \(k\)-skip skipgrams, set <code>skip</code> to <code>0:</code>\(k\), in order to
   conform to the definition of skip-grams found in Guthrie et al (2006): A
@@ -133,69 +144,69 @@ Guthrie et al (2006).</dd>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p><code>char_ngrams</code> is a convenience wrapper for a (non-list) 
-  vector of characters, so named to be consistent with <span class="pkg">quanteda</span>&#39;s naming
+  vector of characters, so named to be consistent with <span class="pkg">quanteda</span>'s naming
   scheme.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p><a href = 'Guthrie,
-D., B. Allison, W. Liu, and L. Guthrie. 2006. &quot;A Closer Look at Skip-Gram 
-Modelling.&quot;'>http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf</a></p>
+    <p><a href = 'http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf'>Guthrie,
+D., B. Allison, W. Liu, and L. Guthrie. 2006. "A Closer Look at Skip-Gram 
+Modelling."</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># ngrams</span>
 <span class='fu'>tokens_ngrams</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"a b c d e"</span>, <span class='st'>"c d e f g"</span>)), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; Component 1 :
-#&gt; [1] &quot;a_b&quot;   &quot;b_c&quot;   &quot;c_d&quot;   &quot;d_e&quot;   &quot;a_b_c&quot; &quot;b_c_d&quot; &quot;c_d_e&quot;
+#&gt; [1] "a_b"   "b_c"   "c_d"   "d_e"   "a_b_c" "b_c_d" "c_d_e"
 #&gt; 
 #&gt; Component 2 :
-#&gt; [1] &quot;c_d&quot;   &quot;d_e&quot;   &quot;e_f&quot;   &quot;f_g&quot;   &quot;c_d_e&quot; &quot;d_e_f&quot; &quot;e_f_g&quot;
+#&gt; [1] "c_d"   "d_e"   "e_f"   "f_g"   "c_d_e" "d_e_f" "e_f_g"
 #&gt; </div><div class='input'>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='kw'>text1</span> <span class='kw'>=</span> <span class='st'>"the quick brown fox jumped over the lazy dog"</span>))
 <span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
-#&gt;  [1] &quot;the&quot;              &quot;quick&quot;            &quot;brown&quot;            &quot;fox&quot;             
-#&gt;  [5] &quot;jumped&quot;           &quot;over&quot;             &quot;the&quot;              &quot;lazy&quot;            
-#&gt;  [9] &quot;dog&quot;              &quot;the_quick&quot;        &quot;quick_brown&quot;      &quot;brown_fox&quot;       
-#&gt; [13] &quot;fox_jumped&quot;       &quot;jumped_over&quot;      &quot;over_the&quot;         &quot;the_lazy&quot;        
-#&gt; [17] &quot;lazy_dog&quot;         &quot;the_quick_brown&quot;  &quot;quick_brown_fox&quot;  &quot;brown_fox_jumped&quot;
-#&gt; [21] &quot;fox_jumped_over&quot;  &quot;jumped_over_the&quot;  &quot;over_the_lazy&quot;    &quot;the_lazy_dog&quot;    
+#&gt;  [1] "the"              "quick"            "brown"            "fox"             
+#&gt;  [5] "jumped"           "over"             "the"              "lazy"            
+#&gt;  [9] "dog"              "the_quick"        "quick_brown"      "brown_fox"       
+#&gt; [13] "fox_jumped"       "jumped_over"      "over_the"         "the_lazy"        
+#&gt; [17] "lazy_dog"         "the_quick_brown"  "quick_brown_fox"  "brown_fox_jumped"
+#&gt; [21] "fox_jumped_over"  "jumped_over_the"  "over_the_lazy"    "the_lazy_dog"    
 #&gt; </div><div class='input'><span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>4</span>), <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
-#&gt;  [1] &quot;the quick&quot;              &quot;quick brown&quot;            &quot;brown fox&quot;             
-#&gt;  [4] &quot;fox jumped&quot;             &quot;jumped over&quot;            &quot;over the&quot;              
-#&gt;  [7] &quot;the lazy&quot;               &quot;lazy dog&quot;               &quot;the quick brown fox&quot;   
-#&gt; [10] &quot;quick brown fox jumped&quot; &quot;brown fox jumped over&quot;  &quot;fox jumped over the&quot;   
-#&gt; [13] &quot;jumped over the lazy&quot;   &quot;over the lazy dog&quot;     
+#&gt;  [1] "the quick"              "quick brown"            "brown fox"             
+#&gt;  [4] "fox jumped"             "jumped over"            "over the"              
+#&gt;  [7] "the lazy"               "lazy dog"               "the quick brown fox"   
+#&gt; [10] "quick brown fox jumped" "brown fox jumped over"  "fox jumped over the"   
+#&gt; [13] "jumped over the lazy"   "over the lazy dog"     
 #&gt; </div><div class='input'><span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>4</span>), <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
-#&gt;  [1] &quot;the brown&quot;            &quot;quick fox&quot;            &quot;brown jumped&quot;        
-#&gt;  [4] &quot;fox over&quot;             &quot;jumped the&quot;           &quot;over lazy&quot;           
-#&gt;  [7] &quot;the dog&quot;              &quot;the brown jumped the&quot; &quot;quick fox over lazy&quot; 
-#&gt; [10] &quot;brown jumped the dog&quot;
+#&gt;  [1] "the brown"            "quick fox"            "brown jumped"        
+#&gt;  [4] "fox over"             "jumped the"           "over lazy"           
+#&gt;  [7] "the dog"              "the brown jumped the" "quick fox over lazy" 
+#&gt; [10] "brown jumped the dog"
 #&gt; </div><div class='input'>
 <span class='co'># on character</span>
-<span class='fu'>char_ngrams</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] &quot;a&quot;     &quot;b&quot;     &quot;c&quot;     &quot;a_b&quot;   &quot;b_c&quot;   &quot;a_b_c&quot;</div><div class='input'>
+<span class='fu'>char_ngrams</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "a"     "b"     "c"     "a_b"   "b_c"   "a_b_c"</div><div class='input'>
 <span class='co'># skipgrams</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"insurgents killed in ongoing fighting"</span>)
 <span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;insurgents killed&quot; &quot;insurgents in&quot;     &quot;killed in&quot;        
-#&gt; [4] &quot;killed ongoing&quot;    &quot;in ongoing&quot;        &quot;in fighting&quot;      
-#&gt; [7] &quot;ongoing fighting&quot; 
+#&gt; [1] "insurgents killed" "insurgents in"     "killed in"        
+#&gt; [4] "killed ongoing"    "in ongoing"        "in fighting"      
+#&gt; [7] "ongoing fighting" 
 #&gt; </div><div class='input'><span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;insurgents killed&quot;  &quot;insurgents in&quot;      &quot;insurgents ongoing&quot;
-#&gt; [4] &quot;killed in&quot;          &quot;killed ongoing&quot;     &quot;killed fighting&quot;   
-#&gt; [7] &quot;in ongoing&quot;         &quot;in fighting&quot;        &quot;ongoing fighting&quot;  
+#&gt; [1] "insurgents killed"  "insurgents in"      "insurgents ongoing"
+#&gt; [4] "killed in"          "killed ongoing"     "killed fighting"   
+#&gt; [7] "in ongoing"         "in fighting"        "ongoing fighting"  
 #&gt; </div><div class='input'><span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt;  [1] &quot;insurgents killed in&quot;        &quot;insurgents killed ongoing&quot;  
-#&gt;  [3] &quot;insurgents killed fighting&quot;  &quot;insurgents in ongoing&quot;      
-#&gt;  [5] &quot;insurgents in fighting&quot;      &quot;insurgents ongoing fighting&quot;
-#&gt;  [7] &quot;killed in ongoing&quot;           &quot;killed in fighting&quot;         
-#&gt;  [9] &quot;killed ongoing fighting&quot;     &quot;in ongoing fighting&quot;        
+#&gt;  [1] "insurgents killed in"        "insurgents killed ongoing"  
+#&gt;  [3] "insurgents killed fighting"  "insurgents in ongoing"      
+#&gt;  [5] "insurgents in fighting"      "insurgents ongoing fighting"
+#&gt;  [7] "killed in ongoing"           "killed in fighting"         
+#&gt;  [9] "killed ongoing fighting"     "in ongoing fighting"        
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

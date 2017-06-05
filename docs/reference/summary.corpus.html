@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -82,7 +84,7 @@ and source.  For texts, prints to the console a desription of the texts,
 including number of types, tokens, and sentences.</p>
     
 
-    <pre><span class='co'># S3 method for character</span>
+    <pre class="usage"><span class='co'># S3 method for character</span>
 <span class='fu'>summary</span>(<span class='no'>object</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
@@ -91,22 +93,35 @@ including number of types, tokens, and sentences.</p>
   <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>object</dt>
-      <dd>corpus or texts to be summarized</dd>
-      <dt>n</dt>
-      <dd>maximum number of texts to describe, default=100</dd>
-      <dt>verbose</dt>
-      <dd>set to <code>FALSE</code> to turn off printed output, for instance
-if you simply want to assign the output to a <code>data.frame</code></dd>
-      <dt>toLower</dt>
-      <dd>convert texts to lower case before counting types</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed through to <code><a href='tokenize.html'>tokenize</a></code></dd>
-      <dt>showmeta</dt>
-      <dd>for a corpus, set to <code>TRUE</code> to include document-level
-meta-data</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>corpus or texts to be summarized</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>maximum number of texts to describe, default=100</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>set to <code>FALSE</code> to turn off printed output, for instance
+if you simply want to assign the output to a <code>data.frame</code></p></td>
+    </tr>
+    <tr>
+      <th>toLower</th>
+      <td><p>convert texts to lower case before counting types</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed through to <code><a href='tokenize.html'>tokenize</a></code></p></td>
+    </tr>
+    <tr>
+      <th>showmeta</th>
+      <td><p>for a corpus, set to <code>TRUE</code> to include document-level
+meta-data</p></td>
+    </tr>
+    </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -229,7 +244,7 @@ meta-data</dd>
 #&gt;          UKIP   346    739        27         UKIP
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Tue May 16 21:00:10 2017
+#&gt; Created: Mon Jun  5 12:02:28 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'><span class='no'>mysummary</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>mycorpus</span>, <span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)  <span class='co'># (quietly) assign the results</span>
 <span class='no'>mysummary</span>$<span class='no'>Types</span> / <span class='no'>mysummary</span>$<span class='no'>Tokens</span>             <span class='co'># crude type-token ratio</span></div><div class='output co'>#&gt; [1] 0.3381381 0.5373134 0.5009940 0.4730713 0.4210526 0.5150301 0.6779661
