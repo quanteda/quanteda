@@ -25,3 +25,11 @@ test_that("predicted NB probabilities are correct", {
     expect_equal(round(predict(textmodel_NB(trainingset, trainingclass, prior = "docfreq"))$posterior.prob, 2)[5,1],
                  0.69)
 })
+
+test_that("bernoulli diff from multinomial model (#776)", {
+    tmp <- textmodel_NB(trainingset, trainingclass, distribution = "Bernoulli")
+    expect_equivalent(
+        round(as.vector(tmp$PcGw[1,]), 7),
+        c(0.6000000, 0.6000000, 0.2727273, 0.6000000, 0.6000000, 0.2727273)
+    )
+})
