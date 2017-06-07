@@ -29,7 +29,7 @@ test_that("predicted NB probabilities are correct", {
 test_that("bernoulli diff from multinomial model (#776)", {
     tmp <- textmodel_NB(trainingset, trainingclass, distribution = "Bernoulli")
     expect_equivalent(
-        round(as.vector(x$PcGw[1,]), 7),
+        round(as.vector(tmp$PcGw[1,]), 7),
         c(0.6000000, 0.6000000, 0.2727273, 0.6000000, 0.6000000, 0.2727273)
     )
 })
