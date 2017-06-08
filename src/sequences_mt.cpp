@@ -129,8 +129,8 @@ struct counts_mt : public Worker{
 void estimates(std::size_t i,
               VecNgrams &seqs,
               IntParams &cs, 
-              DoubleParams &ss, 
-              DoubleParams &ls, 
+              DoubleParams &sgma, 
+              DoubleParams &lmda, 
               const String &method,
               const int &count_min){
     
@@ -149,11 +149,11 @@ void estimates(std::size_t i,
     }
     counts_bit[std::pow(2, n)-1]  += cs[i] - 1;  // c(2^n-1) += number of itself  
     if (method == "unigram"){
-        ss[i] = sigma_uni(counts_bit, n);
-        ls[i] = lambda_uni(counts_bit, n);
+        sgma[i] = sigma_uni(counts_bit, n);
+        lmda[i] = lambda_uni(counts_bit, n);
     } else {
-        ss[i] = sigma_all(counts_bit);
-        ls[i] = lambda_all(counts_bit, n);
+        sgma[i] = sigma_all(counts_bit);
+        lmda[i] = lambda_all(counts_bit, n);
     }
 }
 
@@ -161,19 +161,19 @@ struct estimates_mt : public Worker{
     
     VecNgrams &seqs;
     IntParams &cs;
-    DoubleParams &ss;
-    DoubleParams &ls;
+    DoubleParams &sgma;
+    DoubleParams &lmda;
     const String &method;
     const unsigned int &count_min;
 
     // Constructor
     estimates_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, const String &method,
                 const unsigned int &count_min_):
-        seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), method(method), count_min(count_min_){}
+        seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), method(method), count_min(count_min_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimates(i, seqs, cs, ss, ls, method, count_min);
+            estimates(i, seqs, cs, sgma, lmda, method, count_min);
         }
     }
 };
@@ -229,15 +229,16 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     }
     
     // Estimate significance of the sequences
-    DoubleParams ss(len);
-    DoubleParams ls(len);
+    DoubleParams sgma(len);
+    DoubleParams lmda(len);
+    //DoubleParams dice(len);
     //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-    estimates_mt estimate_mt(seqs, cs, ss, ls, method, count_min);
+    estimates_mt estimate_mt(seqs, cs, sgma, lmda, method, count_min);
     parallelFor(0, seqs.size(), estimate_mt);
 #else
     for (std::size_t i = 0; i < seqs.size(); i++) {
-        estimates(i, seqs, cs, ss, ls, method, count_min);
+        estimates(i, seqs, cs, sgma, lmda, method, count_min);
     }
 #endif
     //dev::stop_timer("Estimate", timer);
@@ -251,8 +252,8 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     DataFrame output_ = DataFrame::create(_["collocation"] = seqs_,
                                           _["count"] = as<IntegerVector>(wrap(cs)),
                                           _["length"] = as<NumericVector>(wrap(ns)),
-                                          _["lambda"] = as<NumericVector>(wrap(ls)),
-                                          _["sigma"] = as<NumericVector>(wrap(ss)),
+                                          _["lambda"] = as<NumericVector>(wrap(lmda)),
+                                          _["sigma"] = as<NumericVector>(wrap(sgma)),
                                           _["stringsAsFactors"] = false);
     output_.attr("tokens") = as<Tokens>(wrap(seqs));
     return output_;
