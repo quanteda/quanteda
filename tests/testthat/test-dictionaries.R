@@ -214,3 +214,11 @@ test_that("dictionary constructor errors as expected with LIWC format missing a 
     )
 })
 
+test_that("dictionary constructor works with LIWC format w/multiple tabs, spaces, etc", {
+    expect_equivalent(
+        dictionary(file = "../data/dictionaries/mary_multipletabs.dic"),
+        dictionary(list(A_CATEGORY = c("lamb", "little", "more"),
+                        ANOTHER_CATEGORY = c("had", "little", "mary")))
+    )
+})
+
