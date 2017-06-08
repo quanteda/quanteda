@@ -35,7 +35,8 @@ double lambda_uni(const std::vector<double> &counts, const std::size_t ntokens){
     return l;
 }
 
-std::size_t bitCount(std::size_t n) {  // count the number of '1' bit
+//count the numer of '1' bit
+std::size_t bitCount(std::size_t n) {  
     std::size_t counter = 0;
     while(n) {
         counter += n % 2;
@@ -67,6 +68,20 @@ double lambda_all(const std::vector<double> &counts, const std::size_t ntokens){
 
     return l;
 }
+
+//calculate dice coefficients
+double compute_dice(const std::vector<double> &counts){
+    double dice = 0.0;
+    const std::size_t n = counts.size();
+    for (std::size_t b = 1; b < n; b++) {  //c(b), #(b)=1
+        dice += bitCount(b) * counts[b];
+    }
+
+    dice = 2*counts[n-1]/(dice);
+    return dice;
+}
+
+//************************//
 void counts(Text text,
            MapNgrams &counts_seq,
            const unsigned int &len_min,
@@ -131,6 +146,7 @@ void estimates(std::size_t i,
               IntParams &cs, 
               DoubleParams &sgma, 
               DoubleParams &lmda, 
+              DoubleParams &dice, 
               const String &method,
               const int &count_min){
     
@@ -155,6 +171,8 @@ void estimates(std::size_t i,
         sgma[i] = sigma_all(counts_bit);
         lmda[i] = lambda_all(counts_bit, n);
     }
+    
+    dice[i] = compute_dice(counts_bit);
 }
 
 struct estimates_mt : public Worker{
@@ -163,17 +181,18 @@ struct estimates_mt : public Worker{
     IntParams &cs;
     DoubleParams &sgma;
     DoubleParams &lmda;
+    DoubleParams &dice;
     const String &method;
     const unsigned int &count_min;
 
     // Constructor
-    estimates_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, const String &method,
-                const unsigned int &count_min_):
-        seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), method(method), count_min(count_min_){}
+    estimates_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_,
+                 const String &method, const unsigned int &count_min_):
+        seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), method(method), count_min(count_min_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimates(i, seqs, cs, sgma, lmda, method, count_min);
+            estimates(i, seqs, cs, sgma, lmda, dice, method, count_min);
         }
     }
 };
@@ -231,14 +250,15 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     // Estimate significance of the sequences
     DoubleParams sgma(len);
     DoubleParams lmda(len);
+    DoubleParams dice(len);
     //DoubleParams dice(len);
     //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-    estimates_mt estimate_mt(seqs, cs, sgma, lmda, method, count_min);
+    estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, method, count_min);
     parallelFor(0, seqs.size(), estimate_mt);
 #else
     for (std::size_t i = 0; i < seqs.size(); i++) {
-        estimates(i, seqs, cs, sgma, lmda, method, count_min);
+        estimates(i, seqs, cs, sgma, lmda, dice, method, count_min);
     }
 #endif
     //dev::stop_timer("Estimate", timer);
@@ -254,6 +274,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                                           _["length"] = as<NumericVector>(wrap(ns)),
                                           _["lambda"] = as<NumericVector>(wrap(lmda)),
                                           _["sigma"] = as<NumericVector>(wrap(sgma)),
+                                          _["dice"] = as<NumericVector>(wrap(dice)),
                                           _["stringsAsFactors"] = false);
     output_.attr("tokens") = as<Tokens>(wrap(seqs));
     return output_;
