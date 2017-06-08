@@ -198,3 +198,19 @@ test_that("dictionary woks with the Yoshicoder format", {
     
 })    
 
+
+test_that("dictionary constructor works with LIWC format w/doubled terms", {
+    expect_equivalent(
+        dictionary(file = "../data/dictionaries/mary_doubleterm.dic"),
+        dictionary(list(A_CATEGORY = c("lamb", "little", "more"),
+                        ANOTHER_CATEGORY = c("had", "little", "mary")))
+    )
+})
+
+test_that("dictionary constructor errors as expected with LIWC format missing a category", {
+    expect_error(
+        dictionary(file = "../data/dictionaries/mary_missingcat.dic"),
+        "Dictionary.*refers to undefined category 3 for term \"little\"" 
+    )
+})
+
