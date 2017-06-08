@@ -91,3 +91,12 @@ test_that("is.sequences function",{
     expect_false(is.sequences(toks))
     expect_true(is.sequences(seqs))
 })
+
+test_that("test the correctness of dice", {
+     toks <- tokens(c('this is a test', 'this also a test'))
+     seqs <- sequences(toks, min_count=1, max_size = 2)
+    # a smooth is used when calculating the dice, so the dice coefficient 
+     #is only tested against manually calculated result.
+     expect_equal(seqs$dice[1], 0.75)
+ })
+
