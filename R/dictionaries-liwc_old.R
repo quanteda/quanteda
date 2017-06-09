@@ -111,5 +111,12 @@ read_dict_liwc_old <- function(path, encoding = "auto", toLower = FALSE) {
             dictionary[[thisCat]] <- append(dictionary[[thisCat]], thisTerm)
         }
     }
+    
+    # check if any keys are empty, and remove them if so
+    if (any(emptykeys <- sapply(dictionary, is.null))) {
+        message("note: removing empty keys: ", paste(names(emptykeys[which(emptykeys)]), collapse = ", "))
+        dictionary <- dictionary[-which(emptykeys)]
+    }
+    
     return(dictionary)
 }

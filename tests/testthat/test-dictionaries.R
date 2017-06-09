@@ -222,3 +222,28 @@ test_that("dictionary constructor works with LIWC format w/multiple tabs, spaces
     )
 })
 
+test_that("dictionary constructor works with LIWC format w/extra codes", {
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: 1 term ignored because contains unsupported <of> tag"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: ignoring parenthetical expressions in lines:"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty keys: friend, humans, insight, cause, discrep, filler"
+    )
+    d <- dictionary(file = "../data/dictionaries/liwc_extracodes.dic")
+    expect_equal(
+        length(d), 
+        10
+    )
+    expect_equal(
+        names(d), 
+        c("verb", "past", "whatever", "family", "affect", "posemo", "cogmech", "tentat", "whatever2", "time")
+    )
+})
+
+
