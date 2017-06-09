@@ -64,7 +64,7 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     
     ## distribution
     if (distribution == "Bernoulli") 
-        x <- tf(x, "boolean")
+        x.trset <- tf(x.trset, "boolean")
     else
         if (distribution != "multinomial")
             stop("Distribution can only be multinomial or Bernoulli.")

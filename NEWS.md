@@ -25,6 +25,7 @@
 
 *  For `sequences()`: Corrected the word matching, and lambda and sigma calculation methods for `unigram subtuples` algorithm in `sequences_mt.cpp`, and consequently the p-values on the bigrams are correct. 
 *  LIWC-formatted dictionary import now robust to assignment to term assignment to missing categories.
+*  `textmodel_NB(x, y, distribution = "Bernoulli")` now correctly sets the features to Bernoulli features prior to fitting the model (#776).
 
 
 ## Changes since v0.9.9-50
