@@ -251,7 +251,8 @@ testdict1 <- dictionary(list(eco = c("compan*", "factory worker*"),
 testdict2 <- dictionary(list(eco = c("compan*", "factory_worker"), 
                              pol = c("politcal_party", "election*")))
 
-expect_error(dfm_select(dfm_inaug, features = testdict1, valuetype = "glob"))
+expect_error(dfm_select(dfm_inaug, features = testdict1, valuetype = "glob"),
+             "dfm_select not implemented for ngrams > 1 and multi-word dictionary values")
 expect_silent(dfm_select(dfm_inaug, features = testdict2, valuetype = "glob"))
 
 })
