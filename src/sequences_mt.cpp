@@ -70,14 +70,15 @@ double lambda_all(const std::vector<double> &counts, const std::size_t ntokens){
 }
 
 //calculate dice coefficients
+// dice = 2*C(2^n-1)/sum(i=1:2^n-1)(#(i)*C(i)): #(i) counts number of digit'1'
 double compute_dice(const std::vector<double> &counts){
     double dice = 0.0;
     const std::size_t n = counts.size();
     for (std::size_t b = 1; b < n; b++) {  //c(b), #(b)=1
-        dice += bitCount(b) * counts[b];
+        dice += bitCount(b) * counts[b]; 
     }
 
-    dice = 2*counts[n-1]/(dice);
+    dice = 2*counts[n-1]/(dice);  // smooth has been applied in counts_bit[]
     return dice;
 }
 
