@@ -143,17 +143,17 @@ get_docvars <- function(dvars, field = NULL) {
 
 #' get or set document-level meta-data
 #' 
-#' Get or set document-level meta-data.  Document-level meta-data are a special
-#' type of \link{docvar}, meant to contain information about documents that
-#' would not be used as a "variable" for analysis. An example could be the
-#' source of the document, or notes pertaining to its transformation, copyright
+#' Get or set document-level meta-data.  Document-level meta-data are a special 
+#' type of \link{docvars}, meant to contain information about documents that 
+#' would not be used as a "variable" for analysis. An example could be the 
+#' source of the document, or notes pertaining to its transformation, copyright 
 #' information, etc.
 #' 
-#' Document-level meta-data differs from corpus-level meta-data in that the
-#' latter pertains to the collection of texts as a whole, whereas the
+#' Document-level meta-data differs from corpus-level meta-data in that the 
+#' latter pertains to the collection of texts as a whole, whereas the 
 #' document-level version can differ with each document.
 #' @param x a \link{corpus} object
-#' @param field character, the name of the metadata field(s) to be queried or
+#' @param field character, the name of the metadata field(s) to be queried or 
 #'   set
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #'   
