@@ -87,9 +87,17 @@ test_that("Bernoulli likelihoods and class posteriors are correct", {
 })
 
 test_that("Bernoulli NB predicted values are correct", {
+    book_lik_Y <- 3/4 * 4/5 * 1/5 * 1/5 * (1-2/5) * (1-2/5) * (1-2/5)  # 0.005184 
+    book_lik_N <- 1/4 * 2/3 * 2/3 * 2/3 * (1-1/3) * (1-1/3) * (1-1/3)  # 0.02194787
     nb_bern_smooth_pred <- predict(nb_bern_smooth)
+    expect_equal( 
+        book_lik_Y / (book_lik_Y + book_lik_N),
+        nb_bern_smooth_pred$posterior.prob["d5", "Y"]
+    )
+    expect_equal( 
+        book_lik_N / (book_lik_Y + book_lik_N),
+        nb_bern_smooth_pred$posterior.prob["d5", "N"]
+    )
 })
-
-    
 
 
