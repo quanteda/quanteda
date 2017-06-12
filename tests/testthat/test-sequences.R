@@ -9,11 +9,11 @@ test_that("test that nested argument is working", {
     toks <- tokens_select(toks, "^[A-Z]$", valuetype="regex", 
                           case_insensitive = FALSE, padding = TRUE)
     seqs <- sequences(toks, min_count = 1, nested = FALSE)
-    expect_equal(seqs$collocation, c('E E', 'E E G G', 'G G'))
+    expect_equal(seqs$collocation, c('E E', 'G G', 'E E G G'))
     expect_equal(seqs$count, c(2, 1, 1))
     
     seqs_nested <- sequences(toks, min_count = 1, nested = TRUE)
-    expect_equal(seqs_nested$collocation, c('E E G G', 'E E', 'G G', 'E G G'))
+    expect_equal(seqs_nested$collocation, c('E E G G', 'G G', 'E E', 'E G G'))
     expect_equal(seqs_nested$count, c(1, 2, 2, 1))
 })
 
@@ -23,7 +23,7 @@ test_that("test that argument 'min_size', 'max_size'", {
     toks <- tokens_select(toks, "^[A-Z]$", valuetype="regex", 
                           case_insensitive = FALSE, padding = TRUE)
     seqs <- sequences(toks, min_count = 1)
-    expect_equal(seqs$collocation, c('G G', 'E E', 'E E G G G', 'G G G', 'E G G G'))
+    expect_equal(seqs$collocation, c('E E G G G', 'G G', 'E E', 'G G G', 'E G G G'))
     
     seqs <- sequences(toks, min_count = 1, min_size = 3, max_size = 4)
     expect_equal(seqs$collocation, c('E G G G', 'E E G G', 'G G G'))
