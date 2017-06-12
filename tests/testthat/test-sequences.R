@@ -93,10 +93,10 @@ test_that("is.sequences function",{
 })
 
 test_that("test the correctness of dice", {
-     toks <- tokens(c('this is a test', 'this also a test'))
+     toks <- tokens('capital other capital gains other capital word2 other gains capital')
      seqs <- sequences(toks, min_count=1, max_size = 2)
-    # a smooth is used when calculating the dice, so the dice coefficient 
+    # smoothing is applied when calculating the dice, so the dice coefficient 
      #is only tested against manually calculated result.
-     expect_equal(seqs$dice[1], 0.75)
+     expect_equal(seqs$dice[1], 0.625)
  })
 
