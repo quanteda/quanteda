@@ -156,7 +156,7 @@ void estimates(std::size_t i,
         bit = match_bit2(seqs[i], seqs[j]);
         counts_bit[bit] += cs[j];
     }
-    counts_bit[std::pow(2, n)-1]  += cs[i] - 1;  // c(2^n-1) += number of itself  
+    counts_bit[std::pow(2, n)-1]  += cs[i];// - 1;  // c(2^n-1) += number of itself  
     
     //B-J algorithm    
     if (method == "unigram"){
