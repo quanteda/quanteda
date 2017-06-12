@@ -1,5 +1,6 @@
 //#include "dev.h"
 #include "quanteda.h"
+#include <bitset>
 using namespace quanteda;
 
 int match_bit2(const std::vector<unsigned int> &tokens1, 
@@ -35,16 +36,6 @@ double lambda_uni(const std::vector<double> &counts, const std::size_t ntokens){
     return l;
 }
 
-//count the numer of '1' bit
-std::size_t bitCount(std::size_t n) {  
-    std::size_t counter = 0;
-    while(n) {
-        counter += n % 2;
-        n >>= 1;
-    }
-    return counter;
-}
-
 // all subtuples from B&J algorithm
 double sigma_all(const std::vector<double> &counts){
     const std::size_t n = counts.size();
@@ -63,7 +54,8 @@ double lambda_all(const std::vector<double> &counts, const std::size_t ntokens){
     double l = 0.0;
 
     for (std::size_t b = 0; b < n; b++) {  //c(b), #(b)=1
-        l += std::pow(-1, ntokens - bitCount(b)) * std::log(counts[b]);
+        std::bitset<8> bitb(b);
+        l += std::pow(-1, ntokens - bitb.count()) * std::log(counts[b]);
     }
 
     return l;
@@ -75,10 +67,11 @@ double compute_dice(const std::vector<double> &counts){
     double dice = 0.0;
     const std::size_t n = counts.size();
     for (std::size_t b = 1; b < n; b++) {  //c(b), #(b)=1
-        dice += bitCount(b) * counts[b]; 
+        std::bitset<8> bitb(b);
+        dice += bitb.count() * counts[b]; 
     }
 
-    dice = 2*counts[n-1]/(dice);  // smooth has been applied in counts_bit[]
+    dice = 2*counts[n-1]/(dice);  // smoothing has been applied when declaring counts_bit[]
     return dice;
 }
 
@@ -149,13 +142,13 @@ void estimates(std::size_t i,
               DoubleParams &lmda, 
               DoubleParams &dice, 
               const String &method,
-              const int &count_min){
+              const int &count_min,
+              const std::size_t nseqs){
     
-    std::size_t n = seqs[i].size();
+    std::size_t n = seqs[i].size(); //n=2:5
     if (n == 1) return; // ignore single words
     if (cs[i] < count_min) return;
-    std::vector<double> counts_bit;
-    counts_bit.resize(std::pow(2, n), 0.5); // use 1/2 as smoothing
+    std::vector<double> counts_bit(std::pow(2, n), 0.5);// use 1/2 as smoothing
     for (std::size_t j = 0; j < seqs.size(); j++) {
         if (i == j) continue; // do not compare with itself
         //if(ns[j] < count_min) continue; // this is different from the old vesion
@@ -165,6 +158,8 @@ void estimates(std::size_t i,
         counts_bit[bit] += cs[j];
     }
     counts_bit[std::pow(2, n)-1]  += cs[i] - 1;  // c(2^n-1) += number of itself  
+    
+    //B-J algorithm    
     if (method == "unigram"){
         sgma[i] = sigma_uni(counts_bit, n);
         lmda[i] = lambda_uni(counts_bit, n);
@@ -173,7 +168,36 @@ void estimates(std::size_t i,
         lmda[i] = lambda_all(counts_bit, n);
     }
     
+    // Dice coefficient
     dice[i] = compute_dice(counts_bit);
+    
+    // marginal counts: used in pmi, chi-sqaure, G2
+    // std::vector<double> mc(n, 0);  // the size of mc is n
+    // for (int k = 1; k < std::pow(2, n); k++){
+    //     int kk = k; 
+    //     for (int j = n-1; j >= 0; j--){
+    //         int jj = std::pow(2, j);
+    //         if (kk >= jj){
+    //             mc[j] += counts_bit[k];
+    //             kk -= jj;
+    //             Rcout<<"C"<<k<<" mc"<<j<<std::endl;
+    //         }
+    //     }
+    // }
+    
+    //expected counts: used in chi-square, G2
+    // std::vector<double> ec(std::pow(2, n), 1.00);
+    // for (int k = 0; k < std::pow(2, n); k++){
+    //     int kk = k; 
+    //     for (int j = n-1; j >= 0; j--){
+    //         int jj = std::pow(2, j);
+    //         if (kk >= jj){
+    //             mc[j] += counts_bit[k];
+    //             kk -= jj;
+    //             Rcout<<"C"<<k<<" mc"<<j<<std::endl;
+    //         }
+    //     }
+    // }
 }
 
 struct estimates_mt : public Worker{
@@ -185,15 +209,16 @@ struct estimates_mt : public Worker{
     DoubleParams &dice;
     const String &method;
     const unsigned int &count_min;
+    const std::size_t nseqs;
 
     // Constructor
     estimates_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_,
-                 const String &method, const unsigned int &count_min_):
-        seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), method(method), count_min(count_min_){}
+                 const String &method, const unsigned int &count_min_, const std::size_t nseqs_):
+        seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), method(method), count_min(count_min_), nseqs(nseqs_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimates(i, seqs, cs, sgma, lmda, dice, method, count_min);
+            estimates(i, seqs, cs, sgma, lmda, dice, method, count_min, nseqs);
         }
     }
 };
@@ -203,7 +228,6 @@ struct estimates_mt : public Worker{
 * that appear in sequences. Estimates are slightly different from the old version,
 *  because this faster version does not ignore infrequent sequences.
 * @used sequences()
-* @creator Kohei Watanabe
 * @param texts_ tokens ojbect
 * @param count_min sequences appear less than this are ignores
 * @param nested if true, subsequences are also collected
@@ -255,11 +279,11 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     //DoubleParams dice(len);
     //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-    estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, method, count_min);
+    estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, method, count_min, seqs.size());
     parallelFor(0, seqs.size(), estimate_mt);
 #else
     for (std::size_t i = 0; i < seqs.size(); i++) {
-        estimates(i, seqs, cs, sgma, lmda, dice, method, count_min);
+        estimates(i, seqs, cs, sgma, lmda, dice, method, count_min, seqs.size());
     }
 #endif
     //dev::stop_timer("Estimate", timer);
