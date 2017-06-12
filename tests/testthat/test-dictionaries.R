@@ -198,3 +198,52 @@ test_that("dictionary woks with the Yoshicoder format", {
     
 })    
 
+
+test_that("dictionary constructor works with LIWC format w/doubled terms", {
+    expect_equivalent(
+        dictionary(file = "../data/dictionaries/mary_doubleterm.dic"),
+        dictionary(list(A_CATEGORY = c("lamb", "little", "more"),
+                        ANOTHER_CATEGORY = c("had", "little", "mary")))
+    )
+})
+
+test_that("dictionary constructor errors as expected with LIWC format missing a category", {
+    expect_error(
+        dictionary(file = "../data/dictionaries/mary_missingcat.dic"),
+        "Dictionary.*refers to undefined category 3 for term \"little\"" 
+    )
+})
+
+test_that("dictionary constructor works with LIWC format w/multiple tabs, spaces, etc", {
+    expect_equivalent(
+        dictionary(file = "../data/dictionaries/mary_multipletabs.dic"),
+        dictionary(list(A_CATEGORY = c("lamb", "little", "more"),
+                        ANOTHER_CATEGORY = c("had", "little", "mary")))
+    )
+})
+
+test_that("dictionary constructor works with LIWC format w/extra codes", {
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: 1 term ignored because contains unsupported <of> tag"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: ignoring parenthetical expressions in lines:"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty keys: friend, humans, insight, cause, discrep, filler"
+    )
+    d <- dictionary(file = "../data/dictionaries/liwc_extracodes.dic")
+    expect_equal(
+        length(d), 
+        10
+    )
+    expect_equal(
+        names(d), 
+        c("verb", "past", "whatever", "family", "affect", "posemo", "cogmech", "tentat", "whatever2", "time")
+    )
+})
+
+
