@@ -183,7 +183,16 @@ void estimates(std::size_t i,
         }
     }
     
-
+    //expected counts: used in chi-square, G2
+    std::vector<double> ec(std::pow(2, n), 1.00);
+    for (std::size_t k = 0; k < std::pow(2, n); k++){
+        for (std::size_t j = 0; j < n; j++){
+            std::bitset<8> bitb(k);
+            ec[k] = ec[k] * (bitb.test(j)?mc[j]:(nseqs-mc[j]));
+        }
+        ec[k] = ec[k]/std::pow(nseqs, n-1);
+    }
+    
     //pmi
     pmi[i] = log(counts_bit[std::pow(2, n)-1]) + (n-1) * log(nseqs);
     //Rcout<<"counts[3]"<<counts_bit[std::pow(2, n)-1]<<"nseqs"<<nseqs<<"pmi["<<i<<"-0]="<<pmi[i];
