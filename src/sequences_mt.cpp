@@ -70,7 +70,7 @@ double compute_dice(const std::vector<double> &counts){
         std::bitset<8> bitb(b);
         dice += bitb.count() * counts[b]; 
     }
-
+    //Rcout<<"counts[n-1]="<<counts[n-1]<<"dice="<<dice<<std::endl;
     dice = 2*counts[n-1]/(dice);  // smoothing has been applied when declaring counts_bit[]
     return dice;
 }
@@ -123,7 +123,6 @@ struct counts_mt : public Worker{
     const unsigned int &len_max;
     const bool &nested;
     
-    
     counts_mt(Texts texts_, MapNgrams &counts_seq_, const unsigned int &len_min_,
              const unsigned int &len_max_, const bool &nested_):
         texts(texts_), counts_seq(counts_seq_), len_min(len_min_), len_max(len_max_), nested(nested_) {}
@@ -140,7 +139,8 @@ void estimates(std::size_t i,
               IntParams &cs, 
               DoubleParams &sgma, 
               DoubleParams &lmda, 
-              DoubleParams &dice, 
+              DoubleParams &dice,
+              DoubleParams &pmi,
               const String &method,
               const int &count_min,
               const std::size_t nseqs){
@@ -151,8 +151,7 @@ void estimates(std::size_t i,
     std::vector<double> counts_bit(std::pow(2, n), 0.5);// use 1/2 as smoothing
     for (std::size_t j = 0; j < seqs.size(); j++) {
         if (i == j) continue; // do not compare with itself
-        //if(ns[j] < count_min) continue; // this is different from the old vesion
-        
+ 
         int bit;
         bit = match_bit2(seqs[i], seqs[j]);
         counts_bit[bit] += cs[j];
@@ -172,32 +171,27 @@ void estimates(std::size_t i,
     dice[i] = compute_dice(counts_bit);
     
     // marginal counts: used in pmi, chi-sqaure, G2
-    // std::vector<double> mc(n, 0);  // the size of mc is n
-    // for (int k = 1; k < std::pow(2, n); k++){
-    //     int kk = k; 
-    //     for (int j = n-1; j >= 0; j--){
-    //         int jj = std::pow(2, j);
-    //         if (kk >= jj){
-    //             mc[j] += counts_bit[k];
-    //             kk -= jj;
-    //             Rcout<<"C"<<k<<" mc"<<j<<std::endl;
-    //         }
-    //     }
-    // }
+    std::vector<double> mc(n, 0);  // the size of mc is n
+    for (int k = 1; k < std::pow(2, n); k++){
+        int kk = k;
+        for (int j = n-1; j >= 0; j--){
+            int jj = std::pow(2, j);
+            if (kk >= jj){
+                mc[j] += counts_bit[k];
+                kk -= jj;
+            }
+        }
+    }
     
-    //expected counts: used in chi-square, G2
-    // std::vector<double> ec(std::pow(2, n), 1.00);
-    // for (int k = 0; k < std::pow(2, n); k++){
-    //     int kk = k; 
-    //     for (int j = n-1; j >= 0; j--){
-    //         int jj = std::pow(2, j);
-    //         if (kk >= jj){
-    //             mc[j] += counts_bit[k];
-    //             kk -= jj;
-    //             Rcout<<"C"<<k<<" mc"<<j<<std::endl;
-    //         }
-    //     }
-    // }
+
+    //pmi
+    pmi[i] = log(counts_bit[std::pow(2, n)-1]) + (n-1) * log(nseqs);
+    //Rcout<<"counts[3]"<<counts_bit[std::pow(2, n)-1]<<"nseqs"<<nseqs<<"pmi["<<i<<"-0]="<<pmi[i];
+    for (std::size_t k = 0; k < n; k++){
+        pmi[i] -= log(mc[k]);
+        //Rcout<<"**"<<pmi[i];
+    }
+    //Rcout<<std::endl;
 }
 
 struct estimates_mt : public Worker{
@@ -207,18 +201,19 @@ struct estimates_mt : public Worker{
     DoubleParams &sgma;
     DoubleParams &lmda;
     DoubleParams &dice;
+    DoubleParams &pmi;
     const String &method;
     const unsigned int &count_min;
     const std::size_t nseqs;
 
     // Constructor
-    estimates_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_,
+    estimates_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_, DoubleParams &pmi_,
                  const String &method, const unsigned int &count_min_, const std::size_t nseqs_):
-        seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), method(method), count_min(count_min_), nseqs(nseqs_){}
+        seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), method(method), count_min(count_min_), nseqs(nseqs_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimates(i, seqs, cs, sgma, lmda, dice, method, count_min, nseqs);
+            estimates(i, seqs, cs, sgma, lmda, dice, pmi, method, count_min, nseqs);
         }
     }
 };
@@ -266,26 +261,29 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     seqs.reserve(len);
     cs.reserve(len);
     ns.reserve(len);
+    double total_counts = 0;
     for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
         seqs.push_back(it -> first);
         cs.push_back(it -> second);
         ns.push_back(it -> first.size());
+        total_counts += it -> second;
     }
     
     // Estimate significance of the sequences
     DoubleParams sgma(len);
     DoubleParams lmda(len);
     DoubleParams dice(len);
+    DoubleParams pmi(len);
     //DoubleParams dice(len);
     //dev::start_timer("Estimate", timer);
-#if QUANTEDA_USE_TBB
-    estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, method, count_min, seqs.size());
-    parallelFor(0, seqs.size(), estimate_mt);
-#else
+//#if QUANTEDA_USE_TBB
+//    estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, pmi, method, count_min, total_counts);
+//    parallelFor(0, seqs.size(), estimate_mt);
+//#else
     for (std::size_t i = 0; i < seqs.size(); i++) {
-        estimates(i, seqs, cs, sgma, lmda, dice, method, count_min, seqs.size());
+        estimates(i, seqs, cs, sgma, lmda, dice, pmi, method, count_min, total_counts);
     }
-#endif
+//#endif
     //dev::stop_timer("Estimate", timer);
     
     // Convert sequences from integer to character
@@ -300,6 +298,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                                           _["lambda"] = as<NumericVector>(wrap(lmda)),
                                           _["sigma"] = as<NumericVector>(wrap(sgma)),
                                           _["dice"] = as<NumericVector>(wrap(dice)),
+                                          _["pmi"] = as<NumericVector>(wrap(pmi)),
                                           _["stringsAsFactors"] = false);
     output_.attr("tokens") = as<Tokens>(wrap(seqs));
     return output_;
@@ -311,13 +310,14 @@ DataFrame qatd_cpp_sequences(const List &texts_,
 toks <- tokens(data_corpus_inaugural)
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 
-toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
-types <- unique(as.character(toks))
-out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "unigram",TRUE)
-out3 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "all_subtuples",TRUE)
-out4 <- qatd_cpp_sequences(toks, types, 1, 2, 3, "unigram",TRUE)
+#toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
+#types <- unique(as.character(toks))
+#out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "unigram",TRUE)
+#out3 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "all_subtuples",TRUE)
+#out4 <- qatd_cpp_sequences(toks, types, 1, 2, 3, "unigram",TRUE)
 # out2$z <- out2$lambda / out2$sigma
 # out2$p <- 1 - stats::pnorm(out2$z)
-
-
+toks <- tokens('capital other capital gains other capital word2 other gains capital')
+types <- unique(as.character(toks))
+out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "unigram",TRUE)
 */
