@@ -63,11 +63,12 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     levs <- levels(y.trclass)
     
     ## distribution
-    if (distribution == "Bernoulli") 
+    if (distribution == "Bernoulli") {
         x.trset <- tf(x.trset, "boolean")
-    else
+    } else {
         if (distribution != "multinomial")
             stop("Distribution can only be multinomial or Bernoulli.")
+    }
     
     ## prior
     if (prior=="uniform") {
@@ -92,12 +93,21 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     } else stop("Prior must be either docfreq (default), wordfreq, or uniform")
     
     ## multinomial ikelihood: class x words, rows sum to 1
-    # d <- t(sapply(split(as.data.frame(x.trset), y.trclass), colSums))
     # combine all of the class counts
     rownames(x.trset) <- y.trclass
     d <- dfm_compress(x.trset, margin = "both")
 
-    PwGc <- rowNorm(d + smooth)
+    if (distribution == "multinomial") {
+        PwGc <- rowNorm(d + smooth)
+    } else if (distribution == "Bernoulli") {
+        # if (smooth != 1) {
+        #     warning("smoothing of 0 makes little sense for Bernoulli NB", call. = FALSE, noBreaks. = TRUE)
+        # }
+        # denominator here is same as IIR Fig 13.3 line 8 - see also Eq. 13.7
+        PwGc <- (d + smooth) / (as.vector(table(docnames(x.trset))[docnames(d)]) + smooth * ndoc(d))
+        PwGc <- as(PwGc, "dgeMatrix")
+    }
+    
     
     # order Pc so that these are the same order as rows of PwGc
     Pc <- Pc[rownames(PwGc)]
@@ -150,10 +160,11 @@ predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
         object$PwGc <- object$PwGc[-notinref]
         object$PcGw <- object$PcGw[-notinref]
         object$Pw   <- object$Pw[-notinref]
-        object$data$x <- object$data$x[,-notinref]
-        newdata <- newdata[,-notinref] 
+        object$data$x <- object$data$x[, -notinref]
+        newdata <- newdata[, -notinref] 
     }
 
+    
     # make sure feature set is ordered the same in test and training set (#490)
     if (ncol(object$PcGw) != ncol(newdata))
         stop("feature set in newdata different from that in training set")
@@ -163,11 +174,34 @@ predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
     } else {
         stop("feature set in newdata different from that in training set")
     }
+    
+    if (object$distribution == "multinomial") {
+        
+        # log P(d|c) class conditional document likelihoods
+        log.lik <- newdata %*% t(log(object$PwGc))
+        # weight by class priors
+        log.posterior.lik <- t(apply(log.lik, 1, "+", log(object$Pc)))
+        
+    } else if (object$distribution == "Bernoulli") {
+        
+        newdata <- tf(newdata, "boolean")
+        Nc <- length(object$Pc)
+        
+        # initialize log posteriors with class priors
+        log.posterior.lik <- matrix(log(object$Pc), byrow = TRUE, ncol = Nc, nrow = nrow(newdata),
+                                    dimnames = list(rownames(newdata), names(object$Pc)))
+        # APPLYBERNOULLINB from IIR Fig 13.3
+        for (c in seq_len(Nc)) {
+            tmp1 <- log(t(newdata) * object$PwGc[c, ])
+            tmp1[is.infinite(tmp1)] <- 0
+            tmp0 <- log(t(!newdata) * (1 - object$PwGc[c, ]))
+            tmp0[is.infinite(tmp0)] <- 0
+            log.posterior.lik[, c] <- 
+                log.posterior.lik[, c] + colSums(tmp0) + colSums(tmp1)
+        }
+        
+    } 
 
-    # log P(d|c) class conditional document likelihoods
-    log.lik <- newdata %*% t(log(object$PwGc))
-    # weight by class priors
-    log.posterior.lik <- t(apply(log.lik, 1, "+", log(object$Pc)))
     
     # predict MAP class
     nb.predicted <- colnames(log.posterior.lik)[apply(log.posterior.lik, 1, which.max)]

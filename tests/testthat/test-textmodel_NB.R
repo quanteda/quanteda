@@ -29,10 +29,8 @@ test_that("class priors are preserved in correct order", {
 
 
 test_that("bernoulli diff from multinomial model (#776)", {
-    tmp <- textmodel_NB(trainingset, trainingclass, distribution = "Bernoulli")
-    expect_equivalent(
-        round(as.vector(tmp$PcGw[1,]), 7),
-        c(0.6000000, 0.6000000, 0.2727273, 0.6000000, 0.6000000, 0.2727273)
+    expect_true(
+        !identical(nb_multi_smooth$PcGw[1,], nb_bern_smooth$PcGw[1,])
     )
 })
 
@@ -56,6 +54,42 @@ test_that("multinomial likelihoods and class posteriors are correct", {
     expect_identical(nb_multi_nosmooth$PwGc["N", "Japan"], 1/3)
 })
 
+test_that("Bernoulli likelihoods and class posteriors are correct", {
+    # test for results from p261, https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf
+    
+    # with smoothing
+    expect_identical(nb_bern_smooth$PwGc["Y", "Chinese"], 4/5)
+    expect_identical(nb_bern_smooth$PwGc["Y", "Japan"], 1/5)
+    expect_identical(nb_bern_smooth$PwGc["Y", "Tokyo"], 1/5)
+    expect_identical(nb_bern_smooth$PwGc["Y", "Beijing"], 2/5)
+    expect_identical(nb_bern_smooth$PwGc["Y", "Macao"], 2/5)
+    expect_identical(nb_bern_smooth$PwGc["Y", "Shanghai"], 2/5)
+    expect_identical(nb_bern_smooth$PwGc["N", "Chinese"], 2/3)
+    expect_identical(nb_bern_smooth$PwGc["N", "Japan"], 2/3)
+    expect_identical(nb_bern_smooth$PwGc["N", "Tokyo"], 2/3)
+    expect_identical(nb_bern_smooth$PwGc["N", "Beijing"], 1/3)
+    expect_identical(nb_bern_smooth$PwGc["N", "Macao"], 1/3)
+    expect_identical(nb_bern_smooth$PwGc["N", "Shanghai"], 1/3)
+    
+    # without smoothing
+    expect_identical(nb_bern_nosmooth$PwGc["Y", "Chinese"], 3/3)
+    expect_identical(nb_bern_nosmooth$PwGc["Y", "Japan"], 0/3)
+    expect_identical(nb_bern_nosmooth$PwGc["Y", "Tokyo"], 0/3)
+    expect_identical(nb_bern_nosmooth$PwGc["Y", "Beijing"], 1/3)
+    expect_identical(nb_bern_nosmooth$PwGc["Y", "Macao"], 1/3)
+    expect_identical(nb_bern_nosmooth$PwGc["Y", "Shanghai"], 1/3)
+    expect_identical(nb_bern_nosmooth$PwGc["N", "Chinese"], 1/1)
+    expect_identical(nb_bern_nosmooth$PwGc["N", "Japan"], 1/1)
+    expect_identical(nb_bern_nosmooth$PwGc["N", "Tokyo"], 1/1)
+    expect_identical(nb_bern_nosmooth$PwGc["N", "Beijing"], 0/1)
+    expect_identical(nb_bern_nosmooth$PwGc["N", "Macao"], 0/1)
+    expect_identical(nb_bern_nosmooth$PwGc["N", "Shanghai"], 0/1)
+})
 
+test_that("Bernoulli NB predicted values are correct", {
+    nb_bern_smooth_pred <- predict(nb_bern_smooth)
+})
+
+    
 
 
