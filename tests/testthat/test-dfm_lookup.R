@@ -10,7 +10,7 @@ test_that("test dfm_lookup, issue #389", {
     expect_equal(featnames(dfm(tokens_lookup(toks, dictionary = dict), tolower = FALSE)),
                  c("Country", "HOR", "law", "freedom"))
     expect_error(dfm_lookup(dfm(toks), dictionary = dict),
-                  "dfm_lookup not currently implemented for ngrams > 1 and multi-word dictionary values")
+                  "dfm_lookup not implemented for ngrams > 1 and multi-word dictionary values")
 
     dict2 <- dictionary(list(Country = "united",
                              HOR = c("House"),
@@ -78,7 +78,7 @@ test_that("dfm_lookup raises error when dictionary has multi-word entries", {
     toks <- tokens(data_corpus_inaugural[1:5])
     dict <- dictionary(list(Country = "united states"), concatenator = ' ')
     expect_error(dfm_lookup(dfm(toks), dictionary = dict), 
-                 "dfm_lookup not currently implemented for .* multi-word dictionary values")
+                 "dfm_lookup not implemented for .* multi-word dictionary values")
 })
 
 test_that("dfm_lookup works with tokens created by kwic, issue #697", {
