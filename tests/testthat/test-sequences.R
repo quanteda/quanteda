@@ -97,6 +97,11 @@ test_that("test the correctness of dice", {
      seqs <- sequences(toks, min_count=1, max_size = 2)
     # smoothing is applied when calculating the dice, so the dice coefficient 
      #is only tested against manually calculated result.
+     
+     #dice
      expect_equal(seqs$dice[1], 0.625)
+     
+     #pmi
+     expect_equal(seqs$pmi[1], log(2.5*9/(2.5+1.5)/(2.5+1.5)))
  })
 
