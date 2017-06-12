@@ -60,24 +60,30 @@ This naive Bayes model works on word counts, with smoothing.
 
 \examples{
 ## Example from 13.1 of _An Introduction to Information Retrieval_
-trainingset <- as.dfm(matrix(c(1, 2, 0, 0, 0, 0,
-                        0, 2, 0, 0, 1, 0,
-                        0, 1, 0, 1, 0, 0,
-                        0, 1, 1, 0, 0, 1,
-                        0, 3, 1, 0, 0, 1), 
-                      ncol=6, nrow=5, byrow=TRUE,
-                      dimnames = list(docs = paste("d", 1:5, sep = ""),
-                                      features = c("Beijing", "Chinese",  "Japan", "Macao", 
-                                                   "Shanghai", "Tokyo"))))
+txt <- c(d1 = "Chinese Beijing Chinese",
+         d2 = "Chinese Chinese Shanghai",
+         d3 = "Chinese Macao",
+         d4 = "Tokyo Japan Chinese",
+         d5 = "Chinese Chinese Chinese Tokyo Japan")
+trainingset <- dfm(txt, tolower = FALSE)
 trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
+ 
 ## replicate IIR p261 prediction for test set (document 5)
-(nb.p261 <- textmodel_NB(trainingset, trainingclass))
+(nb.p261 <- textmodel_NB(trainingset, trainingclass, prior = "docfreq"))
 predict(nb.p261, newdata = trainingset[5, ])
 
 # contrast with other priors
-predict(textmodel_NB(trainingset, trainingclass, prior = "docfreq"))
+predict(textmodel_NB(trainingset, trainingclass, prior = "uniform"))
 predict(textmodel_NB(trainingset, trainingclass, prior = "termfreq"))
 
+## replicate IIR p264 Bernoulli Naive Bayes
+(nb.p261.bern <- textmodel_NB(trainingset, trainingclass, distribution = "Bernoulli", 
+                              prior = "docfreq"))
+predict(nb.p261.bern, newdata = trainingset[5, ])
+}
+\references{
+Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction to Information Retrieval. 
+   Cambridge University Press. \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 }
 \author{
 Kenneth Benoit
