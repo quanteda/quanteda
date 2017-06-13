@@ -56,7 +56,7 @@ inline Tokens recompile(Texts texts,
                         Types types, 
                         bool flag_gap = true, 
                         bool flag_dupli = true,
-                        bool flag_encoding = true){
+                        bool flag_encode = true){
 
     VecIds ids_new(types.size() + 1);
     ids_new[0] = 0; // reserved for padding
@@ -126,10 +126,10 @@ inline Tokens recompile(Texts texts,
     // Do nothing if all used and unique
     //Rcout << all_used << " " << all_unique << "\n";
     if (all_used && all_unique) {
-        ListOf<IntegerVector> texts_list = Rcpp::wrap(texts);
-        texts_list.attr("padding") = (bool)flags_used[0];
-        texts_list.attr("types") = types;
-        return texts_list;
+        Tokens texts_ = Rcpp::wrap(texts);
+        texts_.attr("padding") = (bool)flags_used[0];
+        texts_.attr("types") = types;
+        return texts_;
     }
     
     //dev::start_timer("Convert IDs", timer);
@@ -159,11 +159,15 @@ inline Tokens recompile(Texts texts,
     //dev::start_timer("Wrap", timer);
     Tokens texts_ = Rcpp::wrap(texts);
     //dev::stop_timer("Wrap", timer);
-    if (flag_encoding) {
+    CharacterVector types_new_;
+    if (flag_encode) {
         // dev::start_timer("Encode", timer);
-        texts_.attr("types") = encode(types_new);
+        types_new_ = encode(types_new);
         // dev::stop_timer("Encode", timer);
+    } else {
+        types_new_ = Rcpp::wrap(types_new);
     }
+    texts_.attr("types") = types_new_;
     texts_.attr("padding") = (bool)flags_used[0];
     
     return texts_;
