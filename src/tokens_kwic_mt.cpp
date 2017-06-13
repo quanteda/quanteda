@@ -145,7 +145,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     }
     
 
-    Tokens tokens_ = recompile(contexts, types);
+    Tokens tokens_ = recompile(contexts, types, true, true, is_encoded(types_));
     tokens_.attr("names") = coxs_name_;
     
     DataFrame output_ = DataFrame::create(_["docname"] = coxs_name_,
