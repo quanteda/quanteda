@@ -25,7 +25,7 @@ textplot_network <- function(x, width = 10, ignore = 0.5, ...) {
     x[x < quantile(as.vector(x), ignore)] <- 0
     )
     temp <- igraph::graph_from_adjacency_matrix(x, weighted = TRUE, diag = FALSE, mode = 'undirected')
-    igraph::igraph_options(plot.layout = igraph::layout_with_fr, vertex.label.family = 'sanserif', 
+    igraph::igraph_options(plot.layout = igraph::layout_with_fr, vertex.label.family = 'sans', 
                            vertex.label.color = 'black',
                            edge.color = adjustcolor('sky blue', 0.5),
                            vertex.color = adjustcolor('white', 1.0),
