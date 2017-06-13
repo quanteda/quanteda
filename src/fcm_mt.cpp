@@ -49,10 +49,12 @@ void count_col(const Text &text,
     SetPair set_pair;
     
     for (unsigned int i = 0; i < text.size(); i++) {
+        if (text[i] == 0) continue; // skip padding
         unsigned int j_ini = i + 1;
         unsigned int j_lim = std::min(i + window + 1, len);
         
         for(unsigned int j = j_ini; j < j_lim; j++) {
+            if (text[j] == 0) continue; // skip padding
             if (ordered){
                 if (!tri || ((text[i] <= text[j])&& tri) ){// only include upper triangular element (diagonal inclusive) if tri = TRUE
                     if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
