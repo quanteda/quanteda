@@ -4,7 +4,7 @@
 \alias{textplot_network}
 \title{plot semantic network based on collocations}
 \usage{
-textplot_network(x, width = 10, ignore = 0.99, ...)
+textplot_network(x, width = 10, ignore = 0.5, ...)
 }
 \arguments{
 \item{x}{a dfm object}
@@ -20,7 +20,7 @@ using \code{\link[igraph]{igraph}}.
 \examples{
 \dontrun{
 toks <- tokens(corpus_subset(data_corpus_inaugural, President=="Obama"), remove_punct = TRUE)
-toks <- tokens_remove(toks, feature = stopwords("english"), padding = TRUE)
+toks <- tokens_remove(toks, feature = stopwords("english"), padding = FALSE)
 myfcm <- fcm(toks, context = 'window', tri = FALSE)
 feats <- names(topfeatures(myfcm, 20))
 textplot_network(myfcm[feats,feats], ignore = 0.5)
