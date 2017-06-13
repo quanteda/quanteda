@@ -1,5 +1,5 @@
-//#include "dev.h"
 #include "quanteda.h"
+#include "dev.h"
 #include "recompile.h"
 using namespace quanteda;
 
@@ -185,8 +185,8 @@ List qatd_cpp_tokens_ngrams2(const List &texts_,
     // Register both ngram (key) and unigram (value) IDs in a hash table
     MapNgrams map_ngram;
 
-    //dev::Timer timer;
-    //dev::start_timer("Ngram generation", timer);
+    // dev::Timer timer;
+    // dev::start_timer("Ngram generation", timer);
 #if QUANTEDA_USE_TBB
     IdNgram id_ngram(1);
     skipgram_mt2 skipgram_mt2(texts, ns, skips, map_ngram, id_ngram);
@@ -197,7 +197,7 @@ List qatd_cpp_tokens_ngrams2(const List &texts_,
         texts[h] = skipgram2(texts[h], ns, skips, map_ngram, id_ngram);
     }
 #endif
-     //dev::stop_timer("Ngram generation", timer);
+    // dev::stop_timer("Ngram generation", timer);
     
     // Extract only keys in order of the id
     VecNgrams keys_ngram(id_ngram - 1);
@@ -205,7 +205,7 @@ List qatd_cpp_tokens_ngrams2(const List &texts_,
         keys_ngram[it.second - 1] = it.first;
     }
     
-    //dev::start_timer("Token generation", timer);
+    // dev::start_timer("Token generation", timer);
     // Create ngram types
      Types types_ngram(keys_ngram.size());
 #if QUANTEDA_USE_TBB
@@ -216,8 +216,13 @@ List qatd_cpp_tokens_ngrams2(const List &texts_,
         type2(i, keys_ngram, types_ngram, map_ngram, delim, types);
     }
 #endif
-    //dev::stop_timer("Token generation", timer);
-    return recompile(texts, types_ngram);
+    // dev::stop_timer("Token generation", timer);
+    
+    // dev::start_timer("Recompile", timer);
+    List result = recompile(texts, types_ngram, true, false);
+    // dev::stop_timer("Recompile", timer);
+    
+    return result;
 }
 
 
@@ -230,9 +235,23 @@ tok <- quanteda::tokens(txt)
 out <- qatd_cpp_tokens_ngrams2(tok, attr(tok, 'types'), "-", 2, 1)
 str(out)
 
+out1 <- qatd_cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1)
+class(out1) <- 'tokens'
+head(out1[[3]])
+
+out2 <- qatd_cpp_tokens_ngrams2(tok2, attr(tok2, 'types'), "-", 2, 1)
+class(out2) <- 'tokens'
+head(out2[[3]])
+
+identical(as.list(out1), as.list(out2))
+
+
 tok2 <- quanteda::tokens(data_corpus_inaugural)
 microbenchmark::microbenchmark(
-    qatd_cpp_tokens_ngrams2(tok2, attr(tok2, 'types'), "-", 2, 1)
+    qatd_cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1),
+    qatd_cpp_tokens_ngrams2(tok2, attr(tok2, 'types'), "-", 2, 1),
+    tokenizers::tokenize_ngrams(texts(data_corpus_inaugural)),
+    times = 100
 )
 
 

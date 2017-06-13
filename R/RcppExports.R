@@ -73,6 +73,10 @@ qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
     .Call(quanteda_qatd_cpp_tokens_ngrams, texts_, types_, delim_, ns_, skips_)
 }
 
+qatd_cpp_tokens_ngrams2 <- function(texts_, types_, delim_, ns_, skips_) {
+    .Call(quanteda_qatd_cpp_tokens_ngrams2, texts_, types_, delim_, ns_, skips_)
+}
+
 qatd_cpp_tokens_recompile <- function(texts_, types_) {
     .Call(quanteda_qatd_cpp_tokens_recompile, texts_, types_)
 }

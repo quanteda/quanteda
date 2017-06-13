@@ -1,4 +1,5 @@
 #include "quanteda.h"
+#include "dev.h"
 using namespace quanteda;
 
 #if QUANTEDA_USE_TBB
@@ -34,50 +35,76 @@ struct recompile_mt : public Worker{
     }
 };
 
-inline Tokens recompile(Texts texts, Types types){
-    
+inline Tokens recompile(Texts texts, 
+                        Types types, 
+                        bool check_gap = true, 
+                        bool check_dupli = true){
 
     VecIds ids_new(types.size() + 1);
     ids_new[0] = 0; // reserved for padding
     unsigned int id_new = 1;
+    std::vector<bool> flags_used(ids_new.size(), false);
+    std::vector<bool> flags_unique(ids_new.size(), false);
     //Rcout << setw(10) << "" << ": " << 0 << " -> " << ids_new[0] << "\n";
     
+    //dev::Timer timer;
+    
     // Check if IDs are all used
-    unsigned int id_limit = ids_new.size();
-    std::vector<bool> flags_used(ids_new.size(), false);
-    for (std::size_t h = 0; h < texts.size(); h++) {
-        for (std::size_t i = 0; i < texts[h].size(); i++) {
-            unsigned int id = texts[h][i];
-            if (id > id_limit) {
-                throw std::range_error("Invalid tokens object");    
+    bool all_used;
+    if (check_gap) {
+        // dev::start_timer("Check gaps", timer);
+        unsigned int id_limit = ids_new.size();
+        for (std::size_t h = 0; h < texts.size(); h++) {
+            for (std::size_t i = 0; i < texts[h].size(); i++) {
+                unsigned int id = texts[h][i];
+                if (id > id_limit) {
+                    throw std::range_error("Invalid tokens object");    
+                }
+                flags_used[id] = true;
             }
-            flags_used[id] = true;
         }
+        all_used = std::all_of(flags_used.begin(), flags_used.end(), [](bool v) { return v; });
+        // dev::stop_timer("Check gaps", timer);
+    } else {
+        std::fill(flags_used.begin(), flags_used.end(), true);
+        bool all_used = true;
     }
-    bool all_used = std::all_of(flags_used.begin(), flags_used.end(), [](bool v) { return v; });
     
     // Check if types are duplicated
-    std::vector<bool> flags_unique(ids_new.size(), false);
-    std::unordered_map<std::string, unsigned int> types_unique;
-    flags_unique[0] = true; // padding is always unique
-    for (std::size_t g = 1; g < ids_new.size(); g++) {
-        if (types[g - 1] == "") continue; // ignore null types
-        auto it = types_unique.insert(std::pair<std::string, unsigned int>(types[g - 1], id_new));
-        ids_new[g] = it.first->second;
-        if (it.second) {
-            flags_unique[g] = true;
+    bool all_unique;
+    if (check_dupli) {
+        // dev::start_timer("Check duplication", timer);
+        std::unordered_map<std::string, unsigned int> types_unique;
+        flags_unique[0] = true; // padding is always unique
+        for (std::size_t g = 1; g < ids_new.size(); g++) {
+            if (types[g - 1] == "") continue; // ignore null types
+            auto it = types_unique.insert(std::pair<std::string, unsigned int>(types[g - 1], id_new));
+            ids_new[g] = it.first->second;
+            if (it.second) {
+                flags_unique[g] = true;
+                if (flags_used[g]) {
+                    id_new++; // increment iff there is no gap
+                }
+            }
+            // if (flags_used[g]) {
+            //     Rcout << setw(10) << types[g - 1] << ": " << g << " -> " << ids_new[g] << "\n";
+            // } else {
+            //     Rcout << setw(10) << types[g - 1] << ": " << g << " ->\n";
+            // }
+        }
+        all_unique = std::all_of(flags_unique.begin(), flags_unique.end(), [](bool v) { return v; });
+        // dev::stop_timer("Check duplication", timer);
+    } else {
+        unsigned int id_new = 1;
+        for (std::size_t g = 1; g < ids_new.size(); g++) {
             if (flags_used[g]) {
-                id_new++; // increment iff there is no gap
+                ids_new[g] = id_new++;
             }
         }
-        // if (flags_used[g]) {
-        //     Rcout << setw(10) << types[g - 1] << ": " << g << " -> " << ids_new[g] << "\n";
-        // } else {
-        //     Rcout << setw(10) << types[g - 1] << ": " << g << " ->\n";
-        // }
+        std::fill(flags_unique.begin(), flags_unique.end(), true);
+        all_unique = true;
     }
-    bool all_unique = std::all_of(flags_unique.begin(), flags_unique.end(), [](bool v) { return v; });
-     
+    
     // Do nothing if all used and unique
     //Rcout << all_used << " " << all_unique << "\n";
     if (all_used && all_unique) {
@@ -86,6 +113,8 @@ inline Tokens recompile(Texts texts, Types types){
         texts_list.attr("types") = types;
         return texts_list;
     }
+    
+    //dev::start_timer("Convert IDs", timer);
     
     // Convert old IDs to new IDs
 #if QUANTEDA_USE_TBB
@@ -107,11 +136,18 @@ inline Tokens recompile(Texts texts, Types types){
             types_new.push_back(types[j]);
         }
     }
+    //dev::stop_timer("Convert IDs", timer);
     
-    // dev::stop_timer("Dictionary lookup", timer);
+    //dev::start_timer("Wrap", timer);
     Tokens texts_list = Rcpp::wrap(texts);
+    //dev::stop_timer("Wrap", timer);
+    
+    //dev::start_timer("Encode", timer);
     texts_list.attr("padding") = (bool)flags_used[0];
     texts_list.attr("types") = encode(types_new);
+    //dev::stop_timer("Encode", timer);
+    
+    
     return texts_list;
     
 }
