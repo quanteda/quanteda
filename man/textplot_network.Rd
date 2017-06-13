@@ -14,15 +14,16 @@ textplot_network(x, width = 10, ignore = 0.99, ...)
 \item{ignore}{a threadh for infrequentl collocations to be ignored}
 }
 \description{
-plot semantic network based on collocations
+Plot \link{fcm} as a network, where vertices are features and edges are cooccuraces 
+using \code{\link[igraph]{igraph}}.
 }
 \examples{
 \dontrun{
-# plot the features (without stopwords) from Obama's two inaugural addresses
 toks <- tokens(corpus_subset(data_corpus_inaugural, President=="Obama"), remove_punct = TRUE)
-toks <- tokens_remove(toks, feature = stopwords("english"), padding = TRUE)
+toks <- tokens_remove(toks, feature = stopwords("english"), padding = FALSE) # change to true once #788 is fixed
 myfcm <- fcm(toks, context = 'window', tri = FALSE)
-textplot_network(myfcm, ignore = 0.5)
+feats <- names(topfeatures(myfcm, 20))
+textplot_network(myfcm[feats,feats], ignore = 0.5)
 }
 }
 \keyword{plot}
