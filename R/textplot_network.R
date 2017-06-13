@@ -5,7 +5,7 @@
 #' @param x a dfm object
 #' @param width the maximum width of links that connects words
 #' @param ignore a threadh for infrequentl collocations to be ignored
-#' @param ... additional parameters passed to \link[plot.igraph]{plot.igraph}
+#' @param ... additional parameters passed to \code{\link[igraph]{plot.igraph}}
 #' @examples
 #' \dontrun{
 #' toks <- tokens(corpus_subset(data_corpus_inaugural, President=="Obama"), remove_punct = TRUE)

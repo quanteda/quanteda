@@ -13,7 +13,7 @@ textplot_network(x, width = 10, ignore = 0.5, ...)
 
 \item{ignore}{a threadh for infrequentl collocations to be ignored}
 
-\item{...}{additional parameters passed to \link[plot.igraph]{plot.igraph}}
+\item{...}{additional parameters passed to \code{\link[igraph]{plot.igraph}}}
 }
 \description{
 Plot \link{fcm} as a network, where vertices are features and edges are cooccuraces 
