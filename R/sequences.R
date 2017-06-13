@@ -10,6 +10,7 @@
 #' @param min_size minimum length of sequences which are collected  
 #' @param max_size maximum length of sequences which are collected
 #' @param method default is "unigram" and option is "all_subtuples"
+#' @param smoothing default is 0.5
 #' @param nested if \code{TRUE}, collect all the subsequences of a longer
 #'   sequence as separate entities. e.g. in a sequence of capitalized words
 #'   "United States Congress", "States Congress" is considered as a subsequence.
@@ -39,6 +40,7 @@ sequences <- function(x,
                        min_size = 2,
                        max_size = 5,
                        method = c("unigram", "all_subtuples"),
+                       smoothing = 0.5,
                        nested = TRUE) {
     
     # .Deprecated('textstat_collocations')

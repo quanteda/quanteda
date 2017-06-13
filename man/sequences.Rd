@@ -6,7 +6,7 @@
 \title{Find variable-length collocations}
 \usage{
 sequences(x, min_count = 2, min_size = 2, max_size = 5,
-  method = c("unigram", "all_subtuples"), nested = TRUE)
+  method = c("unigram", "all_subtuples"), smoothing = 0.5, nested = TRUE)
 
 is.sequences(x)
 }
@@ -21,6 +21,8 @@ estimated}
 \item{max_size}{maximum length of sequences which are collected}
 
 \item{method}{default is "unigram" and option is "all_subtuples"}
+
+\item{smoothing}{default is 0.5}
 
 \item{nested}{if \code{TRUE}, collect all the subsequences of a longer
 sequence as separate entities. e.g. in a sequence of capitalized words

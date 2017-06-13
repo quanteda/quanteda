@@ -141,6 +141,8 @@ void estimates(std::size_t i,
               DoubleParams &lmda, 
               DoubleParams &dice,
               DoubleParams &pmi,
+              DoubleParams &logratio,
+              DoubleParams &chi2,
               const String &method,
               const int &count_min,
               const double nseqs,
@@ -199,6 +201,20 @@ void estimates(std::size_t i,
     for (std::size_t k = 0; k < n; k++){
         pmi[i] -= log(mc[k]);
     }
+    
+    //logratio
+    logratio[i] = 0.0;
+    double epsilon = 0.000000001; // to offset zero cell counts
+    for (std::size_t k = 0; k < std::pow(2, n); k++){
+        logratio[i] += counts_bit[k] * log(counts_bit[k]/ec[k] + epsilon);
+    }
+    logratio[i] *= 2;
+    
+    //chi2
+    chi2[i] = 0.0;
+    for (std::size_t k = 0; k < std::pow(2, n); k++){
+        chi2[i] += std::pow((counts_bit[k] - ec[k]), 2)/ec[k];
+    }
 }
 
 struct estimates_mt : public Worker{
@@ -209,19 +225,23 @@ struct estimates_mt : public Worker{
     DoubleParams &lmda;
     DoubleParams &dice;
     DoubleParams &pmi;
+    DoubleParams &logratio;
+    DoubleParams &chi2;
     const String &method;
     const unsigned int &count_min;
     const double nseqs;
     const double smoothing;
 
     // Constructor
-    estimates_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_, DoubleParams &pmi_,
-                 const String &method, const unsigned int &count_min_, const double nseqs_, const double smoothing_):
-        seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
+    estimates_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_, 
+                 DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, const String &method, 
+                 const unsigned int &count_min_, const double nseqs_, const double smoothing_):
+        seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_), 
+        method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimates(i, seqs, cs, sgma, lmda, dice, pmi, method, count_min, nseqs, smoothing);
+            estimates(i, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, nseqs, smoothing);
         }
     }
 };
@@ -286,13 +306,15 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     DoubleParams lmda(len);
     DoubleParams dice(len);
     DoubleParams pmi(len);
+    DoubleParams logratio(len);
+    DoubleParams chi2(len);
     //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-    estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, pmi, method, count_min, total_counts, smoothing);
+    estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
     parallelFor(0, seqs.size(), estimate_mt);
 #else
     for (std::size_t i = 0; i < seqs.size(); i++) {
-        estimates(i, seqs, cs, sgma, lmda, dice, pmi, method, count_min, total_counts, smoothing);
+        estimates(i, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
     }
 #endif
     //dev::stop_timer("Estimate", timer);
@@ -310,6 +332,8 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                                           _["sigma"] = as<NumericVector>(wrap(sgma)),
                                           _["dice"] = as<NumericVector>(wrap(dice)),
                                           _["pmi"] = as<NumericVector>(wrap(pmi)),
+                                          _["logratio"] = as<NumericVector>(wrap(logratio)),
+                                          _["chi2"] = as<NumericVector>(wrap(chi2)),
                                           _["stringsAsFactors"] = false);
     output_.attr("tokens") = as<Tokens>(wrap(seqs));
     return output_;
