@@ -18,7 +18,7 @@
 #' @param comparison if \code{TRUE}, plot a 
 #'   \code{\link[wordcloud]{comparison.cloud}} instead of a simple wordcloud, 
 #'   one grouping per document
-#' @param ... additional parameters passed to to \link[wordcloud]{wordcloud} or 
+#' @param ... additional parameters passed to \link[wordcloud]{wordcloud} or 
 #'   to \link{text} (and \link{strheight}, \link{strwidth})
 #' @seealso \code{\link[wordcloud]{wordcloud}}, 
 #'   \code{\link[wordcloud]{comparison.cloud}}
