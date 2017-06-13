@@ -92,7 +92,7 @@ test_that("is.sequences function",{
     expect_true(is.sequences(seqs))
 })
 
-test_that("test the correctness of dice", {
+test_that("test the correctness of significant with smoothing", {
      toks <- tokens('capital other capital gains other capital word2 other gains capital')
      seqs <- sequences(toks, min_count=1, max_size = 2)
     # smoothing is applied when calculating the dice, so the dice coefficient 
@@ -102,6 +102,23 @@ test_that("test the correctness of dice", {
      expect_equal(seqs$dice[1], 0.625)
      
      #pmi
-     expect_equal(seqs$pmi[1], log(2.5*9/(2.5+1.5)/(2.5+1.5)))
+     expect_equal(seqs$pmi[1], log(2.5*(9+0.5*8)/(2.5+1.5)/(2.5+1.5)))
  })
+
+test_that("test the correctness of significant", {
+    toks <- tokens('capital other capital gains other capital word2 other gains capital')
+    seqs <- sequences(toks, min_count=1, max_size = 2, smoothing = 0)
+
+    #dice
+    expect_equal(seqs$dice[1], 0.667, tolerance = 1e-3)
+    
+    #pmi
+    expect_equal(seqs$pmi[1], log(2*9/(2+1)/(2+1)))
+    
+    #chi2
+    expect_equal(seqs$chi2[1], 2.25)
+    
+    #log likelihood ratio
+    expect_equal(seqs$logratio[1], 2.231, tolerance = 1e-3)
+})
 
