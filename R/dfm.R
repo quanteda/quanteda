@@ -434,12 +434,12 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
         index <- index + 1
     }
     
-    temp <- t(sparseMatrix(i = index, 
-                           p = cumsum(c(1, lengths(x))) - 1, 
-                           x = 1L, 
-                           dims = c(length(types), length(names(x))),
-                           dimnames = list(features = as.character(types), 
-                                           docs = names(x))))
+    temp <- sparseMatrix(j = index, 
+                         p = cumsum(c(1, lengths(x))) - 1, 
+                         x = 1L, 
+                         dims = c(length(names(x)), length(types)),
+                         dimnames = list(docs = names(x),
+                                         features = as.character(types)))
     new("dfmSparse", temp)
 }
 
