@@ -217,7 +217,8 @@ List qatd_cpp_tokens_ngrams(const List &texts_,
     }
 #endif
     //dev::stop_timer("Token generation", timer);
-    return recompile(texts, types_ngram);
+    return recompile(texts, types_ngram, true, false, is_encoded(delim_) || is_encoded(types_));
+    //return recompile(texts, types_ngram);
 }
 
 
@@ -232,7 +233,8 @@ str(out)
 
 tok2 <- quanteda::tokens(data_corpus_inaugural)
 microbenchmark::microbenchmark(
-    qatd_cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1)
+    qatd_cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1),
+    tokenizers::tokenize_ngrams(texts(data_corpus_inaugural))
 )
 
 

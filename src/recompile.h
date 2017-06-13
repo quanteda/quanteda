@@ -8,6 +8,23 @@ typedef tbb::concurrent_vector<unsigned int> VecIds;
 typedef std::vector<unsigned int> VecIds;
 #endif
 
+inline bool is_encoded(String delim_){
+    if (delim_.get_encoding() > 0) {
+        return true;
+    }
+    return false;
+}
+
+inline bool is_encoded(CharacterVector types_){
+    for (std::size_t i = 0; i < types_.size(); i++) {
+        String type_ = types_[i];
+        if (type_.get_encoding() > 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 inline CharacterVector encode(Types types){
     CharacterVector types_(types.size());
     for (std::size_t i = 0; i < types.size(); i++) {
@@ -37,8 +54,9 @@ struct recompile_mt : public Worker{
 
 inline Tokens recompile(Texts texts, 
                         Types types, 
-                        bool check_gap = true, 
-                        bool check_dupli = true){
+                        bool flag_gap = true, 
+                        bool flag_dupli = true,
+                        bool flag_encoding = true){
 
     VecIds ids_new(types.size() + 1);
     ids_new[0] = 0; // reserved for padding
@@ -47,11 +65,11 @@ inline Tokens recompile(Texts texts,
     std::vector<bool> flags_unique(ids_new.size(), false);
     //Rcout << setw(10) << "" << ": " << 0 << " -> " << ids_new[0] << "\n";
     
-    //dev::Timer timer;
+    dev::Timer timer;
     
     // Check if IDs are all used
     bool all_used;
-    if (check_gap) {
+    if (flag_gap) {
         // dev::start_timer("Check gaps", timer);
         unsigned int id_limit = ids_new.size();
         for (std::size_t h = 0; h < texts.size(); h++) {
@@ -72,7 +90,7 @@ inline Tokens recompile(Texts texts,
     
     // Check if types are duplicated
     bool all_unique;
-    if (check_dupli) {
+    if (flag_dupli) {
         // dev::start_timer("Check duplication", timer);
         std::unordered_map<std::string, unsigned int> types_unique;
         flags_unique[0] = true; // padding is always unique
@@ -139,15 +157,15 @@ inline Tokens recompile(Texts texts,
     //dev::stop_timer("Convert IDs", timer);
     
     //dev::start_timer("Wrap", timer);
-    Tokens texts_list = Rcpp::wrap(texts);
+    Tokens texts_ = Rcpp::wrap(texts);
     //dev::stop_timer("Wrap", timer);
+    if (flag_encoding) {
+        // dev::start_timer("Encode", timer);
+        texts_.attr("types") = encode(types_new);
+        // dev::stop_timer("Encode", timer);
+    }
+    texts_.attr("padding") = (bool)flags_used[0];
     
-    //dev::start_timer("Encode", timer);
-    texts_list.attr("padding") = (bool)flags_used[0];
-    texts_list.attr("types") = encode(types_new);
-    //dev::stop_timer("Encode", timer);
-    
-    
-    return texts_list;
+    return texts_;
     
 }
