@@ -20,7 +20,7 @@ using \code{\link[igraph]{igraph}}.
 \examples{
 \dontrun{
 toks <- tokens(corpus_subset(data_corpus_inaugural, President=="Obama"), remove_punct = TRUE)
-toks <- tokens_remove(toks, feature = stopwords("english"), padding = FALSE) # change to true once #788 is fixed
+toks <- tokens_remove(toks, feature = stopwords("english"), padding = TRUE)
 myfcm <- fcm(toks, context = 'window', tri = FALSE)
 feats <- names(topfeatures(myfcm, 20))
 textplot_network(myfcm[feats,feats], ignore = 0.5)

@@ -8,23 +8,17 @@
 #' @examples
 #' \dontrun{
 #' toks <- tokens(corpus_subset(data_corpus_inaugural, President=="Obama"), remove_punct = TRUE)
-#' toks <- tokens_remove(toks, feature = stopwords("english"), padding = TRUE)
+#' toks <- tokens_remove(toks, feature = stopwords("english"), padding = FALSE)
 #' myfcm <- fcm(toks, context = 'window', tri = FALSE)
 #' feats <- names(topfeatures(myfcm, 20))
 #' textplot_network(myfcm[feats,feats], ignore = 0.5)
 #' }
 #' @export
 #' @keywords plot
-textplot_network <- function(x, width = 10, ignore = 0.99, ...) {
+textplot_network <- function(x, width = 10, ignore = 0.5, ...) {
     
-    if (!is.fcm(x) && !is.dfm(x) && !is.tokens(x))
-        stop("x must be a fcm, dfm or tokens object")
-    
-    if (is.tokens(x))
-        x <- dfm(x, verbose = FALSE)
-    
-    if (is.dfm(x))
-        x <- fcm(x, tri = FALSE, verbose = FALSE)
+    if (!is.fcm(x))
+        stop("x must be a fcm object")
     
     diag(x) <- 0
     suppressMessages(

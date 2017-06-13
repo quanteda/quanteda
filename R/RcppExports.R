@@ -39,24 +39,14 @@ qatd_MinkowskiPara_cpp2 <- function(A, B, margin = 1L, p = 2) {
 
 qatd_cpp_fcm <- function(texts_, n_types, count, window, weights, ordered, tri, nvec) {
     .Call(quanteda_qatd_cpp_fcm, texts_, n_types, count, window, weights, ordered, tri, nvec)
-<<<<<<< HEAD
 }
 
 qatd_cpp_sequences <- function(texts_, types_, count_min, len_min, len_max, method, nested) {
     .Call(quanteda_qatd_cpp_sequences, texts_, types_, count_min, len_min, len_max, method, nested)
-=======
->>>>>>> master
 }
 
 qatd_cpp_sequences_old <- function(texts_, words_, types_, count_min, len_max, nested, ordered = FALSE) {
     .Call(quanteda_qatd_cpp_sequences_old, texts_, words_, types_, count_min, len_max, nested, ordered)
-<<<<<<< HEAD
-=======
-}
-
-qatd_cpp_sequences <- function(texts_, types_, count_min, len_min, len_max, method, nested) {
-    .Call(quanteda_qatd_cpp_sequences, texts_, types_, count_min, len_min, len_max, method, nested)
->>>>>>> master
 }
 
 qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {
@@ -99,21 +89,12 @@ qatd_cpp_chars_remove <- function(input_, char_remove) {
     .Call(quanteda_qatd_cpp_chars_remove, input_, char_remove)
 }
 
-<<<<<<< HEAD
 wordfishcpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor) {
     .Call(quanteda_wordfishcpp, wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor)
 }
 
 wordfishcpp_dense <- function(wfm, dir, priors, tol, disp, dispfloor, abs_err) {
     .Call(quanteda_wordfishcpp_dense, wfm, dir, priors, tol, disp, dispfloor, abs_err)
-=======
-wordfishcpp_dense <- function(wfm, dir, priors, tol, disp, dispfloor, abs_err) {
-    .Call(quanteda_wordfishcpp_dense, wfm, dir, priors, tol, disp, dispfloor, abs_err)
-}
-
-wordfishcpp_mt <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor) {
-    .Call(quanteda_wordfishcpp_mt, wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor)
->>>>>>> master
 }
 
 wordfishcpp_mt <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor) {
