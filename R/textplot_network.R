@@ -3,11 +3,12 @@
 #' Plot \link{fcm} as a network, where vertices are features and edges are cooccuraces 
 #' using \code{\link[igraph]{igraph}}.
 #' @param x a dfm object
-#' @param width the maximum width of links that connects words (default is 10)
-#' @param size size of the vertex (default is 15)
-#' @param shape shape of the vertex (default is "circle")
+#' @param width the maximum width of links that connects words
+#' @param size size of the vertices
+#' @param shape shape of the vertices
 #' @param ignore a thread for infrequent collocations to be ignored
 #' @param ... additional parameters passed to \code{\link[igraph]{plot.igraph}}. Note that the 'vertex.' prefix needs to be added.
+#' @author Kohei Watanabe and Stefan Müller
 #' @examples
 #' \dontrun{
 #' toks <- tokens(corpus_subset(data_corpus_inaugural, President=="Obama"), remove_punct = TRUE)
@@ -18,7 +19,6 @@
 #' textplot_network(myfcm[feats, feats], ignore = 0.5, size = 20, shape = "vrectangle")
 #' }
 #' @export
-#' author Kohei Watanabe and Stefan Müller
 #' @seealso \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
 #'   \code{\link{coef.textmodel}}
 #' @keywords textplot

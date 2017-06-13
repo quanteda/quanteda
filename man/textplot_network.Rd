@@ -4,16 +4,21 @@
 \alias{textplot_network}
 \title{plot semantic network based on collocations}
 \usage{
-textplot_network(x, width = 10, ignore = 0.5, ...)
+textplot_network(x, width = 10, size = 15, shape = "circle",
+  ignore = 0.5, ...)
 }
 \arguments{
 \item{x}{a dfm object}
 
 \item{width}{the maximum width of links that connects words}
 
-\item{ignore}{a threadh for infrequentl collocations to be ignored}
+\item{size}{size of the vertices}
 
-\item{...}{additional parameters passed to \code{\link[igraph]{plot.igraph}}}
+\item{shape}{shape of the vertices}
+
+\item{ignore}{a thread for infrequent collocations to be ignored}
+
+\item{...}{additional parameters passed to \code{\link[igraph]{plot.igraph}}. Note that the 'vertex.' prefix needs to be added.}
 }
 \description{
 Plot \link{fcm} as a network, where vertices are features and edges are cooccuraces 
@@ -25,7 +30,15 @@ toks <- tokens(corpus_subset(data_corpus_inaugural, President=="Obama"), remove_
 toks <- tokens_remove(toks, feature = stopwords("english"), padding = FALSE)
 myfcm <- fcm(toks, context = 'window', tri = FALSE)
 feats <- names(topfeatures(myfcm, 20))
-textplot_network(myfcm[feats,feats], ignore = 0.5)
+textplot_network(myfcm[feats, feats], ignore = 0.5)
+textplot_network(myfcm[feats, feats], ignore = 0.5, size = 20, shape = "vrectangle")
 }
 }
-\keyword{plot}
+\seealso{
+\code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
+  \code{\link{coef.textmodel}}
+}
+\author{
+Kohei Watanabe and Stefan Müller
+}
+\keyword{textplot}
