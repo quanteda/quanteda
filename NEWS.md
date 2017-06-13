@@ -12,6 +12,7 @@
     - Added new argument to `textstat_collocations()`: `min_size`, which is used when `method = "bj_uni"` and `method = "bj_all"`.
    This function is still under development and likely to change further.
 *  Added new `quanteda_options` that affect the maximum documents and features displayed by the dfm print method (#756).
+*  `ngram` formation is now significantly faster, including with skips (skipgrams).
     
 
 ### Behaviour changes
