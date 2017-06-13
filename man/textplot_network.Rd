@@ -17,10 +17,12 @@ textplot_network(x, width = 10, ignore = 0.99, ...)
 plot semantic network based on collocations
 }
 \examples{
+\dontrun{
 # plot the features (without stopwords) from Obama's two inaugural addresses
-mydfm <- dfm(corpus_subset(data_corpus_inaugural, President=="Obama"), verbose = FALSE,
-             remove = stopwords("english"))
-textplot_network(mydfm)
-
+toks <- tokens(corpus_subset(data_corpus_inaugural, President=="Obama"), remove_punct = TRUE)
+toks <- tokens_remove(toks, feature = stopwords("english"), padding = TRUE)
+myfcm <- fcm(toks, context = 'window', tri = FALSE)
+textplot_network(myfcm, ignore = 0.5)
+}
 }
 \keyword{plot}

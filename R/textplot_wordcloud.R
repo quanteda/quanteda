@@ -45,7 +45,7 @@
 #' @keywords plot
 textplot_wordcloud <- function(x, comparison = FALSE, ...) {
     
-    if (!is.dfm(x) & !is.tokens(x))
+    if (!is.dfm(x) && !is.tokens(x))
         stop("x must be a dfm or tokens object")
     
     if (is.tokens(x))
