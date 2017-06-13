@@ -71,7 +71,7 @@ double compute_dice(const std::vector<double> &counts){
         dice += bitb.count() * counts[b]; 
     }
     //Rcout<<"counts[n-1]="<<counts[n-1]<<"dice="<<dice<<std::endl;
-    dice = 2*counts[n-1]/(dice);  // smoothing has been applied when declaring counts_bit[]
+    dice = counts[n-1]/(dice);  // smoothing has been applied when declaring counts_bit[]
     return dice;
 }
 
@@ -168,7 +168,7 @@ void estimates(std::size_t i,
     }
     
     // Dice coefficient
-    dice[i] = compute_dice(counts_bit);
+    dice[i] = n * compute_dice(counts_bit);
     
     // marginal counts: used in pmi, chi-sqaure, G2
     std::vector<double> mc(n, 0);  // the size of mc is n
@@ -195,12 +195,9 @@ void estimates(std::size_t i,
     
     //pmi
     pmi[i] = log(counts_bit[std::pow(2, n)-1]) + (n-1) * log(nseqs);
-    //Rcout<<"counts[3]"<<counts_bit[std::pow(2, n)-1]<<"nseqs"<<nseqs<<"pmi["<<i<<"-0]="<<pmi[i];
     for (std::size_t k = 0; k < n; k++){
         pmi[i] -= log(mc[k]);
-        //Rcout<<"**"<<pmi[i];
     }
-    //Rcout<<std::endl;
 }
 
 struct estimates_mt : public Worker{
@@ -283,16 +280,15 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     DoubleParams lmda(len);
     DoubleParams dice(len);
     DoubleParams pmi(len);
-    //DoubleParams dice(len);
     //dev::start_timer("Estimate", timer);
-//#if QUANTEDA_USE_TBB
-//    estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, pmi, method, count_min, total_counts);
-//    parallelFor(0, seqs.size(), estimate_mt);
-//#else
+#if QUANTEDA_USE_TBB
+    estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, pmi, method, count_min, total_counts);
+    parallelFor(0, seqs.size(), estimate_mt);
+#else
     for (std::size_t i = 0; i < seqs.size(); i++) {
         estimates(i, seqs, cs, sgma, lmda, dice, pmi, method, count_min, total_counts);
     }
-//#endif
+#endif
     //dev::stop_timer("Estimate", timer);
     
     // Convert sequences from integer to character
