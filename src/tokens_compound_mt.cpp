@@ -225,7 +225,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
     types.insert(types.end(), types_comp.begin(), types_comp.end());
     
     // dev::stop_timer("Token compound", timer);
-    return recompile(texts, types);
+    return recompile(texts, types, true, true, is_encoded(delim_) || is_encoded(types_));
 }
 
 /***R

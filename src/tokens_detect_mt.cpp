@@ -76,7 +76,7 @@ List qatd_cpp_tokens_detect(const List &texts_,
 #endif
     // dev::stop_timer("Dictionary detect", timer);
     Types types = {"TRUE", "FALSE"};
-    return recompile(texts, types);
+    return recompile(texts, types, false, false, false);
 }
 
 /***R
