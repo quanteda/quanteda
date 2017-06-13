@@ -46,26 +46,24 @@ is.corpuszip <- function(x) {
 }
 
 
-#' summarize a corpus or a vector of texts
+#' summarize a corpus
 #' 
-#' Displays information about a corpus or vector of texts.  For a corpus, this 
+#' Displays information about a corpus, including
 #' includes attributes and metadata such as date of number of texts, creation 
-#' and source.  For texts, prints to the console a desription of the texts,
-#' including number of types, tokens, and sentences.
+#' and source.  
 #' 
-#' @param object corpus or texts to be summarized
+#' @param object corpus to be summarized
 #' @param n maximum number of texts to describe, default=100
 #' @param verbose set to \code{FALSE} to turn off printed output, for instance
 #'   if you simply want to assign the output to a \code{data.frame}
-#' @param showmeta for a corpus, set to \code{TRUE} to include document-level
+#' @param showmeta set to \code{TRUE} to include document-level
 #'   meta-data
-#' @param toLower convert texts to lower case before counting types
+#' @param tolower convert texts to lower case before counting types
 #' @param ... additional arguments passed through to \code{\link{tokenize}}
 #' @export
 #' @method summary corpus
 #' @keywords internal corpus
 #' @examples
-#' # summarize corpus information
 #' summary(data_corpus_inaugural)
 #' summary(data_corpus_inaugural, n=10)
 #' mycorpus <- corpus(data_char_ukimmig2010, 
@@ -73,7 +71,7 @@ is.corpuszip <- function(x) {
 #' summary(mycorpus, showmeta=TRUE)  # show the meta-data
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
-summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, toLower = FALSE, ...) {
+summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, tolower = FALSE, ...) {
     #     if (!(addedArgs <- names(list(...)) %in% )
     #         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
@@ -87,7 +85,7 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
     }
     
     if (verbose) cat("\n")
-    outputdf <- data.frame(summary(texts(object), n, verbose = FALSE, toLower = toLower, ...))
+    outputdf <- data.frame(summary(texts(object), n, verbose = FALSE, tolower = tolower, ...))
     if (!is.null(docvars(object)))
         outputdf <- cbind(outputdf, docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
     # if (detail) outputdf <- cbind(outputdf, metadoc(object))
