@@ -278,6 +278,9 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         total_counts += it -> second;
     }
     
+    // adjust total_counts of MW 
+    total_counts += len * smoothing;
+    
     // Estimate significance of the sequences
     DoubleParams sgma(len);
     DoubleParams lmda(len);
