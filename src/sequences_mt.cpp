@@ -143,12 +143,13 @@ void estimates(std::size_t i,
               DoubleParams &pmi,
               const String &method,
               const int &count_min,
-              const std::size_t nseqs){
+              const double nseqs,
+              const double smoothing){
     
     std::size_t n = seqs[i].size(); //n=2:5
     if (n == 1) return; // ignore single words
     if (cs[i] < count_min) return;
-    std::vector<double> counts_bit(std::pow(2, n), 0.5);// use 1/2 as smoothing
+    std::vector<double> counts_bit(std::pow(2, n), smoothing);// use 1/2 as smoothing
     for (std::size_t j = 0; j < seqs.size(); j++) {
         if (i == j) continue; // do not compare with itself
  
@@ -156,7 +157,7 @@ void estimates(std::size_t i,
         bit = match_bit2(seqs[i], seqs[j]);
         counts_bit[bit] += cs[j];
     }
-    counts_bit[std::pow(2, n)-1]  += cs[i];// - 1;  // c(2^n-1) += number of itself  
+    counts_bit[std::pow(2, n)-1]  += cs[i];//  c(2^n-1) += number of itself  
     
     //B-J algorithm    
     if (method == "unigram"){
@@ -188,7 +189,7 @@ void estimates(std::size_t i,
     for (std::size_t k = 0; k < std::pow(2, n); k++){
         for (std::size_t j = 0; j < n; j++){
             std::bitset<8> bitb(k);
-            ec[k] = ec[k] * (bitb.test(j)?mc[j]:(nseqs-mc[j]));
+            ec[k] = ec[k] * (bitb.test(j)?mc[j]:(nseqs - mc[j]));
         }
         ec[k] = ec[k]/std::pow(nseqs, n-1);
     }
@@ -210,16 +211,17 @@ struct estimates_mt : public Worker{
     DoubleParams &pmi;
     const String &method;
     const unsigned int &count_min;
-    const std::size_t nseqs;
+    const double nseqs;
+    const double smoothing;
 
     // Constructor
     estimates_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_, DoubleParams &pmi_,
-                 const String &method, const unsigned int &count_min_, const std::size_t nseqs_):
-        seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), method(method), count_min(count_min_), nseqs(nseqs_){}
+                 const String &method, const unsigned int &count_min_, const double nseqs_, const double smoothing_):
+        seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimates(i, seqs, cs, sgma, lmda, dice, pmi, method, count_min, nseqs);
+            estimates(i, seqs, cs, sgma, lmda, dice, pmi, method, count_min, nseqs, smoothing);
         }
     }
 };
@@ -242,6 +244,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                              unsigned int len_min,
                              unsigned int len_max,
                              const String &method,
+                             const double smoothing,
                              bool nested){
     
     Texts texts = as<Texts>(texts_);
@@ -267,7 +270,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     seqs.reserve(len);
     cs.reserve(len);
     ns.reserve(len);
-    double total_counts = 0;
+    double total_counts = 0.0;
     for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
         seqs.push_back(it -> first);
         cs.push_back(it -> second);
@@ -282,11 +285,11 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     DoubleParams pmi(len);
     //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-    estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, pmi, method, count_min, total_counts);
+    estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, pmi, method, count_min, total_counts, smoothing);
     parallelFor(0, seqs.size(), estimate_mt);
 #else
     for (std::size_t i = 0; i < seqs.size(); i++) {
-        estimates(i, seqs, cs, sgma, lmda, dice, pmi, method, count_min, total_counts);
+        estimates(i, seqs, cs, sgma, lmda, dice, pmi, method, count_min, total_counts, smoothing);
     }
 #endif
     //dev::stop_timer("Estimate", timer);
