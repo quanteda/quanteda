@@ -78,8 +78,7 @@ double compute_dice(const std::vector<double> &counts){
 //************************//
 void counts(Text text,
            MapNgrams &counts_seq,
-           const unsigned int &len_min,
-           const unsigned int &len_max,
+           const unsigned int &len,
            const bool &nested){
     
     if (text.size() == 0) return; // do nothing with empty text
@@ -94,7 +93,7 @@ void counts(Text text,
             //Rcout << i << " " << j << "\n";
             unsigned int token = text[j];
             bool is_in = true;
-            if (token == 0 || j - i >= len_max) {
+            if (token == 0 || j - i >= len) {
                 is_in = false;
             } 
             
@@ -104,7 +103,7 @@ void counts(Text text,
             } else {
                 //Rcout << "Not match: " <<  token << "\n";
                 //only collect sequences that the size of it >= len_min
-                if (tokens_seq.size() >= len_min) {  
+                if (tokens_seq.size() == len) {  
                     counts_seq[tokens_seq]++;
                 }
                 tokens_seq.clear();
@@ -119,17 +118,15 @@ struct counts_mt : public Worker{
     
     Texts texts;
     MapNgrams &counts_seq;
-    const unsigned int &len_min;
-    const unsigned int &len_max;
+    const unsigned int &len;
     const bool &nested;
     
-    counts_mt(Texts texts_, MapNgrams &counts_seq_, const unsigned int &len_min_,
-             const unsigned int &len_max_, const bool &nested_):
-        texts(texts_), counts_seq(counts_seq_), len_min(len_min_), len_max(len_max_), nested(nested_) {}
+    counts_mt(Texts texts_, MapNgrams &counts_seq_, const unsigned int &len_, const bool &nested_):
+        texts(texts_), counts_seq(counts_seq_), len(len_), nested(nested_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
-            counts(texts[h], counts_seq, len_min, len_max, nested);
+            counts(texts[h], counts_seq, len, nested);
         }
     }
 };
@@ -268,74 +265,116 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                              bool nested){
     
     Texts texts = as<Texts>(texts_);
-
-    // Collect all sequences of specified words
-    MapNgrams counts_seq;
-    //dev::Timer timer;
-    //dev::start_timer("Count", timer);
-#if QUANTEDA_USE_TBB
-    counts_mt count_mt(texts, counts_seq, len_min, len_max, nested);
-    parallelFor(0, texts.size(), count_mt);
-#else
-    for (std::size_t h = 0; h < texts.size(); h++) {
-        counts(texts[h], counts_seq, len_min, len_max, nested);
-    }
-#endif
-    //dev::stop_timer("Count", timer);
-    
-    // Separate map keys and values
-    std::size_t len = counts_seq.size();
-    VecNgrams seqs;
-    IntParams cs, ns;
-    seqs.reserve(len);
-    cs.reserve(len);
-    ns.reserve(len);
-    double total_counts = 0.0;
-    for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
-        seqs.push_back(it -> first);
-        cs.push_back(it -> second);
-        ns.push_back(it -> first.size());
-        total_counts += it -> second;
-    }
-    
-    // adjust total_counts of MW 
-    total_counts += len * smoothing;
+    unsigned int len_coe = (len_max - len_min + 1) * types_.size();
     
     // Estimate significance of the sequences
-    DoubleParams sgma(len);
-    DoubleParams lmda(len);
-    DoubleParams dice(len);
-    DoubleParams pmi(len);
-    DoubleParams logratio(len);
-    DoubleParams chi2(len);
-    //dev::start_timer("Estimate", timer);
+    std::vector<double> sgma_all;
+    sgma_all.reserve(len_coe);
+    
+    std::vector<double> lmda_all;
+    lmda_all.reserve(len_coe);
+    
+    std::vector<double> dice_all;
+    dice_all.reserve(len_coe);
+    
+    std::vector<double> pmi_all;
+    pmi_all.reserve(len_coe);
+    
+    std::vector<double> logratio_all;
+    logratio_all.reserve(len_coe);
+    
+    std::vector<double> chi2_all;
+    chi2_all.reserve(len_coe);
+    
+    std::vector<int> cs_all;
+    cs_all.reserve(len_coe);
+    
+    std::vector<int> ns_all;
+    ns_all.reserve(len_coe);
+    
+    VecNgrams seqs_all;
+    seqs_all.reserve(len_coe);
+    
+    for(unsigned int mw_len = len_min; mw_len <= len_max; mw_len++){
+        // Collect all sequences of specified words
+        MapNgrams counts_seq;
+        //dev::Timer timer;
+        //dev::start_timer("Count", timer);
 #if QUANTEDA_USE_TBB
-    estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
-    parallelFor(0, seqs.size(), estimate_mt);
+        counts_mt count_mt(texts, counts_seq, mw_len, nested);
+        parallelFor(0, texts.size(), count_mt);
 #else
-    for (std::size_t i = 0; i < seqs.size(); i++) {
-        estimates(i, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
-    }
+        for (std::size_t h = 0; h < texts.size(); h++) {
+            counts(texts[h], counts_seq, mw_len, nested);
+        }
 #endif
-    //dev::stop_timer("Estimate", timer);
+        //dev::stop_timer("Count", timer);
+        
+        // Separate map keys and values
+        std::size_t len = counts_seq.size();
+        VecNgrams seqs;
+        IntParams cs, ns;
+        seqs.reserve(len);
+        cs.reserve(len);
+        ns.reserve(len);
+        double total_counts = 0.0;
+        for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
+            seqs.push_back(it -> first);
+            cs.push_back(it -> second);
+            ns.push_back(it -> first.size());
+            total_counts += it -> second;
+        }
+        
+        // adjust total_counts of MW 
+        total_counts += len * smoothing;
+        
+        // Estimate significance of the sequences
+        DoubleParams sgma(len);
+        DoubleParams lmda(len);
+        DoubleParams dice(len);
+        DoubleParams pmi(len);
+        DoubleParams logratio(len);
+        DoubleParams chi2(len);
+        //dev::start_timer("Estimate", timer);
+#if QUANTEDA_USE_TBB
+        estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
+        parallelFor(0, seqs.size(), estimate_mt);
+#else
+        for (std::size_t i = 0; i < seqs.size(); i++) {
+            estimates(i, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
+        }
+#endif
+        //dev::stop_timer("Estimate", timer);
+        for (auto it = seqs.begin(); it != seqs.end(); ++it) {
+            seqs_all.push_back(*it);
+        }   
+
+        cs_all.insert( cs_all.end(), cs.begin(), cs.end() );
+        ns_all.insert( ns_all.end(), ns.begin(), ns.end() );
+        sgma_all.insert( sgma_all.end(), sgma.begin(), sgma.end() );
+        lmda_all.insert( lmda_all.end(), lmda.begin(), lmda.end() );
+        dice_all.insert( dice_all.end(), dice.begin(), dice.end() );
+        pmi_all.insert( pmi_all.end(), pmi.begin(), pmi.end() );
+        logratio_all.insert( logratio_all.end(), logratio.begin(), logratio.end() );
+        chi2_all.insert( chi2_all.end(), chi2.begin(), chi2.end() );
+    }
     
     // Convert sequences from integer to character
-    CharacterVector seqs_(seqs.size());
-    for (std::size_t i = 0; i < seqs.size(); i++) {
-        seqs_[i] = join(seqs[i], types_, " ");
+    CharacterVector seqs_(seqs_all.size());
+    for (std::size_t i = 0; i < seqs_all.size(); i++) {
+        seqs_[i] = join(seqs_all[i], types_, " ");
     }
-    
     DataFrame output_ = DataFrame::create(_["collocation"] = seqs_,
-                                          _["count"] = as<IntegerVector>(wrap(cs)),
-                                          _["length"] = as<NumericVector>(wrap(ns)),
-                                          _["lambda"] = as<NumericVector>(wrap(lmda)),
-                                          _["sigma"] = as<NumericVector>(wrap(sgma)),
-                                          _["dice"] = as<NumericVector>(wrap(dice)),
-                                          _["pmi"] = as<NumericVector>(wrap(pmi)),
-                                          _["logratio"] = as<NumericVector>(wrap(logratio)),
-                                          _["chi2"] = as<NumericVector>(wrap(chi2)),
+                                          _["count"] = as<IntegerVector>(wrap(cs_all)),
+                                          _["length"] = as<NumericVector>(wrap(ns_all)),
+                                          _["lambda"] = as<NumericVector>(wrap(lmda_all)),
+                                          _["sigma"] = as<NumericVector>(wrap(sgma_all)),
+                                          _["dice"] = as<NumericVector>(wrap(dice_all)),
+                                          _["pmi"] = as<NumericVector>(wrap(pmi_all)),
+                                          _["logratio"] = as<NumericVector>(wrap(logratio_all)),
+                                          _["chi2"] = as<NumericVector>(wrap(chi2_all)),
                                           _["stringsAsFactors"] = false);
-    output_.attr("tokens") = as<Tokens>(wrap(seqs));
+    output_.attr("tokens") = as<Tokens>(wrap(seqs_all));
     return output_;
 }
 
@@ -347,12 +386,12 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 
 #toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
 #types <- unique(as.character(toks))
-#out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "unigram",TRUE)
-#out3 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "all_subtuples",TRUE)
-#out4 <- qatd_cpp_sequences(toks, types, 1, 2, 3, "unigram",TRUE)
+#out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "unigram",0.5, TRUE)
+#out3 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "all_subtuples",0.5 TRUE)
+#out4 <- qatd_cpp_sequences(toks, types, 1, 2, 3, "unigram",0.5, TRUE)
 # out2$z <- out2$lambda / out2$sigma
 # out2$p <- 1 - stats::pnorm(out2$z)
 toks <- tokens('capital other capital gains other capital word2 other gains capital')
 types <- unique(as.character(toks))
-out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "unigram",TRUE)
+out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "unigram",0.5, TRUE)
 */

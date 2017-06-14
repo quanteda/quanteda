@@ -7,8 +7,9 @@
 #' @param x a \link{tokens} object
 #' @param min_count minimum frequency of sequences for which parameters are 
 #'   estimated
-#' @param min_size minimum length of sequences which are collected  
-#' @param max_size maximum length of sequences which are collected
+#' @param size length of collocations, default is 2. Can be set up to 5. 
+#'        Use c(2,5) or 2:5 to return collocations of bi-, tri-, 3- and 
+#'        5-gram collocations.
 #' @param method default is "unigram" and option is "all_subtuples"
 #' @param smoothing default is 0.5
 #' @param nested if \code{TRUE}, collect all the subsequences of a longer
@@ -29,7 +30,7 @@
 #' toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", 
 #'                      case_insensitive = FALSE, padding = TRUE)
 #' 
-#' seqs <- sequences(toks)
+#' seqs <- sequences(toks, size = 2:3)
 #' head(seqs, 10)
 #' # to return only trigrams
 #' seqs <- sequences(toks, min_size = 3, max_size = 3)
@@ -37,8 +38,7 @@
 #' @export
 sequences <- function(x, 
                        min_count = 2,
-                       min_size = 2,
-                       max_size = 5,
+                       size = 2,
                        method = c("unigram", "all_subtuples"),
                        smoothing = 0.5,
                        nested = TRUE) {
@@ -52,14 +52,19 @@ sequences <- function(x,
 #' @export
 sequences.tokens <- function(x,
                               min_count = 2,
-                              min_size = 2,
-                              max_size = 5,
+                              size = 2,
                               method = c("unigram", "all_subtuples"),
                               smoothing = 0.5,
                               nested = TRUE) {
     
     attrs_org <- attributes(x)
     methodtype = match.arg(method)
+    
+    if (any(!(size %in% 2:5)))
+        stop("Only bigram, trigram, 4-gram and 5-gram collocations implemented so far.")
+    min_size = min(size)
+    max_size = max(size)
+    
     types <- types(x)
     
     result <- qatd_cpp_sequences(x, types, min_count, min_size, max_size, methodtype, smoothing, nested)

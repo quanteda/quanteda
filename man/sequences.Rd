@@ -5,8 +5,8 @@
 \alias{is.sequences}
 \title{Find variable-length collocations}
 \usage{
-sequences(x, min_count = 2, min_size = 2, max_size = 5,
-  method = c("unigram", "all_subtuples"), smoothing = 0.5, nested = TRUE)
+sequences(x, min_count = 2, size = 2, method = c("unigram",
+  "all_subtuples"), smoothing = 0.5, nested = TRUE)
 
 is.sequences(x)
 }
@@ -16,9 +16,9 @@ is.sequences(x)
 \item{min_count}{minimum frequency of sequences for which parameters are 
 estimated}
 
-\item{min_size}{minimum length of sequences which are collected}
-
-\item{max_size}{maximum length of sequences which are collected}
+\item{size}{length of collocations, default is 2. Can be set up to 5. 
+Use c(2,5) or 2:5 to return collocations of bi-, tri-, 3- and 
+5-gram collocations.}
 
 \item{method}{default is "unigram" and option is "all_subtuples"}
 
