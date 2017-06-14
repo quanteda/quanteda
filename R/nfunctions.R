@@ -142,7 +142,7 @@ ntoken.corpus <- function(x, ...) {
 #' @noRd
 #' @export
 ntoken.character <- function(x, ...) {
-    ntoken(tokenize(x, ...))
+    ntoken(tokens(x, hash = FALSE, ...))
 }
 
 #' @noRd
@@ -162,7 +162,7 @@ ntoken.tokenizedTexts <- function(x, ...) {
 #' @noRd
 #' @export
 ntype.character <- function(x, ...) {
-    ntype(tokenize(x, ...))
+    ntype(tokens(x, hash = FALSE, ...))
 }
 
 #' @noRd
@@ -228,7 +228,7 @@ nsentence.character <- function(x, ...) {
         # warning("Input text contains non-UTF-8 characters.")
     } else if (!upcase)
         warning("nsentence() does not correctly count sentences in all lower-cased text")
-    lengths(tokens(x, what = "sentence", ...))
+    lengths(tokens(x, what = "sentence", hash = FALSE, ...))
 }
 
 #' @noRd
