@@ -364,7 +364,7 @@ textstat_readability.character <- function(x,
     }
 
     #     if (any(c("all", "TRI") %in% measure)) {
-    #         Ptn <- lengths(tokenize(x, remove_punct = FALSE)) - lengths(tokenizedWords)
+    #         Ptn <- lengths(tokens(x, remove_punct = FALSE)) - lengths(tokenizedWords)
     #         Frg <- NA  # foreign words -- cannot compute without a dictionary
     #         textFeatures[, TRI := (0.449 * W_1Sy) - (2.467 * Ptn) - (0.937 * Frg) - 14.417]
     #     }
@@ -425,7 +425,7 @@ prepositions <- c("a", "abaft", "abeam", "aboard", "about", "above", "absent", "
 # makeWordList <- function(filename) {
 #     wordList <- readtext(filename, cache = FALSE)@texts
 #     wordList <- stringi::stri_replace_all_regex(wordList, "-", "_")
-#     wordList <- tokenize(wordList, simplify = TRUE)
+#     wordList <- tokens(wordList, simplify = TRUE)
 #     wordList <- stringi::stri_replace_all_regex(wordList, "_", "-")
 #     wordList
 # }
