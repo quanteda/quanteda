@@ -97,7 +97,7 @@ inline Tokens recompile(Texts texts,
         // dev::stop_timer("Check gaps", timer);
     } else {
         std::fill(flags_used.begin(), flags_used.end(), true);
-        bool all_used = true;
+        all_used = true;
     }
     
     // Check if types are duplicated
