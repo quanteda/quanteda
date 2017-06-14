@@ -8,6 +8,17 @@ typedef tbb::concurrent_vector<unsigned int> VecIds;
 typedef std::vector<unsigned int> VecIds;
 #endif
 
+inline bool is_duplicated(Types types){
+    std::sort(types.begin(), types.end());
+    if (types.size() <= 1) return false;
+    for (std::size_t i = 0; i < types.size() - 1; i++) {
+        if (types[i] != "" && types[i] == types[i + 1]) {
+            return true;
+        }
+    }
+    return false;
+}
+
 inline bool is_encoded(String delim_){
     if (delim_.get_encoding() > 0) {
         return true;
@@ -34,6 +45,7 @@ inline CharacterVector encode(Types types){
     }
     return(types_);
 }
+
 
 struct recompile_mt : public Worker{
     
@@ -90,7 +102,7 @@ inline Tokens recompile(Texts texts,
     
     // Check if types are duplicated
     bool all_unique;
-    if (flag_dupli) {
+    if (flag_dupli && is_duplicated(types)) {
         // dev::start_timer("Check duplication", timer);
         std::unordered_map<std::string, unsigned int> types_unique;
         flags_unique[0] = true; // padding is always unique
