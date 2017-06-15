@@ -21,14 +21,14 @@ test_that("test that collocations only include selected features", {
     expect_false('on #something' %in% cols$collocation)
 })
 
-test_that("test that collocations and sequences are counting the same features", {
-    toks <- tokens(data_corpus_inaugural, remove_punct = TRUE)
-    toks <- tokens_remove(toks, stopwords(), padding = TRUE)
-    seqs <- textstat_collocations(toks, method = 'bj_uni', max_size = 2)
-    cols <- textstat_collocations(toks, method = 'lr', max_size = 2)
-    both <- merge(seqs, cols, by = 'collocation')
-    expect_true(all(both$count.x == both$count.x))
-})
+# test_that("test that collocations and sequences are counting the same features", {
+#     toks <- tokens(data_corpus_inaugural, remove_punct = TRUE)
+#     toks <- tokens_remove(toks, stopwords(), padding = TRUE)
+#     seqs <- textstat_collocations(toks, method = 'bj_uni', max_size = 2)
+#     cols <- textstat_collocations(toks, method = 'lr', max_size = 2)
+#     both <- merge(seqs, cols, by = 'collocation')
+#     expect_true(all(both$count.x == both$count.x))
+# })
 
 test_that("test that extractor works with collocation", {
     

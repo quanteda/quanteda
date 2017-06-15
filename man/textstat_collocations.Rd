@@ -6,7 +6,7 @@
 \title{calculate collocation statistics}
 \usage{
 textstat_collocations(x, method = c("lr", "chi2", "pmi", "dice", "bj_uni",
-  "bj_all"), size = 2, min_count = 2, ...)
+  "bj_all"), min_size = 2, max_size = 3, min_count = 2, ...)
 
 is.collocations(x)
 }
@@ -29,16 +29,16 @@ coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
 \code{\link{sequences}})}  \item{\code{"bj_all"}}{all subtuples algorithm, 
 Blaheta and Johnson's method (called through \code{\link{sequences}})} }}
 
-\item{min_count}{minimum frequency of collocations that will be scored}
-
-\item{...}{additional arguments passed to \code{\link{collocations2}} for the
-first four methods, or to  \code{\link{sequences}} for \code{method = "bj"}}
-
 \item{min_size}{minimum length of sequences which are collected}
 
 \item{max_size}{numeric argument representing the maximum length of the collocations
 to be scored.  The maximum size is currently 3 for all
 methods except \code{"bj_uni"} and \code{"bj_all"}, which has a maximum size of 5.}
+
+\item{min_count}{minimum frequency of collocations that will be scored}
+
+\item{...}{additional arguments passed to \code{\link{collocations2}} for the
+first four methods, or to  \code{\link{sequences}} for \code{method = "bj"}}
 }
 \value{
 \code{is.collocation} returns \code{TRUE} if the object is of class

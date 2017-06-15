@@ -52,11 +52,7 @@
 #' toks2 <- tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
 #' toks2 <- tokens_select(toks2, "^([A-Z][a-z\\-]{2,})", valuetype="regex", 
 #'                      case_insensitive = FALSE, padding = TRUE)
-#' seqs <- textstat_collocations(toks2, method = "bj_uni")
-#' head(seqs, 10)
-#' 
-#' # compounding tokens is more efficient when applied to the same tokens object 
-#' toks_comp <- tokens_compound(toks2, seqs)
+
 textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj_uni", "bj_all"), 
                                   min_size = 2,
                                   max_size = 3,
