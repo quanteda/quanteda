@@ -7,9 +7,8 @@
 #' @param x a \link{tokens} object
 #' @param min_count minimum frequency of sequences for which parameters are 
 #'   estimated
-#' @param size length of collocations, default is 2. Can be set up to 5. 
-#'        Use c(2,5) or 2:5 to return collocations of bi-, tri-, 3- and 
-#'        5-gram collocations.
+#' @param size length of collocations, default is 2. Can be set up to 5.
+#'        Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.
 #' @param method default is "unigram" and option is "all_subtuples"
 #' @param smoothing default is 0.5
 #' @param nested if \code{TRUE}, collect all the subsequences of a longer
