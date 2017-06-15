@@ -61,12 +61,10 @@ sequences.tokens <- function(x,
     
     if (any(!(size %in% 2:5)))
         stop("Only bigram, trigram, 4-gram and 5-gram collocations implemented so far.")
-    min_size = min(size)
-    max_size = max(size)
     
     types <- types(x)
     
-    result <- qatd_cpp_sequences(x, types, min_count, min_size, max_size, methodtype, smoothing, nested)
+    result <- qatd_cpp_sequences(x, types, min_count, size, methodtype, smoothing, nested)
     result <- result[result$count >= min_count,]
     result$z <- result$lambda / result$sigma
     result$p <- 1 - stats::pnorm(result$z)

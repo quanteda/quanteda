@@ -71,7 +71,7 @@ textstat_collocations.tokens <- function(x, method =  c("lambda", "lambda1", "lr
                                          min_count = 2, 
                                          ...) {
     method <- match.arg(method)
-    if (method == 'bj_lambda') {
+    if (method == 'lambda') {
         result <- sequences(x, min_count = min_count, size = size, ...)
     } else if (method == 'lambda1'){
         result <- sequences(x, min_count = min_count, size = size, method = "lambda1", ...)

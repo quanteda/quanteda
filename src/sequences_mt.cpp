@@ -265,15 +265,15 @@ struct estimates_mt : public Worker{
 DataFrame qatd_cpp_sequences(const List &texts_,
                              const CharacterVector &types_,
                              const unsigned int count_min,
-                             unsigned int len_min,
-                             unsigned int len_max,
+                             const IntegerVector sizes_,
                              const String &method,
                              const double smoothing,
                              bool nested){
     
     Texts texts = as<Texts>(texts_);
-    unsigned int len_coe = (len_max - len_min + 1) * types_.size();
-    
+    std::vector<unsigned int> sizes = as< std::vector<unsigned int> >(sizes_);
+    unsigned int len_coe = sizes.size() * types_.size();
+   
     // Estimate significance of the sequences
     std::vector<double> sgma_all;
     sgma_all.reserve(len_coe);
@@ -302,7 +302,8 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     VecNgrams seqs_all;
     seqs_all.reserve(len_coe);
     
-    for(unsigned int mw_len = len_min; mw_len <= len_max; mw_len++){
+    for(unsigned int m = 0; m < sizes.size(); m++){
+        unsigned int mw_len = sizes[m];
         // Collect all sequences of specified words
         MapNgrams counts_seq;
         //dev::Timer timer;

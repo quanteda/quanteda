@@ -140,20 +140,19 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_sequences
-DataFrame qatd_cpp_sequences(const List& texts_, const CharacterVector& types_, const unsigned int count_min, unsigned int len_min, unsigned int len_max, const String& method, const double smoothing, bool nested);
-RcppExport SEXP quanteda_qatd_cpp_sequences(SEXP texts_SEXP, SEXP types_SEXP, SEXP count_minSEXP, SEXP len_minSEXP, SEXP len_maxSEXP, SEXP methodSEXP, SEXP smoothingSEXP, SEXP nestedSEXP) {
+DataFrame qatd_cpp_sequences(const List& texts_, const CharacterVector& types_, const unsigned int count_min, const IntegerVector sizes_, const String& method, const double smoothing, bool nested);
+RcppExport SEXP quanteda_qatd_cpp_sequences(SEXP texts_SEXP, SEXP types_SEXP, SEXP count_minSEXP, SEXP sizes_SEXP, SEXP methodSEXP, SEXP smoothingSEXP, SEXP nestedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
     Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
     Rcpp::traits::input_parameter< const unsigned int >::type count_min(count_minSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type len_min(len_minSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type len_max(len_maxSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type sizes_(sizes_SEXP);
     Rcpp::traits::input_parameter< const String& >::type method(methodSEXP);
     Rcpp::traits::input_parameter< const double >::type smoothing(smoothingSEXP);
     Rcpp::traits::input_parameter< bool >::type nested(nestedSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_sequences(texts_, types_, count_min, len_min, len_max, method, smoothing, nested));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_sequences(texts_, types_, count_min, sizes_, method, smoothing, nested));
     return rcpp_result_gen;
 END_RCPP
 }
