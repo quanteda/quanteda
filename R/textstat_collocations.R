@@ -15,12 +15,12 @@
 #'   m_{ij})^2}{m_{ij}}} } \item{\code{"pmi"}}{point-wise mutual information 
 #'   score, computed as log \eqn{n_{11}/m_{11}}} \item{\code{"dice"}}{the Dice 
 #'   coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
-#'   \item{\code{"bj_lambda1"}}{unigram subtuples, Blaheta and Johnson's method (called through 
-#'   \code{\link{sequences}})}  \item{\code{"bj_lambda"}}{all subtuples algorithm, 
+#'   \item{\code{"lambda1"}}{unigram subtuples, Blaheta and Johnson's method (called through 
+#'   \code{\link{sequences}})}  \item{\code{"lambda"}}{all subtuples algorithm, 
 #'   Blaheta and Johnson's method (called through \code{\link{sequences}})} }
 #' @param size numeric argument representing the length of the collocations
 #'   to be scored.  The maximum size is currently 3 for all
-#'   methods except \code{"bj_lambda"} and \code{"bj_lambda1"}, which has a maximum size of 5.
+#'   methods except \code{"lambda"} and \code{"lambda1"}, which has a maximum size of 5.
 #'   Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.
 #' @param min_count minimum frequency of collocations that will be scored
 #' @param ... additional arguments passed to \code{\link{collocations2}} for the
@@ -52,12 +52,12 @@
 #' toks2 <- tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
 #' toks2 <- tokens_select(toks2, "^([A-Z][a-z\\-]{2,})", valuetype="regex", 
 #'                      case_insensitive = FALSE, padding = TRUE)
-#' seqs <- textstat_collocations(toks2, method = "bj_lambda")
+#' seqs <- textstat_collocations(toks2, method = "lambda")
 #' head(seqs, 10)
 #' 
 #' # compounding tokens is more efficient when applied to the same tokens object 
 #' toks_comp <- tokens_compound(toks2, seqs)
-textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj_lambda", "bj_lambda1"), 
+textstat_collocations <- function(x, method =  c("lambda", "lambda1", "lr", "chi2", "pmi", "dice"), 
                                   size = 2,
                                   min_count = 2, 
                                   ...) {
@@ -66,14 +66,14 @@ textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "b
 
 #' @noRd
 #' @export
-textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj_lambda", "bj_lambda1"), 
+textstat_collocations.tokens <- function(x, method =  c("lambda", "lambda1", "lr", "chi2", "pmi", "dice"), 
                                          size = 2,
                                          min_count = 2, 
                                          ...) {
     method <- match.arg(method)
     if (method == 'bj_lambda') {
         result <- sequences(x, min_count = min_count, size = size, ...)
-    } else if (method == 'bj_lambda1'){
+    } else if (method == 'lambda1'){
         result <- sequences(x, min_count = min_count, size = size, method = "lambda1", ...)
     } else {
         if (!all(size %in% 2:3)) {
