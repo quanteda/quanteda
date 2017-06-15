@@ -151,15 +151,36 @@ test_that("test the correctness of significant: against stats package", {
     # [1] "word1" NA      NA  
     
     seqs <- sequences(tokens(txt), size = 3, smoothing =0)
-    textstat_collocations(tokens(txt), method = "lr", size = 3)[1:3, ]
+    expect_equal(seqs$collocation[3], 'capital gains tax')
+    expect_equal(seqs$logratio[3], statss$lrt, tolerance = 1e-3)
+    expect_equal(seqs$chi2[3], statss$pearson, tolerance = 1e-3)
+    
+    col <- textstat_collocations(tokens(txt), method = "lr", size = 3)
+    expect_equal(seqs$collocation[3], col$collocation[3])
+    expect_equal(seqs$logratio[3], col$G2[3], tolerance = 1e-3)
     #         collocation length count       G2
     # 1   C capital gains      3     3 20.17961
     # 2   gains tax gains      3     2 11.18707
     # 3 capital gains tax      3     2 10.91587
     
-    textstat_collocations(tokens(txt), method = "chi2", size = 3)[1:3, ]
+    col <- textstat_collocations(tokens(txt), method = "chi2", size = 3)
+    expect_equal(seqs$chi2[3], col$X2[3], tolerance = 1e-3)
     #         collocation length count       X2
     # 1   C capital gains      3     3 43.95563
     # 2   gains tax gains      3     2 23.64158
     # 3 capital gains tax      3     2 16.93125
+    
+    col <- textstat_collocations(tokens(txt), method = "pmi", size = 3)
+    expect_equal(seqs$pmi[3], col$pmi[3], tolerance = 1e-3)
+    #    collocation length count      pmi
+    # 1   C capital gains      3     3 2.687847
+    # 2   gains tax gains      3     2 2.505526
+    # 3 capital gains tax      3     2 2.128232
+    
+    col <- textstat_collocations(tokens(txt), method = "dice", size = 3)
+    expect_equal(seqs$dice[3], col$dice[3]*3/2, tolerance = 1e-3)
+    #     collocation length count      dice
+    # 1   C capital gains      3     3 0.4285714
+    # 2   gains tax gains      3     2 0.2857143
+    # 3 capital gains tax      3     2 0.2666667
 })

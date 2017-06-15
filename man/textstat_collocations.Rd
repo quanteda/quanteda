@@ -29,16 +29,15 @@ coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
 \code{\link{sequences}})}  \item{\code{"bj_all"}}{all subtuples algorithm, 
 Blaheta and Johnson's method (called through \code{\link{sequences}})} }}
 
+\item{size}{numeric argument representing the length of the collocations
+to be scored.  The maximum size is currently 3 for all
+methods except \code{"bj_uni"} and \code{"bj_all"}, which has a maximum size of 5.
+Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.}
+
 \item{min_count}{minimum frequency of collocations that will be scored}
 
 \item{...}{additional arguments passed to \code{\link{collocations2}} for the
 first four methods, or to  \code{\link{sequences}} for \code{method = "bj"}}
-
-\item{min_size}{minimum length of sequences which are collected}
-
-\item{max_size}{numeric argument representing the maximum length of the collocations
-to be scored.  The maximum size is currently 3 for all
-methods except \code{"bj_uni"} and \code{"bj_all"}, which has a maximum size of 5.}
 }
 \value{
 \code{is.collocation} returns \code{TRUE} if the object is of class
@@ -78,8 +77,8 @@ txts <- c("quanteda is a package for quantitative text analysis",
 toks <- tokens(txts)
 textstat_collocations(toks, method = "lr")
 textstat_collocations(toks, method = "lr", min_count = 1)
-textstat_collocations(toks, method = "lr", max_size = 3, min_count = 1)
-(cols <- textstat_collocations(toks, method = "lr", max_size = 3, min_count = 2))
+textstat_collocations(toks, method = "lr", size = 2:3, min_count = 1)
+(cols <- textstat_collocations(toks, method = "lr", size = 2:3, min_count = 2))
 
 # extracting multi-part proper nouns (capitalized terms)
 toks2 <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))

@@ -16,9 +16,8 @@ is.sequences(x)
 \item{min_count}{minimum frequency of sequences for which parameters are 
 estimated}
 
-\item{size}{length of collocations, default is 2. Can be set up to 5. 
-Use c(2,5) or 2:5 to return collocations of bi-, tri-, 3- and 
-5-gram collocations.}
+\item{size}{length of collocations, default is 2. Can be set up to 5.
+Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.}
 
 \item{method}{default is "unigram" and option is "all_subtuples"}
 
