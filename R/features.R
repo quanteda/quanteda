@@ -1,0 +1,55 @@
+#' selecting or removing document features through features
+#' 
+#' Feature selection or removal in \pkg{quanteda} using the \code{features} argument.
+#' @param features a character vector, list of character vectors, \link{dictioanry},
+#' \link{collocations} or \link{dfm}. See \link{features} for details.
+#' @details Character vector is the basic object for feature specification in 
+#'   \pkg{quanteda} but features also accept other objects.
+#'   \describe{
+#'   \item{\code{character vector}}{Typically, a vector of words to be selected or removed. 
+#'     If words are separeted by a white space, they are interpreted as multi-word features
+#'     in functions for \link{tokens} objects. An empty feature removes padding from \link{tokens}.
+#'     }
+#'   \item{\code{list of character vectors}}{Each of the character vectors in the list 
+#'     speficies features. Character vectors can be longer than one for multi-word features.
+#'     Functions for \link{dfm} do not accepet features as a list since it does have information 
+#'     on positions of words. To select or remove tokens that contain white spaces (e.g. n-grams), 
+#'     features must be specified as a list of character vectors.
+#'     }
+#'   \item{\code{dictionary}}{Values in dictionary are used as features. Functions for \link{tokens} 
+#'     objects accept multi-word dictionary values, but functions for \link{dfm} do not. 
+#'     See \link{dictionary} for details.
+#'     } 
+#'   \item{\code{collocations}}{Collocations in \link{textstat_collocations} are used as multi-word 
+#'     features in functions for \link{tokens}. Functions for \link{dfm} do not accept collocations
+#'     as features.
+#'     }
+#'   \item{\code{dfm}}{Only \link{dfm_select} accepts \code{dfm} as features to create a new \code{dfm}
+#'     identical in its features set.
+#'     }
+#'   }
+#' @name features
+#' @examples 
+#' # these are interpreted as one sigle-word feature and two multi-word features
+#' feat1 <- c('president', 'white house', 'house of representatives')
+#' 
+#' # but these are three single-word features
+#' feat2 <- c('president', 'white_house', 'house_of_representatives')
+#' 
+#' # this is equivalent to feat1
+#' feat3 <- list(c('president'), c('white', 'house'), c('house', 'of', 'representatives'))
+#'
+#' # glob expression can be used 
+#' feat4 <- c('president?', 'white house', 'house * representatives')
+#' 
+#' # this is equivalent to feat4
+#' feat5 <- list(c('president?'), c('white', 'house'), c('house', '*', 'representatives'))
+#' 
+#' these are interpreted as one sigle-word feature and two multi-word values
+#' dict1 <- dictionary(us = c('president', 'white house', 'house of representatives', concatenator = ' ')
+#' 
+#' # but these are three single-word values
+#' dict2 <- dictionary(us = c('president', 'white house', 'house of representatives', concatenator = '_')
+#' 
+#' @keywords internal
+NULL
