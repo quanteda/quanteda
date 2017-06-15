@@ -47,7 +47,7 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 toks <- tokens_select(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", 
                      case_insensitive = FALSE, padding = TRUE)
 
-seqs <- sequences(toks)
+seqs <- sequences(toks, size = 2:3)
 head(seqs, 10)
 # to return only trigrams
 seqs <- sequences(toks, min_size = 3, max_size = 3)

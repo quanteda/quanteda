@@ -90,7 +90,7 @@ void counts(Text text,
     std::size_t len_text = text.size();
     for (std::size_t i = 0; i < len_text; i++) {
         for (std::size_t j = i; j < len_text; j++) {
-            //Rcout << i << " " << j << "\n";
+            //Rcout << "j loop i="<< i << " " << j << "\n";
             unsigned int token = text[j];
             bool is_in = true;
             if (token == 0 || j - i >= len) {
@@ -107,7 +107,14 @@ void counts(Text text,
                     counts_seq[tokens_seq]++;
                 }
                 tokens_seq.clear();
-                if (!nested) i = j; // jump if nested is false
+                if (!nested) {// jump if nested is false
+                    if (token == 0 || j == len_text){
+                        i = j;
+                    } else {
+                        i = j-1;
+                    }
+                    //Rcout<<"i="<<i<<"token="<<token<<std::endl;
+                }
                 break;
             }
         }
