@@ -2,8 +2,8 @@ context('test textstat_collocations.R')
 
 test_that("test that collocations do not span texts", {
     toks <- tokens(c('this is a test', 'this also a test'))
-    cols <- rbind(textstat_collocations(toks, size = 2, min_count = 1),
-                  textstat_collocations(toks, size = 3, min_count = 1))
+    cols <- rbind(textstat_collocations(toks, size = 2, min_count = 1, method = "lr"),
+                  textstat_collocations(toks, size = 3, min_count = 1, method = "lr"))
     
     expect_false('test this' %in% cols$collocation)
     expect_false('test this also' %in% cols$collocation)
@@ -24,7 +24,7 @@ test_that("test that collocations only include selected features", {
 test_that("test that collocations and sequences are counting the same features", {
     toks <- tokens(data_corpus_inaugural, remove_punct = TRUE)
     toks <- tokens_remove(toks, stopwords(), padding = TRUE)
-    seqs <- textstat_collocations(toks, method = 'bj_lambda', size = 2)
+    seqs <- textstat_collocations(toks, method = 'lambda', size = 2)
     cols <- textstat_collocations(toks, method = 'lr', size = 2)
     both <- merge(seqs, cols, by = 'collocation')
     expect_true(all(both$count.x == both$count.x))
