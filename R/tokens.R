@@ -576,14 +576,20 @@ tokens_word <- function(txt,
         
         tok <- stri_split_boundaries(txt, 
                                      type = "word", 
-                                     skip_word_none = (remove_punct | remove_symbols), # this is what obliterates currency symbols, Twitter tags, and URLs
-                                     skip_word_number = remove_numbers) # but does not remove 4u, 2day, etc.
+                                     # this is what obliterates currency symbols, Twitter tags, and URLs
+                                     skip_word_none = (remove_punct | remove_symbols) & remove_separators, 
+                                     # but does not remove 4u, 2day, etc.
+                                     skip_word_number = remove_numbers) 
         
-        # Remove separators if option is TRUE
+        # Remove separators (including control characters) if option is TRUE
         if (remove_separators & !remove_punct) {
-            tok <- lapply(tok, function(x) x[!stri_detect_regex(x, "^\\s$")])
+            tok <- lapply(tok, function(x) x[!stri_detect_charclass(x, "[\\p{Z}\\p{C}]")])
         }
         
+        if (remove_punct & !remove_separators) {
+            tok <- lapply(tok, function(x) x[!stri_detect_charclass(x, "[\\p{P}]")])
+        }
+
         if (remove_twitter == FALSE) {
             if (verbose) catm("...replacing Twitter characters (#, @)\n")
             tok <- lapply(tok, stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
