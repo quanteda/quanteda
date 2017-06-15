@@ -8,7 +8,7 @@
 features(x)
 }
 \arguments{
-\item{features}{a character vector, list of character vectors, \link{dictioanry},
+\item{features}{a character vector, list of character vectors, \link{dictionary},
 \link{collocations} or \link{dfm}. See \link{features} for details.}
 }
 \description{

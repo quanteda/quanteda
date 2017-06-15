@@ -1,7 +1,7 @@
 #' selecting or removing document features through features
 #' 
 #' Feature selection or removal in \pkg{quanteda} using the \code{features} argument.
-#' @param features a character vector, list of character vectors, \link{dictioanry},
+#' @param features a character vector, list of character vectors, \link{dictionary},
 #' \link{collocations} or \link{dfm}. See \link{features} for details.
 #' @details Character vector is the basic object for feature specification in 
 #'   \pkg{quanteda} but features also accept other objects.
