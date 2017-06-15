@@ -45,11 +45,13 @@
 #' # this is equivalent to feat4
 #' feat5 <- list(c('president?'), c('white', 'house'), c('house', '*', 'representatives'))
 #' 
-#' these are interpreted as one sigle-word feature and two multi-word values
-#' dict1 <- dictionary(us = c('president', 'white house', 'house of representatives', concatenator = ' ')
+#' # these are interpreted as one sigle-word feature and two multi-word values
+#' dict1 <- dictionary(us = c('president', 'white house', 'house of representatives'), 
+#'                     concatenator = ' ')
 #' 
 #' # but these are three single-word values
-#' dict2 <- dictionary(us = c('president', 'white house', 'house of representatives', concatenator = '_')
+#' dict2 <- dictionary(us = c('president', 'white house', 'house of representatives'), 
+#'                     concatenator = '_')
 #' 
 #' @keywords internal
 NULL
