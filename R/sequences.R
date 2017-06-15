@@ -33,7 +33,7 @@
 #' seqs <- sequences(toks, size = 2:3)
 #' head(seqs, 10)
 #' # to return only trigrams
-#' seqs <- sequences(toks, min_size = 3, max_size = 3)
+#' seqs <- sequences(toks, size=3)
 #' head(seqs, 10)
 #' @export
 sequences <- function(x, 
