@@ -52,10 +52,13 @@
 #' toks2 <- tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
 #' toks2 <- tokens_select(toks2, "^([A-Z][a-z\\-]{2,})", valuetype="regex", 
 #'                      case_insensitive = FALSE, padding = TRUE)
-
+#' seqs <- textstat_collocations(toks2, method = "bj_uni")
+#' head(seqs, 10)
+#' 
+#' # compounding tokens is more efficient when applied to the same tokens object 
+#' toks_comp <- tokens_compound(toks2, seqs)
 textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj_uni", "bj_all"), 
-                                  min_size = 2,
-                                  max_size = 3,
+                                  size = 2,
                                   min_count = 2, 
                                   ...) {
     UseMethod("textstat_collocations")
@@ -64,25 +67,21 @@ textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "b
 #' @noRd
 #' @export
 textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj_uni", "bj_all"), 
-                                         min_size = 2,
-                                         max_size = 3,
+                                         size = 2,
                                          min_count = 2, 
                                          ...) {
     method <- match.arg(method)
     if (method == 'bj_uni') {
-        result <- sequences(x, min_count = min_count, min_size = min_size, max_size = max_size, ...)
+        result <- sequences(x, min_count = min_count, size = size, ...)
     } else if (method == 'bj_all'){
-        result <- sequences(x, min_count = min_count, min_size = min_size, max_size = max_size, method = "all_subtuples", ...)
+        result <- sequences(x, min_count = min_count, size = size, method = "all_subtuples", ...)
     } else {
-        if (missing(max_size)) {
-            max_size <- 2:3 
-        } else if (!all(max_size %in% 2:3)) {
+        if (!all(size %in% 2:3)) {
             stop("for method ", method, " max_size can only be 2, 3, or 2:3")
-        } else {
-            max_size <- 2:max_size
-        }
+        } 
+        
         result <- collocations2(x, method = method,  
-                                size = max_size, min_count = min_count, ...)
+                                size = size, min_count = min_count, ...)
     }
     rownames(result) <- seq_len(nrow(result))
     class(result) <- c("collocations", 'data.frame')
