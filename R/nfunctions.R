@@ -142,7 +142,7 @@ ntoken.corpus <- function(x, ...) {
 #' @noRd
 #' @export
 ntoken.character <- function(x, ...) {
-    ntoken(tokenize(x, ...))
+    ntoken(tokens(x, ...))
 }
 
 #' @noRd
@@ -162,7 +162,7 @@ ntoken.tokenizedTexts <- function(x, ...) {
 #' @noRd
 #' @export
 ntype.character <- function(x, ...) {
-    ntype(tokenize(x, ...))
+    ntype(tokens(x, ...))
 }
 
 #' @noRd
