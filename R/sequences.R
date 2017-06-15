@@ -9,7 +9,7 @@
 #'   estimated
 #' @param size length of collocations, default is 2. Can be set up to 5.
 #'        Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.
-#' @param method default is "unigram" and option is "all_subtuples"
+#' @param method default is "lambda" and option is "lambda1"
 #' @param smoothing default is 0.5
 #' @param nested if \code{TRUE}, collect all the subsequences of a longer
 #'   sequence as separate entities. e.g. in a sequence of capitalized words
@@ -38,7 +38,7 @@
 sequences <- function(x, 
                        min_count = 2,
                        size = 2,
-                       method = c("unigram", "all_subtuples"),
+                       method = c("lambda", "lambda1"),
                        smoothing = 0.5,
                        nested = TRUE) {
     
@@ -52,7 +52,7 @@ sequences <- function(x,
 sequences.tokens <- function(x,
                               min_count = 2,
                               size = 2,
-                              method = c("unigram", "all_subtuples"),
+                              method = c("lambda", "lambda1"),
                               smoothing = 0.5,
                               nested = TRUE) {
     

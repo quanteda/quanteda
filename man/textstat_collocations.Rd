@@ -5,8 +5,8 @@
 \alias{is.collocations}
 \title{calculate collocation statistics}
 \usage{
-textstat_collocations(x, method = c("lr", "chi2", "pmi", "dice", "bj_uni",
-  "bj_all"), size = 2, min_count = 2, ...)
+textstat_collocations(x, method = c("lr", "chi2", "pmi", "dice", "bj_lambda",
+  "bj_lambda1"), size = 2, min_count = 2, ...)
 
 is.collocations(x)
 }
@@ -25,19 +25,19 @@ statistic, computed as: \deqn{\sum_i \sum_j \frac{(n_{ij} -
 m_{ij})^2}{m_{ij}}} } \item{\code{"pmi"}}{point-wise mutual information 
 score, computed as log \eqn{n_{11}/m_{11}}} \item{\code{"dice"}}{the Dice 
 coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
-\item{\code{"bj_uni"}}{unigram subtuples, Blaheta and Johnson's method (called through 
-\code{\link{sequences}})}  \item{\code{"bj_all"}}{all subtuples algorithm, 
+\item{\code{"bj_lambda1"}}{unigram subtuples, Blaheta and Johnson's method (called through 
+\code{\link{sequences}})}  \item{\code{"bj_lambda"}}{all subtuples algorithm, 
 Blaheta and Johnson's method (called through \code{\link{sequences}})} }}
 
 \item{size}{numeric argument representing the length of the collocations
 to be scored.  The maximum size is currently 3 for all
-methods except \code{"bj_uni"} and \code{"bj_all"}, which has a maximum size of 5.
+methods except \code{"bj_lambda"} and \code{"bj_lambda1"}, which has a maximum size of 5.
 Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.}
 
 \item{min_count}{minimum frequency of collocations that will be scored}
 
 \item{...}{additional arguments passed to \code{\link{collocations2}} for the
-first four methods, or to  \code{\link{sequences}} for \code{method = "bj"}}
+first four methods, or to  \code{\link{sequences}} for \code{method = "bj_*"}}
 }
 \value{
 \code{is.collocation} returns \code{TRUE} if the object is of class
@@ -85,7 +85,7 @@ toks2 <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
 toks2 <- tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
 toks2 <- tokens_select(toks2, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", 
                      case_insensitive = FALSE, padding = TRUE)
-seqs <- textstat_collocations(toks2, method = "bj_uni")
+seqs <- textstat_collocations(toks2, method = "bj_lambda")
 head(seqs, 10)
 
 # compounding tokens is more efficient when applied to the same tokens object 

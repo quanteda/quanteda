@@ -5,8 +5,8 @@
 \alias{is.sequences}
 \title{Find variable-length collocations}
 \usage{
-sequences(x, min_count = 2, size = 2, method = c("unigram",
-  "all_subtuples"), smoothing = 0.5, nested = TRUE)
+sequences(x, min_count = 2, size = 2, method = c("lambda", "lambda1"),
+  smoothing = 0.5, nested = TRUE)
 
 is.sequences(x)
 }
@@ -19,7 +19,7 @@ estimated}
 \item{size}{length of collocations, default is 2. Can be set up to 5.
 Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.}
 
-\item{method}{default is "unigram" and option is "all_subtuples"}
+\item{method}{default is "lambda" and option is "lambda1"}
 
 \item{smoothing}{default is 0.5}
 

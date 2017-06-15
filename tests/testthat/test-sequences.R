@@ -25,7 +25,7 @@ test_that("test that argument 'size'", {
     seqs <- sequences(toks, min_count = 1)
     expect_equal(seqs$collocation, c('G G', 'E E', 'E G'))
     
-    seqs <- sequences(toks, min_count = 1, size=3:4)
+    seqs <- sequences(toks, min_count = 1, size=3:4, method = "lambda1")
     expect_equal(seqs$collocation, c('E G G', 'E G G G', 'E E G G', 'G G G', 'E E G'))
 })
 
@@ -33,13 +33,13 @@ test_that("test that argument 'method'", {
     
     toks <- tokens('c o c g o c w o g c')
     
-    #the largest count is: counts(NOTcNOTgNOTo)=4; and it has a positive sign in "unigram"
-    seqs <- sequences(toks, min_count = 1, method = "unigram", size = 3)
+    #the largest count is: counts(NOTcNOTgNOTo)=4; and it has a positive sign in "lambda1"
+    seqs <- sequences(toks, min_count = 1, method = "lambda1", size = 3)
     expect_equal(seqs$collocation[3], 'c g o')
     expect_gt(seqs$lambda[3], 0)              
     
-    #the largest count is: counts(NOTcNOTgNOTo)=4; and it has a negtive sign in "all_subtuples"
-    seqs <- sequences(toks, min_count = 1, method = "all_subtuples", size = 3)
+    #the largest count is: counts(NOTcNOTgNOTo)=4; and it has a negtive sign in "lambda"
+    seqs <- sequences(toks, min_count = 1, method = "lambda", size = 3)
     expect_equal(seqs$collocation[5], 'c g o')
     expect_lt(seqs$lambda[5], 0)
     
@@ -178,7 +178,7 @@ test_that("test the correctness of significant: against stats package", {
     # 3 capital gains tax      3     2 2.128232
     
     col <- textstat_collocations(tokens(txt), method = "dice", size = 3)
-    expect_equal(seqs$dice[3], col$dice[3]*3/2, tolerance = 1e-3)
+    expect_equal(seqs$dice[3], col$dice[3], tolerance = 1e-3)
     #     collocation length count      dice
     # 1   C capital gains      3     3 0.4285714
     # 2   gains tax gains      3     2 0.2857143

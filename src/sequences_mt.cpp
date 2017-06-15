@@ -15,7 +15,7 @@ int match_bit2(const std::vector<unsigned int> &tokens1,
     return bit;
 }
 
-// unigram subtuples from B&J algorithm
+// unigram subtuples from B&J algorithm -- lambda1
 double sigma_uni(const std::vector<double> &counts, const std::size_t ntokens){
     double s = 0.0;
     s += std::pow(ntokens - 1, 2) / counts[0];
@@ -166,7 +166,7 @@ void estimates(std::size_t i,
     counts_bit[std::pow(2, n)-1]  += cs[i];//  c(2^n-1) += number of itself  
     
     //B-J algorithm    
-    if (method == "unigram"){
+    if (method == "lambda1"){
         sgma[i] = sigma_uni(counts_bit, n);
         lmda[i] = lambda_uni(counts_bit, n);
     } else {
@@ -393,12 +393,12 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 
 #toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
 #types <- unique(as.character(toks))
-#out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "unigram",0.5, TRUE)
-#out3 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "all_subtuples",0.5 TRUE)
-#out4 <- qatd_cpp_sequences(toks, types, 1, 2, 3, "unigram",0.5, TRUE)
+#out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "lambda1",0.5, TRUE)
+#out3 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "lambda",0.5 TRUE)
+#out4 <- qatd_cpp_sequences(toks, types, 1, 2, 3, "lambda1",0.5, TRUE)
 # out2$z <- out2$lambda / out2$sigma
 # out2$p <- 1 - stats::pnorm(out2$z)
 toks <- tokens('capital other capital gains other capital word2 other gains capital')
 types <- unique(as.character(toks))
-out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "unigram",0.5, TRUE)
+out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "lambda1",0.5, TRUE)
 */
