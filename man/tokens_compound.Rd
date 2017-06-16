@@ -4,17 +4,14 @@
 \alias{tokens_compound}
 \title{convert token sequences into compound tokens}
 \usage{
-tokens_compound(x, sequences, concatenator = "_", valuetype = c("glob",
+tokens_compound(x, features, concatenator = "_", valuetype = c("glob",
   "regex", "fixed"), case_insensitive = TRUE, join = FALSE)
 }
 \arguments{
 \item{x}{an input \link{tokens} object}
 
-\item{sequences}{the input sequence, one of: \itemize{ \item{character vector,
-}{whose elements will be split on whitespace;} \item{list of characters,
-}{consisting of a list of token patterns, separated by white space}; 
-\item{\link{tokens} object;} \item{\link{dictionary} object}{;} 
-\item{\link{collocations} object.}{} }}
+\item{features}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations} or \link{dfm}. See \link{features} for details.}
 
 \item{concatenator}{the concatenation character that will connect the words 
 making up the multi-word sequences.  The default \code{_} is highly 
