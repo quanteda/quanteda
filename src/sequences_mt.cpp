@@ -177,47 +177,100 @@ void estimates(std::size_t i,
     // Dice coefficient
     dice[i] = n * compute_dice(counts_bit);
     
-    // marginal counts: used in pmi, chi-sqaure, G2
-    std::vector<double> mc(n, 0);  // the size of mc is n
-    for (unsigned int k = 1; k < std::pow(2, n); k++){
-        unsigned int kk = k;
-        for (int j = n-1; j >= 0; j--){
-            int jj = std::pow(2, j);
-            if (kk >= jj){
-                mc[j] += counts_bit[k];
-                kk -= jj;
-            }
-        }
+//     // marginal counts: used in pmi, chi-sqaure, G2
+//     std::vector<double> mc(n, 0);  // the size of mc is n
+//     for (int k = 1; k < std::pow(2, n); k++){
+//         int kk = k;
+//         for (int j = n-1; j >= 0; j--){
+//             int jj = std::pow(2, j);
+//             if (kk >= jj){
+//                 mc[j] += counts_bit[k];
+//                 kk -= jj;
+//             }
+//         }
+//     }
+//     
+    
+    
+//     //expected counts: used in chi-square, G2
+//     std::vector<double> ec(std::pow(2, n), 1.00);
+//     for (std::size_t k = 0; k < std::pow(2, n); k++){
+//         for (std::size_t j = 0; j < n; j++){
+//             std::bitset<8> bitb(k);
+//             ec[k] = ec[k] * (bitb.test(j)?mc[j]:(nseqs - mc[j]));
+//         }
+//         ec[k] = ec[k]/std::pow(nseqs, n-1);
+//     }
+//     
+//     //pmi
+//     pmi[i] = log(counts_bit[std::pow(2, n)-1]) + (n-1) * log(nseqs);
+//     for (std::size_t k = 0; k < n; k++){
+//         pmi[i] -= log(mc[k]);
+//     }
+//     
+//     //logratio
+//     logratio[i] = 0.0;
+//     double epsilon = 0.000000001; // to offset zero cell counts
+//     for (std::size_t k = 0; k < std::pow(2, n); k++){
+//         logratio[i] += counts_bit[k] * log(counts_bit[k]/ec[k] + epsilon);
+//     }
+//     logratio[i] *= 2;
+//     
+//     //chi2
+//     chi2[i] = 0.0;
+//     for (std::size_t k = 0; k < std::pow(2, n); k++){
+//         chi2[i] += std::pow((counts_bit[k] - ec[k]), 2)/ec[k];
+//     }
+    
+    //******issue 803: count ngrams as 2x2 table**********//
+    std::vector<double> new_count(4, 0);
+    new_count[3] = counts_bit[std::pow(2, n) - 1]; // C(BA)C
+    new_count[1] = counts_bit[(std::pow(2, n-1) - 1)]; //~C(BA)
+    for (std::size_t k = 0; k < (std::pow(2, n-1) - 1); k++){
+        new_count[2] = new_count[2] + counts_bit[k + std::pow(2, n-1)] - smoothing; //C~(AB)
+        if(i==1)Rcout<<"counts_bit["<<k + std::pow(2, n-1)<<"]="<<counts_bit[k+std::pow(2, n-1)]<<std::endl;
+        new_count[0] = new_count[0] + counts_bit[k] - smoothing; //~C~(AB)
+        
     }
     
-    //expected counts: used in chi-square, G2
-    std::vector<double> ec(std::pow(2, n), 1.00);
-    for (std::size_t k = 0; k < std::pow(2, n); k++){
-        for (std::size_t j = 0; j < n; j++){
-            std::bitset<8> bitb(k);
-            ec[k] = ec[k] * (bitb.test(j)?mc[j]:(nseqs - mc[j]));
-        }
-        ec[k] = ec[k]/std::pow(nseqs, n-1);
-    }
+    // adjust the impact of smoothing
+    new_count[2] += smoothing;
+    new_count[0] += smoothing;
+    if(i==1)Rcout<<"new_count[0]="<<new_count[0]<<" "<<new_count[1]<<" "<<new_count[2]<<" "<<new_count[3]<<std::endl;
+    
+        
+    // marginal totals
+    std::vector<double> new_mc(2);
+    new_mc[0] = new_count[3] + new_count[1]; //?(BA)
+    new_mc[1] = new_count[3] + new_count[2]; //C(??)
+    if(i==1)Rcout<<"new_mc[0]="<<new_mc[0]<<" "<<new_mc[1]<<std::endl;
+    if(i==1) Rcout<<"total="<<nseqs<<"seqs"<<seqs[i][0]<<" "<<seqs[i][1]<<" "<<seqs[i][2]<<std::endl;
+    
+    
+    // expected totals
+    std::vector<double> new_ec(4);
+    new_ec[0] = (nseqs - new_mc[0])*(nseqs - new_mc[1])/nseqs;//
+    new_ec[1] = new_mc[0]*(nseqs - new_mc[1])/nseqs;
+    new_ec[2] = (nseqs - new_mc[0])* new_mc[1]/nseqs;
+    new_ec[3] = new_mc[0]* new_mc[1]/nseqs;
+    if(i==1)Rcout<<"new_ec[0]="<<new_ec[0]<<" "<<new_ec[1]<<" "<<new_ec[2]<<" "<<new_ec[3]<<std::endl;
+    
     
     //pmi
-    pmi[i] = log(counts_bit[std::pow(2, n)-1]) + (n-1) * log(nseqs);
-    for (std::size_t k = 0; k < n; k++){
-        pmi[i] -= log(mc[k]);
-    }
+    pmi[i] = log(new_count[3]*nseqs/(new_mc[0]*new_mc[1]));
     
     //logratio
     logratio[i] = 0.0;
     double epsilon = 0.000000001; // to offset zero cell counts
-    for (std::size_t k = 0; k < std::pow(2, n); k++){
-        logratio[i] += counts_bit[k] * log(counts_bit[k]/ec[k] + epsilon);
+    for (std::size_t k = 0; k < 4; k++){
+        logratio[i] += new_count[k] * log(new_count[k]/new_ec[k] + epsilon);
     }
     logratio[i] *= 2;
     
     //chi2
     chi2[i] = 0.0;
-    for (std::size_t k = 0; k < std::pow(2, n); k++){
-        chi2[i] += std::pow((counts_bit[k] - ec[k]), 2)/ec[k];
+    for (std::size_t k = 0; k < 4; k++){
+        chi2[i] += std::pow((new_count[k] - new_ec[k]), 2)/new_ec[k];
     }
 }
 
@@ -308,14 +361,14 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         MapNgrams counts_seq;
         //dev::Timer timer;
         //dev::start_timer("Count", timer);
-#if QUANTEDA_USE_TBB
-        counts_mt count_mt(texts, counts_seq, mw_len, nested);
-        parallelFor(0, texts.size(), count_mt);
-#else
+// #if QUANTEDA_USE_TBB
+//         counts_mt count_mt(texts, counts_seq, mw_len, nested);
+//         parallelFor(0, texts.size(), count_mt);
+// #else
         for (std::size_t h = 0; h < texts.size(); h++) {
             counts(texts[h], counts_seq, mw_len, nested);
         }
-#endif
+//#endif
         //dev::stop_timer("Count", timer);
         
         // Separate map keys and values
@@ -334,7 +387,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         }
         
         // adjust total_counts of MW 
-        total_counts += len * smoothing;
+        total_counts += 4 * smoothing;
         
         // Estimate significance of the sequences
         DoubleParams sgma(len);
@@ -399,7 +452,9 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 #out4 <- qatd_cpp_sequences(toks, types, 1, 3, "lambda1",0.5, TRUE)
 # out2$z <- out2$lambda / out2$sigma
 # out2$p <- 1 - stats::pnorm(out2$z)
-toks <- tokens('capital other capital gains other capital word2 other gains capital')
+txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
+toks <- tokens(txt)
 types <- unique(as.character(toks))
-out2 <- qatd_cpp_sequences(toks, types, 1, 2, "lambda1",0.5, TRUE)
+out2 <- quanteda:::qatd_cpp_sequences(toks, types, 1, 3, "lambda",0.0, TRUE)
+
 */
