@@ -50,7 +50,7 @@ test_that("features2list works as expected", {
                  target)
     
     # collocations
-    colls <- textstat_collocations(tokens(c("United States", "Congress", "federal government")), min_count = 1)
+    colls <- textstat_collocations(tokens(c("United States", "Congress", "federal government")), min_count = 1, method = "lr")
     expect_equal(quanteda:::features2list(colls),
                  list(c("United", "States"), c("federal", "government")))
 })
