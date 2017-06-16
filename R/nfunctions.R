@@ -191,13 +191,6 @@ ntoken.tokens <- function(x, ...) {
     lengths(x)
 }
 
-#' @export
-#' @noRd
-ntype.tokens <- function(x, ...) {
-    length(types(x))
-}
-
-
 #' count the number of sentences
 #' 
 #' Return the count of sentences in a corpus or character object.

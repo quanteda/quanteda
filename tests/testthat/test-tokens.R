@@ -277,11 +277,12 @@ test_that("+ operator works with tokens", {
     txt1 <- c(d1 = "This is sample document one.",
               d2 = "Here is the second sample document.")
     txt2 <- c(d3 = "And the third document.")
-    
     toks_added <- tokens(txt1) + tokens(txt2)
-    expect_equal(ntype(toks_added), length(attr(toks_added, "types")))
+    expect_equal(
+        length(unique(as.character(toks_added))), 
+        length(attr(toks_added, "types"))
+    )
     expect_equal(ndoc(toks_added), 3)
-
 })
 
 test_that("c() works with tokens", {

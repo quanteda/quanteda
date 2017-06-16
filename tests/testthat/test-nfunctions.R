@@ -23,3 +23,19 @@ test_that("test ntype with dfm (#748)", {
         c(doc1 = 3, doc2 = 3)
     )
 })
+
+test_that("test ntoken tokens", {
+    txt <- c(d1 = "a b c a b c", 
+             d2 = "a b c d e")
+    crp <- corpus(txt)
+    expect_equal(ntoken(txt), c(d1 = 6, d2 = 5))
+    expect_equal(ntoken(crp), c(d1 = 6, d2 = 5))
+})
+
+test_that("test ntype tokens", {
+    txt <- c(d1 = "a b c a b c", 
+             d2 = "a b c d e")
+    crp <- corpus(txt)
+    expect_equal(ntype(txt), c(d1 = 3, d2 = 5))
+    expect_equal(ntype(crp), c(d1 = 3, d2 = 5))
+})
