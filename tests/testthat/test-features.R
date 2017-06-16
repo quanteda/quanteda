@@ -60,7 +60,6 @@ test_that("character vector with whitespace works consistently on dfm", {
     
     mx <- dfm(c("a b c d e a_b_c d e"))
     feat <- 'a b c'
-    
     expect_equivalent(
         featnames(dfm_select(mx, features = feat)),
         character())
@@ -132,5 +131,18 @@ test_that("dictionary works consistently on tokens", {
     expect_equivalent(
         kwic(toks, keywords = dict)[,5],
         c("a b c d e", "d e"))
+})
+
+test_that("dictionary works consistently on dfm", {
+    
+    mx <- dfm(c("a b c d e a_b_c d e"))
+    dict <- dictionary(ABC = 'a b c', D = 'd', E = 'e')
+    expect_equivalent(
+        featnames(dfm_select(mx, features = feat)),
+        character())
+    
+    expect_equivalent(
+        featnames(dfm_remove(mx, features = feat)),
+        c("a", "b", "c", "d", "e", "a_b_c"))
 })
 
