@@ -111,7 +111,7 @@ void counts(Text text,
                     if (token == 0 || j == len_text){
                         i = j;
                     } else {
-                        i = j-1;
+                        i = j - 1;
                     }
                     //Rcout<<"i="<<i<<"token="<<token<<std::endl;
                 }
@@ -179,8 +179,8 @@ void estimates(std::size_t i,
     
     // marginal counts: used in pmi, chi-sqaure, G2
     std::vector<double> mc(n, 0);  // the size of mc is n
-    for (int k = 1; k < std::pow(2, n); k++){
-        int kk = k;
+    for (unsigned int k = 1; k < std::pow(2, n); k++){
+        unsigned int kk = k;
         for (int j = n-1; j >= 0; j--){
             int jj = std::pow(2, j);
             if (kk >= jj){
@@ -394,12 +394,12 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 
 #toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
 #types <- unique(as.character(toks))
-#out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "lambda1",0.5, TRUE)
-#out3 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "lambda",0.5 TRUE)
-#out4 <- qatd_cpp_sequences(toks, types, 1, 2, 3, "lambda1",0.5, TRUE)
+#out2 <- qatd_cpp_sequences(toks, types, 1, 2, "lambda1",0.5, TRUE)
+#out3 <- qatd_cpp_sequences(toks, types, 1, 2, "lambda",0.5 TRUE)
+#out4 <- qatd_cpp_sequences(toks, types, 1, 3, "lambda1",0.5, TRUE)
 # out2$z <- out2$lambda / out2$sigma
 # out2$p <- 1 - stats::pnorm(out2$z)
 toks <- tokens('capital other capital gains other capital word2 other gains capital')
 types <- unique(as.character(toks))
-out2 <- qatd_cpp_sequences(toks, types, 1, 2, 2, "lambda1",0.5, TRUE)
+out2 <- qatd_cpp_sequences(toks, types, 1, 2, "lambda1",0.5, TRUE)
 */
