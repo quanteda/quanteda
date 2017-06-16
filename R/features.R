@@ -4,13 +4,13 @@
 #' @param features a character vector, list of character vectors, \link{dictionary},
 #' \link{collocations} or \link{dfm}. See \link{features} for details.
 #' @details Character vector is the basic object for feature specification in 
-#'   \pkg{quanteda} but features also accept other objects.
+#'   \pkg{quanteda} but features may also come from other objects.
 #'   \describe{
-#'   \item{\code{character vector}}{Typically, a vector of words to be selected or removed. 
+#'   \item{\code{character}}{Typically, a character vector of words to be selected or removed. 
 #'     If words are separeted by a white space, they are interpreted as multi-word features
 #'     in functions for \link{tokens} objects. An empty feature removes padding from \link{tokens}.
 #'     }
-#'   \item{\code{list of character vectors}}{Each of the character vectors in the list 
+#'   \item{\code{list of character objects}}{Each of the character vectors in the list 
 #'     speficies features. Character vectors can be longer than one for multi-word features.
 #'     Functions for \link{dfm} do not accepet features as a list since it does have information 
 #'     on positions of words. To select or remove tokens that contain white spaces (e.g. n-grams), 
@@ -24,7 +24,7 @@
 #'     features in functions for \link{tokens}. Functions for \link{dfm} do not accept collocations
 #'     as features.
 #'     }
-#'   \item{\code{dfm}}{Only \link{dfm_select} accepts \code{dfm} as features to create a new \code{dfm}
+#'   \item{\code{dfm}}{Only \code{\link{dfm_select}} accepts \code{dfm} as features to create a new \code{dfm}
 #'     identical in its features set.
 #'     }
 #'   }
@@ -52,6 +52,5 @@
 #' # but these are three single-word values
 #' dict2 <- dictionary(us = c('president', 'white house', 'house of representatives'), 
 #'                     concatenator = '_')
-#' 
 #' @keywords internal
 NULL
