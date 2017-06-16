@@ -136,13 +136,13 @@ test_that("dictionary works consistently on tokens", {
 test_that("dictionary works consistently on dfm", {
     
     mx <- dfm(c("a b c d e a_b_c d e"))
-    dict <- dictionary(ABC = 'a b c', D = 'd', E = 'e')
+    dict <- dictionary(ABC = 'a_b_c', D = 'd', E = 'e')
     expect_equivalent(
-        featnames(dfm_select(mx, features = feat)),
-        character())
+        featnames(dfm_select(mx, features = dict)),
+        c('d', 'e', 'a_b_c'))
     
     expect_equivalent(
-        featnames(dfm_remove(mx, features = feat)),
-        c("a", "b", "c", "d", "e", "a_b_c"))
+        featnames(dfm_remove(mx, features = dict)),
+        c("a", "b", "c"))
 })
 
