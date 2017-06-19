@@ -35,13 +35,13 @@ test_that("test that argument 'method'", {
     
     #the largest count is: counts(NOTcNOTgNOTo)=4; and it has a positive sign in "lambda1"
     seqs <- sequences(toks, min_count = 1, method = "lambda1", size = 3)
-    expect_equal(seqs$collocation[3], 'c g o')
-    expect_gt(seqs$lambda[3], 0)              
+    cgo_index <- which(seqs$collocation == "c g o")
+    expect_gt(seqs$lambda[cgo_index], 0)              
     
     #the largest count is: counts(NOTcNOTgNOTo)=4; and it has a negtive sign in "lambda"
     seqs <- sequences(toks, min_count = 1, method = "lambda", size = 3)
-    expect_equal(seqs$collocation[5], 'c g o')
-    expect_lt(seqs$lambda[5], 0)
+    cgo_index <- which(seqs$collocation == "c g o")
+    expect_lt(seqs$lambda[cgo_index], 0)
     
 })
 
