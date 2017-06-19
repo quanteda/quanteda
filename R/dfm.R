@@ -141,8 +141,12 @@ dfm.character <- function(x,
                 groups = NULL, 
                 verbose = quanteda_options("verbose"), 
                 ...) {
+    
     start_time <- proc.time()
     valuetype <- match.arg(valuetype)
+    
+    if (!is.null(remove) & !is.null(select))
+        stop("only one of select and remove may be supplied at once")
     
     if (verbose && grepl("^dfm\\.character", sys.calls()[2]))
         catm("Creating a dfm from a character vector ...\n")
@@ -176,6 +180,9 @@ dfm.corpus <- function(x, tolower = TRUE,
     if (verbose)
         catm("Creating a dfm from a corpus ...\n")
     
+    if (!is.null(remove) & !is.null(select))
+        stop("only one of select and remove may be supplied at once")
+
     if (!is.null(groups)) {
         groupsLab <- if (is.factor(groups)) deparse(substitute(groups)) else groups
         if (verbose) 
@@ -215,7 +222,10 @@ dfm.tokenizedTexts <- function(x,
                                groups = NULL, 
                                verbose = quanteda_options("verbose"), 
                                ...) {
-
+    
+    if (!is.null(remove) & !is.null(select))
+        stop("only one of select and remove may be supplied at once")
+    
     valuetype <- match.arg(valuetype)
     dots <- list(...)
     if (length(dots) && any(!(names(dots)) %in% c("start_time", names(formals(tokens)))))

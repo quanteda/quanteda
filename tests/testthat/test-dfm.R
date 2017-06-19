@@ -437,3 +437,20 @@ test_that("dfm print works with options as expected", {
     )
 })
 
+test_that("cannot supply remove and select in one call (#793)", {
+    txt <- c(d1 = "one two three", d2 = "two three four", d3 = "one three four")
+    corp <- corpus(txt, docvars = data.frame(grp = c(1, 1, 2)))
+    toks <- tokens(corp)
+    expect_error(
+        dfm(txt, select = "one", remove = "two"),
+        "only one of select and remove may be supplied at once"
+    )
+    expect_error(
+        dfm(corp, select = "one", remove = "two"),
+        "only one of select and remove may be supplied at once"
+    )
+    expect_error(
+        dfm(toks, select = "one", remove = "two"),
+        "only one of select and remove may be supplied at once"
+    )
+})
