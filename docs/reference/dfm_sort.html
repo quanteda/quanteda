@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -80,20 +82,27 @@
 in documents, or both.</p>
     
 
-    <pre><span class='fu'>dfm_sort</span>(<span class='no'>x</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"features"</span>, <span class='st'>"documents"</span>, <span class='st'>"both"</span>))</pre>
+    <pre class="usage"><span class='fu'>dfm_sort</span>(<span class='no'>x</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"features"</span>, <span class='st'>"documents"</span>, <span class='st'>"both"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>Document-feature matrix created by <code><a href='dfm.html'>dfm</a></code></dd>
-      <dt>decreasing</dt>
-      <dd>TRUE (default) if sort will be in descending order, 
-otherwise sort in increasing order</dd>
-      <dt>margin</dt>
-      <dd>which margin to sort on <code>features</code> to sort by frequency of
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>Document-feature matrix created by <code><a href='dfm.html'>dfm</a></code></p></td>
+    </tr>
+    <tr>
+      <th>decreasing</th>
+      <td><p>TRUE (default) if sort will be in descending order, 
+otherwise sort in increasing order</p></td>
+    </tr>
+    <tr>
+      <th>margin</th>
+      <td><p>which margin to sort on <code>features</code> to sort by frequency of
 features, <code>documents</code> to sort by total feature counts in documents,
-and <code>both</code> to sort by both</dd>
-    </dl>
+and <code>both</code> to sort by both</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -103,7 +112,7 @@ and <code>both</code> to sort by both</dd>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>dtm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)
 <span class='no'>dtm</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 5 features (2% sparse).
-#&gt; 10 x 5 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 10 x 5 sparse Matrix of class "dfmSparse"
 #&gt;                  features
 #&gt; docs              fellow  - citizens  of the
 #&gt;   1789-Washington      3  3        5  71 116
@@ -115,33 +124,7 @@ and <code>both</code> to sort by both</dd>
 #&gt;   1813-Madison         1  1        4  65 100
 #&gt;   1817-Monroe          6 14        9 164 275
 #&gt;   1821-Monroe         10  6       15 197 360
-#&gt;   1825-Adams           3 11        2 245 304</div><div class='input'><span class='fu'>dfm_sort</span>(<span class='no'>dtm</span>)[<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 5 features (0% sparse).
-#&gt; 10 x 5 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;                  features
-#&gt; docs              the  of   , and   .
-#&gt;   1789-Washington 116  71  70  48  23
-#&gt;   1793-Washington  13  11   5   2   4
-#&gt;   1797-Adams      163 140 201 130  33
-#&gt;   1801-Jefferson  130 104 128  81  37
-#&gt;   1805-Jefferson  143 101 142  93  41
-#&gt;   1809-Madison    104  69  47  43  21
-#&gt;   1813-Madison    100  65  53  44  31
-#&gt;   1817-Monroe     275 164 169 122 110
-#&gt;   1821-Monroe     360 197 271 141 130
-#&gt;   1825-Adams      304 245 116 116  72</div><div class='input'><span class='fu'>dfm_sort</span>(<span class='no'>dtm</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='st'>"both"</span>)[<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 5 features (100% sparse).
-#&gt; 10 x 5 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;                  features
-#&gt; docs              notification 14th fondest predilection flattering
-#&gt;   1793-Washington            0    0       0            0          0
-#&gt;   1945-Roosevelt             0    0       0            0          0
-#&gt;   1865-Lincoln               0    0       0            0          0
-#&gt;   1905-Roosevelt             0    0       0            0          0
-#&gt;   1849-Taylor                0    0       0            0          0
-#&gt;   1829-Jackson               0    0       0            0          0
-#&gt;   1869-Grant                 0    0       0            0          0
-#&gt;   1809-Madison               0    0       0            0          0
-#&gt;   1833-Jackson               0    0       0            0          0
-#&gt;   1813-Madison               0    0       0            0          0</div></pre>
+#&gt;   1825-Adams           3 11        2 245 304</div><div class='input'><span class='fu'>dfm_sort</span>(<span class='no'>dtm</span>)[<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>dfm_sort</span>(<span class='no'>dtm</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='st'>"both"</span>)[<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

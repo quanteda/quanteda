@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -80,33 +82,42 @@
 specified length.</p>
     
 
-    <pre><span class='fu'>corpus_trim</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>),
+    <pre class="usage"><span class='fu'>corpus_trim</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>),
   <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_ntoken</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>char_trim</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>),
   <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_ntoken</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd><a href='corpus.html'>corpus</a> or character object whose sentences will be selected.</dd>
-      <dt>what</dt>
-      <dd>units of triming, <code>&quot;sentences&quot;</code> or <code>&quot;paragraphs&quot;</code>, or
-<code>&quot;documents&quot;</code></dd>
-      <dt>min_ntoken, max_ntoken</dt>
-      <dd>minimum and maximum lengths in word tokens 
-(excluding punctuation)</dd>
-      <dt>exclude_pattern</dt>
-      <dd>a <span class="pkg">stringi</span> regular expression whose match (at the
-sentence level) will be used to exclude sentences</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p><a href='corpus.html'>corpus</a> or character object whose sentences will be selected.</p></td>
+    </tr>
+    <tr>
+      <th>what</th>
+      <td><p>units of triming, <code>"sentences"</code> or <code>"paragraphs"</code>, or
+<code>"documents"</code></p></td>
+    </tr>
+    <tr>
+      <th>min_ntoken, max_ntoken</th>
+      <td><p>minimum and maximum lengths in word tokens 
+(excluding punctuation)</p></td>
+    </tr>
+    <tr>
+      <th>exclude_pattern</th>
+      <td><p>a <span class="pkg">stringi</span> regular expression whose match (at the
+sentence level) will be used to exclude sentences</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a <a href='corpus.html'>corpus</a> or character vector equal in length to the input, or
   a tokenized set of sentences if .  If the input was a corpus, then the all
   docvars and metadata are preserved.  For documents whose sentences have
-  been removed entirely, a null string (<code>&quot;&quot;</code>) will be returned.</p>
+  been removed entirely, a null string (<code>""</code>) will be returned.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -115,32 +126,32 @@ sentence level) will be used to exclude sentences</dd>
          <span class='st'>"Very long sentence, with multiple parts, separated by commas.  PAGE 3."</span>)
 <span class='no'>mycorp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>txt</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>serial</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>))
 <span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>mycorp</span>)</div><div class='output co'>#&gt;                                                                      text1 
-#&gt; &quot;PAGE 1. This is a single sentence.  Short sentence. Three word sentence.&quot; 
+#&gt; "PAGE 1. This is a single sentence.  Short sentence. Three word sentence." 
 #&gt;                                                                      text2 
-#&gt;                                             &quot;PAGE 2. Very short! Shorter.&quot; 
+#&gt;                                             "PAGE 2. Very short! Shorter." 
 #&gt;                                                                      text3 
-#&gt;   &quot;Very long sentence, with multiple parts, separated by commas.  PAGE 3.&quot; </div><div class='input'>
+#&gt;   "Very long sentence, with multiple parts, separated by commas.  PAGE 3." </div><div class='input'>
 <span class='co'># exclude sentences shorter than 3 tokens</span>
 <span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_trim</span>(<span class='no'>mycorp</span>, <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='output co'>#&gt;                                                           text1 
-#&gt;              &quot;This is a single sentence.  Three word sentence.&quot; 
+#&gt;              "This is a single sentence.  Three word sentence." 
 #&gt;                                                           text3 
-#&gt; &quot;Very long sentence, with multiple parts, separated by commas.&quot; </div><div class='input'><span class='co'># exclude sentences that start with "PAGE &lt;digit(s)&gt;"</span>
+#&gt; "Very long sentence, with multiple parts, separated by commas." </div><div class='input'><span class='co'># exclude sentences that start with "PAGE &lt;digit(s)&gt;"</span>
 <span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_trim</span>(<span class='no'>mycorp</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='st'>"^PAGE \\d+"</span>))</div><div class='output co'>#&gt;                                                               text1 
-#&gt; &quot;This is a single sentence.  Short sentence.  Three word sentence.&quot; 
+#&gt; "This is a single sentence.  Short sentence.  Three word sentence." 
 #&gt;                                                               text2 
-#&gt;                                             &quot;Very short!  Shorter.&quot; 
+#&gt;                                             "Very short!  Shorter." 
 #&gt;                                                               text3 
-#&gt;     &quot;Very long sentence, with multiple parts, separated by commas.&quot; </div><div class='input'>
+#&gt;     "Very long sentence, with multiple parts, separated by commas." </div><div class='input'>
 <span class='co'># trimming character objects</span>
 <span class='fu'>char_trim</span>(<span class='no'>txt</span>, <span class='st'>"sentences"</span>, <span class='kw'>min_ntoken</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;                                                           text1 
-#&gt;              &quot;This is a single sentence.  Three word sentence.&quot; 
+#&gt;              "This is a single sentence.  Three word sentence." 
 #&gt;                                                           text3 
-#&gt; &quot;Very long sentence, with multiple parts, separated by commas.&quot; </div><div class='input'><span class='fu'>char_trim</span>(<span class='no'>txt</span>, <span class='st'>"sentences"</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='st'>"sentence\\."</span>)</div><div class='output co'>#&gt;                                                                    text1 
-#&gt;                                                                &quot;PAGE 1.&quot; 
+#&gt; "Very long sentence, with multiple parts, separated by commas." </div><div class='input'><span class='fu'>char_trim</span>(<span class='no'>txt</span>, <span class='st'>"sentences"</span>, <span class='kw'>exclude_pattern</span> <span class='kw'>=</span> <span class='st'>"sentence\\."</span>)</div><div class='output co'>#&gt;                                                                    text1 
+#&gt;                                                                "PAGE 1." 
 #&gt;                                                                    text2 
-#&gt;                                         &quot;PAGE 2.  Very short!  Shorter.&quot; 
+#&gt;                                         "PAGE 2.  Very short!  Shorter." 
 #&gt;                                                                    text3 
-#&gt; &quot;Very long sentence, with multiple parts, separated by commas.  PAGE 3.&quot; </div></pre>
+#&gt; "Very long sentence, with multiple parts, separated by commas.  PAGE 3." </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

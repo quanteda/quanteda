@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -83,35 +85,42 @@ text analysis packages for which conversions are defined.    See also
 <a href='convert-wrappers.html'>convert-wrappers</a> for convenience functions for specific package converters.</p>
     
 
-    <pre><span class='fu'>convert</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lda"</span>, <span class='st'>"tm"</span>, <span class='st'>"stm"</span>, <span class='st'>"austin"</span>, <span class='st'>"topicmodels"</span>, <span class='st'>"lsa"</span>,
+    <pre class="usage"><span class='fu'>convert</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lda"</span>, <span class='st'>"tm"</span>, <span class='st'>"stm"</span>, <span class='st'>"austin"</span>, <span class='st'>"topicmodels"</span>, <span class='st'>"lsa"</span>,
   <span class='st'>"matrix"</span>, <span class='st'>"data.frame"</span>), <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>dfm to be converted</dd>
-      <dt>to</dt>
-      <dd>target conversion format, consisting of the name of the package 
-into whose document-term matrix representation the dfm will be converted: 
-<dl class='dl-horizontal'>
-<dt><code>&quot;lda&quot;</code></dt><dd>a list with components &quot;documents&quot; and 
-&quot;vocab&quot; as needed by <a href='http://www.rdocumentation.org/packages/lda/topics/lda.collapsed.gibbs.sampler'>lda.collapsed.gibbs.sampler</a> from the 
-<span class="pkg">lda</span> package</dd> <dt><code>&quot;tm&quot;</code></dt><dd>a <a href='http://www.rdocumentation.org/packages/tm/topics/matrix'>DocumentTermMatrix</a> from 
-the <span class="pkg">tm</span> package</dd> <dt><code>&quot;stm&quot;</code></dt><dd>the  format for the <span class="pkg">stm</span> 
-package</dd> <dt><code>&quot;austin&quot;</code></dt><dd>the <code>wfm</code> format from the 
-<strong>austin</strong> package</dd> <dt><code>&quot;topicmodels&quot;</code></dt><dd>the &quot;dtm&quot; format as 
-used by the <span class="pkg">topicmodels</span> package</dd> 
-<dt><code>&quot;lsa&quot;</code></dt><dd>the &quot;textmatrix&quot; format as 
-used by the <span class="pkg">lsa</span> package</dd> </dl>
-</dd>
-      <dt>docvars</dt>
-      <dd>optional data.frame of document variables used as the 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>dfm to be converted</p></td>
+    </tr>
+    <tr>
+      <th>to</th>
+      <td><p>target conversion format, consisting of the name of the package 
+into whose document-term matrix representation the dfm will be converted:</p><dl class='dl-horizontal'>
+<dt><code>"lda"</code></dt><dd><p>a list with components "documents" and 
+"vocab" as needed by <a href='http://www.rdocumentation.org/packages/lda/topics/lda.collapsed.gibbs.sampler'>lda.collapsed.gibbs.sampler</a> from the 
+<span class="pkg">lda</span> package</p></dd> <dt><code>"tm"</code></dt><dd><p>a <a href='http://www.rdocumentation.org/packages/tm/topics/matrix'>DocumentTermMatrix</a> from 
+the <span class="pkg">tm</span> package</p></dd> <dt><code>"stm"</code></dt><dd><p>the  format for the <span class="pkg">stm</span> 
+package</p></dd> <dt><code>"austin"</code></dt><dd><p>the <code>wfm</code> format from the 
+<strong>austin</strong> package</p></dd> <dt><code>"topicmodels"</code></dt><dd><p>the "dtm" format as 
+used by the <span class="pkg">topicmodels</span> package</p></dd> 
+<dt><code>"lsa"</code></dt><dd><p>the "textmatrix" format as 
+used by the <span class="pkg">lsa</span> package</p></dd> </dl></td>
+    </tr>
+    <tr>
+      <th>docvars</th>
+      <td><p>optional data.frame of document variables used as the 
 <code>meta</code> information in conversion to the STM package format.  This aids
 in selecting the document variables only corresponding to the documents 
-with non-zero counts.</dd>
-      <dt>...</dt>
-      <dd>unused</dd>
-    </dl>
+with non-zero counts.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>unused</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -148,16 +157,13 @@ See <a href='convert-wrappers.html'>convert-wrappers</a> for details.</p>
 #&gt;   ..$ 2009-Obama  : int [1:2, 1:901] 1 53 2 130 3 22 4 4 5 1 ...
 #&gt;   ..$ 2013-Obama  : int [1:2, 1:786] 1 22 2 99 3 14 4 5 7 89 ...
 #&gt;   ..$ 2017-Trump  : int [1:2, 1:547] 1 12 2 96 3 9 4 8 7 88 ...
-#&gt;  $ vocab    : chr [1:3439] &quot;-&quot; &quot;,&quot; &quot;;&quot; &quot;:&quot; ...
-#&gt;  $ meta     :&#39;data.frame&#39;:	12 obs. of  3 variables:
+#&gt;  $ vocab    : chr [1:3439] "-" "," ";" ":" ...
+#&gt;  $ meta     :'data.frame':	12 obs. of  3 variables:
 #&gt;   ..$ Year     : num [1:12] 1973 1977 1981 1985 1989 ...
-#&gt;   ..$ President: chr [1:12] &quot;Nixon&quot; &quot;Carter&quot; &quot;Reagan&quot; &quot;Reagan&quot; ...
-#&gt;   ..$ FirstName: chr [1:12] &quot;Richard Milhous&quot; &quot;Jimmy&quot; &quot;Ronald&quot; &quot;Ronald&quot; ...</div><div class='input'><span class='co'># illustrate what happens with zero-length documents</span>
+#&gt;   ..$ President: chr [1:12] "Nixon" "Carter" "Reagan" "Reagan" ...
+#&gt;   ..$ FirstName: chr [1:12] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...</div><div class='input'><span class='co'># illustrate what happens with zero-length documents</span>
 <span class='no'>quantdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>punctOnly</span> <span class='kw'>=</span> <span class='st'>"!!!"</span>, <span class='no'>mycorpus</span>[-<span class='fl'>1</span>]), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>rowSums</span>(<span class='no'>quantdfm2</span>)</div><div class='output co'>#&gt;    punctOnly  1977-Carter  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 
-#&gt;            3         1380         2798         2935         2683         1837 
-#&gt; 1997-Clinton    2001-Bush    2005-Bush   2009-Obama   2013-Obama   2017-Trump 
-#&gt;         2451         1810         2325         2729         2335         1662 </div><div class='input'><span class='no'>stmdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>mycorpus</span>))
+<span class='fu'>rowSums</span>(<span class='no'>quantdfm2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in rowSums(quantdfm2): 'x' must be an array of at least two dimensions</span></div><div class='input'><span class='no'>stmdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>mycorpus</span>))
 <span class='fu'>str</span>(<span class='no'>stmdfm2</span>)</div><div class='output co'>#&gt; List of 3
 #&gt;  $ documents:List of 12
 #&gt;   ..$ punctOnly   : int [1:2, 1] 5 3
@@ -172,23 +178,23 @@ See <a href='convert-wrappers.html'>convert-wrappers</a> for details.</p>
 #&gt;   ..$ 2009-Obama  : int [1:2, 1:901] 1 53 2 130 3 22 4 4 5 1 ...
 #&gt;   ..$ 2013-Obama  : int [1:2, 1:786] 1 22 2 99 3 14 4 5 7 89 ...
 #&gt;   ..$ 2017-Trump  : int [1:2, 1:547] 1 12 2 96 3 9 4 8 7 88 ...
-#&gt;  $ vocab    : chr [1:3354] &quot;-&quot; &quot;,&quot; &quot;;&quot; &quot;:&quot; ...
-#&gt;  $ meta     :&#39;data.frame&#39;:	12 obs. of  3 variables:
+#&gt;  $ vocab    : chr [1:3354] "-" "," ";" ":" ...
+#&gt;  $ meta     :'data.frame':	12 obs. of  3 variables:
 #&gt;   ..$ Year     : num [1:12] 1973 1977 1981 1985 1989 ...
-#&gt;   ..$ President: chr [1:12] &quot;Nixon&quot; &quot;Carter&quot; &quot;Reagan&quot; &quot;Reagan&quot; ...
-#&gt;   ..$ FirstName: chr [1:12] &quot;Richard Milhous&quot; &quot;Jimmy&quot; &quot;Ronald&quot; &quot;Ronald&quot; ...</div><div class='input'>
-<span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># #' # tm's DocumentTermMatrix format</span>
-<span class='co'># tmdfm &lt;- convert(quantdfm, to = "tm")</span>
-<span class='co'># str(tmdfm)</span>
-<span class='co'># </span>
-<span class='co'># # topicmodels package format</span>
-<span class='co'># str(convert(quantdfm, to = "topicmodels"))</span>
-<span class='co'># </span>
-<span class='co'># # lda package format</span>
-<span class='co'># ldadfm &lt;- convert(quantdfm, to = "lda")</span>
-<span class='co'># str(ldadfm)</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+#&gt;   ..$ President: chr [1:12] "Nixon" "Carter" "Reagan" "Reagan" ...
+#&gt;   ..$ FirstName: chr [1:12] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...</div><div class='input'>
+<span class='fu'>not_run</span>({
+  <span class='co'>#' # tm's DocumentTermMatrix format</span>
+  <span class='no'>tmdfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
+  <span class='fu'>str</span>(<span class='no'>tmdfm</span>)
+
+  <span class='co'># topicmodels package format</span>
+  <span class='fu'>str</span>(<span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"topicmodels"</span>))
+
+  <span class='co'># lda package format</span>
+  <span class='no'>ldadfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>)
+  <span class='fu'>str</span>(<span class='no'>ldadfm</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

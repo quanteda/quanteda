@@ -1,3 +1,4 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 ### [![quanteda: quantitative analysis of textual data](https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
 
@@ -23,7 +24,7 @@ How to cite the package:
     following:
 
       Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
-      Textual Data".  R package version: 0.9.9-63.
+      Textual Data".  R package version: 0.9.9.67.
       http://quanteda.io.
 
     A BibTeX entry for LaTeX users is
@@ -31,7 +32,7 @@ How to cite the package:
       @Manual{,
         title = {quanteda: Quantitative Analysis of Textual Data},
         author = {Kenneth Benoit and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
-        note = {R package version 0.9.9-63},
+        note = {R package version 0.9.9.67},
         url = {http://quanteda.io},
       }
 
@@ -133,7 +134,7 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.63
+## quanteda version 0.9.9.67
 ## Using 7 of 8 cores for parallel computing
 ## 
 ## Attaching package: 'quanteda'
@@ -163,7 +164,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Thu May 25 07:00:17 2017
+## Created: Mon Jun  5 12:23:26 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context

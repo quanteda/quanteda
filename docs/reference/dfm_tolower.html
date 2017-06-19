@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -80,7 +82,7 @@
 lower and upper case, respectively, and then recombine the counts.</p>
     
 
-    <pre><span class='fu'>dfm_tolower</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>dfm_tolower</span>(<span class='no'>x</span>)
 
 <span class='fu'>dfm_toupper</span>(<span class='no'>x</span>)
 
@@ -89,53 +91,44 @@ lower and upper case, respectively, and then recombine the counts.</p>
 <span class='fu'>fcm_toupper</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>the <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a> object</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>the <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a> object</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>fcm_tolower</code> and <code>fcm_toupper</code> convert both dimensions of
   the <a href='fcm.html'>fcm</a> to lower and upper case, respectively, and then recombine
   the counts. This works only on fcm objects created with <code>context = 
-  &quot;document&quot;</code>.</p>
+  "document"</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># for a document-feature matrix</span>
 <span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='st'>"b A A"</span>, <span class='st'>"C C a b B"</span>),
              <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Argument toLower not used.</span></div><div class='input'><span class='no'>mydfm</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.7% sparse).
-#&gt; 2 x 3 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 2 x 3 sparse Matrix of class "dfmSparse"
 #&gt;        features
 #&gt; docs    b a c
 #&gt;   text1 1 2 0
 #&gt;   text2 2 1 2</div><div class='input'><span class='fu'>dfm_tolower</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.7% sparse).
-#&gt; 2 x 3 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 2 x 3 sparse Matrix of class "dfmSparse"
 #&gt;        features
 #&gt; docs    b a c
 #&gt;   text1 1 2 0
 #&gt;   text2 2 1 2</div><div class='input'><span class='fu'>dfm_toupper</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.7% sparse).
-#&gt; 2 x 3 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 2 x 3 sparse Matrix of class "dfmSparse"
 #&gt;        features
 #&gt; docs    B A C
 #&gt;   text1 1 2 0
 #&gt;   text2 2 1 2</div><div class='input'>
 <span class='co'># for a feature co-occurrence matrix</span>
 <span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"b A A d"</span>, <span class='st'>"C C a b B e"</span>)),
-             <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)
-<span class='no'>myfcm</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 7 by 7 features.
-#&gt; 7 x 7 sparse Matrix of class &quot;fcm&quot;
-#&gt;         features
-#&gt; features b A d C a B e
-#&gt;        b 0 2 1 2 1 1 1
-#&gt;        A . 1 2 . . . .
-#&gt;        d . . 0 . . . .
-#&gt;        C . . . 1 2 2 2
-#&gt;        a . . . . 0 1 1
-#&gt;        B . . . . . 0 1
-#&gt;        e . . . . . . 0</div><div class='input'><span class='fu'>fcm_tolower</span>(<span class='no'>myfcm</span>)
-<span class='fu'>fcm_toupper</span>(<span class='no'>myfcm</span>)</div></pre>
+             <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>myfcm</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'myfcm' not found</span></div><div class='input'><span class='fu'>fcm_tolower</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is(x, "fcm"): object 'myfcm' not found</span></div><div class='input'><span class='fu'>fcm_toupper</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is(x, "fcm"): object 'myfcm' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

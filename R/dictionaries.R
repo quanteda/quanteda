@@ -531,12 +531,17 @@ simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
 
 # return the nested depth of a dictionary
 # a dictionary with no nesting would have a depth of 1
-dictionary_depth <- function(this, thisdepth = -1) {
+dictionary_depth <- function(dict, depth = -1) {
     # http://stackoverflow.com/a/13433689/1270695
-    this <- unclass(this)
-    if (!is.list(this)) {
-        return(thisdepth)
+    dict <- unclass(dict)
+    if (!is.list(dict)) {
+        return(depth)
     } else {
-        return(max(unlist(lapply(this, dictionary_depth, thisdepth = thisdepth + 1))))    
+        return(max(unlist(lapply(dict, dictionary_depth, depth = depth + 1))))    
     }
+}
+
+# check if dictionary has multi-word entries
+has_multiword <- function(dict) {
+    any(stri_detect_fixed(unlist(dict, use.names = FALSE), attr(dict, 'concatenator')))
 }

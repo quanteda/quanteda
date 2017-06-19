@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,46 +81,55 @@
     <p>calculate keyness statistics</p>
     
 
-    <pre><span class='fu'>textstat_keyness</span>(<span class='no'>x</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"chi2"</span>, <span class='st'>"exact"</span>, <span class='st'>"lr"</span>),
+    <pre class="usage"><span class='fu'>textstat_keyness</span>(<span class='no'>x</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"chi2"</span>, <span class='st'>"exact"</span>, <span class='st'>"lr"</span>),
   <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a <a href='dfm.html'>dfm</a> containing the features to be examined for keyness</dd>
-      <dt>target</dt>
-      <dd>the document index (numeric, character or logical) identifying the 
-document forming the &quot;target&quot; for computing keyness; all other documents&#39; 
-feature frequencies will be combined for use as a reference</dd>
-      <dt>measure</dt>
-      <dd>(signed) association measure to be used for computing keyness.
-Currenly available: <code>&quot;chi2&quot;</code> (\(chi^2\) with Yates correction); 
-<code>&quot;exact&quot;</code> (Fisher&#39;s exact test); <code>&quot;lr&quot;</code> for the likelihood ratio
-\(G\) statistic with Yates correction.</dd>
-      <dt>sort</dt>
-      <dd>logical; if <code>TRUE</code> sort features scored in descending order 
-of the measure, otherwise leave in original feature order</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <a href='dfm.html'>dfm</a> containing the features to be examined for keyness</p></td>
+    </tr>
+    <tr>
+      <th>target</th>
+      <td><p>the document index (numeric, character or logical) identifying the 
+document forming the "target" for computing keyness; all other documents' 
+feature frequencies will be combined for use as a reference</p></td>
+    </tr>
+    <tr>
+      <th>measure</th>
+      <td><p>(signed) association measure to be used for computing keyness.
+Currenly available: <code>"chi2"</code> (\(chi^2\) with Yates correction); 
+<code>"exact"</code> (Fisher's exact test); <code>"lr"</code> for the likelihood ratio
+\(G\) statistic with Yates correction.</p></td>
+    </tr>
+    <tr>
+      <th>sort</th>
+      <td><p>logical; if <code>TRUE</code> sort features scored in descending order 
+of the measure, otherwise leave in original feature order</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a data.frame of computed statistics and associated p-values, where the features 
 scored name each row, and the number of occurrences for both the target and reference groups.  
-  For <code>measure = &quot;chi2&quot;</code> this is the chi-squared value, signed 
+  For <code>measure = "chi2"</code> this is the chi-squared value, signed 
   positively if the observed value in the target exceeds its expected value; 
-  for <code>measure = &quot;exact&quot;</code> this is the estimate of the odds ratio; for 
-  <code>measure = &quot;lr&quot;</code> this is the likelihood ratio \(G\) statistic.</p>
+  for <code>measure = "exact"</code> this is the estimate of the odds ratio; for 
+  <code>measure = "lr"</code> this is the likelihood ratio \(G\) statistic.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Bondi, Marina, and Mike Scott, eds. 2010.  <em>Keyness in 
-  Texts</em>. Amsterdam, Philadelphia: John Benjamins, 2010.</p>
-    <p>Stubbs, Michael. 2010.  &quot;Three Concepts of Keywords&quot;. In <em>Keyness in 
+  Texts</em>. Amsterdam, Philadelphia: John Benjamins, 2010.
+    Stubbs, Michael. 2010.  "Three Concepts of Keywords". In <em>Keyness in 
   Texts</em>, Marina Bondi and Mike Scott, eds. pp21–42. Amsterdam, Philadelphia:
-  John Benjamins.</p>
-    <p>Scott, M. &amp; Tribble, C. 2006.  <em>Textual Patterns: keyword and corpus 
-  analysis in language education</em>.  Amsterdam: Benjamins, p. 55.</p>
-    <p>Dunning, Ted. 1993. &quot;Accurate Methods for the Statistics of Surprise and Coincidence&quot;, 
+  John Benjamins.
+    Scott, M. &amp; Tribble, C. 2006.  <em>Textual Patterns: keyword and corpus 
+  analysis in language education</em>.  Amsterdam: Benjamins, p. 55.
+    Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and Coincidence", 
   <em>Computational Linguistics</em>, Vol 19, No. 1, pp. 61-74.</p>
     
 
@@ -170,7 +181,7 @@ scored name each row, and the number of occurrences for both the target and refe
 #&gt; let                1.097794e+02 0.000000e+00      100          54
 #&gt; together           1.025977e+02 0.000000e+00       64          19
 #&gt; you                1.006242e+02 0.000000e+00      116          80
-#&gt; america&#39;s          9.051114e+01 0.000000e+00       35           0
+#&gt; america's          9.051114e+01 0.000000e+00       35           0
 #&gt; work               8.895165e+01 0.000000e+00       78          40
 #&gt; help               8.313975e+01 0.000000e+00       46          10
 #&gt; ,                  6.328131e+01 1.776357e-15     2194        4832
@@ -230,7 +241,7 @@ scored name each row, and the number of occurrences for both the target and refe
 #&gt; jobs               2.601513e+01 3.387520e-07       11           0
 #&gt; president          2.601077e+01 3.395174e-07       46          43
 #&gt; join               2.571630e+01 3.954731e-07       16           4
-#&gt; world&#39;s            2.550260e+01 4.417874e-07       18           6
+#&gt; world's            2.550260e+01 4.417874e-07       18           6
 #&gt; strong             2.535083e+01 4.779462e-07       32          23
 #&gt; day                2.507395e+01 5.517329e-07       46          44
 #&gt; believe            2.482330e+01 6.283320e-07       40          35
@@ -271,14 +282,14 @@ scored name each row, and the number of occurrences for both the target and refe
 #&gt; compassion         1.798786e+01 2.223178e-05        8           0
 #&gt; speaker            1.798786e+01 2.223178e-05        8           0
 #&gt; quiet              1.798786e+01 2.223178e-05        8           0
-#&gt; don&#39;t              1.798786e+01 2.223178e-05        8           0
+#&gt; don't              1.798786e+01 2.223178e-05        8           0
 #&gt; here               1.790667e+01 2.320065e-05       39          41
 #&gt; go                 1.754606e+01 2.804306e-05       26          21
 #&gt; but                1.735863e+01 3.094898e-05      225         429
 #&gt; each               1.723627e+01 3.300749e-05       55          70
 #&gt; founding           1.696872e+01 3.800076e-05        9           1
 #&gt; third              1.696872e+01 3.800076e-05        9           1
-#&gt; nation&#39;s           1.677276e+01 4.213381e-05       15           7
+#&gt; nation's           1.677276e+01 4.213381e-05       15           7
 #&gt; poverty            1.677276e+01 4.213381e-05       15           7
 #&gt; democracy          1.658033e+01 4.663221e-05       30          28
 #&gt; bring              1.652378e+01 4.804365e-05       24          19
@@ -290,7 +301,7 @@ scored name each row, and the number of occurrences for both the target and refe
 #&gt; friend             1.625914e+01 5.524243e-05       11           3
 #&gt; leaders            1.625914e+01 5.524243e-05       11           3
 #&gt; learned            1.625914e+01 5.524243e-05       11           3
-#&gt; man&#39;s              1.625914e+01 5.524243e-05       11           3
+#&gt; man's              1.625914e+01 5.524243e-05       11           3
 #&gt; program            1.625914e+01 5.524243e-05       11           3
 #&gt; land               1.579734e+01 7.050173e-05       35          37
 #&gt; planet             1.532040e+01 9.073152e-05        7           0
@@ -364,7 +375,7 @@ scored name each row, and the number of occurrences for both the target and refe
 #&gt; act                1.033269e+01 1.306945e-03       26          29
 #&gt; reach              1.019109e+01 1.411209e-03       16          13
 #&gt; think              1.019109e+01 1.411209e-03       16          13
-#&gt; &quot;                  1.015543e+01 1.438768e-03       90         158
+#&gt; "                  1.015543e+01 1.438768e-03       90         158
 #&gt; stand              1.014731e+01 1.445119e-03       27          31
 #&gt; once               1.002062e+01 1.547975e-03       21          21
 #&gt; programs           1.001269e+01 1.554655e-03        5           0
@@ -376,11 +387,11 @@ scored name each row, and the number of occurrences for both the target and refe
 #&gt; hatreds            1.001269e+01 1.554655e-03        5           0
 #&gt; dawn               1.001269e+01 1.554655e-03        5           0
 #&gt; ending             1.001269e+01 1.554655e-03        5           0
-#&gt; today&#39;s            1.001269e+01 1.554655e-03        5           0
+#&gt; today's            1.001269e+01 1.554655e-03        5           0
 #&gt; breeze             1.001269e+01 1.554655e-03        5           0
 #&gt; drugs              1.001269e+01 1.554655e-03        5           0
 #&gt; edge               1.001269e+01 1.554655e-03        5           0
-#&gt; god&#39;s              9.967813e+00 1.593006e-03       10           5
+#&gt; god's              9.967813e+00 1.593006e-03       10           5
 #&gt; building           9.967813e+00 1.593006e-03       10           5
 #&gt; responsibility     9.845319e+00 1.702645e-03       29          35
 #&gt; ourselves          9.843857e+00 1.703999e-03       35          46
@@ -405,7 +416,7 @@ scored name each row, and the number of occurrences for both the target and refe
 #&gt; few                8.760054e+00 3.078999e-03       17          16
 #&gt; say                8.689091e+00 3.201202e-03       20          21
 #&gt; light              8.636966e+00 3.294096e-03       15          13
-#&gt;  [ reached getOption(&quot;max.print&quot;) -- omitted 8982 rows ]</div><div class='input'>
+#&gt;  [ reached getOption("max.print") -- omitted 8982 rows ]</div><div class='input'>
 <span class='co'># compare Trump 2017 to other post-war preseidents</span>
 <span class='no'>pwdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>period</span> <span class='kw'>==</span> <span class='st'>"post-war"</span>))
 <span class='fu'>head</span>(<span class='fu'>textstat_keyness</span>(<span class='no'>pwdfm</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                  chi2            p n_target n_reference
@@ -413,7 +424,7 @@ scored name each row, and the number of occurrences for both the target and refe
 #&gt; will         49.67662 1.812883e-12       40         299
 #&gt; while        48.33243 3.597567e-12        6           7
 #&gt; obama        47.94909 4.374279e-12        3           0
-#&gt; we&#39;ve        47.94909 4.374279e-12        3           0
+#&gt; we've        47.94909 4.374279e-12        3           0
 #&gt; america      29.11681 6.814327e-08       18         112
 #&gt; again        27.88512 1.287361e-07        9          33
 #&gt; everyone     27.73848 1.388726e-07        4           5

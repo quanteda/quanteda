@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Virtual class &quot;dfm&quot; for a document-feature matrix — dfm-class • quanteda</title>
+<title>Virtual class "dfm" for a document-feature matrix — dfm-class • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -72,7 +74,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Virtual class &quot;dfm&quot; for a document-feature matrix</h1>
+    <h1>Virtual class "dfm" for a document-feature matrix</h1>
     </div>
 
     
@@ -83,7 +85,7 @@
   class object, or if dense, then a <code>dfmDense</code> object.  See Details.</p>
     
 
-    <pre># S4 method for dfmDense
+    <pre class="usage"># S4 method for dfmDense
 t(x)
 
 # S4 method for dfmSparse
@@ -138,44 +140,63 @@ rowMeans(x, na.rm = FALSE, dims = 1L, ...)
 [(x, i, j, ..., drop = FALSE)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>the dfm object</dd>
-      <dt>na.rm</dt>
-      <dd>if <code>TRUE</code>, omit missing values (including <code>NaN</code>) from
-the calculations</dd>
-      <dt>dims</dt>
-      <dd>ignored</dd>
-      <dt>...</dt>
-      <dd>additional arguments not used here</dd>
-      <dt>e1</dt>
-      <dd>first quantity in &quot;+&quot; operation for dfm</dd>
-      <dt>e2</dt>
-      <dd>second quantity in &quot;+&quot; operation for dfm</dd>
-      <dt>i</dt>
-      <dd>index for documents</dd>
-      <dt>j</dt>
-      <dd>index for features</dd>
-      <dt>drop</dt>
-      <dd>always set to <code>FALSE</code></dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>the dfm object</p></td>
+    </tr>
+    <tr>
+      <th>na.rm</th>
+      <td><p>if <code>TRUE</code>, omit missing values (including <code>NaN</code>) from
+the calculations</p></td>
+    </tr>
+    <tr>
+      <th>dims</th>
+      <td><p>ignored</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments not used here</p></td>
+    </tr>
+    <tr>
+      <th>e1</th>
+      <td><p>first quantity in "+" operation for dfm</p></td>
+    </tr>
+    <tr>
+      <th>e2</th>
+      <td><p>second quantity in "+" operation for dfm</p></td>
+    </tr>
+    <tr>
+      <th>i</th>
+      <td><p>index for documents</p></td>
+    </tr>
+    <tr>
+      <th>j</th>
+      <td><p>index for features</p></td>
+    </tr>
+    <tr>
+      <th>drop</th>
+      <td><p>always set to <code>FALSE</code></p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>dfm</code> class is a virtual class that will contain one of two
   subclasses for containing the cell counts of document-feature matrixes: 
   <code>dfmSparse</code> or <code>dfmDense</code>.</p>
-    <p>The <code>dfmSparse</code> class is a sparse matrix version of
+<p>The <code>dfmSparse</code> class is a sparse matrix version of
   <code>dfm-class</code>, inheriting <a href='http://www.rdocumentation.org/packages/Matrix/topics/dgCMatrix-class'>dgCMatrix-class</a> from the
   <span class="pkg">Matrix</span> package.  It is the default object type created when feature
   counts are the object of interest, as typical text-based feature counts
   tend contain many zeroes.  As long as subsequent transformations of the dfm
-  preserve cells with zero counts, the dfm should remain sparse.</p>
-    <p>When the <span class="pkg">Matrix</span> package implements sparse integer matrixes, we will
+  preserve cells with zero counts, the dfm should remain sparse.
+    When the <span class="pkg">Matrix</span> package implements sparse integer matrixes, we will
   switch the default object class to this object type, as integers are 4
   bytes each (compared to the current numeric double type requiring 8 bytes
   per cell.)</p>
-    <p>The <code>dfmDense</code> class is a sparse matrix version of <code>dfm-class</code>, 
+<p>The <code>dfmDense</code> class is a sparse matrix version of <code>dfm-class</code>, 
 inheriting <a href='http://www.rdocumentation.org/packages/Matrix/topics/dgeMatrix-class'>dgeMatrix-class</a> from the <span class="pkg">Matrix</span> package.  dfm objects that
 are converted through weighting or other transformations into cells without zeroes will 
 be automatically converted to the dfmDense class.  This will necessarily be a much larger sized
@@ -184,20 +205,20 @@ requiring 8 bytes of storage.</p>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-    <p></p>
-    <p><dl class='dl-horizontal'>
-<dt><code>settings</code></dt><dd>settings that govern corpus handling and subsequent downstream
+    
+    <dl class='dl-horizontal'>
+<dt><code>settings</code></dt><dd><p>settings that govern corpus handling and subsequent downstream
 operations, including the settings used to clean and tokenize the texts, 
-and to create the dfm.  See <code><a href='settings.html'>settings</a></code>.</dd></p>
-    <p><dt><code>weighting</code></dt><dd>the feature weighting applied to the dfm.  Default is
-<code>&quot;frequency&quot;</code>, indicating that the values in the cells of the dfm are
+and to create the dfm.  See <code><a href='settings.html'>settings</a></code>.</p></dd>
+    <dt><code>weighting</code></dt><dd><p>the feature weighting applied to the dfm.  Default is
+<code>"frequency"</code>, indicating that the values in the cells of the dfm are
 simple feature counts.  To change this, use the <code><a href='weight.html'>weight</a></code>
-method.</dd></p>
-    <p><dt><code>smooth</code></dt><dd>a smoothing parameter, defaults to zero.  Can be changed using 
-either the <code>smooth</code> or the <code><a href='weight.html'>weight</a></code> methods.</dd></p>
-    <p><dt><code>Dimnames</code></dt><dd>These are inherited from <a href='http://www.rdocumentation.org/packages/Matrix/topics/Matrix-class'>Matrix-class</a> but are 
-named <code>docs</code> and <code>features</code> respectively.</dd>
-</dl></p>
+method.</p></dd>
+    <dt><code>smooth</code></dt><dd><p>a smoothing parameter, defaults to zero.  Can be changed using 
+either the <code>smooth</code> or the <code><a href='weight.html'>weight</a></code> methods.</p></dd>
+    <dt><code>Dimnames</code></dt><dd><p>These are inherited from <a href='http://www.rdocumentation.org/packages/Matrix/topics/Matrix-class'>Matrix-class</a> but are 
+named <code>docs</code> and <code>features</code> respectively.</p></dd>
+</dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -211,7 +232,7 @@ named <code>docs</code> and <code>features</code> respectively.</dd>
                   <span class='st'>"and a third document is it"</span>),
                 <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 <span class='no'>x</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, ]</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 16 features (59.4% sparse).
-#&gt; 2 x 16 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 2 x 16 sparse Matrix of class "dfmSparse"
 #&gt;        features
 #&gt; docs    this contains lots of stopwords no if and or but about it a third
 #&gt;   text1    1        1    1  1         1  0  0   0  0   0     0  0 0     0
@@ -220,7 +241,7 @@ named <code>docs</code> and <code>features</code> respectively.</dd>
 #&gt; docs    document is
 #&gt;   text1        0  0
 #&gt;   text2        0  0</div><div class='input'><span class='no'>x</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40% sparse).
-#&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
 #&gt;        features
 #&gt; docs    this contains lots of stopwords
 #&gt;   text1    1        1    1  1         1
@@ -228,19 +249,7 @@ named <code>docs</code> and <code>features</code> respectively.</dd>
 <span class='co'># fcm subsetting</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"this contains lots of stopwords"</span>,
                   <span class='st'>"no if, and, or but about it: lots"</span>),
-                <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-<span class='no'>y</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 12 features.
-#&gt; 3 x 12 sparse Matrix of class &quot;fcm&quot;
-#&gt;           features
-#&gt; features   this contains lots of stopwords no if and or but about it
-#&gt;   this        0        1    1  1         1  .  .   .  .   .     .  .
-#&gt;   contains    .        0    1  1         1  .  .   .  .   .     .  .
-#&gt;   lots        .        .    0  1         1  1  1   1  1   1     1  1</div><div class='input'><span class='no'>y</span>[<span class='fl'>4</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 2 by 5 features.
-#&gt; 2 x 5 sparse Matrix of class &quot;fcm&quot;
-#&gt;            features
-#&gt; features    this contains lots of stopwords
-#&gt;   of           .        .    .  0         1
-#&gt;   stopwords    .        .    .  .         0</div></pre>
+                <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>y</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ]</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'y' not found</span></div><div class='input'><span class='no'>y</span>[<span class='fl'>4</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'y' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,16 +81,19 @@
     <p>Get the number of documents or features in an object.</p>
     
 
-    <pre><span class='fu'>ndoc</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>ndoc</span>(<span class='no'>x</span>)
 
 <span class='fu'>nfeature</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a <span class="pkg">quanteda</span> object: a <a href='corpus.html'>corpus</a>, <a href='dfm.html'>dfm</a>, or
-<a href='tokens.html'>tokens</a> object, or a readtext object from the <span class="pkg">readtext</span> package.</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <span class="pkg">quanteda</span> object: a <a href='corpus.html'>corpus</a>, <a href='dfm.html'>dfm</a>, or
+<a href='tokens.html'>tokens</a> object, or a readtext object from the <span class="pkg">readtext</span> package.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -98,11 +103,11 @@
 
     <p><code>ndoc</code> returns the number of documents in a  <a href='corpus.html'>corpus</a>,
   <a href='dfm.html'>dfm</a>, or <a href='tokens.html'>tokens</a> object, or a readtext object from the
-  <span class="pkg">readtext</span> package</p>
-    <p><code>nfeature</code> returns the number of features in a <a href='dfm.html'>dfm</a></p>
-    <p><code>nfeature</code> returns the number of features from a dfm; it is an
+  <span class="pkg">readtext</span> package
+    <code>nfeature</code> returns the number of features in a <a href='dfm.html'>dfm</a>
+    <code>nfeature</code> returns the number of features from a dfm; it is an
   alias for <code>ntype</code> when applied to dfm objects.  This function is only 
-  defined for <a href='dfm.html'>dfm</a> objects because only these have &quot;features&quot;.  (To count
+  defined for <a href='dfm.html'>dfm</a> objects because only these have "features".  (To count
   tokens, see <code><a href='ntoken.html'>ntoken</a></code>)</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

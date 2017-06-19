@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,7 +81,7 @@
     <p>Convert texts or tokens to lower (or upper) case</p>
     
 
-    <pre><span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for character</span>
 <span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
@@ -114,16 +116,23 @@
 <span class='fu'>toUpper</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>texts to be lower-cased (or upper-cased)</dd>
-      <dt>keep_acronyms</dt>
-      <dd>if <code>TRUE</code>, do not lowercase any all-uppercase words.
-Only applies to <code>toLower</code>.</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to <span class="pkg">stringi</span> functions, (e.g. 
-<code>stri_trans_tolower</code>), such as <code>locale</code></dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>texts to be lower-cased (or upper-cased)</p></td>
+    </tr>
+    <tr>
+      <th>keep_acronyms</th>
+      <td><p>if <code>TRUE</code>, do not lowercase any all-uppercase words.
+Only applies to <code>toLower</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to <span class="pkg">stringi</span> functions, (e.g. 
+<code>stri_trans_tolower</code>), such as <code>locale</code></p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -134,55 +143,57 @@ Only applies to <code>toLower</code>.</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>test1</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>text1</span> <span class='kw'>=</span> <span class='st'>"England and France are members of NATO and UNESCO"</span>,
+    <pre class="examples"><div class='input'>
+<span class='no'>test1</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>text1</span> <span class='kw'>=</span> <span class='st'>"England and France are members of NATO and UNESCO"</span>,
            <span class='kw'>text2</span> <span class='kw'>=</span> <span class='st'>"NASA sent a rocket into space."</span>)
-<span class='fu'>toLower</span>(<span class='no'>test1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;toLower.character&#39; is deprecated.</span>
-#&gt; <span class='warning'>Use &#39;char_tolower&#39; instead.</span>
-#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt;                                               text1 
-#&gt; &quot;england and france are members of nato and unesco&quot; 
+<span class='fu'>toLower</span>(<span class='no'>test1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'toLower.character' is deprecated.</span>
+#&gt; <span class='warning'>Use 'char_tolower' instead.</span>
+#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt;                                               text1 
+#&gt; "england and france are members of nato and unesco" 
 #&gt;                                               text2 
-#&gt;                    &quot;nasa sent a rocket into space.&quot; </div><div class='input'><span class='fu'>toLower</span>(<span class='no'>test1</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;toLower.character&#39; is deprecated.</span>
-#&gt; <span class='warning'>Use &#39;char_tolower&#39; instead.</span>
-#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt;                                               text1 
-#&gt; &quot;england and france are members of NATO and UNESCO&quot; 
+#&gt;                    "nasa sent a rocket into space." </div><div class='input'><span class='fu'>toLower</span>(<span class='no'>test1</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'toLower.character' is deprecated.</span>
+#&gt; <span class='warning'>Use 'char_tolower' instead.</span>
+#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt;                                               text1 
+#&gt; "england and france are members of NATO and UNESCO" 
 #&gt;                                               text2 
-#&gt;                    &quot;NASA sent a rocket into space.&quot; </div><div class='input'>
+#&gt;                    "NASA sent a rocket into space." </div><div class='input'>
 <span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='no'>test1</span>, <span class='kw'>remove_punct</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='fu'>toLower</span>(<span class='no'>test2</span>)</div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
 #&gt; text1 :
-#&gt; [1] &quot;england&quot; &quot;and&quot;     &quot;france&quot;  &quot;are&quot;     &quot;members&quot; &quot;of&quot;      &quot;nato&quot;   
-#&gt; [8] &quot;and&quot;     &quot;unesco&quot; 
+#&gt; [1] "england" "and"     "france"  "are"     "members" "of"      "nato"   
+#&gt; [8] "and"     "unesco" 
 #&gt; 
 #&gt; text2 :
-#&gt; [1] &quot;nasa&quot;   &quot;sent&quot;   &quot;a&quot;      &quot;rocket&quot; &quot;into&quot;   &quot;space&quot; 
+#&gt; [1] "nasa"   "sent"   "a"      "rocket" "into"   "space" 
 #&gt; </div><div class='input'><span class='fu'>toLower</span>(<span class='no'>test2</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
 #&gt; text1 :
-#&gt; [1] &quot;england&quot; &quot;and&quot;     &quot;france&quot;  &quot;are&quot;     &quot;members&quot; &quot;of&quot;      &quot;NATO&quot;   
-#&gt; [8] &quot;and&quot;     &quot;UNESCO&quot; 
+#&gt; [1] "england" "and"     "france"  "are"     "members" "of"      "NATO"   
+#&gt; [8] "and"     "UNESCO" 
 #&gt; 
 #&gt; text2 :
-#&gt; [1] &quot;NASA&quot;   &quot;sent&quot;   &quot;a&quot;      &quot;rocket&quot; &quot;into&quot;   &quot;space&quot; 
+#&gt; [1] "NASA"   "sent"   "a"      "rocket" "into"   "space" 
 #&gt; </div><div class='input'>
+
 <span class='no'>test1</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>text1</span> <span class='kw'>=</span> <span class='st'>"England and France are members of NATO and UNESCO"</span>,
            <span class='kw'>text2</span> <span class='kw'>=</span> <span class='st'>"NASA sent a rocket into space."</span>)
-<span class='fu'>toUpper</span>(<span class='no'>test1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;toUpper.character&#39; is deprecated.</span>
-#&gt; <span class='warning'>Use &#39;char_toupper&#39; instead.</span>
-#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt;                                               text1 
-#&gt; &quot;ENGLAND AND FRANCE ARE MEMBERS OF NATO AND UNESCO&quot; 
+<span class='fu'>toUpper</span>(<span class='no'>test1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'toUpper.character' is deprecated.</span>
+#&gt; <span class='warning'>Use 'char_toupper' instead.</span>
+#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt;                                               text1 
+#&gt; "ENGLAND AND FRANCE ARE MEMBERS OF NATO AND UNESCO" 
 #&gt;                                               text2 
-#&gt;                    &quot;NASA SENT A ROCKET INTO SPACE.&quot; </div><div class='input'>
+#&gt;                    "NASA SENT A ROCKET INTO SPACE." </div><div class='input'>
 <span class='no'>test2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='no'>test1</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>toUpper</span>(<span class='no'>test2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;toUpper.character&#39; is deprecated.</span>
-#&gt; <span class='warning'>Use &#39;char_toupper&#39; instead.</span>
-#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;toUpper.character&#39; is deprecated.</span>
-#&gt; <span class='warning'>Use &#39;char_toupper&#39; instead.</span>
-#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
+<span class='fu'>toUpper</span>(<span class='no'>test2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'toUpper.character' is deprecated.</span>
+#&gt; <span class='warning'>Use 'char_toupper' instead.</span>
+#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'toUpper.character' is deprecated.</span>
+#&gt; <span class='warning'>Use 'char_toupper' instead.</span>
+#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
 #&gt; text1 :
-#&gt; [1] &quot;ENGLAND&quot; &quot;AND&quot;     &quot;FRANCE&quot;  &quot;ARE&quot;     &quot;MEMBERS&quot; &quot;OF&quot;      &quot;NATO&quot;   
-#&gt; [8] &quot;AND&quot;     &quot;UNESCO&quot; 
+#&gt; [1] "ENGLAND" "AND"     "FRANCE"  "ARE"     "MEMBERS" "OF"      "NATO"   
+#&gt; [8] "AND"     "UNESCO" 
 #&gt; 
 #&gt; text2 :
-#&gt; [1] &quot;NASA&quot;   &quot;SENT&quot;   &quot;A&quot;      &quot;ROCKET&quot; &quot;INTO&quot;   &quot;SPACE&quot; 
+#&gt; [1] "NASA"   "SENT"   "A"      "ROCKET" "INTO"   "SPACE" 
 #&gt; </div><div class='input'>
 </div></pre>
   </div>

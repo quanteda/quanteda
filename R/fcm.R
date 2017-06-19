@@ -164,28 +164,28 @@ fcm.dfm <- function(x, context = c("document", "window"),
         stop("fcm.dfm only works on context = \"document\"")
 
     if (count == "boolean") {
-        tokenCo <- x > 1
+        temp <- x > 1
         x <- tf(x, "boolean") 
     } else if (count == "frequency") {
-        tokenCo <- x
-        tokenCo@x <- choose(tokenCo@x, 2)
+        temp <- x
+        temp@x <- choose(temp@x, 2)
     } else {
         stop("Cannot have weighted counts with context = \"document\"")
     }
 
-    result <- Matrix::crossprod(x) 
-    
     # compute co_occurrence of the diagonal elements
-    tokenCoSum <- colSums(tokenCo) # apply(tokenCo, MARGIN = 2, sum)
-    ft <- tokenCoSum >= 1
-    diagIndex <- which(ft)
-    lengthToken <- length(ft)
-    diagCount <- Matrix::sparseMatrix(i = diagIndex,
-                                      j = diagIndex,
-                                      x = tokenCoSum[ft],
-                                      dims = c(lengthToken , lengthToken))
+    sum_col <- colSums(temp) # apply(temp, MARGIN = 2, sum)
+    feature <- sum_col >= 1
+    index_diag <- which(feature)
+    length_feature <- length(feature)
+    temp2 <- Matrix::sparseMatrix(i = index_diag,
+                                  j = index_diag,
+                                  x = sum_col[feature],
+                                  dims = c(length_feature , length_feature))
+    
+    result <- Matrix::crossprod(x)
     diag(result) <- 0
-    result <- result + diagCount
+    result <- result + temp2
     result <- result[rownames(result), colnames(result)]
     
     # discard the lower diagonal if tri == TRUE
@@ -237,7 +237,7 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
         if (!is.tokens(x)) x <- as.tokens(x)
         types <- types(x)
         n <- sum(lengths(x)) * window * 2
-        result <- qatd_cpp_fcm(x, nfeature(x), count, window, weights, ordered, tri, n)
+        result <- qatd_cpp_fcm(x, length(types), count, window, weights, ordered, tri, n)
         # set the dimnames of result
         dimnames(result) <- list(features = types, features = types)
     }

@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,7 +81,7 @@
     <p>Tokenize the texts from a character vector or from a corpus.</p>
     
 
-    <pre><span class='fu'>tokens</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"word"</span>, <span class='st'>"sentence"</span>, <span class='st'>"character"</span>, <span class='st'>"fastestword"</span>,
+    <pre class="usage"><span class='fu'>tokens</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"word"</span>, <span class='st'>"sentence"</span>, <span class='st'>"character"</span>, <span class='st'>"fastestword"</span>,
   <span class='st'>"fasterword"</span>), <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_separators</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>remove_twitter</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -87,82 +89,113 @@
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>), <span class='kw'>include_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a character or <a href='corpus.html'>corpus</a> object to be tokenized</dd>
-      <dt>what</dt>
-      <dd>the unit for splitting the text, available alternatives are: 
-<dl class='dl-horizontal'>
-<dt><code>&quot;word&quot;</code></dt><dd>(recommended default) smartest, but 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a character or <a href='corpus.html'>corpus</a> object to be tokenized</p></td>
+    </tr>
+    <tr>
+      <th>what</th>
+      <td><p>the unit for splitting the text, available alternatives are:</p><dl class='dl-horizontal'>
+<dt><code>"word"</code></dt><dd><p>(recommended default) smartest, but 
 slowest, word tokenization method; see 
-<a href='http://www.rdocumentation.org/packages/stringi/topics/stringi-search-boundaries'>stringi-search-boundaries</a> for details.</dd> 
-<dt><code>&quot;fasterword&quot;</code></dt><dd>dumber, but faster, word tokenization method, 
-uses <code>{<a href='http://www.rdocumentation.org/packages/stringi/topics/stri_split'>stri_split_charclass</a>(x, &quot;\\p{WHITE_SPACE}&quot;)}</code></dd> 
-<dt><code>&quot;fastestword&quot;</code></dt><dd>dumbest, but fastest, word tokenization method,
-calls <code><a href='http://www.rdocumentation.org/packages/stringi/topics/stri_split'>stri_split_fixed</a>(x, &quot; &quot;)</code></dd> 
-<dt><code>&quot;character&quot;</code></dt><dd>tokenization into individual characters</dd> 
-<dt><code>&quot;sentence&quot;</code></dt><dd>sentence segmenter, smart enough to handle some 
-exceptions in English such as &quot;Prof. Plum killed Mrs. Peacock.&quot; (but far 
-from perfect).</dd> </dl>
-</dd>
-      <dt>remove_numbers</dt>
-      <dd>remove tokens that consist only of numbers, but not 
-words that start with digits, e.g. <code>2day</code></dd>
-      <dt>remove_punct</dt>
-      <dd>if <code>TRUE</code>, remove all characters in the Unicode 
-&quot;Punctuation&quot; [P] class</dd>
-      <dt>remove_symbols</dt>
-      <dd>if <code>TRUE</code>, remove all characters in the Unicode 
-&quot;Symbol&quot; [S] class</dd>
-      <dt>remove_separators</dt>
-      <dd>remove Separators and separator characters (spaces 
+<a href='http://www.rdocumentation.org/packages/stringi/topics/stringi-search-boundaries'>stringi-search-boundaries</a> for details.</p></dd> 
+<dt><code>"fasterword"</code></dt><dd><p>dumber, but faster, word tokenization method, 
+uses <code>{<a href='http://www.rdocumentation.org/packages/stringi/topics/stri_split'>stri_split_charclass</a>(x, "\\p{WHITE_SPACE}")}</code></p></dd> 
+<dt><code>"fastestword"</code></dt><dd><p>dumbest, but fastest, word tokenization method,
+calls <code><a href='http://www.rdocumentation.org/packages/stringi/topics/stri_split'>stri_split_fixed</a>(x, " ")</code></p></dd> 
+<dt><code>"character"</code></dt><dd><p>tokenization into individual characters</p></dd> 
+<dt><code>"sentence"</code></dt><dd><p>sentence segmenter, smart enough to handle some 
+exceptions in English such as "Prof. Plum killed Mrs. Peacock." (but far 
+from perfect).</p></dd> </dl></td>
+    </tr>
+    <tr>
+      <th>remove_numbers</th>
+      <td><p>remove tokens that consist only of numbers, but not 
+words that start with digits, e.g. <code>2day</code></p></td>
+    </tr>
+    <tr>
+      <th>remove_punct</th>
+      <td><p>if <code>TRUE</code>, remove all characters in the Unicode 
+"Punctuation" [P] class</p></td>
+    </tr>
+    <tr>
+      <th>remove_symbols</th>
+      <td><p>if <code>TRUE</code>, remove all characters in the Unicode 
+"Symbol" [S] class</p></td>
+    </tr>
+    <tr>
+      <th>remove_separators</th>
+      <td><p>remove Separators and separator characters (spaces 
 and variations of spaces, plus tab, newlines, and anything else in the 
-Unicode &quot;separator&quot; category) when <code>remove_punct=FALSE</code>.  Only 
-applicable for <code>what = &quot;character&quot;</code> (when you probably want it to be 
-<code>FALSE</code>) and for <code>what = &quot;word&quot;</code> (when you probably want it to be
-<code>TRUE</code>).  Note that if <code>what = &quot;word&quot;</code> and you set 
+Unicode "separator" category) when <code>remove_punct=FALSE</code>.  Only 
+applicable for <code>what = "character"</code> (when you probably want it to be 
+<code>FALSE</code>) and for <code>what = "word"</code> (when you probably want it to be
+<code>TRUE</code>).  Note that if <code>what = "word"</code> and you set 
 <code>remove_punct = TRUE</code>, then <code>remove_separators</code> has no effect.  Use
-carefully.</dd>
-      <dt>remove_twitter</dt>
-      <dd>remove Twitter characters <code>@</code> and <code>#</code>; set to
+carefully.</p></td>
+    </tr>
+    <tr>
+      <th>remove_twitter</th>
+      <td><p>remove Twitter characters <code>@</code> and <code>#</code>; set to
 <code>TRUE</code> if you wish to eliminate these.  Note that this will always be set 
-to <code>FALSE</code> if <code>remove_punct = FALSE</code>.</dd>
-      <dt>remove_hyphens</dt>
-      <dd>if <code>TRUE</code>, split words that are connected by 
+to <code>FALSE</code> if <code>remove_punct = FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>remove_hyphens</th>
+      <td><p>if <code>TRUE</code>, split words that are connected by 
 hyphenation and hyphenation-like characters in between words, e.g. 
-<code>&quot;self-storage&quot;</code> becomes <code>c(&quot;self&quot;, &quot;storage&quot;)</code>.  Default is 
+<code>"self-storage"</code> becomes <code>c("self", "storage")</code>.  Default is 
 <code>FALSE</code> to preserve such words as is, with the hyphens.  Only applies 
-if <code>what = &quot;word&quot;</code>.</dd>
-      <dt>remove_url</dt>
-      <dd>if <code>TRUE</code>, find and eliminate URLs beginning with 
-http(s) -- see section &quot;Dealing with URLs&quot;.</dd>
-      <dt>ngrams</dt>
-      <dd>integer vector of the <em>n</em> for <em>n</em>-grams, defaulting 
+if <code>what = "word"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>remove_url</th>
+      <td><p>if <code>TRUE</code>, find and eliminate URLs beginning with 
+http(s) -- see section "Dealing with URLs".</p></td>
+    </tr>
+    <tr>
+      <th>ngrams</th>
+      <td><p>integer vector of the <em>n</em> for <em>n</em>-grams, defaulting 
 to <code>1</code> (unigrams). For bigrams, for instance, use <code>2</code>; for 
 bigrams and unigrams, use <code>1:2</code>.  You can even include irregular 
 sequences such as <code>2:3</code> for bigrams and trigrams only.  See 
-<code><a href='tokens_ngrams.html'>tokens_ngrams</a></code>.</dd>
-      <dt>skip</dt>
-      <dd>integer vector specifying the skips for skip-grams, default is 0 
+<code><a href='tokens_ngrams.html'>tokens_ngrams</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>skip</th>
+      <td><p>integer vector specifying the skips for skip-grams, default is 0 
 for only immediately neighbouring words. Only applies if <code>ngrams</code> is 
-different from the default of 1.  See <code><a href='tokens_ngrams.html'>tokens_skipgrams</a></code>.</dd>
-      <dt>concatenator</dt>
-      <dd>character to use in concatenating <em>n</em>-grams, default
-is &quot;<code>_</code>&quot;, which is recommended since this is included in the regular 
-expression and Unicode definitions of &quot;word&quot; characters</dd>
-      <dt>hash</dt>
-      <dd>if <code>TRUE</code> (default), return a hashed tokens object, 
+different from the default of 1.  See <code><a href='tokens_ngrams.html'>tokens_skipgrams</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>concatenator</th>
+      <td><p>character to use in concatenating <em>n</em>-grams, default
+is "<code>_</code>", which is recommended since this is included in the regular 
+expression and Unicode definitions of "word" characters</p></td>
+    </tr>
+    <tr>
+      <th>hash</th>
+      <td><p>if <code>TRUE</code> (default), return a hashed tokens object, 
 otherwise, return a classic <code>tokenizedTexts</code> object.  (This will be 
-phased out soon in coming versions.)</dd>
-      <dt>verbose</dt>
-      <dd>if <code>TRUE</code>, print timing messages to the console; off by 
-default</dd>
-      <dt>include_docvars</dt>
-      <dd>if <code>TRUE</code>, pass docvars and metadoc fields through to 
-the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a> objects.</dd>
-      <dt>...</dt>
-      <dd>additional arguments not used</dd>
-    </dl>
+phased out soon in coming versions.)</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>if <code>TRUE</code>, print timing messages to the console; off by 
+default</p></td>
+    </tr>
+    <tr>
+      <th>include_docvars</th>
+      <td><p>if <code>TRUE</code>, pass docvars and metadoc fields through to 
+the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a> objects.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments not used</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -185,15 +218,15 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
     <p>URLs are tricky to tokenize, because they contain
   a number of symbols and punctuation characters.  If you wish to remove 
   these, as most people do, and your text contains URLs, then you should set 
-  <code>what = &quot;fasterword&quot;</code> and <code>remove_url = TRUE</code>.  If you wish to 
+  <code>what = "fasterword"</code> and <code>remove_url = TRUE</code>.  If you wish to 
   keep the URLs, but do not want them mangled, then your options are more 
   limited, since removing punctuation and symbols will also remove them from 
-  URLs.  We are working on improving this behaviour.</p>
-    <p>See the examples below.</p>
+  URLs.  We are working on improving this behaviour.
+    See the examples below.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='tokens_ngrams.html'>tokens_ngrams</a></code>, <code><a href='tokens_ngrams.html'>tokens_skipgrams</a></code></p>
+    <p><code><a href='tokens_ngrams.html'>tokens_ngrams</a></code>, <code><a href='tokens_ngrams.html'>tokens_skipgrams</a></code>, <code><a href='as.tokens.html'>as.list.tokens</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -201,169 +234,169 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
          <span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"Another sentence, to demonstrate how tokens works."</span>)
 <span class='fu'>tokens</span>(<span class='no'>txt</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; doc1 :
-#&gt; [1] &quot;This&quot;   &quot;is&quot;     &quot;a&quot;      &quot;sample&quot; &quot;:&quot;      &quot;of&quot;     &quot;tokens&quot; &quot;.&quot;     
+#&gt; [1] "This"   "is"     "a"      "sample" ":"      "of"     "tokens" "."     
 #&gt; 
 #&gt; doc2 :
-#&gt; [1] &quot;Another&quot;     &quot;sentence&quot;    &quot;,&quot;           &quot;to&quot;          &quot;demonstrate&quot;
-#&gt; [6] &quot;how&quot;         &quot;tokens&quot;      &quot;works&quot;       &quot;.&quot;          
+#&gt; [1] "Another"     "sentence"    ","           "to"          "demonstrate"
+#&gt; [6] "how"         "tokens"      "works"       "."          
 #&gt; </div><div class='input'><span class='co'># removing punctuation marks and lowecasing texts</span>
 <span class='fu'>tokens</span>(<span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='no'>txt</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; doc1 :
-#&gt; [1] &quot;this&quot;   &quot;is&quot;     &quot;a&quot;      &quot;sample&quot; &quot;of&quot;     &quot;tokens&quot;
+#&gt; [1] "this"   "is"     "a"      "sample" "of"     "tokens"
 #&gt; 
 #&gt; doc2 :
-#&gt; [1] &quot;another&quot;     &quot;sentence&quot;    &quot;to&quot;          &quot;demonstrate&quot; &quot;how&quot;        
-#&gt; [6] &quot;tokens&quot;      &quot;works&quot;      
+#&gt; [1] "another"     "sentence"    "to"          "demonstrate" "how"        
+#&gt; [6] "tokens"      "works"      
 #&gt; </div><div class='input'><span class='co'># keeping versus removing hyphens</span>
 <span class='fu'>tokens</span>(<span class='st'>"quanteda data objects are auto-loading."</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;quanteda&quot;     &quot;data&quot;         &quot;objects&quot;      &quot;are&quot;          &quot;auto-loading&quot;
+#&gt; [1] "quanteda"     "data"         "objects"      "are"          "auto-loading"
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"quanteda data objects are auto-loading."</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;quanteda&quot; &quot;data&quot;     &quot;objects&quot;  &quot;are&quot;      &quot;auto&quot;     &quot;loading&quot; 
+#&gt; [1] "quanteda" "data"     "objects"  "are"      "auto"     "loading" 
 #&gt; </div><div class='input'><span class='co'># keeping versus removing symbols</span>
 <span class='fu'>tokens</span>(<span class='st'>"&lt;tags&gt; and other + symbols."</span>, <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;&lt;&quot;       &quot;tags&quot;    &quot;&gt;&quot;       &quot;and&quot;     &quot;other&quot;   &quot;+&quot;       &quot;symbols&quot;
-#&gt; [8] &quot;.&quot;      
+#&gt; [1] "&lt;"       "tags"    "&gt;"       "and"     "other"   "+"       "symbols"
+#&gt; [8] "."      
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"&lt;tags&gt; and other + symbols."</span>, <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;tags&quot;    &quot;and&quot;     &quot;other&quot;   &quot;symbols&quot;
+#&gt; [1] "tags"    "and"     "other"   "symbols"
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"&lt;tags&gt; and other + symbols."</span>, <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;&lt;tags&gt;&quot;   &quot;and&quot;      &quot;other&quot;    &quot;+&quot;        &quot;symbols.&quot;
+#&gt; [1] "&lt;tags&gt;"   "and"      "other"    "+"        "symbols."
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"&lt;tags&gt; and other + symbols."</span>, <span class='kw'>remove_symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;tags&quot;     &quot;and&quot;      &quot;other&quot;    &quot;symbols.&quot;
+#&gt; [1] "tags"     "and"      "other"    "symbols."
 #&gt; </div><div class='input'>
 <span class='co'>## examples with URLs - hardly perfect!</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"Repo https://githib.com/kbenoit/quanteda, and www.stackoverflow.com."</span>
 <span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;Repo&quot;                  &quot;and&quot;                   &quot;www.stackoverflow.com&quot;
+#&gt; [1] "Repo"                  "and"                   "www.stackoverflow.com"
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;Repo&quot;                  &quot;https&quot;                 &quot;githib.com&quot;           
-#&gt; [4] &quot;kbenoit&quot;               &quot;quanteda&quot;              &quot;and&quot;                  
-#&gt; [7] &quot;www.stackoverflow.com&quot;
+#&gt; [1] "Repo"                  "https"                 "githib.com"           
+#&gt; [4] "kbenoit"               "quanteda"              "and"                  
+#&gt; [7] "www.stackoverflow.com"
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;Repo&quot;                          &quot;httpsgithibcomkbenoitquanteda&quot;
-#&gt; [3] &quot;and&quot;                           &quot;wwwstackoverflowcom&quot;          
+#&gt; [1] "Repo"                          "httpsgithibcomkbenoitquanteda"
+#&gt; [3] "and"                           "wwwstackoverflowcom"          
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fasterword"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;Repo&quot;                                
-#&gt; [2] &quot;https://githib.com/kbenoit/quanteda,&quot;
-#&gt; [3] &quot;and&quot;                                 
-#&gt; [4] &quot;www.stackoverflow.com.&quot;              
+#&gt; [1] "Repo"                                
+#&gt; [2] "https://githib.com/kbenoit/quanteda,"
+#&gt; [3] "and"                                 
+#&gt; [4] "www.stackoverflow.com."              
 #&gt; </div><div class='input'>
 
 <span class='co'>## MORE COMPARISONS</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"#textanalysis is MY &lt;3 4U @myhandle gr8 #stuff :-)"</span>
 <span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;#textanalysis&quot; &quot;is&quot;            &quot;MY&quot;            &quot;3&quot;            
-#&gt; [5] &quot;4U&quot;            &quot;@myhandle&quot;     &quot;gr8&quot;           &quot;#stuff&quot;       
+#&gt; [1] "#textanalysis" "is"            "MY"            "3"            
+#&gt; [5] "4U"            "@myhandle"     "gr8"           "#stuff"       
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_twitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;textanalysis&quot; &quot;is&quot;           &quot;MY&quot;           &quot;3&quot;            &quot;4U&quot;          
-#&gt; [6] &quot;myhandle&quot;     &quot;gr8&quot;          &quot;stuff&quot;       
+#&gt; [1] "textanalysis" "is"           "MY"           "3"            "4U"          
+#&gt; [6] "myhandle"     "gr8"          "stuff"       
 #&gt; </div><div class='input'><span class='co'>#tokens("great website http://textasdata.com", remove_url = FALSE)</span>
 <span class='co'>#tokens("great website http://textasdata.com", remove_url = TRUE)</span>
 
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>text1</span><span class='kw'>=</span><span class='st'>"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
          <span class='kw'>text2</span><span class='kw'>=</span><span class='st'>"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span>)
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>...tokenizing 1 of 1 blocks</span></div><div class='output co'>#&gt; <span class='message'>...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...replacing Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...serializing tokens </span></div><div class='output co'>#&gt; <span class='message'>31 unique types</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.000999999999997669 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>...tokenizing 1 of 1 blocks</span></div><div class='output co'>#&gt; <span class='message'>...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...replacing Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...serializing tokens </span></div><div class='output co'>#&gt; <span class='message'>31 unique types</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.00200000000000955 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
-#&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;10&quot;        &quot;in&quot;        &quot;999&quot;      
-#&gt;  [7] &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;     
-#&gt; [13] &quot;;&quot;         &quot;left&quot;      &quot;and&quot;       &quot;right&quot;     &quot;!&quot;        
+#&gt;  [1] "This"      "is"        "$"         "10"        "in"        "999"      
+#&gt;  [7] "different" "ways"      ","         "up"        "and"       "down"     
+#&gt; [13] ";"         "left"      "and"       "right"     "!"        
 #&gt; 
 #&gt; text2 :
-#&gt;  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;:&quot;              &quot;on&quot;            
-#&gt;  [5] &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;,&quot;             
-#&gt;  [9] &quot;http&quot;           &quot;:&quot;              &quot;/&quot;              &quot;/&quot;             
-#&gt; [13] &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;             
-#&gt; [17] &quot;123&quot;            &quot;.&quot;             
+#&gt;  [1] "@kenbenoit"     "working"        ":"              "on"            
+#&gt;  [5] "#quanteda"      "2day"           "4ever"          ","             
+#&gt;  [9] "http"           ":"              "/"              "/"             
+#&gt; [13] "textasdata.com" "?"              "page"           "="             
+#&gt; [17] "123"            "."             
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
-#&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;in&quot;        &quot;different&quot; &quot;ways&quot;      &quot;up&quot;       
-#&gt;  [7] &quot;and&quot;       &quot;down&quot;      &quot;left&quot;      &quot;and&quot;       &quot;right&quot;    
+#&gt;  [1] "This"      "is"        "in"        "different" "ways"      "up"       
+#&gt;  [7] "and"       "down"      "left"      "and"       "right"    
 #&gt; 
 #&gt; text2 :
-#&gt; [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;on&quot;             &quot;#quanteda&quot;     
-#&gt; [5] &quot;2day&quot;           &quot;4ever&quot;          &quot;http&quot;           &quot;textasdata.com&quot;
-#&gt; [9] &quot;page&quot;          
+#&gt; [1] "@kenbenoit"     "working"        "on"             "#quanteda"     
+#&gt; [5] "2day"           "4ever"          "http"           "textasdata.com"
+#&gt; [9] "page"          
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
-#&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;10&quot;        &quot;in&quot;        &quot;999&quot;       &quot;different&quot;
-#&gt;  [7] &quot;ways&quot;      &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;left&quot;      &quot;and&quot;      
-#&gt; [13] &quot;right&quot;    
+#&gt;  [1] "This"      "is"        "10"        "in"        "999"       "different"
+#&gt;  [7] "ways"      "up"        "and"       "down"      "left"      "and"      
+#&gt; [13] "right"    
 #&gt; 
 #&gt; text2 :
-#&gt;  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;on&quot;             &quot;#quanteda&quot;     
-#&gt;  [5] &quot;2day&quot;           &quot;4ever&quot;          &quot;http&quot;           &quot;textasdata.com&quot;
-#&gt;  [9] &quot;page&quot;           &quot;123&quot;           
+#&gt;  [1] "@kenbenoit"     "working"        "on"             "#quanteda"     
+#&gt;  [5] "2day"           "4ever"          "http"           "textasdata.com"
+#&gt;  [9] "page"           "123"           
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
-#&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;in&quot;        &quot;different&quot; &quot;ways&quot;     
-#&gt;  [7] &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;;&quot;         &quot;left&quot;     
-#&gt; [13] &quot;and&quot;       &quot;right&quot;     &quot;!&quot;        
+#&gt;  [1] "This"      "is"        "$"         "in"        "different" "ways"     
+#&gt;  [7] ","         "up"        "and"       "down"      ";"         "left"     
+#&gt; [13] "and"       "right"     "!"        
 #&gt; 
 #&gt; text2 :
-#&gt;  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;:&quot;              &quot;on&quot;            
-#&gt;  [5] &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;,&quot;             
-#&gt;  [9] &quot;http&quot;           &quot;:&quot;              &quot;/&quot;              &quot;/&quot;             
-#&gt; [13] &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;             
-#&gt; [17] &quot;.&quot;             
+#&gt;  [1] "@kenbenoit"     "working"        ":"              "on"            
+#&gt;  [5] "#quanteda"      "2day"           "4ever"          ","             
+#&gt;  [9] "http"           ":"              "/"              "/"             
+#&gt; [13] "textasdata.com" "?"              "page"           "="             
+#&gt; [17] "."             
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
-#&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;10&quot;        &quot;in&quot;        &quot;999&quot;      
-#&gt;  [7] &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;     
-#&gt; [13] &quot;;&quot;         &quot;left&quot;      &quot;and&quot;       &quot;right&quot;     &quot;!&quot;        
+#&gt;  [1] "This"      "is"        "$"         "10"        "in"        "999"      
+#&gt;  [7] "different" "ways"      ","         "up"        "and"       "down"     
+#&gt; [13] ";"         "left"      "and"       "right"     "!"        
 #&gt; 
 #&gt; text2 :
-#&gt;  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;:&quot;              &quot;on&quot;            
-#&gt;  [5] &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;,&quot;             
-#&gt;  [9] &quot;http&quot;           &quot;:&quot;              &quot;/&quot;              &quot;/&quot;             
-#&gt; [13] &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;             
-#&gt; [17] &quot;123&quot;            &quot;.&quot;             
+#&gt;  [1] "@kenbenoit"     "working"        ":"              "on"            
+#&gt;  [5] "#quanteda"      "2day"           "4ever"          ","             
+#&gt;  [9] "http"           ":"              "/"              "/"             
+#&gt; [13] "textasdata.com" "?"              "page"           "="             
+#&gt; [17] "123"            "."             
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>remove_separators</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
-#&gt;  [1] &quot;This&quot;      &quot; &quot;         &quot;is&quot;        &quot; &quot;         &quot;$&quot;         &quot;10&quot;       
-#&gt;  [7] &quot; &quot;         &quot;in&quot;        &quot; &quot;         &quot;999&quot;       &quot; &quot;         &quot;different&quot;
-#&gt; [13] &quot; &quot;         &quot;ways&quot;      &quot;,&quot;         &quot;\n&quot;        &quot; &quot;         &quot;up&quot;       
-#&gt; [19] &quot; &quot;         &quot;and&quot;       &quot; &quot;         &quot;down&quot;      &quot;;&quot;         &quot; &quot;        
-#&gt; [25] &quot;left&quot;      &quot; &quot;         &quot;and&quot;       &quot; &quot;         &quot;right&quot;     &quot;!&quot;        
+#&gt;  [1] "This"      " "         "is"        " "         "$"         "10"       
+#&gt;  [7] " "         "in"        " "         "999"       " "         "different"
+#&gt; [13] " "         "ways"      ","         "\n"        " "         "up"       
+#&gt; [19] " "         "and"       " "         "down"      ";"         " "        
+#&gt; [25] "left"      " "         "and"       " "         "right"     "!"        
 #&gt; 
 #&gt; text2 :
-#&gt;  [1] &quot;@kenbenoit&quot;     &quot; &quot;              &quot;working&quot;        &quot;:&quot;             
-#&gt;  [5] &quot; &quot;              &quot;on&quot;             &quot; &quot;              &quot;#quanteda&quot;     
-#&gt;  [9] &quot; &quot;              &quot;2day&quot;           &quot;\t&quot;             &quot;4ever&quot;         
-#&gt; [13] &quot;,&quot;              &quot; &quot;              &quot;http&quot;           &quot;:&quot;             
-#&gt; [17] &quot;/&quot;              &quot;/&quot;              &quot;textasdata.com&quot; &quot;?&quot;             
-#&gt; [21] &quot;page&quot;           &quot;=&quot;              &quot;123&quot;            &quot;.&quot;             
+#&gt;  [1] "@kenbenoit"     " "              "working"        ":"             
+#&gt;  [5] " "              "on"             " "              "#quanteda"     
+#&gt;  [9] " "              "2day"           "\t"             "4ever"         
+#&gt; [13] ","              " "              "http"           ":"             
+#&gt; [17] "/"              "/"              "textasdata.com" "?"             
+#&gt; [21] "page"           "="              "123"            "."             
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_numbers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_url</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
-#&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;in&quot;        &quot;different&quot; &quot;ways&quot;      &quot;up&quot;       
-#&gt;  [7] &quot;and&quot;       &quot;down&quot;      &quot;left&quot;      &quot;and&quot;       &quot;right&quot;    
+#&gt;  [1] "This"      "is"        "in"        "different" "ways"      "up"       
+#&gt;  [7] "and"       "down"      "left"      "and"       "right"    
 #&gt; 
 #&gt; text2 :
-#&gt; [1] &quot;@kenbenoit&quot; &quot;working&quot;    &quot;on&quot;         &quot;#quanteda&quot;  &quot;2day&quot;      
-#&gt; [6] &quot;4ever&quot;     
+#&gt; [1] "@kenbenoit" "working"    "on"         "#quanteda"  "2day"      
+#&gt; [6] "4ever"     
 #&gt; </div><div class='input'>
 <span class='co'># character level</span>
 <span class='fu'>tokens</span>(<span class='st'>"Great website: http://textasdata.com?page=123."</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"character"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt;  [1] &quot;G&quot; &quot;r&quot; &quot;e&quot; &quot;a&quot; &quot;t&quot; &quot;w&quot; &quot;e&quot; &quot;b&quot; &quot;s&quot; &quot;i&quot; &quot;t&quot; &quot;e&quot; &quot;:&quot; &quot;h&quot; &quot;t&quot; &quot;t&quot; &quot;p&quot; &quot;:&quot; &quot;/&quot;
-#&gt; [20] &quot;/&quot; &quot;t&quot; &quot;e&quot; &quot;x&quot; &quot;t&quot; &quot;a&quot; &quot;s&quot; &quot;d&quot; &quot;a&quot; &quot;t&quot; &quot;a&quot; &quot;.&quot; &quot;c&quot; &quot;o&quot; &quot;m&quot; &quot;?&quot; &quot;p&quot; &quot;a&quot; &quot;g&quot;
-#&gt; [39] &quot;e&quot; &quot;=&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;.&quot;
+#&gt;  [1] "G" "r" "e" "a" "t" "w" "e" "b" "s" "i" "t" "e" ":" "h" "t" "t" "p" ":" "/"
+#&gt; [20] "/" "t" "e" "x" "t" "a" "s" "d" "a" "t" "a" "." "c" "o" "m" "?" "p" "a" "g"
+#&gt; [39] "e" "=" "1" "2" "3" "."
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"Great website: http://textasdata.com?page=123."</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"character"</span>,
          <span class='kw'>remove_separators</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt;  [1] &quot;G&quot; &quot;r&quot; &quot;e&quot; &quot;a&quot; &quot;t&quot; &quot; &quot; &quot;w&quot; &quot;e&quot; &quot;b&quot; &quot;s&quot; &quot;i&quot; &quot;t&quot; &quot;e&quot; &quot;:&quot; &quot; &quot; &quot;h&quot; &quot;t&quot; &quot;t&quot; &quot;p&quot;
-#&gt; [20] &quot;:&quot; &quot;/&quot; &quot;/&quot; &quot;t&quot; &quot;e&quot; &quot;x&quot; &quot;t&quot; &quot;a&quot; &quot;s&quot; &quot;d&quot; &quot;a&quot; &quot;t&quot; &quot;a&quot; &quot;.&quot; &quot;c&quot; &quot;o&quot; &quot;m&quot; &quot;?&quot; &quot;p&quot;
-#&gt; [39] &quot;a&quot; &quot;g&quot; &quot;e&quot; &quot;=&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;.&quot;
+#&gt;  [1] "G" "r" "e" "a" "t" " " "w" "e" "b" "s" "i" "t" "e" ":" " " "h" "t" "t" "p"
+#&gt; [20] ":" "/" "/" "t" "e" "x" "t" "a" "s" "d" "a" "t" "a" "." "c" "o" "m" "?" "p"
+#&gt; [39] "a" "g" "e" "=" "1" "2" "3" "."
 #&gt; </div><div class='input'>
 <span class='co'># sentence level         </span>
 <span class='fu'>tokens</span>(<span class='fu'>c</span>(<span class='st'>"Kurt Vongeut said; only assholes use semi-colons."</span>,
@@ -372,50 +405,50 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
            <span class='st'>"To be?  Or\nnot to be?"</span>),
           <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"sentence"</span>)</div><div class='output co'>#&gt; tokens from 4 documents.
 #&gt; Component 1 :
-#&gt; [1] &quot;Kurt Vongeut said; only assholes use semi-colons.&quot;
+#&gt; [1] "Kurt Vongeut said; only assholes use semi-colons."
 #&gt; 
 #&gt; Component 2 :
-#&gt; [1] &quot;Today is Thursday in Canberra:  It is yesterday in London.&quot;
+#&gt; [1] "Today is Thursday in Canberra:  It is yesterday in London."
 #&gt; 
 #&gt; Component 3 :
-#&gt; [1] &quot;Today is Thursday in Canberra:   It is yesterday in London.&quot;
+#&gt; [1] "Today is Thursday in Canberra:   It is yesterday in London."
 #&gt; 
 #&gt; Component 4 :
-#&gt; [1] &quot;To be?&quot;        &quot;Or not to be?&quot;
+#&gt; [1] "To be?"        "Or not to be?"
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='no'>data_corpus_inaugural</span>[<span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>40</span>)], <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"sentence"</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; 1793-Washington :
-#&gt; [1] &quot;Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate.&quot;                                                                                                                                                                                                                                       
-#&gt; [2] &quot;When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.&quot;                                                                                                                                      
-#&gt; [3] &quot;Previous to the execution of any official act of the President the Constitution requires an oath of office.&quot;                                                                                                                                                                                                                                                
-#&gt; [4] &quot;This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.&quot;
+#&gt; [1] "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate."                                                                                                                                                                                                                                       
+#&gt; [2] "When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America."                                                                                                                                      
+#&gt; [3] "Previous to the execution of any official act of the President the Constitution requires an oath of office."                                                                                                                                                                                                                                                
+#&gt; [4] "This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony."
 #&gt; 
 #&gt; 1945-Roosevelt :
-#&gt;  [1] &quot;Chief Justice, Mr. Vice President, my friends, you will understand and, I believe, agree with my wish that the form of this inauguration be simple and its words brief.&quot;                                
-#&gt;  [2] &quot;We Americans of today, together with our allies, are passing through a period of supreme test.&quot;                                                                                                         
-#&gt;  [3] &quot;It is a test of our courage -- of our resolve -- of our wisdom -- our essential democracy.&quot;                                                                                                             
-#&gt;  [4] &quot;If we meet that test -- successfully and honorably -- we shall perform a service of historic importance which men and women and children will honor throughout all time.&quot;                               
-#&gt;  [5] &quot;As I stand here today, having taken the solemn oath of office in the presence of my fellow countrymen -- in the presence of our God -- I know that it is America&#39;s purpose that we shall not fail.&quot;     
-#&gt;  [6] &quot;In the days and in the years that are to come we shall work for a just and honorable peace, a durable peace, as today we work and fight for total victory in war.&quot;                                      
-#&gt;  [7] &quot;We can and we will achieve such a peace.&quot;                                                                                                                                                               
-#&gt;  [8] &quot;We shall strive for perfection.&quot;                                                                                                                                                                        
-#&gt;  [9] &quot;We shall not achieve it immediately -- but we still shall strive.&quot;                                                                                                                                      
-#&gt; [10] &quot;We may make mistakes -- but they must never be mistakes which result from faintness of heart or abandonment of moral principle.&quot;                                                                        
-#&gt; [11] &quot;I remember that my old schoolmaster, Dr. Peabody, said, in days that seemed to us then to be secure and untroubled: \&quot;Things in life will not always run smoothly.&quot;                                     
-#&gt; [12] &quot;Sometimes we will be rising toward the heights -- then all will seem to reverse itself and start downward.&quot;                                                                                             
-#&gt; [13] &quot;The great fact to remember is that the trend of civilization itself is forever upward; that a line drawn through the middle of the peaks and the valleys of the centuries always has an upward trend.\&quot;&quot;
-#&gt; [14] &quot;Our Constitution of 1787 was not a perfect instrument; it is not perfect yet.&quot;                                                                                                                          
-#&gt; [15] &quot;But it provided a firm base upon which all manner of men, of all races and colors and creeds, could build our solid structure of democracy.&quot;                                                            
-#&gt; [16] &quot;And so today, in this year of war, 1945, we have learned lessons -- at a fearful cost -- and we shall profit by them.&quot;                                                                                  
-#&gt; [17] &quot;We have learned that we cannot live alone, at peace; that our own well-being is dependent on the well-being of other nations far away.&quot;                                                                 
-#&gt; [18] &quot;We have learned that we must live as men, not as ostriches, nor as dogs in the manger.&quot;                                                                                                                 
-#&gt; [19] &quot;We have learned to be citizens of the world, members of the human community.&quot;                                                                                                                           
-#&gt; [20] &quot;We have learned the simple truth, as Emerson said, that \&quot;The only way to have a friend is to be one.\&quot;&quot;                                                                                                
-#&gt; [21] &quot;We can gain no lasting peace if we approach it with suspicion and mistrust or with fear.&quot;                                                                                                               
-#&gt; [22] &quot;We can gain it only if we proceed with the understanding, the confidence, and the courage which flow from conviction.&quot;                                                                                  
-#&gt; [23] &quot;The Almighty God has blessed our land in many ways.&quot;                                                                                                                                                    
-#&gt; [24] &quot;He has given our people stout hearts and strong arms with which to strike mighty blows for freedom and truth.&quot;                                                                                          
-#&gt; [25] &quot;He has given to our country a faith which has become the hope of all peoples in an anguished world.&quot;                                                                                                    
-#&gt; [26] &quot;So we pray to Him now for the vision to see our way clearly -- to see the way that leads to a better life for ourselves and for all our fellow men -- to the achievement of His will to peace on earth.&quot;
+#&gt;  [1] "Chief Justice, Mr. Vice President, my friends, you will understand and, I believe, agree with my wish that the form of this inauguration be simple and its words brief."                                
+#&gt;  [2] "We Americans of today, together with our allies, are passing through a period of supreme test."                                                                                                         
+#&gt;  [3] "It is a test of our courage -- of our resolve -- of our wisdom -- our essential democracy."                                                                                                             
+#&gt;  [4] "If we meet that test -- successfully and honorably -- we shall perform a service of historic importance which men and women and children will honor throughout all time."                               
+#&gt;  [5] "As I stand here today, having taken the solemn oath of office in the presence of my fellow countrymen -- in the presence of our God -- I know that it is America's purpose that we shall not fail."     
+#&gt;  [6] "In the days and in the years that are to come we shall work for a just and honorable peace, a durable peace, as today we work and fight for total victory in war."                                      
+#&gt;  [7] "We can and we will achieve such a peace."                                                                                                                                                               
+#&gt;  [8] "We shall strive for perfection."                                                                                                                                                                        
+#&gt;  [9] "We shall not achieve it immediately -- but we still shall strive."                                                                                                                                      
+#&gt; [10] "We may make mistakes -- but they must never be mistakes which result from faintness of heart or abandonment of moral principle."                                                                        
+#&gt; [11] "I remember that my old schoolmaster, Dr. Peabody, said, in days that seemed to us then to be secure and untroubled: \"Things in life will not always run smoothly."                                     
+#&gt; [12] "Sometimes we will be rising toward the heights -- then all will seem to reverse itself and start downward."                                                                                             
+#&gt; [13] "The great fact to remember is that the trend of civilization itself is forever upward; that a line drawn through the middle of the peaks and the valleys of the centuries always has an upward trend.\""
+#&gt; [14] "Our Constitution of 1787 was not a perfect instrument; it is not perfect yet."                                                                                                                          
+#&gt; [15] "But it provided a firm base upon which all manner of men, of all races and colors and creeds, could build our solid structure of democracy."                                                            
+#&gt; [16] "And so today, in this year of war, 1945, we have learned lessons -- at a fearful cost -- and we shall profit by them."                                                                                  
+#&gt; [17] "We have learned that we cannot live alone, at peace; that our own well-being is dependent on the well-being of other nations far away."                                                                 
+#&gt; [18] "We have learned that we must live as men, not as ostriches, nor as dogs in the manger."                                                                                                                 
+#&gt; [19] "We have learned to be citizens of the world, members of the human community."                                                                                                                           
+#&gt; [20] "We have learned the simple truth, as Emerson said, that \"The only way to have a friend is to be one.\""                                                                                                
+#&gt; [21] "We can gain no lasting peace if we approach it with suspicion and mistrust or with fear."                                                                                                               
+#&gt; [22] "We can gain it only if we proceed with the understanding, the confidence, and the courage which flow from conviction."                                                                                  
+#&gt; [23] "The Almighty God has blessed our land in many ways."                                                                                                                                                    
+#&gt; [24] "He has given our people stout hearts and strong arms with which to strike mighty blows for freedom and truth."                                                                                          
+#&gt; [25] "He has given to our country a faith which has become the hope of all peoples in an anguished world."                                                                                                    
+#&gt; [26] "So we pray to Him now for the vision to see our way clearly -- to see the way that leads to a better life for ourselves and for all our fellow men -- to the achievement of His will to peace on earth."
 #&gt; </div><div class='input'>
 <span class='co'># removing features (stopwords) from tokenized texts</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'>c</span>(<span class='kw'>mytext1</span> <span class='kw'>=</span> <span class='st'>"This is a short test sentence."</span>,
@@ -423,13 +456,13 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
                       <span class='kw'>mytext3</span> <span class='kw'>=</span> <span class='st'>"Short, shorter, and shortest."</span>))
 <span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
 #&gt; mytext1 :
-#&gt; [1] &quot;this&quot;     &quot;is&quot;       &quot;a&quot;        &quot;short&quot;    &quot;test&quot;     &quot;sentence&quot;
+#&gt; [1] "this"     "is"       "a"        "short"    "test"     "sentence"
 #&gt; 
 #&gt; mytext2 :
-#&gt; [1] &quot;short&quot;
+#&gt; [1] "short"
 #&gt; 
 #&gt; mytext3 :
-#&gt; [1] &quot;short&quot;    &quot;shorter&quot;  &quot;and&quot;      &quot;shortest&quot;
+#&gt; [1] "short"    "shorter"  "and"      "shortest"
 #&gt; </div><div class='input'><span class='co'>### removeFeatures(tokens(txt, remove_punct = TRUE), stopwords("english"))</span>
 
 <span class='co'># ngram tokenization</span>

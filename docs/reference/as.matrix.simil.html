@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,18 +81,25 @@
     <p>Coerces a simil object, which is a specially classed dist object, into a matrix.</p>
     
 
-    <pre><span class='co'># S3 method for simil</span>
+    <pre class="usage"><span class='co'># S3 method for simil</span>
 <span class='fu'>as.matrix</span>(<span class='no'>x</span>, <span class='kw'>Diag</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a simil object from <code><a href='textstat_dist.html'>textstat_simil</a></code></dd>
-      <dt>Diag</dt>
-      <dd>sets the value for matrix diagonal</dd>
-      <dt>...</dt>
-      <dd>unused</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a simil object from <code><a href='textstat_simil.html'>textstat_simil</a></code></p></td>
+    </tr>
+    <tr>
+      <th>Diag</th>
+      <td><p>sets the value for matrix diagonal</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>unused</p></td>
+    </tr>
+    </table>
     
 
   </div>

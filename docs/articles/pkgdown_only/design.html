@@ -9,7 +9,7 @@
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
-<script src="../../jquery.sticky-kit.min.js"></script><script src="../../pkgdown.js"></script><!-- mathjax --><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../../jquery.sticky-kit.min.js"></script><script src="../../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -61,15 +61,15 @@
 <div class="contents">
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
-<html><body><a href="#introduction" class="anchor"> </a></body></html>Introduction</h1>
+<a href="#introduction" class="anchor"></a>Introduction</h1>
 <div id="changes-in-v0-9-9" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#changes-in-v0-9-9" class="anchor"> </a></body></html>Changes in v0.9.9</h2>
+<a href="#changes-in-v0-9-9" class="anchor"></a>Changes in v0.9.9</h2>
 <p>In v0.9.9, we have made some major changes to the <strong>quanteda</strong>’s API. While this “breaks” some of the commands used previously, it has the advantage going forward of making the function names much more consistent. As a consequence, we hope that the new API will be easier to learn, as well as easier to extend. The changes follow long discussions with the core contributors, reflections on user experiences following many training sessions, classes taught using the package, and feedback received through various on-line forums. This document explains the new, more consistent overall logic and grammar of the package.</p>
 </div>
 <div id="why-did-the-api-need-changing" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#why-did-the-api-need-changing" class="anchor"> </a></body></html>Why did the API need changing?</h2>
+<a href="#why-did-the-api-need-changing" class="anchor"></a>Why did the API need changing?</h2>
 <p>As of 0.9.8.5, <strong>quanteda</strong> started to get a bit haphazard in terms of names and functionality, defeating some of the purposes for which it was designed (to be simple to use and intuitive). In addition, renaming and reorganizing makes it easier:</p>
 <ol style="list-style-type: decimal">
 <li>To comply more with <a href="https://github.com/ropensci/onboarding/blob/master/packaging_guide.md#funvar">standards recommended by ROpenSci</a>, the functions and their operation have been renamed.<br>
@@ -82,10 +82,10 @@
 </div>
 <div id="the-new-logic-of-quantedas-design" class="section level1">
 <h1 class="hasAnchor">
-<html><body><a href="#the-new-logic-of-quantedas-design" class="anchor"> </a></body></html>The new logic of <strong>quanteda</strong>’s design</h1>
+<a href="#the-new-logic-of-quantedas-design" class="anchor"></a>The new logic of <strong>quanteda</strong>’s design</h1>
 <div id="grammatical-rules" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#grammatical-rules" class="anchor"> </a></body></html>Grammatical rules</h2>
+<a href="#grammatical-rules" class="anchor"></a>Grammatical rules</h2>
 <p>The new “grammar” of the package is split between three basic types of functions and data objects:</p>
 <ul>
 <li><p><em>object</em>: a constructor function named <code>object()</code> that returns an object of class <em>object</em>. Example: <code><a href="../../reference/corpus.html">corpus()</a></code> constructs a <code>corpus</code> class object.</p></li>
@@ -111,7 +111,7 @@
 </div>
 <div id="constructors-for-core-data-types" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#constructors-for-core-data-types" class="anchor"> </a></body></html>Constructors for core data types</h2>
+<a href="#constructors-for-core-data-types" class="anchor"></a>Constructors for core data types</h2>
 <p>The <strong>quanteda</strong> package consists of a few core data types, created by calling constructors with identical names. These are all “nouns” in the sense of declaring what they construct. This follows very similar R behaviour in many of the core R objects, such as <code>data.frame()</code>, <code>list()</code>, etc.</p>
 <p>Core object types and their constructor functions:</p>
 <ul>
@@ -134,39 +134,39 @@
 </div>
 <div id="functions-for-manipulating-core-data-types" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#functions-for-manipulating-core-data-types" class="anchor"> </a></body></html>Functions for manipulating core data types</h2>
+<a href="#functions-for-manipulating-core-data-types" class="anchor"></a>Functions for manipulating core data types</h2>
 <div id="naming-convention" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#naming-convention" class="anchor"> </a></body></html>Naming convention</h3>
+<a href="#naming-convention" class="anchor"></a>Naming convention</h3>
 <p>All functions that begin with the name of a core object class will both <em>input</em> and <em>output</em> an object of this class, without exception.</p>
 <p>This replaces the approach in versions up to 0.9.8.5 where a general methods such as <code><a href="../../reference/selectFeatures.html">selectFeatures()</a></code> was defined for each applicable class of core object. This approach made the specific function behaviour unpredictable from the description of the general behaviour. It also made it difficult to get an overview of the functionality available for each object class. By renaming these functions following the convention of object class, followed by an underscore, followed by a verb (or verb-like statement), we could both separate the behaviours into specific functions, as well as clearly describe through the function name what action is taken on what type of object.</p>
 </div>
 <div id="advantages" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#advantages" class="anchor"> </a></body></html>Advantages</h3>
+<a href="#advantages" class="anchor"></a>Advantages</h3>
 <p>In our view, the advantages of this clarity outweigh whatever advantages might be found from overloading a generic function. The functions <code>corpus_sample</code>, <code>tokens_sample</code>, and <code>dfm_sample</code>, for instance, are clearer to understand and read from a package’s function index, than the previously overloaded version of <code><a href="../../reference/sample.html">sample()</a></code> that could be dispatched on a corpus, tokenized text, or dfm object. Additionally, in the case of <code><a href="../../reference/sample.html">sample()</a></code>, we avoid the namespace “conflict” caused by redefining the function as a generic, so that it could be overloaded. Our new, more specific naming conventions therefore reduce the likelihood of namespace conflicts with other packages.</p>
 </div>
 <div id="why-are-some-operations-unavailable-for-specific-object-types" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#why-are-some-operations-unavailable-for-specific-object-types" class="anchor"> </a></body></html>Why are some operations unavailable for specific object types?</h3>
+<a href="#why-are-some-operations-unavailable-for-specific-object-types" class="anchor"></a>Why are some operations unavailable for specific object types?</h3>
 <p>Because not every operation makes sense for every object type. Take the example of a “feature co-occurrence matrix”, or <code>fcm</code>. Construction of a feature co-occurrence matrix is be slightly different from constructing a dfm. Unlike the “Swiss-army” knife approach of <code><a href="../../reference/dfm.html">dfm()</a></code>, which can operate directly on texts, <code><a href="../../reference/fcm.html">fcm()</a></code> works only on tokens, since the definition of how the context of co-occurrence is defined is dependent on token sequences and therefore highly dependent on tokenization options. In addition, <code><a href="../../reference/fcm.html">fcm()</a></code> is likely to be used a lot less frequently, and primarily by more expert users.</p>
 <p>Futhermore, many functions defined for <code>fcm</code> objects <em>should</em> be unavailable, because they violate the principles of the object. For instance, <code>fcm_wordstem</code> and <code>fcm_tolower</code> should not be applied to <code>fcm</code> objects, because collapsing these and treating them as equivalent (as for a dfm object) is incorrect for the context in which co-occurrence is defined, such as a +/- 5 token window.</p>
 </div>
 </div>
 <div id="extensions-of-core-r-functions" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#extensions-of-core-r-functions" class="anchor"> </a></body></html>Extensions of core R functions</h2>
+<a href="#extensions-of-core-r-functions" class="anchor"></a>Extensions of core R functions</h2>
 <p>Many simple base R functions – simpler at least than the example of <code><a href="../../reference/sample.html">sample()</a></code> cited above – are still extended to quanteda objects through overloading. The logic of allowing is that these functions, e.g. <code>cbind()</code> for a dfm, are very simple and very common, and therefore are well-known to users. Furthermore, they can operate in only one fashion on the object for which they are defined, such as <code>cbind()</code> combining two dfm objects by joining columns. Similar functions extended in this way include <code>print</code>, <code>head</code>, <code>tail</code>, and <code>t()</code>. Most of these functions are so natural that their documentation is not included in the package index.</p>
 </div>
 <div id="additions-to-core-r-like-functions" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#additions-to-core-r-like-functions" class="anchor"> </a></body></html>Additions to core R(-like) functions</h2>
+<a href="#additions-to-core-r-like-functions" class="anchor"></a>Additions to core R(-like) functions</h2>
 <p>Additional functions have been defined for <strong>quanteda</strong> objects that are <a href="#r-like-functions">very similar to simple base R functions</a>, but are not named using the <code>class_action</code> format because they do not return a modified object of the same class. These follow as closely as possible the naming conventions found in the base R functions that are similar. For instance, <code><a href="../../reference/docnames.html">docnames()</a></code> and <code><a href="../../reference/featnames.html">featnames()</a></code> return the document names of various <strong>quanteda</strong> objects, in the same way that <code>rownames()</code> does for matrix-like objects (a matrix, data.frame, data.table, etc.). The abbreviation of <code><a href="../../reference/featnames.html">featnames()</a></code> is intentionally modeled on <code>colnames()</code>. Likewise, <code><a href="../../reference/ndoc.html">ndoc()</a></code> returns the number of documents, using the singular form similar to <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
 </div>
 <div id="workflow-principles" class="section level1">
 <h1 class="hasAnchor">
-<html><body><a href="#workflow-principles" class="anchor"> </a></body></html>Workflow principles</h1>
+<a href="#workflow-principles" class="anchor"></a>Workflow principles</h1>
 <p><strong>quanteda</strong> is designed both to facilitate and to enforce a “best-practice” workflow. This includes the following basic principles.</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Corpus texts should remain <em>unchanged</em> during subsequent analysis and processing.</strong> In other words, after <em>loading</em> and <em>encoding</em>, we should discourage users from modifying a corpus of texts as a form of processing, so that the corpus can act as a library and record of the original texts, prior to any downstream processing. This not only aids in replication, but also means that a corpus presents the unmodified texts to which any processing, feature selection, transformations, or sampling may be applied or reapplied, without hard-coding any changes made as part of the process of analyzing the texts. The only exception is to reshape the units of text in a corpus, but we will record the details of this reshaping to make it relatively easy to reverse unit changes. Since the definition of a “document” is part of the process of loading texts into a corpus, however, rather than processing, we will take a less stringent line on this aspect of changing a corpus.</p></li>
@@ -178,10 +178,10 @@
 </div>
 <div id="basic-text-analysis-workflow" class="section level1">
 <h1 class="hasAnchor">
-<html><body><a href="#basic-text-analysis-workflow" class="anchor"> </a></body></html>Basic text analysis workflow</h1>
+<a href="#basic-text-analysis-workflow" class="anchor"></a>Basic text analysis workflow</h1>
 <div id="working-with-a-corpus-documents-and-features" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#working-with-a-corpus-documents-and-features" class="anchor"> </a></body></html>Working with a corpus, documents, and features</h2>
+<a href="#working-with-a-corpus-documents-and-features" class="anchor"></a>Working with a corpus, documents, and features</h2>
 <ol style="list-style-type: decimal">
 <li>
 <p><strong>Creating the corpus</strong></p>
@@ -258,8 +258,7 @@ These steps don’t necessarily require the processing steps above.
 </div>
 <div id="dfm-the-swiss-army-knife" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#dfm-the-swiss-army-knife" class="anchor"> </a></body></html>
-<code>dfm</code>, the Swiss Army knife</h2>
+<a href="#dfm-the-swiss-army-knife" class="anchor"></a><code>dfm</code>, the Swiss Army knife</h2>
 <pre><code>In most cases, users will use the default settings to create a dfm straight from a corpus.  `dfm` will combine steps 3--4, even though basic functions will be available to perform these separately.  All options shown in steps 3--4 will be available in `dfm`.
 
 `dfm` objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens.  **quanteda** works well with `%&gt;%` pipes, if that is your thing:

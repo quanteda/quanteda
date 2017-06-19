@@ -157,7 +157,9 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NU
     if (is.null(metacorpus$source)) {
         metacorpus$source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
     }
-    metacorpus$created <- date()
+    if (is.null(metacorpus$created)) {
+        metacorpus$created <- date()
+    }
 
     # create the documents data frame starting with the texts, using an empty field
     # this saves space if it needs to be separated later

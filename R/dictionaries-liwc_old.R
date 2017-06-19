@@ -73,7 +73,8 @@ read_dict_liwc_old <- function(path, encoding = "auto", toLower = FALSE) {
     # remove spaces before and after
     catlist <- stri_trim_both(catlist)
     
-    catlist <- strsplit(catlist, "\t")
+    catlist <- strsplit(catlist, "\\s")
+    catlist <- lapply(catlist, function(y) y[y != ""])
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
     suppressWarnings(catlist[, 2:ncol(catlist)] <- sapply(catlist[, 2:ncol(catlist)], as.integer))
     names(catlist)[1] <- "category"
@@ -101,10 +102,21 @@ read_dict_liwc_old <- function(path, encoding = "auto", toLower = FALSE) {
     
     for (ind in seq_along(terms)) {
         for(num in as.numeric(terms[[ind]])){
-            thisCat <- guide$catName[which(guide$catNum==num)]
+            tmpIndex <- which(guide$catNum == num)
+            if (!length(tmpIndex))
+                stop("Dictionary ", path, "\n  refers to undefined category ", num,
+                     " for term \"", names(terms[ind]), "\"", call. = FALSE)
+            thisCat <- guide$catName[tmpIndex]
             thisTerm <- names(terms[ind])
             dictionary[[thisCat]] <- append(dictionary[[thisCat]], thisTerm)
         }
     }
+    
+    # check if any keys are empty, and remove them if so
+    if (any(emptykeys <- sapply(dictionary, is.null))) {
+        message("note: removing empty keys: ", paste(names(emptykeys[which(emptykeys)]), collapse = ", "))
+        dictionary <- dictionary[-which(emptykeys)]
+    }
+    
     return(dictionary)
 }

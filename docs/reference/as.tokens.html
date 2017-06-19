@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -81,7 +83,7 @@ object is a <a href='tokens.html'>tokens</a> object, and functions to combine <a
 objects.</p>
     
 
-    <pre>as.tokens(x)
+    <pre class="usage">as.tokens(x)
 
 # S3 method for list
 as.tokens(x)
@@ -107,35 +109,53 @@ is.tokens(x)
 c(...)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>object to be coerced or checked</dd>
-      <dt>...</dt>
-      <dd>for c.tokens only, <a href='tokens.html'>tokens</a> objects to be concatenated</dd>
-      <dt>recursive</dt>
-      <dd>a required argument for unlist but inapplicable to
-<a href='tokens.html'>tokens</a> objects</dd>
-      <dt>use.names</dt>
-      <dd>logical; preserve names if <code>TRUE</code>.  For
-<code>as.character</code> and <code>unlist</code> only.</dd>
-      <dt>t1</dt>
-      <dd>tokens one to be added</dd>
-      <dt>t2</dt>
-      <dd>tokens two to be added</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>object to be coerced or checked</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>for c.tokens only, <a href='tokens.html'>tokens</a> objects to be concatenated</p></td>
+    </tr>
+    <tr>
+      <th>recursive</th>
+      <td><p>a required argument for unlist but inapplicable to
+<a href='tokens.html'>tokens</a> objects</p></td>
+    </tr>
+    <tr>
+      <th>use.names</th>
+      <td><p>logical; preserve names if <code>TRUE</code>.  For
+<code>as.character</code> and <code>unlist</code> only.</p></td>
+    </tr>
+    <tr>
+      <th>t1</th>
+      <td><p>tokens one to be added</p></td>
+    </tr>
+    <tr>
+      <th>t2</th>
+      <td><p>tokens two to be added</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>as.tokens</code> returns a quanteda <a href='tokens.html'>tokens</a> object</p>
-    <p><code>as.list</code> returns a simple list of characters from a
-  <a href='tokens.html'>tokens</a> object</p>
-    <p><code>unlist</code> returns a simple vector of characters from a 
-  <a href='tokens.html'>tokens</a> object</p>
-    <p><code>as.character</code> returns a character vector from a 
-  <a href='tokens.html'>tokens</a> object</p>
-    <p><code>is.tokens</code> returns <code>TRUE</code> if the object is of class
-  tokens, <code>FALSE</code> otherwise.</p>
-    <p><code>c(...)</code> and <code>+</code> return a tokens object whose documents
+    <p><code>as.tokens</code> returns a quanteda <a href='tokens.html'>tokens</a> object
+
+<code>as.list</code> returns a simple list of characters from a
+  <a href='tokens.html'>tokens</a> object
+
+<code>unlist</code> returns a simple vector of characters from a 
+  <a href='tokens.html'>tokens</a> object
+
+<code>as.character</code> returns a character vector from a 
+  <a href='tokens.html'>tokens</a> object
+
+<code>is.tokens</code> returns <code>TRUE</code> if the object is of class
+  tokens, <code>FALSE</code> otherwise.
+
+<code>c(...)</code> and <code>+</code> return a tokens object whose documents
   have been added as a single sequence of documents.</p>
     
 
@@ -145,22 +165,22 @@ c(...)</pre>
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"1 2 3"</span>))
 <span class='no'>toks1</span> + <span class='no'>toks2</span></div><div class='output co'>#&gt; tokens from 3 documents.
 #&gt; Component 1 :
-#&gt; [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;
+#&gt; [1] "a" "b" "c" "d" "e"
 #&gt; 
 #&gt; Component 2 :
-#&gt; [1] &quot;f&quot; &quot;g&quot; &quot;h&quot;
+#&gt; [1] "f" "g" "h"
 #&gt; 
 #&gt; Component 3 :
-#&gt; [1] &quot;1&quot; &quot;2&quot; &quot;3&quot;
+#&gt; [1] "1" "2" "3"
 #&gt; </div><div class='input'><span class='fu'>c</span>(<span class='no'>toks1</span>, <span class='no'>toks2</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
 #&gt; Component 1 :
-#&gt; [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;
+#&gt; [1] "a" "b" "c" "d" "e"
 #&gt; 
 #&gt; Component 2 :
-#&gt; [1] &quot;f&quot; &quot;g&quot; &quot;h&quot;
+#&gt; [1] "f" "g" "h"
 #&gt; 
 #&gt; Component 3 :
-#&gt; [1] &quot;1&quot; &quot;2&quot; &quot;3&quot;
+#&gt; [1] "1" "2" "3"
 #&gt; </div><div class='input'>
 </div></pre>
   </div>

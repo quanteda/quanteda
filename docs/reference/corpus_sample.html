@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -82,27 +84,40 @@ as <code><a href='sample.html'>sample</a></code> works for the documents and the
 document-level variables.</p>
     
 
-    <pre><span class='fu'>corpus_sample</span>(<span class='no'>x</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>x</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>corpus_sample</span>(<span class='no'>x</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>x</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a corpus object whose documents will be sampled</dd>
-      <dt>size</dt>
-      <dd>a positive number, the number of documents to select</dd>
-      <dt>replace</dt>
-      <dd>Should sampling be with replacement?</dd>
-      <dt>prob</dt>
-      <dd>A vector of probability weights for obtaining the elements of the
-vector being sampled.</dd>
-      <dt>by</dt>
-      <dd>a grouping variable for sampling.  Useful for resampling
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a corpus object whose documents will be sampled</p></td>
+    </tr>
+    <tr>
+      <th>size</th>
+      <td><p>a positive number, the number of documents to select</p></td>
+    </tr>
+    <tr>
+      <th>replace</th>
+      <td><p>Should sampling be with replacement?</p></td>
+    </tr>
+    <tr>
+      <th>prob</th>
+      <td><p>A vector of probability weights for obtaining the elements of the
+vector being sampled.</p></td>
+    </tr>
+    <tr>
+      <th>by</th>
+      <td><p>a grouping variable for sampling.  Useful for resampling
 sub-document units such as sentences, for instance by specifying <code>by =
-&quot;document&quot;</code></dd>
-      <dt>...</dt>
-      <dd>unused</dd>
-    </dl>
+"document"</code></p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>unused</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -116,29 +131,29 @@ sub-document units such as sentences, for instance by specifying <code>by =
     <pre class="examples"><div class='input'><span class='co'># sampling from a corpus</span>
 <span class='fu'>summary</span>(<span class='fu'>corpus_sample</span>(<span class='no'>data_corpus_inaugural</span>, <span class='fl'>5</span>))</div><div class='output co'>#&gt; Corpus consisting of 5 documents.
 #&gt; 
-#&gt;             Text Types Tokens Sentences Year  President FirstName
-#&gt;     1921-Harding  1172   3743       148 1921    Harding Warren G.
-#&gt;      1821-Monroe  1262   4898       129 1821     Monroe     James
-#&gt;  1793-Washington    96    147         4 1793 Washington    George
-#&gt;  1953-Eisenhower   903   2765       119 1953 Eisenhower Dwight D.
-#&gt;        2001-Bush   622   1810        97 2001       Bush George W.
+#&gt;            Text Types Tokens Sentences Year President  FirstName
+#&gt;    1833-Jackson   499   1271        29 1833   Jackson     Andrew
+#&gt;   1881-Garfield  1018   3240       111 1881  Garfield   James A.
+#&gt;  1801-Jefferson   716   1935        41 1801 Jefferson     Thomas
+#&gt;      1873-Grant   552   1479        43 1873     Grant Ulysses S.
+#&gt;    1997-Clinton   773   2451       111 1997   Clinton       Bill
 #&gt; 
 #&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
 #&gt; Created: Fri Sep 12 12:41:17 2014
 #&gt; Notes:   
 #&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_sample</span>(<span class='no'>data_corpus_inaugural</span>, <span class='fl'>10</span>, <span class='kw'>replace</span><span class='kw'>=</span><span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; Corpus consisting of 10 documents.
 #&gt; 
-#&gt;              Text Types Tokens Sentences Year President       FirstName
-#&gt;     1889-Harrison  1355   4744       157 1889  Harrison        Benjamin
-#&gt;        1969-Nixon   743   2437       103 1969     Nixon Richard Milhous
-#&gt;      1829-Jackson   517   1210        25 1829   Jackson          Andrew
-#&gt;     1901-McKinley   857   2449       100 1901  McKinley         William
-#&gt;    1945-Roosevelt   276    651        26 1945 Roosevelt     Franklin D.
-#&gt;    1829-Jackson.1   517   1210        25 1829   Jackson          Andrew
-#&gt;     1837-VanBuren  1315   4175        95 1837 Van Buren          Martin
-#&gt;  1945-Roosevelt.1   276    651        26 1945 Roosevelt     Franklin D.
-#&gt;     1881-Garfield  1018   3240       111 1881  Garfield        James A.
-#&gt;        2009-Obama   939   2729       110 2009     Obama          Barack
+#&gt;              Text Types Tokens Sentences Year  President      FirstName
+#&gt;       1853-Pierce  1166   3657       104 1853     Pierce       Franklin
+#&gt;    1945-Roosevelt   276    651        26 1945  Roosevelt    Franklin D.
+#&gt;   1957-Eisenhower   621   1933        92 1957 Eisenhower      Dwight D.
+#&gt;      1833-Jackson   499   1271        29 1833    Jackson         Andrew
+#&gt;        2013-Obama   814   2335        88 2013      Obama         Barack
+#&gt;      1961-Kennedy   566   1568        52 1961    Kennedy        John F.
+#&gt;        1797-Adams   826   2584        37 1797      Adams           John
+#&gt;         1909-Taft  1436   5844       159 1909       Taft William Howard
+#&gt;       1949-Truman   781   2531       116 1949     Truman       Harry S.
+#&gt;  1945-Roosevelt.1   276    651        26 1945  Roosevelt    Franklin D.
 #&gt; 
 #&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
 #&gt; Created: Fri Sep 12 12:41:17 2014
@@ -149,12 +164,12 @@ sub-document units such as sentences, for instance by specifying <code>by =
                       <span class='kw'>two</span> <span class='kw'>=</span> <span class='st'>"First sentence, doc2.  Second sentence, doc2."</span>))
 <span class='no'>sentcorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_reshape.html'>corpus_reshape</a></span>(<span class='no'>doccorpus</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"sentences"</span>)
 <span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>sentcorpus</span>)</div><div class='output co'>#&gt;                    one.1                    one.2                    one.3 
-#&gt;          &quot;Sentence one.&quot;          &quot;Sentence two.&quot;        &quot;Third sentence.&quot; 
+#&gt;          "Sentence one."          "Sentence two."        "Third sentence." 
 #&gt;                    two.1                    two.2 
-#&gt;  &quot;First sentence, doc2.&quot; &quot;Second sentence, doc2.&quot; </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_sample</span>(<span class='no'>sentcorpus</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"document"</span>))</div><div class='output co'>#&gt;                    one.2                    one.3                    one.1 
-#&gt;          &quot;Sentence two.&quot;        &quot;Third sentence.&quot;          &quot;Sentence one.&quot; 
+#&gt;  "First sentence, doc2." "Second sentence, doc2." </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_sample</span>(<span class='no'>sentcorpus</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"document"</span>))</div><div class='output co'>#&gt;                    one.1                  one.1.1                  one.1.2 
+#&gt;          "Sentence one."          "Sentence one."          "Sentence one." 
 #&gt;                    two.2                    two.1 
-#&gt; &quot;Second sentence, doc2.&quot;  &quot;First sentence, doc2.&quot; </div></pre>
+#&gt; "Second sentence, doc2."  "First sentence, doc2." </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

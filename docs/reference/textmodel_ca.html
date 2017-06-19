@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -81,28 +83,41 @@
 the <span class="pkg">ca</span> package.</p>
     
 
-    <pre><span class='fu'>textmodel_ca</span>(<span class='no'>x</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>threads</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+    <pre class="usage"><span class='fu'>textmodel_ca</span>(<span class='no'>x</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>threads</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>residual_floor</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>the dfm on which the model will be fit</dd>
-      <dt>smooth</dt>
-      <dd>a smoothing parameter for word counts; defaults to zero.</dd>
-      <dt>nd</dt>
-      <dd>Number of dimensions to be included in output; if <code>NA</code> (the 
-default) then the maximum possible dimensions are included.</dd>
-      <dt>sparse</dt>
-      <dd>retains the sparsity if set to TRUE</dd>
-      <dt>threads</dt>
-      <dd>specifies the number of threads to be used; set to 1 to use a serial version of the function. 
-Only applies when sparse = TRUE.</dd>
-      <dt>residual_floor</dt>
-      <dd>specifies the threshold for the residual matrix for 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>the dfm on which the model will be fit</p></td>
+    </tr>
+    <tr>
+      <th>smooth</th>
+      <td><p>a smoothing parameter for word counts; defaults to zero.</p></td>
+    </tr>
+    <tr>
+      <th>nd</th>
+      <td><p>Number of dimensions to be included in output; if <code>NA</code> (the 
+default) then the maximum possible dimensions are included.</p></td>
+    </tr>
+    <tr>
+      <th>sparse</th>
+      <td><p>retains the sparsity if set to TRUE</p></td>
+    </tr>
+    <tr>
+      <th>threads</th>
+      <td><p>specifies the number of threads to be used; set to 1 to use a serial version of the function. 
+Only applies when sparse = TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>residual_floor</th>
+      <td><p>specifies the threshold for the residual matrix for 
 calculating the truncated svd.Larger value will reduce memory and time cost but 
-might sacrify the accuracy. Only applies when sparse = TRUE</dd>
-    </dl>
+might sacrify the accuracy. Only applies when sparse = TRUE</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -121,23 +136,7 @@ The ca package. <em>Journal of Statistical Software</em>, 20 (3), <a href = 'htt
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>ieDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>)
-<span class='no'>wca</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_ca</span>(<span class='no'>ieDfm</span>)
-<span class='fu'>summary</span>(<span class='no'>wca</span>)</div><div class='output co'>#&gt;            Length Class  Mode     
-#&gt; sv             7  -none- numeric  
-#&gt; nd             1  -none- numeric  
-#&gt; rownames      14  -none- character
-#&gt; rowmass       14  -none- numeric  
-#&gt; rowdist       14  -none- numeric  
-#&gt; rowinertia    14  -none- numeric  
-#&gt; rowcoord      98  -none- numeric  
-#&gt; rowsup         0  -none- logical  
-#&gt; colnames    5058  -none- character
-#&gt; colmass     5058  -none- numeric  
-#&gt; coldist     5058  -none- numeric  
-#&gt; colinertia  5058  -none- numeric  
-#&gt; colcoord   35406  -none- numeric  
-#&gt; colsup         0  -none- logical  
-#&gt; call           2  -none- call     </div></pre>
+<span class='no'>wca</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_ca</span>(<span class='no'>ieDfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>summary</span>(<span class='no'>wca</span>)</div><div class='output co'>#&gt; <span class='error'>Error in summary(wca): object 'wca' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

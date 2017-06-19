@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -80,7 +82,7 @@
 Works for plain character vectors too, if <code>groups</code> is a factor.</p>
     
 
-    <pre><span class='fu'>texts</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spacer</span> <span class='kw'>=</span> <span class='st'>"  "</span>)
+    <pre class="usage"><span class='fu'>texts</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spacer</span> <span class='kw'>=</span> <span class='st'>"  "</span>)
 
 <span class='fu'>texts</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
 
@@ -88,29 +90,42 @@ Works for plain character vectors too, if <code>groups</code> is a factor.</p>
 <span class='fu'>as.character</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a <a href='corpus.html'>corpus</a> or character object</dd>
-      <dt>groups</dt>
-      <dd>either: a character vector containing the names of document
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <a href='corpus.html'>corpus</a> or character object</p></td>
+    </tr>
+    <tr>
+      <th>groups</th>
+      <td><p>either: a character vector containing the names of document
 variables to be used for grouping; or a factor (or object that can be
 coerced into a factor) equal in length to the number of documents, used for
-aggregating the texts through concatenation</dd>
-      <dt>spacer</dt>
-      <dd>when concatenating texts by using <code>groups</code>, this will be the 
-spacing added between texts.  (Default is two spaces.)</dd>
-      <dt>value</dt>
-      <dd>character vector of the new texts</dd>
-      <dt>...</dt>
-      <dd>unused</dd>
-    </dl>
+aggregating the texts through concatenation</p></td>
+    </tr>
+    <tr>
+      <th>spacer</th>
+      <td><p>when concatenating texts by using <code>groups</code>, this will be the 
+spacing added between texts.  (Default is two spaces.)</p></td>
+    </tr>
+    <tr>
+      <th>value</th>
+      <td><p>character vector of the new texts</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>unused</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>For <code>texts</code>, a character vector of the texts in the corpus.</p>
-    <p>For <code>texts &lt;-</code>, the corpus with the updated texts.</p>
-    <p>for <code>texts &lt;-</code>, a corpus with the texts replaced by <code>value</code></p>
-    <p><code>as.character(x)</code> is equivalent to <code>texts(x)</code></p>
+    <p>For <code>texts</code>, a character vector of the texts in the corpus.
+  
+  For <code>texts &lt;-</code>, the corpus with the updated texts.</p>
+<p>for <code>texts &lt;-</code>, a corpus with the texts replaced by <code>value</code>
+
+<code>as.character(x)</code> is equivalent to <code>texts(x)</code></p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -148,13 +163,13 @@ calling <code>texts(x)</code></p>
                                    <span class='fu'>c</span>(<span class='st'>"ize"</span>, <span class='st'>"$1or"</span>, <span class='st'>"num"</span>),
                                    <span class='kw'>vectorize_all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>texts</span>(<span class='no'>BritCorpus</span>)</div><div class='output co'>#&gt;                                           text1 
-#&gt; &quot;We must prioritize honor in our neighborhood.&quot; 
+#&gt; "We must prioritize honor in our neighborhood." 
 #&gt;                                           text2 
-#&gt;                 &quot;Aluminum is a valorous metal.&quot; </div><div class='input'><span class='fu'>texts</span>(<span class='no'>BritCorpus</span>)[<span class='fl'>2</span>] <span class='kw'>&lt;-</span> <span class='st'>"New text number 2."</span>
+#&gt;                 "Aluminum is a valorous metal." </div><div class='input'><span class='fu'>texts</span>(<span class='no'>BritCorpus</span>)[<span class='fl'>2</span>] <span class='kw'>&lt;-</span> <span class='st'>"New text number 2."</span>
 <span class='fu'>texts</span>(<span class='no'>BritCorpus</span>)</div><div class='output co'>#&gt;                                           text1 
-#&gt; &quot;We must prioritize honor in our neighborhood.&quot; 
+#&gt; "We must prioritize honor in our neighborhood." 
 #&gt;                                           text2 
-#&gt;                            &quot;New text number 2.&quot; </div></pre>
+#&gt;                            "New text number 2." </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

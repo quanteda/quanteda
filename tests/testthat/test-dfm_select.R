@@ -243,8 +243,19 @@ test_that("dfm_remove works even when it does not remove anything, issue 711", {
                  featnames(testdfm))
 
 })
+test_that("dfm_select stop when dicitonary has multi-word features, issue 775", {
 
+dfm_inaug <- dfm(data_corpus_inaugural)
+testdict1 <- dictionary(list(eco = c("compan*", "factory worker*"), 
+                             pol = c("politcal party", "election*")))
+testdict2 <- dictionary(list(eco = c("compan*", "factory_worker"), 
+                             pol = c("politcal_party", "election*")))
 
+expect_error(dfm_select(dfm_inaug, features = testdict1, valuetype = "glob"),
+             "dfm_select not implemented for ngrams > 1 and multi-word dictionary values")
+expect_silent(dfm_select(dfm_inaug, features = testdict2, valuetype = "glob"))
+
+})
 
 
 

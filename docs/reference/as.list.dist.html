@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -77,50 +79,59 @@
 
     
     <p>Coerce a dist matrix into a list of selected terms and tarhet terms in
-descending order.  Can be used after calling <code><a href='textstat_dist.html'>textstat_simil</a></code> or
-<code><a href='textstat_dist.html'>textstat_dist</a></code>.</p>
+descending order.  Can be used after calling <code><a href='textstat_simil.html'>textstat_simil</a></code> or
+<code><a href='textstat_simil.html'>textstat_dist</a></code>.</p>
     
 
-    <pre><span class='co'># S3 method for dist</span>
+    <pre class="usage"><span class='co'># S3 method for dist</span>
 <span class='fu'>as.list</span>(<span class='no'>x</span>, <span class='kw'>sorted</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>dist class object</dd>
-      <dt>sorted</dt>
-      <dd>sort results in descending order if <code>TRUE</code></dd>
-      <dt>n</dt>
-      <dd>the top <code>n</code> highest-ranking items will be returned.  If n is 
-<code>NULL</code>, return all items.</dd>
-      <dt>...</dt>
-      <dd>unused</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>dist class object</p></td>
+    </tr>
+    <tr>
+      <th>sorted</th>
+      <td><p>sort results in descending order if <code>TRUE</code></p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>the top <code>n</code> highest-ranking items will be returned.  If n is 
+<code>NULL</code>, return all items.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>unused</p></td>
+    </tr>
+    </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># ## compare to tm</span>
-<span class='co'># </span>
-<span class='co'># # tm version</span>
-<span class='co'># require(tm)</span>
-<span class='co'># data("crude")</span>
-<span class='co'># crude &lt;- tm_map(crude, content_transformer(tolower))</span>
-<span class='co'># crude &lt;- tm_map(crude, remove_punctuation)</span>
-<span class='co'># crude &lt;- tm_map(crude, remove_numbers)</span>
-<span class='co'># crude &lt;- tm_map(crude, stemDocument)</span>
-<span class='co'># tdm &lt;- TermDocumentMatrix(crude)</span>
-<span class='co'># findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))</span>
-<span class='co'># </span>
-<span class='co'># # in quanteda</span>
-<span class='co'># quantedaDfm &lt;- new("dfmSparse", Matrix::Matrix(t(as.matrix(tdm))))</span>
-<span class='co'># as.list(textstat_simil(quantedaDfm, c("oil", "opec", "xyz"), margin = "features", n = 14))</span>
-<span class='co'># </span>
-<span class='co'># # in base R</span>
-<span class='co'># corMat &lt;- as.matrix(proxy::simil(as.matrix(quantedaDfm), by_rows = FALSE))</span>
-<span class='co'># round(head(sort(corMat[, "oil"], decreasing = TRUE), 14), 2)</span>
-<span class='co'># round(head(sort(corMat[, "opec"], decreasing = TRUE), 9), 2)</span>
-<span class='co'>## --------------------------------------------- </span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='co'>## compare to tm</span>
+
+  <span class='co'># tm version</span>
+  <span class='fu'>require</span>(<span class='no'>tm</span>)
+  <span class='fu'>data</span>(<span class='st'>"crude"</span>)
+  <span class='no'>crude</span> <span class='kw'>&lt;-</span> <span class='fu'>tm_map</span>(<span class='no'>crude</span>, <span class='fu'>content_transformer</span>(<span class='no'>tolower</span>))
+  <span class='no'>crude</span> <span class='kw'>&lt;-</span> <span class='fu'>tm_map</span>(<span class='no'>crude</span>, <span class='no'>remove_punctuation</span>)
+  <span class='no'>crude</span> <span class='kw'>&lt;-</span> <span class='fu'>tm_map</span>(<span class='no'>crude</span>, <span class='no'>remove_numbers</span>)
+  <span class='no'>crude</span> <span class='kw'>&lt;-</span> <span class='fu'>tm_map</span>(<span class='no'>crude</span>, <span class='no'>stemDocument</span>)
+  <span class='no'>tdm</span> <span class='kw'>&lt;-</span> <span class='fu'>TermDocumentMatrix</span>(<span class='no'>crude</span>)
+  <span class='fu'>findAssocs</span>(<span class='no'>tdm</span>, <span class='fu'>c</span>(<span class='st'>"oil"</span>, <span class='st'>"opec"</span>, <span class='st'>"xyz"</span>), <span class='fu'>c</span>(<span class='fl'>0.75</span>, <span class='fl'>0.82</span>, <span class='fl'>0.1</span>))
+
+  <span class='co'># in quanteda</span>
+  <span class='no'>quantedaDfm</span> <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"dfmSparse"</span>, <span class='kw'>Matrix</span><span class='kw'>::</span><span class='fu'>Matrix</span>(<span class='fu'>t</span>(<span class='fu'>as.matrix</span>(<span class='no'>tdm</span>))))
+  <span class='fu'>as.list</span>(<span class='fu'><a href='textstat_simil.html'>textstat_simil</a></span>(<span class='no'>quantedaDfm</span>, <span class='fu'>c</span>(<span class='st'>"oil"</span>, <span class='st'>"opec"</span>, <span class='st'>"xyz"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>14</span>))
+
+  <span class='co'># in base R</span>
+  <span class='no'>corMat</span> <span class='kw'>&lt;-</span> <span class='fu'>as.matrix</span>(<span class='kw'>proxy</span><span class='kw'>::</span><span class='fu'>simil</span>(<span class='fu'>as.matrix</span>(<span class='no'>quantedaDfm</span>), <span class='kw'>by_rows</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))
+  <span class='fu'>round</span>(<span class='fu'>head</span>(<span class='fu'>sort</span>(<span class='no'>corMat</span>[, <span class='st'>"oil"</span>], <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fl'>14</span>), <span class='fl'>2</span>)
+  <span class='fu'>round</span>(<span class='fu'>head</span>(<span class='fu'>sort</span>(<span class='no'>corMat</span>[, <span class='st'>"opec"</span>], <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fl'>9</span>), <span class='fl'>2</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

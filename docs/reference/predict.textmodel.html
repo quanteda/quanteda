@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,30 +81,45 @@
     <p>implements class predictions using trained Naive Bayes examples</p>
     
 
-    <pre><span class='co'># S3 method for textmodel_NB_fitted</span>
+    <pre class="usage"><span class='co'># S3 method for textmodel_NB_fitted</span>
 <span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>object</dt>
-      <dd>a fitted Naive Bayes textmodel</dd>
-      <dt>newdata</dt>
-      <dd>dfm on which prediction should be made</dd>
-      <dt>...</dt>
-      <dd>not used</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>a fitted Naive Bayes textmodel</p></td>
+    </tr>
+    <tr>
+      <th>newdata</th>
+      <td><p>dfm on which prediction should be made</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>not used</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list of two data frames, named <code>docs</code> and <code>words</code> corresponding
 to word- and document-level predicted quantities</p>
+<dt>docs</dt><dd><p>data frame with document-level predictive quantities: 
+nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc, bayesscore.doc, 
+posterior.diff, posterior.logdiff.  Note that the diff quantities are currently 
+implemented only for two-class solutions.</p></dd>
+
+<dt>words</dt><dd><p>data-frame with word-level predictive quantities: 
+wordscore.word, bayesscore.word</p></dd>
+
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>(<span class='no'>nbfit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_NB.html'>textmodel_NB</a></span>(<span class='no'>data_dfm_LBGexample</span>, <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; Fitted Naive Bayes model:
 #&gt; Call:
-#&gt; 	textmodel_NB(x = data_dfm_LBGexample, y = c(&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;C&quot;, 
-#&gt;     &quot;C&quot;, NA))
+#&gt; 	textmodel_NB(x = data_dfm_LBGexample, y = c("A", "A", "B", "C", 
+#&gt;     "C", NA))
 #&gt; 
 #&gt; 
 #&gt; Training classes and priors:
@@ -110,7 +127,7 @@ to word- and document-level predicted quantities</p>
 #&gt; 0.3333333 0.3333333 0.3333333 
 #&gt; 
 #&gt; 		  Likelihoods:		Class Posteriors:
-#&gt; 30 x 6 Matrix of class &quot;dgeMatrix&quot;
+#&gt; 30 x 6 Matrix of class "dgeMatrix"
 #&gt;              A            B           C           A          B           C
 #&gt; A  0.001472754 0.0009643202 0.000490918 0.502991108 0.32934519 0.167663703
 #&gt; B  0.001963672 0.0009643202 0.000490918 0.574356134 0.28205483 0.143589034

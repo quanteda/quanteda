@@ -7,6 +7,8 @@ txt <- c(doc1 = "This is a sample text.\nIt has three lines.\nThe third line.",
 dv <- data.frame(varnumeric = 10:13, varfactor = factor(c("A", "B", "A", "B")), varchar = letters[1:4])
 data_corpus_test    <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpuzip.R"))
 data_corpuszip_test <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpuzip.R"), compress = TRUE)
+metacorpus(data_corpus_test, "created") <- "same"
+metacorpus(data_corpuszip_test, "created") <- "same"
 
 test_that("as.corpus.corpuszip works", {
     skip_on_cran()

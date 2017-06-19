@@ -3,6 +3,7 @@ cache: packages
 warnings_are_errors: true
 sudo: true
 dist: trusty
+latex: false
 r_packages:
   - covr
   - ExPosition

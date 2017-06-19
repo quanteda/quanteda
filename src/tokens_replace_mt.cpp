@@ -82,7 +82,7 @@ List qatd_cpp_tokens_replace(const List &texts_,
     }
 #endif
     // dev::stop_timer("Token replace", timer);
-    return recompile(texts, types);
+    return recompile(texts, types, true, true, is_encoded(types_));
 }
 
 /***R

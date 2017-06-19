@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,24 +81,35 @@
     <p>Sample randomly from a dfm object, from documents or features.</p>
     
 
-    <pre><span class='fu'>dfm_sample</span>(<span class='no'>x</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>x</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>dfm_sample</span>(<span class='no'>x</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>x</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>the dfm object whose documents or features will be sampled</dd>
-      <dt>size</dt>
-      <dd>a positive number, the number of documents or features to select</dd>
-      <dt>replace</dt>
-      <dd>logical; should sampling be with replacement?</dd>
-      <dt>prob</dt>
-      <dd>a vector of probability weights for obtaining the elements of the
-vector being sampled.</dd>
-      <dt>what</dt>
-      <dd>dimension (of a <a href='dfm.html'>dfm</a>) to sample: can be <code>documents</code> or
-<code>features</code></dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>the dfm object whose documents or features will be sampled</p></td>
+    </tr>
+    <tr>
+      <th>size</th>
+      <td><p>a positive number, the number of documents or features to select</p></td>
+    </tr>
+    <tr>
+      <th>replace</th>
+      <td><p>logical; should sampling be with replacement?</p></td>
+    </tr>
+    <tr>
+      <th>prob</th>
+      <td><p>a vector of probability weights for obtaining the elements of the
+vector being sampled.</p></td>
+    </tr>
+    <tr>
+      <th>what</th>
+      <td><p>dimension (of a <a href='dfm.html'>dfm</a>) to sample: can be <code>documents</code> or
+<code>features</code></p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -111,57 +124,57 @@ vector being sampled.</dd>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>10</span>])
 <span class='fu'>dfm_sample</span>(<span class='no'>myDfm</span>)[, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 10 features (31% sparse).
-#&gt; 10 x 10 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 10 x 10 sparse Matrix of class "dfmSparse"
 #&gt;                  features
 #&gt; docs              fellow  - citizens  of the senate and house representatives :
-#&gt;   1801-Jefferson       7 12        7 104 130      0  81     0               0 1
-#&gt;   1817-Monroe          6 14        9 164 275      0 122     0               1 0
 #&gt;   1805-Jefferson       8  2       10 101 143      0  93     0               0 0
-#&gt;   1797-Adams           3  5        5 140 163      1 130     0               2 0
-#&gt;   1789-Washington      3  3        5  71 116      1  48     2               2 1
-#&gt;   1825-Adams           3 11        2 245 304      0 116     0               1 0
-#&gt;   1821-Monroe         10  6       15 197 360      0 141     0               0 0
-#&gt;   1809-Madison         1  6        1  69 104      0  43     0               0 0
+#&gt;   1813-Madison         1  1        4  65 100      0  44     0               0 0
+#&gt;   1817-Monroe          6 14        9 164 275      0 122     0               1 0
 #&gt;   1793-Washington      1  0        1  11  13      0   2     0               0 1
-#&gt;   1813-Madison         1  1        4  65 100      0  44     0               0 0</div><div class='input'><span class='fu'>dfm_sample</span>(<span class='no'>myDfm</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)[, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 10 features (34% sparse).
-#&gt; 10 x 10 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt;   1821-Monroe         10  6       15 197 360      0 141     0               0 0
+#&gt;   1801-Jefferson       7 12        7 104 130      0  81     0               0 1
+#&gt;   1809-Madison         1  6        1  69 104      0  43     0               0 0
+#&gt;   1825-Adams           3 11        2 245 304      0 116     0               1 0
+#&gt;   1797-Adams           3  5        5 140 163      1 130     0               2 0
+#&gt;   1789-Washington      3  3        5  71 116      1  48     2               2 1</div><div class='input'><span class='fu'>dfm_sample</span>(<span class='no'>myDfm</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)[, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 10 features (34% sparse).
+#&gt; 10 x 10 sparse Matrix of class "dfmSparse"
 #&gt;                  features
 #&gt; docs              fellow  - citizens  of the senate and house representatives :
-#&gt;   1793-Washington      1  0        1  11  13      0   2     0               0 1
-#&gt;   1793-Washington      1  0        1  11  13      0   2     0               0 1
+#&gt;   1817-Monroe          6 14        9 164 275      0 122     0               1 0
+#&gt;   1817-Monroe          6 14        9 164 275      0 122     0               1 0
 #&gt;   1825-Adams           3 11        2 245 304      0 116     0               1 0
-#&gt;   1797-Adams           3  5        5 140 163      1 130     0               2 0
-#&gt;   1797-Adams           3  5        5 140 163      1 130     0               2 0
 #&gt;   1825-Adams           3 11        2 245 304      0 116     0               1 0
+#&gt;   1801-Jefferson       7 12        7 104 130      0  81     0               0 1
+#&gt;   1805-Jefferson       8  2       10 101 143      0  93     0               0 0
+#&gt;   1801-Jefferson       7 12        7 104 130      0  81     0               0 1
 #&gt;   1793-Washington      1  0        1  11  13      0   2     0               0 1
-#&gt;   1821-Monroe         10  6       15 197 360      0 141     0               0 0
-#&gt;   1793-Washington      1  0        1  11  13      0   2     0               0 1
-#&gt;   1805-Jefferson       8  2       10 101 143      0  93     0               0 0</div><div class='input'><span class='fu'>dfm_sample</span>(<span class='no'>myDfm</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"features"</span>)[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 10 features (84% sparse).
-#&gt; 10 x 10 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt;   1809-Madison         1  6        1  69 104      0  43     0               0 0
+#&gt;   1805-Jefferson       8  2       10 101 143      0  93     0               0 0</div><div class='input'><span class='fu'>dfm_sample</span>(<span class='no'>myDfm</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"features"</span>)[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 10 features (74% sparse).
+#&gt; 10 x 10 sparse Matrix of class "dfmSparse"
 #&gt;                  features
-#&gt; docs              splendid honest inadequacy pretense practiced god whitened
-#&gt;   1789-Washington        0      1          0        0         0   0        0
-#&gt;   1793-Washington        0      0          0        0         0   0        0
-#&gt;   1797-Adams             1      1          0        1         0   0        0
-#&gt;   1801-Jefferson         0      4          0        0         1   0        0
-#&gt;   1805-Jefferson         0      0          0        0         0   0        0
-#&gt;   1809-Madison           0      0          1        0         0   0        0
-#&gt;   1813-Madison           0      0          0        0         0   0        0
-#&gt;   1817-Monroe            0      0          0        0         0   0        0
-#&gt;   1821-Monroe            0      0          0        0         0   1        0
-#&gt;   1825-Adams             1      1          0        0         0   0        1
+#&gt; docs              guardian iron destructive united thanks croix knowledge
+#&gt;   1789-Washington        0    0           0      4      0     0         0
+#&gt;   1793-Washington        0    0           0      1      0     0         0
+#&gt;   1797-Adams             0    1           0      3      0     0         4
+#&gt;   1801-Jefferson         0    0           0      0      1     0         0
+#&gt;   1805-Jefferson         0    0           0      1      0     0         1
+#&gt;   1809-Madison           0    0           0      3      0     0         0
+#&gt;   1813-Madison           0    0           0      5      0     0         0
+#&gt;   1817-Monroe            1    0           1     13      0     0         0
+#&gt;   1821-Monroe            0    0           1     16      0     2         2
+#&gt;   1825-Adams             0    0           0      2      0     0         0
 #&gt;                  features
-#&gt; docs              disapproved particular acquired
-#&gt;   1789-Washington           0          2        0
-#&gt;   1793-Washington           0          0        0
-#&gt;   1797-Adams                0          1        1
-#&gt;   1801-Jefferson            0          0        0
-#&gt;   1805-Jefferson            1          0        0
-#&gt;   1809-Madison              0          0        0
-#&gt;   1813-Madison              0          0        0
-#&gt;   1817-Monroe               0          0        0
-#&gt;   1821-Monroe               0          0        0
-#&gt;   1825-Adams                0          0        2</div></pre>
+#&gt; docs              honestly internal fulfilling
+#&gt;   1789-Washington        0        0          0
+#&gt;   1793-Washington        0        0          0
+#&gt;   1797-Adams             0        1          0
+#&gt;   1801-Jefferson         0        0          0
+#&gt;   1805-Jefferson         1        1          0
+#&gt;   1809-Madison           0        1          1
+#&gt;   1813-Madison           0        0          0
+#&gt;   1817-Monroe            1        0          0
+#&gt;   1821-Monroe            0        5          0
+#&gt;   1825-Adams             0        4          0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

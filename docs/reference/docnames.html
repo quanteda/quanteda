@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,22 +81,28 @@
     <p>Get or set the document names of a <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object.</p>
     
 
-    <pre><span class='fu'>docnames</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>docnames</span>(<span class='no'>x</span>)
 
 <span class='fu'>docnames</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span></pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>the object with docnames</dd>
-      <dt>value</dt>
-      <dd>a character vector of the same length as <code>x</code></dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>the object with docnames</p></td>
+    </tr>
+    <tr>
+      <th>value</th>
+      <td><p>a character vector of the same length as <code>x</code></p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>docnames</code> returns a character vector of the document names</p>
-    <p><code>docnames &lt;-</code> assigns new values to the document names of a corpus. (Does not work
+    <p><code>docnames</code> returns a character vector of the document names
+
+<code>docnames &lt;-</code> assigns new values to the document names of a corpus. (Does not work
 for dfm objects, whose document names are fixed.)</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -104,26 +112,26 @@ for dfm objects, whose document names are fixed.)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># query the document names of a corpus</span>
-<span class='fu'>docnames</span>(<span class='no'>data_corpus_irishbudget2010</span>)</div><div class='output co'>#&gt;  [1] &quot;2010_BUDGET_01_Brian_Lenihan_FF&quot;      
-#&gt;  [2] &quot;2010_BUDGET_02_Richard_Bruton_FG&quot;     
-#&gt;  [3] &quot;2010_BUDGET_03_Joan_Burton_LAB&quot;       
-#&gt;  [4] &quot;2010_BUDGET_04_Arthur_Morgan_SF&quot;      
-#&gt;  [5] &quot;2010_BUDGET_05_Brian_Cowen_FF&quot;        
-#&gt;  [6] &quot;2010_BUDGET_06_Enda_Kenny_FG&quot;         
-#&gt;  [7] &quot;2010_BUDGET_07_Kieran_ODonnell_FG&quot;    
-#&gt;  [8] &quot;2010_BUDGET_08_Eamon_Gilmore_LAB&quot;     
-#&gt;  [9] &quot;2010_BUDGET_09_Michael_Higgins_LAB&quot;   
-#&gt; [10] &quot;2010_BUDGET_10_Ruairi_Quinn_LAB&quot;      
-#&gt; [11] &quot;2010_BUDGET_11_John_Gormley_Green&quot;    
-#&gt; [12] &quot;2010_BUDGET_12_Eamon_Ryan_Green&quot;      
-#&gt; [13] &quot;2010_BUDGET_13_Ciaran_Cuffe_Green&quot;    
-#&gt; [14] &quot;2010_BUDGET_14_Caoimhghin_OCaolain_SF&quot;</div><div class='input'>
+<span class='fu'>docnames</span>(<span class='no'>data_corpus_irishbudget2010</span>)</div><div class='output co'>#&gt;  [1] "2010_BUDGET_01_Brian_Lenihan_FF"      
+#&gt;  [2] "2010_BUDGET_02_Richard_Bruton_FG"     
+#&gt;  [3] "2010_BUDGET_03_Joan_Burton_LAB"       
+#&gt;  [4] "2010_BUDGET_04_Arthur_Morgan_SF"      
+#&gt;  [5] "2010_BUDGET_05_Brian_Cowen_FF"        
+#&gt;  [6] "2010_BUDGET_06_Enda_Kenny_FG"         
+#&gt;  [7] "2010_BUDGET_07_Kieran_ODonnell_FG"    
+#&gt;  [8] "2010_BUDGET_08_Eamon_Gilmore_LAB"     
+#&gt;  [9] "2010_BUDGET_09_Michael_Higgins_LAB"   
+#&gt; [10] "2010_BUDGET_10_Ruairi_Quinn_LAB"      
+#&gt; [11] "2010_BUDGET_11_John_Gormley_Green"    
+#&gt; [12] "2010_BUDGET_12_Eamon_Ryan_Green"      
+#&gt; [13] "2010_BUDGET_13_Ciaran_Cuffe_Green"    
+#&gt; [14] "2010_BUDGET_14_Caoimhghin_OCaolain_SF"</div><div class='input'>
 <span class='co'># query the document names of a tokens object</span>
-<span class='fu'>docnames</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_char_ukimmig2010</span>))</div><div class='output co'>#&gt; [1] &quot;BNP&quot;          &quot;Coalition&quot;    &quot;Conservative&quot; &quot;Greens&quot;       &quot;Labour&quot;      
-#&gt; [6] &quot;LibDem&quot;       &quot;PC&quot;           &quot;SNP&quot;          &quot;UKIP&quot;        </div><div class='input'>
+<span class='fu'>docnames</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_char_ukimmig2010</span>))</div><div class='output co'>#&gt; [1] "BNP"          "Coalition"    "Conservative" "Greens"       "Labour"      
+#&gt; [6] "LibDem"       "PC"           "SNP"          "UKIP"        </div><div class='input'>
 <span class='co'># query the document names of a dfm</span>
-<span class='fu'>docnames</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; [1] &quot;1789-Washington&quot; &quot;1793-Washington&quot; &quot;1797-Adams&quot;      &quot;1801-Jefferson&quot; 
-#&gt; [5] &quot;1805-Jefferson&quot; </div><div class='input'>
+<span class='fu'>docnames</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; [1] "1789-Washington" "1793-Washington" "1797-Adams"      "1801-Jefferson" 
+#&gt; [5] "1805-Jefferson" </div><div class='input'>
 <span class='co'># reassign the document names of the inaugural speech corpus</span>
 <span class='fu'>docnames</span>(<span class='no'>data_corpus_inaugural</span>) <span class='kw'>&lt;-</span> <span class='fu'>paste</span>(<span class='st'>"Speech"</span>, <span class='fl'>1</span>:<span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>data_corpus_inaugural</span>), <span class='kw'>sep</span><span class='kw'>=</span><span class='st'>""</span>)</div></pre>
   </div>

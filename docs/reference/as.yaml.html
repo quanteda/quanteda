@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -82,13 +84,16 @@ files can be editied in text editors and imported into
 <span class="pkg">quanteda</span> again.</p>
     
 
-    <pre><span class='fu'>as.yaml</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>as.yaml</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>dictionary object</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>dictionary object</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -96,11 +101,11 @@ files can be editied in text editors and imported into
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># dict &lt;- dictionary(file = '/home/kohei/Documents/Dictionary/LaverGarry.txt', format = 'wordstat')</span>
-<span class='co'># yaml &lt;- as.yaml(dict)</span>
-<span class='co'># cat(yaml, file = '/home/kohei/Documents/Dictionary/LaverGarry.yaml')</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>'/home/kohei/Documents/Dictionary/LaverGarry.txt'</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>'wordstat'</span>)
+  <span class='no'>yaml</span> <span class='kw'>&lt;-</span> <span class='fu'>as.yaml</span>(<span class='no'>dict</span>)
+  <span class='fu'>cat</span>(<span class='no'>yaml</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>'/home/kohei/Documents/Dictionary/LaverGarry.yaml'</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

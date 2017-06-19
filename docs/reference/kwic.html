@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -83,7 +85,7 @@ line number, since the text may or may not be segmented using end-of-line
 delimiters.)</p>
     
 
-    <pre><span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>keywords</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+    <pre class="usage"><span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>keywords</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
   <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='fu'>is.kwic</span>(<span class='no'>x</span>)
@@ -92,25 +94,38 @@ delimiters.)</p>
 <span class='fu'><a href='as.tokens.html'>as.tokens</a></span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a character, <a href='corpus.html'>corpus</a>, or <a href='tokens.html'>tokens</a> object</dd>
-      <dt>keywords</dt>
-      <dd>a keyword pattern or phrase consisting of multiple keyword 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a character, <a href='corpus.html'>corpus</a>, or <a href='tokens.html'>tokens</a> object</p></td>
+    </tr>
+    <tr>
+      <th>keywords</th>
+      <td><p>a keyword pattern or phrase consisting of multiple keyword 
 patterns, possibly including punctuation.  If a phrase, <code>keywords</code> 
-will be tokenized using the <code>...</code> options.</dd>
-      <dt>window</dt>
-      <dd>the number of context words to be displayed around the keyword.</dd>
-      <dt>valuetype</dt>
-      <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
-&quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions;
-or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</dd>
-      <dt>case_insensitive</dt>
-      <dd>match without respect to case if <code>TRUE</code></dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to <a href='tokens.html'>tokens</a>, for applicable 
-object types</dd>
-    </dl>
+will be tokenized using the <code>...</code> options.</p></td>
+    </tr>
+    <tr>
+      <th>window</th>
+      <td><p>the number of context words to be displayed around the keyword.</p></td>
+    </tr>
+    <tr>
+      <th>valuetype</th>
+      <td><p>how to interpret keyword expressions: <code>"glob"</code> for 
+"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
+or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+    </tr>
+    <tr>
+      <th>case_insensitive</th>
+      <td><p>match without respect to case if <code>TRUE</code></p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to <a href='tokens.html'>tokens</a>, for applicable 
+object types</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -171,7 +186,7 @@ object types</dd>
 #&gt;       [1977-Carter, 927:928]            and we will fight our |
 #&gt;                                                                
 #&gt;  bulwarks against | antirepublican tendencies; the preservation
-#&gt;  bulwark against  | antirepublican tendencies,&quot; and            
+#&gt;  bulwark against  | antirepublican tendencies," and            
 #&gt;    war against    | a sister republic, we                      
 #&gt;    war against    | the inhabitants of the Philippine          
 #&gt;    war against    | the United States. By                      

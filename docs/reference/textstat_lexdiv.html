@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,26 +81,37 @@
     <p>Calculate the lexical diversity or complexity of text(s).</p>
     
 
-    <pre><span class='fu'>textstat_lexdiv</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"all"</span>, <span class='st'>"TTR"</span>, <span class='st'>"C"</span>, <span class='st'>"R"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"U"</span>, <span class='st'>"S"</span>,
+    <pre class="usage"><span class='fu'>textstat_lexdiv</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"all"</span>, <span class='st'>"TTR"</span>, <span class='st'>"C"</span>, <span class='st'>"R"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"U"</span>, <span class='st'>"S"</span>,
   <span class='st'>"Maas"</span>), <span class='kw'>log.base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>an input object, such as a <a href='dfm.html'>document-feature matrix</a>
-object</dd>
-      <dt>measure</dt>
-      <dd>a character vector defining the measure to calculate.</dd>
-      <dt>log.base</dt>
-      <dd>a numeric value defining the base of the logarithm (for
-measures using logs)</dd>
-      <dt>drop</dt>
-      <dd>if <code>TRUE</code>, the result is returned as a numeric vector if 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>an input object, such as a <a href='dfm.html'>document-feature matrix</a>
+object</p></td>
+    </tr>
+    <tr>
+      <th>measure</th>
+      <td><p>a character vector defining the measure to calculate.</p></td>
+    </tr>
+    <tr>
+      <th>log.base</th>
+      <td><p>a numeric value defining the base of the logarithm (for
+measures using logs)</p></td>
+    </tr>
+    <tr>
+      <th>drop</th>
+      <td><p>if <code>TRUE</code>, the result is returned as a numeric vector if 
 only a single measure is requested; otherwise, a data.frame is returned 
-with each column consisting of a requested measure.</dd>
-      <dt>...</dt>
-      <dd>not used</dd>
-    </dl>
+with each column consisting of a requested measure.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>not used</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -109,37 +122,37 @@ with each column consisting of a requested measure.</dd>
 
     <p><code>textstat_lexdiv</code> calculates a variety of proposed indices for lexical
   diversity. In the following formulae, \(N\) refers to the total number of
-  tokens, and \(V\) to the number of types: <dl class='dl-horizontal'></p>
-    <p><dt><code>&quot;TTR&quot;</code>:</dt><dd>The ordinary <em>Type-Token Ratio</em>: $$TTR =
-  \frac{V}{N}$$</dd></p>
-    <p><dt><code>&quot;C&quot;</code>:</dt><dd>Herdan&#39;s <em>C</em> (Herdan, 1960, as cited in Tweedie &amp; 
+  tokens, and \(V\) to the number of types:</p><dl class='dl-horizontal'>
+    <dt><code>"TTR"</code>:</dt><dd><p>The ordinary <em>Type-Token Ratio</em>: $$TTR =
+  \frac{V}{N}$$</p></dd>
+    <dt><code>"C"</code>:</dt><dd><p>Herdan's <em>C</em> (Herdan, 1960, as cited in Tweedie &amp; 
   Baayen, 1998; sometimes referred to as <em>LogTTR</em>): $$C = 
-  \frac{\log{V}}{\log{N}}$$</dd></p>
-    <p><dt><code>&quot;R&quot;</code>:</dt><dd>Guiraud&#39;s <em>Root TTR</em> (Guiraud, 1954, as cited in 
-  Tweedie &amp; Baayen, 1998): $$R = \frac{V}{\sqrt{N}}$$</dd></p>
-    <p><dt><code>&quot;CTTR&quot;</code>:</dt><dd>Carroll&#39;s <em>Corrected TTR</em>: $$CTTR = 
-  \frac{V}{\sqrt{2N}}$$</dd></p>
-    <p><dt><code>&quot;U&quot;</code>:</dt><dd>Dugast&#39;s <em>Uber Index</em>  (Dugast, 1978, as cited in 
-  Tweedie &amp; Baayen, 1998): $$U = \frac{(\log{N})^2}{\log{N} - \log{V}}$$</dd></p>
-    <p><dt><code>&quot;S&quot;</code>:</dt><dd>Summer&#39;s index: $$S = 
-  \frac{\log{\log{V}}}{\log{\log{N}}}$$</dd></p>
-    <p><dt><code>&quot;K&quot;</code>:</dt><dd>Yule&#39;s <em>K</em>  (Yule, 1944, as cited in Tweedie &amp;
+  \frac{\log{V}}{\log{N}}$$</p></dd>
+    <dt><code>"R"</code>:</dt><dd><p>Guiraud's <em>Root TTR</em> (Guiraud, 1954, as cited in 
+  Tweedie &amp; Baayen, 1998): $$R = \frac{V}{\sqrt{N}}$$</p></dd>
+    <dt><code>"CTTR"</code>:</dt><dd><p>Carroll's <em>Corrected TTR</em>: $$CTTR = 
+  \frac{V}{\sqrt{2N}}$$</p></dd>
+    <dt><code>"U"</code>:</dt><dd><p>Dugast's <em>Uber Index</em>  (Dugast, 1978, as cited in 
+  Tweedie &amp; Baayen, 1998): $$U = \frac{(\log{N})^2}{\log{N} - \log{V}}$$</p></dd>
+    <dt><code>"S"</code>:</dt><dd><p>Summer's index: $$S = 
+  \frac{\log{\log{V}}}{\log{\log{N}}}$$</p></dd>
+    <dt><code>"K"</code>:</dt><dd><p>Yule's <em>K</em>  (Yule, 1944, as cited in Tweedie &amp;
   Baayen, 1998) is calculated by: $$K = 10^4 \times
   \frac{(\sum_{X=1}^{X}{{f_X}X^2}) - N}{N^2}$$ where \(N\) is the number of tokens, \(X\) is a vector with the
-  frequencies of each type, and \(f_X\) is the frequencies for each X.</dd></p>
-    <p><dt><code>&quot;Maas&quot;</code>:</dt><dd>Maas&#39; indices (\(a\), \(\log{V_0}\) &amp; 
+  frequencies of each type, and \(f_X\) is the frequencies for each X.</p></dd>
+    <dt><code>"Maas"</code>:</dt><dd><p>Maas' indices (\(a\), \(\log{V_0}\) &amp; 
   \(\log{}_{e}{V_0}\)): $$a^2 = \frac{\log{N} -
   \log{V}}{\log{N}^2}$$ $$\log{V_0} =
   \frac{\log{V}}{\sqrt{1 - \frac{\log{V}}{\log{N}}^2}}$$ The measure was derived from a formula by
   Mueller (1969, as cited in Maas, 1972). \(\log{}_{e}{V_0}\) is equivalent
   to \(\log{V_0}\), only with \(e\) as the base for the logarithms. Also
   calculated are \(a\), \(\log{V_0}\) (both not the same as before) and
-  \(V&#39;\) as measures of relative vocabulary growth while the text
+  \(V'\) as measures of relative vocabulary growth while the text
   progresses. To calculate these measures, the first half of the text and the
   full text will be examined (see Maas, 1972, p. 67 ff. for details).  Note:
   for the current method (for a dfm) there is no computation on separate
-  halves of the text.</dd></p>
-    <p></dl></p>
+  halves of the text.</p></dd>
+    </dl>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -155,69 +168,27 @@ with each column consisting of a requested measure.</dd>
 
     <p>Covington, M.A. &amp; McFall, J.D. (2010). Cutting the Gordian Knot: 
   The Moving-Average Type-Token Ratio (MATTR). <em>Journal of Quantitative 
-  Linguistics</em>, 17(2), 94--100.</p>
-    <p>Maas, H.-D., (1972). \&quot;Uber den Zusammenhang zwischen Wortschatzumfang und 
-  L\&quot;ange eines Textes. <em>Zeitschrift f\&quot;ur Literaturwissenschaft und 
-  Linguistik</em>, 2(8), 73--96.</p>
-    <p>McCarthy, P.M. &amp; Jarvis, S. (2007). vocd: A theoretical and empirical 
-  evaluation. <em>Language Testing</em>, 24(4), 459--488.</p>
-    <p>McCarthy, P.M. &amp; Jarvis, S. (2010). MTLD, vocd-D, and HD-D: A validation 
+  Linguistics</em>, 17(2), 94--100.
+    Maas, H.-D., (1972). \"Uber den Zusammenhang zwischen Wortschatzumfang und 
+  L\"ange eines Textes. <em>Zeitschrift f\"ur Literaturwissenschaft und 
+  Linguistik</em>, 2(8), 73--96.
+    McCarthy, P.M. &amp; Jarvis, S. (2007). vocd: A theoretical and empirical 
+  evaluation. <em>Language Testing</em>, 24(4), 459--488.
+    McCarthy, P.M. &amp; Jarvis, S. (2010). MTLD, vocd-D, and HD-D: A validation 
   study of sophisticated approaces to lexical diversity assessment. 
-  <em>Behaviour Research Methods</em>, 42(2), 381--392.</p>
-    <p>Michalke, Meik.  (2014) <em>koRpus: An R Package for Text Analysis</em>. 
-  Version 0.05-5. <a href = 'http://reaktanz.de/?c=hacking&amp;s=koRpus'>http://reaktanz.de/?c=hacking&amp;s=koRpus</a></p>
-    <p>Tweedie. F.J. &amp; Baayen, R.H. (1998). How Variable May a Constant Be? 
+  <em>Behaviour Research Methods</em>, 42(2), 381--392.
+    Michalke, Meik.  (2014) <em>koRpus: An R Package for Text Analysis</em>. 
+  Version 0.05-5. <a href = 'http://reaktanz.de/?c=hacking&amp;s=koRpus'>http://reaktanz.de/?c=hacking&amp;s=koRpus</a>
+    Tweedie. F.J. &amp; Baayen, R.H. (1998). How Variable May a Constant Be? 
   Measures of Lexical Richness in Perspective. <em>Computers and the 
   Humanities</em>, 32(5), 323--352.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-(<span class='no'>results</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='fu'>c</span>(<span class='st'>"CTTR"</span>, <span class='st'>"TTR"</span>, <span class='st'>"U"</span>)))</div><div class='output co'>#&gt;                   CTTR       TTR        U
-#&gt; 1981-Reagan  11.389397 0.3045032 23.00653
-#&gt; 1985-Reagan  11.433654 0.2984668 22.89890
-#&gt; 1989-Bush    10.320398 0.2817741 21.36968
-#&gt; 1993-Clinton  9.997768 0.3298857 22.12126
-#&gt; 1997-Clinton 10.369313 0.2962056 21.74016
-#&gt; 2001-Bush     9.855993 0.3276243 21.89836
-#&gt; 2005-Bush    10.763898 0.3156989 22.63270
-#&gt; 2009-Obama   12.195736 0.3301576 24.53073
-#&gt; 2013-Obama   11.501755 0.3366167 23.99284
-#&gt; 2017-Trump    9.487610 0.3291215 21.49093</div><div class='input'><span class='fu'>cor</span>(<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"all"</span>))</div><div class='output co'>#&gt;                TTR          C            R         CTTR          U          S
-#&gt; TTR    1.000000000  0.8655675  0.008768591  0.008768591  0.4254944  0.5371925
-#&gt; C      0.865567451  1.0000000  0.507609571  0.507609571  0.8204234  0.8872298
-#&gt; R      0.008768591  0.5076096  1.000000000  1.000000000  0.9079934  0.8469615
-#&gt; CTTR   0.008768591  0.5076096  1.000000000  1.000000000  0.9079934  0.8469615
-#&gt; U      0.425494404  0.8204234  0.907993408  0.907993408  1.0000000  0.9908749
-#&gt; S      0.537192509  0.8872298  0.846961549  0.846961549  0.9908749  1.0000000
-#&gt; Maas  -0.423120302 -0.8196286 -0.908918583 -0.908918583 -0.9995478 -0.9914058
-#&gt; lgV0   0.200103122  0.6631489  0.981055543  0.981055543  0.9717025  0.9332928
-#&gt; lgeV0  0.200103122  0.6631489  0.981055543  0.981055543  0.9717025  0.9332928
-#&gt;             Maas       lgV0      lgeV0
-#&gt; TTR   -0.4231203  0.2001031  0.2001031
-#&gt; C     -0.8196286  0.6631489  0.6631489
-#&gt; R     -0.9089186  0.9810555  0.9810555
-#&gt; CTTR  -0.9089186  0.9810555  0.9810555
-#&gt; U     -0.9995478  0.9717025  0.9717025
-#&gt; S     -0.9914058  0.9332928  0.9332928
-#&gt; Maas   1.0000000 -0.9722186 -0.9722186
-#&gt; lgV0  -0.9722186  1.0000000  1.0000000
-#&gt; lgeV0 -0.9722186  1.0000000  1.0000000</div><div class='input'>
+(<span class='no'>results</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='fu'>c</span>(<span class='st'>"CTTR"</span>, <span class='st'>"TTR"</span>, <span class='st'>"U"</span>)))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>cor</span>(<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"all"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># with different settings of drop</span>
-<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 1997-Clinton    2001-Bush 
-#&gt;    0.3045032    0.2984668    0.2817741    0.3298857    0.2962056    0.3276243 
-#&gt;    2005-Bush   2009-Obama   2013-Obama   2017-Trump 
-#&gt;    0.3156989    0.3301576    0.3366167    0.3291215 </div><div class='input'><span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;                    TTR
-#&gt; 1981-Reagan  0.3045032
-#&gt; 1985-Reagan  0.2984668
-#&gt; 1989-Bush    0.2817741
-#&gt; 1993-Clinton 0.3298857
-#&gt; 1997-Clinton 0.2962056
-#&gt; 2001-Bush    0.3276243
-#&gt; 2005-Bush    0.3156989
-#&gt; 2009-Obama   0.3301576
-#&gt; 2013-Obama   0.3366167
-#&gt; 2017-Trump   0.3291215</div></pre>
+<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

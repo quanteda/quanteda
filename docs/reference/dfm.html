@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -80,61 +82,84 @@
 <a href='tokens.html'>tokens</a>, or even other dfm object.</p>
     
 
-    <pre><span class='fu'>dfm</span>(<span class='no'>x</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>dfm</span>(<span class='no'>x</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>thesaurus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>,
   <span class='st'>"fixed"</span>), <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>character, <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or dfm object</dd>
-      <dt>tolower</dt>
-      <dd>convert all tokens to lowercase</dd>
-      <dt>stem</dt>
-      <dd>if <code>TRUE</code>, stem words</dd>
-      <dt>select</dt>
-      <dd>a user supplied regular expression defining which features to 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>character, <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or dfm object</p></td>
+    </tr>
+    <tr>
+      <th>tolower</th>
+      <td><p>convert all tokens to lowercase</p></td>
+    </tr>
+    <tr>
+      <th>stem</th>
+      <td><p>if <code>TRUE</code>, stem words</p></td>
+    </tr>
+    <tr>
+      <th>select</th>
+      <td><p>a user supplied regular expression defining which features to 
 keep, while excluding all others.  This can be used in lieu of a dictionary
 if there are only specific features that a user wishes to keep. To extract 
-only Twitter usernames, for example, set <code>select = &quot;@*&quot;</code> and make 
+only Twitter usernames, for example, set <code>select = "@*"</code> and make 
 sure that <code>remove_twitter = FALSE</code> as an additional argument passed to 
-<a href='tokenize.html'>tokenize</a>.  Note: <code>select = &quot;^@\\w+\\b&quot;</code> would be the regular
+<a href='tokenize.html'>tokenize</a>.  Note: <code>select = "^@\\w+\\b"</code> would be the regular
 expression version of this matching pattern.  The pattern matching type 
-will be set by <code>valuetype</code>.</dd>
-      <dt>remove</dt>
-      <dd>a character vector of user-supplied features to ignore, such as
-&quot;stop words&quot;.  To access one possible list (from any list you wish), use 
+will be set by <code>valuetype</code>.</p></td>
+    </tr>
+    <tr>
+      <th>remove</th>
+      <td><p>a character vector of user-supplied features to ignore, such as
+"stop words".  To access one possible list (from any list you wish), use 
 <code><a href='stopwords.html'>stopwords</a>()</code>.  The pattern matching type will be set by 
 <code>valuetype</code>.  For behaviour of <code>remove</code> with <code>ngrams &gt; 1</code>, 
-see Details.</dd>
-      <dt>thesaurus</dt>
-      <dd>A list of character vector &quot;thesaurus&quot; entries, in a 
+see Details.</p></td>
+    </tr>
+    <tr>
+      <th>thesaurus</th>
+      <td><p>A list of character vector "thesaurus" entries, in a 
 dictionary list format, which operates as a dictionary but without 
 excluding values not matched from the dictionary.  Thesaurus keys are 
 converted to upper case to create a feature label in the dfm, as a reminder
 that this was not a type found in the text, but rather the label of a 
 thesaurus key.  For more fine-grained control over this and other aspects 
 of converting features into dictionary/thesaurus keys from pattern matches 
-to values, you can use <code><a href='dfm_lookup.html'>dfm_lookup</a></code> after creating the dfm.</dd>
-      <dt>dictionary</dt>
-      <dd>A list of character vector dictionary entries, including 
-regular expressions (see examples)</dd>
-      <dt>valuetype</dt>
-      <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
-&quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions;
-or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</dd>
-      <dt>groups</dt>
-      <dd>character vector containing the names of document variables for
+to values, you can use <code><a href='dfm_lookup.html'>dfm_lookup</a></code> after creating the dfm.</p></td>
+    </tr>
+    <tr>
+      <th>dictionary</th>
+      <td><p>A list of character vector dictionary entries, including 
+regular expressions (see examples)</p></td>
+    </tr>
+    <tr>
+      <th>valuetype</th>
+      <td><p>how to interpret keyword expressions: <code>"glob"</code> for 
+"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
+or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+    </tr>
+    <tr>
+      <th>groups</th>
+      <td><p>character vector containing the names of document variables for
 aggregating documents; only applies when calling dfm on a corpus object. 
 When <code>x</code> is a dfm object, <code>groups</code> provides a convenient 
 and fast method of combining and refactoring the documents of the dfm 
-according to the groups.</dd>
-      <dt>verbose</dt>
-      <dd>display messages if <code>TRUE</code></dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to <a href='tokens.html'>tokens</a>, for character and 
-corpus</dd>
-    </dl>
+according to the groups.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>display messages if <code>TRUE</code></p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to <a href='tokens.html'>tokens</a>, for character and 
+corpus</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -166,9 +191,9 @@ corpus</dd>
 <span class='co'># with English stopwords and stemming</span>
 <span class='fu'>dfm</span>(<span class='no'>corpus_post80inaug</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus ...</span></div><div class='output co'>#&gt; <span class='message'>   ... tokenizing texts</span></div><div class='output co'>#&gt; <span class='message'>   ... lowercasing</span></div><div class='output co'>#&gt; <span class='message'>   ... found 10 documents, 3,239 features</span></div><div class='output co'>#&gt; <span class='message'>   ... </span></div><div class='output co'>#&gt; <span class='message'>dfm_select removed 130 features and 0 documents, padding 0s for 0 features and 0 documents.</span></div><div class='output co'>#&gt; <span class='message'>   ... stemming features (English)</span></div><div class='output co'>#&gt; <span class='message'>, trimmed 832 feature variants</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 10 x 2,277 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.022 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 2,277 features (74.8% sparse).</div><div class='input'><span class='co'># works for both words in ngrams too</span>
+#&gt; <span class='message'>Elapsed time: 0.02 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 2,277 features (74.8% sparse).</div><div class='input'><span class='co'># works for both words in ngrams too</span>
 <span class='fu'>dfm</span>(<span class='st'>"Banking industry"</span>, <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 1 feature (0% sparse).
-#&gt; 1 x 1 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 1 x 1 sparse Matrix of class "dfmSparse"
 #&gt;        features
 #&gt; docs    bank_industri
 #&gt;   text1             1</div><div class='input'>
@@ -187,23 +212,23 @@ corpus</dd>
              the newspaper from a boy named Seamus, in his mouth."</span>
 <span class='no'>testCorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>testText</span>)
 <span class='co'># note: "also" is not in the default stopwords("english")</span>
-<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>testCorpus</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>)))</div><div class='output co'>#&gt; [1] &quot;the&quot;  &quot;over&quot; &quot;with&quot; &quot;from&quot; &quot;a&quot;    &quot;in&quot;   &quot;his&quot; </div><div class='input'><span class='co'># for ngrams</span>
+<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>testCorpus</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>)))</div><div class='output co'>#&gt; [1] "the"  "over" "with" "from" "a"    "in"   "his" </div><div class='input'><span class='co'># for ngrams</span>
 <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>testCorpus</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; character(0)</div><div class='input'><span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>testCorpus</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; character(0)</div><div class='input'>
 <span class='co'># removing stopwords before constructing ngrams</span>
 <span class='no'>tokensAll</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='no'>testText</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>tokensNoStopwords</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='removeFeatures.html'>removeFeatures</a></span>(<span class='no'>tokensAll</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
 <span class='no'>tokensNgramsNoStopwords</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_ngrams.html'>tokens_ngrams</a></span>(<span class='no'>tokensNoStopwords</span>, <span class='fl'>2</span>)
-<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>tokensNgramsNoStopwords</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt;  [1] &quot;quick_brown&quot;      &quot;brown_fox&quot;        &quot;fox_named&quot;        &quot;named_seamus&quot;    
-#&gt;  [5] &quot;seamus_jumps&quot;     &quot;jumps_lazy&quot;       &quot;lazy_dog&quot;         &quot;dog_also&quot;        
-#&gt;  [9] &quot;also_named&quot;       &quot;seamus_newspaper&quot; &quot;newspaper_boy&quot;    &quot;boy_named&quot;       
-#&gt; [13] &quot;seamus_mouth&quot;    </div><div class='input'>
+<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>tokensNgramsNoStopwords</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt;  [1] "quick_brown"      "brown_fox"        "fox_named"        "named_seamus"    
+#&gt;  [5] "seamus_jumps"     "jumps_lazy"       "lazy_dog"         "dog_also"        
+#&gt;  [9] "also_named"       "seamus_newspaper" "newspaper_boy"    "boy_named"       
+#&gt; [13] "seamus_mouth"    </div><div class='input'>
 <span class='co'># keep only certain words</span>
 <span class='fu'>dfm</span>(<span class='no'>testCorpus</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='st'>"*s"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)  <span class='co'># keep only words ending in "s"</span></div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 3 features (0% sparse).
-#&gt; 1 x 3 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 1 x 3 sparse Matrix of class "dfmSparse"
 #&gt;        features
 #&gt; docs    seamus jumps his
 #&gt;   text1      3     1   1</div><div class='input'><span class='fu'>dfm</span>(<span class='no'>testCorpus</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='st'>"s$"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 3 features (0% sparse).
-#&gt; 1 x 3 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 1 x 3 sparse Matrix of class "dfmSparse"
 #&gt;        features
 #&gt; docs    seamus jumps his
 #&gt;   text1      3     1   1</div><div class='input'>
@@ -212,7 +237,7 @@ corpus</dd>
                 <span class='st'>"2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber"</span>,
                 <span class='st'>"Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber"</span>)
 <span class='fu'>dfm</span>(<span class='no'>testTweets</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='st'>"#*"</span>, <span class='kw'>remove_twitter</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)  <span class='co'># keep only hashtags</span></div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 6 features (50% sparse).
-#&gt; 3 x 6 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 3 x 6 sparse Matrix of class "dfmSparse"
 #&gt;        features
 #&gt; docs    #justinbieber #la #beliebers #emabiggestfansjustinbieber #belieber
 #&gt;   text1             1   1          1                           0         0
@@ -223,7 +248,7 @@ corpus</dd>
 #&gt;   text1            0
 #&gt;   text2            0
 #&gt;   text3            1</div><div class='input'><span class='fu'>dfm</span>(<span class='no'>testTweets</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='st'>"^#.*$"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>remove_twitter</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 6 features (50% sparse).
-#&gt; 3 x 6 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; 3 x 6 sparse Matrix of class "dfmSparse"
 #&gt;        features
 #&gt; docs    #justinbieber #la #beliebers #emabiggestfansjustinbieber #belieber
 #&gt;   text1             1   1          1                           0         0
@@ -241,7 +266,7 @@ corpus</dd>
                             <span class='st'>"Govt"</span>, <span class='st'>"Opposition"</span>),
             <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>   ... grouping texts</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 2 x 5,058 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.005 seconds.</span></div><div class='input'>
+#&gt; <span class='message'>Elapsed time: 0.006 seconds.</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

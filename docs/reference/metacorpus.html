@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,35 +81,43 @@
     <p>Get or set the corpus-level metadata in a <a href='corpus.html'>corpus</a> object.</p>
     
 
-    <pre><span class='fu'>metacorpus</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>metacorpus</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>metacorpus</span>(<span class='no'>x</span>, <span class='no'>field</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span></pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a <a href='corpus.html'>corpus</a> object</dd>
-      <dt>field</dt>
-      <dd>metadata field name(s);  if <code>NULL</code> (default), return all
-metadata names</dd>
-      <dt>value</dt>
-      <dd>new value of the corpus metadata field</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <a href='corpus.html'>corpus</a> object</p></td>
+    </tr>
+    <tr>
+      <th>field</th>
+      <td><p>metadata field name(s);  if <code>NULL</code> (default), return all
+metadata names</p></td>
+    </tr>
+    <tr>
+      <th>value</th>
+      <td><p>new value of the corpus metadata field</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>For <code>metacorpus</code>, a list of the metadata fields in the corpus. 
   If a list is not what you wanted, you can wrap the results in unlist, 
-  but this will remove any metadata field that is set to <code>NULL</code>.</p>
-    <p>For <code>metacorpus &lt;-</code>, the corpus with the updated metadata.</p>
+  but this will remove any metadata field that is set to <code>NULL</code>.
+  
+  For <code>metacorpus &lt;-</code>, the corpus with the updated metadata.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>metacorpus</span>(<span class='no'>data_corpus_inaugural</span>)</div><div class='output co'>#&gt; $source
-#&gt; [1] &quot;/home/paul/Dropbox/code/quanteda/* on x86_64 by paul&quot;
+#&gt; [1] "/home/paul/Dropbox/code/quanteda/* on x86_64 by paul"
 #&gt; 
 #&gt; $created
-#&gt; [1] &quot;Fri Sep 12 12:41:17 2014&quot;
+#&gt; [1] "Fri Sep 12 12:41:17 2014"
 #&gt; 
 #&gt; $notes
 #&gt; NULL
@@ -115,10 +125,10 @@ metadata names</dd>
 #&gt; $citation
 #&gt; NULL
 #&gt; </div><div class='input'><span class='fu'>metacorpus</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"source"</span>)</div><div class='output co'>#&gt; $source
-#&gt; [1] &quot;/home/paul/Dropbox/code/quanteda/* on x86_64 by paul&quot;
+#&gt; [1] "/home/paul/Dropbox/code/quanteda/* on x86_64 by paul"
 #&gt; </div><div class='input'><span class='fu'>metacorpus</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"citation"</span>) <span class='kw'>&lt;-</span> <span class='st'>"Presidential Speeches Online Project (2014)."</span>
 <span class='fu'>metacorpus</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"citation"</span>)</div><div class='output co'>#&gt; $citation
-#&gt; [1] &quot;Presidential Speeches Online Project (2014).&quot;
+#&gt; [1] "Presidential Speeches Online Project (2014)."
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

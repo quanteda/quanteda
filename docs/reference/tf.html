@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -79,39 +81,46 @@
     <p>Apply varieties of term frequency weightings to a <a href='dfm.html'>dfm</a>.</p>
     
 
-    <pre><span class='fu'>tf</span>(<span class='no'>x</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"prop"</span>, <span class='st'>"propmax"</span>, <span class='st'>"boolean"</span>, <span class='st'>"log"</span>, <span class='st'>"augmented"</span>,
+    <pre class="usage"><span class='fu'>tf</span>(<span class='no'>x</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"prop"</span>, <span class='st'>"propmax"</span>, <span class='st'>"boolean"</span>, <span class='st'>"log"</span>, <span class='st'>"augmented"</span>,
   <span class='st'>"logave"</span>), <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>object for which idf or tf-idf will be computed (a document-feature 
-matrix)</dd>
-      <dt>scheme</dt>
-      <dd>divisor for the normalization of feature frequencies by 
-document.  Valid types include: 
-<dl class='dl-horizontal'>
-<dt><code>count</code></dt><dd>default, 
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>object for which idf or tf-idf will be computed (a document-feature 
+matrix)</p></td>
+    </tr>
+    <tr>
+      <th>scheme</th>
+      <td><p>divisor for the normalization of feature frequencies by 
+document.  Valid types include:</p><dl class='dl-horizontal'>
+<dt><code>count</code></dt><dd><p>default, 
 each feature count will remain as feature counts, equivalent to dividing by
-1</dd> 
-<dt><code>prop</code></dt><dd>feature proportions within document, equivalent to 
-dividing each term by the total count of features in the document.</dd> 
-<dt><code>propmax</code></dt><dd>feature proportions relative to the most frequent
+1</p></dd> 
+<dt><code>prop</code></dt><dd><p>feature proportions within document, equivalent to 
+dividing each term by the total count of features in the document.</p></dd> 
+<dt><code>propmax</code></dt><dd><p>feature proportions relative to the most frequent
 term of the document, equivalent to dividing term counts by the frequency
-of the most frequent term in the document.</dd> 
-<dt><code>boolean</code></dt><dd>recode all non-zero counts as 1</dd> 
-<dt><code>log</code></dt><dd>take the logarithm of 1 + each
-count, for base <code>base</code></dd>
-<dt><code>augmented</code></dt><dd>equivalent to K + (1 - K) * <code>tf(x, &quot;propmax&quot;)</code></dd>
-<dt><code>logave</code></dt><dd>(1 + the log of the counts) / (1 + log of the counts / the average count within document)</dd> 
-</dl>
-</dd>
-      <dt>base</dt>
-      <dd>base for the logarithm when <code>scheme</code> is <code>&quot;log&quot;</code> or 
-<code>logave</code></dd>
-      <dt>K</dt>
-      <dd>the K for the augmentation when <code>scheme = &quot;augmented&quot;</code></dd>
-    </dl>
+of the most frequent term in the document.</p></dd> 
+<dt><code>boolean</code></dt><dd><p>recode all non-zero counts as 1</p></dd> 
+<dt><code>log</code></dt><dd><p>take the logarithm of 1 + each
+count, for base <code>base</code></p></dd>
+<dt><code>augmented</code></dt><dd><p>equivalent to K + (1 - K) * <code>tf(x, "propmax")</code></p></dd>
+<dt><code>logave</code></dt><dd><p>(1 + the log of the counts) / (1 + log of the counts / the average count within document)</p></dd> 
+</dl></td>
+    </tr>
+    <tr>
+      <th>base</th>
+      <td><p>base for the logarithm when <code>scheme</code> is <code>"log"</code> or 
+<code>logave</code></p></td>
+    </tr>
+    <tr>
+      <th>K</th>
+      <td><p>the K for the augmentation when <code>scheme = "augmented"</code></p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -120,13 +129,13 @@ count, for base <code>base</code></dd>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>tf(x, scheme = &quot;prop&quot;)</code> is equivalent to <code><a href='weight.html'>weight</a>(x, &quot;relFreq&quot;)</code>).</p>
+    <p><code>tf(x, scheme = "prop")</code> is equivalent to <code><a href='weight.html'>weight</a>(x, "relFreq")</code>).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Manning, C. D., Raghavan, P., &amp; Schutze, H. (2008). 
-  <em>Introduction to Information Retrieval</em>. Cambridge University Press.</p>
-    <p><a href = 'https://en.wikipedia.org/wiki/Tf-idf#Term_frequency_2'>https://en.wikipedia.org/wiki/Tf-idf#Term_frequency_2</a></p>
+  <em>Introduction to Information Retrieval</em>. Cambridge University Press.
+    <a href = 'https://en.wikipedia.org/wiki/Tf-idf#Term_frequency_2'>https://en.wikipedia.org/wiki/Tf-idf#Term_frequency_2</a></p>
     
 
   </div>

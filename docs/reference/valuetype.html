@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -81,33 +83,35 @@
 
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>valuetype</dt>
-      <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
-&quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions;
-or <code>&quot;fixed&quot;</code> for exact matching. See valuetype for details.</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>valuetype</th>
+      <td><p>how to interpret keyword expressions: <code>"glob"</code> for 
+"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
+or <code>"fixed"</code> for exact matching. See valuetype for details.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Pattern matching in in <span class="pkg">quanteda</span> uses &quot;glob&quot;-style pattern
+    <p>Pattern matching in in <span class="pkg">quanteda</span> uses "glob"-style pattern
   matching as the default, because this is simpler than regular expression
-  matching while addressing most users&#39; needs.  It is also has the advantage
+  matching while addressing most users' needs.  It is also has the advantage
   of being identical to fixed pattern matching when the wildcard characters
   (`*` and `?`) are not used. Finally, most <a href='dictionary.html'>dictionary</a> formats use
-  glob matching.</p>
-    <p><dl class='dl-horizontal'>
-  <dt><code>&quot;glob&quot;</code></dt><dd>&quot;glob&quot;-style wildcard expressions, the quanteda default.  
+  glob matching.</p><dl class='dl-horizontal'>
+  <dt><code>"glob"</code></dt><dd><p>"glob"-style wildcard expressions, the quanteda default.  
     The implementation used in <span class="pkg">quanteda</span> uses `*` to match any number of any 
     characters including none, and `?` to match any single character.  See also 
-  <code><a href='http://www.rdocumentation.org/packages/utils/topics/glob2rx'>glob2rx</a></code> and References below.</dd>
-  <dt><code>&quot;regex&quot;</code></dt><dd>Regular expression matching.</dd>
-  <dt><code>&quot;fixed&quot;</code></dt><dd>Fixed (literal) pattern matching.</dd>
-  </dl></p>
+  <code><a href='http://www.rdocumentation.org/packages/utils/topics/glob2rx'>glob2rx</a></code> and References below.</p></dd>
+  <dt><code>"regex"</code></dt><dd><p>Regular expression matching.</p></dd>
+  <dt><code>"fixed"</code></dt><dd><p>Fixed (literal) pattern matching.</p></dd>
+  </dl>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>If &quot;fixed&quot; is used with <code>case_insensitive = TRUE</code>, the text will 
+    <p>If "fixed" is used with <code>case_insensitive = TRUE</code>, the text will 
   typically be lowercased internally prior to matching.  Also, glob matches
   are converted to regular expressions (using <a href='http://www.rdocumentation.org/packages/utils/topics/glob2rx'>glob2rx</a>) when
   they contain wild card characters, and to fixed pattern matches when they
@@ -116,7 +120,7 @@ or <code>&quot;fixed&quot;</code> for exact matching. See valuetype for details.
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p><code><a href='http://www.rdocumentation.org/packages/utils/topics/glob2rx'>glob2rx</a></code>, 
-<a href = 'glob pattern matching (Wikipedia)'>https://en.wikipedia.org/wiki/Glob_(programming)</a>, 
+<a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>glob pattern matching (Wikipedia)</a>, 
 regex</p>
     
 
