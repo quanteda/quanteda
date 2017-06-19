@@ -156,7 +156,7 @@ dfm.character <- function(x,
     temp <- tokens(x, ...)
 
     dfm(temp, verbose = verbose, tolower = FALSE, stem = stem, 
-        remove = remove, select = select,
+        remove = remove, select = select, groups = groups,
         thesaurus = thesaurus, dictionary = dictionary, valuetype = valuetype, 
         start_time = start_time)
 }
