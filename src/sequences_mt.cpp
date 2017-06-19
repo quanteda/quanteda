@@ -228,7 +228,7 @@ void estimates(std::size_t i,
     new_count[1] = counts_bit[(std::pow(2, n-1) - 1)]; //~C(BA)
     for (std::size_t k = 0; k < (std::pow(2, n-1) - 1); k++){
         new_count[2] = new_count[2] + counts_bit[k + std::pow(2, n-1)] - smoothing; //C~(AB)
-        if(i==1)Rcout<<"counts_bit["<<k + std::pow(2, n-1)<<"]="<<counts_bit[k+std::pow(2, n-1)]<<std::endl;
+        //if(i==1)Rcout<<"counts_bit["<<k + std::pow(2, n-1)<<"]="<<counts_bit[k+std::pow(2, n-1)]<<std::endl;
         new_count[0] = new_count[0] + counts_bit[k] - smoothing; //~C~(AB)
         
     }
@@ -236,16 +236,14 @@ void estimates(std::size_t i,
     // adjust the impact of smoothing
     new_count[2] += smoothing;
     new_count[0] += smoothing;
-    if(i==1)Rcout<<"new_count[0]="<<new_count[0]<<" "<<new_count[1]<<" "<<new_count[2]<<" "<<new_count[3]<<std::endl;
+    //if(i==1)Rcout<<"new_count[0]="<<new_count[0]<<" "<<new_count[1]<<" "<<new_count[2]<<" "<<new_count[3]<<std::endl;
     
-        
     // marginal totals
     std::vector<double> new_mc(2);
     new_mc[0] = new_count[3] + new_count[1]; //?(BA)
     new_mc[1] = new_count[3] + new_count[2]; //C(??)
-    if(i==1)Rcout<<"new_mc[0]="<<new_mc[0]<<" "<<new_mc[1]<<std::endl;
-    if(i==1) Rcout<<"total="<<nseqs<<"seqs"<<seqs[i][0]<<" "<<seqs[i][1]<<" "<<seqs[i][2]<<std::endl;
-    
+    //if(i==1)Rcout<<"new_mc[0]="<<new_mc[0]<<" "<<new_mc[1]<<std::endl;
+    //if(i==1) Rcout<<"total="<<nseqs<<"seqs"<<seqs[i][0]<<" "<<seqs[i][1]<<" "<<seqs[i][2]<<std::endl;
     
     // expected totals
     std::vector<double> new_ec(4);
@@ -253,7 +251,7 @@ void estimates(std::size_t i,
     new_ec[1] = new_mc[0]*(nseqs - new_mc[1])/nseqs;
     new_ec[2] = (nseqs - new_mc[0])* new_mc[1]/nseqs;
     new_ec[3] = new_mc[0]* new_mc[1]/nseqs;
-    if(i==1)Rcout<<"new_ec[0]="<<new_ec[0]<<" "<<new_ec[1]<<" "<<new_ec[2]<<" "<<new_ec[3]<<std::endl;
+    //if(i==1)Rcout<<"new_ec[0]="<<new_ec[0]<<" "<<new_ec[1]<<" "<<new_ec[2]<<" "<<new_ec[3]<<std::endl;
     
     
     //pmi
@@ -361,14 +359,14 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         MapNgrams counts_seq;
         //dev::Timer timer;
         //dev::start_timer("Count", timer);
-// #if QUANTEDA_USE_TBB
-//         counts_mt count_mt(texts, counts_seq, mw_len, nested);
-//         parallelFor(0, texts.size(), count_mt);
-// #else
+#if QUANTEDA_USE_TBB
+        counts_mt count_mt(texts, counts_seq, mw_len, nested);
+        parallelFor(0, texts.size(), count_mt);
+#else
         for (std::size_t h = 0; h < texts.size(); h++) {
             counts(texts[h], counts_seq, mw_len, nested);
         }
-//#endif
+#endif
         //dev::stop_timer("Count", timer);
         
         // Separate map keys and values
@@ -455,6 +453,6 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
 toks <- tokens(txt)
 types <- unique(as.character(toks))
-out2 <- quanteda:::qatd_cpp_sequences(toks, types, 1, 3, "lambda",0.0, TRUE)
+out2 <- quanteda:::qatd_cpp_sequences(toks, types, 1, 3, "lambda", 0.0, TRUE)
 
 */
