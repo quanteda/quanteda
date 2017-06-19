@@ -48,9 +48,7 @@ test_that("quanteda_options works correctly to set options", {
 })
 
 test_that("quanteda functions work if package is not attached", {
-    skip_on_travis()
-    skip_on_appveyor()
-    skip_on_cran()
+    skip("skipping test of option setting when quanteda is not attached")
     detach("package:quanteda", unload = TRUE)
     expect_output(
         print(quanteda::dfm(c("a b c d", "a c d e f"))),
