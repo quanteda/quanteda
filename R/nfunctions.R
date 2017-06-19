@@ -142,7 +142,7 @@ ntoken.corpus <- function(x, ...) {
 #' @noRd
 #' @export
 ntoken.character <- function(x, ...) {
-    ntoken(tokenize(x, ...))
+    ntoken(tokens(x, ...))
 }
 
 #' @noRd
@@ -162,7 +162,7 @@ ntoken.tokenizedTexts <- function(x, ...) {
 #' @noRd
 #' @export
 ntype.character <- function(x, ...) {
-    ntype(tokenize(x, ...))
+    ntype(tokens(x, ...))
 }
 
 #' @noRd
@@ -190,13 +190,6 @@ ntype.tokenizedTexts <- function(x, ...) {
 ntoken.tokens <- function(x, ...) {
     lengths(x)
 }
-
-#' @export
-#' @noRd
-ntype.tokens <- function(x, ...) {
-    length(types(x))
-}
-
 
 #' count the number of sentences
 #' 

@@ -63,10 +63,8 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     
-    # cannot/should not apply dictionaries with multi-word keys to a dfm
-    if (any(stri_detect_fixed(unlist(dictionary, use.names = FALSE), attr(dictionary, 'concatenator'))) &&
-        x@ngrams == 1) {
-        stop("dfm_lookup not currently implemented for ngrams > 1 and multi-word dictionary values")
+    if (has_multiword(dictionary) && x@ngrams == 1) {
+        stop("dfm_lookup not implemented for ngrams > 1 and multi-word dictionary values")
     }
     
     # Generate all combinations of type IDs

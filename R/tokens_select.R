@@ -45,7 +45,7 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #' 
 #' \dontshow{
 #' ## with simple examples
-#' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), 
+#' toks <- tokensc("This is a sentence.", "This is a second sentence."), 
 #'                  remove_punct = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", 
 #'               valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)
@@ -61,12 +61,12 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #'                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
 #' 
 #' # with longer texts
-#' toks <- tokenize(data_corpus_inaugural[1:2])
+#' toks <- tokensdata_corpus_inaugural[1:2])
 #' tokens_select(toks, stopwords("english"), "remove")
 #' tokens_select(toks, stopwords("english"), "keep")
 #' tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 #' tokens_select(toks, stopwords("english"), "keep", padding = TRUE)
-#' tokens_select(tokenize(data_corpus_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
+#' tokens_select(tokensdata_corpus_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
 #' }
 tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                          valuetype = c("glob", "regex", "fixed"),

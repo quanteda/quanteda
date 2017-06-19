@@ -12,6 +12,7 @@
     - Added new argument to `textstat_collocations()`: `min_size`, which is used when `method = "bj_uni"` and `method = "bj_all"`.
    This function is still under development and likely to change further.
 *  Added new `quanteda_options` that affect the maximum documents and features displayed by the dfm print method (#756).
+*  `ngram` formation is now significantly faster, including with skips (skipgrams).
     
 
 ### Behaviour changes
@@ -20,11 +21,14 @@
    - Removed arguments from `sequences()`: `features`, `case_insensitive` and `valuetype`, the function can be fully replaced by `tokens_select()`.
    - Removed arguments from `sequences()`: `ordered`.
 
-
 ### Bug fixes and stability enhancements
 
 *  For `sequences()`: Corrected the word matching, and lambda and sigma calculation methods for `unigram subtuples` algorithm in `sequences_mt.cpp`, and consequently the p-values on the bigrams are correct. 
-*  `textmodel_NB(x, y, distribution = "Bernoulli")` now correctly sets the features to Bernoulli features prior to fitting the model (#776).
+*  LIWC-formatted dictionary import now robust to assignment to term assignment to missing categories.
+*  `textmodel_NB(x, y, distribution = "Bernoulli")` was previously inactive even when this option was set.  It has now been fully implemented and tested (#776, #780).
+*  Separators including rare spacing characters are now handled more robustly by the `remove_separators` argument in `tokens()`.  See #796.
+*  Improved memory usage when computing `ntoken()` and `ntype()`. (#795)
+*  Improvements to `quanteda_options()` now does not throw an error when **quanteda** functions are called directly without attaching the package.  In addition, **quanteda** options can be set now in .Rprofile and will not be overwritten when the options initialization takes place when attaching the package.
 
 
 ## Changes since v0.9.9-50

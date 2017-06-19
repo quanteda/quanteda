@@ -31,7 +31,7 @@ docvars.corpus <- function(x, field = NULL) {
 
 #' @noRd
 #' @export
-docvars.tokens <- function(x, field = NULL) {
+docvars.tokenizedTexts <- function(x, field = NULL) {
     check_fields(x, field)
     dvars <- attr(x, "docvars")
     if (is.null(field))
@@ -108,7 +108,7 @@ get_docvars <- function(dvars, field = NULL) {
 }
 
 ## internal only
-"docvars<-.tokens" <- function(x, field = NULL, value) {
+"docvars<-.tokenizedTexts" <- function(x, field = NULL, value) {
     
     if (is.null(field) && (is.data.frame(value) || is.null(value))) {
         attr(x, "docvars") <- value
@@ -143,14 +143,23 @@ get_docvars <- function(dvars, field = NULL) {
 
 #' get or set document-level meta-data
 #' 
-#' Get or set the document-level meta-data.
+#' Get or set document-level meta-data.  Document-level meta-data are a special 
+#' type of \link{docvars}, meant to contain information about documents that 
+#' would not be used as a "variable" for analysis. An example could be the 
+#' source of the document, or notes pertaining to its transformation, copyright 
+#' information, etc.
+#' 
+#' Document-level meta-data differs from corpus-level meta-data in that the 
+#' latter pertains to the collection of texts as a whole, whereas the 
+#' document-level version can differ with each document.
 #' @param x a \link{corpus} object
-#' @param field character, the name of the metadata field(s) to be queried or set
+#' @param field character, the name of the metadata field(s) to be queried or 
+#'   set
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #'   
 #'   For \code{texts <-}, the corpus with the updated texts.
 #' @note Document-level meta-data names are preceded by an underscore character,
-#'   such as \code{_language}, but when named in in the \code{field} argument,
+#'   such as \code{_language}, but when named in in the \code{field} argument, 
 #'   do \emph{not} need the underscore character.
 #' @examples 
 #' mycorp <- corpus_subset(data_corpus_inaugural, Year > 1990)
@@ -159,6 +168,7 @@ get_docvars <- function(dvars, field = NULL) {
 #' metadoc(mycorp)
 #' metadoc(mycorp, "language") <- "english"
 #' summary(mycorp, showmeta = TRUE)
+#' @seealso \code{\link{metacorpus}}
 #' @export
 #' @keywords corpus
 metadoc <- function(x, field = NULL) 
