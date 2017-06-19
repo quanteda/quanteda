@@ -123,68 +123,79 @@ test_that("test the correctness of significant", {
     expect_equal(seqs$logratio[1], 2.231, tolerance = 1e-3)
 })
 
-# test_that("test the correctness of significant: against stats package", {
-#     txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
-#     toks <- as.character(tokens(txt, ngrams = 3, concatenator = " "))
-#     
-#     require(data.table)
-#     toks_df <- data.table(do.call(rbind, strsplit(toks, " ")), stringsAsFactors = FALSE)
-#     names(toks_df) <- paste0("word", 1:3)
-#     
-#     # replace non-target words with "other"
-#     targets <- c("capital", "gains", "tax")
-#     toks_df[word1 != targets[1], word1 := "other"]
-#     toks_df[word2 != targets[2], word2 := "other"]
-#     toks_df[word3 != targets[3], word3 := "other"]
-#     toks_df[, n := 1]
-#     toks_df_n <- toks_df[, list(n = sum(n)), by = c("word1", "word2", "word3")]
-#     toks_df_n
-#    
-#     statss <- stats::loglin(table(toks_df[, 1:3]), margin = 1:3)
-#     # 2 iterations: deviation 1.776357e-15 
-#     # $lrt
-#     # [1] 10.91587
-#     # 
-#     # $pearson
-#     # [1] 16.93125
-#     # 
-#     # $df
-#     # [1] 4
-#     # 
-#     # $margin
-#     # [1] "word1" NA      NA  
-#     
-#     seqs <- sequences(tokens(txt), size = 3, smoothing =0)
-#     expect_equal(seqs$collocation[3], 'capital gains tax')
-#     expect_equal(seqs$logratio[3], statss$lrt, tolerance = 1e-3)
-#     expect_equal(seqs$chi2[3], statss$pearson, tolerance = 1e-3)
-#     
-#     col <- textstat_collocations(tokens(txt), method = "lr", size = 3)
-#     expect_equal(seqs$collocation[3], col$collocation[3])
-#     expect_equal(seqs$logratio[3], col$G2[3], tolerance = 1e-3)
-#     #         collocation length count       G2
-#     # 1   C capital gains      3     3 20.17961
-#     # 2   gains tax gains      3     2 11.18707
-#     # 3 capital gains tax      3     2 10.91587
-#     
-#     col <- textstat_collocations(tokens(txt), method = "chi2", size = 3)
-#     expect_equal(seqs$chi2[3], col$X2[3], tolerance = 1e-3)
-#     #         collocation length count       X2
-#     # 1   C capital gains      3     3 43.95563
-#     # 2   gains tax gains      3     2 23.64158
-#     # 3 capital gains tax      3     2 16.93125
-#     
-#     col <- textstat_collocations(tokens(txt), method = "pmi", size = 3)
-#     expect_equal(seqs$pmi[3], col$pmi[3], tolerance = 1e-3)
-#     #    collocation length count      pmi
-#     # 1   C capital gains      3     3 2.687847
-#     # 2   gains tax gains      3     2 2.505526
-#     # 3 capital gains tax      3     2 2.128232
-#     
-#     col <- textstat_collocations(tokens(txt), method = "dice", size = 3)
-#     expect_equal(seqs$dice[3], col$dice[3], tolerance = 1e-3)
-#     #     collocation length count      dice
-#     # 1   C capital gains      3     3 0.4285714
-#     # 2   gains tax gains      3     2 0.2857143
-#     # 3 capital gains tax      3     2 0.2666667
-# })
+test_that("test the correctness of significant: against stats package", {
+    txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
+    toks <- as.character(tokens(txt, ngrams = 3, concatenator = " "))
+
+    require(data.table)
+    toks_df <- data.table(do.call(rbind, strsplit(toks, " ")), stringsAsFactors = FALSE)
+    names(toks_df) <- paste0("word", 1:3)
+
+    # replace non-target words with "other"
+    targets <- c("capital", "gains", "tax")
+    toks_df[word1 != targets[1], word1 := "other"]
+    toks_df[word2 != targets[2], word2 := "other"]
+    toks_df[word3 != targets[3], word3 := "other"]
+    toks_df[, n := 1]
+    toks_df_n <- toks_df[, list(n = sum(n)), by = c("word1", "word2", "word3")]
+    toks_df_n
+
+    # test code for lr = lr(a, b, c)
+    # statss <- stats::loglin(table(toks_df[, 1:3]), margin = 1:3)
+    # # 2 iterations: deviation 1.776357e-15
+    # # $lrt
+    # # [1] 10.91587
+    # #
+    # # $pearson
+    # # [1] 16.93125
+    # #
+    # # $df
+    # # [1] 4
+    # #
+    # # $margin
+    # # [1] "word1" NA      NA
+    # 
+    # seqs <- sequences(tokens(txt), size = 3, smoothing =0)
+    # expect_equal(seqs$collocation[3], 'capital gains tax')
+    # expect_equal(seqs$logratio[3], statss$lrt, tolerance = 1e-3)
+    # expect_equal(seqs$chi2[3], statss$pearson, tolerance = 1e-3)
+    # 
+    # col <- textstat_collocations(tokens(txt), method = "lr", size = 3)
+    # expect_equal(seqs$collocation[3], col$collocation[3])
+    # expect_equal(seqs$logratio[3], col$G2[3], tolerance = 1e-3)
+    # #         collocation length count       G2
+    # # 1   C capital gains      3     3 20.17961
+    # # 2   gains tax gains      3     2 11.18707
+    # # 3 capital gains tax      3     2 10.91587
+    # 
+    # col <- textstat_collocations(tokens(txt), method = "chi2", size = 3)
+    # expect_equal(seqs$chi2[3], col$X2[3], tolerance = 1e-3)
+    # #         collocation length count       X2
+    # # 1   C capital gains      3     3 43.95563
+    # # 2   gains tax gains      3     2 23.64158
+    # # 3 capital gains tax      3     2 16.93125
+    # 
+    # col <- textstat_collocations(tokens(txt), method = "pmi", size = 3)
+    # expect_equal(seqs$pmi[3], col$pmi[3], tolerance = 1e-3)
+    # #    collocation length count      pmi
+    # # 1   C capital gains      3     3 2.687847
+    # # 2   gains tax gains      3     2 2.505526
+    # # 3 capital gains tax      3     2 2.128232
+    # 
+    # col <- textstat_collocations(tokens(txt), method = "dice", size = 3)
+    # expect_equal(seqs$dice[3], col$dice[3], tolerance = 1e-3)
+    # #     collocation length count      dice
+    # # 1   C capital gains      3     3 0.4285714
+    # # 2   gains tax gains      3     2 0.2857143
+    # # 3 capital gains tax      3     2 0.2666667
+    
+    tt <- toks_df[, cg :=paste(word1,word2)]
+    tt <- tt[cg !="capital gains", cg:="other"]
+    toks_df_2x2 <- table(tt[,c(3,5)])
+    statss <- stats::loglin(toks_df_2x2, margin=1:2)
+    
+    seqs <- sequences(tokens(txt), size = 3, smoothing =0)
+    expect_equal(seqs$collocation[3], 'capital gains tax')
+    expect_equal(seqs$logratio[3], statss$lrt, tolerance = 1e-3)
+    expect_equal(seqs$chi2[3], statss$pearson, tolerance = 1e-3)
+})
