@@ -35,10 +35,3 @@ test_that("toLower/toUpper.tokenizedTexts works as expected", {
                  c("ACCORDING", "TO", "NATO"))
 })
 
-test_that("toLower/toUpper.corpus works as expected", {
-    corp <- corpus("According to NATO")
-    expect_equal(suppressWarnings(toLower(corp))[[1]],
-                 c("according to nato"))
-    expect_equal(suppressWarnings(toUpper(corp))[[1]],
-                 c("ACCORDING TO NATO"))
-})
