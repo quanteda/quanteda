@@ -242,8 +242,7 @@ dictionary <- function(..., file = NULL, format = NULL,
         if (format == "wordstat") {
             x <- read_dict_wordstat(file, encoding)
         } else if (format == "LIWC") {
-            # x <- read_dict_liwc(file, encoding)
-            x <- list2dictionary(read_dict_liwc(file, encoding))
+            x <- read_dict_liwc(file, encoding)
         } else if (format == "yoshikoder") {
             x <- read_dict_yoshikoder(file)
         } else if (format == "lexicoder") {
@@ -447,8 +446,6 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     lines_key <- lines[(sections[1] + 1):(sections[2] - 1)]
     lines_value <- lines[(sections[2] + 1):(length(lines))]
     
-    lines_key <- stri_replace_all_regex(lines_key, '\\s', '\t') # fix wrong delimter
-    
     # remove any lines with <of>
     has_oftag <- stri_detect_fixed(lines_value, '<of>')
     if (any(has_oftag)) {
@@ -467,18 +464,20 @@ read_dict_liwc <- function(path, encoding = 'auto') {
         lines_value <- stri_replace_all_regex(lines_value, '\\(.+\\)', ' ')
     }
     
-    keys <- stri_extract_last_regex(lines_key, '[^\t]+')
+    lines_key <- stri_replace_all_regex(lines_key, '\\s+', '\t') # fix wrong delimter
     keys_id <- stri_extract_first_regex(lines_key, '\\d+')
+    keys <- stri_extract_last_regex(lines_key, '[^\t]+')
     
+    lines_value <- stri_replace_all_regex(lines_value, '\\s+', '\t') # fix wrong delimter
     values <- stri_extract_first_regex(lines_value, '[^\t]+')
-    lines_value <- stri_replace_first_regex(lines_value, '[^\t]+\t', '') # for safety
+    lines_value <- stri_replace_first_regex(lines_value, '[^\t]+\t', '') # for robustness
     values_ids <- stri_extract_all_regex(lines_value, '\\d+')
     
     keys <- stri_replace_all_regex(keys, '[[:control:]]', '') # clean
     values <- stri_replace_all_regex(values, '[[:control:]]', '') # clean
     
     dict <- split(rep(values, lengths(values_ids)), as.factor(unlist(values_ids, use.names = FALSE)))
-    dict <- lapply(dict, unique) # remove duplicated values
+    dict <- lapply(dict, function(x) sort(unique(x))) # remove duplicated and sort values
     
     # check if any keys are empty
     is_empty <- !(keys_id %in% names(dict))
@@ -491,7 +490,7 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     if (any(is_undef)) {
         catm("note: ignoring undefined categories:\n")
         for (i in which(is_undef))
-            catm("  ", names(dict)[i], " for ", dict[[i]], "\n", sep = "")
+            catm("  ", names(dict[i]), " for ", dict[[i]], "\n", sep = "")
         dict <- dict[!is_undef]
     }
 

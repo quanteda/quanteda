@@ -208,10 +208,10 @@ test_that("dictionary constructor works with LIWC format w/doubled terms", {
     )
 })
 
-test_that("dictionary constructor errors as expected with LIWC format missing a category", {
-    expect_error(
+test_that("dictionary constructor reports mssing cateogries in LIWC format", {
+    expect_message(
         dictionary(file = "../data/dictionaries/mary_missingcat.dic"),
-        "Dictionary.*refers to undefined category 3 for term \"little\"" 
+        "note: ignoring undefined categories:" 
     )
 })
 
