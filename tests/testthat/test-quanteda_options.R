@@ -8,15 +8,6 @@ test_that("quanteda_options initialize works correctly", {
     expect_equal(quanteda_options("verbose"), TRUE)
 })
 
-test_that("quanteda_options reset works correctly", {
-    quanteda_options(reset = TRUE)
-    qopts <- quanteda:::QUANTEDA_OPTION_LIST
-    names(qopts) <- stringi::stri_replace_all_fixed(names(qopts), "quanteda_", "")
-    expect_equal(
-        quanteda_options(),
-        qopts        
-    )
-})
 
 test_that("quanteda_options returns an error for non-existing options", {
     expect_error(
@@ -57,13 +48,21 @@ test_that("quanteda_options works correctly to set options", {
 })
 
 test_that("quanteda functions work if package is not attached", {
-    skip_on_travis()
-    skip_on_appveyor()
-    skip_on_cran()
+    skip("skipping test of option setting when quanteda is not attached")
     detach("package:quanteda", unload = TRUE)
     expect_output(
         print(quanteda::dfm(c("a b c d", "a c d e f"))),
         "Document-feature matrix of: 2 documents, 6 features"
     )
     require(quanteda)
+})
+
+test_that("quanteda_options reset works correctly", {
+    quanteda_options(reset = TRUE)
+    qopts <- quanteda:::QUANTEDA_OPTION_LIST
+    names(qopts) <- stringi::stri_replace_all_fixed(names(qopts), "quanteda_", "")
+    expect_equal(
+        quanteda_options(),
+        qopts        
+    )
 })
