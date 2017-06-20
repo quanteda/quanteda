@@ -245,6 +245,9 @@ test_that("dictionary constructor works with LIWC format w/extra codes", {
         names(d), 
         c("verb", "past", "whatever", "family", "affect", "posemo", "cogmech", "tentat", "whatever2", "time")
     )
+    
+    expect_equal(unlist(quanteda:::read_dict_liwc("../data/dictionaries/liwc_extracodes.dic")),
+                 unlist(quanteda:::read_dict_liwc_old("../data/dictionaries/liwc_extracodes.dic")))
 })
 
 
