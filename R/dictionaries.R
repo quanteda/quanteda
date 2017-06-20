@@ -465,13 +465,14 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     }
     
     lines_key <- stri_replace_all_regex(lines_key, '\\s+', '\t') # fix wrong delimter
-    keys_id <- stri_extract_first_regex(lines_key, '\\d+')
+    keys_id <- as.character(as.integer(stri_extract_first_regex(lines_key, '\\d+')))
     keys <- stri_extract_last_regex(lines_key, '[^\t]+')
     
     lines_value <- stri_replace_all_regex(lines_value, '\\s+', '\t') # fix wrong delimter
     values <- stri_extract_first_regex(lines_value, '[^\t]+')
     lines_value <- stri_replace_first_regex(lines_value, '[^\t]+\t', '') # for robustness
     values_ids <- stri_extract_all_regex(lines_value, '\\d+')
+    values_ids <- lapply(values_ids, as.integer)
     
     keys <- stri_replace_all_regex(keys, '[[:control:]]', '') # clean
     values <- stri_replace_all_regex(values, '[[:control:]]', '') # clean
@@ -494,7 +495,7 @@ read_dict_liwc <- function(path, encoding = 'auto') {
         dict <- dict[!is_undef]
     }
 
-    dict <- dict[order(as.numeric(names(dict)))]
+    dict <- dict[order(names(dict))]
     names(dict) <- keys[match(names(dict), keys_id)]
     
     dict <- list2dictionary(dict)

@@ -208,6 +208,14 @@ test_that("dictionary constructor works with LIWC format w/doubled terms", {
     )
 })
 
+test_that("dictionary constructor works with LIWC format zero padding", {
+    expect_equivalent(
+        dictionary(file = "../data/dictionaries/mary_zeropadding.dic"),
+        dictionary(list(A_CATEGORY = c("lamb", "little", "more"),
+                        ANOTHER_CATEGORY = c("had", "little", "mary")))
+    )
+})
+
 test_that("dictionary constructor reports mssing cateogries in LIWC format", {
     expect_message(
         dictionary(file = "../data/dictionaries/mary_missingcat.dic"),
