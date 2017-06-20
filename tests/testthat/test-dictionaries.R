@@ -250,7 +250,7 @@ test_that("dictionary constructor works with LIWC format w/extra codes", {
         10
     )
     expect_true(setequal(
-        names(d), 
+        names(dict), 
         c("verb", "past", "whatever", "family", "affect", "posemo", "cogmech", "tentat", "whatever2", "time")
     ))
     

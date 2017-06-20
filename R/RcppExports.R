@@ -69,12 +69,12 @@ qatd_cpp_tokens_match <- function(texts_, types_, words_, ids_, overlap) {
     .Call(quanteda_qatd_cpp_tokens_match, texts_, types_, words_, ids_, overlap)
 }
 
-qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
-    .Call(quanteda_qatd_cpp_tokens_ngrams, texts_, types_, delim_, ns_, skips_)
-}
-
 qatd_cpp_tokens_ngrams2 <- function(texts_, types_, delim_, ns_, skips_) {
     .Call(quanteda_qatd_cpp_tokens_ngrams2, texts_, types_, delim_, ns_, skips_)
+}
+
+qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
+    .Call(quanteda_qatd_cpp_tokens_ngrams, texts_, types_, delim_, ns_, skips_)
 }
 
 qatd_cpp_tokens_recompile <- function(texts_, types_) {
