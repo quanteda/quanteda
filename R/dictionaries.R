@@ -259,6 +259,63 @@ dictionary <- function(..., file = NULL, format = NULL,
 }
 
 
+#' coercion and checking functions for dictionary objects
+#' 
+#' Convert a dictionary from a different format into a \pkg{quanteda} 
+#' dictionary, or check to see if an object is a dictionary.  The conversion
+#' function from the \code{\link{dictionary}} constructor function in that it
+#' converts an existing object rather than creates one from components or from a
+#' file.
+#' @param x object to be coerced or checked; current legal values are a
+#'   data.frame with the fields \code{word} and \code{sentiment} (as per the 
+#'   \strong{tidytext} package)
+#' @return \code{as.dictionary} returns a \link{dictionary} object.
+#' @export
+#' @examples 
+#' \dontrun{
+#' data(sentiments, package = "tidytext")
+#' as.dictionary(subset(sentiments, lexicon == "nrc"))
+#' as.dictionary(subset(sentiments, lexicon == "bing"))
+#' # to convert AFINN into polarities - adjust thresholds if desired
+#' afinn <- subset(sentiments, lexicon == "AFINN")
+#' afinn[["sentiment"]] <-
+#'     with(afinn,
+#'          sentiment <- ifelse(score < 0, "negative",
+#'                              ifelse(score > 0, "positive", "netural"))
+#'     )
+#' with(afinn, table(score, sentiment))
+#' as.dictionary(afinn)
+#' }
+#' 
+as.dictionary <- function(x) {
+    UseMethod("as.dictionary")
+}
+
+#' @noRd
+#' @method as.dictionary data.frame
+#' @export
+as.dictionary.data.frame <- function(x) {
+    if (!all(c("word", "sentiment") %in% names(x)))
+        stop("data.frame must contain word and sentiment columns")
+    if ("lexicon" %in% names(x) && length(unique(x[["lexicon"]])) > 1)
+        warning("multiple values found in a \'lexicon\' column; you may be mixing different dictionaries")
+    if (all(is.na(x[["sentiment"]])))
+        stop("sentiment values are missing")
+    dictionary(with(x, split(as.character(word), as.character(sentiment))))
+}
+
+#' @rdname as.dictionary
+#' @return \code{is.dictionary} returns \code{TRUE} if an object is a
+#'   \pkg{quanteda} \link{dictionary}.
+#' @export
+#' @examples
+#' is.dictionary(dictionary(key1 = c("val1", "val2"), key2 = "val3"))
+#' is.dictionary(list(key1 = c("val1", "val2"), key2 = "val3"))
+is.dictionary <- function(x) {
+    is(x, "dictionary2")
+}
+
+
 #  Flatten a hierarchical dictionary into a list of character vectors
 # 
 #  Converts a hierarchical dictionary (a named list of named lists, ending in character
@@ -354,16 +411,6 @@ list2dictionary <- function(dict) {
         }
     }
     return(dict)
-}
-
-
-#' check if an object is a dictionary
-#' 
-#' Return \code{TRUE} if an object is a \pkg{quanteda} \link{dictionary}.
-#' @param x any object
-#' @export
-is.dictionary <- function(x) {
-    is(x, "dictionary2")
 }
 
 
