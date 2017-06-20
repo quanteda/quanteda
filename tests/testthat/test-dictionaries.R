@@ -244,18 +244,19 @@ test_that("dictionary constructor works with LIWC format w/extra codes", {
         dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
         "note: removing empty keys: friend, humans, insight, cause, discrep, filler"
     )
-    d <- dictionary(file = "../data/dictionaries/liwc_extracodes.dic")
+    dict <- dictionary(file = "../data/dictionaries/liwc_extracodes.dic")
     expect_equal(
-        length(d), 
+        length(dict), 
         10
     )
-    expect_equal(
+    expect_true(setequal(
         names(d), 
         c("verb", "past", "whatever", "family", "affect", "posemo", "cogmech", "tentat", "whatever2", "time")
-    )
+    ))
     
-    expect_equal(unlist(quanteda:::read_dict_liwc("../data/dictionaries/liwc_extracodes.dic")),
-                 unlist(quanteda:::read_dict_liwc_old("../data/dictionaries/liwc_extracodes.dic")))
+    dict1 <- quanteda:::read_dict_liwc("../data/dictionaries/liwc_extracodes.dic")
+    dict2 <- quanteda:::list2dictionary(quanteda:::read_dict_liwc_old("../data/dictionaries/liwc_extracodes.dic"))
+    expect_equal(dict1[order(names(dict1))], dict2[order(names(dict2))])
 })
 
 
