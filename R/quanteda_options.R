@@ -8,7 +8,9 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, RcppParallel::defaultNum
 #' get or set package options for quanteda
 #' 
 #' Get or set global options affecting functions across \pkg{quatneda}.
-#' @param ... options to be set, as key-value pair, same as \code{\link{options}}
+#' @param ... options to be set, as key-value pair, same as \code{\link{options}}. 
+#'   This may be a list of valid key-value pairs, useful for setting a group of
+#'   options at once (see examples).
 #' @param reset logical; if \code{TRUE}, reset all \pkg{quanteda} options to their 
 #'   default values
 #' @param initialize logical; if \code{TRUE}, reset only the \pkg{quanteda} options 
@@ -37,16 +39,22 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, RcppParallel::defaultNum
 #' @export
 #' @importFrom RcppParallel setThreadOptions
 #' @examples
-#' quanteda_options()
+#' (qopts <- quanteda_options())
+#' \donttest{
 #' quanteda_options(verbose = TRUE)
 #' quanteda_options("verbose" = FALSE)
 #' quanteda_options("threads")
 #' quanteda_options(print_dfm_max_ndoc = 50L)
-#' \dontrun{
-#' quanteda_options(reset = TRUE) 
+#' # reset to defaults
+#' quanteda_options(reset = TRUE)
+#' # reset to saved values 
+#' quanteda_options(qopts)
 #' }
 quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
     args <- list(...)
+    
+    # if the ... is a list already, use that
+    if (length(args)==1 && is.list(args[[1]])) args <- args[[1]]
     
     if (initialize)
         return(quanteda_initialize())
