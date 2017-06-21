@@ -7,7 +7,8 @@
 #' @param measure (signed) association measure to be used for computing keyness.
 #'   Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
 #'   \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
-#'   \eqn{G} statistic with Yates correction.
+#'   \eqn{G} statistic with Yates correction; \code{"MI"} for the Mutual Information
+#'    statistic with Yates correction.
 #' @param sort logical; if \code{TRUE} sort features scored in descending order 
 #'   of the measure, otherwise leave in original feature order
 #' @references Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
@@ -48,13 +49,13 @@
 #' head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
 #' # using the likelihood ratio method
 #' head(textstat_keyness(dfm_smooth(pwdfm), measure = "lr", target = "2017-Trump"), 10)
-textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr"), sort = TRUE) {
+textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "MI"), sort = TRUE) {
     UseMethod("textstat_keyness")
 }
 
 #' @noRd
 #' @export
-textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr"), sort = TRUE) {
+textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "MI"), sort = TRUE) {
     
     # error checking
     measure <- match.arg(measure)
@@ -83,6 +84,8 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
         keywords <- keyness_exact(x)
     } else if (measure == "lr") {
         keywords <- keyness_lr(x)
+    } else if (measure == "MI") {
+        keywords <- keyness_mi(x)
     } else {
         stop(measure, " not yet implemented for textstat_keyness")
     }
@@ -246,5 +249,54 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
     return(result)
 }
 
+#' @rdname keyness
+#' @param correction if \code{"Yates"} implement the Yates correction for 2x2 
+#'   tables, no correction if \code{"none"}
+#' @details \code{keyness_mi} computes the Mutual Information statistic
+#'   using vectorized computation
+#' @examples
+#' quanteda:::keyness_mi(mydfm)
+#' @references
+keyness_mi <- function(x, correction = c("none", "Yates")) {
+    
+    correction <- match.arg(correction)
+    
+    a <- b <- c <- d <- N <- E11 <- MI <- p <- NULL 
+    if (ndoc(x) > 2)
+        stop("x can only have 2 rows")
+    dt <- data.table(feature = featnames(x),
+                     a = as.numeric(x[1, ]),
+                     b = as.numeric(x[2, ]))
+    dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
+    dt[, N := (a + b + c + d)]
+    dt[, E11 := (a+b)*(a+c) / N]
+    
+    if (correction == "Yates") {
+        # implement Yates continuity correction
+        # If (ad-bc) is positive, subtract 0.5 from a and d and add 0.5 to b and c.
+        # If (ad-bc) is negative, add 0.5 to a and d and subtract 0.5 from b and c.
+        dt[, correction := a*d - b*c > 0]
+        dt[, c("a", "d", "b", "c") := list(a + ifelse(correction, -0.5, 0.5),
+                                           d + ifelse(correction, -0.5, 0.5),
+                                           b + ifelse(correction, 0.5, -0.5),
+                                           c + ifelse(correction, 0.5, -0.5))]
+    }
+    # the other possible correction to implement is the Williams correction,
+    # see http://influentialpoints.com/Training/g-likelihood_ratio_test.htm
+    
+    dt[, MI := (  (a * log(a  / E11) / N+ 
+                        b * log(b * N/ ((a+b)*(b+d) )) / N +
+                        c * log(c * N/ ((a+c)*(c+d) )) / N +
+                        d * log(d * N/ ((b+d)*(c+d) )) / N)) ]
+    
+    # compute p-values
+    dt[, p := 1 - stats::pchisq(abs(MI), 1)]
+    
+    result <- as.data.frame(dt[, list(MI, p)])
+    rownames(result) <- dt$feature
+    result$target = as.vector(x[1,])
+    result$reference = as.vector(x[2,])
+    return(result)
+}
 
 

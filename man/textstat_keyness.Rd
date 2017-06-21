@@ -4,7 +4,7 @@
 \alias{textstat_keyness}
 \title{calculate keyness statistics}
 \usage{
-textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr"),
+textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr", "MI"),
   sort = TRUE)
 }
 \arguments{
@@ -17,7 +17,8 @@ feature frequencies will be combined for use as a reference}
 \item{measure}{(signed) association measure to be used for computing keyness.
 Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
 \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
-\eqn{G} statistic with Yates correction.}
+\eqn{G} statistic with Yates correction; \code{"MI"} for the Mutual Information
+ statistic with Yates correction.}
 
 \item{sort}{logical; if \code{TRUE} sort features scored in descending order 
 of the measure, otherwise leave in original feature order}
