@@ -74,7 +74,8 @@ is.resampled.corpus <- function(x) {
 # @rdname resample
 # @export
 is.resampled.dfm <- function(x) {
-    length(dim(x)) == 3
+    # length(dim(x)) == 3
+    FALSE
 }
 
 

@@ -2,34 +2,45 @@
 % Please edit documentation in R/dfm-methods.R
 \name{topfeatures}
 \alias{topfeatures}
-\title{list the most frequent features}
+\title{identify the most frequent features in a dfm}
 \usage{
-topfeatures(x, n = 10, decreasing = TRUE, ci = 0.95)
+topfeatures(x, n = 10, decreasing = TRUE, groups = NULL)
 }
 \arguments{
 \item{x}{the object whose features will be returned}
 
 \item{n}{how many top features should be returned}
 
-\item{decreasing}{If TRUE, return the \code{n} most frequent features, if 
-FALSE, return the \code{n} least frequent features}
+\item{decreasing}{If \code{TRUE}, return the \code{n} most frequent features;
+otherwise return the \code{n} least frequent features}
 
-\item{ci}{confidence interval from 0-1.0 for use if dfm is resampled}
+\item{groups}{either: a character vector containing the names of document
+variables to be used for grouping; or a factor or object that can be
+coerced into a factor equal in length or rows to the number of documents.
+See \code{\link{dfm_group}} for details.}
 }
 \value{
-A named numeric vector of feature counts, where the names are the
-  feature labels.
+A named numeric vector of feature counts, where the names are the 
+  feature labels, or a list of these if \code{groups} is given.
 }
 \description{
-List the most (or least) frequently occuring features in a \link{dfm}.
+List the most (or least) frequently occuring features in a \link{dfm}, either
+as a whole or separated by document.
 }
 \examples{
+mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE)
+mydfm_nostopw <- dfm_remove(mydfm, stopwords("english"))
+
 # most frequent features
-topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE))
-topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
-            remove = stopwords("english"), verbose = FALSE))
-            
+topfeatures(mydfm)
+topfeatures(mydfm_nostopw)
+
 # least frequent features
-topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE), 
-            decreasing = FALSE)
+topfeatures(mydfm_nostopw, decreasing = FALSE)
+
+# top features of individual documents  
+topfeatures(mydfm_nostopw, n = 5, groups = docnames(mydfm_nostopw))
+
+# grouping by president last name
+topfeatures(mydfm_nostopw, n = 5, groups = "President")
 }
