@@ -96,69 +96,74 @@ as.dfm <- function(x) {
 
 
 
-#' list the most frequent features
+#' identify the most frequent features in a dfm
 #' 
-#' List the most (or least) frequently occuring features in a \link{dfm}.
+#' List the most (or least) frequently occuring features in a \link{dfm}, either
+#' as a whole or separated by document.
 #' @name topfeatures
 #' @param x the object whose features will be returned
 #' @param n how many top features should be returned
-#' @param decreasing If TRUE, return the \code{n} most frequent features, if 
-#'   FALSE, return the \code{n} least frequent features
-#' @param ci confidence interval from 0-1.0 for use if dfm is resampled
-#' @return A named numeric vector of feature counts, where the names are the
-#'   feature labels.
+#' @param decreasing If \code{TRUE}, return the \code{n} most frequent features;
+#'   otherwise return the \code{n} least frequent features
+#' @param groups either: a character vector containing the names of document
+#'   variables to be used for grouping; or a factor or object that can be
+#'   coerced into a factor equal in length or rows to the number of documents.
+#'   See \code{\link{dfm_group}} for details.
+#' @return A named numeric vector of feature counts, where the names are the 
+#'   feature labels, or a list of these if \code{groups} is given.
 #' @examples
+#' mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE)
+#' mydfm_nostopw <- dfm_remove(mydfm, stopwords("english"))
+#' 
 #' # most frequent features
-#' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE))
-#' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
-#'             remove = stopwords("english"), verbose = FALSE))
-#'             
+#' topfeatures(mydfm)
+#' topfeatures(mydfm_nostopw)
+#' 
 #' # least frequent features
-#' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE), 
-#'             decreasing = FALSE)
+#' topfeatures(mydfm_nostopw, decreasing = FALSE)
+#' 
+#' # top features of individual documents  
+#' topfeatures(mydfm_nostopw, n = 5, groups = docnames(mydfm_nostopw))
+#' 
+#' # grouping by president last name
+#' topfeatures(mydfm_nostopw, n = 5, groups = "President")
 #' @export
-topfeatures <- function(x, n = 10, decreasing = TRUE, ci = .95) {
+topfeatures <- function(x, n = 10, decreasing = TRUE, groups = NULL) {
     UseMethod("topfeatures")
 }
 
 #' @export
 #' @noRd
 #' @importFrom stats quantile
-topfeatures.dfm <- function(x, n = 10, decreasing = TRUE, ci = .95) {
-    if (n > nfeature(x)) n <- nfeature(x)
-    if (is.resampled(x)) {
-        subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
-        subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
-        return(data.frame(#features=colnames(subdfm),
-            freq=colSums(subdfm[,,1]),
-            cilo = apply(colSums(subdfm), 1, stats::quantile, (1-ci)/2),
-            cihi = apply(colSums(subdfm), 1, stats::quantile, 1-(1-ci)/2)))
-    } else {
-        subdfm <- sort(colSums(x), decreasing)
-        return(subdfm[1:n])
+topfeatures.dfm <- function(x, n = 10, decreasing = TRUE, groups = NULL) {
+    if (!is.null(groups)) {
+        x <- dfm_group(x, groups = groups)
+        result <- list()
+        for (i in seq_len(ndoc(x))) {
+            result[[i]] <- topfeatures(x[i, ], n = n, decreasing = decreasing, 
+                                       groups = NULL)
+        }
+        names(result) <- docnames(x)
+        return(result)
     }
-}
-
-#' @export
-#' @noRd
-topfeatures.dgCMatrix <- function(x, n = 10, decreasing = TRUE, ci = .95) {
-    if (is.null(n)) n <- ncol(x)
-    #     if (is.resampled(x)) {
-    #         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
-    #         subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
-    #         return(data.frame(#features=colnames(subdfm),
-    #             freq=colSums(subdfm[,,1]),
-    #             cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
-    #             cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
-    #     } else {
+    if (n > nfeature(x)) n <- nfeature(x)
     
-    csums <- colSums(x)
-    names(csums) <- x@Dimnames$features
-    subdfm <- sort(csums, decreasing)
-    return(subdfm[1:n])
-    #    }
+    result <- sort(colSums(x), decreasing)
+    return(result[1:n])
+    
+    # Under development by Ken
+    # if (is.resampled(x)) {
+    #     subdfm <- x[, order(colSums(x[,,1]), decreasing = decreasing), ]
+    #     subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
+    #     return(data.frame(#features=colnames(subdfm),
+    #         freq=colSums(subdfm[,,1]),
+    #         cilo = apply(colSums(subdfm), 1, stats::quantile, (1 - ci) / 2),
+    #         cihi = apply(colSums(subdfm), 1, stats::quantile, 1 - (1 - ci) / 2)))
+    # } else {
+    #    subdfm <- sort(colSums(x), decreasing)
+    #    return(subdfm[1:n])
+    #}
 }
-
 
 
 #' compute the sparsity of a document-feature matrix
