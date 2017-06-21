@@ -105,14 +105,13 @@ as.dfm <- function(x) {
 #' @name topfeatures
 #' @param x the object whose features will be returned
 #' @param n how many top features should be returned
-#' @param decreasing If \code{TRUE}, return the \code{n} most frequent features; 
+#' @param decreasing If \code{TRUE}, return the \code{n} most frequent features;
 #'   otherwise return the \code{n} least frequent features
-#' @param groups either a character or integer vector to group documents. If given, 
-#'  return a list of top features of the document groups. See \link{dfm_group} for 
-#'  detail.
-#' @param ci confidence interval from 0-1.0 for use if dfm is resampled
-#'   (not currently used)
-#' @return A named numeric vector of feature counts, where the names are the
+#' @param groups either: a character vector containing the names of document
+#'   variables to be used for grouping; or a factor or object that can be
+#'   coerced into a factor equal in length or rows to the number of documents.
+#'   See \code{\link{dfm_group}} for details.
+#' @return A named numeric vector of feature counts, where the names are the 
 #'   feature labels, or a list of these if \code{groups} is given.
 #' @examples
 #' mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE)
@@ -127,21 +126,24 @@ as.dfm <- function(x) {
 #' 
 #' # top features of individual documents  
 #' topfeatures(mydfm_nostopw, n = 5, groups = docnames(mydfm_nostopw))
+#' 
+#' # grouping by president last name
+#' topfeatures(mydfm_nostopw, n = 5, groups = "President")
 #' @export
-topfeatures <- function(x, n = 10, decreasing = TRUE, groups = NULL, ci = .95) {
+topfeatures <- function(x, n = 10, decreasing = TRUE, groups = NULL) {
     UseMethod("topfeatures")
 }
 
 #' @export
 #' @noRd
 #' @importFrom stats quantile
-topfeatures.dfm <- function(x, n = 10, decreasing = TRUE, groups = NULL, ci = .95) {
+topfeatures.dfm <- function(x, n = 10, decreasing = TRUE, groups = NULL) {
     if (!is.null(groups)) {
         x <- dfm_group(x, groups = groups)
         result <- list()
         for (i in seq_len(ndoc(x))) {
             result[[i]] <- topfeatures(x[i, ], n = n, decreasing = decreasing, 
-                                       groups = NULL, ci = ci)
+                                       groups = NULL)
         }
         names(result) <- docnames(x)
         return(result)
