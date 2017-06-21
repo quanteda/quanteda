@@ -106,6 +106,7 @@ as.dfm <- function(x) {
 #' @param n how many top features should be returned
 #' @param decreasing If TRUE, return the \code{n} most frequent features, if 
 #'   FALSE, return the \code{n} least frequent features
+#' @param by_document If TRUE, return a list of top features of individual documents
 #' @param ci confidence interval from 0-1.0 for use if dfm is resampled
 #' @return A named numeric vector of feature counts, where the names are the
 #'   feature labels.
@@ -114,27 +115,42 @@ as.dfm <- function(x) {
 #' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE))
 #' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
 #'             remove = stopwords("english"), verbose = FALSE))
-#'             
+#' 
 #' # least frequent features
 #' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE), 
 #'             decreasing = FALSE)
+#' 
+#' # top features of individual documents  
+#' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+#'             remove = stopwords("english"), verbose = FALSE), 
+#'             by_document = TRUE)
+#'             
 #' @export
-topfeatures <- function(x, n = 10, decreasing = TRUE, ci = .95) {
+topfeatures <- function(x, n = 10, decreasing = TRUE, by_document = FALSE, ci = .95) {
     UseMethod("topfeatures")
 }
 
 #' @export
 #' @noRd
 #' @importFrom stats quantile
-topfeatures.dfm <- function(x, n = 10, decreasing = TRUE, ci = .95) {
+topfeatures.dfm <- function(x, n = 10, decreasing = TRUE, by_document = FALSE, ci = .95) {
+    if (by_document) {
+        result <- list()
+        for (i in seq_len(ndoc(x))) {
+            result[[i]] <- topfeatures(x[i,], n = n, decreasing = decreasing, 
+                                     by_document = FALSE, ci = ci)
+        }
+        names(result) <- docnames(x)
+        return(result)
+    }
     if (n > nfeature(x)) n <- nfeature(x)
     if (is.resampled(x)) {
-        subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
+        subdfm <- x[, order(colSums(x[,,1]), decreasing = decreasing), ]
         subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
         return(data.frame(#features=colnames(subdfm),
             freq=colSums(subdfm[,,1]),
-            cilo = apply(colSums(subdfm), 1, stats::quantile, (1-ci)/2),
-            cihi = apply(colSums(subdfm), 1, stats::quantile, 1-(1-ci)/2)))
+            cilo = apply(colSums(subdfm), 1, stats::quantile, (1 - ci) / 2),
+            cihi = apply(colSums(subdfm), 1, stats::quantile, 1 - (1 - ci) / 2)))
     } else {
         subdfm <- sort(colSums(x), decreasing)
         return(subdfm[1:n])

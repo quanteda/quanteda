@@ -4,7 +4,8 @@
 \alias{topfeatures}
 \title{list the most frequent features}
 \usage{
-topfeatures(x, n = 10, decreasing = TRUE, ci = 0.95)
+topfeatures(x, n = 10, decreasing = TRUE, by_document = FALSE,
+  ci = 0.95)
 }
 \arguments{
 \item{x}{the object whose features will be returned}
@@ -13,6 +14,8 @@ topfeatures(x, n = 10, decreasing = TRUE, ci = 0.95)
 
 \item{decreasing}{If TRUE, return the \code{n} most frequent features, if 
 FALSE, return the \code{n} least frequent features}
+
+\item{by_document}{If TRUE, return a list of top features of individual documents}
 
 \item{ci}{confidence interval from 0-1.0 for use if dfm is resampled}
 }
@@ -28,8 +31,13 @@ List the most (or least) frequently occuring features in a \link{dfm}.
 topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE))
 topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
             remove = stopwords("english"), verbose = FALSE))
-            
+
 # least frequent features
 topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE), 
             decreasing = FALSE)
+
+# top features of individual documents  
+topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE), 
+            by_document = TRUE)
+            
 }
