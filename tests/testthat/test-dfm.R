@@ -455,12 +455,12 @@ test_that("cannot supply remove and select in one call (#793)", {
     )
 })
 
-test_that("by_document is working as expected", {
+test_that("grouping is working as expected", {
     mydfm <- dfm(data_corpus_inaugural[1:10])
-    expect_equal(names(topfeatures(mydfm, by_document = TRUE)),
+    expect_equal(names(topfeatures(mydfm, groups = docnames(mydfm))),
                  docnames(mydfm))
-    expect_equal(topfeatures(mydfm, by_document = TRUE)[[5]],
-                 topfeatures(mydfm[5,], by_document = FALSE))
-    expect_equal(topfeatures(mydfm, decreasing = TRUE, by_document = TRUE)[[10]],
-                 topfeatures(mydfm[10,], decreasing = TRUE, by_document = FALSE))
+    expect_equal(topfeatures(mydfm, groups = docnames(mydfm))[[5]],
+                 topfeatures(mydfm[5,]))
+    expect_equal(topfeatures(mydfm, decreasing = TRUE, groups = docnames(mydfm))[[10]],
+                 topfeatures(mydfm[10,], decreasing = TRUE))
 })

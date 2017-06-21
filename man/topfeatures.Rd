@@ -4,8 +4,7 @@
 \alias{topfeatures}
 \title{identify the most frequent features in a dfm}
 \usage{
-topfeatures(x, n = 10, decreasing = TRUE, by_document = FALSE,
-  ci = 0.95)
+topfeatures(x, n = 10, decreasing = TRUE, groups = NULL, ci = 0.95)
 }
 \arguments{
 \item{x}{the object whose features will be returned}
@@ -15,14 +14,16 @@ topfeatures(x, n = 10, decreasing = TRUE, by_document = FALSE,
 \item{decreasing}{If \code{TRUE}, return the \code{n} most frequent features; 
 otherwise return the \code{n} least frequent features}
 
-\item{by_document}{If \code{TRUE}, return a list of top features of individual documents}
+\item{groups}{either a character or integer vector to group documents. If given, 
+return a list of top features of the document groups. See \link{dfm_group} for 
+detail.}
 
 \item{ci}{confidence interval from 0-1.0 for use if dfm is resampled
 (not currently used)}
 }
 \value{
 A named numeric vector of feature counts, where the names are the
-  feature labels, or a list of these if \code{by_document = TRUE}.
+  feature labels, or a list of these if \code{groups} is given.
 }
 \description{
 List the most (or least) frequently occuring features in a \link{dfm}, either
@@ -40,5 +41,5 @@ topfeatures(mydfm_nostopw)
 topfeatures(mydfm_nostopw, decreasing = FALSE)
 
 # top features of individual documents  
-topfeatures(mydfm_nostopw, n = 5, by_document = TRUE)
+topfeatures(mydfm_nostopw, n = 5, groups = docnamses(mydfm_nostopw))
 }
