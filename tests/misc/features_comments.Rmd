@@ -81,6 +81,26 @@ tokens_select(toks_bi, dfm_uni)
 tokens_select(toks_bi, dfm_bi)
 ```
 
+### `tokens_compound()` and selecting token sequences
+
+I understand that an important application is selecting token *sequences*, and this is the core purpose of `tokens_compound()`.  But I 
+
+Currently we look for sequences in the same way we use the `keywords` in `kwic()`:
+```{r}
+tokens_select(toks_uni, "c d e", padding = TRUE)
+```
+For `list` objects:
+```{r}
+# does not work as with character
+tokens_select(toks_uni, list("c d e"), padding = TRUE)
+# this works for a sequence
+tokens_select(toks_uni, list("a", "h", c("c", "d", "e")), padding = TRUE)
+```
+With ambiguous results when the sequence comes from collocations:
+```{r}
+tokens_select(toks_uni, coll_bi, padding = TRUE)
+```
+
 ### Recommendations
 
 1.  Never split character elements, so that a `features` value of `"a b"` will only match the feature `"a b"`, not `"a"` and `"b"`.
@@ -98,6 +118,14 @@ tokens_select(toks_bi, dfm_bi)
     ```
 
 5.  Make it clear that a `dfm` object cannot be an input to token feature selection, although `featnames(dfm_uni)` (e.g.) could.  The `tokens_*` methods do not currently accept `dfm` objects as `features` anyway, but the `?features` page suggests they do.
+
+6.  Define a new object type called `sequence` which is essentially a list of characters, where each element of the character elements matches a pattern in sequence.  This is how the list behaviour for `features` is supposed to work now.  I propose we stop allowing a list altogether, but define a replacement for `list()` called `sequence()` that creates a special list - similar to what we do with `dictionary()` at the moment.  This makes the distinction between characters that contain whitespace, and lists of characters.  It also means a) the definition as a sequence is more explicit, and b) we have full control over the definition of this object, whereas with a plain list we are far more limited.  We could put a concatenator slot in this list, for instance, so that it takes that as a default.  (Most importantly we can decide on this and modify later.)  
+
+    I propose to use the `sequences` class for multi-word kwic matches too.  (See below.) 
+    
+7.  `tokens_compound()` should take only `sequences` and `collocations` inputs for `features`.
+
+
 
 ## `kwic()` based token selection
 
@@ -130,9 +158,15 @@ With `dfm` objects supplied for `keywords`, `kwic` fails (as it should).
 
 ### Recommendations
 
-Same as above for `tokens`, *except* that we split any keywords expressions on whitespace and consider the elements as separate matches.  But this should never make `c("a", "b")` the same as `"a b"`.  This is consistent with the existing help page  `?kwic`, but I don't think it's implemented correctly.
+We could:
 
-I propose that if we allow a `list` input, then we unlist it, and also unlist a `dictionary` input, to treat each character (or value, for a dictionary) object the same.  
+a) require sequences to be wrapped in `sequence()`, e.g. `sequence(c("nuclear", "power|energy|war"))`, or
+
+b) Continue to make an exception for `kwic()`, so that we split any keywords expressions on whitespace and consider the elements as separate matches.  But this should never make `c("a", "b")` the same as `"a b"`.  This is consistent with the existing help page  `?kwic`, but I don't think it's implemented correctly.
+
+c) Do both.  I propose this option for now, and encouraging users to use `sequences()`.
+
+I propose that if we allow a `list` input, then we unlist it, and also unlist a `dictionary` input, to treat each character (or value, for a dictionary) object the same.  But I'd prefer *not* to allow list inputs, except for dictionaries.
 
 
 ## `dfm_select()` (includes `dfm_remove()`)

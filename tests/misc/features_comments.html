@@ -296,6 +296,43 @@ tokens_select(toks_uni, dfm_uni)</code></pre>
 <pre><code>## Error in features2list(features): features must be a character vector, a list of character elements, a dictionary, or collocations</code></pre>
 <pre class="r"><code>tokens_select(toks_bi, dfm_bi)</code></pre>
 <pre><code>## Error in features2list(features): features must be a character vector, a list of character elements, a dictionary, or collocations</code></pre>
+<div id="tokens_compound-and-selecting-token-sequences" class="section level3">
+<h3><code>tokens_compound()</code> and selecting token sequences</h3>
+<p>I understand that an important application is selecting token <em>sequences</em>, and this is the core purpose of <code>tokens_compound()</code>. But I</p>
+<p>Currently we look for sequences in the same way we use the <code>keywords</code> in <code>kwic()</code>:</p>
+<pre class="r"><code>tokens_select(toks_uni, &quot;c d e&quot;, padding = TRUE)</code></pre>
+<pre><code>## tokens from 2 documents.
+## d1 :
+## [1] &quot;&quot;  &quot;&quot;  &quot;c&quot; &quot;d&quot; &quot;e&quot; &quot;&quot;  &quot;&quot; 
+## 
+## d2 :
+## character(0)</code></pre>
+<p>For <code>list</code> objects:</p>
+<pre class="r"><code># does not work as with character
+tokens_select(toks_uni, list(&quot;c d e&quot;), padding = TRUE)</code></pre>
+<pre><code>## tokens from 2 documents.
+## d1 :
+## character(0)
+## 
+## d2 :
+## character(0)</code></pre>
+<pre class="r"><code># this works for a sequence
+tokens_select(toks_uni, list(&quot;a&quot;, &quot;h&quot;, c(&quot;c&quot;, &quot;d&quot;, &quot;e&quot;)), padding = TRUE)</code></pre>
+<pre><code>## tokens from 2 documents.
+## d1 :
+## [1] &quot;a&quot; &quot;&quot;  &quot;c&quot; &quot;d&quot; &quot;e&quot; &quot;&quot;  &quot;h&quot;
+## 
+## d2 :
+## [1] &quot;a&quot; &quot;&quot;  &quot;&quot;  &quot;&quot;  &quot;h&quot; &quot;&quot;  &quot;&quot;</code></pre>
+<p>With ambiguous results when the sequence comes from collocations:</p>
+<pre class="r"><code>tokens_select(toks_uni, coll_bi, padding = TRUE)</code></pre>
+<pre><code>## tokens from 2 documents.
+## d1 :
+## [1] &quot;a&quot; &quot;b&quot; &quot;&quot;  &quot;&quot;  &quot;e&quot; &quot;g&quot; &quot;h&quot;
+## 
+## d2 :
+## [1] &quot;a&quot; &quot;b&quot; &quot;e&quot; &quot;g&quot; &quot;h&quot; &quot;&quot;  &quot;&quot;</code></pre>
+</div>
 <div id="recommendations" class="section level3">
 <h3>Recommendations</h3>
 <ol style="list-style-type: decimal">
@@ -311,6 +348,9 @@ tokens_select(toks_uni, dfm_uni)</code></pre>
 ## 2         e g      2     2 10.81347
 ## 3         g h      2     2 10.81347</code></pre></li>
 <li><p>Make it clear that a <code>dfm</code> object cannot be an input to token feature selection, although <code>featnames(dfm_uni)</code> (e.g.) could. The <code>tokens_*</code> methods do not currently accept <code>dfm</code> objects as <code>features</code> anyway, but the <code>?features</code> page suggests they do.</p></li>
+<li><p>Define a new object type called <code>sequence</code> which is essentially a list of characters, where each element of the character elements matches a pattern in sequence. This is how the list behaviour for <code>features</code> is supposed to work now. I propose we stop allowing a list altogether, but define a replacement for <code>list()</code> called <code>sequence()</code> that creates a special list - similar to what we do with <code>dictionary()</code> at the moment. This makes the distinction between characters that contain whitespace, and lists of characters. It also means a) the definition as a sequence is more explicit, and b) we have full control over the definition of this object, whereas with a plain list we are far more limited. We could put a concatenator slot in this list, for instance, so that it takes that as a default. (Most importantly we can decide on this and modify later.)</p>
+<p>I propose to use the <code>sequences</code> class for multi-word kwic matches too. (See below.)</p></li>
+<li><p><code>tokens_compound()</code> should take only <code>sequences</code> and <code>collocations</code> inputs for <code>features</code>.</p></li>
 </ol>
 </div>
 </div>
@@ -368,8 +408,13 @@ kwic(txt, dict_bi)</code></pre>
 <p>With <code>dfm</code> objects supplied for <code>keywords</code>, <code>kwic</code> fails (as it should).</p>
 <div id="recommendations-1" class="section level3">
 <h3>Recommendations</h3>
-<p>Same as above for <code>tokens</code>, <em>except</em> that we split any keywords expressions on whitespace and consider the elements as separate matches. But this should never make <code>c(&quot;a&quot;, &quot;b&quot;)</code> the same as <code>&quot;a b&quot;</code>. This is consistent with the existing help page <code>?kwic</code>, but I don’t think it’s implemented correctly.</p>
-<p>I propose that if we allow a <code>list</code> input, then we unlist it, and also unlist a <code>dictionary</code> input, to treat each character (or value, for a dictionary) object the same.</p>
+<p>We could:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>require sequences to be wrapped in <code>sequence()</code>, e.g. <code>sequence(c(&quot;nuclear&quot;, &quot;power|energy|war&quot;))</code>, or</p></li>
+<li><p>Continue to make an exception for <code>kwic()</code>, so that we split any keywords expressions on whitespace and consider the elements as separate matches. But this should never make <code>c(&quot;a&quot;, &quot;b&quot;)</code> the same as <code>&quot;a b&quot;</code>. This is consistent with the existing help page <code>?kwic</code>, but I don’t think it’s implemented correctly.</p></li>
+<li><p>Do both. I propose this option for now, and encouraging users to use <code>sequences()</code>.</p></li>
+</ol>
+<p>I propose that if we allow a <code>list</code> input, then we unlist it, and also unlist a <code>dictionary</code> input, to treat each character (or value, for a dictionary) object the same. But I’d prefer <em>not</em> to allow list inputs, except for dictionaries.</p>
 </div>
 </div>
 <div id="dfm_select-includes-dfm_remove" class="section level2">
