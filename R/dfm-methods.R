@@ -98,33 +98,33 @@ as.dfm <- function(x) {
 
 
 
-#' list the most frequent features
+#' identify the most frequent features in a dfm
 #' 
-#' List the most (or least) frequently occuring features in a \link{dfm}.
+#' List the most (or least) frequently occuring features in a \link{dfm}, either
+#' as a whole or separated by document.
 #' @name topfeatures
 #' @param x the object whose features will be returned
 #' @param n how many top features should be returned
-#' @param decreasing If TRUE, return the \code{n} most frequent features, if 
-#'   FALSE, return the \code{n} least frequent features
-#' @param by_document If TRUE, return a list of top features of individual documents
+#' @param decreasing If \code{TRUE}, return the \code{n} most frequent features; 
+#'   otherwise return the \code{n} least frequent features
+#' @param by_document If \code{TRUE}, return a list of top features of individual documents
 #' @param ci confidence interval from 0-1.0 for use if dfm is resampled
+#'   (not currently used)
 #' @return A named numeric vector of feature counts, where the names are the
-#'   feature labels.
+#'   feature labels, or a list of these if \code{by_document = TRUE}.
 #' @examples
+#' mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE)
+#' mydfm_nostopw <- dfm_remove(mydfm, stopwords("english"))
+#' 
 #' # most frequent features
-#' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE))
-#' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
-#'             remove = stopwords("english"), verbose = FALSE))
+#' topfeatures(mydfm)
+#' topfeatures(mydfm_nostopw)
 #' 
 #' # least frequent features
-#' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE), 
-#'             decreasing = FALSE)
+#' topfeatures(mydfm_nostopw, decreasing = FALSE)
 #' 
 #' # top features of individual documents  
-#' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
-#'             remove = stopwords("english"), verbose = FALSE), 
-#'             by_document = TRUE)
-#'             
+#' topfeatures(mydfm_nostopw, n = 5, by_document = TRUE)
 #' @export
 topfeatures <- function(x, n = 10, decreasing = TRUE, by_document = FALSE, ci = .95) {
     UseMethod("topfeatures")
@@ -137,24 +137,24 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE, by_document = FALSE, c
     if (by_document) {
         result <- list()
         for (i in seq_len(ndoc(x))) {
-            result[[i]] <- topfeatures(x[i,], n = n, decreasing = decreasing, 
-                                     by_document = FALSE, ci = ci)
+            result[[i]] <- topfeatures(x[i, ], n = n, decreasing = decreasing, 
+                                       by_document = FALSE, ci = ci)
         }
         names(result) <- docnames(x)
         return(result)
     }
     if (n > nfeature(x)) n <- nfeature(x)
-    if (is.resampled(x)) {
-        subdfm <- x[, order(colSums(x[,,1]), decreasing = decreasing), ]
-        subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
-        return(data.frame(#features=colnames(subdfm),
-            freq=colSums(subdfm[,,1]),
-            cilo = apply(colSums(subdfm), 1, stats::quantile, (1 - ci) / 2),
-            cihi = apply(colSums(subdfm), 1, stats::quantile, 1 - (1 - ci) / 2)))
-    } else {
+    # if (is.resampled(x)) {
+    #     subdfm <- x[, order(colSums(x[,,1]), decreasing = decreasing), ]
+    #     subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
+    #     return(data.frame(#features=colnames(subdfm),
+    #         freq=colSums(subdfm[,,1]),
+    #         cilo = apply(colSums(subdfm), 1, stats::quantile, (1 - ci) / 2),
+    #         cihi = apply(colSums(subdfm), 1, stats::quantile, 1 - (1 - ci) / 2)))
+    # } else {
         subdfm <- sort(colSums(x), decreasing)
         return(subdfm[1:n])
-    }
+    # }
 }
 
 
