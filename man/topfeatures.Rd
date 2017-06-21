@@ -41,5 +41,5 @@ topfeatures(mydfm_nostopw)
 topfeatures(mydfm_nostopw, decreasing = FALSE)
 
 # top features of individual documents  
-topfeatures(mydfm_nostopw, n = 5, groups = docnamses(mydfm_nostopw))
+topfeatures(mydfm_nostopw, n = 5, groups = docnames(mydfm_nostopw))
 }
