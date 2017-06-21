@@ -37,7 +37,8 @@ topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FAL
             decreasing = FALSE)
 
 # top features of individual documents  
-topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE), 
+topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+            remove = stopwords("english"), verbose = FALSE), 
             by_document = TRUE)
             
 }
