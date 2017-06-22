@@ -18,7 +18,8 @@ setClass("textmodel_ca_fitted",
 #' @param smooth a smoothing parameter for word counts; defaults to zero.
 #' @param nd  Number of dimensions to be included in output; if \code{NA} (the 
 #'   default) then the maximum possible dimensions are included.
-#' @param sparse retains the sparsity if set to TRUE
+#' @param sparse retains the sparsity if set to TRUE. Set it to TRUE if your \link{dfm} is too big to be allocated 
+#'  after converting to dense. 
 #' @param threads specifies the number of threads to be used; set to 1 to use a serial version of the function. 
 #' Only applies when sparse = TRUE.
 #' @param residual_floor specifies the threshold for the residual matrix for 
@@ -31,7 +32,9 @@ setClass("textmodel_ca_fitted",
 #' 
 #' @details \link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to enable the fast computation of the SVD. 
 #' @note Setting threads larger than 1 (when sparse = TRUE) will trigger multiple threads computation, which retains sparsity of all involved 
-#' matrices. It might not help the speed unless you have a very big \link{dfm}.   
+#' matrices. 
+#' You may need to increase the residual_floor to ignore less important information and hence
+#' to reduce the memory cost when you have a very big \link{dfm}.    
 #' @examples 
 #' ieDfm <- dfm(data_corpus_irishbudget2010)
 #' wca <- textmodel_ca(ieDfm)
@@ -89,7 +92,7 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
     }
     
     #dec <- rsvd::rsvd(S, nd)   #rsvd is not as stable as RSpectra
-    
+    #dec <- irlba::irlba(S, nd)
     dec <- RSpectra::svds(S, nd)   
     
     chimat <- S^2 * n
