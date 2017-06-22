@@ -45,6 +45,6 @@ doccorpus <- corpus(c(one = "Sentence one.  Sentence two.  Third sentence.",
                       two = "First sentence, doc2.  Second sentence, doc2."))
 sentcorpus <- corpus_reshape(doccorpus, to = "sentences")
 texts(sentcorpus)
-texts(corpus_sample(sentcorpus, replace = TRUE, by = "document"))
+texts(corpus_sample(sentcorpus, replace = TRUE, by = 'documents'))
 }
 \keyword{corpus}

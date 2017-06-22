@@ -17,7 +17,7 @@
 #' @examples 
 #' txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
 #'          texttwo = "Premiere phrase.  Deuxieme phrase.")
-#' bootstrap_dfm(txt, n = 3)         
+#' bootstrap_dfm(txt, n = 3)    
 bootstrap_dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     UseMethod("bootstrap_dfm")
 }
@@ -41,8 +41,8 @@ bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = quanteda_options("ver
     corp_sentences <- corpus_reshape(x, to = "sentences")
     for (i in seq_len(n)) {
         if (verbose) message(", ", i, appendLF = FALSE)
-        temp <- dfm(corpus_sample(corp_sentences, replace = TRUE, by = "_document"), 
-                    groups = "_document", ...)
+        temp <- dfm(corpus_sample(corp_sentences, replace = TRUE, by = 'documents'), 
+                    groups = docnames(corp_sentences), ...)
         result[[paste0("dfm_", i)]] <- dfm_select(temp, result[[1]])
     }
     if (verbose) 
