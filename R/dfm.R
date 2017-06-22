@@ -177,6 +177,7 @@ dfm.corpus <- function(x, tolower = TRUE,
                        valuetype = c("glob", "regex", "fixed"), 
                        groups = NULL, 
                        verbose = quanteda_options("verbose"), ...) {
+    
     if (verbose)
         catm("Creating a dfm from a corpus ...\n")
     
@@ -184,27 +185,21 @@ dfm.corpus <- function(x, tolower = TRUE,
         stop("only one of select and remove may be supplied at once")
 
     if (!is.null(groups)) {
-        groupsLab <- if (is.factor(groups)) deparse(substitute(groups)) else groups
-        if (verbose) 
-            catm("   ... grouping texts by variable", 
-                 ifelse(length(groupsLab) == 1, "", "s"), ": ", 
-                 paste(groupsLab, collapse=", "), "\n", sep="")
-        if (verbose) catm("   ... tokenizing grouped texts\n")
+        if (is.character(groups) & all(groups %in% names(docvars(x)))) {
+            groups <- as.character(interaction(docvars(x)[, groups], drop = TRUE))
+        } else {
+            if (length(groups) != ndoc(x))
+                stop("groups must name docvars or provide data matching the documents in x")
+            groups <- as.character(groups)
+        }
         temp <- tokens(texts(x, groups = groups), ...)
     } else {
         if (verbose) catm("   ... tokenizing texts\n")
         temp <- tokens(x, ...)
     }
     
-    dfm(temp, 
-        tolower = tolower,
-        stem = stem,
-        select = select,
-        remove = remove,
-        thesaurus = thesaurus,
-        dictionary = dictionary,
-        valuetype = valuetype, 
-        verbose = verbose, ...)
+    dfm(temp, tolower = tolower, stem = stem, select = select, remove = remove, thesaurus = thesaurus,
+        dictionary = dictionary, valuetype = valuetype, verbose = verbose, ...)
 }    
 
     
@@ -261,6 +256,21 @@ dfm.tokenizedTexts <- function(x,
             dictionary <- thesaurus <- NULL
         }
     }
+    
+    if (!is.null(groups)) {
+        if (is.character(groups) & all(groups %in% names(docvars(x)))) {
+            groups <- as.character(interaction(docvars(x)[, groups], drop = TRUE))
+        } else {
+            if (length(groups) != ndoc(x))
+                stop("groups must name docvars or provide data matching the documents in x")
+            groups <- as.character(groups)
+        }
+        if (verbose)
+            catm("   ... grouping texts\n") 
+        
+        # group tokens (this can be separeted as tokens_group)
+        x <- tokens_group(x, group)
+    }
         
     # compile the dfm
     result <- compile_dfm(x, verbose = verbose)
@@ -313,11 +323,11 @@ dfm.dfm <- function(x,
     
     if (!is.null(groups)) {
         if (is.character(groups) & all(groups %in% names(docvars(x)))) {
-            groups <- as.charcter(interaction(docvars(x)[, groups], drop = TRUE))
+            groups <- as.character(interaction(docvars(x)[, groups], drop = TRUE))
         } else {
             if (length(groups) != ndoc(x))
                 stop("groups must name docvars or provide data matching the documents in x")
-            groups <- as.charcter(groups)
+            groups <- as.character(groups)
         }
         if (verbose)
             catm("   ... grouping texts\n") 
@@ -354,17 +364,17 @@ dfm.dfm <- function(x,
     language <- "english"
     if (stem) {
         if (verbose) catm("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
-        oldNfeature <- nfeature(x)
+        n_old <- nfeature(x)
         x <- dfm_wordstem(x, language)
         if (verbose) 
-            if (oldNfeature - nfeature(x) > 0) 
-                catm(", trimmed ", oldNfeature - nfeature(x), " feature variant",
-                     ifelse(oldNfeature - nfeature(x) != 1, "s", ""), "\n", sep = "")
+            if (n_old - nfeature(x) > 0) 
+                catm(", trimmed ", n_old - nfeature(x), " feature variant",
+                     ifelse(n_old - nfeature(x) != 1, "s", ""), "\n", sep = "")
     }
     
     # remove any NA named columns
-    if (any(naFeatures <- is.na(featnames(x))))
-        x <- x[, -which(naFeatures), drop = FALSE]
+    if (any(is.na(featnames(x))))
+        x <- x[,!is.na(featnames(x)), drop = FALSE]
 
     if (verbose) 
         catm("   ... created a", paste(format(dim(x), big.mark=",", trim = TRUE), 
@@ -436,14 +446,15 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
     x <- unclass(x)
     
     # shift index for padding, if any
-    index <- unlist(x, use.names = FALSE)
+    features_index <- unlist(x, use.names = FALSE)
     if (attr(x, 'padding')) {
         types <- c("", types)
-        index <- index + 1
+        features_index <- features_index + 1
     }
+    documents_index <- rep(seq_len(length(x)), lengths(x))
     
-    temp <- sparseMatrix(j = index, 
-                         p = cumsum(c(1, lengths(x))) - 1, 
+    temp <- sparseMatrix(i = documents_index,
+                         j = features_index, 
                          x = 1L, 
                          dims = c(length(names(x)), length(types)),
                          dimnames = list(docs = names(x),
