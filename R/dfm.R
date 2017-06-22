@@ -192,6 +192,7 @@ dfm.corpus <- function(x, tolower = TRUE,
                 stop("groups must name docvars or provide data matching the documents in x")
             groups <- as.character(groups)
         }
+        # group characters
         temp <- tokens(texts(x, groups = groups), ...)
     } else {
         if (verbose) catm("   ... tokenizing texts\n")
@@ -246,7 +247,7 @@ dfm.tokenizedTexts <- function(x,
     # use tokens_lookup for dictionaries with multi-word values otherwise do this later
     if (!is.null(dictionary) | !is.null(thesaurus)) {
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
-        if (any(stringi::stri_detect_fixed(unlist(dictionary, use.names = FALSE), 
+        if (any(stri_detect_fixed(unlist(dictionary, use.names = FALSE), 
                                            attr(dictionary, 'concatenator')))) {
             if (verbose) catm("   ... ")
             x <- tokens_lookup(x, dictionary,
@@ -268,7 +269,7 @@ dfm.tokenizedTexts <- function(x,
         if (verbose)
             catm("   ... grouping texts\n") 
         
-        # group tokens (this can be separeted as tokens_group)
+        # group tokens
         x <- tokens_group(x, group)
     }
         
@@ -286,7 +287,7 @@ dfm.tokenizedTexts <- function(x,
     }
     
     dfm(result, tolower = FALSE, stem = stem, select = select, remove = remove, thesaurus = thesaurus,
-        dictionary = dictionary, valuetype = valuetype, groups = groups, verbose = verbose, ...)
+        dictionary = dictionary, valuetype = valuetype, verbose = verbose, ...)
 }
 
 #' @noRd
