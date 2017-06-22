@@ -15,7 +15,8 @@ textmodel_ca(x, smooth = 0, nd = NA, sparse = FALSE, threads = 1,
 \item{nd}{Number of dimensions to be included in output; if \code{NA} (the 
 default) then the maximum possible dimensions are included.}
 
-\item{sparse}{retains the sparsity if set to TRUE}
+\item{sparse}{retains the sparsity if set to TRUE. Set it to TRUE if your \link{dfm} is too big to be allocated 
+after converting to dense.}
 
 \item{threads}{specifies the number of threads to be used; set to 1 to use a serial version of the function. 
 Only applies when sparse = TRUE.}
@@ -34,7 +35,9 @@ the \pkg{ca} package.
 }
 \note{
 Setting threads larger than 1 (when sparse = TRUE) will trigger multiple threads computation, which retains sparsity of all involved 
-matrices. It might not help the speed unless you have a very big \link{dfm}.
+matrices. 
+You may need to increase the residual_floor to ignore less important information and hence
+to reduce the memory cost when you have a very big \link{dfm}.
 }
 \examples{
 ieDfm <- dfm(data_corpus_irishbudget2010)
