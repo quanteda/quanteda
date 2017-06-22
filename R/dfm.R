@@ -270,7 +270,7 @@ dfm.tokenizedTexts <- function(x,
             catm("   ... grouping texts\n") 
         
         # group tokens
-        x <- tokens_group(x, group)
+        x <- tokens_group(x, groups)
     }
         
     # compile the dfm

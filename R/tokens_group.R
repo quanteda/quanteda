@@ -10,5 +10,6 @@ tokens_group <- function(x, groups) {
     x <- base::split(unlist(unclass(x), use.names = FALSE), factor(groups_index, levels = unique(groups)))
     names(x) <- as.character(names(x))
     attributes(x, FALSE) <- attrs
+    docvars(x) <- NULL
     return(x)
 }
