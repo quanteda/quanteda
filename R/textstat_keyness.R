@@ -275,7 +275,7 @@ keyness_mi <- function(x) {
                         d * log(d * N/ ((b+d)*(c+d) )) / N)) ]
     
     # compute p-values
-    dt[, p := 1 - stats::pchisq(abs(MI), 1)]
+    dt[, p := stats::pchisq(abs(MI), 1)]
     
     result <- as.data.frame(dt[, list(MI, p)])
     rownames(result) <- dt$feature
