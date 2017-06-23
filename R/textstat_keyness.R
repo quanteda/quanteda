@@ -8,7 +8,7 @@
 #'   Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
 #'   \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
 #'   \eqn{G} statistic with Yates correction; \code{"MI"} for the Mutual Information
-#'    statistic with Yates correction.
+#'    statistic.
 #' @param sort logical; if \code{TRUE} sort features scored in descending order 
 #'   of the measure, otherwise leave in original feature order
 #' @references Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
@@ -256,8 +256,6 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
 #' quanteda:::keyness_mi(mydfm)
 #' @references
 keyness_mi <- function(x) {
-    
-    correction <- match.arg(correction)
     
     a <- b <- c <- d <- N <- E11 <- MI <- p <- NULL 
     if (ndoc(x) > 2)

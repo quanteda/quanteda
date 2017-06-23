@@ -17,13 +17,10 @@ keyness_exact(x)
 
 keyness_lr(x, correction = c("none", "Yates"))
 
-keyness_mi(x, correction = c("none", "Yates"))
+keyness_mi(x)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
-
-\item{correction}{if \code{"Yates"} implement the Yates correction for 2x2 
-tables, no correction if \code{"none"}}
 
 \item{correction}{if \code{"Yates"} implement the Yates correction for 2x2 
 tables, no correction if \code{"none"}}
