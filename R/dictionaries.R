@@ -242,8 +242,7 @@ dictionary <- function(..., file = NULL, format = NULL,
         if (format == "wordstat") {
             x <- read_dict_wordstat(file, encoding)
         } else if (format == "LIWC") {
-            # x <- read_dict_liwc(file, encoding)
-            x <- list2dictionary(read_dict_liwc_old(file, encoding))
+            x <- read_dict_liwc(file, encoding)
         } else if (format == "yoshikoder") {
             x <- read_dict_yoshikoder(file)
         } else if (format == "lexicoder") {
@@ -486,22 +485,66 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     lines <- lines[lines != '']
     
     sections <- which(lines == '%')
+    
+    if (length(sections) < 2) {
+        stop('Start and end of a category legend should be marked by percentage symbols, none found')
+    }
+    
     lines_key <- lines[(sections[1] + 1):(sections[2] - 1)]
     lines_value <- lines[(sections[2] + 1):(length(lines))]
     
-    keys <- stri_extract_last_regex(lines_key, '[^\t]+')
-    keys_id <- stri_extract_first_regex(lines_key, '\\d+')
+    # remove any lines with <of>
+    has_oftag <- stri_detect_fixed(lines_value, '<of>')
+    if (any(has_oftag)) {
+        catm("note: ", sum(has_oftag), " term",
+             if (sum(has_oftag) > 1L) "s" else "", 
+             " ignored because contains unsupported <of> tag\n", sep = "")
+        lines_value <- lines_value[!has_oftag]
+    }
     
+    # note odd parenthetical codes
+    has_paren <- stri_detect_regex(lines_value, '[()]')
+    if (any(has_paren)) {
+        catm("note: ignoring parenthetical expressions in lines:\n")
+        for (i in which(has_paren))
+            catm("  [line ", i + sections[2] + 1, "] ", lines_value[i], "\n", sep = "")
+        lines_value <- stri_replace_all_regex(lines_value, '\\(.+\\)', ' ')
+    }
+    
+    lines_key <- stri_replace_all_regex(lines_key, '\\s+', '\t') # fix wrong delimter
+    keys_id <- as.character(as.integer(stri_extract_first_regex(lines_key, '\\d+')))
+    keys <- stri_extract_last_regex(lines_key, '[^\t]+')
+    
+    lines_value <- stri_replace_all_regex(lines_value, '\\s+', '\t') # fix wrong delimter
     values <- stri_extract_first_regex(lines_value, '[^\t]+')
-    lines_value <- stri_replace_first_regex(lines_value, '[^\t]+\t', '') # for safety
+    lines_value <- stri_replace_first_regex(lines_value, '[^\t]+\t', '') # for robustness
     values_ids <- stri_extract_all_regex(lines_value, '\\d+')
+    values_ids <- lapply(values_ids, as.integer)
     
     keys <- stri_replace_all_regex(keys, '[[:control:]]', '') # clean
     values <- stri_replace_all_regex(values, '[[:control:]]', '') # clean
     
     dict <- split(rep(values, lengths(values_ids)), as.factor(unlist(values_ids, use.names = FALSE)))
-    dict <- dict[order(as.numeric(names(dict)))]
+    dict <- lapply(dict, function(x) sort(unique(x))) # remove duplicated and sort values
+    
+    # check if any keys are empty
+    is_empty <- !(keys_id %in% names(dict))
+    if (any(is_empty)) {
+        message("note: removing empty keys: ", paste(keys[is_empty], collapse = ", "))
+    }
+    
+    # check if all categories are defined
+    is_undef <- !(names(dict) %in% keys_id)
+    if (any(is_undef)) {
+        catm("note: ignoring undefined categories:\n")
+        for (i in which(is_undef))
+            catm("  ", names(dict[i]), " for ", dict[[i]], "\n", sep = "")
+        dict <- dict[!is_undef]
+    }
+
+    dict <- dict[order(names(dict))]
     names(dict) <- keys[match(names(dict), keys_id)]
+    
     dict <- list2dictionary(dict)
     return(dict)
     
@@ -512,7 +555,7 @@ read_dict_liwc <- function(path, encoding = 'auto') {
 read_dict_yoshikoder <- function(path){
     
     xml <- XML::xmlParse(path)
-    root <- XML::xpathSApply(xml, "/dictionary/cnode")
+    root <- XML::xpathSApply(xml, "/dictionary")
     dict <- nodes2list(root[[1]])
     dict <- list2dictionary(dict)
     return(dict)
