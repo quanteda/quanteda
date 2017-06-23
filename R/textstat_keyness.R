@@ -250,14 +250,12 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
 }
 
 #' @rdname keyness
-#' @param correction if \code{"Yates"} implement the Yates correction for 2x2 
-#'   tables, no correction if \code{"none"}
 #' @details \code{keyness_mi} computes the Mutual Information statistic
 #'   using vectorized computation
 #' @examples
 #' quanteda:::keyness_mi(mydfm)
 #' @references
-keyness_mi <- function(x, correction = c("none", "Yates")) {
+keyness_mi <- function(x) {
     
     correction <- match.arg(correction)
     
@@ -270,19 +268,6 @@ keyness_mi <- function(x, correction = c("none", "Yates")) {
     dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
     dt[, N := (a + b + c + d)]
     dt[, E11 := (a+b)*(a+c) / N]
-    
-    if (correction == "Yates") {
-        # implement Yates continuity correction
-        # If (ad-bc) is positive, subtract 0.5 from a and d and add 0.5 to b and c.
-        # If (ad-bc) is negative, add 0.5 to a and d and subtract 0.5 from b and c.
-        dt[, correction := a*d - b*c > 0]
-        dt[, c("a", "d", "b", "c") := list(a + ifelse(correction, -0.5, 0.5),
-                                           d + ifelse(correction, -0.5, 0.5),
-                                           b + ifelse(correction, 0.5, -0.5),
-                                           c + ifelse(correction, 0.5, -0.5))]
-    }
-    # the other possible correction to implement is the Williams correction,
-    # see http://influentialpoints.com/Training/g-likelihood_ratio_test.htm
     
     dt[, MI := (  (a * log(a  / E11) / N+ 
                         b * log(b * N/ ((a+b)*(b+d) )) / N +
