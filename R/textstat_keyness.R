@@ -254,7 +254,6 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
 #'   using vectorized computation
 #' @examples
 #' quanteda:::keyness_mi(mydfm)
-#' @references
 keyness_mi <- function(x) {
     
     a <- b <- c <- d <- N <- E11 <- MI <- p <- NULL 
