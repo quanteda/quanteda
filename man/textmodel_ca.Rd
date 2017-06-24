@@ -15,26 +15,32 @@ textmodel_ca(x, smooth = 0, nd = NA, sparse = FALSE, threads = 1,
 \item{nd}{Number of dimensions to be included in output; if \code{NA} (the 
 default) then the maximum possible dimensions are included.}
 
-\item{sparse}{retains the sparsity if set to TRUE}
+\item{sparse}{retains the sparsity if set to \code{TRUE}; set it to 
+\code{TRUE} if \code{x} (the \link{dfm}) is too big to be allocated after
+converting to dense}
 
-\item{threads}{specifies the number of threads to be used; set to 1 to use a serial version of the function. 
-Only applies when sparse = TRUE.}
+\item{threads}{the number of threads to be used; set to 1 to use a 
+serial version of the function; only applicable when \code{sparse = TRUE}}
 
 \item{residual_floor}{specifies the threshold for the residual matrix for 
-calculating the truncated svd.Larger value will reduce memory and time cost but 
-might sacrify the accuracy. Only applies when sparse = TRUE}
+calculating the truncated svd.Larger value will reduce memory and time cost
+but might sacrify the accuracy; only applicable when \code{sparse = TRUE}}
 }
 \description{
-\code{textmodel_ca} implements correspondence analysis scaling on a
-\link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca} in 
-the \pkg{ca} package.
+\code{textmodel_ca} implements correspondence analysis scaling on a 
+\link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca}, and
+returns a special class of \pkg{ca} object.
 }
 \details{
-\link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to enable the fast computation of the SVD.
+\link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
+  enable the fast computation of the SVD.
 }
 \note{
-Setting threads larger than 1 (when sparse = TRUE) will trigger multiple threads computation, which retains sparsity of all involved 
-matrices. It might not help the speed unless you have a very big \link{dfm}.
+Setting threads larger than 1 (when \code{sparse = TRUE}) will trigger 
+  parallel computation, which retains sparsity of all involved matrices. You
+  may need to increase the value of \code{residual_floor} to ignore less
+  important information and hence to reduce the memory cost when you have a
+  very big \link{dfm}.
 }
 \examples{
 ieDfm <- dfm(data_corpus_irishbudget2010)
@@ -42,8 +48,9 @@ wca <- textmodel_ca(ieDfm)
 summary(wca) 
 }
 \references{
-Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in R, with two- and three-dimensional graphics: 
-The ca package. \emph{Journal of Statistical Software}, 20 (3), \url{http://www.jstatsoft.org/v20/i03/}
+Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in 
+  R, with two- and three-dimensional graphics: The ca package. \emph{Journal 
+  of Statistical Software}, 20 (3), \url{http://www.jstatsoft.org/v20/i03/}
 }
 \author{
 Kenneth Benoit and Haiyan Wang

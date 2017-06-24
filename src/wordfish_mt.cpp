@@ -343,7 +343,7 @@ Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVecto
      
      //create the residual matrix
         Triplets residual_tri;
-        residual_tri.reserve(N*K);
+        // residual_tri.reserve(N*K);
     #if QUANTEDA_USE_TBB
         Residual residual(wfm, rsum, csum, asum, residual_floor, K, residual_tri);
         parallelFor(0, N, residual);
