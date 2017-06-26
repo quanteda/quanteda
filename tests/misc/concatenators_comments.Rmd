@@ -104,7 +104,7 @@ featnames(dfm_select(dfm(toks_bi), features = 'c d'))     #     "c d"
 tokens_select(           toks_bi,  features = 'c d')[[1]] # [1] "c d"
 
 # with bigrams as unigrams
-featnames(dfm_select(dfm(toks_uni), features = 'c d'))     # character(0)
+featnames(dfm_select(dfm(toks_uni), features = 'c d'))     # character(0) (and warning)
 tokens_select(           toks_uni,  features = 'c d')[[1]] # character(0)
 
 featnames(dfm_select(dfm(toks_uni), features = 'c+d'))     # "c+d"
@@ -128,6 +128,7 @@ tokens_select(          toks_uni2,  features = list('c d'))[[1]] # "c d"
 tokens_select(          toks_bi,  features = list(c('c d', 'e f'))[[1]] # "c d", "e f"
 ```
 
+
 # Selection on compounded tokens
 Based on the same priciple as ngrams, we will set concatenator = NULL by default in `tokens_compound()`. Collocation and dictionary object works consistently as they are whitespace separated ngrams.
 ```{r, eval=FALSE}
@@ -141,6 +142,7 @@ attr(tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = ''), 'typ
 #[1] "c"   "d"   "i"   "j"   "ab" "eg" "gh"
 
 ```
+
 Compounded tokens are treated as ngram tokens unless `tokens_concatenate()` is applied.
 ```{r, eval=FALSE}
 toks_comp <- tokens_compound(toks, coll_bi)
@@ -148,12 +150,13 @@ attr(toks_comp, 'ngrams') # 1:2
 attr(tokens_concatenate(toks_comp, concatenator = '_'), 'ngrams') # 1
 ```
 
+`dfm_select()` and `tokens_select()` select the same feature.
 ```{r, eval=FALSE}
 featnames(dfm_select(dfm(toks_comp)), c('a b', 'c d'))      # "a b"
 tokens_select(           toks_comp,   c('a b', 'c d'))[[1]] # "a b"
 ```
-Again, if users concatenate compounds with a whitespace, `dfm_select()` and `tokens_select()` will behave differently, but this is an intential act.
 
+Again, if users concatenate compounds with a whitespace, `dfm_select()` and `tokens_select()` will behave differently, but this is an intentional act.
 ```{r, eval=FALSE}
 toks_comp2 <- tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = ' ')
 featnames(dfm_select(dfm(toks_comp2)), c('a b', 'c d'))               # "a b"
