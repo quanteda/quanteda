@@ -170,3 +170,9 @@ tokens_skipgrams <- function(x, n, skip, concatenator="_") {
     tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
 }
 
+tokens_concatenate <- function(x, concatenator = ' ') {
+    attr(x, 'types') <- stri_replace_all_fixed(attr(x, 'types'), ' ', concatenator)
+    attr(x, 'ngrams') <- 1
+    return(x)
+}
+
