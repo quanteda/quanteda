@@ -171,6 +171,9 @@ tokens_skipgrams <- function(x, n, skip, concatenator="_") {
 }
 
 tokens_concatenate <- function(x, concatenator = ' ') {
+    if (concatenator == ' ') {
+        warning('Your are making your life difficult by creating unigrams with whitespaces')
+    }
     attr(x, 'types') <- stri_replace_all_fixed(attr(x, 'types'), ' ', concatenator)
     attr(x, 'ngrams') <- 1
     attr(x, "skip") <- 0

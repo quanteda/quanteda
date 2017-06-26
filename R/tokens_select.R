@@ -119,7 +119,12 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     attrs <- attributes(x)
     
     types <- types(x)
-    features <- features2list(features)
+    
+    if (attr(x, 'ngrams') == 1) {
+        features <- features2list(features)
+    } else {
+        features <- features2vector(as.list(features))
+    }
     features_id <- regex2id(features, types, valuetype, case_insensitive)
     
     if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index
