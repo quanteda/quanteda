@@ -183,3 +183,7 @@ tokens_concatenate <- function(x, concatenator = ' ') {
     return(x)
 }
 
+is.unigram <- function(x){
+    attr(x, 'ngrams') == 1L
+}
+

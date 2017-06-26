@@ -120,7 +120,7 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     
     types <- types(x)
     
-    if (attr(x, 'ngrams') == 1) {
+    if (is.unigram(x)) {
         features <- features2list(features)
     } else {
         features <- features2vector(as.list(features))
