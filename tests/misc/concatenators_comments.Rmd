@@ -77,17 +77,17 @@ as.list(tokens_ngrams(toks, n = 2), concatenator = '+')
 ```
 
 We will then create a new function `tokens_concatenate()` (or `tokens_unigrams()`), which converts ngram tokens into unigrams by changing internal concatenator to user's concatenator, and reset the ngrams value.
-```{r, eval=FALSE}
+```{r}
 attr(tokens_ngrams(toks, n = 2), 'ngrams') # 2
-attr(tokens_ngrams(toks, n = 2), 'types'))
+attr(tokens_ngrams(toks, n = 2), 'types')
 # [1] "a b" "b c" "c d" "d e" "e g" "g h" "b e" "h i" "i j"
 
-attr(tokens_concatenate(tokens_ngrams(toks, n = 2)), 'ngrams') # 1
-attr(tokens_concatenate(tokens_ngrams(toks, n = 2), concatenator = '+'), 'types')
+attr(quanteda:::tokens_concatenate(tokens_ngrams(toks, n = 2)), 'ngrams') # 1
+attr(quanteda:::tokens_concatenate(tokens_ngrams(toks, n = 2), concatenator = '+'), 'types')
 # [1] "a+b" "b+c" "c+d" "d+e" "e+g" "g+h" "b+e" "h+i" "i+j"
 ```
 We would allow tokens concateantion to happen within `tokens_ngrams()` if concatenator is not NULL.
-```{r, eval=FALSE}
+```{r}
 attr(tokens_ngrams(toks, n = 2, concatenator = '+'), 'ngrams') # 1
 attr(tokens_ngrams(toks, n = 2, concatenator = '+'), 'types')
 # [1] "a+b" "b+c" "c+d" "d+e" "e+g" "g+h" "b+e" "h+i" "i+j"
@@ -95,9 +95,9 @@ attr(tokens_ngrams(toks, n = 2, concatenator = '+'), 'types')
 
 # Selection on ngram tokens
 Above changes will make behaviours of `tokens_select()` and `dfm_select()` more consistent, treating ngrams as sequences in `dfm_select()` and spliting features input to `select_tokens()` by whitespaces only when tokens are unigrams.
-```{r, eval=FALSE}
+```{r}
 toks_bi  <- tokens_ngrams(toks, n = 2) 
-toks_uni <- tokens_concatenate(tokens_ngrams(toks, n = 2), concatenator = '+')
+toks_uni <- quanteda:::tokens_concatenate(tokens_ngrams(toks, n = 2), concatenator = '+')
 
 # with bigrams
 featnames(dfm_select(dfm(toks_bi), features = 'c d'))     #     "c d"
@@ -113,19 +113,16 @@ tokens_select(           toks_uni,  features = 'c+d')[[1]] # "c+d"
 ```
 
 Users are free to concatenate ngrams with a whitespace using `tokens_concatenate()`, but `dfm_select()` and `tokens_select()` will behave differently (as per current).
-```{r, eval=FALSE}
-toks_uni2 <- tokens_concatenate(tokens_ngrams(toks, n = 2), concatenator = ' ')
+```{r}
+toks_uni2 <- quanteda:::tokens_concatenate(tokens_ngrams(toks, n = 2), concatenator = ' ')
 featnames(dfm_select(dfm(toks_uni2), features = 'c d'))           # "c d"
 tokens_select(           toks_uni2,  features = 'c d')[[1]]       # character(0)
 ```
 
 In this densign, users need to use `list()` (or `sequences()`) in only special cases.
-```{r, eval=FALSE}
+```{r}
 # select unigrams with a whitespace
 tokens_select(          toks_uni2,  features = list('c d'))[[1]] # "c d"
-
-# select sequence of bigrams
-tokens_select(          toks_bi,  features = list(c('c d', 'e f'))[[1]] # "c d", "e f"
 ```
 
 
@@ -135,10 +132,10 @@ Based on the same priciple as ngrams, we will set concatenator = NULL by default
 attr(tokens_compound(toks, coll_bi), 'types') 
 #[1] "c"   "d"   "i"   "j"   "a b" "e g" "g h"
 
-attr(tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = '_'), 'types') 
+attr(quanteda:::tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = '_'), 'types') 
 #[1] "c"   "d"   "i"   "j"   "a_b" "e_g" "g_h"
 
-attr(tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = ''), 'types') 
+attr(quanteda:::tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = ''), 'types')
 #[1] "c"   "d"   "i"   "j"   "ab" "eg" "gh"
 
 ```
@@ -147,7 +144,7 @@ Compounded tokens are treated as ngram tokens unless `tokens_concatenate()` is a
 ```{r, eval=FALSE}
 toks_comp <- tokens_compound(toks, coll_bi)
 attr(toks_comp, 'ngrams') # 1:2
-attr(tokens_concatenate(toks_comp, concatenator = '_'), 'ngrams') # 1
+attr(quanteda:::tokens_concatenate(toks_comp, concatenator = '_'), 'ngrams') # 1
 ```
 
 `dfm_select()` and `tokens_select()` select the same feature.
@@ -158,7 +155,7 @@ tokens_select(           toks_comp,   c('a b', 'c d'))[[1]] # "a b"
 
 Again, if users concatenate compounds with a whitespace, `dfm_select()` and `tokens_select()` will behave differently, but this is an intentional act.
 ```{r, eval=FALSE}
-toks_comp2 <- tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = ' ')
+toks_comp2 <- quanteda:::tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = ' ')
 featnames(dfm_select(dfm(toks_comp2)), c('a b', 'c d'))               # "a b"
 tokens_select(           toks_comp2,   c('a b', 'c d'))[[1]]          # "c" "d"
 tokens_select(           toks_comp2,   list('a b', 'c d'))[[1]]       # "a b"

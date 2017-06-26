@@ -130,8 +130,10 @@ coll_bi &lt;- textstat_collocations(toks, method = &quot;lr&quot;, max_size = 2)
 <h1>Issues with concatenators</h1>
 <p>Currently, users can chose concatenators of ngrams, but this is making consistent handling of tokens object difficult.</p>
 <pre class="r"><code>attr(tokens_ngrams(toks, n = 2), 'types')</code></pre>
-<pre><code>## [1] &quot;a_b&quot; &quot;b_c&quot; &quot;c_d&quot; &quot;d_e&quot; &quot;e_g&quot; &quot;g_h&quot; &quot;b_e&quot; &quot;h_i&quot; &quot;i_j&quot;</code></pre>
+<pre><code>## [1] &quot;a b&quot; &quot;b c&quot; &quot;c d&quot; &quot;d e&quot; &quot;e g&quot; &quot;g h&quot; &quot;b e&quot; &quot;h i&quot; &quot;i j&quot;</code></pre>
 <pre class="r"><code>attr(tokens_ngrams(toks, n = 2, concatenator = &quot; &quot;), 'types')</code></pre>
+<pre><code>## Warning in tokens_concatenate(x, concatenator): You are making your life
+## difficult by creating unigrams with whitespaces</code></pre>
 <pre><code>## [1] &quot;a b&quot; &quot;b c&quot; &quot;c d&quot; &quot;d e&quot; &quot;e g&quot; &quot;g h&quot; &quot;b e&quot; &quot;h i&quot; &quot;i j&quot;</code></pre>
 <p>So, concatenators of ngrams should be always the same character internally, making <code>concatenator = NULL</code> by defult. The internal concatenator is a whitespace (or Unicode control character).</p>
 <p>Concatenators should be chosen when tokens are printed:</p>
@@ -180,44 +182,59 @@ as.list(tokens_ngrams(toks, n = 2), concatenator = '+')
 # $d2
 # [1] &quot;a+b&quot; &quot;b+e&quot; &quot;e+g&quot; &quot;g+h&quot; &quot;h+i&quot; &quot;i+j&quot;</code></pre>
 <p>We will then create a new function <code>tokens_concatenate()</code> (or <code>tokens_unigrams()</code>), which converts ngram tokens into unigrams by changing internal concatenator to user’s concatenator, and reset the ngrams value.</p>
-<pre class="r"><code>attr(tokens_ngrams(toks, n = 2), 'ngrams') # 2
-attr(tokens_ngrams(toks, n = 2), 'types'))
-# [1] &quot;a b&quot; &quot;b c&quot; &quot;c d&quot; &quot;d e&quot; &quot;e g&quot; &quot;g h&quot; &quot;b e&quot; &quot;h i&quot; &quot;i j&quot;
+<pre class="r"><code>attr(tokens_ngrams(toks, n = 2), 'ngrams') # 2</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>attr(tokens_ngrams(toks, n = 2), 'types')</code></pre>
+<pre><code>## [1] &quot;a b&quot; &quot;b c&quot; &quot;c d&quot; &quot;d e&quot; &quot;e g&quot; &quot;g h&quot; &quot;b e&quot; &quot;h i&quot; &quot;i j&quot;</code></pre>
+<pre class="r"><code># [1] &quot;a b&quot; &quot;b c&quot; &quot;c d&quot; &quot;d e&quot; &quot;e g&quot; &quot;g h&quot; &quot;b e&quot; &quot;h i&quot; &quot;i j&quot;
 
-attr(tokens_concatenate(tokens_ngrams(toks, n = 2)), 'ngrams') # 1
-attr(tokens_concatenate(tokens_ngrams(toks, n = 2), concatenator = '+'), 'types')
-# [1] &quot;a+b&quot; &quot;b+c&quot; &quot;c+d&quot; &quot;d+e&quot; &quot;e+g&quot; &quot;g+h&quot; &quot;b+e&quot; &quot;h+i&quot; &quot;i+j&quot;</code></pre>
+attr(quanteda:::tokens_concatenate(tokens_ngrams(toks, n = 2)), 'ngrams') # 1</code></pre>
+<pre><code>## Warning in quanteda:::tokens_concatenate(tokens_ngrams(toks, n = 2)): You
+## are making your life difficult by creating unigrams with whitespaces</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>attr(quanteda:::tokens_concatenate(tokens_ngrams(toks, n = 2), concatenator = '+'), 'types')</code></pre>
+<pre><code>## [1] &quot;a+b&quot; &quot;b+c&quot; &quot;c+d&quot; &quot;d+e&quot; &quot;e+g&quot; &quot;g+h&quot; &quot;b+e&quot; &quot;h+i&quot; &quot;i+j&quot;</code></pre>
+<pre class="r"><code># [1] &quot;a+b&quot; &quot;b+c&quot; &quot;c+d&quot; &quot;d+e&quot; &quot;e+g&quot; &quot;g+h&quot; &quot;b+e&quot; &quot;h+i&quot; &quot;i+j&quot;</code></pre>
 <p>We would allow tokens concateantion to happen within <code>tokens_ngrams()</code> if concatenator is not NULL.</p>
-<pre class="r"><code>attr(tokens_ngrams(toks, n = 2, concatenator = '+'), 'ngrams') # 1
-attr(tokens_ngrams(toks, n = 2, concatenator = '+'), 'types')
-# [1] &quot;a+b&quot; &quot;b+c&quot; &quot;c+d&quot; &quot;d+e&quot; &quot;e+g&quot; &quot;g+h&quot; &quot;b+e&quot; &quot;h+i&quot; &quot;i+j&quot;</code></pre>
+<pre class="r"><code>attr(tokens_ngrams(toks, n = 2, concatenator = '+'), 'ngrams') # 1</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>attr(tokens_ngrams(toks, n = 2, concatenator = '+'), 'types')</code></pre>
+<pre><code>## [1] &quot;a+b&quot; &quot;b+c&quot; &quot;c+d&quot; &quot;d+e&quot; &quot;e+g&quot; &quot;g+h&quot; &quot;b+e&quot; &quot;h+i&quot; &quot;i+j&quot;</code></pre>
+<pre class="r"><code># [1] &quot;a+b&quot; &quot;b+c&quot; &quot;c+d&quot; &quot;d+e&quot; &quot;e+g&quot; &quot;g+h&quot; &quot;b+e&quot; &quot;h+i&quot; &quot;i+j&quot;</code></pre>
 </div>
 <div id="selection-on-ngram-tokens" class="section level1">
 <h1>Selection on ngram tokens</h1>
 <p>Above changes will make behaviours of <code>tokens_select()</code> and <code>dfm_select()</code> more consistent, treating ngrams as sequences in <code>dfm_select()</code> and spliting features input to <code>select_tokens()</code> by whitespaces only when tokens are unigrams.</p>
 <pre class="r"><code>toks_bi  &lt;- tokens_ngrams(toks, n = 2) 
-toks_uni &lt;- tokens_concatenate(tokens_ngrams(toks, n = 2), concatenator = '+')
+toks_uni &lt;- quanteda:::tokens_concatenate(tokens_ngrams(toks, n = 2), concatenator = '+')
 
 # with bigrams
-featnames(dfm_select(dfm(toks_bi), features = 'c d'))     #     &quot;c d&quot;
-tokens_select(           toks_bi,  features = 'c d')[[1]] # [1] &quot;c d&quot;
-
-# with bigrams as unigrams
-featnames(dfm_select(dfm(toks_uni), features = 'c d'))     # character(0)
-tokens_select(           toks_uni,  features = 'c d')[[1]] # character(0)
-
-featnames(dfm_select(dfm(toks_uni), features = 'c+d'))     # &quot;c+d&quot;
-tokens_select(           toks_uni,  features = 'c+d')[[1]] # &quot;c+d&quot;</code></pre>
+featnames(dfm_select(dfm(toks_bi), features = 'c d'))     #     &quot;c d&quot;</code></pre>
+<pre><code>## [1] &quot;c d&quot;</code></pre>
+<pre class="r"><code>tokens_select(           toks_bi,  features = 'c d')[[1]] # [1] &quot;c d&quot;</code></pre>
+<pre><code>## [1] &quot;c d&quot;</code></pre>
+<pre class="r"><code># with bigrams as unigrams
+featnames(dfm_select(dfm(toks_uni), features = 'c d'))     # character(0) (and warning)</code></pre>
+<pre><code>## character(0)</code></pre>
+<pre class="r"><code>tokens_select(           toks_uni,  features = 'c d')[[1]] # character(0)</code></pre>
+<pre><code>## character(0)</code></pre>
+<pre class="r"><code>featnames(dfm_select(dfm(toks_uni), features = 'c+d'))     # &quot;c+d&quot;</code></pre>
+<pre><code>## [1] &quot;c+d&quot;</code></pre>
+<pre class="r"><code>tokens_select(           toks_uni,  features = 'c+d')[[1]] # &quot;c+d&quot;</code></pre>
+<pre><code>## [1] &quot;c+d&quot;</code></pre>
 <p>Users are free to concatenate ngrams with a whitespace using <code>tokens_concatenate()</code>, but <code>dfm_select()</code> and <code>tokens_select()</code> will behave differently (as per current).</p>
-<pre class="r"><code>toks_uni2 &lt;- tokens_concatenate(tokens_ngrams(toks, n = 2), concatenator = ' ')
-featnames(dfm_select(dfm(toks_uni2), features = 'c d'))           # &quot;c d&quot;
-tokens_select(           toks_uni2,  features = 'c d')[[1]]       # character(0)</code></pre>
+<pre class="r"><code>toks_uni2 &lt;- quanteda:::tokens_concatenate(tokens_ngrams(toks, n = 2), concatenator = ' ')</code></pre>
+<pre><code>## Warning in quanteda:::tokens_concatenate(tokens_ngrams(toks, n = 2),
+## concatenator = &quot; &quot;): You are making your life difficult by creating
+## unigrams with whitespaces</code></pre>
+<pre class="r"><code>featnames(dfm_select(dfm(toks_uni2), features = 'c d'))           # &quot;c d&quot;</code></pre>
+<pre><code>## [1] &quot;c d&quot;</code></pre>
+<pre class="r"><code>tokens_select(           toks_uni2,  features = 'c d')[[1]]       # character(0)</code></pre>
+<pre><code>## character(0)</code></pre>
 <p>In this densign, users need to use <code>list()</code> (or <code>sequences()</code>) in only special cases.</p>
 <pre class="r"><code># select unigrams with a whitespace
-tokens_select(          toks_uni2,  features = list('c d'))[[1]] # &quot;c d&quot;
-
-# select sequence of bigrams
-tokens_select(          toks_bi,  features = list(c('c d', 'e f'))[[1]] # &quot;c d&quot;, &quot;e f&quot;</code></pre>
+tokens_select(          toks_uni2,  features = list('c d'))[[1]] # &quot;c d&quot;</code></pre>
+<pre><code>## [1] &quot;c d&quot;</code></pre>
 </div>
 <div id="selection-on-compounded-tokens" class="section level1">
 <h1>Selection on compounded tokens</h1>
@@ -225,19 +242,20 @@ tokens_select(          toks_bi,  features = list(c('c d', 'e f'))[[1]] # &quot;
 <pre class="r"><code>attr(tokens_compound(toks, coll_bi), 'types') 
 #[1] &quot;c&quot;   &quot;d&quot;   &quot;i&quot;   &quot;j&quot;   &quot;a b&quot; &quot;e g&quot; &quot;g h&quot;
 
-attr(tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = '_'), 'types') 
+attr(quanteda:::tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = '_'), 'types') 
 #[1] &quot;c&quot;   &quot;d&quot;   &quot;i&quot;   &quot;j&quot;   &quot;a_b&quot; &quot;e_g&quot; &quot;g_h&quot;
 
-attr(tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = ''), 'types') 
+attr(quanteda:::tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = ''), 'types')
 #[1] &quot;c&quot;   &quot;d&quot;   &quot;i&quot;   &quot;j&quot;   &quot;ab&quot; &quot;eg&quot; &quot;gh&quot;</code></pre>
 <p>Compounded tokens are treated as ngram tokens unless <code>tokens_concatenate()</code> is applied.</p>
 <pre class="r"><code>toks_comp &lt;- tokens_compound(toks, coll_bi)
 attr(toks_comp, 'ngrams') # 1:2
-attr(tokens_concatenate(toks_comp, concatenator = '_'), 'ngrams') # 1</code></pre>
+attr(quanteda:::tokens_concatenate(toks_comp, concatenator = '_'), 'ngrams') # 1</code></pre>
+<p><code>dfm_select()</code> and <code>tokens_select()</code> select the same feature.</p>
 <pre class="r"><code>featnames(dfm_select(dfm(toks_comp)), c('a b', 'c d'))      # &quot;a b&quot;
 tokens_select(           toks_comp,   c('a b', 'c d'))[[1]] # &quot;a b&quot;</code></pre>
-<p>Again, if users concatenate compounds with a whitespace, <code>dfm_select()</code> and <code>tokens_select()</code> will behave differently, but this is an intential act.</p>
-<pre class="r"><code>toks_comp2 &lt;- tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = ' ')
+<p>Again, if users concatenate compounds with a whitespace, <code>dfm_select()</code> and <code>tokens_select()</code> will behave differently, but this is an intentional act.</p>
+<pre class="r"><code>toks_comp2 &lt;- quanteda:::tokens_concatenate(tokens_compound(toks, coll_bi), concatenator = ' ')
 featnames(dfm_select(dfm(toks_comp2)), c('a b', 'c d'))               # &quot;a b&quot;
 tokens_select(           toks_comp2,   c('a b', 'c d'))[[1]]          # &quot;c&quot; &quot;d&quot;
 tokens_select(           toks_comp2,   list('a b', 'c d'))[[1]]       # &quot;a b&quot;
