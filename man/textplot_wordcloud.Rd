@@ -13,7 +13,7 @@ textplot_wordcloud(x, comparison = FALSE, ...)
 \code{\link[wordcloud]{comparison.cloud}} instead of a simple wordcloud, 
 one grouping per document}
 
-\item{...}{additional parameters passed to to \link[wordcloud]{wordcloud} or 
+\item{...}{additional parameters passed to \link[wordcloud]{wordcloud} or 
 to \link{text} (and \link{strheight}, \link{strwidth})}
 }
 \description{

@@ -22,6 +22,7 @@ Imports:
     data.table (>= 1.9.6),
     SnowballC,
     wordcloud,
+    igraph,
     Rcpp,
     RcppParallel,
     RSpectra,
@@ -114,6 +115,7 @@ Collate:
     'textmodel_wordfish.R'
     'textmodel_wordscores.R'
     'textmodel_wordshoal.R'
+    'textplot_network.R'
     'textplot_scale1d.R'
     'textplot_wordcloud.R'
     'textplot_xray.R'

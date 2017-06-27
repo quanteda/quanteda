@@ -18,7 +18,7 @@
 #' @param comparison if \code{TRUE}, plot a 
 #'   \code{\link[wordcloud]{comparison.cloud}} instead of a simple wordcloud, 
 #'   one grouping per document
-#' @param ... additional parameters passed to to \link[wordcloud]{wordcloud} or 
+#' @param ... additional parameters passed to \link[wordcloud]{wordcloud} or 
 #'   to \link{text} (and \link{strheight}, \link{strwidth})
 #' @seealso \code{\link[wordcloud]{wordcloud}}, 
 #'   \code{\link[wordcloud]{comparison.cloud}}
@@ -45,7 +45,7 @@
 #' @keywords plot
 textplot_wordcloud <- function(x, comparison = FALSE, ...) {
     
-    if (!is.dfm(x) & !is.tokens(x))
+    if (!is.dfm(x) && !is.tokens(x))
         stop("x must be a dfm or tokens object")
     
     if (is.tokens(x))
