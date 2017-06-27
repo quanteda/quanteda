@@ -21,6 +21,7 @@
 *  For `sequences()`:
    - Removed arguments from `sequences()`: `features`, `case_insensitive` and `valuetype`, the function can be fully replaced by `tokens_select()`.
    - Removed arguments from `sequences()`: `ordered`.
+* (Finally) we added "will" to the list of English stopwords (#818).
 
 ### Bug fixes and stability enhancements
 
