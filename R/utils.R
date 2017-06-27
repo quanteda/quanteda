@@ -157,42 +157,37 @@ code <- function(texts){
 #' 
 #' Convert various input as features into a simple list, for input as a sequence in e.g. 
 #' \code{\link{tokens_compound}}.
-#' @param features the input features, one of: \itemize{ \item{character vector,
+#' @param features the input features, one of: \itemize{ \item{character,
 #'   }{whose elements will be split on whitespace;} \item{list of characters,
-#'   }{consisting of a list of token patterns, separated by white space}; 
-#'   \item{\link{tokens} object;} \item{\link{dictionary} object}{;} 
+#'   }{consisting of a list of token patterns, where sequences are separate elements}; 
+#'   \item{\link{phrases} object;} \item{\link{dictionary} object}{;} 
+#'   \item{\link{dictionary} object}{;} 
 #'   \item{\link{collocations} object.}{} }
 #' @return an unnamed list of features, with each element of the list a
 #'   character vector with the split sequence.
 #' @keywords internal utilities
 features2list <- function(features) {
     
-
-    # convert the input into a simple, unnamed list of split characters
-    if (is.dictionary(features)) {
-        result <- stringi::stri_split_fixed(unlist(features, use.names = FALSE), 
-                                            attr(features, 'concatenator'))
-    } else if (is.collocations(features)) {
-        result <- stringi::stri_split_fixed(features$collocation, " ")
-    } else if (is.character(features)) {
-        result <- stringi::stri_split_fixed(features, " ")
-    } else if (is.tokens(features)) {
-        result <- as.list(features)
+    if (is.collocations(features)) {
+        result <- phrase(features)
+    } else if (is.dictionary(features)) {
+        result <- unlist(features, use.names = FALSE)
     } else if (is.list(features)) {
+        if (!all(is.character(unlist(features, use.names = FALSE))))
+            stop("all list elements must be  character")
         result <- features
+    } else if (is.character(features)) {
+        result <- as.list(features)
     } else {
-        stop("features must be a character vector, a list of character elements, a dictionary, or collocations")
+        stop("features must be a character, a list of character, a dictionary, or collocations")
     }
-    
-    # make sure the resulting list is all character
-    if (!all(is.character(unlist(result, use.names = FALSE))))
-        stop("sequences must be a list of character elements or a dictionary")
+
     return(as.list(result))
 }
 
 #' convert various input as features to a vector
 #' 
-#' Convert various input as features to a vector for fucntions that 
+#' Convert various input as features to a vector for functions that 
 #' do not support multi-word features e.g.
 #' \code{\link{dfm_select}, \link{sequences}, \link{collocations}}.
 #' @inheritParams features2list
@@ -201,8 +196,8 @@ features2list <- function(features) {
 features2vector <- function(features) {
     
     temp <- features2list(features)
-    if (any(lengths(temp) > 1)) {
-        warning(as.character(sys.calls())[1], ' does not support multi-word features')
-    }
+    # if (any(lengths(temp) > 1)) {
+    #     warning(as.character(sys.calls())[1], ' does not support multi-word features')
+    # }
     return(unlist(temp, use.names = FALSE))
 }
