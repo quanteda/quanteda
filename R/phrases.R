@@ -20,9 +20,9 @@ phrase <- function(...) {
 #' @noRd
 #' @export
 phrase.character <- function(...) {
-    x <- lapply(as.list(...), function(y) as.character(tokens(y)))
-    class(x) <- c("phrases", class(x))
-    x
+    x <- lapply(as.list(...), 
+                function(y) as.character(tokens(y, what = "fasterword", remove_punct = FALSE)))
+    phrase(x)    
 }
 
 #' @noRd
@@ -38,6 +38,31 @@ phrase.collocations <- function(...) {
     phrase(x[["collocation"]])
 }
 
+#' @noRd
+#' @export
+phrase.list <- function(...) {
+    x <- as.list(...)
+    class(x) <- c("phrases", class(x))
+    x
+}
+
+#' @noRd
+#' @export
+phrase.tokens <- function(...) {
+    x <- as.list(...)
+    class(x) <- c("phrases", class(x))
+    x
+}
+
+
+#' @rdname phrase
+#' @return \code{is.phrase} returns \code{TRUE} if the object is a
+#'   \link{phrase}s class; \code{FALSE} otherwise.
+#' @export
+is.phrase <- function(x) {
+    "phrases" %in% class(x)
+}
+
 #' print a phrase object
 #' 
 #' prints a phrase object in a way that looks like a standard list.
@@ -47,6 +72,14 @@ phrase.collocations <- function(...) {
 #' @param ... further arguments passed to or from other methods
 #' @export
 print.phrases <- function(x, ...) {
+    print(as.list(x))
+}
+
+#' @noRd
+#' @method as.list phrases
+#' @keywords internal
+#' @export
+as.list.phrases <- function(x, ...) {
     attributes(x) <- NULL
-    print(x)
+    x
 }

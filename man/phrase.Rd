@@ -2,12 +2,19 @@
 % Please edit documentation in R/phrases.R
 \name{phrase}
 \alias{phrase}
+\alias{is.phrase}
 \title{declare a compound character to be a sequence of separate pattern matches}
 \usage{
 phrase(...)
+
+is.phrase(x)
 }
 \arguments{
 \item{...}{the sequence, as a \code{character} object containing whitespace separating the patterns.}
+}
+\value{
+\code{is.phrase} returns \code{TRUE} if the object is a
+  \link{phrase}s class; \code{FALSE} otherwise.
 }
 \description{
 Declares that a whitespace-separated expression consists of multiple patterns, separated by whitespace.
@@ -18,4 +25,8 @@ phrase(c("a b", "c d e", "f"))
 
 # from a dictionary
 phrase(dictionary(catone = c("a b"), cattwo = "c d e", catthree = "f"))
+
+# from a collocations object
+(coll <- textstat_collocations(tokens("a b c a b d e b d a b")))
+phrase(coll)
 }
