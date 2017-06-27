@@ -1,6 +1,5 @@
 context('test tokens_select.R')
 
-
 test_that("test that tokens_select is working", {
     txt <- c(doc1 = "This IS UPPER And Lower case",
              doc2 = "THIS is ALL CAPS aNd sand")
@@ -126,4 +125,175 @@ test_that("tokens_remove works regardless when features are overlapped, issue #7
                       list(character()))
 })
 
+
+
+context("test feature selection according to new scheme")
+
+## objects to work with in tests
+txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")
+toks_uni <- tokens(txt)
+dfm_uni <- dfm(toks_uni)
+toks_bi <- tokens(txt, n = 2, concatenator = " ")
+dfm_bi <- dfm(toks_bi)
+char_uni <- c("a", "b", "g", "j")
+char_bi <- c("a b", "g j")
+list_uni <- list("a", "b", "g", "j")
+list_bi <- list("a b", "g j")
+(dict_uni <- dictionary(one = c("a", "b"), two = c("g", "j")))
+(dict_bi <- dictionary(one = "a b", two = "g j"))
+(coll_bi <- textstat_collocations(toks_uni, method = "lr", max_size = 2))
+(coll_tri <- textstat_collocations(toks_uni, method = "lr", min_size = 3, max_size = 3))
+
+test_that("tokens_select works as expected for unigrams selected on char, list of unigrams", {
+    expect_equal(
+        as.list(tokens_select(toks_uni, char_uni)),
+        list(d1 = c("a", "b", "g"), d2 = c("a", "b", "g", "j"))
+    )
+    expect_equal(
+        tokens_select(toks_uni, list_uni), 
+        tokens_select(toks_uni, char_uni)
+    )
+    expect_equal(
+        as.list(tokens_select(toks_uni, c("a b", "c", "g j"))),
+        list(d1 = "c", d2 = character())
+    )
+})
+
+test_that("tokens_select works as expected for unigrams selected on char, list of bigrams", {
+    expect_equal(
+        as.list(tokens_select(toks_uni, char_bi)),
+        list(d1 = character(), d2 = character())
+    )
+    expect_equal(
+        tokens_select(toks_uni, list_bi), 
+        list(d1 = character(), d2 = character())
+    )
+    expect_equal(
+        tokens_select(toks_uni, list_bi), 
+        tokens_select(toks_uni, char_bi)
+    )
+})
+
+test_that("tokens_select works as expected for bigrams selected on char, list of unigrams", {
+    expect_equal(
+        as.list(tokens_select(toks_bi, char_uni)),
+        list(d1 = character(), d2 = character())
+    )
+    expect_equal(
+        tokens_select(toks_bi, list_uni), 
+        tokens_select(toks_bi, char_uni)
+    )
+    expect_silent(
+        tokens_select(toks_uni, list(c("a b", "c"), "g j"))
+    )
+    expect_equal(
+        as.character(tokens_select(toks_uni, list(c("a b", "c"), "g j"))),
+        list(d1 = "c", d2 = character())
+    )
+})
+
+
+test_that("tokens_select works as expected for bigrams selected on char, list of bigrams", {
+    expect_equal(
+        as.list(tokens_select(toks_bi, char_bi)),
+        list(d1 = "a b", d2 = "a b")
+    )
+    expect_equal(
+        tokens_select(toks_bi, list_bi), 
+        list(d1 = character(), d2 = character())
+    )
+    expect_equal(
+        tokens_select(toks_uni, list_bi), 
+        tokens_select(toks_uni, char_bi)
+    )
+    expect_equal(
+        as.list(tokens_select(toks_bi, list(c("a b", "c"), "g j"))),
+        list(d1 = "a b", d2 = "a b")
+    )
+})
+
+test_that("tokens_select works correctly with collocations objects", {
+    expect_equal(
+        as.list(tokens_select(toks_uni, coll_bi)),
+        list(list(d1 = character(), d2 = character()))
+    )
+    expect_equal(
+        as.list(tokens_select(toks_uni, coll_tri)),
+        list(d1 = character(), d2 = character())
+    )
+    expect_equal(
+        as.list(tokens_select(toks_bi, coll_bi)),
+        list(d1 = c("a b", "e g", "g h"), d2 = c("a b", "e g", "g h"))
+    )
+    expect_silent(
+        tokens_select(toks_bi, coll_bi)
+    )
+    expect_equal(
+        as.list(tokens_select(toks_bi, coll_tri)),
+        list(d1 = character(), d2 = character())
+    )
+    expect_silent(
+        tokens_select(toks_bi, coll_tri)
+    )
+})
+
+
+test_that("tokens_select fails as expected with dfm objects", {
+    expect_error(tokens_select(toks_uni, dfm_uni))
+    expect_error(tokens_select(toks_uni, dfm_bi))
+    expect_error(tokens_select(toks_bi, dfm_uni))
+    expect_error(tokens_select(toks_bi, dfm_bi))
+})
+
+
+test_that("tokens_select on unigrams works as expected when padding = TRUE", {
+    expect_equal(
+        as.list(tokens_select(toks_uni, "c d e", padding = TRUE)),
+        list(d1 = rep("", 7), d2 = rep("", 7))
+    )
+    expect_equal(
+        as.list(tokens_select(toks_uni, list("c d e"), padding = TRUE)),
+        list(d1 = rep("", 7), d2 = rep("", 7))
+    )
+    expect_equal(
+        as.list(tokens_select(toks_uni, list(c("c", "d", "e")), padding = TRUE)),
+        list(d1 = c("", "", "c", "d", "e", "", ""), d2 = rep("", 7))
+    )
+    
+    expect_equal(
+        as.list(tokens_select(toks_uni, coll_bi, padding = TRUE)),
+        list(d1 = rep("", 7), d2 = rep("", 7))
+    )
+    expect_equal(
+        as.list(tokens_select(toks_uni, list_bi, padding = TRUE)),
+        list(d1 = rep("", 7), d2 = rep("", 7))
+    )
+})
+
+test_that("tokens_select on bigrams works as expected when padding = TRUE", {
+    expect_equal(
+        as.list(tokens_select(toks_bi, "c d e", padding = TRUE)),
+        list(d1 = rep("", 7), d2 = rep("", 7))
+    )
+    expect_equal(
+        as.list(tokens_select(toks_bi, list("c d e"), padding = TRUE)),
+        list(d1 = rep("", 7), d2 = rep("", 7))
+    )
+    expect_equal(
+        as.list(tokens_select(toks_bi, list(c("c", "d", "e")), padding = TRUE)),
+        list(d1 = c("", "", "c", "d", "e", "", ""), d2 = rep("", 7))
+    )
+    expect_silent(
+        as.list(tokens_select(toks_bi, list(c("c", "d", "e")), padding = TRUE))
+    )
+    
+    expect_equal(
+        as.list(tokens_select(toks_bi, coll_bi, padding = TRUE)),
+        list(d1 = c("a b", "", "", "", "e g", "g h"), 
+             d2 = c("a b", "", "e g", "g h", "", ""))
+    )
+    expect_silent(
+        as.list(tokens_select(toks_bi, coll_bi, padding = TRUE))
+    )
+})
 

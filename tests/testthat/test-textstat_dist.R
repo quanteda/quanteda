@@ -194,7 +194,7 @@ test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distan
         hammingE1071 <- sort(e1071::hamming.distance(as.matrix(tf(presDfm, "boolean")))[, "1981-Reagan"], decreasing = FALSE)
         if("1981-Reagan" %in% names(hammingE1071)) hammingE1071 <- hammingE1071[-which(names(hammingE1071) == "1981-Reagan")]
     } else {
-        hammingE1071 <- c(711, 724, 745, 766, 766, 778, 785, 804, 851)
+        hammingE1071 <- c(711, 724, 745, 766, 767, 779, 785, 804, 852)
     }
     expect_equivalent(hammingQuanteda, hammingE1071)
 })
@@ -237,7 +237,7 @@ test_that("as.list.dist works as expected",{
     ddist <- textstat_dist(presDfm, method = "hamming")
     ddist_list <- as.list(ddist)
     expect_equal(names(ddist_list$`1981-Reagan`)[1:3], c("2009-Obama", "2013-Obama", "1997-Clinton"))
-    expect_equivalent(ddist_list$`1981-Reagan`[1:3], c(851, 804, 785))
+    expect_equivalent(ddist_list$`1981-Reagan`[1:3], c(852, 804, 785))
 })
 
 test_that("as.list.dist.selection works as expected",{
