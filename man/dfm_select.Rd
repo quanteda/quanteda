@@ -23,13 +23,11 @@ fcm_remove(x, features, ...)
 \arguments{
 \item{x}{the \link{dfm} or \link{fcm} object whose features will be selected}
 
-\item{features}{one of: a character vector of features to be selected, a 
-\link{dfm} whose features will be used for selection, or a dictionary class
-object whose values (not keys) will provide the features to be selected. 
-For \link{dfm} objects, see details in the Value section below.}
+\item{features}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations} or \link{dfm}. See \link{features} for details.}
 
 \item{documents}{select documents based on their document names. Works exactly 
-the same as features.}
+the same as features}
 
 \item{selection}{whether to \code{keep} or \code{remove} the features}
 

@@ -69,10 +69,10 @@ skipgrams <- function(x, ...) {
 #' 
 #' toks <- tokens(c(text1 = "the quick brown fox jumped over the lazy dog"))
 #' tokens_ngrams(toks, n = 1:3)
-#' tokens_ngrams(toks, n = c(2,4), concatenator = " ")
-#' tokens_ngrams(toks, n = c(2,4), skip = 1, concatenator = " ")
+#' tokens_ngrams(toks, n = c(2,4))
+#' tokens_ngrams(toks, n = c(2,4), skip = 1)
 #' 
-tokens_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+tokens_ngrams <- function(x, n = 2L, skip = 0L, concatenator = NULL) {
     UseMethod("tokens_ngrams")
 }
 
@@ -80,10 +80,10 @@ tokens_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' @importFrom stats complete.cases
 #' @noRd
 #' @export
-tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = NULL) {
     # trap condition where a "text" is a single NA
     if (is.na(x[1]) && length(x)==1) return(NULL)
-    if (any(stringi::stri_detect_charclass(x, "\\p{Z}")) & concatenator != " ")
+    if (any(stringi::stri_detect_charclass(x, "\\p{Z}")))
         warning("whitespace detected: you may need to run tokens() first")
     if (length(x) < min(n)) return(NULL)
     if (identical(as.integer(n), 1L)) {
@@ -105,7 +105,7 @@ tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' char_ngrams(letters[1:3], n = 1:3)
 #' 
 #' @export
-char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = NULL) {
     if (!is.character(x))
         stop("x must be a character object")
     tokens_ngrams(x, n, skip, concatenator)
@@ -120,7 +120,7 @@ char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' tokens_ngrams(toks, n = 2:3)
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = NULL) {
     
     if (!is.tokens(x))
         stop("x must be a tokens object")
@@ -129,11 +129,13 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
         stop("ngram length has to be greater than zero")
     
     attrs <- attributes(x)
-    x <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip + 1)
+    x <- qatd_cpp_tokens_ngrams(x, types(x), " ", n, skip + 1)
     attributes(x, FALSE) <- attrs
     attr(x, "ngrams") <- as.integer(n)
     attr(x, "skip") <- as.integer(skip)
-    attr(x, "concatenator") <- concatenator
+    if (!is.null(concatenator)) {
+        x <- tokens_concatenate(x, concatenator)
+    }
     return(x)
 }
 
@@ -163,10 +165,25 @@ tokens_ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_
 #' @examples 
 #' # skipgrams
 #' toks <- tokens("insurgents killed in ongoing fighting")
-#' tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ") 
-#' tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ") 
-#' tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")   
-tokens_skipgrams <- function(x, n, skip, concatenator="_") {
+#' tokens_skipgrams(toks, n = 2, skip = 0:1) 
+#' tokens_skipgrams(toks, n = 2, skip = 0:2) 
+#' tokens_skipgrams(toks, n = 3, skip = 0:2)   
+tokens_skipgrams <- function(x, n, skip, concatenator = NULL) {
     tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
+}
+
+tokens_concatenate <- function(x, concatenator = ' ') {
+    if (concatenator == ' ') {
+        warning('You are making your life difficult by creating unigrams with whitespaces')
+    }
+    attr(x, 'types') <- stri_replace_all_fixed(attr(x, 'types'), ' ', concatenator)
+    attr(x, 'ngrams') <- 1L
+    attr(x, "skip") <- 0L
+    attr(x, "concatenator") <- concatenator
+    return(x)
+}
+
+is.unigram <- function(x){
+    attr(x, 'ngrams') == 1L
 }
 

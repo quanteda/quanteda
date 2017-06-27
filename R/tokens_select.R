@@ -8,8 +8,7 @@
 #' be to select only positive features from a list of regular 
 #' expressions, including a dictionary.
 #' @param x \link{tokens} object whose token elements will be selected
-#' @param features one of: a character vector of features to be selected, a \link{dictionary} class
-#'   object whose values (not keys) will provide the features to be selected. 
+#' @inheritParams features
 #' @param selection whether to \code{"keep"} or \code{"remove"} the features
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
@@ -120,7 +119,12 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     attrs <- attributes(x)
     
     types <- types(x)
-    features <- features2list(features)
+    
+    if (is.unigram(x)) {
+        features <- features2list(features)
+    } else {
+        features <- features2vector(as.list(features))
+    }
     features_id <- regex2id(features, types, valuetype, case_insensitive)
     
     if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index

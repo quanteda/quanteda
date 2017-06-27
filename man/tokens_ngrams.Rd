@@ -6,11 +6,11 @@
 \alias{tokens_skipgrams}
 \title{create ngrams and skipgrams from tokens}
 \usage{
-tokens_ngrams(x, n = 2L, skip = 0L, concatenator = "_")
+tokens_ngrams(x, n = 2L, skip = 0L, concatenator = NULL)
 
-char_ngrams(x, n = 2L, skip = 0L, concatenator = "_")
+char_ngrams(x, n = 2L, skip = 0L, concatenator = NULL)
 
-tokens_skipgrams(x, n, skip, concatenator = "_")
+tokens_skipgrams(x, n, skip, concatenator = NULL)
 }
 \arguments{
 \item{x}{a tokens object, or a character vector, or a list of characters}
@@ -67,17 +67,17 @@ tokens_ngrams(tokens(c("a b c d e", "c d e f g")), n = 2:3)
 
 toks <- tokens(c(text1 = "the quick brown fox jumped over the lazy dog"))
 tokens_ngrams(toks, n = 1:3)
-tokens_ngrams(toks, n = c(2,4), concatenator = " ")
-tokens_ngrams(toks, n = c(2,4), skip = 1, concatenator = " ")
+tokens_ngrams(toks, n = c(2,4))
+tokens_ngrams(toks, n = c(2,4), skip = 1)
 
 # on character
 char_ngrams(letters[1:3], n = 1:3)
 
 # skipgrams
 toks <- tokens("insurgents killed in ongoing fighting")
-tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ") 
-tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ") 
-tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")   
+tokens_skipgrams(toks, n = 2, skip = 0:1) 
+tokens_skipgrams(toks, n = 2, skip = 0:2) 
+tokens_skipgrams(toks, n = 3, skip = 0:2)   
 }
 \references{
 \href{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}{Guthrie,

@@ -1,0 +1,245 @@
+---
+title: "features selection"
+author: "Kenneth Benoit"
+date: "21/06/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(quanteda)
+```
+
+## Define the objects to be tested
+
+Define the objects:
+```{r}
+txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")
+toks_uni <- tokens(txt)
+dfm_uni <- dfm(toks_uni)
+toks_bi <- tokens(txt, n = 2, concatenator = " ")
+dfm_bi <- dfm(toks_bi)
+
+char_uni <- c("a", "b", "g", "j")
+char_bi <- c("a b", "g j")
+list_uni <- list("a", "b", "g", "j")
+list_bi <- list("a b", "g j")
+(dict_uni <- dictionary(one = c("a", "b"), two = c("g", "j")))
+(dict_bi <- dictionary(one = "a b", two = "g j"))
+(coll_bi <- textstat_collocations(toks_uni, method = "lr", max_size = 2))
+(coll_tri <- textstat_collocations(toks_uni, method = "lr", min_size = 3, max_size = 3))
+```
+
+## `tokens_select()` (includes `tokens_remove()`)
+
+With character objects, of lists of characters, it does not work on whitespace separated sequences:
+```{r}
+# as expected
+tokens_select(toks_uni, char_uni)
+tokens_select(toks_uni, list_uni)
+# not as expected
+tokens_select(toks_uni, char_bi)
+tokens_select(toks_uni, list_bi)
+
+# as expected
+tokens_select(toks_bi, char_uni)
+
+# not as expected
+tokens_select(toks_bi, list_uni)
+tokens_select(toks_bi, char_bi)
+tokens_select(toks_bi, list_bi)
+```
+With dictionary objects:
+```{r}
+# as expected
+tokens_select(toks_uni, dict_uni)
+tokens_select(toks_bi, dict_uni)
+
+# not as expected
+tokens_select(toks_uni, dict_bi)
+tokens_select(toks_bi, dict_bi)
+```
+With `collocations` objects:
+```{r}
+# definitely not expected
+tokens_select(toks_uni, coll_bi)
+tokens_select(toks_uni, coll_tri)
+
+# not expected
+tokens_select(toks_bi, coll_bi)
+
+# expected
+tokens_select(toks_bi, coll_tri)
+```
+
+With `dfm` objects:
+```{r error = TRUE}
+# fails as expected
+tokens_select(toks_uni, dfm_uni)
+tokens_select(toks_uni, dfm_bi)
+tokens_select(toks_bi, dfm_uni)
+tokens_select(toks_bi, dfm_bi)
+```
+
+### `tokens_compound()` and selecting token sequences
+
+I understand that an important application is selecting token *sequences*, and this is the core purpose of `tokens_compound()`.  But I 
+
+Currently we look for sequences in the same way we use the `keywords` in `kwic()`:
+```{r}
+tokens_select(toks_uni, "c d e", padding = TRUE)
+```
+For `list` objects:
+```{r}
+# does not work as with character
+tokens_select(toks_uni, list("c d e"), padding = TRUE)
+# this works for a sequence
+tokens_select(toks_uni, list("a", "h", c("c", "d", "e")), padding = TRUE)
+```
+With ambiguous results when the sequence comes from collocations:
+```{r}
+tokens_select(toks_uni, coll_bi, padding = TRUE)
+```
+
+### Recommendations
+
+1.  Never split character elements, so that a `features` value of `"a b"` will only match the feature `"a b"`, not `"a"` and `"b"`.
+
+2.  Eliminate the list type of input.
+
+3.  Convert dictionaries by unlisting them, and using the compound elements as matched, if found, e.g.
+    ```{r}
+    unlist(dict_bi, use.names = FALSE)
+    ```
+
+4.  Use the `collocations` object as a `character` vector "as is" from the  `collocation` element, e.g. the first column of 
+    ```{r}
+    coll_bi
+    ```
+
+5.  Make it clear that a `dfm` object cannot be an input to token feature selection, although `featnames(dfm_uni)` (e.g.) could.  The `tokens_*` methods do not currently accept `dfm` objects as `features` anyway, but the `?features` page suggests they do.
+
+6.  Define a new object type called `sequence` which is essentially a list of characters, where each element of the character elements matches a pattern in sequence.  This is how the list behaviour for `features` is supposed to work now.  I propose we stop allowing a list altogether, but define a replacement for `list()` called `sequence()` that creates a special list - similar to what we do with `dictionary()` at the moment.  This makes the distinction between characters that contain whitespace, and lists of characters.  It also means a) the definition as a sequence is more explicit, and b) we have full control over the definition of this object, whereas with a plain list we are far more limited.  We could put a concatenator slot in this list, for instance, so that it takes that as a default.  (Most importantly we can decide on this and modify later.)  
+
+    I propose to use the `sequences` class for multi-word kwic matches too.  (See below.) 
+    
+7.  `tokens_compound()` should take only `sequences` and `collocations` inputs for `features`.
+
+
+
+## `kwic()` based token selection
+
+The `kwic()` function is a bit different, since it takes not a `features` argument but rather a `keywords` argument.  We currently tokenize the elements of the input to allow the white space to separate pattern matches.  But it's still not working as expected with character or lists of character:
+
+```{r}
+# not expected
+kwic(txt, char_uni)
+kwic(txt, list_uni)
+
+# missing the "g h"
+kwic(txt, char_bi)
+
+# should this return some match?
+kwic(txt, list_bi)
+```
+Behaviour with `collocations` objects is even weirder, as these return identical results:
+```{r}
+kwic(txt, coll_bi)
+kwic(txt, coll_tri)
+```
+With `dictionary` objects:
+```{r}
+# should not be an "a b"
+kwic(txt, dict_uni)
+# missing the "g h"
+kwic(txt, dict_bi)
+```
+With `dfm` objects supplied for `keywords`, `kwic` fails (as it should).
+
+### Recommendations
+
+We could:
+
+a) require sequences to be wrapped in `sequence()`, e.g. `sequence(c("nuclear", "power|energy|war"))`, or
+
+b) Continue to make an exception for `kwic()`, so that we split any keywords expressions on whitespace and consider the elements as separate matches.  But this should never make `c("a", "b")` the same as `"a b"`.  This is consistent with the existing help page  `?kwic`, but I don't think it's implemented correctly.
+
+c) Do both.  I propose this option for now, and encouraging users to use `sequences()`.
+
+I propose that if we allow a `list` input, then we unlist it, and also unlist a `dictionary` input, to treat each character (or value, for a dictionary) object the same.  But I'd prefer *not* to allow list inputs, except for dictionaries.
+
+
+## `dfm_select()` (includes `dfm_remove()`)
+
+With character objects, of lists of characters, it does not work on whitespace separated sequences:
+```{r}
+# as expected
+dfm_select(dfm_uni, char_uni)
+dfm_select(dfm_uni, list_uni)
+dfm_select(dfm_uni, char_bi)
+dfm_select(dfm_uni, list_bi)
+dfm_select(dfm_bi, char_uni)
+dfm_select(dfm_bi, list_uni)
+dfm_select(dfm_bi, char_bi)
+dfm_select(dfm_bi, list_bi)
+dfm_select(dfm_uni, dict_uni)
+dfm_select(dfm_bi, dict_uni)
+```
+
+There is no reason this should not work, if we unlist it and use the multi-word dictionary keys as literal matches, as I propose above for `tokens`:
+```{r error = TRUE}
+# not as expected - I think the error message is unintended (a bug iow)
+dfm_select(dfm_uni, dict_bi)
+
+# as expected
+dfm_select(dfm_bi, dict_bi)
+```
+
+
+With `collocations` objects:
+```{r}
+# return is as expected but should not issue an error message
+dfm_select(dfm_uni, coll_bi)
+dfm_select(dfm_uni, coll_tri)
+
+# not expected
+dfm_select(dfm_bi, coll_bi)
+
+# not as expected and is incorrect
+dfm_select(dfm_bi, coll_tri)
+```
+
+With `dfm` objects:
+```{r}
+# as expected
+dfm_select(dfm_uni, dfm_uni[, 1:3])
+dfm_select(dfm_bi, dfm_bi[, 1:3])
+
+# as expected, although unituitive
+dfm_select(dfm_uni, dfm_bi[, 1:3])
+dfm_select(dfm_bi, dfm_uni[, 1:3])
+```
+It would be worth testing these with wildcarded features too.
+
+### Recommendations
+
+The multi-word feature values for dfm behave as I would expect them to.  Most of the behaviors are ok as is.  Still, we need to:
+
+1.  Check and fix the warnings and error messages.  It should be perfectly ok now to use multi-word features for a match (but only one element per feature).
+
+2.  Change the way that collocations are treated, to match my suggestion above.
+
+
+## Overall Recommendations
+
+1.  We change all three arguments to simply `pattern`.
+
+    We are mixing up the definitions of `tokens` with `features` by having the same argument name in `tokens_select()` and `dfm_select()`.  Should we consider an alternative that clearly covers both?  This is more appropriately named for `dfm_select()`, but even then it's not really a vector of features, but rather a set of objects that contain pattern matches for features.
+    
+    What if we adopted the **stringi** convention and called this `pattern`?  This would also make it compatible if down the road we use the `?readr::modifiers` syntax.  We could use this for `kwic` too, but make it clear (for `kwic` only!) that we will consider whitespace boundaries in the pattern as a separator for sequences of tokens on which we match the patterns element by element for the sequence.  For all other applications of `pattern`, we consider white space as part of the pattern.
+    
+    We would need to implement a deprecation for the `features` and `keywords` arguments if we do this, but if you look at `dfm()` you will see how this is readily done.
+    
+2.  We implement all of the above expectations as unit tests, once their behaviour has been fixed.
+
+

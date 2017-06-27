@@ -6,11 +6,7 @@
 #' to form a single "token".  This ensures that the sequences will be processed
 #' subsequently as single tokens, for instance in constructing a \link{dfm}.
 #' @param x an input \link{tokens} object
-#' @param sequences the input sequence, one of: \itemize{ \item{character vector,
-#'   }{whose elements will be split on whitespace;} \item{list of characters,
-#'   }{consisting of a list of token patterns, separated by white space}; 
-#'   \item{\link{tokens} object;} \item{\link{dictionary} object}{;} 
-#'   \item{\link{collocations} object.}{} }
+#' @inheritParams features
 #' @param concatenator the concatenation character that will connect the words 
 #'   making up the multi-word sequences.  The default \code{_} is highly 
 #'   recommended since it will not be removed during normal cleaning and 
@@ -52,7 +48,7 @@
 #' #                              size = 2, min_count = 1)
 #' #toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
 #' #tokens_compound(toks, cols)
-tokens_compound <- function(x, sequences,
+tokens_compound <- function(x, features,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                     case_insensitive = TRUE, join = FALSE) {
     UseMethod("tokens_compound")
@@ -63,7 +59,7 @@ tokens_compound <- function(x, sequences,
 #' @noRd
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_compound.tokens <- function(x, sequences,
+tokens_compound.tokens <- function(x, features,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                    case_insensitive = TRUE, join = FALSE) {
     
@@ -76,18 +72,18 @@ tokens_compound.tokens <- function(x, sequences,
     attrs_org <- attributes(x)
     types <- types(x)
     
-    if (is.sequences(sequences) || is.collocations(sequences)) {
-        if (identical(attr(sequences, 'types'), types)) {
+    if (is.sequences(features) || is.collocations(features)) {
+        if (identical(attr(features, 'types'), types)) {
             #cat("Skip regex2id\n")
-            seqs_ids <- attr(sequences, 'tokens')
+            seqs_ids <- attr(features, 'tokens')
         } else { 
             #cat("Use regex2id\n")
-            seqs <- features2list(sequences$collocation)
+            seqs <- features2list(features$collocation)
             seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
         }
     } else {
         #cat("Use regex2id\n")
-        seqs <- features2list(sequences)
+        seqs <- features2list(features)
         seqs <- seqs[lengths(seqs) > 1] # drop single words
         seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
     }
@@ -102,10 +98,10 @@ tokens_compound.tokens <- function(x, sequences,
 #' @noRd
 #' @rdname tokens_compound
 #' @export
-tokens_compound.tokenizedTexts <- function(x, sequences, 
+tokens_compound.tokenizedTexts <- function(x, features, 
                                            concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                                            case_insensitive = TRUE, join = FALSE) {
-    as.tokenizedTexts(tokens_compound(as.tokens(x), sequences = sequences, 
+    as.tokenizedTexts(tokens_compound(as.tokens(x), features = features, 
                                       concatenator = concatenator, valuetype = valuetype,
                                       case_insensitive = TRUE, join = join))
 }

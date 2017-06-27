@@ -16,8 +16,8 @@ tokens_remove(x, features, valuetype = c("glob", "regex", "fixed"),
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be selected}
 
-\item{features}{one of: a character vector of features to be selected, a \link{dictionary} class
-object whose values (not keys) will provide the features to be selected.}
+\item{features}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations} or \link{dfm}. See \link{features} for details.}
 
 \item{selection}{whether to \code{"keep"} or \code{"remove"} the features}
 

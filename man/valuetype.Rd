@@ -29,7 +29,7 @@ Pattern matching in in \pkg{quanteda} uses "glob"-style pattern
   }
 }
 \note{
-If "fixed" is used with \code{case_insensitive = TRUE}, the text will 
+If "fixed" is used with \code{case_insensitive = TRUE}, features will 
   typically be lowercased internally prior to matching.  Also, glob matches
   are converted to regular expressions (using \link[utils]{glob2rx}) when
   they contain wild card characters, and to fixed pattern matches when they
