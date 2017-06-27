@@ -1,0 +1,27 @@
+context('test tokens_group.R')
+
+
+test_that("test that tokens_group is working", {
+    
+    txts <- c('a b c d', 'e f g h', 'A B C', 'X Y Z')
+    toks <- tokens(txts)
+    expect_equal(
+        as.list(quanteda:::tokens_group(toks, c(1, 1, 2, 2))),
+        list('1' = c('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'),
+             '2' = c('A', 'B', 'C', 'X', 'Y', 'Z'))
+    )
+    
+    expect_equal(
+        as.list(quanteda:::tokens_group(toks, c(2, 1, 2, 1))),
+        list('2' = c('a', 'b', 'c', 'd', 'A', 'B', 'C'),
+             '1' = c('e', 'f', 'g', 'h', 'X', 'Y', 'Z'))
+    )
+    
+    expect_equal(
+        as.list(quanteda:::tokens_group(toks, c('Z', 'A', 'Z', 'A'))),
+        list('Z' = c('a', 'b', 'c', 'd', 'A', 'B', 'C'),
+             'A' = c('e', 'f', 'g', 'h', 'X', 'Y', 'Z'))
+    )
+    
+})
+

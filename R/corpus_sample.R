@@ -29,7 +29,7 @@
 #'                       two = "First sentence, doc2.  Second sentence, doc2."))
 #' sentcorpus <- corpus_reshape(doccorpus, to = "sentences")
 #' texts(sentcorpus)
-#' texts(corpus_sample(sentcorpus, replace = TRUE, by = "document"))
+#' texts(corpus_sample(sentcorpus, replace = TRUE, by = 'documents'))
 corpus_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL, ...) {
     UseMethod("corpus_sample")
 }
@@ -43,10 +43,13 @@ corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL
     index <- docID <- temp <- NULL
     
     if (!is.null(by)) {
-        if (by == "document") by <- "_document"
-        dt <- data.table(index = 1:ndoc(x), docID = docvars(x, by))
-        dt[, temp := sample(1:.N, replace = TRUE), by = docID]
-        dt[, sample_index := index[temp], by = docID]
+        if (by == 'documents') {
+            dt <- data.table(index = 1:ndoc(x), id_documents = docnames(x))
+        } else {
+            dt <- data.table(index = 1:ndoc(x), id_documents = docvars(x, by))
+        }
+        dt[, temp := sample(1:.N, replace = TRUE), by = id_documents]
+        dt[, sample_index := index[temp], by = id_documents]
         sample_index <- dt[, sample_index]
     } else {
         sample_index <- base::sample(ndoc(x), size, replace, prob) 
