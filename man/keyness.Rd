@@ -6,7 +6,7 @@
 \alias{keyness_chi2_stats}
 \alias{keyness_exact}
 \alias{keyness_lr}
-\alias{keyness_mi}
+\alias{keyness_pmi}
 \title{compute keyness (internal functions)}
 \usage{
 keyness_chi2_dt(x)
@@ -17,7 +17,7 @@ keyness_exact(x)
 
 keyness_lr(x, correction = c("none", "Yates"))
 
-keyness_mi(x)
+keyness_pmi(x)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -45,7 +45,7 @@ application of \link[stats]{fisher.test}, returning the odds ratio.
 \code{keyness_lr} computes the \eqn{G^2} likelihood ratio statistic
   using vectorized computation
 
-\code{keyness_mi} computes the Mutual Information statistic
+\code{keyness_mi} computes the Pointwise Mutual Information statistic
   using vectorized computation
 }
 \examples{
@@ -55,7 +55,7 @@ quanteda:::keyness_chi2_dt(mydfm)
 quanteda:::keyness_chi2_stats(mydfm)
 quanteda:::keyness_exact(mydfm)
 quanteda:::keyness_lr(mydfm)
-quanteda:::keyness_mi(mydfm)
+quanteda:::keyness_pmi(mydfm)
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Yates's_correction_for_continuity}

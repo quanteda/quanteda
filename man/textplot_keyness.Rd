@@ -4,13 +4,17 @@
 \alias{textplot_keyness}
 \title{plot word keyness}
 \usage{
-textplot_keyness(x, sort = TRUE, showBothDoc = FALSE, features = 20)
+textplot_keyness(x, sort = TRUE, showBothDoc = FALSE, n = 20)
 }
 \arguments{
 \item{x}{the keyness object to be plotted}
 
 \item{sort}{if \code{TRUE} (the default), order points from low to high 
 score.}
+
+\item{showBothDoc}{if \code{TRUE} show dual plot for both documents}
+
+\item{n}{number of terms to plot.}
 }
 \value{
 a \pkg{ggplot2} object

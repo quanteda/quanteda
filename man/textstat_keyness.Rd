@@ -4,7 +4,7 @@
 \alias{textstat_keyness}
 \title{calculate keyness statistics}
 \usage{
-textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr", "MI"),
+textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr", "PMI"),
   sort = TRUE)
 }
 \arguments{
@@ -17,7 +17,7 @@ feature frequencies will be combined for use as a reference}
 \item{measure}{(signed) association measure to be used for computing keyness.
 Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
 \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
-\eqn{G} statistic with Yates correction; \code{"MI"} for the Mutual Information
+\eqn{G} statistic with Yates correction; \code{"PMI"} for the Pointwise Mutual Information
  statistic.}
 
 \item{sort}{logical; if \code{TRUE} sort features scored in descending order 
@@ -29,7 +29,8 @@ scored name each row, and the number of occurrences for both the target and refe
   For \code{measure = "chi2"} this is the chi-squared value, signed 
   positively if the observed value in the target exceeds its expected value; 
   for \code{measure = "exact"} this is the estimate of the odds ratio; for 
-  \code{measure = "lr"} this is the likelihood ratio \eqn{G} statistic.
+  \code{measure = "lr"} this is the likelihood ratio \eqn{G} statistic; for \code{"PMI"} 
+  this is Pointwise Mutual Information statistics..
 }
 \description{
 calculate keyness statistics
