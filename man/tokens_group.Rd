@@ -21,9 +21,5 @@ corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
 toks <- tokens(corp)
 quanteda:::tokens_group(toks, groups = "grp")
 quanteda:::tokens_group(toks, groups = c(1, 1, 2, 2))
-
-# equivalent
-dfm(mydfm, groups = "grp")
-dfm(mydfm, groups = c(1, 1, 2, 2))
 }
 \keyword{internal}
