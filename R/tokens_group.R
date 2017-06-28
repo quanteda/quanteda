@@ -25,11 +25,11 @@ tokens_group <- function(x, groups = NULL) {
 # internal function to generate a grouping vector from docvars
 # used in dfm.corpus, dfm.tokens, tokens_group
 generate_groups <- function(x, groups) {
-    if (is.character(groups) && all(groups %in% names(docvars(x)))) {
-        groups <- interaction(docvars(x)[, groups], drop = TRUE)
+    if (is.character(groups) && all(groups %in% names(documents(x)))) {
+        groups <- interaction(documents(x)[, groups], drop = TRUE)
     } else {
         if (length(groups) != ndoc(x))
             stop("groups must name docvars or provide data matching the documents in x")
     }
-    return(as.character(groups))
+    groups
 }
