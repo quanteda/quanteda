@@ -130,6 +130,7 @@ Collate:
     'tokenize_outtakes.R'
     'tokens.R'
     'tokens_compound.R'
+    'tokens_group.R'
     'tokens_lookup.R'
     'tokens_ngrams.R'
     'tokens_select.R'
