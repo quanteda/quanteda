@@ -96,12 +96,13 @@ apply_theme <- function(p) {
 }
 
 ## form https://gist.github.com/jslefche/e4c0e9f57f0af49fca87
+#'@keywords internal
 ggplot_dual_axis = function(plot1, plot2, which.axis = "x") {
     
     # Update plot with transparent panel
     plot2 = plot2 + theme(panel.background = element_rect(fill = NA))
     
-    grid.newpage()
+    grid::grid.newpage()
     
     # Increase right margin if which.axis == "y"
     if(which.axis == "y") plot1 = plot1 + theme(plot.margin = unit(c(0.7, 1.5, 0.4, 0.4), "cm"))
