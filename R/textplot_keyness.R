@@ -37,7 +37,6 @@ textplot_keyness <-  function(x, sort = TRUE) {
     } else {
         ggplot(data = x, aes(x = rownames(x), y = x[,1]))
     }
-    p <-  ggplot(data = x, aes(x=reorder(rownames(x), x[,1]), y = x[,1]))
     p <- p    + coord_flip() +
          geom_point(size=1) +
          ylab(colnames(x)[1]) +
@@ -45,42 +44,6 @@ textplot_keyness <-  function(x, sort = TRUE) {
     apply_theme(p)
 } 
 
-##
-## internal function to plot document scaling
-##
-# textplot_scale1d_documents <- function(x, se, doclabels, sort = TRUE, groups = NULL) {
-#     
-#     if (!is.null(doclabels))
-#         stopifnot(length(doclabels) == length(x))
-#     
-#     if (sort & !is.null(groups)) {
-#         temp_medians <- aggregate(x, list(groups), median, na.rm = TRUE)
-#         groups <- factor(groups, levels = temp_medians[order(temp_medians$x, decreasing = TRUE), 1])
-#     }
-#     
-#     theta <- lower <- upper <- NULL
-#     results <- data.frame(doclabels = doclabels, 
-#                           theta = x, 
-#                           lower = x - 1.96 * se, 
-#                           upper = x + 1.96 * se)
-#     if (!is.null(groups))
-#         results$groups <- groups
-#     
-#     p <- if (sort) {
-#         ggplot(data = results, aes(x = reorder(doclabels, theta), y = theta))
-#     } else {
-#         ggplot(data = results, aes(x = doclabels, y = theta))
-#     }
-#     
-#     p <- p + 
-#         coord_flip() + 
-#         { if (!is.null(groups))
-#             facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free") } +       
-#         geom_pointrange(aes(ymin = lower, ymax = upper), lwd = .25, fatten = .4) + 
-#         geom_point(size = 1) +
-#         xlab(NULL)
-#     p
-# }
 
 ##
 ## common minimal B&W theme
