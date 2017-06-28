@@ -1,17 +1,16 @@
 context('test kwic.R')
 
 test_that("test attr(kwic, 'ntoken') with un-named texts", {
-
-    testkwic <- kwic(texts(c(
-     'The quick brown fox jumped over the lazy dog',
-     'The quick brown fox',
-     'The quick brown dog jumped over the lazy dog',
-     NA
-     )), 'fox')
-
+    testkwic <- kwic(c(
+        'The quick brown fox jumped over the lazy dog',
+        'The quick brown fox',
+        'The quick brown dog jumped over the lazy dog',
+        NA
+    ), 'fox')
+    
     testntokens <- c(9, 4, 9, 1)
     names(testntokens) <- c('text1', 'text2', 'text3', 'text4')
-
+    
     expect_that(
         attr(testkwic, 'ntoken'),
         equals(testntokens)
@@ -19,9 +18,7 @@ test_that("test attr(kwic, 'ntoken') with un-named texts", {
 })
 
 test_that("test attr(kwic, 'ntoken') text names", {
-              
     testkwic <- kwic(data_corpus_inaugural, 'american')
-
     expect_that(
         names(attr(testkwic, 'ntoken')),
         equals(names(texts(data_corpus_inaugural)))
@@ -85,26 +82,26 @@ test_that("test kwic on last token", {
     )
 })
 
-
 test_that("test kwic on two tokens", {
-    testkwic <- kwic(paste(LETTERS, collapse=' '), c('D', 'E'))
+    txt <- "A B C D E F G D H"
+    testkwic <- kwic(txt, c('D', 'E'), 3)
     expect_that(
         data.frame(testkwic),
         equals(data.frame(
-            docname = c('text1'),
-            from = 4L,
-            to = 5L,
-            pre = 'A B C',
-            keyword = 'D E',
-            post = 'F G H I J',
+            docname = "text1",
+            from = c(4L, 5L, 8L),
+            to = c(4L, 5L, 8L),
+            pre = c("A B C", "B C D", "E F G"),
+            keyword = c("D", "E", "D"),
+            post = c("E F G", "F G D", "H"),
             stringsAsFactors = FALSE
         ))
     )
 })
 
-test_that("test kwic on non-existant token", {
+test_that("test kwic on non-existent token", {
     testkwic <- kwic(paste(LETTERS, collapse=' '), 'É')
-    expect_true(is.data.frame(testkwic) )
+    expect_true(is.data.frame(testkwic))
 })
 
 test_that("test kwic on multiple texts", {
@@ -210,7 +207,7 @@ test_that("test that kwic works for fixed types", {
 })
 
 test_that("is.kwic works as expected", {
-    mykwic <- kwic(data_corpus_inaugural, "provident*")
+    mykwic <- kwic(data_corpus_inaugural[1:3], "provident*")
     expect_true(is.kwic(mykwic))
     expect_false(is.kwic("Not a kwic"))
 })
@@ -223,13 +220,7 @@ test_that("textplot_xray works with new kwic, one token phrase", {
 
 test_that("textplot_xray works with new kwic, two token phrase", {
     data_corpus_inauguralPost70 <- corpus_subset(data_corpus_inaugural, Year > 1970)
-    knew <- kwic(data_corpus_inauguralPost70, "american people", new = TRUE)
-    expect_silent(textplot_xray(knew))
-})
-
-test_that("textplot_xray works with new kwic, two token phrase", {
-    data_corpus_inauguralPost70 <- corpus_subset(data_corpus_inaugural, Year > 1970)
-    knew <- kwic(data_corpus_inauguralPost70, "american people", new = TRUE)
+    knew <- kwic(data_corpus_inauguralPost70, phrase("american people"))
     expect_silent(textplot_xray(knew))
 })
 
@@ -264,5 +255,101 @@ test_that("as.tokens is working", {
                       c(0, 1, 1))
 })
 
+test_that("kwic works as expected with and without phrases", {
+    txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")
+    toks_uni <- tokens(txt)
+    dfm_uni <- dfm(toks_uni)
+    toks_bi <- tokens(txt, n = 2, concatenator = " ")
+    dfm_bi <- dfm(toks_bi)
+    char_uni <- c("a", "b", "g", "j")
+    char_bi <- c("a b", "g j")
+    list_uni <- list("a", "b", "g", "j")
+    list_bi <- list("a b", "g j")
+    dict_uni <- dictionary(one = c("a", "b"), two = c("g", "j"))
+    dict_bi <- dictionary(one = "a b", two = "g j")
+    coll_bi <- textstat_collocations(toks_uni, method = "lr", max_size = 2)
+    coll_tri <- textstat_collocations(toks_uni, method = "lr", min_size = 3, max_size = 3)[1, ]
+    
+    expect_equal(
+        kwic(txt, char_uni)$keyword,
+        c("a", "b", "g", "h", 
+          "a", "b", "g", "h")
+    )
+    expect_equal(
+        kwic(txt, list_uni)$keyword,
+        c("a", "b", "g", "h", 
+          "a", "b", "g", "h")
+    )
+    expect_equal(
+        nrow(kwic(txt, char_bi)),
+        0
+    )
+    expect_equal(
+        nrow(kwic(txt, list("c d", "g h"))),
+        0
+    )
+    expect_equal(
+        kwic(txt, list(c("c", "d"), c("g", "h")))$keyword,
+        c("c d", "g h", "g h")
+    )
+    expect_equal(
+        kwic(txt, phrase(c("c d", "g h")))$keyword,
+        c("c d", "g h", "g h")
+    )
+    
+    expect_equal(
+        kwic(txt, coll_bi)$keyword,
+        c("a b", "e g", "g h",
+          "a b", "e g", "g h")
+    )
+    expect_equal(
+        kwic(txt, coll_tri)$keyword,
+        c("e g h", "e g h")
+    )
 
+    expect_equal(
+        kwic(txt, dict_uni),
+        kwic(txt, char_uni)
+    )
+    expect_equal(
+        kwic(txt, dict_bi)$keyword,
+        c("a b", "a b")
+    )
+    
+    expect_equal(
+        kwic(toks_uni, char_uni)$keyword,
+        c("a", "b", "g", "h", 
+          "a", "b", "g", "h")
+    )
+    expect_equal(
+        kwic(toks_uni, list_uni)$keyword,
+        c("a", "b", "g", "h", 
+          "a", "b", "g", "h")
+    )
+    expect_equal(
+        nrow(kwic(toks_uni, char_bi)),
+        0
+    )
+    expect_equal(
+        nrow(kwic(toks_uni, list("c d", "g h"))),
+        0
+    )
+    expect_equal(
+        kwic(toks_uni, list(c("c", "d"), c("g", "h")))$keyword,
+        c("c d", "g h", "g h")
+    )
+    expect_equal(
+        kwic(toks_uni, phrase(c("c d", "g h")))$keyword,
+        c("c d", "g h", "g h")
+    )
+    
+    expect_equal(nrow(kwic(toks_uni, coll_bi)), 0)
+    expect_equal(nrow(kwic(toks_uni, coll_tri)), 0)
 
+    expect_equal(
+        kwic(toks_uni, dict_uni),
+        kwic(toks_uni, char_uni)
+    )
+    expect_equal(nrow(kwic(toks_uni, dict_bi)), 0)
+
+})
