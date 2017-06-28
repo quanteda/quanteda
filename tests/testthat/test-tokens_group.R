@@ -51,6 +51,54 @@ test_that("dfm_group and tokens_group are equivalent", {
     expect_identical(
         dfm_group(dfm(toks), c(1, 1, 2)),
         dfm(quanteda:::tokens_group(toks, c(1, 1, 2))))
-
 })
+
+test_that("generate_groups works for tokens objects", {
+    toks <- tokens(data_corpus_irishbudget2010)
+    expect_equal(
+        quanteda:::generate_groups(toks, rep(c("A", "B"), each = 7)),
+        rep(c("A", "B"), each = 7)
+    )
+    expect_equal(
+        quanteda:::generate_groups(toks, factor(rep(c("A", "B"), each = 7))),
+        factor(rep(c("A", "B"), each = 7))
+    )
+    expect_equal(
+        quanteda:::generate_groups(toks, factor(rep(c(1, 2), each = 7))),
+        factor(rep(c(1, 2), each = 7))
+    )
+    expect_equal(
+        quanteda:::generate_groups(toks, "party"),
+        factor(docvars(data_corpus_irishbudget2010, "party"))
+    )
+    expect_error(
+        quanteda:::generate_groups(toks, rep(c("A", "B"), each = 6)),
+        "groups must name docvars or provide data matching the documents in x"
+    )
+})
+
+test_that("generate_groups works for corpus objects", {
+    toks <- data_corpus_irishbudget2010
+    expect_equal(
+        quanteda:::generate_groups(toks, rep(c("A", "B"), each = 7)),
+        rep(c("A", "B"), each = 7)
+    )
+    expect_equal(
+        quanteda:::generate_groups(toks, factor(rep(c("A", "B"), each = 7))),
+        factor(rep(c("A", "B"), each = 7))
+    )
+    expect_equal(
+        quanteda:::generate_groups(toks, factor(rep(c(1, 2), each = 7))),
+        factor(rep(c(1, 2), each = 7))
+    )
+    expect_equal(
+        quanteda:::generate_groups(toks, "party"),
+        factor(docvars(data_corpus_irishbudget2010, "party"))
+    )
+    expect_error(
+        quanteda:::generate_groups(toks, rep(c("A", "B"), each = 6)),
+        "groups must name docvars or provide data matching the documents in x"
+    )
+})
+
 

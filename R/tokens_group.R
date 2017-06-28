@@ -11,7 +11,6 @@
 #' quanteda:::tokens_group(toks, groups = "grp")
 #' quanteda:::tokens_group(toks, groups = c(1, 1, 2, 2))
 tokens_group <- function(x, groups = NULL) {
-    
     attrs <- attributes(x)
     groups <- generate_groups(x, groups)
     groups_index <- rep(groups, lengths(x))
