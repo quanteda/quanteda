@@ -4,7 +4,7 @@
 \alias{textplot_keyness}
 \title{plot word keyness}
 \usage{
-textplot_keyness(x, sort = TRUE)
+textplot_keyness(x, sort = TRUE, showBothDoc = FALSE, features = 20)
 }
 \arguments{
 \item{x}{the keyness object to be plotted}
