@@ -39,7 +39,7 @@ test_that("tokens_group works with empty documents", {
     )
 })
 
-test_that("dfm_group and tokes_group are equivalent", {
+test_that("dfm_group and tokens_group are equivalent", {
     
     txts <- c('a b c c', 'b c d', 'a')
     toks <- tokens(txts)
