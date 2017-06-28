@@ -50,7 +50,7 @@ test_that("dfm_group and tokes_group are equivalent", {
     
     expect_identical(
         dfm_group(dfm(toks), c(1, 1, 2)),
-        dfm(quanteda:::tokens_group(toks, 1, 1, 2)))
+        dfm(quanteda:::tokens_group(toks, c(1, 1, 2))))
 
 })
 
