@@ -76,14 +76,10 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     
     result <- list()
     
-    # extract metadata
-    is_first <- docvars(x, '_segid') == 1
-    vars <- docvars(x)[is_first,]
-    names <- docvars(x, '_document')[is_first]
-    
     # reconstruct the original dfm
-    temp <- dfm_group(x, groups = docvars(x, '_docid'))
-    rownames(temp) <- rownames(vars) <- names
+    temp <- dfm_group(x, groups = docvars(x, '_document'))
+    vars <- docvars(x)[docvars(x, '_segid') == 1,]
+    rownames(vars) <- rownames(temp)
     docvars(temp) <- vars
     result[['dfm_0']] <- temp
     
@@ -91,8 +87,7 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     for (i in seq_len(n)) {
         if (verbose) message(", ", i, appendLF = FALSE)
         temp <- x[sample(seq_len(ndoc(x)), ndoc(x), replace = TRUE),]
-        temp <- dfm_group(temp, groups = docvars(temp, '_docid'))
-        rownames(temp) <- names
+        temp <- dfm_group(temp, groups = docvars(temp, '_document'))
         result[[paste0("dfm_", i)]] <- dfm_select(temp, result[[1]])
     }
     if (verbose) 
