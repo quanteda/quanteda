@@ -9,7 +9,6 @@
 #' @export
 #' @examples 
 #' # make phrases from characters
-#' phrase("a b", "c d e", "f")
 #' phrase(c("a b", "c d e", "f"))
 #' 
 #' # from a dictionary
