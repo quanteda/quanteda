@@ -10,7 +10,7 @@ features2list(features)
 \item{features}{the input features, one of: \itemize{ \item{character,
 }{whose elements will be split on whitespace;} \item{list of characters,
 }{consisting of a list of token patterns, where sequences are separate elements}; 
-\item{\link{phrases} object;} \item{\link{dictionary} object}{;} 
+\item{\link{phrase} object;} \item{\link{dictionary} object}{;} 
 \item{\link{dictionary} object}{;} 
 \item{\link{collocations} object.}{} }}
 }
