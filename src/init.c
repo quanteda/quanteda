@@ -21,6 +21,7 @@ extern SEXP quanteda_qatd_cpp_tokens_detect(SEXP, SEXP);
 extern SEXP quanteda_qatd_cpp_tokens_lookup(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP quanteda_qatd_cpp_tokens_match(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP quanteda_qatd_cpp_tokens_ngrams(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP quanteda_qatd_cpp_tokens_ngrams2(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP quanteda_qatd_cpp_tokens_recompile(SEXP, SEXP);
 extern SEXP quanteda_qatd_cpp_tokens_replace(SEXP, SEXP, SEXP, SEXP);
 extern SEXP quanteda_qatd_cpp_tokens_select(SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -48,6 +49,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"quanteda_qatd_cpp_tokens_lookup",    (DL_FUNC) &quanteda_qatd_cpp_tokens_lookup,    5},
     {"quanteda_qatd_cpp_tokens_match",     (DL_FUNC) &quanteda_qatd_cpp_tokens_match,     5},
     {"quanteda_qatd_cpp_tokens_ngrams",    (DL_FUNC) &quanteda_qatd_cpp_tokens_ngrams,    5},
+    {"quanteda_qatd_cpp_tokens_ngrams2",   (DL_FUNC) &quanteda_qatd_cpp_tokens_ngrams2,   5},
     {"quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &quanteda_qatd_cpp_tokens_recompile, 2},
     {"quanteda_qatd_cpp_tokens_replace",   (DL_FUNC) &quanteda_qatd_cpp_tokens_replace,   4},
     {"quanteda_qatd_cpp_tokens_select",    (DL_FUNC) &quanteda_qatd_cpp_tokens_select,    5},

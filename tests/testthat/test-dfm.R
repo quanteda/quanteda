@@ -266,13 +266,13 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
 test_that("dfm print works as expected", {
     testdfm <- dfm(data_corpus_irishbudget2010)
     expect_output(print(testdfm),
-                  "^Document-feature matrix of: 14 documents, 5,058 features \\(80.9% sparse\\)")
+                  "^Document-feature matrix of: 14 documents, 5,055 features \\(80.9% sparse\\)")
     expect_output(print(testdfm[1:5, 1:5]),
                   "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\).*")
     expect_output(head(testdfm, 1),
-                  "Document-feature matrix of: 14 documents, 5,058 features.*showing first document and first 6 features.*")
+                  "Document-feature matrix of: 14 documents, 5,055 features.*showing first document and first 6 features.*")
     expect_output(tail(testdfm, 1),
-                  "Document-feature matrix of: 14 documents, 5,058 features.*showing last document and last 6 features.*")
+                  "Document-feature matrix of: 14 documents, 5,055 features.*showing last document and last 6 features.*")
 })
 
 test_that("dfm.dfm works as expected", {
@@ -397,7 +397,7 @@ test_that("dfm print works with options as expected", {
     tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE)
     expect_output(
         head(tmp),
-        "Document-feature matrix of: 14 documents, 5,058 features.*\\(showing first 6 documents and first 6 features\\)"
+        "Document-feature matrix of: 14 documents, 5,055 features.*\\(showing first 6 documents and first 6 features\\)"
     )
     expect_output(
         head(tmp[1:5, 1:5]),
@@ -429,7 +429,7 @@ test_that("dfm print works with options as expected", {
     quanteda_options(print_dfm_max_nfeature = 22L)
     expect_output(
         print(tmp),
-        "Document-feature matrix of: 14 documents, 5,058 features \\(80.9% sparse\\)\\.$"
+        "Document-feature matrix of: 14 documents, 5,055 features \\(80.9% sparse\\)\\.$"
     )
     expect_output(
         print(tmp[, 1:21]),
@@ -453,4 +453,14 @@ test_that("cannot supply remove and select in one call (#793)", {
         dfm(toks, select = "one", remove = "two"),
         "only one of select and remove may be supplied at once"
     )
+})
+
+test_that("grouping is working as expected", {
+    mydfm <- dfm(data_corpus_inaugural[1:10])
+    expect_equal(names(topfeatures(mydfm, groups = docnames(mydfm))),
+                 docnames(mydfm))
+    expect_equal(topfeatures(mydfm, groups = docnames(mydfm))[[5]],
+                 topfeatures(mydfm[5,]))
+    expect_equal(topfeatures(mydfm, decreasing = TRUE, groups = docnames(mydfm))[[10]],
+                 topfeatures(mydfm[10,], decreasing = TRUE))
 })

@@ -192,7 +192,8 @@ test_that("error if empty concatenator is given", {
 
 test_that("dictionary woks with the Yoshicoder format", {
     testdict <- dictionary(file = "../data/dictionaries/laver-garry.ykd")
-    expect_equal(names(testdict), 
+    expect_equal(names(testdict), 'Laver and Garry') 
+    expect_equal(names(testdict[['Laver and Garry']]), 
                  c("State in Economy", "Institutions", "Values", "Law and Order", "Environment", 
                    "Culture", "Groups", "Rural", "Urban"))
     
@@ -207,10 +208,18 @@ test_that("dictionary constructor works with LIWC format w/doubled terms", {
     )
 })
 
-test_that("dictionary constructor errors as expected with LIWC format missing a category", {
-    expect_error(
+test_that("dictionary constructor works with LIWC format zero padding", {
+    expect_equivalent(
+        dictionary(file = "../data/dictionaries/mary_zeropadding.dic"),
+        dictionary(list(A_CATEGORY = c("lamb", "little", "more"),
+                        ANOTHER_CATEGORY = c("had", "little", "mary")))
+    )
+})
+
+test_that("dictionary constructor reports mssing cateogries in LIWC format", {
+    expect_message(
         dictionary(file = "../data/dictionaries/mary_missingcat.dic"),
-        "Dictionary.*refers to undefined category 3 for term \"little\"" 
+        "note: ignoring undefined categories:" 
     )
 })
 
@@ -235,15 +244,19 @@ test_that("dictionary constructor works with LIWC format w/extra codes", {
         dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
         "note: removing empty keys: friend, humans, insight, cause, discrep, filler"
     )
-    d <- dictionary(file = "../data/dictionaries/liwc_extracodes.dic")
+    dict <- dictionary(file = "../data/dictionaries/liwc_extracodes.dic")
     expect_equal(
-        length(d), 
+        length(dict), 
         10
     )
-    expect_equal(
-        names(d), 
+    expect_true(setequal(
+        names(dict), 
         c("verb", "past", "whatever", "family", "affect", "posemo", "cogmech", "tentat", "whatever2", "time")
-    )
+    ))
+    
+    dict1 <- quanteda:::read_dict_liwc("../data/dictionaries/liwc_extracodes.dic")
+    dict2 <- quanteda:::list2dictionary(quanteda:::read_dict_liwc_old("../data/dictionaries/liwc_extracodes.dic"))
+    expect_equal(dict1[order(names(dict1))], dict2[order(names(dict2))])
 })
 
 
