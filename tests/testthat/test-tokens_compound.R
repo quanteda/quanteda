@@ -52,23 +52,23 @@ test_that("tokens_compound join a sequences of sequences", {
     toks <- tokens(txt)
     seqs <- tokens(c("a b", "b c d", "E F", "F G"), 
                    hash = FALSE, what = "fastestword")
-    expect_equivalent(
+    expect_equal(
         as.list(tokens_compound(toks, seqs, valuetype = "glob", case_insensitive = TRUE, join = TRUE)),
         list(c("a_b_c_d", "e_f_g"),
              c("A_B_C_D", "E_F_G"))
     )
     
-    expect_equivalent(
+    expect_equal(
         as.list(tokens_compound(toks, seqs, valuetype = "glob", case_insensitive = TRUE, join = FALSE)),
         list(c("a_b", "b_c_d", "e_f", "f_g"),
              c("A_B", "B_C_D", "E_F", "F_G"))
     )
     
     txts <- 'we like high quality sound'
-    seqs <- c('high quality', 'quality sound')
-    expect_equivalent(as.list(tokens_compound(tokens(txts), seqs, join = TRUE)),
+    seqs <- phrase(c('high quality', 'quality sound'))
+    expect_equal(as.list(tokens_compound(tokens(txts), seqs, join = TRUE)),
                       list(c("we", "like", "high_quality_sound")))
-    expect_equivalent(as.list(tokens_compound(tokenize(txts), seqs, join = FALSE)),
+    expect_equal(as.list(tokens_compound(tokens(txts), seqs, join = FALSE)),
                       list(c("we", "like", "high_quality", "quality_sound")))
     
 })
@@ -94,7 +94,7 @@ test_that("tokens_compound preserved document names", {
 test_that("tokens_compound works with padded tokens", {
     toks <- tokens(c(doc1 = 'a b c d e f g'))
     toks <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
-    toks <- tokens_compound(toks, "c d")
+    toks <- tokens_compound(toks, phrase("c d"))
     expect_equal(sort(attr(toks, "types")),
                  sort(c("a", "c_d", "f", "g")))
 })

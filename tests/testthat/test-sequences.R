@@ -50,12 +50,12 @@ test_that("test that sequences works with tokens_compound", {
     seqs <- sequences(toks_capital, min_count = 1, nested = FALSE)
     
     # seqs have the same types
-    expect_equivalent(as.list(tokens_compound(toks, seqs, join = FALSE)),
+    expect_equivalent(as.list(tokens_compound(toks, phrase(seqs), join = FALSE)),
                       list(c("E_E", "a", "b", "c", "E_E_G_G", "E_E", "G_G", "f", "E_E", "f", "f", "G_G")))
     
     # seqs have different types
     attr(seqs, 'types') <- ''
-    expect_equivalent(as.list(tokens_compound(toks, seqs, join = FALSE)),
+    expect_equivalent(as.list(tokens_compound(toks, phrase(seqs), join = FALSE)),
                       list(c("E_E", "a", "b", "c", "E_E_G_G", "E_E", "G_G", "f", "E_E", "f", "f", "G_G")))
     
 })
