@@ -5,7 +5,7 @@
 #' @param sort if \code{TRUE} (the default), order points from low to high 
 #'   score. 
 #' @param showBothDoc if \code{TRUE} show dual plot for both documents
-#' @n a single integer. number of terms to plot.
+#' @param n number of terms to plot.
 #' @return a \pkg{ggplot2} object
 #' @export
 #' @author Kenneth Benoit and Haiyan Wang
@@ -47,8 +47,10 @@ textplot_keyness <-  function(x, sort = TRUE, showBothDoc = FALSE, n = 20) {
             xlab("Keywords")
         apply_theme(p)
     } else {
-        topn <- head(x, n)
-        tailn <- tail(x, n)
+        pos_n <- min(n, sum(x[ ,1] >= 0))
+        neg_n <- min(n, sum(x[ ,1] < 0))
+        topn <- head(x, pos_n)
+        tailn <- tail(x, neg_n)
         maxY <- max(max(topn[ ,1]), max(tailn[ ,1]))
         p1 <- if (sort) {
             ggplot(data = topn, aes(x = reorder(rownames(topn), topn[,1]), y = topn[,1]))
