@@ -59,4 +59,48 @@ bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("
 }
 
 
+#' @noRd
+#' @export
+#' @examples 
+#' txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+#'          texttwo = "Premiere phrase.  Deuxieme phrase.")
+#' corp <- corpus_reshape(corpus(txt), to = "sentences")
+#' mx <- dfm(corp)
+#' 
+bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
+    
+    if (verbose) 
+        message("Bootstrapping the dfm to create multiple dfm objects...")
+    if (verbose)
+        message("   ...resampling and forming dfms: 0", appendLF = FALSE)
+    
+    result <- list()
+    
+    # extract metadata
+    is_first <- docvars(x, '_segid') == 1
+    vars <- docvars(x)[is_first,]
+    names <- docvars(x, '_document')[is_first]
+    
+    # reconstruct the original dfm
+    temp <- dfm_group(x, groups = docvars(x, '_docid'))
+    rownames(temp) <- rownames(vars) <- names
+    docvars(temp) <- vars
+    result[['dfm_0']] <- temp
+    
+    # random sample dfm
+    for (i in seq_len(n)) {
+        if (verbose) message(", ", i, appendLF = FALSE)
+        temp <- x[sample(seq_len(ndoc(x)), ndoc(x), replace = TRUE),]
+        temp <- dfm_group(temp, groups = docvars(temp, '_docid'))
+        rownames(temp) <- names
+        result[[paste0("dfm_", i)]] <- dfm_select(temp, result[[1]])
+    }
+    if (verbose) 
+        message("\n   ... complete.")
+    
+    class(result) <- c("dfm_bootstrap")
+    return(result)
+}
+
+
 
