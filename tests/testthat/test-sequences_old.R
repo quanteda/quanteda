@@ -45,7 +45,7 @@ test_that("test that sequences_old works with tokens_compound", {
     # seqs have different types
     attr(seqs, 'types') <- ''
     expect_equivalent(as.list(tokens_compound(toks, seqs, join = FALSE)),
-                      list(c("E_E", "a", "b", "c", "E_E_G_G", "E_E", "G_G", "f", "E_E", "f", "f", "G_G")))
+                  list(c("E", "E", "a", "b", "c", "E", "E", "G", "G", "f", "E", "E", "f", "f", "G", "G")))
     
 })
 
