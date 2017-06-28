@@ -185,7 +185,7 @@ dfm.corpus <- function(x, tolower = TRUE,
 
     if (!is.null(groups)) {
         if (verbose) catm("   ... grouping texts\n") 
-        group <- generate_groups(x, groups)
+        # group <- generate_groups(x, groups)
         temp <- tokens(texts(x, groups = groups), ...)
     } else {
         if (verbose) catm("   ... tokenizing texts\n")

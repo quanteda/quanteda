@@ -139,23 +139,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_sequences
-DataFrame qatd_cpp_sequences(const List& texts_, const CharacterVector& types_, const unsigned int count_min, unsigned int len_min, unsigned int len_max, const String& method, bool nested);
-RcppExport SEXP quanteda_qatd_cpp_sequences(SEXP texts_SEXP, SEXP types_SEXP, SEXP count_minSEXP, SEXP len_minSEXP, SEXP len_maxSEXP, SEXP methodSEXP, SEXP nestedSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
-    Rcpp::traits::input_parameter< const unsigned int >::type count_min(count_minSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type len_min(len_minSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type len_max(len_maxSEXP);
-    Rcpp::traits::input_parameter< const String& >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< bool >::type nested(nestedSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_sequences(texts_, types_, count_min, len_min, len_max, method, nested));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_sequences_old
 DataFrame qatd_cpp_sequences_old(const List& texts_, const IntegerVector& words_, const CharacterVector& types_, const unsigned int count_min, unsigned int len_max, bool nested, bool ordered);
 RcppExport SEXP quanteda_qatd_cpp_sequences_old(SEXP texts_SEXP, SEXP words_SEXP, SEXP types_SEXP, SEXP count_minSEXP, SEXP len_maxSEXP, SEXP nestedSEXP, SEXP orderedSEXP) {
@@ -170,6 +153,23 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type nested(nestedSEXP);
     Rcpp::traits::input_parameter< bool >::type ordered(orderedSEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_sequences_old(texts_, words_, types_, count_min, len_max, nested, ordered));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_sequences
+DataFrame qatd_cpp_sequences(const List& texts_, const CharacterVector& types_, const unsigned int count_min, unsigned int len_min, unsigned int len_max, const String& method, bool nested);
+RcppExport SEXP quanteda_qatd_cpp_sequences(SEXP texts_SEXP, SEXP types_SEXP, SEXP count_minSEXP, SEXP len_minSEXP, SEXP len_maxSEXP, SEXP methodSEXP, SEXP nestedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< const unsigned int >::type count_min(count_minSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type len_min(len_minSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type len_max(len_maxSEXP);
+    Rcpp::traits::input_parameter< const String& >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< bool >::type nested(nestedSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_sequences(texts_, types_, count_min, len_min, len_max, method, nested));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -244,21 +244,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_tokens_ngrams2
-List qatd_cpp_tokens_ngrams2(const List& texts_, const CharacterVector types_, const String delim_, const IntegerVector ns_, const IntegerVector skips_);
-RcppExport SEXP quanteda_qatd_cpp_tokens_ngrams2(SEXP texts_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP ns_SEXP, SEXP skips_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
-    Rcpp::traits::input_parameter< const String >::type delim_(delim_SEXP);
-    Rcpp::traits::input_parameter< const IntegerVector >::type ns_(ns_SEXP);
-    Rcpp::traits::input_parameter< const IntegerVector >::type skips_(skips_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_ngrams2(texts_, types_, delim_, ns_, skips_));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_tokens_ngrams
 List qatd_cpp_tokens_ngrams(const List& texts_, const CharacterVector types_, const String delim_, const IntegerVector ns_, const IntegerVector skips_);
 RcppExport SEXP quanteda_qatd_cpp_tokens_ngrams(SEXP texts_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP ns_SEXP, SEXP skips_SEXP) {
@@ -271,6 +256,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector >::type ns_(ns_SEXP);
     Rcpp::traits::input_parameter< const IntegerVector >::type skips_(skips_SEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_ngrams(texts_, types_, delim_, ns_, skips_));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_tokens_ngrams2
+List qatd_cpp_tokens_ngrams2(const List& texts_, const CharacterVector types_, const String delim_, const IntegerVector ns_, const IntegerVector skips_);
+RcppExport SEXP quanteda_qatd_cpp_tokens_ngrams2(SEXP texts_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP ns_SEXP, SEXP skips_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< const String >::type delim_(delim_SEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type ns_(ns_SEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type skips_(skips_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_ngrams2(texts_, types_, delim_, ns_, skips_));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -327,25 +327,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// wordfishcpp
-Rcpp::List wordfishcpp(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS, bool svd_on, double residual_floor);
-RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP, SEXP ABSSEXP, SEXP svd_onSEXP, SEXP residual_floorSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::sp_mat& >::type wfm(wfmSEXP);
-    Rcpp::traits::input_parameter< IntegerVector& >::type dirvec(dirvecSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type priorvec(priorvecSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type tolvec(tolvecSEXP);
-    Rcpp::traits::input_parameter< IntegerVector& >::type disptype(disptypeSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type dispmin(dispminSEXP);
-    Rcpp::traits::input_parameter< bool >::type ABS(ABSSEXP);
-    Rcpp::traits::input_parameter< bool >::type svd_on(svd_onSEXP);
-    Rcpp::traits::input_parameter< double >::type residual_floor(residual_floorSEXP);
-    rcpp_result_gen = Rcpp::wrap(wordfishcpp(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor));
-    return rcpp_result_gen;
-END_RCPP
-}
 // wordfishcpp_dense
 Rcpp::List wordfishcpp_dense(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor, bool abs_err);
 RcppExport SEXP quanteda_wordfishcpp_dense(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP, SEXP abs_errSEXP) {
@@ -379,6 +360,25 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type svd_sparse(svd_sparseSEXP);
     Rcpp::traits::input_parameter< double >::type residual_floor(residual_floorSEXP);
     rcpp_result_gen = Rcpp::wrap(wordfishcpp_mt(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor));
+    return rcpp_result_gen;
+END_RCPP
+}
+// wordfishcpp
+Rcpp::List wordfishcpp(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS, bool svd_on, double residual_floor);
+RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP, SEXP ABSSEXP, SEXP svd_onSEXP, SEXP residual_floorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type wfm(wfmSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type dirvec(dirvecSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type priorvec(priorvecSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type tolvec(tolvecSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type disptype(disptypeSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type dispmin(dispminSEXP);
+    Rcpp::traits::input_parameter< bool >::type ABS(ABSSEXP);
+    Rcpp::traits::input_parameter< bool >::type svd_on(svd_onSEXP);
+    Rcpp::traits::input_parameter< double >::type residual_floor(residual_floorSEXP);
+    rcpp_result_gen = Rcpp::wrap(wordfishcpp(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor));
     return rcpp_result_gen;
 END_RCPP
 }
