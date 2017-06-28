@@ -41,12 +41,19 @@ qatd_cpp_fcm <- function(texts_, n_types, count, window, weights, ordered, tri, 
     .Call('quanteda_qatd_cpp_fcm', PACKAGE = 'quanteda', texts_, n_types, count, window, weights, ordered, tri, nvec)
 }
 
+<<<<<<< HEAD
 qatd_cpp_sequences <- function(texts_, types_, count_min, len_min, len_max, method, nested) {
     .Call('quanteda_qatd_cpp_sequences', PACKAGE = 'quanteda', texts_, types_, count_min, len_min, len_max, method, nested)
 }
 
+=======
+>>>>>>> master
 qatd_cpp_sequences_old <- function(texts_, words_, types_, count_min, len_max, nested, ordered = FALSE) {
     .Call('quanteda_qatd_cpp_sequences_old', PACKAGE = 'quanteda', texts_, words_, types_, count_min, len_max, nested, ordered)
+}
+
+qatd_cpp_sequences <- function(texts_, types_, count_min, len_min, len_max, method, nested) {
+    .Call(quanteda_qatd_cpp_sequences, texts_, types_, count_min, len_min, len_max, method, nested)
 }
 
 qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {
@@ -69,12 +76,19 @@ qatd_cpp_tokens_match <- function(texts_, types_, words_, ids_, overlap) {
     .Call('quanteda_qatd_cpp_tokens_match', PACKAGE = 'quanteda', texts_, types_, words_, ids_, overlap)
 }
 
+<<<<<<< HEAD
 qatd_cpp_tokens_ngrams2 <- function(texts_, types_, delim_, ns_, skips_) {
     .Call('quanteda_qatd_cpp_tokens_ngrams2', PACKAGE = 'quanteda', texts_, types_, delim_, ns_, skips_)
 }
 
+=======
+>>>>>>> master
 qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
     .Call('quanteda_qatd_cpp_tokens_ngrams', PACKAGE = 'quanteda', texts_, types_, delim_, ns_, skips_)
+}
+
+qatd_cpp_tokens_ngrams2 <- function(texts_, types_, delim_, ns_, skips_) {
+    .Call(quanteda_qatd_cpp_tokens_ngrams2, texts_, types_, delim_, ns_, skips_)
 }
 
 qatd_cpp_tokens_recompile <- function(texts_, types_) {
@@ -93,15 +107,22 @@ qatd_cpp_chars_remove <- function(input_, char_remove) {
     .Call('quanteda_qatd_cpp_chars_remove', PACKAGE = 'quanteda', input_, char_remove)
 }
 
+<<<<<<< HEAD
 wordfishcpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor) {
     .Call('quanteda_wordfishcpp', PACKAGE = 'quanteda', wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor)
 }
 
+=======
+>>>>>>> master
 wordfishcpp_dense <- function(wfm, dir, priors, tol, disp, dispfloor, abs_err) {
     .Call('quanteda_wordfishcpp_dense', PACKAGE = 'quanteda', wfm, dir, priors, tol, disp, dispfloor, abs_err)
 }
 
 wordfishcpp_mt <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor) {
     .Call('quanteda_wordfishcpp_mt', PACKAGE = 'quanteda', wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor)
+}
+
+wordfishcpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor) {
+    .Call(quanteda_wordfishcpp, wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor)
 }
 

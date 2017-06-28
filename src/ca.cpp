@@ -68,7 +68,7 @@ arma::sp_mat cacpp(const arma::sp_mat &objm, unsigned int threads, const double 
     
     //create the residual matrix
     Triplets residual_tri;
-    residual_tri.reserve(N*K);
+    //residual_tri.reserve(N*K);
     if (threads == 1){
         for (std::size_t i = 0; i < N; i++) {
             create_residual_ca(i, objm, rsum, csum, residual_floor, K, residual_tri);
