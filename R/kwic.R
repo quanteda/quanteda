@@ -38,6 +38,8 @@ kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"
 #' @noRd
 #' @export
 kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    if (is.collocations(keywords) || is.dictionary(keywords))
+        keywords <- phrase(keywords) 
     kwic(tokens(x, ...), keywords, window, valuetype, case_insensitive)
 }
 
@@ -70,7 +72,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
         stop("x must be a tokens object")
     
     valuetype <- match.arg(valuetype)
-    keywords <- features2list(phrase(keywords))
+    keywords <- features2list(keywords)
 
     # add document names if none
     if (is.null(names(x))) {
