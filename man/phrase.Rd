@@ -10,17 +10,25 @@ phrase(...)
 is.phrase(x)
 }
 \arguments{
-\item{...}{the sequence, as a \code{character} object containing whitespace separating the patterns.}
+\item{...}{the sequence, as a \code{character} object containing whitespace
+separating the patterns.}
+
+\item{x}{object to be tested as or coerced to a phrase}
 }
 \value{
-\code{is.phrase} returns \code{TRUE} if the object is a
-  \link{phrase}s class; \code{FALSE} otherwise.
+\code{phrase} returns a specially classed list whose white-spaced
+  elements have been parsed into separate \code{character} elements.
+
+\code{is.phrase} returns \code{TRUE} if the object was created by 
+  \code{\link{phrase}}; \code{FALSE} otherwise.
 }
 \description{
-Declares that a whitespace-separated expression consists of multiple patterns, separated by whitespace.
+Declares that a whitespace-separated expression consists of multiple
+patterns, separated by whitespace.
 }
 \examples{
 # make phrases from characters
+phrase("a b", "c d e", "f")
 phrase(c("a b", "c d e", "f"))
 
 # from a dictionary

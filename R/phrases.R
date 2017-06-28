@@ -1,10 +1,15 @@
 #' declare a compound character to be a sequence of separate pattern matches
 #' 
-#' Declares that a whitespace-separated expression consists of multiple patterns, separated by whitespace.
-#' @param ... the sequence, as a \code{character} object containing whitespace separating the patterns.
+#' Declares that a whitespace-separated expression consists of multiple
+#' patterns, separated by whitespace.
+#' @param ... the sequence, as a \code{character} object containing whitespace
+#'   separating the patterns.
+#' @return \code{phrase} returns a specially classed list whose white-spaced
+#'   elements have been parsed into separate \code{character} elements.
 #' @export
 #' @examples 
 #' # make phrases from characters
+#' phrase("a b", "c d e", "f")
 #' phrase(c("a b", "c d e", "f"))
 #' 
 #' # from a dictionary
@@ -20,7 +25,8 @@ phrase <- function(...) {
 #' @noRd
 #' @export
 phrase.character <- function(...) {
-    x <- lapply(as.list(...), 
+    x <- sapply(as.list(...), list)
+    x <- lapply(x, 
                 function(y) as.character(tokens(y, what = "fasterword", remove_punct = FALSE)))
     phrase(x)    
 }
@@ -56,8 +62,9 @@ phrase.tokens <- function(...) {
 
 
 #' @rdname phrase
-#' @return \code{is.phrase} returns \code{TRUE} if the object is a
-#'   \link{phrase}s class; \code{FALSE} otherwise.
+#' @param x object to be tested as or coerced to a phrase
+#' @return \code{is.phrase} returns \code{TRUE} if the object was created by 
+#'   \code{\link{phrase}}; \code{FALSE} otherwise.
 #' @export
 is.phrase <- function(x) {
     "phrases" %in% class(x)
@@ -75,10 +82,10 @@ print.phrases <- function(x, ...) {
     print(as.list(x))
 }
 
-#' @noRd
-#' @method as.list phrases
-#' @keywords internal
-#' @export
+# @rdname phrase
+# @method as.list phrases
+# @return \code{as.list} for phrase objects returns an unclassed list.
+# @export
 as.list.phrases <- function(x, ...) {
     attributes(x) <- NULL
     x
