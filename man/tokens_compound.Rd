@@ -11,7 +11,7 @@ tokens_compound(x, features, concatenator = "_", valuetype = c("glob",
 \item{x}{an input \link{tokens} object}
 
 \item{features}{a character vector, list of character vectors, \link{dictionary},
-\link{collocations} or \link{dfm}. See \link{features} for details.}
+\link{collocations}, or \link{dfm}. See \link{features} for details.}
 
 \item{concatenator}{the concatenation character that will connect the words 
 making up the multi-word sequences.  The default \code{_} is highly 

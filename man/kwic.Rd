@@ -17,8 +17,13 @@ is.kwic(x)
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
 
 \item{keywords}{a keyword pattern or phrase consisting of multiple keyword 
-patterns, possibly including punctuation.  If a phrase, \code{keywords} 
-will be tokenized using the \code{...} options.}
+patterns, possibly including punctuation.  If the value contains
+whitespace, it is best to wrap it in \code{\link{phrase}} to make this
+explicit. However if \code{x} is a character or \link{corpus} object, then
+keywords containing whitespace, or dictionary or collocation values, will
+automatically be considered phrases where each whitespace-separated element
+matches a token in sequence, and the \code{keywords} will be tokenized
+using the \code{...} options.}
 
 \item{window}{the number of context words to be displayed around the keyword.}
 
@@ -33,8 +38,8 @@ object types}
 }
 \value{
 A kwic object classed data.frame, with the document name 
-  (\code{docname}), the token index position (\code{position}), the context
-  before (\code{contextPre}), the keyword in its original format
+  (\code{docname}), the token index position (\code{position}), the context 
+  before (\code{contextPre}), the keyword in its original format 
   (\code{keyword}, preserving case and attached punctuation), and the context
   after (\code{contextPost}).
 }
