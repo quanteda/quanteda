@@ -7,7 +7,7 @@
 #' @param measure (signed) association measure to be used for computing keyness.
 #'   Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
 #'   \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
-#'   \eqn{G} statistic with Yates correction; \code{"MI"} for the Mutual Information
+#'   \eqn{G} statistic with Yates correction; \code{"PMI"} for the Pointwise Mutual Information
 #'    statistic.
 #' @param sort logical; if \code{TRUE} sort features scored in descending order 
 #'   of the measure, otherwise leave in original feature order
@@ -28,7 +28,8 @@
 #'   For \code{measure = "chi2"} this is the chi-squared value, signed 
 #'   positively if the observed value in the target exceeds its expected value; 
 #'   for \code{measure = "exact"} this is the estimate of the odds ratio; for 
-#'   \code{measure = "lr"} this is the likelihood ratio \eqn{G} statistic.
+#'   \code{measure = "lr"} this is the likelihood ratio \eqn{G} statistic; for \code{"PMI"} 
+#'   this is Pointwise Mutual Information statistics..
 #' @export
 #' @keywords textstat
 #' @importFrom stats chisq.test
@@ -49,13 +50,13 @@
 #' head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
 #' # using the likelihood ratio method
 #' head(textstat_keyness(dfm_smooth(pwdfm), measure = "lr", target = "2017-Trump"), 10)
-textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "MI"), sort = TRUE) {
+textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "PMI"), sort = TRUE) {
     UseMethod("textstat_keyness")
 }
 
 #' @noRd
 #' @export
-textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "MI"), sort = TRUE) {
+textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "PMI"), sort = TRUE) {
     
     # error checking
     measure <- match.arg(measure)
@@ -84,8 +85,8 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
         keywords <- keyness_exact(x)
     } else if (measure == "lr") {
         keywords <- keyness_lr(x)
-    } else if (measure == "MI") {
-        keywords <- keyness_mi(x)
+    } else if (measure == "PMI") {
+        keywords <- keyness_pmi(x)
     } else {
         stop(measure, " not yet implemented for textstat_keyness")
     }
@@ -250,13 +251,13 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
 }
 
 #' @rdname keyness
-#' @details \code{keyness_mi} computes the Mutual Information statistic
+#' @details \code{keyness_mi} computes the Pointwise Mutual Information statistic
 #'   using vectorized computation
 #' @examples
-#' quanteda:::keyness_mi(mydfm)
-keyness_mi <- function(x) {
+#' quanteda:::keyness_pmi(mydfm)
+keyness_pmi <- function(x) {
     
-    a <- b <- c <- d <- N <- E11 <- MI <- p <- NULL 
+    a <- b <- c <- d <- N <- E11 <- PMI <- p <- NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
     dt <- data.table(feature = featnames(x),
@@ -265,16 +266,17 @@ keyness_mi <- function(x) {
     dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
     dt[, N := (a + b + c + d)]
     dt[, E11 := (a+b)*(a+c) / N]
+    epsilon <- .000000001  # to offset zero cell counts
+    dt[, PMI :=   log(a /E11 + epsilon) * ifelse(a > E11, 1, -1) ]
     
-    dt[, MI := (  (a * log(a  / E11) / N+ 
-                        b * log(b * N/ ((a+b)*(b+d) )) / N +
-                        c * log(c * N/ ((a+c)*(c+d) )) / N +
-                        d * log(d * N/ ((b+d)*(c+d) )) / N)) ]
+    #normalized PMI
+    #dt[, PMI :=   log(a  / E11) * ifelse(a > E11, 1, -1)/(-log(a/N)) ]
+    
     
     # compute p-values
-    dt[, p := stats::pchisq(abs(MI), 1)]
+    dt[, p := 1 - stats::pchisq(abs(PMI), 1)]
     
-    result <- as.data.frame(dt[, list(MI, p)])
+    result <- as.data.frame(dt[, list(PMI, p)])
     rownames(result) <- dt$feature
     result$target = as.vector(x[1,])
     result$reference = as.vector(x[2,])
