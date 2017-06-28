@@ -4,6 +4,8 @@
 #' @param x the keyness object to be plotted
 #' @param sort if \code{TRUE} (the default), order points from low to high 
 #'   score. 
+#' @param showBothDoc if \code{TRUE} show dual plot for both documents
+#' @n a single integer. number of terms to plot.
 #' @return a \pkg{ggplot2} object
 #' @export
 #' @author Kenneth Benoit and Haiyan Wang
@@ -20,7 +22,7 @@
 #' # plot estimated word keyness
 #' textplot_keyness(top20) }
 #' 
-textplot_keyness <-  function(x, sort = TRUE, showBothDoc = FALSE, features = 20) {
+textplot_keyness <-  function(x, sort = TRUE, showBothDoc = FALSE, n = 20) {
     
     UseMethod("textplot_keyness")
 }
@@ -31,9 +33,9 @@ textplot_keyness <-  function(x, sort = TRUE, showBothDoc = FALSE, features = 20
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
 #' @importFrom ggplot2 facet_grid element_line
 #' @export
-textplot_keyness <-  function(x, sort = TRUE, showBothDoc = FALSE, features = 20) {
+textplot_keyness <-  function(x, sort = TRUE, showBothDoc = FALSE, n = 20) {
     if (!showBothDoc){
-        x <- head(x, features)
+        x <- head(x, n)
         p <- if (sort) {
             ggplot(data = x, aes(x = reorder(rownames(x), x[,1]), y = x[,1]))
         } else {
@@ -45,8 +47,8 @@ textplot_keyness <-  function(x, sort = TRUE, showBothDoc = FALSE, features = 20
             xlab("Keywords")
         apply_theme(p)
     } else {
-        topn <- head(x, features)
-        tailn <- tail(x, features)
+        topn <- head(x, n)
+        tailn <- tail(x, n)
         maxY <- max(max(topn[ ,1]), max(tailn[ ,1]))
         p1 <- if (sort) {
             ggplot(data = topn, aes(x = reorder(rownames(topn), topn[,1]), y = topn[,1]))
