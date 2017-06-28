@@ -45,6 +45,13 @@ phrase.collocations <- function(...) {
 
 #' @noRd
 #' @export
+phrase.sequences <- function(...) {
+    x <- as.data.frame(do.call(rbind, list(...)))
+    phrase(x[["collocation"]])
+}
+
+#' @noRd
+#' @export
 phrase.list <- function(...) {
     x <- as.list(...)
     class(x) <- c("phrases", class(x))
