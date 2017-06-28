@@ -20,7 +20,8 @@
 #' top20 <- head(result <- textstat_keyness(mydfm), 20)
 #' tail10 <- tail(result, 10)
 #' # plot estimated word keyness
-#' textplot_keyness(top20) }
+#' textplot_keyness(top20) 
+#' textplot_keyness(result, showBothDoc = TRUE)}
 #' 
 textplot_keyness <-  function(x, sort = TRUE, showBothDoc = FALSE, n = 20) {
     
@@ -34,7 +35,9 @@ textplot_keyness <-  function(x, sort = TRUE, showBothDoc = FALSE, n = 20) {
 #' @importFrom ggplot2 facet_grid element_line
 #' @export
 textplot_keyness <-  function(x, sort = TRUE, showBothDoc = FALSE, n = 20) {
-    if (!showBothDoc){
+    
+    
+    if (!showBothDoc ){
         x <- head(x, n)
         p <- if (sort) {
             ggplot(data = x, aes(x = reorder(rownames(x), x[,1]), y = x[,1]))
@@ -49,9 +52,14 @@ textplot_keyness <-  function(x, sort = TRUE, showBothDoc = FALSE, n = 20) {
     } else {
         pos_n <- min(n, sum(x[ ,1] >= 0))
         neg_n <- min(n, sum(x[ ,1] < 0))
+        if ((pos_n == 0) | (neg_n == 0)) 
+            stop (" Better plot for one Doc.")
         topn <- head(x, pos_n)
         tailn <- tail(x, neg_n)
-        maxY <- max(max(topn[ ,1]), max(abs(tailn[ ,1])))
+        if ((pos_n > 0) & (neg_n > 0)){
+            maxY <- max(max(topn[ ,1]), max(abs(tailn[ ,1])))
+        }
+        
         p1 <- if (sort) {
             ggplot(data = topn, aes(x = reorder(rownames(topn), topn[,1]), y = topn[,1]))
         } else {
@@ -96,7 +104,10 @@ apply_theme <- function(p) {
 }
 
 ## form https://gist.github.com/jslefche/e4c0e9f57f0af49fca87
-#'@keywords internal
+#' @importFrom ggplot2 ggplot_gtable ggplot_build ylim element_text element_rect
+#' @importFrom grid grid.draw
+#' @importFrom gtable gtable_add_grob gtable_add_rows gtable_add_cols
+#' @keywords internal
 ggplot_dual_axis = function(plot1, plot2, which.axis = "x") {
     
     # Update plot with transparent panel
@@ -105,7 +116,7 @@ ggplot_dual_axis = function(plot1, plot2, which.axis = "x") {
     grid::grid.newpage()
     
     # Increase right margin if which.axis == "y"
-    if(which.axis == "y") plot1 = plot1 + theme(plot.margin = unit(c(0.7, 1.5, 0.4, 0.4), "cm"))
+    if(which.axis == "y") plot1 = plot1 + theme(plot.margin = grid::unit(c(0.7, 1.5, 0.4, 0.4), "cm"))
     
     # Extract gtable
     g1 = ggplot_gtable(ggplot_build(plot1))
@@ -113,7 +124,7 @@ ggplot_dual_axis = function(plot1, plot2, which.axis = "x") {
     g2 = ggplot_gtable(ggplot_build(plot2))
     
     # Overlap the panel of the second plot on that of the first
-    pp = c(subset(g1$layout, name == "panel", se = t:r))
+    pp = c(subset(g1$layout, g1$layout$name == "panel"))
     
     g = gtable_add_grob(g1, g2$grobs[[which(g2$layout$name=="panel")]], pp$t, pp$l, pp$b, pp$l)
     
@@ -133,9 +144,9 @@ ggplot_dual_axis = function(plot1, plot2, which.axis = "x") {
     
     if(which.axis == "x") 
         
-        ax$grobs[[2]]$y = ax$grobs[[2]]$y - unit(1, "npc") + unit(0.15, "cm") else
+        ax$grobs[[2]]$y = ax$grobs[[2]]$y - grid::unit(1, "npc") + grid::unit(0.15, "cm") else
             
-            ax$grobs[[1]]$x = ax$grobs[[1]]$x - unit(1, "npc") + unit(0.15, "cm")
+            ax$grobs[[1]]$x = ax$grobs[[1]]$x - grid::unit(1, "npc") + grid::unit(0.15, "cm")
     
     # Modify existing row to be tall enough for axis
     if(which.axis == "x") g$heights[[2]] = g$heights[g2$layout[ia,]$t]

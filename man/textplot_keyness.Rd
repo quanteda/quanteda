@@ -31,7 +31,8 @@ head(mydfm) # make sure 'post-war' is in the first row
 top20 <- head(result <- textstat_keyness(mydfm), 20)
 tail10 <- tail(result, 10)
 # plot estimated word keyness
-textplot_keyness(top20) }
+textplot_keyness(top20) 
+textplot_keyness(result, showBothDoc = TRUE)}
 
 }
 \seealso{
