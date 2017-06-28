@@ -169,7 +169,7 @@ code <- function(texts){
 features2list <- function(features) {
     
     if (is.collocations(features)) {
-        result <- phrase(features)
+        result <- as.list(features[["collocation"]])
     } else if (is.dictionary(features)) {
         result <- unlist(features, use.names = FALSE)
     } else if (is.list(features)) {
