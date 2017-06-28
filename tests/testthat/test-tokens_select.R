@@ -113,16 +113,20 @@ test_that("fcm works on tokens containing padding", {
 })
 
 test_that("tokens_remove works regardless when features are overlapped, issue #711", {
-    
     toks <- tokens("one two three four")
-    expect_equivalent(as.list(tokens_remove(toks, features = c("one", "two", "three"))),
-                      list('four'))
-    expect_equivalent(as.list(tokens_remove(toks, features = c("one", "two three"))),
-                      list('four'))
-    expect_equivalent(as.list(tokens_remove(toks, features = c("one two", "two three"))),
-                      list('four'))
-    expect_equivalent(as.list(tokens_remove(toks, features = c("one two", "two three four"))),
-                      list(character()))
+    expect_equal(as.list(tokens_remove(toks, features = c("one", "two", "three"))),
+                 list('four'))
+    expect_equal(as.list(tokens_remove(toks, features = c("one", "two three"))),
+                 list(c("two", "three", "four")))
+    expect_equal(as.list(tokens_remove(toks, features = c("one two", "two three"))),
+                 as.list(toks))
+    expect_equal(as.list(tokens_remove(toks, features = c("one two", "two three four"))),
+                 as.list(toks))
+    # for phrases
+    expect_equal(as.list(tokens_remove(toks, features = phrase(c("one two", "two three")))),
+                 list("four"))
+    expect_equal(as.list(tokens_remove(toks, features = phrase(c("one two", "two three four")))),
+                 list(character()))
 })
 
 
@@ -139,10 +143,10 @@ char_uni <- c("a", "b", "g", "j")
 char_bi <- c("a b", "g j")
 list_uni <- list("a", "b", "g", "j")
 list_bi <- list("a b", "g j")
-(dict_uni <- dictionary(one = c("a", "b"), two = c("g", "j")))
-(dict_bi <- dictionary(one = "a b", two = "g j"))
-(coll_bi <- textstat_collocations(toks_uni, method = "lr", max_size = 2))
-(coll_tri <- textstat_collocations(toks_uni, method = "lr", min_size = 3, max_size = 3))
+dict_uni <- dictionary(one = c("a", "b"), two = c("g", "j"))
+dict_bi <- dictionary(one = "a b", two = "g j")
+coll_bi <- textstat_collocations(toks_uni, method = "lr", max_size = 2)
+coll_tri <- textstat_collocations(toks_uni, method = "lr", min_size = 3, max_size = 3)[1, ]
 
 test_that("tokens_select works as expected for unigrams selected on char, list of unigrams", {
     expect_equal(
@@ -165,12 +169,16 @@ test_that("tokens_select works as expected for unigrams selected on char, list o
         list(d1 = character(), d2 = character())
     )
     expect_equal(
-        tokens_select(toks_uni, list_bi), 
+        as.list(tokens_select(toks_uni, list_bi)), 
         list(d1 = character(), d2 = character())
     )
     expect_equal(
         tokens_select(toks_uni, list_bi), 
         tokens_select(toks_uni, char_bi)
+    )
+    expect_equal(
+        as.list(tokens_select(toks_uni, phrase(char_bi))),
+        list(d1 = c("a", "b"), d2 = c("a", "b"))
     )
 })
 
@@ -187,8 +195,12 @@ test_that("tokens_select works as expected for bigrams selected on char, list of
         tokens_select(toks_uni, list(c("a b", "c"), "g j"))
     )
     expect_equal(
-        as.character(tokens_select(toks_uni, list(c("a b", "c"), "g j"))),
-        list(d1 = "c", d2 = character())
+        as.list(tokens_select(toks_uni, list(c("a b", "c"), "g j"))),
+        list(d1 = character(), d2 = character())
+    )
+    expect_equal(
+        as.list(tokens_select(toks_uni, list(c("a b", "c"), "g j")), padding = TRUE),
+        list(d1 = rep("", 7), d2 = rep("", 7))
     )
 })
 
@@ -199,23 +211,27 @@ test_that("tokens_select works as expected for bigrams selected on char, list of
         list(d1 = "a b", d2 = "a b")
     )
     expect_equal(
-        tokens_select(toks_bi, list_bi), 
-        list(d1 = character(), d2 = character())
-    )
-    expect_equal(
-        tokens_select(toks_uni, list_bi), 
-        tokens_select(toks_uni, char_bi)
-    )
-    expect_equal(
-        as.list(tokens_select(toks_bi, list(c("a b", "c"), "g j"))),
+        as.list(tokens_select(toks_bi, list_bi)), 
         list(d1 = "a b", d2 = "a b")
+    )
+    expect_equal(
+        tokens_select(toks_bi, list_bi), 
+        tokens_select(toks_bi, char_bi)
+    )
+    expect_equal(
+        as.list(tokens_select(toks_bi, list(c("a b", "b e"), "g j"))),
+        list(d1 = character(0), d2 = c("a b", "b e"))
     )
 })
 
 test_that("tokens_select works correctly with collocations objects", {
     expect_equal(
         as.list(tokens_select(toks_uni, coll_bi)),
-        list(list(d1 = character(), d2 = character()))
+        list(d1 = character(), d2 = character())
+    )
+    expect_equal(
+        as.list(tokens_remove(toks_uni, phrase(coll_bi))),
+        list(d1 = c("c", "d"), d2 = c("i", "j"))
     )
     expect_equal(
         as.list(tokens_select(toks_uni, coll_tri)),
@@ -281,6 +297,10 @@ test_that("tokens_select on bigrams works as expected when padding = TRUE", {
     )
     expect_equal(
         as.list(tokens_select(toks_bi, list(c("c", "d", "e")), padding = TRUE)),
+        list(d1 = rep("", 7), d2 = rep("", 7))
+    )
+    expect_equal(
+        as.list(tokens_select(toks_uni, phrase("c d e"), padding = TRUE)),
         list(d1 = c("", "", "c", "d", "e", "", ""), d2 = rep("", 7))
     )
     expect_silent(
