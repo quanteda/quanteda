@@ -28,6 +28,8 @@ Imports:
     stringi,
     fastmatch,
     ggplot2 (>= 2.2.0),
+    grid,
+    gtable,
     XML,
     yaml
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
