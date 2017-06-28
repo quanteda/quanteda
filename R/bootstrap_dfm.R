@@ -15,9 +15,9 @@
 #' @export
 #' @keywords dfm experimental bootstrap
 #' @examples 
-#' #txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
-#' #         texttwo = "Premiere phrase.  Deuxieme phrase.")
-#' #bootstrap_dfm(txt, n = 3)         
+#' txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+#'          texttwo = "Premiere phrase.  Deuxieme phrase.")
+#' bootstrap_dfm(txt, n = 3)         
 bootstrap_dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     UseMethod("bootstrap_dfm")
 }

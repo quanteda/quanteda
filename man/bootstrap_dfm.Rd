@@ -29,9 +29,9 @@ constant set of features based on the original dfm.  Resampling of the corpus
 is done at the sentence level, within document.
 }
 \examples{
-#txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
-#         texttwo = "Premiere phrase.  Deuxieme phrase.")
-#bootstrap_dfm(txt, n = 3)         
+txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+         texttwo = "Premiere phrase.  Deuxieme phrase.")
+bootstrap_dfm(txt, n = 3)         
 }
 \author{
 Kenneth Benoit
