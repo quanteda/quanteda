@@ -199,7 +199,7 @@ test_that("tokens_select works as expected for bigrams selected on char, list of
         list(d1 = character(), d2 = character())
     )
     expect_equal(
-        as.list(tokens_select(toks_uni, list(c("a b", "c"), "g j")), padding = TRUE),
+        as.list(tokens_select(toks_uni, list(c("a b", "c"), "g j"), padding = TRUE)),
         list(d1 = rep("", 7), d2 = rep("", 7))
     )
 })
