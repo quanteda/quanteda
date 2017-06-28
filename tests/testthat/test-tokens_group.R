@@ -99,6 +99,13 @@ test_that("generate_groups works for corpus objects", {
         quanteda:::generate_groups(toks, rep(c("A", "B"), each = 6)),
         "groups must name docvars or provide data matching the documents in x"
     )
+    
+    sents <- corpus_reshape(data_corpus_irishbudget2010, to = "sentences")
+    expect_equal(
+        quanteda:::generate_groups(sents, "_document"),
+        factor(metadoc(sents, "document"))
+    )
+    
 })
 
 
