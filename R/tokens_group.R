@@ -10,10 +10,6 @@
 #' toks <- tokens(corp)
 #' quanteda:::tokens_group(toks, groups = "grp")
 #' quanteda:::tokens_group(toks, groups = c(1, 1, 2, 2))
-#' 
-#' # equivalent
-#' dfm(mydfm, groups = "grp")
-#' dfm(mydfm, groups = c(1, 1, 2, 2))
 tokens_group <- function(x, groups = NULL) {
     
     attrs <- attributes(x)
