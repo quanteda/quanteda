@@ -13,6 +13,7 @@
    This function is still under development and likely to change further.
 *  Added new `quanteda_options` that affect the maximum documents and features displayed by the dfm print method (#756).
 *  `ngram` formation is now significantly faster, including with skips (skipgrams).
+*  `topfeatures()` now accepts a `groups` argument that can be used to generate lists of top (or bottom) features in a group of texts, including by document (#336).
     
 
 ### Behaviour changes
@@ -20,6 +21,7 @@
 *  For `sequences()`:
    - Removed arguments from `sequences()`: `features`, `case_insensitive` and `valuetype`, the function can be fully replaced by `tokens_select()`.
    - Removed arguments from `sequences()`: `ordered`.
+* (Finally) we added "will" to the list of English stopwords (#818).
 
 ### Bug fixes and stability enhancements
 
