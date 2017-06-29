@@ -12,7 +12,8 @@ test_that("test that collocations do not span texts", {
 
 test_that("test that collocations only include selected features", {
     toks <- tokens(c('This is a Twitter post to @someone on #something.'), what = 'fastest')
-    cols <- textstat_collocations(toks, 'lr', features = "^([a-z]+)$", valuetype = 'regex', min_count = 1, size = 2)
+    toks <- tokens_select(toks, "^([a-z]+)$", valuetype="regex")
+    cols <- textstat_collocations(toks, 'lr', min_count = 1, size = 2)
     
     expect_true('This is' %in% cols$collocation)
     expect_true('a Twitter' %in% cols$collocation)
@@ -45,6 +46,6 @@ test_that("bigrams and trigrams are all sorted correctly, issue #385", {
     toks <- tokens(data_corpus_inaugural, remove_punct = TRUE)
     toks <- tokens_remove(toks, stopwords(), padding = TRUE)
     cols <- textstat_collocations(toks, method = 'lr', size = 2:3)
-    expect_equal(order(cols$G2, decreasing = TRUE), seq_len(nrow(cols)))
+    expect_equal(order(cols$z, decreasing = TRUE), seq_len(nrow(cols)))
     
 })

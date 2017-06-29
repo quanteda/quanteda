@@ -76,12 +76,15 @@ textstat_collocations.tokens <- function(x, method =  c("lambda", "lambda1", "lr
     } else if (method == 'lambda1'){
         result <- sequences(x, min_count = min_count, size = size, method = "lambda1", ...)
     } else {
-        if (!all(size %in% 2:3)) {
-            stop("for method ", method, " size can only be 2, 3, or 2:3")
-        } 
+        # if (!all(size %in% 2:3)) {
+        #     stop("for method ", method, " size can only be 2, 3, or 2:3")
+        # } 
+        # 
+        # result <- collocations2(x, method = method,  
+        #                         size = size, min_count = min_count, ...)
+        # temporally call `lambda` function which also returns all other scores
+        result <- sequences(x, min_count = min_count, size = size, ...)
         
-        result <- collocations2(x, method = method,  
-                                size = size, min_count = min_count, ...)
     }
     rownames(result) <- seq_len(nrow(result))
     class(result) <- c("collocations", 'data.frame')
