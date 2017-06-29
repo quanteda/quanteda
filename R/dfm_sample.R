@@ -18,11 +18,16 @@
 #' dfm_sample(myDfm, replace = TRUE)[, 1:10]
 #' dfm_sample(myDfm, what = "features")[1:10, ]
 dfm_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, 
-                       what = c("documents", "features")) {
-    if (!is.dfm(x))
-        stop("x must be a dfm object")
-    what <- match.arg(what)
-    if (what == "documents") {
+                       by = c("document", "feature")) {
+    UseMethod("dfm_sample")
+}
+
+#' @noRd
+#' @export
+dfm_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, 
+                       by = c("document", "feature")) {
+    what <- match.arg(by)
+    if (what == "document") {
         if (size > ndoc(x))
             stop("size cannot exceed the number of documents (", ndoc(x), ")")
         x <- x[sample(ndoc(x), size, replace, prob), ]
