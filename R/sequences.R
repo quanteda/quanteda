@@ -66,7 +66,11 @@ sequences.tokens <- function(x,
     
     result <- qatd_cpp_sequences(x, types, min_count, size, methodtype, smoothing, nested)
     result <- result[result$count >= min_count,]
-    result$z <- result$lambda / result$sigma
+    if (methodtype == "lambda") {
+        result$z <- result$lambda / result$sigma
+    } else {
+        result$z <- result$lambda1 / result$sigma
+    }
     result$p <- 1 - stats::pnorm(result$z)
     result <- result[order(result$z, decreasing = TRUE),]
     attr(result, 'types') <- types
