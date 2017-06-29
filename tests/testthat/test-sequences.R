@@ -3,20 +3,6 @@ context('test sequences.R')
 toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 
-test_that("test that nested argument is working", {
-    
-    toks <- tokens('E E G F a b c E E G G f E E f f G G')
-    toks <- tokens_select(toks, "^[A-Z]$", valuetype="regex", 
-                          case_insensitive = FALSE, padding = TRUE)
-    seqs <- sequences(toks, min_count = 1, size= 2, nested = FALSE)
-    expect_equal(seqs$collocation, c('E E', 'G G', 'G F'))
-    expect_equal(seqs$count, c(3, 2, 1))
-    
-    seqs_nested <- sequences(toks, min_count = 1, size = 2, nested = TRUE)
-    expect_equal(seqs_nested$collocation, c('E E', 'G F', 'G G', 'E G'))
-    expect_equal(seqs_nested$count, c(3, 1, 2, 2))
-})
-
 test_that("test that argument 'size'", {
     
     toks <- tokens('E E a b c E E G G G f E E f f G G')
@@ -50,18 +36,18 @@ test_that("test that sequences works with tokens_compound", {
     toks <- tokens('E E a b c E E G G f E E f f G G')
     toks_capital <- tokens_select(toks, "^[A-Z]$", valuetype="regex", 
                           case_insensitive = FALSE, padding = TRUE)
-    seqs <- sequences(toks_capital, min_count = 1, nested = FALSE, size = 2:4)
+    seqs <- sequences(toks_capital, min_count = 1, size = 2:4)
     
     # seqs have the same types
     expect_equivalent(as.list(tokens_compound(toks, seqs, join = FALSE)),
-                      list(c("E_E", "a", "b", "c", "E_E_G_G", "E_E_G","E_E", "G_G", "f", "E_E", "f", "f", "G_G")))
+                      list(c("E_E", "a", "b", "c", "E_E_G_G", "E_E_G","E_E", "E_G_G","E_G", "G_G", "f", "E_E", "f", "f", "G_G")))
 })
 
 test_that("[ function",{
     toks <- tokens('E E G F a b c E E G G f E E f f G G')
     toks_capital <- tokens_select(toks, "^[A-Z]$", valuetype="regex", 
                                   case_insensitive = FALSE, padding = TRUE)
-    seqs <- sequences(toks_capital, min_count = 1, nested = TRUE)
+    seqs <- sequences(toks_capital, min_count = 1)
     a_seq <- seqs[1]
     
     expect_equal(a_seq$collocation, 'E E')

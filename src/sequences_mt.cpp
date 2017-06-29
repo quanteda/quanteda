@@ -78,8 +78,7 @@ double compute_dice(const std::vector<double> &counts){
 //************************//
 void counts(Text text,
            MapNgrams &counts_seq,
-           const unsigned int &len,
-           const bool &nested){
+           const unsigned int &len){
     
     if (text.size() == 0) return; // do nothing with empty text
     text.push_back(0); // add padding to include last words
@@ -107,14 +106,6 @@ void counts(Text text,
                     counts_seq[tokens_seq]++;
                 }
                 tokens_seq.clear();
-                if (!nested) {// jump if nested is false
-                    if (token == 0 || j == len_text){
-                        i = j;
-                    } else {
-                        i = j - 1;
-                    }
-                    //Rcout<<"i="<<i<<"token="<<token<<std::endl;
-                }
                 break;
             }
         }
@@ -126,14 +117,13 @@ struct counts_mt : public Worker{
     Texts texts;
     MapNgrams &counts_seq;
     const unsigned int &len;
-    const bool &nested;
-    
-    counts_mt(Texts texts_, MapNgrams &counts_seq_, const unsigned int &len_, const bool &nested_):
-        texts(texts_), counts_seq(counts_seq_), len(len_), nested(nested_) {}
+
+    counts_mt(Texts texts_, MapNgrams &counts_seq_, const unsigned int &len_):
+        texts(texts_), counts_seq(counts_seq_), len(len_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
-            counts(texts[h], counts_seq, len, nested);
+            counts(texts[h], counts_seq, len);
         }
     }
 };
@@ -303,13 +293,12 @@ struct estimates_mt : public Worker{
 
 /* 
 * This funciton estimate the strength of association between specified words 
-* that appear in sequences. Estimates are slightly different from the old version,
-*  because this faster version does not ignore infrequent sequences.
+* that appear in sequences. 
 * @used sequences()
 * @param texts_ tokens ojbect
-* @param count_min sequences appear less than this are ignores
-* @param nested if true, subsequences are also collected
+* @param count_min sequences appear less than this are ignored
 * @param method 
+* @param smoothing
 */
 
 // [[Rcpp::export]]
@@ -318,8 +307,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                              const unsigned int count_min,
                              const IntegerVector sizes_,
                              const String &method,
-                             const double smoothing,
-                             bool nested){
+                             const double smoothing){
     
     Texts texts = as<Texts>(texts_);
     std::vector<unsigned int> sizes = as< std::vector<unsigned int> >(sizes_);
@@ -360,11 +348,11 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         //dev::Timer timer;
         //dev::start_timer("Count", timer);
 #if QUANTEDA_USE_TBB
-        counts_mt count_mt(texts, counts_seq, mw_len, nested);
+        counts_mt count_mt(texts, counts_seq, mw_len);
         parallelFor(0, texts.size(), count_mt);
 #else
         for (std::size_t h = 0; h < texts.size(); h++) {
-            counts(texts[h], counts_seq, mw_len, nested);
+            counts(texts[h], counts_seq, mw_len);
         }
 #endif
         //dev::stop_timer("Count", timer);
@@ -445,14 +433,14 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 
 #toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
 #types <- unique(as.character(toks))
-#out2 <- qatd_cpp_sequences(toks, types, 1, 2, "lambda1",0.5, TRUE)
-#out3 <- qatd_cpp_sequences(toks, types, 1, 2, "lambda",0.5 TRUE)
-#out4 <- qatd_cpp_sequences(toks, types, 1, 3, "lambda1",0.5, TRUE)
+#out2 <- qatd_cpp_sequences(toks, types, 1, 2, "lambda1",0.5)
+#out3 <- qatd_cpp_sequences(toks, types, 1, 2, "lambda",0.5)
+#out4 <- qatd_cpp_sequences(toks, types, 1, 3, "lambda1",0.5)
 # out2$z <- out2$lambda / out2$sigma
 # out2$p <- 1 - stats::pnorm(out2$z)
 txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
 toks <- tokens(txt)
 types <- unique(as.character(toks))
-out2 <- quanteda:::qatd_cpp_sequences(toks, types, 1, 3, "lambda", 0.0, TRUE)
+out2 <- quanteda:::qatd_cpp_sequences(toks, types, 1, 3, "lambda", 0.0)
 
 */

@@ -11,11 +11,6 @@
 #'        Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.
 #' @param method default is "lambda" and option is "lambda1"
 #' @param smoothing default is 0.5
-#' @param nested if \code{TRUE}, collect all the subsequences of a longer
-#'   sequence as separate entities. e.g. in a sequence of capitalized words
-#'   "United States Congress", "States Congress" is considered as a subsequence.
-#'   But "United States" is not a subsequence because it is followed by
-#'   "Congress".
 #' @keywords collocations internal
 #' @author Kohei Watanabe and Haiyan Wang
 #' @references Blaheta, D., & Johnson, M. (2001). 
@@ -39,8 +34,7 @@ sequences <- function(x,
                        min_count = 2,
                        size = 2,
                        method = c("lambda", "lambda1"),
-                       smoothing = 0.5,
-                       nested = TRUE) {
+                       smoothing = 0.5) {
     
     # .Deprecated('textstat_collocations')
     UseMethod("sequences")
@@ -53,8 +47,7 @@ sequences.tokens <- function(x,
                               min_count = 2,
                               size = 2,
                               method = c("lambda", "lambda1"),
-                              smoothing = 0.5,
-                              nested = TRUE) {
+                              smoothing = 0.5) {
     
     attrs_org <- attributes(x)
     methodtype = match.arg(method)
@@ -64,7 +57,7 @@ sequences.tokens <- function(x,
     
     types <- types(x)
     
-    result <- qatd_cpp_sequences(x, types, min_count, size, methodtype, smoothing, nested)
+    result <- qatd_cpp_sequences(x, types, min_count, size, methodtype, smoothing)
     result <- result[result$count >= min_count,]
     if (methodtype == "lambda") {
         result$z <- result$lambda / result$sigma

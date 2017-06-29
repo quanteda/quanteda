@@ -6,7 +6,7 @@
 \title{Find variable-length collocations}
 \usage{
 sequences(x, min_count = 2, size = 2, method = c("lambda", "lambda1"),
-  smoothing = 0.5, nested = TRUE)
+  smoothing = 0.5)
 
 is.sequences(x)
 }
@@ -22,12 +22,6 @@ Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.}
 \item{method}{default is "lambda" and option is "lambda1"}
 
 \item{smoothing}{default is 0.5}
-
-\item{nested}{if \code{TRUE}, collect all the subsequences of a longer
-sequence as separate entities. e.g. in a sequence of capitalized words
-"United States Congress", "States Congress" is considered as a subsequence.
-But "United States" is not a subsequence because it is followed by
-"Congress".}
 }
 \value{
 \code{sequences} returns \code{TRUE} if the object is of class
