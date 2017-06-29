@@ -106,7 +106,7 @@ test_that("test the correctness of significant", {
     expect_equal(seqs$chi2[1], 2.25)
     
     #log likelihood ratio
-    expect_equal(seqs$logratio[1], 2.231, tolerance = 1e-3)
+    expect_equal(seqs$G2[1], 2.231, tolerance = 1e-3)
 })
 
 test_that("test the correctness of significant: against stats package", {
@@ -182,6 +182,6 @@ test_that("test the correctness of significant: against stats package", {
     
     seqs <- sequences(tokens(txt), size = 3, smoothing =0)
     expect_equal(seqs$collocation[3], 'capital gains tax')
-    expect_equal(seqs$logratio[3], statss$lrt, tolerance = 1e-3)
+    expect_equal(seqs$G2[3], statss$lrt, tolerance = 1e-3)
     expect_equal(seqs$chi2[3], statss$pearson, tolerance = 1e-3)
 })

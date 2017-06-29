@@ -418,7 +418,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                                           _["sigma"] = as<NumericVector>(wrap(sgma_all)),
                                           _["dice"] = as<NumericVector>(wrap(dice_all)),
                                           _["pmi"] = as<NumericVector>(wrap(pmi_all)),
-                                          _["logratio"] = as<NumericVector>(wrap(logratio_all)),
+                                          _["G2"] = as<NumericVector>(wrap(logratio_all)),
                                           _["chi2"] = as<NumericVector>(wrap(chi2_all)),
                                           _["stringsAsFactors"] = false);
     output_.attr("tokens") = as<Tokens>(wrap(seqs_all));
