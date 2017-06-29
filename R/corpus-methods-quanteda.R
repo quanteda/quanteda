@@ -47,15 +47,28 @@ metacorpus.corpus <- function(x, field = NULL) {
 
 # internal accessor for documents object
 # @export
-documents <- function(corp) {
-    corp$documents
+documents <- function(x) {
+    UseMethod("documents")
 }
+
+documents.corpus <- function(x) {
+    x$documents
+}
+
+documents.tokens <- function(x) {
+    docvars(x)
+}
+
 
 # internal replacement function for documents
 # @export
-"documents<-" <- function(corp, value) {
-    corp$documents <- value
-    corp
+"documents<-" <- function(x, value) {
+    UseMethod("documents<-")
+}
+
+"documents<-.corpus" <- function(x, value) {
+    x$documents <- value
+    x
 }
 
 

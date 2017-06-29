@@ -266,13 +266,13 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
 test_that("dfm print works as expected", {
     testdfm <- dfm(data_corpus_irishbudget2010)
     expect_output(print(testdfm),
-                  "^Document-feature matrix of: 14 documents, 5,058 features \\(80.9% sparse\\)")
+                  "^Document-feature matrix of: 14 documents, 5,055 features \\(80.9% sparse\\)")
     expect_output(print(testdfm[1:5, 1:5]),
                   "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\).*")
     expect_output(head(testdfm, 1),
-                  "Document-feature matrix of: 14 documents, 5,058 features.*showing first document and first 6 features.*")
+                  "Document-feature matrix of: 14 documents, 5,055 features.*showing first document and first 6 features.*")
     expect_output(tail(testdfm, 1),
-                  "Document-feature matrix of: 14 documents, 5,058 features.*showing last document and last 6 features.*")
+                  "Document-feature matrix of: 14 documents, 5,055 features.*showing last document and last 6 features.*")
 })
 
 test_that("dfm.dfm works as expected", {
@@ -397,7 +397,7 @@ test_that("dfm print works with options as expected", {
     tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE)
     expect_output(
         head(tmp),
-        "Document-feature matrix of: 14 documents, 5,058 features.*\\(showing first 6 documents and first 6 features\\)"
+        "Document-feature matrix of: 14 documents, 5,055 features.*\\(showing first 6 documents and first 6 features\\)"
     )
     expect_output(
         head(tmp[1:5, 1:5]),
@@ -429,7 +429,7 @@ test_that("dfm print works with options as expected", {
     quanteda_options(print_dfm_max_nfeature = 22L)
     expect_output(
         print(tmp),
-        "Document-feature matrix of: 14 documents, 5,058 features \\(80.9% sparse\\)\\.$"
+        "Document-feature matrix of: 14 documents, 5,055 features \\(80.9% sparse\\)\\.$"
     )
     expect_output(
         print(tmp[, 1:21]),
@@ -463,4 +463,22 @@ test_that("grouping is working as expected", {
                  topfeatures(mydfm[5,]))
     expect_equal(topfeatures(mydfm, decreasing = TRUE, groups = docnames(mydfm))[[10]],
                  topfeatures(mydfm[10,], decreasing = TRUE))
+})
+
+test_that("printing an empty dfm produces informative result (#811)", {
+    my_dictionary <- dictionary( list( a = c( "asd", "dsa" ),
+                                      b = c( "foo", "jup" ) ) )
+    raw_text <- c( "Wow I can't believe it's not raining!", 
+                  "Today is a beautiful day. The sky is blue and there are burritos" )
+    my_corpus <- corpus( raw_text )
+    my_dfm <- dfm( my_corpus, dictionary = my_dictionary )
+    
+    expect_output(
+        print(my_dfm),
+        "^Document-feature matrix of: 2 documents, 0 features.\\n2 x 0 sparse Matrix of class \"dfmSparse\""
+    )
+    expect_output(
+        print(my_dfm[-c(1, 2), ]),
+        "^Document-feature matrix of: 0 documents, 0 features.\\n0 x 0 sparse Matrix of class \"dfmSparse\"\\n<0 x 0 matrix>"
+    )
 })

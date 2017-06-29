@@ -184,27 +184,16 @@ dfm.corpus <- function(x, tolower = TRUE,
         stop("only one of select and remove may be supplied at once")
 
     if (!is.null(groups)) {
-        groupsLab <- if (is.factor(groups)) deparse(substitute(groups)) else groups
-        if (verbose) 
-            catm("   ... grouping texts by variable", 
-                 ifelse(length(groupsLab) == 1, "", "s"), ": ", 
-                 paste(groupsLab, collapse=", "), "\n", sep="")
-        if (verbose) catm("   ... tokenizing grouped texts\n")
+        if (verbose) catm("   ... grouping texts\n") 
+        # group <- generate_groups(x, groups)
         temp <- tokens(texts(x, groups = groups), ...)
     } else {
         if (verbose) catm("   ... tokenizing texts\n")
         temp <- tokens(x, ...)
     }
     
-    dfm(temp, 
-        tolower = tolower,
-        stem = stem,
-        select = select,
-        remove = remove,
-        thesaurus = thesaurus,
-        dictionary = dictionary,
-        valuetype = valuetype, 
-        verbose = verbose, ...)
+    dfm(temp, tolower = tolower, stem = stem, select = select, remove = remove, thesaurus = thesaurus,
+        dictionary = dictionary, valuetype = valuetype, verbose = verbose, ...)
 }    
 
     
@@ -261,6 +250,12 @@ dfm.tokenizedTexts <- function(x,
             dictionary <- thesaurus <- NULL
         }
     }
+    
+    if (!is.null(groups)) {
+        if (verbose) catm("   ... grouping texts\n") 
+        group <- generate_groups(x, groups)
+        x <- tokens_group(x, groups)
+    }
         
     # compile the dfm
     result <- compile_dfm(x, verbose = verbose)
@@ -276,7 +271,7 @@ dfm.tokenizedTexts <- function(x,
     }
     
     dfm(result, tolower = FALSE, stem = stem, select = select, remove = remove, thesaurus = thesaurus,
-        dictionary = dictionary, valuetype = valuetype, groups = groups, verbose = verbose, ...)
+        dictionary = dictionary, valuetype = valuetype, verbose = verbose, ...)
 }
 
 #' @noRd
