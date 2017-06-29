@@ -41,8 +41,8 @@ qatd_cpp_fcm <- function(texts_, n_types, count, window, weights, ordered, tri, 
     .Call('quanteda_qatd_cpp_fcm', PACKAGE = 'quanteda', texts_, n_types, count, window, weights, ordered, tri, nvec)
 }
 
-qatd_cpp_sequences <- function(texts_, types_, count_min, sizes_, method, smoothing, nested) {
-    .Call('quanteda_qatd_cpp_sequences', PACKAGE = 'quanteda', texts_, types_, count_min, sizes_, method, smoothing, nested)
+qatd_cpp_sequences <- function(texts_, types_, count_min, sizes_, method, smoothing) {
+    .Call('quanteda_qatd_cpp_sequences', PACKAGE = 'quanteda', texts_, types_, count_min, sizes_, method, smoothing)
 }
 
 qatd_cpp_sequences_old <- function(texts_, words_, types_, count_min, len_max, nested, ordered = FALSE) {
@@ -104,3 +104,4 @@ wordfishcpp_dense <- function(wfm, dir, priors, tol, disp, dispfloor, abs_err) {
 wordfishcpp_mt <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor) {
     .Call('quanteda_wordfishcpp_mt', PACKAGE = 'quanteda', wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor)
 }
+
