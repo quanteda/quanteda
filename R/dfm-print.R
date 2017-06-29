@@ -24,10 +24,10 @@ setMethod("print", signature(x = "dfm"),
                    ndoc = getOption("quanteda_print_dfm_max_ndoc"), 
                    nfeature = getOption("quanteda_print_dfm_max_nfeature"), ...) {
               
-              if (!length(x)) {
-                  print(NULL)
-                  return()
-              } 
+              # if (!length(x)) {
+              #     print(NULL)
+              #     return()
+              # } 
 
               if (show.summary) {
                   cat("Document-feature matrix of: ",
@@ -35,9 +35,9 @@ setMethod("print", signature(x = "dfm"),
                       if (ndoc(x) > 1L || ndoc(x) == 0L) "s, " else ", ",
                       format(nfeature(x), big.mark=","), " feature",
                       if (nfeature(x) > 1L || nfeature(x) == 0L) "s" else "",
-                      if (is.resampled(x)) paste(", ", nresample(x), " resamples", sep="") else "",
-                      " (", format(sparsity(x)*100, digits = 3),
-                      "% sparse).\n", sep="")
+                      if (is.resampled(x)) paste0(", ", nresample(x), " resamples") else "",
+                      if (prod(dim(x))) paste0(" (", format(sparsity(x)*100, digits = 3), "% sparse)"),
+                      ".\n", sep = "")
               }
               
               if (show.settings) {
@@ -63,10 +63,10 @@ setMethod("print", signature(x = "dfm"),
 
               if (show.values)
                   if (is(x, "sparseMatrix"))
-                      Matrix::printSpMatrix2(x[1:ndoc, 1:nfeature], 
-                                             col.names=TRUE, zero.print=0, ...)
+                      Matrix::printSpMatrix2(x[0:ndoc, 0:nfeature], 
+                                             col.names = TRUE, zero.print = 0, ...)
               else if (is(x, "denseMatrix")) {
-                  getMethod("show", "denseMatrix")(x[1:ndoc, 1:nfeature], ...)
+                  getMethod("show", "denseMatrix")(x[0:ndoc, 0:nfeature], ...)
               } else {
                   print(as.matrix(x[1:ndoc, 1:nfeature]))
               }

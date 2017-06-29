@@ -230,7 +230,7 @@ test_that("print method works as expected", {
     expect_output(print(testkwic), "\\[text1, 4\\]*")
     
     testkwic <- kwic('what does the fox say fox', 'foox')
-    expect_null(print(testkwic))
+    expect_output(print(testkwic), "kwic object with 0 rows")
 })
 
 
@@ -238,8 +238,10 @@ test_that("kwic works with padding", {
     testtoks <- tokens('what does the fox say cat')
     expect_output(print(kwic(tokens_remove(testtoks, c('what', 'the'), padding = TRUE), 'fox')),
                   '\\[text1, 4\\]  does \\| fox \\| say cat')
-    expect_null(print(kwic(tokens_remove(testtoks, '*', padding = TRUE), 'fox')))
-    
+    expect_output(
+        print(kwic(tokens_remove(testtoks, '*', padding = TRUE), 'fox')),
+        "kwic object with 0 rows"
+    )
 })
 
 test_that("as.tokens is working", {
