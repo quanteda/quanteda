@@ -41,12 +41,13 @@ qatd_cpp_fcm <- function(texts_, n_types, count, window, weights, ordered, tri, 
     .Call('quanteda_qatd_cpp_fcm', PACKAGE = 'quanteda', texts_, n_types, count, window, weights, ordered, tri, nvec)
 }
 
-qatd_cpp_sequences_old <- function(texts_, words_, types_, count_min, len_max, nested, ordered = FALSE) {
-    .Call('quanteda_qatd_cpp_sequences_old', PACKAGE = 'quanteda', texts_, words_, types_, count_min, len_max, nested, ordered)
+qatd_cpp_sequences <- function(texts_, types_, count_min, sizes_, method, smoothing) {
+    .Call('quanteda_qatd_cpp_sequences', PACKAGE = 'quanteda', texts_, types_, count_min, sizes_, method, smoothing)
 }
 
-qatd_cpp_sequences <- function(texts_, types_, count_min, len_min, len_max, method, nested) {
-    .Call('quanteda_qatd_cpp_sequences', PACKAGE = 'quanteda', texts_, types_, count_min, len_min, len_max, method, nested)
+qatd_cpp_sequences_old <- function(texts_, words_, types_, count_min, len_max, nested, ordered = FALSE) {
+    .Call('quanteda_qatd_cpp_sequences_old', PACKAGE = 'quanteda', texts_, words_, types_, count_min, len_max, nested, ordered)
+
 }
 
 qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {
@@ -69,12 +70,12 @@ qatd_cpp_tokens_match <- function(texts_, types_, words_, ids_, overlap) {
     .Call('quanteda_qatd_cpp_tokens_match', PACKAGE = 'quanteda', texts_, types_, words_, ids_, overlap)
 }
 
-qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
-    .Call('quanteda_qatd_cpp_tokens_ngrams', PACKAGE = 'quanteda', texts_, types_, delim_, ns_, skips_)
-}
-
 qatd_cpp_tokens_ngrams2 <- function(texts_, types_, delim_, ns_, skips_) {
     .Call('quanteda_qatd_cpp_tokens_ngrams2', PACKAGE = 'quanteda', texts_, types_, delim_, ns_, skips_)
+}
+
+qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
+    .Call('quanteda_qatd_cpp_tokens_ngrams', PACKAGE = 'quanteda', texts_, types_, delim_, ns_, skips_)
 }
 
 qatd_cpp_tokens_recompile <- function(texts_, types_) {

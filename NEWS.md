@@ -5,11 +5,11 @@
 ### New features
 
 *  Improvements to `sequences()` and the `textstat_collocations()` which calls it:
-    - Implemented `all_subtuples` collocation method based on Blaheta and Johnson's (2001) in `sequences()`(#753)
-    - Added new argument to `sequences()`: `method = c("unigram", "all_subtuples")` to apply unigram subtuples and all subtuples algorithm. 
-    - Added new methods to argument `method` in `textstat_collocations()`: `method = c(...,"bj_uni", "bj_all")` to apply unigram subtuples and all subtuples algorithm. 
-    - Added new argument to `sequences()`: `min_size` to allow collocation returns of size between `min_size` and `max_size`.
-    - Added new argument to `textstat_collocations()`: `min_size`, which is used when `method = "bj_uni"` and `method = "bj_all"`.
+    - Implemented `lambda` and `lambda1` collocation methods based on Blaheta and Johnson's (2001) in `sequences()`(#753)
+    - Added new argument to `sequences()`: `method = c("lambda", "lambda1")` to apply unigram subtuples and all subtuples algorithm. 
+    - Added new methods to argument `method` in `textstat_collocations()`: `method = c("lambda", "lambda1", ...)` to apply unigram subtuples and all subtuples algorithm. 
+    - Added new argument to `sequences()`: `smoothing = 0.5` as a continuity correction for small counts; this also avoids overflow problems with zero counts.
+    - More statistics returned from `sequences_mt.cpp`: `dice`,`G2`,`pmi` and `chi2`
    This function is still under development and likely to change further.
 *  Added new `quanteda_options` that affect the maximum documents and features displayed by the dfm print method (#756).
 *  `ngram` formation is now significantly faster, including with skips (skipgrams).
@@ -20,7 +20,7 @@
 
 *  For `sequences()`:
    - Removed arguments from `sequences()`: `features`, `case_insensitive` and `valuetype`, the function can be fully replaced by `tokens_select()`.
-   - Removed arguments from `sequences()`: `ordered`.
+   - Removed arguments from `sequences()`: `ordered` and `nested`.
 *  (Finally) we added "will" to the list of English stopwords (#818).
 *  `dfm` objects with one or both dimensions haveing zero length, and empty `kwic` objects now display more appropriately in their print methods (per #811).
 

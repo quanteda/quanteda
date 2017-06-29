@@ -77,9 +77,10 @@ tokens_compound.tokens <- function(x, features,
             #cat("Skip regex2id\n")
             seqs_ids <- attr(features, 'tokens')
         } else { 
-            #cat("Use regex2id\n")
-            seqs <- features2list(features$collocation)
-            seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
+            #cat("Use fmatch\n")
+            seqs <- features2list(sequences$collocation)
+            seqs_ids <- lapply(seqs, function(x) fastmatch::fmatch(x, types))
+            seqs_ids <- seqs_ids[sapply(seqs_ids, function(x) all(!is.na(x)))]
         }
     } else {
         #cat("Use regex2id\n")
