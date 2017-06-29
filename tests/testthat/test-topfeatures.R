@@ -48,13 +48,8 @@ test_that("topfeatures grouping is working", {
     expect_equal(topfeatures(mydfm, scheme = "count", groups = grps)[["b"]],
                  sort(colSums(mydfm[3, ]), decreasing = TRUE))
     
-    ## not implemented yet
-    # expect_equal(topfeatures(mydfm, scheme = "docfreq", groups = grps)[["a"]],
-    #              sort(docfreq(mydfm[1:2, ]), decreasing = TRUE))
-    # expect_equal(topfeatures(mydfm, scheme = "docfreq", groups = grps)[["b"]],
-    #              sort(docfreq(mydfm[3, ]), decreasing = TRUE))
-    expect_error(
-        topfeatures(mydfm, scheme = "docfreq", groups = grps),
-        "docfreq not yet implemented for groups"
-    )
+    expect_equal(topfeatures(mydfm, scheme = "docfreq", groups = grps)[["a"]],
+                 sort(docfreq(mydfm[1:2, ]), decreasing = TRUE))
+    expect_equal(topfeatures(mydfm, scheme = "docfreq", groups = grps)[["b"]],
+                 sort(docfreq(mydfm[3, ]), decreasing = TRUE))
 })

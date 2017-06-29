@@ -147,18 +147,13 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,  scheme = c("count", "
     scheme <- match.arg(scheme)
     
     if (!is.null(groups)) {
-        
-        if (scheme == "docfreq") {
-            stop("docfreq not yet implemented for groups")
-        }
-        
-        x <- dfm_group(x, groups = groups)
+        rownames(x) <- generate_groups(x, groups)
         result <- list()
-        for (i in seq_len(ndoc(x))) {
-            result[[i]] <- topfeatures(x[i, ], n = n, scheme = scheme, 
+        for (i in unique(docnames(x))) {
+            result[[i]] <- topfeatures(x[which(rownames(x)==i), ], 
+                                       n = n, scheme = scheme, 
                                        decreasing = decreasing, groups = NULL)
         }
-        names(result) <- docnames(x)
         return(result)
     }
     
