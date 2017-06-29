@@ -464,3 +464,21 @@ test_that("grouping is working as expected", {
     expect_equal(topfeatures(mydfm, decreasing = TRUE, groups = docnames(mydfm))[[10]],
                  topfeatures(mydfm[10,], decreasing = TRUE))
 })
+
+test_that("printing an empty dfm produces informative result (#811)", {
+    my_dictionary <- dictionary( list( a = c( "asd", "dsa" ),
+                                      b = c( "foo", "jup" ) ) )
+    raw_text <- c( "Wow I can't believe it's not raining!", 
+                  "Today is a beautiful day. The sky is blue and there are burritos" )
+    my_corpus <- corpus( raw_text )
+    my_dfm <- dfm( my_corpus, dictionary = my_dictionary )
+    
+    expect_output(
+        print(my_dfm),
+        "^Document-feature matrix of: 2 documents, 0 features.\\n2 x 0 sparse Matrix of class \"dfmSparse\""
+    )
+    expect_output(
+        print(my_dfm[-c(1, 2), ]),
+        "^Document-feature matrix of: 0 documents, 0 features.\\n0 x 0 sparse Matrix of class \"dfmSparse\"\\n<0 x 0 matrix>"
+    )
+})
