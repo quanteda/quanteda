@@ -224,13 +224,12 @@ test_that("dfm_select raises warning when padding = TRUE but not valuetype = fix
     
 })
 
-test_that("dfm_select return empty dfm when not maching features", {
-    
+test_that("dfm_select returns empty dfm when not maching features", {
     expect_equal(dim(dfm_select(testdfm, features = c('x', 'y', 'z'), documents = 'doc4')),
                  c(0, 0))
     
-    expect_equal(print(dfm_select(testdfm, features = c('x', 'y', 'z'))),
-                 NULL)
+    expect_equal(dim(dfm_select(testdfm, features = c('x', 'y', 'z'))),
+                 c(3, 0))
 })
 
 test_that("dfm_remove works even when it does not remove anything, issue 711", {
