@@ -303,7 +303,7 @@ collocations_trigram <- function(x, method = c("lr", "chi2", "pmi", "dice"),
             ((n211 - m1.211)^2 / m1.211) + ((n212 - m1.212)^2 / m1.212) +
             ((n221 - m1.221)^2 / m1.221) + ((n222 - m1.222)^2 / m1.222)
         pmi <- log(n111 / m1.111)
-        dice <- 2 * n111 / (n111 + n121 + n112 + n122 + n111 + n211 + n112 + n212 + n111 + n211 + n121 + n221)
+        dice <- 3 * n111 / (n111 + n121 + n112 + n122 + n111 + n211 + n112 + n212 + n111 + n211 + n121 + n221)
     })         
     
     dt <- data.table(word1=allTable$w1, 
