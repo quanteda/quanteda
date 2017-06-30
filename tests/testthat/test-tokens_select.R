@@ -289,15 +289,15 @@ test_that("tokens_select on unigrams works as expected when padding = TRUE", {
 test_that("tokens_select on bigrams works as expected when padding = TRUE", {
     expect_equal(
         as.list(tokens_select(toks_bi, "c d e", padding = TRUE)),
-        list(d1 = rep("", 7), d2 = rep("", 7))
+        list(d1 = rep("", 6), d2 = rep("", 6))
     )
     expect_equal(
         as.list(tokens_select(toks_bi, list("c d e"), padding = TRUE)),
-        list(d1 = rep("", 7), d2 = rep("", 7))
+        list(d1 = rep("", 6), d2 = rep("", 6))
     )
     expect_equal(
         as.list(tokens_select(toks_bi, list(c("c", "d", "e")), padding = TRUE)),
-        list(d1 = rep("", 7), d2 = rep("", 7))
+        list(d1 = rep("", 6), d2 = rep("", 6))
     )
     expect_equal(
         as.list(tokens_select(toks_uni, phrase("c d e"), padding = TRUE)),
