@@ -13,8 +13,9 @@
    This function is still under development and likely to change further.
 *  Added new `quanteda_options` that affect the maximum documents and features displayed by the dfm print method (#756).
 *  `ngram` formation is now significantly faster, including with skips (skipgrams).
-*  `topfeatures()` now accepts a `groups` argument that can be used to generate lists of top (or bottom) features in a group of texts, including by document (#336).
-    
+*  Improvements to `topfeatures()`:
+    - now accepts a `groups` argument that can be used to generate lists of top (or bottom) features in a group of texts, including by document (#336).
+    - new argument `scheme` that takes the default of (frequency) `"count"` but also a new `"docfreq"` value (#408).
 
 ### Behaviour changes
 

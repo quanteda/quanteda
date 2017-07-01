@@ -298,13 +298,6 @@ test_that("dfm.dfm works as expected", {
     )
 })
 
-test_that("dfm-methods works as expected", {
-    mydfm <- dfm(c("This is a test", "This is also a test", "This is an odd test"))
-    expect_equivalent(as.matrix(topfeatures(mydfm)),
-                      matrix(c(3,3,3,2,1,1,1)))
-    
-})
-
 test_that("dfm_sample works as expected",{
     myDfm <- dfm(data_corpus_inaugural[1:10], verbose = FALSE)
     expect_error(dfm_sample(myDfm, what="documents", size = 20),
@@ -453,16 +446,6 @@ test_that("cannot supply remove and select in one call (#793)", {
         dfm(toks, select = "one", remove = "two"),
         "only one of select and remove may be supplied at once"
     )
-})
-
-test_that("grouping is working as expected", {
-    mydfm <- dfm(data_corpus_inaugural[1:10])
-    expect_equal(names(topfeatures(mydfm, groups = docnames(mydfm))),
-                 docnames(mydfm))
-    expect_equal(topfeatures(mydfm, groups = docnames(mydfm))[[5]],
-                 topfeatures(mydfm[5,]))
-    expect_equal(topfeatures(mydfm, decreasing = TRUE, groups = docnames(mydfm))[[10]],
-                 topfeatures(mydfm[10,], decreasing = TRUE))
 })
 
 test_that("printing an empty dfm produces informative result (#811)", {
