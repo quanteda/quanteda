@@ -21,7 +21,8 @@
 *  For `sequences()`:
    - Removed arguments from `sequences()`: `features`, `case_insensitive` and `valuetype`, the function can be fully replaced by `tokens_select()`.
    - Removed arguments from `sequences()`: `ordered`.
-* (Finally) we added "will" to the list of English stopwords (#818).
+*  (Finally) we added "will" to the list of English stopwords (#818).
+*  `dfm` objects with one or both dimensions haveing zero length, and empty `kwic` objects now display more appropriately in their print methods (per #811).
 
 ### Bug fixes and stability enhancements
 

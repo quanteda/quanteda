@@ -114,7 +114,7 @@ is.kwic <- function(x) "kwic" %in% class(x)
 #' @export
 print.kwic <- function(x, ...) {
     if (!nrow(x)) {
-        print(NULL)
+        cat("kwic object with 0 rows")
     } else {
         if (all(x$from == x$to)) {
             labels <- stringi::stri_c("[", x$docname, ", ", x$from, "]")
