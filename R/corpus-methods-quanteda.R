@@ -59,6 +59,10 @@ documents.tokens <- function(x) {
     docvars(x)
 }
 
+documents.dfm <- function(x) {
+    docvars(x)
+}
+
 
 # internal replacement function for documents
 # @export
