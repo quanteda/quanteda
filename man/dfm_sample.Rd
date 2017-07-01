@@ -5,7 +5,7 @@
 \title{randomly sample documents or features from a dfm}
 \usage{
 dfm_sample(x, size = ndoc(x), replace = FALSE, prob = NULL,
-  what = c("documents", "features"))
+  by = c("document", "feature"))
 }
 \arguments{
 \item{x}{the dfm object whose documents or features will be sampled}
