@@ -4,23 +4,23 @@
 \alias{textplot_keyness}
 \title{plot word keyness}
 \usage{
-textplot_keyness(x, sort = TRUE, showBothDoc = FALSE, n = 20)
+textplot_keyness(x, sort = TRUE, show_reference = FALSE, n = 20)
 }
 \arguments{
-\item{x}{the keyness object to be plotted}
+\item{x}{a return object from \code{\link{textstat_keyness}}}
 
-\item{sort}{if \code{TRUE} (the default), order points from low to high 
+\item{sort}{logical; if \code{TRUE} (the default), order points from low to high 
 score.}
 
-\item{showBothDoc}{if \code{TRUE} show dual plot for both documents}
+\item{show_reference}{logical; if \code{TRUE}, show key reference features in addition to key target features}
 
-\item{n}{number of terms to plot.}
+\item{n}{number of terms to plot}
 }
 \value{
 a \pkg{ggplot2} object
 }
 \description{
-Plot the results of textstat_keyness analysis
+Plot the results of a keyword analysis using \code{\link{textstat_keyness}}.
 }
 \examples{
 \dontrun{
@@ -30,15 +30,16 @@ mydfm <- dfm(data_corpus_inaugural, groups = period)
 head(mydfm) # make sure 'post-war' is in the first row
 top20 <- head(result <- textstat_keyness(mydfm), 20)
 tail10 <- tail(result, 10)
+
 # plot estimated word keyness
 textplot_keyness(top20) 
-textplot_keyness(result, showBothDoc = TRUE)}
-
+textplot_keyness(result, show_reference = TRUE)
+}
 }
 \seealso{
 \code{\link{textstat_keyness}}
 }
 \author{
-Kenneth Benoit and Haiyan Wang
+Haiyan Wang
 }
 \keyword{textplot}
