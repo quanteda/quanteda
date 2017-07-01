@@ -107,9 +107,12 @@ as.dfm <- function(x) {
 #' @param n how many top features should be returned
 #' @param decreasing If \code{TRUE}, return the \code{n} most frequent features;
 #'   otherwise return the \code{n} least frequent features
-#' @param groups either: a character vector containing the names of document
-#'   variables to be used for grouping; or a factor or object that can be
-#'   coerced into a factor equal in length or rows to the number of documents.
+#' @param scheme one of \code{count} for total feature frequency (within
+#'   \code{group} if applicable), or \code{docfreq} for the document frequencies
+#'   of features
+#' @param groups either: a character vector containing the names of document 
+#'   variables to be used for grouping; or a factor or object that can be 
+#'   coerced into a factor equal in length or rows to the number of documents. 
 #'   See \code{\link{dfm_group}} for details.
 #' @return A named numeric vector of feature counts, where the names are the 
 #'   feature labels, or a list of these if \code{groups} is given.
@@ -129,28 +132,40 @@ as.dfm <- function(x) {
 #' 
 #' # grouping by president last name
 #' topfeatures(mydfm_nostopw, n = 5, groups = "President")
+#'
+#' # features by document frequencies
+#' tail(topfeatures(mydfm, scheme = "docfreq", n = 200))
 #' @export
-topfeatures <- function(x, n = 10, decreasing = TRUE, groups = NULL) {
+topfeatures <- function(x, n = 10, decreasing = TRUE, scheme = c("count", "docfreq"), groups = NULL) {
     UseMethod("topfeatures")
 }
 
 #' @export
 #' @noRd
 #' @importFrom stats quantile
-topfeatures.dfm <- function(x, n = 10, decreasing = TRUE, groups = NULL) {
+topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,  scheme = c("count", "docfreq"), groups = NULL) {
+    scheme <- match.arg(scheme)
+    
     if (!is.null(groups)) {
-        x <- dfm_group(x, groups = groups)
+        rownames(x) <- generate_groups(x, groups)
         result <- list()
-        for (i in seq_len(ndoc(x))) {
-            result[[i]] <- topfeatures(x[i, ], n = n, decreasing = decreasing, 
-                                       groups = NULL)
+        for (i in unique(docnames(x))) {
+            result[[i]] <- topfeatures(x[which(rownames(x)==i), ], 
+                                       n = n, scheme = scheme, 
+                                       decreasing = decreasing, groups = NULL)
         }
-        names(result) <- docnames(x)
         return(result)
     }
+    
     if (n > nfeature(x)) n <- nfeature(x)
     
-    result <- sort(colSums(x), decreasing)
+    if (scheme == "count") {
+        wght <- colSums(x)
+    } else if (scheme == "docfreq") {
+        wght <- docfreq(x)
+    }
+    
+    result <- sort(wght, decreasing)
     return(result[1:n])
     
     # Under development by Ken

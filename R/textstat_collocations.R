@@ -15,16 +15,16 @@
 #'   m_{ij})^2}{m_{ij}}} } \item{\code{"pmi"}}{point-wise mutual information 
 #'   score, computed as log \eqn{n_{11}/m_{11}}} \item{\code{"dice"}}{the Dice 
 #'   coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
-#'   \item{\code{"bj_uni"}}{unigram subtuples, Blaheta and Johnson's method (called through 
-#'   \code{\link{sequences}})}  \item{\code{"bj_all"}}{all subtuples algorithm, 
+#'   \item{\code{"lambda1"}}{unigram subtuples, Blaheta and Johnson's method (called through 
+#'   \code{\link{sequences}})}  \item{\code{"lambda"}}{all subtuples algorithm, 
 #'   Blaheta and Johnson's method (called through \code{\link{sequences}})} }
-#' @param min_size minimum length of sequences which are collected  
-#' @param max_size numeric argument representing the maximum length of the collocations
+#' @param size numeric argument representing the length of the collocations
 #'   to be scored.  The maximum size is currently 3 for all
-#'   methods except \code{"bj_uni"} and \code{"bj_all"}, which has a maximum size of 5.
+#'   methods except \code{"lambda"} and \code{"lambda1"}, which has a maximum size of 5.
+#'   Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.
 #' @param min_count minimum frequency of collocations that will be scored
 #' @param ... additional arguments passed to \code{\link{collocations2}} for the
-#'   first four methods, or to  \code{\link{sequences}} for \code{method = "bj"}
+#'   first four methods, or to  \code{\link{sequences}} for \code{method = "bj_*"}
 #' @references Blaheta, D., & Johnson, M. (2001). 
 #'   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
 #'    learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
@@ -44,22 +44,21 @@
 #' toks <- tokens(txts)
 #' textstat_collocations(toks, method = "lr")
 #' textstat_collocations(toks, method = "lr", min_count = 1)
-#' textstat_collocations(toks, method = "lr", max_size = 3, min_count = 1)
-#' (cols <- textstat_collocations(toks, method = "lr", max_size = 3, min_count = 2))
+#' textstat_collocations(toks, method = "lr", size = 2:3, min_count = 1)
+#' (cols <- textstat_collocations(toks, method = "lr", size = 2:3, min_count = 2))
 #' 
 #' # extracting multi-part proper nouns (capitalized terms)
 #' toks2 <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
 #' toks2 <- tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
 #' toks2 <- tokens_select(toks2, "^([A-Z][a-z\\-]{2,})", valuetype="regex", 
 #'                      case_insensitive = FALSE, padding = TRUE)
-#' seqs <- textstat_collocations(toks2, method = "bj_uni")
+#' seqs <- textstat_collocations(toks2, method = "lambda")
 #' head(seqs, 10)
 #' 
 #' # compounding tokens is more efficient when applied to the same tokens object 
 #' toks_comp <- tokens_compound(toks2, seqs)
-textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj_uni", "bj_all"), 
-                                  min_size = 2,
-                                  max_size = 3,
+textstat_collocations <- function(x, method =  c("lambda", "lambda1", "lr", "chi2", "pmi", "dice"), 
+                                  size = 2,
                                   min_count = 2, 
                                   ...) {
     UseMethod("textstat_collocations")
@@ -67,26 +66,25 @@ textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "b
 
 #' @noRd
 #' @export
-textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj_uni", "bj_all"), 
-                                         min_size = 2,
-                                         max_size = 3,
+textstat_collocations.tokens <- function(x, method =  c("lambda", "lambda1", "lr", "chi2", "pmi", "dice"), 
+                                         size = 2,
                                          min_count = 2, 
                                          ...) {
     method <- match.arg(method)
-    if (method == 'bj_uni') {
-        result <- sequences(x, min_count = min_count, min_size = min_size, max_size = max_size, ...)
-    } else if (method == 'bj_all'){
-        result <- sequences(x, min_count = min_count, min_size = min_size, max_size = max_size, method = "all_subtuples", ...)
+    if (method == 'lambda') {
+        result <- sequences(x, min_count = min_count, size = size, ...)
+    } else if (method == 'lambda1'){
+        result <- sequences(x, min_count = min_count, size = size, method = "lambda1", ...)
     } else {
-        if (missing(max_size)) {
-            max_size <- 2:3 
-        } else if (!all(max_size %in% 2:3)) {
-            stop("for method ", method, " max_size can only be 2, 3, or 2:3")
-        } else {
-            max_size <- 2:max_size
-        }
-        result <- collocations2(x, method = method,  
-                                size = max_size, min_count = min_count, ...)
+        # if (!all(size %in% 2:3)) {
+        #     stop("for method ", method, " size can only be 2, 3, or 2:3")
+        # } 
+        # 
+        # result <- collocations2(x, method = method,  
+        #                         size = size, min_count = min_count, ...)
+        # temporally call `lambda` function which also returns all other scores
+        result <- sequences(x, min_count = min_count, size = size, ...)
+        
     }
     rownames(result) <- seq_len(nrow(result))
     class(result) <- c("collocations", 'data.frame')
