@@ -5,7 +5,7 @@
 \title{randomly sample documents or features from a dfm}
 \usage{
 dfm_sample(x, size = ndoc(x), replace = FALSE, prob = NULL,
-  by = c("document", "feature"))
+  margin = c("documents", "features"))
 }
 \arguments{
 \item{x}{the dfm object whose documents or features will be sampled}
@@ -17,7 +17,7 @@ dfm_sample(x, size = ndoc(x), replace = FALSE, prob = NULL,
 \item{prob}{a vector of probability weights for obtaining the elements of the
 vector being sampled.}
 
-\item{what}{dimension (of a \link{dfm}) to sample: can be \code{documents} or
+\item{margin}{dimension (of a \link{dfm}) to sample: can be \code{documents} or
 \code{features}}
 }
 \value{
@@ -33,7 +33,7 @@ myDfm <- dfm(data_corpus_inaugural[1:10])
 head(myDfm)
 head(dfm_sample(myDfm))
 head(dfm_sample(myDfm, replace = TRUE))
-head(dfm_sample(myDfm, by = "feature"))
+head(dfm_sample(myDfm, margin = "features"))
 }
 \seealso{
 \link{sample}
