@@ -34,8 +34,8 @@ test_that("bootstrap_dfm works as planned with dfm", {
     
     set.seed(10)
     dfmresamp1 <- bootstrap_dfm(mydfm, n = 3, verbose = FALSE)
-    expect_identical(dfmresamp1[[1]], 
-                     dfm(mycorpus))
+    expect_equivalent(dfmresamp1[[1]], 
+                      dfm(mycorpus))
     
     dfmresamp2 <- bootstrap_dfm(txt, n = 3, verbose = FALSE)
     expect_identical(dfmresamp2[[1]], 
@@ -47,5 +47,4 @@ test_that("bootstrap_dfm works as planned with dfm", {
         featnames(dfmresamp2[[1]]),
         featnames(dfmresamp2[[2]])
     )
-    
 })
