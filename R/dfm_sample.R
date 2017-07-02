@@ -24,14 +24,14 @@ dfm_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL,
 
 #' @noRd
 #' @export
-dfm_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, 
+dfm_sample.dfm <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, 
                        by = c("document", "feature")) {
     what <- match.arg(by)
     if (what == "document") {
         if (size > ndoc(x))
             stop("size cannot exceed the number of documents (", ndoc(x), ")")
         x <- x[sample(ndoc(x), size, replace, prob), ]
-    } else if (what == "features") {
+    } else if (what == "feature") {
         if (size > nfeature(x))
             stop("size cannot exceed the number of features (", nfeature(x), ")")
         x <- x[, sample(nfeature(x), size, replace, prob)]
