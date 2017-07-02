@@ -33,6 +33,7 @@
 *  Separators including rare spacing characters are now handled more robustly by the `remove_separators` argument in `tokens()`.  See #796.
 *  Improved memory usage when computing `ntoken()` and `ntype()`. (#795)
 *  Improvements to `quanteda_options()` now does not throw an error when **quanteda** functions are called directly without attaching the package.  In addition, **quanteda** options can be set now in .Rprofile and will not be overwritten when the options initialization takes place when attaching the package.
+*  Fixed a bug in `textstat_readability()` that wrongly computed the number of words with fewer than 3 syllables in a text; this affected the `FOG.NRI` and the `Linsear.Write` measures only.
 
 
 ## Changes since v0.9.9-50

@@ -181,7 +181,7 @@ textstat_readability.character <- function(x,
                                W6C = sapply(wordLengths, function(x) sum(x >= 6)), # number of words with at least 6 letters
                                W7C = sapply(wordLengths, function(x) sum(x >= 7))) # number of words with at least 7 letters
     textFeatures[, W_wl.Dale.Chall := sapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$dalechall)))]
-    textFeatures[, Wlt3Sy := Sy - W3Sy]   # number of words with less than three syllables
+    textFeatures[, Wlt3Sy := W - W3Sy]   # number of words with less than three syllables
 
     if (any(c("all", "ARI") %in% measure))
         textFeatures[, ARI := 0.5 * W / St + 4.71 * C / W - 21.43]
