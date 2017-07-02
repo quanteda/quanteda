@@ -13,10 +13,12 @@
 #'   from the dfm \code{x}.  
 #' @seealso \link{sample}
 #' @examples
+#' set.seed(10)
 #' myDfm <- dfm(data_corpus_inaugural[1:10])
-#' dfm_sample(myDfm)[, 1:10]
-#' dfm_sample(myDfm, replace = TRUE)[, 1:10]
-#' dfm_sample(myDfm, what = "features")[1:10, ]
+#' head(myDfm)
+#' head(dfm_sample(myDfm))
+#' head(dfm_sample(myDfm, replace = TRUE))
+#' head(dfm_sample(myDfm, by = "feature"))
 dfm_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, 
                        by = c("document", "feature")) {
     UseMethod("dfm_sample")
@@ -35,9 +37,7 @@ dfm_sample.dfm <- function(x, size = ndoc(x), replace = FALSE, prob = NULL,
         if (size > nfeature(x))
             stop("size cannot exceed the number of features (", nfeature(x), ")")
         x <- x[, sample(nfeature(x), size, replace, prob)]
-    } else {
-        stop("only documents or features please")
-    }
+    } 
     x
 }
 

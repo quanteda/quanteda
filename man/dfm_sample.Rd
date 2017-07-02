@@ -28,10 +28,12 @@ A dfm object with number of documents or features equal to \code{size}, drawn
 Sample randomly from a dfm object, from documents or features.
 }
 \examples{
+set.seed(10)
 myDfm <- dfm(data_corpus_inaugural[1:10])
-dfm_sample(myDfm)[, 1:10]
-dfm_sample(myDfm, replace = TRUE)[, 1:10]
-dfm_sample(myDfm, what = "features")[1:10, ]
+head(myDfm)
+head(dfm_sample(myDfm))
+head(dfm_sample(myDfm, replace = TRUE))
+head(dfm_sample(myDfm, by = "feature"))
 }
 \seealso{
 \link{sample}
