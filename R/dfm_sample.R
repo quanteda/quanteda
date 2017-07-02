@@ -6,7 +6,7 @@
 #' @param replace logical; should sampling be with replacement?
 #' @param prob a vector of probability weights for obtaining the elements of the
 #'   vector being sampled.
-#' @param what dimension (of a \link{dfm}) to sample: can be \code{documents} or
+#' @param margin dimension (of a \link{dfm}) to sample: can be \code{documents} or
 #'   \code{features}
 #' @export
 #' @return A dfm object with number of documents or features equal to \code{size}, drawn 
@@ -18,22 +18,22 @@
 #' head(myDfm)
 #' head(dfm_sample(myDfm))
 #' head(dfm_sample(myDfm, replace = TRUE))
-#' head(dfm_sample(myDfm, by = "feature"))
+#' head(dfm_sample(myDfm, margin = "features"))
 dfm_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, 
-                       by = c("document", "feature")) {
+                       margin = c("documents", "features")) {
     UseMethod("dfm_sample")
 }
 
 #' @noRd
 #' @export
 dfm_sample.dfm <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, 
-                       by = c("document", "feature")) {
-    what <- match.arg(by)
-    if (what == "document") {
+                       margin = c("documents", "features")) {
+    margin <- match.arg(margin)
+    if (margin == "documents") {
         if (size > ndoc(x))
             stop("size cannot exceed the number of documents (", ndoc(x), ")")
         x <- x[sample(ndoc(x), size, replace, prob), ]
-    } else if (what == "feature") {
+    } else if (margin == "features") {
         if (size > nfeature(x))
             stop("size cannot exceed the number of features (", nfeature(x), ")")
         x <- x[, sample(nfeature(x), size, replace, prob)]
