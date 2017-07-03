@@ -5,15 +5,13 @@
 \alias{is.phrase}
 \title{declare a compound character to be a sequence of separate pattern matches}
 \usage{
-phrase(...)
+phrase(x)
 
 is.phrase(x)
 }
 \arguments{
-\item{...}{the sequence, as a \code{character} object containing whitespace
-separating the patterns.}
-
-\item{x}{object to be tested as or coerced to a phrase}
+\item{x}{the sequence, as a \code{character} object containing whitespace
+separating the patterns}
 }
 \value{
 \code{phrase} returns a specially classed list whose white-spaced

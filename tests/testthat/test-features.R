@@ -66,6 +66,10 @@ test_that("character vector with whitespace works consistently on tokens", {
     
     expect_equal(
         nrow(kwic(toks, keywords = feat)),
+        0
+    )
+    expect_equal(
+        nrow(kwic(toks, keywords = phrase(feat))),
         1
     )
 })

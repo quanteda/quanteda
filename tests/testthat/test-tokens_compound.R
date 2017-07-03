@@ -98,3 +98,10 @@ test_that("tokens_compound works with padded tokens", {
     expect_equal(sort(attr(toks, "types")),
                  sort(c("a", "c_d", "f", "g")))
 })
+
+test_that("tokens_compound works as expected with nested tokens", {
+    expect_equal(
+        as.character(tokens_compound(tokens("a b c d"), phrase(c("a b", "a b c")))),
+        c("a_b_d", "d")
+    )
+})

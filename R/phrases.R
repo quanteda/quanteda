@@ -2,8 +2,8 @@
 #' 
 #' Declares that a whitespace-separated expression consists of multiple
 #' patterns, separated by whitespace.
-#' @param ... the sequence, as a \code{character} object containing whitespace
-#'   separating the patterns.
+#' @param x the sequence, as a \code{character} object containing whitespace
+#'   separating the patterns
 #' @return \code{phrase} returns a specially classed list whose white-spaced
 #'   elements have been parsed into separate \code{character} elements.
 #' @export
@@ -17,58 +17,51 @@
 #' # from a collocations object
 #' (coll <- textstat_collocations(tokens("a b c a b d e b d a b")))
 #' phrase(coll)
-phrase <- function(...) {
+phrase <- function(x) {
     UseMethod("phrase")
 }
 
 #' @noRd
 #' @export
-phrase.character <- function(...) {
-    x <- sapply(as.list(...), list)
-    x <- lapply(x, 
-                function(y) as.character(tokens(y, what = "fasterword", remove_punct = FALSE)))
-    phrase(x)    
+phrase.character <- function(x) {
+    phrase(stringi::stri_split_charclass(x, "\\p{Z}"))
 }
 
 #' @noRd
 #' @export
-phrase.dictionary2 <- function(...) {
-    phrase(unlist(..., use.names = FALSE))
+phrase.dictionary2 <- function(x) {
+    phrase(unlist(x, use.names = FALSE))
 }
 
 #' @noRd
 #' @export
-phrase.collocations <- function(...) {
-    x <- as.data.frame(do.call(rbind, list(...)))
+phrase.collocations <- function(x) {
     phrase(x[["collocation"]])
 }
 
 #' @noRd
 #' @export
-phrase.sequences <- function(...) {
-    x <- as.data.frame(do.call(rbind, list(...)))
+phrase.sequences <- function(x) {
     phrase(x[["collocation"]])
 }
 
 #' @noRd
 #' @export
-phrase.list <- function(...) {
-    x <- as.list(...)
+phrase.list <- function(x) {
+    if (!all(is.character(unlist(x, use.names = FALSE))))
+        stop("all list elements must be character")
     class(x) <- c("phrases", class(x))
     x
 }
 
 #' @noRd
 #' @export
-phrase.tokens <- function(...) {
-    x <- as.list(...)
-    class(x) <- c("phrases", class(x))
-    x
+phrase.tokens <- function(x) {
+    phrase(as.list(x))
 }
 
 
 #' @rdname phrase
-#' @param x object to be tested as or coerced to a phrase
 #' @return \code{is.phrase} returns \code{TRUE} if the object was created by 
 #'   \code{\link{phrase}}; \code{FALSE} otherwise.
 #' @export
