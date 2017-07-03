@@ -1,31 +1,33 @@
-#' plot the frequency of a term across documents
+#' plot the frequency of a feature across documents
 #' 
-#' Plots the absolute or relative frequency of a term in all documents of a document-feature matrix.
-#' Given that this returns a ggplot object, you can modify the plot by adding ggplot layers (see example).
+#' Plots the absolute or relative frequency of a feature in all documents of a 
+#' document-feature matrix. Given that this returns a ggplot object, you can 
+#' modify the plot by adding ggplot layers (see example).
 #' @param x a dfm object
-#' @param term the term to be plotted
-#' @param type the frequency type to be plotted. Options are frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf". See \code{\link{dfm_weight}} for more information
-#' @param doclabels a vector of names for document; if left NULL (the default), docnames will be used
-#' @param sort whether to sort the documents on the x-axis according to the frequency of the term
-#' @param angle The angle of the document labels on the x-axis
-#' @return a **ggplot2** object
+#' @param feature the feature whose frequency will be plotted
+#' @param type the frequency type to be plotted. Options are "frequency", 
+#'   "relFreq", "relMaxFreq", "logFreq", "tfidf". See \code{\link{dfm_weight}} 
+#'   for legal values.
+#' @param doclabels a vector of names for document; if left \code{NULL} (the
+#'   default), \code{docnames(x)} will be used
+#' @param sort logical; if \code{TRUE}, sort the documents on the x-axis
+#'   according to the frequency of the feature
+#' @return a \pkg{ggplot2} object
 #' @author Stefan Müller
 #' @seealso \code{\link{dfm}}, \code{\link{dfm_weight}}
 #' @examples 
 #' \dontrun{
 #' doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
-#'                1, paste, collapse = " ")
-#'
+#'                 1, paste, collapse = " ")
 #' textplot_frequency(x = dfm(data_corpus_irishbudget2010),
-#'                   term = "tax", sort = TRUE, doclabels = doclab)
-#'
-#' textplot_frequency(x = dfm(data_corpus_irishbudget2010), type = "relMaxFreq",
-#'                   term = "tax", sort = FALSE, doclabels = doclab)
-#'
+#'                    feature = "tax", sort = TRUE, doclabels = doclab)
+#' textplot_frequency(x = dfm(data_corpus_irishbudget2010),
+#'                    feature = "tax", sort = FALSE, doclabels = doclab)
+#' textplot_frequency(x = dfm(data_corpus_irishbudget2010), type = "logFreq",
+#'                    feature = "tax", doclabels = doclab)
+#'                   
 #' data_corpus_inauguralPost80 <- corpus_subset(data_corpus_inaugural, Year > 1980)
-#' 
-#' textplot_frequency(dfm(data_corpus_inauguralPost80), "america", sort = TRUE) +
-#'  theme_minimal()
+#' textplot_frequency(dfm(data_corpus_inauguralPost80), "america", sort = TRUE)
 #' }
 #' @export
 #' @keywords plot
@@ -34,42 +36,49 @@
 #' @importFrom ggplot2 ggplot aes geom_point element_blank 
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw theme geom_point
 #' @importFrom ggplot2 scale_x_discrete
+#' @importFrom ggplot2 element_text ggtitle
 #' @export
+textplot_frequency <- function(x, feature, type = "frequency", sort = TRUE, doclabels = docnames(x)) {
+    UseMethod("textplot_frequency")
+}
+    
+#' @noRd
+#' @export
+textplot_frequency.dfm <- function(x, feature, type = "frequency", sort = TRUE, doclabels = docnames(x)) {
 
-
-textplot_frequency <- function (x, term, sort = TRUE, doclabels = NULL, type = 'frequency', angle = 90) {
-
-  if (type != 'frequency') {
+  type <- match.arg(type, c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"))
+  if (type != "frequency") {
     x <- dfm_weight(x, type = as.character(type))
   }
   
-  if (is.null(doclabels)) doclabels <- x@Dimnames$docs
+  freq <- doclabels <- NULL
+  feature_data_frame <- data.frame(
+      doclabels = doclabels,
+      freq = as.vector(x[, feature])
+  )
   
-  feature_data_frame <- data.frame(list(
-    doclabels = doclabels,
-    frequency = unname(as.matrix(x[, as.character(term)]))))
-
   p <- if (sort) {
-    ggplot(data = feature_data_frame, aes(x = reorder(doclabels, -frequency), y = frequency))
+    ggplot(data = feature_data_frame, aes(x = reorder(doclabels, freq), y = freq))
   } else {
-    ggplot(data = feature_data_frame, aes(x = doclabels, y = frequency))
+    ggplot(data = feature_data_frame, aes(x = doclabels, y = freq))
   }
   
   p <-  p + geom_point() +
-    xlab("Document") +
+    coord_flip() + 
+    xlab("") +
     ylab(NULL) +
     if (type == "frequency") {
-      ggtitle(paste0("Frequency", " (“", term, "”)", sep = ""))
+      ggtitle(paste0("Frequency", " (\"", feature, "\")", sep = ""))
     } else if (type == "relFreq") {
-      ggtitle(paste0("Relative frequency", " (“", term, "”)", sep = ""))
+      ggtitle(paste0("Relative frequency", " (\"", feature, "\")", sep = ""))
     } else if (type == "relMaxFreq") {
-      ggtitle(paste0("Relative maximum frequency", " (“", term, "”)", sep = ""))
+      ggtitle(paste0("Relative maximum frequency", " (\"", feature, "\")", sep = ""))
     } else if (type == "logFreq") {
-      ggtitle(paste0("Frequency (log)", " (“", term, "”)", sep = ""))
+      ggtitle(paste0("Frequency (log)", " (\"", feature, "\")", sep = ""))
     } else
-      ggtitle(paste0("Term-frequency * inverse document frequency", " (“", term, "”)", sep = ""))
+      ggtitle(paste0("Term-frequency * inverse document frequency", " (\"", feature, "\")", sep = ""))
 
-  apply_theme(p) + theme(axis.text.x = element_text(angle=angle, hjust=1))
+  apply_theme(p) # + theme(axis.text.x = element_text(hjust=1))
 
 }
 
