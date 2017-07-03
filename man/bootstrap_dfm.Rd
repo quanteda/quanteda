@@ -17,21 +17,25 @@ bootstrap_dfm(x, n = 10, ..., verbose = quanteda_options("verbose"))
 }
 \value{
 A named list of \link{dfm} objects, where the first, \code{dfm_0}, is
-the dfm from the original texts, and subsequent elements are the
-sentence-resampled dfms.
+  the dfm from the original texts, and subsequent elements are the 
+  sentence-resampled dfms.
 }
 \description{
 Create an array of resampled dfms.
 }
 \details{
-This code loops the creation of a dfm from a corpus, keeping a
-constant set of features based on the original dfm.  Resampling of the corpus
-is done at the sentence level, within document.
+Function produces multiple, resampled \link{dfm} objects, based on 
+  resampling sentences (wth replacement) from each document, recombining
+  these into new "documents" and computing a dfm for each. Resampling of
+  sentences is done strictly within document, so that every resampled
+  document will contain at least some of its original tokens.
 }
 \examples{
+# bootstrapping from the original text
 txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
          texttwo = "Premiere phrase.  Deuxieme phrase.")
-bootstrap_dfm(txt, n = 3)         
+bootstrap_dfm(txt, n = 3)
+         
 }
 \author{
 Kenneth Benoit
