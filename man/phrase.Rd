@@ -11,9 +11,7 @@ is.phrase(x)
 }
 \arguments{
 \item{x}{the sequence, as a \code{character} object containing whitespace
-separating the patterns.}
-
-\item{x}{object to be tested as or coerced to a phrase}
+separating the patterns}
 }
 \value{
 \code{phrase} returns a specially classed list whose white-spaced

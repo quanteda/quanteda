@@ -3,7 +3,7 @@
 #' Declares that a whitespace-separated expression consists of multiple
 #' patterns, separated by whitespace.
 #' @param x the sequence, as a \code{character} object containing whitespace
-#'   separating the patterns.
+#'   separating the patterns
 #' @return \code{phrase} returns a specially classed list whose white-spaced
 #'   elements have been parsed into separate \code{character} elements.
 #' @export
@@ -62,7 +62,6 @@ phrase.tokens <- function(x) {
 
 
 #' @rdname phrase
-#' @param x object to be tested as or coerced to a phrase
 #' @return \code{is.phrase} returns \code{TRUE} if the object was created by 
 #'   \code{\link{phrase}}; \code{FALSE} otherwise.
 #' @export
