@@ -4,10 +4,12 @@
 
 [![CRAN Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
-**quanteda** v0.9.9: Important Changes
---------------------------------------
+**quanteda** v0.9.9.x: Important Changes
+----------------------------------------
 
-This version of the package is a transitional release prior to v1.0. It includes some major API changes (see below), but with the most of the older functions retained and deprecated. v0.9.9 also implements many enhancements and performance improvements. See [Quanteda Structure and Design](https://kbenoit.github.io/quanteda/articles/development-plans.html) for details.
+Many important changes to the package have been underway, in preparation for both a final, transitional release (v0.9.9.9000) prior to v1.0, and v1.0 itselt. These include finalizing the v1.0 API, involving some changes to earlier versions of **quanteda**. For the v9.9.9000 and earlier released, most of the older functions are retained and working, but deprecated.
+
+v0.9.9 also implements many enhancements and performance improvements. See [Quanteda Structure and Design](https://kbenoit.github.io/quanteda/articles/development-plans.html) for details.
 
 About the package
 -----------------
@@ -24,7 +26,7 @@ How to cite the package:
     following:
 
       Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
-      Textual Data".  R package version: 0.9.9.67.
+      Textual Data".  R package version: 0.9.9.77.
       http://quanteda.io.
 
     A BibTeX entry for LaTeX users is
@@ -32,7 +34,7 @@ How to cite the package:
       @Manual{,
         title = {quanteda: Quantitative Analysis of Textual Data},
         author = {Kenneth Benoit and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
-        note = {R package version 0.9.9.67},
+        note = {R package version 0.9.9.77},
         url = {http://quanteda.io},
       }
 
@@ -134,8 +136,8 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.67
-## Using 7 of 8 cores for parallel computing
+## quanteda version 0.9.9.77
+## Using 4 of 8 threads for parallel computing
 ## 
 ## Attaching package: 'quanteda'
 ## The following object is masked from 'package:utils':
@@ -164,7 +166,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Mon Jun  5 12:23:26 2017
+## Created: Mon Jul  3 15:34:28 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -176,8 +178,7 @@ kwic(uk2010immigCorpus, "deport", 3)
 ##  [BNP, 2621]  Criminals We shall | deport | all criminal entrants
 
 # create a dfm, removing stopwords
-mydfm <- dfm(uk2010immigCorpus, remove = c("will", stopwords("english")),
-             remove_punct = TRUE)
+mydfm <- dfm(uk2010immigCorpus, remove = stopwords("english"), remove_punct = TRUE)
 mydfm
 ## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).
 

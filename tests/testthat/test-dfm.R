@@ -300,12 +300,11 @@ test_that("dfm.dfm works as expected", {
 
 test_that("dfm_sample works as expected",{
     myDfm <- dfm(data_corpus_inaugural[1:10], verbose = FALSE)
-    expect_error(dfm_sample(myDfm, what="documents", size = 20),
+    expect_error(dfm_sample(myDfm, margin = "documents", size = 20),
                   "size cannot exceed the number of documents \\(10\\)")
-    expect_error(dfm_sample(myDfm, what="features", size = 3500),
+    expect_error(dfm_sample(myDfm, margin = "features", size = 3500),
                  "size cannot exceed the number of features \\(3358\\)")
-    expect_error(dfm_sample(data_corpus_inaugural[1:10]),
-                 "x must be a dfm object")
+    expect_error(dfm_sample(data_corpus_inaugural[1:10]))
 })
 
 

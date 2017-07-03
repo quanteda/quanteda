@@ -11,23 +11,27 @@ textstat_collocations(x, method = c("lambda", "lambda1", "lr", "chi2", "pmi",
 is.collocations(x)
 }
 \arguments{
-\item{x}{a character, \link{corpus}, or \link{tokens} object to be mined for 
-collocations}
+\item{x}{a \link{tokens} object whose collocations will be scored}
 
-\item{method}{association measure for detecting collocations.  Let \eqn{i} 
-index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to 
+\item{method}{association measure for detecting collocations.
+Let \eqn{i} index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to 
 observed counts, and \eqn{m_{ij}} the expected counts in a collocations 
-frequency table of dimensions \eqn{(J - size + 1)^2}. Available measures 
-are computed as: \describe{ \item{\code{"lr"}}{The likelihood ratio 
+frequency table of dimensions \eqn{(J - size + 1)^2}. 
+
+Available measures are computed as: 
+
+\describe{\item{\code{"lr"}}{The likelihood ratio 
 statistic \eqn{G^2}, computed as: \deqn{2 * \sum_i \sum_j ( n_{ij} * log 
-\frac{n_{ij}}{m_{ij}} )} } \item{\code{"chi2"}}{Pearson's \eqn{\chi^2} 
-statistic, computed as: \deqn{\sum_i \sum_j \frac{(n_{ij} - 
-m_{ij})^2}{m_{ij}}} } \item{\code{"pmi"}}{point-wise mutual information 
-score, computed as log \eqn{n_{11}/m_{11}}} \item{\code{"dice"}}{the Dice 
-coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
+\frac{n_{ij}}{m_{ij}} )} } 
+\item{\code{"chi2"}}{Pearson's \eqn{\chi^2} statistic, computed as: 
+\deqn{\sum_i \sum_j \frac{(n_{ij} - m_{ij})^2}{m_{ij}}} } 
+\item{\code{"pmi"}}{point-wise mutual information 
+score, computed as log \eqn{n_{11}/m_{11}}} 
+\item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
 \item{\code{"lambda1"}}{unigram subtuples, Blaheta and Johnson's method (called through 
-\code{\link{sequences}})}  \item{\code{"lambda"}}{all subtuples algorithm, 
-Blaheta and Johnson's method (called through \code{\link{sequences}})} }}
+\code{\link{sequences}})}  
+\item{\code{"lambda"}}{all subtuples algorithm, Blaheta and Johnson's method 
+(called through \code{\link{sequences}})} }}
 
 \item{size}{numeric argument representing the length of the collocations
 to be scored.  The maximum size is currently 3 for all
@@ -40,31 +44,14 @@ Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.}
 first four methods, or to  \code{\link{sequences}} for \code{method = "bj_*"}}
 }
 \value{
+\code{textstat_collocations} returns a data.frame of collocations and their
+  scores and statistsics.
+
 \code{is.collocation} returns \code{TRUE} if the object is of class
   \code{collocations}, \code{FALSE} otherwise.
 }
 \description{
-Identify and score collocations from a corpus, character, or tokens object, 
-with targeted selection.
-
-#' @rdname textstat_collocations
-#' @noRd
-#' @export    
-textstat_collocations.character <- function(x, method = c("lr", "chi2", "pmi", "dice", "bj"), ...) {
-    method <- match.arg(method)
-    textstat_collocations(tokens(x), method = method, ...)
-}
-}
-\details{
-#' @rdname textstat_collocations
-#' @noRd
-#' @export    
-textstat_collocations.tokenizedTexts <- function(x, method = c("lr", "chi2", "pmi", "dice", "bj"), ...) {
-    method <- match.arg(method)
-    textstat_collocations(as.tokens(x), method = method, ...)
-}
-
-check if an object is collocations object
+Identify and score collocations from a tokenized text.
 }
 \note{
 This function is under active development, and we aim to improve both its operation and 
