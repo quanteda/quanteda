@@ -38,6 +38,9 @@ test_that("test that sequences works with tokens_compound", {
                           case_insensitive = FALSE, padding = TRUE)
     seqs <- sequences(toks_capital, min_count = 1, size = 2:4)
     
+    # THE NEXT TWO TESTS HIGHLIGHT THE ISSUES RELATING TO NESTED SEQUENCES.
+    # MAYBE WE SHOULD HAVE A RULE TO FORM THE LONGEST ONLY?  -KB
+
     # seqs have the same types
     expect_equivalent(as.list(tokens_compound(toks, phrase(seqs), join = FALSE)),
                       list(c("E_E", "a", "b", "c", "E_E_G_G", "E_E", "G_G", "f", "E_E", "f", "f", "G_G")))
