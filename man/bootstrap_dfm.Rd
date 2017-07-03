@@ -24,18 +24,18 @@ A named list of \link{dfm} objects, where the first, \code{dfm_0}, is
 Create an array of resampled dfms.
 }
 \details{
-Function produces multiple, resampled \link{dfm} objects, from a
-  common source,  keeping a constant set of features based on the original
-  dfm.  From a corpus or character source, resampling is done at the sentence
-  level, within document.  From a dfm source, resampling is done at the
-  feature level using a multinominal sampling strategy, keeping document
-  marginals constant.
+Function produces multiple, resampled \link{dfm} objects, based on 
+  resampling sentences (wth replacement) from each document, recombining
+  these into new "documents" and computing a dfm for each. Resampling of
+  sentences is done strictly within document, so that every resampled
+  document will contain at least some of its original tokens.
 }
 \examples{
 # bootstrapping from the original text
 txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
          texttwo = "Premiere phrase.  Deuxieme phrase.")
-bootstrap_dfm(txt, n = 3)         
+bootstrap_dfm(txt, n = 3)
+         
 }
 \author{
 Kenneth Benoit
