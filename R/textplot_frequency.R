@@ -39,25 +39,33 @@
 #' @importFrom ggplot2 element_text ggtitle
 #' @export
 textplot_frequency <- function(x, feature, type = "frequency", sort = TRUE, doclabels = docnames(x)) {
-    UseMethod("textplot_frequency")
+  UseMethod("textplot_frequency")
 }
-    
+
 #' @noRd
 #' @export
 textplot_frequency.dfm <- function(x, feature, type = "frequency", sort = TRUE, doclabels = docnames(x)) {
-
+  
   type <- match.arg(type, c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"))
   if (type != "frequency") {
     x <- dfm_weight(x, type = as.character(type))
   }
   
-  freq <- doclabels <- NULL
+  if(!(as.character(feature) %in% colnames(x))) {
+    stop("feature is not part of the dfm")
+  }
+  
+  if (length(doclabels) != ndoc(x)) {
+    stop("custom doclabels do not have same length as documents in dfm")
+  }
+  
+  freq <- NULL
   feature_data_frame <- data.frame(
-      doclabels = doclabels,
-      freq = as.vector(x[, feature])
+    doclabels = doclabels,
+    freq =  as.vector(x[, feature])
   )
   
-  p <- if (sort) {
+  p <- if (sort == TRUE) {
     ggplot(data = feature_data_frame, aes(x = reorder(doclabels, freq), y = freq))
   } else {
     ggplot(data = feature_data_frame, aes(x = doclabels, y = freq))
@@ -65,21 +73,20 @@ textplot_frequency.dfm <- function(x, feature, type = "frequency", sort = TRUE, 
   
   p <-  p + geom_point() +
     coord_flip() + 
-    xlab("") +
-    ylab(NULL) +
+    xlab(NULL) +
     if (type == "frequency") {
-      ggtitle(paste0("Frequency", " (\"", feature, "\")", sep = ""))
+      ylab("Frequency")
     } else if (type == "relFreq") {
-      ggtitle(paste0("Relative frequency", " (\"", feature, "\")", sep = ""))
+      ylab("Relative frequency")
     } else if (type == "relMaxFreq") {
-      ggtitle(paste0("Relative maximum frequency", " (\"", feature, "\")", sep = ""))
+      ylab("Relative maximum frequency")
     } else if (type == "logFreq") {
-      ggtitle(paste0("Frequency (log)", " (\"", feature, "\")", sep = ""))
+      ylab("Frequency (log)")
     } else
-      ggtitle(paste0("Term-frequency * inverse document frequency", " (\"", feature, "\")", sep = ""))
-
-  apply_theme(p) # + theme(axis.text.x = element_text(hjust=1))
-
+      ylab("Term-frequency * inverse document frequency")
+  
+  apply_theme(p)
+  
 }
 
 ##
