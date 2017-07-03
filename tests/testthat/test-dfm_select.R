@@ -273,8 +273,8 @@ test_that("dfm_select works when selecting on collocations", {
     dfm_uni <- dfm(toks_uni)
     toks_bi <- tokens(txt, n = 2, concatenator = " ")
     dfm_bi <- dfm(toks_bi)
-    coll_bi <- textstat_collocations(toks_uni, method = "lr", max_size = 2)
-    coll_tri <- textstat_collocations(toks_uni, method = "lr", min_size = 3, max_size = 3)
+    coll_bi <- textstat_collocations(toks_uni, method = "lr", size = 2)
+    coll_tri <- textstat_collocations(toks_uni, method = "lr", size = 3)
     
     expect_equal(
         dim(dfm_select(dfm_uni, coll_bi)),
