@@ -126,7 +126,7 @@ test_that("test textplot_scale1d wordscores in the most basic way", {
 
 test_that("test textplot_frequency works for a dfm", {
   dfm_test <- dfm(data_corpus_inaugural[1:5])
-  expect_silent(textplot_frequency(dfm_test, feature = "america"))
+  expect_silent(textplot_frequency(dfm_test, feature = c("america", "people")))
   expect_silent(textplot_frequency(dfm_test, feature = "america", type = "logFreq"))
   expect_false(identical(textplot_frequency(dfm_test, feature = "america", sort = TRUE),
                textplot_frequency(dfm_test, feature = "america", sort = FALSE)))
