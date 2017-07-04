@@ -50,7 +50,7 @@ Text join_comp(Text tokens,
 #if QUANTEDA_USE_TBB
                 id_mutex.lock();
 #endif
-                unsigned int &id = map_comps[tokens_seq];
+                UintParam &id = map_comps[tokens_seq];
                 if (!id) id = ++id_comp; // assign new ID if not exisits
                 //Rcout << "Compund "<< id << ": ";
                 //dev::print_ngram(tokens_seq);
