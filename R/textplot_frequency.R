@@ -32,7 +32,7 @@
 #' @importFrom stats reorder
 #' @importFrom ggplot2 ggplot aes geom_point element_blank 
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw theme geom_point
-#' @importFrom ggplot2 scale_x_discrete
+#' @importFrom ggplot2 scale_x_discrete facet_wrap
 #' @importFrom ggplot2 element_text ggtitle
 #' @export
 textplot_frequency <- function(x, feature, type = "frequency", sort = TRUE, doclabels = docnames(x)) {
@@ -52,13 +52,13 @@ textplot_frequency.dfm <- function(x, feature, type = "frequency", sort = TRUE, 
     stop("custom doclabels do not have same length as documents in dfm")
   }
   
+  freq <- NULL
   freqs <- x[, feature]
   feature_data_frame <- data.frame(
     doclabels = rep(docnames(freqs), ncol(freqs)),
     feature = rep(featnames(freqs), each = ndoc(freqs)),
     freq = as.vector(freqs))
-  
-  
+
   p <- if (sort == TRUE) {
     ggplot(data = feature_data_frame, aes(x = reorder(doclabels, freq), y = freq))
   } else {

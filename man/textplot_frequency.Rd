@@ -10,7 +10,7 @@ textplot_frequency(x, feature, type = "frequency", sort = TRUE,
 \arguments{
 \item{x}{a dfm object}
 
-\item{feature}{the feature whose frequency will be plotted}
+\item{feature}{the feature or features whose frequency will be plotted. If more than one feature is used, a separate panel for each feature will be created  (see examples)}
 
 \item{type}{the frequency type to be plotted. Options are "frequency", 
 "relFreq", "relMaxFreq", "logFreq", "tfidf". See \code{\link{dfm_weight}} 
@@ -26,7 +26,7 @@ default), \code{docnames(x)} will be used}
 a \pkg{ggplot2} object
 }
 \description{
-Plots the absolute or relative frequency of a feature in all documents of a 
+Plots the absolute or relative frequency of one feature or several features in all documents of a 
 document-feature matrix. Given that this returns a ggplot object, you can 
 modify the plot by adding ggplot layers (see example).
 }
@@ -36,11 +36,8 @@ doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")),
                 1, paste, collapse = " ")
 textplot_frequency(x = dfm(data_corpus_irishbudget2010),
                    feature = "tax", sort = TRUE, doclabels = doclab)
-textplot_frequency(x = dfm(data_corpus_irishbudget2010),
-                   feature = "tax", sort = FALSE, doclabels = doclab)
-textplot_frequency(x = dfm(data_corpus_irishbudget2010), type = "logFreq",
-                   feature = "tax", doclabels = doclab)
-                  
+textplot_frequency.dfm(mydfm, feature = c("ireland", "tax"), 
+                      type = "relFreq", doclabels = doclab, sort = FALSE) 
 data_corpus_inauguralPost80 <- corpus_subset(data_corpus_inaugural, Year > 1980)
 textplot_frequency(dfm(data_corpus_inauguralPost80), "america", sort = TRUE)
 }

@@ -27,19 +27,20 @@ textplot_topfeatures <- function(x, n, sort = TRUE, angle = 90) {
   
   x_topfeatures <- topfeatures(x, n)
   
+  term <- freq <- NULL
   data <- data.frame(
     list(
       term = names(x_topfeatures),
-      frequency = unname(x_topfeatures)
+      freq = unname(x_topfeatures)
     )
   )
   
   if (sort == TRUE) {
-    data$term <- with(data, reorder(term, -frequency))
+    data$term <- with(data, reorder(term, -freq))
   }
   
   p <- ggplot(data = data) + 
-    geom_point(aes(x = term, y = frequency)) +
+    geom_point(aes(x = term, y = freq)) +
     xlab("Term") +
     ylab("Frequency")
   
