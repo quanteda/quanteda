@@ -27,7 +27,7 @@ inline bool is_encoded(String delim_){
 }
 
 inline bool is_encoded(CharacterVector types_){
-    for (std::size_t i = 0; i < types_.size(); i++) {
+    for (unsigned int i = 0; i < (unsigned int)types_.size(); i++) {
         String type_ = types_[i];
         if (type_.get_encoding() > 0) {
             return true;
