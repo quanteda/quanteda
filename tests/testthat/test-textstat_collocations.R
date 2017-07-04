@@ -49,3 +49,14 @@ test_that("bigrams and trigrams are all sorted correctly, issue #385", {
     expect_equal(order(cols$z, decreasing = TRUE), seq_len(nrow(cols)))
     
 })
+
+test_that("collocation is counted correctly in racing conditions, issue #381", {
+
+    toks <- tokens(rep(texts(data_corpus_inaugural)[1], 100))
+    out1 <- textstat_collocations(toks[1], method = 'chi2', size = 2, min_count = 1)
+    out100 <- textstat_collocations(toks, method = 'chi2', size = 2, min_count = 1)
+    out1 <- out1[order(out1$collocation),]
+    out100 <- out100[order(out100$collocation),]
+    expect_true(all(out1$count * 100 == out100$count))
+
+})
