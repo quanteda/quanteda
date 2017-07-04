@@ -1,10 +1,10 @@
 #' plot the frequency of a feature across documents
 #' 
-#' Plots the absolute or relative frequency of a feature in all documents of a 
+#' Plots the absolute or relative frequency of one feature or several features in all documents of a 
 #' document-feature matrix. Given that this returns a ggplot object, you can 
 #' modify the plot by adding ggplot layers (see example).
 #' @param x a dfm object
-#' @param feature the feature whose frequency will be plotted
+#' @param feature the feature or features whose frequency will be plotted. If more than one feature is used, a separate panel for each feature will be created  (see examples)
 #' @param type the frequency type to be plotted. Options are "frequency", 
 #'   "relFreq", "relMaxFreq", "logFreq", "tfidf". See \code{\link{dfm_weight}} 
 #'   for legal values.
@@ -21,11 +21,8 @@
 #'                 1, paste, collapse = " ")
 #' textplot_frequency(x = dfm(data_corpus_irishbudget2010),
 #'                    feature = "tax", sort = TRUE, doclabels = doclab)
-#' textplot_frequency(x = dfm(data_corpus_irishbudget2010),
-#'                    feature = "tax", sort = FALSE, doclabels = doclab)
-#' textplot_frequency(x = dfm(data_corpus_irishbudget2010), type = "logFreq",
-#'                    feature = "tax", doclabels = doclab)
-#'                   
+#' textplot_frequency.dfm(mydfm, feature = c("ireland", "tax"), 
+#'                       type = "relFreq", doclabels = doclab, sort = FALSE) 
 #' data_corpus_inauguralPost80 <- corpus_subset(data_corpus_inaugural, Year > 1980)
 #' textplot_frequency(dfm(data_corpus_inauguralPost80), "america", sort = TRUE)
 #' }
@@ -50,25 +47,26 @@ textplot_frequency.dfm <- function(x, feature, type = "frequency", sort = TRUE, 
   if (type != "frequency") {
     x <- dfm_weight(x, type = as.character(type))
   }
-  
-  if(!(as.character(feature) %in% colnames(x))) {
-    stop("feature is not part of the dfm")
-  }
-  
+
   if (length(doclabels) != ndoc(x)) {
     stop("custom doclabels do not have same length as documents in dfm")
   }
   
-  freq <- NULL
+  freqs <- x[, feature]
   feature_data_frame <- data.frame(
-    doclabels = doclabels,
-    freq =  as.vector(x[, feature])
-  )
+    doclabels = rep(docnames(freqs), ncol(freqs)),
+    feature = rep(featnames(freqs), each = ndoc(freqs)),
+    freq = as.vector(freqs))
+  
   
   p <- if (sort == TRUE) {
     ggplot(data = feature_data_frame, aes(x = reorder(doclabels, freq), y = freq))
   } else {
     ggplot(data = feature_data_frame, aes(x = doclabels, y = freq))
+  }
+  
+  if (length(feature) > 1) {
+    p <- p + facet_wrap(~feature)
   }
   
   p <-  p + geom_point() +
