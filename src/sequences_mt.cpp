@@ -84,7 +84,6 @@ void counts(Text text,
     if (text.size() == 0) return; // do nothing with empty text
     text.push_back(0); // add padding to include last words
     
-    // Collect sequence of specified types
     std::size_t len_text = text.size();
     for (std::size_t i = 0; i <= len_text; i++) {
         //Rcout << "Size" << size << "\n";
@@ -107,7 +106,6 @@ void counts(Text text,
     if (text.size() == 0) return; // do nothing with empty text
     text.push_back(0); // add padding to include last words
     
-    // Collect sequence of specified types
     std::size_t len_text = text.size();
     for (std::size_t size : sizes) {
         for (std::size_t i = 0; i <= len_text; i++) {
