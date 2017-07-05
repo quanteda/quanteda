@@ -77,7 +77,7 @@ inline Tokens recompile(Texts texts,
     std::vector<bool> flags_unique(ids_new.size(), false);
     //Rcout << setw(10) << "" << ": " << 0 << " -> " << ids_new[0] << "\n";
     
-    dev::Timer timer;
+    /// dev::Timer timer;
     
     // Check if IDs are all used
     bool all_used;
