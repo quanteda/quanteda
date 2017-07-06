@@ -100,8 +100,7 @@ test_that("tokens_compound works with padded tokens", {
 })
 
 test_that("tokens_compound works as expected with nested tokens", {
-    skip_on_appveyor()
-    skip_on_travis()
+
     expect_equal(
         as.character(tokens_compound(tokens("a b c d"), phrase(c("a b", "a b c")), 
                      join = FALSE)),
@@ -115,8 +114,7 @@ test_that("tokens_compound works as expected with nested tokens", {
 })
 
 test_that("tokens_compound works as expected with nested and overlapping tokens", {
-    skip_on_appveyor()
-    skip_on_travis()
+
     expect_equal(
         as.character(tokens_compound(tokens("a b c d e"), 
                                      phrase(c("a b", "a b c", "c d")),
