@@ -229,7 +229,7 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
     } else if (scheme == "inverseprob") {
         dftmp <- docfreq(x, "count", USE.NAMES = FALSE)
         result <- log((ndoc(x) - dftmp) / (k + dftmp), base = base)
-        result[is.infinite(result)] <- 0
+        result <- pmax(0, result)
     }
     
     if (USE.NAMES) names(result) <- featnames(x)
@@ -412,10 +412,8 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
             x <- (1 + log(x, base)) / (1 + log(meantf, base))
         x@weightTf[["base"]] <- base
         
-    } else {
-        stop("shouldn't be here!")
-    }
-    
+    } else stop("invalid tf scheme")
+
     x@weightTf[["scheme"]] <- scheme
     return(x)
 }
