@@ -19,7 +19,7 @@
 #'   \item{\code{"regex"}}{Regular expression matching.}
 #'   \item{\code{"fixed"}}{Fixed (literal) pattern matching.}
 #'   } 
-#' @note If "fixed" is used with \code{case_insensitive = TRUE}, the text will 
+#' @note If "fixed" is used with \code{case_insensitive = TRUE}, features will 
 #'   typically be lowercased internally prior to matching.  Also, glob matches
 #'   are converted to regular expressions (using \link[utils]{glob2rx}) when
 #'   they contain wild card characters, and to fixed pattern matches when they

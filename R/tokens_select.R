@@ -8,8 +8,7 @@
 #' be to select only positive features from a list of regular 
 #' expressions, including a dictionary.
 #' @param x \link{tokens} object whose token elements will be selected
-#' @param features one of: a character vector of features to be selected, a \link{dictionary} class
-#'   object whose values (not keys) will provide the features to be selected. 
+#' @inheritParams features
 #' @param selection whether to \code{"keep"} or \code{"remove"} the features
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}

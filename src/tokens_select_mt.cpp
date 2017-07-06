@@ -35,7 +35,9 @@ Text keep_token(Text tokens,
             tokens_copy.erase(std::remove(tokens_copy.begin(), tokens_copy.end(), filler), tokens_copy.end());
         }
     } else {
-        tokens_copy = {};
+        if (!padding) {
+            tokens_copy = {};
+        }
     }
     return tokens_copy;
 }
@@ -156,7 +158,8 @@ List qatd_cpp_tokens_select(const List &texts_,
 toks <- list(rep(1:10, 1))
 #toks <- list(rep(1:10, 1), rep(5:15, 1))
 #dict <- as.list(1:100000)
-dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
+#dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
+dict <- list(c(99))
 qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE)
 
 

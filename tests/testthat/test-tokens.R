@@ -193,6 +193,10 @@ test_that("longer features longer than documents do not crash (#447)", {
     expect_silent(replicate(10, tokens_select(toks, feat)))
     expect_equal(
         as.list(tokens_select(toks, feat)),
+        list(d1 = character(0), d2 = character(0))
+    )
+    expect_equal(
+        as.list(tokens_select(toks, phrase(feat))),
         list(d1 = character(0), d2 = c("b", "c", "d", "e"))
     )
 })
