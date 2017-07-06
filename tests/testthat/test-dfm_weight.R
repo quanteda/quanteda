@@ -20,7 +20,7 @@ test_that("dfm_weight works", {
     # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
     str <- c("this is a  a sample", "this is another example another example example")
     wikiDfm <- dfm(str)
-    expect_equivalent(round(as.matrix(tfidf(wikiDfm, normalize = TRUE)), 2),
+    expect_equivalent(round(as.matrix(tfidf(wikiDfm, scheme_tf = "prop")), 2),
                       matrix(c(0, 0, 0, 0, 0.12, 0, 0.06, 0, 0, 0.09, 0, 0.13), nrow = 2))
 })
 

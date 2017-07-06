@@ -180,7 +180,13 @@ dfm_smooth <- function(x, smoothing = 1) {
 #'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob", "unary"),
                     smoothing = 0, k = 0, base = 10, threshold = 0, USE.NAMES = TRUE) {
-    
+    UseMethod("docfreq")
+}
+
+#' @noRd
+#' @export
+docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob", "unary"),
+                    smoothing = 0, k = 0, base = 10, threshold = 0, USE.NAMES = TRUE) {
     if (!is.dfm(x))
         stop("x must be a dfm object")
     
@@ -235,20 +241,23 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 
 #' compute tf-idf weights from a dfm
 #' 
-#' Compute tf-idf, inverse document frequency, and relative term frequency on 
-#' document-feature matrices.  See also \code{\link{weight}}.
+#' Weight a dfm by term frequency-inverse document frequency (tf-idf) using
+#' fully sparse methods.
 #' @param x object for which idf or tf-idf will be computed (a document-feature 
 #'   matrix)
 #' @param normalize if \code{TRUE}, use relative term frequency
-#' @param scheme scheme for \code{\link{docfreq}}
-#' @param ... additional arguments passed to \code{\link{docfreq}} when calling
+#' @param scheme_tf scheme for \code{\link{tf}}; defaults to \code{"count"}
+#' @param scheme_df scheme for \code{link{docfreq}}; defaults to
+#'   \code{"inverse"}
+#' @param ... additional arguments passed to \code{\link{docfreq}} when calling 
 #'   \code{tfidf}
 #' @details \code{tfidf} computes term frequency-inverse document frequency 
 #'   weighting.  The default is not to normalize term frequency (by computing 
 #'   relative term frequency within document) but this will be performed if 
-#'   \code{normalize = TRUE}.  
+#'   \code{scheme_tf = "prop"}.
 #' @references Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
 #'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
+#' @seealso \code{\link{tf}}, \code{\link{docfreq}}
 #' @keywords internal weighting dfm
 #' @examples 
 #' head(data_dfm_LBGexample[, 5:10])
@@ -268,16 +277,31 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 #' tfidf(wikiDfm)
 #' @keywords internal weighting
 #' @export
-tfidf <- function(x, normalize = FALSE, scheme = "inverse", ...) {
-    if (!is.dfm(x))
-        stop("x must be a dfm object")
+tfidf <- function(x, normalize = FALSE, scheme_tf = "prop", scheme_df = "inverse", ...) {
+    UseMethod("tfidf")
+}
+
+#' @noRd
+#' @export
+tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", ...) {
+    dfreq <- docfreq(x, scheme = scheme_df, ...)
+    tfreq <- tf(x, scheme = scheme_tf)
+    if (nfeature(x) != length(dfreq)) 
+        stop("missing some values in idf calculation")
+    # get the document indexes
+    j <- as(tfreq, "dgTMatrix")@j + 1
+    # replace just the non-zero values by product with idf
+    x@x <- tfreq@x * dfreq[j]
+    x
+}
+
+tfidf_old <- function(x, normalize = FALSE, scheme = "inverse", ...) {
     invdocfr <- docfreq(x, scheme = scheme, ...)
     if (normalize) x <- tf(x, "prop")
     if (nfeature(x) != length(invdocfr)) 
         stop("missing some values in idf calculation")
     t(t(x) * invdocfr)
 }
-
 
 
 #' compute (weighted) term frequency from a dfm
@@ -316,6 +340,13 @@ tfidf <- function(x, normalize = FALSE, scheme = "inverse", ...) {
 #' @export
 #' @keywords internal weighting dfm
 tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
+               base = 10, K = 0.5) {
+    UseMethod("tf")
+}
+
+#' @noRd
+#' @export
+tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
                base = 10, K = 0.5) {
     if (!is.dfm(x))
         stop("x must be a dfm object")
@@ -366,7 +397,7 @@ tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augm
         x@weightTf[["K"]] <- K
         
     } else if (scheme == "logave") {
-        meantf <- Matrix::rowMeans(x)
+        meantf <- Matrix::rowSums(x) / Matrix::rowSums(tf(x, "boolean"))
         if (is(x, "dfmSparse"))
             x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i+1], base))
         else
