@@ -14,7 +14,7 @@ Text join_comp(Text tokens,
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
-    std::vector< bool > flags_link(tokens.size(), false); // flag correspond to the bourndaries
+    std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
     std::size_t count_match = 0;
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
@@ -70,24 +70,28 @@ Text join_comp(Text tokens,
 
 Text match_comp(Text tokens, 
                 const std::vector<std::size_t> &spans,
-                const bool &overlap,
+                const bool &nested,
                 const MapNgrams &map_comps){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
-    std::vector< bool > flags_match(tokens.size(), false);
+    std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
+    std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
     std::size_t count_match = 0;
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
-            if (!overlap && flags_match[i]) continue; // ignore matched tokens 
+            if (!nested && flags_link[i]) continue; // ignore matched tokens 
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = map_comps.find(ngram);
             if (it != map_comps.end()) {
                 //Rcout << it->second << "\n";
                 std::fill(flags_match.begin() + i, flags_match.begin() + i + span, true); // mark tokens matched
+                if (!nested) {
+                    std::fill(flags_link.begin() + i, flags_link.begin() + i + span - 1, true); // mark tokens linked
+                }
                 tokens_multi[i].push_back(it->second); // keep multiple keys in the same position
                 count_match++;
             }
@@ -108,7 +112,7 @@ Text match_comp(Text tokens,
     Text tokens_flat;
     tokens_flat.reserve(count_match);
     for (auto &tokens_sub: tokens_multi) {
-        if (overlap) {
+        if (nested) {
             tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.end());
         } else {
             if (tokens_sub.size() > 0) {
@@ -139,7 +143,8 @@ struct compound_mt : public Worker{
             if (join) {
                 texts[h] = join_comp(texts[h], spans, map_comps, id_comp);
             } else {
-                texts[h] = match_comp(texts[h], spans, true, map_comps);
+                //texts[h] = join_comp(texts[h], spans, false, map_comps, id_comp);
+                texts[h] = match_comp(texts[h], spans, false, map_comps);
             }
         }
     }
