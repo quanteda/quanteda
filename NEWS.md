@@ -16,6 +16,7 @@
 *  Improvements to `topfeatures()`:
     - now accepts a `groups` argument that can be used to generate lists of top (or bottom) features in a group of texts, including by document (#336).
     - new argument `scheme` that takes the default of (frequency) `"count"` but also a new `"docfreq"` value (#408).
+*  New wrapper `phrase()` converts whitespace-separated multi-word patterns into a list of patterns.  This affects the feature/pattern matching in `tokens/dfm_select/remove`, `tokens_compound`, `tokens/dfm_lookup`, and `kwic`.  `phrase()` and the associated changes also make the behaviour of using character vectors, lists of characters, dictionaries, and collocation objects for pattern matches far more consistent.  (See #820, #787, #740, #838, #837, #836)
 
 ### Behaviour changes
 
@@ -24,6 +25,7 @@
    - Removed arguments from `sequences()`: `ordered` and `nested`.
 *  (Finally) we added "will" to the list of English stopwords (#818).
 *  `dfm` objects with one or both dimensions haveing zero length, and empty `kwic` objects now display more appropriately in their print methods (per #811).
+*  Pattern matches are now implemented more consistently across functions - see above new features related to `phrase()`.
 
 ### Bug fixes and stability enhancements
 
