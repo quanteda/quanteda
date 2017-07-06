@@ -42,9 +42,7 @@ featnames.dfm <- function(x) {
     }
 }
 
-#' deprecated function name for featnames
-#' 
-#' Please use \code{\link{featnames}} instead.
+#' @noRd
 #' @keywords internal deprecated
 #' @export
 features <- function(x) {

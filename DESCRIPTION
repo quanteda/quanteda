@@ -87,6 +87,7 @@ Collate:
     'docvars.R'
     'fcm-methods.R'
     'fcm.R'
+    'features.R'
     'joinTokens-deprecated.R'
     'kwic.R'
     'nfunctions.R'

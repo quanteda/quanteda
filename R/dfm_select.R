@@ -5,12 +5,9 @@
 #' eliminate features from a dfm already constructed, such as stopwords, or to 
 #' select only terms of interest from a dictionary.
 #' @param x the \link{dfm} or \link{fcm} object whose features will be selected
-#' @param features one of: a character vector of features to be selected, a 
-#'   \link{dfm} whose features will be used for selection, or a dictionary class
-#'   object whose values (not keys) will provide the features to be selected. 
-#'   For \link{dfm} objects, see details in the Value section below.
+#' @inheritParams features
 #' @param documents select documents based on their document names. Works exactly 
-#'   the same as features. 
+#'   the same as features
 #' @param selection whether to \code{keep} or \code{remove} the features
 #' @inheritParams valuetype
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
