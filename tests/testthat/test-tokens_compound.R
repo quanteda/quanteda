@@ -100,8 +100,33 @@ test_that("tokens_compound works with padded tokens", {
 })
 
 test_that("tokens_compound works as expected with nested tokens", {
+    skip_on_appveyor()
+    skip_on_travis()
     expect_equal(
-        as.character(tokens_compound(tokens("a b c d"), phrase(c("a b", "a b c")))),
+        as.character(tokens_compound(tokens("a b c d"), phrase(c("a b", "a b c"))), 
+                     join = FALSE),
+        c("a_b_c", "d")
+    )
+    expect_equal(
+        as.character(tokens_compound(tokens("a b c d"), phrase(c("a b", "a b c"))), 
+                     join = TRUE),
         c("a_b_d", "d")
+    )
+})
+
+test_that("tokens_compound works as expected with nested and overlapping tokens", {
+    skip_on_appveyor()
+    skip_on_travis()
+    expect_equal(
+        as.character(tokens_compound(tokens("a b c d e"), 
+                                     phrase(c("a b", "a b c", "c d")),
+                                     join = FALSE)),
+        c("a_b_c_d", "c_d", "e")
+    )
+    expect_equal(
+        as.character(tokens_compound(tokens("a b c d e"), 
+                                     phrase(c("a b", "a b c", "c d")),
+                     join = TRUE)),
+        c("a_b_c_d", "e")
     )
 })
