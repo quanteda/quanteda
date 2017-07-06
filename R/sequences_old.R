@@ -35,7 +35,7 @@
 #' 
 #' # more efficient when applied to the same tokens object 
 #' toks_comp <- tokens_compound(toks, seqs)
-#' toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
+#' toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), phrase(seqs))
 #' 
 #' # types can be any words
 #' seqs2 <- sequences_old(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
