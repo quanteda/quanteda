@@ -70,8 +70,7 @@ topfeatures(tfidfDtm)
 
 # combine these methods for more complex dfm_weightings, e.g. as in Section 6.4
 # of Introduction to Information Retrieval
-head(logTfDtm <- dfm_weight(dtm, type = "logFreq"))
-head(tfidf(logTfDtm, normalize = FALSE))
+head(tfidf(dtm, scheme_tf = "log"))
 
 #' # apply numeric weights
 str <- c("apple is better than banana", "banana banana apple much better")

@@ -49,8 +49,7 @@
 #' 
 #' # combine these methods for more complex dfm_weightings, e.g. as in Section 6.4
 #' # of Introduction to Information Retrieval
-#' head(logTfDtm <- dfm_weight(dtm, type = "logFreq"))
-#' head(tfidf(logTfDtm, normalize = FALSE))
+#' head(tfidf(dtm, scheme_tf = "log"))
 #' 
 #' #' # apply numeric weights
 #' str <- c("apple is better than banana", "banana banana apple much better")
@@ -245,7 +244,6 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 #' fully sparse methods.
 #' @param x object for which idf or tf-idf will be computed (a document-feature 
 #'   matrix)
-#' @param normalize if \code{TRUE}, use relative term frequency
 #' @param scheme_tf scheme for \code{\link{tf}}; defaults to \code{"count"}
 #' @param scheme_df scheme for \code{link{docfreq}}; defaults to
 #'   \code{"inverse"}
@@ -277,13 +275,23 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 #' tfidf(wikiDfm)
 #' @keywords internal weighting
 #' @export
-tfidf <- function(x, normalize = FALSE, scheme_tf = "prop", scheme_df = "inverse", ...) {
+tfidf <- function(x, scheme_tf = "prop", scheme_df = "inverse", ...) {
     UseMethod("tfidf")
 }
 
 #' @noRd
 #' @export
 tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", ...) {
+
+    thecall <- as.list(match.call())[-1]
+    oldargindex <- which(stringi::stri_detect_fixed(names(thecall), "normalize"))
+    if (length(oldargindex)) {
+        warning("normalize is deprecated; use scheme_tf = \"prop\" instead")
+        names(thecall)[oldargindex] <- "scheme_tf"
+        thecall[[oldargindex]] <- if (thecall[[oldargindex]] == TRUE) "prop" else "count"
+        return(do.call(tfidf, thecall))
+    }
+
     dfreq <- docfreq(x, scheme = scheme_df, ...)
     tfreq <- tf(x, scheme = scheme_tf)
     if (nfeature(x) != length(dfreq)) 

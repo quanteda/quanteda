@@ -4,14 +4,11 @@
 \alias{tfidf}
 \title{compute tf-idf weights from a dfm}
 \usage{
-tfidf(x, normalize = FALSE, scheme_tf = "prop", scheme_df = "inverse",
-  ...)
+tfidf(x, scheme_tf = "prop", scheme_df = "inverse", ...)
 }
 \arguments{
 \item{x}{object for which idf or tf-idf will be computed (a document-feature 
 matrix)}
-
-\item{normalize}{if \code{TRUE}, use relative term frequency}
 
 \item{scheme_tf}{scheme for \code{\link{tf}}; defaults to \code{"count"}}
 
