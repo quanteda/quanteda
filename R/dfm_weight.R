@@ -283,13 +283,11 @@ tfidf <- function(x, scheme_tf = "prop", scheme_df = "inverse", ...) {
 #' @export
 tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", ...) {
 
-    thecall <- as.list(match.call())[-1]
-    oldargindex <- which(stringi::stri_detect_fixed(names(thecall), "normalize"))
-    if (length(oldargindex)) {
+    args <- list(...)
+    if ("normalize" %in% names(args)) {
         warning("normalize is deprecated; use scheme_tf = \"prop\" instead")
-        names(thecall)[oldargindex] <- "scheme_tf"
-        thecall[[oldargindex]] <- if (thecall[[oldargindex]] == TRUE) "prop" else "count"
-        return(do.call(tfidf, thecall))
+        scheme_tf <- if (args[["normalize"]] == TRUE) "prop" else "count"
+        return(tfidf(x, scheme_tf = scheme_tf, scheme_df = scheme_df))
     }
 
     dfreq <- docfreq(x, scheme = scheme_df, ...)
