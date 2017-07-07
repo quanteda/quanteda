@@ -60,6 +60,11 @@ Targets range(Text tokens,
             }
         }
     }
+    
+    // sort by the starting positions
+    std::sort(targets.begin(), targets.end(), [](const std::pair<int,int> &left, const std::pair<int,int> &right) {
+        return left.first < right.first;
+    });
     return targets;
 }
 
