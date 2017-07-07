@@ -148,7 +148,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
         for (size_t i = 0; i < targets.size(); i++) {
             int from = targets[i].first - window;
             int to = targets[i].second + window;
-            Rcout << j << " " << targets[i].first << ":" << targets[i].second << "\n";
+            //Rcout << j << " " << targets[i].first << ":" << targets[i].second << "\n";
             
             // Save as intergers
             Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
