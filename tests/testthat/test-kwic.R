@@ -259,9 +259,7 @@ test_that("as.tokens is working", {
 })
 
 test_that("kwic works as expected with and without phrases", {
-    skip_on_travis()
-    skip_on_appveyor()
-    
+   
     txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")
     toks_uni <- tokens(txt)
     dfm_uni <- dfm(toks_uni)
