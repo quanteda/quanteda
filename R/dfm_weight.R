@@ -247,6 +247,7 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 #' @param scheme_tf scheme for \code{\link{tf}}; defaults to \code{"count"}
 #' @param scheme_df scheme for \code{link{docfreq}}; defaults to
 #'   \code{"inverse"}
+#' @base base for the logarithms in the `tf` and `idf` schemes
 #' @param ... additional arguments passed to \code{\link{docfreq}} when calling 
 #'   \code{tfidf}
 #' @details \code{tfidf} computes term frequency-inverse document frequency 
@@ -275,23 +276,23 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 #' tfidf(wikiDfm)
 #' @keywords internal weighting
 #' @export
-tfidf <- function(x, scheme_tf = "prop", scheme_df = "inverse", ...) {
+tfidf <- function(x, scheme_tf = "prop", scheme_df = "inverse", base = 10, ...) {
     UseMethod("tfidf")
 }
 
 #' @noRd
 #' @export
-tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", ...) {
+tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
 
     args <- list(...)
     if ("normalize" %in% names(args)) {
         warning("normalize is deprecated; use scheme_tf = \"prop\" instead")
         scheme_tf <- if (args[["normalize"]] == TRUE) "prop" else "count"
-        return(tfidf(x, scheme_tf = scheme_tf, scheme_df = scheme_df))
+        return(tfidf(x, scheme_tf = scheme_tf, scheme_df = scheme_df, base = base))
     }
 
-    dfreq <- docfreq(x, scheme = scheme_df, ...)
-    tfreq <- tf(x, scheme = scheme_tf)
+    dfreq <- docfreq(x, scheme = scheme_df, base = base, ...)
+    tfreq <- tf(x, scheme = scheme_tf, base = base)
     if (nfeature(x) != length(dfreq)) 
         stop("missing some values in idf calculation")
     # get the document indexes
@@ -359,8 +360,8 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
     
     scheme <- match.arg(scheme)
     args <- as.list(match.call(expand.dots=FALSE))
-    if ("base" %in% names(args) & !(scheme %in% c("log", "logave")))
-        warning("base not used for this scheme")
+    # if ("base" %in% names(args) & !(scheme %in% c("log", "logave")))
+    #     warning("base not used for this scheme")
     if ("K" %in% names(args) & scheme != "augmented")
         warning("K not used for this scheme")
     if (K < 0 | K > 1.0)

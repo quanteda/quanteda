@@ -4,7 +4,7 @@
 \alias{tfidf}
 \title{compute tf-idf weights from a dfm}
 \usage{
-tfidf(x, scheme_tf = "prop", scheme_df = "inverse", ...)
+tfidf(x, scheme_tf = "prop", scheme_df = "inverse", base = 10, ...)
 }
 \arguments{
 \item{x}{object for which idf or tf-idf will be computed (a document-feature 

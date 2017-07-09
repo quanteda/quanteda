@@ -135,3 +135,14 @@ test_that("tf with logave now working as expected", {
         manually_calculated
     )
 })
+
+test_that("tfidf works with different log base", {
+    mydfm <- dfm(c("He went out to buy a car", 
+                   "He went out and bought pickles and onions"))
+    expect_true(
+        !identical(
+            as.matrix(tfidf(mydfm)), 
+            as.matrix(tfidf(mydfm, base = 2))
+        )
+    )
+})
