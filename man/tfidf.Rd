@@ -4,28 +4,31 @@
 \alias{tfidf}
 \title{compute tf-idf weights from a dfm}
 \usage{
-tfidf(x, normalize = FALSE, scheme = "inverse", ...)
+tfidf(x, scheme_tf = "prop", scheme_df = "inverse", base = 10, ...)
 }
 \arguments{
 \item{x}{object for which idf or tf-idf will be computed (a document-feature 
 matrix)}
 
-\item{normalize}{if \code{TRUE}, use relative term frequency}
+\item{scheme_tf}{scheme for \code{\link{tf}}; defaults to \code{"count"}}
 
-\item{scheme}{scheme for \code{\link{docfreq}}}
+\item{scheme_df}{scheme for \code{link{docfreq}}; defaults to
+\code{"inverse"}}
 
-\item{...}{additional arguments passed to \code{\link{docfreq}} when calling
+\item{base}{for the logarithms in the \code{tf} and \code{docfreq} calls}
+
+\item{...}{additional arguments passed to \code{\link{docfreq}} when calling 
 \code{tfidf}}
 }
 \description{
-Compute tf-idf, inverse document frequency, and relative term frequency on 
-document-feature matrices.  See also \code{\link{weight}}.
+Weight a dfm by term frequency-inverse document frequency (tf-idf) using
+fully sparse methods.
 }
 \details{
 \code{tfidf} computes term frequency-inverse document frequency 
   weighting.  The default is not to normalize term frequency (by computing 
   relative term frequency within document) but this will be performed if 
-  \code{normalize = TRUE}.
+  \code{scheme_tf = "prop"}.
 }
 \examples{
 head(data_dfm_LBGexample[, 5:10])
@@ -47,6 +50,9 @@ tfidf(wikiDfm)
 \references{
 Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
   \emph{Introduction to Information Retrieval}. Cambridge University Press.
+}
+\seealso{
+\code{\link{tf}}, \code{\link{docfreq}}
 }
 \keyword{dfm}
 \keyword{internal}
