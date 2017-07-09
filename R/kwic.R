@@ -17,7 +17,7 @@
 #' @param window the number of context words to be displayed around the keyword.
 #' @inheritParams valuetype
 #' @param case_insensitive match without respect to case if \code{TRUE}
-#' @param join join adjecent keywords in the concordance view if \code{TRUE}
+#' @param join join adjacent keywords in the concordance view if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokens}, for applicable 
 #'   object types
 #' @return A kwic object classed data.frame, with the document name 

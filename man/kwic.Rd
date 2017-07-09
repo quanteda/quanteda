@@ -33,7 +33,7 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{match without respect to case if \code{TRUE}}
 
-\item{join}{join adjecent keywords in the concordance view if \code{TRUE}}
+\item{join}{join adjacent keywords in the concordance view if \code{TRUE}}
 
 \item{...}{additional arguments passed to \link{tokens}, for applicable 
 object types}
