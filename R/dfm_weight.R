@@ -247,7 +247,7 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 #' @param scheme_tf scheme for \code{\link{tf}}; defaults to \code{"count"}
 #' @param scheme_df scheme for \code{link{docfreq}}; defaults to
 #'   \code{"inverse"}
-#' @base base for the logarithms in the `tf` and `idf` schemes
+#' @param base for the logarithms in the \code{tf} and \code{docfreq} calls
 #' @param ... additional arguments passed to \code{\link{docfreq}} when calling 
 #'   \code{tfidf}
 #' @details \code{tfidf} computes term frequency-inverse document frequency 

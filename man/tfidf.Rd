@@ -15,6 +15,8 @@ matrix)}
 \item{scheme_df}{scheme for \code{link{docfreq}}; defaults to
 \code{"inverse"}}
 
+\item{base}{for the logarithms in the \code{tf} and \code{docfreq} calls}
+
 \item{...}{additional arguments passed to \code{\link{docfreq}} when calling 
 \code{tfidf}}
 }
