@@ -6,7 +6,7 @@
     quanteda_options(initialize = TRUE)
     
     # threads message
-    if (quanteda::qatd_cpp_tbb_enabled()) {
+    if (quanteda:::qatd_cpp_tbb_enabled()) {
         packageStartupMessage("Using ", quanteda_options("threads"), " of ", 
                               RcppParallel::defaultNumThreads(), " threads for parallel computing")
     } else {
