@@ -8,7 +8,7 @@
 #'   defined as a collection of texts that includes document-level variables
 #'   specific to each text, as well as meta-data for documents and for the
 #'   collection as a whole. \pkg{quanteda} includes tools to make it easy and
-#'   fast to manuipulate the texts in a corpus, by performing the most common
+#'   fast to manipulate the texts in a corpus, by performing the most common
 #'   natural language processing tasks simply and quickly, such as tokenizing,
 #'   stemming, or forming ngrams. \pkg{quanteda}'s functions for tokenizing
 #'   texts and forming multiple tokenized documents into a document-feature

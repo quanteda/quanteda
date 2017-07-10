@@ -28,7 +28,7 @@ When called using a \code{key = value} pair (where \code{key} can be a label or
   are reset to their default values, and \code{TRUE} is returned invisibly.
 }
 \description{
-Get or set global options affecting functions across \pkg{quatneda}.
+Get or set global options affecting functions across \pkg{quanteda}.
 }
 \details{
 Currently available options are:
