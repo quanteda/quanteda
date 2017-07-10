@@ -201,7 +201,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
         if (join) {
             texts[h] = join_comp(texts[h], spans, map_comps, id_comp);
         } else {
-            texts[h] = match_comp(texts[h], spans, true, map_comps);
+            texts[h] = match_comp(texts[h], spans, false, map_comps);
         }
     }
 #endif
