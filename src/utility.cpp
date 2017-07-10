@@ -31,6 +31,15 @@ List qatd_cpp_chars_remove(List input_, String char_remove){
     return output_;
 }
 
+// [[Rcpp::export]]
+bool qatd_cpp_tbb_enabled(){
+#if QUANTEDA_USE_TBB
+    return true;
+#else
+    return false;
+#endif
+}
+
 
 /*** R
 
