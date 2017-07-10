@@ -14,7 +14,7 @@ using namespace std;
 #ifndef QUANTEDA // prevent multiple redefinition
 #define QUANTEDA
 
-#if RCPP_PARALLEL_USE_TBB && GCC_VERSION >= 40801 // newer than gcc 4.8.1
+#if RCPP_PARALLEL_USE_TBB // && GCC_VERSION >= 40801 // newer than gcc 4.8.1
 #define QUANTEDA_USE_TBB true // tbb.h is loaded automatically by RcppParallel.h
 #else
 #define QUANTEDA_USE_TBB false
