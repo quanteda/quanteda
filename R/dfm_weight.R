@@ -49,8 +49,7 @@
 #' 
 #' # combine these methods for more complex dfm_weightings, e.g. as in Section 6.4
 #' # of Introduction to Information Retrieval
-#' head(logTfDtm <- dfm_weight(dtm, type = "logFreq"))
-#' head(tfidf(logTfDtm, normalize = FALSE))
+#' head(tfidf(dtm, scheme_tf = "log"))
 #' 
 #' #' # apply numeric weights
 #' str <- c("apple is better than banana", "banana banana apple much better")
@@ -180,7 +179,13 @@ dfm_smooth <- function(x, smoothing = 1) {
 #'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob", "unary"),
                     smoothing = 0, k = 0, base = 10, threshold = 0, USE.NAMES = TRUE) {
-    
+    UseMethod("docfreq")
+}
+
+#' @noRd
+#' @export
+docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob", "unary"),
+                    smoothing = 0, k = 0, base = 10, threshold = 0, USE.NAMES = TRUE) {
     if (!is.dfm(x))
         stop("x must be a dfm object")
     
@@ -224,7 +229,7 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
     } else if (scheme == "inverseprob") {
         dftmp <- docfreq(x, "count", USE.NAMES = FALSE)
         result <- log((ndoc(x) - dftmp) / (k + dftmp), base = base)
-        result[is.infinite(result)] <- 0
+        result <- pmax(0, result)
     }
     
     if (USE.NAMES) names(result) <- featnames(x)
@@ -235,20 +240,23 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 
 #' compute tf-idf weights from a dfm
 #' 
-#' Compute tf-idf, inverse document frequency, and relative term frequency on 
-#' document-feature matrices.  See also \code{\link{weight}}.
+#' Weight a dfm by term frequency-inverse document frequency (tf-idf) using
+#' fully sparse methods.
 #' @param x object for which idf or tf-idf will be computed (a document-feature 
 #'   matrix)
-#' @param normalize if \code{TRUE}, use relative term frequency
-#' @param scheme scheme for \code{\link{docfreq}}
-#' @param ... additional arguments passed to \code{\link{docfreq}} when calling
+#' @param scheme_tf scheme for \code{\link{tf}}; defaults to \code{"count"}
+#' @param scheme_df scheme for \code{link{docfreq}}; defaults to
+#'   \code{"inverse"}
+#' @param base for the logarithms in the \code{tf} and \code{docfreq} calls
+#' @param ... additional arguments passed to \code{\link{docfreq}} when calling 
 #'   \code{tfidf}
 #' @details \code{tfidf} computes term frequency-inverse document frequency 
 #'   weighting.  The default is not to normalize term frequency (by computing 
 #'   relative term frequency within document) but this will be performed if 
-#'   \code{normalize = TRUE}.  
+#'   \code{scheme_tf = "prop"}.
 #' @references Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
 #'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
+#' @seealso \code{\link{tf}}, \code{\link{docfreq}}
 #' @keywords internal weighting dfm
 #' @examples 
 #' head(data_dfm_LBGexample[, 5:10])
@@ -268,16 +276,39 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 #' tfidf(wikiDfm)
 #' @keywords internal weighting
 #' @export
-tfidf <- function(x, normalize = FALSE, scheme = "inverse", ...) {
-    if (!is.dfm(x))
-        stop("x must be a dfm object")
+tfidf <- function(x, scheme_tf = "prop", scheme_df = "inverse", base = 10, ...) {
+    UseMethod("tfidf")
+}
+
+#' @noRd
+#' @export
+tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
+
+    args <- list(...)
+    if ("normalize" %in% names(args)) {
+        warning("normalize is deprecated; use scheme_tf = \"prop\" instead")
+        scheme_tf <- if (args[["normalize"]] == TRUE) "prop" else "count"
+        return(tfidf(x, scheme_tf = scheme_tf, scheme_df = scheme_df, base = base))
+    }
+
+    dfreq <- docfreq(x, scheme = scheme_df, base = base, ...)
+    tfreq <- tf(x, scheme = scheme_tf, base = base)
+    if (nfeature(x) != length(dfreq)) 
+        stop("missing some values in idf calculation")
+    # get the document indexes
+    j <- as(tfreq, "dgTMatrix")@j + 1
+    # replace just the non-zero values by product with idf
+    x@x <- tfreq@x * dfreq[j]
+    x
+}
+
+tfidf_old <- function(x, normalize = FALSE, scheme = "inverse", ...) {
     invdocfr <- docfreq(x, scheme = scheme, ...)
     if (normalize) x <- tf(x, "prop")
     if (nfeature(x) != length(invdocfr)) 
         stop("missing some values in idf calculation")
     t(t(x) * invdocfr)
 }
-
 
 
 #' compute (weighted) term frequency from a dfm
@@ -317,13 +348,20 @@ tfidf <- function(x, normalize = FALSE, scheme = "inverse", ...) {
 #' @keywords internal weighting dfm
 tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
                base = 10, K = 0.5) {
+    UseMethod("tf")
+}
+
+#' @noRd
+#' @export
+tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
+               base = 10, K = 0.5) {
     if (!is.dfm(x))
         stop("x must be a dfm object")
     
     scheme <- match.arg(scheme)
     args <- as.list(match.call(expand.dots=FALSE))
-    if ("base" %in% names(args) & !(scheme %in% c("log", "logave")))
-        warning("base not used for this scheme")
+    # if ("base" %in% names(args) & !(scheme %in% c("log", "logave")))
+    #     warning("base not used for this scheme")
     if ("K" %in% names(args) & scheme != "augmented")
         warning("K not used for this scheme")
     if (K < 0 | K > 1.0)
@@ -366,17 +404,15 @@ tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augm
         x@weightTf[["K"]] <- K
         
     } else if (scheme == "logave") {
-        meantf <- Matrix::rowMeans(x)
+        meantf <- Matrix::rowSums(x) / Matrix::rowSums(tf(x, "boolean"))
         if (is(x, "dfmSparse"))
             x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i+1], base))
         else
             x <- (1 + log(x, base)) / (1 + log(meantf, base))
         x@weightTf[["base"]] <- base
         
-    } else {
-        stop("shouldn't be here!")
-    }
-    
+    } else stop("invalid tf scheme")
+
     x@weightTf[["scheme"]] <- scheme
     return(x)
 }
