@@ -129,3 +129,24 @@ test_that("tokens_compound works as expected with nested and overlapping tokens"
     )
 })
 
+test_that("tokens_compound works as expected with collocations", {
+    cols <- textstat_collocations("capital gains taxes are worse than inheritance taxes",
+                                  size = 2, min_count = 1)
+    toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
+    
+    expect_equal(
+        as.character(tokens_compound(toks, phrase(cols)))[c(5, 6, 8)],
+        c("capital_gains", "gains_taxes", "inheritance_taxes")
+    )
+    expect_equal(
+        as.character(tokens_compound(toks, phrase(cols), join = TRUE))[c(5, 7)],
+        c("capital_gains_taxes", "inheritance_taxes")
+    )
+
+    # expect_equal(
+    #     as.character(tokens_compound(toks, cols)),
+    #     ???
+    # )
+    
+})
+
