@@ -135,7 +135,7 @@ test_that("tokens_compound works as expected with collocations", {
     toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
     
     expect_equal(
-        as.character(tokens_compound(toks, phrase(cols)))[c(5, 6, 8)],
+        as.character(tokens_compound(toks, phrase(cols), join = FALSE))[c(5, 6, 8)],
         c("capital_gains", "gains_taxes", "inheritance_taxes")
     )
     expect_equal(
