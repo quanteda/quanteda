@@ -33,8 +33,7 @@ test_that("test that nested argument is working", {
 })
 
 test_that("test that sequences_old works with tokens_compound", {
-    skip_on_travis()
-    skip_on_appveyor()
+    skip("For older structures no longer used")
     toks <- tokens('E E a b c E E G G f E E f f G G')
     seqs <- sequences_old(toks, "^[A-Z]$", valuetype="regex", case_insensitive = FALSE,
                       min_count = 1, nested = FALSE, ordered = FALSE)
@@ -47,7 +46,7 @@ test_that("test that sequences_old works with tokens_compound", {
     attr(seqs, 'types') <- ''
     expect_equivalent(as.list(tokens_compound(toks, seqs, join = FALSE)),
                   list(c("E", "E", "a", "b", "c", "E", "E", "G", "G", "f", "E", "E", "f", "f", "G", "G")))
-    
+
 })
 
 

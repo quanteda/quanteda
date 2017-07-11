@@ -5,7 +5,7 @@
 \title{convert token sequences into compound tokens}
 \usage{
 tokens_compound(x, features, concatenator = "_", valuetype = c("glob",
-  "regex", "fixed"), case_insensitive = TRUE, join = FALSE)
+  "regex", "fixed"), case_insensitive = TRUE, join = TRUE)
 }
 \arguments{
 \item{x}{an input \link{tokens} object}
@@ -25,7 +25,7 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching}
 
-\item{join}{logical; if \code{TRUE}, join overlapped compounds}
+\item{join}{logical; if \code{TRUE}, join overlapping compounds}
 }
 \value{
 a \link{tokens} object in which the token sequences matching the patterns 
@@ -49,7 +49,7 @@ myseqs <- list(c("tax"), c("income", "tax"), c("capital", "gains", "tax"), c("in
 dfm(cw)
 
 # when used as a dictionary for dfm creation
-mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
+mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax*")))
 (cw2 <- tokens_compound(mytoks, mydict))
 
 # to pick up "taxes" in the second text, set valuetype = "regex"
@@ -63,10 +63,11 @@ toks <- tokens(c(txt1 = "I liked this, when we can use bad words, in awful text.
 tokens_compound(toks, myDict)
 
 # with collocations
-#cols <- textstat_collocations("capital gains taxes are worse than inheritance taxes", 
-#                              size = 2, min_count = 1)
-#toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
-#tokens_compound(toks, cols)
+cols <- 
+    textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"), 
+                                  size = 2, min_count = 1)
+toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
+tokens_compound(toks, cols)
 }
 \author{
 Kenneth Benoit (R) and Kohei Watanabe (C++)
