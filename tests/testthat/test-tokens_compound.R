@@ -130,7 +130,7 @@ test_that("tokens_compound works as expected with nested and overlapping tokens"
 })
 
 test_that("tokens_compound works as expected with collocations", {
-    cols <- textstat_collocations("capital gains taxes are worse than inheritance taxes",
+    cols <- textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"),
                                   size = 2, min_count = 1)
     toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
     

@@ -63,8 +63,9 @@ toks <- tokens(c(txt1 = "I liked this, when we can use bad words, in awful text.
 tokens_compound(toks, myDict)
 
 # with collocations
-cols <- textstat_collocations("capital gains taxes are worse than inheritance taxes", 
-                              size = 2, min_count = 1)
+cols <- 
+    textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"), 
+                                  size = 2, min_count = 1)
 toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
 tokens_compound(toks, phrase(cols))
 }
