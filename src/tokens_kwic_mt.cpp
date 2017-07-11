@@ -6,9 +6,9 @@ using namespace quanteda;
 typedef pair<size_t, size_t> Target;
 typedef std::vector<Target> Targets;
 
-Targets range(Text tokens,
-              const std::vector<std::size_t> &spans,
-              const SetNgrams &set_words){
+Targets kwic_range(Text tokens,
+                   const std::vector<std::size_t> &spans,
+                   const SetNgrams &set_words){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -42,23 +42,53 @@ Targets range(Text tokens,
     return targets;
 }
 
-struct range_mt : public Worker{
+Targets kwic_match(Text tokens,
+                   const std::vector<std::size_t> &spans,
+                   const SetNgrams &set_words){
+    
+    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    
+    Targets targets;
+    for (std::size_t span : spans) { // substitution starts from the longest sequences
+        if (tokens.size() < span) continue;
+        for (size_t i = 0; i < tokens.size() - (span - 1); i++) {
+            Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
+            bool is_in = set_words.find(ngram) != set_words.end();
+            if (is_in) {
+                targets.push_back(make_pair(i, i + span - 1));
+            }
+        }
+    }
+    
+    // sort by the starting positions
+    std::sort(targets.begin(), targets.end(), [](const std::pair<int,int> &left, const std::pair<int,int> &right) {
+        return left.first < right.first;
+    });
+    return targets;
+}
+
+struct kwic_mt : public Worker{
     
     Texts &texts;
     std::vector<Targets> &temp;
     const std::vector<std::size_t> &spans;
     const SetNgrams &set_words;
+    const bool &join;
     
     // Constructor
-    range_mt(Texts &texts_, std::vector<Targets> &temp_,
-             const std::vector<std::size_t> &spans_, const SetNgrams &set_words_):
-             texts(texts_), temp(temp_), spans(spans_), set_words(set_words_){}
+    kwic_mt(Texts &texts_, std::vector<Targets> &temp_,
+            const std::vector<std::size_t> &spans_, const SetNgrams &set_words_, const bool &join_):
+            texts(texts_), temp(temp_), spans(spans_), set_words(set_words_), join(join_){}
     
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++){
-            temp[h] = range(texts[h], spans, set_words);
+            if (join) {
+                temp[h] = kwic_range(texts[h], spans, set_words);
+            } else {
+                temp[h] = kwic_match(texts[h], spans, set_words);
+            }
         }
     }
 };
@@ -72,14 +102,15 @@ struct range_mt : public Worker{
  * @param texts_ tokens ojbect
  * @param types_ types
  * @param words_ list of target features
- * 
+ * @param join join adjacent keywords
  */
 
 // [[Rcpp::export]]
 DataFrame qatd_cpp_kwic(const List &texts_,
                         const CharacterVector types_,
                         const List &words_,
-                        unsigned int window){
+                        const unsigned int &window,
+                        const bool &join){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as< Types >(types_);
@@ -93,11 +124,15 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     
     // dev::start_timer("Dictionary detect", timer);
 #if QUANTEDA_USE_TBB
-    range_mt range_mt(texts, temp, spans, set_words);
-    parallelFor(0, texts.size(), range_mt);
+    kwic_mt kwic_mt(texts, temp, spans, set_words, join);
+    parallelFor(0, texts.size(), kwic_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        temp[h] = range(texts[h], spans, set_words);
+        if (join) {
+            temp[h] = kwic_range(texts[h], spans, set_words);
+        } else {
+            temp[h] = kwic_match(texts[h], spans, set_words);
+        }
     }
 #endif
     
@@ -136,9 +171,9 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             
             pos_from_[j] = targets[i].first + 1;
             pos_to_[j] = targets[i].second + 1; 
-            coxs_pre_[j] = join(cox_pre, types_); 
-            coxs_target_[j] = join(cox_target, types_);
-            coxs_post_[j] = join(cox_post, types_);
+            coxs_pre_[j] = join_strings(cox_pre, types_); 
+            coxs_target_[j] = join_strings(cox_target, types_);
+            coxs_post_[j] = join_strings(cox_post, types_);
             coxs_name_[j] = names_[h];
             j++;
         }
@@ -171,7 +206,12 @@ toks <- list(text1=1:10, text2=5:15)
 #toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 1)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #qatd_cpp_tokens_contexts(toks, dict, 2)
-qatd_cpp_kwic(toks, letters, list(10), 3)
-qatd_cpp_kwic(toks, letters, list(c(3, 4), 7), 2)
+qatd_cpp_kwic(toks, letters, list(10), 3, FALSE)
+qatd_cpp_kwic(toks, letters, list(10), 3, TRUE)
+qatd_cpp_kwic(toks, letters, list(c(3, 4), 7), 2, FALSE)
+qatd_cpp_kwic(toks, letters, list(c(3, 4), 7), 2, TRUE)
+qatd_cpp_kwic(toks, letters, c(3, 4, 7), 2, FALSE)
+qatd_cpp_kwic(toks, letters, c(3, 4, 7), 2, TRUE)
+
 
 */

@@ -49,7 +49,7 @@ namespace quanteda{
 #endif    
     
 
-    inline String join(CharacterVector &tokens_, 
+    inline String join_strings(CharacterVector &tokens_, 
                        const String delim_ = " "){
         
         if (tokens_.size() == 0) return "";
@@ -62,7 +62,7 @@ namespace quanteda{
         return token_;
     }
     
-    inline std::string join(std::vector<std::string> &tokens, 
+    inline std::string join_strings(std::vector<std::string> &tokens, 
                             const std::string delim = " "){
         if (tokens.size() == 0) return "";
         std::string token = tokens[0];
@@ -72,7 +72,7 @@ namespace quanteda{
         return token;
     }
     
-    inline String join(std::vector<unsigned int> &tokens, 
+    inline String join_strings(std::vector<unsigned int> &tokens, 
                        CharacterVector types_, 
                        const String delim_ = " ") {
         

@@ -57,8 +57,8 @@ qatd_cpp_tokens_detect <- function(texts_, words_) {
     .Call(quanteda_qatd_cpp_tokens_detect, texts_, words_)
 }
 
-qatd_cpp_kwic <- function(texts_, types_, words_, window) {
-    .Call(quanteda_qatd_cpp_kwic, texts_, types_, words_, window)
+qatd_cpp_kwic <- function(texts_, types_, words_, window, join) {
+    .Call(quanteda_qatd_cpp_kwic, texts_, types_, words_, window, join)
 }
 
 qatd_cpp_tokens_lookup <- function(texts_, types_, keys_, ids_, overlap) {

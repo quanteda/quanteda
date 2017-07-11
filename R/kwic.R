@@ -17,6 +17,7 @@
 #' @param window the number of context words to be displayed around the keyword.
 #' @inheritParams valuetype
 #' @param case_insensitive match without respect to case if \code{TRUE}
+#' @param join join adjacent keywords in the concordance view if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokens}, for applicable 
 #'   object types
 #' @return A kwic object classed data.frame, with the document name 
@@ -32,27 +33,30 @@
 #' head(kwic(data_corpus_inaugural, "security", window = 3, valuetype = "fixed"))
 #' 
 #' toks <- tokens(data_corpus_inaugural)
-#' kwic(data_corpus_inaugural, "war against")
-#' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
+#' kwic(data_corpus_inaugural, phrase("war against"))
+#' kwic(data_corpus_inaugural, phrase("war against"), valuetype = "regex")
 #' 
-kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
+                 case_insensitive = TRUE, join = FALSE, ...) {
     UseMethod("kwic")
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export
-kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
+                           case_insensitive = TRUE, join = FALSE, ...) {
     if (is.collocations(keywords) || is.dictionary(keywords))
         keywords <- phrase(keywords) 
-    kwic(tokens(x, ...), keywords, window, valuetype, case_insensitive)
+    kwic(tokens(x, ...), keywords, window, valuetype, case_insensitive, join)
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    kwic(texts(x), keywords, window, valuetype, case_insensitive, ...)
+kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
+                        case_insensitive = TRUE, join = FALSE, ...) {
+    kwic(texts(x), keywords, window, valuetype, case_insensitive, join, ...)
 }
 
 #' @rdname kwic
@@ -65,13 +69,14 @@ kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 #'          "Sometimes you don't know if this is it.",
 #'          "Is it a bird or a plane or is it a train?")
 #' kwic(txt, c("is", "a"), valuetype = "fixed")
-#' kwic(txt, list("is", "a", c("is", "it")), valuetype = "fixed")
+#' kwic(txt, phrase(c("is", "a", "is it")), valuetype = "fixed")
 #' 
 #' toks <- tokens(txt)
 #' kwic(toks, c("is", "a"), valuetype = "fixed")
-#' kwic(toks, list("is", "a", c("is", "it")), valuetype = "fixed")
+#' kwic(toks, phrase(c("is", "a", "is it")), valuetype = "fixed")
 #' @export 
-kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
+                        case_insensitive = TRUE, join = FALSE, ...) {
     
     if (!is.tokens(x))
         stop("x must be a tokens object")
@@ -86,7 +91,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     
     types <- types(x)
     keywords_id <- regex2id(keywords, types, valuetype, case_insensitive, FALSE)
-    result <- qatd_cpp_kwic(x, types, keywords_id, window)
+    result <- qatd_cpp_kwic(x, types, keywords_id, window, join)
     #result$docname <- as.factor(result$docname)
     
     # attributes for tokens object
@@ -104,8 +109,9 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    kwic(as.tokens(x), keywords, window, valuetype, case_insensitive, ...)
+kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
+                                case_insensitive = TRUE, join = FALSE, ...) {
+    kwic(as.tokens(x), keywords, window, valuetype, case_insensitive, join, ...)
 }
 
 #' @rdname kwic

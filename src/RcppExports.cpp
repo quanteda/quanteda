@@ -200,16 +200,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_kwic
-DataFrame qatd_cpp_kwic(const List& texts_, const CharacterVector types_, const List& words_, unsigned int window);
-RcppExport SEXP quanteda_qatd_cpp_kwic(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP windowSEXP) {
+DataFrame qatd_cpp_kwic(const List& texts_, const CharacterVector types_, const List& words_, const unsigned int& window, const bool& join);
+RcppExport SEXP quanteda_qatd_cpp_kwic(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP windowSEXP, SEXP joinSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
     Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
     Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type window(windowSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_kwic(texts_, types_, words_, window));
+    Rcpp::traits::input_parameter< const unsigned int& >::type window(windowSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type join(joinSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_kwic(texts_, types_, words_, window, join));
     return rcpp_result_gen;
 END_RCPP
 }
