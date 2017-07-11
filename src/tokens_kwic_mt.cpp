@@ -6,7 +6,7 @@ using namespace quanteda;
 typedef pair<size_t, size_t> Target;
 typedef std::vector<Target> Targets;
 
-Targets range_join(Text tokens,
+Targets kwic_match(Text tokens,
                    const std::vector<std::size_t> &spans,
                    const SetNgrams &set_words){
     
@@ -42,9 +42,9 @@ Targets range_join(Text tokens,
     return targets;
 }
 
-Targets range(Text tokens,
-              const std::vector<std::size_t> &spans,
-              const SetNgrams &set_words){
+Targets kwic_range(Text tokens,
+                   const std::vector<std::size_t> &spans,
+                   const SetNgrams &set_words){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -67,7 +67,7 @@ Targets range(Text tokens,
     return targets;
 }
 
-struct range_mt : public Worker{
+struct kwic_mt : public Worker{
     
     Texts &texts;
     std::vector<Targets> &temp;
@@ -76,18 +76,18 @@ struct range_mt : public Worker{
     const bool &join;
     
     // Constructor
-    range_mt(Texts &texts_, std::vector<Targets> &temp_,
-             const std::vector<std::size_t> &spans_, const SetNgrams &set_words_, const bool &join_):
-             texts(texts_), temp(temp_), spans(spans_), set_words(set_words_), join(join_){}
+    kwic_mt(Texts &texts_, std::vector<Targets> &temp_,
+            const std::vector<std::size_t> &spans_, const SetNgrams &set_words_, const bool &join_):
+            texts(texts_), temp(temp_), spans(spans_), set_words(set_words_), join(join_){}
     
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++){
             if (join) {
-                temp[h] = range_join(texts[h], spans, set_words);
+                temp[h] = kwic_range(texts[h], spans, set_words);
             } else {
-                temp[h] = range(texts[h], spans, set_words);
+                temp[h] = kwic_match(texts[h], spans, set_words);
             }
         }
     }
@@ -124,14 +124,14 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     
     // dev::start_timer("Dictionary detect", timer);
 #if QUANTEDA_USE_TBB
-    range_mt range_mt(texts, temp, spans, set_words, join);
-    parallelFor(0, texts.size(), range_mt);
+    kwic_mt kwic_mt(texts, temp, spans, set_words, join);
+    parallelFor(0, texts.size(), kwic_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
         if (join) {
-            temp[h] = range_join(texts[h], spans, set_words);
+            temp[h] = kwic_range(texts[h], spans, set_words);
         } else {
-            temp[h] = range(texts[h], spans, set_words);
+            temp[h] = kwic_match(texts[h], spans, set_words);
         }
     }
 #endif
