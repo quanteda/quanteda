@@ -244,21 +244,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_tokens_ngrams
-List qatd_cpp_tokens_ngrams(const List& texts_, const CharacterVector types_, const String delim_, const IntegerVector ns_, const IntegerVector skips_);
-RcppExport SEXP quanteda_qatd_cpp_tokens_ngrams(SEXP texts_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP ns_SEXP, SEXP skips_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
-    Rcpp::traits::input_parameter< const String >::type delim_(delim_SEXP);
-    Rcpp::traits::input_parameter< const IntegerVector >::type ns_(ns_SEXP);
-    Rcpp::traits::input_parameter< const IntegerVector >::type skips_(skips_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_ngrams(texts_, types_, delim_, ns_, skips_));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_tokens_ngrams2
 List qatd_cpp_tokens_ngrams2(const List& texts_, const CharacterVector types_, const String delim_, const IntegerVector ns_, const IntegerVector skips_);
 RcppExport SEXP quanteda_qatd_cpp_tokens_ngrams2(SEXP texts_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP ns_SEXP, SEXP skips_SEXP) {
@@ -271,6 +256,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector >::type ns_(ns_SEXP);
     Rcpp::traits::input_parameter< const IntegerVector >::type skips_(skips_SEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_ngrams2(texts_, types_, delim_, ns_, skips_));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_tokens_ngrams
+List qatd_cpp_tokens_ngrams(const List& texts_, const CharacterVector types_, const String delim_, const IntegerVector ns_, const IntegerVector skips_);
+RcppExport SEXP quanteda_qatd_cpp_tokens_ngrams(SEXP texts_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP ns_SEXP, SEXP skips_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< const String >::type delim_(delim_SEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type ns_(ns_SEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type skips_(skips_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_ngrams(texts_, types_, delim_, ns_, skips_));
     return rcpp_result_gen;
 END_RCPP
 }
