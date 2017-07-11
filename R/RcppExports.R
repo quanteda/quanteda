@@ -93,6 +93,10 @@ qatd_cpp_chars_remove <- function(input_, char_remove) {
     .Call(quanteda_qatd_cpp_chars_remove, input_, char_remove)
 }
 
+qatd_cpp_tbb_enabled <- function() {
+    .Call(quanteda_qatd_cpp_tbb_enabled)
+}
+
 wordfishcpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor) {
     .Call(quanteda_wordfishcpp, wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor)
 }

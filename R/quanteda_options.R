@@ -7,7 +7,7 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, RcppParallel::defaultNum
 
 #' get or set package options for quanteda
 #' 
-#' Get or set global options affecting functions across \pkg{quatneda}.
+#' Get or set global options affecting functions across \pkg{quanteda}.
 #' @param ... options to be set, as key-value pair, same as \code{\link{options}}. 
 #'   This may be a list of valid key-value pairs, useful for setting a group of
 #'   options at once (see examples).

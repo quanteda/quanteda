@@ -327,6 +327,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_tbb_enabled
+bool qatd_cpp_tbb_enabled();
+RcppExport SEXP quanteda_qatd_cpp_tbb_enabled() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tbb_enabled());
+    return rcpp_result_gen;
+END_RCPP
+}
 // wordfishcpp
 Rcpp::List wordfishcpp(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS, bool svd_on, double residual_floor);
 RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP, SEXP ABSSEXP, SEXP svd_onSEXP, SEXP residual_floorSEXP) {
