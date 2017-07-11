@@ -157,29 +157,29 @@ test_that("dictionary works consistently on tokens", {
     dict <- dictionary(ABC = 'a b c', D = 'd', E = 'e')
 
     expect_equal(
-        as.list(tokens_compound(toks, features = dict))[[1]],
-        toksch
+        as.character(tokens_compound(toks, features = dict)),
+        c("a_b_c", "d", "e", "a_b_c", "d", "e")
     )
     expect_equal(
-        as.list(tokens_compound(toks, features = phrase(dict)))[[1]],
+        as.character(tokens_compound(toks, features = phrase(dict))),
         c("a_b_c", "d", "e", "a_b_c", "d", "e")
     )
 
     expect_equal(
-        as.list(tokens_select(toks, features = dict))[[1]],
+        as.character(tokens_select(toks, features = dict)),
         c("d", "e", "d", "e")
     )
     expect_equal(
-        as.list(tokens_select(toks, features = phrase(dict)))[[1]],
+        as.character(tokens_select(toks, features = phrase(dict))),
         c("a", "b", "c", "d", "e", "d", "e")
     )
     
     expect_equal(
-        as.list(tokens_remove(toks, features = dict))[[1]],
+        as.character(tokens_remove(toks, features = dict)),
         c("a", "b", "c", "a_b_c")
     )
     expect_equal(
-        as.list(tokens_remove(toks, features = phrase(dict)))[[1]],
+        as.character(tokens_remove(toks, features = phrase(dict))),
         c("a_b_c")
     )
     
