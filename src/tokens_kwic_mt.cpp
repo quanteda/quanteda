@@ -6,10 +6,9 @@ using namespace quanteda;
 typedef pair<size_t, size_t> Target;
 typedef std::vector<Target> Targets;
 
-Targets range(Text tokens,
-              const std::vector<std::size_t> &spans,
-              const SetNgrams &set_words,
-              bool join){
+Targets range_join(Text tokens,
+                   const std::vector<std::size_t> &spans,
+                   const SetNgrams &set_words){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -86,7 +85,7 @@ struct range_mt : public Worker{
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++){
             if (join) {
-                temp[h] = range(texts[h], spans, set_words, true);
+                temp[h] = range_join(texts[h], spans, set_words);
             } else {
                 temp[h] = range(texts[h], spans, set_words);
             }
@@ -129,7 +128,11 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     parallelFor(0, texts.size(), range_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        temp[h] = range(texts[h], spans, set_words, join);
+        if (join) {
+            temp[h] = range_join(texts[h], spans, set_words);
+        } else {
+            temp[h] = range(texts[h], spans, set_words);
+        }
     }
 #endif
     
