@@ -119,9 +119,10 @@ test_that("character vector with whitespace and wildcard works consistent on tok
         c("a", "b")
     )
     
-    ## INCORRECT - TO FIX
-    # kwic(toks, keywords = phrase(feat))
-    # expect_equal(nrow(kwic(toks, keywords = feat)), 0)
+    expect_equal(
+        nrow(kwic(toks, keywords = feat)), 
+        0
+    )
 
 })
 
@@ -179,11 +180,10 @@ test_that("dictionary works consistently on tokens", {
         c("a_b_c")
     )
     
-    ## INCORRECT - TO FIX
-    # expect_equal(
-    #     as.data.frame(kwic(toks, keywords = dict))$keyword,
-    #     c("d e", "d e")
-    # )
+    expect_equal(
+        as.data.frame(kwic(toks, keywords = dict))$keyword,
+        c("d e", "d e")
+    )
     expect_equal(
         as.data.frame(kwic(toks, keywords = phrase(dict)))$keyword,
         c("a b c d e", "d e")
