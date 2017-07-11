@@ -42,16 +42,26 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
     
     if (!show_reference) {
         x <- head(x, n)
-        p <- if (sort) {
-            ggplot(data = x, aes(x = reorder(rownames(x), x[,1]), y = x[,1]))
+        
+        if (sort) {
+            x_reorder <- reorder(rownames(x), x[,1])
         } else {
-            ggplot(data = x, aes(x = rownames(x), y = x[,1]))
+            x_reorder <- rownames(x)
         }
-        p <- p    + coord_flip() +
+        p <- ggplot(data = x, aes(x = x_reorder, y = x[,1]))
+        
+         p    + coord_flip() +
             geom_point(size=1) +
             ylab(colnames(x)[1]) +
-            xlab("Keywords")
-        apply_theme(p)
+            geom_text(aes(label= x_reorder), hjust = ifelse( x[, 1] > x[floor(n/2)+ 1, 1], 1.2, -0.2), 
+                      vjust = 0, colour = "red", size = 3) + 
+            theme_bw() +
+            theme(axis.line = ggplot2::element_blank(),
+                  axis.title.y = ggplot2::element_blank(),
+                  axis.text.y = ggplot2::element_blank(),
+                  panel.grid.minor.y = ggplot2::element_blank(), 
+                  plot.background = ggplot2::element_blank(),
+                  panel.grid.major.y = element_line(linetype = "dotted"))
     } else {
         pos_n <- min(n, sum(x[ ,1] >= 0))
         neg_n <- min(n, sum(x[ ,1] < 0))
@@ -72,7 +82,7 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
             geom_point(colour="blue", size=1) +
             ylab(colnames(topn)[1]) +
             xlab("Document 1") + 
-            theme(axis.title.y = element_text(colour = "blue"))
+            theme(axis.title.y = element_text(colour = "blue")) + theme_bw()
         apply_theme(p1)
         
         p2 <- if (sort) {
@@ -94,16 +104,22 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
 ## common minimal B&W theme
 ##
 apply_theme <- function(p) {
-    p + theme_bw() + 
-        theme(panel.background = ggplot2::element_blank(),
-              panel.grid.major.x = element_blank(),
-              panel.grid.minor.x = element_blank(), 
+    #pp <- p + theme_bw()  
+     p + theme(axis.line = ggplot2::element_blank(),
+              axis.title.y = ggplot2::element_blank(),
+              axis.text.y = ggplot2::element_blank(),
+              #axis.ticks.y = ggplot2::element_blank(),
+              panel.background = ggplot2::element_blank(),
+              panel.grid.major.x = ggplot2::element_blank(),
+              panel.grid.minor.x = ggplot2::element_blank(), 
               # panel.grid.major.y = element_blank(),
-              panel.grid.minor.y = element_blank(), 
-              plot.background = element_blank(),
-              axis.ticks.y = element_blank(), 
+              panel.grid.minor.y = ggplot2::element_blank(), 
+              plot.background = ggplot2::element_blank(),
+              axis.ticks.y = ggplot2::element_blank(), 
               # panel.spacing = grid::unit(0.1, "lines"),
+              
               panel.grid.major.y = element_line(linetype = "dotted"))
+    
 }
 
 ## form https://gist.github.com/jslefche/e4c0e9f57f0af49fca87
