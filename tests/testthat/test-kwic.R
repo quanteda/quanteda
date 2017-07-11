@@ -83,8 +83,7 @@ test_that("test kwic on last token", {
 })
 
 test_that("test kwic on two tokens", {
-    skip_on_travis()
-    skip_on_appveyor()
+
     txt <- "A B C D E F G D H"
     testkwic <- kwic(txt, c('D', 'E'), 3)
     expect_equivalent(
