@@ -6,7 +6,7 @@ using namespace quanteda;
 typedef pair<size_t, size_t> Target;
 typedef std::vector<Target> Targets;
 
-Targets kwic_match(Text tokens,
+Targets kwic_range(Text tokens,
                    const std::vector<std::size_t> &spans,
                    const SetNgrams &set_words){
     
@@ -42,7 +42,7 @@ Targets kwic_match(Text tokens,
     return targets;
 }
 
-Targets kwic_range(Text tokens,
+Targets kwic_match(Text tokens,
                    const std::vector<std::size_t> &spans,
                    const SetNgrams &set_words){
     
