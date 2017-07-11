@@ -14,13 +14,14 @@ using namespace std;
 #ifndef QUANTEDA // prevent multiple redefinition
 #define QUANTEDA
 
-#if RCPP_PARALLEL_USE_TBB // && GCC_VERSION >= 40801 // newer than gcc 4.8.1
+#define CLANG_VERSION (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__)
+
+// compiler has to be newer than clang 3.30 or gcc 4.8.1
+#if RCPP_PARALLEL_USE_TBB && (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801) 
 #define QUANTEDA_USE_TBB true // tbb.h is loaded automatically by RcppParallel.h
 #else
 #define QUANTEDA_USE_TBB false
 #endif
-
-#define RCPP_USING_CXX11
 
 namespace quanteda{
     
