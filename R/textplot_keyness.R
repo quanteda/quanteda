@@ -59,6 +59,7 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
             theme(axis.line = ggplot2::element_blank(),
                   axis.title.y = ggplot2::element_blank(),
                   axis.text.y = ggplot2::element_blank(),
+                  axis.ticks.y = ggplot2::element_blank(),
                   panel.grid.minor.y = ggplot2::element_blank(), 
                   plot.background = ggplot2::element_blank(),
                   panel.grid.major.y = element_line(linetype = "dotted"))
@@ -103,24 +104,24 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
 ##
 ## common minimal B&W theme
 ##
-apply_theme <- function(p) {
-    #pp <- p + theme_bw()  
-     p + theme(axis.line = ggplot2::element_blank(),
-              axis.title.y = ggplot2::element_blank(),
-              axis.text.y = ggplot2::element_blank(),
-              #axis.ticks.y = ggplot2::element_blank(),
-              panel.background = ggplot2::element_blank(),
-              panel.grid.major.x = ggplot2::element_blank(),
-              panel.grid.minor.x = ggplot2::element_blank(), 
-              # panel.grid.major.y = element_blank(),
-              panel.grid.minor.y = ggplot2::element_blank(), 
-              plot.background = ggplot2::element_blank(),
-              axis.ticks.y = ggplot2::element_blank(), 
-              # panel.spacing = grid::unit(0.1, "lines"),
-              
-              panel.grid.major.y = element_line(linetype = "dotted"))
-    
-}
+# apply_theme <- function(p) {
+#     #pp <- p + theme_bw()  
+#      p + theme(axis.line = ggplot2::element_blank(),
+#               axis.title.y = ggplot2::element_blank(),
+#               axis.text.y = ggplot2::element_blank(),
+#               #axis.ticks.y = ggplot2::element_blank(),
+#               panel.background = ggplot2::element_blank(),
+#               panel.grid.major.x = ggplot2::element_blank(),
+#               panel.grid.minor.x = ggplot2::element_blank(), 
+#               # panel.grid.major.y = element_blank(),
+#               panel.grid.minor.y = ggplot2::element_blank(), 
+#               plot.background = ggplot2::element_blank(),
+#               axis.ticks.y = ggplot2::element_blank(), 
+#               # panel.spacing = grid::unit(0.1, "lines"),
+#               
+#               panel.grid.major.y = element_line(linetype = "dotted"))
+#     
+# }
 
 ## form https://gist.github.com/jslefche/e4c0e9f57f0af49fca87
 #' @importFrom ggplot2 ggplot_gtable ggplot_build ylim element_text element_rect
