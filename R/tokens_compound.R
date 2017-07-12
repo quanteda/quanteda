@@ -70,16 +70,14 @@ tokens_compound.tokens <- function(x, features,
     types <- types(x)
     
     if (is.sequences(features) || is.collocations(features)) {
-        if (identical(attr(features, 'types'), types)) {
-            seqs_ids <- attr(features, 'tokens')
-        } else { 
-            seqs <- phrase(features$collocation)
-            seqs_ids <- lapply(seqs, function(x) fastmatch::fmatch(x, types))
-            seqs_ids <- seqs_ids[sapply(seqs_ids, function(x) all(!is.na(x)))]
-        }
+        seqs <- phrase(features$collocation)
+        print(seqs)
+        seqs_ids <- lapply(seqs, function(x) fastmatch::fmatch(x, types))
+        seqs_ids <- seqs_ids[sapply(seqs_ids, function(x) all(!is.na(x)))]
     } else {
-        if (is.dictionary(features)) features <- phrase(features)
-        seqs <- features2list(features)
+        if (is.dictionary(features))
+            features <- unlist(features, use.names = FALSE)
+        seqs <- phrase(features)
         seqs <- seqs[lengths(seqs) > 1] # drop single words
         seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
     }

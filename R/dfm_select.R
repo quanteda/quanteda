@@ -117,7 +117,6 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             }
             features <- stri_replace_all_fixed(unlist(features, use.names = FALSE), ' ', attr(x, 'concatenator'))
         }
-        features <- features2vector(as.list(features))
         features_id <- unlist(regex2id(features, featnames(x), valuetype, case_insensitive), use.names = FALSE)
         if (!is.null(features_id)) features_id <- sort(features_id) # keep the original column order
     } else {

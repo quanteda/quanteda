@@ -122,7 +122,7 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
                                               attr(x, 'concatenator'))
     }
     types <- types(x)
-    features <- features2list(features)
+    features <- as.list(features)
     features_id <- regex2id(features, types, valuetype, case_insensitive)
     
     if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index
