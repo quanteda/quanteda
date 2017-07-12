@@ -119,11 +119,10 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     
     if (is.dictionary(features)) {
         features <- split_dictionary_values(unlist(features, use.names = FALSE), 
-                                              attr(x, 'concatenator'))
+                                            attr(x, 'concatenator'))
     }
     types <- types(x)
-    features <- as.list(features)
-    features_id <- regex2id(features, types, valuetype, case_insensitive)
+    features_id <- regex2id(as.list(features), types, valuetype, case_insensitive)
     
     if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index
 

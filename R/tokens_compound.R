@@ -71,7 +71,6 @@ tokens_compound.tokens <- function(x, features,
     
     if (is.sequences(features) || is.collocations(features)) {
         seqs <- phrase(features$collocation)
-        print(seqs)
         seqs_ids <- lapply(seqs, function(x) fastmatch::fmatch(x, types))
         seqs_ids <- seqs_ids[sapply(seqs_ids, function(x) all(!is.na(x)))]
     } else {
