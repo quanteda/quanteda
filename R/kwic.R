@@ -150,7 +150,7 @@ print.kwic <- function(x, ...) {
 #' @rdname kwic
 #' @export
 #' @method as.tokens kwic
-as.tokens.kwic <- function(x) {
+as.tokens.kwic <- function(x, ...) {
     result <- attr(x, 'tokens')
     names(result) <- x$docname
     docvars(result) <- data.frame('_docid' = attr(x, 'docid'),

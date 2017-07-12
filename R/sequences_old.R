@@ -43,8 +43,6 @@
 #'                    
 #' head(seqs2, 10)
 #' 
-#' # convert to tokens object
-#' as.tokens(seqs2)
 #' 
 #' @export
 sequences_old <- function(x, features = "*", 

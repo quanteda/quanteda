@@ -327,16 +327,16 @@ as.tokens.list <- function(x, concatenator = '_') {
     return(result)
 }
 
-#' @export
-#' @method as.tokens collocations
-#' @rdname as.tokens
-as.tokens.collocations <- function(x) {
-    tokens(x$collocation, what = 'fastestword')
-}
+#' #' @export
+#' #' @method as.tokens collocations
+#' #' @rdname as.tokens
+#' as.tokens.collocations <- function(x, concatenator = '_') {
+#'     as.tokens(phrase(x$collocation), concatenator = concatenator)
+#' }
 
 #' @export
 #' @noRd
-as.tokens.tokenizedTexts <- function(x) {
+as.tokens.tokenizedTexts <- function(x, ...) {
     NextMethod("as.tokens")
 }
 
