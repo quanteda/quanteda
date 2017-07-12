@@ -89,12 +89,10 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
              if (length(dictionary) > 1L) "s" else "", "\n", sep="")
     
     for (h in seq_along(dictionary)) {
-        entries <- dictionary[[h]]
-        entries <- c(as.list(stri_replace_all_fixed(entries, ' ', attr(x, 'concatenator'))), 
-                     stringi::stri_split_fixed(entries, ' '))
-        entries_temp <- regex2id(entries, types, valuetype, case_insensitive, index)
-        entries_id <- c(entries_id, entries_temp)
-        keys_id <- c(keys_id, rep(h, length(entries_temp)))
+        values <- convert_dictionary_values(dictionary[[h]], attr(x, 'concatenator'))
+        values_temp <- regex2id(values, types, valuetype, case_insensitive, index)
+        values_id <- c(values_id, values_temp)
+        keys_id <- c(keys_id, rep(h, length(values_temp)))
     }
     if (capkeys) {
         keys <- char_toupper(names(dictionary))
@@ -102,9 +100,9 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         keys <- names(dictionary)
     }
     if (exclusive) {
-        result <- qatd_cpp_tokens_lookup(x, keys, entries_id, keys_id, FALSE)
+        result <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE)
     } else {
-        result <- qatd_cpp_tokens_match(x, c(types, keys), entries_id, keys_id + length(types), FALSE)
+        result <- qatd_cpp_tokens_match(x, c(types, keys), values_id, keys_id + length(types), FALSE)
     }
     attributes(result, FALSE) <- attrs
     attr(result, "what") <- "dictionary"

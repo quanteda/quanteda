@@ -113,11 +113,14 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     if (!is.tokens(x))
         stop("x must be a tokens object")
     
-    
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     
+    if (is.dictionary(features)) {
+        features <- convert_dictionary_values(unlist(features, use.names = FALSE), 
+                                              attr(x, 'concatenator'))
+    }
     types <- types(x)
     features <- features2list(features)
     features_id <- regex2id(features, types, valuetype, case_insensitive)

@@ -71,6 +71,18 @@ print_dictionary <- function(entry, level = 1) {
 }
 
 
+# Internal function for special handling of multi-word dicitionary values
+convert_dictionary_values <- function(values, conctenator) {
+    if (any(stri_detect_fixed(values, ' '))) {
+        values <- c(stri_split_fixed(values, ' '),
+                    as.list(stri_replace_all_fixed(values, ' ', conctenator)))
+    } else {
+        values <- as.list(values)
+    }
+    return(values)
+}
+
+
 #' print a dictionary object
 #' 
 #' Print/show method for dictionary objects.
