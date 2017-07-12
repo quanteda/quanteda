@@ -331,8 +331,7 @@ as.tokens.list <- function(x, concatenator = '_') {
 #' @method as.tokens collocations
 #' @rdname as.tokens
 as.tokens.collocations <- function(x) {
-    result <- tokens(x$collocation, what = 'fastestword')
-    return(toks)
+    tokens(x$collocation, what = 'fastestword')
 }
 
 #' @export
