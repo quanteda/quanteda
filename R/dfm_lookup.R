@@ -68,7 +68,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     }
     
     # Generate all combinations of type IDs
-    entries_id <- list()
+    values_id <- list()
     keys_id <- c()
     types <- featnames(x)
     
@@ -77,19 +77,19 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
              if (length(dictionary) > 1L) "s" else "", "\n", sep="")
     
     for (h in seq_along(dictionary)) {
-        entries <- dictionary[[h]]
-        entries_temp <- regex2id(as.list(entries), types, valuetype, case_insensitive, FALSE)
-        entries_id <- c(entries_id, entries_temp)
-        keys_id <- c(keys_id, rep(h, length(entries_temp)))
+        values <- as.list(stri_replace_all_fixed(dictionary[[h]], ' ', attr(x, 'concatenator')))
+        values_temp <- regex2id(values, types, valuetype, case_insensitive, FALSE)
+        values_id <- c(values_id, values_temp)
+        keys_id <- c(keys_id, rep(h, length(values_temp)))
     }
-    if (length(entries_id)) {
+    if (length(values_id)) {
         
         if (capkeys) {
             keys <- char_toupper(names(dictionary))
         } else {
             keys <- names(dictionary)
         }
-        temp <- x[,unlist(entries_id, use.names = FALSE)]
+        temp <- x[,unlist(values_id, use.names = FALSE)]
         colnames(temp) <- keys[keys_id]
         temp <- dfm_compress(temp, margin = 'features')
         temp <- dfm_select(temp, features = as.list(keys), valuetype = 'fixed', padding = TRUE)
@@ -97,7 +97,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
         if (exclusive) {
             result <- temp[,keys]
         } else {
-            result <- cbind(x[,unlist(entries_id) * -1], temp[,keys])
+            result <- cbind(x[,unlist(values_id) * -1], temp[,keys])
         }
     } else {
         if (exclusive) {

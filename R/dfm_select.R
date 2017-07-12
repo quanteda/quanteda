@@ -115,7 +115,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             if (has_multiword(features) && x@ngrams == 1) {
                 stop("dfm_select not implemented for ngrams > 1 and multi-word dictionary values")
             }
-            features <- unlist(features, use.names = FALSE)
+            features <- stri_replace_all_fixed(unlist(features, use.names = FALSE), ' ', attr(x, 'concatenator'))
         }
         features <- features2vector(as.list(features))
         features_id <- unlist(regex2id(features, featnames(x), valuetype, case_insensitive), use.names = FALSE)
