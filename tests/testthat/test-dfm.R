@@ -15,7 +15,7 @@ thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
 preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE)
 dfm_lookup(preDictDfm, mydict)
 
-txt <- tokenize(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
+txt <- tokens(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
                                "The United_States has progressive taxation.")),
                 remove_punct = TRUE)
 
