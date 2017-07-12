@@ -434,7 +434,6 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                                           _["G2"] = as<NumericVector>(wrap(logratio_all)),
                                           _["chi2"] = as<NumericVector>(wrap(chi2_all)),
                                           _["stringsAsFactors"] = false);
-    output_.attr("tokens") = as<Tokens>(wrap(seqs_all));
     return output_;
 }
 
