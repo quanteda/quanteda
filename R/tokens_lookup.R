@@ -89,7 +89,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
              if (length(dictionary) > 1L) "s" else "", "\n", sep="")
     
     for (h in seq_along(dictionary)) {
-        values <- convert_dictionary_values(dictionary[[h]], attr(x, 'concatenator'))
+        values <- split_dictionary_values(dictionary[[h]], attr(x, 'concatenator'))
         values_temp <- regex2id(values, types, valuetype, case_insensitive, index)
         values_id <- c(values_id, values_temp)
         keys_id <- c(keys_id, rep(h, length(values_temp)))

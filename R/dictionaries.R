@@ -72,7 +72,7 @@ print_dictionary <- function(entry, level = 1) {
 
 
 # Internal function for special handling of multi-word dicitionary values
-convert_dictionary_values <- function(values, conctenator) {
+split_dictionary_values <- function(values, conctenator) {
     if (any(stri_detect_fixed(values, ' '))) {
         values <- c(stri_split_fixed(values, ' '),
                     as.list(stri_replace_all_fixed(values, ' ', conctenator)))
@@ -265,8 +265,9 @@ dictionary <- function(..., file = NULL, format = NULL,
         }
     }
     if (tolower)
-        x <- lowercase_dictionary(x)
-    new("dictionary2", x, concatenator = concatenator)
+        x <- lowercase_dictionary_values(x)
+    x <- replace_dictionary_value(x, concatenator, ' ')
+    new("dictionary2", x, concatenator = ' ') # keep concatenator attributes for compatibility
 }
 
 
@@ -384,7 +385,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
     return(dict_flat)
 }
 
-# Internal function to lowercase dictionary entries
+# Internal function to lowercase dictionary values
 #
 # hdict <- list(KEY1 = list(SUBKEY1 = c("A", "B"),
 #                           SUBKEY2 = c("C", "D")),
@@ -392,16 +393,38 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
 #                           SUBKEY4 = c("G", "F", "I")),
 #               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J", "K")),
 #                           SUBKEY6 = list(SUBKEY8 = c("L"))))
-# lowercase_dictionary(hdict)
+# lowercase_dictionary_value(hdict)
 #
-lowercase_dictionary <- function(dict) {
+lowercase_dictionary_value <- function(dict) {
     dict <- unclass(dict)
     for (i in seq_along(dict)) {
         if (is.list(dict[[i]])) {
-            dict[[i]] <- lowercase_dictionary(dict[[i]])
+            dict[[i]] <- lowercase_dictionary_value(dict[[i]])
         } else {
             if (is.character(dict[[i]])) {
                 dict[[i]] <- stri_trans_tolower(dict[[i]])
+            }
+        }
+    }
+    return(dict)
+}
+# Internal function to replace dictionary values
+#
+# hdict <- list(KEY1 = list(SUBKEY1 = c("A_B"),
+#                           SUBKEY2 = c("C_D")),
+#               KEY2 = list(SUBKEY3 = c("E_F"),
+#                           SUBKEY4 = c("G_F_I")),
+#               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J_K")),
+#                           SUBKEY6 = list(SUBKEY8 = c("L"))))
+# replace_dictionary_value(hdict, '_', ' ')
+replace_dictionary_value <- function(dict, from, to) {
+    dict <- unclass(dict)
+    for (i in seq_along(dict)) {
+        if (is.list(dict[[i]])) {
+            dict[[i]] <- replace_dictionary_value(dict[[i]], from, to)
+        } else {
+            if (is.character(dict[[i]])) {
+                dict[[i]] <- stri_replace_all_fixed(dict[[i]], from, to)
             }
         }
     }

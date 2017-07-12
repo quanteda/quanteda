@@ -118,7 +118,7 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     attrs <- attributes(x)
     
     if (is.dictionary(features)) {
-        features <- convert_dictionary_values(unlist(features, use.names = FALSE), 
+        features <- split_dictionary_values(unlist(features, use.names = FALSE), 
                                               attr(x, 'concatenator'))
     }
     types <- types(x)
