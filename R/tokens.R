@@ -307,10 +307,11 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
 #' object is a \link{tokens} object, and functions to combine \link{tokens}
 #' objects.
 #' @param x object to be coerced or checked
+#' @param concatenator character between multi-word expressions, default is _ (underscore) character
 #' @return \code{as.tokens} returns a quanteda \link{tokens} object
 #' @export
 #' @rdname as.tokens
-as.tokens <- function(x) {
+as.tokens <- function(x, concatenator = '_') {
     UseMethod("as.tokens")
 }
 
