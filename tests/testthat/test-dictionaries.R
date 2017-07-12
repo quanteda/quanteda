@@ -183,8 +183,8 @@ test_that("as.list is working", {
 
 test_that("error if empty concatenator is given", {
     
-    expect_error(dictionary(one = c("a", "b"), two = c("c", "d"), concatenator = ''),
-                 'Concatenator cannot be null or an empty string')
+    # expect_error(dictionary(one = c("a", "b"), two = c("c", "d"), separator = ''),
+    #             'Concatenator cannot be null or an empty string')
     
     # expect_error(dictionary(one = c("a", "b"), two = c("c", "d"), concatenator = NULL),
     #              'Concatenator cannot be null or an empty string')
