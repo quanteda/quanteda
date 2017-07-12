@@ -164,7 +164,7 @@ setMethod("as.list",
 #'   the Linguistic Inquiry and Word Count software} \item{\code{"yoshikoder"}}{
 #'   format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
 #'   by Lexicoder} \item{\code{"YAML"}}{the standard YAML format}}
-#' @param concatenator the character in between multi-word dictionary values. 
+#' @param separator the character in between multi-word dictionary values. 
 #'   This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
 #'   a single space \code{" "}.
 #' @param encoding additional optional encoding value for reading in imported 
@@ -213,7 +213,7 @@ setMethod("as.list",
 #' head(dfm(data_corpus_inaugural, dictionary = mfdict))}
 #' @export
 dictionary <- function(..., file = NULL, format = NULL, 
-                       concatenator = "_", 
+                       separator = "_", 
                        tolower = TRUE, encoding = "auto") {
     
     if (is.null(file)) {
@@ -265,7 +265,7 @@ dictionary <- function(..., file = NULL, format = NULL,
     }
     if (tolower)
         x <- lowercase_dictionary_values(x)
-    x <- replace_dictionary_values(x, concatenator, ' ')
+    x <- replace_dictionary_values(x, separator, ' ')
     new("dictionary2", x, concatenator = ' ') # keep concatenator attributes for compatibility
 }
 
