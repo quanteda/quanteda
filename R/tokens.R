@@ -316,24 +316,14 @@ as.tokens <- function(x) {
 
 #' @rdname as.tokens
 #' @export
-as.tokens.list <- function(x) {
+as.tokens.list <- function(x, concatenator = '_') {
     result <- tokens_hash(x)
     attr(result, "what") <- "word"
     attr(result, "ngrams") <- 1L
-    attr(result, "concatenator") <- "_"
+    attr(result, "concatenator") <- concatenator
     attr(result, 'padding') <- FALSE
     class(result)[2] <- "tokenizedTexts"
     return(result)
-}
-
-#' @export
-#' @method as.tokens collocations
-#' @rdname as.tokens
-as.tokens.collocations <- function(x) {
-    toks <- attr(x, 'tokens')
-    attr(toks, 'types') <- attr(x, 'types')
-    class(toks) <- c("tokens", "tokenizedTexts")
-    return(toks)
 }
 
 #' @export

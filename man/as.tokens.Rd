@@ -3,7 +3,6 @@
 \name{as.tokens}
 \alias{as.tokens}
 \alias{as.tokens.list}
-\alias{as.tokens.collocations}
 \alias{as.list.tokens}
 \alias{unlist.tokens}
 \alias{as.character.tokens}
@@ -14,9 +13,7 @@
 \usage{
 as.tokens(x)
 
-\method{as.tokens}{list}(x)
-
-\method{as.tokens}{collocations}(x)
+\method{as.tokens}{list}(x, concatenator = "_")
 
 \method{as.list}{tokens}(x, ...)
 
