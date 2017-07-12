@@ -72,10 +72,10 @@ print_dictionary <- function(entry, level = 1) {
 
 
 # Internal function for special handling of multi-word dicitionary values
-split_dictionary_values <- function(values, conctenator) {
+split_dictionary_values <- function(values, concatenator) {
     if (any(stri_detect_fixed(values, ' '))) {
         values <- c(stri_split_fixed(values, ' '),
-                    as.list(stri_replace_all_fixed(values, ' ', conctenator)))
+                    as.list(stri_replace_all_fixed(values, ' ', concatenator)))
     } else {
         values <- as.list(values)
     }
