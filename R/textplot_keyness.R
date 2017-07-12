@@ -54,7 +54,7 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
             geom_point(size=1) +
             ylab(colnames(x)[1]) +
             geom_text(aes(label= x_reorder), hjust = ifelse( x[, 1] > x[floor(n/2)+ 1, 1], 1.2, -0.2), 
-                      vjust = 0, colour = "red", size = 3) + 
+                      vjust = 0, size = 3) + 
             theme_bw() +
             theme(axis.line = ggplot2::element_blank(),
                   axis.title.y = ggplot2::element_blank(),
@@ -71,57 +71,51 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
         topn <- head(x, pos_n)
         tailn <- tail(x, neg_n)
         if ((pos_n > 0) & (neg_n > 0)) {
-            maxY <- max(max(topn[ ,1]), max(abs(tailn[ ,1])))
+            max_Y <- max(max(topn[ ,1]), max(abs(tailn[ ,1])))
         }
         
-        p1 <- if (sort) {
-            ggplot(data = topn, aes(x = reorder(rownames(topn), topn[,1]), y = topn[,1]))
+        cols <- c("Target"="#f04546","Reference"="blue")
+        
+       if (sort) {
+            x_reorder <- reorder(rownames(topn), topn[,1])
         } else {
-            ggplot(data = topn, aes(x = rownames(topn), y = topn[,1]))
+            x_reorder <- rownames(topn)
         }
-        p1 <- p1    + coord_flip() + ylim(0, maxY) +
-            geom_point(colour="blue", size=1) +
+        p1 <- ggplot(data = topn, aes(x = x_reorder, y = topn[,1]))
+        p1 <- p1+    coord_flip() + ylim(0, max_Y) +
+            geom_point(aes(colour="Target"), size=1) +
             ylab(colnames(topn)[1]) +
-            xlab("Document 1") + 
-            theme(axis.title.y = element_text(colour = "blue")) + theme_bw()
-        apply_theme(p1)
+            geom_text(aes(label= x_reorder), hjust = -0.2, #ifelse( topn[, 1] < topn[floor(neg_n/2)+ 1, 1], 1.2, -0.2),
+                      vjust = 0, colour = "red", size = 3) +
+            scale_colour_manual("", values = cols) +
+            theme_bw() +
+            theme(axis.line = ggplot2::element_blank(),
+                  axis.title.y = ggplot2::element_blank(),
+                  axis.text.y = ggplot2::element_blank(),
+                  axis.ticks.y = ggplot2::element_blank(),
+                  panel.grid.minor.y = ggplot2::element_blank(),
+                  plot.background = ggplot2::element_blank(),
+                  panel.grid.major.y = element_line(linetype = "dotted"))
         
-        p2 <- if (sort) {
-            ggplot(data = tailn, aes(x = reorder(rownames(tailn), abs(tailn[,1])), y = abs(tailn[,1])))
-        } else {
-            ggplot(data = tailn, aes(x = rownames(tailn), y = tailn[,1]))
+        ##plot reference
+        if (sort) {
+            x2_reorder <- reorder(rownames(tailn), abs(tailn[,1]))
+        }else{
+            x2_reorder <- rownames(tailn)
         }
-        p2 <- p2 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-        p2 <- p2    + coord_flip() + ylim(0, maxY) +
-            geom_point(colour="red", size=1) +
-            ylab(colnames(tailn)[1])
+     
+        p2 <- ggplot(data = tailn, aes(x = x2_reorder, y = abs(tailn[,1]))) 
+        p2 <- p2+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
+            coord_flip() + ylim(0, max_Y) +
+            geom_point(aes(colour="Reference"), size = 1) +
+            ylab(colnames(tailn)[1]) +
+            scale_colour_manual("", values = cols) +
+            geom_text(aes(label= x2_reorder), hjust = 1.2, #ifelse( tailn[, 1] > tailn[floor(pos_n/2)+ 1, 1], 1.2, -0.2),
+                      vjust = 0, colour = "blue", size = 3) #+ theme_bw() +
 
         ggplot_dual_axis(p1, p2, "y")
     }
 } 
-
-
-##
-## common minimal B&W theme
-##
-# apply_theme <- function(p) {
-#     #pp <- p + theme_bw()  
-#      p + theme(axis.line = ggplot2::element_blank(),
-#               axis.title.y = ggplot2::element_blank(),
-#               axis.text.y = ggplot2::element_blank(),
-#               #axis.ticks.y = ggplot2::element_blank(),
-#               panel.background = ggplot2::element_blank(),
-#               panel.grid.major.x = ggplot2::element_blank(),
-#               panel.grid.minor.x = ggplot2::element_blank(), 
-#               # panel.grid.major.y = element_blank(),
-#               panel.grid.minor.y = ggplot2::element_blank(), 
-#               plot.background = ggplot2::element_blank(),
-#               axis.ticks.y = ggplot2::element_blank(), 
-#               # panel.spacing = grid::unit(0.1, "lines"),
-#               
-#               panel.grid.major.y = element_line(linetype = "dotted"))
-#     
-# }
 
 ## form https://gist.github.com/jslefche/e4c0e9f57f0af49fca87
 #' @importFrom ggplot2 ggplot_gtable ggplot_build ylim element_text element_rect
@@ -165,16 +159,16 @@ ggplot_dual_axis = function(plot1, plot2, which.axis = "x") {
     if(which.axis == "x") g$heights[[2]] = g$heights[g2$layout[ia,]$t]
     
     # Add new row or column for axis label
-    if (which.axis == "x") {
-        g = gtable_add_grob(g, ax, 2, 4, 2, 4) 
-        g = gtable_add_rows(g, g2$heights[1], 1)
-        g = gtable_add_grob(g, g2$grob[[6]], 2, 4, 2, 4)
-    } else {
-        g = gtable_add_cols(g, g2$widths[g2$layout[ia, ]$l], length(g$widths) - 1)
-        g = gtable_add_grob(g, ax, pp$t, length(g$widths) - 1, pp$b) 
-        #g = gtable_add_grob(g, g2$grob[[7]], pp$t, length(g$widths), pp$b - 1)
-    }
-    
+    # if (which.axis == "x") {
+    #     g = gtable_add_grob(g, ax, 2, 4, 2, 4) 
+    #     g = gtable_add_rows(g, g2$heights[1], 1)
+    #     g = gtable_add_grob(g, g2$grob[[6]], 2, 4, 2, 4)
+    # } else {
+    #     g = gtable_add_cols(g, g2$widths[g2$layout[ia, ]$l], length(g$widths) - 1)
+    #     g = gtable_add_grob(g, ax, pp$t, length(g$widths) - 1, pp$b) 
+    #     #g = gtable_add_grob(g, g2$grob[[7]], pp$t, length(g$widths), pp$b - 1)
+    # }
+    # 
     # Draw it
     grid.draw(g)
 }
