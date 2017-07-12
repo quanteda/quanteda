@@ -73,9 +73,8 @@ print_dictionary <- function(entry, level = 1) {
 
 # Internal function for special handling of multi-word dicitionary values
 split_dictionary_values <- function(values, concatenator) {
-    if (any(stri_detect_fixed(values, ' '))) {
-        values <- c(phrase(values, "\\p{Z}"),
-                    as.list(stri_replace_all_fixed(values, ' ', concatenator)))
+    if (any(stri_detect_charclass(values, "\\p{Z}"))) {
+        values <- c(phrase(values), as.list(stri_replace_all_charclass(values, "\\p{Z}", concatenator)))
     } else {
         values <- as.list(values)
     }
