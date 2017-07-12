@@ -226,19 +226,19 @@ test_that("tokens_select works as expected for bigrams selected on char, list of
 
 test_that("tokens_select works correctly with collocations objects", {
     expect_equal(
-        as.list(tokens_select(toks_uni, coll_bi)),
+        as.list(tokens_select(toks_uni, coll_bi$collocation)),
         list(d1 = character(), d2 = character())
     )
     expect_equal(
-        as.list(tokens_remove(toks_uni, phrase(coll_bi))),
+        as.list(tokens_remove(toks_uni, phrase(coll_bi$collocation))),
         list(d1 = c("c", "d"), d2 = c("i", "j"))
     )
     expect_equal(
-        as.list(tokens_select(toks_uni, coll_tri)),
+        as.list(tokens_select(toks_uni, coll_tri$collocation)),
         list(d1 = character(), d2 = character())
     )
     expect_equal(
-        as.list(tokens_select(toks_bi, coll_bi)),
+        as.list(tokens_select(toks_bi, coll_bi$collocation)),
         list(d1 = c("a b", "e g", "g h"), d2 = c("a b", "e g", "g h"))
     )
     expect_silent(
@@ -277,7 +277,7 @@ test_that("tokens_select on unigrams works as expected when padding = TRUE", {
     )
     
     expect_equal(
-        as.list(tokens_select(toks_uni, coll_bi, padding = TRUE)),
+        as.list(tokens_select(toks_uni, coll_bi$collocation, padding = TRUE)),
         list(d1 = rep("", 7), d2 = rep("", 7))
     )
     expect_equal(
@@ -308,7 +308,7 @@ test_that("tokens_select on bigrams works as expected when padding = TRUE", {
     )
     
     expect_equal(
-        as.list(tokens_select(toks_bi, coll_bi, padding = TRUE)),
+        as.list(tokens_select(toks_bi, coll_bi$collocation, padding = TRUE)),
         list(d1 = c("a b", "", "", "", "e g", "g h"), 
              d2 = c("a b", "", "e g", "g h", "", ""))
     )
