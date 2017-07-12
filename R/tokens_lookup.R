@@ -79,7 +79,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     attrs <- attributes(x)
     
     # Generate all combinations of type IDs
-    entries_id <- list()
+    values_id <- list()
     keys_id <- c()
     types <- types(x)
     

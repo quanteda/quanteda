@@ -266,7 +266,7 @@ dictionary <- function(..., file = NULL, format = NULL,
     }
     if (tolower)
         x <- lowercase_dictionary_values(x)
-    x <- replace_dictionary_value(x, concatenator, ' ')
+    x <- replace_dictionary_values(x, concatenator, ' ')
     new("dictionary2", x, concatenator = ' ') # keep concatenator attributes for compatibility
 }
 
@@ -393,13 +393,13 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
 #                           SUBKEY4 = c("G", "F", "I")),
 #               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J", "K")),
 #                           SUBKEY6 = list(SUBKEY8 = c("L"))))
-# lowercase_dictionary_value(hdict)
+# lowercase_dictionary_values(hdict)
 #
-lowercase_dictionary_value <- function(dict) {
+lowercase_dictionary_values <- function(dict) {
     dict <- unclass(dict)
     for (i in seq_along(dict)) {
         if (is.list(dict[[i]])) {
-            dict[[i]] <- lowercase_dictionary_value(dict[[i]])
+            dict[[i]] <- lowercase_dictionary_values(dict[[i]])
         } else {
             if (is.character(dict[[i]])) {
                 dict[[i]] <- stri_trans_tolower(dict[[i]])
@@ -416,12 +416,12 @@ lowercase_dictionary_value <- function(dict) {
 #                           SUBKEY4 = c("G_F_I")),
 #               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J_K")),
 #                           SUBKEY6 = list(SUBKEY8 = c("L"))))
-# replace_dictionary_value(hdict, '_', ' ')
-replace_dictionary_value <- function(dict, from, to) {
+# replace_dictionary_values(hdict, '_', ' ')
+replace_dictionary_values <- function(dict, from, to) {
     dict <- unclass(dict)
     for (i in seq_along(dict)) {
         if (is.list(dict[[i]])) {
-            dict[[i]] <- replace_dictionary_value(dict[[i]], from, to)
+            dict[[i]] <- replace_dictionary_values(dict[[i]], from, to)
         } else {
             if (is.character(dict[[i]])) {
                 dict[[i]] <- stri_replace_all_fixed(dict[[i]], from, to)
