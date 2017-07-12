@@ -112,9 +112,9 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             padding <- TRUE
             case_insensitive <- FALSE
         } else if (is.dictionary(features)) {
-            if (has_multiword(features) && x@ngrams == 1) {
-                stop("dfm_select not implemented for ngrams > 1 and multi-word dictionary values")
-            }
+            # if (has_multiword(features) && x@ngrams == 1) {
+            #     stop("dfm_select not implemented for ngrams > 1 and multi-word dictionary values")
+            # }
             features <- stri_replace_all_fixed(unlist(features, use.names = FALSE), ' ', attr(x, 'concatenator'))
         }
         features_id <- unlist(regex2id(features, featnames(x), valuetype, case_insensitive), use.names = FALSE)

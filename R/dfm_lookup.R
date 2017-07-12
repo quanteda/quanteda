@@ -63,9 +63,9 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     
-    if (has_multiword(dictionary) && x@ngrams == 1) {
-        stop("dfm_lookup not implemented for ngrams > 1 and multi-word dictionary values")
-    }
+    # if (has_multiword(dictionary) && x@ngrams == 1) {
+    #     stop("dfm_lookup not implemented for ngrams > 1 and multi-word dictionary values")
+    # }
     
     # Generate all combinations of type IDs
     values_id <- list()
