@@ -214,7 +214,7 @@ setMethod("as.list",
 #' head(dfm(data_corpus_inaugural, dictionary = mfdict))}
 #' @export
 dictionary <- function(..., file = NULL, format = NULL, 
-                       concatenator = " ", 
+                       concatenator = "_", 
                        tolower = TRUE, encoding = "auto") {
     
     if (is.null(file)) {

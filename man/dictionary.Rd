@@ -4,7 +4,7 @@
 \alias{dictionary}
 \title{create a dictionary}
 \usage{
-dictionary(..., file = NULL, format = NULL, concatenator = " ",
+dictionary(..., file = NULL, format = NULL, concatenator = "_",
   tolower = TRUE, encoding = "auto")
 }
 \arguments{
