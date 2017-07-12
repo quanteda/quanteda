@@ -1,5 +1,5 @@
 # implement default options
-QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, RcppParallel::defaultNumThreads()/2),
+QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, RcppParallel::defaultNumThreads() / 2),
                              quanteda_verbose = FALSE,
                              quanteda_print_dfm_max_ndoc = 20L,
                              quanteda_print_dfm_max_nfeature = 20L)
@@ -99,6 +99,7 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
                 warning("setting threads instead to maximum available ", available_threads)
                 value <- available_threads
             }
+            RcppParallel::setThreadOptions(value)
         }
         
         # assign the key-value
