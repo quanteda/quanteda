@@ -211,7 +211,7 @@ keyness_exact <- function(x) {
 keyness_lr <- function(x, correction = c("none", "Yates")) {
     
     correction <- match.arg(correction)
-    
+    epsilon <- 0.000000001; # to offset zero cell counts
     a <- b <- c <- d <- N <- E11 <- G <- p <- NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
@@ -235,10 +235,10 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
     ## the other possible correction to implement is the Williams correction, 
     ## see http://influentialpoints.com/Training/g-likelihood_ratio_test.htm
     
-    dt[, G := (2 * (a * log(a / E11) + 
-                     b * log(b / ((a+b)*(b+d) / N)) +
-                     c * log(c / ((a+c)*(c+d) / N)) +
-                     d * log(d / ((b+d)*(c+d) / N)))) *
+    dt[, G := (2 * (a * log(a / E11 + epsilon) + 
+                     b * log(b / ((a+b)*(b+d) / N) + epsilon) +
+                     c * log(c / ((a+c)*(c+d) / N) + epsilon) +
+                     d * log(d / ((b+d)*(c+d) / N) + epsilon))) *
                ifelse(a > E11, 1, -1)]
     
     # compute p-values
