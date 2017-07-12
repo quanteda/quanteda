@@ -108,7 +108,7 @@ setMethod("[",
           signature = c("dictionary2", i = "index"),
           function(x, i) {
               is_category <- sapply(as.list(x)[i], function(y) !is.null(y))
-              dictionary(as.list(x)[i][is_category], concatenator = x@concatenator)
+              dictionary(as.list(x)[i][is_category])
         })
 
 #' Extractor for dictionary objects
@@ -122,7 +122,7 @@ setMethod("[[",
               if (!is.list(as.list(x)[[i]])) {
                   as.list(x)[[i]]
               } else {
-                  dictionary(as.list(x)[[i]], concatenator = x@concatenator)
+                  dictionary(as.list(x)[[i]])
               }
           })
 
