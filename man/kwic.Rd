@@ -7,7 +7,7 @@
 \title{locate keywords-in-context}
 \usage{
 kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, ...)
+  case_insensitive = TRUE, join = FALSE, ...)
 
 is.kwic(x)
 
@@ -33,6 +33,8 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{match without respect to case if \code{TRUE}}
 
+\item{join}{join adjacent keywords in the concordance view if \code{TRUE}}
+
 \item{...}{additional arguments passed to \link{tokens}, for applicable 
 object types}
 }
@@ -56,8 +58,8 @@ head(kwic(data_corpus_inaugural, "secur", window = 3, valuetype = "regex"))
 head(kwic(data_corpus_inaugural, "security", window = 3, valuetype = "fixed"))
 
 toks <- tokens(data_corpus_inaugural)
-kwic(data_corpus_inaugural, "war against")
-kwic(data_corpus_inaugural, "war against", valuetype = "regex")
+kwic(data_corpus_inaugural, phrase("war against"))
+kwic(data_corpus_inaugural, phrase("war against"), valuetype = "regex")
 
 mykwic <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(mykwic)

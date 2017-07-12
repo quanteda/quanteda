@@ -14,7 +14,7 @@ extern SEXP quanteda_qatd_CanberraPara_cpp(SEXP, SEXP);
 extern SEXP quanteda_qatd_CanberraPara_cpp2(SEXP, SEXP, SEXP);
 extern SEXP quanteda_qatd_cpp_chars_remove(SEXP, SEXP);
 extern SEXP quanteda_qatd_cpp_fcm(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP quanteda_qatd_cpp_kwic(SEXP, SEXP, SEXP, SEXP);
+extern SEXP quanteda_qatd_cpp_kwic(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP quanteda_qatd_cpp_sequences_old(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP quanteda_qatd_cpp_sequences(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP quanteda_qatd_cpp_tokens_compound(SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -43,7 +43,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"quanteda_qatd_CanberraPara_cpp2",    (DL_FUNC) &quanteda_qatd_CanberraPara_cpp2,    3},
     {"quanteda_qatd_cpp_chars_remove",     (DL_FUNC) &quanteda_qatd_cpp_chars_remove,     2},
     {"quanteda_qatd_cpp_fcm",              (DL_FUNC) &quanteda_qatd_cpp_fcm,              8},
-    {"quanteda_qatd_cpp_kwic",             (DL_FUNC) &quanteda_qatd_cpp_kwic,             4},
+    {"quanteda_qatd_cpp_kwic",             (DL_FUNC) &quanteda_qatd_cpp_kwic,             5},
     {"quanteda_qatd_cpp_sequences_old",    (DL_FUNC) &quanteda_qatd_cpp_sequences_old,    7},
     {"quanteda_qatd_cpp_sequences",        (DL_FUNC) &quanteda_qatd_cpp_sequences,        6},
     {"quanteda_qatd_cpp_tokens_compound",  (DL_FUNC) &quanteda_qatd_cpp_tokens_compound,  5},
