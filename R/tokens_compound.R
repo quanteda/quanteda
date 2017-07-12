@@ -71,17 +71,17 @@ tokens_compound.tokens <- function(x, features,
     
     if (is.sequences(features) || is.collocations(features)) {
         seqs <- phrase(features$collocation)
-        seqs_ids <- lapply(seqs, function(x) fastmatch::fmatch(x, types))
-        seqs_ids <- seqs_ids[sapply(seqs_ids, function(x) all(!is.na(x)))]
+        seqs_id <- lapply(seqs, function(x) fastmatch::fmatch(x, types))
+        seqs_id <- seqs_id[sapply(seqs_id, function(x) all(!is.na(x)))]
     } else {
         if (is.dictionary(features))
             features <- unlist(features, use.names = FALSE)
         seqs <- phrase(features)
         seqs <- seqs[lengths(seqs) > 1] # drop single words
-        seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
+        seqs_id <- regex2id(seqs, types, valuetype, case_insensitive)
     }
-    if (length(seqs_ids) == 0) return(x) # do nothing
-    x <- qatd_cpp_tokens_compound(x, seqs_ids, types, concatenator, join)
+    if (length(seqs_id) == 0) return(x) # do nothing
+    x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
     attributes(x, FALSE) <- attrs_org
     attr(x, "concatenator") <- concatenator
     return(x)
