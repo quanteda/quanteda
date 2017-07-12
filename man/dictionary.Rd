@@ -4,7 +4,7 @@
 \alias{dictionary}
 \title{create a dictionary}
 \usage{
-dictionary(..., file = NULL, format = NULL, concatenator = "_",
+dictionary(..., file = NULL, format = NULL, separator = "_",
   tolower = TRUE, encoding = "auto")
 }
 \arguments{
@@ -24,7 +24,7 @@ the Linguistic Inquiry and Word Count software} \item{\code{"yoshikoder"}}{
 format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
 by Lexicoder} \item{\code{"YAML"}}{the standard YAML format}}}
 
-\item{concatenator}{the character in between multi-word dictionary values. 
+\item{separator}{the character in between multi-word dictionary values. 
 This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
 a single space \code{" "}.}
 
