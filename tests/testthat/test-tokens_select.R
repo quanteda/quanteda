@@ -241,8 +241,9 @@ test_that("tokens_select works correctly with collocations objects", {
         as.list(tokens_select(toks_bi, coll_bi$collocation)),
         list(d1 = c("a b", "e g", "g h"), d2 = c("a b", "e g", "g h"))
     )
-    expect_silent(
-        tokens_select(toks_bi, coll_bi)
+    expect_equal(
+        as.list(tokens_select(toks_bi, coll_bi)),
+        list(d1 = c("a b", "e g", "g h"), d2 = c("a b", "e g", "g h"))
     )
     expect_equal(
         as.list(tokens_select(toks_bi, coll_tri)),
