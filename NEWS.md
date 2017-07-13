@@ -17,6 +17,7 @@
     - now accepts a `groups` argument that can be used to generate lists of top (or bottom) features in a group of texts, including by document (#336).
     - new argument `scheme` that takes the default of (frequency) `"count"` but also a new `"docfreq"` value (#408).
 *  New wrapper `phrase()` converts whitespace-separated multi-word patterns into a list of patterns.  This affects the feature/pattern matching in `tokens/dfm_select/remove`, `tokens_compound`, `tokens/dfm_lookup`, and `kwic`.  `phrase()` and the associated changes also make the behaviour of using character vectors, lists of characters, dictionaries, and collocation objects for pattern matches far more consistent.  (See #820, #787, #740, #837, #836, #838)
+*  `corpus.Corpus()` for creating a corpus from a **tm** Corpus now works with more complex objects that include document-level variables, such as data from the **manifestoR** package (#849).
 
 ### Behaviour changes
 
