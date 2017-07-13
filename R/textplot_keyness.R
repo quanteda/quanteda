@@ -64,21 +64,30 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
                   plot.background = ggplot2::element_blank(),
                   panel.grid.major.y = element_line(linetype = "dotted"))
     } else {
-        pos_n <- min(n, sum(x[ ,1] >= 0))
-        neg_n <- min(n, sum(x[ ,1] < 0))
-        if ((pos_n == 0) | (neg_n == 0)) 
-            stop (" Better plot for one Doc.")
-        topn <- head(x, pos_n)
-        tailn <- tail(x, neg_n)
-        if ((pos_n > 0) & (neg_n > 0)) {
-            max_Y <- max(max(topn[ ,1]), max(abs(tailn[ ,1])))
+        if (colnames(x)[1] == "pmi"){
+            pos_n <- min(n, nrow(x))
+            neg_n <- min(n, nrow(x))
+            topn <- head(x, pos_n)
+            tailn <- tail(x, neg_n)
+            max_Y <- max(topn[, 1])
+            min_Y <- min(tailn[, 1])
+        } else {
+            pos_n <- min(n, sum(x[ ,1] >= 0))
+            neg_n <- min(n, sum(x[ ,1] < 0))
+            if ((pos_n == 0) | (neg_n == 0)) 
+                stop (" Better plot for one Doc.")
+            topn <- head(x, pos_n)
+            tailn <- tail(x, neg_n)
+            if ((pos_n > 0) & (neg_n > 0)) {
+                max_Y <- max(max(topn[ ,1]), max(abs(tailn[ ,1])))
+            }
+            min_Y <- 0
+            
+            if (sort) {
+                tailn[,1] <- abs(tailn[,1])
+                tailn <- tailn[order(-tailn[,1]),]
+            }
         }
-        
-        if (sort) {
-            tailn[,1] <- abs(tailn[,1])
-            tailn <- tailn[order(-tailn[,1]),]
-        }
-
         p1 <- data.frame(x = pos_n:1, y = topn[,1])
         p2 <- data.frame(x = neg_n:1, y = tailn[,1])
         p <- melt(list(Target = p1,Reference = p2), id.vars="x")
@@ -86,7 +95,7 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
         ggplot(p, aes(x, y = value, color = L1)) + 
             geom_point() + 
             scale_color_manual("Document", values = c("Target" = "red", "Reference" = "blue"))+
-            coord_flip() + ylim(0, max_Y) +
+            coord_flip() + ylim(min_Y -1 , max_Y + 1) +
             ylab(colnames(topn)[1]) +
             geom_text(aes(label= c(rownames(topn), rownames(tailn))), hjust = ifelse( p$L1 == "Target", -0.2, 1.2),
                       vjust = 0, colour = ifelse(p$L1 == "Target", "red", "blue"), size = 3) +
