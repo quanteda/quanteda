@@ -216,7 +216,7 @@ dictionary <- function(..., file = NULL, format = NULL,
                        separator = "_", 
                        tolower = TRUE, encoding = "auto") {
     
-    if (!(is.character(separator) && stri_length(separator) > 1)) {
+    if (!(is.character(separator) && stri_length(separator) > 0)) {
         stop("separator must be a non-empty character")
     }
     
