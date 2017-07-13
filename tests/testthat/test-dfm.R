@@ -152,7 +152,7 @@ test_that("test rbind.dfm with the same columns", {
 
 })
 
-# TODO: Add function for testing the equality of dfms
+# TODO: Add function for testing the equality of dfms
 
 test_that("test rbind.dfm with different columns", {
     dfm1 <- dfm('What does the fox?', remove_punct = TRUE)
@@ -167,7 +167,7 @@ test_that("test rbind.dfm with different columns", {
     testdfm <- rbind(dfm1, dfm2)
 
     expect_true(
-        ##  Order of the result is not guaranteed
+        ## Order of the result is not guaranteed
         all(testdfm[,order(colnames(testdfm))] == foxdfm[,order(colnames(foxdfm))])
     )
 
@@ -288,11 +288,10 @@ test_that("dfm.dfm works as expected", {
 
     dict <- dictionary(articles = c("the", "a", "an"),
                        preps = c("of", "for", "in"))
-    # FAILING
-    # expect_identical(
-    #     dfm(data_corpus_irishbudget2010, dictionary = dict),
-    #         dfm(testdfm, dictionary = dict)
-    # )
+    expect_identical(
+        dfm(data_corpus_irishbudget2010, dictionary = dict),
+        dfm(testdfm, dictionary = dict)
+    )
     expect_identical(
         dfm(data_corpus_irishbudget2010, stem = TRUE),
         dfm(testdfm, stem = TRUE)
@@ -449,7 +448,7 @@ test_that("cannot supply remove and select in one call (#793)", {
 })
 
 test_that("printing an empty dfm produces informative result (#811)", {
-    my_dictionary <- dictionary( list( a = c( "asd", "dsa" ),
+    my_dictionary <- dictionary(list( a = c( "asd", "dsa" ),
                                       b = c( "foo", "jup" ) ) )
     raw_text <- c( "Wow I can't believe it's not raining!", 
                   "Today is a beautiful day. The sky is blue and there are burritos" )
@@ -458,11 +457,11 @@ test_that("printing an empty dfm produces informative result (#811)", {
     
     expect_output(
         print(my_dfm),
-        "^Document-feature matrix of: 2 documents, 0 features.\\n2 x 0 sparse Matrix of class \"dfmSparse\""
+        "^Document-feature matrix of: 2 documents, 2 features \\(100% sparse\\)\\.\\n2 x 2 sparse Matrix of class \"dfmSparse\""
     )
     expect_output(
         print(my_dfm[-c(1, 2), ]),
-        "^Document-feature matrix of: 0 documents, 0 features.\\n0 x 0 sparse Matrix of class \"dfmSparse\"\\n<0 x 0 matrix>"
+        "^Document-feature matrix of: 0 documents, 2 features\\.\\n0 x 2 sparse Matrix of class \"dfmSparse\""
     )
 })
 
