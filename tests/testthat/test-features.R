@@ -182,7 +182,7 @@ test_that("dictionary works consistently on tokens", {
     
     expect_equal(
         kwic(toks, keywords = dict)$keyword,
-        c("d", "e", "d", "e")
+        c("a b c", "d", "e", "a_b_c", "d", "e")
     )
     expect_equal(
         kwic(toks, keywords = phrase(dict))$keyword,
