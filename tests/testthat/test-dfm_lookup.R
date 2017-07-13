@@ -35,20 +35,23 @@ test_that("#459 apply a hierarchical dictionary to a dfm", {
     
     expect_equal(
         as.matrix(dfm_lookup(testdfm, dict, valuetype = "fixed", levels = 1)),
-        matrix(c(3, 1, 1, 1), ncol = 2, dimnames = list(docs = c("d1", "d2"), features = c("geo", "other")))
+        matrix(c(3, 1, 1, 1), ncol = 2, dimnames = list(docs = c("d1", "d2"), 
+                                                        features = c("geo", "other")))
     )
 
     expect_equal(
         as.matrix(dfm_lookup(testdfm, dict, valuetype = "fixed", levels = 1:2)),
         matrix(c(1, 1, 2, 0, 0, 0, 1, 1), ncol = 4, 
-               dimnames = list(c("d1", "d2"), c("geo.Countries", "geo.oceans", "other.gameconsoles", "other.swords")))
+               dimnames = list(docs = c("d1", "d2"), 
+                               features = c("geo.Countries", "geo.oceans", "other.gameconsoles", "other.swords")))
     )
 
 
     expect_equal(
         as.matrix(dfm_lookup(testdfm, dict, valuetype = "fixed", levels = 2)),
         matrix(c(1, 1, 2, 0, 0, 0, 1, 1), ncol = 4, 
-               dimnames = list(c("d1", "d2"), c("Countries", "oceans", "gameconsoles", "swords")))
+               dimnames = list(docs = c("d1", "d2"), 
+                               features = c("Countries", "oceans", "gameconsoles", "swords")))
     )
 
 })
