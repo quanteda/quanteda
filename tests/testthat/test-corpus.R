@@ -189,6 +189,23 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
     expect_equal(texts(qcorpus)[1], data_corpus_inaugural[1])
 })
 
+test_that("test corpus constructor works for complex VCorpus (#849)", {
+    load("../data/corpora/complex_Corpus.RData")
+    qc <- corpus(complex_Corpus)
+    expect_equal(
+        head(docnames(qc), 3),
+        c("41113_201309.1", "41223_201309.2", "41113_201309.3")
+    )
+    expect_equal(
+        tail(docnames(qc), 3),
+        c("41223_201309.2553", "41113_201309.2554", "41223_201309.2555")
+    )
+    expect_output(
+        print(qc),
+        "Corpus consisting of 8,230 documents and 16 docvars\\."
+    )
+})
+
 test_that("corpus_subset works", {
     txt <- c(doc1 = "This is a sample text.\nIt has three lines.\nThe third line.",
              doc2 = "one\ntwo\tpart two\nthree\nfour.",
