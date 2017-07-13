@@ -209,7 +209,7 @@ features2id <- function(features, types, valuetype, case_insensitive,
                         concatenator = '_', phrase_only = FALSE) {
     
     if (is.sequences(features) || is.collocations(features)) {
-        features <- phrase(features$collocation)
+        features <- stri_split_charclass(features$collocation, "\\p{Z}")
         features_id <- lapply(features, function(x) fastmatch::fmatch(x, types))
         features_id <- features_id[sapply(features_id, function(x) all(!is.na(x)))]
     } else {
@@ -221,5 +221,6 @@ features2id <- function(features, types, valuetype, case_insensitive,
             features <- features[lengths(features) > 1] # drop single-word features
         features_id <- regex2id(as.list(features), types, valuetype, case_insensitive)
     }
+    attr(features_id, 'features') <- features
     return(features_id)
 }

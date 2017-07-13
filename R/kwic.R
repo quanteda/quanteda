@@ -99,13 +99,8 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     # attributes for kwic object
     attr(result, "ntoken") <- ntoken(x)
     attr(result, "valuetype") <- valuetype
-    if (is.sequences(keywords) || is.collocations(keywords)) {
-        attr(result, "keywords") <- keywords$collocation
-    } else if (is.dictionary(keywords)){
-        attr(result, "keywords") <- unlist(keywords, use.names = FALSE)
-    } else {
-        attr(result, "keywords") <- sapply(keywords, paste, collapse = ' ', USE.NAMES = FALSE)
-    }
+    attr(result, "keywords") <- sapply(attr(keywords_id, 'features'), paste, collapse = ' ', 
+                                       USE.NAMES = FALSE)
     attributes(result, FALSE)  <- attributes(x)
     class(result) <- c("kwic", "data.frame")
     return(result)
