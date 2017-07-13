@@ -149,9 +149,6 @@ test_that("list works consistently on tokens", {
 
 test_that("dictionary works consistently on tokens", {
     
-    skip_on_travis()
-    skip_on_appveyor()
-    
     toks <- tokens(c("a b c d e a_b_c d e"))
     toksch <- as.character(toks)
     dict <- dictionary(ABC = 'a b c', D = 'd', E = 'e')
@@ -167,7 +164,7 @@ test_that("dictionary works consistently on tokens", {
 
     expect_equal(
         as.character(tokens_select(toks, features = dict)),
-        c("d", "e", "d", "e")
+        c("a", "b", "c", "d", "e", "a_b_c", "d", "e")
     )
     expect_equal(
         as.character(tokens_select(toks, features = phrase(dict))),
@@ -176,22 +173,21 @@ test_that("dictionary works consistently on tokens", {
     
     expect_equal(
         as.character(tokens_remove(toks, features = dict)),
-        c("a", "b", "c", "a_b_c")
+        character(0)
     )
     expect_equal(
         as.character(tokens_remove(toks, features = phrase(dict))),
         c("a_b_c")
     )
     
-    # FALING
-    # expect_equal(
-    #     as.data.frame(kwic(toks, keywords = dict))$keyword,
-    #     c("d e", "d e")
-    # )
-    # expect_equal(
-    #     as.data.frame(kwic(toks, keywords = phrase(dict)))$keyword,
-    #     c("a b c d e", "d e")
-    # )
+    expect_equal(
+        kwic(toks, keywords = dict)$keyword,
+        c("d", "e", "d", "e")
+    )
+    expect_equal(
+        kwic(toks, keywords = phrase(dict))$keyword,
+        c("a b c", "d", "e", "d", "e")
+    )
 })
 
 test_that("dictionary works consistently on dfm", {
