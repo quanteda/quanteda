@@ -115,3 +115,15 @@ test_that("dfm_lookup return all features even if no matches when exclusive = FA
     testdfm <- dfm(data_corpus_inaugural[1:5])
     expect_equivalent(testdfm, dfm_lookup(testdfm, dict, exclusive = FALSE))
 })
+
+test_that("dfm_lookup verbose output works correctly", {
+    expect_message(
+        dfm_lookup(dfm(c(d1 = "a b c d", d2 = "c d e f g")), 
+               dictionary(one = "a", two = c("d", "e")), verbose = TRUE),
+        "applying a dictionary consisting of 2 keys"
+    )
+    expect_silent(
+        dfm_lookup(dfm(c(d1 = "a b c d", d2 = "c d e f g")), 
+                   dictionary(one = "a", two = c("d", "e")), verbose = FALSE)
+    )
+})
