@@ -36,6 +36,7 @@
 #' kwic(data_corpus_inaugural, phrase("war against"))
 #' kwic(data_corpus_inaugural, phrase("war against"), valuetype = "regex")
 #' 
+
 kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
                  case_insensitive = TRUE, join = FALSE, ...) {
     UseMethod("kwic")
@@ -82,17 +83,15 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
         stop("x must be a tokens object")
     
     valuetype <- match.arg(valuetype)
-    keywords <- as.list(keywords)
-
+    types <- types(x)
+    
     # add document names if none
     if (is.null(names(x))) {
         names(x) <- paste("text", 1:length(x), sep="")
     }
     
-    types <- types(x)
-    keywords_id <- regex2id(keywords, types, valuetype, case_insensitive, FALSE)
+    keywords_id <- features2id(keywords, types, valuetype, case_insensitive, attr(x, 'concatenator'))
     result <- qatd_cpp_kwic(x, types, keywords_id, window, join)
-    #result$docname <- as.factor(result$docname)
     
     # attributes for tokens object
     attributes(attr(result, "tokens"), FALSE)  <- attributes(x)
@@ -100,7 +99,13 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     # attributes for kwic object
     attr(result, "ntoken") <- ntoken(x)
     attr(result, "valuetype") <- valuetype
-    attr(result, "keywords") <- sapply(keywords, paste, collapse = " ")
+    if (is.sequences(keywords) || is.collocations(keywords)) {
+        attr(result, "keywords") <- keywords$collocation
+    } else if (is.dictionary(keywords)){
+        attr(result, "keywords") <- unlist(keywords, use.names = FALSE)
+    } else {
+        attr(result, "keywords") <- sapply(keywords, paste, collapse = ' ', USE.NAMES = FALSE)
+    }
     attributes(result, FALSE)  <- attributes(x)
     class(result) <- c("kwic", "data.frame")
     return(result)
