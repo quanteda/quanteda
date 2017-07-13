@@ -250,11 +250,9 @@ dfm.tokenizedTexts <- function(x,
     # use tokens_select for tokens objects
     if (!is.null(c(remove, select))) {
         if (!is.null(remove)) {
-            if (verbose) catm("   ... removing ", length(unlist(remove)), " features")
             x <- tokens_select(x, remove, selection = "remove", 
                                valuetype = valuetype, verbose = verbose)
         } else {
-            if (verbose) catm("   ... selecting ", length(unlist(select)), " features")
             x <- tokens_select(x, select, selection = "keep", 
                                valuetype = valuetype, verbose = verbose)
         }
