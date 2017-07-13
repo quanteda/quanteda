@@ -216,6 +216,10 @@ dictionary <- function(..., file = NULL, format = NULL,
                        separator = "_", 
                        tolower = TRUE, encoding = "auto") {
     
+    if (!(is.character(separator) && stri_length(separator) > 1)) {
+        stop("separator must be a non-empty character")
+    }
+    
     if (is.null(file)) {
         x <- list(...)
         if (length(x) == 1 && is.list(x[[1]]) && is.null(names(x))) {
