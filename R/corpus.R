@@ -307,6 +307,7 @@ corpus.kwic <- function(x, ...) {
 
 #' @rdname corpus
 #' @keywords corpus
+#' @importFrom data.table rbindlist data.table
 #' @export
 corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
     
@@ -315,33 +316,50 @@ corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
     
     # special handling for VCorpus meta-data
     if (inherits(x, what = "VCorpus")) {
+        # texts and associated docvars
+        if (is.data.frame(x[[1]][["content"]])) {
+            df <- as.data.frame(data.table::rbindlist(lapply(x, "[[", "content"), fill = TRUE))
+            rownames(df) <- paste(names(x), unlist(lapply(sapply(lapply(x, "[[", "content"), nrow), seq_len)), sep = ".")
+            # row.names(df) <- make.unique(rep(names(x), sapply(lapply(x, "[[", "content"), nrow)))
+        } else {
+            texts <- sapply(x$content, "[[", "content")
+            # paste together texts if they appear to be vectors
+            if (any(lengths(texts) > 1))
+                texts <- vapply(texts, paste, character(1), collapse = " ")
+            df <- data.frame(text = texts, stringsAsFactors = FALSE, row.names = names(texts))
+        }
+        
+        # document-level metadata
         metad <- data.frame(do.call(rbind, (lapply(x$content, "[[", "meta"))),
-                        stringsAsFactors = FALSE, row.names = NULL)
-        # extract the content (texts)
-        texts <- sapply(x$content, "[[", "content")
-        # paste together texts if they appear to be vectors
-        if (any(lengths(texts) > 1))
-            texts <- vapply(texts, paste, character(1), collapse = " ")
+                            stringsAsFactors = FALSE, row.names = NULL)
+        makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
+        datetimestampIndex <- which(names(metad) == "datetimestamp")
+        if (length(datetimestampIndex)) {
+            metad[, -datetimestampIndex] <- apply(metad[, -datetimestampIndex], 2, makechar)
+            metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
+        }
+
+        # add metad to df, where meta is repeated as appropriate for content
+        df <- cbind(df, metad[rep(seq_len(nrow(metad)), times = lengths(lapply(x, "[[", "content"))), ])
+        
     } else if (inherits(x, what = "SimpleCorpus")) {
-        texts <- x$content
-        metad <- x$dmeta
+        df <- data.frame(text = x$content, stringsAsFactors = FALSE)
+        df <- cbind(df, x$dmeta)
+    
     } else {
         stop("Cannot construct a corpus from this tm ", class(x)[1], " object")
     }
-    makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
-    datetimestampIndex <- which(names(metad) == "datetimestamp")
-    metad[, -datetimestampIndex] <- apply(metad[, -datetimestampIndex], 2, makechar)
-    if (length(datetimestampIndex))
-        metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
-
-    # corpus-level meta-data
-    if (is.null(metacorpus)) 
-        metacorpus <- x$meta
-    metacorpus <- c(metacorpus, 
-                    list(source = paste("Converted from tm VCorpus \'", deparse(substitute(x)), "\'", sep="")))
     
-    corpus(texts, docvars = metad, metacorpus = metacorpus, compress = compress)
+    # corpus-level meta-data
+    if (is.null(metacorpus)) metacorpus <- x$meta
+    metacorpus <- c(metacorpus, 
+                    list(source = paste("Converted from tm Corpus \'", deparse(substitute(x)), "\'", sep="")))
+    
+    corpus(df, metacorpus = metacorpus, compress = compress)
 }
 
+combine_tm_list_elements <- function(x) {
+    
+}
 
 setOldClass("corpus")
