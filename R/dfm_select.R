@@ -158,7 +158,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     if (!length(features_keep)) features_keep <- 0
     if (!length(documents_keep)) documents_keep <- 0
     temp <- x[documents_keep, features_keep]    
-    
+
     features_add <- documents_add <- character() # avoid error in verbose message
     
     if (valuetype == 'fixed' && padding) {
@@ -180,8 +180,8 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
                                          dimnames = list(documents_add, featnames(temp)))
             temp <- new("dfmSparse", Matrix::rbind2(temp, pad_document))
         }
+        names(dimnames(temp)) <- c('docnames', 'features')
     }
-    
     if (is_dfm) {
         result <- temp[,features] # sort features into original order
     } else {
