@@ -4,7 +4,7 @@
 \alias{dictionary}
 \title{create a dictionary}
 \usage{
-dictionary(..., file = NULL, format = NULL, separator = "_",
+dictionary(..., file = NULL, format = NULL, separator = " ",
   tolower = TRUE, encoding = "auto")
 }
 \arguments{
@@ -25,8 +25,7 @@ format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
 by Lexicoder} \item{\code{"YAML"}}{the standard YAML format}}}
 
 \item{separator}{the character in between multi-word dictionary values. 
-This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
-a single space \code{" "}.}
+This defaults to \code{" "}.}
 
 \item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase}
 
