@@ -118,17 +118,18 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     attrs <- attributes(x)
     types <- types(x)
     
-    if (is.sequences(features) || is.collocations(features)) {
-        features <- phrase(features$collocation)
-        features_id <- lapply(features, function(x) fastmatch::fmatch(x, types))
-        features_id <- features_id[sapply(features_id, function(x) all(!is.na(x)))]
-    } else {
-        if (is.dictionary(features)) {
-            features <- split_dictionary_values(unlist(features, use.names = FALSE), 
-                                                attr(x, 'concatenator'))
-        }
-        features_id <- regex2id(as.list(features), types, valuetype, case_insensitive)
-    }
+    # if (is.sequences(features) || is.collocations(features)) {
+    #     features <- phrase(features$collocation)
+    #     features_id <- lapply(features, function(x) fastmatch::fmatch(x, types))
+    #     features_id <- features_id[sapply(features_id, function(x) all(!is.na(x)))]
+    # } else {
+    #     if (is.dictionary(features)) {
+    #         features <- split_dictionary_values(unlist(features, use.names = FALSE), 
+    #                                             attr(x, 'concatenator'))
+    #     }
+    #     features_id <- regex2id(as.list(features), types, valuetype, case_insensitive)
+    # }
+    features_id <- features2id(features, types, valuetype, case_insensitive, attr(x, 'concatenator'))
 
     if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index
 

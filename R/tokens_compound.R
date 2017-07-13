@@ -65,24 +65,13 @@ tokens_compound.tokens <- function(x, features,
                    case_insensitive = TRUE, join = TRUE) {
     
     valuetype <- match.arg(valuetype)
-    names_org <- names(x)
-    attrs_org <- attributes(x)
+    attrs <- attributes(x)
     types <- types(x)
     
-    if (is.sequences(features) || is.collocations(features)) {
-        seqs <- phrase(features$collocation)
-        seqs_id <- lapply(seqs, function(x) fastmatch::fmatch(x, types))
-        seqs_id <- seqs_id[sapply(seqs_id, function(x) all(!is.na(x)))]
-    } else {
-        if (is.dictionary(features))
-            features <- unlist(features, use.names = FALSE)
-        seqs <- phrase(features)
-        seqs <- seqs[lengths(seqs) > 1] # drop single words
-        seqs_id <- regex2id(seqs, types, valuetype, case_insensitive)
-    }
+    seqs_id <- features2id(features, types, valuetype, case_insensitive, phrase_only = TRUE)
     if (length(seqs_id) == 0) return(x) # do nothing
     x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
-    attributes(x, FALSE) <- attrs_org
+    attributes(x, FALSE) <- attrs
     attr(x, "concatenator") <- concatenator
     return(x)
 }

@@ -201,3 +201,25 @@ features2vector <- function(features) {
     # }
     return(unlist(temp, use.names = FALSE))
 }
+
+#' convert various input as features to a vector (newer version of features2list)
+#' in tokens_select, kwic, tokens_compound.
+#' @keywords internal utilities
+features2id <- function(features, types, valuetype, case_insensitive, 
+                        concatenator = '_', phrase_only = FALSE) {
+    
+    if (is.sequences(features) || is.collocations(features)) {
+        features <- phrase(features$collocation)
+        features_id <- lapply(features, function(x) fastmatch::fmatch(x, types))
+        features_id <- features_id[sapply(features_id, function(x) all(!is.na(x)))]
+    } else {
+        if (is.dictionary(features)) {
+            features <- unlist(features, use.names = FALSE)
+            features <- split_dictionary_values(features, concatenator)
+        }
+        if (phrase_only)
+            features <- features[lengths(features) > 1] # drop single-word features
+        features_id <- regex2id(as.list(features), types, valuetype, case_insensitive)
+    }
+    return(features_id)
+}
