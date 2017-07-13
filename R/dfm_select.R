@@ -166,21 +166,22 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         # add non-existent features
         features_add <- setdiff(features, featnames(temp))
         if (length(features_add)) {
-            pad_feature <- sparseMatrix(i = NULL, j = NULL, 
-                                        dims = c(ndoc(temp), length(features_add)), 
-                                        dimnames = list(docnames(temp), features_add))
-            temp <- new("dfmSparse", Matrix::cbind2(temp, pad_feature))
+            pad_feature <- as(sparseMatrix(i = NULL, j = NULL, 
+                                           dims = c(ndoc(temp), length(features_add)), 
+                                           dimnames = list(docnames(temp), features_add)), 
+                              "dgCMatrix")
+            temp <- cbind(temp, new("dfmSparse", pad_feature))
         }
 
         # add non-existent documents
         documents_add <- setdiff(documents, docnames(temp))
         if (length(documents_add)) {
-            pad_document <- sparseMatrix(i = NULL, j = NULL, 
-                                         dims = c(length(documents_add), nfeature(temp)), 
-                                         dimnames = list(documents_add, featnames(temp)))
-            temp <- new("dfmSparse", Matrix::rbind2(temp, pad_document))
+            pad_document <- as(sparseMatrix(i = NULL, j = NULL, 
+                                            dims = c(length(documents_add), nfeature(temp)), 
+                                            dimnames = list(documents_add, featnames(temp))), 
+                               "dgCMatrix")
+            temp <- rbind(temp, new("dfmSparse", pad_document))
         }
-        names(dimnames(temp)) <- c('docs', 'features')
         temp <- reassign_slots(temp, x)
     }
     if (is_dfm) {
