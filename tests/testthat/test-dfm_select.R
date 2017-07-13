@@ -254,17 +254,31 @@ test_that("dfm_remove works even when it does not remove anything, issue 711", {
                  featnames(testdfm))
 })
 
-# test_that("dfm_select errors when dictionary has multi-word features, issue 775", {
-#     dfm_inaug <- dfm(data_corpus_inaugural)
-#     testdict1 <- dictionary(list(eco = c("compan*", "factory worker*"), 
-#                                  pol = c("politcal party", "election*")))
-#     testdict2 <- dictionary(list(eco = c("compan*", "factory_worker"), 
-#                                  pol = c("politcal_party", "election*")))
-#     
-#     expect_error(dfm_select(dfm_inaug, features = testdict1, valuetype = "glob"),
-#                  "dfm_select not implemented for ngrams > 1 and multi-word dictionary values")
-#     expect_silent(dfm_select(dfm_inaug, features = testdict2, valuetype = "glob"))
-# })
+test_that("dfm_select errors when dictionary has multi-word features, issue 775", {
+    dfm_inaug <- dfm(data_corpus_inaugural[50:58])
+    testdict1 <- dictionary(list(eco = c("compan*", "factory worker*"),
+                                 pol = c("political part*", "election*")),
+                            separator = " ")
+    testdict2 <- dictionary(list(eco = c("compan*", "factory_worker"),
+                                 pol = c("political_part*", "election*")), 
+                            separator = "_")
+    expect_equal(
+        featnames(dfm_select(dfm_inaug, features = testdict1, valuetype = "glob")),
+        c("election", "elections", "company", "companies")
+    )
+    expect_equal(
+        featnames(dfm_select(dfm_inaug, features = phrase(testdict1), valuetype = "glob")),
+        c("party", "political", "election", "part", "parties", "elections", "partisan", "company", "participation", "partisanship", "partial", "companies")    
+    )
+    expect_equal(
+        featnames(dfm_select(dfm_inaug, features = testdict2, valuetype = "glob")),
+        c("election", "elections", "company", "companies")
+    )
+    expect_equal(
+        featnames(dfm_select(dfm_inaug, features = phrase(testdict2), valuetype = "glob")),
+        c("party", "political", "election", "part", "parties", "elections", "partisan", "company", "participation", "partisanship", "partial", "companies")    
+    )
+})
 
 
 test_that("dfm_select works when selecting on collocations", {
