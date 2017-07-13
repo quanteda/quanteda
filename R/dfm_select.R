@@ -95,7 +95,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
-    attrs_org <- attributes(x)
+    attrs <- attributes(x)
     is_dfm <- FALSE
     
     if (padding && valuetype != 'fixed')
@@ -180,7 +180,8 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
                                          dimnames = list(documents_add, featnames(temp)))
             temp <- new("dfmSparse", Matrix::rbind2(temp, pad_document))
         }
-        names(dimnames(temp)) <- c('docnames', 'features')
+        names(dimnames(temp)) <- c('docs', 'features')
+        temp <- reassign_slots(temp, x)
     }
     if (is_dfm) {
         result <- temp[,features] # sort features into original order
@@ -200,8 +201,8 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
              format(length(documents_add), big.mark=","),
              " document", if (length(documents_add) != 1L) "s" else "", ".\n",
              sep = "")
-    } 
-    
+    }
+    attributes(x, FALSE) <- attrs
     return(result)
 }
 

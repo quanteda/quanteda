@@ -272,9 +272,15 @@ dfm.tokenizedTexts <- function(x,
     result@ngrams <- as.integer(attr(x, "ngrams"))
     result@skip <- as.integer(attr(x, "skip"))
     result@concatenator <- attr(x, "concatenator")
-    result@docvars <- attr(x, "docvars")
     
-    if (is.null(result@docvars)) {
+    if (attr(x, 'what') == "dictionary") {
+        attr(result, 'what') <- "dictionary"
+        attr(result, 'dictionary') <- attr(x, 'dictionary')
+    }
+    
+    if (!is.null(attr(x, "docvars"))) {
+        result@docvars <- attr(x, "docvars")
+    } else {
         result@docvars <- data.frame()
     }
     

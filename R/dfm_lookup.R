@@ -93,7 +93,6 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
         colnames(temp) <- keys[keys_id]
         temp <- dfm_compress(temp, margin = 'features')
         temp <- dfm_select(temp, features = keys, valuetype = 'fixed', padding = TRUE)
-        
         if (exclusive) {
             result <- temp[,keys]
         } else {
@@ -108,7 +107,8 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     }
     attr(result, "what") <- "dictionary"
     attr(result, "dictionary") <- dictionary
-    attributes(result, FALSE) <- attributes(x)
+    attributes(result, FALSE) <- attrs
+    
     return(result)
 }
 
