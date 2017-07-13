@@ -153,60 +153,60 @@ code <- function(texts){
     cat(paste0('         "', texts[len], '")\n'))
 }
 
-#' convert various input as features to a simple list
+
+#' #' convert various input as features to a simple list
+#' #'
+#' #' Convert various input as features into a simple list, for input as a sequence in e.g.
+#' #' \code{\link{tokens_compound}}.
+#' #' @param features the input features, one of: \itemize{ \item{character,
+#' #'   }{whose elements will be split on whitespace;} \item{list of characters,
+#' #'   }{consisting of a list of token patterns, where sequences are separate elements};
+#' #'   \item{\link{phrase} object;} \item{\link{dictionary} object}{;}
+#' #'   \item{\link{dictionary} object}{;}
+#' #'   \item{\link{collocations} object.}{} }
+#' #' @return an unnamed list of features, with each element of the list a
+#' #'   character vector with the split sequence.
+#' #' @keywords internal utilities
+#' features2list <- function(features) {
 #' 
-#' Convert various input as features into a simple list, for input as a sequence in e.g. 
-#' \code{\link{tokens_compound}}.
-#' @param features the input features, one of: \itemize{ \item{character,
-#'   }{whose elements will be split on whitespace;} \item{list of characters,
-#'   }{consisting of a list of token patterns, where sequences are separate elements}; 
-#'   \item{\link{phrase} object;} \item{\link{dictionary} object}{;} 
-#'   \item{\link{dictionary} object}{;} 
-#'   \item{\link{collocations} object.}{} }
-#' @return an unnamed list of features, with each element of the list a
-#'   character vector with the split sequence.
-#' @keywords internal utilities
-features2list <- function(features) {
-    
-    if (is.collocations(features)) {
-        result <- as.list(features[["collocation"]])
-    } else if (is.dictionary(features)) {
-        result <- unlist(features, use.names = FALSE)
-    } else if (is.list(features)) {
-        if (!all(is.character(unlist(features, use.names = FALSE))))
-            stop("all list elements must be  character")
-        result <- features
-    } else if (is.character(features)) {
-        result <- as.list(features)
-    } else {
-        stop("features must be a character, a list of character, a dictionary, or collocations")
-    }
-
-    return(as.list(result))
-}
-
-#' convert various input as features to a vector
+#'     if (is.collocations(features)) {
+#'         result <- as.list(features[["collocation"]])
+#'     } else if (is.dictionary(features)) {
+#'         result <- unlist(features, use.names = FALSE)
+#'     } else if (is.list(features)) {
+#'         if (!all(is.character(unlist(features, use.names = FALSE))))
+#'             stop("all list elements must be  character")
+#'         result <- features
+#'     } else if (is.character(features)) {
+#'         result <- as.list(features)
+#'     } else {
+#'         stop("features must be a character, a list of character, a dictionary, or collocations")
+#'     }
 #' 
-#' Convert various input as features to a vector for functions that 
-#' do not support multi-word features e.g.
-#' \code{\link{dfm_select}, \link{sequences}, \link{collocations}}.
-#' @inheritParams features2list
-#' @return an unnamed vector of features
-#' @keywords internal utilities
-features2vector <- function(features) {
-    
-    temp <- features2list(features)
-    # if (any(lengths(temp) > 1)) {
-    #     warning(as.character(sys.calls())[1], ' does not support multi-word features')
-    # }
-    return(unlist(temp, use.names = FALSE))
-}
+#'     return(as.list(result))
+#' }
+#' 
+#' #' convert various input as features to a vector
+#' #'
+#' #' Convert various input as features to a vector for functions that
+#' #' do not support multi-word features e.g.
+#' #' \code{\link{dfm_select}, \link{sequences}, \link{collocations}}.
+#' #' @inheritParams features2list
+#' #' @return an unnamed vector of features
+#' #' @keywords internal utilities
+#' features2vector <- function(features) {
+#' 
+#'     temp <- features2list(features)
+#'     # if (any(lengths(temp) > 1)) {
+#'     #     warning(as.character(sys.calls())[1], ' does not support multi-word features')
+#'     # }
+#'     return(unlist(temp, use.names = FALSE))
+#' }
 
-#' convert various input as features to a vector (newer version of features2list)
-#' in tokens_select, tokens_compound and kwic,
-#' @keywords internal utilities
+# convert various input as features to a vector used in tokens_select, 
+# tokens_compound and kwic.
 features2id <- function(features, types, valuetype, case_insensitive, 
-                        concatenator = '_', phrase_only = FALSE) {
+                        concatenator = '_', remove_unigram = TRUE) {
     
     if (is.sequences(features) || is.collocations(features)) {
         features <- stri_split_charclass(features$collocation, "\\p{Z}")
@@ -219,7 +219,7 @@ features2id <- function(features, types, valuetype, case_insensitive,
         } else {
             features <- as.list(features)
         }
-        if (phrase_only)
+        if (remove_unigram)
             features <- features[lengths(features) > 1] # drop single-word features
         features_id <- regex2id(features, types, valuetype, case_insensitive)
     }

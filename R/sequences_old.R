@@ -70,7 +70,7 @@ sequences_old.tokens <- function(x, features = "*",
     attrs_org <- attributes(x)
     
     types <- types(x)
-    features <- features2vector(features)
+    features <- unlist(features, use.names = FALSE)
     features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
     
     result <- qatd_cpp_sequences_old(x, features_id, types, min_count, max_size, nested, ordered)
