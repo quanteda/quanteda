@@ -76,13 +76,14 @@ test_that("#459 extract the lower levels of a dictionary using a dfm", {
     dfm_lookup(testdfm, dict, levels = 4)
 })
 
-# test_that("dfm_lookup raises error when dictionary has multi-word entries", {
-#     
-#     toks <- tokens(data_corpus_inaugural[1:5])
-#     dict <- dictionary(list(Country = "united states"), concatenator = ' ')
-#     expect_error(dfm_lookup(dfm(toks), dictionary = dict), 
-#                  "dfm_lookup not implemented for .* multi-word dictionary values")
-# })
+test_that("dfm_lookup raises error when dictionary has multi-word entries", {
+    toks <- tokens(data_corpus_inaugural[1:5])
+    dict <- dictionary(list(Country = "united states"), separator = ' ')
+    expect_equal(
+        featnames(dfm_lookup(dfm(tokens_ngrams(toks, n = 2, concatenator = " ")), dictionary = dict)), 
+        c("Country")
+    )
+})
 
 test_that("dfm_lookup works with tokens created by kwic, issue #697", {
     toks <- as.tokens(kwic(tokens(data_corpus_inaugural[1:5]), 'america'))
