@@ -252,7 +252,7 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
 }
 
 #' @rdname keyness
-#' @details \code{keyness_mi} computes the Pointwise Mutual Information statistic
+#' @details \code{keyness_pmi} computes the Pointwise Mutual Information statistic
 #'   using vectorized computation
 #' @examples
 #' quanteda:::keyness_pmi(mydfm)
@@ -268,7 +268,7 @@ keyness_pmi <- function(x) {
     dt[, N := (a + b + c + d)]
     dt[, E11 := (a+b)*(a+c) / N]
     epsilon <- .000000001  # to offset zero cell counts
-    dt[, pmi :=   log(a /E11 + epsilon) * ifelse(a > E11, 1, -1) ]
+    dt[, pmi :=   log(a /E11 + epsilon)]
     
     #normalized pmi
     #dt[, pmi :=   log(a  / E11) * ifelse(a > E11, 1, -1)/(-log(a/N)) ]
