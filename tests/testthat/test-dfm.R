@@ -374,16 +374,16 @@ test_that("dfm works with relational operators", {
 })
 
 
-# test_that("dfm's document counts in verbose message is correct", {
-#     txt <- c(d1 = "a b c d e f g x y z",
-#              d2 = "a c d x z",
-#              d3 = "x y",
-#              d4 = "f g")
-#     expect_message(dfm(txt, remove = c('a', 'f'), verbose = TRUE),
-#                    'removed 2 features and 0 documents')
-#     expect_message(dfm(txt, select = c('a', 'f'), verbose = TRUE),
-#                    'kept 2 features and 4 documents')
-# })
+test_that("dfm's document counts in verbose message is correct", {
+    txt <- c(d1 = "a b c d e f g x y z",
+             d2 = "a c d x z",
+             d3 = "x y",
+             d4 = "f g")
+    expect_message(dfm(txt, remove = c('a', 'f'), verbose = TRUE),
+                   'removing 2 features')
+    expect_message(dfm(txt, select = c('a', 'f'), verbose = TRUE),
+                   'keeping 2 features')
+})
 
 test_that("dfm print works with options as expected", {
     tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE)

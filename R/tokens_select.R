@@ -60,7 +60,7 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #'                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
 #' 
 #' # with longer texts
-#' toks <- tokensdata_corpus_inaugural[1:2])
+#' toks <- tokens(data_corpus_inaugural[1:2])
 #' tokens_select(toks, stopwords("english"), "remove")
 #' tokens_select(toks, stopwords("english"), "keep")
 #' tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
@@ -69,8 +69,9 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #' }
 tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                          valuetype = c("glob", "regex", "fixed"),
-                                         case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
-    x <- tokens_select(as.tokens(x), features, selection, valuetype, case_insensitive = TRUE)
+                                         case_insensitive = TRUE, padding = FALSE, 
+                                         verbose = quanteda_options("verbose")) {
+    x <- tokens_select(as.tokens(x), features, selection, valuetype, case_insensitive, padding, verbose)
     x <- as.tokenizedTexts(x)
     return(x)
 }
@@ -108,7 +109,8 @@ tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "rem
 
 tokens_select.tokens <- function(x, features, selection = c("keep", "remove"), 
                                  valuetype = c("glob", "regex", "fixed"),
-                                 case_insensitive = TRUE, padding = FALSE, ...) {
+                                 case_insensitive = TRUE, padding = FALSE, 
+                                 verbose = quanteda_options("verbose"), ...) {
     
     if (!is.tokens(x))
         stop("x must be a tokens object")
@@ -118,24 +120,16 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     attrs <- attributes(x)
     types <- types(x)
     
-    # if (is.sequences(features) || is.collocations(features)) {
-    #     features <- phrase(features$collocation)
-    #     features_id <- lapply(features, function(x) fastmatch::fmatch(x, types))
-    #     features_id <- features_id[sapply(features_id, function(x) all(!is.na(x)))]
-    # } else {
-    #     if (is.dictionary(features)) {
-    #         features <- split_dictionary_values(unlist(features, use.names = FALSE), 
-    #                                             attr(x, 'concatenator'))
-    #     }
-    #     features_id <- regex2id(as.list(features), types, valuetype, case_insensitive)
-    # }
+    if (verbose) catm("Selecting features in tokens object ...\n")
     features_id <- features2id(features, types, valuetype, case_insensitive, attr(x, 'concatenator'))
 
     if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index
 
     if (selection == 'keep') {
+        if (verbose) catm("   ... keeping", length(features_id), "features\n")
         x <- qatd_cpp_tokens_select(x, types, features_id, 1, padding)
     } else {
+        if (verbose) catm("   ... removing", length(features_id), "features\n")
         x <- qatd_cpp_tokens_select(x, types, features_id, 2, padding)
     }
     attributes(x, FALSE) <- attrs
