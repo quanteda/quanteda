@@ -136,7 +136,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     }
 #endif
     //dev::stop_timer("Dictionary lookup", timer);
-    return recompile(texts, types, true, true, is_encoded(types_));
+    return recompile(texts, types, false, false, is_encoded(types_));
 }
 
 /***R
