@@ -92,10 +92,11 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
         p2 <- data.frame(x = neg_n:1, y = tailn[,1])
         p <- melt(list(Target = p1,Reference = p2), id.vars="x")
         
-        ggplot(p, aes(x, y = value, color = L1)) + 
+        ggplot(p, aes(x, y = p$value, color = p$L1)) +  
             geom_point() + 
             scale_color_manual("Document", values = c("Target" = "red", "Reference" = "blue"))+
-            coord_flip() + ylim(min_Y -1 , max_Y + 1) +
+            coord_flip() + 
+            ylim(min_Y -1 , max_Y + 1) +
             ylab(colnames(topn)[1]) +
             geom_text(aes(label= c(rownames(topn), rownames(tailn))), hjust = ifelse( p$L1 == "Target", -0.2, 1.2),
                       vjust = 0, colour = ifelse(p$L1 == "Target", "red", "blue"), size = 3) +

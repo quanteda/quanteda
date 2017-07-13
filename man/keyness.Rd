@@ -45,7 +45,7 @@ application of \link[stats]{fisher.test}, returning the odds ratio.
 \code{keyness_lr} computes the \eqn{G^2} likelihood ratio statistic
   using vectorized computation
 
-\code{keyness_mi} computes the Pointwise Mutual Information statistic
+\code{keyness_pmi} computes the Pointwise Mutual Information statistic
   using vectorized computation
 }
 \examples{
