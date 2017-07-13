@@ -165,8 +165,7 @@ setMethod("as.list",
 #'   format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
 #'   by Lexicoder} \item{\code{"YAML"}}{the standard YAML format}}
 #' @param separator the character in between multi-word dictionary values. 
-#'   This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
-#'   a single space \code{" "}.
+#'   This defaults to \code{" "}.
 #' @param encoding additional optional encoding value for reading in imported 
 #'   dictionaries. This uses the \link{iconv} labels for encoding.  See the 
 #'   "Encoding" section of the help for \link{file}.
@@ -213,7 +212,7 @@ setMethod("as.list",
 #' head(dfm(data_corpus_inaugural, dictionary = mfdict))}
 #' @export
 dictionary <- function(..., file = NULL, format = NULL, 
-                       separator = "_", 
+                       separator = " ", 
                        tolower = TRUE, encoding = "auto") {
     
     if (is.null(file)) {
