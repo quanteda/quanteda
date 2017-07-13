@@ -206,7 +206,7 @@ code <- function(texts){
 # convert various input as features to a vector used in tokens_select, 
 # tokens_compound and kwic.
 features2id <- function(features, types, valuetype, case_insensitive, 
-                        concatenator = '_', remove_unigram = TRUE) {
+                        concatenator = '_', remove_unigram = FALSE) {
     
     if (is.sequences(features) || is.collocations(features)) {
         features <- stri_split_charclass(features$collocation, "\\p{Z}")
