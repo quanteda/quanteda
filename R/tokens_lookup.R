@@ -107,5 +107,6 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     attributes(result, FALSE) <- attrs
     attr(result, "what") <- "dictionary"
     attr(result, "dictionary") <- dictionary
+    attr(result, "padding") <- FALSE
     return(result)
 }
