@@ -3,14 +3,14 @@
 \name{features2id}
 \alias{features2id}
 \title{convert various input as features to a vector (newer version of features2list)
-in tokens_select, kwic, tokens_compound.}
+in tokens_select, tokens_compound and kwic,}
 \usage{
 features2id(features, types, valuetype, case_insensitive, concatenator = "_",
   phrase_only = FALSE)
 }
 \description{
 convert various input as features to a vector (newer version of features2list)
-in tokens_select, kwic, tokens_compound.
+in tokens_select, tokens_compound and kwic,
 }
 \keyword{internal}
 \keyword{utilities}

@@ -203,7 +203,7 @@ features2vector <- function(features) {
 }
 
 #' convert various input as features to a vector (newer version of features2list)
-#' in tokens_select, kwic, tokens_compound.
+#' in tokens_select, tokens_compound and kwic,
 #' @keywords internal utilities
 features2id <- function(features, types, valuetype, case_insensitive, 
                         concatenator = '_', phrase_only = FALSE) {
@@ -216,11 +216,13 @@ features2id <- function(features, types, valuetype, case_insensitive,
         if (is.dictionary(features)) {
             features <- unlist(features, use.names = FALSE)
             features <- split_dictionary_values(features, concatenator)
+        } else {
+            features <- as.list(features)
         }
         if (phrase_only)
             features <- features[lengths(features) > 1] # drop single-word features
-        features_id <- regex2id(as.list(features), types, valuetype, case_insensitive)
+        features_id <- regex2id(features, types, valuetype, case_insensitive)
     }
-    attr(features_id, 'features') <- features
+    attr(features_id, 'features') <- stri_c_list(features, sep = ' ')
     return(features_id)
 }
