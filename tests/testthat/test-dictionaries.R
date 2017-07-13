@@ -181,10 +181,10 @@ test_that("as.list is working", {
     )
 })
 
-test_that("error if empty concatenator is given", {
+test_that("error if empty separator is given", {
     expect_error(dictionary(one = c("a", "b"), two = c("c", "d"), separator = ''),
                  "separator must be a non-empty character")
-    expect_error(dictionary(one = c("a", "b"), two = c("c", "d"), concatenator = NULL),
+    expect_error(dictionary(one = c("a", "b"), two = c("c", "d"), separator = NULL),
                  "separator must be a non-empty character")
 })
 
