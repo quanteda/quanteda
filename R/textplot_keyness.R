@@ -96,7 +96,7 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
             geom_point() + 
             scale_color_manual("Document", values = c("Target" = "red", "Reference" = "blue"))+
             coord_flip() + 
-            ylim(min_Y -1 , max_Y + 1) +
+            ylim(min_Y - max_Y * 0.1 , max_Y * 1.1) +  ## allow extra space for displaying text next to the point
             ylab(colnames(topn)[1]) +
             geom_text(aes(label= c(rownames(topn), rownames(tailn))), hjust = ifelse( p$L1 == "Target", -0.2, 1.2),
                       vjust = 0, colour = ifelse(p$L1 == "Target", "red", "blue"), size = 3) +
