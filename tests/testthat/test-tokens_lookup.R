@@ -240,34 +240,34 @@ test_that("#480 reset padding flag", {
 })
 
 
-test_that("#500 tokens_lookup separates entry words by concatenator", {
+test_that("#500 tokens_lookup separates entry words by separator", {
     
     toks <- tokens(data_corpus_inaugural[1:5])
     dict <- dictionary(list(Country = "united_states",
-                            HOR = c("House_of_Re*")), concatenator = '_')
+                            HOR = c("House_of_Re*")), separator = '_')
     expect_identical(featnames(dfm(tokens_lookup(toks, dict), tolower = FALSE)),
                      c("Country", "HOR"))
 })
 
 
-test_that("#500 tokens_lookup do not separate words when multiword = FALSE", {
-    toks <- as.tokens(list(d1 = c('United States', 'Atlantic Ocean', 'Pacific Ocean'),
-                           d2 = c('Supreme Court', 'United States')))
-    dict <- dictionary(list(Countries = c("United States"),
-                            oceans = c("Atlantic *", "Pacific *")))
-    
-    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "glob", multiword = FALSE)),
-                 list(d1 = c("Countries", "oceans", "oceans"),
-                      d2 = c("Countries")))
-})
+# test_that("#500 tokens_lookup do not separate words when multiword = FALSE", {
+#     toks <- as.tokens(list(d1 = c('United States', 'Atlantic Ocean', 'Pacific Ocean'),
+#                            d2 = c('Supreme Court', 'United States')))
+#     dict <- dictionary(list(Countries = c("United States"),
+#                             oceans = c("Atlantic *", "Pacific *")))
+#     
+#     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "glob", multiword = FALSE)),
+#                  list(d1 = c("Countries", "oceans", "oceans"),
+#                       d2 = c("Countries")))
+# })
 
 test_that("#500 tokens_lookup substitute concatenator", {
     toks <- as.tokens(list(d1 = c('United-States', 'Atlantic-Ocean', 'Pacific-Ocean'),
-                           d2 = c('Supreme-Court', 'United-States')))
+                           d2 = c('Supreme-Court', 'United-States')), concatenator = '-')
     dict <- dictionary(list(Countries = c("United_States"),
-                            oceans = c("Atlantic_*", "Pacific_*")), concatenator = '_')
+                            oceans = c("Atlantic_*", "Pacific_*")), separator = '_')
     
-    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "glob", concatenator = '-', multiword = FALSE)),
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "glob")),
                  list(d1 = c("Countries", "oceans", "oceans"),
                       d2 = c("Countries")))
 })

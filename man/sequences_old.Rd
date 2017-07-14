@@ -58,8 +58,6 @@ seqs2 <- sequences_old(toks, "^([a-z]+)$", valuetype="regex", case_insensitive =
                    
 head(seqs2, 10)
 
-# convert to tokens object
-as.tokens(seqs2)
 
 }
 \references{

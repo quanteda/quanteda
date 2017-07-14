@@ -95,7 +95,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
-    attrs_org <- attributes(x)
+    attrs <- attributes(x)
     is_dfm <- FALSE
     
     if (padding && valuetype != 'fixed')
@@ -112,12 +112,11 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             padding <- TRUE
             case_insensitive <- FALSE
         } else if (is.dictionary(features)) {
-            if (has_multiword(features) && x@ngrams == 1) {
-                stop("dfm_select not implemented for ngrams > 1 and multi-word dictionary values")
-            }
-            features <- unlist(features, use.names = FALSE)
+            # if (has_multiword(features) && x@ngrams == 1) {
+            #     stop("dfm_select not implemented for ngrams > 1 and multi-word dictionary values")
+            # }
+            features <- stri_replace_all_fixed(unlist(features, use.names = FALSE), ' ', attr(x, 'concatenator'))
         }
-        features <- features2vector(as.list(features))
         features_id <- unlist(regex2id(features, featnames(x), valuetype, case_insensitive), use.names = FALSE)
         if (!is.null(features_id)) features_id <- sort(features_id) # keep the original column order
     } else {
@@ -159,7 +158,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     if (!length(features_keep)) features_keep <- 0
     if (!length(documents_keep)) documents_keep <- 0
     temp <- x[documents_keep, features_keep]    
-    
+
     features_add <- documents_add <- character() # avoid error in verbose message
     
     if (valuetype == 'fixed' && padding) {
@@ -167,22 +166,24 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         # add non-existent features
         features_add <- setdiff(features, featnames(temp))
         if (length(features_add)) {
-            pad_feature <- sparseMatrix(i = NULL, j = NULL, 
-                                        dims = c(ndoc(temp), length(features_add)), 
-                                        dimnames = list(docnames(temp), features_add))
-            temp <- new("dfmSparse", Matrix::cbind2(temp, pad_feature))
+            pad_feature <- as(sparseMatrix(i = NULL, j = NULL, 
+                                           dims = c(ndoc(temp), length(features_add)), 
+                                           dimnames = list(docnames(temp), features_add)), 
+                              "dgCMatrix")
+            temp <- cbind(temp, new("dfmSparse", pad_feature))
         }
 
         # add non-existent documents
         documents_add <- setdiff(documents, docnames(temp))
         if (length(documents_add)) {
-            pad_document <- sparseMatrix(i = NULL, j = NULL, 
-                                         dims = c(length(documents_add), nfeature(temp)), 
-                                         dimnames = list(documents_add, featnames(temp)))
-            temp <- new("dfmSparse", Matrix::rbind2(temp, pad_document))
+            pad_document <- as(sparseMatrix(i = NULL, j = NULL, 
+                                            dims = c(length(documents_add), nfeature(temp)), 
+                                            dimnames = list(documents_add, featnames(temp))), 
+                               "dgCMatrix")
+            temp <- rbind(temp, new("dfmSparse", pad_document))
         }
+        temp <- reassign_slots(temp, x)
     }
-    
     if (is_dfm) {
         result <- temp[,features] # sort features into original order
     } else {
@@ -190,19 +191,10 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     }
     
     if (verbose) {
-        catm("dfm_select ", if (selection == "keep") "kept" else "removed", " ", 
-             format(length(features_id), big.mark=","),
-             " feature", if (length(features_id) != 1L) "s" else "", " and ",
-             format(length(documents_id), big.mark=","),
-             " document", if (length(documents_id) != 1L) "s" else "",
-             ", padding 0s for ",
-             format(length(documents_add), big.mark=","), 
-             " feature", if (length(features_add) != 1L) "s" else "", " and ",
-             format(length(documents_add), big.mark=","),
-             " document", if (length(documents_add) != 1L) "s" else "", ".\n",
-             sep = "")
-    } 
-    
+        message_select(selection, length(features_id), length(documents_id), 
+                       length(features_add), length(documents_add))
+    }
+    attributes(x, FALSE) <- attrs
     return(result)
 }
 

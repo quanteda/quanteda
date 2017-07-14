@@ -307,38 +307,36 @@ tokens.corpus <- function(x, ..., include_docvars = TRUE) {
 #' object is a \link{tokens} object, and functions to combine \link{tokens}
 #' objects.
 #' @param x object to be coerced or checked
+#' @param concatenator character between multi-word expressions, default is _ (underscore) character
 #' @return \code{as.tokens} returns a quanteda \link{tokens} object
 #' @export
 #' @rdname as.tokens
-as.tokens <- function(x) {
+as.tokens <- function(x, concatenator = '_') {
     UseMethod("as.tokens")
 }
 
 #' @rdname as.tokens
 #' @export
-as.tokens.list <- function(x) {
+as.tokens.list <- function(x, concatenator = '_') {
     result <- tokens_hash(x)
     attr(result, "what") <- "word"
     attr(result, "ngrams") <- 1L
-    attr(result, "concatenator") <- "_"
+    attr(result, "concatenator") <- concatenator
     attr(result, 'padding') <- FALSE
     class(result)[2] <- "tokenizedTexts"
     return(result)
 }
 
-#' @export
-#' @method as.tokens collocations
-#' @rdname as.tokens
-as.tokens.collocations <- function(x) {
-    toks <- attr(x, 'tokens')
-    attr(toks, 'types') <- attr(x, 'types')
-    class(toks) <- c("tokens", "tokenizedTexts")
-    return(toks)
-}
+#' #' @export
+#' #' @method as.tokens collocations
+#' #' @rdname as.tokens
+#' as.tokens.collocations <- function(x, concatenator = '_') {
+#'     as.tokens(phrase(x$collocation), concatenator = concatenator)
+#' }
 
 #' @export
 #' @noRd
-as.tokens.tokenizedTexts <- function(x) {
+as.tokens.tokenizedTexts <- function(x, ...) {
     NextMethod("as.tokens")
 }
 

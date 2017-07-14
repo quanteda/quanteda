@@ -60,7 +60,7 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #'                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
 #' 
 #' # with longer texts
-#' toks <- tokensdata_corpus_inaugural[1:2])
+#' toks <- tokens(data_corpus_inaugural[1:2])
 #' tokens_select(toks, stopwords("english"), "remove")
 #' tokens_select(toks, stopwords("english"), "keep")
 #' tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
@@ -69,8 +69,9 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #' }
 tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                          valuetype = c("glob", "regex", "fixed"),
-                                         case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
-    x <- tokens_select(as.tokens(x), features, selection, valuetype, case_insensitive = TRUE)
+                                         case_insensitive = TRUE, padding = FALSE, 
+                                         verbose = quanteda_options("verbose")) {
+    x <- tokens_select(as.tokens(x), features, selection, valuetype, case_insensitive, padding, verbose)
     x <- as.tokenizedTexts(x)
     return(x)
 }
@@ -108,22 +109,19 @@ tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "rem
 
 tokens_select.tokens <- function(x, features, selection = c("keep", "remove"), 
                                  valuetype = c("glob", "regex", "fixed"),
-                                 case_insensitive = TRUE, padding = FALSE, ...) {
-    
-    if (!is.tokens(x))
-        stop("x must be a tokens object")
-    
+                                 case_insensitive = TRUE, padding = FALSE, 
+                                 verbose = quanteda_options("verbose"), ...) {
     
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
-    
     types <- types(x)
-    features <- features2list(features)
-    features_id <- regex2id(features, types, valuetype, case_insensitive)
     
+    features_id <- features2id(features, types, valuetype, case_insensitive, attr(x, 'concatenator'))
     if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index
 
+    if (verbose) 
+        message_select(selection, length(features_id), 0)
     if (selection == 'keep') {
         x <- qatd_cpp_tokens_select(x, types, features_id, 1, padding)
     } else {

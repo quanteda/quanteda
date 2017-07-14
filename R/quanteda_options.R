@@ -118,11 +118,13 @@ quanteda_initialize <- function() {
         if (!is.null(getOption(opt)))
             apply_list[opt] <- NULL
     }
+    quanteda_options(threads = QUANTEDA_OPTION_LIST$quanteda_threads)
     options(apply_list)
     return(invisible(TRUE))
 }
 
 quanteda_reset <- function() {
+    quanteda_options(threads = QUANTEDA_OPTION_LIST$quanteda_threads)
     options(QUANTEDA_OPTION_LIST)
     return(invisible(TRUE))
 }
