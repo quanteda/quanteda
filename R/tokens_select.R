@@ -1,36 +1,29 @@
 #' select or remove tokens from a tokens object
 #' 
 #' This function selects or discards tokens from a \link{tokens} objects, with 
-#' the shortcut \code{tokens_remove(x, features)} defined as a shortcut for
-#' \code{tokens_select(x, features, selection = "remove")}.  The most common 
-#' usage for \code{tokens_remove} will be to eliminate stop words from a
-#' text or text-based object, while the most common use of \code{tokens_select} will
-#' be to select only positive features from a list of regular 
+#' the shortcut \code{tokens_remove(x, pattern)} defined as a shortcut for 
+#' \code{tokens_select(x, pattern, selection = "remove")}.  The most common 
+#' usage for \code{tokens_remove} will be to eliminate stop words from a text or
+#' text-based object, while the most common use of \code{tokens_select} will be 
+#' to select tokens with only positive pattern matches from a list of regular 
 #' expressions, including a dictionary.
 #' @param x \link{tokens} object whose token elements will be selected
-#' @inheritParams features
-#' @param selection whether to \code{"keep"} or \code{"remove"} the features
+#' @inheritParams pattern
+#' @param selection whether to \code{"keep"} or \code{"remove"} the tokens 
+#'   matching \code{pattern}
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
-#' @param verbose if \code{TRUE} print messages about how many features were 
-#'   removed
-#' @param padding (only for \code{tokenizedTexts} objects) if \code{TRUE}, leave
-#'   an empty string where the removed tokens previously existed.  This is
-#'   useful if a positional match is needed between the pre- and post-selected
-#'   features, for instance if a window of adjacency needs to be computed.
-#' @return a tokens object with features removed
-#' @export
-tokens_select <- function(x, features, selection = c("keep", "remove"), 
-                          valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
-    UseMethod("tokens_select")
-}
-
-#' @rdname tokens_select
-#' @noRd
+#' @param verbose if \code{TRUE} print messages about how many tokens were 
+#'   selected or removed
+#' @param padding if \code{TRUE}, leave an empty string where the removed tokens
+#'   previously existed.  This is useful if a positional match is needed between
+#'   the pre- and post-selected tokens, for instance if a window of adjacency 
+#'   needs to be computed.
+#' @return a \link{tokens} object with tokens selected or removed based on their
+#'   match to \code{pattern}
 #' @export
 #' @examples 
-#' ## with simple examples
+#' ## tokens_select with simple examples
 #' toks <- tokens(c("This is a sentence.", "This is a second sentence."), 
 #'                  remove_punct = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = FALSE)
@@ -42,8 +35,18 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = FALSE)
 #' 
+tokens_select <- function(x, pattern, selection = c("keep", "remove"), 
+                          valuetype = c("glob", "regex", "fixed"),
+                          case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
+    UseMethod("tokens_select")
+}
+
+#' @rdname tokens_select
+#' @noRd
+#' @export
+#' @examples 
 #' \dontshow{
-#' ## with simple examples
+#' ## tokens_select example
 #' toks <- tokensc("This is a sentence.", "This is a second sentence."), 
 #'                  remove_punct = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", 
@@ -67,11 +70,11 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #' tokens_select(toks, stopwords("english"), "keep", padding = TRUE)
 #' tokens_select(tokensdata_corpus_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
 #' }
-tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
+tokens_select.tokenizedTexts <- function(x, pattern, selection = c("keep", "remove"), 
                                          valuetype = c("glob", "regex", "fixed"),
                                          case_insensitive = TRUE, padding = FALSE, 
                                          verbose = quanteda_options("verbose")) {
-    x <- tokens_select(as.tokens(x), features, selection, valuetype, case_insensitive, padding, verbose)
+    x <- tokens_select(as.tokens(x), pattern, selection, valuetype, case_insensitive, padding, verbose)
     x <- as.tokenizedTexts(x)
     return(x)
 }
@@ -83,12 +86,12 @@ tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "rem
 #' @examples
 #' toksh <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
 #' feats <- c("this", "sample", "is")
-#' # keeping features
+#' # keeping tokens
 #' tokens_select(toksh, feats, selection = "keep")
 #' tokens_select(toksh, feats, selection = "keep", padding = TRUE)
 #' tokens_select(toksh, feats, selection = "keep", case_insensitive = FALSE)
 #' tokens_select(toksh, feats, selection = "keep", padding = TRUE, case_insensitive = FALSE)
-#' # removing features
+#' # removing tokens
 #' tokens_select(toksh, feats, selection = "remove")
 #' tokens_select(toksh, feats, selection = "remove", padding = TRUE)
 #' tokens_select(toksh, feats, selection = "remove", case_insensitive = FALSE)
@@ -106,8 +109,7 @@ tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "rem
 #' tokens_select(toks, 'President *', "keep") # simplified form
 #' tokens_select(toks, list(c('*', 'crisis')), "keep")
 #' tokens_select(toks, '* crisis', "keep") # simplified form
-
-tokens_select.tokens <- function(x, features, selection = c("keep", "remove"), 
+tokens_select.tokens <- function(x, pattern, selection = c("keep", "remove"), 
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, 
                                  verbose = quanteda_options("verbose"), ...) {
@@ -117,8 +119,8 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     attrs <- attributes(x)
     types <- types(x)
     
-    features_id <- features2id(features, types, valuetype, case_insensitive, attr(x, 'concatenator'))
-    if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index
+    features_id <- features2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
+    if ("" %in% pattern) features_id <- c(features_id, list(0)) # append padding index
 
     if (verbose) 
         message_select(selection, length(features_id), 0)
@@ -134,23 +136,23 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
 #' @rdname tokens_select
 #' @export
 #' @examples
-#' ## for tokenized texts 
+#' ## tokens_remove example
 #' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
 #'                    execute the functions of its Chief Magistrate.",
 #'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
 #'                    the high sense I entertain of this distinguished honor.")
 #' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #'
-tokens_remove <- function(x, features, valuetype = c("glob", "regex", "fixed"),
+tokens_remove <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
     UseMethod("tokens_remove")
 }
 
 #' @noRd
 #' @export
-tokens_remove.tokenizedTexts <- function(x, features, valuetype = c("glob", "regex", "fixed"),
+tokens_remove.tokenizedTexts <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
-    tokens_select(x, features, selection = "remove", valuetype = valuetype, 
+    tokens_select(x, pattern, selection = "remove", valuetype = valuetype, 
                   case_insensitive = case_insensitive, padding = padding, verbose = verbose)
 }
 

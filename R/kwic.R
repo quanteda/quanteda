@@ -6,14 +6,7 @@
 #' line number, since the text may or may not be segmented using end-of-line 
 #' delimiters.)
 #' @param x a character, \link{corpus}, or \link{tokens} object
-#' @param keywords a keyword pattern or phrase consisting of multiple keyword 
-#'   patterns, possibly including punctuation.  If the value contains
-#'   whitespace, it is best to wrap it in \code{\link{phrase}} to make this
-#'   explicit. However if \code{x} is a character or \link{corpus} object, then
-#'   keywords containing whitespace, or dictionary or collocation values, will
-#'   automatically be considered phrases where each whitespace-separated element
-#'   matches a token in sequence, and the \code{keywords} will be tokenized
-#'   using the \code{...} options.
+#' @inheritParams pattern
 #' @param window the number of context words to be displayed around the keyword.
 #' @inheritParams valuetype
 #' @param case_insensitive match without respect to case if \code{TRUE}
@@ -25,6 +18,13 @@
 #'   before (\code{contextPre}), the keyword in its original format 
 #'   (\code{keyword}, preserving case and attached punctuation), and the context
 #'   after (\code{contextPost}).
+#' @note \code{pattern} will be a keyword pattern or phrase, possibly multiple
+#'   patterns, that may include punctuation.  If a pattern contains whitespace,
+#'   it is best to wrap it in \code{\link{phrase}} to make this explicit. 
+#'   However if \code{pattern} is a \link[=textstat_collocations]{collocations}
+#'   or \link{dictionary} object, then the collocations or multi-word dictionary
+#'   keys will automatically be considered phrases where each
+#'   whitespace-separated element matches a token in sequence.
 #' @author Kenneth Benoit and Kohei Watanabe
 #' @export
 #' @examples
@@ -37,7 +37,7 @@
 #' kwic(data_corpus_inaugural, phrase("war against"), valuetype = "regex")
 #' 
 
-kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
                  case_insensitive = TRUE, join = FALSE, ...) {
     UseMethod("kwic")
 }
@@ -45,19 +45,19 @@ kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"
 #' @rdname kwic
 #' @noRd
 #' @export
-kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
                            case_insensitive = TRUE, join = FALSE, ...) {
-    if (is.collocations(keywords) || is.dictionary(keywords))
-        keywords <- phrase(keywords) 
-    kwic(tokens(x, ...), keywords, window, valuetype, case_insensitive, join)
+    if (is.collocations(pattern) || is.dictionary(pattern))
+        pattern <- phrase(pattern) 
+    kwic(tokens(x, ...), pattern, window, valuetype, case_insensitive, join)
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic.corpus <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
                         case_insensitive = TRUE, join = FALSE, ...) {
-    kwic(texts(x), keywords, window, valuetype, case_insensitive, join, ...)
+    kwic(texts(x), pattern, window, valuetype, case_insensitive, join, ...)
 }
 
 #' @rdname kwic
@@ -76,7 +76,7 @@ kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 #' kwic(toks, c("is", "a"), valuetype = "fixed")
 #' kwic(toks, phrase(c("is", "a", "is it")), valuetype = "fixed")
 #' @export 
-kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
                         case_insensitive = TRUE, join = FALSE, ...) {
     
     if (!is.tokens(x))
@@ -90,7 +90,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
         names(x) <- paste("text", 1:length(x), sep="")
     }
     
-    keywords_id <- features2id(keywords, types, valuetype, case_insensitive, attr(x, 'concatenator'))
+    keywords_id <- features2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
     result <- qatd_cpp_kwic(x, types, keywords_id, window, join)
     
     # attributes for tokens object
@@ -108,9 +108,9 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic.tokenizedTexts <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
                                 case_insensitive = TRUE, join = FALSE, ...) {
-    kwic(as.tokens(x), keywords, window, valuetype, case_insensitive, join, ...)
+    kwic(as.tokens(x), pattern, window, valuetype, case_insensitive, join, ...)
 }
 
 #' @rdname kwic

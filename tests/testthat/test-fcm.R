@@ -306,7 +306,7 @@ test_that("fcm works tokens with paddings, #788", {
     txt <- c("The quick brown fox jumped over the lazy dog.",
              "The dog jumped and ate the fox.")
     toks <- tokens(txt, remove_punct = TRUE)
-    toks <- tokens_remove(toks, features = stopwords(), padding = TRUE)
+    toks <- tokens_remove(toks, pattern = stopwords(), padding = TRUE)
     testfcm <- fcm(toks, context = "window", window = 3)
     expect_equal(sort(colnames(testfcm)), sort(attr(toks, 'types')))
 })
