@@ -54,7 +54,7 @@ collocations2 <- function(x, method = c("lr", "chi2", "pmi", "dice"),
     attrs_org <- attributes(x)
     
     types <- types(x)
-    features <- features2vector(features)
+    features <- unlist(features, use.names = FALSE)
     features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
 
     # --------------------------------------------------------------

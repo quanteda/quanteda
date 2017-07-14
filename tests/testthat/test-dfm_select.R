@@ -128,13 +128,16 @@ test_that("longer selection than longer than features that exist (related to #44
     feat <- c('b', 'c', 'd', 'e', 'f', 'g')
     # bugs in C++ needs repeated tests
     expect_message(dfm_select(dfmtest, feat, verbose = TRUE),
-                   "dfm_select kept 4 features and 2 documents*")
+                   "kept 4 features")
+    expect_message(dfm_select(dfmtest, feat, verbose = TRUE),
+                   " and 2 documents")
+    expect_message(dfm_remove(dfmtest, feat, verbose = TRUE),
+                   "removed 4 features")
     expect_equivalent(
         as.matrix(dfm_select(dfmtest, feat)),
         matrix(c(1, 1, 0, 1, 0, 1, 0, 1), nrow = 2)
     )
 })
-
 
 test_that("test dfm_select with ngrams #589", {
     ngramdfm <- dfm(c('of_the', 'in_the', 'to_the', 'of_our', 'and_the', ' it_is', 'by_the', 'for_the'))
@@ -255,15 +258,29 @@ test_that("dfm_remove works even when it does not remove anything, issue 711", {
 })
 
 test_that("dfm_select errors when dictionary has multi-word features, issue 775", {
-    dfm_inaug <- dfm(data_corpus_inaugural)
-    testdict1 <- dictionary(list(eco = c("compan*", "factory worker*"), 
-                                 pol = c("politcal party", "election*")))
-    testdict2 <- dictionary(list(eco = c("compan*", "factory_worker"), 
-                                 pol = c("politcal_party", "election*")))
-    
-    expect_error(dfm_select(dfm_inaug, features = testdict1, valuetype = "glob"),
-                 "dfm_select not implemented for ngrams > 1 and multi-word dictionary values")
-    expect_silent(dfm_select(dfm_inaug, features = testdict2, valuetype = "glob"))
+    dfm_inaug <- dfm(data_corpus_inaugural[50:58])
+    testdict1 <- dictionary(list(eco = c("compan*", "factory worker*"),
+                                 pol = c("political part*", "election*")),
+                            separator = " ")
+    testdict2 <- dictionary(list(eco = c("compan*", "factory_worker"),
+                                 pol = c("political_part*", "election*")), 
+                            separator = "_")
+    expect_equal(
+        featnames(dfm_select(dfm_inaug, features = testdict1, valuetype = "glob")),
+        c("election", "elections", "company", "companies")
+    )
+    expect_equal(
+        featnames(dfm_select(dfm_inaug, features = phrase(testdict1), valuetype = "glob")),
+        c("party", "political", "election", "part", "parties", "elections", "partisan", "company", "participation", "partisanship", "partial", "companies")    
+    )
+    expect_equal(
+        featnames(dfm_select(dfm_inaug, features = testdict2, valuetype = "glob")),
+        c("election", "elections", "company", "companies")
+    )
+    expect_equal(
+        featnames(dfm_select(dfm_inaug, features = phrase(testdict2), valuetype = "glob")),
+        c("party", "political", "election", "part", "parties", "elections", "partisan", "company", "participation", "partisanship", "partial", "companies")    
+    )
 })
 
 
