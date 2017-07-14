@@ -123,4 +123,14 @@ test_that("test textplot_scale1d wordscores in the most basic way", {
     expect_equivalent(p1, p2)
 })
 
-
+test_that("test textplot_keyness ", {
+    period <- ifelse(docvars(data_corpus_inaugural, "Year") < 1945, "pre-war", "post-war")
+    mydfm <- dfm(data_corpus_inaugural, groups = period)
+    top20 <- head(result <- textstat_keyness(mydfm), 20)
+    
+    expect_false(identical(textplot_keyness(top20, sort = TRUE),
+                 textplot_keyness(top20, sort = FALSE)))
+    
+    p2 <- textplot_keyness(result, show_reference = TRUE)
+    expect_equal(p2$labels$y, colnames(result)[1])
+})
