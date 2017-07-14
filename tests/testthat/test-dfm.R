@@ -129,8 +129,8 @@ test_that("test c.corpus",
     )
 )
 
-## rbind.dfm
-## TODO: Test classes returned
+## rbind.dfm
+## TODO: Test classes returned
 
 test_that("test rbind.dfm with the same columns", {
 
@@ -380,9 +380,9 @@ test_that("dfm's document counts in verbose message is correct", {
              d3 = "x y",
              d4 = "f g")
     expect_message(dfm(txt, remove = c('a', 'f'), verbose = TRUE),
-                   'removing 2 features')
+                   'removed 2 features')
     expect_message(dfm(txt, select = c('a', 'f'), verbose = TRUE),
-                   'keeping 2 features')
+                   'kept 2 features')
 })
 
 test_that("dfm print works with options as expected", {
@@ -466,6 +466,25 @@ test_that("printing an empty dfm produces informative result (#811)", {
     expect_output(
         print(my_dfm[, -c(1, 2)]),
         "^Document-feature matrix of: 2 documents, 0 features\\.\\n2 x 0 sparse Matrix of class \"dfmSparse\""
+    )
+})
+
+test_that("dfm with selection options produces correct output", {
+    txt <- c(d1 = 'a b', d2 = 'a b c d e')
+    toks <- tokens(txt)
+    dfmt <- dfm(toks)
+    feat <- c('b', 'c', 'd', 'e', 'f', 'g')
+    expect_message(
+        dfm(txt, remove = feat, verbose = TRUE),
+        "removed 4 features" 
+    )
+    expect_message(
+        dfm(toks, remove = feat, verbose = TRUE),
+        "removed 4 features" 
+    )
+    expect_message(
+        dfm(dfmt, remove = feat, verbose = TRUE),
+        "removed 4 features" 
     )
 })
 

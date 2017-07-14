@@ -112,24 +112,19 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
                                  case_insensitive = TRUE, padding = FALSE, 
                                  verbose = quanteda_options("verbose"), ...) {
     
-    if (!is.tokens(x))
-        stop("x must be a tokens object")
-    
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     types <- types(x)
     
-    if (verbose) catm("Selecting features in tokens object ...\n")
     features_id <- features2id(features, types, valuetype, case_insensitive, attr(x, 'concatenator'))
-
     if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index
 
+    if (verbose) 
+        message_select(selection, length(features_id), 0)
     if (selection == 'keep') {
-        if (verbose) catm("   ... keeping", length(features_id), "features\n")
         x <- qatd_cpp_tokens_select(x, types, features_id, 1, padding)
     } else {
-        if (verbose) catm("   ... removing", length(features_id), "features\n")
         x <- qatd_cpp_tokens_select(x, types, features_id, 2, padding)
     }
     attributes(x, FALSE) <- attrs

@@ -237,6 +237,17 @@ dfm.tokenizedTexts <- function(x,
         names(x) <- paste("text", seq_along(x), sep="")
     } 
 
+    if (verbose) {
+        catm("   ... found ", 
+             format(length(x), big.mark = ","), " document",
+             ifelse(length(x) > 1, "s", ""), ### replace with: ntoken()
+             ", ",
+             format(length(types(x)), big.mark = ","),  ### replace with: ntype()
+             " feature",
+             ifelse(length(types(x)) > 1, "s", ""),
+             "\n", sep="")
+    }
+    
     # use tokens_lookup for tokens objects
     if (!is.null(dictionary) || !is.null(thesaurus)) {
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
@@ -249,6 +260,7 @@ dfm.tokenizedTexts <- function(x,
     
     # use tokens_select for tokens objects
     if (!is.null(c(remove, select))) {
+        if (verbose) catm("   ... ")
         if (!is.null(remove)) {
             x <- tokens_select(x, remove, selection = "remove", 
                                valuetype = valuetype, verbose = verbose)
@@ -427,17 +439,6 @@ compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
 }
 
 compile_dfm.tokens <- function(x, verbose = TRUE) {
-    
-    if (verbose) {
-        catm("   ... found ", 
-             format(length(x), big.mark = ","), " document",
-             ifelse(length(x) > 1, "s", ""), ### replace with: ntoken()
-             ", ",
-             format(length(types(x)), big.mark = ","),  ### replace with: ntype()
-             " feature",
-             ifelse(length(types(x)) > 1, "s", ""),
-             "\n", sep="")
-    }
     
     types <- types(x)
     x <- unclass(x)

@@ -128,13 +128,16 @@ test_that("longer selection than longer than features that exist (related to #44
     feat <- c('b', 'c', 'd', 'e', 'f', 'g')
     # bugs in C++ needs repeated tests
     expect_message(dfm_select(dfmtest, feat, verbose = TRUE),
-                   "dfm_select kept 4 features and 2 documents*")
+                   "kept 4 features")
+    expect_message(dfm_select(dfmtest, feat, verbose = TRUE),
+                   " and 2 documents")
+    expect_message(dfm_remove(dfmtest, feat, verbose = TRUE),
+                   "removed 4 features")
     expect_equivalent(
         as.matrix(dfm_select(dfmtest, feat)),
         matrix(c(1, 1, 0, 1, 0, 1, 0, 1), nrow = 2)
     )
 })
-
 
 test_that("test dfm_select with ngrams #589", {
     ngramdfm <- dfm(c('of_the', 'in_the', 'to_the', 'of_our', 'and_the', ' it_is', 'by_the', 'for_the'))
