@@ -78,28 +78,30 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
                 stop (" Better plot for one Doc.")
             topn <- head(x, pos_n)
             tailn <- tail(x, neg_n)
-            if ((pos_n > 0) & (neg_n > 0)) {
-                max_Y <- max(max(topn[ ,1]), max(abs(tailn[ ,1])))
-            }
-            min_Y <- 0
+            # if ((pos_n > 0) & (neg_n > 0)) {
+            #     max_Y <- max(max(topn[ ,1]), max(abs(tailn[ ,1])))
+            # }
+            max_Y <- max(topn[,1])
+            min_Y <- min(tailn[,1])
             
             if (sort) {
-                tailn[,1] <- abs(tailn[,1])
-                tailn <- tailn[order(-tailn[,1]),]
+                #tailn[,1] <- abs(tailn[,1])
+                tailn <- tailn[order(tailn[,1]),]
             }
         }
-        p1 <- data.frame(x = pos_n:1, y = topn[,1])
-        p2 <- data.frame(x = neg_n:1, y = tailn[,1])
-        p <- melt(list(Target = p1,Reference = p2), id.vars="x")
+        p1 <- data.frame(x = (neg_n + pos_n) : (1 + neg_n), y = topn[,1])
+        p2 <- data.frame(x = neg_n  : 1, y = tailn[,1])
+        p <- melt(list(Reference = p2, Target = p1), id.vars = "x")
+        colnames(p)[4] <- "Document"
         
-        ggplot(p, aes(x, y = p$value, color = p$L1)) +  
-            geom_point() + 
-            scale_color_manual("Document", values = c("Target" = "red", "Reference" = "blue"))+
+        ggplot(p, aes(x, y = value, fill = Document)) +  
+            geom_bar(stat="identity") + 
+            scale_fill_manual("Document", values = c("Target" = "#CC3333", "Reference" = "#003366")) +
             coord_flip() + 
-            ylim(min_Y - max_Y * 0.1 , max_Y * 1.1) +  ## allow extra space for displaying text next to the point
+            ylim(min_Y * 1.1 , max_Y * 1.1) +  ## allow extra space for displaying text next to the point
             ylab(colnames(topn)[1]) +
-            geom_text(aes(label= c(rownames(topn), rownames(tailn))), hjust = ifelse( p$L1 == "Target", -0.2, 1.2),
-                      vjust = 0, colour = ifelse(p$L1 == "Target", "red", "blue"), size = 3) +
+            geom_text(aes(label= c(rownames(topn), rownames(tailn))), hjust = ifelse( p$Document == "Target", -0.2, 1.2),
+                      vjust = 0, colour = ifelse(p$Document == "Target", "#CC3333", "#003366"), size = 3) +
             theme_bw() +
             theme(axis.line = ggplot2::element_blank(),
                   axis.title.y = ggplot2::element_blank(),
