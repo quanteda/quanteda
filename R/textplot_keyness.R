@@ -51,10 +51,9 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
         p <- ggplot(data = x, aes(x = x_reorder, y = x[,1]))
         
          p    + coord_flip() +
-            geom_point(size=1) +
+            geom_bar(stat="identity") +
             ylab(colnames(x)[1]) +
-            geom_text(aes(label= x_reorder), hjust = ifelse( x[, 1] > x[floor(n/2)+ 1, 1], 1.2, -0.2), 
-                      vjust = 0, size = 3) + 
+            geom_text(aes(label= x_reorder), hjust =  -0.2, vjust = 0.5, size = 3) + 
             theme_bw() +
             theme(axis.line = ggplot2::element_blank(),
                   axis.title.y = ggplot2::element_blank(),
