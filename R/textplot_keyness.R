@@ -101,7 +101,7 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
             ylim(min_Y * 1.1 , max_Y * 1.1) +  ## allow extra space for displaying text next to the point
             ylab(colnames(topn)[1]) +
             geom_text(aes(label= c(rownames(topn), rownames(tailn))), hjust = ifelse( p$Document == "Target", -0.2, 1.2),
-                      vjust = 0, colour = ifelse(p$Document == "Target", "#CC3333", "#003366"), size = 3) +
+                      vjust = 0.5, colour = ifelse(p$Document == "Target", "#CC3333", "#003366"), size = 3) +
             theme_bw() +
             theme(axis.line = ggplot2::element_blank(),
                   axis.title.y = ggplot2::element_blank(),
