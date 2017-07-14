@@ -128,8 +128,11 @@ test_that("test textplot_keyness ", {
     mydfm <- dfm(data_corpus_inaugural, groups = period)
     top20 <- head(result <- textstat_keyness(mydfm), 20)
     
-    expect_false(identical(textplot_keyness(top20, sort = TRUE),
-                 textplot_keyness(top20, sort = FALSE)))
+    p1 <- textplot_keyness(top20, sort = TRUE)
+    p2 <- textplot_keyness(top20, sort = FALSE)
+    p1$plot_env <- NULL
+    p2$plot_env <- NULL
+    expect_equivalent(p1, p2)
     
     p2 <- textplot_keyness(result, show_reference = TRUE)
     expect_equal(p2$labels$y, colnames(result)[1])
