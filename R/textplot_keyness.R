@@ -32,10 +32,10 @@ textplot_keyness <-  function(x, sort = TRUE, show_reference = FALSE, n = 20) {
 #' @importFrom stats reorder aggregate
 #' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
-#' @importFrom ggplot2 facet_grid element_line
+#' @importFrom ggplot2 facet_grid element_line geom_bar aes_ ylim
 #' @export
 textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, n = 20) {
-
+    
     if (!all(c("p", "n_target", "n_reference") %in% names(x)) | ncol(x) != 4) {
         stop("x must be a return from textstat_keyness")
     }
@@ -50,7 +50,7 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
         }
         p <- ggplot(data = x, aes(x = x_reorder, y = x[,1]))
         
-         p    + coord_flip() +
+        p    + coord_flip() +
             geom_bar(stat="identity") +
             ylab(colnames(x)[1]) +
             geom_text(aes(label= x_reorder), hjust =  -0.2, vjust = 0.5, size = 3) + 
@@ -77,14 +77,10 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
                 stop (" Better plot for one Doc.")
             topn <- head(x, pos_n)
             tailn <- tail(x, neg_n)
-            # if ((pos_n > 0) & (neg_n > 0)) {
-            #     max_Y <- max(max(topn[ ,1]), max(abs(tailn[ ,1])))
-            # }
             max_Y <- max(topn[,1])
             min_Y <- min(tailn[,1])
             
             if (sort) {
-                #tailn[,1] <- abs(tailn[,1])
                 tailn <- tailn[order(tailn[,1]),]
             }
         }
@@ -93,9 +89,9 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
         p <- melt(list(Reference = p2, Target = p1), id.vars = "x")
         colnames(p)[4] <- "Document"
         
-        ggplot(p, aes(x, y = value, fill = Document)) +  
+        ggplot(p, aes_(x = ~x, y = p$value, fill = ~Document)) +  
             geom_bar(stat="identity") + 
-            scale_fill_manual("Document", values = c("Target" = "#CC3333", "Reference" = "#003366")) +
+            ggplot2::scale_fill_manual("Document", values = c("Target" = "#CC3333", "Reference" = "#003366")) +
             coord_flip() + 
             ylim(min_Y * 1.1 , max_Y * 1.1) +  ## allow extra space for displaying text next to the point
             ylab(colnames(topn)[1]) +
