@@ -51,6 +51,7 @@ kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex"
     if ("keywords" %in% names(thecall)) {
         .Deprecated(msg = "keywords argument has been replaced by pattern")
         names(thecall)[which(names(thecall) == "keywords")] <- "pattern"
+        thecall[["x"]] <- x
         return(do.call(kwic, thecall))
     }    
     if (is.collocations(pattern) || is.dictionary(pattern))
