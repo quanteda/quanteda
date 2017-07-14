@@ -24,7 +24,7 @@ phrase <- function(x) {
 #' @noRd
 #' @export
 phrase.character <- function(x) {
-    phrase(stringi::stri_split_charclass(x, "\\p{Z}"))
+    phrase(stri_split_charclass(x, "\\p{Z}"))
 }
 
 #' @noRd

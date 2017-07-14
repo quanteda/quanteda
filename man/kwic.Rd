@@ -11,7 +11,7 @@ kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
 
 is.kwic(x)
 
-\method{as.tokens}{kwic}(x)
+\method{as.tokens}{kwic}(x, ...)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object}

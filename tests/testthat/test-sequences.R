@@ -63,16 +63,16 @@ test_that("[ function",{
     expect_equal(class(a_seq), c("sequences", 'data.frame'))
 })
 
-test_that("as.tokens.sequences function",{
-    toks <- tokens('E E a b c E E G G f E E f f G G')
-    toks <- tokens_select(toks, "^[A-Z]$", valuetype="regex", 
-                                  case_insensitive = FALSE, padding = TRUE)
-    seqs <- sequences(toks, min_count = 1)
-    tokens <- as.tokens(seqs)
-    
-    expect_equal(length(tokens), 3)
-    expect_equal(class(tokens), c("tokens", "tokenizedTexts"))
-})
+# test_that("as.tokens.sequences function",{
+#     toks <- tokens('E E a b c E E G G f E E f f G G')
+#     toks <- tokens_select(toks, "^[A-Z]$", valuetype="regex", 
+#                                   case_insensitive = FALSE, padding = TRUE)
+#     seqs <- sequences(toks, min_count = 1)
+#     tokens <- as.tokens(seqs)
+#     
+#     expect_equal(length(tokens), 3)
+#     expect_equal(class(tokens), c("tokens", "tokenizedTexts"))
+# })
 
 test_that("is.sequences function",{
     toks <- tokens('E E a b c E E G G f E E f f G G')

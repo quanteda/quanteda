@@ -31,15 +31,15 @@ test_that("test that collocations and sequences are counting the same features",
     expect_true(all(both$count.x == both$count.y))
 })
 
-test_that("test that extractor works with collocation", {
-    
-    toks <- tokens(data_corpus_inaugural, remove_punct = TRUE)
-    toks <- tokens_remove(toks, stopwords(), padding = TRUE)
-    cols <- textstat_collocations(toks, method = 'lr', size = 2)
-    cols <- cols[1:5,]
-    expect_equal(nrow(cols), length(as.tokens(cols)))
-    
-})
+# test_that("test that extractor works with collocation", {
+#     
+#     toks <- tokens(data_corpus_inaugural, remove_punct = TRUE)
+#     toks <- tokens_remove(toks, stopwords(), padding = TRUE)
+#     cols <- textstat_collocations(toks, method = 'lr', size = 2)
+#     cols <- cols[1:5,]
+#     expect_equal(nrow(cols), length(as.tokens(cols)))
+#     
+# })
 
 test_that("bigrams and trigrams are all sorted correctly, issue #385", {
     

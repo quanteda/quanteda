@@ -236,18 +236,37 @@ dfm.tokenizedTexts <- function(x,
     if (is.null(names(x))) {
         names(x) <- paste("text", seq_along(x), sep="")
     } 
+
+    if (verbose) {
+        catm("   ... found ", 
+             format(length(x), big.mark = ","), " document",
+             ifelse(length(x) > 1, "s", ""), ### replace with: ntoken()
+             ", ",
+             format(length(types(x)), big.mark = ","),  ### replace with: ntype()
+             " feature",
+             ifelse(length(types(x)) > 1, "s", ""),
+             "\n", sep="")
+    }
     
-    # use tokens_lookup for dictionaries with multi-word values otherwise do this later
-    if (!is.null(dictionary) | !is.null(thesaurus)) {
+    # use tokens_lookup for tokens objects
+    if (!is.null(dictionary) || !is.null(thesaurus)) {
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
-        if (any(stringi::stri_detect_fixed(unlist(dictionary, use.names = FALSE), 
-                                           attr(dictionary, 'concatenator')))) {
-            if (verbose) catm("   ... ")
-            x <- tokens_lookup(x, dictionary,
-                               exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
-                               valuetype = valuetype,
-                               verbose = verbose)
-            dictionary <- thesaurus <- NULL
+        if (verbose) catm("   ... ")
+        x <- tokens_lookup(x, dictionary,
+                           exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
+                           valuetype = valuetype,
+                           verbose = verbose)
+    }
+    
+    # use tokens_select for tokens objects
+    if (!is.null(c(remove, select))) {
+        if (verbose) catm("   ... ")
+        if (!is.null(remove)) {
+            x <- tokens_select(x, remove, selection = "remove", 
+                               valuetype = valuetype, verbose = verbose)
+        } else {
+            x <- tokens_select(x, select, selection = "keep", 
+                               valuetype = valuetype, verbose = verbose)
         }
     }
     
@@ -264,14 +283,19 @@ dfm.tokenizedTexts <- function(x,
     result@ngrams <- as.integer(attr(x, "ngrams"))
     result@skip <- as.integer(attr(x, "skip"))
     result@concatenator <- attr(x, "concatenator")
-    result@docvars <- attr(x, "docvars")
     
-    if (is.null(result@docvars)) {
+    if (attr(x, 'what') == "dictionary") {
+        attr(result, 'what') <- "dictionary"
+        attr(result, 'dictionary') <- attr(x, 'dictionary')
+    }
+    
+    if (!is.null(attr(x, "docvars"))) {
+        result@docvars <- attr(x, "docvars")
+    } else {
         result@docvars <- data.frame()
     }
     
-    dfm(result, tolower = FALSE, stem = stem, select = select, remove = remove, thesaurus = thesaurus,
-        dictionary = dictionary, valuetype = valuetype, verbose = verbose, ...)
+    dfm(result, tolower = FALSE, stem = stem, valuetype = valuetype, verbose = verbose, ...)
 }
 
 #' @noRd
@@ -415,17 +439,6 @@ compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
 }
 
 compile_dfm.tokens <- function(x, verbose = TRUE) {
-    
-    if (verbose) {
-        catm("   ... found ", 
-             format(length(x), big.mark = ","), " document",
-             ifelse(length(x) > 1, "s", ""), ### replace with: ntoken()
-             ", ",
-             format(length(types(x)), big.mark = ","),  ### replace with: ntype()
-             " feature",
-             ifelse(length(types(x)) > 1, "s", ""),
-             "\n", sep="")
-    }
     
     types <- types(x)
     x <- unclass(x)

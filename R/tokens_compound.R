@@ -65,27 +65,13 @@ tokens_compound.tokens <- function(x, features,
                    case_insensitive = TRUE, join = TRUE) {
     
     valuetype <- match.arg(valuetype)
-    names_org <- names(x)
-    attrs_org <- attributes(x)
+    attrs <- attributes(x)
     types <- types(x)
     
-    if (is.sequences(features) || is.collocations(features)) {
-        if (identical(attr(features, 'types'), types)) {
-            seqs_ids <- attr(features, 'tokens')
-        } else { 
-            seqs <- phrase(features$collocation)
-            seqs_ids <- lapply(seqs, function(x) fastmatch::fmatch(x, types))
-            seqs_ids <- seqs_ids[sapply(seqs_ids, function(x) all(!is.na(x)))]
-        }
-    } else {
-        if (is.dictionary(features)) features <- phrase(features)
-        seqs <- features2list(features)
-        seqs <- seqs[lengths(seqs) > 1] # drop single words
-        seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
-    }
-    if (length(seqs_ids) == 0) return(x) # do nothing
-    x <- qatd_cpp_tokens_compound(x, seqs_ids, types, concatenator, join)
-    attributes(x, FALSE) <- attrs_org
+    seqs_id <- features2id(features, types, valuetype, case_insensitive, remove_unigram = TRUE)
+    if (length(seqs_id) == 0) return(x) # do nothing
+    x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
+    attributes(x, FALSE) <- attrs
     attr(x, "concatenator") <- concatenator
     return(x)
 }

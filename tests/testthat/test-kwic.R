@@ -328,11 +328,8 @@ test_that("kwic works as expected with and without phrases", {
         kwic(txt, dict_bi)$keyword,
         c("a b", "a b")
     )
-    
-    
-    
+
     ## on tokens
-    
     expect_equal(
         kwic(toks_uni, char_uni)$keyword,
         c("a", "b", "g", 
@@ -360,8 +357,8 @@ test_that("kwic works as expected with and without phrases", {
         c("c d", "g h", "g h")
     )
     
-    expect_equal(nrow(kwic(toks_uni, coll_bi)), 0)
-    expect_equal(nrow(kwic(toks_uni, coll_tri)), 0)
+    expect_equal(nrow(kwic(toks_uni, coll_bi)), 6)
+    expect_equal(nrow(kwic(toks_uni, coll_tri)), 2)
     
     expect_equal(
         kwic(toks_uni, phrase(coll_bi))$keyword,
@@ -376,6 +373,6 @@ test_that("kwic works as expected with and without phrases", {
         kwic(toks_uni, dict_uni),
         kwic(toks_uni, char_uni)
     )
-    expect_equal(nrow(kwic(toks_uni, dict_bi)), 0)
+    expect_equal(nrow(kwic(toks_uni, dict_bi)), 2)
 
 })

@@ -3,7 +3,6 @@
 \name{as.tokens}
 \alias{as.tokens}
 \alias{as.tokens.list}
-\alias{as.tokens.collocations}
 \alias{as.list.tokens}
 \alias{unlist.tokens}
 \alias{as.character.tokens}
@@ -12,11 +11,9 @@
 \alias{c.tokens}
 \title{coercion, checking, and combining functions for tokens objects}
 \usage{
-as.tokens(x)
+as.tokens(x, concatenator = "_")
 
-\method{as.tokens}{list}(x)
-
-\method{as.tokens}{collocations}(x)
+\method{as.tokens}{list}(x, concatenator = "_")
 
 \method{as.list}{tokens}(x, ...)
 
@@ -32,6 +29,8 @@ is.tokens(x)
 }
 \arguments{
 \item{x}{object to be coerced or checked}
+
+\item{concatenator}{character between multi-word expressions, default is _ (underscore) character}
 
 \item{...}{for \link{c.tokens} only, \link{tokens} objects to be concatenated}
 
