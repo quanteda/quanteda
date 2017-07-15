@@ -178,7 +178,8 @@ List qatd_cpp_tokens_compound(const List &texts_,
     #else
     IdNgram id_comp = id_last;
     #endif
-
+    
+/*
     MapNgrams map_comps;
     std::vector<std::size_t> spans(comps_.size());
     for (unsigned int g = 0; g < (unsigned int)comps_.size(); g++) {
@@ -190,7 +191,21 @@ List qatd_cpp_tokens_compound(const List &texts_,
     sort(spans.begin(), spans.end());
     spans.erase(unique(spans.begin(), spans.end()), spans.end());
     std::reverse(std::begin(spans), std::end(spans));
+*/    
     
+    MapNgrams map_comps;
+    map_comps.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+    
+    Ngrams comps = Rcpp::as<Ngrams>(comps_);
+    std::vector<std::size_t> spans(comps.size());
+    for (size_t g = 0; g < comps.size(); g++) {
+        map_comps.insert(std::pair<Ngram, IdNgram>(comps[g], ++id_comp));
+        spans[g] = comps[g].size();
+    }
+    sort(spans.begin(), spans.end());
+    spans.erase(unique(spans.begin(), spans.end()), spans.end());
+    std::reverse(std::begin(spans), std::end(spans));
+     
     // dev::Timer timer;
     // dev::start_timer("Token compound", timer);
 #if QUANTEDA_USE_TBB

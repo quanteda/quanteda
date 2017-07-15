@@ -25,7 +25,8 @@
    - Removed arguments from `sequences()`: `ordered` and `nested`.
 *  (Finally) we added "will" to the list of English stopwords (#818).
 *  `dfm` objects with one or both dimensions haveing zero length, and empty `kwic` objects now display more appropriately in their print methods (per #811).
-*  Pattern matches are now implemented more consistently across functions - see above new features related to `phrase()`.
+*  Pattern matches are now implemented more consistently across functions.  In functions such as `*_select`, `*_remove`, `tokens_compound`, `features` has been replaced by `pattern`, and in `kwic`, `keywords` has been replaced by `pattern`.  These all behave consistently with respect to `pattern`, which now has a unified single help page and parameter description.(#839)  See also above new features related to `phrase()`.
+*  We have improved the performance of the C++ routines that handle many of the `tokens_*` functions using hashed tokens, making some of them 10x faster (#853).
 
 ### Bug fixes and stability enhancements
 
