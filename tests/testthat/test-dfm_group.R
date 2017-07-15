@@ -56,3 +56,21 @@ test_that("dfm.character groups works (#794)", {
         dfm(corp, groups = "grp")
     )
 })
+
+test_that("test dfm_group with factor levels, #854", {
+    
+    testdfm <- dfm(c('a b c c', 'b c d', 'a'))
+    expect_equivalent(
+        as.matrix(dfm_group(testdfm, factor(c('doc1', 'doc1', 'doc2'), 
+                                            levels = c('doc0', 'doc1', 'doc2', 'doc3')))),
+        matrix(c(0, 1, 1, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0), nrow = 4, 
+               dimnames = list(c('doc0', 'doc1', 'doc2', 'doc3'), c('a', 'b', 'c', 'd')))
+    )
+    
+    expect_equivalent(
+        as.matrix(dfm_group(testdfm, factor(c(1, 1, 2), 
+                                            levels = c(4, 3, 2, 1)))),
+        matrix(c(0, 0, 1, 1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 1), nrow = 4, 
+               dimnames = list(c('4', '3', '2', '1'), c('a', 'b', 'c', 'd')))
+    )
+})
