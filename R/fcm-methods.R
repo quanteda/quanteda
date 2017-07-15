@@ -71,48 +71,6 @@ fcm_compress.fcm <- function(x) {
         context = x@context, window = x@window, weights = x@weights, tri = x@tri)
 } 
 
-
-#' @rdname dfm_tolower
-#' @details \code{fcm_tolower} and \code{fcm_toupper} convert both dimensions of
-#'   the \link{fcm} to lower and upper case, respectively, and then recombine
-#'   the counts. This works only on fcm objects created with \code{context = 
-#'   "document"}.
-#' @export
-#' @examples
-#' # for a feature co-occurrence matrix
-#' myfcm <- fcm(tokens(c("b A A d", "C C a b B e")), 
-#'              context = "document")
-#' myfcm
-#' fcm_tolower(myfcm) 
-#' fcm_toupper(myfcm)   
-fcm_tolower <- function(x, keep_acronyms = FALSE, ...) {
-    UseMethod("fcm_tolower")   
-}
-
-#' @noRd
-#' @export
-fcm_tolower.fcm <- function(x, keep_acronyms = FALSE, ...) {
-    colnames(x) <- rownames(x) <- 
-        char_tolower(colnames(x), keep_acronyms = keep_acronyms, ...)
-    fcm_compress(x)
-}
-
-#' @rdname dfm_tolower
-#' @importFrom stringi stri_trans_toupper
-#' @export
-fcm_toupper <- function(x, ...) {
-    UseMethod("fcm_toupper")   
-}
-
-#' @noRd
-#' @export
-fcm_toupper.fcm <- function(x) {
-    colnames(x) <- rownames(x) <-
-        char_toupper(colnames(x), ...)
-    fcm_compress(x)
-}
-
-
 #' sort an fcm in alphabetical order of the features
 #' 
 #' Sorts a \link{dfm} in alphabetical order of the features.
