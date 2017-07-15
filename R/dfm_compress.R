@@ -75,8 +75,15 @@ dfm_compress.dfmSparse <- function(x, margin = c("both", "documents", "features"
 #' dfm(mydfm, groups = "grp")
 #' dfm(mydfm, groups = c(1, 1, 2, 2))
 dfm_group <- function(x, groups = NULL) {
+    UseMethod("dfm_group")
+}
+
+#' @noRd
+#' @export
+dfm_group.dfm <- function(x, groups = NULL) {
     dfm(x, groups = groups, tolower = FALSE)
 }
+
 
 
 #
@@ -169,8 +176,12 @@ dfm_compress.dfmDense <- function(x, ...) {
 #' dfm_toupper(mydfm)
 #'    
 dfm_tolower <- function(x) {
-    if (!is.dfm(x))
-        stop("dfm_tolower requires x to be a dfm object")
+    UseMethod("dfm_tolower")
+}
+
+#' @noRd
+#' @export
+dfm_tolower.dfm <- function(x) {
     colnames(x) <- stri_trans_tolower(colnames(x))
     dfm_compress(x, margin = "features")
 }
@@ -179,8 +190,12 @@ dfm_tolower <- function(x) {
 #' @importFrom stringi stri_trans_toupper
 #' @export
 dfm_toupper <- function(x) {
-    if (!is.dfm(x))
-        stop("dfm_toupper requires x to be a dfm object")
+    UseMethod("dfm_toupper")
+}
+
+#' @noRd
+#' @export
+dfm_toupper.dfm <- function(x) {
     colnames(x) <- stri_trans_toupper(colnames(x))
     dfm_compress(x, margin = "features")
 }
@@ -207,8 +222,13 @@ dfm_toupper <- function(x) {
 #' dfm_sort(dtm, decreasing = FALSE, "both")[1:10, 1:5]  
 dfm_sort <- function(x, decreasing = TRUE, 
                      margin = c("features", "documents", "both")) {
-    if (!is.dfm(x))
-        stop("dfm_sort requires x to be a dfm object")
+    UseMethod("dfm_sort")
+}
+
+#' @noRd
+#' @export
+dfm_sort <- function(x, decreasing = TRUE, 
+                     margin = c("features", "documents", "both")) {
     margin <- match.arg(margin)
     class_org <- class(x)
     if (margin=="features") {
