@@ -42,8 +42,12 @@ featnames.dfm <- function(x) {
     }
 }
 
-#' @noRd
+#' deprecated function for featnames
+#' 
+#' Deprecated function equivalent to \code{\link{featnames}}.  Soon to be eliminated.
+#' @param x a \link{dfm}
 #' @keywords internal deprecated
+#' @seealso \code{\link{featnames}}
 #' @export
 features <- function(x) {
     .Deprecated("featnames")

@@ -92,7 +92,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
         temp <- x[,unlist(values_id, use.names = FALSE)]
         colnames(temp) <- keys[keys_id]
         temp <- dfm_compress(temp, margin = 'features')
-        temp <- dfm_select(temp, features = keys, valuetype = 'fixed', padding = TRUE)
+        temp <- dfm_select(temp, pattern = keys, valuetype = 'fixed', padding = TRUE)
         if (exclusive) {
             result <- temp[,keys]
         } else {
