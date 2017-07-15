@@ -159,48 +159,6 @@ dfm_compress.dfmDense <- function(x, ...) {
                  ...)
 }                 
 
-
-#' convert the case of the features of a dfm and combine
-#' 
-#' \code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm to
-#' lower and upper case, respectively, and then recombine the counts.
-#' @param x the \link{dfm} or \link{fcm} object
-#' @importFrom stringi stri_trans_tolower
-#' @export
-#' @examples
-#' # for a document-feature matrix
-#' mydfm <- dfm(c("b A A", "C C a b B"), 
-#'              toLower = FALSE, verbose = FALSE)
-#' mydfm
-#' dfm_tolower(mydfm) 
-#' dfm_toupper(mydfm)
-#'    
-dfm_tolower <- function(x) {
-    UseMethod("dfm_tolower")
-}
-
-#' @noRd
-#' @export
-dfm_tolower.dfm <- function(x) {
-    colnames(x) <- stri_trans_tolower(colnames(x))
-    dfm_compress(x, margin = "features")
-}
-
-#' @rdname dfm_tolower
-#' @importFrom stringi stri_trans_toupper
-#' @export
-dfm_toupper <- function(x) {
-    UseMethod("dfm_toupper")
-}
-
-#' @noRd
-#' @export
-dfm_toupper.dfm <- function(x) {
-    colnames(x) <- stri_trans_toupper(colnames(x))
-    dfm_compress(x, margin = "features")
-}
-
-
 #' sort a dfm by frequency of one or more margins
 #' 
 #' Sorts a \link{dfm} by descending frequency of total features, total features

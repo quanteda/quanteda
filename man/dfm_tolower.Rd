@@ -17,6 +17,10 @@ fcm_toupper(x)
 }
 \arguments{
 \item{x}{the \link{dfm} or \link{fcm} object}
+
+\item{...}{additional arguments}
+
+\item{keep_acronyms}{if \code{TRUE}, do not lowercase any all-uppercase words}
 }
 \description{
 \code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm to

@@ -85,30 +85,30 @@ fcm_compress.fcm <- function(x) {
 #' myfcm
 #' fcm_tolower(myfcm) 
 #' fcm_toupper(myfcm)   
-fcm_tolower <- function(x, ...) {
+fcm_tolower <- function(x, keep_acronyms = FALSE, ...) {
     UseMethod("fcm_tolower")   
 }
 
 #' @noRd
 #' @export
-fcm_tolower.fcm <- function(x) {
+fcm_tolower.fcm <- function(x, keep_acronyms = FALSE, ...) {
     colnames(x) <- rownames(x) <- 
-        stringi::stri_trans_tolower(colnames(x))
+        char_tolower(colnames(x), keep_acronyms = keep_acronyms, ...)
     fcm_compress(x)
 }
 
 #' @rdname dfm_tolower
 #' @importFrom stringi stri_trans_toupper
 #' @export
-fcm_toupper <- function(x) {
-    UseMethod("fcm_tolower")   
+fcm_toupper <- function(x, ...) {
+    UseMethod("fcm_toupper")   
 }
 
 #' @noRd
 #' @export
 fcm_toupper.fcm <- function(x) {
     colnames(x) <- rownames(x) <-
-        stringi::stri_trans_toupper(colnames(x))
+        char_toupper(colnames(x), ...)
     fcm_compress(x)
 }
 
@@ -139,7 +139,7 @@ fcm_sort <- function(x) {
     
 #' @noRd
 #' @export
-fcm_sort <- function(x) {
+fcm_sort.fcm <- function(x) {
     result <- x[order(rownames(x)), order(colnames(x))]
     if (x@tri) {
         # make a triplet

@@ -10,10 +10,11 @@ char_tolower(x, keep_acronyms = FALSE, ...)
 char_toupper(x, ...)
 }
 \arguments{
-\item{x}{a \link{tokens} object}
+\item{x}{the input object whose character/tokens/feature elements will be
+case-converted}
 
-\item{keep_acronyms}{if \code{TRUE}, do not lowercase any all-uppercase words.
-Only applies to \code{char_tolower}.}
+\item{keep_acronyms}{(for `tolower` only) logical; if \code{TRUE}, do not lowercase any
+all-uppercase words}
 
 \item{...}{additional arguments passed to \pkg{stringi} functions, (e.g. 
 \code{\link{stri_trans_tolower}}), such as \code{locale}}

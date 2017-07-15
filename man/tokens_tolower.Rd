@@ -5,15 +5,19 @@
 \alias{tokens_toupper}
 \title{convert the case of tokens}
 \usage{
-tokens_tolower(x, ...)
+tokens_tolower(x, keep_acronyms = FALSE, ...)
 
 tokens_toupper(x, ...)
 }
 \arguments{
-\item{x}{a \link{tokens} object}
+\item{x}{the input object whose character/tokens/feature elements will be
+case-converted}
 
-\item{...}{additional arguments passed to \code{\link{char_tolower}}
-(currently this is limited to \code{keep_acronyms})}
+\item{keep_acronyms}{(for `tolower` only) logical; if \code{TRUE}, do not lowercase any
+all-uppercase words}
+
+\item{...}{additional arguments passed to \pkg{stringi} functions, (e.g. 
+\code{\link{stri_trans_tolower}}), such as \code{locale}}
 }
 \description{
 \code{tokens_tolower} and \code{tokens_toupper} convert the features of a
@@ -24,7 +28,4 @@ tokens_toupper(x, ...)
 toks <- tokens(c(txt1 = "b A A", txt2 = "C C a b B"))
 tokens_tolower(toks) 
 tokens_toupper(toks)
-}
-\seealso{
-\code{\link{char_tolower}}, \code{\link{char_toupper}}
 }
