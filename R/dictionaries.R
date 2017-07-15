@@ -634,7 +634,7 @@ as.yaml <- function(x) {
 #' @noRd
 #' @method as.yaml dictionary2
 #' @export
-as.yaml.dictionary <- function(x) {
+as.yaml.dictionary2 <- function(x) {
     yaml <- yaml::as.yaml(simplify_dictionary(x, TRUE), indent.mapping.sequence = TRUE)
     yaml <- stri_enc_toutf8(yaml)
     return(yaml)

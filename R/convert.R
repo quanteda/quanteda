@@ -141,7 +141,7 @@ as.wfm <- function(x) {
 #' @noRd
 #' @method as.wfm dfm
 #' @export
-as.wfm <- function(x) {
+as.wfm.dfm <- function(x) {
     convert(x, to = "austin")
 }
 

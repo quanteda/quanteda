@@ -15,8 +15,8 @@ ngrams <- function(x, ...) {
 
 #' @rdname ngrams
 #' @export
-ngrams.default <-  function(x, ...) {
-    tokens_ngrams(x, ...)
+ngrams.character <-  function(x, ...) {
+    char_ngrams(x, ...)
 }
 
 #' @rdname ngrams
@@ -24,6 +24,13 @@ ngrams.default <-  function(x, ...) {
 ngrams.tokenizedTexts <- function(x, ...) {
     as.tokenizedTexts(tokens_ngrams(as.tokens(x), ...))
 }
+
+#' @rdname ngrams
+#' @export
+ngrams.tokens <- function(x, ...) {
+    tokens_ngrams(x, ...)
+}
+
 
 #' @rdname ngrams
 #' @keywords internal tokens deprecated

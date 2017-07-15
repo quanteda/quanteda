@@ -184,7 +184,7 @@ fcm_toupper <- function(x, ...) {
 
 #' @noRd
 #' @export
-fcm_toupper.fcm <- function(x) {
+fcm_toupper.fcm <- function(x, ...) {
     colnames(x) <- rownames(x) <-
         char_toupper(colnames(x), ...)
     fcm_compress(x)
