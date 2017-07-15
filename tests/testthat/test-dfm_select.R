@@ -141,9 +141,9 @@ test_that("longer selection than longer than features that exist (related to #44
 
 test_that("test dfm_select with ngrams #589", {
     ngramdfm <- dfm(c('of_the', 'in_the', 'to_the', 'of_our', 'and_the', ' it_is', 'by_the', 'for_the'))
-    expect_equal(featnames(dfm_select(ngramdfm, features = c('of_the', 'in_the'), valuetype = 'fixed')),
+    expect_equal(featnames(dfm_select(ngramdfm, pattern = c('of_the', 'in_the'), valuetype = 'fixed')),
                  c('of_the', 'in_the'))
-    expect_equal(featnames(dfm_select(ngramdfm, features = '*_the', valuetype = 'glob')),
+    expect_equal(featnames(dfm_select(ngramdfm, pattern = '*_the', valuetype = 'glob')),
                  c('of_the', 'in_the', 'to_the', 'and_the', 'by_the', 'for_the'))
 })
 
@@ -151,11 +151,11 @@ test_that("test dfm_select with ngrams concatenated with whitespace", {
     ngramdfm <- dfm(c('of_the', 'in_the', 'to_the', 'of_our', 'and_the', ' it_is', 'by_the', 'for_the'))
     colnames(ngramdfm) <- stringi::stri_replace_all_fixed(colnames(ngramdfm), "_", " ")
     expect_equal(
-        featnames(dfm_select(ngramdfm, features = c('of the', 'in the'), valuetype = 'fixed')),
+        featnames(dfm_select(ngramdfm, pattern = c('of the', 'in the'), valuetype = 'fixed')),
         c('of the', 'in the')
     )
     expect_equal(
-        featnames(dfm_select(ngramdfm, features = '* the', valuetype = 'glob')),
+        featnames(dfm_select(ngramdfm, pattern = '* the', valuetype = 'glob')),
         c('of the', 'in the', 'to the', 'and the', 'by the', 'for the')
     )
 })
@@ -241,10 +241,10 @@ test_that("dfm_select raises warning when padding = TRUE but not valuetype = fix
 
 test_that("dfm_select returns empty dfm when not maching features", {
 
-    expect_equal(dim(dfm_select(testdfm, features = c('x', 'y', 'z'), documents = 'doc4')),
+    expect_equal(dim(dfm_select(testdfm, pattern = c('x', 'y', 'z'), documents = 'doc4')),
                  c(0, 0))
     
-    expect_equal(dim(dfm_select(testdfm, features = c('x', 'y', 'z'))),
+    expect_equal(dim(dfm_select(testdfm, pattern = c('x', 'y', 'z'))),
                  c(3, 0))
 })
 
@@ -266,19 +266,19 @@ test_that("dfm_select errors when dictionary has multi-word features, issue 775"
                                  pol = c("political_part*", "election*")), 
                             separator = "_")
     expect_equal(
-        featnames(dfm_select(dfm_inaug, features = testdict1, valuetype = "glob")),
+        featnames(dfm_select(dfm_inaug, pattern = testdict1, valuetype = "glob")),
         c("election", "elections", "company", "companies")
     )
     expect_equal(
-        featnames(dfm_select(dfm_inaug, features = phrase(testdict1), valuetype = "glob")),
+        featnames(dfm_select(dfm_inaug, pattern = phrase(testdict1), valuetype = "glob")),
         c("party", "political", "election", "part", "parties", "elections", "partisan", "company", "participation", "partisanship", "partial", "companies")    
     )
     expect_equal(
-        featnames(dfm_select(dfm_inaug, features = testdict2, valuetype = "glob")),
+        featnames(dfm_select(dfm_inaug, pattern = testdict2, valuetype = "glob")),
         c("election", "elections", "company", "companies")
     )
     expect_equal(
-        featnames(dfm_select(dfm_inaug, features = phrase(testdict2), valuetype = "glob")),
+        featnames(dfm_select(dfm_inaug, pattern = phrase(testdict2), valuetype = "glob")),
         c("party", "political", "election", "part", "parties", "elections", "partisan", "company", "participation", "partisanship", "partial", "companies")    
     )
 })

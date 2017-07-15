@@ -4,17 +4,17 @@
 \alias{tokens_compound}
 \title{convert token sequences into compound tokens}
 \usage{
-tokens_compound(x, features, concatenator = "_", valuetype = c("glob",
+tokens_compound(x, pattern, concatenator = "_", valuetype = c("glob",
   "regex", "fixed"), case_insensitive = TRUE, join = TRUE)
 }
 \arguments{
 \item{x}{an input \link{tokens} object}
 
-\item{features}{a character vector, list of character vectors, \link{dictionary},
-\link{collocations}, or \link{dfm}. See \link{features} for details.}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
 \item{concatenator}{the concatenation character that will connect the words 
-making up the multi-word sequences.  The default \code{_} is highly 
+making up the multi-word sequences.  The default \code{_} is  
 recommended since it will not be removed during normal cleaning and 
 tokenization (while nearly all other punctuation characters, at least those
 in the Unicode punctuation class [P] will be removed).}
@@ -28,8 +28,8 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 \item{join}{logical; if \code{TRUE}, join overlapping compounds}
 }
 \value{
-a \link{tokens} object in which the token sequences matching the patterns 
-in \code{sequences} have been replaced by  compound "tokens" joined by the concatenator
+a \link{tokens} object in which the token sequences matching \code{pattern}
+have been replaced by  compound "tokens" joined by the concatenator
 }
 \description{
 Replace multi-token sequences with a multi-word, or "compound" token.  The

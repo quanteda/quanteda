@@ -6,17 +6,17 @@
 #' to form a single "token".  This ensures that the sequences will be processed
 #' subsequently as single tokens, for instance in constructing a \link{dfm}.
 #' @param x an input \link{tokens} object
-#' @inheritParams features
+#' @inheritParams pattern
 #' @param concatenator the concatenation character that will connect the words 
-#'   making up the multi-word sequences.  The default \code{_} is highly 
+#'   making up the multi-word sequences.  The default \code{_} is  
 #'   recommended since it will not be removed during normal cleaning and 
 #'   tokenization (while nearly all other punctuation characters, at least those
 #'   in the Unicode punctuation class [P] will be removed).
 #' @inheritParams valuetype
 #' @param case_insensitive logical; if \code{TRUE}, ignore case when matching
 #' @param join logical; if \code{TRUE}, join overlapping compounds
-#' @return a \link{tokens} object in which the token sequences matching the patterns 
-#' in \code{sequences} have been replaced by  compound "tokens" joined by the concatenator
+#' @return a \link{tokens} object in which the token sequences matching \code{pattern}
+#' have been replaced by  compound "tokens" joined by the concatenator
 #' @export
 #' @author Kenneth Benoit (R) and Kohei Watanabe (C++)
 #' @examples
@@ -49,7 +49,7 @@
 #'                                   size = 2, min_count = 1)
 #' toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
 #' tokens_compound(toks, cols)
-tokens_compound <- function(x, features,
+tokens_compound <- function(x, pattern,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                     case_insensitive = TRUE, join = TRUE) {
     UseMethod("tokens_compound")
@@ -60,7 +60,7 @@ tokens_compound <- function(x, features,
 #' @noRd
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_compound.tokens <- function(x, features,
+tokens_compound.tokens <- function(x, pattern,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                    case_insensitive = TRUE, join = TRUE) {
     
@@ -68,7 +68,7 @@ tokens_compound.tokens <- function(x, features,
     attrs <- attributes(x)
     types <- types(x)
     
-    seqs_id <- features2id(features, types, valuetype, case_insensitive, remove_unigram = TRUE)
+    seqs_id <- features2id(pattern, types, valuetype, case_insensitive, remove_unigram = TRUE)
     if (length(seqs_id) == 0) return(x) # do nothing
     x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
     attributes(x, FALSE) <- attrs
@@ -80,10 +80,10 @@ tokens_compound.tokens <- function(x, features,
 #' @noRd
 #' @rdname tokens_compound
 #' @export
-tokens_compound.tokenizedTexts <- function(x, features, 
+tokens_compound.tokenizedTexts <- function(x, pattern, 
                                            concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                                            case_insensitive = TRUE, join = FALSE) {
-    as.tokenizedTexts(tokens_compound(as.tokens(x), features = features, 
+    as.tokenizedTexts(tokens_compound(as.tokens(x), pattern = pattern, 
                                       concatenator = concatenator, valuetype = valuetype,
                                       case_insensitive = TRUE, join = join))
 }
