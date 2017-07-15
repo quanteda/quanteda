@@ -209,9 +209,14 @@ dfm_select.dfm <-  function(x, pattern = NULL, documents = NULL,
 #' tmpdfm
 #' dfm_remove(tmpdfm, stopwords("english"))
 dfm_remove <- function(x, pattern = NULL, documents = NULL, ...) {
-    dfm_select(x, pattern, selection = "remove", ...)
+    UseMethod("dfm_remove")
 }
 
+#' @noRd
+#' @export
+dfm_remove <- function(x, pattern = NULL, documents = NULL, ...) {
+    dfm_select(x, pattern, selection = "remove", ...)
+}
 
 
 
