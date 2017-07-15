@@ -103,7 +103,7 @@ dfm_wordstem <- function(x, language = "porter") {
 
 #' @noRd    
 #' @export
-dfm_wordstem <- function(x, language = "porter") {
+dfm_wordstem.dfm <- function(x, language = "porter") {
     if (identical(as.integer(x@ngrams), 1L)) 
         colnames(x) <- char_wordstem(featnames(x), language = language)
     else

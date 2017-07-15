@@ -130,7 +130,7 @@ dfm_smooth <- function(x, smoothing = 1) {
 
 #' @noRd
 #' @export
-dfm_smooth <- function(x, smoothing = 1) {
+dfm_smooth.dfm <- function(x, smoothing = 1) {
     x + smoothing
 }
 

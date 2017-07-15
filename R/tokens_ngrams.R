@@ -6,7 +6,7 @@
 #' @export
 ngrams <- function(x, ...) {
     .Deprecated("tokens_ngrams")
-    tokens_ngrams(x, ...)
+    UseMethod("ngrams")
 }
 # @examples 
 # txt <- c("a b c d e", "c d e f g")

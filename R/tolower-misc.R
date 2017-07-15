@@ -14,20 +14,20 @@
 #' tokens_tolower(toks) 
 #' tokens_toupper(toks)
 tokens_tolower <- function(x, ...) {
-    originally_tokenizedTexts <- 
-        class(x)[1L] == "tokenizedTexts"
-    if (originally_tokenizedTexts) {
-        x <- as.tokens(x)
-    }
-    if (!is.tokens(x))
-        stop("x must be a tokens object")
-    types(x) <- char_tolower(types(x))
-    x <- tokens_hashed_recompile(x)
+    UseMethod("tokens_tolower")
+}
 
-    if (originally_tokenizedTexts)
-        as.tokenizedTexts(x)
-    else
-        x
+#' @noRd
+#' @export
+tokens_tolower.tokenizedTexts <- function(x, ...) {
+    as.tokenizedTexts(tokens_tolower(as.tokens(x), ...))
+}
+
+#' @noRd
+#' @export
+tokens_tolower.tokens <- function(x, ...) {
+    types(x) <- char_tolower(types(x), ...)
+    tokens_hashed_recompile(x)
 }
 
 
@@ -35,20 +35,20 @@ tokens_tolower <- function(x, ...) {
 #' @importFrom stringi stri_trans_toupper
 #' @export
 tokens_toupper <- function(x, ...) {
-    originally_tokenizedTexts <- 
-        class(x)[1L] == "tokenizedTexts"
-    if (originally_tokenizedTexts) {
-        x <- as.tokens(x)
-    }
-    if (!is.tokens(x))
-        stop("x must be a tokens object")
-    types(x) <- char_toupper(types(x))
-    x <- tokens_hashed_recompile(x)
+    UseMethod("tokens_toupper")
+}
+
+#' @noRd
+#' @export
+tokens_toupper.tokenizedTexts <- function(x, ...) {
+    as.tokenizedTexts(tokens_toupper(as.tokens(x), ...))
+}
     
-    if (originally_tokenizedTexts)
-        as.tokenizedTexts(x)
-    else
-        x
+#' @noRd
+#' @export
+tokens_toupper.tokens <- function(x, ...) {
+    types(x) <- char_toupper(types(x), ...)
+    tokens_hashed_recompile(x)
 }
 
 
@@ -76,28 +76,38 @@ tokens_toupper <- function(x, ...) {
 #' char_tolower(txt2, keep_acronyms = TRUE)
 #' char_toupper(txt2)
 char_tolower <- function(x, keep_acronyms = FALSE, ...) {
-        savedNames <- names(x)
-        if (keep_acronyms)
-            x <- stri_replace_all_regex(x, "\\b(\\p{Uppercase_Letter}{2,})\\b",  "_$1_", ...)
-        x <- stri_trans_tolower(x, ...)
-        if (keep_acronyms) {
-            m1 <- unique(unlist(stri_extract_all_regex(x, "\\b_\\p{Lowercase_Letter}+_\\b", omit_no_match = TRUE, ...)))
-            if (length(m1) > 0) {
-                m2 <- stri_replace_all_fixed(stri_trans_toupper(m1, ...), "_", "", ...)
-                x <- vapply(x, function(s) stri_replace_all_regex(s, m1,  m2, vectorize_all = FALSE, ...), character(1))
-            }
+    UseMethod("char_tolower")
+}
+
+#' @noRd
+#' @export
+char_tolower.character <- function(x, keep_acronyms = FALSE, ...) {
+    savedNames <- names(x)
+    if (keep_acronyms)
+        x <- stri_replace_all_regex(x, "\\b(\\p{Uppercase_Letter}{2,})\\b",  "_$1_", ...)
+    x <- stri_trans_tolower(x, ...)
+    if (keep_acronyms) {
+        m1 <- unique(unlist(stri_extract_all_regex(x, "\\b_\\p{Lowercase_Letter}+_\\b", omit_no_match = TRUE, ...)))
+        if (length(m1) > 0) {
+            m2 <- stri_replace_all_fixed(stri_trans_toupper(m1, ...), "_", "", ...)
+            x <- vapply(x, function(s) stri_replace_all_regex(s, m1,  m2, vectorize_all = FALSE, ...), character(1))
         }
-        names(x) <- savedNames
-        return(x)
+    }
+    names(x) <- savedNames
+    return(x)
 }
 
 #' @rdname char_tolower
 #' @export 
 char_toupper <- function(x, ...) {
+    UseMethod("char_toupper")
+}
+
+#' @noRd char_tolower
+#' @export 
+char_toupper.character <- function(x, ...) {
     savedNames <- names(x)
     x <- stri_trans_toupper(x, ...)
     names(x) <- savedNames
     return(x)
 }
-
-
