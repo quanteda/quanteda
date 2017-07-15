@@ -53,15 +53,20 @@ dfm_compress.dfmSparse <- function(x, margin = c("both", "documents", "features"
 
 #' @rdname dfm_compress
 #' @description \code{dfm_group} allows combining dfm documents by a grouping 
-#'   variable, which can also be one of the \link{docvars} attached to the dfm.  This is
-#'   identical in functionality to using the \code{"groups"} argument in
+#'   variable, which can also be one of the \link{docvars} attached to the dfm. 
+#'   This is identical in functionality to using the \code{"groups"} argument in
 #'   \code{\link{dfm}}.
 #' @param groups either: a character vector containing the names of document 
 #'   variables to be used for grouping; or a factor or object that can be 
 #'   coerced into a factor equal in length or rows to the number of documents
-#' @return \code{dfm_group} returns a \link{dfm} whose documents are equal to
-#'   the unique group combinations, and whose cell values are the sums of the
-#'   previous values summed by group.  This currently erases any docvars in the dfm.
+#' @param fill logical; if \code{TRUE} and \code{groups} is a factor, then use 
+#'   all levels of the factor when forming the new "documents" of the grouped 
+#'   dfm.  This will result in documents with zero feature counts for levels not
+#'   observed.  Has no effect if the \code{groups} variable(s) are not factors.
+#' @return \code{dfm_group} returns a \link{dfm} whose documents are equal to 
+#'   the unique group combinations, and whose cell values are the sums of the 
+#'   previous values summed by group.  This currently erases any docvars in the 
+#'   dfm.
 #' @export
 #' @examples
 #' # dfm_group examples
@@ -74,14 +79,13 @@ dfm_compress.dfmSparse <- function(x, margin = c("both", "documents", "features"
 #' # equivalent
 #' dfm(mydfm, groups = "grp")
 #' dfm(mydfm, groups = c(1, 1, 2, 2))
-dfm_group <- function(x, groups = NULL) {
+dfm_group <- function(x, groups = NULL, fill = FALSE) {
     UseMethod("dfm_group")
 }
 
 #' @noRd
 #' @export
-dfm_group.dfm <- function(x, groups = NULL) {
-    dfm(x, groups = groups, tolower = FALSE)
+dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
     #dfm(x, groups = groups, tolower = FALSE)
     if (is.character(groups) & all(groups %in% names(docvars(x)))) {
         groups <- interaction(docvars(x)[, groups], drop = TRUE)
