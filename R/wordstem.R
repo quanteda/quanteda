@@ -28,25 +28,12 @@
 #' tokens_wordstem(th)
 #' 
 tokens_wordstem <- function(x, language = "porter") {
-    
-    # call the old type of tokenizedTexts if that is what is passed
-    if (is.tokenizedTexts(x) & !is.tokens(x))
-        return(tokenizedTexts_wordstem(x, language = language))
-    
-    if (!is.tokens(x))
-        stop("x must be a tokens object")
-    
-    if (identical(as.integer(attributes(x)$ngrams), 1L))
-        types(x) <- char_wordstem(types(x), language = language)
-    else 
-        types(x) <- wordstem_Ngrams(types(x), 
-                                    concatenator = attributes(x)$concatenator, 
-                                    language = language)
-    
-    tokens_hashed_recompile(x)
+    UseMethod("tokens_wordstem")
 }
-
-tokenizedTexts_wordstem <- function(x, language = "porter") {
+    
+#' @noRd
+#' @export
+tokens_wordstem.tokenizedTexts <- function(x, language = "porter") {
     origAttrs <- attributes(x)
     if (!grepl("word", attr(x, "what")) || any(unlist(lapply(x, function(y) stringi::stri_detect_fixed(y, " ") & !is.na(y)))))
         stop("whitespace detected: you can only stem word-tokenized texts")
@@ -61,6 +48,20 @@ tokenizedTexts_wordstem <- function(x, language = "porter") {
     attributes(result) <- origAttrs
     result
 }
+    
+#' @noRd
+#' @export
+tokens_wordstem.tokens <- function(x, language = "porter") {
+    
+    if (identical(as.integer(attributes(x)$ngrams), 1L))
+        types(x) <- char_wordstem(types(x), language = language)
+    else 
+        types(x) <- wordstem_Ngrams(types(x), 
+                                    concatenator = attributes(x)$concatenator, 
+                                    language = language)
+    tokens_hashed_recompile(x)
+}
+
 
 #' @rdname tokens_wordstem
 #' @import stringi 
@@ -72,8 +73,12 @@ tokenizedTexts_wordstem <- function(x, language = "porter") {
 #' char_wordstem(c("win", "winning", "wins", "won", "winner"))
 #' 
 char_wordstem <- function(x, language = "porter") {
-    if (!is.character(x))
-        stop("x must be a character object")
+    UseMethod("char_wordstem")
+}
+
+#' @noRd
+#' @export
+char_wordstem.character <- function(x, language = "porter") {
     if (any(stringi::stri_detect_fixed(x, " ") & !is.na(x)))
         stop("whitespace detected: you can only stem tokenized texts")
     result <- SnowballC::wordStem(x, language)
@@ -93,8 +98,12 @@ char_wordstem <- function(x, language = "porter") {
 #' 
 #' @export
 dfm_wordstem <- function(x, language = "porter") {
-    if (!is.dfm(x))
-        stop("x must be a dfm object")
+    UseMethod("dfm_wordstem")
+}
+
+#' @noRd    
+#' @export
+dfm_wordstem <- function(x, language = "porter") {
     if (identical(as.integer(x@ngrams), 1L)) 
         colnames(x) <- char_wordstem(featnames(x), language = language)
     else
@@ -162,7 +171,3 @@ wordstem.character <- function(x, language = "porter") {
     .Deprecated("char_wordstem")
     char_wordstem(x, language = language)
 }
-
-
-
-
