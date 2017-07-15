@@ -73,6 +73,13 @@ setClass("textmodel_wordscores_predicted",
 #' @export
 textmodel_wordscores <- function(x, y,
                                  scale = c("linear", "logit"), smooth = 0) {
+    UseMethod("textmodel_wordscores")
+}
+
+#' @noRd
+#' @export
+textmodel_wordscores.dfm <- function(x, y,
+                                     scale = c("linear", "logit"), smooth = 0) {
     scale <- match.arg(scale)
     data <- x
     scores <- y

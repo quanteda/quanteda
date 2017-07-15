@@ -88,8 +88,24 @@ is.dfm <- function(x) {
 #' @return \code{as.dfm} coerces a matrix or data.frame to a dfm
 #' @export
 as.dfm <- function(x) {
-    if (!any((c("matrix", "data.frame") %in% class(x))))
-        stop("as.dfm only applicable to matrix(-like) objects.")
+    UseMethod("as.dfm")
+}
+
+#' @noRd
+#' @method as.dfm matrix
+#' @export
+as.dfm.matrix <- function(x) {
+    as_dfm_constructor(x)
+}
+
+#' @noRd
+#' @method as.dfm data.frame
+#' @export
+as.dfm.data.frame <- function(x) {
+    as_dfm_constructor(x)
+}
+
+as_dfm_constructor <- function(x) {
     new("dfmSparse", Matrix(as.matrix(x), 
                             sparse = TRUE,
                             dimnames = list(docs = if (is.null(rownames(x))) paste0("doc", seq_len(nrow(x))) else rownames(x),
@@ -97,7 +113,6 @@ as.dfm <- function(x) {
                             ) 
         )
 }
-
 
 
 #' identify the most frequent features in a dfm

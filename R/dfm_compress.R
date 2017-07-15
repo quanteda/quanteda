@@ -75,8 +75,15 @@ dfm_compress.dfmSparse <- function(x, margin = c("both", "documents", "features"
 #' dfm(mydfm, groups = "grp")
 #' dfm(mydfm, groups = c(1, 1, 2, 2))
 dfm_group <- function(x, groups = NULL) {
+    UseMethod("dfm_group")
+}
+
+#' @noRd
+#' @export
+dfm_group.dfm <- function(x, groups = NULL) {
     dfm(x, groups = groups, tolower = FALSE)
 }
+
 
 
 #
@@ -152,40 +159,6 @@ dfm_compress.dfmDense <- function(x, ...) {
                  ...)
 }                 
 
-
-#' convert the case of the features of a dfm and combine
-#' 
-#' \code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm to
-#' lower and upper case, respectively, and then recombine the counts.
-#' @param x the \link{dfm} or \link{fcm} object
-#' @importFrom stringi stri_trans_tolower
-#' @export
-#' @examples
-#' # for a document-feature matrix
-#' mydfm <- dfm(c("b A A", "C C a b B"), 
-#'              toLower = FALSE, verbose = FALSE)
-#' mydfm
-#' dfm_tolower(mydfm) 
-#' dfm_toupper(mydfm)
-#'    
-dfm_tolower <- function(x) {
-    if (!is.dfm(x))
-        stop("dfm_tolower requires x to be a dfm object")
-    colnames(x) <- stri_trans_tolower(colnames(x))
-    dfm_compress(x, margin = "features")
-}
-
-#' @rdname dfm_tolower
-#' @importFrom stringi stri_trans_toupper
-#' @export
-dfm_toupper <- function(x) {
-    if (!is.dfm(x))
-        stop("dfm_toupper requires x to be a dfm object")
-    colnames(x) <- stri_trans_toupper(colnames(x))
-    dfm_compress(x, margin = "features")
-}
-
-
 #' sort a dfm by frequency of one or more margins
 #' 
 #' Sorts a \link{dfm} by descending frequency of total features, total features
@@ -207,8 +180,13 @@ dfm_toupper <- function(x) {
 #' dfm_sort(dtm, decreasing = FALSE, "both")[1:10, 1:5]  
 dfm_sort <- function(x, decreasing = TRUE, 
                      margin = c("features", "documents", "both")) {
-    if (!is.dfm(x))
-        stop("dfm_sort requires x to be a dfm object")
+    UseMethod("dfm_sort")
+}
+
+#' @noRd
+#' @export
+dfm_sort <- function(x, decreasing = TRUE, 
+                     margin = c("features", "documents", "both")) {
     margin <- match.arg(margin)
     class_org <- class(x)
     if (margin=="features") {
