@@ -214,7 +214,7 @@ dfm_remove <- function(x, pattern = NULL, documents = NULL, ...) {
 
 #' @noRd
 #' @export
-dfm_remove <- function(x, pattern = NULL, documents = NULL, ...) {
+dfm_remove.dfm <- function(x, pattern = NULL, documents = NULL, ...) {
     dfm_select(x, pattern, selection = "remove", ...)
 }
 

@@ -106,9 +106,13 @@ tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' 
 #' @export
 char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    if (!is.character(x))
-        stop("x must be a character object")
-    tokens_ngrams(x, n, skip, concatenator)
+    UseMethod("char_ngrams")
+}
+
+#' @noRd
+#' @export
+char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+    as.character(tokens_ngrams(x, n, skip, concatenator))
 }
     
 
@@ -167,6 +171,11 @@ tokens_ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_
 #' tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ") 
 #' tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")   
 tokens_skipgrams <- function(x, n, skip, concatenator="_") {
-    tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
+    UseMethod("tokens_skipgrams")
 }
 
+#' @noRd
+#' @export
+tokens_skipgrams <- function(x, n, skip, concatenator="_") {
+    tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
+}

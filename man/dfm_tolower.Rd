@@ -11,7 +11,7 @@ dfm_tolower(x)
 
 dfm_toupper(x)
 
-fcm_tolower(x)
+fcm_tolower(x, ...)
 
 fcm_toupper(x)
 }

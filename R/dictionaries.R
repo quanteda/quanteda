@@ -628,11 +628,17 @@ nodes2list <- function(node, dict = list()){
 #' cat(yaml, file = '/home/kohei/Documents/Dictionary/LaverGarry.yaml')
 #' }
 as.yaml <- function(x) {
+    UseMethod("as.yaml")
+}
+
+#' @noRd
+#' @method as.yaml dictionary2
+#' @export
+as.yaml.dictionary <- function(x) {
     yaml <- yaml::as.yaml(simplify_dictionary(x, TRUE), indent.mapping.sequence = TRUE)
     yaml <- stri_enc_toutf8(yaml)
     return(yaml)
 }
-
 
 # Internal function for as.yaml to simplify dictionary objects
 simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
