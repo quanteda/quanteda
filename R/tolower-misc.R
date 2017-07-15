@@ -103,7 +103,7 @@ char_toupper <- function(x, ...) {
     UseMethod("char_toupper")
 }
 
-#' @noRd char_tolower
+#' @noRd
 #' @export 
 char_toupper.character <- function(x, ...) {
     savedNames <- names(x)

@@ -135,8 +135,13 @@ NULL
 #' identical(as.wfm(quantdfm), convert(quantdfm, to = "austin"))
 #' 
 as.wfm <- function(x) {
-    if (!is.dfm(x))
-        stop("x must be a dfm class object")
+    UseMethod("as.wfm")
+}
+
+#' @noRd
+#' @method as.wfm dfm
+#' @export
+as.wfm <- function(x) {
     convert(x, to = "austin")
 }
 
@@ -176,8 +181,13 @@ dfm2tmformat <- function(x, weighting = tm::weightTf) {
 #' }
 #' 
 as.DocumentTermMatrix <- function(x, ...) {
-    if (!is.dfm(x))
-        stop("x must be a dfm class object")
+    UseMethod("as.DocumentTermMatrix")
+}
+
+#' @noRd
+#' @method as.DocumentTermMatrix dfm
+#' @export
+as.DocumentTermMatrix.dfm <- function(x, ...) {
     convert(x, to = "tm", ...)
 }
 
@@ -195,8 +205,12 @@ as.DocumentTermMatrix <- function(x, ...) {
 #' }
 #' 
 dfm2ldaformat <- function(x) {
-    if (!is.dfm(x))
-        stop("x must be a dfm class object")
+    UseMethod("dfm2ldaformat")
+}
+
+#' @noRd
+#' @export
+dfm2ldaformat.dfm <- function(x) {
     if (!requireNamespace("tm"))
         stop("You must install the slam package installed for this conversion.")
     tmDTM <- dfm2tmformat(x)
@@ -235,8 +249,12 @@ dtm2ldaformat <- function (x, omit_empty = TRUE) {
 #' }
 #' 
 quantedaformat2dtm <- function(x) {
-    if (!is.dfm(x))
-        stop("x must be a dfm class object")
+    UseMethod("quantedaformat2dtm")
+}
+    
+#' @noRd
+#' @export
+quantedaformat2dtm.dfm <- function(x) {
     d_lda <- convert(x, to = "lda")
     ldaformat2dtm(d_lda$documents, d_lda$vocab)
 }

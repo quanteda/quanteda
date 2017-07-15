@@ -9,9 +9,9 @@
 \usage{
 ngrams(x, ...)
 
-ngrams.default(x, ...)
+\method{ngrams}{default}(x, ...)
 
-ngrams.tokenizedTexts(x, ...)
+\method{ngrams}{tokenizedTexts}(x, ...)
 
 skipgrams(x, ...)
 }
