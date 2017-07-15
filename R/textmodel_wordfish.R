@@ -121,7 +121,20 @@ textmodel_wordfish <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol
                                abs_err = FALSE,
                                svd_sparse = TRUE,
                                residual_floor = 0.5) {
+    UseMethod("textmodel_wordfish")
+}
     
+#' @noRd
+#' @export
+textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 
+                               dispersion = c("poisson", "quasipoisson"), 
+                               dispersion_level = c("feature", "overall"),
+                               dispersion_floor = 0,
+                               sparse = TRUE, 
+                               threads = quanteda_options("threads"),
+                               abs_err = FALSE,
+                               svd_sparse = TRUE,
+                               residual_floor = 0.5) {
     dispersion <- match.arg(dispersion)
     dispersion_level <- match.arg(dispersion_level)
     

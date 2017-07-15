@@ -55,6 +55,13 @@
 #' @export
 textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
                          distribution = c("multinomial", "Bernoulli"), ...) {
+    UseMethod("textmodel_NB")
+}
+
+#' @noRd
+#' @export
+textmodel_NB.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
+                             distribution = c("multinomial", "Bernoulli"), ...) {
     call <- match.call()
     prior <- match.arg(prior)
     distribution <- match.arg(distribution)

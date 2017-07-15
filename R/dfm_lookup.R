@@ -52,10 +52,16 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
                        case_insensitive = TRUE,
                        capkeys = !exclusive,
                        verbose = quanteda_options("verbose")) {
-    
-    if (!is.dfm(x))
-        stop("x must be a dfm object")
-    
+    UseMethod("dfm_lookup")
+}
+ 
+#' @noRd
+#' @export
+dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
+                           exclusive = TRUE, valuetype = c("glob", "regex", "fixed"), 
+                           case_insensitive = TRUE,
+                           capkeys = !exclusive,
+                           verbose = quanteda_options("verbose")) {
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
     
