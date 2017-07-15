@@ -241,7 +241,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##          UKIP   346    739        27
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Wed Jun 28 10:53:13 2017
+## Created: Fri Jul 14 12:56:11 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -262,7 +262,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##          UKIP   346    739        27         UKIP 2010
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Wed Jun 28 10:53:13 2017
+## Created: Fri Jul 14 12:56:11 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">metadoc</span>(myCorpus, <span class="st">&quot;language&quot;</span>) &lt;-<span class="st"> &quot;english&quot;</span>
@@ -292,7 +292,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/vignettes/* on x86_64 by kbenoit
-## Created: Wed Jun 28 10:53:13 2017
+## Created: Fri Jul 14 12:56:11 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>&quot;english&quot;</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code>ndoc()</code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -345,20 +345,20 @@ mytf7 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class
 ## Corpus consisting of 14 documents.
 ## 
 ##                                   Text Types Tokens Sentences year debate
-##        2010_BUDGET_01_Brian_Lenihan_FF  1949   8733       374 2010 BUDGET
-##       2010_BUDGET_02_Richard_Bruton_FG  1042   4478       217 2010 BUDGET
-##         2010_BUDGET_03_Joan_Burton_LAB  1621   6429       307 2010 BUDGET
-##        2010_BUDGET_04_Arthur_Morgan_SF  1589   7185       343 2010 BUDGET
-##          2010_BUDGET_05_Brian_Cowen_FF  1618   6697       250 2010 BUDGET
-##           2010_BUDGET_06_Enda_Kenny_FG  1151   4254       153 2010 BUDGET
-##      2010_BUDGET_07_Kieran_ODonnell_FG   681   2309       133 2010 BUDGET
-##       2010_BUDGET_08_Eamon_Gilmore_LAB  1183   4217       201 2010 BUDGET
-##     2010_BUDGET_09_Michael_Higgins_LAB   490   1288        44 2010 BUDGET
-##        2010_BUDGET_10_Ruairi_Quinn_LAB   442   1290        59 2010 BUDGET
+##        2010_BUDGET_01_Brian_Lenihan_FF  1948   8733       374 2010 BUDGET
+##       2010_BUDGET_02_Richard_Bruton_FG  1040   4478       217 2010 BUDGET
+##         2010_BUDGET_03_Joan_Burton_LAB  1619   6429       307 2010 BUDGET
+##        2010_BUDGET_04_Arthur_Morgan_SF  1587   7185       343 2010 BUDGET
+##          2010_BUDGET_05_Brian_Cowen_FF  1617   6697       250 2010 BUDGET
+##           2010_BUDGET_06_Enda_Kenny_FG  1149   4254       153 2010 BUDGET
+##      2010_BUDGET_07_Kieran_ODonnell_FG   680   2309       133 2010 BUDGET
+##       2010_BUDGET_08_Eamon_Gilmore_LAB  1180   4217       201 2010 BUDGET
+##     2010_BUDGET_09_Michael_Higgins_LAB   489   1288        44 2010 BUDGET
+##        2010_BUDGET_10_Ruairi_Quinn_LAB   441   1290        59 2010 BUDGET
 ##      2010_BUDGET_11_John_Gormley_Green   404   1036        49 2010 BUDGET
 ##        2010_BUDGET_12_Eamon_Ryan_Green   512   1651        90 2010 BUDGET
 ##      2010_BUDGET_13_Ciaran_Cuffe_Green   444   1248        45 2010 BUDGET
-##  2010_BUDGET_14_Caoimhghin_OCaolain_SF  1188   4094       176 2010 BUDGET
+##  2010_BUDGET_14_Caoimhghin_OCaolain_SF  1186   4094       176 2010 BUDGET
 ##  number      foren     name party
 ##      01      Brian  Lenihan    FF
 ##      02    Richard   Bruton    FG
@@ -375,8 +375,8 @@ mytf7 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class
 ##      13     Ciaran    Cuffe Green
 ##      14 Caoimhghin OCaolain    SF
 ## 
-## Source:  /home/paul/Dropbox/code/quantedaData/* on x86_64 by paul
-## Created: Tue Sep 16 15:58:21 2014
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
+## Created: Wed Jun 28 22:04:18 2017
 ## Notes:</code></pre></div>
 <p>We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tokenInfo &lt;-<span class="st"> </span><span class="kw">summary</span>(data_corpus_inaugural)
@@ -489,7 +489,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2017-Trump   582   1662        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Wed Jun 28 10:53:14 2017
+## Created: Fri Jul 14 12:56:12 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -1895,29 +1895,29 @@ ieDfm &lt;-<span class="st"> </span><span class="kw">dfm</span>(data_corpus_iris
 ## Estimated document positions:
 ## 
 ##                                Documents      theta         SE       lower       upper
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8268036 0.02020113  1.78720939  1.86639781
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5855453 0.02767752 -0.63979326 -0.53129738
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.0696093 0.01556654 -1.10011977 -1.03909892
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1141058 0.02791284 -0.16881502 -0.05939668
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7742535 0.02354795  1.72809951  1.82040749
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7016675 0.02613599 -0.75289405 -0.65044099
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4967371 0.04081043 -0.57672554 -0.41674864
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5438955 0.02931964 -0.60136202 -0.48642903
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -1.0104557 0.03669246 -1.08237288 -0.93853843
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9879423 0.03741468 -1.06127505 -0.91460950
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1913710 0.07324285  1.04781505  1.33492703
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1500193 0.06254512  0.02743087  0.27260773
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7196468 0.07340590  0.57577127  0.86352238
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1521357 0.03644625 -0.22357033 -0.08070102
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8280046 0.02021240  1.78838828  1.86762088
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5840053 0.02765681 -0.63821262 -0.52979792
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.0656316 0.01558103 -1.09617041 -1.03509279
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1148756 0.02788633 -0.16953284 -0.06021844
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7761552 0.02355473  1.72998791  1.82232247
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7034261 0.02604779 -0.75447977 -0.65237246
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.5003274 0.04065502 -0.58001120 -0.42064352
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5328334 0.02948065 -0.59061542 -0.47505129
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -1.0129992 0.03651098 -1.08456072 -0.94143767
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9908513 0.03721958 -1.06380168 -0.91790092
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1909375 0.07332243  1.04722550  1.33464944
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1460350 0.06248950  0.02355555  0.26851439
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7167872 0.07347917  0.57276806  0.86080640
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1529696 0.03640683 -0.22432698 -0.08161222
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the   supplementary          budget              to            this           house            last           april               , 
-##     -0.15058982      0.34726053      0.36922895      0.21628040      1.09099461      0.05829019      0.33579913      0.26839752      0.14935164      0.25353066     -0.13851438      0.30630139 
+##     -0.15194012      0.34699140      0.36823381      0.21644537      1.09030483      0.05860111      0.33590315      0.26845502      0.14883224      0.25356386     -0.14091674      0.30663342 
 ##            said              we           could            work             our             way         through          period              of          severe        economic        distress 
-##     -0.77779200      0.43921107     -0.59703182      0.54219872      0.70824736      0.29607747      0.62274642      0.51835687      0.30095010      1.25529502      0.44375418      1.83470247 
+##     -0.77650211      0.43922668     -0.59679331      0.54169712      0.70823949      0.29582731      0.62246919      0.51779644      0.30115757      1.25775410      0.44408696      1.83380921 
 ##               .           today             can          report            that notwithstanding 
-##      0.23398491      0.14174075      0.32480755      0.65459489      0.04184343      1.83470247</code></pre></div>
+##      0.23426837      0.14304541      0.32521548      0.65466428      0.04180191      1.83380921</code></pre></div>
 </div>
 <div id="topic-models" class="section level2">
 <h2>Topic models</h2>
@@ -1937,17 +1937,17 @@ if (<span class="kw">require</span>(topicmodels)) {
 ## 
 ##     dtm2ldaformat, ldaformat2dtm
 ##      2010_BUDGET_01_Brian_Lenihan_FF 2010_BUDGET_02_Richard_Bruton_FG 2010_BUDGET_03_Joan_Burton_LAB 2010_BUDGET_04_Arthur_Morgan_SF 2010_BUDGET_05_Brian_Cowen_FF 2010_BUDGET_06_Enda_Kenny_FG
-## [1,]                              10                               12                              4                               2                            18                           17
-## [2,]                               1                               15                             19                              14                             3                           11
-## [3,]                              17                               16                             18                              20                            17                           19
+## [1,]                               4                                3                             12                               8                            16                            5
+## [2,]                              14                               10                             10                              17                            15                           20
+## [3,]                              18                                2                             15                              15                             5                            2
 ##      2010_BUDGET_07_Kieran_ODonnell_FG 2010_BUDGET_08_Eamon_Gilmore_LAB 2010_BUDGET_09_Michael_Higgins_LAB 2010_BUDGET_10_Ruairi_Quinn_LAB 2010_BUDGET_11_John_Gormley_Green
-## [1,]                                 8                               13                                  7                              20                                19
-## [2,]                                19                                6                                 17                              14                                14
-## [3,]                                16                               16                                  1                               2                                 1
+## [1,]                                13                               19                                  2                               9                                 9
+## [2,]                                 7                                1                                 20                              20                                 3
+## [3,]                                11                                2                                  7                              10                                18
 ##      2010_BUDGET_12_Eamon_Ryan_Green 2010_BUDGET_13_Ciaran_Cuffe_Green 2010_BUDGET_14_Caoimhghin_OCaolain_SF
-## [1,]                               7                                16                                     9
-## [2,]                              16                                19                                     5
-## [3,]                               5                                 7                                    16</code></pre></div>
+## [1,]                              11                                 7                                     6
+## [2,]                               7                                 1                                     7
+## [3,]                              19                                17                                     2</code></pre></div>
 </div>
 </div>
 

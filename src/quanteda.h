@@ -11,10 +11,14 @@ using namespace Rcpp;
 using namespace RcppParallel;
 using namespace std;
 
-#ifndef QUANTEDA // prevent multiple redefinition
+#ifndef QUANTEDA // prevent redefining
 #define QUANTEDA
 
 #define CLANG_VERSION (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__)
+
+// setting for unordered_map and unordered_set 
+const float GLOBAL_PATTERNS_MAX_LOAD_FACTOR = 0.1;
+const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.5;
 
 // compiler has to be newer than clang 3.30 or gcc 4.8.1
 #if RCPP_PARALLEL_USE_TBB && (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801) 
@@ -168,7 +172,7 @@ namespace quanteda{
     typedef std::vector<Ngram> VecNgrams;
     typedef std::unordered_set<unsigned int> SetUnigrams;
 #endif    
-
+/*
     inline std::vector<std::size_t> register_ngrams(List words_, SetNgrams &set_words) {
         std::vector<std::size_t> spans(words_.size());
         for (unsigned int g = 0; g < (unsigned int)words_.size(); g++) {
@@ -196,6 +200,44 @@ namespace quanteda{
         std::reverse(std::begin(spans), std::end(spans));
         return spans;
     }
+*/
+    inline std::vector<std::size_t> register_ngrams(List patterns_, SetNgrams &set) {
+
+        set.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+        Ngrams patterns = Rcpp::as<Ngrams>(patterns_);
+        std::vector<std::size_t> spans(patterns.size());
+        for (size_t g = 0; g < patterns.size(); g++) {
+            set.insert(patterns[g]);
+            spans[g] = patterns[g].size();
+        }
+        sort(spans.begin(), spans.end());
+        spans.erase(unique(spans.begin(), spans.end()), spans.end());
+        std::reverse(std::begin(spans), std::end(spans));
+        return spans;
+    }
+
+    inline std::vector<std::size_t> register_ngrams(List patterns_, IntegerVector ids_, MapNgrams &map) {
+
+        map.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+        Ngrams patterns = Rcpp::as<Ngrams>(patterns_);
+        std::vector<unsigned int> ids = Rcpp::as< std::vector<unsigned int> >(ids_);
+        std::vector<std::size_t> spans(patterns.size());
+        for (size_t g = 0; g < std::min(patterns.size(), ids.size()); g++) {
+            map.insert(std::pair<Ngram, IdNgram>(patterns[g], ids[g]));
+            spans[g] = patterns[g].size();
+        }
+
+        // Rcout << "current max_load_factor: " << map.max_load_factor() << std::endl;
+        // Rcout << "current size           : " << map.size() << std::endl;
+        // Rcout << "current bucket_count   : " << map.unsafe_bucket_count() << std::endl;
+        // Rcout << "current load_factor    : " << map.load_factor() << std::endl;
+
+        sort(spans.begin(), spans.end());
+        spans.erase(unique(spans.begin(), spans.end()), spans.end());
+        std::reverse(std::begin(spans), std::end(spans));
+        return spans;
+    }
+    
 
 // These typedefs are used in fcm_mt, ca, wordfish_mt
 #if QUANTEDA_USE_TBB

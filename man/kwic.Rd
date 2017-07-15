@@ -6,7 +6,7 @@
 \alias{as.tokens.kwic}
 \title{locate keywords-in-context}
 \usage{
-kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
+kwic(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, join = FALSE, ...)
 
 is.kwic(x)
@@ -16,14 +16,8 @@ is.kwic(x)
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
 
-\item{keywords}{a keyword pattern or phrase consisting of multiple keyword 
-patterns, possibly including punctuation.  If the value contains
-whitespace, it is best to wrap it in \code{\link{phrase}} to make this
-explicit. However if \code{x} is a character or \link{corpus} object, then
-keywords containing whitespace, or dictionary or collocation values, will
-automatically be considered phrases where each whitespace-separated element
-matches a token in sequence, and the \code{keywords} will be tokenized
-using the \code{...} options.}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
 \item{window}{the number of context words to be displayed around the keyword.}
 
@@ -51,6 +45,15 @@ list of a keyword supplied by the user in its immediate context, identifying
 the source text and the word index number within the source text.  (Not the 
 line number, since the text may or may not be segmented using end-of-line 
 delimiters.)
+}
+\note{
+\code{pattern} will be a keyword pattern or phrase, possibly multiple
+  patterns, that may include punctuation.  If a pattern contains whitespace,
+  it is best to wrap it in \code{\link{phrase}} to make this explicit. 
+  However if \code{pattern} is a \link[=textstat_collocations]{collocations}
+  or \link{dictionary} object, then the collocations or multi-word dictionary
+  keys will automatically be considered phrases where each
+  whitespace-separated element matches a token in sequence.
 }
 \examples{
 head(kwic(data_corpus_inaugural, "secure*", window = 3, valuetype = "glob"))
