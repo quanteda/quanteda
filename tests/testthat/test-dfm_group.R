@@ -69,8 +69,8 @@ test_that("test dfm_group with factor levels, fill = TRUE and FALSE, #854", {
     )
     expect_equal(
         as.matrix(dfm_group(testdfm, groups = "grp", fill = TRUE)),
-        matrix(c(1,2,3,1, 1,0,0,0, 0,0,0,0), byrow = TRUE, nrow = 3, 
-               dimnames = list(docs = c("A", "B", "C"), features = letters[1:4]))
+        matrix(c(1,2,3,1, 1,0,0,0, 0,0,0,0, 0,0,0,0), byrow = TRUE, nrow = 4 , 
+               dimnames = list(docs = c("A", "B", "C", "D"), features = letters[1:4]))
     )
     
     testdfm <- dfm(c('a b c c', 'b c d', 'a'))
@@ -95,7 +95,7 @@ test_that("test dfm_group with factor levels, fill = TRUE and FALSE, #854", {
     # should this also be ordered? (here the expectation is that it is)
     expect_equal(
         as.matrix(dfm_group(testdfm, groups = factor(c(3, 3, 1), levels = 4:1), fill = FALSE)),
-        matrix(c(1,2,3,1, 1,0,0,0), byrow = TRUE, nrow = 4,
+        matrix(c(1,2,3,1, 1,0,0,0), byrow = TRUE, nrow = 2,
                dimnames = list(docs = c(3, 1), features = letters[1:4]))
     )
 })
@@ -108,7 +108,7 @@ test_that("test dfm_group with non-factor grouping variable, with fill", {
     expect_equal(
         as.matrix(dfm_group(testdfm, groups = "grp", fill = FALSE)),
         matrix(c(1,0,0,0, 0,1,0,2, 1,2,3,1), byrow = TRUE, nrow = 3, 
-               dimnames = list(docs = c("A", "B", "D"), features = letters[1:4]))
+               dimnames = list(docs = c("A", "C", "D"), features = letters[1:4]))
     )
     expect_equal(
         dfm_group(testdfm, groups = "grp", fill = FALSE),
@@ -118,19 +118,20 @@ test_that("test dfm_group with non-factor grouping variable, with fill", {
         dfm_group(testdfm, groups = grp, fill = FALSE),
         dfm_group(testdfm, groups = grp, fill = TRUE)
     )
-    # should this be sorted? I think it should be the same as when obtained from a docvar
+    
     expect_equal(
-        dfm_group(testdfm, groups = grp, fill = FALSE),
+        as.matrix(dfm_group(testdfm, groups = grp, fill = FALSE)),
         matrix(c(1,0,0,0, 0,1,0,2, 1,2,3,1), byrow = TRUE, nrow = 3, 
-               dimnames = list(docs = c("A", "B", "D"), features = letters[1:4]))
+               dimnames = list(docs = c("A", "C", "D"), features = letters[1:4]))
     )
     expect_equal(
         dfm_group(testdfm, groups = grp, fill = FALSE),
-        dfm_group(testdfm, groups = "grp", fill = FALSE),
+        dfm_group(testdfm, groups = "grp", fill = FALSE)
     )
 })
     
 test_that("test dfm_group with wrongly dimensioned groups variables", {
+    grp <- c("D", "D", "A", "C")
     corp <- corpus(c('a b c c', 'b c d', 'a', "b d d"),
                    docvars = data.frame(grp = grp, stringsAsFactors = FALSE))
     testdfm <- dfm(corp)
