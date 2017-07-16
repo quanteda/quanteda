@@ -86,11 +86,19 @@ dfm_group <- function(x, groups = NULL, fill = FALSE) {
 #' @noRd
 #' @export
 dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
-    #dfm(x, groups = groups, tolower = FALSE)
+    
     if (is.character(groups) & all(groups %in% names(docvars(x)))) {
-        groups <- interaction(docvars(x)[, groups], drop = TRUE)
+        groups <- interaction(docvars(x)[, groups], drop = FALSE)
     }
-    group_dfm(x, documents = groups)
+    if (ndoc(x) != length(groups)) {
+        stop("groups must name docvars or provide data matching the documents in x\n")
+    }
+    if(!fill || !is.factor(groups))
+        groups <- factor(groups, levels = sort(unique(groups)))
+    x <- group_dfm(x, documents = groups, fill = fill)
+    if (!is.null(groups))
+        x <- x[as.character(levels(groups)),]
+    return(x)
 }
 
 
@@ -98,7 +106,7 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
 #
 # internal code to perform dfm compression and grouping
 # on features and/or documents
-group_dfm <- function(x, features = NULL, documents = NULL) {
+group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
     
     if (is.null(features) && is.null(documents)) {
         return(x)
@@ -120,7 +128,7 @@ group_dfm <- function(x, features = NULL, documents = NULL) {
         if(!is.factor(features))
             features <- factor(features, levels = features_unique)
         features_name <- as.character(features_unique)
-        if (!identical(levels(features), features_unique)) {
+        if (fill && !identical(levels(features), features_unique)) {
             features_name <- c(features_name, setdiff(as.character(levels(features)), 
                                                       as.character(features_unique)))
         }
@@ -139,7 +147,7 @@ group_dfm <- function(x, features = NULL, documents = NULL) {
         if(!is.factor(documents))
             documents <- factor(documents, levels = documents_unique)
         documents_name <- as.character(documents_unique)
-        if (!identical(levels(documents), documents_unique)) {
+        if (fill && !identical(levels(documents), documents_unique)) {
             documents_name <- c(documents_name, setdiff(as.character(levels(documents)), 
                                                         as.character(documents_unique)))
         }
@@ -159,11 +167,7 @@ group_dfm <- function(x, features = NULL, documents = NULL) {
                   skip = x@skip,
                   concatenator = x@concatenator,
                   docvars = docvars_new)
-    
-    if (!is.null(features))
-        result <- result[,as.character(levels(features))]
-    if (!is.null(documents))
-        result <- result[as.character(levels(documents)),]
+
     return(result)
 }
 
