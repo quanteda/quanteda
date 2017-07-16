@@ -28,6 +28,7 @@
 *  `dfm` objects with one or both dimensions haveing zero length, and empty `kwic` objects now display more appropriately in their print methods (per #811).
 *  Pattern matches are now implemented more consistently across functions.  In functions such as `*_select`, `*_remove`, `tokens_compound`, `features` has been replaced by `pattern`, and in `kwic`, `keywords` has been replaced by `pattern`.  These all behave consistently with respect to `pattern`, which now has a unified single help page and parameter description.(#839)  See also above new features related to `phrase()`.
 *  We have improved the performance of the C++ routines that handle many of the `tokens_*` functions using hashed tokens, making some of them 10x faster (#853).
+*  Upgrades to the `dfm_group()` function now allow "empty" documents to be created using the `fill = TRUE` option, for making documents conform to a selection (similar to how `dfm_select()` works for features, when supplied a dfm as the pattern argument).  The `groups` argument now behaves consistently across the functions where it is used. (#854)
 
 ### Bug fixes and stability enhancements
 

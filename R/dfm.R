@@ -31,9 +31,8 @@
 #'   creating the dfm first, and then applying \code{\link{dfm_lookup}}
 #'   separately.
 #' @inheritParams valuetype
-#' @param groups character vector containing the names of document variables for
-#'   aggregating documents; only applies when calling dfm on a corpus object. 
-#'   When \code{x} is a \link{dfm} object, \code{groups} provides a convenient 
+#' @inheritParams groups
+#' @note When \code{x} is a \link{dfm}, \code{groups} provides a convenient 
 #'   and fast method of combining and refactoring the documents of the dfm 
 #'   according to the groups.
 #' @param verbose display messages if \code{TRUE}

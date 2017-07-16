@@ -84,8 +84,12 @@ test_that("test plot.kwic keeps order of keywords passed", {
     )
 })
 
-test_that("test textplot_wordcloud works for wordfish fitted models", {
+test_that("test textplot_wordcloud works for dfm objects", {
     expect_silent(textplot_wordcloud(dfm(data_corpus_inaugural[1:5]), min.freq = 10))
+})
+
+test_that("test textplot_wordcloud works for tokens objects", {
+    expect_silent(textplot_wordcloud(tokens(data_corpus_inaugural[1:5]), min.freq = 10))
 })
 
 test_that("test textplot_scale1d wordfish in the most basic way", {

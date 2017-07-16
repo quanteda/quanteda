@@ -52,10 +52,16 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
                        case_insensitive = TRUE,
                        capkeys = !exclusive,
                        verbose = quanteda_options("verbose")) {
-    
-    if (!is.dfm(x))
-        stop("x must be a dfm object")
-    
+    UseMethod("dfm_lookup")
+}
+ 
+#' @noRd
+#' @export
+dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
+                           exclusive = TRUE, valuetype = c("glob", "regex", "fixed"), 
+                           case_insensitive = TRUE,
+                           capkeys = !exclusive,
+                           verbose = quanteda_options("verbose")) {
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
     
@@ -92,9 +98,12 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
         temp <- x[,unlist(values_id, use.names = FALSE)]
         colnames(temp) <- keys[keys_id]
         temp <- dfm_compress(temp, margin = 'features')
-        temp <- dfm_select(temp, pattern = keys, valuetype = 'fixed', padding = TRUE)
+        # temp <- dfm_select(temp, pattern = keys, valuetype = 'fixed', padding = TRUE)
+        # an alternative way to select the identical features as in the dictionary keys
+        temp <- dfm_select(temp, 
+                           as.dfm(matrix(0, ncol = length(keys), dimnames = list(docs = "removeme", features = keys))))
         if (exclusive) {
-            result <- temp[,keys]
+            result <- temp[, keys]
         } else {
             result <- cbind(x[,unlist(values_id) * -1], temp[,keys])
         }

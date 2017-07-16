@@ -2,16 +2,19 @@
 % Please edit documentation in R/tokens_ngrams.R
 \name{ngrams}
 \alias{ngrams}
-\alias{ngrams.default}
+\alias{ngrams.character}
 \alias{ngrams.tokenizedTexts}
+\alias{ngrams.tokens}
 \alias{skipgrams}
 \title{deprecated function name for forming ngrams and skipgrams}
 \usage{
 ngrams(x, ...)
 
-ngrams.default(x, ...)
+\method{ngrams}{character}(x, ...)
 
-ngrams.tokenizedTexts(x, ...)
+\method{ngrams}{tokenizedTexts}(x, ...)
+
+\method{ngrams}{tokens}(x, ...)
 
 skipgrams(x, ...)
 }

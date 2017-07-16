@@ -1,7 +1,7 @@
 #' recombine documents tokens by groups
 #' 
 #' @param x \link{tokens} object
-#' @param groups a character or numeric vector that speficy grouping of documents
+#' @inheritParams groups
 #' @keywords internal
 #' @examples
 #' # dfm_group examples
