@@ -127,10 +127,7 @@ as_dfm_constructor <- function(x) {
 #' @param scheme one of \code{count} for total feature frequency (within
 #'   \code{group} if applicable), or \code{docfreq} for the document frequencies
 #'   of features
-#' @param groups either: a character vector containing the names of document 
-#'   variables to be used for grouping; or a factor or object that can be 
-#'   coerced into a factor equal in length or rows to the number of documents. 
-#'   See \code{\link{dfm_group}} for details.
+#' @inheritParams groups
 #' @return A named numeric vector of feature counts, where the names are the 
 #'   feature labels, or a list of these if \code{groups} is given.
 #' @examples

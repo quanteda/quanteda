@@ -22,7 +22,7 @@ of features}
 \item{groups}{either: a character vector containing the names of document 
 variables to be used for grouping; or a factor or object that can be 
 coerced into a factor equal in length or rows to the number of documents. 
-See \code{\link{dfm_group}} for details.}
+See \link{groups} for details.}
 }
 \value{
 A named numeric vector of feature counts, where the names are the 

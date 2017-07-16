@@ -21,7 +21,8 @@ objects, \code{"documents"} has no effect.}
 
 \item{groups}{either: a character vector containing the names of document 
 variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents}
+coerced into a factor equal in length or rows to the number of documents. 
+See \link{groups} for details.}
 
 \item{fill}{logical; if \code{TRUE} and \code{groups} is a factor, then use 
 all levels of the factor when forming the new "documents" of the grouped 

@@ -9,8 +9,10 @@ textmodel_wordshoal(x, groups, authors, dir = c(1, 2), tol = 0.001)
 \arguments{
 \item{x}{the \link{dfm} from which the model will be fit}
 
-\item{groups}{the name of a variable in the document variables for data giving the 
-document group for each document}
+\item{groups}{either: a character vector containing the names of document 
+variables to be used for grouping; or a factor or object that can be 
+coerced into a factor equal in length or rows to the number of documents. 
+See \link{groups} for details.}
 
 \item{authors}{the name of a variable in the document variables for data giving the 
 author of each document}

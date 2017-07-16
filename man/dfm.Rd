@@ -44,11 +44,10 @@ creating the dfm}
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
-\item{groups}{character vector containing the names of document variables for
-aggregating documents; only applies when calling dfm on a corpus object. 
-When \code{x} is a \link{dfm} object, \code{groups} provides a convenient 
-and fast method of combining and refactoring the documents of the dfm 
-according to the groups.}
+\item{groups}{either: a character vector containing the names of document 
+variables to be used for grouping; or a factor or object that can be 
+coerced into a factor equal in length or rows to the number of documents. 
+See \link{groups} for details.}
 
 \item{verbose}{display messages if \code{TRUE}}
 
@@ -70,6 +69,11 @@ The default behavior for \code{remove}/\code{select} when
   the texts with ngrams, then remove the features to be ignored, and then 
   construct the dfm using this modified tokenization object.  See the code 
   examples for an illustration.
+}
+\note{
+When \code{x} is a \link{dfm}, \code{groups} provides a convenient 
+  and fast method of combining and refactoring the documents of the dfm 
+  according to the groups.
 }
 \examples{
 ## for a corpus
