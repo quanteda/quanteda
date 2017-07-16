@@ -1,13 +1,11 @@
 #' select features from a dfm or fcm
 #' 
-#' This function selects or discards features from a \link{dfm} or \link{fcm},
-#' based on feature name matches with \code{pattern}.  The most common usages
-#' are to eliminate features from a dfm already constructed, such as stopwords,
+#' This function selects or discards features from a \link{dfm} or \link{fcm}, 
+#' based on feature name matches with \code{pattern}.  The most common usages 
+#' are to eliminate features from a dfm already constructed, such as stopwords, 
 #' or to select only terms of interest from a dictionary.
 #' @param x the \link{dfm} or \link{fcm} object whose features will be selected
 #' @inheritParams pattern
-#' @param documents select documents based on their document names. Works
-#'   exactly the same as features.
 #' @param selection whether to \code{keep} or \code{remove} the features
 #' @inheritParams valuetype
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
@@ -16,10 +14,7 @@
 #'   \href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
 #'    (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are 
 #'   applied after (and hence, in addition to) any selection based on pattern 
-#'   matches. These arguments are Ignored when padding is \code{TRUE}.
-#' @param padding if \code{TRUE} features or documents not existing in x is 
-#'   added to \link{dfm}. This option is available only when selection is 
-#'   \code{keep} and valuetype is \code{fixed}.
+#'   matches.
 #' @param verbose if \code{TRUE} print message about how many pattern were 
 #'   removed
 #' @param ... supplementary arguments passed to the underlying functions in 
@@ -30,21 +25,20 @@
 #' @note This function selects features based on their labels.  To select 
 #'   features based on the values of the document-feature matrix, use 
 #'   \code{\link{dfm_trim}}.
-#' @return A \link{dfm} or \link{fcm} object, after the feature selection has
+#' @return A \link{dfm} or \link{fcm} object, after the feature selection has 
 #'   been applied.
 #'   
-#'   When \code{pattern} is a \link{dfm} object and \code{padding} is
-#'   \code{TRUE}, then the returned object will be identical in its feature set
-#'   to the dfm supplied as the \code{pattern} argument. This means that any
-#'   features in \code{x} not in the dfm provided as \code{pattern} will be
-#'   discarded, and that any features in found in the dfm supplied as
-#'   \code{pattern} but not found in \code{x} will be added with all zero
-#'   counts.  Because selecting on a dfm is designed to produce a selected dfm
-#'   with an exact feature match, when \code{pattern} is a \link{dfm} object,
-#'   then the following settings are always used: \code{padding = TRUE}, 
+#'   When \code{pattern} is a \link{dfm} object, then the returned object will
+#'   be identical in its feature set to the dfm supplied as the \code{pattern}
+#'   argument. This means that any features in \code{x} not in the dfm provided
+#'   as \code{pattern} will be discarded, and that any features in found in the
+#'   dfm supplied as \code{pattern} but not found in \code{x} will be added with
+#'   all zero counts.  Because selecting on a dfm is designed to produce a
+#'   selected dfm with an exact feature match, when \code{pattern} is a
+#'   \link{dfm} object, then the following settings are always used: 
 #'   \code{case_insensitive = FALSE}, and \code{valuetype = "fixed"}.
 #'   
-#'   Selecting on a \link{dfm} is useful when you have trained a model on one
+#'   Selecting on a \link{dfm} is useful when you have trained a model on one 
 #'   dfm, and need to project this onto a test set whose features must be 
 #'   identical.  It is also used in \code{\link{bootstrap_dfm}}.  See examples.
 #' @export
@@ -70,15 +64,14 @@
 #' txts <- c("This is text one", "The second text", "This is text three")
 #' (dfm1 <- dfm(txts[1:2]))
 #' (dfm2 <- dfm(txts[2:3]))
-#' (dfm3 <- dfm_select(dfm1, dfm2, valuetype = "fixed", padding = TRUE, verbose = TRUE))
+#' (dfm3 <- dfm_select(dfm1, dfm2, valuetype = "fixed", verbose = TRUE))
 #' setequal(featnames(dfm2), featnames(dfm3))
 #' 
-dfm_select <- function(x, pattern = NULL, documents = NULL, 
+dfm_select <- function(x, pattern = NULL, 
                        selection = c("keep", "remove"), 
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
                        min_nchar = 1, max_nchar = 63,
-                       padding = FALSE,
                        verbose = quanteda_options("verbose"), ...) {
     UseMethod("dfm_select")
 }
@@ -86,21 +79,17 @@ dfm_select <- function(x, pattern = NULL, documents = NULL,
 #' @rdname dfm_select
 #' @noRd
 #' @export
-dfm_select.dfm <-  function(x, pattern = NULL, documents = NULL, 
+dfm_select.dfm <-  function(x, pattern = NULL, 
                             selection = c("keep", "remove"), 
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
                             min_nchar = 1, max_nchar = 63,
-                            padding = FALSE,
                             verbose = quanteda_options("verbose"), ...) {
-    
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     is_dfm <- FALSE
-    
-    if (padding && valuetype != 'fixed')
-        warning("padding is used only when valuetype is 'fixed'")
+    padding <- FALSE
     
     # select features based on "pattern"
     features_keep <- seq_len(nfeature(x))
@@ -128,42 +117,25 @@ dfm_select.dfm <-  function(x, pattern = NULL, documents = NULL,
         }
     }
     
-    # select documents based on "documents" pattern
-    documents_keep <- seq_len(ndoc(x))
-    if (!is.null(documents)){
-        documents <- unlist(documents, use.names = FALSE) # this funciton does not accept list
-        documents_id <- unlist(regex2id(documents, docnames(x), valuetype, case_insensitive), use.names = FALSE)
-        if (!is.null(documents_id)) documents_id <- sort(documents_id) # keep the original row order
-    } else {
-        if (selection == "keep") {
-            documents_id <- seq_len(ndoc(x))
-        } else {
-            documents_id <- NULL
-        }
-    }
-    
     if (selection == "keep") {
         features_keep <- features_id
-        documents_keep <- documents_id
     } else {
         features_keep <- setdiff(features_keep, features_id)
-        documents_keep <- setdiff(documents_keep, documents_id)
     }
     
     # select features based on feature length
     if (!padding) {
         features_keep <- intersect(features_keep, which(stri_length(featnames(x)) >= min_nchar & 
-                                                        stri_length(featnames(x)) <= max_nchar))
+                                                            stri_length(featnames(x)) <= max_nchar))
     }
     
     if (!length(features_keep)) features_keep <- 0
-    if (!length(documents_keep)) documents_keep <- 0
-    temp <- x[documents_keep, features_keep]    
+    temp <- x[, features_keep]    
 
-    features_add <- documents_add <- character() # avoid error in verbose message
-    
+    features_add <- character() # avoid error in verbose message
+
     if (valuetype == 'fixed' && padding) {
-    
+        
         # add non-existent features
         features_add <- setdiff(pattern, featnames(temp))
         if (length(features_add)) {
@@ -172,16 +144,6 @@ dfm_select.dfm <-  function(x, pattern = NULL, documents = NULL,
                                            dimnames = list(docnames(temp), features_add)), 
                               "dgCMatrix")
             temp <- cbind(temp, new("dfmSparse", pad_feature))
-        }
-
-        # add non-existent documents
-        documents_add <- setdiff(documents, docnames(temp))
-        if (length(documents_add)) {
-            pad_document <- as(sparseMatrix(i = NULL, j = NULL, 
-                                            dims = c(length(documents_add), nfeature(temp)), 
-                                            dimnames = list(documents_add, featnames(temp))), 
-                               "dgCMatrix")
-            temp <- rbind(temp, new("dfmSparse", pad_document))
         }
         temp <- reassign_slots(temp, x)
     }
@@ -192,8 +154,8 @@ dfm_select.dfm <-  function(x, pattern = NULL, documents = NULL,
     }
     
     if (verbose) {
-        message_select(selection, length(features_id), length(documents_id), 
-                       length(features_add), length(documents_add))
+        message_select(selection, length(features_id), 0, 
+                       length(features_add), 0)
     }
     attributes(x, FALSE) <- attrs
     return(result)
@@ -208,13 +170,13 @@ dfm_select.dfm <-  function(x, pattern = NULL, documents = NULL,
 #'               verbose = FALSE)
 #' tmpdfm
 #' dfm_remove(tmpdfm, stopwords("english"))
-dfm_remove <- function(x, pattern = NULL, documents = NULL, ...) {
+dfm_remove <- function(x, pattern = NULL, ...) {
     UseMethod("dfm_remove")
 }
 
 #' @noRd
 #' @export
-dfm_remove.dfm <- function(x, pattern = NULL, documents = NULL, ...) {
+dfm_remove.dfm <- function(x, pattern = NULL, ...) {
     dfm_select(x, pattern, selection = "remove", ...)
 }
 

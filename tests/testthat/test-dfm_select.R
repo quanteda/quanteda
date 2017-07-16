@@ -129,8 +129,6 @@ test_that("longer selection than longer than features that exist (related to #44
     # bugs in C++ needs repeated tests
     expect_message(dfm_select(dfmtest, feat, verbose = TRUE),
                    "kept 4 features")
-    expect_message(dfm_select(dfmtest, feat, verbose = TRUE),
-                   " and 2 documents")
     expect_message(dfm_remove(dfmtest, feat, verbose = TRUE),
                    "removed 4 features")
     expect_equivalent(
@@ -161,34 +159,34 @@ test_that("test dfm_select with ngrams concatenated with whitespace", {
 })
 
 
-test_that("test dfm_select with documents", {
-    
-    expect_equal(docnames(dfm_select(testdfm, documents = 'doc*', selection = "keep", valuetype = "glob", 
-                                     padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
-                 c('doc1', 'doc2', 'doc3'))
-    
-    expect_equal(docnames(dfm_select(testdfm, documents = c('doc1', 'doc2'), selection = "keep", valuetype = "fixed", 
-                                    padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
-                 c('doc1', 'doc2'))
-    
-    expect_equal(docnames(dfm_select(testdfm, documents = c('doc1', 'doc2'), selection = "remove", valuetype = "fixed", 
-                                     padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
-                 c('doc3'))
-    
-    expect_equal(docnames(dfm_select(testdfm, documents = c('doc3', 'doc4'), selection = "keep", valuetype = "fixed", 
-                                     padding = TRUE, verbose = FALSE, case_insensitive = FALSE)),
-                 c('doc3', 'doc4'))
-})
-
-test_that("test dfm_select with dates in document names", {
-    
-    dates <- as.character(seq.Date(as.Date('2017-01-01'), as.Date('2017-12-31'), 1))
-    txts <- paste('text', seq_along(dates))
-    names(txts) <- dates
-    paddeddfm <- dfm_select(dfm(txts)[1:10,], documents = dates, valuetype = 'fixed', padding = TRUE)
-    expect_equal(ndoc(paddeddfm), 365)
-    
-})
+# test_that("test dfm_select with documents", {
+#     
+#     expect_equal(docnames(dfm_select(testdfm, documents = 'doc*', selection = "keep", valuetype = "glob", 
+#                                      padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
+#                  c('doc1', 'doc2', 'doc3'))
+#     
+#     expect_equal(docnames(dfm_select(testdfm, documents = c('doc1', 'doc2'), selection = "keep", valuetype = "fixed", 
+#                                     padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
+#                  c('doc1', 'doc2'))
+#     
+#     expect_equal(docnames(dfm_select(testdfm, documents = c('doc1', 'doc2'), selection = "remove", valuetype = "fixed", 
+#                                      padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
+#                  c('doc3'))
+#     
+#     expect_equal(docnames(dfm_select(testdfm, documents = c('doc3', 'doc4'), selection = "keep", valuetype = "fixed", 
+#                                      padding = TRUE, verbose = FALSE, case_insensitive = FALSE)),
+#                  c('doc3', 'doc4'))
+# })
+# 
+# test_that("test dfm_select with dates in document names", {
+#     
+#     dates <- as.character(seq.Date(as.Date('2017-01-01'), as.Date('2017-12-31'), 1))
+#     txts <- paste('text', seq_along(dates))
+#     names(txts) <- dates
+#     paddeddfm <- dfm_select(dfm(txts)[1:10,], documents = dates, valuetype = 'fixed', padding = TRUE)
+#     expect_equal(ndoc(paddeddfm), 365)
+#     
+# })
 
 
 test_that("test dfm_select with features from a dfm,  fixed", {
@@ -232,18 +230,14 @@ test_that("dfm_select removes padding", {
     
 })
 
-test_that("dfm_select raises warning when padding = TRUE but not valuetype = fixed", {
-    
-  expect_warning(dfm_select(testdfm, c('z', 'd', 'e'), padding = TRUE),
-                 "padding is used only when valuetype is 'fixed'")
-    
-})
+# test_that("dfm_select raises warning when padding = TRUE but not valuetype = fixed", {
+#     
+#   expect_warning(dfm_select(testdfm, c('z', 'd', 'e'), padding = TRUE),
+#                  "padding is used only when valuetype is 'fixed'")
+#     
+# })
 
 test_that("dfm_select returns empty dfm when not maching features", {
-
-    expect_equal(dim(dfm_select(testdfm, pattern = c('x', 'y', 'z'), documents = 'doc4')),
-                 c(0, 0))
-    
     expect_equal(dim(dfm_select(testdfm, pattern = c('x', 'y', 'z'))),
                  c(3, 0))
 })
