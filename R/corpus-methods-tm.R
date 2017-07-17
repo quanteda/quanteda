@@ -25,3 +25,16 @@ make_unique_tm_names <- function(char_names, int_lengths, start_at = 1, sep = ".
     int_seqs <- int_seqs - (1 - start_at)
     paste(char_names, int_seqs, sep = sep)
 }
+
+flatten_lists <- function(x) {
+    x <- lapply(x, unclass)
+    for (i in seq_along(x)) {
+        x[[i]] <- lapply(x[[i]], function(y) {
+            if (lubridate::is.POSIXlt(y)) y <- as.character(y)
+            if (length(y) > 1) y <- paste(y, collapse = " ")
+            if (length(y) == 0) y <- NULL
+            y
+        })
+    }
+    x
+}

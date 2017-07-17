@@ -159,7 +159,7 @@ test_that("test corpus constructor works for tm objects", {
     
     data(acq, package = "tm")
     mytmCorpus2 <- corpus(acq)
-    expect_equal(dim(docvars(mytmCorpus2)), c(50,15))
+    expect_equal(dim(docvars(mytmCorpus2)), c(50,12))
     
     # SimpleCorpus
     txt <- system.file("texts", "txt", package = "tm")

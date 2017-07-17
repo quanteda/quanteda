@@ -308,6 +308,7 @@ corpus.kwic <- function(x, ...) {
 #' @rdname corpus
 #' @keywords corpus
 #' @importFrom data.table rbindlist data.table
+#' @importFrom lubridate is.POSIXlt
 #' @export
 corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
     
@@ -336,15 +337,12 @@ corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
         }
         
         # document-level metadata
-        metad <- data.frame(do.call(rbind, (lapply(x$content, "[[", "meta"))),
-                            stringsAsFactors = FALSE, row.names = NULL)
-        makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
-        datetimestampIndex <- which(names(metad) == "datetimestamp")
-        if (length(datetimestampIndex)) {
-            metad[, -datetimestampIndex] <- apply(metad[, -datetimestampIndex], 2, makechar)
-            metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
-        }
-
+        metad <- unclass(lapply(x$content, "[[", "meta"))
+        # flatten any elements that are themselves lists, into pasted vectors
+        metad <- flatten_lists(metad)
+        # get rid of any empty fields
+        metad <- lapply(metad, function(y) y[lengths(y) > 0])
+        metad <- data.table::rbindlist(metad, fill = TRUE)
         # add metad to df, where meta is repeated as appropriate for content
         df <- cbind(df, metad[rep(seq_len(nrow(metad)), times = doc_lengths), ])
         
