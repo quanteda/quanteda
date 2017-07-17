@@ -29,7 +29,8 @@ Imports:
     fastmatch,
     ggplot2 (>= 2.2.0),
     XML,
-    yaml
+    yaml,
+    lubridate
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     knitr,
