@@ -9,8 +9,8 @@ test_that("test dfm_lookup, issue #389", {
                             freedom = c('free*', 'libert*')))
     expect_equal(featnames(dfm(tokens_lookup(toks, dictionary = dict), tolower = FALSE)),
                  c("Country", "HOR", "law", "freedom"))
-    expect_error(dfm_lookup(dfm(toks), dictionary = dict),
-                  "dfm_lookup not implemented for ngrams > 1 and multi-word dictionary values")
+    # expect_error(dfm_lookup(dfm(toks), dictionary = dict),
+    #               "dfm_lookup not implemented for ngrams > 1 and multi-word dictionary values")
 
     dict2 <- dictionary(list(Country = "united",
                              HOR = c("House"),
@@ -35,20 +35,23 @@ test_that("#459 apply a hierarchical dictionary to a dfm", {
     
     expect_equal(
         as.matrix(dfm_lookup(testdfm, dict, valuetype = "fixed", levels = 1)),
-        matrix(c(3, 1, 1, 1), ncol = 2, dimnames = list(docs = c("d1", "d2"), features = c("geo", "other")))
+        matrix(c(3, 1, 1, 1), ncol = 2, dimnames = list(docs = c("d1", "d2"), 
+                                                        features = c("geo", "other")))
     )
 
     expect_equal(
         as.matrix(dfm_lookup(testdfm, dict, valuetype = "fixed", levels = 1:2)),
         matrix(c(1, 1, 2, 0, 0, 0, 1, 1), ncol = 4, 
-               dimnames = list(c("d1", "d2"), c("geo.Countries", "geo.oceans", "other.gameconsoles", "other.swords")))
+               dimnames = list(docs = c("d1", "d2"), 
+                               features = c("geo.Countries", "geo.oceans", "other.gameconsoles", "other.swords")))
     )
 
 
     expect_equal(
         as.matrix(dfm_lookup(testdfm, dict, valuetype = "fixed", levels = 2)),
         matrix(c(1, 1, 2, 0, 0, 0, 1, 1), ncol = 4, 
-               dimnames = list(c("d1", "d2"), c("Countries", "oceans", "gameconsoles", "swords")))
+               dimnames = list(docs = c("d1", "d2"), 
+                               features = c("Countries", "oceans", "gameconsoles", "swords")))
     )
 
 })
@@ -74,11 +77,12 @@ test_that("#459 extract the lower levels of a dictionary using a dfm", {
 })
 
 test_that("dfm_lookup raises error when dictionary has multi-word entries", {
-    
     toks <- tokens(data_corpus_inaugural[1:5])
-    dict <- dictionary(list(Country = "united states"), concatenator = ' ')
-    expect_error(dfm_lookup(dfm(toks), dictionary = dict), 
-                 "dfm_lookup not implemented for .* multi-word dictionary values")
+    dict <- dictionary(list(Country = "united states"), separator = ' ')
+    expect_equal(
+        featnames(dfm_lookup(dfm(tokens_ngrams(toks, n = 2, concatenator = " ")), dictionary = dict)), 
+        c("Country")
+    )
 })
 
 test_that("dfm_lookup works with tokens created by kwic, issue #697", {
@@ -110,4 +114,16 @@ test_that("dfm_lookup return all features even if no matches when exclusive = FA
     dict <- dictionary(list('en'=list('foreign policy' = 'aaaaa', 'domestic politics' = 'bbbbb')))
     testdfm <- dfm(data_corpus_inaugural[1:5])
     expect_equivalent(testdfm, dfm_lookup(testdfm, dict, exclusive = FALSE))
+})
+
+test_that("dfm_lookup verbose output works correctly", {
+    expect_message(
+        dfm_lookup(dfm(c(d1 = "a b c d", d2 = "c d e f g")), 
+               dictionary(one = "a", two = c("d", "e")), verbose = TRUE),
+        "applying a dictionary consisting of 2 keys"
+    )
+    expect_silent(
+        dfm_lookup(dfm(c(d1 = "a b c d", d2 = "c d e f g")), 
+                   dictionary(one = "a", two = c("d", "e")), verbose = FALSE)
+    )
 })

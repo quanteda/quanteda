@@ -17,8 +17,7 @@
 #' @param sort if \code{TRUE} (the default), order points from low to high 
 #'   score. If a vector, order according to these values from low to high. Only 
 #'   applies when \code{margin = "documents"}.
-#' @param groups optional grouping variable for sorting categories of the documents.  
-#' Only applies when \code{margin = "documents"}.
+#' @inheritParams groups 
 #' @param doclabels a vector of names for document; if left NULL (the default), 
 #'   docnames will be used
 #' @param highlighted a vector of feature names to draw attention to in a 
@@ -28,6 +27,7 @@
 #'   alpha transparency used to overplot feature names in a feature plot; only 
 #'   applies if \code{margin = "features"}
 #' @return a \pkg{ggplot2} object
+#' @note The \code{groups} argument only applies when \code{margin = "documents"}.
 #' @export
 #' @author Kenneth Benoit, Stefan Müller, and Adam Obeng
 #' @seealso \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 

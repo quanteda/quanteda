@@ -12,7 +12,6 @@
 #'   level into the first, but record the third level (if present) collapsed below
 #'   the first.  (See examples.)
 #' @inheritParams valuetype
-#' @param concatenator a charactor that connect words in multi-words entries in \code{x}
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE} 
 #'   uppercase to distinguish them from other features
 #' @param capkeys if TRUE, convert dictionary keys to uppercase to distinguish 
@@ -20,8 +19,6 @@
 #' @param exclusive if \code{TRUE}, remove all features not in dictionary, 
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
-#' @param multiword if \code{FALSE}, multi-word entries in dictionary are treated
-#'   as single tokens
 #' @param verbose print status messages if \code{TRUE}
 #' @examples
 #' toks <- tokens(data_corpus_inaugural)
@@ -55,12 +52,9 @@
 #' @export
 tokens_lookup <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"), 
-                          concatenator = ' ',
                           case_insensitive = TRUE,
                           capkeys = !exclusive,
                           exclusive = TRUE,
-#                          overlap = FALSE,
-                          multiword = TRUE,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_lookup")    
 }
@@ -69,11 +63,9 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
 #' @export
 tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"), 
-                          concatenator = ' ',
                           case_insensitive = TRUE,
                           capkeys = !exclusive,
                           exclusive = TRUE,
-                          multiword = TRUE,
                           verbose = quanteda_options("verbose")) {
 
     if (!is.tokens(x))
@@ -87,7 +79,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     attrs <- attributes(x)
     
     # Generate all combinations of type IDs
-    entries_id <- list()
+    values_id <- list()
     keys_id <- c()
     types <- types(x)
     
@@ -97,36 +89,24 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
              if (length(dictionary) > 1L) "s" else "", "\n", sep="")
     
     for (h in seq_along(dictionary)) {
-        entries <- dictionary[[h]]
-        
-        # Substitute dictionary's concatenator with tokens' concatenator 
-        if (concatenator != attr(dictionary, 'concatenator'))
-            entries <- stri_replace_all_fixed(entries, attr(dictionary, 'concatenator'), concatenator)
-        
-        # Separate entries by concatenator
-        if (multiword) {
-            entries <- stringi::stri_split_fixed(entries, concatenator)
-        } else {
-            entries <- as.list(entries)
-        } 
-        entries_temp <- regex2id(entries, types, valuetype, case_insensitive, index)
-        entries_id <- c(entries_id, entries_temp)
-        keys_id <- c(keys_id, rep(h, length(entries_temp)))
+        values <- split_dictionary_values(dictionary[[h]], attr(x, 'concatenator'))
+        values_temp <- regex2id(values, types, valuetype, case_insensitive, index)
+        values_id <- c(values_id, values_temp)
+        keys_id <- c(keys_id, rep(h, length(values_temp)))
     }
-    # if (verbose) 
-    #     message('Searching ', length(entries_id), ' types of features...')
     if (capkeys) {
         keys <- char_toupper(names(dictionary))
     } else {
         keys <- names(dictionary)
     }
     if (exclusive) {
-        result <- qatd_cpp_tokens_lookup(x, keys, entries_id, keys_id, FALSE)
+        result <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE)
     } else {
-        result <- qatd_cpp_tokens_match(x, c(types, keys), entries_id, keys_id + length(types), FALSE)
+        result <- qatd_cpp_tokens_match(x, c(types, keys), values_id, keys_id + length(types), FALSE)
     }
     attributes(result, FALSE) <- attrs
     attr(result, "what") <- "dictionary"
     attr(result, "dictionary") <- dictionary
+    attr(result, "padding") <- FALSE
     return(result)
 }

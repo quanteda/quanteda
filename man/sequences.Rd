@@ -5,8 +5,8 @@
 \alias{is.sequences}
 \title{Find variable-length collocations}
 \usage{
-sequences(x, min_count = 2, min_size = 2, max_size = 5,
-  method = c("unigram", "all_subtuples"), nested = TRUE)
+sequences(x, min_count = 2, size = 2, method = c("lambda", "lambda1"),
+  smoothing = 0.5)
 
 is.sequences(x)
 }
@@ -16,17 +16,12 @@ is.sequences(x)
 \item{min_count}{minimum frequency of sequences for which parameters are 
 estimated}
 
-\item{min_size}{minimum length of sequences which are collected}
+\item{size}{length of collocations, default is 2. Can be set up to 5.
+Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.}
 
-\item{max_size}{maximum length of sequences which are collected}
+\item{method}{default is "lambda" and option is "lambda1"}
 
-\item{method}{default is "unigram" and option is "all_subtuples"}
-
-\item{nested}{if \code{TRUE}, collect all the subsequences of a longer
-sequence as separate entities. e.g. in a sequence of capitalized words
-"United States Congress", "States Congress" is considered as a subsequence.
-But "United States" is not a subsequence because it is followed by
-"Congress".}
+\item{smoothing}{default is 0.5}
 }
 \value{
 \code{sequences} returns \code{TRUE} if the object is of class
@@ -37,6 +32,16 @@ This function automatically identifies contiguous collocations consisting of
 variable-length term sequences whose frequency is unlikely to have occurred 
 by chance.  The algorithm is based on Blaheta and Johnson's (2001) 
 "Unsupervised Learning of Multi-Word Verbs".
+
+#' @export
+#' @method as.tokens sequences
+#' @noRd 
+as.tokens.sequences <- function(x) {
+    toks <- attr(x, 'tokens')
+    attr(toks, 'types') <- attr(x, 'types')
+    class(toks) <- c("tokens", "tokenizedTexts")
+    return(toks)
+}
 }
 \examples{
 toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"), remove_punct=TRUE)
@@ -45,10 +50,10 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 toks <- tokens_select(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", 
                      case_insensitive = FALSE, padding = TRUE)
 
-seqs <- sequences(toks)
+seqs <- sequences(toks, size = 2:3)
 head(seqs, 10)
 # to return only trigrams
-seqs <- sequences(toks, min_size = 3, max_size = 3)
+seqs <- sequences(toks, size=3)
 head(seqs, 10)
 }
 \references{

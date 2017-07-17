@@ -41,8 +41,8 @@ qatd_cpp_fcm <- function(texts_, n_types, count, window, weights, ordered, tri, 
     .Call(quanteda_qatd_cpp_fcm, texts_, n_types, count, window, weights, ordered, tri, nvec)
 }
 
-qatd_cpp_sequences <- function(texts_, types_, count_min, len_min, len_max, method, nested) {
-    .Call(quanteda_qatd_cpp_sequences, texts_, types_, count_min, len_min, len_max, method, nested)
+qatd_cpp_sequences <- function(texts_, types_, count_min, sizes_, method, smoothing) {
+    .Call(quanteda_qatd_cpp_sequences, texts_, types_, count_min, sizes_, method, smoothing)
 }
 
 qatd_cpp_sequences_old <- function(texts_, words_, types_, count_min, len_max, nested, ordered = FALSE) {
@@ -57,8 +57,8 @@ qatd_cpp_tokens_detect <- function(texts_, words_) {
     .Call(quanteda_qatd_cpp_tokens_detect, texts_, words_)
 }
 
-qatd_cpp_kwic <- function(texts_, types_, words_, window) {
-    .Call(quanteda_qatd_cpp_kwic, texts_, types_, words_, window)
+qatd_cpp_kwic <- function(texts_, types_, words_, window, join) {
+    .Call(quanteda_qatd_cpp_kwic, texts_, types_, words_, window, join)
 }
 
 qatd_cpp_tokens_lookup <- function(texts_, types_, keys_, ids_, overlap) {
@@ -67,10 +67,6 @@ qatd_cpp_tokens_lookup <- function(texts_, types_, keys_, ids_, overlap) {
 
 qatd_cpp_tokens_match <- function(texts_, types_, words_, ids_, overlap) {
     .Call(quanteda_qatd_cpp_tokens_match, texts_, types_, words_, ids_, overlap)
-}
-
-qatd_cpp_tokens_ngrams2 <- function(texts_, types_, delim_, ns_, skips_) {
-    .Call(quanteda_qatd_cpp_tokens_ngrams2, texts_, types_, delim_, ns_, skips_)
 }
 
 qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
@@ -91,6 +87,10 @@ qatd_cpp_tokens_select <- function(texts_, types_, words_, mode, padding) {
 
 qatd_cpp_chars_remove <- function(input_, char_remove) {
     .Call(quanteda_qatd_cpp_chars_remove, input_, char_remove)
+}
+
+qatd_cpp_tbb_enabled <- function() {
+    .Call(quanteda_qatd_cpp_tbb_enabled)
 }
 
 wordfishcpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor) {

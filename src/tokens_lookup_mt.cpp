@@ -105,8 +105,14 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
-    const unsigned int id_max = Rcpp::max(ids_);
+    unsigned int id_max(0);
+    if (ids_.size() > 0) id_max = Rcpp::max(ids_);
+    // Rcout << id_max << "\n";
     
+    //dev::Timer timer;
+    
+    //dev::start_timer("Map construction", timer);
+/*
     MultiMapNgrams map_keys;
     std::vector<std::size_t> spans(keys_.size());
     for (unsigned int g = 0; g < (unsigned int)keys_.size(); g++) {
@@ -118,9 +124,26 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     sort(spans.begin(), spans.end());
     spans.erase(unique(spans.begin(), spans.end()), spans.end());
     std::reverse(std::begin(spans), std::end(spans));
+*/    
     
-    // dev::Timer timer;
-    // dev::start_timer("Dictionary lookup", timer);
+    MultiMapNgrams map_keys;
+    map_keys.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+    
+    Ngrams keys = Rcpp::as<Ngrams>(keys_);
+    std::vector<unsigned int> ids = Rcpp::as< std::vector<unsigned int> >(ids_);
+    std::vector<std::size_t> spans(keys.size());
+    for (size_t g = 0; g < std::min(keys.size(), ids.size()); g++) {
+        map_keys.insert(std::pair<Ngram, unsigned int>(keys[g], ids[g]));
+        spans[g] = keys[g].size();
+    }
+    sort(spans.begin(), spans.end());
+    spans.erase(unique(spans.begin(), spans.end()), spans.end());
+    std::reverse(std::begin(spans), std::end(spans));
+    
+    
+    //dev::stop_timer("Map construction", timer);
+    
+    //dev::start_timer("Dictionary lookup", timer);
 #if QUANTEDA_USE_TBB
     lookup_mt lookup_mt(texts, spans, id_max, overlap, map_keys);
     parallelFor(0, texts.size(), lookup_mt);
@@ -129,19 +152,20 @@ List qatd_cpp_tokens_lookup(const List &texts_,
         texts[h] = lookup(texts[h], spans, id_max, overlap, map_keys);
     }
 #endif
-    // dev::stop_timer("Dictionary lookup", timer);
-    return recompile(texts, types, true, true, is_encoded(types_));
+    //dev::stop_timer("Dictionary lookup", timer);
+    return recompile(texts, types, false, false, is_encoded(types_));
 }
 
 /***R
 
 toks <- list(rep(1:10, 1), rep(5:15, 1))
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-dict <- list(5, c(5, 6) , 4)
+#dict <- list(5, c(5, 6) , 4)
+dict <- list(100, c(200, 201))
 #dict <- list(1, 10, 20)
 #keys <- seq_along(dict)
 keys <- rep(1, length(dict))
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE)
+qatd_cpp_tokens_lookup(toks, letters, dict, integer(0), TRUE)
 qatd_cpp_tokens_lookup(toks, letters, dict, keys, TRUE)
 
 

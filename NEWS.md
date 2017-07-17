@@ -5,23 +5,29 @@
 ### New features
 
 *  Improvements to `sequences()` and the `textstat_collocations()` which calls it:
-    - Implemented `all_subtuples` collocation method based on Blaheta and Johnson's (2001) in `sequences()`(#753)
-    - Added new argument to `sequences()`: `method = c("unigram", "all_subtuples")` to apply unigram subtuples and all subtuples algorithm. 
-    - Added new methods to argument `method` in `textstat_collocations()`: `method = c(...,"bj_uni", "bj_all")` to apply unigram subtuples and all subtuples algorithm. 
-    - Added new argument to `sequences()`: `min_size` to allow collocation returns of size between `min_size` and `max_size`.
-    - Added new argument to `textstat_collocations()`: `min_size`, which is used when `method = "bj_uni"` and `method = "bj_all"`.
+    - Implemented `lambda` and `lambda1` collocation methods based on Blaheta and Johnson's (2001) in `sequences()`(#753)
+    - Added new argument to `sequences()`: `method = c("lambda", "lambda1")` to apply unigram subtuples and all subtuples algorithm. 
+    - Added new methods to argument `method` in `textstat_collocations()`: `method = c("lambda", "lambda1", ...)` to apply unigram subtuples and all subtuples algorithm. 
+    - Added new argument to `sequences()`: `smoothing = 0.5` as a continuity correction for small counts; this also avoids overflow problems with zero counts.
+    - More statistics returned from `sequences_mt.cpp`: `dice`,`G2`,`pmi` and `chi2`
    This function is still under development and likely to change further.
 *  Added new `quanteda_options` that affect the maximum documents and features displayed by the dfm print method (#756).
 *  `ngram` formation is now significantly faster, including with skips (skipgrams).
-*  `topfeatures()` now accepts a `groups` argument that can be used to generate lists of top (or bottom) features in a group of texts, including by document (#336).
-    
+*  Improvements to `topfeatures()`:
+    - now accepts a `groups` argument that can be used to generate lists of top (or bottom) features in a group of texts, including by document (#336).
+    - new argument `scheme` that takes the default of (frequency) `"count"` but also a new `"docfreq"` value (#408).
+*  New wrapper `phrase()` converts whitespace-separated multi-word patterns into a list of patterns.  This affects the feature/pattern matching in `tokens/dfm_select/remove`, `tokens_compound`, `tokens/dfm_lookup`, and `kwic`.  `phrase()` and the associated changes also make the behaviour of using character vectors, lists of characters, dictionaries, and collocation objects for pattern matches far more consistent.  (See #820, #787, #740, #837, #836, #838)
 
 ### Behaviour changes
 
 *  For `sequences()`:
    - Removed arguments from `sequences()`: `features`, `case_insensitive` and `valuetype`, the function can be fully replaced by `tokens_select()`.
-   - Removed arguments from `sequences()`: `ordered`.
-* (Finally) we added "will" to the list of English stopwords (#818).
+   - Removed arguments from `sequences()`: `ordered` and `nested`.
+*  (Finally) we added "will" to the list of English stopwords (#818).
+*  `dfm` objects with one or both dimensions haveing zero length, and empty `kwic` objects now display more appropriately in their print methods (per #811).
+*  Pattern matches are now implemented more consistently across functions.  In functions such as `*_select`, `*_remove`, `tokens_compound`, `features` has been replaced by `pattern`, and in `kwic`, `keywords` has been replaced by `pattern`.  These all behave consistently with respect to `pattern`, which now has a unified single help page and parameter description.(#839)  See also above new features related to `phrase()`.
+*  We have improved the performance of the C++ routines that handle many of the `tokens_*` functions using hashed tokens, making some of them 10x faster (#853).
+*  Upgrades to the `dfm_group()` function now allow "empty" documents to be created using the `fill = TRUE` option, for making documents conform to a selection (similar to how `dfm_select()` works for features, when supplied a dfm as the pattern argument).  The `groups` argument now behaves consistently across the functions where it is used. (#854)
 
 ### Bug fixes and stability enhancements
 
@@ -31,6 +37,9 @@
 *  Separators including rare spacing characters are now handled more robustly by the `remove_separators` argument in `tokens()`.  See #796.
 *  Improved memory usage when computing `ntoken()` and `ntype()`. (#795)
 *  Improvements to `quanteda_options()` now does not throw an error when **quanteda** functions are called directly without attaching the package.  In addition, **quanteda** options can be set now in .Rprofile and will not be overwritten when the options initialization takes place when attaching the package.
+*  Fixed a bug in `textstat_readability()` that wrongly computed the number of words with fewer than 3 syllables in a text; this affected the `FOG.NRI` and the `Linsear.Write` measures only.
+*  Fixed mistakes in the computation of two docfreq schemes: `"logave"` and `"inverseprob"`.
+*  Fixed a bug in the handling of multi-thread options where the settings using `quanteda_options()` did not actually set the number of threads.  In addition, we fixed a bug causing threading to be turned off on macOS (due to a check for a gcc version that is not used for compiling the macOS binaries) prevented multi-threading from being used at all on that platform.
 
 
 ## Changes since v0.9.9-50

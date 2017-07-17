@@ -5,21 +5,22 @@
 \alias{tokens_remove}
 \title{select or remove tokens from a tokens object}
 \usage{
-tokens_select(x, features, selection = c("keep", "remove"),
+tokens_select(x, pattern, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   padding = FALSE, verbose = quanteda_options("verbose"))
 
-tokens_remove(x, features, valuetype = c("glob", "regex", "fixed"),
+tokens_remove(x, pattern, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, padding = FALSE,
   verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be selected}
 
-\item{features}{one of: a character vector of features to be selected, a \link{dictionary} class
-object whose values (not keys) will provide the features to be selected.}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
-\item{selection}{whether to \code{"keep"} or \code{"remove"} the features}
+\item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens 
+matching \code{pattern}}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
@@ -27,28 +28,41 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 
-\item{padding}{(only for \code{tokenizedTexts} objects) if \code{TRUE}, leave
-an empty string where the removed tokens previously existed.  This is
-useful if a positional match is needed between the pre- and post-selected
-features, for instance if a window of adjacency needs to be computed.}
+\item{padding}{if \code{TRUE}, leave an empty string where the removed tokens
+previously existed.  This is useful if a positional match is needed between
+the pre- and post-selected tokens, for instance if a window of adjacency 
+needs to be computed.}
 
-\item{verbose}{if \code{TRUE} print messages about how many features were 
-removed}
+\item{verbose}{if \code{TRUE} print messages about how many tokens were 
+selected or removed}
 }
 \value{
-a tokens object with features removed
+a \link{tokens} object with tokens selected or removed based on their
+  match to \code{pattern}
 }
 \description{
 This function selects or discards tokens from a \link{tokens} objects, with 
-the shortcut \code{tokens_remove(x, features)} defined as a shortcut for
-\code{tokens_select(x, features, selection = "remove")}.  The most common 
-usage for \code{tokens_remove} will be to eliminate stop words from a
-text or text-based object, while the most common use of \code{tokens_select} will
-be to select only positive features from a list of regular 
+the shortcut \code{tokens_remove(x, pattern)} defined as a shortcut for 
+\code{tokens_select(x, pattern, selection = "remove")}.  The most common 
+usage for \code{tokens_remove} will be to eliminate stop words from a text or
+text-based object, while the most common use of \code{tokens_select} will be 
+to select tokens with only positive pattern matches from a list of regular 
 expressions, including a dictionary.
 }
 \examples{
-## for tokenized texts 
+## tokens_select with simple examples
+toks <- tokens(c("This is a sentence.", "This is a second sentence."), 
+                 remove_punct = TRUE)
+tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = FALSE)
+tokens_select(toks, c("is", "a", "this"), selection = "keep", padding = TRUE)
+tokens_select(toks, c("is", "a", "this"), selection = "remove", padding = FALSE)
+tokens_select(toks, c("is", "a", "this"), selection = "remove", padding = TRUE)
+
+# how case_insensitive works
+tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = TRUE)
+tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = FALSE)
+
+## tokens_remove example
 txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
                    execute the functions of its Chief Magistrate.",
          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express

@@ -4,7 +4,8 @@
 \alias{topfeatures}
 \title{identify the most frequent features in a dfm}
 \usage{
-topfeatures(x, n = 10, decreasing = TRUE, groups = NULL)
+topfeatures(x, n = 10, decreasing = TRUE, scheme = c("count", "docfreq"),
+  groups = NULL)
 }
 \arguments{
 \item{x}{the object whose features will be returned}
@@ -14,10 +15,14 @@ topfeatures(x, n = 10, decreasing = TRUE, groups = NULL)
 \item{decreasing}{If \code{TRUE}, return the \code{n} most frequent features;
 otherwise return the \code{n} least frequent features}
 
-\item{groups}{either: a character vector containing the names of document
-variables to be used for grouping; or a factor or object that can be
-coerced into a factor equal in length or rows to the number of documents.
-See \code{\link{dfm_group}} for details.}
+\item{scheme}{one of \code{count} for total feature frequency (within
+\code{group} if applicable), or \code{docfreq} for the document frequencies
+of features}
+
+\item{groups}{either: a character vector containing the names of document 
+variables to be used for grouping; or a factor or object that can be 
+coerced into a factor equal in length or rows to the number of documents. 
+See \link{groups} for details.}
 }
 \value{
 A named numeric vector of feature counts, where the names are the 
@@ -43,4 +48,7 @@ topfeatures(mydfm_nostopw, n = 5, groups = docnames(mydfm_nostopw))
 
 # grouping by president last name
 topfeatures(mydfm_nostopw, n = 5, groups = "President")
+
+# features by document frequencies
+tail(topfeatures(mydfm, scheme = "docfreq", n = 200))
 }

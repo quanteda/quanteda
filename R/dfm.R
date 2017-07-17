@@ -31,9 +31,8 @@
 #'   creating the dfm first, and then applying \code{\link{dfm_lookup}}
 #'   separately.
 #' @inheritParams valuetype
-#' @param groups character vector containing the names of document variables for
-#'   aggregating documents; only applies when calling dfm on a corpus object. 
-#'   When \code{x} is a \link{dfm} object, \code{groups} provides a convenient 
+#' @inheritParams groups
+#' @note When \code{x} is a \link{dfm}, \code{groups} provides a convenient 
 #'   and fast method of combining and refactoring the documents of the dfm 
 #'   according to the groups.
 #' @param verbose display messages if \code{TRUE}
@@ -184,27 +183,16 @@ dfm.corpus <- function(x, tolower = TRUE,
         stop("only one of select and remove may be supplied at once")
 
     if (!is.null(groups)) {
-        groupsLab <- if (is.factor(groups)) deparse(substitute(groups)) else groups
-        if (verbose) 
-            catm("   ... grouping texts by variable", 
-                 ifelse(length(groupsLab) == 1, "", "s"), ": ", 
-                 paste(groupsLab, collapse=", "), "\n", sep="")
-        if (verbose) catm("   ... tokenizing grouped texts\n")
+        if (verbose) catm("   ... grouping texts\n") 
+        # group <- generate_groups(x, groups)
         temp <- tokens(texts(x, groups = groups), ...)
     } else {
         if (verbose) catm("   ... tokenizing texts\n")
         temp <- tokens(x, ...)
     }
     
-    dfm(temp, 
-        tolower = tolower,
-        stem = stem,
-        select = select,
-        remove = remove,
-        thesaurus = thesaurus,
-        dictionary = dictionary,
-        valuetype = valuetype, 
-        verbose = verbose, ...)
+    dfm(temp, tolower = tolower, stem = stem, select = select, remove = remove, thesaurus = thesaurus,
+        dictionary = dictionary, valuetype = valuetype, verbose = verbose, ...)
 }    
 
     
@@ -247,19 +235,44 @@ dfm.tokenizedTexts <- function(x,
     if (is.null(names(x))) {
         names(x) <- paste("text", seq_along(x), sep="")
     } 
+
+    if (verbose) {
+        catm("   ... found ", 
+             format(length(x), big.mark = ","), " document",
+             ifelse(length(x) > 1, "s", ""), ### replace with: ntoken()
+             ", ",
+             format(length(types(x)), big.mark = ","),  ### replace with: ntype()
+             " feature",
+             ifelse(length(types(x)) > 1, "s", ""),
+             "\n", sep="")
+    }
     
-    # use tokens_lookup for dictionaries with multi-word values otherwise do this later
-    if (!is.null(dictionary) | !is.null(thesaurus)) {
+    # use tokens_lookup for tokens objects
+    if (!is.null(dictionary) || !is.null(thesaurus)) {
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
-        if (any(stringi::stri_detect_fixed(unlist(dictionary, use.names = FALSE), 
-                                           attr(dictionary, 'concatenator')))) {
-            if (verbose) catm("   ... ")
-            x <- tokens_lookup(x, dictionary,
-                               exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
-                               valuetype = valuetype,
-                               verbose = verbose)
-            dictionary <- thesaurus <- NULL
+        if (verbose) catm("   ... ")
+        x <- tokens_lookup(x, dictionary,
+                           exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
+                           valuetype = valuetype,
+                           verbose = verbose)
+    }
+    
+    # use tokens_select for tokens objects
+    if (!is.null(c(remove, select))) {
+        if (verbose) catm("   ... ")
+        if (!is.null(remove)) {
+            x <- tokens_select(x, remove, selection = "remove", 
+                               valuetype = valuetype, verbose = verbose)
+        } else {
+            x <- tokens_select(x, select, selection = "keep", 
+                               valuetype = valuetype, verbose = verbose)
         }
+    }
+    
+    if (!is.null(groups)) {
+        if (verbose) catm("   ... grouping texts\n") 
+        group <- generate_groups(x, groups)
+        x <- tokens_group(x, groups)
     }
         
     # compile the dfm
@@ -269,14 +282,19 @@ dfm.tokenizedTexts <- function(x,
     result@ngrams <- as.integer(attr(x, "ngrams"))
     result@skip <- as.integer(attr(x, "skip"))
     result@concatenator <- attr(x, "concatenator")
-    result@docvars <- attr(x, "docvars")
     
-    if (is.null(result@docvars)) {
+    if (attr(x, 'what') == "dictionary") {
+        attr(result, 'what') <- "dictionary"
+        attr(result, 'dictionary') <- attr(x, 'dictionary')
+    }
+    
+    if (!is.null(attr(x, "docvars"))) {
+        result@docvars <- attr(x, "docvars")
+    } else {
         result@docvars <- data.frame()
     }
     
-    dfm(result, tolower = FALSE, stem = stem, select = select, remove = remove, thesaurus = thesaurus,
-        dictionary = dictionary, valuetype = valuetype, groups = groups, verbose = verbose, ...)
+    dfm(result, tolower = FALSE, stem = stem, valuetype = valuetype, verbose = verbose, ...)
 }
 
 #' @noRd
@@ -420,17 +438,6 @@ compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
 }
 
 compile_dfm.tokens <- function(x, verbose = TRUE) {
-    
-    if (verbose) {
-        catm("   ... found ", 
-             format(length(x), big.mark = ","), " document",
-             ifelse(length(x) > 1, "s", ""), ### replace with: ntoken()
-             ", ",
-             format(length(types(x)), big.mark = ","),  ### replace with: ntype()
-             " feature",
-             ifelse(length(types(x)) > 1, "s", ""),
-             "\n", sep="")
-    }
     
     types <- types(x)
     x <- unclass(x)

@@ -35,7 +35,7 @@
 #' 
 #' # more efficient when applied to the same tokens object 
 #' toks_comp <- tokens_compound(toks, seqs)
-#' toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
+#' toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), phrase(seqs))
 #' 
 #' # types can be any words
 #' seqs2 <- sequences_old(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
@@ -43,8 +43,6 @@
 #'                    
 #' head(seqs2, 10)
 #' 
-#' # convert to tokens object
-#' as.tokens(seqs2)
 #' 
 #' @export
 sequences_old <- function(x, features = "*", 
@@ -72,7 +70,7 @@ sequences_old.tokens <- function(x, features = "*",
     attrs_org <- attributes(x)
     
     types <- types(x)
-    features <- features2vector(features)
+    features <- unlist(features, use.names = FALSE)
     features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
     
     result <- qatd_cpp_sequences_old(x, features_id, types, min_count, max_size, nested, ordered)

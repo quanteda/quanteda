@@ -7,14 +7,10 @@
 #' @param x a \link{tokens} object
 #' @param min_count minimum frequency of sequences for which parameters are 
 #'   estimated
-#' @param min_size minimum length of sequences which are collected  
-#' @param max_size maximum length of sequences which are collected
-#' @param method default is "unigram" and option is "all_subtuples"
-#' @param nested if \code{TRUE}, collect all the subsequences of a longer
-#'   sequence as separate entities. e.g. in a sequence of capitalized words
-#'   "United States Congress", "States Congress" is considered as a subsequence.
-#'   But "United States" is not a subsequence because it is followed by
-#'   "Congress".
+#' @param size length of collocations, default is 2. Can be set up to 5.
+#'        Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.
+#' @param method default is "lambda" and option is "lambda1"
+#' @param smoothing default is 0.5
 #' @keywords collocations internal
 #' @author Kohei Watanabe and Haiyan Wang
 #' @references Blaheta, D., & Johnson, M. (2001). 
@@ -28,18 +24,17 @@
 #' toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", 
 #'                      case_insensitive = FALSE, padding = TRUE)
 #' 
-#' seqs <- sequences(toks)
+#' seqs <- sequences(toks, size = 2:3)
 #' head(seqs, 10)
 #' # to return only trigrams
-#' seqs <- sequences(toks, min_size = 3, max_size = 3)
+#' seqs <- sequences(toks, size=3)
 #' head(seqs, 10)
 #' @export
 sequences <- function(x, 
                        min_count = 2,
-                       min_size = 2,
-                       max_size = 5,
-                       method = c("unigram", "all_subtuples"),
-                       nested = TRUE) {
+                       size = 2,
+                       method = c("lambda", "lambda1"),
+                       smoothing = 0.5) {
     
     # .Deprecated('textstat_collocations')
     UseMethod("sequences")
@@ -50,18 +45,25 @@ sequences <- function(x,
 #' @export
 sequences.tokens <- function(x,
                               min_count = 2,
-                              min_size = 2,
-                              max_size = 5,
-                              method = c("unigram", "all_subtuples"),
-                              nested = TRUE) {
+                              size = 2,
+                              method = c("lambda", "lambda1"),
+                              smoothing = 0.5) {
     
     attrs_org <- attributes(x)
     methodtype = match.arg(method)
+    
+    if (any(!(size %in% 2:5)))
+        stop("Only bigram, trigram, 4-gram and 5-gram collocations implemented so far.")
+    
     types <- types(x)
     
-    result <- qatd_cpp_sequences(x, types, min_count, min_size, max_size, methodtype, nested)
+    result <- qatd_cpp_sequences(x, types, min_count, size, methodtype, smoothing)
     result <- result[result$count >= min_count,]
-    result$z <- result$lambda / result$sigma
+    if (methodtype == "lambda") {
+        result$z <- result$lambda / result$sigma
+    } else {
+        result$z <- result$lambda1 / result$sigma
+    }
     result$p <- 1 - stats::pnorm(result$z)
     result <- result[order(result$z, decreasing = TRUE),]
     attr(result, 'types') <- types
@@ -80,15 +82,15 @@ sequences.tokens <- function(x,
     return(x)
 }
 
-#' @export
-#' @method as.tokens sequences
-#' @noRd 
-as.tokens.sequences <- function(x) {
-    toks <- attr(x, 'tokens')
-    attr(toks, 'types') <- attr(x, 'types')
-    class(toks) <- c("tokens", "tokenizedTexts")
-    return(toks)
-}
+#' #' @export
+#' #' @method as.tokens sequences
+#' #' @noRd 
+#' as.tokens.sequences <- function(x) {
+#'     toks <- attr(x, 'tokens')
+#'     attr(toks, 'types') <- attr(x, 'types')
+#'     class(toks) <- c("tokens", "tokenizedTexts")
+#'     return(toks)
+#' }
 
 #' @rdname sequences
 #' @export

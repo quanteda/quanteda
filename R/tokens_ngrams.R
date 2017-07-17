@@ -6,7 +6,7 @@
 #' @export
 ngrams <- function(x, ...) {
     .Deprecated("tokens_ngrams")
-    tokens_ngrams(x, ...)
+    UseMethod("ngrams")
 }
 # @examples 
 # txt <- c("a b c d e", "c d e f g")
@@ -15,8 +15,8 @@ ngrams <- function(x, ...) {
 
 #' @rdname ngrams
 #' @export
-ngrams.default <-  function(x, ...) {
-    tokens_ngrams(x, ...)
+ngrams.character <-  function(x, ...) {
+    char_ngrams(x, ...)
 }
 
 #' @rdname ngrams
@@ -24,6 +24,13 @@ ngrams.default <-  function(x, ...) {
 ngrams.tokenizedTexts <- function(x, ...) {
     as.tokenizedTexts(tokens_ngrams(as.tokens(x), ...))
 }
+
+#' @rdname ngrams
+#' @export
+ngrams.tokens <- function(x, ...) {
+    tokens_ngrams(x, ...)
+}
+
 
 #' @rdname ngrams
 #' @keywords internal tokens deprecated
@@ -106,9 +113,13 @@ tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' 
 #' @export
 char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    if (!is.character(x))
-        stop("x must be a character object")
-    tokens_ngrams(x, n, skip, concatenator)
+    UseMethod("char_ngrams")
+}
+
+#' @noRd
+#' @export
+char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+    as.character(tokens_ngrams(x, n, skip, concatenator))
 }
     
 
@@ -167,6 +178,11 @@ tokens_ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_
 #' tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ") 
 #' tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")   
 tokens_skipgrams <- function(x, n, skip, concatenator="_") {
-    tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
+    UseMethod("tokens_skipgrams")
 }
 
+#' @noRd
+#' @export
+tokens_skipgrams <- function(x, n, skip, concatenator="_") {
+    tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
+}

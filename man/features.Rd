@@ -2,12 +2,18 @@
 % Please edit documentation in R/dfm-methods.R
 \name{features}
 \alias{features}
-\title{deprecated function name for featnames}
+\title{deprecated function for featnames}
 \usage{
 features(x)
 }
+\arguments{
+\item{x}{a \link{dfm}}
+}
 \description{
-Please use \code{\link{featnames}} instead.
+Deprecated function equivalent to \code{\link{featnames}}.  Soon to be eliminated.
+}
+\seealso{
+\code{\link{featnames}}
 }
 \keyword{deprecated}
 \keyword{internal}
