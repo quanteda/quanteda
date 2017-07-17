@@ -62,6 +62,7 @@ Collate:
     'corpus-deprecated.R'
     'corpus-methods-base.R'
     'corpus-methods-quanteda.R'
+    'corpus-methods-tm.R'
     'corpus_reshape.R'
     'corpus_sample.R'
     'corpus_segment.R'

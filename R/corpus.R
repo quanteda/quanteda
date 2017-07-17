@@ -316,17 +316,23 @@ corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
     
     # special handling for VCorpus meta-data
     if (inherits(x, what = "VCorpus")) {
+        # remove the classes that mess parsing this list
+        x <- unclass(x)
+        x <- lapply(x, unclass)
+        x$content <- lapply(x$content, unclass)
+        
         # texts and associated docvars
-        if (is.data.frame(x[[1]][["content"]])) {
-            df <- as.data.frame(data.table::rbindlist(lapply(x, "[[", "content"), fill = TRUE))
-            rownames(df) <- paste(names(x), unlist(lapply(sapply(lapply(x, "[[", "content"), nrow), seq_len)), sep = ".")
-            # row.names(df) <- make.unique(rep(names(x), sapply(lapply(x, "[[", "content"), nrow)))
+        if (is.data.frame(x$content[[1]][["content"]])) {
+            df <- as.data.frame(data.table::rbindlist(lapply(x$content, "[[", "content"), fill = TRUE))
+            doc_lengths <- sapply(lapply(x$content, "[[", "content"), nrow)
+            rownames(df) <- make_unique_tm_names(names_tmCorpus(x), doc_lengths)
         } else {
             texts <- sapply(x$content, "[[", "content")
             # paste together texts if they appear to be vectors
             if (any(lengths(texts) > 1))
                 texts <- vapply(texts, paste, character(1), collapse = " ")
-            df <- data.frame(text = texts, stringsAsFactors = FALSE, row.names = names(texts))
+            doc_lengths <- 1
+            df <- data.frame(text = texts, stringsAsFactors = FALSE, row.names = names_tmCorpus(x))
         }
         
         # document-level metadata
@@ -340,12 +346,12 @@ corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
         }
 
         # add metad to df, where meta is repeated as appropriate for content
-        df <- cbind(df, metad[rep(seq_len(nrow(metad)), times = lengths(lapply(x, "[[", "content"))), ])
+        df <- cbind(df, metad[rep(seq_len(nrow(metad)), times = doc_lengths), ])
         
     } else if (inherits(x, what = "SimpleCorpus")) {
-        df <- data.frame(text = x$content, stringsAsFactors = FALSE)
-        df <- cbind(df, x$dmeta)
-    
+        df <- data.frame(text = as.character(x$content), stringsAsFactors = FALSE,
+                         row.names = names(x$content))
+        if (length(x$dmeta)) df <- cbind(df, x$dmeta)
     } else {
         stop("Cannot construct a corpus from this tm ", class(x)[1], " object")
     }
@@ -353,13 +359,9 @@ corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
     # corpus-level meta-data
     if (is.null(metacorpus)) metacorpus <- x$meta
     metacorpus <- c(metacorpus, 
-                    list(source = paste("Converted from tm Corpus \'", deparse(substitute(x)), "\'", sep="")))
+                    list(source = paste("Converted from tm Corpus \'", as.character(match.call())[2], "\'", sep="")))
     
     corpus(df, metacorpus = metacorpus, compress = compress)
-}
-
-combine_tm_list_elements <- function(x) {
-    
 }
 
 setOldClass("corpus")
