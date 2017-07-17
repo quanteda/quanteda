@@ -221,4 +221,16 @@ test_that("textstat_keyness returns raw frequency counts", {
     
 })
 
-
+test_that("textstat_keyness returns correct pmi", {
+    mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
+                   d2 = "a a b c c d d d d e f h"))
+    skip_if_not_installed("svs")
+    svs_pmi <- svs::pmi(as.table(as.matrix(mydfm)), base = 2.7182818459)
+    mykeyness <- textstat_keyness(mydfm, measure = "pmi")
+    
+    expect_equal(mykeyness$pmi[which(rownames(mykeyness) == "g")],
+                 svs_pmi[1, which(attr(svs_pmi, "dimnames")$features == "g")],
+                 tolerance = 0.0001)
+    
+    expect_equal(max(mykeyness$pmi), max(svs_pmi[1,]), tolerance = 0.0001)
+})
