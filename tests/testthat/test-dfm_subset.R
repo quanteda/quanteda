@@ -14,6 +14,10 @@ test_that("dfm_subset works in a basic way", {
         docnames(dfm_subset(dfmtest, c(TRUE, TRUE, rep(FALSE, 8)))),
         c("1981-Reagan", "1985-Reagan")
     )
+    expect_equal(
+        docvars(dfm_subset(dfmtest, select = 'President')),
+        subset(docvars(dfmtest), 'President')
+    )
 })
 
 test_that("dfm_subset works with docvars", {
@@ -23,4 +27,6 @@ test_that("dfm_subset works with docvars", {
         c("Bush", "Bush", "Obama", "Obama", "Trump")
     )
 })
+
+
 
