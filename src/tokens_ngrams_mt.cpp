@@ -184,7 +184,8 @@ List qatd_cpp_tokens_ngrams(const List &texts_,
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
     MapNgrams map_ngram;
-
+    map_ngram.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
+    
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);
 #if QUANTEDA_USE_TBB

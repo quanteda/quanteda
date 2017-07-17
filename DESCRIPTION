@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.9.9.76
+Version: 0.9.9.82
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible framework for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -94,7 +94,7 @@ Collate:
     'nsyllable.R'
     'phrases.R'
     'plots-deprecated.R'
-    'quanteda.R'
+    'quanteda-documentation.R'
     'quanteda_options.R'
     'readtext-methods.R'
     'regex2fixed.R'
@@ -124,7 +124,6 @@ Collate:
     'textstat_lexdiv.R'
     'textstat_readability.R'
     'textstat_simil.R'
-    'toLower.R'
     'tokenize.R'
     'tokenize_outtakes.R'
     'tokens.R'
@@ -133,9 +132,9 @@ Collate:
     'tokens_lookup.R'
     'tokens_ngrams.R'
     'tokens_select.R'
-    'tolower-misc.R'
+    'tolower-deprecated.R'
+    'tolower-functions.R'
     'utils.R'
-    'valuetype.R'
     'wordstem.R'
     'zzz.R'
 RcppModules: ngramMaker

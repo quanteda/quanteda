@@ -1,5 +1,5 @@
 # implement default options
-QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, RcppParallel::defaultNumThreads()/2),
+QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, RcppParallel::defaultNumThreads() / 2),
                              quanteda_verbose = FALSE,
                              quanteda_print_dfm_max_ndoc = 20L,
                              quanteda_print_dfm_max_nfeature = 20L)
@@ -7,7 +7,7 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, RcppParallel::defaultNum
 
 #' get or set package options for quanteda
 #' 
-#' Get or set global options affecting functions across \pkg{quatneda}.
+#' Get or set global options affecting functions across \pkg{quanteda}.
 #' @param ... options to be set, as key-value pair, same as \code{\link{options}}. 
 #'   This may be a list of valid key-value pairs, useful for setting a group of
 #'   options at once (see examples).
@@ -99,6 +99,7 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
                 warning("setting threads instead to maximum available ", available_threads)
                 value <- available_threads
             }
+            RcppParallel::setThreadOptions(value)
         }
         
         # assign the key-value
@@ -117,11 +118,13 @@ quanteda_initialize <- function() {
         if (!is.null(getOption(opt)))
             apply_list[opt] <- NULL
     }
+    quanteda_options(threads = QUANTEDA_OPTION_LIST$quanteda_threads)
     options(apply_list)
     return(invisible(TRUE))
 }
 
 quanteda_reset <- function() {
+    quanteda_options(threads = QUANTEDA_OPTION_LIST$quanteda_threads)
     options(QUANTEDA_OPTION_LIST)
     return(invisible(TRUE))
 }

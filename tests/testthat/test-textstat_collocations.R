@@ -31,14 +31,15 @@ test_that("test that collocations and sequences are counting the same features",
     expect_true(all(both$count.x == both$count.y))
 })
 
-test_that("test that extractor works with collocation", {
-    toks <- tokens(data_corpus_inaugural, remove_punct = TRUE)
-    toks <- tokens_remove(toks, stopwords(), padding = TRUE)
-    cols <- textstat_collocations(toks, method = 'lr', size = 2)
-    cols <- cols[1:5,]
-    expect_equal(nrow(cols), length(as.tokens(cols)))
-    
-})
+# test_that("test that extractor works with collocation", {
+#     
+#     toks <- tokens(data_corpus_inaugural, remove_punct = TRUE)
+#     toks <- tokens_remove(toks, stopwords(), padding = TRUE)
+#     cols <- textstat_collocations(toks, method = 'lr', size = 2)
+#     cols <- cols[1:5,]
+#     expect_equal(nrow(cols), length(as.tokens(cols)))
+#     
+# })
 
 test_that("bigrams and trigrams are all sorted correctly, issue #385", {
     toks <- tokens(data_corpus_inaugural, remove_punct = TRUE)
@@ -156,4 +157,15 @@ test_that("test the correctness of significant: against stats package", {
     expect_equal(seqs$collocation[3], 'capital gains tax')
     expect_equal(seqs$G2[3], statss$lrt, tolerance = 1e-3)
     expect_equal(seqs$chi2[3], statss$pearson, tolerance = 1e-3)
+})
+
+test_that("collocation is counted correctly in racing conditions, issue #381", {
+
+    toks <- tokens(rep(texts(data_corpus_inaugural)[1], 100))
+    out1 <- textstat_collocations(toks[1], method = 'chi2', size = 2, min_count = 1)
+    out100 <- textstat_collocations(toks, method = 'chi2', size = 2, min_count = 1)
+    out1 <- out1[order(out1$collocation),]
+    out100 <- out100[order(out100$collocation),]
+    expect_true(all(out1$count * 100 == out100$count))
+
 })

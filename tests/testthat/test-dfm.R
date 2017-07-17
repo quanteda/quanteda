@@ -15,7 +15,7 @@ thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
 preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE)
 dfm_lookup(preDictDfm, mydict)
 
-txt <- tokenize(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
+txt <- tokens(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
                                "The United_States has progressive taxation.")),
                 remove_punct = TRUE)
 
@@ -129,8 +129,8 @@ test_that("test c.corpus",
     )
 )
 
-## rbind.dfm
-## TODO: Test classes returned
+## rbind.dfm
+## TODO: Test classes returned
 
 test_that("test rbind.dfm with the same columns", {
 
@@ -152,7 +152,7 @@ test_that("test rbind.dfm with the same columns", {
 
 })
 
-# TODO: Add function for testing the equality of dfms
+# TODO: Add function for testing the equality of dfms
 
 test_that("test rbind.dfm with different columns", {
     dfm1 <- dfm('What does the fox?', remove_punct = TRUE)
@@ -167,7 +167,7 @@ test_that("test rbind.dfm with different columns", {
     testdfm <- rbind(dfm1, dfm2)
 
     expect_true(
-        ##  Order of the result is not guaranteed
+        ## Order of the result is not guaranteed
         all(testdfm[,order(colnames(testdfm))] == foxdfm[,order(colnames(foxdfm))])
     )
 
@@ -290,7 +290,7 @@ test_that("dfm.dfm works as expected", {
                        preps = c("of", "for", "in"))
     expect_identical(
         dfm(data_corpus_irishbudget2010, dictionary = dict),
-            dfm(testdfm, dictionary = dict)
+        dfm(testdfm, dictionary = dict)
     )
     expect_identical(
         dfm(data_corpus_irishbudget2010, stem = TRUE),
@@ -298,21 +298,13 @@ test_that("dfm.dfm works as expected", {
     )
 })
 
-test_that("dfm-methods works as expected", {
-    mydfm <- dfm(c("This is a test", "This is also a test", "This is an odd test"))
-    expect_equivalent(as.matrix(topfeatures(mydfm)),
-                      matrix(c(3,3,3,2,1,1,1)))
-    
-})
-
 test_that("dfm_sample works as expected",{
     myDfm <- dfm(data_corpus_inaugural[1:10], verbose = FALSE)
-    expect_error(dfm_sample(myDfm, what="documents", size = 20),
+    expect_error(dfm_sample(myDfm, margin = "documents", size = 20),
                   "size cannot exceed the number of documents \\(10\\)")
-    expect_error(dfm_sample(myDfm, what="features", size = 3500),
+    expect_error(dfm_sample(myDfm, margin = "features", size = 3500),
                  "size cannot exceed the number of features \\(3358\\)")
-    expect_error(dfm_sample(data_corpus_inaugural[1:10]),
-                 "x must be a dfm object")
+    expect_error(dfm_sample(data_corpus_inaugural[1:10]))
 })
 
 
@@ -388,9 +380,9 @@ test_that("dfm's document counts in verbose message is correct", {
              d3 = "x y",
              d4 = "f g")
     expect_message(dfm(txt, remove = c('a', 'f'), verbose = TRUE),
-                   'removed 2 features and 0 documents')
+                   'removed 2 features')
     expect_message(dfm(txt, select = c('a', 'f'), verbose = TRUE),
-                   'kept 2 features and 4 documents')
+                   'kept 2 features')
 })
 
 test_that("dfm print works with options as expected", {
@@ -455,30 +447,44 @@ test_that("cannot supply remove and select in one call (#793)", {
     )
 })
 
-test_that("grouping is working as expected", {
-    mydfm <- dfm(data_corpus_inaugural[1:10])
-    expect_equal(names(topfeatures(mydfm, groups = docnames(mydfm))),
-                 docnames(mydfm))
-    expect_equal(topfeatures(mydfm, groups = docnames(mydfm))[[5]],
-                 topfeatures(mydfm[5,]))
-    expect_equal(topfeatures(mydfm, decreasing = TRUE, groups = docnames(mydfm))[[10]],
-                 topfeatures(mydfm[10,], decreasing = TRUE))
-})
-
 test_that("printing an empty dfm produces informative result (#811)", {
-    my_dictionary <- dictionary( list( a = c( "asd", "dsa" ),
+    my_dictionary <- dictionary(list( a = c( "asd", "dsa" ),
                                       b = c( "foo", "jup" ) ) )
     raw_text <- c( "Wow I can't believe it's not raining!", 
-                  "Today is a beautiful day. The sky is blue and there are burritos" )
+                   "Today is a beautiful day. The sky is blue and there are burritos" )
     my_corpus <- corpus( raw_text )
     my_dfm <- dfm( my_corpus, dictionary = my_dictionary )
     
     expect_output(
         print(my_dfm),
-        "^Document-feature matrix of: 2 documents, 0 features.\\n2 x 0 sparse Matrix of class \"dfmSparse\""
+        "^Document-feature matrix of: 2 documents, 2 features \\(100% sparse\\)\\.\\n2 x 2 sparse Matrix of class \"dfmSparse\""
     )
     expect_output(
         print(my_dfm[-c(1, 2), ]),
-        "^Document-feature matrix of: 0 documents, 0 features.\\n0 x 0 sparse Matrix of class \"dfmSparse\"\\n<0 x 0 matrix>"
+        "^Document-feature matrix of: 0 documents, 2 features\\.\\n0 x 2 sparse Matrix of class \"dfmSparse\""
+    )
+    expect_output(
+        print(my_dfm[, -c(1, 2)]),
+        "^Document-feature matrix of: 2 documents, 0 features\\.\\n2 x 0 sparse Matrix of class \"dfmSparse\""
     )
 })
+
+test_that("dfm with selection options produces correct output", {
+    txt <- c(d1 = 'a b', d2 = 'a b c d e')
+    toks <- tokens(txt)
+    dfmt <- dfm(toks)
+    feat <- c('b', 'c', 'd', 'e', 'f', 'g')
+    expect_message(
+        dfm(txt, remove = feat, verbose = TRUE),
+        "removed 4 features" 
+    )
+    expect_message(
+        dfm(toks, remove = feat, verbose = TRUE),
+        "removed 4 features" 
+    )
+    expect_message(
+        dfm(dfmt, remove = feat, verbose = TRUE),
+        "removed 4 features" 
+    )
+})
+

@@ -247,7 +247,7 @@ DataFrame qatd_cpp_sequences_old(const List &texts_,
     // Convert sequences from integer to character
     CharacterVector seqs_(seqs.size());
     for (std::size_t i = 0; i < seqs.size(); i++) {
-        seqs_[i] = join(seqs[i], types_, " ");
+        seqs_[i] = join_strings(seqs[i], types_, " ");
     }
     
     DataFrame output_ = DataFrame::create(_["collocation"] = seqs_,

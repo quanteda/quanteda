@@ -27,7 +27,7 @@ inline bool is_encoded(String delim_){
 }
 
 inline bool is_encoded(CharacterVector types_){
-    for (std::size_t i = 0; i < types_.size(); i++) {
+    for (unsigned int i = 0; i < (unsigned int)types_.size(); i++) {
         String type_ = types_[i];
         if (type_.get_encoding() > 0) {
             return true;
@@ -77,7 +77,7 @@ inline Tokens recompile(Texts texts,
     std::vector<bool> flags_unique(ids_new.size(), false);
     //Rcout << setw(10) << "" << ": " << 0 << " -> " << ids_new[0] << "\n";
     
-    dev::Timer timer;
+    /// dev::Timer timer;
     
     // Check if IDs are all used
     bool all_used;

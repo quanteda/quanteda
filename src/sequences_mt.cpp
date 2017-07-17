@@ -78,35 +78,48 @@ double compute_dice(const std::vector<double> &counts){
 //************************//
 void counts(Text text,
            MapNgrams &counts_seq,
-           const unsigned int &len){
+           const unsigned int &size){
+
     
     if (text.size() == 0) return; // do nothing with empty text
     text.push_back(0); // add padding to include last words
-    Ngram tokens_seq;
-    tokens_seq.reserve(text.size());
     
-    // Collect sequence of specified types
     std::size_t len_text = text.size();
-    for (std::size_t i = 0; i < len_text; i++) {
-        for (std::size_t j = i; j < len_text; j++) {
-            //Rcout << "j loop i="<< i << " " << j << "\n";
-            unsigned int token = text[j];
-            bool is_in = true;
-            if (token == 0 || j - i >= len) {
-                is_in = false;
-            } 
-            
-            if (is_in) {
-                //Rcout << "Match: " << token << "\n";
-                tokens_seq.push_back(token);
-            } else {
-                //Rcout << "Not match: " <<  token << "\n";
-                //only collect sequences that the size of it >= len_min
-                if (tokens_seq.size() == len) {  
-                    counts_seq[tokens_seq]++;
+    for (std::size_t i = 0; i <= len_text; i++) {
+        //Rcout << "Size" << size << "\n";
+        if (i + size < len_text) {
+            if (std::find(text.begin() + i, text.begin() + i + size, 0) == text.begin() + i + size) {
+                // dev::print_ngram(text_sub);
+                Text text_sub(text.begin() + i, text.begin() + i + size);
+                counts_seq[text_sub]++;
+            }
+        }
+    }
+}
+
+
+void counts(Text text, 
+            MapNgrams &counts_seq,
+            const std::vector<unsigned int> &sizes,
+            const bool &nested){
+    
+    if (text.size() == 0) return; // do nothing with empty text
+    text.push_back(0); // add padding to include last words
+    
+    std::size_t len_text = text.size();
+    for (std::size_t size : sizes) {
+        for (std::size_t i = 0; i <= len_text; i++) {
+            //Rcout << "Size" << size << "\n";
+            if (i + size < len_text) {
+                if (std::find(text.begin() + i, text.begin() + i + size, 0) == text.begin() + i + size) {
+                    // dev::print_ngram(text_sub);
+                    Text text_sub(text.begin() + i, text.begin() + i + size);
+                    counts_seq[text_sub]++;
                 }
-                tokens_seq.clear();
-                break;
+                if (!nested) {
+                    i += size - 1;
+                    // Rcout << "Skip" << i + size - 1 << "\n";
+                }
             }
         }
     }
@@ -409,7 +422,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     // Convert sequences from integer to character
     CharacterVector seqs_(seqs_all.size());
     for (std::size_t i = 0; i < seqs_all.size(); i++) {
-        seqs_[i] = join(seqs_all[i], types_, " ");
+        seqs_[i] = join_strings(seqs_all[i], types_, " ");
     }
     DataFrame output_ = DataFrame::create(_["collocation"] = seqs_,
                                           _["count"] = as<IntegerVector>(wrap(cs_all)),
@@ -421,7 +434,6 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                                           _["G2"] = as<NumericVector>(wrap(logratio_all)),
                                           _["chi2"] = as<NumericVector>(wrap(chi2_all)),
                                           _["stringsAsFactors"] = false);
-    output_.attr("tokens") = as<Tokens>(wrap(seqs_all));
     return output_;
 }
 

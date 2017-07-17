@@ -32,6 +32,16 @@ This function automatically identifies contiguous collocations consisting of
 variable-length term sequences whose frequency is unlikely to have occurred 
 by chance.  The algorithm is based on Blaheta and Johnson's (2001) 
 "Unsupervised Learning of Multi-Word Verbs".
+
+#' @export
+#' @method as.tokens sequences
+#' @noRd 
+as.tokens.sequences <- function(x) {
+    toks <- attr(x, 'tokens')
+    attr(toks, 'types') <- attr(x, 'types')
+    class(toks) <- c("tokens", "tokenizedTexts")
+    return(toks)
+}
 }
 \examples{
 toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"), remove_punct=TRUE)
