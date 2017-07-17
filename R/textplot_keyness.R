@@ -13,15 +13,15 @@
 #' @keywords textplot
 #' @examples
 #' \dontrun{
-#' # compare pre- v. post-war terms using grouping
-#' period <- ifelse(docvars(data_corpus_inaugural, "Year") < 1945, "pre-war", "post-war")
-#' mydfm <- dfm(data_corpus_inaugural, groups = period)
-#' head(mydfm) # make sure 'post-war' is in the first row
-#' top20 <- head(result <- textstat_keyness(mydfm), 20)
-#' tail10 <- tail(result, 10)
+#' # compare Trump v. Obama speeches
+#' prescorpus <- corpus_subset(data_corpus_inaugural, 
+#'                             President %in% c("Obama", "Trump"))
+#' presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
+#'                remove_punct = TRUE)
+#' result <- textstat_keyness(presdfm, target = "Trump")
 #' 
 #' # plot estimated word keyness
-#' textplot_keyness(top20) 
+#' textplot_keyness(result) 
 #' textplot_keyness(result, show_reference = TRUE)
 #' }
 textplot_keyness <-  function(x, sort = TRUE, show_reference = FALSE, n = 20) {
