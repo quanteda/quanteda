@@ -20,10 +20,13 @@ values are taken as false}
 \link{dfm} object, with a subset of documents (and docvars) selected according to arguments
 }
 \description{
-Returns document subsets of a dfm that meet certain conditions, including direct 
+Returns \emph{document} subsets of a dfm that meet certain conditions, including direct 
 logical operations on docvars (document-level variables).  \code{dfm_subset}
 functions identically to \code{\link{subset.data.frame}}, using non-standard
 evaluation to evaluate conditions based on the \link{docvars} in the dfm.
+}
+\details{
+To select or subset \emph{features}, see \code{\link{dfm_select}} instead.
 }
 \examples{
 testcorp <- corpus(c(d1 = "a b c d", d2 = "a a b e",

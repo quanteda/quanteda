@@ -1,10 +1,11 @@
 #' extract a subset of a dfm
 #' 
-#' Returns document subsets of a dfm that meet certain conditions, including direct 
+#' Returns \emph{document} subsets of a dfm that meet certain conditions, including direct 
 #' logical operations on docvars (document-level variables).  \code{dfm_subset}
 #' functions identically to \code{\link{subset.data.frame}}, using non-standard
 #' evaluation to evaluate conditions based on the \link{docvars} in the dfm.
 #' 
+#' To select or subset \emph{features}, see \code{\link{dfm_select}} instead.
 #' @param x \link{dfm} object to be subsetted
 #' @param subset logical expression indicating the documents to keep: missing
 #'   values are taken as false
