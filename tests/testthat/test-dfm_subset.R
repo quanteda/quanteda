@@ -14,14 +14,6 @@ test_that("dfm_subset works in a basic way", {
         docnames(dfm_subset(dfmtest, c(TRUE, TRUE, rep(FALSE, 8)))),
         c("1981-Reagan", "1985-Reagan")
     )
-    expect_equal(
-        docvars(dfm_subset(dfmtest, select = President)),
-        subset(docvars(dfmtest), select = President)
-    )
-    expect_equal(
-        docvars(dfm_subset(dfmtest, select = President)),
-        docvars(dfm_subset(dfmtest, select = "President"))
-    )
 })
 
 test_that("dfm_subset works with docvars", {
@@ -32,5 +24,34 @@ test_that("dfm_subset works with docvars", {
     )
 })
 
+test_that("dfm_subset select argument works", {
+    dfmtest <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980 & Year < 2018))
+    expect_equal(
+        docvars(dfm_subset(dfmtest, select = President)),
+        subset(docvars(dfmtest), select = President)
+    )
+    expect_equal(
+        docvars(dfm_subset(dfmtest, select = President)),
+        docvars(dfm_subset(dfmtest, select = "President"))
+    )
+})
 
+test_that("dfm_subset NSE works", {
+    x <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980 & Year < 2018))
+
+    selvar <- "President"
+    expect_equal(
+        docvars(dfm_subset(x, select = selvar)),
+        docvars(dfm_subset(x, select = President))
+    )
+    
+    tempfun <- function() {
+        selvar2 <- "President"
+        docvars(dfm_subset(x, select = selvar2))
+    }
+    expect_equal(
+        tempfun(),
+        docvars(dfm_subset(x, select = President))
+    )
+})
 
