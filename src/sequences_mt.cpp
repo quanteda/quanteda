@@ -97,34 +97,6 @@ void counts(Text text,
     }
 }
 
-
-void counts(Text text, 
-            MapNgrams &counts_seq,
-            const std::vector<unsigned int> &sizes,
-            const bool &nested){
-    
-    if (text.size() == 0) return; // do nothing with empty text
-    text.push_back(0); // add padding to include last words
-    
-    std::size_t len_text = text.size();
-    for (std::size_t size : sizes) {
-        for (std::size_t i = 0; i <= len_text; i++) {
-            //Rcout << "Size" << size << "\n";
-            if (i + size < len_text) {
-                if (std::find(text.begin() + i, text.begin() + i + size, 0) == text.begin() + i + size) {
-                    // dev::print_ngram(text_sub);
-                    Text text_sub(text.begin() + i, text.begin() + i + size);
-                    counts_seq[text_sub]++;
-                }
-                if (!nested) {
-                    i += size - 1;
-                    // Rcout << "Skip" << i + size - 1 << "\n";
-                }
-            }
-        }
-    }
-}
-
 struct counts_mt : public Worker{
     
     Texts texts;
