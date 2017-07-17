@@ -15,8 +15,12 @@ test_that("dfm_subset works in a basic way", {
         c("1981-Reagan", "1985-Reagan")
     )
     expect_equal(
-        docvars(dfm_subset(dfmtest, select = 'President')),
-        subset(docvars(dfmtest), 'President')
+        docvars(dfm_subset(dfmtest, select = President)),
+        subset(docvars(dfmtest), select = President)
+    )
+    expect_equal(
+        docvars(dfm_subset(dfmtest, select = President)),
+        docvars(dfm_subset(dfmtest, select = "President"))
     )
 })
 

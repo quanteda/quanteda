@@ -45,10 +45,10 @@ dfm_subset.dfm <- function(x, subset, select, ...) {
     } else {
         nl <- as.list(seq_along(docvars(x)))
         names(nl) <- names(docvars(x))
-        c(1, eval(substitute(select), nl, parent.frame()))
+        eval(substitute(select), nl, parent.frame())
     }
     
     docvars(x) <- docvars(x)[, vars, drop = FALSE]
-    x[r, ]
+    x[which(r), ]
 }
 
