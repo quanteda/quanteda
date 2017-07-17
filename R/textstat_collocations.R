@@ -26,8 +26,9 @@
 #'   methods except \code{"lambda"} and \code{"lambda1"}, which has a maximum size of 5.
 #'   Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.
 #' @param min_count minimum frequency of collocations that will be scored
+#' @param smoothing default is 0.5, for \code{"lambda"} and \code{"lambda1 "} only
 #' @param ... additional arguments passed to \code{\link{collocations2}} for the
-#'   first four methods, or to  \code{\link{sequences}} for \code{method = "bj_*"}
+#'   first four methods
 #' @references Blaheta, D., & Johnson, M. (2001). 
 #'   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
 #'    learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
@@ -65,6 +66,7 @@
 textstat_collocations <- function(x, method =  c("lambda", "lambda1", "lr", "chi2", "pmi", "dice"), 
                                   size = 2,
                                   min_count = 2, 
+                                  smoothing = 0.5,
                                   ...) {
     UseMethod("textstat_collocations")
 }
@@ -73,13 +75,14 @@ textstat_collocations <- function(x, method =  c("lambda", "lambda1", "lr", "chi
 #' @export
 textstat_collocations.tokens <- function(x, method =  c("lambda", "lambda1", "lr", "chi2", "pmi", "dice"), 
                                          size = 2,
-                                         min_count = 2, 
+                                         min_count = 2,
+                                         smoothing = 0.5,
                                          ...) {
     method <- match.arg(method)
     if (method == 'lambda') {
-        result <- sequences(x, min_count = min_count, size = size, ...)
+        result <- sequences(x, min_count = min_count, size = size, smoothing = smooting,...)
     } else if (method == 'lambda1'){
-        result <- sequences(x, min_count = min_count, size = size, method = "lambda1", ...)
+        result <- sequences(x, min_count = min_count, size = size, method = "lambda1", smoothing = smoothing, ...)
     } else {
         # if (!all(size %in% 2:3)) {
         #     stop("for method ", method, " size can only be 2, 3, or 2:3")

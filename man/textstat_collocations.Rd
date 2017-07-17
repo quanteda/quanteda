@@ -6,7 +6,7 @@
 \title{calculate collocation statistics}
 \usage{
 textstat_collocations(x, method = c("lambda", "lambda1", "lr", "chi2", "pmi",
-  "dice"), size = 2, min_count = 2, ...)
+  "dice"), size = 2, min_count = 2, smoothing = 0.5, ...)
 
 is.collocations(x)
 }
@@ -40,8 +40,10 @@ Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.}
 
 \item{min_count}{minimum frequency of collocations that will be scored}
 
+\item{smoothing}{default is 0.5, for \code{"lambda"} and \code{"lambda1 "} only}
+
 \item{...}{additional arguments passed to \code{\link{collocations2}} for the
-first four methods, or to  \code{\link{sequences}} for \code{method = "bj_*"}}
+first four methods}
 }
 \value{
 \code{textstat_collocations} returns a data.frame of collocations and their
