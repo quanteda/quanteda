@@ -40,6 +40,7 @@ textplot_keyness.data.frame <- function(x, show_reference = FALSE, n = 20) {
     
     if (!show_reference) {
         x <- head(x, n)
+        measure <- colnames(x)[1]
         x  <- data.frame(words = rownames(x), val = x[, 1])
         x$words <- factor(x$words, levels = x$words[order(x$val)])
         
@@ -47,7 +48,7 @@ textplot_keyness.data.frame <- function(x, show_reference = FALSE, n = 20) {
         
         p   + coord_flip() +
             geom_bar(stat="identity") +
-            ylab(colnames(x)[1]) +
+            ylab(measure) +
             geom_text(aes(label= x$words), hjust = -0.2, vjust = 0.5, size = 3) + 
             theme_bw() +
             theme(axis.line = ggplot2::element_blank(),
