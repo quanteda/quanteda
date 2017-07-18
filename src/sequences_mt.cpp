@@ -88,11 +88,11 @@ void counts(Text text,
     for (std::size_t i = 0; i <= len_text; i++) {
         //Rcout << "Size" << size << "\n";
         if (i + size < len_text) {
-            if (std::find(text.begin() + i, text.begin() + i + size, 0) == text.begin() + i + size) {
+            //if (std::find(text.begin() + i, text.begin() + i + size, 0) == text.begin() + i + size) {
                 // dev::print_ngram(text_sub);
                 Text text_sub(text.begin() + i, text.begin() + i + size);
                 counts_seq[text_sub]++;
-            }
+           // }
         }
     }
 }
@@ -271,7 +271,9 @@ struct estimates_mt : public Worker{
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimates(i, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, nseqs, smoothing);
+            if (std::find(seqs[i].begin(), seqs[i].begin() + seqs[i].size(), 0) == seqs[i].begin() + seqs[i].size()) {
+                estimates(i, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, nseqs, smoothing);
+            }
         }
     }
 };
@@ -373,7 +375,15 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         parallelFor(0, seqs.size(), estimate_mt);
 #else
         for (std::size_t i = 0; i < seqs.size(); i++) {
-            estimates(i, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
+            //if (i==2) Rcout<<"size="<<seqs[i].size()<<std::endl;
+            if (std::find(seqs[i].begin(), seqs[i].begin() + seqs[i].size(), 0) == seqs[i].begin() + seqs[i].size()) {
+                // Rcout<<"size="<<seqs[i].size()<<std::endl;
+                
+                estimates(i, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
+            }//else{
+             //   Rcout<<seqs[i][0]<<seqs[i][1]<<seqs[i][2]<<std::endl;
+                
+            //}
         }
 #endif
         //dev::stop_timer("Estimate", timer);
