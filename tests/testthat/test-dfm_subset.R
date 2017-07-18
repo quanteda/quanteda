@@ -55,3 +55,18 @@ test_that("dfm_subset NSE works", {
     )
 })
 
+test_that("dfm_subset works with subset as a dfm", {
+    dfm1 <- dfm(c(d1 = "a b b c", d2 = "b b c d"))
+    dfm2 <- dfm(c(d1 = "x y z", d2 = "a b c c d", d3 = "a b c", d4 = "x x x"))
+    expect_equal(
+        as.matrix(dfm_subset(dfm1, subset = dfm2)),
+        matrix(c(1,2,1,0, 0,2,1,1, rep(0,8)), byrow = TRUE, nrow = 4, 
+               dimnames = list(docs = paste0("d", 1:4), features = letters[1:4]))
+    )
+    
+    expect_equal(
+        as.matrix(dfm_subset(dfm1, subset = dfm2[c(3,4,1,2), ])),
+        matrix(c(rep(0,8), 1,2,1,0, 0,2,1,1), byrow = TRUE, nrow = 4, 
+               dimnames = list(docs = paste0("d", c(3,4,1,2)), features = letters[1:4]))
+    )
+})
