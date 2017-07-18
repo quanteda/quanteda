@@ -97,6 +97,10 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
     
     names(keywords)[which(names(keywords) == "target")] <- "n_target"
     names(keywords)[which(names(keywords) == "reference")] <- "n_reference"
+
+    doc_names <- grouping[order(grouping)]
+    attr(keywords, "documents") <- names(doc_names)
+
     return(keywords)
 }
 
