@@ -121,12 +121,11 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
     
     # in case no features were removed as a result of filtering conditions
     if (!length(c(featIndexMinCount, featIndexMaxCount, featIndexMinDoc, featIndexMaxDoc))) {
-        catm("No features removed.", appendLF = TRUE)
+        if (verbose) catm("No features removed.", appendLF = TRUE)
         return(x)
     }
     
-    if (verbose)
-        catm("Removing features occurring: ", appendLF = TRUE)
+    if (verbose) catm("Removing features occurring: ", appendLF = TRUE)
     
     # print messages about frequency count removal
     if (verbose & length(c(featIndexMinCount, featIndexMaxCount))) {
@@ -167,9 +166,10 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
              " (", format(length(featureRemoveIndex) / nfeature(x) * 100, digits = 3, nsmall = 1), "%).", 
              sep = "", appendLF = TRUE)
     }
-    if ((nfeature(x) - length(featureRemoveIndex)) == 0)  
+    if (verbose && (nfeature(x) - length(featureRemoveIndex)) == 0)
         stop("No features left after trimming.")
     
-    dfm_sort(x[, -featureRemoveIndex])
+    # dfm_sort(x[, -featureRemoveIndex])
+    x[, -featureRemoveIndex]
 }
 
