@@ -50,10 +50,10 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
         }
         p <- ggplot(data = x, aes(x = x_reorder, y = x[,1]))
         
-        p    + coord_flip() +
+        p   + coord_flip() +
             geom_bar(stat="identity") +
             ylab(colnames(x)[1]) +
-            geom_text(aes(label= x_reorder), hjust =  -0.2, vjust = 0.5, size = 3) + 
+            geom_text(aes(label= x_reorder), hjust = -0.2, vjust = 0.5, size = 3) + 
             theme_bw() +
             theme(axis.line = ggplot2::element_blank(),
                   axis.title.y = ggplot2::element_blank(),
@@ -77,15 +77,15 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
                 stop (" Better plot for one Doc.")
             topn <- head(x, pos_n)
             tailn <- tail(x, neg_n)
-            max_Y <- max(topn[,1])
-            min_Y <- min(tailn[,1])
+            max_Y <- max(topn[, 1])
+            min_Y <- min(tailn[, 1])
             
             if (sort) {
-                tailn <- tailn[order(tailn[,1]),]
+                tailn <- tailn[order(tailn[, 1]),]
             }
         }
         p1 <- data.frame(x = (neg_n + pos_n) : (1 + neg_n), y = topn[,1])
-        p2 <- data.frame(x = neg_n  : 1, y = tailn[,1])
+        p2 <- data.frame(x = 1 : neg_n, y = tailn[,1])
         p <- melt(list(Reference = p2, Target = p1), id.vars = "x")
         colnames(p)[4] <- "Document"
         
@@ -95,7 +95,7 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
             coord_flip() + 
             ylim(min_Y * 1.1 , max_Y * 1.1) +  ## allow extra space for displaying text next to the point
             ylab(colnames(topn)[1]) +
-            geom_text(aes(label= c(rownames(topn), rownames(tailn))), hjust = ifelse( p$Document == "Target", -0.2, 1.2),
+            geom_text(aes(label= c(rownames(tailn), rownames(topn))), hjust = ifelse( p$Document == "Target", -0.2, 1.2),
                       vjust = 0.5, colour = ifelse(p$Document == "Target", "#CC3333", "#003366"), size = 3) +
             theme_bw() +
             theme(axis.line = ggplot2::element_blank(),
