@@ -212,9 +212,10 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
         
     } else if (scheme == "count") {
         if (is(x, "dfmSparse")) {
-            tx <- t(x)
-            featfactor <- factor(tx@i, 0:(nfeature(x)-1), labels = featnames(x))
-            result <- as.integer(table(featfactor[tx@x > threshold]))
+            result <- colSums(x > threshold)
+            # tx <- t(x)
+            # featfactor <- factor(tx@i, 0:(nfeature(x)-1), labels = featnames(x))
+            # result <- as.integer(table(featfactor[tx@x > threshold]))
         } else {
             if (!any(x@x <= threshold)) 
                 result <- rep(ndoc(x), nfeature(x))
@@ -235,7 +236,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
         result <- pmax(0, result)
     }
     
-    if (USE.NAMES) names(result) <- featnames(x)
+    if (USE.NAMES) names(result) <- featnames(x) else names(result) <- NULL
     result
 }
 
