@@ -128,9 +128,11 @@ test_that("test textplot_scale1d wordscores in the most basic way", {
 })
 
 test_that("test textplot_keyness ", {
-    period <- ifelse(docvars(data_corpus_inaugural, "Year") < 1945, "pre-war", "post-war")
-    mydfm <- dfm(data_corpus_inaugural, groups = period)
-    top20 <- head(result <- textstat_keyness(mydfm), 20)
+    prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
+    presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
+                    remove_punct = TRUE)
+    result <- textstat_keyness(presdfm, target = "Trump")
+    top20 <- head(result, 20)
     
     p1 <- textplot_keyness(top20, sort = TRUE)
     p2 <- textplot_keyness(top20, sort = FALSE)
@@ -140,4 +142,25 @@ test_that("test textplot_keyness ", {
     
     p2 <- textplot_keyness(result, show_reference = TRUE)
     expect_equal(p2$labels$y, colnames(result)[1])
+})
+
+test_that("test textplot_keyness: show_reference works correctly ", {
+    prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
+    presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
+                   remove_punct = TRUE)
+    result <- textstat_keyness(presdfm, target = "Trump")
+    
+    k = 10
+    p1 <- textplot_keyness(result, show_reference = FALSE, n = k)
+    p2 <- textplot_keyness(result, show_reference = TRUE, n = k)
+    
+    # Plot with two different fills when show_reference = TRUE
+    expect_equal(dim(table(ggplot2::ggplot_build(p1)$data[[1]]$fill)), 1)
+    expect_equal(dim(table(ggplot2::ggplot_build(p2)$data[[1]]$fill)), 2)
+
+    # number of words plotted doubled when show_reference = TRUE
+    expect_equal(nrow(ggplot2::ggplot_build(p1)$data[[1]]), k)
+    expect_equal(nrow(ggplot2::ggplot_build(p2)$data[[1]]), 2*k)
+    
+
 })
