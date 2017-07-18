@@ -2,8 +2,6 @@
 #' 
 #' Plot the results of a keyword analysis using \code{\link{textstat_keyness}}.
 #' @param x a return object from \code{\link{textstat_keyness}}
-#' @param sort logical; if \code{TRUE} (the default), order points from low to high 
-#'   score. 
 #' @param show_reference logical; if \code{TRUE}, show key reference features in addition to key target features
 #' @param n number of terms to plot
 #' @return a \pkg{ggplot2} object
@@ -24,7 +22,7 @@
 #' textplot_keyness(result) 
 #' textplot_keyness(result, show_reference = TRUE)
 #' }
-textplot_keyness <-  function(x, sort = TRUE, show_reference = FALSE, n = 20) {
+textplot_keyness <-  function(x, show_reference = FALSE, n = 20) {
     UseMethod("textplot_keyness")
 }
 
@@ -32,9 +30,9 @@ textplot_keyness <-  function(x, sort = TRUE, show_reference = FALSE, n = 20) {
 #' @importFrom stats reorder aggregate
 #' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
-#' @importFrom ggplot2 facet_grid element_line geom_bar aes_ ylim
+#' @importFrom ggplot2 facet_grid element_line geom_bar ylim aes_
 #' @export
-textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, n = 20) {
+textplot_keyness.data.frame <- function(x, show_reference = FALSE, n = 20) {
     
     if (!all(c("p", "n_target", "n_reference") %in% names(x)) | ncol(x) != 4) {
         stop("x must be a return from textstat_keyness")
@@ -42,18 +40,15 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
     
     if (!show_reference) {
         x <- head(x, n)
+        x  <- data.frame(words = rownames(x), val = x[, 1])
+        x$words <- factor(x$words, levels = x$words[order(x$val)])
         
-        if (sort) {
-            x_reorder <- reorder(rownames(x), x[,1])
-        } else {
-            x_reorder <- rownames(x)
-        }
-        p <- ggplot(data = x, aes(x = x_reorder, y = x[,1]))
+        p <- ggplot(data = x, aes(x = x$words, y = x$val))
         
         p   + coord_flip() +
             geom_bar(stat="identity") +
             ylab(colnames(x)[1]) +
-            geom_text(aes(label= x_reorder), hjust = -0.2, vjust = 0.5, size = 3) + 
+            geom_text(aes(label= x$words), hjust = -0.2, vjust = 0.5, size = 3) + 
             theme_bw() +
             theme(axis.line = ggplot2::element_blank(),
                   axis.title.y = ggplot2::element_blank(),
@@ -79,11 +74,10 @@ textplot_keyness.data.frame <- function(x, sort = TRUE, show_reference = FALSE, 
             tailn <- tail(x, neg_n)
             max_Y <- max(topn[, 1])
             min_Y <- min(tailn[, 1])
-            
-            if (sort) {
-                tailn <- tailn[order(tailn[, 1]),]
-            }
-        }
+        }   
+        topn  <- topn[order(-topn[, 1]), ]
+        tailn <- tailn[order(tailn[, 1]), ]
+        
         p1 <- data.frame(x = (neg_n + pos_n) : (1 + neg_n), y = topn[,1])
         p2 <- data.frame(x = 1 : neg_n, y = tailn[,1])
         p <- melt(list(Reference = p2, Target = p1), id.vars = "x")

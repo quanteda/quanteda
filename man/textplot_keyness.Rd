@@ -4,13 +4,10 @@
 \alias{textplot_keyness}
 \title{plot word keyness}
 \usage{
-textplot_keyness(x, sort = TRUE, show_reference = FALSE, n = 20)
+textplot_keyness(x, show_reference = FALSE, n = 20)
 }
 \arguments{
 \item{x}{a return object from \code{\link{textstat_keyness}}}
-
-\item{sort}{logical; if \code{TRUE} (the default), order points from low to high 
-score.}
 
 \item{show_reference}{logical; if \code{TRUE}, show key reference features in addition to key target features}
 
