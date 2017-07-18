@@ -131,17 +131,11 @@ test_that("test textplot_keyness ", {
     prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
     presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
                     remove_punct = TRUE)
-    result <- textstat_keyness(presdfm, target = "Trump")
-    top20 <- head(result, 20)
-    
-    p1 <- textplot_keyness(top20, sort = TRUE)
-    p2 <- textplot_keyness(top20, sort = FALSE)
-    p1$plot_env <- NULL
-    p2$plot_env <- NULL
-    expect_equivalent(p1, p2)
-    
-    p2 <- textplot_keyness(result, show_reference = TRUE)
-    expect_equal(p2$labels$y, colnames(result)[1])
+    result <- textstat_keyness(presdfm, target = "Trump", measure = "chi2")
+
+    # shows the correct statistic measure 
+    p3 <- textplot_keyness(result, show_reference = TRUE)
+    expect_equal(p3$labels$y, colnames(result)[1])
 })
 
 test_that("test textplot_keyness: show_reference works correctly ", {
