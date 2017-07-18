@@ -27,3 +27,23 @@ test_that("test fcm indexing", {
     expect_equivalent(dim(x[1:3, drop = FALSE]), c(3, 12))
 
 })
+
+test_that("test dfm indexing with docvar selection", {
+    
+    testcorp <- corpus(c(d1 = "a b c d", d2 = "a a b e",
+                         d3 = "b b c e", d4 = "e e f a b"),
+                       docvars = data.frame(grp = c(1, 1, 2, 3)))
+    testdfm <- dfm(testcorp)
+    expect_equal(
+        docvars(testdfm[1:2, ]),
+        data.frame(grp = c(1,1), row.names = c("d1", "d2"))
+    )
+    expect_equal(
+        docvars(testdfm[c(2,4), ]),
+        data.frame(grp = c(1,3), row.names = c("d2", "d4"))
+    )
+    expect_equal(
+        docvars(testdfm[c(2,4), c(1, 3, 5)]),
+        data.frame(grp = c(1,3), row.names = c("d2", "d4"))
+    )
+})
