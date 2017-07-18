@@ -29,7 +29,8 @@ Imports:
     fastmatch,
     ggplot2 (>= 2.2.0),
     XML,
-    yaml
+    yaml,
+    lubridate
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     knitr,
@@ -62,6 +63,7 @@ Collate:
     'corpus-deprecated.R'
     'corpus-methods-base.R'
     'corpus-methods-quanteda.R'
+    'corpus-methods-tm.R'
     'corpus_reshape.R'
     'corpus_sample.R'
     'corpus_segment.R'
