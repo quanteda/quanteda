@@ -96,6 +96,7 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
     x <- group_dfm(x, documents = groups, fill = fill)
     if (!is.null(groups))
         x <- x[as.character(levels(groups)),]
+    x@docvars <- data.frame()
     return(x)
 }
 
