@@ -79,19 +79,28 @@ textplot_keyness.data.frame <- function(x, show_reference = FALSE, n = 20) {
         topn  <- topn[order(-topn[, 1]), ]
         tailn <- tailn[order(tailn[, 1]), ]
         
+        Tars <- attr(x, "documents")[1]
+        if (length(attr(x, "documents")) == 2){
+            Refs <- attr(x, "documents")[2]
+        } else {
+            Refs <- "Reference"
+        }
         p1 <- data.frame(x = (neg_n + pos_n) : (1 + neg_n), y = topn[,1])
         p2 <- data.frame(x = 1 : neg_n, y = tailn[,1])
-        p <- melt(list(Reference = p2, Target = p1), id.vars = "x")
+        p <- melt(list(Refs = p2, Tars = p1), id.vars = "x")
         colnames(p)[4] <- "Document"
+        p[p=="Refs"] <- Refs
+        p[p=="Tars"] <- Tars
+
         
         ggplot(p, aes_(x = ~x, y = p$value, fill = ~Document)) +  
             geom_bar(stat="identity") + 
-            ggplot2::scale_fill_manual("Document", values = c("Target" = "#CC3333", "Reference" = "#003366")) +
+            ggplot2::scale_fill_manual("Document", values = c("#003366", "#CC3333")) +
             coord_flip() + 
             ylim(min_Y * 1.1 , max_Y * 1.1) +  ## allow extra space for displaying text next to the point
             ylab(colnames(topn)[1]) +
-            geom_text(aes(label= c(rownames(tailn), rownames(topn))), hjust = ifelse( p$Document == "Target", -0.2, 1.2),
-                      vjust = 0.5, colour = ifelse(p$Document == "Target", "#CC3333", "#003366"), size = 3) +
+            geom_text(aes(label= c(rownames(tailn), rownames(topn))), hjust = ifelse( p$Document == Tars, -0.2, 1.2),
+                      vjust = 0.5, colour = ifelse(p$Document == Tars, "#CC3333", "#003366"), size = 3) +
             theme_bw() +
             theme(axis.line = ggplot2::element_blank(),
                   axis.title.y = ggplot2::element_blank(),
