@@ -129,7 +129,7 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
 #'   
 keyness_chi2_dt <- function(x, correction = 0.5) {
     
-    a <- b <- c <- d <- N <- E <- chi2 <- p <- NULL 
+    a <- b <- c <- d <- N <- E <- chi2 <- p <- cor_app <- NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
     dt <- data.table(feature = featnames(x),
@@ -223,7 +223,7 @@ keyness_lr <- function(x, correction = 0.5) {
     
     #correction <- match.arg(correction)
     epsilon <- 0.000000001; # to offset zero cell counts
-    a <- b <- c <- d <- N <- E11 <- G <- p <- NULL 
+    a <- b <- c <- d <- N <- E11 <- G2 <- p <- cor_app <- correction_sign <- NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
     dt <- data.table(feature = featnames(x),
@@ -272,7 +272,7 @@ keyness_lr <- function(x, correction = 0.5) {
 #' quanteda:::keyness_pmi(mydfm)
 keyness_pmi <- function(x, correction = 0.5) {
     
-    a <- b <- c <- d <- N <- E11 <- pmi <- p <- NULL 
+    a <- b <- c <- d <- N <- E11 <- pmi <- p <- cor_app <- correction_sign <-NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
     dt <- data.table(feature = featnames(x),
