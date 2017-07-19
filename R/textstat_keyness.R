@@ -11,6 +11,8 @@
 #'   mutual information.
 #' @param sort logical; if \code{TRUE} sort features scored in descending order 
 #'   of the measure, otherwise leave in original feature order
+#' @param correction to prevent overestimation of statistical significance for small data. 
+#' 0.5 is recommanded for Yates correction and is set as default.
 #' @references Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
 #'   Texts}. Amsterdam, Philadelphia: John Benjamins, 2010.
 #'   
@@ -51,13 +53,13 @@
 #' head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
 #' # using the likelihood ratio method
 #' head(textstat_keyness(dfm_smooth(pwdfm), measure = "lr", target = "2017-Trump"), 10)
-textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), sort = TRUE) {
+textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), sort = TRUE, correction = 0.5) {
     UseMethod("textstat_keyness")
 }
 
 #' @noRd
 #' @export
-textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), sort = TRUE) {
+textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), sort = TRUE, correction = 0.5) {
     
     # error checking
     measure <- match.arg(measure)
@@ -81,13 +83,13 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
     x <- x[order(docnames(x)), ]
 
     if (measure == "chi2") {
-        keywords <- keyness_chi2_dt(x)
+        keywords <- keyness_chi2_dt(x, correction)
     } else if (measure == "exact") {
         keywords <- keyness_exact(x)
     } else if (measure == "lr") {
-        keywords <- keyness_lr(x)
+        keywords <- keyness_lr(x, correction)
     } else if (measure == "pmi") {
-        keywords <- keyness_pmi(x)
+        keywords <- keyness_pmi(x, correction)
     } else {
         stop(measure, " not yet implemented for textstat_keyness")
     }
@@ -125,7 +127,7 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
 #'   \url{https://en.wikipedia.org/wiki/Yates's_correction_for_continuity}
 #'   
 #'   
-keyness_chi2_dt <- function(x) {
+keyness_chi2_dt <- function(x, correction = 0.5) {
     
     a <- b <- c <- d <- N <- E <- chi2 <- p <- NULL 
     if (ndoc(x) > 2)
@@ -136,10 +138,16 @@ keyness_chi2_dt <- function(x) {
     dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
     dt[, N := (a+b+c+d)]
     dt[, E := (a+b)*(a+c) / N]
+    dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5) 
+                     & abs(a*d - b*c) > N/2)]
+    # the correction is usually only recommended if the smallest expected frequency is less than 5
+    # the correction should not be applied if |ad − bc| is less than N/2.
     # compute using the direct formula - see link above (adds sign)
-    dt[, chi2 := (N * (abs(a*d - b*c) - N/2)^2) / ((a+b)*(c+d)*(a+c)*(b+d)) * 
-                 ifelse(a > E, 1, -1)]
-
+    dt[, chi2 := ifelse(cor_app, 
+       (N * (abs(a*d - b*c) - N * correction)^2) / ((a+b)*(c+d)*(a+c)*(b+d)) * ifelse(a > E, 1, -1), 
+       (N * (abs(a*d - b*c) - N * correction)^2) / ((a+b)*(c+d)*(a+c)*(b+d)) * ifelse(a > E, 1, -1) )]
+    
+    
     # compute p-values
     dt[, p := 1 - stats::pchisq(abs(chi2), 1)]
 
@@ -204,17 +212,16 @@ keyness_exact <- function(x) {
 
 
 #' @rdname keyness
-#' @param correction if \code{"Yates"} implement the Yates correction for 2x2 
-#'   tables, no correction if \code{"none"}
+#' @param correction implement the Yates correction for 2x2 tables
 #' @details \code{keyness_lr} computes the \eqn{G^2} likelihood ratio statistic
 #'   using vectorized computation
 #' @examples
 #' quanteda:::keyness_lr(mydfm)
 #' @references
 #' \url{http://influentialpoints.com/Training/g-likelihood_ratio_test.htm}
-keyness_lr <- function(x, correction = c("none", "Yates")) {
+keyness_lr <- function(x, correction = 0.5) {
     
-    correction <- match.arg(correction)
+    #correction <- match.arg(correction)
     epsilon <- 0.000000001; # to offset zero cell counts
     a <- b <- c <- d <- N <- E11 <- G <- p <- NULL 
     if (ndoc(x) > 2)
@@ -225,25 +232,28 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
     dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
     dt[, N := (a + b + c + d)]
     dt[, E11 := (a+b)*(a+c) / N]
+    dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5) 
+                     & abs(a*d - b*c) > N/2)]
+    # the correction is usually only recommended if the smallest expected frequency is less than 5
+    # the correction should not be applied if |ad − bc| is less than N/2.
+    # implement Yates continuity correction
+    # If (ad-bc) is positive, subtract 0.5 from a and d and add 0.5 to b and c. 
+    # If (ad-bc) is negative, add 0.5 to a and d and subtract 0.5 from b and c.
+    dt[, correction_sign := a*d - b*c > 0]
+    dt[, c("a", "d", "b", "c") := list(a + ifelse(cor_app, ifelse(correction_sign, -correction, correction), 0),
+                                       d + ifelse(cor_app, ifelse(correction_sign, -correction, correction), 0),
+                                       b + ifelse(cor_app, ifelse(correction_sign, correction, -correction), 0),
+                                       c + ifelse(cor_app, ifelse(correction_sign, correction, -correction), 0))]
     
-    if (correction == "Yates") {
-        # implement Yates continuity correction
-        # If (ad-bc) is positive, subtract 0.5 from a and d and add 0.5 to b and c. 
-        # If (ad-bc) is negative, add 0.5 to a and d and subtract 0.5 from b and c.
-        dt[, correction := a*d - b*c > 0]
-        dt[, c("a", "d", "b", "c") := list(a + ifelse(correction, -0.5, 0.5),
-                                           d + ifelse(correction, -0.5, 0.5),
-                                           b + ifelse(correction, 0.5, -0.5),
-                                           c + ifelse(correction, 0.5, -0.5))]
-    } 
     ## the other possible correction to implement is the Williams correction, 
     ## see http://influentialpoints.com/Training/g-likelihood_ratio_test.htm
     
+    
     dt[, G2 := (2 * (a * log(a / E11 + epsilon) + 
-                     b * log(b / ((a+b)*(b+d) / N) + epsilon) +
-                     c * log(c / ((a+c)*(c+d) / N) + epsilon) +
-                     d * log(d / ((b+d)*(c+d) / N) + epsilon))) *
-               ifelse(a > E11, 1, -1)]
+                         b * log(b / ((a+b)*(b+d) / N) + epsilon) +
+                         c * log(c / ((a+c)*(c+d) / N) + epsilon) +
+                         d * log(d / ((b+d)*(c+d) / N) + epsilon))) *
+           ifelse(a > E11, 1, -1)]
     
     # compute p-values
     dt[, p := 1 - stats::pchisq(abs(G2), 1)]
@@ -260,7 +270,7 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
 #'   using vectorized computation
 #' @examples
 #' quanteda:::keyness_pmi(mydfm)
-keyness_pmi <- function(x) {
+keyness_pmi <- function(x, correction = 0.5) {
     
     a <- b <- c <- d <- N <- E11 <- pmi <- p <- NULL 
     if (ndoc(x) > 2)
@@ -272,6 +282,21 @@ keyness_pmi <- function(x) {
     dt[, N := (a + b + c + d)]
     dt[, E11 := (a+b)*(a+c) / N]
     epsilon <- .000000001  # to offset zero cell counts
+    
+    dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5) 
+                     & abs(a*d - b*c) > N/2)]
+    # the correction is usually only recommended if the smallest expected frequency is less than 5
+    # the correction should not be applied if |ad − bc| is less than N/2.
+    # implement Yates continuity correction
+    # If (ad-bc) is positive, subtract 0.5 from a and d and add 0.5 to b and c. 
+    # If (ad-bc) is negative, add 0.5 to a and d and subtract 0.5 from b and c.
+    dt[, correction_sign := a*d - b*c > 0]
+    dt[, a := a + ifelse(cor_app, ifelse(correction_sign, -correction, correction), 0)]
+    
+    ## the other possible correction to implement is the Williams correction, 
+    ## see http://influentialpoints.com/Training/g-likelihood_ratio_test.htm
+
+    
     dt[, pmi :=   log(a /E11 + epsilon)]
     
     #normalized pmi

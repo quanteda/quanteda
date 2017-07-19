@@ -5,7 +5,7 @@
 \title{calculate keyness statistics}
 \usage{
 textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"),
-  sort = TRUE)
+  sort = TRUE, correction = 0.5)
 }
 \arguments{
 \item{x}{a \link{dfm} containing the features to be examined for keyness}
@@ -22,6 +22,9 @@ mutual information.}
 
 \item{sort}{logical; if \code{TRUE} sort features scored in descending order 
 of the measure, otherwise leave in original feature order}
+
+\item{correction}{to prevent overestimation of statistical significance for small data. 
+0.5 is recommanded for Yates correction and is set as default.}
 }
 \value{
 a data.frame of computed statistics and associated p-values, where
