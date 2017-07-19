@@ -4,7 +4,7 @@
 \alias{textplot_keyness}
 \title{plot word keyness}
 \usage{
-textplot_keyness(x, show_reference = FALSE, n = 20)
+textplot_keyness(x, show_reference = TRUE, n = 20)
 }
 \arguments{
 \item{x}{a return object from \code{\link{textstat_keyness}}}
@@ -30,7 +30,7 @@ result <- textstat_keyness(presdfm, target = "Trump")
 
 # plot estimated word keyness
 textplot_keyness(result) 
-textplot_keyness(result, show_reference = TRUE)
+textplot_keyness(result, show_reference = FALSE)
 }
 }
 \seealso{

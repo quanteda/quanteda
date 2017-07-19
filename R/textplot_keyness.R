@@ -20,9 +20,9 @@
 #' 
 #' # plot estimated word keyness
 #' textplot_keyness(result) 
-#' textplot_keyness(result, show_reference = TRUE)
+#' textplot_keyness(result, show_reference = FALSE)
 #' }
-textplot_keyness <-  function(x, show_reference = FALSE, n = 20) {
+textplot_keyness <-  function(x, show_reference = TRUE, n = 20) {
     UseMethod("textplot_keyness")
 }
 
@@ -32,7 +32,7 @@ textplot_keyness <-  function(x, show_reference = FALSE, n = 20) {
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
 #' @importFrom ggplot2 facet_grid element_line geom_bar ylim aes_
 #' @export
-textplot_keyness.data.frame <- function(x, show_reference = FALSE, n = 20) {
+textplot_keyness.data.frame <- function(x, show_reference = TRUE, n = 20) {
     
     if (!all(c("p", "n_target", "n_reference") %in% names(x)) | ncol(x) != 4) {
         stop("x must be a return from textstat_keyness")
