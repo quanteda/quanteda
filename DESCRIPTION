@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.9.9.79
+Version: 0.9.9.83
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible framework for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -29,7 +29,8 @@ Imports:
     fastmatch,
     ggplot2 (>= 2.2.0),
     XML,
-    yaml
+    yaml,
+    lubridate
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     knitr,
@@ -62,6 +63,7 @@ Collate:
     'corpus-deprecated.R'
     'corpus-methods-base.R'
     'corpus-methods-quanteda.R'
+    'corpus-methods-tm.R'
     'corpus_reshape.R'
     'corpus_sample.R'
     'corpus_segment.R'
@@ -80,6 +82,7 @@ Collate:
     'dfm_lookup.R'
     'dfm_sample.R'
     'dfm_select.R'
+    'dfm_subset.R'
     'dfm_trim.R'
     'dfm_weight.R'
     'dictionaries-deprecated.R'
@@ -87,7 +90,6 @@ Collate:
     'docvars.R'
     'fcm-methods.R'
     'fcm.R'
-    'features.R'
     'joinTokens-deprecated.R'
     'kwic.R'
     'nfunctions.R'
@@ -95,7 +97,7 @@ Collate:
     'nsyllable.R'
     'phrases.R'
     'plots-deprecated.R'
-    'quanteda.R'
+    'quanteda-documentation.R'
     'quanteda_options.R'
     'readtext-methods.R'
     'regex2fixed.R'
@@ -116,6 +118,7 @@ Collate:
     'textmodel_wordscores.R'
     'textmodel_wordshoal.R'
     'textplot_frequency.R'
+    'textplot_keyness.R'
     'textplot_scale1d.R'
     'textplot_topfeatures.R'
     'textplot_wordcloud.R'
@@ -127,7 +130,6 @@ Collate:
     'textstat_lexdiv.R'
     'textstat_readability.R'
     'textstat_simil.R'
-    'toLower.R'
     'tokenize.R'
     'tokenize_outtakes.R'
     'tokens.R'
@@ -136,9 +138,9 @@ Collate:
     'tokens_lookup.R'
     'tokens_ngrams.R'
     'tokens_select.R'
-    'tolower-misc.R'
+    'tolower-deprecated.R'
+    'tolower-functions.R'
     'utils.R'
-    'valuetype.R'
     'wordstem.R'
     'zzz.R'
 RcppModules: ngramMaker

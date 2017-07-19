@@ -1,7 +1,7 @@
-# @rdname catm
+# rdname catm
 # make temporary files and directories in a more reasonable way than tempfile()
 # or tempdir(): here, the filename is different each time you call mktemp()
-mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
+mktemp <- function(prefix='tmp.', base_path = NULL, directory = FALSE) {
     #  Create a randomly-named temporary file or directory, sort of like
     #  https://www.mktemp.org/manual.html
     if (is.null(base_path))
@@ -29,11 +29,40 @@ mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
 }
 
 
-# @rdname catm
+# rdname catm
 # messages() with some of the same syntax as cat(): takes a sep argument and
 # does not append a newline by default
-catm <- function(..., sep = " ", appendLF = F) {
+catm <- function(..., sep = " ", appendLF = FALSE) {
     message(paste(..., sep = sep), appendLF = appendLF)
+}
+
+
+# used in displaying verbose messages for tokens_select and dfm_select
+message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0) {
+    catm(if (selection == "keep") "kept" else "removed", " ",
+         format(nfeats, big.mark = ",", scientific = FALSE),
+         " feature", if (nfeats != 1L) "s" else "", sep = "")
+    if (ndocs > 0) {
+        catm(" and ",
+             format(ndocs, big.mark=",", scientific = FALSE),
+             " document", if (ndocs != 1L) "s" else "",
+             sep = "")
+    }
+    if ((nfeatspad + ndocspad) > 0) {
+        catm(", padded ", sep = "")
+    }
+    if (nfeatspad > 0) {
+        catm(format(nfeatspad, big.mark=",", scientific = FALSE), 
+             " feature", if (nfeatspad != 1L) "s" else "",
+             sep = "")
+    }
+    if (ndocspad > 0) {
+        if (nfeatspad > 0) catm(" and ", sep = "")
+        catm(format(ndocspad, big.mark=",", scientific = FALSE), 
+             " document", if (ndocspad != 1L) "s" else "",
+             sep = "")
+    }
+    catm("", appendLF = TRUE)
 }
 
 ##
@@ -153,51 +182,27 @@ code <- function(texts){
     cat(paste0('         "', texts[len], '")\n'))
 }
 
-#' convert various input as features to a simple list
-#' 
-#' Convert various input as features into a simple list, for input as a sequence in e.g. 
-#' \code{\link{tokens_compound}}.
-#' @param features the input features, one of: \itemize{ \item{character,
-#'   }{whose elements will be split on whitespace;} \item{list of characters,
-#'   }{consisting of a list of token patterns, where sequences are separate elements}; 
-#'   \item{\link{phrase} object;} \item{\link{dictionary} object}{;} 
-#'   \item{\link{dictionary} object}{;} 
-#'   \item{\link{collocations} object.}{} }
-#' @return an unnamed list of features, with each element of the list a
-#'   character vector with the split sequence.
-#' @keywords internal utilities
-features2list <- function(features) {
+
+# convert various input as features to a vector used in tokens_select, 
+# tokens_compound and kwic.
+features2id <- function(features, types, valuetype, case_insensitive, 
+                        concatenator = '_', remove_unigram = FALSE) {
     
-    if (is.collocations(features)) {
-        result <- as.list(features[["collocation"]])
-    } else if (is.dictionary(features)) {
-        result <- unlist(features, use.names = FALSE)
-    } else if (is.list(features)) {
-        if (!all(is.character(unlist(features, use.names = FALSE))))
-            stop("all list elements must be  character")
-        result <- features
-    } else if (is.character(features)) {
-        result <- as.list(features)
+    if (is.sequences(features) || is.collocations(features)) {
+        features <- stri_split_charclass(features$collocation, "\\p{Z}")
+        features_id <- lapply(features, function(x) fastmatch::fmatch(x, types))
+        features_id <- features_id[sapply(features_id, function(x) all(!is.na(x)))]
     } else {
-        stop("features must be a character, a list of character, a dictionary, or collocations")
+        if (is.dictionary(features)) {
+            features <- unlist(features, use.names = FALSE)
+            features <- split_dictionary_values(features, concatenator)
+        } else {
+            features <- as.list(features)
+        }
+        if (remove_unigram)
+            features <- features[lengths(features) > 1] # drop single-word features
+        features_id <- regex2id(features, types, valuetype, case_insensitive)
     }
-
-    return(as.list(result))
-}
-
-#' convert various input as features to a vector
-#' 
-#' Convert various input as features to a vector for functions that 
-#' do not support multi-word features e.g.
-#' \code{\link{dfm_select}, \link{sequences}, \link{collocations}}.
-#' @inheritParams features2list
-#' @return an unnamed vector of features
-#' @keywords internal utilities
-features2vector <- function(features) {
-    
-    temp <- features2list(features)
-    # if (any(lengths(temp) > 1)) {
-    #     warning(as.character(sys.calls())[1], ' does not support multi-word features')
-    # }
-    return(unlist(temp, use.names = FALSE))
+    attr(features_id, 'features') <- stri_c_list(features, sep = ' ')
+    return(features_id)
 }

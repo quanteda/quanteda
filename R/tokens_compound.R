@@ -6,17 +6,17 @@
 #' to form a single "token".  This ensures that the sequences will be processed
 #' subsequently as single tokens, for instance in constructing a \link{dfm}.
 #' @param x an input \link{tokens} object
-#' @inheritParams features
+#' @inheritParams pattern
 #' @param concatenator the concatenation character that will connect the words 
-#'   making up the multi-word sequences.  The default \code{_} is highly 
+#'   making up the multi-word sequences.  The default \code{_} is  
 #'   recommended since it will not be removed during normal cleaning and 
 #'   tokenization (while nearly all other punctuation characters, at least those
 #'   in the Unicode punctuation class [P] will be removed).
 #' @inheritParams valuetype
 #' @param case_insensitive logical; if \code{TRUE}, ignore case when matching
-#' @param join logical; if \code{TRUE}, join overlapped compounds
-#' @return a \link{tokens} object in which the token sequences matching the patterns 
-#' in \code{sequences} have been replaced by  compound "tokens" joined by the concatenator
+#' @param join logical; if \code{TRUE}, join overlapping compounds
+#' @return a \link{tokens} object in which the token sequences matching \code{pattern}
+#' have been replaced by  compound "tokens" joined by the concatenator
 #' @export
 #' @author Kenneth Benoit (R) and Kohei Watanabe (C++)
 #' @examples
@@ -30,7 +30,7 @@
 #' dfm(cw)
 #' 
 #' # when used as a dictionary for dfm creation
-#' mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
+#' mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax*")))
 #' (cw2 <- tokens_compound(mytoks, mydict))
 #' 
 #' # to pick up "taxes" in the second text, set valuetype = "regex"
@@ -44,13 +44,14 @@
 #' tokens_compound(toks, myDict)
 #'
 #' # with collocations
-#' #cols <- textstat_collocations("capital gains taxes are worse than inheritance taxes", 
-#' #                              size = 2, min_count = 1)
-#' #toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
-#' #tokens_compound(toks, cols)
-tokens_compound <- function(x, features,
+#' cols <- 
+#'     textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"), 
+#'                                   size = 2, min_count = 1)
+#' toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
+#' tokens_compound(toks, cols)
+tokens_compound <- function(x, pattern,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
-                    case_insensitive = TRUE, join = FALSE) {
+                    case_insensitive = TRUE, join = TRUE) {
     UseMethod("tokens_compound")
 }
 
@@ -59,38 +60,18 @@ tokens_compound <- function(x, features,
 #' @noRd
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_compound.tokens <- function(x, features,
+tokens_compound.tokens <- function(x, pattern,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
-                   case_insensitive = TRUE, join = FALSE) {
-    
-    if (!is.tokens(x))
-        stop("x must be a tokens object")
+                   case_insensitive = TRUE, join = TRUE) {
     
     valuetype <- match.arg(valuetype)
-
-    names_org <- names(x)
-    attrs_org <- attributes(x)
+    attrs <- attributes(x)
     types <- types(x)
     
-    if (is.sequences(features) || is.collocations(features)) {
-        if (identical(attr(features, 'types'), types)) {
-            #cat("Skip regex2id\n")
-            seqs_ids <- attr(features, 'tokens')
-        } else { 
-            #cat("Use fmatch\n")
-            seqs <- features2list(sequences$collocation)
-            seqs_ids <- lapply(seqs, function(x) fastmatch::fmatch(x, types))
-            seqs_ids <- seqs_ids[sapply(seqs_ids, function(x) all(!is.na(x)))]
-        }
-    } else {
-        #cat("Use regex2id\n")
-        seqs <- features2list(features)
-        seqs <- seqs[lengths(seqs) > 1] # drop single words
-        seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
-    }
-    if(length(seqs_ids) == 0) return(x) # do nothing
-    x <- qatd_cpp_tokens_compound(x, seqs_ids, types, concatenator, join)
-    attributes(x, FALSE) <- attrs_org
+    seqs_id <- features2id(pattern, types, valuetype, case_insensitive, remove_unigram = TRUE)
+    if (length(seqs_id) == 0) return(x) # do nothing
+    x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
+    attributes(x, FALSE) <- attrs
     attr(x, "concatenator") <- concatenator
     return(x)
 }
@@ -99,10 +80,10 @@ tokens_compound.tokens <- function(x, features,
 #' @noRd
 #' @rdname tokens_compound
 #' @export
-tokens_compound.tokenizedTexts <- function(x, features, 
+tokens_compound.tokenizedTexts <- function(x, pattern, 
                                            concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                                            case_insensitive = TRUE, join = FALSE) {
-    as.tokenizedTexts(tokens_compound(as.tokens(x), features = features, 
+    as.tokenizedTexts(tokens_compound(as.tokens(x), pattern = pattern, 
                                       concatenator = concatenator, valuetype = valuetype,
                                       case_insensitive = TRUE, join = join))
 }

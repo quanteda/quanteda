@@ -23,6 +23,7 @@ setMethod("[",
           signature = c("dfm", i = "index", j = "index", drop = "missing"),
           function(x, i, j, ..., drop = FALSE) {
               xnew <-  "["(as(x, "Matrix"), i, j, ..., drop = FALSE)
+              x@docvars <- x@docvars[i, , drop = FALSE]
               reassign_slots(as(xnew, class(x)), x)
           })
 
@@ -33,6 +34,7 @@ setMethod("[",
           function(x, i, j, ..., drop = FALSE) {
               if (drop) warning("drop = TRUE not supported")
               xnew <-  "["(as(x, "Matrix"), i, j, ..., drop = FALSE)
+              x@docvars <- x@docvars[i, , drop = FALSE]
               reassign_slots(as(xnew, class(x)), x)
           })
 
@@ -59,6 +61,7 @@ setMethod("[",
           signature = c("dfm", i = "index", j = "missing", drop = "missing"),
           function(x, i, j, ..., drop = FALSE) {
               xnew <-  "["(as(x, "Matrix"), i, , ..., drop = FALSE)
+              x@docvars <- x@docvars[i, , drop = FALSE]
               reassign_slots(as(xnew, class(x)), x)
           })
 
@@ -69,6 +72,7 @@ setMethod("[",
           function(x, i, j, ..., drop = FALSE) {
               if (drop) warning("drop = TRUE not supported")
               xnew <-  "["(as(x, "Matrix"), i, , ..., drop = FALSE)
+              x@docvars <- x@docvars[i, , drop = FALSE]
               reassign_slots(as(xnew, class(x)), x)
           })
 
@@ -90,5 +94,3 @@ setMethod("[",
               xnew <-  "["(as(x, "Matrix"), , j, ..., drop = FALSE)
               reassign_slots(as(xnew, class(x)), x)
           })
-
-

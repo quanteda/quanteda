@@ -83,8 +83,7 @@ test_that("test kwic on last token", {
 })
 
 test_that("test kwic on two tokens", {
-    skip_on_travis()
-    skip_on_appveyor()
+
     txt <- "A B C D E F G D H"
     testkwic <- kwic(txt, c('D', 'E'), 3)
     expect_equivalent(
@@ -259,9 +258,7 @@ test_that("as.tokens is working", {
 })
 
 test_that("kwic works as expected with and without phrases", {
-    skip_on_travis()
-    skip_on_appveyor()
-    
+   
     txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")
     toks_uni <- tokens(txt)
     dfm_uni <- dfm(toks_uni)
@@ -278,13 +275,13 @@ test_that("kwic works as expected with and without phrases", {
     
     expect_equal(
         kwic(txt, char_uni)$keyword,
-        c("a", "b", "g", "h", 
-          "a", "b", "g", "h")
+        c("a", "b", "g", 
+          "a", "b", "g", "j")
     )
     expect_equal(
         kwic(txt, list_uni)$keyword,
-        c("a", "b", "g", "h", 
-          "a", "b", "g", "h")
+        c("a", "b", "g", 
+          "a", "b", "g", "j")
     )
     expect_equal(
         nrow(kwic(txt, char_bi)),
@@ -331,20 +328,17 @@ test_that("kwic works as expected with and without phrases", {
         kwic(txt, dict_bi)$keyword,
         c("a b", "a b")
     )
-    
-    
-    
+
     ## on tokens
-    
     expect_equal(
         kwic(toks_uni, char_uni)$keyword,
-        c("a", "b", "g", "h", 
-          "a", "b", "g", "h")
+        c("a", "b", "g", 
+          "a", "b", "g", "j")
     )
     expect_equal(
         kwic(toks_uni, list_uni)$keyword,
-        c("a", "b", "g", "h", 
-          "a", "b", "g", "h")
+        c("a", "b", "g", 
+          "a", "b", "g", "j")
     )
     expect_equal(
         nrow(kwic(toks_uni, char_bi)),
@@ -363,8 +357,8 @@ test_that("kwic works as expected with and without phrases", {
         c("c d", "g h", "g h")
     )
     
-    expect_equal(nrow(kwic(toks_uni, coll_bi)), 0)
-    expect_equal(nrow(kwic(toks_uni, coll_tri)), 0)
+    expect_equal(nrow(kwic(toks_uni, coll_bi)), 6)
+    expect_equal(nrow(kwic(toks_uni, coll_tri)), 2)
     
     expect_equal(
         kwic(toks_uni, phrase(coll_bi))$keyword,
@@ -379,6 +373,26 @@ test_that("kwic works as expected with and without phrases", {
         kwic(toks_uni, dict_uni),
         kwic(toks_uni, char_uni)
     )
-    expect_equal(nrow(kwic(toks_uni, dict_bi)), 0)
+    expect_equal(nrow(kwic(toks_uni, dict_bi)), 2)
 
+})
+
+test_that("deprecated keywords argument still works", {
+    txt <- "The quick brown fox jumped over the lazy dog."
+    expect_warning(
+        kwic(txt, keywords = "fox", window = 3),
+        "keywords argument has been replaced by pattern"
+    )
+    expect_equal(
+        suppressWarnings(kwic(txt, keywords = "fox", window = 3)$keyword),
+        "fox"
+    )
+    expect_warning(
+        kwic(tokens(txt), keywords = "fox", window = 3),
+        "keywords argument has been replaced by pattern"
+    )
+    expect_equal(
+        suppressWarnings(kwic(tokens(txt), keywords = "fox", window = 3)$keyword),
+        "fox"
+    )
 })

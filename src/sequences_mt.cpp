@@ -422,7 +422,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     // Convert sequences from integer to character
     CharacterVector seqs_(seqs_all.size());
     for (std::size_t i = 0; i < seqs_all.size(); i++) {
-        seqs_[i] = join(seqs_all[i], types_, " ");
+        seqs_[i] = join_strings(seqs_all[i], types_, " ");
     }
     DataFrame output_ = DataFrame::create(_["collocation"] = seqs_,
                                           _["count"] = as<IntegerVector>(wrap(cs_all)),
@@ -434,7 +434,6 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                                           _["G2"] = as<NumericVector>(wrap(logratio_all)),
                                           _["chi2"] = as<NumericVector>(wrap(chi2_all)),
                                           _["stringsAsFactors"] = false);
-    output_.attr("tokens") = as<Tokens>(wrap(seqs_all));
     return output_;
 }
 

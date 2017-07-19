@@ -112,6 +112,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     //dev::Timer timer;
     
     //dev::start_timer("Map construction", timer);
+/*
     MultiMapNgrams map_keys;
     std::vector<std::size_t> spans(keys_.size());
     for (unsigned int g = 0; g < (unsigned int)keys_.size(); g++) {
@@ -123,6 +124,22 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     sort(spans.begin(), spans.end());
     spans.erase(unique(spans.begin(), spans.end()), spans.end());
     std::reverse(std::begin(spans), std::end(spans));
+*/    
+    
+    MultiMapNgrams map_keys;
+    map_keys.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+    
+    Ngrams keys = Rcpp::as<Ngrams>(keys_);
+    std::vector<unsigned int> ids = Rcpp::as< std::vector<unsigned int> >(ids_);
+    std::vector<std::size_t> spans(keys.size());
+    for (size_t g = 0; g < std::min(keys.size(), ids.size()); g++) {
+        map_keys.insert(std::pair<Ngram, unsigned int>(keys[g], ids[g]));
+        spans[g] = keys[g].size();
+    }
+    sort(spans.begin(), spans.end());
+    spans.erase(unique(spans.begin(), spans.end()), spans.end());
+    std::reverse(std::begin(spans), std::end(spans));
+    
     
     //dev::stop_timer("Map construction", timer);
     
@@ -136,7 +153,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     }
 #endif
     //dev::stop_timer("Dictionary lookup", timer);
-    return recompile(texts, types, true, true, is_encoded(types_));
+    return recompile(texts, types, false, false, is_encoded(types_));
 }
 
 /***R

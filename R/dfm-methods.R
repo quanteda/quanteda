@@ -42,8 +42,12 @@ featnames.dfm <- function(x) {
     }
 }
 
-#' @noRd
+#' deprecated function for featnames
+#' 
+#' Deprecated function equivalent to \code{\link{featnames}}.  Soon to be eliminated.
+#' @param x a \link{dfm}
 #' @keywords internal deprecated
+#' @seealso \code{\link{featnames}}
 #' @export
 features <- function(x) {
     .Deprecated("featnames")
@@ -84,8 +88,24 @@ is.dfm <- function(x) {
 #' @return \code{as.dfm} coerces a matrix or data.frame to a dfm
 #' @export
 as.dfm <- function(x) {
-    if (!any((c("matrix", "data.frame") %in% class(x))))
-        stop("as.dfm only applicable to matrix(-like) objects.")
+    UseMethod("as.dfm")
+}
+
+#' @noRd
+#' @method as.dfm matrix
+#' @export
+as.dfm.matrix <- function(x) {
+    as_dfm_constructor(x)
+}
+
+#' @noRd
+#' @method as.dfm data.frame
+#' @export
+as.dfm.data.frame <- function(x) {
+    as_dfm_constructor(x)
+}
+
+as_dfm_constructor <- function(x) {
     new("dfmSparse", Matrix(as.matrix(x), 
                             sparse = TRUE,
                             dimnames = list(docs = if (is.null(rownames(x))) paste0("doc", seq_len(nrow(x))) else rownames(x),
@@ -93,7 +113,6 @@ as.dfm <- function(x) {
                             ) 
         )
 }
-
 
 
 #' identify the most frequent features in a dfm
@@ -108,10 +127,7 @@ as.dfm <- function(x) {
 #' @param scheme one of \code{count} for total feature frequency (within
 #'   \code{group} if applicable), or \code{docfreq} for the document frequencies
 #'   of features
-#' @param groups either: a character vector containing the names of document 
-#'   variables to be used for grouping; or a factor or object that can be 
-#'   coerced into a factor equal in length or rows to the number of documents. 
-#'   See \code{\link{dfm_group}} for details.
+#' @inheritParams groups
 #' @return A named numeric vector of feature counts, where the names are the 
 #'   feature labels, or a list of these if \code{groups} is given.
 #' @examples

@@ -19,6 +19,12 @@
 #' myfcm
 #' fcm_compress(myfcm)
 fcm_compress <- function(x) {
+    UseMethod("fcm_compress")
+}
+
+#' @noRd
+#' @export
+fcm_compress.fcm <- function(x) {
     if (!is.fcm(x))
         stop("compress_fcm only works on a fcm object")
     if (x@context != "document")
@@ -65,40 +71,6 @@ fcm_compress <- function(x) {
         context = x@context, window = x@window, weights = x@weights, tri = x@tri)
 } 
 
-
-#' @rdname dfm_tolower
-#' @details \code{fcm_tolower} and \code{fcm_toupper} convert both dimensions of
-#'   the \link{fcm} to lower and upper case, respectively, and then recombine
-#'   the counts. This works only on fcm objects created with \code{context = 
-#'   "document"}.
-#' @export
-#' @examples
-#' # for a feature co-occurrence matrix
-#' myfcm <- fcm(tokens(c("b A A d", "C C a b B e")), 
-#'              context = "document")
-#' myfcm
-#' fcm_tolower(myfcm) 
-#' fcm_toupper(myfcm)   
-fcm_tolower <- function(x) {
-    if (!is.fcm(x))
-        stop("fcm_tolower requires x to be a fcm object")
-    colnames(x) <- rownames(x) <- 
-        stringi::stri_trans_tolower(colnames(x))
-    fcm_compress(x)
-}
-
-#' @rdname dfm_tolower
-#' @importFrom stringi stri_trans_toupper
-#' @export
-fcm_toupper <- function(x) {
-    if (!is.fcm(x))
-        stop("fcm_toupper requires x to be a fcm object")
-    colnames(x) <- rownames(x) <-
-        stringi::stri_trans_toupper(colnames(x))
-    fcm_compress(x)
-}
-
-
 #' sort an fcm in alphabetical order of the features
 #' 
 #' Sorts a \link{dfm} in alphabetical order of the features.
@@ -120,8 +92,12 @@ fcm_toupper <- function(x) {
 #' myfcm
 #' fcm_sort(myfcm)
 fcm_sort <- function(x) {
-    if (!is.fcm(x))
-        stop("fcm_sort requires x to be a fcm object")
+    UseMethod("fcm_sort")    
+}
+    
+#' @noRd
+#' @export
+fcm_sort.fcm <- function(x) {
     result <- x[order(rownames(x)), order(colnames(x))]
     if (x@tri) {
         # make a triplet
@@ -135,7 +111,6 @@ fcm_sort <- function(x) {
         # now copy the slot values
         result <- reassign_slots(result, x)
     }
-
     result
 }
 
@@ -148,39 +123,49 @@ fcm_sort <- function(x) {
 #' tmpfcm <- fcm(toks)
 #' tmpfcm
 #' fcm_remove(tmpfcm, stopwords("english"))
-fcm_select <- function(x, features = NULL, selection = c("keep", "remove"), 
+fcm_select <- function(x, pattern = NULL, selection = c("keep", "remove"), 
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
                        verbose = TRUE, ...) {
-    selection <- match.arg(selection)
+    UseMethod("fcm_select")
+}
+
+#' @noRd
+#' @export
+fcm_select.fcm <- function(x, pattern = NULL, selection = c("keep", "remove"), 
+                           valuetype = c("glob", "regex", "fixed"),
+                           case_insensitive = TRUE,
+                           verbose = TRUE, ...) {
+        
+        selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     features_from_dfm <- FALSE
     
     # select features based on character length
     featIndex <- 1:nfeature(x)
    
-    if (!is.null(features)) {
-        if (!(is.character(features) | is.dfm(features) | is(features, "dictionary")))
-            stop("features must be of type character, dictionary, or dfm")
-        if (is.dfm(features)) {
+    if (!is.null(pattern)) {
+        if (!(is.character(pattern) | is.dfm(pattern) | is(pattern, "dictionary")))
+            stop("pattern must be of type character, dictionary, or dfm")
+        if (is.dfm(pattern)) {
             if (selection == "keep") {
-                features_dfm <- features <- featnames(features)
+                features_dfm <- pattern <- featnames(pattern)
                 features_from_dfm <- TRUE
             } else {
-                features <- featnames(features)
+                pattern <- featnames(pattern)
             }
         }
         
-        features <- unique(unlist(features))  # to convert any dictionaries
+        pattern <- unique(unlist(pattern))  # to convert any dictionaries
         
         originalvaluetype <- valuetype
         # convert glob to fixed if no actual glob characters (since fixed is much faster)
         if (valuetype == "glob") {
             # treat as fixed if no glob characters detected
-            if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
+            if (!sum(stringi::stri_detect_charclass(pattern, c("[*?]"))))
                 valuetype <- "fixed"
             else {
-                features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
+                pattern <- sapply(pattern, utils::glob2rx, USE.NAMES = FALSE)
                 valuetype <- "regex"
             }
         }
@@ -188,40 +173,40 @@ fcm_select <- function(x, features = NULL, selection = c("keep", "remove"),
         features_x <- featnames(x)
         if (case_insensitive & valuetype == "fixed") {
             features_x <- char_tolower(features_x)
-            features <- char_tolower(features)
+            pattern <- char_tolower(pattern)
         }
-        # split features on concatenator if exists
+        # split pattern on concatenator if exists
         if (x@concatenator != "")
             features_x <- strsplit(features_x, x@concatenator)
         
         if (valuetype == "regex") {
             if (all.equal(x@ngrams, 1L)==TRUE) {
-                featIndex <- which(stringi::stri_detect_regex(features_x, paste0(features, collapse = "|"), 
+                featIndex <- which(stringi::stri_detect_regex(features_x, paste0(pattern, collapse = "|"), 
                                                               case_insensitive = case_insensitive, ...))
             } else {
                 ####
                 ####
-                matchPattern <- paste0(features, collapse = "|")
+                matchPattern <- paste0(pattern, collapse = "|")
                 featIndex <- which(sapply(features_x, 
                                           function(x) any(stringi::stri_detect_regex(x, matchPattern, 
                                                                                      case_insensitive = case_insensitive, ...))))
             }
         } else {
             if (all.equal(x@ngrams, 1L)==TRUE)
-                featIndex <- which(features_x %in% features)  # unigrams
+                featIndex <- which(features_x %in% pattern)  # unigrams
             else
-                featIndex <- which(sapply(features_x, function(f) any(f %in% features), USE.NAMES = FALSE)) # ngrams
+                featIndex <- which(sapply(features_x, function(f) any(f %in% pattern), USE.NAMES = FALSE)) # ngrams
         }
         
         if (verbose & !features_from_dfm) 
             catm(if (selection == "keep") "kept" else "removed", " ", 
                  format(length(featIndex), big.mark=","),
                  " feature", if (length(featIndex) > 1L || length(featIndex) == 0L) "s" else "",
-                 ", from ", length(features), " supplied (", originalvaluetype, ") feature type",
-                 if (length(features) > 1L || length(featIndex) == 0L) "s" else "",
+                 ", from ", length(pattern), " supplied (", originalvaluetype, ") feature type",
+                 if (length(pattern) > 1L || length(featIndex) == 0L) "s" else "",
                  "\n", sep = "")
         
-        # pad the zeros if features was a dfm, return in same feature order as original dfm
+        # pad the zeros if pattern was a dfm, return in same feature order as original dfm
         # for selection = "keep" only
         if (features_from_dfm) {
             
@@ -229,24 +214,24 @@ fcm_select <- function(x, features = NULL, selection = c("keep", "remove"),
                 catm(ifelse(selection=="keep", "found", "zeroed"), " ", 
                      format(length(featIndex), big.mark=","),
                      " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
-                     " from ", length(features), " supplied type",
-                     ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
+                     " from ", length(pattern), " supplied type",
+                     ifelse(length(pattern) > 0 | length(featIndex)==0, "s", ""),
                      " in a dfm,", sep = "")
             
             
             # remove features in x that are not in features (from supplied dfm)
             x2 <- x[featIndex, featIndex]
-            # now add zero-valued features to x that are not in x but are in features
-            origDfmFeatureIndex <- which(!(char_tolower(features) %in% char_tolower(featnames(x2))))
+            # now add zero-valued features to x that are not in x but are in pattern
+            origDfmFeatureIndex <- which(!(char_tolower(pattern) %in% char_tolower(featnames(x2))))
             xOriginalFeatureLength <- nfeature(x2)
             xOriginalFeatures <- featnames(x2)
             if (verbose) catm(" padding 0s for another", length(origDfmFeatureIndex), "\n")
 #             x <- new("fcm", Matrix::cbind2(x2, sparseMatrix(i = NULL, j = NULL, 
 #                                                             dims = c(length(origDfmFeatureIndex), length(origDfmFeatureIndex)), 
-#                                                             dimnames = list(features[origDfmFeatureIndex], features[origDfmFeatureIndex]))))
+#                                                             dimnames = list(pattern[origDfmFeatureIndex], pattern[origDfmFeatureIndex]))))
             x <- new("dfmSparse", Matrix::cbind2(x2,
                                                  sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
-                                                              dimnames = list(docnames(x2), features[origDfmFeatureIndex]))))
+                                                              dimnames = list(docnames(x2), pattern[origDfmFeatureIndex]))))
             if (case_insensitive & valuetype == "fixed") {
                 features_x_ori <- char_tolower(featnames(x))
                 features_dfm <- char_tolower(features_dfm)
@@ -274,7 +259,12 @@ fcm_select <- function(x, features = NULL, selection = c("keep", "remove"),
 
 #' @rdname dfm_select
 #' @export
-fcm_remove <- function(x, features, ...) {
-    fcm_select(x, features, selection = "remove", ...)
+fcm_remove <- function(x, pattern, ...) {
+    UseMethod("fcm_select")
 }
 
+#' @noRd
+#' @export
+fcm_remove.fcm <- function(x, pattern, ...) {
+    fcm_select(x, pattern, selection = "remove", ...)
+}

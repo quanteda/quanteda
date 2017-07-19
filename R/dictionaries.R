@@ -71,6 +71,17 @@ print_dictionary <- function(entry, level = 1) {
 }
 
 
+# Internal function for special handling of multi-word dicitionary values
+split_dictionary_values <- function(values, concatenator) {
+    if (any(stri_detect_charclass(values, "\\p{Z}"))) {
+        values <- c(phrase(values), as.list(stri_replace_all_charclass(values, "\\p{Z}", concatenator)))
+    } else {
+        values <- as.list(values)
+    }
+    return(values)
+}
+
+
 #' print a dictionary object
 #' 
 #' Print/show method for dictionary objects.
@@ -97,7 +108,7 @@ setMethod("[",
           signature = c("dictionary2", i = "index"),
           function(x, i) {
               is_category <- sapply(as.list(x)[i], function(y) !is.null(y))
-              dictionary(as.list(x)[i][is_category], concatenator = x@concatenator)
+              dictionary(as.list(x)[i][is_category])
         })
 
 #' Extractor for dictionary objects
@@ -111,7 +122,7 @@ setMethod("[[",
               if (!is.list(as.list(x)[[i]])) {
                   as.list(x)[[i]]
               } else {
-                  dictionary(as.list(x)[[i]], concatenator = x@concatenator)
+                  dictionary(as.list(x)[[i]])
               }
           })
 
@@ -153,9 +164,8 @@ setMethod("as.list",
 #'   the Linguistic Inquiry and Word Count software} \item{\code{"yoshikoder"}}{
 #'   format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
 #'   by Lexicoder} \item{\code{"YAML"}}{the standard YAML format}}
-#' @param concatenator the character in between multi-word dictionary values. 
-#'   This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
-#'   a single space \code{" "}.
+#' @param separator the character in between multi-word dictionary values. 
+#'   This defaults to \code{" "}.
 #' @param encoding additional optional encoding value for reading in imported 
 #'   dictionaries. This uses the \link{iconv} labels for encoding.  See the 
 #'   "Encoding" section of the help for \link{file}.
@@ -202,8 +212,12 @@ setMethod("as.list",
 #' head(dfm(data_corpus_inaugural, dictionary = mfdict))}
 #' @export
 dictionary <- function(..., file = NULL, format = NULL, 
-                       concatenator = " ", 
+                       separator = " ", 
                        tolower = TRUE, encoding = "auto") {
+    
+    if (!is.character(separator) || stri_length(separator) == 0) {
+        stop("separator must be a non-empty character")
+    }
     
     if (is.null(file)) {
         x <- list(...)
@@ -253,8 +267,9 @@ dictionary <- function(..., file = NULL, format = NULL,
         }
     }
     if (tolower)
-        x <- lowercase_dictionary(x)
-    new("dictionary2", x, concatenator = concatenator)
+        x <- lowercase_dictionary_values(x)
+    x <- replace_dictionary_values(x, separator, ' ')
+    new("dictionary2", x, concatenator = ' ') # keep concatenator attributes for compatibility
 }
 
 
@@ -372,7 +387,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
     return(dict_flat)
 }
 
-# Internal function to lowercase dictionary entries
+# Internal function to lowercase dictionary values
 #
 # hdict <- list(KEY1 = list(SUBKEY1 = c("A", "B"),
 #                           SUBKEY2 = c("C", "D")),
@@ -380,16 +395,38 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
 #                           SUBKEY4 = c("G", "F", "I")),
 #               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J", "K")),
 #                           SUBKEY6 = list(SUBKEY8 = c("L"))))
-# lowercase_dictionary(hdict)
+# lowercase_dictionary_values(hdict)
 #
-lowercase_dictionary <- function(dict) {
+lowercase_dictionary_values <- function(dict) {
     dict <- unclass(dict)
     for (i in seq_along(dict)) {
         if (is.list(dict[[i]])) {
-            dict[[i]] <- lowercase_dictionary(dict[[i]])
+            dict[[i]] <- lowercase_dictionary_values(dict[[i]])
         } else {
             if (is.character(dict[[i]])) {
                 dict[[i]] <- stri_trans_tolower(dict[[i]])
+            }
+        }
+    }
+    return(dict)
+}
+# Internal function to replace dictionary values
+#
+# hdict <- list(KEY1 = list(SUBKEY1 = c("A_B"),
+#                           SUBKEY2 = c("C_D")),
+#               KEY2 = list(SUBKEY3 = c("E_F"),
+#                           SUBKEY4 = c("G_F_I")),
+#               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J_K")),
+#                           SUBKEY6 = list(SUBKEY8 = c("L"))))
+# replace_dictionary_values(hdict, '_', ' ')
+replace_dictionary_values <- function(dict, from, to) {
+    dict <- unclass(dict)
+    for (i in seq_along(dict)) {
+        if (is.list(dict[[i]])) {
+            dict[[i]] <- replace_dictionary_values(dict[[i]], from, to)
+        } else {
+            if (is.character(dict[[i]])) {
+                dict[[i]] <- stri_replace_all_fixed(dict[[i]], from, to)
             }
         }
     }
@@ -591,11 +628,17 @@ nodes2list <- function(node, dict = list()){
 #' cat(yaml, file = '/home/kohei/Documents/Dictionary/LaverGarry.yaml')
 #' }
 as.yaml <- function(x) {
+    UseMethod("as.yaml")
+}
+
+#' @noRd
+#' @method as.yaml dictionary2
+#' @export
+as.yaml.dictionary2 <- function(x) {
     yaml <- yaml::as.yaml(simplify_dictionary(x, TRUE), indent.mapping.sequence = TRUE)
     yaml <- stri_enc_toutf8(yaml)
     return(yaml)
 }
-
 
 # Internal function for as.yaml to simplify dictionary objects
 simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {

@@ -8,7 +8,7 @@
 \usage{
 dfm_compress(x, margin = c("both", "documents", "features"))
 
-dfm_group(x, groups = NULL)
+dfm_group(x, groups = NULL, fill = FALSE)
 
 fcm_compress(x)
 }
@@ -21,7 +21,13 @@ objects, \code{"documents"} has no effect.}
 
 \item{groups}{either: a character vector containing the names of document 
 variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents}
+coerced into a factor equal in length or rows to the number of documents. 
+See \link{groups} for details.}
+
+\item{fill}{logical; if \code{TRUE} and \code{groups} is a factor, then use 
+all levels of the factor when forming the new "documents" of the grouped 
+dfm.  This will result in documents with zero feature counts for levels not
+observed.  Has no effect if the \code{groups} variable(s) are not factors.}
 
 \item{...}{additional arguments passed from generic to specific methods}
 }
@@ -31,9 +37,10 @@ coerced into a factor equal in length or rows to the number of documents}
   (\link{docnames} or \link{featnames}).  The \link{docvars} will be
   preserved for combining by features but not when documents are combined.
 
-\code{dfm_group} returns a \link{dfm} whose documents are equal to
-  the unique group combinations, and whose cell values are the sums of the
-  previous values summed by group.  This currently erases any docvars in the dfm.
+\code{dfm_group} returns a \link{dfm} whose documents are equal to 
+  the unique group combinations, and whose cell values are the sums of the 
+  previous values summed by group.  This currently erases any docvars in the 
+  dfm.
 }
 \description{
 "Compresses" or groups a \link{dfm} or \link{fcm} whose dimension names are
@@ -45,8 +52,8 @@ this \emph{before} constructing the dfm.)  It could also be needed after a
 \code{\link{cbind.dfm}} or \code{\link{rbind.dfm}} operation.
 
 \code{dfm_group} allows combining dfm documents by a grouping 
-  variable, which can also be one of the \link{docvars} attached to the dfm.  This is
-  identical in functionality to using the \code{"groups"} argument in
+  variable, which can also be one of the \link{docvars} attached to the dfm. 
+  This is identical in functionality to using the \code{"groups"} argument in
   \code{\link{dfm}}.
 }
 \note{

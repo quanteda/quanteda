@@ -100,8 +100,7 @@ test_that("tokens_compound works with padded tokens", {
 })
 
 test_that("tokens_compound works as expected with nested tokens", {
-    skip_on_appveyor()
-    skip_on_travis()
+
     expect_equal(
         as.character(tokens_compound(tokens("a b c d"), phrase(c("a b", "a b c")), 
                      join = FALSE)),
@@ -115,8 +114,7 @@ test_that("tokens_compound works as expected with nested tokens", {
 })
 
 test_that("tokens_compound works as expected with nested and overlapping tokens", {
-    skip_on_appveyor()
-    skip_on_travis()
+
     expect_equal(
         as.character(tokens_compound(tokens("a b c d e"), 
                                      phrase(c("a b", "a b c", "c d")),
@@ -128,6 +126,54 @@ test_that("tokens_compound works as expected with nested and overlapping tokens"
                                      phrase(c("a b", "a b c", "c d")),
                                      join = TRUE)),
         c("a_b_c_d", "e")
+    )
+})
+
+test_that("tokens_compound works as expected with collocations", {
+    cols <- textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"),
+                                  size = 2, min_count = 1)
+    toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
+    
+    expect_equal(
+        as.character(tokens_compound(toks, phrase(cols), join = FALSE))[c(5, 6, 8)],
+        c("capital_gains", "gains_taxes", "inheritance_taxes")
+    )
+    expect_equal(
+        as.character(tokens_compound(toks, phrase(cols), join = TRUE))[c(5, 7)],
+        c("capital_gains_taxes", "inheritance_taxes")
+    )
+
+    expect_equal(
+         tokens_compound(toks, cols),
+         tokens_compound(toks, phrase(cols))
+     )
+    expect_equal(
+        tokens_compound(toks, cols, join = TRUE),
+        tokens_compound(toks, phrase(cols), join = TRUE)
+    )
+})
+
+test_that("tokens_compound works as expected with dictionaries", {
+    dict <- dictionary(taxcgt = c("capital gains tax*"), taxit = "inheritance tax*")
+    toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
+    expect_equal(
+        as.character(tokens_compound(toks, dict))[c(5, 7)],
+        c("capital_gains_taxes", "inheritance_taxes")
+    )
+    expect_equal(
+        tokens_compound(toks, dict),
+        tokens_compound(toks, phrase(dict))
+    )
+    
+    dict <- dictionary(tax1 = c("capital gains", "taxes"), 
+                       tax2 = "gains taxes")
+    expect_equal(
+        as.character(tokens_compound(toks, dict, join = TRUE))[5],
+        c("capital_gains_taxes")
+    )
+    expect_equal(
+        as.character(tokens_compound(toks, dict, join = FALSE))[5:6],
+        c("capital_gains", "gains_taxes")
     )
 })
 

@@ -114,18 +114,18 @@ test_that("fcm works on tokens containing padding", {
 
 test_that("tokens_remove works regardless when features are overlapped, issue #711", {
     toks <- tokens("one two three four")
-    expect_equal(as.list(tokens_remove(toks, features = c("one", "two", "three"))),
+    expect_equal(as.list(tokens_remove(toks, pattern = c("one", "two", "three"))),
                  list('four'))
-    expect_equal(as.list(tokens_remove(toks, features = c("one", "two three"))),
+    expect_equal(as.list(tokens_remove(toks, pattern = c("one", "two three"))),
                  list(c("two", "three", "four")))
-    expect_equal(as.list(tokens_remove(toks, features = c("one two", "two three"))),
+    expect_equal(as.list(tokens_remove(toks, pattern = c("one two", "two three"))),
                  as.list(toks))
-    expect_equal(as.list(tokens_remove(toks, features = c("one two", "two three four"))),
+    expect_equal(as.list(tokens_remove(toks, pattern = c("one two", "two three four"))),
                  as.list(toks))
     # for phrases
-    expect_equal(as.list(tokens_remove(toks, features = phrase(c("one two", "two three")))),
+    expect_equal(as.list(tokens_remove(toks, pattern = phrase(c("one two", "two three")))),
                  list("four"))
-    expect_equal(as.list(tokens_remove(toks, features = phrase(c("one two", "two three four")))),
+    expect_equal(as.list(tokens_remove(toks, pattern = phrase(c("one two", "two three four")))),
                  list(character()))
 })
 
@@ -226,23 +226,32 @@ test_that("tokens_select works as expected for bigrams selected on char, list of
 
 test_that("tokens_select works correctly with collocations objects", {
     expect_equal(
-        as.list(tokens_select(toks_uni, coll_bi)),
+        as.list(tokens_select(toks_uni, coll_bi$collocation)),
         list(d1 = character(), d2 = character())
     )
     expect_equal(
-        as.list(tokens_remove(toks_uni, phrase(coll_bi))),
+        as.list(tokens_remove(toks_uni, phrase(coll_bi$collocation))),
         list(d1 = c("c", "d"), d2 = c("i", "j"))
     )
     expect_equal(
-        as.list(tokens_select(toks_uni, coll_tri)),
+        as.list(tokens_remove(toks_uni, coll_bi)),
+        as.list(tokens_remove(toks_uni, phrase(coll_bi$collocation)))
+    )
+    expect_equal(
+        as.list(tokens_select(toks_uni, coll_tri$collocation)),
         list(d1 = character(), d2 = character())
     )
     expect_equal(
-        as.list(tokens_select(toks_bi, coll_bi)),
+        as.list(tokens_select(toks_bi, coll_bi$collocation)),
         list(d1 = c("a b", "e g", "g h"), d2 = c("a b", "e g", "g h"))
     )
-    expect_silent(
-        tokens_select(toks_bi, coll_bi)
+    expect_equal(
+        as.list(tokens_select(toks_bi, phrase(coll_bi$collocation))),
+        list(d1 = character(), d2 = character())
+    )
+    expect_equal(
+        as.list(tokens_select(toks_bi, phrase(coll_bi$collocation))),
+        as.list(tokens_select(toks_bi, coll_bi))
     )
     expect_equal(
         as.list(tokens_select(toks_bi, coll_tri)),
@@ -277,9 +286,21 @@ test_that("tokens_select on unigrams works as expected when padding = TRUE", {
     )
     
     expect_equal(
-        as.list(tokens_select(toks_uni, coll_bi, padding = TRUE)),
+        as.list(tokens_select(toks_uni, coll_bi$collocation, padding = TRUE)),
         list(d1 = rep("", 7), d2 = rep("", 7))
     )
+    
+    expect_equal(
+        as.list(tokens_select(toks_uni, phrase(coll_bi$collocation), padding = TRUE)),
+        list(d1 = c("a", "b", "", "", "e", "g", "h"), 
+             d2 = c("a", "b", "e", "g", "h", "", ""))
+    )
+    
+    expect_equal(
+        as.list(tokens_select(toks_uni, phrase(coll_bi$collocation), padding = TRUE)),
+        as.list(tokens_select(toks_uni, coll_bi, padding = TRUE))
+    )
+    
     expect_equal(
         as.list(tokens_select(toks_uni, list_bi, padding = TRUE)),
         list(d1 = rep("", 7), d2 = rep("", 7))
@@ -308,12 +329,46 @@ test_that("tokens_select on bigrams works as expected when padding = TRUE", {
     )
     
     expect_equal(
-        as.list(tokens_select(toks_bi, coll_bi, padding = TRUE)),
+        as.list(tokens_select(toks_bi, coll_bi$collocation, padding = TRUE)),
         list(d1 = c("a b", "", "", "", "e g", "g h"), 
              d2 = c("a b", "", "e g", "g h", "", ""))
     )
+    
+    expect_equal(
+        as.list(tokens_select(toks_bi, phrase(coll_bi$collocation), padding = TRUE)),
+        list(d1 = rep("", 6), d2 = rep("", 6))
+    )
+    
+    expect_equal(
+        as.list(tokens_select(toks_bi, phrase(coll_bi$collocation), padding = TRUE)),
+        as.list(tokens_select(toks_bi, coll_bi, padding = TRUE))
+    )
+    
     expect_silent(
         as.list(tokens_select(toks_bi, coll_bi, padding = TRUE))
     )
 })
+
+test_that("tokens_select output works as planned", {
+    txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
+                   execute the functions of its Chief Magistrate.",
+             wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
+             the high sense I entertain of this distinguished honor.")
+    toks <- tokens(txt)
+    dfm <- dfm(toks)
+    
+    expect_message(
+        tokens_remove(toks, stopwords("english"), verbose = TRUE),
+        "removed 13 features"
+    )
+    expect_message(
+        tokens_select(toks, stopwords("english"), verbose = TRUE),
+        "kept 13 features"
+    )
+    expect_message(
+        tokens_select(toks, stopwords("english"), padding = TRUE, verbose = TRUE),
+        "kept 13 features"
+    )
+})
+
 

@@ -15,7 +15,7 @@ thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
 preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE)
 dfm_lookup(preDictDfm, mydict)
 
-txt <- tokenize(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
+txt <- tokens(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
                                "The United_States has progressive taxation.")),
                 remove_punct = TRUE)
 
@@ -72,56 +72,6 @@ expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0
 (tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE))
 expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 0))
 
-
-test_that("dfm_trim", {
-
-    mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900 & Year < 2017)
-    preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE)
-    
-    nfeature(dfm_trim(preDictDfm, min_count = 7))
-    nfeature(dfm_trim(preDictDfm, min_count = 0.001))
-
-    expect_equal(nfeature(dfm_trim(preDictDfm, min_count = 0.001)), 1045)
-    expect_equal(nfeature(dfm_trim(preDictDfm, min_count = 7)), 1045)
-
-    expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)), 3077)
-    expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 2)), 3077)
-    
-    expect_equal(nfeature(dfm_trim(preDictDfm, sparsity = 0.95)), 3077)
-    expect_equal(nfeature(dfm_trim(preDictDfm, sparsity = 0.95)), nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)))
-    expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)), 3077)
-    
-})
-
-test_that("dfm_trim works as expected", {
-    mydfm <- dfm(c("This is a sentence.", "This is a second sentence.", "Third sentence.", "Fouth sentence.", "Fifth sentence."))
-    expect_message(dfm_trim(mydfm, min_count =2, min_docfreq=2, verbose=T),
-                   regexp = "Removing features occurring:")
-    expect_message(dfm_trim(mydfm, min_count =2, min_docfreq=2, verbose=T),
-                   regexp = "fewer than 2 times: 4")
-    expect_message(dfm_trim(mydfm, min_count =2, min_docfreq=2, verbose=T),
-                   regexp = "in fewer than 2 documents: 4")
-    expect_message(dfm_trim(mydfm, min_count =2, min_docfreq=2, verbose=T),
-                   regexp = "  Total features removed: 4 \\(44.4%\\).")
-})
-
-test_that("dfm_trim works as expected", {
-    mydfm <- dfm(c("This is a sentence.", "This is a second sentence.", "Third sentence.", "Fouth sentence.", "Fifth sentence."))
-    expect_message(dfm_trim(mydfm, max_count =2, max_docfreq=2, verbose=T),
-                   regexp = "more than 2 times: 2")
-    expect_message(dfm_trim(mydfm, max_count =2, max_docfreq=2, verbose=T),
-                   regexp = "in more than 2 documents: 2")
-    
-    expect_message(dfm_trim(mydfm, max_count =5, max_docfreq=5, verbose=T),
-                   regexp = "No features removed.")
-})
-
-test_that("dfm_trim works without trimming arguments #509", {
-    mydfm <- dfm(c("This is a sentence.", "This is a second sentence.", "Third sentence."))
-    expect_equal(dim(mydfm[-2, ]), c(2, 7))
-    expect_equal(dim(dfm_trim(mydfm[-2, ], verbose = FALSE)), c(2, 6))
-})
-
 test_that("test c.corpus",
     expect_that(
         matrix(dfm(corpus(c('What does the fox say?', 'What does the fox say?', '')), remove_punct = TRUE)),
@@ -129,8 +79,8 @@ test_that("test c.corpus",
     )
 )
 
-## rbind.dfm
-## TODO: Test classes returned
+## rbind.dfm
+## TODO: Test classes returned
 
 test_that("test rbind.dfm with the same columns", {
 
@@ -152,7 +102,7 @@ test_that("test rbind.dfm with the same columns", {
 
 })
 
-# TODO: Add function for testing the equality of dfms
+# TODO: Add function for testing the equality of dfms
 
 test_that("test rbind.dfm with different columns", {
     dfm1 <- dfm('What does the fox?', remove_punct = TRUE)
@@ -167,7 +117,7 @@ test_that("test rbind.dfm with different columns", {
     testdfm <- rbind(dfm1, dfm2)
 
     expect_true(
-        ##  Order of the result is not guaranteed
+        ## Order of the result is not guaranteed
         all(testdfm[,order(colnames(testdfm))] == foxdfm[,order(colnames(foxdfm))])
     )
 
@@ -290,7 +240,7 @@ test_that("dfm.dfm works as expected", {
                        preps = c("of", "for", "in"))
     expect_identical(
         dfm(data_corpus_irishbudget2010, dictionary = dict),
-            dfm(testdfm, dictionary = dict)
+        dfm(testdfm, dictionary = dict)
     )
     expect_identical(
         dfm(data_corpus_irishbudget2010, stem = TRUE),
@@ -380,9 +330,9 @@ test_that("dfm's document counts in verbose message is correct", {
              d3 = "x y",
              d4 = "f g")
     expect_message(dfm(txt, remove = c('a', 'f'), verbose = TRUE),
-                   'removed 2 features and 0 documents')
+                   'removed 2 features')
     expect_message(dfm(txt, select = c('a', 'f'), verbose = TRUE),
-                   'kept 2 features and 4 documents')
+                   'kept 2 features')
 })
 
 test_that("dfm print works with options as expected", {
@@ -448,19 +398,43 @@ test_that("cannot supply remove and select in one call (#793)", {
 })
 
 test_that("printing an empty dfm produces informative result (#811)", {
-    my_dictionary <- dictionary( list( a = c( "asd", "dsa" ),
+    my_dictionary <- dictionary(list( a = c( "asd", "dsa" ),
                                       b = c( "foo", "jup" ) ) )
     raw_text <- c( "Wow I can't believe it's not raining!", 
-                  "Today is a beautiful day. The sky is blue and there are burritos" )
+                   "Today is a beautiful day. The sky is blue and there are burritos" )
     my_corpus <- corpus( raw_text )
     my_dfm <- dfm( my_corpus, dictionary = my_dictionary )
     
     expect_output(
         print(my_dfm),
-        "^Document-feature matrix of: 2 documents, 0 features.\\n2 x 0 sparse Matrix of class \"dfmSparse\""
+        "^Document-feature matrix of: 2 documents, 2 features \\(100% sparse\\)\\.\\n2 x 2 sparse Matrix of class \"dfmSparse\""
     )
     expect_output(
         print(my_dfm[-c(1, 2), ]),
-        "^Document-feature matrix of: 0 documents, 0 features.\\n0 x 0 sparse Matrix of class \"dfmSparse\"\\n<0 x 0 matrix>"
+        "^Document-feature matrix of: 0 documents, 2 features\\.\\n0 x 2 sparse Matrix of class \"dfmSparse\""
+    )
+    expect_output(
+        print(my_dfm[, -c(1, 2)]),
+        "^Document-feature matrix of: 2 documents, 0 features\\.\\n2 x 0 sparse Matrix of class \"dfmSparse\""
     )
 })
+
+test_that("dfm with selection options produces correct output", {
+    txt <- c(d1 = 'a b', d2 = 'a b c d e')
+    toks <- tokens(txt)
+    dfmt <- dfm(toks)
+    feat <- c('b', 'c', 'd', 'e', 'f', 'g')
+    expect_message(
+        dfm(txt, remove = feat, verbose = TRUE),
+        "removed 4 features" 
+    )
+    expect_message(
+        dfm(toks, remove = feat, verbose = TRUE),
+        "removed 4 features" 
+    )
+    expect_message(
+        dfm(dfmt, remove = feat, verbose = TRUE),
+        "removed 4 features" 
+    )
+})
+

@@ -80,11 +80,10 @@ documents.dfm <- function(x) {
 #' 
 #' Get or replace the texts in a \link{corpus}, with grouping options. 
 #' Works for plain character vectors too, if \code{groups} is a factor.
+#' @note The \code{groups} will be used for concatenating the texts based on shared
+#' values of \code{groups}, without any specified order of aggregation.
 #' @param x a \link{corpus} or character object
-#' @param groups either: a character vector containing the names of document
-#'   variables to be used for grouping; or a factor (or object that can be
-#'   coerced into a factor) equal in length to the number of documents, used for
-#'   aggregating the texts through concatenation
+#' @inheritParams groups
 #' @param spacer when concatenating texts by using \code{groups}, this will be the 
 #'   spacing added between texts.  (Default is two spaces.)
 #' @return For \code{texts}, a character vector of the texts in the corpus.

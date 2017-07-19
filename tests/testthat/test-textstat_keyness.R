@@ -70,7 +70,7 @@ test_that("textstat_keyness combines non-target rows correctly", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h", 
                    d3 = "a a a a b b c c d d d d d d"))
-    expect_equal(textstat_keyness(mydfm, 1),
+    expect_equivalent(textstat_keyness(mydfm, 1),
                  textstat_keyness(rbind(mydfm[1, ], new("dfmSparse", mydfm[2, ] + mydfm[3, ])), target = "d1"))    
 })
 
@@ -189,8 +189,8 @@ test_that("keyness_textstat lr computation is correct", {
         result$statistic,
         textstat_keyness(mydfm, measure = "lr", sort = FALSE)[1, 1]
     )
-    expect_equivalent(
-        result$p.value,
+    expect_equal(
+        as.vector(result$p.value),
         textstat_keyness(mydfm, measure = "lr", sort = FALSE)[1, 2]
     )
 })
@@ -199,9 +199,9 @@ test_that("basic textstat_keyness lr works on two rows", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h"))
     expect_equal(rownames(textstat_keyness(mydfm, measure = "lr")),
-                 c("c", "b", "h", "a", "e", "f", "d", "g"))
+                 c("c", "g", "b", "h", "a", "e", "f", "d"))
     expect_equal(rownames(textstat_keyness(mydfm, target = 2, measure = "lr")),
-                 c("d", "e", "f", "a", "b", "h", "c", "g"))
+                 c("d", "e", "f", "a", "b", "h", "g", "c"))
     expect_equal(rownames(textstat_keyness(mydfm, measure = "lr", sort = FALSE)),
                  letters[1:8])
 })
@@ -221,4 +221,24 @@ test_that("textstat_keyness returns raw frequency counts", {
     
 })
 
-
+test_that("textstat_keyness returns correct pmi", {
+    mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
+                   d2 = "a a b c c d d d d e f h"))
+    ## manual checking
+    mykeyness <- textstat_keyness(mydfm, measure = "pmi")
+    my_cal <- log(mydfm[1,1] * sum(mydfm)/( (mydfm[1, 1] + mydfm[2, 1]) * sum(mydfm[1,])) )
+    expect_equal(colnames(mydfm)[1], "a")
+    expect_equal(mykeyness$pmi[which(rownames(mykeyness) == "a")],
+                 as.numeric(my_cal),
+                 tolerance = 0.0001)
+    
+    skip_if_not_installed("svs")
+    svs_pmi <- svs::pmi(as.table(as.matrix(mydfm)), base = 2.7182818459)
+    mykeyness <- textstat_keyness(mydfm, measure = "pmi")
+    
+    expect_equal(mykeyness$pmi[which(rownames(mykeyness) == "g")],
+                 svs_pmi[1, which(attr(svs_pmi, "dimnames")$features == "g")],
+                 tolerance = 0.0001)
+    
+    expect_equal(max(mykeyness$pmi), max(svs_pmi[1,]), tolerance = 0.0001)
+})

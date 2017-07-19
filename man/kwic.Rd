@@ -6,24 +6,18 @@
 \alias{as.tokens.kwic}
 \title{locate keywords-in-context}
 \usage{
-kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, ...)
+kwic(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, join = FALSE, ...)
 
 is.kwic(x)
 
-\method{as.tokens}{kwic}(x)
+\method{as.tokens}{kwic}(x, ...)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
 
-\item{keywords}{a keyword pattern or phrase consisting of multiple keyword 
-patterns, possibly including punctuation.  If the value contains
-whitespace, it is best to wrap it in \code{\link{phrase}} to make this
-explicit. However if \code{x} is a character or \link{corpus} object, then
-keywords containing whitespace, or dictionary or collocation values, will
-automatically be considered phrases where each whitespace-separated element
-matches a token in sequence, and the \code{keywords} will be tokenized
-using the \code{...} options.}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
 \item{window}{the number of context words to be displayed around the keyword.}
 
@@ -32,6 +26,8 @@ using the \code{...} options.}
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{match without respect to case if \code{TRUE}}
+
+\item{join}{join adjacent keywords in the concordance view if \code{TRUE}}
 
 \item{...}{additional arguments passed to \link{tokens}, for applicable 
 object types}
@@ -50,14 +46,23 @@ the source text and the word index number within the source text.  (Not the
 line number, since the text may or may not be segmented using end-of-line 
 delimiters.)
 }
+\note{
+\code{pattern} will be a keyword pattern or phrase, possibly multiple
+  patterns, that may include punctuation.  If a pattern contains whitespace,
+  it is best to wrap it in \code{\link{phrase}} to make this explicit. 
+  However if \code{pattern} is a \link[=textstat_collocations]{collocations}
+  or \link{dictionary} object, then the collocations or multi-word dictionary
+  keys will automatically be considered phrases where each
+  whitespace-separated element matches a token in sequence.
+}
 \examples{
 head(kwic(data_corpus_inaugural, "secure*", window = 3, valuetype = "glob"))
 head(kwic(data_corpus_inaugural, "secur", window = 3, valuetype = "regex"))
 head(kwic(data_corpus_inaugural, "security", window = 3, valuetype = "fixed"))
 
 toks <- tokens(data_corpus_inaugural)
-kwic(data_corpus_inaugural, "war against")
-kwic(data_corpus_inaugural, "war against", valuetype = "regex")
+kwic(data_corpus_inaugural, phrase("war against"))
+kwic(data_corpus_inaugural, phrase("war against"), valuetype = "regex")
 
 mykwic <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(mykwic)

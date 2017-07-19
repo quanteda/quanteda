@@ -15,10 +15,10 @@ texts(x) <- value
 \arguments{
 \item{x}{a \link{corpus} or character object}
 
-\item{groups}{either: a character vector containing the names of document
-variables to be used for grouping; or a factor (or object that can be
-coerced into a factor) equal in length to the number of documents, used for
-aggregating the texts through concatenation}
+\item{groups}{either: a character vector containing the names of document 
+variables to be used for grouping; or a factor or object that can be 
+coerced into a factor equal in length or rows to the number of documents. 
+See \link{groups} for details.}
 
 \item{spacer}{when concatenating texts by using \code{groups}, this will be the 
 spacing added between texts.  (Default is two spaces.)}
@@ -45,6 +45,9 @@ Works for plain character vectors too, if \code{groups} is a factor.
 calling \code{texts(x)}
 }
 \note{
+The \code{groups} will be used for concatenating the texts based on shared
+values of \code{groups}, without any specified order of aggregation.
+
 You are strongly encouraged as a good practice of text analysis 
   workflow \emph{not} to modify the substance of the texts in a corpus. 
   Rather, this sort of processing is better performed through downstream 
