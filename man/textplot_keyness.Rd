@@ -4,7 +4,7 @@
 \alias{textplot_keyness}
 \title{plot word keyness}
 \usage{
-textplot_keyness(x, show_reference = TRUE, n = 20)
+textplot_keyness(x, show_reference = TRUE, n = 20, min_count = 2)
 }
 \arguments{
 \item{x}{a return object from \code{\link{textstat_keyness}}}
@@ -12,6 +12,8 @@ textplot_keyness(x, show_reference = TRUE, n = 20)
 \item{show_reference}{logical; if \code{TRUE}, show key reference features in addition to key target features}
 
 \item{n}{number of terms to plot}
+
+\item{min_count}{minimum total count of words appears in all documents.}
 }
 \value{
 a \pkg{ggplot2} object

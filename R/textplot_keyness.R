@@ -4,6 +4,7 @@
 #' @param x a return object from \code{\link{textstat_keyness}}
 #' @param show_reference logical; if \code{TRUE}, show key reference features in addition to key target features
 #' @param n number of terms to plot
+#' @param min_count minimum total count of words appears in all documents. 
 #' @return a \pkg{ggplot2} object
 #' @export
 #' @author Haiyan Wang
@@ -22,7 +23,7 @@
 #' textplot_keyness(result) 
 #' textplot_keyness(result, show_reference = FALSE)
 #' }
-textplot_keyness <-  function(x, show_reference = TRUE, n = 20) {
+textplot_keyness <-  function(x, show_reference = TRUE, n = 20, min_count = 2) {
     UseMethod("textplot_keyness")
 }
 
@@ -32,12 +33,20 @@ textplot_keyness <-  function(x, show_reference = TRUE, n = 20) {
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
 #' @importFrom ggplot2 facet_grid element_line geom_bar ylim aes_
 #' @export
-textplot_keyness.data.frame <- function(x, show_reference = TRUE, n = 20) {
+textplot_keyness.data.frame <- function(x, show_reference = TRUE, n = 20, min_count = 2) {
     
     if (!all(c("p", "n_target", "n_reference") %in% names(x)) | ncol(x) != 4) {
         stop("x must be a return from textstat_keyness")
     }
     
+    # filter out the rare words
+    x <- x[(x$n_target + x$n_reference) >= min_count, ]
+    
+    if (nrow(x) < 1) {
+        stop ("Too few words in the documents.")
+    }
+    
+    n <- min(n, nrow(x))
     if (!show_reference) {
         x <- head(x, n)
         measure <- colnames(x)[1]
@@ -60,8 +69,8 @@ textplot_keyness.data.frame <- function(x, show_reference = TRUE, n = 20) {
                   panel.grid.major.y = element_line(linetype = "dotted"))
     } else {
         if (colnames(x)[1] == "pmi"){
-            pos_n <- min(n, nrow(x))
-            neg_n <- min(n, nrow(x))
+            pos_n <- min(n, nrow(x)/2)
+            neg_n <- min(n, nrow(x)/2)
             topn <- head(x, pos_n)
             tailn <- tail(x, neg_n)
             max_Y <- max(topn[, 1])
