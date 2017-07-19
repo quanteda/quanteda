@@ -239,16 +239,16 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
     ## the other possible correction to implement is the Williams correction, 
     ## see http://influentialpoints.com/Training/g-likelihood_ratio_test.htm
     
-    dt[, G := (2 * (a * log(a / E11 + epsilon) + 
+    dt[, G2 := (2 * (a * log(a / E11 + epsilon) + 
                      b * log(b / ((a+b)*(b+d) / N) + epsilon) +
                      c * log(c / ((a+c)*(c+d) / N) + epsilon) +
                      d * log(d / ((b+d)*(c+d) / N) + epsilon))) *
                ifelse(a > E11, 1, -1)]
     
     # compute p-values
-    dt[, p := 1 - stats::pchisq(abs(G), 1)]
+    dt[, p := 1 - stats::pchisq(abs(G2), 1)]
     
-    result <- as.data.frame(dt[, list(G, p)])
+    result <- as.data.frame(dt[, list(G2, p)])
     rownames(result) <- dt$feature
     result$target = as.vector(x[1,])
     result$reference = as.vector(x[2,])
