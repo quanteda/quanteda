@@ -36,7 +36,7 @@ extern SEXP _quanteda_wordfishcpp_dense(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP
 extern SEXP _quanteda_wordfishcpp_mt(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-  {"__quanteda_cacpp",                     (DL_FUNC) &_quanteda_cacpp,                     3},
+  {"_quanteda_cacpp",                     (DL_FUNC) &_quanteda_cacpp,                     3},
   {"_quanteda_qatd_CanberraPara_cpp",     (DL_FUNC) &_quanteda_qatd_CanberraPara_cpp,     2},
   {"_quanteda_qatd_CanberraPara_cpp2",    (DL_FUNC) &_quanteda_qatd_CanberraPara_cpp2,    3},
   {"_quanteda_qatd_cpp_chars_remove",     (DL_FUNC) &_quanteda_qatd_cpp_chars_remove,     2},
