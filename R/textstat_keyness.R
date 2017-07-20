@@ -1,13 +1,14 @@
 #' calculate keyness statistics
 #' 
 #' @param x a \link{dfm} containing the features to be examined for keyness
-#' @param target the document index (numeric, character or logical) identifying the 
-#'   document forming the "target" for computing keyness; all other documents' 
-#'   feature frequencies will be combined for use as a reference
+#' @param target the document index (numeric, character or logical) identifying
+#'   the document forming the "target" for computing keyness; all other
+#'   documents' feature frequencies will be combined for use as a reference
 #' @param measure (signed) association measure to be used for computing keyness.
 #'   Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
-#'   \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
-#'   \eqn{G} statistic with Yates correction.
+#'   \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio 
+#'   \eqn{G^2} statistic with Yates correction; \code{"pmi"} for pointwise
+#'   mutual information.
 #' @param sort logical; if \code{TRUE} sort features scored in descending order 
 #'   of the measure, otherwise leave in original feature order
 #' @references Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
@@ -20,14 +21,16 @@
 #'   Scott, M. & Tribble, C. 2006.  \emph{Textual Patterns: keyword and corpus 
 #'   analysis in language education}.  Amsterdam: Benjamins, p. 55.
 #'   
-#'   Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and Coincidence", 
-#'   \emph{Computational Linguistics}, Vol 19, No. 1, pp. 61-74.
-#' @return a data.frame of computed statistics and associated p-values, where the features 
-#' scored name each row, and the number of occurrences for both the target and reference groups.  
-#'   For \code{measure = "chi2"} this is the chi-squared value, signed 
-#'   positively if the observed value in the target exceeds its expected value; 
-#'   for \code{measure = "exact"} this is the estimate of the odds ratio; for 
-#'   \code{measure = "lr"} this is the likelihood ratio \eqn{G} statistic.
+#'   Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and
+#'   Coincidence", \emph{Computational Linguistics}, Vol 19, No. 1, pp. 61-74.
+#' @return a data.frame of computed statistics and associated p-values, where
+#'   the features scored name each row, and the number of occurrences for both
+#'   the target and reference groups. For \code{measure = "chi2"} this is the
+#'   chi-squared value, signed positively if the observed value in the target
+#'   exceeds its expected value; for \code{measure = "exact"} this is the
+#'   estimate of the odds ratio; for \code{measure = "lr"} this is the
+#'   likelihood ratio \eqn{G} statistic; for \code{"pmi"} this is the pointwise
+#'   mutual information statistics.
 #' @export
 #' @keywords textstat
 #' @importFrom stats chisq.test
@@ -48,13 +51,13 @@
 #' head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
 #' # using the likelihood ratio method
 #' head(textstat_keyness(dfm_smooth(pwdfm), measure = "lr", target = "2017-Trump"), 10)
-textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr"), sort = TRUE) {
+textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), sort = TRUE) {
     UseMethod("textstat_keyness")
 }
 
 #' @noRd
 #' @export
-textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr"), sort = TRUE) {
+textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), sort = TRUE) {
     
     # error checking
     measure <- match.arg(measure)
@@ -83,6 +86,8 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
         keywords <- keyness_exact(x)
     } else if (measure == "lr") {
         keywords <- keyness_lr(x)
+    } else if (measure == "pmi") {
+        keywords <- keyness_pmi(x)
     } else {
         stop(measure, " not yet implemented for textstat_keyness")
     }
@@ -92,6 +97,10 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
     
     names(keywords)[which(names(keywords) == "target")] <- "n_target"
     names(keywords)[which(names(keywords) == "reference")] <- "n_reference"
+
+    doc_names <- grouping[order(grouping)]
+    attr(keywords, "documents") <- names(doc_names)
+
     return(keywords)
 }
 
@@ -206,7 +215,7 @@ keyness_exact <- function(x) {
 keyness_lr <- function(x, correction = c("none", "Yates")) {
     
     correction <- match.arg(correction)
-    
+    epsilon <- 0.000000001; # to offset zero cell counts
     a <- b <- c <- d <- N <- E11 <- G <- p <- NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
@@ -230,21 +239,53 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
     ## the other possible correction to implement is the Williams correction, 
     ## see http://influentialpoints.com/Training/g-likelihood_ratio_test.htm
     
-    dt[, G := (2 * (a * log(a / E11) + 
-                     b * log(b / ((a+b)*(b+d) / N)) +
-                     c * log(c / ((a+c)*(c+d) / N)) +
-                     d * log(d / ((b+d)*(c+d) / N)))) *
+    dt[, G2 := (2 * (a * log(a / E11 + epsilon) + 
+                     b * log(b / ((a+b)*(b+d) / N) + epsilon) +
+                     c * log(c / ((a+c)*(c+d) / N) + epsilon) +
+                     d * log(d / ((b+d)*(c+d) / N) + epsilon))) *
                ifelse(a > E11, 1, -1)]
     
     # compute p-values
-    dt[, p := 1 - stats::pchisq(abs(G), 1)]
+    dt[, p := 1 - stats::pchisq(abs(G2), 1)]
     
-    result <- as.data.frame(dt[, list(G, p)])
+    result <- as.data.frame(dt[, list(G2, p)])
     rownames(result) <- dt$feature
     result$target = as.vector(x[1,])
     result$reference = as.vector(x[2,])
     return(result)
 }
 
+#' @rdname keyness
+#' @details \code{keyness_pmi} computes the Pointwise Mutual Information statistic
+#'   using vectorized computation
+#' @examples
+#' quanteda:::keyness_pmi(mydfm)
+keyness_pmi <- function(x) {
+    
+    a <- b <- c <- d <- N <- E11 <- pmi <- p <- NULL 
+    if (ndoc(x) > 2)
+        stop("x can only have 2 rows")
+    dt <- data.table(feature = featnames(x),
+                     a = as.numeric(x[1, ]),
+                     b = as.numeric(x[2, ]))
+    dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
+    dt[, N := (a + b + c + d)]
+    dt[, E11 := (a+b)*(a+c) / N]
+    epsilon <- .000000001  # to offset zero cell counts
+    dt[, pmi :=   log(a /E11 + epsilon)]
+    
+    #normalized pmi
+    #dt[, pmi :=   log(a  / E11) * ifelse(a > E11, 1, -1)/(-log(a/N)) ]
+    
+    
+    # compute p-values
+    dt[, p := 1 - stats::pchisq(abs(pmi), 1)]
+    
+    result <- as.data.frame(dt[, list(pmi, p)])
+    rownames(result) <- dt$feature
+    result$target = as.vector(x[1,])
+    result$reference = as.vector(x[2,])
+    return(result)
+}
 
 
