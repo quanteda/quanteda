@@ -202,6 +202,17 @@ test_that("keyness_textstat lr computation is correct", {
         as.vector(result$p.value),
         textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "none")[1, 2]
     )
+    
+    # with william's correction
+    result <- likelihood.test(as.matrix(mydfm), conservative = TRUE)
+    expect_equivalent(
+        result$statistic,
+        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "williams")[1, 1]
+    )
+    expect_equal(
+        as.vector(result$p.value),
+        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "williams")[1, 2]
+    )
 })
 
 test_that("basic textstat_keyness lr works on two rows", {
