@@ -1,10 +1,14 @@
 #' plot word keyness
 #' 
-#' Plot the results of a keyword analysis using \code{\link{textstat_keyness}}.
+#' Plot the results of a "keyword" of features comparing their differential 
+#' associations with a target and a reference group, after calculating keyness
+#' using \code{\link{textstat_keyness}}.
 #' @param x a return object from \code{\link{textstat_keyness}}
-#' @param show_reference logical; if \code{TRUE}, show key reference features in addition to key target features
-#' @param n number of terms to plot
-#' @param min_count minimum total count of words appears in all documents. 
+#' @param show_reference logical; if \code{TRUE}, show key reference features in
+#'   addition to key target features
+#' @param n integer; number of features to plot
+#' @param min_count numeric; minimum total count of feature across the target 
+#'   and reference categories, for a feature to be included in the plot
 #' @return a \pkg{ggplot2} object
 #' @export
 #' @author Haiyan Wang
@@ -23,7 +27,7 @@
 #' textplot_keyness(result) 
 #' textplot_keyness(result, show_reference = FALSE)
 #' }
-textplot_keyness <-  function(x, show_reference = TRUE, n = 20, min_count = 2) {
+textplot_keyness <-  function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
     UseMethod("textplot_keyness")
 }
 
@@ -33,7 +37,7 @@ textplot_keyness <-  function(x, show_reference = TRUE, n = 20, min_count = 2) {
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
 #' @importFrom ggplot2 facet_grid element_line geom_bar ylim aes_
 #' @export
-textplot_keyness.data.frame <- function(x, show_reference = TRUE, n = 20, min_count = 2) {
+textplot_keyness.data.frame <- function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
     
     if (!all(c("p", "n_target", "n_reference") %in% names(x)) | ncol(x) != 4) {
         stop("x must be a return from textstat_keyness")
