@@ -155,11 +155,11 @@ test_that("test corpus constructor works for tm objects", {
     data(crude, package = "tm")    # load in a tm example VCorpus
     mytmCorpus <- corpus(crude)
     expect_equal(substring(texts(mytmCorpus)[1], 1, 21),
-                 c("reut-00001.xml"  = "Diamond Shamrock Corp"))
+                 c("127"  = "Diamond Shamrock Corp"))
     
     data(acq, package = "tm")
     mytmCorpus2 <- corpus(acq)
-    expect_equal(dim(docvars(mytmCorpus2)), c(50,15))
+    expect_equal(dim(docvars(mytmCorpus2)), c(50,12))
     
     # SimpleCorpus
     txt <- system.file("texts", "txt", package = "tm")
@@ -177,16 +177,36 @@ test_that("test corpus constructor works for tm objects", {
         corpus(mytmCorpus4),
         "Cannot construct a corpus from this tm OtherCorpus object"
     )
-    
     detach("package:tm", unload = TRUE)
     detach("package:NLP", unload = TRUE)
 })
 
 test_that("test corpus constructor works for VCorpus with one document (#445)", {
     skip_if_not_installed("tm")
-    tmCorpus_length1 <- tm::VCorpus(tm::VectorSource(data_corpus_inaugural[1]))
+    require(tm)
+    tmCorpus_length1 <- VCorpus(VectorSource(data_corpus_inaugural[2]))
     expect_silent(qcorpus <- corpus(tmCorpus_length1))
-    expect_equal(texts(qcorpus)[1], data_corpus_inaugural[1])
+    expect_equivalent(texts(qcorpus)[1], data_corpus_inaugural[2])
+    detach("package:tm", unload = TRUE)
+    detach("package:NLP", unload = TRUE)
+})
+
+test_that("test corpus constructor works for complex VCorpus (#849)", {
+    skip_if_not_installed("tm")
+    load("../data/corpora/complex_Corpus.RData")
+    qc <- corpus(complex_Corpus)
+    expect_equal(
+        head(docnames(qc), 3),
+        c("41113_201309.1", "41113_201309.2", "41113_201309.3")
+    )
+    expect_equal(
+        tail(docnames(qc), 3),
+        c("41223_201309.2553", "41223_201309.2554", "41223_201309.2555")
+    )
+    expect_output(
+        print(qc),
+        "Corpus consisting of 8,230 documents and 16 docvars\\."
+    )
 })
 
 test_that("corpus_subset works", {
