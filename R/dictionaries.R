@@ -604,7 +604,7 @@ nodes2list <- function(node, dict = list()){
     if (length(nodes)) {
         for (i in seq_along(nodes)) {
             key <- XML::xmlGetAttr(nodes[[i]], name = "name")
-            dict[[key]] <- nodes2list(nodes[[i]], dict[[key]])
+            dict[[key]] <- nodes2list(nodes[[i]], dict)
         }
     } else {
         dict <- unname(XML::xpathSApply(node, "pnode/@name"))
