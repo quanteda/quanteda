@@ -5,7 +5,7 @@
 \title{calculate keyness statistics}
 \usage{
 textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"),
-  sort = TRUE, correction = 0.5)
+  sort = TRUE, correction = c("default", "yates", "williams", "none"))
 }
 \arguments{
 \item{x}{a \link{dfm} containing the features to be examined for keyness}
@@ -15,16 +15,15 @@ the document forming the "target" for computing keyness; all other
 documents' feature frequencies will be combined for use as a reference}
 
 \item{measure}{(signed) association measure to be used for computing keyness.
-Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
-\code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio 
-\eqn{G^2} statistic with Yates correction; \code{"pmi"} for pointwise
+Currenly available: \code{"chi2"}; \code{"exact"} (Fisher's exact test); 
+\code{"lr"} for the likelihood ratio; \code{"pmi"} for pointwise
 mutual information.}
 
 \item{sort}{logical; if \code{TRUE} sort features scored in descending order 
 of the measure, otherwise leave in original feature order}
 
-\item{correction}{to prevent overestimation of statistical significance for small data. 
-0.5 is recommanded for Yates correction and is set as default.}
+\item{correction}{if \code{"default"}, Yates correction is applied to "chi2", 
+William's correction is applied to \code{"lr"} and none for \code{"exact"} and \code{"pmi"}}
 }
 \value{
 a data.frame of computed statistics and associated p-values, where
@@ -33,7 +32,7 @@ a data.frame of computed statistics and associated p-values, where
   chi-squared value, signed positively if the observed value in the target
   exceeds its expected value; for \code{measure = "exact"} this is the
   estimate of the odds ratio; for \code{measure = "lr"} this is the
-  likelihood ratio \eqn{G} statistic; for \code{"pmi"} this is the pointwise
+  likelihood ratio \eqn{G2} statistic; for \code{"pmi"} this is the pointwise
   mutual information statistics.
 }
 \description{

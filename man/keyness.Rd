@@ -9,15 +9,15 @@
 \alias{keyness_pmi}
 \title{compute keyness (internal functions)}
 \usage{
-keyness_chi2_dt(x, correction = 0.5)
+keyness_chi2_dt(x, correction = c("default", "yates", "williams", "none"))
 
 keyness_chi2_stats(x)
 
 keyness_exact(x)
 
-keyness_lr(x, correction = 0.5)
+keyness_lr(x, correction = c("default", "yates", "williams", "none"))
 
-keyness_pmi(x, correction = 0.5)
+keyness_pmi(x)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
