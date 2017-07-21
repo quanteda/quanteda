@@ -1,5 +1,5 @@
 # implement default options
-QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, RcppParallel::defaultNumThreads() / 2),
+QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, floor(RcppParallel::defaultNumThreads() / 2)),
                              quanteda_verbose = FALSE,
                              quanteda_print_dfm_max_ndoc = 20L,
                              quanteda_print_dfm_max_nfeature = 20L)
@@ -56,9 +56,9 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
     # if the ... is a list already, use that
     if (length(args)==1 && is.list(args[[1]])) args <- args[[1]]
     
-    if (initialize)
+    if (initialize) 
         return(quanteda_initialize())
-    
+
     if (reset)
         return(quanteda_reset())
 
@@ -107,7 +107,7 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
         names(opt_list) <- paste0("quanteda_", key)
         options(opt_list)
     }
-
+    
     return(invisible(TRUE))
 }
 
@@ -118,13 +118,13 @@ quanteda_initialize <- function() {
         if (!is.null(getOption(opt)))
             apply_list[opt] <- NULL
     }
-    quanteda_options(threads = QUANTEDA_OPTION_LIST$quanteda_threads)
+    # quanteda_options(threads = QUANTEDA_OPTION_LIST$quanteda_threads)
     options(apply_list)
     return(invisible(TRUE))
 }
 
 quanteda_reset <- function() {
-    quanteda_options(threads = QUANTEDA_OPTION_LIST$quanteda_threads)
+    # quanteda_options(threads = QUANTEDA_OPTION_LIST$quanteda_threads)
     options(QUANTEDA_OPTION_LIST)
     return(invisible(TRUE))
 }
