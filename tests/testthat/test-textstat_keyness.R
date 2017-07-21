@@ -7,7 +7,16 @@ test_that("keyness_textstat chi2 computation is correct", {
     )
     expect_equivalent(
         result$statistic,
-        textstat_keyness(mydfm, sort = FALSE)[1, 1]
+        textstat_keyness(mydfm, sort = FALSE, correction = "default")[1, 1]
+    )
+    
+    # without Yates correction
+    suppressWarnings(
+        result <- stats::chisq.test(as.matrix(mydfm), correct = FALSE)
+    )
+    expect_equivalent(
+        result$statistic,
+        textstat_keyness(mydfm, sort = FALSE, correction = "none")[1, 1]
     )
 })
 
@@ -40,9 +49,9 @@ test_that("basic textstat_keyness works on two rows", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h"))
     expect_equal(rownames(textstat_keyness(mydfm)),
-                 c("c", "a", "b", "h", "g", "e", "f", "d"))
+                 c("g", "c", "b", "h", "a", "e", "f", "d"))
     expect_equal(rownames(textstat_keyness(mydfm, target = 2)),
-                 c("d", "e", "f", "g", "b", "h", "a", "c"))
+                 c("d", "e", "f", "a", "b", "h", "c", "g"))
 })
 
 test_that("textstat_keyness works with different targets", {
@@ -187,20 +196,20 @@ test_that("keyness_textstat lr computation is correct", {
     result <- likelihood.test(as.matrix(mydfm))
     expect_equivalent(
         result$statistic,
-        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = 0)[1, 1]
+        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "none")[1, 1]
     )
     expect_equal(
         as.vector(result$p.value),
-        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = 0)[1, 2]
+        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "none")[1, 2]
     )
 })
 
 test_that("basic textstat_keyness lr works on two rows", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h"))
-    expect_equal(rownames(textstat_keyness(mydfm, measure = "lr", correction = 0)),
+    expect_equal(rownames(textstat_keyness(mydfm, measure = "lr", correction = "none")),
                  c("c", "g", "b", "h", "a", "e", "f", "d"))
-    expect_equal(rownames(textstat_keyness(mydfm, target = 2, measure = "lr", correction = 0)),
+    expect_equal(rownames(textstat_keyness(mydfm, target = 2, measure = "lr", correction = "none")),
                  c("d", "e", "f", "a", "b", "h", "g", "c"))
     expect_equal(rownames(textstat_keyness(mydfm, measure = "lr", sort = FALSE)),
                  letters[1:8])
@@ -242,3 +251,4 @@ test_that("textstat_keyness returns correct pmi", {
     
     expect_equal(max(mykeyness$pmi), max(svs_pmi[1,]), tolerance = 0.0001)
 })
+
