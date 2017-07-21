@@ -263,3 +263,21 @@ test_that("textstat_keyness returns correct pmi", {
     expect_equal(max(mykeyness$pmi), max(svs_pmi[1,]), tolerance = 0.0001)
 })
 
+test_that("textstat_keyness correction warnings for pmi and exact", {
+    mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
+                   d2 = "a a b c c d d d d e f h"))
+    expect_warning(
+        textstat_keyness(mydfm, measure = "pmi", correction = "yates"),
+        "correction is always none for measure pmi"
+    )
+    expect_warning(
+        textstat_keyness(mydfm, measure = "exact", correction = "williams"),
+        "correction is always none for measure exact"
+    )
+    expect_silent(
+        textstat_keyness(mydfm, measure = "exact", correction = "none")
+    )
+    expect_silent(
+        textstat_keyness(mydfm, measure = "pmi", correction = "none")
+    )
+})

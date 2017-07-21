@@ -91,11 +91,15 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
 
     if (measure == "chi2") {
         keywords <- keyness_chi2_dt(x, correction)
-    } else if (measure == "exact") {
-        keywords <- keyness_exact(x)
     } else if (measure == "lr") {
         keywords <- keyness_lr(x, correction)
+    } else if (measure == "exact") {
+        if (!correction %in% c("default", "none"))
+            warning("correction is always none for measure exact")
+        keywords <- keyness_exact(x)
     } else if (measure == "pmi") {
+        if (!correction %in% c("default", "none"))
+            warning("correction is always none for measure pmi")
         keywords <- keyness_pmi(x)
     } else {
         stop(measure, " not yet implemented for textstat_keyness")
