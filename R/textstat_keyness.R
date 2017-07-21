@@ -1,17 +1,22 @@
 #' calculate keyness statistics
 #' 
 #' @param x a \link{dfm} containing the features to be examined for keyness
-#' @param target the document index (numeric, character or logical) identifying
-#'   the document forming the "target" for computing keyness; all other
+#' @param target the document index (numeric, character or logical) identifying 
+#'   the document forming the "target" for computing keyness; all other 
 #'   documents' feature frequencies will be combined for use as a reference
 #' @param measure (signed) association measure to be used for computing keyness.
 #'   Currenly available: \code{"chi2"}; \code{"exact"} (Fisher's exact test); 
-#'   \code{"lr"} for the likelihood ratio; \code{"pmi"} for pointwise
-#'   mutual information.
+#'   \code{"lr"} for the likelihood ratio; \code{"pmi"} for pointwise mutual 
+#'   information.
 #' @param sort logical; if \code{TRUE} sort features scored in descending order 
 #'   of the measure, otherwise leave in original feature order
-#' @param correction if \code{"default"}, Yates correction is applied to "chi2", 
-#' William's correction is applied to \code{"lr"} and none for \code{"exact"} and \code{"pmi"} 
+#' @param correction if \code{"default"}, Yates correction is applied to 
+#'   \code{"chi2"}; William's correction is applied to \code{"lr"}; and no 
+#'   correction is applied for the \code{"exact"} and \code{"pmi"} measures. 
+#'   Specifying a value other than the default can be used to override the 
+#'   defaults, for instance to apply the Williams correction to the chi2 
+#'   measure.  Specying a correction for the \code{"exact"} and \code{"pmi"}
+#'   measures has no effect and produces a warning.
 #' @references Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
 #'   Texts}. Amsterdam, Philadelphia: John Benjamins, 2010.
 #'   
@@ -22,14 +27,14 @@
 #'   Scott, M. & Tribble, C. 2006.  \emph{Textual Patterns: keyword and corpus 
 #'   analysis in language education}.  Amsterdam: Benjamins, p. 55.
 #'   
-#'   Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and
+#'   Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and 
 #'   Coincidence", \emph{Computational Linguistics}, Vol 19, No. 1, pp. 61-74.
-#' @return a data.frame of computed statistics and associated p-values, where
-#'   the features scored name each row, and the number of occurrences for both
-#'   the target and reference groups. For \code{measure = "chi2"} this is the
-#'   chi-squared value, signed positively if the observed value in the target
-#'   exceeds its expected value; for \code{measure = "exact"} this is the
-#'   estimate of the odds ratio; for \code{measure = "lr"} this is the
+#' @return a data.frame of computed statistics and associated p-values, where 
+#'   the features scored name each row, and the number of occurrences for both 
+#'   the target and reference groups. For \code{measure = "chi2"} this is the 
+#'   chi-squared value, signed positively if the observed value in the target 
+#'   exceeds its expected value; for \code{measure = "exact"} this is the 
+#'   estimate of the odds ratio; for \code{measure = "lr"} this is the 
 #'   likelihood ratio \eqn{G2} statistic; for \code{"pmi"} this is the pointwise
 #'   mutual information statistics.
 #' @export
