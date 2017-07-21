@@ -216,7 +216,7 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
     
     correction <- match.arg(correction)
     epsilon <- 0.000000001; # to offset zero cell counts
-    a <- b <- c <- d <- N <- E11 <- G <- p <- NULL 
+    a <- b <- c <- d <- N <- E11 <- G2 <- p <- NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
     dt <- data.table(feature = featnames(x),
