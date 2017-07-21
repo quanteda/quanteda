@@ -9,21 +9,20 @@
 \alias{keyness_pmi}
 \title{compute keyness (internal functions)}
 \usage{
-keyness_chi2_dt(x)
+keyness_chi2_dt(x, correction = c("default", "yates", "williams", "none"))
 
 keyness_chi2_stats(x)
 
 keyness_exact(x)
 
-keyness_lr(x, correction = c("none", "Yates"))
+keyness_lr(x, correction = c("default", "yates", "williams", "none"))
 
 keyness_pmi(x)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
 
-\item{correction}{if \code{"Yates"} implement the Yates correction for 2x2 
-tables, no correction if \code{"none"}}
+\item{correction}{implement the Yates correction for 2x2 tables}
 }
 \value{
 a data.frame of chi2 and p-values with rows named for each feature

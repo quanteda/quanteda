@@ -4,20 +4,26 @@
 \alias{textplot_keyness}
 \title{plot word keyness}
 \usage{
-textplot_keyness(x, show_reference = TRUE, n = 20)
+textplot_keyness(x, show_reference = TRUE, n = 20L, min_count = 2L)
 }
 \arguments{
 \item{x}{a return object from \code{\link{textstat_keyness}}}
 
-\item{show_reference}{logical; if \code{TRUE}, show key reference features in addition to key target features}
+\item{show_reference}{logical; if \code{TRUE}, show key reference features in
+addition to key target features}
 
-\item{n}{number of terms to plot}
+\item{n}{integer; number of features to plot}
+
+\item{min_count}{numeric; minimum total count of feature across the target 
+and reference categories, for a feature to be included in the plot}
 }
 \value{
 a \pkg{ggplot2} object
 }
 \description{
-Plot the results of a keyword analysis using \code{\link{textstat_keyness}}.
+Plot the results of a "keyword" of features comparing their differential 
+associations with a target and a reference group, after calculating keyness
+using \code{\link{textstat_keyness}}.
 }
 \examples{
 \dontrun{

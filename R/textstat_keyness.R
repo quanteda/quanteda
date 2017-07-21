@@ -1,16 +1,22 @@
 #' calculate keyness statistics
 #' 
 #' @param x a \link{dfm} containing the features to be examined for keyness
-#' @param target the document index (numeric, character or logical) identifying
-#'   the document forming the "target" for computing keyness; all other
+#' @param target the document index (numeric, character or logical) identifying 
+#'   the document forming the "target" for computing keyness; all other 
 #'   documents' feature frequencies will be combined for use as a reference
 #' @param measure (signed) association measure to be used for computing keyness.
-#'   Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
-#'   \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio 
-#'   \eqn{G^2} statistic with Yates correction; \code{"pmi"} for pointwise
-#'   mutual information.
+#'   Currenly available: \code{"chi2"}; \code{"exact"} (Fisher's exact test); 
+#'   \code{"lr"} for the likelihood ratio; \code{"pmi"} for pointwise mutual 
+#'   information.
 #' @param sort logical; if \code{TRUE} sort features scored in descending order 
 #'   of the measure, otherwise leave in original feature order
+#' @param correction if \code{"default"}, Yates correction is applied to 
+#'   \code{"chi2"}; William's correction is applied to \code{"lr"}; and no 
+#'   correction is applied for the \code{"exact"} and \code{"pmi"} measures. 
+#'   Specifying a value other than the default can be used to override the 
+#'   defaults, for instance to apply the Williams correction to the chi2 
+#'   measure.  Specying a correction for the \code{"exact"} and \code{"pmi"}
+#'   measures has no effect and produces a warning.
 #' @references Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
 #'   Texts}. Amsterdam, Philadelphia: John Benjamins, 2010.
 #'   
@@ -21,15 +27,15 @@
 #'   Scott, M. & Tribble, C. 2006.  \emph{Textual Patterns: keyword and corpus 
 #'   analysis in language education}.  Amsterdam: Benjamins, p. 55.
 #'   
-#'   Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and
+#'   Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and 
 #'   Coincidence", \emph{Computational Linguistics}, Vol 19, No. 1, pp. 61-74.
-#' @return a data.frame of computed statistics and associated p-values, where
-#'   the features scored name each row, and the number of occurrences for both
-#'   the target and reference groups. For \code{measure = "chi2"} this is the
-#'   chi-squared value, signed positively if the observed value in the target
-#'   exceeds its expected value; for \code{measure = "exact"} this is the
-#'   estimate of the odds ratio; for \code{measure = "lr"} this is the
-#'   likelihood ratio \eqn{G} statistic; for \code{"pmi"} this is the pointwise
+#' @return a data.frame of computed statistics and associated p-values, where 
+#'   the features scored name each row, and the number of occurrences for both 
+#'   the target and reference groups. For \code{measure = "chi2"} this is the 
+#'   chi-squared value, signed positively if the observed value in the target 
+#'   exceeds its expected value; for \code{measure = "exact"} this is the 
+#'   estimate of the odds ratio; for \code{measure = "lr"} this is the 
+#'   likelihood ratio \eqn{G2} statistic; for \code{"pmi"} this is the pointwise
 #'   mutual information statistics.
 #' @export
 #' @keywords textstat
@@ -51,16 +57,19 @@
 #' head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
 #' # using the likelihood ratio method
 #' head(textstat_keyness(dfm_smooth(pwdfm), measure = "lr", target = "2017-Trump"), 10)
-textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), sort = TRUE) {
+textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), sort = TRUE, 
+                             correction = c("default", "yates", "williams", "none")) {
     UseMethod("textstat_keyness")
 }
 
 #' @noRd
 #' @export
-textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), sort = TRUE) {
+textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), 
+                                 sort = TRUE, correction = c("default", "yates", "williams", "none")) {
     
     # error checking
     measure <- match.arg(measure)
+    correction <- match.arg(correction)
     if (ndoc(x) < 2 )
         stop("x must have at least two documents")
     if (is.character(target) && !(target %in% docnames(x)))
@@ -81,12 +90,16 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
     x <- x[order(docnames(x)), ]
 
     if (measure == "chi2") {
-        keywords <- keyness_chi2_dt(x)
-    } else if (measure == "exact") {
-        keywords <- keyness_exact(x)
+        keywords <- keyness_chi2_dt(x, correction)
     } else if (measure == "lr") {
-        keywords <- keyness_lr(x)
+        keywords <- keyness_lr(x, correction)
+    } else if (measure == "exact") {
+        if (!correction %in% c("default", "none"))
+            warning("correction is always none for measure exact")
+        keywords <- keyness_exact(x)
     } else if (measure == "pmi") {
+        if (!correction %in% c("default", "none"))
+            warning("correction is always none for measure pmi")
         keywords <- keyness_pmi(x)
     } else {
         stop(measure, " not yet implemented for textstat_keyness")
@@ -125,9 +138,10 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
 #'   \url{https://en.wikipedia.org/wiki/Yates's_correction_for_continuity}
 #'   
 #'   
-keyness_chi2_dt <- function(x) {
+keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "none")) {
     
-    a <- b <- c <- d <- N <- E <- chi2 <- p <- NULL 
+    correction <- match.arg(correction)
+    a <- b <- c <- d <- N <- E <- chi2 <- p <- cor_app <- q <- NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
     dt <- data.table(feature = featnames(x),
@@ -136,10 +150,25 @@ keyness_chi2_dt <- function(x) {
     dt[, c("c", "d") := list(sum(x[1, ]) - a, sum(x[2, ]) - b)]
     dt[, N := (a+b+c+d)]
     dt[, E := (a+b)*(a+c) / N]
-    # compute using the direct formula - see link above (adds sign)
-    dt[, chi2 := (N * (abs(a*d - b*c) - N/2)^2) / ((a+b)*(c+d)*(a+c)*(b+d)) * 
-                 ifelse(a > E, 1, -1)]
-
+    
+    if (correction == "default" | correction == "yates"){
+        dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5) 
+                         & abs(a*d - b*c) >= N/2)]
+        # the correction is usually only recommended if the smallest expected frequency is less than 5
+        # the correction should not be applied if |ad − bc| is less than N/2.
+        # compute using the direct formula - see link above (adds sign)
+        dt[, chi2 := ifelse(cor_app, 
+                            (N * (abs(a*d - b*c) - N * 0.5)^2) / ((a+b)*(c+d)*(a+c)*(b+d)) * ifelse(a > E, 1, -1), 
+                            (N * abs(a*d - b*c)^2) / ((a+b)*(c+d)*(a+c)*(b+d)) * ifelse(a > E, 1, -1) )]
+    } else if (correction == "williams"){
+        # William's correction cannot be used if there are any zeros in the table
+        # \url{http://influentialpoints.com/Training/g-likelihood_ratio_test.htm}
+        dt[, q := ifelse(a * b * c * d == 0, 1, 1 + (N/(a + b) + N/(c + d) - 1) * (N/(a + c) + N/(b + d) - 1) / (6 * N) )]
+        dt[, chi2 := (N * abs(a*d - b*c)^2) / ((a+b)*(c+d)*(a+c)*(b+d)) * ifelse(a > E, 1, -1) / q]
+    } else {
+        dt[, chi2 := (N * abs(a*d - b*c)^2) / ((a+b)*(c+d)*(a+c)*(b+d)) * ifelse(a > E, 1, -1)]
+    }
+    
     # compute p-values
     dt[, p := 1 - stats::pchisq(abs(chi2), 1)]
 
@@ -204,19 +233,18 @@ keyness_exact <- function(x) {
 
 
 #' @rdname keyness
-#' @param correction if \code{"Yates"} implement the Yates correction for 2x2 
-#'   tables, no correction if \code{"none"}
+#' @param correction implement the Yates correction for 2x2 tables
 #' @details \code{keyness_lr} computes the \eqn{G^2} likelihood ratio statistic
 #'   using vectorized computation
 #' @examples
 #' quanteda:::keyness_lr(mydfm)
 #' @references
 #' \url{http://influentialpoints.com/Training/g-likelihood_ratio_test.htm}
-keyness_lr <- function(x, correction = c("none", "Yates")) {
+keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")) {
     
     correction <- match.arg(correction)
     epsilon <- 0.000000001; # to offset zero cell counts
-    a <- b <- c <- d <- N <- E11 <- G2 <- p <- NULL 
+    a <- b <- c <- d <- N <- E11 <- G2 <- p <- cor_app <- correction_sign <- q <- NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
     dt <- data.table(feature = featnames(x),
@@ -226,24 +254,35 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
     dt[, N := (a + b + c + d)]
     dt[, E11 := (a+b)*(a+c) / N]
     
-    if (correction == "Yates") {
+    
+    if (correction == "default" | correction == "yates"){
+        
+        dt[, cor_app := (((a+b)*(a+c)/N < 5 | (a+b)*(b+d)/N < 5 | (a+c)*(c+d)/N < 5 | (c+d)*(b+d)/N < 5) 
+                         & abs(a*d - b*c) > N/2)]
+        # the correction is usually only recommended if the smallest expected frequency is less than 5
+        # the correction should not be applied if |ad − bc| is less than N/2.
         # implement Yates continuity correction
         # If (ad-bc) is positive, subtract 0.5 from a and d and add 0.5 to b and c. 
         # If (ad-bc) is negative, add 0.5 to a and d and subtract 0.5 from b and c.
-        dt[, correction := a*d - b*c > 0]
-        dt[, c("a", "d", "b", "c") := list(a + ifelse(correction, -0.5, 0.5),
-                                           d + ifelse(correction, -0.5, 0.5),
-                                           b + ifelse(correction, 0.5, -0.5),
-                                           c + ifelse(correction, 0.5, -0.5))]
-    } 
-    ## the other possible correction to implement is the Williams correction, 
-    ## see http://influentialpoints.com/Training/g-likelihood_ratio_test.htm
-    
+        dt[, correction_sign := a*d - b*c > 0]
+        dt[, c("a", "d", "b", "c") := list(a + ifelse(cor_app, ifelse(correction_sign, -0.5, 0.5), 0),
+                                           d + ifelse(cor_app, ifelse(correction_sign, -0.5, 0.5), 0),
+                                           b + ifelse(cor_app, ifelse(correction_sign, 0.5, -0.5), 0),
+                                           c + ifelse(cor_app, ifelse(correction_sign, 0.5, -0.5), 0))]
+    }
+
     dt[, G2 := (2 * (a * log(a / E11 + epsilon) + 
-                     b * log(b / ((a+b)*(b+d) / N) + epsilon) +
-                     c * log(c / ((a+c)*(c+d) / N) + epsilon) +
-                     d * log(d / ((b+d)*(c+d) / N) + epsilon))) *
-               ifelse(a > E11, 1, -1)]
+                         b * log(b / ((a+b)*(b+d) / N) + epsilon) +
+                         c * log(c / ((a+c)*(c+d) / N) + epsilon) +
+                         d * log(d / ((b+d)*(c+d) / N) + epsilon))) *
+           ifelse(a > E11, 1, -1)]
+    
+    if (correction == "williams"){
+        # William's correction cannot be used if there are any zeros in the table
+        # \url{http://influentialpoints.com/Training/g-likelihood_ratio_test.htm}
+        dt[, q := ifelse(a * b * c * d == 0, 1, 1 + (N/(a + b) + N/(c + d) - 1) * (N/(a + c) + N/(b + d) - 1) / (6 * N) )]
+        dt[, G2 := G2 / q]
+    }
     
     # compute p-values
     dt[, p := 1 - stats::pchisq(abs(G2), 1)]
@@ -262,7 +301,7 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
 #' quanteda:::keyness_pmi(mydfm)
 keyness_pmi <- function(x) {
     
-    a <- b <- c <- d <- N <- E11 <- pmi <- p <- NULL 
+    a <- b <- c <- d <- N <- E11 <- pmi <- p <-NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
     dt <- data.table(feature = featnames(x),
