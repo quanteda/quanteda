@@ -322,6 +322,7 @@ as.tokens.list <- function(x, concatenator = '_') {
     result <- tokens_hash(x)
     attr(result, "what") <- "word"
     attr(result, "ngrams") <- 1L
+    attr(result, "skip") <- 0L
     attr(result, "concatenator") <- concatenator
     attr(result, 'padding') <- FALSE
     class(result)[2] <- "tokenizedTexts"
