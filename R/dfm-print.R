@@ -24,10 +24,7 @@ setMethod("print", signature(x = "dfm"),
                    ndoc = getOption("quanteda_print_dfm_max_ndoc"), 
                    nfeature = getOption("quanteda_print_dfm_max_nfeature"), ...) {
               
-              # if (!length(x)) {
-              #     print(NULL)
-              #     return()
-              # } 
+              quanteda_options(initialize = TRUE)
 
               if (show.summary) {
                   cat("Document-feature matrix of: ",
@@ -47,7 +44,7 @@ setMethod("print", signature(x = "dfm"),
               
               if (show.values == TRUE) {          
                   # if show.values is set to TRUE, show full matrix
-                  ndoc <- nrow(x)
+                  nd <- nrow(x)
                   nfeature <- ncol(x)
               } else if (missing(show.values)) {  
                   if (nrow(x) <= ndoc & ncol(x) <= nfeature) {
