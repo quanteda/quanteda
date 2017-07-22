@@ -274,6 +274,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     names(result) <- names_org
     attr(result, "what") <- what
     attr(result, "ngrams") <- ngrams
+    attr(result, "skip") <- skip
     attr(result, "concatenator") <- concatenator
     attr(result, 'padding') <- FALSE
     
