@@ -258,3 +258,9 @@ test_that("dictionary constructor works with LIWC format w/extra codes", {
 })
 
 
+test_that("dictionary works with yoshicoder, issue 819", {
+    expect_equal(
+        as.list(dictionary(file = "../data/dictionaries/issue-819.ykd")),
+        list('Dictionary' = list('pos' = list('A' = 'a word', 'B' = 'b word'))))
+})
+

@@ -22,7 +22,7 @@ Imports:
     data.table (>= 1.9.6),
     SnowballC,
     wordcloud,
-    Rcpp,
+    Rcpp (>= 0.12.12),
     RcppParallel,
     RSpectra,
     stringi,
