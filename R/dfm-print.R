@@ -59,9 +59,10 @@ setMethod("print", signature(x = "dfm"),
               }
 
               if (show.values)
-                  if (is(x, "sparseMatrix"))
+                  if (is(x, "sparseMatrix")) {
                       Matrix::printSpMatrix2(x[0:ndoc, 0:nfeature], 
                                              col.names = TRUE, zero.print = 0, ...)
+                  }
               else if (is(x, "denseMatrix")) {
                   getMethod("show", "denseMatrix")(x[0:ndoc, 0:nfeature], ...)
               } else {
