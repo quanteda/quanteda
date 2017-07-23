@@ -55,8 +55,8 @@
 #'   matrix-like inputs.
 #'   
 #'   Additional features of \pkg{quanteda} include: \itemize{ 
-#'   \item{powerful, flexible tools for working with \link{=dictionary}{dictionaries};}
-#'   \item{the ability to identify \link{=textstat_keyness}{keywords} associated with documents or groups of documents;}
+#'   \item{powerful, flexible tools for working with \link[=dictionary]{dictionaries};}
+#'   \item{the ability to identify \link[=textstat_keyness]{keywords} associated with documents or groups of documents;}
 #'   \item{the ability to explore texts using \link[=kwic]{key-words-in-context};}
 #'   \item{fast computation of a variety of \link[=textstat_readability]{readability indexes};}
 #'   \item{fast computation of a variety of \link[=textstat_lexdiv]{lexical diversity measures};}
