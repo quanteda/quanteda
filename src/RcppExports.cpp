@@ -377,6 +377,7 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+<<<<<<< HEAD
 
 static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cacpp", (DL_FUNC) &_quanteda_cacpp, 3},
@@ -412,3 +413,5 @@ RcppExport void R_init_quanteda(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }
+=======
+>>>>>>> 861666ed6d291f3c582921c7c99dd3f635c48253
