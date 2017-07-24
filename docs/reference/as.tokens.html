@@ -83,13 +83,10 @@ object is a <a href='tokens.html'>tokens</a> object, and functions to combine <a
 objects.</p>
     
 
-    <pre class="usage">as.tokens(x)
+    <pre class="usage">as.tokens(x, concatenator = "_")
 
 # S3 method for list
-as.tokens(x)
-
-# S3 method for collocations
-as.tokens(x)
+as.tokens(x, concatenator = "_")
 
 # S3 method for tokens
 as.list(x, ...)
@@ -114,6 +111,10 @@ c(...)</pre>
     <tr>
       <th>x</th>
       <td><p>object to be coerced or checked</p></td>
+    </tr>
+    <tr>
+      <th>concatenator</th>
+      <td><p>character between multi-word expressions, default is _ (underscore) character</p></td>
     </tr>
     <tr>
       <th>...</th>

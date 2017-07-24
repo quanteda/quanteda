@@ -85,8 +85,8 @@ to form a single "token".  This ensures that the sequences will be processed
 subsequently as single tokens, for instance in constructing a <a href='dfm.html'>dfm</a>.</p>
     
 
-    <pre class="usage"><span class='fu'>tokens_compound</span>(<span class='no'>x</span>, <span class='no'>sequences</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>,
-  <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>tokens_compound</span>(<span class='no'>x</span>, <span class='no'>pattern</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>,
+  <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -96,21 +96,14 @@ subsequently as single tokens, for instance in constructing a <a href='dfm.html'
       <td><p>an input <a href='tokens.html'>tokens</a> object</p></td>
     </tr>
     <tr>
-      <th>sequences</th>
-      <td><p>the input sequence, one of:</p><ul>
-<li><p>character vector,
-whose elements will be split on whitespace;</p></li>
-<li><p>list of characters,
-consisting of a list of token patterns, separated by white space;</p></li>
-<li><p><a href='tokens.html'>tokens</a> object;</p></li>
-<li><p><a href='dictionary.html'>dictionary</a> object;</p></li>
-<li><p><a href='collocations.html'>collocations</a> object.</p></li>
-</ul></td>
+      <th>pattern</th>
+      <td><p>a character vector, list of character vectors, <a href='dictionary.html'>dictionary</a>,
+<a href='collocations.html'>collocations</a>, or <a href='dfm.html'>dfm</a>. See <a href='pattern.html'>pattern</a> for details.</p></td>
     </tr>
     <tr>
       <th>concatenator</th>
       <td><p>the concatenation character that will connect the words 
-making up the multi-word sequences.  The default <code>_</code> is highly 
+making up the multi-word sequences.  The default <code>_</code> is  
 recommended since it will not be removed during normal cleaning and 
 tokenization (while nearly all other punctuation characters, at least those
 in the Unicode punctuation class [P] will be removed).</p></td>
@@ -127,14 +120,14 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
     </tr>
     <tr>
       <th>join</th>
-      <td><p>logical; if <code>TRUE</code>, join overlapped compounds</p></td>
+      <td><p>logical; if <code>TRUE</code>, join overlapping compounds</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <a href='tokens.html'>tokens</a> object in which the token sequences matching the patterns 
-in <code>sequences</code> have been replaced by  compound "tokens" joined by the concatenator</p>
+    <p>a <a href='tokens.html'>tokens</a> object in which the token sequences matching <code>pattern</code>
+have been replaced by  compound "tokens" joined by the concatenator</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -165,7 +158,7 @@ in <code>sequences</code> have been replaced by  compound "tokens" joined by the
 #&gt;   text1          0                 1               1
 #&gt;   text2          1                 0               0</div><div class='input'>
 <span class='co'># when used as a dictionary for dfm creation</span>
-<span class='no'>mydict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>tax</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"tax"</span>, <span class='st'>"income tax"</span>, <span class='st'>"capital gains tax"</span>, <span class='st'>"inheritance tax"</span>)))
+<span class='no'>mydict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>tax</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"tax"</span>, <span class='st'>"income tax"</span>, <span class='st'>"capital gains tax"</span>, <span class='st'>"inheritance tax*"</span>)))
 (<span class='no'>cw2</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>mydict</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; Component 1 :
 #&gt; [1] "The"               "new"               "law"              
@@ -173,9 +166,10 @@ in <code>sequences</code> have been replaced by  compound "tokens" joined by the
 #&gt; [7] "and"               "an"                "inheritance_tax"  
 #&gt; 
 #&gt; Component 2 :
-#&gt;  [1] "New"         "York"        "City"        "has"         "raised"     
-#&gt;  [6] "taxes"       "an"          "income_tax"  "and"         "inheritance"
-#&gt; [11] "taxes"      
+#&gt;  [1] "New"               "York"              "City"             
+#&gt;  [4] "has"               "raised"            "taxes"            
+#&gt;  [7] "an"                "income_tax"        "and"              
+#&gt; [10] "inheritance_taxes"
 #&gt; </div><div class='input'>
 <span class='co'># to pick up "taxes" in the second text, set valuetype = "regex"</span>
 (<span class='no'>cw3</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>mydict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
@@ -207,10 +201,16 @@ in <code>sequences</code> have been replaced by  compound "tokens" joined by the
 #&gt; [11] "too"        "."         
 #&gt; </div><div class='input'>
 <span class='co'># with collocations</span>
-<span class='co'>#cols &lt;- textstat_collocations("capital gains taxes are worse than inheritance taxes", </span>
-<span class='co'>#                              size = 2, min_count = 1)</span>
-<span class='co'>#toks &lt;- tokens("The new law included capital gains taxes and inheritance taxes.")</span>
-<span class='co'>#tokens_compound(toks, cols)</span></div></pre>
+<span class='no'>cols</span> <span class='kw'>&lt;-</span>
+    <span class='fu'><a href='textstat_collocations.html'>textstat_collocations</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"capital gains taxes are worse than inheritance taxes"</span>),
+                                  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"The new law included capital gains taxes and inheritance taxes."</span>)
+<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='no'>cols</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; Component 1 :
+#&gt; [1] "The"                 "new"                 "law"                
+#&gt; [4] "included"            "capital_gains_taxes" "and"                
+#&gt; [7] "inheritance_taxes"   "."                  
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -86,7 +86,7 @@ methods.
   defined as a collection of texts that includes document-level variables
   specific to each text, as well as meta-data for documents and for the
   collection as a whole. <span class="pkg">quanteda</span> includes tools to make it easy and
-  fast to manuipulate the texts in a corpus, by performing the most common
+  fast to manipulate the texts in a corpus, by performing the most common
   natural language processing tasks simply and quickly, such as tokenizing,
   stemming, or forming ngrams. <span class="pkg">quanteda</span>'s functions for tokenizing
   texts and forming multiple tokenized documents into a document-feature
@@ -120,23 +120,28 @@ methods.
   "thesaurus", and trimming and weighting features based on document
   frequency, feature frequency, and related measures such as tf-idf.
 
-    Once constructed, a <span class="pkg">quanteda</span> "<a href='dfm.html'>dfm</a>"" can be easily analyzed using
+    Once constructed, a <span class="pkg">quanteda</span> document-feature matrix ("<a href='dfm.html'>dfm</a>") 
+  can be easily analyzed using
   either <span class="pkg">quanteda</span>'s built-in tools for scaling document positions,
   or used with a number of other text analytic tools, such as: topic models
   (including converters for direct use with the topicmodels, LDA, and stm
   packages) document scaling (using <span class="pkg">quanteda</span>'s own functions for the
-  "wordfish" and "Wordscores" models, direct use with the ca package for
+  "wordfish" and "Wordscores" models, direct use with the <strong>ca</strong> 
+  package for
   correspondence analysis, or scaling with the austin package) machine
   learning through a variety of other packages that take matrix or
   matrix-like inputs.
 
     Additional features of <span class="pkg">quanteda</span> include:</p><ul>
+<li><p>powerful, flexible tools for working with <a href='dictionary.html'>dictionaries</a>;</p></li>
+<li><p>the ability to identify <a href='textstat_keyness.html'>keywords</a> associated with documents or groups of documents;</p></li>
 <li><p>the ability to explore texts using <a href='kwic.html'>key-words-in-context</a>;</p></li>
 <li><p>fast computation of a variety of <a href='textstat_readability.html'>readability indexes</a>;</p></li>
 <li><p>fast computation of a variety of <a href='textstat_lexdiv.html'>lexical diversity measures</a>;</p></li>
-<li><p>quick computation of word or document <a href='similarity.html'>similarities</a>, for clustering or to compute distances for other purposes; and</p></li>
+<li><p>quick computation of word or document <a href='similarity.html'>similarities</a>, for clustering or to compute distances for other purposes;</p></li>
 <li><p>a comprehensive suite of <a href='summary.corpus.html'>descriptive statistics on text</a> such as the number of sentences, words, characters, or
-  syllables per document.</p></li>
+  syllables per document; and</p></li>
+<li><p>flexible, easy to use graphical tools to portray many of the analyses available in the package.</p></li>
 </ul>
     
 

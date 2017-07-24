@@ -78,22 +78,30 @@
     </div>
 
     
-    <p>Get or set global options affecting functions across <span class="pkg">quatneda</span>.</p>
+    <p>Get or set global options affecting functions across <span class="pkg">quanteda</span>.</p>
     
 
-    <pre class="usage"><span class='fu'>quanteda_options</span>(<span class='no'>...</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>quanteda_options</span>(<span class='no'>...</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>initialize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>options to be set, as key-value pair, same as <code>options</code></p></td>
+      <td><p>options to be set, as key-value pair, same as <code>options</code>. 
+This may be a list of valid key-value pairs, useful for setting a group of
+options at once (see examples).</p></td>
     </tr>
     <tr>
       <th>reset</th>
       <td><p>logical; if <code>TRUE</code>, reset all <span class="pkg">quanteda</span> options to their 
 default values</p></td>
+    </tr>
+    <tr>
+      <th>initialize</th>
+      <td><p>logical; if <code>TRUE</code>, reset only the <span class="pkg">quanteda</span> options 
+that are not already defined.  Used for setting initial values when some have 
+been defined previously, such as in `.Rprofile`.</p></td>
     </tr>
     </table>
     
@@ -121,8 +129,8 @@ default values</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>quanteda_options</span>()</div><div class='output co'>#&gt; $threads
-#&gt; [1] 7
+    <pre class="examples"><div class='input'>(<span class='no'>qopts</span> <span class='kw'>&lt;-</span> <span class='fu'>quanteda_options</span>())</div><div class='output co'>#&gt; $threads
+#&gt; [1] 4
 #&gt; 
 #&gt; $verbose
 #&gt; [1] FALSE
@@ -132,12 +140,14 @@ default values</p></td>
 #&gt; 
 #&gt; $print_dfm_max_nfeature
 #&gt; [1] 20
-#&gt; </div><div class='input'><span class='fu'>quanteda_options</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+#&gt; </div><div class='input'>
+<span class='fu'>quanteda_options</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'>quanteda_options</span>(<span class='st'>"verbose"</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>quanteda_options</span>(<span class='st'>"threads"</span>)</div><div class='output co'>#&gt; [1] 7</div><div class='input'><span class='fu'>quanteda_options</span>(<span class='kw'>print_dfm_max_ndoc</span> <span class='kw'>=</span> <span class='fl'>50L</span>)
-<span class='fu'>not_run</span>({
-  <span class='fu'>quanteda_options</span>(<span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-})</div></pre>
+<span class='fu'>quanteda_options</span>(<span class='st'>"threads"</span>)</div><div class='output co'>#&gt; [1] 4</div><div class='input'><span class='fu'>quanteda_options</span>(<span class='kw'>print_dfm_max_ndoc</span> <span class='kw'>=</span> <span class='fl'>50L</span>)
+<span class='co'># reset to defaults</span>
+<span class='fu'>quanteda_options</span>(<span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># reset to saved values </span>
+<span class='fu'>quanteda_options</span>(<span class='no'>qopts</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

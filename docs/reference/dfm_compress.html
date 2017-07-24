@@ -87,14 +87,14 @@ this <em>before</em> constructing the dfm.)  It could also be needed after a
 <code><a href='cbind.dfm.html'>cbind.dfm</a></code> or <code><a href='cbind.dfm.html'>rbind.dfm</a></code> operation.
 
     <code>dfm_group</code> allows combining dfm documents by a grouping 
-  variable, which can also be one of the <a href='docvars.html'>docvars</a> attached to the dfm.  This is
-  identical in functionality to using the <code>"groups"</code> argument in
+  variable, which can also be one of the <a href='docvars.html'>docvars</a> attached to the dfm. 
+  This is identical in functionality to using the <code>"groups"</code> argument in
   <code><a href='dfm.html'>dfm</a></code>.</p>
     
 
     <pre class="usage"><span class='fu'>dfm_compress</span>(<span class='no'>x</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"both"</span>, <span class='st'>"documents"</span>, <span class='st'>"features"</span>))
 
-<span class='fu'>dfm_group</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>dfm_group</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>fcm_compress</span>(<span class='no'>x</span>)</pre>
     
@@ -115,7 +115,15 @@ objects, <code>"documents"</code> has no effect.</p></td>
       <th>groups</th>
       <td><p>either: a character vector containing the names of document 
 variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents</p></td>
+coerced into a factor equal in length or rows to the number of documents. 
+See <a href='groups.html'>groups</a> for details.</p></td>
+    </tr>
+    <tr>
+      <th>fill</th>
+      <td><p>logical; if <code>TRUE</code> and <code>groups</code> is a factor, then use 
+all levels of the factor when forming the new "documents" of the grouped 
+dfm.  This will result in documents with zero feature counts for levels not
+observed.  Has no effect if the <code>groups</code> variable(s) are not factors.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -130,9 +138,10 @@ coerced into a factor equal in length or rows to the number of documents</p></td
   (<a href='docnames.html'>docnames</a> or <a href='featnames.html'>featnames</a>).  The <a href='docvars.html'>docvars</a> will be
   preserved for combining by features but not when documents are combined.
 
-<code>dfm_group</code> returns a <a href='dfm.html'>dfm</a> whose documents are equal to
-  the unique group combinations, and whose cell values are the sums of the
-  previous values summed by group.  This currently erases any docvars in the dfm.</p>
+<code>dfm_group</code> returns a <a href='dfm.html'>dfm</a> whose documents are equal to 
+  the unique group combinations, and whose cell values are the sums of the 
+  previous values summed by group.  This currently erases any docvars in the 
+  dfm.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -219,7 +228,7 @@ context.</p>
 #&gt;      d   . . . .   . . 1 1 1
 #&gt;      f   . . . .   . . . 1 1
 #&gt;      e   . . . .   . . . . 1
-#&gt;      b   . . . .   . . . . .</div><div class='input'><span class='fu'>fcm_compress</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_compress(myfcm): compress_fcm invalid if fcm was created with a window context</span></div></pre>
+#&gt;      b   . . . .   . . . . .</div><div class='input'><span class='fu'>fcm_compress</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_compress.fcm(myfcm): compress_fcm invalid if fcm was created with a window context</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -145,7 +145,14 @@ the resulting numeric vector</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>2</span>])
-<span class='fu'>docfreq</span>(<span class='no'>mydfm</span>[, <span class='fl'>1</span>:<span class='fl'>20</span>])</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'>
+<span class='fu'>docfreq</span>(<span class='no'>mydfm</span>[, <span class='fl'>1</span>:<span class='fl'>20</span>])</div><div class='output co'>#&gt;          fellow               -        citizens              of             the 
+#&gt;               2               1               2               2               2 
+#&gt;          senate             and           house representatives               : 
+#&gt;               1               2               1               1               2 
+#&gt;           among    vicissitudes        incident              to            life 
+#&gt;               1               1               1               2               1 
+#&gt;              no           event           could            have          filled 
+#&gt;               1               1               1               2               1 </div><div class='input'>
 <span class='co'># replication of worked example from</span>
 <span class='co'># https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf</span>
 <span class='no'>wikiDfm</span> <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"dfmSparse"</span>,
@@ -160,8 +167,13 @@ the resulting numeric vector</p></td>
 #&gt;            features
 #&gt; docs        this is a sample another example
 #&gt;   document1    1  1 2      1       0       0
-#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"unary"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       1       1       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inversemax"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverseprob"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div></pre>
+#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt; 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt;      this        is         a    sample   another   example 
+#&gt; 0.2218487 0.2218487 0.3010300 0.3010300 0.3010300 0.3010300 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"unary"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt;       1       1       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inversemax"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt; 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverseprob"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt;       0       0       0       0       0       0 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

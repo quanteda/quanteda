@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>deprecated function for featnames — features • quanteda</title>
+<title>declare a compound character to be a sequence of separate pattern matches — phrase • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -74,37 +74,80 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>deprecated function for featnames</h1>
+    <h1>declare a compound character to be a sequence of separate pattern matches</h1>
     </div>
 
     
-    <p>Deprecated function equivalent to <code><a href='featnames.html'>featnames</a></code>.  Soon to be eliminated.</p>
+    <p>Declares that a whitespace-separated expression consists of multiple
+patterns, separated by whitespace.</p>
     
 
-    <pre class="usage"><span class='fu'>features</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>phrase</span>(<span class='no'>x</span>)
+
+<span class='fu'>is.phrase</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a <a href='dfm.html'>dfm</a></p></td>
+      <td><p>the sequence, as a <code>character</code> object containing whitespace
+separating the patterns</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='featnames.html'>featnames</a></code></p>
+    <p><code>phrase</code> returns a specially classed list whose white-spaced
+  elements have been parsed into separate <code>character</code> elements.
+
+<code>is.phrase</code> returns <code>TRUE</code> if the object was created by 
+  <code>phrase</code>; <code>FALSE</code> otherwise.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># make phrases from characters</span>
+<span class='fu'>phrase</span>(<span class='fu'>c</span>(<span class='st'>"a b"</span>, <span class='st'>"c d e"</span>, <span class='st'>"f"</span>))</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] "a" "b"
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] "c" "d" "e"
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] "f"
+#&gt; </div><div class='input'>
+<span class='co'># from a dictionary</span>
+<span class='fu'>phrase</span>(<span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='kw'>catone</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a b"</span>), <span class='kw'>cattwo</span> <span class='kw'>=</span> <span class='st'>"c d e"</span>, <span class='kw'>catthree</span> <span class='kw'>=</span> <span class='st'>"f"</span>))</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] "a" "b"
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] "c" "d" "e"
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] "f"
+#&gt; </div><div class='input'>
+<span class='co'># from a collocations object</span>
+(<span class='no'>coll</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_collocations.html'>textstat_collocations</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"a b c a b d e b d a b"</span>)))</div><div class='output co'>#&gt;   collocation count length   lambda    sigma      dice       pmi       G2
+#&gt; 1         a b     3      2 3.412247 1.762449 0.7777778 0.7419373 5.565236
+#&gt; 2         b d     2      2 3.218876 1.788854 0.7142857 0.9162907 4.462871
+#&gt;       chi2        z          p
+#&gt; 1 5.185714 1.936083 0.02642879
+#&gt; 2 4.500000 1.799406 0.03597722</div><div class='input'><span class='fu'>phrase</span>(<span class='no'>coll</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] "a" "b"
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] "b" "d"
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

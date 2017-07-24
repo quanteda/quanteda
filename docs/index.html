@@ -61,10 +61,11 @@
 </h3>
 
 </div>
-<div id="quanteda-v0-9-9-important-changes" class="section level2">
+<div id="quanteda-v0-9-9-x-important-changes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#quanteda-v0-9-9-important-changes" class="anchor"></a><strong>quanteda</strong> v0.9.9: Important Changes</h2>
-<p>This version of the package is a transitional release prior to v1.0. It includes some major API changes (see below), but with the most of the older functions retained and deprecated. v0.9.9 also implements many enhancements and performance improvements. See <a href="https://kbenoit.github.io/quanteda/articles/development-plans.html">Quanteda Structure and Design</a> for details.</p>
+<a href="#quanteda-v0-9-9-x-important-changes" class="anchor"></a><strong>quanteda</strong> v0.9.9.x: Important Changes</h2>
+<p>Many important changes to the package have been underway, in preparation for both a final, transitional release (v0.9.9.9000) prior to v1.0, and v1.0 itselt. These include finalizing the v1.0 API, involving some changes to earlier versions of <strong>quanteda</strong>. For the v9.9.9000 and earlier released, most of the older functions are retained and working, but deprecated.</p>
+<p>v0.9.9 also implements many enhancements and performance improvements. See <a href="https://kbenoit.github.io/quanteda/articles/development-plans.html">Quanteda Structure and Design</a> for details.</p>
 </div>
 <div id="about-the-package" class="section level2">
 <h2 class="hasAnchor">
@@ -78,7 +79,7 @@ To cite package 'quanteda' in publications please use the
 following:
 
   Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
-  Textual Data".  R package version: 0.9.9.67.
+  Textual Data".  R package version: 0.9.9.84.
   http://quanteda.io.
 
 A BibTeX entry for LaTeX users is
@@ -86,7 +87,7 @@ A BibTeX entry for LaTeX users is
   @Manual{,
     title = {quanteda: Quantitative Analysis of Textual Data},
     author = {Kenneth Benoit and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
-    note = {R package version 0.9.9.67},
+    note = {R package version 0.9.9.84},
     url = {http://quanteda.io},
   }</code></pre>
 <div id="leave-feedback" class="section level3">
@@ -170,8 +171,8 @@ devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quant
 <h2 class="hasAnchor">
 <a href="#demonstration" class="anchor"></a>Demonstration</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
-## quanteda version 0.9.9.67
-## Using 7 of 8 cores for parallel computing
+## quanteda version 0.9.9.84
+## Using 4 of 8 threads for parallel computing
 ## 
 ## Attaching package: 'quanteda'
 ## The following object is masked from 'package:utils':
@@ -200,7 +201,7 @@ uk2010immigCorpus
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/* on x86_64 by kbenoit
-## Created: Mon Jun  5 12:23:29 2017
+## Created: Mon Jul 24 15:45:22 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 <span class="co"># key words in context for "deport", 3 words of context</span>
@@ -212,8 +213,7 @@ uk2010immigCorpus
 ##  [BNP, 2621]  Criminals We shall | deport | all criminal entrants
 
 <span class="co"># create a dfm, removing stopwords</span>
-mydfm &lt;-<span class="st"> </span><span class="kw"><a href="reference/dfm.html">dfm</a></span>(uk2010immigCorpus, <span class="dt">remove =</span> <span class="kw">c</span>(<span class="st">"will"</span>, <span class="kw"><a href="reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)),
-             <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+mydfm &lt;-<span class="st"> </span><span class="kw"><a href="reference/dfm.html">dfm</a></span>(uk2010immigCorpus, <span class="dt">remove =</span> <span class="kw"><a href="reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 mydfm
 ## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).
 

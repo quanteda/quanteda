@@ -82,20 +82,31 @@
 lower and upper case, respectively, and then recombine the counts.</p>
     
 
-    <pre class="usage"><span class='fu'>dfm_tolower</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>dfm_tolower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
-<span class='fu'>dfm_toupper</span>(<span class='no'>x</span>)
+<span class='fu'>dfm_toupper</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
-<span class='fu'>fcm_tolower</span>(<span class='no'>x</span>)
+<span class='fu'>fcm_tolower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
-<span class='fu'>fcm_toupper</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>fcm_toupper</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>the <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a> object</p></td>
+      <td><p>the input object whose character/tokens/feature elements will be
+case-converted</p></td>
+    </tr>
+    <tr>
+      <th>keep_acronyms</th>
+      <td><p>logical; if <code>TRUE</code>, do not lowercase any
+all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to <span class="pkg">stringi</span> functions, (e.g. 
+<code>stri_trans_tolower</code>), such as <code>locale</code></p></td>
     </tr>
     </table>
     
@@ -128,7 +139,7 @@ lower and upper case, respectively, and then recombine the counts.</p>
 #&gt;   text2 2 1 2</div><div class='input'>
 <span class='co'># for a feature co-occurrence matrix</span>
 <span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"b A A d"</span>, <span class='st'>"C C a b B e"</span>)),
-             <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>myfcm</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'myfcm' not found</span></div><div class='input'><span class='fu'>fcm_tolower</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is(x, "fcm"): object 'myfcm' not found</span></div><div class='input'><span class='fu'>fcm_toupper</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is(x, "fcm"): object 'myfcm' not found</span></div></pre>
+             <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>myfcm</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'myfcm' not found</span></div><div class='input'><span class='fu'>fcm_tolower</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_tolower(myfcm): object 'myfcm' not found</span></div><div class='input'><span class='fu'>fcm_toupper</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_toupper(myfcm): object 'myfcm' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

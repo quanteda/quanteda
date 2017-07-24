@@ -83,9 +83,8 @@ object.</p>
     
 
     <pre class="usage"><span class='fu'>tokens_lookup</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>,
-  <span class='st'>"fixed"</span>), <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>multiword</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
+  <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>,
+  <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -115,10 +114,6 @@ the first.  (See examples.)</p></td>
 or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
     <tr>
-      <th>concatenator</th>
-      <td><p>a charactor that connect words in multi-words entries in <code>x</code></p></td>
-    </tr>
-    <tr>
       <th>case_insensitive</th>
       <td><p>ignore the case of dictionary values if <code>TRUE</code> 
 uppercase to distinguish them from other features</p></td>
@@ -133,11 +128,6 @@ them from other features</p></td>
       <td><p>if <code>TRUE</code>, remove all features not in dictionary, 
 otherwise, replace values in dictionary with keys while leaving other 
 features unaffected</p></td>
-    </tr>
-    <tr>
-      <th>multiword</th>
-      <td><p>if <code>FALSE</code>, multi-word entries in dictionary are treated
-as single tokens</p></td>
     </tr>
     <tr>
       <th>verbose</th>

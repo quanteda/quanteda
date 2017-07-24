@@ -210,7 +210,7 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># create a corpus from texts</span>
-<span class='fu'>corpus</span>(<span class='no'>data_char_ukimmig2010</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents and 0 docvar.</div><div class='input'>
+<span class='fu'>corpus</span>(<span class='no'>data_char_ukimmig2010</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents and 0 docvars.</div><div class='input'>
 <span class='co'># create a corpus from texts and assign meta-data and document variables</span>
 <span class='fu'>summary</span>(<span class='fu'>corpus</span>(<span class='no'>data_char_ukimmig2010</span>,
                <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>party</span> <span class='kw'>=</span> <span class='fu'>names</span>(<span class='no'>data_char_ukimmig2010</span>))), <span class='fl'>5</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 5 documents.
@@ -223,12 +223,12 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;        Labour   296    703        29       Labour
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Jun  5 12:01:59 2017
+#&gt; Created: Mon Jul 24 15:45:29 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'>
-<span class='fu'>corpus</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>data_corpus_irishbudget2010</span>))</div><div class='output co'>#&gt; Corpus consisting of 14 documents and 0 docvar.</div><div class='input'>
+<span class='fu'>corpus</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>data_corpus_irishbudget2010</span>))</div><div class='output co'>#&gt; Corpus consisting of 14 documents and 0 docvars.</div><div class='input'>
 <span class='co'># import a tm VCorpus</span>
-<span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"tm"</span>)) {
+<span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"tm"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
     <span class='fu'>data</span>(<span class='no'>crude</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)    <span class='co'># load in a tm example VCorpus</span>
     <span class='no'>mytmCorpus</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus</span>(<span class='no'>crude</span>)
     <span class='fu'>summary</span>(<span class='no'>mytmCorpus</span>, <span class='kw'>showmeta</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
@@ -241,48 +241,27 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
     <span class='fu'>summary</span>(<span class='no'>quantCorp</span>)
 }</div><div class='output co'>#&gt; Corpus consisting of 20 documents.
 #&gt; 
-#&gt;            Text Types Tokens Sentences                     author
-#&gt;  reut-00001.xml    62    103         5                       &lt;NA&gt;
-#&gt;  reut-00002.xml   240    497        19 BY TED D'AFFLISIO, Reuters
-#&gt;  reut-00004.xml    47     62         4                       &lt;NA&gt;
-#&gt;  reut-00005.xml    55     74         5                       &lt;NA&gt;
-#&gt;  reut-00006.xml    67     97         4                       &lt;NA&gt;
-#&gt;  reut-00007.xml   260    533        22                       &lt;NA&gt;
-#&gt;  reut-00008.xml   255    500        22   By Jeremy Clift, Reuters
-#&gt;  reut-00009.xml   117    199         8                       &lt;NA&gt;
-#&gt;  reut-00010.xml   197    380        16                       &lt;NA&gt;
-#&gt;  reut-00011.xml   204    396        16                       &lt;NA&gt;
-#&gt;  reut-00012.xml   207    420        14                       &lt;NA&gt;
-#&gt;  reut-00013.xml    72    106         4                       &lt;NA&gt;
-#&gt;  reut-00014.xml    75    115         4                       &lt;NA&gt;
-#&gt;  reut-00015.xml    81    116         5                       &lt;NA&gt;
-#&gt;  reut-00016.xml    78    120         5                       &lt;NA&gt;
-#&gt;  reut-00018.xml   100    162         6                       &lt;NA&gt;
-#&gt;  reut-00019.xml   128    217         8                       &lt;NA&gt;
-#&gt;  reut-00021.xml    54     94         5                       &lt;NA&gt;
-#&gt;  reut-00022.xml   155    323        11 By BERNICE NAPACH, Reuters
-#&gt;  reut-00023.xml    40     59         3                       &lt;NA&gt;
-#&gt;        datetimestamp description
-#&gt;  1987-02-26 17:00:56            
-#&gt;  1987-02-26 17:34:11            
-#&gt;  1987-02-26 18:18:00            
-#&gt;  1987-02-26 18:21:01            
-#&gt;  1987-02-26 19:00:57            
-#&gt;  1987-03-01 03:25:46            
-#&gt;  1987-03-01 03:39:14            
-#&gt;  1987-03-01 05:27:27            
-#&gt;  1987-03-01 08:22:30            
-#&gt;  1987-03-01 18:31:44            
-#&gt;  1987-03-02 01:05:49            
-#&gt;  1987-03-02 07:39:23            
-#&gt;  1987-03-02 07:43:22            
-#&gt;  1987-03-02 07:43:41            
-#&gt;  1987-03-02 08:25:42            
-#&gt;  1987-03-02 11:20:05            
-#&gt;  1987-03-02 11:28:26            
-#&gt;  1987-03-02 12:13:46            
-#&gt;  1987-03-02 14:38:34            
-#&gt;  1987-03-02 14:49:06            
+#&gt;  Text Types Tokens Sentences       datetimestamp description
+#&gt;   127    62    103         5 1987-02-26 17:00:56            
+#&gt;   144   240    497        19 1987-02-26 17:34:11            
+#&gt;   191    47     62         4 1987-02-26 18:18:00            
+#&gt;   194    55     74         5 1987-02-26 18:21:01            
+#&gt;   211    67     97         4 1987-02-26 19:00:57            
+#&gt;   236   260    533        22 1987-03-01 03:25:46            
+#&gt;   237   255    500        22 1987-03-01 03:39:14            
+#&gt;   242   117    199         8 1987-03-01 05:27:27            
+#&gt;   246   197    380        16 1987-03-01 08:22:30            
+#&gt;   248   204    396        16 1987-03-01 18:31:44            
+#&gt;   273   207    420        14 1987-03-02 01:05:49            
+#&gt;   349    72    106         4 1987-03-02 07:39:23            
+#&gt;   352    75    115         4 1987-03-02 07:43:22            
+#&gt;   353    81    116         5 1987-03-02 07:43:41            
+#&gt;   368    78    120         5 1987-03-02 08:25:42            
+#&gt;   489   100    162         6 1987-03-02 11:20:05            
+#&gt;   502   128    217         8 1987-03-02 11:28:26            
+#&gt;   543    54     94         5 1987-03-02 12:13:46            
+#&gt;   704   155    323        11 1987-03-02 14:38:34            
+#&gt;   708    40     59         3 1987-03-02 14:49:06            
 #&gt;                                            heading  id language
 #&gt;           DIAMOND SHAMROCK (DIA) CUTS CRUDE PRICES 127       en
 #&gt;    OPEC MAY HAVE TO MEET TO FIRM PRICES - ANALYSTS 144       en
@@ -325,109 +304,93 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12726
 #&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12887
 #&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12891
-#&gt;                                                  places       people      orgs
-#&gt;                                                     usa         &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                                     usa         &lt;NA&gt;      opec
-#&gt;                                                  canada         &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                                     usa         &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                                     usa         &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                  c("kuwait", "ecuador")         &lt;NA&gt;      opec
-#&gt;                                   c("indonesia", "usa")         &lt;NA&gt; worldbank
-#&gt;                            c("bahrain", "saudi-arabia")         &lt;NA&gt;      opec
-#&gt;                                                   qatar         &lt;NA&gt;      &lt;NA&gt;
-#&gt;                            c("bahrain", "saudi-arabia") hisham-nazer      opec
-#&gt;                                c("saudi-arabia", "uae")         &lt;NA&gt;      opec
-#&gt;  c("uae", "bahrain", "saudi-arabia", "kuwait", "qatar")         &lt;NA&gt;      opec
-#&gt;                            c("saudi-arabia", "bahrain") hisham-nazer      opec
-#&gt;                                                  kuwait         &lt;NA&gt;      opec
-#&gt;                                                     usa         &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                                     usa         &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                                     usa         &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                                     usa         &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                                     usa         &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                               argentina         &lt;NA&gt;      &lt;NA&gt;
-#&gt;  exchanges
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;       &lt;NA&gt;
-#&gt;      nymex
-#&gt;       &lt;NA&gt;
+#&gt;                                 places                     author      orgs
+#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
+#&gt;                                    usa BY TED D'AFFLISIO, Reuters      opec
+#&gt;                                 canada                       &lt;NA&gt;      &lt;NA&gt;
+#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
+#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
+#&gt;                         kuwait ecuador                       &lt;NA&gt;      opec
+#&gt;                          indonesia usa   By Jeremy Clift, Reuters worldbank
+#&gt;                   bahrain saudi-arabia                       &lt;NA&gt;      opec
+#&gt;                                  qatar                       &lt;NA&gt;      &lt;NA&gt;
+#&gt;                   bahrain saudi-arabia                       &lt;NA&gt;      opec
+#&gt;                       saudi-arabia uae                       &lt;NA&gt;      opec
+#&gt;  uae bahrain saudi-arabia kuwait qatar                       &lt;NA&gt;      opec
+#&gt;                   saudi-arabia bahrain                       &lt;NA&gt;      opec
+#&gt;                                 kuwait                       &lt;NA&gt;      opec
+#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
+#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
+#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
+#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
+#&gt;                                    usa By BERNICE NAPACH, Reuters      &lt;NA&gt;
+#&gt;                              argentina                       &lt;NA&gt;      &lt;NA&gt;
+#&gt;        people exchanges
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;  hisham-nazer      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;  hisham-nazer      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
+#&gt;          &lt;NA&gt;     nymex
+#&gt;          &lt;NA&gt;      &lt;NA&gt;
 #&gt; 
-#&gt; Source:  Converted from tm VCorpus 'crude'
-#&gt; Created: Mon Jun  5 12:01:59 2017
+#&gt; Source:  Converted from tm Corpus 'crude'
+#&gt; Created: Mon Jul 24 15:45:29 2017
 #&gt; Notes:   
 #&gt; 
 #&gt; Corpus consisting of 50 documents, showing 5 documents.
 #&gt; 
-#&gt;            Text Types Tokens Sentences                    author
-#&gt;  reut-00001.xml   120    233         9                      &lt;NA&gt;
-#&gt;  reut-00002.xml    89    146         6                      &lt;NA&gt;
-#&gt;  reut-00003.xml    62     86         6                      &lt;NA&gt;
-#&gt;  reut-00004.xml   232    431        22 By Cal Mankowski, Reuters
-#&gt;  reut-00005.xml    42     59         3                      &lt;NA&gt;
-#&gt;        datetimestamp description
-#&gt;  1987-02-26 15:18:06            
-#&gt;  1987-02-26 15:19:15            
-#&gt;  1987-02-26 15:49:56            
-#&gt;  1987-02-26 15:51:17            
-#&gt;  1987-02-26 16:08:33            
+#&gt;  Text Types Tokens Sentences       datetimestamp description
+#&gt;    10   120    233         9 1987-02-26 15:18:06            
+#&gt;    12    89    146         6 1987-02-26 15:19:15            
+#&gt;    44    62     86         6 1987-02-26 15:49:56            
+#&gt;    45   232    431        22 1987-02-26 15:51:17            
+#&gt;    68    42     59         3 1987-02-26 16:08:33            
 #&gt;                                          heading id language            origin
 #&gt;  COMPUTER TERMINAL SYSTEMS &lt;CPML&gt; COMPLETES SALE 10       en Reuters-21578 XML
 #&gt;   OHIO MATTRESS &lt;OMT&gt; MAY HAVE LOWER 1ST QTR NET 12       en Reuters-21578 XML
 #&gt;    MCLEAN'S &lt;MII&gt; U.S. LINES SETS ASSET TRANSFER 44       en Reuters-21578 XML
 #&gt;   CHEMLAWN &lt;CHEM&gt; RISES ON HOPES FOR HIGHER BIDS 45       en Reuters-21578 XML
 #&gt;   &lt;COFAB INC&gt; BUYS GULFEX FOR UNDISCLOSED AMOUNT 68       en Reuters-21578 XML
-#&gt;  topics lewissplit     cgisplit oldid places people orgs exchanges
-#&gt;     YES      TRAIN TRAINING-SET  5553    usa   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt;
-#&gt;     YES      TRAIN TRAINING-SET  5555    usa   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt;
-#&gt;     YES      TRAIN TRAINING-SET  5587    usa   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt;
-#&gt;     YES      TRAIN TRAINING-SET  5588    usa   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt;
-#&gt;     YES      TRAIN TRAINING-SET  5611    usa   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt;
+#&gt;  topics lewissplit     cgisplit oldid places                    author
+#&gt;     YES      TRAIN TRAINING-SET  5553    usa                      &lt;NA&gt;
+#&gt;     YES      TRAIN TRAINING-SET  5555    usa                      &lt;NA&gt;
+#&gt;     YES      TRAIN TRAINING-SET  5587    usa                      &lt;NA&gt;
+#&gt;     YES      TRAIN TRAINING-SET  5588    usa By Cal Mankowski, Reuters
+#&gt;     YES      TRAIN TRAINING-SET  5611    usa                      &lt;NA&gt;
 #&gt; 
-#&gt; Source:  Converted from tm VCorpus 'acq'
-#&gt; Created: Mon Jun  5 12:01:59 2017
+#&gt; Source:  Converted from tm Corpus 'acq'
+#&gt; Created: Mon Jul 24 15:45:29 2017
 #&gt; Notes:   
 #&gt; 
 #&gt; Corpus consisting of 9 documents.
 #&gt; 
-#&gt;          Text Types Tokens Sentences author       datetimestamp description
-#&gt;           BNP  1126   3330        88   &lt;NA&gt; 2017-06-05 11:01:59        &lt;NA&gt;
-#&gt;     Coalition   144    268         4   &lt;NA&gt; 2017-06-05 11:01:59        &lt;NA&gt;
-#&gt;  Conservative   252    503        15   &lt;NA&gt; 2017-06-05 11:01:59        &lt;NA&gt;
-#&gt;        Greens   325    687        21   &lt;NA&gt; 2017-06-05 11:01:59        &lt;NA&gt;
-#&gt;        Labour   296    703        29   &lt;NA&gt; 2017-06-05 11:01:59        &lt;NA&gt;
-#&gt;        LibDem   257    499        14   &lt;NA&gt; 2017-06-05 11:01:59        &lt;NA&gt;
-#&gt;            PC    80    118         5   &lt;NA&gt; 2017-06-05 11:01:59        &lt;NA&gt;
-#&gt;           SNP    90    136         4   &lt;NA&gt; 2017-06-05 11:01:59        &lt;NA&gt;
-#&gt;          UKIP   346    739        27   &lt;NA&gt; 2017-06-05 11:01:59        &lt;NA&gt;
-#&gt;  heading id language origin
-#&gt;     &lt;NA&gt;  1       en   &lt;NA&gt;
-#&gt;     &lt;NA&gt;  2       en   &lt;NA&gt;
-#&gt;     &lt;NA&gt;  3       en   &lt;NA&gt;
-#&gt;     &lt;NA&gt;  4       en   &lt;NA&gt;
-#&gt;     &lt;NA&gt;  5       en   &lt;NA&gt;
-#&gt;     &lt;NA&gt;  6       en   &lt;NA&gt;
-#&gt;     &lt;NA&gt;  7       en   &lt;NA&gt;
-#&gt;     &lt;NA&gt;  8       en   &lt;NA&gt;
-#&gt;     &lt;NA&gt;  9       en   &lt;NA&gt;
+#&gt;   Text Types Tokens Sentences       datetimestamp id language
+#&gt;  text1  1126   3330        88 2017-07-24 14:45:29  1       en
+#&gt;  text2   144    268         4 2017-07-24 14:45:29  2       en
+#&gt;  text3   252    503        15 2017-07-24 14:45:29  3       en
+#&gt;  text4   325    687        21 2017-07-24 14:45:29  4       en
+#&gt;  text5   296    703        29 2017-07-24 14:45:29  5       en
+#&gt;  text6   257    499        14 2017-07-24 14:45:29  6       en
+#&gt;  text7    80    118         5 2017-07-24 14:45:29  7       en
+#&gt;  text8    90    136         4 2017-07-24 14:45:29  8       en
+#&gt;  text9   346    739        27 2017-07-24 14:45:29  9       en
 #&gt; 
-#&gt; Source:  Converted from tm VCorpus 'tmCorp'
-#&gt; Created: Mon Jun  5 12:01:59 2017
+#&gt; Source:  Converted from tm Corpus 'tmCorp'
+#&gt; Created: Mon Jul 24 15:45:29 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'>
 <span class='co'># construct a corpus from a data.frame</span>
@@ -454,7 +417,7 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;  fromDf_6     6      6         1             c         6
 #&gt; 
 #&gt; Source:  From a data.frame called mydf.
-#&gt; Created: Mon Jun  5 12:01:59 2017
+#&gt; Created: Mon Jul 24 15:45:30 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'>
 <span class='co'># construct a corpus from a kwic object</span>
@@ -492,7 +455,7 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;  text14.post     5      5         1 1953-Eisenhower 1226 1226 southern    post
 #&gt; 
 #&gt; Source:  Corpus created from kwic(x, keywords = "southern")
-#&gt; Created: Mon Jun  5 12:02:00 2017
+#&gt; Created: Mon Jul 24 15:45:30 2017
 #&gt; Notes:   
 #&gt; </div></pre>
   </div>

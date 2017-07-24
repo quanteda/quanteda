@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>summarize a corpus or a vector of texts — summary.character • quanteda</title>
+<title>summarize a corpus — summary.corpus • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -74,30 +74,25 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>summarize a corpus or a vector of texts</h1>
+    <h1>summarize a corpus</h1>
     </div>
 
     
-    <p>Displays information about a corpus or vector of texts.  For a corpus, this 
+    <p>Displays information about a corpus, including
 includes attributes and metadata such as date of number of texts, creation 
-and source.  For texts, prints to the console a desription of the texts,
-including number of types, tokens, and sentences.</p>
+and source.</p>
     
 
-    <pre class="usage"><span class='co'># S3 method for character</span>
+    <pre class="usage"><span class='co'># S3 method for corpus</span>
 <span class='fu'>summary</span>(<span class='no'>object</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for corpus</span>
-<span class='fu'>summary</span>(<span class='no'>object</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>corpus or texts to be summarized</p></td>
+      <td><p>corpus to be summarized</p></td>
     </tr>
     <tr>
       <th>n</th>
@@ -109,44 +104,23 @@ including number of types, tokens, and sentences.</p>
 if you simply want to assign the output to a <code>data.frame</code></p></td>
     </tr>
     <tr>
-      <th>toLower</th>
+      <th>showmeta</th>
+      <td><p>set to <code>TRUE</code> to include document-level
+meta-data</p></td>
+    </tr>
+    <tr>
+      <th>tolower</th>
       <td><p>convert texts to lower case before counting types</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>additional arguments passed through to <code><a href='tokenize.html'>tokenize</a></code></p></td>
     </tr>
-    <tr>
-      <th>showmeta</th>
-      <td><p>for a corpus, set to <code>TRUE</code> to include document-level
-meta-data</p></td>
-    </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># summarize texts</span>
-<span class='fu'>summary</span>(<span class='fu'>c</span>(<span class='st'>"Testing this text.  Second sentence."</span>, <span class='st'>"And this one."</span>))</div><div class='output co'>#&gt;    Text Types Tokens Sentences
-#&gt; 1 text1     6      7         2
-#&gt; 2 text2     4      4         1</div><div class='input'><span class='fu'>summary</span>(<span class='no'>data_char_ukimmig2010</span>)</div><div class='output co'>#&gt;           Text Types Tokens Sentences
-#&gt; 1          BNP  1126   3330        88
-#&gt; 2    Coalition   144    268         4
-#&gt; 3 Conservative   252    503        15
-#&gt; 4       Greens   325    687        21
-#&gt; 5       Labour   296    703        29
-#&gt; 6       LibDem   257    499        14
-#&gt; 7           PC    80    118         5
-#&gt; 8          SNP    90    136         4
-#&gt; 9         UKIP   346    739        27</div><div class='input'><span class='no'>myTextSummaryDF</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>data_char_ukimmig2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>head</span>(<span class='no'>myTextSummaryDF</span>)</div><div class='output co'>#&gt;           Text Types Tokens Sentences
-#&gt; 1          BNP  1126   3330        88
-#&gt; 2    Coalition   144    268         4
-#&gt; 3 Conservative   252    503        15
-#&gt; 4       Greens   325    687        21
-#&gt; 5       Labour   296    703        29
-#&gt; 6       LibDem   257    499        14</div><div class='input'><span class='co'># summarize corpus information</span>
-<span class='fu'>summary</span>(<span class='no'>data_corpus_inaugural</span>)</div><div class='output co'>#&gt; Corpus consisting of 58 documents.
+    <pre class="examples"><div class='input'><span class='fu'>summary</span>(<span class='no'>data_corpus_inaugural</span>)</div><div class='output co'>#&gt; Corpus consisting of 58 documents.
 #&gt; 
 #&gt;             Text Types Tokens Sentences Year  President       FirstName
 #&gt;  1789-Washington   626   1540        23 1789 Washington          George
@@ -208,9 +182,9 @@ meta-data</p></td>
 #&gt;       2013-Obama   814   2335        88 2013      Obama          Barack
 #&gt;       2017-Trump   582   1662        88 2017      Trump       Donald J.
 #&gt; 
-#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
-#&gt; Created: Fri Sep 12 12:41:17 2014
-#&gt; Notes:   
+#&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
+#&gt; Created: Tue Jun 13 14:51:47 2017
+#&gt; Notes:   http://www.presidency.ucsb.edu/inaugurals.php
 #&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>n</span><span class='kw'>=</span><span class='fl'>10</span>)</div><div class='output co'>#&gt; Corpus consisting of 58 documents, showing 10 documents.
 #&gt; 
 #&gt;             Text Types Tokens Sentences Year  President   FirstName
@@ -225,9 +199,9 @@ meta-data</p></td>
 #&gt;      1821-Monroe  1262   4898       129 1821     Monroe       James
 #&gt;       1825-Adams  1004   3154        74 1825      Adams John Quincy
 #&gt; 
-#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
-#&gt; Created: Fri Sep 12 12:41:17 2014
-#&gt; Notes:   
+#&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
+#&gt; Created: Tue Jun 13 14:51:47 2017
+#&gt; Notes:   http://www.presidency.ucsb.edu/inaugurals.php
 #&gt; </div><div class='input'><span class='no'>mycorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>data_char_ukimmig2010</span>,
                    <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>party</span><span class='kw'>=</span><span class='fu'>names</span>(<span class='no'>data_char_ukimmig2010</span>)))
 <span class='fu'>summary</span>(<span class='no'>mycorpus</span>, <span class='kw'>showmeta</span><span class='kw'>=</span><span class='fl'>TRUE</span>)  <span class='co'># show the meta-data</span></div><div class='output co'>#&gt; Corpus consisting of 9 documents.
@@ -244,7 +218,7 @@ meta-data</p></td>
 #&gt;          UKIP   346    739        27         UKIP
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Jun  5 12:02:28 2017
+#&gt; Created: Mon Jul 24 15:45:43 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'><span class='no'>mysummary</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>mycorpus</span>, <span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)  <span class='co'># (quietly) assign the results</span>
 <span class='no'>mysummary</span>$<span class='no'>Types</span> / <span class='no'>mysummary</span>$<span class='no'>Tokens</span>             <span class='co'># crude type-token ratio</span></div><div class='output co'>#&gt; [1] 0.3381381 0.5373134 0.5009940 0.4730713 0.4210526 0.5150301 0.6779661
