@@ -107,7 +107,8 @@ get_docvars <- function(dvars, field = NULL) {
     x
 }
 
-## internal only
+
+#' @export
 "docvars<-.tokenizedTexts" <- function(x, field = NULL, value) {
     
     if (is.null(field) && (is.data.frame(value) || is.null(value))) {
@@ -124,7 +125,7 @@ get_docvars <- function(dvars, field = NULL) {
     return(x)
 }
 
-## internal only
+#' @export
 "docvars<-.dfm" <- function(x, field = NULL, value) {
     
     if (is.null(field) && (is.data.frame(value) || is.null(value))) {
