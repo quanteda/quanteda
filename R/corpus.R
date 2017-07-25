@@ -117,22 +117,17 @@ corpus <- function(x, ...) {
     UseMethod("corpus")
 }
 
-#
-# better solution might be 
-# corpus.corpus <- function(x, docnames = docnames(x), docvars = docvars(x), metacorpus = metacorpus(x), compress = FALSE, ...) {
-# see https://stackoverflow.com/questions/45314208/how-to-avoid-promise-already-under-evaluation-warning-for-setting-default-argume
-#
-# also, this would be more efficient if we moved the compression code from corpus.character below and made it something we could call
-# from this function, then instead of extracting the texts and reconstructing the corpus, we would just replace the metadata,
-# and compress only if needed
-#
 #' @rdname corpus
 #' @export
-corpus.corpus <- function(x, docnames = NULL, docvars = NULL, metacorpus = NULL, compress = FALSE, ...) {
-    if (is.null(docnames)) docnames <- docnames(x)
-    if (is.null(docvars)) docvars <- docvars(x)
-    if (is.null(metacorpus)) metacorpus <- metacorpus(x)
-    corpus(texts(x), docnames, docvars, metacorpus, compress = compress)
+corpus.corpus <- function(x, docnames = quanteda::docnames(x), docvars = quanteda::docvars(x), metacorpus = quanteda::metacorpus(x), compress = FALSE, ...) {
+    if (!compress) {
+        if (!missing(docnames)) docnames(x) <- docnames
+        if (!missing(docvars)) docnames(x) <- docvars
+        if (!missing(metacorpus)) metacorpus(x) <- metacorpus
+        x
+    } else {
+        corpus(texts(x), docnames, docvars, metacorpus, compress = compress)
+    }
 }
 
 #' @rdname corpus

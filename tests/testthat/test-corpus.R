@@ -262,4 +262,12 @@ test_that("create a corpus on a corpus", {
         tmpcorp,
         corpus(data_corpus_irishbudget2010, docnames =  paste0("d", seq_len(ndoc(tmpcorp))))
     )
+    
+    expect_identical(
+        corpus(data_corpus_irishbudget2010, compress = TRUE),
+        corpus(texts(data_corpus_irishbudget2010), 
+               docvars = docvars(data_corpus_irishbudget2010),
+               metacorpus = metacorpus(data_corpus_irishbudget2010),
+               compress = TRUE)
+    )
 })
