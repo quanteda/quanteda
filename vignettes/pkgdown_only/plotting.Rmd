@@ -157,7 +157,7 @@ ggplot(relFreq) + geom_point(aes(x=document,y=frequency)) +
 If you want to compare the differential associations of keywords in a target and reference group, you can calculate "keyness" which is based on `textstat_keyness`.
 In this example, we compare the inaugural speech by Donald Trump with the speeches by Barack Obama.
 
-```{r}
+```{r fig.width=8, fig.height=6}
 # Currently requires the quanteda development version 
 # which can be downloaded using:
 # devtools::install_github("kbenoit/quanteda")
