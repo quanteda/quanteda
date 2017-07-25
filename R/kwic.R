@@ -64,7 +64,7 @@ kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex"
 #' @export 
 kwic.corpus <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
                         case_insensitive = TRUE, join = FALSE, ...) {
-    kwic(texts(x), pattern, window, valuetype, case_insensitive, join, ...)
+    kwic(tokens(x, ...), pattern, window, valuetype, case_insensitive, join)
 }
 
 #' @rdname kwic
@@ -161,7 +161,9 @@ as.tokens.kwic <- function(x, ...) {
     vars <- attr(x, 'docvars')
     if (is.null(vars))
         vars <- data.frame()
-    vars <- vars[attr(x, 'docid'),]
+    vars <- structure(vars[attr(x, 'docid'),], 
+                      class = 'data.frame',
+                      row.names = paste(rownames(vars)[attr(x, 'docid')], attr(x, 'segid'), sep = "."))
     vars[['_docid']] <- attr(x, 'docid')
     vars[['_segid']] <- attr(x, 'segid')
     result <- structure(attr(x, 'tokens'), 
