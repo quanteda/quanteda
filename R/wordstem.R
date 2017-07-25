@@ -35,7 +35,7 @@ tokens_wordstem <- function(x, language = "porter") {
 #' @export
 tokens_wordstem.tokenizedTexts <- function(x, language = "porter") {
     origAttrs <- attributes(x)
-    if (!grepl("word", attr(x, "what")) || any(unlist(lapply(x, function(y) stringi::stri_detect_fixed(y, " ") & !is.na(y)))))
+    if (!stri_endswith_fixed(attr(x, "what"), "word") || any(unlist(lapply(x, function(y) stri_detect_fixed(y, " ") & !is.na(y)))))
         stop("whitespace detected: you can only stem word-tokenized texts")
     if (all.equal(attributes(x)$ngrams, 1))
         result <- lapply(x, SnowballC::wordStem, language)
