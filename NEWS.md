@@ -19,6 +19,8 @@
 *  New wrapper `phrase()` converts whitespace-separated multi-word patterns into a list of patterns.  This affects the feature/pattern matching in `tokens/dfm_select/remove`, `tokens_compound`, `tokens/dfm_lookup`, and `kwic`.  `phrase()` and the associated changes also make the behaviour of using character vectors, lists of characters, dictionaries, and collocation objects for pattern matches far more consistent.  (See #820, #787, #740, #837, #836, #838)
 *  `corpus.Corpus()` for creating a corpus from a **tm** Corpus now works with more complex objects that include document-level variables, such as data from the **manifestoR** package (#849).
 *  New plot function `textplot_keyness()` plots term "keyness", the association of words with contrasting classes as measured by `textstat_keyness()`.
+*  Added corpus constructor for corpus objects (#690).
+*  Added dictionary constructor for dictionary objects (#690).
 
 ### Behaviour changes
 
@@ -30,6 +32,7 @@
 *  Pattern matches are now implemented more consistently across functions.  In functions such as `*_select`, `*_remove`, `tokens_compound`, `features` has been replaced by `pattern`, and in `kwic`, `keywords` has been replaced by `pattern`.  These all behave consistently with respect to `pattern`, which now has a unified single help page and parameter description.(#839)  See also above new features related to `phrase()`.
 *  We have improved the performance of the C++ routines that handle many of the `tokens_*` functions using hashed tokens, making some of them 10x faster (#853).
 *  Upgrades to the `dfm_group()` function now allow "empty" documents to be created using the `fill = TRUE` option, for making documents conform to a selection (similar to how `dfm_select()` works for features, when supplied a dfm as the pattern argument).  The `groups` argument now behaves consistently across the functions where it is used. (#854)
+*  `dictionary()` now requires its main argument to be a list, not a series of elements that can be used to build a list.
 
 ### Bug fixes and stability enhancements
 
