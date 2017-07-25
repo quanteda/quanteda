@@ -236,8 +236,8 @@ test_that("dfm.dfm works as expected", {
     expect_identical(docnames(groupeddfm), c("Govt", "Opposition"))
     expect_identical(testdfm, dfm(testdfm))
 
-    dict <- dictionary(articles = c("the", "a", "an"),
-                       preps = c("of", "for", "in"))
+    dict <- dictionary(list(articles = c("the", "a", "an"),
+                            preps = c("of", "for", "in")))
     expect_identical(
         dfm(data_corpus_irishbudget2010, dictionary = dict),
         dfm(testdfm, dictionary = dict)

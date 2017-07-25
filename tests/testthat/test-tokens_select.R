@@ -143,8 +143,8 @@ char_uni <- c("a", "b", "g", "j")
 char_bi <- c("a b", "g j")
 list_uni <- list("a", "b", "g", "j")
 list_bi <- list("a b", "g j")
-dict_uni <- dictionary(one = c("a", "b"), two = c("g", "j"))
-dict_bi <- dictionary(one = "a b", two = "g j")
+dict_uni <- dictionary(list(one = c("a", "b"), two = c("g", "j")))
+dict_bi <- dictionary(list(one = "a b", two = "g j"))
 coll_bi <- textstat_collocations(toks_uni, method = "lr", size = 2)
 coll_tri <- textstat_collocations(toks_uni, method = "lr", size = 3)[1, ]
 

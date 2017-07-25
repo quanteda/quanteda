@@ -154,7 +154,7 @@ test_that("tokens_compound works as expected with collocations", {
 })
 
 test_that("tokens_compound works as expected with dictionaries", {
-    dict <- dictionary(taxcgt = c("capital gains tax*"), taxit = "inheritance tax*")
+    dict <- dictionary(list(taxcgt = c("capital gains tax*"), taxit = "inheritance tax*"))
     toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
     expect_equal(
         as.character(tokens_compound(toks, dict))[c(5, 7)],
@@ -165,8 +165,8 @@ test_that("tokens_compound works as expected with dictionaries", {
         tokens_compound(toks, phrase(dict))
     )
     
-    dict <- dictionary(tax1 = c("capital gains", "taxes"), 
-                       tax2 = "gains taxes")
+    dict <- dictionary(list(tax1 = c("capital gains", "taxes"), 
+                            tax2 = "gains taxes"))
     expect_equal(
         as.character(tokens_compound(toks, dict, join = TRUE))[5],
         c("capital_gains_taxes")

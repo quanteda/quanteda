@@ -151,7 +151,7 @@ setMethod("as.list",
 #' LIWC format works with 
 #' all currently available dictionary files supplied as part of the LIWC 2001, 
 #' 2007, and 2015 software (see References).
-#' @param ... a named list of character vector dictionary entries, including \link{valuetype} pattern
+#' @param x a named list of character vector dictionary entries, including \link{valuetype} pattern
 #'  matches, and including multi-word expressions separated by \code{concatenator}.  The argument 
 #'  may be an explicit list or named set of elements that can be turned into a list.  See examples.
 #'  This argument may be omitted if the dictionary is read from \code{file}.
@@ -196,11 +196,6 @@ setMethod("as.list",
 #'                           country = "america"))
 #' head(dfm(mycorpus, dictionary = mydict))
 #' 
-#' # also works
-#' mydict2 <- dictionary(christmas = c("Christmas", "Santa", "holiday"),
-#'                       opposition = c("Opposition", "reject", "notincorpus"))
-#' dfm(mycorpus, dictionary = mydict2)
-#' 
 #' \dontrun{
 #' # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
 #' lgdict <- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
@@ -211,67 +206,85 @@ setMethod("as.list",
 #' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
 #' head(dfm(data_corpus_inaugural, dictionary = mfdict))}
 #' @export
-dictionary <- function(..., file = NULL, format = NULL, 
+dictionary <- function(x, file = NULL, format = NULL, 
                        separator = " ", 
                        tolower = TRUE, encoding = "auto") {
-    
-    if (!is.character(separator) || stri_length(separator) == 0) {
-        stop("separator must be a non-empty character")
-    }
-    
-    if (is.null(file)) {
-        x <- list(...)
-        if (length(x) == 1 && is.list(x[[1]]) && is.null(names(x))) {
-            x <- x[[1]]
-        } else {
-            x <- x[sapply(x, function(x) is.character(x) || is.list(x))]
-        }
-        if (!is.null(x) && !is.list(x)) {
-            stop("Dictionaries must be named lists or lists of named lists.")
-        }
-        if (is.dictionary(x)) {
-            return(x)
-        } else {
-            # a dictionary is a list of lists in the new implementation
-            x <- list2dictionary(x)
-        }
-    } else { 
-        
-        formats <- c(cat = "wordstat", dic = "LIWC", ykd = "yoshikoder", lcd = "yoshikoder", 
-                     lc3 = "lexicoder", yml = "YAML")
-        
-        if (!file.exists(file))
-            stop("File does not exist: ", file)
-        if (is.null(format)) {
-            ext <- stri_trans_tolower(tools::file_ext(file))
-            if (ext %in% names(formats)) {
-                format <- formats[[ext]]
-            } else {
-                stop("Unknown dictionary file extension: ", ext)
-            }
-        } else {
-            format <- match.arg(format, formats)
-        }
-        
-        if (format == "wordstat") {
-            x <- read_dict_wordstat(file, encoding)
-        } else if (format == "LIWC") {
-            x <- read_dict_liwc(file, encoding)
-        } else if (format == "yoshikoder") {
-            x <- read_dict_yoshikoder(file)
-        } else if (format == "lexicoder") {
-            x <- read_dict_lexicoder(file)
-        } else if (format == "YAML") {
-            x <- yaml::yaml.load_file(file, as.named.list = TRUE)
-            x <- list2dictionary(x)
-        }
-    }
-    if (tolower)
-        x <- lowercase_dictionary_values(x)
-    x <- replace_dictionary_values(x, separator, ' ')
-    new("dictionary2", x, concatenator = ' ') # keep concatenator attributes for compatibility
+    UseMethod("dictionary")
 }
 
+# method for when x is not supplied, but file is
+#' @export
+dictionary.default <- function(x, file = NULL, format = NULL, 
+                               separator = " ", 
+                               tolower = TRUE, encoding = "auto") {
+    if (!missing(x) & is.null(file))
+        stop("x must be a list if file is not specified")
+    
+    formats <- c(cat = "wordstat", dic = "LIWC", ykd = "yoshikoder", lcd = "yoshikoder", 
+                 lc3 = "lexicoder", yml = "YAML")
+    
+    if (!file.exists(file))
+        stop("File does not exist: ", file)
+
+    if (is.null(format)) {
+        ext <- stri_trans_tolower(tools::file_ext(file))
+        if (ext %in% names(formats)) {
+            format <- formats[[ext]]
+        } else {
+            stop("Unknown dictionary file extension: ", ext)
+        }
+    } else {
+        format <- match.arg(format, formats)
+    }
+    
+    if (format == "wordstat") {
+        x <- read_dict_wordstat(file, encoding)
+    } else if (format == "LIWC") {
+        x <- read_dict_liwc(file, encoding)
+    } else if (format == "yoshikoder") {
+        x <- read_dict_yoshikoder(file)
+    } else if (format == "lexicoder") {
+        x <- read_dict_lexicoder(file)
+    } else if (format == "YAML") {
+        x <- yaml::yaml.load_file(file, as.named.list = TRUE)
+        x <- list2dictionary(x)
+    }
+    
+    ## this code is repeated from dictionary.list()
+    ## would be better to return a one-level list and send that to 
+    ## dictionary.list.  This means the above functions would be more like the
+    ## yaml return, and we would not call list2dictionary() in dictionary.default().
+    ## The code below is a workaround until you can modify the first four read_*
+    ## functions.  --ken
+    if (tolower)
+        x <- lowercase_dictionary_values(x)
+    x <- replace_dictionary_values(x, separator, " ")
+    x <- as.list(new("dictionary2", x, concatenator = " "))
+    
+    dictionary(x, separator = separator, tolower = tolower)
+}
+
+#' @export
+dictionary.list <- function(x, file = NULL, format = NULL, 
+                               separator = " ", 
+                               tolower = TRUE, encoding = "auto") {
+    if (!is.null(file) | !is.null(format) | encoding != "auto")
+        stop("cannot specify file, format, or encoding when x is a list")
+    if (!is.character(separator) || stri_length(separator) == 0)
+        stop("separator must be a non-empty character")
+    x <- list2dictionary(x)
+    if (tolower)
+        x <- lowercase_dictionary_values(x)
+    x <- replace_dictionary_values(x, separator, " ")
+    new("dictionary2", x, concatenator = " ") # keep concatenator attributes for compatibility
+}
+
+#' @export
+dictionary.dictionary2 <- function(x, file = NULL, format = NULL, 
+                            separator = " ", 
+                            tolower = TRUE, encoding = "auto") {
+    dictionary(as.list(x), separator = separator, tolower = tolower, encoding = encoding)
+}
 
 #' coercion and checking functions for dictionary objects
 #' 
@@ -323,7 +336,7 @@ as.dictionary.data.frame <- function(x) {
 #'   \pkg{quanteda} \link{dictionary}.
 #' @export
 #' @examples
-#' is.dictionary(dictionary(key1 = c("val1", "val2"), key2 = "val3"))
+#' is.dictionary(dictionary(list(key1 = c("val1", "val2"), key2 = "val3")))
 #' is.dictionary(list(key1 = c("val1", "val2"), key2 = "val3"))
 is.dictionary <- function(x) {
     is(x, "dictionary2")
