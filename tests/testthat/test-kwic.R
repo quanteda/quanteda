@@ -396,3 +396,31 @@ test_that("deprecated keywords argument still works", {
         "fox"
     )
 })
+
+test_that("test docvar is passed through kwic()", {
+    
+    # kwic only copy original docvars
+    expect_equal(attr(kwic(data_corpus_inaugural, 'american'), 'docvars'),
+                 docvars(data_corpus_inaugural))
+    
+    # docvars with values
+    toks1 <- as.tokens(kwic(data_corpus_inaugural, 'american'))
+    expect_equal(
+        nrow(docvars(toks1)),
+        ndoc(toks1)
+    )
+    
+    expect_true(
+        all(stringi::stri_startswith_fixed(names(toks), kwic(data_corpus_inaugural, 'american')$docname))
+    )
+    
+    #  empty docvars
+    corp <- corpus(texts(data_corpus_inaugural))
+    toks2 <- as.tokens(kwic(corp, 'american'))
+    expect_equal(
+        nrow(docvars(toks2)),
+        ndoc(toks2)
+    )
+    
+})
+
