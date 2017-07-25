@@ -283,7 +283,7 @@ struct estimates_mt : public Worker{
 * This funciton estimate the strength of association between specified words 
 * that appear in sequences. 
 * @used sequences()
-* @param texts_ tokens ojbect
+* @param texts_ tokens object
 * @param count_min sequences appear less than this are ignored
 * @param method 
 * @param smoothing
@@ -320,10 +320,10 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     std::vector<double> chi2_all;
     chi2_all.reserve(len_coe);
     
-    std::vector<int> cs_all;
+    std::vector<int> cs_all;   // count of sequence
     cs_all.reserve(len_coe);
     
-    std::vector<int> ns_all;
+    std::vector<int> ns_all; //length of sequence
     ns_all.reserve(len_coe);
     
     VecNgrams seqs_all;
@@ -347,19 +347,17 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         
         // Separate map keys and values
         std::size_t len = counts_seq.size();
-        VecNgrams seqs, seqs_np;
-        IntParams cs, ns, cs_np;
+        VecNgrams seqs, seqs_np;   //seqs_np sequences without padding
+        IntParams cs, cs_np;    // cs: count of sequences;  
         seqs.reserve(len);
         seqs_np.reserve(len);
         cs_np.reserve(len);
         cs.reserve(len);
-        ns.reserve(len);
         double total_counts = 0.0;
         std::size_t len_noPadding = 0;
         for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
             seqs.push_back(it -> first);
             cs.push_back(it -> second);
-            ns.push_back(it -> first.size());
             total_counts += it -> second;
             if (std::find(it -> first.begin() , it -> first.begin() + it -> first.size(), 0) == it -> first.begin() + it -> first.size()) 
             {
@@ -388,13 +386,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         parallelFor(0, seqs_np.size(), estimate_mt);
 #else
         for (std::size_t i = 0; i < seqs_np.size(); i++) {
-            //if (i==2) Rcout<<"size="<<seqs[i].size()<<std::endl;
-                // Rcout<<"size="<<seqs[i].size()<<std::endl;
                 estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
-//else{
-             //   Rcout<<seqs[i][0]<<seqs[i][1]<<seqs[i][2]<<std::endl;
-                
-            //}
         }
 #endif
         //dev::stop_timer("Estimate", timer);
@@ -411,6 +403,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     for (std::size_t i = 0; i < seqs_all.size(); i++) {
         seqs_[i] = join_strings(seqs_all[i], types_, " ");
     }
+    
     DataFrame output_ = DataFrame::create(_["collocation"] = seqs_,
                                           _["count"] = as<IntegerVector>(wrap(cs_all)),
                                           _["length"] = as<NumericVector>(wrap(ns_all)),
@@ -440,6 +433,6 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
 toks <- tokens(txt)
 types <- unique(as.character(toks))
-out2 <- quanteda:::qatd_cpp_sequences(toks, types, 1, 3, "lambda", 0.0)
+out2 <- qatd_cpp_sequences(toks, types, 1, 3, "lambda", 0.0)
 
 */
