@@ -91,16 +91,16 @@ evaluation to evaluate conditions based on the <a href='docvars.html'>docvars</a
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>corpus object to be subsetted</p></td>
+      <td><p><a href='corpus.html'>corpus</a> object to be subsetted</p></td>
     </tr>
     <tr>
       <th>subset</th>
-      <td><p>logical expression indicating elements or rows to keep: missing
+      <td><p>logical expression indicating the documents to keep: missing
 values are taken as false</p></td>
     </tr>
     <tr>
       <th>select</th>
-      <td><p>expression, indicating the attributes to select from the corpus</p></td>
+      <td><p>expression, indicating the docvars to select from the corpus</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -132,9 +132,9 @@ values are taken as false</p></td>
 #&gt;    2013-Obama   814   2335        88 2013     Obama    Barack
 #&gt;    2017-Trump   582   1662        88 2017     Trump Donald J.
 #&gt; 
-#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
-#&gt; Created: Fri Sep 12 12:41:17 2014
-#&gt; Notes:   
+#&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
+#&gt; Created: Tue Jun 13 14:51:47 2017
+#&gt; Notes:   http://www.presidency.ucsb.edu/inaugurals.php
 #&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_subset</span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1930</span> <span class='kw'>&amp;</span> <span class='no'>President</span> <span class='kw'>==</span> <span class='st'>"Roosevelt"</span>,
                       <span class='kw'>select</span> <span class='kw'>=</span> <span class='no'>Year</span>))</div><div class='output co'>#&gt; Corpus consisting of 4 documents.
 #&gt; 
@@ -144,9 +144,9 @@ values are taken as false</p></td>
 #&gt;  1941-Roosevelt   527   1552        68 1941
 #&gt;  1945-Roosevelt   276    651        26 1945
 #&gt; 
-#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
-#&gt; Created: Fri Sep 12 12:41:17 2014
-#&gt; Notes:   
+#&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
+#&gt; Created: Tue Jun 13 14:51:47 2017
+#&gt; Notes:   http://www.presidency.ucsb.edu/inaugurals.php
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

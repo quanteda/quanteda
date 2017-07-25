@@ -161,23 +161,23 @@ topDf$term &lt;-<span class="st"> </span><span class="kw">with</span>(topDf, <sp
 ## Use 'dfm_weight' instead.
 ## See help("Deprecated")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(relDfm)</code></pre></div>
-<pre><code>## Document-feature matrix of: 10 documents, 3,240 features (80.6% sparse).
+<pre><code>## Document-feature matrix of: 10 documents, 3,239 features (80.6% sparse).
 ## (showing first 6 documents and first 6 features)
 ##                  features
 ## docs              fellow-citizens     senate     house representatives
-##   1789-Washington       0.1510574 0.15105740 0.3021148       0.3021148
+##   1789-Washington       0.1533742 0.15337423 0.3067485       0.3067485
 ##   1793-Washington       0.0000000 0.00000000 0.0000000       0.0000000
-##   1797-Adams            0.2798507 0.09328358 0.0000000       0.1865672
-##   1801-Jefferson        0.2424242 0.00000000 0.0000000       0.0000000
+##   1797-Adams            0.2803738 0.09345794 0.0000000       0.1869159
+##   1801-Jefferson        0.2460025 0.00000000 0.0000000       0.0000000
 ##   1805-Jefferson        0.0000000 0.00000000 0.0000000       0.0000000
-##   1809-Madison          0.1879699 0.00000000 0.0000000       0.0000000
+##   1809-Madison          0.1901141 0.00000000 0.0000000       0.0000000
 ##                  features
 ## docs                  among vicissitudes
-##   1789-Washington 0.1510574    0.1510574
+##   1789-Washington 0.1533742    0.1533742
 ##   1793-Washington 0.0000000    0.0000000
-##   1797-Adams      0.3731343    0.0000000
-##   1801-Jefferson  0.1212121    0.0000000
-##   1805-Jefferson  0.6835938    0.0000000
+##   1797-Adams      0.3738318    0.0000000
+##   1801-Jefferson  0.1230012    0.0000000
+##   1805-Jefferson  0.6923838    0.0000000
 ##   1809-Madison    0.0000000    0.0000000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">relFreq &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">list</span>(
     <span class="dt">document =</span> <span class="kw">rownames</span>(inaugDfm[, <span class="st">'american'</span>]),

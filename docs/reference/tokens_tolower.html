@@ -82,7 +82,7 @@
 <a href='tokens.html'>tokens</a> object and reindex the types.</p>
     
 
-    <pre class="usage"><span class='fu'>tokens_tolower</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>tokens_tolower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='fu'>tokens_toupper</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
@@ -91,18 +91,20 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a <a href='tokens.html'>tokens</a> object</p></td>
+      <td><p>the input object whose character/tokens/feature elements will be
+case-converted</p></td>
+    </tr>
+    <tr>
+      <th>keep_acronyms</th>
+      <td><p>logical; if <code>TRUE</code>, do not lowercase any
+all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to <code><a href='char_tolower.html'>char_tolower</a></code>
-(currently this is limited to <code>keep_acronyms</code>)</p></td>
+      <td><p>additional arguments passed to <span class="pkg">stringi</span> functions, (e.g. 
+<code>stri_trans_tolower</code>), such as <code>locale</code></p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code><a href='char_tolower.html'>char_tolower</a></code>, <code><a href='char_tolower.html'>char_toupper</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -126,9 +128,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#see-also">See also</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 

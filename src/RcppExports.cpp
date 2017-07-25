@@ -377,3 +377,38 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_quanteda_cacpp", (DL_FUNC) &_quanteda_cacpp, 3},
+    {"_quanteda_qatd_ManhattanPara_cpp", (DL_FUNC) &_quanteda_qatd_ManhattanPara_cpp, 2},
+    {"_quanteda_qatd_ManhattanPara_cpp2", (DL_FUNC) &_quanteda_qatd_ManhattanPara_cpp2, 3},
+    {"_quanteda_qatd_MaximumPara_cpp", (DL_FUNC) &_quanteda_qatd_MaximumPara_cpp, 2},
+    {"_quanteda_qatd_MaximumPara_cpp2", (DL_FUNC) &_quanteda_qatd_MaximumPara_cpp2, 3},
+    {"_quanteda_qatd_CanberraPara_cpp", (DL_FUNC) &_quanteda_qatd_CanberraPara_cpp, 2},
+    {"_quanteda_qatd_CanberraPara_cpp2", (DL_FUNC) &_quanteda_qatd_CanberraPara_cpp2, 3},
+    {"_quanteda_qatd_MinkowskiPara_cpp", (DL_FUNC) &_quanteda_qatd_MinkowskiPara_cpp, 3},
+    {"_quanteda_qatd_MinkowskiPara_cpp2", (DL_FUNC) &_quanteda_qatd_MinkowskiPara_cpp2, 4},
+    {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 8},
+    {"_quanteda_qatd_cpp_sequences", (DL_FUNC) &_quanteda_qatd_cpp_sequences, 6},
+    {"_quanteda_qatd_cpp_sequences_old", (DL_FUNC) &_quanteda_qatd_cpp_sequences_old, 7},
+    {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},
+    {"_quanteda_qatd_cpp_tokens_detect", (DL_FUNC) &_quanteda_qatd_cpp_tokens_detect, 2},
+    {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 5},
+    {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 5},
+    {"_quanteda_qatd_cpp_tokens_match", (DL_FUNC) &_quanteda_qatd_cpp_tokens_match, 5},
+    {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
+    {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 2},
+    {"_quanteda_qatd_cpp_tokens_replace", (DL_FUNC) &_quanteda_qatd_cpp_tokens_replace, 4},
+    {"_quanteda_qatd_cpp_tokens_select", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select, 5},
+    {"_quanteda_qatd_cpp_chars_remove", (DL_FUNC) &_quanteda_qatd_cpp_chars_remove, 2},
+    {"_quanteda_qatd_cpp_tbb_enabled", (DL_FUNC) &_quanteda_qatd_cpp_tbb_enabled, 0},
+    {"_quanteda_wordfishcpp", (DL_FUNC) &_quanteda_wordfishcpp, 9},
+    {"_quanteda_wordfishcpp_dense", (DL_FUNC) &_quanteda_wordfishcpp_dense, 7},
+    {"_quanteda_wordfishcpp_mt", (DL_FUNC) &_quanteda_wordfishcpp_mt, 9},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_quanteda(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
+}

@@ -355,7 +355,7 @@ test_that("dfm print works with options as expected", {
     )
     expect_output(
         print(tmp[1:3, 1:3], ndoc = 2, nfeature = 2, show.values = TRUE),
-        "^Document-feature matrix of: 3 documents, 3 features.*3 x 3 sparse Matrix"
+        "^Document-feature matrix of: 3 documents, 3 features.*2 x 3 sparse Matrix.*features"
     )
     expect_output(
         print(tmp[1:3, 1:3], ndoc = 2, nfeature = 2),

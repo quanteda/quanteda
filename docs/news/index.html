@@ -91,14 +91,26 @@
 <ul>
 <li>Improvements to <code><a href="../reference/sequences.html">sequences()</a></code> and the <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code> which calls it:
 <ul>
-<li>Implemented <code>all_subtuples</code> collocation method based on Blaheta and Johnson’s (2001) in <code><a href="../reference/sequences.html">sequences()</a></code>(#753)</li>
-<li>Added new argument to <code><a href="../reference/sequences.html">sequences()</a></code>: <code>method = c("unigram", "all_subtuples")</code> to apply unigram subtuples and all subtuples algorithm.</li>
-<li>Added new methods to argument <code>method</code> in <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>: <code>method = c(...,"bj_uni", "bj_all")</code> to apply unigram subtuples and all subtuples algorithm.</li>
-<li>Added new argument to <code><a href="../reference/sequences.html">sequences()</a></code>: <code>min_size</code> to allow collocation returns of size between <code>min_size</code> and <code>max_size</code>.</li>
-<li>Added new argument to <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>: <code>min_size</code>, which is used when <code>method = "bj_uni"</code> and <code>method = "bj_all"</code>. This function is still under development and likely to change further.</li>
+<li>Implemented <code>lambda</code> and <code>lambda1</code> collocation methods based on Blaheta and Johnson’s (2001) in <code><a href="../reference/sequences.html">sequences()</a></code>(#753)</li>
+<li>Added new argument to <code><a href="../reference/sequences.html">sequences()</a></code>: <code>method = c("lambda", "lambda1")</code> to apply unigram subtuples and all subtuples algorithm.</li>
+<li>Added new methods to argument <code>method</code> in <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>: <code>method = c("lambda", "lambda1", ...)</code> to apply unigram subtuples and all subtuples algorithm.</li>
+<li>Added new argument to <code><a href="../reference/sequences.html">sequences()</a></code>: <code>smoothing = 0.5</code> as a continuity correction for small counts; this also avoids overflow problems with zero counts.</li>
+<li>More statistics returned from <code>sequences_mt.cpp</code>: <code>dice</code>,<code>G2</code>,<code>pmi</code> and <code>chi2</code> This function is still under development and likely to change further.</li>
 </ul>
 </li>
 <li>Added new <code>quanteda_options</code> that affect the maximum documents and features displayed by the dfm print method (#756).</li>
+<li>
+<code>ngram</code> formation is now significantly faster, including with skips (skipgrams).</li>
+<li>Improvements to <code><a href="../reference/topfeatures.html">topfeatures()</a></code>:
+<ul>
+<li>now accepts a <code>groups</code> argument that can be used to generate lists of top (or bottom) features in a group of texts, including by document (#336).</li>
+<li>new argument <code>scheme</code> that takes the default of (frequency) <code>"count"</code> but also a new <code>"docfreq"</code> value (#408).</li>
+</ul>
+</li>
+<li>New wrapper <code><a href="../reference/phrase.html">phrase()</a></code> converts whitespace-separated multi-word patterns into a list of patterns. This affects the feature/pattern matching in <code>tokens/dfm_select/remove</code>, <code>tokens_compound</code>, <code>tokens/dfm_lookup</code>, and <code>kwic</code>. <code><a href="../reference/phrase.html">phrase()</a></code> and the associated changes also make the behaviour of using character vectors, lists of characters, dictionaries, and collocation objects for pattern matches far more consistent. (See #820, #787, #740, #837, #836, #838)</li>
+<li>
+<code><a href="../reference/corpus.html">corpus.Corpus()</a></code> for creating a corpus from a <strong>tm</strong> Corpus now works with more complex objects that include document-level variables, such as data from the <strong>manifestoR</strong> package (#849).</li>
+<li>New plot function <code><a href="../reference/textplot_keyness.html">textplot_keyness()</a></code> plots term “keyness”, the association of words with contrasting classes as measured by <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code>.</li>
 </ul>
 </div>
 <div id="behaviour-changes" class="section level3">
@@ -107,7 +119,13 @@
 <ul>
 <li>For <code><a href="../reference/sequences.html">sequences()</a></code>:</li>
 <li>Removed arguments from <code><a href="../reference/sequences.html">sequences()</a></code>: <code>features</code>, <code>case_insensitive</code> and <code>valuetype</code>, the function can be fully replaced by <code><a href="../reference/tokens_select.html">tokens_select()</a></code>.</li>
-<li>Removed arguments from <code><a href="../reference/sequences.html">sequences()</a></code>: <code>ordered</code>.</li>
+<li>Removed arguments from <code><a href="../reference/sequences.html">sequences()</a></code>: <code>ordered</code> and <code>nested</code>.</li>
+<li>(Finally) we added “will” to the list of English stopwords (#818).</li>
+<li>
+<code>dfm</code> objects with one or both dimensions haveing zero length, and empty <code>kwic</code> objects now display more appropriately in their print methods (per #811).</li>
+<li>Pattern matches are now implemented more consistently across functions. In functions such as <code>*_select</code>, <code>*_remove</code>, <code>tokens_compound</code>, <code>features</code> has been replaced by <code>pattern</code>, and in <code>kwic</code>, <code>keywords</code> has been replaced by <code>pattern</code>. These all behave consistently with respect to <code>pattern</code>, which now has a unified single help page and parameter description.(#839) See also above new features related to <code><a href="../reference/phrase.html">phrase()</a></code>.</li>
+<li>We have improved the performance of the C++ routines that handle many of the <code>tokens_*</code> functions using hashed tokens, making some of them 10x faster (#853).</li>
+<li>Upgrades to the <code><a href="../reference/dfm_compress.html">dfm_group()</a></code> function now allow “empty” documents to be created using the <code>fill = TRUE</code> option, for making documents conform to a selection (similar to how <code><a href="../reference/dfm_select.html">dfm_select()</a></code> works for features, when supplied a dfm as the pattern argument). The <code>groups</code> argument now behaves consistently across the functions where it is used. (#854)</li>
 </ul>
 </div>
 <div id="bug-fixes-and-stability-enhancements" class="section level3">
@@ -115,6 +133,16 @@
 <a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h3>
 <ul>
 <li>For <code><a href="../reference/sequences.html">sequences()</a></code>: Corrected the word matching, and lambda and sigma calculation methods for <code>unigram subtuples</code> algorithm in <code>sequences_mt.cpp</code>, and consequently the p-values on the bigrams are correct.</li>
+<li>LIWC-formatted dictionary import now robust to assignment to term assignment to missing categories.</li>
+<li>
+<code><a href="../reference/textmodel_NB.html">textmodel_NB(x, y, distribution = "Bernoulli")</a></code> was previously inactive even when this option was set. It has now been fully implemented and tested (#776, #780).</li>
+<li>Separators including rare spacing characters are now handled more robustly by the <code>remove_separators</code> argument in <code><a href="../reference/tokens.html">tokens()</a></code>. See #796.</li>
+<li>Improved memory usage when computing <code><a href="../reference/ntoken.html">ntoken()</a></code> and <code><a href="../reference/ntoken.html">ntype()</a></code>. (#795)</li>
+<li>Improvements to <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> now does not throw an error when <strong>quanteda</strong> functions are called directly without attaching the package. In addition, <strong>quanteda</strong> options can be set now in .Rprofile and will not be overwritten when the options initialization takes place when attaching the package.</li>
+<li>Fixed a bug in <code><a href="../reference/textstat_readability.html">textstat_readability()</a></code> that wrongly computed the number of words with fewer than 3 syllables in a text; this affected the <code>FOG.NRI</code> and the <code>Linsear.Write</code> measures only.</li>
+<li>Fixed mistakes in the computation of two docfreq schemes: <code>"logave"</code> and <code>"inverseprob"</code>.</li>
+<li>Fixed a bug in the handling of multi-thread options where the settings using <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> did not actually set the number of threads. In addition, we fixed a bug causing threading to be turned off on macOS (due to a check for a gcc version that is not used for compiling the macOS binaries) prevented multi-threading from being used at all on that platform.</li>
+<li>Fixed a bug causing failure when functions that use <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> are called without the namespace or package being attached or loaded (#864).</li>
 </ul>
 </div>
 </div>

@@ -81,8 +81,8 @@
 <p>The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(quanteda)</code></pre></div>
 <pre><code>## Loading required package: quanteda</code></pre>
-<pre><code>## quanteda version 0.9.9.67</code></pre>
-<pre><code>## Using 7 of 8 cores for parallel computing</code></pre>
+<pre><code>## quanteda version 0.9.9.84</code></pre>
+<pre><code>## Using 4 of 8 threads for parallel computing</code></pre>
 <pre><code>## 
 ## Attaching package: 'quanteda'</code></pre>
 <pre><code>## The following object is masked from 'package:utils':
@@ -155,7 +155,7 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<
 <span class="kw">nrow</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"whale"</span>))</code></pre></div>
 <pre><code>## [1] 1030</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"whale*"</span>)) <span class="co"># includes words like 'whalemen'</span></code></pre></div>
-<pre><code>## [1] 1569</code></pre>
+<pre><code>## [1] 1572</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(total.whale.hits &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"^whale('s){0,1}$"</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>)))</code></pre></div>
 <pre><code>## [1] 1150</code></pre>
 <p>What fraction of the total words in the novel are ‘whale’?</p>

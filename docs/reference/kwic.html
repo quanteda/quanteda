@@ -85,13 +85,13 @@ line number, since the text may or may not be segmented using end-of-line
 delimiters.)</p>
     
 
-    <pre class="usage"><span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>keywords</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>pattern</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='fu'>is.kwic</span>(<span class='no'>x</span>)
 
 <span class='co'># S3 method for kwic</span>
-<span class='fu'><a href='as.tokens.html'>as.tokens</a></span>(<span class='no'>x</span>)</pre>
+<span class='fu'><a href='as.tokens.html'>as.tokens</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -101,10 +101,9 @@ delimiters.)</p>
       <td><p>a character, <a href='corpus.html'>corpus</a>, or <a href='tokens.html'>tokens</a> object</p></td>
     </tr>
     <tr>
-      <th>keywords</th>
-      <td><p>a keyword pattern or phrase consisting of multiple keyword 
-patterns, possibly including punctuation.  If a phrase, <code>keywords</code> 
-will be tokenized using the <code>...</code> options.</p></td>
+      <th>pattern</th>
+      <td><p>a character vector, list of character vectors, <a href='dictionary.html'>dictionary</a>,
+<a href='collocations.html'>collocations</a>, or <a href='dfm.html'>dfm</a>. See <a href='pattern.html'>pattern</a> for details.</p></td>
     </tr>
     <tr>
       <th>window</th>
@@ -121,6 +120,10 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
       <td><p>match without respect to case if <code>TRUE</code></p></td>
     </tr>
     <tr>
+      <th>join</th>
+      <td><p>join adjacent keywords in the concordance view if <code>TRUE</code></p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>additional arguments passed to <a href='tokens.html'>tokens</a>, for applicable 
 object types</p></td>
@@ -130,10 +133,20 @@ object types</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A kwic object classed data.frame, with the document name 
-  (<code>docname</code>), the token index position (<code>position</code>), the context
-  before (<code>contextPre</code>), the keyword in its original format
+  (<code>docname</code>), the token index position (<code>position</code>), the context 
+  before (<code>contextPre</code>), the keyword in its original format 
   (<code>keyword</code>, preserving case and attached punctuation), and the context
   after (<code>contextPost</code>).</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p><code>pattern</code> will be a keyword pattern or phrase, possibly multiple
+  patterns, that may include punctuation.  If a pattern contains whitespace,
+  it is best to wrap it in <code><a href='phrase.html'>phrase</a></code> to make this explicit. 
+  However if <code>pattern</code> is a <a href='textstat_collocations.html'>collocations</a>
+  or <a href='dictionary.html'>dictionary</a> object, then the collocations or multi-word dictionary
+  keys will automatically be considered phrases where each
+  whitespace-separated element matches a token in sequence.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -164,7 +177,7 @@ object types</p></td>
 #&gt;  for the beneficence    
 #&gt;  of peace is            </div><div class='input'>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
-<span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"war against"</span>)</div><div class='output co'>#&gt;                                                                         
+<span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"war against"</span>))</div><div class='output co'>#&gt;                                                                         
 #&gt;   [1857-Buchanan, 2933:2934] advantage of the fortune of | war against |
 #&gt;   [1901-McKinley, 2284:2285]         . We are not waging | war against |
 #&gt;   [1901-McKinley, 2299:2300]  portion of them are making | war against |
@@ -175,7 +188,7 @@ object types</p></td>
 #&gt;  the inhabitants of the Philippine
 #&gt;  the United States. By            
 #&gt;  us shall make it no              
-#&gt;  the emergency, as great          </div><div class='input'><span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"war against"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)</div><div class='output co'>#&gt;                                                                
+#&gt;  the emergency, as great          </div><div class='input'><span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"war against"</span>), <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)</div><div class='output co'>#&gt;                                                                
 #&gt;  [1801-Jefferson, 1277:1278] domestic concerns and the surest |
 #&gt;         [1845-Polk, 692:693] domestic concerns and the surest |
 #&gt;   [1857-Buchanan, 2933:2934]      advantage of the fortune of |
@@ -202,6 +215,8 @@ object types</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#note">Note</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

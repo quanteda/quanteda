@@ -86,7 +86,7 @@
 #' corpus(texts(data_corpus_irishbudget2010))
 #' 
 #' # import a tm VCorpus
-#' if (requireNamespace("tm")) {
+#' if (requireNamespace("tm", quietly = TRUE)) {
 #'     data(crude, package = "tm")    # load in a tm example VCorpus
 #'     mytmCorpus <- corpus(crude)
 #'     summary(mytmCorpus, showmeta=TRUE)

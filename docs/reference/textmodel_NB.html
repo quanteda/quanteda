@@ -150,52 +150,55 @@ or <code>Bernoulli</code></p></td>
     <p>A <code>predict</code> method is also available for a 
   fitted Naive Bayes object, see <code><a href='predict.textmodel.html'>predict.textmodel_NB_fitted</a></code>.</p>
     
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Manning, C. D., Raghavan, P., &amp; Schütze, H. (2008). Introduction to Information Retrieval. 
+   Cambridge University Press. <a href = 'https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf'>https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf</a></p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Example from 13.1 of _An Introduction to Information Retrieval_</span>
-<span class='no'>trainingset</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='is.dfm.html'>as.dfm</a></span>(<span class='fu'>matrix</span>(<span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>,
-                        <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>,
-                        <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>,
-                        <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>,
-                        <span class='fl'>0</span>, <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>),
-                      <span class='kw'>ncol</span><span class='kw'>=</span><span class='fl'>6</span>, <span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>5</span>, <span class='kw'>byrow</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
-                      <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>docs</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='st'>"d"</span>, <span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>),
-                                      <span class='kw'>features</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Beijing"</span>, <span class='st'>"Chinese"</span>,  <span class='st'>"Japan"</span>, <span class='st'>"Macao"</span>,
-                                                   <span class='st'>"Shanghai"</span>, <span class='st'>"Tokyo"</span>))))
+<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"Chinese Beijing Chinese"</span>,
+         <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"Chinese Chinese Shanghai"</span>,
+         <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"Chinese Macao"</span>,
+         <span class='kw'>d4</span> <span class='kw'>=</span> <span class='st'>"Tokyo Japan Chinese"</span>,
+         <span class='kw'>d5</span> <span class='kw'>=</span> <span class='st'>"Chinese Chinese Chinese Tokyo Japan"</span>)
+<span class='no'>trainingset</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>txt</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>trainingclass</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>c</span>(<span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='fl'>NA</span>), <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
 <span class='co'>## replicate IIR p261 prediction for test set (document 5)</span>
-(<span class='no'>nb.p261</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_NB</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>))</div><div class='output co'>#&gt; Fitted Naive Bayes model:
+(<span class='no'>nb.p261</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_NB</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>))</div><div class='output co'>#&gt; Fitted Naive Bayes model:
 #&gt; Call:
-#&gt; 	textmodel_NB(x = trainingset, y = trainingclass)
+#&gt; 	textmodel_NB.dfm(x = trainingset, y = trainingclass, prior = "docfreq")
 #&gt; 
 #&gt; 
 #&gt; Training classes and priors:
-#&gt;   Y   N 
-#&gt; 0.5 0.5 
+#&gt;    Y    N 
+#&gt; 0.75 0.25 
 #&gt; 
 #&gt; 		  Likelihoods:		Class Posteriors:
 #&gt; 6 x 4 Matrix of class "dgeMatrix"
 #&gt;                   Y         N         Y         N
-#&gt; Beijing  0.14285714 0.1111111 0.5625000 0.4375000
-#&gt; Chinese  0.42857143 0.2222222 0.6585366 0.3414634
-#&gt; Japan    0.07142857 0.2222222 0.2432432 0.7567568
-#&gt; Macao    0.14285714 0.1111111 0.5625000 0.4375000
-#&gt; Shanghai 0.14285714 0.1111111 0.5625000 0.4375000
-#&gt; Tokyo    0.07142857 0.2222222 0.2432432 0.7567568
+#&gt; Chinese  0.42857143 0.2222222 0.8526316 0.1473684
+#&gt; Beijing  0.14285714 0.1111111 0.7941176 0.2058824
+#&gt; Shanghai 0.14285714 0.1111111 0.7941176 0.2058824
+#&gt; Macao    0.14285714 0.1111111 0.7941176 0.2058824
+#&gt; Tokyo    0.07142857 0.2222222 0.4909091 0.5090909
+#&gt; Japan    0.07142857 0.2222222 0.4909091 0.5090909
 #&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb.p261</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='no'>trainingset</span>[<span class='fl'>5</span>, ])</div><div class='output co'>#&gt; Predicted textmodel of type: Naive Bayes
 #&gt; 
-#&gt;        lp(Y)     lp(N)     Pr(Y)  Pr(N) Predicted
-#&gt; d5 -8.513155 -8.213534    0.4257 0.5743         N
+#&gt;       lp(Y)     lp(N)     Pr(Y)  Pr(N) Predicted
+#&gt; d5 -8.10769 -8.906681    0.6898 0.3102         Y
 #&gt; </div><div class='input'>
 <span class='co'># contrast with other priors</span>
-<span class='fu'>predict</span>(<span class='fu'>textmodel_NB</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>))</div><div class='output co'>#&gt; Predicted textmodel of type: Naive Bayes
+<span class='fu'>predict</span>(<span class='fu'>textmodel_NB</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"uniform"</span>))</div><div class='output co'>#&gt; Predicted textmodel of type: Naive Bayes
 #&gt; 
 #&gt;        lp(Y)     lp(N)     Pr(Y)  Pr(N) Predicted
-#&gt; d1 -3.928188 -6.591674    0.9348 0.0652         Y
-#&gt; d2 -3.928188 -6.591674    0.9348 0.0652         Y
-#&gt; d3 -3.080890 -5.087596    0.8815 0.1185         Y
-#&gt; d4 -6.413095 -5.898527    0.3741 0.6259         N
-#&gt; d5 -8.107690 -8.906681    0.6898 0.3102         Y
+#&gt; d1 -4.333653 -5.898527    0.8271 0.1729         Y
+#&gt; d2 -4.333653 -5.898527    0.8271 0.1729         Y
+#&gt; d3 -3.486355 -4.394449    0.7126 0.2874         Y
+#&gt; d4 -6.818560 -5.205379    0.1661 0.8339         N
+#&gt; d5 -8.513155 -8.213534    0.4257 0.5743         N
 #&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='fu'>textmodel_NB</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"termfreq"</span>))</div><div class='output co'>#&gt; Predicted textmodel of type: Naive Bayes
 #&gt; 
 #&gt;        lp(Y)     lp(N)     Pr(Y)  Pr(N) Predicted
@@ -205,7 +208,28 @@ or <code>Bernoulli</code></p></td>
 #&gt; d4 -6.443866 -5.811515    0.3470 0.6530         N
 #&gt; d5 -8.138462 -8.819670    0.6640 0.3360         Y
 #&gt; </div><div class='input'>
-</div></pre>
+<span class='co'>## replicate IIR p264 Bernoulli Naive Bayes</span>
+(<span class='no'>nb.p261.bern</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_NB</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"Bernoulli"</span>,
+                              <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>))</div><div class='output co'>#&gt; Fitted Naive Bayes model:
+#&gt; Call:
+#&gt; 	textmodel_NB.dfm(x = trainingset, y = trainingclass, prior = "docfreq", 
+#&gt;     distribution = "Bernoulli")
+#&gt; 
+#&gt; 
+#&gt; Training classes and priors:
+#&gt;    Y    N 
+#&gt; 0.75 0.25 
+#&gt; 
+#&gt; 		  Likelihoods:		Class Posteriors:
+#&gt; 6 x 4 Matrix of class "dgeMatrix"
+#&gt;            Y         N         Y         N
+#&gt; Chinese  0.8 0.6666667 0.7826087 0.2173913
+#&gt; Beijing  0.4 0.3333333 0.7826087 0.2173913
+#&gt; Shanghai 0.4 0.3333333 0.7826087 0.2173913
+#&gt; Macao    0.4 0.3333333 0.7826087 0.2173913
+#&gt; Tokyo    0.2 0.6666667 0.4736842 0.5263158
+#&gt; Japan    0.2 0.6666667 0.4736842 0.5263158
+#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb.p261.bern</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='no'>trainingset</span>[<span class='fl'>5</span>, ])</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -217,6 +241,8 @@ or <code>Bernoulli</code></p></td>
       <li><a href="#details">Details</a></li>
 
       <li><a href="#predict-methods">Predict Methods</a></li>
+
+      <li><a href="#references">References</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

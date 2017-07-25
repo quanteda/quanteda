@@ -78,9 +78,9 @@
     </div>
 
     
-    <p><code>textmodel_ca</code> implements correspondence analysis scaling on a
-<a href='dfm.html'>dfm</a>.  The method is a fast/sparse version of function <a href='http://www.rdocumentation.org/packages/ca/topics/ca'>ca</a> in 
-the <span class="pkg">ca</span> package.</p>
+    <p><code>textmodel_ca</code> implements correspondence analysis scaling on a 
+<a href='dfm.html'>dfm</a>.  The method is a fast/sparse version of function <a href='http://www.rdocumentation.org/packages/ca/topics/ca'>ca</a>, and
+returns a special class of <span class="pkg">ca</span> object.</p>
     
 
     <pre class="usage"><span class='fu'>textmodel_ca</span>(<span class='no'>x</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>threads</span> <span class='kw'>=</span> <span class='fl'>1</span>,
@@ -104,34 +104,41 @@ default) then the maximum possible dimensions are included.</p></td>
     </tr>
     <tr>
       <th>sparse</th>
-      <td><p>retains the sparsity if set to TRUE</p></td>
+      <td><p>retains the sparsity if set to <code>TRUE</code>; set it to 
+<code>TRUE</code> if <code>x</code> (the <a href='dfm.html'>dfm</a>) is too big to be allocated after
+converting to dense</p></td>
     </tr>
     <tr>
       <th>threads</th>
-      <td><p>specifies the number of threads to be used; set to 1 to use a serial version of the function. 
-Only applies when sparse = TRUE.</p></td>
+      <td><p>the number of threads to be used; set to 1 to use a 
+serial version of the function; only applicable when <code>sparse = TRUE</code></p></td>
     </tr>
     <tr>
       <th>residual_floor</th>
       <td><p>specifies the threshold for the residual matrix for 
-calculating the truncated svd.Larger value will reduce memory and time cost but 
-might sacrify the accuracy. Only applies when sparse = TRUE</p></td>
+calculating the truncated svd.Larger value will reduce memory and time cost
+but might sacrify the accuracy; only applicable when <code>sparse = TRUE</code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='http://www.rdocumentation.org/packages/RSpectra/topics/svds'>svds</a> in the <span class="pkg">RSpectra</span> package is applied to enable the fast computation of the SVD.</p>
+    <p><a href='http://www.rdocumentation.org/packages/RSpectra/topics/svds'>svds</a> in the <span class="pkg">RSpectra</span> package is applied to 
+  enable the fast computation of the SVD.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Setting threads larger than 1 (when sparse = TRUE) will trigger multiple threads computation, which retains sparsity of all involved 
-matrices. It might not help the speed unless you have a very big <a href='dfm.html'>dfm</a>.</p>
+    <p>Setting threads larger than 1 (when <code>sparse = TRUE</code>) will trigger 
+  parallel computation, which retains sparsity of all involved matrices. You
+  may need to increase the value of <code>residual_floor</code> to ignore less
+  important information and hence to reduce the memory cost when you have a
+  very big <a href='dfm.html'>dfm</a>.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in R, with two- and three-dimensional graphics: 
-The ca package. <em>Journal of Statistical Software</em>, 20 (3), <a href = 'http://www.jstatsoft.org/v20/i03/'>http://www.jstatsoft.org/v20/i03/</a></p>
+    <p>Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in 
+  R, with two- and three-dimensional graphics: The ca package. <em>Journal 
+  of Statistical Software</em>, 20 (3), <a href = 'http://www.jstatsoft.org/v20/i03/'>http://www.jstatsoft.org/v20/i03/</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

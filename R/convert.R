@@ -154,9 +154,9 @@ dfm2austinformat <- function(d) {
 
 ## convert to tm format
 dfm2tmformat <- function(x, weighting = tm::weightTf) {
-    if (!requireNamespace("tm")) 
+    if (!requireNamespace("tm", quietly = TRUE)) 
         stop("You must install the tm package installed for this conversion.")
-    if (!requireNamespace("slam"))
+    if (!requireNamespace("slam", quietly = TRUE))
         stop("You must install the slam package installed for this conversion.")
     sl <- slam::as.simple_triplet_matrix(x)
     td <- tm::as.DocumentTermMatrix(sl, weighting = weighting)
@@ -211,7 +211,7 @@ dfm2ldaformat <- function(x) {
 #' @noRd
 #' @export
 dfm2ldaformat.dfm <- function(x) {
-    if (!requireNamespace("tm"))
+    if (!requireNamespace("tm", quietly = TRUE))
         stop("You must install the slam package installed for this conversion.")
     tmDTM <- dfm2tmformat(x)
     return(dtm2ldaformat(tmDTM))
@@ -220,7 +220,7 @@ dfm2ldaformat.dfm <- function(x) {
 
 ## from the package topicmodels
 dtm2ldaformat <- function (x, omit_empty = TRUE) {
-    if (!requireNamespace("slam"))
+    if (!requireNamespace("slam", quietly = TRUE))
         stop("You must install the slam package installed for this conversion.")
     
     split.matrix <- function(x, f, drop = FALSE, ...) lapply(split(seq_len(ncol(x)), 
@@ -260,9 +260,9 @@ quantedaformat2dtm.dfm <- function(x) {
 }
 
 ldaformat2dtm <- function (documents, vocab, omit_empty = TRUE) {
-    if (!requireNamespace("tm"))
+    if (!requireNamespace("tm", quietly = TRUE))
         stop("You must install the tm package installed for this conversion.")
-    if (!requireNamespace("slam"))
+    if (!requireNamespace("slam", quietly = TRUE))
         stop("You must install the slam package installed for this conversion.")
     
     stm <- slam::simple_triplet_matrix(i = rep(seq_along(documents), vapply(documents, ncol, integer(1))), 

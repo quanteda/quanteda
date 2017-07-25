@@ -82,10 +82,18 @@
 variable-length term sequences whose frequency is unlikely to have occurred 
 by chance.  The algorithm is based on Blaheta and Johnson's (2001) 
 "Unsupervised Learning of Multi-Word Verbs".</p>
+<p>#' @export
+#' @method as.tokens sequences
+#' @noRd 
+as.tokens.sequences &lt;- function(x) 
+    toks &lt;- attr(x, 'tokens')
+    attr(toks, 'types') &lt;- attr(x, 'types')
+    class(toks) &lt;- c("tokens", "tokenizedTexts")
+    return(toks)</p>
     
 
-    <pre class="usage"><span class='fu'>sequences</span>(<span class='no'>x</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_size</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"unigram"</span>, <span class='st'>"all_subtuples"</span>), <span class='kw'>nested</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>sequences</span>(<span class='no'>x</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lambda"</span>, <span class='st'>"lambda1"</span>),
+  <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
 
 <span class='fu'>is.sequences</span>(<span class='no'>x</span>)</pre>
     
@@ -102,24 +110,17 @@ by chance.  The algorithm is based on Blaheta and Johnson's (2001)
 estimated</p></td>
     </tr>
     <tr>
-      <th>min_size</th>
-      <td><p>minimum length of sequences which are collected</p></td>
-    </tr>
-    <tr>
-      <th>max_size</th>
-      <td><p>maximum length of sequences which are collected</p></td>
+      <th>size</th>
+      <td><p>length of collocations, default is 2. Can be set up to 5.
+Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>default is "unigram" and option is "all_subtuples"</p></td>
+      <td><p>default is "lambda" and option is "lambda1"</p></td>
     </tr>
     <tr>
-      <th>nested</th>
-      <td><p>if <code>TRUE</code>, collect all the subsequences of a longer
-sequence as separate entities. e.g. in a sequence of capitalized words
-"United States Congress", "States Congress" is considered as a subsequence.
-But "United States" is not a subsequence because it is followed by
-"Congress".</p></td>
+      <th>smoothing</th>
+      <td><p>default is 0.5</p></td>
     </tr>
     </table>
     
@@ -143,33 +144,44 @@ But "United States" is not a subsequence because it is followed by
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks</span>, <span class='st'>"^([A-Z][a-z\\-]{2,})"</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>"regex"</span>,
                      <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='no'>seqs</span> <span class='kw'>&lt;-</span> <span class='fu'>sequences</span>(<span class='no'>toks</span>)
-<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;             collocation count length   lambda     sigma         z            p
-#&gt; 266       United States   155      2 6.329748 0.4286645 14.766205 0.000000e+00
-#&gt; 103  Federal Government    32      2 3.614841 0.3734731  9.678987 0.000000e+00
-#&gt; 169        Almighty God    15      2 6.697117 0.8323334  8.046195 4.440892e-16
-#&gt; 191       Chief Justice     7      2 5.438884 0.7454415  7.296191 1.479927e-13
-#&gt; 284       South America     6      2 5.741934 0.8975573  6.397290 7.907930e-11
-#&gt; 200    Chief Magistrate    10      2 5.476210 0.9133139  5.995978 1.011323e-09
-#&gt; 239       Supreme Court     4      2 6.396374 1.1635881  5.497112 1.930311e-08
-#&gt; 115 National Government    11      2 2.745355 0.5173342  5.306734 5.580353e-08
-#&gt; 269           Old World    10      2 8.147660 1.5467865  5.267476 6.915622e-08
-#&gt; 74    Divine Providence     3      2 5.549076 1.0961553  5.062308 2.071052e-07</div><div class='input'><span class='co'># to return only trigrams</span>
-<span class='no'>seqs</span> <span class='kw'>&lt;-</span> <span class='fu'>sequences</span>(<span class='no'>toks</span>, <span class='kw'>min_size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>max_size</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;                   collocation count length    lambda    sigma        z
-#&gt; 8      United States Congress     2      3 10.306583 2.319391 4.443659
-#&gt; 45        Vice President Bush     2      3  8.105361 2.200615 3.683225
-#&gt; 80    Chief Justice President     2      3  7.504587 2.188510 3.429085
-#&gt; 71   President Vice President     2      3  5.444652 1.736877 3.134738
-#&gt; 11   President Bush President     2      3  5.134497 1.722863 2.980213
-#&gt; 32 President Carter President     2      3  4.898109 1.714697 2.856545
-#&gt;               p
-#&gt; 8  4.422095e-06
-#&gt; 45 1.151510e-04
-#&gt; 80 3.028102e-04
-#&gt; 71 8.600395e-04
-#&gt; 11 1.440240e-03
-#&gt; 32 2.141397e-03</div></pre>
+<span class='no'>seqs</span> <span class='kw'>&lt;-</span> <span class='fu'>sequences</span>(<span class='no'>toks</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>)
+<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;             collocation count length   lambda     sigma      dice      pmi
+#&gt; 39        United States   157      2 6.336118 0.4286172 0.9319527 1.278173
+#&gt; 191  Federal Government    32      2 3.646094 0.3721631 0.5603448 1.890407
+#&gt; 238        Almighty God    15      2 6.763808 0.8296562 0.8157895 3.333246
+#&gt; 106       Chief Justice    13      2 5.515845 0.7414561 0.6279070 3.012774
+#&gt; 220       South America     6      2 5.908988 0.8818373 0.6500000 3.755192
+#&gt; 108    Chief Magistrate    10      2 5.576293 0.9078090 0.5384615 3.049141
+#&gt; 136       Supreme Court     4      2 6.647688 1.1359777 0.6923077 4.244917
+#&gt; 66    Divine Providence     3      2 5.885548 1.0427227 0.5833333 4.147754
+#&gt; 202 National Government    11      2 2.836326 0.5092672 0.2584270 1.767805
+#&gt; 32            Old World    10      2 8.247744 1.5435425 0.8400000 3.792932
+#&gt;            G2      chi2         z            p
+#&gt; 39  553.07890 536.87252 14.782696 0.000000e+00
+#&gt; 191 108.70100 187.04369  9.797032 0.000000e+00
+#&gt; 238 110.69891 428.66274  8.152543 2.220446e-16
+#&gt; 106  80.17375 265.57535  7.439207 5.062617e-14
+#&gt; 220  47.33845 273.31063  6.700769 1.036626e-11
+#&gt; 108  62.45004 213.65478  6.142584 4.059483e-10
+#&gt; 136  37.87774 311.12156  5.851953 2.429165e-09
+#&gt; 66   27.28012 218.58681  5.644404 8.287725e-09
+#&gt; 202  30.46242  53.48005  5.569427 1.277892e-08
+#&gt; 32   87.69169 462.90173  5.343386 4.561303e-08</div><div class='input'><span class='co'># to return only trigrams</span>
+<span class='no'>seqs</span> <span class='kw'>&lt;-</span> <span class='fu'>sequences</span>(<span class='no'>toks</span>, <span class='kw'>size</span><span class='kw'>=</span><span class='fl'>3</span>)
+<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;                   collocation count length      lambda    sigma      dice
+#&gt; 15 President Carter President     2      3  0.08917943 2.603866 0.1785714
+#&gt; 25    Chief Justice President     2      3 -2.07378039 2.949803 0.2142857
+#&gt; 17     United States Congress     2      3 -2.44524139 3.328397 0.5769231
+#&gt; 12   President Bush President     2      3 -1.75664726 2.282146 0.1704545
+#&gt; 14   President Vice President     2      3 -2.65458886 2.253641 0.1630435
+#&gt; 71        Vice President Bush     2      3 -5.03120656 2.652830 0.1785714
+#&gt;          pmi        G2      chi2           z         p
+#&gt; 15 1.4381662  5.887414  7.896617  0.03424885 0.4863394
+#&gt; 25 0.5908683  1.056418  1.213391 -0.70302338 0.7589794
+#&gt; 17 3.2299257 17.502472 62.335640 -0.73466035 0.7687268
+#&gt; 12 0.9273406  2.444195  3.044970 -0.76973481 0.7792714
+#&gt; 14 1.4381662  5.887414  7.896617 -1.17791115 0.8805840
+#&gt; 71 1.3328057  4.266731  6.263170 -1.89654291 0.9710559</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

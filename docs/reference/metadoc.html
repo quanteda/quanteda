@@ -78,7 +78,11 @@
     </div>
 
     
-    <p>Get or set the document-level meta-data.</p>
+    <p>Get or set document-level meta-data.  Document-level meta-data are a special 
+type of <a href='docvars.html'>docvars</a>, meant to contain information about documents that 
+would not be used as a "variable" for analysis. An example could be the 
+source of the document, or notes pertaining to its transformation, copyright 
+information, etc.</p>
     
 
     <pre class="usage"><span class='fu'>metadoc</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -94,7 +98,8 @@
     </tr>
     <tr>
       <th>field</th>
-      <td><p>character, the name of the metadata field(s) to be queried or set</p></td>
+      <td><p>character, the name of the metadata field(s) to be queried or 
+set</p></td>
     </tr>
     <tr>
       <th>value</th>
@@ -108,11 +113,21 @@
   
   For <code>texts &lt;-</code>, the corpus with the updated texts.</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Document-level meta-data differs from corpus-level meta-data in that the 
+latter pertains to the collection of texts as a whole, whereas the 
+document-level version can differ with each document.</p>
+    
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Document-level meta-data names are preceded by an underscore character,
-  such as <code>_language</code>, but when named in in the <code>field</code> argument,
+  such as <code>_language</code>, but when named in in the <code>field</code> argument, 
   do <em>not</em> need the underscore character.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='metacorpus.html'>metacorpus</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -128,9 +143,9 @@
 #&gt;    2013-Obama   814   2335        88 2013     Obama    Barack
 #&gt;    2017-Trump   582   1662        88 2017     Trump Donald J.
 #&gt; 
-#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
-#&gt; Created: Fri Sep 12 12:41:17 2014
-#&gt; Notes:   
+#&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
+#&gt; Created: Tue Jun 13 14:51:47 2017
+#&gt; Notes:   http://www.presidency.ucsb.edu/inaugurals.php
 #&gt; </div><div class='input'><span class='fu'>metadoc</span>(<span class='no'>mycorp</span>, <span class='st'>"encoding"</span>) <span class='kw'>&lt;-</span> <span class='st'>"UTF-8"</span>
 <span class='fu'>metadoc</span>(<span class='no'>mycorp</span>)</div><div class='output co'>#&gt;              _encoding
 #&gt; 1993-Clinton     UTF-8
@@ -159,9 +174,9 @@
 #&gt;    english
 #&gt;    english
 #&gt; 
-#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
-#&gt; Created: Fri Sep 12 12:41:17 2014
-#&gt; Notes:   
+#&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
+#&gt; Created: Tue Jun 13 14:51:47 2017
+#&gt; Notes:   http://www.presidency.ucsb.edu/inaugurals.php
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -171,7 +186,11 @@
       
       <li><a href="#value">Value</a></li>
 
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#note">Note</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

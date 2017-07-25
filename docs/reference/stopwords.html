@@ -91,13 +91,25 @@ English.</p>
     <tr>
       <th>kind</th>
       <td><p>The pre-set kind of stopwords (as a character string).  Allowed 
-values are <code>english</code>, <code>SMART</code>, <code>danish</code>, <code>french</code>,
-<code>greek</code>, <code>hungarian</code>, <code>norwegian</code>, <code>russian</code>,
-<code>swedish</code>, <code>catalan</code>, <code>dutch</code>, <code>finnish</code>,
-<code>german</code>, <code>italian</code>, <code>portuguese</code>, <code>spanish</code>,
+values are <code>english</code>, <code>SMART</code>, <code>danish</code>, <code>french</code>, 
+<code>greek</code>, <code>hungarian</code>, <code>norwegian</code>, <code>russian</code>, 
+<code>swedish</code>, <code>catalan</code>, <code>dutch</code>, <code>finnish</code>, 
+<code>german</code>, <code>italian</code>, <code>portuguese</code>, <code>spanish</code>, 
 <code>arabic</code></p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p>The English stopwords are taken from the SMART information retrieval 
+  system (obtained from Lewis, David D., et al. 
+  "<a href = 'http://www.jmlr.org/papers/volume5/lewis04a/lewis04a.pdf'>Rcv1: A 
+  new benchmark collection for text categorization research.</a>" <em>Journal 
+  of machine learning research</em> (2004, 5 April): 361-397.
+    Additional stopword lists are taken from the Snowball stemmer project in 
+  different languages (see <a href = 'http://snowballstem.org/projects.html'>http://snowballstem.org/projects.html</a>).
+    The Greek stopwords were supplied by Carsten Schwemmer (see 
+  <a href = 'https://github.com/kbenoit/quanteda/issues/282'>GitHub issue #282</a>).</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -106,32 +118,25 @@ values are <code>english</code>, <code>SMART</code>, <code>danish</code>, <code>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The stopword list is an internal data object named 
-<code><a href='data-internal.html'>data_char_stopwords</a></code>, which consists of English stopwords from
-the SMART information retrieval system (obtained from 
-<a href = 'http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop'>http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop</a>)
+<code><a href='data-internal.html'>data_char_stopwords</a></code>, which consists of English stopwords from 
+the SMART information retrieval system (obtained from Lewis et. al. (2004) 
 and a set of stopword lists from the Snowball stemmer project in different 
-languages (see <a href = 'http://snowballstem.org/projects.html'>http://snowballstem.org/projects.html</a>). Supported 
-languages are Arabic, Danish, Dutch, English, Finnish, French, German, Greek,
-Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish, and Swedish. 
-Language names should be lower-case (except for "SMART" -- see below) and are
-case sensitive.</p>
+languages (see <a href = 'http://snowballstem.org/projects.html'>http://snowballstem.org/projects.html</a>).  See
+<a href='data-internal.html'>data_char_stopwords</a> for details.</p>
     
     <h2 class="hasAnchor" id="a-note-of-caution"><a class="anchor" href="#a-note-of-caution"></a>A note of caution</h2>
 
     <p>Stop words are an arbitrary choice imposed by the
   user, and accessing a pre-defined list of words to ignore does not mean 
   that it will perfectly fit your needs. You are strongly encourged to 
-  inspect the list and to make sure it fits your particular requirements. The
-  built-in English stopword list does not contain "will", for instance, 
-  because of its multiple meanings, but you might want to include this word 
-  for your own application.</p>
+  inspect the list and to make sure it fits your particular requirements.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; [1] "i"      "me"     "my"     "myself" "we"     "our"   </div><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"italian"</span>))</div><div class='output co'>#&gt; [1] "ad"   "al"   "allo" "ai"   "agli" "all" </div><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"arabic"</span>))</div><div class='output co'>#&gt; [1] "فى" "في" "كل" "لم" "لن" "له"</div><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"SMART"</span>))</div><div class='output co'>#&gt; [1] "a"         "a's"       "able"      "about"     "above"     "according"</div><div class='input'>
 <span class='co'># adding to the built-in stopword list</span>
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='st'>"The judge will sentence Mr. Adams to nine years in prison"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='removeFeatures.html'>removeFeatures</a></span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='fu'>stopwords</span>(<span class='st'>"english"</span>), <span class='st'>"will"</span>, <span class='st'>"mr"</span>, <span class='st'>"nine"</span>))</div><div class='output co'>#&gt; tokenizedTexts from 1 document.
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"The judge will sentence Mr. Adams to nine years in prison"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='fu'>stopwords</span>(<span class='st'>"english"</span>), <span class='st'>"will"</span>, <span class='st'>"mr"</span>, <span class='st'>"nine"</span>))</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] "judge"    "sentence" "Adams"    "years"    "prison"  
 #&gt; </div></pre>
@@ -141,6 +146,8 @@ case sensitive.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#source">Source</a></li>
+
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
