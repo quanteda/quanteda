@@ -100,17 +100,16 @@ kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "
     }
     
     keywords_id <- features2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
-    result <- qatd_cpp_kwic(x, types, keywords_id, window, join)
-    
-    # attributes for tokens object
-    attributes(attr(result, "tokens"), FALSE)  <- attributes(x)
+    temp <- qatd_cpp_kwic(x, types, keywords_id, window, join)
     
     # attributes for kwic object
-    attr(result, "ntoken") <- ntoken(x)
-    attr(result, "valuetype") <- valuetype
-    attr(result, "keywords") <- attr(keywords_id, 'features')
+    result <- structure(temp, 
+                        class = c("kwic", "data.frame"), 
+                        ntoken = ntoken(x), 
+                        valuetype = valuetype, 
+                        keywords = attr(keywords_id, 'features'),
+                        tokens =  attr(temp, "tokens"))
     attributes(result, FALSE)  <- attributes(x)
-    class(result) <- c("kwic", "data.frame")
     return(result)
 }
 
@@ -159,9 +158,16 @@ print.kwic <- function(x, ...) {
 #' @export
 #' @method as.tokens kwic
 as.tokens.kwic <- function(x, ...) {
-    result <- attr(x, 'tokens')
-    names(result) <- x$docname
-    docvars(result) <- data.frame('_docid' = attr(x, 'docid'),
-                                  '_segid' = attr(x, 'segid'))
+    vars <- attr(x, 'docvars')
+    if (is.null(vars))
+        vars <- data.frame()
+    vars <- vars[attr(x, 'docid'),]
+    vars[['_docid']] <- attr(x, 'docid')
+    vars[['_segid']] <- attr(x, 'segid')
+    result <- structure(attr(x, 'tokens'), 
+                        class = c('tokens', 'tokenizedTexts', 'list'),
+                        names = x$docname,
+                        docvars = vars)
+    attributes(result, FALSE) <- attributes(x)
     return(result)
 }
