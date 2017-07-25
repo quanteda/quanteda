@@ -15,6 +15,7 @@
 #'   with the fixed metadata 
 #'   fields imported as \link{docvars} and corpus-level metadata imported
 #'   as \link{metacorpus} information.
+#' \item a \link{corpus} object.
 #' } 
 #' @param x a valid corpus source object
 #' @param docnames Names to be assigned to the texts.  Defaults to the names of 
@@ -114,6 +115,24 @@
 #' summary(corpus(mykwic))
 corpus <- function(x, ...) {
     UseMethod("corpus")
+}
+
+#
+# better solution might be 
+# corpus.corpus <- function(x, docnames = docnames(x), docvars = docvars(x), metacorpus = metacorpus(x), compress = FALSE, ...) {
+# see https://stackoverflow.com/questions/45314208/how-to-avoid-promise-already-under-evaluation-warning-for-setting-default-argume
+#
+# also, this would be more efficient if we moved the compression code from corpus.character below and made it something we could call
+# from this function, then instead of extracting the texts and reconstructing the corpus, we would just replace the metadata,
+# and compress only if needed
+#
+#' @rdname corpus
+#' @export
+corpus.corpus <- function(x, docnames = NULL, docvars = NULL, metacorpus = NULL, compress = FALSE, ...) {
+    if (is.null(docnames)) docnames <- docnames(x)
+    if (is.null(docvars)) docvars <- docvars(x)
+    if (is.null(metacorpus)) metacorpus <- metacorpus(x)
+    corpus(texts(x), docnames, docvars, metacorpus, compress = compress)
 }
 
 #' @rdname corpus

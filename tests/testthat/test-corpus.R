@@ -249,3 +249,17 @@ test_that("corpus works for texts with duplicate filenames", {
     cor <- corpus(txt)
     expect_equal(docnames(cor), c("one", "two", "one.1"))
 })
+
+test_that("create a corpus on a corpus", {
+    expect_identical(
+        data_corpus_irishbudget2010,
+        corpus(data_corpus_irishbudget2010)
+    )
+    
+    tmpcorp <- data_corpus_irishbudget2010
+    docnames(tmpcorp) <- paste0("d", seq_len(ndoc(tmpcorp)))
+    expect_identical(
+        tmpcorp,
+        corpus(data_corpus_irishbudget2010, docnames =  paste0("d", seq_len(ndoc(tmpcorp))))
+    )
+})
