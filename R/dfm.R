@@ -121,7 +121,6 @@ dfm <- function(x,
                 groups = NULL, 
                 verbose = quanteda_options("verbose"), 
                 ...) {
-
     UseMethod("dfm")
 }
 

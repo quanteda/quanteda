@@ -114,6 +114,8 @@ struct counts_mt : public Worker{
 };
 
 void estimates(std::size_t i,
+               VecNgrams &seqs_np,
+               IntParams &cs_np,
               VecNgrams &seqs,
               IntParams &cs, 
               DoubleParams &sgma, 
@@ -127,18 +129,18 @@ void estimates(std::size_t i,
               const double nseqs,
               const double smoothing){
     
-    std::size_t n = seqs[i].size(); //n=2:5
+    std::size_t n = seqs_np[i].size(); //n=2:5
     if (n == 1) return; // ignore single words
-    if (cs[i] < count_min) return;
+    if (cs_np[i] < count_min) return;
     std::vector<double> counts_bit(std::pow(2, n), smoothing);// use 1/2 as smoothing
     for (std::size_t j = 0; j < seqs.size(); j++) {
-        if (i == j) continue; // do not compare with itself
+        //if (i == j) continue; // do not compare with itself
  
         int bit;
-        bit = match_bit2(seqs[i], seqs[j]);
+        bit = match_bit2(seqs_np[i], seqs[j]);
         counts_bit[bit] += cs[j];
     }
-    counts_bit[std::pow(2, n)-1]  += cs[i];//  c(2^n-1) += number of itself  
+    //counts_bit[std::pow(2, n)-1]  += cs_np[i];//  c(2^n-1) += number of itself  
     
     //B-J algorithm    
     if (method == "lambda1"){
@@ -248,7 +250,8 @@ void estimates(std::size_t i,
 }
 
 struct estimates_mt : public Worker{
-    
+    VecNgrams &seqs_np;
+    IntParams &cs_np;
     VecNgrams &seqs;
     IntParams &cs;
     DoubleParams &sgma;
@@ -263,17 +266,15 @@ struct estimates_mt : public Worker{
     const double smoothing;
 
     // Constructor
-    estimates_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_, 
+    estimates_mt(VecNgrams &seqs_np_, IntParams &cs_np_, VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_, 
                  DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, const String &method, 
                  const unsigned int &count_min_, const double nseqs_, const double smoothing_):
-        seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_), 
+        seqs_np(seqs_np_), cs_np(cs_np_), seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_), 
         method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            if (std::find(seqs[i].begin(), seqs[i].begin() + seqs[i].size(), 0) == seqs[i].begin() + seqs[i].size()) {
-                estimates(i, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, nseqs, smoothing);
-            }
+                estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, nseqs, smoothing);
         }
     }
 };
@@ -346,53 +347,57 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         
         // Separate map keys and values
         std::size_t len = counts_seq.size();
-        VecNgrams seqs;
-        IntParams cs, ns;
+        VecNgrams seqs, seqs_np;
+        IntParams cs, ns, cs_np;
         seqs.reserve(len);
+        seqs_np.reserve(len);
+        cs_np.reserve(len);
         cs.reserve(len);
         ns.reserve(len);
         double total_counts = 0.0;
+        std::size_t len_noPadding = 0;
         for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
             seqs.push_back(it -> first);
             cs.push_back(it -> second);
             ns.push_back(it -> first.size());
             total_counts += it -> second;
+            if (std::find(it -> first.begin() , it -> first.begin() + it -> first.size(), 0) == it -> first.begin() + it -> first.size()) 
+            {
+                seqs_np.push_back(it -> first);
+                cs_np.push_back(it -> second);
+                seqs_all.push_back(it -> first);
+                cs_all.push_back(it -> second);
+                ns_all.push_back(it -> first.size());
+                len_noPadding ++;
+            }
         }
         
         // adjust total_counts of MW 
         total_counts += 4 * smoothing;
         
         // Estimate significance of the sequences
-        DoubleParams sgma(len);
-        DoubleParams lmda(len);
-        DoubleParams dice(len);
-        DoubleParams pmi(len);
-        DoubleParams logratio(len);
-        DoubleParams chi2(len);
+        DoubleParams sgma(len_noPadding);
+        DoubleParams lmda(len_noPadding);
+        DoubleParams dice(len_noPadding);
+        DoubleParams pmi(len_noPadding);
+        DoubleParams logratio(len_noPadding);
+        DoubleParams chi2(len_noPadding);
         //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-        estimates_mt estimate_mt(seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
-        parallelFor(0, seqs.size(), estimate_mt);
+        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
+        parallelFor(0, seqs_np.size(), estimate_mt);
 #else
-        for (std::size_t i = 0; i < seqs.size(); i++) {
+        for (std::size_t i = 0; i < seqs_np.size(); i++) {
             //if (i==2) Rcout<<"size="<<seqs[i].size()<<std::endl;
-            if (std::find(seqs[i].begin(), seqs[i].begin() + seqs[i].size(), 0) == seqs[i].begin() + seqs[i].size()) {
                 // Rcout<<"size="<<seqs[i].size()<<std::endl;
-                
-                estimates(i, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
-            }//else{
+                estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
+//else{
              //   Rcout<<seqs[i][0]<<seqs[i][1]<<seqs[i][2]<<std::endl;
                 
             //}
         }
 #endif
         //dev::stop_timer("Estimate", timer);
-        for (auto it = seqs.begin(); it != seqs.end(); ++it) {
-            seqs_all.push_back(*it);
-        }   
-
-        cs_all.insert( cs_all.end(), cs.begin(), cs.end() );
-        ns_all.insert( ns_all.end(), ns.begin(), ns.end() );
         sgma_all.insert( sgma_all.end(), sgma.begin(), sgma.end() );
         lmda_all.insert( lmda_all.end(), lmda.begin(), lmda.end() );
         dice_all.insert( dice_all.end(), dice.begin(), dice.end() );
