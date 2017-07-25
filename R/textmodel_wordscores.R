@@ -257,7 +257,7 @@ print.textmodel_wordscores_fitted <- function(x, n=30L, digits=2, ...) {
     refscores <- data.frame(Documents=docnames(x@x),
                             "Ref scores" = x@y)
     refscores$Ref.scores <- format(refscores$Ref.scores, digits=digits)
-    refscores$Ref.scores[grep("NA", refscores$Ref.scores)] <- "."
+    refscores$Ref.scores[stri_detect_fixed(refscores$Ref.scores, "NA")] <- "."
     names(refscores)[2] <- "Ref scores"
     print(refscores, row.names=FALSE, digits=digits)
     cat("\nWord scores: ")
