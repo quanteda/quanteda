@@ -189,7 +189,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     # trap older arguments, issue a warning, and call with correct arguments
     thecall <- as.list(match.call())[-1]
     oldargindex <- 
-        stringi::stri_detect_regex(names(thecall), 
+        stri_detect_regex(names(thecall), 
                                    "remove(Numbers|Punct|Symbols|Separators|Twitter|Hyphens|URL)$")
     if (any(oldargindex)) {
         warning(names(thecall)[oldargindex], " is deprecated; use ",
@@ -555,10 +555,10 @@ tokens_word <- function(txt,
                                   sep = "|")
         
         # catm("\n..", regexToEliminate, "..\n", sep = "")
-        regexToEliminate <- gsub("^\\|+", "", regexToEliminate)
-        regexToEliminate <- gsub("\\|+$", "", regexToEliminate)
+        regexToEliminate <- stri_replace_all_regex(regexToEliminate, "^\\|+", "")
+        regexToEliminate <- stri_replace_all_regex(regexToEliminate, "\\|+$", "")
         # catm("\n..", regexToEliminate, "..\n", sep = "")
-        if (gsub("|", "", regexToEliminate, fixed = TRUE) != "")
+        if (stri_replace_all_fixed(regexToEliminate, "|", "") != "")
             txt <- stri_replace_all_regex(txt, regexToEliminate, "")
         
         if (verbose & remove_punct==TRUE) catm(", ", what, " tokenizing", sep="")
