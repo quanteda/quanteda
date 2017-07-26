@@ -49,6 +49,18 @@ docvars.dfm <- function(x, field = NULL) {
     get_docvars(dvars, field)    
 }
 
+#' @noRd
+#' @keywords internal
+docvars.kwic <- function(x) {
+    dvars <- attr(x, 'docvars')
+    if (is.null(dvars))
+        dvars <- data.frame()
+    dvars <- structure(dvars[attr(x, 'docid'),], 
+                       class = 'data.frame',
+                       row.names = paste(x$docname, attr(x, 'segid'), sep = "."))
+    select_fields(dvars)
+}
+
 ## internal function to return the docvars for all docvars functions
 get_docvars <- function(dvars, field = NULL) {
     if (is.null(field)) {
@@ -243,7 +255,7 @@ metadoc.dfm <- function(x, field = NULL) {
 ## a field is not a valid docvar name
 check_fields <- function(x, field = NULL) {
     if (!is.null(field)) {
-        if (length(notin <- which(! field %in% c(names(docvars(x)), names(metadoc(x))))))
+        if (length(notin <- which(!field %in% c(names(docvars(x)), names(metadoc(x))))))
             stop("field(s) ", field[notin], " not found", call. = FALSE)
     }
 }

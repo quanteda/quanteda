@@ -47,16 +47,7 @@ kwic <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed")
 #' @export
 kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
                            case_insensitive = TRUE, join = FALSE, ...) {
-    thecall <- as.list(match.call())[-1]
-    if ("keywords" %in% names(thecall)) {
-        .Deprecated(msg = "keywords argument has been replaced by pattern")
-        names(thecall)[which(names(thecall) == "keywords")] <- "pattern"
-        thecall[["x"]] <- x
-        return(do.call(kwic, thecall))
-    }    
-    if (is.collocations(pattern) || is.dictionary(pattern))
-        pattern <- phrase(pattern) 
-    kwic(tokens(x, ...), pattern, window, valuetype, case_insensitive, join)
+    kwic(corpus(x), pattern, window, valuetype, case_insensitive, join, ...)
 }
 
 #' @rdname kwic
@@ -64,7 +55,17 @@ kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex"
 #' @export 
 kwic.corpus <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
                         case_insensitive = TRUE, join = FALSE, ...) {
-    kwic(texts(x), pattern, window, valuetype, case_insensitive, join, ...)
+    #thecall <- as.list(match.call())[-1]
+    # if ("keywords" %in% names(thecall)) {
+    #     .Deprecated(msg = "keywords argument has been replaced by pattern")
+    #     names(thecall)[which(names(thecall) == "keywords")] <- "pattern"
+    #     thecall[["x"]] <- x
+    #     print(thecall)
+    #     return(do.call(kwic, thecall))
+    # }    
+    if (is.collocations(pattern) || is.dictionary(pattern))
+        pattern <- phrase(pattern) 
+    kwic(tokens(x, ...), pattern, window, valuetype, case_insensitive, join)
 }
 
 #' @rdname kwic
@@ -100,17 +101,16 @@ kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "
     }
     
     keywords_id <- features2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
-    result <- qatd_cpp_kwic(x, types, keywords_id, window, join)
-    
-    # attributes for tokens object
-    attributes(attr(result, "tokens"), FALSE)  <- attributes(x)
+    temp <- qatd_cpp_kwic(x, types, keywords_id, window, join)
     
     # attributes for kwic object
-    attr(result, "ntoken") <- ntoken(x)
-    attr(result, "valuetype") <- valuetype
-    attr(result, "keywords") <- attr(keywords_id, 'features')
+    result <- structure(temp, 
+                        class = c("kwic", "data.frame"), 
+                        ntoken = ntoken(x), 
+                        valuetype = valuetype, 
+                        keywords = attr(keywords_id, 'features'),
+                        tokens =  attr(temp, "tokens"))
     attributes(result, FALSE)  <- attributes(x)
-    class(result) <- c("kwic", "data.frame")
     return(result)
 }
 
@@ -159,9 +159,13 @@ print.kwic <- function(x, ...) {
 #' @export
 #' @method as.tokens kwic
 as.tokens.kwic <- function(x, ...) {
-    result <- attr(x, 'tokens')
-    names(result) <- x$docname
-    docvars(result) <- data.frame('_docid' = attr(x, 'docid'),
-                                  '_segid' = attr(x, 'segid'))
+    vars <- docvars(x)
+    vars[['_docid']] <- attr(x, 'docid')
+    vars[['_segid']] <- attr(x, 'segid')
+    result <- structure(attr(x, 'tokens'), 
+                        class = c('tokens', 'tokenizedTexts', 'list'),
+                        names = rownames(vars),
+                        docvars = vars)
+    attributes(result, FALSE) <- attributes(x)
     return(result)
 }
