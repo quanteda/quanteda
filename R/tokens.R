@@ -170,120 +170,8 @@ tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", 
 #' @rdname tokens
 #' @noRd
 #' @export
-tokens.character <- function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
-                             remove_numbers = FALSE,
-                             remove_punct = FALSE,
-                             remove_symbols = FALSE,
-                             remove_separators = TRUE,
-                             remove_twitter = FALSE,
-                             remove_hyphens = FALSE,
-                             remove_url = FALSE,
-                             ngrams = 1L,
-                             skip = 0L,
-                             concatenator = "_",
-                             hash = TRUE,
-                             verbose = getOption("verbose"),  
-                             include_docvars = TRUE, 
-                             ...) {
-    
-    # trap older arguments, issue a warning, and call with correct arguments
-    thecall <- as.list(match.call())[-1]
-    oldargindex <- 
-        stringi::stri_detect_regex(names(thecall), 
-                                   "remove(Numbers|Punct|Symbols|Separators|Twitter|Hyphens|URL)$")
-    if (any(oldargindex)) {
-        warning(names(thecall)[oldargindex], " is deprecated; use ",
-                tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex])), " instead")
-        names(thecall)[oldargindex] <- tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex]))
-        return(do.call(tokens, thecall))
-    }
-    
-    what <- match.arg(what)
-    names_org <- names(x)
-    attrs_org <- attributes(x)
-    
-    # disable remove_twitter if remove_punct = FALSE
-    if (!remove_punct & remove_twitter) {
-        remove_twitter <- FALSE
-        warning("remove_twitter reset to FALSE when remove_punct = FALSE")
-    }
-    
-    # warn about unused arguments
-    if (length(added_args <- list(...)) & 
-        !all(names(added_args) %in% paste0("remove", c("Numbers", "Punct", "Symbols", "Separators", "Twitter", "Hyphens", "URL", "simplify")))) {
-        warning("Argument", if (length(added_args) > 1L) "s " else " ", names(added_args), " not used.", sep = "")
-    }
-    
-    # deprecate "simplify"
-    if ("simplify" %in% names(added_args)) warning("simplify no longer available")
-    
-    if (!is.integer(ngrams)) ngrams <- as.integer(ngrams)
-    
-    if (verbose) catm("Starting tokenization...\n")
-    
-    time_start <- proc.time()
-    
-    # Split x into smaller blocks to reducre peak memory consumption
-    x <- split(x, ceiling(seq_along(x) / 10000))
-    for (i in seq_along(x)) {
-        
-        if (verbose) catm("...tokenizing", i, "of" , length(x), "blocks\n")
-        if (what %in% c("word", "fastestword", "fasterword")) {
-            temp <- tokens_word(x[[i]], what, remove_numbers, remove_punct, remove_symbols, 
-                                  remove_separators, remove_twitter, remove_hyphens, remove_url, verbose)
-        } else if (what == "character") {
-            temp <- tokens_character(x[[i]],remove_punct, remove_symbols, remove_separators, verbose)
-        } else if (what == "sentence") {
-            temp <- tokens_sentence(x[[i]], verbose)
-        } else {
-            stop(what, " not implemented in tokens().")
-        }
-        
-        # Hash the tokens
-        if (hash == TRUE) {
-            if (verbose) catm("...serializing tokens ")
-            if (i == 1) {
-                x[[i]] <- tokens_hash(temp)
-            } else {
-                x[[i]] <- tokens_hash(temp, attr(x[[i - 1]], 'types'))
-            }
-            if (verbose) catm(length(attr(x[[i]], 'types')), 'unique types\n')
-        } else {
-            x[[i]] <- temp
-        }
-    }
-    
-    # Put all the blocked results togather
-    result <- unlist(x, recursive = FALSE)
-    
-    if (hash == TRUE){
-        class(result) <- c("tokens", "tokenizedTexts")
-        types(result) <- attr(x[[length(x)]], 'types') # last block has all the types
-    } else {
-        class(result) <- c("tokenizedTexts", "list")
-    }  
-    if (!identical(ngrams, 1L)) {
-        if (verbose) catm("...creating ngrams\n")
-        result <- tokens_ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
-    }
-    if (verbose){
-        catm("...total elapsed: ", (proc.time() - time_start)[3], "seconds.\n")
-        catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n")
-    }
-    
-    names(result) <- names_org
-    attr(result, "what") <- what
-    attr(result, "ngrams") <- ngrams
-    attr(result, "skip") <- skip
-    attr(result, "concatenator") <- concatenator
-    attr(result, 'padding') <- FALSE
-    
-    # issue #607: remove @ # only if not part of Twitter names
-    if (remove_punct & !remove_twitter) {
-        result <- tokens_remove(result, "^#+$|^@+$", valuetype = "regex")
-    }
-    
-    return(result)
+tokens.character <- function(x, ...) {
+    tokens(corpus(x), ...)
 }
 
 
@@ -291,12 +179,11 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
 #' @export
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
-    result <- tokens(texts(x), ...)
+    result <- tokens_internal(texts(x), ...)
     if (include_docvars) {
-        dvars <- documents(x)[, which(names(documents(x)) != "texts"), drop = FALSE]
-        if (length(dvars)) {
-            docvars(result) <- dvars
-        }
+        docvars(result) <- documents(x)[, which(names(documents(x)) != "texts"), drop = FALSE]
+    } else {
+        docvars(result) <- data.frame(row.names = docnames(x))
     }
     return(result)
 }
@@ -319,13 +206,14 @@ as.tokens <- function(x, concatenator = '_') {
 #' @rdname as.tokens
 #' @export
 as.tokens.list <- function(x, concatenator = '_') {
-    result <- tokens_hash(x)
-    attr(result, "what") <- "word"
-    attr(result, "ngrams") <- 1L
-    attr(result, "skip") <- 0L
-    attr(result, "concatenator") <- concatenator
-    attr(result, 'padding') <- FALSE
-    class(result)[2] <- "tokenizedTexts"
+    result <- structure(tokens_hash(x),
+                        "class" = c("tokens", "tokenizedTexts"),
+                        "what" = "word",
+                        "ngrams" = 1L,
+                        "skip" = 0L, 
+                        "concatenator" = concatenator,
+                        "padding" = FALSE)
+    docvars(result) <- data.frame(row.names = docnames(result))
     return(result)
 }
 
@@ -524,6 +412,123 @@ docnames.tokens <- function(x) {
 ## ============== INTERNAL FUNCTIONS =======================================
 ##
 
+# TODO can be name "tokenize" onece quanteda::tokenize has gone
+tokens_internal <- function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
+                            remove_numbers = FALSE,
+                            remove_punct = FALSE,
+                            remove_symbols = FALSE,
+                            remove_separators = TRUE,
+                            remove_twitter = FALSE,
+                            remove_hyphens = FALSE,
+                            remove_url = FALSE,
+                            ngrams = 1L,
+                            skip = 0L,
+                            concatenator = "_",
+                            hash = TRUE,
+                            verbose = getOption("verbose"),  
+                            include_docvars = TRUE, 
+                            ...) {
+    
+    # trap older arguments, issue a warning, and call with correct arguments
+    thecall <- as.list(match.call())[-1]
+    oldargindex <- 
+        stri_detect_regex(names(thecall), 
+                          "remove(Numbers|Punct|Symbols|Separators|Twitter|Hyphens|URL)$")
+    if (any(oldargindex)) {
+        warning(names(thecall)[oldargindex], " is deprecated; use ",
+                tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex])), " instead")
+        names(thecall)[oldargindex] <- tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex]))
+        return(do.call(tokens, thecall))
+    }
+    
+    what <- match.arg(what)
+    names_org <- names(x)
+    attrs_org <- attributes(x)
+    
+    # disable remove_twitter if remove_punct = FALSE
+    if (!remove_punct & remove_twitter) {
+        remove_twitter <- FALSE
+        warning("remove_twitter reset to FALSE when remove_punct = FALSE")
+    }
+    
+    # warn about unused arguments
+    if (length(added_args <- list(...)) & 
+        !all(names(added_args) %in% paste0("remove", c("Numbers", "Punct", "Symbols", "Separators", "Twitter", "Hyphens", "URL", "simplify")))) {
+        warning("Argument", if (length(added_args) > 1L) "s " else " ", names(added_args), " not used.", sep = "")
+    }
+    
+    # deprecate "simplify"
+    if ("simplify" %in% names(added_args)) warning("simplify no longer available")
+    
+    if (!is.integer(ngrams)) ngrams <- as.integer(ngrams)
+    
+    if (verbose) catm("Starting tokenization...\n")
+    
+    time_start <- proc.time()
+    
+    # Split x into smaller blocks to reducre peak memory consumption
+    x <- split(x, ceiling(seq_along(x) / 10000))
+    for (i in seq_along(x)) {
+        
+        if (verbose) catm("...tokenizing", i, "of" , length(x), "blocks\n")
+        if (what %in% c("word", "fastestword", "fasterword")) {
+            temp <- tokens_word(x[[i]], what, remove_numbers, remove_punct, remove_symbols, 
+                                remove_separators, remove_twitter, remove_hyphens, remove_url, verbose)
+        } else if (what == "character") {
+            temp <- tokens_character(x[[i]],remove_punct, remove_symbols, remove_separators, verbose)
+        } else if (what == "sentence") {
+            temp <- tokens_sentence(x[[i]], verbose)
+        } else {
+            stop(what, " not implemented in tokens().")
+        }
+        
+        # Hash the tokens
+        if (hash == TRUE) {
+            if (verbose) catm("...serializing tokens ")
+            if (i == 1) {
+                x[[i]] <- tokens_hash(temp)
+            } else {
+                x[[i]] <- tokens_hash(temp, attr(x[[i - 1]], 'types'))
+            }
+            if (verbose) catm(length(attr(x[[i]], 'types')), 'unique types\n')
+        } else {
+            x[[i]] <- temp
+        }
+    }
+    
+    # Put all the blocked results togather
+    result <- unlist(x, recursive = FALSE)
+    
+    if (hash == TRUE){
+        class(result) <- c("tokens", "tokenizedTexts")
+        types(result) <- attr(x[[length(x)]], 'types') # last block has all the types
+    } else {
+        class(result) <- c("tokenizedTexts", "list")
+    }  
+    if (!identical(ngrams, 1L)) {
+        if (verbose) catm("...creating ngrams\n")
+        result <- tokens_ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
+    }
+    if (verbose){
+        catm("...total elapsed: ", (proc.time() - time_start)[3], "seconds.\n")
+        catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n")
+    }
+    
+    names(result) <- names_org
+    attr(result, "what") <- what
+    attr(result, "ngrams") <- ngrams
+    attr(result, "skip") <- skip
+    attr(result, "concatenator") <- concatenator
+    attr(result, 'padding') <- FALSE
+    
+    # issue #607: remove @ # only if not part of Twitter names
+    if (remove_punct & !remove_twitter) {
+        result <- tokens_remove(result, "^#+$|^@+$", valuetype = "regex")
+    }
+    
+    return(result)
+}
+
 tokens_word <- function(txt, 
                         what = 'word', 
                         remove_numbers = FALSE, 
@@ -555,10 +560,10 @@ tokens_word <- function(txt,
                                   sep = "|")
         
         # catm("\n..", regexToEliminate, "..\n", sep = "")
-        regexToEliminate <- gsub("^\\|+", "", regexToEliminate)
-        regexToEliminate <- gsub("\\|+$", "", regexToEliminate)
+        regexToEliminate <- stri_replace_all_regex(regexToEliminate, "^\\|+", "")
+        regexToEliminate <- stri_replace_all_regex(regexToEliminate, "\\|+$", "")
         # catm("\n..", regexToEliminate, "..\n", sep = "")
-        if (gsub("|", "", regexToEliminate, fixed = TRUE) != "")
+        if (stri_replace_all_fixed(regexToEliminate, "|", "") != "")
             txt <- stri_replace_all_regex(txt, regexToEliminate, "")
         
         if (verbose & remove_punct==TRUE) catm(", ", what, " tokenizing", sep="")
@@ -787,8 +792,8 @@ types.tokens <- function(x) {
 #'   have been added as a single sequence of documents.
 #' @examples 
 #' # combining tokens
-#' toks1 <- tokens(c("a b c d e", "f g h"))
-#' toks2 <- tokens(c("1 2 3"))
+#' toks1 <- tokens(c(doc1 = "a b c d e", doc2 = "f g h"))
+#' toks2 <- tokens(c(doc3 = "1 2 3"))
 #' toks1 + toks2
 #' c(toks1, toks2)
 #' 

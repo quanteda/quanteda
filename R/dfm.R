@@ -146,7 +146,7 @@ dfm.character <- function(x,
     if (!is.null(remove) & !is.null(select))
         stop("only one of select and remove may be supplied at once")
     
-    if (verbose && grepl("^dfm\\.character", sys.calls()[2]))
+    if (verbose && stri_startswith_fixed(sys.calls()[2], "dfm.character"))
         catm("Creating a dfm from a character vector ...\n")
 
     if (tolower) {
@@ -290,7 +290,7 @@ dfm.tokenizedTexts <- function(x,
     if (!is.null(attr(x, "docvars"))) {
         result@docvars <- attr(x, "docvars")
     } else {
-        result@docvars <- data.frame()
+        result@docvars <- data.frame(row.names = docnames(x))
     }
     
     dfm(result, tolower = FALSE, stem = stem, valuetype = valuetype, verbose = verbose, ...)
@@ -465,8 +465,8 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
 ## convert patterns (remove and select) to ngram regular expressions
 make_ngram_pattern <- function(features, valuetype, concatenator) {
     if (valuetype == "glob") {
-        features <- gsub("\\*", ".*", features)
-        features <- gsub("\\?", ".{1}", features)
+        features <- stri_replace_all_regex(features, "\\*", ".*")
+        features <- stri_replace_all_regex(features, "\\?", ".{1}")
     }
     features <- paste0("(\\b|(\\w+", concatenator, ")+)", 
                        features, "(\\b|(", concatenator, "\\w+)+)")

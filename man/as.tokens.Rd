@@ -69,8 +69,8 @@ objects.
 }
 \examples{
 # combining tokens
-toks1 <- tokens(c("a b c d e", "f g h"))
-toks2 <- tokens(c("1 2 3"))
+toks1 <- tokens(c(doc1 = "a b c d e", doc2 = "f g h"))
+toks2 <- tokens(c(doc3 = "1 2 3"))
 toks1 + toks2
 c(toks1, toks2)
 

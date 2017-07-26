@@ -103,7 +103,6 @@ g + aes(color = keyword) + scale_color_manual(values = c('blue', 'red', 'green')
 
 ## 3. Frequency plots
 
-
 You can plot the frequency of the top features in a text using `topfeatures`.
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
@@ -153,7 +152,36 @@ ggplot(relFreq) + geom_point(aes(x=document,y=frequency)) +
     theme(axis.text.x = element_text(angle=90, hjust=1))
 ```
 
-## 4. Plot fitted scaling models
+## 4. Plot "keyness" in a target and reference group
+
+If you want to compare the differential associations of keywords in a target and reference group, you can calculate "keyness" which is based on `textstat_keyness`.
+In this example, we compare the inaugural speech by Donald Trump with the speeches by Barack Obama.
+
+```{r fig.width=8, fig.height=6}
+# Currently requires the quanteda development version 
+# which can be downloaded using:
+# devtools::install_github("kbenoit/quanteda")
+
+# Only select speeches by Obama and Trump
+pres_corpus <- corpus_subset(data_corpus_inaugural, 
+                            President %in% c("Obama", "Trump"))
+
+# Create a dfm grouped by president
+pres_dfm <- dfm(pres_corpus, groups = "President", 
+                remove = stopwords("english"),
+                remove_punct = TRUE)
+
+# Calculate keyness and determine Trump as target group
+result_keyness <- textstat_keyness(pres_dfm, target = "Trump")
+
+# Plot estimated word keyness
+textplot_keyness(result_keyness) 
+
+# Plot without the reference text (in this case Obama)
+textplot_keyness(result_keyness, show_reference = FALSE)
+```
+
+## 5. Plot fitted scaling models
 
 You can also plot fitted Wordscores (Laver et al., 2003) or Wordfish scaling models (Proksch and Slapin, 2008). To use the following functions, currently you need to download the development version of **quanteda**.
 
@@ -163,7 +191,7 @@ devtools::install_github("kbenoit/quanteda")
 require(quanteda)
 ```
 
-### 4.1 Wordscores
+### 5.1 Wordscores
 
 Wordscores is a scaling procedure for estimating policy positions or scores (Laver et al., 2003). Known scores are assigned to so called reference texts in order to infer the positions of new documents ("virgin texts"). You can plot the position of words (features) against the logged term frequency, or the position of the documents.
 
@@ -203,7 +231,7 @@ textplot_scale1d(pred_lbg, margin = "documents",
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 ```
 
-### 4.2 Wordfish
+### 5.2 Wordfish
 
 Wordfish is a Poisson scaling model that estimates one-dimension document positions using maximum likelihood (Slapin and Proksch, 2008). Both the estimated position of words and the positions of the documents can be plotted. 
 
@@ -223,7 +251,7 @@ textplot_scale1d(wfm, doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 ```
 
-### 4.3 Correspondence Analysis
+### 5.3 Correspondence Analysis
 
 You can also plot the estimated document positions of a correspodence analysis (Nenadic and Greenacre 2007).
 
