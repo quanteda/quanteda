@@ -20,9 +20,9 @@ txt <- tokens(char_tolower(c("My Christmas was ruined by your opposition tax pla
                 remove_punct = TRUE)
 
 
-dfm(txt, dictionary = mydict, verbose = TRUE)
-dfm(txt, thesaurus = mydict, verbose = TRUE)
-dfm(txt, thesaurus = mydict, verbose = TRUE)
+dfm(txt, dictionary = mydict, verbose = FALSE)
+dfm(txt, thesaurus = mydict, verbose = FALSE)
+dfm(txt, thesaurus = mydict, verbose = FALSE)
 
 (txtDfm <- dfm(txt, verbose = FALSE))
 dfm_lookup(txtDfm, mydict, valuetype = "glob") 

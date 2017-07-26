@@ -30,6 +30,7 @@
 #'   -1.5, -0.75, 0, 0.75, 1.5.  Document V1 is assumed unknown, and will have a
 #'   raw text score of approximately -0.45 when computed as per LBG (2003).
 #' @keywords data
+#' @aliases data_dfm_LBGexample
 #' @format A \link{dfm} object with 6 documents and 37 features
 #' @references Laver, Michael, Kenneth Benoit, and John Garry.  2003. 
 #'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy 
