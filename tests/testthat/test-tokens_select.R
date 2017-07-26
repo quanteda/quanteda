@@ -115,18 +115,18 @@ test_that("fcm works on tokens containing padding", {
 test_that("tokens_remove works regardless when features are overlapped, issue #711", {
     toks <- tokens("one two three four")
     expect_equal(as.list(tokens_remove(toks, pattern = c("one", "two", "three"))),
-                 list('four'))
+                 list(text1 = 'four'))
     expect_equal(as.list(tokens_remove(toks, pattern = c("one", "two three"))),
-                 list(c("two", "three", "four")))
+                 list(text1 = c("two", "three", "four")))
     expect_equal(as.list(tokens_remove(toks, pattern = c("one two", "two three"))),
                  as.list(toks))
     expect_equal(as.list(tokens_remove(toks, pattern = c("one two", "two three four"))),
                  as.list(toks))
     # for phrases
     expect_equal(as.list(tokens_remove(toks, pattern = phrase(c("one two", "two three")))),
-                 list("four"))
+                 list(text1 = "four"))
     expect_equal(as.list(tokens_remove(toks, pattern = phrase(c("one two", "two three four")))),
-                 list(character()))
+                 list(text1 = character()))
 })
 
 

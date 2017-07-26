@@ -54,22 +54,22 @@ test_that("tokens_compound join a sequences of sequences", {
                    hash = FALSE, what = "fastestword")
     expect_equal(
         as.list(tokens_compound(toks, seqs, valuetype = "glob", case_insensitive = TRUE, join = TRUE)),
-        list(c("a_b_c_d", "e_f_g"),
-             c("A_B_C_D", "E_F_G"))
+        list(text1 = c("a_b_c_d", "e_f_g"),
+             text2 = c("A_B_C_D", "E_F_G"))
     )
     
     expect_equal(
         as.list(tokens_compound(toks, seqs, valuetype = "glob", case_insensitive = TRUE, join = FALSE)),
-        list(c("a_b", "b_c_d", "e_f", "f_g"),
-             c("A_B", "B_C_D", "E_F", "F_G"))
+        list(text1 = c("a_b", "b_c_d", "e_f", "f_g"),
+             text2 = c("A_B", "B_C_D", "E_F", "F_G"))
     )
     
     txts <- 'we like high quality sound'
     seqs <- phrase(c('high quality', 'quality sound'))
     expect_equal(as.list(tokens_compound(tokens(txts), seqs, join = TRUE)),
-                      list(c("we", "like", "high_quality_sound")))
+                      list(text1 = c("we", "like", "high_quality_sound")))
     expect_equal(as.list(tokens_compound(tokens(txts), seqs, join = FALSE)),
-                      list(c("we", "like", "high_quality", "quality_sound")))
+                      list(text1 = c("we", "like", "high_quality", "quality_sound")))
     
 })
 
