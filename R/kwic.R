@@ -47,6 +47,14 @@ kwic <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed")
 #' @export
 kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
                            case_insensitive = TRUE, join = FALSE, ...) {
+    kwic(corpus(x), pattern, window, valuetype, case_insensitive, join, ...)
+}
+
+#' @rdname kwic
+#' @noRd
+#' @export 
+kwic.corpus <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+                        case_insensitive = TRUE, join = FALSE, ...) {
     thecall <- as.list(match.call())[-1]
     if ("keywords" %in% names(thecall)) {
         .Deprecated(msg = "keywords argument has been replaced by pattern")
@@ -56,14 +64,6 @@ kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex"
     }    
     if (is.collocations(pattern) || is.dictionary(pattern))
         pattern <- phrase(pattern) 
-    kwic(tokens(x, ...), pattern, window, valuetype, case_insensitive, join)
-}
-
-#' @rdname kwic
-#' @noRd
-#' @export 
-kwic.corpus <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
-                        case_insensitive = TRUE, join = FALSE, ...) {
     kwic(tokens(x, ...), pattern, window, valuetype, case_insensitive, join)
 }
 
