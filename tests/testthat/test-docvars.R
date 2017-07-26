@@ -210,4 +210,12 @@ test_that("dfm works works with two docvars", {
     expect_equivalent(docvars(dfm2), docv2)
 })
 
+test_that("object always have docvars in the same rows as documents", {
+    
+    txts <- data_char_ukimmig2010
+    toks5 <- as.tokens(kwic(txts, 'immigra*'))
+    expect_true(nrow(docvars(toks5)) == ndoc(toks5))
+    expect_true(all(rownames(docvars(toks5)) == docnames(toks5)))
+})
+
 

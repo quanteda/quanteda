@@ -161,14 +161,15 @@ as.tokens.kwic <- function(x, ...) {
     vars <- attr(x, 'docvars')
     if (is.null(vars))
         vars <- data.frame()
+    docnames <- paste(x$docname, attr(x, 'segid'), sep = ".")
     vars <- structure(vars[attr(x, 'docid'),], 
                       class = 'data.frame',
-                      row.names = paste(rownames(vars)[attr(x, 'docid')], attr(x, 'segid'), sep = "."))
+                      row.names = docnames)
     vars[['_docid']] <- attr(x, 'docid')
     vars[['_segid']] <- attr(x, 'segid')
     result <- structure(attr(x, 'tokens'), 
                         class = c('tokens', 'tokenizedTexts', 'list'),
-                        names = x$docname,
+                        names = docnames,
                         docvars = vars)
     attributes(result, FALSE) <- attributes(x)
     return(result)
