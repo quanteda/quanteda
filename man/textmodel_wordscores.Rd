@@ -51,14 +51,14 @@ Fitting a \code{textmodel_wordscores} results in an object of class
 }
 
 \examples{
-(ws <- textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)))
+(ws <- textmodel_wordscores(data_dfm_lgbexample, c(seq(-1.5, 1.5, .75), NA)))
 
 predict(ws)
 predict(ws, rescaling = "mv")
 predict(ws, rescaling = "lbg")
 
 # same as:
-(ws2 <- textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)))
+(ws2 <- textmodel_wordscores(data_dfm_lgbexample, c(seq(-1.5, 1.5, .75), NA)))
 predict(ws2)
 }
 \references{

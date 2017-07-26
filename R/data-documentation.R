@@ -35,7 +35,7 @@
 #'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy 
 #'   positions from political text using words as data.}" \emph{American
 #'   Political Science Review} 97(2): 311-331.
-"data_dfm_LBGexample"  
+"data_dfm_lbgexample"  
 
 #' Irish budget speeches from 2010
 #' 
