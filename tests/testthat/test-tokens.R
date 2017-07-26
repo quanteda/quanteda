@@ -240,7 +240,9 @@ test_that("remove_url works as expected", {
     toks <- tokens(txt, remove_url = TRUE)
     expect_equal(
         as.list(toks),
-        list(c("The", "URL", "was"), c("The", "URL", "was"), c("is", "another", "URL"))
+        list(text1 = c("The", "URL", "was"), 
+             text2 = c("The", "URL", "was"), 
+             text3 = c("is", "another", "URL"))
     )
 
     toks2 <- tokenize(txt, remove_url = TRUE)
@@ -330,12 +332,12 @@ test_that("docvars are erased for tokens added", {
 test_that("what = character works with @ and #, issue #637", {
     
     expect_equal(as.list(tokens("This: is, a @test! #tag", what = "character", remove_punct = FALSE)),
-                 list(c("T", "h", "i", "s", ":", "i", "s", ",", 
-                        "a", "@", "t", "e", "s", "t", "!", "#", "t", "a", "g")))
+                 list(text1 = c("T", "h", "i", "s", ":", "i", "s", ",", 
+                                "a", "@", "t", "e", "s", "t", "!", "#", "t", "a", "g")))
                       
     expect_equal(as.list(tokens("This: is, a @test! #tag", what = "character", remove_punct = TRUE)),
-                 list(c("T", "h", "i", "s", "i", "s", 
-                        "a", "t", "e", "s", "t", "t", "a", "g")))
+                 list(text1 = c("T", "h", "i", "s", "i", "s", 
+                                "a", "t", "e", "s", "t", "t", "a", "g")))
 
 })
 
@@ -374,40 +376,40 @@ test_that("deprecated tokens arguments still work", {
 test_that("tokens arguments works with values from parent frame (#721)", {
     expect_identical(
         tokens("This contains 99 numbers.", remove_numbers = T),
-        tokens("This contains 99 numbers.", remove_numbers = TRUE),
+        tokens("This contains 99 numbers.", remove_numbers = TRUE)
     )
     
     expect_identical(
         dfm("This contains 99 numbers.", remove_numbers = T),
-        dfm("This contains 99 numbers.", remove_numbers = TRUE),
+        dfm("This contains 99 numbers.", remove_numbers = TRUE)
     )
 
     val <- FALSE
     expect_identical(
         tokens("This contains 99 numbers.", remove_numbers = val),
-        tokens("This contains 99 numbers.", remove_numbers = F),
+        tokens("This contains 99 numbers.", remove_numbers = F)
     )
     expect_identical(
         dfm("This contains 99 numbers.", remove_numbers = val),
-        dfm("This contains 99 numbers.", remove_numbers = F),
+        dfm("This contains 99 numbers.", remove_numbers = F)
     )
 })
 
 test_that("tokens works for strange spaces (#796)", {
     txt <- "space tab\t newline\n non-breakingspace\u00A0, em-space\u2003 variationselector16 \uFE0F."
-    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = TRUE), 12)
+    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = TRUE), c(text1 = 12))
     expect_equal(
         as.character(tokens(txt, remove_punct = TRUE, remove_separators = TRUE)),
         c("space", "tab", "newline", "non-breakingspace", "em-space", "variationselector16")
     )
-    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), 22)
+    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), c(text1 = 22))
     expect_equal(
         as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[20:22],
         c("variationselector16", " \uFE0F", ".")
     )
     expect_equal(
         ntoken(txt, remove_punct = TRUE, remove_separators = FALSE),
-        14
+        c(text1 = 14)
     )
     expect_equal(
         as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[13:14],

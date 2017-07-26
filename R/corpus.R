@@ -15,6 +15,7 @@
 #'   with the fixed metadata 
 #'   fields imported as \link{docvars} and corpus-level metadata imported
 #'   as \link{metacorpus} information.
+#' \item a \link{corpus} object.
 #' } 
 #' @param x a valid corpus source object
 #' @param docnames Names to be assigned to the texts.  Defaults to the names of 
@@ -114,6 +115,19 @@
 #' summary(corpus(mykwic))
 corpus <- function(x, ...) {
     UseMethod("corpus")
+}
+
+#' @rdname corpus
+#' @export
+corpus.corpus <- function(x, docnames = quanteda::docnames(x), docvars = quanteda::docvars(x), metacorpus = quanteda::metacorpus(x), compress = FALSE, ...) {
+    if (!compress) {
+        if (!missing(docnames)) docnames(x) <- docnames
+        if (!missing(docvars)) docnames(x) <- docvars
+        if (!missing(metacorpus)) metacorpus(x) <- metacorpus
+        x
+    } else {
+        corpus(texts(x), docnames, docvars, metacorpus, compress = compress)
+    }
 }
 
 #' @rdname corpus

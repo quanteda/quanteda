@@ -115,18 +115,18 @@ test_that("fcm works on tokens containing padding", {
 test_that("tokens_remove works regardless when features are overlapped, issue #711", {
     toks <- tokens("one two three four")
     expect_equal(as.list(tokens_remove(toks, pattern = c("one", "two", "three"))),
-                 list('four'))
+                 list(text1 = 'four'))
     expect_equal(as.list(tokens_remove(toks, pattern = c("one", "two three"))),
-                 list(c("two", "three", "four")))
+                 list(text1 = c("two", "three", "four")))
     expect_equal(as.list(tokens_remove(toks, pattern = c("one two", "two three"))),
                  as.list(toks))
     expect_equal(as.list(tokens_remove(toks, pattern = c("one two", "two three four"))),
                  as.list(toks))
     # for phrases
     expect_equal(as.list(tokens_remove(toks, pattern = phrase(c("one two", "two three")))),
-                 list("four"))
+                 list(text1 = "four"))
     expect_equal(as.list(tokens_remove(toks, pattern = phrase(c("one two", "two three four")))),
-                 list(character()))
+                 list(text1 = character()))
 })
 
 
@@ -143,8 +143,8 @@ char_uni <- c("a", "b", "g", "j")
 char_bi <- c("a b", "g j")
 list_uni <- list("a", "b", "g", "j")
 list_bi <- list("a b", "g j")
-dict_uni <- dictionary(one = c("a", "b"), two = c("g", "j"))
-dict_bi <- dictionary(one = "a b", two = "g j")
+dict_uni <- dictionary(list(one = c("a", "b"), two = c("g", "j")))
+dict_bi <- dictionary(list(one = "a b", two = "g j"))
 coll_bi <- textstat_collocations(toks_uni, method = "lr", size = 2)
 coll_tri <- textstat_collocations(toks_uni, method = "lr", size = 3)[1, ]
 

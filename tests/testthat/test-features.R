@@ -151,7 +151,7 @@ test_that("dictionary works consistently on tokens", {
     
     toks <- tokens(c("a b c d e a_b_c d e"))
     toksch <- as.character(toks)
-    dict <- dictionary(ABC = 'a b c', D = 'd', E = 'e')
+    dict <- dictionary(list(ABC = 'a b c', D = 'd', E = 'e'))
 
     expect_equal(
         as.character(tokens_compound(toks, pattern = dict)),
@@ -193,7 +193,7 @@ test_that("dictionary works consistently on tokens", {
 test_that("dictionary works consistently on dfm", {
     
     mx <- dfm(c("a b c d e a_b_c d e"))
-    dict <- dictionary(ABC = 'a_b_c', D = 'd', E = 'e')
+    dict <- dictionary(list(ABC = 'a_b_c', D = 'd', E = 'e'))
     expect_equivalent(
         featnames(dfm_select(mx, pattern = dict)),
         c('d', 'e', 'a_b_c'))

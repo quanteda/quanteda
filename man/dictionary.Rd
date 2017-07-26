@@ -4,11 +4,11 @@
 \alias{dictionary}
 \title{create a dictionary}
 \usage{
-dictionary(..., file = NULL, format = NULL, separator = " ",
+dictionary(x, file = NULL, format = NULL, separator = " ",
   tolower = TRUE, encoding = "auto")
 }
 \arguments{
-\item{...}{a named list of character vector dictionary entries, including \link{valuetype} pattern
+\item{x}{a named list of character vector dictionary entries, including \link{valuetype} pattern
 matches, and including multi-word expressions separated by \code{concatenator}.  The argument 
 may be an explicit list or named set of elements that can be turned into a list.  See examples.
 This argument may be omitted if the dictionary is read from \code{file}.}
@@ -54,11 +54,6 @@ mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           taxregex = "tax*",
                           country = "america"))
 head(dfm(mycorpus, dictionary = mydict))
-
-# also works
-mydict2 <- dictionary(christmas = c("Christmas", "Santa", "holiday"),
-                      opposition = c("Opposition", "reject", "notincorpus"))
-dfm(mycorpus, dictionary = mydict2)
 
 \dontrun{
 # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
