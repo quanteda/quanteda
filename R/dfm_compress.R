@@ -120,7 +120,6 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
         features_unique <- unique(features)
         features_index <- match(features, features_unique)
         j_new <- features_index[temp@j + 1]
-        docvars_new <- docvars(x)
         
         #print(as.character(levels(features)))
         #print(features_name)
@@ -139,7 +138,6 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
         documents_unique <- unique(documents)
         documents_index <- match(documents, documents_unique)
         i_new <- documents_index[temp@i + 1]
-        docvars_new <- data.frame()
         
         #print(as.character(levels(documents)))
         #print(documents_name)
@@ -164,9 +162,13 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
                   smooth = x@smooth,
                   ngrams = x@ngrams,
                   skip = x@skip,
-                  concatenator = x@concatenator,
-                  docvars = docvars_new)
-
+                  concatenator = x@concatenator)
+    
+    if (is.null(documents)) {
+        docvars(result) <- docvars(x)
+    } else {
+        docvars(result) <- data.frame(row.names = documents_name)
+    }
     return(result)
 }
 
