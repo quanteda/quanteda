@@ -1,83 +1,86 @@
 context('Testing dfm*.R')
 
-mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900)
-mydict <- dictionary(list(christmas=c("Christmas", "Santa", "holiday"),
-                          opposition=c("Opposition", "reject", "notincorpus"),
-                          taxing="taxing",
-                          taxation="taxation",
-                          taxregex="tax*",
-                          country="united_states"))
-dictDfm <- dfm(mycorpus, dictionary = mydict, valuetype = "glob")
-dictDfm[1:10, ]
-thesDfm <- dfm(mycorpus, thesaurus = mydict, valuetype = "glob")
-thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
+test_that("oldest dfm test", {
+    mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900)
+    mydict <- dictionary(list(christmas=c("Christmas", "Santa", "holiday"),
+                              opposition=c("Opposition", "reject", "notincorpus"),
+                              taxing="taxing",
+                              taxation="taxation",
+                              taxregex="tax*",
+                              country="united_states"))
+    dictDfm <- dfm(mycorpus, dictionary = mydict, valuetype = "glob")
+    dictDfm[1:10, ]
+    thesDfm <- dfm(mycorpus, thesaurus = mydict, valuetype = "glob")
+    thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
+    
+    preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE)
+    dfm_lookup(preDictDfm, mydict)
+    
+    txt <- tokens(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
+                                   "The United_States has progressive taxation.")),
+                    remove_punct = TRUE)
+    
+    
+    dfm(txt, dictionary = mydict, verbose = FALSE)
+    dfm(txt, thesaurus = mydict, verbose = FALSE)
+    dfm(txt, thesaurus = mydict, verbose = FALSE)
+    
+    (txtDfm <- dfm(txt, verbose = FALSE))
+    dfm_lookup(txtDfm, mydict, valuetype = "glob") 
+    dfm_lookup(txtDfm, mydict, exclusive = FALSE, valuetype = "glob", verbose = FALSE) 
+    
+    
+    inaugTextsTokenized <- tokens(data_corpus_inaugural, remove_punct = TRUE)
+    inaugTextsTokenized <- tokens_tolower(inaugTextsTokenized)
+    
+    # microbenchmark::microbenchmark(
+    #     dfm(inaugTextsTokenized, verbose = FALSE),
+    #     dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE),
+    # )
+    
+    ## need to be carefully inspected!
+    txt <- "The tall brown trees with pretty leaves in its branches."
+    dfm(txt)
+    dfm(txt, stem = TRUE)
+    dfm(txt, remove = stopwords("english"))
+    dfm(txt, stem = TRUE, remove = stopwords("english"))
+    
+    
+    myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
+                              opposition = c("Opposition", "reject", "notincorpus"),
+                              taxglob = "tax*",
+                              taxregex = "tax.+$",
+                              country = c("United_States", "Sweden")))
+    myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
+                   "Does the United_States or Sweden have more progressive taxation?"),
+                 remove = stopwords("english"), remove_punct = TRUE, tolower = FALSE,
+                 verbose = FALSE)
+    myDfm
+    # glob format
+    (tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE))
+    expect_equal(as.vector(tmp[, c("christmas", "country")]), c(1, 0, 0, 2))
+    (tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = FALSE))
+    expect_equal(as.vector(tmp[, c("christmas", "country")]), c(0, 0, 0, 0))
+    # regex v. glob format
+    (tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE))
+    expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 1, 0, 0))
+    (tmp <- dfm_lookup(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE))
+    expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 2, 0, 1))
+    ## note: "united_states" is a regex match for "tax*"!!
+    
+    (tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed"))
+    expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 2))
+    (tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE))
+    expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 0))
 
-preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE)
-dfm_lookup(preDictDfm, mydict)
+})
 
-txt <- tokens(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
-                               "The United_States has progressive taxation.")),
-                remove_punct = TRUE)
-
-
-dfm(txt, dictionary = mydict, verbose = FALSE)
-dfm(txt, thesaurus = mydict, verbose = FALSE)
-dfm(txt, thesaurus = mydict, verbose = FALSE)
-
-(txtDfm <- dfm(txt, verbose = FALSE))
-dfm_lookup(txtDfm, mydict, valuetype = "glob") 
-dfm_lookup(txtDfm, mydict, exclusive = FALSE, valuetype = "glob", verbose = FALSE) 
-
-
-inaugTextsTokenized <- tokens(data_corpus_inaugural, remove_punct = TRUE)
-inaugTextsTokenized <- tokens_tolower(inaugTextsTokenized)
-
-# microbenchmark::microbenchmark(
-#     dfm(inaugTextsTokenized, verbose = FALSE),
-#     dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE),
-# )
-
-## need to be carefully inspected!
-txt <- "The tall brown trees with pretty leaves in its branches."
-dfm(txt)
-dfm(txt, stem = TRUE)
-dfm(txt, remove = stopwords("english"))
-dfm(txt, stem = TRUE, remove = stopwords("english"))
-
-
-myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
-                          opposition = c("Opposition", "reject", "notincorpus"),
-                          taxglob = "tax*",
-                          taxregex = "tax.+$",
-                          country = c("United_States", "Sweden")))
-myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
-               "Does the United_States or Sweden have more progressive taxation?"),
-             remove = stopwords("english"), remove_punct = TRUE, tolower = FALSE,
-             verbose = FALSE)
-myDfm
-# glob format
-(tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE))
-expect_equal(as.vector(tmp[, c("christmas", "country")]), c(1, 0, 0, 2))
-(tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = FALSE))
-expect_equal(as.vector(tmp[, c("christmas", "country")]), c(0, 0, 0, 0))
-# regex v. glob format
-(tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE))
-expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 1, 0, 0))
-(tmp <- dfm_lookup(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE))
-expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 2, 0, 1))
-## note: "united_states" is a regex match for "tax*"!!
-
-(tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed"))
-expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 2))
-(tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE))
-expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 0))
-
-test_that("test c.corpus",
+test_that("test c.corpus", {
     expect_that(
         matrix(dfm(corpus(c('What does the fox say?', 'What does the fox say?', '')), remove_punct = TRUE)),
         equals(matrix(rep(c(1, 1, 0), 5), nrow=15, ncol=1))
     )
-)
+})
 
 ## rbind.dfm
 ## TODO: Test classes returned
