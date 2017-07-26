@@ -63,8 +63,8 @@ setClass("textmodel_wordshoal_predicted",
 #'                         authors = docvars(data_corpus_irish30, "member.name"))
 #' fitdf <- merge(as.data.frame(summary(wordshoalfit)),
 #'                docvars(data_corpus_irish30), 
-#'                by.x="row.names", by.y="member.name")
-#' fitdf <- subset(fitdf,!duplicated(memberID))
+#'                by.x = "row.names", by.y = "member.name")
+#' fitdf <- subset(fitdf, !duplicated(memberID))
 #' aggregate(theta ~ party.name, data = fitdf, mean)
 #' }
 #' @importFrom stats dgamma dnorm
