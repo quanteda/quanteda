@@ -210,4 +210,44 @@ test_that("dfm works works with two docvars", {
     expect_equivalent(docvars(dfm2), docv2)
 })
 
+test_that("object always have docvars in the same rows as documents", {
+    
+    txts <- data_char_ukimmig2010
+    corp <- corpus(txts)
+    expect_true(nrow(docvars(corp)) == ndoc(corp))
+    expect_true(all(rownames(docvars(corp)) == docnames(corp)))
+    
+    toks1 <- tokens(txts)
+    expect_true(nrow(docvars(toks1)) == ndoc(toks1))
+    expect_true(all(rownames(docvars(toks1)) == docnames(toks1)))
+    
+    toks2 <- tokens(corpus(txts))
+    expect_true(nrow(docvars(toks2)) == ndoc(toks2))
+    expect_true(all(rownames(docvars(toks2)) == docnames(toks2)))
+    
+    toks3 <- quanteda:::tokens_group(toks1, rep(c(1, 2, 3), 3))
+    expect_true(nrow(docvars(toks3)) == ndoc(toks3))
+    expect_true(all(rownames(docvars(toks3)) == docnames(toks3)))
+    
+    dfm1 <- dfm(txts)
+    expect_true(nrow(docvars(dfm1)) == ndoc(dfm1))
+    expect_true(all(rownames(docvars(toks3)) == docnames(toks3)))
+    
+    dfm2 <- dfm(tokens(txts))
+    expect_true(nrow(docvars(dfm2)) == ndoc(dfm2))
+    expect_true(all(rownames(docvars(dfm2)) == docnames(dfm2)))
+    
+    dfm3 <- dfm(corpus(txts))
+    expect_true(nrow(docvars(dfm3)) == ndoc(dfm3))
+    expect_true(all(rownames(docvars(dfm3)) == docnames(dfm3)))
+    
+    dfm4 <- dfm_group(dfm1, rep(c(1, 2, 3), 3))
+    expect_true(nrow(docvars(dfm4)) == ndoc(dfm4))
+    expect_true(all(rownames(docvars(dfm4)) == docnames(dfm4)))
+    
+    dfm5 <- dfm(dfm1, group = rep(c(1, 2, 3), 3))
+    expect_true(nrow(docvars(dfm5)) == ndoc(dfm5))
+    expect_true(all(rownames(docvars(dfm5)) == docnames(dfm5)))
+})
+
 
