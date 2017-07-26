@@ -12,9 +12,9 @@
 #' @param type a label of the weight type:
 #' \describe{
 #'  \item{\code{"frequency"}}{integer feature count (default when a dfm is created)}
-#'  \item{\code{"relFreq"}}{the proportion of the feature counts of total feature counts (aka relative frequency)}
-#'  \item{\code{"relMaxFreq"}}{the proportion of the feature counts of the highest feature count in a document}
-#'  \item{\code{"logFreq"}}{take the logarithm of 1 + the feature count, for base 10}
+#'  \item{\code{"relfreq"}}{the proportion of the feature counts of total feature counts (aka relative frequency)}
+#'  \item{\code{"relmaxfreq"}}{the proportion of the feature counts of the highest feature count in a document}
+#'  \item{\code{"logfreq"}}{take the logarithm of 1 + the feature count, for base 10}
 #'  \item{\code{"tfidf"}}{Term-frequency * inverse document frequency. For a
 #'   full explanation, see, for example, 
 #'   \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
@@ -38,11 +38,11 @@
 #' 
 #' x <- apply(dtm, 1, function(tf) tf/max(tf))
 #' topfeatures(dtm)
-#' normDtm <- dfm_weight(dtm, "relFreq")
+#' normDtm <- dfm_weight(dtm, "relfreq")
 #' topfeatures(normDtm)
-#' maxTfDtm <- dfm_weight(dtm, type = "relMaxFreq")
+#' maxTfDtm <- dfm_weight(dtm, type = "relmaxfreq")
 #' topfeatures(maxTfDtm)
-#' logTfDtm <- dfm_weight(dtm, type = "logFreq")
+#' logTfDtm <- dfm_weight(dtm, type = "logfreq")
 #' topfeatures(logTfDtm)
 #' tfidfDtm <- dfm_weight(dtm, type = "tfidf")
 #' topfeatures(tfidfDtm)
@@ -58,7 +58,7 @@
 #' 
 #' \dontshow{
 #' testdfm <- dfm(data_corpus_inaugural[1:5])
-#' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
+#' for (w in c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf")) {
 #'     testw <- dfm_weight(testdfm, w)
 #'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
 #'     head(testw)
@@ -67,7 +67,7 @@
 #'   \emph{Introduction to Information Retrieval}. Vol. 1. Cambridge: Cambridge 
 #'   University Press, 2008.
 dfm_weight <- function(x, 
-                       type = c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"),
+                       type = c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf"),
                        weights = NULL) {
     UseMethod("dfm_weight")
 }
@@ -75,7 +75,7 @@ dfm_weight <- function(x,
 #' @noRd
 #' @export
 dfm_weight.dfm <- function(x, 
-                           type = c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"),
+                           type = c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf"),
                            weights = NULL) {
     # for numeric weights
     if (!is.null(weights)) {
@@ -96,15 +96,16 @@ dfm_weight.dfm <- function(x,
         
     } else {
         # named type weights
+        type <- char_tolower(type)
         type <- match.arg(type)
         
         if (x@weightTf[["scheme"]] != "count") {
             catm("  No weighting applied: you should not weight an already weighted dfm.\n")
-        } else if (type=="relFreq") {
+        } else if (type=="relfreq") {
             return(tf(x, "prop"))
-        } else if (type=="relMaxFreq") {
+        } else if (type=="relmaxfreq") {
             return(tf(x, "propmax"))
-        } else if (type=="logFreq") {
+        } else if (type=="logfreq") {
             return(tf(x, "log"))
         } else if (type=="tfidf") {
             return(tfidf(x))
@@ -263,10 +264,10 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
 #' @seealso \code{\link{tf}}, \code{\link{docfreq}}
 #' @keywords internal weighting dfm
 #' @examples 
-#' head(data_dfm_LBGexample[, 5:10])
-#' head(tfidf(data_dfm_LBGexample)[, 5:10])
-#' docfreq(data_dfm_LBGexample)[5:15]
-#' head(tf(data_dfm_LBGexample)[, 5:10])
+#' head(data_dfm_lbgexample[, 5:10])
+#' head(tfidf(data_dfm_lbgexample)[, 5:10])
+#' docfreq(data_dfm_lbgexample)[5:15]
+#' head(tf(data_dfm_lbgexample)[, 5:10])
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf

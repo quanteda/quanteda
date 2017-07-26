@@ -1,7 +1,6 @@
 context('Testing dfm*.R')
 
 test_that("oldest dfm test", {
-          
     mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900)
     mydict <- dictionary(list(christmas=c("Christmas", "Santa", "holiday"),
                               opposition=c("Opposition", "reject", "notincorpus"),
@@ -22,9 +21,9 @@ test_that("oldest dfm test", {
                     remove_punct = TRUE)
     
     
-    dfm(txt, dictionary = mydict, verbose = TRUE)
-    dfm(txt, thesaurus = mydict, verbose = TRUE)
-    dfm(txt, thesaurus = mydict, verbose = TRUE)
+    dfm(txt, dictionary = mydict, verbose = FALSE)
+    dfm(txt, thesaurus = mydict, verbose = FALSE)
+    dfm(txt, thesaurus = mydict, verbose = FALSE)
     
     (txtDfm <- dfm(txt, verbose = FALSE))
     dfm_lookup(txtDfm, mydict, valuetype = "glob") 
