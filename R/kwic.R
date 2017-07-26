@@ -55,13 +55,14 @@ kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex"
 #' @export 
 kwic.corpus <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
                         case_insensitive = TRUE, join = FALSE, ...) {
-    thecall <- as.list(match.call())[-1]
-    if ("keywords" %in% names(thecall)) {
-        .Deprecated(msg = "keywords argument has been replaced by pattern")
-        names(thecall)[which(names(thecall) == "keywords")] <- "pattern"
-        thecall[["x"]] <- x
-        return(do.call(kwic, thecall))
-    }    
+    #thecall <- as.list(match.call())[-1]
+    # if ("keywords" %in% names(thecall)) {
+    #     .Deprecated(msg = "keywords argument has been replaced by pattern")
+    #     names(thecall)[which(names(thecall) == "keywords")] <- "pattern"
+    #     thecall[["x"]] <- x
+    #     print(thecall)
+    #     return(do.call(kwic, thecall))
+    # }    
     if (is.collocations(pattern) || is.dictionary(pattern))
         pattern <- phrase(pattern) 
     kwic(tokens(x, ...), pattern, window, valuetype, case_insensitive, join)
@@ -158,18 +159,12 @@ print.kwic <- function(x, ...) {
 #' @export
 #' @method as.tokens kwic
 as.tokens.kwic <- function(x, ...) {
-    vars <- attr(x, 'docvars')
-    if (is.null(vars))
-        vars <- data.frame()
-    docnames <- paste(x$docname, attr(x, 'segid'), sep = ".")
-    vars <- structure(vars[attr(x, 'docid'),], 
-                      class = 'data.frame',
-                      row.names = docnames)
+    vars <- docvars(x)
     vars[['_docid']] <- attr(x, 'docid')
     vars[['_segid']] <- attr(x, 'segid')
     result <- structure(attr(x, 'tokens'), 
                         class = c('tokens', 'tokenizedTexts', 'list'),
-                        names = docnames,
+                        names = rownames(vars),
                         docvars = vars)
     attributes(result, FALSE) <- attributes(x)
     return(result)

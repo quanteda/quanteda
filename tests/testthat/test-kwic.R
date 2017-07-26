@@ -377,25 +377,25 @@ test_that("kwic works as expected with and without phrases", {
 
 })
 
-test_that("deprecated keywords argument still works", {
-    txt <- "The quick brown fox jumped over the lazy dog."
-    expect_warning(
-        kwic(txt, keywords = "fox", window = 3),
-        "keywords argument has been replaced by pattern"
-    )
-    expect_equal(
-        suppressWarnings(kwic(txt, keywords = "fox", window = 3)$keyword),
-        "fox"
-    )
-    expect_warning(
-        kwic(tokens(txt), keywords = "fox", window = 3),
-        "keywords argument has been replaced by pattern"
-    )
-    expect_equal(
-        suppressWarnings(kwic(tokens(txt), keywords = "fox", window = 3)$keyword),
-        "fox"
-    )
-})
+# test_that("deprecated keywords argument still works", {
+#     txt <- "The quick brown fox jumped over the lazy dog."
+#     expect_warning(
+#         kwic(txt, keywords = "fox", window = 3),
+#         "keywords argument has been replaced by pattern"
+#     )
+#     expect_equal(
+#         suppressWarnings(kwic(txt, keywords = "fox", window = 3)$keyword),
+#         "fox"
+#     )
+#     expect_warning(
+#         kwic(tokens(txt), keywords = "fox", window = 3),
+#         "keywords argument has been replaced by pattern"
+#     )
+#     expect_equal(
+#         suppressWarnings(kwic(tokens(txt), keywords = "fox", window = 3)$keyword),
+#         "fox"
+#     )
+# })
 
 test_that("test docvar is passed through kwic()", {
     
