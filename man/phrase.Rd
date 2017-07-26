@@ -29,7 +29,7 @@ patterns, separated by whitespace.
 phrase(c("a b", "c d e", "f"))
 
 # from a dictionary
-phrase(dictionary(catone = c("a b"), cattwo = "c d e", catthree = "f"))
+phrase(dictionary(list(catone = c("a b"), cattwo = "c d e", catthree = "f")))
 
 # from a collocations object
 (coll <- textstat_collocations(tokens("a b c a b d e b d a b")))

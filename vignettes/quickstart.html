@@ -251,18 +251,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## Corpus consisting of 9 documents.
 ## 
 ##          Text Types Tokens Sentences        Party Year
-##           BNP  1126   3330        88          BNP 2010
-##     Coalition   144    268         4    Coalition 2010
-##  Conservative   252    503        15 Conservative 2010
-##        Greens   325    687        21       Greens 2010
-##        Labour   296    703        29       Labour 2010
-##        LibDem   257    499        14       LibDem 2010
-##            PC    80    118         5           PC 2010
-##           SNP    90    136         4          SNP 2010
-##          UKIP   346    739        27         UKIP 2010
+##           BNP  1126   3330      3330          BNP 2010
+##     Coalition   144    268       268    Coalition 2010
+##  Conservative   252    503       503 Conservative 2010
+##        Greens   325    687       687       Greens 2010
+##        Labour   296    703       703       Labour 2010
+##        LibDem   257    499       499       LibDem 2010
+##            PC    80    118       118           PC 2010
+##           SNP    90    136       136          SNP 2010
+##          UKIP   346    739       739         UKIP 2010
 ## 
 ## Source:  /home/kohei/packages/quanteda/vignettes/* on x86_64 by kohei
-## Created: Wed Jul 26 15:38:36 2017
+## Created: Wed Jul 26 11:30:30 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">metadoc</span>(myCorpus, <span class="st">&quot;language&quot;</span>) &lt;-<span class="st"> &quot;english&quot;</span>
@@ -598,25 +598,30 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <span class="kw">tokens</span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 ## tokens from 2 documents.
 ## text1 :
-##  [1] &quot;This&quot;      &quot;is&quot;        &quot;in&quot;        &quot;different&quot; &quot;ways&quot;      &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;left&quot;      &quot;and&quot;       &quot;right&quot;    
-## 
-## text2 :
-## [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;on&quot;             &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;http&quot;           &quot;textasdata.com&quot; &quot;page&quot;
-<span class="kw">tokens</span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
-## tokens from 2 documents.
-## text1 :
-##  [1] &quot;This&quot;      &quot;is&quot;        &quot;10&quot;        &quot;in&quot;        &quot;999&quot;       &quot;different&quot; &quot;ways&quot;      &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;left&quot;      &quot;and&quot;       &quot;right&quot;    
-## 
-## text2 :
-##  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;on&quot;             &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;http&quot;           &quot;textasdata.com&quot; &quot;page&quot;           &quot;123&quot;
-<span class="kw">tokens</span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)
-## tokens from 2 documents.
-## text1 :
-##  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;in&quot;        &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;;&quot;         &quot;left&quot;      &quot;and&quot;       &quot;right&quot;     &quot;!&quot;        
+##  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;10&quot;        &quot;in&quot;        &quot;999&quot;       &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;;&quot;         &quot;left&quot;      &quot;and&quot;       &quot;right&quot;    
+## [17] &quot;!&quot;        
 ## 
 ## text2 :
 ##  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;:&quot;              &quot;on&quot;             &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;,&quot;              &quot;http&quot;           &quot;:&quot;              &quot;/&quot;             
-## [12] &quot;/&quot;              &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;              &quot;.&quot;
+## [12] &quot;/&quot;              &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;              &quot;123&quot;            &quot;.&quot;
+<span class="kw">tokens</span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+## tokens from 2 documents.
+## text1 :
+##  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;10&quot;        &quot;in&quot;        &quot;999&quot;       &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;;&quot;         &quot;left&quot;      &quot;and&quot;       &quot;right&quot;    
+## [17] &quot;!&quot;        
+## 
+## text2 :
+##  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;:&quot;              &quot;on&quot;             &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;,&quot;              &quot;http&quot;           &quot;:&quot;              &quot;/&quot;             
+## [12] &quot;/&quot;              &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;              &quot;123&quot;            &quot;.&quot;
+<span class="kw">tokens</span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)
+## tokens from 2 documents.
+## text1 :
+##  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;10&quot;        &quot;in&quot;        &quot;999&quot;       &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;      &quot;;&quot;         &quot;left&quot;      &quot;and&quot;       &quot;right&quot;    
+## [17] &quot;!&quot;        
+## 
+## text2 :
+##  [1] &quot;@kenbenoit&quot;     &quot;working&quot;        &quot;:&quot;              &quot;on&quot;             &quot;#quanteda&quot;      &quot;2day&quot;           &quot;4ever&quot;          &quot;,&quot;              &quot;http&quot;           &quot;:&quot;              &quot;/&quot;             
+## [12] &quot;/&quot;              &quot;textasdata.com&quot; &quot;?&quot;              &quot;page&quot;           &quot;=&quot;              &quot;123&quot;            &quot;.&quot;
 <span class="kw">tokens</span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)
 ## tokens from 2 documents.
 ## text1 :

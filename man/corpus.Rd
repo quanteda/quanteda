@@ -2,6 +2,7 @@
 % Please edit documentation in R/corpus.R
 \name{corpus}
 \alias{corpus}
+\alias{corpus.corpus}
 \alias{corpus.character}
 \alias{corpus.data.frame}
 \alias{corpus.kwic}
@@ -9,6 +10,10 @@
 \title{construct a corpus object}
 \usage{
 corpus(x, ...)
+
+\method{corpus}{corpus}(x, docnames = quanteda::docnames(x),
+  docvars = quanteda::docvars(x), metacorpus = quanteda::metacorpus(x),
+  compress = FALSE, ...)
 
 \method{corpus}{character}(x, docnames = NULL, docvars = NULL,
   metacorpus = NULL, compress = FALSE, ...)
@@ -80,6 +85,7 @@ meta-data.  This matches the format of data.frames constructed by the the
   with the fixed metadata 
   fields imported as \link{docvars} and corpus-level metadata imported
   as \link{metacorpus} information.
+\item a \link{corpus} object.
 }
 }
 \details{

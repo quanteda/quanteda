@@ -14,11 +14,12 @@ tokens_group <- function(x, groups = NULL) {
     attrs <- attributes(x)
     groups <- generate_groups(x, groups)
     groups_index <- rep(groups, lengths(x))
-    x <- base::split(unlist(unclass(x), use.names = FALSE), factor(groups_index, levels = unique(groups)))
-    names(x) <- as.character(names(x))
-    attributes(x, FALSE) <- attrs
-    docvars(x) <- NULL
-    return(x)
+    result <- structure(base::split(unlist(unclass(x), use.names = FALSE), 
+                                    factor(groups_index, levels = unique(groups))),
+                        class = c('tokens', 'tokenizedTexts'))
+    docvars(result) <- data.frame(row.names = docnames(result))
+    attributes(result, FALSE) <- attrs
+    return(result)
 }
 
 # internal function to generate a grouping vector from docvars

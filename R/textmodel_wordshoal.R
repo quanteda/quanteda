@@ -59,12 +59,12 @@ setClass("textmodel_wordshoal_predicted",
 #' iedfm <- dfm(data_corpus_irish30, remove_punct = TRUE)
 #' wordshoalfit <- 
 #'     textmodel_wordshoal(iedfm, dir = c(7,1),
-#'                         groups = docvars(ie30corpus, "debateID"), 
-#'                         authors = docvars(ie30corpus, "member.name"))
+#'                         groups = docvars(data_corpus_irish30, "debateID"), 
+#'                         authors = docvars(data_corpus_irish30, "member.name"))
 #' fitdf <- merge(as.data.frame(summary(wordshoalfit)),
-#'                docvars(ie30corpus), 
-#'                by.x="row.names", by.y="member.name")
-#' fitdf <- subset(fitdf,!duplicated(memberID))
+#'                docvars(data_corpus_irish30), 
+#'                by.x = "row.names", by.y = "member.name")
+#' fitdf <- subset(fitdf, !duplicated(memberID))
 #' aggregate(theta ~ party.name, data = fitdf, mean)
 #' }
 #' @importFrom stats dgamma dnorm

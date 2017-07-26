@@ -248,3 +248,23 @@ check_fields <- function(x, field = NULL) {
     }
 }
 
+## internal function to select docvara fields
+select_fields <- function(x, types = c('user', 'system')) {
+
+    names <- names(x)
+    is_system <- stri_startswith_fixed(names, '_') 
+    is_text <- stri_detect_fixed(names, 'texts') | stri_detect_fixed(names, '_texts')
+    
+    result <- data.frame(row.names = row.names(x))
+    if ('text' %in% types) {
+        result <- cbind(result, x[,is_text, drop = FALSE])
+    } 
+    if ('system' %in% types) {
+        result <- cbind(result, x[,is_system & !is_text, drop = FALSE])
+    }
+    if ('user' %in% types) {
+        result <- cbind(result, x[,!is_system & !is_text, drop = FALSE])
+    } 
+    return(result)
+}
+

@@ -43,6 +43,6 @@ with(afinn, table(score, sentiment))
 as.dictionary(afinn)
 }
 
-is.dictionary(dictionary(key1 = c("val1", "val2"), key2 = "val3"))
+is.dictionary(dictionary(list(key1 = c("val1", "val2"), key2 = "val3")))
 is.dictionary(list(key1 = c("val1", "val2"), key2 = "val3"))
 }

@@ -8,9 +8,9 @@ test_that("dictionary constructors fail if all elements unnamed: explicit", {
 })
 
 test_that("dictionary constructors fail if all elements unnamed: implicit", {
-    expect_error(dictionary(c("a", "b"), "c"),
+    expect_error(dictionary(list(c("a", "b"), "c")),
                  "Dictionary elements must be named: a b c")
-    expect_error(dictionary(first =  c("a", "b"), "c"),
+    expect_error(dictionary(list(first =  c("a", "b"), "c")),
                  "Unnamed dictionary entry: c")
 })
 
@@ -19,18 +19,20 @@ test_that("dictionary constructors fail if a value is numeric", {
                  "Non-character entries found: 2016")
 })
 
-test_that("dictionary constructor works on list explicitly or implicitly", {
-    expect_equal(dictionary(list(first =  c("a", "b"), second = "c")),
-                 dictionary(first =  c("a", "b"), second = "c"))
+# test_that("dictionary constructor works on list explicitly or implicitly", {
+#     expect_equal(dictionary(list(first =  c("a", "b"), second = "c")),
+#                  dictionary(first =  c("a", "b"), second = "c"))
+# })
+
+test_that("dictionary constructor ignores extra arguments", {
+    expect_error(
+        dictionary(list(first =  c("a", "b"), second = "c"), something = TRUE),
+        "unused argument \\(something = TRUE\\)"
+    )
 })
 
-test_that("dictionary constructor ignores non-character arguments in the implicit mode", {
-    expect_equal(dictionary(first =  c("a", "b"), second = "c"),
-                 dictionary(first =  c("a", "b"), second = "c", something = TRUE))
-})
-
-marydict <- dictionary("A CATEGORY" = c("more", "lamb", "little"),
-                       "ANOTHER CATEGORY" = c("had", "mary"))
+marydict <- dictionary(list("A CATEGORY" = c("more", "lamb", "little"),
+                       "ANOTHER CATEGORY" = c("had", "mary")))
 
 test_that("dictionary constructor works with wordstat format", {
     expect_equivalent(dictionary(file = "../data/dictionaries/mary.cat"),
@@ -127,11 +129,11 @@ test_that("indexing for dictionary objects works", {
 })
 
 test_that("indexing for dictionary keys works", {
-    dict <- dictionary(one = c("a", "b"), two = c("c", "d"))
+    dict <- dictionary(list(one = c("a", "b"), two = c("c", "d")))
     expect_true(is.dictionary(dict[1]))
     expect_equal(
         dict[1],
-        dictionary(one = c("a", "b"))
+        dictionary(list(one = c("a", "b")))
     )
 
     expect_output(
@@ -154,12 +156,12 @@ test_that("indexing for dictionary keys works", {
 
 
 test_that("dictionary_depth works correctly", {
-    dict1 <- dictionary(one = c("a", "b"), two = c("c", "d"))
+    dict1 <- dictionary(list(one = c("a", "b"), two = c("c", "d")))
     expect_equal(quanteda:::dictionary_depth(dict1), 1)
     
-    dict2 <- dictionary(one = c("a", "b"), 
+    dict2 <- dictionary(list(one = c("a", "b"), 
                         two = list(sub1 = c("c", "d"),
-                                   sub2 = c("e", "f")))
+                                   sub2 = c("e", "f"))))
     expect_equal(quanteda:::dictionary_depth(dict2), 2)
     
     expect_output(
@@ -170,7 +172,7 @@ test_that("dictionary_depth works correctly", {
 
 test_that("as.list is working", {
     
-    dict <- dictionary(one = c("a", "b"), two = c("c", "d"))
+    dict <- dictionary(list(one = c("a", "b"), two = c("c", "d")))
     expect_equal(
         as.list(dict),
         list(one = c("a", "b"), two = c("c", "d"))
@@ -182,9 +184,9 @@ test_that("as.list is working", {
 })
 
 test_that("error if empty separator is given", {
-    expect_error(dictionary(one = c("a", "b"), two = c("c", "d"), separator = ''),
+    expect_error(dictionary(list(one = c("a", "b"), two = c("c", "d")), separator = ""),
                  "separator must be a non-empty character")
-    expect_error(dictionary(one = c("a", "b"), two = c("c", "d"), separator = NULL),
+    expect_error(dictionary(list(one = c("a", "b"), two = c("c", "d")), separator = NULL),
                  "separator must be a non-empty character")
 })
 
@@ -264,3 +266,22 @@ test_that("dictionary works with yoshicoder, issue 819", {
         list('Dictionary' = list('pos' = list('A' = 'a word', 'B' = 'b word'))))
 })
 
+test_that("dictionary constructor works on a dictionary", {
+    dictlist <- list(one = LETTERS[1:2], Two = letters[1:3], three = c("E f", "g"))
+    dict <- dictionary(dictlist, tolower = FALSE)
+    expect_identical(
+        dict,
+        dictionary(dict, tolower = FALSE)
+    )
+
+    dictlist2 <- list(one = LETTERS[1:2], Two = letters[1:3], three = c("E_f", "g"))
+    dict2 <- dictionary(dictlist, tolower = FALSE)
+    expect_equal(
+        dictionary(dictlist, tolower = FALSE, separator = "_"),
+        dictionary(dict2, tolower = FALSE, separator = "_")
+    )
+    expect_equal(
+        as.list(dictionary(dict2, separator = "_", tolower = FALSE)),
+        dictlist
+    )
+})
