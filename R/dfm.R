@@ -290,7 +290,7 @@ dfm.tokenizedTexts <- function(x,
     if (!is.null(attr(x, "docvars"))) {
         result@docvars <- attr(x, "docvars")
     } else {
-        result@docvars <- data.frame()
+        result@docvars <- data.frame(row.names = docnames(x))
     }
     
     dfm(result, tolower = FALSE, stem = stem, valuetype = valuetype, verbose = verbose, ...)

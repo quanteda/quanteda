@@ -74,7 +74,8 @@ dfm_subset.dfm <- function(x, subset, select, ...) {
         names(nl) <- names(docvars(x))
         eval(substitute(select), nl, parent.frame())
     }
-    docvars(x) <- docvars(x)[, vars, drop = FALSE]
+    if (ncol(docvars(x)))
+        docvars(x) <- docvars(x)[, vars, drop = FALSE]
     
     x[which(r), ]
 }
