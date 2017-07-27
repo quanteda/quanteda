@@ -101,14 +101,14 @@ test_that("tokens indexing works as expected", {
     expect_equal(attr(toks[2], "types"), c("four", "five", "six"))
 })
 
-test_that("tokens_hashed_recompile combine duplicates is working", {
+test_that("tokens_recompile combine duplicates is working", {
     toksh <- tokens(c(one = "a b c d A B C D", two = "A B C d"))
     expect_equivalent(attr(toksh, "types"),
                     c("a", "b", "c", "d", "A", "B", "C", "D"))
     expect_equivalent(attr(tokens_tolower(toksh), "types"),
                     c("a", "b", "c", "d"))
     attr(toksh, "types") <- char_tolower(attr(toksh, "types"))
-    expect_equivalent(attr(quanteda:::tokens_hashed_recompile(toksh), "types"),
+    expect_equivalent(attr(quanteda:::tokens_recompile(toksh), "types"),
                     c("a", "b", "c", "d"))
     
 })
@@ -416,20 +416,49 @@ test_that("tokens works for strange spaces (#796)", {
         c("variationselector16", " \uFE0F")
     )
 })
+
 test_that("test tokens.tokens", {
     
-chars <- "a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F"
-toks <- as.tokens(stringi::stri_split_fixed(chars, ' '))
-toks
+chars <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F",
+           "#tag @user", "abc be-fg hi 100kg 2017", "https://github.com/kbenoit/quanteda", "a b c d e")
+toks1 <- as.tokens(stringi::stri_split_fixed(chars[1], ' '))
+toks2 <- as.tokens(stringi::stri_split_fixed(chars[2], ' '))
+toks3 <- as.tokens(stringi::stri_split_fixed(chars[3], ' '))
+toks4 <- as.tokens(stringi::stri_split_fixed(chars[4], ' '))
+toks5 <- as.tokens(stringi::stri_split_fixed(chars[5], ' '))
 
-tokens(chars, what = 'fasterword', remove_separator = TRUE)
-tokens(chars, what = 'fastestword', remove_separator = TRUE)
+expect_equal(tokens(chars[1], remove_numbers = TRUE),
+             tokens(toks1, remove_numbers = TRUE))
 
-tokens(chars, remove_separator = TRUE)
-tokens(toks, remove_separator = TRUE)
+expect_equal(tokens(chars[1], remove_punct = TRUE),
+             tokens(toks1, remove_punct = TRUE))
 
-tokens(chars, remove_punct = TRUE)
-tokens(toks, remove_punct = TRUE)
+expect_equal(tokens(chars[1], remove_separator = TRUE),
+             tokens(toks1, remove_separator = TRUE))
+
+expect_equal(tokens(chars[1], remove_symbols = TRUE),
+             tokens(toks1, remove_symbols = TRUE))
+
+expect_equal(tokens(chars[2], remove_punct = TRUE, remove_twitter = TRUE),
+             tokens(toks2, remove_punct = TRUE, remove_twitter = TRUE))
+
+expect_equal(tokens(chars[4], remove_url = TRUE),
+             tokens(toks4, remove_url = TRUE))
+
+expect_equal(tokens(chars[5], ngrams = 1:2),
+             tokens(toks5, ngrams = 1:2))
+
+expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2),
+             tokens(toks5, ngrams = 2, skip = 1:2))
+
+# This fails because hyphnated words are concatenated in toks
+#expect_equal(tokens(chars[3], remove_hyphens = TRUE),
+#             tokens(toks3, remove_hyphens = TRUE))
+
+# This fails because there is not separator in toks
+# expect_equal(tokens(chars[1], remove_symbols = TRUE, remove_separator = FALSE),
+#              tokens(toks1, remove_symbols = TRUE, remove_separator = FALSE))
+
 })
 
     
