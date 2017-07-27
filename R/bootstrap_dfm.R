@@ -83,7 +83,7 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
         result[[paste0("dfm_", i)]] <- dfm_select(temp, result[[1]])
     }
     if (verbose) 
-        message("\n   ...complete.")
+        message("\n   ...complete.\n")
     
     class(result) <- c("dfm_bootstrap")
     return(result)

@@ -436,7 +436,7 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
                           "remove(Numbers|Punct|Symbols|Separators|Twitter|Hyphens|URL)$")
     if (any(oldargindex)) {
         warning(names(thecall)[oldargindex], " is deprecated; use ",
-                tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex])), " instead")
+                tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex])), " instead", call. = FALSE)
         names(thecall)[oldargindex] <- tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex]))
         return(do.call(tokens, thecall))
     }

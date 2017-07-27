@@ -194,16 +194,20 @@ predict.textmodel_wordscores_fitted <-
                          textscore_raw_hi = textscore_raw + z * textscore_raw_se)
     
     if ("mv" %in% rescaling) {
+        mv_transform <- function(x) {
+            lowerIndex <- which(object@y == min(object@y, na.rm = TRUE))
+            upperIndex <- which(object@y == max(object@y, na.rm = TRUE))
+            as.numeric((x - result$textscore_raw[lowerIndex]) *
+                (max(object@y, na.rm = TRUE) - min(object@y, na.rm = TRUE)) /
+                (result$textscore_raw[upperIndex] - result$textscore_raw[lowerIndex]) +
+                min(object@y, na.rm = TRUE))
+        }
+        
         if (sum(!is.na(object@y)) > 2)
             warning("\nMore than two reference scores found with MV rescaling; using only min, max values.")
-        lowerIndex <- which(object@y==min(object@y, na.rm=TRUE))
-        upperIndex <- which(object@y==max(object@y, na.rm=TRUE))
-        textscore_mv <-
-            (textscore_raw - textscore_raw[lowerIndex]) *
-            (max(object@y, na.rm=TRUE) - min(object@y, na.rm=TRUE)) /
-            (textscore_raw[upperIndex] - textscore_raw[lowerIndex]) +
-            min(object@y, na.rm=TRUE)
-        result$textscore_mv <- as.numeric(textscore_mv)
+        result$textscore_mv <- mv_transform(result$textscore_raw)
+        result$textscore_mv_lo <- mv_transform(result$textscore_raw_lo)
+        result$textscore_mv_hi <- mv_transform(result$textscore_raw_hi)
     } 
     
     if ("lbg" %in% rescaling) {
@@ -231,7 +235,8 @@ predict.textmodel_wordscores_fitted <-
         x = object@x,
         Sw = object@Sw,
         y = object@y,
-        call = object@call)
+        call = object@call, 
+        level = level)
 }
 
 
@@ -356,10 +361,10 @@ setMethod("coef", signature(object = "textmodel_wordscores_predicted"),
           function(object, ...) {
               if ("textscore_mv" %in% names(object@textscores)) {
                   coef_document <- object@textscores$textscore_mv
-                  coef_document_se <- NULL
+                  coef_document_se <- (object@textscores$textscore_mv - object@textscores$textscore_mv_lo) / qnorm((object@level + 1)/2)
               } else if ("textscore_lbg" %in% names(object@textscores)) {
                   coef_document <- object@textscores$textscore_lbg
-                  coef_document_se <- (object@textscores$textscore_lbg - object@textscores$textscore_lbg_lo) / 1.96
+                  coef_document_se <- (object@textscores$textscore_lbg - object@textscores$textscore_lbg_lo) / qnorm((object@level + 1)/2)
               } else {
                   coef_document <- object@textscores$textscore_raw
                   coef_document_se <- object@textscores$textscore_raw_se
