@@ -354,6 +354,7 @@ is.tokens <- function(x) "tokens" %in% class(x)
 #' 
 tokens_hash <- function(x, types_reserved, ...) {
     
+    attrs <- attributes(x)
     types <- unique(unlist(x, use.names = FALSE))
     types <- types[types != '']  # remove empty tokens
     
@@ -362,13 +363,15 @@ tokens_hash <- function(x, types_reserved, ...) {
     } else {
         types <- c(types_reserved, setdiff(types, types_reserved))
     }
-    tokens <- lapply(x, fastmatch::fmatch, types) # serialize tokens 
+    x <- lapply(x, function(x) {
+        id <- fastmatch::fmatch(x, types)
+        id[!is.na(id)]
+    })
     
-    # Restore and add additional attributes
-    attributes(tokens) <- attributes(x)
-    attr(tokens, "types") <- stri_trans_nfc(types) # unicode normalization
-    class(tokens) <- c("tokens", class(x))
-    return(tokens)
+    attributes(x) <- attrs
+    attr(x, "types") <- stri_trans_nfc(types) # unicode normalization
+    class(x) <- c("tokens", 'tokenizedTexts')
+    return(x)
 }
 
 
@@ -566,17 +569,16 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
                         padding = FALSE,
                         types = attr(x[[length(x)]], 'types') # last block has all the types
                         )
-    
     # Put hyphens and twitter tags back
-    if (hash) {
+#    if (hash) {
         types <- types(result)
         types <- stri_replace_all_fixed(types, "_hy_", "-")
         types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
         types(result) <- types
-    } else {
-        result <- lapply(result, stri_replace_all_fixed, "_hy_", "-")
-        result <- lapply(result, stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
-    }
+    # } else {
+    #     result <- lapply(result, stri_replace_all_fixed, "_hy_", "-")
+    #     result <- lapply(result, stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
+    # }
     
     if (what %in% c("word", "fastestword", "fasterword")) {
         # Remove separators (including control characters) if option is TRUE
@@ -636,20 +638,17 @@ tokens_word <- function(txt,
     } else if (what=="fasterword") {
         tok <- stri_split_charclass(txt, "\\p{WHITE_SPACE}")
     } else {
-        
         if (remove_twitter == FALSE) {
             if (verbose) catm("...preserving Twitter characters (#, @)\n")
             txt <- stri_replace_all_fixed(txt, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
         }
-        
         tok <- stri_split_boundaries(txt, type = "word", 
                                      # this is what obliterates currency symbols, Twitter tags, and URLs
-                                     skip_word_none = remove_punct & remove_separators, 
+                                     skip_word_none = remove_punct && remove_separators, 
                                      # but does not remove 4u, 2day, etc.
                                      skip_word_number = remove_numbers) 
         
     }
-    
     return(tok)
 }
 
