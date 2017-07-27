@@ -210,7 +210,11 @@ docnames <- function(x) {
 docnames.corpus <- function(x) {
     # didn't use accessor documents() because didn't want to pass
     # that large object
-    rownames(x$documents)
+    if (is.null(rownames(x$documents))) {
+        paste0('text', seq_len(ndoc(x)))
+    } else {
+        rownames(x$documents)
+    }
 }
 
 #' @param value a character vector of the same length as \code{x}

@@ -58,7 +58,7 @@ features <- function(x) {
 #' @export
 docnames.dfm <- function(x) {
     if (is.null(rownames(x))) {
-        character()
+        paste0('text', seq_len(ndoc(x)))
     } else {
         rownames(x)
     }
