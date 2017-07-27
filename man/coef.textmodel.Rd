@@ -25,3 +25,10 @@ for instance \code{coef_documents} has no meaning for a fitted wordscores object
 Extract text model coefficients for documents and features, in a manner similar to \link{coef} and \link{coefficients}.
 (\code{coefficients} is an alias for \link{coef}.)
 }
+\section{Usage}{
+
+\code{coef(object, ...)}
+
+\code{coefficients(object, ...)}
+}
+

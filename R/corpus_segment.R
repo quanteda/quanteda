@@ -4,7 +4,7 @@
 #' paragraphs, or other sections. \code{segment} works on a character vector or 
 #' corpus object, and allows the delimiters to be user-defined.  This is useful 
 #' for breaking the texts of a corpus into smaller documents based on sentences,
-#' or based on a user defined "tag" pattern.  See details.
+#' or based on a user defined "tag" pattern.  See Details.
 #' @param x character or \link{corpus} object whose texts will be segmented
 #' @param what unit of segmentation.  Current options are  
 #'   \code{"sentences"} (default), \code{"paragraphs"}, \code{"tokens"}, 
@@ -147,7 +147,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
 #' segmentedChar <- char_segment(data_char_ukimmig2010, "sentences")
 #' segmentedChar[3]
 #' @keywords character
-#' @return \code{corpus_segment} returns a character vector of segmented texts
+#' @return \code{char_segment} returns a character vector of segmented texts
 char_segment <- function(x, 
                          what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                          delimiter = NULL,

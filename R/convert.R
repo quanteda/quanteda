@@ -10,7 +10,7 @@
 #' @param to target conversion format, consisting of the name of the package 
 #'   into whose document-term matrix representation the dfm will be converted: 
 #'   \describe{ \item{\code{"lda"}}{a list with components "documents" and 
-#'   "vocab" as needed by \link[lda]{lda.collapsed.gibbs.sampler} from the 
+#'   "vocab" as needed by the function \link[lda]{lda.collapsed.gibbs.sampler} from the 
 #'   \pkg{lda} package} \item{\code{"tm"}}{a \link[tm]{DocumentTermMatrix} from 
 #'   the \pkg{tm} package} \item{\code{"stm"}}{the  format for the \pkg{stm} 
 #'   package} \item{\code{"austin"}}{the \code{wfm} format from the 

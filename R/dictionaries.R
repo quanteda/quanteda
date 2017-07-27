@@ -289,14 +289,14 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
 #' coercion and checking functions for dictionary objects
 #' 
 #' Convert a dictionary from a different format into a \pkg{quanteda} 
-#' dictionary, or check to see if an object is a dictionary.  The conversion
-#' function from the \code{\link{dictionary}} constructor function in that it
-#' converts an existing object rather than creates one from components or from a
-#' file.
+#' dictionary, or check to see if an object is a dictionary.  
 #' @param x object to be coerced or checked; current legal values are a
 #'   data.frame with the fields \code{word} and \code{sentiment} (as per the 
 #'   \strong{tidytext} package)
-#' @return \code{as.dictionary} returns a \link{dictionary} object.
+#' @return \code{as.dictionary} returns a \link{dictionary} object.  This conversion
+#' function differs from the \code{\link{dictionary}} constructor function in that it
+#' converts an existing object rather than creates one from components or from a
+#' file.
 #' @export
 #' @examples 
 #' \dontrun{
@@ -337,7 +337,9 @@ as.dictionary.data.frame <- function(x) {
 #' @export
 #' @examples
 #' is.dictionary(dictionary(list(key1 = c("val1", "val2"), key2 = "val3")))
+#' ## [1] TRUE
 #' is.dictionary(list(key1 = c("val1", "val2"), key2 = "val3"))
+#' ## [1] FALSE
 is.dictionary <- function(x) {
     is(x, "dictionary2")
 }
@@ -631,14 +633,15 @@ nodes2list <- function(node, dict = list()){
 #' \link{dictionary} function into the YAML format. The YAML 
 #' files can be editied in text editors and imported into 
 #' \pkg{quanteda} again.
-#' @param x dictionary object
-#' @return \code{as.yaml} returns a dictionary in the YAML format
+#' @param x a \link{dictionary} object
+#' @return \code{as.yaml} a dictionary in the YAML format, as a character object
 #' @export
 #' @examples
 #' \dontrun{
-#' dict <- dictionary(file = '/home/kohei/Documents/Dictionary/LaverGarry.txt', format = 'wordstat')
-#' yaml <- as.yaml(dict)
-#' cat(yaml, file = '/home/kohei/Documents/Dictionary/LaverGarry.yaml')
+#' dict <- dictionary(list(one = c("a b", "c*"), two = c("x", "y", "z??")))
+#' cat(yaml <- as.yaml(dict))
+#' cat(yaml, file = (yamlfile <- paste0(tempfile(), ".yml")))
+#' dictionary(file = yamlfile)
 #' }
 as.yaml <- function(x) {
     UseMethod("as.yaml")
