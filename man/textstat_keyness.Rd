@@ -27,7 +27,7 @@ of the measure, otherwise leave in original feature order}
 correction is applied for the \code{"exact"} and \code{"pmi"} measures. 
 Specifying a value other than the default can be used to override the 
 defaults, for instance to apply the Williams correction to the chi2 
-measure.  Specying a correction for the \code{"exact"} and \code{"pmi"}
+measure.  Specying a correction for the \code{"exact"} and \code{"pmi"} 
 measures has no effect and produces a warning.}
 }
 \value{
@@ -41,7 +41,10 @@ a data.frame of computed statistics and associated p-values, where
   mutual information statistics.
 }
 \description{
-calculate keyness statistics
+Calculate "keyness", a score for features that occur differentially across 
+different categories.  Here, the categories are defined by reference to a
+"target" document index in the \link{dfm}, with the reference group
+consisting of all other documents.
 }
 \examples{
 # compare pre- v. post-war terms using grouping

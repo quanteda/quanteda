@@ -1,8 +1,8 @@
 #' randomly sample documents from a corpus
 #' 
-#' Takes a random sample or documents or features of the specified size from a 
-#' corpus or document-feature matrix, with or without replacement.  Works just 
-#' as \code{\link{sample}} works for the documents and their associated 
+#' Take a random sample or documents of the specified size from a corpus or
+#' document-feature matrix, with or without replacement.  Works just as
+#' \code{\link{sample}} works for the documents and their associated 
 #' document-level variables.
 #' @param x a corpus object whose documents will be sampled
 #' @param size a positive number, the number of documents to select
@@ -22,7 +22,7 @@
 #' @examples
 #' # sampling from a corpus
 #' summary(corpus_sample(data_corpus_inaugural, 5)) 
-#' summary(corpus_sample(data_corpus_inaugural, 10, replace=TRUE))
+#' summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))
 #' 
 #' # sampling sentences within document
 #' doccorpus <- corpus(c(one = "Sentence one.  Sentence two.  Third sentence.",

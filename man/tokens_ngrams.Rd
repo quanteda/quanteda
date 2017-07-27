@@ -16,8 +16,8 @@ tokens_skipgrams(x, n, skip, concatenator = "_")
 \item{x}{a tokens object, or a character vector, or a list of characters}
 
 \item{n}{integer vector specifying the number of elements to be concatenated 
-in each ngram.  Each element of this vector will define a $n$ in the 
-$n$-gram(s) that are produced.}
+in each ngram.  Each element of this vector will define a \eqn{n} in the 
+\eqn{n}-gram(s) that are produced.}
 
 \item{skip}{integer vector specifying the adjacency skip size for tokens 
 forming the ngrams, default is 0 for only immediately neighbouring words. 

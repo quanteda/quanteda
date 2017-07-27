@@ -13,7 +13,7 @@
 #' @param join join adjacent keywords in the concordance view if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokens}, for applicable 
 #'   object types
-#' @return A kwic object classed data.frame, with the document name 
+#' @return A \code{kwic} classed data.frame, with the document name 
 #'   (\code{docname}), the token index position (\code{position}), the context 
 #'   before (\code{contextPre}), the keyword in its original format 
 #'   (\code{keyword}, preserving case and attached punctuation), and the context

@@ -1,17 +1,17 @@
 #' Naive Bayes classifier for texts
 #' 
-#' Currently working for vectors of texts -- not specially defined for a dfm.
-#' 
-#' This naive Bayes model works on word counts, with smoothing.
-#' @param x the dfm on which the model will be fit.  Does not need to contain 
+#' Fit a multinomial or Bernoulli Naive Bayes model, given a dfm and some
+#' training labels.
+#' @param x the \link{dfm} on which the model will be fit.  Does not need to contain 
 #'   only the training documents.
 #' @param y vector of training labels associated with each document identified 
 #'   in \code{train}.  (These will be converted to factors if not already 
 #'   factors.)
 #' @param smooth smoothing parameter for feature counts by class
-#' @param prior prior distribution on texts, see details
+#' @param prior prior distribution on texts; see Details
 #' @param distribution count model for text features, can be \code{multinomial} 
-#'   or \code{Bernoulli}
+#'   or \code{Bernoulli}.  To fit a "binary multinomial" model, first convert the 
+#'   dfm to a binary matrix using \code{\link{tf}(x, "boolean")}.
 #' @param ... more arguments passed through
 #' @return A list of return values, consisting of:
 #' @return \item{call}{original function call}
@@ -27,8 +27,12 @@
 #' @return \item{smooth}{smoothing parameter}
 #' @section Predict Methods: A \code{predict} method is also available for a 
 #'   fitted Naive Bayes object, see \code{\link{predict.textmodel_NB_fitted}}.
-#' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction to Information Retrieval. 
-#'    Cambridge University Press. \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+#' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction
+#'   to Information Retrieval. Cambridge University Press.
+#'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+#'   
+#'   Jurafsky, Daniel and James H. Martin. (2016) \emph{Speech and Language Processing.}  Draft of November 7, 2016.
+#'   \url{https://web.stanford.edu/~jurafsky/slp3/6.pdf}
 #' @author Kenneth Benoit
 #' @examples
 #' ## Example from 13.1 of _An Introduction to Information Retrieval_

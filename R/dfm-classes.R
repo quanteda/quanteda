@@ -177,8 +177,7 @@ as.matrix.dfm <- function(x, ...) {
 #' @param row.names if \code{FALSE}, do not set the row names of the data.frame
 #'   to the docnames of the dfm (default); or a vector of values to which the
 #'   row names will be set.
-#' @param optional not applicable to this method
-#' @param ... not used 
+#' @param ... unused
 #' @method as.data.frame dfm
 #' @export
 #' @examples
@@ -186,8 +185,8 @@ as.matrix.dfm <- function(x, ...) {
 #' inaugDfm <- dfm(data_corpus_inaugural[1:5])
 #' as.data.frame(inaugDfm[, 1:10])
 #' as.data.frame(inaugDfm[, 1:10], row.names = FALSE)
-as.data.frame.dfm <- function(x, row.names = NULL, optional = FALSE , ...) {
-    as.data.frame(as.matrix(x), row.names = row.names, optional = optional, ...)
+as.data.frame.dfm <- function(x, row.names = NULL, ...) {
+    as.data.frame(as.matrix(x), row.names = row.names, ...)
 }
     
 

@@ -33,7 +33,7 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 object types}
 }
 \value{
-A kwic object classed data.frame, with the document name 
+A \code{kwic} classed data.frame, with the document name 
   (\code{docname}), the token index position (\code{position}), the context 
   before (\code{contextPre}), the keyword in its original format 
   (\code{keyword}, preserving case and attached punctuation), and the context

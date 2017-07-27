@@ -18,7 +18,7 @@
 #' @return a \link{tokens} object in which the token sequences matching \code{pattern}
 #' have been replaced by  compound "tokens" joined by the concatenator
 #' @export
-#' @author Kenneth Benoit (R) and Kohei Watanabe (C++)
+#' @author Kenneth Benoit and Kohei Watanabe
 #' @examples
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
 #'              "New York City has raised taxes: an income tax and inheritance taxes.")

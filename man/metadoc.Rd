@@ -28,8 +28,7 @@ type of \link{docvars}, meant to contain information about documents that
 would not be used as a "variable" for analysis. An example could be the 
 source of the document, or notes pertaining to its transformation, copyright 
 information, etc.
-}
-\details{
+
 Document-level meta-data differs from corpus-level meta-data in that the 
 latter pertains to the collection of texts as a whole, whereas the 
 document-level version can differ with each document.
