@@ -59,7 +59,7 @@ tokens_wordstem.tokens <- function(x, language = "porter") {
         types(x) <- wordstem_Ngrams(types(x), 
                                     concatenator = attributes(x)$concatenator, 
                                     language = language)
-    tokens_hashed_recompile(x)
+    tokens_recompile(x)
 }
 
 
