@@ -8,15 +8,15 @@ test_that("dfm_trim", {
     nfeature(dfm_trim(preDictDfm, min_count = 7))
     nfeature(dfm_trim(preDictDfm, min_count = 0.001))
     
-    expect_equal(nfeature(dfm_trim(preDictDfm, min_count = 0.001)), 1045)
-    expect_equal(nfeature(dfm_trim(preDictDfm, min_count = 7)), 1045)
+    expect_equal(nfeature(dfm_trim(preDictDfm, min_count = 0.001)), 1050)
+    expect_equal(nfeature(dfm_trim(preDictDfm, min_count = 7)), 1050)
     
-    expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)), 3077)
-    expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 2)), 3077)
+    expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)), 3082)
+    expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 2)), 3082)
     
-    expect_equal(nfeature(dfm_trim(preDictDfm, sparsity = 0.95)), 3077)
+    expect_equal(nfeature(dfm_trim(preDictDfm, sparsity = 0.95)), 3082)
     expect_equal(nfeature(dfm_trim(preDictDfm, sparsity = 0.95)), nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)))
-    expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)), 3077)
+    expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)), 3082)
     
 })
 

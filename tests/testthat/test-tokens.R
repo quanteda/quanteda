@@ -409,10 +409,10 @@ test_that("tokens works for strange spaces (#796)", {
     )
     expect_equal(
         ntoken(txt, remove_punct = TRUE, remove_separators = FALSE),
-        c(text1 = 21)
+        c(text1 = 22)
     )
     expect_equal(
-        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[20:21],
+        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[21:22],
         c("variationselector16", " \uFE0F")
     )
 })

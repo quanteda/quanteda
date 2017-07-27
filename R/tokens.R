@@ -178,7 +178,7 @@ tokens.character <- function(x, ...) {
 #' @rdname tokens
 #' @export
 #' @noRd
-tokens.corpus <- function(x, hash = TRUE, include_docvars = TRUE, ...) {
+tokens.corpus <- function(x, ..., hash = TRUE, include_docvars = TRUE) {
     result <- tokens_internal(texts(x), ...)
     if (include_docvars) {
         docvars(result) <- documents(x)[, which(names(documents(x)) != "texts"), drop = FALSE]
@@ -194,7 +194,7 @@ tokens.corpus <- function(x, hash = TRUE, include_docvars = TRUE, ...) {
 #' @export
 #' @noRd
 #' 
-tokens.tokens <-  function(x,
+tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
                            remove_numbers = FALSE,
                            remove_punct = FALSE,
                            remove_symbols = FALSE,
@@ -207,6 +207,7 @@ tokens.tokens <-  function(x,
                            concatenator = "_",
                            hash = TRUE,
                            verbose = quanteda_options("verbose"),
+                           include_docvars,
                            ...) {
     
     
@@ -217,7 +218,7 @@ tokens.tokens <-  function(x,
     if (remove_hyphens || remove_twitter)
         x <- tokens_recompile(x)
     
-    regex <- c("^$")
+    regex <- c()
     if (remove_numbers)
         regex = c(regex, "^[\\p{N}]+$")
     if (remove_punct)
@@ -559,30 +560,27 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
 
     }
     
-    result <- structure(unlist(x, recursive = FALSE), # put all the blocked results togather
-                        class = c("tokens", "tokenizedTexts"),
-                        names = attrs$names,
-                        what = what,
-                        ngrams = ngrams,
-                        skip = skip,
-                        concatenator = concatenator,
-                        padding = FALSE,
-                        types = attr(x[[length(x)]], 'types') # last block has all the types
-                        )
-    # Put hyphens and twitter tags back
-#    if (hash) {
-        types <- types(result)
-        types <- stri_replace_all_fixed(types, "_hy_", "-")
-        types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
-        types(result) <- types
-    # } else {
-    #     result <- lapply(result, stri_replace_all_fixed, "_hy_", "-")
-    #     result <- lapply(result, stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
-    # }
-    
+    x <- structure(unlist(x, recursive = FALSE), # put all the blocked results togather
+                   class = c("tokens", "tokenizedTexts"),
+                   names = attrs$names,
+                   what = what,
+                   ngrams = ngrams,
+                   skip = skip,
+                   concatenator = concatenator,
+                   padding = FALSE,
+                   types = attr(x[[length(x)]], 'types') # last block has all the types
+                   )
+
+    if (!remove_hyphens)
+        types(x) <- stri_replace_all_fixed(types(x), "_hy_", "-")
+    if (!remove_twitter)
+        types(x) <- stri_replace_all_fixed(types(x), c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
+    if (!remove_hyphens || !remove_twitter)
+        x <- tokens_recompile(x)
+
     if (what %in% c("word", "fastestword", "fasterword")) {
         # Remove separators (including control characters) if option is TRUE
-        regex <- c("^$")
+        regex <- c()
         if (remove_numbers)
             regex = c(regex, "^[\\p{N}]+$")
         if (remove_punct)
@@ -594,20 +592,21 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
         if (remove_punct & !remove_twitter)
             regex <- c(regex, "^#+$|^@+$") # remove @ # only if not part of Twitter names
         if (length(regex))
-            result <- tokens_remove(result, paste(regex, collapse = '|'), valuetype = "regex")
+            x <- tokens_remove(x, paste(regex, collapse = '|'), valuetype = "regex")
     }
     
+        
     if (!identical(ngrams, 1L)) {
         if (verbose) catm("...creating ngrams\n")
-        result <- tokens_ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
+        x <- tokens_ngrams(x, n = ngrams, skip = skip, concatenator = concatenator)
     }
         
     if (verbose){
         catm("...total elapsed: ", (proc.time() - time_start)[3], "seconds.\n")
-        catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n")
+        catm("Finished tokenizing and cleaning", format(length(x), big.mark=","), "texts.\n")
     }
     
-    return(result)
+    return(x)
 }
 
 tokens_word <- function(txt, 
