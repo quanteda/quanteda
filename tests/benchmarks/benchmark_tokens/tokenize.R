@@ -4,7 +4,11 @@ library(tokenizers)
 load("/home/kohei/Documents/Brexit/Analysis/data_corpus_guardian.RData")
 
 system.time(
-    tokens(data_corpus_guardian, what='word', hash = TRUE, verbose = TRUE)
+    tokens(data_corpus_guardian, what='word', verbose = TRUE)
+)
+
+system.time(
+    tokens(data_corpus_guardian, what='fastestword', verbose = TRUE)
 )
 
 

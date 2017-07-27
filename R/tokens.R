@@ -540,10 +540,12 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
     for (i in seq_along(x)) {
         
         if (verbose) catm("...tokenizing", i, "of" , length(x), "blocks\n")
-        if (what %in% c("word", "fastestword", "fasterword")) {
+        if (what %in% c("word", "fasterword")) {
             temp <- preserve_special(x[[i]], remove_hyphens, remove_url, remove_twitter, verbose)
             temp <- tokens_word(temp, what, remove_numbers, remove_punct, remove_symbols, 
                                 remove_separators, verbose)
+        } else if (what == "fastestword") {
+            temp <- tokens_word(x[[i]], what, FALSE, FALSE, FALSE, FALSE, verbose)
         } else if (what == "character") {
             temp <- tokens_character(x[[i]],remove_punct, remove_symbols, remove_separators, verbose)
         } else if (what == "sentence") {
@@ -572,16 +574,15 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
                    padding = FALSE,
                    types = attr(x[[length(x)]], 'types') # last block has all the types
                    )
+    if (what %in% c("word", "fasterword")) {
+        
+        if (!remove_hyphens)
+            types(x) <- stri_replace_all_fixed(types(x), "_hy_", "-")
+        if (!remove_twitter)
+            types(x) <- stri_replace_all_fixed(types(x), c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
+        if (!remove_hyphens || !remove_twitter)
+            x <- tokens_recompile(x)
 
-    if (!remove_hyphens)
-        types(x) <- stri_replace_all_fixed(types(x), "_hy_", "-")
-    if (!remove_twitter)
-        types(x) <- stri_replace_all_fixed(types(x), c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
-    if (!remove_hyphens || !remove_twitter)
-        x <- tokens_recompile(x)
-
-    if (what %in% c("word", "fastestword", "fasterword")) {
-        # Remove separators (including control characters) if option is TRUE
         regex <- c()
         if (remove_numbers)
             regex = c(regex, "^[\\p{N}]+$")
