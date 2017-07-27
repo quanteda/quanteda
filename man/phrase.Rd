@@ -10,19 +10,22 @@ phrase(x)
 is.phrase(x)
 }
 \arguments{
-\item{x}{the sequence, as a \code{character} object containing whitespace
+\item{x}{the sequence, as a \code{character} object containing whitespace 
 separating the patterns}
 }
 \value{
-\code{phrase} returns a specially classed list whose white-spaced
+\code{phrase} returns a specially classed list whose white-spaced 
   elements have been parsed into separate \code{character} elements.
 
 \code{is.phrase} returns \code{TRUE} if the object was created by 
   \code{\link{phrase}}; \code{FALSE} otherwise.
 }
 \description{
-Declares that a whitespace-separated expression consists of multiple
-patterns, separated by whitespace.
+Declares that a whitespace-separated expression consists of multiple 
+patterns, separated by whitespace.  This is typically used as a wrapper 
+around \code{\link{pattern}} to make it explicit that the pattern elements 
+are to be used for matches to multi-word sequences, rather than individual,
+unordered matches to single words.
 }
 \examples{
 # make phrases from characters

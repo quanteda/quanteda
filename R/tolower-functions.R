@@ -115,8 +115,8 @@ char_toupper.character <- function(x, ...) {
 
 #' convert the case of the features of a dfm and combine
 #' 
-#' \code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm to
-#' lower and upper case, respectively, and then recombine the counts.
+#' \code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm or
+#' fcm to lower and upper case, respectively, and then recombine the counts.
 #' @inheritParams char_tolower
 #' @importFrom stringi stri_trans_tolower
 #' @export

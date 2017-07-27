@@ -167,10 +167,6 @@ setMethod("textmodel", signature(x = "formula", y="missing", data="dfm", model =
 #' @param object a fitted or predicted text model object whose coefficients will be extracted
 #' @param ... unused
 #' @name coef.textmodel
-#' @section Usage:
-#' \code{coef(object, ...)}
-#' 
-#' \code{coefficients(object, ...)}
 #' @return 
 #' Returns a list of named numeric vectors with the following elements:
 #' \describe{
@@ -183,5 +179,9 @@ setMethod("textmodel", signature(x = "formula", y="missing", data="dfm", model =
 #' }
 #' An element that is not applicable for a particular object class will be \code{NULL}, 
 #' for instance \code{coef_documents} has no meaning for a fitted wordscores object.
-NULL
+coef.textmodel <- coefficients.textmodel <- function(object, ...) {
+    coef(object, ...)
+}
+
+
 

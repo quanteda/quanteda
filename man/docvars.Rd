@@ -41,14 +41,11 @@ for \link{tokens} or \link{dfm} objects as well.  Use with caution.
 
 Another way to access and set docvars is through indexing of the corpus 
 \code{j} element, such as \code{data_corpus_irishbudget2010[, c("foren", 
-"name"]} or for a single docvar, 
+"name"]}; or, for a single docvar, 
 \code{data_corpus_irishbudget2010[["name"]]}.  The latter also permits 
-assignment, including the easy creation of new document varibles, e.g. 
+assignment, including the easy creation of new document variables, e.g. 
 \code{data_corpus_irishbudget2010[["newvar"]] <- 
 1:ndoc(data_corpus_irishbudget2010)}. See \code{\link{[.corpus}} for details.
-
-Assigning docvars to a \link{tokens} object is not supported.  (You should 
-only be manipulating these variables at the corpus level.)
 }
 
 \examples{

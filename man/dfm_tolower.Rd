@@ -26,8 +26,8 @@ all-uppercase words (applies only to \code{*_tolower} functions)}
 \code{\link{stri_trans_tolower}}), such as \code{locale}}
 }
 \description{
-\code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm to
-lower and upper case, respectively, and then recombine the counts.
+\code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm or
+fcm to lower and upper case, respectively, and then recombine the counts.
 }
 \details{
 \code{fcm_tolower} and \code{fcm_toupper} convert both dimensions of

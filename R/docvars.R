@@ -88,14 +88,12 @@ get_docvars <- function(dvars, field = NULL) {
 #' @section Index access to docvars in a corpus:
 #' Another way to access and set docvars is through indexing of the corpus 
 #' \code{j} element, such as \code{data_corpus_irishbudget2010[, c("foren", 
-#' "name"]} or for a single docvar, 
+#' "name"]}; or, for a single docvar, 
 #' \code{data_corpus_irishbudget2010[["name"]]}.  The latter also permits 
-#' assignment, including the easy creation of new document varibles, e.g. 
+#' assignment, including the easy creation of new document variables, e.g. 
 #' \code{data_corpus_irishbudget2010[["newvar"]] <- 
 #' 1:ndoc(data_corpus_irishbudget2010)}. See \code{\link{[.corpus}} for details.
 #' 
-#' Assigning docvars to a \link{tokens} object is not supported.  (You should 
-#' only be manipulating these variables at the corpus level.)
 #' @return \code{docvars<-} assigns \code{value} to the named \code{field}
 #' @examples 
 #' # assigning document variables to a corpus
@@ -164,6 +162,7 @@ get_docvars <- function(dvars, field = NULL) {
 
 #' get or set document-level meta-data
 #' 
+#' @description
 #' Get or set document-level meta-data.  Document-level meta-data are a special 
 #' type of \link{docvars}, meant to contain information about documents that 
 #' would not be used as a "variable" for analysis. An example could be the 

@@ -7,12 +7,12 @@
 \alias{fcm_remove}
 \title{select features from a dfm or fcm}
 \usage{
-dfm_select(x, pattern = NULL, selection = c("keep", "remove"),
+dfm_select(x, pattern, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  min_nchar = 1, max_nchar = 63, verbose = quanteda_options("verbose"),
+  min_nchar = 1L, max_nchar = 63L, verbose = quanteda_options("verbose"),
   ...)
 
-dfm_remove(x, pattern = NULL, ...)
+dfm_remove(x, pattern, ...)
 
 fcm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
@@ -44,8 +44,8 @@ matches.}
 \item{verbose}{if \code{TRUE} print message about how many pattern were 
 removed}
 
-\item{...}{supplementary arguments passed to the underlying functions in 
-\code{\link[stringi]{stri_detect_regex}}}
+\item{...}{used only for passing arguments from \code{*_remove} to
+\code{*_select} functions}
 }
 \value{
 A \link{dfm} or \link{fcm} object, after the feature selection has 
@@ -72,7 +72,7 @@ are to eliminate features from a dfm already constructed, such as stopwords,
 or to select only terms of interest from a dictionary.
 }
 \details{
-\code{dfm_remove} and \code{fcm_remove} are simply a convenience 
+\code{dfm_remove} and \code{fcm_remove} are simply a convenience
   wrappers to calling \code{dfm_select} and \code{fcm_select} with 
   \code{selection = "remove"}.
 }

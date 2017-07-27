@@ -16,12 +16,12 @@
 #' @return A \link{dfm} reduced in features (with the same number 
 #'   of documents)
 #' @export
-#' @note Trimming a \link{dfm} object is an operation based on the values 
-#'   in the document-feature \emph{matrix}.  To select subsets of a dfm based on
-#'   attributes of the features themselves -- such as selecting features 
+#' @note Trimming a \link{dfm} object is an operation based on the \emph{values}
+#'   in the document-feature matrix.  To select subsets of a dfm based on
+#'   the features themselves (meaning the feature labels from \code{\link{featnames}}) -- such as those   
 #'   matching a regular expression, or removing features matching a stopword 
 #'   list, use \code{\link{dfm_select}}.
-#' @author Ken Benoit and Paul Nulty, with some inspiration from Will Lowe's
+#' @author Ken Benoit and Paul Nulty, with some inspiration from Will Lowe
 #'   (see \code{trim} from the \code{austin} package)
 #' @seealso \code{\link{dfm_select}}, \code{\link{dfm_sample}}
 #' @examples

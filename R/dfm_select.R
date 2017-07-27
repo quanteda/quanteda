@@ -17,9 +17,9 @@
 #'   matches.
 #' @param verbose if \code{TRUE} print message about how many pattern were 
 #'   removed
-#' @param ... supplementary arguments passed to the underlying functions in 
-#'   \code{\link[stringi]{stri_detect_regex}}
-#' @details \code{dfm_remove} and \code{fcm_remove} are simply a convenience 
+#' @param ... used only for passing arguments from \code{*_remove} to
+#'   \code{*_select} functions
+#' @details \code{dfm_remove} and \code{fcm_remove} are simply a convenience
 #'   wrappers to calling \code{dfm_select} and \code{fcm_select} with 
 #'   \code{selection = "remove"}.
 #' @note This function selects features based on their labels.  To select 
@@ -67,11 +67,11 @@
 #' (dfm3 <- dfm_select(dfm1, dfm2, valuetype = "fixed", verbose = TRUE))
 #' setequal(featnames(dfm2), featnames(dfm3))
 #' 
-dfm_select <- function(x, pattern = NULL, 
+dfm_select <- function(x, pattern, 
                        selection = c("keep", "remove"), 
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
-                       min_nchar = 1, max_nchar = 63,
+                       min_nchar = 1L, max_nchar = 63L,
                        verbose = quanteda_options("verbose"), ...) {
     UseMethod("dfm_select")
 }
@@ -79,11 +79,11 @@ dfm_select <- function(x, pattern = NULL,
 #' @rdname dfm_select
 #' @noRd
 #' @export
-dfm_select.dfm <-  function(x, pattern = NULL, 
+dfm_select.dfm <-  function(x, pattern, 
                             selection = c("keep", "remove"), 
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
-                            min_nchar = 1, max_nchar = 63,
+                            min_nchar = 1L, max_nchar = 63L,
                             verbose = quanteda_options("verbose"), ...) {
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
@@ -93,7 +93,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     
     # select features based on "pattern"
     features_keep <- seq_len(nfeature(x))
-    if (!is.null(pattern)) {
+    if (!missing(pattern)) {
         # special handling if pattern is a dfm
         if (is.dfm(pattern)) {
             is_dfm <- TRUE
@@ -170,13 +170,13 @@ dfm_select.dfm <-  function(x, pattern = NULL,
 #'               verbose = FALSE)
 #' tmpdfm
 #' dfm_remove(tmpdfm, stopwords("english"))
-dfm_remove <- function(x, pattern = NULL, ...) {
+dfm_remove <- function(x, pattern, ...) {
     UseMethod("dfm_remove")
 }
 
 #' @noRd
 #' @export
-dfm_remove.dfm <- function(x, pattern = NULL, ...) {
+dfm_remove.dfm <- function(x, pattern, ...) {
     dfm_select(x, pattern, selection = "remove", ...)
 }
 

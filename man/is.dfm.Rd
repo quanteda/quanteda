@@ -15,7 +15,8 @@ as.dfm(x)
 \value{
 \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
 
-\code{as.dfm} coerces a matrix or data.frame to a dfm
+\code{as.dfm} coerces a matrix or data.frame to a dfm.  Row names are
+  used for docnames, and column names for featnames, of the resulting dfm.
 }
 \description{
 Check for a dfm, or convert

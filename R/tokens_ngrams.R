@@ -52,8 +52,8 @@ skipgrams <- function(x, ...) {
 #'   character vector
 #' @param x a tokens object, or a character vector, or a list of characters
 #' @param n integer vector specifying the number of elements to be concatenated 
-#'   in each ngram.  Each element of this vector will define a $n$ in the 
-#'   $n$-gram(s) that are produced.
+#'   in each ngram.  Each element of this vector will define a \eqn{n} in the 
+#'   \eqn{n}-gram(s) that are produced.
 #' @param skip integer vector specifying the adjacency skip size for tokens 
 #'   forming the ngrams, default is 0 for only immediately neighbouring words. 
 #'   For \code{skipgrams}, \code{skip} can be a vector of integers, as the 
