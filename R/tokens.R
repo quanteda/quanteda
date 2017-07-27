@@ -540,8 +540,9 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
         
         if (verbose) catm("...tokenizing", i, "of" , length(x), "blocks\n")
         if (what %in% c("word", "fastestword", "fasterword")) {
-            temp <- tokens_word(x[[i]], what, remove_numbers, remove_punct, remove_symbols, 
-                                remove_separators, remove_twitter, remove_hyphens, remove_url, verbose)
+            temp <- preserve_special(x[[i]], remove_hyphens, remove_url, remove_twitter, verbose)
+            temp <- tokens_word(temp, what, remove_numbers, remove_punct, remove_symbols, 
+                                remove_separators, verbose)
         } else if (what == "character") {
             temp <- tokens_character(x[[i]],remove_punct, remove_symbols, remove_separators, verbose)
         } else if (what == "sentence") {
@@ -614,33 +615,14 @@ tokens_word <- function(txt,
                         remove_numbers = FALSE, 
                         remove_punct = FALSE, 
                         remove_symbols = FALSE, 
-                        remove_separators = TRUE, 
-                        remove_twitter = FALSE, 
-                        remove_hyphens = FALSE, 
-                        remove_url = FALSE, 
+                        remove_separators = TRUE,
                         verbose = FALSE){
-    
-    # to preserve intra-word hyphens, replace with _hy_
-    if (remove_hyphens) {
-        txt <- stri_replace_all_regex(txt, "(\\b)[\\p{Pd}](\\b)", "$1 $2")
-    } else {
-        txt <- stri_replace_all_regex(txt, "(\\b)[\\p{Pd}](\\b)", "$1 _hy_ $2")
-    }
-    if (remove_url) {
-        if (verbose & remove_url) catm(", removing URLs")
-        regex_url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
-        txt <- stri_replace_all_regex(txt, regex_url, "")
-    }
     
     if (what=="fastestword") {
         tok <- stri_split_fixed(txt, " ")
     } else if (what=="fasterword") {
         tok <- stri_split_charclass(txt, "\\p{WHITE_SPACE}")
     } else {
-        if (remove_twitter == FALSE) {
-            if (verbose) catm("...preserving Twitter characters (#, @)\n")
-            txt <- stri_replace_all_fixed(txt, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
-        }
         tok <- stri_split_boundaries(txt, type = "word", 
                                      # this is what obliterates currency symbols, Twitter tags, and URLs
                                      skip_word_none = remove_punct && remove_separators, 
@@ -649,6 +631,26 @@ tokens_word <- function(txt,
         
     }
     return(tok)
+}
+
+preserve_special <- function(txt, remove_hyphens, remove_url, remove_twitter, verbose) {
+    
+    if (remove_hyphens) {
+        if (verbose) catm("...preserving hyphens\n")
+        txt <- stri_replace_all_regex(txt, "(\\b)[\\p{Pd}](\\b)", "$1 $2")
+    } else {
+        txt <- stri_replace_all_regex(txt, "(\\b)[\\p{Pd}](\\b)", "$1 _hy_ $2")
+    }
+    if (remove_url) {
+        if (verbose & remove_url) catm("...removing URLs\n")
+        regex_url <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+        txt <- stri_replace_all_regex(txt, regex_url, "")
+    }
+    if (remove_twitter == FALSE) {
+        if (verbose) catm("...preserving Twitter characters (#, @)\n")
+        txt <- stri_replace_all_fixed(txt, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
+    }
+    return(txt)
 }
 
 tokens_sentence <- function(txt, verbose = FALSE){
