@@ -42,8 +42,8 @@ test_that("oldest dfm test", {
     txt <- "The tall brown trees with pretty leaves in its branches."
     dfm(txt)
     dfm(txt, stem = TRUE)
-    dfm(txt, remove = stopwords("english"))
-    dfm(txt, stem = TRUE, remove = stopwords("english"))
+    dfm(txt, remove = stopwords("en"))
+    dfm(txt, stem = TRUE, remove = stopwords("en"))
     
     
     myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
@@ -53,7 +53,7 @@ test_that("oldest dfm test", {
                               country = c("United_States", "Sweden")))
     myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
                    "Does the United_States or Sweden have more progressive taxation?"),
-                 remove = stopwords("english"), remove_punct = TRUE, tolower = FALSE,
+                 remove = stopwords("en"), remove_punct = TRUE, tolower = FALSE,
                  verbose = FALSE)
     myDfm
     # glob format
@@ -256,7 +256,7 @@ test_that("dfm_sample works as expected",{
     expect_error(dfm_sample(myDfm, margin = "documents", size = 20),
                   "size cannot exceed the number of documents \\(10\\)")
     expect_error(dfm_sample(myDfm, margin = "features", size = 3500),
-                 "size cannot exceed the number of features \\(3358\\)")
+                 "size cannot exceed the number of features \\(3359\\)")
     expect_error(dfm_sample(data_corpus_inaugural[1:10]))
 })
 
