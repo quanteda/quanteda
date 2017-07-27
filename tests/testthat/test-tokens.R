@@ -256,7 +256,7 @@ test_that("remove_punct and remove_twitter interact correctly, #607", {
     txt <- "they: #stretched, @ @@ in,, a # ## never-ending @line."
     expect_equal(
         as.character(tokens(txt, what = "word", remove_punct = TRUE, remove_twitter = TRUE)),
-        c("they", "stretched", "in", "a", "never-ending", "line")
+        c("they", "stretched", "in", "a", "never", "ending", "line")
     )
     expect_equal(
         as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = FALSE)),
@@ -265,7 +265,7 @@ test_that("remove_punct and remove_twitter interact correctly, #607", {
     # this is #607
     expect_equal(
         as.character(tokens(txt, what = "word", remove_punct = TRUE, remove_twitter = FALSE)),
-        c("they", "#stretched", "in", "a", "never-ending", "@line")
+        c("they", "#stretched", "in", "a", "never", "ending", "@line")
     )
     # remove_twitter should be inactive if remove_punct is FALSE
     expect_equal(
@@ -400,21 +400,36 @@ test_that("tokens works for strange spaces (#796)", {
     expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = TRUE), c(text1 = 12))
     expect_equal(
         as.character(tokens(txt, remove_punct = TRUE, remove_separators = TRUE)),
-        c("space", "tab", "newline", "non-breakingspace", "em-space", "variationselector16")
+        c("space", "tab", "newline", "non", "breakingspace", "em", "space", "variationselector16")
     )
-    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), c(text1 = 22))
+    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), c(text1 = 26))
     expect_equal(
-        as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[20:22],
+        as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[24:26],
         c("variationselector16", " \uFE0F", ".")
     )
     expect_equal(
         ntoken(txt, remove_punct = TRUE, remove_separators = FALSE),
-        c(text1 = 14)
+        c(text1 = 21)
     )
     expect_equal(
-        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[13:14],
+        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[20:21],
         c("variationselector16", " \uFE0F")
     )
+})
+test_that("test tokens.tokens", {
+    
+chars <- "a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F"
+toks <- as.tokens(stringi::stri_split_fixed(chars, ' '))
+toks
+
+tokens(chars, what = 'fasterword', remove_separator = TRUE)
+tokens(chars, what = 'fastestword', remove_separator = TRUE)
+
+tokens(chars, remove_separator = TRUE)
+tokens(toks, remove_separator = TRUE)
+
+tokens(chars, remove_punct = TRUE)
+tokens(toks, remove_punct = TRUE)
 })
 
     
