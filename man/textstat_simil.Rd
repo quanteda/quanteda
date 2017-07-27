@@ -32,11 +32,15 @@ matrix is recorded}
 
 \item{p}{The power of the Minkowski distance.}
 }
+\value{
+\code{textstat_simil} and \code{textstat_dist} return \code{dist} class objects.
+}
 \description{
 These functions compute matrixes of distances and similarities between 
 documents or features from a \code{\link{dfm}} and return a 
 \code{\link[stats]{dist}} object (or a matrix if specific targets are
-selected).
+selected).  They are fast and robust because they operate directly on the sparse
+\link{dfm} objects.
 }
 \details{
 \code{textstat_dist} options are: \code{"euclidean"} (default), 

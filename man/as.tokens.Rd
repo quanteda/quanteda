@@ -30,7 +30,7 @@ is.tokens(x)
 \arguments{
 \item{x}{object to be coerced or checked}
 
-\item{concatenator}{character between multi-word expressions, default is _ (underscore) character}
+\item{concatenator}{character between multi-word expressions, default is the underscore character.  See Details.}
 
 \item{...}{for \link{c.tokens} only, \link{tokens} objects to be concatenated}
 
@@ -45,16 +45,16 @@ is.tokens(x)
 \item{t2}{tokens two to be added}
 }
 \value{
-\code{as.tokens} returns a quanteda \link{tokens} object
+\code{as.tokens} returns a quanteda \link{tokens} object.
 
 \code{as.list} returns a simple list of characters from a
-  \link{tokens} object
+  \link{tokens} object.
 
 \code{unlist} returns a simple vector of characters from a 
-  \link{tokens} object
+  \link{tokens} object.
 
 \code{as.character} returns a character vector from a 
-  \link{tokens} object
+  \link{tokens} object.
 
 \code{is.tokens} returns \code{TRUE} if the object is of class
   tokens, \code{FALSE} otherwise.
@@ -66,6 +66,9 @@ is.tokens(x)
 Coercion functions to and from \link{tokens} objects, checks for whether an
 object is a \link{tokens} object, and functions to combine \link{tokens}
 objects.
+}
+\details{
+The \code{concatenator} value is (TO BE COMPLETED).
 }
 \examples{
 # combining tokens

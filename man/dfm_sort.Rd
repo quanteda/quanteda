@@ -9,7 +9,7 @@ dfm_sort(x, decreasing = TRUE, margin = c("features", "documents", "both"))
 \arguments{
 \item{x}{Document-feature matrix created by \code{\link{dfm}}}
 
-\item{decreasing}{TRUE (default) if sort will be in descending order, 
+\item{decreasing}{logical; if \code{TRUE}, the sort will be in descending order,
 otherwise sort in increasing order}
 
 \item{margin}{which margin to sort on \code{features} to sort by frequency of
@@ -25,9 +25,9 @@ in documents, or both.
 }
 \examples{
 dtm <- dfm(data_corpus_inaugural)
-dtm[1:10, 1:5]
-dfm_sort(dtm)[1:10, 1:5]
-dfm_sort(dtm, decreasing = FALSE, "both")[1:10, 1:5]  
+head(dtm)
+head(dfm_sort(dtm))
+head(dfm_sort(dtm, decreasing = FALSE, "both"))
 }
 \author{
 Ken Benoit

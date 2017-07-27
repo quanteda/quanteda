@@ -79,6 +79,7 @@ Collate:
     'dfm-subsetting.R'
     'dfm.R'
     'dfm_compress.R'
+    'dfm_group.R'
     'dfm_lookup.R'
     'dfm_sample.R'
     'dfm_select.R'

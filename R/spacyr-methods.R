@@ -3,7 +3,7 @@
 ### spacy_parsed objects
 ###
 
-#' extensions of methods defind in the quanteda package
+#' extensions of methods defined in the quanteda package
 #' 
 #' Extensions to quanteda functions.  You must have attached \pkg{quanteda} for these
 #' to work.
@@ -17,7 +17,7 @@
 #' 
 #' \code{ntype(x, ...)} returns the number of types (unique tokens) by document
 #' 
-#' @param x the \code{spacyr_parsed} object returned by \code{spacy_parse}
+#' @param x an object returned by \code{spacy_parse}
 #' @param ... unused
 #' @examples 
 #' \dontrun{

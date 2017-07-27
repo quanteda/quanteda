@@ -62,6 +62,7 @@
 #'                  highlighted = c("government", "global", "children", 
 #'                                  "bank", "economy", "the", "citizenship",
 #'                                  "productivity", "deficit")) }
+
 textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels = NULL, 
                              sort = TRUE, groups = NULL, 
                              highlighted = NULL, alpha = 0.7, 

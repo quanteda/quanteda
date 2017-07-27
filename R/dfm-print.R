@@ -78,7 +78,7 @@ setMethod("show", signature(object = "dfm"), function(object) print(object))
 #' return the first or last part of a dfm
 #' 
 #' For a \link{dfm} object, returns the first or last \code{n} documents 
-#' and first \code{ncol} features for inspection.
+#' and first \code{nfeature} features for inspection.
 #' @param x a dfm object
 #' @param n a single integer.  If positive, size for the resulting object: 
 #'   number of first/last documents for the dfm. If negative, all but the n 

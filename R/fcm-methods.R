@@ -1,7 +1,8 @@
 #' @rdname dfm_compress
-#' @note 
-#' \code{fcm_compress} works only when the \link{fcm} was created with a document
-#' context.
+#' @note \code{fcm_compress} works only when the \link{fcm} was created with a
+#' document context.
+#' @return \code{fcm_compress} returns an \link{fcm} whose features have been
+#' recombined by combining counts of identical features, summing their counts.
 #' @export
 #' @examples
 #' # compress an fcm
@@ -73,10 +74,12 @@ fcm_compress.fcm <- function(x) {
 
 #' sort an fcm in alphabetical order of the features
 #' 
-#' Sorts a \link{dfm} in alphabetical order of the features.
+#' Sorts an \link{fcm} in alphabetical order of the features.
 #' 
 #' @param x \link{fcm} object
-#' @return A \link{fcm} object whose features have been alphabetically sorted
+#' @return A \link{fcm} object whose features have been alphabetically sorted. 
+#'   Differs from \code{\link{fcm_sort}} in that this function sorts the fcm by
+#'   the feature labels, not the counts of the features.
 #' @export
 #' @author Ken Benoit
 #' @examples

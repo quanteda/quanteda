@@ -179,5 +179,9 @@ setMethod("textmodel", signature(x = "formula", y="missing", data="dfm", model =
 #' }
 #' An element that is not applicable for a particular object class will be \code{NULL}, 
 #' for instance \code{coef_documents} has no meaning for a fitted wordscores object.
-NULL 
+coef.textmodel <- coefficients.textmodel <- function(object, ...) {
+    coef(object, ...)
+}
+
+
 

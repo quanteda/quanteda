@@ -27,7 +27,7 @@ A \link{dfm} class object corresponding to the subset defined
 }
 \description{
 For a \link{dfm} object, returns the first or last \code{n} documents 
-and first \code{ncol} features for inspection.
+and first \code{nfeature} features for inspection.
 }
 \examples{
 myDfm <- dfm(data_corpus_inaugural, ngrams = 2, verbose = FALSE)

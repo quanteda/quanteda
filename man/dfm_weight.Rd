@@ -36,7 +36,12 @@ assigned a weight of 1.0 (meaning they will be unchanged).}
 \item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
 }
 \value{
-The dfm with weighted values.
+\code{dfm_weight} returns the dfm with weighted values.
+
+\code{dfm_smooth} returns a dfm whose values have been smoothed by
+  adding the \code{smoothing} amount. Note that this effectively converts a
+  matrix from sparse to dense format, so may exceed memory requirements
+  depending on the size of your input matrix.
 }
 \description{
 Returns a document by feature matrix with the feature frequencies weighted 
@@ -46,10 +51,6 @@ according to one of several common methods.  Some shortcut functions that offer 
 \item{\code{\link{tfidf}}}{  compute term frequency-inverse document frequency weights}
 \item{\code{\link{docfreq}}}{  compute document frequencies of features}
 }
-}
-\details{
-This converts a matrix from sparse to dense format, so may exceed memory
-requirements depending on the size of your input matrix.
 }
 \note{
 For finer grained control, consider calling the convenience functions directly.

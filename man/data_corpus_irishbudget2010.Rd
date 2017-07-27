@@ -8,9 +8,9 @@
   variables for year, debate, serial number, first and last name of the 
   speaker, and the speaker's party.}
 \source{
-Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of 
-  Latent Traits From Textual Data Using Human Judgment as a Benchmark." 
-  \emph{Political Analysis} 21: 298-313.
+Dáil Éireann Debate, 
+\href{http://oireachtasdebates.oireachtas.ie/debates\%20authoring/debateswebpack.nsf/takes/dail2009120900022?opendocument}{Budget Statement 2010.}
+9 December 2009.  vol. 697, no. 3.
 }
 \usage{
 data_corpus_irishbudget2010
@@ -21,5 +21,10 @@ of 2010.
 }
 \examples{
 summary(data_corpus_irishbudget2010)
+}
+\references{
+Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of 
+  Latent Traits From Textual Data Using Human Judgment as a Benchmark." 
+  \emph{Political Analysis} 21: 298-313.
 }
 \keyword{data}

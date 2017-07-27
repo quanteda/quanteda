@@ -24,10 +24,10 @@ char_trim(x, what = c("sentences", "paragraphs", "documents"),
 sentence level) will be used to exclude sentences}
 }
 \value{
-a \link{corpus} or character vector equal in length to the input, or
-  a tokenized set of sentences if .  If the input was a corpus, then the all
-  docvars and metadata are preserved.  For documents whose sentences have
-  been removed entirely, a null string (\code{""}) will be returned.
+a \link{corpus} or character vector equal in length to the input.  If
+  the input was a corpus, then the all docvars and metadata are preserved. 
+  For documents whose sentences have been removed entirely, a null string
+  (\code{""}) will be returned.
 }
 \description{
 Removes sentences from a corpus or a character vector shorter than a 

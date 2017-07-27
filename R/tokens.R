@@ -246,8 +246,9 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
 #' object is a \link{tokens} object, and functions to combine \link{tokens}
 #' objects.
 #' @param x object to be coerced or checked
-#' @param concatenator character between multi-word expressions, default is _ (underscore) character
-#' @return \code{as.tokens} returns a quanteda \link{tokens} object
+#' @param concatenator character between multi-word expressions, default is the underscore character.  See Details.
+#' @return \code{as.tokens} returns a quanteda \link{tokens} object.
+#' @details The \code{concatenator} value is (TO BE COMPLETED).
 #' @export
 #' @rdname as.tokens
 as.tokens <- function(x, concatenator = '_') {
@@ -284,7 +285,7 @@ as.tokens.tokenizedTexts <- function(x, ...) {
 
 #' @rdname as.tokens
 #' @return \code{as.list} returns a simple list of characters from a
-#'   \link{tokens} object
+#'   \link{tokens} object.
 #' @method as.list tokens
 #' @export
 as.list.tokens <- function(x, ...) {
@@ -296,7 +297,7 @@ as.list.tokens <- function(x, ...) {
 
 #' @rdname as.tokens
 #' @return \code{unlist} returns a simple vector of characters from a 
-#'   \link{tokens} object
+#'   \link{tokens} object.
 #' @param recursive a required argument for \link{unlist} but inapplicable to
 #'   \link{tokens} objects
 #' @method unlist tokens
@@ -309,7 +310,7 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
 #' @param use.names logical; preserve names if \code{TRUE}.  For
 #'   \code{as.character} and \code{unlist} only.
 #' @return \code{as.character} returns a character vector from a 
-#'   \link{tokens} object
+#'   \link{tokens} object.
 #' @export
 as.character.tokens <- function(x, use.names = FALSE, ...) {
     unlist(as.list(x), use.names = use.names)
@@ -505,7 +506,7 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
                           "remove(Numbers|Punct|Symbols|Separators|Twitter|Hyphens|URL)$")
     if (any(oldargindex)) {
         warning(names(thecall)[oldargindex], " is deprecated; use ",
-                tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex])), " instead")
+                tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex])), " instead", call. = FALSE)
         names(thecall)[oldargindex] <- tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex]))
         return(do.call(tokens, thecall))
     }

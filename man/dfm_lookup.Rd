@@ -26,25 +26,26 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
-\item{capkeys}{if \code{TRUE}, convert dictionary keys to
-uppercase to distinguish them from other features}
+\item{capkeys}{if \code{TRUE}, convert dictionary keys to uppercase to
+distinguish them from other features}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }
 \description{
-Apply a dictionary to a dfm by looking up all dfm features for matches in a
-a set of \link{dictionary} values, and combine replace those features with a 
-count of the dictionary's keys.  If \code{exclusive = FALSE} then the 
-behaviour is to apply a "thesaurus" where each value match is replaced by 
-the dictionary key, converted to capitals if \code{capkeys = TRUE} (so that 
-the replacements are easily distinguished from features that were terms
-found originally in the document).
+Apply a dictionary to a dfm by looking up all dfm features for matches in a a
+set of \link{dictionary} values, and replace those features with a count of
+the dictionary's keys.  If \code{exclusive = FALSE} then the behaviour is to
+apply a "thesaurus", where each value match is replaced by the dictionary
+key, converted to capitals if \code{capkeys = TRUE} (so that the replacements
+are easily distinguished from features that were terms found originally in
+the document).
 }
 \note{
-\code{dfm_lookup} should not be used with dictionaries containing
-multi-word values, because dfm features will already have been fixed using
-a specific ngram value which may not match the multi-word structure of the
-dictionary.
+If using \code{dfm_lookup} with dictionaries containing multi-word
+  values, matches will only occur if the features themselves are multi-word
+  or formed from ngrams. A better way to match dictionary values that include
+  multi-word patterns is to apply \code{\link{tokens_lookup}} to the tokens,
+  and then construct the dfm.
 }
 \examples{
 myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),

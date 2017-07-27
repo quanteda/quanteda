@@ -28,7 +28,7 @@
 #'   for the corresponding named fatures.  Any features not named will be 
 #'   assigned a weight of 1.0 (meaning they will be unchanged).
 #' @note For finer grained control, consider calling the convenience functions directly.
-#' @return The dfm with weighted values.
+#' @return \code{dfm_weight} returns the dfm with weighted values.
 #' @export
 #' @seealso \code{\link{tf}},  \code{\link{tfidf}}, \code{\link{docfreq}}
 #' @keywords dfm
@@ -119,8 +119,10 @@ dfm_weight.dfm <- function(x,
 
 #' @rdname dfm_weight
 #' @param smoothing constant added to the dfm cells for smoothing, default is 1
-#' @details This converts a matrix from sparse to dense format, so may exceed memory
-#' requirements depending on the size of your input matrix.
+#' @return \code{dfm_smooth} returns a dfm whose values have been smoothed by
+#'   adding the \code{smoothing} amount. Note that this effectively converts a
+#'   matrix from sparse to dense format, so may exceed memory requirements
+#'   depending on the size of your input matrix.
 #' @export
 #' @examples 
 #' # smooth the dfm

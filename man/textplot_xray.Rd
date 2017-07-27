@@ -9,22 +9,24 @@ textplot_xray(..., scale = c("absolute", "relative"), sort = FALSE)
 \arguments{
 \item{...}{any number of \link{kwic} class objects}
 
-\item{scale}{whether to scale the token index axis by absolute position of the token in the 
-document or by relative position. Defaults are absolute for single document and relative for
-multiple documents.}
+\item{scale}{whether to scale the token index axis by absolute position of
+the token in the document or by relative position. Defaults are absolute
+for single document and relative for multiple documents.}
 
-\item{sort}{whether to sort the rows of a multiple document plot by document name}
+\item{sort}{whether to sort the rows of a multiple document plot by document
+name}
 }
 \value{
-\code{plot.kwic} returns a ggplot object
+a \pkg{ggplot2} object
 }
 \description{
-Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or
+Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or 
 more texts. The format of the plot depends on the number of \link{kwic} class
 objects passed: if there is only one document, keywords are plotted one below
-the other. If there are multiple documents the documents are plotted one
-below the other, with keywords shown side-by-side. Given that this returns a
-ggplot object, you can modify the plot by adding ggplot layers (see example).
+the other. If there are multiple documents the documents are plotted one 
+below the other, with keywords shown side-by-side. Given that this returns a 
+\pkg{ggplot2} object, you can modify the plot by adding \pkg{ggplot2} layers
+(see example).
 }
 \examples{
 \dontrun{

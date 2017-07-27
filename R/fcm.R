@@ -49,7 +49,7 @@ setClass("fcm",
 #'   function of distance from the target feature.  Only makes sense for \code{context = "window"}.}
 #'   }
 #' @param weights a vector of weights applied to each distance from 
-#'   \code{1:window}, strictly decreasing by default; can be a customer defined vector of the same length as 
+#'   \code{1:window}, strictly decreasing by default; can be a custom-defined vector of the same length as 
 #'   \code{length(weights)}
 #' @param ordered if \code{TRUE} the number of times that a term appears before or after the target feature 
 #'      are counted seperately. Only makes sense for context = "window".
@@ -74,7 +74,7 @@ setClass("fcm",
 #'   
 #'   \link{fcm} provides all of this functionality, returning a \eqn{V * V}
 #'   matrix (where \eqn{V} is the vocabulary size, returned by
-#'   \code{\link{ntype}}). The \code{tri = TRUE} option will only return the
+#'   \code{\link{nfeature}}). The \code{tri = TRUE} option will only return the
 #'   upper part of the matrix.
 #'   
 #'   Unlike some implementations of co-occurrences, \link{fcm} counts feature
