@@ -248,9 +248,18 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
 #' @param x object to be coerced or checked
 #' @param concatenator character between multi-word expressions, default is the underscore character.  See Details.
 #' @return \code{as.tokens} returns a quanteda \link{tokens} object.
-#' @details The \code{concatenator} value is (TO BE COMPLETED).
+#' @details The \code{concatenator} is used to automatically generate dictionary values for multi-word expressions 
+#'          in \link{tokens_lookup} and \link{dfm_lookup}.
 #' @export
 #' @rdname as.tokens
+#' @examples 
+#' 
+#' # create tokens object from list of characters with custom concatenator
+#' dict <- dictionary(list(country = 'United States', sea = c('Atlantic Ocean', 'Pacific Ocean')))
+#' lis <- list(c('The', 'United+States', 'has', 'the', 'Atlantic+Ocean', 'and', 'the', 'Pacific+Ocean', '.'))
+#' toks <- as.tokens(lis, concatenator = '+')
+#' tokens_lookup(toks, dict)
+#' 
 as.tokens <- function(x, concatenator = '_') {
     UseMethod("as.tokens")
 }
