@@ -184,17 +184,17 @@ test_that("test textstat_dist method = \"Canberra\" against proxy dist() : featu
 
 # Hamming distance
 test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distance: documents", {
-    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980 & Year < 2018), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     hammingQuanteda <- sort(as.matrix(textstat_dist(presDfm, "1981-Reagan", method = "hamming", margin = "documents", upper = TRUE))[,"1981-Reagan"], decreasing = FALSE)
     hammingQuanteda <- hammingQuanteda[-which(names(hammingQuanteda) == "1981-Reagan")]
     
-    if (requireNamespace("e1071", quietly = TRUE)){
+    if (requireNamespace("e1071", quietly = TRUE)) {
         hammingE1071 <- sort(e1071::hamming.distance(as.matrix(tf(presDfm, "boolean")))[, "1981-Reagan"], decreasing = FALSE)
         if("1981-Reagan" %in% names(hammingE1071)) hammingE1071 <- hammingE1071[-which(names(hammingE1071) == "1981-Reagan")]
     } else {
-        hammingE1071 <- c(711, 724, 745, 766, 767, 779, 785, 804, 852)
+        hammingE1071 <- c(712, 723, 746, 769, 774, 781, 784, 812, 857)
     }
     expect_equivalent(hammingQuanteda, hammingE1071)
 })
