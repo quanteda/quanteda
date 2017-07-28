@@ -214,12 +214,13 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
                            include_docvars,
                            ...) {
     
-    
+    types <- types(x)
     if (remove_hyphens)
-        types(x) <- stri_replace_all_fixed(types(x), "-", " ")
+        types <- stri_replace_all_fixed(types, "-", " ")
     if (remove_twitter)
-        types(x) <- stri_replace_all_fixed(types(x), c('@', '#'), "", vectorize_all = FALSE)
-    if (remove_hyphens || remove_twitter)
+        types <- stri_replace_all_regex(types, c('^@', '^#'), "", vectorize_all = FALSE)
+    if (!identical(types, types(x)))
+        types(x) <- types
         x <- tokens_recompile(x)
     
     regex <- c()
@@ -599,11 +600,13 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
                    )
     if (what %in% c("word", "fasterword")) {
         
-        if (!remove_hyphens)
-            types(x) <- stri_replace_all_fixed(types(x), "_hy_", "-")
+        types <- types(x)
+        if (!remove_punct || remove_punct)
+            types <- stri_replace_all_fixed(types, "_hy_", "-") # run this always
         if (!remove_twitter)
-            types(x) <- stri_replace_all_fixed(types(x), c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
-        if (!remove_hyphens || !remove_twitter)
+            types <- stri_replace_all_fixed(types, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
+        if (!identical(types, types(x)))
+            types(x) <- types
             x <- tokens_recompile(x)
 
         regex <- c()
