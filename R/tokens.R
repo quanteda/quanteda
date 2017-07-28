@@ -242,24 +242,31 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
 
 #' coercion, checking, and combining functions for tokens objects
 #' 
-#' Coercion functions to and from \link{tokens} objects, checks for whether an
-#' object is a \link{tokens} object, and functions to combine \link{tokens}
+#' Coercion functions to and from \link{tokens} objects, checks for whether an 
+#' object is a \link{tokens} object, and functions to combine \link{tokens} 
 #' objects.
 #' @param x object to be coerced or checked
-#' @param concatenator character between multi-word expressions, default is the underscore character.  See Details.
+#' @param concatenator character between multi-word expressions, default is the
+#'   underscore character.  See Details.
 #' @return \code{as.tokens} returns a quanteda \link{tokens} object.
-#' @details The \code{concatenator} is used to automatically generate dictionary values for multi-word expressions 
-#'          in \link{tokens_lookup} and \link{dfm_lookup}. The underscore character is commonly used to join elements 
-#'          of multi-word expressions (e.g. piece_of_cake, New_York), but other characters (e.g. whitespace " ", 
-#'          hyphane "-") can also be used. In those cases, users have to tell the system what is the concatenator in 
-#'          your tokens.
+#' @details The \code{concatenator} is used to automatically generate dictionary
+#'   values for multi-word expressions in \code{\link{tokens_lookup}} and
+#'   \code{\link{dfm_lookup}}. The underscore character is commonly used to join
+#'   elements of multi-word expressions (e.g. "piece_of_cake", "New_York"), but
+#'   other characters (e.g. whitespace " " or a hyphen "-") can also be used. 
+#'   In those cases, users have to tell the system what is the concatenator in 
+#'   your tokens so that the conversion knows to treat this character as the
+#'   inter-word delimiter, when reading in the elements that will become the
+#'   tokens.
 #' @export
 #' @rdname as.tokens
 #' @examples 
 #' 
 #' # create tokens object from list of characters with custom concatenator
-#' dict <- dictionary(list(country = 'United States', sea = c('Atlantic Ocean', 'Pacific Ocean')))
-#' lis <- list(c('The', 'United-States', 'has', 'the', 'Atlantic-Ocean', 'and', 'the', 'Pacific-Ocean', '.'))
+#' dict <- dictionary(list(country = 'United States', 
+#'                    sea = c('Atlantic Ocean', 'Pacific Ocean')))
+#' lis <- list(c('The', 'United-States', 'has', 'the', 'Atlantic-Ocean', 
+#'               'and', 'the', 'Pacific-Ocean', '.'))
 #' toks <- as.tokens(lis, concatenator = '-')
 #' tokens_lookup(toks, dict)
 #' 
