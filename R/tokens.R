@@ -249,15 +249,18 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
 #' @param concatenator character between multi-word expressions, default is the underscore character.  See Details.
 #' @return \code{as.tokens} returns a quanteda \link{tokens} object.
 #' @details The \code{concatenator} is used to automatically generate dictionary values for multi-word expressions 
-#'          in \link{tokens_lookup} and \link{dfm_lookup}.
+#'          in \link{tokens_lookup} and \link{dfm_lookup}. The underscore character is commonly used to join elements 
+#'          of multi-word expressions (e.g. piece_of_cake, New_York), but other characters (e.g. whitespace " ", 
+#'          hyphane "-") can also be used. In those cases, users have to tell the system what is the concatenator in 
+#'          your tokens.
 #' @export
 #' @rdname as.tokens
 #' @examples 
 #' 
 #' # create tokens object from list of characters with custom concatenator
 #' dict <- dictionary(list(country = 'United States', sea = c('Atlantic Ocean', 'Pacific Ocean')))
-#' lis <- list(c('The', 'United+States', 'has', 'the', 'Atlantic+Ocean', 'and', 'the', 'Pacific+Ocean', '.'))
-#' toks <- as.tokens(lis, concatenator = '+')
+#' lis <- list(c('The', 'United-States', 'has', 'the', 'Atlantic-Ocean', 'and', 'the', 'Pacific-Ocean', '.'))
+#' toks <- as.tokens(lis, concatenator = '-')
 #' tokens_lookup(toks, dict)
 #' 
 as.tokens <- function(x, concatenator = '_') {
@@ -650,7 +653,7 @@ preserve_special <- function(txt, remove_hyphens, remove_url, remove_twitter, ve
         if (verbose) catm("...preserving hyphens\n")
         txt <- stri_replace_all_regex(txt, "(\\b)[\\p{Pd}](\\b)", "$1 $2")
     } else {
-        txt <- stri_replace_all_regex(txt, "(\\b)[\\p{Pd}](\\b)", "$1 _hy_ $2")
+        txt <- stri_replace_all_regex(txt, "(\\b)[\\p{Pd}](\\b)", "$1_hy_$2")
     }
     if (remove_url) {
         if (verbose & remove_url) catm("...removing URLs\n")

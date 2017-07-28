@@ -69,14 +69,17 @@ objects.
 }
 \details{
 The \code{concatenator} is used to automatically generate dictionary values for multi-word expressions 
-         in \link{tokens_lookup} and \link{dfm_lookup}.
+         in \link{tokens_lookup} and \link{dfm_lookup}. The underscore character is commonly used to join elements 
+         of multi-word expressions (e.g. piece_of_cake, New_York), but other characters (e.g. whitespace " ", 
+         hyphane "-") can also be used. In those cases, users have to tell the system what is the concatenator in 
+         your tokens.
 }
 \examples{
 
 # create tokens object from list of characters with custom concatenator
 dict <- dictionary(list(country = 'United States', sea = c('Atlantic Ocean', 'Pacific Ocean')))
-lis <- list(c('The', 'United+States', 'has', 'the', 'Atlantic+Ocean', 'and', 'the', 'Pacific+Ocean', '.'))
-toks <- as.tokens(lis, concatenator = '+')
+lis <- list(c('The', 'United-States', 'has', 'the', 'Atlantic-Ocean', 'and', 'the', 'Pacific-Ocean', '.'))
+toks <- as.tokens(lis, concatenator = '-')
 tokens_lookup(toks, dict)
 
 # combining tokens
