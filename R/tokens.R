@@ -661,9 +661,9 @@ tokens_word <- function(txt,
 preserve_special <- function(txt, remove_hyphens, remove_url, remove_twitter, verbose) {
     
     if (remove_hyphens) {
-        if (verbose) catm("...preserving hyphens\n")
-        txt <- stri_replace_all_regex(txt, "(\\b)[\\p{Pd}](\\b)", "$1 $2")
+        txt <- stri_replace_all_regex(txt, "(\\b)[\\p{Pd}](\\b)", "$1 _hy_ $2")
     } else {
+        if (verbose) catm("...preserving hyphens\n")
         txt <- stri_replace_all_regex(txt, "(\\b)[\\p{Pd}](\\b)", "$1_hy_$2")
     }
     if (remove_url) {
