@@ -235,9 +235,10 @@ test_that("as.list.dist works as expected",{
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     ddist <- textstat_dist(presDfm, method = "hamming")
-    ddist_list <- as.list(ddist)
-    expect_equal(names(ddist_list$`1981-Reagan`)[1:3], c("2009-Obama", "2013-Obama", "1997-Clinton"))
-    expect_equivalent(ddist_list$`1981-Reagan`[1:3], c(852, 804, 785))
+    expect_equal(
+        as.list(ddist)$`1981-Reagan`[1:3], 
+        c("2009-Obama" = 857, "2013-Obama" = 812, "1997-Clinton" = 784)
+    )
 })
 
 test_that("as.list.dist.selection works as expected",{
