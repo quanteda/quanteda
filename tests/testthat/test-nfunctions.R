@@ -39,3 +39,31 @@ test_that("test ntype tokens", {
     expect_equal(ntype(txt), c(d1 = 3, d2 = 5))
     expect_equal(ntype(crp), c(d1 = 3, d2 = 5))
 })
+
+
+test_that("test ntoken tokens with orignal argument", {
+    txts <- c(d1 = "a b c a b c", 
+             d2 = "a b c d e")
+    
+    dict <- dictionary(list(A = c('a'), B = c('b')))
+    
+    toks <- tokens(txts)
+    toks_dict <- tokens_lookup(toks, dict)
+    
+    expect_equal(ntoken(toks_dict), c(d1 = 4, d2 = 2))
+    expect_equal(ntoken(toks), ntoken(toks_dict, original = TRUE))
+    
+    mx <- dfm(toks)
+    mx_dict <- dfm_lookup(mx, dict)
+    
+    expect_equal(ntoken(mx_dict), c(d1 = 4, d2 = 2))
+    expect_equal(ntoken(mx), ntoken(mx_dict, original = TRUE))
+    
+    excpect_error(ntoken(toks, original = TRUE),
+                  "original number of tokens is not available for this object"
+    )
+    excpect_error(ntoken(mx, original = TRUE),
+                  "original number of tokens is not available for this object"
+    )
+
+})
