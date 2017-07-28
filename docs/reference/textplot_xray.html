@@ -78,12 +78,13 @@
     </div>
 
     
-    <p>Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or
+    <p>Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or 
 more texts. The format of the plot depends on the number of <a href='kwic.html'>kwic</a> class
 objects passed: if there is only one document, keywords are plotted one below
-the other. If there are multiple documents the documents are plotted one
-below the other, with keywords shown side-by-side. Given that this returns a
-ggplot object, you can modify the plot by adding ggplot layers (see example).</p>
+the other. If there are multiple documents the documents are plotted one 
+below the other, with keywords shown side-by-side. Given that this returns a 
+<span class="pkg">ggplot2</span> object, you can modify the plot by adding <span class="pkg">ggplot2</span> layers
+(see example).</p>
     
 
     <pre class="usage"><span class='fu'>textplot_xray</span>(<span class='no'>...</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"absolute"</span>, <span class='st'>"relative"</span>), <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -97,19 +98,20 @@ ggplot object, you can modify the plot by adding ggplot layers (see example).</p
     </tr>
     <tr>
       <th>scale</th>
-      <td><p>whether to scale the token index axis by absolute position of the token in the 
-document or by relative position. Defaults are absolute for single document and relative for
-multiple documents.</p></td>
+      <td><p>whether to scale the token index axis by absolute position of
+the token in the document or by relative position. Defaults are absolute
+for single document and relative for multiple documents.</p></td>
     </tr>
     <tr>
       <th>sort</th>
-      <td><p>whether to sort the rows of a multiple document plot by document name</p></td>
+      <td><p>whether to sort the rows of a multiple document plot by document
+name</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>plot.kwic</code> returns a ggplot object</p>
+    <p>a <span class="pkg">ggplot2</span> object</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

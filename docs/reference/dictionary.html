@@ -86,17 +86,16 @@ all currently available dictionary files supplied as part of the LIWC 2001,
 2007, and 2015 software (see References).</p>
     
 
-    <pre class="usage"><span class='fu'>dictionary</span>(<span class='no'>...</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
+    <pre class="usage"><span class='fu'>dictionary</span>(<span class='no'>x</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
   <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"auto"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
+      <th>x</th>
       <td><p>a named list of character vector dictionary entries, including <a href='valuetype.html'>valuetype</a> pattern
-matches, and including multi-word expressions separated by <code>concatenator</code>.  The argument 
-may be an explicit list or named set of elements that can be turned into a list.  See examples.
+matches, and including multi-word expressions separated by <code>concatenator</code>.  See examples.
 This argument may be omitted if the dictionary is read from <code>file</code>.</p></td>
     </tr>
     <tr>
@@ -170,18 +169,17 @@ dictionaries. This uses the iconv labels for encoding.  See the
 #&gt;   1913-Wilson            0          0      0        1        1       0
 #&gt;   1917-Wilson            0          0      0        0        0       2
 #&gt;   1921-Harding           0          0      0        1        2      15</div><div class='input'>
-<span class='co'># also works</span>
-<span class='no'>mydict2</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>christmas</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Christmas"</span>, <span class='st'>"Santa"</span>, <span class='st'>"holiday"</span>),
-                      <span class='kw'>opposition</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Opposition"</span>, <span class='st'>"reject"</span>, <span class='st'>"notincorpus"</span>))
-<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mydict2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 30 documents, 2 features (81.7% sparse).</div><div class='input'>
 <span class='fu'>not_run</span>({
-  <span class='co'># import the Laver-Garry dictionary from http://bit.ly/1FH2nvf</span>
-  <span class='no'>lgdict</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat"</span>,
-                       <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"wordstat"</span>)
+  <span class='co'># import the Laver-Garry dictionary from Provalis Research</span>
+  <span class='no'>dictfile</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>()
+  <span class='fu'>download.file</span>(<span class='st'>"https://provalisresearch.com/Download/LaverGarry.zip"</span>, <span class='no'>dictfile</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"wb"</span>)
+  <span class='fu'>unzip</span>(<span class='no'>dictfile</span>, <span class='kw'>exdir</span> <span class='kw'>=</span> (<span class='no'>td</span> <span class='kw'>&lt;-</span> <span class='fu'>tempdir</span>()))
+  <span class='no'>lgdict</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='no'>td</span>, <span class='st'>"LaverGarry.cat"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"/"</span>))
   <span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>lgdict</span>))
 
   <span class='co'># import a LIWC formatted dictionary from http://www.moralfoundations.org</span>
-  <span class='no'>mfdict</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"http://ow.ly/VMRkL"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"LIWC"</span>)
+  <span class='fu'>download.file</span>(<span class='st'>"https://goo.gl/5gmwXq"</span>, <span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>())
+  <span class='no'>mfdict</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>tf</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"LIWC"</span>)
   <span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mfdict</span>))
 })</div></pre>
   </div>

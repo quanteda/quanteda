@@ -95,26 +95,26 @@ column names of the <a href='dfm.html'>dfm</a> object.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>character vector of the features</p>
+    <p>character vector of the feature labels</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>inaugDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># first 50 features (in original text order)</span>
-<span class='fu'>head</span>(<span class='fu'>featnames</span>(<span class='no'>inaugDfm</span>), <span class='fl'>50</span>)</div><div class='output co'>#&gt;  [1] "fellow"          "-"               "citizens"        "of"             
-#&gt;  [5] "the"             "senate"          "and"             "house"          
-#&gt;  [9] "representatives" ":"               "among"           "vicissitudes"   
-#&gt; [13] "incident"        "to"              "life"            "no"             
-#&gt; [17] "event"           "could"           "have"            "filled"         
-#&gt; [21] "me"              "with"            "greater"         "anxieties"      
-#&gt; [25] "than"            "that"            "which"           "notification"   
-#&gt; [29] "was"             "transmitted"     "by"              "your"           
-#&gt; [33] "order"           ","               "received"        "on"             
-#&gt; [37] "14th"            "day"             "present"         "month"          
-#&gt; [41] "."               "one"             "hand"            "i"              
-#&gt; [45] "summoned"        "my"              "country"         "whose"          
-#&gt; [49] "voice"           "can"            </div><div class='input'>
+<span class='fu'>head</span>(<span class='fu'>featnames</span>(<span class='no'>inaugDfm</span>), <span class='fl'>50</span>)</div><div class='output co'>#&gt;  [1] "fellow-citizens" "of"              "the"             "senate"         
+#&gt;  [5] "and"             "house"           "representatives" ":"              
+#&gt;  [9] "among"           "vicissitudes"    "incident"        "to"             
+#&gt; [13] "life"            "no"              "event"           "could"          
+#&gt; [17] "have"            "filled"          "me"              "with"           
+#&gt; [21] "greater"         "anxieties"       "than"            "that"           
+#&gt; [25] "which"           "notification"    "was"             "transmitted"    
+#&gt; [29] "by"              "your"            "order"           ","              
+#&gt; [33] "received"        "on"              "14th"            "day"            
+#&gt; [37] "present"         "month"           "."               "one"            
+#&gt; [41] "hand"            "i"               "summoned"        "my"             
+#&gt; [45] "country"         "whose"           "voice"           "can"            
+#&gt; [49] "never"           "hear"           </div><div class='input'>
 <span class='co'># first 50 features alphabetically</span>
 <span class='fu'>head</span>(<span class='fu'>sort</span>(<span class='fu'>featnames</span>(<span class='no'>inaugDfm</span>)), <span class='fl'>50</span>)</div><div class='output co'>#&gt;  [1] "-"           ","           ";"           ":"           "!"          
 #&gt;  [6] "?"           "."           "'"           "\""          "("          

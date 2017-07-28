@@ -132,43 +132,55 @@ object types</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A kwic object classed data.frame, with the document name 
-  (<code>docname</code>), the token index position (<code>position</code>), the context 
-  before (<code>contextPre</code>), the keyword in its original format 
-  (<code>keyword</code>, preserving case and attached punctuation), and the context
-  after (<code>contextPost</code>).</p>
+    <p>A <code>kwic</code> classed data.frame, with the document name 
+  (<code>docname</code>), the token index positions (<code>from</code> and <code>to</code>, 
+  which will be the same for single-word patterns, or a sequence equal in 
+  length to the number of elements for multi-word phrases), the context 
+  before (<code>pre</code>), the keyword in its original format (<code>keyword</code>, 
+  preserving case and attached punctuation), and the context after 
+  (<code>post</code>).  The return object has its own <code>print</code> method, plus
+  some special attributes that are hidden in the print view.  If you want to
+  turn this into a simple data.frame, simply wrap the result in
+  <code>data.frame</code>.
+
+<code>as.tokens.kwic</code> converts the kwic object into a <a href='tokens.html'>tokens</a>
+  object, with each new "document" consisting of one keyword match, and the
+  contents of the <code>pre</code>, <code>keyword</code>, and <code>post</code> fields forming
+  the tokens.  This is one way to save the output for subsequent usage;
+  another way is to form a <a href='corpus.html'>corpus</a> from the return
+  object.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p><code>pattern</code> will be a keyword pattern or phrase, possibly multiple
-  patterns, that may include punctuation.  If a pattern contains whitespace,
+    <p><code>pattern</code> will be a keyword pattern or phrase, possibly multiple 
+  patterns, that may include punctuation.  If a pattern contains whitespace, 
   it is best to wrap it in <code><a href='phrase.html'>phrase</a></code> to make this explicit. 
-  However if <code>pattern</code> is a <a href='textstat_collocations.html'>collocations</a>
+  However if <code>pattern</code> is a <a href='textstat_collocations.html'>collocations</a> 
   or <a href='dictionary.html'>dictionary</a> object, then the collocations or multi-word dictionary
-  keys will automatically be considered phrases where each
+  keys will automatically be considered phrases where each 
   whitespace-separated element matches a token in sequence.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"secure*"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>))</div><div class='output co'>#&gt;                                                                       
 #&gt;       [1797-Adams, 479]  welfare, and | secure  | the blessings of    
-#&gt;      [1797-Adams, 1517]  nations, and | secured | immortal glory with 
+#&gt;      [1797-Adams, 1513]  nations, and | secured | immortal glory with 
 #&gt;  [1805-Jefferson, 2368]   , and shall | secure  | to you the          
-#&gt;     [1817-Monroe, 1765] cherished. To | secure  | us against these    
-#&gt;     [1817-Monroe, 1825] defense as to | secure  | our cities and      
-#&gt;     [1817-Monroe, 3026]      I can to | secure  | economy and fidelity</div><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"secur"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt;                                                                               
-#&gt;  [1789-Washington, 1499] government for the | security | of their union       
+#&gt;     [1817-Monroe, 1755] cherished. To | secure  | us against these    
+#&gt;     [1817-Monroe, 1815] defense as to | secure  | our cities and      
+#&gt;     [1817-Monroe, 3012]      I can to | secure  | economy and fidelity</div><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"secur"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt;                                                                               
+#&gt;  [1789-Washington, 1497] government for the | security | of their union       
 #&gt;        [1797-Adams, 479]       welfare, and |  secure  | the blessings of     
-#&gt;       [1797-Adams, 1517]       nations, and | secured  | immortal glory with  
+#&gt;       [1797-Adams, 1513]       nations, and | secured  | immortal glory with  
 #&gt;   [1805-Jefferson, 2368]        , and shall |  secure  | to you the           
 #&gt;      [1813-Madison, 321]       seas and the | security | of an important      
-#&gt;      [1817-Monroe, 1620]      may form some | security | against these dangers</div><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"security"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>))</div><div class='output co'>#&gt;                                                         
-#&gt;  [1789-Washington, 1499] government for the | security |
+#&gt;      [1817-Monroe, 1610]      may form some | security | against these dangers</div><div class='input'><span class='fu'>head</span>(<span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"security"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>))</div><div class='output co'>#&gt;                                                         
+#&gt;  [1789-Washington, 1497] government for the | security |
 #&gt;      [1813-Madison, 321]       seas and the | security |
-#&gt;      [1817-Monroe, 1620]      may form some | security |
-#&gt;      [1817-Monroe, 3444]           and as a | security |
-#&gt;       [1825-Adams, 1373]      that the best | security |
-#&gt;       [1825-Adams, 1445]   that the firmest | security |
+#&gt;      [1817-Monroe, 1610]      may form some | security |
+#&gt;      [1817-Monroe, 3430]           and as a | security |
+#&gt;       [1825-Adams, 1371]      that the best | security |
+#&gt;       [1825-Adams, 1443]   that the firmest | security |
 #&gt;                         
 #&gt;  of their union         
 #&gt;  of an important        
@@ -178,24 +190,24 @@ object types</p></td>
 #&gt;  of peace is            </div><div class='input'>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
 <span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"war against"</span>))</div><div class='output co'>#&gt;                                                                         
-#&gt;   [1857-Buchanan, 2933:2934] advantage of the fortune of | war against |
-#&gt;   [1901-McKinley, 2284:2285]         . We are not waging | war against |
-#&gt;   [1901-McKinley, 2299:2300]  portion of them are making | war against |
-#&gt;   [1901-McKinley, 2413:2414]    used when those who make | war against |
-#&gt;  [1933-Roosevelt, 1851:1852]   Executive power to wage a | war against |
+#&gt;   [1857-Buchanan, 2913:2914] advantage of the fortune of | war against |
+#&gt;   [1901-McKinley, 2272:2273]         . We are not waging | war against |
+#&gt;   [1901-McKinley, 2287:2288]  portion of them are making | war against |
+#&gt;   [1901-McKinley, 2401:2402]    used when those who make | war against |
+#&gt;  [1933-Roosevelt, 1849:1850]   Executive power to wage a | war against |
 #&gt;                                   
 #&gt;  a sister republic, we            
 #&gt;  the inhabitants of the Philippine
 #&gt;  the United States. By            
 #&gt;  us shall make it no              
 #&gt;  the emergency, as great          </div><div class='input'><span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"war against"</span>), <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)</div><div class='output co'>#&gt;                                                                
-#&gt;  [1801-Jefferson, 1277:1278] domestic concerns and the surest |
-#&gt;         [1845-Polk, 692:693] domestic concerns and the surest |
-#&gt;   [1857-Buchanan, 2933:2934]      advantage of the fortune of |
-#&gt;   [1901-McKinley, 2284:2285]              . We are not waging |
-#&gt;   [1901-McKinley, 2299:2300]       portion of them are making |
-#&gt;   [1901-McKinley, 2413:2414]         used when those who make |
-#&gt;  [1933-Roosevelt, 1851:1852]        Executive power to wage a |
+#&gt;  [1801-Jefferson, 1271:1272] domestic concerns and the surest |
+#&gt;         [1845-Polk, 690:691] domestic concerns and the surest |
+#&gt;   [1857-Buchanan, 2913:2914]      advantage of the fortune of |
+#&gt;   [1901-McKinley, 2272:2273]              . We are not waging |
+#&gt;   [1901-McKinley, 2287:2288]       portion of them are making |
+#&gt;   [1901-McKinley, 2401:2402]         used when those who make |
+#&gt;  [1933-Roosevelt, 1849:1850]        Executive power to wage a |
 #&gt;       [1977-Carter, 927:928]            and we will fight our |
 #&gt;                                                                
 #&gt;  bulwarks against | antirepublican tendencies; the preservation

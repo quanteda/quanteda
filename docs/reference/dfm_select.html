@@ -84,12 +84,12 @@ are to eliminate features from a dfm already constructed, such as stopwords,
 or to select only terms of interest from a dictionary.</p>
     
 
-    <pre class="usage"><span class='fu'>dfm_select</span>(<span class='no'>x</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
+    <pre class="usage"><span class='fu'>dfm_select</span>(<span class='no'>x</span>, <span class='no'>pattern</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>min_nchar</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_nchar</span> <span class='kw'>=</span> <span class='fl'>63</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>),
+  <span class='kw'>min_nchar</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>max_nchar</span> <span class='kw'>=</span> <span class='fl'>63L</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>),
   <span class='no'>...</span>)
 
-<span class='fu'>dfm_remove</span>(<span class='no'>x</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+<span class='fu'>dfm_remove</span>(<span class='no'>x</span>, <span class='no'>pattern</span>, <span class='no'>...</span>)
 
 <span class='fu'>fcm_select</span>(<span class='no'>x</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
@@ -139,8 +139,8 @@ removed</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>supplementary arguments passed to the underlying functions in 
-<code><a href='http://www.rdocumentation.org/packages/stringi/topics/stri_detect'>stri_detect_regex</a></code></p></td>
+      <td><p>used only for passing arguments from <code>*_remove</code> to
+<code>*_select</code> functions</p></td>
     </tr>
     </table>
     
@@ -165,7 +165,7 @@ removed</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>dfm_remove</code> and <code>fcm_remove</code> are simply a convenience 
+    <p><code>dfm_remove</code> and <code>fcm_remove</code> are simply a convenience
   wrappers to calling <code>dfm_select</code> and <code>fcm_select</code> with 
   <code>selection = "remove"</code>.</p>
     

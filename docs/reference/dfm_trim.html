@@ -123,9 +123,9 @@ appears, below/above which features will be removed</p></td>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Trimming a <a href='dfm.html'>dfm</a> object is an operation based on the values 
-  in the document-feature <em>matrix</em>.  To select subsets of a dfm based on
-  attributes of the features themselves -- such as selecting features 
+    <p>Trimming a <a href='dfm.html'>dfm</a> object is an operation based on the <em>values</em>
+  in the document-feature matrix.  To select subsets of a dfm based on
+  the features themselves (meaning the feature labels from <code><a href='featnames.html'>featnames</a></code>) -- such as those   
   matching a regular expression, or removing features matching a stopword 
   list, use <code><a href='dfm_select.html'>dfm_select</a></code>.</p>
     
@@ -135,7 +135,7 @@ appears, below/above which features will be removed</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,947 features (69.5% sparse).</div><div class='input'>
+    <pre class="examples"><div class='input'>(<span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,948 features (69.5% sparse).</div><div class='input'>
 <span class='co'># keep only words occuring &gt;=10 times and in &gt;=2 docs</span>
 <span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># keep only words occuring &gt;=10 times and in at least 0.4 of the documents</span>
@@ -174,7 +174,7 @@ appears, below/above which features will be removed</p></td>
 
     <h2>Author</h2>
     
-Ken Benoit and Paul Nulty, with some inspiration from Will Lowe's
+Ken Benoit and Paul Nulty, with some inspiration from Will Lowe
   (see <code>trim</code> from the <code>austin</code> package)
 
   </div>

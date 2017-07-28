@@ -86,7 +86,7 @@ according to one of several common methods.  Some shortcut functions that offer 
 </ul>
     
 
-    <pre class="usage"><span class='fu'>dfm_weight</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"frequency"</span>, <span class='st'>"relFreq"</span>, <span class='st'>"relMaxFreq"</span>, <span class='st'>"logFreq"</span>,
+    <pre class="usage"><span class='fu'>dfm_weight</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"frequency"</span>, <span class='st'>"relfreq"</span>, <span class='st'>"relmaxfreq"</span>, <span class='st'>"logfreq"</span>,
   <span class='st'>"tfidf"</span>), <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>dfm_smooth</span>(<span class='no'>x</span>, <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
@@ -102,9 +102,9 @@ according to one of several common methods.  Some shortcut functions that offer 
       <th>type</th>
       <td><p>a label of the weight type:</p><dl class='dl-horizontal'>
  <dt><code>"frequency"</code></dt><dd><p>integer feature count (default when a dfm is created)</p></dd>
- <dt><code>"relFreq"</code></dt><dd><p>the proportion of the feature counts of total feature counts (aka relative frequency)</p></dd>
- <dt><code>"relMaxFreq"</code></dt><dd><p>the proportion of the feature counts of the highest feature count in a document</p></dd>
- <dt><code>"logFreq"</code></dt><dd><p>take the logarithm of 1 + the feature count, for base 10</p></dd>
+ <dt><code>"relfreq"</code></dt><dd><p>the proportion of the feature counts of total feature counts (aka relative frequency)</p></dd>
+ <dt><code>"relmaxfreq"</code></dt><dd><p>the proportion of the feature counts of the highest feature count in a document</p></dd>
+ <dt><code>"logfreq"</code></dt><dd><p>take the logarithm of 1 + the feature count, for base 10</p></dd>
  <dt><code>"tfidf"</code></dt><dd><p>Term-frequency * inverse document frequency. For a
   full explanation, see, for example, 
   <a href = 'http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html'>http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html</a>.
@@ -129,12 +129,12 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The dfm with weighted values.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p><code>dfm_weight</code> returns the dfm with weighted values.
 
-    <p>This converts a matrix from sparse to dense format, so may exceed memory
-requirements depending on the size of your input matrix.</p>
+<code>dfm_smooth</code> returns a dfm whose values have been smoothed by
+  adding the <code>smoothing</code> amount. Note that this effectively converts a
+  matrix from sparse to dense format, so may exceed memory requirements
+  depending on the size of your input matrix.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -155,22 +155,22 @@ requirements depending on the size of your input matrix.</p>
     <pre class="examples"><div class='input'><span class='no'>dtm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)
 
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>dtm</span>, <span class='fl'>1</span>, <span class='kw'>function</span>(<span class='no'>tf</span>) <span class='no'>tf</span>/<span class='fu'>max</span>(<span class='no'>tf</span>))
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>dtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>normDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='st'>"relFreq"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>normDtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in topfeatures(normDtm): object 'normDtm' not found</span></div><div class='input'><span class='no'>maxTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relMaxFreq"</span>)
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>maxTfDtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>logTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"logFreq"</span>)
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>dtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>normDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='st'>"relfreq"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>normDtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in topfeatures(normDtm): object 'normDtm' not found</span></div><div class='input'><span class='no'>maxTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relmaxfreq"</span>)
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>maxTfDtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>logTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"logfreq"</span>)
 <span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>logTfDtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>tfidfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"tfidf"</span>)
 <span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>tfidfDtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># combine these methods for more complex dfm_weightings, e.g. as in Section 6.4</span>
 <span class='co'># of Introduction to Information Retrieval</span>
-<span class='fu'>head</span>(<span class='fu'><a href='tfidf.html'>tfidf</a></span>(<span class='no'>dtm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"log"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 9,232 features (91.6% sparse).
+<span class='fu'>head</span>(<span class='fu'><a href='tfidf.html'>tfidf</a></span>(<span class='no'>dtm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"log"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 9,357 features (91.8% sparse).
 #&gt; (showing first 6 documents and first 6 features)
 #&gt;                  features
-#&gt; docs                  fellow           -   citizens of the    senate
-#&gt;   1789-Washington 0.10817242 0.011156901 0.06651828  0   0 0.8091855
-#&gt;   1793-Washington 0.07323191 0.000000000 0.03915212  0   0 0.0000000
-#&gt;   1797-Adams      0.10817242 0.012832555 0.06651828  0   0 0.8091855
-#&gt;   1801-Jefferson  0.13512006 0.015704343 0.07223951  0   0 0.0000000
-#&gt;   1805-Jefferson  0.13936692 0.009826859 0.07830425  0   0 0.0000000
-#&gt;   1809-Madison    0.07323191 0.013430622 0.03915212  0   0 0.0000000</div><div class='input'>
+#&gt; docs              fellow-citizens of the    senate and    house
+#&gt;   1789-Washington       0.4846744  0   0 0.8091855   0 1.119326
+#&gt;   1793-Washington       0.0000000  0   0 0.0000000   0 0.000000
+#&gt;   1797-Adams            0.7159228  0   0 0.8091855   0 0.000000
+#&gt;   1801-Jefferson        0.6305759  0   0 0.0000000   0 0.000000
+#&gt;   1805-Jefferson        0.0000000  0   0 0.0000000   0 0.000000
+#&gt;   1809-Madison          0.4846744  0   0 0.0000000   0 0.000000</div><div class='input'>
 <span class='co'>#' # apply numeric weights</span>
 <span class='no'>str</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"apple is better than banana"</span>, <span class='st'>"banana banana apple much better"</span>)
 (<span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>str</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
@@ -199,8 +199,6 @@ requirements depending on the size of your input matrix.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
 
       <li><a href="#note">Note</a></li>
 
