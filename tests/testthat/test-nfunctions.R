@@ -59,10 +59,10 @@ test_that("test ntoken tokens with orignal argument", {
     expect_equal(ntoken(mx_dict), c(d1 = 4, d2 = 2))
     expect_equal(ntoken(mx), ntoken(mx_dict, original = TRUE))
     
-    excpect_error(ntoken(toks, original = TRUE),
+    expect_error(ntoken(toks, original = TRUE),
                   "original number of tokens is not available for this object"
     )
-    excpect_error(ntoken(mx, original = TRUE),
+    expect_error(ntoken(mx, original = TRUE),
                   "original number of tokens is not available for this object"
     )
 
