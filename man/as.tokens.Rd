@@ -82,8 +82,10 @@ The \code{concatenator} is used to automatically generate dictionary
 \examples{
 
 # create tokens object from list of characters with custom concatenator
-dict <- dictionary(list(country = 'United States', sea = c('Atlantic Ocean', 'Pacific Ocean')))
-lis <- list(c('The', 'United-States', 'has', 'the', 'Atlantic-Ocean', 'and', 'the', 'Pacific-Ocean', '.'))
+dict <- dictionary(list(country = 'United States', 
+                   sea = c('Atlantic Ocean', 'Pacific Ocean')))
+lis <- list(c('The', 'United-States', 'has', 'the', 'Atlantic-Ocean', 
+              'and', 'the', 'Pacific-Ocean', '.'))
 toks <- as.tokens(lis, concatenator = '-')
 tokens_lookup(toks, dict)
 
