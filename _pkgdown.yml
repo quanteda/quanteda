@@ -59,6 +59,7 @@ reference:
     - dfm_sample
     - dfm_remove
     - dfm_select
+    - dfm_subset
     - dfm_sort
     - dfm_tolower
     - dfm_toupper
@@ -128,6 +129,7 @@ reference:
     - stopwords
 - title: Miscellaneous functions
   contents:
+    - phrase
     - as.list.dist
     - convert
     - bootstrap_dfm

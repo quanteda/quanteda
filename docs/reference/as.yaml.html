@@ -91,20 +91,21 @@ files can be editied in text editors and imported into
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>dictionary object</p></td>
+      <td><p>a <a href='dictionary.html'>dictionary</a> object</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>as.yaml</code> returns a dictionary in the YAML format</p>
+    <p><code>as.yaml</code> a dictionary in the YAML format, as a character object</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>'/home/kohei/Documents/Dictionary/LaverGarry.txt'</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>'wordstat'</span>)
-  <span class='no'>yaml</span> <span class='kw'>&lt;-</span> <span class='fu'>as.yaml</span>(<span class='no'>dict</span>)
-  <span class='fu'>cat</span>(<span class='no'>yaml</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>'/home/kohei/Documents/Dictionary/LaverGarry.yaml'</span>)
+  <span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>one</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a b"</span>, <span class='st'>"c*"</span>), <span class='kw'>two</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z??"</span>)))
+  <span class='fu'>cat</span>(<span class='no'>yaml</span> <span class='kw'>&lt;-</span> <span class='fu'>as.yaml</span>(<span class='no'>dict</span>))
+  <span class='fu'>cat</span>(<span class='no'>yaml</span>, <span class='kw'>file</span> <span class='kw'>=</span> (<span class='no'>yamlfile</span> <span class='kw'>&lt;-</span> <span class='fu'>paste0</span>(<span class='fu'>tempfile</span>(), <span class='st'>".yml"</span>)))
+  <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>yamlfile</span>)
 })</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

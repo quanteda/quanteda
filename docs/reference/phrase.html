@@ -78,8 +78,11 @@
     </div>
 
     
-    <p>Declares that a whitespace-separated expression consists of multiple
-patterns, separated by whitespace.</p>
+    <p>Declares that a whitespace-separated expression consists of multiple 
+patterns, separated by whitespace.  This is typically used as a wrapper 
+around <code><a href='pattern.html'>pattern</a></code> to make it explicit that the pattern elements 
+are to be used for matches to multi-word sequences, rather than individual,
+unordered matches to single words.</p>
     
 
     <pre class="usage"><span class='fu'>phrase</span>(<span class='no'>x</span>)
@@ -91,14 +94,14 @@ patterns, separated by whitespace.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>the sequence, as a <code>character</code> object containing whitespace
+      <td><p>the sequence, as a <code>character</code> object containing whitespace 
 separating the patterns</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>phrase</code> returns a specially classed list whose white-spaced
+    <p><code>phrase</code> returns a specially classed list whose white-spaced 
   elements have been parsed into separate <code>character</code> elements.
 
 <code>is.phrase</code> returns <code>TRUE</code> if the object was created by 
@@ -117,7 +120,7 @@ separating the patterns</p></td>
 #&gt; [1] "f"
 #&gt; </div><div class='input'>
 <span class='co'># from a dictionary</span>
-<span class='fu'>phrase</span>(<span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='kw'>catone</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a b"</span>), <span class='kw'>cattwo</span> <span class='kw'>=</span> <span class='st'>"c d e"</span>, <span class='kw'>catthree</span> <span class='kw'>=</span> <span class='st'>"f"</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='fu'>phrase</span>(<span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>catone</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a b"</span>), <span class='kw'>cattwo</span> <span class='kw'>=</span> <span class='st'>"c d e"</span>, <span class='kw'>catthree</span> <span class='kw'>=</span> <span class='st'>"f"</span>)))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "a" "b"
 #&gt; 
 #&gt; [[2]]

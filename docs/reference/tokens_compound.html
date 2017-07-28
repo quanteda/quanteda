@@ -138,12 +138,12 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
 <span class='co'># for lists of sequence elements</span>
 <span class='no'>myseqs</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>"tax"</span>), <span class='fu'>c</span>(<span class='st'>"income"</span>, <span class='st'>"tax"</span>), <span class='fu'>c</span>(<span class='st'>"capital"</span>, <span class='st'>"gains"</span>, <span class='st'>"tax"</span>), <span class='fu'>c</span>(<span class='st'>"inheritance"</span>, <span class='st'>"tax"</span>))
 (<span class='no'>cw</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>myseqs</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "The"               "new"               "law"              
 #&gt; [4] "included"          "a"                 "capital_gains_tax"
 #&gt; [7] "and"               "an"                "inheritance_tax"  
 #&gt; 
-#&gt; Component 2 :
+#&gt; text2 :
 #&gt;  [1] "New"         "York"        "City"        "has"         "raised"     
 #&gt;  [6] "taxes"       "an"          "income_tax"  "and"         "inheritance"
 #&gt; [11] "taxes"      
@@ -160,12 +160,12 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
 <span class='co'># when used as a dictionary for dfm creation</span>
 <span class='no'>mydict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>tax</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"tax"</span>, <span class='st'>"income tax"</span>, <span class='st'>"capital gains tax"</span>, <span class='st'>"inheritance tax*"</span>)))
 (<span class='no'>cw2</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>mydict</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "The"               "new"               "law"              
 #&gt; [4] "included"          "a"                 "capital_gains_tax"
 #&gt; [7] "and"               "an"                "inheritance_tax"  
 #&gt; 
-#&gt; Component 2 :
+#&gt; text2 :
 #&gt;  [1] "New"               "York"              "City"             
 #&gt;  [4] "has"               "raised"            "taxes"            
 #&gt;  [7] "an"                "income_tax"        "and"              
@@ -173,12 +173,12 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
 #&gt; </div><div class='input'>
 <span class='co'># to pick up "taxes" in the second text, set valuetype = "regex"</span>
 (<span class='no'>cw3</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>mydict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "The"               "new"               "law"              
 #&gt; [4] "included"          "a"                 "capital_gains_tax"
 #&gt; [7] "and"               "an"                "inheritance_tax"  
 #&gt; 
-#&gt; Component 2 :
+#&gt; text2 :
 #&gt;  [1] "New"               "York"              "City"             
 #&gt;  [4] "has"               "raised"            "taxes"            
 #&gt;  [7] "an"                "income_tax"        "and"              
@@ -206,7 +206,7 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
                                   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"The new law included capital gains taxes and inheritance taxes."</span>)
 <span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='no'>cols</span>)</div><div class='output co'>#&gt; tokens from 1 document.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "The"                 "new"                 "law"                
 #&gt; [4] "included"            "capital_gains_taxes" "and"                
 #&gt; [7] "inheritance_taxes"   "."                  
@@ -224,7 +224,7 @@ have been replaced by  compound "tokens" joined by the concatenator</p>
 
     <h2>Author</h2>
     
-Kenneth Benoit (R) and Kohei Watanabe (C++)
+Kenneth Benoit and Kohei Watanabe
 
   </div>
 </div>

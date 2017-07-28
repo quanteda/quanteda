@@ -78,7 +78,9 @@
     </div>
 
     
-    <p>This is a long paragraph (2,914 characters) of text taken from an Irish budget speech by Joe Higgins.</p>
+    <p>This is a long paragraph (2,914 characters) of text taken from a debate on
+the Irish budget in <em>Dáil Éireann</em> by Socialist <em>Teachta Dála</em> (TD)
+Joe Higgins, delivered December 8, 2011.</p>
     
 
     <pre class="usage"><span class='no'>data_char_sampletext</span></pre>
@@ -87,15 +89,21 @@
 
     <p>character vector with one element</p>
     
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p>Dáil Éireann Debate, 
+<a href = 'http://oireachtasdebates.oireachtas.ie/debates%20authoring/debateswebpack.nsf/takes/dail2011120700006?opendocument'>Financial Resolution No. 13: General (Resumed).</a>
+7 December 2011.  vol. 749, no. 1.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='no'>data_char_sampletext</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokenizedTexts from 1 document.
-#&gt; Component 1 :
+    <pre class="examples"><div class='input'><span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_char_sampletext</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; text1 :
 #&gt;   [1] "Instead"       "we"            "have"          "a"            
 #&gt;   [5] "Fine"          "Gael-Labour"   "Party"         "Government"   
 #&gt;   [9] "coming"        "into"          "power"         "promising"    
 #&gt;  [13] "real"          "change"        "but"           "slavishly"    
-#&gt;  [17] "following"     "the"           "previous"      "Government’s" 
+#&gt;  [17] "following"     "the"           "previous"      "Government's" 
 #&gt;  [21] "policy"        "That"          "policy"        "has"          
 #&gt;  [25] "been"          "dictated"      "by"            "the"          
 #&gt;  [29] "IMF"           "the"           "EU"            "and"          
@@ -222,6 +230,8 @@
     <ul class="nav nav-pills nav-stacked">
       
       <li><a href="#format">Format</a></li>
+
+      <li><a href="#source">Source</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

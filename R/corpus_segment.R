@@ -229,9 +229,9 @@ segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
     }
     
     if (what == "tokens") {
-        temp <- tokens_word(x, ...)
+        temp <- as.list(tokens(x, ...))
     } else if (what == "sentences") {
-        temp <- tokens_sentence(x, ...)
+        temp <- as.list(tokens(x, what = "sentence", ...))
     } else if (what == 'tags') {
         temp <- stri_replace_all_regex(x, delimiter, "\UE000$0") # insert PUA character
         temp <- stri_split_fixed(temp, pattern = "\UE000", omit_empty = omit_empty)

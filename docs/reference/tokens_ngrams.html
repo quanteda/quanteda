@@ -100,8 +100,8 @@ lengths or skips in one pass.  Implemented in C++ for efficiency.</p>
     <tr>
       <th>n</th>
       <td><p>integer vector specifying the number of elements to be concatenated 
-in each ngram.  Each element of this vector will define a $n$ in the 
-$n$-gram(s) that are produced.</p></td>
+in each ngram.  Each element of this vector will define a \(n\) in the 
+\(n\)-gram(s) that are produced.</p></td>
     </tr>
     <tr>
       <th>skip</th>
@@ -157,10 +157,10 @@ Modelling."</a></p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># ngrams</span>
 <span class='fu'>tokens_ngrams</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"a b c d e"</span>, <span class='st'>"c d e f g"</span>)), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "a_b"   "b_c"   "c_d"   "d_e"   "a_b_c" "b_c_d" "c_d_e"
 #&gt; 
-#&gt; Component 2 :
+#&gt; text2 :
 #&gt; [1] "c_d"   "d_e"   "e_f"   "f_g"   "c_d_e" "d_e_f" "e_f_g"
 #&gt; </div><div class='input'>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='kw'>text1</span> <span class='kw'>=</span> <span class='st'>"the quick brown fox jumped over the lazy dog"</span>))
@@ -191,17 +191,17 @@ Modelling."</a></p>
 <span class='co'># skipgrams</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"insurgents killed in ongoing fighting"</span>)
 <span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "insurgents killed" "insurgents in"     "killed in"        
 #&gt; [4] "killed ongoing"    "in ongoing"        "in fighting"      
 #&gt; [7] "ongoing fighting" 
 #&gt; </div><div class='input'><span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "insurgents killed"  "insurgents in"      "insurgents ongoing"
 #&gt; [4] "killed in"          "killed ongoing"     "killed fighting"   
 #&gt; [7] "in ongoing"         "in fighting"        "ongoing fighting"  
 #&gt; </div><div class='input'><span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt;  [1] "insurgents killed in"        "insurgents killed ongoing"  
 #&gt;  [3] "insurgents killed fighting"  "insurgents in ongoing"      
 #&gt;  [5] "insurgents in fighting"      "insurgents ongoing fighting"

@@ -83,6 +83,9 @@ type of <a href='docvars.html'>docvars</a>, meant to contain information about d
 would not be used as a "variable" for analysis. An example could be the 
 source of the document, or notes pertaining to its transformation, copyright 
 information, etc.</p>
+<p>Document-level meta-data differs from corpus-level meta-data in that the 
+latter pertains to the collection of texts as a whole, whereas the 
+document-level version can differ with each document.</p>
     
 
     <pre class="usage"><span class='fu'>metadoc</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -113,12 +116,6 @@ set</p></td>
   
   For <code>texts &lt;-</code>, the corpus with the updated texts.</p>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Document-level meta-data differs from corpus-level meta-data in that the 
-latter pertains to the collection of texts as a whole, whereas the 
-document-level version can differ with each document.</p>
-    
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Document-level meta-data names are preceded by an underscore character,
@@ -135,13 +132,13 @@ document-level version can differ with each document.</p>
 <span class='fu'>summary</span>(<span class='no'>mycorp</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 7 documents.
 #&gt; 
 #&gt;          Text Types Tokens Sentences Year President FirstName
-#&gt;  1993-Clinton   644   1837        81 1993   Clinton      Bill
-#&gt;  1997-Clinton   773   2451       111 1997   Clinton      Bill
-#&gt;     2001-Bush   622   1810        97 2001      Bush George W.
-#&gt;     2005-Bush   772   2325       100 2005      Bush George W.
-#&gt;    2009-Obama   939   2729       110 2009     Obama    Barack
-#&gt;    2013-Obama   814   2335        88 2013     Obama    Barack
-#&gt;    2017-Trump   582   1662        88 2017     Trump Donald J.
+#&gt;  1993-Clinton   642   1833        81 1993   Clinton      Bill
+#&gt;  1997-Clinton   773   2449       111 1997   Clinton      Bill
+#&gt;     2001-Bush   621   1808        97 2001      Bush George W.
+#&gt;     2005-Bush   773   2321       100 2005      Bush George W.
+#&gt;    2009-Obama   938   2711       110 2009     Obama    Barack
+#&gt;    2013-Obama   814   2317        88 2013     Obama    Barack
+#&gt;    2017-Trump   582   1660        88 2017     Trump Donald J.
 #&gt; 
 #&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
 #&gt; Created: Tue Jun 13 14:51:47 2017
@@ -158,13 +155,13 @@ document-level version can differ with each document.</p>
 <span class='fu'>summary</span>(<span class='no'>mycorp</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 7 documents.
 #&gt; 
 #&gt;          Text Types Tokens Sentences Year President FirstName _encoding
-#&gt;  1993-Clinton   644   1837        81 1993   Clinton      Bill     UTF-8
-#&gt;  1997-Clinton   773   2451       111 1997   Clinton      Bill     UTF-8
-#&gt;     2001-Bush   622   1810        97 2001      Bush George W.     UTF-8
-#&gt;     2005-Bush   772   2325       100 2005      Bush George W.     UTF-8
-#&gt;    2009-Obama   939   2729       110 2009     Obama    Barack     UTF-8
-#&gt;    2013-Obama   814   2335        88 2013     Obama    Barack     UTF-8
-#&gt;    2017-Trump   582   1662        88 2017     Trump Donald J.     UTF-8
+#&gt;  1993-Clinton   642   1833        81 1993   Clinton      Bill     UTF-8
+#&gt;  1997-Clinton   773   2449       111 1997   Clinton      Bill     UTF-8
+#&gt;     2001-Bush   621   1808        97 2001      Bush George W.     UTF-8
+#&gt;     2005-Bush   773   2321       100 2005      Bush George W.     UTF-8
+#&gt;    2009-Obama   938   2711       110 2009     Obama    Barack     UTF-8
+#&gt;    2013-Obama   814   2317        88 2013     Obama    Barack     UTF-8
+#&gt;    2017-Trump   582   1660        88 2017     Trump Donald J.     UTF-8
 #&gt;  _language
 #&gt;    english
 #&gt;    english
@@ -185,8 +182,6 @@ document-level version can differ with each document.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
 
       <li><a href="#note">Note</a></li>
 
