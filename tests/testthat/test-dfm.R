@@ -217,7 +217,7 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
 })
 
 test_that("dfm print works as expected", {
-    testdfm <- dfm(data_corpus_irishbudget2010)
+    testdfm <- dfm(tokens(data_corpus_irishbudget2010, old= TRUE))
     expect_output(print(testdfm),
                   "^Document-feature matrix of: 14 documents, 5,055 features \\(80.9% sparse\\)")
     expect_output(print(testdfm[1:5, 1:5]),
@@ -227,6 +227,19 @@ test_that("dfm print works as expected", {
     expect_output(tail(testdfm, 1),
                   "Document-feature matrix of: 14 documents, 5,055 features.*showing last document and last 6 features.*")
 })
+
+test_that("dfm print works as expected", {
+    testdfm <- dfm(data_corpus_irishbudget2010)
+    expect_output(print(testdfm),
+                  "^Document-feature matrix of: 14 documents, 5,140 features \\(8.{3}% sparse\\)")
+    expect_output(print(testdfm[1:5, 1:5]),
+                  "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\).*")
+    expect_output(head(testdfm, 1),
+                  "Document-feature matrix of: 14 documents, 5,\\d{3} features.*showing first document and first 6 features.*")
+    expect_output(tail(testdfm, 1),
+                  "Document-feature matrix of: 14 documents, 5,\\d{3} features.*showing last document and last 6 features.*")
+})
+
 
 test_that("dfm.dfm works as expected", {
     testdfm <- dfm(data_corpus_irishbudget2010, tolower = TRUE)
@@ -256,7 +269,7 @@ test_that("dfm_sample works as expected",{
     expect_error(dfm_sample(myDfm, margin = "documents", size = 20),
                   "size cannot exceed the number of documents \\(10\\)")
     expect_error(dfm_sample(myDfm, margin = "features", size = 3500),
-                 "size cannot exceed the number of features \\(3358\\)")
+                 "size cannot exceed the number of features \\(33\\d{2}\\)")
     expect_error(dfm_sample(data_corpus_inaugural[1:10]))
 })
 
@@ -342,7 +355,7 @@ test_that("dfm print works with options as expected", {
     tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE)
     expect_output(
         head(tmp),
-        "Document-feature matrix of: 14 documents, 5,055 features.*\\(showing first 6 documents and first 6 features\\)"
+        "Document-feature matrix of: 14 documents, 5,\\d{3} features.*\\(showing first 6 documents and first 6 features\\)"
     )
     expect_output(
         head(tmp[1:5, 1:5]),
@@ -374,7 +387,7 @@ test_that("dfm print works with options as expected", {
     quanteda_options(print_dfm_max_nfeature = 22L)
     expect_output(
         print(tmp),
-        "Document-feature matrix of: 14 documents, 5,055 features \\(80.9% sparse\\)\\.$"
+        "Document-feature matrix of: 14 documents, 5,\\d{3} features \\(8\\d\\.\\d% sparse\\)\\.$"
     )
     expect_output(
         print(tmp[, 1:21]),
