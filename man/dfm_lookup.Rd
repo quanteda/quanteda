@@ -69,5 +69,15 @@ dfm_lookup(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
 # fixed format: no pattern matching
 dfm_lookup(myDfm, myDict, valuetype = "fixed")
 dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
+
+# obtain original number of tokens
+ntoken(myDfm)
+myDfmDict <- dfm_lookup(myDfm, myDict, valuetype = "glob")
+ntoken(myDfmDict) # current
+ntoken(myDfmDict, original = TRUE) # original 
+
+# normalize dictionary count
+myDfmDict / ntoken(myDfmDict, original = TRUE)
+
 }
 \keyword{dfm}

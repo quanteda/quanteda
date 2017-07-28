@@ -5,13 +5,16 @@
 \alias{ntype}
 \title{count the number of tokens or types}
 \usage{
-ntoken(x, ...)
+ntoken(x, original = FALSE, ...)
 
 ntype(x, ...)
 }
 \arguments{
 \item{x}{a \pkg{quanteda} object: a character, \link{corpus}, 
 \link{tokens}, or \link{dfm} object}
+
+\item{original}{return the number of tokens before \link{tokens_lookup} or 
+\link{dfm_lookup} was applied.}
 
 \item{...}{additional arguments passed to \code{\link{tokens}}}
 }
