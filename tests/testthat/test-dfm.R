@@ -352,7 +352,7 @@ test_that("dfm's document counts in verbose message is correct", {
 })
 
 test_that("dfm print works with options as expected", {
-    tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE)
+    tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE, remove_hyphens = TRUE)
     expect_output(
         head(tmp),
         "Document-feature matrix of: 14 documents, 5,\\d{3} features.*\\(showing first 6 documents and first 6 features\\)"

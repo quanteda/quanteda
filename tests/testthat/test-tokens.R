@@ -256,16 +256,16 @@ test_that("remove_punct and remove_twitter interact correctly, #607", {
     txt <- "they: #stretched, @ @@ in,, a # ## never-ending @line."
     expect_equal(
         as.character(tokens(txt, what = "word", remove_punct = TRUE, remove_twitter = TRUE)),
-        c("they", "stretched", "in", "a", "never", "ending", "line")
+        c("they", "stretched", "in", "a", "never-ending", "line")
     )
     expect_equal(
         as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = FALSE)),
-        c("they", ":", "#stretched", ",", "@", "@@", "in", ",", ",", "a", "#", "##", "never", "-", "ending", "@line", ".")
+        c("they", ":", "#stretched", ",", "@", "@@", "in", ",", ",", "a", "#", "##", "never-ending", "@line", ".")
     )    
     # this is #607
     expect_equal(
         as.character(tokens(txt, what = "word", remove_punct = TRUE, remove_twitter = FALSE)),
-        c("they", "#stretched", "in", "a", "never", "ending", "@line")
+        c("they", "#stretched", "in", "a", "never-ending", "@line")
     )
     # remove_twitter should be inactive if remove_punct is FALSE
     expect_equal(
@@ -397,24 +397,36 @@ test_that("tokens arguments works with values from parent frame (#721)", {
 
 test_that("tokens works for strange spaces (#796)", {
     txt <- "space tab\t newline\n non-breakingspace\u00A0, em-space\u2003 variationselector16 \uFE0F."
-    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = TRUE), c(text1 = 12))
+    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = TRUE), c(text1 = 8))
     expect_equal(
         as.character(tokens(txt, remove_punct = TRUE, remove_separators = TRUE)),
-        c("space", "tab", "newline", "non", "breakingspace", "em", "space", "variationselector16")
+        c("space", "tab", "newline", "non-breakingspace", "em-space", "variationselector16")
     )
-    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), c(text1 = 26))
+    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), c(text1 = 18))
     expect_equal(
-        as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[24:26],
+        as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[16:18],
         c("variationselector16", " \uFE0F", ".")
     )
     expect_equal(
         ntoken(txt, remove_punct = TRUE, remove_separators = FALSE),
-        c(text1 = 22)
+        c(text1 = 16)
     )
     expect_equal(
-        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[21:22],
+        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[15:16],
         c("variationselector16", " \uFE0F")
     )
+})
+
+test_that("remove_hyphens is working correctly", {
+    txt <- 'a b-c d . !'
+    expect_equal(as.character(tokens(txt, remove_hyphens = FALSE, remove_punct = FALSE)[[1]]),
+                 c("a", "b-c", "d", ".", "!"))
+    expect_equal(as.character(tokens(txt, remove_hyphens = FALSE, remove_punct = TRUE)[[1]]),
+                 c("a", "b-c", "d"))
+    expect_equal(as.character(tokens(txt, remove_hyphens = TRUE, remove_punct = FALSE)[[1]]),
+                 c("a", "b", "-", "c", "d", ".", "!"))
+    expect_equal(as.character(tokens(txt, remove_hyphens = TRUE, remove_punct = TRUE)[[1]]),
+                 c("a", "b", "c", "d"))
 })
 
 test_that("test tokens.tokens", {
