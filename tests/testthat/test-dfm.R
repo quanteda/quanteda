@@ -217,7 +217,7 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
 })
 
 test_that("dfm print works as expected", {
-    testdfm <- dfm(data_corpus_irishbudget2010)
+    testdfm <- dfm(data_corpus_irishbudget2010, remove_hyphens = TRUE)
     expect_output(print(testdfm),
                   "^Document-feature matrix of: 14 documents, 5,055 features \\(80.9% sparse\\)")
     expect_output(print(testdfm[1:5, 1:5]),
@@ -256,7 +256,7 @@ test_that("dfm_sample works as expected",{
     expect_error(dfm_sample(myDfm, margin = "documents", size = 20),
                   "size cannot exceed the number of documents \\(10\\)")
     expect_error(dfm_sample(myDfm, margin = "features", size = 3500),
-                 "size cannot exceed the number of features \\(3358\\)")
+                 "size cannot exceed the number of features \\(3366\\)")
     expect_error(dfm_sample(data_corpus_inaugural[1:10]))
 })
 
@@ -339,7 +339,7 @@ test_that("dfm's document counts in verbose message is correct", {
 })
 
 test_that("dfm print works with options as expected", {
-    tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE)
+    tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE, remove_hyphens = TRUE)
     expect_output(
         head(tmp),
         "Document-feature matrix of: 14 documents, 5,055 features.*\\(showing first 6 documents and first 6 features\\)"
