@@ -48,6 +48,16 @@
 #' # fixed format: no pattern matching
 #' dfm_lookup(myDfm, myDict, valuetype = "fixed")
 #' dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
+#' 
+#' # obtain original number of tokens
+#' ntoken(myDfm)
+#' myDfmDict <- dfm_lookup(myDfm, myDict, valuetype = "glob")
+#' ntoken(myDfmDict) # current
+#' ntoken(myDfmDict, original = TRUE) # original 
+#' 
+#' # normalize dictionary count
+#' myDfmDict / ntoken(myDfmDict, original = TRUE)
+#' 
 dfm_lookup <- function(x, dictionary, levels = 1:5,
                        exclusive = TRUE, valuetype = c("glob", "regex", "fixed"), 
                        case_insensitive = TRUE,
@@ -69,10 +79,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     dictionary <- flatten_dictionary(dictionary, levels)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
-    
-    # if (has_multiword(dictionary) && x@ngrams == 1) {
-    #     stop("dfm_lookup not implemented for ngrams > 1 and multi-word dictionary values")
-    # }
+    lengths <- ntoken(x)
     
     # Generate all combinations of type IDs
     values_id <- list()
@@ -90,7 +97,6 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         keys_id <- c(keys_id, rep(h, length(values_temp)))
     }
     if (length(values_id)) {
-        
         if (capkeys) {
             keys <- char_toupper(names(dictionary))
         } else {
@@ -99,10 +105,8 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         temp <- x[,unlist(values_id, use.names = FALSE)]
         colnames(temp) <- keys[keys_id]
         temp <- dfm_compress(temp, margin = 'features')
-        # temp <- dfm_select(temp, pattern = keys, valuetype = 'fixed', padding = TRUE)
-        # an alternative way to select the identical features as in the dictionary keys
-        temp <- dfm_select(temp, 
-                           as.dfm(matrix(0, ncol = length(keys), dimnames = list(docs = "removeme", features = keys))))
+        temp <- dfm_select(temp, as.dfm(matrix(0, ncol = length(keys), 
+                                               dimnames = list(docs = NULL, features = keys))))
         if (exclusive) {
             result <- temp[, keys]
         } else {
@@ -118,7 +122,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     attr(result, "what") <- "dictionary"
     attr(result, "dictionary") <- dictionary
     attributes(result, FALSE) <- attrs
-    
+    docvars(result, '_length_original') <- lengths
     return(result)
 }
 
