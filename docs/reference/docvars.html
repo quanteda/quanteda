@@ -78,8 +78,8 @@
     </div>
 
     
-    <p>Get or set variables associated with a document in a <a href='corpus.html'>corpus</a>, or get
-these variables from a <a href='tokens.html'>tokens</a> or <a href='dfm.html'>dfm</a> object.</p>
+    <p>Get or set variables associated with a document in a <a href='corpus.html'>corpus</a>,
+<a href='tokens.html'>tokens</a> or <a href='dfm.html'>dfm</a> object.</p>
     
 
     <pre class="usage"><span class='fu'>docvars</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -91,7 +91,7 @@ these variables from a <a href='tokens.html'>tokens</a> or <a href='dfm.html'>df
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object whose
+      <td><p><a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object whose 
 document-level variables will be read or set</p></td>
     </tr>
     <tr>
@@ -106,24 +106,32 @@ document-level variables will be read or set</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>docvars</code> returns a data.frame of the document-level variables,
-  dropping the second dimension to form a vector if a single docvar is
+    <p><code>docvars</code> returns a data.frame of the document-level variables, 
+  dropping the second dimension to form a vector if a single docvar is 
   returned.
 
 <code>docvars&lt;-</code> assigns <code>value</code> to the named <code>field</code></p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Another way to access and set docvars is through indexing of the corpus
-  <code>j</code> element, such as <code>data_corpus_irishbudget2010[, c("foren", 
-  "name"]</code> or for a single docvar, 
-  <code>data_corpus_irishbudget2010[["name"]]</code>.  The latter also permits 
-  assignment, including the easy creation of new document varibles, e.g. 
-  <code>data_corpus_irishbudget2010[["newvar"]] &lt;- 
-  1:ndoc(data_corpus_irishbudget2010)</code>. See <code><a href='corpus-class.html'>[.corpus</a></code> for 
-  details.
-    Assigning docvars to a <a href='tokens.html'>tokens</a> object is not supported.  (You should
-  only be manipulating these variables at the corpus level.)</p>
+    <p>Reassigning document variables for a <a href='tokens.html'>tokens</a> or <a href='dfm.html'>dfm</a> object
+is allowed, but discouraged.  A better, more reproducible workflow is to
+create your docvars as desired in the <a href='corpus.html'>corpus</a>, and let these continue
+to be attached "downstream" after tokenization and forming a document-feature
+matrix.  Recognizing that in some cases, you may need to modify or add
+document variables to downstream objects, the assignment operator is defined
+for <a href='tokens.html'>tokens</a> or <a href='dfm.html'>dfm</a> objects as well.  Use with caution.</p>
+    
+    <h2 class="hasAnchor" id="index-access-to-docvars-in-a-corpus"><a class="anchor" href="#index-access-to-docvars-in-a-corpus"></a>Index access to docvars in a corpus</h2>
+
+    
+    <p>Another way to access and set docvars is through indexing of the corpus 
+<code>j</code> element, such as <code>data_corpus_irishbudget2010[, c("foren", 
+"name"]</code>; or, for a single docvar, 
+<code>data_corpus_irishbudget2010[["name"]]</code>.  The latter also permits 
+assignment, including the easy creation of new document variables, e.g. 
+<code>data_corpus_irishbudget2010[["newvar"]] &lt;- 
+1:ndoc(data_corpus_irishbudget2010)</code>. See <code><a href='corpus-class.html'>[.corpus</a></code> for details.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -165,6 +173,8 @@ document-level variables will be read or set</p></td>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#note">Note</a></li>
+
+      <li><a href="#index-access-to-docvars-in-a-corpus">Index access to docvars in a corpus</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

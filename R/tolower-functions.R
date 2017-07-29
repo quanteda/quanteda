@@ -24,7 +24,7 @@ tokens_tolower.tokenizedTexts <- function(x, keep_acronyms = FALSE, ...) {
 #' @export
 tokens_tolower.tokens <- function(x, keep_acronyms = FALSE, ...) {
     types(x) <- char_tolower(types(x), keep_acronyms = keep_acronyms, ...)
-    tokens_hashed_recompile(x)
+    tokens_recompile(x)
 }
 
 
@@ -45,7 +45,7 @@ tokens_toupper.tokenizedTexts <- function(x, ...) {
 #' @export
 tokens_toupper.tokens <- function(x, ...) {
     types(x) <- char_toupper(types(x), ...)
-    tokens_hashed_recompile(x)
+    tokens_recompile(x)
 }
 
 

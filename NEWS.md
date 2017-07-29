@@ -21,6 +21,7 @@
 *  New plot function `textplot_keyness()` plots term "keyness", the association of words with contrasting classes as measured by `textstat_keyness()`.
 *  Added corpus constructor for corpus objects (#690).
 *  Added dictionary constructor for dictionary objects (#690).
+*  Added a tokens constructor for tokens objects (#690), including updates to `tokens()` that improve the consistency and efficiency of the tokenization.
 
 ### Behaviour changes
 
@@ -33,6 +34,7 @@
 *  We have improved the performance of the C++ routines that handle many of the `tokens_*` functions using hashed tokens, making some of them 10x faster (#853).
 *  Upgrades to the `dfm_group()` function now allow "empty" documents to be created using the `fill = TRUE` option, for making documents conform to a selection (similar to how `dfm_select()` works for features, when supplied a dfm as the pattern argument).  The `groups` argument now behaves consistently across the functions where it is used. (#854)
 *  `dictionary()` now requires its main argument to be a list, not a series of elements that can be used to build a list.
+*  Some changes to the behaviour of `tokens()` have improved the behaviour of  `remove_hyphens = FALSE`, which now behaves more correctly regardless of the setting of `remove_punct` (#887).
 
 ### Bug fixes and stability enhancements
 

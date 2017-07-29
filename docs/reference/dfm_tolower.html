@@ -78,8 +78,8 @@
     </div>
 
     
-    <p><code>dfm_tolower</code> and <code>dfm_toupper</code> convert the features of the dfm to
-lower and upper case, respectively, and then recombine the counts.</p>
+    <p><code>dfm_tolower</code> and <code>dfm_toupper</code> convert the features of the dfm or
+fcm to lower and upper case, respectively, and then recombine the counts.</p>
     
 
     <pre class="usage"><span class='fu'>dfm_tolower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
@@ -95,12 +95,12 @@ lower and upper case, respectively, and then recombine the counts.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>the input object whose character/tokens/feature elements will be
+      <td><p>the input object whose character/tokens/feature elements will be 
 case-converted</p></td>
     </tr>
     <tr>
       <th>keep_acronyms</th>
-      <td><p>logical; if <code>TRUE</code>, do not lowercase any
+      <td><p>logical; if <code>TRUE</code>, do not lowercase any 
 all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
     </tr>
     <tr>
