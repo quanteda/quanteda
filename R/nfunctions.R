@@ -1,10 +1,3 @@
-# head
-# tail
-
-# kwic
-# 
-# char_tolower
-# char_toupper
 
 #' count the number of documents or features
 #' 
@@ -92,8 +85,6 @@ nfeature.tokens <- function(x) {
 #' Get the count of tokens (total features) or types (unique tokens).
 #' @param x a \pkg{quanteda} object: a character, \link{corpus}, 
 #'   \link{tokens}, or \link{dfm} object
-#' @param original return the number of tokens before \link{tokens_lookup} or 
-#'   \link{dfm_lookup} was applied.
 #' @param ... additional arguments passed to \code{\link{tokens}}
 #' @note Due to differences between raw text tokens and features that have been 
 #'   defined for a \link{dfm}, the counts may be different for dfm objects and the 
@@ -121,57 +112,8 @@ nfeature.tokens <- function(x) {
 #' ntoken(dfm(corpus_subset(data_corpus_inaugural, Year<1800)))
 #' ntype(dfm(corpus_subset(data_corpus_inaugural, Year<1800)))
 #' @export
-ntoken <- function(x, original = FALSE, ...) {
+ntoken <- function(x, ...) {
     UseMethod("ntoken")
-}
-
-#' @noRd
-#' @export
-ntoken.corpus <- function(x, original = FALSE, ...) {
-    ntoken(texts(x), ...)
-}
-
-
-#' @noRd
-#' @export
-ntoken.character <- function(x, original = FALSE, ...) {
-    ntoken(tokens(x, ...))
-}
-
-#' @noRd
-#' @export
-ntoken.dfm <- function(x, original = FALSE, ...) {
-    if (length(list(...)) > 0)
-        warning("additional arguments not used for ntoken.dfm()")
-    if (original) {
-        if (check_docvars(x, '_length_original')) {
-            rowSums(get_docvars2(x, '_length_original')) # use rowSums to attach names
-        } else {
-            stop("original number of tokens is not available for this object")
-        }
-    } else {
-        rowSums(x)
-    }
-}
-
-#' @noRd
-#' @export
-ntoken.tokenizedTexts <- function(x, original = FALSE, ...) {
-    lengths(x)
-}
-
-#' @export
-#' @noRd
-ntoken.tokens <- function(x, original = FALSE, ...) {
-    if (original) {
-        if (check_docvars(x, '_length_original')) {
-            rowSums(get_docvars2(x, '_length_original')) # use rowSums to attach names
-        } else {
-            stop("original number of tokens is not available for this object")
-        }
-    } else {
-        lengths(x)   
-    }
 }
 
 #' @rdname ntoken
@@ -185,8 +127,35 @@ ntype <- function(x, ...) {
 
 #' @noRd
 #' @export
+ntoken.corpus <- function(x, ...) {
+    ntoken(texts(x), ...)
+}
+
+
+#' @noRd
+#' @export
+ntoken.character <- function(x, ...) {
+    ntoken(tokens(x, ...))
+}
+
+#' @noRd
+#' @export
+ntoken.dfm <- function(x, ...) {
+    if (length(list(...)) > 0)
+        warning("additional arguments not used for ntoken.dfm()")
+    rowSums(x)
+}
+
+#' @noRd
+#' @export
+ntoken.tokenizedTexts <- function(x, ...) {
+    lengths(x)
+}
+
+#' @noRd
+#' @export
 ntype.character <- function(x, ...) {
-    ntype(tokenize(x, ...))
+    ntype(tokens(x, ...))
 }
 
 #' @noRd
@@ -211,8 +180,8 @@ ntype.tokenizedTexts <- function(x, ...) {
 
 #' @export
 #' @noRd
-ntype.tokens <- function(x, ...) {
-    length(types(x))
+ntoken.tokens <- function(x, ...) {
+    lengths(x)
 }
 
 #' count the number of sentences
