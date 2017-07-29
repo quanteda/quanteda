@@ -6,7 +6,8 @@
 \usage{
 dfm_lookup(x, dictionary, levels = 1:5, exclusive = TRUE,
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  capkeys = !exclusive, verbose = quanteda_options("verbose"))
+  capkeys = !exclusive, show_unmatched = FALSE,
+  verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{the dfm to which the dictionary will be applied}
@@ -28,6 +29,9 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{capkeys}{if \code{TRUE}, convert dictionary keys to uppercase to
 distinguish them from other features}
+
+\item{show_unmatched}{if \code{TRUE}, show the count of unmatched features in
+the output}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }
@@ -70,14 +74,8 @@ dfm_lookup(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
 dfm_lookup(myDfm, myDict, valuetype = "fixed")
 dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
 
-# obtain original number of tokens
-ntoken(myDfm)
-myDfmDict <- dfm_lookup(myDfm, myDict, valuetype = "glob")
-ntoken(myDfmDict) # current
-ntoken(myDfmDict, original = TRUE) # original 
-
-# normalize dictionary count
-myDfmDict / ntoken(myDfmDict, original = TRUE)
+# show unmatched tokens
+dfm_lookup(myDfm, myDict, show_unmatched = TRUE)
 
 }
 \keyword{dfm}
