@@ -156,7 +156,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NU
         stopifnot(length(docnames) == length(x))
         names(x) <- docnames
     } else if (is.null(x_names)) {
-        names(x) <- paste("text", seq_along(x), sep="")
+        names(x) <- paste(quanteda_options("docname_stem"), seq_along(x), sep="")
     } else if (is.null(names(x))) {
         # if they previously existed, but got obliterated by a stringi function
         names(x) <- x_names

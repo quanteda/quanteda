@@ -41,6 +41,10 @@ Currently available options are:
    to display when using the defaults for printing a dfm}
 \item{\code{print_dfm_max_nfeature}}{integer; specifies the number of features
    to display when using the defaults for printing a dfm}
+\item{\code{docname_stem}}{character; stem name for documents that are unnamed
+   when a corpus, tokens, or dfm are created}
+\item{\code{featname_stem}}{character; stem name for features that are unnamed
+   when dfm is converted from another object}
 }
 }
 \examples{

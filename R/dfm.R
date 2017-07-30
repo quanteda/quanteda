@@ -233,7 +233,7 @@ dfm.tokenizedTexts <- function(x,
     
     # set document names if none
     if (is.null(names(x))) {
-        names(x) <- paste("text", seq_along(x), sep="")
+        names(x) <- paste0(quanteda_options("docname_stem"), seq_along(x))
     } 
 
     if (verbose) {

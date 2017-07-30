@@ -110,8 +110,8 @@ as.dfm.data.frame <- function(x) {
 as_dfm_constructor <- function(x) {
     new("dfmSparse", Matrix(as.matrix(x), 
                             sparse = TRUE,
-                            dimnames = list(docs = if (is.null(rownames(x))) paste0("doc", seq_len(nrow(x))) else rownames(x),
-                                            features = if (is.null(colnames(x))) paste0("feat", seq_len(ncol(x))) else colnames(x)) 
+                            dimnames = list(docs = if (is.null(rownames(x))) paste0(quanteda_options("docname_stem"), seq_len(nrow(x))) else rownames(x),
+                                            features = if (is.null(colnames(x))) paste0(quanteda_options("featname_stem"), seq_len(ncol(x))) else colnames(x)) 
                             ) 
         )
 }

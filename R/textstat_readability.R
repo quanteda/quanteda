@@ -148,7 +148,7 @@ textstat_readability.character <- function(x,
         Coleman.Liau <- meanSentenceLength <- meanWordSyllables <- NULL
 
     if (is.null(names(x)))
-        names(x) <- paste0("text", seq_along(x))
+        names(x) <- paste0(quanteda_options("docname_stem"), seq_along(x))
 
     if (!missing(min_sentence_length) | !missing(max_sentence_length)) {
         x <- char_trim(x, 'sentences',
