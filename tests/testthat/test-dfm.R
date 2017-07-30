@@ -284,6 +284,42 @@ test_that("cbind.dfm works as expected",{
                  c("docs", "features"))
 })
 
+test_that("cbind.dfm works with non-dfm objects",{
+    dfm1 <- dfm(c("a b c", "c d e"))
+    
+    vec <- c(10, 20)
+    expect_equal(
+        as.matrix(cbind(dfm1, vec)),
+        matrix(c(1,1,1,0,0,10, 0,0,1,1,1,20), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat")))
+    )
+    expect_equal(
+        as.matrix(cbind(vec, dfm1)),
+        matrix(c(10,1,1,1,0,0, 20, 0,0,1,1,1), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c("feat", letters[1:5])))
+    )
+    
+    mat <- matrix(1:4, nrow = 2, dimnames = list(NULL, c("f1", "f2")))
+    expect_equal(
+        as.matrix(cbind(dfm1, mat)),
+        matrix(c(1,1,1,0,0,1,3, 0,0,1,1,1,2,4), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "f1", "f2")))
+    )
+    expect_equal(
+        as.matrix(cbind(mat, dfm1)),
+        matrix(c(1,3,1,1,1,0,0, 2,4,0,0,1,1,1), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c("f1", "f2", letters[1:5])))
+    )
+    
+    expect_equal(
+        as.matrix(cbind(dfm1, vec, mat)),
+        matrix(c(1,1,1,0,0,10,1,3, 0,0,1,1,1,20,2,4), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat", "f1", "f2")))
+    )
+
+})
+
+
 test_that("rbind.dfm works as expected",{
     dfm1 <- dfm("This is one sample text sample")
     dfm2 <- dfm("More words here")
