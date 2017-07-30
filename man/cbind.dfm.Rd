@@ -44,6 +44,7 @@ cbind(100, dfm1)
 cbind(dfm1, matrix(c(101, 102), ncol = 1))
 cbind(matrix(c(101, 102), ncol = 1), dfm1)
 
+
 # rbind() for dfm objects
 (dfm1 <- dfm(c(doc1 = "This is one sample text sample."), verbose = FALSE))
 (dfm2 <- dfm(c(doc2 = "One two three text text."), verbose = FALSE))

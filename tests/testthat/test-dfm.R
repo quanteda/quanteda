@@ -317,6 +317,17 @@ test_that("cbind.dfm works with non-dfm objects",{
                dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat", "f1", "f2")))
     )
 
+    expect_equal(
+        as.matrix(cbind(vec, dfm1, vec)),
+        matrix(c(10,1,1,1,0,0,10, 20,0,0,1,1,1,20), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c("feat", letters[1:5], "feat1")))
+    )
+
+    expect_silent(cbind(vec, dfm1, vec))
+    expect_warning(
+        cbind(dfm1, dfm1),
+        "cbinding dfms with overlapping features will result in duplicated features"
+    )
 })
 
 

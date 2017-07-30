@@ -218,15 +218,13 @@ as.data.frame.dfm <- function(x, row.names = NULL, ...) {
 #' cbind(100, dfm1)
 #' cbind(dfm1, matrix(c(101, 102), ncol = 1))
 #' cbind(matrix(c(101, 102), ncol = 1), dfm1)
+#' 
 cbind.dfm <-  function(...) {
     args <- list(...)
     result <- cbind_dfm(args[[1]], args[[2]])
     for (a in args[-c(1,2)]) {
         result <- cbind_dfm(result, a)
     }
-    dupl_featname_index <- 
-        grep(paste0("^", quanteda_options("featname_stem")), featnames(result))
-    colnames(result)[dupl_featname_index] <- make.unique(gsub("\\d", "", colnames(result)[dupl_featname_index]), "")
     result
 }
 
@@ -270,14 +268,21 @@ cbind_dfm_dfm <- function(...) {
         dnames <- matrix(dnames, ncol = length(dnames))
     if (!all(apply(dnames, 1, function(x) length(table(x)) == 1)))
         warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
-    if (length(Reduce(intersect, lapply(args, featnames))))
-        warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE, call. = FALSE)
     
     result <- Matrix::cbind2(args[[1]], args[[2]])
     if (length(args) > 2) {
-        for (y in args[3:length(args)]) 
+        for (y in args[3:length(args)])
             result <- Matrix::cbind2(result, y)
     }
+
+    # make any added feature names unique
+    dupl_featname_index <- 
+        grep(paste0("^", quanteda_options("featname_stem")), colnames(result))
+    colnames(result)[dupl_featname_index] <- make.unique(gsub("\\d", "", colnames(result)[dupl_featname_index]), "")
+    # only issue warning if these did not come from added feature names
+    if (any(duplicated(colnames(result))))
+        warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE, call. = FALSE)
+    
     names(dimnames(result)) <- c("docs", "features")
     new("dfmSparse", result)
 }
