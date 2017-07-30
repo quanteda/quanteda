@@ -193,26 +193,67 @@ as.data.frame.dfm <- function(x, row.names = NULL, ...) {
 
 #' Combine dfm objects by Rows or Columns
 #' 
-#' Take a sequence of \link{dfm} objects and combine by columns or
-#' rows, returning a dfm with the combined documents or features, respectively.
+#' Combine a \link{dfm} with another dfm, or numeric, or matrix object, 
+#' returning a dfm with the combined documents or features, respectively.
 #' 
-#' @param ... \link{dfm} objects to be joined column-wise (\code{cbind}) or
-#'   row-wise (\code{rbind}) to the first
+#' @param ... \link{dfm}, numeric, or matrix  objects to be joined column-wise
+#'   (\code{cbind}) or row-wise (\code{rbind}) to the first.  Numeric objects
+#'   not confirming to the row or column dimension will be recycled as normal.
 #' @details \code{cbind(x, y, ...)} combines dfm objects by columns, returning a
-#'   dfm object with combined features from input dfm objects.  Note that this should be used
-#'   with extreme caution, as joining dfms with different documents will result in a new row
-#'   with the docname(s) of the first dfm, merging in those from the second.  Furthermore, 
-#'   if features are shared between the dfms being cbinded, then duplicate feature labels will 
-#'   result.  In both instances, warning messages will result.
+#'   dfm object with combined features from input dfm objects.  Note that this 
+#'   should be used with extreme caution, as joining dfms with different 
+#'   documents will result in a new row with the docname(s) of the first dfm, 
+#'   merging in those from the second.  Furthermore, if features are shared 
+#'   between the dfms being cbinded, then duplicate feature labels will result. 
+#'   In both instances, warning messages will result.
 #' @export
 #' @method cbind dfm
 #' @keywords internal dfm
 #' @examples 
 #' # cbind() for dfm objects
-#' (dfm1 <- dfm("This is one sample text sample"))
-#' (dfm2 <- dfm("More words here"))
+#' (dfm1 <- dfm(c("a b c d", "c d e f")))
+#' (dfm2 <- dfm(c("a b", "x y z")))
 #' cbind(dfm1, dfm2)
-cbind.dfm <- function(...) {
+#' cbind(dfm1, 100)
+#' cbind(100, dfm1)
+#' cbind(dfm1, matrix(c(101, 102), ncol = 1))
+#' cbind(matrix(c(101, 102), ncol = 1), dfm1)
+cbind.dfm <-  function(...) {
+    cbind_dfm(...)
+}
+
+setGeneric("cbind_dfm", function(x, y, ...) standardGeneric("cbind_dfm"))
+
+setMethod("cbind_dfm", signature(x = "dfm", y = "dfm"), function(x, y, ...) {
+    cbind_dfm_dfm(x, y, ...)
+})
+
+setMethod("cbind_dfm", signature(x = "dfm", y = "numeric"), function(x, y, ...) {
+    if (is.null(names(y))) fname <- "feat1"
+    y <- as.dfm(matrix(y, ncol = 1, nrow = ndoc(x), dimnames = list(docnames(x), fname)))
+    cbind_dfm_dfm(x, y, ...)
+})
+
+setMethod("cbind_dfm", signature(x = "numeric", y = "dfm"), function(x, y, ...) {
+    if (is.null(names(x))) fname <- "feat1"
+    x <- as.dfm(matrix(x, ncol = 1, nrow = ndoc(y), dimnames = list(docnames(y), fname)))
+    cbind_dfm_dfm(x, y, ...)
+})
+
+setMethod("cbind_dfm", signature(x = "dfm", y = "matrix"), function(x, y, ...) {
+    if (is.null(colnames(y))) colnames(y) <- paste0("feat", 1:ncol(y))
+    if (is.null(rownames(y))) rownames(y) <- docnames(x)
+    cbind_dfm_dfm(x, as.dfm(y), ...)
+})
+
+setMethod("cbind_dfm", signature(x = "matrix", y = "dfm"), function(x, y, ...) {
+    if (is.null(colnames(x))) colnames(x) <- paste0("feat", 1:ncol(x))
+    if (is.null(rownames(x))) rownames(x) <- docnames(y)
+    cbind_dfm_dfm(as.dfm(x), y, ...)
+})
+
+
+cbind_dfm_dfm <- function(...) {
     args <- list(...)
     if (!all(vapply(args, is.dfm, logical(1))))
         stop("all arguments must be dfm objects")
@@ -234,10 +275,6 @@ cbind.dfm <- function(...) {
     new("dfmSparse", result)
 }
 
-# setMethod("cbind", signature(x = "dfmSparse", y = "dfmSparse"), function(x, y, ...) {
-#     getMethod("cbind", "dgCMatrix")(x, y, ...)
-# })
-#     
 
 #' @rdname cbind.dfm
 #' @details  \code{rbind(x, y, ...)} combines dfm objects by rows, returning a dfm
