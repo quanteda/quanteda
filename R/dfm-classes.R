@@ -219,7 +219,15 @@ as.data.frame.dfm <- function(x, row.names = NULL, ...) {
 #' cbind(dfm1, matrix(c(101, 102), ncol = 1))
 #' cbind(matrix(c(101, 102), ncol = 1), dfm1)
 cbind.dfm <-  function(...) {
-    cbind_dfm(...)
+    args <- list(...)
+    result <- cbind_dfm(args[[1]], args[[2]])
+    for (a in args[-c(1,2)]) {
+        result <- cbind_dfm(result, a)
+    }
+    dupl_featname_index <- 
+        grep(paste0("^", quanteda_options("featname_stem")), featnames(result))
+    colnames(result)[dupl_featname_index] <- make.unique(gsub("\\d", "", colnames(result)[dupl_featname_index]), "")
+    result
 }
 
 setGeneric("cbind_dfm", function(x, y, ...) standardGeneric("cbind_dfm"))
@@ -229,29 +237,28 @@ setMethod("cbind_dfm", signature(x = "dfm", y = "dfm"), function(x, y, ...) {
 })
 
 setMethod("cbind_dfm", signature(x = "dfm", y = "numeric"), function(x, y, ...) {
-    if (is.null(names(y))) fname <- "feat1"
+    if (is.null(names(y))) fname <- quanteda_options("featname_stem")
     y <- as.dfm(matrix(y, ncol = 1, nrow = ndoc(x), dimnames = list(docnames(x), fname)))
     cbind_dfm_dfm(x, y, ...)
 })
 
 setMethod("cbind_dfm", signature(x = "numeric", y = "dfm"), function(x, y, ...) {
-    if (is.null(names(x))) fname <- "feat1"
+    if (is.null(names(x))) fname <- quanteda_options("featname_stem")
     x <- as.dfm(matrix(x, ncol = 1, nrow = ndoc(y), dimnames = list(docnames(y), fname)))
     cbind_dfm_dfm(x, y, ...)
 })
 
 setMethod("cbind_dfm", signature(x = "dfm", y = "matrix"), function(x, y, ...) {
-    if (is.null(colnames(y))) colnames(y) <- paste0("feat", 1:ncol(y))
+    if (is.null(colnames(y))) colnames(y) <- paste0(quanteda_options("featname_stem"), 1:ncol(y))
     if (is.null(rownames(y))) rownames(y) <- docnames(x)
     cbind_dfm_dfm(x, as.dfm(y), ...)
 })
 
 setMethod("cbind_dfm", signature(x = "matrix", y = "dfm"), function(x, y, ...) {
-    if (is.null(colnames(x))) colnames(x) <- paste0("feat", 1:ncol(x))
+    if (is.null(colnames(x))) colnames(x) <- paste0(quanteda_options("featname_stem"), 1:ncol(x))
     if (is.null(rownames(x))) rownames(x) <- docnames(y)
     cbind_dfm_dfm(as.dfm(x), y, ...)
 })
-
 
 cbind_dfm_dfm <- function(...) {
     args <- list(...)
@@ -262,9 +269,9 @@ cbind_dfm_dfm <- function(...) {
     if (is.null(dim(dnames)))
         dnames <- matrix(dnames, ncol = length(dnames))
     if (!all(apply(dnames, 1, function(x) length(table(x)) == 1)))
-        warning("cbinding dfms with different docnames", noBreaks. = TRUE)
+        warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
     if (length(Reduce(intersect, lapply(args, featnames))))
-        warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE)
+        warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE, call. = FALSE)
     
     result <- Matrix::cbind2(args[[1]], args[[2]])
     if (length(args) > 2) {
