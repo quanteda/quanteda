@@ -3,6 +3,8 @@
 #include <bitset>
 using namespace quanteda;
 
+// return the matching pattern between two words at each position, 0 for matching, 1 for not matching.
+// for example, for 3-gram, bit = 000, 001, 010 ... 111 eg. 0-7
 int match_bit2(const std::vector<unsigned int> &tokens1, 
               const std::vector<unsigned int> &tokens2){
     
@@ -10,7 +12,7 @@ int match_bit2(const std::vector<unsigned int> &tokens1,
     std::size_t len2 = tokens2.size();
     int bit = 0;
     for (std::size_t i = 0; i < len1 && i < len2; i++) {
-        if (tokens1[i] == tokens2[i]) bit += std::pow(2, i); // position dependent
+        if (tokens1[i] == tokens2[i]) bit += std::pow(2, i); // position dependent, bit=0:(2^n-1)
     }
     return bit;
 }
@@ -114,7 +116,7 @@ struct counts_mt : public Worker{
 };
 
 void estimates(std::size_t i,
-               VecNgrams &seqs_np,
+               VecNgrams &seqs_np,  // seqs without padding
                IntParams &cs_np,
               VecNgrams &seqs,
               IntParams &cs, 
@@ -124,12 +126,14 @@ void estimates(std::size_t i,
               DoubleParams &pmi,
               DoubleParams &logratio,
               DoubleParams &chi2,
+              DoubleParams &gensim,
+              DoubleParams &lfmd,
               const String &method,
               const int &count_min,
               const double nseqs,
               const double smoothing){
     
-    std::size_t n = seqs_np[i].size(); //n=2:5
+    std::size_t n = seqs_np[i].size(); //n=2:5, seqs
     if (n == 1) return; // ignore single words
     if (cs_np[i] < count_min) return;
     std::vector<double> counts_bit(std::pow(2, n), smoothing);// use 1/2 as smoothing
@@ -154,20 +158,34 @@ void estimates(std::size_t i,
     // Dice coefficient
     dice[i] = n * compute_dice(counts_bit);
     
-//     // marginal counts: used in pmi, chi-sqaure, G2
-//     std::vector<double> mc(n, 0);  // the size of mc is n
-//     for (int k = 1; k < std::pow(2, n); k++){
-//         int kk = k;
-//         for (int j = n-1; j >= 0; j--){
-//             int jj = std::pow(2, j);
-//             if (kk >= jj){
-//                 mc[j] += counts_bit[k];
-//                 kk -= jj;
-//             }
-//         }
-//     }
-//     
+    // marginal counts: used in pmi, chi-sqaure, G2, gensim, LFMD
+    std::vector<double> mc(n, 0);  // the size of mc is n
+    for (int k = 1; k < std::pow(2, n); k++){
+        int kk = k;
+        for (int j = n-1; j >= 0; j--){
+            int jj = std::pow(2, j);
+            if (kk >= jj){
+                mc[j] += counts_bit[k];
+                kk -= jj;
+            }
+        }
+    }
+
+    double mc_product = 1;
+    for (int k = 0; k < n; k++){
+        mc_product *= mc[k];
+    }
     
+    // calculate gensim score
+    // https://radimrehurek.com/gensim/models/phrases.html#gensim.models.phrases.Phrases
+    // gensim = (cnt(a, b) - min_count) * N / (cnt(a) * cnt(b))
+    gensim[i] = (counts_bit[std::pow(2, n) - 1] - count_min) * nseqs/mc_product;
+    
+    //LFMD
+    //see http://www.lrec-conf.org/proceedings/lrec2002/pdf/128.pdf for details about LFMD
+    //LFMD = log2(P(w1,w2)^2/P(w1)P(w2)) + log2(P(w1,w2))
+    lfmd[i] = log2(counts_bit[std::pow(2, n) - 1] * counts_bit[std::pow(2, n) - 1] * pow(nseqs, n-2) / mc_product) 
+        + log2(counts_bit[std::pow(2, n) - 1] / nseqs);
     
 //     //expected counts: used in chi-square, G2
 //     std::vector<double> ec(std::pow(2, n), 1.00);
@@ -260,6 +278,8 @@ struct estimates_mt : public Worker{
     DoubleParams &pmi;
     DoubleParams &logratio;
     DoubleParams &chi2;
+    DoubleParams &gensim;
+    DoubleParams &lfmd;
     const String &method;
     const unsigned int &count_min;
     const double nseqs;
@@ -267,14 +287,14 @@ struct estimates_mt : public Worker{
 
     // Constructor
     estimates_mt(VecNgrams &seqs_np_, IntParams &cs_np_, VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_, 
-                 DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, const String &method, 
+                 DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, const String &method,
                  const unsigned int &count_min_, const double nseqs_, const double smoothing_):
         seqs_np(seqs_np_), cs_np(cs_np_), seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_), 
-        method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
+        method(method), gensim(gensim_), lfmd(lfmd_), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-                estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, nseqs, smoothing);
+                estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, nseqs, smoothing);
         }
     }
 };
@@ -319,6 +339,12 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     
     std::vector<double> chi2_all;
     chi2_all.reserve(len_coe);
+    
+    std::vector<double> gensim_all;
+    gensim_all.reserve(len_coe);
+    
+    std::vector<double> lfmd_all;
+    lfmd_all.reserve(len_coe);
     
     std::vector<int> cs_all;   // count of sequence
     cs_all.reserve(len_coe);
@@ -380,13 +406,15 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         DoubleParams pmi(len_noPadding);
         DoubleParams logratio(len_noPadding);
         DoubleParams chi2(len_noPadding);
+        DoubleParams gensim(len_noPadding);
+        DoubleParams lfmd(len_noPadding);
         //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
+        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
         parallelFor(0, seqs_np.size(), estimate_mt);
 #else
         for (std::size_t i = 0; i < seqs_np.size(); i++) {
-                estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, method, count_min, total_counts, smoothing);
+                estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
         }
 #endif
         //dev::stop_timer("Estimate", timer);
@@ -396,6 +424,8 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         pmi_all.insert( pmi_all.end(), pmi.begin(), pmi.end() );
         logratio_all.insert( logratio_all.end(), logratio.begin(), logratio.end() );
         chi2_all.insert( chi2_all.end(), chi2.begin(), chi2.end() );
+        gensim_all.insert( gensim_all.end(), gensim.begin(), gensim.end() );
+        lfmd_all.insert( lfmd_all.end(), lfmd.begin(), lfmd.end() );
     }
     
     // Convert sequences from integer to character
@@ -413,6 +443,8 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                                           _["pmi"] = as<NumericVector>(wrap(pmi_all)),
                                           _["G2"] = as<NumericVector>(wrap(logratio_all)),
                                           _["chi2"] = as<NumericVector>(wrap(chi2_all)),
+                                          _["gensim"] = as<NumericVector>(wrap(gensim_all)),
+                                          _["LFMD"] = as<NumericVector>(wrap(lfmd_all)),
                                           _["stringsAsFactors"] = false);
     return output_;
 }
