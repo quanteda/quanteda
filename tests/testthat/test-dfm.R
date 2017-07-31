@@ -328,6 +328,13 @@ test_that("cbind.dfm works with non-dfm objects",{
         cbind(dfm1, dfm1),
         "cbinding dfms with overlapping features will result in duplicated features"
     )
+    
+    expect_equal(
+        as.matrix(cbind(dfm1, 100)),
+        matrix(c(1,1,1,0,0,100, 0,0,1,1,1,100), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat")))
+    )
+    
 })
 
 test_that("more cbind tests for dfms", {
