@@ -239,7 +239,7 @@ cbind.dfm <- function(...) {
         y <- as.dfm(matrix(y, ncol = 1, nrow = nrow(x), dimnames = list(NULL, names[2])))
     }
     
-    result <- quanteda:::cbind_dfm_dfm(x, y)
+    result <- cbind_dfm_dfm(x, y)
     
     while (length(args[-c(1,2)])) {
         args <- args[-c(1,2)]
