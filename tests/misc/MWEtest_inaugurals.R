@@ -5,7 +5,92 @@
 # Two functions: One for counting the expressions and one for calculating the statistics
 
 # ************************************************************8
-
+loglin_local <- function (table, margin, start = rep(1, length(table)), fit = FALSE, 
+          eps = 0.1, iter = 20L, param = FALSE, print = TRUE) 
+{
+    rfit <- fit
+    dtab <- dim(table)
+    nvar <- length(dtab)
+    ncon <- length(margin)
+    conf <- matrix(0L, nrow = nvar, ncol = ncon)
+    nmar <- 0
+    varnames <- names(dimnames(table))
+    for (k in seq_along(margin)) {
+        tmp <- margin[[k]]
+        if (is.character(tmp)) {
+            tmp <- match(tmp, varnames)
+            margin[[k]] <- tmp
+        }
+        if (!is.numeric(tmp) || any(is.na(tmp) | tmp <= 0)) 
+            stop("'margin' must contain names or numbers corresponding to 'table'")
+        conf[seq_along(tmp), k] <- tmp
+        nmar <- nmar + prod(dtab[tmp])
+    }
+    ntab <- length(table)
+    if (length(start) != ntab) 
+        stop("'start' and 'table' must be same length")
+    z <- .Call(stats:::C_LogLin, dtab, conf, table, start, nmar, eps, 
+               iter)
+    if (print) 
+        cat(z$nlast, "iterations: deviation", z$dev[z$nlast], 
+            "\\n")
+    fit <- z$fit
+    attributes(fit) <- attributes(table)
+    observed <- as.vector(table[start > 0])
+    expected <- as.vector(fit[start > 0])
+    pearson <- sum((observed - expected)^2/expected)
+    observed <- as.vector(table[table * fit > 0])
+    expected <- as.vector(fit[table * fit > 0])
+    lrt <- 2 * sum(observed * log(observed/expected))
+    subsets <- function(x) {
+        y <- list(vector(mode(x), length = 0))
+        for (i in seq_along(x)) {
+            y <- c(y, lapply(y, "c", x[i]))
+        }
+        y[-1L]
+    }
+    df <- rep.int(0, 2^nvar)
+    for (k in seq_along(margin)) {
+        terms <- subsets(margin[[k]])
+        for (j in seq_along(terms)) df[sum(2^(terms[[j]] - 1))] <- prod(dtab[terms[[j]]] - 
+                                                                            1)
+    }
+    if (!is.null(varnames) && all(nzchar(varnames))) {
+        for (k in seq_along(margin)) margin[[k]] <- varnames[margin[[k]]]
+    }
+    else {
+        varnames <- as.character(1:ntab)
+    }
+    y <- list(lrt = lrt, pearson = pearson, df = ntab - sum(df) - 
+                  1, margin = margin)
+    if (rfit) 
+        y$fit <- fit
+    if (param) {
+        fit <- log(fit)
+        terms <- seq_along(df)[df > 0]
+        parlen <- length(terms) + 1
+        parval <- list(parlen)
+        parnam <- character(parlen)
+        parval[[1L]] <- mean(fit)
+        parnam[1L] <- "(Intercept)"
+        fit <- fit - parval[[1L]]
+        dyadic <- NULL
+        while (any(terms > 0)) {
+            dyadic <- cbind(dyadic, terms%%2)
+            terms <- terms%/%2
+        }
+        dyadic <- dyadic[order(rowSums(dyadic)), , drop = FALSE]
+        for (i in 2:parlen) {
+            vars <- which(dyadic[i - 1, ] > 0)
+            parval[[i]] <- apply(fit, vars, mean)
+            parnam[i] <- paste(varnames[vars], collapse = ".")
+            fit <- sweep(fit, vars, parval[[i]], check.margin = FALSE)
+        }
+        names(parval) <- parnam
+        y$param <- parval
+    }
+    return(y)
+}
 MWEcounts <- function (candidate,text,stopword="xxxx") 
 {
 # Function for creating the 2^K table of yes/no occurrences 
@@ -112,7 +197,7 @@ MWEstatistics <- function (counts,smooth=0.5)
 # (note: this could also be obtained by fitting this model and the saturated model with glm, and asking for the LR test
 
 	counts.table <- counts.table+smooth
-	mod2 <- loglin(counts.table,loglin.margins,print=F)	
+	mod2 <- loglin_local(counts.table,loglin.margins,print=F)	
 	results[,"LRtest"] <- mod2$lrt
 #
 	return(results)
@@ -153,51 +238,51 @@ MWEstatistics <- function (counts,smooth=0.5)
 # Tests with a few candidate expressions
 ## counts:
 
-test2.tmp <- MWEcounts(c("united","states"),inaugTexts.vector)
-test3.tmp <- MWEcounts(c("house","of","representatives"),inaugTexts.vector)
-test4.tmp <- MWEcounts(c("united","states","of","america"),inaugTexts.vector)
-
-test2.tmp
-test3.tmp
-test4.tmp
-
-MWEstatistics(test2.tmp)
-MWEstatistics(test3.tmp)
-MWEstatistics(test4.tmp)
-
-MWEstatistics(test2.tmp,smooth=0)
-MWEstatistics(test3.tmp,smooth=0)
-MWEstatistics(test4.tmp,smooth=0)
-
-# Some two-word expressions:
-
-mwe2.examples <- MWEstatistics(MWEcounts(c("united","states"),inaugTexts.vector))
-mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("supreme","court"),inaugTexts.vector)))
-mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("american","people"),inaugTexts.vector)))
-mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("federal","government"),inaugTexts.vector)))
-mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("national","government"),inaugTexts.vector)))
-mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("american","dream"),inaugTexts.vector)))
-mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("george","washington"),inaugTexts.vector)))
-mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("vice","president"),inaugTexts.vector)))
-mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("our","people"),inaugTexts.vector))) # Example of a relatively low odds ratio (but high test statistics, because of larger counts)
-mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("middle","east"),inaugTexts.vector))) # Both words are rare, so their appearance together (although also rare) gives high odds ratio
-mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("we","will"),inaugTexts.vector))) # Both words are common; association is moderate but highly significant
-mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("united","nations"),inaugTexts.vector)))
-mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("two","centuries"),inaugTexts.vector)))
-
-mwe2.examples
-
-mwe3.examples <- MWEstatistics(MWEcounts(c("house","of","representatives"),inaugTexts.vector))
-mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("bill","of","rights"),inaugTexts.vector)))
-mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("declaration","of","independence"),inaugTexts.vector)))
-mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("way","of","life"),inaugTexts.vector)))
-mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("men","and","women"),inaugTexts.vector)))
-mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("they","may","be"),inaugTexts.vector))) # Three-word expression which is *less* common than we would expect based on the pairwise distributions
-mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("we","the","people"),inaugTexts.vector)))
-mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("people","of","the"),inaugTexts.vector))) # Looks like "people of" is followed by many different things, not particularly often by "the.."
-mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("we","do","not"),inaugTexts.vector))) # common words, even in combination, but not more so in combination than we would expect
-
-mwe3.examples
+# test2.tmp <- MWEcounts(c("united","states"),inaugTexts.vector)
+# test3.tmp <- MWEcounts(c("house","of","representatives"),inaugTexts.vector)
+# test4.tmp <- MWEcounts(c("united","states","of","america"),inaugTexts.vector)
+# 
+# test2.tmp
+# test3.tmp
+# test4.tmp
+# 
+# MWEstatistics(test2.tmp)
+# MWEstatistics(test3.tmp)
+# MWEstatistics(test4.tmp)
+# 
+# #MWEstatistics(test2.tmp,smooth=0)
+# MWEstatistics(test3.tmp,smooth=0)
+# MWEstatistics(test4.tmp,smooth=0)
+# 
+# # Some two-word expressions:
+# 
+# mwe2.examples <- MWEstatistics(MWEcounts(c("united","states"),inaugTexts.vector))
+# mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("supreme","court"),inaugTexts.vector)))
+# mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("american","people"),inaugTexts.vector)))
+# mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("federal","government"),inaugTexts.vector)))
+# mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("national","government"),inaugTexts.vector)))
+# mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("american","dream"),inaugTexts.vector)))
+# mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("george","washington"),inaugTexts.vector)))
+# mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("vice","president"),inaugTexts.vector)))
+# mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("our","people"),inaugTexts.vector))) # Example of a relatively low odds ratio (but high test statistics, because of larger counts)
+# mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("middle","east"),inaugTexts.vector))) # Both words are rare, so their appearance together (although also rare) gives high odds ratio
+# mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("we","will"),inaugTexts.vector))) # Both words are common; association is moderate but highly significant
+# mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("united","nations"),inaugTexts.vector)))
+# mwe2.examples <- rbind(mwe2.examples,MWEstatistics(MWEcounts(c("two","centuries"),inaugTexts.vector)))
+# 
+# mwe2.examples
+# 
+# mwe3.examples <- MWEstatistics(MWEcounts(c("house","of","representatives"),inaugTexts.vector))
+# mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("bill","of","rights"),inaugTexts.vector)))
+# mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("declaration","of","independence"),inaugTexts.vector)))
+# mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("way","of","life"),inaugTexts.vector)))
+# mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("men","and","women"),inaugTexts.vector)))
+# mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("they","may","be"),inaugTexts.vector))) # Three-word expression which is *less* common than we would expect based on the pairwise distributions
+# mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("we","the","people"),inaugTexts.vector)))
+# mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("people","of","the"),inaugTexts.vector))) # Looks like "people of" is followed by many different things, not particularly often by "the.."
+# mwe3.examples <- rbind(mwe3.examples,MWEstatistics(MWEcounts(c("we","do","not"),inaugTexts.vector))) # common words, even in combination, but not more so in combination than we would expect
+# 
+# mwe3.examples
 
 
 ####*****************quanteda tests***********************
