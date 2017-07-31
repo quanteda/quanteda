@@ -3,8 +3,8 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, floor(RcppParallel::defa
                              quanteda_verbose = FALSE,
                              quanteda_print_dfm_max_ndoc = 20L,
                              quanteda_print_dfm_max_nfeature = 20L,
-                             quanteda_docname_stem = "text",
-                             quanteda_featname_stem = "feat")
+                             quanteda_base_docname = "text",
+                             quanteda_base_featname = "feat")
 
 
 #' get or set package options for quanteda
@@ -29,9 +29,8 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, floor(RcppParallel::defa
 #'    to display when using the defaults for printing a dfm}
 #' \item{\code{print_dfm_max_nfeature}}{integer; specifies the number of features
 #'    to display when using the defaults for printing a dfm}
-#' \item{\code{docname_stem}}{character; stem name for documents that are unnamed
+#' \item{\code{base_docname}}{character; stem name for documents that are unnamed
 #'    when a corpus, tokens, or dfm are created}
-#' \item{\code{featname_stem}}{character; stem name for features that are unnamed
 #'    when dfm is converted from another object}
 #' }
 #' @return 

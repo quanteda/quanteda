@@ -102,7 +102,7 @@ kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "
     
     # add document names if none
     if (is.null(names(x))) {
-        names(x) <- paste0(quanteda_options("docname_stem"), seq_len(x))
+        names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
     }
     
     keywords_id <- features2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))

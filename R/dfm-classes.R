@@ -224,20 +224,20 @@ cbind.dfm <- function(...) {
     names <- names(args)
     
     x <- args[[1]]
+    y <- args[[2]]
+    if (!(is.dfm(x) || is.dfm(y))) stop("cannot cbind this type of object")
+
     if (is.matrix(x)) {
         x <- as.dfm(x)
     } else if (is.numeric(x)) {
-        x <- as.dfm(matrix(x, ncol = 1, nrow = length(x), dimnames = list(NULL, names[1])))
+        x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y), dimnames = list(NULL, names[1])))
     }
     
-    y <- args[[2]]
     if (is.matrix(y)) {
         y <- as.dfm(y)
     } else if (is.numeric(y)) {
-        y <- as.dfm(matrix(y, ncol = 1, nrow = length(y), dimnames = list(NULL, names[2])))
+        y <- as.dfm(matrix(y, ncol = 1, nrow = nrow(x), dimnames = list(NULL, names[2])))
     }
-    
-    if (!(is.dfm(x) && is.dfm(y))) stop("cannot cbind this type of object")
     
     result <- quanteda:::cbind_dfm_dfm(x, y)
     
@@ -267,7 +267,7 @@ cbind_dfm_dfm <- function(...) {
 
     # make any added feature names unique
     dupl_featname_index <- 
-        grep(paste0("^", quanteda_options("featname_stem")), colnames(result))
+        grep(paste0("^", quanteda_options("base_featname")), colnames(result))
     colnames(result)[dupl_featname_index] <- make.unique(gsub("\\d", "", colnames(result)[dupl_featname_index]), "")
     # only issue warning if these did not come from added feature names
     if (any(duplicated(colnames(result))))

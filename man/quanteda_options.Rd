@@ -30,23 +30,6 @@ When called using a \code{key = value} pair (where \code{key} can be a label or
 \description{
 Get or set global options affecting functions across \pkg{quanteda}.
 }
-\details{
-Currently available options are:
-\describe{
-\item{\code{verbose}}{logical; if \code{TRUE} then use this as the default
-   for all functions with a \code{verbose} argument}
-\item{\code{threads}}{integer; specifies the number of threads to use in
-   use this as the setting in all functions that uee parallelization}
-\item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
-   to display when using the defaults for printing a dfm}
-\item{\code{print_dfm_max_nfeature}}{integer; specifies the number of features
-   to display when using the defaults for printing a dfm}
-\item{\code{docname_stem}}{character; stem name for documents that are unnamed
-   when a corpus, tokens, or dfm are created}
-\item{\code{featname_stem}}{character; stem name for features that are unnamed
-   when dfm is converted from another object}
-}
-}
 \examples{
 (qopts <- quanteda_options())
 \donttest{
