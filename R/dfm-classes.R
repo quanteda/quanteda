@@ -222,10 +222,10 @@ as.data.frame.dfm <- function(x, row.names = NULL, ...) {
 cbind.dfm <- function(...) {
     args <- list(...)
     names <- names(args)
-    
+    if (!any(sapply(args, is.dfm))) stop("at least one input object must be a dfm")
+
     x <- args[[1]]
     y <- args[[2]]
-    if (!(is.dfm(x) || is.dfm(y))) stop("cannot cbind this type of object")
 
     if (is.matrix(x)) {
         x <- as.dfm(x)

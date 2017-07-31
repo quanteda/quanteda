@@ -10,14 +10,14 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, floor(RcppParallel::defa
 #' get or set package options for quanteda
 #' 
 #' Get or set global options affecting functions across \pkg{quanteda}.
-#' @param ... options to be set, as key-value pair, same as \code{\link{options}}. 
-#'   This may be a list of valid key-value pairs, useful for setting a group of
-#'   options at once (see examples).
-#' @param reset logical; if \code{TRUE}, reset all \pkg{quanteda} options to their 
-#'   default values
-#' @param initialize logical; if \code{TRUE}, reset only the \pkg{quanteda} options 
-#'   that are not already defined.  Used for setting initial values when some have 
-#'   been defined previously, such as in `.Rprofile`.
+#' @param ... options to be set, as key-value pair, same as
+#'   \code{\link{options}}. This may be a list of valid key-value pairs, useful
+#'   for setting a group of options at once (see examples).
+#' @param reset logical; if \code{TRUE}, reset all \pkg{quanteda} options to
+#'   their default values
+#' @param initialize logical; if \code{TRUE}, reset only the \pkg{quanteda}
+#'   options that are not already defined.  Used for setting initial values when
+#'   some have been defined previously, such as in `.Rprofile`.
 #' @details
 #' Currently available options are:
 #' \describe{
@@ -29,9 +29,9 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, floor(RcppParallel::defa
 #'    to display when using the defaults for printing a dfm}
 #' \item{\code{print_dfm_max_nfeature}}{integer; specifies the number of features
 #'    to display when using the defaults for printing a dfm}
-#' \item{\code{base_docname}}{character; stem name for documents that are unnamed
-#'    when a corpus, tokens, or dfm are created}
-#'    when dfm is converted from another object}
+#' \item{\code{base_docname}}{character; stem name for documents that are
+#' unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
+#' from another object}
 #' }
 #' @return 
 #'   When called using a \code{key = value} pair (where \code{key} can be a label or 

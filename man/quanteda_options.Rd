@@ -7,16 +7,16 @@
 quanteda_options(..., reset = FALSE, initialize = FALSE)
 }
 \arguments{
-\item{...}{options to be set, as key-value pair, same as \code{\link{options}}. 
-This may be a list of valid key-value pairs, useful for setting a group of
-options at once (see examples).}
+\item{...}{options to be set, as key-value pair, same as
+\code{\link{options}}. This may be a list of valid key-value pairs, useful
+for setting a group of options at once (see examples).}
 
-\item{reset}{logical; if \code{TRUE}, reset all \pkg{quanteda} options to their 
-default values}
+\item{reset}{logical; if \code{TRUE}, reset all \pkg{quanteda} options to
+their default values}
 
-\item{initialize}{logical; if \code{TRUE}, reset only the \pkg{quanteda} options 
-that are not already defined.  Used for setting initial values when some have 
-been defined previously, such as in `.Rprofile`.}
+\item{initialize}{logical; if \code{TRUE}, reset only the \pkg{quanteda}
+options that are not already defined.  Used for setting initial values when
+some have been defined previously, such as in `.Rprofile`.}
 }
 \value{
 When called using a \code{key = value} pair (where \code{key} can be a label or 
@@ -29,6 +29,22 @@ When called using a \code{key = value} pair (where \code{key} can be a label or
 }
 \description{
 Get or set global options affecting functions across \pkg{quanteda}.
+}
+\details{
+Currently available options are:
+\describe{
+\item{\code{verbose}}{logical; if \code{TRUE} then use this as the default
+   for all functions with a \code{verbose} argument}
+\item{\code{threads}}{integer; specifies the number of threads to use in
+   use this as the setting in all functions that uee parallelization}
+\item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
+   to display when using the defaults for printing a dfm}
+\item{\code{print_dfm_max_nfeature}}{integer; specifies the number of features
+   to display when using the defaults for printing a dfm}
+\item{\code{base_docname}}{character; stem name for documents that are
+unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
+from another object}
+}
 }
 \examples{
 (qopts <- quanteda_options())
