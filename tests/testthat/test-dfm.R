@@ -330,6 +330,33 @@ test_that("cbind.dfm works with non-dfm objects",{
     )
 })
 
+test_that("more cbind tests for dfms", {
+    txts <- c("a b c d", "b c d e") 
+    mydfm <- dfm(txts)
+    
+    expect_equal(
+        as.matrix(cbind(mydfm, as.dfm(cbind("ALL" = ntoken(mydfm))))),
+        matrix(c(1,1,1,1,0,4, 0,1,1,1,1,4), byrow = TRUE, nrow = 2,
+                  dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "ALL")))
+    )
+    
+    expect_equal(
+        as.matrix(cbind(mydfm, cbind("ALL" = ntoken(mydfm)))),
+        matrix(c(1,1,1,1,0,4, 0,1,1,1,1,4), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "ALL")))
+    )
+
+    expect_equal(
+        as.matrix(cbind(mydfm, "ALL" = ntoken(mydfm))),
+        matrix(c(1,1,1,1,0,4, 0,1,1,1,1,4), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "ALL")))
+    )
+    expect_equal(
+        as.matrix(cbind(mydfm, ntoken(mydfm))),
+        matrix(c(1,1,1,1,0,4, 0,1,1,1,1,4), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat")))
+    )
+})
 
 test_that("rbind.dfm works as expected",{
     dfm1 <- dfm("This is one sample text sample")
