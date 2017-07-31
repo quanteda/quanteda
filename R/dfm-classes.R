@@ -193,26 +193,62 @@ as.data.frame.dfm <- function(x, row.names = NULL, ...) {
 
 #' Combine dfm objects by Rows or Columns
 #' 
-#' Take a sequence of \link{dfm} objects and combine by columns or
-#' rows, returning a dfm with the combined documents or features, respectively.
+#' Combine a \link{dfm} with another dfm, or numeric, or matrix object, 
+#' returning a dfm with the combined documents or features, respectively.
 #' 
-#' @param ... \link{dfm} objects to be joined column-wise (\code{cbind}) or
-#'   row-wise (\code{rbind}) to the first
+#' @param ... \link{dfm}, numeric, or matrix  objects to be joined column-wise
+#'   (\code{cbind}) or row-wise (\code{rbind}) to the first.  Numeric objects
+#'   not confirming to the row or column dimension will be recycled as normal.
 #' @details \code{cbind(x, y, ...)} combines dfm objects by columns, returning a
-#'   dfm object with combined features from input dfm objects.  Note that this should be used
-#'   with extreme caution, as joining dfms with different documents will result in a new row
-#'   with the docname(s) of the first dfm, merging in those from the second.  Furthermore, 
-#'   if features are shared between the dfms being cbinded, then duplicate feature labels will 
-#'   result.  In both instances, warning messages will result.
+#'   dfm object with combined features from input dfm objects.  Note that this 
+#'   should be used with extreme caution, as joining dfms with different 
+#'   documents will result in a new row with the docname(s) of the first dfm, 
+#'   merging in those from the second.  Furthermore, if features are shared 
+#'   between the dfms being cbinded, then duplicate feature labels will result. 
+#'   In both instances, warning messages will result.
 #' @export
 #' @method cbind dfm
 #' @keywords internal dfm
 #' @examples 
 #' # cbind() for dfm objects
-#' (dfm1 <- dfm("This is one sample text sample"))
-#' (dfm2 <- dfm("More words here"))
+#' (dfm1 <- dfm(c("a b c d", "c d e f")))
+#' (dfm2 <- dfm(c("a b", "x y z")))
 #' cbind(dfm1, dfm2)
+#' cbind(dfm1, 100)
+#' cbind(100, dfm1)
+#' cbind(dfm1, matrix(c(101, 102), ncol = 1))
+#' cbind(matrix(c(101, 102), ncol = 1), dfm1)
+#' 
 cbind.dfm <- function(...) {
+    args <- list(...)
+    names <- names(args)
+    if (!any(sapply(args, is.dfm))) stop("at least one input object must be a dfm")
+
+    x <- args[[1]]
+    y <- args[[2]]
+
+    if (is.matrix(x)) {
+        x <- as.dfm(x)
+    } else if (is.numeric(x)) {
+        x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y), dimnames = list(NULL, names[1])))
+    }
+    
+    if (is.matrix(y)) {
+        y <- as.dfm(y)
+    } else if (is.numeric(y)) {
+        y <- as.dfm(matrix(y, ncol = 1, nrow = nrow(x), dimnames = list(NULL, names[2])))
+    }
+    
+    result <- cbind_dfm_dfm(x, y)
+    
+    while (length(args[-c(1,2)])) {
+        args <- args[-c(1,2)]
+        result <- do.call(cbind, c(result, args))
+    }
+    result
+}
+
+cbind_dfm_dfm <- function(...) {
     args <- list(...)
     if (!all(vapply(args, is.dfm, logical(1))))
         stop("all arguments must be dfm objects")
@@ -221,23 +257,26 @@ cbind.dfm <- function(...) {
     if (is.null(dim(dnames)))
         dnames <- matrix(dnames, ncol = length(dnames))
     if (!all(apply(dnames, 1, function(x) length(table(x)) == 1)))
-        warning("cbinding dfms with different docnames", noBreaks. = TRUE)
-    if (length(Reduce(intersect, lapply(args, featnames))))
-        warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE)
+        warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
     
     result <- Matrix::cbind2(args[[1]], args[[2]])
     if (length(args) > 2) {
-        for (y in args[3:length(args)]) 
+        for (y in args[3:length(args)])
             result <- Matrix::cbind2(result, y)
     }
+
+    # make any added feature names unique
+    dupl_featname_index <- 
+        grep(paste0("^", quanteda_options("base_featname")), colnames(result))
+    colnames(result)[dupl_featname_index] <- make.unique(gsub("\\d", "", colnames(result)[dupl_featname_index]), "")
+    # only issue warning if these did not come from added feature names
+    if (any(duplicated(colnames(result))))
+        warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE, call. = FALSE)
+    
     names(dimnames(result)) <- c("docs", "features")
     new("dfmSparse", result)
 }
 
-# setMethod("cbind", signature(x = "dfmSparse", y = "dfmSparse"), function(x, y, ...) {
-#     getMethod("cbind", "dgCMatrix")(x, y, ...)
-# })
-#     
 
 #' @rdname cbind.dfm
 #' @details  \code{rbind(x, y, ...)} combines dfm objects by rows, returning a dfm
