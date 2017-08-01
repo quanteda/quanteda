@@ -405,7 +405,7 @@ test_that("tokens works for strange spaces (#796)", {
     expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), c(text1 = 18))
     expect_equal(
         as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[16:18],
-        c("variationselector16", " \uFE0F", ".")
+        c("variationselector16", " ", ".")
     )
     expect_equal(
         ntoken(txt, remove_punct = TRUE, remove_separators = FALSE),
@@ -413,8 +413,17 @@ test_that("tokens works for strange spaces (#796)", {
     )
     expect_equal(
         as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[15:16],
-        c("variationselector16", " \uFE0F")
+        c("variationselector16", " ")
     )
+})
+
+test_that("tokens remove whitespace with combining characters (#882)", {
+    
+    txt <- "( \u0361\u00b0 \u035c\u0296 \u0361\u00b0)"
+    tok <- tokens(txt)
+    expect_equal(as.list(tok)[[1]],
+                 c("(", "°", "ʖ", "°", ")"))
+    
 })
 
 test_that("remove_hyphens is working correctly", {

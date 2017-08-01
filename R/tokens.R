@@ -617,7 +617,8 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
         if (remove_symbols)
             regex = c(regex, "^[\\p{S}]+$")
         if (remove_separators)
-            regex = c(regex, "^[\uFE00-\uFE0F\\p{Z}\\p{C}]+$") 
+            regex = c(regex, "^[\\p{Z}\\p{C}]+$") 
+            #regex = c(regex, "^[\uFE00-\uFE0F\\p{Z}\\p{C}]+$") 
         if (remove_punct & !remove_twitter)
             regex <- c(regex, "^#+$|^@+$") # remove @ # only if not part of Twitter names
         if (length(regex))
@@ -651,6 +652,8 @@ tokens_word <- function(txt,
     } else if (what=="fasterword") {
         tok <- stri_split_charclass(txt, "\\p{WHITE_SPACE}")
     } else {
+        txt <- stri_replace_all_regex(txt, "[\uFE00-\uFE0F]", '') # remove variant selector
+        txt <- stri_replace_all_regex(txt, "\\s[\u0300-\u036F]", '') # remove whitespace with diacritical marks
         tok <- stri_split_boundaries(txt, type = "word", 
                                      # this is what obliterates currency symbols, Twitter tags, and URLs
                                      skip_word_none = remove_punct && remove_separators, 
