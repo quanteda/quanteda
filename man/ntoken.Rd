@@ -31,10 +31,10 @@ that occur more than zero times in the dfm.
 }
 \note{
 Due to differences between raw text tokens and features that have been 
-  defined for a \link{dfm}, the counts be different for dfm objects and the 
+  defined for a \link{dfm}, the counts may be different for dfm objects and the 
   texts from which the dfm was generated.  Because the method tokenizes the 
   text in order to count the tokens, your results will depend on the options 
-  passed through to \code{\link{tokens}}
+  passed through to \code{\link{tokens}}.
 }
 \examples{
 # simple example

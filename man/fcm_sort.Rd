@@ -10,10 +10,12 @@ fcm_sort(x)
 \item{x}{\link{fcm} object}
 }
 \value{
-A \link{fcm} object whose features have been alphabetically sorted
+A \link{fcm} object whose features have been alphabetically sorted. 
+  Differs from \code{\link{fcm_sort}} in that this function sorts the fcm by
+  the feature labels, not the counts of the features.
 }
 \description{
-Sorts a \link{dfm} in alphabetical order of the features.
+Sorts an \link{fcm} in alphabetical order of the features.
 }
 \examples{
 # with tri = FALSE

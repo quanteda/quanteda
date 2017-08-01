@@ -70,5 +70,5 @@ toks <- tokens("The new law included capital gains taxes and inheritance taxes."
 tokens_compound(toks, cols)
 }
 \author{
-Kenneth Benoit (R) and Kohei Watanabe (C++)
+Kenneth Benoit and Kohei Watanabe
 }

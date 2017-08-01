@@ -26,9 +26,6 @@ __MACOSX
 ^tests/benchmarks/
 ^tests/misc/
 ^css/
-^cran-comments\.md$
 ^vignettes/pkgdown_only/
 
-
-
-
+^revdep$

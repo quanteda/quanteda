@@ -10,20 +10,22 @@
 \method{rbind}{dfm}(...)
 }
 \arguments{
-\item{...}{\link{dfm} objects to be joined column-wise (\code{cbind}) or
-row-wise (\code{rbind}) to the first}
+\item{...}{\link{dfm}, numeric, or matrix  objects to be joined column-wise
+(\code{cbind}) or row-wise (\code{rbind}) to the first.  Numeric objects
+not confirming to the row or column dimension will be recycled as normal.}
 }
 \description{
-Take a sequence of \link{dfm} objects and combine by columns or
-rows, returning a dfm with the combined documents or features, respectively.
+Combine a \link{dfm} with another dfm, or numeric, or matrix object, 
+returning a dfm with the combined documents or features, respectively.
 }
 \details{
 \code{cbind(x, y, ...)} combines dfm objects by columns, returning a
-  dfm object with combined features from input dfm objects.  Note that this should be used
-  with extreme caution, as joining dfms with different documents will result in a new row
-  with the docname(s) of the first dfm, merging in those from the second.  Furthermore, 
-  if features are shared between the dfms being cbinded, then duplicate feature labels will 
-  result.  In both instances, warning messages will result.
+  dfm object with combined features from input dfm objects.  Note that this 
+  should be used with extreme caution, as joining dfms with different 
+  documents will result in a new row with the docname(s) of the first dfm, 
+  merging in those from the second.  Furthermore, if features are shared 
+  between the dfms being cbinded, then duplicate feature labels will result. 
+  In both instances, warning messages will result.
 
 \code{rbind(x, y, ...)} combines dfm objects by rows, returning a dfm
   object with combined features from input dfm objects.  Features are matched
@@ -34,9 +36,14 @@ rows, returning a dfm with the combined documents or features, respectively.
 }
 \examples{
 # cbind() for dfm objects
-(dfm1 <- dfm("This is one sample text sample"))
-(dfm2 <- dfm("More words here"))
+(dfm1 <- dfm(c("a b c d", "c d e f")))
+(dfm2 <- dfm(c("a b", "x y z")))
 cbind(dfm1, dfm2)
+cbind(dfm1, 100)
+cbind(100, dfm1)
+cbind(dfm1, matrix(c(101, 102), ncol = 1))
+cbind(matrix(c(101, 102), ncol = 1), dfm1)
+
 
 # rbind() for dfm objects
 (dfm1 <- dfm(c(doc1 = "This is one sample text sample."), verbose = FALSE))

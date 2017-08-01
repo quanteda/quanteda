@@ -5,40 +5,41 @@
 \title{create a document-feature matrix}
 \usage{
 dfm(x, tolower = TRUE, stem = FALSE, select = NULL, remove = NULL,
-  thesaurus = NULL, dictionary = NULL, valuetype = c("glob", "regex",
+  dictionary = NULL, thesaurus = NULL, valuetype = c("glob", "regex",
   "fixed"), groups = NULL, verbose = quanteda_options("verbose"), ...)
 }
 \arguments{
 \item{x}{character, \link{corpus}, \link{tokens}, or \link{dfm} object}
 
-\item{tolower}{convert all tokens to lowercase}
+\item{tolower}{convert all features to lowercase}
 
 \item{stem}{if \code{TRUE}, stem words}
 
-\item{select}{a character vector of user-supplied features to keep, while
-excluding all others.  This can be used in lieu of a dictionary if there
-are only specific features that a user wishes to keep. To extract only
-Twitter usernames, for example, set \code{select = "@*"} and make sure
+\item{select}{a  \link{pattern}  of user-supplied features to keep, while 
+excluding all others.  This can be used in lieu of a dictionary if there 
+are only specific features that a user wishes to keep. To extract only 
+Twitter usernames, for example, set \code{select = "@*"} and make sure 
 that \code{remove_twitter = FALSE} as an additional argument passed to 
 \link{tokenize}.  Note: \code{select = "^@\\\w+\\\b"} would be the regular
 expression version of this matching pattern.  The pattern matching type 
-will be set by \code{valuetype}.}
+will be set by \code{valuetype}.  See also \code{\link{tokens_remove}}.}
 
-\item{remove}{a character vector of user-supplied features to ignore, such as
+\item{remove}{a \link{pattern} of user-supplied features to ignore, such as 
 "stop words".  To access one possible list (from any list you wish), use 
 \code{\link{stopwords}()}.  The pattern matching type will be set by 
-\code{valuetype}.  For behaviour of \code{remove} with \code{ngrams > 1}, 
-see Details.}
+\code{valuetype}.  See also \code{\link{tokens_select}}.  For behaviour of
+\code{remove} with \code{ngrams > 1}, see Details.}
 
-\item{thesaurus}{a \link{dictionary} object that will be applied as if
-\code{exclusive = FALSE}. See \code{\link{dfm_lookup}}.  For more
-fine-grained control over this and other aspects of converting features
-into dictionary/thesaurus keys from pattern matches to values, consider
-creating the dfm first, and then applying \code{\link{dfm_lookup}}
-separately.}
-
-\item{dictionary}{a \link{dictionary} object to apply to the tokens when
+\item{dictionary}{a \link{dictionary} object to apply to the tokens when 
 creating the dfm}
+
+\item{thesaurus}{a \link{dictionary} object that will be applied as if 
+\code{exclusive = FALSE}. See also \code{\link{tokens_lookup}}.  For more 
+fine-grained control over this and other aspects of converting features 
+into dictionary/thesaurus keys from pattern matches to values, consider 
+creating the dfm first, and then applying \code{\link{dfm_lookup}} 
+separately, or using \code{\link{tokens_lookup}} on the tokenized text
+before calling \code{dfm}.}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
@@ -71,9 +72,9 @@ The default behavior for \code{remove}/\code{select} when
   examples for an illustration.
 }
 \note{
-When \code{x} is a \link{dfm}, \code{groups} provides a convenient 
-  and fast method of combining and refactoring the documents of the dfm 
-  according to the groups.
+When \code{x} is a \link{dfm}, \code{groups} provides a convenient and
+  fast method of combining and refactoring the documents of the dfm according
+  to the groups.
 }
 \examples{
 ## for a corpus

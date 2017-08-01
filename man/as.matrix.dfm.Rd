@@ -7,18 +7,16 @@
 \usage{
 \method{as.matrix}{dfm}(x, ...)
 
-\method{as.data.frame}{dfm}(x, row.names = NULL, optional = FALSE, ...)
+\method{as.data.frame}{dfm}(x, row.names = NULL, ...)
 }
 \arguments{
 \item{x}{dfm to be coerced}
 
-\item{...}{not used}
+\item{...}{unused}
 
 \item{row.names}{if \code{FALSE}, do not set the row names of the data.frame
 to the docnames of the dfm (default); or a vector of values to which the
 row names will be set.}
-
-\item{optional}{not applicable to this method}
 }
 \description{
 Methods for coercing a \link{dfm} object to a matrix or data.frame object.

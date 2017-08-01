@@ -94,7 +94,7 @@
     </tr>
     <tr>
       <th>field</th>
-      <td><p>metadata field name(s);  if <code>NULL</code> (default), return all
+      <td><p>metadata field name(s);  if <code>NULL</code> (default), return all 
 metadata names</p></td>
     </tr>
     <tr>
@@ -105,27 +105,22 @@ metadata names</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>For <code>metacorpus</code>, a list of the metadata fields in the corpus. 
-  If a list is not what you wanted, you can wrap the results in unlist, 
-  but this will remove any metadata field that is set to <code>NULL</code>.
+    <p>For <code>metacorpus</code>, a named list of the metadata fields in the corpus. 
   
   For <code>metacorpus &lt;-</code>, the corpus with the updated metadata.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>metacorpus</span>(<span class='no'>data_corpus_inaugural</span>)</div><div class='output co'>#&gt; $source
-#&gt; [1] "/home/paul/Dropbox/code/quanteda/* on x86_64 by paul"
-#&gt; 
-#&gt; $created
-#&gt; [1] "Fri Sep 12 12:41:17 2014"
+#&gt; [1] "Gerhard Peters and John T. Woolley. The American Presidency Project."
 #&gt; 
 #&gt; $notes
-#&gt; NULL
+#&gt; [1] "http://www.presidency.ucsb.edu/inaugurals.php"
 #&gt; 
-#&gt; $citation
-#&gt; NULL
+#&gt; $created
+#&gt; [1] "Tue Jun 13 14:51:47 2017"
 #&gt; </div><div class='input'><span class='fu'>metacorpus</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"source"</span>)</div><div class='output co'>#&gt; $source
-#&gt; [1] "/home/paul/Dropbox/code/quanteda/* on x86_64 by paul"
+#&gt; [1] "Gerhard Peters and John T. Woolley. The American Presidency Project."
 #&gt; </div><div class='input'><span class='fu'>metacorpus</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"citation"</span>) <span class='kw'>&lt;-</span> <span class='st'>"Presidential Speeches Online Project (2014)."</span>
 <span class='fu'>metacorpus</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"citation"</span>)</div><div class='output co'>#&gt; $citation
 #&gt; [1] "Presidential Speeches Online Project (2014)."

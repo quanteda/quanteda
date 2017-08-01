@@ -51,24 +51,20 @@ setClass("textmodel_wordscores_predicted",
 #'   \code{\link{predict.textmodel_wordscores_fitted}}.
 #' @author Kenneth Benoit
 #' @examples 
-#' (ws <- textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)))
+#' (ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
 #' 
 #' predict(ws)
 #' predict(ws, rescaling = "mv")
 #' predict(ws, rescaling = "lbg")
-#' 
-#' # same as:
-#' (ws2 <- textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)))
-#' predict(ws2)
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
-#'   "Extracting Policy Positions From Political Texts Using Words as Data." 
-#'   American Political Science Review 97(02): 311-31
+#'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy Positions From Political Texts Using Words as Data.}" 
+#'   \emph{American Political Science Review} 97(02): 311-31
 #'   
 #'   Beauchamp, N. 2012. "Using Text to Scale Legislatures with Uninformative 
 #'   Voting." New York University Mimeo.
 #'   
 #'   Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for 
-#'   Interpreting Political Text." Political Analysis 16(1): 93-100.
+#'   Interpreting Political Text." \emph{Political Analysis} 16(1): 93-100.
 #' @seealso \code{\link{predict.textmodel_wordscores_fitted}}
 #' @export
 textmodel_wordscores <- function(x, y,
@@ -194,16 +190,20 @@ predict.textmodel_wordscores_fitted <-
                          textscore_raw_hi = textscore_raw + z * textscore_raw_se)
     
     if ("mv" %in% rescaling) {
+        mv_transform <- function(x) {
+            lowerIndex <- which(object@y == min(object@y, na.rm = TRUE))
+            upperIndex <- which(object@y == max(object@y, na.rm = TRUE))
+            as.numeric((x - result$textscore_raw[lowerIndex]) *
+                (max(object@y, na.rm = TRUE) - min(object@y, na.rm = TRUE)) /
+                (result$textscore_raw[upperIndex] - result$textscore_raw[lowerIndex]) +
+                min(object@y, na.rm = TRUE))
+        }
+        
         if (sum(!is.na(object@y)) > 2)
             warning("\nMore than two reference scores found with MV rescaling; using only min, max values.")
-        lowerIndex <- which(object@y==min(object@y, na.rm=TRUE))
-        upperIndex <- which(object@y==max(object@y, na.rm=TRUE))
-        textscore_mv <-
-            (textscore_raw - textscore_raw[lowerIndex]) *
-            (max(object@y, na.rm=TRUE) - min(object@y, na.rm=TRUE)) /
-            (textscore_raw[upperIndex] - textscore_raw[lowerIndex]) +
-            min(object@y, na.rm=TRUE)
-        result$textscore_mv <- as.numeric(textscore_mv)
+        result$textscore_mv <- mv_transform(result$textscore_raw)
+        result$textscore_mv_lo <- mv_transform(result$textscore_raw_lo)
+        result$textscore_mv_hi <- mv_transform(result$textscore_raw_hi)
     } 
     
     if ("lbg" %in% rescaling) {
@@ -231,7 +231,8 @@ predict.textmodel_wordscores_fitted <-
         x = object@x,
         Sw = object@Sw,
         y = object@y,
-        call = object@call)
+        call = object@call, 
+        level = level)
 }
 
 
@@ -257,7 +258,7 @@ print.textmodel_wordscores_fitted <- function(x, n=30L, digits=2, ...) {
     refscores <- data.frame(Documents=docnames(x@x),
                             "Ref scores" = x@y)
     refscores$Ref.scores <- format(refscores$Ref.scores, digits=digits)
-    refscores$Ref.scores[grep("NA", refscores$Ref.scores)] <- "."
+    refscores$Ref.scores[stri_detect_fixed(refscores$Ref.scores, "NA")] <- "."
     names(refscores)[2] <- "Ref scores"
     print(refscores, row.names=FALSE, digits=digits)
     cat("\nWord scores: ")
@@ -356,10 +357,10 @@ setMethod("coef", signature(object = "textmodel_wordscores_predicted"),
           function(object, ...) {
               if ("textscore_mv" %in% names(object@textscores)) {
                   coef_document <- object@textscores$textscore_mv
-                  coef_document_se <- NULL
+                  coef_document_se <- (object@textscores$textscore_mv - object@textscores$textscore_mv_lo) / qnorm((object@level + 1)/2)
               } else if ("textscore_lbg" %in% names(object@textscores)) {
                   coef_document <- object@textscores$textscore_lbg
-                  coef_document_se <- (object@textscores$textscore_lbg - object@textscores$textscore_lbg_lo) / 1.96
+                  coef_document_se <- (object@textscores$textscore_lbg - object@textscores$textscore_lbg_lo) / qnorm((object@level + 1)/2)
               } else {
                   coef_document <- object@textscores$textscore_raw
                   coef_document_se <- object@textscores$textscore_raw_se

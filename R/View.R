@@ -14,7 +14,9 @@ View <- function(x, title) {
 #' @rdname View
 #' @export
 View.default <- function(x, title) {
-    mget('View', as.environment('package:utils'))[[1]](x)
+    if (missing(title)) 
+        title <- deparse(substitute(x))
+    mget('View', as.environment('package:utils'))[[1]](x, title)
 }
 
 #' @rdname View
@@ -28,11 +30,11 @@ View.default <- function(x, title) {
 #' View(dfm(data_char_ukimmig2010))
 #' }
 View.kwic <- function(x, title) {
-    if (requireNamespace("DT")) {
+    if (requireNamespace("DT", quietly = TRUE)) {
         DT::datatable(x, options = list(pageLength = 20), rownames = FALSE,
                       class = "display",
                       colnames = c("document", "position", "pre", "keyword", "post"))    
-    } else if (requireNamespace("xtable")) {
+    } else if (requireNamespace("xtable", quietly = TRUE)) {
         filename <- tempfile(, fileext = ".html")
         temp_xtable <- xtable::xtable(x)
         print(temp_xtable, type = "html", sanitize.text.function = identity, file = filename,
@@ -45,6 +47,9 @@ View.kwic <- function(x, title) {
 
 #' @rdname View
 #' @export
-View.dfmSparse <- function(x, title) {
-    mget('View', as.environment('package:utils'))[[1]](x)
+View.dfm <- function(x, title) {
+    if (missing(title)) 
+        title <- deparse(substitute(x))
+    View(as.matrix(x), title)
 }
+

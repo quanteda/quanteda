@@ -7,10 +7,10 @@
 as.yaml(x)
 }
 \arguments{
-\item{x}{dictionary object}
+\item{x}{a \link{dictionary} object}
 }
 \value{
-\code{as.yaml} returns a dictionary in the YAML format
+\code{as.yaml} a dictionary in the YAML format, as a character object
 }
 \description{
 Converts a \pkg{quanteda} dictionary object constructed by the 
@@ -20,8 +20,9 @@ files can be editied in text editors and imported into
 }
 \examples{
 \dontrun{
-dict <- dictionary(file = '/home/kohei/Documents/Dictionary/LaverGarry.txt', format = 'wordstat')
-yaml <- as.yaml(dict)
-cat(yaml, file = '/home/kohei/Documents/Dictionary/LaverGarry.yaml')
+dict <- dictionary(list(one = c("a b", "c*"), two = c("x", "y", "z??")))
+cat(yaml <- as.yaml(dict))
+cat(yaml, file = (yamlfile <- paste0(tempfile(), ".yml")))
+dictionary(file = yamlfile)
 }
 }

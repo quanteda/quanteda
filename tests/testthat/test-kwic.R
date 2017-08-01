@@ -268,8 +268,8 @@ test_that("kwic works as expected with and without phrases", {
     char_bi <- c("a b", "g j")
     list_uni <- list("a", "b", "g", "j")
     list_bi <- list("a b", "g j")
-    dict_uni <- dictionary(one = c("a", "b"), two = c("g", "j"))
-    dict_bi <- dictionary(one = "a b", two = "g j")
+    dict_uni <- dictionary(list(one = c("a", "b"), two = c("g", "j")))
+    dict_bi <- dictionary(list(one = "a b", two = "g j"))
     coll_bi <- textstat_collocations(toks_uni, method = "lr", size = 2)
     coll_tri <- textstat_collocations(toks_uni, method = "lr", size = 3)[1, ]
     
@@ -377,22 +377,51 @@ test_that("kwic works as expected with and without phrases", {
 
 })
 
-test_that("deprecated keywords argument still works", {
-    txt <- "The quick brown fox jumped over the lazy dog."
-    expect_warning(
-        kwic(txt, keywords = "fox", window = 3),
-        "keywords argument has been replaced by pattern"
-    )
+# test_that("deprecated keywords argument still works", {
+#     txt <- "The quick brown fox jumped over the lazy dog."
+#     expect_warning(
+#         kwic(txt, keywords = "fox", window = 3),
+#         "keywords argument has been replaced by pattern"
+#     )
+#     expect_equal(
+#         suppressWarnings(kwic(txt, keywords = "fox", window = 3)$keyword),
+#         "fox"
+#     )
+#     expect_warning(
+#         kwic(tokens(txt), keywords = "fox", window = 3),
+#         "keywords argument has been replaced by pattern"
+#     )
+#     expect_equal(
+#         suppressWarnings(kwic(tokens(txt), keywords = "fox", window = 3)$keyword),
+#         "fox"
+#     )
+# })
+
+test_that("test docvar is passed through kwic()", {
+    
+    # kwic only copy original docvars
+    testkwic <- kwic(data_corpus_inaugural, 'american')
+    expect_equal(attr(testkwic, 'docvars'),
+                 docvars(data_corpus_inaugural))
+    
+    # docvars with values
+    testtoks1 <- as.tokens(testkwic)
     expect_equal(
-        suppressWarnings(kwic(txt, keywords = "fox", window = 3)$keyword),
-        "fox"
+        nrow(docvars(testtoks1)),
+        ndoc(testtoks1)
     )
-    expect_warning(
-        kwic(tokens(txt), keywords = "fox", window = 3),
-        "keywords argument has been replaced by pattern"
+    
+    expect_true(
+        all(stringi::stri_startswith_fixed(names(testtoks1), testkwic$docname))
     )
+    
+    #  empty docvars
+    testcorp <- corpus(texts(data_corpus_inaugural))
+    testtoks2 <- as.tokens(kwic(testcorp, 'american'))
     expect_equal(
-        suppressWarnings(kwic(tokens(txt), keywords = "fox", window = 3)$keyword),
-        "fox"
+        nrow(docvars(testtoks2)),
+        ndoc(testtoks2)
     )
+    
 })
+

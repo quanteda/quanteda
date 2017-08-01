@@ -78,18 +78,15 @@
     </div>
 
     
-    <p>Coercion functions to and from <a href='tokens.html'>tokens</a> objects, checks for whether an
-object is a <a href='tokens.html'>tokens</a> object, and functions to combine <a href='tokens.html'>tokens</a>
+    <p>Coercion functions to and from <a href='tokens.html'>tokens</a> objects, checks for whether an 
+object is a <a href='tokens.html'>tokens</a> object, and functions to combine <a href='tokens.html'>tokens</a> 
 objects.</p>
     
 
-    <pre class="usage">as.tokens(x)
+    <pre class="usage">as.tokens(x, concatenator = "_")
 
 # S3 method for list
-as.tokens(x)
-
-# S3 method for collocations
-as.tokens(x)
+as.tokens(x, concatenator = "_")
 
 # S3 method for tokens
 as.list(x, ...)
@@ -114,6 +111,11 @@ c(...)</pre>
     <tr>
       <th>x</th>
       <td><p>object to be coerced or checked</p></td>
+    </tr>
+    <tr>
+      <th>concatenator</th>
+      <td><p>character between multi-word expressions, default is the
+underscore character.  See Details.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -141,16 +143,16 @@ c(...)</pre>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>as.tokens</code> returns a quanteda <a href='tokens.html'>tokens</a> object
+    <p><code>as.tokens</code> returns a quanteda <a href='tokens.html'>tokens</a> object.
 
 <code>as.list</code> returns a simple list of characters from a
-  <a href='tokens.html'>tokens</a> object
+  <a href='tokens.html'>tokens</a> object.
 
 <code>unlist</code> returns a simple vector of characters from a 
-  <a href='tokens.html'>tokens</a> object
+  <a href='tokens.html'>tokens</a> object.
 
 <code>as.character</code> returns a character vector from a 
-  <a href='tokens.html'>tokens</a> object
+  <a href='tokens.html'>tokens</a> object.
 
 <code>is.tokens</code> returns <code>TRUE</code> if the object is of class
   tokens, <code>FALSE</code> otherwise.
@@ -158,28 +160,51 @@ c(...)</pre>
 <code>c(...)</code> and <code>+</code> return a tokens object whose documents
   have been added as a single sequence of documents.</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The <code>concatenator</code> is used to automatically generate dictionary
+  values for multi-word expressions in <code><a href='tokens_lookup.html'>tokens_lookup</a></code> and
+  <code><a href='dfm_lookup.html'>dfm_lookup</a></code>. The underscore character is commonly used to join
+  elements of multi-word expressions (e.g. "piece_of_cake", "New_York"), but
+  other characters (e.g. whitespace " " or a hyphen "-") can also be used. 
+  In those cases, users have to tell the system what is the concatenator in 
+  your tokens so that the conversion knows to treat this character as the
+  inter-word delimiter, when reading in the elements that will become the
+  tokens.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># combining tokens</span>
-<span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"a b c d e"</span>, <span class='st'>"f g h"</span>))
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"1 2 3"</span>))
+    <pre class="examples"><div class='input'>
+<span class='co'># create tokens object from list of characters with custom concatenator</span>
+<span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>'United States'</span>,
+                   <span class='kw'>sea</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'Atlantic Ocean'</span>, <span class='st'>'Pacific Ocean'</span>)))
+<span class='no'>lis</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>'The'</span>, <span class='st'>'United-States'</span>, <span class='st'>'has'</span>, <span class='st'>'the'</span>, <span class='st'>'Atlantic-Ocean'</span>,
+              <span class='st'>'and'</span>, <span class='st'>'the'</span>, <span class='st'>'Pacific-Ocean'</span>, <span class='st'>'.'</span>))
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'>as.tokens</span>(<span class='no'>lis</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>'-'</span>)
+<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='no'>toks</span>, <span class='no'>dict</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; text1 :
+#&gt; [1] "country" "sea"     "sea"    
+#&gt; </div><div class='input'>
+<span class='co'># combining tokens</span>
+<span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"a b c d e"</span>, <span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"f g h"</span>))
+<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='kw'>doc3</span> <span class='kw'>=</span> <span class='st'>"1 2 3"</span>))
 <span class='no'>toks1</span> + <span class='no'>toks2</span></div><div class='output co'>#&gt; tokens from 3 documents.
-#&gt; Component 1 :
+#&gt; doc1 :
 #&gt; [1] "a" "b" "c" "d" "e"
 #&gt; 
-#&gt; Component 2 :
+#&gt; doc2 :
 #&gt; [1] "f" "g" "h"
 #&gt; 
-#&gt; Component 3 :
+#&gt; doc3 :
 #&gt; [1] "1" "2" "3"
 #&gt; </div><div class='input'><span class='fu'>c</span>(<span class='no'>toks1</span>, <span class='no'>toks2</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
-#&gt; Component 1 :
+#&gt; doc1 :
 #&gt; [1] "a" "b" "c" "d" "e"
 #&gt; 
-#&gt; Component 2 :
+#&gt; doc2 :
 #&gt; [1] "f" "g" "h"
 #&gt; 
-#&gt; Component 3 :
+#&gt; doc3 :
 #&gt; [1] "1" "2" "3"
 #&gt; </div><div class='input'>
 </div></pre>
@@ -190,6 +215,8 @@ c(...)</pre>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

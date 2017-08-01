@@ -54,7 +54,11 @@ test_that("coef works for wordscores predicted, rescaling = mv", {
     pr <- predict(textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)), 
                   rescaling = "mv")
     expect_equal(coef(pr)$coef_document, pr@textscores$textscore_mv)
-    expect_equal(coef(pr)$coef_document_se, NULL)
+    expect_equal(
+        coef(pr)$coef_document_se, 
+        (pr@textscores$textscore_mv - pr@textscores$textscore_mv_lo) / 1.96,
+        tolerance = .001
+    )
 })
 
 test_that("coef works for wordscores predicted, rescaling = lbg", {
@@ -63,7 +67,8 @@ test_that("coef works for wordscores predicted, rescaling = lbg", {
     expect_equal(coef(pr)$coef_document, pr@textscores$textscore_lbg)
     expect_equal(
         coef(pr)$coef_document_se, 
-        (pr@textscores$textscore_lbg - pr@textscores$textscore_lbg_lo) / 1.96
+        (pr@textscores$textscore_lbg - pr@textscores$textscore_lbg_lo) / 1.96,
+        tolerance = .001
     )
 })
 

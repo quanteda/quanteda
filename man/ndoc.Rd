@@ -29,7 +29,7 @@ Get the number of documents or features in an object.
 \code{nfeature} returns the number of features from a dfm; it is an
   alias for \code{ntype} when applied to dfm objects.  This function is only 
   defined for \link{dfm} objects because only these have "features".  (To count
-  tokens, see \code{\link{ntoken}})
+  tokens, see \code{\link{ntoken}}.)
 }
 \examples{
 # number of documents

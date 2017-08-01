@@ -2,6 +2,7 @@
 % Please edit documentation in R/corpus.R
 \name{corpus}
 \alias{corpus}
+\alias{corpus.corpus}
 \alias{corpus.character}
 \alias{corpus.data.frame}
 \alias{corpus.kwic}
@@ -9,6 +10,10 @@
 \title{construct a corpus object}
 \usage{
 corpus(x, ...)
+
+\method{corpus}{corpus}(x, docnames = quanteda::docnames(x),
+  docvars = quanteda::docvars(x), metacorpus = quanteda::metacorpus(x),
+  compress = FALSE, ...)
 
 \method{corpus}{character}(x, docnames = NULL, docvars = NULL,
   metacorpus = NULL, compress = FALSE, ...)
@@ -31,7 +36,7 @@ names in a \pkg{tm} corpus; or a vector of user-supplied labels equal in
 length to the number of documents.  If none of these are round, then 
 "text1", "text2", etc. are assigned automatically.}
 
-\item{docvars}{A data frame of attributes that is associated with each text.}
+\item{docvars}{a data.frame of document-level variables associated with each text}
 
 \item{metacorpus}{a named list containing additional (character) information
   to be added to the corpus as corpus-level metadata.  Special fields
@@ -49,7 +54,7 @@ gzip compression. This significantly reduces the size of the corpus in
 memory, but will slow down operations that require the texts to be
 extracted.}
 
-\item{docid_field}{name of the data.frame variable containing the document
+\item{docid_field}{column index of a document
 identifier; defaults to \code{doc_id} but if this is not found, will use
 the row.names of the data.frame if these are assigned}
 
@@ -80,6 +85,7 @@ meta-data.  This matches the format of data.frames constructed by the the
   with the fixed metadata 
   fields imported as \link{docvars} and corpus-level metadata imported
   as \link{metacorpus} information.
+\item a \link{corpus} object.
 }
 }
 \details{
@@ -90,9 +96,8 @@ The texts and document variables of corpus objects can also be
   \code{\link{subset}} method for a corpus.
   
   Indexing a corpus using two indexes (integers or column names) will return 
-  the document variables, equivalent to \code{docvars(x)}.  Because a corpus 
-  is also a list, it is also possible to access, create, or replace docvars 
-  using list notation, e.g. 
+  the document variables, equivalent to \code{docvars(x)}.  It is also
+  possible to access, create, or replace docvars using list notation, e.g.
   
   \code{myCorpus[["newSerialDocvar"]] <- 
   paste0("tag", 1:ndoc(myCorpus))}.
@@ -120,7 +125,7 @@ summary(corpus(data_char_ukimmig2010,
 corpus(texts(data_corpus_irishbudget2010))
 
 # import a tm VCorpus
-if (requireNamespace("tm")) {
+if (requireNamespace("tm", quietly = TRUE)) {
     data(crude, package = "tm")    # load in a tm example VCorpus
     mytmCorpus <- corpus(crude)
     summary(mytmCorpus, showmeta=TRUE)

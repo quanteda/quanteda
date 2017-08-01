@@ -4,13 +4,12 @@
 \alias{dictionary}
 \title{create a dictionary}
 \usage{
-dictionary(..., file = NULL, format = NULL, separator = " ",
+dictionary(x, file = NULL, format = NULL, separator = " ",
   tolower = TRUE, encoding = "auto")
 }
 \arguments{
-\item{...}{a named list of character vector dictionary entries, including \link{valuetype} pattern
-matches, and including multi-word expressions separated by \code{concatenator}.  The argument 
-may be an explicit list or named set of elements that can be turned into a list.  See examples.
+\item{x}{a named list of character vector dictionary entries, including \link{valuetype} pattern
+matches, and including multi-word expressions separated by \code{concatenator}.  See examples.
 This argument may be omitted if the dictionary is read from \code{file}.}
 
 \item{file}{file identifier for a foreign dictionary}
@@ -55,20 +54,19 @@ mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           country = "america"))
 head(dfm(mycorpus, dictionary = mydict))
 
-# also works
-mydict2 <- dictionary(christmas = c("Christmas", "Santa", "holiday"),
-                      opposition = c("Opposition", "reject", "notincorpus"))
-dfm(mycorpus, dictionary = mydict2)
-
 \dontrun{
-# import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
-lgdict <- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
-                     format = "wordstat")
+# import the Laver-Garry dictionary from Provalis Research
+dictfile <- tempfile()
+download.file("https://provalisresearch.com/Download/LaverGarry.zip", dictfile, mode = "wb")
+unzip(dictfile, exdir = (td <- tempdir()))
+lgdict <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
 head(dfm(data_corpus_inaugural, dictionary = lgdict))
 
 # import a LIWC formatted dictionary from http://www.moralfoundations.org
-mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
-head(dfm(data_corpus_inaugural, dictionary = mfdict))}
+download.file("https://goo.gl/5gmwXq", tf <- tempfile())
+mfdict <- dictionary(file = tf, format = "LIWC")
+head(dfm(data_corpus_inaugural, dictionary = mfdict))
+}
 }
 \references{
 Wordstat dictionaries page, from Provalis Research 

@@ -24,7 +24,7 @@ tokens_tolower.tokenizedTexts <- function(x, keep_acronyms = FALSE, ...) {
 #' @export
 tokens_tolower.tokens <- function(x, keep_acronyms = FALSE, ...) {
     types(x) <- char_tolower(types(x), keep_acronyms = keep_acronyms, ...)
-    tokens_hashed_recompile(x)
+    tokens_recompile(x)
 }
 
 
@@ -45,7 +45,7 @@ tokens_toupper.tokenizedTexts <- function(x, ...) {
 #' @export
 tokens_toupper.tokens <- function(x, ...) {
     types(x) <- char_toupper(types(x), ...)
-    tokens_hashed_recompile(x)
+    tokens_recompile(x)
 }
 
 
@@ -53,10 +53,13 @@ tokens_toupper.tokens <- function(x, ...) {
 #' 
 #' \code{char_tolower} and \code{char_toupper} are replacements for 
 #' \link[base]{tolower} and \link[base]{toupper} based on the \pkg{stringi} 
-#' package.
-#' @param x the input object whose character/tokens/feature elements will be
+#' package.  The \pkg{stringi} functions for case conversion are superior to the
+#' \pkg{base} functions because they correctly handle case conversion for
+#' Unicode.  In addition, the \code{*_tolower} functions provide an option for
+#' preserving acronyms.
+#' @param x the input object whose character/tokens/feature elements will be 
 #'   case-converted
-#' @param keep_acronyms logical; if \code{TRUE}, do not lowercase any
+#' @param keep_acronyms logical; if \code{TRUE}, do not lowercase any 
 #'   all-uppercase words (applies only to \code{*_tolower} functions)
 #' @param ... additional arguments passed to \pkg{stringi} functions, (e.g. 
 #'   \code{\link{stri_trans_tolower}}), such as \code{locale}
@@ -112,8 +115,8 @@ char_toupper.character <- function(x, ...) {
 
 #' convert the case of the features of a dfm and combine
 #' 
-#' \code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm to
-#' lower and upper case, respectively, and then recombine the counts.
+#' \code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm or
+#' fcm to lower and upper case, respectively, and then recombine the counts.
 #' @inheritParams char_tolower
 #' @importFrom stringi stri_trans_tolower
 #' @export

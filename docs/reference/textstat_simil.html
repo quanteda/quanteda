@@ -81,7 +81,8 @@
     <p>These functions compute matrixes of distances and similarities between 
 documents or features from a <code><a href='dfm.html'>dfm</a></code> and return a 
 <code><a href='http://www.rdocumentation.org/packages/stats/topics/dist'>dist</a></code> object (or a matrix if specific targets are
-selected).</p>
+selected).  They are fast and robust because they operate directly on the sparse
+<a href='dfm.html'>dfm</a> objects.</p>
     
 
     <pre class="usage"><span class='fu'>textstat_dist</span>(<span class='no'>x</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>),
@@ -128,6 +129,10 @@ matrix is recorded</p></td>
       <td><p>The power of the Minkowski distance.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>textstat_simil</code> and <code>textstat_dist</code> return <code>dist</code> class objects.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -176,6 +181,8 @@ matrix is recorded</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
 
       <li><a href="#note">Note</a></li>

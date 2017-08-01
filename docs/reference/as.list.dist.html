@@ -78,9 +78,9 @@
     </div>
 
     
-    <p>Coerce a dist matrix into a list of selected terms and tarhet terms in
-descending order.  Can be used after calling <code><a href='textstat_simil.html'>textstat_simil</a></code> or
-<code><a href='textstat_simil.html'>textstat_dist</a></code>.</p>
+    <p>Coerce a dist matrix into a list of selected target terms and similar terms,
+in descending order of similarity.  Can be used after calling
+<code><a href='textstat_simil.html'>textstat_simil</a></code> or <code><a href='textstat_simil.html'>textstat_dist</a></code>.</p>
     
 
     <pre class="usage"><span class='co'># S3 method for dist</span>
@@ -124,8 +124,8 @@ descending order.  Can be used after calling <code><a href='textstat_simil.html'
   <span class='fu'>findAssocs</span>(<span class='no'>tdm</span>, <span class='fu'>c</span>(<span class='st'>"oil"</span>, <span class='st'>"opec"</span>, <span class='st'>"xyz"</span>), <span class='fu'>c</span>(<span class='fl'>0.75</span>, <span class='fl'>0.82</span>, <span class='fl'>0.1</span>))
 
   <span class='co'># in quanteda</span>
-  <span class='no'>quantedaDfm</span> <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"dfmSparse"</span>, <span class='kw'>Matrix</span><span class='kw'>::</span><span class='fu'>Matrix</span>(<span class='fu'>t</span>(<span class='fu'>as.matrix</span>(<span class='no'>tdm</span>))))
-  <span class='fu'>as.list</span>(<span class='fu'><a href='textstat_simil.html'>textstat_simil</a></span>(<span class='no'>quantedaDfm</span>, <span class='fu'>c</span>(<span class='st'>"oil"</span>, <span class='st'>"opec"</span>, <span class='st'>"xyz"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>14</span>))
+  <span class='no'>quantedaDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='is.dfm.html'>as.dfm</a></span>(<span class='fu'>t</span>(<span class='fu'>as.matrix</span>(<span class='no'>tdm</span>)))
+  <span class='fu'>as.list</span>(<span class='fu'><a href='textstat_simil.html'>textstat_simil</a></span>(<span class='no'>quantedaDfm</span>, <span class='fu'>c</span>(<span class='st'>"oil"</span>, <span class='st'>"opec"</span>, <span class='st'>"xyz"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>14</span>)
 
   <span class='co'># in base R</span>
   <span class='no'>corMat</span> <span class='kw'>&lt;-</span> <span class='fu'>as.matrix</span>(<span class='kw'>proxy</span><span class='kw'>::</span><span class='fu'>simil</span>(<span class='fu'>as.matrix</span>(<span class='no'>quantedaDfm</span>), <span class='kw'>by_rows</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))

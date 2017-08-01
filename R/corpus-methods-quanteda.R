@@ -2,11 +2,9 @@
 #' 
 #' Get or set the corpus-level metadata in a \link{corpus} object.
 #' @param x a \link{corpus} object
-#' @param field metadata field name(s);  if \code{NULL} (default), return all
+#' @param field metadata field name(s);  if \code{NULL} (default), return all 
 #'   metadata names
-#' @return For \code{metacorpus}, a list of the metadata fields in the corpus. 
-#'   If a list is not what you wanted, you can wrap the results in \link{unlist}, 
-#'   but this will remove any metadata field that is set to \code{NULL}.
+#' @return For \code{metacorpus}, a named list of the metadata fields in the corpus. 
 #'   
 #'   For \code{metacorpus <-}, the corpus with the updated metadata.
 #' @export
@@ -210,12 +208,15 @@ docnames <- function(x) {
 docnames.corpus <- function(x) {
     # didn't use accessor documents() because didn't want to pass
     # that large object
-    rownames(x$documents)
+    if (is.null(rownames(x$documents))) {
+        paste0('text', seq_len(ndoc(x)))
+    } else {
+        rownames(x$documents)
+    }
 }
 
 #' @param value a character vector of the same length as \code{x}
-#' @return \code{docnames <-} assigns new values to the document names of a corpus. (Does not work
-#' for dfm objects, whose document names are fixed.)
+#' @return \code{docnames <-} assigns new values to the document names of an object.
 #' @export
 #' @examples 
 #' # reassign the document names of the inaugural speech corpus

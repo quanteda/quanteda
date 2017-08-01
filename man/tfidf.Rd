@@ -31,10 +31,10 @@ fully sparse methods.
   \code{scheme_tf = "prop"}.
 }
 \examples{
-head(data_dfm_LBGexample[, 5:10])
-head(tfidf(data_dfm_LBGexample)[, 5:10])
-docfreq(data_dfm_LBGexample)[5:15]
-head(tf(data_dfm_LBGexample)[, 5:10])
+head(data_dfm_lbgexample[, 5:10])
+head(tfidf(data_dfm_lbgexample)[, 5:10])
+docfreq(data_dfm_lbgexample)[5:15]
+head(tf(data_dfm_lbgexample)[, 5:10])
 
 # replication of worked example from
 # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf

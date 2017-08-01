@@ -17,8 +17,7 @@ docnames(x) <- value
 \value{
 \code{docnames} returns a character vector of the document names
 
-\code{docnames <-} assigns new values to the document names of a corpus. (Does not work
-for dfm objects, whose document names are fixed.)
+\code{docnames <-} assigns new values to the document names of an object.
 }
 \description{
 Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.

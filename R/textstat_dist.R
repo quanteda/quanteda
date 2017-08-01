@@ -103,9 +103,9 @@ textstat_dist.dfm <- function(x, selection = NULL,
 
 #' coerce a dist object into a list
 #' 
-#' Coerce a dist matrix into a list of selected terms and tarhet terms in
-#' descending order.  Can be used after calling \code{\link{textstat_simil}} or
-#' \code{\link{textstat_dist}}.
+#' Coerce a dist matrix into a list of selected target terms and similar terms,
+#' in descending order of similarity.  Can be used after calling
+#' \code{\link{textstat_simil}} or \code{\link{textstat_dist}}.
 #' @param x dist class object
 #' @param sorted sort results in descending order if \code{TRUE}
 #' @param n the top \code{n} highest-ranking items will be returned.  If n is 
@@ -128,8 +128,8 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #' findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
 #' 
 #' # in quanteda
-#' quantedaDfm <- new("dfmSparse", Matrix::Matrix(t(as.matrix(tdm))))
-#' as.list(textstat_simil(quantedaDfm, c("oil", "opec", "xyz"), margin = "features", n = 14))
+#' quantedaDfm <- as.dfm(t(as.matrix(tdm)))
+#' as.list(textstat_simil(quantedaDfm, c("oil", "opec", "xyz"), margin = "features"), n = 14)
 #' 
 #' # in base R
 #' corMat <- as.matrix(proxy::simil(as.matrix(quantedaDfm), by_rows = FALSE))

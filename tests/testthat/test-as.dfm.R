@@ -7,7 +7,7 @@ test_that("as.dfm adds document and feature names when a matrix has none", {
     m <- matrix(elements, nrow = 4)
     expect_equal(
         docnames(as.dfm(m)),
-        paste0("doc", seq_len(nrow(m)))
+        paste0("text", seq_len(nrow(m)))
     )
     expect_equal(
         featnames(as.dfm(m)),
@@ -21,11 +21,11 @@ test_that("as.dfm adds document and feature names when a matrix has none", {
 
 test_that("as.dfm adds names of dimnames when a matrix has none", {
     m <- matrix(elements, nrow = 4)
-    dimnames(m) <- list(paste0("doc", seq_len(nrow(m))),
+    dimnames(m) <- list(paste0("text", seq_len(nrow(m))),
                         letters[seq_len(ncol(m))])
     expect_equal(
         docnames(as.dfm(m)),
-        paste0("doc", seq_len(nrow(m)))
+        paste0("text", seq_len(nrow(m)))
     )
     expect_equal(
         featnames(as.dfm(m)),
@@ -55,11 +55,11 @@ test_that("as.dfm keeps document and feature names from a data.frame", {
 
 test_that("as.dfm adds names of dimnames when a data.frame has none", {
     m <- data.frame(matrix(elements, nrow = 4))
-    dimnames(m) <- list(paste0("doc", seq_len(nrow(m))),
+    dimnames(m) <- list(paste0("text", seq_len(nrow(m))),
                         letters[seq_len(ncol(m))])
     expect_equal(
         docnames(as.dfm(m)),
-        paste0("doc", seq_len(nrow(m)))
+        paste0("text", seq_len(nrow(m)))
     )
     expect_equal(
         featnames(as.dfm(m)),

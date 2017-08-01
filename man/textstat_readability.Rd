@@ -19,7 +19,8 @@ textstat_readability(x, measure = c("all", "ARI", "ARI.simple", "Bormuth",
 \arguments{
 \item{x}{a character or \link{corpus} object containing the texts}
 
-\item{measure}{character vector defining the readability measure to calculate}
+\item{measure}{character vector defining the readability measure to calculate.
+Matches are case-insensitive.}
 
 \item{remove_hyphens}{if \code{TRUE}, treat constituent words in hyphenated as
 separate terms, for purposes of computing word lengths, e.g.

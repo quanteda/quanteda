@@ -1,10 +1,13 @@
 #' declare a compound character to be a sequence of separate pattern matches
 #' 
-#' Declares that a whitespace-separated expression consists of multiple
-#' patterns, separated by whitespace.
-#' @param x the sequence, as a \code{character} object containing whitespace
+#' Declares that a whitespace-separated expression consists of multiple 
+#' patterns, separated by whitespace.  This is typically used as a wrapper 
+#' around \code{\link{pattern}} to make it explicit that the pattern elements 
+#' are to be used for matches to multi-word sequences, rather than individual,
+#' unordered matches to single words.
+#' @param x the sequence, as a \code{character} object containing whitespace 
 #'   separating the patterns
-#' @return \code{phrase} returns a specially classed list whose white-spaced
+#' @return \code{phrase} returns a specially classed list whose white-spaced 
 #'   elements have been parsed into separate \code{character} elements.
 #' @export
 #' @examples 
@@ -12,7 +15,7 @@
 #' phrase(c("a b", "c d e", "f"))
 #' 
 #' # from a dictionary
-#' phrase(dictionary(catone = c("a b"), cattwo = "c d e", catthree = "f"))
+#' phrase(dictionary(list(catone = c("a b"), cattwo = "c d e", catthree = "f")))
 #' 
 #' # from a collocations object
 #' (coll <- textstat_collocations(tokens("a b c a b d e b d a b")))

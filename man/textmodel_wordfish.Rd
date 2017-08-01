@@ -77,7 +77,7 @@ The returns match those of Will Lowe's R implementation of
   se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
 }
 \examples{
-textmodel_wordfish(data_dfm_LBGexample, dir = c(1,5))
+textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5))
 
 \dontrun{
 ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)

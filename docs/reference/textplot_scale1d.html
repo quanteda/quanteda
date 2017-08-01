@@ -120,8 +120,10 @@ applies when <code>margin = "documents"</code>.</p></td>
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>optional grouping variable for sorting categories of the documents.
-Only applies when <code>margin = "documents"</code>.</p></td>
+      <td><p>either: a character vector containing the names of document 
+variables to be used for grouping; or a factor or object that can be 
+coerced into a factor equal in length or rows to the number of documents. 
+See <a href='groups.html'>groups</a> for details.</p></td>
     </tr>
     <tr>
       <th>highlighted</th>
@@ -143,6 +145,10 @@ applies if <code>margin = "features"</code></p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a <span class="pkg">ggplot2</span> object</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>The <code>groups</code> argument only applies when <code>margin = "documents"</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -187,6 +193,8 @@ applies if <code>margin = "features"</code></p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#note">Note</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

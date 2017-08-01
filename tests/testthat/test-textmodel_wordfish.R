@@ -80,14 +80,19 @@ test_that("textmodel-wordfish works for quasipoisson - feature as expected: dens
                                 dispersion = "quasipoisson", dispersion_floor = 0)
     wfm_mt <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
                                  dispersion = "quasipoisson", dispersion_floor = 0)
-    cc<-cor(wfm_d@theta, wfm_mt@theta)
-    expect_gt(cc, 0.99)
+    expect_equal(
+        cor(wfm_d@theta, wfm_mt@theta),
+        0.99,
+        tolerance = .005
+    )
     
     wfm_s <- textmodel_wordfish(ie2010dfm, dir = c(6,5), threads = 1,
                                 dispersion = "quasipoisson", dispersion_floor = 0)
-    cc<-cor(wfm_d@theta, wfm_s@theta)
-    expect_gt(cc, 0.99)
-    
+    expect_equal(
+        cor(wfm_d@theta, wfm_s@theta),
+        0.99,
+        tolerance = .005
+    )
 })
 
 test_that("textmodel-wordfish works for quasipoisson - overall as expected: dense vs sparse vs sparse+mt", {

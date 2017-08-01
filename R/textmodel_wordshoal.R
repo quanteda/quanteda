@@ -24,33 +24,37 @@ setClass("textmodel_wordshoal_predicted",
 
 #' wordshoal text model
 #' 
-#' Estimate Lauderdale and Herzog's (2016) model for one-dimensional document author (eg speakers)
-#' positions based on multiple groups of texts (eg debates).  Each group of texts is scaled using
-#' Slapin and Proksch's (2008) "wordfish" Poisson scaling model of one-dimensional document
-#' positions, and then the positions from a particular author are scaled across groups
-#' using a second-level linear factor model, using conditional maximum likelihood.
+#' Estimate Lauderdale and Herzog's (2016) model for one-dimensional document
+#' author (e.g. speakers) positions based on multiple groups of texts (e.g.
+#' debates).  Each group of texts is scaled using Slapin and Proksch's (2008)
+#' "wordfish" Poisson scaling model of one-dimensional document positions, and
+#' then the positions from a particular author are scaled across groups using a
+#' second-level linear factor model, using conditional maximum likelihood.
 #' @importFrom Rcpp evalCpp
 #' @param x the \link{dfm} from which the model will be fit
-#' @param groups the name of a variable in the document variables for data giving the 
-#' document group for each document
-#' @param authors the name of a variable in the document variables for data giving the 
-#' author of each document
+#' @param groups the name of a variable in the document variables for data
+#'   giving the document group for each document
+#' @param authors the name of a variable in the document variables for data
+#'   giving the author of each document
 #' @param dir set global identification by specifying the indexes for a pair of 
-#'   authors such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.
-#' @param tol tolerance for convergence.  A convergence 
-#'   threshold for the log-posterior of the model.
+#'   authors such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}
+#' @param tol a convergence threshold for the
+#'   log-posterior of the model
 #' @return An object of class textmodel_fitted_wordshoal.  This is a list 
 #'   containing: \item{tol}{log-posterior tolerance used in fitting} 
-#'   \item{dir}{global identification of the dimension} 
-#'   \item{theta}{estimated document positions} \item{beta}{debate marginal effects} 
-#'   \item{alpha}{estimated document fixed effects} 
-#'   \item{psi}{estimated document debate-level positions} \item{groups}{document groups} 
+#'   \item{dir}{global identification of the dimension} \item{theta}{estimated
+#'   document positions} \item{beta}{debate marginal effects} 
+#'   \item{alpha}{estimated document fixed effects} \item{psi}{estimated
+#'   document debate-level positions} \item{groups}{document groups} 
 #'   \item{authors}{document authors} \item{ll}{log likelihood at convergence} 
-#'   \item{se.theta}{standard errors for theta-hats} \item{data}{corpus to which 
+#'   \item{se.theta}{standard errors for theta-hats} \item{data}{corpus to which
 #'   the model was fit}
-#' @details Returns estimates of relative author positions across the full corpus of texts.
-#' @references Benjamin E. Lauderdale and Alexander Herzog.  (forthcoming) "Measuring 
-#'    Political Positions from Legislative Speech." \emph{Political Analysis}.
+#' @details Returns estimates of relative author positions across the full
+#'   corpus of texts.
+#' @references Benjamin E. Lauderdale and Alexander Herzog.  2016.
+#'   "\href{https://www.cambridge.org/core/journals/political-analysis/article/measuring-political-positions-from-legislative-speech/35D8B53C4B7367185325C25BBE5F42B4}{Measuring
+#'    Political Positions from Legislative Speech}." \emph{Political Analysis}
+#'   24 (3, July): 374-394.
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @keywords textmodel experimental
 #' @examples
@@ -59,12 +63,12 @@ setClass("textmodel_wordshoal_predicted",
 #' iedfm <- dfm(data_corpus_irish30, remove_punct = TRUE)
 #' wordshoalfit <- 
 #'     textmodel_wordshoal(iedfm, dir = c(7,1),
-#'                         groups = docvars(ie30corpus, "debateID"), 
-#'                         authors = docvars(ie30corpus, "member.name"))
+#'                         groups = docvars(data_corpus_irish30, "debateID"), 
+#'                         authors = docvars(data_corpus_irish30, "member.name"))
 #' fitdf <- merge(as.data.frame(summary(wordshoalfit)),
-#'                docvars(ie30corpus), 
-#'                by.x="row.names", by.y="member.name")
-#' fitdf <- subset(fitdf,!duplicated(memberID))
+#'                docvars(data_corpus_irish30), 
+#'                by.x = "row.names", by.y = "member.name")
+#' fitdf <- subset(fitdf, !duplicated(memberID))
 #' aggregate(theta ~ party.name, data = fitdf, mean)
 #' }
 #' @importFrom stats dgamma dnorm

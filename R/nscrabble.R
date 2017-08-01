@@ -1,7 +1,7 @@
 #' count the Scrabble letter values of text
 #' 
-#' Tally the Scrabble letter values of text given a user-supplied function, 
-#' such as the sum (default) or mean of the character values.
+#' Tally the Scrabble letter values of text given a user-supplied function, such
+#' as the sum (default) or mean of the character values.
 #' @param x a character vector
 #' @param FUN function to be applied to the character values in the text; 
 #'   default is \code{sum}, but could also be \code{mean} or a user-supplied 
@@ -11,6 +11,9 @@
 #'   \code{FUN}, corresponding to the input text(s)
 #' @note Character values are only defined for non-accented Latin a-z, A-Z 
 #'   letters.  Lower-casing is unnecessary.
+#'   
+#'   We would be happy to add more languages to this \emph{extremely useful
+#'   function} if you send us the values for your language!
 #' @examples
 #' nscrabble(c("muzjiks", "excellency"))
 #' nscrabble(data_corpus_inaugural[1:5], mean)

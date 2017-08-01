@@ -33,7 +33,7 @@ of the target feature, default is 5, meaning 5 words before and after the
 target feature}
 
 \item{weights}{a vector of weights applied to each distance from 
-\code{1:window}, strictly decreasing by default; can be a customer defined vector of the same length as 
+\code{1:window}, strictly decreasing by default; can be a custom-defined vector of the same length as 
 \code{length(weights)}}
 
 \item{ordered}{if \code{TRUE} the number of times that a term appears before or after the target feature 
@@ -66,7 +66,7 @@ The function \code{\link{fcm}} provides a very general
   
   \link{fcm} provides all of this functionality, returning a \eqn{V * V}
   matrix (where \eqn{V} is the vocabulary size, returned by
-  \code{\link{ntype}}). The \code{tri = TRUE} option will only return the
+  \code{\link{nfeature}}). The \code{tri = TRUE} option will only return the
   upper part of the matrix.
   
   Unlike some implementations of co-occurrences, \link{fcm} counts feature

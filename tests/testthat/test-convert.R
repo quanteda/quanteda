@@ -105,14 +105,14 @@ test_that("test stm converter: under extreme situations ", {
                              0, 0, 1, 2, 
                              0, 0, 0, 0, 
                              1, 2, 3, 4), byrow = TRUE, nrow = 4))
-    expect_warning(convert(mydfm, to = "stm"), "Dropped empty document\\(s\\): doc3")
+    expect_warning(convert(mydfm, to = "stm"), "Dropped empty document\\(s\\): text3")
 
     #zero-count feature
     mydfm <- as.dfm(matrix(c(1, 0, 2, 0, 
                              0, 0, 1, 2, 
                              1, 0, 0, 0, 
                              1, 0, 3, 4), byrow = TRUE, nrow = 4))
-    expect_warning(stmdfm<-convert(mydfm, to = "stm"), "zero-count features: feat2")
+    expect_warning(stmdfm <- convert(mydfm, to = "stm"), "zero-count features: feat2")
     
     skip_if_not_installed("stm")
     require(stm)

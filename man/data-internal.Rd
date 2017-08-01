@@ -10,15 +10,17 @@
 \title{internal data sets}
 \format{An object of class \code{integer} of length 133245.}
 \source{
-The English stopwords are taken from the SMART information retrieval
-system (obtained from 
-\url{http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop}).
-
-Additional stopword lists are taken from the Snowball stemmer project in
-different languages (see \url{http://snowballstem.org/projects.html}).
-
-The Greek stopwords were supplied by Carsten Schwemmer (see
-\href{https://github.com/kbenoit/quanteda/issues/282}{GitHub issue #282}).
+The English stopwords are taken from the SMART information retrieval 
+  system (obtained from Lewis, David D., et al. 
+  "\href{http://www.jmlr.org/papers/volume5/lewis04a/lewis04a.pdf}{Rcv1: A 
+  new benchmark collection for text categorization research.}" \emph{Journal 
+  of machine learning research} (2004, 5 April): 361-397.
+  
+  Additional stopword lists are taken from the Snowball stemmer project in 
+  different languages (see \url{http://snowballstem.org/projects.html}).
+  
+  The Greek stopwords were supplied by Carsten Schwemmer (see 
+  \href{https://github.com/kbenoit/quanteda/issues/282}{GitHub issue #282}).
 }
 \usage{
 data_int_syllables
@@ -36,13 +38,12 @@ an integer vector whose element names correspond to English words. Built from
 the freely available CMU pronunciation dictionary at 
 \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
 
-\code{data_char_stopwords} provides stopword lists in multiple
-languages; it is a named list of characters with the lowercase language name
-(in English) as the name of each list element.
-
-Supported languages are Arabic, Danish, Dutch, English, Finnish, French,
-German, Greek, Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish,
-and Swedish.
+\code{data_char_stopwords} provides stopword lists in multiple 
+  languages; it is a named list of characters with the lowercase language 
+  name (in English) as the name of each list element.  
+  Supported languages are Arabic, Danish, Dutch, English, Finnish, French, 
+  German, Greek, Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish,
+  and Swedish.
 
 \code{data_char_wordlists} provides word lists used in some readability indexes; 
 it is a named list of character vectors where each list element 
@@ -60,6 +61,9 @@ Chall, J. S., & Dale, E.  1995. \emph{Readability Revisited: The New Dale-Chall 
 Klare, G. R. 1975. "Assessing readability." \emph{Reading Research Quarterly} 10(1): 62-102.
 
 Spache, G. 1953. "A new readability formula for primary-grade reading materials." \emph{The Elementary School Journal} 53: 410-413.
+}
+\seealso{
+\code{\link{stopwords}}
 }
 \keyword{data}
 \keyword{datasets}
