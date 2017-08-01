@@ -93,7 +93,92 @@ loglin_local <- function (table, margin, start = rep(1, length(table)), fit = FA
 # Two functions: One for counting the expressions and one for calculating the statistics
 
 # ************************************************************8
-
+loglin_local <- function (table, margin, start = rep(1, length(table)), fit = FALSE, 
+          eps = 0.1, iter = 20L, param = FALSE, print = TRUE) 
+{
+    rfit <- fit
+    dtab <- dim(table)
+    nvar <- length(dtab)
+    ncon <- length(margin)
+    conf <- matrix(0L, nrow = nvar, ncol = ncon)
+    nmar <- 0
+    varnames <- names(dimnames(table))
+    for (k in seq_along(margin)) {
+        tmp <- margin[[k]]
+        if (is.character(tmp)) {
+            tmp <- match(tmp, varnames)
+            margin[[k]] <- tmp
+        }
+        if (!is.numeric(tmp) || any(is.na(tmp) | tmp <= 0)) 
+            stop("'margin' must contain names or numbers corresponding to 'table'")
+        conf[seq_along(tmp), k] <- tmp
+        nmar <- nmar + prod(dtab[tmp])
+    }
+    ntab <- length(table)
+    if (length(start) != ntab) 
+        stop("'start' and 'table' must be same length")
+    z <- .Call(stats:::C_LogLin, dtab, conf, table, start, nmar, eps, 
+               iter)
+    if (print) 
+        cat(z$nlast, "iterations: deviation", z$dev[z$nlast], 
+            "\\n")
+    fit <- z$fit
+    attributes(fit) <- attributes(table)
+    observed <- as.vector(table[start > 0])
+    expected <- as.vector(fit[start > 0])
+    pearson <- sum((observed - expected)^2/expected)
+    observed <- as.vector(table[table * fit > 0])
+    expected <- as.vector(fit[table * fit > 0])
+    lrt <- 2 * sum(observed * log(observed/expected))
+    subsets <- function(x) {
+        y <- list(vector(mode(x), length = 0))
+        for (i in seq_along(x)) {
+            y <- c(y, lapply(y, "c", x[i]))
+        }
+        y[-1L]
+    }
+    df <- rep.int(0, 2^nvar)
+    for (k in seq_along(margin)) {
+        terms <- subsets(margin[[k]])
+        for (j in seq_along(terms)) df[sum(2^(terms[[j]] - 1))] <- prod(dtab[terms[[j]]] - 
+                                                                            1)
+    }
+    if (!is.null(varnames) && all(nzchar(varnames))) {
+        for (k in seq_along(margin)) margin[[k]] <- varnames[margin[[k]]]
+    }
+    else {
+        varnames <- as.character(1:ntab)
+    }
+    y <- list(lrt = lrt, pearson = pearson, df = ntab - sum(df) - 
+                  1, margin = margin)
+    if (rfit) 
+        y$fit <- fit
+    if (param) {
+        fit <- log(fit)
+        terms <- seq_along(df)[df > 0]
+        parlen <- length(terms) + 1
+        parval <- list(parlen)
+        parnam <- character(parlen)
+        parval[[1L]] <- mean(fit)
+        parnam[1L] <- "(Intercept)"
+        fit <- fit - parval[[1L]]
+        dyadic <- NULL
+        while (any(terms > 0)) {
+            dyadic <- cbind(dyadic, terms%%2)
+            terms <- terms%/%2
+        }
+        dyadic <- dyadic[order(rowSums(dyadic)), , drop = FALSE]
+        for (i in 2:parlen) {
+            vars <- which(dyadic[i - 1, ] > 0)
+            parval[[i]] <- apply(fit, vars, mean)
+            parnam[i] <- paste(varnames[vars], collapse = ".")
+            fit <- sweep(fit, vars, parval[[i]], check.margin = FALSE)
+        }
+        names(parval) <- parnam
+        y$param <- parval
+    }
+    return(y)
+}
 MWEcounts <- function (candidate,text,stopword="xxxx") 
 {
 # Function for creating the 2^K table of yes/no occurrences 
@@ -241,7 +326,7 @@ MWEstatistics <- function (counts,smooth=0.5)
 # Tests with a few candidate expressions
 ## counts:
 
-#test2.tmp <- MWEcounts(c("united","states"),inaugTexts.vector)
+# test2.tmp <- MWEcounts(c("united","states"),inaugTexts.vector)
 # test3.tmp <- MWEcounts(c("house","of","representatives"),inaugTexts.vector)
 # test4.tmp <- MWEcounts(c("united","states","of","america"),inaugTexts.vector)
 # 
@@ -253,7 +338,8 @@ MWEstatistics <- function (counts,smooth=0.5)
 # MWEstatistics(test3.tmp)
 # MWEstatistics(test4.tmp)
 # 
-# MWEstatistics(test2.tmp,smooth=0)
+
+# #MWEstatistics(test2.tmp,smooth=0)
 # MWEstatistics(test3.tmp,smooth=0)
 # MWEstatistics(test4.tmp,smooth=0)
 # 
