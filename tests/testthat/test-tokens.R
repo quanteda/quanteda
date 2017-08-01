@@ -438,7 +438,7 @@ test_that("remove_hyphens is working correctly", {
                  c("a", "b", "c", "d"))
 })
 
-test_that("test tokens.tokens", {
+test_that("test that features remove by tokens.tokens is comparable to tokens.character", {
     
 chars <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F",
            "#tag @user", "abc be-fg hi 100kg 2017", "https://github.com/kbenoit/quanteda", "a b c d e")
@@ -479,6 +479,17 @@ expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2),
 # This fails because there is not separator in toks
 # expect_equal(tokens(chars[1], remove_symbols = TRUE, remove_separator = FALSE),
 #              tokens(toks1, remove_symbols = TRUE, remove_separator = FALSE))
+
+})
+
+test_that("remove_hyphens is working correctly", {
+    corp <- data_corpus_inaugural[1:2]
+    toks <- tokens(corp)
+    
+    expect_equal(dfm(corp), dfm(toks))
+    expect_equal(dfm(corp, remove_punct = TRUE), dfm(toks, remove_punct = TRUE))
+    expect_equal(setdiff(featnames(dfm(corp, ngrams = 2)), featnames(dfm(toks, ngrams = 2))),
+                 character())
 
 })
 
