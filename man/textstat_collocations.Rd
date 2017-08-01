@@ -6,7 +6,8 @@
 \title{calculate collocation statistics}
 \usage{
 textstat_collocations(x, method = c("lambda", "lambda1", "lr", "chi2", "pmi",
-  "dice"), size = 2, min_count = 2, smoothing = 0.5, ...)
+  "dice", "gensim", "LFMD"), size = 2, min_count = 2, smoothing = 0.5,
+  ...)
 
 is.collocations(x)
 }
@@ -31,7 +32,10 @@ score, computed as log \eqn{n_{11}/m_{11}}}
 \item{\code{"lambda1"}}{unigram subtuples, Blaheta and Johnson's method (called through 
 \code{\link{sequences}})}  
 \item{\code{"lambda"}}{all subtuples algorithm, Blaheta and Johnson's method 
-(called through \code{\link{sequences}})} }}
+(called through \code{\link{sequences}})}
+\item{\code{"gensim"}}{gensim score, coumputed as \eqn{(cnt(a, b) - min_count) * N / (cnt(a) * cnt(b))}}   
+\item{\code{"LFMD"}}{LFMD, computed as \eqn{log2(P(w1,w2)^2/P(w1)P(w2)) + log2(P(w1,w2))}}
+ }}
 
 \item{size}{numeric argument representing the length of the collocations
 to be scored.  The maximum size is currently 3 for all
@@ -40,7 +44,7 @@ Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.}
 
 \item{min_count}{minimum frequency of collocations that will be scored}
 
-\item{smoothing}{default is 0.5, for \code{"lambda"} and \code{"lambda1 "} only}
+\item{smoothing}{default is 0.5}
 
 \item{...}{additional arguments passed to \code{\link{collocations2}} for the
 first four methods}
@@ -64,17 +68,14 @@ txts <- c("quanteda is a package for quantitative text analysis",
           "quantitative text analysis is a rapidly growing field", 
           "The population is rapidly growing")
 toks <- tokens(txts)
-textstat_collocations(toks, method = "lr")
-textstat_collocations(toks, method = "lr", min_count = 1)
-textstat_collocations(toks, method = "lr", size = 2:3, min_count = 1)
-(cols <- textstat_collocations(toks, method = "lr", size = 2:3, min_count = 2))
+(cols <- textstat_collocations(toks, size = 2:3, min_count = 2))
 
 # extracting multi-part proper nouns (capitalized terms)
 toks2 <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
 toks2 <- tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
 toks2 <- tokens_select(toks2, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", 
                      case_insensitive = FALSE, padding = TRUE)
-seqs <- textstat_collocations(toks2, method = "lambda")
+seqs <- textstat_collocations(toks2)
 head(seqs, 10)
 
 # compounding tokens is more efficient when applied to the same tokens object 
@@ -86,8 +87,14 @@ Blaheta, D., & Johnson, M. (2001).
    learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
   Computational Extraction, Analysis and Exploitation of Collocations.
   
-  McInnes, B T. 2004. "Extending the Log Likelihood Measure to Improve 
+  McInnes, B T. (2004). "Extending the Log Likelihood Measure to Improve 
   Collocation Identification."  M.Sc. Thesis, University of Minnesota.
+  
+  A. Thanopoulos et al(2002), 
+  \href{http://www.lrec-conf.org/proceedings/lrec2002/pdf/128.pdf}{Comparative evaluation of collocations extraction metrics}
+  
+  gensim score,  
+  \href{https://radimrehurek.com/gensim/models/phrases.html#gensim.models.phrases.Phrases}{gensim models}
 }
 \keyword{collocations}
 \keyword{experimental}
