@@ -27,13 +27,13 @@
 #' th <- tokens(txt)
 #' tokens_wordstem(th)
 #' 
-tokens_wordstem <- function(x, language = "porter") {
+tokens_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
     UseMethod("tokens_wordstem")
 }
     
 #' @noRd
 #' @export
-tokens_wordstem.tokenizedTexts <- function(x, language = "porter") {
+tokens_wordstem.tokenizedTexts <- function(x, language = quanteda_options("language_stemmer")) {
     origAttrs <- attributes(x)
     if (!stri_endswith_fixed(attr(x, "what"), "word") || any(unlist(lapply(x, function(y) stri_detect_fixed(y, " ") & !is.na(y)))))
         stop("whitespace detected: you can only stem word-tokenized texts")
@@ -51,7 +51,7 @@ tokens_wordstem.tokenizedTexts <- function(x, language = "porter") {
     
 #' @noRd
 #' @export
-tokens_wordstem.tokens <- function(x, language = "porter") {
+tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stemmer")) {
     
     if (identical(as.integer(attributes(x)$ngrams), 1L))
         types(x) <- char_wordstem(types(x), language = language)
@@ -72,13 +72,13 @@ tokens_wordstem.tokens <- function(x, language = "porter") {
 #' # simple example
 #' char_wordstem(c("win", "winning", "wins", "won", "winner"))
 #' 
-char_wordstem <- function(x, language = "porter") {
+char_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
     UseMethod("char_wordstem")
 }
 
 #' @noRd
 #' @export
-char_wordstem.character <- function(x, language = "porter") {
+char_wordstem.character <- function(x, language = quanteda_options("language_stemmer")) {
     if (any(stringi::stri_detect_fixed(x, " ") & !is.na(x)))
         stop("whitespace detected: you can only stem tokenized texts")
     result <- SnowballC::wordStem(x, language)
@@ -97,13 +97,13 @@ char_wordstem.character <- function(x, language = "porter") {
 #' dfm_wordstem(origdfm)
 #' 
 #' @export
-dfm_wordstem <- function(x, language = "porter") {
+dfm_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
     UseMethod("dfm_wordstem")
 }
 
 #' @noRd    
 #' @export
-dfm_wordstem.dfm <- function(x, language = "porter") {
+dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer")) {
     if (identical(as.integer(x@ngrams), 1L)) 
         colnames(x) <- char_wordstem(featnames(x), language = language)
     else

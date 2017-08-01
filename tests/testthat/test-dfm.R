@@ -535,3 +535,35 @@ test_that("dfm with selection options produces correct output", {
     )
 })
 
+test_that("dfm works with stem options", {
+    txt_english <- "running ran runs"
+    txt_french <- "en courant je suis fatigué"
+    
+    quanteda_options(language_stemmer = "english")
+    expect_equal(
+        as.character(tokens_wordstem(tokens(txt_english))),
+        c("run", "ran", "run")
+    )
+    expect_equal(
+        featnames(dfm(txt_english)),
+        c("running", "ran", "runs")
+    )
+    expect_equal(
+        featnames(dfm(txt_english, stem = TRUE)),
+        c("run", "ran")
+    )
+
+    quanteda_options(language_stemmer = "french")
+    expect_equal(
+        as.character(tokens_wordstem(tokens(txt_french))),
+        c("en", "cour", "je", "suis", "fatigu")
+    )
+    expect_equal(
+        featnames(dfm(txt_french)),
+        c("en", "courant", "je", "suis", "fatigué")
+    )
+    expect_equal(
+        featnames(dfm(txt_french, stem = TRUE)),
+        c("en", "cour", "je", "suis", "fatigu")
+    )
+})

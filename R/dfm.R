@@ -369,7 +369,7 @@ dfm.dfm <- function(x,
         }
     }
     
-    language <- "english"
+    language <- quanteda_options("language_stemmer")
     if (stem) {
         if (verbose) catm("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
         oldNfeature <- nfeature(x)

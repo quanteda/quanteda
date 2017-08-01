@@ -22,6 +22,7 @@
 *  Added corpus constructor for corpus objects (#690).
 *  Added dictionary constructor for dictionary objects (#690).
 *  Added a tokens constructor for tokens objects (#690), including updates to `tokens()` that improve the consistency and efficiency of the tokenization.
+*  Added new `quanteda_options()`: `language_stemmer` and `language_stopwords`, now used for default in `*_wordstem` functions and `stopwords()` for defaults, respectively.  Also uses this option in `dfm()` when `stem = TRUE`, rather than hard-wiring in the "english" stemmer (#386).
 
 ### Behaviour changes
 
