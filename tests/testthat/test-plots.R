@@ -155,6 +155,21 @@ test_that("test textplot_keyness: show_reference works correctly ", {
     # number of words plotted doubled when show_reference = TRUE
     expect_equal(nrow(ggplot2::ggplot_build(p1)$data[[1]]), k)
     expect_equal(nrow(ggplot2::ggplot_build(p2)$data[[1]]), 2*k)
-    
-
 })
+
+test_that("test textplot_frequency works for a dfm", {
+  dfm_test <- dfm(data_corpus_inaugural[1:5])
+  expect_silent(textplot_frequency(dfm_test, feature = c("america", "people")))
+  expect_silent(textplot_frequency(dfm_test, feature = "america", type = "logFreq"))
+  expect_false(identical(textplot_frequency(dfm_test, feature = "america", sort = TRUE),
+               textplot_frequency(dfm_test, feature = "america", sort = FALSE)))
+})
+
+
+test_that("test textplot_topfeatures works for a dfm", {
+  dfm_test <- dfm(data_corpus_inaugural[1:5])
+  expect_silent(textplot_topfeatures(dfm_test, n = 10))
+  expect_false(identical(textplot_topfeatures(dfm_test, n = 10, sort = TRUE),
+               textplot_topfeatures(dfm_test, n = 10, sort = FALSE)))
+})
+
