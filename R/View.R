@@ -14,7 +14,9 @@ View <- function(x, title) {
 #' @rdname View
 #' @export
 View.default <- function(x, title) {
-    mget('View', as.environment('package:utils'))[[1]](x)
+    if (missing(title)) 
+        title <- deparse(substitute(x))
+    mget('View', as.environment('package:utils'))[[1]](x, title)
 }
 
 #' @rdname View
@@ -45,6 +47,9 @@ View.kwic <- function(x, title) {
 
 #' @rdname View
 #' @export
-View.dfmSparse <- function(x, title) {
-    mget('View', as.environment('package:utils'))[[1]](x)
+View.dfm <- function(x, title) {
+    if (missing(title)) 
+        title <- deparse(substitute(x))
+    View(as.matrix(x), title)
 }
+

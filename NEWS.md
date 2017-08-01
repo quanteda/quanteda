@@ -49,7 +49,7 @@
 *  Fixed mistakes in the computation of two docfreq schemes: `"logave"` and `"inverseprob"`.
 *  Fixed a bug in the handling of multi-thread options where the settings using `quanteda_options()` did not actually set the number of threads.  In addition, we fixed a bug causing threading to be turned off on macOS (due to a check for a gcc version that is not used for compiling the macOS binaries) prevented multi-threading from being used at all on that platform.
 *  Fixed a bug causing failure when functions that use `quanteda_options()` are called without the namespace or package being attached or loaded (#864).
-
+*  Fixed a bug in overloading the View method that caused all named objects in the RStudio/Source pane to be named "x". (#893) 
 
 ## Changes since v0.9.9-50
 
