@@ -91,7 +91,7 @@ textstat_collocations.tokens <- function(x, method =  c("lambda", "lambda1", "lr
         # result <- collocations2(x, method = method,  
         #                         size = size, min_count = min_count, ...)
         # temporally call `lambda` function which also returns all other scores
-        result <- sequences(x, min_count = min_count, size = size, ...)
+        result <- sequences(x, min_count = min_count, size = size, smoothing = smoothing, ...)
         
     }
     rownames(result) <- seq_len(nrow(result))
