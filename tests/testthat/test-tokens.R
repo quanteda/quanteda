@@ -405,7 +405,7 @@ test_that("tokens works for strange spaces (#796)", {
     expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), c(text1 = 18))
     expect_equal(
         as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[16:18],
-        c("variationselector16", " \uFE0F", ".")
+        c("variationselector16", " ", ".")
     )
     expect_equal(
         ntoken(txt, remove_punct = TRUE, remove_separators = FALSE),
@@ -413,8 +413,22 @@ test_that("tokens works for strange spaces (#796)", {
     )
     expect_equal(
         as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[15:16],
-        c("variationselector16", " \uFE0F")
+        c("variationselector16", " ")
     )
+})
+
+test_that("tokens remove whitespace with combining characters (#882)", {
+    
+    skip_on_travis()
+    skip_on_cran()
+    skip_on_appveyor()
+    skip_on_os("windows")
+    
+    txt <- "( \u0361\u00b0 \u035c\u0296 \u0361\u00b0)"
+    tok <- tokens(txt)
+    expect_equal(as.list(tok)[[1]],
+                 c("(", "°", "ʖ", "°", ")"))
+    
 })
 
 test_that("remove_hyphens is working correctly", {
@@ -429,7 +443,7 @@ test_that("remove_hyphens is working correctly", {
                  c("a", "b", "c", "d"))
 })
 
-test_that("test tokens.tokens", {
+test_that("test that features remove by tokens.tokens is comparable to tokens.character", {
     
 chars <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F",
            "#tag @user", "abc be-fg hi 100kg 2017", "https://github.com/kbenoit/quanteda", "a b c d e")
@@ -470,6 +484,17 @@ expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2),
 # This fails because there is not separator in toks
 # expect_equal(tokens(chars[1], remove_symbols = TRUE, remove_separator = FALSE),
 #              tokens(toks1, remove_symbols = TRUE, remove_separator = FALSE))
+
+})
+
+test_that("remove_hyphens is working correctly", {
+    corp <- data_corpus_inaugural[1:2]
+    toks <- tokens(corp)
+    
+    expect_equal(dfm(corp), dfm(toks))
+    expect_equal(dfm(corp, remove_punct = TRUE), dfm(toks, remove_punct = TRUE))
+    expect_equal(setdiff(featnames(dfm(corp, ngrams = 2)), featnames(dfm(toks, ngrams = 2))),
+                 character())
 
 })
 

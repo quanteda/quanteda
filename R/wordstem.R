@@ -41,7 +41,7 @@ tokens_wordstem.tokenizedTexts <- function(x, language = quanteda_options("langu
         result <- lapply(x, SnowballC::wordStem, language)
     else {
         # catm("Ngrams wordstem\n")
-        result <- wordstem_Ngrams(x, attributes(x)$concatenator, language)
+        result <- wordstem_ngrams(x, attributes(x)$concatenator, language)
     }
     class(result) <- c("tokenizedTexts", class(result))
     result[which(is.na(x))] <- NA
@@ -56,7 +56,7 @@ tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stem
     if (identical(as.integer(attributes(x)$ngrams), 1L))
         types(x) <- char_wordstem(types(x), language = language)
     else 
-        types(x) <- wordstem_Ngrams(types(x), 
+        types(x) <- wordstem_ngrams(types(x), 
                                     concatenator = attributes(x)$concatenator, 
                                     language = language)
     tokens_recompile(x)
@@ -107,7 +107,7 @@ dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer"))
     if (identical(as.integer(x@ngrams), 1L)) 
         colnames(x) <- char_wordstem(featnames(x), language = language)
     else
-        colnames(x) <- wordstem_Ngrams(featnames(x), x@concatenator, language)
+        colnames(x) <- wordstem_ngrams(featnames(x), x@concatenator, language)
     dfm_compress(x, margin = "features")
 }
 
@@ -117,7 +117,7 @@ dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer"))
 ###
 
 # stemming for ngrams, internal function
-wordstem_Ngrams <- function(x, concatenator, language) {
+wordstem_ngrams <- function(x, concatenator, language) {
     result <- lapply(x, strsplit, concatenator, fixed = TRUE)
     result <- lapply(result, function(y) lapply(y, SnowballC::wordStem, language = language))
     result <- lapply(result, function(y) vapply(y, paste, character(1), collapse = concatenator))
