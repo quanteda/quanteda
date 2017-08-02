@@ -83,6 +83,13 @@ textplot_scale1d(wfm, margin = "features",
                  highlighted = c("government", "global", "children", 
                                  "bank", "economy", "the", "citizenship",
                                  "productivity", "deficit")) }
+
+## correspondence analysis
+wca <- textmodel_ca(ie_dfm)
+# plot estimated document positions
+textplot_scale1d(wca, margin = "documents",
+                 doclabels = doclab,
+                 groups = docvars(data_corpus_irishbudget2010, "party"))
 }
 \seealso{
 \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
