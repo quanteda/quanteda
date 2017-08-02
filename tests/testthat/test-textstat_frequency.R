@@ -53,3 +53,22 @@ test_that("test textstat_frequency without groups", {
     
 })
 
+test_that("test textstat_frequency works with weights", {
+    txt <- c("a a b b c d", "a d d d", "a a a")
+    grp1 <- c("one", "two", "one")
+    corp1 <- corpus(txt, docvars = data.frame(grp2 = grp1))
+    
+    dfm1 <- dfm(corp1)
+    dfm1weighted <- dfm_weight(dfm1, "relfreq")
+    
+    expect_equal(
+        textstat_frequency(dfm1weighted),
+        data.frame(feature = c("a", "d", "b", "c"),
+                   frequency = c(1.58, .916, .333, .1666),
+                   rank = 1:4,
+                   docfreq = c(3,2,1,1), 
+                   stringsAsFactors = FALSE),
+        tolerance = .01
+    )
+})
+
