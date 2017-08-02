@@ -61,7 +61,7 @@
 #' textplot_scale1d(wfm, margin = "features", 
 #'                  highlighted = c("government", "global", "children", 
 #'                                  "bank", "economy", "the", "citizenship",
-#'                                  "productivity", "deficit")) }
+#'                                  "productivity", "deficit"))
 #'
 #' ## correspondence analysis
 #' wca <- textmodel_ca(ie_dfm)
@@ -69,7 +69,7 @@
 #' textplot_scale1d(wca, margin = "documents",
 #'                  doclabels = doclab,
 #'                  groups = docvars(data_corpus_irishbudget2010, "party"))
-
+#' }
 textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels = NULL, 
                              sort = TRUE, groups = NULL, 
                              highlighted = NULL, alpha = 0.7, 
