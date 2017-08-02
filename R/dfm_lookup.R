@@ -122,12 +122,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         if (!exclusive) {
             warning("show_unmatched only applies if exclusive = TRUE")
         } else {
-            nunmatched <- ntoken(dfm_remove(x, dictionary))
-            result <- 
-                cbind(result,
-                      ## NOTE
-                      ## after we improve cbind.dfm() we can make this next expression a lot simpler
-                      new("dfmSparse", as(dfm(as.tokens(lapply(nunmatched + 1, function(x) rep("_unmatched_", x)))) - 1, "dgCMatrix")))
+            result <- cbind(result, "_unmatched" = ntoken(dfm_remove(x, dictionary)))
         }
     }
     
