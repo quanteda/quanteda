@@ -47,6 +47,12 @@ from another object}
 \item{\code{base_featname}}{character; stem name for features that are
 unnamed when they are added, for whatever reason, to a dfm through an operation
 that adds features}
+\item{\code{base_featname}}{character; stem name for features that are
+unnamed when they are added, for whatever reason, to a dfm through an operation
+that adds features}
+\item{\code{base_featname}}{character; stem name for features that are
+unnamed when they are added, for whatever reason, to a dfm through an operation
+that adds features}
 }
 }
 \examples{

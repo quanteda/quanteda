@@ -17,7 +17,7 @@ The English stopwords are taken from the SMART information retrieval
   \href{https://github.com/kbenoit/quanteda/issues/282}{GitHub issue #282}).
 }
 \usage{
-stopwords(kind = "english")
+stopwords(kind = quanteda_options("language_stopwords"))
 }
 \arguments{
 \item{kind}{The pre-set kind of stopwords (as a character string).  Allowed 

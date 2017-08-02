@@ -44,7 +44,7 @@
 #' # adding to the built-in stopword list
 #' toks <- tokens("The judge will sentence Mr. Adams to nine years in prison", remove_punct = TRUE)
 #' tokens_remove(toks, c(stopwords("english"), "will", "mr", "nine"))
-stopwords <- function(kind = "english") {
+stopwords <- function(kind = quanteda_options("language_stopwords")) {
     if (!(kind %in% names(quanteda::data_char_stopwords)))
         stop(paste0("\"", kind, "\" is not a recognized stopword list name."))
     quanteda::data_char_stopwords[[kind]]
