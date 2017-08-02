@@ -22,6 +22,7 @@
 *  Added corpus constructor for corpus objects (#690).
 *  Added dictionary constructor for dictionary objects (#690).
 *  Added a tokens constructor for tokens objects (#690), including updates to `tokens()` that improve the consistency and efficiency of the tokenization.
+*  Added a new function `textstat_frequency()` to compile feature frequencies, possibly by groups. (#825)
 
 ### Behaviour changes
 
