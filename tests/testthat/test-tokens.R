@@ -419,6 +419,11 @@ test_that("tokens works for strange spaces (#796)", {
 
 test_that("tokens remove whitespace with combining characters (#882)", {
     
+    skip_on_travis()
+    skip_on_cran()
+    skip_on_appveyor()
+    skip_on_os("windows")
+    
     txt <- "( \u0361\u00b0 \u035c\u0296 \u0361\u00b0)"
     tok <- tokens(txt)
     expect_equal(as.list(tok)[[1]],
