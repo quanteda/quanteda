@@ -34,7 +34,8 @@ sequences <- function(x,
                        min_count = 2,
                        size = 2,
                        method = c("lambda", "lambda1"),
-                       smoothing = 0.5) {
+                       smoothing = 0.5, 
+                      show_counts = FALSE) {
     
     # .Deprecated('textstat_collocations')
     UseMethod("sequences")
@@ -47,7 +48,8 @@ sequences.tokens <- function(x,
                               min_count = 2,
                               size = 2,
                               method = c("lambda", "lambda1"),
-                              smoothing = 0.5) {
+                              smoothing = 0.5,
+                             show_counts = FALSE) {
     
     attrs_org <- attributes(x)
     methodtype = match.arg(method)
@@ -58,6 +60,38 @@ sequences.tokens <- function(x,
     types <- types(x)
     
     result <- qatd_cpp_sequences(x, types, min_count, size, methodtype, smoothing)
+    
+    ###############output counts
+    if (show_counts == TRUE){
+        n_counts <- strsplit(result[, 12], "_")
+        ttt <- sapply(n_counts, as.numeric)
+        df_counts <- data.frame(t(ttt))
+        if (size == 2){
+            colnames(df_counts) <- c("n00", "n01", "n10", "n11")
+        } else if (size == 3){
+            colnames(df_counts) <- c("n000", "n001", "n010", "n011", "n100", "n101", "n110", "n111")
+        } else if (size == 4){
+            colnames(df_counts) <- c("n0000", "n0001", "n0010", "n0011", "n0100", "n0101", "n0110", "n1111", 
+                                     "n1000", "n1001", "n1010", "n1011", "n1100", "n1101", "n1110", "n1111")
+            
+        }
+        df_e_counts <- format(round(get_expected_values(df_counts, size = size), 1), nsmall = 1)
+
+        if (size == 2){
+            colnames(df_e_counts) <- c("e00", "e01", "e10", "e11")
+        } else if (size == 3){
+            colnames(df_e_counts) <- c("e000", "e001", "e010", "e011", "e100", "e101", "e110", "e111")
+        } else if (size == 4){
+            colnames(df_e_counts) <- c("e0000", "e0001", "e0010", "e0011", "e0100", "e0101", "e0110", "e1111", 
+                                       "e1000", "e1001", "e1010", "e1011", "e1100", "e1101", "e1110", "e1111")
+            
+        }
+        result <- cbind(result[, 1:11], df_counts, df_e_counts)
+    } else {
+        result <- result[, 1:11]
+    }
+    
+    ######################
     result <- result[result$count >= min_count,]
     if (methodtype == "lambda") {
         result$z <- result$lambda / result$sigma
@@ -97,3 +131,33 @@ sequences.tokens <- function(x,
 #' @return \code{sequences} returns \code{TRUE} if the object is of class
 #'   sequences, \code{FALSE} otherwise.
 is.sequences <- function(x) "sequences" %in% class(x)
+
+
+# function to get lower-order interactions for k-grams
+marginalfun <- function(k) {
+    utils::combn(k, k-1, simplify = FALSE)
+}
+
+# function to get expected counts from IPF
+get_expected_values <- function(df, size) {
+    # get the columns of the data.frame that are the n* counts
+    counts <- df[, grep("^n\\d+", names(df))]
+    # sort the counts alphabetically
+    counts <- df[, sort(names(counts))]
+    
+    expected_counts_list <- apply(counts, 1, function(x) {
+        countsnum <- as.numeric(x)
+        names(countsnum) <- names(counts)
+        array_dimnames <- c(rep(list(c("0", "1")), size))
+        names(array_dimnames) <- paste0("W", size:1)
+        counts_table <- array(countsnum, dim = rep(2, size), dimnames = array_dimnames)
+        counts_expected <- stats::loglin(counts_table,
+                                         margin =  marginalfun(size),
+                                         fit = TRUE, print = FALSE)$fit
+        counts_expected <- as.numeric(counts_expected)
+        names(counts_expected) <- gsub("e", "n", names(counts))
+        counts_expected
+    })
+    
+    data.frame(t(expected_counts_list))
+}

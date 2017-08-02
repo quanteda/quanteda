@@ -6,7 +6,7 @@
 \title{Find variable-length collocations}
 \usage{
 sequences(x, min_count = 2, size = 2, method = c("lambda", "lambda1"),
-  smoothing = 0.5)
+  smoothing = 0.5, show_counts = FALSE)
 
 is.sequences(x)
 }
