@@ -216,8 +216,10 @@ dfm.tokenizedTexts <- function(x,
     
     valuetype <- match.arg(valuetype)
     dots <- list(...)
-    if (length(dots) && any(!(names(dots)) %in% c("start_time", names(formals(tokens)))))
-        warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", sep = "", noBreaks. = TRUE)
+    if (length(dots))
+        if (any(!(names(dots)) %in% c("start_time", names(formals(tokens)))))
+            warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", sep = "", noBreaks. = TRUE)
+        x <- tokens(x, ...)
     
     start_time <- proc.time()
     if ("start_time" %in% names(dots)) start_time <- dots$start_time

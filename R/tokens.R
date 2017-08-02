@@ -3,7 +3,7 @@
 #'
 #' Tokenize the texts from a character vector or from a corpus.
 #' @rdname tokens
-#' @param x a character or \link{corpus} object to be tokenized
+#' @param x a character, \link{corpus}, or \link{tokens} object to be tokenized
 #' @keywords tokens
 #' @export
 #' @param what the unit for splitting the text, available alternatives are: 
@@ -70,6 +70,15 @@
 #'   intervention. This means that punctuation is tokenized as well, and that 
 #'   nothing is removed by default from the text being tokenized except 
 #'   inter-word spacing and equivalent characters.
+#'   
+#'   Note that a \code{tokens} constructor also works on \link{tokens} objects, 
+#'   which allows setting additional options that will modify the original object.
+#'   It is not possible, however, to change a setting to "un-remove" something 
+#'   that was removed from the input \link{tokens} object, however.  For instance,
+#'   \code{tokens(tokens("Ha!", remove_punct = TRUE), remove_punct = FALSE)} will 
+#'   not restore the \code{"!"} token.  No warning is currently issued about this,
+#'   so the user should use \code{tokens.tokens()} with caution.
+#'  
 #' @section Dealing with URLs: URLs are tricky to tokenize, because they contain
 #'   a number of symbols and punctuation characters.  If you wish to remove 
 #'   these, as most people do, and your text contains URLs, then you should set 
@@ -617,7 +626,8 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
         if (remove_symbols)
             regex = c(regex, "^[\\p{S}]+$")
         if (remove_separators)
-            regex = c(regex, "^[\uFE00-\uFE0F\\p{Z}\\p{C}]+$") 
+            regex = c(regex, "^[\\p{Z}\\p{C}]+$") 
+            #regex = c(regex, "^[\uFE00-\uFE0F\\p{Z}\\p{C}]+$") 
         if (remove_punct & !remove_twitter)
             regex <- c(regex, "^#+$|^@+$") # remove @ # only if not part of Twitter names
         if (length(regex))
@@ -651,6 +661,8 @@ tokens_word <- function(txt,
     } else if (what=="fasterword") {
         tok <- stri_split_charclass(txt, "\\p{WHITE_SPACE}")
     } else {
+        txt <- stri_replace_all_regex(txt, "[\uFE00-\uFE0F]", '') # remove variant selector
+        txt <- stri_replace_all_regex(txt, "\\s[\u0300-\u036F]", '') # remove whitespace with diacritical marks
         tok <- stri_split_boundaries(txt, type = "word", 
                                      # this is what obliterates currency symbols, Twitter tags, and URLs
                                      skip_word_none = remove_punct && remove_separators, 
