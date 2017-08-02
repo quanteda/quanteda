@@ -125,6 +125,7 @@ Collate:
     'textstat-deprecated.R'
     'textstat_collocations.R'
     'textstat_dist.R'
+    'textstat_frequency.R'
     'textstat_keyness.R'
     'textstat_lexdiv.R'
     'textstat_readability.R'
