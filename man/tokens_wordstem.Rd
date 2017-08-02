@@ -6,11 +6,11 @@
 \alias{dfm_wordstem}
 \title{stem the terms in an object}
 \usage{
-tokens_wordstem(x, language = "porter")
+tokens_wordstem(x, language = quanteda_options("language_stemmer"))
 
-char_wordstem(x, language = "porter")
+char_wordstem(x, language = quanteda_options("language_stemmer"))
 
-dfm_wordstem(x, language = "porter")
+dfm_wordstem(x, language = quanteda_options("language_stemmer"))
 }
 \arguments{
 \item{x}{a character, tokens, or dfm object whose word stems are to be

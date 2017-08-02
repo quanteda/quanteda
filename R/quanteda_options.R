@@ -4,7 +4,9 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, floor(RcppParallel::defa
                              quanteda_print_dfm_max_ndoc = 20L,
                              quanteda_print_dfm_max_nfeature = 20L,
                              quanteda_base_docname = "text",
-                             quanteda_base_featname = "feat")
+                             quanteda_base_featname = "feat",
+                             quanteda_language_stemmer = "english",
+                             quanteda_language_stopwords = "english")
 
 
 #' get or set package options for quanteda
@@ -32,6 +34,15 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = max(1L, floor(RcppParallel::defa
 #' \item{\code{base_docname}}{character; stem name for documents that are
 #' unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
 #' from another object}
+#' \item{\code{base_featname}}{character; stem name for features that are
+#' unnamed when they are added, for whatever reason, to a dfm through an operation
+#' that adds features}
+#' \item{\code{base_featname}}{character; stem name for features that are
+#' unnamed when they are added, for whatever reason, to a dfm through an operation
+#' that adds features}
+#' \item{\code{base_featname}}{character; stem name for features that are
+#' unnamed when they are added, for whatever reason, to a dfm through an operation
+#' that adds features}
 #' }
 #' @return 
 #'   When called using a \code{key = value} pair (where \code{key} can be a label or 

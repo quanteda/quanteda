@@ -44,6 +44,15 @@ Currently available options are:
 \item{\code{base_docname}}{character; stem name for documents that are
 unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
 from another object}
+\item{\code{base_featname}}{character; stem name for features that are
+unnamed when they are added, for whatever reason, to a dfm through an operation
+that adds features}
+\item{\code{base_featname}}{character; stem name for features that are
+unnamed when they are added, for whatever reason, to a dfm through an operation
+that adds features}
+\item{\code{base_featname}}{character; stem name for features that are
+unnamed when they are added, for whatever reason, to a dfm through an operation
+that adds features}
 }
 }
 \examples{

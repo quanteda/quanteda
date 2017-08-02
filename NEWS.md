@@ -22,6 +22,8 @@
 *  Added corpus constructor for corpus objects (#690).
 *  Added dictionary constructor for dictionary objects (#690).
 *  Added a tokens constructor for tokens objects (#690), including updates to `tokens()` that improve the consistency and efficiency of the tokenization.
+*  Added new `quanteda_options()`: `language_stemmer` and `language_stopwords`, now used for default in `*_wordstem` functions and `stopwords()` for defaults, respectively.  Also uses this option in `dfm()` when `stem = TRUE`, rather than hard-wiring in the "english" stemmer (#386).
+*  Added a new function `textstat_frequency()` to compile feature frequencies, possibly by groups. (#825)
 
 ### Behaviour changes
 
@@ -35,6 +37,7 @@
 *  Upgrades to the `dfm_group()` function now allow "empty" documents to be created using the `fill = TRUE` option, for making documents conform to a selection (similar to how `dfm_select()` works for features, when supplied a dfm as the pattern argument).  The `groups` argument now behaves consistently across the functions where it is used. (#854)
 *  `dictionary()` now requires its main argument to be a list, not a series of elements that can be used to build a list.
 *  Some changes to the behaviour of `tokens()` have improved the behaviour of  `remove_hyphens = FALSE`, which now behaves more correctly regardless of the setting of `remove_punct` (#887).
+*  Improved `cbind.dfm()` function allows cbinding vectors, matrixes, and (recyclable) scalars to dfm objects.
 
 ### Bug fixes and stability enhancements
 
@@ -48,7 +51,7 @@
 *  Fixed mistakes in the computation of two docfreq schemes: `"logave"` and `"inverseprob"`.
 *  Fixed a bug in the handling of multi-thread options where the settings using `quanteda_options()` did not actually set the number of threads.  In addition, we fixed a bug causing threading to be turned off on macOS (due to a check for a gcc version that is not used for compiling the macOS binaries) prevented multi-threading from being used at all on that platform.
 *  Fixed a bug causing failure when functions that use `quanteda_options()` are called without the namespace or package being attached or loaded (#864).
-
+*  Fixed a bug in overloading the View method that caused all named objects in the RStudio/Source pane to be named "x". (#893) 
 
 ## Changes since v0.9.9-50
 

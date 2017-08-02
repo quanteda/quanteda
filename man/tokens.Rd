@@ -12,7 +12,7 @@ tokens(x, what = c("word", "sentence", "character", "fastestword",
   verbose = quanteda_options("verbose"), include_docvars = TRUE, ...)
 }
 \arguments{
-\item{x}{a character or \link{corpus} object to be tokenized}
+\item{x}{a character, \link{corpus}, or \link{tokens} object to be tokenized}
 
 \item{what}{the unit for splitting the text, available alternatives are: 
 \describe{ \item{\code{"word"}}{(recommended default) smartest, but 
@@ -100,6 +100,14 @@ The tokenizer is designed to be fast and flexible as well as to
   intervention. This means that punctuation is tokenized as well, and that 
   nothing is removed by default from the text being tokenized except 
   inter-word spacing and equivalent characters.
+  
+  Note that a \code{tokens} constructor also works on \link{tokens} objects, 
+  which allows setting additional options that will modify the original object.
+  It is not possible, however, to change a setting to "un-remove" something 
+  that was removed from the input \link{tokens} object, however.  For instance,
+  \code{tokens(tokens("Ha!", remove_punct = TRUE), remove_punct = FALSE)} will 
+  not restore the \code{"!"} token.  No warning is currently issued about this,
+  so the user should use \code{tokens.tokens()} with caution.
 }
 \section{Dealing with URLs}{
  URLs are tricky to tokenize, because they contain
