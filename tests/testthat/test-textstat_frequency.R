@@ -10,6 +10,15 @@ test_that("test textstat_frequency without groups", {
                    docfreq = c(3,2,1,1), 
                    stringsAsFactors = FALSE)
     )
+    expect_identical(
+      textstat_frequency(dfm1, n = 2),
+      data.frame(feature = c("a", "d", "b", "c"),
+                 frequency = c(6,4,2,1),
+                 rank = 1:4,
+                 docfreq = c(3,2,1,1), 
+                 stringsAsFactors = FALSE)[1:2, ]
+    )
+    
 })
 
 test_that("test textstat_frequency without groups", {
@@ -31,4 +40,16 @@ test_that("test textstat_frequency without groups", {
                    group = c("one", "one", "one", "one", "two", "two"),
                    stringsAsFactors = FALSE)
     )
+    
+    expect_identical(
+      textstat_frequency(dfm(corp1), groups = grp1, n = 2),
+      data.frame(feature = c("a", "b", "d", "a"),
+                 frequency = c(5,2,3,1),
+                 rank = c(1:2, 1:2),
+                 docfreq = c(2,1,1,1),
+                 group = c("one", "one", "two", "two"),
+                 stringsAsFactors = FALSE)
+    )
+    
 })
+

@@ -1,10 +1,12 @@
 #' tabulate feature frequencies
 #' 
 #' Produces counts and document frequencies summaries of the features in a
-#' \link{dfm}, optionally grouped by a \link{docvar} or other supplied grouping
-#' variable.
+#' \link{dfm}, optionally grouped by a \link{docvars} variable or other supplied
+#' grouping variable.
 #' @param x a \link{dfm} object
-#' @inheritParams groups 
+#' @param n (optional) integer specifying the top \code{n} features to be returned,
+#' within group if \code{groups} is specified
+#' @inheritParams groups
 #' @return a data.frame containing the following variables:
 #' \describe{
 #' \item{\code{feature}}{(character) the feature}
@@ -30,15 +32,18 @@
 #' head(freq, 10)
 #' @export
 #' @keywords plot
-textstat_frequency <- function(x, groups = NULL) {
+textstat_frequency <- function(x, n = NULL, groups = NULL) {
     UseMethod("textstat_frequency")
 }
     
 #' @rdname textplot_frequency
 #' @noRd
+#' @importFrom data.table data.table setorder setcolorder
 #' @export
-textstat_frequency.dfm <- function(x, groups = NULL) { 
+textstat_frequency.dfm <- function(x, n = NULL, groups = NULL) { 
     
+    group <- frequency <- NULL
+  
     groupsadded <- FALSE
     if (is.null(groups)) {
         groupsadded <- TRUE
@@ -55,8 +60,11 @@ textstat_frequency.dfm <- function(x, groups = NULL) {
                          docfreq = x_docfreq@x,
                          group = docnames(x)[x_dgt@i+1])
     setorder(result, group, -frequency)
+    # result[, ngrp := ifelse(is.null(n), .N, min(c(n, .N))), by = group]
     result[, rank := 1:.N, by = group]
+    # result[, ngrp := NULL]
     setcolorder(result, c("feature", "frequency", "rank", "docfreq", "group"))
     if (groupsadded) result[, group := NULL]
+    if (!is.null(n)) result <- result[rank <= n]
     as.data.frame(result)
 }

@@ -4,10 +4,13 @@
 \alias{textstat_frequency}
 \title{tabulate feature frequencies}
 \usage{
-textstat_frequency(x, groups = NULL)
+textstat_frequency(x, n = NULL, groups = NULL)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
+
+\item{n}{(optional) integer specifying the top \code{n} features to be returned,
+within group if \code{groups} is specified}
 
 \item{groups}{either: a character vector containing the names of document 
 variables to be used for grouping; or a factor or object that can be 
@@ -32,8 +35,8 @@ column is omitted from the returned data.frame.}
 }
 \description{
 Produces counts and document frequencies summaries of the features in a
-\link{dfm}, optionally grouped by a \link{docvar} or other supplied grouping
-variable.
+\link{dfm}, optionally grouped by a \link{docvars} variable or other supplied
+grouping variable.
 }
 \examples{
 (dfm1 <- dfm(c("a a b b c d", "a d d d", "a a a")))
