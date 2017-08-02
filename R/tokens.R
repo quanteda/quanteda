@@ -3,7 +3,7 @@
 #'
 #' Tokenize the texts from a character vector or from a corpus.
 #' @rdname tokens
-#' @param x a character or \link{corpus} object to be tokenized
+#' @param x a character, \link{corpus}, or \link{tokens} object to be tokenized
 #' @keywords tokens
 #' @export
 #' @param what the unit for splitting the text, available alternatives are: 
@@ -70,6 +70,15 @@
 #'   intervention. This means that punctuation is tokenized as well, and that 
 #'   nothing is removed by default from the text being tokenized except 
 #'   inter-word spacing and equivalent characters.
+#'   
+#'   Note that a \code{tokens} constructor also works on \link{tokens} objects, 
+#'   which allows setting additional options that will modify the original object.
+#'   It is not possible, however, to change a setting to "un-remove" something 
+#'   that was removed from the input \link{tokens} object, however.  For instance,
+#'   \code{tokens(tokens("Ha!", remove_punct = TRUE), remove_punct = FALSE)} will 
+#'   not restore the \code{"!"} token.  No warning is currently issued about this,
+#'   so the user should use \code{tokens.tokens()} with caution.
+#'  
 #' @section Dealing with URLs: URLs are tricky to tokenize, because they contain
 #'   a number of symbols and punctuation characters.  If you wish to remove 
 #'   these, as most people do, and your text contains URLs, then you should set 
