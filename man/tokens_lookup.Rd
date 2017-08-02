@@ -69,11 +69,4 @@ tokens_lookup(toks, dict, levels = 1:2)
 tokens_lookup(toks, dict, levels = 3)
 tokens_lookup(toks, dict, levels = c(1,3))
 tokens_lookup(toks, dict, levels = c(2,3))
-
-# obtain original number of tokens
-ntoken(toks)
-toks_dict <- tokens_lookup(toks, dict, levels = 1)
-ntoken(toks_dict) # current
-ntoken(toks_dict, original = TRUE) # original
-
 }
