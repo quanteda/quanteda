@@ -123,7 +123,7 @@ target feature</p></td>
     <tr>
       <th>weights</th>
       <td><p>a vector of weights applied to each distance from 
-<code>1:window</code>, strictly decreasing by default; can be a customer defined vector of the same length as 
+<code>1:window</code>, strictly decreasing by default; can be a custom-defined vector of the same length as 
 <code>length(weights)</code></p></td>
     </tr>
     <tr>
@@ -160,7 +160,7 @@ sentences</p></td>
   features is considered (see Church &amp; Hanks 1990).
     fcm provides all of this functionality, returning a \(V * V\)
   matrix (where \(V\) is the vocabulary size, returned by
-  <code><a href='ntoken.html'>ntype</a></code>). The <code>tri = TRUE</code> option will only return the
+  <code><a href='ndoc.html'>nfeature</a></code>). The <code>tri = TRUE</code> option will only return the
   upper part of the matrix.
     Unlike some implementations of co-occurrences, fcm counts feature
   co-occurrences with themselves, meaning that the diagonal will not be zero.

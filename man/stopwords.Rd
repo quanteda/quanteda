@@ -17,7 +17,7 @@ The English stopwords are taken from the SMART information retrieval
   \href{https://github.com/kbenoit/quanteda/issues/282}{GitHub issue #282}).
 }
 \usage{
-stopwords(kind = "english")
+stopwords(kind = quanteda_options("language_stopwords"))
 }
 \arguments{
 \item{kind}{The pre-set kind of stopwords (as a character string).  Allowed 
@@ -25,14 +25,14 @@ values are \code{english}, \code{SMART}, \code{danish}, \code{french},
 \code{greek}, \code{hungarian}, \code{norwegian}, \code{russian}, 
 \code{swedish}, \code{catalan}, \code{dutch}, \code{finnish}, 
 \code{german}, \code{italian}, \code{portuguese}, \code{spanish}, 
-\code{arabic}}
+\code{arabic}.}
 }
 \value{
 a character vector of stopwords
 }
 \description{
 This function retrieves stopwords from the type specified in the \code{kind} 
-argument and returns the stopword list as a character vector The default is 
+argument and returns the stopword list as a character vector.  The default is 
 English.
 }
 \details{

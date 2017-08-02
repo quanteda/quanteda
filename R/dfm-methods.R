@@ -9,7 +9,7 @@
 #' Get the features from a document-feature matrix, which are stored as the
 #' column names of the \link{dfm} object.
 #' @param x the dfm whose features will be extracted
-#' @return character vector of the features
+#' @return character vector of the feature labels
 #' @examples
 #' inaugDfm <- dfm(data_corpus_inaugural, verbose = FALSE)
 #' 
@@ -58,7 +58,7 @@ features <- function(x) {
 #' @export
 docnames.dfm <- function(x) {
     if (is.null(rownames(x))) {
-        character()
+        paste0('text', seq_len(ndoc(x)))
     } else {
         rownames(x)
     }
@@ -79,13 +79,15 @@ docnames.NULL <- function(x) {
 #' \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
 #' @seealso \code{\link{as.data.frame.dfm}}, \code{\link{as.matrix.dfm}}
 #' @export
+
 is.dfm <- function(x) {
     is(x, "dfm")
     # "dfm" %in% class(x)
 }
 
 #' @rdname is.dfm
-#' @return \code{as.dfm} coerces a matrix or data.frame to a dfm
+#' @return \code{as.dfm} coerces a matrix or data.frame to a dfm.  Row names are
+#'   used for docnames, and column names for featnames, of the resulting dfm.
 #' @export
 as.dfm <- function(x) {
     UseMethod("as.dfm")
@@ -108,8 +110,8 @@ as.dfm.data.frame <- function(x) {
 as_dfm_constructor <- function(x) {
     new("dfmSparse", Matrix(as.matrix(x), 
                             sparse = TRUE,
-                            dimnames = list(docs = if (is.null(rownames(x))) paste0("doc", seq_len(nrow(x))) else rownames(x),
-                                            features = if (is.null(colnames(x))) paste0("feat", seq_len(ncol(x))) else colnames(x)) 
+                            dimnames = list(docs = if (is.null(rownames(x))) paste0(quanteda_options("base_docname"), seq_len(nrow(x))) else rownames(x),
+                                            features = if (is.null(colnames(x))) paste0(quanteda_options("base_featname"), seq_len(ncol(x))) else colnames(x)) 
                             ) 
         )
 }

@@ -158,7 +158,7 @@ NULL
 #' (patt5 <- list(c('president?'), c('white', 'house'), c('house', '*', 'representatives')))
 #' 
 #' # dictionary with multi-word matches
-#' (dict1 <- dictionary(us = c('president', 'white house', 'house of representatives')))
+#' (dict1 <- dictionary(list(us = c('president', 'white house', 'house of representatives'))))
 #' phrase(dict1)
 #' @keywords internal
 NULL

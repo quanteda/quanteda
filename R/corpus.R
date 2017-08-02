@@ -15,6 +15,7 @@
 #'   with the fixed metadata 
 #'   fields imported as \link{docvars} and corpus-level metadata imported
 #'   as \link{metacorpus} information.
+#' \item a \link{corpus} object.
 #' } 
 #' @param x a valid corpus source object
 #' @param docnames Names to be assigned to the texts.  Defaults to the names of 
@@ -22,7 +23,7 @@
 #'   names in a \pkg{tm} corpus; or a vector of user-supplied labels equal in 
 #'   length to the number of documents.  If none of these are round, then 
 #'   "text1", "text2", etc. are assigned automatically.
-#' @param docvars A data frame of attributes that is associated with each text.
+#' @param docvars a data.frame of document-level variables associated with each text
 #' @param text_field the character name or numeric index of the source
 #'   \code{data.frame} indicating the variable to be read in as text, which must
 #'   be a character vector. All other variables in the data.frame will be
@@ -64,9 +65,8 @@
 #'   \code{\link{subset}} method for a corpus.
 #'   
 #'   Indexing a corpus using two indexes (integers or column names) will return 
-#'   the document variables, equivalent to \code{docvars(x)}.  Because a corpus 
-#'   is also a list, it is also possible to access, create, or replace docvars 
-#'   using list notation, e.g. 
+#'   the document variables, equivalent to \code{docvars(x)}.  It is also
+#'   possible to access, create, or replace docvars using list notation, e.g.
 #'   
 #'   \code{myCorpus[["newSerialDocvar"]] <- 
 #'   paste0("tag", 1:ndoc(myCorpus))}.
@@ -118,6 +118,19 @@ corpus <- function(x, ...) {
 
 #' @rdname corpus
 #' @export
+corpus.corpus <- function(x, docnames = quanteda::docnames(x), docvars = quanteda::docvars(x), metacorpus = quanteda::metacorpus(x), compress = FALSE, ...) {
+    if (!compress) {
+        if (!missing(docnames)) docnames(x) <- docnames
+        if (!missing(docvars)) docnames(x) <- docvars
+        if (!missing(metacorpus)) metacorpus(x) <- metacorpus
+        x
+    } else {
+        corpus(texts(x), docnames, docvars, metacorpus, compress = compress)
+    }
+}
+
+#' @rdname corpus
+#' @export
 corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NULL, compress = FALSE, ...) {
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
@@ -143,7 +156,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NU
         stopifnot(length(docnames) == length(x))
         names(x) <- docnames
     } else if (is.null(x_names)) {
-        names(x) <- paste("text", seq_along(x), sep="")
+        names(x) <- paste(quanteda_options("base_docname"), seq_along(x), sep="")
     } else if (is.null(names(x))) {
         # if they previously existed, but got obliterated by a stringi function
         names(x) <- x_names
@@ -213,7 +226,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NU
 }
 
 #' @rdname corpus
-#' @param docid_field name of the data.frame variable containing the document
+#' @param docid_field column index of a document
 #'   identifier; defaults to \code{doc_id} but if this is not found, will use
 #'   the row.names of the data.frame if these are assigned
 #' @keywords corpus

@@ -188,16 +188,43 @@ topDf$term &lt;-<span class="st"> </span><span class="kw">with</span>(topDf, <sp
 <span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">hjust=</span><span class="dv">1</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 </div>
+<div id="plot-keyness-in-a-target-and-reference-group" class="section level2">
+<h2 class="hasAnchor">
+<a href="#plot-keyness-in-a-target-and-reference-group" class="anchor"></a>4. Plot “keyness” in a target and reference group</h2>
+<p>If you want to compare the differential associations of keywords in a target and reference group, you can calculate “keyness” which is based on <code>textstat_keyness</code>. In this example, we compare the inaugural speech by Donald Trump with the speeches by Barack Obama.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Currently requires the quanteda development version </span>
+<span class="co"># which can be downloaded using:</span>
+<span class="co"># devtools::install_github("kbenoit/quanteda")</span>
+
+<span class="co"># Only select speeches by Obama and Trump</span>
+pres_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, 
+                            President %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">"Obama"</span>, <span class="st">"Trump"</span>))
+
+<span class="co"># Create a dfm grouped by president</span>
+pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(pres_corpus, <span class="dt">groups =</span> <span class="st">"President"</span>, 
+                <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>),
+                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># Calculate keyness and determine Trump as target group</span>
+result_keyness &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_keyness.html">textstat_keyness</a></span>(pres_dfm, <span class="dt">target =</span> <span class="st">"Trump"</span>)
+
+<span class="co"># Plot estimated word keyness</span>
+<span class="kw"><a href="../../reference/textplot_keyness.html">textplot_keyness</a></span>(result_keyness) </code></pre></div>
+<p><img src="plotting_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot without the reference text (in this case Obama)</span>
+<span class="kw"><a href="../../reference/textplot_keyness.html">textplot_keyness</a></span>(result_keyness, <span class="dt">show_reference =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<p><img src="plotting_files/figure-html/unnamed-chunk-13-2.png" width="768"></p>
+</div>
 <div id="plot-fitted-scaling-models" class="section level2">
 <h2 class="hasAnchor">
-<a href="#plot-fitted-scaling-models" class="anchor"></a>4. Plot fitted scaling models</h2>
+<a href="#plot-fitted-scaling-models" class="anchor"></a>5. Plot fitted scaling models</h2>
 <p>You can also plot fitted Wordscores (Laver et al., 2003) or Wordfish scaling models (Proksch and Slapin, 2008). To use the following functions, currently you need to download the development version of <strong>quanteda</strong>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># devtools packaged required to install quanteda from Github </span>
 devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quanteda"</span>) 
 <span class="kw">require</span>(quanteda)</code></pre></div>
 <div id="wordscores" class="section level3">
 <h3 class="hasAnchor">
-<a href="#wordscores" class="anchor"></a>4.1 Wordscores</h3>
+<a href="#wordscores" class="anchor"></a>5.1 Wordscores</h3>
 <p>Wordscores is a scaling procedure for estimating policy positions or scores (Laver et al., 2003). Known scores are assigned to so called reference texts in order to infer the positions of new documents (“virgin texts”). You can plot the position of words (features) against the logged term frequency, or the position of the documents.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Transform corpus to dfm</span>
 ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">verbose=</span><span class="ot">FALSE</span>)
@@ -215,7 +242,7 @@ pred &lt;-<span class="st"> </span><span class="kw">predict</span>(ws)
 <span class="kw"><a href="../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(pred, <span class="dt">margin =</span> <span class="st">"features"</span>, 
                  <span class="dt">highlighted =</span> <span class="kw">c</span>(<span class="st">"minister"</span>, <span class="st">"have"</span>, <span class="st">"our"</span>, <span class="st">"budget"</span>), 
                  <span class="dt">highlighted_color =</span> <span class="st">"red"</span>)</code></pre></div>
-<p><img src="plotting_files/figure-html/unnamed-chunk-14-1.png" width="768"></p>
+<p><img src="plotting_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Set document labels for y-axis</span>
 doclab &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="kw">c</span>(<span class="st">"name"</span>, <span class="st">"party"</span>)), 
                 <span class="dv">1</span>, paste, <span class="dt">collapse =</span> <span class="st">" "</span>)
@@ -224,7 +251,7 @@ doclab &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="
 <span class="kw"><a href="../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(pred, <span class="dt">margin =</span> <span class="st">"documents"</span>,
                  <span class="dt">doclabels =</span> doclab,
                  <span class="dt">groups =</span> <span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</code></pre></div>
-<p><img src="plotting_files/figure-html/unnamed-chunk-14-2.png" width="768"></p>
+<p><img src="plotting_files/figure-html/unnamed-chunk-15-2.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot estimated document positions using the LBG transformation and group by "party" variable</span>
 
 pred_lbg &lt;-<span class="st"> </span><span class="kw">predict</span>(ws, <span class="dt">rescaling =</span> <span class="st">"lbg"</span>)
@@ -232,11 +259,11 @@ pred_lbg &lt;-<span class="st"> </span><span class="kw">predict</span>(ws, <span
 <span class="kw"><a href="../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(pred_lbg, <span class="dt">margin =</span> <span class="st">"documents"</span>,
                  <span class="dt">doclabels =</span> doclab,
                  <span class="dt">groups =</span> <span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</code></pre></div>
-<p><img src="plotting_files/figure-html/unnamed-chunk-14-3.png" width="768"></p>
+<p><img src="plotting_files/figure-html/unnamed-chunk-15-3.png" width="768"></p>
 </div>
 <div id="wordfish" class="section level3">
 <h3 class="hasAnchor">
-<a href="#wordfish" class="anchor"></a>4.2 Wordfish</h3>
+<a href="#wordfish" class="anchor"></a>5.2 Wordfish</h3>
 <p>Wordfish is a Poisson scaling model that estimates one-dimension document positions using maximum likelihood (Slapin and Proksch, 2008). Both the estimated position of words and the positions of the documents can be plotted.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Estimate Wordfish model</span>
 wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010), <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">6</span>,<span class="dv">5</span>))
@@ -247,15 +274,15 @@ wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/text
                                  <span class="st">"bank"</span>, <span class="st">"economy"</span>, <span class="st">"the"</span>, <span class="st">"citizenship"</span>,
                                  <span class="st">"productivity"</span>, <span class="st">"deficit"</span>), 
                  <span class="dt">highlighted_color =</span> <span class="st">"red"</span>)</code></pre></div>
-<p><img src="plotting_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
+<p><img src="plotting_files/figure-html/unnamed-chunk-16-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot estimated document positions</span>
 <span class="kw"><a href="../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(wfm, <span class="dt">doclabels =</span> doclab,
                  <span class="dt">groups =</span> <span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</code></pre></div>
-<p><img src="plotting_files/figure-html/unnamed-chunk-15-2.png" width="768"></p>
+<p><img src="plotting_files/figure-html/unnamed-chunk-16-2.png" width="768"></p>
 </div>
 <div id="correspondence-analysis" class="section level3">
 <h3 class="hasAnchor">
-<a href="#correspondence-analysis" class="anchor"></a>4.3 Correspondence Analysis</h3>
+<a href="#correspondence-analysis" class="anchor"></a>5.3 Correspondence Analysis</h3>
 <p>You can also plot the estimated document positions of a correspodence analysis (Nenadic and Greenacre 2007).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Transform corpus to dfm</span>
 ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)
@@ -272,7 +299,7 @@ doclab &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="
                  <span class="dt">doclabels =</span> doclab,
                  <span class="dt">groups =</span> <span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</code></pre></div>
 <pre><code>## Warning: Removed 14 rows containing missing values (geom_pointrange).</code></pre>
-<p><img src="plotting_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
+<p><img src="plotting_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
 </div>
 </div>
 <div id="references" class="section level2">
@@ -292,7 +319,8 @@ doclab &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="
 <li><a href="#wordcloud">1. Wordcloud</a></li>
       <li><a href="#lexical-dispersion-plot">2. Lexical dispersion plot</a></li>
       <li><a href="#frequency-plots">3. Frequency plots</a></li>
-      <li><a href="#plot-fitted-scaling-models">4. Plot fitted scaling models</a></li>
+      <li><a href="#plot-keyness-in-a-target-and-reference-group">4. Plot “keyness” in a target and reference group</a></li>
+      <li><a href="#plot-fitted-scaling-models">5. Plot fitted scaling models</a></li>
       <li><a href="#references">References</a></li>
       </ul>
 </div>

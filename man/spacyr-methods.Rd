@@ -2,9 +2,9 @@
 % Please edit documentation in R/spacyr-methods.R
 \name{spacyr-methods}
 \alias{spacyr-methods}
-\title{extensions of methods defind in the quanteda package}
+\title{extensions of methods defined in the quanteda package}
 \arguments{
-\item{x}{the \code{spacyr_parsed} object returned by \code{spacy_parse}}
+\item{x}{an object returned by \code{spacy_parse}}
 
 \item{...}{unused}
 }

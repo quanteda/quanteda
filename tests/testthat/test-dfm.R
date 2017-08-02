@@ -1,83 +1,86 @@
 context('Testing dfm*.R')
 
-mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900)
-mydict <- dictionary(list(christmas=c("Christmas", "Santa", "holiday"),
-                          opposition=c("Opposition", "reject", "notincorpus"),
-                          taxing="taxing",
-                          taxation="taxation",
-                          taxregex="tax*",
-                          country="united_states"))
-dictDfm <- dfm(mycorpus, dictionary = mydict, valuetype = "glob")
-dictDfm[1:10, ]
-thesDfm <- dfm(mycorpus, thesaurus = mydict, valuetype = "glob")
-thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
+test_that("oldest dfm test", {
+    mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900)
+    mydict <- dictionary(list(christmas=c("Christmas", "Santa", "holiday"),
+                              opposition=c("Opposition", "reject", "notincorpus"),
+                              taxing="taxing",
+                              taxation="taxation",
+                              taxregex="tax*",
+                              country="united_states"))
+    dictDfm <- dictDfm <- dfm(mycorpus, dictionary = mydict, valuetype = "glob")
+    dictDfm <- dictDfm[1:10, ]
+    dictDfm <- thesDfm <- dfm(mycorpus, thesaurus = mydict, valuetype = "glob")
+    dictDfm <- thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
+    
+    preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE)
+    dfm_lookup(preDictDfm, mydict)
+    
+    txt <- tokens(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
+                                   "The United_States has progressive taxation.")),
+                    remove_punct = TRUE)
+    
+    
+    dictDfm <- dfm(txt, dictionary = mydict, verbose = FALSE)
+    dictDfm <- dfm(txt, thesaurus = mydict, verbose = FALSE)
+    dictDfm <- dfm(txt, thesaurus = mydict, verbose = FALSE)
+    
+    txtDfm <- dfm(txt, verbose = FALSE)
+    dictDfm <- dfm_lookup(txtDfm, mydict, valuetype = "glob") 
+    dictDfm <- dfm_lookup(txtDfm, mydict, exclusive = FALSE, valuetype = "glob", verbose = FALSE) 
+    
+    
+    inaugTextsTokenized <- tokens(data_corpus_inaugural, remove_punct = TRUE)
+    inaugTextsTokenized <- tokens_tolower(inaugTextsTokenized)
+    
+    # microbenchmark::microbenchmark(
+    #     dfm(inaugTextsTokenized, verbose = FALSE),
+    #     dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE),
+    # )
+    
+    ## need to be carefully inspected!
+    txt <- "The tall brown trees with pretty leaves in its branches."
+    txtDfm <- dfm(txt)
+    txtDfm <- dfm(txt, stem = TRUE)
+    txtDfm <- dfm(txt, remove = stopwords("english"))
+    txtDfm <- dfm(txt, stem = TRUE, remove = stopwords("english"))
+    
+    
+    myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
+                              opposition = c("Opposition", "reject", "notincorpus"),
+                              taxglob = "tax*",
+                              taxregex = "tax.+$",
+                              country = c("United_States", "Sweden")))
+    myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
+                   "Does the United_States or Sweden have more progressive taxation?"),
+                 remove = stopwords("english"), remove_punct = TRUE, tolower = FALSE,
+                 verbose = FALSE)
+    
+    # glob format
+    tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE)
+    expect_equal(as.vector(tmp[, c("christmas", "country")]), c(1, 0, 0, 2))
+    tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = FALSE)
+    expect_equal(as.vector(tmp[, c("christmas", "country")]), c(0, 0, 0, 0))
+    # regex v. glob format
+    tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE)
+    expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 1, 0, 0))
+    tmp <- dfm_lookup(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
+    expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 2, 0, 1))
+    ## note: "united_states" is a regex match for "tax*"!!
+    
+    tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed")
+    expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 2))
+    tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
+    expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 0))
 
-preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE)
-dfm_lookup(preDictDfm, mydict)
+})
 
-txt <- tokens(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
-                               "The United_States has progressive taxation.")),
-                remove_punct = TRUE)
-
-
-dfm(txt, dictionary = mydict, verbose = TRUE)
-dfm(txt, thesaurus = mydict, verbose = TRUE)
-dfm(txt, thesaurus = mydict, verbose = TRUE)
-
-(txtDfm <- dfm(txt, verbose = FALSE))
-dfm_lookup(txtDfm, mydict, valuetype = "glob") 
-dfm_lookup(txtDfm, mydict, exclusive = FALSE, valuetype = "glob", verbose = FALSE) 
-
-
-inaugTextsTokenized <- tokens(data_corpus_inaugural, remove_punct = TRUE)
-inaugTextsTokenized <- tokens_tolower(inaugTextsTokenized)
-
-# microbenchmark::microbenchmark(
-#     dfm(inaugTextsTokenized, verbose = FALSE),
-#     dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE),
-# )
-
-## need to be carefully inspected!
-txt <- "The tall brown trees with pretty leaves in its branches."
-dfm(txt)
-dfm(txt, stem = TRUE)
-dfm(txt, remove = stopwords("english"))
-dfm(txt, stem = TRUE, remove = stopwords("english"))
-
-
-myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
-                          opposition = c("Opposition", "reject", "notincorpus"),
-                          taxglob = "tax*",
-                          taxregex = "tax.+$",
-                          country = c("United_States", "Sweden")))
-myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
-               "Does the United_States or Sweden have more progressive taxation?"),
-             remove = stopwords("english"), remove_punct = TRUE, tolower = FALSE,
-             verbose = FALSE)
-myDfm
-# glob format
-(tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE))
-expect_equal(as.vector(tmp[, c("christmas", "country")]), c(1, 0, 0, 2))
-(tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = FALSE))
-expect_equal(as.vector(tmp[, c("christmas", "country")]), c(0, 0, 0, 0))
-# regex v. glob format
-(tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE))
-expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 1, 0, 0))
-(tmp <- dfm_lookup(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE))
-expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 2, 0, 1))
-## note: "united_states" is a regex match for "tax*"!!
-
-(tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed"))
-expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 2))
-(tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE))
-expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 0))
-
-test_that("test c.corpus",
+test_that("test c.corpus", {
     expect_that(
         matrix(dfm(corpus(c('What does the fox say?', 'What does the fox say?', '')), remove_punct = TRUE)),
         equals(matrix(rep(c(1, 1, 0), 5), nrow=15, ncol=1))
     )
-)
+})
 
 ## rbind.dfm
 ## TODO: Test classes returned
@@ -214,7 +217,7 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
 })
 
 test_that("dfm print works as expected", {
-    testdfm <- dfm(data_corpus_irishbudget2010)
+    testdfm <- dfm(tokens(data_corpus_irishbudget2010, old= TRUE))
     expect_output(print(testdfm),
                   "^Document-feature matrix of: 14 documents, 5,055 features \\(80.9% sparse\\)")
     expect_output(print(testdfm[1:5, 1:5]),
@@ -224,6 +227,19 @@ test_that("dfm print works as expected", {
     expect_output(tail(testdfm, 1),
                   "Document-feature matrix of: 14 documents, 5,055 features.*showing last document and last 6 features.*")
 })
+
+test_that("dfm print works as expected", {
+    testdfm <- dfm(data_corpus_irishbudget2010)
+    expect_output(print(testdfm),
+                  "^Document-feature matrix of: 14 documents, 5,140 features \\(8.{3}% sparse\\)")
+    expect_output(print(testdfm[1:5, 1:5]),
+                  "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\).*")
+    expect_output(head(testdfm, 1),
+                  "Document-feature matrix of: 14 documents, 5,\\d{3} features.*showing first document and first 6 features.*")
+    expect_output(tail(testdfm, 1),
+                  "Document-feature matrix of: 14 documents, 5,\\d{3} features.*showing last document and last 6 features.*")
+})
+
 
 test_that("dfm.dfm works as expected", {
     testdfm <- dfm(data_corpus_irishbudget2010, tolower = TRUE)
@@ -236,8 +252,8 @@ test_that("dfm.dfm works as expected", {
     expect_identical(docnames(groupeddfm), c("Govt", "Opposition"))
     expect_identical(testdfm, dfm(testdfm))
 
-    dict <- dictionary(articles = c("the", "a", "an"),
-                       preps = c("of", "for", "in"))
+    dict <- dictionary(list(articles = c("the", "a", "an"),
+                            preps = c("of", "for", "in")))
     expect_identical(
         dfm(data_corpus_irishbudget2010, dictionary = dict),
         dfm(testdfm, dictionary = dict)
@@ -253,7 +269,7 @@ test_that("dfm_sample works as expected",{
     expect_error(dfm_sample(myDfm, margin = "documents", size = 20),
                   "size cannot exceed the number of documents \\(10\\)")
     expect_error(dfm_sample(myDfm, margin = "features", size = 3500),
-                 "size cannot exceed the number of features \\(3358\\)")
+                 "size cannot exceed the number of features \\(33\\d{2}\\)")
     expect_error(dfm_sample(data_corpus_inaugural[1:10]))
 })
 
@@ -266,6 +282,87 @@ test_that("cbind.dfm works as expected",{
     expect_equal(nfeature(dfm12), 8)
     expect_equal(names(dimnames(dfm12)),
                  c("docs", "features"))
+})
+
+test_that("cbind.dfm works with non-dfm objects",{
+    dfm1 <- dfm(c("a b c", "c d e"))
+    
+    vec <- c(10, 20)
+    expect_equal(
+        as.matrix(cbind(dfm1, vec)),
+        matrix(c(1,1,1,0,0,10, 0,0,1,1,1,20), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat")))
+    )
+    expect_equal(
+        as.matrix(cbind(vec, dfm1)),
+        matrix(c(10,1,1,1,0,0, 20, 0,0,1,1,1), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c("feat", letters[1:5])))
+    )
+    
+    mat <- matrix(1:4, nrow = 2, dimnames = list(NULL, c("f1", "f2")))
+    expect_equal(
+        as.matrix(cbind(dfm1, mat)),
+        matrix(c(1,1,1,0,0,1,3, 0,0,1,1,1,2,4), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "f1", "f2")))
+    )
+    expect_equal(
+        as.matrix(cbind(mat, dfm1)),
+        matrix(c(1,3,1,1,1,0,0, 2,4,0,0,1,1,1), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c("f1", "f2", letters[1:5])))
+    )
+    
+    expect_equal(
+        as.matrix(cbind(dfm1, vec, mat)),
+        matrix(c(1,1,1,0,0,10,1,3, 0,0,1,1,1,20,2,4), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat", "f1", "f2")))
+    )
+
+    expect_equal(
+        as.matrix(cbind(vec, dfm1, vec)),
+        matrix(c(10,1,1,1,0,0,10, 20,0,0,1,1,1,20), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c("feat", letters[1:5], "feat1")))
+    )
+
+    expect_silent(cbind(vec, dfm1, vec))
+    expect_warning(
+        cbind(dfm1, dfm1),
+        "cbinding dfms with overlapping features will result in duplicated features"
+    )
+    
+    expect_equal(
+        as.matrix(cbind(dfm1, 100)),
+        matrix(c(1,1,1,0,0,100, 0,0,1,1,1,100), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat")))
+    )
+    
+})
+
+test_that("more cbind tests for dfms", {
+    txts <- c("a b c d", "b c d e") 
+    mydfm <- dfm(txts)
+    
+    expect_equal(
+        as.matrix(cbind(mydfm, as.dfm(cbind("ALL" = ntoken(mydfm))))),
+        matrix(c(1,1,1,1,0,4, 0,1,1,1,1,4), byrow = TRUE, nrow = 2,
+                  dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "ALL")))
+    )
+    
+    expect_equal(
+        as.matrix(cbind(mydfm, cbind("ALL" = ntoken(mydfm)))),
+        matrix(c(1,1,1,1,0,4, 0,1,1,1,1,4), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "ALL")))
+    )
+
+    expect_equal(
+        as.matrix(cbind(mydfm, "ALL" = ntoken(mydfm))),
+        matrix(c(1,1,1,1,0,4, 0,1,1,1,1,4), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "ALL")))
+    )
+    expect_equal(
+        as.matrix(cbind(mydfm, ntoken(mydfm))),
+        matrix(c(1,1,1,1,0,4, 0,1,1,1,1,4), byrow = TRUE, nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat")))
+    )
 })
 
 test_that("rbind.dfm works as expected",{
@@ -336,10 +433,10 @@ test_that("dfm's document counts in verbose message is correct", {
 })
 
 test_that("dfm print works with options as expected", {
-    tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE)
+    tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE, remove_hyphens = TRUE)
     expect_output(
         head(tmp),
-        "Document-feature matrix of: 14 documents, 5,055 features.*\\(showing first 6 documents and first 6 features\\)"
+        "Document-feature matrix of: 14 documents, 5,\\d{3} features.*\\(showing first 6 documents and first 6 features\\)"
     )
     expect_output(
         head(tmp[1:5, 1:5]),
@@ -371,7 +468,7 @@ test_that("dfm print works with options as expected", {
     quanteda_options(print_dfm_max_nfeature = 22L)
     expect_output(
         print(tmp),
-        "Document-feature matrix of: 14 documents, 5,055 features \\(80.9% sparse\\)\\.$"
+        "Document-feature matrix of: 14 documents, 5,\\d{3} features \\(8\\d\\.\\d% sparse\\)\\.$"
     )
     expect_output(
         print(tmp[, 1:21]),
@@ -438,3 +535,35 @@ test_that("dfm with selection options produces correct output", {
     )
 })
 
+test_that("dfm works with stem options", {
+    txt_english <- "running ran runs"
+    txt_french <- "courant courir cours"
+    
+    quanteda_options(language_stemmer = "english")
+    expect_equal(
+        as.character(tokens_wordstem(tokens(txt_english))),
+        c("run", "ran", "run")
+    )
+    expect_equal(
+        featnames(dfm(txt_english)),
+        c("running", "ran", "runs")
+    )
+    expect_equal(
+        featnames(dfm(txt_english, stem = TRUE)),
+        c("run", "ran")
+    )
+
+    quanteda_options(language_stemmer = "french")
+    expect_equal(
+        as.character(tokens_wordstem(tokens(txt_french))),
+        rep("cour", 3)
+    )
+    expect_equal(
+        featnames(dfm(txt_french)),
+        c("courant", "courir", "cours")
+    )
+    expect_equal(
+        featnames(dfm(txt_french, stem = TRUE)),
+        "cour"
+    )
+})

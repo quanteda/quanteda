@@ -3,7 +3,7 @@ context("test dfm_trim")
 test_that("dfm_trim", {
     
     mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900 & Year < 2017)
-    preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE)
+    preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE, remove_hyphens = FALSE)
     
     nfeature(dfm_trim(preDictDfm, min_count = 7))
     nfeature(dfm_trim(preDictDfm, min_count = 0.001))

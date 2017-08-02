@@ -98,7 +98,7 @@ test_that("textmodel-ca(sparse) works as expected on another dataset", {
 # })
 
 test_that("ca coefficients methods work", {
-    camodel <- textmodel_ca(data_dfm_LBGexample)
+    camodel <- textmodel_ca(data_dfm_lbgexample)
     expect_equal(coef(camodel), coefficients(camodel))
     expect_equal(
         coef(camodel, doc_dim = 2)$coef_document,
@@ -107,7 +107,7 @@ test_that("ca coefficients methods work", {
 })
 
 test_that("ca textplot_scale1d method works", {
-    camodel <- textmodel_ca(data_dfm_LBGexample)
+    camodel <- textmodel_ca(data_dfm_lbgexample)
     textplot_scale1d(camodel, margin = "document")
     expect_error(
         textplot_scale1d(camodel, margin = "features"),
@@ -117,7 +117,7 @@ test_that("ca textplot_scale1d method works", {
 
 test_that("ca sparse = FALSE with threads > 1 issues warning (#663)", {
     expect_warning(
-        textmodel_ca(data_dfm_LBGexample, sparse = FALSE, threads = 2),
+        textmodel_ca(data_dfm_lbgexample, sparse = FALSE, threads = 2),
         "threads reset to 1 when sparse = FALSE"
     )
 })

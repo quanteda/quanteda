@@ -101,14 +101,14 @@ test_that("tokens indexing works as expected", {
     expect_equal(attr(toks[2], "types"), c("four", "five", "six"))
 })
 
-test_that("tokens_hashed_recompile combine duplicates is working", {
+test_that("tokens_recompile combine duplicates is working", {
     toksh <- tokens(c(one = "a b c d A B C D", two = "A B C d"))
     expect_equivalent(attr(toksh, "types"),
                     c("a", "b", "c", "d", "A", "B", "C", "D"))
     expect_equivalent(attr(tokens_tolower(toksh), "types"),
                     c("a", "b", "c", "d"))
     attr(toksh, "types") <- char_tolower(attr(toksh, "types"))
-    expect_equivalent(attr(quanteda:::tokens_hashed_recompile(toksh), "types"),
+    expect_equivalent(attr(quanteda:::tokens_recompile(toksh), "types"),
                     c("a", "b", "c", "d"))
     
 })
@@ -240,7 +240,9 @@ test_that("remove_url works as expected", {
     toks <- tokens(txt, remove_url = TRUE)
     expect_equal(
         as.list(toks),
-        list(c("The", "URL", "was"), c("The", "URL", "was"), c("is", "another", "URL"))
+        list(text1 = c("The", "URL", "was"), 
+             text2 = c("The", "URL", "was"), 
+             text3 = c("is", "another", "URL"))
     )
 
     toks2 <- tokenize(txt, remove_url = TRUE)
@@ -258,7 +260,7 @@ test_that("remove_punct and remove_twitter interact correctly, #607", {
     )
     expect_equal(
         as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = FALSE)),
-        c("they", ":", "#stretched", ",", "@", "@@", "in", ",", ",", "a", "#", "##", "never", "-", "ending", "@line", ".")
+        c("they", ":", "#stretched", ",", "@", "@@", "in", ",", ",", "a", "#", "##", "never-ending", "@line", ".")
     )    
     # this is #607
     expect_equal(
@@ -330,12 +332,12 @@ test_that("docvars are erased for tokens added", {
 test_that("what = character works with @ and #, issue #637", {
     
     expect_equal(as.list(tokens("This: is, a @test! #tag", what = "character", remove_punct = FALSE)),
-                 list(c("T", "h", "i", "s", ":", "i", "s", ",", 
-                        "a", "@", "t", "e", "s", "t", "!", "#", "t", "a", "g")))
+                 list(text1 = c("T", "h", "i", "s", ":", "i", "s", ",", 
+                                "a", "@", "t", "e", "s", "t", "!", "#", "t", "a", "g")))
                       
     expect_equal(as.list(tokens("This: is, a @test! #tag", what = "character", remove_punct = TRUE)),
-                 list(c("T", "h", "i", "s", "i", "s", 
-                        "a", "t", "e", "s", "t", "t", "a", "g")))
+                 list(text1 = c("T", "h", "i", "s", "i", "s", 
+                                "a", "t", "e", "s", "t", "t", "a", "g")))
 
 })
 
@@ -374,45 +376,126 @@ test_that("deprecated tokens arguments still work", {
 test_that("tokens arguments works with values from parent frame (#721)", {
     expect_identical(
         tokens("This contains 99 numbers.", remove_numbers = T),
-        tokens("This contains 99 numbers.", remove_numbers = TRUE),
+        tokens("This contains 99 numbers.", remove_numbers = TRUE)
     )
     
     expect_identical(
         dfm("This contains 99 numbers.", remove_numbers = T),
-        dfm("This contains 99 numbers.", remove_numbers = TRUE),
+        dfm("This contains 99 numbers.", remove_numbers = TRUE)
     )
 
     val <- FALSE
     expect_identical(
         tokens("This contains 99 numbers.", remove_numbers = val),
-        tokens("This contains 99 numbers.", remove_numbers = F),
+        tokens("This contains 99 numbers.", remove_numbers = F)
     )
     expect_identical(
         dfm("This contains 99 numbers.", remove_numbers = val),
-        dfm("This contains 99 numbers.", remove_numbers = F),
+        dfm("This contains 99 numbers.", remove_numbers = F)
     )
 })
 
 test_that("tokens works for strange spaces (#796)", {
     txt <- "space tab\t newline\n non-breakingspace\u00A0, em-space\u2003 variationselector16 \uFE0F."
-    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = TRUE), 12)
+    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = TRUE), c(text1 = 8))
     expect_equal(
         as.character(tokens(txt, remove_punct = TRUE, remove_separators = TRUE)),
         c("space", "tab", "newline", "non-breakingspace", "em-space", "variationselector16")
     )
-    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), 22)
+    expect_equal(ntoken(txt, remove_punct = FALSE, remove_separators = FALSE), c(text1 = 18))
     expect_equal(
-        as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[20:22],
-        c("variationselector16", " \uFE0F", ".")
+        as.character(tokens(txt, remove_punct = FALSE, remove_separators = FALSE))[16:18],
+        c("variationselector16", " ", ".")
     )
     expect_equal(
         ntoken(txt, remove_punct = TRUE, remove_separators = FALSE),
-        14
+        c(text1 = 16)
     )
     expect_equal(
-        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[13:14],
-        c("variationselector16", " \uFE0F")
+        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE))[15:16],
+        c("variationselector16", " ")
     )
+})
+
+test_that("tokens remove whitespace with combining characters (#882)", {
+    
+    skip_on_travis()
+    skip_on_cran()
+    skip_on_appveyor()
+    skip_on_os("windows")
+    
+    txt <- "( \u0361\u00b0 \u035c\u0296 \u0361\u00b0)"
+    tok <- tokens(txt)
+    expect_equal(as.list(tok)[[1]],
+                 c("(", "°", "ʖ", "°", ")"))
+    
+})
+
+test_that("remove_hyphens is working correctly", {
+    txt <- 'a b-c d . !'
+    expect_equal(as.character(tokens(txt, remove_hyphens = FALSE, remove_punct = FALSE)[[1]]),
+                 c("a", "b-c", "d", ".", "!"))
+    expect_equal(as.character(tokens(txt, remove_hyphens = FALSE, remove_punct = TRUE)[[1]]),
+                 c("a", "b-c", "d"))
+    expect_equal(as.character(tokens(txt, remove_hyphens = TRUE, remove_punct = FALSE)[[1]]),
+                 c("a", "b", "-", "c", "d", ".", "!"))
+    expect_equal(as.character(tokens(txt, remove_hyphens = TRUE, remove_punct = TRUE)[[1]]),
+                 c("a", "b", "c", "d"))
+})
+
+test_that("test that features remove by tokens.tokens is comparable to tokens.character", {
+    
+chars <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F",
+           "#tag @user", "abc be-fg hi 100kg 2017", "https://github.com/kbenoit/quanteda", "a b c d e")
+toks1 <- as.tokens(stringi::stri_split_fixed(chars[1], ' '))
+toks2 <- as.tokens(stringi::stri_split_fixed(chars[2], ' '))
+toks3 <- as.tokens(stringi::stri_split_fixed(chars[3], ' '))
+toks4 <- as.tokens(stringi::stri_split_fixed(chars[4], ' '))
+toks5 <- as.tokens(stringi::stri_split_fixed(chars[5], ' '))
+
+expect_equal(tokens(chars[1], remove_numbers = TRUE),
+             tokens(toks1, remove_numbers = TRUE))
+
+expect_equal(tokens(chars[1], remove_punct = TRUE),
+             tokens(toks1, remove_punct = TRUE))
+
+expect_equal(tokens(chars[1], remove_separator = TRUE),
+             tokens(toks1, remove_separator = TRUE))
+
+expect_equal(tokens(chars[1], remove_symbols = TRUE),
+             tokens(toks1, remove_symbols = TRUE))
+
+expect_equal(tokens(chars[2], remove_punct = TRUE, remove_twitter = TRUE),
+             tokens(toks2, remove_punct = TRUE, remove_twitter = TRUE))
+
+expect_equal(tokens(chars[4], remove_url = TRUE),
+             tokens(toks4, remove_url = TRUE))
+
+expect_equal(tokens(chars[5], ngrams = 1:2),
+             tokens(toks5, ngrams = 1:2))
+
+expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2),
+             tokens(toks5, ngrams = 2, skip = 1:2))
+
+# This fails because hyphnated words are concatenated in toks
+#expect_equal(tokens(chars[3], remove_hyphens = TRUE),
+#             tokens(toks3, remove_hyphens = TRUE))
+
+# This fails because there is not separator in toks
+# expect_equal(tokens(chars[1], remove_symbols = TRUE, remove_separator = FALSE),
+#              tokens(toks1, remove_symbols = TRUE, remove_separator = FALSE))
+
+})
+
+test_that("remove_hyphens is working correctly", {
+    corp <- data_corpus_inaugural[1:2]
+    toks <- tokens(corp)
+    
+    expect_equal(dfm(corp), dfm(toks))
+    expect_equal(dfm(corp, remove_punct = TRUE), dfm(toks, remove_punct = TRUE))
+    expect_equal(setdiff(featnames(dfm(corp, ngrams = 2)), featnames(dfm(toks, ngrams = 2))),
+                 character())
+
 })
 
     

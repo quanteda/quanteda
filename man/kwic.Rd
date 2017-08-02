@@ -33,11 +33,23 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 object types}
 }
 \value{
-A kwic object classed data.frame, with the document name 
-  (\code{docname}), the token index position (\code{position}), the context 
-  before (\code{contextPre}), the keyword in its original format 
-  (\code{keyword}, preserving case and attached punctuation), and the context
-  after (\code{contextPost}).
+A \code{kwic} classed data.frame, with the document name 
+  (\code{docname}), the token index positions (\code{from} and \code{to}, 
+  which will be the same for single-word patterns, or a sequence equal in 
+  length to the number of elements for multi-word phrases), the context 
+  before (\code{pre}), the keyword in its original format (\code{keyword}, 
+  preserving case and attached punctuation), and the context after 
+  (\code{post}).  The return object has its own \code{print} method, plus
+  some special attributes that are hidden in the print view.  If you want to
+  turn this into a simple data.frame, simply wrap the result in
+  \code{data.frame}.
+
+\code{as.tokens.kwic} converts the kwic object into a \link{tokens}
+  object, with each new "document" consisting of one keyword match, and the
+  contents of the \code{pre}, \code{keyword}, and \code{post} fields forming
+  the tokens.  This is one way to save the output for subsequent usage;
+  another way is to form a \link[=corpus.kwic]{corpus} from the return
+  object.
 }
 \description{
 For a text or a collection of texts (in a quanteda corpus object), return a 
@@ -47,12 +59,12 @@ line number, since the text may or may not be segmented using end-of-line
 delimiters.)
 }
 \note{
-\code{pattern} will be a keyword pattern or phrase, possibly multiple
-  patterns, that may include punctuation.  If a pattern contains whitespace,
+\code{pattern} will be a keyword pattern or phrase, possibly multiple 
+  patterns, that may include punctuation.  If a pattern contains whitespace, 
   it is best to wrap it in \code{\link{phrase}} to make this explicit. 
-  However if \code{pattern} is a \link[=textstat_collocations]{collocations}
+  However if \code{pattern} is a \link[=textstat_collocations]{collocations} 
   or \link{dictionary} object, then the collocations or multi-word dictionary
-  keys will automatically be considered phrases where each
+  keys will automatically be considered phrases where each 
   whitespace-separated element matches a token in sequence.
 }
 \examples{

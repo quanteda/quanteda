@@ -1,9 +1,9 @@
 library(quanteda)
 
 test_that("character wordstem test to test testing.", {
-    expect_equal(char_wordstem('testing'), 'test')
+    expect_equal(char_wordstem('testing', "porter"), 'test')
+    expect_equal(char_wordstem('testing', "english"), 'test')
 })
-
 
 test_that("can wordstem dfms with zero features and zero docs", {
     
@@ -44,7 +44,7 @@ test_that("can wordstem dfm with unigrams", {
              d2 = "one two three")
     toks <- tokens(txt)
     dfmtoks <- dfm(toks)
-    expect_equal(featnames(dfm_wordstem(dfmtoks)),
+    expect_equal(featnames(dfm_wordstem(dfmtoks, language = "porter")),
                  c("stem", "plural", "perfectli", "on", "two", "three"))
 })
 

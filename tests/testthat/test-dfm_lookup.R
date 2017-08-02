@@ -119,11 +119,11 @@ test_that("dfm_lookup return all features even if no matches when exclusive = FA
 test_that("dfm_lookup verbose output works correctly", {
     expect_message(
         dfm_lookup(dfm(c(d1 = "a b c d", d2 = "c d e f g")), 
-               dictionary(one = "a", two = c("d", "e")), verbose = TRUE),
+               dictionary(list(one = "a", two = c("d", "e"))), verbose = TRUE),
         "applying a dictionary consisting of 2 keys"
     )
     expect_silent(
         dfm_lookup(dfm(c(d1 = "a b c d", d2 = "c d e f g")), 
-                   dictionary(one = "a", two = c("d", "e")), verbose = FALSE)
+                   dictionary(list(one = "a", two = c("d", "e"))), verbose = FALSE)
     )
 })

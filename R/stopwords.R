@@ -1,7 +1,7 @@
 #' access built-in stopwords
 #' 
 #' This function retrieves stopwords from the type specified in the \code{kind} 
-#' argument and returns the stopword list as a character vector The default is 
+#' argument and returns the stopword list as a character vector.  The default is 
 #' English.
 #' 
 #' The stopword list is an internal data object named 
@@ -20,7 +20,7 @@
 #'   \code{greek}, \code{hungarian}, \code{norwegian}, \code{russian}, 
 #'   \code{swedish}, \code{catalan}, \code{dutch}, \code{finnish}, 
 #'   \code{german}, \code{italian}, \code{portuguese}, \code{spanish}, 
-#'   \code{arabic}
+#'   \code{arabic}.
 #' @return a character vector of stopwords
 #' @source The English stopwords are taken from the SMART information retrieval 
 #'   system (obtained from Lewis, David D., et al. 
@@ -44,7 +44,7 @@
 #' # adding to the built-in stopword list
 #' toks <- tokens("The judge will sentence Mr. Adams to nine years in prison", remove_punct = TRUE)
 #' tokens_remove(toks, c(stopwords("english"), "will", "mr", "nine"))
-stopwords <- function(kind = "english") {
+stopwords <- function(kind = quanteda_options("language_stopwords")) {
     if (!(kind %in% names(quanteda::data_char_stopwords)))
         stop(paste0("\"", kind, "\" is not a recognized stopword list name."))
     quanteda::data_char_stopwords[[kind]]

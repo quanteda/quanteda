@@ -2,9 +2,31 @@
 #' @export
 #' @param p The power of the Minkowski distance.
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
-#'   \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"},
+#'   \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, 
 #'   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
 #'   and \code{"minkowski"}.
+#' @references The \code{"Chisquared"} metric is from Legendre, P., & Gallagher,
+#'   E. D. (2001).
+#'   "\href{http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf}{Ecologically
+#'    meaningful transformations for ordination of species data}".
+#'   \emph{Oecologia}, 129(2), 271–280. doi.org/10.1007/s004420100716
+#'   
+#'   The \code{"Chisquared2"} metric is the "Quadratic-Chi" measure from Pele,
+#'   O., & Werman, M. (2010). 
+#'   "\href{http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf}{The
+#'   Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision – ECCV
+#'   2010} (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
+#'   Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.
+#'   
+#'   \code{"hamming"} is \eqn{\sum{x \neq y)}}.
+#'
+#'   \code{"kullback"} is the Kullback-Leibler distance, which assumes that
+#'   \eqn{P(x_i) = 0} implies \eqn{P(y_i)=0}, and in case both \eqn{P(x_i)} and
+#'   \eqn{P(y_i)} equals to zero, then \eqn{P(x_i) * log(p(x_i)/p(y_i))} is
+#'   assumed to be zero as the limit value.  The formula is:
+#'    \deqn{\sum{P(x)*log(P(x)/p(y))}}
+#'    
+#'   All other measures are described in the \pkg{proxy} package.
 #' @importFrom RcppParallel RcppParallelLibs
 #' @author Kenneth Benoit, Haiyan Wang
 #' @examples
@@ -60,6 +82,10 @@ textstat_dist.dfm <- function(x, selection = NULL,
     methods1 <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")
     methods2 <- c("jaccard", "binary", "eJaccard", "simple matching")
     
+    # methods1 <- char_tolower(methods1)
+    # methods1 <- char_tolower(methods2)
+    # method <- char_tolower(method)
+    
     if (method %in% methods1) {
         temp <- get(paste0(method, "_sparse"))(x, y, margin = m)
     } else if (method == "minkowski") {
@@ -103,9 +129,9 @@ textstat_dist.dfm <- function(x, selection = NULL,
 
 #' coerce a dist object into a list
 #' 
-#' Coerce a dist matrix into a list of selected terms and tarhet terms in
-#' descending order.  Can be used after calling \code{\link{textstat_simil}} or
-#' \code{\link{textstat_dist}}.
+#' Coerce a dist matrix into a list of selected target terms and similar terms,
+#' in descending order of similarity.  Can be used after calling
+#' \code{\link{textstat_simil}} or \code{\link{textstat_dist}}.
 #' @param x dist class object
 #' @param sorted sort results in descending order if \code{TRUE}
 #' @param n the top \code{n} highest-ranking items will be returned.  If n is 
@@ -128,8 +154,8 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #' findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
 #' 
 #' # in quanteda
-#' quantedaDfm <- new("dfmSparse", Matrix::Matrix(t(as.matrix(tdm))))
-#' as.list(textstat_simil(quantedaDfm, c("oil", "opec", "xyz"), margin = "features", n = 14))
+#' quantedaDfm <- as.dfm(t(as.matrix(tdm)))
+#' as.list(textstat_simil(quantedaDfm, c("oil", "opec", "xyz"), margin = "features"), n = 14)
 #' 
 #' # in base R
 #' corMat <- as.matrix(proxy::simil(as.matrix(quantedaDfm), by_rows = FALSE))

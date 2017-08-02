@@ -48,14 +48,14 @@ space or if these are not desired for the segmented corpus.}
 \code{corpus_segment} returns a corpus of segmented texts, with a 
   \code{tag} docvar if \code{what = "tags"}.
 
-\code{corpus_segment} returns a character vector of segmented texts
+\code{char_segment} returns a character vector of segmented texts
 }
 \description{
 Segment corpus text(s) or a character vector into tokens, sentences, 
 paragraphs, or other sections. \code{segment} works on a character vector or 
 corpus object, and allows the delimiters to be user-defined.  This is useful 
 for breaking the texts of a corpus into smaller documents based on sentences,
-or based on a user defined "tag" pattern.  See details.
+or based on a user defined "tag" pattern.  See Details.
 }
 \details{
 Tokens are delimited by separators.  For tokens and sentences, these

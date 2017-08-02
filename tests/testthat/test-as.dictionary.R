@@ -8,7 +8,7 @@ test_that("as.dictionary works for data.frame", {
         stringsAsFactors = FALSE
     )
     expect_equal(
-        dictionary(neg = c("a", "b"), neutral = c("c", "d"), pos = c("e", "f")),
+        dictionary(list(neg = c("a", "b"), neutral = c("c", "d"), pos = c("e", "f"))),
         as.dictionary(df)
     )
     df <- data.frame(
@@ -18,7 +18,7 @@ test_that("as.dictionary works for data.frame", {
         stringsAsFactors = TRUE
     )
     expect_equal(
-        dictionary(neg = c("a", "b"), neutral = c("c", "d"), pos = c("e", "f")),
+        dictionary(list(neg = c("a", "b"), neutral = c("c", "d"), pos = c("e", "f"))),
         as.dictionary(df)
     )
 })

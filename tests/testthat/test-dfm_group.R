@@ -74,17 +74,17 @@ test_that("test dfm_group with factor levels, fill = TRUE and FALSE, #854", {
     )
     
     testdfm <- dfm(c('a b c c', 'b c d', 'a'))
-    external_factor <- factor(c('doc1', 'doc1', 'doc2'), 
-                              levels = c('doc0', 'doc1', 'doc2', 'doc3'))
+    external_factor <- factor(c("text1", "text1", "text2"), 
+                              levels = paste0("text", 0:3))
     expect_equal(
         as.matrix(dfm_group(testdfm, groups = external_factor, fill = FALSE)),
         matrix(c(1,2,3,1, 1,0,0,0), byrow = TRUE, nrow = 2, 
-               dimnames = list(docs = c('doc1', 'doc2'), features = letters[1:4]))
+               dimnames = list(docs = c('text1', 'text2'), features = letters[1:4]))
     )
     expect_equal(
         as.matrix(dfm_group(testdfm, groups = external_factor, fill = TRUE)),
         matrix(c(0,0,0,0, 1,2,3,1, 1,0,0,0, 0,0,0,0), byrow = TRUE, nrow = 4, 
-               dimnames = list(docs = paste0("doc", 0:3), features = letters[1:4]))
+               dimnames = list(docs = paste0("text", 0:3), features = letters[1:4]))
     )
     # new documents in factor order
     expect_equal(

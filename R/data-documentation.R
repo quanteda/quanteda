@@ -1,10 +1,15 @@
 #' a paragraph of text for testing various text-based functions
 #' 
-#' This is a long paragraph (2,914 characters) of text taken from an Irish budget speech by Joe Higgins.
+#' This is a long paragraph (2,914 characters) of text taken from a debate on
+#' the Irish budget in \emph{Dáil Éireann} by Socialist \emph{Teachta Dála} (TD)
+#' Joe Higgins, delivered December 8, 2011.
 #' @format character vector with one element
 #' @keywords data
+#' @source Dáil Éireann Debate, 
+#' \href{http://oireachtasdebates.oireachtas.ie/debates\%20authoring/debateswebpack.nsf/takes/dail2011120700006?opendocument}{Financial Resolution No. 13: General (Resumed).}
+#' 7 December 2011.  vol. 749, no. 1.
 #' @examples
-#' tokenize(data_char_sampletext, remove_punct = TRUE)
+#' tokens(data_char_sampletext, remove_punct = TRUE)
 "data_char_sampletext"
 
 #' immigration-related sections of 2010 UK party manifestos
@@ -30,12 +35,13 @@
 #'   -1.5, -0.75, 0, 0.75, 1.5.  Document V1 is assumed unknown, and will have a
 #'   raw text score of approximately -0.45 when computed as per LBG (2003).
 #' @keywords data
-#' @format A \link{dfm} object with 6 documents and 37 features
+#' @aliases data_dfm_LBGexample
+#' @format A \link{dfm} object with 6 documents and 37 features.
 #' @references Laver, Michael, Kenneth Benoit, and John Garry.  2003. 
 #'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy 
 #'   positions from political text using words as data.}" \emph{American
 #'   Political Science Review} 97(2): 311-331.
-"data_dfm_LBGexample"  
+"data_dfm_lbgexample"  
 
 #' Irish budget speeches from 2010
 #' 
@@ -44,10 +50,15 @@
 #' @format The corpus object for the 2010 budget speeches, with document-level 
 #'   variables for year, debate, serial number, first and last name of the 
 #'   speaker, and the speaker's party.
-#' @source Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of 
+#' @references Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of 
 #'   Latent Traits From Textual Data Using Human Judgment as a Benchmark." 
 #'   \emph{Political Analysis} 21: 298-313.
 #' @keywords data
+#' @source 
+#' Dáil Éireann Debate, 
+#' \href{http://oireachtasdebates.oireachtas.ie/debates\%20authoring/debateswebpack.nsf/takes/dail2009120900022?opendocument}{Budget Statement 2010.}
+#' 9 December 2009.  vol. 697, no. 3.
+#' 
 #' @examples
 #' summary(data_corpus_irishbudget2010)
 "data_corpus_irishbudget2010"
@@ -80,13 +91,17 @@ NULL
 #' @details \code{data_corpus_inaugural} is the \link{quanteda-package} corpus 
 #'   object of US presidents' inaugural addresses since 1789. Document variables
 #'   contain the year of the address and the last name of the president.
-#' @format a \link{corpus} object with docvars including year, and the last and
-#'   first names of the presidents delivering the inaugural address
+#' @format a \link{corpus} object with the following docvars:
+#' \itemize{
+#' \item \code{Year} a four-digit integer year
+#' \item \code{President} character; President's last name
+#' \item \code{FirstName} character; President's first name (and possibly middle initial)
+#' }
 #' @examples
 #' # some operations on the inaugural corpus
 #' summary(data_corpus_inaugural)
 #' head(docvars(data_corpus_inaugural), 10)
-#' @references 
+#' @source 
 #' \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
 #' \url{http://www.presidency.ucsb.edu/inaugurals.php}.
 #' @keywords data

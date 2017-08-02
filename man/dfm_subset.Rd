@@ -10,7 +10,7 @@ dfm_subset(x, subset, select, ...)
 \item{x}{\link{dfm} object to be subsetted}
 
 \item{subset}{logical expression indicating the documents to keep: missing 
-values are taken as false}
+values are taken as \code{FALSE}}
 
 \item{select}{expression, indicating the docvars to select from the dfm; or a
 dfm, in which case the returned dfm will contain the same documents as the
@@ -23,7 +23,7 @@ original dfm, even if these are empty.  See Details.}
   according to arguments
 }
 \description{
-Returns \emph{document} subsets of a dfm that meet certain conditions,
+Returns document subsets of a dfm that meet certain conditions,
 including direct logical operations on docvars (document-level variables). 
 \code{dfm_subset} functions identically to \code{\link{subset.data.frame}},
 using non-standard evaluation to evaluate conditions based on the

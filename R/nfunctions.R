@@ -58,7 +58,7 @@ ndoc.tokenizedTexts <- function(x) {
 #' @details \code{nfeature} returns the number of features from a dfm; it is an
 #'   alias for \code{ntype} when applied to dfm objects.  This function is only 
 #'   defined for \link{dfm} objects because only these have "features".  (To count
-#'   tokens, see \code{\link{ntoken}})
+#'   tokens, see \code{\link{ntoken}}.)
 #' @export
 #' @seealso \code{\link{ntoken}}
 #' @examples
@@ -94,10 +94,10 @@ nfeature.tokens <- function(x) {
 #'   \link{tokens}, or \link{dfm} object
 #' @param ... additional arguments passed to \code{\link{tokens}}
 #' @note Due to differences between raw text tokens and features that have been 
-#'   defined for a \link{dfm}, the counts be different for dfm objects and the 
+#'   defined for a \link{dfm}, the counts may be different for dfm objects and the 
 #'   texts from which the dfm was generated.  Because the method tokenizes the 
 #'   text in order to count the tokens, your results will depend on the options 
-#'   passed through to \code{\link{tokens}}
+#'   passed through to \code{\link{tokens}}.
 #' @return count of the total tokens or types
 #' @details
 #' The precise definition of "tokens" for objects not yet tokenized (e.g.

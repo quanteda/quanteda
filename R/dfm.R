@@ -7,34 +7,35 @@
 #' Construct a sparse document-feature matrix, from a character, \link{corpus}, 
 #' \link{tokens}, or even other \link{dfm} object.
 #' @param x character, \link{corpus}, \link{tokens}, or \link{dfm} object
-#' @param tolower convert all tokens to lowercase
+#' @param tolower convert all features to lowercase
 #' @param stem if \code{TRUE}, stem words
-#' @param remove a character vector of user-supplied features to ignore, such as
+#' @param remove a \link{pattern} of user-supplied features to ignore, such as 
 #'   "stop words".  To access one possible list (from any list you wish), use 
 #'   \code{\link{stopwords}()}.  The pattern matching type will be set by 
-#'   \code{valuetype}.  For behaviour of \code{remove} with \code{ngrams > 1}, 
-#'   see Details.
-#' @param select a character vector of user-supplied features to keep, while
-#'   excluding all others.  This can be used in lieu of a dictionary if there
-#'   are only specific features that a user wishes to keep. To extract only
-#'   Twitter usernames, for example, set \code{select = "@@*"} and make sure
+#'   \code{valuetype}.  See also \code{\link{tokens_select}}.  For behaviour of
+#'   \code{remove} with \code{ngrams > 1}, see Details.
+#' @param select a  \link{pattern}  of user-supplied features to keep, while 
+#'   excluding all others.  This can be used in lieu of a dictionary if there 
+#'   are only specific features that a user wishes to keep. To extract only 
+#'   Twitter usernames, for example, set \code{select = "@@*"} and make sure 
 #'   that \code{remove_twitter = FALSE} as an additional argument passed to 
 #'   \link{tokenize}.  Note: \code{select = "^@@\\\w+\\\b"} would be the regular
 #'   expression version of this matching pattern.  The pattern matching type 
-#'   will be set by \code{valuetype}.
-#' @param dictionary a \link{dictionary} object to apply to the tokens when
+#'   will be set by \code{valuetype}.  See also \code{\link{tokens_remove}}.
+#' @param dictionary a \link{dictionary} object to apply to the tokens when 
 #'   creating the dfm
-#' @param thesaurus a \link{dictionary} object that will be applied as if
-#'   \code{exclusive = FALSE}. See \code{\link{dfm_lookup}}.  For more
-#'   fine-grained control over this and other aspects of converting features
-#'   into dictionary/thesaurus keys from pattern matches to values, consider
-#'   creating the dfm first, and then applying \code{\link{dfm_lookup}}
-#'   separately.
+#' @param thesaurus a \link{dictionary} object that will be applied as if 
+#'   \code{exclusive = FALSE}. See also \code{\link{tokens_lookup}}.  For more 
+#'   fine-grained control over this and other aspects of converting features 
+#'   into dictionary/thesaurus keys from pattern matches to values, consider 
+#'   creating the dfm first, and then applying \code{\link{dfm_lookup}} 
+#'   separately, or using \code{\link{tokens_lookup}} on the tokenized text
+#'   before calling \code{dfm}.
 #' @inheritParams valuetype
 #' @inheritParams groups
-#' @note When \code{x} is a \link{dfm}, \code{groups} provides a convenient 
-#'   and fast method of combining and refactoring the documents of the dfm 
-#'   according to the groups.
+#' @note When \code{x} is a \link{dfm}, \code{groups} provides a convenient and
+#'   fast method of combining and refactoring the documents of the dfm according
+#'   to the groups.
 #' @param verbose display messages if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokens}, for character and 
 #'   corpus
@@ -115,8 +116,8 @@ dfm <- function(x,
                 stem = FALSE,
                 select = NULL,
                 remove = NULL,
-                thesaurus = NULL,
                 dictionary = NULL,
+                thesaurus = NULL,
                 valuetype = c("glob", "regex", "fixed"), 
                 groups = NULL, 
                 verbose = quanteda_options("verbose"), 
@@ -133,8 +134,8 @@ dfm.character <- function(x,
                 stem = FALSE,
                 select = NULL,
                 remove = NULL,
-                thesaurus = NULL,
                 dictionary = NULL,
+                thesaurus = NULL,
                 valuetype = c("glob", "regex", "fixed"), 
                 groups = NULL, 
                 verbose = quanteda_options("verbose"), 
@@ -146,7 +147,7 @@ dfm.character <- function(x,
     if (!is.null(remove) & !is.null(select))
         stop("only one of select and remove may be supplied at once")
     
-    if (verbose && grepl("^dfm\\.character", sys.calls()[2]))
+    if (verbose && stri_startswith_fixed(sys.calls()[2], "dfm.character"))
         catm("Creating a dfm from a character vector ...\n")
 
     if (tolower) {
@@ -170,8 +171,8 @@ dfm.corpus <- function(x, tolower = TRUE,
                        stem = FALSE,
                        select = NULL,
                        remove = NULL,
-                       thesaurus = NULL,
                        dictionary = NULL,
+                       thesaurus = NULL,
                        valuetype = c("glob", "regex", "fixed"), 
                        groups = NULL, 
                        verbose = quanteda_options("verbose"), ...) {
@@ -203,8 +204,8 @@ dfm.tokenizedTexts <- function(x,
                                stem = FALSE, 
                                select = NULL,
                                remove = NULL,
-                               thesaurus = NULL,
                                dictionary = NULL,
+                               thesaurus = NULL,
                                valuetype = c("glob", "regex", "fixed"), 
                                groups = NULL, 
                                verbose = quanteda_options("verbose"), 
@@ -215,8 +216,10 @@ dfm.tokenizedTexts <- function(x,
     
     valuetype <- match.arg(valuetype)
     dots <- list(...)
-    if (length(dots) && any(!(names(dots)) %in% c("start_time", names(formals(tokens)))))
-        warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", sep = "", noBreaks. = TRUE)
+    if (length(dots))
+        if (any(!(names(dots)) %in% c("start_time", names(formals(tokens)))))
+            warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", sep = "", noBreaks. = TRUE)
+        x <- tokens(x, ...)
     
     start_time <- proc.time()
     if ("start_time" %in% names(dots)) start_time <- dots$start_time
@@ -232,7 +235,7 @@ dfm.tokenizedTexts <- function(x,
     
     # set document names if none
     if (is.null(names(x))) {
-        names(x) <- paste("text", seq_along(x), sep="")
+        names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
     } 
 
     if (verbose) {
@@ -290,7 +293,7 @@ dfm.tokenizedTexts <- function(x,
     if (!is.null(attr(x, "docvars"))) {
         result@docvars <- attr(x, "docvars")
     } else {
-        result@docvars <- data.frame()
+        result@docvars <- data.frame(row.names = docnames(x))
     }
     
     dfm(result, tolower = FALSE, stem = stem, valuetype = valuetype, verbose = verbose, ...)
@@ -305,8 +308,8 @@ dfm.dfm <- function(x,
                     stem = FALSE,
                     select = NULL,
                     remove = NULL,
-                    thesaurus = NULL,
                     dictionary = NULL,
+                    thesaurus = NULL,
                     valuetype = c("glob", "regex", "fixed"), 
                     groups = NULL, 
                     verbose = quanteda_options("verbose"), 
@@ -368,7 +371,7 @@ dfm.dfm <- function(x,
         }
     }
     
-    language <- "english"
+    language <- quanteda_options("language_stemmer")
     if (stem) {
         if (verbose) catm("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
         oldNfeature <- nfeature(x)
@@ -465,8 +468,8 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
 ## convert patterns (remove and select) to ngram regular expressions
 make_ngram_pattern <- function(features, valuetype, concatenator) {
     if (valuetype == "glob") {
-        features <- gsub("\\*", ".*", features)
-        features <- gsub("\\?", ".{1}", features)
+        features <- stri_replace_all_regex(features, "\\*", ".*")
+        features <- stri_replace_all_regex(features, "\\?", ".{1}")
     }
     features <- paste0("(\\b|(\\w+", concatenator, ")+)", 
                        features, "(\\b|(", concatenator, "\\w+)+)")

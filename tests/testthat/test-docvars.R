@@ -210,4 +210,69 @@ test_that("dfm works works with two docvars", {
     expect_equivalent(docvars(dfm2), docv2)
 })
 
+test_that("object always have docvars in the same rows as documents", {
+    
+    txts <- data_char_ukimmig2010
+    corp1 <- corpus(txts)
+    expect_true(nrow(docvars(corp1)) == ndoc(corp1))
+    expect_true(all(rownames(docvars(corp1)) == docnames(corp1)))
+    
+    corp2 <- corpus_segment(corp1, what = "sentences")
+    expect_true(nrow(docvars(corp2)) == ndoc(corp2))
+    expect_true(all(rownames(docvars(corp2)) == docnames(corp2)))
+    
+    corp3 <- corpus_reshape(corp1, to = "sentences")
+    expect_true(nrow(docvars(corp3)) == ndoc(corp3))
+    expect_true(all(rownames(docvars(corp3)) == docnames(corp3)))
+    
+    corp4 <- corpus_sample(corp1, size = 5)
+    expect_true(nrow(docvars(corp4)) == ndoc(corp4))
+    expect_true(all(rownames(docvars(corp4)) == docnames(corp4)))
+    
+    toks1 <- tokens(txts)
+    expect_true(nrow(docvars(toks1)) == ndoc(toks1))
+    expect_true(all(rownames(docvars(toks1)) == docnames(toks1)))
+    
+    toks2 <- tokens(corpus(txts))
+    expect_true(nrow(docvars(toks2)) == ndoc(toks2))
+    expect_true(all(rownames(docvars(toks2)) == docnames(toks2)))
+    
+    toks3 <- quanteda:::tokens_group(toks1, rep(c(1, 2, 3), 3))
+    expect_true(nrow(docvars(toks3)) == ndoc(toks3))
+    expect_true(all(rownames(docvars(toks3)) == docnames(toks3)))
+    
+    toks4 <- tokens_select(toks1, stopwords())
+    expect_true(nrow(docvars(toks4)) == ndoc(toks4))
+    expect_true(all(rownames(docvars(toks4)) == docnames(toks4)))
+  
+    toks5 <- as.tokens(kwic(txts, 'immigra*'))
+    expect_true(nrow(docvars(toks5)) == ndoc(toks5))
+    expect_true(all(rownames(docvars(toks5)) == docnames(toks5)))
+    
+    dfm1 <- dfm(txts)
+    expect_true(nrow(docvars(dfm1)) == ndoc(dfm1))
+    expect_true(all(rownames(docvars(toks3)) == docnames(toks3)))
+    
+    dfm2 <- dfm(tokens(txts))
+    expect_true(nrow(docvars(dfm2)) == ndoc(dfm2))
+    expect_true(all(rownames(docvars(dfm2)) == docnames(dfm2)))
+    
+    dfm3 <- dfm(corpus(txts))
+    expect_true(nrow(docvars(dfm3)) == ndoc(dfm3))
+    expect_true(all(rownames(docvars(dfm3)) == docnames(dfm3)))
+    
+    dfm4 <- dfm_group(dfm1, rep(c(1, 2, 3), 3))
+    expect_true(nrow(docvars(dfm4)) == ndoc(dfm4))
+    expect_true(all(rownames(docvars(dfm4)) == docnames(dfm4)))
+    
+    dfm5 <- dfm(dfm1, group = rep(c(1, 2, 3), 3))
+    expect_true(nrow(docvars(dfm5)) == ndoc(dfm5))
+    expect_true(all(rownames(docvars(dfm5)) == docnames(dfm5)))
+    
+    dfm6 <- dfm_subset(dfm1, rep(c(TRUE, TRUE, FALSE), 3))
+    expect_true(nrow(docvars(dfm6)) == ndoc(dfm6))
+    expect_true(all(rownames(docvars(dfm6)) == docnames(dfm6)))
+
+})
+
 

@@ -51,26 +51,22 @@ Fitting a \code{textmodel_wordscores} results in an object of class
 }
 
 \examples{
-(ws <- textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)))
+(ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
 
 predict(ws)
 predict(ws, rescaling = "mv")
 predict(ws, rescaling = "lbg")
-
-# same as:
-(ws2 <- textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)))
-predict(ws2)
 }
 \references{
 Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
-  "Extracting Policy Positions From Political Texts Using Words as Data." 
-  American Political Science Review 97(02): 311-31
+  "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy Positions From Political Texts Using Words as Data.}" 
+  \emph{American Political Science Review} 97(02): 311-31
   
   Beauchamp, N. 2012. "Using Text to Scale Legislatures with Uninformative 
   Voting." New York University Mimeo.
   
   Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for 
-  Interpreting Political Text." Political Analysis 16(1): 93-100.
+  Interpreting Political Text." \emph{Political Analysis} 16(1): 93-100.
 }
 \seealso{
 \code{\link{predict.textmodel_wordscores_fitted}}

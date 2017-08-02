@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.9.9.84
+Version: 0.9.9.88
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible framework for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -79,6 +79,7 @@ Collate:
     'dfm-subsetting.R'
     'dfm.R'
     'dfm_compress.R'
+    'dfm_group.R'
     'dfm_lookup.R'
     'dfm_sample.R'
     'dfm_select.R'
@@ -124,6 +125,7 @@ Collate:
     'textstat-deprecated.R'
     'textstat_collocations.R'
     'textstat_dist.R'
+    'textstat_frequency.R'
     'textstat_keyness.R'
     'textstat_lexdiv.R'
     'textstat_readability.R'
@@ -135,6 +137,7 @@ Collate:
     'tokens_group.R'
     'tokens_lookup.R'
     'tokens_ngrams.R'
+    'tokens_old.R'
     'tokens_select.R'
     'tolower-deprecated.R'
     'tolower-functions.R'

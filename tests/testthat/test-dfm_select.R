@@ -265,7 +265,7 @@ test_that("dfm_select errors when dictionary has multi-word features, issue 775"
     )
     expect_equal(
         featnames(dfm_select(dfm_inaug, pattern = phrase(testdict1), valuetype = "glob")),
-        c("party", "political", "election", "part", "parties", "elections", "partisan", "company", "participation", "partisanship", "partial", "companies")    
+        c("political", "election", "part", "parties", "elections", "partisan", "company", "participation", "party", "partisanship", "partial", "companies")    
     )
     expect_equal(
         featnames(dfm_select(dfm_inaug, pattern = testdict2, valuetype = "glob")),
@@ -273,7 +273,7 @@ test_that("dfm_select errors when dictionary has multi-word features, issue 775"
     )
     expect_equal(
         featnames(dfm_select(dfm_inaug, pattern = phrase(testdict2), valuetype = "glob")),
-        c("party", "political", "election", "part", "parties", "elections", "partisan", "company", "participation", "partisanship", "partial", "companies")    
+        c("political", "election", "part", "parties", "elections", "partisan", "company", "participation", "party", "partisanship", "partial", "companies")    
     )
 })
 

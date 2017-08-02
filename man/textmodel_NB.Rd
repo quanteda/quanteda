@@ -8,7 +8,7 @@ textmodel_NB(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"),
   distribution = c("multinomial", "Bernoulli"), ...)
 }
 \arguments{
-\item{x}{the dfm on which the model will be fit.  Does not need to contain 
+\item{x}{the \link{dfm} on which the model will be fit.  Does not need to contain 
 only the training documents.}
 
 \item{y}{vector of training labels associated with each document identified 
@@ -17,10 +17,11 @@ factors.)}
 
 \item{smooth}{smoothing parameter for feature counts by class}
 
-\item{prior}{prior distribution on texts, see details}
+\item{prior}{prior distribution on texts; see Details}
 
 \item{distribution}{count model for text features, can be \code{multinomial} 
-or \code{Bernoulli}}
+or \code{Bernoulli}.  To fit a "binary multinomial" model, first convert the 
+dfm to a binary matrix using \code{\link{tf}(x, "boolean")}.}
 
 \item{...}{more arguments passed through}
 }
@@ -48,10 +49,8 @@ A list of return values, consisting of:
 \item{smooth}{smoothing parameter}
 }
 \description{
-Currently working for vectors of texts -- not specially defined for a dfm.
-}
-\details{
-This naive Bayes model works on word counts, with smoothing.
+Fit a multinomial or Bernoulli Naive Bayes model, given a dfm and some
+training labels.
 }
 \section{Predict Methods}{
  A \code{predict} method is also available for a 
@@ -82,8 +81,12 @@ predict(textmodel_NB(trainingset, trainingclass, prior = "termfreq"))
 predict(nb.p261.bern, newdata = trainingset[5, ])
 }
 \references{
-Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction to Information Retrieval. 
-   Cambridge University Press. \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction
+  to Information Retrieval. Cambridge University Press.
+  \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
+  
+  Jurafsky, Daniel and James H. Martin. (2016) \emph{Speech and Language Processing.}  Draft of November 7, 2016.
+  \url{https://web.stanford.edu/~jurafsky/slp3/6.pdf}
 }
 \author{
 Kenneth Benoit

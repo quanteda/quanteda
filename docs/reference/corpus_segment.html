@@ -82,7 +82,7 @@
 paragraphs, or other sections. <code>segment</code> works on a character vector or 
 corpus object, and allows the delimiters to be user-defined.  This is useful 
 for breaking the texts of a corpus into smaller documents based on sentences,
-or based on a user defined "tag" pattern.  See details.</p>
+or based on a user defined "tag" pattern.  See Details.</p>
     
 
     <pre class="usage"><span class='fu'>corpus_segment</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"tokens"</span>, <span class='st'>"tags"</span>,
@@ -146,7 +146,7 @@ space or if these are not desired for the segmented corpus.</p></td>
     <p><code>corpus_segment</code> returns a corpus of segmented texts, with a 
   <code>tag</code> docvar if <code>what = "tags"</code>.
 
-<code>corpus_segment</code> returns a character vector of segmented texts</p>
+<code>char_segment</code> returns a character vector of segmented texts</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -214,7 +214,7 @@ space or if these are not desired for the segmented corpus.</p></td>
 #&gt;  text2.3     2      2         1 textSerial2 ##NUMBER
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Jul 24 15:45:29 2017
+#&gt; Created: Fri Jul 28 18:19:01 2017
 #&gt; Notes:   corpus_segment.corpus(testCorpus, "tags")
 #&gt; </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>testCorpusSeg</span>)</div><div class='output co'>#&gt;                                                  text1.1 
 #&gt;                              "This is the introduction." 
@@ -232,28 +232,28 @@ space or if these are not desired for the segmented corpus.</p></td>
 <span class='fu'>summary</span>(<span class='no'>segmentedCorpus</span>)</div><div class='output co'>#&gt; Corpus consisting of 207 documents, showing 100 documents.
 #&gt; 
 #&gt;            Text Types Tokens Sentences
-#&gt;           BNP.1   145    259         1
+#&gt;           BNP.1   145    257         1
 #&gt;           BNP.2    18     18         1
 #&gt;           BNP.3    26     29         1
-#&gt;           BNP.4    31     40         1
+#&gt;           BNP.4    30     38         1
 #&gt;           BNP.5   103    191         1
 #&gt;           BNP.6    25     29         1
 #&gt;           BNP.7    58     90         1
 #&gt;           BNP.8    40     48         1
 #&gt;           BNP.9    72    106         1
 #&gt;          BNP.10    40     69         1
-#&gt;          BNP.11    40     49         1
-#&gt;          BNP.12    44     56         1
-#&gt;          BNP.13    28     33         1
+#&gt;          BNP.11    38     47         1
+#&gt;          BNP.12    42     54         1
+#&gt;          BNP.13    26     31         1
 #&gt;          BNP.14    29     31         1
-#&gt;          BNP.15    32     36         1
+#&gt;          BNP.15    30     34         1
 #&gt;          BNP.16     9      9         1
 #&gt;          BNP.17    10     10         1
 #&gt;          BNP.18    42     67         1
 #&gt;          BNP.19    50     63         1
 #&gt;          BNP.20    41     52         1
 #&gt;          BNP.21   103    169         1
-#&gt;          BNP.22    37     42         1
+#&gt;          BNP.22    35     40         1
 #&gt;          BNP.23    25     29         1
 #&gt;          BNP.24    45     54         1
 #&gt;          BNP.25    25     27         1
@@ -266,49 +266,49 @@ space or if these are not desired for the segmented corpus.</p></td>
 #&gt;          BNP.32    29     31         1
 #&gt;          BNP.33    18     21         1
 #&gt;          BNP.34    14     14         1
-#&gt;          BNP.35    29     33         1
+#&gt;          BNP.35    26     29         1
 #&gt;          BNP.36    30     35         1
 #&gt;          BNP.37    14     14         1
-#&gt;          BNP.38    34     40         1
+#&gt;          BNP.38    31     34         1
 #&gt;          BNP.39     2      2         1
 #&gt;          BNP.40    16     19         1
 #&gt;          BNP.41    23     24         1
 #&gt;          BNP.42    17     18         1
 #&gt;          BNP.43    18     21         1
-#&gt;          BNP.44    28     33         1
+#&gt;          BNP.44    26     31         1
 #&gt;          BNP.45    23     25         1
 #&gt;          BNP.46     2      2         1
 #&gt;          BNP.47    24     27         1
 #&gt;          BNP.48    20     21         1
 #&gt;          BNP.49    19     23         1
-#&gt;          BNP.50    28     34         1
+#&gt;          BNP.50    26     32         1
 #&gt;          BNP.51    30     35         1
 #&gt;          BNP.52    25     28         1
-#&gt;          BNP.53    31     34         1
+#&gt;          BNP.53    29     32         1
 #&gt;          BNP.54    24     26         1
 #&gt;          BNP.55     2      2         1
 #&gt;          BNP.56    39     45         1
 #&gt;          BNP.57    25     30         1
 #&gt;          BNP.58    23     24         1
 #&gt;          BNP.59     2      2         1
-#&gt;          BNP.60    26     36         1
+#&gt;          BNP.60    24     32         1
 #&gt;          BNP.61    12     15         1
 #&gt;          BNP.62    31     35         1
 #&gt;          BNP.63     2      2         1
 #&gt;          BNP.64    20     22         1
 #&gt;          BNP.65    18     21         1
 #&gt;          BNP.66     2      2         1
-#&gt;          BNP.67    34     36         1
+#&gt;          BNP.67    32     34         1
 #&gt;          BNP.68     2      2         1
 #&gt;          BNP.69    16     18         1
 #&gt;          BNP.70    18     21         1
 #&gt;          BNP.71     2      2         1
-#&gt;          BNP.72    83    147         1
+#&gt;          BNP.72    83    143         1
 #&gt;          BNP.73    38     49         1
-#&gt;          BNP.74    48     64         1
+#&gt;          BNP.74    46     60         1
 #&gt;          BNP.75    32     34         1
 #&gt;          BNP.76    25     26         1
-#&gt;          BNP.77    37     43         1
+#&gt;          BNP.77    35     41         1
 #&gt;          BNP.78    23     26         1
 #&gt;          BNP.79    32     41         1
 #&gt;          BNP.80    34     41         1
@@ -317,24 +317,24 @@ space or if these are not desired for the segmented corpus.</p></td>
 #&gt;          BNP.83    20     21         1
 #&gt;          BNP.84    18     22         1
 #&gt;          BNP.85    31     39         1
-#&gt;          BNP.86    28     30         1
+#&gt;          BNP.86    25     26         1
 #&gt;          BNP.87    14     15         1
 #&gt;          BNP.88    30     33         1
 #&gt;     Coalition.1     2      2         1
 #&gt;     Coalition.2    26     29         1
-#&gt;     Coalition.3    72    121         1
-#&gt;     Coalition.4    74    116         1
+#&gt;     Coalition.3    71    117         1
+#&gt;     Coalition.4    72    112         1
 #&gt;  Conservative.1     9      9         1
 #&gt;  Conservative.2    25     30         1
 #&gt;  Conservative.3    12     12         1
 #&gt;  Conservative.4    24     26         1
 #&gt;  Conservative.5    22     28         1
-#&gt;  Conservative.6    58     78         1
+#&gt;  Conservative.6    58     76         1
 #&gt;  Conservative.7    34     37         1
 #&gt;  Conservative.8    16     16         1
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Jul 24 15:45:29 2017
+#&gt; Created: Fri Jul 28 18:19:01 2017
 #&gt; Notes:   corpus_segment.corpus(corpus(data_char_ukimmig2010), "sentences")
 #&gt; </div><div class='input'>
 <span class='co'>## segmenting a character object</span>

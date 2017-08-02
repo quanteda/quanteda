@@ -79,7 +79,7 @@
 
     
     <p>This function retrieves stopwords from the type specified in the <code>kind</code> 
-argument and returns the stopword list as a character vector The default is 
+argument and returns the stopword list as a character vector.  The default is 
 English.</p>
     
 
@@ -95,7 +95,7 @@ values are <code>english</code>, <code>SMART</code>, <code>danish</code>, <code>
 <code>greek</code>, <code>hungarian</code>, <code>norwegian</code>, <code>russian</code>, 
 <code>swedish</code>, <code>catalan</code>, <code>dutch</code>, <code>finnish</code>, 
 <code>german</code>, <code>italian</code>, <code>portuguese</code>, <code>spanish</code>, 
-<code>arabic</code></p></td>
+<code>arabic</code>.</p></td>
     </tr>
     </table>
     
@@ -137,7 +137,7 @@ languages (see <a href = 'http://snowballstem.org/projects.html'>http://snowball
 <span class='co'># adding to the built-in stopword list</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"The judge will sentence Mr. Adams to nine years in prison"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='fu'>stopwords</span>(<span class='st'>"english"</span>), <span class='st'>"will"</span>, <span class='st'>"mr"</span>, <span class='st'>"nine"</span>))</div><div class='output co'>#&gt; tokens from 1 document.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "judge"    "sentence" "Adams"    "years"    "prison"  
 #&gt; </div></pre>
   </div>

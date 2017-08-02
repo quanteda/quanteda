@@ -3,7 +3,8 @@
 #' Calculate the readability of text(s) using one of a variety of computed 
 #' indexes.
 #' @param x a character or \link{corpus} object containing the texts
-#' @param measure character vector defining the readability measure to calculate
+#' @param measure character vector defining the readability measure to calculate.  
+#'   Matches are case-insensitive.
 #' @param remove_hyphens if \code{TRUE}, treat constituent words in hyphenated as
 #'   separate terms, for purposes of computing word lengths, e.g.
 #'   "decision-making" as two terms of lengths 8 and 6 characters respectively,
@@ -128,11 +129,12 @@ textstat_readability.character <- function(x,
                        "Wheeler.Smith",
                        "meanSentenceLength",
                        "meanWordSyllables")
-    checkMeasure <- measure %in% validMeasures
+    checkMeasure <- char_tolower(measure) %in% char_tolower(validMeasures)
     if (!all(checkMeasure))
         stop("Invalid measure(s): ", measure[!checkMeasure])
     if ("all" %in% measure)
         measure <- validMeasures[-1]
+    measure <- validMeasures[char_tolower(validMeasures) %in% char_tolower(measure)]
 
     # to avoid "no visible binding for global variable" CHECK NOTE
     textID <- W <- St <- C <- Sy <- W3Sy <- W2Sy <- W_1Sy <- W6C <- W7C <- Wlt3Sy <- W_wl.Dale.Chall <-
@@ -146,7 +148,7 @@ textstat_readability.character <- function(x,
         Coleman.Liau <- meanSentenceLength <- meanWordSyllables <- NULL
 
     if (is.null(names(x)))
-        names(x) <- paste0("text", seq_along(x))
+        names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
 
     if (!missing(min_sentence_length) | !missing(max_sentence_length)) {
         x <- char_trim(x, 'sentences',
