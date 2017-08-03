@@ -227,20 +227,26 @@ cbind.dfm <- function(...) {
     x <- args[[1]]
     y <- args[[2]]
 
+    # select the dfm, but just one feature, to keep slots to reassign later
+    # if both are dfms, use the slots of the first
+    refdfm <- args[[which(sapply(args, is.dfm))[1]]][, 1]
+    
     if (is.matrix(x)) {
         x <- as.dfm(x)
     } else if (is.numeric(x)) {
-        x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y), dimnames = list(NULL, names[1])))
+        x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y), dimnames = list(docnames(y), names[1])))
     }
     
     if (is.matrix(y)) {
         y <- as.dfm(y)
     } else if (is.numeric(y)) {
-        y <- as.dfm(matrix(y, ncol = 1, nrow = nrow(x), dimnames = list(NULL, names[2])))
+        y <- as.dfm(matrix(y, ncol = 1, nrow = nrow(x), dimnames = list(docnames(x), names[2])))
     }
     
     result <- cbind_dfm_dfm(x, y)
-    
+    result <- reassign_slots(result, refdfm)
+    docvars(result, "_length_original") <- NULL
+
     while (length(args[-c(1,2)])) {
         args <- args[-c(1,2)]
         result <- do.call(cbind, c(result, args))

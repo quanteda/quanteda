@@ -1,7 +1,3 @@
-#### dfm working and construction functions
-####
-#### Ken Benoit
-
 #' create a document-feature matrix
 #' 
 #' Construct a sparse document-feature matrix, from a character, \link{corpus}, 
@@ -37,8 +33,8 @@
 #'   fast method of combining and refactoring the documents of the dfm according
 #'   to the groups.
 #' @param verbose display messages if \code{TRUE}
-#' @param ... additional arguments passed to \link{tokens}, for character and 
-#'   corpus
+#' @param ... additional arguments passed to \link{tokens}; not used when \code{x}
+#'   is a \link{dfm}
 #' @details The default behavior for \code{remove}/\code{select} when 
 #'   constructing ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to 
 #'   remove/select any ngram constructed from a matching feature.  If you wish 
@@ -49,7 +45,7 @@
 #' @return a \link{dfm-class} object
 #' @import Matrix
 #' @export
-#' @name dfm
+#' @rdname dfm
 #' @keywords dfm
 #' @seealso  \code{\link{dfm_select}}, \link{dfm-class}
 #' @examples
@@ -67,7 +63,7 @@
 #' dfm("Banking industry", stem = TRUE, ngrams = 2, verbose = FALSE)
 #' 
 #' # with dictionaries
-#' corpus_post1900inaug <- corpus_subset(data_corpus_inaugural, Year>1900)
+#' corpus_post1900inaug <- corpus_subset(data_corpus_inaugural, Year > 1900)
 #' mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
 #'                opposition = c("Opposition", "reject", "notincorpus"),
 #'                taxing = "taxing",
@@ -125,74 +121,82 @@ dfm <- function(x,
     UseMethod("dfm")
 }
 
-#' @noRd
-#' @author Kenneth Benoit
-#' @import Matrix
-#' @export
-dfm.character <- function(x, 
-                tolower = TRUE,
-                stem = FALSE,
-                select = NULL,
-                remove = NULL,
-                dictionary = NULL,
-                thesaurus = NULL,
-                valuetype = c("glob", "regex", "fixed"), 
-                groups = NULL, 
-                verbose = quanteda_options("verbose"), 
-                ...) {
-    
-    start_time <- proc.time()
-    valuetype <- match.arg(valuetype)
-    
-    if (!is.null(remove) & !is.null(select))
-        stop("only one of select and remove may be supplied at once")
-    
-    if (verbose && stri_startswith_fixed(sys.calls()[2], "dfm.character"))
-        catm("Creating a dfm from a character vector ...\n")
+# GLOBAL FOR dfm THAT FUNCTIONS CAN RESET AS NEEDED TO RECORD TIME ELAPSED
+dfm_env <- new.env()
+dfm_env$START_TIME <- NULL  
 
-    if (tolower) {
-        if (verbose) catm("   ... lowercasing\n")
-        x <- char_tolower(x)
-    }
-    
-    if (verbose) catm("   ... tokenizing\n")
-    temp <- tokens(x, ...)
+# dfm function to check that any ellipsis arguments belong only to tokens formals
+check_dfm_dots <-  function(dots) {
+    if (length(dots) && any(!(names(dots)) %in% names(formals(tokens))))
+        warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", sep = "", noBreaks. = TRUE)
+}
 
-    dfm(temp, verbose = verbose, tolower = FALSE, stem = stem, 
-        remove = remove, select = select, groups = groups,
-        thesaurus = thesaurus, dictionary = dictionary, valuetype = valuetype, 
-        start_time = start_time)
+# which function started the dfm chain?
+who_called_me_first <- function(x) {
+    x <- as.character(x)
+    base_dfm_call_index <- which(stringi::stri_startswith_fixed(x, "dfm"))
+    x <- x[base_dfm_call_index[-1]]
+    x <- stringi::stri_replace_all_regex(x, "dfm\\.(\\w+)\\(.+$", "$1")
+    x[1]
 }
 
 
+#' @rdname dfm
 #' @noRd
 #' @export
-dfm.corpus <- function(x, tolower = TRUE,
+dfm.character <- function(x, 
+                          tolower = TRUE,
+                          stem = FALSE,
+                          select = NULL,
+                          remove = NULL,
+                          dictionary = NULL,
+                          thesaurus = NULL,
+                          valuetype = c("glob", "regex", "fixed"),
+                          groups = NULL,
+                          verbose = quanteda_options("verbose"),
+                          ...) {
+    
+    if (who_called_me_first(sys.calls()) == "character") {
+        dfm_env$START_TIME <- proc.time()
+        if (verbose) catm("Creating a dfm from a character vector ...\n")
+    }
+
+    dfm(corpus(x),
+        tolower = tolower, 
+        stem = stem, 
+        select = select, remove = remove, 
+        dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
+        groups = groups, 
+        verbose = verbose,
+        ...)
+}
+
+
+#' @rdname dfm
+#' @noRd
+#' @export
+dfm.corpus <- function(x, 
+                       tolower = TRUE,
                        stem = FALSE,
                        select = NULL,
                        remove = NULL,
                        dictionary = NULL,
                        thesaurus = NULL,
-                       valuetype = c("glob", "regex", "fixed"), 
+                       valuetype = c("glob", "regex", "fixed"),
                        groups = NULL, 
-                       verbose = quanteda_options("verbose"), ...) {
-    if (verbose)
-        catm("Creating a dfm from a corpus ...\n")
-    
-    if (!is.null(remove) & !is.null(select))
-        stop("only one of select and remove may be supplied at once")
-
-    if (!is.null(groups)) {
-        if (verbose) catm("   ... grouping texts\n") 
-        # group <- generate_groups(x, groups)
-        temp <- tokens(texts(x, groups = groups), ...)
-    } else {
-        if (verbose) catm("   ... tokenizing texts\n")
-        temp <- tokens(x, ...)
+                       verbose = quanteda_options("verbose"),
+                       ...) {
+    if (who_called_me_first(sys.calls()) == "corpus") {
+        dfm_env$START_TIME <- proc.time()
+        if (verbose) catm("Creating a dfm from a corpus ...\n")
     }
-    
-    dfm(temp, tolower = tolower, stem = stem, select = select, remove = remove, thesaurus = thesaurus,
-        dictionary = dictionary, valuetype = valuetype, verbose = verbose, ...)
+    dfm(tokens(x, ...),  
+        tolower = tolower, 
+        stem = stem, 
+        select = select, remove = remove, 
+        dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
+        groups = groups, 
+        verbose = verbose)
 }    
 
     
@@ -210,33 +214,25 @@ dfm.tokenizedTexts <- function(x,
                                groups = NULL, 
                                verbose = quanteda_options("verbose"), 
                                ...) {
-    
-    if (!is.null(remove) & !is.null(select))
-        stop("only one of select and remove may be supplied at once")
-    
+
     valuetype <- match.arg(valuetype)
-    dots <- list(...)
-    if (length(dots))
-        if (any(!(names(dots)) %in% c("start_time", names(formals(tokens)))))
-            warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", sep = "", noBreaks. = TRUE)
+    # set document names if none
+    if (is.null(names(x))) {
+        names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
+    } 
+
+    if (who_called_me_first(sys.calls()) %in% c("tokens", "tokenizedTexts")) {
+        dfm_env$START_TIME <- proc.time()
+        if (verbose) catm("Creating a dfm from a", class(x)[1], "object ...\n")
+        check_dfm_dots(list(...))
         x <- tokens(x, ...)
-    
-    start_time <- proc.time()
-    if ("start_time" %in% names(dots)) start_time <- dots$start_time
-    
-    if (verbose & stri_startswith_fixed(sys.calls()[2], "dfm.token"))
-        catm("Creating a dfm from a", class(x)[1], "object ...\n")
+    }
     
     if (tolower) {
         if (verbose) catm("   ... lowercasing\n", sep="")
         x <- tokens_tolower(x)
         tolower <- FALSE
     }
-    
-    # set document names if none
-    if (is.null(names(x))) {
-        names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
-    } 
 
     if (verbose) {
         catm("   ... found ", 
@@ -247,6 +243,12 @@ dfm.tokenizedTexts <- function(x,
              " feature",
              ifelse(length(types(x)) > 1, "s", ""),
              "\n", sep="")
+    }
+    
+    if (!is.null(groups)) {
+        if (verbose) catm("   ... grouping texts\n") 
+        group <- generate_groups(x, groups)
+        x <- tokens_group(x, groups)
     }
     
     # use tokens_lookup for tokens objects
@@ -261,42 +263,33 @@ dfm.tokenizedTexts <- function(x,
     
     # use tokens_select for tokens objects
     if (!is.null(c(remove, select))) {
+        if (!is.null(remove) & !is.null(select)) stop("only one of select and remove may be supplied at once")
         if (verbose) catm("   ... ")
-        if (!is.null(remove)) {
-            x <- tokens_select(x, remove, selection = "remove", 
-                               valuetype = valuetype, verbose = verbose)
-        } else {
-            x <- tokens_select(x, select, selection = "keep", 
-                               valuetype = valuetype, verbose = verbose)
-        }
+        x <- tokens_select(x, 
+                           pattern = if (!is.null(remove)) remove else select,
+                           selection = if (!is.null(remove)) "remove" else "keep",
+                           valuetype = valuetype, 
+                           verbose = verbose)
     }
     
-    if (!is.null(groups)) {
-        if (verbose) catm("   ... grouping texts\n") 
-        group <- generate_groups(x, groups)
-        x <- tokens_group(x, groups)
-    }
-        
     # compile the dfm
     result <- compile_dfm(x, verbose = verbose)
     
-    # copy attributes
+    # copy, set attributes
     result@ngrams <- as.integer(attr(x, "ngrams"))
     result@skip <- as.integer(attr(x, "skip"))
     result@concatenator <- attr(x, "concatenator")
-    
     if (attr(x, 'what') == "dictionary") {
         attr(result, 'what') <- "dictionary"
         attr(result, 'dictionary') <- attr(x, 'dictionary')
     }
-    
     if (!is.null(attr(x, "docvars"))) {
         result@docvars <- attr(x, "docvars")
     } else {
         result@docvars <- data.frame(row.names = docnames(x))
     }
     
-    dfm(result, tolower = FALSE, stem = stem, valuetype = valuetype, verbose = verbose, ...)
+    dfm(result, tolower = FALSE, stem = stem, verbose = verbose)
 }
 
 #' @noRd
@@ -316,15 +309,12 @@ dfm.dfm <- function(x,
                     ...) {
 
     valuetype <- match.arg(valuetype)
-    dots <- list(...)
-    if (length(dots) && any(!(names(dots)) %in% c("start_time", names(formals(tokens)))))
-        warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", sep = "", noBreaks. = TRUE)
-    
-    start_time <- proc.time()
-    if ("start_time" %in% names(dots)) start_time <- dots$start_time
-    
-    if (verbose & stri_startswith_fixed(sys.calls()[2], "dfm.dfm"))
-        catm("Creating a dfm from a", class(x)[1], "object ...\n")
+    if (length(args <- list(...))) warning("arguments ", names(args), "unused")
+
+    if ((who_called_me_first(sys.calls()) == "dfm")) {
+        dfm_env$START_TIME <- proc.time()
+        if (verbose) catm("Creating a dfm from a", class(x)[1], "object ...\n")
+    }
 
     if (tolower) {
         if (verbose) catm("   ... lowercasing\n", sep="")
@@ -332,17 +322,8 @@ dfm.dfm <- function(x,
     }
     
     if (!is.null(groups)) {
-        if (is.character(groups) & all(groups %in% names(docvars(x)))) {
-            groups <- as.factor(interaction(docvars(x)[, groups], drop = TRUE))
-        } else {
-            if (length(groups) != ndoc(x))
-                stop("groups must name docvars or provide data matching the documents in x")
-            groups <- as.factor(groups)
-        }
-        if (verbose)
-            catm("   ... grouping texts\n") 
-        rownames(x) <- groups
-        x <- dfm_compress(x, margin = "documents")
+        if (verbose) catm("   ... grouping texts\n") 
+        x <- dfm_group(x, groups)
     }
     
     if (!is.null(dictionary) | !is.null(thesaurus)) {
@@ -355,6 +336,7 @@ dfm.dfm <- function(x,
     }
     
     if (!is.null(c(remove, select))) {
+        if (!is.null(remove) & !is.null(select)) stop("only one of select and remove may be supplied at once")
         if (verbose) catm("   ... ")
         # if ngrams > 1 and remove or selct is specified, then convert these into a
         # regex that will remove any ngram containing one of the words
@@ -362,13 +344,11 @@ dfm.dfm <- function(x,
             remove <- make_ngram_pattern(remove, valuetype, x@concatenator)
             valuetype <- "regex"
         }
-        if (!is.null(remove)) {
-            x <- dfm_select(x, remove, selection = "remove", 
-                                valuetype = valuetype, verbose = verbose)
-        } else {
-            x <- dfm_select(x, select, selection = "keep", 
-                            valuetype = valuetype, verbose = verbose)
-        }
+        x <- dfm_select(x, 
+                        pattern = if (!is.null(remove)) remove else select,
+                        selection = if (!is.null(remove)) "remove" else "keep",
+                        valuetype = valuetype, 
+                        verbose = verbose)
     }
     
     language <- quanteda_options("language_stemmer")
@@ -390,7 +370,7 @@ dfm.dfm <- function(x,
         catm("   ... created a", paste(format(dim(x), big.mark=",", trim = TRUE), 
                                        collapse=" x "), 
              "sparse dfm\n   ... complete. \nElapsed time:", 
-             format((proc.time() - start_time)[3], digits = 3),
+             format((proc.time() - dfm_env$START_TIME)[3], digits = 3),
              "seconds.\n")
     return(x)
 }

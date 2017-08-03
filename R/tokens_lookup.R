@@ -77,11 +77,13 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     dictionary <- flatten_dictionary(dictionary, levels)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
+    lengths <- ntoken(x)
     
     # Generate all combinations of type IDs
     values_id <- list()
     keys_id <- c()
     types <- types(x)
+    
     
     index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
     if (verbose) 
@@ -100,13 +102,14 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         keys <- names(dictionary)
     }
     if (exclusive) {
-        result <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE)
+        x <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE)
     } else {
-        result <- qatd_cpp_tokens_match(x, c(types, keys), values_id, keys_id + length(types), FALSE)
+        x <- qatd_cpp_tokens_match(x, c(types, keys), values_id, keys_id + length(types), FALSE)
     }
-    attributes(result, FALSE) <- attrs
-    attr(result, "what") <- "dictionary"
-    attr(result, "dictionary") <- dictionary
-    attr(result, "padding") <- FALSE
-    return(result)
+    attr(x, "what") <- "dictionary"
+    attr(x, "dictionary") <- dictionary
+    attributes(x, FALSE) <- attrs
+    docvars(x, '_length_original') <- lengths
+    if (exclusive) attr(x, "padding") <- FALSE
+    return(x)
 }
