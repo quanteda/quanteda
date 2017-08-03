@@ -3,51 +3,52 @@
 \name{textstat_collocations}
 \alias{textstat_collocations}
 \alias{is.collocations}
-\title{calculate collocation statistics}
+\title{identify and score multi-word expressions}
 \usage{
-textstat_collocations(x, method = c("lambda", "lambda1", "lr", "chi2", "pmi",
-  "dice", "gensim", "LFMD"), size = 2, min_count = 2, smoothing = 0.5,
-  ...)
+textstat_collocations(x, method = "all", size = 2, min_count = 2,
+  smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...)
 
 is.collocations(x)
 }
 \arguments{
-\item{x}{a \link{tokens} object whose collocations will be scored}
+\item{x}{a character, \link{corpus}, or \link{tokens} object whose
+collocations will be scored.  The tokens object should include punctuation,
+and if any words have been removed, these should have been removed with
+\code{padding = TRUE}}
 
-\item{method}{association measure for detecting collocations.
-Let \eqn{i} index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to 
+\item{method}{association measure for detecting collocations. Let \eqn{i}
+index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to 
 observed counts, and \eqn{m_{ij}} the expected counts in a collocations 
-frequency table of dimensions \eqn{(J - size + 1)^2}. 
+frequency table of dimensions \eqn{(J - size + 1)^2}.
 
 Available measures are computed as: 
 
-\describe{\item{\code{"lr"}}{The likelihood ratio 
-statistic \eqn{G^2}, computed as: \deqn{2 * \sum_i \sum_j ( n_{ij} * log 
+\describe{
+\item{\code{"lambda"}}{log-linear coefficient for the full-ngram, similar to Blaheta and Johnson's (2001) method}
+\item{\code{"lambda1"}}{unigram subtuples, alternative score from Blaheta and Johnson (2001)}
+\item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as: \deqn{2 * \sum_i \sum_j ( n_{ij} * log 
 \frac{n_{ij}}{m_{ij}} )} } 
 \item{\code{"chi2"}}{Pearson's \eqn{\chi^2} statistic, computed as: 
 \deqn{\sum_i \sum_j \frac{(n_{ij} - m_{ij})^2}{m_{ij}}} } 
 \item{\code{"pmi"}}{point-wise mutual information 
 score, computed as log \eqn{n_{11}/m_{11}}} 
 \item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
-\item{\code{"lambda1"}}{unigram subtuples, Blaheta and Johnson's method (called through 
-\code{\link{sequences}})}  
-\item{\code{"lambda"}}{all subtuples algorithm, Blaheta and Johnson's method 
-(called through \code{\link{sequences}})}
-\item{\code{"gensim"}}{gensim score, coumputed as \eqn{(cnt(a, b) - min_count) * N / (cnt(a) * cnt(b))}}   
-\item{\code{"LFMD"}}{LFMD, computed as \eqn{log2(P(w1,w2)^2/P(w1)P(w2)) + log2(P(w1,w2))}}
  }}
 
-\item{size}{numeric argument representing the length of the collocations
-to be scored.  The maximum size is currently 3 for all
-methods except \code{"lambda"} and \code{"lambda1"}, which has a maximum size of 5.
-Use c(2,n) or 2:n to return collocations of bigram to n-gram collocations.}
+\item{size}{integer; the length of the collocations
+to be scored}
 
-\item{min_count}{minimum frequency of collocations that will be scored}
+\item{min_count}{numeric; minimum frequency of collocations that will be scored}
 
-\item{smoothing}{default is 0.5}
+\item{smoothing}{numeric; a smoothing parameter added to the observed counts
+(default is 0.5)}
 
-\item{...}{additional arguments passed to \code{\link{collocations2}} for the
-first four methods}
+\item{tolower}{logical; if \code{TRUE}, form collocations as lower-cased combinations}
+
+\item{show_counts}{logical; if \code{TRUE}, output observed and expected counts}
+
+\item{...}{additional arguments passed to \code{\link{tokens}}, if \code{x}
+is not a \link{tokens} object already}
 }
 \value{
 \code{textstat_collocations} returns a data.frame of collocations and their
@@ -57,29 +58,30 @@ first four methods}
   \code{collocations}, \code{FALSE} otherwise.
 }
 \description{
-Identify and score collocations from a tokenized text.
+Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.
+}
+\details{
+Documents are grouped for the purposes of scoring, but collocations will not span sentences.
+If \code{x} is a \link{tokens} object and some tokens have been removed, this should be done
+using \code{\link{tokens_remove}(x, pattern, padding = TRUE)} so that counts will still be
+accurate, but the pads will prevent those collocations from being scored.
 }
 \note{
 This function is under active development, and we aim to improve both its operation and 
 efficiency in the next release of \pkg{quanteda}.
 }
 \examples{
-txts <- c("quanteda is a package for quantitative text analysis", 
-          "quantitative text analysis is a rapidly growing field", 
-          "The population is rapidly growing")
-toks <- tokens(txts)
-(cols <- textstat_collocations(toks, size = 2:3, min_count = 2))
+txts <- data_corpus_inaugural[1:2]
+head(cols <- textstat_collocations(txts, size = 2, min_count = 2), 10)
+head(cols <- textstat_collocations(txts, size = 3, min_count = 2), 10)
 
 # extracting multi-part proper nouns (capitalized terms)
-toks2 <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
-toks2 <- tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
-toks2 <- tokens_select(toks2, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", 
-                     case_insensitive = FALSE, padding = TRUE)
-seqs <- textstat_collocations(toks2)
+toks2 <- tokens(data_corpus_inaugural)
+toks2 <- tokens_remove(toks2, stopwords("english"), padding = TRUE)
+toks2 <- tokens_select(toks2, "^([A-Z][a-z\\\\-]{2,})", valuetype = "regex", 
+                       case_insensitive = FALSE, padding = TRUE)
+seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
 head(seqs, 10)
-
-# compounding tokens is more efficient when applied to the same tokens object 
-toks_comp <- tokens_compound(toks2, seqs)
 }
 \references{
 Blaheta, D., & Johnson, M. (2001). 
