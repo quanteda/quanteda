@@ -127,3 +127,22 @@ test_that("dfm_lookup verbose output works correctly", {
                    dictionary(list(one = "a", two = c("d", "e"))), verbose = FALSE)
     )
 })
+
+test_that("dfm_lookup with nomatch works", {
+    txt <- c(d1 = "a c d d", d2 = "a a b c c c e f")
+    dfm1 <- dfm(txt)
+    dict <- dictionary(list(one = c("a", "b"), two = c("e", "f")))
+
+    expect_equivalent(
+        dfm_lookup(dfm1, dict),
+        dfm_lookup(dfm1, dict, nomatch = "_unmatched")[, 1:2]
+    )
+    expect_equal(
+        as.matrix(dfm_lookup(dfm1, dict, nomatch = "_unmatched")),
+        matrix(c(1,3,0,2,3,3), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = c("one", "two", "_unmatched")))
+    )
+    expect_warning(
+        dfm_lookup(dfm1, dict, nomatch = "ANYTHING", exclusive = FALSE),
+        "nomatch only applies if exclusive = TRUE"
+    )
+})
