@@ -44,12 +44,6 @@ phrase.collocations <- function(x) {
 
 #' @noRd
 #' @export
-phrase.sequences <- function(x) {
-    phrase(x[["collocation"]])
-}
-
-#' @noRd
-#' @export
 phrase.list <- function(x) {
     if (!all(is.character(unlist(x, use.names = FALSE))))
         stop("all list elements must be character")

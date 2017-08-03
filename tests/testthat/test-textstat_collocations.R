@@ -169,3 +169,23 @@ test_that("collocation is counted correctly in racing conditions, issue #381", {
     # expect_true(all(out1$count * 100 == out100$count))
 
 })
+
+test_that("textstat_collocations works with corpus, character, tokens objects", {
+    txt <- data_char_sampletext
+    corp <- corpus(txt)
+    expect_equal(
+        textstat_collocations(txt, min_count = 2, size = 3),
+        textstat_collocations(corp, min_count = 2, size = 3)
+    )
+    
+    ## THIS SHOULD BE THE SAME, BUT IS NOT BECAUSE THE REMOVED PUNCTUATION BECOMES
+    ## PADS, AND IS COUNTED, WHEN IT SHOULD NOT BE COUNTED AT ALL
+    toks <- tokens(txt)
+    seqs_corp <- textstat_collocations(corp, method = "lambda", min_count = 2, size = 3)
+    seqs_toks <- textstat_collocations(tokens_remove(toks, "\\p{P}", valuetype = "regex"), method = "lambda", min_count = 2, size = 3)
+    expect_equal(
+        seqs_corp[, 1:3],
+        seqs_toks[match(seqs_corp$collocation, seqs_toks$collocation), 1:3],
+        check.attributes = FALSE
+    )
+})
