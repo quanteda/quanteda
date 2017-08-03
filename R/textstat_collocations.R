@@ -119,13 +119,16 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
         # remove observed counts character
         result <- result[, -which(names(result)=="observed_counts")]
         
+        # "pmi_2", "chi2_2" and "G2_2" are verified, remove the result from cpp
+        result[c("pmi", "chi2", "G2")] <- NULL
+        
         # recompute dice, pmi, G2, chi2
         if (method %in% c("all", "lr"))
-            result["G2_2"] <- 2 * rowSums(df_counts_n * log(df_counts_n / df_counts_e))
+            result["G2"] <- 2 * rowSums(df_counts_n * log(df_counts_n / df_counts_e))
         if (method %in% c("all", "chi2"))
-            result["chi2_2"] <- rowSums((df_counts_n - df_counts_e)^2 / df_counts_e)
+            result["chi2"] <- rowSums((df_counts_n - df_counts_e)^2 / df_counts_e)
         if (method %in% c("all", "pmi"))
-            result["pmi_2"] <- log(df_counts_n[[ncol(df_counts_n)]] / df_counts_e[[ncol(df_counts_e)]], base = 2)
+            result["pmi"] <- log(df_counts_n[[ncol(df_counts_n)]] / df_counts_e[[ncol(df_counts_e)]], base = 2)
     }
 
     # remove other measures if not specified
@@ -133,9 +136,9 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
         result[c("pmi", "chi2", "G2")] <- NULL
     if (!method %in% c("lambda", "lambda1", "all"))
         result[c("lambda", "lambda1", "sigma", "z")] <- NULL
-    if (method == "chi2") result[c("pmi", "G2")] <- NULL
-    if (method == "lr") result[c("pmi", "chi2")] <- NULL
-    if (method == "pmi") result[c("G2", "chi2")] <- NULL
+    #if (method == "chi2") result[c("pmi", "G2")] <- NULL
+    #if (method == "lr") result[c("pmi", "chi2")] <- NULL
+    #if (method == "pmi") result[c("G2", "chi2")] <- NULL
     
     # remove results whose counts are less than min_count
     result <- result[result$count >= min_count, ]
