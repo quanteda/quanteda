@@ -94,7 +94,7 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
     result <- qatd_cpp_sequences(x, types, min_count, size, 
                                  if (method == "lambda1") "lambda1" else "lambda", 
                                  smoothing)
-    
+
     # compute z for lambda methods
     lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
     result["z"] <- result[lambda_index] / result[["sigma"]]
@@ -147,13 +147,13 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
     result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
                                        "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
                                      names(result)))]
+    rownames(result) <- NULL
     
     # add counts to output if requested
     if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
 
     # tag attributes and class, and return
     attr(result, 'types') <- types
-    rownames(result) <- seq_len(nrow(result))
     class(result) <- c("collocations", 'data.frame')
     return(result)
 }
