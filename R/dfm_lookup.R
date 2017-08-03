@@ -18,8 +18,9 @@
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param capkeys if \code{TRUE}, convert dictionary keys to uppercase to
 #'   distinguish them from other features
-#' @param show_unmatched if \code{TRUE}, show the count of unmatched features in
-#'   the output
+#' @param nomatch an optional character naming a new feature that will contain 
+#'   the counts of features of \code{x} not matched to a dictionary key.  If 
+#'   \code{NULL} (default), do not tabulate unmatched features.
 #' @param verbose print status messages if \code{TRUE}
 #' @export
 #' @note If using \code{dfm_lookup} with dictionaries containing multi-word
@@ -52,13 +53,13 @@
 #' dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
 #' 
 #' # show unmatched tokens
-#' dfm_lookup(myDfm, myDict, show_unmatched = TRUE)
+#' dfm_lookup(myDfm, myDict, nomatch = "_UNMATCHED")
 #' 
 dfm_lookup <- function(x, dictionary, levels = 1:5,
                        exclusive = TRUE, valuetype = c("glob", "regex", "fixed"), 
                        case_insensitive = TRUE,
                        capkeys = !exclusive,
-                       show_unmatched = FALSE,
+                       nomatch = NULL,
                        verbose = quanteda_options("verbose")) {
     UseMethod("dfm_lookup")
 }
@@ -69,7 +70,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
                            exclusive = TRUE, valuetype = c("glob", "regex", "fixed"), 
                            case_insensitive = TRUE,
                            capkeys = !exclusive,
-                           show_unmatched = FALSE,
+                           nomatch = NULL,
                            verbose = quanteda_options("verbose")) {
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
@@ -118,11 +119,12 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         }
     }
     
-    if (show_unmatched) {
+    if (!is.null(nomatch)) {
         if (!exclusive) {
-            warning("show_unmatched only applies if exclusive = TRUE")
+            warning("nomatch only applies if exclusive = TRUE")
         } else {
-            result <- cbind(result, "_unmatched" = ntoken(dfm_remove(x, dictionary)))
+            result <- cbind(result, ntoken(dfm_remove(x, dictionary)))
+            colnames(result)[ncol(result)] <- nomatch
         }
     }
     
