@@ -5,7 +5,7 @@
 #' modify the plot by adding ggplot layers (see example).
 #' @param x a dfm or weighted dfm object
 #' @param margin "documents" to plot the most frequent features across documents or groups
-#'   or "features" to plot the occurence of one or more features
+#'   or "features" to plot the occurrence of one or more features
 #' @param features the feature or features whose frequency will be plotted
 #' @param group a vector of names to group the dfm; if left \code{NULL} (the
 #'   default) the feature frequencies will be estimated across all documents
@@ -29,19 +29,19 @@
 #' textplot_frequency(ie_dfm, margin = "documents",
 #'                    groups = ie_groups, n = 10)
 #' 
-#' # plot occurence of selected features aggregated for entire dfm
+#' # plot occurrence of selected features aggregated for entire dfm
 #' textplot_frequency(ie_dfm, margin = "features", 
 #'                    features = c("tax", "ireland", "increase"))
 #' 
-#' # plot occurence of selected features for each group
-#' textplot_frequency.dfm(ie_dfm, margin = "features", 
+#' # plot occurrence of selected features for each group
+#' textplot_frequency(ie_dfm, margin = "features", 
 #'                        features = c("tax", "ireland", "increase"), 
 #'                        groups = ie_groups)
 #' 
 #' # plot frequencies based on weighted dfm
 #' ie_dfm_relfreq <- dfm_weight(ie_dfm, type = "relfreq")
 #' 
-#' textplot_frequency.dfm(ie_dfm_relfreq, n = 10, margin = "documents",
+#' textplot_frequency(ie_dfm_relfreq, n = 10, margin = "documents",
 #'                        groups = ie_groups) +
 #'   ylab("Relative Frequency")
 #' 
