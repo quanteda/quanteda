@@ -182,7 +182,7 @@ test_that("textstat_collocations works with corpus, character, tokens objects", 
     ## PADS, AND IS COUNTED, WHEN IT SHOULD NOT BE COUNTED AT ALL
     toks <- tokens(txt)
     seqs_corp <- textstat_collocations(corp, method = "lambda", min_count = 2, size = 3)
-    seqs_toks <- textstat_collocations(tokens_remove(toks, "\\p{P}", valuetype = "regex"), method = "lambda", min_count = 2, size = 3)
+    seqs_toks <- textstat_collocations(tokens_remove(toks, "\\p{P}", valuetype = "regex", padding = TRUE), method = "lambda", min_count = 2, size = 3)
     expect_equal(
         seqs_corp[, 1:3],
         seqs_toks[match(seqs_corp$collocation, seqs_toks$collocation), 1:3],
