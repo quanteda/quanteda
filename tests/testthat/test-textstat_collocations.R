@@ -177,6 +177,10 @@ test_that("textstat_collocations works with corpus, character, tokens objects", 
         textstat_collocations(txt, min_count = 2, size = 3),
         textstat_collocations(corp, min_count = 2, size = 3)
     )
+    expect_equal(
+        textstat_collocations(tokens(txt), min_count = 2, size = 3),
+        textstat_collocations(tokens(txt, hash = FALSE), min_count = 2, size = 3)
+    )
     
     ## THIS SHOULD BE THE SAME, BUT IS NOT BECAUSE THE REMOVED PUNCTUATION BECOMES
     ## PADS, AND IS COUNTED, WHEN IT SHOULD NOT BE COUNTED AT ALL
