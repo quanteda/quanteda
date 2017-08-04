@@ -35,6 +35,10 @@ them from other features}
 otherwise, replace values in dictionary with keys while leaving other 
 features unaffected}
 
+\item{nomatch}{an optional character naming a new feature that will contain 
+the counts of features of \code{x} not matched to a dictionary key.  If 
+\code{NULL} (default), do not tabulate unmatched features.}
+
 \item{verbose}{print status messages if \code{TRUE}}
 }
 \description{

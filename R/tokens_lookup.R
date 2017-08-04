@@ -16,6 +16,9 @@
 #'   uppercase to distinguish them from other features
 #' @param capkeys if TRUE, convert dictionary keys to uppercase to distinguish 
 #'   them from other features
+#' @param nomatch an optional character naming a new feature that will contain 
+#'   the counts of features of \code{x} not matched to a dictionary key.  If 
+#'   \code{NULL} (default), do not tabulate unmatched features.
 #' @param exclusive if \code{TRUE}, remove all features not in dictionary, 
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
