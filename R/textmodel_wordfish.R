@@ -78,6 +78,10 @@ setClass("textmodel_wordfish_predicted",
 #'   have also followed the practice begun with Slapin and Proksch's early 
 #'   implementation of the model that used a regularization parameter of 
 #'   se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
+#'   
+#' @note In the rare situation where a warning message of "The algorighm did not converge." shows up, removing 
+#'   some documents may work. 
+#'   
 #' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
 #'   for Estimating Time-Series Party Positions from Texts." \emph{American 
 #'   Journal of Political Science} 52(3):705-772.
@@ -190,6 +194,7 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
     }
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
+    if (any(is.nan(wfresult$theta))) warning("Warning: The algorithm did not converge.")
     new("textmodel_wordfish_fitted", 
         x = x,
         docs = docnames(x), 
