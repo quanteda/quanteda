@@ -104,8 +104,9 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         temp <- x[,unlist(values_id, use.names = FALSE)]
         colnames(temp) <- keys[keys_id]
         temp <- dfm_compress(temp, margin = 'features')
-        temp <- dfm_select(temp, as.dfm(matrix(0, ncol = length(keys), 
-                                               dimnames = list(docs = NULL, features = keys))))
+        #temp <- dfm_select(temp, as.dfm(matrix(0, ncol = length(keys), 
+        #                                       dimnames = list(docs = NULL, features = keys))))
+        temp <- dfm_select(temp, as.dfm(rbind(structure(rep(0, length(keys)), names = keys))))
         if (exclusive) {
             result <- temp[, keys]
         } else {
