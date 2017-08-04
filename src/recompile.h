@@ -88,7 +88,7 @@ inline Tokens recompile(Texts texts,
             for (std::size_t i = 0; i < texts[h].size(); i++) {
                 unsigned int id = texts[h][i];
                 if (id > id_limit) {
-                    throw std::range_error("Invalid tokens object");    
+                    throw std::range_error("Invalid tokens object");
                 }
                 flags_used[id] = true;
             }

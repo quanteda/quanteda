@@ -82,7 +82,7 @@ Text lookup(Text tokens,
             keys_flat.insert(keys_flat.end(), key_sub.begin(), key_sub.end());
         } else {
             if (padding) {
-                keys_flat.push_back(1); // no-matches are padded with 1
+                keys_flat.push_back(1); // no-matches
             }
         }
     }
@@ -152,8 +152,16 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     std::vector<unsigned int> ids = Rcpp::as< std::vector<unsigned int> >(ids_);
     std::vector<std::size_t> spans(keys.size());
     for (size_t g = 0; g < std::min(keys.size(), ids.size()); g++) {
-        map_keys.insert(std::pair<Ngram, unsigned int>(keys[g], ids[g]));
-        spans[g] = keys[g].size();
+        Ngram key = keys[g];
+        unsigned int id = ids[g];
+        if (padding) {
+            if (id == 0) {
+                throw std::range_error("Invalid dictionary");
+            }
+            id = id + 1; // 1 is for no-match key
+        }
+        map_keys.insert(std::pair<Ngram, unsigned int>(key, id));
+        spans[g] = key.size();
     }
     sort(spans.begin(), spans.end());
     spans.erase(unique(spans.begin(), spans.end()), spans.end());
