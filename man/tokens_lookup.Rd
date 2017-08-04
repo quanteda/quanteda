@@ -6,7 +6,7 @@
 \usage{
 tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
   "fixed"), case_insensitive = TRUE, capkeys = !exclusive,
-  exclusive = TRUE, verbose = quanteda_options("verbose"))
+  exclusive = TRUE, nomatch = NULL, verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}
@@ -47,6 +47,7 @@ dict <- dictionary(list(country = "united states",
                    law=c('law*', 'constitution'), 
                    freedom=c('free*', 'libert*')))
 dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE))
+dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE, nomatch = 'NONE'))
 
 dict_fix <- dictionary(list(country = "united states", 
                        law = c('law', 'constitution'), 

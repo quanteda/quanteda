@@ -26,6 +26,7 @@
 #'                    law=c('law*', 'constitution'), 
 #'                    freedom=c('free*', 'libert*')))
 #' dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE))
+#' dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE, nomatch = 'NONE'))
 #' 
 #' dict_fix <- dictionary(list(country = "united states", 
 #'                        law = c('law', 'constitution'), 
@@ -55,6 +56,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           case_insensitive = TRUE,
                           capkeys = !exclusive,
                           exclusive = TRUE,
+                          nomatch = NULL,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_lookup")    
 }
@@ -66,6 +68,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           case_insensitive = TRUE,
                           capkeys = !exclusive,
                           exclusive = TRUE,
+                          nomatch = NULL,
                           verbose = quanteda_options("verbose")) {
 
     if (!is.tokens(x))
@@ -77,13 +80,11 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     dictionary <- flatten_dictionary(dictionary, levels)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
-    lengths <- ntoken(x)
     
     # Generate all combinations of type IDs
     values_id <- list()
     keys_id <- c()
     types <- types(x)
-    
     
     index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
     if (verbose) 
@@ -102,14 +103,19 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         keys <- names(dictionary)
     }
     if (exclusive) {
-        x <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE)
+        if (is.null(nomatch)) {
+            x <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE, FALSE)
+        } else {
+            keys <- c(nomatch, keys)
+            keys_id <- keys_id + 1
+            x <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE, TRUE)
+        }
     } else {
         x <- qatd_cpp_tokens_match(x, c(types, keys), values_id, keys_id + length(types), FALSE)
     }
     attr(x, "what") <- "dictionary"
     attr(x, "dictionary") <- dictionary
     attributes(x, FALSE) <- attrs
-    docvars(x, '_length_original') <- lengths
     if (exclusive) attr(x, "padding") <- FALSE
     return(x)
 }

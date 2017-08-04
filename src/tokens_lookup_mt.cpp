@@ -7,14 +7,15 @@ Text lookup(Text tokens,
             const std::vector<std::size_t> &spans,
             const unsigned int &id_max,
             const bool &overlap,
+            const bool &padding,
             const MultiMapNgrams &map_keys){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     // Make flags for all the keys
-    std::vector< std::vector< bool > > flags_match(id_max);
+    std::vector< std::vector<bool> > flags_match(id_max);
     if (!overlap) {
-        std::vector< bool > flags_init(tokens.size(), false);
+        std::vector<bool> flags_init(tokens.size(), false);
         for (unsigned int h = 0; h < id_max; h++) {
             flags_match[h] = flags_init;
         }
@@ -46,16 +47,44 @@ Text lookup(Text tokens,
         }
     }
     
-    if (match == 0) return {}; // return empty vector if no match
+    if (match == 0) {
+        if (padding) {
+            Text keys_flat(tokens.size(), false); 
+            return keys_flat;
+        } else {
+            return {}; // return empty vector if no match    
+        }
+    }
+    
+    // Merge match flags
+    std::vector<bool> flags_match_any(tokens.size(), false);
+    for (size_t h = 0; h < flags_match.size(); h++) {
+        for (size_t i = 0; i < flags_match[h].size(); i++) {
+            if (flags_match[h][i]) {
+                flags_match_any[i] = true;
+            }
+        }
+    }
     
     // Flatten the vector of vector
     Text keys_flat;
-    keys_flat.reserve(match);
-    for (auto &key_sub: keys) {
-        if (key_sub.size() > 1) {
-            std::sort(key_sub.begin(), key_sub.end()); // sort in order of keys
+    if (padding) {
+        keys_flat.reserve(match + tokens.size());
+    } else {
+        keys_flat.reserve(match);
+    }
+    for (size_t i = 0; i < keys.size(); i++) {
+        if (flags_match_any[i]) {
+            std::vector<unsigned int> key_sub = keys[i];
+            if (key_sub.size() > 1) {
+                std::sort(key_sub.begin(), key_sub.end()); // sort in order of keys
+            }
+            keys_flat.insert(keys_flat.end(), key_sub.begin(), key_sub.end());
+        } else {
+            if (padding) {
+                keys_flat.push_back(1); // no-matches are padded with 1
+            }
         }
-        keys_flat.insert(keys_flat.end(), key_sub.begin(), key_sub.end());                                                                                         
     }
     return keys_flat;
 }
@@ -67,18 +96,20 @@ struct lookup_mt : public Worker{
     const std::vector<std::size_t> &spans;
     const unsigned int &id_max;
     const bool &overlap;
+    const bool &padding;
     const MultiMapNgrams &map_keys;
     
     // Constructor
     lookup_mt(Texts &texts_, const std::vector<std::size_t> &spans_, const unsigned int &id_max_,
-              const bool &overlap_, const MultiMapNgrams &map_keys_):
-              texts(texts_), spans(spans_), id_max(id_max_), overlap(overlap_), map_keys(map_keys_){}
+              const bool &overlap_, const bool &padding_, const MultiMapNgrams &map_keys_):
+              texts(texts_), spans(spans_), id_max(id_max_), overlap(overlap_), padding(padding_),
+              map_keys(map_keys_){}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
-            texts[h] = lookup(texts[h], spans, id_max, overlap, map_keys);
+            texts[h] = lookup(texts[h], spans, id_max, overlap, padding, map_keys);
         }
     }
 };
@@ -101,7 +132,8 @@ List qatd_cpp_tokens_lookup(const List &texts_,
                             const CharacterVector types_,
                             const List &keys_,
                             const IntegerVector &ids_,
-                            const bool overlap){
+                            const bool overlap,
+                            const bool padding){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
@@ -112,20 +144,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     //dev::Timer timer;
     
     //dev::start_timer("Map construction", timer);
-/*
-    MultiMapNgrams map_keys;
-    std::vector<std::size_t> spans(keys_.size());
-    for (unsigned int g = 0; g < (unsigned int)keys_.size(); g++) {
-        if (has_na(keys_[g])) continue;
-        Ngram word = keys_[g];
-        map_keys.insert(std::make_pair(word, ids_[g]));
-        spans[g] = word.size();
-    }
-    sort(spans.begin(), spans.end());
-    spans.erase(unique(spans.begin(), spans.end()), spans.end());
-    std::reverse(std::begin(spans), std::end(spans));
-*/    
-    
+
     MultiMapNgrams map_keys;
     map_keys.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
     
@@ -144,29 +163,27 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     //dev::stop_timer("Map construction", timer);
     
     //dev::start_timer("Dictionary lookup", timer);
-#if QUANTEDA_USE_TBB
-    lookup_mt lookup_mt(texts, spans, id_max, overlap, map_keys);
-    parallelFor(0, texts.size(), lookup_mt);
-#else
+// #if QUANTEDA_USE_TBB
+//     lookup_mt lookup_mt(texts, spans, id_max, overlap, map_keys);
+//     parallelFor(0, texts.size(), lookup_mt);
+// #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        texts[h] = lookup(texts[h], spans, id_max, overlap, map_keys);
+        texts[h] = lookup(texts[h], spans, id_max, overlap, padding, map_keys);
     }
-#endif
+// #endif
     //dev::stop_timer("Dictionary lookup", timer);
-    return recompile(texts, types, false, false, is_encoded(types_));
+    return recompile(texts, types, true, false, is_encoded(types_));
 }
 
 /***R
 
 toks <- list(rep(1:10, 1), rep(5:15, 1))
-#dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-#dict <- list(5, c(5, 6) , 4)
-dict <- list(100, c(200, 201))
-#dict <- list(1, 10, 20)
-#keys <- seq_along(dict)
-keys <- rep(1, length(dict))
-qatd_cpp_tokens_lookup(toks, letters, dict, integer(0), TRUE)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, TRUE)
+dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
+#dict <- list(1:10, c(5, 6) , 4)
+#keys <- rep(2, length(dict))
+keys <- seq_along(dict) + 1
+#qatd_cpp_tokens_lookup(toks, letters, dict, integer(0), TRUE)
+qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, TRUE)
 
 
 */
