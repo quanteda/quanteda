@@ -104,6 +104,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
                            ...) {
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
+    vars <- docvars(x)
     
     temp <- segment_texts(texts(x), what, delimiter, valuetype, omit_empty, ...)
 
@@ -117,8 +118,11 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
     settings(result, "units") <- what
     
     # add repeated versions of remaining docvars
-    if (use_docvars && !is.null(docvars(x))) {
-        result[[names(docvars(x))]] <- docvars(x)[attr(temp, 'docid'),,drop = FALSE]
+    if (use_docvars && !is.null(vars)) {
+        rownames(vars) <- NULL # faster to repeat rows without rownames
+        vars <- select_fields(vars, "user")[attr(temp, 'docid'),,drop = FALSE]
+        rownames(vars) <- stri_c(attr(temp, 'document'), '.', attr(temp, 'segid'), sep = '')
+        docvars(result) <- vars
     }
     if (what == 'tags') {
         docvars(result, 'tag') <- attr(temp, 'tag')

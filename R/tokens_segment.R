@@ -54,10 +54,11 @@ tokens_segment.tokens <- function(x, pattern,
     x <- qatd_cpp_tokens_segment(x, types, patt_id)
     
     # create repeated docvars with document and segment IDs
+    rownames(vars) <- NULL # faster to repeat rows without rownames
     vars <- cbind(vars[attr(x, 'docid'),,drop = FALSE], 
                   '_docid' = attr(x, 'docid'), 
                   '_segid' = attr(x, 'segid'))
-    rownames(vars) <- paste0(attr(x, 'document'), '.', attr(x, 'segid'))
+    rownames(vars) <- stri_c(attr(x, 'document'), '.', attr(x, 'segid'), sep = '')
     
     create(x, what = 'tokens', 
            names = rownames(vars), 
