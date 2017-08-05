@@ -111,8 +111,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     }
     if (exclusive) {
         if (!is.null(nomatch)) {
-            keys <- c(nomatch, keys)
-            x <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE, TRUE)
+            x <- qatd_cpp_tokens_lookup(x, c(keys, nomatch), values_id, keys_id, FALSE, TRUE)
         } else {
             x <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE, FALSE)
         }

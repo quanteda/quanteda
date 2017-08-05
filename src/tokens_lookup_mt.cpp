@@ -37,13 +37,11 @@ Text lookup(Text tokens,
                     std::vector< bool > &flags_temp = flags_match[id - 1];
                     bool flaged = std::any_of(flags_temp.begin() + i, flags_temp.begin() + i + span, [](bool v) { return v; });
                     if (!flaged) {
-                        if (nomatch) id = id + 1; // shift one for no-match
                         keys[i].push_back(id); // keep multiple keys in the same position
                         std::fill(flags_temp.begin() + i, flags_temp.begin() + i + span, true); // mark tokens matched
                         match++;
                     }
                 } else {
-                    if (nomatch) id = id + 1; // shift one for no-match
                     keys[i].push_back(id); // keep multiple keys in the same position
                     match++;
                 }
@@ -53,7 +51,7 @@ Text lookup(Text tokens,
     
     if (match == 0) {
         if (nomatch) {
-            Text keys_flat(tokens.size(), 1); 
+            Text keys_flat(tokens.size(), id_max + 1); 
             return keys_flat;
         } else {
             return {}; // return empty vector if no match    
@@ -86,7 +84,7 @@ Text lookup(Text tokens,
             keys_flat.insert(keys_flat.end(), key_sub.begin(), key_sub.end());
         } else {
             if (nomatch) {
-                keys_flat.push_back(1); // no-matches
+                keys_flat.push_back(id_max + 1); // no-matches
             }
         }
     }

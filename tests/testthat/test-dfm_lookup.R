@@ -135,7 +135,7 @@ test_that("dfm_lookup with nomatch works", {
 
     expect_equal(
         as.matrix(dfm_lookup(dfm1, dict)),
-        as.matrix(dtemp <- dfm_lookup(dfm1, dict, nomatch = "_unmatched"))[, -ncol(dtemp)]
+        as.matrix(fm_lookup(dfm1, dict, nomatch = "_unmatched"))[, 1:2]
     )
     expect_equal(
         as.matrix(dfm_lookup(dfm1, dict, nomatch = "_unmatched")),

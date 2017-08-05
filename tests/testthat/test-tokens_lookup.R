@@ -313,7 +313,7 @@ test_that("tokens_lookup with nomatch works", {
     
     expect_equal(
         as.matrix(dfm(tokens_lookup(toks, dict))),
-        as.matrix(dfm(tokens_lookup(toks, dict, nomatch = "_unmatched")))[, -1]
+        as.matrix(dfm(tokens_lookup(toks, dict, nomatch = "_unmatched")))[, 1:2]
     )
     
     expect_equivalent(
@@ -323,7 +323,7 @@ test_that("tokens_lookup with nomatch works", {
     
     expect_equal(
         as.matrix(dfm(tokens_lookup(toks, dict, nomatch = "_unmatched"))),
-        matrix(c(3,2,1,3,0,2), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = c("_unmatched", "one", "two")))
+        matrix(c(1,3,0,2,3,2), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = c("one", "two", "_unmatched")))
     )
     expect_warning(
         tokens_lookup(toks, dict, nomatch = "ANYTHING", exclusive = FALSE),
