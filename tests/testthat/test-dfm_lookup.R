@@ -133,9 +133,9 @@ test_that("dfm_lookup with nomatch works", {
     dfm1 <- dfm(txt)
     dict <- dictionary(list(one = c("a", "b"), two = c("e", "f")))
 
-    expect_equivalent(
-        dfm_lookup(dfm1, dict),
-        dfm_lookup(dfm1, dict, nomatch = "_unmatched")[, 1:2]
+    expect_equal(
+        as.matrix(dfm_lookup(dfm1, dict)),
+        as.matrix(dfm_lookup(dfm1, dict, nomatch = "_unmatched"))[, 1:2]
     )
     expect_equal(
         as.matrix(dfm_lookup(dfm1, dict, nomatch = "_unmatched")),

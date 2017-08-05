@@ -305,3 +305,28 @@ test_that("#502 tokens_lookup count overlapped words", {
 })
 
 
+
+test_that("tokens_lookup with nomatch works", {
+    txts <- c(d1 = "a c d d", d2 = "a a b c c c e f")
+    toks <- tokens(txts)
+    dict <- dictionary(list(one = c("a", "b", "b c"), two = c("e", "f")))
+    
+    expect_equal(
+        as.matrix(dfm(tokens_lookup(toks, dict))),
+        as.matrix(dfm(tokens_lookup(toks, dict, nomatch = "_unmatched")))[, 1:2]
+    )
+    
+    expect_equivalent(
+        as.matrix(cbind("_unmatched" = ntoken(tokens_remove(toks, dict)))),
+        as.matrix(dfm(tokens_lookup(toks, dict, nomatch = "_unmatched")))[, "_unmatched", drop = FALSE]
+    )
+    
+    expect_equal(
+        as.matrix(dfm(tokens_lookup(toks, dict, nomatch = "_unmatched"))),
+        matrix(c(1,3,0,2,3,2), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = c("one", "two", "_unmatched")))
+    )
+    expect_warning(
+        tokens_lookup(toks, dict, nomatch = "ANYTHING", exclusive = FALSE),
+        "nomatch only applies if exclusive = TRUE"
+    )
+})

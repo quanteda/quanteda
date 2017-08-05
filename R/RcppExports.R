@@ -57,8 +57,8 @@ qatd_cpp_kwic <- function(texts_, types_, words_, window, join) {
     .Call(`_quanteda_qatd_cpp_kwic`, texts_, types_, words_, window, join)
 }
 
-qatd_cpp_tokens_lookup <- function(texts_, types_, keys_, ids_, overlap) {
-    .Call(`_quanteda_qatd_cpp_tokens_lookup`, texts_, types_, keys_, ids_, overlap)
+qatd_cpp_tokens_lookup <- function(texts_, types_, keys_, ids_, overlap, nomatch) {
+    .Call(`_quanteda_qatd_cpp_tokens_lookup`, texts_, types_, keys_, ids_, overlap, nomatch)
 }
 
 qatd_cpp_tokens_match <- function(texts_, types_, words_, ids_, overlap) {
