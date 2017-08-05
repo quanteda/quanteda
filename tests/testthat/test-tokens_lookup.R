@@ -272,25 +272,6 @@ test_that("#500 tokens_lookup substitute concatenator", {
                       d2 = c("Countries")))
 })
 
-test_that("dfm_lookup with nomatch works", {
-    txts <- c(d1 = "a c d d", d2 = "a a b c c c e f")
-    toks <- tokens(txt)
-    dict <- dictionary(list(one = c("a", "b"), two = c("e", "f")))
-    
-    expect_equivalent(
-        tokens_lookup(toks, dict),
-        tokens_lookup(toks, dict, nomatch = "_unmatched")[, 1:2]
-    )
-    expect_equal(
-        as.matrix(dfm_lookup(dfm1, dict, nomatch = "_unmatched")),
-        matrix(c(3,3,1,3,0,2), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = c("_unmatched", "one", "two")))
-    )
-    expect_warning(
-        dfm_lookup(dfm1, dict, nomatch = "ANYTHING", exclusive = FALSE),
-        "nomatch only applies if exclusive = TRUE"
-    )
-})
-
 
 test_that("#502 tokens_lookup count overlapped words", {
     
