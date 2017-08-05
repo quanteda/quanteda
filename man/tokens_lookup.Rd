@@ -6,7 +6,7 @@
 \usage{
 tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
   "fixed"), case_insensitive = TRUE, capkeys = !exclusive,
-  exclusive = TRUE, verbose = quanteda_options("verbose"))
+  exclusive = TRUE, nomatch = NULL, verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}
@@ -14,12 +14,12 @@ tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
 \item{dictionary}{the \link{dictionary}-class object that will be applied to 
 \code{x}}
 
-\item{levels}{integers specifying the levels of entries in a hierarchical
+\item{levels}{integers specifying the levels of entries in a hierarchical 
 dictionary that will be applied.  The top level is 1, and subsequent levels
-describe lower nesting levels.  Values may be combined, even if these
-levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second
-level into the first, but record the third level (if present) collapsed below
-the first.  (See examples.)}
+describe lower nesting levels.  Values may be combined, even if these 
+levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second 
+level into the first, but record the third level (if present) collapsed
+below the first.  (See examples.)}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
@@ -35,6 +35,10 @@ them from other features}
 otherwise, replace values in dictionary with keys while leaving other 
 features unaffected}
 
+\item{nomatch}{an optional character naming a new key for tokens that do not
+matched to a dictionary values  If \code{NULL} (default), do not record
+unmatched tokens.}
+
 \item{verbose}{print status messages if \code{TRUE}}
 }
 \description{
@@ -47,6 +51,7 @@ dict <- dictionary(list(country = "united states",
                    law=c('law*', 'constitution'), 
                    freedom=c('free*', 'libert*')))
 dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE))
+dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE, nomatch = 'NONE'))
 
 dict_fix <- dictionary(list(country = "united states", 
                        law = c('law', 'constitution'), 
@@ -69,4 +74,8 @@ tokens_lookup(toks, dict, levels = 1:2)
 tokens_lookup(toks, dict, levels = 3)
 tokens_lookup(toks, dict, levels = c(1,3))
 tokens_lookup(toks, dict, levels = c(2,3))
+
+# show unmatched tokens
+tokens_lookup(toks, dict, nomatch = "_UNMATCHED")
+
 }
