@@ -215,8 +215,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_lookup
-List qatd_cpp_tokens_lookup(const List& texts_, const CharacterVector types_, const List& keys_, const IntegerVector& ids_, const bool overlap, const bool padding);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_lookup(SEXP texts_SEXP, SEXP types_SEXP, SEXP keys_SEXP, SEXP ids_SEXP, SEXP overlapSEXP, SEXP paddingSEXP) {
+List qatd_cpp_tokens_lookup(const List& texts_, const CharacterVector types_, const List& keys_, const IntegerVector& ids_, const bool overlap, const bool nomatch);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_lookup(SEXP texts_SEXP, SEXP types_SEXP, SEXP keys_SEXP, SEXP ids_SEXP, SEXP overlapSEXP, SEXP nomatchSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -225,8 +225,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const List& >::type keys_(keys_SEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type ids_(ids_SEXP);
     Rcpp::traits::input_parameter< const bool >::type overlap(overlapSEXP);
-    Rcpp::traits::input_parameter< const bool >::type padding(paddingSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_lookup(texts_, types_, keys_, ids_, overlap, padding));
+    Rcpp::traits::input_parameter< const bool >::type nomatch(nomatchSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_lookup(texts_, types_, keys_, ids_, overlap, nomatch));
     return rcpp_result_gen;
 END_RCPP
 }
