@@ -6,7 +6,8 @@
 \usage{
 dfm_lookup(x, dictionary, levels = 1:5, exclusive = TRUE,
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  capkeys = !exclusive, verbose = quanteda_options("verbose"))
+  capkeys = !exclusive, nomatch = NULL,
+  verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{the dfm to which the dictionary will be applied}
@@ -28,6 +29,10 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{capkeys}{if \code{TRUE}, convert dictionary keys to uppercase to
 distinguish them from other features}
+
+\item{nomatch}{an optional character naming a new feature that will contain 
+the counts of features of \code{x} not matched to a dictionary key.  If 
+\code{NULL} (default), do not tabulate unmatched features.}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }
@@ -69,5 +74,9 @@ dfm_lookup(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
 # fixed format: no pattern matching
 dfm_lookup(myDfm, myDict, valuetype = "fixed")
 dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
+
+# show unmatched tokens
+dfm_lookup(myDfm, myDict, nomatch = "_UNMATCHED")
+
 }
 \keyword{dfm}
