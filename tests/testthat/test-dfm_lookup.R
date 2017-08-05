@@ -139,7 +139,7 @@ test_that("dfm_lookup with nomatch works", {
     )
     expect_equal(
         as.matrix(dfm_lookup(dfm1, dict, nomatch = "_unmatched")),
-        matrix(c(1,3,0,2,3,3), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = c("one", "two", "_unmatched")))
+        matrix(c(3,3,1,3,0,2), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = c("_unmatched", "one", "two")))
     )
     expect_warning(
         dfm_lookup(dfm1, dict, nomatch = "ANYTHING", exclusive = FALSE),
