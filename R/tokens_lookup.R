@@ -5,20 +5,20 @@
 #' @param x tokens object to which dictionary or thesaurus will be supplied
 #' @param dictionary the \link{dictionary}-class object that will be applied to 
 #'   \code{x}
-#' @param levels integers specifying the levels of entries in a hierarchical
+#' @param levels integers specifying the levels of entries in a hierarchical 
 #'   dictionary that will be applied.  The top level is 1, and subsequent levels
-#'   describe lower nesting levels.  Values may be combined, even if these
-#'   levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second
-#'   level into the first, but record the third level (if present) collapsed below
-#'   the first.  (See examples.)
+#'   describe lower nesting levels.  Values may be combined, even if these 
+#'   levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second 
+#'   level into the first, but record the third level (if present) collapsed
+#'   below the first.  (See examples.)
 #' @inheritParams valuetype
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE} 
 #'   uppercase to distinguish them from other features
 #' @param capkeys if TRUE, convert dictionary keys to uppercase to distinguish 
 #'   them from other features
-#' @param nomatch an optional character naming a new feature that will contain 
-#'   the counts of features of \code{x} not matched to a dictionary key.  If 
-#'   \code{NULL} (default), do not tabulate unmatched features.
+#' @param nomatch an optional character naming a new key for tokens that do not
+#'   matched to a dictionary values  If \code{NULL} (default), do not record
+#'   unmatched tokens.
 #' @param exclusive if \code{TRUE}, remove all features not in dictionary, 
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
@@ -52,6 +52,10 @@
 #' tokens_lookup(toks, dict, levels = 3)
 #' tokens_lookup(toks, dict, levels = c(1,3))
 #' tokens_lookup(toks, dict, levels = c(2,3))
+#' 
+#' # show unmatched tokens
+#' tokens_lookup(toks, dict, nomatch = "_UNMATCHED")
+#' 
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_lookup <- function(x, dictionary, levels = 1:5,
