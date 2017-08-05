@@ -104,10 +104,10 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     
         if (exclusive) {
             if (!is.null(nomatch)) {
-                values_id <- c(setdiff(seq_len(nfeature(x)), values_id), values_id)
-                keys_id <- c(rep(0, nfeature(x) - length(keys_id)), keys_id) + 1
-                cols_all <- c(nomatch, keys)
-                cols_new <- c(nomatch, keys)[keys_id]
+                values_id <- c(values_id, setdiff(seq_len(nfeature(x)), values_id))
+                keys_id <- c(keys_id, rep(length(keys) + 1, nfeature(x) - length(keys_id)))
+                cols_all <- c(keys, nomatch)
+                cols_new <- c(keys, nomatch)[keys_id]
             } else {
                 cols_all <- keys
                 cols_new <- keys[keys_id]
@@ -135,12 +135,6 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         } else {
             result <- x
         }
-    }
-
-    # put the nomatch column at the end, if any
-    if (!is.null(nomatch)) {
-        nomatch_index <- which(featnames(result) == nomatch)
-        result <- result[, c(seq_len(nfeature(result))[-nomatch_index], nomatch_index)]
     }
         
     attr(result, "what") <- "dictionary"
