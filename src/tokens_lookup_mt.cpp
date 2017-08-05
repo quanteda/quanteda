@@ -18,6 +18,7 @@ Text lookup(Text tokens,
         std::vector<bool> flags_init(tokens.size(), false);
         for (unsigned int h = 0; h < id_max; h++) {
             flags_match[h] = flags_init;
+            //Rcout << "h " << h << "\n";
         }
     }
     
@@ -32,14 +33,17 @@ Text lookup(Text tokens,
                 //Rcout << it->second << "\n";
                 unsigned int id = it->second;
                 if (!overlap) {
+                    //Rcout << "id " << id << "\n";
                     std::vector< bool > &flags_temp = flags_match[id - 1];
                     bool flaged = std::any_of(flags_temp.begin() + i, flags_temp.begin() + i + span, [](bool v) { return v; });
                     if (!flaged) {
+                        if (nomatch) id = id + 1; // shift one for no-match
                         keys[i].push_back(id); // keep multiple keys in the same position
                         std::fill(flags_temp.begin() + i, flags_temp.begin() + i + span, true); // mark tokens matched
                         match++;
                     }
                 } else {
+                    if (nomatch) id = id + 1; // shift one for no-match
                     keys[i].push_back(id); // keep multiple keys in the same position
                     match++;
                 }
@@ -49,7 +53,7 @@ Text lookup(Text tokens,
     
     if (match == 0) {
         if (nomatch) {
-            Text keys_flat(tokens.size(), false); 
+            Text keys_flat(tokens.size(), 1); 
             return keys_flat;
         } else {
             return {}; // return empty vector if no match    
@@ -155,19 +159,17 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     for (size_t g = 0; g < std::min(keys.size(), ids.size()); g++) {
         Ngram key = keys[g];
         unsigned int id = ids[g];
-        if (nomatch) {
-            if (id == 0) {
-                throw std::range_error("Invalid dictionary");
-            }
-            id = id + 1; // 1 is for no-match key
-        }
+        // if (nomatch) {
+        //     if (id == 0) {
+        //         throw std::range_error("Invalid dictionary");
+        //     }
+        // }
         map_keys.insert(std::pair<Ngram, unsigned int>(key, id));
         spans[g] = key.size();
     }
     sort(spans.begin(), spans.end());
     spans.erase(unique(spans.begin(), spans.end()), spans.end());
     std::reverse(std::begin(spans), std::end(spans));
-    
     
     //dev::stop_timer("Map construction", timer);
     
@@ -192,6 +194,7 @@ dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #keys <- rep(2, length(dict))
 keys <- seq_along(dict) + 1
 #qatd_cpp_tokens_lookup(toks, letters, dict, integer(0), TRUE)
+qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, FALSE)
 qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, TRUE)
 
 
