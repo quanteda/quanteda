@@ -325,7 +325,7 @@ test_that("#502 tokens_lookup count overlapped words", {
 
 
 
-test_that("dfm_lookup with nomatch works", {
+test_that("tokens_lookup with nomatch works", {
     txts <- c(d1 = "a c d d", d2 = "a a b c c c e f")
     toks <- tokens(txts)
     dict <- dictionary(list(one = c("a", "b", "b c"), two = c("e", "f")))

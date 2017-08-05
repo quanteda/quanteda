@@ -135,7 +135,7 @@ test_that("dfm_lookup with nomatch works", {
 
     expect_equivalent(
         dfm_lookup(dfm1, dict),
-        dfm_lookup(dfm1, dict, nomatch = "_unmatched")[, 1:2]
+        dfm_lookup(dfm1, dict, nomatch = "_unmatched")[,-1]
     )
     expect_equal(
         as.matrix(dfm_lookup(dfm1, dict, nomatch = "_unmatched")),
