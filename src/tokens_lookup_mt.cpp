@@ -7,7 +7,7 @@ Text lookup(Text tokens,
             const std::vector<std::size_t> &spans,
             const unsigned int &id_max,
             const bool &overlap,
-            const bool &padding,
+            const bool &nomatch,
             const MultiMapNgrams &map_keys){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
@@ -48,7 +48,7 @@ Text lookup(Text tokens,
     }
     
     if (match == 0) {
-        if (padding) {
+        if (nomatch) {
             Text keys_flat(tokens.size(), false); 
             return keys_flat;
         } else {
@@ -68,7 +68,7 @@ Text lookup(Text tokens,
     
     // Flatten the vector of vector
     Text keys_flat;
-    if (padding) {
+    if (nomatch) {
         keys_flat.reserve(match + tokens.size());
     } else {
         keys_flat.reserve(match);
@@ -81,7 +81,7 @@ Text lookup(Text tokens,
             }
             keys_flat.insert(keys_flat.end(), key_sub.begin(), key_sub.end());
         } else {
-            if (padding) {
+            if (nomatch) {
                 keys_flat.push_back(1); // no-matches
             }
         }
@@ -96,20 +96,20 @@ struct lookup_mt : public Worker{
     const std::vector<std::size_t> &spans;
     const unsigned int &id_max;
     const bool &overlap;
-    const bool &padding;
+    const bool &nomatch;
     const MultiMapNgrams &map_keys;
     
     // Constructor
     lookup_mt(Texts &texts_, const std::vector<std::size_t> &spans_, const unsigned int &id_max_,
-              const bool &overlap_, const bool &padding_, const MultiMapNgrams &map_keys_):
-              texts(texts_), spans(spans_), id_max(id_max_), overlap(overlap_), padding(padding_),
+              const bool &overlap_, const bool &nomatch_, const MultiMapNgrams &map_keys_):
+              texts(texts_), spans(spans_), id_max(id_max_), overlap(overlap_), nomatch(nomatch_),
               map_keys(map_keys_){}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
-            texts[h] = lookup(texts[h], spans, id_max, overlap, padding, map_keys);
+            texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
         }
     }
 };
@@ -124,6 +124,7 @@ struct lookup_mt : public Worker{
 * @param words_ list of features to find
 * @param ids_ IDs of features
 * @param overlap if count overlapped words if true
+* @param nomatch if unmached words are indexed as one if true
 */
 
 
@@ -133,7 +134,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
                             const List &keys_,
                             const IntegerVector &ids_,
                             const bool overlap,
-                            const bool padding){
+                            const bool nomatch){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
@@ -154,7 +155,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     for (size_t g = 0; g < std::min(keys.size(), ids.size()); g++) {
         Ngram key = keys[g];
         unsigned int id = ids[g];
-        if (padding) {
+        if (nomatch) {
             if (id == 0) {
                 throw std::range_error("Invalid dictionary");
             }
@@ -171,16 +172,16 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     //dev::stop_timer("Map construction", timer);
     
     //dev::start_timer("Dictionary lookup", timer);
-// #if QUANTEDA_USE_TBB
-//     lookup_mt lookup_mt(texts, spans, id_max, overlap, map_keys);
-//     parallelFor(0, texts.size(), lookup_mt);
-// #else
+#if QUANTEDA_USE_TBB
+    lookup_mt lookup_mt(texts, spans, id_max, overlap, nomatch, map_keys);
+    parallelFor(0, texts.size(), lookup_mt);
+#else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        texts[h] = lookup(texts[h], spans, id_max, overlap, padding, map_keys);
+        texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
     }
-// #endif
+#endif
     //dev::stop_timer("Dictionary lookup", timer);
-    return recompile(texts, types, true, false, is_encoded(types_));
+    return recompile(texts, types, false, false, is_encoded(types_));
 }
 
 /***R
