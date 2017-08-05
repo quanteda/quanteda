@@ -71,7 +71,7 @@
 #'                        case_insensitive = FALSE, padding = TRUE)
 #' seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
 #' head(seqs, 10)
-textstat_collocations <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5,  tolower = TRUE, show_counts = FALSE, ...) {
+textstat_collocations <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5,  tolower = TRUE, show_counts = FALSE, ...) {
     UseMethod("textstat_collocations")
 }
 
@@ -140,9 +140,6 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
     #if (method == "lr") result[c("pmi", "chi2")] <- NULL
     #if (method == "pmi") result[c("G2", "chi2")] <- NULL
     
-    # remove results whose counts are less than min_count
-    result <- result[result$count >= min_count, ]
-    
     # reorder columns
     result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
                                        "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
@@ -152,6 +149,9 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
     # add counts to output if requested
     if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
 
+    # remove results whose counts are less than min_count
+    result <- result[result$count >= min_count, ]
+    
     # tag attributes and class, and return
     attr(result, 'types') <- types
     class(result) <- c("collocations", 'data.frame')

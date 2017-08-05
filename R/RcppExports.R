@@ -89,15 +89,15 @@ qatd_cpp_tbb_enabled <- function() {
     .Call(`_quanteda_qatd_cpp_tbb_enabled`)
 }
 
-wordfishcpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor) {
-    .Call(`_quanteda_wordfishcpp`, wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor)
-}
-
 wordfishcpp_dense <- function(wfm, dir, priors, tol, disp, dispfloor, abs_err) {
     .Call(`_quanteda_wordfishcpp_dense`, wfm, dir, priors, tol, disp, dispfloor, abs_err)
 }
 
 wordfishcpp_mt <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor) {
     .Call(`_quanteda_wordfishcpp_mt`, wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor)
+}
+
+wordfishcpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor) {
+    .Call(`_quanteda_wordfishcpp`, wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor)
 }
 
