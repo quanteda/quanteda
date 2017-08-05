@@ -124,6 +124,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         x <- dfm_compress(x, margin = 'features')
         x <- dfm_select(x, as.dfm(rbind(structure(rep(0, length(cols_all)), names = cols_all))))
         result <- x
+        
     } else {
         if (exclusive) {
             if (!is.null(nomatch)) {
@@ -135,7 +136,13 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             result <- x
         }
     }
-    
+
+    # put the nomatch column at the end, if any
+    if (!is.null(nomatch)) {
+        nomatch_index <- which(featnames(result) == nomatch)
+        result <- result[, c(seq_len(nfeature(result))[-nomatch_index], nomatch_index)]
+    }
+        
     attr(result, "what") <- "dictionary"
     attr(result, "dictionary") <- dictionary
     attributes(result, FALSE) <- attrs

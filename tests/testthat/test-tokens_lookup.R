@@ -311,14 +311,14 @@ test_that("tokens_lookup with nomatch works", {
     toks <- tokens(txts)
     dict <- dictionary(list(one = c("a", "b", "b c"), two = c("e", "f")))
     
-    expect_equivalent(
-        dfm(tokens_lookup(toks, dict)),
-        dfm(tokens_lookup(toks, dict, nomatch = "_unmatched"))[,-1]
+    expect_equal(
+        as.matrix(dfm(tokens_lookup(toks, dict))),
+        as.matrix(dfm(tokens_lookup(toks, dict, nomatch = "_unmatched")))[, -1]
     )
     
     expect_equivalent(
-        as.dfm(cbind("_unmatched" = ntoken(tokens_remove(toks, dict)))),
-        dfm(tokens_lookup(toks, dict, nomatch = "_unmatched"))[,1]
+        as.matrix(cbind("_unmatched" = ntoken(tokens_remove(toks, dict)))),
+        as.matrix(dfm(tokens_lookup(toks, dict, nomatch = "_unmatched")))[, "_unmatched", drop = FALSE]
     )
     
     expect_equal(
