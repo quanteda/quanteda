@@ -81,7 +81,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     lengths <- ntoken(x)
     
     # Generate all combinations of type IDs
-    values_id <- list()
+    values_id <- c()
     keys_id <- c()
     types <- featnames(x)
     
@@ -91,48 +91,54 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     
     for (h in seq_along(dictionary)) {
         values <- as.list(stri_replace_all_fixed(dictionary[[h]], ' ', attr(x, 'concatenator')))
-        values_temp <- regex2id(values, types, valuetype, case_insensitive, FALSE)
+        values_temp <- unlist(regex2id(values, types, valuetype, case_insensitive, FALSE))
         values_id <- c(values_id, values_temp)
         keys_id <- c(keys_id, rep(h, length(values_temp)))
     }
+    
     if (length(values_id)) {
-        if (capkeys) {
-            keys <- char_toupper(names(dictionary))
-        } else {
-            keys <- names(dictionary)
-        }
-        temp <- x[,unlist(values_id, use.names = FALSE)]
-        colnames(temp) <- keys[keys_id]
-        temp <- dfm_compress(temp, margin = 'features')
-        #temp <- dfm_select(temp, as.dfm(matrix(0, ncol = length(keys), 
-        #                                       dimnames = list(docs = NULL, features = keys))))
-        temp <- dfm_select(temp, as.dfm(rbind(structure(rep(0, length(keys)), names = keys))))
+    
+        keys <- names(dictionary)
+        if (capkeys)
+            keys <- char_toupper(keys)
+    
         if (exclusive) {
-            result <- temp[, keys]
+            if (!is.null(nomatch)) {
+                values_id <- c(setdiff(seq_len(nfeature(x)), values_id), values_id)
+                keys_id <- c(rep(0, nfeature(x) - length(keys_id)), keys_id) + 1
+                cols_all <- c(nomatch, keys)
+                cols_new <- c(nomatch, keys)[keys_id]
+            } else {
+                cols_all <- keys
+                cols_new <- keys[keys_id]
+            }
+            x <- x[,values_id]
         } else {
-            result <- cbind(x[,unlist(values_id) * -1], temp[,keys])
+            if (!is.null(nomatch))
+                warning("nomatch only applies if exclusive = TRUE")
+            cols_all <- c(types, keys)
+            cols_new <- types
+            cols_new[values_id] <- keys[keys_id]
         }
+        colnames(x) <- cols_new
+        x <- dfm_compress(x, margin = 'features')
+        x <- dfm_select(x, as.dfm(rbind(structure(rep(0, length(cols_all)), names = cols_all))))
+        result <- x
     } else {
         if (exclusive) {
-            result <- x[,0] # dfm without features
+            if (!is.null(nomatch)) {
+                restul <- cbind(x[,0], as.dfm(cbind(structure(ntoken(x), names = nomatch))))
+            } else {
+                result <- x[,0] # dfm without features
+            }
         } else {
             result <- x
-        }
-    }
-    
-    if (!is.null(nomatch)) {
-        if (!exclusive) {
-            warning("nomatch only applies if exclusive = TRUE")
-        } else {
-            result <- cbind(result, ntoken(dfm_remove(x, dictionary)))
-            colnames(result)[ncol(result)] <- nomatch
         }
     }
     
     attr(result, "what") <- "dictionary"
     attr(result, "dictionary") <- dictionary
     attributes(result, FALSE) <- attrs
-    docvars(result, '_length_original') <- lengths
     return(result)
 }
 
