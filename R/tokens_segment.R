@@ -1,7 +1,13 @@
 #' segment tokens object by patterns
 #' 
 #' @param x \link{tokens} object whose token elements will be segmented
-#' @inheritParams pattern
+#' #' @param what unit of segmentation.  Current options are  
+#'   \code{"sentences"} (default) and \code{"other"}.
+#'   
+#'   Segmenting on \code{"other"} allows segmentation of a text on any 
+#'   user-defined value, and must be accompanied by the \code{delimiter} 
+#'   argument. 
+#' @param delimiter the same as \code{pattern}
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param verbose if \code{TRUE} print messages about how many tokens were 
@@ -17,7 +23,9 @@
 #' toks_sent <- tokens_segment(toks, '.')
 #' toks_punc <- tokens_segment(toks, '[\\p{P}]', valuetype = 'regex')
 #' 
-tokens_segment <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
+tokens_segment <- function(x, what = c("sentences", "other"), 
+                           delimiter = NULL,
+                           valuetype = c("glob", "regex", "fixed"),
                            case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
     UseMethod("tokens_segment")
 }
@@ -25,11 +33,12 @@ tokens_segment <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
 #' @rdname tokens_segment
 #' @noRd
 #' @export
-tokens_segment.tokenizedTexts <- function(x, pattern, 
+tokens_segment.tokenizedTexts <- function(x, what = c("sentences", "other"), 
+                                          delimiter = NULL,
                                           valuetype = c("glob", "regex", "fixed"),
                                           case_insensitive = TRUE, 
                                           verbose = quanteda_options("verbose")) {
-    x <- tokens_segment(as.tokens(x), pattern, valuetype, case_insensitive, verbose)
+    x <- tokens_segment(as.tokens(x), delimiter, valuetype, case_insensitive, verbose)
     x <- as.tokenizedTexts(x)
     return(x)
 }
@@ -38,15 +47,25 @@ tokens_segment.tokenizedTexts <- function(x, pattern,
 #' @noRd
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_segment.tokens <- function(x, pattern, 
+tokens_segment.tokens <- function(x, what = c("sentences", "other"), 
+                                  delimiter = NULL,
                                   valuetype = c("glob", "regex", "fixed"),
                                   case_insensitive = TRUE, 
                                   verbose = quanteda_options("verbose"), ...) {
     
+    what <- match.arg(what)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     types <- types(x)
     vars <- docvars(x)
+
+    if (what == "sentences") {
+        if (!is.null(delimiter)) warning("delimiter is only used for 'other'")
+        pattern <- "^[\\p{Sterm}]$"
+        valuetype <- "regex"
+    } else {
+        pattern <- delimiter
+    }
     
     patt_id <- features2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
     if ("" %in% pattern) patt_id <- c(patt_id, list(0)) # append padding index
