@@ -1,7 +1,7 @@
 #' segment tokens object by patterns
 #' 
 #' @param x \link{tokens} object whose token elements will be segmented
-#' #' @param what unit of segmentation.  Current options are  
+#' @param what unit of segmentation.  Current options are  
 #'   \code{"sentences"} (default) and \code{"other"}.
 #'   
 #'   Segmenting on \code{"other"} allows segmentation of a text on any 
@@ -20,8 +20,12 @@
 #' it shall arrive, I shall endeavor to express the high sense I entertain of
 #' this distinguished honor."
 #' toks <- tokens(txts)
-#' toks_sent <- tokens_segment(toks, '.')
-#' toks_punc <- tokens_segment(toks, '[\\p{P}]', valuetype = 'regex')
+#' 
+#' # split into sentences
+#' toks_sent <- tokens_segment(toks, what = "sentences")
+#' 
+#' # split by any punctuation
+#' toks_punc <- tokens_segment(toks, what = "other", delimiter = "[\\p{P}]", valuetype = 'regex')
 #' 
 tokens_segment <- function(x, what = c("sentences", "other"), 
                            delimiter = NULL,

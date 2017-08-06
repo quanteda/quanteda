@@ -4,14 +4,21 @@
 \alias{tokens_segment}
 \title{segment tokens object by patterns}
 \usage{
-tokens_segment(x, pattern, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, verbose = quanteda_options("verbose"))
+tokens_segment(x, what = c("sentences", "other"), delimiter = NULL,
+  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
+  verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be segmented}
 
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
+\item{what}{unit of segmentation.  Current options are
+\code{"sentences"} (default) and \code{"other"}.
+
+Segmenting on \code{"other"} allows segmentation of a text on any 
+user-defined value, and must be accompanied by the \code{delimiter} 
+argument.}
+
+\item{delimiter}{the same as \code{pattern}}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
@@ -34,7 +41,11 @@ execute the functions of its Chief Magistrate. When the occasion proper for
 it shall arrive, I shall endeavor to express the high sense I entertain of
 this distinguished honor."
 toks <- tokens(txts)
-toks_sent <- tokens_segment(toks, '.')
-toks_punc <- tokens_segment(toks, '[\\\\p{P}]', valuetype = 'regex')
+
+# split into sentences
+toks_sent <- tokens_segment(toks, what = "sentences")
+
+# split by any punctuation
+toks_punc <- tokens_segment(toks, what = "other", delimiter = "[\\\\p{P}]", valuetype = 'regex')
 
 }
