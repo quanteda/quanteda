@@ -244,11 +244,10 @@ segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
     } else {
         if (valuetype == "fixed") {
             temp <- stri_replace_all_fixed(x, delimiter, stri_c(delimiter, "\UE000"))
-            temp <- stri_split_fixed(x, pattern = "\UE000", omit_empty = omit_empty)
         } else {
             temp <- stri_replace_all_regex(x, delimiter, "$0\UE000")
-            temp <- stri_split_fixed(temp, pattern = "\UE000", omit_empty = omit_empty)
         }
+        temp <- stri_split_fixed(temp, pattern = "\UE000", omit_empty = omit_empty)
     }
 
     result <- unlist(temp, use.names = FALSE)
