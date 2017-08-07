@@ -95,6 +95,27 @@ reassign_slots <- function(x_new, x_orig, exceptions = NULL) {
     return(x)
 }
 
+#' utility function to remove all attributes
+#' @keywords internal
+remove_attributes <- function(x) {
+    base::attributes(x) <- NULL
+    return(x)
+}
+
+#' utility function to create a object with new set of attributes
+#' @keywords internal
+create <- function(x, what, attrs = NULL, ...) {
+    base::attributes(x) <- NULL
+    if (what == 'tokens') {
+        class <- c('tokens', 'tokenizedTexts', 'list')
+    }
+    x <- structure(x, class = class, ...)
+    if (!is.null(attrs)) {
+        attributes(x, FALSE) <- attrs
+    }
+    return(x)
+}
+
 # This function generates random texts from English alphabets or any other characters.
 
 # @param n_doc the number of documents generated

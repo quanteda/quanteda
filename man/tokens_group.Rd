@@ -26,3 +26,4 @@ quanteda:::tokens_group(toks, groups = "grp")
 quanteda:::tokens_group(toks, groups = c(1, 1, 2, 2))
 }
 \keyword{internal}
+\keyword{tokens}
