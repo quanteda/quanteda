@@ -12,7 +12,8 @@
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param verbose if \code{TRUE} print messages about how many tokens were 
 #'   selected or removed
-#' @return @return \code{tokens_segment} returns a tokens of segmented texts,
+#' @return @return \code{tokens_segment} returns a tokens of segmented texts
+#' @keywords tokens internal
 #' @export
 #' @examples 
 #' txts <- "Fellow citizens, I am again called upon by the voice of my country to

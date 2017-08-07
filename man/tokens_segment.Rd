@@ -30,7 +30,7 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 selected or removed}
 }
 \value{
-@return \code{tokens_segment} returns a tokens of segmented texts,
+@return \code{tokens_segment} returns a tokens of segmented texts
 }
 \description{
 segment tokens object by patterns
@@ -49,3 +49,5 @@ toks_sent <- tokens_segment(toks, what = "sentences")
 toks_punc <- tokens_segment(toks, what = "other", delimiter = "[\\\\p{P}]", valuetype = 'regex')
 
 }
+\keyword{internal}
+\keyword{tokens}

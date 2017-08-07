@@ -2,7 +2,7 @@
 #' 
 #' @param x \link{tokens} object
 #' @inheritParams groups
-#' @keywords internal
+#' @keywords tokens internal
 #' @examples
 #' # dfm_group examples
 #' corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"), 
