@@ -7,11 +7,11 @@
 \usage{
 corpus_segment(x, what = c("sentences", "paragraphs", "tokens", "tags",
   "other"), delimiter = NULL, valuetype = c("regex", "fixed", "glob"),
-  omit_empty = TRUE, use_docvars = TRUE, ...)
+  remove_delimiter = FALSE, omit_empty = TRUE, use_docvars = TRUE, ...)
 
 char_segment(x, what = c("sentences", "paragraphs", "tokens", "tags",
   "other"), delimiter = NULL, valuetype = c("regex", "fixed", "glob"),
-  omit_empty = TRUE, use_docvars = TRUE, ...)
+  remove_delimiter = FALSE, omit_empty = TRUE, use_docvars = TRUE, ...)
 }
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}
@@ -33,6 +33,8 @@ preceded by two pound or "hash" signs \code{##}), and \code{"other"}.}
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+
+\item{remove_delimiter}{remove deimiter, if \code{TRUE}}
 
 \item{omit_empty}{if \code{TRUE}, empty texts are removed}
 

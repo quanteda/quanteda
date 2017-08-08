@@ -6,7 +6,7 @@
 \usage{
 tokens_segment(x, what = c("sentences", "other"), delimiter = NULL,
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  verbose = quanteda_options("verbose"))
+  remove_delimiter = FALSE, verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be segmented}
@@ -25,6 +25,8 @@ argument.}
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+
+\item{remove_delimiter}{remove deimiter, if \code{TRUE}}
 
 \item{verbose}{if \code{TRUE} print messages about how many tokens were 
 selected or removed}
@@ -46,7 +48,10 @@ toks <- tokens(txts)
 toks_sent <- tokens_segment(toks, what = "sentences")
 
 # split by any punctuation
-toks_punc <- tokens_segment(toks, what = "other", delimiter = "[\\\\p{P}]", valuetype = 'regex')
+toks_punc <- tokens_segment(toks, what = "other", delimiter = "[\\\\p{P}]", valuetype = 'regex',
+                            remove_delimiter = FALSE)
+toks_punc <- tokens_segment(toks, what = "other", delimiter = "[\\\\p{P}]", valuetype = 'regex', 
+                            remove_delimiter = TRUE)
 
 }
 \keyword{internal}

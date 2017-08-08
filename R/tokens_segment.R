@@ -10,6 +10,7 @@
 #' @param delimiter the same as \code{pattern}
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
+#' @param remove_delimiter remove deimiter, if \code{TRUE}
 #' @param verbose if \code{TRUE} print messages about how many tokens were 
 #'   selected or removed
 #' @return @return \code{tokens_segment} returns a tokens of segmented texts
@@ -26,12 +27,17 @@
 #' toks_sent <- tokens_segment(toks, what = "sentences")
 #' 
 #' # split by any punctuation
-#' toks_punc <- tokens_segment(toks, what = "other", delimiter = "[\\p{P}]", valuetype = 'regex')
+#' toks_punc <- tokens_segment(toks, what = "other", delimiter = "[\\p{P}]", valuetype = 'regex',
+#'                             remove_delimiter = FALSE)
+#' toks_punc <- tokens_segment(toks, what = "other", delimiter = "[\\p{P}]", valuetype = 'regex', 
+#'                             remove_delimiter = TRUE)
 #' 
 tokens_segment <- function(x, what = c("sentences", "other"), 
                            delimiter = NULL,
                            valuetype = c("glob", "regex", "fixed"),
-                           case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
+                           case_insensitive = TRUE, 
+                           remove_delimiter = FALSE,
+                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_segment")
 }
 
@@ -42,8 +48,9 @@ tokens_segment.tokenizedTexts <- function(x, what = c("sentences", "other"),
                                           delimiter = NULL,
                                           valuetype = c("glob", "regex", "fixed"),
                                           case_insensitive = TRUE, 
+                                          remove_delimiter = FALSE,
                                           verbose = quanteda_options("verbose")) {
-    x <- tokens_segment(as.tokens(x), delimiter, valuetype, case_insensitive, verbose)
+    x <- tokens_segment(as.tokens(x), delimiter, valuetype, case_insensitive, remove_delimiter, verbose)
     x <- as.tokenizedTexts(x)
     return(x)
 }
@@ -56,6 +63,7 @@ tokens_segment.tokens <- function(x, what = c("sentences", "other"),
                                   delimiter = NULL,
                                   valuetype = c("glob", "regex", "fixed"),
                                   case_insensitive = TRUE, 
+                                  remove_delimiter = FALSE,
                                   verbose = quanteda_options("verbose"), ...) {
     
     what <- match.arg(what)
@@ -75,7 +83,7 @@ tokens_segment.tokens <- function(x, what = c("sentences", "other"),
     patt_id <- features2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
     if ("" %in% pattern) patt_id <- c(patt_id, list(0)) # append padding index
 
-    x <- qatd_cpp_tokens_segment(x, types, patt_id)
+    x <- qatd_cpp_tokens_segment(x, types, patt_id, remove_delimiter)
     
     # create repeated docvars with document and segment IDs
     rownames(vars) <- NULL # faster to repeat rows without rownames
