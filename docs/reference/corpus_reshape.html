@@ -123,7 +123,7 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;   textwo     4      6         2     USA 2000
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Tue Jul 25 23:51:59 2017
+#&gt; Created: Tue Aug  8 11:32:53 2017
 #&gt; Notes:   Example showing how corpus_reshape() works.
 #&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_reshape</span>(<span class='no'>mycorpus</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"sentences"</span>), <span class='kw'>showmeta</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 5 documents.
 #&gt; 
@@ -135,7 +135,7 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;   textwo.2     3      3         1     USA 2000    textwo      2      2
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Tue Jul 25 23:51:59 2017
+#&gt; Created: Tue Aug  8 11:32:53 2017
 #&gt; Notes:   corpus_segment.corpus(x, what = to, ...)
 #&gt; </div><div class='input'>
 <span class='co'># example with inaugural corpus speeches</span>
@@ -143,18 +143,18 @@ to sentences, and then back to documents (possibly after modifying the sentences
 <span class='no'>paragCorpus</span></div><div class='output co'>#&gt; Corpus consisting of 138 documents and 3 docvars.</div><div class='input'><span class='fu'>summary</span>(<span class='no'>paragCorpus</span>, <span class='fl'>100</span>, <span class='kw'>showmeta</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 138 documents, showing 100 documents.
 #&gt; 
 #&gt;           Text Types Tokens Sentences Year President FirstName  _document
-#&gt;    2005-Bush.1   772   2325       100 2005      Bush George W.  2005-Bush
+#&gt;    2005-Bush.1   773   2321       100 2005      Bush George W.  2005-Bush
 #&gt;   2009-Obama.1     4      4         1 2009     Obama    Barack 2009-Obama
 #&gt;   2009-Obama.2    42     53         2 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.3    64     88         4 2009     Obama    Barack 2009-Obama
+#&gt;   2009-Obama.3    62     86         4 2009     Obama    Barack 2009-Obama
 #&gt;   2009-Obama.4    12     15         2 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.5    78    110         5 2009     Obama    Barack 2009-Obama
+#&gt;   2009-Obama.5    76    108         5 2009     Obama    Barack 2009-Obama
 #&gt;   2009-Obama.6    39     47         2 2009     Obama    Barack 2009-Obama
 #&gt;   2009-Obama.7    36     47         4 2009     Obama    Barack 2009-Obama
 #&gt;   2009-Obama.8    19     22         1 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.9    31     35         1 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.10    58     84         2 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.11    73    110         5 2009     Obama    Barack 2009-Obama
+#&gt;   2009-Obama.9    29     33         1 2009     Obama    Barack 2009-Obama
+#&gt;  2009-Obama.10    56     82         2 2009     Obama    Barack 2009-Obama
+#&gt;  2009-Obama.11    71    106         5 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.12    21     21         1 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.13    20     24         1 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.14    17     20         1 2009     Obama    Barack 2009-Obama
@@ -166,11 +166,11 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;  2009-Obama.20    76    117         3 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.21    90    137         4 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.22    60     83         3 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.23    93    144         5 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.24    83    128         3 2009     Obama    Barack 2009-Obama
+#&gt;  2009-Obama.23    92    142         5 2009     Obama    Barack 2009-Obama
+#&gt;  2009-Obama.24    82    126         3 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.25    65    103         3 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.26    63     84         3 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.27    82    117         4 2009     Obama    Barack 2009-Obama
+#&gt;  2009-Obama.27    81    115         4 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.28    69     96         3 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.29    95    158         7 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.30     9     10         1 2009     Obama    Barack 2009-Obama
@@ -182,10 +182,10 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;  2009-Obama.36    11     16         3 2009     Obama    Barack 2009-Obama
 #&gt;   2013-Obama.1    20     23         1 2013     Obama    Barack 2013-Obama
 #&gt;   2013-Obama.2    56     82         4 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.3    35     43         1 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.4    78    117         4 2013     Obama    Barack 2013-Obama
+#&gt;   2013-Obama.3    33     41         1 2013     Obama    Barack 2013-Obama
+#&gt;   2013-Obama.4    76    111         4 2013     Obama    Barack 2013-Obama
 #&gt;   2013-Obama.5    10     10         1 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.6    36     46         2 2013     Obama    Barack 2013-Obama
+#&gt;   2013-Obama.6    34     42         2 2013     Obama    Barack 2013-Obama
 #&gt;   2013-Obama.7    22     26         1 2013     Obama    Barack 2013-Obama
 #&gt;   2013-Obama.8    21     21         1 2013     Obama    Barack 2013-Obama
 #&gt;   2013-Obama.9    23     24         1 2013     Obama    Barack 2013-Obama
@@ -197,14 +197,14 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;  2013-Obama.15    66     97         4 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.16    72    109         4 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.17    54     76         3 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.18    70    104         6 2013     Obama    Barack 2013-Obama
+#&gt;  2013-Obama.18    69    102         6 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.19    81    122         5 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.20    44     56         2 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.21    92    140         4 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.22    66     98         1 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.23   110    189         6 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.24    62    101         4 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.25    65     95         4 2013     Obama    Barack 2013-Obama
+#&gt;  2013-Obama.24    61     99         4 2013     Obama    Barack 2013-Obama
+#&gt;  2013-Obama.25    63     93         4 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.26    75    109         4 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.27    45     72         3 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.28    39     52         2 2013     Obama    Barack 2013-Obama
@@ -232,7 +232,7 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;  2017-Trump.21    19     20         1 2017     Trump Donald J. 2017-Trump
 #&gt;  2017-Trump.22    16     20         1 2017     Trump Donald J. 2017-Trump
 #&gt;  2017-Trump.23    12     14         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.24    62     84         1 2017     Trump Donald J. 2017-Trump
+#&gt;  2017-Trump.24    60     82         1 2017     Trump Donald J. 2017-Trump
 #&gt;  2017-Trump.25     9     11         1 2017     Trump Donald J. 2017-Trump
 #&gt;  2017-Trump.26    23     39         3 2017     Trump Donald J. 2017-Trump
 #&gt;  2017-Trump.27    14     16         1 2017     Trump Donald J. 2017-Trump
@@ -346,7 +346,7 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;       4     34
 #&gt; 
 #&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
-#&gt; Created: Tue Jul 25 23:51:59 2017
+#&gt; Created: Tue Aug  8 11:32:53 2017
 #&gt; Notes:   corpus_segment.corpus(x, what = to, ...)
 #&gt; </div><div class='input'><span class='co'>## Note that Bush 2005 is recorded as a single paragraph because that text used a single</span>
 <span class='co'>## \n to mark the end of a paragraph.</span></div></pre>

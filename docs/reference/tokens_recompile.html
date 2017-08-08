@@ -229,6 +229,12 @@ R-based method</p></td>
 #&gt; [1] "test"
 #&gt; attr(,"what")
 #&gt; [1] "dictionary"
+#&gt; attr(,"dictionary")
+#&gt; attr(,"dictionary")$test
+#&gt; [1] "one"   "three"
+#&gt; 
+#&gt; attr(,"dictionary")attr(,"concatenator")
+#&gt; [1] " "
 #&gt; attr(,"ngrams")
 #&gt; [1] 1
 #&gt; attr(,"skip")
@@ -236,13 +242,7 @@ R-based method</p></td>
 #&gt; attr(,"concatenator")
 #&gt; [1] "_"
 #&gt; attr(,"docvars")
-#&gt; data frame with 0 columns and 1 row
-#&gt; attr(,"dictionary")
-#&gt; attr(,"dictionary")$test
-#&gt; [1] "one"   "three"
-#&gt; 
-#&gt; attr(,"dictionary")attr(,"concatenator")
-#&gt; [1] " "</div><div class='input'>
+#&gt; data frame with 0 columns and 1 row</div><div class='input'>
 <span class='co'># empty pads</span>
 <span class='fu'>unclass</span>(<span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks3</span>, <span class='no'>dict</span>))</div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 2

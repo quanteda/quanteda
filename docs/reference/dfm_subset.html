@@ -151,7 +151,19 @@ original dfm, even if these are empty.  See Details.</p></td>
 <span class='co'># selecting on a dfm</span>
 <span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b b c"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"b b c d"</span>))
 <span class='no'>dfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"x y z"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a b c c d"</span>, <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"x x x"</span>))
-<span class='fu'>dfm_subset</span>(<span class='no'>dfm1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>dfm_subset</span>(<span class='no'>dfm1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfm2</span>[<span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>1</span>,<span class='fl'>2</span>), ])</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div></pre>
+<span class='fu'>dfm_subset</span>(<span class='no'>dfm1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (50% sparse).
+#&gt; 3 x 4 sparse Matrix of class "dfmSparse"
+#&gt;     features
+#&gt; docs a b c d
+#&gt;   d1 1 2 1 0
+#&gt;   d2 0 2 1 1
+#&gt;   d3 0 0 0 0</div><div class='input'><span class='fu'>dfm_subset</span>(<span class='no'>dfm1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfm2</span>[<span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>1</span>,<span class='fl'>2</span>), ])</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (50% sparse).
+#&gt; 3 x 4 sparse Matrix of class "dfmSparse"
+#&gt;     features
+#&gt; docs a b c d
+#&gt;   d3 0 0 0 0
+#&gt;   d1 1 2 1 0
+#&gt;   d2 0 2 1 1</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

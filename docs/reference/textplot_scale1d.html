@@ -185,6 +185,13 @@ applies if <code>margin = "features"</code></p></td>
                    <span class='kw'>highlighted</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"government"</span>, <span class='st'>"global"</span>, <span class='st'>"children"</span>,
                                    <span class='st'>"bank"</span>, <span class='st'>"economy"</span>, <span class='st'>"the"</span>, <span class='st'>"citizenship"</span>,
                                    <span class='st'>"productivity"</span>, <span class='st'>"deficit"</span>))
+
+  <span class='co'>## correspondence analysis</span>
+  <span class='no'>wca</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_ca.html'>textmodel_ca</a></span>(<span class='no'>ie_dfm</span>)
+  <span class='co'># plot estimated document positions</span>
+  <span class='fu'>textplot_scale1d</span>(<span class='no'>wca</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>,
+                   <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='no'>doclab</span>,
+                   <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='st'>"party"</span>))
 })</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -88,20 +88,20 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>options to be set, as key-value pair, same as <code>options</code>. 
-This may be a list of valid key-value pairs, useful for setting a group of
-options at once (see examples).</p></td>
+      <td><p>options to be set, as key-value pair, same as
+<code>options</code>. This may be a list of valid key-value pairs, useful
+for setting a group of options at once (see examples).</p></td>
     </tr>
     <tr>
       <th>reset</th>
-      <td><p>logical; if <code>TRUE</code>, reset all <span class="pkg">quanteda</span> options to their 
-default values</p></td>
+      <td><p>logical; if <code>TRUE</code>, reset all <span class="pkg">quanteda</span> options to
+their default values</p></td>
     </tr>
     <tr>
       <th>initialize</th>
-      <td><p>logical; if <code>TRUE</code>, reset only the <span class="pkg">quanteda</span> options 
-that are not already defined.  Used for setting initial values when some have 
-been defined previously, such as in `.Rprofile`.</p></td>
+      <td><p>logical; if <code>TRUE</code>, reset only the <span class="pkg">quanteda</span>
+options that are not already defined.  Used for setting initial values when
+some have been defined previously, such as in `.Rprofile`.</p></td>
     </tr>
     </table>
     
@@ -125,6 +125,18 @@ been defined previously, such as in `.Rprofile`.</p></td>
    to display when using the defaults for printing a dfm</p></dd>
 <dt><code>print_dfm_max_nfeature</code></dt><dd><p>integer; specifies the number of features
    to display when using the defaults for printing a dfm</p></dd>
+<dt><code>base_docname</code></dt><dd><p>character; stem name for documents that are
+unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
+from another object</p></dd>
+<dt><code>base_featname</code></dt><dd><p>character; stem name for features that are
+unnamed when they are added, for whatever reason, to a dfm through an operation
+that adds features</p></dd>
+<dt><code>base_featname</code></dt><dd><p>character; stem name for features that are
+unnamed when they are added, for whatever reason, to a dfm through an operation
+that adds features</p></dd>
+<dt><code>base_featname</code></dt><dd><p>character; stem name for features that are
+unnamed when they are added, for whatever reason, to a dfm through an operation
+that adds features</p></dd>
 </dl>
     
 
@@ -140,6 +152,18 @@ been defined previously, such as in `.Rprofile`.</p></td>
 #&gt; 
 #&gt; $print_dfm_max_nfeature
 #&gt; [1] 20
+#&gt; 
+#&gt; $base_docname
+#&gt; [1] "text"
+#&gt; 
+#&gt; $base_featname
+#&gt; [1] "feat"
+#&gt; 
+#&gt; $language_stemmer
+#&gt; [1] "english"
+#&gt; 
+#&gt; $language_stopwords
+#&gt; [1] "english"
 #&gt; </div><div class='input'>
 <span class='fu'>quanteda_options</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'>quanteda_options</span>(<span class='st'>"verbose"</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)

@@ -81,7 +81,7 @@
 <p>The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(quanteda)</code></pre></div>
 <pre><code>## Loading required package: quanteda</code></pre>
-<pre><code>## quanteda version 0.9.9.84</code></pre>
+<pre><code>## quanteda version 0.9.9.90</code></pre>
 <pre><code>## Using 4 of 8 threads for parallel computing</code></pre>
 <pre><code>## 
 ## Attaching package: 'quanteda'</code></pre>
@@ -108,7 +108,7 @@ metadata.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># verify that "orphan" is the end of the novel</span>
 <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"orphan"</span>)</code></pre></div>
 <pre><code>##                                                              
-##  [pg2701.txt, 260460] children, only found another | orphan |
+##  [pg2701.txt, 255352] children, only found another | orphan |
 ##                              
 ##  . End of Project Gutenberg's</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># extract the novel -- a better way</span>
@@ -147,25 +147,25 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(novel.lower.v))
 <span class="co"># count of the word 'whale'</span>
 <span class="kw">length</span>(moby.word.v[<span class="kw">which</span>(moby.word.v ==<span class="st"> "whale"</span>)])</code></pre></div>
-<pre><code>## [1] 1030</code></pre>
+<pre><code>## [1] 908</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total occurrences of 'whale' including possessive</span>
 <span class="kw">length</span>(moby.word.v[<span class="kw">which</span>(moby.word.v ==<span class="st"> "whale"</span>)]) +<span class="st"> </span><span class="kw">length</span>(moby.word.v[<span class="kw">which</span>(moby.word.v ==<span class="st"> "whale's"</span>)])</code></pre></div>
-<pre><code>## [1] 1150</code></pre>
+<pre><code>## [1] 1028</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># same thing using kwic()</span>
 <span class="kw">nrow</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"whale"</span>))</code></pre></div>
-<pre><code>## [1] 1030</code></pre>
+<pre><code>## [1] 908</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"whale*"</span>)) <span class="co"># includes words like 'whalemen'</span></code></pre></div>
-<pre><code>## [1] 1572</code></pre>
+<pre><code>## [1] 1565</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(total.whale.hits &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"^whale('s){0,1}$"</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>)))</code></pre></div>
-<pre><code>## [1] 1150</code></pre>
+<pre><code>## [1] 1028</code></pre>
 <p>What fraction of the total words in the novel are ‘whale’?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">total.whale.hits /<span class="st"> </span><span class="kw"><a href="../../reference/ntoken.html">ntoken</a></span>(novel.lower.v, <span class="dt">remove_punct=</span><span class="ot">TRUE</span>)  </code></pre></div>
-<pre><code>## pg2701.txt 
-## 0.00547619</code></pre>
+<pre><code>##  pg2701.txt 
+## 0.004895238</code></pre>
 <p>Calculating the size of the vocabulary – includes possessive forms.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total unique words</span>
 <span class="kw">length</span>(<span class="kw">unique</span>(moby.word.v))</code></pre></div>
-<pre><code>## [1] 17299</code></pre>
+<pre><code>## [1] 18541</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(<span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>(novel.v), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## pg2701.txt 
 ##      18525</code></pre>
@@ -177,10 +177,10 @@ mobyDfm[, <span class="st">"whale"</span>]</code></pre></div>
 ## 1 x 1 sparse Matrix of class "dfmSparse"
 ##             features
 ## docs         whale
-##   pg2701.txt  1030</code></pre>
+##   pg2701.txt   908</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mobyDfm)</code></pre></div>
-<pre><code>##     ,   the     .    of   and     -     a    to     ;    in 
-## 18923 14175  7370  6469  6325  5741  4622  4539  4143  4078</code></pre>
+<pre><code>##     ,   the     .    of   and     a    to     ;    in     - 
+## 18923 14173  7370  6446  6311  4605  4511  4143  4071  3238</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mobyDfm, <span class="dv">100</span>), <span class="dt">log =</span> <span class="st">"y"</span>, <span class="dt">cex =</span> .<span class="dv">6</span>, <span class="dt">ylab =</span> <span class="st">"Term frequency"</span>)</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 </div>
@@ -228,7 +228,7 @@ mobyDfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="s
 ## 1 x 1 sparse Matrix of class "dfmSparse"
 ##             features
 ## docs              the
-##   pg2701.txt 5.549183</code></pre>
+##   pg2701.txt 5.659308</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mobyDfmPct), <span class="dt">type=</span><span class="st">"b"</span>,
      <span class="dt">xlab=</span><span class="st">"Top Ten Words"</span>, <span class="dt">ylab=</span><span class="st">"Percentage of Full Text"</span>, <span class="dt">xaxt =</span><span class="st">"n"</span>)
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">labels =</span> <span class="kw">names</span>(<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mobyDfmPct)))</code></pre></div>
@@ -267,15 +267,15 @@ mobyDfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.v, <span class="st">'chapter'</span>))</code></pre></div>
 <pre><code>##                                                         
 ##      [pg2701.txt, 1]                         | CHAPTER |
-##   [pg2701.txt, 2621]        hill in the air. | CHAPTER |
-##   [pg2701.txt, 4355]        Spouter" may be. | CHAPTER |
-##  [pg2701.txt, 11416]      better in my life. | CHAPTER |
-##  [pg2701.txt, 13363] like a marshal's baton. | CHAPTER |
-##  [pg2701.txt, 14249]       out for a stroll. | CHAPTER |
+##   [pg2701.txt, 2581]        hill in the air. | CHAPTER |
+##   [pg2701.txt, 4287]        Spouter" may be. | CHAPTER |
+##  [pg2701.txt, 11236]      better in my life. | CHAPTER |
+##  [pg2701.txt, 13169] like a marshal's baton. | CHAPTER |
+##  [pg2701.txt, 14043]       out for a stroll. | CHAPTER |
 ##                     
 ##  1. Loomings. Call  
-##  2. The Carpet-     
-##  3. The Spouter-    
+##  2. The Carpet-Bag. 
+##  3. The Spouter-Inn.
 ##  4. The Counterpane.
 ##  5. Breakfast. I    
 ##  6. The Street.</code></pre>
@@ -302,16 +302,16 @@ chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../refer
 ## Use 'dfm_weight' instead.
 ## See help("Deprecated")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(relDfm)</code></pre></div>
-<pre><code>## Document-feature matrix of: 137 documents, 17,211 features (96.4% sparse).
+<pre><code>## Document-feature matrix of: 137 documents, 18,453 features (96.6% sparse).
 ## (showing first 6 documents and first 6 features)
 ##               features
 ## docs               chapter  1        .   loomings       call        me
 ##   pg2701.txt.1 50.00000000 50 0.000000 0.00000000 0.00000000 0.0000000
-##   pg2701.txt.2  0.03816794  0 3.129771 0.03816794 0.03816794 0.9541985
-##   pg2701.txt.3  0.05767013  0 2.710496 0.00000000 0.00000000 0.3460208
-##   pg2701.txt.4  0.01416230  0 3.243167 0.00000000 0.01416230 0.6514658
-##   pg2701.txt.5  0.05136107  0 2.722137 0.00000000 0.00000000 0.9758603
-##   pg2701.txt.6  0.11286682  0 3.160271 0.00000000 0.00000000 0.1128668</code></pre>
+##   pg2701.txt.2  0.03875969  0 3.178295 0.03875969 0.03875969 0.9689922
+##   pg2701.txt.3  0.05861665  0 2.754982 0.00000000 0.00000000 0.3516999
+##   pg2701.txt.4  0.01439056  0 3.295438 0.00000000 0.01439056 0.6331846
+##   pg2701.txt.5  0.05173306  0 2.741852 0.00000000 0.00000000 0.9829281
+##   pg2701.txt.6  0.11441648  0 3.203661 0.00000000 0.00000000 0.1144165</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">barplot</span>(<span class="kw">as.numeric</span>(relDfm[, <span class="st">'whale'</span>]))</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">barplot</span>(<span class="kw">as.numeric</span>(relDfm[, <span class="st">'ahab'</span>]))</code></pre></div>
@@ -328,12 +328,12 @@ chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../refer
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wf &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(relDfm[, <span class="st">'whale'</span>])
 af &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(relDfm[, <span class="st">'ahab'</span>])
 <span class="kw">cor</span>(wf, af)</code></pre></div>
-<pre><code>## [1] -0.2402552</code></pre>
+<pre><code>## [1] -0.2364822</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waDfm &lt;-<span class="st"> </span><span class="kw">cbind</span>(relDfm[, <span class="st">'whale'</span>], relDfm[, <span class="st">'ahab'</span>])
 <span class="kw">cor</span>(<span class="kw">as.matrix</span>(waDfm))</code></pre></div>
 <pre><code>##            whale       ahab
-## whale  1.0000000 -0.2402552
-## ahab  -0.2402552  1.0000000</code></pre>
+## whale  1.0000000 -0.2364822
+## ahab  -0.2364822  1.0000000</code></pre>
 <p>With the ahab frequency and whale frequency vectors extracted from the dfm, it is easy to calculate the significance of the correlation.</p>
 </div>
 <div id="random-sampling" class="section level2">
@@ -356,13 +356,13 @@ yfit &lt;-<span class="st"> </span>yfit *<span class="st"> </span><span class="k
 ##  Pearson's product-moment correlation
 ## 
 ## data:  wf and af
-## t = -2.8757, df = 135, p-value = 0.004686
+## t = -2.8279, df = 135, p-value = 0.0054
 ## alternative hypothesis: true correlation is not equal to 0
 ## 95 percent confidence interval:
-##  -0.3921685 -0.0755854
+##  -0.38877812 -0.07160681
 ## sample estimates:
 ##        cor 
-## -0.2402552</code></pre>
+## -0.2364822</code></pre>
 </div>
 </div>
 <div id="measures-of-lexical-variety" class="section level1">

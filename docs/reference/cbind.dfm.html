@@ -78,8 +78,8 @@
     </div>
 
     
-    <p>Take a sequence of <a href='dfm.html'>dfm</a> objects and combine by columns or
-rows, returning a dfm with the combined documents or features, respectively.</p>
+    <p>Combine a <a href='dfm.html'>dfm</a> with another dfm, or numeric, or matrix object, 
+returning a dfm with the combined documents or features, respectively.</p>
     
 
     <pre class="usage"><span class='co'># S3 method for dfm</span>
@@ -93,19 +93,21 @@ rows, returning a dfm with the combined documents or features, respectively.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p><a href='dfm.html'>dfm</a> objects to be joined column-wise (<code>cbind</code>) or
-row-wise (<code>rbind</code>) to the first</p></td>
+      <td><p><a href='dfm.html'>dfm</a>, numeric, or matrix  objects to be joined column-wise
+(<code>cbind</code>) or row-wise (<code>rbind</code>) to the first.  Numeric objects
+not confirming to the row or column dimension will be recycled as normal.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>cbind(x, y, ...)</code> combines dfm objects by columns, returning a
-  dfm object with combined features from input dfm objects.  Note that this should be used
-  with extreme caution, as joining dfms with different documents will result in a new row
-  with the docname(s) of the first dfm, merging in those from the second.  Furthermore, 
-  if features are shared between the dfms being cbinded, then duplicate feature labels will 
-  result.  In both instances, warning messages will result.
+  dfm object with combined features from input dfm objects.  Note that this 
+  should be used with extreme caution, as joining dfms with different 
+  documents will result in a new row with the docname(s) of the first dfm, 
+  merging in those from the second.  Furthermore, if features are shared 
+  between the dfms being cbinded, then duplicate feature labels will result. 
+  In both instances, warning messages will result.
     <code>rbind(x, y, ...)</code> combines dfm objects by rows, returning a dfm
   object with combined features from input dfm objects.  Features are matched
   between the two dfm objects, so that the order and names of the features
@@ -116,19 +118,43 @@ row-wise (<code>rbind</code>) to the first</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># cbind() for dfm objects</span>
-(<span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"This is one sample text sample"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (0% sparse).
-#&gt; 1 x 5 sparse Matrix of class "dfmSparse"
+(<span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='st'>"a b c d"</span>, <span class='st'>"c d e f"</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
+#&gt; 2 x 6 sparse Matrix of class "dfmSparse"
 #&gt;        features
-#&gt; docs    this is one sample text
-#&gt;   text1    1  1   1      2    1</div><div class='input'>(<span class='no'>dfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"More words here"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 3 features (0% sparse).
-#&gt; 1 x 3 sparse Matrix of class "dfmSparse"
+#&gt; docs    a b c d e f
+#&gt;   text1 1 1 1 1 0 0
+#&gt;   text2 0 0 1 1 1 1</div><div class='input'>(<span class='no'>dfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='st'>"a b"</span>, <span class='st'>"x y z"</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50% sparse).
+#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
 #&gt;        features
-#&gt; docs    more words here
-#&gt;   text1    1     1    1</div><div class='input'><span class='fu'>cbind</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 8 features (0% sparse).
-#&gt; 1 x 8 sparse Matrix of class "dfmSparse"
+#&gt; docs    a b x y z
+#&gt;   text1 1 1 0 0 0
+#&gt;   text2 0 0 1 1 1</div><div class='input'><span class='fu'>cbind</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cbinding dfms with overlapping features will result in duplicated features</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (40.9% sparse).
+#&gt; 2 x 11 sparse Matrix of class "dfmSparse"
 #&gt;        features
-#&gt; docs    this is one sample text more words here
-#&gt;   text1    1  1   1      2    1    1     1    1</div><div class='input'>
+#&gt; docs    a b c d e f a b x y z
+#&gt;   text1 1 1 1 1 0 0 1 1 0 0 0
+#&gt;   text2 0 0 1 1 1 1 0 0 1 1 1</div><div class='input'><span class='fu'>cbind</span>(<span class='no'>dfm1</span>, <span class='fl'>100</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
+#&gt; 2 x 7 sparse Matrix of class "dfmSparse"
+#&gt;        features
+#&gt; docs    a b c d e f feat
+#&gt;   text1 1 1 1 1 0 0  100
+#&gt;   text2 0 0 1 1 1 1  100</div><div class='input'><span class='fu'>cbind</span>(<span class='fl'>100</span>, <span class='no'>dfm1</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
+#&gt; 2 x 7 sparse Matrix of class "dfmSparse"
+#&gt;        features
+#&gt; docs    feat a b c d e f
+#&gt;   text1  100 1 1 1 1 0 0
+#&gt;   text2  100 0 0 1 1 1 1</div><div class='input'><span class='fu'>cbind</span>(<span class='no'>dfm1</span>, <span class='fu'>matrix</span>(<span class='fu'>c</span>(<span class='fl'>101</span>, <span class='fl'>102</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
+#&gt; 2 x 7 sparse Matrix of class "dfmSparse"
+#&gt;        features
+#&gt; docs    a b c d e f feat
+#&gt;   text1 1 1 1 1 0 0  101
+#&gt;   text2 0 0 1 1 1 1  102</div><div class='input'><span class='fu'>cbind</span>(<span class='fu'>matrix</span>(<span class='fu'>c</span>(<span class='fl'>101</span>, <span class='fl'>102</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>), <span class='no'>dfm1</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
+#&gt; 2 x 7 sparse Matrix of class "dfmSparse"
+#&gt;        features
+#&gt; docs    feat a b c d e f
+#&gt;   text1  101 1 1 1 1 0 0
+#&gt;   text2  102 0 0 1 1 1 1</div><div class='input'>
+
 <span class='co'># rbind() for dfm objects</span>
 (<span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"This is one sample text sample."</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 6 features (0% sparse).
 #&gt; 1 x 6 sparse Matrix of class "dfmSparse"

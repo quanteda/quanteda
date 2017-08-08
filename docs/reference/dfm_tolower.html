@@ -139,7 +139,19 @@ all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
 #&gt;   text2 2 1 2</div><div class='input'>
 <span class='co'># for a feature co-occurrence matrix</span>
 <span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"b A A d"</span>, <span class='st'>"C C a b B e"</span>)),
-             <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>myfcm</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'myfcm' not found</span></div><div class='input'><span class='fu'>fcm_tolower</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_tolower(myfcm): object 'myfcm' not found</span></div><div class='input'><span class='fu'>fcm_toupper</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_toupper(myfcm): object 'myfcm' not found</span></div></pre>
+             <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)
+<span class='no'>myfcm</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 7 by 7 features.
+#&gt; 7 x 7 sparse Matrix of class "fcm"
+#&gt;         features
+#&gt; features b A d C a B e
+#&gt;        b 0 2 1 2 1 1 1
+#&gt;        A . 1 2 . . . .
+#&gt;        d . . 0 . . . .
+#&gt;        C . . . 1 2 2 2
+#&gt;        a . . . . 0 1 1
+#&gt;        B . . . . . 0 1
+#&gt;        e . . . . . . 0</div><div class='input'><span class='fu'>fcm_tolower</span>(<span class='no'>myfcm</span>)
+<span class='fu'>fcm_toupper</span>(<span class='no'>myfcm</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -84,7 +84,7 @@ object.</p>
 
     <pre class="usage"><span class='fu'>tokens_lookup</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>,
   <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>,
-  <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
+  <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -100,12 +100,12 @@ object.</p>
     </tr>
     <tr>
       <th>levels</th>
-      <td><p>integers specifying the levels of entries in a hierarchical
+      <td><p>integers specifying the levels of entries in a hierarchical 
 dictionary that will be applied.  The top level is 1, and subsequent levels
-describe lower nesting levels.  Values may be combined, even if these
-levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second
-level into the first, but record the third level (if present) collapsed below
-the first.  (See examples.)</p></td>
+describe lower nesting levels.  Values may be combined, even if these 
+levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second 
+level into the first, but record the third level (if present) collapsed
+below the first.  (See examples.)</p></td>
     </tr>
     <tr>
       <th>valuetype</th>
@@ -130,6 +130,12 @@ otherwise, replace values in dictionary with keys while leaving other
 features unaffected</p></td>
     </tr>
     <tr>
+      <th>nomatch</th>
+      <td><p>an optional character naming a new key for tokens that do not
+matched to a dictionary values  If <code>NULL</code> (default), do not record
+unmatched tokens.</p></td>
+    </tr>
+    <tr>
       <th>verbose</th>
       <td><p>print status messages if <code>TRUE</code></p></td>
     </tr>
@@ -141,7 +147,7 @@ features unaffected</p></td>
 <span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>,
                    <span class='kw'>law</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'law*'</span>, <span class='st'>'constitution'</span>),
                    <span class='kw'>freedom</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'free*'</span>, <span class='st'>'libert*'</span>)))
-<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'glob'</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 3 features (14.9% sparse).</div><div class='input'>
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'glob'</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 3 features (14.9% sparse).</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'glob'</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>'NONE'</span>))</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 4 features (11.2% sparse).</div><div class='input'>
 <span class='no'>dict_fix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>,
                        <span class='kw'>law</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'law'</span>, <span class='st'>'constitution'</span>),
                        <span class='kw'>freedom</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'freedom'</span>, <span class='st'>'liberty'</span>)))
@@ -192,7 +198,21 @@ features unaffected</p></td>
 #&gt; 
 #&gt; d2 :
 #&gt; [1] "Countries"   "Countries"   "oceans.west" "oceans.east"
-#&gt; </div></pre>
+#&gt; </div><div class='input'>
+<span class='co'># show unmatched tokens</span>
+<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>"_UNMATCHED"</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; d1 :
+#&gt;  [1] "_UNMATCHED"   "_UNMATCHED"   "US.Countries" "_UNMATCHED"   "_UNMATCHED"  
+#&gt;  [6] "US.oceans"    "_UNMATCHED"   "_UNMATCHED"   "_UNMATCHED"   "US.oceans"   
+#&gt; [11] "_UNMATCHED"   "_UNMATCHED"  
+#&gt; 
+#&gt; d2 :
+#&gt;  [1] "Europe.Countries"   "_UNMATCHED"         "Europe.Countries"  
+#&gt;  [4] "_UNMATCHED"         "_UNMATCHED"         "Europe.oceans.west"
+#&gt;  [7] "_UNMATCHED"         "_UNMATCHED"         "Europe.oceans.east"
+#&gt; [10] "_UNMATCHED"        
+#&gt; </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

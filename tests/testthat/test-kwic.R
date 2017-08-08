@@ -270,8 +270,8 @@ test_that("kwic works as expected with and without phrases", {
     list_bi <- list("a b", "g j")
     dict_uni <- dictionary(list(one = c("a", "b"), two = c("g", "j")))
     dict_bi <- dictionary(list(one = "a b", two = "g j"))
-    coll_bi <- textstat_collocations(toks_uni, method = "lr", size = 2)
-    coll_tri <- textstat_collocations(toks_uni, method = "lr", size = 3)[1, ]
+    coll_bi <- textstat_collocations(toks_uni, size = 2, min_count = 2)
+    coll_tri <- textstat_collocations(toks_uni, size = 3, min_count = 2)[1, ]
     
     expect_equal(
         kwic(txt, char_uni)$keyword,

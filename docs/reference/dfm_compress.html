@@ -164,21 +164,20 @@ document context.</p>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"The fox JUMPED over the dog."</span>,
          <span class='st'>"The dog jumped over the fox."</span>)
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>colnames</span>(<span class='no'>myfcm</span>) <span class='kw'>&lt;-</span> <span class='fu'>rownames</span>(<span class='no'>myfcm</span>) <span class='kw'>&lt;-</span> <span class='fu'>tolower</span>(<span class='fu'>colnames</span>(<span class='no'>myfcm</span>))
+<span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)
+<span class='fu'>colnames</span>(<span class='no'>myfcm</span>) <span class='kw'>&lt;-</span> <span class='fu'>rownames</span>(<span class='no'>myfcm</span>) <span class='kw'>&lt;-</span> <span class='fu'>tolower</span>(<span class='fu'>colnames</span>(<span class='no'>myfcm</span>))
 <span class='fu'>colnames</span>(<span class='no'>myfcm</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='fu'>rownames</span>(<span class='no'>myfcm</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='st'>"fox"</span>
-<span class='no'>myfcm</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 9 by 9 features.
-#&gt; 9 x 9 sparse Matrix of class "fcm"
+<span class='no'>myfcm</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 7 by 7 features.
+#&gt; 7 x 7 sparse Matrix of class "fcm"
 #&gt;         features
-#&gt; features a d a c fox d f e b
-#&gt;      a   . 2 1 2   1 . 1 1 1
-#&gt;      d   . . 1 2   2 . . . .
-#&gt;      a   . . 1 2   2 1 1 1 .
-#&gt;      c   . . . .   2 1 . 1 1
-#&gt;      fox . . . .   . 1 1 . 1
-#&gt;      d   . . . .   . . 1 1 1
-#&gt;      f   . . . .   . . . 1 1
-#&gt;      e   . . . .   . . . . 1
-#&gt;      b   . . . .   . . . . .</div><div class='input'><span class='fu'>fcm_compress</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_compress.fcm(myfcm): compress_fcm invalid if fcm was created with a window context</span></div></pre>
+#&gt; features the fox jumped over fox dog jumped
+#&gt;   the      0   2      1    2   2   2      1
+#&gt;   fox      .   0      1    2   2   2      1
+#&gt;   jumped   .   .      0    1   1   1      .
+#&gt;   over     .   .      .    0   2   2      1
+#&gt;   fox      .   .      .    .   0   2      1
+#&gt;   dog      .   .      .    .   .   0      1
+#&gt;   jumped   .   .      .    .   .   .      0</div><div class='input'><span class='fu'>fcm_compress</span>(<span class='no'>myfcm</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
