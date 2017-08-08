@@ -1,3 +1,16 @@
+#' deprecated function name for textstat_collocations
+#' 
+#' Use \code{\link{textstat_collocations}} instead.
+#' @param x a character, \link{corpus}, \link{tokens} object
+#' @param ... other arguments passed to  \code{\link{textstat_collocations}}
+#' @export
+#' @seealso \link{textstat_collocations}
+#' @keywords collocations internal deprecated
+collocations <- function(x,  ...) {
+    .Deprecated("textstat_collocations")
+    UseMethod("textstat_collocations")
+}
+
 #' identify and score multi-word expressions
 #' 
 #' Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.  
@@ -9,56 +22,69 @@
 #' @param x a character, \link{corpus}, or \link{tokens} object whose
 #'   collocations will be scored.  The tokens object should include punctuation,
 #'   and if any words have been removed, these should have been removed with
-#'   \code{padding = TRUE}
-#' @param method association measure for detecting collocations. Let \eqn{i}
-#'   index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to 
-#'   observed counts, and \eqn{m_{ij}} the expected counts in a collocations 
-#'   frequency table of dimensions \eqn{(J - size + 1)^2}.
-#'   
-#'   Available measures are computed as: 
-#'   
-#'   \describe{
-#'   \item{\code{"lambda"}}{log-linear coefficient for the full-ngram, similar to Blaheta and Johnson's (2001) method}
-#'   \item{\code{"lambda1"}}{unigram subtuples, alternative score from Blaheta and Johnson (2001)}
-#'   \item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as: \deqn{2 * \sum_i \sum_j ( n_{ij} * log 
-#'   \frac{n_{ij}}{m_{ij}} )} } 
-#'   \item{\code{"chi2"}}{Pearson's \eqn{\chi^2} statistic, computed as: 
-#'   \deqn{\sum_i \sum_j \frac{(n_{ij} - m_{ij})^2}{m_{ij}}} } 
-#'   \item{\code{"pmi"}}{point-wise mutual information 
-#'   score, computed as log \eqn{n_{11}/m_{11}}} 
-#'   \item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
-#   \item{\code{"gensim"}}{gensim score, coumputed as \eqn{(cnt(a, b) - min_count) * N / (cnt(a) * cnt(b))}}   
-#   \item{\code{"LFMD"}}{LFMD, computed as \eqn{log2(P(w1,w2)^2/P(w1)P(w2)) + log2(P(w1,w2))}}
-#'    }
+#'   \code{padding = TRUE}.  While identifying collocations for tokens objects is 
+#'   supported, you will get better results with character or corpus objects due
+#'   to relatively imperfect detection of sentence boundaries from texts already 
+#'   tokenized.
+#' @param method association measure for detecting collocations. Currently this 
+#' is limited to \code{"lambda"}.  See Details.
 #' @param size integer; the length of the collocations
 #'   to be scored
 #' @param min_count numeric; minimum frequency of collocations that will be scored
 #' @param smoothing numeric; a smoothing parameter added to the observed counts
 #'   (default is 0.5)
 #' @param tolower logical; if \code{TRUE}, form collocations as lower-cased combinations
-#' @param show_counts logical; if \code{TRUE}, output observed and expected counts
 #' @param ... additional arguments passed to \code{\link{tokens}}, if \code{x}
 #'   is not a \link{tokens} object already
 #' @references Blaheta, D., & Johnson, M. (2001). 
 #'   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
-#'    learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
+#'   learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
 #'   Computational Extraction, Analysis and Exploitation of Collocations.
-#'   
-#'   McInnes, B T. (2004). "Extending the Log Likelihood Measure to Improve 
-#'   Collocation Identification."  M.Sc. Thesis, University of Minnesota.
-#'   
-#'   A. Thanopoulos et al(2002), 
-#'   \href{http://www.lrec-conf.org/proceedings/lrec2002/pdf/128.pdf}{Comparative evaluation of collocations extraction metrics}
-#'   
-#'   gensim score,  
-#'   \href{https://radimrehurek.com/gensim/models/phrases.html#gensim.models.phrases.Phrases}{gensim models}
 #' @note 
-#' This function is under active development, and we aim to improve both its operation and 
-#' efficiency in the next release of \pkg{quanteda}.
+#' This function is under active development, with more measures to be added in the 
+#' the next release of \pkg{quanteda}.
+#' @details 
+#' The \code{lambda} computed for a size = \eqn{K}-word target multi-word
+#' expression the coefficient for the  \eqn{K}-way interaction parameter in the
+#' saturated log-linear model fitted to the counts of the terms forming the set
+#' of eligible multi-word expressions. This is the same as the "lambda" computed
+#' in Blaheta and Johnson's (2001), where all multi-word expressions are
+#' considered (rather than just verbs, as in that paper). The \code{z} is the 
+#' Wald \eqn{z}-statistic computed as the quotient of \code{lambda} and the Wald
+#' statistic for \code{lambda} as described below.
+#' 
+#' In detail:
+#' 
+#' Consider a \eqn{K}-word target expression \eqn{x}, and let \eqn{z} be any
+#' \eqn{K}-word expression. Define a comparison function \eqn{c(x,z)=(j_{1},
+#' \dots, j_{K})=c} such that the \eqn{k}th element of \eqn{c} is 1 if the
+#' \eqn{k}th word in \eqn{z} is equal to the \eqn{k}th word in \eqn{x}, and 0
+#' otherwise. Let \eqn{c_{i}=(j_{i1}, \dots, j_{iK})}, \eqn{i=1, \dots,
+#' 2^{K}=M}, be the possible values of \eqn{c(x,z)}, with \eqn{c_{M}=(1,1,
+#' \dots, 1)}. Consider the set of \eqn{c(x,z_{r})} across all expressions
+#' \eqn{z_{r}} in a corpus of text, and let \eqn{n_{i}}, for \eqn{i=1,\dots,M},
+#' denote the number of the \eqn{c(x,z_{r})} which equal \eqn{c_{i}}, plus the
+#' smoothing constant \code{smoothing}. The \eqn{n_{i}} are the counts in a
+#' \eqn{2^{K}} contingency table whose dimensions are defined by the
+#' \eqn{c_{i}}.
+#' 
+#' \eqn{\lambda}: The \eqn{K}-way interaction parameter in the saturated
+#' loglinear model fitted to the \eqn{n_{i}}. It can be calculated as
+#' 
+#' \deqn{\lambda  = \sum_{i=1}^{M} (-1)^{K-b_{i}} \log n_{i}}
+#' 
+#' where \eqn{b_{i}} is the number of the elements of \eqn{c_{i}} which are
+#' equal to 1.
+#' 
+#' Wald test \eqn{z}-statistic \eqn{z} is calculated as:
+#' 
+#' \deqn{z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}}
+#' 
 #' @return \code{textstat_collocations} returns a data.frame of collocations and their
 #'   scores and statistsics.
 #' @export
 #' @keywords textstat collocations experimental
+#' @author Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 #' @examples
 #' txts <- data_corpus_inaugural[1:2]
 #' head(cols <- textstat_collocations(txts, size = 2, min_count = 2), 10)
@@ -71,18 +97,18 @@
 #'                        case_insensitive = FALSE, padding = TRUE)
 #' seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
 #' head(seqs, 10)
-textstat_collocations <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5,  tolower = TRUE, show_counts = FALSE, ...) {
+textstat_collocations <- function(x, method = "lambda", size = 2, min_count = 1, smoothing = 0.5,  tolower = TRUE, ...) { #show_counts = FALSE, ...) {
     UseMethod("textstat_collocations")
 }
 
-VALID_SCORING_METHODS <- c("lambda", "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD")
+VALID_SCORING_METHODS <- c("lambda") #, "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD")
 
 #' @noRd
 #' @export
 #' @importFrom stats na.omit
-textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
+textstat_collocations.tokens <- function(x, method = "lambda", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, ...) { #show_counts = FALSE, ...) {
 
-    method <- match.arg(method, c("all", VALID_SCORING_METHODS))
+    method <- match.arg(method, VALID_SCORING_METHODS)
     if (any(!(size %in% 2:5)))
         stop("Only bigram, trigram, 4-gram and 5-gram collocations implemented so far.")
 
@@ -106,36 +132,36 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
     # sort by decreasing z
     result <- result[order(result[["z"]], decreasing = TRUE), ]
 
-    # compute statistics that require expected counts
-    if (method %in% c("all", "lr", "chi2", "pmi") | show_counts) {
-        # get observed counts and compute expected counts
-        # split the string into n00, n01, n10, etc
-        counts_n <- strsplit(result[, "observed_counts"], "_")
-        df_counts_n <- data.frame(t(sapply(counts_n, as.numeric)))
-        names(df_counts_n) <- make_count_names(size, "n")
-        # compute expected counts
-        df_counts_e <- get_expected_values(df_counts_n, size = size)
-        names(df_counts_e) <- make_count_names(size, "e")
-        # remove observed counts character
-        result <- result[, -which(names(result)=="observed_counts")]
-        
-        # "pmi_2", "chi2_2" and "G2_2" are verified, remove the result from cpp
-        result[c("pmi", "chi2", "G2")] <- NULL
-        
-        # recompute dice, pmi, G2, chi2
-        if (method %in% c("all", "lr"))
-            result["G2"] <- 2 * rowSums(df_counts_n * log(df_counts_n / df_counts_e))
-        if (method %in% c("all", "chi2"))
-            result["chi2"] <- rowSums((df_counts_n - df_counts_e)^2 / df_counts_e)
-        if (method %in% c("all", "pmi"))
-            result["pmi"] <- log(df_counts_n[[ncol(df_counts_n)]] / df_counts_e[[ncol(df_counts_e)]], base = 2)
-    }
+    # # compute statistics that require expected counts
+    # if (method %in% c("all", "lr", "chi2", "pmi") | show_counts) {
+    #     # get observed counts and compute expected counts
+    #     # split the string into n00, n01, n10, etc
+    #     counts_n <- strsplit(result[, "observed_counts"], "_")
+    #     df_counts_n <- data.frame(t(sapply(counts_n, as.numeric)))
+    #     names(df_counts_n) <- make_count_names(size, "n")
+    #     # compute expected counts
+    #     df_counts_e <- get_expected_values(df_counts_n, size = size)
+    #     names(df_counts_e) <- make_count_names(size, "e")
+    #     # remove observed counts character
+    #     result <- result[, -which(names(result)=="observed_counts")]
+    #     
+    #     # "pmi_2", "chi2_2" and "G2_2" are verified, remove the result from cpp
+    #     result[c("pmi", "chi2", "G2")] <- NULL
+    #     
+    #     # recompute dice, pmi, G2, chi2
+    #     if (method %in% c("all", "lr"))
+    #         result["G2"] <- 2 * rowSums(df_counts_n * log(df_counts_n / df_counts_e))
+    #     if (method %in% c("all", "chi2"))
+    #         result["chi2"] <- rowSums((df_counts_n - df_counts_e)^2 / df_counts_e)
+    #     if (method %in% c("all", "pmi"))
+    #         result["pmi"] <- log(df_counts_n[[ncol(df_counts_n)]] / df_counts_e[[ncol(df_counts_e)]], base = 2)
+    # }
 
     # remove other measures if not specified
-    if (method == "lambda" | method == "lambda1")
-        result[c("pmi", "chi2", "G2")] <- NULL
-    if (!method %in% c("lambda", "lambda1", "all"))
-        result[c("lambda", "lambda1", "sigma", "z")] <- NULL
+#    if (method == "lambda" | method == "lambda1")
+        result[c("pmi", "chi2", "G2", "sigma")] <- NULL
+    # if (!method %in% c("lambda", "lambda1", "all"))
+    #     result[c("lambda", "lambda1", "sigma", "z")] <- NULL
     #if (method == "chi2") result[c("pmi", "G2")] <- NULL
     #if (method == "lr") result[c("pmi", "chi2")] <- NULL
     #if (method == "pmi") result[c("G2", "chi2")] <- NULL
@@ -146,8 +172,8 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
                                      names(result)))]
     rownames(result) <- NULL
     
-    # add counts to output if requested
-    if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
+    # # add counts to output if requested
+    # if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
 
     # remove results whose counts are less than min_count
     result <- result[result$count >= min_count, ]
@@ -160,26 +186,26 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
 
 
 #' @export
-textstat_collocations.corpus <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
+textstat_collocations.corpus <- function(x, method = "lambda", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, ...) {
     # segment into units not including punctuation, to avoid identifying collocations that are not adjacent
     texts(x) <- paste(".", texts(x))
     # separate each line except those where the punctuation is a hyphen or apostrophe
     x <- corpus_segment(x, "tag", delimiter =  "[^\\P{P}#@'-]", valuetype = "regex")
     # tokenize the texts
     x <- tokens(x, ...)
-    textstat_collocations(x, method = method, size = size, min_count = min_count, smoothing = smoothing, tolower = tolower, show_counts = show_counts)
+    textstat_collocations(x, method = method, size = size, min_count = min_count, smoothing = smoothing, tolower = tolower)
 }
 
 #' @export
-textstat_collocations.character <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
+textstat_collocations.character <- function(x, method = "lambda", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, ...) {
     textstat_collocations(corpus(x), method = method, size = size, min_count = min_count, 
-                          smoothing = smoothing, tolower = tolower, show_counts = show_counts, ...)
+                          smoothing = smoothing, tolower = tolower, ...)
 }
 
 #' @export
-textstat_collocations.tokenizedTexts <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
+textstat_collocations.tokenizedTexts <- function(x, method = "lambda", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, ...) {
     textstat_collocations(as.tokens(x), method = method, size = size, min_count = min_count, 
-                          smoothing = smoothing, tolower = tolower, show_counts = FALSE)
+                          smoothing = smoothing, tolower = tolower)
 }
 
 
@@ -258,4 +284,6 @@ get_expected_values <- function(df, size) {
     
     data.frame(t(expected_counts_list))
 }
+
+
 

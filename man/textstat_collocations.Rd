@@ -5,8 +5,8 @@
 \alias{is.collocations}
 \title{identify and score multi-word expressions}
 \usage{
-textstat_collocations(x, method = "all", size = 2, min_count = 1,
-  smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...)
+textstat_collocations(x, method = "lambda", size = 2, min_count = 1,
+  smoothing = 0.5, tolower = TRUE, ...)
 
 is.collocations(x)
 }
@@ -14,26 +14,13 @@ is.collocations(x)
 \item{x}{a character, \link{corpus}, or \link{tokens} object whose
 collocations will be scored.  The tokens object should include punctuation,
 and if any words have been removed, these should have been removed with
-\code{padding = TRUE}}
+\code{padding = TRUE}.  While identifying collocations for tokens objects is 
+supported, you will get better results with character or corpus objects due
+to relatively imperfect detection of sentence boundaries from texts already 
+tokenized.}
 
-\item{method}{association measure for detecting collocations. Let \eqn{i}
-index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to 
-observed counts, and \eqn{m_{ij}} the expected counts in a collocations 
-frequency table of dimensions \eqn{(J - size + 1)^2}.
-
-Available measures are computed as: 
-
-\describe{
-\item{\code{"lambda"}}{log-linear coefficient for the full-ngram, similar to Blaheta and Johnson's (2001) method}
-\item{\code{"lambda1"}}{unigram subtuples, alternative score from Blaheta and Johnson (2001)}
-\item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as: \deqn{2 * \sum_i \sum_j ( n_{ij} * log 
-\frac{n_{ij}}{m_{ij}} )} } 
-\item{\code{"chi2"}}{Pearson's \eqn{\chi^2} statistic, computed as: 
-\deqn{\sum_i \sum_j \frac{(n_{ij} - m_{ij})^2}{m_{ij}}} } 
-\item{\code{"pmi"}}{point-wise mutual information 
-score, computed as log \eqn{n_{11}/m_{11}}} 
-\item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
- }}
+\item{method}{association measure for detecting collocations. Currently this 
+is limited to \code{"lambda"}.  See Details.}
 
 \item{size}{integer; the length of the collocations
 to be scored}
@@ -44,8 +31,6 @@ to be scored}
 (default is 0.5)}
 
 \item{tolower}{logical; if \code{TRUE}, form collocations as lower-cased combinations}
-
-\item{show_counts}{logical; if \code{TRUE}, output observed and expected counts}
 
 \item{...}{additional arguments passed to \code{\link{tokens}}, if \code{x}
 is not a \link{tokens} object already}
@@ -65,10 +50,47 @@ Documents are grouped for the purposes of scoring, but collocations will not spa
 If \code{x} is a \link{tokens} object and some tokens have been removed, this should be done
 using \code{\link{tokens_remove}(x, pattern, padding = TRUE)} so that counts will still be
 accurate, but the pads will prevent those collocations from being scored.
+
+
+The \code{lambda} computed for a size = \eqn{K}-word target multi-word
+expression the coefficient for the  \eqn{K}-way interaction parameter in the
+saturated log-linear model fitted to the counts of the terms forming the set
+of eligible multi-word expressions. This is the same as the "lambda" computed
+in Blaheta and Johnson's (2001), where all multi-word expressions are
+considered (rather than just verbs, as in that paper). The \code{z} is the 
+Wald \eqn{z}-statistic computed as the quotient of \code{lambda} and the Wald
+statistic for \code{lambda} as described below.
+
+In detail:
+
+Consider a \eqn{K}-word target expression \eqn{x}, and let \eqn{z} be any
+\eqn{K}-word expression. Define a comparison function \eqn{c(x,z)=(j_{1},
+\dots, j_{K})=c} such that the \eqn{k}th element of \eqn{c} is 1 if the
+\eqn{k}th word in \eqn{z} is equal to the \eqn{k}th word in \eqn{x}, and 0
+otherwise. Let \eqn{c_{i}=(j_{i1}, \dots, j_{iK})}, \eqn{i=1, \dots,
+2^{K}=M}, be the possible values of \eqn{c(x,z)}, with \eqn{c_{M}=(1,1,
+\dots, 1)}. Consider the set of \eqn{c(x,z_{r})} across all expressions
+\eqn{z_{r}} in a corpus of text, and let \eqn{n_{i}}, for \eqn{i=1,\dots,M},
+denote the number of the \eqn{c(x,z_{r})} which equal \eqn{c_{i}}, plus the
+smoothing constant \code{smoothing}. The \eqn{n_{i}} are the counts in a
+\eqn{2^{K}} contingency table whose dimensions are defined by the
+\eqn{c_{i}}.
+
+\eqn{\lambda}: The \eqn{K}-way interaction parameter in the saturated
+loglinear model fitted to the \eqn{n_{i}}. It can be calculated as
+
+\deqn{\lambda  = \sum_{i=1}^{M} (-1)^{K-b_{i}} \log n_{i}}
+
+where \eqn{b_{i}} is the number of the elements of \eqn{c_{i}} which are
+equal to 1.
+
+Wald test \eqn{z}-statistic \eqn{z} is calculated as:
+
+\deqn{z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}}
 }
 \note{
-This function is under active development, and we aim to improve both its operation and 
-efficiency in the next release of \pkg{quanteda}.
+This function is under active development, with more measures to be added in the 
+the next release of \pkg{quanteda}.
 }
 \examples{
 txts <- data_corpus_inaugural[1:2]
@@ -86,17 +108,11 @@ head(seqs, 10)
 \references{
 Blaheta, D., & Johnson, M. (2001). 
   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
-   learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
+  learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
   Computational Extraction, Analysis and Exploitation of Collocations.
-  
-  McInnes, B T. (2004). "Extending the Log Likelihood Measure to Improve 
-  Collocation Identification."  M.Sc. Thesis, University of Minnesota.
-  
-  A. Thanopoulos et al(2002), 
-  \href{http://www.lrec-conf.org/proceedings/lrec2002/pdf/128.pdf}{Comparative evaluation of collocations extraction metrics}
-  
-  gensim score,  
-  \href{https://radimrehurek.com/gensim/models/phrases.html#gensim.models.phrases.Phrases}{gensim models}
+}
+\author{
+Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 }
 \keyword{collocations}
 \keyword{experimental}
