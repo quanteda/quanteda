@@ -89,7 +89,8 @@ the document).</p>
 
     <pre class="usage"><span class='fu'>dfm_lookup</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
+  <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -127,6 +128,12 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
       <th>capkeys</th>
       <td><p>if <code>TRUE</code>, convert dictionary keys to uppercase to
 distinguish them from other features</p></td>
+    </tr>
+    <tr>
+      <th>nomatch</th>
+      <td><p>an optional character naming a new feature that will contain 
+the counts of features of <code>x</code> not matched to a dictionary key.  If 
+<code>NULL</code> (default), do not tabulate unmatched features.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -197,7 +204,15 @@ distinguish them from other features</p></td>
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
 #&gt;   text1         1          1       0        0       0
-#&gt;   text2         0          0       0        0       2</div></pre>
+#&gt;   text2         0          0       0        0       2</div><div class='input'>
+<span class='co'># show unmatched tokens</span>
+<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>"_UNMATCHED"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
+#&gt; 2 x 6 sparse Matrix of class "dfmSparse"
+#&gt;        features
+#&gt; docs    christmas opposition taxglob taxregex country _UNMATCHED
+#&gt;   text1         1          1       1        0       0          3
+#&gt;   text2         0          0       1        0       2          2</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

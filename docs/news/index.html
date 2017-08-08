@@ -89,15 +89,7 @@
 <h3 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New features</h3>
 <ul>
-<li>Improvements to <code><a href="../reference/sequences.html">sequences()</a></code> and the <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code> which calls it:
-<ul>
-<li>Implemented <code>lambda</code> and <code>lambda1</code> collocation methods based on Blaheta and Johnson’s (2001) in <code><a href="../reference/sequences.html">sequences()</a></code>(#753)</li>
-<li>Added new argument to <code><a href="../reference/sequences.html">sequences()</a></code>: <code>method = c("lambda", "lambda1")</code> to apply unigram subtuples and all subtuples algorithm.</li>
-<li>Added new methods to argument <code>method</code> in <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>: <code>method = c("lambda", "lambda1", ...)</code> to apply unigram subtuples and all subtuples algorithm.</li>
-<li>Added new argument to <code><a href="../reference/sequences.html">sequences()</a></code>: <code>smoothing = 0.5</code> as a continuity correction for small counts; this also avoids overflow problems with zero counts.</li>
-<li>More statistics returned from <code>sequences_mt.cpp</code>: <code>dice</code>,<code>G2</code>,<code>pmi</code> and <code>chi2</code> This function is still under development and likely to change further.</li>
-</ul>
-</li>
+<li>Improvements and consoldiation of methods for detecting multi-word expressions, now active only through <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, which computes only the <code>lambda</code> method for now, but does so accurately and efficiently. (#753, #803). This function is still under development and likely to change further.</li>
 <li>Added new <code>quanteda_options</code> that affect the maximum documents and features displayed by the dfm print method (#756).</li>
 <li>
 <code>ngram</code> formation is now significantly faster, including with skips (skipgrams).</li>
@@ -111,28 +103,37 @@
 <li>
 <code><a href="../reference/corpus.html">corpus.Corpus()</a></code> for creating a corpus from a <strong>tm</strong> Corpus now works with more complex objects that include document-level variables, such as data from the <strong>manifestoR</strong> package (#849).</li>
 <li>New plot function <code><a href="../reference/textplot_keyness.html">textplot_keyness()</a></code> plots term “keyness”, the association of words with contrasting classes as measured by <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code>.</li>
+<li>Added corpus constructor for corpus objects (#690).</li>
+<li>Added dictionary constructor for dictionary objects (#690).</li>
+<li>Added a tokens constructor for tokens objects (#690), including updates to <code><a href="../reference/tokens.html">tokens()</a></code> that improve the consistency and efficiency of the tokenization.</li>
+<li>Added new <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>: <code>language_stemmer</code> and <code>language_stopwords</code>, now used for default in <code>*_wordstem</code> functions and <code><a href="../reference/stopwords.html">stopwords()</a></code> for defaults, respectively. Also uses this option in <code><a href="../reference/dfm.html">dfm()</a></code> when <code>stem = TRUE</code>, rather than hard-wiring in the “english” stemmer (#386).</li>
+<li>Added a new function <code><a href="../reference/textstat_frequency.html">textstat_frequency()</a></code> to compile feature frequencies, possibly by groups. (#825)</li>
+<li>Added <code>nomatch</code> option to <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> and <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code>, to provide tokens or feature counts for categories not matched to any dictionary key. (#496)</li>
 </ul>
 </div>
 <div id="behaviour-changes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#behaviour-changes" class="anchor"></a>Behaviour changes</h3>
 <ul>
-<li>For <code><a href="../reference/sequences.html">sequences()</a></code>:</li>
-<li>Removed arguments from <code><a href="../reference/sequences.html">sequences()</a></code>: <code>features</code>, <code>case_insensitive</code> and <code>valuetype</code>, the function can be fully replaced by <code><a href="../reference/tokens_select.html">tokens_select()</a></code>.</li>
-<li>Removed arguments from <code><a href="../reference/sequences.html">sequences()</a></code>: <code>ordered</code> and <code>nested</code>.</li>
+<li>The functions <code><a href="../reference/collocations.html">sequences()</a></code> and <code><a href="../reference/collocations.html">collocations()</a></code> have been removed and replaced by <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>.</li>
 <li>(Finally) we added “will” to the list of English stopwords (#818).</li>
 <li>
 <code>dfm</code> objects with one or both dimensions haveing zero length, and empty <code>kwic</code> objects now display more appropriately in their print methods (per #811).</li>
 <li>Pattern matches are now implemented more consistently across functions. In functions such as <code>*_select</code>, <code>*_remove</code>, <code>tokens_compound</code>, <code>features</code> has been replaced by <code>pattern</code>, and in <code>kwic</code>, <code>keywords</code> has been replaced by <code>pattern</code>. These all behave consistently with respect to <code>pattern</code>, which now has a unified single help page and parameter description.(#839) See also above new features related to <code><a href="../reference/phrase.html">phrase()</a></code>.</li>
 <li>We have improved the performance of the C++ routines that handle many of the <code>tokens_*</code> functions using hashed tokens, making some of them 10x faster (#853).</li>
-<li>Upgrades to the <code><a href="../reference/dfm_compress.html">dfm_group()</a></code> function now allow “empty” documents to be created using the <code>fill = TRUE</code> option, for making documents conform to a selection (similar to how <code><a href="../reference/dfm_select.html">dfm_select()</a></code> works for features, when supplied a dfm as the pattern argument). The <code>groups</code> argument now behaves consistently across the functions where it is used. (#854)</li>
+<li>Upgrades to the <code><a href="../reference/dfm_group.html">dfm_group()</a></code> function now allow “empty” documents to be created using the <code>fill = TRUE</code> option, for making documents conform to a selection (similar to how <code><a href="../reference/dfm_select.html">dfm_select()</a></code> works for features, when supplied a dfm as the pattern argument). The <code>groups</code> argument now behaves consistently across the functions where it is used. (#854)</li>
+<li>
+<code><a href="../reference/dictionary.html">dictionary()</a></code> now requires its main argument to be a list, not a series of elements that can be used to build a list.</li>
+<li>Some changes to the behaviour of <code><a href="../reference/tokens.html">tokens()</a></code> have improved the behaviour of <code>remove_hyphens = FALSE</code>, which now behaves more correctly regardless of the setting of <code>remove_punct</code> (#887).</li>
+<li>Improved <code><a href="../reference/cbind.dfm.html">cbind.dfm()</a></code> function allows cbinding vectors, matrixes, and (recyclable) scalars to dfm objects.</li>
 </ul>
 </div>
 <div id="bug-fixes-and-stability-enhancements" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h3>
 <ul>
-<li>For <code><a href="../reference/sequences.html">sequences()</a></code>: Corrected the word matching, and lambda and sigma calculation methods for <code>unigram subtuples</code> algorithm in <code>sequences_mt.cpp</code>, and consequently the p-values on the bigrams are correct.</li>
+<li>For the underlying methods behind <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, we corrected the word matching, and lambda and z calculation methods, which were slightly incorrect before. We also removed the chi2, G2, and pmi statistics, because these were incorrectly calculated for size &gt; 2.<br>
+</li>
 <li>LIWC-formatted dictionary import now robust to assignment to term assignment to missing categories.</li>
 <li>
 <code><a href="../reference/textmodel_NB.html">textmodel_NB(x, y, distribution = "Bernoulli")</a></code> was previously inactive even when this option was set. It has now been fully implemented and tested (#776, #780).</li>
@@ -143,6 +144,7 @@
 <li>Fixed mistakes in the computation of two docfreq schemes: <code>"logave"</code> and <code>"inverseprob"</code>.</li>
 <li>Fixed a bug in the handling of multi-thread options where the settings using <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> did not actually set the number of threads. In addition, we fixed a bug causing threading to be turned off on macOS (due to a check for a gcc version that is not used for compiling the macOS binaries) prevented multi-threading from being used at all on that platform.</li>
 <li>Fixed a bug causing failure when functions that use <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> are called without the namespace or package being attached or loaded (#864).</li>
+<li>Fixed a bug in overloading the View method that caused all named objects in the RStudio/Source pane to be named “x”. (#893)</li>
 </ul>
 </div>
 </div>
@@ -156,7 +158,7 @@
 <li>Corpus construction using <code><a href="../reference/corpus.html">corpus()</a></code> now works for a <code>tm::SimpleCorpus</code> object. (#680)</li>
 <li>Added <code><a href="../reference/corpus_trim.html">corpus_trim()</a></code> and <code><a href="../reference/corpus_trim.html">char_trim()</a></code> functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.</li>
 <li>Conversion of a dfm to an stm object now passes docvars through in the <code>$meta</code> of the return object.</li>
-<li>New <code><a href="../reference/dfm_compress.html">dfm_group(x, groups = )</a></code> command, a convenience wrapper around <code>dfm.dfm(x, groups = )</code> (#725).</li>
+<li>New <code><a href="../reference/dfm_group.html">dfm_group(x, groups = )</a></code> command, a convenience wrapper around <code>dfm.dfm(x, groups = )</code> (#725).</li>
 <li>Methods for extending quanteda functions to readtext objects updated to match CRAN release of readtext package.</li>
 <li>Corpus constructor methods for data.frame objects now conform to the “text interchange format” for corpus data.frames, automatically recognizing <code>doc_id</code> and <code>text</code> fields, which also provides interoperability with the <strong>readtext</strong> package. corpus construction methods are now more explicitly tailored to input object classes.</li>
 </ul>
@@ -215,7 +217,7 @@
 <li>Added functions <code><a href="../reference/corpus_trimsentences.html">corpus_trimsentences()</a></code> and <code><a href="../reference/corpus_trimsentences.html">char_trimsentences()</a></code> to remove sentences from a corpus or character object, based on token length or pattern matching.</li>
 <li>Added options to <code><a href="../reference/textstat_readability.html">textstat_readability()</a></code>: <code>min_sentence_length</code> and <code>max_sentence_length</code>. (#632)</li>
 <li>Indexing now works for dictionaries, for slicing out keys and values (<code>[</code>), or accessing values directly (<code>[[</code>). (#651)</li>
-<li>Began the consolidation of collocation detection and scoring into a new function <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, which combines the existing <code><a href="../reference/collocations.html">collocations()</a></code> and <code><a href="../reference/sequences.html">sequences()</a></code> functions. (#434) Collocations now behave as sequences for other functions (such as <code><a href="../reference/tokens_compound.html">tokens_compound()</a></code>) and have a greatly improved performance for such uses.</li>
+<li>Began the consolidation of collocation detection and scoring into a new function <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, which combines the existing <code><a href="../reference/collocations.html">collocations()</a></code> and <code><a href="../reference/collocations.html">sequences()</a></code> functions. (#434) Collocations now behave as sequences for other functions (such as <code><a href="../reference/tokens_compound.html">tokens_compound()</a></code>) and have a greatly improved performance for such uses.</li>
 </ul>
 </div>
 <div id="behaviour-changes-1" class="section level3">
@@ -309,7 +311,7 @@
 </li>
 <li>Improved the <code>groups</code> argument in <code><a href="../reference/texts.html">texts()</a></code> (and in <code><a href="../reference/dfm.html">dfm()</a></code> that uses this function), which will now coerce to a factor rather than requiring one.</li>
 <li>Added a dfm constructor from dfm objects, with the option of collapsing by groups.</li>
-<li>Added new arguments to <code><a href="../reference/sequences.html">sequences()</a></code>: <code>ordered</code> and <code>max_length</code>, the latter to prevent memory leaks from extremely long sequences.<br>
+<li>Added new arguments to <code><a href="../reference/collocations.html">sequences()</a></code>: <code>ordered</code> and <code>max_length</code>, the latter to prevent memory leaks from extremely long sequences.<br>
 </li>
 <li>
 <code><a href="../reference/dictionary.html">dictionary()</a></code> now accepts YAML as an input file format.</li>

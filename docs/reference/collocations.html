@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>detect collocations from text — collocations • quanteda</title>
+<title>deprecated function names for textstat_collocations — collocations • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -74,20 +74,16 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>detect collocations from text</h1>
+    <h1>deprecated function names for textstat_collocations</h1>
     </div>
 
     
-    <p>Detects collocations from texts or a corpus, returning a data.frame of
-collocations and their scores, sorted in descending order of the association
-measure.  Words separated by punctuation delimiters are not counted by
-default (<code>spanPunct = FALSE</code>)  as adjacent and hence are not eligible to
-be collocations.</p>
+    <p>Use <code><a href='textstat_collocations.html'>textstat_collocations</a></code> instead.</p>
     
 
-    <pre class="usage"><span class='fu'>collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lr"</span>, <span class='st'>"chi2"</span>, <span class='st'>"pmi"</span>, <span class='st'>"dice"</span>, <span class='st'>"all"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"dontspan"</span>, <span class='st'>"ignore"</span>,
-  <span class='st'>"include"</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>collocations</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>sequences</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -97,109 +93,24 @@ be collocations.</p>
       <td><p>a character, <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a> object</p></td>
     </tr>
     <tr>
-      <th>method</th>
-      <td><p>association measure for detecting collocations.  Let \(i\) 
-index documents, and \(j\) index features, \(n_{ij}\) refers to 
-observed counts, and \(m_{ij}\) the expected counts in a collocations 
-frequency table of dimensions \((J - size + 1)^2\). Available measures 
-are computed as:</p><dl class='dl-horizontal'>
-<dt><code>"lr"</code></dt><dd><p>The likelihood ratio 
-statistic \(G^2\), computed as: $$2 * \sum_i \sum_j ( n_{ij} * log 
-\frac{n_{ij}}{m_{ij}} )$$</p></dd> <dt><code>"chi2"</code></dt><dd><p>Pearson's \(\chi^2\) 
-statistic, computed as: $$\sum_i \sum_j \frac{(n_{ij} - 
-m_{ij})^2}{m_{ij}}$$</p></dd> <dt><code>"pmi"</code></dt><dd><p>point-wise mutual information 
-score, computed as log \(n_{11}/m_{11}\)</p></dd> <dt><code>"dice"</code></dt><dd><p>the Dice 
-coefficient, computed as \(n_{11}/n_{1.} + n_{.1}\)</p></dd> 
-<dt><code>"all"</code></dt><dd><p>returns all of the above</p></dd> </dl></td>
-    </tr>
-    <tr>
-      <th>size</th>
-      <td><p>length of the collocation.  Only bigram (<code>n=2</code>) and trigram 
-(<code>n=3</code>) collocations are currently implemented.  Can be <code>c(2,3)</code>
-(or <code>2:3</code>) to return both bi- and tri-gram collocations.</p></td>
-    </tr>
-    <tr>
-      <th>n</th>
-      <td><p>the number of collocations to return, sorted in descending order of 
-the requested statistic, or \(G^2\) if none is specified.</p></td>
-    </tr>
-    <tr>
-      <th>tolower</th>
-      <td><p>convert collocations to lower case if <code>TRUE</code> (default)</p></td>
-    </tr>
-    <tr>
-      <th>punctuation</th>
-      <td><p>how to handle tokens separated by punctuation characters.  Options are:</p><dl class='dl-horizontal'>
-<dt><code>dontspan</code></dt><dd><p>do not form collocations from tokens separated by punctuation characters (default)</p></dd>
-<dt><code>ignore</code></dt><dd><p>ignore punctuation characters when forming collocations, meaning that collocations will 
-include those separated by punctuation characters in the text.  The punctuation characters themselves are not
-returned.</p></dd>
-<dt><code>include</code></dt><dd><p>do not treat punctuation characters specially, meaning that collocations will include
-punctuation characters as tokens</p></dd>
-</dl></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>additional parameters passed to <code><a href='tokens.html'>tokens</a></code></p></td>
+      <td><p>other arguments passed to  <code><a href='textstat_collocations.html'>textstat_collocations</a></code></p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>a collocations class object: a specially classed data.table consisting 
-  of collocations, their frequencies, and the computed association measure(s).</p>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>McInnes, B T. 2004. "Extending the Log Likelihood Measure to 
-  Improve Collocation Identification."  M.Sc. Thesis, University of 
-  Minnesota.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='tokens_ngrams.html'>tokens_ngrams</a></p>
+    <p><a href='textstat_collocations.html'>textstat_collocations</a></p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"This is software testing: looking for (word) pairs!  
-           This [is] a software testing again. For."</span>,
-           <span class='st'>"Here: this is more Software Testing, looking again for word pairs."</span>)
-  <span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"dontspan"</span>) <span class='co'># default</span>
-  <span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"dontspan"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)  <span class='co'># includes "testing looking"</span>
-  <span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"ignore"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)    <span class='co'># same as previous </span>
-  <span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='st'>"include"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)  <span class='co'># keep punctuation as tokens</span>
-
-  <span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>)
-  <span class='fu'><a href='removeFeatures.html'>removeFeatures</a></span>(<span class='fu'>collocations</span>(<span class='no'>txt</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>), <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
-
-  <span class='fu'>collocations</span>(<span class='st'>"@textasdata We really, really love the #quanteda package - thanks!!"</span>)
-  <span class='fu'>collocations</span>(<span class='st'>"@textasdata We really, really love the #quanteda package - thanks!!"</span>,
-                <span class='kw'>remove_twitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-  <span class='fu'>collocations</span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>49</span>:<span class='fl'>57</span>], <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-  <span class='fu'>collocations</span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>49</span>:<span class='fl'>57</span>], <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-  <span class='fu'>collocations</span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>49</span>:<span class='fl'>57</span>], <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"chi2"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-  <span class='fu'>collocations</span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>1980</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pmi"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#references">References</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    
-Kenneth Benoit
+          </ul>
 
   </div>
 </div>

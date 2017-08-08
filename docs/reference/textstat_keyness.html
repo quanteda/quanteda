@@ -155,29 +155,29 @@ measures has no effect and produces a warning.</p></td>
 <span class='fu'>head</span>(<span class='no'>mydfm</span>) <span class='co'># make sure 'post-war' is in the first row</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9,357 features (34.9% sparse).
 #&gt; (showing first 2 documents and first 6 features)
 #&gt;           features
-#&gt; docs       chief justice    , mr    . vice
-#&gt;   post-war    12      40 2194 25 1804   15
-#&gt;   pre-war     24      97 4832  6 3141    2</div><div class='input'><span class='fu'>head</span>(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>mydfm</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;               chi2 p n_target n_reference
-#&gt; we        701.9371 0      960         779
-#&gt; -         395.1029 0      450         312
-#&gt; .         226.6128 0     1804        3141
-#&gt; our       187.8002 0      874        1307
-#&gt; us        185.9959 0      262         216
-#&gt; :         178.1175 0      105          29
-#&gt; america   176.5995 0      130          54
-#&gt; world     175.1212 0      188         123
-#&gt; americans 150.6399 0       67           7
-#&gt; new       141.3576 0      150          97</div><div class='input'><span class='fu'>tail</span>(<span class='no'>result</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;                    chi2            p n_target n_reference
-#&gt; upon          -51.91683 5.789813e-13       39         332
-#&gt; it            -52.70987 3.866907e-13      257        1132
-#&gt; public        -55.99591 7.260859e-14       11         213
-#&gt; states        -59.13492 1.476597e-14       28         305
-#&gt; constitution  -61.17021 5.218048e-15        6         200
-#&gt; be            -72.23208 0.000000e+00      257        1224
-#&gt; should        -83.11275 0.000000e+00       15         309
-#&gt; which        -160.15966 0.000000e+00       95         911
-#&gt; of           -179.22512 0.000000e+00     1437        5666
-#&gt; the          -299.92925 0.000000e+00     1988        8094</div><div class='input'>
+#&gt; docs       fellow-citizens   of  the senate  and house
+#&gt;   pre-war               39 5666 8094     13 3854     8
+#&gt;   post-war               0 1437 1988      2 1456     3</div><div class='input'><span class='fu'>head</span>(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>mydfm</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                   chi2            p n_target n_reference
+#&gt; the          299.92925 0.000000e+00     8094        1988
+#&gt; of           179.22512 0.000000e+00     5666        1437
+#&gt; which        160.15966 0.000000e+00      911          95
+#&gt; should        83.11275 0.000000e+00      309          15
+#&gt; be            72.23208 0.000000e+00     1224         257
+#&gt; constitution  61.17021 5.218048e-15      200           6
+#&gt; states        59.13492 1.476597e-14      305          28
+#&gt; public        55.99591 7.260859e-14      213          11
+#&gt; it            52.70987 3.866907e-13     1132         257
+#&gt; upon          51.91683 5.789813e-13      332          39</div><div class='input'><span class='fu'>tail</span>(<span class='no'>result</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;                chi2 p n_target n_reference
+#&gt; new       -141.3576 0       97         150
+#&gt; americans -150.6399 0        7          67
+#&gt; world     -175.1212 0      123         188
+#&gt; america   -176.5995 0       54         130
+#&gt; :         -178.1175 0       29         105
+#&gt; us        -185.9959 0      216         262
+#&gt; our       -187.8002 0     1307         874
+#&gt; .         -226.6128 0     3141        1804
+#&gt; -         -395.1029 0      312         450
+#&gt; we        -701.9371 0      779         960</div><div class='input'>
 <span class='co'># compare pre- v. post-war terms using logical vector</span>
 <span class='no'>mydfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)
 <span class='fu'>textstat_keyness</span>(<span class='no'>mydfm2</span>, <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&gt;=</span> <span class='fl'>1945</span>)</div><div class='output co'>#&gt;                                chi2            p n_target n_reference
