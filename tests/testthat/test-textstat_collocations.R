@@ -263,4 +263,8 @@ test_that("deprecated collocations function works", {
         collocations(txts, size = 3, min_count = 2),
         "'collocations' is deprecated"
     )
+    expect_warning(
+        sequences(txts, size = 3, min_count = 2),
+        "'sequences' is deprecated"
+    )
 })

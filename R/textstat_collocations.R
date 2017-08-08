@@ -1,4 +1,4 @@
-#' deprecated function name for textstat_collocations
+#' deprecated function names for textstat_collocations
 #' 
 #' Use \code{\link{textstat_collocations}} instead.
 #' @param x a character, \link{corpus}, \link{tokens} object
@@ -10,6 +10,10 @@ collocations <- function(x,  ...) {
     .Deprecated("textstat_collocations")
     UseMethod("textstat_collocations")
 }
+
+#' @rdname collocations
+#' @export
+sequences <- collocations
 
 #' identify and score multi-word expressions
 #' 

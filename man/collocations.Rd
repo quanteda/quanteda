@@ -2,9 +2,12 @@
 % Please edit documentation in R/textstat_collocations.R
 \name{collocations}
 \alias{collocations}
-\title{deprecated function name for textstat_collocations}
+\alias{sequences}
+\title{deprecated function names for textstat_collocations}
 \usage{
 collocations(x, ...)
+
+sequences(x, ...)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, \link{tokens} object}
