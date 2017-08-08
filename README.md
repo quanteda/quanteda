@@ -26,7 +26,7 @@ How to cite the package:
     following:
 
       Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
-      Textual Data".  R package version: 0.9.9.84.
+      Textual Data".  R package version: 0.9.9.90.
       http://quanteda.io.
 
     A BibTeX entry for LaTeX users is
@@ -34,7 +34,7 @@ How to cite the package:
       @Manual{,
         title = {quanteda: Quantitative Analysis of Textual Data},
         author = {Kenneth Benoit and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
-        note = {R package version 0.9.9.84},
+        note = {R package version 0.9.9.90},
         url = {http://quanteda.io},
       }
 
@@ -136,7 +136,7 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.84
+## quanteda version 0.9.9.90
 ## Using 4 of 8 threads for parallel computing
 ## 
 ## Attaching package: 'quanteda'
@@ -155,27 +155,27 @@ summary(uk2010immigCorpus)
 ## Corpus consisting of 9 documents.
 ## 
 ##          Text Types Tokens Sentences        party
-##           BNP  1126   3330        88          BNP
-##     Coalition   144    268         4    Coalition
-##  Conservative   252    503        15 Conservative
-##        Greens   325    687        21       Greens
-##        Labour   296    703        29       Labour
-##        LibDem   257    499        14       LibDem
-##            PC    80    118         5           PC
-##           SNP    90    136         4          SNP
-##          UKIP   346    739        27         UKIP
+##           BNP  1125   3280        88          BNP
+##     Coalition   142    260         4    Coalition
+##  Conservative   251    499        15 Conservative
+##        Greens   322    679        21       Greens
+##        Labour   298    683        29       Labour
+##        LibDem   251    483        14       LibDem
+##            PC    77    114         5           PC
+##           SNP    88    134         4          SNP
+##          UKIP   346    723        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Tue Jul 25 23:51:47 2017
+## Created: Tue Aug  8 11:32:40 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
 kwic(uk2010immigCorpus, "deport", 3)
 ##                                                                     
-##   [BNP, 159]        The BNP will | deport | all foreigners convicted
-##  [BNP, 1970]                . 2. | Deport | all illegal immigrants  
-##  [BNP, 1976] immigrants We shall | deport | all illegal immigrants  
-##  [BNP, 2621]  Criminals We shall | deport | all criminal entrants
+##   [BNP, 157]        The BNP will | deport | all foreigners convicted
+##  [BNP, 1946]                . 2. | Deport | all illegal immigrants  
+##  [BNP, 1952] immigrants We shall | deport | all illegal immigrants  
+##  [BNP, 2585]  Criminals We shall | deport | all criminal entrants
 
 # create a dfm, removing stopwords
 mydfm <- dfm(uk2010immigCorpus, remove = stopwords("english"), remove_punct = TRUE)
