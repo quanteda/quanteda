@@ -103,7 +103,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
                                   use_docvars = TRUE, 
                            ...) {
     
-    remove_delimiter = FALSE
+    #remove_delimiter = FALSE
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
     vars <- docvars(x)
@@ -177,7 +177,7 @@ char_segment.character <- function(x,
     if (!all(is.character(x)))
         stop("x must be of character type")
     
-    remove_delimiter = FALSE
+    #remove_delimiter = FALSE
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
     names_org <- names(x)
@@ -246,17 +246,19 @@ segment_texts <- function(x, what, delimiter, valuetype, remove_delimiter, omit_
         temp <- lapply(temp, function(x) x[stri_replace_first_regex(x, '^\\s+$', '') != ''])
     } else {
         if (valuetype == "fixed") {
-            if (remove_delimiter) {
-                temp <- stri_replace_all_fixed(x, delimiter, "\uE000")
-            } else {
-                temp <- stri_replace_all_fixed(x, delimiter, stri_c(delimiter, "\uE000"))
-            }
+            temp <- stri_replace_all_fixed(x, delimiter, stri_c(delimiter, "\uE000"))
+            #if (remove_delimiter) {
+            #    temp <- stri_replace_all_fixed(x, delimiter, "\uE000")
+            #} else {
+            #    temp <- stri_replace_all_fixed(x, delimiter, stri_c(delimiter, "\uE000"))
+            #}
         } else {
-            if (remove_delimiter) {
-                temp <- stri_replace_all_regex(x, delimiter, "\uE000")
-            } else {
-                temp <- stri_replace_all_regex(x, delimiter, "$0\uE000")
-            }
+            temp <- stri_replace_all_regex(x, delimiter, "$0\uE000")
+            # if (remove_delimiter) {
+            #     temp <- stri_replace_all_regex(x, delimiter, "\uE000")
+            # } else {
+            #     temp <- stri_replace_all_regex(x, delimiter, "$0\uE000")
+            # }
         }
         temp <- stri_split_fixed(temp, pattern = "\uE000", omit_empty = omit_empty)
     }
