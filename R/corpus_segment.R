@@ -19,7 +19,6 @@
 #'   default is two newlines), \code{"tags"} (where the default is a tag 
 #'   preceded by two pound or "hash" signs \code{##}), and \code{"other"}.
 #' @inheritParams valuetype
-#' @param remove_delimiter remove deimiter, if \code{TRUE}
 #' @param omit_empty if \code{TRUE}, empty texts are removed 
 #' @param use_docvars (for corpus objects only) if \code{TRUE}, repeat the docvar 
 #'   values for each segmented text; if \code{FALSE}, drop the docvars in the 
@@ -88,7 +87,6 @@
 corpus_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                            delimiter = NULL,
                            valuetype = c("regex", "fixed", "glob"),
-                           remove_delimiter = FALSE,
                            omit_empty = TRUE,
                            use_docvars = TRUE, 
                            ...) {
@@ -101,10 +99,11 @@ corpus_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tag
 corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                                   delimiter = NULL,
                                   valuetype = c("regex", "fixed", "glob"),
-                                  remove_delimiter = FALSE,
                                   omit_empty = TRUE,
                                   use_docvars = TRUE, 
                            ...) {
+    
+    remove_delimiter = FALSE
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
     vars <- docvars(x)
@@ -159,7 +158,6 @@ char_segment <- function(x,
                          what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                          delimiter = NULL,
                          valuetype = c("regex", "fixed", "glob"),
-                         remove_delimiter = FALSE,
                          omit_empty = TRUE,
                          use_docvars = TRUE, 
                          ...) {
@@ -172,7 +170,6 @@ char_segment.character <- function(x,
                                    what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                                    delimiter = NULL,
                                    valuetype = c("regex", "fixed", "glob"),
-                                   remove_delimiter = FALSE,
                                    omit_empty = TRUE,
                                    use_docvars = TRUE, 
                                    ...) {
@@ -180,6 +177,7 @@ char_segment.character <- function(x,
     if (!all(is.character(x)))
         stop("x must be of character type")
     
+    remove_delimiter = FALSE
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
     names_org <- names(x)
