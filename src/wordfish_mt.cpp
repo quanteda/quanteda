@@ -382,7 +382,7 @@ Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVecto
         // Load initial values
         for (std::size_t i=0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) - dist(mt);//* U(i, 0);
     }
-    for (int k=0; k < K; k++) beta(k) = 0;//  pow(csum(k)/asum,-0.5) * V(k,0);
+    for (std::size_t k=0; k < K; k++) beta(k) = 0;//  pow(csum(k)/asum,-0.5) * V(k,0);
     //beta.fill(0.0);
     alpha = log(rsum);
     psi = log(csum/N);
