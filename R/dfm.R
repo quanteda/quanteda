@@ -134,7 +134,7 @@ check_dfm_dots <-  function(dots) {
 # which function started the dfm chain?
 who_called_me_first <- function(x) {
     x <- as.character(x)
-    base_dfm_call_index <- stringi::stri_detect_regex(x, "dfm(\\.\\w+){0,1}\\(")
+    base_dfm_call_index <- which(stringi::stri_detect_regex(x, "^(quanteda::){0,1}dfm(\\.\\w+){0,1}\\("))
     x <- x[base_dfm_call_index[-1]]
     x <- stringi::stri_replace_all_regex(x, "dfm\\.(\\w+)\\(.+$", "$1")
     x[1]
