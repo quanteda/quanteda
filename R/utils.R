@@ -227,3 +227,17 @@ features2id <- function(features, types, valuetype, case_insensitive,
     attr(features_id, 'features') <- stri_c_list(features, sep = ' ')
     return(features_id)
 }
+
+# which object class started the call stack?
+# @param x sys.calls() from inside a function
+# @param function_name the base name of the method of the function
+# @examples
+# who_called_me_first(sys.calls(), "dfm")
+who_called_me_first <- function(x, function_name) {
+    x <- as.character(x)
+    base_call_index <- which(stringi::stri_startswith_fixed(x, function_name))
+    x <- x[base_call_index[-1]]
+    x <- stringi::stri_replace_all_regex(x, paste0(function_name, "\\.(\\w+)\\(.+$"), "$1")
+    x[1]
+}
+
