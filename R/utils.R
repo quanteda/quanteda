@@ -236,6 +236,7 @@ features2id <- function(features, types, valuetype, case_insensitive,
 who_called_me_first <- function(x, function_name) {
     x <- as.character(x)
     base_call_index <- which(stringi::stri_startswith_fixed(x, function_name))
+    base_call_index <- which(stringi::stri_detect_regex(x, paste0("^(quanteda::){0,1}", function_name, "(\\.\\w+){0,1}\\(")))
     x <- x[base_call_index[-1]]
     x <- stringi::stri_replace_all_regex(x, paste0(function_name, "\\.(\\w+)\\(.+$"), "$1")
     x[1]

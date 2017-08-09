@@ -16,7 +16,7 @@ test_that("can wordstem dfms with zero features and zero docs", {
     mydfm <- dfm(c("stemming porter three", "stemming four five"))
     mydfm[2, 4] <- 0
     mydfm <- new("dfmSparse", mydfm)
-    dfm_wordstem(mydfm)
+    dfm_wordstem(mydfm, language = "english")
     expect_equal(nfeature(dfm_wordstem(mydfm)), 5)
     
 })
@@ -68,3 +68,11 @@ test_that("wordstem works with tokens with padding = TRUE", {
                       d2 = c("", "two", "")))
 })
 
+test_that("wordstem works on tokens that include separators (#909)", {
+    txt <- "Tests for developers."
+    toks <- tokens(txt, remove_separators = FALSE, remove_punct = TRUE)
+    expect_equal(
+        as.list(tokens_wordstem(toks, language = "english")),
+        list(text1 = c("Test", " ", "for", " ", "develop"))
+    )
+})
