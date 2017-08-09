@@ -79,7 +79,7 @@ char_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
 #' @noRd
 #' @export
 char_wordstem.character <- function(x, language = quanteda_options("language_stemmer")) {
-    if (any(stringi::stri_detect_fixed(x, " ") & !is.na(x)))
+    if (any(stringi::stri_detect_regex(x, "^\\P{Z}+\\p{Z}+") & !is.na(x)))
         stop("whitespace detected: you can only stem tokenized texts")
     result <- SnowballC::wordStem(x, language)
     result[which(is.na(x))] <- NA
