@@ -566,4 +566,5 @@ test_that("dfm works with stem options", {
         featnames(dfm(txt_french, stem = TRUE)),
         "cour"
     )
+    quanteda_options(reset = TRUE)
 })
