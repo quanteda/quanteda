@@ -23,11 +23,6 @@ NULL
 NULL
 
 #' @rdname data-deprecated
-#' @details \code{inaugTexts} is deprecated; please use
-#'   \code{data_char_inaugural} instead.
-"inaugTexts"
-
-#' @rdname data-deprecated
 #' @name data_char_inaugural
 #' @details \code{data_char_inaugural} is defunct; please use
 #'   \code{data_corpus_inaugural} instead.
