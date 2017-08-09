@@ -105,7 +105,8 @@ textstat_collocations <- function(x, method = "lambda", size = 2, min_count = 1,
     UseMethod("textstat_collocations")
 }
 
-VALID_SCORING_METHODS <- c("lambda") #, "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD")
+VALID_SCORING_METHODS <- c("lambda") 
+                                     #, "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD")
 
 #' @noRd
 #' @export
@@ -118,6 +119,11 @@ textstat_collocations.tokens <- function(x, method = "lambda", size = 2, min_cou
 
     # lower case if requested
     if (tolower) x <- tokens_tolower(x, keep_acronyms = TRUE)
+    
+    # segment by sentences, if the call started with a tokens object
+    # if (who_called_me_first(sys.calls(), "textstat_collocations") == "tokens") {
+    #     x <- tokens_segment(x, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = TRUE)
+    # }
 
     attrs_org <- attributes(x)
     types <- types(x)
