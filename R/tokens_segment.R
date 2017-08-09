@@ -7,13 +7,14 @@
 #'   Segmenting on \code{"other"} allows segmentation of a text on any 
 #'   user-defined value, and must be accompanied by the \code{delimiter} 
 #'   argument. 
-#' @param delimiter the same as \code{pattern}
+#' @param delimiter the same as \code{\link{pattern}}
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param remove_delimiter remove deimiter, if \code{TRUE}
 #' @param verbose if \code{TRUE} print messages about how many tokens were 
 #'   selected or removed
-#' @return @return \code{tokens_segment} returns a tokens of segmented texts
+#' @return \code{tokens_segment} returns a \link{tokens} object whose documents
+#'   have been redefined according to the segmentation type
 #' @keywords tokens internal
 #' @export
 #' @examples 

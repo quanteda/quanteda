@@ -18,7 +18,7 @@ Segmenting on \code{"other"} allows segmentation of a text on any
 user-defined value, and must be accompanied by the \code{delimiter} 
 argument.}
 
-\item{delimiter}{the same as \code{pattern}}
+\item{delimiter}{the same as \code{\link{pattern}}}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
@@ -32,7 +32,8 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 selected or removed}
 }
 \value{
-@return \code{tokens_segment} returns a tokens of segmented texts
+\code{tokens_segment} returns a \link{tokens} object whose documents
+  have been redefined according to the segmentation type
 }
 \description{
 segment tokens object by patterns
