@@ -91,3 +91,39 @@ test_that("tokens_segment includes left-over text", {
     
     
 })
+
+test_that("tokens_segment works when removing punctuation match, remove_delimiter tests", {
+    toks1 <- tokens(c("This: is a test", "Another test"))
+    toks2 <- tokens(c("This is a test", "Another test."))
+    toks3 <- tokens(c("This is a test", "Another test"))
+    
+    # remove_delimiter = TRUE
+    expect_equal(
+        as.list(tokens_segment(toks1, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = TRUE)),
+        list(text1.1 = "This", text1.2 = c("is", "a", "test"), text2.1 = c("Another", "test"))
+    )
+    expect_equal(
+        as.list(tokens_segment(toks2, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = TRUE)),
+        list(text1 = c("This", "is", "a", "test"), text2.1 = c("Another", "test"))
+    )
+    expect_equal(
+        as.list(tokens_segment(toks3, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = TRUE)),
+        as.list(toks3)
+    )
+    
+    # remove_delimiter = FALSE
+    expect_equal(
+        as.list(tokens_segment(toks1, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = FALSE)),
+        list(text1.1 = c("This", ":"), text1.2 = c("is", "a", "test"), text2.1 = c("Another", "test"))
+    )
+    expect_equal(
+        as.list(tokens_segment(toks2, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = FALSE)),
+        list(text1 = c("This", "is", "a", "test"), text2.1 = c("Another", "test", "."))
+    )
+    expect_silent(as.list(tokens_segment(toks2, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = FALSE)))
+    expect_equal(
+        as.list(tokens_segment(toks3, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = FALSE)),
+        as.list(toks3)
+    )
+})
+
