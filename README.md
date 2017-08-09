@@ -4,12 +4,12 @@
 
 [![CRAN Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
-**quanteda** v0.9.9.x: Important Changes
+**quanteda** v0.9.9000 Important Changes
 ----------------------------------------
 
-Many important changes to the package have been underway, in preparation for both a final, transitional release (v0.9.9.9000) prior to v1.0, and v1.0 itselt. These include finalizing the v1.0 API, involving some changes to earlier versions of **quanteda**. For the v9.9.9000 and earlier released, most of the older functions are retained and working, but deprecated.
+Many important changes to the package have been underway, including API changes, as we approach a stable API, "1.0" release in October 2017. Version 0.9.9000 represents the last version that will contain many of the deprecated object types and methods that date several releases.
 
-v0.9.9 also implements many enhancements and performance improvements. See [Quanteda Structure and Design](https://kbenoit.github.io/quanteda/articles/development-plans.html) for details.
+v0.9.9000 also implements many enhancements and performance improvements over previous releases. See [NEWS.md](http://quanteda.io/news/index.html#quanteda-0-9-9000) for details, and [Quanteda Structure and Design](https://kbenoit.github.io/quanteda/articles/development-plans.html) for a description of the package's underlying logic and design philosophy.
 
 About the package
 -----------------
@@ -26,7 +26,7 @@ How to cite the package:
     following:
 
       Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
-      Textual Data".  R package version: 0.9.9.90.
+      Textual Data".  R package version: 0.9.9000.
       http://quanteda.io.
 
     A BibTeX entry for LaTeX users is
@@ -34,7 +34,7 @@ How to cite the package:
       @Manual{,
         title = {quanteda: Quantitative Analysis of Textual Data},
         author = {Kenneth Benoit and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
-        note = {R package version 0.9.9.90},
+        note = {R package version 0.9.9000},
         url = {http://quanteda.io},
       }
 
@@ -136,7 +136,7 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.90
+## quanteda version 0.9.9000
 ## Using 4 of 8 threads for parallel computing
 ## 
 ## Attaching package: 'quanteda'
@@ -166,7 +166,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    723        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Tue Aug  8 11:32:40 2017
+## Created: Wed Aug  9 12:36:46 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
