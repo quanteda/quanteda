@@ -68,3 +68,11 @@ test_that("wordstem works with tokens with padding = TRUE", {
                       d2 = c("", "two", "")))
 })
 
+test_that("wordstem works on tokens that include separators (#909)", {
+    txt <- "Tests for developers."
+    toks <- tokens(txt, remove_separators = FALSE, remove_punct = TRUE)
+    expect_equal(
+        as.list(tokens_wordstem(toks)),
+        list(text1 = c("Test", " ", "for", " ", "developer"))
+    )
+})
