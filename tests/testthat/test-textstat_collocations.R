@@ -118,6 +118,7 @@ MWEstatistics <- function (counts, smooth=0.5)
     #
     return(results)
 }
+
 test_that("test that collocations do not span texts", {
     toks <- tokens(c('this is a test', 'this also a test'))
     cols <- rbind(textstat_collocations(toks, size = 2, min_count = 1),
@@ -275,26 +276,26 @@ test_that("tokens_segment_by_punctuation works as expected", {
     toks3 <- tokens(c("This is a test", "Another test"))
     
     expect_equal(
-        as.list(tokens_segment_by_punctuation(toks1)),
+        as.list(quanteda:::tokens_segment_by_punctuation(toks1)),
         list(text1.1 = "This", text1.2 = c("is", "a", "test"), text2.1 = c("Another", "test"))
     )
     
     expect_equal(
-        as.list(tokens_segment_by_punctuation(toks2)),
+        as.list(quanteda:::tokens_segment_by_punctuation(toks2)),
         list(text1.1 = "This", text1.2 = c("is", "a", "test"), text2.1 = c("Another", "test"))
     )
     
     expect_equal(
-        as.list(tokens_segment_by_punctuation(toks3)),
+        as.list(quanteda:::tokens_segment_by_punctuation(toks3)),
         list(text1 = c("This", "is", "a", "test"), text2 = c("Another", "test"))
     )
     
     expect_equal(
-        as.character(tokens_segment_by_punctuation(tokens("One!?"))),
+        as.character(quanteda:::tokens_segment_by_punctuation(tokens("One!?"))),
         "One"
     )
     expect_equal(
-        as.list(tokens_segment_by_punctuation(tokens("%*!?"))),
+        as.list(quanteda:::tokens_segment_by_punctuation(tokens("%*!?"))),
         list(text1 = character())
     )
 })

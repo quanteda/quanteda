@@ -121,32 +121,10 @@ textstat_collocations.tokens <- function(x, method = "lambda", size = 2, min_cou
     if (tolower) x <- tokens_tolower(x, keep_acronyms = TRUE)
     
     # segment by sentences, if the call started with a tokens object
-    if (who_called_me_first(sys.calls(), "textstat_collocations") == "tokens") {
+    if (who_called_me_first(sys.calls(), "textstat_collocations") %in% c("tokens", "tokenizedTexts")) {
         x <- tokens_segment_by_punctuation(x, remove_delimiter = TRUE)
     }
     
-    len_original <- length(x)
-    names_original <- names(x)
-    x <- lapply(x, function(y) {
-        y <- c(y, ".")  # make sure every sequence ends with a punct character
-        punct_index <- which(stringi::stri_detect_regex(y, "^\\p{P}+$"))
-        if (!length(punct_index)) return(y) # should never happen now
-        punct_reps <- punct_index - c(0, punct_index[-length(punct_index)])
-        y <- split(y, rep(1:length(punct_index), punct_reps))
-        if (remove_delimiter) y <- lapply(y, function(z) z[-length(z)])
-        y <- y[lengths(y) > 0]    # remove any zero-length elements
-        if (!length(y)) return(list(""))
-        names(y) <- 1:length(y)  # rename in sequence
-        y
-    })
-    
-    x <- as.tokens(unlist(x, recursive = FALSE))
-    if (length(x) == len_original) names(x) <- names_original
-    x
-}
-(x, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = TRUE)
-    # }
-
     attrs_org <- attributes(x)
     types <- types(x)
     result <- qatd_cpp_sequences(x, types, min_count, size, 
@@ -266,6 +244,10 @@ is.sequences <- function(x) "sequences" %in% class(x)
 
 # Internal Functions ------------------------------------------------------
 
+## function to segment tokens sequences into separate objects, based on 
+## punctuation.  Mimics tokens_segment() but provides a temporary
+## workaround with specific functionality.  See tests at the end of
+## test-textstat_collocations.R
 tokens_segment_by_punctuation <- function(x, remove_delimiter = TRUE) {
     len_original <- length(x)
     names_original <- names(x)
@@ -282,7 +264,12 @@ tokens_segment_by_punctuation <- function(x, remove_delimiter = TRUE) {
         y
     })
     
-    x <- as.tokens(unlist(x, recursive = FALSE))
+    # remove top level of list
+    x <- unlist(x, recursive = FALSE)
+    # convert any "tokens" left as "" that are empty into character(0)
+    if (any(allempties <- lengths(x)==1 & x=="")) x[[allempties]] <- character(0)
+    # make into tokens
+    x <- as.tokens(x)
     if (length(x) == len_original) names(x) <- names_original
     x
 }
