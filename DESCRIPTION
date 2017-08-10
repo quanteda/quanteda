@@ -1,8 +1,13 @@
 Package: quanteda
-Version: 0.9.9000
+Version: 0.9.99
 Title: Quantitative Analysis of Textual Data
-Description: A fast, flexible framework for for the management, processing, and
-    quantitative analysis of textual data in R.
+Description: A fast, flexible, and comprehensive framework for 
+    quantitative text analysis in R.  Provides functionality for corpus management,
+    creating and manipulating tokens and ngrams, exploring keywords in context, 
+    forming and manipulating sparse matrices
+    of documents by features and feature co-occurrences, analyzing keywords, computing feature similarities and
+    distances, applying content dictionaries, applying supervised and unsupervised machine learning, 
+    visually representing text and text analyses, and more. 
 Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     c("aut", "cre", "cph")), 
     person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "ctb"), 
