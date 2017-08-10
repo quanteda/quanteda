@@ -5,8 +5,8 @@
 \alias{is.collocations}
 \title{identify and score multi-word expressions}
 \usage{
-textstat_collocations(x, method = "lambda", size = 2, min_count = 1,
-  smoothing = 0.5, tolower = TRUE, ...)
+textstat_collocations(x, method = "all", size = 2, min_count = 1,
+  smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...)
 
 is.collocations(x)
 }
@@ -19,8 +19,9 @@ supported, you will get better results with character or corpus objects due
 to relatively imperfect detection of sentence boundaries from texts already 
 tokenized.}
 
-\item{method}{association measure for detecting collocations. Currently this 
-is limited to \code{"lambda"}.  See Details.}
+\item{method}{association measure for detecting collocations: \code{"all"},
+\code{"lambda"}, \code{"lambda1"}, \code{"lr"}, \code{"chi2"}, and
+\code{"dice"}.  See Details.}
 
 \item{size}{integer; the length of the collocations
 to be scored}
@@ -31,6 +32,8 @@ to be scored}
 (default is 0.5)}
 
 \item{tolower}{logical; if \code{TRUE}, form collocations as lower-cased combinations}
+
+\item{show_counts}{logical; if \code{TRUE}, output observed and expected counts}
 
 \item{...}{additional arguments passed to \code{\link{tokens}}, if \code{x}
 is not a \link{tokens} object already}
