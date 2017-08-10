@@ -131,15 +131,6 @@ check_dfm_dots <-  function(dots) {
         warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", sep = "", noBreaks. = TRUE)
 }
 
-# which function started the dfm chain?
-who_called_me_first <- function(x) {
-    x <- as.character(x)
-    base_dfm_call_index <- which(stringi::stri_detect_regex(x, "^(quanteda::){0,1}dfm(\\.\\w+){0,1}\\("))
-    x <- x[base_dfm_call_index[-1]]
-    x <- stringi::stri_replace_all_regex(x, "dfm\\.(\\w+)\\(.+$", "$1")
-    x[1]
-}
-
 
 #' @rdname dfm
 #' @noRd
@@ -156,7 +147,7 @@ dfm.character <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...) {
     
-    if (who_called_me_first(sys.calls()) == "character") {
+    if (who_called_me_first(sys.calls(), "dfm") == "character") {
         dfm_env$START_TIME <- proc.time()
         if (verbose) catm("Creating a dfm from a character vector ...\n")
     }
@@ -186,7 +177,7 @@ dfm.corpus <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"),
                        ...) {
-    if (who_called_me_first(sys.calls()) == "corpus") {
+    if (who_called_me_first(sys.calls(), "dfm") == "corpus") {
         dfm_env$START_TIME <- proc.time()
         if (verbose) catm("Creating a dfm from a corpus ...\n")
     }
@@ -221,7 +212,7 @@ dfm.tokenizedTexts <- function(x,
         names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
     } 
 
-    if (who_called_me_first(sys.calls()) %in% c("tokens", "tokenizedTexts")) {
+    if (who_called_me_first(sys.calls(), "dfm") %in% c("tokens", "tokenizedTexts")) {
         dfm_env$START_TIME <- proc.time()
         if (verbose) catm("Creating a dfm from a", class(x)[1], "object ...\n")
         check_dfm_dots(list(...))
@@ -311,7 +302,7 @@ dfm.dfm <- function(x,
     valuetype <- match.arg(valuetype)
     if (length(args <- list(...))) warning("arguments ", names(args), "unused")
 
-    if ((who_called_me_first(sys.calls()) == "dfm")) {
+    if ((who_called_me_first(sys.calls(), "dfm") == "dfm")) {
         dfm_env$START_TIME <- proc.time()
         if (verbose) catm("Creating a dfm from a", class(x)[1], "object ...\n")
     }

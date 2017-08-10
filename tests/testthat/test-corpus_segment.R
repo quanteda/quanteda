@@ -195,3 +195,33 @@ test_that("char_segment works with Japanese texts", {
     expect_equal(char_segment(txt, what = 'other', delimiter = '。'),
                  c("日本語の終止符は.ではない。", "しかし、最近は．が使われることある。"))
 })
+
+# 
+# test_that("corpus_segment works for delimiter with remove_delimiter", {
+#     
+#     txt <- c(d1 = "Sentence one.  Second sentence is this one!\n
+#                    Here is the third sentence.",
+#              d2 = "Only sentence of doc2?  No there is another.")
+#     
+#     mycorp <- corpus(txt, docvars = data.frame(title = c("doc1", "doc2")))
+#     mycorp_seg1 <- corpus_segment(mycorp, what = "other", delimiter = '[.!?]', valuetype = 'regex',
+#                                   remove_delimiter = FALSE)
+# 
+#     expect_equal(texts(mycorp_seg1), 
+#                  c(d1.1 = "Sentence one.",
+#                    d1.2 = "Second sentence is this one!",
+#                    d1.3 = "Here is the third sentence.",
+#                    d2.1 = "Only sentence of doc2?",
+#                    d2.2 = "No there is another."))
+#     
+#     mycorp_seg2 <- corpus_segment(mycorp, what = "other", delimiter = '[.!?]', valuetype = 'regex',
+#                                   remove_delimiter = TRUE)
+#     
+#     expect_equal(texts(mycorp_seg2), 
+#                  c(d1.1 = "Sentence one",
+#                    d1.2 = "Second sentence is this one",
+#                    d1.3 = "Here is the third sentence",
+#                    d2.1 = "Only sentence of doc2",
+#                    d2.2 = "No there is another"))
+#     
+# })

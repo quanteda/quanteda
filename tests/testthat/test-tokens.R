@@ -223,7 +223,7 @@ test_that("tokens works with unusual hiragana #554", {
     skip_on_os("windows")
     txts <- c("づいﾞ", "゛んﾞ", "たーﾟ")
     expect_equivalent(as.list(tokens(txts)),
-                      list(c('づ', 'いﾞ'), c('゛', 'んﾞ'), c('た', 'ーﾟ')))
+                      list(c('づ', '', 'いﾞ'), c('゛', '', 'んﾞ'), c('た', '',  'ーﾟ')))
 })
 
 test_that("types attribute is a character vector", {
@@ -445,46 +445,46 @@ test_that("remove_hyphens is working correctly", {
 
 test_that("test that features remove by tokens.tokens is comparable to tokens.character", {
     
-chars <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F",
-           "#tag @user", "abc be-fg hi 100kg 2017", "https://github.com/kbenoit/quanteda", "a b c d e")
-toks1 <- as.tokens(stringi::stri_split_fixed(chars[1], ' '))
-toks2 <- as.tokens(stringi::stri_split_fixed(chars[2], ' '))
-toks3 <- as.tokens(stringi::stri_split_fixed(chars[3], ' '))
-toks4 <- as.tokens(stringi::stri_split_fixed(chars[4], ' '))
-toks5 <- as.tokens(stringi::stri_split_fixed(chars[5], ' '))
-
-expect_equal(tokens(chars[1], remove_numbers = TRUE),
-             tokens(toks1, remove_numbers = TRUE))
-
-expect_equal(tokens(chars[1], remove_punct = TRUE),
-             tokens(toks1, remove_punct = TRUE))
-
-expect_equal(tokens(chars[1], remove_separator = TRUE),
-             tokens(toks1, remove_separator = TRUE))
-
-expect_equal(tokens(chars[1], remove_symbols = TRUE),
-             tokens(toks1, remove_symbols = TRUE))
-
-expect_equal(tokens(chars[2], remove_punct = TRUE, remove_twitter = TRUE),
-             tokens(toks2, remove_punct = TRUE, remove_twitter = TRUE))
-
-expect_equal(tokens(chars[4], remove_url = TRUE),
-             tokens(toks4, remove_url = TRUE))
-
-expect_equal(tokens(chars[5], ngrams = 1:2),
-             tokens(toks5, ngrams = 1:2))
-
-expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2),
-             tokens(toks5, ngrams = 2, skip = 1:2))
-
-# This fails because hyphnated words are concatenated in toks
-#expect_equal(tokens(chars[3], remove_hyphens = TRUE),
-#             tokens(toks3, remove_hyphens = TRUE))
-
-# This fails because there is not separator in toks
-# expect_equal(tokens(chars[1], remove_symbols = TRUE, remove_separator = FALSE),
-#              tokens(toks1, remove_symbols = TRUE, remove_separator = FALSE))
-
+    chars <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F",
+               "#tag @user", "abc be-fg hi 100kg 2017", "https://github.com/kbenoit/quanteda", "a b c d e")
+    toks1 <- as.tokens(stringi::stri_split_fixed(chars[1], ' '))
+    toks2 <- as.tokens(stringi::stri_split_fixed(chars[2], ' '))
+    toks3 <- as.tokens(stringi::stri_split_fixed(chars[3], ' '))
+    toks4 <- as.tokens(stringi::stri_split_fixed(chars[4], ' '))
+    toks5 <- as.tokens(stringi::stri_split_fixed(chars[5], ' '))
+    
+    expect_equal(tokens(chars[1], remove_numbers = TRUE),
+                 tokens(toks1, remove_numbers = TRUE))
+    
+    expect_equal(tokens(chars[1], remove_punct = TRUE),
+                 tokens(toks1, remove_punct = TRUE))
+    
+    expect_equal(tokens(chars[1], remove_separator = TRUE),
+                 tokens(toks1, remove_separator = TRUE))
+    
+    expect_equal(tokens(chars[1], remove_symbols = TRUE),
+                 tokens(toks1, remove_symbols = TRUE))
+    
+    expect_equal(tokens(chars[2], remove_punct = TRUE, remove_twitter = TRUE),
+                 tokens(toks2, remove_punct = TRUE, remove_twitter = TRUE))
+    
+    expect_equal(tokens(chars[4], remove_url = TRUE),
+                 tokens(toks4, remove_url = TRUE))
+    
+    expect_equal(tokens(chars[5], ngrams = 1:2),
+                 tokens(toks5, ngrams = 1:2))
+    
+    expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2),
+                 tokens(toks5, ngrams = 2, skip = 1:2))
+    
+    # This fails because hyphnated words are concatenated in toks
+    #expect_equal(tokens(chars[3], remove_hyphens = TRUE),
+    #             tokens(toks3, remove_hyphens = TRUE))
+    
+    # This fails because there is not separator in toks
+    # expect_equal(tokens(chars[1], remove_symbols = TRUE, remove_separator = FALSE),
+    #              tokens(toks1, remove_symbols = TRUE, remove_separator = FALSE))
+    
 })
 
 test_that("remove_hyphens is working correctly", {
@@ -498,4 +498,35 @@ test_that("remove_hyphens is working correctly", {
 
 })
 
+test_that("tokens works as expected with NA, and blanks", {
+    expect_equal(
+        as.list(tokens(c("one", "two", ""))),
+        list(text1 = "one", text2 = "two", text3 = character())
+    )   
+    expect_equal(
+        as.list(tokens(c("one", NA, ""))),
+        list(text1 = "one", text2 = "NA", text3 = character())
+    )   
+    expect_equal(
+        as.list(tokens(c(NA, "one", ""))),
+        list(text1 = "NA", text2 = "one", text3 = character())
+    )   
+    expect_equal(
+        as.list(tokens("")),
+        list(text1 = character())
+    )   
+    expect_equal(
+        as.list(tokens(c(d1 = "", d2 = NA))),
+        list(d1 = character(), d2 = "NA")
+    )   
+    expect_equal(
+        as.list(tokens(c(d1 = NA, d2 = ""))),
+        list(d1 = "NA", d2 = character())
+    )
+    expect_equal(tokens_hash(list("")), tokens_hash(list("")))
+    expect_equal(
+        as.character(as.tokens(list(""))),
+        ""
+    )
+})
     
