@@ -160,170 +160,29 @@ reasons.  If you want to compute similarity on a "normalized" dfm objects
 <span class='co'># compute some document similarities</span>
 (<span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: 'similarity' is deprecated.</span>
 #&gt; <span class='warning'>Use 'textstat_simil' instead.</span>
-#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; similarity Matrix:
-#&gt; $`1981-Reagan`
-#&gt;  1985-Reagan    1989-Bush    2001-Bush 1993-Clinton   2009-Obama   2013-Obama 
-#&gt;    0.9704059    0.9603411    0.9494593    0.9443849    0.9423306    0.9384555 
-#&gt; 1997-Clinton   2017-Trump    2005-Bush 
-#&gt;    0.9366096    0.9348161    0.9329456 
-#&gt; 
-#&gt; $`1985-Reagan`
-#&gt;  1981-Reagan    1989-Bush 1993-Clinton 1997-Clinton   2009-Obama   2013-Obama 
-#&gt;    0.9704059    0.9557316    0.9485131    0.9480250    0.9441305    0.9421446 
-#&gt;    2001-Bush   2017-Trump    2005-Bush 
-#&gt;    0.9416197    0.9335340    0.9320715 
-#&gt; 
-#&gt; $`1989-Bush`
-#&gt;  1981-Reagan  1985-Reagan    2001-Bush   2009-Obama   2017-Trump   2013-Obama 
-#&gt;    0.9603411    0.9557316    0.9545460    0.9475499    0.9431783    0.9394478 
-#&gt; 1997-Clinton 1993-Clinton    2005-Bush 
-#&gt;    0.9379579    0.9374917    0.9343554 
-#&gt; 
-#&gt; $`1993-Clinton`
-#&gt;  1985-Reagan  1981-Reagan    1989-Bush    2001-Bush 1997-Clinton   2013-Obama 
-#&gt;    0.9485131    0.9443849    0.9374917    0.9308542    0.9271750    0.9209066 
-#&gt;   2017-Trump    2005-Bush   2009-Obama 
-#&gt;    0.9194515    0.9181682    0.9096792 
-#&gt; 
-#&gt; $`1997-Clinton`
-#&gt;  1985-Reagan   2009-Obama    1989-Bush  1981-Reagan   2013-Obama    2001-Bush 
-#&gt;    0.9480250    0.9421327    0.9379579    0.9366096    0.9357481    0.9307404 
-#&gt; 1993-Clinton   2017-Trump    2005-Bush 
-#&gt;    0.9271750    0.9268390    0.9051528 
-#&gt; 
-#&gt; $`2001-Bush`
-#&gt;    1989-Bush  1981-Reagan    2005-Bush  1985-Reagan   2017-Trump   2013-Obama 
-#&gt;    0.9545460    0.9494593    0.9428909    0.9416197    0.9409308    0.9399379 
-#&gt;   2009-Obama 1993-Clinton 1997-Clinton 
-#&gt;    0.9321777    0.9308542    0.9307404 
-#&gt; 
-#&gt; $`2005-Bush`
-#&gt;    2001-Bush    1989-Bush  1981-Reagan  1985-Reagan   2017-Trump   2013-Obama 
-#&gt;    0.9428909    0.9343554    0.9329456    0.9320715    0.9264388    0.9223702 
-#&gt; 1993-Clinton 1997-Clinton   2009-Obama 
-#&gt;    0.9181682    0.9051528    0.9041379 
-#&gt; 
-#&gt; $`2009-Obama`
-#&gt;    1989-Bush  1985-Reagan   2013-Obama  1981-Reagan 1997-Clinton    2001-Bush 
-#&gt;    0.9475499    0.9441305    0.9427078    0.9423306    0.9421327    0.9321777 
-#&gt;   2017-Trump 1993-Clinton    2005-Bush 
-#&gt;    0.9292572    0.9096792    0.9041379 
-#&gt; 
-#&gt; $`2013-Obama`
-#&gt;   2009-Obama  1985-Reagan    2001-Bush    1989-Bush  1981-Reagan 1997-Clinton 
-#&gt;    0.9427078    0.9421446    0.9399379    0.9394478    0.9384555    0.9357481 
-#&gt;   2017-Trump    2005-Bush 1993-Clinton 
-#&gt;    0.9252686    0.9223702    0.9209066 
-#&gt; 
-#&gt; $`2017-Trump`
-#&gt;    1989-Bush    2001-Bush  1981-Reagan  1985-Reagan   2009-Obama 1997-Clinton 
-#&gt;    0.9431783    0.9409308    0.9348161    0.9335340    0.9292572    0.9268390 
-#&gt;    2005-Bush   2013-Obama 1993-Clinton 
-#&gt;    0.9264388    0.9252686    0.9194515 
-#&gt; </div><div class='input'><span class='co'># output as a matrix</span>
-<span class='fu'>as.matrix</span>(<span class='no'>tmp</span>)</div><div class='output co'>#&gt;              1981-Reagan 1985-Reagan 1989-Bush 1993-Clinton 1997-Clinton
-#&gt; 1981-Reagan    1.0000000   0.9704059 0.9603411    0.9443849    0.9366096
-#&gt; 1985-Reagan    0.9704059   1.0000000 0.9557316    0.9485131    0.9480250
-#&gt; 1989-Bush      0.9603411   0.9557316 1.0000000    0.9374917    0.9379579
-#&gt; 2001-Bush      0.9494593   0.9416197 0.9545460    0.9308542    0.9307404
-#&gt; 1993-Clinton   0.9443849   0.9485131 0.9374917    1.0000000    0.9271750
-#&gt; 2009-Obama     0.9423306   0.9441305 0.9475499    0.9096792    0.9421327
-#&gt; 2013-Obama     0.9384555   0.9421446 0.9394478    0.9209066    0.9357481
-#&gt; 1997-Clinton   0.9366096   0.9480250 0.9379579    0.9271750    1.0000000
-#&gt; 2017-Trump     0.9348161   0.9335340 0.9431783    0.9194515    0.9268390
-#&gt; 2005-Bush      0.9329456   0.9320715 0.9343554    0.9181682    0.9051528
-#&gt;              2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
-#&gt; 1981-Reagan  0.9494593 0.9329456  0.9423306  0.9384555  0.9348161
-#&gt; 1985-Reagan  0.9416197 0.9320715  0.9441305  0.9421446  0.9335340
-#&gt; 1989-Bush    0.9545460 0.9343554  0.9475499  0.9394478  0.9431783
-#&gt; 2001-Bush    1.0000000 0.9428909  0.9321777  0.9399379  0.9409308
-#&gt; 1993-Clinton 0.9308542 0.9181682  0.9096792  0.9209066  0.9194515
-#&gt; 2009-Obama   0.9321777 0.9041379  1.0000000  0.9427078  0.9292572
-#&gt; 2013-Obama   0.9399379 0.9223702  0.9427078  1.0000000  0.9252686
-#&gt; 1997-Clinton 0.9307404 0.9051528  0.9421327  0.9357481  0.9268390
-#&gt; 2017-Trump   0.9409308 0.9264388  0.9292572  0.9252686  1.0000000
-#&gt; 2005-Bush    0.9428909 1.0000000  0.9041379  0.9223702  0.9264388</div><div class='input'><span class='co'># for specific comparisons</span>
+#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='co'># output as a matrix</span>
+<span class='fu'>as.matrix</span>(<span class='no'>tmp</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.matrix(tmp): object 'tmp' not found</span></div><div class='input'><span class='co'># for specific comparisons</span>
 <span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='st'>"1985-Reagan"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'similarity' is deprecated.</span>
 #&gt; <span class='warning'>Use 'textstat_simil' instead.</span>
-#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; similarity Matrix:
-#&gt; $`1985-Reagan`
-#&gt;  1981-Reagan    1989-Bush 1993-Clinton 1997-Clinton   2009-Obama 
-#&gt;    0.9704059    0.9557316    0.9485131    0.9480250    0.9441305 
-#&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'similarity' is deprecated.</span>
+#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'similarity' is deprecated.</span>
 #&gt; <span class='warning'>Use 'textstat_simil' instead.</span>
-#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; similarity Matrix:
-#&gt; $`2009-Obama`
-#&gt;    1989-Bush  1985-Reagan   2013-Obama  1981-Reagan 1997-Clinton 
-#&gt;    0.9475499    0.9441305    0.9427078    0.9423306    0.9421327 
-#&gt; 
-#&gt; $`2013-Obama`
-#&gt;  2009-Obama 1985-Reagan   2001-Bush   1989-Bush 1981-Reagan 
-#&gt;   0.9427078   0.9421446   0.9399379   0.9394478   0.9384555 
-#&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'similarity' is deprecated.</span>
+#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'similarity' is deprecated.</span>
 #&gt; <span class='warning'>Use 'textstat_simil' instead.</span>
-#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; similarity Matrix:
-#&gt; $`2009-Obama`
-#&gt;    1989-Bush  1985-Reagan   2013-Obama  1981-Reagan 1997-Clinton    2001-Bush 
-#&gt;    0.9475499    0.9441305    0.9427078    0.9423306    0.9421327    0.9321777 
-#&gt;   2017-Trump 1993-Clinton    2005-Bush 
-#&gt;    0.9292572    0.9096792    0.9041379 
-#&gt; 
-#&gt; $`2013-Obama`
-#&gt;   2009-Obama  1985-Reagan    2001-Bush    1989-Bush  1981-Reagan 1997-Clinton 
-#&gt;    0.9427078    0.9421446    0.9399379    0.9394478    0.9384555    0.9357481 
-#&gt;   2017-Trump    2005-Bush 1993-Clinton 
-#&gt;    0.9252686    0.9223702    0.9209066 
-#&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'similarity' is deprecated.</span>
+#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'similarity' is deprecated.</span>
 #&gt; <span class='warning'>Use 'textstat_simil' instead.</span>
-#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; similarity Matrix:
-#&gt; $`2009-Obama`
-#&gt;    1989-Bush  1985-Reagan   2013-Obama 1997-Clinton  1981-Reagan    2001-Bush 
-#&gt;    0.9482559    0.9454094    0.9442339    0.9435812    0.9433197    0.9333455 
-#&gt;   2017-Trump 1993-Clinton    2005-Bush 
-#&gt;    0.9305574    0.9109059    0.9066006 
-#&gt; 
-#&gt; $`2013-Obama`
-#&gt;   2009-Obama  1985-Reagan    2001-Bush    1989-Bush  1981-Reagan 1997-Clinton 
-#&gt;    0.9442339    0.9433017    0.9405479    0.9398937    0.9391740    0.9373137 
-#&gt;   2017-Trump    2005-Bush 1993-Clinton 
-#&gt;    0.9263442    0.9243987    0.9214006 
-#&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"eJaccard"</span>, <span class='kw'>sorted</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'similarity' is deprecated.</span>
+#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"eJaccard"</span>, <span class='kw'>sorted</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'similarity' is deprecated.</span>
 #&gt; <span class='warning'>Use 'textstat_simil' instead.</span>
 #&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`2005-Bush`
 #&gt;  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 1997-Clinton    2001-Bush 
-#&gt;    0.8074885    0.8016859    0.8077599    0.8504882    0.8209170    0.8869300 
+#&gt;    0.8063781    0.8017041    0.8077805    0.8507758    0.8211545    0.8875512 
 #&gt;   2009-Obama   2013-Obama   2017-Trump 
-#&gt;    0.8168055    0.8445454    0.8387562 
+#&gt;    0.8172377    0.8454122    0.8393692 
 #&gt; </div><div class='input'>
 <span class='co'># compute some term similarities</span>
 <span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>), <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>, <span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'similarity' is deprecated.</span>
 #&gt; <span class='warning'>Use 'textstat_simil' instead.</span>
-#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; similarity Matrix:
-#&gt; $fair
-#&gt;   economi     begin jefferson    author     faith      call   struggl      best 
-#&gt; 0.9080252 0.9075951 0.8981462 0.8944272 0.8866586 0.8608285 0.8451543 0.8366600 
-#&gt;     creat    courag       god     pledg   compass      much    social      alli 
-#&gt; 0.8347300 0.8326664 0.8321715 0.8292884 0.8280787 0.8235321 0.8215838 0.8215838 
-#&gt;    believ     order    danger   continu 
-#&gt; 0.8194652 0.8164966 0.8164966 0.8150876 
-#&gt; 
-#&gt; $terror
-#&gt;    potenti  adversari commonplac     miracl     racial     bounti     martin 
-#&gt;  0.9036961  0.9036961  0.8944272  0.8944272  0.8944272  0.8944272  0.8944272 
-#&gt;      dream      polit   guarante       solv      grate       open      solut 
-#&gt;  0.8624394  0.8500000  0.8485281  0.8485281  0.8485281  0.8451543  0.8432740 
-#&gt;      whose     cultur   maintain       upon       educ       told 
-#&gt;  0.8391464  0.8366600  0.8280787  0.8253073  0.8215838  0.8215838 
-#&gt; 
-#&gt; $health
-#&gt;     shape   generat     wrong    common  knowledg    planet      task    demand 
-#&gt; 0.9045340 0.8971180 0.8944272 0.8888889 0.8888889 0.8819171 0.8728716 0.8666667 
-#&gt;       eye     defin      forc    danger     child     choos      fear    extend 
-#&gt; 0.8660254 0.8642416 0.8641586 0.8432740 0.8432740 0.8432740 0.8432740 0.8432740 
-#&gt;      true   without      long    advanc 
-#&gt; 0.8432740 0.8432740 0.8357109 0.8340577 
-#&gt; </div><div class='input'>
+#&gt; <span class='warning'>See help("Deprecated")</span></div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

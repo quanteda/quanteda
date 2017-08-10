@@ -267,35 +267,7 @@ removed</p></td>
 #&gt;   text2        0    1         1 1 2 1</div><div class='input'><span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"this contains lots of stopwords"</span>,
                  <span class='st'>"no if, and, or but about it: lots"</span>),
                <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>tmpfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>toks</span>)
-<span class='no'>tmpfcm</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 12 by 12 features.
-#&gt; 12 x 12 sparse Matrix of class "fcm"
-#&gt;            features
-#&gt; features    this contains lots of stopwords no if and or but about it
-#&gt;   this         0        1    1  1         1  .  .   .  .   .     .  .
-#&gt;   contains     .        0    1  1         1  .  .   .  .   .     .  .
-#&gt;   lots         .        .    0  1         1  1  1   1  1   1     1  1
-#&gt;   of           .        .    .  0         1  .  .   .  .   .     .  .
-#&gt;   stopwords    .        .    .  .         0  .  .   .  .   .     .  .
-#&gt;   no           .        .    .  .         .  0  1   1  1   1     1  1
-#&gt;   if           .        .    .  .         .  .  0   1  1   1     1  1
-#&gt;   and          .        .    .  .         .  .  .   0  1   1     1  1
-#&gt;   or           .        .    .  .         .  .  .   .  0   1     1  1
-#&gt;   but          .        .    .  .         .  .  .   .  .   0     1  1
-#&gt;   about        .        .    .  .         .  .  .   .  .   .     0  1
-#&gt;   it           .        .    .  .         .  .  .   .  .   .     .  0</div><div class='input'><span class='fu'>fcm_remove</span>(<span class='no'>tmpfcm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; <span class='message'>kept 9 features, from 175 supplied (glob) feature types</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 9 by 9 features.
-#&gt; 9 x 9 sparse Matrix of class "fcm"
-#&gt;         features
-#&gt; features this of no if and or but about it
-#&gt;    this     0  1  .  .   .  .   .     .  .
-#&gt;    of       .  0  .  .   .  .   .     .  .
-#&gt;    no       .  .  0  1   1  1   1     1  1
-#&gt;    if       .  .  .  0   1  1   1     1  1
-#&gt;    and      .  .  .  .   0  1   1     1  1
-#&gt;    or       .  .  .  .   .  0   1     1  1
-#&gt;    but      .  .  .  .   .  .   0     1  1
-#&gt;    about    .  .  .  .   .  .   .     0  1
-#&gt;    it       .  .  .  .   .  .   .     .  0</div></pre>
+<span class='no'>tmpfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>toks</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>tmpfcm</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'tmpfcm' not found</span></div><div class='input'><span class='fu'>fcm_remove</span>(<span class='no'>tmpfcm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in fcm_remove(tmpfcm, stopwords("english")): object 'tmpfcm' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
