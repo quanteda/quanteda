@@ -102,10 +102,13 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
                                   omit_empty = TRUE,
                                   use_docvars = TRUE, 
                            ...) {
+    
+    remove_delimiter = FALSE
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
+    vars <- docvars(x)
     
-    temp <- segment_texts(texts(x), what, delimiter, valuetype, omit_empty, ...)
+    temp <- segment_texts(texts(x), what, delimiter, valuetype, remove_delimiter, omit_empty, ...)
 
     # get the relevant function call
     commands <- as.character(sys.calls())
@@ -117,8 +120,11 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
     settings(result, "units") <- what
     
     # add repeated versions of remaining docvars
-    if (use_docvars && !is.null(docvars(x))) {
-        result[[names(docvars(x))]] <- docvars(x)[attr(temp, 'docid'),,drop = FALSE]
+    if (use_docvars && !is.null(vars)) {
+        rownames(vars) <- NULL # faster to repeat rows without rownames
+        vars <- select_fields(vars, "user")[attr(temp, 'docid'),,drop = FALSE]
+        rownames(vars) <- stri_c(attr(temp, 'document'), '.', attr(temp, 'segid'), sep = '')
+        docvars(result) <- vars
     }
     if (what == 'tags') {
         docvars(result, 'tag') <- attr(temp, 'tag')
@@ -171,6 +177,7 @@ char_segment.character <- function(x,
     if (!all(is.character(x)))
         stop("x must be of character type")
     
+    remove_delimiter = FALSE
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
     names_org <- names(x)
@@ -180,7 +187,7 @@ char_segment.character <- function(x,
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     names(x) <- names_org
-    result <- segment_texts(x, what, delimiter, valuetype, omit_empty, ...)
+    result <- segment_texts(x, what, delimiter, valuetype, remove_delimiter, omit_empty, ...)
     result <- result[result!='']
     
     attr(result, 'tag') <- NULL
@@ -192,7 +199,7 @@ char_segment.character <- function(x,
 }
 
 # internal function for char_segment and corpus_segment
-segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
+segment_texts <- function(x, what, delimiter, valuetype, remove_delimiter, omit_empty, ...){
     
     names_org <- names(x)
     
@@ -233,18 +240,27 @@ segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
     } else if (what == "sentences") {
         temp <- as.list(tokens(x, what = "sentence", ...))
     } else if (what == 'tags') {
-        temp <- stri_replace_all_regex(x, delimiter, "\UE000$0") # insert PUA character
-        temp <- stri_split_fixed(temp, pattern = "\UE000", omit_empty = omit_empty)
+        temp <- stri_replace_all_regex(x, delimiter, "\uE000$0") # insert PUA character
+        temp <- stri_split_fixed(temp, pattern = "\uE000", omit_empty = omit_empty)
         # remove elements to be empty
         temp <- lapply(temp, function(x) x[stri_replace_first_regex(x, '^\\s+$', '') != ''])
     } else {
         if (valuetype == "fixed") {
-            temp <- stri_replace_all_fixed(x, delimiter, stri_c(delimiter, "\UE000"))
-            temp <- stri_split_fixed(x, pattern = "\UE000", omit_empty = omit_empty)
+            temp <- stri_replace_all_fixed(x, delimiter, stri_c(delimiter, "\uE000"))
+            #if (remove_delimiter) {
+            #    temp <- stri_replace_all_fixed(x, delimiter, "\uE000")
+            #} else {
+            #    temp <- stri_replace_all_fixed(x, delimiter, stri_c(delimiter, "\uE000"))
+            #}
         } else {
-            temp <- stri_replace_all_regex(x, delimiter, "$0\UE000")
-            temp <- stri_split_fixed(temp, pattern = "\UE000", omit_empty = omit_empty)
+            temp <- stri_replace_all_regex(x, delimiter, "$0\uE000")
+            # if (remove_delimiter) {
+            #     temp <- stri_replace_all_regex(x, delimiter, "\uE000")
+            # } else {
+            #     temp <- stri_replace_all_regex(x, delimiter, "$0\uE000")
+            # }
         }
+        temp <- stri_split_fixed(temp, pattern = "\uE000", omit_empty = omit_empty)
     }
 
     result <- unlist(temp, use.names = FALSE)
@@ -272,7 +288,6 @@ segment_texts <- function(x, what, delimiter, valuetype, omit_empty, ...){
     
     return(result)
 }
-
 
 #' segment: deprecated function
 #' 

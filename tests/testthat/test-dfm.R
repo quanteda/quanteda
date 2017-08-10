@@ -254,7 +254,7 @@ test_that("dfm.dfm works as expected", {
 
     dict <- dictionary(list(articles = c("the", "a", "an"),
                             preps = c("of", "for", "in")))
-    expect_identical(
+    expect_equivalent(
         dfm(data_corpus_irishbudget2010, dictionary = dict),
         dfm(testdfm, dictionary = dict)
     )
@@ -566,4 +566,5 @@ test_that("dfm works with stem options", {
         featnames(dfm(txt_french, stem = TRUE)),
         "cour"
     )
+    quanteda_options(reset = TRUE)
 })

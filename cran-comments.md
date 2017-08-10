@@ -1,6 +1,6 @@
 ## Submission notes
 
-Thhis is a resubmission to fix errors on the Solaris tests in v0.9.9-22.  These were due to compiler warnings/errors due to unsigned integer comparisons, now resolved.
+This is a significant update in terms of adding functionality, fixing bugs, and creating greater compatibility with other packages.
 
 ## Test environments
 
@@ -18,27 +18,11 @@ None.
 
 ### NOTES
 
-There were 3 NOTES:
-
-* checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Kenneth Benoit <kbenoit@lse.ac.uk>'
-
-Days since last update: 5
-
-Possibly mis-spelled words in DESCRIPTION:
-  toolset (4:31)
-  
-* checking installed package size ... NOTE
-  installed size is  7.8Mb
-  sub-directories of 1Mb or more:
-    data   2.3Mb
-    doc    2.3Mb
-    libs   2.3Mb 
- 
-* checking for GNU extensions in Makefiles ... NOTE
-GNU make is a SystemRequirements.
+None (on macOS Sierra 10.12.6).
 
 
 ## Downstream dependencies
 
 No changes in this release affect the (few) downstream packages that Import **quanteda**.
+
+We have run `devtools::devtools::revdep_check()` to confirm.

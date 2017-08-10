@@ -47,7 +47,7 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
 #' @examples 
 #' \dontshow{
 #' ## tokens_select example
-#' toks <- tokensc("This is a sentence.", "This is a second sentence."), 
+#' toks <- tokens(c("This is a sentence.", "This is a second sentence."), 
 #'                  remove_punct = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", 
 #'               valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)

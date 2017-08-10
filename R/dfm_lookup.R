@@ -18,6 +18,9 @@
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param capkeys if \code{TRUE}, convert dictionary keys to uppercase to
 #'   distinguish them from other features
+#' @param nomatch an optional character naming a new feature that will contain 
+#'   the counts of features of \code{x} not matched to a dictionary key.  If 
+#'   \code{NULL} (default), do not tabulate unmatched features.
 #' @param verbose print status messages if \code{TRUE}
 #' @export
 #' @note If using \code{dfm_lookup} with dictionaries containing multi-word
@@ -48,10 +51,15 @@
 #' # fixed format: no pattern matching
 #' dfm_lookup(myDfm, myDict, valuetype = "fixed")
 #' dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
+#' 
+#' # show unmatched tokens
+#' dfm_lookup(myDfm, myDict, nomatch = "_UNMATCHED")
+#' 
 dfm_lookup <- function(x, dictionary, levels = 1:5,
                        exclusive = TRUE, valuetype = c("glob", "regex", "fixed"), 
                        case_insensitive = TRUE,
                        capkeys = !exclusive,
+                       nomatch = NULL,
                        verbose = quanteda_options("verbose")) {
     UseMethod("dfm_lookup")
 }
@@ -62,6 +70,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
                            exclusive = TRUE, valuetype = c("glob", "regex", "fixed"), 
                            case_insensitive = TRUE,
                            capkeys = !exclusive,
+                           nomatch = NULL,
                            verbose = quanteda_options("verbose")) {
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
@@ -69,13 +78,10 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     dictionary <- flatten_dictionary(dictionary, levels)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
-    
-    # if (has_multiword(dictionary) && x@ngrams == 1) {
-    #     stop("dfm_lookup not implemented for ngrams > 1 and multi-word dictionary values")
-    # }
+    lengths <- ntoken(x)
     
     # Generate all combinations of type IDs
-    values_id <- list()
+    values_id <- c()
     keys_id <- c()
     types <- featnames(x)
     
@@ -85,41 +91,55 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     
     for (h in seq_along(dictionary)) {
         values <- as.list(stri_replace_all_fixed(dictionary[[h]], ' ', attr(x, 'concatenator')))
-        values_temp <- regex2id(values, types, valuetype, case_insensitive, FALSE)
+        values_temp <- unlist(regex2id(values, types, valuetype, case_insensitive, FALSE))
         values_id <- c(values_id, values_temp)
         keys_id <- c(keys_id, rep(h, length(values_temp)))
     }
+    
     if (length(values_id)) {
-        
-        if (capkeys) {
-            keys <- char_toupper(names(dictionary))
-        } else {
-            keys <- names(dictionary)
-        }
-        temp <- x[,unlist(values_id, use.names = FALSE)]
-        colnames(temp) <- keys[keys_id]
-        temp <- dfm_compress(temp, margin = 'features')
-        # temp <- dfm_select(temp, pattern = keys, valuetype = 'fixed', padding = TRUE)
-        # an alternative way to select the identical features as in the dictionary keys
-        temp <- dfm_select(temp, 
-                           as.dfm(matrix(0, ncol = length(keys), dimnames = list(docs = "removeme", features = keys))))
+    
+        keys <- names(dictionary)
+        if (capkeys)
+            keys <- char_toupper(keys)
+    
         if (exclusive) {
-            result <- temp[, keys]
+            if (!is.null(nomatch)) {
+                values_id <- c(values_id, setdiff(seq_len(nfeature(x)), values_id))
+                keys_id <- c(keys_id, rep(length(keys) + 1, nfeature(x) - length(keys_id)))
+                cols_all <- c(keys, nomatch)
+                cols_new <- c(keys, nomatch)[keys_id]
+            } else {
+                cols_all <- keys
+                cols_new <- keys[keys_id]
+            }
+            x <- x[,values_id]
         } else {
-            result <- cbind(x[,unlist(values_id) * -1], temp[,keys])
+            if (!is.null(nomatch))
+                warning("nomatch only applies if exclusive = TRUE")
+            cols_all <- c(types, keys)
+            cols_new <- types
+            cols_new[values_id] <- keys[keys_id]
         }
+        colnames(x) <- cols_new
+        x <- dfm_compress(x, margin = 'features')
+        x <- dfm_select(x, as.dfm(rbind(structure(rep(0, length(cols_all)), names = cols_all))))
+        result <- x
+        
     } else {
         if (exclusive) {
-            result <- x[,0] # dfm without features
+            if (!is.null(nomatch)) {
+                restul <- cbind(x[,0], as.dfm(cbind(structure(ntoken(x), names = nomatch))))
+            } else {
+                result <- x[,0] # dfm without features
+            }
         } else {
             result <- x
         }
     }
+        
     attr(result, "what") <- "dictionary"
     attr(result, "dictionary") <- dictionary
     attributes(result, FALSE) <- attrs
-    
     return(result)
 }
-
 

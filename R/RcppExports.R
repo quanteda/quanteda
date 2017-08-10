@@ -45,10 +45,6 @@ qatd_cpp_sequences <- function(texts_, types_, count_min, sizes_, method, smooth
     .Call(`_quanteda_qatd_cpp_sequences`, texts_, types_, count_min, sizes_, method, smoothing)
 }
 
-qatd_cpp_sequences_old <- function(texts_, words_, types_, count_min, len_max, nested, ordered = FALSE) {
-    .Call(`_quanteda_qatd_cpp_sequences_old`, texts_, words_, types_, count_min, len_max, nested, ordered)
-}
-
 qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {
     .Call(`_quanteda_qatd_cpp_tokens_compound`, texts_, comps_, types_, delim_, join)
 }
@@ -61,8 +57,8 @@ qatd_cpp_kwic <- function(texts_, types_, words_, window, join) {
     .Call(`_quanteda_qatd_cpp_kwic`, texts_, types_, words_, window, join)
 }
 
-qatd_cpp_tokens_lookup <- function(texts_, types_, keys_, ids_, overlap) {
-    .Call(`_quanteda_qatd_cpp_tokens_lookup`, texts_, types_, keys_, ids_, overlap)
+qatd_cpp_tokens_lookup <- function(texts_, types_, keys_, ids_, overlap, nomatch) {
+    .Call(`_quanteda_qatd_cpp_tokens_lookup`, texts_, types_, keys_, ids_, overlap, nomatch)
 }
 
 qatd_cpp_tokens_match <- function(texts_, types_, words_, ids_, overlap) {

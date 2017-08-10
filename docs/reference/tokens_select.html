@@ -147,42 +147,42 @@ selected or removed</p></td>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"This is a sentence."</span>, <span class='st'>"This is a second sentence."</span>),
                  <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "This" "is"   "a"   
 #&gt; 
-#&gt; Component 2 :
+#&gt; text2 :
 #&gt; [1] "This" "is"   "a"   
 #&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "This" "is"   "a"    ""    
 #&gt; 
-#&gt; Component 2 :
+#&gt; text2 :
 #&gt; [1] "This" "is"   "a"    ""     ""    
 #&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "sentence"
 #&gt; 
-#&gt; Component 2 :
+#&gt; text2 :
 #&gt; [1] "second"   "sentence"
 #&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] ""         ""         ""         "sentence"
 #&gt; 
-#&gt; Component 2 :
+#&gt; text2 :
 #&gt; [1] ""         ""         ""         "second"   "sentence"
 #&gt; </div><div class='input'>
 <span class='co'># how case_insensitive works</span>
 <span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "sentence"
 #&gt; 
-#&gt; Component 2 :
+#&gt; text2 :
 #&gt; [1] "second"   "sentence"
 #&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt; [1] "This"     "sentence"
 #&gt; 
-#&gt; Component 2 :
+#&gt; text2 :
 #&gt; [1] "This"     "second"   "sentence"
 #&gt; </div><div class='input'>
 <span class='co'>## tokens_remove example</span>
@@ -191,11 +191,11 @@ selected or removed</p></td>
          <span class='no'>wash2</span> <span class='kw'>&lt;-</span> <span class='st'>"When the occasion proper for it shall arrive, I shall endeavor to express
                    the high sense I entertain of this distinguished honor."</span>)
 <span class='fu'>tokens_remove</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; Component 1 :
+#&gt; text1 :
 #&gt;  [1] "Fellow"     "citizens"   "called"     "upon"       "voice"     
 #&gt;  [6] "country"    "execute"    "functions"  "Chief"      "Magistrate"
 #&gt; 
-#&gt; Component 2 :
+#&gt; text2 :
 #&gt;  [1] "occasion"      "proper"        "shall"         "arrive"       
 #&gt;  [5] "shall"         "endeavor"      "express"       "high"         
 #&gt;  [9] "sense"         "entertain"     "distinguished" "honor"        

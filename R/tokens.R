@@ -361,7 +361,7 @@ is.tokens <- function(x) "tokens" %in% class(x)
 #' 
 #' Creates a hashed object of tokens, called by \code{\link{tokens}}.
 #' @param x a source of tokenizedText
-#' @param types optional pre-existing types for mapping of tokens
+#' @param types_reserved optional pre-existing types for mapping of tokens
 #' @param ... additional arguments
 #' @return a list the hashed tokens found in each text
 #' @importFrom fastmatch fmatch
@@ -391,17 +391,22 @@ tokens_hash <- function(x, types_reserved, ...) {
     
     attrs <- attributes(x)
     types <- unique(unlist(x, use.names = FALSE))
-    types <- types[types != '']  # remove empty tokens
     
-    if (missing(types_reserved)) {
-        types <- types
-    } else {
+    # special handling for "" pad
+    if (any(types[!is.na(types)] == "")) {
+        types <- c("", setdiff(types, ""))
+    }
+
+    if (!missing(types_reserved)) {
         types <- c(types_reserved, setdiff(types, types_reserved))
     }
     x <- lapply(x, function(x) {
         id <- fastmatch::fmatch(x, types)
+        if (length(types) && !is.na(types[1]) && types[1] == "") id <- id - 1
         id[!is.na(id)]
     })
+    
+    types <- types[types != '']  # remove empty tokens
     
     attributes(x) <- attrs
     attr(x, "types") <- stri_trans_nfc(types) # unicode normalization

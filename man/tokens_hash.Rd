@@ -9,9 +9,9 @@ tokens_hash(x, types_reserved, ...)
 \arguments{
 \item{x}{a source of tokenizedText}
 
-\item{...}{additional arguments}
+\item{types_reserved}{optional pre-existing types for mapping of tokens}
 
-\item{types}{optional pre-existing types for mapping of tokens}
+\item{...}{additional arguments}
 }
 \value{
 a list the hashed tokens found in each text

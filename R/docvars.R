@@ -259,6 +259,35 @@ check_fields <- function(x, field = NULL) {
     }
 }
 
+# New docvar functions -----------------------------------------
+
+## helper function to get all docvars
+docvars_internal <- function(x) {
+    if (is.corpus(x)) {
+        return(documents(x))
+    } else if (is.tokens(x)) {
+        return(attr(x, 'docvars'))
+    } else if (is.dfm(x)) {
+        return(x@docvars)
+    }
+}
+
+get_docvars2 <- function(x, fields) {
+    if (check_docvars(x, fields)) {
+        return(docvars_internal(x)[,fields, drop = FALSE])
+    } else {
+        return(NULL)
+    }
+}
+
+## helper function to check fields
+check_docvars <- function(x, fields) {
+    dvars <- docvars_internal(x)
+    if (is.null(dvars)) 
+        return(rep(FALSE, length(fields)))
+    return(fields %in% names(dvars))
+}
+
 ## internal function to select docvara fields
 select_fields <- function(x, types = c('user', 'system')) {
 

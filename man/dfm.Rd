@@ -52,8 +52,8 @@ See \link{groups} for details.}
 
 \item{verbose}{display messages if \code{TRUE}}
 
-\item{...}{additional arguments passed to \link{tokens}, for character and 
-corpus}
+\item{...}{additional arguments passed to \link{tokens}; not used when \code{x}
+is a \link{dfm}}
 }
 \value{
 a \link{dfm-class} object
@@ -91,7 +91,7 @@ dfm(corpus_post80inaug, remove = stopwords("english"), stem = TRUE, verbose = TR
 dfm("Banking industry", stem = TRUE, ngrams = 2, verbose = FALSE)
 
 # with dictionaries
-corpus_post1900inaug <- corpus_subset(data_corpus_inaugural, Year>1900)
+corpus_post1900inaug <- corpus_subset(data_corpus_inaugural, Year > 1900)
 mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                opposition = c("Opposition", "reject", "notincorpus"),
                taxing = "taxing",

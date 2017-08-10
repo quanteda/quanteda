@@ -1,16 +1,10 @@
-# quanteda 0.9.9
+# quanteda 0.9.9000
 
 ## Changes since v0.9.9-65
 
 ### New features
 
-*  Improvements to `sequences()` and the `textstat_collocations()` which calls it:
-    - Implemented `lambda` and `lambda1` collocation methods based on Blaheta and Johnson's (2001) in `sequences()`(#753)
-    - Added new argument to `sequences()`: `method = c("lambda", "lambda1")` to apply unigram subtuples and all subtuples algorithm. 
-    - Added new methods to argument `method` in `textstat_collocations()`: `method = c("lambda", "lambda1", ...)` to apply unigram subtuples and all subtuples algorithm. 
-    - Added new argument to `sequences()`: `smoothing = 0.5` as a continuity correction for small counts; this also avoids overflow problems with zero counts.
-    - More statistics returned from `sequences_mt.cpp`: `dice`,`G2`,`pmi` and `chi2`
-   This function is still under development and likely to change further.
+*  Improvements and consoldiation of methods for detecting multi-word expressions, now active only through `textstat_collocations()`, which computes only the `lambda` method for now, but does so accurately and efficiently.  (#753, #803).  This function is still under development and likely to change further.
 *  Added new `quanteda_options` that affect the maximum documents and features displayed by the dfm print method (#756).
 *  `ngram` formation is now significantly faster, including with skips (skipgrams).
 *  Improvements to `topfeatures()`:
@@ -24,12 +18,11 @@
 *  Added a tokens constructor for tokens objects (#690), including updates to `tokens()` that improve the consistency and efficiency of the tokenization.
 *  Added new `quanteda_options()`: `language_stemmer` and `language_stopwords`, now used for default in `*_wordstem` functions and `stopwords()` for defaults, respectively.  Also uses this option in `dfm()` when `stem = TRUE`, rather than hard-wiring in the "english" stemmer (#386).
 *  Added a new function `textstat_frequency()` to compile feature frequencies, possibly by groups. (#825)
+*  Added `nomatch` option to `tokens_lookup()` and `dfm_lookup()`, to provide tokens or feature counts for categories not matched to any dictionary key. (#496)
 
 ### Behaviour changes
 
-*  For `sequences()`:
-   - Removed arguments from `sequences()`: `features`, `case_insensitive` and `valuetype`, the function can be fully replaced by `tokens_select()`.
-   - Removed arguments from `sequences()`: `ordered` and `nested`.
+*  The functions `sequences()` and `collocations()` have been removed and replaced by `textstat_collocations()`.
 *  (Finally) we added "will" to the list of English stopwords (#818).
 *  `dfm` objects with one or both dimensions haveing zero length, and empty `kwic` objects now display more appropriately in their print methods (per #811).
 *  Pattern matches are now implemented more consistently across functions.  In functions such as `*_select`, `*_remove`, `tokens_compound`, `features` has been replaced by `pattern`, and in `kwic`, `keywords` has been replaced by `pattern`.  These all behave consistently with respect to `pattern`, which now has a unified single help page and parameter description.(#839)  See also above new features related to `phrase()`.
@@ -41,7 +34,7 @@
 
 ### Bug fixes and stability enhancements
 
-*  For `sequences()`: Corrected the word matching, and lambda and sigma calculation methods for `unigram subtuples` algorithm in `sequences_mt.cpp`, and consequently the p-values on the bigrams are correct. 
+*  For the underlying methods behind `textstat_collocations()`, we corrected the word matching, and lambda and z calculation methods, which were slightly incorrect before.  We also removed the chi2, G2, and pmi statistics, because these were incorrectly calculated for size > 2.  
 *  LIWC-formatted dictionary import now robust to assignment to term assignment to missing categories.
 *  `textmodel_NB(x, y, distribution = "Bernoulli")` was previously inactive even when this option was set.  It has now been fully implemented and tested (#776, #780).
 *  Separators including rare spacing characters are now handled more robustly by the `remove_separators` argument in `tokens()`.  See #796.

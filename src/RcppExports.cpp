@@ -155,23 +155,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_sequences_old
-DataFrame qatd_cpp_sequences_old(const List& texts_, const IntegerVector& words_, const CharacterVector& types_, const unsigned int count_min, unsigned int len_max, bool nested, bool ordered);
-RcppExport SEXP _quanteda_qatd_cpp_sequences_old(SEXP texts_SEXP, SEXP words_SEXP, SEXP types_SEXP, SEXP count_minSEXP, SEXP len_maxSEXP, SEXP nestedSEXP, SEXP orderedSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type words_(words_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
-    Rcpp::traits::input_parameter< const unsigned int >::type count_min(count_minSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type len_max(len_maxSEXP);
-    Rcpp::traits::input_parameter< bool >::type nested(nestedSEXP);
-    Rcpp::traits::input_parameter< bool >::type ordered(orderedSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_sequences_old(texts_, words_, types_, count_min, len_max, nested, ordered));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_tokens_compound
 List qatd_cpp_tokens_compound(const List& texts_, const List& comps_, const CharacterVector& types_, const String& delim_, const bool& join);
 RcppExport SEXP _quanteda_qatd_cpp_tokens_compound(SEXP texts_SEXP, SEXP comps_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP joinSEXP) {
@@ -215,8 +198,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_lookup
-List qatd_cpp_tokens_lookup(const List& texts_, const CharacterVector types_, const List& keys_, const IntegerVector& ids_, const bool overlap);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_lookup(SEXP texts_SEXP, SEXP types_SEXP, SEXP keys_SEXP, SEXP ids_SEXP, SEXP overlapSEXP) {
+List qatd_cpp_tokens_lookup(const List& texts_, const CharacterVector types_, const List& keys_, const IntegerVector& ids_, const bool overlap, const bool nomatch);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_lookup(SEXP texts_SEXP, SEXP types_SEXP, SEXP keys_SEXP, SEXP ids_SEXP, SEXP overlapSEXP, SEXP nomatchSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -225,7 +208,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const List& >::type keys_(keys_SEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type ids_(ids_SEXP);
     Rcpp::traits::input_parameter< const bool >::type overlap(overlapSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_lookup(texts_, types_, keys_, ids_, overlap));
+    Rcpp::traits::input_parameter< const bool >::type nomatch(nomatchSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_lookup(texts_, types_, keys_, ids_, overlap, nomatch));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -390,11 +374,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_MinkowskiPara_cpp2", (DL_FUNC) &_quanteda_qatd_MinkowskiPara_cpp2, 4},
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 8},
     {"_quanteda_qatd_cpp_sequences", (DL_FUNC) &_quanteda_qatd_cpp_sequences, 6},
-    {"_quanteda_qatd_cpp_sequences_old", (DL_FUNC) &_quanteda_qatd_cpp_sequences_old, 7},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},
     {"_quanteda_qatd_cpp_tokens_detect", (DL_FUNC) &_quanteda_qatd_cpp_tokens_detect, 2},
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 5},
-    {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 5},
+    {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
     {"_quanteda_qatd_cpp_tokens_match", (DL_FUNC) &_quanteda_qatd_cpp_tokens_match, 5},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
     {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 2},

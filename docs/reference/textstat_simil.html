@@ -137,7 +137,7 @@ matrix is recorded</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>textstat_dist</code> options are: <code>"euclidean"</code> (default), 
-  <code>"Chisquared"</code>, <code>"Chisquared2"</code>, <code>"hamming"</code>,
+  <code>"Chisquared"</code>, <code>"Chisquared2"</code>, <code>"hamming"</code>, 
   <code>"kullback"</code>. <code>"manhattan"</code>, <code>"maximum"</code>, <code>"canberra"</code>,
   and <code>"minkowski"</code>.
     <code>textstat_simil</code> options are: <code>"correlation"</code> (default), 
@@ -150,7 +150,28 @@ matrix is recorded</p></td>
     <p>If you want to compute similarity on a "normalized" dfm object 
   (controlling for variable document lengths, for methods such as correlation
   for which different document lengths matter), then wrap the input dfm in 
-  <code><a href='weight.html'>weight</a>(x, "relFreq")</code>.</p>
+  <code><a href='dfm_weight.html'>dfm_weight</a>(x, "relfreq")</code>.</p>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>The <code>"Chisquared"</code> metric is from Legendre, P., &amp; Gallagher,
+  E. D. (2001).
+  "<a href = 'http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&amp;_Gallagher.pdf'>Ecologically
+   meaningful transformations for ordination of species data</a>".
+  <em>Oecologia</em>, 129(2), 271–280. doi.org/10.1007/s004420100716
+    The <code>"Chisquared2"</code> metric is the "Quadratic-Chi" measure from Pele,
+  O., &amp; Werman, M. (2010). 
+  "<a href = 'http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf'>The
+  Quadratic-Chi Histogram Distance Family</a>". In <em>Computer Vision – ECCV
+  2010</em> (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
+  Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.
+    <code>"hamming"</code> is \(\sum{x \neq y)}\).</p>
+<p><code>"kullback"</code> is the Kullback-Leibler distance, which assumes that
+  \(P(x_i) = 0\) implies \(P(y_i)=0\), and in case both \(P(x_i)\) and
+  \(P(y_i)\) equals to zero, then \(P(x_i) * log(p(x_i)/p(y_i))\) is
+  assumed to be zero as the limit value.  The formula is:
+   $$\sum{P(x)*log(P(x)/p(y))}$$
+    All other measures are described in the <span class="pkg">proxy</span> package.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -186,6 +207,8 @@ matrix is recorded</p></td>
       <li><a href="#details">Details</a></li>
 
       <li><a href="#note">Note</a></li>
+
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

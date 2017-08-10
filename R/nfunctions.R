@@ -1,10 +1,3 @@
-# head
-# tail
-
-# kwic
-# 
-# char_tolower
-# char_toupper
 
 #' count the number of documents or features
 #' 
