@@ -9,7 +9,7 @@
 
 Many important changes to the package have been underway, including API changes, as we approach a stable API, "1.0" release in October 2017. Version 0.99 represents the last version that will contain many of the deprecated object types and methods that date several releases.
 
-v0.999 also implements many enhancements and performance improvements over previous releases. See [NEWS.md](http://quanteda.io/news/index.html#quanteda-0-99) for details, and [Quanteda Structure and Design](https://kbenoit.github.io/quanteda/articles/development-plans.html) for a description of the package's underlying logic and design philosophy.
+v0.99 also implements many enhancements and performance improvements over previous releases. See [NEWS.md](http://quanteda.io/news/index.html#quanteda-0-99) for details, and [Quanteda Structure and Design](https://kbenoit.github.io/quanteda/articles/development-plans.html) for a description of the package's underlying logic and design philosophy.
 
 About the package
 -----------------
@@ -165,7 +165,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    723        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Thu Aug 10 18:26:49 2017
+## Created: Thu Aug 10 18:31:56 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
