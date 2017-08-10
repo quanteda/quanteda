@@ -1,4 +1,4 @@
-# quanteda 0.9.9000
+# quanteda 0.99
 
 ## Changes since v0.9.9-65
 
