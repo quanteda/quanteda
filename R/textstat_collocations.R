@@ -121,8 +121,30 @@ textstat_collocations.tokens <- function(x, method = "lambda", size = 2, min_cou
     if (tolower) x <- tokens_tolower(x, keep_acronyms = TRUE)
     
     # segment by sentences, if the call started with a tokens object
-    # if (who_called_me_first(sys.calls(), "textstat_collocations") == "tokens") {
-    #     x <- tokens_segment(x, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = TRUE)
+    if (who_called_me_first(sys.calls(), "textstat_collocations") == "tokens") {
+        x <- tokens_segment_by_punctuation(x, remove_delimiter = TRUE)
+    }
+    
+    len_original <- length(x)
+    names_original <- names(x)
+    x <- lapply(x, function(y) {
+        y <- c(y, ".")  # make sure every sequence ends with a punct character
+        punct_index <- which(stringi::stri_detect_regex(y, "^\\p{P}+$"))
+        if (!length(punct_index)) return(y) # should never happen now
+        punct_reps <- punct_index - c(0, punct_index[-length(punct_index)])
+        y <- split(y, rep(1:length(punct_index), punct_reps))
+        if (remove_delimiter) y <- lapply(y, function(z) z[-length(z)])
+        y <- y[lengths(y) > 0]    # remove any zero-length elements
+        if (!length(y)) return(list(""))
+        names(y) <- 1:length(y)  # rename in sequence
+        y
+    })
+    
+    x <- as.tokens(unlist(x, recursive = FALSE))
+    if (length(x) == len_original) names(x) <- names_original
+    x
+}
+(x, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = TRUE)
     # }
 
     attrs_org <- attributes(x)
@@ -243,6 +265,27 @@ is.collocations <- function(x) {
 is.sequences <- function(x) "sequences" %in% class(x)
 
 # Internal Functions ------------------------------------------------------
+
+tokens_segment_by_punctuation <- function(x, remove_delimiter = TRUE) {
+    len_original <- length(x)
+    names_original <- names(x)
+    x <- lapply(x, function(y) {
+        y <- c(y, ".")  # make sure every sequence ends with a punct character
+        punct_index <- which(stringi::stri_detect_regex(y, "^\\p{P}+$"))
+        if (!length(punct_index)) return(y) # should never happen now
+        punct_reps <- punct_index - c(0, punct_index[-length(punct_index)])
+        y <- split(y, rep(1:length(punct_index), punct_reps))
+        if (remove_delimiter) y <- lapply(y, function(z) z[-length(z)])
+        y <- y[lengths(y) > 0]    # remove any zero-length elements
+        if (!length(y)) return(list(""))
+        names(y) <- 1:length(y)  # rename in sequence
+        y
+    })
+    
+    x <- as.tokens(unlist(x, recursive = FALSE))
+    if (length(x) == len_original) names(x) <- names_original
+    x
+}
 
 # function to get lower-order interactions for k-grams
 # example:
