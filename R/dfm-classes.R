@@ -47,6 +47,13 @@ setClass("dfm",
                           concatenator = ""),
          contains = "dgCMatrix")
 
+# deprecated dfmSparse class for backword compatibility
+#' @rdname dfm-class
+#' @keywords internal dfm
+setClass("dfmSparse", contains = "dfm")
+
+
+
 # #' @rdname dfm-class
 # #' @details The \code{dfm} class is a sparse matrix version of
 # #'   \code{dfm-class}, inheriting \link[Matrix]{dgCMatrix-class} from the
@@ -82,6 +89,8 @@ setClass("dfm",
 #               function(x) {
 #                   getMethod("t", "dgeMatrix")(x)
 #               }) #getMethod("t", "dgeMatrix"))
+
+
 
 
 ## S4 Method for the S3 class dfm

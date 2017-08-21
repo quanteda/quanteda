@@ -111,23 +111,25 @@ as.dfm.Matrix <- function(x) {
 #' @method as.dfm data.frame
 #' @export
 as.dfm.data.frame <- function(x) {
-    as_dfm_constructor(x)
+    as_dfm_constructor(as.matrix(x, rownames.force = TRUE))
 }
 
 #' @noRd
 #' @method as.dfm dfmSparse
 #' @export
 as.dfm.dfmSparse <- function(x) {
-    class(x) <- 'dfm'
-    x
+    as.dfm(as(x, 'dgCMatrix'))
 }
 
 as_dfm_constructor <- function(x) {
-    dname <- if (is.null(rownames(x))) paste0(quanteda_options("base_docname"), seq_len(nrow(x))) else rownames(x)
-    fname <- if (is.null(colnames(x))) paste0(quanteda_options("base_featname"), seq_len(ncol(x))) else colnames(x)
-    new("dfm", Matrix(as.matrix(x), sparse = TRUE, dimnames = list(docs = dname, features = fname)))
+    x <- Matrix(x, sparse = TRUE) # dimnames argument is not working
+    names(dimnames(x)) <- c("docs", "features")
+    if (is.null(rownames(x))) 
+        rownames(x) <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
+    if (is.null(colnames(x)))
+        colnames(x) <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
+    new("dfm", x)
 }
-
 
 #' identify the most frequent features in a dfm
 #' 
