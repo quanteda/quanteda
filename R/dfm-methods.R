@@ -114,13 +114,18 @@ as.dfm.data.frame <- function(x) {
     as_dfm_constructor(x)
 }
 
+#' @noRd
+#' @method as.dfm dfmSparse
+#' @export
+as.dfm.dfmSparse <- function(x) {
+    class(x) <- 'dfm'
+    x
+}
+
 as_dfm_constructor <- function(x) {
     dname <- if (is.null(rownames(x))) paste0(quanteda_options("base_docname"), seq_len(nrow(x))) else rownames(x)
     fname <- if (is.null(colnames(x))) paste0(quanteda_options("base_featname"), seq_len(ncol(x))) else colnames(x)
-    new("dfmSparse", Matrix(as.matrix(x), sparse = TRUE, 
-                            dimnames = list(docs = dname, features = fname) 
-                            )
-        )
+    new("dfm", Matrix(as.matrix(x), sparse = TRUE, dimnames = list(docs = dname, features = fname)))
 }
 
 
@@ -237,6 +242,6 @@ NULL
 #' @param e2 a numeric value to compare with values in a dfm
 #' @export
 #' @seealso \link{Comparison} operators
-setMethod("Compare", c("dfmSparse", "numeric"), function(e1, e2) {
+setMethod("Compare", c("dfm", "numeric"), function(e1, e2) {
     as(callGeneric(as(e1, "dgCMatrix"), e2), "lgCMatrix")
 })

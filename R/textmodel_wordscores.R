@@ -51,7 +51,7 @@ setClass("textmodel_wordscores_predicted",
 #'   \code{\link{predict.textmodel_wordscores_fitted}}.
 #' @author Kenneth Benoit
 #' @examples 
-#' (ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
+#' (ws <- textmodel_wordscores(as.dfm(data_dfm_lbgexample), c(seq(-1.5, 1.5, .75), NA)))
 #' 
 #' predict(ws)
 #' predict(ws, rescaling = "mv")
@@ -67,15 +67,13 @@ setClass("textmodel_wordscores_predicted",
 #'   Interpreting Political Text." \emph{Political Analysis} 16(1): 93-100.
 #' @seealso \code{\link{predict.textmodel_wordscores_fitted}}
 #' @export
-textmodel_wordscores <- function(x, y,
-                                 scale = c("linear", "logit"), smooth = 0) {
+textmodel_wordscores <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
     UseMethod("textmodel_wordscores")
 }
 
 #' @noRd
 #' @export
-textmodel_wordscores.dfm <- function(x, y,
-                                     scale = c("linear", "logit"), smooth = 0) {
+textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
     scale <- match.arg(scale)
     data <- x
     scores <- y

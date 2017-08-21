@@ -15,7 +15,7 @@
 #' dfm_compress(matd, margin = "features")
 #' dfm_compress(matd)
 dfm_compress.dfmDense <- function(x, ...) {
-    dfm_compress(new("dfmSparse", Matrix::Matrix(as.matrix(x), sparse = TRUE),
+    dfm_compress(new("dfm", Matrix::Matrix(as.matrix(x), sparse = TRUE),
                      settings = x@settings,
                      weightTf = x@weightTf,
                      weightDf = x@weightDf,

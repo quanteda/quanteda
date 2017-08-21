@@ -38,7 +38,7 @@ dfm_compress <- function(x, margin = c("both", "documents", "features")) {
     
 #' @noRd
 #' @export
-dfm_compress.dfmSparse <- function(x, margin = c("both", "documents", "features")) {
+dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
     margin <- match.arg(margin)
     if (margin == 'documents') {
         result <- group_dfm(x, NULL, docnames(x))
@@ -63,7 +63,7 @@ dfm_compress.dfmSparse <- function(x, margin = c("both", "documents", "features"
 #' #' dfm_compress(matd, margin = "features")
 #' #' dfm_compress(matd)
 #' dfm_compress.dfmDense <- function(x, ...) {
-#'     dfm_compress(new("dfmSparse", Matrix::Matrix(as.matrix(x), sparse = TRUE),
+#'     dfm_compress(new("dfm", Matrix::Matrix(as.matrix(x), sparse = TRUE),
 #'                      settings = x@settings,
 #'                      weightTf = x@weightTf,
 #'                      weightDf = x@weightDf,

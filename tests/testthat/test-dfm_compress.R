@@ -26,7 +26,7 @@ test_that("dfm_compress: no effect if no compression needed", {
 })
 
 test_that("dfm_compress: empty features are preserved", {
-    testdfm <- new("dfmSparse", Matrix::Matrix(matrix(c(0,0,0, 2,1,5, 0,1,0, 1,1,0), nrow = 3,
+    testdfm <- new("dfm", Matrix::Matrix(matrix(c(0,0,0, 2,1,5, 0,1,0, 1,1,0), nrow = 3,
                                                       dimnames = list(docs = paste0("d", 1:3),
                                                                       features = c("a", "b", "c", "b"))),
                                                sparse = TRUE))
@@ -34,7 +34,7 @@ test_that("dfm_compress: empty features are preserved", {
 })
 
 test_that("dfm_compress: empty documents are preserved", {
-    testdfm <- new("dfmSparse", Matrix::Matrix(matrix(c(0,0,0, 2,1,0, 0,1,0, 1,1,0), nrow = 3,
+    testdfm <- new("dfm", Matrix::Matrix(matrix(c(0,0,0, 2,1,0, 0,1,0, 1,1,0), nrow = 3,
                                                       dimnames = list(docs = paste0("d", 1:3),
                                                                       features = c("a", "b", "c", "b"))),
                                                sparse = TRUE))

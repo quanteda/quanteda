@@ -3,17 +3,7 @@
 \name{as.matrix.dfm}
 \alias{as.matrix.dfm}
 \alias{as.data.frame.dfm}
-\title{#' @rdname dfm-class
-setMethod("+", signature(e1 = "dfmDense", e2 = "numeric"),
-          function(e1, e2) {
-              as(as(e1, "Matrix") + e2, "dfmDense")
-          })
-#' @rdname dfm-class
-setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
-          function(e1, e2) {
-              as(e1 + as(e2, "Matrix"), "dfmDense")
-          })
-coerce a dfm to a matrix or data.frame}
+\title{coerce a dfm to a matrix or data.frame}
 \usage{
 \method{as.matrix}{dfm}(x, ...)
 

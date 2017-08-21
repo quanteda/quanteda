@@ -143,7 +143,7 @@ dfm_select.dfm <-  function(x, pattern,
                                            dims = c(ndoc(temp), length(features_add)), 
                                            dimnames = list(docnames(temp), features_add)), 
                               "dgCMatrix")
-            temp <- cbind(temp, new("dfmSparse", pad_feature))
+            temp <- cbind(temp, new("dfm", pad_feature))
         }
         temp <- reassign_slots(temp, x)
     }

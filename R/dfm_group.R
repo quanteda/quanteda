@@ -108,7 +108,7 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
     dims <- c(length(documents_name), length(features_name))
     dimnames <- list(docs = documents_name, features = features_name)
     
-    result <- new("dfmSparse", 
+    result <- new("dfm", 
                   sparseMatrix(i = i_new, j = j_new, x = x_new, dims = dims, dimnames = dimnames),
                   settings = x@settings,
                   weightTf = x@weightTf,

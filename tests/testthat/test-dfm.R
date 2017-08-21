@@ -100,7 +100,7 @@ test_that("test rbind.dfm with the same columns", {
     )
     expect_that(
         rbind(dfm1, dfm1),
-        is_a('dfmSparse')
+        is_a('dfm')
     )
 
 })
@@ -126,7 +126,7 @@ test_that("test rbind.dfm with different columns", {
 
     expect_that(
         rbind(dfm1, dfm2),
-        is_a('dfmSparse')
+        is_a('dfm')
     )
 
 })
@@ -150,7 +150,7 @@ test_that("test rbind.dfm with different columns, three args and repeated words"
 
     expect_that(
         rbind(dfm1, dfm2, dfm3),
-        is_a('dfmSparse')
+        is_a('dfm')
     )
 
 })
@@ -164,7 +164,7 @@ test_that("test rbind.dfm with a single argument returns the same dfm", {
     )
     expect_that(
         rbind(dfm(fox, remove_punct = TRUE)),
-        is_a('dfmSparse')
+        is_a('dfm')
     )
 })
 
@@ -504,15 +504,15 @@ test_that("printing an empty dfm produces informative result (#811)", {
     
     expect_output(
         print(my_dfm),
-        "^Document-feature matrix of: 2 documents, 2 features \\(100% sparse\\)\\.\\n2 x 2 sparse Matrix of class \"dfmSparse\""
+        "^Document-feature matrix of: 2 documents, 2 features \\(100% sparse\\)\\.\\n2 x 2 sparse Matrix of class \"dfm\""
     )
     expect_output(
         print(my_dfm[-c(1, 2), ]),
-        "^Document-feature matrix of: 0 documents, 2 features\\.\\n0 x 2 sparse Matrix of class \"dfmSparse\""
+        "^Document-feature matrix of: 0 documents, 2 features\\.\\n0 x 2 sparse Matrix of class \"dfm\""
     )
     expect_output(
         print(my_dfm[, -c(1, 2)]),
-        "^Document-feature matrix of: 2 documents, 0 features\\.\\n2 x 0 sparse Matrix of class \"dfmSparse\""
+        "^Document-feature matrix of: 2 documents, 0 features\\.\\n2 x 0 sparse Matrix of class \"dfm\""
     )
 })
 

@@ -81,7 +81,7 @@ In the rare situation where a warning message of "The algorighm did not converge
   some documents may work.
 }
 \examples{
-textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5))
+textmodel_wordfish(as.dfm(data_dfm_lbgexample), dir = c(1,5))
 
 \dontrun{
 ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)

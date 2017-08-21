@@ -31,14 +31,15 @@ fully sparse methods.
   \code{scheme_tf = "prop"}.
 }
 \examples{
-head(data_dfm_lbgexample[, 5:10])
-head(tfidf(data_dfm_lbgexample)[, 5:10])
-docfreq(data_dfm_lbgexample)[5:15]
-head(tf(data_dfm_lbgexample)[, 5:10])
+mydfm <- as.dfm(data_dfm_lbgexample)
+head(mydfm[, 5:10])
+head(tfidf(mydfm)[, 5:10])
+docfreq(mydfm)[5:15]
+head(tf(mydfm)[, 5:10])
 
 # replication of worked example from
 # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-(wikiDfm <- new("dfmSparse", 
+(wikiDfm <- new("dfm", 
                 Matrix::Matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
                    byrow = TRUE, nrow = 2,  
                    dimnames = list(docs = c("document1", "document2"), 
