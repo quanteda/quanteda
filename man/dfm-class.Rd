@@ -4,8 +4,6 @@
 \name{dfm-class}
 \alias{dfm-class}
 \alias{dfmSparse-class}
-\alias{dfmDense-class}
-\alias{t,dfmDense-method}
 \alias{t,dfmSparse-method}
 \alias{colSums,dfmSparse-method}
 \alias{rowSums,dfmSparse-method}
@@ -13,8 +11,6 @@
 \alias{rowMeans,dfmSparse-method}
 \alias{+,dfmSparse,numeric-method}
 \alias{+,numeric,dfmSparse-method}
-\alias{+,dfmDense,numeric-method}
-\alias{+,numeric,dfmDense-method}
 \alias{[,dfm,index,index,missing-method}
 \alias{[,dfm,index,index,logical-method}
 \alias{[,dfm,missing,missing,missing-method}
@@ -25,8 +21,6 @@
 \alias{[,dfm,missing,index,logical-method}
 \title{Virtual class "dfm" for a document-feature matrix}
 \usage{
-\S4method{t}{dfmDense}(x)
-
 \S4method{t}{dfmSparse}(x)
 
 \S4method{colSums}{dfmSparse}(x, na.rm = FALSE, dims = 1L, ...)
@@ -40,10 +34,6 @@
 \S4method{+}{dfmSparse,numeric}(e1, e2)
 
 \S4method{+}{numeric,dfmSparse}(e1, e2)
-
-\S4method{+}{dfmDense,numeric}(e1, e2)
-
-\S4method{+}{numeric,dfmDense}(e1, e2)
 
 \S4method{[}{dfm,index,index,missing}(x, i, j, ..., drop = FALSE)
 
@@ -87,6 +77,24 @@ The dfm class of object is a type of \link[Matrix]{Matrix-class}
   subclasses of the \code{dfm} class, depending on whether the object can be 
   represented by a sparse matrix, in which case it is a \code{dfmSparse} 
   class object, or if dense, then a \code{dfmDense} object.  See Details.
+
+#' @rdname dfm-class
+#' @details The \code{dfmDense} class is a sparse matrix version of \code{dfm-class}, 
+#' inheriting \link[Matrix]{dgeMatrix-class} from the \pkg{Matrix} package.  dfm objects that
+#' are converted through weighting or other transformations into cells without zeroes will 
+#' be automatically converted to the dfmDense class.  This will necessarily be a much larger sized
+#' object than one of \code{dfmSparse} class, because each cell is recorded as a numeric (double) type
+#' requiring 8 bytes of storage.
+#' @export
+setClass("dfmDense",
+         contains = c("dfm", "dgeMatrix"))
+# S4 Method for the S4 class dense/weighted dfm
+#' @export
+#' @rdname dfm-class
+setMethod("t", signature(x = "dfmDense"), definition = 
+              function(x) {
+                  getMethod("t", "dgeMatrix")(x)
+              }) #getMethod("t", "dgeMatrix"))
 }
 \details{
 The \code{dfm} class is a virtual class that will contain one of two
@@ -104,13 +112,6 @@ The \code{dfmSparse} class is a sparse matrix version of
   switch the default object class to this object type, as integers are 4
   bytes each (compared to the current numeric double type requiring 8 bytes
   per cell.)
-
-The \code{dfmDense} class is a sparse matrix version of \code{dfm-class}, 
-inheriting \link[Matrix]{dgeMatrix-class} from the \pkg{Matrix} package.  dfm objects that
-are converted through weighting or other transformations into cells without zeroes will 
-be automatically converted to the dfmDense class.  This will necessarily be a much larger sized
-object than one of \code{dfmSparse} class, because each cell is recorded as a numeric (double) type
-requiring 8 bytes of storage.
 }
 \section{Slots}{
 

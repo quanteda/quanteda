@@ -4,7 +4,7 @@
 ## Ken Benoit
 ####################################################################
 
-setClassUnion("dframe", members = c("data.frame", "NULL"))
+setClassUnion("dframe", members = c("data.frame", "NULL")) # TODO should not allow docvars to be NULL
 
 #' Virtual class "dfm" for a document-feature matrix
 #' 
@@ -47,7 +47,7 @@ setClass("dfm",
                           ngrams = 1L,
                           skip = 0L,
                           concatenator = ""),
-         contains = "Matrix")
+         contains = "dgCMatrix")
 
 #' @rdname dfm-class
 #' @details The \code{dfmSparse} class is a sparse matrix version of
@@ -65,38 +65,34 @@ setClass("dfm",
 setClass("dfmSparse",
          contains = c("dfm", "dgCMatrix"))
 
-#' @rdname dfm-class
-#' @details The \code{dfmDense} class is a sparse matrix version of \code{dfm-class}, 
-#' inheriting \link[Matrix]{dgeMatrix-class} from the \pkg{Matrix} package.  dfm objects that
-#' are converted through weighting or other transformations into cells without zeroes will 
-#' be automatically converted to the dfmDense class.  This will necessarily be a much larger sized
-#' object than one of \code{dfmSparse} class, because each cell is recorded as a numeric (double) type
-#' requiring 8 bytes of storage.
-#' @export
-setClass("dfmDense",
-         contains = c("dfm", "dgeMatrix"))
+#' #' @rdname dfm-class
+#' #' @details The \code{dfmDense} class is a sparse matrix version of \code{dfm-class}, 
+#' #' inheriting \link[Matrix]{dgeMatrix-class} from the \pkg{Matrix} package.  dfm objects that
+#' #' are converted through weighting or other transformations into cells without zeroes will 
+#' #' be automatically converted to the dfmDense class.  This will necessarily be a much larger sized
+#' #' object than one of \code{dfmSparse} class, because each cell is recorded as a numeric (double) type
+#' #' requiring 8 bytes of storage.
+#' #' @export
+#' setClass("dfmDense",
+#'          contains = c("dfm", "dgeMatrix"))
 
 
-# S4 Method for the S4 class dense/weighted dfm
-#' @export
-#' @rdname dfm-class
-setMethod("t", signature(x = "dfmDense"), definition = 
-              function(x) {
-                  getMethod("t", "dgeMatrix")(x)
-              }) #getMethod("t", "dgeMatrix"))
+#' # S4 Method for the S4 class dense/weighted dfm
+#' #' @export
+#' #' @rdname dfm-class
+#' setMethod("t", signature(x = "dfmDense"), definition = 
+#'               function(x) {
+#'                   getMethod("t", "dgeMatrix")(x)
+#'               }) #getMethod("t", "dgeMatrix"))
 
 
 ## S4 Method for the S3 class dense dfm
 #' @export
 #' @param x the dfm object
-#' @rdname dfm-class 
+#' @rdname dfm-class
 setMethod("t",
           signature = (x = "dfmSparse"),
-          definition = function(x) {
-              new("dfmSparse", getMethod("t", "dgCMatrix")(x))
-          })
-
-
+          function(x) as.dfm(t(as(x, "dgCMatrix"))))
 
 #' @method colSums dfmSparse
 #' @rdname dfm-class
@@ -135,23 +131,25 @@ setMethod("rowMeans",
 #' @rdname dfm-class
 setMethod("+", signature(e1 = "dfmSparse", e2 = "numeric"),
           function(e1, e2) {
-              as(as(e1, "Matrix") + e2, ifelse(e2==0, "dfmSparse", "dfmDense"))
-          })       
+              as.dfm(as(e1, "dgCMatrix") + e2)
+          })
 #' @rdname dfm-class
 setMethod("+", signature(e1 = "numeric", e2 = "dfmSparse"),
           function(e1, e2) {
-              as(e1 + as(e2, "Matrix"), ifelse(e1==0, "dfmSparse", "dfmDense"))
-          })  
-#' @rdname dfm-class
-setMethod("+", signature(e1 = "dfmDense", e2 = "numeric"),
-          function(e1, e2) {
-              as(as(e1, "Matrix") + e2, "dfmDense")
+              as.dfm(e1 + as(e2, "dgCMatrix"))
           })
-#' @rdname dfm-class
-setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
-          function(e1, e2) {
-              as(e1 + as(e2, "Matrix"), "dfmDense")
-          })
+
+
+#' #' @rdname dfm-class
+#' setMethod("+", signature(e1 = "dfmDense", e2 = "numeric"),
+#'           function(e1, e2) {
+#'               as(as(e1, "Matrix") + e2, "dfmDense")
+#'           })
+#' #' @rdname dfm-class
+#' setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
+#'           function(e1, e2) {
+#'               as(e1 + as(e2, "Matrix"), "dfmDense")
+#'           })
 
 
 #' coerce a dfm to a matrix or data.frame

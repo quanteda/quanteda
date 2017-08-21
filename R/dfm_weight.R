@@ -439,8 +439,8 @@ setMethod("maxtf", signature(x = "dfmSparse"), definition = function(x) {
     # sapply(split(x@x, x@i), max)
 })
 
-setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
-    apply(x, 1, max)
-})
+# setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
+#     apply(x, 1, max)
+# })
 
 

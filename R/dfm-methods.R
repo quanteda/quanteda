@@ -101,6 +101,13 @@ as.dfm.matrix <- function(x) {
 }
 
 #' @noRd
+#' @method as.dfm Matrix
+#' @export
+as.dfm.Matrix <- function(x) {
+    as_dfm_constructor(x)
+}
+
+#' @noRd
 #' @method as.dfm data.frame
 #' @export
 as.dfm.data.frame <- function(x) {
@@ -108,11 +115,11 @@ as.dfm.data.frame <- function(x) {
 }
 
 as_dfm_constructor <- function(x) {
-    new("dfmSparse", Matrix(as.matrix(x), 
-                            sparse = TRUE,
-                            dimnames = list(docs = if (is.null(rownames(x))) paste0(quanteda_options("base_docname"), seq_len(nrow(x))) else rownames(x),
-                                            features = if (is.null(colnames(x))) paste0(quanteda_options("base_featname"), seq_len(ncol(x))) else colnames(x)) 
-                            ) 
+    dname <- if (is.null(rownames(x))) paste0(quanteda_options("base_docname"), seq_len(nrow(x))) else rownames(x)
+    fname <- if (is.null(colnames(x))) paste0(quanteda_options("base_featname"), seq_len(ncol(x))) else colnames(x)
+    new("dfmSparse", Matrix(as.matrix(x), sparse = TRUE, 
+                            dimnames = list(docs = dname, features = fname) 
+                            )
         )
 }
 

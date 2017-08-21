@@ -146,7 +146,7 @@ as.wfm.dfm <- function(x) {
 }
 
 dfm2austinformat <- function(d) {
-    d <- as.matrix(d)
+    d <- as.matrix(as(d, 'dgeMatrix'))
     names(dimnames(d))[2] <- "words"
     class(d) <- c("wfm", "matrix")
     d
