@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.99
+Version: 0.99.1
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -49,7 +49,8 @@ Suggests:
     RColorBrewer,
     xtable,
     DT,
-    ca
+    ca,
+    purrr
 URL: http://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
