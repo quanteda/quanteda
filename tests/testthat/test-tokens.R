@@ -529,4 +529,15 @@ test_that("tokens works as expected with NA, and blanks", {
         ""
     )
 })
+
+test_that("assignment operators are disabled for tokens object", {
+    toks <- tokens(c(d1 = "a b c d", d2 = "c d e"))
+    
+    suppressWarnings(toks[[1]] <- c(6, 100, 'z'))
+    expect_equal(as.list(toks),
+                 list(d1 = c("a", "b", "c", "d"), d2 = c("c", "d", "e")))
+    
+    expect_warning(toks[[1]] <- c(6, 100, 'z'))
+    expect_warning(toks[1] <- list(c(6, 100, 'z')))
+})
     
