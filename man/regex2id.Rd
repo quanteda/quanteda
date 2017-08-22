@@ -3,7 +3,7 @@
 \name{regex2fixed}
 \alias{regex2fixed}
 \alias{regex2id}
-\title{converts regex and glob patterns to fixed patters}
+\title{convert regex and glob patterns to type IDs or fixed patterns}
 \usage{
 regex2fixed(pattern, types, valuetype, case_insensitive = FALSE,
   index = TRUE)
@@ -22,21 +22,23 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 
-\item{index}{If TRUE, index is constructed automatically. It also accept index 
-constructed by index_types().}
+\item{index}{If TRUE, index is constructed automatically. It also accept
+index constructed by index_types().}
 }
 \value{
-a list of character vectors containing types
+\code{regex2fixed} returns a list of character vectors containing
+  types
 
-a list of integer vectors containing type IDs
+\code{regex2id} returns a list of integer vectors containing type
+  IDs
 }
 \description{
-converts regex and glob patterns to fixed patters
+\code{regex2fixed} converts regex and glob patterns to fixed patterns.
 
-This function converts regex or glob to type IDs to allow C++ function to
-perform fast searches in tokens object. C++ functions use a list of type IDs
-to construct a hash table, agaist which sub-vectors of tokens object are
-matched.
+\code{regex2id} converts regex or glob to type IDs to allow C++
+  function to perform fast searches in tokens object. C++ functions use a
+  list of type IDs to construct a hash table, agaist which sub-vectors of
+  tokens object are matched.
 }
 \examples{
 pattern <- list(c('^a$', '^b'), c('c'), c('d'))

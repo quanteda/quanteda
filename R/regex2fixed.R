@@ -1,40 +1,40 @@
-#' converts regex and glob patterns to fixed patters
-#' @inherit regex2id
-#' @return a list of character vectors containing types
-#' @keywords internal
 #' @rdname regex2id
+#' @description \code{regex2fixed} converts regex and glob patterns to fixed patterns.
+#' @inherit regex2id
+#' @return \code{regex2fixed} returns a list of character vectors containing
+#'   types
+#' @keywords internal
 #' @examples
 #' pattern <- list(c('^a$', '^b'), c('c'), c('d'))
 #' types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
 #' quanteda:::regex2fixed(pattern, types, 'regex', case_insensitive=TRUE)
 #' index <- quanteda:::index_types(types, 'regex', case_insensitive=TRUE)
 #' quanteda:::regex2fixed(pattern, types, 'regex', case_insensitive=TRUE, index=index)
-
 regex2fixed <- function(pattern, types, valuetype, case_insensitive = FALSE, index = TRUE){
     id <- regex2id(pattern, types, valuetype, case_insensitive, index)
     fixed <- lapply(id, function(x) types[x])
     return(fixed)
 }
 
-#' converts regex and glob patterns to type IDs
-#' 
-#' This function converts regex or glob to type IDs to allow C++ function to
-#' perform fast searches in tokens object. C++ functions use a list of type IDs
-#' to construct a hash table, agaist which sub-vectors of tokens object are
-#' matched.
+#' convert regex and glob patterns to type IDs or fixed patterns
+#'
+#' @description \code{regex2id} converts regex or glob to type IDs to allow C++
+#'   function to perform fast searches in tokens object. C++ functions use a
+#'   list of type IDs to construct a hash table, agaist which sub-vectors of
+#'   tokens object are matched.
 #' @inheritParams pattern
 #' @param types unique types of tokens obtaine by \code{quanteda:::types()}
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
-#' @param index If TRUE, index is constructed automatically. It also accept index 
-#'   constructed by index_types().
-#' @return a list of integer vectors containing type IDs
+#' @param index If TRUE, index is constructed automatically. It also accept
+#'   index constructed by index_types().
+#' @return  \code{regex2id} returns a list of integer vectors containing type
+#'   IDs
 #' @keywords internal
 #' @examples
 #' pattern <- list(c('^a$', '^b'), c('c'), c('d'))
 #' types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
 #' quanteda:::regex2id(pattern, types, 'regex', case_insensitive=TRUE)
-
 regex2id <- function(pattern, types, valuetype, case_insensitive = FALSE, index = TRUE) {
     
     if (!length(pattern)) return(list())
@@ -151,11 +151,11 @@ select_types <- function (regex, types_search, exact, index){
 }
 
 
-#' index types for fastest regular expression matches 
-#' 
-#' This is an internal function for regex2id() that constructs an index of regex
-#' patters(e.g. ^xxxx, xxxx$ and ^xxxx$) to avoide expensive sequential search
-#' by stri_detect_regex.
+#' index types for fastest regular expression matches
+#'
+#' An internal function for \code{\link{regex2id}} that constructs an index of
+#' regex patterns (e.g. \code{^xxxx}, \code{xxxx$} and \code{^xxxx$}) to avoid
+#' expensive sequential search by \link[stringi]{stri_detect_regex}.
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param max_len maximum length of types to be indexed

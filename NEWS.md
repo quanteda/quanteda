@@ -5,6 +5,7 @@
 ### Bug fixes and stability enhancements
 
 * Fixed a problem when applying `purrr::map()` to `dfm()` (#928).
+* Added documentation for `regex2fixed()` and associated functions.
 
 
 ## Changes since v0.9.9-65

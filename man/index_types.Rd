@@ -20,9 +20,10 @@ a list of integer vectors containing type IDs with index keys as an
   attribute
 }
 \description{
-This is an internal function for regex2id() that constructs an index of regex
-patters(e.g. ^xxxx, xxxx$ and ^xxxx$) to avoide expensive sequential search
-by stri_detect_regex.
+An internal function for \code{\link{regex2id}} that constructs
+  an index of regex patterns (e.g. \code{^xxxx}, \code{xxxx$} and
+  \code{^xxxx$}) to avoid expensive sequential search by
+  \link[stringi]{stri_detect_regex}.
 }
 \examples{
 types <- c('xxx', 'yyyy', 'ZZZ')
