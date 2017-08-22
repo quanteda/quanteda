@@ -529,8 +529,6 @@ test_that("tokens works as expected with NA, and blanks", {
         ""
     )
 })
-<<<<<<< HEAD
-=======
 
 test_that("assignment operators are disabled for tokens object", {
     toks <- tokens(c(d1 = "a b c d", d2 = "c d e"))
@@ -542,5 +540,4 @@ test_that("assignment operators are disabled for tokens object", {
     expect_error(toks[[1]] <- c(6, 100, 'z'), 'assignment to tokens objects is not allowed')
     expect_error(toks[1] <- list(c(6, 100, 'z')), 'assignment to tokens objects is not allowed')
 })
-    
->>>>>>> master
+
