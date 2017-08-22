@@ -94,6 +94,13 @@ as.dfm <- function(x) {
 }
 
 #' @noRd
+#' @method as.dfm dfm
+#' @export
+as.dfm.dfm <- function(x) {
+    x
+}
+
+#' @noRd
 #' @method as.dfm matrix
 #' @export
 as.dfm.matrix <- function(x) {
