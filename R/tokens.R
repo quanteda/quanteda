@@ -496,7 +496,7 @@ print.tokens <- function(x, ...) {
 #' @method "[<-" tokens
 #' @export
 #' @noRd
-"[<-.tokens" <- function(x, ...) {
+"[<-.tokens" <- function(x, i, value) {
     warning('assignment to tokens objects is not allowed', call. = FALSE)
     x
 }
@@ -504,7 +504,7 @@ print.tokens <- function(x, ...) {
 #' @method "[[<-" tokens
 #' @export
 #' @noRd
-"[[<-.tokens" <- function(x, ...) {
+"[[<-.tokens" <- function(x, i, value) {
     warning('assignment to tokens objects is not allowed', call. = FALSE)
     x
 }
