@@ -1,40 +1,52 @@
-# @param regex a list of regular expression
-# @param types unique types of tokens
-# @param case_insensitive case sensitivity
-# @param If TRUE, index is constructed automatically. It also accept index constructed 
-#        by index_regex(). 
-#
-# regex <- list(c('^a$', '^b'), c('c'), c('d'))
-# types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
-# regex2fixed(regex, types, 'regex', case_insensitive=TRUE)
-# index <- index_regex(types, 'regex', case_insensitive=TRUE)
-# regex2fixed(regex, types, 'regex', case_insensitive=TRUE, index=index)
+#' converts regex and glob patterns to fixed patters
+#' @inherit regex2id
+#' @return a list of character vectors containing types
+#' @keywords internal
+#' @rdname regex2id
+#' @examples
+#' pattern <- list(c('^a$', '^b'), c('c'), c('d'))
+#' types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
+#' quanteda:::regex2fixed(pattern, types, 'regex', case_insensitive=TRUE)
+#' index <- quanteda:::index_types(types, 'regex', case_insensitive=TRUE)
+#' quanteda:::regex2fixed(pattern, types, 'regex', case_insensitive=TRUE, index=index)
 
-regex2fixed <- function(regex, types, valuetype, case_insensitive = FALSE, index = TRUE){
-    id <- regex2id(regex, types, valuetype, case_insensitive, index)
+regex2fixed <- function(pattern, types, valuetype, case_insensitive = FALSE, index = TRUE){
+    id <- regex2id(pattern, types, valuetype, case_insensitive, index)
     fixed <- lapply(id, function(x) types[x])
     return(fixed)
 }
 
-# This function converts regex to type IDs. This is one of the coner strones of 
-# the new artchitecture, but not yet really fast. Performance improvement is needed.
-# @params the same as regex2fixed()
-# regex <- list(c('^a$', '^b'), c('c'), c('d'))
-# types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
-# regex2id(regex, types, 'regex', case_insensitive=TRUE)
+#' converts regex and glob patterns to type IDs
+#' 
+#' This function converts regex or glob to type IDs to allow C++ function to
+#' perform fast searches in tokens object. C++ functions use a list of type IDs
+#' to construct a hash table, agaist which sub-vectors of tokens object are
+#' matched.
+#' @inheritParams pattern
+#' @param types unique types of tokens obtaine by \code{quanteda:::types()}
+#' @inheritParams valuetype
+#' @param case_insensitive ignore case when matching, if \code{TRUE}
+#' @param index If TRUE, index is constructed automatically. It also accept index 
+#'   constructed by index_types().
+#' @return a list of integer vectors containing type IDs
+#' @keywords internal
+#' @examples
+#' pattern <- list(c('^a$', '^b'), c('c'), c('d'))
+#' types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
+#' quanteda:::regex2id(pattern, types, 'regex', case_insensitive=TRUE)
 
-regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = TRUE) {
+regex2id <- function(pattern, types, valuetype, case_insensitive = FALSE, index = TRUE) {
     
-    if (!length(regex)) return(list())
+    if (!length(pattern)) return(list())
         
     # Normalize
-    regex <- lapply(regex, stringi::stri_trans_nfc)
-    types <- stringi::stri_trans_nfc(types)
+    pattern <- lapply(pattern, stri_trans_nfc)
+    types <- stri_trans_nfc(types)
     
     # Make case insensitive
     if (case_insensitive) {
-        types_search <- stringi::stri_trans_tolower(types)
-        regex <- lapply(regex, stringi::stri_trans_tolower)
+        types_search <- stri_trans_tolower(types)
+        pattern <- lapply(pattern, stri_trans_tolower)
     } else {
         types_search <- types
     }
@@ -42,17 +54,20 @@ regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = 
     # Only when index is not constructed externally
     if (is.logical(index)) {
         # Glob is treated as fixed if neither * or ? is found
-        regex_unlist <- unlist(regex, use.names = FALSE)
+        pattern_unlist <- unlist(pattern, use.names = FALSE)
         if (valuetype == 'glob' && 
-           !any(stringi::stri_detect_fixed(regex_unlist, '*')) &&
-           !any(stringi::stri_detect_fixed(regex_unlist, '?'))) {
+           !any(stri_detect_fixed(pattern_unlist, '*')) &&
+           !any(stri_detect_fixed(pattern_unlist, '?'))) {
             valuetype <- 'fixed'
         } 
     }
+    if (valuetype == 'glob') {
+        # Convert fixed or glob to regex
+        regex <- lapply(pattern, function(x) utils::glob2rx(escape_regex(x)))
+    } else {
+        regex <- pattern
+    }
     
-    # Convert fixed or glob to regex
-    if (valuetype == 'glob') regex <- lapply(regex, function(x) utils::glob2rx(escape_regex(x)))
-
     # Set if exact match of not
     if (valuetype == 'fixed'){
         exact <- TRUE
@@ -63,8 +78,8 @@ regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = 
     if (is.logical(index)) {
         if (index){
             # Construct index if not given
-            len_max <- max(stringi::stri_length(unlist(regex, use.names = FALSE)))
-            index <- index_regex(types_search, valuetype, case_insensitive, len_max)
+            max_len <- max(stri_length(unlist(regex, use.names = FALSE)))
+            index <- index_types(types_search, valuetype, case_insensitive, max_len)
         } else {
             # Use stri_detect when index is null
             index <- NULL
@@ -92,14 +107,16 @@ regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = 
     return(unique(id))
 }
 
-# This is an internal function for regex2id().
-# This function subset types avoiding expensive full regular expression matching.
-# @param regex a list of regular expression
-# @param types_search lowercase types when case_insensitive=TRUE
-# @param exact TRUE, if valuetype=fixed
-# @param index index is used to find types without sequential search
+#' select types without performing slow regex search
+#' 
+#' This is an internal function for \code{regex2id()} that select types using an
+#' index of types by reular expressions.
+#' @param regex a list of regular expressions
+#' @param types_search lowercased types when \code{case_insensitive=TRUE}
+#' @param exact set TRUE for \code{valuetype = fixed}
+#' @param index index object created by \code{index_types()}
+#' @keywords internal
 select_types <- function (regex, types_search, exact, index){
-
 
     subset <- lapply(regex, function(regex, types_search, exact, index){
         if (length(index)) {
@@ -116,7 +133,7 @@ select_types <- function (regex, types_search, exact, index){
                     return(pos)
                 } else if (!is_indexed(regex)) {
                     #cat('Regex search', regex, '\n')
-                    return(which(stringi::stri_detect_regex(types_search, regex)))
+                    return(which(stri_detect_regex(types_search, regex)))
                 } else {
                     #cat("Not found\n")
                     return(NULL)
@@ -126,7 +143,7 @@ select_types <- function (regex, types_search, exact, index){
             if (exact) {
                 return(which(types_search %in% regex))
             } else {
-                return(which(stringi::stri_detect_regex(types_search, regex)))
+                return(which(stri_detect_regex(types_search, regex)))
             }
         }
     }, types_search, exact, index)
@@ -134,17 +151,29 @@ select_types <- function (regex, types_search, exact, index){
 }
 
 
-# This is an internal function for regex2id().
-# This function construct an index of regex patters of ^xxxx, xxxx$ and ^xxxx$ 
-# to avoide expensive sequential search by stri_detect_regex. len_max should be obtained 
-# from the longest regex queries to limit the size of the index.
-index_regex <- function(types, valuetype, case_insensitive, len_max){
+#' index types for fastest regular expression matches 
+#' 
+#' This is an internal function for regex2id() that constructs an index of regex
+#' patters(e.g. ^xxxx, xxxx$ and ^xxxx$) to avoide expensive sequential search
+#' by stri_detect_regex.
+#' @inheritParams valuetype
+#' @param case_insensitive ignore case when matching, if \code{TRUE}
+#' @param max_len maximum length of types to be indexed
+#' @return a list of integer vectors containing type IDs with index keys as an
+#'   attribute
+#' @keywords internal
+#' @examples
+#' types <- c('xxx', 'yyyy', 'ZZZ')
+#' index <- quanteda:::index_types(types, 'regex', FALSE, 3)
+#' type_id <- quanteda:::search_index('^y', index)
+#' types[type_id]
+index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     
     # Normalize
-    types <- stringi::stri_trans_nfc(types)
+    types <- stri_trans_nfc(types)
     
     if (case_insensitive)
-        types <- stringi::stri_trans_tolower(types)
+        types <- stri_trans_tolower(types)
 
     if (valuetype == 'fixed') {
         exact <- TRUE
@@ -153,7 +182,7 @@ index_regex <- function(types, valuetype, case_insensitive, len_max){
     }
     # Create regex patterns from types
     if (!exact) { 
-        types <- stringi::stri_c("^", types, "$")
+        types <- stri_c("^", types, "$")
     }
     # Index for regex patterns of ^xxxx$ 
     pos_tmp <- seq_along(types)
@@ -161,13 +190,13 @@ index_regex <- function(types, valuetype, case_insensitive, len_max){
 
     # Index for regex patterns of ^xxxx and xxxx$
     if (!exact) {
-        len <- stringi::stri_length(types)
-        if (missing(len_max)) len_max <- max(len) # index all the types if len_max is unknown
-        for (i in 2:len_max) {
+        len <- stri_length(types)
+        if (is.null(max_len)) max_len <- max(len) # index all the types if max_len is unknown
+        for (i in 2:max_len) {
             k <- which(len > i)
             pos_tmp <- c(pos_tmp, list(rep(k, 2)))
-            key_tmp <- c(key_tmp, list(stringi::stri_sub(types[k], 1, i)))
-            key_tmp <- c(key_tmp, list(stringi::stri_sub(types[k], i * -1, -1)))
+            key_tmp <- c(key_tmp, list(stri_sub(types[k], 1, i)))
+            key_tmp <- c(key_tmp, list(stri_sub(types[k], i * -1, -1)))
         }
     }
     # Faster to join vectors in the end
@@ -179,12 +208,20 @@ index_regex <- function(types, valuetype, case_insensitive, len_max){
     return(index)
 }
 
-# This is an internal function for select_types().
-search_index <- function(key, index){
-    index[[fastmatch::fmatch(key, attr(index, 'key'))]] # use fmatch instead of names for quick access
+#' internal function for \code{select_types()} to seach the index using fastmatch.
+#' @param regex a regular expression to search
+#' @param index an index object created by \code{index_types()}
+#' @seealso index_types
+#' @keywords internal
+search_index <- function(regex, index){
+    index[[fastmatch::fmatch(regex, attr(index, 'key'))]] # use fmatch instead of names for quick access
 }
 
-# This function is a simplyfied version of expand.grid() in base package
+#' simpler and faster version of expand.grid() in base package
+#' @param elem list of elements to be combined
+#' @keywords internal
+#' @examples
+#' quanteda:::expand(list(c('a', 'b', 'c'), c('x', 'y')))
 expand <- function(elem){
     
     m <- prod(lengths(elem))
@@ -204,26 +241,33 @@ expand <- function(elem){
     return(comb)
 }
 
-# This is an internal function for select_types(). 
-# This function checks if a string is regular expression
+#' internal function for \code{select_types()} to check if a string is a regular expression
+#' @param x a character string to be tested
+#' @keywords internal
 is_regex <- function(x){
-    any(stringi::stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
+    any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
 }
 
-# This is an internal function for select_types(). This function escapes glob patterns before
-# utils:glob2rx(), therefore allow * and ? are allowed
+#' internal function for \code{select_types()} to escape regular expressions 
+#' 
+#' This function escapes glob patterns before \code{utils:glob2rx()}, therefore * and ?
+#' are unescaped.
+#' @param x character vector to be escaped
+#' @keywords internal
 escape_regex <- function(x){
-    #stringi::stri_replace_all_regex(x, "([.()^\\{\\}+$*\\[\\]\\\\])", "\\\\$1") # escape any
-    stringi::stri_replace_all_regex(x, "([.()^\\{\\}+$\\[\\]\\\\])", "\\\\$1") # allow glob
+    #stri_replace_all_regex(x, "([.()^\\{\\}+$*\\[\\]\\\\])", "\\\\$1") # escape any
+    stri_replace_all_regex(x, "([.()^\\{\\}+$\\[\\]\\\\])", "\\\\$1") # allow glob
 }
 
-# This is an internal function for select_types().
+#' internal function for select_types() to check if regex a pattern is indexed by /code{index_types()}
+#' @param x a regex pattern to be tested
+#' @keywords internal
 is_indexed <- function(x){
-    head <- stringi::stri_startswith_fixed(x, '^')
-    tail <- stringi::stri_endswith_fixed(x, '$')
-    if (head && tail && !is_regex(stringi::stri_sub(x, 2, -2))) return(TRUE)
-    if (head && !is_regex(stringi::stri_sub(x, 2, -1))) return(TRUE)
-    if (tail && !is_regex(stringi::stri_sub(x, 1, -2))) return(TRUE)
+    head <- stri_startswith_fixed(x, '^')
+    tail <- stri_endswith_fixed(x, '$')
+    if (head && tail && !is_regex(stri_sub(x, 2, -2))) return(TRUE)
+    if (head && !is_regex(stri_sub(x, 2, -1))) return(TRUE)
+    if (tail && !is_regex(stri_sub(x, 1, -2))) return(TRUE)
     return(FALSE)
 }
 
