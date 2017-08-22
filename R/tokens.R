@@ -493,6 +493,20 @@ print.tokens <- function(x, ...) {
     x[[i]]
 }
 
+#' @method "[<-" tokens
+#' @export
+#' @noRd
+"[<-.tokens" <- function(x, i, value) {
+    stop('assignment to tokens objects is not allowed', call. = FALSE)
+}
+
+#' @method "[[<-" tokens
+#' @export
+#' @noRd
+"[[<-.tokens" <- function(x, i, value) {
+    stop('assignment to tokens objects is not allowed', call. = FALSE)
+}
+
 #' @method lengths tokens
 #' @noRd
 #' @export
