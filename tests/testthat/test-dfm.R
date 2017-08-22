@@ -568,3 +568,37 @@ test_that("dfm works with stem options", {
     )
     quanteda_options(reset = TRUE)
 })
+
+test_that("dfm verbose option prints correctly", {
+    txt <- c(d1 = "a b c d e", d2 = "a a b c c c")
+    corp <- corpus(txt)
+    toks <- tokens(txt)
+    mydfm <- dfm(toks)
+    expect_message(dfm(txt, verbose = TRUE), "Creating a dfm from a character input")
+    expect_message(dfm(corp, verbose = TRUE), "Creating a dfm from a corpus input")
+    expect_message(dfm(toks, verbose = TRUE), "Creating a dfm from a tokens input")
+    expect_message(dfm(mydfm, verbose = TRUE), "Creating a dfm from a dfm input")
+    expect_message(dfm(tokens(txt, hash = FALSE), verbose = TRUE), "Creating a dfm from a tokenizedTexts input")
+})
+
+test_that("dfm works with purrr::map (#928)", {
+    skip_if_not_installed("purrr")
+    a <- "a b"
+    b <- "a a a b b"
+    expect_identical(
+        sapply(purrr::map(list(a, b), dfm), is.dfm),
+        c(TRUE, TRUE)
+    )
+    expect_identical(
+        sapply(purrr::map(list(corpus(a), corpus(b)), dfm), is.dfm),
+        c(TRUE, TRUE)
+    )
+    expect_identical(
+        sapply(purrr::map(list(tokens(a), tokens(b)), dfm), is.dfm),
+        c(TRUE, TRUE)
+    )
+    expect_identical(
+        sapply(purrr::map(list(dfm(a), dfm(b)), dfm), is.dfm),
+        c(TRUE, TRUE)
+    )
+})

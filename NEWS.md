@@ -1,5 +1,12 @@
 # quanteda 0.99
 
+## Changes since v0.99
+
+### Bug fixes and stability enhancements
+
+* Fixed a problem when applying `purrr::map()` to `dfm()` (#928).
+
+
 ## Changes since v0.9.9-65
 
 ### New features
