@@ -77,6 +77,9 @@ dfm_weight <- function(x,
 dfm_weight.dfm <- function(x, 
                            type = c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf"),
                            weights = NULL) {
+    
+    x <- as.dfm(x)
+    
     # for numeric weights
     if (!is.null(weights)) {
         if (!missing(type)) warning("type is ignored when numeric weights are supplied")
@@ -134,6 +137,7 @@ dfm_smooth <- function(x, smoothing = 1) {
 #' @noRd
 #' @export
 dfm_smooth.dfm <- function(x, smoothing = 1) {
+    x <- as.dfm(x)
     x + smoothing
 }
 
@@ -194,7 +198,8 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 #' @export
 docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob", "unary"),
                         smoothing = 0, k = 0, base = 10, threshold = 0, USE.NAMES = TRUE) {
-
+    
+    x <- as.dfm(x)
     scheme <- match.arg(scheme)
     args <- as.list(match.call(expand.dots=FALSE))
     if ("base" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
@@ -291,14 +296,15 @@ tfidf <- function(x, scheme_tf = "prop", scheme_df = "inverse", base = 10, ...) 
 #' @noRd
 #' @export
 tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
-
+    
+    x <- as.dfm(x)
     args <- list(...)
     if ("normalize" %in% names(args)) {
         warning("normalize is deprecated; use scheme_tf = \"prop\" instead")
         scheme_tf <- if (args[["normalize"]] == TRUE) "prop" else "count"
         return(tfidf(x, scheme_tf = scheme_tf, scheme_df = scheme_df, base = base))
     }
-
+    
     dfreq <- docfreq(x, scheme = scheme_df, base = base, ...)
     tfreq <- tf(x, scheme = scheme_tf, base = base)
     if (nfeature(x) != length(dfreq)) 
@@ -362,7 +368,9 @@ tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augm
 #' @noRd
 #' @export
 tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
-               base = 10, K = 0.5) {
+                   base = 10, K = 0.5) {
+    
+    x <- as.dfm(x)
     if (!is.dfm(x))
         stop("x must be a dfm object")
     

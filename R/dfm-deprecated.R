@@ -158,7 +158,7 @@ weight <- function(x, ...) {
     .Deprecated("dfm_weight")
     dfm_weight(x, ...)
 }
-    
+
 
 #' @rdname weight
 #' @export

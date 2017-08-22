@@ -91,7 +91,7 @@ setClass("textmodel_wordfish_predicted",
 #'   21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
 #' @author Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit
 #' @examples
-#' textmodel_wordfish(as.dfm(data_dfm_lbgexample), dir = c(1,5))
+#' textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5))
 #' 
 #' \dontrun{
 #' ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
@@ -139,6 +139,8 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
                                abs_err = FALSE,
                                svd_sparse = TRUE,
                                residual_floor = 0.5) {
+    
+    x <- as.dfm(x)
     dispersion <- match.arg(dispersion)
     dispersion_level <- match.arg(dispersion_level)
     
@@ -154,7 +156,7 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
         x <- x[, -zeroLengthFeatures]
     }
     if (length(zeroLengthDocs) | length(zeroLengthFeatures)) catm("\n")
-
+    
     # some error checking
     if (length(priors) != 4)
         stop("priors requires 4 elements")
@@ -168,9 +170,9 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
     if (dispersion == "poisson" & dispersion_floor != 0)
         warning("dispersion_floor argument ignored for poisson")
     
-#     if (length(addedArgs <- list(...)))
-#         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-
+    #     if (length(addedArgs <- list(...)))
+    #         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+    
     # check quasi-poisson settings and translate into numerical values  
     # 1 = Poisson, 2 = quasi-Poisson, overall dispersion, 
     # 3 = quasi-Poisson, term dispersion, 4 = quasi-Poisson, term dispersion w/floor
@@ -181,7 +183,7 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
         else disp <- 3L
     } else
         stop("Illegal option combination.")
-
+    
     # catm("disp = ", disp, "\n")
     if (sparse == TRUE){
         if (threads == 1){

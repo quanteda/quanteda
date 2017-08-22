@@ -39,6 +39,8 @@ dfm_compress <- function(x, margin = c("both", "documents", "features")) {
 #' @noRd
 #' @export
 dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
+    
+    x <- as.dfm(x)
     margin <- match.arg(margin)
     if (margin == 'documents') {
         result <- group_dfm(x, NULL, docnames(x))
@@ -101,8 +103,10 @@ dfm_sort <- function(x, decreasing = TRUE,
 
 #' @noRd
 #' @export
-dfm_sort <- function(x, decreasing = TRUE, 
-                     margin = c("features", "documents", "both")) {
+dfm_sort.dfm <- function(x, decreasing = TRUE, 
+                         margin = c("features", "documents", "both")) {
+    
+    x <- as.dfm(x)
     margin <- match.arg(margin)
     class_org <- class(x)
     if (margin=="features") {

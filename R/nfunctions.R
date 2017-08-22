@@ -31,6 +31,7 @@ ndoc.corpus <- function(x) {
 #' @noRd
 #' @export
 ndoc.dfm <- function(x) {
+    x <- as.dfm(x)
     nrow(x)
 }
 
@@ -65,6 +66,7 @@ nfeature <- function(x) {
 #' @noRd
 #' @export
 nfeature.dfm <- function(x) {
+    x <- as.dfm(x)
     ncol(x)
 }
 
@@ -141,6 +143,7 @@ ntoken.character <- function(x, ...) {
 #' @noRd
 #' @export
 ntoken.dfm <- function(x, ...) {
+    x <- as.dfm(x)
     if (length(list(...)) > 0)
         warning("additional arguments not used for ntoken.dfm()")
     rowSums(x)
@@ -168,6 +171,7 @@ ntype.corpus <- function(x, ...) {
 #' @noRd
 #' @export
 ntype.dfm <- function(x, ...) {
+    x <- as.dfm(x)
     ## only returns total NON-ZERO COUNT types
     rowSums(x > 0)
 }

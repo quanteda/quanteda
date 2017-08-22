@@ -193,7 +193,7 @@ as.matrix.dfm <- function(x, ...) {
 as.data.frame.dfm <- function(x, row.names = NULL, ...) {
     as.data.frame(as.matrix(x), row.names = row.names, ...)
 }
-    
+
 
 
 #' Combine dfm objects by Rows or Columns
@@ -228,10 +228,10 @@ cbind.dfm <- function(...) {
     args <- list(...)
     names <- names(args)
     if (!any(sapply(args, is.dfm))) stop("at least one input object must be a dfm")
-
+    
     x <- args[[1]]
     y <- args[[2]]
-
+    
     # select the dfm, but just one feature, to keep slots to reassign later
     # if both are dfms, use the slots of the first
     refdfm <- args[[which(sapply(args, is.dfm))[1]]][, 1]
@@ -251,7 +251,7 @@ cbind.dfm <- function(...) {
     result <- cbind_dfm_dfm(x, y)
     result <- reassign_slots(result, refdfm)
     docvars(result, "_length_original") <- NULL
-
+    
     while (length(args[-c(1,2)])) {
         args <- args[-c(1,2)]
         result <- do.call(cbind, c(result, args))
@@ -275,7 +275,7 @@ cbind_dfm_dfm <- function(...) {
         for (y in args[3:length(args)])
             result <- Matrix::cbind2(result, y)
     }
-
+    
     # make any added feature names unique
     dupl_featname_index <- 
         grep(paste0("^", quanteda_options("base_featname")), colnames(result))
@@ -311,7 +311,7 @@ rbind.dfm <- function(...) {
     if (!all(vapply(args, is.dfm, logical(1))))
         stop("all arguments must be dfm objects")
     catm(names(args))
-
+    
     if (length(args) == 1) {
         warning('rbind.dfm called on single dfm')
         result <- args[[1]]

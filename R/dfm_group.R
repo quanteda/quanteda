@@ -39,6 +39,7 @@ dfm_group <- function(x, groups = NULL, fill = FALSE) {
 #' @export
 dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
     
+    x <- as.dfm(x)
     if (is.character(groups) & all(groups %in% names(docvars(x)))) {
         groups <- interaction(docvars(x)[, groups], drop = FALSE)
     }

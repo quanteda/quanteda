@@ -35,6 +35,7 @@ featnames.NULL <- function(x) {
 #' @export
 #' @noRd
 featnames.dfm <- function(x) {
+    x <- as.dfm(x)
     if (is.null(colnames(x))) {
         character()
     } else {
@@ -57,6 +58,7 @@ features <- function(x) {
 #' @noRd
 #' @export
 docnames.dfm <- function(x) {
+    x <- as.dfm(x)
     if (is.null(rownames(x))) {
         paste0('text', seq_len(ndoc(x)))
     } else {
@@ -181,6 +183,8 @@ topfeatures <- function(x, n = 10, decreasing = TRUE, scheme = c("count", "docfr
 #' @noRd
 #' @importFrom stats quantile
 topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,  scheme = c("count", "docfreq"), groups = NULL) {
+    
+    x <- as.dfm(x)
     scheme <- match.arg(scheme)
     
     if (!is.null(groups)) {

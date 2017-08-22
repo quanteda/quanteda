@@ -63,6 +63,7 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
                              threads = 1,
                              residual_floor = 0.1) {
     
+    x <- as.dfm(x)
     x <- x + smooth  # smooth by the specified amount
     
     I <- dim(x)[1] 

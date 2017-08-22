@@ -98,6 +98,7 @@ setMethod("show", signature(object = "dfm"), function(object) print(object))
 #' tail(myDfm)
 #' tail(myDfm, nfeature = 4)
 head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
+    x <- as.dfm(x)
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     print(x, show.values = FALSE)
@@ -115,6 +116,7 @@ head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
 #' @method tail dfm
 #' @export
 tail.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
+    x <- as.dfm(x)
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     print(x, show.values = FALSE)

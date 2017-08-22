@@ -85,6 +85,8 @@ dfm_select.dfm <-  function(x, pattern,
                             case_insensitive = TRUE,
                             min_nchar = 1L, max_nchar = 63L,
                             verbose = quanteda_options("verbose"), ...) {
+    
+    x <- as.dfm(x)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
@@ -177,6 +179,7 @@ dfm_remove <- function(x, pattern, ...) {
 #' @noRd
 #' @export
 dfm_remove.dfm <- function(x, pattern, ...) {
+    x <- as.dfm(x)
     dfm_select(x, pattern, selection = "remove", ...)
 }
 
