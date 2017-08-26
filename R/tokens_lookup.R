@@ -93,7 +93,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     keys_id <- c()
     types <- types(x)
     
-    index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
+    index <- index_types(types, valuetype, case_insensitive) # index types before the loop
     if (verbose) 
         catm("applying a dictionary consisting of ", length(dictionary), " key", 
              if (length(dictionary) > 1L) "s" else "", "\n", sep="")
