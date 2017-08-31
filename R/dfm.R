@@ -332,7 +332,7 @@ dfm.dfm <- function(x,
     
     language <- quanteda_options("language_stemmer")
     if (stem) {
-        if (verbose) catm("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
+        if (verbose) catm("   ... stemming features (", stri_trans_totitle(language), ")\n", sep="")
         oldNfeature <- nfeature(x)
         x <- dfm_wordstem(x, language)
         if (verbose) 
