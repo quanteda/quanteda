@@ -67,6 +67,7 @@ Collate:
     'corpus-methods-quanteda.R'
     'corpus-methods-tm.R'
     'corpus.R'
+    'corpus_extract.R'
     'corpus_reshape.R'
     'corpus_sample.R'
     'corpus_segment.R'
