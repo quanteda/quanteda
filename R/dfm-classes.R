@@ -252,8 +252,6 @@ cbind.dfm <- function(...) {
     result <- cbind_dfm_dfm(x, y)
     result <- reassign_slots(result, refdfm)
     
-    docvars(result, "_length_original") <- NULL
-    
     while (length(args[-c(1,2)])) {
         args <- args[-c(1,2)]
         result <- do.call(cbind, c(result, args))
