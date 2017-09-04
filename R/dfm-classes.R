@@ -34,7 +34,7 @@ setClassUnion("dframe", members = c("data.frame", "NULL")) # TODO should not all
 #' @keywords internal dfm
 setClass("dfm",
          slots = c(settings = "list", weightTf = "list", weightDf = "list", smooth = "numeric", # TODO stop using camel-case
-                   ngrams = "integer", skip = "integer", concatenator = "character", 
+                   ngrams = "integer", skip = "integer", concatenator = "character", version = "character",
                    docvars = "dframe"),
          prototype = list(settings = list(NULL),
                           Dim = integer(2), 
@@ -44,10 +44,11 @@ setClass("dfm",
                           smooth = 0,
                           ngrams = 1L,
                           skip = 0L,
+                          version = installed.packages()['quanteda', 'Version'],
                           concatenator = ""),
          contains = "dgCMatrix")
 
-# deprecated dfmSparse class for backword compatibility
+# deprecated dfmSparse class for backward compatibility
 #' @rdname dfm-class
 #' @keywords internal dfm
 setClass("dfmSparse", contains = "dfm")

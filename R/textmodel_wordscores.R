@@ -249,12 +249,12 @@ rescaler <- function(x, scale.min=-1, scale.max=1) {
 #' @param digits number of decimal places to print for print methods
 #' @export
 #' @method print textmodel_wordscores_fitted
-print.textmodel_wordscores_fitted <- function(x, n=30L, digits=2, ...) {
+print.textmodel_wordscores_fitted <- function(x, n = 30L, digits = 2, ...) {
     cat("Fitted wordscores model:\n")
     cat("Call:\n\t")
     print(x@call)
     cat("\nReference documents and reference scores:\n\n")
-    refscores <- data.frame(Documents=docnames(x@x),
+    refscores <- data.frame(Documents = docnames(x@x),
                             "Ref scores" = x@y)
     refscores$Ref.scores <- format(refscores$Ref.scores, digits=digits)
     refscores$Ref.scores[stri_detect_fixed(refscores$Ref.scores, "NA")] <- "."
