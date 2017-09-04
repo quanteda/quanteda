@@ -44,7 +44,7 @@ setClass("dfm",
                           smooth = 0,
                           ngrams = 1L,
                           skip = 0L,
-                          version = installed.packages()['quanteda', 'Version'],
+                          version = packageVersion("quanteda"),
                           concatenator = ""),
          contains = "dgCMatrix")
 
