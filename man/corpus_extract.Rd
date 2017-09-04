@@ -46,7 +46,11 @@ corpus(c("##INTRO This is the introduction.
           ##DOC1 This is the first document.  Second sentence in Doc 1.
           ##DOC3 Third document starts here.  End of third document.",
          "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
-corp2_seg <- corpus_segment(corp2, "other", delimiter = "##", valuetype = "fixed", position = "before")
+corp2_seg <- corpus_segment(corp2, "other", delimiter = "##", 
+                            valuetype = "fixed", position = "before")
+corp2_seg <- corpus_extract(corp2_seg, '##[A-Z0-9]+', 'tag', remove = TRUE)
+head(corp2_seg)
+head(docvars(corp2_seg))
 
 ## segmenting a character object
 
