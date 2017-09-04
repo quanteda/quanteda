@@ -24,6 +24,7 @@
 #'   values for each segmented text; if \code{FALSE}, drop the docvars in the 
 #'   segmented corpus. Dropping the docvars might be useful in order to conserve
 #'   space or if these are not desired for the segmented corpus.
+#' @param position specify position to split texts for \code{what = "other"}
 #' @param ... provides additional arguments passed to \code{\link{tokens}}, if 
 #'   \code{what = "tokens"} is used
 #' @return \code{corpus_segment} returns a corpus of segmented texts, with a 
@@ -89,6 +90,7 @@ corpus_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tag
                            valuetype = c("regex", "fixed", "glob"),
                            omit_empty = TRUE,
                            use_docvars = TRUE, 
+                           position = c('after', 'before'),
                            ...) {
     UseMethod("corpus_segment")
 }
@@ -101,14 +103,16 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
                                   valuetype = c("regex", "fixed", "glob"),
                                   omit_empty = TRUE,
                                   use_docvars = TRUE, 
+                                  position = c('after', 'before'),
                            ...) {
     
     remove_delimiter = FALSE
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
+    position <- match.arg(position)
     vars <- docvars(x)
     
-    temp <- segment_texts(texts(x), what, delimiter, valuetype, remove_delimiter, omit_empty, ...)
+    temp <- segment_texts(texts(x), what, delimiter, valuetype, remove_delimiter, omit_empty, position, ...)
 
     # get the relevant function call
     commands <- as.character(sys.calls())
@@ -160,6 +164,7 @@ char_segment <- function(x,
                          valuetype = c("regex", "fixed", "glob"),
                          omit_empty = TRUE,
                          use_docvars = TRUE, 
+                         position = c('after', 'before'),
                          ...) {
     UseMethod("char_segment")
 }
@@ -172,6 +177,7 @@ char_segment.character <- function(x,
                                    valuetype = c("regex", "fixed", "glob"),
                                    omit_empty = TRUE,
                                    use_docvars = TRUE, 
+                                   position = c('after', 'before'),
                                    ...) {
         
     if (!all(is.character(x)))
@@ -187,7 +193,7 @@ char_segment.character <- function(x,
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     names(x) <- names_org
-    result <- segment_texts(x, what, delimiter, valuetype, remove_delimiter, omit_empty, ...)
+    result <- segment_texts(x, what, delimiter, valuetype, remove_delimiter, omit_empty, position, ...)
     result <- result[result!='']
     
     attr(result, 'tag') <- NULL
@@ -199,7 +205,7 @@ char_segment.character <- function(x,
 }
 
 # internal function for char_segment and corpus_segment
-segment_texts <- function(x, what, delimiter, valuetype, remove_delimiter, omit_empty, ...){
+segment_texts <- function(x, what, delimiter, valuetype, remove_delimiter, omit_empty, position, ...){
     
     names_org <- names(x)
     
@@ -246,19 +252,17 @@ segment_texts <- function(x, what, delimiter, valuetype, remove_delimiter, omit_
         temp <- lapply(temp, function(x) x[stri_replace_first_regex(x, '^\\s+$', '') != ''])
     } else {
         if (valuetype == "fixed") {
-            temp <- stri_replace_all_fixed(x, delimiter, stri_c(delimiter, "\uE000"))
-            #if (remove_delimiter) {
-            #    temp <- stri_replace_all_fixed(x, delimiter, "\uE000")
-            #} else {
-            #    temp <- stri_replace_all_fixed(x, delimiter, stri_c(delimiter, "\uE000"))
-            #}
+            if (position == "after") {
+                temp <- stri_replace_all_fixed(x, delimiter, stri_c(delimiter, "\uE000"))
+            } else {
+                temp <- stri_replace_all_fixed(x, delimiter, stri_c("\uE000", delimiter))
+            }
         } else {
-            temp <- stri_replace_all_regex(x, delimiter, "$0\uE000")
-            # if (remove_delimiter) {
-            #     temp <- stri_replace_all_regex(x, delimiter, "\uE000")
-            # } else {
-            #     temp <- stri_replace_all_regex(x, delimiter, "$0\uE000")
-            # }
+            if (position == "after") {
+                temp <- stri_replace_all_regex(x, delimiter, "$0\uE000")
+            } else {
+                temp <- stri_replace_all_regex(x, delimiter, "\uE000$0")
+            }
         }
         temp <- stri_split_fixed(temp, pattern = "\uE000", omit_empty = omit_empty)
     }

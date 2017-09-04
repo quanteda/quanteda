@@ -5,9 +5,9 @@
 \alias{char_extract}
 \title{extract and store values in corpus}
 \usage{
-corpus_extract(x, pattern, field, remove = TRUE, ...)
+corpus_extract(x, pattern, field, trim = TRUE, remove = TRUE, ...)
 
-char_extract(x, pattern, ...)
+char_extract(x, pattern, trim = TRUE, ...)
 }
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}
@@ -17,7 +17,9 @@ documents}
 
 \item{field}{a name of a \link{docvars} field to store extracted values}
 
-\item{remove}{remove matched characters from documents if TRUE}
+\item{trim}{trim whitespaces around the matched values if \code{TRUE}}
+
+\item{remove}{remove matched characters from documents if \code{TRUE}}
 }
 \value{
 \code{corpus_extract} returns a corpus of texts, with extracted 
@@ -30,14 +32,21 @@ Extract characters from douments with regular expression pattern and store
 them in \link{corpus} in corpus.
 }
 \examples{
-txts <- c("##INTRO This is the introduction.",
-          "##DOC1 This is the first document.",
-          "##DOC2 This is the second document.",
-          "##DOC3 This is the third document.")
-corp <- corpus(txts)
+corp <- 
+corpus(c("##INTRO This is the introduction.",
+         "##DOC1 This is the first document.",
+         "##DOC2 This is the second document.",
+         "##DOC3 This is the third document."))
 corp <- corpus_extract(corp, '##[A-Z0-9]+', 'tag', remove = TRUE)
 head(corp)
 head(docvars(corp))
+
+corp2 <- 
+corpus(c("##INTRO This is the introduction.
+          ##DOC1 This is the first document.  Second sentence in Doc 1.
+          ##DOC3 Third document starts here.  End of third document.",
+         "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
+corp2_seg <- corpus_segment(corp2, "other", delimiter = "##", valuetype = "fixed", position = "before")
 
 ## segmenting a character object
 

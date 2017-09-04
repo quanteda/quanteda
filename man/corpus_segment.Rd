@@ -7,11 +7,13 @@
 \usage{
 corpus_segment(x, what = c("sentences", "paragraphs", "tokens", "tags",
   "other"), delimiter = NULL, valuetype = c("regex", "fixed", "glob"),
-  omit_empty = TRUE, use_docvars = TRUE, ...)
+  omit_empty = TRUE, use_docvars = TRUE, position = c("after", "before"),
+  ...)
 
 char_segment(x, what = c("sentences", "paragraphs", "tokens", "tags",
   "other"), delimiter = NULL, valuetype = c("regex", "fixed", "glob"),
-  omit_empty = TRUE, use_docvars = TRUE, ...)
+  omit_empty = TRUE, use_docvars = TRUE, position = c("after", "before"),
+  ...)
 }
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}
@@ -40,6 +42,8 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 values for each segmented text; if \code{FALSE}, drop the docvars in the 
 segmented corpus. Dropping the docvars might be useful in order to conserve
 space or if these are not desired for the segmented corpus.}
+
+\item{position}{specify position to split texts for \code{what = "other"}}
 
 \item{...}{provides additional arguments passed to \code{\link{tokens}}, if 
 \code{what = "tokens"} is used}
