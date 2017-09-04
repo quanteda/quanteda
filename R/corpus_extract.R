@@ -8,6 +8,7 @@
 #' @param field a name of a \link{docvars} field to store extracted values
 #' @param trim trim whitespaces around the matched values if \code{TRUE}
 #' @param remove remove matched characters from documents if \code{TRUE}
+#' @param ... not used
 #' @return \code{corpus_extract} returns a corpus of texts, with extracted 
 #'   values in \link{docvars}.
 

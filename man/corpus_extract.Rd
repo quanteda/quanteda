@@ -20,6 +20,8 @@ documents}
 \item{trim}{trim whitespaces around the matched values if \code{TRUE}}
 
 \item{remove}{remove matched characters from documents if \code{TRUE}}
+
+\item{...}{not used}
 }
 \value{
 \code{corpus_extract} returns a corpus of texts, with extracted 

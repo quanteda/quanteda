@@ -196,6 +196,39 @@ test_that("char_segment works with Japanese texts", {
                  c("日本語の終止符は.ではない。", "しかし、最近は．が使われることある。"))
 })
 
+test_that("corpus_segment works with position argument", {
+    
+    corp1 <- corpus(c(d1 = "##TEST One two ##TEST2 Three",
+                      d2 = "##TEST3 Four"))
+    corp1_seg <- corpus_segment(corp1, 'other', delimiter = '##', valuetype = 'fixed', position = 'before')
+    expect_equal(texts(corp1_seg), c("d1.1" = "##TEST One two",
+                                     "d1.2" = "##TEST2 Three",
+                                     "d2.1" = "##TEST3 Four"))
+    
+    corp2 <- corpus(c(d1 = "TEST One two; TEST2 Three;",
+                      d2 = "TEST3 Four;"))
+    corp2_seg <- corpus_segment(corp2, 'other', delimiter = ';', valuetype = 'fixed', position = 'after')
+    expect_equal(texts(corp2_seg), c("d1.1" = "TEST One two;",
+                                     "d1.2" = "TEST2 Three;",
+                                     "d2.1" = "TEST3 Four;"))
+    
+    corp3 <- corpus(c(d1 = "**TEST One two ##TEST2 Three",
+                      d2 = "??TEST3 Four"))
+    corp3_seg <- corpus_segment(corp3, 'other', delimiter = '[*#?]{2}', valuetype = 'regex', position = 'before')
+    expect_equal(texts(corp3_seg), c("d1.1" = "**TEST One two",
+                                     "d1.2" = "##TEST2 Three",
+                                     "d2.1" = "??TEST3 Four"))
+    
+    corp4 <- corpus(c(d1 = "TEST One two; TEST2 Three?",
+                      d2 = "TEST3 Four!"))
+    corp4_seg <- corpus_segment(corp4, 'other', delimiter = '[!?;]', valuetype = 'regex', position = 'after')
+    expect_equal(texts(corp4_seg), c("d1.1" = "TEST One two;",
+                                     "d1.2" = "TEST2 Three?",
+                                     "d2.1" = "TEST3 Four!"))
+    
+    
+})
+
 # 
 # test_that("corpus_segment works for delimiter with remove_delimiter", {
 #     
