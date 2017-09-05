@@ -43,7 +43,7 @@ corpus_extract <- function(x, pattern, field, valuetype, keep_pattern = FALSE, .
 corpus_extract.corpus <- function(x, pattern, valuetype, field, keep_pattern = FALSE, ...) {
     
     match <- char_extract(texts(x), pattern, valuetype)
-    docvars(x, field) <- match
+    docvars(x, field) <- stri_trim_both(match)
     if (!keep_pattern)
         texts(x) <- stri_replace_first_fixed(texts(x), match, '')
     return(x)
@@ -90,8 +90,6 @@ char_extract.character <- function(x, pattern, valuetype, ...) {
     } else {
         match <- stri_extract_first_fixed(x, pattern)
     }
-    
-    match <- stri_trim_both(match)
     return(match)
 }
 
