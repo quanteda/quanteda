@@ -33,14 +33,18 @@
 #' head(docvars(corp2_seg))
 #' 
 #' @export
-corpus_extract <- function(x, pattern, field, valuetype, keep_pattern = FALSE, ...) {
+corpus_extract <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), 
+                           field, keep_pattern = FALSE, ...) {
     UseMethod("corpus_extract")
 }
 
 #' @noRd
 #' @rdname corpus_extract
 #' @export    
-corpus_extract.corpus <- function(x, pattern, valuetype, field, keep_pattern = FALSE, ...) {
+corpus_extract.corpus <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), 
+                                  field, keep_pattern = FALSE, ...) {
+    
+    valuetype <- match.arg(valuetype)
     
     match <- char_extract(texts(x), pattern, valuetype)
     docvars(x, field) <- stri_trim_both(match)
@@ -67,10 +71,9 @@ char_extract <- function(x, pattern, valuetype, ...) {
         
 #' @noRd
 #' @export
-char_extract.character <- function(x, pattern, valuetype, ...) {
-        
-    if (!all(is.character(x)))
-        stop("x must be of character type")
+char_extract.character <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), ...) {
+    
+    valuetype <- match.arg(valuetype)
     
     if (valuetype == "glob") {
         # treat as fixed if no glob character is detected

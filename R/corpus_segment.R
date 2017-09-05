@@ -179,10 +179,7 @@ char_segment.character <- function(x,
                                    use_docvars = TRUE, 
                                    position = c('after', 'before'),
                                    ...) {
-        
-    if (!all(is.character(x)))
-        stop("x must be of character type")
-    
+
     remove_delimiter = FALSE
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)

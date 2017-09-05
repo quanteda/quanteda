@@ -5,7 +5,8 @@
 \alias{char_extract}
 \title{extract and store values in corpus}
 \usage{
-corpus_extract(x, pattern, field, valuetype, keep_pattern = FALSE, ...)
+corpus_extract(x, pattern, valuetype = c("glob", "regex", "fixed"), field,
+  keep_pattern = FALSE, ...)
 
 char_extract(x, pattern, valuetype, ...)
 }
@@ -15,11 +16,11 @@ char_extract(x, pattern, valuetype, ...)
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 \link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
-\item{field}{a name of a \link{docvars} field to store extracted values}
-
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+
+\item{field}{a name of a \link{docvars} field to store extracted values}
 
 \item{keep_pattern}{keep matched patters in documents if \code{TRUE}}
 
