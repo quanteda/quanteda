@@ -267,7 +267,7 @@ tokens_segment_by_punctuation <- function(x, remove_delimiter = TRUE) {
     # remove top level of list
     x <- unlist(x, recursive = FALSE)
     # convert any "tokens" left as "" that are empty into character(0)
-    if (any(allempties <- lengths(x)==1 & x=="")) x[[allempties]] <- character(0)
+    x <- lapply(x, function(y) if (all(y == "")) character(0) else y)
     # make into tokens
     x <- as.tokens(x)
     if (length(x) == len_original) names(x) <- names_original
