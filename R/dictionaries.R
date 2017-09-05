@@ -194,7 +194,16 @@ setMethod("as.list",
 #'                           taxregex = "tax*",
 #'                           country = "america"))
 #' head(dfm(mycorpus, dictionary = mydict))
-#' 
+#'                  
+#' # subset a dictionary
+#' mydict[1:2]
+#' dictionary(as.list(mydict)[c("christmas", "opposition")])
+#'
+#' # combine dictionaries
+#' # dictionary(c(as.list(mydict[1:2]), as.list(mydict[6])))
+#' dictionary(c(as.list(mydict[c("christmas", "opposition")]), 
+#'             as.list(mydict["taxregex"])))
+#'                   
 #' \dontrun{
 #' # import the Laver-Garry dictionary from Provalis Research
 #' dictfile <- tempfile()
