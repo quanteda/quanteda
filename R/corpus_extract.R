@@ -65,7 +65,7 @@ corpus_extract.corpus <- function(x, pattern, valuetype = c("glob", "regex", "fi
 #' char_extract(txts, '##[A-Z0-9]+')
 #' @keywords character
 #' @return \code{char_extract} returns a character vector of matched characters
-char_extract <- function(x, pattern, valuetype, ...) {
+char_extract <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), ...) {
     UseMethod("char_extract")
 }
         
