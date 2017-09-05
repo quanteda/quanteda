@@ -8,7 +8,7 @@
 corpus_extract(x, pattern, valuetype = c("glob", "regex", "fixed"), field,
   keep_pattern = FALSE, ...)
 
-char_extract(x, pattern, valuetype, ...)
+char_extract(x, pattern, valuetype = c("glob", "regex", "fixed"), ...)
 }
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}
