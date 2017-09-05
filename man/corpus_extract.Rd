@@ -5,21 +5,23 @@
 \alias{char_extract}
 \title{extract and store values in corpus}
 \usage{
-corpus_extract(x, pattern, field, trim = TRUE, remove = TRUE, ...)
+corpus_extract(x, pattern, field, valuetype, keep_pattern = FALSE, ...)
 
-char_extract(x, pattern, trim = TRUE, ...)
+char_extract(x, pattern, valuetype, ...)
 }
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}
 
-\item{pattern}{a regular expression pattern that match characters in
-documents}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
 \item{field}{a name of a \link{docvars} field to store extracted values}
 
-\item{trim}{trim whitespaces around the matched values if \code{TRUE}}
+\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
-\item{remove}{remove matched characters from documents if \code{TRUE}}
+\item{keep_pattern}{keep matched patters in documents if \code{TRUE}}
 
 \item{...}{not used}
 }
@@ -39,7 +41,7 @@ corpus(c("##INTRO This is the introduction.",
          "##DOC1 This is the first document.",
          "##DOC2 This is the second document.",
          "##DOC3 This is the third document."))
-corp <- corpus_extract(corp, '##[A-Z0-9]+', 'tag', remove = TRUE)
+corp <- corpus_extract(corp, '##*', valuetype = "glob", field = 'tag')
 head(corp)
 head(docvars(corp))
 
@@ -50,7 +52,7 @@ corpus(c("##INTRO This is the introduction.
          "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
 corp2_seg <- corpus_segment(corp2, "other", delimiter = "##", 
                             valuetype = "fixed", position = "before")
-corp2_seg <- corpus_extract(corp2_seg, '##[A-Z0-9]+', 'tag', remove = TRUE)
+corp2_seg <- corpus_extract(corp2_seg, '##[A-Z0-9]+', valuetype = "regex", field = 'tag')
 head(corp2_seg)
 head(docvars(corp2_seg))
 
@@ -61,8 +63,5 @@ txts <- c("##INTRO This is the introduction.",
           "##DOC2 This is the second document.",
           "##DOC3 This is the third document.")
 char_extract(txts, '##[A-Z0-9]+')
-}
-\author{
-Kenneth Benoit
 }
 \keyword{character}

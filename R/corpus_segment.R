@@ -122,7 +122,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
     result <- corpus(temp, metacorpus = list(source = metacorpus(x, "source"),
                                              notes = commands))
     settings(result, "units") <- what
-    print(result)
+
     # add repeated versions of remaining docvars
     if (use_docvars && !is.null(vars)) {
         rownames(vars) <- NULL # faster to repeat rows without rownames
@@ -229,7 +229,7 @@ segment_texts <- function(x, what, delimiter, valuetype, remove_delimiter, omit_
     }
 
     if (valuetype == "glob") {
-        # treat as fixed if no glob characters detected
+        # treat as fixed if no glob character is detected
         if (!any(stri_detect_charclass(delimiter, c("[*?]")))) {
             valuetype <- "fixed"
         } else {
