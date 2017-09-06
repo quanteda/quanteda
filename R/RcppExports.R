@@ -5,6 +5,10 @@ cacpp <- function(objm, threads, residual_floor) {
     .Call(`_quanteda_cacpp`, objm, threads, residual_floor)
 }
 
+qatd_cpp_collocations <- function(texts_, types_, count_min, sizes_, method, smoothing) {
+    .Call(`_quanteda_qatd_cpp_collocations`, texts_, types_, count_min, sizes_, method, smoothing)
+}
+
 qatd_ManhattanPara_cpp <- function(A, margin = 1L) {
     .Call(`_quanteda_qatd_ManhattanPara_cpp`, A, margin)
 }
@@ -39,6 +43,10 @@ qatd_MinkowskiPara_cpp2 <- function(A, B, margin = 1L, p = 2) {
 
 qatd_cpp_fcm <- function(texts_, n_types, count, window, weights, ordered, tri, nvec) {
     .Call(`_quanteda_qatd_cpp_fcm`, texts_, n_types, count, window, weights, ordered, tri, nvec)
+}
+
+loglin_cpp_2 <- function(dtab_, conf, table_, start, snmar, eps, iter) {
+    .Call(`_quanteda_loglin_cpp_2`, dtab_, conf, table_, start, snmar, eps, iter)
 }
 
 qatd_cpp_sequences <- function(texts_, types_, count_min, sizes_, method, smoothing) {
