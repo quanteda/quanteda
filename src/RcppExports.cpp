@@ -19,6 +19,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_collocations
+DataFrame qatd_cpp_collocations(const List& texts_, const CharacterVector& types_, const unsigned int count_min, const IntegerVector sizes_, const String& method, const double smoothing);
+RcppExport SEXP _quanteda_qatd_cpp_collocations(SEXP texts_SEXP, SEXP types_SEXP, SEXP count_minSEXP, SEXP sizes_SEXP, SEXP methodSEXP, SEXP smoothingSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< const unsigned int >::type count_min(count_minSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type sizes_(sizes_SEXP);
+    Rcpp::traits::input_parameter< const String& >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< const double >::type smoothing(smoothingSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_collocations(texts_, types_, count_min, sizes_, method, smoothing));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_ManhattanPara_cpp
 NumericMatrix qatd_ManhattanPara_cpp(const arma::sp_mat& A, const int margin);
 RcppExport SEXP _quanteda_qatd_ManhattanPara_cpp(SEXP ASEXP, SEXP marginSEXP) {
@@ -136,6 +152,23 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool >::type tri(triSEXP);
     Rcpp::traits::input_parameter< const unsigned int >::type nvec(nvecSEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_fcm(texts_, n_types, count, window, weights, ordered, tri, nvec));
+    return rcpp_result_gen;
+END_RCPP
+}
+// loglin_cpp_2
+Rcpp::List loglin_cpp_2(const IntegerVector& dtab_, IntegerMatrix& conf, const NumericVector table_, NumericVector start, const int snmar, const double eps, const int iter);
+RcppExport SEXP _quanteda_loglin_cpp_2(SEXP dtab_SEXP, SEXP confSEXP, SEXP table_SEXP, SEXP startSEXP, SEXP snmarSEXP, SEXP epsSEXP, SEXP iterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerVector& >::type dtab_(dtab_SEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix& >::type conf(confSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type table_(table_SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type start(startSEXP);
+    Rcpp::traits::input_parameter< const int >::type snmar(snmarSEXP);
+    Rcpp::traits::input_parameter< const double >::type eps(epsSEXP);
+    Rcpp::traits::input_parameter< const int >::type iter(iterSEXP);
+    rcpp_result_gen = Rcpp::wrap(loglin_cpp_2(dtab_, conf, table_, start, snmar, eps, iter));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -364,6 +397,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cacpp", (DL_FUNC) &_quanteda_cacpp, 3},
+    {"_quanteda_qatd_cpp_collocations", (DL_FUNC) &_quanteda_qatd_cpp_collocations, 6},
     {"_quanteda_qatd_ManhattanPara_cpp", (DL_FUNC) &_quanteda_qatd_ManhattanPara_cpp, 2},
     {"_quanteda_qatd_ManhattanPara_cpp2", (DL_FUNC) &_quanteda_qatd_ManhattanPara_cpp2, 3},
     {"_quanteda_qatd_MaximumPara_cpp", (DL_FUNC) &_quanteda_qatd_MaximumPara_cpp, 2},
@@ -373,6 +407,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_MinkowskiPara_cpp", (DL_FUNC) &_quanteda_qatd_MinkowskiPara_cpp, 3},
     {"_quanteda_qatd_MinkowskiPara_cpp2", (DL_FUNC) &_quanteda_qatd_MinkowskiPara_cpp2, 4},
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 8},
+    {"_quanteda_loglin_cpp_2", (DL_FUNC) &_quanteda_loglin_cpp_2, 7},
     {"_quanteda_qatd_cpp_sequences", (DL_FUNC) &_quanteda_qatd_cpp_sequences, 6},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},
     {"_quanteda_qatd_cpp_tokens_detect", (DL_FUNC) &_quanteda_qatd_cpp_tokens_detect, 2},
