@@ -12,21 +12,22 @@
 #'   including document-level meta-data identifying the original documents.
 #' @examples
 #' # simple example
-#' mycorpus <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
-#'                      textwo = "Premiere phrase.  Deuxieme phrase."), 
-#'                    docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
-#'                    metacorpus = list(notes = "Example showing how corpus_reshape() works."))
-#' summary(mycorpus)
-#' summary(corpus_reshape(mycorpus, to = "sentences"), showmeta=TRUE)
+#' corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+#'                  textwo = "Premiere phrase.  Deuxieme phrase."), 
+#'                  docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
+#'                  metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+#' summary(corp)
+#' summary(corpus_reshape(corp, to = "sentences"), showmeta = TRUE)
 #' 
 #' # example with inaugural corpus speeches
-#' (mycorpus2 <- corpus_subset(data_corpus_inaugural, Year>2004))
-#' paragCorpus <- corpus_reshape(mycorpus2, to="paragraphs")
-#' paragCorpus
-#' summary(paragCorpus, 100, showmeta=TRUE)
+#' (corp2 <- corpus_subset(data_corpus_inaugural, Year>2004))
+#' corp2_para <- corpus_reshape(corp2, to="paragraphs")
+#' corp2_para
+#' summary(corp2_para, 100, showmeta = TRUE)
 #' ## Note that Bush 2005 is recorded as a single paragraph because that text used a single
 #' ## \n to mark the end of a paragraph.
 #' @export
+#' @import strigi
 #' @keywords corpus
 corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
     UseMethod("corpus_reshape")
@@ -46,9 +47,9 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             segid <- docvars(x, '_segid')
             
             if (settings(x, 'units') == 'sentences') {
-                texts <- stringi::stri_join_list(split(texts(x), factor(docid)), sep = "  ")
+                texts <- stri_join_list(split(texts(x), factor(docid)), sep = "  ")
             } else {
-                texts <- stringi::stri_join_list(split(texts(x), factor(docid)), sep = "\n\n")
+                texts <- stri_join_list(split(texts(x), factor(docid)), sep = "\n\n")
             }
 
             temp <- corpus(texts, 
@@ -62,7 +63,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         }
     } else if (to %in% c("sentences", "paragraphs")) {
         if (settings(x, 'units') == 'documents') {
-            result <- corpus_segment(x, what = to, ...)
+            result <- corpus_segment(x, pattern = NULL, what = to, ...)
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
         }
