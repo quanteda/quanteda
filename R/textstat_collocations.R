@@ -308,6 +308,8 @@ get_expected_values <- function(df, size) {
     # sort the counts alphabetically
     counts <- df[, sort(names(counts))]
 
+    n <- n00 <- n01 <- n10 <- n11 <- e00 <- e01 <- e10 <- e11 <- NULL
+    
     if (size == 2) {
         result <- data.table(counts)
         result[, n := rowSums(result)]
