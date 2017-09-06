@@ -532,29 +532,99 @@ hierarchize_list <- function (dict, depth, depth_current = 1) {
     if (length(dict) != length(depth))
         stop('Depth vectot must have the same length as dictionary')
     
-    flag_nested <- depth > depth_current
+    flag_current <- depth == depth_current
     
-    cat('nested\n')
-    print(flag_nested)
+    cat('current\n')
+    print(flag_current)
     
     temp <- list()
     #temp <- c(temp, dict[!flag_nested])
     
-    dict_nested <- dict[flag_nested]
-    for (i in seq_along(dict_nested)) {
+    dict_current <- dict[flag_current]
+    for (i in seq_along(dict_current)) {
         cat("i", i, '\n')
         #print(depth[i])
         #print(names(dict[i]))
-        temp[names(dict_nested[i])] <- dict_nested[i]
+        temp[names(dict_current[i])] <- dict_current[i]
     }
     
-    return(c(dict[!flag_nested], list(temp)))
-    
+    flag_below <- depth > depth_current
+    if (any(flag_below)) {
+        return(c(list(temp), list(hierarchize_list(dict[flag_below], depth[flag_below], depth_current + 1))))
+    } else {
+        return(list(temp))
+    }
 }
-#dict_flat <- dictionary(list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc')))
-dict_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'))
-hierarchize_list(dict_flat, c(1, 2, 3))
 
+dict_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'))
+hierarchize_list(dict_flat, c(1, 2, 1))
+
+
+
+
+hierarchize_list3 <- function (dict, depth, depth_current = 1, parent_name = NULL) {
+    
+    if (length(dict) != length(depth))
+        stop('Depth vectot must have the same length as dictionary')
+    
+    temp <- list()
+    for (i in seq_along(dict)) {
+        cat("i", i, parent_name, '\n')
+        #print(depth[i])
+        #print(names(dict[i]))
+        if (depth[i] == depth_current) {
+            temp[names(dict[i])] <- list(dict[i])
+        } else {
+            temp[names(dict[i])] <- hierarchize_list3(dict[i], depth[i], depth_current + 1, names(dict[i]))
+        }
+    }
+    return(temp)
+}
+
+dict_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'))
+hierarchize_list3(dict_flat, c(1, 2, 1))
+
+
+
+hierarchize_list2 <- function (dict, depth, name_parent = NULL) {
+    
+    #if (length(dict) != length(depth))
+    #    stop('Depth vectot must have the same length as dictionary')
+    print(dict)
+    depth <- c(0, depth)
+    temp <- list()
+    for (i in seq_along(dict)) {
+        for (j in seq_len(depth[i])) {
+            cat('level', depth[i], names(dict[i]), '\n')
+            if (depth[i - 1] > depth[i]) {
+                temp[name] <- list(dict[[i]])
+            } else {
+                temp <- hierarchize_list2
+            }
+        }
+    }
+    return(temp)
+}
+
+dict_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'))
+hierarchize_list2(dict_flat, c(1, 1, 2))
+
+nest_list <- function(depth) {
+    temp <- list()
+    if (depth > 1) {
+        temp[paste0('L', depth)] <- list(nest_list(depth - 1))
+    } else {
+        temp[paste0('L', depth)] <- 'xxx'
+    }
+    return(temp)
+}
+nest_list(4)
+
+temp <- list()
+for (name in c('a', 'b', 'c')) {
+    temp[name] <- list(temp)
+}
+temp
 
 # Import a LIWC-formatted dictionary
 # read_dict_liwc('/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')        # WORKS
