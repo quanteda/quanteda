@@ -527,6 +527,35 @@ list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
 }
 
 
+hierarchize_list <- function (dict, depth, depth_current = 1) {
+    
+    if (length(dict) != length(depth))
+        stop('Depth vectot must have the same length as dictionary')
+    
+    flag_nested <- depth > depth_current
+    
+    cat('nested\n')
+    print(flag_nested)
+    
+    temp <- list()
+    #temp <- c(temp, dict[!flag_nested])
+    
+    dict_nested <- dict[flag_nested]
+    for (i in seq_along(dict_nested)) {
+        cat("i", i, '\n')
+        #print(depth[i])
+        #print(names(dict[i]))
+        temp[names(dict_nested[i])] <- dict_nested[i]
+    }
+    
+    return(c(dict[!flag_nested], list(temp)))
+    
+}
+#dict_flat <- dictionary(list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc')))
+dict_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'))
+hierarchize_list(dict_flat, c(1, 2, 3))
+
+
 # Import a LIWC-formatted dictionary
 # read_dict_liwc('/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')        # WORKS
 # dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English.dic")      # WORKS
