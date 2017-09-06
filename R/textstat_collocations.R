@@ -183,7 +183,7 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
     rownames(result) <- NULL
     
     # # add counts to output if requested
-    # if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
+    if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
 
     # remove results whose counts are less than min_count
     result <- result[result$count >= min_count, ]
