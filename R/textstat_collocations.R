@@ -152,7 +152,6 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
         names(df_counts_n) <- make_count_names(size, "n")
         # compute expected counts
         df_counts_e <- get_expected_values(df_counts_n, size = size)
-        names(df_counts_e) <- make_count_names(size, "e")
         # remove observed counts character
         result <- result[, -which(names(result)=="observed_counts")]
 
@@ -308,22 +307,36 @@ get_expected_values <- function(df, size) {
     counts <- df[, grep("^n\\d+", names(df))]
     # sort the counts alphabetically
     counts <- df[, sort(names(counts))]
+
+    if (size == 2) {
+        result <- data.table(counts)
+        result[, n := rowSums(result)]
+        result[, c("e00", "e01", "e10", "e11") := 
+                   list((n00 + n01) * (n00 + n10) / n,
+                        (n00 + n01) * (n01 + n11) / n,
+                        (n10 + n11) * (n00 + n10) / n,
+                        (n10 + n11) * (n01 + n11) / n)]
+        result <- as.data.frame(result[, list(e00, e01, e10, e11)])
     
-    expected_counts_list <- apply(counts, 1, function(x) {
-        countsnum <- as.numeric(x)
-        names(countsnum) <- names(counts)
-        array_dimnames <- c(rep(list(c("0", "1")), size))
-        names(array_dimnames) <- paste0("W", size:1)
-        counts_table <- array(countsnum, dim = rep(2, size), dimnames = array_dimnames)
-        counts_expected <- stats::loglin(counts_table,
-                                         margin =  marginalfun(size),
-                                         fit = TRUE, print = FALSE)$fit
-        counts_expected <- as.numeric(counts_expected)
-        names(counts_expected) <- gsub("e", "n", names(counts))
-        counts_expected
-    })
-    
-    data.frame(t(expected_counts_list))
+    } else {
+        expected_counts_list <- apply(counts, 1, function(x) {
+            countsnum <- as.numeric(x)
+            names(countsnum) <- names(counts)
+            array_dimnames <- c(rep(list(c("0", "1")), size))
+            names(array_dimnames) <- paste0("W", size:1)
+            counts_table <- array(countsnum, dim = rep(2, size), dimnames = array_dimnames)
+            counts_expected <- stats::loglin(counts_table,
+                                             margin =  marginalfun(size),
+                                             fit = TRUE, print = FALSE)$fit
+            counts_expected <- as.numeric(counts_expected)
+            names(counts_expected) <- gsub("e", "n", names(counts))
+            counts_expected
+        })
+        result <- data.frame(t(expected_counts_list))
+        names(result) <- make_count_names(size, "e")
+    }
+
+    result
 }
 
 
