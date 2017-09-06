@@ -568,23 +568,42 @@ hierarchize_list3 <- function (dict, depth, depth_current = 1, parent_name = NUL
         stop('Depth vectot must have the same length as dictionary')
     
     temp <- list()
-    for (i in seq_along(dict)) {
-        cat("i", i, parent_name, '\n')
+    #for (i in seq_along(dict)) {
+    while (max(depth) > 1) {    
         #print(depth[i])
         #print(names(dict[i]))
-        if (depth[i] == depth_current) {
-            temp[names(dict[i])] <- list(dict[i])
-        } else {
-            temp[names(dict[i])] <- hierarchize_list3(dict[i], depth[i], depth_current + 1, names(dict[i]))
+        flag_max <- depth == max(depth)
+        for (i in which(flag_max)) {
+            cat("i", i, depth[i], '\n')
+            #print(dict[[i - 1]])
+            dict[[i - 1]] <- c(dict[[i - 1]], dict[i])
+            depth[flag_max] <- 0
+            dict[i] <- NULL
         }
+        cat("max", max(depth), '\n')
     }
-    return(temp)
+    return(dict)
 }
 
 dict_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'))
-hierarchize_list3(dict_flat, c(1, 2, 1))
+dict_hier <- hierarchize_list3(dict_flat, c(1, 2, 1))
+dictionary(dict_hier)
 
 
+quanteda:::list2dictionary(dict)
+class(dict) <- 'dictionary2'
+
+dict
+unclass(dictionary(list('A' = list(c('a', 'aa', 'aaa'), 'B' = c('b', 'bb')), 'C' = c('c', 'cc'))))
+
+l <- list()
+l <- append(l, dict_flat[[2]])
+str(c(dict_flat[[2]], dict_flat[3]))
+
+l[[1]] <- dict_flat[[2]]
+l
+
+length(list('B' = c('b', 'bb'), list('C' = c('c', 'cc'))))
 
 hierarchize_list2 <- function (dict, depth, name_parent = NULL) {
     
