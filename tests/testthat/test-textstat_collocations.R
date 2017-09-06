@@ -298,5 +298,34 @@ test_that("tokens_segment_by_punctuation works as expected", {
         as.list(quanteda:::tokens_segment_by_punctuation(tokens("%*!?"))),
         list(text1 = character())
     )
+    expect_equal(
+        as.list(quanteda:::tokens_segment_by_punctuation(as.tokens(list(d1 = letters[1:3], d2 = "")))),
+        list(d1 = c("a", "b", "c"), d2 = character())
+    )
+    expect_equal(
+        as.list(quanteda:::tokens_segment_by_punctuation(as.tokens(list(d1 = letters[1:3], d2 = "", d3 = c("", ""))))),
+        list(d1 = c("a", "b", "c"), d2 = character(), d3 = character())
+    )
+})
+
+
+test_that("textstat_collocations.tokens works ok with zero-length documents (#940)", {
+    txt <- c('I like good ice cream.', 'Me too!  I like good ice cream.', '')
+    toks <- tokens(tolower(txt), remove_punct = TRUE, remove_symbols = TRUE)
+    
+    expect_equal(
+        textstat_collocations(txt, size = 2, min_count = 2, tolower = TRUE)$collocation,
+        c("ice cream", "like good", "i like", "good ice")
+    )
+    ##   collocation count length   lambda        z
+    ## 1   ice cream     2      2 4.317488 2.027787
+    ## 2   like good     2      2 4.317488 2.027787
+    ## 3      i like     2      2 4.317488 2.027787
+    ## 4    good ice     2      2 4.317488 2.027787
+    
+    expect_equal(
+        textstat_collocations(toks, size = 2, min_count = 2)$collocation,
+        c("ice cream", "like good", "i like", "good ice")
+    )
 })
 

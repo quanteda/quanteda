@@ -118,6 +118,10 @@ dfm <- function(x,
                 groups = NULL, 
                 verbose = quanteda_options("verbose"), 
                 ...) {
+    dfm_env$START_TIME <- proc.time()
+    object_class <- class(x)[1]
+    if (object_class == "dfmSparse") object_class <- "dfm"
+    if (verbose) message("Creating a dfm from a ", object_class, " input...")
     UseMethod("dfm")
 }
 
@@ -126,9 +130,10 @@ dfm_env <- new.env()
 dfm_env$START_TIME <- NULL  
 
 # dfm function to check that any ellipsis arguments belong only to tokens formals
-check_dfm_dots <-  function(dots) {
-    if (length(dots) && any(!(names(dots)) %in% names(formals(tokens))))
-        warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", sep = "", noBreaks. = TRUE)
+check_dfm_dots <-  function(dots, permissible_args = NULL) {
+    if (length(dots) && any(!(names(dots)) %in% permissible_args))
+        warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", 
+                noBreaks. = TRUE, call. = FALSE)
 }
 
 
@@ -146,13 +151,7 @@ dfm.character <- function(x,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
-    
-    if (who_called_me_first(sys.calls(), "dfm") == "character") {
-        dfm_env$START_TIME <- proc.time()
-        if (verbose) catm("Creating a dfm from a character vector ...\n")
-    }
-
-    dfm(corpus(x),
+    dfm.corpus(corpus(x),
         tolower = tolower, 
         stem = stem, 
         select = select, remove = remove, 
@@ -177,11 +176,7 @@ dfm.corpus <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"),
                        ...) {
-    if (who_called_me_first(sys.calls(), "dfm") == "corpus") {
-        dfm_env$START_TIME <- proc.time()
-        if (verbose) catm("Creating a dfm from a corpus ...\n")
-    }
-    dfm(tokens(x, ...),  
+    dfm.tokenizedTexts(tokens(x, ...),  
         tolower = tolower, 
         stem = stem, 
         select = select, remove = remove, 
@@ -213,9 +208,7 @@ dfm.tokenizedTexts <- function(x,
     } 
 
     if (who_called_me_first(sys.calls(), "dfm") %in% c("tokens", "tokenizedTexts")) {
-        dfm_env$START_TIME <- proc.time()
-        if (verbose) catm("Creating a dfm from a", class(x)[1], "object ...\n")
-        check_dfm_dots(list(...))
+        check_dfm_dots(list(...), permissible_args = names(formals(tokens)))
         x <- tokens(x, ...)
     }
     
@@ -280,7 +273,7 @@ dfm.tokenizedTexts <- function(x,
         result@docvars <- data.frame(row.names = docnames(x))
     }
     
-    dfm(result, tolower = FALSE, stem = stem, verbose = verbose)
+    dfm.dfm(result, tolower = FALSE, stem = stem, verbose = verbose)
 }
 
 #' @noRd
@@ -300,12 +293,7 @@ dfm.dfm <- function(x,
                     ...) {
 
     valuetype <- match.arg(valuetype)
-    if (length(args <- list(...))) warning("arguments ", names(args), "unused")
-
-    if ((who_called_me_first(sys.calls(), "dfm") == "dfm")) {
-        dfm_env$START_TIME <- proc.time()
-        if (verbose) catm("Creating a dfm from a", class(x)[1], "object ...\n")
-    }
+    check_dfm_dots(list(...))
 
     if (tolower) {
         if (verbose) catm("   ... lowercasing\n", sep="")
@@ -344,7 +332,7 @@ dfm.dfm <- function(x,
     
     language <- quanteda_options("language_stemmer")
     if (stem) {
-        if (verbose) catm("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
+        if (verbose) catm("   ... stemming features (", stri_trans_totitle(language), ")\n", sep="")
         oldNfeature <- nfeature(x)
         x <- dfm_wordstem(x, language)
         if (verbose) 
