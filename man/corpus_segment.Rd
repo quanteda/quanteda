@@ -15,10 +15,10 @@ char_segment(x, pattern, valuetype = c("regex", "fixed", "glob"),
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}
 
-\item{pattern}{pattern defined as a \code{\link{regex}} for 
-segmentation; only relevant for \code{what = "paragraphs"} (where the 
-default is two newlines), \code{"tags"} (where the default is a tag 
-preceded by two pound or "hash" signs \code{##}), and \code{"other"}.}
+\item{pattern}{pattern defined as a \code{\link{regex}} for segmentation;
+only relevant for \code{what = "paragraphs"} (where the default is two
+newlines), \code{"tags"} (where the default is a tag preceded by two pound
+or "hash" signs \code{##}), and \code{"other"}.}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
@@ -26,12 +26,13 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{remove_pattern}{removes matched patterns from the texts if \code{TRUE}.}
 
-\item{position}{specify position to split texts for \code{what = "other"}}
+\item{position}{specify whether texts should be split before or after the
+pattern}
 
-\item{use_docvars}{(for corpus objects only) if \code{TRUE}, repeat the docvar 
-values for each segmented text; if \code{FALSE}, drop the docvars in the 
-segmented corpus. Dropping the docvars might be useful in order to conserve
-space or if these are not desired for the segmented corpus.}
+\item{use_docvars}{(for corpus objects only) if \code{TRUE}, repeat the
+docvar values for each segmented text; if \code{FALSE}, drop the docvars in
+the segmented corpus. Dropping the docvars might be useful in order to
+conserve space or if these are not desired for the segmented corpus.}
 
 \item{...}{provides additional arguments passed to internal functions}
 }
@@ -52,34 +53,29 @@ Tokens are delimited by separators.  For tokens and sentences, these
   are determined by the tokenizer behaviour in \code{\link{tokens}}.
   
   For paragraphs, the default is two carriage returns, although this could be
-  changed to a single carriage return by changing the value of 
-  \code{pattern} to \code{"\\\n{1}"} which is the R version of the 
-  \code{\link{regex}} for one newline character.  (You might need this if the
-  document was created in a word processor, for instance, and the lines were 
-  wrapped in the window rather than being hard-wrapped with a newline 
-  character.)
+  changed to a single carriage return by changing the value of \code{pattern}
+  to \code{"\\\n{1}"} which is the R version of the \code{\link{regex}} for
+  one newline character.  (You might need this if the document was created in
+  a word processor, for instance, and the lines were wrapped in the window
+  rather than being hard-wrapped with a newline character.)
 }
 \section{Using patterns}{
-
-  One of the most common uses for \code{corpus_segment} is to 
-  partition a corpus into sub-documents using tags.  By default, the tag 
-  value is any word that begins with a double "hash" sign and is followed by 
-  a whitespace.  This can be modified but be careful to use the syntax for
-  the trailing word boundary (\code{\\\\b})
+ One of the most common uses for
+  \code{corpus_segment} is to partition a corpus into sub-documents using
+  tags.  By default, the tag value is any word that begins with a double
+  "hash" sign and is followed by a whitespace.  This can be modified but be
+  careful to use the syntax for the trailing word boundary (\code{\\\\b})
   
-  The default values for \code{pattern} are, according to valuetype:
-  \describe{
-  \item{paragraphs}{\code{"\\\\n{2}"}, \link[=regex]{regular expression} 
-    meaning two newlines.  If you wish to define a paragaph as a single 
-    newline, change the 2 to a 1.}
-  \item{other}{No default; user must supply one.}
-  \item{tokens, sentences}{patterns do not apply to these, and a warning
-    will be issued if you attempt to supply one.}
-  }
+  The default values for \code{pattern} are, according to valuetype: 
+  \describe{ \item{paragraphs}{\code{"\\\\n{2}"}, \link[=regex]{regular
+  expression} meaning two newlines.  If you wish to define a paragaph as a
+  single newline, change the 2 to a 1.} \item{other}{No default; user must
+  supply one.} \item{tokens, sentences}{patterns do not apply to these, and a
+  warning will be issued if you attempt to supply one.} }
   
-  patterns may be defined for different \link[=valuetype]{valuetypes} 
-  but these may produce unexpected results, for example the lack of the
-  ability in a "glob" expression to define the word boundaries.
+  patterns may be defined for different \link[=valuetype]{valuetypes} but
+  these may produce unexpected results, for example the lack of the ability
+  in a "glob" expression to define the word boundaries.
 }
 
 \examples{

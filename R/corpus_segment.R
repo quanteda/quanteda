@@ -6,50 +6,46 @@
 #' for breaking the texts of a corpus into smaller documents based on sentences,
 #' or based on a user defined "tag" pattern.  See Details.
 #' @param x character or \link{corpus} object whose texts will be segmented
-#' @param pattern  pattern defined as a \code{\link{regex}} for 
-#'   segmentation; only relevant for \code{what = "paragraphs"} (where the 
-#'   default is two newlines), \code{"tags"} (where the default is a tag 
-#'   preceded by two pound or "hash" signs \code{##}), and \code{"other"}.
+#' @param pattern  pattern defined as a \code{\link{regex}} for segmentation;
+#'   only relevant for \code{what = "paragraphs"} (where the default is two
+#'   newlines), \code{"tags"} (where the default is a tag preceded by two pound
+#'   or "hash" signs \code{##}), and \code{"other"}.
 #' @inheritParams valuetype
 #' @param remove_pattern removes matched patterns from the texts if \code{TRUE}.
-#' @param position specify position to split texts for \code{what = "other"}
-#' @param use_docvars (for corpus objects only) if \code{TRUE}, repeat the docvar 
-#'   values for each segmented text; if \code{FALSE}, drop the docvars in the 
-#'   segmented corpus. Dropping the docvars might be useful in order to conserve
-#'   space or if these are not desired for the segmented corpus.
+#' @param position specify whether texts should be split before or after the
+#'   pattern
+#' @param use_docvars (for corpus objects only) if \code{TRUE}, repeat the
+#'   docvar values for each segmented text; if \code{FALSE}, drop the docvars in
+#'   the segmented corpus. Dropping the docvars might be useful in order to
+#'   conserve space or if these are not desired for the segmented corpus.
 #' @param ... provides additional arguments passed to internal functions
 #' @return \code{corpus_segment} returns a corpus of segmented texts
 #' @details Tokens are delimited by separators.  For tokens and sentences, these
 #'   are determined by the tokenizer behaviour in \code{\link{tokens}}.
 #'   
 #'   For paragraphs, the default is two carriage returns, although this could be
-#'   changed to a single carriage return by changing the value of 
-#'   \code{pattern} to \code{"\\\n{1}"} which is the R version of the 
-#'   \code{\link{regex}} for one newline character.  (You might need this if the
-#'   document was created in a word processor, for instance, and the lines were 
-#'   wrapped in the window rather than being hard-wrapped with a newline 
-#'   character.)
+#'   changed to a single carriage return by changing the value of \code{pattern}
+#'   to \code{"\\\n{1}"} which is the R version of the \code{\link{regex}} for
+#'   one newline character.  (You might need this if the document was created in
+#'   a word processor, for instance, and the lines were wrapped in the window
+#'   rather than being hard-wrapped with a newline character.)
 #' @keywords corpus
-#' @section Using patterns:
-#'   One of the most common uses for \code{corpus_segment} is to 
-#'   partition a corpus into sub-documents using tags.  By default, the tag 
-#'   value is any word that begins with a double "hash" sign and is followed by 
-#'   a whitespace.  This can be modified but be careful to use the syntax for
-#'   the trailing word boundary (\code{\\\\b})
+#' @section Using patterns: One of the most common uses for
+#'   \code{corpus_segment} is to partition a corpus into sub-documents using
+#'   tags.  By default, the tag value is any word that begins with a double
+#'   "hash" sign and is followed by a whitespace.  This can be modified but be
+#'   careful to use the syntax for the trailing word boundary (\code{\\\\b})
 #'   
-#'   The default values for \code{pattern} are, according to valuetype:
-#'   \describe{
-#'   \item{paragraphs}{\code{"\\\\n{2}"}, \link[=regex]{regular expression} 
-#'     meaning two newlines.  If you wish to define a paragaph as a single 
-#'     newline, change the 2 to a 1.}
-#'   \item{other}{No default; user must supply one.}
-#'   \item{tokens, sentences}{patterns do not apply to these, and a warning
-#'     will be issued if you attempt to supply one.}
-#'   }
+#'   The default values for \code{pattern} are, according to valuetype: 
+#'   \describe{ \item{paragraphs}{\code{"\\\\n{2}"}, \link[=regex]{regular
+#'   expression} meaning two newlines.  If you wish to define a paragaph as a
+#'   single newline, change the 2 to a 1.} \item{other}{No default; user must
+#'   supply one.} \item{tokens, sentences}{patterns do not apply to these, and a
+#'   warning will be issued if you attempt to supply one.} }
 #'   
-#'   patterns may be defined for different \link[=valuetype]{valuetypes} 
-#'   but these may produce unexpected results, for example the lack of the
-#'   ability in a "glob" expression to define the word boundaries.
+#'   patterns may be defined for different \link[=valuetype]{valuetypes} but
+#'   these may produce unexpected results, for example the lack of the ability
+#'   in a "glob" expression to define the word boundaries.
 #' @seealso \code{\link{corpus_reshape}}, \code{\link{tokens}}
 #' @examples
 #' ## segmenting a corpus
@@ -61,7 +57,7 @@
 #'          "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
 #' corp_seg <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", position = "before")
 #' texts(corp_seg)
-#'
+#' 
 #' corp_seg2 <- corpus_segment(corp, ".", valuetype = "fixed", position = "after")
 #' texts(corp_seg2)
 #' 
