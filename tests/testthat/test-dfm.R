@@ -291,12 +291,12 @@ test_that("cbind.dfm works with non-dfm objects",{
     expect_equal(
         as.matrix(cbind(dfm1, vec)),
         matrix(c(1,1,1,0,0,10, 0,0,1,1,1,20), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat")))
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat1")))
     )
     expect_equal(
         as.matrix(cbind(vec, dfm1)),
         matrix(c(10,1,1,1,0,0, 20, 0,0,1,1,1), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c("feat", letters[1:5])))
+               dimnames = list(docs = c("text1", "text2"), features = c("feat1", letters[1:5])))
     )
     
     mat <- matrix(1:4, nrow = 2, dimnames = list(NULL, c("f1", "f2")))
@@ -314,13 +314,13 @@ test_that("cbind.dfm works with non-dfm objects",{
     expect_equal(
         as.matrix(cbind(dfm1, vec, mat)),
         matrix(c(1,1,1,0,0,10,1,3, 0,0,1,1,1,20,2,4), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat", "f1", "f2")))
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat1", "f1", "f2")))
     )
     
     expect_equal(
         as.matrix(cbind(vec, dfm1, vec)),
         matrix(c(10,1,1,1,0,0,10, 20,0,0,1,1,1,20), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c("feat", letters[1:5], "feat1")))
+               dimnames = list(docs = c("text1", "text2"), features = c("feat1", letters[1:5], "feat11")))
     )
     
     expect_silent(cbind(vec, dfm1, vec))
@@ -332,7 +332,7 @@ test_that("cbind.dfm works with non-dfm objects",{
     expect_equal(
         as.matrix(cbind(dfm1, 100)),
         matrix(c(1,1,1,0,0,100, 0,0,1,1,1,100), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat")))
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat1")))
     )
     
 })
@@ -361,7 +361,7 @@ test_that("more cbind tests for dfms", {
     expect_equal(
         as.matrix(cbind(mydfm, ntoken(mydfm))),
         matrix(c(1,1,1,1,0,4, 0,1,1,1,1,4), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat")))
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat1")))
     )
 })
 
@@ -600,5 +600,22 @@ test_that("dfm works with purrr::map (#928)", {
     expect_identical(
         sapply(purrr::map(list(dfm(a), dfm(b)), dfm), is.dfm),
         c(TRUE, TRUE)
+    )
+})
+
+test_that("dfm works when features are created (#946", {
+    dfm1 <- as.dfm(matrix(1:6, nrow = 2, 
+                          dimnames = list(c("doc1", "doc2"), c("a", "b", "c"))))
+    dfm2 <- as.dfm(matrix(1:6, nrow = 2, 
+                          dimnames = list(c("doc1", "doc2"), c("b", "c", "feat_2"))))
+    
+    expect_equal(
+        as.matrix(dfm_select(dfm1, dfm2)),
+        matrix(c(3, 4, 5, 6, 0, 0), nrow = 2, dimnames = list(docs = c("doc1", "doc2"), features = c("b", "c", "feat_2")))
+    )
+    
+    expect_equal(
+        as.matrix(cbind(dfm("a b"), dfm("feat_1"))),
+        matrix(c(1,1,1), nrow = 1, dimnames = list(docs = "text1", features = c("a", "b", "feat_1")))
     )
 })
