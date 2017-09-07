@@ -272,9 +272,9 @@ cbind_dfm_dfm <- function(...) {
     }
 
     # make any added feature names unique
-    dupl_featname_index <- 
+    dupl_featname_index <-
         grep(paste0("^", quanteda_options("base_featname")), colnames(result))
-    colnames(result)[dupl_featname_index] <- make.unique(gsub("\\d", "", colnames(result)[dupl_featname_index]), "")
+    colnames(result)[dupl_featname_index] <- make.unique(colnames(result)[dupl_featname_index], sep = "")
     # only issue warning if these did not come from added feature names
     if (any(duplicated(colnames(result))))
         warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE, call. = FALSE)
