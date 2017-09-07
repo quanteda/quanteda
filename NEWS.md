@@ -7,6 +7,7 @@
 * Fixed a problem when applying `purrr::map()` to `dfm()` (#928).
 * Added documentation for `regex2fixed()` and associated functions.
 * Fixed a bug in `textstat_collocations.tokens()` caused by "documents" containing only `""` as tokens. (#940)
+* Fixed a bug caused by `cbind.dfm()` when features shared a name starting with `quanteda_options("base_featname")` (#946)
 
 
 ## Changes since v0.9.9-65
