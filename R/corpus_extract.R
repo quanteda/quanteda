@@ -17,7 +17,7 @@
 #'          "##DOC1 This is the first document.",
 #'          "##DOC2 This is the second document.",
 #'          "##DOC3 This is the third document."))
-#' corp <- corpus_extract(corp, '##*', valuetype = "glob", field = 'tag')
+#' corp <- corpus_extracttags(corp, '##*', valuetype = "glob")
 #' head(corp)
 #' head(docvars(corp))
 #' 
@@ -26,34 +26,31 @@
 #'           ##DOC1 This is the first document.  Second sentence in Doc 1.
 #'           ##DOC3 Third document starts here.  End of third document.",
 #'          "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
-#' corp2_seg <- corpus_segment(corp2, "other", delimiter = "##", 
-#'                             valuetype = "fixed", position = "before")
-#' corp2_seg <- corpus_extract(corp2_seg, '##[A-Z0-9]+', valuetype = "regex", field = 'tag')
+#' corp2_seg <- corpus_extracttags(corp2, '##[A-Z0-9]+', valuetype = "regex")
 #' head(corp2_seg)
 #' head(docvars(corp2_seg))
 #' 
 #' @export
-corpus_extract <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), 
-                           field, keep_pattern = FALSE, ...) {
-    UseMethod("corpus_extract")
+corpus_extracttags <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), 
+                               position = c("after", "before"), use_docvars = TRUE, ...) {
+    UseMethod("corpus_extracttags")
 }
 
 #' @noRd
-#' @rdname corpus_extract
+#' @rdname corpus_extracttags
 #' @export    
-corpus_extract.corpus <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), 
-                                  field, keep_pattern = FALSE, ...) {
+corpus_extracttags.corpus <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), 
+                                      position = c("after", "before"), use_docvars = TRUE, ...) {
     
     valuetype <- match.arg(valuetype)
-    
-    match <- char_extract(texts(x), pattern, valuetype)
-    docvars(x, field) <- stri_trim_both(match)
-    if (!keep_pattern)
-        texts(x) <- stri_replace_first_fixed(texts(x), match, '')
-    return(x)
+    temp <- corpus_segment(x, pattern, valuetype, remove_pattern = FALSE, position, use_docvars, ...) 
+    match <- char_extracttags(texts(temp), pattern, valuetype, position)
+    texts(temp) <- stri_trim_both(stri_replace_first_fixed(texts(x), match, ''))
+    docvars(temp, 'tag') <- stri_trim_both(match)
+    return(temp)
 }
 
-#' @rdname corpus_extract
+#' @rdname corpus_extracttags
 #' @export
 #' @examples
 #' ## segmenting a character object
@@ -62,16 +59,16 @@ corpus_extract.corpus <- function(x, pattern, valuetype = c("glob", "regex", "fi
 #'           "##DOC1 This is the first document.",
 #'           "##DOC2 This is the second document.",
 #'           "##DOC3 This is the third document.")
-#' char_extract(txts, '##[A-Z0-9]+')
+#' char_extracttags(txts, '##[A-Z0-9]+')
 #' @keywords character
-#' @return \code{char_extract} returns a character vector of matched characters
-char_extract <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), ...) {
-    UseMethod("char_extract")
+#' @return \code{char_extracttags} returns a character vector of matched characters
+char_extracttags <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), ...) {
+    UseMethod("char_extracttags")
 }
         
 #' @noRd
 #' @export
-char_extract.character <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), ...) {
+char_extracttags.character <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), ...) {
     
     valuetype <- match.arg(valuetype)
     
