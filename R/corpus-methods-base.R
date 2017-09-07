@@ -100,7 +100,7 @@ print.summary.corpus <- function(x, ...) {
     cat("Corpus consisting of ", ndoc_original, " document", if (ndoc_original > 1) "s" else "", 
         attr(x, "showing"), ":\n\n", sep = "")
     print.data.frame(x, row.names = FALSE)
-    cat(attr(x, "meta"))
+    cat(attr(x, "meta"), "\n")
 }
 
 #' @rdname corpus-class
