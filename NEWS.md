@@ -2,12 +2,17 @@
 
 ## Changes since v0.99
 
+### New Features
+
+* Added **magrittr** pipe support (#927).  `%>%` can now be used with **quanteda** without needing to attach **magrittr** (or, as many users apparently believe, the entire tidyverse.)
+
 ### Bug fixes and stability enhancements
 
 * Fixed a problem when applying `purrr::map()` to `dfm()` (#928).
 * Added documentation for `regex2fixed()` and associated functions.
 * Fixed a bug in `textstat_collocations.tokens()` caused by "documents" containing only `""` as tokens. (#940)
 * Fixed a bug caused by `cbind.dfm()` when features shared a name starting with `quanteda_options("base_featname")` (#946)
+
 
 
 ## Changes since v0.9.9-65
