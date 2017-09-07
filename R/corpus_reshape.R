@@ -27,7 +27,7 @@
 #' ## Note that Bush 2005 is recorded as a single paragraph because that text used a single
 #' ## \n to mark the end of a paragraph.
 #' @export
-#' @import strigi
+#' @import stringi
 #' @keywords corpus
 corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
     UseMethod("corpus_reshape")

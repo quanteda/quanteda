@@ -109,17 +109,13 @@ texts(corp_seg2)
 ## segmenting a character object
 
 # segment into paragraphs
-char_segment(data_char_ukimmig2010[3:4], "paragraphs")
+char_segment(data_char_ukimmig2010[3:4], pattern = "\\\\n\\\\n", valuetype = "regex", remove_pattern = TRUE)
 
 # segment a text into sentences
-segmentedChar <- char_segment(data_char_ukimmig2010, "sentences")
-segmentedChar[3]
+char_segment(data_char_ukimmig2010[3:4], pattern = "\\\\p{P}", valuetype = "regex", remove_pattern = FALSE)
 }
 \seealso{
 \code{\link{corpus_reshape}}, \code{\link{tokens}}
-}
-\author{
-Kenneth Benoit
 }
 \keyword{character}
 \keyword{corpus}

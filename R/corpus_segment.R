@@ -74,7 +74,7 @@
 #' corp_seg2 <- corpus_segment(corp, ".", valuetype = "fixed", position = "after")
 #' texts(corp_seg2)
 #' 
-#' @import strigi
+#' @import stringi
 #' @export
 corpus_segment <- function(x, pattern,
                            valuetype = c("regex", "fixed", "glob"),
@@ -131,11 +131,10 @@ corpus_segment.corpus <- function(x, pattern,
 #' ## segmenting a character object
 #' 
 #' # segment into paragraphs
-#' char_segment(data_char_ukimmig2010[3:4], "paragraphs")
+#' char_segment(data_char_ukimmig2010[3:4], pattern = "\\n\\n", valuetype = "regex", remove_pattern = TRUE)
 #' 
 #' # segment a text into sentences
-#' segmentedChar <- char_segment(data_char_ukimmig2010, "sentences")
-#' segmentedChar[3]
+#' char_segment(data_char_ukimmig2010[3:4], pattern = "\\p{P}", valuetype = "regex", remove_pattern = FALSE)
 #' @keywords character
 #' @return \code{char_segment} returns a character vector of segmented texts
 char_segment <- function(x, pattern,
@@ -153,16 +152,16 @@ char_segment.character <- function(x, pattern,
                                    remove_pattern = FALSE,
                                    position = c("after", "before"),
                                    ...) {
-
+    
     valuetype <- match.arg(valuetype)
-    names_org <- names(x)
+    position <- match.arg(position)
     
     # normalize EOL
-    x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
-    x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
+    temp <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
+    temp <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
-    names(x) <- names_org
-    result <- segment_texts(x, pattern, valuetype, remove_pattern, position, ...)
+    names(temp) <- names(x)
+    result <- segment_texts(temp, pattern, valuetype, remove_pattern, position, ...)
     result <- result[result!='']
     
     attr(result, 'tag') <- NULL
@@ -175,9 +174,7 @@ char_segment.character <- function(x, pattern,
 
 # internal function for char_segment and corpus_segment
 segment_texts <- function(x, pattern = NULL, valuetype = "regex", 
-                          remove_pattern = FALSE, position = "after", what, ...){
-    
-    names_org <- names(x)
+                          remove_pattern = FALSE, position = "after", what = "other"){
     
     # use preset regex pattern
     if (what == 'paragraphs') {
@@ -208,38 +205,39 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
             }
         }
         
+        temp <- stri_trim_both(x)
         if (valuetype == "fixed") {
             if (remove_pattern) {
-                temp <- stri_replace_all_fixed(x, pattern, "\uE000")
+                temp <- stri_replace_all_fixed(temp, pattern, "\uE000")
             } else {
                 if (position == "after") {
-                    temp <- stri_replace_all_fixed(x, pattern, stri_c(pattern, "\uE000"))
+                    temp <- stri_replace_all_fixed(temp, pattern, stri_c(pattern, "\uE000"))
                 } else {
-                    temp <- stri_replace_all_fixed(x, pattern, stri_c("\uE000", pattern))
+                    temp <- stri_replace_all_fixed(temp, pattern, stri_c("\uE000", pattern))
                 }
             }
         } else {
             if (remove_pattern) {
-                temp <- stri_replace_all_regex(x, pattern, "\uE000")
+                temp <- stri_replace_all_regex(temp, pattern, "\uE000")
             } else {
                 if (position == "after") {
-                    temp <- stri_replace_all_regex(x, pattern, "$0\uE000")
+                    temp <- stri_replace_all_regex(temp, pattern, "$0\uE000")
                 } else {
-                    temp <- stri_replace_all_regex(x, pattern, "\uE000$0")
+                    temp <- stri_replace_all_regex(temp, pattern, "\uE000$0")
                 }
             }
         }
         temp <- stri_split_fixed(temp, pattern = "\uE000", omit_empty = TRUE)
-        
     }
     
     n <- lengths(temp)
     result <- unlist(temp, use.names = FALSE)
-    attr(result, 'document') <- rep(names_org, n)
-    attr(result,'docid') <-  rep(seq_along(x), n)
-    attr(result,'segid') <- unlist(lapply(n, seq_len), use.names = FALSE)
+    result <- stri_trim_both(result)
+    attr(result, 'document') <- rep(names(x), n)
+    attr(result, 'docid') <- rep(seq_along(x), n)
+    attr(result, 'segid') <- unlist(lapply(n, seq_len), use.names = FALSE)
 
-    if (!is.null(names_org)) {
+    if (!is.null(names(x))) {
         # to make names doc1.1, doc1.2, doc2.1, ...
         names(result) <- stri_c(attr(result, 'document'), ".", attr(result,'segid'))
     }
