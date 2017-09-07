@@ -54,8 +54,6 @@ is.corpuszip <- function(x) {
 #' 
 #' @param object corpus to be summarized
 #' @param n maximum number of texts to describe, default=100
-#' @param verbose set to \code{FALSE} to turn off printed output, for instance
-#'   if you simply want to assign the output to a \code{data.frame}
 #' @param showmeta set to \code{TRUE} to include document-level
 #'   meta-data
 #' @param tolower convert texts to lower case before counting types
@@ -65,42 +63,45 @@ is.corpuszip <- function(x) {
 #' @keywords internal corpus
 #' @examples
 #' summary(data_corpus_inaugural)
-#' summary(data_corpus_inaugural, n=10)
+#' summary(data_corpus_inaugural, n = 10)
 #' mycorpus <- corpus(data_char_ukimmig2010, 
 #'                    docvars = data.frame(party=names(data_char_ukimmig2010))) 
 #' summary(mycorpus, showmeta=TRUE)  # show the meta-data
-#' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
+#' mysummary <- summary(mycorpus)    # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
-summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, tolower = FALSE, ...) {
-    #     if (!(addedArgs <- names(list(...)) %in% )
-    #         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    
-    if (verbose) {
-        cat("Corpus consisting of ", ndoc(object), " document",
-            ifelse(ndoc(object)>1, "s", ""), 
-            ifelse(is.corpuszip(object), paste0(" (compressed ", 100 - round(object$compression_rate, 1), "%)"), ""),
-            ifelse(ndoc(object) <= n, "", 
-                   paste(", showing ", n, " document", ifelse(n>1, "s", ""), sep="")),
-            ".\n", sep="")
-    }
-    
-    if (verbose) cat("\n")
-    outputdf <- data.frame(summary(texts(object), n, verbose = FALSE, tolower = tolower, ...))
+summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, ...) {
+    outputdf <- data.frame(summary(texts(object), n, tolower = tolower, ...))
     if (!is.null(docvars(object)))
         outputdf <- cbind(outputdf, docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
     # if (detail) outputdf <- cbind(outputdf, metadoc(object))
     if (showmeta)
         outputdf[names(metadoc(object))] <- metadoc(object)[1:min(c(n, ndoc(object))),,drop=FALSE]
-    if (verbose) {
-        print(head(outputdf, n), row.names=FALSE)
-        cat("\nSource:  ", unlist(metacorpus(object, "source")), "\n", sep="")
-        cat("Created: ",   unlist(metacorpus(object, "created")), "\n", sep="")
-        cat("Notes:   ",   unlist(metacorpus(object, "notes")), "\n\n", sep="")
-    }
     # invisibly pass the summary of the texts
-    return(invisible(outputdf))
+    class(outputdf) <- c("summary.corpus", class(outputdf))
+    
+    attr(outputdf, "showing") <- 
+        paste0(
+            if (is.corpuszip(object)) paste0(" (compressed ", 100 - round(object$compression_rate, 1), "%)") else "", 
+            if (ndoc(object) <= n) "" else paste0(", showing ", n, " document", if (n > 1) "s" else "")
+        )
+    attr(outputdf, "meta") <- 
+        paste0("\nSource:  ", unlist(metacorpus(object, "source")),
+               "\nCreated: ", unlist(metacorpus(object, "created")),
+               "\nNotes:   ", unlist(metacorpus(object, "notes")))
+    attr(outputdf, "ndoc_original") <- ndoc(object)
+    outputdf
 }
 
+#' @export
+#' @rdname corpus-class
+#' @method print summary.corpus
+print.summary.corpus <- function(x, ...) {
+    ndoc_original <- attr(x, "ndoc_original")
+    cat("Corpus consisting of ", ndoc_original, " document", if (ndoc_original > 1) "s" else "", 
+        attr(x, "showing"), ":\n\n", sep = "")
+    print.data.frame(x, row.names = FALSE)
+    cat(attr(x, "meta"))
+}
 
 #' @rdname corpus-class
 #' @param c1 corpus one to be added
