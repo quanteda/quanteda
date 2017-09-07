@@ -8,8 +8,8 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
     tokens <- txt %>% tolower %>% word_tokenizer
     it <- itoken(tokens)
     v <- create_vocabulary(it)
-    vectorizer <- vocab_vectorizer(v, grow_dtm = FALSE, skip_grams_window = 3L)
-    tcm <- create_tcm(itoken(tokens), vectorizer)
+    vectorizer <- vocab_vectorizer(v)
+    tcm <- create_tcm(itoken(tokens), vectorizer, skip_grams_window = 3L)
     
     # convert to a symmetric matrix to facilitate the sorting
     tcm <- as.matrix(tcm)
@@ -17,7 +17,7 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
     
     # sort the matrix according to rowname-colname and convert back to a upper triangle matrix
     tcm <- tcm[order(rownames(tcm)), order(colnames(tcm))]
-    tcm[lower.tri(tcm,diag = FALSE)] <- 0
+    tcm[lower.tri(tcm, diag = FALSE)] <- 0
     
     toks <- tokenize(char_tolower(txt), remove_punct = TRUE)
     fcm <- fcm(toks, context = "window", count = "weighted", window = 3)
