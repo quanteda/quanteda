@@ -13,6 +13,10 @@
 * Fixed a bug in `textstat_collocations.tokens()` caused by "documents" containing only `""` as tokens. (#940)
 * Fixed a bug caused by `cbind.dfm()` when features shared a name starting with `quanteda_options("base_featname")` (#946)
 
+### Behaviour changes
+
+* `summary.corpus()` now generates a special data.frame, which has its own print method, rather than requiring `verbose = FALSE` to suppress output. (#926)
+
 
 
 ## Changes since v0.9.9-65

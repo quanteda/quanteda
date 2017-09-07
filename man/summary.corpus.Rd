@@ -4,16 +4,13 @@
 \alias{summary.corpus}
 \title{summarize a corpus}
 \usage{
-\method{summary}{corpus}(object, n = 100, verbose = TRUE,
-  showmeta = FALSE, tolower = FALSE, ...)
+\method{summary}{corpus}(object, n = 100, showmeta = FALSE,
+  tolower = FALSE, ...)
 }
 \arguments{
 \item{object}{corpus to be summarized}
 
 \item{n}{maximum number of texts to describe, default=100}
-
-\item{verbose}{set to \code{FALSE} to turn off printed output, for instance
-if you simply want to assign the output to a \code{data.frame}}
 
 \item{showmeta}{set to \code{TRUE} to include document-level
 meta-data}
@@ -29,11 +26,11 @@ and source.
 }
 \examples{
 summary(data_corpus_inaugural)
-summary(data_corpus_inaugural, n=10)
+summary(data_corpus_inaugural, n = 10)
 mycorpus <- corpus(data_char_ukimmig2010, 
                    docvars = data.frame(party=names(data_char_ukimmig2010))) 
 summary(mycorpus, showmeta=TRUE)  # show the meta-data
-mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
+mysummary <- summary(mycorpus)    # (quietly) assign the results
 mysummary$Types / mysummary$Tokens             # crude type-token ratio
 }
 \keyword{corpus}
