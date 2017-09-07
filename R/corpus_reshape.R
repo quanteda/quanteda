@@ -63,7 +63,8 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         }
     } else if (to %in% c("sentences", "paragraphs")) {
         if (settings(x, 'units') == 'documents') {
-            result <- corpus_segment(x, pattern = NULL, what = to, ...)
+            result <- corpus_segment(x, pattern = NULL, omit_empty = FALSE, what = to, ...)
+            settings(result, "units") <- to
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
         }

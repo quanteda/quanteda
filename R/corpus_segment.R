@@ -93,7 +93,7 @@ corpus_segment.corpus <- function(x, pattern,
                                   remove_pattern = FALSE,
                                   position = c("after", "before"),
                                   use_docvars = TRUE, 
-                           ...) {
+                                  ...) {
     
     valuetype <- match.arg(valuetype)
     position <- match.arg(position)
@@ -174,7 +174,8 @@ char_segment.character <- function(x, pattern,
 
 # internal function for char_segment and corpus_segment
 segment_texts <- function(x, pattern = NULL, valuetype = "regex", 
-                          remove_pattern = FALSE, position = "after", what = "other"){
+                          remove_pattern = FALSE, position = "after", 
+                          omit_empty = FALSE, what = "other", ...){
     
     # use preset regex pattern
     if (what == 'paragraphs') {
@@ -227,7 +228,7 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                 }
             }
         }
-        temp <- stri_split_fixed(temp, pattern = "\uE000", omit_empty = TRUE)
+        temp <- stri_split_fixed(temp, pattern = "\uE000", omit_empty = omit_empty)
     }
     
     n <- lengths(temp)

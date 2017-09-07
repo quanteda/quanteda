@@ -42,7 +42,7 @@ corpus(c("##INTRO This is the introduction.",
          "##DOC1 This is the first document.",
          "##DOC2 This is the second document.",
          "##DOC3 This is the third document."))
-corp <- corpus_extracttags(corp, '##*', valuetype = "glob")
+corp <- corpus_extracttags(corp, '##*', valuetype = "glob", position = 'before')
 head(corp)
 head(docvars(corp))
 
@@ -51,7 +51,7 @@ corpus(c("##INTRO This is the introduction.
           ##DOC1 This is the first document.  Second sentence in Doc 1.
           ##DOC3 Third document starts here.  End of third document.",
          "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
-corp2_seg <- corpus_extracttags(corp2, '##[A-Z0-9]+', valuetype = "regex")
+corp2_seg <- corpus_extracttags(corp2, '##[A-Z0-9]+', valuetype = "regex", position = 'before')
 head(corp2_seg)
 head(docvars(corp2_seg))
 
