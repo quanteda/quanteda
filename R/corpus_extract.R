@@ -5,8 +5,10 @@
 #' @param x character or \link{corpus} object whose texts will be segmented
 #' @inheritParams pattern
 #' @inheritParams valuetype
-#' @param field a name of a \link{docvars} field to store extracted values
-#' @param keep_pattern keep matched patters in documents if \code{TRUE}
+#' @param use_docvars (for corpus objects only) if \code{TRUE}, repeat the docvar 
+#'   values for each segmented text; if \code{FALSE}, drop the docvars in the 
+#'   segmented corpus. Dropping the docvars might be useful in order to conserve
+#'   space or if these are not desired for the segmented corpus.
 #' @param ... not used
 #' @return \code{corpus_extract} returns a corpus of texts, with extracted 
 #'   values in \link{docvars}.

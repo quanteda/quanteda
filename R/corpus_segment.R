@@ -6,14 +6,6 @@
 #' for breaking the texts of a corpus into smaller documents based on sentences,
 #' or based on a user defined "tag" pattern.  See Details.
 #' @param x character or \link{corpus} object whose texts will be segmented
-#' @param what unit of segmentation.  Current options are  
-#'   \code{"sentences"} (default), \code{"paragraphs"}, \code{"tokens"}, 
-#'   \code{"tags"}, and \code{"other"}.
-#'   
-#'   Segmenting on \code{"other"} allows segmentation of a text on any 
-#'   user-defined value, and must be accompanied by the \code{pattern} 
-#'   argument.  Segmenting on \code{"tags"} performs the same function but 
-#'   preserves the tags as a document variable in the segmented corpus.
 #' @param pattern  pattern defined as a \code{\link{regex}} for 
 #'   segmentation; only relevant for \code{what = "paragraphs"} (where the 
 #'   default is two newlines), \code{"tags"} (where the default is a tag 
@@ -25,8 +17,7 @@
 #'   values for each segmented text; if \code{FALSE}, drop the docvars in the 
 #'   segmented corpus. Dropping the docvars might be useful in order to conserve
 #'   space or if these are not desired for the segmented corpus.
-#' @param ... provides additional arguments passed to \code{\link{tokens}}, if 
-#'   \code{what = "tokens"} is used
+#' @param ... provides additional arguments passed to internal functions
 #' @return \code{corpus_segment} returns a corpus of segmented texts
 #' @details Tokens are delimited by separators.  For tokens and sentences, these
 #'   are determined by the tokenizer behaviour in \code{\link{tokens}}.

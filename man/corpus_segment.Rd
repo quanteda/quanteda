@@ -33,17 +33,7 @@ values for each segmented text; if \code{FALSE}, drop the docvars in the
 segmented corpus. Dropping the docvars might be useful in order to conserve
 space or if these are not desired for the segmented corpus.}
 
-\item{...}{provides additional arguments passed to \code{\link{tokens}}, if 
-\code{what = "tokens"} is used}
-
-\item{what}{unit of segmentation.  Current options are
-\code{"sentences"} (default), \code{"paragraphs"}, \code{"tokens"}, 
-\code{"tags"}, and \code{"other"}.
-
-Segmenting on \code{"other"} allows segmentation of a text on any 
-user-defined value, and must be accompanied by the \code{pattern} 
-argument.  Segmenting on \code{"tags"} performs the same function but 
-preserves the tags as a document variable in the segmented corpus.}
+\item{...}{provides additional arguments passed to internal functions}
 }
 \value{
 \code{corpus_segment} returns a corpus of segmented texts
