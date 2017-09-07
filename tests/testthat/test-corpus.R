@@ -227,7 +227,7 @@ test_that("corpus_subset works", {
 })
 
 test_that("summary method works for corpus", {
-    expect_output(summary(data_corpus_irishbudget2010, verbose = TRUE), regexp = "^Corpus consisting of 14 documents\\.")
+    expect_output(summary(print(data_corpus_irishbudget2010)), regexp = "^Corpus consisting of 14 documents")
 })
 
 test_that("corpus works for texts with duplicate filenames", {
@@ -257,3 +257,11 @@ test_that("create a corpus on a corpus", {
                compress = TRUE)
     )
 })
+
+test_that("summary.corpus with verbose prints warning", {
+    expect_warning(
+        summary(data_corpus_irishbudget2010, verbose = FALSE),
+        "verbose argument is defunct"
+    )        
+})
+
