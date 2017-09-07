@@ -271,3 +271,11 @@ test_that("create a corpus on a corpus", {
                compress = TRUE)
     )
 })
+
+test_that("summary.corpus with verbose prints warning", {
+    expect_warning(
+        summary(data_corpus_irishbudget2010, verbose = FALSE),
+        "verbose argument is defunct"
+    )        
+})
+
