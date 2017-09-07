@@ -175,7 +175,7 @@ char_segment.character <- function(x, pattern,
 # internal function for char_segment and corpus_segment
 segment_texts <- function(x, pattern = NULL, valuetype = "regex", 
                           remove_pattern = FALSE, position = "after", 
-                          omit_empty = FALSE, what = "other", ...){
+                          omit_empty = TRUE, what = "other", ...){
     
     # use preset regex pattern
     if (what == 'paragraphs') {
