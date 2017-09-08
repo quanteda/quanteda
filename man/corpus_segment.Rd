@@ -5,36 +5,33 @@
 \alias{char_segment}
 \title{segment texts into component elements}
 \usage{
-corpus_segment(x, pattern, valuetype = c("regex", "fixed", "glob"),
-  remove_pattern = FALSE, position = c("after", "before"),
-  use_docvars = TRUE, ...)
+corpus_segment(x, pattern, valuetype = c("glob", "regex", "fixed"),
+  pattern_remove = TRUE, pattern_position = c("before", "after"),
+  use_docvars = TRUE)
 
 char_segment(x, pattern, valuetype = c("regex", "fixed", "glob"),
-  remove_pattern = FALSE, position = c("after", "before"), ...)
+  pattern_remove = TRUE, pattern_position = c("before", "after"))
 }
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}
 
-\item{pattern}{pattern defined as a \code{\link{regex}} for segmentation;
-only relevant for \code{what = "paragraphs"} (where the default is two
-newlines), \code{"tags"} (where the default is a tag preceded by two pound
-or "hash" signs \code{##}), and \code{"other"}.}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
-\item{remove_pattern}{removes matched patterns from the texts if \code{TRUE}.}
+\item{pattern_remove}{removes matched patterns from the texts if \code{TRUE}}
 
-\item{position}{specify whether texts should be split before or after the
-pattern}
+\item{pattern_position}{either \code{"before"} or \code{"after"}, depending
+on whether the pattern precedes the text (as with a tag) or follows the
+text (as with punctuation delimiters)}
 
-\item{use_docvars}{(for corpus objects only) if \code{TRUE}, repeat the
-docvar values for each segmented text; if \code{FALSE}, drop the docvars in
-the segmented corpus. Dropping the docvars might be useful in order to
-conserve space or if these are not desired for the segmented corpus.}
-
-\item{...}{provides additional arguments passed to internal functions}
+\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each
+segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.
+Dropping the docvars might be useful in order to conserve space or if these
+are not desired for the segmented corpus.}
 }
 \value{
 \code{corpus_segment} returns a corpus of segmented texts
@@ -42,66 +39,96 @@ conserve space or if these are not desired for the segmented corpus.}
 \code{char_segment} returns a character vector of segmented texts
 }
 \description{
-Segment corpus text(s) or a character vector into tokens, sentences, 
-paragraphs, or other sections. \code{segment} works on a character vector or 
-corpus object, and allows the patterns to be user-defined.  This is useful 
+Segment corpus text(s) or a character vector into tokens, sentences,
+paragraphs, or other sections. \code{segment} works on a character vector or
+corpus object, and allows the patterns to be user-defined.  This is useful
 for breaking the texts of a corpus into smaller documents based on sentences,
 or based on a user defined "tag" pattern.  See Details.
 }
-\details{
-Tokens are delimited by separators.  For tokens and sentences, these
-  are determined by the tokenizer behaviour in \code{\link{tokens}}.
-  
-  For paragraphs, the default is two carriage returns, although this could be
-  changed to a single carriage return by changing the value of \code{pattern}
-  to \code{"\\\n{1}"} which is the R version of the \code{\link{regex}} for
-  one newline character.  (You might need this if the document was created in
-  a word processor, for instance, and the lines were wrapped in the window
-  rather than being hard-wrapped with a newline character.)
+\section{Boundaries and segmentation explained}{
+ 
+  The \code{pattern} acts as a boundary delimiter that defines the
+  segmentation points for splitting a text into new "document" units.  Boundaries
+  are always defined as the pattern matches, plus the end and beginnings of each 
+  document.  The new "documents" that are created following the segmenation
+  will then be the texts found between boundaries.
+
+  The pattern itself will be saved as a new document variable named
+  \code{pattern}.  This is most useful when segmenting a text according to
+  tags such as names in a transcript, section titles, or user-supplied
+  annotations.  If the beginning of the file precedes a pattern match, then
+  the extracted text will have a \code{NA} for the extracted \code{pattern}
+  document variable (or when \code{pattern_position = "after"}, this will be
+  true for the text split between the last pattern match and the end of the
+  document).
+
+  To extract syntactically defined sub-document units such as sentences and
+  paragraphs, use \code{\link{corpus_reshape}} instead.
 }
+
 \section{Using patterns}{
- One of the most common uses for
-  \code{corpus_segment} is to partition a corpus into sub-documents using
-  tags.  By default, the tag value is any word that begins with a double
-  "hash" sign and is followed by a whitespace.  This can be modified but be
-  careful to use the syntax for the trailing word boundary (\code{\\\\b})
+ 
+  One of the most common uses for \code{corpus_segment} is to partition a
+  corpus into sub-documents using tags.  A good tag would be a term preceded
+  by double "hash" signs, and followed by a whitespace, such as
+  \code{##INTRODUCTION The text}.  Glob and fixed pattern types use a
+  whitespace character to signal the end of the pattern.
+
+  For more advanced pattern matches that could include whitespace or
+  newlines, a regex pattern type can be used, for instance a text such as
   
-  The default values for \code{pattern} are, according to valuetype: 
-  \describe{ \item{paragraphs}{\code{"\\\\n{2}"}, \link[=regex]{regular
-  expression} meaning two newlines.  If you wish to define a paragaph as a
-  single newline, change the 2 to a 1.} \item{other}{No default; user must
-  supply one.} \item{tokens, sentences}{patterns do not apply to these, and a
-  warning will be issued if you attempt to supply one.} }
+  \code{Mr. Smith: Text} \cr
+  \code{Mrs. Jones: More text} 
   
-  patterns may be defined for different \link[=valuetype]{valuetypes} but
-  these may produce unexpected results, for example the lack of the ability
-  in a "glob" expression to define the word boundaries.
+  could have as \code{pattern = "\\\\b[A-Z].+\\\\.\\\\s[A-Z][a-z]+:"},
+  which would catch the title, the name, and the colon.
+
+  For custom boundary delimitation using punctuation characters that come
+  come at the end of a clause or sentence (such as \code{,} and\code{.},
+  these can be specified manually and \code{pattern_position} set to
+  \code{"after"}. To keep the punctuation characters in the text (as with
+  sentence segmentation), set \code{pattern_remove = FALSE}.  (With most tag
+  applications, users will want to remove the patterns from the text, as they
+  are annotations rather than parts of the text itself.)
 }
 
 \examples{
 ## segmenting a corpus
 
-corp <- 
-corpus(c("##INTRO This is the introduction.
-          ##DOC1 This is the first document.  Second sentence in Doc 1.
-          ##DOC3 Third document starts here.  End of third document.",
-         "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
-corp_seg <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", position = "before")
-texts(corp_seg)
+# segmenting a corpus using tags
+corp <- corpus(c("##INTRO This is the introduction.
+                  ##DOC1 This is the first document.  Second sentence in Doc 1.
+                  ##DOC3 Third document starts here.  End of third document.",
+                 "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
+corp_seg <- corpus_segment(corp, "##*")
+cbind(texts(corp_seg), docvars(corp_seg), metadoc(corp_seg))
 
-corp_seg2 <- corpus_segment(corp, ".", valuetype = "fixed", position = "after")
-texts(corp_seg2)
+# segmenting a transcript based on speaker identifiers
+corp2 <- corpus("Mr. Smith: Text.\\nMrs. Jones: More text.\\nMr. Smith: I'm speaking, again.")
+corp_seg2 <- corpus_segment(corp2, pattern = "\\\\b[A-Z].+\\\\s[A-Z][a-z]+:",
+                            valuetype = "regex")
+cbind(texts(corp_seg2), docvars(corp_seg2), metadoc(corp_seg2))
 
-## segmenting a character object
+# segmenting a corpus using crude end-of-sentence segmentation
+corp_seg3 <- corpus_segment(corp, pattern = ".", valuetype = "fixed", 
+                            pattern_position = "after", pattern_remove = FALSE)
+cbind(texts(corp_seg3), docvars(corp_seg3), metadoc(corp_seg3))
 
-# segment into paragraphs
-char_segment(data_char_ukimmig2010[3:4], pattern = "\\\\n\\\\n", valuetype = "regex", remove_pattern = TRUE)
+## segmenting a character vector
 
-# segment a text into sentences
-char_segment(data_char_ukimmig2010[3:4], pattern = "\\\\p{P}", valuetype = "regex", remove_pattern = FALSE)
+# segment into paragraphs and removing the "- " bullet points
+cat(data_char_ukimmig2010[4])
+char_segment(data_char_ukimmig2010[4], 
+             pattern = "\\\\n\\\\n(\\\\-\\\\s){0,1}", valuetype = "regex", pattern_remove = TRUE)
+
+# segment a text into clauses
+txt <- c(d1 = "This, is a sentence?  You: come here.", d2 = "Yes, yes, okay.")
+char_segment(txt, pattern = "\\\\p{P}", valuetype = "regex", 
+             pattern_position = "after", pattern_remove = FALSE)
 }
 \seealso{
-\code{\link{corpus_reshape}}, \code{\link{tokens}}
+\code{\link{corpus_reshape}}, for segmenting texts into pre-defined
+  syntactic units such as sentences, paragraphs, or fixed-length chunks
 }
 \keyword{character}
 \keyword{corpus}
