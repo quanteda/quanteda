@@ -16,7 +16,7 @@ char_extracttags(x, pattern, valuetype = c("glob", "regex", "fixed"), ...)
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 \link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 

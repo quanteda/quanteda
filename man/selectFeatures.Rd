@@ -41,7 +41,7 @@ For \link{dfm} objects, see details in the Value section below.}
 
 \item{selection}{whether to keep or remove the features}
 
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
