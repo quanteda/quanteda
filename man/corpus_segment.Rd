@@ -3,7 +3,7 @@
 \name{corpus_segment}
 \alias{corpus_segment}
 \alias{char_segment}
-\title{segment texts into component elements}
+\title{segment texts on a pattern match}
 \usage{
 corpus_segment(x, pattern, valuetype = c("glob", "regex", "fixed"),
   pattern_remove = TRUE, pattern_position = c("before", "after"),
@@ -39,11 +39,18 @@ are not desired for the segmented corpus.}
 \code{char_segment} returns a character vector of segmented texts
 }
 \description{
-Segment corpus text(s) or a character vector into tokens, sentences,
-paragraphs, or other sections. \code{segment} works on a character vector or
-corpus object, and allows the patterns to be user-defined.  This is useful
-for breaking the texts of a corpus into smaller documents based on sentences,
-or based on a user defined "tag" pattern.  See Details.
+Segment corpus text(s) or a character vector into smaller sgements, splitting
+on a pattern match.  This is useful
+for breaking the texts into smaller documents based on a regular pattern 
+(such as a speaker identifier in a transcript) or a user-supplied annotation (a "tag").
+}
+\details{
+For segmentation into syntactic units defined by the locale (such as
+sentences), use \code{\link{corpus_reshape}} instead.  In cases where more
+fine-grained segmentation is needed, such as that based on commas or
+semi-colons (phrase delimiters within a sentence),
+\code{\link{corpus_segment}} offers greater user control than
+\link{\code{corpus_reshape}}.
 }
 \section{Boundaries and segmentation explained}{
  

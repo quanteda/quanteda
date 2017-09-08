@@ -6,7 +6,7 @@
 \title{extract and store values in corpus}
 \usage{
 corpus_extracttags(x, pattern, valuetype = c("glob", "regex", "fixed"),
-  position = c("after", "before"), use_docvars = TRUE, ...)
+  pattern_position = c("after", "before"), use_docvars = TRUE, ...)
 
 char_extracttags(x, pattern, valuetype = c("glob", "regex", "fixed"), ...)
 }
@@ -20,15 +20,15 @@ char_extracttags(x, pattern, valuetype = c("glob", "regex", "fixed"), ...)
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
-\item{position}{specify whether texts should be split before or after the
-pattern}
-
 \item{use_docvars}{(for corpus objects only) if \code{TRUE}, repeat the 
 docvar values for each segmented text; if \code{FALSE}, drop the docvars in
 the segmented corpus. Dropping the docvars might be useful in order to 
 conserve space or if these are not desired for the segmented corpus.}
 
 \item{...}{not used}
+
+\item{position}{specify whether texts should be split before or after the
+pattern}
 }
 \value{
 \code{corpus_extract} returns a corpus of texts, with extracted 
@@ -68,3 +68,4 @@ txts <- c("##INTRO This is the introduction.",
 char_extracttags(txts, '##[A-Z0-9]+')
 }
 \keyword{character}
+\keyword{internal}

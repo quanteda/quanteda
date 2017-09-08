@@ -61,13 +61,15 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         } else {
             stop("reshape to documents only goes from sentences or paragraphs")
         }
+        
     } else if (to %in% c("sentences", "paragraphs")) {
         if (settings(x, 'units') == 'documents') {
-            result <- corpus_segment(x, pattern = NULL, omit_empty = FALSE, what = to, ...)
+            result <- segment_texts(x, pattern = NULL, omit_empty = FALSE, what = to, ...)
             settings(result, "units") <- to
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
         }
+        
     } else {
         stop("reshape to", to, "is not supported")
     }

@@ -14,7 +14,6 @@
 #' @param ... not used
 #' @return \code{corpus_extract} returns a corpus of texts, with extracted 
 #'   values in \link{docvars}.
-
 #' @examples
 #' corp <- 
 #' corpus(c("##INTRO This is the introduction.",
@@ -35,8 +34,9 @@
 #' head(docvars(corp2_seg))
 #' 
 #' @export
+#' @keywords internal
 corpus_extracttags <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), 
-                               position = c("after", "before"), use_docvars = TRUE, ...) {
+                               pattern_position = c("after", "before"), use_docvars = TRUE, ...) {
     UseMethod("corpus_extracttags")
 }
 
@@ -44,13 +44,13 @@ corpus_extracttags <- function(x, pattern, valuetype = c("glob", "regex", "fixed
 #' @rdname corpus_extracttags
 #' @export    
 corpus_extracttags.corpus <- function(x, pattern, valuetype = c("glob", "regex", "fixed"), 
-                                      position = c("after", "before"), use_docvars = TRUE, ...) {
+                                      pattern_position = c("after", "before"), use_docvars = TRUE, ...) {
     
     valuetype <- match.arg(valuetype)
-    temp <- corpus_segment(x, pattern, valuetype, remove_pattern = FALSE, position, use_docvars, ...) 
-    match <- char_extracttags(texts(temp), pattern, valuetype, position)
+    temp <- corpus_segment(x, pattern, valuetype, pattern_remove = FALSE, pattern_position, use_docvars, ...) 
+    match <- char_extracttags(texts(temp), pattern, valuetype, pattern_position)
     texts(temp) <- stri_trim_both(stri_replace_first_fixed(texts(x), match, ''))
-    docvars(temp, 'tag') <- stri_trim_both(match)
+    docvars(temp, 'pattern') <- stri_trim_both(match)
     return(temp)
 }
 
