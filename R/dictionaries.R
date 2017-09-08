@@ -640,8 +640,8 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     
     line_value <- stri_replace_all_regex(line_value, '\\s+(\\d+)', '\t$1') # fix wrong delimter
     value <- stri_extract_first_regex(line_value, '[^\t]+')
+    line_value <- stri_replace_first_regex(line_value, '.+?\t', '') # remove words
     
-    #line_value <- stri_replace_first_regex(line_value, '[^\t]+\t', '') # for robustness
     values_id <- stri_extract_all_regex(line_value, '\\d+')
     value_id <- as.integer(unlist(values_id, use.names = FALSE))
     value_rep <- rep(value, lengths(values_id))
