@@ -455,12 +455,12 @@ replace_dictionary_values <- function(dict, from, to) {
 list2dictionary <- function(dict) {
     for (i in seq_along(dict)) {
         if (is.list(dict[[i]])) {
-            dict[[i]] = list2dictionary(dict[[i]])
+            dict[[i]] <- list2dictionary(dict[[i]])
         } else {
             if (is.character(dict[[i]])) {
-                dict[[i]] = list(stri_enc_toutf8(dict[[i]]))
+                dict[[i]] <- list(stri_enc_toutf8(dict[[i]]))
             } else {
-                dict[[i]] = list(dict[[i]])
+                dict[[i]] <- list(dict[[i]])
             }
         }
     }
@@ -526,6 +526,24 @@ list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
     return(dict)
 }
 
+#' utility function to remove empty keys
+#' @param dict a flat or hierarchical dictionary
+#' @keywords internal
+#' 
+remove_empty_keys <- function(dict) {
+    for (i in rev(seq_along(dict))) {
+        if (identical(dict[[i]], list(character(0)))) {
+            message("note: removing empty key: ", paste(names(dict[i]), collapse = ", "))
+            dict <- dict[i * -1]
+        } else {
+            if (!is.character(dict[[i]])) {
+                dict[[i]] <- remove_empty_keys(dict[[i]])
+            }
+        }
+    }
+    return(dict)
+}
+
 #' utility function to generate a nested list
 #' @param dict a flat dictionary
 #' @param depth depths of nested element
@@ -533,10 +551,10 @@ list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
 #' @examples
 #' list_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'), 'D' = c('ddd'))
 #' dict_flat <- quanteda:::list2dictionary(list_flat)
-#' quanteda:::nest_dict(dict_flat, c(1, 1, 2, 2))
-#' quanteda:::nest_dict(dict_flat, c(1, 2, 1, 2))
+#' quanteda:::nest_dicitonary(dict_flat, c(1, 1, 2, 2))
+#' quanteda:::nest_dicitonary(dict_flat, c(1, 2, 1, 2))
 #' 
-nest_dict <- function (dict, depth) {
+nest_dicitonary <- function (dict, depth) {
     
     if (length(dict) != length(depth))
         stop('Depth vectot must have the same length as dictionary')
@@ -547,7 +565,12 @@ nest_dict <- function (dict, depth) {
             #cat("i", i, "\n")
             i_parent <- tail(which(head(depth, i - 1) < depth_max), 1)
             #cat("i_parent", i_parent, "\n")
+            
+            # remove empty character vector
+            if (!length(dict[[i_parent]][[1]]))
+                dict[[i_parent]][[1]] <- NULL
             dict[[i_parent]] <- c(dict[[i_parent]], dict[i])
+            
             #dict[[i - 1]] <- append(dict[[i - 1]], dict[i])
             #cat('---------------------\n')
             #print(dict)
@@ -577,94 +600,80 @@ nest_dict <- function (dict, depth) {
 #' }
 read_dict_liwc <- function(path, encoding = 'auto') {
     
-    lines <- stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
-    tabs <- stri_extract_first_regex(lines, '^\t+')
-    lines <- stri_trim_both(lines)
-    lines <- lines[lines != '']
+    line <- stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
+    tab <- stri_extract_first_regex(line, '^\t+')
+    line <- stri_trim_both(line)
+    line <- line[line != '']
     
-    sections <- which(lines == '%')
+    section <- which(line == '%')
     
-    if (length(sections) < 2) {
+    if (length(section) < 2) {
         stop('Start and end of a category legend should be marked by percentage symbols, none found')
     }
     
-    lines_key <- lines[(sections[1] + 1):(sections[2] - 1)]
-    tabs_key <- tabs[(sections[1] + 1):(sections[2] - 1)]
-    
-    # remove any keys without ID 
-    has_noid <- !stri_detect_regex(lines_key, '^[0-9]+')
-    if (any(has_noid)) {
-        catm("note: ", sum(has_noid), " key",
-             if (sum(has_noid) > 1L) "s" else "", 
-             " ignored because has no ID\n", sep = "")
-        lines_key <- lines_key[!has_noid]
-        tabs_key <- tabs_key[!has_noid]
-    }
-    
-    lines_value <- lines[(sections[2] + 1):(length(lines))]
+    line_key <- line[(section[1] + 1):(section[2] - 1)]
+    tab_key <- tab[(section[1] + 1):(section[2] - 1)]
+    line_value <- line[(section[2] + 1):(length(line))]
     
     # remove any lines with <of>
-    has_oftag <- stri_detect_fixed(lines_value, '<of>')
+    has_oftag <- stri_detect_fixed(line_value, '<of>')
     if (any(has_oftag)) {
         catm("note: ", sum(has_oftag), " term",
              if (sum(has_oftag) > 1L) "s" else "", 
              " ignored because contains unsupported <of> tag\n", sep = "")
-        lines_value <- lines_value[!has_oftag]
+        line_value <- line_value[!has_oftag]
     }
     
     # note odd parenthetical codes
-    has_paren <- stri_detect_regex(lines_value, '\\(.+\\)')
+    has_paren <- stri_detect_regex(line_value, '\\(.+\\)')
     if (any(has_paren)) {
         catm("note: ignoring parenthetical expressions in lines:\n")
         for (i in which(has_paren))
-            catm("  [line ", i + sections[2] + 1, "] ", lines_value[i], "\n", sep = "")
-        lines_value <- stri_replace_all_regex(lines_value, '\\(.+\\)', ' ')
+            catm("  [line ", i + section[2] + 1, "] ", line_value[i], "\n", sep = "")
+        line_value <- stri_replace_all_regex(line_value, '\\(.+\\)', ' ')
     }
     
-    lines_key <- stri_replace_all_regex(lines_key, '(\\d+)\\s+', '$1\t') # fix wrong delimter
-    keys_id <- as.character(as.integer(stri_extract_first_regex(lines_key, '\\d+')))
-    keys <- stri_extract_last_regex(lines_key, '[^\t]+')
-    depth <- ifelse(is.na(tabs_key), 0, stri_length(tabs_key)) + 1
+    line_key <- stri_replace_all_regex(line_key, '(\\d+)\\s+', '$1\t') # fix wrong delimter
+    key_id <- as.integer(stri_extract_first_regex(line_key, '\\d+'))
+    key <- stri_extract_last_regex(line_key, '[^\t]+')
+    depth <- ifelse(is.na(tab_key), 0, stri_length(tab_key)) + 1
     
-    lines_value <- stri_replace_all_regex(lines_value, '\\s+(\\d+)', '\t$1') # fix wrong delimter
-    values <- stri_extract_first_regex(lines_value, '[^\t]+')
-    lines_value <- stri_replace_first_regex(lines_value, '[^\t]+\t', '') # for robustness
-    values_ids <- stri_extract_all_regex(lines_value, '\\d+')
-    values_ids <- lapply(values_ids, as.integer)
+    line_value <- stri_replace_all_regex(line_value, '\\s+(\\d+)', '\t$1') # fix wrong delimter
+    value <- stri_extract_first_regex(line_value, '[^\t]+')
     
-    keys <- stri_replace_all_regex(keys, '[[:control:]]', '') # clean
-    values <- stri_replace_all_regex(values, '[[:control:]]', '') # clean
+    #line_value <- stri_replace_first_regex(line_value, '[^\t]+\t', '') # for robustness
+    values_id <- stri_extract_all_regex(line_value, '\\d+')
+    value_id <- as.integer(unlist(values_id, use.names = FALSE))
+    value_rep <- rep(value, lengths(values_id))
     
-    dict <- split(rep(values, lengths(values_ids)), as.factor(unlist(values_ids, use.names = FALSE)))
-    dict <- lapply(dict, function(x) sort(unique(x))) # remove duplicated and sort values
-    
-    # check if any keys are empty
-    is_empty <- !(keys_id %in% names(dict))
-    if (any(is_empty)) {
-        message("note: removing empty keys: ", paste(keys[is_empty], collapse = ", "))
-    }
+    key <- stri_trim_both(stri_replace_all_regex(key, '[[:control:]]', '')) # clean
+    value <- stri_trim_both(stri_replace_all_regex(value, '[[:control:]]', '')) # clean
+    key_match <- key[match(value_id, key_id)]
     
     # check if all categories are defined
-    is_undef <- !(names(dict) %in% keys_id)
+    is_undef <- is.na(key_match)
     if (any(is_undef)) {
         catm("note: ignoring undefined categories:\n")
         for (i in which(is_undef))
-            catm("  ", names(dict[i]), " for ", dict[[i]], "\n", sep = "")
-        dict <- dict[!is_undef]
-        depth <- depth[!is_undef]
+            catm("  ", value_id[i], " for ", value_rep[i], "\n", sep = "")
     }
     
-    names(dict) <- keys[match(names(dict), keys_id)]
+    dict <- split(value_rep, factor(key_match, levels = key))
+    dict <- lapply(dict, function(x) sort(unique(x))) # remove duplicated and sort values
     dict <- list2dictionary(dict)
+    
     # create hierachical structure of the LIWC 2015 format
     if (any(depth != max(depth))) {
-        dict <- nest_dict(dict, depth)
+        dict <- nest_dicitonary(dict, depth)
     }
-    dict <- dict[order(names(dict))]
+    dict <- remove_empty_keys(dict)
     
     return(dict)
     
 }
+
+split(1:5, factor(c('a', 'b', 'b', 'c', 'e'), levels = c('a', 'b', 'c', 'd', 'e')))
+
 
 # Import a Yoshikoder dictionary
 # dict <- read_dict_yoshikoder('/home/kohei/Documents/Dictionary/Yoshikoder/laver-garry-ajps.ykd')

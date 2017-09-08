@@ -242,8 +242,29 @@ test_that("dictionary constructor works with LIWC format w/extra codes", {
     )
     expect_message(
         dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
-        "note: removing empty keys: friend, humans, insight, cause, discrep, filler"
+                   "note: removing empty key: filler"
     )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+                   "note: removing empty key: discrep"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: cause"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: insight"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: humans"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: friend"
+    )
+    
     dict <- dictionary(file = "../data/dictionaries/liwc_extracodes.dic")
     expect_equal(
         length(dict), 
@@ -258,6 +279,28 @@ test_that("dictionary constructor works with LIWC format w/extra codes", {
     dict2 <- quanteda:::list2dictionary(quanteda:::read_dict_liwc_old("../data/dictionaries/liwc_extracodes.dic"))
     expect_equal(dict1[order(names(dict1))], dict2[order(names(dict2))])
 })
+
+# test_that("dictionary constructor works with LIWC format w/extra codes and nesting", {
+#     expect_message(
+#         dictionary(file = "../data/dictionaries/liwc_hierarchical.dic"),
+#         "note: 1 term ignored because contains unsupported <of> tag"
+#     )
+#     expect_message(
+#         dictionary(file = "../data/dictionaries/liwc_hierarchical.dic"),
+#         "note: ignoring parenthetical expressions in lines:"
+#     )
+#     expect_message(
+#         dictionary(file = "../data/dictionaries/liwc_hierarchical.dic"),
+#         "note: removing empty keys: friend, humans, insight, cause, discrep, filler"
+#     )
+#     dict <- dictionary(file = "../data/dictionaries/liwc_hierarchical.dic")
+#     expect_equal(
+#         length(dict), 
+#         10
+#     )
+#     
+# })
+
 
 
 test_that("dictionary works with yoshicoder, issue 819", {
