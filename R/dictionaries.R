@@ -526,134 +526,59 @@ list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
     return(dict)
 }
 
-
-hierarchize_list <- function (dict, depth, depth_current = 1) {
+#' utility function to generate a nested list
+#' @param dict a flat dictionary
+#' @param depth depths of nested element
+#' @keywords internal
+#' @examples
+#' list_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'), 'D' = c('ddd'))
+#' dict_flat <- quanteda:::list2dictionary(list_flat)
+#' quanteda:::nest_dict(dict_flat, c(1, 1, 2, 2))
+#' quanteda:::nest_dict(dict_flat, c(1, 2, 1, 2))
+#' 
+nest_dict <- function (dict, depth) {
     
     if (length(dict) != length(depth))
         stop('Depth vectot must have the same length as dictionary')
-    
-    flag_current <- depth == depth_current
-    
-    cat('current\n')
-    print(flag_current)
-    
-    temp <- list()
-    #temp <- c(temp, dict[!flag_nested])
-    
-    dict_current <- dict[flag_current]
-    for (i in seq_along(dict_current)) {
-        cat("i", i, '\n')
-        #print(depth[i])
-        #print(names(dict[i]))
-        temp[names(dict_current[i])] <- dict_current[i]
-    }
-    
-    flag_below <- depth > depth_current
-    if (any(flag_below)) {
-        return(c(list(temp), list(hierarchize_list(dict[flag_below], depth[flag_below], depth_current + 1))))
-    } else {
-        return(list(temp))
-    }
-}
-
-dict_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'))
-hierarchize_list(dict_flat, c(1, 2, 1))
-
-
-
-
-hierarchize_list3 <- function (dict, depth, depth_current = 1, parent_name = NULL) {
-    
-    if (length(dict) != length(depth))
-        stop('Depth vectot must have the same length as dictionary')
-    
-    temp <- list()
-    #for (i in seq_along(dict)) {
-    while (max(depth) > 1) {    
-        #print(depth[i])
-        #print(names(dict[i]))
-        flag_max <- depth == max(depth)
-        for (i in which(flag_max)) {
-            cat("i", i, depth[i], '\n')
-            #print(dict[[i - 1]])
-            dict[[i - 1]] <- c(dict[[i - 1]], dict[i])
-            depth[flag_max] <- 0
-            dict[i] <- NULL
+    depth_max <- max(depth)
+    while (depth_max > 1) {
+        i_max <- which(depth == depth_max)
+        for (i in i_max){
+            #cat("i", i, "\n")
+            i_parent <- tail(which(head(depth, i - 1) < depth_max), 1)
+            #cat("i_parent", i_parent, "\n")
+            dict[[i_parent]] <- c(dict[[i_parent]], dict[i])
+            #dict[[i - 1]] <- append(dict[[i - 1]], dict[i])
+            #cat('---------------------\n')
+            #print(dict)
+            #cat('---------------------\n')
         }
-        cat("max", max(depth), '\n')
+        dict <- dict[i_max * -1]
+        depth <- depth[i_max * -1]
+        depth_max <- max(depth)
     }
     return(dict)
 }
 
-dict_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'))
-dict_hier <- hierarchize_list3(dict_flat, c(1, 2, 1))
-dictionary(dict_hier)
-
-
-quanteda:::list2dictionary(dict)
-class(dict) <- 'dictionary2'
-
-dict
-unclass(dictionary(list('A' = list(c('a', 'aa', 'aaa'), 'B' = c('b', 'bb')), 'C' = c('c', 'cc'))))
-
-l <- list()
-l <- append(l, dict_flat[[2]])
-str(c(dict_flat[[2]], dict_flat[3]))
-
-l[[1]] <- dict_flat[[2]]
-l
-
-length(list('B' = c('b', 'bb'), list('C' = c('c', 'cc'))))
-
-hierarchize_list2 <- function (dict, depth, name_parent = NULL) {
-    
-    #if (length(dict) != length(depth))
-    #    stop('Depth vectot must have the same length as dictionary')
-    print(dict)
-    depth <- c(0, depth)
-    temp <- list()
-    for (i in seq_along(dict)) {
-        for (j in seq_len(depth[i])) {
-            cat('level', depth[i], names(dict[i]), '\n')
-            if (depth[i - 1] > depth[i]) {
-                temp[name] <- list(dict[[i]])
-            } else {
-                temp <- hierarchize_list2
-            }
-        }
-    }
-    return(temp)
-}
-
-dict_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'))
-hierarchize_list2(dict_flat, c(1, 1, 2))
-
-nest_list <- function(depth) {
-    temp <- list()
-    if (depth > 1) {
-        temp[paste0('L', depth)] <- list(nest_list(depth - 1))
-    } else {
-        temp[paste0('L', depth)] <- 'xxx'
-    }
-    return(temp)
-}
-nest_list(4)
-
-temp <- list()
-for (name in c('a', 'b', 'c')) {
-    temp[name] <- list(temp)
-}
-temp
-
-# Import a LIWC-formatted dictionary
-# read_dict_liwc('/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')        # WORKS
-# dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English.dic")      # WORKS
-# dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2015_English_Flat.dic") # WORKS
-# dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic")       # FAILS
-# dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English080730.dic") # FAILS
+#' Import a LIWC-formatted dictionary
+#' @param path a path to LIWC-formatted dictionary file
+#' @param encoding encoding of a dictionary file
+#' @keywords internal
+#' @examples
+#' \dontrun{
+#' quanteda:::read_dict_liwc('/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')
+#' quanteda:::read_dict_liwc('/home/kohei/Documents/Dictionary/LIWC/LIWC2015_English.dic')
+#' 
+#' dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English.dic")      # WORKS
+#' dictionary(file = "/home/kohei/Documents/Dictionary/LIWC/LIWC2015_English.dic") # WORKS
+#' dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2015_English_Flat.dic") # WORKS
+#' dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic")       # FAILS
+#' dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English080730.dic") # FAILS
+#' }
 read_dict_liwc <- function(path, encoding = 'auto') {
     
     lines <- stri_read_lines(path, encoding = encoding, fallback_encoding = 'windows-1252')
+    tabs <- stri_extract_first_regex(lines, '^\t+')
     lines <- stri_trim_both(lines)
     lines <- lines[lines != '']
     
@@ -664,6 +589,18 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     }
     
     lines_key <- lines[(sections[1] + 1):(sections[2] - 1)]
+    tabs_key <- tabs[(sections[1] + 1):(sections[2] - 1)]
+    
+    # remove any keys without ID 
+    has_noid <- !stri_detect_regex(lines_key, '^[0-9]+')
+    if (any(has_noid)) {
+        catm("note: ", sum(has_noid), " key",
+             if (sum(has_noid) > 1L) "s" else "", 
+             " ignored because has no ID\n", sep = "")
+        lines_key <- lines_key[!has_noid]
+        tabs_key <- tabs_key[!has_noid]
+    }
+    
     lines_value <- lines[(sections[2] + 1):(length(lines))]
     
     # remove any lines with <of>
@@ -676,7 +613,7 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     }
     
     # note odd parenthetical codes
-    has_paren <- stri_detect_regex(lines_value, '[()]')
+    has_paren <- stri_detect_regex(lines_value, '\\(.+\\)')
     if (any(has_paren)) {
         catm("note: ignoring parenthetical expressions in lines:\n")
         for (i in which(has_paren))
@@ -684,11 +621,12 @@ read_dict_liwc <- function(path, encoding = 'auto') {
         lines_value <- stri_replace_all_regex(lines_value, '\\(.+\\)', ' ')
     }
     
-    lines_key <- stri_replace_all_regex(lines_key, '\\s+', '\t') # fix wrong delimter
+    lines_key <- stri_replace_all_regex(lines_key, '(\\d+)\\s+', '$1\t') # fix wrong delimter
     keys_id <- as.character(as.integer(stri_extract_first_regex(lines_key, '\\d+')))
     keys <- stri_extract_last_regex(lines_key, '[^\t]+')
+    depth <- ifelse(is.na(tabs_key), 0, stri_length(tabs_key)) + 1
     
-    lines_value <- stri_replace_all_regex(lines_value, '\\s+', '\t') # fix wrong delimter
+    lines_value <- stri_replace_all_regex(lines_value, '\\s+(\\d+)', '\t$1') # fix wrong delimter
     values <- stri_extract_first_regex(lines_value, '[^\t]+')
     lines_value <- stri_replace_first_regex(lines_value, '[^\t]+\t', '') # for robustness
     values_ids <- stri_extract_all_regex(lines_value, '\\d+')
@@ -713,12 +651,17 @@ read_dict_liwc <- function(path, encoding = 'auto') {
         for (i in which(is_undef))
             catm("  ", names(dict[i]), " for ", dict[[i]], "\n", sep = "")
         dict <- dict[!is_undef]
+        depth <- depth[!is_undef]
     }
-
-    dict <- dict[order(names(dict))]
-    names(dict) <- keys[match(names(dict), keys_id)]
     
+    names(dict) <- keys[match(names(dict), keys_id)]
     dict <- list2dictionary(dict)
+    # create hierachical structure of the LIWC 2015 format
+    if (any(depth != max(depth))) {
+        dict <- nest_dict(dict, depth)
+    }
+    dict <- dict[order(names(dict))]
+    
     return(dict)
     
 }
