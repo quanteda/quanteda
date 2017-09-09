@@ -5,11 +5,11 @@
 \alias{char_segment}
 \title{segment texts on a pattern match}
 \usage{
-corpus_segment(x, pattern, valuetype = c("glob", "regex", "fixed"),
+corpus_segment(x, pattern = "##*", valuetype = c("glob", "regex", "fixed"),
   pattern_remove = TRUE, pattern_position = c("before", "after"),
   use_docvars = TRUE)
 
-char_segment(x, pattern, valuetype = c("regex", "fixed", "glob"),
+char_segment(x, pattern = "##*", valuetype = c("glob", "regex", "fixed"),
   pattern_remove = TRUE, pattern_position = c("before", "after"))
 }
 \arguments{
@@ -76,10 +76,13 @@ semi-colons (phrase delimiters within a sentence),
 \section{Using patterns}{
  
   One of the most common uses for \code{corpus_segment} is to partition a
-  corpus into sub-documents using tags.  A good tag would be a term preceded
-  by double "hash" signs, and followed by a whitespace, such as
-  \code{##INTRODUCTION The text}.  Glob and fixed pattern types use a
-  whitespace character to signal the end of the pattern.
+  corpus into sub-documents using tags.  The default pattern value is
+  designed for a user-annotated tag that is a term begining with double
+  "hash" signs, followed by a whitespace, for instance as
+  \code{##INTRODUCTION The text}.
+  
+  Glob and fixed pattern types use a whitespace character to signal the end
+  of the pattern.
 
   For more advanced pattern matches that could include whitespace or
   newlines, a regex pattern type can be used, for instance a text such as
