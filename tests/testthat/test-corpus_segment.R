@@ -275,18 +275,18 @@ test_that("corpus_segment works for begining and end tags", {
                            d2 = "##INTRO Document ##NUMBER Two starts before ##NUMBER Three. ##END"))
     
     # there is no empty document after ##END
-    testCorpusSeg <- corpus_segment(testCorpus, "##*", pattern_position = "after")
+    testCorpusSeg <- corpus_segment(testCorpus, "##*", pattern_position = "before")
     expect_equal(docvars(testCorpusSeg, "pattern")[ndoc(testCorpusSeg)], "##NUMBER")
     expect_equal(texts(testCorpusSeg[1]), c(d1.1 = "This is the introduction."))
     # the first document is after ##INTRO
-    expect_equal(docvars(testCorpusSeg, "pattern")[1], "##INTRO")
+    expect_equal(head(docvars(testCorpusSeg, "pattern"), 1), "##INTRO")
     expect_equal(texts(testCorpusSeg[1]), c(d1.1 = "This is the introduction."))
     
-    # there is no empty document after ##INTRO, with pattern_position = "before
-    testCorpusSeg <- corpus_segment(testCorpus, "##*", pattern_position = "before")
+    # there is no empty document before ##INTRO, with pattern_position = "after"
+    testCorpusSeg <- corpus_segment(testCorpus, "##*", pattern_position = "after")
     expect_equal(docvars(testCorpusSeg, "pattern")[1], "##DOC1")
-    expect_equal(texts(testCorpusSeg[1]), c(d2.3 = "This is the introduction."))
+    expect_equal(texts(testCorpusSeg[1]), c(d1.1 = "This is the introduction."))
     # the last document is before ##END
-    expect_equal(docvars(testCorpusSeg, "pattern")[ndoc(testCorpusSeg)] == "##END")
+    expect_equal(tail(docvars(testCorpusSeg, "pattern"), 1), "##END")
     expect_equal(texts(testCorpusSeg[ndoc(testCorpusSeg)]), c(d2.3 = "Three."))
 })

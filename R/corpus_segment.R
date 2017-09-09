@@ -118,22 +118,23 @@ corpus_segment.corpus <- function(x, pattern,
     commands <- commands[stri_detect_regex(commands, "segment\\.corpus")]
     
     # create the new corpus
-    result <- corpus(temp, metacorpus = list(source = metacorpus(x, "source"),
-                                             notes = commands))
+    result <- corpus(temp$texts, docnames = rownames(temp),
+                     metacorpus = list(source = metacorpus(x, "source"),
+                                                   notes = commands))
     settings(result, "units") <- 'other'
 
     # add repeated versions of remaining docvars
     if (use_docvars && !is.null(vars)) {
         rownames(vars) <- NULL # faster to repeat rows without rownames
-        vars <- select_fields(vars, "user")[attr(temp, 'docid'),,drop = FALSE]
-        rownames(vars) <- stri_c(attr(temp, 'document'), '.', attr(temp, 'segid'), sep = '')
+        vars <- select_fields(vars, "user")[temp$docid,,drop = FALSE]
+        rownames(vars) <- rownames(temp)
         docvars(result) <- vars
     }
-    docvars(result, '_document') <- attr(temp, 'document')
-    docvars(result, '_docid') <- attr(temp, 'docid')
-    docvars(result, '_segid') <- attr(temp, 'segid')
+    docvars(result, '_document') <- temp$docname
+    docvars(result, '_docid') <- temp$docid
+    docvars(result, '_segid') <- temp$segid
     
-    if (!is.null(attr(temp, "tag"))) docvars(result, "pattern") <- attr(temp, "tag")
+    if (!is.null(temp$tag)) docvars(result, "pattern") <- temp$tag
     
     return(result)
 }
@@ -178,14 +179,7 @@ char_segment.character <- function(x, pattern,
     
     names(temp) <- names(x)
     result <- segment_texts(temp, pattern, valuetype, pattern_remove, pattern_position)
-    result <- result[result != '']
-    
-    attr(result, 'tag') <- NULL
-    attr(result, 'document') <- NULL
-    attr(result, 'docid') <- NULL
-    attr(result, 'segid') <- NULL
-    
-    return(result)
+    return(result$texts)
 }
 
 # internal function for char_segment and corpus_segment
@@ -226,41 +220,49 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
         
         temp <- stri_trim_both(x)
         if (valuetype == "fixed") {
-            if (pattern_remove) {
-                temp <- stri_replace_all_fixed(temp, pattern, "\uE000")
+            if (pattern_position == "after") {
+                temp <- stri_replace_all_fixed(temp, pattern, stri_c(pattern, "\uE000"))
             } else {
-                if (pattern_position == "after") {
-                    temp <- stri_replace_all_fixed(temp, pattern, stri_c(pattern, "\uE000"))
-                } else {
-                    temp <- stri_replace_all_fixed(temp, pattern, stri_c("\uE000", pattern))
-                }
+                temp <- stri_replace_all_fixed(temp, pattern, stri_c("\uE000", pattern))
             }
         } else {
-            if (pattern_remove) {
-                tag <- unlist(stri_extract_all_regex(temp, pattern))
-                temp <- stri_replace_all_regex(temp, pattern, "\uE000")
+            if (pattern_position == "after") {
+                temp <- stri_replace_all_regex(temp, pattern, "$0\uE000")
             } else {
-                if (pattern_position == "after") {
-                    temp <- stri_replace_all_regex(temp, pattern, "$0\uE000")
-                } else {
-                    temp <- stri_replace_all_regex(temp, pattern, "\uE000$0")
-                }
+                temp <- stri_replace_all_regex(temp, pattern, "\uE000$0")
             }
         }
         temp <- stri_split_fixed(temp, pattern = "\uE000", omit_empty = omit_empty)
     }
     
-    n <- lengths(temp)
-    result <- unlist(temp, use.names = FALSE)
-    result <- stri_trim_both(result)
-    attr(result, 'document') <- rep(names(x), n)
-    attr(result, 'docid') <- rep(seq_along(x), n)
-    attr(result, 'segid') <- unlist(lapply(n, seq_len), use.names = FALSE)
-    attr(result, "tag") <- if (pattern_remove) tag else NULL
+    result <- data.frame(docname = rep(names(x), lengths(temp)), 
+                         texts = unlist(temp, use.names = FALSE), stringsAsFactors = FALSE)
+    
+    if (valuetype == "fixed") {
+        result$tag <- stri_extract_first_fixed(result$texts, pattern)
+    } else {
+        result$tag <- stri_extract_first_regex(result$texts, pattern)
+    }
+    if (pattern_remove) {
+        if (pattern_position == "after") {
+            result$texts <- stri_replace_last_fixed(result$texts, result$tag, '', vectorize_all = TRUE)
+        } else {
+            result$texts <- stri_replace_first_fixed(result$texts, result$tag, '', vectorize_all = TRUE)
+        }
+    }
+    
+    result$texts <- stri_trim_both(result$texts)
+    result <- result[!is.na(result$texts) & result$texts != '',] # remove empty documents 
+    ids <- rle(result$docname) # count repeats
+    result$docid <- rep(seq_along(ids$values), ids$lengths)
+    result$segid <- unlist(lapply(ids$lengths, seq_len))
+    
+    if (!pattern_remove)
+        result$tag <- NULL
 
     if (!is.null(names(x))) {
         # to make names doc1.1, doc1.2, doc2.1, ...
-        names(result) <- stri_c(attr(result, 'document'), ".", attr(result,'segid'))
+        rownames(result) <- stri_c(result$docname, ".", result$segid)
     }
     
     return(result)
