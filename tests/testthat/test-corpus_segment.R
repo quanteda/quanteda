@@ -170,7 +170,7 @@ test_that("corpus_segment works with use_docvars TRUE or FALSE", {
     corp_seg2 <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                 pattern_position = "before", pattern_remove = TRUE, use_docvars = FALSE)
     summ2 <- summary(corp_seg2)
-    expect_equal(names(summ2), c("Text", "Types", "Tokens", "Sentences"))
+    expect_equal(names(summ2), c("Text", "Types", "Tokens", "Sentences", "pattern"))
 })
 
 test_that("char_segment works with Japanese texts", {
@@ -241,7 +241,7 @@ test_that("corpus_segment works for delimiter with remove_pattern", {
                    d2.1 = "Only sentence of doc2?",
                    d2.2 = "No there is another."))
 
-    mycorp_seg2 <- corpus_segment(mycorp, '[.!?]', valuetype = 'regex',
+    mycorp_seg2 <- corpus_segment(mycorp, pattern = '[.!?]', valuetype = 'regex',
                                   pattern_position = "after",
                                   pattern_remove = TRUE)
     expect_equal(texts(mycorp_seg2),

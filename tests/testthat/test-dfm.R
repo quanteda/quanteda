@@ -76,9 +76,9 @@ test_that("oldest dfm test", {
 })
 
 test_that("test c.corpus", {
-    expect_that(
+    expect_equal(
         matrix(dfm(corpus(c('What does the fox say?', 'What does the fox say?', '')), remove_punct = TRUE)),
-        equals(matrix(rep(c(1, 1, 0), 5), nrow=15, ncol=1))
+        matrix(rep(c(1, 1, 0), 5), nrow=15, ncol=1)
     )
 })
 

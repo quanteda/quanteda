@@ -10,7 +10,7 @@
 #' fine-grained segmentation is needed, such as that based on commas or
 #' semi-colons (phrase delimiters within a sentence),
 #' \code{\link{corpus_segment}} offers greater user control than
-#' \link{\code{corpus_reshape}}.
+#' \code{\link{corpus_reshape}}.
 #' @param x character or \link{corpus} object whose texts will be segmented
 #' @inheritParams pattern
 #' @inheritParams valuetype
@@ -133,6 +133,8 @@ corpus_segment.corpus <- function(x, pattern,
     docvars(result, '_docid') <- attr(temp, 'docid')
     docvars(result, '_segid') <- attr(temp, 'segid')
     
+    if (!is.null(attr(temp, "tag"))) docvars(result, "pattern") <- attr(temp, "tag")
+    
     return(result)
 }
 
@@ -176,7 +178,7 @@ char_segment.character <- function(x, pattern,
     
     names(temp) <- names(x)
     result <- segment_texts(temp, pattern, valuetype, pattern_remove, pattern_position)
-    result <- result[result!='']
+    result <- result[result != '']
     
     attr(result, 'tag') <- NULL
     attr(result, 'document') <- NULL
@@ -235,6 +237,7 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
             }
         } else {
             if (pattern_remove) {
+                tag <- unlist(stri_extract_all_regex(temp, pattern))
                 temp <- stri_replace_all_regex(temp, pattern, "\uE000")
             } else {
                 if (pattern_position == "after") {
@@ -253,6 +256,7 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
     attr(result, 'document') <- rep(names(x), n)
     attr(result, 'docid') <- rep(seq_along(x), n)
     attr(result, 'segid') <- unlist(lapply(n, seq_len), use.names = FALSE)
+    attr(result, "tag") <- if (pattern_remove) tag else NULL
 
     if (!is.null(names(x))) {
         # to make names doc1.1, doc1.2, doc2.1, ...

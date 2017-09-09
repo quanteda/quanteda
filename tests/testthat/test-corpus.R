@@ -44,28 +44,27 @@ test_that("test c.corpus", {
     expected_docvars <-rbind(docvars(data_corpus_inaugural), docvars(data_corpus_inaugural), docvars(data_corpus_inaugural))
     rownames(expected_docvars) <- make.unique(rep(rownames(docvars(data_corpus_inaugural)), 3), sep='')
 
-    expect_that(
+    expect_equal(
         docvars(concat.corpus),
-        equals(expected_docvars)
+        expected_docvars
     )
 
-    expect_that(
+    expect_is(
         docvars(concat.corpus),
-        is_a('data.frame')
+        'data.frame'
     )
 
-    
     expected_texts <- c(texts(data_corpus_inaugural), texts(data_corpus_inaugural), texts(data_corpus_inaugural))
     names(expected_texts) <- make.unique(rep(names(texts(data_corpus_inaugural)), 3), sep='')
   
-    expect_that(
+    expect_equal(
         texts(concat.corpus),
-        equals(expected_texts)
+        expected_texts
     )
 
-    expect_that(
+    expect_is(
         texts(concat.corpus),
-        is_a('character')
+        'character'
     )
 
 

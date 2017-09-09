@@ -50,7 +50,7 @@ sentences), use \code{\link{corpus_reshape}} instead.  In cases where more
 fine-grained segmentation is needed, such as that based on commas or
 semi-colons (phrase delimiters within a sentence),
 \code{\link{corpus_segment}} offers greater user control than
-\link{\code{corpus_reshape}}.
+\code{\link{corpus_reshape}}.
 }
 \section{Boundaries and segmentation explained}{
  
