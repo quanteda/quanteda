@@ -7,7 +7,9 @@
 #' to sentences, and then back to documents (possibly after modifying the sentences).
 #' @param x corpus whose document units will be reshaped
 #' @param to new document units in which the corpus will be recast
-#' @param ... additonal arguments passed to \link{corpus_segment} 
+#' @param ... additonal arguments passed to \code{\link{tokens}}, since the
+#'   syntactic segmenter uses this function)
+#' @inheritParams corpus_segment
 #' @return A corpus object with the documents defined as the new units,
 #'   including document-level meta-data identifying the original documents.
 #' @examples
@@ -29,14 +31,14 @@
 #' @export
 #' @import stringi
 #' @keywords corpus
-corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
+corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), use_docvars = TRUE, ...) {
     UseMethod("corpus_reshape")
 }
     
 #' @noRd
 #' @rdname corpus_reshape
 #' @export
-corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
+corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), use_docvars = TRUE, ...) {
     
     to <- match.arg(to)
     
@@ -64,8 +66,25 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         
     } else if (to %in% c("sentences", "paragraphs")) {
         if (settings(x, 'units') == 'documents') {
-            result <- segment_texts(x, pattern = NULL, omit_empty = FALSE, what = to, ...)
+            vars <- docvars(x)
+            temp <- segment_texts(texts(x), pattern = NULL, omit_empty = FALSE, what = to, ...)
+            
+            # get the relevant function call
+            commands <- as.character(sys.calls())
+            commands <- commands[stri_detect_regex(commands, "reshape\\.corpus")]
+            
+            result <- corpus(temp, metacorpus = list(source = metacorpus(x, "source"),
+                                                     notes = commands))
             settings(result, "units") <- to
+            if (use_docvars && !is.null(vars)) {
+                rownames(vars) <- NULL # faster to repeat rows without rownames
+                vars <- select_fields(vars, "user")[attr(temp, 'docid'),,drop = FALSE]
+                rownames(vars) <- stri_c(attr(temp, 'document'), '.', attr(temp, 'segid'), sep = '')
+                docvars(result) <- vars
+            }
+            docvars(result, '_document') <- attr(temp, 'document')
+            docvars(result, '_docid') <- attr(temp, 'docid')
+            docvars(result, '_segid') <- attr(temp, 'segid')
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
         }

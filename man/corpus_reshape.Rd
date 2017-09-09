@@ -4,14 +4,21 @@
 \alias{corpus_reshape}
 \title{recast the document units of a corpus}
 \usage{
-corpus_reshape(x, to = c("sentences", "paragraphs", "documents"), ...)
+corpus_reshape(x, to = c("sentences", "paragraphs", "documents"),
+  use_docvars = TRUE, ...)
 }
 \arguments{
 \item{x}{corpus whose document units will be reshaped}
 
 \item{to}{new document units in which the corpus will be recast}
 
-\item{...}{additonal arguments passed to \link{corpus_segment}}
+\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each
+segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.
+Dropping the docvars might be useful in order to conserve space or if these
+are not desired for the segmented corpus.}
+
+\item{...}{additonal arguments passed to \code{\link{tokens}}, since the
+syntactic segmenter uses this function)}
 }
 \value{
 A corpus object with the documents defined as the new units,
