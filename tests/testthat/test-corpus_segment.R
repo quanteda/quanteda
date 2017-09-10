@@ -1,25 +1,12 @@
 context("Testing corpus_segment and char_segment")
 
-test_that("corpus_segment works when the delimiter is of glob pattern", {
-    txt <- c(d1 = 
-                 "Paragraph one.  
-
-Second paragraph is this one!  Here is the third sentence.",
-             d2 = "Only paragraph of doc2?  
-
-No there is another.")
-    mycorp <- corpus(txt, docvars = data.frame(title = c("doc1", "doc2")))
-    cseg <- corpus_segment(mycorp, "paragraph*")
-    expect_equal(as.character(cseg)[2], c(d1.2 = "is this one!  Here is the third sentence."))
-})
-
 test_that("char_segment works with punctuations", {
     txt <- c(d1 = "Sentence one.  Second sentence is this one!\n
              Here is the third sentence.",
              d2 = "Only sentence of doc2?  No there is another.")
-    cseg <- char_segment(txt, "\\p{P}", valuetype = "regex", 
+    char_seg <- char_segment(txt, "\\p{P}", valuetype = "regex", 
                          extract_pattern = FALSE, pattern_position = "after")
-    expect_equal(cseg[4], c(d2.1 = "Only sentence of doc2?"))
+    expect_equal(char_seg[4], c(d2.1 = "Only sentence of doc2?"))
 })
 
 test_that("char_segment works for tags", {
@@ -29,9 +16,9 @@ test_that("char_segment works for tags", {
                            ##DOC3 Third document starts here.
                            End of third document.",
                            "##INTRO Document ##NUMBER Two starts before ##NUMBER Three.")
-    testCharSeg <- char_segment(txt, "##[A-Z0-9]+", valuetype = "regex",
+    char_seg <- char_segment(txt, "##[A-Z0-9]+", valuetype = "regex",
                                 pattern_position = "before", extract_pattern = TRUE)
-    expect_equal(testCharSeg[5], "Two starts before")
+    expect_equal(char_seg[5], "Two starts before")
 })
 
 test_that("char_segment works for glob customized tags", {
@@ -41,9 +28,9 @@ test_that("char_segment works for glob customized tags", {
                            DOC3: Third document starts here.  
                            End of third document.",
              "INTRO: Document NUMBER: Two starts before NUMBER: Three.")
-    testCharSeg <- char_segment(txt, "*:", valuetype = "glob", 
+    char_seg <- char_segment(txt, "*:", valuetype = "glob", 
                                 pattern_position = "before", extract_pattern = TRUE)
-    expect_equal(testCharSeg[6], "Three.")
+    expect_equal(char_seg[6], "Three.")
 })
 
 test_that("char_segment works for glob customized tags, test 2", {
@@ -53,9 +40,9 @@ test_that("char_segment works for glob customized tags, test 2", {
                            [DOC3] Third document starts here.  
                            End of third document.",
              "[INTRO] Document [NUMBER] Two starts before [NUMBER] Three.")
-    testCharSeg <- char_segment(txt, "[*]", valuetype = "glob", 
+    char_seg <- char_segment(txt, "[*]", valuetype = "glob", 
                                 pattern_position = "before", extract_pattern = TRUE)
-    expect_equal(testCharSeg[6], "Three.")
+    expect_equal(char_seg[6], "Three.")
 })
 
 test_that("corpus_segment works with blank before tag", {
@@ -181,24 +168,31 @@ test_that("tag extraction works", {
 })
 
 test_that("corpus_segment works for begining and end tags", {
-    testCorpus <- corpus(c(d1 = "##INTRO This is the introduction.
+    corp <- corpus(c(d1 = "##START ##INTRO This is the introduction.
                            ##DOC1 This is the first document.  Second sentence in Doc 1.
                            ##DOC3 Third document starts here.  End of third document.",
-                           d2 = "##INTRO Document ##NUMBER Two starts before ##NUMBER Three. ##END"))
+                     d2 = "##INTRO Document ##NUMBER Two starts before ##NUMBER Three. ##END"))
     
-    # there is no empty document after ##END
-    testCorpusSeg <- corpus_segment(testCorpus, "##*", pattern_position = "before")
-    expect_equal(docvars(testCorpusSeg, "pattern")[ndoc(testCorpusSeg)], "##NUMBER")
-    expect_equal(texts(testCorpusSeg[1]), c(d1.1 = "This is the introduction."))
-    # the first document is after ##INTRO
-    expect_equal(head(docvars(testCorpusSeg, "pattern"), 1), "##INTRO")
-    expect_equal(texts(testCorpusSeg[1]), c(d1.1 = "This is the introduction."))
+    corp_seg1 <- corpus_segment(corp, "##*", pattern_position = "before", extract_pattern = TRUE)
+    expect_equal(head(docvars(corp_seg1, "pattern"), 1), "##START")
+    expect_equal(head(texts(corp_seg1), 1), c(d1.1 = ""))
+    expect_equal(tail(docvars(corp_seg1, "pattern"), 1), "##END")
+    expect_equal(tail(texts(corp_seg1), 1), c(d2.4 = ""))
     
-    # there is no empty document before ##INTRO, with pattern_position = "after"
-    testCorpusSeg <- corpus_segment(testCorpus, "##*", pattern_position = "after")
-    expect_equal(docvars(testCorpusSeg, "pattern")[1], "##DOC1")
-    expect_equal(texts(testCorpusSeg[1]), c(d1.1 = "This is the introduction."))
-    # the last document is before ##END
-    expect_equal(tail(docvars(testCorpusSeg, "pattern"), 1), "##END")
-    expect_equal(texts(testCorpusSeg[ndoc(testCorpusSeg)]), c(d2.3 = "Three."))
+    corp_seg2 <- corpus_segment(corp, "##*", pattern_position = "before", extract_pattern = FALSE)
+    expect_error(docvars(corp_seg2, "pattern"))
+    expect_equal(head(texts(corp_seg2), 1), c(d1.1 = "##START"))
+    expect_equal(tail(texts(corp_seg2), 1), c(d2.4 = "##END"))
+    
+    corp_seg3 <- corpus_segment(corp, "##*", pattern_position = "after", extract_pattern = TRUE)
+    expect_equal(head(docvars(corp_seg3, "pattern"), 1), "##START")
+    expect_equal(head(texts(corp_seg3), 1), c(d1.1 = ""))
+    expect_equal(tail(docvars(corp_seg3, "pattern"), 1), "##END")
+    expect_equal(tail(texts(corp_seg3), 1), c(d2.4 = "Three."))
+    
+    corp_seg4 <- corpus_segment(corp, "##*", pattern_position = "after", extract_pattern = FALSE)
+    expect_error(docvars(corp_seg4, "pattern"))
+    expect_equal(head(texts(corp_seg4), 1), c(d1.1 = "##START"))
+    expect_equal(tail(texts(corp_seg4), 1), c(d2.4 = "Three. ##END"))
+    
 })

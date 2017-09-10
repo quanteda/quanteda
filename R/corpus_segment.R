@@ -114,15 +114,15 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     pattern_position <- match.arg(pattern_position)
     vars <- docvars(x)
     
+    # get the relevant function call
+    commands <- as.character(sys.calls())
+    commands <- commands[stri_detect_regex(commands, "segment\\.corpus")]
+    
     temp <- segment_texts(texts(x), pattern = pattern, valuetype = valuetype, 
                           extract_pattern = extract_pattern, 
                           pattern_position = pattern_position,
                           omit_empty = !extract_pattern)
 
-    # get the relevant function call
-    commands <- as.character(sys.calls())
-    commands <- commands[stri_detect_regex(commands, "segment\\.corpus")]
-    
     # create the new corpus
     result <- corpus(temp$texts, docnames = rownames(temp),
                      metacorpus = list(source = metacorpus(x, "source"),
@@ -179,13 +179,11 @@ char_segment.character <- function(x, pattern = "##*",
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
     
-    # normalize EOL
-    temp <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
-    temp <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
-    
-    names(temp) <- names(x)
-    result <- segment_texts(temp, pattern, valuetype, extract_pattern, pattern_position)
-    return(result$texts)
+    temp <- segment_texts(x, pattern, valuetype, extract_pattern, pattern_position)
+    result <- temp$texts
+    if (!is.null(names(x)))
+        names(result) <- rownames(temp)
+    return(result)
 }
 
 # internal function for char_segment and corpus_segment
@@ -193,7 +191,11 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                           extract_pattern = FALSE, pattern_position = "after", 
                           omit_empty = TRUE, what = "other", ...){
     
-    if (is.corpus(x)) x <- texts(x)
+    docname <- names(x)
+    
+    # normalize EOL
+    x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
+    x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     # use preset regex pattern
     if (what == 'paragraphs') {
@@ -241,8 +243,10 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
         temp <- stri_split_fixed(temp, pattern = "\uE000", omit_empty = TRUE)
     }
     
-    result <- data.frame(docname = rep(names(x), lengths(temp)), 
-                         texts = unlist(temp, use.names = FALSE), stringsAsFactors = FALSE)
+    result <- data.frame(texts = unlist(temp, use.names = FALSE), stringsAsFactors = FALSE)
+    result$docid <- rep(seq_len(length(temp)), lengths(temp))
+    if (!is.null(docname)) result$docname = rep(docname, lengths(temp))
+    
     
     if (valuetype == "fixed") {
         result$tag <- stri_extract_first_fixed(result$texts, pattern)
@@ -259,16 +263,13 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
     
     result$texts <- stri_trim_both(result$texts)
     result <- result[!is.na(result$texts),]
-    if (omit_empty)
-        result <- result[result$texts != '',] # remove empty documents 
-    ids <- rle(result$docname) # count repeats
-    result$docid <- rep(seq_along(ids$values), ids$lengths)
-    result$segid <- unlist(lapply(ids$lengths, seq_len))
+    if (omit_empty) result <- result[result$texts != '',] # remove empty documents 
+    result$segid <- unlist(lapply(rle(result$docid)$lengths, seq_len))
     
     if (!extract_pattern)
         result$tag <- NULL
 
-    if (!is.null(names(x))) {
+    if (!is.null(docname)) {
         # to make names doc1.1, doc1.2, doc2.1, ...
         rownames(result) <- stri_c(result$docname, ".", result$segid)
     }
