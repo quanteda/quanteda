@@ -67,24 +67,28 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     } else if (to %in% c("sentences", "paragraphs")) {
         if (settings(x, 'units') == 'documents') {
             vars <- docvars(x)
-            temp <- segment_texts(texts(x), pattern = NULL, omit_empty = FALSE, what = to, ...)
             
             # get the relevant function call
             commands <- as.character(sys.calls())
             commands <- commands[stri_detect_regex(commands, "reshape\\.corpus")]
             
-            result <- corpus(temp, metacorpus = list(source = metacorpus(x, "source"),
-                                                     notes = commands))
-            settings(result, "units") <- to
+            temp <- segment_texts(texts(x), pattern = NULL, omit_empty = FALSE, what = to, ...)
+            
+            result <- corpus(temp$texts, docnames = rownames(temp),
+                             metacorpus = list(source = metacorpus(x, "source"),
+                                               notes = commands))
+            
+            # add repeated versions of remaining docvars
             if (use_docvars && !is.null(vars)) {
                 rownames(vars) <- NULL # faster to repeat rows without rownames
-                vars <- select_fields(vars, "user")[attr(temp, 'docid'),,drop = FALSE]
-                rownames(vars) <- stri_c(attr(temp, 'document'), '.', attr(temp, 'segid'), sep = '')
+                vars <- select_fields(vars, "user")[temp$docid,,drop = FALSE]
+                rownames(vars) <- rownames(temp)
                 docvars(result) <- vars
             }
-            docvars(result, '_document') <- attr(temp, 'document')
-            docvars(result, '_docid') <- attr(temp, 'docid')
-            docvars(result, '_segid') <- attr(temp, 'segid')
+            docvars(result, '_document') <- temp$docname
+            docvars(result, '_docid') <- temp$docid
+            docvars(result, '_segid') <- temp$segid
+            settings(result, "units") <- to
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
         }

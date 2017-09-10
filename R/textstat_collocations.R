@@ -200,7 +200,7 @@ textstat_collocations.corpus <- function(x, method = "lambda", size = 2, min_cou
     # segment into units not including punctuation, to avoid identifying collocations that are not adjacent
     texts(x) <- paste(".", texts(x))
     # separate each line except those where the punctuation is a hyphen or apostrophe
-    x <- corpus_segment(x, pattern =  "[^\\P{P}#@'-]", valuetype = "regex", pattern_remove = TRUE, pattern_position = "after")
+    x <- corpus_segment(x, pattern =  "[^\\P{P}#@'-]", valuetype = "regex", extract_pattern = TRUE, pattern_position = "after")
     # tokenize the texts
     x <- tokens(x, ...)
     textstat_collocations(x, method = method, size = size, min_count = min_count, smoothing = smoothing, tolower = tolower)
