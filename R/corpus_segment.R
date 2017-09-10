@@ -116,7 +116,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     
     temp <- segment_texts(texts(x), pattern = pattern, valuetype = valuetype, 
                           extract_pattern = extract_pattern, 
-                          pattern_position = pattner_position,
+                          pattern_position = pattern_position,
                           omit_empty = !extract_pattern)
 
     # get the relevant function call
@@ -238,7 +238,7 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                 temp <- stri_replace_all_regex(temp, pattern, "\uE000$0")
             }
         }
-        temp <- stri_split_fixed(temp, pattern = "\uE000", omit_empty = omit_empty)
+        temp <- stri_split_fixed(temp, pattern = "\uE000", omit_empty = TRUE)
     }
     
     result <- data.frame(docname = rep(names(x), lengths(temp)), 
@@ -258,7 +258,9 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
     }
     
     result$texts <- stri_trim_both(result$texts)
-    result <- result[!is.na(result$texts) & result$texts != '',] # remove empty documents 
+    result <- result[!is.na(result$texts),]
+    if (omit_empty)
+        result <- result[result$texts != '',] # remove empty documents 
     ids <- rle(result$docname) # count repeats
     result$docid <- rep(seq_along(ids$values), ids$lengths)
     result$segid <- unlist(lapply(ids$lengths, seq_len))
