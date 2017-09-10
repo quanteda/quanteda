@@ -64,7 +64,7 @@ test_that("char_segment works with punctuations", {
              Here is the third sentence.",
              d2 = "Only sentence of doc2?  No there is another.")
     cseg <- char_segment(txt, "\\p{P}", valuetype = "regex", 
-                         pattern_remove = FALSE, pattern_position = "after")
+                         extract_pattern = FALSE, pattern_position = "after")
     expect_equal(cseg[4], c(d2.1 = "Only sentence of doc2?"))
 })
 
@@ -88,7 +88,7 @@ test_that("char_segment works for tags", {
                            End of third document.",
                            "##INTRO Document ##NUMBER Two starts before ##NUMBER Three.")
     testCharSeg <- char_segment(txt, "##[A-Z0-9]+", valuetype = "regex",
-                                pattern_position = "before", pattern_remove = TRUE)
+                                pattern_position = "before", extract_pattern = TRUE)
     expect_equal(testCharSeg[5], "Two starts before")
 })
 
@@ -100,7 +100,7 @@ test_that("char_segment works for glob customized tags", {
                            End of third document.",
              "INTRO: Document NUMBER: Two starts before NUMBER: Three.")
     testCharSeg <- char_segment(txt, "*:", valuetype = "glob", 
-                                pattern_position = "before", pattern_remove = TRUE)
+                                pattern_position = "before", extract_pattern = TRUE)
     expect_equal(testCharSeg[6], "Three.")
 })
 
@@ -112,7 +112,7 @@ test_that("char_segment works for glob customized tags, test 2", {
                            End of third document.",
              "[INTRO] Document [NUMBER] Two starts before [NUMBER] Three.")
     testCharSeg <- char_segment(txt, "[*]", valuetype = "glob", 
-                                pattern_position = "before", pattern_remove = TRUE)
+                                pattern_position = "before", extract_pattern = TRUE)
     expect_equal(testCharSeg[6], "Three.")
 })
 
@@ -122,7 +122,7 @@ test_that("corpus_segment works with blank before tag", {
                            ##DOC3 Third document starts here.  End of third document.",
                            "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
     corp_seg <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
-                               pattern_position = "before", pattern_remove = TRUE)
+                               pattern_position = "before", extract_pattern = TRUE)
     summ <- summary(corp_seg)
     expect_equal(summ["text1.1", "Tokens"], 5)
 })
@@ -163,12 +163,12 @@ test_that("corpus_segment works with use_docvars TRUE or FALSE", {
                      d2 = "##TEST3 Four"),
                    docvars = data.frame(test = c("A", "B"), stringsAsFactors = FALSE))
     corp_seg1 <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
-                           pattern_position = "before", pattern_remove = TRUE, use_docvars = TRUE)
+                           pattern_position = "before", extract_pattern = TRUE, use_docvars = TRUE)
     summ1 <- summary(corp_seg1)
     expect_equal(summ1$test, c("A", "A", "B"))
     
     corp_seg2 <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
-                                pattern_position = "before", pattern_remove = TRUE, use_docvars = FALSE)
+                                pattern_position = "before", extract_pattern = TRUE, use_docvars = FALSE)
     summ2 <- summary(corp_seg2)
     expect_equal(names(summ2), c("Text", "Types", "Tokens", "Sentences", "pattern"))
 })
@@ -178,10 +178,10 @@ test_that("char_segment works with Japanese texts", {
     skip_on_os("windows")
     txt <- "日本語の終止符は.ではない。しかし、最近は．が使われることある。"
     expect_equal(char_segment(txt, '\\p{P}', valuetype = "regex", 
-                              pattern_remove = FALSE, pattern_position = "after"),
+                              extract_pattern = FALSE, pattern_position = "after"),
                  c("日本語の終止符は.", "ではない。", "しかし、", "最近は．", "が使われることある。"))
     
-    expect_equal(char_segment(txt, '。', valuetype = "fixed", pattern_remove = FALSE,
+    expect_equal(char_segment(txt, '。', valuetype = "fixed", extract_pattern = FALSE,
                               pattern_position = "after"),
                  c("日本語の終止符は.ではない。", "しかし、最近は．が使われることある。"))
 })
@@ -191,7 +191,7 @@ test_that("corpus_segment works with position argument", {
     corp1 <- corpus(c(d1 = "##TEST One two ##TEST2 Three",
                       d2 = "##TEST3 Four"))
     corp1_seg <- corpus_segment(corp1, '##', valuetype = 'fixed', 
-                                pattern_position = "before", pattern_remove = FALSE)
+                                pattern_position = "before", extract_pattern = FALSE)
     expect_equal(texts(corp1_seg), c("d1.1" = "##TEST One two",
                                      "d1.2" = "##TEST2 Three",
                                      "d2.1" = "##TEST3 Four"))
@@ -199,7 +199,7 @@ test_that("corpus_segment works with position argument", {
     corp2 <- corpus(c(d1 = "TEST One two; TEST2 Three;",
                       d2 = "TEST3 Four;"))
     corp2_seg <- corpus_segment(corp2, ';', valuetype = 'fixed', 
-                                pattern_position = 'after', pattern_remove = FALSE)
+                                pattern_position = 'after', extract_pattern = FALSE)
     expect_equal(texts(corp2_seg), c("d1.1" = "TEST One two;",
                                      "d1.2" = "TEST2 Three;",
                                      "d2.1" = "TEST3 Four;"))
@@ -207,7 +207,7 @@ test_that("corpus_segment works with position argument", {
     corp3 <- corpus(c(d1 = "**TEST One two ##TEST2 Three",
                       d2 = "??TEST3 Four"))
     corp3_seg <- corpus_segment(corp3, '[*#?]{2}', valuetype = 'regex', 
-                                pattern_position = 'before', pattern_remove = FALSE)
+                                pattern_position = 'before', extract_pattern = FALSE)
     expect_equal(texts(corp3_seg), c("d1.1" = "**TEST One two",
                                      "d1.2" = "##TEST2 Three",
                                      "d2.1" = "??TEST3 Four"))
@@ -215,7 +215,7 @@ test_that("corpus_segment works with position argument", {
     corp4 <- corpus(c(d1 = "TEST One two; TEST2 Three?",
                       d2 = "TEST3 Four!"))
     corp4_seg <- corpus_segment(corp4, '[!?;]', valuetype = 'regex', pattern_position = 'after',
-                                pattern_remove = FALSE)
+                                extract_pattern = FALSE)
     expect_equal(texts(corp4_seg), c("d1.1" = "TEST One two;",
                                      "d1.2" = "TEST2 Three?",
                                      "d2.1" = "TEST3 Four!"))
@@ -232,7 +232,7 @@ test_that("corpus_segment works for delimiter with remove_pattern", {
     mycorp <- corpus(txt, docvars = data.frame(title = c("doc1", "doc2")))
     mycorp_seg1 <- corpus_segment(mycorp, '[.!?]', valuetype = 'regex',
                                   pattern_position = "after",
-                                  pattern_remove = FALSE)
+                                  extract_pattern = FALSE)
 
     expect_equal(texts(mycorp_seg1),
                  c(d1.1 = "Sentence one.",
@@ -243,7 +243,7 @@ test_that("corpus_segment works for delimiter with remove_pattern", {
 
     mycorp_seg2 <- corpus_segment(mycorp, pattern = '[.!?]', valuetype = 'regex',
                                   pattern_position = "after",
-                                  pattern_remove = TRUE)
+                                  extract_pattern = TRUE)
     expect_equal(texts(mycorp_seg2),
                  c(d1.1 = "Sentence one",
                    d1.2 = "Second sentence is this one",
@@ -255,13 +255,13 @@ test_that("corpus_segment works for delimiter with remove_pattern", {
 test_that("tag extraction works", {
     corp <- corpus(c("#tag1 Some text. #tag2 More text."))
     
-    corpseg <- corpus_segment(corp, pattern = "#*", pattern_remove = TRUE)
+    corpseg <- corpus_segment(corp, pattern = "#*", extract_pattern = TRUE)
     expect_equal(
         docvars(corpseg, "pattern"),
         c("#tag1", "#tag2")
     )
     
-    corpseg <- corpus_segment(corp, pattern = "#*", pattern_remove = FALSE)
+    corpseg <- corpus_segment(corp, pattern = "#*", extract_pattern = FALSE)
     expect_error(
         docvars(corpseg, "pattern"),
         "field\\(s\\) pattern not found"

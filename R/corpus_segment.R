@@ -14,7 +14,7 @@
 #' @param x character or \link{corpus} object whose texts will be segmented
 #' @inheritParams pattern
 #' @inheritParams valuetype
-#' @param pattern_remove removes matched patterns from the texts if \code{TRUE}
+#' @param extract_pattern removes matched patterns from the texts if \code{TRUE}
 #' @param pattern_position either \code{"before"} or \code{"after"}, depending
 #'   on whether the pattern precedes the text (as with a tag) or follows the
 #'   text (as with punctuation delimiters)
@@ -65,7 +65,7 @@
 #'   come at the end of a clause or sentence (such as \code{,} and\code{.},
 #'   these can be specified manually and \code{pattern_position} set to
 #'   \code{"after"}. To keep the punctuation characters in the text (as with
-#'   sentence segmentation), set \code{pattern_remove = FALSE}.  (With most tag
+#'   sentence segmentation), set \code{extract_pattern = FALSE}.  (With most tag
 #'   applications, users will want to remove the patterns from the text, as they
 #'   are annotations rather than parts of the text itself.)
 #' @seealso \code{\link{corpus_reshape}}, for segmenting texts into pre-defined
@@ -89,14 +89,14 @@
 #'
 #' # segmenting a corpus using crude end-of-sentence segmentation
 #' corp_seg3 <- corpus_segment(corp, pattern = ".", valuetype = "fixed", 
-#'                             pattern_position = "after", pattern_remove = FALSE)
+#'                             pattern_position = "after", extract_pattern = FALSE)
 #' cbind(texts(corp_seg3), docvars(corp_seg3), metadoc(corp_seg3))
 #'
 #' @import stringi
 #' @export
 corpus_segment <- function(x, pattern = "##*",
                            valuetype = c("glob", "regex", "fixed"),
-                           pattern_remove = TRUE,
+                           extract_pattern = TRUE,
                            pattern_position = c("before", "after"),
                            use_docvars = TRUE) {
     UseMethod("corpus_segment")
@@ -107,7 +107,7 @@ corpus_segment <- function(x, pattern = "##*",
 #' @export    
 corpus_segment.corpus <- function(x, pattern = "##*",
                                   valuetype = c("glob", "regex", "fixed"),
-                                  pattern_remove = TRUE,
+                                  extract_pattern = TRUE,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
     valuetype <- match.arg(valuetype)
@@ -115,9 +115,9 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     vars <- docvars(x)
     
     temp <- segment_texts(texts(x), pattern = pattern, valuetype = valuetype, 
-                          pattern_remove = pattern_remove, 
+                          extract_pattern = extract_pattern, 
                           pattern_position = pattner_position,
-                          omit_empty = !pattern_remove)
+                          omit_empty = !extract_pattern)
 
     # get the relevant function call
     commands <- as.character(sys.calls())
@@ -154,17 +154,17 @@ corpus_segment.corpus <- function(x, pattern = "##*",
 #' # segment into paragraphs and removing the "- " bullet points
 #' cat(data_char_ukimmig2010[4])
 #' char_segment(data_char_ukimmig2010[4], 
-#'              pattern = "\\n\\n(\\-\\s){0,1}", valuetype = "regex", pattern_remove = TRUE)
+#'              pattern = "\\n\\n(\\-\\s){0,1}", valuetype = "regex", extract_pattern = TRUE)
 #' 
 #' # segment a text into clauses
 #' txt <- c(d1 = "This, is a sentence?  You: come here.", d2 = "Yes, yes, okay.")
 #' char_segment(txt, pattern = "\\p{P}", valuetype = "regex", 
-#'              pattern_position = "after", pattern_remove = FALSE)
+#'              pattern_position = "after", extract_pattern = FALSE)
 #' @keywords character
 #' @return \code{char_segment} returns a character vector of segmented texts
 char_segment <- function(x, pattern = "##*",
                          valuetype = c("glob", "regex", "fixed"),
-                         pattern_remove = TRUE,
+                         extract_pattern = TRUE,
                          pattern_position = c("before", "after")) {
     UseMethod("char_segment")
 }
@@ -173,7 +173,7 @@ char_segment <- function(x, pattern = "##*",
 #' @export
 char_segment.character <- function(x, pattern = "##*",
                                    valuetype = c("glob", "regex", "fixed"),
-                                   pattern_remove = TRUE,
+                                   extract_pattern = TRUE,
                                    pattern_position = c("before", "after")) {
     
     valuetype <- match.arg(valuetype)
@@ -184,13 +184,13 @@ char_segment.character <- function(x, pattern = "##*",
     temp <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     names(temp) <- names(x)
-    result <- segment_texts(temp, pattern, valuetype, pattern_remove, pattern_position)
+    result <- segment_texts(temp, pattern, valuetype, extract_pattern, pattern_position)
     return(result$texts)
 }
 
 # internal function for char_segment and corpus_segment
 segment_texts <- function(x, pattern = NULL, valuetype = "regex", 
-                          pattern_remove = FALSE, pattern_position = "after", 
+                          extract_pattern = FALSE, pattern_position = "after", 
                           omit_empty = TRUE, what = "other", ...){
     
     if (is.corpus(x)) x <- texts(x)
@@ -249,7 +249,7 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
     } else {
         result$tag <- stri_extract_first_regex(result$texts, pattern)
     }
-    if (pattern_remove) {
+    if (extract_pattern) {
         if (pattern_position == "after") {
             result$texts <- stri_replace_last_fixed(result$texts, result$tag, '', vectorize_all = TRUE)
         } else {
@@ -263,7 +263,7 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
     result$docid <- rep(seq_along(ids$values), ids$lengths)
     result$segid <- unlist(lapply(ids$lengths, seq_len))
     
-    if (!pattern_remove)
+    if (!extract_pattern)
         result$tag <- NULL
 
     if (!is.null(names(x))) {
