@@ -6,11 +6,11 @@
 \title{segment texts on a pattern match}
 \usage{
 corpus_segment(x, pattern = "##*", valuetype = c("glob", "regex", "fixed"),
-  pattern_remove = TRUE, pattern_position = c("before", "after"),
+  extract_pattern = TRUE, pattern_position = c("before", "after"),
   use_docvars = TRUE)
 
 char_segment(x, pattern = "##*", valuetype = c("glob", "regex", "fixed"),
-  pattern_remove = TRUE, pattern_position = c("before", "after"))
+  extract_pattern = TRUE, pattern_position = c("before", "after"))
 }
 \arguments{
 \item{x}{character or \link{corpus} object whose texts will be segmented}
@@ -22,7 +22,7 @@ char_segment(x, pattern = "##*", valuetype = c("glob", "regex", "fixed"),
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
-\item{pattern_remove}{removes matched patterns from the texts if \code{TRUE}}
+\item{extract_pattern}{removes matched patterns from the texts if \code{TRUE}}
 
 \item{pattern_position}{either \code{"before"} or \code{"after"}, depending
 on whether the pattern precedes the text (as with a tag) or follows the
@@ -97,7 +97,7 @@ semi-colons (phrase delimiters within a sentence),
   come at the end of a clause or sentence (such as \code{,} and\code{.},
   these can be specified manually and \code{pattern_position} set to
   \code{"after"}. To keep the punctuation characters in the text (as with
-  sentence segmentation), set \code{pattern_remove = FALSE}.  (With most tag
+  sentence segmentation), set \code{extract_pattern = FALSE}.  (With most tag
   applications, users will want to remove the patterns from the text, as they
   are annotations rather than parts of the text itself.)
 }
@@ -121,7 +121,7 @@ cbind(texts(corp_seg2), docvars(corp_seg2), metadoc(corp_seg2))
 
 # segmenting a corpus using crude end-of-sentence segmentation
 corp_seg3 <- corpus_segment(corp, pattern = ".", valuetype = "fixed", 
-                            pattern_position = "after", pattern_remove = FALSE)
+                            pattern_position = "after", extract_pattern = FALSE)
 cbind(texts(corp_seg3), docvars(corp_seg3), metadoc(corp_seg3))
 
 ## segmenting a character vector
@@ -129,12 +129,12 @@ cbind(texts(corp_seg3), docvars(corp_seg3), metadoc(corp_seg3))
 # segment into paragraphs and removing the "- " bullet points
 cat(data_char_ukimmig2010[4])
 char_segment(data_char_ukimmig2010[4], 
-             pattern = "\\\\n\\\\n(\\\\-\\\\s){0,1}", valuetype = "regex", pattern_remove = TRUE)
+             pattern = "\\\\n\\\\n(\\\\-\\\\s){0,1}", valuetype = "regex", extract_pattern = TRUE)
 
 # segment a text into clauses
 txt <- c(d1 = "This, is a sentence?  You: come here.", d2 = "Yes, yes, okay.")
 char_segment(txt, pattern = "\\\\p{P}", valuetype = "regex", 
-             pattern_position = "after", pattern_remove = FALSE)
+             pattern_position = "after", extract_pattern = FALSE)
 }
 \seealso{
 \code{\link{corpus_reshape}}, for segmenting texts into pre-defined
