@@ -12,8 +12,8 @@ corpus_reshape(x, to = c("sentences", "paragraphs", "documents"),
 
 \item{to}{new document units in which the corpus will be recast}
 
-\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each
-segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.
+\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each 
+segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
 Dropping the docvars might be useful in order to conserve space or if these
 are not desired for the segmented corpus.}
 

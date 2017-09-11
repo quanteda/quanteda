@@ -5,7 +5,7 @@ test_that("char_segment works with punctuations", {
              Here is the third sentence.",
              d2 = "Only sentence of doc2?  No there is another.")
     char_seg <- char_segment(txt, "\\p{P}", valuetype = "regex", 
-                         extract_pattern = FALSE, pattern_position = "after")
+                             remove_pattern = FALSE, pattern_position = "after")
     expect_equal(char_seg[4], c(d2.1 = "Only sentence of doc2?"))
 })
 
@@ -17,7 +17,7 @@ test_that("char_segment works for tags", {
                            End of third document.",
                            "##INTRO Document ##NUMBER Two starts before ##NUMBER Three.")
     char_seg <- char_segment(txt, "##[A-Z0-9]+", valuetype = "regex",
-                                pattern_position = "before", extract_pattern = TRUE)
+                                pattern_position = "before", remove_pattern = TRUE)
     expect_equal(char_seg[5], "Two starts before")
 })
 
@@ -29,7 +29,7 @@ test_that("char_segment works for glob customized tags", {
                            End of third document.",
              "INTRO: Document NUMBER: Two starts before NUMBER: Three.")
     char_seg <- char_segment(txt, "*:", valuetype = "glob", 
-                                pattern_position = "before", extract_pattern = TRUE)
+                                pattern_position = "before", remove_pattern = TRUE)
     expect_equal(char_seg[6], "Three.")
 })
 
@@ -41,7 +41,7 @@ test_that("char_segment works for glob customized tags, test 2", {
                            End of third document.",
              "[INTRO] Document [NUMBER] Two starts before [NUMBER] Three.")
     char_seg <- char_segment(txt, "[*]", valuetype = "glob", 
-                                pattern_position = "before", extract_pattern = TRUE)
+                                pattern_position = "before", remove_pattern = TRUE)
     expect_equal(char_seg[6], "Three.")
 })
 
@@ -77,10 +77,10 @@ test_that("char_segment works with Japanese texts", {
     skip_on_os("windows")
     txt <- "日本語の終止符は.ではない。しかし、最近は．が使われることある。"
     expect_equal(char_segment(txt, '\\p{P}', valuetype = "regex", 
-                              extract_pattern = FALSE, pattern_position = "after"),
+                              remove_pattern = FALSE, pattern_position = "after"),
                  c("日本語の終止符は.", "ではない。", "しかし、", "最近は．", "が使われることある。"))
     
-    expect_equal(char_segment(txt, '。', valuetype = "fixed", extract_pattern = FALSE,
+    expect_equal(char_segment(txt, '。', valuetype = "fixed", remove_pattern = FALSE,
                               pattern_position = "after"),
                  c("日本語の終止符は.ではない。", "しかし、最近は．が使われることある。"))
 })
