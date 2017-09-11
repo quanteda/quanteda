@@ -10,6 +10,7 @@ remove_empty_keys(dict)
 \item{dict}{a flat or hierarchical dictionary}
 }
 \description{
-utility function to remove empty keys
+Remove internal keys from a dictionary.
 }
+\keyword{dictionary}
 \keyword{internal}
