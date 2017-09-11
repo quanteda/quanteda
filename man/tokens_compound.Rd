@@ -19,7 +19,7 @@ recommended since it will not be removed during normal cleaning and
 tokenization (while nearly all other punctuation characters, at least those
 in the Unicode punctuation class [P] will be removed).}
 
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 

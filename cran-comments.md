@@ -20,9 +20,14 @@ None.
 
 None (on macOS Sierra 10.12.6).
 
+From the results of testing on win-builder.r-project.org, I see: 
+* checking installed package size ... NOTE
+  installed size is  5.2Mb
+  
+This is our last transitional version before 1.0, and the slightly larger sizes are due to keeping some deprecated items.  We will remove these in the next release, and hope that the slightly larger size is ok for this version.
+
 
 ## Downstream dependencies
 
 No changes in this release affect the (few) downstream packages that Import **quanteda**.
-
 We have run `devtools::devtools::revdep_check()` to confirm.
