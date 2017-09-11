@@ -145,46 +145,60 @@ setMethod("as.list",
           })
 
 #' create a dictionary
-#' 
-#' Create a \pkg{quanteda} dictionary class object, either from a list or by importing from a 
-#' foreign format.  Currently supported input file formats are the Wordstat,
-#' LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import using the 
-#' LIWC format works with 
-#' all currently available dictionary files supplied as part of the LIWC 2001, 
-#' 2007, and 2015 software (see References).
-#' @param x a named list of character vector dictionary entries, including \link{valuetype} pattern
-#'  matches, and including multi-word expressions separated by \code{concatenator}.  See examples.
-#'  This argument may be omitted if the dictionary is read from \code{file}.
+#'
+#' Create a \pkg{quanteda} dictionary class object, either from a list or by
+#' importing from a foreign format.  Currently supported input file formats are
+#' the Wordstat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
+#' using the LIWC format works with all currently available dictionary files
+#' supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
+#' @param x a named list of character vector dictionary entries, including
+#'   \link{valuetype} pattern matches, and including multi-word expressions
+#'   separated by \code{concatenator}.  See examples. This argument may be
+#'   omitted if the dictionary is read from \code{file}.
 #' @param file file identifier for a foreign dictionary
-#' @param format character identifier for the format of the foreign dictionary. 
+#' @param format character identifier for the format of the foreign dictionary.
 #'   If not supplied, the format is guessed from the dictionary file's
-#'   extension.
-#'   Available options are: \describe{ \item{\code{"wordstat"}}{format used by 
-#'   Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by 
-#'   the Linguistic Inquiry and Word Count software} \item{\code{"yoshikoder"}}{
-#'   format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
-#'   by Lexicoder} \item{\code{"YAML"}}{the standard YAML format}}
-#' @param separator the character in between multi-word dictionary values. 
-#'   This defaults to \code{" "}.
-#' @param encoding additional optional encoding value for reading in imported 
-#'   dictionaries. This uses the \link{iconv} labels for encoding.  See the 
+#'   extension. Available options are: \describe{
+#'   \item{\code{"wordstat"}}{format used by Provalis Research's Wordstat
+#'   software} \item{\code{"LIWC"}}{format used by the Linguistic Inquiry and
+#'   Word Count software} \item{\code{"yoshikoder"}}{ format used by Yoshikoder
+#'   software} \item{\code{"lexicoder"}}{format used by Lexicoder}
+#'   \item{\code{"YAML"}}{the standard YAML format}}
+#' @param separator the character in between multi-word dictionary values. This
+#'   defaults to \code{" "}.
+#' @param encoding additional optional encoding value for reading in imported
+#'   dictionaries. This uses the \link{iconv} labels for encoding.  See the
 #'   "Encoding" section of the help for \link{file}.
 #' @param tolower if \code{TRUE}, convert all dictionary values to lowercase
 #' @return A dictionary class object, essentially a specially classed named list
 #'   of characters.
-#' @references Wordstat dictionaries page, from Provalis Research 
+#' @details Dictionaries can be subsetted using
+#'   \code{\link[=dictionary2-class]{[}} and
+#'   \code{\link[=dictionary2-class]{[[}}, operating the same as the equivalent
+#'   \link[=dictionary2-class]{list} operators.
+#'
+#'   Dictionaries can be coerced from lists using \code{\link{as.dictionary}},
+#'   coerced to named lists of characters using
+#'   \code{\link[=dictionary2-class]{as.list}}, and checked using
+#'   \code{\link{is.dictionary}}.
+#' @references Wordstat dictionaries page, from Provalis Research
 #'   \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
-#'   
-#'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J. 
-#'   (2007). The development and psychometric properties of LIWC2007. [Software 
+#'
+#'
+#'
+#'
+#'
+#'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
+#'   (2007). The development and psychometric properties of LIWC2007. [Software
 #'   manual]. Austin, TX (\url{www.liwc.net}).
-#'   
-#'   Yoshikoder page, from Will Lowe 
+#'
+#'   Yoshikoder page, from Will Lowe
 #'   \url{http://conjugateprior.org/software/yoshikoder/}.
-#'   
+#'
 #'   Lexicoder format, \url{http://www.lexicoder.com}
-#'   
-#' @seealso \link{dfm}
+#'
+#' @seealso \link{dfm}, \code{\link{as.dictionary}},
+#'   \code{\link[=dictionary2-class]{as.list}}, \code{\link{is.dictionary}}
 #' @import stringi
 #' @examples
 #' mycorpus <- corpus_subset(data_corpus_inaugural, Year>1900)
@@ -195,7 +209,12 @@ setMethod("as.list",
 #'                           taxregex = "tax*",
 #'                           country = "america"))
 #' head(dfm(mycorpus, dictionary = mydict))
-#' 
+#'
+#' # subset a dictionary
+#' mydict[1:2]
+#' mydict[c("christmas", "opposition")]
+#' mydict[["opposition"]]
+#'
 #' \dontrun{
 #' # import the Laver-Garry dictionary from Provalis Research
 #' dictfile <- tempfile()
@@ -203,7 +222,7 @@ setMethod("as.list",
 #' unzip(dictfile, exdir = (td <- tempdir()))
 #' lgdict <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
 #' head(dfm(data_corpus_inaugural, dictionary = lgdict))
-#' 
+#'
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' download.file("https://goo.gl/5gmwXq", tf <- tempfile())
 #' mfdict <- dictionary(file = tf, format = "LIWC")

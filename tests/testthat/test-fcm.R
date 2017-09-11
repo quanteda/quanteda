@@ -1,10 +1,8 @@
-require(quanteda)
-require(testthat)
 context('Testing fcm*.R')
 
 test_that("compare the output feature co-occurrence matrix to that of the text2vec package", {
     skip_if_not_installed("text2vec")
-    require(text2vec)
+    library("text2vec")
     
     txt <- "A D A C E A D F E B A C E D"
     tokens <- txt %>% tolower %>% word_tokenizer
@@ -30,9 +28,9 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
 })
 
 # Testing weighting function
-txt <- "A D A C E A D F E B A C E D"
 
 test_that("not weighted",{
+    txt <- "A D A C E A D F E B A C E D"
     fcm <- fcm(txt, context = "window", window = 3) 
     
     # serial implementation of cpp function
@@ -53,6 +51,7 @@ test_that("not weighted",{
 })
 
 test_that("weighted by default",{
+    txt <- "A D A C E A D F E B A C E D"
     fcm <- fcm(txt, context = "window", count = "weighted", window = 3)           
     
     # serial implementation of cpp function
@@ -78,6 +77,7 @@ test_that("weighted by default",{
 })
 
 test_that("customized weighting function",{
+    txt <- "A D A C E A D F E B A C E D"
     fcm <- fcm(txt, context = "window", count = "weighted", weights = c(3,2,1), window = 3)           
     
     # serial implementation of cpp function
@@ -103,8 +103,8 @@ test_that("customized weighting function",{
 })
 
 # Testing 'ordered' 
-txt <- "A D A C E A D F E B A C E D"
 test_that("ordered setting: window",{
+    txt <- "A D A C E A D F E B A C E D"
     fcm <- fcm(txt, context = "window", window = 3, ordered = TRUE, tri = FALSE)           
     
     # serial implementation of cpp function
@@ -177,8 +177,8 @@ test_that("ordered setting: boolean",{
 })
 
 # Testing "count" with multiple documents
-txts <- c("a a a b b c", "a a c e", "a c e f g")
 test_that("counting the frequency of the co-occurrences",{
+    txts <- c("a a a b b c", "a a c e", "a c e f g")
     fcm <- fcm(txts, context = "document", count = "frequency", tri = TRUE)           
     fcm <- fcm_sort(fcm)
     aMat <- matrix(c(4, 6, 6, 3, 1, 1,
@@ -192,6 +192,7 @@ test_that("counting the frequency of the co-occurrences",{
 })
 
 test_that("counting the co-occurrences in 'boolean' way",{
+    txts <- c("a a a b b c", "a a c e", "a c e f g")
     fcm <- fcm(txts, context = "document", count = "boolean")           
     fcm <- fcm_sort(fcm)
     
@@ -206,8 +207,8 @@ test_that("counting the co-occurrences in 'boolean' way",{
 })
 
 # Testing the setting of window size
-txts <- c("a a a b b c", "a a c e", "a c e f g")
 test_that("window = 2",{
+    txts <- c("a a a b b c", "a a c e", "a c e f g")
     fcm <- fcm(txts, context = "window", count = "boolean", window = 2)           
 
     # tokenizedTexts
@@ -227,6 +228,7 @@ test_that("window = 2",{
 })
 
 test_that("window = 3",{
+    txts <- c("a a a b b c", "a a c e", "a c e f g")
     fcm <- fcm(txts, context = "window", count = "boolean", window = 3)           
     fcm <- fcm_sort(fcm)
     aMat <- matrix(c(2, 1, 3, 2, 1, 0,
@@ -264,7 +266,6 @@ test_that("fcm.dfm does works for context = \"document\" with weighed counts", {
 })
 
 test_that("fcm works as expected for tokens_hashed", {
-    
     txt <- c("The quick brown fox jumped over the lazy dog.",
              "The dog jumped and ate the fox.")
     toks <- tokenize(char_tolower(txt), remove_punct = TRUE)
@@ -302,7 +303,6 @@ test_that("fcm expects warning for a wrong weights length", {
 
 
 test_that("fcm works tokens with paddings, #788", {
-    
     txt <- c("The quick brown fox jumped over the lazy dog.",
              "The dog jumped and ate the fox.")
     toks <- tokens(txt, remove_punct = TRUE)

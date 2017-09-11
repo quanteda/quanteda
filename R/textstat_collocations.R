@@ -200,7 +200,7 @@ textstat_collocations.corpus <- function(x, method = "lambda", size = 2, min_cou
     # segment into units not including punctuation, to avoid identifying collocations that are not adjacent
     texts(x) <- paste(".", texts(x))
     # separate each line except those where the punctuation is a hyphen or apostrophe
-    x <- corpus_segment(x, "tag", delimiter =  "[^\\P{P}#@'-]", valuetype = "regex")
+    x <- corpus_segment(x, pattern =  "[^\\P{P}#@'-]", valuetype = "regex", extract_pattern = TRUE, pattern_position = "after")
     # tokenize the texts
     x <- tokens(x, ...)
     textstat_collocations(x, method = method, size = size, min_count = min_count, smoothing = smoothing, tolower = tolower)
@@ -267,7 +267,7 @@ tokens_segment_by_punctuation <- function(x, remove_delimiter = TRUE) {
     # remove top level of list
     x <- unlist(x, recursive = FALSE)
     # convert any "tokens" left as "" that are empty into character(0)
-    if (any(allempties <- lengths(x)==1 & x=="")) x[[allempties]] <- character(0)
+    x <- lapply(x, function(y) if (all(y == "")) character(0) else y)
     # make into tokens
     x <- as.tokens(x)
     if (length(x) == len_original) names(x) <- names_original

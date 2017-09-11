@@ -75,7 +75,7 @@
 #' pattern matching using valuetype
 #' 
 #' Pattern matching in \pkg{quanteda} using the \code{valuetype} argument.
-#' @param valuetype how to interpret keyword expressions: \code{"glob"} for 
+#' @param valuetype the type of pattern matching: \code{"glob"} for 
 #'   "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 #'   or \code{"fixed"} for exact matching. See \link{valuetype} for details.
 #' @details Pattern matching in in \pkg{quanteda} uses "glob"-style pattern

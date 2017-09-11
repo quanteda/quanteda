@@ -5,6 +5,7 @@
 \alias{print.corpus}
 \alias{is.corpus}
 \alias{is.corpuszip}
+\alias{print.summary.corpus}
 \alias{+.corpus}
 \alias{c.corpus}
 \alias{[.corpus}
@@ -18,6 +19,8 @@
 is.corpus(x)
 
 is.corpuszip(x)
+
+\method{print}{summary.corpus}(x, ...)
 
 \method{+}{corpus}(c1, c2)
 
