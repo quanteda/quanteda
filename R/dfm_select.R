@@ -85,6 +85,8 @@ dfm_select.dfm <-  function(x, pattern,
                             case_insensitive = TRUE,
                             min_nchar = 1L, max_nchar = 63L,
                             verbose = quanteda_options("verbose"), ...) {
+    
+    x <- as.dfm(x)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
@@ -143,7 +145,7 @@ dfm_select.dfm <-  function(x, pattern,
                                            dims = c(ndoc(temp), length(features_add)), 
                                            dimnames = list(docnames(temp), features_add)), 
                               "dgCMatrix")
-            temp <- cbind(temp, new("dfmSparse", pad_feature))
+            temp <- cbind(temp, new("dfm", pad_feature))
         }
         temp <- reassign_slots(temp, x)
     }
@@ -177,6 +179,7 @@ dfm_remove <- function(x, pattern, ...) {
 #' @noRd
 #' @export
 dfm_remove.dfm <- function(x, pattern, ...) {
+    x <- as.dfm(x)
     dfm_select(x, pattern, selection = "remove", ...)
 }
 

@@ -149,12 +149,13 @@ fcm.corpus <- function(x, ...) {
 #' @import Matrix
 #' @export
 fcm.dfm <- function(x, context = c("document", "window"), 
-                               count = c("frequency", "boolean", "weighted"),
-                               window = 5L,
-                               weights = 1L,
-                               ordered = FALSE,
-                               span_sentence = TRUE, tri = TRUE, ...) {
-
+                       count = c("frequency", "boolean", "weighted"),
+                       window = 5L,
+                       weights = 1L,
+                       ordered = FALSE,
+                       span_sentence = TRUE, tri = TRUE, ...) {
+    
+    x <- as.dfm(x)
     context <- match.arg(context)
     count <- match.arg(count)
     window <- as.integer(window)

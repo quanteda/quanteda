@@ -83,6 +83,7 @@ textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3
     
     startTime <- proc.time()
     
+    x <- as.dfm(x)
     groups <- as.factor(groups)
     authors <- as.factor(authors)
     

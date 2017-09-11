@@ -232,7 +232,7 @@ fcm_select.fcm <- function(x, pattern = NULL, selection = c("keep", "remove"),
 #             x <- new("fcm", Matrix::cbind2(x2, sparseMatrix(i = NULL, j = NULL, 
 #                                                             dims = c(length(origDfmFeatureIndex), length(origDfmFeatureIndex)), 
 #                                                             dimnames = list(pattern[origDfmFeatureIndex], pattern[origDfmFeatureIndex]))))
-            x <- new("dfmSparse", Matrix::cbind2(x2,
+            x <- new("dfm", Matrix::cbind2(x2,
                                                  sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
                                                               dimnames = list(docnames(x2), pattern[origDfmFeatureIndex]))))
             if (case_insensitive & valuetype == "fixed") {

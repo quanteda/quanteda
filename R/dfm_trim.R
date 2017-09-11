@@ -69,6 +69,8 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
     #     return(x)
     # }
     
+    x <- as.dfm(x)
+    
     # initialize additional messages as empty strings
     messageSparsity <- messageMinCount <- messageMinDoc <- messageMaxCount <- messageMaxDoc <- ""
 

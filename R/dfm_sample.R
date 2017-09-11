@@ -27,7 +27,9 @@ dfm_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL,
 #' @noRd
 #' @export
 dfm_sample.dfm <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, 
-                       margin = c("documents", "features")) {
+                           margin = c("documents", "features")) {
+    
+    x <- as.dfm(x)
     margin <- match.arg(margin)
     if (margin == "documents") {
         if (size > ndoc(x))
