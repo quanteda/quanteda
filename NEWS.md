@@ -4,7 +4,8 @@
 
 ### New Features
 
-* Added **magrittr** pipe support (#927).  `%>%` can now be used with **quanteda** without needing to attach **magrittr** (or, as many users apparently believe, the entire tidyverse.)
+* Added **magrittr** pipe support (#927).  `%>%` can now be used with **quanteda** without needing to attach **magrittr** (or, as many users apparently believe, the entire tidyverse.)  
+* `corpus_segment()` now behaves more logically and flexibly, and is clearly differentiated from `corpus_reshape()` in terms of its functionality.  Its documentation is also vastly improved.  (#908)
 
 ### Bug fixes and stability enhancements
 

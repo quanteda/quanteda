@@ -58,6 +58,7 @@ test_that("corpus_reshape works for corpus and corpuszip", {
     c1 <- corpus_reshape(data_corpus_test, to = "sentences")
     c2 <- corpus_reshape(data_corpuszip_test, to = "sentences")
     metacorpus(c1, "created") <- metacorpus(c2, "created") <- NULL
+    metacorpus(c1, "notes") <- metacorpus(c2, "notes") <- NULL
     expect_equal(c1, c2)
 })
 
