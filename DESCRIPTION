@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.99.3
+Version: 0.99.4
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -35,7 +35,8 @@ Imports:
     ggplot2 (>= 2.2.0),
     XML,
     yaml,
-    lubridate
+    lubridate,
+    magrittr
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     knitr,

@@ -16,7 +16,7 @@ regex2id(pattern, types, valuetype, case_insensitive = FALSE, index = TRUE)
 
 \item{types}{unique types of tokens obtaine by \code{quanteda:::types()}}
 
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 

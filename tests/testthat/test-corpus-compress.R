@@ -21,8 +21,8 @@ test_that("print method works for corpuszip", {
 })
 
 test_that("summary method works for corpuszip", {
-    expect_output(summary(data_corpus_test, verbose = TRUE), regexp = "^Corpus consisting of 4 documents\\.")
-    expect_output(summary(data_corpuszip_test, verbose = TRUE), regexp = "^Corpus consisting of 4 documents \\(compressed")
+    expect_output(print(summary(data_corpus_test)), regexp = "^Corpus consisting of 4 documents")
+    expect_output(print(summary(data_corpuszip_test)), regexp = "^Corpus consisting of 4 documents \\(compressed")
 })
 
 test_that("is.corpus methods work", {
@@ -58,6 +58,7 @@ test_that("corpus_reshape works for corpus and corpuszip", {
     c1 <- corpus_reshape(data_corpus_test, to = "sentences")
     c2 <- corpus_reshape(data_corpuszip_test, to = "sentences")
     metacorpus(c1, "created") <- metacorpus(c2, "created") <- NULL
+    metacorpus(c1, "notes") <- metacorpus(c2, "notes") <- NULL
     expect_equal(c1, c2)
 })
 

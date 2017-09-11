@@ -41,7 +41,7 @@ creating the dfm first, and then applying \code{\link{dfm_lookup}}
 separately, or using \code{\link{tokens_lookup}} on the tokenized text
 before calling \code{dfm}.}
 
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
