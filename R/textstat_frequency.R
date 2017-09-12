@@ -30,6 +30,36 @@
 #'                 remove_punct = TRUE, remove = stopwords("english"))
 #' freq <- textstat_frequency(obamadfm)
 #' head(freq, 10)
+#'
+#' # plot 20 most frequent words
+#' ggplot(freq[1:20, ], aes(x = reorder(feature, frequency), y = frequency)) +
+#'   geom_point() + 
+#'   coord_flip() +
+#'   labs(x = NULL, y = "Frequency")
+#' 
+#' # plot relative frequencies by group
+#' dfm_weight_pres <- data_corpus_inaugural %>% 
+#'   corpus_subset(Year > 2000) %>% 
+#'   dfm(remove = stopwords("english"), remove_punct = TRUE) %>% 
+#'   dfm_weight(type = "relfreq")
+#' 
+#' # calculate relative frequency by president
+#' freq_weight <- textstat_frequency(dfm_weight_pres, 
+#'                            group = docvars(my_corpus, "President"), 
+#'                            n = 10)
+#' 
+#' # reorder data frame to plot the facets descending
+#' freq_weight <- freq_weight[seq(dim(freq_weight)[1],1),]
+#' freq_weight$order <- 1:nrow(freq_weight)
+#' 
+#' # plot frequencies
+#' ggplot(data = freq_weight, aes(x = order, y = frequency)) +
+#'   geom_point() +
+#'   facet_wrap(~ group, scales = "free") +
+#'   coord_flip() +
+#'   scale_x_continuous(breaks = freq_ordered$order, 
+#'                      labels = freq_ordered$feature) +
+#'   labs(x = NULL, y = "Relative frequency")
 #' @export
 #' @keywords plot
 textstat_frequency <- function(x, n = NULL, groups = NULL) {
