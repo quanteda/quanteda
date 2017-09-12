@@ -9,11 +9,16 @@
 #'   consisting of a pattern match
 #' @slot concatenator character object specifying space between multi-word
 #'   values
-setClass("dictionary2", contains = "list",
+setClass("dictionary", contains = "list",
          slots = c(concatenator = "character"),
          prototype = prototype(concatenator = " "))
 
-setValidity("dictionary2", function(object) {
+# deprecated dictionary2 class for backward compatibility
+#' @rdname dictionary-class
+#' @keywords internal dictionary
+setClass("dictionary2", contains = "dictionary")
+
+setValidity("dictionary", function(object) {
     # does every element have a name? simply needs to pass
     validate_dictionary(object)
 })
@@ -88,9 +93,11 @@ split_dictionary_values <- function(values, concatenator) {
 #' @param object the dictionary to be printed
 #' @rdname dictionary-class
 #' @export
-setMethod("show", "dictionary2", 
+setMethod("show", "dictionary", 
           function(object) {
-              levs <- if ((depth <- dictionary_depth(object)) > 1L) " primary" else ""
+              object <- unclass(object)
+              depth <- dictionary_depth(object)
+              levs <- if (depth > 1L) " primary" else ""
               nkeys <- length(names(object))
               cat("Dictionary object with ", nkeys, levs, " key entr", 
                   if (nkeys == 1L) "y" else "ies", sep = "")
@@ -105,10 +112,10 @@ setMethod("show", "dictionary2",
 #' @rdname dictionary-class
 #' @export
 setMethod("[",
-          signature = c("dictionary2", i = "index"),
+          signature = c("dictionary", i = "index"),
           function(x, i) {
               is_category <- sapply(unclass(x)[i], function(y) is.list(y))
-              new('dictionary2', unclass(x)[i][is_category], concatenator = x@concatenator)
+              new('dictionary', unclass(x)[i][is_category], concatenator = x@concatenator)
         })
 
 #' Extractor for dictionary objects
@@ -117,20 +124,20 @@ setMethod("[",
 #' @rdname dictionary-class
 #' @export
 setMethod("[[",
-          signature = c("dictionary2", i = "index"),
+          signature = c("dictionary", i = "index"),
           function(x, i) {
               is_category <- sapply(unclass(x)[[i]], function(y) is.list(y))
               if (all(is_category == FALSE)) {
                   unlist(unclass(x)[[i]], use.names = FALSE)
               } else {
-                  new('dictionary2', unclass(x)[[i]][is_category], concatenator = x@concatenator)
+                  new('dictionary', unclass(x)[[i]][is_category], concatenator = x@concatenator)
               }
           })
 
 #' @rdname dictionary-class
 #' @param name the dictionary key
 #' @export
-`$.dictionary2` <- function(x, name) {
+`$.dictionary` <- function(x, name) {
     x[[name]]
 }
 
@@ -139,7 +146,7 @@ setMethod("[[",
 #' @rdname dictionary-class
 #' @export
 setMethod("as.list",
-          signature = c("dictionary2"),
+          signature = c("dictionary"),
           function(x) {
               simplify_dictionary(x)
           })
@@ -173,13 +180,13 @@ setMethod("as.list",
 #' @return A dictionary class object, essentially a specially classed named list
 #'   of characters.
 #' @details Dictionaries can be subsetted using
-#'   \code{\link[=dictionary2-class]{[}} and
-#'   \code{\link[=dictionary2-class]{[[}}, operating the same as the equivalent
-#'   \link[=dictionary2-class]{list} operators.
+#'   \code{\link[=dictionary-class]{[}} and
+#'   \code{\link[=dictionary-class]{[[}}, operating the same as the equivalent
+#'   \link[=dictionary-class]{list} operators.
 #'
 #'   Dictionaries can be coerced from lists using \code{\link{as.dictionary}},
 #'   coerced to named lists of characters using
-#'   \code{\link[=dictionary2-class]{as.list}}, and checked using
+#'   \code{\link[=dictionary-class]{as.list}}, and checked using
 #'   \code{\link{is.dictionary}}.
 #' @references Wordstat dictionaries page, from Provalis Research
 #'   \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
@@ -198,7 +205,7 @@ setMethod("as.list",
 #'   Lexicoder format, \url{http://www.lexicoder.com}
 #'
 #' @seealso \link{dfm}, \code{\link{as.dictionary}},
-#'   \code{\link[=dictionary2-class]{as.list}}, \code{\link{is.dictionary}}
+#'   \code{\link[=dictionary-class]{as.list}}, \code{\link{is.dictionary}}
 #' @import stringi
 #' @examples
 #' mycorpus <- corpus_subset(data_corpus_inaugural, Year>1900)
@@ -275,11 +282,11 @@ dictionary.default <- function(x, file = NULL, format = NULL,
     
     if (tolower)
         x <- lowercase_dictionary_values(x)
-    new("dictionary2", x, concatenator = " ") # keep concatenator attributes for compatibility
+    new("dictionary", x, concatenator = " ") # keep concatenator attributes for compatibility
 }
 
 #' @export
-dictionary.dictionary2 <- function(x, file = NULL, format = NULL, 
+dictionary.dictionary <- function(x, file = NULL, format = NULL, 
                                    separator = " ", 
                                    tolower = TRUE, encoding = "auto") {
     
@@ -305,14 +312,7 @@ dictionary.list <- function(x, file = NULL, format = NULL,
     if (tolower)
         x <- lowercase_dictionary_values(x)
     x <- replace_dictionary_values(x, separator, " ")
-    new("dictionary2", x, concatenator = " ") # keep concatenator attributes for compatibility
-}
-
-#' @export
-dictionary.dictionary2 <- function(x, file = NULL, format = NULL, 
-                            separator = " ", 
-                            tolower = TRUE, encoding = "auto") {
-    dictionary(as.list(x), separator = separator, tolower = tolower, encoding = encoding)
+    new("dictionary", x, concatenator = " ") # keep concatenator attributes for compatibility
 }
 
 #' coercion and checking functions for dictionary objects
@@ -360,6 +360,21 @@ as.dictionary.data.frame <- function(x) {
     dictionary(with(x, split(as.character(word), as.character(sentiment))))
 }
 
+#' @noRd
+#' @method as.dictionary dictionary
+#' @export
+as.dictionary.dictionary <- function(x) {
+    return(x)
+}
+
+#' @noRd
+#' @method as.dictionary dictionary2
+#' @export
+as.dictionary.dictionary2 <- function(x) {
+    class(x) <- 'dictionary'
+    return(x)
+}
+
 #' @rdname as.dictionary
 #' @return \code{is.dictionary} returns \code{TRUE} if an object is a
 #'   \pkg{quanteda} \link{dictionary}.
@@ -370,9 +385,20 @@ as.dictionary.data.frame <- function(x) {
 #' is.dictionary(list(key1 = c("val1", "val2"), key2 = "val3"))
 #' ## [1] FALSE
 is.dictionary <- function(x) {
-    is(x, "dictionary2")
+    is(x, "dictionary") || is(x, "dictionary2")
 }
 
+#' @noRd
+#' @export
+names.dictionary <- function(x) {
+    names(unclass(x))
+}
+
+#' @noRd
+#' @export
+print.dictionary <- function(x) {
+    show(x)
+}
 
 #  Flatten a hierarchical dictionary into a list of character vectors
 # 
@@ -698,9 +724,6 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     
 }
 
-split(1:5, factor(c('a', 'b', 'b', 'c', 'e'), levels = c('a', 'b', 'c', 'd', 'e')))
-
-
 # Import a Yoshikoder dictionary
 # dict <- read_dict_yoshikoder('/home/kohei/Documents/Dictionary/Yoshikoder/laver-garry-ajps.ykd')
 read_dict_yoshikoder <- function(path){
@@ -747,9 +770,9 @@ as.yaml <- function(x) {
 }
 
 #' @noRd
-#' @method as.yaml dictionary2
+#' @method as.yaml dictionary
 #' @export
-as.yaml.dictionary2 <- function(x) {
+as.yaml.dictionary <- function(x) {
     yaml <- yaml::as.yaml(simplify_dictionary(x, TRUE), indent.mapping.sequence = TRUE)
     yaml <- stri_enc_toutf8(yaml)
     return(yaml)
@@ -780,7 +803,6 @@ simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
 # return the nested depth of a dictionary
 # a dictionary with no nesting would have a depth of 1
 dictionary_depth <- function(dict, depth = -1) {
-    # http://stackoverflow.com/a/13433689/1270695
     dict <- unclass(dict)
     if (!is.list(dict)) {
         return(depth)

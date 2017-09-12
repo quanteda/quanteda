@@ -46,13 +46,13 @@ supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
 }
 \details{
 Dictionaries can be subsetted using
-  \code{\link[=dictionary2-class]{[}} and
-  \code{\link[=dictionary2-class]{[[}}, operating the same as the equivalent
-  \link[=dictionary2-class]{list} operators.
+  \code{\link[=dictionary-class]{[}} and
+  \code{\link[=dictionary-class]{[[}}, operating the same as the equivalent
+  \link[=dictionary-class]{list} operators.
 
   Dictionaries can be coerced from lists using \code{\link{as.dictionary}},
   coerced to named lists of characters using
-  \code{\link[=dictionary2-class]{as.list}}, and checked using
+  \code{\link[=dictionary-class]{as.list}}, and checked using
   \code{\link{is.dictionary}}.
 }
 \examples{
@@ -103,5 +103,5 @@ Wordstat dictionaries page, from Provalis Research
 }
 \seealso{
 \link{dfm}, \code{\link{as.dictionary}},
-  \code{\link[=dictionary2-class]{as.list}}, \code{\link{is.dictionary}}
+  \code{\link[=dictionary-class]{as.list}}, \code{\link{is.dictionary}}
 }
