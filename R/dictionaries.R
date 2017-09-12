@@ -1,6 +1,4 @@
 
-# setClassUnion("character_NULL", c("character", "NULL"))
-
 #' @rdname dictionary-class
 #' @export
 #' @keywords internal dictionary
