@@ -97,7 +97,6 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     }
     
     if (length(values_id)) {
-    
         keys <- names(dictionary)
         if (capkeys)
             keys <- char_toupper(keys)
@@ -106,10 +105,8 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             if (!is.null(nomatch)) {
                 values_id <- c(values_id, setdiff(seq_len(nfeature(x)), values_id))
                 keys_id <- c(keys_id, rep(length(keys) + 1, nfeature(x) - length(keys_id)))
-                cols_all <- c(keys, nomatch)
                 cols_new <- c(keys, nomatch)[keys_id]
             } else {
-                cols_all <- keys
                 cols_new <- keys[keys_id]
             }
             x <- x[,values_id]
@@ -120,10 +117,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             cols_new[values_id] <- keys[keys_id]
         }
         colnames(x) <- cols_new
-        x <- dfm_compress(x, margin = 'features')
-        #x <- dfm_select(x, as.dfm(rbind(structure(rep(0, length(cols_new)), names = cols_new))))
-        result <- x
-        
+        result <- dfm_compress(x, margin = 'features')
     } else {
         if (exclusive) {
             if (!is.null(nomatch)) {

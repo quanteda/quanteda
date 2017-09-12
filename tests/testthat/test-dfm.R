@@ -60,18 +60,13 @@ test_that("oldest dfm test", {
     tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE)
     expect_equal(as.vector(tmp[, c("christmas", "country")]), c(1, 0, 0, 2))
     tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = FALSE)
-    expect_equal(as.vector(tmp[, c("christmas", "country")]), c(0, 0, 0, 0))
+    expect_error(tmp[, c("christmas", "country")])
     # regex v. glob format
     tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE)
-    expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 1, 0, 0))
+    expect_equal(as.vector(tmp[, c("taxglob")]), c(1, 1))
     tmp <- dfm_lookup(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
     expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 2, 0, 1))
     ## note: "united_states" is a regex match for "tax*"!!
-    
-    tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed")
-    expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 2))
-    tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
-    expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 0))
 
 })
 
