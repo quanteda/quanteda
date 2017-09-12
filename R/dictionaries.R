@@ -107,8 +107,10 @@ setMethod("show", "dictionary2",
 setMethod("[",
           signature = c("dictionary2", i = "index"),
           function(x, i) {
-              is_category <- sapply(unclass(x)[i], function(y) is.list(y))
-              new('dictionary2', unclass(x)[i][is_category], concatenator = x@concatenator)
+              x <- unclass(x)
+              #if (is.character(i)) i <- which(names(x) == i)
+              is_category <- sapply(x[i], function(y) is.list(y))
+              new('dictionary2', x[i][is_category], concatenator = x@concatenator)
           })
 
 #' Extractor for dictionary objects
@@ -119,11 +121,12 @@ setMethod("[",
 setMethod("[[",
           signature = c("dictionary2", i = "index"),
           function(x, i) {
-              is_category <- sapply(unclass(x)[[i]], function(y) is.list(y))
+              x <- unclass(x)
+              is_category <- sapply(x[[i]], function(y) is.list(y))
               if (all(is_category == FALSE)) {
-                  unlist(unclass(x)[[i]], use.names = FALSE)
+                  unlist(x[[i]], use.names = FALSE)
               } else {
-                  new('dictionary2', unclass(x)[[i]][is_category], concatenator = x@concatenator)
+                  new('dictionary2', x[[i]][is_category], concatenator = x@concatenator)
               }
           })
 
