@@ -118,10 +118,14 @@ List qatd_cpp_tokens_match(const List &texts_,
 toks <- list(rep(1:10, 1), rep(5:15, 1))
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 dict <- list(c(1, 2), c(1, 2, 3))
-id <- rep(1, length(dict)) * 100
-qatd_cpp_tokens_match(toks, dict, id, FALSE)
-qatd_cpp_tokens_match(toks, dict, id, TRUE)
+id <- seq(length(dict))
+qatd_cpp_tokens_match(toks, c(letters[1:15], 'X', 'Y'), dict, id + 15, FALSE)
+qatd_cpp_tokens_match(toks, c(letters[1:15], 'X', 'Y'), dict, id + 15, TRUE)
 
-
+toks <- list(c(1, 2, 3, 4, 5), c(6, 7, 1, 2))
+types <- c("word", "word2", "document","documents", "documenting", "use", "using")
+id <- c(1, 1, 1, 2, 2)
+dict <- as.list(3:7)
+qatd_cpp_tokens_match(toks, c(types, 'document', 'use'), dict, id + length(types), TRUE)
 
 */
