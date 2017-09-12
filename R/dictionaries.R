@@ -65,7 +65,7 @@ print_dictionary <- function(entry, level = 1) {
         cat(rep('  ', level - 1), "- ", paste(word, collapse = ", "), "\n", sep = "")
     }
     for (i in seq_along(category)) {
-        cat(rep('  ', level - 1), "- ", names(category[i]), ':\n', sep = "")
+        cat(rep('  ', level - 1), "- [", names(category[i]), ']:\n', sep = "")
         print_dictionary(category[[i]], level + 1)
     }
 }
