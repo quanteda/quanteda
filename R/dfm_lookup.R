@@ -116,13 +116,12 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         } else {
             if (!is.null(nomatch))
                 warning("nomatch only applies if exclusive = TRUE")
-            cols_all <- c(types, keys)
             cols_new <- types
             cols_new[values_id] <- keys[keys_id]
         }
         colnames(x) <- cols_new
         x <- dfm_compress(x, margin = 'features')
-        x <- dfm_select(x, as.dfm(rbind(structure(rep(0, length(cols_all)), names = cols_all))))
+        #x <- dfm_select(x, as.dfm(rbind(structure(rep(0, length(cols_new)), names = cols_new))))
         result <- x
         
     } else {

@@ -147,3 +147,31 @@ test_that("dfm_lookup with nomatch works", {
     )
 })
 
+test_that("dfm_lookup works with exclusive = TRUE, #958", {
+    
+    txt <- c("word word2 document documents documenting",
+             "use using word word2")
+    dict <- dictionary(list(
+        document = "document*",
+        use      = c("use", "using")
+    ))
+    
+    mx <- dfm(txt)
+    expect_equal(
+        as.matrix(dfm_lookup(mx, dict, exclusive = TRUE)),
+        matrix(c(3,0,0,2), ncol = 2, dimnames = list(docs = c("text1", "text2"), 
+                                                     features = c("document", "use")))
+    )
+    expect_equal(
+        as.matrix(dfm_lookup(my_dfm, my_dict, exclusive = FALSE, capkeys = TRUE)),
+        matrix(c(1,1,1,1,3,0,0,2), ncol = 4, dimnames = list(docs = c("text1", "text2"), 
+                                                             features = c("word", "word2", "DOCUMENT", "USE")))
+    )
+    expect_equal(
+        as.matrix(dfm_lookup(my_dfm, my_dict, exclusive = FALSE, capkeys = FALSE)),
+        matrix(c(1,1,1,1,3,0,0,2), ncol = 4, dimnames = list(docs = c("text1", "text2"), 
+                                                             features = c("word", "word2", "document", "use")))
+    )
+})
+
+
