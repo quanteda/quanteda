@@ -13,6 +13,7 @@
 * Added documentation for `regex2fixed()` and associated functions.
 * Fixed a bug in `textstat_collocations.tokens()` caused by "documents" containing only `""` as tokens. (#940)
 * Fixed a bug caused by `cbind.dfm()` when features shared a name starting with `quanteda_options("base_featname")` (#946)
+* Improved dictionary handling and creation now correctly handles nested LIWC 2015 categories. (#941)
 
 ### Behaviour changes
 

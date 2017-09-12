@@ -88,10 +88,6 @@ head(dfm(data_corpus_inaugural, dictionary = mfdict))
 Wordstat dictionaries page, from Provalis Research
   \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
 
-
-
-
-
   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
   (2007). The development and psychometric properties of LIWC2007. [Software
   manual]. Austin, TX (\url{www.liwc.net}).
