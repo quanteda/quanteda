@@ -103,7 +103,7 @@ sequences <- collocations
 #'                        case_insensitive = FALSE, padding = TRUE)
 #' seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
 #' head(seqs, 10)
-textstat_collocations <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5,  tolower = TRUE, show_counts = FALSE, ...) {
+textstat_collocations <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5,  tolower = TRUE, show_counts = FALSE, path = 1, ...) {
     UseMethod("textstat_collocations")
 }
 
@@ -112,7 +112,7 @@ VALID_SCORING_METHODS <- c("lambda", "lambda1", "lr", "chi2", "pmi") #, "dice", 
 #' @noRd
 #' @export
 #' @importFrom stats na.omit
-textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
+textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...) {
     
     method <- match.arg(method, c("all", VALID_SCORING_METHODS))
     if (any(!(size %in% 2:5)))
@@ -128,66 +128,95 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
     
     attrs_org <- attributes(x)
     types <- types(x)
-    result <- qatd_cpp_sequences(x, types, min_count, size, 
-                                 if (method == "lambda1") "lambda1" else "lambda", 
-                                 smoothing)
-    
-    # compute z for lambda methods
-    lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
-    result["z"] <- result[lambda_index] / result[["sigma"]]
-    # result$p <- 1 - stats::pnorm(result$z)
-    
-    # remove gensim and LFMD for now
-    result[c("gensim", "LFMD", "dice", "sigma")] <- NULL
-    
-    # sort by decreasing z
-    result <- result[order(result[["z"]], decreasing = TRUE), ]
-    
-    # compute statistics that require expected counts
-    if (method %in% c("all", "lr", "chi2", "pmi") | show_counts) {
-        # get observed counts and compute expected counts
-        # split the string into n00, n01, n10, etc
-        counts_n <- strsplit(result[, "observed_counts"], "_")
-        df_counts_n <- data.frame(t(sapply(counts_n, as.numeric)))
-        names(df_counts_n) <- make_count_names(size, "n")
-        # compute expected counts
-        df_counts_e <- get_expected_values(df_counts_n, size = size)
-        # remove observed counts character
-        result <- result[, -which(names(result)=="observed_counts")]
+    if (path == 1){
+        result <- qatd_cpp_sequences(x, types, min_count, size, 
+                                     if (method == "lambda1") "lambda1" else "lambda", 
+                                     smoothing)
         
-        # "pmi_2", "chi2_2" and "G2_2" are verified, remove the result from cpp
-        result[c("pmi", "chi2", "G2")] <- NULL
+        # compute z for lambda methods
+        lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
+        result["z"] <- result[lambda_index] / result[["sigma"]]
+        # result$p <- 1 - stats::pnorm(result$z)
         
-        # recompute dice, pmi, G2, chi2
-        if (method %in% c("all", "lr"))
-            result["G2"] <- 2 * rowSums(df_counts_n * log(df_counts_n / df_counts_e))
-        if (method %in% c("all", "chi2"))
-            result["chi2"] <- rowSums((df_counts_n - df_counts_e)^2 / df_counts_e)
-        if (method %in% c("all", "pmi"))
-            result["pmi"] <- log(df_counts_n[[ncol(df_counts_n)]] / df_counts_e[[ncol(df_counts_e)]], base = 2)
+        # remove gensim and LFMD for now
+        result[c("gensim", "LFMD", "dice", "sigma")] <- NULL
+        
+        # sort by decreasing z
+        result <- result[order(result[["z"]], decreasing = TRUE), ]
+        
+        # compute statistics that require expected counts
+        if (method %in% c("all", "lr", "chi2", "pmi") | show_counts) {
+            # get observed counts and compute expected counts
+            # split the string into n00, n01, n10, etc
+            counts_n <- strsplit(result[, "observed_counts"], "_")
+            df_counts_n <- data.frame(t(sapply(counts_n, as.numeric)))
+            names(df_counts_n) <- make_count_names(size, "n")
+            # compute expected counts
+            df_counts_e <- get_expected_values(df_counts_n, size = size)
+            # remove observed counts character
+            result <- result[, -which(names(result)=="observed_counts")]
+            
+            # "pmi_2", "chi2_2" and "G2_2" are verified, remove the result from cpp
+            result[c("pmi", "chi2", "G2")] <- NULL
+            
+            # recompute dice, pmi, G2, chi2
+            if (method %in% c("all", "lr"))
+                result["G2"] <- 2 * rowSums(df_counts_n * log(df_counts_n / df_counts_e))
+            if (method %in% c("all", "chi2"))
+                result["chi2"] <- rowSums((df_counts_n - df_counts_e)^2 / df_counts_e)
+            if (method %in% c("all", "pmi"))
+                result["pmi"] <- log(df_counts_n[[ncol(df_counts_n)]] / df_counts_e[[ncol(df_counts_e)]], base = 2)
+        }
+        
+        # remove other measures if not specified
+        if (method == "lambda" | method == "lambda1")
+            result[c("pmi", "chi2", "G2", "sigma")] <- NULL
+        if (!method %in% c("lambda", "lambda1", "all"))
+            result[c("lambda", "lambda1", "sigma", "z")] <- NULL
+        if (method == "chi2") result[c("pmi", "G2")] <- NULL
+        if (method == "lr") result[c("pmi", "chi2")] <- NULL
+        if (method == "pmi") result[c("G2", "chi2")] <- NULL
+        
+        # reorder columns
+        result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
+                                                  "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
+                                                names(result)))]
+        rownames(result) <- NULL
+        
+        # # add counts to output if requested
+        if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
+        
+    } else if (path == 2){
+        result <- qatd_cpp_collocations(x, types, min_count, size, 
+                                        if (method == "lambda1") "lambda1" else "lambda", 
+                                        smoothing) 
+        # compute z for lambda methods
+        lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
+        result["z"] <- result[lambda_index] / result[["sigma"]]
+        # result$p <- 1 - stats::pnorm(result$z)
+        
+        # remove gensim and dice for now
+        result[c("gensim", "dice", "sigma")] <- NULL
+        
+        # sort by decreasing z
+        result <- result[order(result[["z"]], decreasing = TRUE), ]
+        # remove other measures if not specified
+        if (method == "lambda" | method == "lambda1")
+            result[c("pmi", "chi2", "G2", "sigma")] <- NULL
+        if (!method %in% c("lambda", "lambda1", "all"))
+            result[c("lambda", "lambda1", "sigma", "z")] <- NULL
+        if (method == "chi2") result[c("pmi", "G2")] <- NULL
+        if (method == "lr") result[c("pmi", "chi2")] <- NULL
+        if (method == "pmi") result[c("G2", "chi2")] <- NULL
+        
+        # reorder columns
+        result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
+                                                  "G2", "chi2", "pmi", "LFMD"), 
+                                                names(result)))]
+        rownames(result) <- NULL
     }
-    
-    # remove other measures if not specified
-    if (method == "lambda" | method == "lambda1")
-        result[c("pmi", "chi2", "G2", "sigma")] <- NULL
-    if (!method %in% c("lambda", "lambda1", "all"))
-        result[c("lambda", "lambda1", "sigma", "z")] <- NULL
-    if (method == "chi2") result[c("pmi", "G2")] <- NULL
-    if (method == "lr") result[c("pmi", "chi2")] <- NULL
-    if (method == "pmi") result[c("G2", "chi2")] <- NULL
-    
-    # reorder columns
-    result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
-                                              "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
-                                            names(result)))]
-    rownames(result) <- NULL
-    
-    # # add counts to output if requested
-    if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
-
     # remove results whose counts are less than min_count
     result <- result[result$count >= min_count, ]
-    
     # tag attributes and class, and return
     attr(result, 'types') <- types
     class(result) <- c("collocations", 'data.frame')
@@ -307,7 +336,7 @@ get_expected_values <- function(df, size) {
     counts <- df[, grep("^n\\d+", names(df))]
     # sort the counts alphabetically
     counts <- df[, sort(names(counts))]
-
+    
     n <- n00 <- n01 <- n10 <- n11 <- e00 <- e01 <- e10 <- e11 <- NULL
     
     if (size == 2) {
@@ -319,7 +348,7 @@ get_expected_values <- function(df, size) {
                         (n10 + n11) * (n00 + n10) / n,
                         (n10 + n11) * (n01 + n11) / n)]
         result <- as.data.frame(result[, list(e00, e01, e10, e11)])
-    
+        
     } else {
         expected_counts_list <- apply(counts, 1, function(x) {
             countsnum <- as.numeric(x)
@@ -327,9 +356,13 @@ get_expected_values <- function(df, size) {
             array_dimnames <- c(rep(list(c("0", "1")), size))
             names(array_dimnames) <- paste0("W", size:1)
             counts_table <- array(countsnum, dim = rep(2, size), dimnames = array_dimnames)
-            counts_expected <- stats::loglin(counts_table,
-                                             margin =  marginalfun(size),
-                                             fit = TRUE, print = FALSE)$fit
+            # counts_expected <- stats::loglin(counts_table,
+            #                                  margin =  marginalfun(size),
+            #                                  fit = TRUE, print = FALSE)$fit
+            counts_expected <- loglin_local_2(countsnum, counts_table,
+                                              margin =  marginalfun(size),
+                                              fit = TRUE, print = FALSE)$fit
+            
             counts_expected <- as.numeric(counts_expected)
             names(counts_expected) <- gsub("e", "n", names(counts))
             counts_expected
@@ -337,7 +370,7 @@ get_expected_values <- function(df, size) {
         result <- data.frame(t(expected_counts_list))
         names(result) <- make_count_names(size, "e")
     }
-
+    
     result
 }
 
@@ -359,9 +392,9 @@ get_expected_values <- function(df, size) {
 #  A copy of the GNU General Public License is available at
 #  https://www.R-project.org/Licenses/
 
-loglin_local <- function(table, margin, start = rep(1, length(table)), fit =
-                             FALSE, eps = 0.1, iter = 20L, param = FALSE, print =
-                             TRUE) {
+loglin_local_2 <- function(countvec, table, margin, start = rep(1, length(table)), fit =
+                               FALSE, eps = 0.1, iter = 20L, param = FALSE, print =
+                               TRUE) {
     rfit <- fit
     
     dtab <- dim(table)
@@ -388,7 +421,7 @@ loglin_local <- function(table, margin, start = rep(1, length(table)), fit =
     if (length(start) != ntab ) stop("'start' and 'table' must be same length")
     
     #z <- .Call(stats:::C_LogLin, dtab, conf, table, start, nmar, eps, iter)
-    z <- loglin_cpp_2(dtab, conf, table, start, nmar, eps, iter)
+    z <- loglin_cpp_2(dtab, conf, countvec, start, nmar, eps, iter)
     
     if (print)
         cat(z$nlast, "iterations: deviation", z$dev[z$nlast], "\n")

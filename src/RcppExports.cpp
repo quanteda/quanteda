@@ -156,13 +156,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // loglin_cpp_2
-Rcpp::List loglin_cpp_2(const IntegerVector& dtab_, IntegerMatrix& conf, const NumericVector table_, NumericVector start, const int snmar, const double eps, const int iter);
+Rcpp::List loglin_cpp_2(const IntegerVector& dtab_, IntegerVector& conf, const NumericVector table_, NumericVector start, const int snmar, const double eps, const int iter);
 RcppExport SEXP _quanteda_loglin_cpp_2(SEXP dtab_SEXP, SEXP confSEXP, SEXP table_SEXP, SEXP startSEXP, SEXP snmarSEXP, SEXP epsSEXP, SEXP iterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const IntegerVector& >::type dtab_(dtab_SEXP);
-    Rcpp::traits::input_parameter< IntegerMatrix& >::type conf(confSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type conf(confSEXP);
     Rcpp::traits::input_parameter< const NumericVector >::type table_(table_SEXP);
     Rcpp::traits::input_parameter< NumericVector >::type start(startSEXP);
     Rcpp::traits::input_parameter< const int >::type snmar(snmarSEXP);
