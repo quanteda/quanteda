@@ -55,10 +55,12 @@ Text lookup(Text tokens,
     
     if (match == 0) {
         if (nomatch == 0) {
+            return {}; // return empty vector if no match
+        } else if (nomatch == 1) {
             Text keys_flat(tokens.size(), id_max + 1); 
             return keys_flat;
-        } else {
-            return {}; // return empty vector if no match    
+        } else if (nomatch == 2) {
+            return tokens; // do nothing in exclusive mode
         }
     }
     
@@ -75,7 +77,7 @@ Text lookup(Text tokens,
     
     // Flatten the vector of vector
     Text keys_flat;
-    if (nomatch == 0) {
+    if (nomatch > 0) {
         keys_flat.reserve(match + tokens.size());
     } else {
         keys_flat.reserve(match);
