@@ -128,7 +128,7 @@ dfm_select.dfm <-  function(x, pattern,
     # select features based on feature length
     if (!padding) {
         features_keep <- intersect(features_keep, which(stri_length(featnames(x)) >= min_nchar & 
-                                                            stri_length(featnames(x)) <= max_nchar))
+                                                        stri_length(featnames(x)) <= max_nchar))
     }
     
     if (!length(features_keep)) features_keep <- 0
