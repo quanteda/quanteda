@@ -154,7 +154,7 @@ test_that("non-exclusive lookup is working",{
     
     expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE)),
                  list(d1=c("COUNTRY", "signed", "a", "new", "FREEDOM", "LAW WORDS", "with", "COUNTRY"),
-                      d2=c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY")))
+                      d2=c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY", "OVERLAP")))
 })
 
 test_that("tokens_lookup preserves case on keys", {
@@ -351,4 +351,17 @@ test_that("dfm_lookup works with exclusive = TRUE, #958", {
         list(text1 = c('word', 'word2', 'DOCUMENT', 'DOCUMENT', 'DOCUMENT'), 
              text2 = c('USE', 'USE', 'word', 'word2'))
     )
+})
+
+test_that("dfm_lookup match the same words in exclusive = TRUE and FALSE, #970", {
+    
+    toks <- tokens("say good bye to Hollywood")
+    dict <- dictionary(list(pos = "good", farewell = "good bye"))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = TRUE)),
+                 list(text1 = c("pos", "farewell")))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE)),
+                 list(text1 = c("say", "POS", "FAREWELL", "to", "Hollywood")))
+
 })
