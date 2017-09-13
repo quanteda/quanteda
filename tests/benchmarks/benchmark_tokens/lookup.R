@@ -11,6 +11,7 @@ dict_fix <- dictionary(list(country = "united states",
 microbenchmark::microbenchmark(
     cpp1=tokens_lookup(toks, dict_fix, valuetype='fixed', verbose=FALSE),
     cpp2=tokens_lookup(toks, dict_fix, valuetype='fixed', verbose=FALSE, nomatch = 'NA'),
+    cpp3=tokens_lookup(toks, dict_fix, valuetype='fixed', verbose=FALSE, exclusive = FALSE),
     times=1
 )
 
@@ -19,6 +20,12 @@ dict_liwc <- dictionary(file='/home/kohei/Documents/Dictionary/LIWC/LIWC2007_Eng
 microbenchmark::microbenchmark(
     fixed=tokens_lookup(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
     glob=tokens_lookup(toks, dict_liwc, valuetype='glob', verbose=FALSE),
+    times=1
+)
+
+microbenchmark::microbenchmark(
+    fixed=tokens_lookup(toks, dict_liwc, valuetype='fixed', verbose=FALSE, exclusive = FALSE),
+    glob=tokens_lookup(toks, dict_liwc, valuetype='glob', verbose=FALSE, exclusive = FALSE),
     times=1
 )
 
