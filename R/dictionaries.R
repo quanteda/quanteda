@@ -145,6 +145,24 @@ setMethod("as.list",
               simplify_dictionary(x)
           })
 
+#' @rdname dictionary-class
+#' @param ... \link{dictionary} objects to be concatenated
+#' @export
+setMethod("c",
+          signature = c("dictionary2"),
+          function(x, ...) {
+              y <- list(...)
+              if (length(y) == 0)
+                  return(x)
+              result <- c(unclass(x), unclass(y[[1]]))
+              if (length(y) > 1) {
+                  for (i in 2:length(y)) {
+                      result <- c(result, unclass(y[[i]]))
+                  }
+              }
+              return(new('dictionary2', result))
+          })
+
 #' create a dictionary
 #'
 #' Create a \pkg{quanteda} dictionary class object, either from a list or by
@@ -184,11 +202,7 @@ setMethod("as.list",
 #'   \code{\link{is.dictionary}}.
 #' @references Wordstat dictionaries page, from Provalis Research
 #'   \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
-#'
-#'
-#'
-#'
-#'
+#'   
 #'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
 #'   (2007). The development and psychometric properties of LIWC2007. [Software
 #'   manual]. Austin, TX (\url{www.liwc.net}).
@@ -215,6 +229,9 @@ setMethod("as.list",
 #' mydict[1:2]
 #' mydict[c("christmas", "opposition")]
 #' mydict[["opposition"]]
+#' 
+#' # combine dictionaries
+#' c(mydict["christmas"], mydict["country"])
 #'
 #' \dontrun{
 #' # import the Laver-Garry dictionary from Provalis Research
