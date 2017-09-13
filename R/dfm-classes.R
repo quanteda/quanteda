@@ -227,7 +227,7 @@ cbind.dfm <- function(...) {
     x <- args[[1]]
     y <- args[[2]]
     
-    attr <- attributes(x)
+    attrs <- attributes(x)
     
     if (is.matrix(x)) {
         x <- as.dfm(x)
@@ -242,7 +242,7 @@ cbind.dfm <- function(...) {
     }
     
     result <- cbind_dfm_dfm(x, y)
-    slots(result) <- attr
+    slots(result) <- attrs
 
     while (length(args[-c(1,2)])) {
         args <- args[-c(1,2)]
