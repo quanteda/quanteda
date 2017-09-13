@@ -55,12 +55,19 @@ Text lookup(Text tokens,
     
     if (match == 0) {
         if (nomatch == 0) {
-            return {}; // return empty vector if no match
+            // return empty vector
+            return {}; 
         } else if (nomatch == 1) {
+            // return tokens with no-match ID
             Text keys_flat(tokens.size(), id_max + 1); 
             return keys_flat;
         } else if (nomatch == 2) {
-            return tokens; // do nothing in exclusive mode
+            // return shifted tokens in exclusive mode
+            Text keys_flat(tokens.size());
+            for (std::size_t i = 0; i < tokens.size(); i++) {
+                keys_flat[i] = id_max + tokens[i];
+            }
+            return keys_flat;
         }
     }
     
@@ -134,8 +141,8 @@ struct lookup_mt : public Worker{
 * @param texts_ tokens ojbect
 * @param words_ list of patterns to find
 * @param ids_ IDs of patterns
-* @param overlap if count overlapped words if true
-* @param nomatch determine how to treat unmached words: (0) ignore, (1) keep; (3) pad
+* @param overlap count overlapped words if true
+* @param nomatch determine how to treat unmached words: 0=ignore, 1=keep; 2=pad
 */
 
 
@@ -185,7 +192,12 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     }
 #endif
     //dev::stop_timer("Dictionary lookup", timer);
-    return recompile(texts, types, false, false, is_encoded(types_));
+    if (nomatch == 2) {
+        return recompile(texts, types, true, true, is_encoded(types_));
+    } else {
+        return recompile(texts, types, false, false, is_encoded(types_));
+    }
+    
 }
 
 /***R
