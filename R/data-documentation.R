@@ -132,11 +132,11 @@ NULL
 #'   in detail in Young and Soroka (2012). Please cite this article when using the
 #'   Lexicoder Sentiment Dictionary and related resources.
 #
-#'   Young, L. and Soroka, S. 2012. \emph{Lexicoder Sentiment
+#'   Young, Lori and Stuart Soroka. 2012. \emph{Lexicoder Sentiment
 #'   Dictionary}. Available at \url{http://lexicoder.com}.
 #'   
 #'   Young, Lori and Stuart Soroka.  2012.  "Affective News: The Automated
-#'   Coding of Sentiment in Political Texts," \emph{Political Communication} 29:
+#'   Coding of Sentiment in Political Texts." \emph{Political Communication} 29(2):
 #'   205-231.
 #' @keywords data
 #' @examples 
