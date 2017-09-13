@@ -114,14 +114,19 @@ NULL
 #' 
 #' @details
 #' The dictionary consists of 2,858 "negative" sentiment words and 1,709
-#' "positive" sentiment words.  A further set of 2,860 and 1,721 negations of
-#' negative and positive words, respectively, is also included. While, many
-#' users will find the non-negation sentiment forms of the LSD adequate for
-#' sentiment analysis, Young and Soroka (2012) did find a small, but
-#' non-negligible increase in performance when accounting for negations. Users
-#' wishing to test this or include the negations are encouraged to consider the
-#' negations of positive words as negative, and negations of negative words as
-#' positive.
+#' "positive" sentiment words. A further set of 2,860 and 1,721 negations of
+#' negative and positive words, respectively, is also included. While many users
+#' will find the non-negation sentiment forms of the LSD adequate for sentiment
+#' analysis, Young and Soroka (2012) did find a small, but non-negligible
+#' increase in performance when accounting for negations. Users wishing to test
+#' this or include the negations are encouraged to subtract negated positive
+#' words from the count of positive words, and subtract the negated negative
+#' words from the negative count.  
+#' 
+#' Young and Soroka (2012) also suggest the use of a pre-processing script to
+#' remove specific cases of some words (i.e., “good bye,” or “nobody better,”
+#' which should not be counted as positive). Pre-processing scripts are
+#' available at http://lexicoder.com.
 #' @section License and Conditions: 
 #'   The LSD is available for non-commercial academic purposes only. By using
 #'   \code{data_dictionary_LSD2015}, you accept these terms.

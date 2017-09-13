@@ -14,14 +14,19 @@ format.
 }
 \details{
 The dictionary consists of 2,858 "negative" sentiment words and 1,709
-"positive" sentiment words.  A further set of 2,860 and 1,721 negations of
-negative and positive words, respectively, is also included. While, many
-users will find the non-negation sentiment forms of the LSD adequate for
-sentiment analysis, Young and Soroka (2012) did find a small, but
-non-negligible increase in performance when accounting for negations. Users
-wishing to test this or include the negations are encouraged to consider the
-negations of positive words as negative, and negations of negative words as
-positive.
+"positive" sentiment words. A further set of 2,860 and 1,721 negations of
+negative and positive words, respectively, is also included. While many users
+will find the non-negation sentiment forms of the LSD adequate for sentiment
+analysis, Young and Soroka (2012) did find a small, but non-negligible
+increase in performance when accounting for negations. Users wishing to test
+this or include the negations are encouraged to subtract negated positive
+words from the count of positive words, and subtract the negated negative
+words from the negative count.  
+
+Young and Soroka (2012) also suggest the use of a pre-processing script to
+remove specific cases of some words (i.e., “good bye,” or “nobody better,”
+which should not be counted as positive). Pre-processing scripts are
+available at http://lexicoder.com.
 }
 \section{License and Conditions}{
  
@@ -47,11 +52,11 @@ kwic(data_char_ukimmig2010, "not")
 The objectives, development and reliability of the dictionary are discussed
   in detail in Young and Soroka (2012). Please cite this article when using the
   Lexicoder Sentiment Dictionary and related resources.
-  Young, L. and Soroka, S. 2012. \emph{Lexicoder Sentiment
+  Young, Lori and Stuart Soroka. 2012. \emph{Lexicoder Sentiment
   Dictionary}. Available at \url{http://lexicoder.com}.
   
   Young, Lori and Stuart Soroka.  2012.  "Affective News: The Automated
-  Coding of Sentiment in Political Texts," \emph{Political Communication} 29:
+  Coding of Sentiment in Political Texts." \emph{Political Communication} 29(2):
   205-231.
 }
 \keyword{data}
