@@ -89,9 +89,9 @@ Text lookup(Text tokens,
             keys_flat.insert(keys_flat.end(), key_sub.begin(), key_sub.end());
         } else {
             if (nomatch == 1) {
-                keys_flat.push_back(id_max + tokens[i]); // keep original token
-            } else if (nomatch == 2) {
                 keys_flat.push_back(id_max + 1); // pad with a new ID
+            } else if (nomatch == 2) {
+                keys_flat.push_back(id_max + tokens[i]); // keep original token
             }
         }
     }
