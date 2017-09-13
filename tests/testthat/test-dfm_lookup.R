@@ -38,22 +38,22 @@ test_that("#459 apply a hierarchical dictionary to a dfm", {
         matrix(c(3, 1, 1, 1), ncol = 2, dimnames = list(docs = c("d1", "d2"), 
                                                         features = c("geo", "other")))
     )
-
+    
     expect_equal(
         as.matrix(dfm_lookup(testdfm, dict, valuetype = "fixed", levels = 1:2)),
         matrix(c(1, 1, 2, 0, 0, 0, 1, 1), ncol = 4, 
                dimnames = list(docs = c("d1", "d2"), 
                                features = c("geo.Countries", "geo.oceans", "other.gameconsoles", "other.swords")))
     )
-
-
+    
+    
     expect_equal(
         as.matrix(dfm_lookup(testdfm, dict, valuetype = "fixed", levels = 2)),
         matrix(c(1, 1, 2, 0, 0, 0, 1, 1), ncol = 4, 
                dimnames = list(docs = c("d1", "d2"), 
                                features = c("Countries", "oceans", "gameconsoles", "swords")))
     )
-
+    
 })
 
 test_that("#459 extract the lower levels of a dictionary using a dfm", {
@@ -145,4 +145,58 @@ test_that("dfm_lookup with nomatch works", {
         dfm_lookup(dfm1, dict, nomatch = "ANYTHING", exclusive = FALSE),
         "nomatch only applies if exclusive = TRUE"
     )
+})
+
+test_that("dfm_lookup works with exclusive = TRUE, #958", {
+    
+    txt <- c("word word2 document documents documenting",
+             "use using word word2")
+    dict <- dictionary(list(
+        document = "document*",
+        use      = c("use", "using")
+    ))
+    
+    mx <- dfm(txt)
+    expect_equal(
+        as.matrix(dfm_lookup(mx, dict, exclusive = TRUE)),
+        matrix(c(3,0,0,2), ncol = 2, dimnames = list(docs = c("text1", "text2"), 
+                                                     features = c("document", "use")))
+    )
+    expect_equal(
+        as.matrix(dfm_lookup(mx, dict, exclusive = FALSE, capkeys = TRUE)),
+        matrix(c(1,1,1,1,3,0,0,2), ncol = 4, dimnames = list(docs = c("text1", "text2"), 
+                                                             features = c("word", "word2", "DOCUMENT", "USE")))
+    )
+    expect_equal(
+        as.matrix(dfm_lookup(mx, dict, exclusive = FALSE, capkeys = FALSE)),
+        matrix(c(1,1,1,1,3,0,0,2), ncol = 4, dimnames = list(docs = c("text1", "text2"), 
+                                                             features = c("word", "word2", "document", "use")))
+    )
+})
+
+test_that("dfm_lookup works with zero count features, #958", {
+
+    dict <- dictionary(list(A = 'aa', B = 'bb', D = 'dd'))
+    mx1 <- as.dfm(matrix(c(0, 0 , 0, 0, 1, 2), nrow = 2, 
+                         dimnames = list(c("doc1", "doc2"), c("aa", "bb", "cc"))))
+    mx2 <- as.dfm(matrix(c(4, 5 , 0, 0, 0, 0), nrow = 2, 
+                         dimnames = list(c("doc1", "doc2"), c("aa", "bb", "cc"))))
+    
+    expect_equal(as.matrix(dfm_lookup(mx1, dict, exclusive = TRUE)),
+                 matrix(c(0, 0 , 0, 0, 0, 0), nrow = 2, 
+                        dimnames = list(docs = c("doc1", "doc2"), features = c("A", "B", "D"))))
+    
+    expect_equal(as.matrix(dfm_lookup(mx2, dict, exclusive = TRUE)),
+                 matrix(c(4, 5 , 0, 0, 0, 0), nrow = 2, 
+                        dimnames = list(docs = c("doc1", "doc2"), features = c("A", "B", "D"))))
+    
+    expect_equal(as.matrix(dfm_lookup(mx1, dict, exclusive = FALSE)),
+                 matrix(c(0, 0 , 0, 0, 1, 2), nrow = 2, 
+                        dimnames = list(docs = c("doc1", "doc2"), features = c("A", "B", "cc"))))
+    
+    expect_equal(as.matrix(dfm_lookup(mx2, dict, exclusive = FALSE)),
+                 matrix(c(4, 5 , 0, 0, 0, 0), nrow = 2, 
+                        dimnames = list(docs = c("doc1", "doc2"), features = c("A", "B", "cc"))))
+    
+
 })

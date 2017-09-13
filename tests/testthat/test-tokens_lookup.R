@@ -330,3 +330,25 @@ test_that("tokens_lookup with nomatch works", {
         "nomatch only applies if exclusive = TRUE"
     )
 })
+
+test_that("dfm_lookup works with exclusive = TRUE, #958", {
+    
+    txt <- c("word word2 document documents documenting",
+                 "use using word word2")
+    dict <- dictionary(list(
+        document = "document*",
+        use      = c("use", "using")
+    ))
+    
+    toks <- tokens(txt)
+    expect_equal(
+        as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = FALSE)),
+        list(text1 = c('word', 'word2', 'document', 'document', 'document'), 
+             text2 = c('use', 'use', 'word', 'word2'))
+    )
+    expect_equal(
+        as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE)),
+        list(text1 = c('word', 'word2', 'DOCUMENT', 'DOCUMENT', 'DOCUMENT'), 
+             text2 = c('USE', 'USE', 'word', 'word2'))
+    )
+})
