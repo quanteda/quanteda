@@ -84,17 +84,33 @@ reassign_slots <- function(x_new, x_orig, exceptions = NULL) {
 }
 
 
-#' R-like alternative to reassign_attributes()
+#' function extending base::attributes()
 #' @keywords internal
 #' @param x an object
 #' @param overwrite if \code{TRUE}, overwrite old attributes
 #' @param value new attributes
-#' @author Kohei Watanabe
+#' @keywords internal
 "attributes<-" <- function(x, overwrite = TRUE, value) {
     if (overwrite) {
         base::attributes(x) <- value
     } else {
         base::attributes(x) <- c(base::attributes(x), value[!(names(value) %in% names(base::attributes(x)))])
+    }
+    return(x)
+}
+
+#' function to assign multiple slots to a S4 object
+#' @keywords internal
+#' @param x an S4 object
+#' @param exceptions slots to ignore
+#' @param values list of slots extracted by attributes()
+#' @keywords internal
+"slots<-" <- function(x, exceptions = c("Dim", "Dimnames", "i", "p", "x", "factors"), values) {
+    slots <- methods::getSlots(class(x)[1])
+    for (sname in names(values)) {
+        if (!sname %in% names(slots) || sname %in% exceptions) next
+        if (!identical(typeof(values[[sname]]), slots[[sname]])) next
+        methods::slot(x, sname) <- values[[sname]]
     }
     return(x)
 }
