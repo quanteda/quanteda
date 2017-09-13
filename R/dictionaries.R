@@ -145,6 +145,24 @@ setMethod("as.list",
               simplify_dictionary(x)
           })
 
+#' @rdname dictionary-class
+#' @param ... \link{dictionary} objects to be concatenated
+#' @export
+setMethod("c",
+          signature = c("dictionary2"),
+          function(x, ...) {
+              y <- list(...)
+              if (length(y) == 0)
+                  return(x)
+              result <- c(unclass(x), unclass(y[[1]]))
+              if (length(y) > 1) {
+                  for (i in 2:length(y)) {
+                      result <- c(result, unclass(y[[i]]))
+                  }
+              }
+              return(new('dictionary2', result))
+          })
+
 #' create a dictionary
 #'
 #' Create a \pkg{quanteda} dictionary class object, either from a list or by
