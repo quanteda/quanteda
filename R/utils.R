@@ -85,7 +85,6 @@ reassign_slots <- function(x_new, x_orig, exceptions = NULL) {
 
 
 #' function extending base::attributes()
-#' @keywords internal
 #' @param x an object
 #' @param overwrite if \code{TRUE}, overwrite old attributes
 #' @param value new attributes
@@ -100,7 +99,6 @@ reassign_slots <- function(x_new, x_orig, exceptions = NULL) {
 }
 
 #' function to assign multiple slots to a S4 object
-#' @keywords internal
 #' @param x an S4 object
 #' @param exceptions slots to ignore
 #' @param value a list of attributes extracted by attributes()

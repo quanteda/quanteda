@@ -4,15 +4,15 @@
 \alias{slots<-}
 \title{function to assign multiple slots to a S4 object}
 \usage{
-slots(x, exceptions = c("Dim", "Dimnames", "i", "p", "x", "factors"),
-  values) <- value
+slots(x, exceptions = c("Dim", "Dimnames", "i", "p", "x",
+  "factors")) <- value
 }
 \arguments{
 \item{x}{an S4 object}
 
 \item{exceptions}{slots to ignore}
 
-\item{values}{list of slots extracted by attributes()}
+\item{value}{a list of attributes extracted by attributes()}
 }
 \description{
 function to assign multiple slots to a S4 object
