@@ -17,8 +17,8 @@ test_that("oldest dfm test", {
     dfm_lookup(preDictDfm, mydict)
     
     txt <- tokens(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
-                                   "The United_States has progressive taxation.")),
-                    remove_punct = TRUE)
+                                 "The United_States has progressive taxation.")),
+                  remove_punct = TRUE)
     
     
     dictDfm <- dfm(txt, dictionary = mydict, verbose = FALSE)
@@ -60,14 +60,19 @@ test_that("oldest dfm test", {
     tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE)
     expect_equal(as.vector(tmp[, c("christmas", "country")]), c(1, 0, 0, 2))
     tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = FALSE)
-    expect_error(tmp[, c("christmas", "country")])
+    expect_equal(as.vector(tmp[, c("christmas", "country")]), c(0, 0, 0, 0))
     # regex v. glob format
     tmp <- dfm_lookup(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE)
-    expect_equal(as.vector(tmp[, c("taxglob")]), c(1, 1))
+    expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 1, 0, 0))
     tmp <- dfm_lookup(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
     expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 2, 0, 1))
     ## note: "united_states" is a regex match for "tax*"!!
-
+    
+    tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed")
+    expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 2))
+    tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
+    expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 0))
+    
 })
 
 test_that("test c.corpus", {
@@ -358,6 +363,18 @@ test_that("more cbind tests for dfms", {
         matrix(c(1,1,1,1,0,4, 0,1,1,1,1,4), byrow = TRUE, nrow = 2,
                dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat1")))
     )
+})
+
+test_that("cbind.dfm keeps attributes of the dfm",{
+    
+    mx1 <- as.dfm(matrix(c(0, 0 , 0, 0, 1, 2), nrow = 2, 
+                         dimnames = list(c("doc1", "doc2"), c("aa", "bb", "cc"))))
+    mx2 <- as.dfm(matrix(c(2, 3 , 0, 0, 0, 0), nrow = 2, 
+                         dimnames = list(c("doc1", "doc2"), c("dd", "ee", "ff"))))
+    slot(mx1, 'settings') <- list(somesetting = 'somevalue')
+    mx3 <- cbind(mx1, mx2)
+    expect_equal(mx3@settings, list(somesetting = 'somevalue'))
+    
 })
 
 test_that("rbind.dfm works as expected",{
