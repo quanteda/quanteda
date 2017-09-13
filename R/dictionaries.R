@@ -202,11 +202,7 @@ setMethod("c",
 #'   \code{\link{is.dictionary}}.
 #' @references Wordstat dictionaries page, from Provalis Research
 #'   \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
-#'
-#'
-#'
-#'
-#'
+#'   
 #'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
 #'   (2007). The development and psychometric properties of LIWC2007. [Software
 #'   manual]. Austin, TX (\url{www.liwc.net}).
@@ -233,6 +229,9 @@ setMethod("c",
 #' mydict[1:2]
 #' mydict[c("christmas", "opposition")]
 #' mydict[["opposition"]]
+#' 
+#' # combine dictionaries
+#' c(mydict["christmas"], mydict["country"])
 #'
 #' \dontrun{
 #' # import the Laver-Garry dictionary from Provalis Research
