@@ -22,19 +22,19 @@
 #' column is omitted from the returned data.frame.}
 #' }
 #' @examples 
-#' (dfm1 <- dfm(c("a a b b c d", "a d d d", "a a a")))
+#' dfm1 <- dfm(c("a a b b c d", "a d d d", "a a a"))
 #' textstat_frequency(dfm1)
 #' textstat_frequency(dfm1, groups = c("one", "two", "one"))
 #' 
-#' obamadfm <- dfm(data_corpus_inaugural[56:57], 
-#'                 remove_punct = TRUE, remove = stopwords("english"))
+#' obamadfm <- 
+#'     corpus_subset(data_corpus_inaugural, President == "Obama") %>%
+#'     dfm(remove_punct = TRUE, remove = stopwords("english"))
 #' freq <- textstat_frequency(obamadfm)
 #' head(freq, 10)
 #'
 #' \donttest{
 #' # plot 20 most frequent words
-#' require("ggplot2")
-#' require("dplyr")
+#' library("ggplot2")
 #' ggplot(freq[1:20, ], aes(x = reorder(feature, frequency), y = frequency)) +
 #'     geom_point() + 
 #'     coord_flip() +
@@ -58,6 +58,7 @@
 #'     scale_x_continuous(breaks = nrow(freq_weight):1,
 #'                        labels = freq_weight$feature) +
 #'     labs(x = NULL, y = "Relative frequency")
+#' }
 #' @export
 #' @keywords plot
 textstat_frequency <- function(x, n = NULL, groups = NULL) {
