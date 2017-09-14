@@ -1,0 +1,24 @@
+---
+title: "benchmark_textstat_collocations.Rmd"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(quanteda)
+```
+
+## R Markdown
+
+
+```{r}
+toks2 <- tokens(data_corpus_inaugural)
+toks2 <- tokens_remove(toks2, stopwords("english"), padding = TRUE)
+toks2 <- tokens_select(toks2, "^([A-Z][a-z\\-]{2,})", valuetype = "regex", 
+                        case_insensitive = FALSE, padding = TRUE)
+microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 3, tolower = FALSE, method="all", path=1),  
+path_C = textstat_collocations(toks2, size = 3, tolower = FALSE, method="all", path=2), 
+times = 20, unit = "relative")
+```
+
+

@@ -331,7 +331,7 @@ extern "C" {
 // [[Rcpp::export]]
 
 Rcpp::List loglin_cpp_2(const IntegerVector &dtab_,
-                      IntegerMatrix &conf,
+                        IntegerVector &conf,
                       const NumericVector table_,
                       NumericVector start,
                       const int snmar,
@@ -340,7 +340,7 @@ Rcpp::List loglin_cpp_2(const IntegerVector &dtab_,
     
     
     int nvar = dtab_.size();
-    int ncon = conf.cols();
+    int ncon = sqrt(conf.size());
     int ntab = table_.size();
     int nmar = snmar;
     int maxit = iter;

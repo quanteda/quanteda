@@ -420,11 +420,12 @@ void loglin_api(std::vector<double> &table, std::vector<double> &fit, const std:
     } else {
         throw "ntokens is out of range ";   
     }
-    
+
+   
     loglin_local(nvar, &dtab[0], ncon, &conf[0], ntab,
                  &table[0], &fit[0], &locmar[0], nmar, &marg[0],
-                                                            ntab, &u[0], eps, iter, &dev[0], &nlast, &ifault);
-    
+                ntab, &u[0], eps, iter, &dev[0], &nlast, &ifault);
+
     switch(ifault) {
     case 1:
     case 2:
@@ -542,10 +543,11 @@ void estimates(std::size_t i,
     //see http://www.lrec-conf.org/proceedings/lrec2002/pdf/128.pdf for details about LFMD
     //LFMD = log2(P(w1,w2)^2/P(w1)P(w2)) + log2(P(w1,w2))
     lfmd[i] = log2( pow(counts_bit[csize - 1], 2)/ ec[csize -1] ) + log2(counts_bit[csize - 1]);
-    
+
     //pmi
     pmi[i] = log2(counts_bit[csize - 1]/ ec[csize -1]);
     
+
     //logratio
     logratio[i] = 0.0;
     double epsilon = 0.000000001; // to offset zero cell counts
@@ -553,17 +555,13 @@ void estimates(std::size_t i,
         logratio[i] += counts_bit[k] * log(counts_bit[k]/ec[k] + epsilon);
     }
     logratio[i] *= 2;
-    
+
     //chi2
     chi2[i] = 0.0;
     for (std::size_t k = 0; k < csize; k++){
         chi2[i] += std::pow((counts_bit[k] - ec[k]), 2)/ec[k];
     }
 }
-
-
-
-
 
 // disable templately for output counts
 // struct estimates_mt : public Worker{

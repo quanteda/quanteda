@@ -6,7 +6,7 @@
 \title{identify and score multi-word expressions}
 \usage{
 textstat_collocations(x, method = "all", size = 2, min_count = 1,
-  smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...)
+  smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...)
 
 is.collocations(x)
 }
