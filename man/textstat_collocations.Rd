@@ -35,6 +35,8 @@ to be scored}
 
 \item{show_counts}{logical; if \code{TRUE}, output observed and expected counts}
 
+\item{path}{default to 1 to apply stats::loglin}
+
 \item{...}{additional arguments passed to \code{\link{tokens}}, if \code{x}
 is not a \link{tokens} object already}
 }

@@ -133,7 +133,7 @@ path_C = textstat_collocations(toks2, size = 2, tolower = FALSE, method=&quot;al
 times = 20, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
 ##    expr      min       lq     mean   median       uq      max neval
-##  path_R 1.328061 1.329014 1.265868 1.313977 1.303947 1.134771    20
+##  path_R 1.351785 1.306048 1.502614 1.313634 1.492003 1.490086    20
 ##  path_C 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20</code></pre>
 </div>
 <div id="trigram" class="section level3">
@@ -146,9 +146,9 @@ microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 3, t
 path_C = textstat_collocations(toks2, size = 3, tolower = FALSE, method=&quot;all&quot;, path=2), 
 times = 20, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
-##    expr      min       lq     mean   median      uq      max neval
-##  path_R 1.246351 1.219621 1.401677 1.223263 1.22831 2.905272    20
-##  path_C 1.000000 1.000000 1.000000 1.000000 1.00000 1.000000    20</code></pre>
+##    expr      min       lq     mean   median       uq      max neval
+##  path_R 1.259293 1.215432 1.201257 1.217501 1.204151 1.099328    20
+##  path_C 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20</code></pre>
 </div>
 <div id="grams" class="section level3">
 <h3>4-grams</h3>
@@ -160,9 +160,9 @@ microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 4, t
 path_C = textstat_collocations(toks2, size = 4, tolower = FALSE, method=&quot;all&quot;, path=2), 
 times = 20, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
-##    expr     min       lq     mean   median       uq     max neval
-##  path_R 1.16592 1.165594 1.235987 1.140174 1.134903 2.72938    20
-##  path_C 1.00000 1.000000 1.000000 1.000000 1.000000 1.00000    20</code></pre>
+##    expr      min       lq      mean   median      uq       max neval
+##  path_R 1.138788 1.120906 0.9720425 1.141117 1.12435 0.4639771    20
+##  path_C 1.000000 1.000000 1.0000000 1.000000 1.00000 1.0000000    20</code></pre>
 </div>
 </div>
 

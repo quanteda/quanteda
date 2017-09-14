@@ -40,6 +40,7 @@ sequences <- collocations
 #'   (default is 0.5)
 #' @param tolower logical; if \code{TRUE}, form collocations as lower-cased combinations
 #' @param show_counts logical; if \code{TRUE}, output observed and expected counts
+#' @param path default to 1 to apply stats::loglin
 #' @param ... additional arguments passed to \code{\link{tokens}}, if \code{x}
 #'   is not a \link{tokens} object already
 #' @references Blaheta, D., & Johnson, M. (2001). 
@@ -359,7 +360,7 @@ get_expected_values <- function(df, size) {
             # counts_expected <- stats::loglin(counts_table,
             #                                  margin =  marginalfun(size),
             #                                  fit = TRUE, print = FALSE)$fit
-            counts_expected <- loglin_local_2(countsnum, counts_table,
+            counts_expected <- stats::loglin(counts_table,
                                               margin =  marginalfun(size),
                                               fit = TRUE, print = FALSE)$fit
             
