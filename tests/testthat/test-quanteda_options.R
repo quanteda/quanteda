@@ -1,6 +1,5 @@
 context("test quanteda_options")
 
-
 test_that("quanteda_options initialize works correctly", {
     threads_temp <- getOption("quanteda_threads")
     quanteda_options(verbose = TRUE, threads = 1)
@@ -15,9 +14,9 @@ test_that("quanteda_options returns an error for non-existing options", {
         quanteda_options(notanoption = TRUE),
         "notanoption is not a valid quanteda option"
     )
-    expect_error(
+    expect_equal(
         quanteda_options("notanoption"),
-        "notanoption is not a valid quanteda option"
+        NULL
     )
 })
 
@@ -60,11 +59,10 @@ test_that("quanteda functions work if package is not attached (#864)", {
 
 test_that("quanteda_options reset works correctly", {
     quanteda_options(reset = TRUE)
-    qopts <- quanteda:::QUANTEDA_OPTION_LIST
-    names(qopts) <- stringi::stri_replace_all_fixed(names(qopts), "quanteda_", "")
+    opts <- quanteda:::QUANTEDA_OPTIONS
     expect_equal(
         quanteda_options(),
-        qopts        
+        opts        
     )
 })
 
@@ -85,3 +83,4 @@ test_that("quanteda_options works with threads", {
         as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS'))
     )
 })
+
