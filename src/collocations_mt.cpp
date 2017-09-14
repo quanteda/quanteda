@@ -5,7 +5,7 @@ using namespace quanteda;
 // return the matching pattern between two words at each position, 0 for matching, 1 for not matching.
 // for example, for 3-gram, bit = 000, 001, 010 ... 111 eg. 0-7
 int match_bit(const std::vector<unsigned int> &tokens1, 
-               const std::vector<unsigned int> &tokens2){
+              const std::vector<unsigned int> &tokens2){
     
     std::size_t len1 = tokens1.size();
     std::size_t len2 = tokens2.size();
@@ -75,7 +75,368 @@ double compute_dice(const std::vector<double> &counts){
     dice = counts[n-1]/(dice);  // smoothing has been applied when declaring counts_bit[]
     return dice;
 }
+//************************//
+extern "C" {
+    /* Algorithm AS 51 Appl. Statist. (1972), vol. 21, p. 218
+    original (C) Royal Statistical Society 1972
+    Performs an iterative proportional fit of the marginal totals of a
+    contingency table.
+    */
+#include <math.h>
+    
+#include <stdio.h>
+#include <R_ext/Memory.h>
+#include <R_ext/Applic.h>
+    
+#undef max
+#undef min
+#undef abs
+#define	max(a, b)		((a) < (b) ? (b) : (a))
+#define	min(a, b)		((a) > (b) ? (b) : (a))
+#define	abs(x)			((x) >= 0 ? (x) : -(x))
+    
+    /* Algorithm AS 51.1 Appl. Statist. (1972), vol. 21, p. 218
+Computes a marginal table from a complete table.
+All parameters are assumed valid without test.
+The larger table is X and the smaller one is Y.
+*/
+    
+    void collap(int nvar, double *x, double *y, int locy, int *dim, int *config)
+    {
+        int i, j, k, l, n, locu, size[nvar + 1], coord[nvar];
+        
+        /* Parameter adjustments */
+        --config;
+        --dim;
+        --x;
+        --y;
+        
+        /* Initialize arrays */
+        
+        size[0] = 1;
+        for (k = 1; k <= nvar; k++) {
+            l = config[k];
+            if (l == 0)  goto L20;
+            size[k] = size[k - 1] * dim[l];
+        }
+        
+        /* Find number of variables in configuration */
+        
+        k = nvar + 1;
+        L20:
+            n = k - 1;
+        
+        /* Initialize Y.  First cell of marginal table is at Y(LOCY) and
+        table has SIZE(K) elements */
+        
+        locu = locy + size[k - 1] - 1;
+        for (j = locy; j <= locu; j++) y[j] = 0.;
+        
+        /* Initialize coordinates */
+        
+        for (k = 0; k < nvar; k++) coord[k] = 0;
+        
+        /* Find locations in tables */
+        i = 1;
+        L60:
+            j = locy;
+        for (k = 1; k <= n; k++) {
+            l = config[k];
+            j += coord[l - 1] * size[k - 1];
+        }
+        y[j] += x[i];
+        
+        /* Update coordinates */
+        
+        i++;
+        for (k = 1; k <= nvar; k++) {
+            coord[k - 1]++;
+            if (coord[k - 1] < dim[k]) goto L60;
+            coord[k - 1] = 0;
+        }
+        
+        return;
+    }
+    
+    
+    /* Makes proportional adjustment corresponding to CONFIG.
+    All parameters are assumed valid without test.
+    */
+    void adjust(int nvar, double *x, double *y, double *z, int *locz,
+                int *dim, int *config, double *d)
+    {
+        int i, j, k, l, n, size[nvar + 1], coord[nvar];
+        double e;
+        
+        /* Parameter adjustments */
+        --config;
+        --dim;
+        --x;
+        --y;
+        --z;
+        
+        /* Set size array */
+        
+        size[0] = 1;
+        for (k = 1; k <= nvar; k++) {
+            l = config[k];
+            if (l == 0) goto L20;
+            size[k] = size[k - 1] * dim[l];
+        }
+        
+        /* Find number of variables in configuration */
+        
+        k = nvar + 1;
+        L20:
+            n = k - 1;
+        
+        /* Test size of deviation */
+        
+        l = size[k - 1];
+        j = 1;
+        k = *locz;
+        for (i = 1; i <= l; i++) {
+            e = abs(z[k] - y[j]);
+            if (e > *d) {
+                *d = e;
+            }
+            j++;
+            k++;
+        }
+        
+        /* Initialize coordinates */
+        
+        for (k = 0; k < nvar; k++)  coord[k] = 0;
+        i = 1;
+        
+        /* Perform adjustment */
+        
+        L50:
+            j = 0;
+        for (k = 1; k <= n; k++) {
+            l = config[k];
+            j += coord[l - 1] * size[k - 1];
+        }
+        k = j + *locz;
+        j++;
+        
+        /* Note that Y(J) should be non-negative */
+        
+        if (y[j] <= 0.) x[i] = 0.;
+        if (y[j] > 0.) x[i] = x[i] * z[k] / y[j];
+        
+        /* Update coordinates */
+        
+        i++;
+        for (k = 1; k <= nvar; k++) {
+            coord[k - 1]++;
+            if (coord[k - 1] < dim[k]) goto L50;
+            coord[k - 1] = 0;
+        }
+        
+        return;
+    }
+    /* Table of constant values */
+    
+    static void 
+        loglin_local(int nvar, int *dim, int ncon, int *config, int ntab,
+                     double *table, double *fit, int *locmar, int nmar, double *marg,
+                     int nu, double *u, double maxdev, int maxit,
+                     double *dev, int *nlast, int *ifault)
+        {
+            // nvar could be zero (no-segfault test)
+            if (!nvar) Rcout<< "no variables" << endl;  // not translated
+            int i, j, k, n, point, size, check[nvar], icon[nvar];
+            double x, y, xmax;
+            
+            /* Parameter adjustments */
+            --dim;
+            --locmar;
+            config -= nvar + 1;
+            --fit;
+            --table;
+            --marg;
+            --u;
+            --dev;
+            
+            /* Function body */
+            
+            *ifault = 0;
+            *nlast = 0;
+            
+            /* Check validity of NVAR, the number of variables, and of maxit,
+            the maximum number of iterations */
+            
+            if (nvar > 0 && maxit > 0) goto L10;
+            L5:
+                *ifault = 4;
+            return;
+            
+            /* Look at table and fit constants */
+            
+            L10:
+                size = 1;
+            for (j = 1; j <= nvar; j++) {
+                if (dim[j] <= 0) goto L5;
+                size *= dim[j];
+            }
+            if (size <= ntab) goto L40;
+            L35:
+                *ifault = 2;
+            return;
+            L40:
+                x = 0.;
+            y = 0.;
+            for (i = 1; i <= size; i++) {
+                if (table[i] < 0. || fit[i] < 0.) goto L5;
+                x += table[i];
+                y += fit[i];
+            }
+            
+            /* Make a preliminary adjustment to obtain the fit to an empty
+            configuration list */
+            
+            if (y == 0.) goto L5;
+            x /= y;
+            for (i = 1; i <= size; i++) fit[i] = x * fit[i];
+            if (ncon <= 0 || config[nvar + 1] == 0) return;
+            
+            /* Allocate marginal tables */
+            
+            point = 1;
+            for (i = 1; i <= ncon; i++) {
+                /* A zero beginning a configuration indicates that the list is
+                completed */
+                if (config[i * nvar + 1] == 0)  goto L160;
+                /* Get marginal table size.  While doing this task, see if the
+                configuration list contains duplications or elements out of
+                range. */
+                size = 1;
+                for (j = 0; j < nvar; j++) check[j] = 0;
+                for (j = 1; j <= nvar; j++) {
+                    k = config[j + i * nvar];
+                    /* A zero indicates the end of the string. */
+                    if (k == 0) goto L130;
+                    /* See if element is valid. */
+                    if (k >= 0 && k <= nvar) goto L100;
+                    L95:
+                        *ifault = 1;
+                    return;
+                    /* Check for duplication */
+                    L100:
+                        if (check[k - 1]) goto L95;
+                        check[k - 1] = 1;
+                        /* Get size */
+                        size *= dim[k];
+                }
+                
+                /* Since U is used to store fitted marginals, size must not
+                exceed NU */
+                L130:
+                    if (size > nu) goto L35;
+                    
+                    /* LOCMAR points to marginal tables to be placed in MARG */
+                    locmar[i] = point;
+                    point += size;
+            }
+            
+            /* Get N, number of valid configurations */
+            
+            i = ncon + 1;
+            L160:
+                n = i - 1;
+            
+            /* See if MARG can hold all marginal tables */
+            
+            if (point > nmar + 1) goto L35;
+            
+            /* Obtain marginal tables */
+            
+            for (i = 1; i <= n; i++) {
+                for (j = 1; j <= nvar; j++) {
+                    icon[j - 1] = config[j + i * nvar];
+                }
+                collap(nvar, &table[1], &marg[1], locmar[i], &dim[1], icon);
+            }
+            
+            /* Perform iterations */
+            
+            for (k = 1; k <= maxit; k++) {
+                /* XMAX is maximum deviation observed between fitted and true
+                marginal during a cycle */
+                xmax = 0.;
+                for (i = 1; i <= n; i++) {
+                    for (j = 1; j <= nvar; j++) icon[j - 1] = config[j + i * nvar];
+                    collap(nvar, &fit[1], &u[1], 1, &dim[1], icon);
+                    adjust(nvar, &fit[1], &u[1], &marg[1], &locmar[i], &dim[1], icon, &xmax);
+                }
+                /* Test convergence */
+                dev[k] = xmax;
+                if (xmax < maxdev) goto L240;
+            }
+            if (maxit > 1) goto L230;
+            *nlast = 1;
+            return;
+            
+            /* No convergence */
+            L230:
+                *ifault = 3;
+            *nlast = maxit;
+            return;
+            
+            /* Normal termination */
+            L240:
+                *nlast = k;
+            
+            return;
+        }
+#undef max
+#undef min
+#undef abs
+}
 
+void loglin_api(std::vector<double> &table, std::vector<double> &fit, const std::size_t ntokens, const int iter = 20, const double eps = 0.1){
+    int nvar = ntokens;
+    int ncon = ntokens;
+    int ntab = table.size();
+    int nmar = std::pow(2, ntokens - 1) * ntokens;
+    int nlast, ifault;
+    
+    std::vector<int> locmar(ncon);
+    std::vector<double> marg(nmar);
+    std::vector<double> u(ntab);
+    std::vector<double> dev(iter);
+    std::vector<int> dtab(ntokens, 2);
+    std::vector<int> conf(ntokens * ntokens);
+    if (ntokens == 3){
+        static const int arr[] = {1, 2, 0, 1, 3, 0, 2, 3, 0};
+        conf.assign(arr, arr + sizeof(arr) / sizeof(int));
+    } else if (ntokens == 4){
+        static const int arr4[] = {1, 2, 3, 0, 1, 2, 4, 0, 1, 3, 4, 0, 2, 3, 4, 0};
+        conf.assign(arr4, arr4 + sizeof(arr4) / sizeof(int));
+    } else if (ntokens == 5){
+        static const int arr5[] = {1, 2, 3, 4, 0, 1, 2, 3, 5, 0, 1, 3, 4, 5, 0, 2, 3, 4, 5, 0};
+        conf.assign(arr5, arr5 + sizeof(arr5) / sizeof(int));
+    } else {
+        throw "ntokens is out of range ";   
+    }
+    
+    loglin_local(nvar, &dtab[0], ncon, &conf[0], ntab,
+                 &table[0], &fit[0], &locmar[0], nmar, &marg[0],
+                                                            ntab, &u[0], eps, iter, &dev[0], &nlast, &ifault);
+    
+    switch(ifault) {
+    case 1:
+    case 2:
+        Rcout << "this should not happen" << endl; break;
+    case 3:
+        Rcout<< "algorithm did not converge"<<endl; break;
+    case 4:
+        Rcout << "incorrect specification of 'table' or 'start'" << endl; break;
+    default:
+        break;
+    }
+}
 //************************//
 void counts(Text text,
             MapNgrams &counts_seq,
@@ -159,454 +520,52 @@ void estimates(std::size_t i,
     // Dice coefficient
     dice[i] = n * compute_dice(counts_bit);
     
-    // marginal counts: used in pmi, chi-sqaure, G2, gensim, LFMD
-    std::vector<double> mc(n, 0);  // the size of mc is n
-    for (int k = 1; k < std::pow(2, n); k++){
-        int kk = k;
-        for (int j = n-1; j >= 0; j--){
-            int jj = std::pow(2, j);
-            if (kk >= jj){
-                mc[j] += counts_bit[k];
-                kk -= jj;
-            }
-        }
-    }
-    
-    double mc_product = 1;
-    for (std::size_t k = 0; k < n; k++){
-        mc_product *= mc[k];
+    // expected counts: used in pmi, chi-sqaure, G2, gensim, LFMD
+    std::size_t csize = pow(2, n);  
+    std::vector<double> ec(csize, 1.0);
+    if ( n == 2){
+        double row_sum = counts_bit[0] + counts_bit[1] + counts_bit[2] + counts_bit[3];
+        ec[0] = (counts_bit[0] + counts_bit[1]) * (counts_bit[0] + counts_bit[2]) / row_sum;
+        ec[1] = (counts_bit[0] + counts_bit[1]) * (counts_bit[1] + counts_bit[3]) / row_sum;
+        ec[2] = (counts_bit[2] + counts_bit[3]) * (counts_bit[0] + counts_bit[2]) / row_sum;
+        ec[3] = (counts_bit[2] + counts_bit[3]) * (counts_bit[1] + counts_bit[3]) / row_sum;
+    } else {
+        loglin_api(counts_bit, ec, n);
     }
     
     // calculate gensim score
     // https://radimrehurek.com/gensim/models/phrases.html#gensim.models.phrases.Phrases
     // gensim = (cnt(a, b) - min_count) * N / (cnt(a) * cnt(b))
-    gensim[i] = (counts_bit[std::pow(2, n) - 1] - count_min) * nseqs/mc_product;
+    //gensim[i] = (counts_bit[std::pow(2, n) - 1] - count_min) * nseqs/mc_product;
     
     //LFMD
     //see http://www.lrec-conf.org/proceedings/lrec2002/pdf/128.pdf for details about LFMD
     //LFMD = log2(P(w1,w2)^2/P(w1)P(w2)) + log2(P(w1,w2))
-    lfmd[i] = log2(counts_bit[std::pow(2, n) - 1] * counts_bit[std::pow(2, n) - 1] * pow(nseqs, n-2) / mc_product) 
-        + log2(counts_bit[std::pow(2, n) - 1] / nseqs);
-    
-    
-    //******issue 803: count ngrams as 2x2 table**********//
-    std::vector<double> new_count(4, 0);
-    new_count[3] = counts_bit[std::pow(2, n) - 1]; // C(BA)C
-    new_count[1] = counts_bit[(std::pow(2, n-1) - 1)]; //~C(BA)
-    for (std::size_t k = 0; k < (std::pow(2, n-1) - 1); k++){
-        new_count[2] = new_count[2] + counts_bit[k + std::pow(2, n-1)] - smoothing; //C~(AB)
-        //if(i==1)Rcout<<"counts_bit["<<k + std::pow(2, n-1)<<"]="<<counts_bit[k+std::pow(2, n-1)]<<std::endl;
-        new_count[0] = new_count[0] + counts_bit[k] - smoothing; //~C~(AB)
-        
-    }
-    
-    // adjust the impact of smoothing
-    new_count[2] += smoothing;
-    new_count[0] += smoothing;
-    //if(i==1)Rcout<<"new_count[0]="<<new_count[0]<<" "<<new_count[1]<<" "<<new_count[2]<<" "<<new_count[3]<<std::endl;
-    
-    // marginal totals
-    std::vector<double> new_mc(2);
-    new_mc[0] = new_count[3] + new_count[1]; //?(BA)
-    new_mc[1] = new_count[3] + new_count[2]; //C(??)
-    //if(i==1)Rcout<<"new_mc[0]="<<new_mc[0]<<" "<<new_mc[1]<<std::endl;
-    //if(i==1) Rcout<<"total="<<nseqs<<"seqs"<<seqs[i][0]<<" "<<seqs[i][1]<<" "<<seqs[i][2]<<std::endl;
-    
-    // expected totals
-    std::vector<double> new_ec(4);
-    new_ec[0] = (nseqs - new_mc[0])*(nseqs - new_mc[1])/nseqs;//
-    new_ec[1] = new_mc[0]*(nseqs - new_mc[1])/nseqs;
-    new_ec[2] = (nseqs - new_mc[0])* new_mc[1]/nseqs;
-    new_ec[3] = new_mc[0]* new_mc[1]/nseqs;
-    //if(i==1)Rcout<<"new_ec[0]="<<new_ec[0]<<" "<<new_ec[1]<<" "<<new_ec[2]<<" "<<new_ec[3]<<std::endl;
-    
+    lfmd[i] = log2( pow(counts_bit[csize - 1], 2)/ ec[csize -1] ) + log2(counts_bit[csize - 1]);
     
     //pmi
-    pmi[i] = log(new_count[3]*nseqs/(new_mc[0]*new_mc[1]));
+    pmi[i] = log2(counts_bit[csize - 1]/ ec[csize -1]);
     
     //logratio
     logratio[i] = 0.0;
     double epsilon = 0.000000001; // to offset zero cell counts
-    for (std::size_t k = 0; k < 4; k++){
-        logratio[i] += new_count[k] * log(new_count[k]/new_ec[k] + epsilon);
+    for (std::size_t k = 0; k < csize; k++){
+        logratio[i] += counts_bit[k] * log(counts_bit[k]/ec[k] + epsilon);
     }
     logratio[i] *= 2;
     
     //chi2
     chi2[i] = 0.0;
-    for (std::size_t k = 0; k < 4; k++){
-        chi2[i] += std::pow((new_count[k] - new_ec[k]), 2)/new_ec[k];
+    for (std::size_t k = 0; k < csize; k++){
+        chi2[i] += std::pow((counts_bit[k] - ec[k]), 2)/ec[k];
     }
 }
 
-extern "C" {
-/* Algorithm AS 51 Appl. Statist. (1972), vol. 21, p. 218
-original (C) Royal Statistical Society 1972
-Performs an iterative proportional fit of the marginal totals of a
-contingency table.
-*/
-#include <math.h>
-
-#include <stdio.h>
-#include <R_ext/Memory.h>
-#include <R_ext/Applic.h>
-
-#undef max
-#undef min
-#undef abs
-#define	max(a, b)		((a) < (b) ? (b) : (a))
-#define	min(a, b)		((a) > (b) ? (b) : (a))
-#define	abs(x)			((x) >= 0 ? (x) : -(x))
-
-/* Algorithm AS 51.1 Appl. Statist. (1972), vol. 21, p. 218
- Computes a marginal table from a complete table.
- All parameters are assumed valid without test.
- The larger table is X and the smaller one is Y.
- */
-
-void collap(int nvar, double *x, double *y, int locy, int *dim, int *config)
-{
-    int i, j, k, l, n, locu, size[nvar + 1], coord[nvar];
-    
-    /* Parameter adjustments */
-    --config;
-    --dim;
-    --x;
-    --y;
-    
-    /* Initialize arrays */
-    
-    size[0] = 1;
-    for (k = 1; k <= nvar; k++) {
-        l = config[k];
-        if (l == 0)  goto L20;
-        size[k] = size[k - 1] * dim[l];
-    }
-    
-    /* Find number of variables in configuration */
-    
-    k = nvar + 1;
-    L20:
-        n = k - 1;
-    
-    /* Initialize Y.  First cell of marginal table is at Y(LOCY) and
-    table has SIZE(K) elements */
-    
-    locu = locy + size[k - 1] - 1;
-    for (j = locy; j <= locu; j++) y[j] = 0.;
-    
-    /* Initialize coordinates */
-    
-    for (k = 0; k < nvar; k++) coord[k] = 0;
-    
-    /* Find locations in tables */
-    i = 1;
-    L60:
-        j = locy;
-    for (k = 1; k <= n; k++) {
-        l = config[k];
-        j += coord[l - 1] * size[k - 1];
-    }
-    y[j] += x[i];
-    
-    /* Update coordinates */
-    
-    i++;
-    for (k = 1; k <= nvar; k++) {
-        coord[k - 1]++;
-        if (coord[k - 1] < dim[k]) goto L60;
-        coord[k - 1] = 0;
-    }
-    
-    return;
-}
-
-
-/* Algorithm AS 51.2 Appl. Statist. (1972), vol. 21, p. 218
-Makes proportional adjustment corresponding to CONFIG.
-All parameters are assumed valid without test.
-*/
-void adjust(int nvar, double *x, double *y, double *z, int *locz,
-            int *dim, int *config, double *d)
-{
-    int i, j, k, l, n, size[nvar + 1], coord[nvar];
-    double e;
-    
-    /* Parameter adjustments */
-    --config;
-    --dim;
-    --x;
-    --y;
-    --z;
-    
-    /* Set size array */
-    
-    size[0] = 1;
-    for (k = 1; k <= nvar; k++) {
-        l = config[k];
-        if (l == 0) goto L20;
-        size[k] = size[k - 1] * dim[l];
-    }
-    
-    /* Find number of variables in configuration */
-    
-    k = nvar + 1;
-    L20:
-        n = k - 1;
-    
-    /* Test size of deviation */
-    
-    l = size[k - 1];
-    j = 1;
-    k = *locz;
-    for (i = 1; i <= l; i++) {
-        e = abs(z[k] - y[j]);
-        if (e > *d) {
-            *d = e;
-        }
-        j++;
-        k++;
-    }
-    
-    /* Initialize coordinates */
-    
-    for (k = 0; k < nvar; k++)  coord[k] = 0;
-    i = 1;
-    
-    /* Perform adjustment */
-    
-    L50:
-        j = 0;
-    for (k = 1; k <= n; k++) {
-        l = config[k];
-        j += coord[l - 1] * size[k - 1];
-    }
-    k = j + *locz;
-    j++;
-    
-    /* Note that Y(J) should be non-negative */
-    
-    if (y[j] <= 0.) x[i] = 0.;
-    if (y[j] > 0.) x[i] = x[i] * z[k] / y[j];
-    
-    /* Update coordinates */
-    
-    i++;
-    for (k = 1; k <= nvar; k++) {
-        coord[k - 1]++;
-        if (coord[k - 1] < dim[k]) goto L50;
-        coord[k - 1] = 0;
-    }
-    
-    return;
-}
-/* Table of constant values */
-
-static void 
-    loglin(int nvar, int *dim, int ncon, int *config, int ntab,
-           double *table, double *fit, int *locmar, int nmar, double *marg,
-           int nu, double *u, double maxdev, int maxit,
-           double *dev, int *nlast, int *ifault)
-    {
-        // nvar could be zero (no-segfault test)
-        if (!nvar) Rcout<< "no variables" << endl;  // not translated
-        int i, j, k, n, point, size, check[nvar], icon[nvar];
-        double x, y, xmax;
-        
-        /* Parameter adjustments */
-        --dim;
-        --locmar;
-        config -= nvar + 1;
-        --fit;
-        --table;
-        --marg;
-        --u;
-        --dev;
-        
-        /* Function body */
-        
-        *ifault = 0;
-        *nlast = 0;
-        
-        /* Check validity of NVAR, the number of variables, and of maxit,
-        the maximum number of iterations */
-        
-        if (nvar > 0 && maxit > 0) goto L10;
-        L5:
-            *ifault = 4;
-        return;
-        
-        /* Look at table and fit constants */
-        
-        L10:
-            size = 1;
-        for (j = 1; j <= nvar; j++) {
-            if (dim[j] <= 0) goto L5;
-            size *= dim[j];
-        }
-        if (size <= ntab) goto L40;
-        L35:
-            *ifault = 2;
-        return;
-        L40:
-            x = 0.;
-        y = 0.;
-        for (i = 1; i <= size; i++) {
-            if (table[i] < 0. || fit[i] < 0.) goto L5;
-            x += table[i];
-            y += fit[i];
-        }
-        
-        /* Make a preliminary adjustment to obtain the fit to an empty
-        configuration list */
-        
-        if (y == 0.) goto L5;
-        x /= y;
-        for (i = 1; i <= size; i++) fit[i] = x * fit[i];
-        if (ncon <= 0 || config[nvar + 1] == 0) return;
-        
-        /* Allocate marginal tables */
-        
-        point = 1;
-        for (i = 1; i <= ncon; i++) {
-            /* A zero beginning a configuration indicates that the list is
-            completed */
-            if (config[i * nvar + 1] == 0)  goto L160;
-            /* Get marginal table size.  While doing this task, see if the
-            configuration list contains duplications or elements out of
-            range. */
-            size = 1;
-            for (j = 0; j < nvar; j++) check[j] = 0;
-            for (j = 1; j <= nvar; j++) {
-                k = config[j + i * nvar];
-                /* A zero indicates the end of the string. */
-                if (k == 0) goto L130;
-                /* See if element is valid. */
-                if (k >= 0 && k <= nvar) goto L100;
-                L95:
-                    *ifault = 1;
-                return;
-                /* Check for duplication */
-                L100:
-                    if (check[k - 1]) goto L95;
-                    check[k - 1] = 1;
-                    /* Get size */
-                    size *= dim[k];
-            }
-            
-            /* Since U is used to store fitted marginals, size must not
-            exceed NU */
-            L130:
-                if (size > nu) goto L35;
-                
-                /* LOCMAR points to marginal tables to be placed in MARG */
-                locmar[i] = point;
-                point += size;
-        }
-        
-        /* Get N, number of valid configurations */
-        
-        i = ncon + 1;
-        L160:
-            n = i - 1;
-        
-        /* See if MARG can hold all marginal tables */
-        
-        if (point > nmar + 1) goto L35;
-        
-        /* Obtain marginal tables */
-        
-        for (i = 1; i <= n; i++) {
-            for (j = 1; j <= nvar; j++) {
-                icon[j - 1] = config[j + i * nvar];
-            }
-            collap(nvar, &table[1], &marg[1], locmar[i], &dim[1], icon);
-        }
-        
-        /* Perform iterations */
-        
-        for (k = 1; k <= maxit; k++) {
-            /* XMAX is maximum deviation observed between fitted and true
-            marginal during a cycle */
-            xmax = 0.;
-            for (i = 1; i <= n; i++) {
-                for (j = 1; j <= nvar; j++) icon[j - 1] = config[j + i * nvar];
-                collap(nvar, &fit[1], &u[1], 1, &dim[1], icon);
-                adjust(nvar, &fit[1], &u[1], &marg[1], &locmar[i], &dim[1], icon, &xmax);
-            }
-            /* Test convergence */
-            dev[k] = xmax;
-            if (xmax < maxdev) goto L240;
-        }
-        if (maxit > 1) goto L230;
-        *nlast = 1;
-        return;
-        
-        /* No convergence */
-        L230:
-            *ifault = 3;
-        *nlast = maxit;
-        return;
-        
-        /* Normal termination */
-        L240:
-            *nlast = k;
-        
-        return;
-    }
-#undef max
-#undef min
-#undef abs
-}
-
-Rcpp::List loglin_cpp(const IntegerVector &dtab_,
-                      IntegerMatrix &conf,
-                      const NumericVector table_,
-                      NumericVector start,
-                      const int snmar,
-                      const double eps,
-                      const int iter){
-    
-    
-    int nvar = dtab_.size();
-    int ncon = conf.cols();
-    int ntab = table_.size();
-    int nmar = snmar;
-    int maxit = iter;
-    int nlast, ifault;
-    double maxdev = eps;
-    
-    std::vector<int> locmar(ncon);
-    std::vector<double> marg(nmar);
-    std::vector<double> u(ntab);
-    std::vector<double> dev(maxit);
-    std::vector<double> fit = as< std::vector<double> >(start);
-    std::vector<double> table = as< std::vector<double> >(table_);
-    std::vector<int> dtab = as< std::vector<int> >(dtab_);
-    
-    loglin(nvar, &dtab[0], ncon, &conf[0], ntab,
-           &table[0], &fit[0], &locmar[0], nmar, &marg[0],
-                                                      ntab, &u[0], maxdev, maxit, &dev[0], &nlast, &ifault);
-    
-    switch(ifault) {
-    case 1:
-    case 2:
-        Rcout << "this should not happen" << endl; break;
-    case 3:
-        Rcout<< "algorithm did not converge"<<endl; break;
-    case 4:
-        Rcout << "incorrect specification of 'table' or 'start'" << endl; break;
-    default: 
-        break;
-    }
-    return Rcpp::List::create(Rcpp::Named("fit") = as<NumericVector>(wrap(fit)),
-                              Rcpp::Named("dev") = as<NumericVector>(wrap(dev)),
-                              Rcpp::Named("nlast") = nlast);
-}
 
 
 
-// diable templately for output counts
+
+// disable templately for output counts
 // struct estimates_mt : public Worker{
 //     VecNgrams &seqs_np;
 //     IntParams &cs_np;
@@ -651,11 +610,11 @@ Rcpp::List loglin_cpp(const IntegerVector &dtab_,
 
 // [[Rcpp::export]]
 DataFrame qatd_cpp_collocations(const List &texts_,
-                             const CharacterVector &types_,
-                             const unsigned int count_min,
-                             const IntegerVector sizes_,
-                             const String &method,
-                             const double smoothing){
+                                const CharacterVector &types_,
+                                const unsigned int count_min,
+                                const IntegerVector sizes_,
+                                const String &method,
+                                const double smoothing){
     
     Texts texts = as<Texts>(texts_);
     std::vector<unsigned int> sizes = as< std::vector<unsigned int> >(sizes_);
@@ -820,10 +779,8 @@ DataFrame qatd_cpp_collocations(const List &texts_,
 
 
 /***R
-
 toks <- tokens(data_corpus_inaugural)
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-
 #toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
 #types <- unique(as.character(toks))
 #out2 <- qatd_cpp_sequences(toks, types, 1, 2, "lambda1",0.5)
@@ -835,5 +792,4 @@ txt <- "A gains capital B C capital gains A B capital C capital gains tax gains 
 toks <- tokens(txt)
 types <- unique(as.character(toks))
 out2 <- qatd_cpp_collocations(toks, types, 1, 3, "lambda", 0.0)
-
 */
