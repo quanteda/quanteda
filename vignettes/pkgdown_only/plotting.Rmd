@@ -19,28 +19,24 @@ This vignette walks through various plot options available in **quanteda** throu
 
 ## 1. Wordcloud 
 
-Plotting a `dfm` object will create a wordcloud using the `wordcloud` pacakge.
+Plotting a `dfm` object will create a wordcloud using the **wordcloud** pacakge.
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-# Create new document-level variable for each speech
-docvars(data_corpus_inaugural, "Year-Speech") <- paste0(docvars(data_corpus_inaugural, "Year"), "-", docvars(data_corpus_inaugural, "President")) 
-
-# Create a dfm from a somewhat smaller corpus
 dfm_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) %>% 
-  dfm(remove = stopwords('english'), remove_punct = TRUE)
+    dfm(remove = stopwords('english'), remove_punct = TRUE) %>%
+    dfm_trim(min_count = 10, verbose = FALSE)
 
-# Some words will not fit on a plot this size, so suppress those warings
-textplot_wordcloud(dfm_trim(dfm_inaug, min_count = 10, verbose = FALSE))
+textplot_wordcloud(dfm_inaug)
 ```
 
 You can also plot a "comparison cloud", but this can only be done with fewer than eight documents:
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-dfm_comp <- corpus_subset(data_corpus_inaugural, 
-                         President %in% c("Washington", "Jefferson", "Madison")) %>%
-    dfm(groups = "Year-Speech", remove = stopwords("english"), remove_punct = TRUE)
-
-textplot_wordcloud(dfm_trim(dfm_comp, min_count = 5, verbose = FALSE), comparison = TRUE)
+corpus_subset(data_corpus_inaugural, 
+              President %in% c("Washington", "Jefferson", "Madison")) %>%
+    dfm(groups = "President", remove = stopwords("english"), remove_punct = TRUE) %>%
+    dfm_trim(min_count = 5, verbose = FALSE) %>%
+    textplot_wordcloud(comparison = TRUE)
 ```
 
 Plot will pass through additional arguments to the underlying call to `wordcloud`.
@@ -54,10 +50,10 @@ textplot_wordcloud(dfm_inaug, min.freq = 10,
 Plotting a `kwic` object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text.  We call these "x-ray" plots due to their similarity to the data produced by [Amazon's "x-ray" feature for Kindle books](https://en.wikipedia.org/wiki/X-Ray_(Amazon_Kindle)).
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-# Subset the corpus
-data_corpus_inaugural_subset <- corpus_subset(data_corpus_inaugural, Year > 1949)
-
-textplot_xray(kwic(data_corpus_inaugural_subset, "american"))
+data_corpus_inaugural_subset <- 
+    corpus_subset(data_corpus_inaugural, Year > 1949)
+kwic(data_corpus_inaugural_subset, pattern = "american") %>%
+    textplot_xray()
 ```
 
 You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
@@ -74,7 +70,6 @@ If you're only plotting a single document, but with multiple keywords, then the 
 ```{r eval=TRUE, fig.width=8, fig.height=1.25}
 require(readtext)
 data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
-
 textplot_xray(
     kwic(data_char_mobydick, "whale"),
     kwic(data_char_mobydick, "ahab")
@@ -85,10 +80,10 @@ You might also have noticed that the x-axis scale is the absolute token index fo
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 textplot_xray(
-     kwic(data_corpus_inaugural_subset, "american"),
-     kwic(data_corpus_inaugural_subset, "people"),
-     kwic(data_corpus_inaugural_subset, "communist"),
-     scale = 'absolute'
+    kwic(data_corpus_inaugural_subset, "american"),
+    kwic(data_corpus_inaugural_subset, "people"),
+    kwic(data_corpus_inaugural_subset, "communist"),
+    scale = "absolute"
 )
 ```
 
@@ -99,12 +94,12 @@ In this case, the texts may not have the same length, so the tokens that don't e
 The object returned is a ggplot object, which can be modified using ggplot:
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-library(ggplot2)
+library("ggplot2")
 theme_set(theme_bw())
 g <- textplot_xray(
-     kwic(data_corpus_inaugural_subset, "american"),
-     kwic(data_corpus_inaugural_subset, "people"),
-     kwic(data_corpus_inaugural_subset, "communist")
+    kwic(data_corpus_inaugural_subset, "american"),
+    kwic(data_corpus_inaugural_subset, "people"),
+    kwic(data_corpus_inaugural_subset, "communist")
 )
 g + aes(color = keyword) + scale_color_manual(values = c("blue", "red", "green"))
 
@@ -130,7 +125,8 @@ If you wanted to compare the frequency of a single term across different texts, 
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 # Get frequency grouped by president
-freq_grouped <- textstat_frequency(dfm(data_corpus_inaugural_subset), groups = "Year-Speech")
+freq_grouped <- textstat_frequency(dfm(data_corpus_inaugural_subset), 
+                                   groups = "President")
 
 # Filter the term "american"
 freq_american <- subset(freq_grouped, feature %in% "american")  
@@ -149,7 +145,7 @@ The above plots are raw frequency plots. For relative frequency plots, (word cou
 dfm_rel_freq <- dfm_weight(dfm(data_corpus_inaugural_subset), type='relFreq') * 100
 head(dfm_rel_freq)
 
-rel_freq <- textstat_frequency(dfm_rel_freq, groups = "Year-Speech")
+rel_freq <- textstat_frequency(dfm_rel_freq, groups = "President")
 
 # Filter the term "american"
 rel_freq_american <- subset(rel_freq, feature %in% "american")  
@@ -171,8 +167,7 @@ dfm_weight_pres <- data_corpus_inaugural %>%
      dfm_weight(type = "relfreq")
 
 # Calculate relative frequency by president
-freq_weight <- textstat_frequency(dfm_weight_pres, n = 10, 
-                                  groups = "Year-Speech")
+freq_weight <- textstat_frequency(dfm_weight_pres, n = 10, groups = "President")
 
 ggplot(data = freq_weight, aes(x = nrow(freq_weight):1, y = frequency)) +
      geom_point() +
@@ -194,8 +189,7 @@ pres_corpus <- corpus_subset(data_corpus_inaugural,
                             President %in% c("Obama", "Trump"))
 
 # Create a dfm grouped by president
-pres_dfm <- dfm(pres_corpus, groups = "President", 
-                remove = stopwords("english"),
+pres_dfm <- dfm(pres_corpus, groups = "President", remove = stopwords("english"), 
                 remove_punct = TRUE)
 
 # Calculate keyness and determine Trump as target group
@@ -224,7 +218,7 @@ ie_dfm <- dfm(data_corpus_irishbudget2010, verbose=FALSE)
 refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 
 # Predict Wordscores model
-ws <- textmodel(ie_dfm, refscores, model="wordscores", smooth = 1)
+ws <- textmodel(ie_dfm, refscores, model = "wordscores", smooth = 1)
 
 # Get predictions
 pred <- predict(ws)
