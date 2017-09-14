@@ -1,5 +1,5 @@
 load("/home/kohei/Documents/Brexit/Analysis/data_tokens_guardian.RData")
-toks <- tokens(data_tokens_guardian)
+toks <- data_tokens_guardian
 
 dict <- dictionary(list(country = "united states", 
                         law=c('law*', 'constitution'), 
@@ -53,10 +53,13 @@ microbenchmark::microbenchmark(
     times=1
 )
 
-
-system.time(tokens_lookup(toks, dict_liwc, valuetype='glob', verbose=TRUE))
-
 profvis::profvis(tokens_lookup(toks, dict_liwc, valuetype='glob', verbose=FALSE))
 
+type <- char_tolower(attr(toks, 'types'))
+type <- type[stringi::stri_detect_regex(type, '^[a-zA-Z]+$')]
+stem <- char_wordstem(type)
 
+dict_stem <- dictionary(split(type, stem))
+length(dict_stem) #216000
 
+profvis::profvis(tokens_lookup(toks, dict_stem[1:10], valuetype='fixed', exclusive = FALSE, verbose=FALSE))
