@@ -489,7 +489,6 @@ void estimates(std::size_t i,
                DoubleParams &chi2,
                DoubleParams &gensim,
                DoubleParams &lfmd,
-               std::vector<double> &counts_bit,         // output counts
                const String &method,
                const int &count_min,
                const double nseqs,
@@ -499,7 +498,7 @@ void estimates(std::size_t i,
     if (n == 1) return; // ignore single words
     if (cs_np[i] < count_min) return;
     //output counts
-    //std::vector<double> counts_bit(std::pow(2, n), smoothing);// use 1/2 as smoothing
+    std::vector<double> counts_bit(std::pow(2, n), smoothing);// use 1/2 as smoothing
     for (std::size_t j = 0; j < seqs.size(); j++) {
         //if (i == j) continue; // do not compare with itself
         
@@ -563,7 +562,6 @@ void estimates(std::size_t i,
     }
 }
 
-// disable templately for output counts
 // struct estimates_mt : public Worker{
 //     VecNgrams &seqs_np;
 //     IntParams &cs_np;
@@ -653,8 +651,8 @@ DataFrame qatd_cpp_collocations(const List &texts_,
     seqs_all.reserve(len_coe);
     
     //output oberved counting
-    std::vector<std::string> ob_all;
-    ob_all.reserve(len_coe);
+    //std::vector<std::string> ob_all;
+    //ob_all.reserve(len_coe);
     
     for(unsigned int m = 0; m < sizes.size(); m++){
         unsigned int mw_len = sizes[m];
@@ -701,7 +699,7 @@ DataFrame qatd_cpp_collocations(const List &texts_,
         }
         
         //output counts;
-        std::vector<std::string> ob_n(len_noPadding);
+        //std::vector<std::string> ob_n(len_noPadding);
         
         
         // adjust total_counts of MW 
@@ -722,19 +720,19 @@ DataFrame qatd_cpp_collocations(const List &texts_,
         //        parallelFor(0, seqs_np.size(), estimate_mt);
         //#else
         for (std::size_t i = 0; i < seqs_np.size(); i++) {
-            std::vector<double> count_bit(std::pow(2, mw_len), smoothing);
-            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, count_bit, method, count_min, total_counts, smoothing);
+            //std::vector<double> count_bit(std::pow(2, mw_len), smoothing);
+            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
             
             // Convert sequences from integer to character
-            std::ostringstream out;
-            out<<std::setprecision(1)<<std::fixed<<std::showpoint<< count_bit[0];
-            std::string this_count = out.str();
-            for (std::size_t j = 1; j < count_bit.size(); j++) {
-                std::ostringstream out;
-                out<<std::setprecision(1)<<std::fixed<<std::showpoint<< count_bit[j];
-                this_count = this_count + '_' + out.str();
-            }
-            ob_n[i] = this_count;
+            // std::ostringstream out;
+            // out<<std::setprecision(1)<<std::fixed<<std::showpoint<< count_bit[0];
+            // std::string this_count = out.str();
+            // for (std::size_t j = 1; j < count_bit.size(); j++) {
+            //     std::ostringstream out;
+            //     out<<std::setprecision(1)<<std::fixed<<std::showpoint<< count_bit[j];
+            //     this_count = this_count + '_' + out.str();
+            // }
+            // ob_n[i] = this_count;
             ///end of out
         }
         //#endif
@@ -749,7 +747,7 @@ DataFrame qatd_cpp_collocations(const List &texts_,
         lfmd_all.insert( lfmd_all.end(), lfmd.begin(), lfmd.end() );
         
         //output counts
-        ob_all.insert( ob_all.end(), ob_n.begin(), ob_n.end() );
+        //ob_all.insert( ob_all.end(), ob_n.begin(), ob_n.end() );
         
     }
     
@@ -770,7 +768,6 @@ DataFrame qatd_cpp_collocations(const List &texts_,
                                           _["G2"] = as<NumericVector>(wrap(logratio_all)),
                                           _["chi2"] = as<NumericVector>(wrap(chi2_all)),
                                           _["LFMD"] = as<NumericVector>(wrap(lfmd_all)),
-                                          _["observed_counts"] = ob_all,
                                           _["stringsAsFactors"] = false);
     return output_;
 }
