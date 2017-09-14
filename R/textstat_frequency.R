@@ -33,11 +33,12 @@
 #'
 #' \donttest{
 #' # plot 20 most frequent words
-#' library("ggplot2")
+#' require("ggplot2")
+#' require("dplyr")
 #' ggplot(freq[1:20, ], aes(x = reorder(feature, frequency), y = frequency)) +
-#'   geom_point() + 
-#'   coord_flip() +
-#'   labs(x = NULL, y = "Frequency")
+#'     geom_point() + 
+#'     coord_flip() +
+#'     labs(x = NULL, y = "Frequency")
 #' 
 #' # plot relative frequencies by group
 #' dfm_weight_pres <- data_corpus_inaugural %>% 
@@ -50,14 +51,13 @@
 #'                                   groups = "President")
 #' 
 #' # plot frequencies
-#' ggplot(data = freq_ordered, aes(x = nrow(freq_weight):1, y = frequency)) +
+#' ggplot(data = freq_weight, aes(x = nrow(freq_weight):1, y = frequency)) +
 #'     geom_point() +
 #'     facet_wrap(~ group, scales = "free") +
 #'     coord_flip() +
-#'     scale_x_continuous(breaks = nrow(freq_weight):1, 
-#'                        labels = freq_ordered$feature) +
+#'     scale_x_continuous(breaks = nrow(freq_weight):1,
+#'                        labels = freq_weight$feature) +
 #'     labs(x = NULL, y = "Relative frequency")
-#' }
 #' @export
 #' @keywords plot
 textstat_frequency <- function(x, n = NULL, groups = NULL) {
