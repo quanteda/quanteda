@@ -122,6 +122,22 @@ $(document).ready(function () {
 
 <div id="r-markdown" class="section level2">
 <h2>R Markdown</h2>
+<div id="bigram" class="section level3">
+<h3>bigram</h3>
+<pre class="r"><code>toks2 &lt;- tokens(data_corpus_inaugural)
+toks2 &lt;- tokens_remove(toks2, stopwords(&quot;english&quot;), padding = TRUE)
+toks2 &lt;- tokens_select(toks2, &quot;^([A-Z][a-z\\-]{2,})&quot;, valuetype = &quot;regex&quot;, 
+                        case_insensitive = FALSE, padding = TRUE)
+microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 2, tolower = FALSE, method=&quot;all&quot;, path=1),  
+path_C = textstat_collocations(toks2, size = 2, tolower = FALSE, method=&quot;all&quot;, path=2), 
+times = 20, unit = &quot;relative&quot;)</code></pre>
+<pre><code>## Unit: relative
+##    expr      min       lq     mean   median       uq      max neval
+##  path_R 1.328061 1.329014 1.265868 1.313977 1.303947 1.134771    20
+##  path_C 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20</code></pre>
+</div>
+<div id="trigram" class="section level3">
+<h3>trigram</h3>
 <pre class="r"><code>toks2 &lt;- tokens(data_corpus_inaugural)
 toks2 &lt;- tokens_remove(toks2, stopwords(&quot;english&quot;), padding = TRUE)
 toks2 &lt;- tokens_select(toks2, &quot;^([A-Z][a-z\\-]{2,})&quot;, valuetype = &quot;regex&quot;, 
@@ -131,8 +147,23 @@ path_C = textstat_collocations(toks2, size = 3, tolower = FALSE, method=&quot;al
 times = 20, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
 ##    expr      min       lq     mean   median      uq      max neval
-##  path_R 1.229621 1.201915 1.446322 1.666452 1.58023 1.105525    20
+##  path_R 1.246351 1.219621 1.401677 1.223263 1.22831 2.905272    20
 ##  path_C 1.000000 1.000000 1.000000 1.000000 1.00000 1.000000    20</code></pre>
+</div>
+<div id="grams" class="section level3">
+<h3>4-grams</h3>
+<pre class="r"><code>toks2 &lt;- tokens(data_corpus_inaugural)
+toks2 &lt;- tokens_remove(toks2, stopwords(&quot;english&quot;), padding = TRUE)
+toks2 &lt;- tokens_select(toks2, &quot;^([A-Z][a-z\\-]{2,})&quot;, valuetype = &quot;regex&quot;, 
+                        case_insensitive = FALSE, padding = TRUE)
+microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 4, tolower = FALSE, method=&quot;all&quot;, path=1),  
+path_C = textstat_collocations(toks2, size = 4, tolower = FALSE, method=&quot;all&quot;, path=2), 
+times = 20, unit = &quot;relative&quot;)</code></pre>
+<pre><code>## Unit: relative
+##    expr     min       lq     mean   median       uq     max neval
+##  path_R 1.16592 1.165594 1.235987 1.140174 1.134903 2.72938    20
+##  path_C 1.00000 1.000000 1.000000 1.000000 1.000000 1.00000    20</code></pre>
+</div>
 </div>
 
 
