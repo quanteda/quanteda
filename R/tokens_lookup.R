@@ -111,14 +111,15 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     }
     if (exclusive) {
         if (!is.null(nomatch)) {
-            x <- qatd_cpp_tokens_lookup(x, c(keys, nomatch), values_id, keys_id, FALSE, TRUE)
+            x <- qatd_cpp_tokens_lookup(x, c(keys, nomatch), values_id, keys_id, FALSE, 1)
         } else {
-            x <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE, FALSE)
+            x <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE, 0)
         }
     } else {
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
-        x <- qatd_cpp_tokens_match(x, c(types, keys), values_id, keys_id + length(types), FALSE)
+        x <- qatd_cpp_tokens_lookup(x, c(keys, types), values_id, keys_id, FALSE, 2)
+        #x <- qatd_cpp_tokens_match(x, c(types, keys), values_id, keys_id + length(types), FALSE)
     }
     attr(x, "what") <- "dictionary"
     attr(x, "dictionary") <- dictionary

@@ -198,7 +198,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_lookup
-List qatd_cpp_tokens_lookup(const List& texts_, const CharacterVector types_, const List& keys_, const IntegerVector& ids_, const bool overlap, const bool nomatch);
+List qatd_cpp_tokens_lookup(const List& texts_, const CharacterVector types_, const List& keys_, const IntegerVector& ids_, const bool overlap, const int nomatch);
 RcppExport SEXP _quanteda_qatd_cpp_tokens_lookup(SEXP texts_SEXP, SEXP types_SEXP, SEXP keys_SEXP, SEXP ids_SEXP, SEXP overlapSEXP, SEXP nomatchSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -208,23 +208,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const List& >::type keys_(keys_SEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type ids_(ids_SEXP);
     Rcpp::traits::input_parameter< const bool >::type overlap(overlapSEXP);
-    Rcpp::traits::input_parameter< const bool >::type nomatch(nomatchSEXP);
+    Rcpp::traits::input_parameter< const int >::type nomatch(nomatchSEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_lookup(texts_, types_, keys_, ids_, overlap, nomatch));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_tokens_match
-List qatd_cpp_tokens_match(const List& texts_, const CharacterVector types_, const List& words_, const IntegerVector& ids_, const bool& overlap);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_match(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP ids_SEXP, SEXP overlapSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
-    Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type ids_(ids_SEXP);
-    Rcpp::traits::input_parameter< const bool& >::type overlap(overlapSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_match(texts_, types_, words_, ids_, overlap));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -378,7 +363,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_tokens_detect", (DL_FUNC) &_quanteda_qatd_cpp_tokens_detect, 2},
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 5},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
-    {"_quanteda_qatd_cpp_tokens_match", (DL_FUNC) &_quanteda_qatd_cpp_tokens_match, 5},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
     {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 2},
     {"_quanteda_qatd_cpp_tokens_replace", (DL_FUNC) &_quanteda_qatd_cpp_tokens_replace, 4},
