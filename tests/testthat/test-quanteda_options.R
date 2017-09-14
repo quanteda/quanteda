@@ -10,7 +10,6 @@ test_that("quanteda_options initialize works correctly", {
     quanteda_options(threads = threads_temp)
 })
 
-
 test_that("quanteda_options returns an error for non-existing options", {
     expect_error(
         quanteda_options(notanoption = TRUE),
@@ -66,5 +65,23 @@ test_that("quanteda_options reset works correctly", {
     expect_equal(
         quanteda_options(),
         qopts        
+    )
+})
+
+test_that("quanteda_options works with threads", {
+    
+    quanteda_options(reset = TRUE)
+    expect_equal(
+        as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS')),
+        max(1L, floor(RcppParallel::defaultNumThreads() / 2))
+    )
+    expect_equal(
+        as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS')),
+        quanteda_options("threads")
+    )
+    quanteda_options(threads = 2)
+    expect_equal(
+        quanteda_options("threads"),
+        as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS'))
     )
 })

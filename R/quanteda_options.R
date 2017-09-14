@@ -119,9 +119,9 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
         }
         
         # assign the key-value
-        opt_list <- list(value)
-        names(opt_list) <- paste0("quanteda_", key)
-        options(opt_list)
+        options <- list(value)
+        names(options) <- paste0("quanteda_", key)
+        options(options)
     }
     
     return(invisible(TRUE))
@@ -129,18 +129,19 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
 
 
 quanteda_initialize <- function() {
-    apply_list <- QUANTEDA_OPTION_LIST
-    for (opt in names(QUANTEDA_OPTION_LIST)) {
-        if (!is.null(getOption(opt)))
-            apply_list[opt] <- NULL
+    options <- QUANTEDA_OPTION_LIST
+    for (oname in names(options)) {
+        if (!is.null(getOption(oname)))
+            options[oname] <- NULL # do not overwrite existing settings
     }
-    # quanteda_options(threads = QUANTEDA_OPTION_LIST$quanteda_threads)
-    options(apply_list)
+    names(options) <- stri_replace_first_fixed(names(options), 'quanteda_', '')
+    quanteda_options(options)
     return(invisible(TRUE))
 }
 
 quanteda_reset <- function() {
-    # quanteda_options(threads = QUANTEDA_OPTION_LIST$quanteda_threads)
-    options(QUANTEDA_OPTION_LIST)
+    options <- QUANTEDA_OPTION_LIST
+    names(options) <- stri_replace_first_fixed(names(options), 'quanteda_', '')
+    quanteda_options(options)
     return(invisible(TRUE))
 }
