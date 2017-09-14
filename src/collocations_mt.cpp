@@ -562,37 +562,37 @@ void estimates(std::size_t i,
     }
 }
 
-// struct estimates_mt : public Worker{
-//     VecNgrams &seqs_np;
-//     IntParams &cs_np;
-//     VecNgrams &seqs;
-//     IntParams &cs;
-//     DoubleParams &sgma;
-//     DoubleParams &lmda;
-//     DoubleParams &dice;
-//     DoubleParams &pmi;
-//     DoubleParams &logratio;
-//     DoubleParams &chi2;
-//     DoubleParams &gensim;
-//     DoubleParams &lfmd;
-//     const String &method;
-//     const unsigned int &count_min;
-//     const double nseqs;
-//     const double smoothing;
-// 
-//     // Constructor
-//     estimates_mt(VecNgrams &seqs_np_, IntParams &cs_np_, VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_, 
-//                  DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, const String &method,
-//                  const unsigned int &count_min_, const double nseqs_, const double smoothing_):
-//         seqs_np(seqs_np_), cs_np(cs_np_), seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_), 
-//         gensim(gensim_), lfmd(lfmd_), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
-//     
-//     void operator()(std::size_t begin, std::size_t end){
-//         for (std::size_t i = begin; i < end; i++) {
-//                 estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, nseqs, smoothing);
-//         }
-//     }
-// };
+struct estimates_mt : public Worker{
+    VecNgrams &seqs_np;
+    IntParams &cs_np;
+    VecNgrams &seqs;
+    IntParams &cs;
+    DoubleParams &sgma;
+    DoubleParams &lmda;
+    DoubleParams &dice;
+    DoubleParams &pmi;
+    DoubleParams &logratio;
+    DoubleParams &chi2;
+    DoubleParams &gensim;
+    DoubleParams &lfmd;
+    const String &method;
+    const unsigned int &count_min;
+    const double nseqs;
+    const double smoothing;
+
+    // Constructor
+    estimates_mt(VecNgrams &seqs_np_, IntParams &cs_np_, VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_,
+                 DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, const String &method,
+                 const unsigned int &count_min_, const double nseqs_, const double smoothing_):
+        seqs_np(seqs_np_), cs_np(cs_np_), seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_),
+        gensim(gensim_), lfmd(lfmd_), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
+
+    void operator()(std::size_t begin, std::size_t end){
+        for (std::size_t i = begin; i < end; i++) {
+                estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, nseqs, smoothing);
+        }
+    }
+};
 
 /* 
 * This funciton estimate the strength of association between specified words 
@@ -715,10 +715,10 @@ DataFrame qatd_cpp_collocations(const List &texts_,
         DoubleParams gensim(len_noPadding);
         DoubleParams lfmd(len_noPadding);
         //dev::start_timer("Estimate", timer);
-        //#if QUANTEDA_USE_TBB
-        //        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
-        //        parallelFor(0, seqs_np.size(), estimate_mt);
-        //#else
+#if QUANTEDA_USE_TBB
+        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
+        parallelFor(0, seqs_np.size(), estimate_mt);
+#else
         for (std::size_t i = 0; i < seqs_np.size(); i++) {
             //std::vector<double> count_bit(std::pow(2, mw_len), smoothing);
             estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
@@ -735,7 +735,7 @@ DataFrame qatd_cpp_collocations(const List &texts_,
             // ob_n[i] = this_count;
             ///end of out
         }
-        //#endif
+#endif
         //dev::stop_timer("Estimate", timer);
         sgma_all.insert( sgma_all.end(), sgma.begin(), sgma.end() );
         lmda_all.insert( lmda_all.end(), lmda.begin(), lmda.end() );
