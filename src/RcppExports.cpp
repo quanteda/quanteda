@@ -6,16 +6,16 @@
 
 using namespace Rcpp;
 
-// cacpp
-arma::sp_mat cacpp(const arma::sp_mat& objm, unsigned int threads, const double residual_floor);
-RcppExport SEXP _quanteda_cacpp(SEXP objmSEXP, SEXP threadsSEXP, SEXP residual_floorSEXP) {
+// qutd_cpp_ca
+arma::sp_mat qutd_cpp_ca(const arma::sp_mat& objm, unsigned int threads, const double residual_floor);
+RcppExport SEXP _quanteda_qutd_cpp_ca(SEXP objmSEXP, SEXP threadsSEXP, SEXP residual_floorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type objm(objmSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type threads(threadsSEXP);
     Rcpp::traits::input_parameter< const double >::type residual_floor(residual_floorSEXP);
-    rcpp_result_gen = Rcpp::wrap(cacpp(objm, threads, residual_floor));
+    rcpp_result_gen = Rcpp::wrap(qutd_cpp_ca(objm, threads, residual_floor));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -348,7 +348,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_quanteda_cacpp", (DL_FUNC) &_quanteda_cacpp, 3},
+    {"_quanteda_qutd_cpp_ca", (DL_FUNC) &_quanteda_qutd_cpp_ca, 3},
     {"_quanteda_qatd_ManhattanPara_cpp", (DL_FUNC) &_quanteda_qatd_ManhattanPara_cpp, 2},
     {"_quanteda_qatd_ManhattanPara_cpp2", (DL_FUNC) &_quanteda_qatd_ManhattanPara_cpp2, 3},
     {"_quanteda_qatd_MaximumPara_cpp", (DL_FUNC) &_quanteda_qatd_MaximumPara_cpp, 2},
