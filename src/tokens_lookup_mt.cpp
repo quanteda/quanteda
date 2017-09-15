@@ -37,16 +37,18 @@ Text lookup(Text tokens,
                 unsigned int id = it->second;
                 //Rcout << "id " << id << "\n";
                 if (!overlap) {
-                    std::vector< bool > &flags_temp = flags_match[id - 1];
-                    bool flaged = std::any_of(flags_temp.begin() + i, flags_temp.begin() + i + span, [](bool v) { return v; });
-                    if (!flaged) {
+                    std::vector< bool > &flags_match_temp = flags_match[id - 1];
+                    bool flagged = std::any_of(flags_match_temp.begin() + i, flags_match_temp.begin() + i + span, [](bool v) { return v; });
+                    if (!flagged) {
                         keys[i].push_back(id); // keep multiple keys in the same position
-                        std::fill(flags_temp.begin() + i, flags_temp.begin() + i + span, true); // mark tokens matched
+                        std::fill(flags_match_temp.begin() + i, flags_match_temp.begin() + i + span, true); // for each key
+                        std::fill(flags_match_any.begin() + i, flags_match_any.begin() + i + span, true); // for all keys
                         match++;
                     }
                 } else {
                     keys[i].push_back(id); // keep multiple keys in the same position
                     flags_match_any[i] = true;
+                    std::fill(flags_match_any.begin() + i, flags_match_any.begin() + i + span, true); //  for all keys
                     match++;
                 }
             }
@@ -71,18 +73,7 @@ Text lookup(Text tokens,
         }
     }
     
-    // Merge match flags
-    if (!overlap) {
-        for (size_t h = 0; h < flags_match.size(); h++) {
-            for (size_t i = 0; i < flags_match[h].size(); i++) {
-                if (flags_match[h][i]) {
-                    flags_match_any[i] = true;
-                }
-            }
-        }
-    }
-    
-    // Flatten the vector of vector
+    // Flatten the vector of vectors
     Text keys_flat;
     if (nomatch > 0) {
         keys_flat.reserve(match + tokens.size());
@@ -142,7 +133,7 @@ struct lookup_mt : public Worker{
 * @param words_ list of patterns to find
 * @param ids_ IDs of patterns
 * @param overlap count overlapped words if true
-* @param nomatch determine how to treat unmached words: 0=ignore, 1=keep; 2=pad
+* @param nomatch determine how to treat unmached words: 0=remove, 1=keep; 2=pad
 */
 
 
