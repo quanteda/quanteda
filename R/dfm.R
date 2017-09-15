@@ -176,7 +176,7 @@ dfm.corpus <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"),
                        ...) {
-    dfm.tokenizedTexts(tokens(x, ...),  
+    dfm(tokens(x, ...),  
         tolower = tolower, 
         stem = stem, 
         select = select, remove = remove, 
@@ -185,7 +185,6 @@ dfm.corpus <- function(x,
         verbose = verbose)
 }    
 
-    
 #' @noRd
 #' @importFrom utils glob2rx
 #' @export
@@ -200,17 +199,39 @@ dfm.tokenizedTexts <- function(x,
                                groups = NULL, 
                                verbose = quanteda_options("verbose"), 
                                ...) {
+    dfm(as.tokens(x),  
+        tolower = tolower, 
+        stem = stem, 
+        select = select, remove = remove, 
+        dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
+        groups = groups, 
+        verbose = verbose, ...)
+}
+    
+#' @noRd
+#' @importFrom utils glob2rx
+#' @export
+dfm.tokens <- function(x, 
+                       tolower = TRUE,
+                       stem = FALSE, 
+                       select = NULL,
+                       remove = NULL,
+                       dictionary = NULL,
+                       thesaurus = NULL,
+                       valuetype = c("glob", "regex", "fixed"), 
+                       groups = NULL, 
+                       verbose = quanteda_options("verbose"), 
+                       ...) {
 
     valuetype <- match.arg(valuetype)
     # set document names if none
     if (is.null(names(x))) {
         names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
     } 
-
-    if (who_called_me_first(sys.calls(), "dfm") %in% c("tokens", "tokenizedTexts")) {
-        check_dfm_dots(list(...), permissible_args = names(formals(tokens)))
+    
+    # call tokens only if options given
+    if (length(intersect(names(list(...)), names(formals('tokens')))))
         x <- tokens(x, ...)
-    }
     
     if (tolower) {
         if (verbose) catm("   ... lowercasing\n", sep="")
