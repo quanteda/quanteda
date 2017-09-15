@@ -5,10 +5,11 @@
 \alias{regex2id}
 \title{convert regex and glob patterns to type IDs or fixed patterns}
 \usage{
-regex2fixed(pattern, types, valuetype, case_insensitive = FALSE,
-  index = TRUE)
+regex2fixed(pattern, types = NULL, valuetype = NULL,
+  case_insensitive = NULL, index = NULL)
 
-regex2id(pattern, types, valuetype, case_insensitive = FALSE, index = TRUE)
+regex2id(pattern, types = NULL, valuetype = NULL, case_insensitive = NULL,
+  index = NULL)
 }
 \arguments{
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
@@ -43,11 +44,11 @@ index constructed by index_types().}
 \examples{
 pattern <- list(c('^a$', '^b'), c('c'), c('d'))
 types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
-quanteda:::regex2fixed(pattern, types, 'regex', case_insensitive=TRUE)
-index <- quanteda:::index_types(types, 'regex', case_insensitive=TRUE)
-quanteda:::regex2fixed(pattern, types, 'regex', case_insensitive=TRUE, index=index)
+quanteda:::regex2fixed(pattern, types, 'regex', case_insensitive = TRUE)
+index <- quanteda:::index_types(types, 'regex', case_insensitive = TRUE)
+quanteda:::regex2fixed(pattern, index = index)
 pattern <- list(c('^a$', '^b'), c('c'), c('d'))
 types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
-quanteda:::regex2id(pattern, types, 'regex', case_insensitive=TRUE)
+quanteda:::regex2id(pattern, types, 'regex', case_insensitive = TRUE)
 }
 \keyword{internal}
