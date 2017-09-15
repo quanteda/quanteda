@@ -485,7 +485,9 @@ void estimates(std::size_t i,
                const std::string &method,
                const int &count_min,
                const double nseqs,
-               const double smoothing){
+               const double smoothing,
+               StringParams &ob_n,
+               StringParams &exp_n){
     
     std::size_t n = seqs_np[i].size(); //n=2:5, seqs
     if (n == 1) return; // ignore single words
@@ -555,6 +557,29 @@ void estimates(std::size_t i,
         for (std::size_t k = 0; k < csize; k++){
             chi2[i] += std::pow((counts_bit[k] - ec[k]), 2)/ec[k];
         }
+        
+        //output counts
+        //Convert sequences from integer to character
+        std::ostringstream out;
+        out<<std::setprecision(1)<<std::fixed<<std::showpoint<< counts_bit[0];
+        std::string this_count = out.str();
+        for (std::size_t j = 1; j < csize; j++) {
+            std::ostringstream out;
+            out<<std::setprecision(1)<<std::fixed<<std::showpoint<< counts_bit[j];
+            this_count = this_count + '_' + out.str();
+        }
+        ob_n[i] = this_count;
+        
+        std::ostringstream out_ec;
+        out_ec<<std::setprecision(1)<<std::fixed<<std::showpoint<< ec[0];
+        std::string this_count_ec = out_ec.str();
+        for (std::size_t j = 1; j < csize; j++) {
+            std::ostringstream out_ec;
+            out_ec<<std::setprecision(1)<<std::fixed<<std::showpoint<< ec[j];
+            this_count_ec = this_count_ec + '_' + out_ec.str();
+        }
+        exp_n[i] = this_count_ec;
+        ///end of out
     }
 }
 
@@ -576,17 +601,19 @@ struct estimates_mt : public Worker{
     const unsigned int &count_min;
     const double nseqs;
     const double smoothing;
+    StringParams &ob_n;
+    StringParams &exp_n;
     
     // Constructor
     estimates_mt(VecNgrams &seqs_np_, IntParams &cs_np_, VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_,
                  DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, IntParams &ifault, const std::string &method,
-                 const unsigned int &count_min_, const double nseqs_, const double smoothing_):
+                 const unsigned int &count_min_, const double nseqs_, const double smoothing_, StringParams &ob_n_, StringParams &exp_n_):
         seqs_np(seqs_np_), cs_np(cs_np_), seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_),
-        gensim(gensim_), lfmd(lfmd_), ifault(ifault), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
+        gensim(gensim_), lfmd(lfmd_), ifault(ifault), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_), ob_n(ob_n_), exp_n(exp_n_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, ifault, method, count_min, nseqs, smoothing);
+            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, ifault, method, count_min, nseqs, smoothing, ob_n, exp_n);
         }
     }
 };
@@ -647,9 +674,12 @@ DataFrame qatd_cpp_collocations(const List &texts_,
     VecNgrams seqs_all;
     seqs_all.reserve(len_coe);
     
-    //output oberved counting
-    //std::vector<std::string> ob_all;
-    //ob_all.reserve(len_coe);
+    //output oberved and expected counting
+    std::vector<std::string> ob_all;
+    ob_all.reserve(len_coe);
+    
+    std::vector<std::string> exp_all;
+    exp_all.reserve(len_coe);
     
     //warning sign
     std::vector<int> iwarning(3, 0);
@@ -699,7 +729,8 @@ DataFrame qatd_cpp_collocations(const List &texts_,
         }
         
         //output counts;
-        //std::vector<std::string> ob_n(len_noPadding);
+        StringParams ob_n(len_noPadding);
+        StringParams exp_n(len_noPadding);
         
         // adjust total_counts of MW 
         total_counts += 4 * smoothing;
@@ -716,24 +747,12 @@ DataFrame qatd_cpp_collocations(const List &texts_,
         IntParams ifault(len_noPadding);
         //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, ifault, method, count_min, total_counts, smoothing);
+        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, ifault, method, count_min, total_counts, smoothing, ob_n, exp_n);
         parallelFor(0, seqs_np.size(), estimate_mt);
 #else
         for (std::size_t i = 0; i < seqs_np.size(); i++) {
             //std::vector<double> count_bit(std::pow(2, mw_len), smoothing);
-            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, ifault, method, count_min, total_counts, smoothing);
-            
-            // Convert sequences from integer to character
-            // std::ostringstream out;
-            // out<<std::setprecision(1)<<std::fixed<<std::showpoint<< count_bit[0];
-            // std::string this_count = out.str();
-            // for (std::size_t j = 1; j < count_bit.size(); j++) {
-            //     std::ostringstream out;
-            //     out<<std::setprecision(1)<<std::fixed<<std::showpoint<< count_bit[j];
-            //     this_count = this_count + '_' + out.str();
-            // }
-            // ob_n[i] = this_count;
-            ///end of out
+            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, ifault, method, count_min, total_counts, smoothing, ob_n, exp_n);
         }
 #endif
         //output warning message
@@ -774,7 +793,9 @@ DataFrame qatd_cpp_collocations(const List &texts_,
         lfmd_all.insert( lfmd_all.end(), lfmd.begin(), lfmd.end() );
         
         //output counts
-        //ob_all.insert( ob_all.end(), ob_n.begin(), ob_n.end() );
+        ob_all.insert( ob_all.end(), ob_n.begin(), ob_n.end() );
+        exp_all.insert( exp_all.end(), exp_n.begin(), exp_n.end() );
+        
         
     }
     
@@ -795,6 +816,8 @@ DataFrame qatd_cpp_collocations(const List &texts_,
                                           _["G2"] = as<NumericVector>(wrap(logratio_all)),
                                           _["chi2"] = as<NumericVector>(wrap(chi2_all)),
                                           _["LFMD"] = as<NumericVector>(wrap(lfmd_all)),
+                                          _["observed_counts"] = ob_all,
+                                          _["expected_counts"] = exp_all,
                                           _["stringsAsFactors"] = false);
     return output_;
 }

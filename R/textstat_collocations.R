@@ -168,8 +168,8 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
             if (method %in% c("all", "pmi"))
                 result["pmi"] <- log(df_counts_n[[ncol(df_counts_n)]] / df_counts_e[[ncol(df_counts_e)]], base = 2)
             if (method %in% c("all", "LFMD"))
-                result["LFMD"] <- log(df_counts_n[[ncol(df_counts_n)]]^2 / df_counts_e[[ncol(df_counts_e)]], base = 2)
-                                    + log(df_counts_n[[ncol(df_counts_n)]], base = 2)
+                result["LFMD"] <- log(df_counts_n[[ncol(df_counts_n)]]^2 / df_counts_e[[ncol(df_counts_e)]], base = 2) + 
+                                    log(df_counts_n[[ncol(df_counts_n)]], base = 2)
         }
         
         # remove other measures if not specified
@@ -189,7 +189,7 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
         rownames(result) <- NULL
         
         # # add counts to output if requested
-        if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
+        if (show_counts) result <- cbind(result, df_counts_n, round(df_counts_e, 1))
         
     } else if (path == 2){
         result <- qatd_cpp_collocations(x, types, min_count, size, 
@@ -214,6 +214,22 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
             result <- result[order(result[["z"]], decreasing = TRUE), ]
         }
         
+        if (method %in% c("all", "lr", "chi2", "pmi", "LFMD") | show_counts) {
+            # get observed counts and compute expected counts
+            # split the string into n00, n01, n10, etc
+            counts_n <- strsplit(result[, "observed_counts"], "_")
+            df_counts_n <- data.frame(t(sapply(counts_n, as.numeric)))
+            names(df_counts_n) <- make_count_names(size, "n")
+            # get expected counts
+            counts_e <- strsplit(result[, "expected_counts"], "_")
+            df_counts_e <- data.frame(t(sapply(counts_e, as.numeric)))
+            names(df_counts_e) <- make_count_names(size, "e")
+            # remove counts character
+            result <- result[, -which(names(result)=="observed_counts")]
+            result <- result[, -which(names(result)=="expected_counts")]
+            
+        }
+        
         # remove other measures if not specified
         if (method == "lambda" | method == "lambda1")
             result[c("pmi", "chi2", "G2", "sigma", "LFMD")] <- NULL
@@ -230,6 +246,8 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
                                                   "G2", "chi2", "pmi", "LFMD"), 
                                                 names(result)))]
         rownames(result) <- NULL
+        # # add counts to output if requested
+        if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
     }
     # remove results whose counts are less than min_count
     result <- result[result$count >= min_count, ]
@@ -523,4 +541,5 @@ loglin_local_2 <- function(countvec, table, margin, start = rep(1, length(table)
     
     return(y)
 }
+
 
