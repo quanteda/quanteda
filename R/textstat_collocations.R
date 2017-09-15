@@ -108,7 +108,7 @@ textstat_collocations <- function(x, method = "all", size = 2, min_count = 1, sm
     UseMethod("textstat_collocations")
 }
 
-VALID_SCORING_METHODS <- c("lambda", "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD")
+VALID_SCORING_METHODS <- c("lambda", "lambda1", "lr", "chi2", "pmi", "LFMD") #, "dice", "gensim")
 
 #' @noRd
 #' @export
@@ -146,7 +146,7 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
         result <- result[order(result[["z"]], decreasing = TRUE), ]
         
         # compute statistics that require expected counts
-        if (method %in% c("all", "lr", "chi2", "pmi") | show_counts) {
+        if (method %in% c("all", "lr", "chi2", "pmi", "LFMD") | show_counts) {
             # get observed counts and compute expected counts
             # split the string into n00, n01, n10, etc
             counts_n <- strsplit(result[, "observed_counts"], "_")
@@ -158,29 +158,33 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
             result <- result[, -which(names(result)=="observed_counts")]
             
             # "pmi_2", "chi2_2" and "G2_2" are verified, remove the result from cpp
-            result[c("pmi", "chi2", "G2")] <- NULL
+            result[c("pmi", "chi2", "G2", "LFMD")] <- NULL
             
-            # recompute dice, pmi, G2, chi2
+            # recompute dice, pmi, G2, chi2, LFMD
             if (method %in% c("all", "lr"))
                 result["G2"] <- 2 * rowSums(df_counts_n * log(df_counts_n / df_counts_e))
             if (method %in% c("all", "chi2"))
                 result["chi2"] <- rowSums((df_counts_n - df_counts_e)^2 / df_counts_e)
             if (method %in% c("all", "pmi"))
                 result["pmi"] <- log(df_counts_n[[ncol(df_counts_n)]] / df_counts_e[[ncol(df_counts_e)]], base = 2)
+            if (method %in% c("all", "LFMD"))
+                result["LFMD"] <- log(df_counts_n[[ncol(df_counts_n)]]^2 / df_counts_e[[ncol(df_counts_e)]], base = 2)
+                                    + log(df_counts_n[[ncol(df_counts_n)]], base = 2)
         }
         
         # remove other measures if not specified
         if (method == "lambda" | method == "lambda1")
-            result[c("pmi", "chi2", "G2", "sigma")] <- NULL
+            result[c("pmi", "chi2", "G2", "sigma", "LFMD")] <- NULL
         if (!method %in% c("lambda", "lambda1", "all"))
             result[c("lambda", "lambda1", "sigma", "z")] <- NULL
-        if (method == "chi2") result[c("pmi", "G2")] <- NULL
-        if (method == "lr") result[c("pmi", "chi2")] <- NULL
-        if (method == "pmi") result[c("G2", "chi2")] <- NULL
+        if (method == "chi2") result[c("pmi", "G2", "LFMD")] <- NULL
+        if (method == "lr") result[c("pmi", "chi2", "LFMD")] <- NULL
+        if (method == "pmi") result[c("G2", "chi2", "LFMD")] <- NULL
+        if (method == "LFMD") result[c("G2", "chi2", "pmi")] <- NULL
         
         # reorder columns
         result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
-                                                  "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
+                                                  "G2", "chi2", "pmi", "LFMD"), 
                                                 names(result)))]
         rownames(result) <- NULL
         
@@ -203,12 +207,14 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
         result <- result[order(result[["z"]], decreasing = TRUE), ]
         # remove other measures if not specified
         if (method == "lambda" | method == "lambda1")
-            result[c("pmi", "chi2", "G2", "sigma")] <- NULL
+            result[c("pmi", "chi2", "G2", "sigma", "LFMD")] <- NULL
         if (!method %in% c("lambda", "lambda1", "all"))
             result[c("lambda", "lambda1", "sigma", "z")] <- NULL
-        if (method == "chi2") result[c("pmi", "G2")] <- NULL
-        if (method == "lr") result[c("pmi", "chi2")] <- NULL
-        if (method == "pmi") result[c("G2", "chi2")] <- NULL
+        if (method == "chi2") result[c("pmi", "G2", "LFMD")] <- NULL
+        if (method == "lr") result[c("pmi", "chi2", "LFMD")] <- NULL
+        if (method == "pmi") result[c("G2", "chi2", "LFMD")] <- NULL
+        if (method == "LFMD") result[c("G2", "chi2", "pmi")] <- NULL
+        
         
         # reorder columns
         result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
