@@ -126,43 +126,72 @@ $(document).ready(function () {
 <h3>bigram</h3>
 <pre class="r"><code>toks2 &lt;- tokens(data_corpus_inaugural)
 toks2 &lt;- tokens_remove(toks2, stopwords(&quot;english&quot;), padding = TRUE)
-toks2 &lt;- tokens_select(toks2, &quot;^([A-Z][a-z\\-]{2,})&quot;, valuetype = &quot;regex&quot;, 
-                        case_insensitive = FALSE, padding = TRUE)
 microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 2, tolower = FALSE, method=&quot;all&quot;, path=1),  
 path_C = textstat_collocations(toks2, size = 2, tolower = FALSE, method=&quot;all&quot;, path=2), 
-times = 20, unit = &quot;relative&quot;)</code></pre>
+times = 2, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
-##    expr      min       lq     mean   median       uq      max neval
-##  path_R 1.351785 1.306048 1.502614 1.313634 1.492003 1.490086    20
-##  path_C 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20</code></pre>
+##    expr      min       lq     mean   median      uq     max neval
+##  path_R 4.826219 4.826219 4.835711 4.835711 4.84519 4.84519     2
+##  path_C 1.000000 1.000000 1.000000 1.000000 1.00000 1.00000     2</code></pre>
 </div>
 <div id="trigram" class="section level3">
 <h3>trigram</h3>
 <pre class="r"><code>toks2 &lt;- tokens(data_corpus_inaugural)
 toks2 &lt;- tokens_remove(toks2, stopwords(&quot;english&quot;), padding = TRUE)
-toks2 &lt;- tokens_select(toks2, &quot;^([A-Z][a-z\\-]{2,})&quot;, valuetype = &quot;regex&quot;, 
-                        case_insensitive = FALSE, padding = TRUE)
+
 microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 3, tolower = FALSE, method=&quot;all&quot;, path=1),  
 path_C = textstat_collocations(toks2, size = 3, tolower = FALSE, method=&quot;all&quot;, path=2), 
-times = 20, unit = &quot;relative&quot;)</code></pre>
+times = 2, unit = &quot;relative&quot;)</code></pre>
+<pre><code>## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
+## TRUE, : algorithm did not converge
+
+## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
+## TRUE, : algorithm did not converge
+
+## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
+## TRUE, : algorithm did not converge
+
+## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
+## TRUE, : algorithm did not converge
+
+## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
+## TRUE, : algorithm did not converge
+
+## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
+## TRUE, : algorithm did not converge
+
+## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
+## TRUE, : algorithm did not converge
+
+## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
+## TRUE, : algorithm did not converge
+
+## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
+## TRUE, : algorithm did not converge
+
+## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
+## TRUE, : algorithm did not converge</code></pre>
+<pre><code>## Warning: ipf algorithm did not converge for at least once
+## Warning: incorrect specification of 'table' or 'start'
+## Warning: ipf algorithm did not converge for at least once
+## Warning: incorrect specification of 'table' or 'start'</code></pre>
 <pre><code>## Unit: relative
 ##    expr      min       lq     mean   median       uq      max neval
-##  path_R 1.259293 1.215432 1.201257 1.217501 1.204151 1.099328    20
-##  path_C 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20</code></pre>
+##  path_R 4.385976 4.385976 4.518384 4.518384 4.648623 4.648623     2
+##  path_C 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000     2</code></pre>
 </div>
 <div id="grams" class="section level3">
 <h3>4-grams</h3>
 <pre class="r"><code>toks2 &lt;- tokens(data_corpus_inaugural)
 toks2 &lt;- tokens_remove(toks2, stopwords(&quot;english&quot;), padding = TRUE)
-toks2 &lt;- tokens_select(toks2, &quot;^([A-Z][a-z\\-]{2,})&quot;, valuetype = &quot;regex&quot;, 
-                        case_insensitive = FALSE, padding = TRUE)
+
 microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 4, tolower = FALSE, method=&quot;all&quot;, path=1),  
 path_C = textstat_collocations(toks2, size = 4, tolower = FALSE, method=&quot;all&quot;, path=2), 
-times = 20, unit = &quot;relative&quot;)</code></pre>
+times = 2, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
-##    expr      min       lq      mean   median      uq       max neval
-##  path_R 1.138788 1.120906 0.9720425 1.141117 1.12435 0.4639771    20
-##  path_C 1.000000 1.000000 1.0000000 1.000000 1.00000 1.0000000    20</code></pre>
+##    expr      min       lq     mean   median       uq      max neval
+##  path_R 2.806677 2.806677 2.960758 2.960758 3.114146 3.114146     2
+##  path_C 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000     2</code></pre>
 </div>
 </div>
 
