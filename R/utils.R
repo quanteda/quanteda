@@ -224,7 +224,7 @@ code <- function(texts){
 
 # convert various input as features to a vector used in tokens_select, 
 # tokens_compound and kwic.
-features2id <- function(features, types, valuetype, case_insensitive, 
+pattern2id <- function(features, types, valuetype, case_insensitive, 
                         concatenator = '_', remove_unigram = FALSE) {
     
     if (is.sequences(features) || is.collocations(features)) {

@@ -68,7 +68,7 @@ tokens_compound.tokens <- function(x, pattern,
     attrs <- attributes(x)
     types <- types(x)
     
-    seqs_id <- features2id(pattern, types, valuetype, case_insensitive, remove_unigram = TRUE)
+    seqs_id <- pattern2id(pattern, types, valuetype, case_insensitive, remove_unigram = TRUE)
     if (length(seqs_id) == 0) return(x) # do nothing
     x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
     attributes(x, FALSE) <- attrs
