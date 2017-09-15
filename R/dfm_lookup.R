@@ -92,11 +92,10 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     index <- index_types(types, valuetype, case_insensitive) # index types before the loop
     for (h in seq_along(dictionary)) {
         values <- as.list(stri_replace_all_fixed(dictionary[[h]], ' ', attr(x, 'concatenator')))
-        values_temp <- unlist(regex2id(values, types, valuetype, case_insensitive, index))
+        values_temp <- unlist(regex2id(values, index = index))
         values_id <- c(values_id, values_temp)
         keys_id <- c(keys_id, rep(h, length(values_temp)))
     }
-    
     if (length(values_id)) {
         keys <- names(dictionary)
         if (capkeys)
@@ -109,7 +108,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             }
             x <- x[,values_id]
             cols_new <- keys[keys_id]
-            type <- cols_new
+            colnames(x) <- cols_new
             # merge identical keys and add non-existent keys
             result <- dfm_select(dfm_compress(x, margin = 'features'), 
                                  as.dfm(rbind(structure(rep(0, length(keys)), names = keys))))
