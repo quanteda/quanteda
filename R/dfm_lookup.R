@@ -79,6 +79,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
     lengths <- ntoken(x)
+    types <- colnames(x)
     
     # Generate all combinations of type IDs
     values_id <- c()
@@ -88,9 +89,10 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         catm("applying a dictionary consisting of ", length(dictionary), " key", 
              if (length(dictionary) > 1L) "s" else "", "\n", sep="")
     
+    index <- index_types(types, valuetype, case_insensitive) # index types before the loop
     for (h in seq_along(dictionary)) {
         values <- as.list(stri_replace_all_fixed(dictionary[[h]], ' ', attr(x, 'concatenator')))
-        values_temp <- unlist(regex2id(values, colnames(x), valuetype, case_insensitive, FALSE))
+        values_temp <- unlist(regex2id(values, types, valuetype, case_insensitive, index))
         values_id <- c(values_id, values_temp)
         keys_id <- c(keys_id, rep(h, length(values_temp)))
     }
@@ -107,14 +109,14 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             }
             x <- x[,values_id]
             cols_new <- keys[keys_id]
-            colnames(x) <- cols_new
+            type <- cols_new
             # merge identical keys and add non-existent keys
             result <- dfm_select(dfm_compress(x, margin = 'features'), 
                                  as.dfm(rbind(structure(rep(0, length(keys)), names = keys))))
         } else {
             if (!is.null(nomatch))
                 warning("nomatch only applies if exclusive = TRUE")
-            cols_new <- colnames(x)
+            cols_new <- types
             cols_new[values_id] <- keys[keys_id]
             colnames(x) <- cols_new
             result <- dfm_compress(x, margin = 'features')
