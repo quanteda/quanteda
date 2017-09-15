@@ -255,11 +255,11 @@ cbind_dfm_dfm <- function(...) {
     args <- list(...)
     if (!all(vapply(args, is.dfm, logical(1))))
         stop("all arguments must be dfm objects")
-    dnames <- sapply(args, docnames)
-    # make into a matrix-like object for apply to work below, even if just one document per input
-    if (is.null(dim(dnames)))
-        dnames <- matrix(dnames, ncol = length(dnames))
-    if (!all(apply(dnames, 1, function(x) length(table(x)) == 1)))
+    # dnames <- sapply(args, docnames)
+    # # make into a matrix-like object for apply to work below, even if just one document per input
+    # if (is.null(dim(dnames)))
+    #     dnames <- matrix(dnames, ncol = length(dnames))
+    if (any(docnames(args[[1]]) != docnames(args[[2]])))
         warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
     
     result <- Matrix::cbind2(args[[1]], args[[2]])
