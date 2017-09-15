@@ -241,14 +241,14 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
 
 
 #' @export
-textstat_collocations.corpus <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
+textstat_collocations.corpus <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE,  path = 1, ...) {
     # segment into units not including punctuation, to avoid identifying collocations that are not adjacent
     texts(x) <- paste(".", texts(x))
     # separate each line except those where the punctuation is a hyphen or apostrophe
     x <- corpus_segment(x, "tag", delimiter =  "[^\\P{P}#@'-]", valuetype = "regex")
     # tokenize the texts
     x <- tokens(x, ...)
-    textstat_collocations(x, method = method, size = size, min_count = min_count, smoothing = smoothing, tolower = tolower, show_counts = show_counts)
+    textstat_collocations(x, method = method, size = size, min_count = min_count, smoothing = smoothing, tolower = tolower, show_counts = show_counts, path = path)
 }
 
 #' @export
@@ -258,9 +258,9 @@ textstat_collocations.character <- function(x, method = "all", size = 2, min_cou
 }
 
 #' @export
-textstat_collocations.tokenizedTexts <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
+textstat_collocations.tokenizedTexts <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...) {
     textstat_collocations(as.tokens(x), method = method, size = size, min_count = min_count, 
-                          smoothing = smoothing, tolower = tolower, show_counts = show_counts)
+                          smoothing = smoothing, tolower = tolower, show_counts = show_counts, path = path)
 }
 
 
