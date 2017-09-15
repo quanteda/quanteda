@@ -443,13 +443,13 @@ test_that("remove_hyphens is working correctly", {
                  c("a", "b", "c", "d"))
 })
 
-test_that("tokens.tokens. does nothing by default", {
+test_that("tokens.tokens() does nothing by default", {
     
     toks <- tokens(data_corpus_inaugural, 
                    remove_numbers = FALSE,
                    remove_punct = FALSE,
                    remove_symbols = FALSE,
-                   remove_separators = FALSE,
+                   remove_separators = TRUE,
                    remove_twitter = FALSE,
                    remove_hyphens = FALSE,
                    remove_url = FALSE)
