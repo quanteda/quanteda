@@ -217,7 +217,7 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
                            remove_numbers = FALSE,
                            remove_punct = FALSE,
                            remove_symbols = FALSE,
-                           remove_separators = TRUE,
+                           remove_separators = FALSE,
                            remove_twitter = FALSE,
                            remove_hyphens = FALSE,
                            remove_url = FALSE,
@@ -252,7 +252,7 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
     
     if (length(regex))
         x <- tokens_remove(x, paste(regex, collapse = '|'), valuetype = 'regex', padding = FALSE)
-    if (!identical(ngrams, 1L))
+    if (!identical(ngrams, 1L) || !identical(skip, 0L))
         x <- tokens_ngrams(x, n = ngrams, skip = skip, concatenator = concatenator)
     if (hash == FALSE)
         x <- as.tokenizedTexts(x)
