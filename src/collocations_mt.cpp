@@ -396,7 +396,7 @@ extern "C" {
 #undef abs
 }
 
-void loglin_api(std::vector<double> &table, std::vector<double> &fit, const std::size_t ntokens, const int iter = 20, const double eps = 0.1){
+int loglin_api(std::vector<double> &table, std::vector<double> &fit, const std::size_t ntokens, const int iter = 20, const double eps = 0.1){
     int nvar = ntokens;
     int ncon = ntokens;
     int ntab = table.size();
@@ -425,19 +425,10 @@ void loglin_api(std::vector<double> &table, std::vector<double> &fit, const std:
     
     loglin_local(nvar, &dtab[0], ncon, &conf[0], ntab,
                  &table[0], &fit[0], &locmar[0], nmar, &marg[0],
-                                                            ntab, &u[0], eps, iter, &dev[0], &nlast, &ifault);
+                 ntab, &u[0], eps, iter, &dev[0], &nlast, &ifault);
     
-    switch(ifault) {
-    case 1:
-    case 2:
-        Rcout << "this should not happen" << endl; break;
-    case 3:
-        Rcout<< "algorithm did not converge"<<endl; break;
-    case 4:
-        Rcout << "incorrect specification of 'table' or 'start'" << endl; break;
-    default:
-        break;
-    }
+    return ifault;
+    
 }
 //************************//
 void counts(Text text,
@@ -490,6 +481,7 @@ void estimates(std::size_t i,
                DoubleParams &chi2,
                DoubleParams &gensim,
                DoubleParams &lfmd,
+               IntParams &ifault,
                const std::string &method,
                const int &count_min,
                const double nseqs,
@@ -531,8 +523,9 @@ void estimates(std::size_t i,
             ec[1] = (counts_bit[0] + counts_bit[1]) * (counts_bit[1] + counts_bit[3]) / row_sum;
             ec[2] = (counts_bit[2] + counts_bit[3]) * (counts_bit[0] + counts_bit[2]) / row_sum;
             ec[3] = (counts_bit[2] + counts_bit[3]) * (counts_bit[1] + counts_bit[3]) / row_sum;
+            ifault[i] = 0;
         } else {
-            loglin_api(counts_bit, ec, n);
+            ifault[i] = loglin_api(counts_bit, ec, n);
         }
         
         // calculate gensim score
@@ -578,6 +571,7 @@ struct estimates_mt : public Worker{
     DoubleParams &chi2;
     DoubleParams &gensim;
     DoubleParams &lfmd;
+    IntParams &ifault;
     const std::string &method;
     const unsigned int &count_min;
     const double nseqs;
@@ -585,14 +579,14 @@ struct estimates_mt : public Worker{
     
     // Constructor
     estimates_mt(VecNgrams &seqs_np_, IntParams &cs_np_, VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_,
-                 DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, const std::string &method,
+                 DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, IntParams &ifault, const std::string &method,
                  const unsigned int &count_min_, const double nseqs_, const double smoothing_):
         seqs_np(seqs_np_), cs_np(cs_np_), seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_),
-        gensim(gensim_), lfmd(lfmd_), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
+        gensim(gensim_), lfmd(lfmd_), ifault(ifault), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, nseqs, smoothing);
+            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, ifault, method, count_min, nseqs, smoothing);
         }
     }
 };
@@ -657,6 +651,9 @@ DataFrame qatd_cpp_collocations(const List &texts_,
     //std::vector<std::string> ob_all;
     //ob_all.reserve(len_coe);
     
+    //warning sign
+    std::vector<int> iwarning(3, 0);
+    
     for(unsigned int m = 0; m < sizes.size(); m++){
         unsigned int mw_len = sizes[m];
         // Collect all sequences of specified words
@@ -704,7 +701,6 @@ DataFrame qatd_cpp_collocations(const List &texts_,
         //output counts;
         //std::vector<std::string> ob_n(len_noPadding);
         
-        
         // adjust total_counts of MW 
         total_counts += 4 * smoothing;
         
@@ -717,14 +713,15 @@ DataFrame qatd_cpp_collocations(const List &texts_,
         DoubleParams chi2(len_noPadding);
         DoubleParams gensim(len_noPadding);
         DoubleParams lfmd(len_noPadding);
+        IntParams ifault(len_noPadding);
         //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
+        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, ifault, method, count_min, total_counts, smoothing);
         parallelFor(0, seqs_np.size(), estimate_mt);
 #else
         for (std::size_t i = 0; i < seqs_np.size(); i++) {
             //std::vector<double> count_bit(std::pow(2, mw_len), smoothing);
-            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
+            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, ifault, method, count_min, total_counts, smoothing);
             
             // Convert sequences from integer to character
             // std::ostringstream out;
@@ -739,6 +736,33 @@ DataFrame qatd_cpp_collocations(const List &texts_,
             ///end of out
         }
 #endif
+        //output warning message
+        for (std::size_t i = 0; i < len_noPadding; i++){
+            switch(ifault[i]) {
+            case 1:
+            case 2:
+                // if (iwarning[0] == 0){
+                //     Rcout << "Warning: this should not happen" << endl; 
+                //     iwarning[0] = 1;
+                // }
+                break;
+            case 3:
+                if (iwarning[1] == 0){
+                    Rcout << "Warning: ipf algorithm did not converge for at least once" << endl; 
+                    iwarning[1] = 1;
+                }
+            case 4:
+                if (iwarning[2] == 0){
+                    Rcout << "Warning: incorrect specification of 'table' or 'start'" << endl; 
+                    iwarning[2] = 1;
+                }
+            default:
+                break;
+            }
+        }
+        
+        
+        
         //dev::stop_timer("Estimate", timer);
         sgma_all.insert( sgma_all.end(), sgma.begin(), sgma.end() );
         lmda_all.insert( lmda_all.end(), lmda.begin(), lmda.end() );
