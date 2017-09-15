@@ -193,23 +193,32 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
         
     } else if (path == 2){
         result <- qatd_cpp_collocations(x, types, min_count, size, 
-                                        if (method == "lambda1") "lambda1" else "lambda", 
+                                        method, 
                                         smoothing) 
+        
         # compute z for lambda methods
-        lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
-        result["z"] <- result[lambda_index] / result[["sigma"]]
-        # result$p <- 1 - stats::pnorm(result$z)
+        if (method %in% c("lambda", "lambda1", "all")){
+            
+            result["z"] <- result[["method"]] / result[["sigma"]]
+            # result$p <- 1 - stats::pnorm(result$z)
+            if (method == "all"){
+                colnames(result)[colnames(result) == "method"] <- "lambda";
+            } else {
+                colnames(result)[colnames(result) == "method"] <- method;
+            }
+            
+            # remove gensim and dice for now
+            result[c("gensim", "dice", "sigma")] <- NULL
+            
+            # sort by decreasing z
+            result <- result[order(result[["z"]], decreasing = TRUE), ]
+        }
         
-        # remove gensim and dice for now
-        result[c("gensim", "dice", "sigma")] <- NULL
-        
-        # sort by decreasing z
-        result <- result[order(result[["z"]], decreasing = TRUE), ]
         # remove other measures if not specified
         if (method == "lambda" | method == "lambda1")
             result[c("pmi", "chi2", "G2", "sigma", "LFMD")] <- NULL
         if (!method %in% c("lambda", "lambda1", "all"))
-            result[c("lambda", "lambda1", "sigma", "z")] <- NULL
+            result[c("method", "sigma", "z")] <- NULL
         if (method == "chi2") result[c("pmi", "G2", "LFMD")] <- NULL
         if (method == "lr") result[c("pmi", "chi2", "LFMD")] <- NULL
         if (method == "pmi") result[c("G2", "chi2", "LFMD")] <- NULL
