@@ -262,10 +262,11 @@ cbind_dfm_dfm <- function(...) {
     if (any(docnames(args[[1]]) != docnames(args[[2]])))
         warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
     
-    result <- Matrix::cbind2(args[[1]], args[[2]])
+    result <-  new("dfmSparse", Matrix::cbind2(args[[1]], args[[2]]))
     if (length(args) > 2) {
-        for (y in args[3:length(args)])
-            result <- Matrix::cbind2(result, y)
+        for (i in seq(3, length(args))) {
+            result <- cbind(result, args[[i]])
+        }
     }
 
     # make any added feature names unique
