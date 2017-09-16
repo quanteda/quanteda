@@ -119,23 +119,12 @@ regex2id <- function(pattern, types = NULL, valuetype = NULL, case_insensitive =
 #' 
 #' This is an internal function for \code{regex2id()} that select types using an
 #' index of types by reular expressions.
-#' @param regex a list of regular expressions
+#' @rdname regex2id
+#' @param patterns a list of regular expressions
 #' @param types_search lowercased types when \code{case_insensitive=TRUE}
-#' @param exact set TRUE for \code{valuetype = fixed}
+#' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param index index object created by \code{index_types()}
 #' @keywords internal
-
-search_regex <- function(patterns, types_search, case_insensitive) {
-    lapply(patterns, function(pattern, types_search, case_insensitive) {
-        if (pattern == '') {
-            return(NULL)
-        } else {
-            return(which(stri_detect_regex(types_search, pattern, 
-                                           case_insensitive = case_insensitive)))
-        }
-    }, types_search, case_insensitive)
-}
-
 search_glob <- function(patterns, types_search, case_insensitive, index) {
     lapply(patterns, function(pattern, types_search, case_insensitive, index) {
         if (pattern == '') {
@@ -159,6 +148,21 @@ search_glob <- function(patterns, types_search, case_insensitive, index) {
     }, types_search, case_insensitive, index)
 }
 
+#' @rdname regex2id
+#' @keywords internal
+search_regex <- function(patterns, types_search, case_insensitive) {
+    lapply(patterns, function(pattern, types_search, case_insensitive) {
+        if (pattern == '') {
+            return(NULL)
+        } else {
+            return(which(stri_detect_regex(types_search, pattern, 
+                                           case_insensitive = case_insensitive)))
+        }
+    }, types_search, case_insensitive)
+}
+
+#' @rdname regex2id
+#' @keywords internal
 search_fixed <- function(patterns, types_search, case_insensitive, index) {
     lapply(patterns, function(pattern, types_search, case_insensitive, index) {
         if (pattern == '') {
@@ -174,7 +178,9 @@ search_fixed <- function(patterns, types_search, case_insensitive, index) {
 #' An internal function for \code{\link{regex2id}} that constructs an index of
 #' regex patterns (e.g. \code{^xxxx}, \code{xxxx$} and \code{^xxxx$}) to avoid
 #' expensive sequential search by \link[stringi]{stri_detect_regex}.
+#' @rdname regex2id
 #' @inheritParams valuetype
+#' @param types types of tokens to index 
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param max_len maximum length of types to be indexed
 #' @return a list of integer vectors containing type IDs with index keys as an
@@ -214,7 +220,7 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
         len <- stri_length(types_search)
         id <- seq_along(types_search)
         if (is.null(max_len)) max_len <- max(len) # index all the types if max_len is unknown
-        for (i in seq(2, max_len)) {
+        for (i in seq(1, max_len)) {
             k <- id[len >= i]
             
             # index for patterns with * at the end
@@ -255,6 +261,7 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
 }
 
 #' internal function for \code{select_types()} to seach the index using fastmatch.
+#' @rdname regex2id
 #' @param regex a glob expression to search
 #' @param index an index object created by \code{index_types()}
 #' @seealso index_types
@@ -264,6 +271,7 @@ search_index <- function(pattern, index){
 }
 
 #' simpler and faster version of expand.grid() in base package
+#' @rdname regex2id
 #' @param elem list of elements to be combined
 #' @keywords internal
 #' @examples
@@ -289,6 +297,7 @@ expand <- function(elem){
 
 
 #' internal function for select_types() to check if a glob pattern is indexed by \code{index_types()}
+#' @rdname regex2id
 #' @param x a glob pattern to be tested
 #' @keywords internal
 is_indexed <- function(pattern){

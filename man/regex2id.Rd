@@ -3,6 +3,13 @@
 \name{regex2fixed}
 \alias{regex2fixed}
 \alias{regex2id}
+\alias{search_glob}
+\alias{search_regex}
+\alias{search_fixed}
+\alias{index_types}
+\alias{search_index}
+\alias{expand}
+\alias{is_indexed}
 \title{convert regex and glob patterns to type IDs or fixed patterns}
 \usage{
 regex2fixed(pattern, types = NULL, valuetype = NULL,
@@ -10,6 +17,20 @@ regex2fixed(pattern, types = NULL, valuetype = NULL,
 
 regex2id(pattern, types = NULL, valuetype = NULL, case_insensitive = NULL,
   index = NULL)
+
+search_glob(patterns, types_search, case_insensitive, index)
+
+search_regex(patterns, types_search, case_insensitive)
+
+search_fixed(patterns, types_search, case_insensitive, index)
+
+index_types(types, valuetype, case_insensitive, max_len = NULL)
+
+search_index(pattern, index)
+
+expand(elem)
+
+is_indexed(pattern)
 }
 \arguments{
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
@@ -25,6 +46,28 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{index}{If TRUE, index is constructed automatically. It also accept
 index constructed by index_types().}
+
+\item{patterns}{a list of regular expressions}
+
+\item{types_search}{lowercased types when \code{case_insensitive=TRUE}}
+
+\item{max_len}{maximum length of types to be indexed}
+
+\item{elem}{list of elements to be combined}
+
+\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+
+\item{index}{index object created by \code{index_types()}}
+
+\item{types}{types of tokens to index}
+
+\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+
+\item{regex}{a glob expression to search}
+
+\item{index}{an index object created by \code{index_types()}}
+
+\item{x}{a glob pattern to be tested}
 }
 \value{
 \code{regex2fixed} returns a list of character vectors containing
@@ -32,6 +75,9 @@ index constructed by index_types().}
 
 \code{regex2id} returns a list of integer vectors containing type
   IDs
+
+a list of integer vectors containing type IDs with index keys as an
+  attribute
 }
 \description{
 \code{regex2fixed} converts regex and glob patterns to fixed patterns.
@@ -39,7 +85,21 @@ index constructed by index_types().}
 \code{regex2id} converts regex or glob to type IDs to allow C++
   function to perform fast searches in tokens object. C++ functions use a
   list of type IDs to construct a hash table, agaist which sub-vectors of
-  tokens object are matched.
+  tokens object are matched. This function constructs index of glob patterns
+  for faster matching.
+
+This is an internal function for \code{regex2id()} that select types using an
+index of types by reular expressions.
+
+An internal function for \code{\link{regex2id}} that constructs an index of
+regex patterns (e.g. \code{^xxxx}, \code{xxxx$} and \code{^xxxx$}) to avoid
+expensive sequential search by \link[stringi]{stri_detect_regex}.
+
+internal function for \code{select_types()} to seach the index using fastmatch.
+
+simpler and faster version of expand.grid() in base package
+
+internal function for select_types() to check if a glob pattern is indexed by \code{index_types()}
 }
 \examples{
 pattern <- list(c('^a$', '^b'), c('c'), c('d'))
@@ -47,8 +107,20 @@ types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
 quanteda:::regex2fixed(pattern, types, 'regex', case_insensitive = TRUE)
 index <- quanteda:::index_types(types, 'regex', case_insensitive = TRUE)
 quanteda:::regex2fixed(pattern, index = index)
-pattern <- list(c('^a$', '^b'), c('c'), c('d'))
 types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
-quanteda:::regex2id(pattern, types, 'regex', case_insensitive = TRUE)
+
+pats_regex <- list(c('^a$', '^b'), c('c'), c('d'))
+quanteda:::regex2id(pats_regex, types, 'regex', case_insensitive = TRUE)
+
+pats_glob <- list(c('a*', 'b*'), c('c'), c('d'))
+quanteda:::regex2id(pats_glob, types, 'glob', case_insensitive = TRUE)
+
+types <- c('xxx', 'yyyy', 'ZZZ')
+index <- quanteda:::index_types2(types, 'glob', FALSE, 3)
+ quanteda:::search_glob('yy*', types, TRUE, index)
+quanteda:::expand(list(c('a', 'b', 'c'), c('x', 'y')))
+}
+\seealso{
+index_types
 }
 \keyword{internal}
