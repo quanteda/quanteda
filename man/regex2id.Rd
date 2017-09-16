@@ -18,11 +18,11 @@ regex2fixed(pattern, types = NULL, valuetype = NULL,
 regex2id(pattern, types = NULL, valuetype = NULL, case_insensitive = NULL,
   index = NULL)
 
-search_glob(patterns, types_search, case_insensitive, index)
+search_glob(patterns, types_search, index)
 
 search_regex(patterns, types_search, case_insensitive)
 
-search_fixed(patterns, types_search, case_insensitive, index)
+search_fixed(patterns, types_search, index)
 
 index_types(types, valuetype, case_insensitive, max_len = NULL)
 
@@ -55,7 +55,8 @@ index constructed by index_types().}
 
 \item{elem}{list of elements to be combined}
 
-\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+\item{case_insensitive}{ignore case when matching, if \code{TRUE}, but not
+used in glob and fixed matching as types are lowercased in the index.}
 
 \item{index}{index object created by \code{index_types()}}
 
@@ -116,8 +117,8 @@ pats_glob <- list(c('a*', 'b*'), c('c'), c('d'))
 quanteda:::regex2id(pats_glob, types, 'glob', case_insensitive = TRUE)
 
 types <- c('xxx', 'yyyy', 'ZZZ')
-index <- quanteda:::index_types2(types, 'glob', FALSE, 3)
- quanteda:::search_glob('yy*', types, TRUE, index)
+index <- quanteda:::index_types(types, 'glob', FALSE, 3)
+quanteda:::search_glob('yy*', types, TRUE, index)
 quanteda:::expand(list(c('a', 'b', 'c'), c('x', 'y')))
 }
 \seealso{
