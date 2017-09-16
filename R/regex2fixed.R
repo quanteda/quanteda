@@ -46,19 +46,13 @@ regex2fixed <- function(pattern, types = NULL, valuetype = NULL, case_insensitiv
 regex2id <- function(pattern, types = NULL, valuetype = NULL, case_insensitive = NULL, index = NULL) {
     
     if (!length(pattern)) return(list())
-    
-    if (!is.null(index)) {
-        if (!is.null(types)) stop('types must be NULL when index is provided')
-        if (!is.null(valuetype)) stop('valuetype must be NULL when index is provided')
-        if (!is.null(case_insensitive)) stop('case_insensitive must be NULL when index is provided')
-        valuetype <- attr(index, 'valuetype')
-        case_insensitive <- attr(index, 'case_insensitive')
-    }
+    pattern <- lapply(pattern, stri_trans_nfc) # normalize unicode
 
-    # normalize and convert patterns
-    pattern <- lapply(pattern, stri_trans_nfc)
-    
     if (is.null(index)) {
+        if (is.null(types)) stop('types cannot be NULL when index is not provided')
+        if (is.null(valuetype)) stop('valuetype cannot be NULL when index is not provided')
+        if (is.null(case_insensitive)) stop('case_insensitive cannot be NULL when index is not provided')
+        
         # glob is treated as fixed if neither * or ? is found
         pattern_unlist <- unlist(pattern, use.names = FALSE)
         if (valuetype == 'glob' &&
@@ -66,18 +60,23 @@ regex2id <- function(pattern, types = NULL, valuetype = NULL, case_insensitive =
             !any(stri_detect_fixed(pattern_unlist, '?'))) {
             valuetype <- 'fixed'
         }
-    }
-    
-    if (is.null(index)) {
         max_len <- max(stri_length(unlist(pattern, use.names = FALSE)))
-        index <- index_types(types, valuetype, case_insensitive, max_len)
+        index <- index_types(types, valuetype, case_insensitive, max_len) # index types for quick search
+    } else {
+        if (!is.null(types)) stop('types must be NULL when index is provided')
+        if (!is.null(valuetype)) stop('valuetype must be NULL when index is provided')
+        if (!is.null(case_insensitive)) stop('case_insensitive must be NULL when index is provided')
     }
     
-    # index types for quick search
+    # use options in the index
+    types_search <- attr(index, 'types_search')
+    valuetype <- attr(index, 'valuetype')
+    case_insensitive <- attr(index, 'case_insensitive')
+    
+    # lowercases for case-insensitive search
     if (valuetype != 'regex' && case_insensitive) {
         pattern <- lapply(pattern, stri_trans_tolower)
     }
-    types_search <- attr(index, 'types_search')
     
     # separate multi and single-entry patterns
     len <- lengths(pattern)
@@ -101,14 +100,11 @@ regex2id <- function(pattern, types = NULL, valuetype = NULL, case_insensitive =
     if (length(pats_single) > 0) {
         pats_single <- unlist(pats_single, use.names = FALSE)
         if (valuetype == 'regex') {
-            ids_single <- unlist(search_regex(pats_single, types_search, 
-                                              case_insensitive), use.names = FALSE)
+            ids_single <- unlist(search_regex(pats_single, types_search, case_insensitive), use.names = FALSE)
         } else if (valuetype == 'glob') {
-            ids_single <- unlist(search_glob(pats_single, types_search, 
-                                             index), use.names = FALSE)
+            ids_single <- unlist(search_glob(pats_single, types_search, index), use.names = FALSE)
         } else {
-            ids_single <- unlist(search_fixed(pats_single, types_search, 
-                                              index), use.names = FALSE)
+            ids_single <- unlist(search_fixed(pats_single, types_search, index), use.names = FALSE)
         }
         ids <- c(ids, ids_single)
     }
@@ -121,7 +117,8 @@ regex2id <- function(pattern, types = NULL, valuetype = NULL, case_insensitive =
 #' index of types by reular expressions.
 #' @rdname regex2id
 #' @param patterns a list of regular expressions
-#' @param types_search lowercased types when \code{case_insensitive=TRUE}
+#' @param types_search lowercased types when \code{case_insensitive=TRUE}, but not
+#'   used in glob and fixed matching as types are in the index.
 #' @param case_insensitive ignore case when matching, if \code{TRUE}, but not
 #'   used in glob and fixed matching as types are lowercased in the index.
 #' @param index index object created by \code{index_types()}
@@ -188,9 +185,8 @@ search_fixed <- function(patterns, types_search, index) {
 #'   attribute
 #' @keywords internal
 #' @examples
-#' types <- c('xxx', 'yyyy', 'ZZZ')
-#' index <- quanteda:::index_types(types, 'glob', FALSE, 3)
-#' quanteda:::search_glob('yy*', types, TRUE, index)
+#' index <- quanteda:::index_types(c('xxx', 'yyyy', 'ZZZ'), 'glob', FALSE, 3)
+#' quanteda:::search_glob('yy*', attr(index, 'type_search'), index)
 index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     
     if (is.null(types)) stop('types cannot be NULL')
@@ -208,10 +204,13 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     
     # normalize unicode
     types <- stri_trans_nfc(types)
-    types_search <- types
-    if (case_insensitive)
-        types_search <- stri_trans_tolower(types_search)
     
+    # lowercases for case-insensitive search
+    if (case_insensitive) {
+        types_search <- stri_trans_tolower(types)
+    } else {
+        types_search <- types
+    }
     # index for fixed patterns
     pos_tmp <- seq_along(types_search)
     key_tmp <- list(types_search)

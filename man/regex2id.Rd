@@ -49,7 +49,8 @@ index constructed by index_types().}
 
 \item{patterns}{a list of regular expressions}
 
-\item{types_search}{lowercased types when \code{case_insensitive=TRUE}}
+\item{types_search}{lowercased types when \code{case_insensitive=TRUE}, but not
+used in glob and fixed matching as types are in the index.}
 
 \item{max_len}{maximum length of types to be indexed}
 
@@ -116,9 +117,8 @@ quanteda:::regex2id(pats_regex, types, 'regex', case_insensitive = TRUE)
 pats_glob <- list(c('a*', 'b*'), c('c'), c('d'))
 quanteda:::regex2id(pats_glob, types, 'glob', case_insensitive = TRUE)
 
-types <- c('xxx', 'yyyy', 'ZZZ')
-index <- quanteda:::index_types(types, 'glob', FALSE, 3)
-quanteda:::search_glob('yy*', types, TRUE, index)
+index <- quanteda:::index_types(c('xxx', 'yyyy', 'ZZZ'), 'glob', FALSE, 3)
+quanteda:::search_glob('yy*', attr(index, 'type_search'), index)
 quanteda:::expand(list(c('a', 'b', 'c'), c('x', 'y')))
 }
 \seealso{
