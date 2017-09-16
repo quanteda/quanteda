@@ -342,6 +342,7 @@ test_that("dictionary constructor works on a dictionary", {
         dictlist
     )
 })
+
 test_that("combine method is working with dictionary objects", {
     
     dict1 <- dictionary(list(A = c('aa', 'aaa')))
@@ -352,3 +353,18 @@ test_that("combine method is working with dictionary objects", {
     expect_equal(c(dict1, dict2, dict3),
                  dictionary(list(A = c('aa', 'aaa'), B = c('b', 'bb'), A = c('aaaa', 'aaaaa'))))
 })
+
+test_that("dictionary constrcutor clean values", {
+    
+    dict1 <- dictionary(list(A = c('aa  ', '  aaa  ')))
+    dict2 <- dictionary(list(B = c('b', 'bb', 'bb')))
+    
+    # trim whitespaces
+    expect_equal(dict1,
+                 dictionary(list(A = c('aa', 'aaa'))))
+    
+    # remove duplicates
+    expect_equal(dict2,
+                 dictionary(list(B = c('b', 'bb'))))
+})
+
