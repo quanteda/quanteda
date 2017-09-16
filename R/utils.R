@@ -246,6 +246,24 @@ pattern2id <- function(features, types, valuetype, case_insensitive,
     return(features_id)
 }
 
+#' internal function for \code{select_types()} to check if a string is a regular expression
+#' @param x a character string to be tested
+#' @keywords internal
+is_regex <- function(x){
+    any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
+}
+
+#' internal function for \code{select_types()} to escape regular expressions 
+#' 
+#' This function escapes glob patterns before \code{utils:glob2rx()}, therefore * and ?
+#' are unescaped.
+#' @param x character vector to be escaped
+#' @keywords internal
+escape_regex <- function(x){
+    #stri_replace_all_regex(x, "([.()^\\{\\}+$*\\[\\]\\\\])", "\\\\$1") # escape any
+    stri_replace_all_regex(x, "([.()^\\{\\}+$\\[\\]\\\\])", "\\\\$1") # allow glob
+}
+
 # which object class started the call stack?
 # @param x sys.calls() from inside a function
 # @param function_name the base name of the method of the function
