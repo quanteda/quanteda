@@ -330,8 +330,8 @@ rbind.dfm <- function(...) {
     
     # make features identical using a null dfm
     z <- make_null_dfm(union(featnames(x), featnames(y)))
-    x <- dfm_select(x, z)
-    y <- dfm_select(y, z)
+    x <- dfm_select(x, pattern = z, verbose = FALSE)
+    y <- dfm_select(y, pattern = z, verbose = FALSE)
     result <-  new("dfmSparse", Matrix::rbind2(x, y))
     if (length(args) > 2) {
         for (i in seq(3, length(args))) {
