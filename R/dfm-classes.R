@@ -329,7 +329,7 @@ rbind.dfm <- function(...) {
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
     
     # make features identical using a null dfm
-    z <- make_null_dfm(unique(c(featnames(x), featnames(y))))
+    z <- make_null_dfm(union(featnames(x), featnames(y)))
     x <- dfm_select(x, z)
     y <- dfm_select(y, z)
     result <-  new("dfmSparse", Matrix::rbind2(x, y))
