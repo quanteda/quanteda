@@ -232,54 +232,68 @@ cbind.dfm <- function(...) {
     if (is.matrix(x)) {
         x <- as.dfm(x)
     } else if (is.numeric(x)) {
-        x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y), dimnames = list(docnames(y), names[1])))
+        x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y), 
+                           dimnames = list(docs = docnames(y), features = names[1])))
     }
     
     if (is.matrix(y)) {
         y <- as.dfm(y)
     } else if (is.numeric(y)) {
-        y <- as.dfm(matrix(y, ncol = 1, nrow = nrow(x), dimnames = list(docnames(x), names[2])))
+        y <- as.dfm(matrix(y, ncol = 1, nrow = nrow(x), 
+                           dimnames = list(docs = docnames(x), features = names[2])))
     }
     
-    result <- cbind_dfm_dfm(x, y)
-    slots(result) <- attrs
-
-    while (length(args[-c(1,2)])) {
-        args <- args[-c(1,2)]
-        result <- do.call(cbind, c(result, args))
-    }
-    result
-}
-
-cbind_dfm_dfm <- function(...) {
-    args <- list(...)
-    if (!all(vapply(args, is.dfm, logical(1))))
-        stop("all arguments must be dfm objects")
-    # dnames <- sapply(args, docnames)
-    # # make into a matrix-like object for apply to work below, even if just one document per input
-    # if (is.null(dim(dnames)))
-    #     dnames <- matrix(dnames, ncol = length(dnames))
-    if (any(docnames(args[[1]]) != docnames(args[[2]])))
+    if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
+    if (any(docnames(x) != docnames(y)))
         warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
     
-    result <-  new("dfmSparse", Matrix::cbind2(args[[1]], args[[2]]))
+    result <-  new("dfmSparse", Matrix::cbind2(x, y))
     if (length(args) > 2) {
         for (i in seq(3, length(args))) {
             result <- cbind(result, args[[i]])
         }
     }
-
+    
     # make any added feature names unique
-    dupl_featname_index <-
-        grep(paste0("^", quanteda_options("base_featname")), colnames(result))
-    colnames(result)[dupl_featname_index] <- make.unique(colnames(result)[dupl_featname_index], sep = "")
+    index_added <- stri_startswith_fixed(colnames(result), quanteda_options("base_featname"))
+    colnames(result)[index_added] <- make.unique(colnames(result)[index_added], sep = "")
     # only issue warning if these did not come from added feature names
     if (any(duplicated(colnames(result))))
         warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE, call. = FALSE)
     
-    names(dimnames(result)) <- c("docs", "features")
-    new("dfmSparse", result)
+    names(dimnames(result)) <- c("docs", "features") # TODO could be removed after upgradeing as.dfm()
+    slots(result) <- attrs
+    return(result)
 }
+
+# cbind_dfm_dfm <- function(...) {
+#     args <- list(...)
+#     if (!all(vapply(args, is.dfm, logical(1)))) stop("all arguments must be dfm objects")
+#     # dnames <- sapply(args, docnames)
+#     # # make into a matrix-like object for apply to work below, even if just one document per input
+#     # if (is.null(dim(dnames)))
+#     #     dnames <- matrix(dnames, ncol = length(dnames))
+#     if (any(docnames(args[[1]]) != docnames(args[[2]])))
+#         warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
+#     
+#     result <-  new("dfmSparse", Matrix::cbind2(args[[1]], args[[2]]))
+#     if (length(args) > 2) {
+#         for (i in seq(3, length(args))) {
+#             result <- cbind(result, args[[i]])
+#         }
+#     }
+# 
+#     # make any added feature names unique
+#     dupl_featname_index <-
+#         grep(paste0("^", quanteda_options("base_featname")), colnames(result))
+#     colnames(result)[dupl_featname_index] <- make.unique(colnames(result)[dupl_featname_index], sep = "")
+#     # only issue warning if these did not come from added feature names
+#     if (any(duplicated(colnames(result))))
+#         warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE, call. = FALSE)
+#     
+#     names(dimnames(result)) <- c("docs", "features")
+#     new("dfmSparse", result)
+# }
 
 
 #' @rdname cbind.dfm
@@ -314,7 +328,7 @@ rbind.dfm <- function(...) {
     } else {
         # Recursive call
         result <- rbind2.dfm(args[[1]], args[[2]])
-        for (y in args[3:length(args)]) 
+        for (y in args[3:length(args)])
             result <- rbind2.dfm(result, y)
     }
     names(dimnames(result)) <- c("docs", "features")
