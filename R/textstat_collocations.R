@@ -104,7 +104,7 @@ sequences <- collocations
 #'                        case_insensitive = FALSE, padding = TRUE)
 #' seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
 #' head(seqs, 10)
-textstat_collocations <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5,  tolower = TRUE, show_counts = FALSE, path = 1, ...) {
+textstat_collocations <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5,  tolower = TRUE, show_counts = FALSE, path = 1, ...) {
     UseMethod("textstat_collocations")
 }
 
@@ -113,7 +113,7 @@ VALID_SCORING_METHODS <- c("lambda", "lambda1", "lr", "chi2", "pmi", "LFMD") #, 
 #' @noRd
 #' @export
 #' @importFrom stats na.omit
-textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...) {
+textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...) {
     
     method <- match.arg(method, c("all", VALID_SCORING_METHODS))
     if (any(!(size %in% 2:5)))
@@ -259,7 +259,7 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
 
 
 #' @export
-textstat_collocations.corpus <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE,  path = 1, ...) {
+textstat_collocations.corpus <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE,  path = 1, ...) {
     # segment into units not including punctuation, to avoid identifying collocations that are not adjacent
     texts(x) <- paste(".", texts(x))
     # separate each line except those where the punctuation is a hyphen or apostrophe
@@ -270,13 +270,13 @@ textstat_collocations.corpus <- function(x, method = "all", size = 2, min_count 
 }
 
 #' @export
-textstat_collocations.character <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
+textstat_collocations.character <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
     textstat_collocations(corpus(x), method = method, size = size, min_count = min_count, 
                           smoothing = smoothing, tolower = tolower, show_counts = show_counts, ...)
 }
 
 #' @export
-textstat_collocations.tokenizedTexts <- function(x, method = "all", size = 2, min_count = 1, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...) {
+textstat_collocations.tokenizedTexts <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...) {
     textstat_collocations(as.tokens(x), method = method, size = size, min_count = min_count, 
                           smoothing = smoothing, tolower = tolower, show_counts = show_counts, path = path)
 }
