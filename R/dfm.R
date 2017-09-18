@@ -130,11 +130,12 @@ dfm_env <- new.env()
 dfm_env$START_TIME <- NULL  
 
 # dfm function to check that any ellipsis arguments belong only to tokens formals
-check_dfm_dots <-  function(dots, permissible_args = NULL) {
-    if (length(dots) && any(!(names(dots)) %in% permissible_args))
-        warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", 
-                noBreaks. = TRUE, call. = FALSE)
-}
+# check_dfm_dots <-  function(dots, permissible_args = NULL) {
+#     if (length(dots) && any(!(names(dots)) %in% permissible_args))
+#         warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", 
+#                 noBreaks. = TRUE, call. = FALSE)
+# }
+
 
 
 #' @rdname dfm
@@ -176,13 +177,14 @@ dfm.corpus <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"),
                        ...) {
-    dfm.tokens(tokens(x, ...),  
+    dfm.tokens(tokens(x),  
                tolower = tolower, 
                stem = stem, 
                select = select, remove = remove, 
                dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
                groups = groups, 
-               verbose = verbose)
+               verbose = verbose, 
+               ...)
 }    
 
 #' @noRd
@@ -205,7 +207,8 @@ dfm.tokenizedTexts <- function(x,
                select = select, remove = remove, 
                dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
                groups = groups, 
-               verbose = verbose, ...)
+               verbose = verbose, 
+               ...)
 }
     
 #' @noRd
@@ -224,6 +227,8 @@ dfm.tokens <- function(x,
                        ...) {
 
     valuetype <- match.arg(valuetype)
+    check_dots(list(...), names(formals('tokens')))
+    
     # set document names if none
     if (is.null(names(x))) {
         names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
@@ -314,7 +319,7 @@ dfm.dfm <- function(x,
                     ...) {
 
     valuetype <- match.arg(valuetype)
-    check_dfm_dots(list(...))
+    check_dots(list(...))
 
     if (tolower) {
         if (verbose) catm("   ... lowercasing\n", sep="")

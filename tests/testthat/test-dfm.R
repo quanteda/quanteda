@@ -620,3 +620,21 @@ test_that("dfm works when features are created (#946", {
         matrix(c(1,1,1), nrow = 1, dimnames = list(docs = "text1", features = c("a", "b", "feat_1")))
     )
 })
+
+test_that("dfm warns of argument not used", {
+    
+    txt <- c(d1 = "a b c d e", d2 = "a a b c c c")
+    corp <- corpus(txt)
+    toks <- tokens(txt)
+    mx <- dfm(toks)
+    
+    expect_warning(dfm(txt, xxxxx = 'something', yyyyy = 'else'), 
+                   'Arguments xxxxx, yyyyy not used')
+    expect_warning(dfm(corp, xxxxx = 'something', yyyyy = 'else'), 
+                   'Arguments xxxxx, yyyyy not used')
+    expect_warning(dfm(toks, xxxxx = 'something', yyyyy = 'else'), 
+                   'Arguments xxxxx, yyyyy not used')
+    expect_warning(dfm(mx, xxxxx = 'something', yyyyy = 'else'), 
+                   'Arguments xxxxx, yyyyy not used')
+    
+})

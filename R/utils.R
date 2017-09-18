@@ -278,3 +278,14 @@ who_called_me_first <- function(x, function_name) {
     x[1]
 }
 
+# function to check dots arguments against a list of permissible arguments
+check_dots <-  function(dots, permissible_args = NULL) {
+    if (length(dots) == 0) return()
+    args <- names(dots)
+    impermissible_args <-  setdiff(args, permissible_args)
+    if (length(impermissible_args))
+        warning("Argument", if (length(impermissible_args) > 1) "s " else " ", 
+                paste(impermissible_args, collapse = ', '), " not used.", 
+                noBreaks. = TRUE, call. = FALSE)
+}
+
