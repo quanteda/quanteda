@@ -113,7 +113,7 @@ kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "
                         class = c("kwic", "data.frame"), 
                         ntoken = ntoken(x), 
                         valuetype = valuetype, 
-                        keywords = attr(keywords_id, 'features'),
+                        keywords = attr(keywords_id, 'pattern'),
                         tokens =  attr(temp, "tokens"))
     attributes(result, FALSE)  <- attributes(x)
     return(result)
