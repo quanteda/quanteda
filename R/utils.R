@@ -222,10 +222,16 @@ code <- function(texts){
 }
 
 
-# convert various input as features to a vector used in tokens_select, 
-# tokens_compound and kwic.
+#' convert various input as pattern to a vector used in tokens_select, 
+#' tokens_compound and kwic.
+#' @inheritParam pattern
+#' @inheritParam valuetype
+#' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
+#' @concatenator concatenator that join multiword expression in tokens object
+#' @remove_unigram drop single-word patterns if \code{TRUE}
+#' @seealso regex2id
 pattern2id <- function(features, types, valuetype, case_insensitive, 
-                        concatenator = '_', remove_unigram = FALSE) {
+                       concatenator = '_', remove_unigram = FALSE) {
     
     if (is.sequences(features) || is.collocations(features)) {
         features <- stri_split_charclass(features$collocation, "\\p{Z}")
@@ -245,6 +251,7 @@ pattern2id <- function(features, types, valuetype, case_insensitive,
     attr(features_id, 'features') <- stri_c_list(features, sep = ' ')
     return(features_id)
 }
+
 
 #' internal function for \code{select_types()} to check if a string is a regular expression
 #' @param x a character string to be tested
