@@ -168,17 +168,6 @@ test_that("test rbind.dfm with a single argument returns the same dfm", {
     )
 })
 
-test_that("test that rbind.dfm with a single argument prints a warning", {
-    fox <-'What does the fox say?'
-    expect_that(
-        rbind(dfm(fox, remove_punct = TRUE)),
-        gives_warning('rbind.dfm called on single dfm')
-        )
-
-})
-
-
-
 test_that("test rbind.dfm with the same features, but in a different order", {
 
     fox <-'What does the fox say?'

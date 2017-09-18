@@ -456,3 +456,14 @@ make_ngram_pattern <- function(features, valuetype, concatenator) {
     features
 }
 
+# create an empty dfm for given features and documents
+make_null_dfm <- function(feature = NULL, document = NULL) {
+    temp <- as(sparseMatrix(
+        i = NULL,
+        j = NULL,
+        dims = c(length(document), length(feature)),
+        dimnames = list(docs = document, features = feature)
+    ),
+    "dgCMatrix")
+    new("dfmSparse", temp)
+}
