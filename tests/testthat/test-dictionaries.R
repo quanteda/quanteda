@@ -354,7 +354,7 @@ test_that("combine method is working with dictionary objects", {
                  dictionary(list(A = c('aa', 'aaa'), B = c('b', 'bb'), A = c('aaaa', 'aaaaa'))))
 })
 
-test_that("dictionary constrcutor clean values", {
+test_that("dictionary constructor clean values", {
     
     dict1 <- dictionary(list(A = c('aa  ', '  aaa  ')))
     dict2 <- dictionary(list(B = c('b', 'bb', 'bb')))

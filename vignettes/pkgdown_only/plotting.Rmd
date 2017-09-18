@@ -19,26 +19,29 @@ This vignette walks through various plot options available in **quanteda** throu
 
 ## 1. Wordcloud 
 
-Plotting a `dfm` object will create a wordcloud using the `wordcloud` pacakge.
+Plotting a `dfm` object will create a wordcloud using the **wordcloud** pacakge.
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-# Create a dfm from a somewhat smaller corpus
-inaugDfm <- dfm(data_corpus_inaugural[0:10], remove = stopwords('english'), remove_punct = TRUE)
-# Some words will not fit on a plot this size, so suppress those warings
-textplot_wordcloud(dfm_trim(inaugDfm, min_count = 10, verbose = FALSE))
+dfm_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) %>% 
+    dfm(remove = stopwords('english'), remove_punct = TRUE) %>%
+    dfm_trim(min_count = 10, verbose = FALSE)
+
+textplot_wordcloud(dfm_inaug)
 ```
 
 You can also plot a "comparison cloud", but this can only be done with fewer than eight documents:
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-compDfm <- dfm(corpus_subset(data_corpus_inaugural, President %in% c("Washington", "Jefferson", "Madison")),
-               groups = "President", remove = stopwords("english"), remove_punct = TRUE)
-textplot_wordcloud(dfm_trim(compDfm, min_count = 5, verbose = FALSE), comparison = TRUE)
+corpus_subset(data_corpus_inaugural, 
+              President %in% c("Washington", "Jefferson", "Madison")) %>%
+    dfm(groups = "President", remove = stopwords("english"), remove_punct = TRUE) %>%
+    dfm_trim(min_count = 5, verbose = FALSE) %>%
+    textplot_wordcloud(comparison = TRUE)
 ```
 
 Plot will pass through additional arguments to the underlying call to `wordcloud`.
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-textplot_wordcloud(inaugDfm, min.freq = 10,
+textplot_wordcloud(dfm_inaug, min.freq = 10,
      colors = c('red', 'pink', 'green', 'purple', 'orange', 'blue'))
 ```
 
@@ -47,15 +50,18 @@ textplot_wordcloud(inaugDfm, min.freq = 10,
 Plotting a `kwic` object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text.  We call these "x-ray" plots due to their similarity to the data produced by [Amazon's "x-ray" feature for Kindle books](https://en.wikipedia.org/wiki/X-Ray_(Amazon_Kindle)).
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-textplot_xray(kwic(data_corpus_inaugural[40:57], "american"))
+data_corpus_inaugural_subset <- 
+    corpus_subset(data_corpus_inaugural, Year > 1949)
+kwic(data_corpus_inaugural_subset, pattern = "american") %>%
+    textplot_xray()
 ```
 
 You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 textplot_xray(
-     kwic(data_corpus_inaugural[40:57], "american"),
-     kwic(data_corpus_inaugural[40:57], "people"),
-     kwic(data_corpus_inaugural[40:57], "communist")
+     kwic(data_corpus_inaugural_subset, "american"),
+     kwic(data_corpus_inaugural_subset, "people"),
+     kwic(data_corpus_inaugural_subset, "communist")
 )
 ```
 
@@ -64,7 +70,6 @@ If you're only plotting a single document, but with multiple keywords, then the 
 ```{r eval=TRUE, fig.width=8, fig.height=1.25}
 require(readtext)
 data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
-
 textplot_xray(
     kwic(data_char_mobydick, "whale"),
     kwic(data_char_mobydick, "ahab")
@@ -75,10 +80,10 @@ You might also have noticed that the x-axis scale is the absolute token index fo
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 textplot_xray(
-     kwic(data_corpus_inaugural[40:57], "american"),
-     kwic(data_corpus_inaugural[40:57], "people"),
-     kwic(data_corpus_inaugural[40:57], "communist"),
-     scale = 'absolute'
+    kwic(data_corpus_inaugural_subset, "american"),
+    kwic(data_corpus_inaugural_subset, "people"),
+    kwic(data_corpus_inaugural_subset, "communist"),
+    scale = "absolute"
 )
 ```
 
@@ -89,14 +94,14 @@ In this case, the texts may not have the same length, so the tokens that don't e
 The object returned is a ggplot object, which can be modified using ggplot:
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-library(ggplot2)
+library("ggplot2")
 theme_set(theme_bw())
 g <- textplot_xray(
-     kwic(data_corpus_inaugural[40:57], "american"),
-     kwic(data_corpus_inaugural[40:57], "people"),
-     kwic(data_corpus_inaugural[40:57], "communist")
+    kwic(data_corpus_inaugural_subset, "american"),
+    kwic(data_corpus_inaugural_subset, "people"),
+    kwic(data_corpus_inaugural_subset, "communist")
 )
-g + aes(color = keyword) + scale_color_manual(values = c('blue', 'red', 'green'))
+g + aes(color = keyword) + scale_color_manual(values = c("blue", "red", "green"))
 
 ```
 
@@ -106,50 +111,71 @@ g + aes(color = keyword) + scale_color_manual(values = c('blue', 'red', 'green')
 You can plot the frequency of the top features in a text using `topfeatures`.
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-inaugFeatures <- topfeatures(inaugDfm, 100)
-
-# Create a data.frame for ggplot
-topDf <- data.frame(
-    list(
-        term = names(inaugFeatures),
-        frequency = unname(inaugFeatures)
-    )
-)
+features_dfm_inaug <- textstat_frequency(dfm_inaug, n = 100)
 
 # Sort by reverse frequency order
-topDf$term <- with(topDf, reorder(term, -frequency))
+features_dfm_inaug$feature <- with(features_dfm_inaug, reorder(feature, -frequency))
 
-ggplot(topDf) + geom_point(aes(x=term, y=frequency)) +
-    theme(axis.text.x=element_text(angle=90, hjust=1))
+ggplot(features_dfm_inaug, aes(x = feature, y = frequency)) +
+    geom_point() + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-If you wanted to compare the frequency of a single term across different texts, you could plot the dfm matrix like this:
+If you wanted to compare the frequency of a single term across different texts, you can also use `textstat_frequency`, group the frequency by speech and extract the term.
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
+# Get frequency grouped by president
+freq_grouped <- textstat_frequency(dfm(data_corpus_inaugural_subset), 
+                                   groups = "President")
 
-americanFreq <- data.frame(list(
-    document = rownames(inaugDfm[, 'american']),
-    frequency = unname(as.matrix(inaugDfm[, 'american']))
-))
+# Filter the term "american"
+freq_american <- subset(freq_grouped, feature %in% "american")  
 
-ggplot(americanFreq) + geom_point(aes(x=document,y=frequency)) +
-    theme(axis.text.x = element_text(angle=90, hjust=1))
-
+ggplot(freq_american, aes(x = group, y = frequency)) +
+    geom_point() + 
+    scale_y_continuous(limits = c(0, 14), breaks = c(seq(0, 14, 2))) +
+    xlab(NULL) + 
+    ylab("Frequency") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. 
+The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we need to weight the document-frequency matrix first. To obtain expected word frequency per 100 words, we multiply by 100. 
 
-```{r eval=TRUE}
-relDfm <- weight(inaugDfm, type='relFreq') * 100
-head(relDfm)
+```{r eval=TRUE, fig.width=8, fig.height=4}
+dfm_rel_freq <- dfm_weight(dfm(data_corpus_inaugural_subset), type='relFreq') * 100
+head(dfm_rel_freq)
 
-relFreq <- data.frame(list(
-    document = rownames(inaugDfm[, 'american']),
-    frequency = unname(as.matrix(relDfm[, 'american']))
-))
+rel_freq <- textstat_frequency(dfm_rel_freq, groups = "President")
 
-ggplot(relFreq) + geom_point(aes(x=document,y=frequency)) +
-    theme(axis.text.x = element_text(angle=90, hjust=1))
+# Filter the term "american"
+rel_freq_american <- subset(rel_freq, feature %in% "american")  
+
+ggplot(rel_freq_american, aes(x = group, y = frequency)) +
+    geom_point() + 
+    scale_y_continuous(limits = c(0, 0.7), breaks = c(seq(0, 0.7, 0.1))) +
+    xlab(NULL) + 
+    ylab("Relative frequency") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+Finally, `texstat_frequency` allows to plot the most frequent words in terms of relative frequency by group.
+
+```{r eval=TRUE, fig.width=8, fig.height=6}
+dfm_weight_pres <- data_corpus_inaugural %>%
+     corpus_subset(Year > 2000) %>%
+     dfm(remove = stopwords("english"), remove_punct = TRUE) %>%
+     dfm_weight(type = "relfreq")
+
+# Calculate relative frequency by president
+freq_weight <- textstat_frequency(dfm_weight_pres, n = 10, groups = "President")
+
+ggplot(data = freq_weight, aes(x = nrow(freq_weight):1, y = frequency)) +
+     geom_point() +
+     facet_wrap(~ group, scales = "free") +
+     coord_flip() +
+     scale_x_continuous(breaks = nrow(freq_weight):1,
+                        labels = freq_weight$feature) +
+     labs(x = NULL, y = "Relative frequency")
 ```
 
 ## 4. Plot "keyness" in a target and reference group
@@ -158,17 +184,12 @@ If you want to compare the differential associations of keywords in a target and
 In this example, we compare the inaugural speech by Donald Trump with the speeches by Barack Obama.
 
 ```{r fig.width=8, fig.height=6}
-# Currently requires the quanteda development version 
-# which can be downloaded using:
-# devtools::install_github("kbenoit/quanteda")
-
 # Only select speeches by Obama and Trump
 pres_corpus <- corpus_subset(data_corpus_inaugural, 
                             President %in% c("Obama", "Trump"))
 
 # Create a dfm grouped by president
-pres_dfm <- dfm(pres_corpus, groups = "President", 
-                remove = stopwords("english"),
+pres_dfm <- dfm(pres_corpus, groups = "President", remove = stopwords("english"), 
                 remove_punct = TRUE)
 
 # Calculate keyness and determine Trump as target group
@@ -185,12 +206,6 @@ textplot_keyness(result_keyness, show_reference = FALSE)
 
 You can also plot fitted Wordscores (Laver et al., 2003) or Wordfish scaling models (Proksch and Slapin, 2008). To use the following functions, currently you need to download the development version of **quanteda**.
 
-```{r eval=FALSE}
-# devtools packaged required to install quanteda from Github 
-devtools::install_github("kbenoit/quanteda") 
-require(quanteda)
-```
-
 ### 5.1 Wordscores
 
 Wordscores is a scaling procedure for estimating policy positions or scores (Laver et al., 2003). Known scores are assigned to so called reference texts in order to infer the positions of new documents ("virgin texts"). You can plot the position of words (features) against the logged term frequency, or the position of the documents.
@@ -203,7 +218,7 @@ ie_dfm <- dfm(data_corpus_irishbudget2010, verbose=FALSE)
 refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 
 # Predict Wordscores model
-ws <- textmodel(ie_dfm, refscores, model="wordscores", smooth = 1)
+ws <- textmodel(ie_dfm, refscores, model = "wordscores", smooth = 1)
 
 # Get predictions
 pred <- predict(ws)
@@ -279,4 +294,3 @@ Laver, Michael, Kenneth Benoit, and John Garry. 2003. "Extracting Policy Positio
 Nenadic, Oleg, and Michael Greenacre. 2007. "Correspondence analysis in R, with two- and three-dimensional graphics: The ca package." _Journal of Statistical Software_ 20(3): 1-13. URL: http://www.jstatsoft.org/v20/i03/.
 
 Slapin, Jonathan, and Sven-Oliver Proksch. 2008. "A Scaling Model for Estimating Time-Series Party Positions from Texts." _American Journal of Political Science_ 52(3):705-772.
-
