@@ -224,32 +224,33 @@ code <- function(texts){
 
 #' convert various input as pattern to a vector used in tokens_select, 
 #' tokens_compound and kwic.
-#' @inheritParam pattern
-#' @inheritParam valuetype
+#' @inheritParams pattern
+#' @inheritParams valuetype
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
-#' @concatenator concatenator that join multiword expression in tokens object
-#' @remove_unigram drop single-word patterns if \code{TRUE}
+#' @param concatenator concatenator that join multi-word expression in tokens object
+#' @param remove_unigram ignore single-word patterns if \code{TRUE}
 #' @seealso regex2id
-pattern2id <- function(features, types, valuetype, case_insensitive, 
+#' @keywords internal
+pattern2id <- function(pattern, types, valuetype, case_insensitive, 
                        concatenator = '_', remove_unigram = FALSE) {
     
-    if (is.sequences(features) || is.collocations(features)) {
-        features <- stri_split_charclass(features$collocation, "\\p{Z}")
-        features_id <- lapply(features, function(x) fastmatch::fmatch(x, types))
-        features_id <- features_id[sapply(features_id, function(x) all(!is.na(x)))]
+    if (is.sequences(pattern) || is.collocations(pattern)) {
+        pattern <- stri_split_charclass(pattern$collocation, "\\p{Z}")
+        pattern_id <- lapply(pattern, function(x) fastmatch::fmatch(x, types))
+        pattern_id <- pattern_id[sapply(pattern_id, function(x) all(!is.na(x)))]
     } else {
-        if (is.dictionary(features)) {
-            features <- unlist(features, use.names = FALSE)
-            features <- split_dictionary_values(features, concatenator)
+        if (is.dictionary(pattern)) {
+            pattern <- unlist(pattern, use.names = FALSE)
+            pattern <- split_dictionary_values(pattern, concatenator)
         } else {
-            features <- as.list(features)
+            pattern <- as.list(pattern)
         }
         if (remove_unigram)
-            features <- features[lengths(features) > 1] # drop single-word features
-        features_id <- regex2id(features, types, valuetype, case_insensitive)
+            pattern <- pattern[lengths(pattern) > 1] # drop single-word pattern
+        pattern_id <- regex2id(pattern, types, valuetype, case_insensitive)
     }
-    attr(features_id, 'features') <- stri_c_list(features, sep = ' ')
-    return(features_id)
+    attr(pattern_id, 'pattern') <- stri_c_list(pattern, sep = ' ')
+    return(pattern_id)
 }
 
 
