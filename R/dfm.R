@@ -176,13 +176,13 @@ dfm.corpus <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"),
                        ...) {
-    dfm(tokens(x, ...),  
-        tolower = tolower, 
-        stem = stem, 
-        select = select, remove = remove, 
-        dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
-        groups = groups, 
-        verbose = verbose)
+    dfm.tokens(tokens(x, ...),  
+               tolower = tolower, 
+               stem = stem, 
+               select = select, remove = remove, 
+               dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
+               groups = groups, 
+               verbose = verbose)
 }    
 
 #' @noRd
@@ -199,13 +199,13 @@ dfm.tokenizedTexts <- function(x,
                                groups = NULL, 
                                verbose = quanteda_options("verbose"), 
                                ...) {
-    dfm(as.tokens(x),  
-        tolower = tolower, 
-        stem = stem, 
-        select = select, remove = remove, 
-        dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
-        groups = groups, 
-        verbose = verbose, ...)
+    dfm.tokens(as.tokens(x),  
+               tolower = tolower, 
+               stem = stem, 
+               select = select, remove = remove, 
+               dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
+               groups = groups, 
+               verbose = verbose, ...)
 }
     
 #' @noRd
