@@ -5,7 +5,7 @@
 \alias{is.collocations}
 \title{identify and score multi-word expressions}
 \usage{
-textstat_collocations(x, method = "all", size = 2, min_count = 1,
+textstat_collocations(x, method = "all", size = 2, min_count = 2,
   smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...)
 
 is.collocations(x)

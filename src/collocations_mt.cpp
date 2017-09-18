@@ -618,6 +618,8 @@ struct estimates_mt : public Worker{
     }
 };
 
+Function warningR("warning");
+
 /* 
  * This funciton estimate the strength of association between specified words 
  * that appear in sequences. 
@@ -744,7 +746,7 @@ DataFrame qatd_cpp_collocations(const List &texts_,
         DoubleParams chi2(len_noPadding);
         DoubleParams gensim(len_noPadding);
         DoubleParams lfmd(len_noPadding);
-        IntParams ifault(len_noPadding);
+        IntParams ifault(len_noPadding, 0);
         //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
         estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, ifault, method, count_min, total_counts, smoothing, ob_n, exp_n);
@@ -767,14 +769,16 @@ DataFrame qatd_cpp_collocations(const List &texts_,
                 break;
             case 3:
                 if (iwarning[1] == 0){
-                    Rcout << "Warning: ipf algorithm did not converge for at least once" << endl; 
+                    warningR("Warning: ipf algorithm did not converge for at least once"); 
                     iwarning[1] = 1;
                 }
+                break;
             case 4:
                 if (iwarning[2] == 0){
-                    Rcout << "Warning: incorrect specification of 'table' or 'start'" << endl; 
+                    warningR("Warning: incorrect specification of 'table' or 'start'"); 
                     iwarning[2] = 1;
                 }
+                break;
             default:
                 break;
             }
