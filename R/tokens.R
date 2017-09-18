@@ -226,7 +226,7 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
                            concatenator = "_",
                            hash = TRUE,
                            verbose = quanteda_options("verbose"),
-                           include_docvars,
+                           include_docvars = TRUE,
                            ...) {
     
     types <- types(x)
@@ -256,6 +256,8 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
         x <- tokens_ngrams(x, n = ngrams, skip = skip, concatenator = concatenator)
     if (hash == FALSE)
         x <- as.tokenizedTexts(x)
+    if (!include_docvars)
+        docvars(x) <- data.frame(row.names = docnames(x))
     return(x)
 }
 

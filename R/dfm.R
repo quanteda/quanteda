@@ -152,7 +152,7 @@ dfm.character <- function(x,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
-    dfm.tokens(tokens(corpus(x), ...),
+    dfm.tokens(tokens(corpus(x)),
         tolower = tolower, 
         stem = stem, 
         select = select, remove = remove, 
@@ -177,7 +177,7 @@ dfm.corpus <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"),
                        ...) {
-    dfm.tokens(tokens(x, ...),  
+    dfm.tokens(tokens(x),  
                tolower = tolower, 
                stem = stem, 
                select = select, remove = remove, 
@@ -235,8 +235,9 @@ dfm.tokens <- function(x,
     } 
     
     # call tokens only if options given
-    if (length(intersect(names(list(...)), names(formals('tokens')))))
+    if (length(intersect(names(list(...)), names(formals('tokens'))))) {
         x <- tokens(x, ...)
+    }
     
     if (tolower) {
         if (verbose) catm("   ... lowercasing\n", sep="")
