@@ -18,6 +18,16 @@ path_C = textstat_collocations(toks2, size = 2, tolower = FALSE, method="all", p
 times = 2, unit = "relative")
 ```
 
+### compare minimum counts
+```{r}
+toks2 <- tokens(quantedaData::data_corpus_SOTU)
+toks2 <- tokens_remove(toks2, stopwords("english"), padding = TRUE)
+microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 3, tolower = FALSE, method="lambda", min_count = 2, path=2),  
+path_C = textstat_collocations(toks2, size = 3, tolower = FALSE, method="lambda", min_count = 1,  path=2), 
+times = 2, unit = "relative")
+```
+
+
 ###trigram
 ```{r}
 toks2 <- tokens(data_corpus_inaugural)
