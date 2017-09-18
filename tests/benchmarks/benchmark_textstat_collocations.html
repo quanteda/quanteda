@@ -130,9 +130,36 @@ microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 2, t
 path_C = textstat_collocations(toks2, size = 2, tolower = FALSE, method=&quot;all&quot;, path=2), 
 times = 2, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
-##    expr      min       lq     mean   median      uq     max neval
-##  path_R 4.826219 4.826219 4.835711 4.835711 4.84519 4.84519     2
-##  path_C 1.000000 1.000000 1.000000 1.000000 1.00000 1.00000     2</code></pre>
+##    expr      min       lq     mean   median       uq      max neval
+##  path_R 2.725511 2.725511 2.665482 2.665482 2.609778 2.609778     2
+##  path_C 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000     2</code></pre>
+</div>
+<div id="compare-minimum-counts" class="section level3">
+<h3>compare minimum counts</h3>
+<pre class="r"><code>toks2 &lt;- tokens(quantedaData::data_corpus_SOTU)
+toks2 &lt;- tokens_remove(toks2, stopwords(&quot;english&quot;), padding = TRUE)
+microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 3, tolower = FALSE, method=&quot;lambda&quot;, min_count = 2, path=2),  
+path_C = textstat_collocations(toks2, size = 3, tolower = FALSE, method=&quot;lambda&quot;, min_count = 1,  path=2), 
+times = 2, unit = &quot;relative&quot;)</code></pre>
+<pre><code>## Warning in evalq((function (..., call. = TRUE, immediate. = FALSE,
+## noBreaks. = FALSE, : Warning: ipf algorithm did not converge for at least
+## once
+
+## Warning in evalq((function (..., call. = TRUE, immediate. = FALSE,
+## noBreaks. = FALSE, : Warning: ipf algorithm did not converge for at least
+## once
+
+## Warning in evalq((function (..., call. = TRUE, immediate. = FALSE,
+## noBreaks. = FALSE, : Warning: ipf algorithm did not converge for at least
+## once
+
+## Warning in evalq((function (..., call. = TRUE, immediate. = FALSE,
+## noBreaks. = FALSE, : Warning: ipf algorithm did not converge for at least
+## once</code></pre>
+<pre><code>## Unit: relative
+##    expr      min       lq     mean   median       uq      max neval
+##  path_R  1.00000  1.00000  1.00000  1.00000  1.00000  1.00000     2
+##  path_C 11.93741 11.93741 11.98982 11.98982 12.04222 12.04222     2</code></pre>
 </div>
 <div id="trigram" class="section level3">
 <h3>trigram</h3>
@@ -142,43 +169,10 @@ toks2 &lt;- tokens_remove(toks2, stopwords(&quot;english&quot;), padding = TRUE)
 microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 3, tolower = FALSE, method=&quot;all&quot;, path=1),  
 path_C = textstat_collocations(toks2, size = 3, tolower = FALSE, method=&quot;all&quot;, path=2), 
 times = 2, unit = &quot;relative&quot;)</code></pre>
-<pre><code>## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
-## TRUE, : algorithm did not converge
-
-## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
-## TRUE, : algorithm did not converge
-
-## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
-## TRUE, : algorithm did not converge
-
-## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
-## TRUE, : algorithm did not converge
-
-## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
-## TRUE, : algorithm did not converge
-
-## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
-## TRUE, : algorithm did not converge
-
-## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
-## TRUE, : algorithm did not converge
-
-## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
-## TRUE, : algorithm did not converge
-
-## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
-## TRUE, : algorithm did not converge
-
-## Warning in stats::loglin(counts_table, margin = marginalfun(size), fit =
-## TRUE, : algorithm did not converge</code></pre>
-<pre><code>## Warning: ipf algorithm did not converge for at least once
-## Warning: incorrect specification of 'table' or 'start'
-## Warning: ipf algorithm did not converge for at least once
-## Warning: incorrect specification of 'table' or 'start'</code></pre>
 <pre><code>## Unit: relative
-##    expr      min       lq     mean   median       uq      max neval
-##  path_R 4.385976 4.385976 4.518384 4.518384 4.648623 4.648623     2
-##  path_C 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000     2</code></pre>
+##    expr     min      lq    mean  median       uq      max neval
+##  path_R 3.02222 3.02222 3.02029 3.02029 3.018381 3.018381     2
+##  path_C 1.00000 1.00000 1.00000 1.00000 1.000000 1.000000     2</code></pre>
 </div>
 <div id="grams" class="section level3">
 <h3>4-grams</h3>
@@ -190,7 +184,7 @@ path_C = textstat_collocations(toks2, size = 4, tolower = FALSE, method=&quot;al
 times = 2, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
 ##    expr      min       lq     mean   median       uq      max neval
-##  path_R 2.806677 2.806677 2.960758 2.960758 3.114146 3.114146     2
+##  path_R 1.517191 1.517191 1.536343 1.536343 1.555169 1.555169     2
 ##  path_C 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000     2</code></pre>
 </div>
 </div>
