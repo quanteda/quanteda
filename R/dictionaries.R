@@ -70,11 +70,11 @@ print_dictionary <- function(entry, level = 1) {
 
 
 # Internal function for special handling of multi-word dicitionary values
-split_dictionary_values <- function(values, concatenator) {
-    if (any(stri_detect_charclass(values, "\\p{Z}"))) {
-        values <- c(phrase(values), as.list(stri_replace_all_charclass(values, "\\p{Z}", concatenator)))
-    } else {
-        values <- as.list(values)
+split_dictionary_values <- function(value, concatenator) {
+    values <- as.list(stri_replace_all_charclass(value, "\\p{Z}", concatenator))
+    is_multi <- stri_detect_charclass(value, "\\p{Z}")
+    if (any(is_multi)) {
+        values <- c(values, stri_split_charclass(value[is_multi], "\\p{Z}"))
     }
     return(values)
 }
@@ -502,7 +502,7 @@ list2dictionary <- function(dict) {
             dict[[i]] <- list2dictionary(dict[[i]])
         } else {
             if (is.character(dict[[i]])) {
-                dict[[i]] <- list(stri_enc_toutf8(dict[[i]]))
+                dict[[i]] <- list(unique(stri_trim_both(stri_enc_toutf8(dict[[i]]))))
             } else {
                 dict[[i]] <- list(dict[[i]])
             }

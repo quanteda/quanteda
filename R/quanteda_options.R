@@ -1,5 +1,5 @@
 # implement default options
-QUANTEDA_OPTIONS <- list(threads = max(1L, floor(RcppParallel::defaultNumThreads() / 2)),
+QUANTEDA_OPTIONS <- list(threads = max(1L, RcppParallel::defaultNumThreads() - 1),
                          verbose = FALSE,
                          print_dfm_max_ndoc = 20L,
                          print_dfm_max_nfeature = 20L,

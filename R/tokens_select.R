@@ -119,7 +119,7 @@ tokens_select.tokens <- function(x, pattern, selection = c("keep", "remove"),
     attrs <- attributes(x)
     types <- types(x)
     
-    features_id <- features2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
+    features_id <- pattern2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
     if ("" %in% pattern) features_id <- c(features_id, list(0)) # append padding index
 
     if (verbose) 
