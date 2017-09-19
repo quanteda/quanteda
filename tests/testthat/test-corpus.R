@@ -264,3 +264,24 @@ test_that("summary.corpus with verbose prints warning", {
     )        
 })
 
+test_that("head, tail.corpus work as expected", {
+    crp <- corpus_subset(data_corpus_inaugural, Year < 2018)
+    
+    expect_equal(
+        docnames(head(crp, 3)),
+        c("1789-Washington", "1793-Washington", "1797-Adams")
+    )
+    expect_equal(
+        docnames(head(crp, -55)),
+        c("1789-Washington", "1793-Washington", "1797-Adams")
+    )
+    expect_equal(
+        docnames(tail(crp, 3)),
+        c("2009-Obama", "2013-Obama", "2017-Trump")
+    )
+    expect_equal(
+        docnames(tail(crp, -55)),
+        c("2009-Obama", "2013-Obama", "2017-Trump")
+    )
+})
+
