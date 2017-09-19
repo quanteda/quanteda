@@ -95,9 +95,7 @@ setMethod("show", signature(object = "dfm"), function(object) print(object))
 #' @examples
 #' head(data_dfm_lbgexample, 3, nfeature = 5)
 #' head(data_dfm_lbgexample, -4)
-
-#' tail(myDfm)
-#' tail(myDfm, nfeature = 4)
+#' 
 head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
     stopifnot(length(n) == 1L || length(nfeature) == 1L)
     n <- if (n < 0L)  max(ndoc(x) + n, 0L) else min(n, ndoc(x))
@@ -121,6 +119,9 @@ head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
 #' @rdname head.dfm
 #' @method tail dfm
 #' @export
+#' @examples 
+#' tail(data_dfm_lbgexample)
+#' tail(data_dfm_lbgexample, n = 3, nfeature = 4)
 tail.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
     stopifnot(length(n) == 1L || length(nfeature) == 1L)
     nrx <- ndoc(x)

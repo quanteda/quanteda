@@ -30,9 +30,10 @@ For a \link{dfm} object, returns the first or last \code{n} documents
 and first \code{nfeature} features.
 }
 \examples{
-myDfm <- dfm(data_corpus_inaugural, ngrams = 2, verbose = FALSE)
-head(myDfm)
-tail(myDfm)
-tail(myDfm, nfeature = 4)
+head(data_dfm_lbgexample, 3, nfeature = 5)
+head(data_dfm_lbgexample, -4)
+
+tail(data_dfm_lbgexample)
+tail(data_dfm_lbgexample, n = 3, nfeature = 4)
 }
 \keyword{dfm}
