@@ -22,7 +22,7 @@ tokens_remove(x, pattern, valuetype = c("glob", "regex", "fixed"),
 \item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens 
 matching \code{pattern}}
 
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 

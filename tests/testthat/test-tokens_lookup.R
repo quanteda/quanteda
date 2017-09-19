@@ -154,7 +154,7 @@ test_that("non-exclusive lookup is working",{
     
     expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE)),
                  list(d1=c("COUNTRY", "signed", "a", "new", "FREEDOM", "LAW WORDS", "with", "COUNTRY"),
-                      d2=c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY")))
+                      d2=c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY", "OVERLAP")))
 })
 
 test_that("tokens_lookup preserves case on keys", {
@@ -329,4 +329,56 @@ test_that("tokens_lookup with nomatch works", {
         tokens_lookup(toks, dict, nomatch = "ANYTHING", exclusive = FALSE),
         "nomatch only applies if exclusive = TRUE"
     )
+})
+
+test_that("dfm_lookup works with exclusive = TRUE, #958", {
+    
+    txt <- c("word word2 document documents documenting",
+                 "use using word word2")
+    dict <- dictionary(list(
+        document = "document*",
+        use      = c("use", "using")
+    ))
+    
+    toks <- tokens(txt)
+    expect_equal(
+        as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = FALSE)),
+        list(text1 = c('word', 'word2', 'document', 'document', 'document'), 
+             text2 = c('use', 'use', 'word', 'word2'))
+    )
+    expect_equal(
+        as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE)),
+        list(text1 = c('word', 'word2', 'DOCUMENT', 'DOCUMENT', 'DOCUMENT'), 
+             text2 = c('USE', 'USE', 'word', 'word2'))
+    )
+})
+
+test_that("dfm_lookup match the same words in exclusive = TRUE and FALSE, #970", {
+    
+    toks <- tokens("say good bye to Hollywood")
+    dict <- dictionary(list(pos = "good", farewell = "good bye"))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = TRUE)),
+                 list(text1 = c("pos", "farewell")))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE)),
+                 list(text1 = c("say", "POS", "FAREWELL", "to", "Hollywood")))
+
+})
+
+test_that("dfm_lookup works exclusive = FALSE, #970", {
+    
+    dict <- dictionary(list(sequence1 = "a b", sequence2 = "x y", notseq = c("d", "e")))
+    txt <- c(d1 = "a b c d e f g x y z",
+             d2 = "a c d x z",
+             d3 = "x y",
+             d4 = "f g")
+    toks <- tokens(txt)
+    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE)),
+                 list(d1 = c("SEQUENCE1", "c", "NOTSEQ", "NOTSEQ", "f", "g", "SEQUENCE2", "z"), 
+                      d2 = c("a","c", "NOTSEQ", "x", "z"),
+                      d3 = c("SEQUENCE2"),
+                      d4 = c("f", "g"))
+                 )
+    
 })

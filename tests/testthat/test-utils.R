@@ -79,6 +79,13 @@ test_that("message_select works as expected", {
     )
 })
 
+test_that("pipes work", {
+    expect_true(!"package:magrittr" %in% search())
+    expect_equal(
+        tokens(char_tolower("A B C")),
+        tokens("A B C") %>% tokens_tolower()
+    )
+})
 
 # test_that("features2list works as expected", {
 #     

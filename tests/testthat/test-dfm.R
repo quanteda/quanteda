@@ -17,8 +17,8 @@ test_that("oldest dfm test", {
     dfm_lookup(preDictDfm, mydict)
     
     txt <- tokens(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
-                                   "The United_States has progressive taxation.")),
-                    remove_punct = TRUE)
+                                 "The United_States has progressive taxation.")),
+                  remove_punct = TRUE)
     
     
     dictDfm <- dfm(txt, dictionary = mydict, verbose = FALSE)
@@ -72,13 +72,13 @@ test_that("oldest dfm test", {
     expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 2))
     tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
     expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 0))
-
+    
 })
 
 test_that("test c.corpus", {
-    expect_that(
+    expect_equal(
         matrix(dfm(corpus(c('What does the fox say?', 'What does the fox say?', '')), remove_punct = TRUE)),
-        equals(matrix(rep(c(1, 1, 0), 5), nrow=15, ncol=1))
+        matrix(rep(c(1, 1, 0), 5), nrow=15, ncol=1)
     )
 })
 
@@ -291,12 +291,12 @@ test_that("cbind.dfm works with non-dfm objects",{
     expect_equal(
         as.matrix(cbind(dfm1, vec)),
         matrix(c(1,1,1,0,0,10, 0,0,1,1,1,20), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat")))
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat1")))
     )
     expect_equal(
         as.matrix(cbind(vec, dfm1)),
         matrix(c(10,1,1,1,0,0, 20, 0,0,1,1,1), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c("feat", letters[1:5])))
+               dimnames = list(docs = c("text1", "text2"), features = c("feat1", letters[1:5])))
     )
     
     mat <- matrix(1:4, nrow = 2, dimnames = list(NULL, c("f1", "f2")))
@@ -314,13 +314,13 @@ test_that("cbind.dfm works with non-dfm objects",{
     expect_equal(
         as.matrix(cbind(dfm1, vec, mat)),
         matrix(c(1,1,1,0,0,10,1,3, 0,0,1,1,1,20,2,4), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat", "f1", "f2")))
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat1", "f1", "f2")))
     )
 
     expect_equal(
         as.matrix(cbind(vec, dfm1, vec)),
         matrix(c(10,1,1,1,0,0,10, 20,0,0,1,1,1,20), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c("feat", letters[1:5], "feat1")))
+               dimnames = list(docs = c("text1", "text2"), features = c("feat1", letters[1:5], "feat11")))
     )
 
     expect_silent(cbind(vec, dfm1, vec))
@@ -332,7 +332,7 @@ test_that("cbind.dfm works with non-dfm objects",{
     expect_equal(
         as.matrix(cbind(dfm1, 100)),
         matrix(c(1,1,1,0,0,100, 0,0,1,1,1,100), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat")))
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat1")))
     )
     
 })
@@ -361,8 +361,20 @@ test_that("more cbind tests for dfms", {
     expect_equal(
         as.matrix(cbind(mydfm, ntoken(mydfm))),
         matrix(c(1,1,1,1,0,4, 0,1,1,1,1,4), byrow = TRUE, nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat")))
+               dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat1")))
     )
+})
+
+test_that("cbind.dfm keeps attributes of the dfm",{
+    
+    mx1 <- as.dfm(matrix(c(0, 0 , 0, 0, 1, 2), nrow = 2, 
+                         dimnames = list(c("doc1", "doc2"), c("aa", "bb", "cc"))))
+    mx2 <- as.dfm(matrix(c(2, 3 , 0, 0, 0, 0), nrow = 2, 
+                         dimnames = list(c("doc1", "doc2"), c("dd", "ee", "ff"))))
+    slot(mx1, 'settings') <- list(somesetting = 'somevalue')
+    mx3 <- cbind(mx1, mx2)
+    expect_equal(mx3@settings, list(somesetting = 'somevalue'))
+    
 })
 
 test_that("rbind.dfm works as expected",{
@@ -397,12 +409,12 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
     dfm2 <- dfm(txt, thesaurus = mwvdict, verbose = TRUE)
     expect_identical(
         as.matrix(dfm2), 
-        matrix(c(0, 1, 0, 0,  1, 1, 0, 0,  1, 0, 0, 1,  1, 0, 0, 1,  0, 1, 0, 0, 1, 1, 0, 0, 
-                 1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0),
+        matrix(c(1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0,
+                 0, 1, 0, 0,  1, 1, 0, 0,  1, 0, 0, 1,  1, 0, 0, 1,  0, 1, 0, 0, 1, 1, 0, 0),
                nrow = 4,
                dimnames = list(docs = paste0("d", 1:4), 
-                               features = c("a", "c", "f", "g", "x", "z", 
-                                            "SEQUENCE1", "SEQUENCE2", "NOTSEQ")))
+                               features = c("SEQUENCE1", "SEQUENCE2", "NOTSEQ",
+                                            "a", "c", "f", "g", "x", "z")))
     )
 })
 
@@ -567,4 +579,55 @@ test_that("dfm works with stem options", {
         "cour"
     )
     quanteda_options(reset = TRUE)
+})
+
+test_that("dfm verbose option prints correctly", {
+    txt <- c(d1 = "a b c d e", d2 = "a a b c c c")
+    corp <- corpus(txt)
+    toks <- tokens(txt)
+    mydfm <- dfm(toks)
+    expect_message(dfm(txt, verbose = TRUE), "Creating a dfm from a character input")
+    expect_message(dfm(corp, verbose = TRUE), "Creating a dfm from a corpus input")
+    expect_message(dfm(toks, verbose = TRUE), "Creating a dfm from a tokens input")
+    expect_message(dfm(mydfm, verbose = TRUE), "Creating a dfm from a dfm input")
+    expect_message(dfm(tokens(txt, hash = FALSE), verbose = TRUE), "Creating a dfm from a tokenizedTexts input")
+})
+
+test_that("dfm works with purrr::map (#928)", {
+    skip_if_not_installed("purrr")
+    a <- "a b"
+    b <- "a a a b b"
+    expect_identical(
+        sapply(purrr::map(list(a, b), dfm), is.dfm),
+        c(TRUE, TRUE)
+    )
+    expect_identical(
+        sapply(purrr::map(list(corpus(a), corpus(b)), dfm), is.dfm),
+        c(TRUE, TRUE)
+    )
+    expect_identical(
+        sapply(purrr::map(list(tokens(a), tokens(b)), dfm), is.dfm),
+        c(TRUE, TRUE)
+    )
+    expect_identical(
+        sapply(purrr::map(list(dfm(a), dfm(b)), dfm), is.dfm),
+        c(TRUE, TRUE)
+    )
+})
+
+test_that("dfm works when features are created (#946", {
+    dfm1 <- as.dfm(matrix(1:6, nrow = 2, 
+                          dimnames = list(c("doc1", "doc2"), c("a", "b", "c"))))
+    dfm2 <- as.dfm(matrix(1:6, nrow = 2, 
+                          dimnames = list(c("doc1", "doc2"), c("b", "c", "feat_2"))))
+    
+    expect_equal(
+        as.matrix(dfm_select(dfm1, dfm2)),
+        matrix(c(3, 4, 5, 6, 0, 0), nrow = 2, dimnames = list(docs = c("doc1", "doc2"), features = c("b", "c", "feat_2")))
+    )
+    
+    expect_equal(
+        as.matrix(cbind(dfm("a b"), dfm("feat_1"))),
+        matrix(c(1,1,1), nrow = 1, dimnames = list(docs = "text1", features = c("a", "b", "feat_1")))
+    )
 })

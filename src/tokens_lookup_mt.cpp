@@ -7,12 +7,15 @@ Text lookup(Text tokens,
             const std::vector<std::size_t> &spans,
             const unsigned int &id_max,
             const bool &overlap,
-            const bool &nomatch,
+            const int &nomatch,
             const MultiMapNgrams &map_keys){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
-    // Make flags for all the keys
+    // Match flag for each token
+    std::vector<bool> flags_match_any(tokens.size(), false);
+    
+    // Match flag for each token for each key
     std::vector< std::vector<bool> > flags_match(id_max);
     if (!overlap) {
         std::vector<bool> flags_init(tokens.size(), false);
@@ -32,17 +35,20 @@ Text lookup(Text tokens,
             for (auto it = range.first; it != range.second; ++it){
                 //Rcout << it->second << "\n";
                 unsigned int id = it->second;
+                //Rcout << "id " << id << "\n";
                 if (!overlap) {
-                    //Rcout << "id " << id << "\n";
-                    std::vector< bool > &flags_temp = flags_match[id - 1];
-                    bool flaged = std::any_of(flags_temp.begin() + i, flags_temp.begin() + i + span, [](bool v) { return v; });
-                    if (!flaged) {
+                    std::vector< bool > &flags_match_temp = flags_match[id - 1];
+                    bool flagged = std::any_of(flags_match_temp.begin() + i, flags_match_temp.begin() + i + span, [](bool v) { return v; });
+                    if (!flagged) {
                         keys[i].push_back(id); // keep multiple keys in the same position
-                        std::fill(flags_temp.begin() + i, flags_temp.begin() + i + span, true); // mark tokens matched
+                        std::fill(flags_match_temp.begin() + i, flags_match_temp.begin() + i + span, true); // for each key
+                        std::fill(flags_match_any.begin() + i, flags_match_any.begin() + i + span, true); // for all keys
                         match++;
                     }
                 } else {
                     keys[i].push_back(id); // keep multiple keys in the same position
+                    flags_match_any[i] = true;
+                    std::fill(flags_match_any.begin() + i, flags_match_any.begin() + i + span, true); //  for all keys
                     match++;
                 }
             }
@@ -50,27 +56,26 @@ Text lookup(Text tokens,
     }
     
     if (match == 0) {
-        if (nomatch) {
+        if (nomatch == 0) {
+            // return empty vector
+            return {}; 
+        } else if (nomatch == 1) {
+            // return tokens with no-match ID
             Text keys_flat(tokens.size(), id_max + 1); 
             return keys_flat;
-        } else {
-            return {}; // return empty vector if no match    
-        }
-    }
-    
-    // Merge match flags
-    std::vector<bool> flags_match_any(tokens.size(), false);
-    for (size_t h = 0; h < flags_match.size(); h++) {
-        for (size_t i = 0; i < flags_match[h].size(); i++) {
-            if (flags_match[h][i]) {
-                flags_match_any[i] = true;
+        } else if (nomatch == 2) {
+            // return shifted tokens in exclusive mode
+            Text keys_flat(tokens.size());
+            for (std::size_t i = 0; i < tokens.size(); i++) {
+                keys_flat[i] = id_max + tokens[i];
             }
+            return keys_flat;
         }
     }
     
-    // Flatten the vector of vector
+    // Flatten the vector of vectors
     Text keys_flat;
-    if (nomatch) {
+    if (nomatch > 0) {
         keys_flat.reserve(match + tokens.size());
     } else {
         keys_flat.reserve(match);
@@ -83,8 +88,10 @@ Text lookup(Text tokens,
             }
             keys_flat.insert(keys_flat.end(), key_sub.begin(), key_sub.end());
         } else {
-            if (nomatch) {
-                keys_flat.push_back(id_max + 1); // no-matches
+            if (nomatch == 1) {
+                keys_flat.push_back(id_max + 1); // pad with a new ID
+            } else if (nomatch == 2) {
+                keys_flat.push_back(id_max + tokens[i]); // keep original token
             }
         }
     }
@@ -98,12 +105,12 @@ struct lookup_mt : public Worker{
     const std::vector<std::size_t> &spans;
     const unsigned int &id_max;
     const bool &overlap;
-    const bool &nomatch;
+    const int &nomatch;
     const MultiMapNgrams &map_keys;
     
     // Constructor
     lookup_mt(Texts &texts_, const std::vector<std::size_t> &spans_, const unsigned int &id_max_,
-              const bool &overlap_, const bool &nomatch_, const MultiMapNgrams &map_keys_):
+              const bool &overlap_, const int &nomatch_, const MultiMapNgrams &map_keys_):
               texts(texts_), spans(spans_), id_max(id_max_), overlap(overlap_), nomatch(nomatch_),
               map_keys(map_keys_){}
     
@@ -117,16 +124,16 @@ struct lookup_mt : public Worker{
 };
 
 /* 
-* This funciton finds features in tokens object. This is similar to tokens_replace, 
-* but all overlapping or nested features are detected and recorded by IDs.
+* This funciton finds patterns in tokens object. This is similar to tokens_replace, 
+* but all overlapping or nested patterns are detected and recorded by IDs.
 * The number of threads is set by RcppParallel::setThreadOptions()
 * @used tokens_lookup()
 * @creator Kohei Watanabe
 * @param texts_ tokens ojbect
-* @param words_ list of features to find
-* @param ids_ IDs of features
-* @param overlap if count overlapped words if true
-* @param nomatch if unmached words are indexed as one if true
+* @param words_ list of patterns to find
+* @param ids_ IDs of patterns
+* @param overlap count overlapped words if true
+* @param nomatch determine how to treat unmached words: 0=remove, 1=keep; 2=pad
 */
 
 
@@ -136,7 +143,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
                             const List &keys_,
                             const IntegerVector &ids_,
                             const bool overlap,
-                            const bool nomatch){
+                            const int nomatch){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
@@ -157,11 +164,6 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     for (size_t g = 0; g < std::min(keys.size(), ids.size()); g++) {
         Ngram key = keys[g];
         unsigned int id = ids[g];
-        // if (nomatch) {
-        //     if (id == 0) {
-        //         throw std::range_error("Invalid dictionary");
-        //     }
-        // }
         map_keys.insert(std::pair<Ngram, unsigned int>(key, id));
         spans[g] = key.size();
     }
@@ -181,7 +183,12 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     }
 #endif
     //dev::stop_timer("Dictionary lookup", timer);
-    return recompile(texts, types, false, false, is_encoded(types_));
+    if (nomatch == 2) {
+        return recompile(texts, types, true, true, is_encoded(types_));
+    } else {
+        return recompile(texts, types, false, false, is_encoded(types_));
+    }
+    
 }
 
 /***R
@@ -191,9 +198,11 @@ dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #dict <- list(1:10, c(5, 6) , 4)
 #keys <- rep(2, length(dict))
 keys <- seq_along(dict) + 1
-#qatd_cpp_tokens_lookup(toks, letters, dict, integer(0), TRUE)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, FALSE)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, TRUE)
-
+#qatd_cpp_tokens_lookup(toks, letters, dict, integer(0), 0)
+qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, 0)
+qatd_cpp_tokens_lookup(toks, letters, dict, keys, TRUE, 0)
+qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, 0)
+qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, 1)
+qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, 2)
 
 */

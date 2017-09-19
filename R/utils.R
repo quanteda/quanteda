@@ -1,3 +1,7 @@
+#' @importFrom magrittr %>%
+#' @export
+magrittr::`%>%`
+
 # rdname catm
 # make temporary files and directories in a more reasonable way than tempfile()
 # or tempdir(): here, the filename is different each time you call mktemp()
@@ -80,17 +84,31 @@ reassign_slots <- function(x_new, x_orig, exceptions = NULL) {
 }
 
 
-#' R-like alternative to reassign_attributes()
-#' @keywords internal
+#' function extending base::attributes()
 #' @param x an object
 #' @param overwrite if \code{TRUE}, overwrite old attributes
 #' @param value new attributes
-#' @author Kohei Watanabe
+#' @keywords internal
 "attributes<-" <- function(x, overwrite = TRUE, value) {
     if (overwrite) {
         base::attributes(x) <- value
     } else {
         base::attributes(x) <- c(base::attributes(x), value[!(names(value) %in% names(base::attributes(x)))])
+    }
+    return(x)
+}
+
+#' function to assign multiple slots to a S4 object
+#' @param x an S4 object
+#' @param exceptions slots to ignore
+#' @param value a list of attributes extracted by attributes()
+#' @keywords internal
+"slots<-" <- function(x, exceptions = c("Dim", "Dimnames", "i", "p", "x", "factors"), value) {
+    slots <- methods::getSlots(class(x)[1])
+    for (sname in names(value)) {
+        if (!sname %in% names(slots) || sname %in% exceptions) next
+        if (!identical(typeof(value[[sname]]), slots[[sname]])) next
+        methods::slot(x, sname) <- value[[sname]]
     }
     return(x)
 }
@@ -141,31 +159,31 @@ texts_random <- function(n_doc=10,
                          code=FALSE,
                          seed, characters){
     
-    if(!missing(seed)) set.seed(seed)
-    if(missing(characters)){
+    if (!missing(seed)) set.seed(seed)
+    if (missing(characters)){
         # Empirical distribution in English (https://en.wikipedia.org/wiki/Letter_frequency)
         chars <- letters
         prob_chars <-c(0.08167, 0.01492, 0.02782, 0.04253, 0.12702, 0.02228, 0.02015, 
                        0.06094, 0.06966, 0.00153, 0.00772, 0.04025, 0.02406, 0.06749,
                        0.07507, 0.01929, 0.00095, 0.05987, 0.06327, 0.09056, 0.02758, 
                        0.00978, 0.02360, 0.00150, 0.01974, 0.00074)
-    }else{
+    } else {
         # Log-normal distribution
         chars <- characters
         dist_chars <- stats::rlnorm(length(chars))
         prob_chars <- sort(dist_chars / sum(dist_chars), decreasing = TRUE)
     }
-    if(n_type > length(chars) ^ len_word) 
+    if (n_type > length(chars) ^ len_word) 
         stop('n_type is too large')
     
     # Generate unique types
     type <- c()
-    if(fast){
+    if (fast) {
         pat <- stri_flatten(c('[', chars, ']'))
         while(n_type > length(type)){
             type <- unique(c(type, stri_rand_strings(n_type, 1:len_word, pat)))
         }
-    }else{
+    } else {
         while(n_type > length(type)){
             type <- unique(c(type, word_random(chars, sample(len_word, 1), prob_chars)))
         }
@@ -179,9 +197,9 @@ texts_random <- function(n_doc=10,
         words <- sample(type, size=n_word, replace = TRUE, prob=prob_words)
         stri_c(words, collapse = ' ')
     })
-    if(code){
+    if (code) {
         return(code(texts))
-    }else{
+    } else {
         return(texts)
     }
 }
@@ -197,7 +215,7 @@ zipf <- function(n_type){
 code <- function(texts){
     len <- length(texts)
     cat(paste0('txt <- c("', texts[1], '",\n'))
-    for(text in texts[2:(len-1)]){
+    for (text in texts[2:(len-1)]) {
         cat(paste0('         "', text, '",\n'))
     }
     cat(paste0('         "', texts[len], '")\n'))

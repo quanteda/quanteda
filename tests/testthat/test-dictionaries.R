@@ -19,11 +19,6 @@ test_that("dictionary constructors fail if a value is numeric", {
                  "Non-character entries found: 2016")
 })
 
-# test_that("dictionary constructor works on list explicitly or implicitly", {
-#     expect_equal(dictionary(list(first =  c("a", "b"), second = "c")),
-#                  dictionary(first =  c("a", "b"), second = "c"))
-# })
-
 test_that("dictionary constructor ignores extra arguments", {
     expect_error(
         dictionary(list(first =  c("a", "b"), second = "c"), something = TRUE),
@@ -242,8 +237,29 @@ test_that("dictionary constructor works with LIWC format w/extra codes", {
     )
     expect_message(
         dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
-        "note: removing empty keys: friend, humans, insight, cause, discrep, filler"
+        "note: removing empty key: filler"
     )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: discrep"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: cause"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: insight"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: humans"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: friend"
+    )
+    
     dict <- dictionary(file = "../data/dictionaries/liwc_extracodes.dic")
     expect_equal(
         length(dict), 
@@ -257,6 +273,47 @@ test_that("dictionary constructor works with LIWC format w/extra codes", {
     dict1 <- quanteda:::read_dict_liwc("../data/dictionaries/liwc_extracodes.dic")
     dict2 <- quanteda:::list2dictionary(quanteda:::read_dict_liwc_old("../data/dictionaries/liwc_extracodes.dic"))
     expect_equal(dict1[order(names(dict1))], dict2[order(names(dict2))])
+})
+
+test_that("dictionary constructor works with LIWC format w/extra codes and nesting", {
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_hierarchical.dic"),
+        "note: 1 term ignored because contains unsupported <of> tag"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_hierarchical.dic"),
+        "note: ignoring parenthetical expressions in lines:"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: filler"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: discrep"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: cause"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: insight"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: humans"
+    )
+    expect_message(
+        dictionary(file = "../data/dictionaries/liwc_extracodes.dic"),
+        "note: removing empty key: friend"
+    )
+    dict <- dictionary(file = "../data/dictionaries/liwc_hierarchical.dic")
+    expect_equal(length(dict), 4)
+    expect_equal(length(dict[[1]]), 1)
+    expect_equal(length(dict[[2]]), 4)
+    expect_equal(length(dict[[3]]), 2)
+    expect_equal(length(dict[[4]]), 2)
 })
 
 
@@ -284,4 +341,14 @@ test_that("dictionary constructor works on a dictionary", {
         as.list(dictionary(dict2, separator = "_", tolower = FALSE)),
         dictlist
     )
+})
+test_that("combine method is working with dictionary objects", {
+    
+    dict1 <- dictionary(list(A = c('aa', 'aaa')))
+    dict2 <- dictionary(list(B = c('b', 'bb')))
+    dict3 <- dictionary(list(A = c('aaaa', 'aaaaa')))
+    expect_equal(c(dict1, dict2),
+                 dictionary(list(A = c('aa', 'aaa'), B = c('b', 'bb'))))
+    expect_equal(c(dict1, dict2, dict3),
+                 dictionary(list(A = c('aa', 'aaa'), B = c('b', 'bb'), A = c('aaaa', 'aaaaa'))))
 })

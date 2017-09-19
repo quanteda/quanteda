@@ -226,10 +226,8 @@ cbind.dfm <- function(...) {
 
     x <- args[[1]]
     y <- args[[2]]
-
-    # select the dfm, but just one feature, to keep slots to reassign later
-    # if both are dfms, use the slots of the first
-    refdfm <- args[[which(sapply(args, is.dfm))[1]]][, 1]
+    
+    attrs <- attributes(x)
     
     if (is.matrix(x)) {
         x <- as.dfm(x)
@@ -244,8 +242,7 @@ cbind.dfm <- function(...) {
     }
     
     result <- cbind_dfm_dfm(x, y)
-    result <- reassign_slots(result, refdfm)
-    docvars(result, "_length_original") <- NULL
+    slots(result) <- attrs
 
     while (length(args[-c(1,2)])) {
         args <- args[-c(1,2)]
@@ -272,9 +269,9 @@ cbind_dfm_dfm <- function(...) {
     }
 
     # make any added feature names unique
-    dupl_featname_index <- 
+    dupl_featname_index <-
         grep(paste0("^", quanteda_options("base_featname")), colnames(result))
-    colnames(result)[dupl_featname_index] <- make.unique(gsub("\\d", "", colnames(result)[dupl_featname_index]), "")
+    colnames(result)[dupl_featname_index] <- make.unique(colnames(result)[dupl_featname_index], sep = "")
     # only issue warning if these did not come from added feature names
     if (any(duplicated(colnames(result))))
         warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE, call. = FALSE)

@@ -56,7 +56,7 @@ struct Res : public Worker {
 };
 // [[Rcpp::export]]
 
-arma::sp_mat cacpp(const arma::sp_mat &objm, unsigned int threads, const double residual_floor){
+arma::sp_mat qutd_cpp_ca(const arma::sp_mat &objm, unsigned int threads, const double residual_floor){
     
     const std::size_t N = objm.n_rows;
     const std::size_t K = objm.n_cols;
@@ -106,5 +106,5 @@ threads = 7
 residual_floor = 0.1
 n = 195
 P <- as.dfm(smoke)/n
-cacpp(P, threads, residual_floor/sqrt(n))
+quatd_cpp_ca(P, threads, residual_floor/sqrt(n))
 */

@@ -5,9 +5,17 @@
 # # summarize texts
 # summary(c("Testing this text.  Second sentence.", "And this one."))
 # summary(data_char_ukimmig2010)
-# myTextSummaryDF <- summary(data_char_ukimmig2010, verbose = FALSE)
+# myTextSummaryDF <- summary(data_char_ukimmig2010)
 # head(myTextSummaryDF)
-summary.character <- function(object, n = 100, verbose = TRUE, tolower = FALSE, ...) {
+summary.character <- function(object, n = 100, tolower = FALSE, ...) {
+    
+    # trap the verbose argument and ignore
+    thecall <- as.list(match.call())[-1]
+    if (!is.na(verbose_index <- match("verbose", names(thecall)))) {
+        warning("verbose argument is defunct")
+        return(do.call(summary.character, thecall[-verbose_index]))
+    }
+    
     object <- object[1 : min(c(n, length(object)))]
     if (is.null(names(object))) 
         names(object) <- paste(quanteda_options("base_docname"), seq_along(object), sep = "")
@@ -21,8 +29,7 @@ summary.character <- function(object, n = 100, verbose = TRUE, tolower = FALSE, 
                           Tokens = ntokens,
                           Sentences = nsents,
                           row.names = NULL)
-    if (verbose) print(results, ...)
-    return(invisible(results))
+    results
 }
 
 

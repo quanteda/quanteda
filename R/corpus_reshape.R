@@ -7,35 +7,38 @@
 #' to sentences, and then back to documents (possibly after modifying the sentences).
 #' @param x corpus whose document units will be reshaped
 #' @param to new document units in which the corpus will be recast
-#' @param ... additonal arguments passed to \link{corpus_segment} 
+#' @param ... additonal arguments passed to \code{\link{tokens}}, since the
+#'   syntactic segmenter uses this function)
+#' @inheritParams corpus_segment
 #' @return A corpus object with the documents defined as the new units,
 #'   including document-level meta-data identifying the original documents.
 #' @examples
 #' # simple example
-#' mycorpus <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
-#'                      textwo = "Premiere phrase.  Deuxieme phrase."), 
-#'                    docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
-#'                    metacorpus = list(notes = "Example showing how corpus_reshape() works."))
-#' summary(mycorpus)
-#' summary(corpus_reshape(mycorpus, to = "sentences"), showmeta=TRUE)
+#' corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+#'                  textwo = "Premiere phrase.  Deuxieme phrase."), 
+#'                  docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
+#'                  metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+#' summary(corp)
+#' summary(corpus_reshape(corp, to = "sentences"), showmeta = TRUE)
 #' 
 #' # example with inaugural corpus speeches
-#' (mycorpus2 <- corpus_subset(data_corpus_inaugural, Year>2004))
-#' paragCorpus <- corpus_reshape(mycorpus2, to="paragraphs")
-#' paragCorpus
-#' summary(paragCorpus, 100, showmeta=TRUE)
+#' (corp2 <- corpus_subset(data_corpus_inaugural, Year>2004))
+#' corp2_para <- corpus_reshape(corp2, to="paragraphs")
+#' corp2_para
+#' summary(corp2_para, 100, showmeta = TRUE)
 #' ## Note that Bush 2005 is recorded as a single paragraph because that text used a single
 #' ## \n to mark the end of a paragraph.
 #' @export
+#' @import stringi
 #' @keywords corpus
-corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
+corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), use_docvars = TRUE, ...) {
     UseMethod("corpus_reshape")
 }
     
 #' @noRd
 #' @rdname corpus_reshape
 #' @export
-corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
+corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), use_docvars = TRUE, ...) {
     
     to <- match.arg(to)
     
@@ -46,9 +49,9 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             segid <- docvars(x, '_segid')
             
             if (settings(x, 'units') == 'sentences') {
-                texts <- stringi::stri_join_list(split(texts(x), factor(docid)), sep = "  ")
+                texts <- stri_join_list(split(texts(x), factor(docid)), sep = "  ")
             } else {
-                texts <- stringi::stri_join_list(split(texts(x), factor(docid)), sep = "\n\n")
+                texts <- stri_join_list(split(texts(x), factor(docid)), sep = "\n\n")
             }
 
             temp <- corpus(texts, 
@@ -60,12 +63,36 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         } else {
             stop("reshape to documents only goes from sentences or paragraphs")
         }
+        
     } else if (to %in% c("sentences", "paragraphs")) {
         if (settings(x, 'units') == 'documents') {
-            result <- corpus_segment(x, what = to, ...)
+            vars <- docvars(x)
+            
+            # get the relevant function call
+            commands <- as.character(sys.calls())
+            commands <- commands[stri_detect_regex(commands, "reshape\\.corpus")]
+            
+            temp <- segment_texts(texts(x), pattern = NULL, omit_empty = FALSE, what = to, ...)
+            
+            result <- corpus(temp$texts, docnames = rownames(temp),
+                             metacorpus = list(source = metacorpus(x, "source"),
+                                               notes = commands))
+            
+            # add repeated versions of remaining docvars
+            if (use_docvars && !is.null(vars)) {
+                rownames(vars) <- NULL # faster to repeat rows without rownames
+                vars <- select_fields(vars, "user")[temp$docid,,drop = FALSE]
+                rownames(vars) <- rownames(temp)
+                docvars(result) <- vars
+            }
+            docvars(result, '_document') <- temp$docname
+            docvars(result, '_docid') <- temp$docid
+            docvars(result, '_segid') <- temp$segid
+            settings(result, "units") <- to
         } else {
             stop("reshape to sentences or paragraphs only goes from documents")
         }
+        
     } else {
         stop("reshape to", to, "is not supported")
     }

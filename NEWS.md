@@ -1,4 +1,27 @@
-# quanteda 0.9.9000
+# quanteda 0.99
+
+## Changes since v0.99
+
+### New Features
+
+* Added **magrittr** pipe support (#927).  `%>%` can now be used with **quanteda** without needing to attach **magrittr** (or, as many users apparently believe, the entire tidyverse.)  
+* `corpus_segment()` now behaves more logically and flexibly, and is clearly differentiated from `corpus_reshape()` in terms of its functionality.  Its documentation is also vastly improved.  (#908)
+* Added `data_dictionary_LSD2015`, the Lexicoder Sentiment 2015 dictionary (#963).
+
+### Bug fixes and stability enhancements
+
+* Fixed a problem when applying `purrr::map()` to `dfm()` (#928).
+* Added documentation for `regex2fixed()` and associated functions.
+* Fixed a bug in `textstat_collocations.tokens()` caused by "documents" containing only `""` as tokens. (#940)
+* Fixed a bug caused by `cbind.dfm()` when features shared a name starting with `quanteda_options("base_featname")` (#946)
+* Improved dictionary handling and creation now correctly handles nested LIWC 2015 categories. (#941)
+* Number of threads now set correctly by `quanteda_options()`. (#966)
+
+### Behaviour changes
+
+* `summary.corpus()` now generates a special data.frame, which has its own print method, rather than requiring `verbose = FALSE` to suppress output. (#926)
+
+
 
 ## Changes since v0.9.9-65
 
