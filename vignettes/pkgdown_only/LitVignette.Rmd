@@ -23,7 +23,8 @@ In what follows, each section corresponds to a chapter in the book.
 
 Our closest equivalent is simply:
 ```{r eval=FALSE}
-install.packages("quanteda", dependencies = TRUE)
+install.packages("quanteda")
+install.packages("readtext")
 ```
 
 But if you are reading this vignette, than chances are that you have already completed this step.
@@ -36,15 +37,16 @@ Moby Dick: Descriptive analysis
 
 The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.  
 ```{r eval=TRUE}
-require(quanteda)
-require(readtext)
+suppressPackageStartupMessages(library("quanteda"))
+library("readtext")
 data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
 ```
 
 The `readtext()` function from the **readtext** package loads the text files into a `data.frame` object. We can access the text from a `data.frame` object (and also, as we will see, a `corpus` class object), using the `texts()` or the `View()` method. Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `substring()` function, which shows the 1st through the 75th characters of the texts of our new object `data_char_mobydick`.  Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
 
 ```{r}
-substring(data_char_mobydick, 1, 75)
+library("stringi")
+stri_sub(data_char_mobydick, 1, 75)
 ```
 
 ## 2.2 Separate content from metadata
@@ -62,14 +64,14 @@ To trim the extra text at the end of the Gutenburg version of the text, we can u
 kwic(data_char_mobydick, "orphan")
 
 # extract the novel -- a better way
-novel.v <- substring(data_char_mobydick, endMetadataIndex, 
+novel.v <- stri_sub(data_char_mobydick, endMetadataIndex, 
                      regexec("End of Project Gutenberg's Moby Dick.", data_char_mobydick)[[1]]-1)
 ```
 
 
 ## 2.3 Reprocessing the content
 
-We begin processing the text by converting to lower case. `quanteda`'s `tolower` functions work like the built-in `tolower`, with an extra option to preserve upper-case acronyms when detected.  For `character` objects, we use `char_tolower`:
+We begin processing the text by converting to lower case. **quanteda**'s `*_tolower()` functions work like the built-in `tolower()`, with an extra option to preserve upper-case acronyms when detected.  For `character` objects, we use `char_tolower()`:
 
 ```{r}
 # lowercase
@@ -111,9 +113,9 @@ nrow(kwic(novel.lower.v, "whale*")) # includes words like 'whalemen'
 (total.whale.hits <- nrow(kwic(novel.lower.v, "^whale('s){0,1}$", valuetype = 'regex')))
 ```
 
-What fraction of the total words in the novel are 'whale'?
+What fraction of the total words in the novel are "whale"?
 ```{r}
-total.whale.hits / ntoken(novel.lower.v, remove_punct=TRUE)  
+total.whale.hits / ntoken(novel.lower.v, remove_punct = TRUE)  
 ```
 
 
@@ -121,7 +123,7 @@ Calculating the size of the vocabulary -- includes possessive forms.
 ```{r}
 # total unique words
 length(unique(moby.word.v))
-ntype(char_tolower(novel.v), remove_punct = TRUE)
+ntype(char_tolower(novel.v), remove_punct = TRUE, remove_numbers = TRUE, remove_symbols = TRUE)
 ```
 
 
@@ -179,7 +181,7 @@ A dispersion plot allows us to visualize the occurrences of particular terms thr
 textplot_xray(kwic(novel.v, "whale"))
 ```
 
-You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
+You can also pass multiple kwic objects to `textplot_xray()` to compare the dispersion of different terms:
 ```{r eval=TRUE, fig.width=8, fig.height=2.5}
 textplot_xray(
      kwic(novel.v, "whale"),
@@ -198,7 +200,7 @@ textplot_xray(
 
 ## Identifying chapter breaks
 
-Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `char_segment` function to split this by the string which specifies the chapter breaks. 
+Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `char_segment()` function to split this by the string which specifies the chapter breaks. 
 
 ```{r}
 head(kwic(novel.v, 'chapter'))
@@ -207,7 +209,7 @@ chaptersLowerVec <- char_tolower(chaptersVec)
 chaptersCorp <- corpus(chaptersVec)
 ```
 
-With the corpus split into chapters, we can use the `dfm` command to create a matrix of counts of each word in each chapter -- a document-frequency matrix.
+With the corpus split into chapters, we can use the `dfm()` function to create a matrix of counts of each word in each chapter -- a document-frequency matrix.
 
 ## Fig 4.4 barplots of whale and ahab
 ```{r eval=TRUE}
@@ -221,7 +223,7 @@ The above plots are raw frequency plots. For relative frequency plots, (word cou
 
 ## Relative frequency barplots of whale and ahab
 ```{r eval=TRUE}
-relDfm <- weight(chapDfm, type = 'relFreq') * 100
+relDfm <- weight(chapDfm, type = 'relfreq') * 100
 head(relDfm)
 barplot(as.numeric(relDfm[, 'whale']))
 barplot(as.numeric(relDfm[, 'ahab']))
@@ -266,19 +268,20 @@ cor.test(wf, af)
 # 6 Measures of Lexical Variety
 
 ## 6.2 Mean word frequency
+
 The mean word frequency for a particular chapter can be calculated simply with the dfm. Each row is a document (chapter), so, for example, the mean word frequency of the first chapter is the sum of the first row of the matrix, divided by the number of word types in the first chapter. To get the number of word types in the first chapter only, we can either exclude words in that row which have a frequency of zero, or use the `ntype` function on the first document in the corpus to achieve the same result.
 
 ```{r}
 firstChap <- as.matrix(chapDfm[1,])
 numWords <- length(firstChap[firstChap > 0])
-sum(chapDfm[1,])/numWords
-sum(chapDfm[1,])/ntype(chaptersCorp[1], remove_punct=TRUE)
+sum(chapDfm[1,]) / numWords
+sum(chapDfm[1,]) / ntype(chaptersCorp[1], remove_punct = TRUE)
 ```
 
 ## 6.3 Extracting Word Usage Means
 
 The `rowMeans` matrix function, which operates on a dfm, allows us to retreieve the means for all of the chapters.
 ```{r}
-chapMeans <- Matrix::rowMeans(chapDfm)
-plot(chapMeans, type="h")
+chapMeans <- rowMeans(chapDfm)
+plot(chapMeans, type = "h")
 ```
