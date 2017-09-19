@@ -14,7 +14,7 @@
 #'   For documents whose sentences have been removed entirely, a null string
 #'   (\code{""}) will be returned.
 #' @export
-#' @keywords corpus
+#' @keywords corpus internal
 #' @examples
 #' txt <- c("PAGE 1. This is a single sentence.  Short sentence. Three word sentence.",
 #'          "PAGE 2. Very short! Shorter.",
