@@ -19,7 +19,8 @@
 
 ### Behaviour changes
 
-* `summary.corpus()` now generates a special data.frame, which has its own print method, rather than requiring `verbose = FALSE` to suppress output. (#926)
+* `summary.corpus()` now generates a special data.frame, which has its own print method, rather than requiring `verbose = FALSE` to suppress output (#926).
+* `textstat_collocations()` is now multi-threaded.
 
 
 
