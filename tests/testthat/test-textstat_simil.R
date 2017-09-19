@@ -343,3 +343,38 @@ test_that("textstat_simil stops as expected for wrong selections",{
 #                       as.dist(distmat, upper = TRUE, diag = TRUE)) 
 # })
 
+test_that("textstat_simil works on zero-frequency features", {
+    d1 <- dfm(c("a b c", "a b c d"))
+    d2 <- dfm(letters[1:6])
+    dtest <- dfm_select(d1, d2)
+    
+    expect_equal(
+        as.numeric(textstat_simil(dtest, method = "cosine")),
+        0.866,
+        tolerance = 0.001
+    )    
+    expect_equal(
+        as.numeric(textstat_simil(dtest, method = "correlation")),
+        0.707,
+        tolerance = 0.001
+    )    
+})
+
+test_that("textstat_simil works on zero-feature documents (#952)", {
+    corp <- corpus(c('a b c c', 'b c d', 'a'),
+                   docvars = data.frame(grp = factor(c("A", "A", "B"), levels = LETTERS[1:3])))
+    testdfm <- dfm(corp)
+    dtest <- dfm_group(testdfm, groups = "grp", fill = TRUE)
+
+    expect_equal(
+        as.numeric(textstat_simil(dtest, method = "cosine")),
+        c(.2581, 0, 0),
+        tolerance = .001
+    )    
+    expect_equal(
+        as.numeric(textstat_simil(dtest, method = "correlation")),
+        c(-.52222, NaN, NaN),
+        tolerance = .001
+    )    
+})
+

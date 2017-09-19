@@ -103,6 +103,43 @@ print.summary.corpus <- function(x, ...) {
     cat(attr(x, "meta"), "\n")
 }
 
+#' return the first or last part of a corpus
+#' 
+#' For a \link{corpus} object, returns the first or last \code{n} documents.
+#' @param x a dfm object
+#' @param n a single integer.  If positive, the number of documents for the resulting object: 
+#'   number of first/last documents for the dfm.  If negative, all but the n 
+#'   last/first number of documents of x.
+#' @param ... additional arguments passed to other functions
+#' @return A \link{corpus} class object corresponding to the subset defined 
+#'   by \code{n}.
+#' @export
+#' @name head.corpus
+#' @method head corpus
+#' @keywords corpus
+#' @examples
+#' head(data_corpus_irishbudget2010, 3) %>% summary()
+#' 
+head.corpus <- function(x, n = 6L, ...) {
+    stopifnot(length(n) == 1L)
+    n <- if (n < 0L) max(ndoc(x) + n, 0L) else min(n, ndoc(x))
+    corpus_subset(x, seq_len(ndoc(x)) %in% seq_len(n))
+}
+
+#' @rdname head.corpus
+#' @method tail corpus
+#' @export
+#' @examples
+#' tail(data_corpus_irishbudget2010, 3) %>% summary()
+tail.corpus <- function(x, n = 6L, ...) {
+    stopifnot(length(n) == 1L)
+    nrx <- ndoc(x)
+    n <- if (n < 0L) max(nrx + n, 0L) else min(n, nrx)
+    sel <- as.integer(seq.int(to = nrx, length.out = n))
+    corpus_subset(x, seq_len(ndoc(x)) %in% sel)
+}
+    
+
 #' @rdname corpus-class
 #' @param c1 corpus one to be added
 #' @param c2 corpus two to be added
