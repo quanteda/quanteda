@@ -15,7 +15,7 @@ vignette: >
 %\VignetteIndexEntry{Quickstart}
 -->
 
-In this vignette we show how the **quanteda** package can be used to replicate the analysis from Matthew Jockers' book *Text Analysis with R for Students of Literature* (London: Springer, 2014).  Most of the Jockers book consists of loading, transforming, and analyzing quantities derived from text and data from text.  Because **quanteda** has built in most of the code to perform these data transformations and analyses, it makes it possible to replicate the results from the book with far less code.
+In this vignette we show how the **quanteda** package can be used to replicate the analysis from Matthew Jockers' book [*Text Analysis with R for Students of Literature*](http://doi.org/10.1007/978-3-319-03164-4) (London: Springer, 2014).  Most of the Jockers book consists of loading, transforming, and analyzing quantities derived from text and data from text.  Because **quanteda** has built in most of the code to perform these data transformations and analyses, it makes it possible to replicate the results from the book with far less code.
 
 In what follows, each section corresponds to a chapter in the book.
 
@@ -41,9 +41,7 @@ require(readtext)
 data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
 ```
 
-The `textfile()` loads the text and places inside a structured, intermediate object known as a `corpusSource` object.  We see this by outputting it to the global environment, as above.
-
-We can access the text from a `corpusSource` object (and also, as we will see, a `corpus` class object), using the `texts()` method.  Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `substring()` function, which shows the 1st through the 75th characters of the texts of our new object `mobydicktf`.  Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
+The `readtext()` function from the **readtext** package loads the text files into a `data.frame` object. We can access the text from a `data.frame` object (and also, as we will see, a `corpus` class object), using the `texts()` or the `View()` method. Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `substring()` function, which shows the 1st through the 75th characters of the texts of our new object `data_char_mobydick`.  Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
 
 ```{r}
 substring(data_char_mobydick, 1, 75)
@@ -130,11 +128,17 @@ ntype(char_tolower(novel.v), remove_punct = TRUE)
 To quickly sort the word types by their frequency, we can use the `dfm` command to create a matrix of counts of each word type -- a document-frequency matrix. In this case there is only one document, the entire book.
 ```{r eval=TRUE}
 # ten most frequent words
-mobyDfm <- dfm(novel.lower.v)
-mobyDfm[, "whale"]
+moby_dfm <- dfm(novel.lower.v, tolower = TRUE)
+moby_dfm[, "whale"]
 
-topfeatures(mobyDfm)
-plot(topfeatures(mobyDfm, 100), log = "y", cex = .6, ylab = "Term frequency")
+# plot 50 most frequent words 
+library(ggplot2)
+theme_set(theme_minimal())
+
+textstat_frequency(moby_dfm, n = 50) %>% 
+  ggplot(aes(x = rank, y = frequency)) +
+  geom_point() +
+  labs(x = NULL, y = "Term frequency")
 ```
 
 
@@ -145,21 +149,23 @@ plot(topfeatures(mobyDfm, 100), log = "y", cex = .6, ylab = "Term frequency")
 We can query the document-frequency matrix to retrieve word frequencies, as with a normal matrix:
 ```{r eval=TRUE}
 # frequencies of 'he' and 'she' - these are matrixes, not numerics
-mobyDfm[, c("he", "she", "him", "her")]
-mobyDfm[, "her"]
-mobyDfm[, "him"]/mobyDfm[, "her"]
-mobyDfm[, "he"]/mobyDfm[, "she"]
+moby_dfm[, c("he", "she", "him", "her")]
+moby_dfm[, "her"]
+moby_dfm[, "him"] / moby_dfm[, "her"]
+moby_dfm[, "he"] / moby_dfm[, "she"]
 ```
 
 ## 3.2 Recycling
 
 ```{r}
-mobyDfmPct <- weight(mobyDfm, "relFreq") * 100
-mobyDfmPct[, "the"]
+moby_dfm_pct <- dfm_weight(moby_dfm, type = "relfreq") * 100
+moby_dfm_pct[, "the"]
 
-plot(topfeatures(mobyDfmPct), type="b",
-     xlab="Top Ten Words", ylab="Percentage of Full Text", xaxt ="n")
-axis(1, 1:10, labels = names(topfeatures(mobyDfmPct)))
+textstat_frequency(moby_dfm_pct, n = 10) %>% 
+  ggplot(aes(x = reorder(feature, rank), y = frequency)) +
+  geom_point() +
+  labs(x = "Top Ten Words", y = "Percentage of Full Text") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
 
@@ -196,7 +202,7 @@ Splitting the text into chapters means that we will have a collection of documen
 
 ```{r}
 head(kwic(novel.v, 'chapter'))
-chaptersVec <- unlist(char_segment(novel.v, what = 'other', delimiter = "CHAPTER\\s\\d", perl = TRUE))
+chaptersVec <- unlist(char_segment(novel.v, valuetype = "regex", pattern = "CHAPTER\\s\\d"))
 chaptersLowerVec <- char_tolower(chaptersVec)
 chaptersCorp <- corpus(chaptersVec)
 ```
@@ -276,4 +282,3 @@ The `rowMeans` matrix function, which operates on a dfm, allows us to retreieve 
 chapMeans <- Matrix::rowMeans(chapDfm)
 plot(chapMeans, type="h")
 ```
-
