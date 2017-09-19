@@ -12,7 +12,7 @@
 \arguments{
 \item{x}{a dfm object}
 
-\item{n}{a single integer.  If positive, size for the resulting object: 
+\item{n}{a single, positive integer.  If positive, size for the resulting object: 
 number of first/last documents for the dfm. If negative, all but the n 
 last/first number of documents of x.}
 
@@ -27,7 +27,7 @@ A \link{dfm} class object corresponding to the subset defined
 }
 \description{
 For a \link{dfm} object, returns the first or last \code{n} documents 
-and first \code{nfeature} features for inspection.
+and first \code{nfeature} features.
 }
 \examples{
 myDfm <- dfm(data_corpus_inaugural, ngrams = 2, verbose = FALSE)
