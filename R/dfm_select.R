@@ -141,11 +141,11 @@ dfm_select.dfm <-  function(x, pattern,
         # add non-existent features
         features_add <- setdiff(pattern, featnames(temp))
         if (length(features_add)) {
-            pad_feature <- as(sparseMatrix(i = NULL, j = NULL, 
-                                           dims = c(ndoc(temp), length(features_add)), 
-                                           dimnames = list(docnames(temp), features_add)), 
-                              "dgCMatrix")
-            temp <- cbind(temp, new("dfm", pad_feature))
+            # pad_feature <- as(sparseMatrix(i = NULL, j = NULL, 
+            #                                dims = c(ndoc(temp), length(features_add)), 
+            #                                dimnames = list(docnames(temp), features_add)), 
+            #                   "dgCMatrix")
+            temp <- cbind(temp, make_null_dfm(features_add, docnames(temp)))
         }
         temp <- reassign_slots(temp, x)
     }

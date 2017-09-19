@@ -226,66 +226,55 @@ as.data.frame.dfm <- function(x, row.names = NULL, ...) {
 #' cbind(matrix(c(101, 102), ncol = 1), dfm1)
 #' 
 cbind.dfm <- function(...) {
+    
     args <- list(...)
-    names <- names(args)
+    names <- names(args) # for non-dfm objects
+    
     if (!any(sapply(args, is.dfm))) stop("at least one input object must be a dfm")
+
+    if (length(args) == 1) return(args[[1]])
     
     x <- args[[1]]
     y <- args[[2]]
-    
-    # select the dfm, but just one feature, to keep slots to reassign later
-    # if both are dfms, use the slots of the first
-    refdfm <- args[[which(sapply(args, is.dfm))[1]]][, 1]
+    attrs <- attributes(x)
     
     if (is.matrix(x)) {
         x <- as.dfm(x)
     } else if (is.numeric(x)) {
-        x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y), dimnames = list(docnames(y), names[1])))
+        x <- as.dfm(matrix(x, ncol = 1, nrow = nrow(y), 
+                           dimnames = list(docs = docnames(y), features = names[1])))
     }
     
     if (is.matrix(y)) {
         y <- as.dfm(y)
     } else if (is.numeric(y)) {
-        y <- as.dfm(matrix(y, ncol = 1, nrow = nrow(x), dimnames = list(docnames(x), names[2])))
+        y <- as.dfm(matrix(y, ncol = 1, nrow = nrow(x), 
+                           dimnames = list(docs = docnames(x), features = names[2])))
     }
     
-    result <- cbind_dfm_dfm(x, y)
-    result <- reassign_slots(result, refdfm)
-    
-    while (length(args[-c(1,2)])) {
-        args <- args[-c(1,2)]
-        result <- do.call(cbind, c(result, args))
-    }
-    result
-}
-
-cbind_dfm_dfm <- function(...) {
-    args <- list(...)
-    if (!all(vapply(args, is.dfm, logical(1))))
-        stop("all arguments must be dfm objects")
-    dnames <- sapply(args, docnames)
-    # make into a matrix-like object for apply to work below, even if just one document per input
-    if (is.null(dim(dnames)))
-        dnames <- matrix(dnames, ncol = length(dnames))
-    if (!all(apply(dnames, 1, function(x) length(table(x)) == 1)))
+    if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
+    if (any(docnames(x) != docnames(y)))
         warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
     
-    result <- Matrix::cbind2(args[[1]], args[[2]])
+    result <-  new("dfmSparse", Matrix::cbind2(x, y))
     if (length(args) > 2) {
-        for (y in args[3:length(args)])
-            result <- Matrix::cbind2(result, y)
+        for (i in seq(3, length(args))) {
+            result <- cbind(result, args[[i]])
+        }
     }
     
     # make any added feature names unique
-    dupl_featname_index <-
-        grep(paste0("^", quanteda_options("base_featname")), colnames(result))
-    colnames(result)[dupl_featname_index] <- make.unique(colnames(result)[dupl_featname_index], sep = "")
+    index_added <- stri_startswith_fixed(colnames(result), quanteda_options("base_featname"))
+    colnames(result)[index_added] <- make.unique(colnames(result)[index_added], sep = "")
+    
     # only issue warning if these did not come from added feature names
     if (any(duplicated(colnames(result))))
         warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE, call. = FALSE)
     
-    names(dimnames(result)) <- c("docs", "features")
-    new("dfm", result)
+    names(dimnames(result)) <- c("docs", "features") # TODO could be removed after upgrading as.dfm()
+    slots(result) <- attrs
+    return(result)
+
 }
 
 
@@ -307,57 +296,28 @@ cbind_dfm_dfm <- function(...) {
 #' rbind(dfm1, dfm2)
 #' rbind(dfm1, dfm2, dfm3)
 rbind.dfm <- function(...) {
-    args <- list(...)
-    if (!all(vapply(args, is.dfm, logical(1))))
-        stop("all arguments must be dfm objects")
-    catm(names(args))
     
-    if (length(args) == 1) {
-        warning('rbind.dfm called on single dfm')
-        result <- args[[1]]
+    args <- list(...)
+    if (length(args) == 1) return(args[[1]])
+    
+    x <- args[[1]]
+    y <- args[[2]]
+    attrs <- attributes(x)
+    
+    if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
+    
+    # make features identical using a null dfm
+    z <- make_null_dfm(union(featnames(x), featnames(y)))
+    x <- dfm_select(x, pattern = z, verbose = FALSE)
+    y <- dfm_select(y, pattern = z, verbose = FALSE)
+    result <-  new("dfmSparse", Matrix::rbind2(x, y))
+    if (length(args) > 2) {
+        for (i in seq(3, length(args))) {
+            result <- rbind(result, args[[i]])
+        }
     }
-    else if (length(args) == 2) {
-        result <- rbind2.dfm(args[[1]], args[[2]])
-    } else {
-        # Recursive call
-        result <- rbind2.dfm(args[[1]], args[[2]])
-        for (y in args[3:length(args)]) 
-            result <- rbind2.dfm(result, y)
-    }
-    names(dimnames(result)) <- c("docs", "features")
-    result
+    
+    names(dimnames(result)) <- c("docs", "features") # TODO could be removed after upgrading as.dfm()
+    slots(result) <- attrs
+    return(result)
 }
-
-rbind2.dfm <- function(x, y) {
-    x_names <- featnames(x)
-    y_names <- featnames(y)
-
-      if (identical(x_names, y_names)) {
-          return(new("dfm", Matrix::rbind2(x, y)))
-      }
-
-    common_names <- intersect(x_names, y_names)
-
-    only_x_names <- setdiff(x_names, y_names)
-    only_y_names <- setdiff(y_names, x_names)
-
-    #  Evetually, we want to rbind together two rows with the same columns
-    #  we acheive this by re-ordering the columns in the original matrices, and adding
-    #  in some blank ones
-
-    #  Here's what we're constructing:
-    #  row x ... <columns in both x and y> ... <columns only in x> ... <blank columns>
-    #  row y ... <columns in both x and y> ... <blank columns>     ... <columns only in y>
-    xcols <- Matrix::cbind2(x[, common_names], x[, only_x_names])
-    empty_ycols <- sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), length(only_y_names)), 
-                                dimnames = list(NULL, only_y_names))
-    empty_xcols <- sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(y), length(only_x_names)), 
-                                dimnames = list(NULL, only_x_names))
-    y_with_xcols <- Matrix::cbind2(y[, common_names], empty_xcols)
-
-    new("dfm", Matrix::rbind2(
-        Matrix::cbind2( xcols, empty_ycols),
-        Matrix::cbind2( y_with_xcols, y[, only_y_names])
-    ))
-}
-

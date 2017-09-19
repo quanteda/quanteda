@@ -168,17 +168,6 @@ test_that("test rbind.dfm with a single argument returns the same dfm", {
     )
 })
 
-test_that("test that rbind.dfm with a single argument prints a warning", {
-    fox <-'What does the fox say?'
-    expect_that(
-        rbind(dfm(fox, remove_punct = TRUE)),
-        gives_warning('rbind.dfm called on single dfm')
-    )
-    
-})
-
-
-
 test_that("test rbind.dfm with the same features, but in a different order", {
     
     fox <-'What does the fox say?'
@@ -630,4 +619,22 @@ test_that("dfm works when features are created (#946", {
         as.matrix(cbind(dfm("a b"), dfm("feat_1"))),
         matrix(c(1,1,1), nrow = 1, dimnames = list(docs = "text1", features = c("a", "b", "feat_1")))
     )
+})
+
+test_that("dfm warns of argument not used", {
+    
+    txt <- c(d1 = "a b c d e", d2 = "a a b c c c")
+    corp <- corpus(txt)
+    toks <- tokens(txt)
+    mx <- dfm(toks)
+    
+    expect_warning(dfm(txt, xxxxx = 'something', yyyyy = 'else'), 
+                   'Arguments xxxxx, yyyyy not used')
+    expect_warning(dfm(corp, xxxxx = 'something', yyyyy = 'else'), 
+                   'Arguments xxxxx, yyyyy not used')
+    expect_warning(dfm(toks, xxxxx = 'something', yyyyy = 'else'), 
+                   'Arguments xxxxx, yyyyy not used')
+    expect_warning(dfm(mx, xxxxx = 'something', yyyyy = 'else'), 
+                   'Arguments xxxxx, yyyyy not used')
+    
 })

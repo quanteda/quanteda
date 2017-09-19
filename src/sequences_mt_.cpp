@@ -128,7 +128,6 @@ void estimates(std::size_t i,
               DoubleParams &chi2,
               DoubleParams &gensim,
               DoubleParams &lfmd,
-              std::vector<double> &counts_bit,         // output counts
               const String &method,
               const int &count_min,
               const double nseqs,
@@ -138,7 +137,7 @@ void estimates(std::size_t i,
     if (n == 1) return; // ignore single words
     if (cs_np[i] < count_min) return;
     //output counts
-    //std::vector<double> counts_bit(std::pow(2, n), smoothing);// use 1/2 as smoothing
+    std::vector<double> counts_bit(std::pow(2, n), smoothing);// use 1/2 as smoothing
     for (std::size_t j = 0; j < seqs.size(); j++) {
         //if (i == j) continue; // do not compare with itself
  
@@ -157,121 +156,121 @@ void estimates(std::size_t i,
         lmda[i] = lambda_all(counts_bit, n);
     }
     
-    // Dice coefficient
-    dice[i] = n * compute_dice(counts_bit);
-    
-    // marginal counts: used in pmi, chi-sqaure, G2, gensim, LFMD
-    std::vector<double> mc(n, 0);  // the size of mc is n
-    for (int k = 1; k < std::pow(2, n); k++){
-        int kk = k;
-        for (int j = n-1; j >= 0; j--){
-            int jj = std::pow(2, j);
-            if (kk >= jj){
-                mc[j] += counts_bit[k];
-                kk -= jj;
-            }
-        }
-    }
-
-    double mc_product = 1;
-    for (std::size_t k = 0; k < n; k++){
-        mc_product *= mc[k];
-    }
-    
-    // calculate gensim score
-    // https://radimrehurek.com/gensim/models/phrases.html#gensim.models.phrases.Phrases
-    // gensim = (cnt(a, b) - min_count) * N / (cnt(a) * cnt(b))
-    gensim[i] = (counts_bit[std::pow(2, n) - 1] - count_min) * nseqs/mc_product;
-    
-    //LFMD
-    //see http://www.lrec-conf.org/proceedings/lrec2002/pdf/128.pdf for details about LFMD
-    //LFMD = log2(P(w1,w2)^2/P(w1)P(w2)) + log2(P(w1,w2))
-    lfmd[i] = log2(counts_bit[std::pow(2, n) - 1] * counts_bit[std::pow(2, n) - 1] * pow(nseqs, n-2) / mc_product) 
-        + log2(counts_bit[std::pow(2, n) - 1] / nseqs);
-    
-
-    //******issue 803: count ngrams as 2x2 table**********//
-    std::vector<double> new_count(4, 0);
-    new_count[3] = counts_bit[std::pow(2, n) - 1]; // C(BA)C
-    new_count[1] = counts_bit[(std::pow(2, n-1) - 1)]; //~C(BA)
-    for (std::size_t k = 0; k < (std::pow(2, n-1) - 1); k++){
-        new_count[2] = new_count[2] + counts_bit[k + std::pow(2, n-1)] - smoothing; //C~(AB)
-        //if(i==1)Rcout<<"counts_bit["<<k + std::pow(2, n-1)<<"]="<<counts_bit[k+std::pow(2, n-1)]<<std::endl;
-        new_count[0] = new_count[0] + counts_bit[k] - smoothing; //~C~(AB)
-        
-    }
-    
-    // adjust the impact of smoothing
-    new_count[2] += smoothing;
-    new_count[0] += smoothing;
-    //if(i==1)Rcout<<"new_count[0]="<<new_count[0]<<" "<<new_count[1]<<" "<<new_count[2]<<" "<<new_count[3]<<std::endl;
-    
-    // marginal totals
-    std::vector<double> new_mc(2);
-    new_mc[0] = new_count[3] + new_count[1]; //?(BA)
-    new_mc[1] = new_count[3] + new_count[2]; //C(??)
-    //if(i==1)Rcout<<"new_mc[0]="<<new_mc[0]<<" "<<new_mc[1]<<std::endl;
-    //if(i==1) Rcout<<"total="<<nseqs<<"seqs"<<seqs[i][0]<<" "<<seqs[i][1]<<" "<<seqs[i][2]<<std::endl;
-    
-    // expected totals
-    std::vector<double> new_ec(4);
-    new_ec[0] = (nseqs - new_mc[0])*(nseqs - new_mc[1])/nseqs;//
-    new_ec[1] = new_mc[0]*(nseqs - new_mc[1])/nseqs;
-    new_ec[2] = (nseqs - new_mc[0])* new_mc[1]/nseqs;
-    new_ec[3] = new_mc[0]* new_mc[1]/nseqs;
-    //if(i==1)Rcout<<"new_ec[0]="<<new_ec[0]<<" "<<new_ec[1]<<" "<<new_ec[2]<<" "<<new_ec[3]<<std::endl;
-    
-    
-    //pmi
-    pmi[i] = log(new_count[3]*nseqs/(new_mc[0]*new_mc[1]));
-    
-    //logratio
-    logratio[i] = 0.0;
-    double epsilon = 0.000000001; // to offset zero cell counts
-    for (std::size_t k = 0; k < 4; k++){
-        logratio[i] += new_count[k] * log(new_count[k]/new_ec[k] + epsilon);
-    }
-    logratio[i] *= 2;
-    
-    //chi2
-    chi2[i] = 0.0;
-    for (std::size_t k = 0; k < 4; k++){
-        chi2[i] += std::pow((new_count[k] - new_ec[k]), 2)/new_ec[k];
-    }
+    // // Dice coefficient
+    // dice[i] = n * compute_dice(counts_bit);
+    // 
+    // // marginal counts: used in pmi, chi-sqaure, G2, gensim, LFMD
+    // std::vector<double> mc(n, 0);  // the size of mc is n
+    // for (int k = 1; k < std::pow(2, n); k++){
+    //     int kk = k;
+    //     for (int j = n-1; j >= 0; j--){
+    //         int jj = std::pow(2, j);
+    //         if (kk >= jj){
+    //             mc[j] += counts_bit[k];
+    //             kk -= jj;
+    //         }
+    //     }
+    // }
+    // 
+    // double mc_product = 1;
+    // for (std::size_t k = 0; k < n; k++){
+    //     mc_product *= mc[k];
+    // }
+    // 
+    // // calculate gensim score
+    // // https://radimrehurek.com/gensim/models/phrases.html#gensim.models.phrases.Phrases
+    // // gensim = (cnt(a, b) - min_count) * N / (cnt(a) * cnt(b))
+    // gensim[i] = (counts_bit[std::pow(2, n) - 1] - count_min) * nseqs/mc_product;
+    // 
+    // //LFMD
+    // //see http://www.lrec-conf.org/proceedings/lrec2002/pdf/128.pdf for details about LFMD
+    // //LFMD = log2(P(w1,w2)^2/P(w1)P(w2)) + log2(P(w1,w2))
+    // lfmd[i] = log2(counts_bit[std::pow(2, n) - 1] * counts_bit[std::pow(2, n) - 1] * pow(nseqs, n-2) / mc_product) 
+    //     + log2(counts_bit[std::pow(2, n) - 1] / nseqs);
+    // 
+    // 
+    // //******issue 803: count ngrams as 2x2 table**********//
+    // std::vector<double> new_count(4, 0);
+    // new_count[3] = counts_bit[std::pow(2, n) - 1]; // C(BA)C
+    // new_count[1] = counts_bit[(std::pow(2, n-1) - 1)]; //~C(BA)
+    // for (std::size_t k = 0; k < (std::pow(2, n-1) - 1); k++){
+    //     new_count[2] = new_count[2] + counts_bit[k + std::pow(2, n-1)] - smoothing; //C~(AB)
+    //     //if(i==1)Rcout<<"counts_bit["<<k + std::pow(2, n-1)<<"]="<<counts_bit[k+std::pow(2, n-1)]<<std::endl;
+    //     new_count[0] = new_count[0] + counts_bit[k] - smoothing; //~C~(AB)
+    //     
+    // }
+    // 
+    // // adjust the impact of smoothing
+    // new_count[2] += smoothing;
+    // new_count[0] += smoothing;
+    // //if(i==1)Rcout<<"new_count[0]="<<new_count[0]<<" "<<new_count[1]<<" "<<new_count[2]<<" "<<new_count[3]<<std::endl;
+    // 
+    // // marginal totals
+    // std::vector<double> new_mc(2);
+    // new_mc[0] = new_count[3] + new_count[1]; //?(BA)
+    // new_mc[1] = new_count[3] + new_count[2]; //C(??)
+    // //if(i==1)Rcout<<"new_mc[0]="<<new_mc[0]<<" "<<new_mc[1]<<std::endl;
+    // //if(i==1) Rcout<<"total="<<nseqs<<"seqs"<<seqs[i][0]<<" "<<seqs[i][1]<<" "<<seqs[i][2]<<std::endl;
+    // 
+    // // expected totals
+    // std::vector<double> new_ec(4);
+    // new_ec[0] = (nseqs - new_mc[0])*(nseqs - new_mc[1])/nseqs;//
+    // new_ec[1] = new_mc[0]*(nseqs - new_mc[1])/nseqs;
+    // new_ec[2] = (nseqs - new_mc[0])* new_mc[1]/nseqs;
+    // new_ec[3] = new_mc[0]* new_mc[1]/nseqs;
+    // //if(i==1)Rcout<<"new_ec[0]="<<new_ec[0]<<" "<<new_ec[1]<<" "<<new_ec[2]<<" "<<new_ec[3]<<std::endl;
+    // 
+    // 
+    // //pmi
+    // pmi[i] = log(new_count[3]*nseqs/(new_mc[0]*new_mc[1]));
+    // 
+    // //logratio
+    // logratio[i] = 0.0;
+    // double epsilon = 0.000000001; // to offset zero cell counts
+    // for (std::size_t k = 0; k < 4; k++){
+    //     logratio[i] += new_count[k] * log(new_count[k]/new_ec[k] + epsilon);
+    // }
+    // logratio[i] *= 2;
+    // 
+    // //chi2
+    // chi2[i] = 0.0;
+    // for (std::size_t k = 0; k < 4; k++){
+    //     chi2[i] += std::pow((new_count[k] - new_ec[k]), 2)/new_ec[k];
+    // }
 }
 
-// diable templately for output counts
-// struct estimates_mt : public Worker{
-//     VecNgrams &seqs_np;
-//     IntParams &cs_np;
-//     VecNgrams &seqs;
-//     IntParams &cs;
-//     DoubleParams &sgma;
-//     DoubleParams &lmda;
-//     DoubleParams &dice;
-//     DoubleParams &pmi;
-//     DoubleParams &logratio;
-//     DoubleParams &chi2;
-//     DoubleParams &gensim;
-//     DoubleParams &lfmd;
-//     const String &method;
-//     const unsigned int &count_min;
-//     const double nseqs;
-//     const double smoothing;
-// 
-//     // Constructor
-//     estimates_mt(VecNgrams &seqs_np_, IntParams &cs_np_, VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_, 
-//                  DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, const String &method,
-//                  const unsigned int &count_min_, const double nseqs_, const double smoothing_):
-//         seqs_np(seqs_np_), cs_np(cs_np_), seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_), 
-//         gensim(gensim_), lfmd(lfmd_), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
-//     
-//     void operator()(std::size_t begin, std::size_t end){
-//         for (std::size_t i = begin; i < end; i++) {
-//                 estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, nseqs, smoothing);
-//         }
-//     }
-// };
+//diable templately for output counts
+struct estimates_mt : public Worker{
+    VecNgrams &seqs_np;
+    IntParams &cs_np;
+    VecNgrams &seqs;
+    IntParams &cs;
+    DoubleParams &sgma;
+    DoubleParams &lmda;
+    DoubleParams &dice;
+    DoubleParams &pmi;
+    DoubleParams &logratio;
+    DoubleParams &chi2;
+    DoubleParams &gensim;
+    DoubleParams &lfmd;
+    const String &method;
+    const unsigned int &count_min;
+    const double nseqs;
+    const double smoothing;
+
+    // Constructor
+    estimates_mt(VecNgrams &seqs_np_, IntParams &cs_np_, VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_,
+                 DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, const String &method,
+                 const unsigned int &count_min_, const double nseqs_, const double smoothing_):
+        seqs_np(seqs_np_), cs_np(cs_np_), seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_),
+        gensim(gensim_), lfmd(lfmd_), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
+
+    void operator()(std::size_t begin, std::size_t end){
+        for (std::size_t i = begin; i < end; i++) {
+                estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, nseqs, smoothing);
+        }
+    }
+};
 
 /* 
 * This funciton estimate the strength of association between specified words 
@@ -330,8 +329,8 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     seqs_all.reserve(len_coe);
     
     //output oberved counting
-    std::vector<std::string> ob_all;
-    ob_all.reserve(len_coe);
+    //std::vector<std::string> ob_all;
+    //ob_all.reserve(len_coe);
     
     for(unsigned int m = 0; m < sizes.size(); m++){
         unsigned int mw_len = sizes[m];
@@ -378,7 +377,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         }
         
         //output counts;
-        std::vector<std::string> ob_n(len_noPadding);
+        //std::vector<std::string> ob_n(len_noPadding);
         
         
         // adjust total_counts of MW 
@@ -394,27 +393,14 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         DoubleParams gensim(len_noPadding);
         DoubleParams lfmd(len_noPadding);
         //dev::start_timer("Estimate", timer);
-//#if QUANTEDA_USE_TBB
-//        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
-//        parallelFor(0, seqs_np.size(), estimate_mt);
-//#else
+#if QUANTEDA_USE_TBB
+        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
+        parallelFor(0, seqs_np.size(), estimate_mt);
+#else
         for (std::size_t i = 0; i < seqs_np.size(); i++) {
-            std::vector<double> count_bit(std::pow(2, mw_len), smoothing);
-                estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, count_bit, method, count_min, total_counts, smoothing);
-                
-                // Convert sequences from integer to character
-                std::ostringstream out;
-                out<<std::setprecision(1)<<std::fixed<<std::showpoint<< count_bit[0];
-                std::string this_count = out.str();
-                for (std::size_t j = 1; j < count_bit.size(); j++) {
-                    std::ostringstream out;
-                    out<<std::setprecision(1)<<std::fixed<<std::showpoint<< count_bit[j];
-                    this_count = this_count + '_' + out.str();
-                }
-                ob_n[i] = this_count;
-                ///end of out
+            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
         }
-//#endif
+#endif
         //dev::stop_timer("Estimate", timer);
         sgma_all.insert( sgma_all.end(), sgma.begin(), sgma.end() );
         lmda_all.insert( lmda_all.end(), lmda.begin(), lmda.end() );
@@ -426,7 +412,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         lfmd_all.insert( lfmd_all.end(), lfmd.begin(), lfmd.end() );
         
         //output counts
-        ob_all.insert( ob_all.end(), ob_n.begin(), ob_n.end() );
+        //ob_all.insert( ob_all.end(), ob_n.begin(), ob_n.end() );
         
     }
     
@@ -447,7 +433,6 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                                           _["G2"] = as<NumericVector>(wrap(logratio_all)),
                                           _["chi2"] = as<NumericVector>(wrap(chi2_all)),
                                           _["LFMD"] = as<NumericVector>(wrap(lfmd_all)),
-                                          _["observed_counts"] = ob_all,
                                           _["stringsAsFactors"] = false);
     return output_;
 }

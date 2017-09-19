@@ -7,6 +7,7 @@
 * Added **magrittr** pipe support (#927).  `%>%` can now be used with **quanteda** without needing to attach **magrittr** (or, as many users apparently believe, the entire tidyverse.)  
 * `corpus_segment()` now behaves more logically and flexibly, and is clearly differentiated from `corpus_reshape()` in terms of its functionality.  Its documentation is also vastly improved.  (#908)
 * Added `data_dictionary_LSD2015`, the Lexicoder Sentiment 2015 dictionary (#963).
+* Significant improvements to the performance of `tokens_lookup()` and `dfm_lookup()` (#960).
 
 ### Bug fixes and stability enhancements
 
@@ -19,7 +20,8 @@
 
 ### Behaviour changes
 
-* `summary.corpus()` now generates a special data.frame, which has its own print method, rather than requiring `verbose = FALSE` to suppress output. (#926)
+* `summary.corpus()` now generates a special data.frame, which has its own print method, rather than requiring `verbose = FALSE` to suppress output (#926).
+* `textstat_collocations()` is now multi-threaded.
 
 
 

@@ -130,11 +130,12 @@ dfm_env <- new.env()
 dfm_env$START_TIME <- NULL  
 
 # dfm function to check that any ellipsis arguments belong only to tokens formals
-check_dfm_dots <-  function(dots, permissible_args = NULL) {
-    if (length(dots) && any(!(names(dots)) %in% permissible_args))
-        warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", 
-                noBreaks. = TRUE, call. = FALSE)
-}
+# check_dfm_dots <-  function(dots, permissible_args = NULL) {
+#     if (length(dots) && any(!(names(dots)) %in% permissible_args))
+#         warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", 
+#                 noBreaks. = TRUE, call. = FALSE)
+# }
+
 
 
 #' @rdname dfm
@@ -151,14 +152,15 @@ dfm.character <- function(x,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
-    dfm.corpus(corpus(x),
-               tolower = tolower, 
-               stem = stem, 
-               select = select, remove = remove, 
-               dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
-               groups = groups, 
-               verbose = verbose,
-               ...)
+
+    dfm.tokens(tokens(corpus(x)),
+        tolower = tolower, 
+        stem = stem, 
+        select = select, remove = remove, 
+        dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
+        groups = groups, 
+        verbose = verbose, 
+        ...)
 }
 
 
@@ -176,15 +178,15 @@ dfm.corpus <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"),
                        ...) {
-    dfm.tokenizedTexts(tokens(x, ...),  
-                       tolower = tolower, 
-                       stem = stem, 
-                       select = select, remove = remove, 
-                       dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
-                       groups = groups, 
-                       verbose = verbose)
+    dfm.tokens(tokens(x),  
+               tolower = tolower, 
+               stem = stem, 
+               select = select, remove = remove, 
+               dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
+               groups = groups, 
+               verbose = verbose,
+               ...)
 }    
-
 
 #' @noRd
 #' @importFrom utils glob2rx
@@ -200,15 +202,41 @@ dfm.tokenizedTexts <- function(x,
                                groups = NULL, 
                                verbose = quanteda_options("verbose"), 
                                ...) {
+    dfm.tokens(as.tokens(x),  
+               tolower = tolower, 
+               stem = stem, 
+               select = select, remove = remove, 
+               dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
+               groups = groups, 
+               verbose = verbose, 
+               ...)
+}
     
+#' @noRd
+#' @importFrom utils glob2rx
+#' @export
+dfm.tokens <- function(x, 
+                       tolower = TRUE,
+                       stem = FALSE, 
+                       select = NULL,
+                       remove = NULL,
+                       dictionary = NULL,
+                       thesaurus = NULL,
+                       valuetype = c("glob", "regex", "fixed"), 
+                       groups = NULL, 
+                       verbose = quanteda_options("verbose"), 
+                       ...) {
+
     valuetype <- match.arg(valuetype)
+    check_dots(list(...), names(formals('tokens')))
+    
     # set document names if none
     if (is.null(names(x))) {
         names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
     } 
     
-    if (who_called_me_first(sys.calls(), "dfm") %in% c("tokens", "tokenizedTexts")) {
-        check_dfm_dots(list(...), permissible_args = names(formals(tokens)))
+    # call tokens only if options given
+    if (length(intersect(names(list(...)), names(formals('tokens'))))) {
         x <- tokens(x, ...)
     }
     
@@ -294,7 +322,7 @@ dfm.dfm <- function(x,
     
     x <- as.dfm(x)
     valuetype <- match.arg(valuetype)
-    check_dfm_dots(list(...))
+    check_dots(list(...))
 
     if (tolower) {
         if (verbose) catm("   ... lowercasing\n", sep="")
@@ -436,3 +464,14 @@ make_ngram_pattern <- function(features, valuetype, concatenator) {
     features
 }
 
+# create an empty dfm for given features and documents
+make_null_dfm <- function(feature = NULL, document = NULL) {
+    temp <- as(sparseMatrix(
+        i = NULL,
+        j = NULL,
+        dims = c(length(document), length(feature)),
+        dimnames = list(docs = document, features = feature)
+    ),
+    "dgCMatrix")
+    new("dfmSparse", temp)
+}
