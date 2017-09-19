@@ -264,7 +264,7 @@ cbind.dfm <- function(...) {
     if (any(duplicated(colnames(result))))
         warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE, call. = FALSE)
     
-    names(dimnames(result)) <- c("docs", "features") # TODO could be removed after upgradeing as.dfm()
+    names(dimnames(result)) <- c("docs", "features") # TODO could be removed after upgrading as.dfm()
     slots(result) <- attrs
     return(result)
 }
@@ -309,7 +309,7 @@ rbind.dfm <- function(...) {
         }
     }
     
-    names(dimnames(result)) <- c("docs", "features") # TODO could be removed after upgradeing as.dfm()
+    names(dimnames(result)) <- c("docs", "features") # TODO could be removed after upgrading as.dfm()
     slots(result) <- attrs
     return(result)
 }
