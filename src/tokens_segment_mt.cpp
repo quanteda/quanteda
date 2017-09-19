@@ -31,7 +31,7 @@ Segments segment(Text tokens,
     
     Segments segments;
     if (targets.size() == 0) {
-        segments.push_back(make_tuple(0, tokens.size(), -1, -1));
+        segments.push_back(make_tuple(0, tokens.size() - 1, -1, -1));
         return segments;
     }
     
@@ -39,6 +39,7 @@ Segments segment(Text tokens,
     std::sort(targets.begin(), targets.end(), [](const std::pair<int,int> &left, const std::pair<int,int> &right) {
         return left.first < right.first;
     });
+    
     if (position == 1) {
         // preceeded by delimiter
         if (0 < targets.front().first) {
@@ -54,7 +55,7 @@ Segments segment(Text tokens,
                 to = targets[i + 1].first - 1;
             }
             segments.push_back(make_tuple(from, to, targets[i].first, targets[i].second));
-            Rcout << "segment " << i << ": " << from << " " << to << "\n";
+            //Rcout << "segment " << i << ": " << from << " " << to << "\n";
         }
         
     } else {
@@ -70,7 +71,7 @@ Segments segment(Text tokens,
                 to = targets[i].first - 1;
             }
             segments.push_back(make_tuple(from, to, targets[i].first, targets[i].second));
-            Rcout << "segment " << i << ": " << from << " " << to << "\n";
+            //Rcout << "segment " << i << ": " << from << " " << to << "\n";
         }
         if (targets.back().second < tokens.size() - 1) {
             segments.push_back(make_tuple(targets.back().second + 1, tokens.size() - 1, -1, -1));
@@ -113,6 +114,8 @@ struct segment_mt : public Worker{
  * @param texts_ tokens ojbect
  * @param types_ types
  * @param patterns_ list of target patterns
+ * @param remove remove and save matched patterns if true
+ * @param position determine position to split texts 1=before; 2=after
  */
 
 // [[Rcpp::export]]
@@ -133,14 +136,14 @@ List qatd_cpp_tokens_segment(const List &texts_,
     std::vector<Segments> temp(texts.size());
     
     // dev::start_timer("Dictionary detect", timer);
-// #if QUANTEDA_USE_TBB
-//     segment_mt segment_mt(texts, temp, spans, set_patterns, remove, position);
-//     parallelFor(0, texts.size(), segment_mt);
-// #else
+#if QUANTEDA_USE_TBB
+     segment_mt segment_mt(texts, temp, spans, set_patterns, remove, position);
+     parallelFor(0, texts.size(), segment_mt);
+#else
     for (std::size_t h = 0; h < texts.size(); h++) {
         temp[h] = segment(texts[h], spans, set_patterns, remove, position);
     }
-//#endif
+#endif
     
     // Get total number of matches
     std::size_t len = 0;
@@ -149,9 +152,8 @@ List qatd_cpp_tokens_segment(const List &texts_,
     }
     
     Texts segments(len);
-    IntegerVector document_ids_(len), segment_ids_(len);
-    CharacterVector document_names_(len);
-    CharacterVector matches_(len);
+    IntegerVector ids_document_(len), ids_segment_(len);
+    CharacterVector names_document_(len), matches_(len);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
@@ -170,31 +172,28 @@ List qatd_cpp_tokens_segment(const List &texts_,
             }
             
             // extract matched patterns
-            if (-1 < std::get<2>(target) && -1 < std::get<3>(target)) {
+            if (remove && -1 < std::get<2>(target) && -1 < std::get<3>(target)) {
                 Text match(tokens.begin() + std::get<2>(target), tokens.begin() + std::get<3>(target) + 1);
                 matches_[j] = join_strings(match, types_, " ");
             } else {
                 matches_[j] = "";
             }
             
-            document_ids_[j] = (int)h + 1;
-            segment_ids_[j] = (int)i + 1;
-            document_names_[j] = names_[h];
+            ids_document_[j] = (int)h + 1;
+            ids_segment_[j] = (int)i + 1;
+            names_document_[j] = names_[h];
             j++;
         }
     }
     
-    Tokens segments_ = recompile(segments, types, false, false, false);
-    segments_.attr("match") = matches_;
-    segments_.attr("document") = document_names_;
-    segments_.attr("docid") = document_ids_;
-    segments_.attr("segid") = segment_ids_;
+    Tokens segments_ = recompile(segments, types, remove, false, false);
+    segments_.attr("pattern") = matches_;
+    segments_.attr("document") = names_document_;
+    segments_.attr("docid") = ids_document_;
+    segments_.attr("segid") = ids_segment_;
     
     return(segments_);
 }
-
-
-
 
 /***R
 
