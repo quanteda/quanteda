@@ -4,29 +4,24 @@
 \alias{tokens_segment}
 \title{segment tokens object by patterns}
 \usage{
-tokens_segment(x, what = c("sentences", "other"), delimiter = NULL,
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  remove_delimiter = FALSE, verbose = quanteda_options("verbose"))
+tokens_segment(x, pattern, valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, extract_pattern = FALSE,
+  pattern_position = c("before", "after"),
+  verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be segmented}
 
-\item{what}{unit of segmentation.  Current options are
-\code{"sentences"} (default) and \code{"other"}.
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
-Segmenting on \code{"other"} allows segmentation of a text on any 
-user-defined value, and must be accompanied by the \code{delimiter} 
-argument.}
-
-\item{delimiter}{the same as \code{\link{pattern}}}
-
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 
-\item{remove_delimiter}{remove deimiter, if \code{TRUE}}
+\item{extract_pattern}{remove deimiter from the texts and save in \link{docvars}, if \code{TRUE}}
 
 \item{verbose}{if \code{TRUE} print messages about how many tokens were 
 selected or removed}
@@ -45,14 +40,9 @@ it shall arrive, I shall endeavor to express the high sense I entertain of
 this distinguished honor."
 toks <- tokens(txts)
 
-# split into sentences
-toks_sent <- tokens_segment(toks, what = "sentences")
-
 # split by any punctuation
-toks_punc <- tokens_segment(toks, what = "other", delimiter = "[\\\\p{P}]", valuetype = 'regex',
-                            remove_delimiter = FALSE)
-toks_punc <- tokens_segment(toks, what = "other", delimiter = "[\\\\p{P}]", valuetype = 'regex', 
-                            remove_delimiter = TRUE)
+toks_punc <- tokens_segment(toks, c(".", "?", "!"), valuetype = 'fixed', pattern_position = 'after')
+toks_punc <- tokens_segment(toks, "^\\\\p{P}$", valuetype = 'regex', extract_pattern = TRUE, pattern_position = 'after')
 
 }
 \keyword{internal}

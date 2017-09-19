@@ -7,11 +7,16 @@ corp <- data_corpus_guardian
 load("/home/kohei/Documents/Brexit/Analysis/data_tokens_guardian.RData")
 toks <- data_tokens_guardian
 
-
 microbenchmark::microbenchmark(
-    corpus = corpus_segment(corp, what = 'other', delimiter = '[\\p{P}]', valuetype = 'regex'),
-    token = tokens_segment(toks, pattern = '^[\\p{P}]$', valuetype = 'regex'),
-    times=1
+    tokens_segment(toks, '^\\p{Pe}$', valuetype = 'regex', extract_pattern = TRUE),
+    tokens_segment(toks, '^\\p{Pe}$', valuetype = 'regex', extract_pattern = FALSE),
+    times = 5
 )
 
-profvis::profvis(tokens_segment(toks, pattern = '^[\\p{P}]$', valuetype = 'regex'))
+microbenchmark::microbenchmark(
+    corpus = corpus_segment(corp, '\\p{P}', valuetype = 'regex', extract_pattern = TRUE),
+    token = tokens_segment(toks, '^\\p{P}$', valuetype = 'regex', extract_pattern = TRUE),
+    times = 5
+)
+
+profvis::profvis(tokens_segment(toks, '^\\p{P}$', valuetype = 'regex', pattern_position = 'after'))
