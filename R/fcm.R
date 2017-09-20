@@ -21,8 +21,8 @@
 setClass("fcm",
          slots = c(context = "character", window = "integer", count = "character", weights = "numeric", ordered = "logical", tri = "logical"),
          # prototype = list(Dimnames = list(contexts = NULL, features = NULL)),
+         #contains = c("dfm", "dgCMatrix", "dtCMatrix"))
          contains = c("dfm", "dgCMatrix"))
-
 
 #' create a feature co-occurrence matrix
 #' 
@@ -192,7 +192,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
     # discard the lower diagonal if tri == TRUE
     if (tri) 
         result <- Matrix::triu(result)
-    
+
     # create a new feature context matrix
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
                   context = context, window = window, weights = weights, tri = tri)
@@ -244,9 +244,9 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
     }
 
     # discard the lower diagonal if tri == TRUE
-    if (tri) # & !is.tokens(x))
+    if (tri)
         result <- Matrix::triu(result)
-
+    
     # create a new feature context matrix
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
                   context = context, window = window, weights = weights, tri = tri)
@@ -260,7 +260,6 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
 #' @export
 setMethod("print", signature(x = "fcm"), 
           function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, nfeature = 20L, ...) {
-              ndoc <- nfeature
               if (show.summary) {
                   cat("Feature co-occurrence matrix of: ",
                       format(ndoc(x), big.mark = ","), " by ",
@@ -270,11 +269,12 @@ setMethod("print", signature(x = "fcm"),
                       if (is.resampled(x)) paste(", ", nresample(x), " resamples", sep = "") else "",
                       ".\n", sep = "")
               }
-              if (show.settings) {
+              if (show.settings)
                   cat("Settings: TO BE IMPLEMENTED.")
-              }
-              if (show.values | (nrow(x) <= ndoc & ncol(x) <= nfeature)) {
-                  Matrix::printSpMatrix2(x[1:min(ndoc, ndoc(x)), 1:min(nfeature, nfeature(x))], 
+              if (show.values) {
+                  #x <- as(x, 'dgCMatrix')
+                  #print('here')
+                  Matrix::printSpMatrix2(x[seq_len(min(nfeature, nrow(x))), seq_len(min(nfeature, ncol(x)))], 
                                          col.names = TRUE, 
                                          zero.print = if (x@tri) "." else 0, ...)
               }
