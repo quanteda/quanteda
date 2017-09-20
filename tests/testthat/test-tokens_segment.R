@@ -7,7 +7,7 @@ test_that("tokens_segment works for sentences", {
     
     mycorp <- corpus(txt, docvars = data.frame(title = c("doc1", "doc2")))
     mytoks <- tokens(mycorp)
-    mytoks_sent <- tokens_segment(mytoks, "sentences")
+    mytoks_sent <- tokens_segment(mytoks, "\\p{Sterm}", valuetype = 'regex', pattern_position = 'after')
     
     expect_equal(ndoc(mytoks_sent), 5)
     
@@ -19,9 +19,6 @@ test_that("tokens_segment works for sentences", {
     expect_equal(docvars(mytoks_sent, 'title'),
                  as.factor(c('doc1', 'doc1', 'doc1', 'doc2', 'doc2')))
     
-    expect_warning(tokens_segment(mytoks, "sentences", delimiter = "."),
-                   "delimiter is only used for 'other'")
-    
 })
 
 
@@ -32,7 +29,7 @@ test_that("tokens_segment works for delimiter", {
     
     mycorp <- corpus(txt, docvars = data.frame(title = c("doc1", "doc2")))
     mytoks <- tokens(mycorp)
-    mytoks_sent <- tokens_segment(mytoks, what = "other", delimiter = '[.!?]', valuetype = 'regex')
+    mytoks_sent <- tokens_segment(mytoks, '[.!?]', valuetype = 'regex', pattern_position = 'after')
     
     expect_equal(ndoc(mytoks_sent), 5)
     
@@ -49,15 +46,15 @@ test_that("tokens_segment works for delimiter", {
     
 })
 
-test_that("tokens_segment works for delimiter with remove_delimiter = TRUE", {
+test_that("tokens_segment works for delimiter with extract_pattern = TRUE", {
     txt <- c(d1 = "Sentence one.  Second sentence is this one!\n
                    Here is the third sentence.",
              d2 = "Only sentence of doc2?  No there is another.")
     
     mycorp <- corpus(txt, docvars = data.frame(title = c("doc1", "doc2")))
     mytoks <- tokens(mycorp)
-    mytoks_sent <- tokens_segment(mytoks, what = "other", delimiter = '[.!?]', valuetype = 'regex',
-                                  remove_delimiter = TRUE)
+    mytoks_sent <- tokens_segment(mytoks, '[.!?]', valuetype = 'regex',
+                                  extract_pattern = TRUE, pattern_position = 'after')
     
     expect_equal(ndoc(mytoks_sent), 5)
     
@@ -77,14 +74,14 @@ test_that("tokens_segment works for delimiter with remove_delimiter = TRUE", {
 test_that("tokens_segment includes left-over text", {
     txt <- c("This is the main. this is left-over")
     mytoks <- tokens(txt)
-    mytoks_seg1 <- tokens_segment(mytoks, what = "other", delimiter = '[.!?]', valuetype = 'regex',
-                                  remove_delimiter = FALSE)
+    mytoks_seg1 <- tokens_segment(mytoks, '[.!?]', valuetype = 'regex',
+                                  extract_pattern = FALSE, pattern_position = 'after')
     
     expect_equal(as.list(mytoks_seg1)[2], 
                  list(text1.2 = c("this", "is", "left-over")))
     
-    mytoks_seg2 <- tokens_segment(mytoks, what = "other", delimiter = '[.!?]', valuetype = 'regex',
-                                  remove_delimiter = TRUE)
+    mytoks_seg2 <- tokens_segment(mytoks, '[.!?]', valuetype = 'regex',
+                                  extract_pattern = FALSE, pattern_position = 'after')
     
     expect_equal(as.list(mytoks_seg2)[2], 
                  list(text1.2 = c("this", "is", "left-over")))
@@ -97,33 +94,81 @@ test_that("tokens_segment works when removing punctuation match, remove_delimite
     toks2 <- tokens(c("This is a test", "Another test."))
     toks3 <- tokens(c("This is a test", "Another test"))
     
-    # remove_delimiter = TRUE
+    # extract_pattern = TRUE
     expect_equal(
-        as.list(tokens_segment(toks1, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = TRUE)),
+        as.list(tokens_segment(toks1, "^\\p{P}$", valuetype = "regex", 
+                               extract_pattern = TRUE, pattern_position = 'after')),
         list(text1.1 = "This", text1.2 = c("is", "a", "test"), text2.1 = c("Another", "test"))
     )
     expect_equal(
-        as.list(tokens_segment(toks2, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = TRUE)),
-        list(text1 = c("This", "is", "a", "test"), text2.1 = c("Another", "test"))
+        as.list(tokens_segment(toks2, "^\\p{P}$", valuetype = "regex", 
+                               extract_pattern = TRUE, pattern_position = 'after')),
+        list(text1.1 = c("This", "is", "a", "test"), text2.1 = c("Another", "test"))
     )
     expect_equal(
-        as.list(tokens_segment(toks3, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = TRUE)),
-        as.list(toks3)
+        as.list(tokens_segment(toks3, "^\\p{P}$", valuetype = "regex", 
+                               extract_pattern = TRUE, pattern_position = 'after')),
+        list(text1.1 = c("This", "is", "a", "test"), text2.1 = c("Another", "test"))
     )
     
-    # remove_delimiter = FALSE
+    # extract_pattern = FALSE
     expect_equal(
-        as.list(tokens_segment(toks1, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = FALSE)),
+        as.list(tokens_segment(toks1, "^\\p{P}$", valuetype = "regex", 
+                               extract_pattern = FALSE, pattern_position = 'after')),
         list(text1.1 = c("This", ":"), text1.2 = c("is", "a", "test"), text2.1 = c("Another", "test"))
     )
     expect_equal(
-        as.list(tokens_segment(toks2, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = FALSE)),
-        list(text1 = c("This", "is", "a", "test"), text2.1 = c("Another", "test", "."))
+        as.list(tokens_segment(toks2, "^\\p{P}$", valuetype = "regex", 
+                               extract_pattern = FALSE, pattern_position = 'after')),
+        list(text1.1 = c("This", "is", "a", "test"), text2.1 = c("Another", "test", "."))
     )
-    expect_silent(as.list(tokens_segment(toks2, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = FALSE)))
+    expect_silent(as.list(tokens_segment(toks2, "^\\p{P}$", valuetype = "regex", 
+                                         extract_pattern = FALSE, pattern_position = 'after')))
     expect_equal(
-        as.list(tokens_segment(toks3, what = "other", delimiter =  "^\\p{P}$", valuetype = "regex", remove_delimiter = FALSE)),
-        as.list(toks3)
+        as.list(tokens_segment(toks3,  "^\\p{P}$", valuetype = "regex", 
+                               extract_pattern = FALSE, pattern_position = 'after')),
+        list(text1.1 = c("This", "is", "a", "test"), text2.1 = c("Another", "test"))
     )
 })
+
+
+test_that("tokens_segment works with tags", {
+    corp <- corpus(c(d1 = "##TEST One two ##TEST2 Three",
+                     d2 = "##TEST3 Four"),
+                   docvars = data.frame(test = c("A", "B"), stringsAsFactors = FALSE))
+    toks <- tokens(corp)
+    toks_seg1 <- tokens_segment(toks, "##[A-Z0-9]+", valuetype = "regex", 
+                                pattern_position = "before", extract_pattern = TRUE, use_docvars = TRUE)
+    vars1 <- docvars(toks_seg1)
+    expect_equal(vars1$test, c("A", "A", "B"))
+    expect_equal(vars1$pattern, c("##TEST", "##TEST2", "##TEST3"))
+    expect_equal(as.list(toks_seg1),
+                 list(d1.1 = c("One", "two"), d1.2 = "Three", d2.1 = "Four"))
+    
+    toks_seg2 <- tokens_segment(toks, "##[A-Z0-9]+", valuetype = "regex", 
+                                pattern_position = "before", extract_pattern = FALSE, use_docvars = TRUE)
+    vars2 <- docvars(toks_seg2)
+    expect_equal(vars2$test, c("A", "A", "B"))
+    expect_equal(vars2$pattern, NULL)
+    expect_equal(as.list(toks_seg2),
+                 list(d1.1 = c("##TEST", "One", "two"), d1.2 = c("##TEST2", "Three"), d2.1 = c("##TEST3", "Four")))
+    
+    toks_seg3 <- tokens_segment(toks, "##[A-Z0-9]+", valuetype = "regex", 
+                                pattern_position = "before", extract_pattern = TRUE, use_docvars = FALSE)
+    vars3 <- docvars(toks_seg3)
+    expect_equal(vars3$test, NULL)
+    expect_equal(vars3$pattern, c("##TEST", "##TEST2", "##TEST3"))
+    expect_equal(as.list(toks_seg3),
+                 list(d1.1 = c("One", "two"), d1.2 = "Three", d2.1 = "Four"))
+    
+    toks_seg4 <- tokens_segment(toks, "##[A-Z0-9]+", valuetype = "regex", 
+                                pattern_position = "before", extract_pattern = FALSE, use_docvars = FALSE)
+    vars4 <- docvars(toks_seg4)
+    expect_equal(vars4$test, NULL)
+    expect_equal(vars4$pattern, NULL)
+    expect_equal(as.list(toks_seg4),
+                 list(d1.1 = c("##TEST", "One", "two"), d1.2 = c("##TEST2", "Three"), d2.1 = c("##TEST3", "Four")))
+})
+
+
 
