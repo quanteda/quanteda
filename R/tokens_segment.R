@@ -6,10 +6,12 @@
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param extract_pattern remove matched patterns from the texts and save in
 #'   \link{docvars}, if \code{TRUE}
-#' @param verbose if \code{TRUE} print messages about how many tokens were 
-#'   selected or removed
+#' @param use_docvars if \code{TRUE}, repeat the docvar values for each 
+#'   segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
+#'   Dropping the docvars might be useful in order to conserve space or if these
+#'   are not desired for the segmented corpus.
 #' @return \code{tokens_segment} returns a \link{tokens} object whose documents 
-#'   have been redefined according to the segmentation type
+#'   have been split by patterns
 #' @keywords tokens internal
 #' @export
 #' @examples 
@@ -22,7 +24,7 @@
 #' # split by any punctuation
 #' toks_punc <- tokens_segment(toks, c(".", "?", "!"), valuetype = 'fixed', 
 #'                             pattern_position = 'after')
-#' toks_punc <- tokens_segment(toks, "^\\p{P}$", valuetype = 'regex', extract_pattern = TRUE, 
+#' toks_punc <- tokens_segment(toks, "^\\p{Sterm}$", valuetype = 'regex', extract_pattern = FALSE, 
 #'                             pattern_position = 'after')
 #' 
 tokens_segment <- function(x, pattern,
@@ -30,7 +32,7 @@ tokens_segment <- function(x, pattern,
                            case_insensitive = TRUE, 
                            extract_pattern = FALSE,
                            pattern_position = c("before", "after"),
-                           verbose = quanteda_options("verbose")) {
+                           use_docvars = TRUE) {
     UseMethod("tokens_segment")
 }
 
@@ -42,8 +44,8 @@ tokens_segment.tokenizedTexts <- function(x, pattern,
                                           case_insensitive = TRUE, 
                                           extract_pattern = FALSE,
                                           pattern_position = c("before", "after"), 
-                                          verbose = quanteda_options("verbose")) {
-    x <- tokens_segment(as.tokens(x), pattern, valuetype, case_insensitive, extract_pattern, verbose)
+                                          use_docvars = TRUE) {
+    x <- tokens_segment(as.tokens(x), pattern, valuetype, case_insensitive, extract_pattern, use_docvars)
     x <- as.tokenizedTexts(x)
     return(x)
 }
@@ -57,17 +59,16 @@ tokens_segment.tokens <- function(x, pattern,
                                   case_insensitive = TRUE, 
                                   extract_pattern = FALSE,
                                   pattern_position = c("before", "after"),
-                                  verbose = quanteda_options("verbose"), ...) {
+                                  use_docvars = TRUE) {
     
     valuetype <- match.arg(valuetype)
     pattern_position <- match.arg(pattern_position)
     
     attrs <- attributes(x)
     types <- types(x)
-    vars <- get_docvars2(x, c( 'system', 'user'))
+    vars <- docvars(x)
 
     patt_id <- features2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
-    
     if ("" %in% pattern) patt_id <- c(patt_id, list(0)) # append padding index
 
     if (pattern_position == "before") {
@@ -75,26 +76,29 @@ tokens_segment.tokens <- function(x, pattern,
     } else {
         x <- qatd_cpp_tokens_segment(x, types, patt_id, extract_pattern, 2)
     }
-    
     docname <- paste(attr(x, 'document'), as.character(attr(x, 'segid')), sep = '.')
     
-    if (!is.null(vars)) {
-        # create repeated docvars with document and segment IDs
-        rownames(vars) <- NULL # faster to repeat rows without rownames
-        vars <- vars[attr(x, 'docid'),,drop = FALSE]
-        vars[,'_document'] <- attr(x, 'document')
-        vars[,'_docid'] <- attr(x, 'docid')
-        vars[,'_segid'] <- attr(x, 'segid')
+    # add repeated versions of remaining docvars
+    if (use_docvars && !is.null(vars)) {
+        vars <- vars[attr(x, 'docid'),,drop = FALSE] # repeat rows
         rownames(vars) <- docname
     } else {
-        vars <- data.frame('_document' = attr(x, 'document'),
-                           '_docid' = attr(x, 'docid'),
-                           '_segid' = attr(x, 'segid'),
-                           row.names = docname,
-                           stringsAsFactors = FALSE)
+        attrs$docvars <- NULL
+        vars <- NULL
     }
-    if (extract_pattern) 
-        vars[,'pattern'] = attr(x, 'pattern')
+    result <- create(x, what = 'tokens', 
+                     attrs = attrs, 
+                     docvars = vars, 
+                     names = docname,
+                     document = NULL, 
+                     docid = NULL, 
+                     segid = NULL)
     
-    create(x, what = 'tokens', names = docname, docvars = vars,  attrs = attrs)
+    docvars(result, '_document') <- attr(x, 'document')
+    docvars(result, '_docid') <- attr(x, 'docid')
+    docvars(result, '_segid') <- attr(x, 'segid')
+    if (extract_pattern) docvars(result, "pattern") <- attr(x, 'pattern')
+    
+    return(result)
+
 }

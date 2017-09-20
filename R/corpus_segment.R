@@ -129,7 +129,6 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     
     # add repeated versions of remaining docvars
     if (use_docvars && !is.null(vars)) {
-        rownames(vars) <- NULL # faster to repeat rows without rownames
         vars <- select_fields(vars, "user")[temp$docid,,drop = FALSE]
         rownames(vars) <- rownames(temp)
         docvars(result) <- vars
@@ -137,7 +136,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     docvars(result, '_document') <- temp$docname
     docvars(result, '_docid') <- temp$docid
     docvars(result, '_segid') <- temp$segid
-    if (!is.null(temp$pattern)) docvars(result, "pattern") <- temp$pattern
+    if (extract_pattern) docvars(result, "pattern") <- temp$pattern
     settings(result, "units") <- 'other'
     
     return(result)
