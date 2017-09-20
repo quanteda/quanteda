@@ -5,17 +5,17 @@ test_that("dfm_compress: simple test", {
                  dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
     colnames(mat) <- char_tolower(featnames(mat))
     expect_equal(as.matrix(dfm_compress(mat, margin = "documents")),
-                 matrix(c(3,0,5,2,1,1,0,1,0,1), nrow = 2,
+                 matrix(c(1,1,3,0,5,2,0,1,0,1), nrow = 2,
                         dimnames = list(docs = c("text1", "text2"), features = featnames(mat))))
     expect_equal(
         as.matrix(dfm_compress(mat, margin = "features")),
-        matrix(c(2,1,1,0,2,5,1,2,0), nrow = 3,
-               dimnames = list(docs = docnames(mat), features = c("a", "c", "b")))
+        matrix(c(1,2,0,2,1,1,0,2,5), nrow = 3,
+               dimnames = list(docs = docnames(mat), features = c("b", "a", "c")))
     )
     expect_equal(
         as.matrix(dfm_compress(mat, margin = "both")),
-        matrix(c(3,1,5,2,1,2), nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c("a", "c", "b")))
+        matrix(c(1,2,3,1,5,2), nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c("b", "a", "c")))
     )
 })
 
@@ -48,17 +48,17 @@ test_that("dfm_compress dfmDense: simple test", {
     mat <- dfm_smooth(mat)
     colnames(mat) <- char_tolower(featnames(mat))
     expect_equal(as.matrix(dfm_compress(mat, margin = "documents")),
-                 matrix(c(5,1,7,3,3,2,2,2,2,2), nrow = 2,
+                 matrix(c(3,2,5,1,7,3,2,2,2,2), nrow = 2,
                         dimnames = list(docs = c("text1", "text2"), features = featnames(mat))))
     expect_equal(
         as.matrix(dfm_compress(mat, margin = "features")),
-        matrix(c(4,3,3,1,3,6,3,4,2), nrow = 3,
-               dimnames = list(docs = docnames(mat), features = c("a", "c", "b")))
+        matrix(c(3,4,2,4,3,3,1,3,6), nrow = 3,
+               dimnames = list(docs = docnames(mat), features = c("b", "a", "c")))
     )
     expect_equal(
         as.matrix(dfm_compress(mat, margin = "both")),
-        matrix(c(7,3,7,3,5,4), nrow = 2,
-               dimnames = list(docs = c("text1", "text2"), features = c("a", "c", "b")))
+        matrix(c(5,4,7,3,7,3), nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c("b", "a", "c")))
     )
 })
 

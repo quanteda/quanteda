@@ -168,17 +168,6 @@ test_that("test rbind.dfm with a single argument returns the same dfm", {
     )
 })
 
-test_that("test that rbind.dfm with a single argument prints a warning", {
-    fox <-'What does the fox say?'
-    expect_that(
-        rbind(dfm(fox, remove_punct = TRUE)),
-        gives_warning('rbind.dfm called on single dfm')
-        )
-
-})
-
-
-
 test_that("test rbind.dfm with the same features, but in a different order", {
 
     fox <-'What does the fox say?'
@@ -222,22 +211,26 @@ test_that("dfm print works as expected", {
                   "^Document-feature matrix of: 14 documents, 5,055 features \\(80.9% sparse\\)")
     expect_output(print(testdfm[1:5, 1:5]),
                   "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\).*")
-    expect_output(head(testdfm, 1),
-                  "Document-feature matrix of: 14 documents, 5,055 features.*showing first document and first 6 features.*")
-    expect_output(tail(testdfm, 1),
-                  "Document-feature matrix of: 14 documents, 5,055 features.*showing last document and last 6 features.*")
+    
+    expect_equal(dim(head(testdfm, 2)), c(2, 6))
+    expect_is(head(testdfm, 2), "dfm")
+    
+    expect_equal(dim(tail(testdfm, 2, 8)), c(2, 8))
+    expect_is(tail(testdfm, 2), "dfm")
 })
 
 test_that("dfm print works as expected", {
-    testdfm <- dfm(data_corpus_irishbudget2010)
+    testdfm <- dfm(tokens(data_corpus_irishbudget2010))
     expect_output(print(testdfm),
-                  "^Document-feature matrix of: 14 documents, 5,140 features \\(8.{3}% sparse\\)")
+                  "^Document-feature matrix of: 14 documents, 5,140 features \\(81.2% sparse\\)")
     expect_output(print(testdfm[1:5, 1:5]),
                   "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\).*")
-    expect_output(head(testdfm, 1),
-                  "Document-feature matrix of: 14 documents, 5,\\d{3} features.*showing first document and first 6 features.*")
-    expect_output(tail(testdfm, 1),
-                  "Document-feature matrix of: 14 documents, 5,\\d{3} features.*showing last document and last 6 features.*")
+    
+    expect_equal(dim(head(testdfm, 2)), c(2, 6))
+    expect_is(head(testdfm, 2), "dfm")
+    
+    expect_equal(dim(tail(testdfm, 2, 8)), c(2, 8))
+    expect_is(tail(testdfm, 2), "dfm")
 })
 
 
@@ -444,16 +437,26 @@ test_that("dfm's document counts in verbose message is correct", {
                    'kept 2 features')
 })
 
+test_that("dfm head, tail work as expected", {
+    tmp <- head(data_dfm_lbgexample, 4, nfeature = 3)
+    expect_equal(featnames(tmp), LETTERS[1:3])
+    expect_equal(docnames(tmp), paste0("R", 1:4))
+    
+    tmp <- head(data_dfm_lbgexample, -4, nfeature = -30)
+    expect_equal(featnames(tmp), LETTERS[1:7])
+    expect_equal(docnames(tmp), paste0("R", 1:2))
+    
+    tmp <- tail(data_dfm_lbgexample, 4, nfeature = 3)
+    expect_equal(featnames(tmp), c("ZI", "ZJ", "ZK"))
+    expect_equal(docnames(tmp), c("R3", "R4", "R5", "V1"))
+    
+    tmp <- tail(data_dfm_lbgexample, -4, nfeature = -34)
+    expect_equal(featnames(tmp), c("ZI", "ZJ", "ZK"))
+    expect_equal(docnames(tmp), c("R5", "V1"))
+})
+    
 test_that("dfm print works with options as expected", {
     tmp <- dfm(data_corpus_irishbudget2010, remove_punct = FALSE, remove_numbers = FALSE, remove_hyphens = TRUE)
-    expect_output(
-        head(tmp),
-        "Document-feature matrix of: 14 documents, 5,\\d{3} features.*\\(showing first 6 documents and first 6 features\\)"
-    )
-    expect_output(
-        head(tmp[1:5, 1:5]),
-        "Document-feature matrix of: 5 documents, 5 features.*\\(showing first 5 documents and first 5 features\\)"
-    )
     expect_output(
         print(tmp[1:5, 1:5]),
         "Document-feature matrix of: 5 documents, 5 features.*5 x 5 sparse Matrix"
@@ -630,4 +633,22 @@ test_that("dfm works when features are created (#946", {
         as.matrix(cbind(dfm("a b"), dfm("feat_1"))),
         matrix(c(1,1,1), nrow = 1, dimnames = list(docs = "text1", features = c("a", "b", "feat_1")))
     )
+})
+
+test_that("dfm warns of argument not used", {
+    
+    txt <- c(d1 = "a b c d e", d2 = "a a b c c c")
+    corp <- corpus(txt)
+    toks <- tokens(txt)
+    mx <- dfm(toks)
+    
+    expect_warning(dfm(txt, xxxxx = 'something', yyyyy = 'else'), 
+                   'Arguments xxxxx, yyyyy not used')
+    expect_warning(dfm(corp, xxxxx = 'something', yyyyy = 'else'), 
+                   'Arguments xxxxx, yyyyy not used')
+    expect_warning(dfm(toks, xxxxx = 'something', yyyyy = 'else'), 
+                   'Arguments xxxxx, yyyyy not used')
+    expect_warning(dfm(mx, xxxxx = 'something', yyyyy = 'else'), 
+                   'Arguments xxxxx, yyyyy not used')
+    
 })

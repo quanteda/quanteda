@@ -229,12 +229,11 @@ fcm_select.fcm <- function(x, pattern = NULL, selection = c("keep", "remove"),
             xOriginalFeatureLength <- nfeature(x2)
             xOriginalFeatures <- featnames(x2)
             if (verbose) catm(" padding 0s for another", length(origDfmFeatureIndex), "\n")
-#             x <- new("fcm", Matrix::cbind2(x2, sparseMatrix(i = NULL, j = NULL, 
-#                                                             dims = c(length(origDfmFeatureIndex), length(origDfmFeatureIndex)), 
-#                                                             dimnames = list(pattern[origDfmFeatureIndex], pattern[origDfmFeatureIndex]))))
-            x <- new("dfmSparse", Matrix::cbind2(x2,
-                                                 sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
-                                                              dimnames = list(docnames(x2), pattern[origDfmFeatureIndex]))))
+            # x <- new("dfmSparse", Matrix::cbind2(x2,
+            #                                      sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
+            #                                                   dimnames = list(docnames(x2), pattern[origDfmFeatureIndex]))))
+            # 
+            x <- cbind(x2, make_null_dfm(pattern[origDfmFeatureIndex], docnames(x2)))
             if (case_insensitive & valuetype == "fixed") {
                 features_x_ori <- char_tolower(featnames(x))
                 features_dfm <- char_tolower(features_dfm)
