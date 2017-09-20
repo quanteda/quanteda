@@ -230,7 +230,7 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
         try (if (window < 2) stop("The window size is too small.")) 
             
         if (count == "weighted") {
-            if (!missing(weights) & length(weights) != window) {
+            if (!missing(weights) && length(weights) != window) {
                 warning ("weights length is not equal to the window size, weights are assigned by default!")
                 weights <- 1
             }
@@ -256,46 +256,22 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
 }     
 
 
-#' @rdname print.dfm
+#' @noRd
+#' @keywords fcm
 #' @export
 setMethod("print", signature(x = "fcm"), 
-          function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, 
-                   ndoc = getOption("quanteda_print_dfm_max_ndoc"), 
-                   nfeature = getOption("quanteda_print_dfm_max_nfeature"), ...) {
-              
+          function(x, show.values = NULL, show.settings = FALSE, show.summary = TRUE, 
+                   ndoc = quanteda_options("print_dfm_max_ndoc"), 
+                   nfeature = quanteda_options("print_dfm_max_nfeature"), ...) {
               if (show.summary) {
                   cat("Feature co-occurrence matrix of: ",
                       format(ndoc(x), big.mark = ","), " by ",
-                      # ifelse(ndoc(x) > 1 | ndoc(x) == 0, "s, ", ", "),
                       format(nfeature(x), big.mark = ","), " feature",
                       if (nfeature(x) != 1L) "s" else "",
                       if (is.resampled(x)) paste(", ", nresample(x), " resamples", sep = "") else "",
                       ".\n", sep = "")
               }
-              if (show.settings)
-                  cat("Settings: TO BE IMPLEMENTED.")
-              if (show.values == TRUE) {          
-                  # if show.values is set to TRUE, show full matrix
-                  ndoc <- nrow(x)
-                  nfeature <- ncol(x)
-              } else if (missing(show.values)) {  
-                  if (nrow(x) <= ndoc && ncol(x) <= nfeature) {
-                      # use TRUE default but limit dimensions
-                      ndoc <- nrow(x)
-                      nfeature <- ncol(x)
-                      show.values <- TRUE
-                  } else {
-                      # turn off display if > dimensions
-                      show.values <- FALSE        
-                  }                      
-              }
-              if (show.values) {
-                  #x <- as(x, 'dgCMatrix')
-                  #print('here')
-                  Matrix::printSpMatrix2(x[seq_len(ndoc), seq_len(nfeature)], 
-                                         col.names = TRUE, 
-                                         zero.print = if (x@tri) "." else 0, ...)
-              }
+              print_dfm(x, ndoc, nfeature, show.values, show.settings, ...)
           })
 
 #' @rdname print.dfm

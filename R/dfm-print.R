@@ -20,12 +20,9 @@ NULL
 #' @rdname print.dfm
 #' @keywords dfm
 setMethod("print", signature(x = "dfm"), 
-          function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, 
-                   ndoc = getOption("quanteda_print_dfm_max_ndoc"), 
-                   nfeature = getOption("quanteda_print_dfm_max_nfeature"), ...) {
-              
-              quanteda_options(initialize = TRUE)
-
+          function(x, show.values = NULL, show.settings = FALSE, show.summary = TRUE, 
+                   ndoc = quanteda_options("print_dfm_max_ndoc"), 
+                   nfeature = quanteda_options("print_dfm_max_nfeature"), ...) {
               if (show.summary) {
                   cat("Document-feature matrix of: ",
                       format(ndoc(x), , big.mark = ","), " document",
@@ -36,34 +33,38 @@ setMethod("print", signature(x = "dfm"),
                       if (prod(dim(x))) paste0(" (", format(sparsity(x)*100, digits = 3), "% sparse)"),
                       ".\n", sep = "")
               }
-              
-              if (show.settings)
-                  cat("Settings: TO BE IMPLEMENTED.")
-              if (show.values == TRUE) {          
-                  # if show.values is set to TRUE, show full matrix
-                  ndoc <- nrow(x)
-                  nfeature <- ncol(x)
-              } else if (missing(show.values)) {  
-                  if (nrow(x) <= ndoc && ncol(x) <= nfeature) {
-                      # use TRUE default but limit dimensions
-                      ndoc <- nrow(x)
-                      nfeature <- ncol(x)
-                      show.values <- TRUE
-                  } else {
-                      # turn off display if > dimensions
-                      show.values <- FALSE        
-                  }                      
-              }
-              if (show.values) {
-                  Matrix::printSpMatrix2(x[seq_len(ndoc), seq_len(nfeature)], 
-                                         col.names = TRUE, zero.print = 0, ...)
-              }
+              print_dfm(x, ndoc, nfeature, show.values, show.settings, ...)
           })
 
 #' @rdname print.dfm
 #' @param object the item to be printed
 setMethod("show", signature(object = "dfm"), function(object) print(object))
 
+# internal function for print.dfm and print.fcm
+print_dfm <- function(x, ndoc, nfeature, show_values, show_settings, ...) {
+    
+    if (show_settings)
+        cat("Settings: TO BE IMPLEMENTED.")
+    if (!is.null(show_values)) {
+        # if show.values is set to TRUE, show full matrix
+        ndoc <- nrow(x)
+        nfeature <- ncol(x)
+    } else {  
+        if (nrow(x) <= ndoc && ncol(x) <= nfeature) {
+            # use TRUE default but limit dimensions
+            ndoc <- nrow(x)
+            nfeature <- ncol(x)
+            show_values <- TRUE
+        } else {
+            # turn off display if > dimensions
+            show_values <- FALSE        
+        }                      
+    }
+    if (show_values) {
+        Matrix::printSpMatrix2(x[seq_len(ndoc), seq_len(nfeature)], 
+                               col.names = TRUE, zero.print = 0, ...)
+    }
+}
 
 #' return the first or last part of a dfm
 #' 

@@ -182,10 +182,7 @@ test_that("test rbind.dfm with the same features, but in a different order", {
     expect_true(
         all(rbind(dfm1, dfm1) == foxdfm)
     )
-    
-    
 })
-
 
 
 test_that("dfm keeps all types with > 10,000 documents (#438) (a)", {
@@ -467,7 +464,7 @@ test_that("dfm print works with options as expected", {
     )
     expect_output(
         print(tmp[1:3, 1:3], ndoc = 2, nfeature = 2, show.values = TRUE),
-        "^Document-feature matrix of: 3 documents, 3 features.*2 x 3 sparse Matrix.*features"
+        "^Document-feature matrix of: 3 documents, 3 features.*3 x 3 sparse Matrix.*features"
     )
     expect_output(
         print(tmp[1:3, 1:3], ndoc = 2, nfeature = 2),
