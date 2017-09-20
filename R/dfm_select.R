@@ -67,7 +67,7 @@
 #' (dfm3 <- dfm_select(dfm1, dfm2, valuetype = "fixed", verbose = TRUE))
 #' setequal(featnames(dfm2), featnames(dfm3))
 #' 
-dfm_select <- function(x, pattern, 
+dfm_select <- function(x, pattern = NULL, 
                        selection = c("keep", "remove"), 
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
@@ -160,13 +160,13 @@ dfm_select.dfm <-  function(x, pattern = NULL,
 #'               verbose = FALSE)
 #' tmpdfm
 #' dfm_remove(tmpdfm, stopwords("english"))
-dfm_remove <- function(x, pattern, ...) {
+dfm_remove <- function(x, pattern = NULL, ...) {
     UseMethod("dfm_remove")
 }
 
 #' @noRd
 #' @export
-dfm_remove.dfm <- function(x, pattern, ...) {
+dfm_remove.dfm <- function(x, pattern = NULL, ...) {
     x <- as.dfm(x)
     dfm_select(x, pattern, selection = "remove", ...)
 }

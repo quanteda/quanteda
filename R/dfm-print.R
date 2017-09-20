@@ -41,10 +41,10 @@ setMethod("print", signature(x = "dfm"),
                   cat("Settings: TO BE IMPLEMENTED.")
               if (show.values == TRUE) {          
                   # if show.values is set to TRUE, show full matrix
-                  nd <- nrow(x)
+                  ndoc <- nrow(x)
                   nfeature <- ncol(x)
               } else if (missing(show.values)) {  
-                  if (nrow(x) <= ndoc & ncol(x) <= nfeature) {
+                  if (nrow(x) <= ndoc && ncol(x) <= nfeature) {
                       # use TRUE default but limit dimensions
                       ndoc <- nrow(x)
                       nfeature <- ncol(x)

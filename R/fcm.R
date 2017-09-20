@@ -259,7 +259,10 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
 #' @rdname print.dfm
 #' @export
 setMethod("print", signature(x = "fcm"), 
-          function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, nfeature = 20L, ...) {
+          function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, 
+                   ndoc = getOption("quanteda_print_dfm_max_ndoc"), 
+                   nfeature = getOption("quanteda_print_dfm_max_nfeature"), ...) {
+              
               if (show.summary) {
                   cat("Feature co-occurrence matrix of: ",
                       format(ndoc(x), big.mark = ","), " by ",
@@ -271,10 +274,25 @@ setMethod("print", signature(x = "fcm"),
               }
               if (show.settings)
                   cat("Settings: TO BE IMPLEMENTED.")
+              if (show.values == TRUE) {          
+                  # if show.values is set to TRUE, show full matrix
+                  ndoc <- nrow(x)
+                  nfeature <- ncol(x)
+              } else if (missing(show.values)) {  
+                  if (nrow(x) <= ndoc && ncol(x) <= nfeature) {
+                      # use TRUE default but limit dimensions
+                      ndoc <- nrow(x)
+                      nfeature <- ncol(x)
+                      show.values <- TRUE
+                  } else {
+                      # turn off display if > dimensions
+                      show.values <- FALSE        
+                  }                      
+              }
               if (show.values) {
                   #x <- as(x, 'dgCMatrix')
                   #print('here')
-                  Matrix::printSpMatrix2(x[seq_len(min(nfeature, nrow(x))), seq_len(min(nfeature, ncol(x)))], 
+                  Matrix::printSpMatrix2(x[seq_len(ndoc), seq_len(nfeature)], 
                                          col.names = TRUE, 
                                          zero.print = if (x@tri) "." else 0, ...)
               }
@@ -283,6 +301,22 @@ setMethod("print", signature(x = "fcm"),
 #' @rdname print.dfm
 #' @export
 setMethod("show", signature(object = "fcm"), function(object) print(object))
+
+#' @method head fcm
+#' @keywords fcm
+#' @noRd
+#' @export
+head.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
+    head.dfm(x, n, nfeature, ...)
+}
+
+#' @method head fcm
+#' @keywords fcm
+#' @noRd
+#' @export
+tail.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
+    head.dfm(x, n, nfeature, ...)
+}
 
 #' @noRd
 #' @rdname fcm-class
