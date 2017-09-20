@@ -466,12 +466,23 @@ make_ngram_pattern <- function(features, valuetype, concatenator) {
 
 # create an empty dfm for given features and documents
 make_null_dfm <- function(feature = NULL, document = NULL) {
-    temp <- as(sparseMatrix(
+    new("dfm", 
+        as(sparseMatrix(
         i = NULL,
         j = NULL,
         dims = c(length(document), length(feature)),
         dimnames = list(docs = document, features = feature)
     ),
-    "dgCMatrix")
-    new("dfmSparse", temp)
+    "dgCMatrix"))
 }
+
+# pad dfm with zero-count features
+pad_dfm <- function(x, feature = NULL) {
+    feat_pad <- setdiff(feature, featnames(x))
+    if (length(feat_pad)) {
+        x <- cbind(x, make_null_dfm(feat_pad, docnames(x)))
+    }
+    x <- x[,feature]
+    return(x)
+}
+

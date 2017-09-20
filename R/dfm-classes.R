@@ -256,7 +256,7 @@ cbind.dfm <- function(...) {
     if (any(docnames(x) != docnames(y)))
         warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
     
-    result <-  new("dfmSparse", Matrix::cbind2(x, y))
+    result <-  new("dfm", Matrix::cbind2(x, y))
     if (length(args) > 2) {
         for (i in seq(3, length(args))) {
             result <- cbind(result, args[[i]])
@@ -306,11 +306,8 @@ rbind.dfm <- function(...) {
     
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
     
-    # make features identical using a null dfm
-    z <- make_null_dfm(union(featnames(x), featnames(y)))
-    x <- dfm_select(x, pattern = z, verbose = FALSE)
-    y <- dfm_select(y, pattern = z, verbose = FALSE)
-    result <-  new("dfmSparse", Matrix::rbind2(x, y))
+    feature <- union(featnames(x), featnames(y))
+    result <- new("dfm", Matrix::rbind2(pad_dfm(x, feature), pad_dfm(y, feature)))
     if (length(args) > 2) {
         for (i in seq(3, length(args))) {
             result <- rbind(result, args[[i]])
