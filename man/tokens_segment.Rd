@@ -6,8 +6,7 @@
 \usage{
 tokens_segment(x, pattern, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, extract_pattern = FALSE,
-  pattern_position = c("before", "after"),
-  verbose = quanteda_options("verbose"))
+  pattern_position = c("before", "after"), use_docvars = TRUE)
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be segmented}
@@ -21,14 +20,17 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 
-\item{extract_pattern}{remove deimiter from the texts and save in \link{docvars}, if \code{TRUE}}
+\item{extract_pattern}{remove matched patterns from the texts and save in
+\link{docvars}, if \code{TRUE}}
 
-\item{verbose}{if \code{TRUE} print messages about how many tokens were 
-selected or removed}
+\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each 
+segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
+Dropping the docvars might be useful in order to conserve space or if these
+are not desired for the segmented corpus.}
 }
 \value{
-\code{tokens_segment} returns a \link{tokens} object whose documents
-  have been redefined according to the segmentation type
+\code{tokens_segment} returns a \link{tokens} object whose documents 
+  have been split by patterns
 }
 \description{
 segment tokens object by patterns
@@ -41,8 +43,10 @@ this distinguished honor."
 toks <- tokens(txts)
 
 # split by any punctuation
-toks_punc <- tokens_segment(toks, c(".", "?", "!"), valuetype = 'fixed', pattern_position = 'after')
-toks_punc <- tokens_segment(toks, "^\\\\p{P}$", valuetype = 'regex', extract_pattern = TRUE, pattern_position = 'after')
+toks_punc <- tokens_segment(toks, c(".", "?", "!"), valuetype = 'fixed', 
+                            pattern_position = 'after')
+toks_punc <- tokens_segment(toks, "^\\\\p{Sterm}$", valuetype = 'regex', extract_pattern = FALSE, 
+                            pattern_position = 'after')
 
 }
 \keyword{internal}
