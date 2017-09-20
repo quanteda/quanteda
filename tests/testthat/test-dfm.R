@@ -8,7 +8,7 @@ test_that("oldest dfm test", {
                               taxation="taxation",
                               taxregex="tax*",
                               country="united_states"))
-    dictDfm <- dictDfm <- dfm(mycorpus, dictionary = mydict, valuetype = "glob")
+    dictDfm <- dfm(mycorpus, dictionary = mydict, valuetype = "glob")
     dictDfm <- dictDfm[1:10, ]
     dictDfm <- thesDfm <- dfm(mycorpus, thesaurus = mydict, valuetype = "glob")
     dictDfm <- thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
