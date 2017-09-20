@@ -1,0 +1,16 @@
+.R*
+*.Rproj
+.Rd2pdf*
+__MACOSX
+.DS_Store
+.Rproj.user
+.Rhistory
+*.o
+*.so
+.httr-oauth
+*Rcheck*
+*.dll
+quanteda.pdf
+API_notes.md
+
+/revdep/.cache.rds

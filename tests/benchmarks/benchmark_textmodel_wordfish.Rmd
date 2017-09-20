@@ -1,0 +1,28 @@
+---
+title: "textmodel-wordfish benchmarks"
+date: "27/03/2017"
+output: html_document
+---
+
+### Test: quanteda::textmodel-wordfish 
+
+To test the performance of calculation applying on dense dfm matrix versus on sparse dfm matrix versus using multi-thread (on sparse dfm)
+
+```{r}
+require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
+wfm_sparse <- function(x){
+    textmodel_wordfish(x, dir = c(6,5), threads =  1)
+}
+wfm_sparse_mt <- function(x){
+    threads <- RcppParallel::defaultNumThreads()
+    quanteda_options(threads = threads - 1)
+    textmodel_wordfish(x, dir = c(6,5))
+}
+microbenchmark::microbenchmark(
+    wfm_s_mt = wfm_sparse_mt(ie2010dfm), 
+    wfm_s = wfm_sparse(ie2010dfm),
+    wfm_d = textmodel_wordfish(ie2010dfm, dir = c(6,5), sparse = FALSE),
+    times=20, unit = 'relative')
+```
+

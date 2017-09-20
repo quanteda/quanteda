@@ -1,0 +1,119 @@
+---
+title: "Token hashing method performance tests"
+author: "Kenneth Benoit"
+date: "05/11/2016"
+output: html_document
+---
+
+Work with the `SOTUCorpus` of 230 US presidential speeches.
+```{r}
+require(quanteda)
+
+data(SOTUCorpus, package = "quantedaData")
+# standard list of characters
+toks <- tokenize(SOTUCorpus)
+# make this into a giant single vector
+toksUL <- unlist(toks, use.names = FALSE)
+ndoc(SOTUCorpus)
+```
+
+### Purpose
+
+To compare the performance of different methods of "hashing" the tokens, formerly a list of
+characters.
+
+### Format
+
+Although they differ slightly depending on the object type, each function will return, more or less:
+
+*  `tokens`: a vector or list of the tokens
+*  `types`: the vocabulary, or unique tokens (whose ordered position corresponds to the index if tokens have been converted to integers)  
+*  `docindex`: a vector of positions equal in length to the number of documents, starting with 1, and ending with the position of the first token of the last document
+
+
+### Functions to compare
+
+```{r}
+# quick token hashing to convert characters into integers
+# returned as a vector
+hashtokens_list <- function(x) {
+    # doclengths <- cumsum(lengths(x)) + 1
+    # docindex <- c(1, doclengths[-length(doclengths)])
+    # names(docindex) <- names(x)
+    vocabulary <- unique(unlist(x, use.names = FALSE))
+    tokens <- lapply(x, fastmatch::fmatch, vocabulary)
+    list(tokens = tokens, types = vocabulary, docindex = NULL)
+}
+
+# quick token hashing to convert characters into integers
+# returned as a list
+hashtokens_vector <- function(x) {
+    tokens <- unlist(x, use.names = FALSE)
+    doclengths <- cumsum(lengths(x)) + 1
+    docindex <- c(1, doclengths[-length(doclengths)])
+    names(docindex) <- names(x)
+    vocabulary <- unique(tokens)
+    tokensi <- fastmatch::fmatch(tokens, vocabulary)
+    list(tokens = tokensi, types = vocabulary, docindex = docindex)
+}
+
+# convert the tokens into a data.table, docname as index, tokens
+makedt <- function(x) {
+    docname <- rep(names(x), lengths(x))
+    data.table::data.table(docname = docname,
+                           token = unlist(x, use.names = FALSE))
+}
+
+# convert the tokens into a data.table, single column of tokens, 
+# separate docindex
+makedt_docindex <- function(x) {
+    doclengths <- cumsum(lengths(x)) + 1
+    docindex <- c(1, doclengths[-length(doclengths)])
+    names(docindex) <- names(x)
+    list(tokens = data.table::data.table(token = unlist(x, use.names = FALSE)), 
+         docindex = docindex)
+}
+
+# use factor() to index the types; vectorized 
+factortoks <- function(x) {
+    tokens <- unlist(x, use.names = FALSE)
+    types <- unique(tokens)
+    doclengths <- cumsum(lengths(x)) + 1
+    docindex <- c(1, doclengths[-length(doclengths)])
+    names(docindex) <- names(x)
+    list(tokens = factor(tokens, levels = types),
+         types = NULL,
+         docindex = docindex) 
+}
+```
+
+### Speed comparisons
+
+```{r}
+microbenchmark::microbenchmark(factor = factortoks(toks),
+                               hash_list = hashtokens_list(toks),
+                               hash_vec = hashtokens_vector(toks),
+                               dt = makedt(toks),
+                               dt2 = makedt_docindex(toks),
+                               times = 5, unit = "relative")
+```
+
+
+### Object size comparisons
+
+```{r}
+format(object.size(factortoks(toks)), units = "Mb")
+format(object.size(hashtokens_list(toks)), units = "Mb")
+format(object.size(hashtokens_vector(toks)), units = "Mb")
+format(object.size(makedt(toks)), units = "Mb")
+format(object.size(makedt_docindex(toks)), units = "Mb")
+format(object.size(toks), units = "Mb")
+```
+
+### Conclusions
+
+The **data.table** methods are the fastest, but almost as large in size as the original format of a list of characters.  The version with the docindex is smaller but still about 180% larger than the hashedtokens method.
+
+For the hashed methods, the list approach is actually faster than the fully vectorized method, and no smaller.  Since it would require a lot less programming to maintain the docindex integrity, the list method seems the better way to go.
+
+**Going forward**, it remains to be tested which is the most efficient when performing actual operations.
