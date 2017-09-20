@@ -79,7 +79,7 @@ dfm_select <- function(x, pattern,
 #' @rdname dfm_select
 #' @noRd
 #' @export
-dfm_select.dfm <-  function(x, pattern, 
+dfm_select.dfm <-  function(x, pattern = NULL, 
                             selection = c("keep", "remove"), 
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
@@ -95,7 +95,7 @@ dfm_select.dfm <-  function(x, pattern,
     
     # select features based on "pattern"
     features_keep <- seq_len(nfeature(x))
-    if (!missing(pattern)) {
+    if (!is.null(pattern)) {
         # special handling if pattern is a dfm
         if (is.dfm(pattern)) {
             is_dfm <- TRUE
@@ -134,19 +134,8 @@ dfm_select.dfm <-  function(x, pattern,
     if (!length(features_keep)) features_keep <- 0
     temp <- x[, features_keep]    
 
-    features_add <- character() # avoid error in verbose message
-
     if (valuetype == 'fixed' && padding) {
-        
-        # add non-existent features
-        features_add <- setdiff(pattern, featnames(temp))
-        if (length(features_add)) {
-            # pad_feature <- as(sparseMatrix(i = NULL, j = NULL, 
-            #                                dims = c(ndoc(temp), length(features_add)), 
-            #                                dimnames = list(docnames(temp), features_add)), 
-            #                   "dgCMatrix")
-            temp <- cbind(temp, make_null_dfm(features_add, docnames(temp)))
-        }
+        temp <- pad_dfm(temp, pattern)
         temp <- reassign_slots(temp, x)
     }
     if (is_dfm) {
@@ -156,8 +145,7 @@ dfm_select.dfm <-  function(x, pattern,
     }
     
     if (verbose) {
-        message_select(selection, length(features_id), 0, 
-                       length(features_add), 0)
+        message_select(selection, length(features_id), 0, nfeature(temp) - nfeature(x), 0)
     }
     attributes(x, FALSE) <- attrs
     return(result)
