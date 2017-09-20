@@ -133,9 +133,9 @@ as.dfm.dfmSparse <- function(x) {
 as_dfm_constructor <- function(x) {
     x <- Matrix(x, sparse = TRUE) # dimnames argument is not working
     names(dimnames(x)) <- c("docs", "features")
-    if (is.null(rownames(x))) 
+    if (nrow(x) > 0 && is.null(rownames(x))) 
         rownames(x) <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
-    if (is.null(colnames(x)))
+    if (ncol(x) > 0 && is.null(colnames(x)))
         colnames(x) <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
     new("dfm", x)
 }

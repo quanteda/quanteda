@@ -28,7 +28,7 @@ setMethod("print", signature(x = "dfm"),
 
               if (show.summary) {
                   cat("Document-feature matrix of: ",
-                      format(ndoc(x), , big.mark=","), " document",
+                      format(ndoc(x), , big.mark = ","), " document",
                       if (ndoc(x) > 1L || ndoc(x) == 0L) "s, " else ", ",
                       format(nfeature(x), big.mark=","), " feature",
                       if (nfeature(x) > 1L || nfeature(x) == 0L) "s" else "",
@@ -37,11 +37,8 @@ setMethod("print", signature(x = "dfm"),
                       ".\n", sep = "")
               }
               
-              if (show.settings) {
+              if (show.settings)
                   cat("Settings: TO BE IMPLEMENTED.")
-              }
-              
-              
               if (show.values == TRUE) {          
                   # if show.values is set to TRUE, show full matrix
                   nd <- nrow(x)
@@ -57,16 +54,9 @@ setMethod("print", signature(x = "dfm"),
                       show.values <- FALSE        
                   }                      
               }
-
-              if (show.values)
-                  if (is(x, "sparseMatrix")) {
-                      Matrix::printSpMatrix2(x[0:ndoc, 0:nfeature], 
-                                             col.names = TRUE, zero.print = 0, ...)
-                  }
-              else if (is(x, "denseMatrix")) {
-                  getMethod("show", "denseMatrix")(x[0:ndoc, 0:nfeature], ...)
-              } else {
-                  print(as.matrix(x[1:ndoc, 1:nfeature]))
+              if (show.values) {
+                  Matrix::printSpMatrix2(x[seq_len(ndoc), seq_len(nfeature)], 
+                                         col.names = TRUE, zero.print = 0, ...)
               }
           })
 
