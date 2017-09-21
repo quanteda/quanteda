@@ -20,11 +20,13 @@
 * Improved dictionary handling and creation now correctly handles nested LIWC 2015 categories. (#941)
 * Number of threads now set correctly by `quanteda_options()`. (#966)
 
+
 ### Behaviour changes
 
 * `summary.corpus()` now generates a special data.frame, which has its own print method, rather than requiring `verbose = FALSE` to suppress output (#926).
 * `textstat_collocations()` is now multi-threaded.
 * `head.dfm()`, `tail.dfm()` now behave consistently with base R methods for matrix, with the added argument `nfeature`.  Previously, these methods printed the subset and invisibly returned it.  Now, they simply return the subset. (#952)
+*  Dictionary keys are now unique, and if multiple, identical keys are defined for a dictionary when constructed, the values will be merged into the consolidated key. (#959)
 
 
 
