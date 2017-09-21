@@ -255,22 +255,8 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
     result
 }     
 
-#' @param x the fcm to be printed
-#' @param show.values print the dfm values; if called explicitly this will print
-#'   all values, overriding \code{ndoc} and \code{nfeature}.
-#' @param show.settings print the settings used to create the dfm. See 
-#'   \link{settings}.
-#' @param show.summary print a brief summary indicating the number of documents 
-#'   and features
-#' @param ndoc max number of documents to print; default is from the
-#'   \code{print_dfm_max_ndoc} setting of \code{\link{quanteda_options}}
-#' @param nfeature max number of features to print; default is from the
-#'   \code{print_dfm_max_nfeature} setting of \code{\link{quanteda_options}}
-#' @param ... further arguments passed to \code{Matrix::printSpMatrix2}
-#' @seealso \code{\link{quanteda_options}}
+#' @rdname print.dfm
 #' @export
-#' @rdname print.fcm
-#' @keywords fcm
 setMethod("print", signature(x = "fcm"), 
           function(x, show.values = NULL, show.settings = FALSE, show.summary = TRUE, 
                    ndoc = quanteda_options("print_dfm_max_ndoc"), 
@@ -286,21 +272,19 @@ setMethod("print", signature(x = "fcm"),
               print_dfm(x, ndoc, nfeature, show.values, show.settings, ...)
           })
 
-#' @rdname print.fcm
-#' @param object the item to be printed
+#' @rdname print.dfm
+#' @export
 setMethod("show", signature(object = "fcm"), function(object) print(object))
 
+#' @rdname print.dfm
 #' @method head fcm
-#' @keywords fcm
-#' @noRd
 #' @export
 head.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
     head.dfm(x, n, nfeature, ...)
 }
 
-#' @method head fcm
-#' @keywords fcm
-#' @noRd
+#' @rdname print.dfm
+#' @method tail fcm
 #' @export
 tail.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
     head.dfm(x, n, nfeature, ...)

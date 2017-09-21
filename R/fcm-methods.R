@@ -71,12 +71,12 @@ fcm_sort.fcm <- function(x) {
     result <- x[order(rownames(x)), order(colnames(x))]
     if (x@tri) {
         # make a triplet
-        result_triplet <- as(result, "dgTMatrix")
-        vals_to_swap <- which(result_triplet@i > result_triplet@j)
-        tempi <- result_triplet@i[vals_to_swap]
-        result_triplet@i[vals_to_swap] <- result_triplet@j[vals_to_swap]
-        result_triplet@j[vals_to_swap] <- tempi
-        result <- new("fcm", as(result_triplet, "dgCMatrix")) 
+        tmp <- as(result, "dgTMatrix")
+        swap <- which(tmp@i > tmp@j)
+        i <- tmp@i[swap]
+        tmp@i[swap] <- tmp@j[swap]
+        tmp@j[swap] <- i
+        result <- new("fcm", as(tmp, "dgCMatrix")) 
         
         # now copy the slot values
         result <- reassign_slots(result, x)
