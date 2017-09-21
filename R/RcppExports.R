@@ -73,6 +73,10 @@ qatd_cpp_tokens_replace <- function(texts_, types_, words_, ids_) {
     .Call(`_quanteda_qatd_cpp_tokens_replace`, texts_, types_, words_, ids_)
 }
 
+qatd_cpp_tokens_segment <- function(texts_, types_, patterns_, remove, position) {
+    .Call(`_quanteda_qatd_cpp_tokens_segment`, texts_, types_, patterns_, remove, position)
+}
+
 qatd_cpp_tokens_select <- function(texts_, types_, words_, mode, padding) {
     .Call(`_quanteda_qatd_cpp_tokens_select`, texts_, types_, words_, mode, padding)
 }

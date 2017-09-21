@@ -141,6 +141,7 @@ Collate:
     'tokens_lookup.R'
     'tokens_ngrams.R'
     'tokens_old.R'
+    'tokens_segment.R'
     'tokens_select.R'
     'tolower-deprecated.R'
     'tolower-functions.R'
@@ -150,3 +151,4 @@ Collate:
 RcppModules: ngramMaker
 RoxygenNote: 6.0.1
 SystemRequirements: C++11
+
