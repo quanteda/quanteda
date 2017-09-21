@@ -151,3 +151,4 @@ Collate:
 RcppModules: ngramMaker
 RoxygenNote: 6.0.1
 SystemRequirements: C++11
+
