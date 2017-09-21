@@ -4,7 +4,14 @@
 \alias{create}
 \title{utility function to create a object with new set of attributes}
 \usage{
-create(x, what, attrs = NULL, ...)
+create(x, what, attrs = NULL, overwrite_attributes = FALSE, ...)
+}
+\arguments{
+\item{x}{an underlying R object of a new object}
+
+\item{attrs}{attributes of a new object}
+
+\item{overwrite_attributes}{overwrite attributes of the input object, if \code{TRUE}}
 }
 \description{
 utility function to create a object with new set of attributes

@@ -121,15 +121,17 @@ remove_attributes <- function(x) {
 }
 
 #' utility function to create a object with new set of attributes
+#' @param x an underlying R object of a new object
+#' @param attrs attributes of a new object
+#' @param overwrite_attributes overwrite attributes of the input object, if \code{TRUE}
 #' @keywords internal
-create <- function(x, what, attrs = NULL, ...) {
-    base::attributes(x) <- NULL
+create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
     if (what == 'tokens') {
         class <- c('tokens', 'tokenizedTexts', 'list')
     }
     x <- structure(x, class = class, ...)
     if (!is.null(attrs)) {
-        attributes(x, FALSE) <- attrs
+        attributes(x, overwrite_attributes) <- attrs
     }
     return(x)
 }
