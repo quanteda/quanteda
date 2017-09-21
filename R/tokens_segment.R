@@ -68,13 +68,13 @@ tokens_segment.tokens <- function(x, pattern,
     types <- types(x)
     vars <- docvars(x)
 
-    patt_id <- features2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
-    if ("" %in% pattern) patt_id <- c(patt_id, list(0)) # append padding index
+    ids <- pattern2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
+    if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
 
     if (pattern_position == "before") {
-        x <- qatd_cpp_tokens_segment(x, types, patt_id, extract_pattern, 1)
+        x <- qatd_cpp_tokens_segment(x, types, ids, extract_pattern, 1)
     } else {
-        x <- qatd_cpp_tokens_segment(x, types, patt_id, extract_pattern, 2)
+        x <- qatd_cpp_tokens_segment(x, types, ids, extract_pattern, 2)
     }
     docname <- paste(attr(x, 'document'), as.character(attr(x, 'segid')), sep = '.')
     

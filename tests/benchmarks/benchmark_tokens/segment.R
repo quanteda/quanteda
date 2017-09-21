@@ -14,6 +14,14 @@ microbenchmark::microbenchmark(
 )
 
 microbenchmark::microbenchmark(
+    tokens_segment(toks, '^\\p{Pe}$', valuetype = 'regex', pattern_position = 'after',
+                   use_docvars = FALSE),
+    tokens_segment(toks, '^\\p{Pe}$', valuetype = 'regex', pattern_position = 'after',
+                   use_docvars = TRUE),
+    times = 5
+)
+
+microbenchmark::microbenchmark(
     corpus = corpus_segment(corp, '\\p{P}', valuetype = 'regex', extract_pattern = TRUE),
     token = tokens_segment(toks, '^\\p{P}$', valuetype = 'regex', extract_pattern = TRUE),
     times = 5
