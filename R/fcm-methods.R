@@ -68,20 +68,19 @@ fcm_sort <- function(x) {
 #' @noRd
 #' @export
 fcm_sort.fcm <- function(x) {
-    result <- x[order(rownames(x)), order(colnames(x))]
+    attrs <- attributes(x)
+    x <- x[order(rownames(x)), order(colnames(x))]
     if (x@tri) {
         # make a triplet
-        tmp <- as(result, "dgTMatrix")
+        tmp <- as(x, "dgTMatrix")
         swap <- which(tmp@i > tmp@j)
         i <- tmp@i[swap]
         tmp@i[swap] <- tmp@j[swap]
         tmp@j[swap] <- i
-        result <- new("fcm", as(tmp, "dgCMatrix")) 
-        
-        # now copy the slot values
-        result <- reassign_slots(result, x)
+        x <- new("fcm", as(tmp, "dgCMatrix")) 
+        slots(x) <- attrs
     }
-    result
+    return(x)
 }
 
 #' @rdname dfm_select

@@ -190,8 +190,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
     result <- result[rownames(result), colnames(result)]
     
     # discard the lower diagonal if tri == TRUE
-    if (tri) 
-        result <- Matrix::triu(result)
+    if (tri) result <- Matrix::triu(result)
 
     # create a new feature context matrix
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
@@ -214,21 +213,16 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
                        span_sentence = TRUE, tri = TRUE, ...) {
     context <- match.arg(context)
     count <- match.arg(count)
-    feature <- V1 <- NULL  # to avoid no visible binding errors in CHECK
-    # could add a warning if not roundly coerced to integer
-    window <- as.integer(window)
+    window <- as.integer(window) # TODO could add a warning if not roundly coerced to integer
     
     if (!span_sentence) 
         warning("spanSentence = FALSE not yet implemented")
     
-    if (context == "document") {
-        result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE),
-                      count = count, tri = tri)
-    }
+    if (context == "document")
+        result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE), count = count, tri = tri)
         
     if (context == "window") { 
         try (if (window < 2) stop("The window size is too small.")) 
-            
         if (count == "weighted") {
             if (!missing(weights) && length(weights) != window) {
                 warning ("weights length is not equal to the window size, weights are assigned by default!")
@@ -244,8 +238,7 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
     }
 
     # discard the lower diagonal if tri == TRUE
-    if (tri)
-        result <- Matrix::triu(result)
+    if (tri) result <- Matrix::triu(result)
     
     # create a new feature context matrix
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
