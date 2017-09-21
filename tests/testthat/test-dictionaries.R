@@ -368,3 +368,19 @@ test_that("dictionary constructor clean values", {
                  dictionary(list(B = c('b', 'bb'))))
 })
 
+test_that("dictionary merge values in duplicate keys", {
+    
+    dict <- dictionary(list(A = 'a', 
+                            A = 'aa', 
+                            A = 'aaa',
+                            B = list(BB = 'bb'),
+                            B = list(BB = 'bbb'),
+                            C = 'c'))
+    
+    expect_equal(dict,
+                 dictionary(list(A = c('a', 'aa', 'aaa'),
+                                 B = list(BB = c('bb', 'bbb')),
+                                 C = 'c')))
+    
+})
+
