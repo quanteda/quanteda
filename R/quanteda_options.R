@@ -128,7 +128,7 @@ set_option_value <- function(key, value) {
 
 # returns default options
 get_optons_default <- function(){
-    opts <- list(threads = max(1L, floor(RcppParallel::defaultNumThreads() / 2)),
+    opts <- list(threads = max(1L, floor(RcppParallel::defaultNumThreads() - 1)),
                  verbose = FALSE,
                  print_dfm_max_ndoc = 20L,
                  print_dfm_max_nfeature = 20L,
