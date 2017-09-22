@@ -59,7 +59,7 @@ test_that("quanteda functions work if package is not attached (#864)", {
 
 test_that("quanteda_options reset works correctly", {
     quanteda_options(reset = TRUE)
-    opts <- quanteda:::QUANTEDA_OPTIONS
+    opts <- quanteda:::get_options_default()
     expect_equal(
         quanteda_options(),
         opts        
