@@ -1,14 +1,3 @@
-# implement default options
-QUANTEDA_OPTIONS <- list(threads = max(1L, floor(RcppParallel::defaultNumThreads() / 2)),
-                         verbose = FALSE,
-                         print_dfm_max_ndoc = 20L,
-                         print_dfm_max_nfeature = 20L,
-                         base_docname = "text",
-                         base_featname = "feat",
-                         language_stemmer = "english",
-                         language_stopwords = "english")
-
-
 #' get or set package options for quanteda
 #' 
 #' Get or set global options affecting functions across \pkg{quanteda}.
@@ -82,8 +71,9 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
 
     if (!length(args)) {
         # return all options
-        opts <- options()[paste0("quanteda_", names(QUANTEDA_OPTIONS))]
-        names(opts) <- stri_replace_first_fixed(names(opts), "quanteda_", "") # remove prefix
+        opts_names <- names(get_optons_default())
+        opts <- options()[paste0("quanteda_", opts_names)]
+        names(opts) <- stri_sub(names(opts), 10, -1) # remove prefix
         return(opts)
     } else if (is.null(names(args))) {
         # return a value
@@ -98,24 +88,25 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
 
 
 quanteda_initialize <- function() {
-    opts <- QUANTEDA_OPTIONS
+    opts <- get_optons_default()
     for (key in names(opts)) {
         if (is.null(getOption(paste0("quanteda_", key))))
-            set_option_value(key, QUANTEDA_OPTIONS[[key]])
+            set_option_value(key, opts[[key]])
     }
 }
 
 quanteda_reset <- function() {
-    opts <- QUANTEDA_OPTIONS
+    opts <- get_optons_default()
     for (key in names(opts)) {
-        set_option_value(key, QUANTEDA_OPTIONS[[key]])
+        set_option_value(key, opts[[key]])
     }
 }
 
 set_option_value <- function(key, value) {
     
+    opts <- get_optons_default()
     # check for key validity
-    if (!key %in% names(QUANTEDA_OPTIONS))
+    if (!key %in% names(opts))
         stop(key, " is not a valid quanteda option")
     
     # special setting for threads
@@ -133,4 +124,17 @@ set_option_value <- function(key, value) {
     names(opts) <- paste0("quanteda_", key)
     options(opts)
     
+}
+
+# returns default options
+get_optons_default <- function(){
+    opts <- list(threads = max(1L, floor(RcppParallel::defaultNumThreads() / 2)),
+                 verbose = FALSE,
+                 print_dfm_max_ndoc = 20L,
+                 print_dfm_max_nfeature = 20L,
+                 base_docname = "text",
+                 base_featname = "feat",
+                 language_stemmer = "english",
+                 language_stopwords = "english")
+    return(opts)
 }
