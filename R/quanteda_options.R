@@ -56,33 +56,37 @@
 #' quanteda_options(opt)
 #' }
 quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
-    args <- list(...)
     
+    args <- list(...)
     # if the ... is a list already, use that
     if (length(args) == 1 && is.list(args[[1]])) 
         args <- args[[1]]
     
-    if (initialize || is.null(options('quanteda_initialized'))) {
-        # initialize automatically it not yet done so
+    # initialize automatically it not yet done so
+    if (is.null(options('quanteda_initialized')) || !"package:quanteda" %in% search())
         quanteda_initialize()
+        
+    if (initialize) {
+        quanteda_initialize()
+        return(invisible(TRUE))
     } else if (reset) {
         quanteda_reset()
-    }
-
-    if (!length(args)) {
-        # return all options
+        return(invisible(TRUE))
+    } else if (!length(args)) {
+        # return all option values with names
         opts_names <- names(get_options_default())
         opts <- options()[paste0("quanteda_", opts_names)]
         names(opts) <- stri_sub(names(opts), 10, -1) # remove prefix
         return(opts)
     } else if (is.null(names(args))) {
-        # return a value
+        # return a option value
         return(getOption(paste0("quanteda_", args[[1]])))
     } else {
         # set value
         for (key in names(args)) {
             set_option_value(key, args[[key]])
         }
+        return(invisible(args))
     }
 }
 
