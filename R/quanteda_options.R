@@ -71,7 +71,7 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
 
     if (!length(args)) {
         # return all options
-        opts_names <- names(get_optons_default())
+        opts_names <- names(get_options_default())
         opts <- options()[paste0("quanteda_", opts_names)]
         names(opts) <- stri_sub(names(opts), 10, -1) # remove prefix
         return(opts)
@@ -88,7 +88,7 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
 
 
 quanteda_initialize <- function() {
-    opts <- get_optons_default()
+    opts <- get_options_default()
     for (key in names(opts)) {
         if (is.null(getOption(paste0("quanteda_", key))))
             set_option_value(key, opts[[key]])
@@ -96,7 +96,7 @@ quanteda_initialize <- function() {
 }
 
 quanteda_reset <- function() {
-    opts <- get_optons_default()
+    opts <- get_options_default()
     for (key in names(opts)) {
         set_option_value(key, opts[[key]])
     }
@@ -104,7 +104,7 @@ quanteda_reset <- function() {
 
 set_option_value <- function(key, value) {
     
-    opts <- get_optons_default()
+    opts <- get_options_default()
     # check for key validity
     if (!key %in% names(opts))
         stop(key, " is not a valid quanteda option")
@@ -127,7 +127,7 @@ set_option_value <- function(key, value) {
 }
 
 # returns default options
-get_optons_default <- function(){
+get_options_default <- function(){
     opts <- list(threads = max(1L, floor(RcppParallel::defaultNumThreads() - 1)),
                  verbose = FALSE,
                  print_dfm_max_ndoc = 20L,
