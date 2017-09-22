@@ -62,8 +62,8 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
     if (length(args) == 1 && is.list(args[[1]])) 
         args <- args[[1]]
     
-    if (initialize || !"package:quanteda" %in% search()) {
-        # initialize automatically if called through :: without attaching package #986
+    if (initialize || is.null(options('quanteda_initialized'))) {
+        # initialize automatically it not yet done so
         quanteda_initialize()
     } else if (reset) {
         quanteda_reset()
@@ -86,13 +86,13 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
     }
 }
 
-
 quanteda_initialize <- function() {
     opts <- get_options_default()
     for (key in names(opts)) {
         if (is.null(getOption(paste0("quanteda_", key))))
             set_option_value(key, opts[[key]])
     }
+    options('quanteda_initialized' = TRUE)
 }
 
 quanteda_reset <- function() {
@@ -100,6 +100,7 @@ quanteda_reset <- function() {
     for (key in names(opts)) {
         set_option_value(key, opts[[key]])
     }
+    options('quanteda_initialized' = TRUE)
 }
 
 set_option_value <- function(key, value) {
