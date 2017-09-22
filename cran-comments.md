@@ -1,6 +1,6 @@
 ## Submission notes
 
-This is a significant update in terms of adding functionality, fixing bugs, and creating greater compatibility with other packages.
+Bug fixes and stability improvements to existing 0.99 CRAN version.
 
 ## Test environments
 
@@ -22,12 +22,15 @@ None (on macOS Sierra 10.12.6).
 
 From the results of testing on win-builder.r-project.org, I see: 
 * checking installed package size ... NOTE
-  installed size is  5.2Mb
-  
+  installed size is  5.4Mb
+  sub-directories of 1Mb or more:
+    libs   3.1Mb
+    
 This is our last transitional version before 1.0, and the slightly larger sizes are due to keeping some deprecated items.  We will remove these in the next release, and hope that the slightly larger size is ok for this version.
 
 
 ## Downstream dependencies
 
 No changes in this release affect the (few) downstream packages that Import **quanteda**.
+
 We have run `devtools::revdep_check()` to confirm.
