@@ -273,8 +273,9 @@ docvars_internal <- function(x) {
 }
 
 get_docvars2 <- function(x, fields) {
-    if (check_docvars(x, fields)) {
-        return(docvars_internal(x)[,fields, drop = FALSE])
+    is_field <- check_docvars(x, fields)
+    if (any(is_field)) {
+        return(docvars_internal(x)[,is_field, drop = FALSE])
     } else {
         return(NULL)
     }

@@ -70,11 +70,11 @@ print_dictionary <- function(entry, level = 1) {
 
 
 # Internal function for special handling of multi-word dicitionary values
-split_dictionary_values <- function(values, concatenator) {
-    if (any(stri_detect_charclass(values, "\\p{Z}"))) {
-        values <- c(phrase(values), as.list(stri_replace_all_charclass(values, "\\p{Z}", concatenator)))
-    } else {
-        values <- as.list(values)
+split_dictionary_values <- function(value, concatenator) {
+    values <- as.list(stri_replace_all_charclass(value, "\\p{Z}", concatenator))
+    is_multi <- stri_detect_charclass(value, "\\p{Z}")
+    if (any(is_multi)) {
+        values <- c(values, stri_split_charclass(value[is_multi], "\\p{Z}"))
     }
     return(values)
 }
@@ -88,11 +88,12 @@ split_dictionary_values <- function(values, concatenator) {
 #' @export
 setMethod("show", "dictionary2", 
           function(object) {
-              levs <- if ((depth <- dictionary_depth(object)) > 1L) " primary" else ""
-              nkeys <- length(names(object))
-              cat("Dictionary object with ", nkeys, levs, " key entr", 
-                  if (nkeys == 1L) "y" else "ies", sep = "")
-              if (levs != "") cat(" and ", depth, " nested levels", sep = "")
+              depth <- dictionary_depth(object)
+              lev <- if (depth > 1L) " primary" else ""
+              nkey <- length(names(object))
+              cat("Dictionary object with ", nkey, lev, " key entr", 
+                  if (nkey == 1L) "y" else "ies", sep = "")
+              if (lev != "") cat(" and ", depth, " nested levels", sep = "")
               cat(".\n")
               print_dictionary(object)
           })
@@ -106,7 +107,6 @@ setMethod("[",
           signature = c("dictionary2", i = "index"),
           function(x, i) {
               x <- unclass(x)
-              #if (is.character(i)) i <- which(names(x) == i)
               is_category <- sapply(x[i], function(y) is.list(y))
               new('dictionary2', x[i][is_category], concatenator = x@concatenator)
           })
@@ -160,6 +160,7 @@ setMethod("c",
                       result <- c(result, unclass(y[[i]]))
                   }
               }
+              result <- merge_dictionary_values(result)
               return(new('dictionary2', result))
           })
 
@@ -290,9 +291,8 @@ dictionary.default <- function(x, file = NULL, format = NULL,
         x <- yaml::yaml.load_file(file, as.named.list = TRUE)
         x <- list2dictionary(x)
     }
-    
-    if (tolower)
-        x <- lowercase_dictionary_values(x)
+    if (tolower) x <- lowercase_dictionary_values(x)
+    x <- merge_dictionary_values(x)
     new("dictionary2", x, concatenator = " ") # keep concatenator attributes for compatibility
 }
 
@@ -308,6 +308,7 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
     
     x@separator = separator
     if (tolower) x <- lowercase_dictionary_values(x)
+    x <- merge_dictionary_values(x)
     return(x)
 }
 
@@ -320,9 +321,9 @@ dictionary.list <- function(x, file = NULL, format = NULL,
     if (!is.character(separator) || stri_length(separator) == 0)
         stop("separator must be a non-empty character")
     x <- list2dictionary(x)
-    if (tolower)
-        x <- lowercase_dictionary_values(x)
+    if (tolower) x <- lowercase_dictionary_values(x)
     x <- replace_dictionary_values(x, separator, " ")
+    x <- merge_dictionary_values(x)
     new("dictionary2", x, concatenator = " ") # keep concatenator attributes for compatibility
 }
 
@@ -472,15 +473,18 @@ lowercase_dictionary_values <- function(dict) {
     }
     return(dict)
 }
-# Internal function to replace dictionary values
-#
-# hdict <- list(KEY1 = list(SUBKEY1 = c("A_B"),
-#                           SUBKEY2 = c("C_D")),
-#               KEY2 = list(SUBKEY3 = c("E_F"),
-#                           SUBKEY4 = c("G_F_I")),
-#               KEY3 = list(SUBKEY5 = list(SUBKEY7 = c("J_K")),
-#                           SUBKEY6 = list(SUBKEY8 = c("L"))))
-# replace_dictionary_values(hdict, '_', ' ')
+
+#' internal function to replace dictionary values
+#' @param dict a dicitonary object
+#' @keywords internal
+#' @examples
+#' dict <- list(KEY1 = list(SUBKEY1 = list("A_B"),
+#'                           SUBKEY2 = list("C_D")),
+#'               KEY2 = list(SUBKEY3 = list("E_F"),
+#'                           SUBKEY4 = list("G_F_I")),
+#'               KEY3 = list(SUBKEY5 = list(SUBKEY7 = list("J_K")),
+#'                           SUBKEY6 = list(SUBKEY8 = list("L"))))
+#' quanteda:::replace_dictionary_values(dict, '_', ' ')
 replace_dictionary_values <- function(dict, from, to) {
     dict <- unclass(dict)
     for (i in seq_along(dict)) {
@@ -495,14 +499,53 @@ replace_dictionary_values <- function(dict, from, to) {
     return(dict)
 }
 
-# Internal function to convert a list to a dictionary
+#' internal function to mege values of duplicated keys
+#' @param dict a dicitonary object
+#' @keywords internal
+#' @examples
+#' dict <- list('A' = list(AA = list('aaaaa'), 'a'), 
+#'              'B' = list('b'),
+#'              'C' = list('c'),
+#'              'A' = list('aa'))
+#' quanteda:::merge_dictionary_values(dict)
+merge_dictionary_values <- function(dict) {
+    name <- names(dict)
+    #if (is.null(name)) return(unlist(dict, use.names = FALSE))
+    if (is.null(name)) return(dict)
+    dict_unique <- dict[!duplicated(name)]
+    for (n in unique(name)) {
+        for (i in which(n == name & duplicated(name))) {
+            dict_unique[[n]] <- c(dict_unique[[n]], dict[[i]])
+        }
+        name_sub <- names(dict_unique[[n]])
+        if (is.null(name_sub)) {
+            is_value <- rep(TRUE, length(dict_unique[[n]]))
+        } else {
+            is_value <- name_sub == ""
+        }
+        if (any(is_value)) {
+            value <- unlist(dict_unique[[n]][is_value], use.names = FALSE)
+            dict_unique[[n]][is_value] <- NULL
+            dict_unique[[n]] <- c(dict_unique[[n]], list(value))
+        }
+        dict_unique[[n]] <- merge_dictionary_values(dict_unique[[n]])
+    }
+    return(dict_unique)
+}
+
+#' internal function to convert a list to a dictionary
+#' 
+#' A dictionary is internally a list of list to keys and values to coexist in
+#' the same level.
+#' @param dict list of object
+#' @keywords internal
 list2dictionary <- function(dict) {
     for (i in seq_along(dict)) {
         if (is.list(dict[[i]])) {
             dict[[i]] <- list2dictionary(dict[[i]])
         } else {
             if (is.character(dict[[i]])) {
-                dict[[i]] <- list(stri_enc_toutf8(dict[[i]]))
+                dict[[i]] <- list(unique(stri_trim_both(stri_enc_toutf8(dict[[i]]))))
             } else {
                 dict[[i]] <- list(dict[[i]])
             }
@@ -715,9 +758,6 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     return(dict)
     
 }
-
-split(1:5, factor(c('a', 'b', 'b', 'c', 'e'), levels = c('a', 'b', 'c', 'd', 'e')))
-
 
 # Import a Yoshikoder dictionary
 # dict <- read_dict_yoshikoder('/home/kohei/Documents/Dictionary/Yoshikoder/laver-garry-ajps.ykd')

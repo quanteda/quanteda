@@ -105,7 +105,7 @@ kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "
         names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
     }
     
-    keywords_id <- features2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
+    keywords_id <- pattern2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
     temp <- qatd_cpp_kwic(x, types, keywords_id, window, join)
     
     # attributes for kwic object
@@ -113,7 +113,7 @@ kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "
                         class = c("kwic", "data.frame"), 
                         ntoken = ntoken(x), 
                         valuetype = valuetype, 
-                        keywords = attr(keywords_id, 'features'),
+                        keywords = attr(keywords_id, 'pattern'),
                         tokens =  attr(temp, "tokens"))
     attributes(result, FALSE)  <- attributes(x)
     return(result)

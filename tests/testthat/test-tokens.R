@@ -443,6 +443,20 @@ test_that("remove_hyphens is working correctly", {
                  c("a", "b", "c", "d"))
 })
 
+test_that("tokens.tokens() does nothing by default", {
+    
+    toks <- tokens(data_corpus_inaugural, 
+                   remove_numbers = FALSE,
+                   remove_punct = FALSE,
+                   remove_symbols = FALSE,
+                   remove_separators = TRUE,
+                   remove_twitter = FALSE,
+                   remove_hyphens = FALSE,
+                   remove_url = FALSE)
+    expect_equal(toks, tokens(toks))
+    
+})
+
 test_that("test that features remove by tokens.tokens is comparable to tokens.character", {
     
     chars <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F",

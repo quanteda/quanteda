@@ -42,7 +42,7 @@ are not desired for the segmented corpus.}
 \code{char_segment} returns a character vector of segmented texts
 }
 \description{
-Segment corpus text(s) or a character vector into smaller sgements, splitting
+Segment corpus text(s) or a character vector, splitting
 on a pattern match.  This is useful for breaking the texts into smaller
 documents based on a regular pattern (such as a speaker identifier in a
 transcript) or a user-supplied annotation (a "tag").

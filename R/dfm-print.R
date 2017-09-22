@@ -78,9 +78,9 @@ setMethod("show", signature(object = "dfm"), function(object) print(object))
 #' return the first or last part of a dfm
 #' 
 #' For a \link{dfm} object, returns the first or last \code{n} documents 
-#' and first \code{nfeature} features for inspection.
+#' and first \code{nfeature} features.
 #' @param x a dfm object
-#' @param n a single integer.  If positive, size for the resulting object: 
+#' @param n a single, positive integer.  If positive, size for the resulting object: 
 #'   number of first/last documents for the dfm. If negative, all but the n 
 #'   last/first number of documents of x.
 #' @param nfeature the number of features to return, where the resulting object 
@@ -93,38 +93,56 @@ setMethod("show", signature(object = "dfm"), function(object) print(object))
 #' @method head dfm
 #' @keywords dfm
 #' @examples
-#' myDfm <- dfm(data_corpus_inaugural, ngrams = 2, verbose = FALSE)
-#' head(myDfm)
-#' tail(myDfm)
-#' tail(myDfm, nfeature = 4)
+#' head(data_dfm_lbgexample, 3, nfeature = 5)
+#' head(data_dfm_lbgexample, -4)
+#' 
 head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    print(x, show.values = FALSE)
-    cat("(showing first ", 
-        ifelse(min(ndoc(x), n)==1, "", paste0(min(ndoc(x), n), " ")), 
-        "document", ifelse(min(ndoc(x), n)==1, "", "s"), 
-        " and first ", ifelse(min(nfeature, nfeature(x))==1, "", paste0(min(nfeature, nfeature(x)), " ")), 
-        "feature", ifelse(min(nfeature, nfeature(x))==1, "", "s"), ")\n", sep = "")
-    print(head(as.matrix(x[, 1:min(nfeature(x), nfeature)]), n))
-    return(invisible(x[1:min(ndoc(x), n), 1:min(nfeature(x), nfeature)]))
+    stopifnot(length(n) == 1L || length(nfeature) == 1L)
+    n <- if (n < 0L)  max(ndoc(x) + n, 0L) else min(n, ndoc(x))
+    nfeature <- if (nfeature < 0L)  max(nfeature(x) + nfeature, 0L) else min(nfeature, nfeature(x))
+    x[seq_len(n), seq_len(nfeature)]
+    
+    # 
+    # if (length(addedArgs <- list(...)))
+    #     warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+    # print(x, show.values = FALSE)
+    # cat("(showing first ", 
+    #     ifelse(min(ndoc(x), n)==1, "", paste0(min(ndoc(x), n), " ")), 
+    #     "document", ifelse(min(ndoc(x), n)==1, "", "s"), 
+    #     " and first ", ifelse(min(nfeature, nfeature(x))==1, "", paste0(min(nfeature, nfeature(x)), " ")), 
+    #     "feature", ifelse(min(nfeature, nfeature(x))==1, "", "s"), ")\n", sep = "")
+    # print(head(as.matrix(x[, 1:min(nfeature(x), nfeature)]), n))
+    # return(invisible(x[1:min(ndoc(x), n), 1:min(nfeature(x), nfeature)]))
 }
 
 
 #' @rdname head.dfm
 #' @method tail dfm
 #' @export
+#' @examples 
+#' tail(data_dfm_lbgexample)
+#' tail(data_dfm_lbgexample, n = 3, nfeature = 4)
 tail.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    print(x, show.values = FALSE)
-    cat("(showing last ", 
-        ifelse(min(ndoc(x), n)==1, "", paste0(min(ndoc(x), n), " ")), 
-        "document", ifelse(min(ndoc(x), n)==1, "", "s"), 
-        " and last ", ifelse(min(nfeature, nfeature(x))==1, "", paste0(min(nfeature, nfeature(x)), " ")), 
-        "feature", ifelse(min(nfeature, nfeature(x))==1, "", "s"), ")\n", sep = "")
-    print(tail(as.matrix(x[, 1:min(nfeature(x), nfeature)]), n))
-    return(invisible(x[max(ndoc(x) - n + 1, 1) : ndoc(x), 1:min(nfeature(x), nfeature)]))
+    stopifnot(length(n) == 1L || length(nfeature) == 1L)
+    nrx <- ndoc(x)
+    ncl <- nfeature(x)
+    n <- if (n < 0L) max(nrx + n, 0L) else min(n, nrx)
+    nfeature <- if (nfeature < 0L) max(ncl + nfeature, 0L) else min(nfeature, ncl)
+    sel_doc <- as.integer(seq.int(to = nrx, length.out = n))
+    sel_feat <- as.integer(seq.int(to = ncl, length.out = nfeature))
+    x[sel_doc, sel_feat]
+
+    # 
+    # if (length(addedArgs <- list(...)))
+    #     warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+    # print(x, show.values = FALSE)
+    # cat("(showing last ", 
+    #     ifelse(min(ndoc(x), n)==1, "", paste0(min(ndoc(x), n), " ")), 
+    #     "document", ifelse(min(ndoc(x), n)==1, "", "s"), 
+    #     " and last ", ifelse(min(nfeature, nfeature(x))==1, "", paste0(min(nfeature, nfeature(x)), " ")), 
+    #     "feature", ifelse(min(nfeature, nfeature(x))==1, "", "s"), ")\n", sep = "")
+    # print(tail(as.matrix(x[, 1:min(nfeature(x), nfeature)]), n))
+    # return(invisible(x[max(ndoc(x) - n + 1, 1) : ndoc(x), 1:min(nfeature(x), nfeature)]))
 }
 
 setMethod("head", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) {

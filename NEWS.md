@@ -4,9 +4,12 @@
 
 ### New Features
 
+* Added `tokens_segment()`, which works on tokens objects in the same way as `corpus_segment()` does on corpus objects (#902).
 * Added **magrittr** pipe support (#927).  `%>%` can now be used with **quanteda** without needing to attach **magrittr** (or, as many users apparently believe, the entire tidyverse.)  
 * `corpus_segment()` now behaves more logically and flexibly, and is clearly differentiated from `corpus_reshape()` in terms of its functionality.  Its documentation is also vastly improved.  (#908)
 * Added `data_dictionary_LSD2015`, the Lexicoder Sentiment 2015 dictionary (#963).
+* Significant improvements to the performance of `tokens_lookup()` and `dfm_lookup()` (#960).
+* New functions `head.corpus()`, `tail.corpus()` provide fast subsetting of the first or last documents in a corpus. (#952)
 
 ### Bug fixes and stability enhancements
 
@@ -17,9 +20,14 @@
 * Improved dictionary handling and creation now correctly handles nested LIWC 2015 categories. (#941)
 * Number of threads now set correctly by `quanteda_options()`. (#966)
 
+
 ### Behaviour changes
 
-* `summary.corpus()` now generates a special data.frame, which has its own print method, rather than requiring `verbose = FALSE` to suppress output. (#926)
+* `summary.corpus()` now generates a special data.frame, which has its own print method, rather than requiring `verbose = FALSE` to suppress output (#926).
+* `textstat_collocations()` is now multi-threaded.
+* `head.dfm()`, `tail.dfm()` now behave consistently with base R methods for matrix, with the added argument `nfeature`.  Previously, these methods printed the subset and invisibly returned it.  Now, they simply return the subset. (#952)
+*  Dictionary keys are now unique, and if multiple, identical keys are defined for a dictionary when constructed, the values will be merged into the consolidated key. (#959)
+
 
 
 
