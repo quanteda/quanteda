@@ -78,12 +78,11 @@
     </div>
 
     
-    <p>Create a <span class="pkg">quanteda</span> dictionary class object, either from a list or by importing from a 
-foreign format.  Currently supported input file formats are the Wordstat,
-LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import using the 
-LIWC format works with 
-all currently available dictionary files supplied as part of the LIWC 2001, 
-2007, and 2015 software (see References).</p>
+    <p>Create a <span class="pkg">quanteda</span> dictionary class object, either from a list or by
+importing from a foreign format.  Currently supported input file formats are
+the Wordstat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
+using the LIWC format works with all currently available dictionary files
+supplied as part of the LIWC 2001, 2007, and 2015 software (see References).</p>
     
 
     <pre class="usage"><span class='fu'>dictionary</span>(<span class='no'>x</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
@@ -94,9 +93,10 @@ all currently available dictionary files supplied as part of the LIWC 2001,
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a named list of character vector dictionary entries, including <a href='valuetype.html'>valuetype</a> pattern
-matches, and including multi-word expressions separated by <code>concatenator</code>.  See examples.
-This argument may be omitted if the dictionary is read from <code>file</code>.</p></td>
+      <td><p>a named list of character vector dictionary entries, including
+<a href='valuetype.html'>valuetype</a> pattern matches, and including multi-word expressions
+separated by <code>concatenator</code>.  See examples. This argument may be
+omitted if the dictionary is read from <code>file</code>.</p></td>
     </tr>
     <tr>
       <th>file</th>
@@ -104,19 +104,19 @@ This argument may be omitted if the dictionary is read from <code>file</code>.</
     </tr>
     <tr>
       <th>format</th>
-      <td><p>character identifier for the format of the foreign dictionary. 
+      <td><p>character identifier for the format of the foreign dictionary.
 If not supplied, the format is guessed from the dictionary file's
-extension.
-Available options are:</p><dl class='dl-horizontal'>
-<dt><code>"wordstat"</code></dt><dd><p>format used by 
-Provalis Research's Wordstat software</p></dd> <dt><code>"LIWC"</code></dt><dd><p>format used by 
-the Linguistic Inquiry and Word Count software</p></dd> <dt><code>"yoshikoder"</code></dt><dd><p>format used by Yoshikoder software</p></dd> <dt><code>"lexicoder"</code></dt><dd><p>format used
-by Lexicoder</p></dd> <dt><code>"YAML"</code></dt><dd><p>the standard YAML format</p></dd></dl></td>
+extension. Available options are:</p><dl class='dl-horizontal'>
+<dt><code>"wordstat"</code></dt><dd><p>format used by Provalis Research's Wordstat
+software</p></dd> <dt><code>"LIWC"</code></dt><dd><p>format used by the Linguistic Inquiry and
+Word Count software</p></dd> <dt><code>"yoshikoder"</code></dt><dd><p>format used by Yoshikoder
+software</p></dd> <dt><code>"lexicoder"</code></dt><dd><p>format used by Lexicoder</p></dd>
+<dt><code>"YAML"</code></dt><dd><p>the standard YAML format</p></dd></dl></td>
     </tr>
     <tr>
       <th>separator</th>
-      <td><p>the character in between multi-word dictionary values. 
-This defaults to <code>" "</code>.</p></td>
+      <td><p>the character in between multi-word dictionary values. This
+defaults to <code>" "</code>.</p></td>
     </tr>
     <tr>
       <th>tolower</th>
@@ -124,8 +124,8 @@ This defaults to <code>" "</code>.</p></td>
     </tr>
     <tr>
       <th>encoding</th>
-      <td><p>additional optional encoding value for reading in imported 
-dictionaries. This uses the iconv labels for encoding.  See the 
+      <td><p>additional optional encoding value for reading in imported
+dictionaries. This uses the iconv labels for encoding.  See the
 "Encoding" section of the help for file.</p></td>
     </tr>
     </table>
@@ -135,20 +135,32 @@ dictionaries. This uses the iconv labels for encoding.  See the
     <p>A dictionary class object, essentially a specially classed named list
   of characters.</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Dictionaries can be subsetted using
+  <code><a href='dictionary-class.html'>[</a></code> and
+  <code><a href='dictionary-class.html'>[[</a></code>, operating the same as the equivalent
+  <a href='dictionary-class.html'>list</a> operators.</p>
+<p>Dictionaries can be coerced from lists using <code><a href='as.dictionary.html'>as.dictionary</a></code>,
+  coerced to named lists of characters using
+  <code><a href='dictionary-class.html'>as.list</a></code>, and checked using
+  <code><a href='as.dictionary.html'>is.dictionary</a></code>.</p>
+    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Wordstat dictionaries page, from Provalis Research 
+    <p>Wordstat dictionaries page, from Provalis Research
   <a href = 'http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/'>http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/</a>.
-    Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., &amp; Booth, R.J. 
-  (2007). The development and psychometric properties of LIWC2007. [Software 
-  manual]. Austin, TX (<a href = 'www.liwc.net'>www.liwc.net</a>).
-    Yoshikoder page, from Will Lowe 
-  <a href = 'http://conjugateprior.org/software/yoshikoder/'>http://conjugateprior.org/software/yoshikoder/</a>.
-    Lexicoder format, <a href = 'http://www.lexicoder.com'>http://www.lexicoder.com</a></p>
+    Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., &amp; Booth, R.J.
+  (2007). The development and psychometric properties of LIWC2007. [Software
+  manual]. Austin, TX (<a href = 'www.liwc.net'>www.liwc.net</a>).</p>
+<p>Yoshikoder page, from Will Lowe
+  <a href = 'http://conjugateprior.org/software/yoshikoder/'>http://conjugateprior.org/software/yoshikoder/</a>.</p>
+<p>Lexicoder format, <a href = 'http://www.lexicoder.com'>http://www.lexicoder.com</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='dfm.html'>dfm</a></p>
+    <p><a href='dfm.html'>dfm</a>, <code><a href='as.dictionary.html'>as.dictionary</a></code>,
+  <code><a href='dictionary-class.html'>as.list</a></code>, <code><a href='as.dictionary.html'>is.dictionary</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -159,8 +171,8 @@ dictionaries. This uses the iconv labels for encoding.  See the
                           <span class='kw'>taxation</span> <span class='kw'>=</span> <span class='st'>"taxation"</span>,
                           <span class='kw'>taxregex</span> <span class='kw'>=</span> <span class='st'>"tax*"</span>,
                           <span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"america"</span>))
-<span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mydict</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 30 documents, 6 features (71.7% sparse).
-#&gt; (showing first 6 documents and first 6 features)
+<span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mydict</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (63.9% sparse).
+#&gt; 6 x 6 sparse Matrix of class "dfmSparse"
 #&gt;                 features
 #&gt; docs             christmas opposition taxing taxation taxregex country
 #&gt;   1901-McKinley          0          2      0        1        1       0
@@ -169,6 +181,22 @@ dictionaries. This uses the iconv labels for encoding.  See the
 #&gt;   1913-Wilson            0          0      0        1        1       0
 #&gt;   1917-Wilson            0          0      0        0        0       2
 #&gt;   1921-Harding           0          0      0        1        2      15</div><div class='input'>
+<span class='co'># subset a dictionary</span>
+<span class='no'>mydict</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]</div><div class='output co'>#&gt; Dictionary object with 2 key entries.
+#&gt; - [christmas]:
+#&gt;   - christmas, santa, holiday
+#&gt; - [opposition]:
+#&gt;   - opposition, reject, notincorpus</div><div class='input'><span class='no'>mydict</span>[<span class='fu'>c</span>(<span class='st'>"christmas"</span>, <span class='st'>"opposition"</span>)]</div><div class='output co'>#&gt; Dictionary object with 2 key entries.
+#&gt; - [christmas]:
+#&gt;   - christmas, santa, holiday
+#&gt; - [opposition]:
+#&gt;   - opposition, reject, notincorpus</div><div class='input'><span class='no'>mydict</span><span class='kw'>[[</span><span class='st'>"opposition"</span>]]</div><div class='output co'>#&gt; [1] "opposition"  "reject"      "notincorpus"</div><div class='input'>
+<span class='co'># combine dictionaries</span>
+<span class='fu'>c</span>(<span class='no'>mydict</span>[<span class='st'>"christmas"</span>], <span class='no'>mydict</span>[<span class='st'>"country"</span>])</div><div class='output co'>#&gt; Dictionary object with 2 key entries.
+#&gt; - [christmas]:
+#&gt;   - christmas, santa, holiday
+#&gt; - [country]:
+#&gt;   - america</div><div class='input'>
 <span class='fu'>not_run</span>({
   <span class='co'># import the Laver-Garry dictionary from Provalis Research</span>
   <span class='no'>dictfile</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>()
@@ -189,6 +217,8 @@ dictionaries. This uses the iconv labels for encoding.  See the
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>
 

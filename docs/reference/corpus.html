@@ -218,7 +218,7 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 <span class='fu'>corpus</span>(<span class='no'>data_char_ukimmig2010</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents and 0 docvars.</div><div class='input'>
 <span class='co'># create a corpus from texts and assign meta-data and document variables</span>
 <span class='fu'>summary</span>(<span class='fu'>corpus</span>(<span class='no'>data_char_ukimmig2010</span>,
-               <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>party</span> <span class='kw'>=</span> <span class='fu'>names</span>(<span class='no'>data_char_ukimmig2010</span>))), <span class='fl'>5</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 5 documents.
+               <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>party</span> <span class='kw'>=</span> <span class='fu'>names</span>(<span class='no'>data_char_ukimmig2010</span>))), <span class='fl'>5</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 5 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences        party
 #&gt;           BNP  1125   3280        88          BNP
@@ -228,9 +228,8 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;        Labour   298    683        29       Labour
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Thu Aug 10 12:42:43 2017
-#&gt; Notes:   
-#&gt; </div><div class='input'>
+#&gt; Created: Sat Sep 23 08:12:07 2017
+#&gt; Notes:    </div><div class='input'>
 <span class='fu'>corpus</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>data_corpus_irishbudget2010</span>))</div><div class='output co'>#&gt; Corpus consisting of 14 documents and 0 docvars.</div><div class='input'>
 <span class='co'># import a tm VCorpus</span>
 <span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"tm"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
@@ -244,160 +243,22 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
     <span class='no'>tmCorp</span> <span class='kw'>&lt;-</span> <span class='kw'>tm</span><span class='kw'>::</span><span class='fu'>VCorpus</span>(<span class='kw'>tm</span><span class='kw'>::</span><span class='fu'>VectorSource</span>(<span class='no'>data_char_ukimmig2010</span>))
     <span class='no'>quantCorp</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus</span>(<span class='no'>tmCorp</span>)
     <span class='fu'>summary</span>(<span class='no'>quantCorp</span>)
-}</div><div class='output co'>#&gt; Corpus consisting of 20 documents.
-#&gt; 
-#&gt;  Text Types Tokens Sentences       datetimestamp description
-#&gt;   127    62    103         5 1987-02-26 17:00:56            
-#&gt;   144   238    495        19 1987-02-26 17:34:11            
-#&gt;   191    47     62         4 1987-02-26 18:18:00            
-#&gt;   194    55     74         5 1987-02-26 18:21:01            
-#&gt;   211    67     97         4 1987-02-26 19:00:57            
-#&gt;   236   256    519        22 1987-03-01 03:25:46            
-#&gt;   237   252    494        22 1987-03-01 03:39:14            
-#&gt;   242   116    179         8 1987-03-01 05:27:27            
-#&gt;   246   193    366        16 1987-03-01 08:22:30            
-#&gt;   248   201    386        16 1987-03-01 18:31:44            
-#&gt;   273   203    410        14 1987-03-02 01:05:49            
-#&gt;   349    72    106         4 1987-03-02 07:39:23            
-#&gt;   352    75    115         4 1987-03-02 07:43:22            
-#&gt;   353    77    106         5 1987-03-02 07:43:41            
-#&gt;   368    76    118         5 1987-03-02 08:25:42            
-#&gt;   489    98    160         6 1987-03-02 11:20:05            
-#&gt;   502   126    215         8 1987-03-02 11:28:26            
-#&gt;   543    54     94         5 1987-03-02 12:13:46            
-#&gt;   704   153    321        11 1987-03-02 14:38:34            
-#&gt;   708    40     59         3 1987-03-02 14:49:06            
-#&gt;                                            heading  id language
-#&gt;           DIAMOND SHAMROCK (DIA) CUTS CRUDE PRICES 127       en
-#&gt;    OPEC MAY HAVE TO MEET TO FIRM PRICES - ANALYSTS 144       en
-#&gt;          TEXACO CANADA &lt;TXC&gt; LOWERS CRUDE POSTINGS 191       en
-#&gt;          MARATHON PETROLEUM REDUCES CRUDE POSTINGS 194       en
-#&gt;          HOUSTON OIL &lt;HO&gt; RESERVES STUDY COMPLETED 211       en
-#&gt;      KUWAIT SAYS NO PLANS FOR EMERGENCY OPEC TALKS 236       en
-#&gt;  INDONESIA SEEN AT CROSSROADS OVER ECONOMIC CHANGE 237       en
-#&gt;              SAUDI RIYAL DEPOSIT RATES REMAIN FIRM 242       en
-#&gt;            QATAR UNVEILS BUDGET FOR FISCAL 1987/88 246       en
-#&gt;    SAUDI ARABIA REITERATES COMMITMENT TO OPEC PACT 248       en
-#&gt;     SAUDI FEBRUARY CRUDE OUTPUT PUT AT 3.5 MLN BPD 273       en
-#&gt;  GULF ARAB DEPUTY OIL MINISTERS TO MEET IN BAHRAIN 349       en
-#&gt;  SAUDI ARABIA REITERATES COMMITMENT TO OPEC ACCORD 352       en
-#&gt;   KUWAIT MINISTER SAYS NO EMERGENCY OPEC TALKS SET 353       en
-#&gt;           PHILADELPHIA PORT CLOSED BY TANKER CRASH 368       en
-#&gt;      STUDY GROUP URGES INCREASED U.S. OIL RESERVES 489       en
-#&gt;      STUDY GROUP URGES INCREASED U.S. OIL RESERVES 502       en
-#&gt;     UNOCAL &lt;UCL&gt; UNIT CUTS CRUDE OIL POSTED PRICES 543       en
-#&gt;       NYMEX WILL EXPAND OFF-HOUR TRADING APRIL ONE 704       en
-#&gt;      ARGENTINE OIL PRODUCTION DOWN IN JANUARY 1987 708       en
-#&gt;             origin topics lewissplit     cgisplit oldid
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  5670
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  5687
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  5734
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  5737
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  5754
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  8321
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  8322
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  8327
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  8331
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  8333
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12456
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12532
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12535
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12536
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12550
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12672
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12685
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12726
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12887
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12891
-#&gt;                                 places                     author      orgs
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa BY TED D'AFFLISIO, Reuters      opec
-#&gt;                                 canada                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                         kuwait ecuador                       &lt;NA&gt;      opec
-#&gt;                          indonesia usa   By Jeremy Clift, Reuters worldbank
-#&gt;                   bahrain saudi-arabia                       &lt;NA&gt;      opec
-#&gt;                                  qatar                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                   bahrain saudi-arabia                       &lt;NA&gt;      opec
-#&gt;                       saudi-arabia uae                       &lt;NA&gt;      opec
-#&gt;  uae bahrain saudi-arabia kuwait qatar                       &lt;NA&gt;      opec
-#&gt;                   saudi-arabia bahrain                       &lt;NA&gt;      opec
-#&gt;                                 kuwait                       &lt;NA&gt;      opec
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa By BERNICE NAPACH, Reuters      &lt;NA&gt;
-#&gt;                              argentina                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;        people exchanges
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;  hisham-nazer      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;  hisham-nazer      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;     nymex
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt; 
-#&gt; Source:  Converted from tm Corpus 'crude'
-#&gt; Created: Thu Aug 10 12:42:43 2017
-#&gt; Notes:   
-#&gt; 
-#&gt; Corpus consisting of 50 documents, showing 5 documents.
-#&gt; 
-#&gt;  Text Types Tokens Sentences       datetimestamp description
-#&gt;    10   120    233         9 1987-02-26 15:18:06            
-#&gt;    12    89    146         6 1987-02-26 15:19:15            
-#&gt;    44    62     86         6 1987-02-26 15:49:56            
-#&gt;    45   229    421        22 1987-02-26 15:51:17            
-#&gt;    68    39     55         3 1987-02-26 16:08:33            
-#&gt;                                          heading id language            origin
-#&gt;  COMPUTER TERMINAL SYSTEMS &lt;CPML&gt; COMPLETES SALE 10       en Reuters-21578 XML
-#&gt;   OHIO MATTRESS &lt;OMT&gt; MAY HAVE LOWER 1ST QTR NET 12       en Reuters-21578 XML
-#&gt;    MCLEAN'S &lt;MII&gt; U.S. LINES SETS ASSET TRANSFER 44       en Reuters-21578 XML
-#&gt;   CHEMLAWN &lt;CHEM&gt; RISES ON HOPES FOR HIGHER BIDS 45       en Reuters-21578 XML
-#&gt;   &lt;COFAB INC&gt; BUYS GULFEX FOR UNDISCLOSED AMOUNT 68       en Reuters-21578 XML
-#&gt;  topics lewissplit     cgisplit oldid places                    author
-#&gt;     YES      TRAIN TRAINING-SET  5553    usa                      &lt;NA&gt;
-#&gt;     YES      TRAIN TRAINING-SET  5555    usa                      &lt;NA&gt;
-#&gt;     YES      TRAIN TRAINING-SET  5587    usa                      &lt;NA&gt;
-#&gt;     YES      TRAIN TRAINING-SET  5588    usa By Cal Mankowski, Reuters
-#&gt;     YES      TRAIN TRAINING-SET  5611    usa                      &lt;NA&gt;
-#&gt; 
-#&gt; Source:  Converted from tm Corpus 'acq'
-#&gt; Created: Thu Aug 10 12:42:43 2017
-#&gt; Notes:   
-#&gt; 
-#&gt; Corpus consisting of 9 documents.
+}</div><div class='output co'>#&gt; Corpus consisting of 9 documents:
 #&gt; 
 #&gt;   Text Types Tokens Sentences       datetimestamp id language
-#&gt;  text1  1125   3280        88 2017-08-10 11:42:43  1       en
-#&gt;  text2   142    260         4 2017-08-10 11:42:43  2       en
-#&gt;  text3   251    499        15 2017-08-10 11:42:43  3       en
-#&gt;  text4   322    679        21 2017-08-10 11:42:43  4       en
-#&gt;  text5   298    683        29 2017-08-10 11:42:43  5       en
-#&gt;  text6   251    483        14 2017-08-10 11:42:43  6       en
-#&gt;  text7    77    114         5 2017-08-10 11:42:43  7       en
-#&gt;  text8    88    134         4 2017-08-10 11:42:43  8       en
-#&gt;  text9   346    723        27 2017-08-10 11:42:43  9       en
+#&gt;  text1  1125   3280        88 2017-09-23 07:12:07  1       en
+#&gt;  text2   142    260         4 2017-09-23 07:12:07  2       en
+#&gt;  text3   251    499        15 2017-09-23 07:12:07  3       en
+#&gt;  text4   322    679        21 2017-09-23 07:12:07  4       en
+#&gt;  text5   298    683        29 2017-09-23 07:12:07  5       en
+#&gt;  text6   251    483        14 2017-09-23 07:12:07  6       en
+#&gt;  text7    77    114         5 2017-09-23 07:12:07  7       en
+#&gt;  text8    88    134         4 2017-09-23 07:12:07  8       en
+#&gt;  text9   346    723        27 2017-09-23 07:12:07  9       en
 #&gt; 
 #&gt; Source:  Converted from tm Corpus 'tmCorp'
-#&gt; Created: Thu Aug 10 12:42:43 2017
-#&gt; Notes:   
-#&gt; </div><div class='input'>
+#&gt; Created: Sat Sep 23 08:12:07 2017
+#&gt; Notes:    </div><div class='input'>
 <span class='co'># construct a corpus from a data.frame</span>
 <span class='no'>mydf</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>letter_factor</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='fu'>rep</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>2</span>)),
                   <span class='kw'>some_ints</span> <span class='kw'>=</span> <span class='fl'>1L</span>:<span class='fl'>6L</span>,
@@ -411,7 +272,7 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt; fromDf_4             b         4 This is text number 4.
 #&gt; fromDf_5             c         5 This is text number 5.
 #&gt; fromDf_6             c         6 This is text number 6.</div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus</span>(<span class='no'>mydf</span>, <span class='kw'>text_field</span> <span class='kw'>=</span> <span class='st'>"some_text"</span>,
-               <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>source</span> <span class='kw'>=</span> <span class='st'>"From a data.frame called mydf."</span>)))</div><div class='output co'>#&gt; Corpus consisting of 6 documents.
+               <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>source</span> <span class='kw'>=</span> <span class='st'>"From a data.frame called mydf."</span>)))</div><div class='output co'>#&gt; Corpus consisting of 6 documents:
 #&gt; 
 #&gt;      Text Types Tokens Sentences letter_factor some_ints
 #&gt;  fromDf_1     6      6         1             a         1
@@ -422,12 +283,11 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;  fromDf_6     6      6         1             c         6
 #&gt; 
 #&gt; Source:  From a data.frame called mydf.
-#&gt; Created: Thu Aug 10 12:42:43 2017
-#&gt; Notes:   
-#&gt; </div><div class='input'>
+#&gt; Created: Sat Sep 23 08:12:07 2017
+#&gt; Notes:    </div><div class='input'>
 <span class='co'># construct a corpus from a kwic object</span>
 <span class='no'>mykwic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"southern"</span>)
-<span class='fu'>summary</span>(<span class='fu'>corpus</span>(<span class='no'>mykwic</span>))</div><div class='output co'>#&gt; Corpus consisting of 28 documents.
+<span class='fu'>summary</span>(<span class='fu'>corpus</span>(<span class='no'>mykwic</span>))</div><div class='output co'>#&gt; Corpus consisting of 28 documents:
 #&gt; 
 #&gt;         Text Types Tokens Sentences         docname from   to  keyword context
 #&gt;    text1.pre     5      5         1      1797-Adams 1803 1803 southern     pre
@@ -460,9 +320,8 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;  text14.post     5      5         1 1953-Eisenhower 1226 1226 southern    post
 #&gt; 
 #&gt; Source:  Corpus created from kwic(x, keywords = "southern")
-#&gt; Created: Thu Aug 10 12:42:43 2017
-#&gt; Notes:   
-#&gt; </div></pre>
+#&gt; Created: Sat Sep 23 08:12:07 2017
+#&gt; Notes:    </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

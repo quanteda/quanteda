@@ -130,33 +130,13 @@ separating the patterns</p></td>
 #&gt; [1] "f"
 #&gt; </div><div class='input'>
 <span class='co'># from a collocations object</span>
-(<span class='no'>coll</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_collocations.html'>textstat_collocations</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"a b c a b d e b d a b"</span>)))</div><div class='output co'>#&gt;   collocation count length   lambda         z
-#&gt; 1         a b     3      2 3.412247 1.9360826
-#&gt; 2         b d     2      2 3.218876 1.7994063
-#&gt; 3         d e     1      2 2.833213 1.5251341
-#&gt; 4         c a     1      2 2.833213 1.5251341
-#&gt; 5         b c     1      2 2.197225 1.2282859
-#&gt; 6         d a     1      2 1.609438 1.1019068
-#&gt; 7         e b     1      2 1.717651 0.9745821</div><div class='input'><span class='fu'>phrase</span>(<span class='no'>coll</span>)</div><div class='output co'>#&gt; [[1]]
+(<span class='no'>coll</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_collocations.html'>textstat_collocations</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"a b c a b d e b d a b"</span>)))</div><div class='output co'>#&gt;   collocation count length   lambda        z
+#&gt; 1         a b     3      2 3.412247 1.936083
+#&gt; 2         b d     2      2 3.218876 1.799406</div><div class='input'><span class='fu'>phrase</span>(<span class='no'>coll</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "a" "b"
 #&gt; 
 #&gt; [[2]]
 #&gt; [1] "b" "d"
-#&gt; 
-#&gt; [[3]]
-#&gt; [1] "d" "e"
-#&gt; 
-#&gt; [[4]]
-#&gt; [1] "c" "a"
-#&gt; 
-#&gt; [[5]]
-#&gt; [1] "b" "c"
-#&gt; 
-#&gt; [[6]]
-#&gt; [1] "d" "a"
-#&gt; 
-#&gt; [[7]]
-#&gt; [1] "e" "b"
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
