@@ -82,12 +82,55 @@
     <div id="quanteda-0-99" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quanteda-0-99" class="anchor"></a>quanteda 0.99</h1>
+<div id="changes-since-v0-99" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-since-v0-99" class="anchor"></a>Changes since v0.99</h2>
+<div id="new-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New Features</h3>
+<ul>
+<li>Added <code><a href="../reference/tokens_segment.html">tokens_segment()</a></code>, which works on tokens objects in the same way as <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code> does on corpus objects (#902).</li>
+<li>Added <strong>magrittr</strong> pipe support (#927). <code>%&gt;%</code> can now be used with <strong>quanteda</strong> without needing to attach <strong>magrittr</strong> (or, as many users apparently believe, the entire tidyverse.)<br>
+</li>
+<li>
+<code><a href="../reference/corpus_segment.html">corpus_segment()</a></code> now behaves more logically and flexibly, and is clearly differentiated from <code><a href="../reference/corpus_reshape.html">corpus_reshape()</a></code> in terms of its functionality. Its documentation is also vastly improved. (#908)</li>
+<li>Added <code>data_dictionary_LSD2015</code>, the Lexicoder Sentiment 2015 dictionary (#963).</li>
+<li>Significant improvements to the performance of <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> and <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code> (#960).</li>
+<li>New functions <code><a href="../reference/head.corpus.html">head.corpus()</a></code>, <code><a href="../reference/head.corpus.html">tail.corpus()</a></code> provide fast subsetting of the first or last documents in a corpus. (#952)</li>
+</ul>
+</div>
+<div id="bug-fixes-and-stability-enhancements" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h3>
+<ul>
+<li>Fixed a problem when applying <code>purrr::map()</code> to <code><a href="../reference/dfm.html">dfm()</a></code> (#928).</li>
+<li>Added documentation for <code><a href="../reference/regex2id.html">regex2fixed()</a></code> and associated functions.</li>
+<li>Fixed a bug in <code>textstat_collocations.tokens()</code> caused by “documents” containing only <code>""</code> as tokens. (#940)</li>
+<li>Fixed a bug caused by <code><a href="../reference/cbind.dfm.html">cbind.dfm()</a></code> when features shared a name starting with <code><a href="../reference/quanteda_options.html">quanteda_options("base_featname")</a></code> (#946)</li>
+<li>Improved dictionary handling and creation now correctly handles nested LIWC 2015 categories. (#941)</li>
+<li>Number of threads now set correctly by <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>. (#966)</li>
+</ul>
+</div>
+<div id="behaviour-changes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#behaviour-changes" class="anchor"></a>Behaviour changes</h3>
+<ul>
+<li>
+<code><a href="../reference/summary.corpus.html">summary.corpus()</a></code> now generates a special data.frame, which has its own print method, rather than requiring <code>verbose = FALSE</code> to suppress output (#926).</li>
+<li>
+<code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code> is now multi-threaded.</li>
+<li>
+<code><a href="../reference/head.dfm.html">head.dfm()</a></code>, <code><a href="../reference/head.dfm.html">tail.dfm()</a></code> now behave consistently with base R methods for matrix, with the added argument <code>nfeature</code>. Previously, these methods printed the subset and invisibly returned it. Now, they simply return the subset. (#952)</li>
+<li>Dictionary keys are now unique, and if multiple, identical keys are defined for a dictionary when constructed, the values will be merged into the consolidated key. (#959)</li>
+</ul>
+</div>
+</div>
 <div id="changes-since-v0-9-9-65" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-since-v0-9-9-65" class="anchor"></a>Changes since v0.9.9-65</h2>
-<div id="new-features" class="section level3">
+<div id="new-features-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New features</h3>
+<a href="#new-features-1" class="anchor"></a>New features</h3>
 <ul>
 <li>Improvements and consoldiation of methods for detecting multi-word expressions, now active only through <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, which computes only the <code>lambda</code> method for now, but does so accurately and efficiently. (#753, #803). This function is still under development and likely to change further.</li>
 <li>Added new <code>quanteda_options</code> that affect the maximum documents and features displayed by the dfm print method (#756).</li>
@@ -111,9 +154,9 @@
 <li>Added <code>nomatch</code> option to <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> and <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code>, to provide tokens or feature counts for categories not matched to any dictionary key. (#496)</li>
 </ul>
 </div>
-<div id="behaviour-changes" class="section level3">
+<div id="behaviour-changes-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#behaviour-changes" class="anchor"></a>Behaviour changes</h3>
+<a href="#behaviour-changes-1" class="anchor"></a>Behaviour changes</h3>
 <ul>
 <li>The functions <code><a href="../reference/collocations.html">sequences()</a></code> and <code><a href="../reference/collocations.html">collocations()</a></code> have been removed and replaced by <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>.</li>
 <li>(Finally) we added “will” to the list of English stopwords (#818).</li>
@@ -128,9 +171,9 @@
 <li>Improved <code><a href="../reference/cbind.dfm.html">cbind.dfm()</a></code> function allows cbinding vectors, matrixes, and (recyclable) scalars to dfm objects.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements" class="section level3">
+<div id="bug-fixes-and-stability-enhancements-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h3>
+<a href="#bug-fixes-and-stability-enhancements-1" class="anchor"></a>Bug fixes and stability enhancements</h3>
 <ul>
 <li>For the underlying methods behind <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, we corrected the word matching, and lambda and z calculation methods, which were slightly incorrect before. We also removed the chi2, G2, and pmi statistics, because these were incorrectly calculated for size &gt; 2.<br>
 </li>
@@ -151,9 +194,9 @@
 <div id="changes-since-v0-9-9-50" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-since-v0-9-9-50" class="anchor"></a>Changes since v0.9.9-50</h2>
-<div id="new-features-1" class="section level3">
+<div id="new-features-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-1" class="anchor"></a>New features</h3>
+<a href="#new-features-2" class="anchor"></a>New features</h3>
 <ul>
 <li>Corpus construction using <code><a href="../reference/corpus.html">corpus()</a></code> now works for a <code>tm::SimpleCorpus</code> object. (#680)</li>
 <li>Added <code><a href="../reference/corpus_trim.html">corpus_trim()</a></code> and <code><a href="../reference/corpus_trim.html">char_trim()</a></code> functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.</li>
@@ -163,9 +206,9 @@
 <li>Corpus constructor methods for data.frame objects now conform to the “text interchange format” for corpus data.frames, automatically recognizing <code>doc_id</code> and <code>text</code> fields, which also provides interoperability with the <strong>readtext</strong> package. corpus construction methods are now more explicitly tailored to input object classes.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-1" class="section level3">
+<div id="bug-fixes-and-stability-enhancements-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-1" class="anchor"></a>Bug fixes and stability enhancements</h3>
+<a href="#bug-fixes-and-stability-enhancements-2" class="anchor"></a>Bug fixes and stability enhancements</h3>
 <ul>
 <li>
 <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code> behaves more robustly on different platforms, especially for keys whose values match no features (#704).</li>
@@ -196,9 +239,9 @@
 <div id="changes-since-v0-9-9-24" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-since-v0-9-9-24" class="anchor"></a>Changes since v0.9.9-24</h2>
-<div id="new-features-2" class="section level3">
+<div id="new-features-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-2" class="anchor"></a>New features</h3>
+<a href="#new-features-3" class="anchor"></a>New features</h3>
 <ul>
 <li>
 <code><a href="../reference/corpus_reshape.html">corpus_reshape()</a></code> can now go from sentences and paragraph units back to documents.</li>
@@ -220,9 +263,9 @@
 <li>Began the consolidation of collocation detection and scoring into a new function <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, which combines the existing <code><a href="../reference/collocations.html">collocations()</a></code> and <code><a href="../reference/collocations.html">sequences()</a></code> functions. (#434) Collocations now behave as sequences for other functions (such as <code><a href="../reference/tokens_compound.html">tokens_compound()</a></code>) and have a greatly improved performance for such uses.</li>
 </ul>
 </div>
-<div id="behaviour-changes-1" class="section level3">
+<div id="behaviour-changes-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#behaviour-changes-1" class="anchor"></a>Behaviour changes</h3>
+<a href="#behaviour-changes-2" class="anchor"></a>Behaviour changes</h3>
 <ul>
 <li>
 <code><a href="../reference/docvars.html">docvars()</a></code> now permits direct access to “metadoc” fields (starting with <code>_</code>, e.g. <code>_document</code>)</li>
@@ -257,9 +300,9 @@
 <div id="changes-since-v0-9-9-17" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-since-v0-9-9-17" class="anchor"></a>Changes since v0.9.9-17</h2>
-<div id="new-features-3" class="section level3">
+<div id="new-features-4" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-3" class="anchor"></a>New features</h3>
+<a href="#new-features-4" class="anchor"></a>New features</h3>
 <ul>
 <li>
 <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code> now returns a data.frame with p-values as well as the test statistic, and rownames containing the feature. This is more consistent with the other textstat functions.</li>
@@ -301,9 +344,9 @@
 <li>Fixed a bug in <code>textmodel_NB</code> that caused the class priors <code>Pc</code> to be refactored alphabetically instead of in the order of assignment (#471), also affecting predicted classes (#476).</li>
 </ul>
 </div>
-<div id="new-features-4" class="section level3">
+<div id="new-features-5" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-4" class="anchor"></a>New features</h3>
+<a href="#new-features-5" class="anchor"></a>New features</h3>
 <ul>
 <li>New textstat function <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code> discovers words that occur at differential rates between partitions of a dfm (using chi-squared, Fisher’s exact test, and the G^2 likelihood ratio test to measure the strength of associations).<br>
 </li>
@@ -780,9 +823,9 @@
     <div id="quanteda-0-9-8" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quanteda-0-9-8" class="anchor"></a>quanteda 0.9.8</h1>
-<div id="new-features-5" class="section level2">
+<div id="new-features-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-5" class="anchor"></a>New Features</h2>
+<a href="#new-features-6" class="anchor"></a>New Features</h2>
 <ul>
 <li>Improved the performance of <code><a href="../reference/selectFeatures.html">selectFeatures.tokenizedTexts()</a></code>.<br>
 </li>

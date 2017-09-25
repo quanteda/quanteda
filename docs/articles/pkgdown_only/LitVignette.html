@@ -62,13 +62,14 @@
 %\VignetteEngine{knitr::rmarkdown}
 %\VignetteIndexEntry{Quickstart}
 -->
-<p>In this vignette we show how the <strong>quanteda</strong> package can be used to replicate the analysis from Matthew Jockers’ book <em>Text Analysis with R for Students of Literature</em> (London: Springer, 2014). Most of the Jockers book consists of loading, transforming, and analyzing quantities derived from text and data from text. Because <strong>quanteda</strong> has built in most of the code to perform these data transformations and analyses, it makes it possible to replicate the results from the book with far less code.</p>
+<p>In this vignette we show how the <strong>quanteda</strong> package can be used to replicate the analysis from Matthew Jockers’ book <a href="http://doi.org/10.1007/978-3-319-03164-4"><em>Text Analysis with R for Students of Literature</em></a> (London: Springer, 2014). Most of the Jockers book consists of loading, transforming, and analyzing quantities derived from text and data from text. Because <strong>quanteda</strong> has built in most of the code to perform these data transformations and analyses, it makes it possible to replicate the results from the book with far less code.</p>
 <p>In what follows, each section corresponds to a chapter in the book.</p>
 <div id="r-basics" class="section level1">
 <h1 class="hasAnchor">
 <a href="#r-basics" class="anchor"></a>1 R Basics</h1>
 <p>Our closest equivalent is simply:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>)
+<span class="kw">install.packages</span>(<span class="st">"readtext"</span>)</code></pre></div>
 <p>But if you are reading this vignette, than chances are that you have already completed this step.</p>
 </div>
 <div id="first-foray" class="section level1">
@@ -79,23 +80,13 @@
 <h2 class="hasAnchor">
 <a href="#loading-the-first-text-file" class="anchor"></a>2.1 Loading the first text file</h2>
 <p>The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(quanteda)</code></pre></div>
-<pre><code>## Loading required package: quanteda</code></pre>
-<pre><code>## quanteda version 0.9.9000</code></pre>
-<pre><code>## Using 4 of 8 threads for parallel computing</code></pre>
-<pre><code>## 
-## Attaching package: 'quanteda'</code></pre>
-<pre><code>## The following object is masked from 'package:utils':
-## 
-##     View</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(readtext)</code></pre></div>
-<pre><code>## Loading required package: readtext</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/texts.html">texts</a></span>(<span class="kw">readtext</span>(<span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span>))</code></pre></div>
-<p>The <code><a href="../../reference/textfile.html">textfile()</a></code> loads the text and places inside a structured, intermediate object known as a <code>corpusSource</code> object. We see this by outputting it to the global environment, as above.</p>
-<p>We can access the text from a <code>corpusSource</code> object (and also, as we will see, a <code>corpus</code> class object), using the <code><a href="../../reference/texts.html">texts()</a></code> method. Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel. We do this using the <code>substring()</code> function, which shows the 1st through the 75th characters of the texts of our new object <code>mobydicktf</code>. Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substring</span>(data_char_mobydick, <span class="dv">1</span>, <span class="dv">75</span>)</code></pre></div>
-<pre><code>##                                                                     pg2701.txt 
-## "The Project Gutenberg EBook of Moby Dick; or The Whale, by Herman Melville\n"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">library</span>(<span class="st">"quanteda"</span>))
+<span class="kw">library</span>(<span class="st">"readtext"</span>)
+data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/texts.html">texts</a></span>(<span class="kw">readtext</span>(<span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span>))</code></pre></div>
+<p>The <code>readtext()</code> function from the <strong>readtext</strong> package loads the text files into a <code>data.frame</code> object. We can access the text from a <code>data.frame</code> object (and also, as we will see, a <code>corpus</code> class object), using the <code><a href="../../reference/texts.html">texts()</a></code> or the <code><a href="../../reference/View.html">View()</a></code> method. Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel. We do this using the <code>substring()</code> function, which shows the 1st through the 75th characters of the texts of our new object <code>data_char_mobydick</code>. Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"stringi"</span>)
+<span class="kw">stri_sub</span>(data_char_mobydick, <span class="dv">1</span>, <span class="dv">75</span>)</code></pre></div>
+<pre><code>## [1] "The Project Gutenberg EBook of Moby Dick; or The Whale, by Herman Melville\n"</code></pre>
 </div>
 <div id="separate-content-from-metadata" class="section level2">
 <h2 class="hasAnchor">
@@ -103,7 +94,7 @@
 <p>The Gutenburg edition of the text contains some metadata before and after the text of the novel. The code below uses the <code>regexec</code> and <code>substring</code> functions to separate this from the text.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># extract the header information</span>
 endMetadataIndex &lt;-<span class="st"> </span><span class="kw">regexec</span>(<span class="st">"CHAPTER 1. Loomings."</span>, data_char_mobydick)[[<span class="dv">1</span>]]
-metadata.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_char_mobydick, <span class="dv">1</span>, endMetadataIndex -<span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+metadata.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_char_mobydick, <span class="dv">1</span>, endMetadataIndex <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
 <p>To trim the extra text at the end of the Gutenburg version of the text, we can use the keyword-in-context (<code>kwic</code>) function to view the contexts around the word ‘orphan’, which we know should occur at the end of the book.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># verify that "orphan" is the end of the novel</span>
 <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"orphan"</span>)</code></pre></div>
@@ -112,13 +103,13 @@ metadata.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_
 ##                              
 ##  . End of Project Gutenberg's</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># extract the novel -- a better way</span>
-novel.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_char_mobydick, endMetadataIndex, 
-                     <span class="kw">regexec</span>(<span class="st">"End of Project Gutenberg's Moby Dick."</span>, data_char_mobydick)[[<span class="dv">1</span>]]-<span class="dv">1</span>)</code></pre></div>
+novel.v &lt;-<span class="st"> </span><span class="kw">stri_sub</span>(data_char_mobydick, endMetadataIndex, 
+                     <span class="kw">regexec</span>(<span class="st">"End of Project Gutenberg's Moby Dick."</span>, data_char_mobydick)[[<span class="dv">1</span>]]<span class="op">-</span><span class="dv">1</span>)</code></pre></div>
 </div>
 <div id="reprocessing-the-content" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reprocessing-the-content" class="anchor"></a>2.3 Reprocessing the content</h2>
-<p>We begin processing the text by converting to lower case. <code>quanteda</code>’s <code>tolower</code> functions work like the built-in <code>tolower</code>, with an extra option to preserve upper-case acronyms when detected. For <code>character</code> objects, we use <code>char_tolower</code>:</p>
+<p>We begin processing the text by converting to lower case. <strong>quanteda</strong>’s <code>*_tolower()</code> functions work like the built-in <code>tolower()</code>, with an extra option to preserve upper-case acronyms when detected. For <code>character</code> objects, we use <code><a href="../../reference/char_tolower.html">char_tolower()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># lowercase</span>
 novel.lower.v &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>(novel.v)</code></pre></div>
 <p><strong>quanteda</strong>’s <code>tokens</code> function splits the text into words, with many options available for which characters should be preserved, and which should be used to define word boundaries. The default behaviour works similarly to splitting on the regular expression for word boundary (<code>\W</code>), but does not treat apostrophes as word boundaries. This means that <em>’s</em> and <em>’t</em> are not treated as whole words from possessive forms and contractions.</p>
@@ -129,14 +120,14 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">total.length &lt;-<span class="st"> </span><span class="kw">length</span>(moby.word.v)
 <span class="kw">str</span>(moby.word.v)</code></pre></div>
 <pre><code>##  chr [1:210000] "chapter" "1" "loomings" "call" "me" "ishmael" "some" ...</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby.word.v[<span class="dv">1</span>:<span class="dv">10</span>]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby.word.v[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
 <pre><code>##  [1] "chapter"  "1"        "loomings" "call"     "me"       "ishmael" 
 ##  [7] "some"     "years"    "ago"      "never"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby.word.v[<span class="dv">99986</span>] </code></pre></div>
 <pre><code>## [1] "in"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby.word.v[<span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</code></pre></div>
 <pre><code>## [1] "call"    "me"      "ishmael"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">which</span>(moby.word.v ==<span class="st"> "whale"</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">which</span>(moby.word.v <span class="op">==</span><span class="st"> "whale"</span>))</code></pre></div>
 <pre><code>## [1] 2030 2060 2203 2415 4048 4211</code></pre>
 </div>
 <div id="beginning-the-analysis" class="section level2">
@@ -146,10 +137,10 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<
 <p>[^1] A <em>glob</em> is a simple wildcard matching pattern common on Unix systems – asterisks match zero or more characters.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(novel.lower.v))
 <span class="co"># count of the word 'whale'</span>
-<span class="kw">length</span>(moby.word.v[<span class="kw">which</span>(moby.word.v ==<span class="st"> "whale"</span>)])</code></pre></div>
+<span class="kw">length</span>(moby.word.v[<span class="kw">which</span>(moby.word.v <span class="op">==</span><span class="st"> "whale"</span>)])</code></pre></div>
 <pre><code>## [1] 908</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total occurrences of 'whale' including possessive</span>
-<span class="kw">length</span>(moby.word.v[<span class="kw">which</span>(moby.word.v ==<span class="st"> "whale"</span>)]) +<span class="st"> </span><span class="kw">length</span>(moby.word.v[<span class="kw">which</span>(moby.word.v ==<span class="st"> "whale's"</span>)])</code></pre></div>
+<span class="kw">length</span>(moby.word.v[<span class="kw">which</span>(moby.word.v <span class="op">==</span><span class="st"> "whale"</span>)]) <span class="op">+</span><span class="st"> </span><span class="kw">length</span>(moby.word.v[<span class="kw">which</span>(moby.word.v <span class="op">==</span><span class="st"> "whale's"</span>)])</code></pre></div>
 <pre><code>## [1] 1028</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># same thing using kwic()</span>
 <span class="kw">nrow</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"whale"</span>))</code></pre></div>
@@ -158,30 +149,34 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<
 <pre><code>## [1] 1565</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(total.whale.hits &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"^whale('s){0,1}$"</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>)))</code></pre></div>
 <pre><code>## [1] 1028</code></pre>
-<p>What fraction of the total words in the novel are ‘whale’?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">total.whale.hits /<span class="st"> </span><span class="kw"><a href="../../reference/ntoken.html">ntoken</a></span>(novel.lower.v, <span class="dt">remove_punct=</span><span class="ot">TRUE</span>)  </code></pre></div>
-<pre><code>##  pg2701.txt 
+<p>What fraction of the total words in the novel are “whale”?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">total.whale.hits <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../reference/ntoken.html">ntoken</a></span>(novel.lower.v, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)  </code></pre></div>
+<pre><code>##       text1 
 ## 0.004895238</code></pre>
 <p>Calculating the size of the vocabulary – includes possessive forms.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total unique words</span>
 <span class="kw">length</span>(<span class="kw">unique</span>(moby.word.v))</code></pre></div>
 <pre><code>## [1] 18541</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(<span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>(novel.v), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## pg2701.txt 
-##      18525</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(<span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>(novel.v), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove_symbols =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## text1 
+## 18345</code></pre>
 <p>To quickly sort the word types by their frequency, we can use the <code>dfm</code> command to create a matrix of counts of each word type – a document-frequency matrix. In this case there is only one document, the entire book.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ten most frequent words</span>
-mobyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(novel.lower.v)
-mobyDfm[, <span class="st">"whale"</span>]</code></pre></div>
+moby_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(novel.lower.v, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)
+moby_dfm[, <span class="st">"whale"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
 ## 1 x 1 sparse Matrix of class "dfmSparse"
-##             features
-## docs         whale
-##   pg2701.txt   908</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mobyDfm)</code></pre></div>
-<pre><code>##     ,   the     .    of   and     a    to     ;    in     - 
-## 18923 14173  7370  6446  6311  4605  4511  4143  4071  3238</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mobyDfm, <span class="dv">100</span>), <span class="dt">log =</span> <span class="st">"y"</span>, <span class="dt">cex =</span> .<span class="dv">6</span>, <span class="dt">ylab =</span> <span class="st">"Term frequency"</span>)</code></pre></div>
+##        features
+## docs    whale
+##   text1   908</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot 50 most frequent words </span>
+<span class="kw">library</span>(ggplot2)
+<span class="kw">theme_set</span>(<span class="kw">theme_minimal</span>())
+
+<span class="kw"><a href="../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm, <span class="dt">n =</span> <span class="dv">50</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> rank, <span class="dt">y =</span> frequency)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">"Term frequency"</span>)</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 </div>
 </div>
@@ -193,45 +188,44 @@ mobyDfm[, <span class="st">"whale"</span>]</code></pre></div>
 <a href="#accessing-word-data" class="anchor"></a>3.1 Accessing Word Data</h2>
 <p>We can query the document-frequency matrix to retrieve word frequencies, as with a normal matrix:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># frequencies of 'he' and 'she' - these are matrixes, not numerics</span>
-mobyDfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</code></pre></div>
+moby_dfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 4 features (0% sparse).
 ## 1 x 4 sparse Matrix of class "dfmSparse"
-##             features
-## docs           he she  him her
-##   pg2701.txt 1758 112 1058 330</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mobyDfm[, <span class="st">"her"</span>]</code></pre></div>
+##        features
+## docs      he she  him her
+##   text1 1758 112 1058 330</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby_dfm[, <span class="st">"her"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
 ## 1 x 1 sparse Matrix of class "dfmSparse"
-##             features
-## docs         her
-##   pg2701.txt 330</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mobyDfm[, <span class="st">"him"</span>]/mobyDfm[, <span class="st">"her"</span>]</code></pre></div>
+##        features
+## docs    her
+##   text1 330</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby_dfm[, <span class="st">"him"</span>] <span class="op">/</span><span class="st"> </span>moby_dfm[, <span class="st">"her"</span>]</code></pre></div>
 <pre><code>## 1 x 1 Matrix of class "dgeMatrix"
-##             features
-## docs              him
-##   pg2701.txt 3.206061</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mobyDfm[, <span class="st">"he"</span>]/mobyDfm[, <span class="st">"she"</span>]</code></pre></div>
+##        features
+## docs         him
+##   text1 3.206061</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby_dfm[, <span class="st">"he"</span>] <span class="op">/</span><span class="st"> </span>moby_dfm[, <span class="st">"she"</span>]</code></pre></div>
 <pre><code>## 1 x 1 Matrix of class "dgeMatrix"
-##             features
-## docs               he
-##   pg2701.txt 15.69643</code></pre>
+##        features
+## docs          he
+##   text1 15.69643</code></pre>
 </div>
 <div id="recycling" class="section level2">
 <h2 class="hasAnchor">
 <a href="#recycling" class="anchor"></a>3.2 Recycling</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mobyDfmPct &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/weight.html">weight</a></span>(mobyDfm, <span class="st">"relFreq"</span>) *<span class="st"> </span><span class="dv">100</span></code></pre></div>
-<pre><code>## Warning: 'weight' is deprecated.
-## Use 'dfm_weight' instead.
-## See help("Deprecated")</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mobyDfmPct[, <span class="st">"the"</span>]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby_dfm_pct &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(moby_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+moby_dfm_pct[, <span class="st">"the"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
 ## 1 x 1 sparse Matrix of class "dfmSparse"
-##             features
-## docs              the
-##   pg2701.txt 5.659308</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mobyDfmPct), <span class="dt">type=</span><span class="st">"b"</span>,
-     <span class="dt">xlab=</span><span class="st">"Top Ten Words"</span>, <span class="dt">ylab=</span><span class="st">"Percentage of Full Text"</span>, <span class="dt">xaxt =</span><span class="st">"n"</span>)
-<span class="kw">axis</span>(<span class="dv">1</span>, <span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">labels =</span> <span class="kw">names</span>(<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mobyDfmPct)))</code></pre></div>
+##        features
+## docs         the
+##   text1 5.659308</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm_pct, <span class="dt">n =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(feature, rank), <span class="dt">y =</span> frequency)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">"Top Ten Words"</span>, <span class="dt">y =</span> <span class="st">"Percentage of Full Text"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
 </div>
 </div>
@@ -245,7 +239,7 @@ mobyDfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># using words from tokenized corpus for dispersion</span>
 <span class="kw"><a href="../../reference/textplot_xray.html">textplot_xray</a></span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.v, <span class="st">"whale"</span>))</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-14-1.png" width="768"></p>
-<p>You can also pass multiple kwic objects to <code>plot</code> to compare the dispersion of different terms:</p>
+<p>You can also pass multiple kwic objects to <code><a href="../../reference/textplot_xray.html">textplot_xray()</a></code> to compare the dispersion of different terms:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/textplot_xray.html">textplot_xray</a></span>(
      <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.v, <span class="st">"whale"</span>),
      <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.v, <span class="st">"Ahab"</span>),
@@ -258,31 +252,24 @@ mobyDfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="s
 <a href="#searching-with-grep" class="anchor"></a>4.2 Searching with <code>grep</code>
 </h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># identify the chapter break locations</span>
-(chap.positions.v &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.v, <span class="st">"CHAPTER </span><span class="ch">\\</span><span class="st">d"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)$position)</code></pre></div>
+(chap.positions.v &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.v, <span class="st">"CHAPTER </span><span class="ch">\\</span><span class="st">d"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)<span class="op">$</span>position)</code></pre></div>
 </div>
 <div id="identifying-chapter-breaks" class="section level2">
 <h2 class="hasAnchor">
 <a href="#identifying-chapter-breaks" class="anchor"></a>Identifying chapter breaks</h2>
-<p>Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a <code>corpus</code> object to hold the texts. Initially, we make a single-document corpus, and then use the <code>char_segment</code> function to split this by the string which specifies the chapter breaks.</p>
+<p>Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a <code>corpus</code> object to hold the texts. Initially, we make a single-document corpus, and then use the <code><a href="../../reference/corpus_segment.html">char_segment()</a></code> function to split this by the string which specifies the chapter breaks.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel.v, <span class="st">'chapter'</span>))</code></pre></div>
-<pre><code>##                                                         
-##      [pg2701.txt, 1]                         | CHAPTER |
-##   [pg2701.txt, 2581]        hill in the air. | CHAPTER |
-##   [pg2701.txt, 4287]        Spouter" may be. | CHAPTER |
-##  [pg2701.txt, 11236]      better in my life. | CHAPTER |
-##  [pg2701.txt, 13169] like a marshal's baton. | CHAPTER |
-##  [pg2701.txt, 14043]       out for a stroll. | CHAPTER |
-##                     
-##  1. Loomings. Call  
-##  2. The Carpet-Bag. 
-##  3. The Spouter-Inn.
-##  4. The Counterpane.
-##  5. Breakfast. I    
-##  6. The Street.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chaptersVec &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw"><a href="../../reference/corpus_segment.html">char_segment</a></span>(novel.v, <span class="dt">what =</span> <span class="st">'other'</span>, <span class="dt">delimiter =</span> <span class="st">"CHAPTER</span><span class="ch">\\</span><span class="st">s</span><span class="ch">\\</span><span class="st">d"</span>, <span class="dt">perl =</span> <span class="ot">TRUE</span>))
+<pre><code>##                                                                        
+##      [text1, 1]                         | CHAPTER | 1. Loomings. Call  
+##   [text1, 2581]        hill in the air. | CHAPTER | 2. The Carpet-Bag. 
+##   [text1, 4287]        Spouter" may be. | CHAPTER | 3. The Spouter-Inn.
+##  [text1, 11236]      better in my life. | CHAPTER | 4. The Counterpane.
+##  [text1, 13169] like a marshal's baton. | CHAPTER | 5. Breakfast. I    
+##  [text1, 14043]       out for a stroll. | CHAPTER | 6. The Street.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chaptersVec &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw"><a href="../../reference/corpus_segment.html">char_segment</a></span>(novel.v, <span class="dt">valuetype =</span> <span class="st">"regex"</span>, <span class="dt">pattern =</span> <span class="st">"CHAPTER</span><span class="ch">\\</span><span class="st">s</span><span class="ch">\\</span><span class="st">d"</span>))
 chaptersLowerVec &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>(chaptersVec)
 chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(chaptersVec)</code></pre></div>
-<p>With the corpus split into chapters, we can use the <code>dfm</code> command to create a matrix of counts of each word in each chapter – a document-frequency matrix.</p>
+<p>With the corpus split into chapters, we can use the <code><a href="../../reference/dfm.html">dfm()</a></code> function to create a matrix of counts of each word in each chapter – a document-frequency matrix.</p>
 </div>
 <div id="fig-4-4-barplots-of-whale-and-ahab" class="section level2">
 <h2 class="hasAnchor">
@@ -297,21 +284,21 @@ chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../refer
 <div id="relative-frequency-barplots-of-whale-and-ahab" class="section level2">
 <h2 class="hasAnchor">
 <a href="#relative-frequency-barplots-of-whale-and-ahab" class="anchor"></a>Relative frequency barplots of whale and ahab</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">relDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/weight.html">weight</a></span>(chapDfm, <span class="dt">type =</span> <span class="st">'relFreq'</span>) *<span class="st"> </span><span class="dv">100</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">relDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/weight.html">weight</a></span>(chapDfm, <span class="dt">type =</span> <span class="st">'relfreq'</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></code></pre></div>
 <pre><code>## Warning: 'weight' is deprecated.
 ## Use 'dfm_weight' instead.
 ## See help("Deprecated")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(relDfm)</code></pre></div>
-<pre><code>## Document-feature matrix of: 137 documents, 18,453 features (96.6% sparse).
-## (showing first 6 documents and first 6 features)
-##               features
-## docs               chapter  1        .   loomings       call        me
-##   pg2701.txt.1 50.00000000 50 0.000000 0.00000000 0.00000000 0.0000000
-##   pg2701.txt.2  0.03875969  0 3.178295 0.03875969 0.03875969 0.9689922
-##   pg2701.txt.3  0.05861665  0 2.754982 0.00000000 0.00000000 0.3516999
-##   pg2701.txt.4  0.01439056  0 3.295438 0.00000000 0.01439056 0.6331846
-##   pg2701.txt.5  0.05173306  0 2.741852 0.00000000 0.00000000 0.9829281
-##   pg2701.txt.6  0.11441648  0 3.203661 0.00000000 0.00000000 0.1144165</code></pre>
+<pre><code>## Document-feature matrix of: 6 documents, 6 features (36.1% sparse).
+## 6 x 6 sparse Matrix of class "dfmSparse"
+##        features
+## docs           .   loomings       call        me    ishmael       some
+##   text1 3.180760 0.03878976 0.03878976 0.9697440 0.07757952 0.42668735
+##   text2 2.758216 0          0          0.3521127 0.23474178 0.05868545
+##   text3 3.296387 0          0.01439470 0.6333669 0          0.24470995
+##   text4 2.744692 0          0          0.9839461 0          0.05178664
+##   text5 3.211009 0          0          0.1146789 0          0.22935780
+##   text6 4.334038 0          0          0.1057082 0          0.10570825</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">barplot</span>(<span class="kw">as.numeric</span>(relDfm[, <span class="st">'whale'</span>]))</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">barplot</span>(<span class="kw">as.numeric</span>(relDfm[, <span class="st">'ahab'</span>]))</code></pre></div>
@@ -328,12 +315,12 @@ chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../refer
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wf &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(relDfm[, <span class="st">'whale'</span>])
 af &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(relDfm[, <span class="st">'ahab'</span>])
 <span class="kw">cor</span>(wf, af)</code></pre></div>
-<pre><code>## [1] -0.2364822</code></pre>
+<pre><code>## [1] -0.2418019</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waDfm &lt;-<span class="st"> </span><span class="kw">cbind</span>(relDfm[, <span class="st">'whale'</span>], relDfm[, <span class="st">'ahab'</span>])
 <span class="kw">cor</span>(<span class="kw">as.matrix</span>(waDfm))</code></pre></div>
 <pre><code>##            whale       ahab
-## whale  1.0000000 -0.2364822
-## ahab  -0.2364822  1.0000000</code></pre>
+## whale  1.0000000 -0.2418019
+## ahab  -0.2418019  1.0000000</code></pre>
 <p>With the ahab frequency and whale frequency vectors extracted from the dfm, it is easy to calculate the significance of the correlation.</p>
 </div>
 <div id="random-sampling" class="section level2">
@@ -348,7 +335,7 @@ h &lt;-<span class="st"> </span><span class="kw">hist</span>(samples, <span clas
 <span class="dt">plot=</span>T)
 xfit &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="kw">min</span>(samples), <span class="kw">max</span>(samples), <span class="dt">length=</span><span class="dv">1000</span>)
 yfit &lt;-<span class="st"> </span><span class="kw">dnorm</span>(xfit, <span class="dt">mean =</span> <span class="kw">mean</span>(samples), <span class="dt">sd =</span> <span class="kw">sd</span>(samples))
-yfit &lt;-<span class="st"> </span>yfit *<span class="st"> </span><span class="kw">diff</span>(h$mids[<span class="dv">1</span>:<span class="dv">2</span>]) *<span class="st"> </span><span class="kw">length</span>(samples)
+yfit &lt;-<span class="st"> </span>yfit <span class="op">*</span><span class="st"> </span><span class="kw">diff</span>(h<span class="op">$</span>mids[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]) <span class="op">*</span><span class="st"> </span><span class="kw">length</span>(samples)
 <span class="kw">lines</span>(xfit, yfit, <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor.test</span>(wf, af)</code></pre></div>
@@ -356,13 +343,13 @@ yfit &lt;-<span class="st"> </span>yfit *<span class="st"> </span><span class="k
 ##  Pearson's product-moment correlation
 ## 
 ## data:  wf and af
-## t = -2.8279, df = 135, p-value = 0.0054
+## t = -2.8847, df = 134, p-value = 0.004567
 ## alternative hypothesis: true correlation is not equal to 0
 ## 95 percent confidence interval:
-##  -0.38877812 -0.07160681
+##  -0.39409392 -0.07658636
 ## sample estimates:
 ##        cor 
-## -0.2364822</code></pre>
+## -0.2418019</code></pre>
 </div>
 </div>
 <div id="measures-of-lexical-variety" class="section level1">
@@ -373,19 +360,19 @@ yfit &lt;-<span class="st"> </span>yfit *<span class="st"> </span><span class="k
 <a href="#mean-word-frequency" class="anchor"></a>6.2 Mean word frequency</h2>
 <p>The mean word frequency for a particular chapter can be calculated simply with the dfm. Each row is a document (chapter), so, for example, the mean word frequency of the first chapter is the sum of the first row of the matrix, divided by the number of word types in the first chapter. To get the number of word types in the first chapter only, we can either exclude words in that row which have a frequency of zero, or use the <code>ntype</code> function on the first document in the corpus to achieve the same result.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">firstChap &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(chapDfm[<span class="dv">1</span>,])
-numWords &lt;-<span class="st"> </span><span class="kw">length</span>(firstChap[firstChap &gt;<span class="st"> </span><span class="dv">0</span>])
-<span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,])/numWords</code></pre></div>
-<pre><code>## [1] 1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,])/<span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(chaptersCorp[<span class="dv">1</span>], <span class="dt">remove_punct=</span><span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## pg2701.txt.1 
-##            1</code></pre>
+numWords &lt;-<span class="st"> </span><span class="kw">length</span>(firstChap[firstChap <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>])
+<span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,]) <span class="op">/</span><span class="st"> </span>numWords</code></pre></div>
+<pre><code>## [1] 3.001164</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,]) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(chaptersCorp[<span class="dv">1</span>], <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>##    text1 
+## 2.839207</code></pre>
 </div>
 <div id="extracting-word-usage-means" class="section level2">
 <h2 class="hasAnchor">
 <a href="#extracting-word-usage-means" class="anchor"></a>6.3 Extracting Word Usage Means</h2>
 <p>The <code>rowMeans</code> matrix function, which operates on a dfm, allows us to retreieve the means for all of the chapters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chapMeans &lt;-<span class="st"> </span>Matrix::<span class="kw">rowMeans</span>(chapDfm)
-<span class="kw">plot</span>(chapMeans, <span class="dt">type=</span><span class="st">"h"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chapMeans &lt;-<span class="st"> </span><span class="kw">rowMeans</span>(chapDfm)
+<span class="kw">plot</span>(chapMeans, <span class="dt">type =</span> <span class="st">"h"</span>)</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 </div>
 </div>

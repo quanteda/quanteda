@@ -79,14 +79,14 @@ To cite package 'quanteda' in publications please use the
 following:
 
   Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
-  Textual Data".  R package version: 0.99.  http://quanteda.io.
+  Textual Data".  R package version: 0.99.8.  http://quanteda.io.
 
 A BibTeX entry for LaTeX users is
 
   @Manual{,
     title = {quanteda: Quantitative Analysis of Textual Data},
     author = {Kenneth Benoit and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
-    note = {R package version 0.99},
+    note = {R package version 0.99.8},
     url = {http://quanteda.io},
   }</code></pre>
 <div id="leave-feedback" class="section level3">
@@ -140,7 +140,7 @@ Once constructed, a <em>dfm</em> can be easily analyzed using either <strong>qua
 <li>
 <p>From <a href="https://github.com/kbenoit/quanteda">GitHub</a>, using:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># devtools packaged required to install quanteda from Github </span>
-devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quanteda"</span>) </code></pre></div>
+devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kbenoit/quanteda"</span>) </code></pre></div>
 <p>Because this compiles some C++ source code, you will need a compiler installed. If you are using a Windows platform, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN. If you are using OS X, you will need to to install XCode, available for free from the App Store, or if you prefer a lighter footprint set of tools, <a href="http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">just the Xcode command line tools</a>, using the command <code>xcode-select --install</code> from the Terminal.</p>
 </li>
 <li>
@@ -151,11 +151,11 @@ devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quant
 <li><p><a href="https://github.com/kbenoit/spacyr"><strong>spacyr</strong></a>: NLP using the <a href="http://spacy.io">spaCy</a> library, including part-of-speech tagging, entity recognition, and dependency parsing.</p></li>
 <li>
 <p><a href="https://github.com/kbenoit/quantedaData"><strong>quantedaData</strong></a>: Additional textual data for use with <strong>quanteda</strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quantedaData"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kbenoit/quantedaData"</span>)</code></pre></div>
 </li>
 <li>
 <p><a href="https://github.com/kbenoit/LIWCalike"><strong>LIWCalike</strong></a>: An R implementation of the <a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a> approach to text analysis.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/LIWCalike"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kbenoit/LIWCalike"</span>)</code></pre></div>
 </li>
 </ul>
 </li>
@@ -170,8 +170,8 @@ devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quant
 <h2 class="hasAnchor">
 <a href="#demonstration" class="anchor"></a>Demonstration</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
-## quanteda version 0.99
-## Using 4 of 8 threads for parallel computing
+## quanteda version 0.99.8
+## Using 7 of 8 threads for parallel computing
 ## 
 ## Attaching package: 'quanteda'
 ## The following object is masked from 'package:utils':
@@ -186,7 +186,7 @@ uk2010immigCorpus &lt;-<span class="st"> </span>
 uk2010immigCorpus
 ## Corpus consisting of 9 documents and 1 docvar.
 <span class="kw">summary</span>(uk2010immigCorpus)
-## Corpus consisting of 9 documents.
+## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences        party
 ##           BNP  1125   3280        88          BNP
@@ -200,7 +200,7 @@ uk2010immigCorpus
 ##          UKIP   346    723        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/* on x86_64 by kbenoit
-## Created: Wed Aug 16 12:47:07 2017
+## Created: Sat Sep 23 08:11:54 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 <span class="co"># key words in context for "deport", 3 words of context</span>
@@ -230,7 +230,7 @@ mydfm
 <span class="kw">set.seed</span>(<span class="dv">100</span>)
 <span class="kw"><a href="reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
                    <span class="dt">rot.per =</span> .<span class="dv">25</span>, 
-                   <span class="dt">colors =</span> RColorBrewer::<span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
+                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
 <p><img src="man/images/quanteda_example-1.png" width="672"></p>
 </div>
 <div id="contributing" class="section level2">

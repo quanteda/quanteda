@@ -160,8 +160,8 @@
 <a href="#creating-and-working-with-a-corpus" class="anchor"></a>Creating and Working with a Corpus</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(quanteda)
 ## Loading required package: quanteda
-## quanteda version 0.9.9000
-## Using 4 of 8 threads for parallel computing
+## quanteda version 0.99.8
+## Using 7 of 8 threads for parallel computing
 ## 
 ## Attaching package: 'quanteda'
 ## The following object is masked from 'package:utils':
@@ -193,7 +193,7 @@
 <p>If we already have the texts in this form, we can call the corpus constructor function directly. We can demonstrate this on the built-in character object of the texts about immigration policy extracted from the 2010 election manifestos of the UK political parties (called <code>data_char_ukimmig2010</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># build a new corpus from the texts</span>
 <span class="kw">summary</span>(myCorpus)
-## Corpus consisting of 9 documents.
+## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences
 ##           BNP  1125   3280        88
@@ -207,14 +207,14 @@
 ##          UKIP   346    723        27
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Thu Aug 10 12:43:43 2017
+## Created: Sat Sep 23 08:14:00 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Party"</span>) &lt;-<span class="st"> </span><span class="kw">names</span>(data_char_ukimmig2010)
 <span class="kw"><a href="../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="dv">2010</span>
 <span class="kw">summary</span>(myCorpus)
-## Corpus consisting of 9 documents.
+## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences        Party Year
 ##           BNP  1125   3280        88          BNP 2010
@@ -228,13 +228,13 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Thu Aug 10 12:43:43 2017
+## Created: Sat Sep 23 08:14:00 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
-<span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="dv">1</span>:<span class="kw"><a href="../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)
+<span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)
 <span class="kw">summary</span>(myCorpus, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)
-## Corpus consisting of 9 documents.
+## Corpus consisting of 9 documents:
 ## 
 ##          Text Types Tokens Sentences        Party Year _language
 ##           BNP  1125   3280        88          BNP 2010   english
@@ -258,7 +258,7 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Thu Aug 10 12:43:43 2017
+## Created: Sat Sep 23 08:14:00 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -311,7 +311,7 @@ mytf7 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class
 ## "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</code></pre></div>
 <p>To summarize the texts from a corpus, we can call a <code>summary()</code> method defined for a corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(data_corpus_irishbudget2010)
-## Corpus consisting of 14 documents.
+## Corpus consisting of 14 documents:
 ## 
 ##                                   Text Types Tokens Sentences year debate
 ##        2010_BUDGET_01_Brian_Lenihan_FF  1953   8641       374 2010 BUDGET
@@ -349,83 +349,22 @@ mytf7 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class
 ## Notes:</code></pre></div>
 <p>We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tokenInfo &lt;-<span class="st"> </span><span class="kw">summary</span>(data_corpus_inaugural)
-## Corpus consisting of 58 documents.
-## 
-##             Text Types Tokens Sentences Year  President       FirstName
-##  1789-Washington   625   1538        23 1789 Washington          George
-##  1793-Washington    96    147         4 1793 Washington          George
-##       1797-Adams   826   2578        37 1797      Adams            John
-##   1801-Jefferson   717   1927        41 1801  Jefferson          Thomas
-##   1805-Jefferson   804   2381        45 1805  Jefferson          Thomas
-##     1809-Madison   535   1263        21 1809    Madison           James
-##     1813-Madison   541   1302        33 1813    Madison           James
-##      1817-Monroe  1040   3680       121 1817     Monroe           James
-##      1821-Monroe  1259   4886       129 1821     Monroe           James
-##       1825-Adams  1003   3152        74 1825      Adams     John Quincy
-##     1829-Jackson   517   1210        25 1829    Jackson          Andrew
-##     1833-Jackson   499   1269        29 1833    Jackson          Andrew
-##    1837-VanBuren  1315   4165        95 1837  Van Buren          Martin
-##    1841-Harrison  1896   9144       210 1841   Harrison   William Henry
-##        1845-Polk  1334   5193       153 1845       Polk      James Knox
-##      1849-Taylor   496   1179        22 1849     Taylor         Zachary
-##      1853-Pierce  1165   3641       104 1853     Pierce        Franklin
-##    1857-Buchanan   945   3086        89 1857   Buchanan           James
-##     1861-Lincoln  1075   4006       135 1861    Lincoln         Abraham
-##     1865-Lincoln   360    776        26 1865    Lincoln         Abraham
-##       1869-Grant   485   1235        40 1869      Grant      Ulysses S.
-##       1873-Grant   552   1475        43 1873      Grant      Ulysses S.
-##       1877-Hayes   831   2716        59 1877      Hayes   Rutherford B.
-##    1881-Garfield  1021   3212       111 1881   Garfield        James A.
-##   1885-Cleveland   676   1820        44 1885  Cleveland          Grover
-##    1889-Harrison  1352   4722       157 1889   Harrison        Benjamin
-##   1893-Cleveland   821   2125        58 1893  Cleveland          Grover
-##    1897-McKinley  1232   4361       130 1897   McKinley         William
-##    1901-McKinley   854   2437       100 1901   McKinley         William
-##   1905-Roosevelt   404   1079        33 1905  Roosevelt        Theodore
-##        1909-Taft  1437   5822       159 1909       Taft  William Howard
-##      1913-Wilson   658   1882        68 1913     Wilson         Woodrow
-##      1917-Wilson   549   1656        59 1917     Wilson         Woodrow
-##     1921-Harding  1169   3721       148 1921    Harding       Warren G.
-##    1925-Coolidge  1220   4440       196 1925   Coolidge          Calvin
-##      1929-Hoover  1090   3865       158 1929     Hoover         Herbert
-##   1933-Roosevelt   743   2062        85 1933  Roosevelt     Franklin D.
-##   1937-Roosevelt   725   1997        96 1937  Roosevelt     Franklin D.
-##   1941-Roosevelt   526   1544        68 1941  Roosevelt     Franklin D.
-##   1945-Roosevelt   275    647        26 1945  Roosevelt     Franklin D.
-##      1949-Truman   781   2513       116 1949     Truman        Harry S.
-##  1953-Eisenhower   900   2757       119 1953 Eisenhower       Dwight D.
-##  1957-Eisenhower   621   1931        92 1957 Eisenhower       Dwight D.
-##     1961-Kennedy   566   1566        52 1961    Kennedy         John F.
-##     1965-Johnson   568   1723        93 1965    Johnson   Lyndon Baines
-##       1969-Nixon   743   2437       103 1969      Nixon Richard Milhous
-##       1973-Nixon   544   2012        68 1973      Nixon Richard Milhous
-##      1977-Carter   527   1376        52 1977     Carter           Jimmy
-##      1981-Reagan   902   2790       128 1981     Reagan          Ronald
-##      1985-Reagan   925   2921       123 1985     Reagan          Ronald
-##        1989-Bush   795   2681       141 1989       Bush          George
-##     1993-Clinton   642   1833        81 1993    Clinton            Bill
-##     1997-Clinton   773   2449       111 1997    Clinton            Bill
-##        2001-Bush   621   1808        97 2001       Bush       George W.
-##        2005-Bush   773   2319       100 2005       Bush       George W.
-##       2009-Obama   938   2711       110 2009      Obama          Barack
-##       2013-Obama   814   2317        88 2013      Obama          Barack
-##       2017-Trump   582   1660        88 2017      Trump       Donald J.
-## 
-## Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
-## Created: Tue Jun 13 14:51:47 2017
-## Notes:   http://www.presidency.ucsb.edu/inaugurals.php
-if (<span class="kw">require</span>(ggplot2))
-    <span class="kw">ggplot</span>(<span class="dt">data=</span>tokenInfo, <span class="kw">aes</span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) +<span class="st"> </span><span class="kw">geom_line</span>() +<span class="st"> </span><span class="kw">geom_point</span>() +
+<span class="cf">if</span> (<span class="kw">require</span>(ggplot2))
+    <span class="kw">ggplot</span>(<span class="dt">data=</span>tokenInfo, <span class="kw">aes</span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">        </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>) ) 
 ## Loading required package: ggplot2</code></pre></div>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># Longest inaugural address: William Henry Harrison</span>
-tokenInfo[<span class="kw">which.max</span>(tokenInfo$Tokens), ] 
-##                        Text Types Tokens Sentences Year President
-## 1841-Harrison 1841-Harrison  1896   9144       210 1841  Harrison
-##                   FirstName
-## 1841-Harrison William Henry</code></pre></div>
+tokenInfo[<span class="kw">which.max</span>(tokenInfo<span class="op">$</span>Tokens), ] 
+## Corpus consisting of 58 documents:
+## 
+##           Text Types Tokens Sentences Year President     FirstName
+##  1841-Harrison  1896   9144       210 1841  Harrison William Henry
+## 
+## Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
+## Created: Tue Jun 13 14:51:47 2017
+## Notes:   http://www.presidency.ucsb.edu/inaugurals.php</code></pre></div>
 </div>
 </div>
 <div id="tools-for-handling-corpus-objects" class="section level2">
@@ -436,15 +375,15 @@ tokenInfo[<span class="kw">which.max</span>(tokenInfo$Tokens), ]
 <a href="#adding-two-corpus-objects-together" class="anchor"></a>Adding two corpus objects together</h3>
 <p>The <code>+</code> operator provides a simple method for concatenating two corpus objects. If they contain different sets of document-level variables, these will be stitched together in a fashion that guarantees that no information is lost. Corpus-level medata data is also concatenated.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
-mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span>:<span class="dv">5</span>], <span class="dt">note =</span> <span class="st">"First five inaug speeches."</span>)
+mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], <span class="dt">note =</span> <span class="st">"First five inaug speeches."</span>)
 ## Warning in corpus.character(data_corpus_inaugural[1:5], note = "First five
 ## inaug speeches."): Argument note not used.
-mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span>:<span class="dv">58</span>], <span class="dt">note =</span> <span class="st">"Last five inaug speeches."</span>)
+mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span><span class="op">:</span><span class="dv">58</span>], <span class="dt">note =</span> <span class="st">"Last five inaug speeches."</span>)
 ## Warning in corpus.character(data_corpus_inaugural[53:58], note = "Last five
 ## inaug speeches."): Argument note not used.
-mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>mycorpus2
+mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span class="st"> </span>mycorpus2
 <span class="kw">summary</span>(mycorpus3)
-## Corpus consisting of 11 documents.
+## Corpus consisting of 11 documents:
 ## 
 ##             Text Types Tokens Sentences
 ##  1789-Washington   625   1538        23
@@ -460,15 +399,15 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Thu Aug 10 12:43:44 2017
+## Created: Sat Sep 23 08:14:02 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
 <h3 class="hasAnchor">
 <a href="#subsetting-corpus-objects" class="anchor"></a>subsetting corpus objects</h3>
 <p>There is a method of the <code><a href="../reference/corpus_subset.html">corpus_subset()</a></code> function defined for corpus objects, where a new corpus can be extracted based on logical conditions applied to docvars:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year &gt;<span class="st"> </span><span class="dv">1990</span>))
-## Corpus consisting of 7 documents.
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>))
+## Corpus consisting of 7 documents:
 ## 
 ##          Text Types Tokens Sentences Year President FirstName
 ##  1993-Clinton   642   1833        81 1993   Clinton      Bill
@@ -482,8 +421,8 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ## Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
 ## Created: Tue Jun 13 14:51:47 2017
 ## Notes:   http://www.presidency.ucsb.edu/inaugurals.php
-<span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, President ==<span class="st"> "Adams"</span>))
-## Corpus consisting of 2 documents.
+<span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, President <span class="op">==</span><span class="st"> "Adams"</span>))
+## Corpus consisting of 2 documents:
 ## 
 ##        Text Types Tokens Sentences Year President   FirstName
 ##  1797-Adams   826   2578        37 1797     Adams        John
@@ -641,11 +580,11 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <h2 class="hasAnchor">
 <a href="#constructing-a-document-frequency-matrix" class="anchor"></a>Constructing a document-frequency matrix</h2>
 <p>Tokenizing texts is an intermediate option, and most users will want to skip straight to constructing a document-feature matrix. For this, we have a Swiss-army knife function, called <code><a href="../reference/dfm.html">dfm()</a></code>, which performs tokenization and tabulates the extracted features into a matrix of documents by features. Unlike the conservative approach taken by <code><a href="../reference/tokens.html">tokens()</a></code>, the <code><a href="../reference/dfm.html">dfm()</a></code> function applies certain options by default, such as <code><a href="../reference/toLower.html">toLower()</a></code> – a separate function for lower-casing texts – and removes punctuation. All of the options to <code><a href="../reference/tokens.html">tokens()</a></code> can be passed to <code><a href="../reference/dfm.html">dfm()</a></code>, however.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year &gt;<span class="st"> </span><span class="dv">1990</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>)
 
 <span class="co"># make a dfm</span>
 myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(myCorpus)
-myDfm[, <span class="dv">1</span>:<span class="dv">5</span>]
+myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]
 ## Document-feature matrix of: 7 documents, 5 features (0% sparse).
 ## 7 x 5 sparse Matrix of class "dfmSparse"
 ##               features
@@ -660,7 +599,7 @@ myDfm[, <span class="dv">1</span>:<span class="dv">5</span>]
 <p>Other options for a <code><a href="../reference/dfm.html">dfm()</a></code> include removing stopwords, and stemming the tokens.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make a dfm, removing stopwords and applying stemming</span>
 myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
-myStemMat[, <span class="dv">1</span>:<span class="dv">5</span>]
+myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]
 ## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
 ## 7 x 5 sparse Matrix of class "dfmSparse"
 ##               features
@@ -697,7 +636,7 @@ mydfm
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">100</span>)
 <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
                    <span class="dt">rot.per =</span> .<span class="dv">25</span>, 
-                   <span class="dt">colors =</span> RColorBrewer::<span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
+                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
 </div>
 <div id="grouping-documents-by-document-variable" class="section level3">
@@ -706,7 +645,7 @@ mydfm
 <p>Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>We can sort this dfm, and inspect it:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sort</span>(byPartyDfm)[, <span class="dv">1</span>:<span class="dv">10</span>]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sort</span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]
 ## Warning: 'sort.dfm' is deprecated.
 ## Use 'dfm_sort' instead.
 ## See help("Deprecated")
@@ -726,7 +665,7 @@ mydfm
 <a href="#grouping-words-by-dictionary-or-equivalence-class" class="anchor"></a>Grouping words by dictionary or equivalence class</h3>
 <p>For some applications we have prior knowledge of sets of words that are indicative of traits we would like to measure from the text. For example, a general list of positive words might indicate positive sentiment in a movie review, or we might have a dictionary of political terms which are associated with a particular ideological stance. In these cases, it is sometimes useful to treat these groups of words as equivalent for the purposes of analysis, and sum their counts into classes.</p>
 <p>For example, let’s look at how words associated with terrorism and words associated with the economy vary by President in the inaugural speeches corpus. From the original corpus, we select Presidents since Clinton:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year &gt;<span class="st"> </span><span class="dv">1991</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</code></pre></div>
 <p>Now we define a demonstration dictionary:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myDict &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dictionary.html">dictionary</a></span>(<span class="kw">list</span>(<span class="dt">terror =</span> <span class="kw">c</span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),
                           <span class="dt">economy =</span> <span class="kw">c</span>(<span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span>)))</code></pre></div>
@@ -747,8 +686,8 @@ byPresMat
 <p>The constructor function <code><a href="../reference/dictionary.html">dictionary()</a></code> also works with two common “foreign” dictionary formats: the LIWC and Provalis Research’s Wordstat format. For instance, we can load the LIWC and apply this to the Presidential inaugural speech corpus:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,
                        <span class="dt">format =</span> <span class="st">"LIWC"</span>)
-liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span>:<span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
-liwcdfm[, <span class="dv">1</span>:<span class="dv">10</span>]</code></pre></div>
+liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span><span class="op">:</span><span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
+liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
 </div>
 </div>
 </div>
@@ -758,7 +697,7 @@ liwcdfm[, <span class="dv">1</span>:<span class="dv">10</span>]</code></pre></di
 <div id="similarities-between-texts" class="section level2">
 <h2 class="hasAnchor">
 <a href="#similarities-between-texts" class="anchor"></a>Similarities between texts</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year &gt;<span class="st"> </span><span class="dv">1980</span>), 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), 
                <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), 
                              <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)
@@ -777,7 +716,7 @@ obamaSimil
 <span class="co"># dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")</span></code></pre></div>
 <p>We can use these distances to plot a dendrogram, clustering presidents:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quantedaData"</span>)
-presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date &gt;<span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
+presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
                <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
@@ -786,7 +725,7 @@ presDistMat &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <span class="co"># hiarchical clustering the distance object</span>
 presCluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(presDistMat)
 <span class="co"># label with document names</span>
-presCluster$labels &lt;-<span class="st"> </span><span class="kw"><a href="../reference/docnames.html">docnames</a></span>(presDfm)
+presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../reference/docnames.html">docnames</a></span>(presDfm)
 <span class="co"># plot as a dendrogram</span>
 <span class="kw">plot</span>(presCluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</code></pre></div>
 <p>(try it!)</p>
@@ -818,30 +757,30 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.h
 ## 
 ## Estimated document positions:
 ## 
-##                                Documents      theta         SE       lower       upper
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209414 0.02032315  1.78110806  1.86077480
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932871 0.02818870 -0.64853690 -0.53803720
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136878 0.01540286 -1.14387741 -1.08349818
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219203 0.02846354 -0.17770888 -0.06613179
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724143 0.02364059  1.72607877  1.81874987
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145831 0.02650301 -0.76652898 -0.66263717
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844865 0.04171530 -0.56624848 -0.40272450
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616612 0.02967423 -0.61982268 -0.50349971
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703175 0.03850625 -1.04578972 -0.89484520
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589295 0.03892458 -1.03522168 -0.88263733
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807223 0.07221386  1.03918317  1.32226151
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866512 0.06294145  0.06328595  0.31001643
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7422014 0.07245394  0.60019164  0.88421107
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840577 0.03666326 -0.25591771 -0.11219775
+##                                Documents      theta         SE      lower       upper
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209528 0.02032344  1.7811188  1.86078670
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932785 0.02818838 -0.6485277 -0.53802929
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136760 0.01540258 -1.1438651 -1.08348698
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219317 0.02846321 -0.1777196 -0.06614381
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724219 0.02364094  1.7260857  1.81875820
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145787 0.02650257 -0.7665237 -0.66263366
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844823 0.04171479 -0.5662433 -0.40272136
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616707 0.02967356 -0.6198308 -0.50351048
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703111 0.03850546 -1.0457818 -0.89484035
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589233 0.03892378 -1.0352139 -0.88263273
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807220 0.07221459  1.0391815  1.32226263
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866460 0.06294120  0.0632812  0.31001072
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421902 0.07245434  0.6001797  0.88420068
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840806 0.03666261 -0.2559393 -0.11222186
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the   supplementary          budget              to            this           house            last           april               , 
-##     -0.09929396      0.38792877      0.39870512      0.25585084      1.11577625      0.09906187      0.36998571      0.30684327      0.19897567      0.28962672     -0.09535080      0.34525935 
+##     -0.09918735      0.38804034      0.39880812      0.25596073      1.11587940      0.09917113      0.37009570      0.30695197      0.19908780      0.28973411     -0.09524568      0.34536954 
 ##            said              we           could            work             our             way         through          period              of          severe        economic        distress 
-##     -0.71939992      0.47983038     -0.52985450      0.58218329      0.74364373      0.33602301      0.65973997      0.55612703      0.33922983      1.27902260      0.47857924      1.84448008 
+##     -0.71929360      0.47993974     -0.52974784      0.58229001      0.74375077      0.33613277      0.65984375      0.55623495      0.33933976      1.27912340      0.47868749      1.84455974 
 ##               .           today             can          report            that notwithstanding 
-##      0.27343280      0.17410070      0.36369449      0.69166796      0.08824170      1.84448008</code></pre></div>
+##      0.27354268      0.17421583      0.36380216      0.69177917      0.08835240      1.84455974</code></pre></div>
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
@@ -851,29 +790,29 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.h
                 <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
 quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm_trim.html">dfm_trim</a></span>(quantdfm, <span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)
 ## Removing features occurring:
-##   - fewer than 4 times: 3,427
+##   - fewer than 4 times: 3,527
 ##   - in more than 10 documents: 72
-##   Total features removed: 3,499 (73.5%).
+##   Total features removed: 3,599 (73.8%).
 quantdfm
-## Document-feature matrix of: 14 documents, 1,263 features (64.5% sparse).
+## Document-feature matrix of: 14 documents, 1,279 features (64.6% sparse).
 
-if (<span class="kw">require</span>(topicmodels)) {
+<span class="cf">if</span> (<span class="kw">require</span>(topicmodels)) {
     myLDAfit20 &lt;-<span class="st"> </span><span class="kw">LDA</span>(<span class="kw"><a href="../reference/convert.html">convert</a></span>(quantdfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)
     <span class="kw">get_terms</span>(myLDAfit20, <span class="dv">5</span>)
 }
 ## Loading required package: topicmodels
-##      Topic 1     Topic 2     Topic 3     Topic 4   Topic 5   Topic 6    Topic 7       Topic 8    Topic 9    Topic 10  Topic 11    Topic 12     Topic 13       Topic 14     Topic 15 Topic 16  
-## [1,] "hit"       "measures"  "failed"    "levy"    "welfare" "million"  "kind"        "fianna"   "payment"  "child"   "taoiseach" "million"    "welfare"      "million"    "fianna" "fianna"  
-## [2,] "hospital"  "spending"  "strategy"  "million" "workers" "local"    "imagination" "fáil"     "measures" "benefit" "employees" "welfare"    "system"       "investment" "fáil"   "taxation"
-## [3,] "family"    "increases" "needed"    "carbon"  "million" "rate"     "policies"    "national" "aware"    "day"     "rate"      "even"       "government's" "scheme"     "side"   "high"    
-## [4,] "system"    "recent"    "ministers" "change"  "child"   "measures" "wit"         "irish"    "child"    "bank"    "referred"  "measures"   "policies"     "review"     "level"  "system"  
-## [5,] "allowance" "reduced"   "system"    "welfare" "fianna"  "level"    "create"      "support"  "day"      "society" "debate"    "investment" "child"        "spending"   "third"  "fáil"    
-##      Topic 17    Topic 18     Topic 19       Topic 20   
-## [1,] "level"     "support"    "society"      "taoiseach"
-## [2,] "million"   "back"       "equal"        "fine"     
-## [3,] "reduction" "continue"   "enterprising" "gael"     
-## [4,] "measures"  "investment" "sense"        "may"      
-## [5,] "create"    "million"    "nation"       "irish"</code></pre></div>
+##      Topic 1     Topic 2  Topic 3      Topic 4     Topic 5       Topic 6   Topic 7     Topic 8    Topic 9     Topic 10  Topic 11    Topic 12     Topic 13   Topic 14   Topic 15  Topic 16   
+## [1,] "measures"  "child"  "support"    "strategy"  "policies"    "face"    "taoiseach" "irish"    "care"      "benefit" "taoiseach" "reductions" "fianna"   "welfare"  "levy"    "scheme"   
+## [2,] "million"   "day"    "million"    "ministers" "imagination" "system"  "fine"      "scheme"   "welfare"   "child"   "employees" "investment" "fáil"     "system"   "million" "welfare"  
+## [3,] "spending"  "fáil"   "welfare"    "failed"    "face"        "failed"  "gael"      "recovery" "per"       "welfare" "rate"      "million"    "national" "fianna"   "carbon"  "recent"   
+## [4,] "review"    "bank"   "investment" "sort"      "create"      "brought" "may"       "making"   "allowance" "society" "referred"  "difficult"  "irish"    "taxation" "change"  "increases"
+## [5,] "reduction" "burden" "back"       "radical"   "tackle"      "needed"  "irish"     "benefit"  "hit"       "much"    "debate"    "confidence" "support"  "fáil"     "welfare" "deficit"  
+##      Topic 17       Topic 18      Topic 19    Topic 20     
+## [1,] "society"      "fianna"      "nation"    "kind"       
+## [2,] "sense"        "fáil"        "difficult" "wit"        
+## [3,] "enterprising" "citizenship" "companies" "national"   
+## [4,] "equal"        "side"        "equal"     "programme"  
+## [5,] "going"        "alternative" "change"    "imagination"</code></pre></div>
 </div>
 </div>
 </div>
