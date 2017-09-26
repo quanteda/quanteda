@@ -10,9 +10,9 @@ tfidf(x, scheme_tf = "prop", scheme_df = "inverse", base = 10, ...)
 \item{x}{object for which idf or tf-idf will be computed (a document-feature 
 matrix)}
 
-\item{scheme_tf}{scheme for \code{\link{tf}}; defaults to \code{"count"}}
+\item{scheme_tf}{scheme for \code{\link{tf}}; defaults to \code{"prop"}}
 
-\item{scheme_df}{scheme for \code{link{docfreq}}; defaults to
+\item{scheme_df}{scheme for \code{\link{docfreq}}; defaults to
 \code{"inverse"}}
 
 \item{base}{for the logarithms in the \code{tf} and \code{docfreq} calls}

@@ -251,8 +251,8 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
 #' fully sparse methods.
 #' @param x object for which idf or tf-idf will be computed (a document-feature 
 #'   matrix)
-#' @param scheme_tf scheme for \code{\link{tf}}; defaults to \code{"count"}
-#' @param scheme_df scheme for \code{link{docfreq}}; defaults to
+#' @param scheme_tf scheme for \code{\link{tf}}; defaults to \code{"prop"}
+#' @param scheme_df scheme for \code{\link{docfreq}}; defaults to
 #'   \code{"inverse"}
 #' @param base for the logarithms in the \code{tf} and \code{docfreq} calls
 #' @param ... additional arguments passed to \code{\link{docfreq}} when calling 
@@ -289,7 +289,7 @@ tfidf <- function(x, scheme_tf = "prop", scheme_df = "inverse", base = 10, ...) 
 
 #' @noRd
 #' @export
-tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
+tfidf.dfm <- function(x, scheme_tf = "prop", scheme_df = "inverse", base = 10, ...) {
 
     args <- list(...)
     if ("normalize" %in% names(args)) {
