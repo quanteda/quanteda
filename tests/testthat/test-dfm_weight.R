@@ -97,22 +97,22 @@ test_that("docfreq works as expected", {
     )
 })
 
-test_that("deprecated normalize argument still works in tfidf", {
-    mydfm <- dfm(c("He went out to buy a car", 
-                   "He went out and bought pickles and onions"))
-    expect_equal(
-        tfidf(mydfm),
-        suppressWarnings(tfidf(mydfm, normalize = FALSE))
-    )
-    expect_equal(
-        tfidf(mydfm, scheme_tf = "prop"),
-        suppressWarnings(tfidf(mydfm, normalize = TRUE))
-    )
-    expect_warning(
-        tfidf(mydfm, normalize = TRUE),
-        "normalize is deprecated"
-    )
-})
+# test_that("deprecated normalize argument still works in tfidf", {
+#     mydfm <- dfm(c("He went out to buy a car", 
+#                    "He went out and bought pickles and onions"))
+#     expect_equal(
+#         tfidf(mydfm),
+#         suppressWarnings(tfidf(mydfm, normalize = FALSE))
+#     )
+#     expect_equal(
+#         tfidf(mydfm, scheme_tf = "prop"),
+#         suppressWarnings(tfidf(mydfm, normalize = TRUE))
+#     )
+#     expect_warning(
+#         tfidf(mydfm, normalize = TRUE),
+#         "normalize is deprecated"
+#     )
+# })
 
 test_that("new tfidf returns same results as older one", {
     mydfm <- dfm(c("He went out to buy a car", 

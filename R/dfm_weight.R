@@ -244,7 +244,6 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
 }
 
 
-
 #' compute tf-idf weights from a dfm
 #' 
 #' Weight a dfm by term frequency-inverse document frequency (tf-idf) using
@@ -252,11 +251,13 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
 #' @param x object for which idf or tf-idf will be computed (a document-feature 
 #'   matrix)
 #' @param scheme_tf scheme for \code{\link{tf}}; defaults to \code{"count"}
-#' @param scheme_df scheme for \code{link{docfreq}}; defaults to
-#'   \code{"inverse"}
-#' @param base for the logarithms in the \code{tf} and \code{docfreq} calls
+#' @param scheme_df scheme for \code{\link{docfreq}}; defaults to
+#'   \code{"inverse"}.  Other options to \code{\link{docfreq}} can be passed through
+#'   the elipsis (\code{...}).
+#' @param base the base for the logarithms in the \code{\link{tf}} and \code{\link{docfreq}} calls; default is 10
 #' @param ... additional arguments passed to \code{\link{docfreq}} when calling 
-#'   \code{tfidf}
+#'   \code{tfidf}; these can be used to fix smoothing constants (default values 
+#'   are 0).  
 #' @details \code{tfidf} computes term frequency-inverse document frequency 
 #'   weighting.  The default is not to normalize term frequency (by computing 
 #'   relative term frequency within document) but this will be performed if 
@@ -273,17 +274,26 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-#' (wikiDfm <- new("dfmSparse", 
-#'                 Matrix::Matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
-#'                    byrow = TRUE, nrow = 2,  
-#'                    dimnames = list(docs = c("document1", "document2"), 
-#'                      features = c("this", "is", "a", "sample", "another",
-#'                                   "example")), sparse = TRUE)))
-#' docfreq(wikiDfm)
-#' tfidf(wikiDfm)
+#' wiki_dfm <- 
+#'     matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
+#'            byrow = TRUE, nrow = 2,
+#'            dimnames = list(docs = c("document1", "document2"),
+#'                            features = c("this", "is", "a", "sample", "another", "example"))) %>%
+#'     as.dfm()
+#' docfreq(wiki_dfm)
+#' tfidf(wiki_dfm, scheme_tf = "prop") %>% round(digits = 2)
+#' 
+#' \dontrun{
+#' # comparison with tm
+#' if (requireNamespace("tm")) {
+#'     convert(wiki_dfm, to = "tm") %>% weightTfIdf() %>% as.matrix()
+#'     # same as:
+#'     tfidf(wiki_dfm, base = 2, scheme_tf = "prop")
+#' }
+#' }
 #' @keywords internal weighting
 #' @export
-tfidf <- function(x, scheme_tf = "prop", scheme_df = "inverse", base = 10, ...) {
+tfidf <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
     UseMethod("tfidf")
 }
 
@@ -292,18 +302,17 @@ tfidf <- function(x, scheme_tf = "prop", scheme_df = "inverse", base = 10, ...) 
 tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
 
     args <- list(...)
-    if ("normalize" %in% names(args)) {
-        warning("normalize is deprecated; use scheme_tf = \"prop\" instead")
-        scheme_tf <- if (args[["normalize"]] == TRUE) "prop" else "count"
-        return(tfidf(x, scheme_tf = scheme_tf, scheme_df = scheme_df, base = base))
-    }
+    check_dots(args, names(formals(docfreq)))
 
     dfreq <- docfreq(x, scheme = scheme_df, base = base, ...)
     tfreq <- tf(x, scheme = scheme_tf, base = base)
+    
     if (nfeature(x) != length(dfreq)) 
         stop("missing some values in idf calculation")
+    
     # get the document indexes
     j <- as(tfreq, "dgTMatrix")@j + 1
+    
     # replace just the non-zero values by product with idf
     x@x <- tfreq@x * dfreq[j]
     x
