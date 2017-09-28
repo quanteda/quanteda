@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -170,13 +195,48 @@ the counts of features of <code>x</code> not matched to a dictionary key.  If
 #&gt;   text1        0 0
 #&gt;   text2        1 1</div><div class='input'>
 <span class='co'># glob format</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50% sparse).
+#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
+#&gt;        features
+#&gt; docs    christmas opposition taxglob taxregex country
+#&gt;   text1         1          1       1        0       0
+#&gt;   text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50% sparse).
+#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
+#&gt;        features
+#&gt; docs    christmas opposition taxglob taxregex country
+#&gt;   text1         1          1       1        0       0
+#&gt;   text2         0          0       1        0       2</div><div class='input'>
 <span class='co'># regex v. glob format: note that "united_states" is a regex match for "tax*"</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50% sparse).
+#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
+#&gt;        features
+#&gt; docs    christmas opposition taxglob taxregex country
+#&gt;   text1         1          1       1        0       0
+#&gt;   text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40% sparse).
+#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
+#&gt;        features
+#&gt; docs    christmas opposition taxglob taxregex country
+#&gt;   text1         1          1       1        0       0
+#&gt;   text2         0          0       2        1       2</div><div class='input'>
 <span class='co'># fixed format: no pattern matching</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (70% sparse).
+#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
+#&gt;        features
+#&gt; docs    christmas opposition taxglob taxregex country
+#&gt;   text1         1          1       0        0       0
+#&gt;   text2         0          0       0        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (70% sparse).
+#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
+#&gt;        features
+#&gt; docs    christmas opposition taxglob taxregex country
+#&gt;   text1         1          1       0        0       0
+#&gt;   text2         0          0       0        0       2</div><div class='input'>
 <span class='co'># show unmatched tokens</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>"_UNMATCHED"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>"_UNMATCHED"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
+#&gt; 2 x 6 sparse Matrix of class "dfmSparse"
+#&gt;        features
+#&gt; docs    christmas opposition taxglob taxregex country _UNMATCHED
+#&gt;   text1         1          1       1        0       0          3
+#&gt;   text2         0          0       1        0       2          2</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
