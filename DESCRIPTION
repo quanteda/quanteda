@@ -118,6 +118,7 @@ Collate:
     'textmodel-internal.R'
     'textmodel_NB.R'
     'textmodel_ca.R'
+    'textmodel_lsa.R'
     'textmodel_wordfish.R'
     'textmodel_wordscores.R'
     'textmodel_wordshoal.R'
@@ -151,4 +152,3 @@ Collate:
 RcppModules: ngramMaker
 RoxygenNote: 6.0.1
 SystemRequirements: C++11
-
