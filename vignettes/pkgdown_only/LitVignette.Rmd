@@ -30,17 +30,20 @@ install.packages("readtext")
 
 But if you are reading this vignette, than chances are that you have already completed this step.
 
-# 2 First Foray
 
-Moby Dick: Descriptive analysis
+# 2 First Foray
 
 ## 2.1 Loading the first text file
 
-The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.  
-```{r eval=TRUE}
+```{r show = FALSE}
 suppressPackageStartupMessages(library("quanteda"))
+```
+
+We can load the text from _Moby Dick_ using the **readtext** package, directly from the [Project Gutenberg website](https://www.gutenberg.org/ebooks/2701).  
+```{r}
 library("readtext")
 data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
+names(data_char_mobydick) <- "mobydick"
 ```
 
 The `readtext()` function from the **readtext** package loads the text files into a `data.frame` object. We can access the text from a `data.frame` object (and also, as we will see, a `corpus` class object), using the `texts()` or the `View()` method. Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `stri_sub()` function from the **stringi** package, which shows the 1st through the 75th characters of the texts of our new object `data_char_mobydick`. Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
@@ -55,19 +58,32 @@ stri_sub(data_char_mobydick, 1, 75)
 The Gutenburg edition of the text contains some metadata before and after the text of the novel. The code below uses the `regexec` and `substring` functions to separate this from the text.
 ```{r}
 # extract the header information
-end_metadata_index <- regexec("CHAPTER 1. Loomings.", data_char_mobydick)[[1]]
-metadata_v <- stri_sub(data_char_mobydick, 1, end_metadata_index - 1)
+(start_v <- stri_locate_first_fixed(data_char_mobydick, "CHAPTER 1. Loomings.")[1])
+(end_v <- stri_locate_last_fixed(data_char_mobydick, "orphan.")[1])
 ```
 
-To trim the extra text at the end of the Gutenburg version of the text, we can use the keyword-in-context (`kwic`) function to view the contexts around the word 'orphan', which we know should occur at the end of the book.
-
-```{r}
+Here, we found the character index of the beginning and end of the novel, rather than counting the lines as in the book, but the result will be very similar.  If we want to verify that "orpan." is the end of the novel, we can use the `kwic()` function:
+```{r out.width='\\textwidth'}
 # verify that "orphan" is the end of the novel
 kwic(data_char_mobydick, "orphan")
+```
 
-# extract the novel -- a better way
-novel_v <- stri_sub(data_char_mobydick, end_metadata_index, 
-                     regexec("End of Project Gutenberg's Moby Dick.", data_char_mobydick)[[1]]-1)
+If we want to count the number of lines, we can do so by counting the newlines in the text.
+```{r}
+stri_count_fixed(data_char_mobydick, "\n")
+```
+
+To measure just the number lines in the novel itself, without the metadata, we can subset the text from the start and end of the novel part, as identified above.
+```{r}
+stri_sub(data_char_mobydick, from = start_v, to = end_v) %>%
+    stri_count_fixed("\n")
+```
+
+To trim the non-book content, we use `stri_sub()` to extract the text between the beginning and ending indexes found above:
+```{r}
+novel_v <- stri_sub(data_char_mobydick, start_v, end_v)
+length(novel_v)
+stri_sub(novel_v, 1, 94) %>% cat()
 ```
 
 
@@ -80,30 +96,26 @@ We begin processing the text by converting to lower case. **quanteda**'s `*_tolo
 novel_lower_v <- char_tolower(novel_v)
 ```
 
-**quanteda**'s `tokens` function splits the text into words, with many options available for which characters should be preserved, and which should be used to define word boundaries. The default behaviour works similarly to splitting on the regular expression for word boundary (`\W`), but does not treat apostrophes as word boundaries. This means that *'s* and *'t* are not treated as whole words from possessive forms and contractions. 
+**quanteda**'s `tokens()` function splits the text into words, with many options available for which characters should be preserved, and which should be used to define word boundaries.  The default behaviour works similarly to splitting on the regular expression for non-word characters (`\W` as in the book), but it much smarter.  For instance, it does not treat apostrophes as word boundaries, meaning that `'s` and `'t` are not treated as whole words from possessive forms and contractions. 
 
+We will skip straight to getting the character vector of tokens:
 ```{r}
-# tokenize
-moby_word_v <- as.character(tokens(novel_lower_v, remove_punct = TRUE))
-length(moby_word_v)
-total.length <- length(moby_word_v)
-str(moby_word_v)
+moby_word_v <- tokens(novel_lower_v, remove_punct = TRUE) %>% as.character()
+(total_length <- length(moby_word_v))
 moby_word_v[1:10]
 moby_word_v[99986] 
-
 moby_word_v[c(4,5,6)]
 
 # check positions of "whale"
-head(which(moby_word_v == "whale"))
+which(moby_word_v == "whale") %>% head()
 ```
 
 ## 2.4 Beginning the analysis
 
-The code below uses the tokenized text to the occurrence of the word *whale*. To include the possessive form *whale's*, we may sum the counts of both forms, count the keyword-in-context matches by regular expression or glob. A *glob* is a simple wildcard matching pattern common on Unix systems -- asterisks match zero or more characters. **quanteda**'s tokenize function separates punctuation into tokens by default. To match the counts in the book, we can choose to remove the punctuation.
+The code below uses the tokenized text to the occurrence of the word *whale*. To include the possessive form *whale's*, we may sum the counts of both forms, count the keyword-in-context matches by regular expression or glob. A *glob* is a simple wildcard matching pattern common on Unix systems -- asterisks match zero or more characters.  
 
+Note that the counts below do not match those in the book, due to differences in how the book has split on any non-word character, while **quanteda**'s tokenizer splits on a more comprehensive set of "word boundaries".  **quanteda**'s `tokens()` function by default does not remove punctuation or numbers (both defined as "non-word" characters) by default.  To more closely match the counts in the book, we have removed punctuation. 
 ```{r}
-moby_word_v <- as.character(tokens(novel_lower_v))
-# count of the word 'whale'
 length(moby_word_v[which(moby_word_v == "whale")])
 
 # total occurrences of 'whale' including possessive
@@ -111,8 +123,8 @@ length(moby_word_v[which(moby_word_v == "whale")]) + length(moby_word_v[which(mo
 
 # same thing using kwic()
 nrow(kwic(novel_lower_v, "whale"))
-nrow(kwic(novel_lower_v, "whale*")) # includes words like 'whalemen'
-(total_whale_hits <- nrow(kwic(novel_lower_v, "^whale('s){0,1}$", valuetype = 'regex')))
+nrow(kwic(novel_lower_v, "whale*")) # includes words like "whalemen"
+(total_whale_hits <- nrow(kwic(novel_lower_v, pattern = "^whale('s){0,1}$", valuetype = "regex")))
 ```
 
 What fraction of the total words (excluding punctuation) in the novel are "whale"?
@@ -124,25 +136,30 @@ total_whale_hits / ntoken(novel_lower_v, remove_punct = TRUE)
 With `ntype()` we can calculate the size of the vocabulary -- includes possessive forms, but excludes punctuation, symbols and numbers.
 ```{r}
 # total unique words
-length(unique(novel_lower_v))
-ntype(char_tolower(novel_v), remove_punct = TRUE, remove_numbers = TRUE, remove_symbols = TRUE)
+length(unique(moby_word_v))
+ntype(char_tolower(novel_v), remove_punct = TRUE)
 ```
 
-To quickly sort the word types by their frequency, we can use the `dfm()` command to create a matrix of counts of each word type -- a document-frequency matrix. In this case there is only one document, the entire book.
+To quickly sort the word types by their frequency, we can use the `dfm()` command to create a matrix of counts of each word type -- a document-frequency matrix. In this case there is only one document, the entire book. 
 ```{r eval=TRUE}
 # ten most frequent words
-moby_dfm <- dfm(novel_lower_v, tolower = TRUE)
+moby_dfm <- dfm(novel_lower_v, remove_punct = TRUE)
+head(moby_dfm, nfeature = 10)
+```
+Getting the list of the most frequent 10 terms is easy, using `textstat_frequency()`.  
+```{r}
+textstat_frequency(moby_dfm, n = 10) 
+```
 
-moby_dfm[, "whale"]
-
+Finally, if we wish to plot the most frequent (50) terms, we can supply the results of `textstat_frequency()` to `ggplot()` to plot their frequency by their rank:
+```{r fig.width = 8}
 # plot frequency of 50 most frequent terms 
 library(ggplot2)
 theme_set(theme_minimal())
-
 textstat_frequency(moby_dfm, n = 50) %>% 
   ggplot(aes(x = rank, y = frequency)) +
   geom_point() +
-  labs(x = NULL, y = "Term frequency")
+  labs(x = "Frequency rank", y = "Term frequency")
 ```
 
 
