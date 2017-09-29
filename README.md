@@ -136,7 +136,7 @@ Demonstration
 ``` r
 library(quanteda)
 ## quanteda version 0.99.8
-## Using 7 of 8 threads for parallel computing
+## Using 3 of 4 threads for parallel computing
 ## 
 ## Attaching package: 'quanteda'
 ## The following object is masked from 'package:utils':
@@ -165,7 +165,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    723        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Sat Sep 23 08:11:50 2017
+## Created: Thu Sep 28 17:49:12 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context

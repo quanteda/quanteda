@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -211,8 +236,8 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
   technical users, we have set its options to default to minimal 
   intervention. This means that punctuation is tokenized as well, and that 
   nothing is removed by default from the text being tokenized except 
-  inter-word spacing and equivalent characters.
-    Note that a <code>tokens</code> constructor also works on tokens objects, 
+  inter-word spacing and equivalent characters.</p>  
+<p>Note that a <code>tokens</code> constructor also works on tokens objects, 
   which allows setting additional options that will modify the original object.
   It is not possible, however, to change a setting to "un-remove" something 
   that was removed from the input tokens object, however.  For instance,
@@ -228,8 +253,8 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
   <code>what = "fasterword"</code> and <code>remove_url = TRUE</code>.  If you wish to 
   keep the URLs, but do not want them mangled, then your options are more 
   limited, since removing punctuation and symbols will also remove them from 
-  URLs.  We are working on improving this behaviour.
-    See the examples below.</p>
+  URLs.  We are working on improving this behaviour.</p>  
+<p>See the examples below.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -315,7 +340,7 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>text1</span><span class='kw'>=</span><span class='st'>"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
          <span class='kw'>text2</span><span class='kw'>=</span><span class='st'>"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span>)
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>...tokenizing 1 of 1 blocks</span></div><div class='output co'>#&gt; <span class='message'>...preserving hyphens</span></div><div class='output co'>#&gt; <span class='message'>...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...serializing tokens </span></div><div class='output co'>#&gt; <span class='message'>34 unique types</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.010999999998603 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>...tokenizing 1 of 1 blocks</span></div><div class='output co'>#&gt; <span class='message'>...preserving hyphens</span></div><div class='output co'>#&gt; <span class='message'>...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...serializing tokens </span></div><div class='output co'>#&gt; <span class='message'>34 unique types</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.0149999999999864 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] "This"      "is"        "$"         "10"        "in"        "999"      
 #&gt;  [7] "different" "ways"      ","         "up"        "and"       "down"     
@@ -472,14 +497,15 @@ the tokens object.  Only applies when tokenizing <a href='corpus.html'>corpus</a
 #&gt; 
 #&gt; mytext3 :
 #&gt; [1] "short"    "shorter"  "and"      "shortest"
-#&gt; </div><div class='input'><span class='co'>### removeFeatures(tokens(txt, remove_punct = TRUE), stopwords("english"))</span>
+#&gt; </div><div class='input'>### removeFeatures(tokens(txt, remove_punct = TRUE), stopwords("english"))
 
-<span class='co'># ngram tokenization</span>
-<span class='co'>### tokens(txt, remove_punct = TRUE, ngrams = 2)</span>
-<span class='co'>### tokens(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")</span>
-<span class='co'>### tokens(txt, remove_punct = TRUE, ngrams = 1:2)</span>
-<span class='co'># removing features from ngram tokens</span>
-<span class='co'>### removeFeatures(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))</span></div></pre>
+# ngram tokenization
+### tokens(txt, remove_punct = TRUE, ngrams = 2)
+### tokens(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
+### tokens(txt, remove_punct = TRUE, ngrams = 1:2)
+# removing features from ngram tokens
+### removeFeatures(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -29,10 +29,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../../reference/index.html">Reference</a>
+  <a href="../..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../../articles/index.html">Articles</a>
+  <a href="../../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../../news/index.html">News</a>
@@ -93,7 +117,7 @@
 <li><p><code>data_</code><em>class</em><code>_</code><em>descriptor</em>: data objects are named this way to clearly distinguish them and to make them easy to identify in the index. The first part identifies them as data, the second names their object class, and the third component is a descriptor. Example: <code>data_corpus_inaugural</code> is the <strong>quanteda</strong> <code>corpus</code> class object consisting of the US presidents’ inaugural addresses.</p></li>
 <li><p><code>text</code><em>general</em><code>_</code><em>specific</em>: functions that input a <strong>quanteda</strong> object and return the result of an analysis. Only the underscored functions that begin with <code>text</code> break the previous rule about the first part of the name identifying the object class that is input and output. Examples: <code><a href="../../reference/textstat_readability.html">textstat_readability()</a></code> takes a character or corpus as input, and returns a data.frame; <code><a href="../../reference/textplot_xray.html">textplot_xray()</a></code> takes a <code>kwic</code> object as input, and generates a dispersion plot (named “x-ray” because of its similarity to the plot produced by Kindle).</p></li>
 <li><p>Extensions of R functions: These are commonly used R functions, such as <code>head()</code>, that are also defined for <strong>quanteda</strong> objects. Examples: <code><a href="../../reference/head.dfm.html">head.dfm()</a></code>, coercion functions such as <code>as.list.tokens</code>, and Boolean class type checking functions such as <code><a href="../../reference/is.dfm.html">is.dfm()</a></code>.</p></li>
-<li><p>R-like functions. These are functions for <strong>quanteda</strong> objects that follow naming conventions and functionality that should be very familiar to users of R. Example: <code><a href="../../reference/ndoc.html">ndoc()</a></code> returns the number of documents in a corpus, tokens, or dfm object, similar to <code>base::nrow()</code>. Note that like <code>nrow()</code>, <code><a href="../../reference/ndoc.html">ndoc()</a></code> is not plural. Other examples include <code><a href="../../reference/docnames.html">docnames()</a></code> and <code><a href="../../reference/featnames.html">featnames()</a></code> – similar to <code>rownames()</code> and <code>colnames()</code>.</p></li>
+<li><p>R-like functions. These are functions for <strong>quanteda</strong> objects that follow naming conventions and functionality that should be very familiar to users of R. Example: <code><a href="../../reference/ndoc.html">ndoc()</a></code> returns the number of documents in a corpus, tokens, or dfm object, similar to <code><a href="http://www.rdocumentation.org/packages/base/topics/nrow">base::nrow()</a></code>. Note that like <code>nrow()</code>, <code><a href="../../reference/ndoc.html">ndoc()</a></code> is not plural. Other examples include <code><a href="../../reference/docnames.html">docnames()</a></code> and <code><a href="../../reference/featnames.html">featnames()</a></code> – similar to <code>rownames()</code> and <code>colnames()</code>.</p></li>
 <li>
 <p>Grammatical exceptions: Every language has these, usually due to path dependency from historical development, and <strong>quanteda</strong> is no exception. The list, however, is short:</p>
 <ul>
@@ -277,11 +301,12 @@ We recognize however that not all sequences will make sense, for instance `words
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
         <div id="tocnav">
-      <h2>Contents</h2>
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li>
 <a href="#introduction">Introduction</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#changes-in-v0.9.9">Changes in v0.9.9</a></li>
+<li><a href="#changes-in-v0-9-9">Changes in v0.9.9</a></li>
       <li><a href="#why-did-the-api-need-changing">Why did the API need changing?</a></li>
       </ul>
 </li>

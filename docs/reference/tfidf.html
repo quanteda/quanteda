@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -82,7 +107,7 @@
 fully sparse methods.</p>
     
 
-    <pre class="usage"><span class='fu'>tfidf</span>(<span class='no'>x</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>, <span class='kw'>scheme_df</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>tfidf</span>(<span class='no'>x</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"count"</span>, <span class='kw'>scheme_df</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -98,17 +123,19 @@ matrix)</p></td>
     </tr>
     <tr>
       <th>scheme_df</th>
-      <td><p>scheme for <code>link{docfreq}</code>; defaults to
-<code>"inverse"</code></p></td>
+      <td><p>scheme for <code><a href='docfreq.html'>docfreq</a></code>; defaults to
+<code>"inverse"</code>.  Other options to <code><a href='docfreq.html'>docfreq</a></code> can be passed through
+<code>...</code></p></td>
     </tr>
     <tr>
       <th>base</th>
-      <td><p>for the logarithms in the <code>tf</code> and <code>docfreq</code> calls</p></td>
+      <td><p>the base for the logarithms in the <code><a href='tf.html'>tf</a></code> and <code><a href='docfreq.html'>docfreq</a></code> calls; default is 10</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>additional arguments passed to <code><a href='docfreq.html'>docfreq</a></code> when calling 
-<code>tfidf</code></p></td>
+<code>tfidf</code>; these can be used to fix smoothing constants (default values 
+are 0).</p></td>
     </tr>
     </table>
     
@@ -159,25 +186,29 @@ matrix)</p></td>
 #&gt;   R4  0  0   0   0   0   0
 #&gt;   R5  0  0   0   0   0   0
 #&gt;   V1  0  0   0   2   3  10</div><div class='input'>
-<span class='co'># replication of worked example from</span>
-<span class='co'># https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf</span>
-(<span class='no'>wikiDfm</span> <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"dfmSparse"</span>,
-                <span class='kw'>Matrix</span><span class='kw'>::</span><span class='fu'>Matrix</span>(<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>, <span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
-                   <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                   <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>docs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"document1"</span>, <span class='st'>"document2"</span>),
-                     <span class='kw'>features</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>, <span class='st'>"another"</span>,
-                                  <span class='st'>"example"</span>)), <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
+<span class='co'>## replication of worked example from</span>
+<span class='co'>## https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf</span>
+<span class='no'>wiki_dfm</span> <span class='kw'>&lt;-</span>
+    <span class='fu'>matrix</span>(<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>, <span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
+           <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+           <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>docs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"document1"</span>, <span class='st'>"document2"</span>),
+                           <span class='kw'>features</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>, <span class='st'>"another"</span>, <span class='st'>"example"</span>))) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='is.dfm.html'>as.dfm</a></span>()
+<span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>wiki_dfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>round</span>(<span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
 #&gt; 2 x 6 sparse Matrix of class "dfmSparse"
 #&gt;            features
-#&gt; docs        this is a sample another example
-#&gt;   document1    1  1 2      1       0       0
-#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>wikiDfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>tfidf</span>(<span class='no'>wikiDfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfmSparse"
-#&gt;            features
-#&gt; docs        this is       a  sample another example
-#&gt;   document1    0  0 0.60206 0.30103 0       0      
-#&gt;   document2    0  0 0       0       0.60206 0.90309</div></pre>
+#&gt; docs        this is    a sample another example
+#&gt;   document1    0  0 0.12   0.06    0       0   
+#&gt;   document2    0  0 0      0       0.09    0.13</div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'>## comparison with tm</span>
+<span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"tm"</span>)) {
+    <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>wiki_dfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>weightTfIdf</span>() <span class='kw'>%&gt;%</span> <span class='fu'>as.matrix</span>()
+    <span class='co'># same as:</span>
+    <span class='fu'>tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
+}
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

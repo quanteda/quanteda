@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -151,7 +176,19 @@ original dfm, even if these are empty.  See Details.</p></td>
 <span class='co'># selecting on a dfm</span>
 <span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b b c"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"b b c d"</span>))
 <span class='no'>dfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"x y z"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a b c c d"</span>, <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"x x x"</span>))
-<span class='fu'>dfm_subset</span>(<span class='no'>dfm1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>dfm_subset</span>(<span class='no'>dfm1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfm2</span>[<span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>1</span>,<span class='fl'>2</span>), ])</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div></pre>
+<span class='fu'>dfm_subset</span>(<span class='no'>dfm1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (50% sparse).
+#&gt; 3 x 4 sparse Matrix of class "dfmSparse"
+#&gt;     features
+#&gt; docs a b c d
+#&gt;   d1 1 2 1 0
+#&gt;   d2 0 2 1 1
+#&gt;   d3 0 0 0 0</div><div class='input'><span class='fu'>dfm_subset</span>(<span class='no'>dfm1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfm2</span>[<span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>1</span>,<span class='fl'>2</span>), ])</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (50% sparse).
+#&gt; 3 x 4 sparse Matrix of class "dfmSparse"
+#&gt;     features
+#&gt; docs a b c d
+#&gt;   d3 0 0 0 0
+#&gt;   d1 1 2 1 0
+#&gt;   d2 0 2 1 1</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
