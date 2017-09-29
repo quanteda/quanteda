@@ -14,7 +14,7 @@ matrix)}
 
 \item{scheme_df}{scheme for \code{\link{docfreq}}; defaults to
 \code{"inverse"}.  Other options to \code{\link{docfreq}} can be passed through
-\code{...}}
+the elipsis (\code{...}).}
 
 \item{base}{the base for the logarithms in the \code{\link{tf}} and \code{\link{docfreq}} calls; default is 10}
 
@@ -38,8 +38,8 @@ head(tfidf(data_dfm_lbgexample)[, 5:10])
 docfreq(data_dfm_lbgexample)[5:15]
 head(tf(data_dfm_lbgexample)[, 5:10])
 
-## replication of worked example from
-## https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
+# replication of worked example from
+# https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
 wiki_dfm <- 
     matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
            byrow = TRUE, nrow = 2,
@@ -50,7 +50,7 @@ docfreq(wiki_dfm)
 tfidf(wiki_dfm, scheme_tf = "prop") \%>\% round(digits = 2)
 
 \dontrun{
-## comparison with tm
+# comparison with tm
 if (requireNamespace("tm")) {
     convert(wiki_dfm, to = "tm") \%>\% weightTfIdf() \%>\% as.matrix()
     # same as:
