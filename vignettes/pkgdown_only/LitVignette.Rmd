@@ -162,6 +162,11 @@ textstat_frequency(moby_dfm, n = 50) %>%
   labs(x = "Frequency rank", y = "Term frequency")
 ```
 
+For direct comparison with the next chapter, we also create the sorted list of the most frequently found words using this:
+```{r}
+sorted_moby_freqs_t <- topfeatures(moby_dfm, n = nfeature(moby_dfm))
+```
+
 
 # 3 Accessing and Comparing Word Frequency Data
 
@@ -170,35 +175,50 @@ textstat_frequency(moby_dfm, n = 50) %>%
 We can query the document-frequency matrix to retrieve word frequencies, as with a normal matrix:
 ```{r eval=TRUE}
 # frequencies of 'he' and 'she' - these are matrixes, not numerics
+sorted_moby_freqs_t[c("he", "she", "him", "her")]
+# another method: indexing the dfm
 moby_dfm[, c("he", "she", "him", "her")]
-moby_dfm[, "her"]
-moby_dfm[, "him"] / moby_dfm[, "her"]
-moby_dfm[, "he"] / moby_dfm[, "she"]
+sorted_moby_freqs_t[1]
+sorted_moby_freqs_t["the"]
+
+# term frequency ratios
+sorted_moby_freqs_t["him"] / sorted_moby_freqs_t["her"]
+sorted_moby_freqs_t["he"] / sorted_moby_freqs_t["she"]
 ```
+
+Total number of tokens:
+```{r}
+ntoken(moby_dfm)
+sum(sorted_moby_freqs_t)
+```
+
 
 ## 3.2 Recycling
 
+Relative term frequencies:
 ```{r}
+sorted_moby_rel_freqs_t <- sorted_moby_freqs_t / sum(sorted_moby_freqs_t) * 100
+sorted_moby_rel_freqs_t["the"]
+
+# by weighting the dfm directly
 moby_dfm_pct <- dfm_weight(moby_dfm, type = "relfreq") * 100
 moby_dfm_pct[, "the"]
-
-textstat_frequency(moby_dfm_pct, n = 10) %>% 
-  ggplot(aes(x = reorder(feature, rank), y = frequency)) +
-  geom_point() +
-  labs(title = "Top Ten Words", x = NULL, y = "Percentage of Full Text")
 ```
 
-Note that the top ten words are either punctuation or so called stopwords. You can remove stopwords and punctuation from a `dfm()`.
-
+Plotting the most frequent terms, replicating the plot from the book:
 ```{r}
-moby_dfm_no_stopwords <- dfm(novel_lower_v, remove = stopwords("english"), remove_punct = TRUE)
-
-# find relative frequency of top ten words excluding punctuation and stopwords
-moby_dfm_no_stopwords %>% 
-  dfm_weight(type = "relfreq") %>% 
-  textstat_frequency(n = 10)
+plot(sorted_moby_rel_freqs_t[1:10], type = "b",
+     xlab = "Top Ten Words", ylab = "Percentage of Full Text", xaxt = "n")
+axis(1,1:10, labels = names(sorted_moby_rel_freqs_t[1:10]))
 ```
 
+Plotting the most frequent terms using **ggplot2**:
+```{r}
+textstat_frequency(moby_dfm_pct, n = 10) %>% 
+  ggplot(aes(x = reorder(feature, -rank), y = frequency)) +
+  geom_bar(stat = "identity") + coord_flip() + 
+  labs(x = "", y = "Term Frequency as a Percentage")
+```
 
 # 4 Token Distribution Analysis
 
@@ -207,125 +227,119 @@ moby_dfm_no_stopwords %>%
 A dispersion plot allows us to visualize the occurrences of particular terms throughout the text. The object returned by the `kwic` function can be plotted to display a dispersion plot. The **quanteda** `textplot_` objects are based on **ggplot2**, so you can easily change the plot, for example by adding custom title.
 ```{r eval=TRUE, fig.width=8, fig.height=1.5}
 # using words from tokenized corpus for dispersion
-textplot_xray(kwic(novel_v, "whale")) +
-  ggtitle("Lexical dispersion")
-  
+textplot_xray(kwic(novel_v, "whale")) + ggtitle("Lexical dispersion")
 ```
 
-You can also pass multiple kwic objects to `textplot_xray()` to compare the dispersion of different terms:
+To produce multiple dispersion plots for comparison, you can simply send more than one `kwic()` output to `textplot_xray()`:
 ```{r eval=TRUE, fig.width=8, fig.height=2.5}
 textplot_xray(
      kwic(novel_v, "whale"),
-     kwic(novel_v, "Ahab"),
-     kwic(novel_v, "Pequod")) +
-    ggtitle("Lexical dispersion")
+     kwic(novel_v, "Ahab")
+) + ggtitle("Lexical dispersion")
+```
+
+## 4.2 Searching with `grep`
+
+```{r}
+# identify the chapter break locations
+chap_positions_v <- kwic(novel_v, phrase(c("CHAPTER \\d")), valuetype = "regex")$from
+head(chap_positions_v)
 ```
 
 
 ## 4.2 Identifying chapter breaks
 
 Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `char_segment()` function to split this by the string which specifies the chapter breaks. 
-
 ```{r}
-head(kwic(novel_v, 'chapter'))
-chapters_vec <- unlist(char_segment(novel_v, valuetype = "regex", pattern = "CHAPTER\\s\\d"))
-chapters_ower_vec <- char_tolower(chapters_vec)
-
-# create a text corpus
-chapters_corp <- corpus(chapters_vec)
-
-# rename document names
-docnames(chapters_corp) <- paste("Chapter", 1:ndoc(chapters_corp), sep = " ")
+chapters_corp <- 
+    corpus(data_char_mobydick) %>%
+    corpus_segment(pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")
+summary(chapters_corp, 10)
 ```
+The titles are automatically extracted into the `pattern` document variables, and the text of each chapter becomes the text of each new document unit. Job done!
+
+
+### 4.4.5 barplots of whale and ahab
 
 With the corpus split into chapters, we can use the `dfm()` function to create a matrix of counts of each word in each chapter -- a document-frequency matrix.
 
-## Fig 4.4 barplots of whale and ahab
 ```{r eval=TRUE}
 # create a dfm
 chap_dfm <- dfm(chapters_corp)
 
 # extract row with count for "whale"/"ahab" in each chapter
 # and convert to data frame for plotting
-chap_freq <- chap_dfm[, c('whale', 'ahab')] %>% 
-  convert(to = "data.frame")
+whales_ahabs_df <- as.data.frame(chap_dfm[, c('whale', 'ahab')])
+    
+whales_ahabs_df$chapter <- 1:nrow(whales_ahabs_df)
 
-chap_freq$chapter <- 1:nrow(chap_freq)
+ggplot(data = whales_ahabs_df, aes(x = chapter, y = whale)) + 
+    geom_bar(stat = "identity") +
+    labs(x = "Chapter", 
+         y = "Frequency",
+         title = "Occurrence of 'whale'")
 
-ggplot(data = chap_freq, aes(x = chapter, y = whale)) + 
-  geom_bar(stat = "identity") +
-  labs(x = "Chapter", 
-       y = "Frequency",
-       title = "Occurrence of 'whale'")
-
-ggplot(data = chap_freq, aes(x = chapter, y = ahab)) + 
-  geom_bar(stat = "identity") +
-      labs(x = "Chapter", 
-       y = "Frequency",
-       title = "Occurrence of 'ahab'")
+ggplot(data = whales_ahabs_df, aes(x = chapter, y = ahab)) + 
+    geom_bar(stat = "identity") +
+        labs(x = "Chapter", 
+         y = "Frequency",
+         title = "Occurrence of 'ahab'")
 
 ```
 
-The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. To get a feel for what the resulting weighted dfm (document feature matrix) looks like, you can inspect it with the `head` function, which prints the first few rows and columns.
+The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. To get a feel for what the resulting weighted dfm (document-feature matrix) looks like, you can inspect it with the `head` function, which prints the first few rows and columns.
 
-## Relative frequency barplots of whale and ahab
 ```{r eval=TRUE}
 rel_dfm <- dfm_weight(chap_dfm, type = 'relfreq') * 100
 head(rel_dfm)
 
 # subset dfm and convert to data.frame object
-rel_chap_freq <- rel_dfm[, c('whale', 'ahab')] %>% 
-  convert(to = "data.frame")
-
+rel_chap_freq <- as.data.frame(rel_dfm[, c('whale', 'ahab')])
 rel_chap_freq$chapter <- 1:nrow(rel_chap_freq)
-
 ggplot(data = rel_chap_freq, aes(x = chapter, y = whale)) + 
-  geom_bar(stat = "identity") +
-    labs(x = "Chapter", 
-       y = "Relative frequency",
-       title = "Occurrence of 'whale'")
+    geom_bar(stat = "identity") +
+    labs(x = "Chapter", y = "Relative frequency",
+         title = "Occurrence of 'whale'")
 
 ggplot(data = rel_chap_freq, aes(x = chapter, y = ahab)) + 
-  geom_bar(stat = "identity") +
-  labs(x = "Chapter", 
-       y = "Relative frequency",
-       title = "Occurrence of 'ahab'")
+    geom_bar(stat = "identity") +
+    labs(x = "Chapter", y = "Relative frequency",
+         title = "Occurrence of 'ahab'")
 ```
 
 # 5 Correlation
 
 ## 5.2 Correlation Analysis
 
-The `dfm` function constructs a matrix which contains zeroes (rather than NAs) for words that do not occur in a chapter, so there's no need to manually convert NAs. We can compute the individual correlation or the correlation for a matrix of the two columns.
-
+Correlation analysis (and many other similarity measures) can be constructed using fast, sparse means through the `textstat_simil()` function.  Here, we select feature comparisons for just "whale" and "ahab", and convert this into a matrix as in the book.  Because correlations are sensitive to document length, we first convert this into a relative frequency using `dfm_weight()`.
 ```{r}
-wf <- as.numeric(rel_dfm[, 'whale'])
-af <- as.numeric(rel_dfm[, 'ahab'])
-
-wa_dfm <- cbind(rel_dfm[, 'whale'], rel_dfm[, 'ahab'])
-cor(as.matrix(wa_dfm))
-
-cor.test(wf, af)
+dfm_weight(chap_dfm, type = "relfreq") %>% 
+    textstat_simil(selection = c("whale", "ahab"), method = "correlation", margin = "features") %>%
+    as.matrix() %>%
+    head(2)
 ```
 
 With the ahab frequency and whale frequency vectors extracted from the dfm, it is easy to calculate the significance of the correlation.
 
-##  5.4 Random Sampling
+##  5.4 Testing Correlation with Randomization
+
 ```{r}
+cor_data_df <- dfm_weight(chap_dfm, type = "relfreq")[, c("ahab", "whale")] %>%
+    as.data.frame
+
 # sample 1000 replicates and create data frame
 n <- 1000
 samples <- data.frame(
-  cor_sample = replicate(n, cor(sample(af), sample(wf))),
-  id_sample = 1:n
+    cor_sample = replicate(n, cor(sample(cor_data_df$whale), cor_data_df$ahab)),
+    id_sample = 1:n
 )
 
 # plot distribution of resampled correlations
 ggplot(data = samples, aes(x = cor_sample, y = ..density..)) +
-  geom_histogram(colour = "black", binwidth = 0.01) +
-  geom_density(colour = "red") +
-  labs(x = "Correlation Coefficient",
-       y = NULL,
-       title = "Histogram of Random Correlation Coefficients with Normal Curve")
+    geom_histogram(colour = "black", binwidth = 0.01) +
+    geom_density(colour = "red") +
+    labs(x = "Correlation Coefficient", y = NULL,
+         title = "Histogram of Random Correlation Coefficients with Normal Curve")
 ```
 
 
@@ -336,7 +350,7 @@ ggplot(data = samples, aes(x = cor_sample, y = ..density..)) +
 The mean word frequency for a particular chapter can be calculated simply with the dfm. Each row is a document (in our case a chapter), so, for example, the mean word frequency of the first chapter is the sum of the first row of the matrix, divided by the number of word types in the first chapter. To get the number of word types in the first chapter only, we can either exclude words in that row which have a frequency of zero, or use the `ntype()` function on the first document in the corpus to achieve the same result.
 
 ```{r}
-first_chap <- as.matrix(chap_dfm[1,])
+first_chap <- as.matrix(chap_dfm[1, ])
 num_words <- length(first_chap[first_chap > 0])
 sum(chap_dfm[1,]) / num_words
 sum(chap_dfm[1,]) / ntype(chapters_corp[1], remove_punct = TRUE)
