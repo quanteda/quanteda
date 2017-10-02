@@ -80,22 +80,18 @@ double compute_dice(const std::vector<double> &counts){
 //************************//
 void counts(Text text,
            MapNgrams &counts_seq,
+           SetNgrams &set_ignore,
            const unsigned int &size){
 
     
     if (text.size() == 0) return; // do nothing with empty text
-    text.push_back(0); // add padding to include last words
-    
+
     std::size_t len_text = text.size();
-    for (std::size_t i = 0; i <= len_text; i++) {
+    for (std::size_t i = 0; i < text.size() - size + 1; i++) {
         //Rcout << "Size" << size << "\n";
-        if (i + size < len_text) {
-            //if (std::find(text.begin() + i, text.begin() + i + size, 0) == text.begin() + i + size) {
-                // dev::print_ngram(text_sub);
-                Text text_sub(text.begin() + i, text.begin() + i + size);
-                counts_seq[text_sub]++;
-           // }
-        }
+        // dev::print_ngram(text_sub);
+        Text text_sub(text.begin() + i, text.begin() + i + size);
+        counts_seq[text_sub]++;
     }
 }
 
@@ -103,14 +99,15 @@ struct counts_mt : public Worker{
     
     Texts texts;
     MapNgrams &counts_seq;
-    const unsigned int &len;
+    SetNgrams &set_ignore;
+    const unsigned int &size;
 
-    counts_mt(Texts texts_, MapNgrams &counts_seq_, const unsigned int &len_):
-        texts(texts_), counts_seq(counts_seq_), len(len_){}
+    counts_mt(Texts texts_, MapNgrams &counts_seq_, SetNgrams &set_ignore_, const unsigned int &size_):
+        texts(texts_), counts_seq(counts_seq_), set_ignore(set_ignore_), size(size_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
-            counts(texts[h], counts_seq, len);
+            counts(texts[h], counts_seq, set_ignore, size);
         }
     }
 };
@@ -118,20 +115,20 @@ struct counts_mt : public Worker{
 void estimates(std::size_t i,
                VecNgrams &seqs_np,  // seqs without padding
                IntParams &cs_np,
-              VecNgrams &seqs,
-              IntParams &cs, 
-              DoubleParams &sgma, 
-              DoubleParams &lmda, 
-              DoubleParams &dice,
-              DoubleParams &pmi,
-              DoubleParams &logratio,
-              DoubleParams &chi2,
-              DoubleParams &gensim,
-              DoubleParams &lfmd,
-              const String &method,
-              const int &count_min,
-              const double nseqs,
-              const double smoothing){
+               VecNgrams &seqs,
+               IntParams &cs, 
+               DoubleParams &sgma, 
+               DoubleParams &lmda, 
+               DoubleParams &dice,
+               DoubleParams &pmi,
+               DoubleParams &logratio,
+               DoubleParams &chi2,
+               DoubleParams &gensim,
+               DoubleParams &lfmd,
+               const String &method,
+               const int &count_min,
+               const double nseqs,
+               const double smoothing){
     
     std::size_t n = seqs_np[i].size(); //n=2:5, seqs
     if (n == 1) return; // ignore single words
@@ -285,6 +282,7 @@ struct estimates_mt : public Worker{
 // [[Rcpp::export]]
 DataFrame qatd_cpp_sequences(const List &texts_,
                              const CharacterVector &types_,
+                             const List &words_ignore_,
                              const unsigned int count_min,
                              const IntegerVector sizes_,
                              const String &method,
@@ -292,9 +290,12 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     
     Texts texts = as<Texts>(texts_);
     std::vector<unsigned int> sizes = as< std::vector<unsigned int> >(sizes_);
-    unsigned int len_coe = sizes.size() * types_.size();
+
+    SetNgrams set_ignore;
+    std::vector<std::size_t> spans = register_ngrams(words_ignore_, set_ignore);
    
     // Estimate significance of the sequences
+    unsigned int len_coe = sizes.size() * types_.size();
     std::vector<double> sgma_all;
     sgma_all.reserve(len_coe);
     
@@ -338,14 +339,14 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         MapNgrams counts_seq;
         //dev::Timer timer;
         //dev::start_timer("Count", timer);
-#if QUANTEDA_USE_TBB
-        counts_mt count_mt(texts, counts_seq, mw_len);
-        parallelFor(0, texts.size(), count_mt);
-#else
+//#if QUANTEDA_USE_TBB
+//        counts_mt count_mt(texts, counts_seq, mw_len);
+//        parallelFor(0, texts.size(), count_mt);
+//#else
         for (std::size_t h = 0; h < texts.size(); h++) {
-            counts(texts[h], counts_seq, mw_len);
+            counts(texts[h], counts_seq, set_ignore, mw_len);
         }
-#endif
+//#endif
         //dev::stop_timer("Count", timer);
         
         // Separate map keys and values
@@ -453,6 +454,6 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
 toks <- tokens(txt)
 types <- unique(as.character(toks))
-out2 <- qatd_cpp_sequences(toks, types, 1, 3, "lambda", 0.0)
+out2 <- qatd_cpp_sequences(toks, types, list(1, 2), 1, 3, "lambda", 0.0)
 
 */
