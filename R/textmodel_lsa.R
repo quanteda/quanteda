@@ -1,9 +1,3 @@
-#' @rdname textmodel-internal
-#' @keywords internal textmodel
-#' @export
-setClass("textmodel_lsa_fitted",
-         slots = c(nd = "numeric"),
-         contains = "textmodel_fitted")
 #' Latent Semantic Analysis 
 #' 
 #' \code{textmodel_lsa} implements Latent Semantic Analysis scaling on a 
@@ -30,9 +24,7 @@ textmodel_lsa <- function(x, nd = 10) {
 #' @noRd
 #' @export
 textmodel_lsa.dfm <- function(x, nd = 10) {
-    #tfidf
-    x <- tfidf(x)
-    
+
     if (nd > min(nrow(x), ncol(x))) nd <- min(nrow(x), ncol(x))
     if (nd < 2) nd <- 2
     #dec <- rsvd::rsvd(S, nd)   #rsvd is not as stable as RSpectra
@@ -43,11 +35,18 @@ textmodel_lsa.dfm <- function(x, nd = 10) {
         warning("[lsa] - there are singular values which are zero.");
     }
     
-    docs <- dec$u %*% diag(dec$d) %*% t(dec$v)
-    rownames(docs) <- rownames(x)
-    colnames(docs) <- colnames(x)
-    class(docs) <- "textmodel_lsa_fitted"
+    space <- NULL
+    space$tk <- dec$u
+    space$dk <- dec$v
+    space$sk <- dec$d
+    space$docs <- dec$u
+    space$features <- dec$v
+    rownames(space$tk) = rownames(x)
+    rownames(space$dk) = colnames(x)
     
-    #results
-    return(docs)  
+    # to be compatible with "lsa" package
+    class(space) = "LSAspace"
+    
+    # return the LSA space
+    return ( space )
 }
