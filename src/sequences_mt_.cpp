@@ -1,5 +1,5 @@
-//#include "dev.h"
 #include "quanteda.h"
+#include "dev.h"
 #include <bitset>
 using namespace quanteda;
 
@@ -77,40 +77,45 @@ double compute_dice(const std::vector<double> &counts){
     return dice;
 }
 
-//************************//
+
 void counts(Text text,
            MapNgrams &counts_seq,
+           SetUnigrams &set_ignore,
            const unsigned int &size){
 
-    
     if (text.size() == 0) return; // do nothing with empty text
-    text.push_back(0); // add padding to include last words
-    
-    std::size_t len_text = text.size();
-    for (std::size_t i = 0; i <= len_text; i++) {
-        //Rcout << "Size" << size << "\n";
-        if (i + size < len_text) {
-            //if (std::find(text.begin() + i, text.begin() + i + size, 0) == text.begin() + i + size) {
-                // dev::print_ngram(text_sub);
-                Text text_sub(text.begin() + i, text.begin() + i + size);
-                counts_seq[text_sub]++;
-           // }
+    for (std::size_t i = 0; i < text.size() - size + 1; i++) {
+        Text text_sub(text.begin() + i, text.begin() + i + size);
+        bool ignore = false;
+        for (std::size_t j = 0; j < text_sub.size(); j++) {
+            auto it = set_ignore.find(text_sub[j]);
+            if (it != set_ignore.end()) {
+                //Rcout << "i:" << i  << " j:" << j << "\n";
+                //dev::print_ngram(text_sub);
+                i += j; // jump
+                ignore = true;
+                break;
+            }
+        }
+        if (!ignore) {
+            counts_seq[text_sub]++;    
         }
     }
 }
 
-struct counts_mt : public Worker{
+struct counts_mt : public Worker {
     
     Texts texts;
     MapNgrams &counts_seq;
-    const unsigned int &len;
+    SetUnigrams &set_ignore;
+    const unsigned int &size;
 
-    counts_mt(Texts texts_, MapNgrams &counts_seq_, const unsigned int &len_):
-        texts(texts_), counts_seq(counts_seq_), len(len_){}
+    counts_mt(Texts texts_, MapNgrams &counts_seq_, SetUnigrams &set_ignore_, const unsigned int &size_):
+        texts(texts_), counts_seq(counts_seq_), set_ignore(set_ignore_), size(size_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
-            counts(texts[h], counts_seq, len);
+            counts(texts[h], counts_seq, set_ignore, size);
         }
     }
 };
@@ -118,20 +123,20 @@ struct counts_mt : public Worker{
 void estimates(std::size_t i,
                VecNgrams &seqs_np,  // seqs without padding
                IntParams &cs_np,
-              VecNgrams &seqs,
-              IntParams &cs, 
-              DoubleParams &sgma, 
-              DoubleParams &lmda, 
-              DoubleParams &dice,
-              DoubleParams &pmi,
-              DoubleParams &logratio,
-              DoubleParams &chi2,
-              DoubleParams &gensim,
-              DoubleParams &lfmd,
-              const String &method,
-              const int &count_min,
-              const double nseqs,
-              const double smoothing){
+               VecNgrams &seqs,
+               IntParams &cs, 
+               DoubleParams &sgma, 
+               DoubleParams &lmda, 
+               DoubleParams &dice,
+               DoubleParams &pmi,
+               DoubleParams &logratio,
+               DoubleParams &chi2,
+               DoubleParams &gensim,
+               DoubleParams &lfmd,
+               const String &method,
+               const int &count_min,
+               const double nseqs,
+               const double smoothing) {
     
     std::size_t n = seqs_np[i].size(); //n=2:5, seqs
     if (n == 1) return; // ignore single words
@@ -140,7 +145,6 @@ void estimates(std::size_t i,
     std::vector<double> counts_bit(std::pow(2, n), smoothing);// use 1/2 as smoothing
     for (std::size_t j = 0; j < seqs.size(); j++) {
         //if (i == j) continue; // do not compare with itself
- 
         int bit;
         bit = match_bit2(seqs_np[i], seqs[j]);
         counts_bit[bit] += cs[j];
@@ -285,6 +289,7 @@ struct estimates_mt : public Worker{
 // [[Rcpp::export]]
 DataFrame qatd_cpp_sequences(const List &texts_,
                              const CharacterVector &types_,
+                             const IntegerVector &words_ignore_,
                              const unsigned int count_min,
                              const IntegerVector sizes_,
                              const String &method,
@@ -292,37 +297,28 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     
     Texts texts = as<Texts>(texts_);
     std::vector<unsigned int> sizes = as< std::vector<unsigned int> >(sizes_);
-    unsigned int len_coe = sizes.size() * types_.size();
+    std::vector<unsigned int> words_ignore = as< std::vector<unsigned int> >(words_ignore_);
+
+    SetUnigrams set_ignore;
+    set_ignore.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+    for (size_t g = 0; g < words_ignore.size(); g++) {
+        set_ignore.insert(words_ignore[g]);
+    }
    
     // Estimate significance of the sequences
-    std::vector<double> sgma_all;
+    unsigned int len_coe = sizes.size() * types_.size();
+    std::vector<double> sgma_all, lmda_all, dice_all, pmi_all, logratio_all;
+    std::vector<double> chi2_all, gensim_all, lfmd_all, cs_all, ns_all;
+    
     sgma_all.reserve(len_coe);
-    
-    std::vector<double> lmda_all;
     lmda_all.reserve(len_coe);
-    
-    std::vector<double> dice_all;
     dice_all.reserve(len_coe);
-    
-    std::vector<double> pmi_all;
     pmi_all.reserve(len_coe);
-    
-    std::vector<double> logratio_all;
     logratio_all.reserve(len_coe);
-    
-    std::vector<double> chi2_all;
     chi2_all.reserve(len_coe);
-    
-    std::vector<double> gensim_all;
     gensim_all.reserve(len_coe);
-    
-    std::vector<double> lfmd_all;
     lfmd_all.reserve(len_coe);
-    
-    std::vector<int> cs_all;   // count of sequence
     cs_all.reserve(len_coe);
-    
-    std::vector<int> ns_all; //length of sequence
     ns_all.reserve(len_coe);
     
     VecNgrams seqs_all;
@@ -332,21 +328,21 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     //std::vector<std::string> ob_all;
     //ob_all.reserve(len_coe);
     
-    for(unsigned int m = 0; m < sizes.size(); m++){
-        unsigned int mw_len = sizes[m];
+    for (unsigned int size : sizes) {
+        //unsigned int mw_len = sizes[m];
         // Collect all sequences of specified words
         MapNgrams counts_seq;
-        //dev::Timer timer;
-        //dev::start_timer("Count", timer);
+        // dev::Timer timer;
+        // dev::start_timer("Count", timer);
 #if QUANTEDA_USE_TBB
-        counts_mt count_mt(texts, counts_seq, mw_len);
+        counts_mt count_mt(texts, counts_seq, set_ignore, size);
         parallelFor(0, texts.size(), count_mt);
 #else
         for (std::size_t h = 0; h < texts.size(); h++) {
-            counts(texts[h], counts_seq, mw_len);
+            counts(texts[h], counts_seq, set_ignore, size);
         }
 #endif
-        //dev::stop_timer("Count", timer);
+        // dev::stop_timer("Count", timer);
         
         // Separate map keys and values
         std::size_t len = counts_seq.size();
@@ -357,41 +353,32 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         cs_np.reserve(len);
         cs.reserve(len);
         
-       
-
         double total_counts = 0.0;
-        std::size_t len_noPadding = 0;
+        std::size_t len_nopad = 0;
         for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
-            seqs.push_back(it -> first);
-            cs.push_back(it -> second);
-            total_counts += it -> second;
-            if (std::find(it -> first.begin() , it -> first.begin() + it -> first.size(), 0) == it -> first.begin() + it -> first.size()) 
-            {
-                seqs_np.push_back(it -> first);
-                cs_np.push_back(it -> second);
-                seqs_all.push_back(it -> first);
-                cs_all.push_back(it -> second);
-                ns_all.push_back(it -> first.size());
-                len_noPadding ++;
+            seqs.push_back(it->first);
+            cs.push_back(it->second);
+            total_counts += it->second;
+            if (std::find(it->first.begin(), it->first.end(), 0) == it->first.end()) {
+                seqs_np.push_back(it->first);
+                cs_np.push_back(it->second);
+                seqs_all.push_back(it->first);
+                cs_all.push_back(it->second);
+                ns_all.push_back(it->first.size());
+                len_nopad++;
             }
         }
         
         //output counts;
-        //std::vector<std::string> ob_n(len_noPadding);
-        
+        //std::vector<std::string> ob_n(len_nopad);
         
         // adjust total_counts of MW 
         total_counts += 4 * smoothing;
         
         // Estimate significance of the sequences
-        DoubleParams sgma(len_noPadding);
-        DoubleParams lmda(len_noPadding);
-        DoubleParams dice(len_noPadding);
-        DoubleParams pmi(len_noPadding);
-        DoubleParams logratio(len_noPadding);
-        DoubleParams chi2(len_noPadding);
-        DoubleParams gensim(len_noPadding);
-        DoubleParams lfmd(len_noPadding);
+        DoubleParams sgma(len_nopad), lmda(len_nopad), dice(len_nopad), pmi(len_nopad);
+        DoubleParams logratio(len_nopad), chi2(len_nopad), gensim(len_nopad), lfmd(len_nopad);
+        
         //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
         estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
@@ -402,17 +389,17 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         }
 #endif
         //dev::stop_timer("Estimate", timer);
-        sgma_all.insert( sgma_all.end(), sgma.begin(), sgma.end() );
-        lmda_all.insert( lmda_all.end(), lmda.begin(), lmda.end() );
-        dice_all.insert( dice_all.end(), dice.begin(), dice.end() );
-        pmi_all.insert( pmi_all.end(), pmi.begin(), pmi.end() );
-        logratio_all.insert( logratio_all.end(), logratio.begin(), logratio.end() );
-        chi2_all.insert( chi2_all.end(), chi2.begin(), chi2.end() );
-        gensim_all.insert( gensim_all.end(), gensim.begin(), gensim.end() );
-        lfmd_all.insert( lfmd_all.end(), lfmd.begin(), lfmd.end() );
+        sgma_all.insert(sgma_all.end(), sgma.begin(), sgma.end());
+        lmda_all.insert(lmda_all.end(), lmda.begin(), lmda.end());
+        dice_all.insert(dice_all.end(), dice.begin(), dice.end());
+        pmi_all.insert(pmi_all.end(), pmi.begin(), pmi.end());
+        logratio_all.insert(logratio_all.end(), logratio.begin(), logratio.end());
+        chi2_all.insert(chi2_all.end(), chi2.begin(), chi2.end());
+        gensim_all.insert(gensim_all.end(), gensim.begin(), gensim.end());
+        lfmd_all.insert(lfmd_all.end(), lfmd.begin(), lfmd.end());
         
         //output counts
-        //ob_all.insert( ob_all.end(), ob_n.begin(), ob_n.end() );
+        //ob_all.insert(ob_all.end(), ob_n.begin(), ob_n.end());
         
     }
     
@@ -439,20 +426,17 @@ DataFrame qatd_cpp_sequences(const List &texts_,
 
 
 /***R
-
+require(quanteda)
 toks <- tokens(data_corpus_inaugural)
-toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
+#toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
+types <- attr(toks, 'types')
+id_ignore <- unlist(quanteda:::regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
 
-#toks <- tokens_select(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE, padding = TRUE)
-#types <- unique(as.character(toks))
-#out2 <- qatd_cpp_sequences(toks, types, 1, 2, "lambda1",0.5)
-#out3 <- qatd_cpp_sequences(toks, types, 1, 2, "lambda",0.5)
-#out4 <- qatd_cpp_sequences(toks, types, 1, 3, "lambda1",0.5)
-# out2$z <- out2$lambda / out2$sigma
-# out2$p <- 1 - stats::pnorm(out2$z)
+if (is.null(id_ignore)) id_ignore <- integer(0)
+(out <- qatd_cpp_sequences(toks, types, id_ignore, 1, 3, "lambda", 0.0))
+
 txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
-toks <- tokens(txt)
-types <- unique(as.character(toks))
-out2 <- qatd_cpp_sequences(toks, types, 1, 3, "lambda", 0.0)
+toks2 <- tokens(txt)
+(out2 <- qatd_cpp_sequences(toks2, attr(toks2, 'types'), c(3), 1, 3, "lambda", 0.0))
 
 */

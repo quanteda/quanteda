@@ -5,10 +5,9 @@ context('test textstat_collocations.R')
 # 
 # Two functions: One for counting the expressions and one for calculating the statistics
 
-# ************************************************************8
+# ************************************************************
 
-MWEcounts <- function (candidate,text,stopword="xxxx") 
-{
+MWEcounts <- function (candidate,text,stopword="xxxx") {
     # Function for creating the 2^K table of yes/no occurrences 
     # in text (character vector) 
     # of words in a K-word candidate expression (character vector) 
@@ -62,8 +61,7 @@ MWEcounts <- function (candidate,text,stopword="xxxx")
 
 # ************************************************************8
 
-MWEstatistics <- function (counts, smooth=0.5) 
-{
+MWEstatistics <- function (counts, smooth=0.5) {
     # Function for calculating some association statistics for a 
     # K-word candidate expression 
     # The input is output from the function MWEcounts 
@@ -263,71 +261,32 @@ test_that("deprecated collocations function works", {
         textstat_collocations(txts, size = 2, min_count = 2)
     )
     expect_warning(
-        collocations(txts, size = 3, min_count = 2),
+        collocations(txts, size = 2, min_count = 2),
         "'collocations' is deprecated"
     )
     expect_warning(
-        sequences(txts, size = 3, min_count = 2),
+        sequences(txts, size = 2, min_count = 2),
         "'sequences' is deprecated"
     )
 })
 
-test_that("tokens_segment_by_punctuation works as expected", {
-    toks1 <- tokens(c("This: is a test", "Another test"))
-    toks2 <- tokens(c("This: is a test!", "Another test."))
-    toks3 <- tokens(c("This is a test", "Another test"))
-    
+test_that("textstat_collocations.tokens works ok with zero-length documents (#940)", {
+    txt <- c('I like good ice cream.', 'Me too!  I like good ice cream.', '')
+    toks <- tokens(tolower(txt), remove_punct = TRUE, remove_symbols = TRUE)
+
     expect_equal(
-        as.list(quanteda:::tokens_segment_by_punctuation(toks1)),
-        list(text1.1 = "This", text1.2 = c("is", "a", "test"), text2.1 = c("Another", "test"))
+        textstat_collocations(txt, size = 2, min_count = 2, tolower = TRUE)$collocation,
+        c("ice cream", "like good", "i like", "good ice")
     )
-    
+    ##   collocation count length   lambda        z
+    ## 1   ice cream     2      2 4.317488 2.027787
+    ## 2   like good     2      2 4.317488 2.027787
+    ## 3      i like     2      2 4.317488 2.027787
+    ## 4    good ice     2      2 4.317488 2.027787
+
     expect_equal(
-        as.list(quanteda:::tokens_segment_by_punctuation(toks2)),
-        list(text1.1 = "This", text1.2 = c("is", "a", "test"), text2.1 = c("Another", "test"))
-    )
-    
-    expect_equal(
-        as.list(quanteda:::tokens_segment_by_punctuation(toks3)),
-        list(text1 = c("This", "is", "a", "test"), text2 = c("Another", "test"))
-    )
-    
-    expect_equal(
-        as.character(quanteda:::tokens_segment_by_punctuation(tokens("One!?"))),
-        "One"
-    )
-    expect_equal(
-        as.list(quanteda:::tokens_segment_by_punctuation(tokens("%*!?"))),
-        list(text1 = character())
-    )
-    expect_equal(
-        as.list(quanteda:::tokens_segment_by_punctuation(as.tokens(list(d1 = letters[1:3], d2 = "")))),
-        list(d1 = c("a", "b", "c"), d2 = character())
-    )
-    expect_equal(
-        as.list(quanteda:::tokens_segment_by_punctuation(as.tokens(list(d1 = letters[1:3], d2 = "", d3 = c("", ""))))),
-        list(d1 = c("a", "b", "c"), d2 = character(), d3 = character())
+        textstat_collocations(toks, size = 2, min_count = 2)$collocation,
+        c("ice cream", "like good", "i like", "good ice")
     )
 })
-
-# Broken
-# test_that("textstat_collocations.tokens works ok with zero-length documents (#940)", {
-#     txt <- c('I like good ice cream.', 'Me too!  I like good ice cream.', '')
-#     toks <- tokens(tolower(txt), remove_punct = TRUE, remove_symbols = TRUE)
-#     
-#     expect_equal(
-#         textstat_collocations(txt, size = 2, min_count = 2, tolower = TRUE)$collocation,
-#         c("ice cream", "like good", "i like", "good ice")
-#     )
-#     ##   collocation count length   lambda        z
-#     ## 1   ice cream     2      2 4.317488 2.027787
-#     ## 2   like good     2      2 4.317488 2.027787
-#     ## 3      i like     2      2 4.317488 2.027787
-#     ## 4    good ice     2      2 4.317488 2.027787
-#     
-#     expect_equal(
-#         textstat_collocations(toks, size = 2, min_count = 2)$collocation,
-#         c("ice cream", "like good", "i like", "good ice")
-#     )
-# })
 
