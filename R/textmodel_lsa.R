@@ -13,6 +13,12 @@ setClass("textmodel_lsa_fitted",
 #' @author Haiyan Wang and Kenneth Benoit
 #' @details \link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
 #'   enable the fast computation of the SVD.
+#' @note  The number of dimensions \code{nd} retained in LSA is an empirical issue. While a reduction in k can remove much of the noise, keeping too few dimensions
+#'  or factors may loose important information.
+#' @references Barbara Rosario.  2000. "Latent Semantic Indexing: An overview". 
+#' \emph{Techn. rep. INFOSYS 240 Spring Paper, University of California, Berkeley.} 
+#' \url{http://www.sims.berkeley.edu/rosario/projects/LSI.pdf} 
+#'   
 #' @examples 
 #' ieDfm <- dfm(data_corpus_irishbudget2010)
 #' mylsa <- textmodel_lsa(ieDfm)
