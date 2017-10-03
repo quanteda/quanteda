@@ -16,14 +16,15 @@
 #' @examples 
 #' ieDfm <- dfm(data_corpus_irishbudget2010)
 #' mylsa <- textmodel_lsa(ieDfm)
+#' head(mylsa$docs)
 #' @export
 textmodel_lsa <- function(x, nd = 10) {
     UseMethod("textmodel_lsa")
 }
 
-#' @noRd
+#' @rdname textmodel_lsa
 #' @export
-textmodel_lsa.dfm <- function(x, nd = 10) {
+textmodel_lsa <- function(x, nd = 10) {
 
     if (nd > min(nrow(x), ncol(x))) nd <- min(nrow(x), ncol(x))
     if (nd < 2) nd <- 2
@@ -36,17 +37,30 @@ textmodel_lsa.dfm <- function(x, nd = 10) {
     }
     
     space <- NULL
-    space$tk <- dec$u
-    space$dk <- dec$v
+    space$dk <- dec$u
+    space$tk <- dec$v
     space$sk <- dec$d
     space$docs <- dec$u
     space$features <- dec$v
-    rownames(space$tk) = rownames(x)
-    rownames(space$dk) = colnames(x)
-    
+    rownames(space$dk) = rownames(x)
+    rownames(space$tk) = colnames(x)
+    rownames(space$docs) = rownames(x)
+    rownames(space$features) = colnames(x)
     # to be compatible with "lsa" package
     class(space) = "LSAspace"
     
     # return the LSA space
     return ( space )
+}
+
+#' @rdname textmodel_lsa
+#' @export
+transform_lsa <- function( newX, LSAspace ) {
+    tsa =  newX %*% LSAspace$tk %*% solve(diag(LSAspace$sk))
+    transed =  t( LSAspace$tk %*% diag(LSAspace$sk) %*% t(tsa) ) 
+    
+    colnames(transfed) = rownames(LSAspace$tk)
+    rownames(transfed) = rownames(newX)
+    
+    return (transfed)
 }

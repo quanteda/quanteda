@@ -2,9 +2,15 @@
 % Please edit documentation in R/textmodel_lsa.R
 \name{textmodel_lsa}
 \alias{textmodel_lsa}
+\alias{textmodel_lsa}
+\alias{transform_lsa}
 \title{Latent Semantic Analysis}
 \usage{
 textmodel_lsa(x, nd = 10)
+
+textmodel_lsa(x, nd = 10)
+
+transform_lsa(newX, LSAspace)
 }
 \arguments{
 \item{x}{the dfm on which the model will be fit}
@@ -26,6 +32,7 @@ The number of dimensions \code{nd} retained in LSA is an empirical issue. While 
 \examples{
 ieDfm <- dfm(data_corpus_irishbudget2010)
 mylsa <- textmodel_lsa(ieDfm)
+head(mylsa$docs)
 }
 \references{
 Barbara Rosario.  2000. "Latent Semantic Indexing: An overview". 
