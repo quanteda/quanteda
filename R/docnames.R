@@ -7,14 +7,17 @@
 #' @return \code{docnames} returns a character vector of the document names
 #' @seealso \code{\link{featnames}}
 #' @examples
-#' # query the document names of a corpus
-#' docnames(data_corpus_irishbudget2010)
+#' # get and set doument names to a corpus
+#' mycorp <- data_corpus_inaugural
+#' docnames(mycorp) <- char_tolower(docnames(mycorp))
 #' 
-#' # query the document names of a tokens object
-#' docnames(tokens(data_char_ukimmig2010))
+#' # get and set doument names to a tokens
+#' mytoks <- tokens(data_corpus_inaugural)
+#' docnames(mytoks) <- char_tolower(docnames(mytoks))
 #' 
-#' # query the document names of a dfm
-#' docnames(dfm(data_corpus_inaugural[1:5]))
+#' # get and set doument names to a dfm
+#' mydfm <- dfm(data_corpus_inaugural[1:5])
+#' docnames(mydfm) <- char_tolower(docnames(mydfm))
 #' 
 #' @keywords corpus dfm
 docnames <- function(x) {
