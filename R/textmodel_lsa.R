@@ -57,7 +57,7 @@ textmodel_lsa <- function(x, nd = 10) {
 #' @export
 transform_lsa <- function( newX, LSAspace ) {
     tsa =  newX %*% LSAspace$tk %*% solve(diag(LSAspace$sk))
-    transed =  t( LSAspace$tk %*% diag(LSAspace$sk) %*% t(tsa) ) 
+    transfed =  t( LSAspace$tk %*% diag(LSAspace$sk) %*% t(tsa) ) 
     
     colnames(transfed) = rownames(LSAspace$tk)
     rownames(transfed) = rownames(newX)
