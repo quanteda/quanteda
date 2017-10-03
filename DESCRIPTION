@@ -93,6 +93,7 @@ Collate:
     'dictionaries-deprecated.R'
     'dictionaries-liwc_old.R'
     'dictionaries.R'
+    'docnames.R'
     'docvars.R'
     'fcm-methods.R'
     'fcm.R'
@@ -151,4 +152,3 @@ Collate:
 RcppModules: ngramMaker
 RoxygenNote: 6.0.1
 SystemRequirements: C++11
-
