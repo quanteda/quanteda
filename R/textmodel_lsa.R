@@ -15,8 +15,11 @@
 #'   
 #' @examples 
 #' ieDfm <- dfm(data_corpus_irishbudget2010)
-#' mylsa <- textmodel_lsa(ieDfm)
+#' mylsa <- textmodel_lsa(ieDfm[1:10, ])
 #' head(mylsa$docs)
+#' 
+#' newlsa <- transform_lsa(ieDfm[11:14, ], mylsa)
+#' newlsa[, 1:10]
 #' @export
 textmodel_lsa <- function(x, nd = 10) {
     UseMethod("textmodel_lsa")
