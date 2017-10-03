@@ -123,6 +123,19 @@ test_that("test corpus constructors works for data.frame", {
                  "text_field index refers to an invalid column")
     expect_error(corpus(mydf, text_field = "notfound"),
                  "column name notfound not found")
+    
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = "some_ints"),
+                 "docid_field must refer to a character mode column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = c(1,3)),
+                 "docid_field must refer to a single column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = c("some_text", "letter_factor")),
+                 "docid_field must refer to a single column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = 0),
+                 "docid_field index refers to an invalid column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = -1),
+                 "docid_field index refers to an invalid column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = "notfound"),
+                 "column name notfound not found")
 
 })
 
