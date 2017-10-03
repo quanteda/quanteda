@@ -224,9 +224,9 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NU
 }
 
 #' @rdname corpus
-#' @param docid_field column index of a document
-#'   identifier; defaults to \code{doc_id} but if this is not found, will use
-#'   the row.names of the data.frame if these are assigned
+#' @param docid_field optional column index of a document identifier; if 
+#'   \code{NULL}, the constructor will use the row.names of the data.frame (if 
+#'   found)
 #' @keywords corpus
 #' @method corpus data.frame
 #' @export
