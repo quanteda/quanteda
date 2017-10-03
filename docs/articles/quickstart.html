@@ -29,10 +29,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -161,7 +185,7 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(quanteda)
 ## Loading required package: quanteda
 ## quanteda version 0.99.8
-## Using 7 of 8 threads for parallel computing
+## Using 3 of 4 threads for parallel computing
 ## 
 ## Attaching package: 'quanteda'
 ## The following object is masked from 'package:utils':
@@ -170,8 +194,8 @@
 <div id="currently-available-corpus-sources" class="section level2">
 <h2 class="hasAnchor">
 <a href="#currently-available-corpus-sources" class="anchor"></a>Currently available corpus sources</h2>
-<p><strong>quanteda</strong> has a simple and powerful companion package for loading texts: <a href="https://github.com/kbenoit/readtext"><strong>readtext</strong></a>. The main function in this package, <code>readtext()</code>, takes a file or fileset from disk or a URL, and returns a type of data.frame that can be used directly with the <code><a href="../reference/corpus.html">corpus()</a></code> constructor function, to create a <strong>quanteda</strong> corpus object.</p>
-<p><code>readtext()</code> works on:</p>
+<p><strong>quanteda</strong> has a simple and powerful companion package for loading texts: <a href="https://github.com/kbenoit/readtext"><strong>readtext</strong></a>. The main function in this package, <code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code>, takes a file or fileset from disk or a URL, and returns a type of data.frame that can be used directly with the <code><a href="../reference/corpus.html">corpus()</a></code> constructor function, to create a <strong>quanteda</strong> corpus object.</p>
+<p><code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code> works on:</p>
 <ul>
 <li>text (<code>.txt</code>) files;</li>
 <li>comma-separated-value (<code>.csv</code>) files;</li>
@@ -207,7 +231,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Sat Sep 23 08:14:00 2017
+## Created: Thu Sep 28 17:52:19 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -228,7 +252,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Sat Sep 23 08:14:00 2017
+## Created: Thu Sep 28 17:52:19 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -258,7 +282,7 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Sat Sep 23 08:14:00 2017
+## Created: Thu Sep 28 17:52:19 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -268,32 +292,32 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(readtext)
 
 <span class="co"># Twitter json</span>
-mytf1 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span>)
+mytf1 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span>)
 myCorpusTwitter &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf1)
 <span class="kw">summary</span>(myCorpusTwitter, <span class="dv">5</span>)
 <span class="co"># generic json - needs a textfield specifier</span>
-mytf2 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,
+mytf2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,
                   <span class="dt">textfield =</span> <span class="st">"text"</span>)
 <span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf2), <span class="dv">5</span>)
 <span class="co"># text file</span>
-mytf3 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)
+mytf3 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)
 <span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf3), <span class="dv">5</span>)
 <span class="co"># multiple text files</span>
-mytf4 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)
+mytf4 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)
 <span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf4), <span class="dv">5</span>)
 <span class="co"># multiple text files with docvars from filenames</span>
-mytf5 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, 
+mytf5 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, 
                   <span class="dt">docvarsfrom =</span> <span class="st">"filenames"</span>, <span class="dt">sep =</span> <span class="st">"-"</span>, <span class="dt">docvarnames =</span> <span class="kw">c</span>(<span class="st">"Year"</span>, <span class="st">"President"</span>))
 <span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf5), <span class="dv">5</span>)
 <span class="co"># XML data</span>
-mytf6 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>, 
+mytf6 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>, 
                   <span class="dt">textfield =</span> <span class="st">"COMMON"</span>)
 <span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf6), <span class="dv">5</span>)
 <span class="co"># csv file</span>
 <span class="kw">write.csv</span>(<span class="kw">data.frame</span>(<span class="dt">inaugSpeech =</span> <span class="kw"><a href="../reference/texts.html">texts</a></span>(data_corpus_inaugural), 
                      <span class="kw"><a href="../reference/docvars.html">docvars</a></span>(data_corpus_inaugural)),
           <span class="dt">file =</span> <span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)
-mytf7 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">textfield =</span> <span class="st">"inaugSpeech"</span>)
+mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">textfield =</span> <span class="st">"inaugSpeech"</span>)
 <span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf7), <span class="dv">5</span>)</code></pre></div>
 </div>
 </div>
@@ -350,8 +374,8 @@ mytf7 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class
 <p>We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tokenInfo &lt;-<span class="st"> </span><span class="kw">summary</span>(data_corpus_inaugural)
 <span class="cf">if</span> (<span class="kw">require</span>(ggplot2))
-    <span class="kw">ggplot</span>(<span class="dt">data=</span>tokenInfo, <span class="kw">aes</span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">        </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>) ) 
+    <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data=</span>tokenInfo, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
+<span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_discrete">scale_x_discrete</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>) ) 
 ## Loading required package: ggplot2</code></pre></div>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
@@ -399,7 +423,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Sat Sep 23 08:14:02 2017
+## Created: Thu Sep 28 17:52:21 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -636,7 +660,7 @@ mydfm
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">100</span>)
 <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
                    <span class="dt">rot.per =</span> .<span class="dv">25</span>, 
-                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
+                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
 </div>
 <div id="grouping-documents-by-document-variable" class="section level3">
@@ -757,30 +781,30 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.h
 ## 
 ## Estimated document positions:
 ## 
-##                                Documents      theta         SE      lower       upper
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209528 0.02032344  1.7811188  1.86078670
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932785 0.02818838 -0.6485277 -0.53802929
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136760 0.01540258 -1.1438651 -1.08348698
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219317 0.02846321 -0.1777196 -0.06614381
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724219 0.02364094  1.7260857  1.81875820
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145787 0.02650257 -0.7665237 -0.66263366
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844823 0.04171479 -0.5662433 -0.40272136
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616707 0.02967356 -0.6198308 -0.50351048
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703111 0.03850546 -1.0457818 -0.89484035
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589233 0.03892378 -1.0352139 -0.88263273
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807220 0.07221459  1.0391815  1.32226263
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866460 0.06294120  0.0632812  0.31001072
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421902 0.07245434  0.6001797  0.88420068
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840806 0.03666261 -0.2559393 -0.11222186
+##                                Documents      theta         SE       lower       upper
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209524 0.02032343  1.78111849  1.86078632
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932789 0.02818839 -0.64852817 -0.53802970
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136765 0.01540259 -1.14386554 -1.08348739
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219313 0.02846322 -0.17771925 -0.06614341
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724217 0.02364093  1.72608548  1.81875793
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145788 0.02650258 -0.76652390 -0.66263377
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844825 0.04171481 -0.56624351 -0.40272146
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616703 0.02967358 -0.61983056 -0.50351013
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703112 0.03850549 -1.04578193 -0.89484039
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589235 0.03892381 -1.03521414 -0.88263281
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807221 0.07221456  1.03918152  1.32226261
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866461 0.06294121  0.06328133  0.31001088
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421905 0.07245433  0.60018004  0.88420100
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840798 0.03666263 -0.25593852 -0.11222102
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the   supplementary          budget              to            this           house            last           april               , 
-##     -0.09918735      0.38804034      0.39880812      0.25596073      1.11587940      0.09917113      0.37009570      0.30695197      0.19908780      0.28973411     -0.09524568      0.34536954 
+##     -0.09919077      0.38803674      0.39880482      0.25595718      1.11587607      0.09916760      0.37009214      0.30694846      0.19908421      0.28973064     -0.09524906      0.34536598 
 ##            said              we           could            work             our             way         through          period              of          severe        economic        distress 
-##     -0.71929360      0.47993974     -0.52974784      0.58229001      0.74375077      0.33613277      0.65984375      0.55623495      0.33933976      1.27912340      0.47868749      1.84455974 
+##     -0.71929698      0.47993620     -0.52975127      0.58228656      0.74374730      0.33612922      0.65984040      0.55623146      0.33933622      1.27912014      0.47868399      1.84455717 
 ##               .           today             can          report            that notwithstanding 
-##      0.27354268      0.17421583      0.36380216      0.69177917      0.08835240      1.84455974</code></pre></div>
+##      0.27353913      0.17421209      0.36379868      0.69177553      0.08834882      1.84455717</code></pre></div>
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
@@ -797,22 +821,22 @@ quantdfm
 ## Document-feature matrix of: 14 documents, 1,279 features (64.6% sparse).
 
 <span class="cf">if</span> (<span class="kw">require</span>(topicmodels)) {
-    myLDAfit20 &lt;-<span class="st"> </span><span class="kw">LDA</span>(<span class="kw"><a href="../reference/convert.html">convert</a></span>(quantdfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)
-    <span class="kw">get_terms</span>(myLDAfit20, <span class="dv">5</span>)
+    myLDAfit20 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../reference/convert.html">convert</a></span>(quantdfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)
+    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }
 ## Loading required package: topicmodels
-##      Topic 1     Topic 2  Topic 3      Topic 4     Topic 5       Topic 6   Topic 7     Topic 8    Topic 9     Topic 10  Topic 11    Topic 12     Topic 13   Topic 14   Topic 15  Topic 16   
-## [1,] "measures"  "child"  "support"    "strategy"  "policies"    "face"    "taoiseach" "irish"    "care"      "benefit" "taoiseach" "reductions" "fianna"   "welfare"  "levy"    "scheme"   
-## [2,] "million"   "day"    "million"    "ministers" "imagination" "system"  "fine"      "scheme"   "welfare"   "child"   "employees" "investment" "fáil"     "system"   "million" "welfare"  
-## [3,] "spending"  "fáil"   "welfare"    "failed"    "face"        "failed"  "gael"      "recovery" "per"       "welfare" "rate"      "million"    "national" "fianna"   "carbon"  "recent"   
-## [4,] "review"    "bank"   "investment" "sort"      "create"      "brought" "may"       "making"   "allowance" "society" "referred"  "difficult"  "irish"    "taxation" "change"  "increases"
-## [5,] "reduction" "burden" "back"       "radical"   "tackle"      "needed"  "irish"     "benefit"  "hit"       "much"    "debate"    "confidence" "support"  "fáil"     "welfare" "deficit"  
-##      Topic 17       Topic 18      Topic 19    Topic 20     
-## [1,] "society"      "fianna"      "nation"    "kind"       
-## [2,] "sense"        "fáil"        "difficult" "wit"        
-## [3,] "enterprising" "citizenship" "companies" "national"   
-## [4,] "equal"        "side"        "equal"     "programme"  
-## [5,] "going"        "alternative" "change"    "imagination"</code></pre></div>
+##      Topic 1 Topic 2     Topic 3       Topic 4   Topic 5        Topic 6      Topic 7     Topic 8    Topic 9     Topic 10   Topic 11   Topic 12 Topic 13   Topic 14  Topic 15    Topic 16     
+## [1,] "wrong" "failed"    "kind"        "today"   "spending"     "million"    "taoiseach" "fianna"   "taoiseach" "review"   "measures" "fianna" "system"   "child"   "care"      "alternative"
+## [2,] "still" "strategy"  "imagination" "welfare" "contribution" "investment" "employees" "fáil"     "gael"      "scheme"   "welfare"  "fáil"   "welfare"  "benefit" "welfare"   "adjustment" 
+## [3,] "irish" "needed"    "moral"       "face"    "reduction"    "welfare"    "rate"      "national" "fine"      "million"  "live"     "side"   "recovery" "fianna"  "per"       "wealth"     
+## [4,] "bank"  "ministers" "citizenship" "benefit" "measures"     "confidence" "referred"  "irish"    "may"       "welfare"  "times"    "level"  "fáil"     "day"     "allowance" "position"   
+## [5,] "sent"  "system"    "policies"    "per"     "reduced"      "energy"     "debate"    "support"  "day"       "measures" "poverty"  "third"  "payments" "society" "hit"       "matter"     
+##      Topic 17   Topic 18  Topic 19     Topic 20      
+## [1,] "welfare"  "levy"    "support"    "society"     
+## [2,] "stimulus" "million" "enterprise" "enterprising"
+## [3,] "taxation" "carbon"  "create"     "sense"       
+## [4,] "taxes"    "change"  "increased"  "equal"       
+## [5,] "fianna"   "welfare" "rates"      "nation"</code></pre></div>
 </div>
 </div>
 </div>
@@ -820,7 +844,8 @@ quantdfm
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
         <div id="tocnav">
-      <h2>Contents</h2>
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#introduction">Introduction</a></li>
       <li>

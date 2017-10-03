@@ -6,7 +6,7 @@
 #' @export
 #' @seealso \link{textstat_collocations}
 #' @keywords collocations internal deprecated
-collocations <- function(x,  ...) {
+collocations <- function(x, ...) {
     .Deprecated("textstat_collocations")
     UseMethod("textstat_collocations")
 }
@@ -105,29 +105,26 @@ textstat_collocations <- function(x, method = "lambda", size = 2, min_count = 2,
     UseMethod("textstat_collocations")
 }
 
-VALID_SCORING_METHODS <- c("lambda") 
-                                     #, "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD")
 
 #' @noRd
 #' @export
 #' @importFrom stats na.omit
 textstat_collocations.tokens <- function(x, method = "lambda", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, ...) { #show_counts = FALSE, ...) {
 
-    method <- match.arg(method, VALID_SCORING_METHODS)
+    #method <- match.arg(method, ("lambda", "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD"))
+    method <- match.arg(method, c("lambda"))
+    
     if (any(!(size %in% 2:5)))
         stop("Only bigram, trigram, 4-gram and 5-gram collocations implemented so far.")
 
     # lower case if requested
     if (tolower) x <- tokens_tolower(x, keep_acronyms = TRUE)
     
-    # segment by sentences, if the call started with a tokens object
-    if (who_called_me_first(sys.calls(), "textstat_collocations") %in% c("tokens", "tokenizedTexts")) {
-        x <- tokens_segment_by_punctuation(x, remove_delimiter = TRUE)
-    }
-    
-    attrs_org <- attributes(x)
+    attrs <- attributes(x)
     types <- types(x)
-    result <- qatd_cpp_sequences(x, types, min_count, size, 
+    id_ignore <- unlist(regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
+    if (is.null(id_ignore)) id_ignore <- integer(0)
+    result <- qatd_cpp_sequences(x, types, id_ignore, min_count, size, 
                                  if (method == "lambda1") "lambda1" else "lambda", 
                                  smoothing)
 
@@ -178,7 +175,7 @@ textstat_collocations.tokens <- function(x, method = "lambda", size = 2, min_cou
     
     # reorder columns
     result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
-                                       "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
+                                              "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
                                      names(result)))]
     rownames(result) <- NULL
     
@@ -197,13 +194,8 @@ textstat_collocations.tokens <- function(x, method = "lambda", size = 2, min_cou
 
 #' @export
 textstat_collocations.corpus <- function(x, method = "lambda", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, ...) {
-    # segment into units not including punctuation, to avoid identifying collocations that are not adjacent
-    texts(x) <- paste(".", texts(x))
-    # separate each line except those where the punctuation is a hyphen or apostrophe
-    x <- corpus_segment(x, pattern =  "[^\\P{P}#@'-]", valuetype = "regex", extract_pattern = TRUE, pattern_position = "after")
-    # tokenize the texts
-    x <- tokens(x, ...)
-    textstat_collocations(x, method = method, size = size, min_count = min_count, smoothing = smoothing, tolower = tolower)
+    textstat_collocations(tokens(x, ...), method = method, size = size, min_count = min_count, 
+                          smoothing = smoothing, tolower = tolower)
 }
 
 #' @export
@@ -243,36 +235,6 @@ is.collocations <- function(x) {
 is.sequences <- function(x) "sequences" %in% class(x)
 
 # Internal Functions ------------------------------------------------------
-
-## function to segment tokens sequences into separate objects, based on 
-## punctuation.  Mimics tokens_segment() but provides a temporary
-## workaround with specific functionality.  See tests at the end of
-## test-textstat_collocations.R
-tokens_segment_by_punctuation <- function(x, remove_delimiter = TRUE) {
-    len_original <- length(x)
-    names_original <- names(x)
-    x <- lapply(x, function(y) {
-        y <- c(y, ".")  # make sure every sequence ends with a punct character
-        punct_index <- which(stringi::stri_detect_regex(y, "^\\p{P}+$"))
-        if (!length(punct_index)) return(y) # should never happen now
-        punct_reps <- punct_index - c(0, punct_index[-length(punct_index)])
-        y <- split(y, rep(1:length(punct_index), punct_reps))
-        if (remove_delimiter) y <- lapply(y, function(z) z[-length(z)])
-        y <- y[lengths(y) > 0]    # remove any zero-length elements
-        if (!length(y)) return(list(""))
-        names(y) <- 1:length(y)  # rename in sequence
-        y
-    })
-    
-    # remove top level of list
-    x <- unlist(x, recursive = FALSE)
-    # convert any "tokens" left as "" that are empty into character(0)
-    x <- lapply(x, function(y) if (all(y == "")) character(0) else y)
-    # make into tokens
-    x <- as.tokens(x)
-    if (length(x) == len_original) names(x) <- names_original
-    x
-}
 
 # function to get lower-order interactions for k-grams
 # example:

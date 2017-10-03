@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -120,9 +145,8 @@ spacing added between texts.  (Default is two spaces.)</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>For <code>texts</code>, a character vector of the texts in the corpus.
-  
-  For <code>texts &lt;-</code>, the corpus with the updated texts.</p>
+    <p>For <code>texts</code>, a character vector of the texts in the corpus.</p>  
+<p>For <code>texts &lt;-</code>, the corpus with the updated texts.</p>
 <p>for <code>texts &lt;-</code>, a corpus with the texts replaced by <code>value</code>
 
 <code>as.character(x)</code> is equivalent to <code>texts(x)</code></p>
@@ -160,7 +184,7 @@ values of <code>groups</code>, without any specified order of aggregation.</p>
 <span class='no'>BritCorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'>c</span>(<span class='st'>"We must prioritise honour in our neighbourhood."</span>,
                        <span class='st'>"Aluminium is a valourous metal."</span>))
 <span class='fu'>texts</span>(<span class='no'>BritCorpus</span>) <span class='kw'>&lt;-</span>
-    <span class='kw'>stringi</span><span class='kw'>::</span><span class='fu'>stri_replace_all_regex</span>(<span class='fu'>texts</span>(<span class='no'>BritCorpus</span>),
+    <span class='kw pkg'>stringi</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/stringi/topics/stri_replace'>stri_replace_all_regex</a></span>(<span class='fu'>texts</span>(<span class='no'>BritCorpus</span>),
                                    <span class='fu'>c</span>(<span class='st'>"ise"</span>, <span class='st'>"([nlb])our"</span>, <span class='st'>"nium"</span>),
                                    <span class='fu'>c</span>(<span class='st'>"ize"</span>, <span class='st'>"$1or"</span>, <span class='st'>"num"</span>),
                                    <span class='kw'>vectorize_all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)

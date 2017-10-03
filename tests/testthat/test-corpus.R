@@ -78,8 +78,8 @@ test_that("test corpus constructors works for kwic", {
     
     kwiccorpus <- corpus(kwic(data_corpus_inaugural, "christmas"))
     expect_that(kwiccorpus, is_a("corpus"))
-    expect_equal(sort(names(docvars(kwiccorpus))),
-                 c("context", "docname", "from", "keyword", "to"))
+    expect_equal(names(docvars(kwiccorpus)),
+                 c("docname", "from", "to", "keyword", "context"))
 })
 
 
@@ -108,39 +108,33 @@ test_that("test corpus constructors works for data.frame", {
     names(mydf2)[3] <- "text"
     expect_equal(corpus(mydf, text_field = "some_text"),
                  corpus(mydf2))
-    
-    mydf3 <- mydf2
-    mydf3$doc_id <- row.names(mydf3)
-    row.names(mydf3) <- NULL
-    expect_equal(corpus(mydf, text_field = "some_text"),
-                 corpus(mydf3))
-    
-    expect_error(
-        corpus(mydf3, docid_field = paste0("d", 1:6)),
-        "docid_field must refer to a single column"
-    )
-    
-    # expect_error(
-    #     corpus(mydf3, docnames = paste0("d", 1:5)),
-    #     "user-supplied docnames must be the same as the number of documents"
-    # )
-    
     expect_equal(corpus(mydf, text_field = "some_text"),
                  corpus(mydf, text_field = 3))
     
     expect_error(corpus(mydf, text_field = "some_ints"),
                  "text_field must refer to a character mode column")
     expect_error(corpus(mydf, text_field = c(1,3)),
-                 "only one text_field may be specified")
+                 "text_field must refer to a single column")
     expect_error(corpus(mydf, text_field = c("some_text", "letter_factor")),
-                 "only one text_field may be specified")
-    expect_error(corpus(mydf, text_field = 3.1),
-                 "text_field index refers to an invalid column")
+                 "text_field must refer to a single column")
     expect_error(corpus(mydf, text_field = 0),
                  "text_field index refers to an invalid column")
     expect_error(corpus(mydf, text_field = -1),
                  "text_field index refers to an invalid column")
     expect_error(corpus(mydf, text_field = "notfound"),
+                 "column name notfound not found")
+    
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = "some_ints"),
+                 "docid_field must refer to a character mode column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = c(1,3)),
+                 "docid_field must refer to a single column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = c("some_text", "letter_factor")),
+                 "docid_field must refer to a single column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = 0),
+                 "docid_field index refers to an invalid column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = -1),
+                 "docid_field index refers to an invalid column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = "notfound"),
                  "column name notfound not found")
 
 })

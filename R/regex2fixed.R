@@ -126,7 +126,7 @@ regex2id <- function(pattern, types = NULL, valuetype = NULL, case_insensitive =
 search_glob <- function(patterns, types_search, index) {
     lapply(patterns, function(pattern, types_search, index) {
         if (pattern == '') {
-            return(NULL) # return nothing for empty pattern
+            return(integer(0)) # return nothing for empty pattern
         } else if (pattern == '*') {
             return(seq_along(types_search)) # return all types when glob is *
         } else {
@@ -140,7 +140,7 @@ search_glob <- function(patterns, types_search, index) {
                                                case_insensitive = FALSE)))
             } else {
                 #cat("Not found\n")
-                return(NULL)
+                return(integer(0))
             }
         }
     }, types_search, index)
@@ -151,7 +151,7 @@ search_glob <- function(patterns, types_search, index) {
 search_regex <- function(patterns, types_search, case_insensitive) {
     lapply(patterns, function(pattern, types_search, case_insensitive) {
         if (pattern == '') {
-            return(NULL)
+            return(integer(0))
         } else {
             return(which(stri_detect_regex(types_search, pattern, 
                                            case_insensitive = case_insensitive)))
@@ -164,7 +164,7 @@ search_regex <- function(patterns, types_search, case_insensitive) {
 search_fixed <- function(patterns, types_search, index) {
     lapply(patterns, function(pattern, types_search, index) {
         if (pattern == '') {
-            return(NULL)
+            return(integer(0))
         } else {
             return(search_index(pattern, index))
         }
