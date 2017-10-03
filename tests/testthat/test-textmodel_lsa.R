@@ -3,26 +3,39 @@ context('Testing textmodel-lsa.R')
 test_that("textmodel-lsa (rsvd) works as expected as lsa", {
     foxmatrix <- c(1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1,1)
     dim(foxmatrix) <- c(3, 4)
-    
+    rownames(foxmatrix) <- paste0("D", seq(1:3))
     #{lsa}
-    foxlsaMatrix <- as.textmatrix(foxmatrix)
-    myMatrix <- lw_logtf(foxlsaMatrix) * gw_idf(foxlsaMatrix)
+    foxlsaMatrix <- as.textmatrix(t(foxmatrix))
+    #myMatrix <- lw_logtf(foxlsaMatrix) * gw_idf(foxlsaMatrix)
     
-    myLSAspace <- lsa(myMatrix, dims=dimcalc_share())
-    myLSA <- as.textmatrix(myLSAspace)
-
+    myLSAspace <- lsa(foxlsaMatrix, dims = 2)
     
     #quanteda
     foxdfm <- as.dfm(foxmatrix)
-    qtd_lsa <- textmodel_lsa(foxdfm)
+    qtd_lsa <- textmodel_lsa(foxdfm, nd = 2)
     
-    #text2vec
-    tv_tfidf = text2vec::TfIdf$new()
-    tv_lsa = text2vec::LSA$new(n_topics = 3, method = "randomized")
+    expect_equivalent(abs(qtd_lsa$dk), abs(myLSAspace$dk))
+    expect_equivalent(abs(qtd_lsa$tk), abs(myLSAspace$tk))
+    expect_equivalent(abs(qtd_lsa$sk), abs(myLSAspace$sk))
+})
+
+test_that("transform-lsa works as expected as lsa", {
+    foxmatrix <- c(1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1)
+    dim(foxmatrix) <- c(3, 4)
+    rownames(foxmatrix) <- paste0("D", seq(1:3))
     
-    doc_embeddings = foxdfm %>% 
-        fit_transform(tv_tfidf) %>% 
-        fit_transform(tv_lsa)
+    newfox <- matrix(c(1, 0, 1, 0, 1, 1, 0, 0), nrow = 2, ncol = 4, byrow = TRUE)
+    rownames(newfox) <- paste0("D", c(4:5))
+    #{lsa}
+    foxlsaMatrix <- as.textmatrix(t(foxmatrix))
+    myLSAspace <- lsa(foxlsaMatrix, dims = 2)
+    newSpace <- t(fold_in(t(newfox), myLSAspace))
+    newSpace <- newSpace[ , ]
+    #quanteda
+    foxdfm <- as.dfm(foxmatrix)
+    qtd_lsa <- textmodel_lsa(foxdfm, nd = 2)
+    new_qtd_lsa <- transform_lsa(newfox, qtd_lsa)
     
-    
+    expect_equivalent(round(abs(new_qtd_lsa), digits = 3), round(abs(newSpace), digits = 3))
+
 })
