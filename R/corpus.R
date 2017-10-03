@@ -138,25 +138,25 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NU
     x_names <- names(x)
     
     # convert the dreaded "curly quotes" to ASCII equivalents
-    x <- stringi::stri_replace_all_fixed(x, 
+    x <- stri_replace_all_fixed(x, 
                                          c("\u201C", "\u201D", "\u201F",
                                            "\u2018", "\u201B", "\u2019"),                                     
                                          c("\"", "\"", "\"", 
                                            "\'", "\'", "\'"), vectorize_all = FALSE)
     
     # replace all hyphens with simple hyphen
-    x <- stringi::stri_replace_all_regex(x, "\\p{Pd}", "-")
+    x <- stri_replace_all_regex(x, "\\p{Pd}", "-")
     
     # normalize EOL
-    x <- stringi::stri_replace_all_fixed(x, "\r\n", "\n") # Windows
-    x <- stringi::stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
+    x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
+    x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
     
     # name the texts vector
     if (!is.null(docnames)) {
         stopifnot(length(docnames) == length(x))
         names(x) <- docnames
     } else if (is.null(x_names)) {
-        names(x) <- paste(quanteda_options("base_docname"), seq_along(x), sep="")
+        names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
     } else if (is.null(names(x))) {
         # if they previously existed, but got obliterated by a stringi function
         names(x) <- x_names
@@ -189,102 +189,98 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NU
     }
     
     # initialize results corpus
-    tempCorpus <- list()
+    temp <- list()
     
     ## compress and separate texts if compress == TRUE
     # paste delimiters into object to be compressed
     if (compress) {
         x[1 : (length(x)-1)] <- paste0(x[1 : (length(x)-1)], quanteda_document_delimiter)
-        # compress texts
-        texts <- memCompress(x, 'gzip')
         # remove texts from documents
         documents$texts <- NULL
-        tempCorpus <- c(tempCorpus, list(texts = memCompress(x, "gzip")))
+        temp <- c(temp, list(texts = memCompress(x, "gzip")))
     } else {
         # otherwise replace NA placeholder with the actual text
         documents$texts <- x
     }
 
     # build and return the corpus object
-    tempCorpus <- c(tempCorpus, list(documents = documents, 
-                                     metadata = metacorpus, 
-                                     settings = settings(),
-                                     tokens = NULL))
+    temp <- c(temp, list(documents = documents, 
+                         metadata = metacorpus, 
+                         settings = settings(),
+                         tokens = NULL))
                     
     ## add some elements if compress
     if (compress) {
-        tempCorpus$docnames <- names(x)
+        temp$docnames <- names(x)
         # compute the compression %
-        tempCorpus$compression_rate <- utils::object.size(tempCorpus$texts) / utils::object.size(unname(x)) * 100
+        temp$compression_rate <- utils::object.size(temp$texts) / utils::object.size(unname(x)) * 100
     }
     
-    class(tempCorpus) <- c("corpus", class(tempCorpus))
+    class(temp) <- c("corpus", class(temp))
     if (compress) {
-        class(tempCorpus) <- c("corpuszip", class(tempCorpus))
+        class(temp) <- c("corpuszip", class(temp))
     }
-    return(tempCorpus)
+    return(temp)
 }
 
 #' @rdname corpus
-#' @param docid_field column index of a document
-#'   identifier; defaults to \code{doc_id} but if this is not found, will use
-#'   the row.names of the data.frame if these are assigned
+#' @param docid_field optional column index of a document identifier; if 
+#'   \code{NULL}, the constructor will use the row.names of the data.frame (if 
+#'   found)
 #' @keywords corpus
 #' @method corpus data.frame
 #' @export
-corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
+corpus.data.frame <- function(x, docid_field = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
     
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
-    docnames <- docid_field
-    
-    x <- as.data.frame(x)
-        
     args <- list(...)
+    
+    # text field
+    if (length(text_field) != 1)
+        stop("text_field must refer to a single column")
+    if (is.numeric(text_field)) {
+        if (1 <= text_field && text_field <= length(x)) {
+            text_field <- names(x)[text_field]
+        } else {
+            stop("text_field index refers to an invalid column") 
+        }
+    }
     if ("docvars" %in% names(args))
         stop("docvars are assigned automatically for data.frames")
-    
-    if (is.character(text_field)) {
-        text_fieldi <- which(names(x) %in% text_field)
-        if (length(text_fieldi)==0)
-            stop("column name ", text_field, " not found")
-        text_field <- text_fieldi
-    } else if (is.numeric(text_field)) {
-        text_fieldi <- text_field
-    } else {
-        stop("text_field must be a character (variable name) or numeric index")
-    }
-
-    docnamesi <- integer()
-    if (is.numeric(docnames)) {
-        docnames <- names(docnames)[docnames]
-    }
-    
-    if (length(docnames) > 1) 
-        stop("docid_field must refer to a single column")
-    
-    if (docnames %in% names(x)) {
-        docnamesi <- which(names(x) == docnames)
-        docnames <- x[[docnames]]
-    } else if (!identical(row.names(x), as.character(seq_len(nrow(x))))) {
-        docnames <- row.names(x)
-    } else {
-        docnames <- NULL
-    }
-    
-    if (length(text_fieldi) != 1)
-        stop("only one text_field may be specified")
-
-    if (text_fieldi > ncol(x) | text_fieldi <= 0 | (text_fieldi - as.integer(text_fieldi)))
-        stop("text_field index refers to an invalid column")
-    
-    if (!is.character(x[, text_fieldi]))
+    if (!text_field %in% names(x))
+        stop("column name ", text_field, " not found")
+    if (!is.character(x[, text_field, drop = TRUE]))
         stop("text_field must refer to a character mode column")
     
-    corpus(x[, text_fieldi], 
-           docvars = x[, -c(text_fieldi, docnamesi), drop = FALSE],
-           docnames = docnames, 
+    # docname field
+    if (is.null(docid_field)) {
+        if (identical(row.names(x), as.character(seq_len(nrow(x))))) {
+            docname <- paste0(quanteda_options("base_docname"), row.names(x))
+        } else {
+            docname <- row.names(x)
+        }
+    } else {
+        if (length(docid_field) != 1)
+            stop("docid_field must refer to a single column")
+        if (is.numeric(docid_field)) {
+            if (1 <= docid_field && docid_field <= length(x)) {
+                docid_field <- names(x)[docid_field]
+            } else {
+                stop("docid_field index refers to an invalid column") 
+            }
+        }
+        if (!docid_field %in% names(x))
+            stop("column name ", docid_field, " not found")
+        if (!is.character(x[, docid_field, drop = TRUE]))
+            stop("docid_field must refer to a character mode column")
+        docname <- x[, docid_field, drop = TRUE]
+    }
+    
+    corpus(x[, text_field], 
+           docvars = x[, match(c(text_field, docid_field), names(x)) * -1, drop = FALSE],
+           docnames = docname, 
            metacorpus = metacorpus, compress = compress)
 }
 
@@ -301,21 +297,19 @@ corpus.kwic <- function(x, ...) {
     # convert docnames to a factor, as in original kwic
     x$docname <- factor(x$docname)
     
-    result <- corpus(x, text_field = "pre")
-    result[["post"]] <- NULL
-    result[["context"]] <- "pre"
-    docnames(result) <- paste0(docnames(result), ".pre")
+    pre <- corpus(x[,c("docname", "from", "to", "pre", "keyword")], text_field = "pre")
+    docvars(pre, 'context') <- "pre"
+    docnames(pre) <- paste0(docnames(pre), ".pre")
 
-    tempCorp <- corpus(x, text_field = "post")
-    tempCorp[["pre"]] <- NULL
-    tempCorp[["context"]] <- "post"
-    docnames(tempCorp) <- paste0(docnames(tempCorp), ".post")
+    post <- corpus(x[,c("docname", "from", "to", "post", "keyword")], text_field = "post")
+    docvars(post, 'context') <- "post"
+    docnames(post) <- paste0(docnames(post), ".post")
     
-    result <- result + tempCorp
+    result <- pre + post
     metacorpus(result, "source") <- paste0("Corpus created from kwic(x, keywords = \"", 
                                            paste(attr(x, "keywords"), collapse = ", "),
                                            "\")")
-    result
+    return(result)
 }
 
 #' @rdname corpus

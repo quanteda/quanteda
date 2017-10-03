@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.99.11
+Version: 0.99.12
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -93,6 +93,7 @@ Collate:
     'dictionaries-deprecated.R'
     'dictionaries-liwc_old.R'
     'dictionaries.R'
+    'docnames.R'
     'docvars.R'
     'fcm-methods.R'
     'fcm.R'
@@ -151,4 +152,3 @@ Collate:
 RcppModules: ngramMaker
 RoxygenNote: 6.0.1
 SystemRequirements: C++11
-
