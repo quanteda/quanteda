@@ -40,6 +40,6 @@ test_that("transform-lsa works as expected as lsa", {
     qtd_lsa <- textmodel_lsa(foxdfm, nd = 2)
     new_qtd_lsa <- transform_lsa(newfox, qtd_lsa)
     
-    expect_equivalent(round(abs(new_qtd_lsa), digits = 3), round(abs(newSpace), digits = 3))
+    expect_equivalent(round(abs(new_qtd_lsa$matrix_low_rank), digits = 3), round(abs(newSpace), digits = 3))
 
 })
