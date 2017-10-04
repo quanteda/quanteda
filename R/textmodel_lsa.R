@@ -63,8 +63,13 @@ transform_lsa <- function( newX, LSAspace ) {
     tsa =  newX %*% LSAspace$tk %*% solve(diag(LSAspace$sk))
     transfed =  t( LSAspace$tk %*% diag(LSAspace$sk) %*% t(tsa) ) 
     
-    colnames(transfed) = rownames(LSAspace$tk)
-    rownames(transfed) = rownames(newX)
+    colnames(transfed) <- rownames(LSAspace$tk)
+    rownames(transfed) <- rownames(newX)
     
-    return (transfed)
+    newSpace <- NULL
+    newSpace$transDocs <- tsa
+    rownames(newSpace$transDocs) <- rownames(newX)
+    
+    newSpace$matrix_low_rank <- transfed
+    return (newSpace)
 }
