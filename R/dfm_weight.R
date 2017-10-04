@@ -407,8 +407,8 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
         x@x <- as.numeric(x@x > 0)
         
     } else if (scheme == "log") {
-        #x@x <- 1 + log(x@x, base)
-        x@x <- log(x@x + 1, base)
+        x@x <- 1 + log(x@x, base)
+        #x@x <- log(x@x + 1, base)
         x@x[is.infinite(x@x)] <- 0
         x@weightTf[["base"]] <- base
         
