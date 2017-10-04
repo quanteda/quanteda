@@ -1,8 +1,7 @@
 #' Latent Semantic Analysis 
 #' 
-#' \code{textmodel_lsa} implements Latent Semantic Analysis scaling on a 
-#' \link{dfm}.  
-#' @param x the dfm on which the model will be fit
+#' \code{textmodel_lsa} implements Latent Semantic Analysis scaling on a matrix, which can be a dfm or a tfidf.  
+#' @param x the matrix on which the model will be fit
 #' @param nd  Number of dimensions to be included in output.
 #' @author Haiyan Wang and Kenneth Benoit
 #' @details \link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
@@ -57,6 +56,8 @@ textmodel_lsa <- function(x, nd = 10) {
 }
 
 #' @rdname textmodel_lsa
+#' @param newX new matrix to be transformed into the lsa space
+#' @param LSAspace previously fitted lsa space
 #' @export
 transform_lsa <- function( newX, LSAspace ) {
     tsa =  newX %*% LSAspace$tk %*% solve(diag(LSAspace$sk))
