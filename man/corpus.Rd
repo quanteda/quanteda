@@ -18,7 +18,7 @@ corpus(x, ...)
 \method{corpus}{character}(x, docnames = NULL, docvars = NULL,
   metacorpus = NULL, compress = FALSE, ...)
 
-\method{corpus}{data.frame}(x, docid_field = "doc_id", text_field = "text",
+\method{corpus}{data.frame}(x, docid_field = NULL, text_field = "text",
   metacorpus = NULL, compress = FALSE, ...)
 
 \method{corpus}{kwic}(x, ...)
@@ -54,9 +54,9 @@ gzip compression. This significantly reduces the size of the corpus in
 memory, but will slow down operations that require the texts to be
 extracted.}
 
-\item{docid_field}{column index of a document
-identifier; defaults to \code{doc_id} but if this is not found, will use
-the row.names of the data.frame if these are assigned}
+\item{docid_field}{optional column index of a document identifier; if 
+\code{NULL}, the constructor will use the row.names of the data.frame (if 
+found)}
 
 \item{text_field}{the character name or numeric index of the source
 \code{data.frame} indicating the variable to be read in as text, which must
