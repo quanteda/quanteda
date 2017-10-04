@@ -1,6 +1,8 @@
 context('Testing textmodel-lsa.R')
 
 test_that("textmodel-lsa (rsvd) works as expected as lsa", {
+    skip_if_not_installed("lsa")
+    
     foxmatrix <- c(1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1,1)
     dim(foxmatrix) <- c(3, 4)
     rownames(foxmatrix) <- paste0("D", seq(1:3))
@@ -20,6 +22,8 @@ test_that("textmodel-lsa (rsvd) works as expected as lsa", {
 })
 
 test_that("transform-lsa works as expected as lsa", {
+    skip_if_not_installed("lsa")
+    
     foxmatrix <- c(1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1)
     dim(foxmatrix) <- c(3, 4)
     rownames(foxmatrix) <- paste0("D", seq(1:3))

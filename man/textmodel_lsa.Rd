@@ -13,13 +13,16 @@ textmodel_lsa(x, nd = 10)
 transform_lsa(newX, LSAspace)
 }
 \arguments{
-\item{x}{the dfm on which the model will be fit}
+\item{x}{the matrix on which the model will be fit}
 
 \item{nd}{Number of dimensions to be included in output.}
+
+\item{newX}{new matrix to be transformed into the lsa space}
+
+\item{LSAspace}{previously fitted lsa space}
 }
 \description{
-\code{textmodel_lsa} implements Latent Semantic Analysis scaling on a 
-\link{dfm}.
+\code{textmodel_lsa} implements Latent Semantic Analysis scaling on a matrix, which can be a dfm or a tfidf.
 }
 \details{
 \link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
@@ -31,8 +34,11 @@ The number of dimensions \code{nd} retained in LSA is an empirical issue. While 
 }
 \examples{
 ieDfm <- dfm(data_corpus_irishbudget2010)
-mylsa <- textmodel_lsa(ieDfm)
+mylsa <- textmodel_lsa(ieDfm[1:10, ])
 head(mylsa$docs)
+
+newlsa <- transform_lsa(ieDfm[11:14, ], mylsa)
+newlsa[, 1:10]
 }
 \references{
 Barbara Rosario.  2000. "Latent Semantic Indexing: An overview". 
