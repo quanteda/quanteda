@@ -21,7 +21,7 @@ test_that("textmodel-lsa (rsvd) works as expected as lsa", {
     expect_equivalent(abs(qtd_lsa$sk), abs(myLSAspace$sk))
 })
 
-test_that("transform-lsa works as expected as lsa", {
+test_that("transform-lsa works as expected as lsa::fold_in()", {
     skip_if_not_installed("lsa")
     
     foxmatrix <- c(1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1)
@@ -42,4 +42,24 @@ test_that("transform-lsa works as expected as lsa", {
     
     expect_equivalent(round(abs(new_qtd_lsa$matrix_low_rank), digits = 3), round(abs(newSpace), digits = 3))
 
+})
+
+test_that("textmodel-lsa (rsvd) works as expected as lsa::as.textmatrix()", {
+    skip_if_not_installed("lsa")
+    
+    foxmatrix <- c(1, 0, 1, 2, 0, 1, 1, 0, 3, 0, 1, 1)
+    dim(foxmatrix) <- c(3, 4)
+    rownames(foxmatrix) <- paste0("D", seq(1:3))
+    #{lsa}
+    foxlsaMatrix <- as.textmatrix(t(foxmatrix))
+    #myMatrix <- lw_logtf(foxlsaMatrix) * gw_idf(foxlsaMatrix)
+    
+    myLSAspace <- lsa(foxlsaMatrix, dims = 2)
+    foxlsaMatrix_lowRank <- as.textmatrix(myLSAspace)
+    foxlsaMatrix_lowRank <- foxlsaMatrix_lowRank[ , ]
+    #quanteda
+    foxdfm <- as.dfm(foxmatrix)
+    qtd_lsa <- textmodel_lsa(foxdfm, nd = 2)
+    
+    expect_equivalent(round(abs(qtd_lsa$matrix_low_rank), 3), round(abs(t(foxlsaMatrix_lowRank)), 3))
 })
