@@ -5,6 +5,7 @@
 ### New Features
 
 * Added methods for changing the docnames of tokens and dfm objects (#987).
+* Added new function `textmodel_lsa()` for Latent Semantic Analysis.
 
 ### Bug fixes and stability enhancements
 
