@@ -16,12 +16,12 @@ test_that("textmodel-lsa (rsvd) works as expected as lsa", {
     foxdfm <- as.dfm(foxmatrix)
     qtd_lsa <- textmodel_lsa(foxdfm, nd = 2)
     
-    expect_equivalent(abs(qtd_lsa$dk), abs(myLSAspace$dk))
-    expect_equivalent(abs(qtd_lsa$tk), abs(myLSAspace$tk))
+    expect_equivalent(abs(qtd_lsa$docs), abs(myLSAspace$dk))
+    expect_equivalent(abs(qtd_lsa$features), abs(myLSAspace$tk))
     expect_equivalent(abs(qtd_lsa$sk), abs(myLSAspace$sk))
 })
 
-test_that("transform-lsa works as expected as lsa::fold_in()", {
+test_that("predict works as expected as lsa::fold_in()", {
     skip_if_not_installed("lsa")
     
     foxmatrix <- c(1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1)
@@ -38,7 +38,7 @@ test_that("transform-lsa works as expected as lsa::fold_in()", {
     #quanteda
     foxdfm <- as.dfm(foxmatrix)
     qtd_lsa <- textmodel_lsa(foxdfm, nd = 2)
-    new_qtd_lsa <- transform_lsa(newfox, qtd_lsa)
+    new_qtd_lsa <- predict(qtd_lsa, newfox)
     
     expect_equivalent(round(abs(new_qtd_lsa$matrix_low_rank), digits = 3), round(abs(newSpace), digits = 3))
 
