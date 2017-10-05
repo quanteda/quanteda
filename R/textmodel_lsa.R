@@ -61,13 +61,9 @@ textmodel_lsa.dfm <- function(x, nd = 10) {
     }
     
     space <- NULL
-    space$dk <- dec$u
-    space$tk <- dec$v
     space$sk <- dec$d
     space$docs <- dec$u
     space$features <- dec$v
-    rownames(space$dk) <- rownames(x)
-    rownames(space$tk) <- colnames(x)
     rownames(space$docs) <- rownames(x)
     rownames(space$features) <- colnames(x)
     
@@ -76,7 +72,7 @@ textmodel_lsa.dfm <- function(x, nd = 10) {
     rownames(space$matrix_low_rank) <- rownames(x)
     colnames(space$matrix_low_rank) <- colnames(x)
     # to be compatible with "lsa" package
-    class(space) = c("textmodel_lsa_fitted", "LSAspace")
+    class(space) = c("textmodel_lsa_fitted")
     
     # return the LSA space
     return ( space )
@@ -87,10 +83,10 @@ textmodel_lsa.dfm <- function(x, nd = 10) {
 #' @param LSAspace previously fitted lsa space
 #' @export
 transform_lsa <- function( newX, LSAspace ) {
-    tsa =  newX %*% LSAspace$tk %*% solve(diag(LSAspace$sk))
-    transfed =  t( LSAspace$tk %*% diag(LSAspace$sk) %*% t(tsa) ) 
+    tsa =  newX %*% LSAspace$features %*% solve(diag(LSAspace$sk))
+    transfed =  t( LSAspace$features %*% diag(LSAspace$sk) %*% t(tsa) ) 
     
-    colnames(transfed) <- rownames(LSAspace$tk)
+    colnames(transfed) <- rownames(LSAspace$features)
     rownames(transfed) <- rownames(newX)
     
     newSpace <- NULL
