@@ -1,3 +1,10 @@
+#' @rdname textmodel-internal
+#' @keywords internal textmodel
+#' @export
+setClass("textmodel_lsa_fitted",
+         slots = c(nd = "numeric"),
+         contains = "textmodel_fitted")
+
 #' Latent Semantic Analysis
 #' 
 #' Fit the Latent Semantic Analysis scaling model to a \link{dfm}, which may be
@@ -69,7 +76,7 @@ textmodel_lsa.dfm <- function(x, nd = 10) {
     rownames(space$matrix_low_rank) <- rownames(x)
     colnames(space$matrix_low_rank) <- colnames(x)
     # to be compatible with "lsa" package
-    class(space) = "LSAspace"
+    class(space) = c("textmodel_lsa_fitted", "LSAspace")
     
     # return the LSA space
     return ( space )
