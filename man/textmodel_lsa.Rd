@@ -21,6 +21,8 @@ textmodel_lsa(x, nd = 10)
 \description{
 Fit the Latent Semantic Analysis scaling model to a \link{dfm}, which may be
 weighted (for instance using \code{\link{tfidf}}).
+
+Transformation method for Latent Sementic Analysis objects
 }
 \details{
 \link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
