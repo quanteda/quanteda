@@ -100,3 +100,21 @@ transform_lsa <- function( newX, LSAspace ) {
     newSpace$matrix_low_rank <- transfed
     return (newSpace)
 }
+
+#' @rdname textmodel-internal
+#' @param doc_dim,feat_dim the document and feature dimension scores to be 
+#'   extracted as coefficients
+#' @export
+setMethod("coef", signature(object = "textmodel_lsa_fitted"),
+          function(object, doc_dim = 1, feat_dim = 1,...) 
+              list(coef_feature = object$features[, feat_dim],
+                   coef_feature_se = rep(NA, dim(object$features)[1]),
+                   coef_document = object$docs[, doc_dim],
+                   coef_document_se = rep(NA, dim(object$docs)[1]))
+                   
+)
+
+#' @rdname textmodel-internal
+#' @export
+setMethod("coefficients", signature(object = "textmodel_lsa_fitted"),
+          function(object, ...) coef(object, ...))
