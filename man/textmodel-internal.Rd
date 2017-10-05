@@ -10,6 +10,7 @@
 \alias{coef,textmodel_ca_fitted-method}
 \alias{coefficients,textmodel_ca_fitted-method}
 \alias{textmodel_lsa_fitted-class}
+\alias{textmodel_lsa_predicted-class}
 \alias{coef,textmodel_lsa_fitted-method}
 \alias{coefficients,textmodel_lsa_fitted-method}
 \alias{textmodel_wordfish_fitted-class}
