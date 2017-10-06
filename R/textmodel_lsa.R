@@ -19,7 +19,7 @@ setClass("textmodel_lsa_fitted",
 #'   too few dimensions or factors may loose important information.
 #' @references 
 #'   Rosario, Barbara.  2000.
-#'   "\href{http://www.sims.berkeley.edu/rosario/projects/LSI.pdf}{Latent 
+#'   "\href{http://www.cse.msu.edu/~cse960/Papers/LSI/LSI.pdf}{Latent 
 #'   Semantic Indexing: An overview}". \emph{Technical report INFOSYS 240 Spring
 #'   Paper, University of California, Berkeley.}
 #'   
