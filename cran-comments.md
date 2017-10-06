@@ -1,6 +1,6 @@
 ## Submission notes
 
-Bug fixes and stability improvements to existing 0.99 CRAN version.
+Bug fixes and stability improvements to existing 0.99.9 CRAN version.
 
 ## Test environments
 
@@ -20,13 +20,7 @@ None.
 
 None (on macOS Sierra 10.12.6).
 
-From the results of testing on win-builder.r-project.org, I see: 
-* checking installed package size ... NOTE
-  installed size is  5.4Mb
-  sub-directories of 1Mb or more:
-    libs   3.1Mb
-    
-This is our last transitional version before 1.0, and the slightly larger sizes are due to keeping some deprecated items.  We will remove these in the next release, and hope that the slightly larger size is ok for this version.
+None from the results of testing on win-builder.r-project.org.
 
 
 ## Downstream dependencies
