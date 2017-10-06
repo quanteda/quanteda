@@ -29,34 +29,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
-    </li>
-    <li>
-      <a href="../../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
-    </li>
-    <li>
-      <a href="../../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../../articles/quickstart.html">Getting Started with quanteda</a>
-    </li>
-  </ul>
+  <a href="../../articles/index.html">Articles</a>
 </li>
 <li>
   <a href="../../news/index.html">News</a>
@@ -125,7 +101,7 @@
 <p>If you’re only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(readtext)</code></pre></div>
 <pre><code>## Loading required package: readtext</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/texts.html">texts</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/texts.html">texts</a></span>(<span class="kw">readtext</span>(<span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span>))
 <span class="kw"><a href="../../reference/textplot_xray.html">textplot_xray</a></span>(
     <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"whale"</span>),
     <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"ahab"</span>)
@@ -145,13 +121,13 @@
 <a href="#modifying-lexical-dispersion-plots" class="anchor"></a>Modifying lexical dispersion plots</h3>
 <p>The object returned is a ggplot object, which can be modified using ggplot:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"ggplot2"</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme_get">theme_set</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_bw</a></span>())
+<span class="kw">theme_set</span>(<span class="kw">theme_bw</span>())
 g &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textplot_xray.html">textplot_xray</a></span>(
     <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="st">"american"</span>),
     <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="st">"people"</span>),
     <span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural_subset, <span class="st">"communist"</span>)
 )
-g <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">color =</span> keyword) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_manual">scale_color_manual</a></span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"green"</span>))</code></pre></div>
+g <span class="op">+</span><span class="st"> </span><span class="kw">aes</span>(<span class="dt">color =</span> keyword) <span class="op">+</span><span class="st"> </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"green"</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>
 </div>
 </div>
@@ -164,9 +140,9 @@ g <span class="op">+</span><span class="st"> </span><span class="kw"><a href="ht
 <span class="co"># Sort by reverse frequency order</span>
 features_dfm_inaug<span class="op">$</span>feature &lt;-<span class="st"> </span><span class="kw">with</span>(features_dfm_inaug, <span class="kw">reorder</span>(feature, <span class="op">-</span>frequency))
 
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(features_dfm_inaug, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> feature, <span class="dt">y =</span> frequency)) <span class="op">+</span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">axis.text.x =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/element">element_text</a></span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
+<span class="kw">ggplot</span>(features_dfm_inaug, <span class="kw">aes</span>(<span class="dt">x =</span> feature, <span class="dt">y =</span> frequency)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-10-1.png" width="768"></p>
 <p>If you wanted to compare the frequency of a single term across different texts, you can also use <code>textstat_frequency</code>, group the frequency by speech and extract the term.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get frequency grouped by president</span>
@@ -176,12 +152,12 @@ freq_grouped &lt;-<span class="st"> </span><span class="kw"><a href="../../refer
 <span class="co"># Filter the term "american"</span>
 freq_american &lt;-<span class="st"> </span><span class="kw">subset</span>(freq_grouped, feature <span class="op">%in%</span><span class="st"> "american"</span>)  
 
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(freq_american, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> group, <span class="dt">y =</span> frequency)) <span class="op">+</span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_y_continuous</a></span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">14</span>), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">14</span>, <span class="dv">2</span>))) <span class="op">+</span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="st">"Frequency"</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">axis.text.x =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/element">element_text</a></span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
+<span class="kw">ggplot</span>(freq_american, <span class="kw">aes</span>(<span class="dt">x =</span> group, <span class="dt">y =</span> frequency)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">14</span>), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">14</span>, <span class="dv">2</span>))) <span class="op">+</span>
+<span class="st">    </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">ylab</span>(<span class="st">"Frequency"</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-11-1.png" width="768"></p>
 <p>The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we need to weight the document-frequency matrix first. To obtain expected word frequency per 100 words, we multiply by 100.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfm_rel_freq &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(<span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural_subset), <span class="dt">type=</span><span class="st">'relFreq'</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
@@ -209,12 +185,12 @@ freq_american &lt;-<span class="st"> </span><span class="kw">subset</span>(freq_
 <span class="co"># Filter the term "american"</span>
 rel_freq_american &lt;-<span class="st"> </span><span class="kw">subset</span>(rel_freq, feature <span class="op">%in%</span><span class="st"> "american"</span>)  
 
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(rel_freq_american, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> group, <span class="dt">y =</span> frequency)) <span class="op">+</span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_y_continuous</a></span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.7</span>), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="fl">0.7</span>, <span class="fl">0.1</span>))) <span class="op">+</span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="st">"Relative frequency"</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">axis.text.x =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/element">element_text</a></span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
+<span class="kw">ggplot</span>(rel_freq_american, <span class="kw">aes</span>(<span class="dt">x =</span> group, <span class="dt">y =</span> frequency)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.7</span>), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="fl">0.7</span>, <span class="fl">0.1</span>))) <span class="op">+</span>
+<span class="st">    </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">ylab</span>(<span class="st">"Relative frequency"</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <p>Finally, <code>texstat_frequency</code> allows to plot the most frequent words in terms of relative frequency by group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfm_weight_pres &lt;-<span class="st"> </span>data_corpus_inaugural <span class="op">%&gt;%</span>
@@ -225,13 +201,13 @@ rel_freq_american &lt;-<span class="st"> </span><span class="kw">subset</span>(r
 <span class="co"># Calculate relative frequency by president</span>
 freq_weight &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_frequency.html">textstat_frequency</a></span>(dfm_weight_pres, <span class="dt">n =</span> <span class="dv">10</span>, <span class="dt">groups =</span> <span class="st">"President"</span>)
 
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> freq_weight, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> <span class="kw">nrow</span>(freq_weight)<span class="op">:</span><span class="dv">1</span>, <span class="dt">y =</span> frequency)) <span class="op">+</span>
-<span class="st">     </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
-<span class="st">     </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span><span class="st"> </span>group, <span class="dt">scales =</span> <span class="st">"free"</span>) <span class="op">+</span>
-<span class="st">     </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/coord_flip">coord_flip</a></span>() <span class="op">+</span>
-<span class="st">     </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_continuous</a></span>(<span class="dt">breaks =</span> <span class="kw">nrow</span>(freq_weight)<span class="op">:</span><span class="dv">1</span>,
+<span class="kw">ggplot</span>(<span class="dt">data =</span> freq_weight, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">nrow</span>(freq_weight)<span class="op">:</span><span class="dv">1</span>, <span class="dt">y =</span> frequency)) <span class="op">+</span>
+<span class="st">     </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">     </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>group, <span class="dt">scales =</span> <span class="st">"free"</span>) <span class="op">+</span>
+<span class="st">     </span><span class="kw">coord_flip</span>() <span class="op">+</span>
+<span class="st">     </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">nrow</span>(freq_weight)<span class="op">:</span><span class="dv">1</span>,
                         <span class="dt">labels =</span> freq_weight<span class="op">$</span>feature) <span class="op">+</span>
-<span class="st">     </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>)</code></pre></div>
+<span class="st">     </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>)</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 </div>
 <div id="plot-keyness-in-a-target-and-reference-group" class="section level2">
@@ -351,8 +327,7 @@ doclab &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
         <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#wordcloud">1. Wordcloud</a></li>
       <li><a href="#lexical-dispersion-plot">2. Lexical dispersion plot</a></li>

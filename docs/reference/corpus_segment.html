@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -52,34 +51,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -180,16 +155,16 @@ semi-colons (phrase delimiters within a sentence),
   text into new "document" units.  Boundaries are always defined as the
   pattern matches, plus the end and beginnings of each document.  The new
   "documents" that are created following the segmenation will then be the
-  texts found between boundaries.</p>  
-<p>The pattern itself will be saved as a new document variable named 
+  texts found between boundaries.
+    The pattern itself will be saved as a new document variable named 
   <code>pattern</code>.  This is most useful when segmenting a text according to 
   tags such as names in a transcript, section titles, or user-supplied 
   annotations.  If the beginning of the file precedes a pattern match, then 
   the extracted text will have a <code>NA</code> for the extracted <code>pattern</code> 
   document variable (or when <code>pattern_position = "after"</code>, this will be 
   true for the text split between the last pattern match and the end of the 
-  document).</p>  
-<p>To extract syntactically defined sub-document units such as sentences and 
+  document).
+    To extract syntactically defined sub-document units such as sentences and 
   paragraphs, use <code><a href='corpus_reshape.html'>corpus_reshape</a></code> instead.</p>
     
     <h2 class="hasAnchor" id="using-patterns"><a class="anchor" href="#using-patterns"></a>Using patterns</h2>
@@ -198,15 +173,15 @@ semi-colons (phrase delimiters within a sentence),
   <code>corpus_segment</code> is to partition a corpus into sub-documents using
   tags.  The default pattern value is designed for a user-annotated tag that
   is a term begining with double "hash" signs, followed by a whitespace, for
-  instance as <code>##INTRODUCTION The text</code>.</p>  
-<p>Glob and fixed pattern types use a whitespace character to signal the end 
-  of the pattern.</p>  
-<p>For more advanced pattern matches that could include whitespace or 
-  newlines, a regex pattern type can be used, for instance a text such as</p>  
-<p><code>Mr. Smith: Text</code>  <code>Mrs. Jones: More text</code></p>  
-<p>could have as <code>pattern = "\\b[A-Z].+\\.\\s[A-Z][a-z]+:"</code>, which
-  would catch the title, the name, and the colon.</p>  
-<p>For custom boundary delimitation using punctuation characters that come 
+  instance as <code>##INTRODUCTION The text</code>.
+    Glob and fixed pattern types use a whitespace character to signal the end 
+  of the pattern.
+    For more advanced pattern matches that could include whitespace or 
+  newlines, a regex pattern type can be used, for instance a text such as
+    <code>Mr. Smith: Text</code>  <code>Mrs. Jones: More text</code>
+    could have as <code>pattern = "\\b[A-Z].+\\.\\s[A-Z][a-z]+:"</code>, which
+  would catch the title, the name, and the colon.
+    For custom boundary delimitation using punctuation characters that come 
   come at the end of a clause or sentence (such as <code>,</code> and<code>.</code>, 
   these can be specified manually and <code>pattern_position</code> set to 
   <code>"after"</code>. To keep the punctuation characters in the text (as with 

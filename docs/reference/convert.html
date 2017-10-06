@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -52,34 +51,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -125,7 +100,7 @@ text analysis packages for which conversions are defined.    See also
       <td><p>target conversion format, consisting of the name of the package 
 into whose document-term matrix representation the dfm will be converted:</p><dl class='dl-horizontal'>
 <dt><code>"lda"</code></dt><dd><p>a list with components "documents" and 
-"vocab" as needed by the function lda.collapsed.gibbs.sampler from the 
+"vocab" as needed by the function <a href='http://www.rdocumentation.org/packages/lda/topics/lda.collapsed.gibbs.sampler'>lda.collapsed.gibbs.sampler</a> from the 
 <span class="pkg">lda</span> package</p></dd> <dt><code>"tm"</code></dt><dd><p>a <a href='http://www.rdocumentation.org/packages/tm/topics/matrix'>DocumentTermMatrix</a> from 
 the <span class="pkg">tm</span> package</p></dd> <dt><code>"stm"</code></dt><dd><p>the  format for the <span class="pkg">stm</span> 
 package</p></dd> <dt><code>"austin"</code></dt><dd><p>the <code>wfm</code> format from the 
@@ -188,10 +163,7 @@ See <a href='convert-wrappers.html'>convert-wrappers</a> for details.</p>
 #&gt;   ..$ President: chr [1:12] "Nixon" "Carter" "Reagan" "Reagan" ...
 #&gt;   ..$ FirstName: chr [1:12] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...</div><div class='input'><span class='co'># illustrate what happens with zero-length documents</span>
 <span class='no'>quantdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>punctOnly</span> <span class='kw'>=</span> <span class='st'>"!!!"</span>, <span class='no'>mycorpus</span>[-<span class='fl'>1</span>]), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>rowSums</span>(<span class='no'>quantdfm2</span>)</div><div class='output co'>#&gt;    punctOnly  1977-Carter  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 
-#&gt;            3         1376         2790         2921         2681         1833 
-#&gt; 1997-Clinton    2001-Bush    2005-Bush   2009-Obama   2013-Obama   2017-Trump 
-#&gt;         2449         1808         2319         2711         2317         1660 </div><div class='input'><span class='no'>stmdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>mycorpus</span>))
+<span class='fu'>rowSums</span>(<span class='no'>quantdfm2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in rowSums(quantdfm2): 'x' must be an array of at least two dimensions</span></div><div class='input'><span class='no'>stmdfm2</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>mycorpus</span>))
 <span class='fu'>str</span>(<span class='no'>stmdfm2</span>)</div><div class='output co'>#&gt; List of 3
 #&gt;  $ documents:List of 12
 #&gt;   ..$ punctOnly   : int [1:2, 1] 5 3
@@ -210,19 +182,19 @@ See <a href='convert-wrappers.html'>convert-wrappers</a> for details.</p>
 #&gt;  $ meta     :'data.frame':	12 obs. of  3 variables:
 #&gt;   ..$ Year     : num [1:12] 1973 1977 1981 1985 1989 ...
 #&gt;   ..$ President: chr [1:12] "Nixon" "Carter" "Reagan" "Reagan" ...
-#&gt;   ..$ FirstName: chr [1:12] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...</div><div class='input'> 
-</div><span class='co'># NOT RUN {</span>
-<span class='co'>#' # tm's DocumentTermMatrix format</span>
-<span class='no'>tmdfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
-<span class='fu'>str</span>(<span class='no'>tmdfm</span>)
+#&gt;   ..$ FirstName: chr [1:12] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...</div><div class='input'>
+<span class='fu'>not_run</span>({
+  <span class='co'>#' # tm's DocumentTermMatrix format</span>
+  <span class='no'>tmdfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
+  <span class='fu'>str</span>(<span class='no'>tmdfm</span>)
 
-<span class='co'># topicmodels package format</span>
-<span class='fu'>str</span>(<span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"topicmodels"</span>))
+  <span class='co'># topicmodels package format</span>
+  <span class='fu'>str</span>(<span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"topicmodels"</span>))
 
-<span class='co'># lda package format</span>
-<span class='no'>ldadfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>)
-<span class='fu'>str</span>(<span class='no'>ldadfm</span>)
-<span class='co'># }</span></pre>
+  <span class='co'># lda package format</span>
+  <span class='no'>ldadfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>)
+  <span class='fu'>str</span>(<span class='no'>ldadfm</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
