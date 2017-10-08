@@ -19,6 +19,7 @@
 ### Bug fixes and stability enhancements
 
 * The computation of tfidf has been more thoroughly described in the documentation for this function (#997).
+* Fixed a bug discovered in #1011 for unused keys in `tokens_lookup(..., exclusive = FALSE)`.
 
 
 ## Changes since v0.99
