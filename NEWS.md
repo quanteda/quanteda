@@ -1,5 +1,15 @@
 # quanteda 0.99
 
+## Changes since v0.99.12
+
+### New Features
+
+
+### Bug fixes and stability enhancements
+
+* Improved documentation for `textmodel_NB()` (#1010), and made output quantities from the fitted NB model regular matrix objects instead of **Matrix** classes.
+
+
 ## Changes since v0.99.9
 
 ### New Features
