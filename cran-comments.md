@@ -20,7 +20,12 @@ None.
 
 None (on macOS Sierra 10.12.6).
 
-None from the results of testing on win-builder.r-project.org.
+Only this from the results of testing on win-builder.r-project.org:
+
+* checking installed package size ... NOTE
+  installed size is  5.4Mb
+  sub-directories of 1Mb or more:
+    libs   3.1Mb
 
 
 ## Downstream dependencies
