@@ -256,14 +256,22 @@ chapters_corp <-
     corpus_segment(pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")
 summary(chapters_corp, 10)
 ```
-The titles are automatically extracted into the `pattern` document variables, and the text of each chapter becomes the text of each new document unit. Job done!
+The titles are automatically extracted into the `pattern` document variables, and the text of each chapter becomes the text of each new document unit.  To tidy this up, we can remove the trailing `\n` character, using `stri_trim_right()`, since the `\n` is a member of the "whitespace" group.
+```{r}
+docvars(chapters_corp, "pattern") <- stringi::stri_trim_right(docvars(chapters_corp, "pattern"))
+summary(chapters_corp, n = 3)
+```
 
+For better reference, let's also rename the document labels with these chapter headings:
+```{r}
+docnames(chapters_corp) <- docvars(chapters_corp, "pattern")
+```
 
 ### 4.4.5 barplots of whale and ahab
 
 With the corpus split into chapters, we can use the `dfm()` function to create a matrix of counts of each word in each chapter -- a document-frequency matrix.
 
-```{r eval=TRUE}
+```{r eval=TRUE, fig.width=8}
 # create a dfm
 chap_dfm <- dfm(chapters_corp)
 
@@ -289,7 +297,7 @@ ggplot(data = whales_ahabs_df, aes(x = chapter, y = ahab)) +
 
 The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. To get a feel for what the resulting weighted dfm (document-feature matrix) looks like, you can inspect it with the `head` function, which prints the first few rows and columns.
 
-```{r eval=TRUE}
+```{r eval=TRUE, fig.width=8}
 rel_dfm <- dfm_weight(chap_dfm, type = 'relfreq') * 100
 head(rel_dfm)
 
@@ -323,7 +331,7 @@ With the ahab frequency and whale frequency vectors extracted from the dfm, it i
 
 ##  5.4 Testing Correlation with Randomization
 
-```{r}
+```{r, fig.width=8}
 cor_data_df <- dfm_weight(chap_dfm, type = "relfreq")[, c("ahab", "whale")] %>%
     as.data.frame
 
@@ -347,39 +355,45 @@ ggplot(data = samples, aes(x = cor_sample, y = ..density..)) +
 
 ## 6.2 Mean word frequency
 
-The mean word frequency for a particular chapter can be calculated simply with the dfm. Each row is a document (in our case a chapter), so, for example, the mean word frequency of the first chapter is the sum of the first row of the matrix, divided by the number of word types in the first chapter. To get the number of word types in the first chapter only, we can either exclude words in that row which have a frequency of zero, or use the `ntype()` function on the first document in the corpus to achieve the same result.
-
 ```{r}
-first_chap <- as.matrix(chap_dfm[1, ])
-num_words <- length(first_chap[first_chap > 0])
-sum(chap_dfm[1,]) / num_words
-sum(chap_dfm[1,]) / ntype(chapters_corp[1], remove_punct = TRUE)
+# length of the book in chapters
+ndoc(chapters_corp)
+
+# chapter names
+docnames(chapters_corp) %>% head()
 ```
+
+Calculating the mean word frequencies is easy:
+```{r}
+# for first few chapters
+ntoken(chapters_corp) %>% head()
+
+# average
+(ntoken(chapters_corp) / ntype(chapters_corp)) %>% head()
+```
+
 
 ## 6.3 Extracting Word Usage Means
 
-The `rowMeans` matrix function, which operates on a dfm, allows us to retrieve the means for all of the chapters.
-```{r}
-chap_means <- data.frame(
-  mean_usage = rowMeans(chap_dfm),
-  chapter = 1:ndoc(chap_dfm)
-)
-
-head(chap_means)
-
-ggplot(data = chap_means, aes(x = chapter, y = mean_usage)) +
-  geom_bar(stat = "identity") +
-  labs(x = "Chapter", y = "Mean word usage")
+Since the quotient of the number of tokens and number of types is a vector, we 
+can simply feed this to `plot()` using the pipe operator:
+```{r, fig.width = 8}
+(ntoken(chapters_corp) / ntype(chapters_corp)) %>%
+    plot(type = "h", ylab = "Mean word frequency")
 ```
 
-To plot the scaled version of the plot, we simply standardize (`scale()`) the word mean usage.
+For the scaled plot:
+```{r, fig.width = 8}
+(ntoken(chapters_corp) / ntype(chapters_corp)) %>%
+    scale() %>%
+    plot(type = "h", ylab = "Scaled mean word frequency")
+```
+
+## 6.4 Ranking the values
 
 ```{r}
-chap_means$mean_usage_scaled <- as.numeric(scale(chap_means$mean_usage)) 
-
-ggplot(data = chap_means, aes(x = chapter, y = mean_usage_scaled)) +
-  geom_bar(stat = "identity") +
-  labs(x = "Chapter", y = "Scaled mean word usage")
+mean_word_use_m <- (ntoken(chapters_corp) / ntype(chapters_corp))
+sort(mean_word_use_m, decreasing = TRUE) %>% head()
 ```
 
 ## 6.5 Calculating the TTR 
@@ -387,41 +401,61 @@ ggplot(data = chap_means, aes(x = chapter, y = mean_usage_scaled)) +
 Measures of lexical diversity can be estimated using `textstat_lexdiv()`. The TTR (Type-Token Ratio), a measure used in section 6.5, can be calculcated for each document of the `dfm`.
 
 ```{r}
-ttr <- textstat_lexdiv(chap_dfm, measure = "TTR")
-head(ttr, 20)
+dfm(chapters_corp) %>% 
+    textstat_lexdiv(measure = "TTR") %>%
+    head(n = 10)
 ```
 
-## 7. Hapax Richness
+# 7. Hapax Richness
 
-Another measure of lexical diversity is Hapax richness, defined as the number of words that occur only once divided by the total number of words. We can calculate Hapax richness through `textstat_frequency` and use the **dplyr** package to wrangle the resulting dataframe. 
-
+Another measure of lexical diversity is Hapax richness, defined as the number of words that occur only once divided by the total number of words. We can calculate Hapax richness very simply by using a logical operation on the document-feature matrix, to return a logical value for each term that occurs once, and then sum these to get a count.
 ```{r}
-library(dplyr)
-library(tidyr)
+# hapaxes per document
+rowSums(chap_dfm == 1) %>% head()
 
-hapax <- dfm(chapters_corp, remove_punct = TRUE) %>% 
-  textstat_frequency(groups = docnames(chapters_corp)) %>% 
-  group_by(group) %>% 
-  summarise(number_tokens = sum(frequency),
-             number_hapax = sum(frequency == 1),
-             hapax_richness = number_hapax / number_tokens) %>% 
-  separate(group, into = c("chapter", "chapter_id")) 
-
-ggplot(data = hapax, aes(x = as.numeric(chapter_id), y = hapax_richness)) + 
-  geom_bar(stat = "identity") +
-  labs(x = "Chapter", y = "Ratio of number of hapax and chapter length")
-  
+# as a proportion
+hapax_proportion <- rowSums(chap_dfm == 1) / ntoken(chap_dfm)
+head(hapax_proportion)
 ```
 
-## 8 & 9 Keywords-in-context
+To plot this:
+```{r, fig.width=8}
+barplot(hapax_proportion, beside = TRUE, col = "grey", names.arg = seq_len(ndoc(chap_dfm)))
+```
 
-Chapters 8 and 9 are a description of how to create a keywords-in-context function. In **quanteda**, you can return a list of a keyword and its immediate context with the `kwic()` function.
 
+# 8 Do it KWIC
+
+For this, and the next chapter, we simply use **quanteda**'s excellent `kwic()` function.  To find the indexes of the token positions for "gutenberg", for instance, we use the following, which returns a data.frame with the name `from` indicating the index position of the start of the token match:
 ```{r}
-head(kwic(chapters_corp, "moby", window = 3), 5)
+gutenberg_kwic <- kwic(data_char_mobydick, pattern = "gutenberg")
+head(gutenberg_kwic$from, 10)
 ```
 
-## 11 Clustering
+# 9 Do it KWIC (Better)
+
+This is going to be super easy since we don't need to reinvent the wheel here, since `kwic()` already does all that we need.
+
+Let's create a corpus containing _Moby Dick_ but also Jane Austen's _Sense and Sensibility_.
+```{r}
+data_char_senseandsensibility <- texts(readtext("http://www.gutenberg.org/files/161/161.txt"))
+litcorpus <- corpus(c(data_char_mobydick, austen = data_char_senseandsensibility))
+```
+Now we can use `kwic()` to find out where in each novel this occurred:
+```{r}
+(dogkwic <- kwic(litcorpus, "dog"))
+```
+
+We can plot this easily too, as a lexical dispersion plot.  By specifying the scale as "absolute", we are looking at absolute token index position rather than relative position, and therefore we see that _Moby Dick_ is nearly twice as long as _Sense and Sensibility_.
+```{r, fig.width = 8, fig.height=3}
+textplot_xray(dogkwic, scale = "absolute")
+```
+
+# 10 Text Quality, Text Variety, and Parsing XML
+
+We should be able to put `melville1.xml` in the vignette folder, access it from GitHub, and demonstrate how easy this is to do using **readtext**.
+
+# 11 Clustering
 
 Chapter 11 describes how to detect clusters in a corpus. While the book uses the `XMLAuthorCorpus`, we describe clustering using U.S. State of the Union addresses included in the **quantedaData** package. We trim the corpus with `dfm_trim()` by keeping only those words that occur at least five times in the corpus and in at least three speeches.
 
@@ -445,11 +479,11 @@ pres_cluster$labels <- docnames(pres_dfm)
 plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
-## 12 Classification
+# 12 Classification
 
 _To be added._
 
-## 13 Topic Modeling
+# 13 Topic Modeling
 
 Finally, Jockers' book introduces topic modeling of a corpus and the visualisation through wordclouds. In our example, we use the State of the Union addresses again. We can easily apply functions from the **topicmodels** package by using **quanteda**'s `convert()` function. In our example, we use the Irish budget speeches from 2010 and classify 20 topics using Latent Dirichlet Allocation.
 
