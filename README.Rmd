@@ -127,36 +127,6 @@ See the [package website](http://quanteda.io), which includes the [Getting Start
 Vignette](http://quanteda.io/articles/quickstart.html).
 
 
-## Demonstration
-
-```{r quanteda_example, fig.width=7, fig.height=7}
-library(quanteda)
-
-# create a corpus from the immigration texts from UK party platforms
-uk2010immigCorpus <- 
-    corpus(data_char_ukimmig2010,
-           docvars = data.frame(party = names(data_char_ukimmig2010)),
-           metacorpus = list(notes = "Immigration-related sections of 2010 UK party manifestos"))
-uk2010immigCorpus
-summary(uk2010immigCorpus)
-
-# key words in context for "deport", 3 words of context
-kwic(uk2010immigCorpus, "deport", 3)
-
-# create a dfm, removing stopwords
-mydfm <- dfm(uk2010immigCorpus, remove = stopwords("english"), remove_punct = TRUE)
-mydfm
-
-topfeatures(mydfm, 20)  # 20 top words
-
-# plot a word cloud
-set.seed(100)
-textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
-                   rot.per = .25, 
-                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
-```
-
-
 ## Contributing
 
 Contributions in the form of feedback, comments, code, and bug reports are most welcome.  How to contribute:
