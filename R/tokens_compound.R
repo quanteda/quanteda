@@ -88,11 +88,4 @@ tokens_compound.tokenizedTexts <- function(x, pattern,
                                       case_insensitive = TRUE, join = join))
 }
 
-test_that("tokens_compound error when dfm is given, #1006", {
-    
-    toks <- tokens('a b c')
-    expect_error(tokens_compound(toks, dfm('b c d')))
-    
-})
-
 
