@@ -57,6 +57,25 @@ citation("quanteda")
 
 If you like **quanteda**, please consider leaving [feedback or a testimonial here](https://github.com/kbenoit/quanteda/issues/461).
 
+## Basic principles
+
+1. Corpus texts are text repositories.
+    * Should not have their texts modified as part of preparation or analysis
+    * Subsetting or redefining documents is allowable
+    
+2. A corpus should be capable of holding additional objects that will be associated with the corpus, such as dictionaries, stopword, and phrase lists, that will propagate downstream. 
+    
+3. Downstream objects should record the settings used to produce them.
+    * includes: tokenized texts (`tokens`), document-feature matrixes (`dfm`)
+    * settings examples are: `tolower`, `stem`, `removeTwitter` etc.
+    * also include any objects used in feature selection, such as dictionaries or stopword lists
+
+4. A document-feature matrix is a sparse matrix that is always *documents* (or document groups) in rows by *features* in columns.
+
+5. Encoding of texts should be done in the corpus, and recorded as meta-data in the corpus
+    * This encoding should be `UTF-8` by default (problem for Windows machines)
+    * Basic text operations will use the `stringi` package, based on the ICU libraries for Unicode compliance
+
 
 ## How to Install
 
