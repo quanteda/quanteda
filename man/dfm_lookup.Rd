@@ -22,8 +22,9 @@ otherwise, replace values in dictionary with keys while leaving other
 features unaffected}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
-wildcard expressions; \code{"regex"} for regular expressions; or 
-\code{"fixed"} for exact matching. See \link{valuetype} for details.}
+wildcard expressions; \code{"regex"} for regular expressions;
+\code{"fixed"} for exact matching; or \code{"charclass"} for character classes. 
+See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 

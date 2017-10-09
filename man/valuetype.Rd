@@ -5,8 +5,9 @@
 \title{pattern matching using valuetype}
 \arguments{
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
-wildcard expressions; \code{"regex"} for regular expressions; or 
-\code{"fixed"} for exact matching. See \link{valuetype} for details.}
+wildcard expressions; \code{"regex"} for regular expressions;
+\code{"fixed"} for exact matching; or \code{"charclass"} for character classes. 
+See \link{valuetype} for details.}
 }
 \description{
 Pattern matching in \pkg{quanteda} using the \code{valuetype} argument.

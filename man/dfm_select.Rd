@@ -29,8 +29,12 @@ fcm_remove(x, pattern, ...)
 \item{selection}{whether to \code{keep} or \code{remove} the features}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
-wildcard expressions; \code{"regex"} for regular expressions; or 
-\code{"fixed"} for exact matching. See \link{valuetype} for details.}
+wildcard expressions; \code{"regex"} for regular expressions; 
+\code{"fixed"} for exact matching; or \code{"charclass"} for character
+classes. See \link{valuetype} for more details.
+
+For \code{dfm_select}, \code{pattern} may also be a \link{dfm}; see Value
+below.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 

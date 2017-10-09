@@ -7,7 +7,13 @@
 #' @param x the \link{dfm} or \link{fcm} object whose features will be selected
 #' @inheritParams pattern
 #' @param selection whether to \code{keep} or \code{remove} the features
-#' @inheritParams valuetype
+#' @param valuetype the type of pattern matching: \code{"glob"} for "glob"-style
+#'   wildcard expressions; \code{"regex"} for regular expressions; 
+#'   \code{"fixed"} for exact matching; or \code{"charclass"} for character
+#'   classes. See \link{valuetype} for more details.
+#'   
+#'   For \code{dfm_select}, \code{pattern} may also be a \link{dfm}; see Value
+#'   below.
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param min_nchar,max_nchar numerics specifying the minimum and maximum length
 #'   in characters for features to be removed or kept; defaults are 1 and 
