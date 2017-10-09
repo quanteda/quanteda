@@ -6,11 +6,12 @@
 \title{select or remove tokens from a tokens object}
 \usage{
 tokens_select(x, pattern, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  padding = FALSE, verbose = quanteda_options("verbose"))
-
-tokens_remove(x, pattern, valuetype = c("glob", "regex", "fixed"),
+  valuetype = c("glob", "regex", "fixed", "charclass"),
   case_insensitive = TRUE, padding = FALSE,
+  verbose = quanteda_options("verbose"))
+
+tokens_remove(x, pattern, valuetype = c("glob", "regex", "fixed",
+  "charclass"), case_insensitive = TRUE, padding = FALSE,
   verbose = quanteda_options("verbose"))
 }
 \arguments{

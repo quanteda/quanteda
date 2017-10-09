@@ -36,7 +36,7 @@
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = FALSE)
 #' 
 tokens_select <- function(x, pattern, selection = c("keep", "remove"), 
-                          valuetype = c("glob", "regex", "fixed"),
+                          valuetype = c("glob", "regex", "fixed", "charclass"),
                           case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
     UseMethod("tokens_select")
 }
@@ -71,7 +71,7 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
 #' tokens_select(tokensdata_corpus_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
 #' }
 tokens_select.tokenizedTexts <- function(x, pattern, selection = c("keep", "remove"), 
-                                         valuetype = c("glob", "regex", "fixed"),
+                                         valuetype = c("glob", "regex", "fixed", "charclass"),
                                          case_insensitive = TRUE, padding = FALSE, 
                                          verbose = quanteda_options("verbose")) {
     x <- tokens_select(as.tokens(x), pattern, selection, valuetype, case_insensitive, padding, verbose)
@@ -110,7 +110,7 @@ tokens_select.tokenizedTexts <- function(x, pattern, selection = c("keep", "remo
 #' tokens_select(toks, list(c('*', 'crisis')), "keep")
 #' tokens_select(toks, '* crisis', "keep") # simplified form
 tokens_select.tokens <- function(x, pattern, selection = c("keep", "remove"), 
-                                 valuetype = c("glob", "regex", "fixed"),
+                                 valuetype = c("glob", "regex", "fixed", "charclass"),
                                  case_insensitive = TRUE, padding = FALSE, 
                                  verbose = quanteda_options("verbose"), ...) {
     
@@ -143,14 +143,14 @@ tokens_select.tokens <- function(x, pattern, selection = c("keep", "remove"),
 #'                    the high sense I entertain of this distinguished honor.")
 #' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #'
-tokens_remove <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
+tokens_remove <- function(x, pattern, valuetype = c("glob", "regex", "fixed", "charclass"),
                           case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
     UseMethod("tokens_remove")
 }
 
 #' @noRd
 #' @export
-tokens_remove.tokenizedTexts <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
+tokens_remove.tokenizedTexts <- function(x, pattern, valuetype = c("glob", "regex", "fixed", "charclass"),
                           case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
     tokens_select(x, pattern, selection = "remove", valuetype = valuetype, 
                   case_insensitive = case_insensitive, padding = padding, verbose = verbose)

@@ -52,10 +52,11 @@
 #'                           notintext = "blahblah"))
 #' dfm_select(myDfm, mydict)
 #' dfm_select(myDfm, mydict, case_insensitive = FALSE)
-#' dfm_select(myDfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
-#' dfm_select(myDfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
 #' dfm_select(myDfm, stopwords("english"), selection = "keep", valuetype = "fixed")
 #' dfm_select(myDfm, stopwords("english"), selection = "remove", valuetype = "fixed")
+#' dfm_select(myDfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
+#' dfm_select(myDfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
+#' dfm_select(myDfm, "\\p{P}", selection = "remove", valuetype = "charclass")
 #' 
 #' # select based on character length
 #' dfm_select(myDfm, min_nchar = 5)
@@ -69,7 +70,7 @@
 #' 
 dfm_select <- function(x, pattern, 
                        selection = c("keep", "remove"), 
-                       valuetype = c("glob", "regex", "fixed"),
+                       valuetype = c("glob", "regex", "fixed", "charclass"),
                        case_insensitive = TRUE,
                        min_nchar = 1L, max_nchar = 63L,
                        verbose = quanteda_options("verbose"), ...) {
@@ -81,7 +82,7 @@ dfm_select <- function(x, pattern,
 #' @export
 dfm_select.dfm <-  function(x, pattern, 
                             selection = c("keep", "remove"), 
-                            valuetype = c("glob", "regex", "fixed"),
+                            valuetype = c("glob", "regex", "fixed", "charclass"),
                             case_insensitive = TRUE,
                             min_nchar = 1L, max_nchar = 63L,
                             verbose = quanteda_options("verbose"), ...) {

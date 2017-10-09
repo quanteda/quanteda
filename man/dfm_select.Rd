@@ -8,9 +8,9 @@
 \title{select features from a dfm or fcm}
 \usage{
 dfm_select(x, pattern, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  min_nchar = 1L, max_nchar = 63L, verbose = quanteda_options("verbose"),
-  ...)
+  valuetype = c("glob", "regex", "fixed", "charclass"),
+  case_insensitive = TRUE, min_nchar = 1L, max_nchar = 63L,
+  verbose = quanteda_options("verbose"), ...)
 
 dfm_remove(x, pattern, ...)
 
@@ -90,10 +90,11 @@ mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           notintext = "blahblah"))
 dfm_select(myDfm, mydict)
 dfm_select(myDfm, mydict, case_insensitive = FALSE)
-dfm_select(myDfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
-dfm_select(myDfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
 dfm_select(myDfm, stopwords("english"), selection = "keep", valuetype = "fixed")
 dfm_select(myDfm, stopwords("english"), selection = "remove", valuetype = "fixed")
+dfm_select(myDfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
+dfm_select(myDfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
+dfm_select(myDfm, "\\\\p{P}", selection = "remove", valuetype = "charclass")
 
 # select based on character length
 dfm_select(myDfm, min_nchar = 5)

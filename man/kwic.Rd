@@ -6,8 +6,8 @@
 \alias{as.tokens.kwic}
 \title{locate keywords-in-context}
 \usage{
-kwic(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, join = FALSE, ...)
+kwic(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed",
+  "charclass"), case_insensitive = TRUE, join = FALSE, ...)
 
 is.kwic(x)
 

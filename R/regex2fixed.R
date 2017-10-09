@@ -47,7 +47,12 @@ regex2id <- function(pattern, types = NULL, valuetype = NULL, case_insensitive =
     
     if (!length(pattern)) return(list())
     pattern <- lapply(pattern, stri_trans_nfc) # normalize unicode
-
+    
+    if (valuetype == 'charclass') {
+        pattern <- paste0('^[', pattern, ']+$')
+        valuetype <- 'regex'
+    }
+    
     if (is.null(index)) {
         if (is.null(types)) stop('types cannot be NULL when index is not provided')
         if (is.null(valuetype)) stop('valuetype cannot be NULL when index is not provided')

@@ -25,15 +25,18 @@ Pattern matching in in \pkg{quanteda} uses "glob"-style pattern
     characters including none, and `?` to match any single character.  See also 
   \code{\link[utils]{glob2rx}} and References below.}
   \item{\code{"regex"}}{Regular expression matching.}
+  \item{\code{"charclass"}}{Character class matching matching.}
   \item{\code{"fixed"}}{Fixed (literal) pattern matching.}
   }
 }
 \note{
-If "fixed" is used with \code{case_insensitive = TRUE}, features will 
-  typically be lowercased internally prior to matching.  Also, glob matches
-  are converted to regular expressions (using \link[utils]{glob2rx}) when
-  they contain wild card characters, and to fixed pattern matches when they
-  do not.
+If "fixed" is used with \code{case_insensitive = TRUE}, patterns will 
+  typically be lowercased internally prior to matching.  Also, glob matches 
+  are converted to regular expressions (using \link[utils]{glob2rx}) when 
+  they contain wild card characters, and to fixed pattern matches when they 
+  do not. If "charclass" is used, patterns will be internally convereted to
+  regular expression with the character class operator
+  \code{"'^[\\p{X}]+$'"}.
 }
 \seealso{
 \code{\link[utils]{glob2rx}}, 
