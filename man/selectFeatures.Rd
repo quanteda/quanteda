@@ -15,13 +15,13 @@ selectFeatures(x, features, ...)
   verbose = FALSE, ...)
 
 \method{selectFeatures}{tokenizedTexts}(x, features, selection = c("keep",
-  "remove"), valuetype = c("glob", "regex", "fixed"),
+  "remove"), valuetype = c("glob", "regex", "fixed", "charclass"),
   case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
   verbose = FALSE, ...)
 
 \method{selectFeatures}{tokens}(x, features, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  padding = FALSE, ...)
+  valuetype = c("glob", "regex", "fixed", "charclass"),
+  case_insensitive = TRUE, padding = FALSE, ...)
 
 \method{selectFeatures}{collocations}(x, features, selection = c("keep",
   "remove"), valuetype = c("glob", "regex", "fixed"),
