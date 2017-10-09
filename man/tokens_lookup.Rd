@@ -21,9 +21,9 @@ levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second
 level into the first, but record the third level (if present) collapsed
 below the first.  (See examples.)}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or 
+\code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE} 
 uppercase to distinguish them from other features}

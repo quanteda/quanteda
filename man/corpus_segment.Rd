@@ -18,9 +18,9 @@ char_segment(x, pattern = "##*", valuetype = c("glob", "regex", "fixed"),
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 \link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or 
+\code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{extract_pattern}{extracts matched patterns from the texts and save in docvars if
 \code{TRUE}}

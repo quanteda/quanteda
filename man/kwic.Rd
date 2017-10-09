@@ -21,9 +21,9 @@ is.kwic(x)
 
 \item{window}{the number of context words to be displayed around the keyword.}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or 
+\code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{match without respect to case if \code{TRUE}}
 

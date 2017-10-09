@@ -4,43 +4,44 @@
 \alias{valuetype}
 \title{pattern matching using valuetype}
 \arguments{
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or 
+\code{"fixed"} for exact matching. See \link{valuetype} for details.}
 }
 \description{
 Pattern matching in \pkg{quanteda} using the \code{valuetype} argument.
 }
 \details{
-Pattern matching in in \pkg{quanteda} uses "glob"-style pattern
-  matching as the default, because this is simpler than regular expression
-  matching while addressing most users' needs.  It is also has the advantage
-  of being identical to fixed pattern matching when the wildcard characters
-  (`*` and `?`) are not used. Finally, most \link{dictionary} formats use
+Pattern matching in in \pkg{quanteda} uses "glob"-style pattern 
+  matching as the default, because this is simpler than regular expression 
+  matching while addressing most users' needs.  It is also has the advantage 
+  of being identical to fixed pattern matching when the wildcard characters 
+  (`*` and `?`) are not used. Finally, most \link{dictionary} formats use 
   glob matching.
   
-  \describe{
-  \item{\code{"glob"}}{"glob"-style wildcard expressions, the quanteda default.  
-    The implementation used in \pkg{quanteda} uses `*` to match any number of any 
-    characters including none, and `?` to match any single character.  See also 
-  \code{\link[utils]{glob2rx}} and References below.}
-  \item{\code{"regex"}}{Regular expression matching.}
-  \item{\code{"charclass"}}{Character class matching matching.}
-  \item{\code{"fixed"}}{Fixed (literal) pattern matching.}
-  }
+  \describe{ \item{\code{"glob"}}{"glob"-style wildcard expressions, the 
+  quanteda default. The implementation used in \pkg{quanteda} uses `*` to 
+  match any number of any characters including none, and `?` to match any 
+  single character.  See also \code{\link[utils]{glob2rx}} and References 
+  below.} \item{\code{"regex"}}{Regular expression matching.} 
+  \item{\code{"fixed"}}{Fixed (literal) pattern matching.} 
+  \item{\code{"charclass"}}{Character class matching. Patterns will be 
+  internally convereted to regular expression with the character class 
+  operator \code{^[pattern]+$}. This type is currently enabled only in 
+  \link{tokens_select}, \link{dfm_select} and \link{kwic}. See also 
+  \code{\link[stringi]{stringi-search-charclass}}.}}
 }
 \note{
 If "fixed" is used with \code{case_insensitive = TRUE}, patterns will 
   typically be lowercased internally prior to matching.  Also, glob matches 
   are converted to regular expressions (using \link[utils]{glob2rx}) when 
   they contain wild card characters, and to fixed pattern matches when they 
-  do not. If "charclass" is used, patterns will be internally convereted to
-  regular expression with the character class operator
-  \code{"'^[\\p{X}]+$'"}.
+  do not.
 }
 \seealso{
-\code{\link[utils]{glob2rx}}, 
-\href{https://en.wikipedia.org/wiki/Glob_(programming)}{glob pattern matching (Wikipedia)}, 
-\link{regex}
+\code{\link[stringi]{stringi-search-charclass}}, 
+  \code{\link[utils]{glob2rx}}, 
+  \href{https://en.wikipedia.org/wiki/Glob_(programming)}{glob pattern 
+  matching (Wikipedia)}, \link{regex}
 }
 \keyword{internal}
