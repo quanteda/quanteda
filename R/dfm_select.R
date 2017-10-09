@@ -7,7 +7,13 @@
 #' @param x the \link{dfm} or \link{fcm} object whose features will be selected
 #' @inheritParams pattern
 #' @param selection whether to \code{keep} or \code{remove} the features
-#' @inheritParams valuetype
+#' @param valuetype the type of pattern matching: \code{"glob"} for "glob"-style
+#'   wildcard expressions; \code{"regex"} for regular expressions; 
+#'   \code{"fixed"} for exact matching; or \code{"charclass"} for character
+#'   classes. See \link{valuetype} for more details.
+#'   
+#'   For \code{dfm_select}, \code{pattern} may also be a \link{dfm}; see Value
+#'   below.
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param min_nchar,max_nchar numerics specifying the minimum and maximum length
 #'   in characters for features to be removed or kept; defaults are 1 and 
@@ -52,10 +58,11 @@
 #'                           notintext = "blahblah"))
 #' dfm_select(myDfm, mydict)
 #' dfm_select(myDfm, mydict, case_insensitive = FALSE)
-#' dfm_select(myDfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
-#' dfm_select(myDfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
 #' dfm_select(myDfm, stopwords("english"), selection = "keep", valuetype = "fixed")
 #' dfm_select(myDfm, stopwords("english"), selection = "remove", valuetype = "fixed")
+#' dfm_select(myDfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
+#' dfm_select(myDfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
+#' dfm_select(myDfm, "\\p{P}", selection = "remove", valuetype = "charclass")
 #' 
 #' # select based on character length
 #' dfm_select(myDfm, min_nchar = 5)
@@ -69,7 +76,7 @@
 #' 
 dfm_select <- function(x, pattern, 
                        selection = c("keep", "remove"), 
-                       valuetype = c("glob", "regex", "fixed"),
+                       valuetype = c("glob", "regex", "fixed", "charclass"),
                        case_insensitive = TRUE,
                        min_nchar = 1L, max_nchar = 63L,
                        verbose = quanteda_options("verbose"), ...) {
@@ -81,7 +88,7 @@ dfm_select <- function(x, pattern,
 #' @export
 dfm_select.dfm <-  function(x, pattern, 
                             selection = c("keep", "remove"), 
-                            valuetype = c("glob", "regex", "fixed"),
+                            valuetype = c("glob", "regex", "fixed", "charclass"),
                             case_insensitive = TRUE,
                             min_nchar = 1L, max_nchar = 63L,
                             verbose = quanteda_options("verbose"), ...) {

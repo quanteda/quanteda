@@ -8,9 +8,9 @@
 \title{select features from a dfm or fcm}
 \usage{
 dfm_select(x, pattern, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  min_nchar = 1L, max_nchar = 63L, verbose = quanteda_options("verbose"),
-  ...)
+  valuetype = c("glob", "regex", "fixed", "charclass"),
+  case_insensitive = TRUE, min_nchar = 1L, max_nchar = 63L,
+  verbose = quanteda_options("verbose"), ...)
 
 dfm_remove(x, pattern, ...)
 
@@ -28,9 +28,13 @@ fcm_remove(x, pattern, ...)
 
 \item{selection}{whether to \code{keep} or \code{remove} the features}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; 
+\code{"fixed"} for exact matching; or \code{"charclass"} for character
+classes. See \link{valuetype} for more details.
+
+For \code{dfm_select}, \code{pattern} may also be a \link{dfm}; see Value
+below.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
@@ -90,10 +94,11 @@ mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           notintext = "blahblah"))
 dfm_select(myDfm, mydict)
 dfm_select(myDfm, mydict, case_insensitive = FALSE)
-dfm_select(myDfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
-dfm_select(myDfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
 dfm_select(myDfm, stopwords("english"), selection = "keep", valuetype = "fixed")
 dfm_select(myDfm, stopwords("english"), selection = "remove", valuetype = "fixed")
+dfm_select(myDfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
+dfm_select(myDfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
+dfm_select(myDfm, "\\\\p{P}", selection = "remove", valuetype = "charclass")
 
 # select based on character length
 dfm_select(myDfm, min_nchar = 5)

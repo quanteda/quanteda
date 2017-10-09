@@ -47,7 +47,7 @@ regex2id <- function(pattern, types = NULL, valuetype = NULL, case_insensitive =
     
     if (!length(pattern)) return(list())
     pattern <- lapply(pattern, stri_trans_nfc) # normalize unicode
-
+    
     if (is.null(index)) {
         if (is.null(types)) stop('types cannot be NULL when index is not provided')
         if (is.null(valuetype)) stop('valuetype cannot be NULL when index is not provided')
@@ -72,6 +72,12 @@ regex2id <- function(pattern, types = NULL, valuetype = NULL, case_insensitive =
     types_search <- attr(index, 'types_search')
     valuetype <- attr(index, 'valuetype')
     case_insensitive <- attr(index, 'case_insensitive')
+    
+    # convert charclass to regex
+    if (valuetype == 'charclass') {
+        pattern <- paste0('^[', pattern, ']+$')
+        valuetype <- 'regex'
+    }
     
     # lowercases for case-insensitive search
     if (valuetype != 'regex' && case_insensitive) {
@@ -193,7 +199,7 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     if (is.null(valuetype)) stop('valuetype cannot be NULL')
     if (is.null(case_insensitive)) stop('case_insensitive cannot be NULL')
     
-    if (valuetype == 'regex') {
+    if (valuetype == 'regex' || valuetype == 'charclass') {
         index_empty <- list()
         attr(index_empty, 'types_search') <- types
         attr(index_empty, 'types') <- types

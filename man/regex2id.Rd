@@ -38,9 +38,10 @@ is_indexed(pattern)
 
 \item{types}{unique types of tokens obtaine by \code{quanteda:::types()}}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions;
+\code{"fixed"} for exact matching; or \code{"charclass"} for character classes. 
+See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 

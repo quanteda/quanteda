@@ -42,7 +42,7 @@
 #' kwic(data_corpus_inaugural, phrase("war against"))
 #' kwic(data_corpus_inaugural, phrase("war against"), valuetype = "regex")
 #' 
-kwic <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed", "charclass"), 
                  case_insensitive = TRUE, join = FALSE, ...) {
     UseMethod("kwic")
 }
@@ -50,7 +50,7 @@ kwic <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed")
 #' @rdname kwic
 #' @noRd
 #' @export
-kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed", "charclass"), 
                            case_insensitive = TRUE, join = FALSE, ...) {
     kwic(corpus(x), pattern, window, valuetype, case_insensitive, join, ...)
 }
@@ -58,7 +58,7 @@ kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex"
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.corpus <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic.corpus <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed", "charclass"), 
                         case_insensitive = TRUE, join = FALSE, ...) {
     #thecall <- as.list(match.call())[-1]
     # if ("keywords" %in% names(thecall)) {
@@ -89,7 +89,7 @@ kwic.corpus <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "
 #' kwic(toks, c("is", "a"), valuetype = "fixed")
 #' kwic(toks, phrase(c("is", "a", "is it")), valuetype = "fixed")
 #' @export 
-kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed", "charclass"), 
                         case_insensitive = TRUE, join = FALSE, ...) {
     
     if ("keywords" %in% names(arglist <- list(...))) {
@@ -122,7 +122,7 @@ kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.tokenizedTexts <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic.tokenizedTexts <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed", "charclass"), 
                                 case_insensitive = TRUE, join = FALSE, ...) {
     kwic(as.tokens(x), pattern, window, valuetype, case_insensitive, join, ...)
 }

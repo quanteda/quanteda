@@ -118,7 +118,7 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
 #' selectFeatures(tokenize(data_corpus_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
 #' }
 selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
-                                           valuetype = c("glob", "regex", "fixed"),
+                                           valuetype = c("glob", "regex", "fixed", "charclass"),
                                            case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
                                            verbose = FALSE, ...) {
     as.tokenizedTexts(tokens_select(as.tokens(x), features, selection, valuetype, case_insensitive, padding))
@@ -142,7 +142,7 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
 #' selectFeatures(toksh, feats, selection = "remove", padding = TRUE, case_insensitive = FALSE)
 #' }
 selectFeatures.tokens <- function(x, features, selection = c("keep", "remove"), 
-                                  valuetype = c("glob", "regex", "fixed"),
+                                  valuetype = c("glob", "regex", "fixed", "charclass"),
                                   case_insensitive = TRUE, padding = FALSE, ...) {
     tokens_select(x, features, selection, valuetype, case_insensitive, padding)
 }

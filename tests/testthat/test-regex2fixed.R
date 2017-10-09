@@ -98,6 +98,15 @@ test_that("regex2fixed works with character class", {
     expect_equal(quanteda:::regex2fixed('\\D', types, 'regex', case_insensitive = TRUE),
                  list('NATO', 'GM', 'G7'))
     
+    expect_equal(quanteda:::regex2fixed('\\p{N}', types, 'charclass', case_insensitive = TRUE),
+                 list('2000'))
+    expect_equal(quanteda:::regex2fixed('A-Z', types, 'charclass', case_insensitive = FALSE),
+                 list('NATO', 'GM'))
+    expect_equal(quanteda:::regex2fixed('a-z', types, 'charclass', case_insensitive = FALSE),
+                 list())
+    expect_equal(quanteda:::regex2fixed('A-Z0-9', types, 'charclass', case_insensitive = TRUE),
+                 list('NATO', 'GM', '2000', 'G7'))
+    
 })
 
 test_that("regex2fixed converts emoji correctly", {
