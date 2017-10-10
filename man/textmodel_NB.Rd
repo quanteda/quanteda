@@ -17,7 +17,8 @@ factors.)}
 
 \item{smooth}{smoothing parameter for feature counts by class}
 
-\item{prior}{prior distribution on texts; see Details}
+\item{prior}{prior distribution on texts; one of \code{"uniform"},
+\code{"docfreq"}, or \code{"termfreq"}.  See Prior Distributions below.}
 
 \item{distribution}{count model for text features, can be \code{multinomial} 
 or \code{Bernoulli}.  To fit a "binary multinomial" model, first convert the 
@@ -26,27 +27,29 @@ dfm to a binary matrix using \code{\link{tf}(x, "boolean")}.}
 \item{...}{more arguments passed through}
 }
 \value{
-A list of return values, consisting of:
+A list of return values, consisting of (where \eqn{I} is the total
+  number of documents, \eqn{J} is the total numebr features, and \eqn{k} is
+  the total number of training classes):
 
 \item{call}{original function call}
 
-\item{PwGc}{probability of the word given the class (empirical 
+\item{PwGc}{\eqn{k \times J}; probability of the word given the class (empirical 
   likelihood)}
 
-\item{Pc}{class prior probability}
+\item{Pc}{\eqn{k}-length named numeric vector of class prior probabilities}
 
-\item{PcGw}{posterior class probability given the word}
+\item{PcGw}{\eqn{k \times J}; posterior class probability given the word}
 
-\item{Pw}{baseline probability of the word}
+\item{Pw}{\eqn{J \times 1}; baseline probability of the word}
 
-\item{data}{list consisting of \code{x} training class, and \code{y} 
-  test class}
+\item{data}{list consisting of the \eqn{I \times J} training dfm
+  \code{x}, and the \eqn{I}-length \code{y} training class vector}
 
 \item{distribution}{the distribution argument}
 
-\item{prior}{argument passed as a prior}
+\item{prior}{the prior argument}
 
-\item{smooth}{smoothing parameter}
+\item{smooth}{the value of the smoothing parameter}
 }
 \description{
 Fit a multinomial or Bernoulli Naive Bayes model, given a dfm and some
@@ -55,6 +58,32 @@ training labels.
 \section{Predict Methods}{
  A \code{predict} method is also available for a 
   fitted Naive Bayes object, see \code{\link{predict.textmodel_NB_fitted}}.
+}
+
+\section{Prior distributions}{
+
+
+Prior distributions refer to the prior probabilities assigned to the training
+classes, and the choice of prior distribution affects the calculation of the
+fitted probabilities.  The default is uniform priors, which sets the
+unconditional probability of observing the one class to be the same as
+observing any other class.
+
+"Document frequency" means that the class priors will be taken from the
+relative proportions of the class documents used in the training set.  This
+approach is so common that it is assumed in many examples, such as the worked
+example from Manning, Raghavan, and Schütze (2008) below.  It is not the
+default in \pkg{quanteda}, however, since there may be nothing informative in
+the relative numbers of documents used to train a classifier other than the
+relative availability of the documents.  When training classes are balanced
+in their number of documents (usually advisable), however, then the
+empirically computed "docfreq" would be equivalent to "uniform" priors.
+
+Setting \code{prior} to "termfreq" makes the priors equal to the proportions
+of total feature counts found in the grouped documents in each training
+class, so that the classes with the largest number of features are assigned
+the largest priors. If the total count of features in each training class was
+the same, then "uniform" and "termfreq" would be the same.
 }
 
 \examples{

@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -52,34 +51,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -110,6 +85,13 @@
 <div id="changes-since-v0-99-9" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-since-v0-99-9" class="anchor"></a>Changes since v0.99.9</h2>
+<div id="new-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New Features</h3>
+<ul>
+<li>Added methods for changing the docnames of tokens and dfm objects (#987).</li>
+</ul>
+</div>
 <div id="bug-fixes-and-stability-enhancements" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h3>
@@ -121,9 +103,9 @@
 <div id="changes-since-v0-99" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-since-v0-99" class="anchor"></a>Changes since v0.99</h2>
-<div id="new-features" class="section level3">
+<div id="new-features-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New Features</h3>
+<a href="#new-features-1" class="anchor"></a>New Features</h3>
 <ul>
 <li>Added <code><a href="../reference/tokens_segment.html">tokens_segment()</a></code>, which works on tokens objects in the same way as <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code> does on corpus objects (#902).</li>
 <li>Added <strong>magrittr</strong> pipe support (#927). <code>%&gt;%</code> can now be used with <strong>quanteda</strong> without needing to attach <strong>magrittr</strong> (or, as many users apparently believe, the entire tidyverse.)<br>
@@ -139,7 +121,7 @@
 <h3 class="hasAnchor">
 <a href="#bug-fixes-and-stability-enhancements-1" class="anchor"></a>Bug fixes and stability enhancements</h3>
 <ul>
-<li>Fixed a problem when applying <code><a href="http://www.rdocumentation.org/packages/purrr/topics/map">purrr::map()</a></code> to <code><a href="../reference/dfm.html">dfm()</a></code> (#928).</li>
+<li>Fixed a problem when applying <code>purrr::map()</code> to <code><a href="../reference/dfm.html">dfm()</a></code> (#928).</li>
 <li>Added documentation for <code><a href="../reference/regex2id.html">regex2fixed()</a></code> and associated functions.</li>
 <li>Fixed a bug in <code>textstat_collocations.tokens()</code> caused by “documents” containing only <code>""</code> as tokens. (#940)</li>
 <li>Fixed a bug caused by <code><a href="../reference/cbind.dfm.html">cbind.dfm()</a></code> when features shared a name starting with <code><a href="../reference/quanteda_options.html">quanteda_options("base_featname")</a></code> (#946)</li>
@@ -164,9 +146,9 @@
 <div id="changes-since-v0-9-9-65" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-since-v0-9-9-65" class="anchor"></a>Changes since v0.9.9-65</h2>
-<div id="new-features-1" class="section level3">
+<div id="new-features-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-1" class="anchor"></a>New features</h3>
+<a href="#new-features-2" class="anchor"></a>New features</h3>
 <ul>
 <li>Improvements and consoldiation of methods for detecting multi-word expressions, now active only through <code><a href="../reference/textstat_collocations.html">textstat_collocations()</a></code>, which computes only the <code>lambda</code> method for now, but does so accurately and efficiently. (#753, #803). This function is still under development and likely to change further.</li>
 <li>Added new <code>quanteda_options</code> that affect the maximum documents and features displayed by the dfm print method (#756).</li>
@@ -230,11 +212,11 @@
 <div id="changes-since-v0-9-9-50" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-since-v0-9-9-50" class="anchor"></a>Changes since v0.9.9-50</h2>
-<div id="new-features-2" class="section level3">
+<div id="new-features-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-2" class="anchor"></a>New features</h3>
+<a href="#new-features-3" class="anchor"></a>New features</h3>
 <ul>
-<li>Corpus construction using <code><a href="../reference/corpus.html">corpus()</a></code> now works for a <code><a href="http://www.rdocumentation.org/packages/tm/topics/SimpleCorpus">tm::SimpleCorpus</a></code> object. (#680)</li>
+<li>Corpus construction using <code><a href="../reference/corpus.html">corpus()</a></code> now works for a <code>tm::SimpleCorpus</code> object. (#680)</li>
 <li>Added <code><a href="../reference/corpus_trim.html">corpus_trim()</a></code> and <code><a href="../reference/corpus_trim.html">char_trim()</a></code> functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.</li>
 <li>Conversion of a dfm to an stm object now passes docvars through in the <code>$meta</code> of the return object.</li>
 <li>New <code><a href="../reference/dfm_group.html">dfm_group(x, groups = )</a></code> command, a convenience wrapper around <code>dfm.dfm(x, groups = )</code> (#725).</li>
@@ -275,9 +257,9 @@
 <div id="changes-since-v0-9-9-24" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-since-v0-9-9-24" class="anchor"></a>Changes since v0.9.9-24</h2>
-<div id="new-features-3" class="section level3">
+<div id="new-features-4" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-3" class="anchor"></a>New features</h3>
+<a href="#new-features-4" class="anchor"></a>New features</h3>
 <ul>
 <li>
 <code><a href="../reference/corpus_reshape.html">corpus_reshape()</a></code> can now go from sentences and paragraph units back to documents.</li>
@@ -336,9 +318,9 @@
 <div id="changes-since-v0-9-9-17" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-since-v0-9-9-17" class="anchor"></a>Changes since v0.9.9-17</h2>
-<div id="new-features-4" class="section level3">
+<div id="new-features-5" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-4" class="anchor"></a>New features</h3>
+<a href="#new-features-5" class="anchor"></a>New features</h3>
 <ul>
 <li>
 <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code> now returns a data.frame with p-values as well as the test statistic, and rownames containing the feature. This is more consistent with the other textstat functions.</li>
@@ -380,9 +362,9 @@
 <li>Fixed a bug in <code>textmodel_NB</code> that caused the class priors <code>Pc</code> to be refactored alphabetically instead of in the order of assignment (#471), also affecting predicted classes (#476).</li>
 </ul>
 </div>
-<div id="new-features-5" class="section level3">
+<div id="new-features-6" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-5" class="anchor"></a>New features</h3>
+<a href="#new-features-6" class="anchor"></a>New features</h3>
 <ul>
 <li>New textstat function <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code> discovers words that occur at differential rates between partitions of a dfm (using chi-squared, Fisher’s exact test, and the G^2 likelihood ratio test to measure the strength of associations).<br>
 </li>
@@ -859,9 +841,9 @@
     <div id="quanteda-0-9-8" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quanteda-0-9-8" class="anchor"></a>quanteda 0.9.8</h1>
-<div id="new-features-6" class="section level2">
+<div id="new-features-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-6" class="anchor"></a>New Features</h2>
+<a href="#new-features-7" class="anchor"></a>New Features</h2>
 <ul>
 <li>Improved the performance of <code><a href="../reference/selectFeatures.html">selectFeatures.tokenizedTexts()</a></code>.<br>
 </li>

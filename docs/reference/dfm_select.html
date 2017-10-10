@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -52,34 +51,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -152,7 +127,7 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
       <th>min_nchar, max_nchar</th>
       <td><p>numerics specifying the minimum and maximum length
 in characters for features to be removed or kept; defaults are 1 and 
-<a href='https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft'>79</a>.
+<a href = 'https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft'>79</a>.
  (Set <code>max_nchar</code> to <code>NULL</code> for no upper limit.) These are 
 applied after (and hence, in addition to) any selection based on pattern 
 matches.</p></td>
@@ -172,8 +147,9 @@ removed</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a> object, after the feature selection has 
-  been applied.</p>  
-<p>When <code>pattern</code> is a <a href='dfm.html'>dfm</a> object, then the returned object will
+  been applied.
+  
+  When <code>pattern</code> is a <a href='dfm.html'>dfm</a> object, then the returned object will
   be identical in its feature set to the dfm supplied as the <code>pattern</code>
   argument. This means that any features in <code>x</code> not in the dfm provided
   as <code>pattern</code> will be discarded, and that any features in found in the
@@ -181,8 +157,9 @@ removed</p></td>
   all zero counts.  Because selecting on a dfm is designed to produce a
   selected dfm with an exact feature match, when <code>pattern</code> is a
   <a href='dfm.html'>dfm</a> object, then the following settings are always used: 
-  <code>case_insensitive = FALSE</code>, and <code>valuetype = "fixed"</code>.</p>  
-<p>Selecting on a <a href='dfm.html'>dfm</a> is useful when you have trained a model on one 
+  <code>case_insensitive = FALSE</code>, and <code>valuetype = "fixed"</code>.
+  
+  Selecting on a <a href='dfm.html'>dfm</a> is useful when you have trained a model on one 
   dfm, and need to project this onto a test set whose features must be 
   identical.  It is also used in <code><a href='bootstrap_dfm.html'>bootstrap_dfm</a></code>.  See examples.</p>
     
@@ -290,35 +267,7 @@ removed</p></td>
 #&gt;   text2        0    1         1 1 2 1</div><div class='input'><span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"this contains lots of stopwords"</span>,
                  <span class='st'>"no if, and, or but about it: lots"</span>),
                <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>tmpfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>toks</span>)
-<span class='no'>tmpfcm</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 12 by 12 features.
-#&gt; 12 x 12 sparse Matrix of class "fcm"
-#&gt;            features
-#&gt; features    this contains lots of stopwords no if and or but about it
-#&gt;   this         0        1    1  1         1  .  .   .  .   .     .  .
-#&gt;   contains     .        0    1  1         1  .  .   .  .   .     .  .
-#&gt;   lots         .        .    0  1         1  1  1   1  1   1     1  1
-#&gt;   of           .        .    .  0         1  .  .   .  .   .     .  .
-#&gt;   stopwords    .        .    .  .         0  .  .   .  .   .     .  .
-#&gt;   no           .        .    .  .         .  0  1   1  1   1     1  1
-#&gt;   if           .        .    .  .         .  .  0   1  1   1     1  1
-#&gt;   and          .        .    .  .         .  .  .   0  1   1     1  1
-#&gt;   or           .        .    .  .         .  .  .   .  0   1     1  1
-#&gt;   but          .        .    .  .         .  .  .   .  .   0     1  1
-#&gt;   about        .        .    .  .         .  .  .   .  .   .     0  1
-#&gt;   it           .        .    .  .         .  .  .   .  .   .     .  0</div><div class='input'><span class='fu'>fcm_remove</span>(<span class='no'>tmpfcm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; <span class='message'>kept 9 features, from 175 supplied (glob) feature types</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 9 by 9 features.
-#&gt; 9 x 9 sparse Matrix of class "fcm"
-#&gt;         features
-#&gt; features this of no if and or but about it
-#&gt;    this     0  1  .  .   .  .   .     .  .
-#&gt;    of       .  0  .  .   .  .   .     .  .
-#&gt;    no       .  .  0  1   1  1   1     1  1
-#&gt;    if       .  .  .  0   1  1   1     1  1
-#&gt;    and      .  .  .  .   0  1   1     1  1
-#&gt;    or       .  .  .  .   .  0   1     1  1
-#&gt;    but      .  .  .  .   .  .   0     1  1
-#&gt;    about    .  .  .  .   .  .   .     0  1
-#&gt;    it       .  .  .  .   .  .   .     .  0</div></pre>
+<span class='no'>tmpfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='no'>toks</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>tmpfcm</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'tmpfcm' not found</span></div><div class='input'><span class='fu'>fcm_remove</span>(<span class='no'>tmpfcm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in fcm_remove(tmpfcm, stopwords("english")): object 'tmpfcm' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

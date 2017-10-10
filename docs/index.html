@@ -29,34 +29,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="/index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/pkgdown_only/design.html">quanteda Structure and Design</a>
-    </li>
-    <li>
-      <a href="articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
-    </li>
-    <li>
-      <a href="articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="articles/quickstart.html">Getting Started with quanteda</a>
-    </li>
-  </ul>
+  <a href="articles/index.html">Articles</a>
 </li>
 <li>
   <a href="news/index.html">News</a>
@@ -103,14 +79,14 @@ To cite package 'quanteda' in publications please use the
 following:
 
   Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
-  Textual Data".  R package version: 0.99.8.  http://quanteda.io.
+  Textual Data".  R package version: 0.99.12.  http://quanteda.io.
 
 A BibTeX entry for LaTeX users is
 
   @Manual{,
     title = {quanteda: Quantitative Analysis of Textual Data},
     author = {Kenneth Benoit and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
-    note = {R package version 0.99.8},
+    note = {R package version 0.99.12},
     url = {http://quanteda.io},
   }</code></pre>
 <div id="leave-feedback" class="section level3">
@@ -164,7 +140,7 @@ Once constructed, a <em>dfm</em> can be easily analyzed using either <strong>qua
 <li>
 <p>From <a href="https://github.com/kbenoit/quanteda">GitHub</a>, using:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># devtools packaged required to install quanteda from Github </span>
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"kbenoit/quanteda"</span>) </code></pre></div>
+devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kbenoit/quanteda"</span>) </code></pre></div>
 <p>Because this compiles some C++ source code, you will need a compiler installed. If you are using a Windows platform, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN. If you are using OS X, you will need to to install XCode, available for free from the App Store, or if you prefer a lighter footprint set of tools, <a href="http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">just the Xcode command line tools</a>, using the command <code>xcode-select --install</code> from the Terminal.</p>
 </li>
 <li>
@@ -175,11 +151,11 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <li><p><a href="https://github.com/kbenoit/spacyr"><strong>spacyr</strong></a>: NLP using the <a href="http://spacy.io">spaCy</a> library, including part-of-speech tagging, entity recognition, and dependency parsing.</p></li>
 <li>
 <p><a href="https://github.com/kbenoit/quantedaData"><strong>quantedaData</strong></a>: Additional textual data for use with <strong>quanteda</strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"kbenoit/quantedaData"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kbenoit/quantedaData"</span>)</code></pre></div>
 </li>
 <li>
 <p><a href="https://github.com/kbenoit/LIWCalike"><strong>LIWCalike</strong></a>: An R implementation of the <a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a> approach to text analysis.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"kbenoit/LIWCalike"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kbenoit/LIWCalike"</span>)</code></pre></div>
 </li>
 </ul>
 </li>
@@ -194,8 +170,8 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <h2 class="hasAnchor">
 <a href="#demonstration" class="anchor"></a>Demonstration</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
-## quanteda version 0.99.8
-## Using 3 of 4 threads for parallel computing
+## quanteda version 0.99.12
+## Using 7 of 8 threads for parallel computing
 ## 
 ## Attaching package: 'quanteda'
 ## The following object is masked from 'package:utils':
@@ -224,7 +200,7 @@ uk2010immigCorpus
 ##          UKIP   346    723        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/* on x86_64 by kbenoit
-## Created: Thu Sep 28 17:49:18 2017
+## Created: Fri Oct  6 09:35:35 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 <span class="co"># key words in context for "deport", 3 words of context</span>
@@ -254,7 +230,7 @@ mydfm
 <span class="kw">set.seed</span>(<span class="dv">100</span>)
 <span class="kw"><a href="reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
                    <span class="dt">rot.per =</span> .<span class="dv">25</span>, 
-                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
+                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
 <p><img src="man/images/quanteda_example-1.png" width="672"></p>
 </div>
 <div id="contributing" class="section level2">
@@ -272,8 +248,7 @@ mydfm
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2 class="hasAnchor">
-<a href="#sidebar" class="anchor"></a>Links</h2>
+    <h2>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cran.r-project.org/package=quanteda">https://​cran.r-project.org/​package=quanteda</a>
 </li>
@@ -282,13 +257,9 @@ mydfm
 </ul>
 <h2>License</h2>
 <p><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></p>
-<h2>Citation</h2>
-<ul class="list-unstyled">
-<li><a href="authors.html">Citing quanteda</a></li>
-</ul>
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Kenneth Benoit <br><small class="roles"> Author, maintainer, copyright holder </small> </li>
+<li>Kenneth Benoit <br><small class="roles"> Author, maintainer, copyright holder </small> </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
 <h2>Dev status</h2>
