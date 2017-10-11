@@ -139,13 +139,6 @@ trimdfm <- function(x, ...) {
     UseMethod("trim")
 }
 
-#' @rdname sample
-#' @export
-sample.dfm <- function(x, ...) {
-    .Deprecated("dfm_sample")
-    dfm_sample(x, ...)
-}
-
 #' weight or smooth a dfm
 #' 
 #' Deprecated weighting and smoothing functions for dfm objects.  See instead
