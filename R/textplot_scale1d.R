@@ -169,9 +169,8 @@ textplot_scale1d.textmodel_ca_fitted <- function(x,
 }
 
 
-##
-## internal function to plot document scaling
-##
+# internal fns --------
+
 textplot_scale1d_documents <- function(x, se, doclabels, sort = TRUE, groups = NULL) {
 
     if (!is.null(doclabels))
