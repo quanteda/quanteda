@@ -88,8 +88,6 @@ Collate:
     'dfm_subset.R'
     'dfm_trim.R'
     'dfm_weight.R'
-    'dictionaries-deprecated.R'
-    'dictionaries-liwc_old.R'
     'dictionaries.R'
     'docnames.R'
     'docvars.R'
