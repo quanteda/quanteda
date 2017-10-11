@@ -13,8 +13,10 @@
 tokens_group <- function(x, groups = NULL) {
     attrs <- attributes(x)
     groups <- generate_groups(x, groups)
-    if (length(unique(groups)) > 1) {
-        temp <- base::split(unlist(unclass(x), use.names = FALSE), rep(factor(groups), lengths(x)))
+    groups_unique <- unique(groups)
+    if (length(groups_unique) > 1) {
+        temp <- base::split(unlist(unclass(x), use.names = FALSE), 
+                            rep(factor(groups, levels = groups_unique), lengths(x)))
     } else {
         temp <- list(unlist(unclass(x), use.names = FALSE))
         names(temp) <- as.character(groups[1])
