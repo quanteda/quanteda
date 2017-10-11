@@ -19,6 +19,11 @@
 #'   previously existed.  This is useful if a positional match is needed between
 #'   the pre- and post-selected tokens, for instance if a window of adjacency 
 #'   needs to be computed.
+#' @param window select or remove tokens around matched patterns if 
+#'   \code{"window"} is greater than zero. If \code{"window"} is a single
+#'   integer, the window is synmtric, but it can also be a integer vector of two
+#'   values to define asynmetic windows (i.e. different window sizes before and
+#'   after the pattern).
 #' @return a \link{tokens} object with tokens selected or removed based on their
 #'   match to \code{pattern}
 #' @export
@@ -35,9 +40,13 @@
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = TRUE)
 #' tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = FALSE)
 #' 
+#' # use window
+#' tokens_select(toks, "is", selection = "remove", window = 1)
+#' tokens_select(toks, "is", selection = "remove", window = c(0, 1))
+#' 
 tokens_select <- function(x, pattern, selection = c("keep", "remove"), 
                           valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
+                          case_insensitive = TRUE, padding = FALSE, window = 0, verbose = quanteda_options("verbose")) {
     UseMethod("tokens_select")
 }
 
@@ -72,7 +81,7 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
 #' }
 tokens_select.tokenizedTexts <- function(x, pattern, selection = c("keep", "remove"), 
                                          valuetype = c("glob", "regex", "fixed"),
-                                         case_insensitive = TRUE, padding = FALSE, 
+                                         case_insensitive = TRUE, padding = FALSE, window = 0, 
                                          verbose = quanteda_options("verbose")) {
     x <- tokens_select(as.tokens(x), pattern, selection, valuetype, case_insensitive, padding, verbose)
     x <- as.tokenizedTexts(x)
@@ -111,7 +120,7 @@ tokens_select.tokenizedTexts <- function(x, pattern, selection = c("keep", "remo
 #' tokens_select(toks, '* crisis', "keep") # simplified form
 tokens_select.tokens <- function(x, pattern, selection = c("keep", "remove"), 
                                  valuetype = c("glob", "regex", "fixed"),
-                                 case_insensitive = TRUE, padding = FALSE, 
+                                 case_insensitive = TRUE, padding = FALSE, window = 0, 
                                  verbose = quanteda_options("verbose"), ...) {
     
     selection <- match.arg(selection)
@@ -124,10 +133,14 @@ tokens_select.tokens <- function(x, pattern, selection = c("keep", "remove"),
 
     if (verbose) 
         message_select(selection, length(features_id), 0)
+    
+    if (any(window < 0))
+        stop('window sizes cannot be negative')
+    if (length(window) == 1) window <- rep(window, 2)
     if (selection == 'keep') {
-        x <- qatd_cpp_tokens_select(x, types, features_id, 1, padding)
+        x <- qatd_cpp_tokens_select(x, types, features_id, 1, padding, window[1], window[2])
     } else {
-        x <- qatd_cpp_tokens_select(x, types, features_id, 2, padding)
+        x <- qatd_cpp_tokens_select(x, types, features_id, 2, padding, window[1], window[2])
     }
     attributes(x, FALSE) <- attrs
     return(x)
@@ -144,16 +157,16 @@ tokens_select.tokens <- function(x, pattern, selection = c("keep", "remove"),
 #' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #'
 tokens_remove <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
+                          case_insensitive = TRUE, padding = FALSE, window = 0, verbose = quanteda_options("verbose")) {
     UseMethod("tokens_remove")
 }
 
 #' @noRd
 #' @export
 tokens_remove.tokenizedTexts <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, verbose = quanteda_options("verbose")) {
+                          case_insensitive = TRUE, padding = FALSE, window = 0, verbose = quanteda_options("verbose")) {
     tokens_select(x, pattern, selection = "remove", valuetype = valuetype, 
-                  case_insensitive = case_insensitive, padding = padding, verbose = verbose)
+                  case_insensitive = case_insensitive, padding = padding, window = window, verbose = verbose)
 }
 
 
