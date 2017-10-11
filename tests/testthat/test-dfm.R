@@ -8,7 +8,7 @@ test_that("oldest dfm test", {
                               taxation="taxation",
                               taxregex="tax*",
                               country="united_states"))
-    dictDfm <- dictDfm <- dfm(mycorpus, dictionary = mydict, valuetype = "glob")
+    dictDfm <- dfm(mycorpus, dictionary = mydict, valuetype = "glob")
     dictDfm <- dictDfm[1:10, ]
     dictDfm <- thesDfm <- dfm(mycorpus, thesaurus = mydict, valuetype = "glob")
     dictDfm <- thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
@@ -100,7 +100,7 @@ test_that("test rbind.dfm with the same columns", {
     )
     expect_that(
         rbind(dfm1, dfm1),
-        is_a('dfmSparse')
+        is_a('dfm')
     )
 
 })
@@ -126,33 +126,33 @@ test_that("test rbind.dfm with different columns", {
 
     expect_that(
         rbind(dfm1, dfm2),
-        is_a('dfmSparse')
+        is_a('dfm')
     )
-
+    
 })
 
 test_that("test rbind.dfm with different columns, three args and repeated words", {
-
+    
     dfm1 <- dfm('What does the?', remove_punct = TRUE)
     dfm2 <- dfm('fox say fox', remove_punct = TRUE)
     dfm3 <- dfm('The quick brown fox', remove_punct = TRUE)
-
+    
     foxdfm <- c(0, 0, 1, 1, 0, 0, 0, 2, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0)
     dim(foxdfm) <- c(3,7)
     colnames(foxdfm) <- c('brown', 'does', 'fox', 'quick', 'say', 'the', 'what')
     rownames(foxdfm) <-  c('text1', 'text1', 'text1')
     foxdfm <- as.matrix(foxdfm)
-
+    
     testdfm <- rbind(dfm1, dfm2, dfm3)
     expect_true(
         all(testdfm[,order(colnames(testdfm))] == foxdfm[,order(colnames(foxdfm))])
     )
-
+    
     expect_that(
         rbind(dfm1, dfm2, dfm3),
-        is_a('dfmSparse')
+        is_a('dfm')
     )
-
+    
 })
 
 test_that("test rbind.dfm with a single argument returns the same dfm", {
@@ -164,28 +164,25 @@ test_that("test rbind.dfm with a single argument returns the same dfm", {
     )
     expect_that(
         rbind(dfm(fox, remove_punct = TRUE)),
-        is_a('dfmSparse')
+        is_a('dfm')
     )
 })
 
 test_that("test rbind.dfm with the same features, but in a different order", {
-
+    
     fox <-'What does the fox say?'
     xof <-'say fox the does What??'
     foxdfm <- rep(1, 20)
     dim(foxdfm) <- c(4,5)
     colnames(foxdfm) <- c('does', 'fox', 'say', 'the', 'what')
     rownames(foxdfm) <-  rep(c('text1', 'text2'), 2)
-
+    
     dfm1 <- dfm(c(fox, xof), remove_punct = TRUE)
-
+    
     expect_true(
         all(rbind(dfm1, dfm1) == foxdfm)
     )
-
-
 })
-
 
 
 test_that("dfm keeps all types with > 10,000 documents (#438) (a)", {
@@ -244,7 +241,7 @@ test_that("dfm.dfm works as expected", {
     expect_identical(colSums(groupeddfm), colSums(groupeddfm))
     expect_identical(docnames(groupeddfm), c("Govt", "Opposition"))
     expect_identical(testdfm, dfm(testdfm))
-
+    
     dict <- dictionary(list(articles = c("the", "a", "an"),
                             preps = c("of", "for", "in")))
     expect_equivalent(
@@ -260,7 +257,7 @@ test_that("dfm.dfm works as expected", {
 test_that("dfm_sample works as expected",{
     myDfm <- dfm(data_corpus_inaugural[1:10], verbose = FALSE)
     expect_error(dfm_sample(myDfm, margin = "documents", size = 20),
-                  "size cannot exceed the number of documents \\(10\\)")
+                 "size cannot exceed the number of documents \\(10\\)")
     expect_error(dfm_sample(myDfm, margin = "features", size = 3500),
                  "size cannot exceed the number of features \\(33\\d{2}\\)")
     expect_error(dfm_sample(data_corpus_inaugural[1:10]))
@@ -271,7 +268,7 @@ test_that("cbind.dfm works as expected",{
     dfm1 <- dfm("This is one sample text sample")
     dfm2 <- dfm("More words here")
     dfm12 <- cbind(dfm1, dfm2)
-
+    
     expect_equal(nfeature(dfm12), 8)
     expect_equal(names(dimnames(dfm12)),
                  c("docs", "features"))
@@ -309,13 +306,13 @@ test_that("cbind.dfm works with non-dfm objects",{
         matrix(c(1,1,1,0,0,10,1,3, 0,0,1,1,1,20,2,4), byrow = TRUE, nrow = 2,
                dimnames = list(docs = c("text1", "text2"), features = c(letters[1:5], "feat1", "f1", "f2")))
     )
-
+    
     expect_equal(
         as.matrix(cbind(vec, dfm1, vec)),
         matrix(c(10,1,1,1,0,0,10, 20,0,0,1,1,1,20), byrow = TRUE, nrow = 2,
                dimnames = list(docs = c("text1", "text2"), features = c("feat1", letters[1:5], "feat11")))
     )
-
+    
     expect_silent(cbind(vec, dfm1, vec))
     expect_warning(
         cbind(dfm1, dfm1),
@@ -467,7 +464,7 @@ test_that("dfm print works with options as expected", {
     )
     expect_output(
         print(tmp[1:3, 1:3], ndoc = 2, nfeature = 2, show.values = TRUE),
-        "^Document-feature matrix of: 3 documents, 3 features.*2 x 3 sparse Matrix.*features"
+        "^Document-feature matrix of: 3 documents, 3 features.*3 x 3 sparse Matrix.*features"
     )
     expect_output(
         print(tmp[1:3, 1:3], ndoc = 2, nfeature = 2),
@@ -519,15 +516,15 @@ test_that("printing an empty dfm produces informative result (#811)", {
     
     expect_output(
         print(my_dfm),
-        "^Document-feature matrix of: 2 documents, 2 features \\(100% sparse\\)\\.\\n2 x 2 sparse Matrix of class \"dfmSparse\""
+        "^Document-feature matrix of: 2 documents, 2 features \\(100% sparse\\)\\.\\n2 x 2 sparse Matrix of class \"dfm\""
     )
     expect_output(
         print(my_dfm[-c(1, 2), ]),
-        "^Document-feature matrix of: 0 documents, 2 features\\.\\n0 x 2 sparse Matrix of class \"dfmSparse\""
+        "^Document-feature matrix of: 0 documents, 2 features\\.\\n0 x 2 sparse Matrix of class \"dfm\""
     )
     expect_output(
         print(my_dfm[, -c(1, 2)]),
-        "^Document-feature matrix of: 2 documents, 0 features\\.\\n2 x 0 sparse Matrix of class \"dfmSparse\""
+        "^Document-feature matrix of: 2 documents, 0 features\\.\\n2 x 0 sparse Matrix of class \"dfm\""
     )
 })
 

@@ -7,18 +7,25 @@
 \alias{show,dfm-method}
 \alias{print,fcm-method}
 \alias{show,fcm-method}
+\alias{head.fcm}
+\alias{tail.fcm}
 \title{print a dfm object}
 \usage{
-\S4method{print}{dfm}(x, show.values = FALSE, show.settings = FALSE,
-  show.summary = TRUE, ndoc = getOption("quanteda_print_dfm_max_ndoc"),
-  nfeature = getOption("quanteda_print_dfm_max_nfeature"), ...)
+\S4method{print}{dfm}(x, show.values = NULL, show.settings = FALSE,
+  show.summary = TRUE, ndoc = quanteda_options("print_dfm_max_ndoc"),
+  nfeature = quanteda_options("print_dfm_max_nfeature"), ...)
 
 \S4method{show}{dfm}(object)
 
-\S4method{print}{fcm}(x, show.values = FALSE, show.settings = FALSE,
-  show.summary = TRUE, nfeature = 20L, ...)
+\S4method{print}{fcm}(x, show.values = NULL, show.settings = FALSE,
+  show.summary = TRUE, ndoc = quanteda_options("print_dfm_max_ndoc"),
+  nfeature = quanteda_options("print_dfm_max_nfeature"), ...)
 
 \S4method{show}{fcm}(object)
+
+\method{head}{fcm}(x, n = 6L, nfeature = 6L, ...)
+
+\method{tail}{fcm}(x, n = 6L, nfeature = 6L, ...)
 }
 \arguments{
 \item{x}{the dfm to be printed}
@@ -26,17 +33,19 @@
 \item{show.values}{print the dfm values; if called explicitly this will print
 all values, overriding \code{ndoc} and \code{nfeature}.}
 
-\item{show.settings}{print the settings used to create the dfm.  See 
+\item{show.settings}{print the settings used to create the dfm. See 
 \link{settings}.}
 
-\item{show.summary}{print a brief summary indicating the number of documents
+\item{show.summary}{print a brief summary indicating the number of documents 
 and features}
 
-\item{ndoc}{max number of documents to print; default is from the \code{quanteda_print_dfm_max_ndoc} setting}
+\item{ndoc}{max number of documents to print; default is from the
+\code{print_dfm_max_ndoc} setting of \code{\link{quanteda_options}}}
 
-\item{nfeature}{max number of features to print; ; default is from the \code{quanteda_print_dfm_max_nfeature} setting}
+\item{nfeature}{max number of features to print; default is from the
+\code{print_dfm_max_nfeature} setting of \code{\link{quanteda_options}}}
 
-\item{...}{further arguments passed to or from other methods}
+\item{...}{further arguments passed to \code{Matrix::printSpMatrix2}}
 
 \item{object}{the item to be printed}
 }

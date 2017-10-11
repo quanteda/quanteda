@@ -135,6 +135,7 @@ dfm_tolower <- function(x, keep_acronyms = FALSE, ...) {
 #' @noRd
 #' @export
 dfm_tolower.dfm <- function(x, keep_acronyms = FALSE, ...) {
+    x <- as.dfm(x)
     colnames(x) <- char_tolower(featnames(x), keep_acronyms = keep_acronyms, ...)
     dfm_compress(x, margin = "features")
 }
@@ -149,6 +150,7 @@ dfm_toupper <- function(x, ...) {
 #' @noRd
 #' @export
 dfm_toupper.dfm <- function(x, ...) {
+    x <- as.dfm(x)
     colnames(x) <- char_toupper(featnames(x), ...)
     dfm_compress(x, margin = "features")
 }

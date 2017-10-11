@@ -92,9 +92,11 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
 #' @export
 textmodel_NB.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
                              distribution = c("multinomial", "Bernoulli"), ...) {
-    call <- match.call()
+    
+    x <- as.dfm(x)
     prior <- match.arg(prior)
     distribution <- match.arg(distribution)
+    call <- match.call()
     
     y <- factor(y) # no effect if already a factor    
     x.trset <- x[which(!is.na(y)), ]
@@ -195,7 +197,7 @@ textmodel_NB.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "
 predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
     
     call <- match.call()
-    if (is.null(newdata)) newdata <- object$data$x
+    if (is.null(newdata)) newdata <- as.dfm(object$data$x)
 
     # remove any words for which zero probabilities exist in training set --
     # would happen if smooth=0

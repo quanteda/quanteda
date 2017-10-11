@@ -104,6 +104,7 @@ dfm_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
 #' @noRd    
 #' @export
 dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer")) {
+    x <- as.dfm(x)
     if (identical(as.integer(x@ngrams), 1L)) 
         colnames(x) <- char_wordstem(featnames(x), language = language)
     else

@@ -35,6 +35,7 @@ featnames.NULL <- function(x) {
 #' @export
 #' @noRd
 featnames.dfm <- function(x) {
+    x <- as.dfm(x)
     if (is.null(colnames(x))) {
         character()
     } else {
@@ -57,6 +58,7 @@ features <- function(x) {
 #' @noRd
 #' @export
 docnames.dfm <- function(x) {
+    x <- as.dfm(x)
     if (is.null(rownames(x))) {
         paste0('text', seq_len(ndoc(x)))
     } else {
@@ -94,6 +96,13 @@ as.dfm <- function(x) {
 }
 
 #' @noRd
+#' @method as.dfm dfm
+#' @export
+as.dfm.dfm <- function(x) {
+    x
+}
+
+#' @noRd
 #' @method as.dfm matrix
 #' @export
 as.dfm.matrix <- function(x) {
@@ -101,19 +110,35 @@ as.dfm.matrix <- function(x) {
 }
 
 #' @noRd
-#' @method as.dfm data.frame
+#' @method as.dfm Matrix
 #' @export
-as.dfm.data.frame <- function(x) {
+as.dfm.Matrix <- function(x) {
     as_dfm_constructor(x)
 }
 
-as_dfm_constructor <- function(x) {
-    result <- new("dfmSparse", Matrix(as.matrix(x), sparse = TRUE))
-    dimnames(result) <- list(docs = if (is.null(rownames(x))) paste0(quanteda_options("base_docname"), seq_len(nrow(x))) else rownames(x),
-                             features = if (is.null(colnames(x))) paste0(quanteda_options("base_featname"), seq_len(ncol(x))) else colnames(x))
-    result
+#' @noRd
+#' @method as.dfm data.frame
+#' @export
+as.dfm.data.frame <- function(x) {
+    as_dfm_constructor(as.matrix(x, rownames.force = TRUE))
 }
 
+#' @noRd
+#' @method as.dfm dfmSparse
+#' @export
+as.dfm.dfmSparse <- function(x) {
+    as.dfm(as(x, 'dgCMatrix'))
+}
+
+as_dfm_constructor <- function(x) {
+    x <- Matrix(x, sparse = TRUE) # dimnames argument is not working
+    names(dimnames(x)) <- c("docs", "features")
+    if (nrow(x) > 0 && is.null(rownames(x))) 
+        rownames(x) <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
+    if (ncol(x) > 0 && is.null(colnames(x)))
+        colnames(x) <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
+    new("dfm", x)
+}
 
 #' identify the most frequent features in a dfm
 #' 
@@ -158,6 +183,8 @@ topfeatures <- function(x, n = 10, decreasing = TRUE, scheme = c("count", "docfr
 #' @noRd
 #' @importFrom stats quantile
 topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,  scheme = c("count", "docfreq"), groups = NULL) {
+    
+    x <- as.dfm(x)
     scheme <- match.arg(scheme)
     
     if (!is.null(groups)) {
@@ -228,6 +255,6 @@ NULL
 #' @param e2 a numeric value to compare with values in a dfm
 #' @export
 #' @seealso \link{Comparison} operators
-setMethod("Compare", c("dfmSparse", "numeric"), function(e1, e2) {
+setMethod("Compare", c("dfm", "numeric"), function(e1, e2) {
     as(callGeneric(as(e1, "dgCMatrix"), e2), "lgCMatrix")
 })

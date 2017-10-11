@@ -47,7 +47,8 @@ dfm_subset <- function(x, subset, select, ...) {
 #' @noRd    
 #' @export
 dfm_subset.dfm <- function(x, subset, select, ...) {
-
+    
+    x <- as.dfm(x)
     if (length(addedArgs <- list(...)))
         warning("Argument", if (length(addedArgs) > 1L) "s " else " ", names(addedArgs), " not used.", sep = "")
     
@@ -66,7 +67,7 @@ dfm_subset.dfm <- function(x, subset, select, ...) {
             r & !is.na(r)
         }
     }
-
+    
     vars <- if (missing(select)) {
         TRUE
     } else {
