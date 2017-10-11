@@ -29,3 +29,4 @@ __MACOSX
 ^vignettes/pkgdown_only/
 ^vignettes/cheatsheet/
 ^revdep$
+

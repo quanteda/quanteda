@@ -118,9 +118,9 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
 #' selectFeatures(tokenize(data_corpus_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
 #' }
 selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
-                                           valuetype = c("glob", "regex", "fixed"),
-                                           case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
-                                           verbose = FALSE, ...) {
+                                          valuetype = c("glob", "regex", "fixed"),
+                                          case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
+                                          verbose = FALSE, ...) {
     as.tokenizedTexts(tokens_select(as.tokens(x), features, selection, valuetype, case_insensitive, padding))
 }
 
@@ -225,10 +225,10 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
     x[, order:=NULL]
     nend <- nrow(x)
     if (verbose) catm("Removed ", format(nstart - nend, big.mark=","),  
-                     " (", format((nstart - nend)/nstart*100, digits=3),
-                     "%) of ", format(nstart, big.mark=","), 
-                     " collocations containing one of ", 
-                     length(features), " stopwords.\n", sep="")
+                      " (", format((nstart - nend)/nstart*100, digits=3),
+                      "%) of ", format(nstart, big.mark=","), 
+                      " collocations containing one of ", 
+                      length(features), " stopwords.\n", sep="")
     class(x) <- origclass
     x
 }

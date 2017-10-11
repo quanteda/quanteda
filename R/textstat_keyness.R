@@ -71,9 +71,11 @@ textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr", 
 textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), 
                                  sort = TRUE, correction = c("default", "yates", "williams", "none")) {
     
-    # error checking
+    
+    x <- as.dfm(x)
     measure <- match.arg(measure)
     correction <- match.arg(correction)
+    # error checking
     if (ndoc(x) < 2 )
         stop("x must have at least two documents")
     if (is.character(target) && !(target %in% docnames(x)))
@@ -92,7 +94,7 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
     rownames(x) <- grouping
     x <- dfm_compress(x, margin = 'documents')
     x <- x[order(docnames(x)), ]
-
+    
     if (measure == "chi2") {
         keywords <- keyness_chi2_dt(x, correction)
     } else if (measure == "lr") {
@@ -108,16 +110,16 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
     } else {
         stop(measure, " not yet implemented for textstat_keyness")
     }
-
+    
     if (sort)
         keywords <- keywords[order(keywords[, 1], decreasing = TRUE), ]
     
     names(keywords)[which(names(keywords) == "target")] <- "n_target"
     names(keywords)[which(names(keywords) == "reference")] <- "n_reference"
-
+    
     doc_names <- grouping[order(grouping)]
     attr(keywords, "documents") <- names(doc_names)
-
+    
     return(keywords)
 }
 
@@ -175,14 +177,14 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
     
     # compute p-values
     dt[, p := 1 - stats::pchisq(abs(chi2), 1)]
-
+    
     result <- as.data.frame(dt[, list(chi2, p)])
     rownames(result) <- dt$feature
     result$target = as.vector(x[1,])
     result$reference = as.vector(x[2,])
     return(result)
 }
-    
+
 #' @rdname keyness
 #' @importFrom stats chisq.test
 #' @details 
@@ -274,7 +276,7 @@ keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")
                                            b + ifelse(cor_app, ifelse(correction_sign, 0.5, -0.5), 0),
                                            c + ifelse(cor_app, ifelse(correction_sign, 0.5, -0.5), 0))]
     }
-
+    
     dt[, G2 := (2 * (a * log(a / E11 + epsilon) + 
                          b * log(b / ((a+b)*(b+d) / N) + epsilon) +
                          c * log(c / ((a+c)*(c+d) / N) + epsilon) +

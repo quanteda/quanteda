@@ -152,6 +152,7 @@ dfm.character <- function(x,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
+
     dfm.tokens(tokens(corpus(x)),
         tolower = tolower, 
         stem = stem, 
@@ -244,7 +245,7 @@ dfm.tokens <- function(x,
         x <- tokens_tolower(x)
         tolower <- FALSE
     }
-
+    
     if (verbose) {
         catm("   ... found ", 
              format(length(x), big.mark = ","), " document",
@@ -318,7 +319,8 @@ dfm.dfm <- function(x,
                     groups = NULL, 
                     verbose = quanteda_options("verbose"), 
                     ...) {
-
+    
+    x <- as.dfm(x)
     valuetype <- match.arg(valuetype)
     check_dots(list(...))
 
@@ -422,7 +424,7 @@ compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
                          dims = c(length(x), length(uniqueFeatures)),
                          dimnames = list(docs = names(x), 
                                       features = uniqueFeatures))
-    new("dfmSparse", temp)
+    new("dfm", temp)
 }
 
 compile_dfm.tokens <- function(x, verbose = TRUE) {
@@ -443,7 +445,7 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
                          dims = c(length(names(x)), length(types)),
                          dimnames = list(docs = names(x),
                                          features = as.character(types)))
-    new("dfmSparse", temp)
+    new("dfm", temp)
 }
 
 
@@ -464,12 +466,23 @@ make_ngram_pattern <- function(features, valuetype, concatenator) {
 
 # create an empty dfm for given features and documents
 make_null_dfm <- function(feature = NULL, document = NULL) {
-    temp <- as(sparseMatrix(
+    new("dfm", 
+        as(sparseMatrix(
         i = NULL,
         j = NULL,
         dims = c(length(document), length(feature)),
         dimnames = list(docs = document, features = feature)
     ),
-    "dgCMatrix")
-    new("dfmSparse", temp)
+    "dgCMatrix"))
 }
+
+# pad dfm with zero-count features
+pad_dfm <- function(x, feature = NULL) {
+    feat_pad <- setdiff(feature, featnames(x))
+    if (length(feat_pad)) {
+        x <- cbind(x, make_null_dfm(feat_pad, docnames(x)))
+    }
+    x <- x[,feature]
+    return(x)
+}
+
