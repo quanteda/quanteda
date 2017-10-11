@@ -177,3 +177,7 @@ test_that("tokens_compound works as expected with dictionaries", {
     )
 })
 
+test_that("tokens_compound error when dfm is given, #1006", {
+    toks <- tokens('a b c')
+    expect_error(tokens_compound(toks, dfm('b c d')))
+})

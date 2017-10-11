@@ -371,6 +371,7 @@ test_that("tokens_select output works as planned", {
     )
 })
 
+
 test_that("tokens_select works when window sizes are given ", {
     toks <- tokens('a b c d e f g h i')
     expect_equal(as.list(tokens_select(toks, 'c', window = 1)),
@@ -399,3 +400,11 @@ test_that("tokens_select works when window sizes are given ", {
     expect_silent(tokens_remove(toks, 'c', window = c(1, 1, 3)))
     
 })
+
+test_that("tokens_select error when dfm is given, #1006", {
+    toks <- tokens('a b c')
+    expect_error(tokens_select(toks, dfm('b c d')))
+})
+
+
+
