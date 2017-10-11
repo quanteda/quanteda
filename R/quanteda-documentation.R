@@ -101,7 +101,7 @@
 #' @name valuetype
 #' @seealso \code{\link[utils]{glob2rx}}, 
 #' \href{https://en.wikipedia.org/wiki/Glob_(programming)}{glob pattern matching (Wikipedia)}, 
-#' \link{regex}
+#' \code{\link[stringi]{stringi-search-regex}}, \code{\link[stringi]{stringi-search-fixed}}
 #' @keywords internal
 NULL
 

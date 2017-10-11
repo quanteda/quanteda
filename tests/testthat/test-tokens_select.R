@@ -371,4 +371,9 @@ test_that("tokens_select output works as planned", {
     )
 })
 
+test_that("tokens_select error when dfm is given, #1006", {
+    toks <- tokens('a b c')
+    expect_error(tokens_select(toks, dfm('b c d')))
+})
+
 
