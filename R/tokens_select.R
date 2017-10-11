@@ -19,11 +19,11 @@
 #'   previously existed.  This is useful if a positional match is needed between
 #'   the pre- and post-selected tokens, for instance if a window of adjacency 
 #'   needs to be computed.
-#' @param window select or remove tokens around matched patterns if 
-#'   \code{"window"} is greater than zero. If \code{"window"} is a single
-#'   integer, the window is symmetric, but it can also be a integer vector of two
-#'   values to define asymmetic windows (i.e. different window sizes for before and
-#'   after the pattern).
+#' @param window if \code{"window"} is greater than zero, it keeps or removes
+#'   tokens around matched patterns. The window is symmetric when
+#'   \code{"window"} is a single integer, but it can also be a integer vector of
+#'   two values to define asymmetic windows (i.e. different window sizes for
+#'   before and after the pattern).
 #' @return a \link{tokens} object with tokens selected or removed based on their
 #'   match to \code{pattern}
 #' @export
