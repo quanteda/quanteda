@@ -117,10 +117,10 @@ tokens_ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_
 
 #' @rdname tokens_ngrams
 #' @details 
-#'   \code{\link{tokens_skipgrams}} is a wrapper to \code{\link{ngrams}} that requires 
-#'   arguments to be supplied for both \code{n} and \code{skip}.  For
-#'   \eqn{k}-skip skipgrams, set \code{skip} to \code{0:}\eqn{k}, in order to
-#'   conform to the definition of skip-grams found in Guthrie et al (2006): A
+#'   \code{\link{tokens_skipgrams}} is a wrapper to \code{\link{tokens_ngrams}}
+#'   that requires arguments to be supplied for both \code{n} and \code{skip}.
+#'   For \eqn{k}-skip skipgrams, set \code{skip} to \code{0:}\eqn{k}, in order
+#'   to conform to the definition of skip-grams found in Guthrie et al (2006): A
 #'   \eqn{k} skip-gram is an ngram which is a superset of all ngrams and each
 #'   \eqn{(k-i)} skipgram until \eqn{(k-i)==0} (which includes 0 skip-grams).
 #' @export

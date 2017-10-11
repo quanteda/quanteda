@@ -50,8 +50,8 @@ test_that("skipgrams works as expected for tokens_hashed", {
     txt <- c(one = "insurgents killed in ongoing fighting")
     toks <- tokenize(txt)
     toksh <- tokens(txt)
-    classic <- skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
-    hashed <- skipgrams(toksh, n = 3, skip = 0:2, concatenator = " ")
+    classic <- tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
+    hashed <- tokens_skipgrams(toksh, n = 3, skip = 0:2, concatenator = " ")
     expect_equivalent(classic, as.tokenizedTexts(hashed))
 })
 

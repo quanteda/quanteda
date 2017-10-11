@@ -19,10 +19,10 @@ setClassUnion("dframe", members = c("data.frame", "NULL")) # TODO should not all
 #'   and to create the dfm.  See \code{\link{settings}}.
 #' @slot weighting the feature weighting applied to the dfm.  Default is 
 #'   \code{"frequency"}, indicating that the values in the cells of the dfm are 
-#'   simple feature counts. To change this, use the \code{\link{weight}} 
+#'   simple feature counts. To change this, use the \code{\link{dfm_weight}} 
 #'   method.
 #' @slot smooth a smoothing parameter, defaults to zero.  Can be changed using 
-#'   either the \code{\link{smooth}} or the \code{\link{weight}} methods.
+#'   either the \code{\link{smooth}} or the \code{\link{dfm_weight}} methods.
 #' @slot Dimnames  These are inherited from \link[Matrix]{Matrix-class} but are 
 #'   named \code{docs} and \code{features} respectively.
 #' @details The \code{dfm} class is a virtual class that will contain 

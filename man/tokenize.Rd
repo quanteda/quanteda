@@ -86,7 +86,7 @@ sequences such as \code{2:3} for bigrams and trigrams only.  See
 
 \item{skip}{integer vector specifying the skips for skip-grams, default is 0 
 for only immediately neighbouring words. Only applies if \code{ngrams} is 
-different from the default of 1.  See \code{\link{skipgrams}}.}
+different from the default of 1.  See \code{\link{tokens_skipgrams}}.}
 
 \item{concatenator}{character to use in concatenating \emph{n}-grams, default
 is "\code{_}", which is recommended since this is included in the regular 
@@ -207,14 +207,14 @@ txt <- char_tolower(c(mytext1 = "This is a short test sentence.",
                       mytext2 = "Short.",
                       mytext3 = "Short, shorter, and shortest."))
 tokenize(txt, remove_punct = TRUE)
-removeFeatures(tokenize(txt, remove_punct = TRUE), stopwords("english"))
+tokens_remove(tokenize(txt, remove_punct = TRUE), stopwords("english"))
 
 # ngram tokenization
 tokenize(txt, remove_punct = TRUE, ngrams = 2)
 tokenize(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
 tokenize(txt, remove_punct = TRUE, ngrams = 1:2)
 # removing features from ngram tokens
-removeFeatures(tokenize(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
+tokens_remove(tokenize(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
 }
 \seealso{
 \code{\link{tokens_ngrams}}
