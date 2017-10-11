@@ -1,12 +1,15 @@
-# @rdname summary.corpus
-# @method summary character
-# @examples
-# 
-# # summarize texts
-# summary(c("Testing this text.  Second sentence.", "And this one."))
-# summary(data_char_ukimmig2010)
-# myTextSummaryDF <- summary(data_char_ukimmig2010)
-# head(myTextSummaryDF)
+#' summary statistics on a character vector
+#' 
+#' Internal-only function to compute summary statistics on a character object.
+#' @method summary character
+#' @inheritParams summary.corpus
+#' @keywords internal 
+#' @examples
+#' # summarize texts
+#' summary(c("Testing this text.  Second sentence.", "And this one."))
+#' summary(data_char_ukimmig2010)
+#' myTextSummaryDF <- summary(data_char_ukimmig2010)
+#' head(myTextSummaryDF)
 summary.character <- function(object, n = 100, tolower = FALSE, ...) {
     
     # trap the verbose argument and ignore
