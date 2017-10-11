@@ -63,7 +63,6 @@ Collate:
     'bootstrap_dfm.R'
     'character-methods.R'
     'convert.R'
-    'corpus-deprecated.R'
     'corpus-methods-base.R'
     'corpus-methods-quanteda.R'
     'corpus-methods-tm.R'

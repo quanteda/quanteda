@@ -184,6 +184,8 @@ char_segment.character <- function(x, pattern = "##*",
     return(result)
 }
 
+# internal functions ----------
+
 # internal function for char_segment and corpus_segment
 segment_texts <- function(x, pattern = NULL, valuetype = "regex", 
                           extract_pattern = FALSE, pattern_position = "after", 
@@ -273,28 +275,3 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
     return(result)
 }
 
-#' segment: deprecated function
-#' 
-#' See \code{\link{corpus_segment}}
-#' @param x object to be segmented
-#' @param ... additional arguments passed to  \code{\link{corpus_segment}}.
-#' @export
-#' @keywords internal deprecated
-segment <- function(x, ...) {
-    .Deprecated("corpus_segment")
-    UseMethod("segment")
-}
-
-#' @rdname segment
-#' @keywords internal deprecated
-#' @export
-segment.character <- function(x, ...) {
-    char_segment(x, ...)
-}
-
-#' @rdname segment
-#' @keywords internal deprecated
-#' @export
-segment.corpus <- function(x, ...) {
-    corpus_segment(x, ...)
-}
