@@ -424,24 +424,3 @@ prepositions <- c("a", "abaft", "abeam", "aboard", "about", "above", "absent", "
 #' Spache, G. 1953. "A new readability formula for primary-grade reading materials." \emph{The Elementary School Journal} 53: 410-413.
 "data_char_wordlists"
 
-# makeWordList <- function(filename) {
-#     wordList <- readtext(filename, cache = FALSE)@texts
-#     wordList <- stringi::stri_replace_all_regex(wordList, "-", "_")
-#     wordList <- tokens(wordList, simplify = TRUE)
-#     wordList <- stringi::stri_replace_all_regex(wordList, "_", "-")
-#     wordList
-# }
-# dalechall    <- makeWordList("~/Dropbox/QUANTESS/quanteda_working_files/readability/Dale-Chall.txt")
-# spache    <- makeWordList("~/Dropbox/QUANTESS/quanteda_working_files/readability/Spache.txt")
-# wordlists <- list(dalechall = dalechall, spache = spache)
-# save(wordlists, file = "data/wordlists.RData")
-
-
-# (1 point)-A, E, I, O, U, L, N, S, T, R.
-# (2 points)-D, G.
-# (3 points)-B, C, M, P.
-# (4 points)-F, H, V, W, Y.
-# (5 points)-K.
-# (8 points)- J, X.
-# (10 points)-Q, Z.
-

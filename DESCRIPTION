@@ -116,7 +116,6 @@ Collate:
     'textplot_scale1d.R'
     'textplot_wordcloud.R'
     'textplot_xray.R'
-    'textstat-deprecated.R'
     'textstat_collocations.R'
     'textstat_dist.R'
     'textstat_frequency.R'
