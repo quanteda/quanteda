@@ -236,6 +236,9 @@ code <- function(texts){
 pattern2id <- function(pattern, types, valuetype, case_insensitive, 
                        concatenator = '_', remove_unigram = FALSE) {
     
+    if (is.dfm(pattern)) 
+        stop('dfm cannot be used as pattern')
+    
     if (is.sequences(pattern) || is.collocations(pattern)) {
         pattern <- stri_split_charclass(pattern$collocation, "\\p{Z}")
         pattern_id <- lapply(pattern, function(x) fastmatch::fmatch(x, types))
