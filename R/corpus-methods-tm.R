@@ -1,3 +1,5 @@
+# internal-only functions for handling tm corpora -------
+
 names_tmCorpus <- function(x) 
     unlist(meta(x, "id", "local"), use.names = FALSE)
 
