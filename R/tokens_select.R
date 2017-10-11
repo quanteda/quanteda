@@ -21,8 +21,8 @@
 #'   needs to be computed.
 #' @param window select or remove tokens around matched patterns if 
 #'   \code{"window"} is greater than zero. If \code{"window"} is a single
-#'   integer, the window is synmtric, but it can also be a integer vector of two
-#'   values to define asynmetic windows (i.e. different window sizes before and
+#'   integer, the window is symmetric, but it can also be a integer vector of two
+#'   values to define asymmetic windows (i.e. different window sizes for before and
 #'   after the pattern).
 #' @return a \link{tokens} object with tokens selected or removed based on their
 #'   match to \code{pattern}
