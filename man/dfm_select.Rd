@@ -7,18 +7,18 @@
 \alias{fcm_remove}
 \title{select features from a dfm or fcm}
 \usage{
-dfm_select(x, pattern, selection = c("keep", "remove"),
+dfm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   min_nchar = 1L, max_nchar = 63L, verbose = quanteda_options("verbose"),
   ...)
 
-dfm_remove(x, pattern, ...)
+dfm_remove(x, pattern = NULL, ...)
 
 fcm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   verbose = TRUE, ...)
 
-fcm_remove(x, pattern, ...)
+fcm_remove(x, pattern = NULL, ...)
 }
 \arguments{
 \item{x}{the \link{dfm} or \link{fcm} object whose features will be selected}

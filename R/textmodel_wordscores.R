@@ -67,18 +67,17 @@ setClass("textmodel_wordscores_predicted",
 #'   Interpreting Political Text." \emph{Political Analysis} 16(1): 93-100.
 #' @seealso \code{\link{predict.textmodel_wordscores_fitted}}
 #' @export
-textmodel_wordscores <- function(x, y,
-                                 scale = c("linear", "logit"), smooth = 0) {
+textmodel_wordscores <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
     UseMethod("textmodel_wordscores")
 }
 
 #' @noRd
 #' @export
-textmodel_wordscores.dfm <- function(x, y,
-                                     scale = c("linear", "logit"), smooth = 0) {
-    scale <- match.arg(scale)
-    data <- x
+textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
+    
+    data <- as.dfm(x)
     scores <- y
+    scale <- match.arg(scale)
     
     if (nrow(data) < 2)
         stop("wordscores model requires at least two training documents.")
@@ -149,91 +148,91 @@ textmodel_wordscores.dfm <- function(x, y,
 predict.textmodel_wordscores_fitted <- 
     function(object, newdata=NULL, rescaling = c("none", "lbg", "mv"), 
              level=0.95, verbose = quanteda_options("verbose"), ...) {    
-    if (length(list(...)) > 0) 
-        stop("Arguments:", names(list(...)), "not supported.\n")
-    
-    rescaling <- match.arg(rescaling)
-    
-    if (!is.null(newdata))
-        data <- newdata
-    else {
-        data <- object@x
-        newdata <- data
-    }
-    
-    featureIndex <- match(names(object@Sw), featnames(data))
-    
-    scorable <- which(colnames(data) %in% names(object@Sw))
-    Sw <- object@Sw[featnames(data)[scorable]]
-    if (verbose)
-        catm(paste(length(scorable), " of ", nfeature(data), " features (",
-                  round(100*length(scorable)/nfeature(data), 2),
-                  "%) can be scored\n\n", sep=""))
-    
-    # compute text scores as weighted mean of word scores in "virgin" document
-    #Fw <- tf(data)   # first compute relative term weights
-    #scorable.newd <- Fw[, featureIndex]  # then exclude any features not found/scored
-    scorable.newd <- data[, scorable]
-    ## NOTE: This is different from computing term weights on only the scorable words
-    textscore_raw <- as.matrix(tf(scorable.newd, "prop") %*% Sw)
-    
-    textscore_raw_se <- rep(NA, length(textscore_raw))
-    Fwv <- tf(scorable.newd, "prop")
-    for (i in seq_along(textscore_raw_se))
-        textscore_raw_se[i] <- sqrt(sum(Fwv[i, , drop=FALSE] * (textscore_raw[i] - Sw)^2)) / sqrt(rowSums(scorable.newd)[i])
-    
-    z <- stats::qnorm(1 - (1-level)/2)
-    
-    result <- data.frame(textscore_raw,
-                         textscore_raw_se,
-                         textscore_raw_lo = textscore_raw - z * textscore_raw_se,
-                         textscore_raw_hi = textscore_raw + z * textscore_raw_se)
-    
-    if ("mv" %in% rescaling) {
-        mv_transform <- function(x) {
-            lowerIndex <- which(object@y == min(object@y, na.rm = TRUE))
-            upperIndex <- which(object@y == max(object@y, na.rm = TRUE))
-            as.numeric((x - result$textscore_raw[lowerIndex]) *
-                (max(object@y, na.rm = TRUE) - min(object@y, na.rm = TRUE)) /
-                (result$textscore_raw[upperIndex] - result$textscore_raw[lowerIndex]) +
-                min(object@y, na.rm = TRUE))
+        if (length(list(...)) > 0) 
+            stop("Arguments:", names(list(...)), "not supported.\n")
+        
+        rescaling <- match.arg(rescaling)
+        
+        if (!is.null(newdata))
+            data <- as.dfm(newdata)
+        else {
+            data <- as.dfm(object@x)
+            newdata <- data
         }
         
-        if (sum(!is.na(object@y)) > 2)
-            warning("\nMore than two reference scores found with MV rescaling; using only min, max values.")
-        result$textscore_mv <- mv_transform(result$textscore_raw)
-        result$textscore_mv_lo <- mv_transform(result$textscore_raw_lo)
-        result$textscore_mv_hi <- mv_transform(result$textscore_raw_hi)
-    } 
-    
-    if ("lbg" %in% rescaling) {
-        SDr <- stats::sd(object@y, na.rm=TRUE)
-        Sv <- mean(textscore_raw, na.rm=TRUE)
-        SDv <- if (length(textscore_raw) < 2L) 0 else stats::sd(textscore_raw)
-        mult <- if (SDv == 0) 0 else SDr/SDv
-        textscore_lbg <- (textscore_raw - Sv) * mult + Sv
-        # borrowed the next few lines from https://github.com/conjugateprior/austin
-        if (mult == 0) {
-            textscore_lbg_lo <- textscore_raw + z * textscore_raw_se
-            textscore_lbg_hi <- textscore_raw + z * textscore_raw_se
-        } else {
-            textscore_lbg_lo <- (result$textscore_raw_lo - Sv) * mult + Sv
-            textscore_lbg_hi <- (result$textscore_raw_hi - Sv) * mult + Sv
+        featureIndex <- match(names(object@Sw), featnames(data))
+        
+        scorable <- which(colnames(data) %in% names(object@Sw))
+        Sw <- object@Sw[featnames(data)[scorable]]
+        if (verbose)
+            catm(paste(length(scorable), " of ", nfeature(data), " features (",
+                       round(100*length(scorable)/nfeature(data), 2),
+                       "%) can be scored\n\n", sep=""))
+        
+        # compute text scores as weighted mean of word scores in "virgin" document
+        #Fw <- tf(data)   # first compute relative term weights
+        #scorable.newd <- Fw[, featureIndex]  # then exclude any features not found/scored
+        scorable.newd <- data[, scorable]
+        ## NOTE: This is different from computing term weights on only the scorable words
+        textscore_raw <- as.matrix(tf(scorable.newd, "prop") %*% Sw)
+        
+        textscore_raw_se <- rep(NA, length(textscore_raw))
+        Fwv <- tf(scorable.newd, "prop")
+        for (i in seq_along(textscore_raw_se))
+            textscore_raw_se[i] <- sqrt(sum(Fwv[i, , drop=FALSE] * (textscore_raw[i] - Sw)^2)) / sqrt(rowSums(scorable.newd)[i])
+        
+        z <- stats::qnorm(1 - (1-level)/2)
+        
+        result <- data.frame(textscore_raw,
+                             textscore_raw_se,
+                             textscore_raw_lo = textscore_raw - z * textscore_raw_se,
+                             textscore_raw_hi = textscore_raw + z * textscore_raw_se)
+        
+        if ("mv" %in% rescaling) {
+            mv_transform <- function(x) {
+                lowerIndex <- which(object@y == min(object@y, na.rm = TRUE))
+                upperIndex <- which(object@y == max(object@y, na.rm = TRUE))
+                as.numeric((x - result$textscore_raw[lowerIndex]) *
+                               (max(object@y, na.rm = TRUE) - min(object@y, na.rm = TRUE)) /
+                               (result$textscore_raw[upperIndex] - result$textscore_raw[lowerIndex]) +
+                               min(object@y, na.rm = TRUE))
+            }
+            
+            if (sum(!is.na(object@y)) > 2)
+                warning("\nMore than two reference scores found with MV rescaling; using only min, max values.")
+            result$textscore_mv <- mv_transform(result$textscore_raw)
+            result$textscore_mv_lo <- mv_transform(result$textscore_raw_lo)
+            result$textscore_mv_hi <- mv_transform(result$textscore_raw_hi)
+        } 
+        
+        if ("lbg" %in% rescaling) {
+            SDr <- stats::sd(object@y, na.rm=TRUE)
+            Sv <- mean(textscore_raw, na.rm=TRUE)
+            SDv <- if (length(textscore_raw) < 2L) 0 else stats::sd(textscore_raw)
+            mult <- if (SDv == 0) 0 else SDr/SDv
+            textscore_lbg <- (textscore_raw - Sv) * mult + Sv
+            # borrowed the next few lines from https://github.com/conjugateprior/austin
+            if (mult == 0) {
+                textscore_lbg_lo <- textscore_raw + z * textscore_raw_se
+                textscore_lbg_hi <- textscore_raw + z * textscore_raw_se
+            } else {
+                textscore_lbg_lo <- (result$textscore_raw_lo - Sv) * mult + Sv
+                textscore_lbg_hi <- (result$textscore_raw_hi - Sv) * mult + Sv
+            }
+            result <- cbind(result, data.frame(textscore_lbg,
+                                               textscore_lbg_lo,
+                                               textscore_lbg_hi))
         }
-        result <- cbind(result, data.frame(textscore_lbg,
-                                           textscore_lbg_lo,
-                                           textscore_lbg_hi))
+        
+        new("textmodel_wordscores_predicted", rescaling = rescaling,
+            newdata = newdata, 
+            textscores = result,
+            x = object@x,
+            Sw = object@Sw,
+            y = object@y,
+            call = object@call, 
+            level = level)
     }
-    
-    new("textmodel_wordscores_predicted", rescaling = rescaling,
-        newdata = newdata, 
-        textscores = result,
-        x = object@x,
-        Sw = object@Sw,
-        y = object@y,
-        call = object@call, 
-        level = level)
-}
 
 
 ## rescale a vector so that the endpoints match scale.min, scale.max
@@ -250,12 +249,12 @@ rescaler <- function(x, scale.min=-1, scale.max=1) {
 #' @param digits number of decimal places to print for print methods
 #' @export
 #' @method print textmodel_wordscores_fitted
-print.textmodel_wordscores_fitted <- function(x, n=30L, digits=2, ...) {
+print.textmodel_wordscores_fitted <- function(x, n = 30L, digits = 2, ...) {
     cat("Fitted wordscores model:\n")
     cat("Call:\n\t")
     print(x@call)
     cat("\nReference documents and reference scores:\n\n")
-    refscores <- data.frame(Documents=docnames(x@x),
+    refscores <- data.frame(Documents = docnames(x@x),
                             "Ref scores" = x@y)
     refscores$Ref.scores <- format(refscores$Ref.scores, digits=digits)
     refscores$Ref.scores[stri_detect_fixed(refscores$Ref.scores, "NA")] <- "."

@@ -21,8 +21,8 @@
 setClass("fcm",
          slots = c(context = "character", window = "integer", count = "character", weights = "numeric", ordered = "logical", tri = "logical"),
          # prototype = list(Dimnames = list(contexts = NULL, features = NULL)),
+         #contains = c("dfm", "dgCMatrix", "dtCMatrix"))
          contains = c("dfm", "dgCMatrix"))
-
 
 #' create a feature co-occurrence matrix
 #' 
@@ -149,12 +149,13 @@ fcm.corpus <- function(x, ...) {
 #' @import Matrix
 #' @export
 fcm.dfm <- function(x, context = c("document", "window"), 
-                               count = c("frequency", "boolean", "weighted"),
-                               window = 5L,
-                               weights = 1L,
-                               ordered = FALSE,
-                               span_sentence = TRUE, tri = TRUE, ...) {
-
+                       count = c("frequency", "boolean", "weighted"),
+                       window = 5L,
+                       weights = 1L,
+                       ordered = FALSE,
+                       span_sentence = TRUE, tri = TRUE, ...) {
+    
+    x <- as.dfm(x)
     context <- match.arg(context)
     count <- match.arg(count)
     window <- as.integer(window)
@@ -189,9 +190,8 @@ fcm.dfm <- function(x, context = c("document", "window"),
     result <- result[rownames(result), colnames(result)]
     
     # discard the lower diagonal if tri == TRUE
-    if (tri) 
-        result <- Matrix::triu(result)
-    
+    if (tri) result <- Matrix::triu(result)
+
     # create a new feature context matrix
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
                   context = context, window = window, weights = weights, tri = tri)
@@ -213,23 +213,18 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
                        span_sentence = TRUE, tri = TRUE, ...) {
     context <- match.arg(context)
     count <- match.arg(count)
-    feature <- V1 <- NULL  # to avoid no visible binding errors in CHECK
-    # could add a warning if not roundly coerced to integer
-    window <- as.integer(window)
+    window <- as.integer(window) # TODO could add a warning if not roundly coerced to integer
     
     if (!span_sentence) 
         warning("spanSentence = FALSE not yet implemented")
     
-    if (context == "document") {
-        result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE),
-                      count = count, tri = tri)
-    }
+    if (context == "document")
+        result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE), count = count, tri = tri)
         
     if (context == "window") { 
         try (if (window < 2) stop("The window size is too small.")) 
-            
         if (count == "weighted") {
-            if (!missing(weights) & length(weights) != window) {
+            if (!missing(weights) && length(weights) != window) {
                 warning ("weights length is not equal to the window size, weights are assigned by default!")
                 weights <- 1
             }
@@ -243,9 +238,8 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
     }
 
     # discard the lower diagonal if tri == TRUE
-    if (tri) # & !is.tokens(x))
-        result <- Matrix::triu(result)
-
+    if (tri) result <- Matrix::triu(result)
+    
     # create a new feature context matrix
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
                   context = context, window = window, weights = weights, tri = tri)
@@ -254,34 +248,40 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
     result
 }     
 
-
 #' @rdname print.dfm
 #' @export
 setMethod("print", signature(x = "fcm"), 
-          function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, nfeature = 20L, ...) {
-              ndoc <- nfeature
+          function(x, show.values = NULL, show.settings = FALSE, show.summary = TRUE, 
+                   ndoc = quanteda_options("print_dfm_max_ndoc"), 
+                   nfeature = quanteda_options("print_dfm_max_nfeature"), ...) {
               if (show.summary) {
                   cat("Feature co-occurrence matrix of: ",
                       format(ndoc(x), big.mark = ","), " by ",
-                      # ifelse(ndoc(x) > 1 | ndoc(x) == 0, "s, ", ", "),
                       format(nfeature(x), big.mark = ","), " feature",
                       if (nfeature(x) != 1L) "s" else "",
                       if (is.resampled(x)) paste(", ", nresample(x), " resamples", sep = "") else "",
                       ".\n", sep = "")
               }
-              if (show.settings) {
-                  cat("Settings: TO BE IMPLEMENTED.")
-              }
-              if (show.values | (nrow(x) <= ndoc & ncol(x) <= nfeature)) {
-                  Matrix::printSpMatrix2(x[1:min(ndoc, ndoc(x)), 1:min(nfeature, nfeature(x))], 
-                                         col.names = TRUE, 
-                                         zero.print = if (x@tri) "." else 0, ...)
-              }
+              print_dfm(x, ndoc, nfeature, show.values, show.settings, ...)
           })
 
 #' @rdname print.dfm
 #' @export
 setMethod("show", signature(object = "fcm"), function(object) print(object))
+
+#' @rdname print.dfm
+#' @method head fcm
+#' @export
+head.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
+    head.dfm(x, n, nfeature, ...)
+}
+
+#' @rdname print.dfm
+#' @method tail fcm
+#' @export
+tail.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
+    head.dfm(x, n, nfeature, ...)
+}
 
 #' @noRd
 #' @rdname fcm-class

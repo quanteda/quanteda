@@ -67,6 +67,8 @@ convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa"
 #' @export
 convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
                                   "matrix", "data.frame"), docvars = NULL, ...) {
+    
+    x <- as.dfm(x)
     to <- match.arg(to)
     if (length(addedArgs <- list(...)))
         warning("Argument", if (length(addedArgs) > 1L) "s " else " ", names(addedArgs), " not used.", sep = "")
@@ -142,11 +144,12 @@ as.wfm <- function(x) {
 #' @method as.wfm dfm
 #' @export
 as.wfm.dfm <- function(x) {
+    x <- as.dfm(x)
     convert(x, to = "austin")
 }
 
 dfm2austinformat <- function(d) {
-    d <- as.matrix(d)
+    d <- as.matrix(as(d, 'dgeMatrix'))
     names(dimnames(d))[2] <- "words"
     class(d) <- c("wfm", "matrix")
     d
@@ -188,6 +191,7 @@ as.DocumentTermMatrix <- function(x, ...) {
 #' @method as.DocumentTermMatrix dfm
 #' @export
 as.DocumentTermMatrix.dfm <- function(x, ...) {
+    x <- as.dfm(x)
     convert(x, to = "tm", ...)
 }
 
@@ -211,6 +215,7 @@ dfm2ldaformat <- function(x) {
 #' @noRd
 #' @export
 dfm2ldaformat.dfm <- function(x) {
+    x <- as.dfm(x)
     if (!requireNamespace("tm", quietly = TRUE))
         stop("You must install the slam package installed for this conversion.")
     tmDTM <- dfm2tmformat(x)
@@ -251,10 +256,11 @@ dtm2ldaformat <- function (x, omit_empty = TRUE) {
 quantedaformat2dtm <- function(x) {
     UseMethod("quantedaformat2dtm")
 }
-    
+
 #' @noRd
 #' @export
 quantedaformat2dtm.dfm <- function(x) {
+    x <- as.dfm(x)
     d_lda <- convert(x, to = "lda")
     ldaformat2dtm(d_lda$documents, d_lda$vocab)
 }
@@ -278,7 +284,7 @@ ldaformat2dtm <- function (documents, vocab, omit_empty = TRUE) {
 dfm2stmformat <- function(data, meta) {
     # get docvars (if any)
     dvars <- docvars(data)
-        
+    
     # sort features into alphabetical order
     data <- data[, order(featnames(data))]
     data <- as(data, "dgTMatrix")
