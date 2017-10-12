@@ -13,10 +13,15 @@
 tokens_group <- function(x, groups = NULL) {
     attrs <- attributes(x)
     groups <- generate_groups(x, groups)
-    groups_index <- rep(groups, lengths(x))
-    result <- structure(base::split(unlist(unclass(x), use.names = FALSE), 
-                                    factor(groups_index, levels = unique(groups))),
-                        class = c('tokens', 'tokenizedTexts'))
+    groups_unique <- unique(groups)
+    if (length(groups_unique) > 1) {
+        temp <- base::split(unlist(unclass(x), use.names = FALSE), 
+                            rep(factor(groups, levels = groups_unique), lengths(x)))
+    } else {
+        temp <- list(unlist(unclass(x), use.names = FALSE))
+        names(temp) <- as.character(groups[1])
+    }
+    result <- structure(temp, class = c('tokens', 'tokenizedTexts'))
     docvars(result) <- data.frame(row.names = docnames(result))
     attributes(result, FALSE) <- attrs
     return(result)
