@@ -397,8 +397,10 @@ test_that("tokens_select works when window sizes are given ", {
                  list(text1 = c('a', '', '', '', '', 'f', 'g', 'h', 'i')))
     
     expect_error(tokens_remove(toks, 'c', window = -1))
-    expect_silent(tokens_remove(toks, 'c', window = c(1, 1, 3)))
-    
+    expect_error(
+        tokens_remove(toks, 'c', window = c(1, 1, 3)),
+        "window must be a integer vector of length 1 or 2"         
+    )
 })
 
 test_that("tokens_select error when dfm is given, #1006", {
