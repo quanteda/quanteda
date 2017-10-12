@@ -312,7 +312,7 @@ struct DocErr : public Worker {
 };
 // [[Rcpp::export]]
 
-Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS,bool svd_sparse, double residual_floor){
+Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS,bool svd_sparse, double residual_floor){
     
     // DEFINE INPUTS
     double priorprecalpha = priorvec(0);
