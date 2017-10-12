@@ -33,11 +33,17 @@ previously existed.  This is useful if a positional match is needed between
 the pre- and post-selected tokens, for instance if a window of adjacency 
 needs to be computed.}
 
-\item{window}{if \code{"window"} is greater than zero, it keeps or removes
-tokens around matched patterns. The window is symmetric when
-\code{"window"} is a single integer, but it can also be a integer vector of
-two values to define asymmetic windows (i.e. different window sizes for
-before and after the pattern).}
+\item{window}{integer of length 1 or 2; the size of the window of tokens
+  adjacent to \code{pattern} that will be selected. The window is symmetric
+  unless a vector of two elements is supplied, in which case the first
+  element will be the token length of the window before \code{pattern}, and
+  the second will be the token length of the window after \code{pattern}.
+  The default is \code{0}, meaning that only the pattern matched token(s) are
+  selected, with no adjacent terms.
+
+  Terms from overlapping windows are never double-counted, but simply
+  returned in the patern match. This is because \code{tokens_select} never
+  redefines the document units; for this, see \code{\link{kwic}}.}
 
 \item{verbose}{if \code{TRUE} print messages about how many tokens were 
 selected or removed}
@@ -69,8 +75,9 @@ tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive
 tokens_select(toks, c("is", "a", "this"), selection = "remove", case_insensitive = FALSE)
 
 # use window
-tokens_select(toks, "is", selection = "remove", window = 1)
-tokens_select(toks, "is", selection = "remove", window = c(0, 1))
+tokens_select(toks, "second", selection = "keep", window = 1)
+tokens_select(toks, "second", selection = "remove", window = 1)
+tokens_remove(toks, "is", selection = "remove", window = c(0, 1))
 
 ## tokens_remove example
 txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
