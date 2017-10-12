@@ -371,9 +371,50 @@ test_that("tokens_select output works as planned", {
     )
 })
 
+
+test_that("tokens_select works when window sizes are given ", {
+    toks <- tokens('a b c d e f g h i')
+    expect_equal(as.list(tokens_select(toks, 'c', window = 1)),
+                 list(text1 = c('b', 'c', 'd')))
+    expect_equal(as.list(tokens_select(toks, 'c', window = 2)),
+                 list(text1 = c('a', 'b', 'c', 'd', 'e')))
+    expect_equal(as.list(tokens_select(toks, 'c', window = 10)),
+                 list(text1 = c('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i')))
+    expect_equal(as.list(tokens_select(toks, 'c', window = c(1, 2))),
+                 list(text1 = c('b', 'c', 'd', 'e')))
+    expect_equal(as.list(tokens_select(toks, 'c', window = c(0, 1))),
+                 list(text1 = c('c', 'd')))
+    expect_equal(as.list(tokens_select(toks, 'c', window = c(1, 0))),
+                 list(text1 = c('b', 'c')))
+    expect_equal(as.list(tokens_select(toks, 'c', padding = TRUE, window = c(1, 2))),
+                 list(text1 = c('', 'b', 'c', 'd', 'e', '', '', '', '')))
+    
+    expect_equal(as.list(tokens_remove(toks, 'c', window = 1)),
+                 list(text1 = c('a', 'e', 'f', 'g', 'h', 'i')))
+    expect_equal(as.list(tokens_remove(toks, 'c', window = 2)),
+                 list(text1 = c('f', 'g', 'h', 'i')))
+    expect_equal(as.list(tokens_remove(toks, 'c', window = 10)),
+                 list(text1 = character()))
+    expect_equal(as.list(tokens_remove(toks, 'c', window = c(1, 2))),
+                 list(text1 = c('a', 'f', 'g', 'h', 'i')))
+    expect_equal(as.list(tokens_remove(toks, 'c', window = c(0, 1))),
+                 list(text1 = c('a', 'b', 'e','f', 'g', 'h', 'i')))
+    expect_equal(as.list(tokens_remove(toks, 'c', window = c(1, 0))),
+                 list(text1 = c('a', 'd', 'e','f', 'g', 'h', 'i')))
+    expect_equal(as.list(tokens_remove(toks, 'c', padding = TRUE, window = c(1, 2))),
+                 list(text1 = c('a', '', '', '', '', 'f', 'g', 'h', 'i')))
+    
+    expect_error(tokens_remove(toks, 'c', window = -1))
+    expect_error(
+        tokens_remove(toks, 'c', window = c(1, 1, 3)),
+        "window must be a integer vector of length 1 or 2"         
+    )
+})
+
 test_that("tokens_select error when dfm is given, #1006", {
     toks <- tokens('a b c')
     expect_error(tokens_select(toks, dfm('b c d')))
 })
+
 
 
