@@ -43,17 +43,6 @@ featnames.dfm <- function(x) {
     }
 }
 
-#' deprecated function for featnames
-#' 
-#' Deprecated function equivalent to \code{\link{featnames}}.  Soon to be eliminated.
-#' @param x a \link{dfm}
-#' @keywords internal deprecated
-#' @seealso \code{\link{featnames}}
-#' @export
-features <- function(x) {
-    .Deprecated("featnames")
-    featnames(x)
-}
 
 #' @noRd
 #' @export
@@ -81,7 +70,6 @@ docnames.NULL <- function(x) {
 #' \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
 #' @seealso \code{\link{as.data.frame.dfm}}, \code{\link{as.matrix.dfm}}
 #' @export
-
 is.dfm <- function(x) {
     is(x, "dfm")
     # "dfm" %in% class(x)

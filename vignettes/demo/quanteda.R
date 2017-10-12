@@ -39,7 +39,7 @@ immigDfm <- dfm(subset(immigCorpus, party=="BNP"), remove = stopwords("english")
 textplot_wordcloud(immigDfm, random.color = TRUE, rot.per = .25, colors = sample(colors()[2:128], 5))
 
 # change units to sentences
-immigCorpusSent <- changeunits(immigCorpus, to = "sentences")
+immigCorpusSent <- corpus_rehape(immigCorpus, to = "sentences")
 summary(immigCorpusSent, 20)
 
 

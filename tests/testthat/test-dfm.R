@@ -204,8 +204,6 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
 
 test_that("dfm print works as expected", {
     testdfm <- dfm(tokens(data_corpus_irishbudget2010, old= TRUE))
-    expect_output(print(testdfm),
-                  "^Document-feature matrix of: 14 documents, 5,055 features \\(80.9% sparse\\)")
     expect_output(print(testdfm[1:5, 1:5]),
                   "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\).*")
     

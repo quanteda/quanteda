@@ -19,10 +19,10 @@ setClassUnion("dframe", members = c("data.frame", "NULL")) # TODO should not all
 #'   and to create the dfm.  See \code{\link{settings}}.
 #' @slot weighting the feature weighting applied to the dfm.  Default is 
 #'   \code{"frequency"}, indicating that the values in the cells of the dfm are 
-#'   simple feature counts. To change this, use the \code{\link{weight}} 
+#'   simple feature counts. To change this, use the \code{\link{dfm_weight}} 
 #'   method.
 #' @slot smooth a smoothing parameter, defaults to zero.  Can be changed using 
-#'   either the \code{\link{smooth}} or the \code{\link{weight}} methods.
+#'   either the \code{\link{smooth}} or the \code{\link{dfm_weight}} methods.
 #' @slot Dimnames  These are inherited from \link[Matrix]{Matrix-class} but are 
 #'   named \code{docs} and \code{features} respectively.
 #' @details The \code{dfm} class is a virtual class that will contain 
@@ -52,46 +52,6 @@ setClass("dfm",
 #' @rdname dfm-class
 #' @keywords internal dfm
 setClass("dfmSparse", contains = "dfm")
-
-
-
-# #' @rdname dfm-class
-# #' @details The \code{dfm} class is a sparse matrix version of
-# #'   \code{dfm-class}, inheriting \link[Matrix]{dgCMatrix-class} from the
-# #'   \pkg{Matrix} package.  It is the default object type created when feature
-# #'   counts are the object of interest, as typical text-based feature counts
-# #'   tend contain many zeroes.  As long as subsequent transformations of the dfm
-# #'   preserve cells with zero counts, the dfm should remain sparse.
-# #'   
-# #'   When the \pkg{Matrix} package implements sparse integer matrixes, we will
-# #'   switch the default object class to this object type, as integers are 4
-# #'   bytes each (compared to the current numeric double type requiring 8 bytes
-# #'   per cell.)
-# #' @export
-# setClass("dfm",
-#          contains = c("dfm", "dgCMatrix"))
-
-# #' @rdname dfm-class
-# #' @details The \code{dfmDense} class is a sparse matrix version of \code{dfm-class}, 
-# #' inheriting \link[Matrix]{dgeMatrix-class} from the \pkg{Matrix} package.  dfm objects that
-# #' are converted through weighting or other transformations into cells without zeroes will 
-# #' be automatically converted to the dfmDense class.  This will necessarily be a much larger sized
-# #' object than one of \code{dfm} class, because each cell is recorded as a numeric (double) type
-# #' requiring 8 bytes of storage.
-# #' @export
-# setClass("dfmDense",
-#          contains = c("dfm", "dgeMatrix"))
-
-
-# # S4 Method for the S4 class dense/weighted dfm
-# #' @export
-# #' @rdname dfm-class
-# setMethod("t", signature(x = "dfmDense"), definition = 
-#               function(x) {
-#                   getMethod("t", "dgeMatrix")(x)
-#               }) #getMethod("t", "dgeMatrix"))
-
-
 
 
 ## S4 Method for the S3 class dfm
@@ -146,18 +106,6 @@ setMethod("+", signature(e1 = "numeric", e2 = "dfm"),
           function(e1, e2) {
               as.dfm(e1 + as(e2, "dgCMatrix"))
           })
-
-
-# #' @rdname dfm-class
-# setMethod("+", signature(e1 = "dfmDense", e2 = "numeric"),
-#           function(e1, e2) {
-#               as(as(e1, "Matrix") + e2, "dfmDense")
-#           })
-# #' @rdname dfm-class
-# setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
-#           function(e1, e2) {
-#              as(e1 + as(e2, "Matrix"), "dfmDense")
-#           })
 
 
 #' coerce a dfm to a matrix or data.frame

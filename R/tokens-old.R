@@ -1,18 +1,18 @@
 tokens_internal_old <- function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
-                            remove_numbers = FALSE,
-                            remove_punct = FALSE,
-                            remove_symbols = FALSE,
-                            remove_separators = TRUE,
-                            remove_twitter = FALSE,
-                            remove_hyphens = FALSE,
-                            remove_url = FALSE,
-                            ngrams = 1L,
-                            skip = 0L,
-                            concatenator = "_",
-                            hash = TRUE,
-                            verbose = getOption("verbose"),  
-                            include_docvars = TRUE, 
-                            ...) {
+                                remove_numbers = FALSE,
+                                remove_punct = FALSE,
+                                remove_symbols = FALSE,
+                                remove_separators = TRUE,
+                                remove_twitter = FALSE,
+                                remove_hyphens = FALSE,
+                                remove_url = FALSE,
+                                ngrams = 1L,
+                                skip = 0L,
+                                concatenator = "_",
+                                hash = TRUE,
+                                verbose = getOption("verbose"),  
+                                include_docvars = TRUE, 
+                                ...) {
     
     # trap older arguments, issue a warning, and call with correct arguments
     thecall <- as.list(match.call())[-1]
@@ -58,7 +58,7 @@ tokens_internal_old <- function(x, what = c("word", "sentence", "character", "fa
         if (verbose) catm("...tokenizing", i, "of" , length(x), "blocks\n")
         if (what %in% c("word", "fastestword", "fasterword")) {
             temp <- tokens_word_old(x[[i]], what, remove_numbers, remove_punct, remove_symbols, 
-                                remove_separators, remove_twitter, remove_hyphens, remove_url, verbose)
+                                    remove_separators, remove_twitter, remove_hyphens, remove_url, verbose)
         } else if (what == "character") {
             temp <- tokens_character(x[[i]],remove_punct, remove_symbols, remove_separators, verbose)
         } else if (what == "sentence") {
@@ -115,15 +115,15 @@ tokens_internal_old <- function(x, what = c("word", "sentence", "character", "fa
 }
 
 tokens_word_old <- function(txt, 
-                        what = 'word', 
-                        remove_numbers = FALSE, 
-                        remove_punct = FALSE, 
-                        remove_symbols = FALSE, 
-                        remove_separators = TRUE, 
-                        remove_twitter = FALSE, 
-                        remove_hyphens = FALSE, 
-                        remove_url = FALSE, 
-                        verbose = FALSE){
+                            what = 'word', 
+                            remove_numbers = FALSE, 
+                            remove_punct = FALSE, 
+                            remove_symbols = FALSE, 
+                            remove_separators = TRUE, 
+                            remove_twitter = FALSE, 
+                            remove_hyphens = FALSE, 
+                            remove_url = FALSE, 
+                            verbose = FALSE){
     
     # to preserve intra-word hyphens, replace with _hy_
     if (!remove_hyphens & remove_punct)

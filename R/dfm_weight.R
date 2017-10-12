@@ -356,7 +356,7 @@ tfidf_old <- function(x, normalize = FALSE, scheme = "inverse", ...) {
 #'   \item{\code{augmented}}{equivalent to K + (1 - K) * \code{tf(x, "propmax")}}
 #'   \item{\code{logave}}{(1 + the log of the counts) / (1 + log of the counts / the average count within document)} 
 #'   }
-#' @details \code{tf(x, scheme = "prop")} is equivalent to \code{\link{weight}(x, "relFreq")}).
+#' @details \code{tf(x, scheme = "prop")} is equivalent to \code{\link{dfm_weight}(x, "relFreq")}).
 #' @param base base for the logarithm when \code{scheme} is \code{"log"} or 
 #'   \code{logave}
 #' @param K the K for the augmentation when \code{scheme = "augmented"}

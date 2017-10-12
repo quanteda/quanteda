@@ -1,11 +1,11 @@
 #' convert a dfm to a non-quanteda format
 #' 
-#' Convert a quanteda \link{dfm} object to a format useable by other text 
-#' analysis packages.  The general function \code{convert} provides easy 
-#' conversion from a dfm to the document-term representations used in all other 
-#' text analysis packages for which conversions are defined.    See also 
-#' \link{convert-wrappers} for convenience functions for specific package converters.
-#' 
+#' Convert a quanteda \link{dfm} object to a format useable by other text
+#' analysis packages.  The general function \code{convert} provides easy
+#' conversion from a dfm to the document-term representations used in all other
+#' text analysis packages for which conversions are defined.    See also
+#' \link{convert-wrappers} for convenience functions for specific package
+#' converters.
 #' @param x dfm to be converted
 #' @param to target conversion format, consisting of the name of the package 
 #'   into whose document-term matrix representation the dfm will be converted: 
@@ -18,9 +18,9 @@
 #'   used by the \pkg{topicmodels} package} 
 #'   \item{\code{"lsa"}}{the "textmatrix" format as 
 #'   used by the \pkg{lsa} package} }
-#' @param docvars optional data.frame of document variables used as the 
+#' @param docvars optional data.frame of document variables used as the
 #'   \code{meta} information in conversion to the STM package format.  This aids
-#'   in selecting the document variables only corresponding to the documents 
+#'   in selecting the document variables only corresponding to the documents
 #'   with non-zero counts.
 #' @param ... unused
 #' @return A converted object determined by the value of \code{to} (see above). 

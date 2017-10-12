@@ -1,3 +1,5 @@
+# metacorpus functions ---------------------
+
 #' get or set corpus metadata
 #' 
 #' Get or set the corpus-level metadata in a \link{corpus} object.
@@ -42,37 +44,7 @@ metacorpus.corpus <- function(x, field = NULL) {
     x
 }
 
-
-# internal accessor for documents object
-# @export
-documents <- function(x) {
-    UseMethod("documents")
-}
-
-documents.corpus <- function(x) {
-    x$documents
-}
-
-documents.tokens <- function(x) {
-    docvars(x)
-}
-
-documents.dfm <- function(x) {
-    docvars(x)
-}
-
-
-# internal replacement function for documents
-# @export
-"documents<-" <- function(x, value) {
-    UseMethod("documents<-")
-}
-
-"documents<-.corpus" <- function(x, value) {
-    x$documents <- value
-    x
-}
-
+# texts() functions ----------------------------
 
 #' get or assign corpus texts
 #' 
@@ -180,3 +152,34 @@ texts.character <- function(x, groups = NULL, spacer = "  ") {
 as.character.corpus <- function(x, ...) {
     texts(x)
 }
+
+# internal: documents() functions ---------------------------------
+
+# internal accessor for documents object
+# @export
+documents <- function(x) {
+    UseMethod("documents")
+}
+
+documents.corpus <- function(x) {
+    x$documents
+}
+
+documents.tokens <- function(x) {
+    docvars(x)
+}
+
+documents.dfm <- function(x) {
+    docvars(x)
+}
+
+# internal replacement function for documents
+"documents<-" <- function(x, value) {
+    UseMethod("documents<-")
+}
+
+"documents<-.corpus" <- function(x, value) {
+    x$documents <- value
+    x
+}
+
