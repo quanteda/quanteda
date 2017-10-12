@@ -28,7 +28,7 @@ Text keep_token(Text tokens,
             auto it = set_words.find(ngram);
             if (it != set_words.end()) {
                 match = true;
-                if (window.first == 0 && window.first == 0) {
+                if (window.first == 0 && window.second == 0) {
                     std::copy(ngram.begin(), ngram.end(), tokens_copy.begin() + i);
                 } else {
                     int from = std::max((int)i - window.first, 0);
@@ -68,7 +68,7 @@ Text remove_token(Text tokens,
             auto it = set_words.find(ngram);
             if (it != set_words.end()) {
                 match = true;
-                if (window.first == 0 && window.first == 0) {
+                if (window.first == 0 && window.second == 0) {
                     if (padding) {
                         std::fill(tokens_copy.begin() + i, tokens_copy.begin() + i + span, 0);
                     } else {
