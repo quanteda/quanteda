@@ -186,17 +186,13 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
     
     # catm("disp = ", disp, "\n")
     if (sparse == TRUE){
-        if (threads == 1){
-            wfresult <- wordfishcpp(x, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
-        } else {
-            wfresult <- wordfishcpp_mt(x, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
-        }
+        result <- qatd_cpp_wordfish(x, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
     } else{
-        wfresult <- wordfishcpp_dense(as.matrix(x), as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err)
+        result <- qatd_cpp_wordfish_dense(as.matrix(x), as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err)
     }
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
-    if (any(is.nan(wfresult$theta))) warning("Warning: The algorithm did not converge.")
+    if (any(is.nan(result$theta))) warning("Warning: The algorithm did not converge.")
     new("textmodel_wordfish_fitted", 
         x = x,
         docs = docnames(x), 
@@ -204,12 +200,12 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
         dir = dir,
         dispersion = dispersion,
         priors = priors,
-        theta = as.numeric(wfresult$theta),
-        beta = as.numeric(wfresult$beta),
-        psi = as.numeric(wfresult$psi),
-        alpha = as.numeric(wfresult$alpha),
-        phi = as.numeric(wfresult$phi),
-        se.theta = as.numeric(wfresult$thetaSE) ,
+        theta = as.numeric(result$theta),
+        beta = as.numeric(result$beta),
+        psi = as.numeric(result$psi),
+        alpha = as.numeric(result$alpha),
+        phi = as.numeric(result$phi),
+        se.theta = as.numeric(result$thetaSE) ,
         call = match.call())
 }
 
