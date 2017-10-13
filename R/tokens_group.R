@@ -15,16 +15,16 @@ tokens_group <- function(x, groups = NULL) {
     groups <- generate_groups(x, groups)
     groups_unique <- unique(groups)
     if (length(groups_unique) > 1) {
-        temp <- base::split(unlist(unclass(x), use.names = FALSE), 
-                            rep(factor(groups, levels = groups_unique), lengths(x)))
+        x <- base::split(unlist(unclass(x), use.names = FALSE), 
+                         rep(factor(groups, levels = groups_unique), lengths(x)))
     } else {
-        temp <- list(unlist(unclass(x), use.names = FALSE))
-        names(temp) <- as.character(groups[1])
+        x <- list(unlist(unclass(x), use.names = FALSE))
+        names(x) <- as.character(groups[1])
     }
-    result <- structure(temp, class = c('tokens', 'tokenizedTexts'))
-    docvars(result) <- data.frame(row.names = docnames(result))
-    attributes(result, FALSE) <- attrs
-    return(result)
+    x <- structure(x, class = c('tokens', 'tokenizedTexts'))
+    docvars(x) <- data.frame(row.names = docnames(x))
+    attributes(x, FALSE) <- attrs
+    return(x)
 }
 
 # internal function to generate a grouping vector from docvars
@@ -36,5 +36,5 @@ generate_groups <- function(x, groups) {
         if (length(groups) != ndoc(x))
             stop("groups must name docvars or provide data matching the documents in x")
     }
-    groups
+    return(groups)
 }
