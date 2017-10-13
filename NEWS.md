@@ -4,10 +4,17 @@
 
 ### New Features
 
+* `tokens_segment()` has a new `window` argument, permitting selection within an asymmetric window around the `pattern` of selection. (#521)
 
 ### Bug fixes and stability enhancements
 
-* Improved documentation for `textmodel_NB()` (#1010), and made output quantities from the fitted NB model regular matrix objects instead of **Matrix** classes.
+* Improved documentation for `textmodel_nb()` (#1010), and made output quantities from the fitted NB model regular matrix objects instead of **Matrix** classes.
+
+
+### Behaviour Changes
+
+* All of the deprecated functions are now removed. (#991)
+* `tokens_group()` is now significantly faster.
 
 
 ## Changes since v0.99.9
