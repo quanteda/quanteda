@@ -51,6 +51,10 @@ test_that("dfm_group and tokens_group are equivalent", {
     expect_identical(
         dfm_group(dfm(toks), c(1, 1, 2)),
         dfm(quanteda:::tokens_group(toks, c(1, 1, 2))))
+    
+    expect_identical(
+        dfm_group(dfm(toks), c(1, 1, 1)),
+        dfm(quanteda:::tokens_group(toks, c(1, 1, 1))))
 })
 
 test_that("generate_groups works for tokens objects", {
