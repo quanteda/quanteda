@@ -150,14 +150,14 @@
 #'                       mytext2 = "Short.",
 #'                       mytext3 = "Short, shorter, and shortest."))
 #' tokens(txt, remove_punct = TRUE)
-#' ### removeFeatures(tokens(txt, remove_punct = TRUE), stopwords("english"))
+#' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #' 
 #' # ngram tokenization
-#' ### tokens(txt, remove_punct = TRUE, ngrams = 2)
-#' ### tokens(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
-#' ### tokens(txt, remove_punct = TRUE, ngrams = 1:2)
+#' tokens(txt, remove_punct = TRUE, ngrams = 2)
+#' tokens(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
+#' tokens(txt, remove_punct = TRUE, ngrams = 1:2)
 #' # removing features from ngram tokens
-#' ### removeFeatures(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
+#' tokens_remove(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
 tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
                     remove_numbers = FALSE,
                     remove_punct = FALSE,

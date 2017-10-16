@@ -71,6 +71,7 @@ textstat_frequency <- function(x, n = NULL, groups = NULL) {
 #' @export
 textstat_frequency.dfm <- function(x, n = NULL, groups = NULL) { 
     
+    x <- as.dfm(x)
     group <- frequency <- NULL
   
     groupsadded <- FALSE
@@ -78,7 +79,7 @@ textstat_frequency.dfm <- function(x, n = NULL, groups = NULL) {
         groupsadded <- TRUE
         groups <- rep("all", ndoc(x))
     }
-
+    
     # get document frequency, override weight check
     x_docfreq <- x
     x_docfreq@weightTf[["scheme"]] <- "count"

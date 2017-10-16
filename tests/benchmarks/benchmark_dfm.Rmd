@@ -45,7 +45,7 @@ ijx <- function(x) {
     uniqueFeatures <- unique(allFeatures)
     j <- match(allFeatures, uniqueFeatures)
 
-    new("dfmSparse", Matrix::sparseMatrix(i = i, j = j, x = 1L, 
+    new("dfm", Matrix::sparseMatrix(i = i, j = j, x = 1L, 
                                   dimnames = list(docs = names(x), 
                                                   features = uniqueFeatures)))
 }
@@ -58,7 +58,7 @@ ipx <- function(x) {
     uniqueFeatures <- unique(allFeatures)
     i <- match(allFeatures, uniqueFeatures)
 
-    new("dfmSparse", t(Matrix::sparseMatrix(i = i, p = p, x = 1L, 
+    new("dfm", t(Matrix::sparseMatrix(i = i, p = p, x = 1L, 
                                             dimnames = list(features = uniqueFeatures, 
                                                             docs = names(x)))))
 }

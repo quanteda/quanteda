@@ -59,6 +59,7 @@
 #'   
 #'   Jurafsky, Daniel and James H. Martin. (2016) \emph{Speech and Language Processing.}  Draft of November 7, 2016.
 #'   \url{https://web.stanford.edu/~jurafsky/slp3/6.pdf}
+#' @name textmodel-nb
 #' @author Kenneth Benoit
 #' @examples
 #' ## Example from 13.1 of _An Introduction to Information Retrieval_
@@ -71,30 +72,32 @@
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #'  
 #' ## replicate IIR p261 prediction for test set (document 5)
-#' (nb.p261 <- textmodel_NB(trainingset, trainingclass, prior = "docfreq"))
+#' (nb.p261 <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
 #' predict(nb.p261, newdata = trainingset[5, ])
 #' 
 #' # contrast with other priors
-#' predict(textmodel_NB(trainingset, trainingclass, prior = "uniform"))
-#' predict(textmodel_NB(trainingset, trainingclass, prior = "termfreq"))
+#' predict(textmodel_nb(trainingset, trainingclass, prior = "uniform"))
+#' predict(textmodel_nb(trainingset, trainingclass, prior = "termfreq"))
 #' 
 #' ## replicate IIR p264 Bernoulli Naive Bayes
-#' (nb.p261.bern <- textmodel_NB(trainingset, trainingclass, distribution = "Bernoulli", 
+#' (nb.p261.bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
 #'                               prior = "docfreq"))
 #' predict(nb.p261.bern, newdata = trainingset[5, ])
 #' @export
-textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
+textmodel_nb <- textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
                          distribution = c("multinomial", "Bernoulli"), ...) {
-    UseMethod("textmodel_NB")
+    UseMethod("textmodel_nb")
 }
 
 #' @noRd
 #' @export
-textmodel_NB.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
+textmodel_nb.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
                              distribution = c("multinomial", "Bernoulli"), ...) {
-    call <- match.call()
+    
+    x <- as.dfm(x)
     prior <- match.arg(prior)
     distribution <- match.arg(distribution)
+    call <- match.call()
     
     y <- factor(y) # no effect if already a factor    
     x.trset <- x[which(!is.na(y)), ]
@@ -188,14 +191,14 @@ textmodel_NB.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "
 #' @author Kenneth Benoit
 #' @rdname predict.textmodel
 #' @examples 
-#' (nbfit <- textmodel_NB(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
+#' (nbfit <- textmodel_nb(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
 #' (nbpred <- predict(nbfit))
 #' @keywords internal textmodel
 #' @export
 predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
     
     call <- match.call()
-    if (is.null(newdata)) newdata <- object$data$x
+    if (is.null(newdata)) newdata <- as.dfm(object$data$x)
 
     # remove any words for which zero probabilities exist in training set --
     # would happen if smooth=0

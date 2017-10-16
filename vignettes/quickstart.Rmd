@@ -447,7 +447,7 @@ byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", remove = stopwo
 
 We can sort this dfm, and inspect it:
 ```{r}
-sort(byPartyDfm)[, 1:10]
+dfm_sort(byPartyDfm)[, 1:10]
 ```
 
 Note that the most frequently occurring feature is "will", a word usually on English stop lists, but

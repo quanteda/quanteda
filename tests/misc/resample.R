@@ -99,8 +99,12 @@ nresample.corpus <- function(x) {
 # @rdname nresample
 # @export
 nresample.dfm <- function(x) {
-    if (!is.resampled(x)) 0 else
+    x <- as.dfm(x)
+    if (!is.resampled(x)) {
+        0
+    } else {
         dim(x)[3] - 1
+    }
 }
 
 

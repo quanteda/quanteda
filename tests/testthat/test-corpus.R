@@ -279,3 +279,11 @@ test_that("head, tail.corpus work as expected", {
     )
 })
 
+test_that("internal documents fn works", {
+    mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year < 1800))
+    expect_is(quanteda:::documents.dfm(mydfm), "data.frame")
+    expect_equal(
+        dim(quanteda:::documents.dfm(mydfm)),
+        c(3, 3)
+    )
+})

@@ -75,6 +75,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
     
+    x <- as.dfm(x)
     dictionary <- flatten_dictionary(dictionary, levels)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)

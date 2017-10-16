@@ -64,7 +64,7 @@ tokenize <- function(x, ...) {
 #'   \code{\link{tokens_ngrams}}.
 #' @param skip integer vector specifying the skips for skip-grams, default is 0 
 #'   for only immediately neighbouring words. Only applies if \code{ngrams} is 
-#'   different from the default of 1.  See \code{\link{skipgrams}}.
+#'   different from the default of 1.  See \code{\link{tokens_skipgrams}}.
 #' @param concatenator character to use in concatenating \emph{n}-grams, default
 #'   is "\code{_}", which is recommended since this is included in the regular 
 #'   expression and Unicode definitions of "word" characters
@@ -158,14 +158,14 @@ tokenize <- function(x, ...) {
 #'                       mytext2 = "Short.",
 #'                       mytext3 = "Short, shorter, and shortest."))
 #' tokenize(txt, remove_punct = TRUE)
-#' removeFeatures(tokenize(txt, remove_punct = TRUE), stopwords("english"))
+#' tokens_remove(tokenize(txt, remove_punct = TRUE), stopwords("english"))
 #' 
 #' # ngram tokenization
 #' tokenize(txt, remove_punct = TRUE, ngrams = 2)
 #' tokenize(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
 #' tokenize(txt, remove_punct = TRUE, ngrams = 1:2)
 #' # removing features from ngram tokens
-#' removeFeatures(tokenize(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
+#' tokens_remove(tokenize(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
 tokenize.character <- function(x, what=c("word", "sentence", "character", "fastestword", "fasterword"),
                                remove_numbers = FALSE,
                                remove_punct = FALSE,
