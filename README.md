@@ -26,14 +26,14 @@ How to cite the package:
     following:
 
       Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
-      Textual Data".  R package version: 0.99.13.  http://quanteda.io.
+      Textual Data".  R package version: 0.99.14.  http://quanteda.io.
 
     A BibTeX entry for LaTeX users is
 
       @Manual{,
         title = {quanteda: Quantitative Analysis of Textual Data},
         author = {Kenneth Benoit and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
-        note = {R package version 0.99.13},
+        note = {R package version 0.99.14},
         url = {http://quanteda.io},
       }
 
@@ -93,13 +93,11 @@ For developpers
 1.  Corpus texts are text repositories.
     -   Should not have their texts modified as part of preparation or analysis
     -   Subsetting or redefining documents is allowable
-
 2.  A corpus should be capable of holding additional objects that will be associated with the corpus, such as dictionaries, stopword, and phrase lists, that will propagate downstream.
 3.  Downstream objects should record the settings used to produce them.
     -   includes: tokenized texts (`tokens`), document-feature matrixes (`dfm`)
     -   settings examples are: `tolower`, `stem`, `removeTwitter` etc.
     -   also include any objects used in feature selection, such as dictionaries or stopword lists
-
 4.  A document-feature matrix is a sparse matrix that is always *documents* (or document groups) in rows by *features* in columns.
 5.  Encoding of texts should be done in the corpus, and recorded as meta-data in the corpus
     -   This encoding should be `UTF-8` by default (problem for Windows machines)
