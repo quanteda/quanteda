@@ -131,6 +131,7 @@ Collate:
     'tokens_group.R'
     'tokens_lookup.R'
     'tokens_ngrams.R'
+    'tokens_replace.R'
     'tokens_segment.R'
     'tokens_select.R'
     'utils.R'
