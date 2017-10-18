@@ -15,6 +15,8 @@ tokens_replace(x, from, to, case_insensitive = TRUE,
 \item{to}{a vector of types to substitute}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
+
+\item{verbose}{print status messages if \code{TRUE}}
 }
 \description{
 This funciton substitutes token types based on vectorized one-to-one matching.

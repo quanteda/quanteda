@@ -10,6 +10,7 @@
 #' @param from a vector of types to be substituted
 #' @param to a vector of types to substitute
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
+#' @param verbose print status messages if \code{TRUE}
 #' @export
 #' @examples
 #' toks <- tokens(data_corpus_irishbudget2010)
