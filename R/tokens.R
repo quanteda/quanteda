@@ -876,10 +876,14 @@ get_tokens.tokens <- function(x) {
     as.list(x)
 }
 
+#' @rdname featnames
+#' @export
 types <- function(x) {
     UseMethod("types")
 }
 
+#' @rdname featnames
+#' @export
 types.tokens <- function(x) {
     attr(x, "types")
 }
