@@ -6,6 +6,9 @@
 \usage{
 types(x)
 }
+\arguments{
+\item{x}{a tokens object}
+}
 \description{
 Get unique types of tokens from a \link{tokens} object.
 }
