@@ -9,7 +9,8 @@ test_that("nsyllable works as expected", {
              two = "merrily all go aerodynamic")
     toksh <- tokens(txt)
     toks <- tokenize(txt)
-    expect_equivalent(nsyllable(toks), nsyllable(toksh), list(c(2, 3, 1), c(3, 1, 1, 5)))
+    expect_equivalent(nsyllable(toks), list(c(2, 3, 1), c(3, 1, 1, 5)))
+    expect_equivalent(nsyllable(toksh), list(c(2, 3, 1), c(3, 1, 1, 5)))
 })
 
 test_that("nsyllable works as expected with padding = TRUE", {
