@@ -4,15 +4,16 @@
 \alias{tokens_replace}
 \title{replace types in tokens object}
 \usage{
-tokens_replace(x, from, to, case_insensitive = TRUE,
+tokens_replace(x, pattern, replacement = NULL, case_insensitive = TRUE,
   verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be replaced}
 
-\item{from}{a vector of types to be substituted}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
-\item{to}{a vector of types to substitute}
+\item{replacement}{a vector of types to substitute}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 
