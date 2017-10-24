@@ -7,8 +7,11 @@
 #' \code{tokens_lookup} with \code{exclusive = FALSE} for substitutions of more
 #' complex patterns.
 #' @param x \link{tokens} object whose token elements will be replaced
-#' @inheritParams pattern
-#' @param replacement a vector of types to substitute
+#' @param pattern a character vector or \link{dictionary}.  See \link{pattern}
+#'   for more details.
+#' @param replacement if \code{pattern} is a character vector, then \code{replacement}
+#'   must be character vector of equal length, for a 1:1 match.  If \code{pattern} is
+#'   a \link{dictionary}, then \code{replacement} should not be used.
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param verbose print status messages if \code{TRUE}
 #' @export
@@ -16,17 +19,16 @@
 #' toks <- tokens(data_corpus_irishbudget2010)
 #'
 #' # lemmatization
-#' infle <- c('foci', 'focus', 'focused', 'focuses', 'focusing', 'focussed', 'focusses', 'focussing')
-#' lemma <- rep('focus', length(infle))
+#' infle <- c("foci", "focus", "focused", "focuses", "focusing", "focussed", "focusses")
+#' lemma <- rep("focus", length(infle))
 #' toks2 <- tokens_replace(toks, infle, lemma)
-#' kwic(toks2, 'focus*')
+#' kwic(toks2, "focus*")
 #'
 #' # stemming
 #' type <- types(toks)
-#' stem <- char_wordstem(type, 'porter')
+#' stem <- char_wordstem(type, "porter")
 #' toks3 <- tokens_replace(toks, type, stem, case_insensitive = FALSE)
-#' identical(toks3, tokens_wordstem(toks, 'porter'))
-
+#' identical(toks3, tokens_wordstem(toks, "porter"))
 tokens_replace <- function(x, pattern, replacement = NULL, case_insensitive = TRUE, 
                            verbose = quanteda_options("verbose")) {
     UseMethod("tokens_replace")

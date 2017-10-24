@@ -10,10 +10,12 @@ tokens_replace(x, pattern, replacement = NULL, case_insensitive = TRUE,
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be replaced}
 
-\item{pattern}{a character vector, list of character vectors, \link{dictionary},
-\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
+\item{pattern}{a character vector or \link{dictionary}.  See \link{pattern}
+for more details.}
 
-\item{replacement}{a vector of types to substitute}
+\item{replacement}{if \code{pattern} is a character vector, then \code{replacement}
+must be character vector of equal length, for a 1:1 match.  If \code{pattern} is
+a \link{dictionary}, then \code{replacement} should not be used.}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 
@@ -30,14 +32,14 @@ complex patterns.
 toks <- tokens(data_corpus_irishbudget2010)
 
 # lemmatization
-infle <- c('foci', 'focus', 'focused', 'focuses', 'focusing', 'focussed', 'focusses', 'focussing')
-lemma <- rep('focus', length(infle))
+infle <- c("foci", "focus", "focused", "focuses", "focusing", "focussed", "focusses")
+lemma <- rep("focus", length(infle))
 toks2 <- tokens_replace(toks, infle, lemma)
-kwic(toks2, 'focus*')
+kwic(toks2, "focus*")
 
 # stemming
 type <- types(toks)
-stem <- char_wordstem(type, 'porter')
+stem <- char_wordstem(type, "porter")
 toks3 <- tokens_replace(toks, type, stem, case_insensitive = FALSE)
-identical(toks3, tokens_wordstem(toks, 'porter'))
+identical(toks3, tokens_wordstem(toks, "porter"))
 }
