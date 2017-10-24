@@ -41,7 +41,7 @@ tokens_replace.tokens <- function(x, pattern, replacement = NULL, case_insensiti
     if (is.dictionary(pattern)) {
         if (!is.null(replacement))
             stop("'replacement' must be NULL when 'pattern' is a dictionary")
-        pattern <- flatten_dictionary(dict, levels = 1)
+        pattern <- flatten_dictionary(pattern, levels = 1)
         replacement <- rep(names(pattern), lengths(pattern))
         pattern <- unlist(pattern, use.names = FALSE)
     }
