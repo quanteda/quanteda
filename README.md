@@ -25,15 +25,17 @@ How to cite the package:
     To cite package 'quanteda' in publications please use the
     following:
 
-      Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
-      Textual Data".  R package version: 0.99.14.  http://quanteda.io.
+      Benoit, Kenneth et. al. (2017).  "quanteda: Quantitative
+      Analysis of Textual Data".  R package version: 0.99.12.
+      http://quanteda.io.
 
     A BibTeX entry for LaTeX users is
 
       @Manual{,
         title = {quanteda: Quantitative Analysis of Textual Data},
         author = {Kenneth Benoit and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
-        note = {R package version 0.99.14},
+        year = {2017},
+        note = {R package version 0.99.12},
         url = {http://quanteda.io},
       }
 

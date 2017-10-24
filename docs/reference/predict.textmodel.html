@@ -116,9 +116,9 @@ wordscore.word, bayesscore.word</p></dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>nbfit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_NB.html'>textmodel_NB</a></span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; Fitted Naive Bayes model:
+    <pre class="examples"><div class='input'>(<span class='no'>nbfit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel-nb.html'>textmodel_nb</a></span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; Fitted Naive Bayes model:
 #&gt; Call:
-#&gt; 	textmodel_NB.dfm(x = data_dfm_lbgexample, y = c("A", "A", "B", 
+#&gt; 	textmodel_nb.dfm(x = data_dfm_lbgexample, y = c("A", "A", "B", 
 #&gt;     "C", "C", NA))
 #&gt; 
 #&gt; 
@@ -127,7 +127,6 @@ wordscore.word, bayesscore.word</p></dd>
 #&gt; 0.3333333 0.3333333 0.3333333 
 #&gt; 
 #&gt; 		  Likelihoods:		Class Posteriors:
-#&gt; 30 x 6 Matrix of class "dgeMatrix"
 #&gt;              A            B           C           A          B           C
 #&gt; A  0.001472754 0.0009643202 0.000490918 0.502991108 0.32934519 0.167663703
 #&gt; B  0.001963672 0.0009643202 0.000490918 0.574356134 0.28205483 0.143589034

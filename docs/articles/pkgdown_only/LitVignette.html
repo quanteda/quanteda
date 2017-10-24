@@ -284,7 +284,7 @@ chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../refer
 <div id="relative-frequency-barplots-of-whale-and-ahab" class="section level2">
 <h2 class="hasAnchor">
 <a href="#relative-frequency-barplots-of-whale-and-ahab" class="anchor"></a>Relative frequency barplots of whale and ahab</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">relDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/weight.html">weight</a></span>(chapDfm, <span class="dt">type =</span> <span class="st">'relfreq'</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">relDfm &lt;-<span class="st"> </span><span class="kw">weight</span>(chapDfm, <span class="dt">type =</span> <span class="st">'relfreq'</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></code></pre></div>
 <pre><code>## Warning: 'weight' is deprecated.
 ## Use 'dfm_weight' instead.
 ## See help("Deprecated")</code></pre>
@@ -326,7 +326,7 @@ af &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(relDfm[, <sp
 <div id="random-sampling" class="section level2">
 <h2 class="hasAnchor">
 <a href="#random-sampling" class="anchor"></a>5.4 Random Sampling</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">samples &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dv">1000</span>, <span class="kw">cor</span>(<span class="kw"><a href="../../reference/sample.html">sample</a></span>(af), <span class="kw"><a href="../../reference/sample.html">sample</a></span>(wf)))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">samples &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dv">1000</span>, <span class="kw">cor</span>(<span class="kw">sample</span>(af), <span class="kw">sample</span>(wf)))
 
 h &lt;-<span class="st"> </span><span class="kw">hist</span>(samples, <span class="dt">breaks =</span> <span class="dv">100</span>, <span class="dt">col =</span> <span class="st">"grey"</span>,
 <span class="dt">xlab =</span> <span class="st">"Correlation Coefficient"</span>,

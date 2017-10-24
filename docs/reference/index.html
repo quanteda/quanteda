@@ -76,7 +76,7 @@
     <div class="page-header">
       <h1>
         Reference
-        <small>version&nbsp;0.99.12</small>
+        <small>version&nbsp;0.99.9000</small>
       </h1>
     </div>
 
@@ -362,7 +362,31 @@
           <td>
             <p><code><a href="dfm_sort.html">dfm_sort</a></code> </p>
           </td>
-          <td><p>sort a dfm by frequency of one or more margins</p></td>
+          <td><p>#' @noRd
+#' @export
+#' @examples 
+#' # for dfmDense
+#' mat &lt;- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
+#'              dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
+#' matd &lt;- dfm_smooth(mat)
+#' colnames(matd) &lt;- char_tolower(featnames(mat))
+#' matd
+#' dfm_compress(matd, margin = "documents")
+#' dfm_compress(matd, margin = "features")
+#' dfm_compress(matd)
+dfm_compress.dfmDense &lt;- function(x, ...) 
+    dfm_compress(new("dfm", Matrix::Matrix(as.matrix(x), sparse = TRUE),
+                     settings = x@settings,
+                     weightTf = x@weightTf,
+                     weightDf = x@weightDf,
+                     smooth = x@smooth,
+                     ngrams = x@ngrams,
+                     skip = x@skip,
+                     concatenator = x@concatenator,
+                     docvars = x@docvars),
+                 ...)
+                 
+sort a dfm by frequency of one or more margins</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -574,7 +598,7 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="textmodel_NB.html">textmodel_NB</a></code> </p>
+            <p><code><a href="textmodel-nb.html">textmodel_nb</a></code> </p>
           </td>
           <td><p>Naive Bayes classifier for texts</p></td>
         </tr><tr>
