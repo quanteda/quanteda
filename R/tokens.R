@@ -876,10 +876,20 @@ get_tokens.tokens <- function(x) {
     as.list(x)
 }
 
+#' get types of tokens from a tokens object
+#' 
+#' Get unique types of tokens from a \link{tokens} object. 
+#' @param x a tokens object
+#' @export
+#' @seealso \link{featnames}
+#' @examples 
+#' toks <- tokens(data_corpus_inaugural)
+#' types(toks)
 types <- function(x) {
     UseMethod("types")
 }
 
+#' @export
 types.tokens <- function(x) {
     attr(x, "types")
 }
