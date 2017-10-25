@@ -198,32 +198,7 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>textmodel_wordfish</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>5</span>))</div><div class='output co'>#&gt; Fitted wordfish model:
-#&gt; Call:
-#&gt; 	textmodel_wordfish.dfm(x = data_dfm_lbgexample, dir = c(1, 5))
-#&gt; 
-#&gt; Estimated document positions:
-#&gt; 
-#&gt;   Documents       theta         SE       lower       upper
-#&gt; 1        R1 -1.33130955 0.01573051 -1.36214135 -1.30047775
-#&gt; 2        R2 -0.60626138 0.01215643 -0.63008799 -0.58243477
-#&gt; 3        R3  0.06333708 0.01129471  0.04119946  0.08547471
-#&gt; 4        R4  0.70266854 0.01266598  0.67784321  0.72749387
-#&gt; 5        R5  1.50121281 0.01775926  1.46640466  1.53602096
-#&gt; 6        V1 -0.32964751 0.01194625 -0.35306216 -0.30623285
-#&gt; 
-#&gt; Estimated feature scores: showing first 30 beta-hats for features
-#&gt; 
-#&gt;           A           B           C           D           E           F 
-#&gt;  -7.4063951  -8.0776014  -9.7349696 -10.7145703 -11.5831267 -11.3612150 
-#&gt;           G           H           I           J           K           L 
-#&gt; -11.5593401 -10.4554965  -9.7338049  -8.6724146  -7.6191458  -6.6315425 
-#&gt;           M           N           O           P           Q           R 
-#&gt;  -5.6178433  -4.6855345  -3.7792728  -2.7246938  -1.8090846  -0.7117858 
-#&gt;           S           T           U           V           W           X 
-#&gt;   0.2594673   1.2559817   2.3935754   3.3679896   4.4773799   5.2773857 
-#&gt;           Y           Z          ZA          ZB          ZC          ZD 
-#&gt;   6.1121241   6.9830310   7.8338711   8.8092514   9.7279492  10.4987080 </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>textmodel_wordfish</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>5</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='fu'>not_run</span>({
   <span class='no'>ie2010dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
   (<span class='no'>wfm1</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>)))

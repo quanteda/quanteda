@@ -61,41 +61,29 @@
 </h3>
 
 </div>
-<div id="important-changes-in-v0-99" class="section level2">
+<div id="about" class="section level2">
 <h2 class="hasAnchor">
-<a href="#important-changes-in-v0-99" class="anchor"></a>Important Changes in v0.99</h2>
-<p>Many important changes to the package have been underway, including API changes, as we approach a stable API, “1.0” release in October 2017. Version 0.99 represents the last version that will contain many of the deprecated object types and methods that date several releases.</p>
-<p>v0.99 also implements many enhancements and performance improvements over previous releases. See <a href="http://quanteda.io/news/index.html#quanteda-0-99">NEWS.md</a> for details, and <a href="https://kbenoit.github.io/quanteda/articles/development-plans.html">Quanteda Structure and Design</a> for a description of the package’s underlying logic and design philosophy.</p>
-</div>
-<div id="about-the-package" class="section level2">
-<h2 class="hasAnchor">
-<a href="#about-the-package" class="anchor"></a>About the package</h2>
+<a href="#about" class="anchor"></a>About</h2>
 <p>An R package for managing and analyzing text, created by <a href="http://kenbenoit.net">Kenneth Benoit</a> in collaboration with a team of core <a href="https://github.com/kbenoit/quanteda/graphs/contributors">contributors</a>: <a href="https://github.com/koheiw">Kohei Watanabe</a>, <a href="https://github.com/pnulty">Paul Nulty</a>, <a href="https://github.com/adamobeng">Adam Obeng</a>, <a href="https://github.com/HaiyanLW">Haiyan Wang</a>, <a href="https://github.com/lauderdale">Ben Lauderdale</a>, and <a href="https://github.com/conjugateprior">Will Lowe</a>.<br>
 Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
-<p>For more details, see the <a href="http://quanteda.io"><strong>package website</strong></a>.</p>
+<p>For more details, see <a href="http://quanteda.io" class="uri">http://quanteda.io</a>.</p>
 <p>How to cite the package:</p>
 <pre><code>
-To cite package 'quanteda' in publications please use the
-following:
-
-  Benoit, Kenneth et. al. (2017).  "quanteda: Quantitative
-  Analysis of Textual Data".  R package version: 0.99.12.
-  http://quanteda.io.
+Benoit K (2017). _quanteda: Quantitative Analysis of Textual
+Data_. doi: doi.org/10.5281/zenodo.1004683 (URL:
+http://doi.org/doi.org/10.5281/zenodo.1004683), R package version
+0.99.9001, &lt;URL: http://quanteda.io&gt;.
 
 A BibTeX entry for LaTeX users is
 
   @Manual{,
     title = {quanteda: Quantitative Analysis of Textual Data},
-    author = {Kenneth Benoit and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
+    author = {Kenneth Benoit},
     year = {2017},
-    note = {R package version 0.99.12},
+    doi = {doi.org/10.5281/zenodo.1004683},
     url = {http://quanteda.io},
+    note = {R package version 0.99.9001},
   }</code></pre>
-</div>
-<div id="getting-started" class="section level2">
-<h2 class="hasAnchor">
-<a href="#getting-started" class="anchor"></a>Getting Started</h2>
-<p>See the <a href="http://quanteda.io">package website</a>, which includes the <a href="http://quanteda.io/articles/quickstart.html">Getting Started Vignette</a>.</p>
 </div>
 <div id="how-to-install" class="section level2">
 <h2 class="hasAnchor">
@@ -129,44 +117,14 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 </li>
 </ol>
 </div>
-<div id="leave-feedback" class="section level2">
+<div id="leaving-feedback" class="section level2">
 <h2 class="hasAnchor">
-<a href="#leave-feedback" class="anchor"></a>Leave feedback</h2>
+<a href="#leaving-feedback" class="anchor"></a>Leaving feedback</h2>
 <p>If you like <strong>quanteda</strong>, please consider leaving <a href="https://github.com/kbenoit/quanteda/issues/461">feedback or a testimonial here</a>.</p>
 </div>
-<div id="for-developpers" class="section level2">
+<div id="contributing" class="section level2">
 <h2 class="hasAnchor">
-<a href="#for-developpers" class="anchor"></a>For developpers</h2>
-<div id="basic-principles" class="section level3">
-<h3 class="hasAnchor">
-<a href="#basic-principles" class="anchor"></a>Basic principles</h3>
-<ol style="list-style-type: decimal">
-<li>Corpus texts are text repositories.
-<ul>
-<li>Should not have their texts modified as part of preparation or analysis</li>
-<li>Subsetting or redefining documents is allowable</li>
-</ul>
-</li>
-<li>A corpus should be capable of holding additional objects that will be associated with the corpus, such as dictionaries, stopword, and phrase lists, that will propagate downstream.</li>
-<li>Downstream objects should record the settings used to produce them.
-<ul>
-<li>includes: tokenized texts (<code>tokens</code>), document-feature matrixes (<code>dfm</code>)</li>
-<li>settings examples are: <code>tolower</code>, <code>stem</code>, <code>removeTwitter</code> etc.</li>
-<li>also include any objects used in feature selection, such as dictionaries or stopword lists</li>
-</ul>
-</li>
-<li>A document-feature matrix is a sparse matrix that is always <em>documents</em> (or document groups) in rows by <em>features</em> in columns.</li>
-<li>Encoding of texts should be done in the corpus, and recorded as meta-data in the corpus
-<ul>
-<li>This encoding should be <code>UTF-8</code> by default (problem for Windows machines)</li>
-<li>Basic text operations will use the <code>stringi</code> package, based on the ICU libraries for Unicode compliance</li>
-</ul>
-</li>
-</ol>
-</div>
-<div id="contributing" class="section level3">
-<h3 class="hasAnchor">
-<a href="#contributing" class="anchor"></a>Contributing</h3>
+<a href="#contributing" class="anchor"></a>Contributing</h2>
 <p>Contributions in the form of feedback, comments, code, and bug reports are most welcome. How to contribute:</p>
 <ul>
 <li>Fork the source code, modify, and issue a <a href="https://help.github.com/articles/creating-a-pull-request-from-a-fork/">pull request</a> through the <a href="https://github.com/kbenoit/quanteda">project GitHub page</a>. See our <a href="https://github.com/kbenoit/quanteda/blob/master/CONDUCT.md">Contributor Code of Conduct</a> and the all-important <strong>quanteda</strong> <a href="https://github.com/kbenoit/quanteda/wiki/Style-guide">Style Guide</a>.</li>
@@ -174,7 +132,6 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <li>Usage questions: Submit a question on the <a href="http://stackoverflow.com/questions/tagged/quanteda"><strong>quanteda</strong> channel on StackOverflow</a>.</li>
 <li>Contact <a href="kbenoit@lse.ac.uk">the maintainer</a> by email.</li>
 </ul>
-</div>
 </div>
 </div>
   </div>
@@ -200,8 +157,9 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <li><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"></a></li>
 <li><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a></li>
 <li><a href="https://travis-ci.org/kbenoit/quanteda"><img src="https://travis-ci.org/kbenoit/quanteda.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://ci.appveyor.com/project/kbenoit/quanteda/branch/master"><img src="https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true" alt="Build status"></a></li>
-<li><a href="https://codecov.io/gh/kbenoit/quanteda/branch/master"><img src="https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master" alt="codecov.io"></a></li>
+<li><a href="https://ci.appveyor.com/project/kbenoit/quanteda/branch/master"><img src="https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true" alt="Appveyor Build status"></a></li>
+<li><a href="https://codecov.io/gh/kbenoit/quanteda"><img src="https://codecov.io/gh/kbenoit/quanteda/branch/master/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://zenodo.org/badge/latestdoi/5424649"><img src="https://zenodo.org/badge/5424649.svg" alt="DOI"></a></li>
 </ul>
 </div>
 

@@ -14,22 +14,22 @@ For more details, see <http://quanteda.io>.
 
 How to cite the package:
 
-    ## 
-    ## Benoit K (2017). _quanteda: Quantitative Analysis of Textual
-    ## Data_. doi: doi.org/10.5281/zenodo.1004683 (URL:
-    ## http://doi.org/doi.org/10.5281/zenodo.1004683), R package version
-    ## 0.99.9001, <URL: http://quanteda.io>.
-    ## 
-    ## A BibTeX entry for LaTeX users is
-    ## 
-    ##   @Manual{,
-    ##     title = {quanteda: Quantitative Analysis of Textual Data},
-    ##     author = {Kenneth Benoit},
-    ##     year = {2017},
-    ##     doi = {doi.org/10.5281/zenodo.1004683},
-    ##     url = {http://quanteda.io},
-    ##     note = {R package version 0.99.9001},
-    ##   }
+
+    Benoit K (2017). _quanteda: Quantitative Analysis of Textual
+    Data_. doi: doi.org/10.5281/zenodo.1004683 (URL:
+    http://doi.org/doi.org/10.5281/zenodo.1004683), R package version
+    0.99.9001, <URL: http://quanteda.io>.
+
+    A BibTeX entry for LaTeX users is
+
+      @Manual{,
+        title = {quanteda: Quantitative Analysis of Textual Data},
+        author = {Kenneth Benoit},
+        year = {2017},
+        doi = {doi.org/10.5281/zenodo.1004683},
+        url = {http://quanteda.io},
+        note = {R package version 0.99.9001},
+      }
 
 How to Install
 --------------

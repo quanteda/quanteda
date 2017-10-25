@@ -194,46 +194,9 @@ the same, then "uniform" and "termfreq" would be the same.</p>
 <span class='no'>trainingclass</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='fu'>c</span>(<span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>, <span class='fl'>NA</span>), <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'>## replicate IIR p261 prediction for test set (document 5)</span>
-(<span class='no'>nb.p261</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>))</div><div class='output co'>#&gt; Fitted Naive Bayes model:
-#&gt; Call:
-#&gt; 	textmodel_nb.dfm(x = trainingset, y = trainingclass, prior = "docfreq")
-#&gt; 
-#&gt; 
-#&gt; Training classes and priors:
-#&gt;    Y    N 
-#&gt; 0.75 0.25 
-#&gt; 
-#&gt; 		  Likelihoods:		Class Posteriors:
-#&gt;                   Y         N         Y         N
-#&gt; Chinese  0.42857143 0.2222222 0.8526316 0.1473684
-#&gt; Beijing  0.14285714 0.1111111 0.7941176 0.2058824
-#&gt; Shanghai 0.14285714 0.1111111 0.7941176 0.2058824
-#&gt; Macao    0.14285714 0.1111111 0.7941176 0.2058824
-#&gt; Tokyo    0.07142857 0.2222222 0.4909091 0.5090909
-#&gt; Japan    0.07142857 0.2222222 0.4909091 0.5090909
-#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb.p261</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='no'>trainingset</span>[<span class='fl'>5</span>, ])</div><div class='output co'>#&gt; Predicted textmodel of type: Naive Bayes
-#&gt; 
-#&gt;       lp(Y)     lp(N)     Pr(Y)  Pr(N) Predicted
-#&gt; d5 -8.10769 -8.906681    0.6898 0.3102         Y
-#&gt; </div><div class='input'>
+(<span class='no'>nb.p261</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb.p261</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='no'>trainingset</span>[<span class='fl'>5</span>, ])</div><div class='output co'>#&gt; <span class='error'>Error in predict(nb.p261, newdata = trainingset[5, ]): object 'nb.p261' not found</span></div><div class='input'>
 <span class='co'># contrast with other priors</span>
-<span class='fu'>predict</span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"uniform"</span>))</div><div class='output co'>#&gt; Predicted textmodel of type: Naive Bayes
-#&gt; 
-#&gt;        lp(Y)     lp(N)     Pr(Y)  Pr(N) Predicted
-#&gt; d1 -4.333653 -5.898527    0.8271 0.1729         Y
-#&gt; d2 -4.333653 -5.898527    0.8271 0.1729         Y
-#&gt; d3 -3.486355 -4.394449    0.7126 0.2874         Y
-#&gt; d4 -6.818560 -5.205379    0.1661 0.8339         N
-#&gt; d5 -8.513155 -8.213534    0.4257 0.5743         N
-#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"termfreq"</span>))</div><div class='output co'>#&gt; Predicted textmodel of type: Naive Bayes
-#&gt; 
-#&gt;        lp(Y)     lp(N)     Pr(Y)  Pr(N) Predicted
-#&gt; d1 -3.958960 -6.504662    0.9273 0.0727         Y
-#&gt; d2 -3.958960 -6.504662    0.9273 0.0727         Y
-#&gt; d3 -3.111662 -5.000585    0.8686 0.1314         Y
-#&gt; d4 -6.443866 -5.811515    0.3470 0.6530         N
-#&gt; d5 -8.138462 -8.819670    0.6640 0.3360         Y
-#&gt; </div><div class='input'>
+<span class='fu'>predict</span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"uniform"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>predict</span>(<span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"termfreq"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'>## replicate IIR p264 Bernoulli Naive Bayes</span>
 (<span class='no'>nb.p261.bern</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_nb</span>(<span class='no'>trainingset</span>, <span class='no'>trainingclass</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"Bernoulli"</span>,
                               <span class='kw'>prior</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>))</div><div class='output co'>#&gt; Fitted Naive Bayes model:
