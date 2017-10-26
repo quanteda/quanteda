@@ -29,34 +29,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
-    </li>
-    <li>
-      <a href="../../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
-    </li>
-    <li>
-      <a href="../../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../../articles/quickstart.html">Getting Started with quanteda</a>
-    </li>
-  </ul>
+  <a href="../../articles/index.html">Articles</a>
 </li>
 <li>
   <a href="../../news/index.html">News</a>
@@ -106,10 +82,10 @@
 <p>The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">library</span>(<span class="st">"quanteda"</span>))
 <span class="kw">library</span>(<span class="st">"readtext"</span>)
-data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/texts.html">texts</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span>))</code></pre></div>
-<p>The <code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code> function from the <strong>readtext</strong> package loads the text files into a <code>data.frame</code> object. We can access the text from a <code>data.frame</code> object (and also, as we will see, a <code>corpus</code> class object), using the <code><a href="../../reference/texts.html">texts()</a></code> or the <code><a href="../../reference/View.html">View()</a></code> method. Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel. We do this using the <code>substring()</code> function, which shows the 1st through the 75th characters of the texts of our new object <code>data_char_mobydick</code>. Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.</p>
+data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/texts.html">texts</a></span>(<span class="kw">readtext</span>(<span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span>))</code></pre></div>
+<p>The <code>readtext()</code> function from the <strong>readtext</strong> package loads the text files into a <code>data.frame</code> object. We can access the text from a <code>data.frame</code> object (and also, as we will see, a <code>corpus</code> class object), using the <code><a href="../../reference/texts.html">texts()</a></code> or the <code><a href="../../reference/View.html">View()</a></code> method. Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel. We do this using the <code>substring()</code> function, which shows the 1st through the 75th characters of the texts of our new object <code>data_char_mobydick</code>. Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"stringi"</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub</a></span>(data_char_mobydick, <span class="dv">1</span>, <span class="dv">75</span>)</code></pre></div>
+<span class="kw">stri_sub</span>(data_char_mobydick, <span class="dv">1</span>, <span class="dv">75</span>)</code></pre></div>
 <pre><code>## [1] "The Project Gutenberg EBook of Moby Dick; or The Whale, by Herman Melville\n"</code></pre>
 </div>
 <div id="separate-content-from-metadata" class="section level2">
@@ -127,7 +103,7 @@ metadata.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_
 ##                              
 ##  . End of Project Gutenberg's</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># extract the novel -- a better way</span>
-novel.v &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub</a></span>(data_char_mobydick, endMetadataIndex, 
+novel.v &lt;-<span class="st"> </span><span class="kw">stri_sub</span>(data_char_mobydick, endMetadataIndex, 
                      <span class="kw">regexec</span>(<span class="st">"End of Project Gutenberg's Moby Dick."</span>, data_char_mobydick)[[<span class="dv">1</span>]]<span class="op">-</span><span class="dv">1</span>)</code></pre></div>
 </div>
 <div id="reprocessing-the-content" class="section level2">
@@ -189,18 +165,18 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<
 moby_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(novel.lower.v, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)
 moby_dfm[, <span class="st">"whale"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
-## 1 x 1 sparse Matrix of class "dfmSparse"
+## 1 x 1 sparse Matrix of class "dfm"
 ##        features
 ## docs    whale
 ##   text1   908</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot 50 most frequent words </span>
 <span class="kw">library</span>(ggplot2)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme_get">theme_set</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_minimal</a></span>())
+<span class="kw">theme_set</span>(<span class="kw">theme_minimal</span>())
 
 <span class="kw"><a href="../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm, <span class="dt">n =</span> <span class="dv">50</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> rank, <span class="dt">y =</span> frequency)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">"Term frequency"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> rank, <span class="dt">y =</span> frequency)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">"Term frequency"</span>)</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 </div>
 </div>
@@ -214,13 +190,13 @@ moby_dfm[, <span class="st">"whale"</span>]</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># frequencies of 'he' and 'she' - these are matrixes, not numerics</span>
 moby_dfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 4 features (0% sparse).
-## 1 x 4 sparse Matrix of class "dfmSparse"
+## 1 x 4 sparse Matrix of class "dfm"
 ##        features
 ## docs      he she  him her
 ##   text1 1758 112 1058 330</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby_dfm[, <span class="st">"her"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
-## 1 x 1 sparse Matrix of class "dfmSparse"
+## 1 x 1 sparse Matrix of class "dfm"
 ##        features
 ## docs    her
 ##   text1 330</code></pre>
@@ -241,15 +217,15 @@ moby_dfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby_dfm_pct &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(moby_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
 moby_dfm_pct[, <span class="st">"the"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
-## 1 x 1 sparse Matrix of class "dfmSparse"
+## 1 x 1 sparse Matrix of class "dfm"
 ##        features
 ## docs         the
 ##   text1 5.659308</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm_pct, <span class="dt">n =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> <span class="kw">reorder</span>(feature, rank), <span class="dt">y =</span> frequency)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Top Ten Words"</span>, <span class="dt">y =</span> <span class="st">"Percentage of Full Text"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">axis.text.x =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/element">element_text</a></span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(feature, rank), <span class="dt">y =</span> frequency)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">"Top Ten Words"</span>, <span class="dt">y =</span> <span class="st">"Percentage of Full Text"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
 </div>
 </div>
@@ -308,13 +284,10 @@ chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../refer
 <div id="relative-frequency-barplots-of-whale-and-ahab" class="section level2">
 <h2 class="hasAnchor">
 <a href="#relative-frequency-barplots-of-whale-and-ahab" class="anchor"></a>Relative frequency barplots of whale and ahab</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">relDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/weight.html">weight</a></span>(chapDfm, <span class="dt">type =</span> <span class="st">'relfreq'</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></code></pre></div>
-<pre><code>## Warning: 'weight' is deprecated.
-## Use 'dfm_weight' instead.
-## See help("Deprecated")</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(relDfm)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">relDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(chapDfm, <span class="dt">type =</span> <span class="st">'relfreq'</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+<span class="kw">head</span>(relDfm)</code></pre></div>
 <pre><code>## Document-feature matrix of: 6 documents, 6 features (36.1% sparse).
-## 6 x 6 sparse Matrix of class "dfmSparse"
+## 6 x 6 sparse Matrix of class "dfm"
 ##        features
 ## docs           .   loomings       call        me    ishmael       some
 ##   text1 3.180760 0.03878976 0.03878976 0.9697440 0.07757952 0.42668735
@@ -350,7 +323,7 @@ af &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(relDfm[, <sp
 <div id="random-sampling" class="section level2">
 <h2 class="hasAnchor">
 <a href="#random-sampling" class="anchor"></a>5.4 Random Sampling</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">samples &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dv">1000</span>, <span class="kw">cor</span>(<span class="kw"><a href="../../reference/sample.html">sample</a></span>(af), <span class="kw"><a href="../../reference/sample.html">sample</a></span>(wf)))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">samples &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dv">1000</span>, <span class="kw">cor</span>(<span class="kw">sample</span>(af), <span class="kw">sample</span>(wf)))
 
 h &lt;-<span class="st"> </span><span class="kw">hist</span>(samples, <span class="dt">breaks =</span> <span class="dv">100</span>, <span class="dt">col =</span> <span class="st">"grey"</span>,
 <span class="dt">xlab =</span> <span class="st">"Correlation Coefficient"</span>,
@@ -405,8 +378,7 @@ numWords &lt;-<span class="st"> </span><span class="kw">length</span>(firstChap[
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
         <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#r-basics">1 R Basics</a></li>
       <li>
@@ -428,7 +400,7 @@ numWords &lt;-<span class="st"> </span><span class="kw">length</span>(firstChap[
 <li><a href="#dispersion-plots">4.1 Dispersion plots</a></li>
       <li><a href="#searching-with-grep">4.2 Searching with <code>grep</code></a></li>
       <li><a href="#identifying-chapter-breaks">Identifying chapter breaks</a></li>
-      <li><a href="#fig-4-4-barplots-of-whale-and-ahab">Fig 4.4 barplots of whale and ahab</a></li>
+      <li><a href="#fig-4.4-barplots-of-whale-and-ahab">Fig 4.4 barplots of whale and ahab</a></li>
       <li><a href="#relative-frequency-barplots-of-whale-and-ahab">Relative frequency barplots of whale and ahab</a></li>
       </ul>
 </li>

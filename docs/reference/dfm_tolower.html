@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -52,34 +51,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -147,36 +122,24 @@ all-uppercase words (applies only to <code>*_tolower</code> functions)</p></td>
     <pre class="examples"><div class='input'><span class='co'># for a document-feature matrix</span>
 <span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='st'>"b A A"</span>, <span class='st'>"C C a b B"</span>),
              <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Argument toLower not used.</span></div><div class='input'><span class='no'>mydfm</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.7% sparse).
-#&gt; 2 x 3 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 3 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    b a c
 #&gt;   text1 1 2 0
 #&gt;   text2 2 1 2</div><div class='input'><span class='fu'>dfm_tolower</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.7% sparse).
-#&gt; 2 x 3 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 3 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    b a c
 #&gt;   text1 1 2 0
 #&gt;   text2 2 1 2</div><div class='input'><span class='fu'>dfm_toupper</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.7% sparse).
-#&gt; 2 x 3 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 3 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    B A C
 #&gt;   text1 1 2 0
 #&gt;   text2 2 1 2</div><div class='input'>
 <span class='co'># for a feature co-occurrence matrix</span>
 <span class='no'>myfcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"b A A d"</span>, <span class='st'>"C C a b B e"</span>)),
-             <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)
-<span class='no'>myfcm</span></div><div class='output co'>#&gt; Feature co-occurrence matrix of: 7 by 7 features.
-#&gt; 7 x 7 sparse Matrix of class "fcm"
-#&gt;         features
-#&gt; features b A d C a B e
-#&gt;        b 0 2 1 2 1 1 1
-#&gt;        A . 1 2 . . . .
-#&gt;        d . . 0 . . . .
-#&gt;        C . . . 1 2 2 2
-#&gt;        a . . . . 0 1 1
-#&gt;        B . . . . . 0 1
-#&gt;        e . . . . . . 0</div><div class='input'><span class='fu'>fcm_tolower</span>(<span class='no'>myfcm</span>)
-<span class='fu'>fcm_toupper</span>(<span class='no'>myfcm</span>)</div></pre>
+             <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>myfcm</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'myfcm' not found</span></div><div class='input'><span class='fu'>fcm_tolower</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_tolower(myfcm): object 'myfcm' not found</span></div><div class='input'><span class='fu'>fcm_toupper</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_toupper(myfcm): object 'myfcm' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

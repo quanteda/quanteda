@@ -49,10 +49,6 @@ qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {
     .Call(`_quanteda_qatd_cpp_tokens_compound`, texts_, comps_, types_, delim_, join)
 }
 
-qatd_cpp_tokens_detect <- function(texts_, words_) {
-    .Call(`_quanteda_qatd_cpp_tokens_detect`, texts_, words_)
-}
-
 qatd_cpp_kwic <- function(texts_, types_, words_, window, join) {
     .Call(`_quanteda_qatd_cpp_kwic`, texts_, types_, words_, window, join)
 }
@@ -69,16 +65,12 @@ qatd_cpp_tokens_recompile <- function(texts_, types_) {
     .Call(`_quanteda_qatd_cpp_tokens_recompile`, texts_, types_)
 }
 
-qatd_cpp_tokens_replace <- function(texts_, types_, words_, ids_) {
-    .Call(`_quanteda_qatd_cpp_tokens_replace`, texts_, types_, words_, ids_)
-}
-
 qatd_cpp_tokens_segment <- function(texts_, types_, patterns_, remove, position) {
     .Call(`_quanteda_qatd_cpp_tokens_segment`, texts_, types_, patterns_, remove, position)
 }
 
-qatd_cpp_tokens_select <- function(texts_, types_, words_, mode, padding) {
-    .Call(`_quanteda_qatd_cpp_tokens_select`, texts_, types_, words_, mode, padding)
+qatd_cpp_tokens_select <- function(texts_, types_, words_, mode, padding, window_left, window_right) {
+    .Call(`_quanteda_qatd_cpp_tokens_select`, texts_, types_, words_, mode, padding, window_left, window_right)
 }
 
 qatd_cpp_chars_remove <- function(input_, char_remove) {
@@ -89,15 +81,11 @@ qatd_cpp_tbb_enabled <- function() {
     .Call(`_quanteda_qatd_cpp_tbb_enabled`)
 }
 
-wordfishcpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor) {
-    .Call(`_quanteda_wordfishcpp`, wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor)
+qatd_cpp_wordfish_dense <- function(wfm, dir, priors, tol, disp, dispfloor, abs_err) {
+    .Call(`_quanteda_qatd_cpp_wordfish_dense`, wfm, dir, priors, tol, disp, dispfloor, abs_err)
 }
 
-wordfishcpp_dense <- function(wfm, dir, priors, tol, disp, dispfloor, abs_err) {
-    .Call(`_quanteda_wordfishcpp_dense`, wfm, dir, priors, tol, disp, dispfloor, abs_err)
-}
-
-wordfishcpp_mt <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor) {
-    .Call(`_quanteda_wordfishcpp_mt`, wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor)
+qatd_cpp_wordfish <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor) {
+    .Call(`_quanteda_qatd_cpp_wordfish`, wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor)
 }
 

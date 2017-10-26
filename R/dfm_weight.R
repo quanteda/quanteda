@@ -77,6 +77,9 @@ dfm_weight <- function(x,
 dfm_weight.dfm <- function(x, 
                            type = c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf"),
                            weights = NULL) {
+    
+    x <- as.dfm(x)
+    
     # for numeric weights
     if (!is.null(weights)) {
         if (!missing(type)) warning("type is ignored when numeric weights are supplied")
@@ -134,6 +137,7 @@ dfm_smooth <- function(x, smoothing = 1) {
 #' @noRd
 #' @export
 dfm_smooth.dfm <- function(x, smoothing = 1) {
+    x <- as.dfm(x)
     x + smoothing
 }
 
@@ -169,7 +173,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-#' wikiDfm <- new("dfmSparse", 
+#' wikiDfm <- new("dfm", 
 #'                Matrix::Matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
 #'                               byrow = TRUE, nrow = 2,  
 #'                               dimnames = list(docs = c("document1", "document2"),
@@ -194,7 +198,8 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 #' @export
 docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob", "unary"),
                         smoothing = 0, k = 0, base = 10, threshold = 0, USE.NAMES = TRUE) {
-
+    
+    x <- as.dfm(x)
     scheme <- match.arg(scheme)
     args <- as.list(match.call(expand.dots=FALSE))
     if ("base" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
@@ -214,7 +219,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
         result <- rep(1, nfeature(x))
         
     } else if (scheme == "count") {
-        if (is(x, "dfmSparse")) {
+        if (is(x, "dfm")) {
             result <- colSums(x > threshold)
             # tx <- t(x)
             # featfactor <- factor(tx@i, 0:(nfeature(x)-1), labels = featnames(x))
@@ -267,10 +272,11 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
 #' @seealso \code{\link{tf}}, \code{\link{docfreq}}
 #' @keywords internal weighting dfm
 #' @examples 
-#' head(data_dfm_lbgexample[, 5:10])
-#' head(tfidf(data_dfm_lbgexample)[, 5:10])
-#' docfreq(data_dfm_lbgexample)[5:15]
-#' head(tf(data_dfm_lbgexample)[, 5:10])
+#' mydfm <- as.dfm(data_dfm_lbgexample)
+#' head(mydfm[, 5:10])
+#' head(tfidf(mydfm)[, 5:10])
+#' docfreq(mydfm)[5:15]
+#' head(tf(mydfm)[, 5:10])
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
@@ -300,7 +306,8 @@ tfidf <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...)
 #' @noRd
 #' @export
 tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
-
+    
+    x <- as.dfm(x)
     args <- list(...)
     check_dots(args, names(formals(docfreq)))
 
@@ -349,7 +356,7 @@ tfidf_old <- function(x, normalize = FALSE, scheme = "inverse", ...) {
 #'   \item{\code{augmented}}{equivalent to K + (1 - K) * \code{tf(x, "propmax")}}
 #'   \item{\code{logave}}{(1 + the log of the counts) / (1 + log of the counts / the average count within document)} 
 #'   }
-#' @details \code{tf(x, scheme = "prop")} is equivalent to \code{\link{weight}(x, "relFreq")}).
+#' @details \code{tf(x, scheme = "prop")} is equivalent to \code{\link{dfm_weight}(x, "relFreq")}).
 #' @param base base for the logarithm when \code{scheme} is \code{"log"} or 
 #'   \code{logave}
 #' @param K the K for the augmentation when \code{scheme = "augmented"}
@@ -370,7 +377,9 @@ tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augm
 #' @noRd
 #' @export
 tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
-               base = 10, K = 0.5) {
+                   base = 10, K = 0.5) {
+    
+    x <- as.dfm(x)
     if (!is.dfm(x))
         stop("x must be a dfm object")
     
@@ -391,14 +400,14 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
         
     } else if (scheme == "prop") {
         div <- rowSums(x)
-        if (is(x, "dfmSparse"))
+        if (is(x, "dfm"))
             x@x <- x@x / div[x@i+1]
         else
             x <- x / div
         
     } else if (scheme == "propmax") {
         div <- maxtf(x)
-        if (is(x, "dfmSparse"))
+        if (is(x, "dfm"))
             x@x <- x@x / div[x@i+1]
         else 
             x <- x / div
@@ -414,7 +423,7 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
         
     } else if (scheme == "augmented") {
         maxtf <- maxtf(x)
-        if (is(x, "dfmSparse"))
+        if (is(x, "dfm"))
             x@x <- K + (1 - K) * x@x / maxtf[x@i+1]
         else
             x <- K + (1 - K) * x / maxtf
@@ -422,7 +431,7 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
         
     } else if (scheme == "logave") {
         meantf <- Matrix::rowSums(x) / Matrix::rowSums(tf(x, "boolean"))
-        if (is(x, "dfmSparse"))
+        if (is(x, "dfm"))
             x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i+1], base))
         else
             x <- (1 + log(x, base)) / (1 + log(meantf, base))
@@ -437,10 +446,10 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
 
 
 ## internal function to get maximum term frequency by document
-## only applies to CsparseMatrix formats (dfmSparse)
+## only applies to CsparseMatrix formats (dfm)
 setGeneric("maxtf", function(x) standardGeneric("maxtf"))
 
-setMethod("maxtf", signature(x = "dfmSparse"), definition = function(x) {
+setMethod("maxtf", signature(x = "dfm"), definition = function(x) {
     freq <- doc <- V1 <- NULL 
 #    dt <- data.table(doc = t(x)@i, freq = x@x)
     dt <- data.table(doc = x@i, freq = x@x)
@@ -449,8 +458,8 @@ setMethod("maxtf", signature(x = "dfmSparse"), definition = function(x) {
     # sapply(split(x@x, x@i), max)
 })
 
-setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
-    apply(x, 1, max)
-})
+# setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
+#     apply(x, 1, max)
+# })
 
 

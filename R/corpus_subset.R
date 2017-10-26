@@ -27,9 +27,6 @@ corpus_subset <- function(x, subset, select, ...) {
 #' @export
 corpus_subset.corpus <- function(x, subset, select, ...) {
     
-    if (as.character(match.call()[[1]]) == "subset.corpus")
-        .Deprecated("corpus_subset")
-    
     if (length(addedArgs <- list(...)))
         warning("Argument", if (length(addedArgs) > 1L) "s " else " ", names(addedArgs), " not used.", sep = "")
     r <- if (missing(subset)) {
@@ -54,20 +51,5 @@ corpus_subset.corpus <- function(x, subset, select, ...) {
     }
     
     x
-}
-
-
-#' deprecated name for corpus_subset
-#' 
-#' The deprecated function name for what is now \code{\link{corpus_subset}}. 
-#' Please use that instead.
-#' @param x corpus to be subset
-#' @param ... subsetting arguments, see \code{\link{subset.data.frame}}
-#' @method subset corpus
-#' @keywords internal deprecated
-#' @export
-subset.corpus <- function(x, ...) {
-    .Deprecated("corpus_subset")
-    UseMethod("corpus_subset")
 }
 

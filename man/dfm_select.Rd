@@ -7,18 +7,18 @@
 \alias{fcm_remove}
 \title{select features from a dfm or fcm}
 \usage{
-dfm_select(x, pattern, selection = c("keep", "remove"),
+dfm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   min_nchar = 1L, max_nchar = 63L, verbose = quanteda_options("verbose"),
   ...)
 
-dfm_remove(x, pattern, ...)
+dfm_remove(x, pattern = NULL, ...)
 
 fcm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   verbose = TRUE, ...)
 
-fcm_remove(x, pattern, ...)
+fcm_remove(x, pattern = NULL, ...)
 }
 \arguments{
 \item{x}{the \link{dfm} or \link{fcm} object whose features will be selected}
@@ -28,9 +28,12 @@ fcm_remove(x, pattern, ...)
 
 \item{selection}{whether to \code{keep} or \code{remove} the features}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+  wildcard expressions; \code{"regex"} for regular expressions; or
+  \code{"fixed"} for exact matching. See \link{valuetype} for details.
+
+  For \code{dfm_select}, \code{pattern} may also be a \link{dfm}; see Value
+  below.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 

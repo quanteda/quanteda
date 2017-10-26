@@ -23,7 +23,7 @@ NULL
 #' @slot x  the dfm on which the wordscores model was called
 #' @slot y  supervised labels (for supervised methods only)
 #' @slot call  the function call that fitted the model
-#' @slot method the type of textmodel, e.g. wordfish, wordscores, NB-
+#' @slot method the type of textmodel, e.g. wordfish, wordscores, nb
 #' @name textmodel_fitted-class
 #' @keywords internal textmodel
 #' @export
@@ -46,9 +46,9 @@ setClass("textmodel_fitted",
 #'   or the logit scale proposed by Beauchamps (2001).  See 
 #'   \link{textmodel_wordscores}.}
 #'   
-#'   \item{\code{NB}}{Fits a Naive Bayes model to the dfm, with options for 
+#'   \item{\code{nb}}{Fits a Naive Bayes model to the dfm, with options for 
 #'   smoothing, setting class priors, and a choice of multinomial or binomial 
-#'   probabilities.  See \link{textmodel_NB}.}
+#'   probabilities.  See \link{textmodel_nb}.}
 #'   
 #'   \item{\code{wordfish}}{Fits the "wordfish" model of Slapin and Proksch (2008).  
 #'   See \link{textmodel_wordfish}.}
@@ -70,7 +70,7 @@ setClass("textmodel_fitted",
 #'   etc.
 #' @param ... additional arguments to be passed to specific model types
 #' @seealso \code{\link{textmodel}}, \code{\link{textmodel_wordscores}}
-# , \code{\link{textmodel_NB}}, \code{\link{textmodel_ca}, \code{\link{textmodel_lsa},
+# , \code{\link{textmodel_nb}}, \code{\link{textmodel_ca}, \code{\link{textmodel_lsa},
 #   \code{\link{textmodel_wordfish}}, \code{\link{textmodel_lda}}, 
 #' @section Class hierarchy: Here will go the description of the class hierarchy
 #'   that governs dispatch for the predict, print, summary methods, since this 
@@ -96,13 +96,12 @@ setClass("textmodel_fitted",
 #' @export
 #' @keywords internal textmodel
 setGeneric("textmodel", 
-    function(x, y=NULL, data=NULL, model=c("wordscores", "NB", "wordfish", "ca", "lsa"), ...)
+    function(x, y=NULL, data=NULL, model=c("wordscores", "nb", "wordfish", "ca", "lsa"), ...)
              standardGeneric("textmodel"))
 
 #' @rdname textmodel
 setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "character"),
-          definition = 
-              function(x, y=NULL, model=c("wordscores", "NB", "wordfish", "ca", "lsa"), ...) {
+          definition = function(x, y=NULL, model=c("wordscores", "nb", "wordfish", "ca", "lsa"), ...) {
                   #catm("x is:"); print(x)
                   #catm("y is:"); print(y)
                   #catm("model is:", model, "\n")
@@ -118,15 +117,11 @@ setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "ch
                       if (!is.null(y))
                           warning("y values not used with wordfish model. ")
                       result <- textmodel_wordfish(x, ...)
-                  } else if (model=="NB") {
+                  } else if (char_tolower(model) == "nb") {
                       if (nrow(x) != length(y))
                           stop("x and y contain different numbers of documents.")
-                      result <- textmodel_NB(x, y, ...)
-#                   } else if (model=="lda") {
-#                       if (!is.null(y))
-#                           warning("y values not used with wordfish model. ")
-#                       result <- textmodel_lda(x, ...)
-                  } else if (model=="ca") {
+                      result <- textmodel_nb(x, y, ...)
+                  } else if (model == "ca") {
                       if (!is.null(y))
                           warning("y values not used with ca model. ")
                       result <- textmodel_ca(x, ...)
@@ -150,8 +145,8 @@ setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "ch
 #' @param data dfm or data.frame from which to take the formula
 #' @importFrom stats model.frame model.response
 setMethod("textmodel", signature(x = "formula", y="missing", data="dfm", model = "character"),
-          definition = 
-              function(x, data, model=c("wordscores", "NB", "wordfish", "lda", "ca", "lsa"), ...) {
+          definition = function(x, data, model=c("wordscores", "nb", "wordfish", "lda", "ca", "lsa"), ...) {
+
                   model <- match.arg(model)
                   if (isS4(data))  # is it a new type dfm class object
                       mf <- stats::model.frame(formula=x, data=as.data.frame(as.matrix(data)))

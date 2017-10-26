@@ -217,14 +217,14 @@ c.corpus <- function(..., recursive = FALSE) {
 }
 
 
+#' @rdname corpus-class
+#' @method [ corpus
 #' @export
 #' @param i index for documents or rows of document variables
 #' @param j index for column of document variables
 #' @param drop if \code{TRUE}, return a vector if extracting a single document
 #'   variable; if \code{FALSE}, return it as a single-column data.frame.  See
 #'   \code{\link{drop}} for further details.
-#' @method [ corpus
-#' @rdname corpus-class
 #' @examples 
 #' 
 #' # ways to index corpus elements

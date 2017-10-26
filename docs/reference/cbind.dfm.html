@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -52,34 +51,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -144,37 +119,37 @@ not confirming to the row or column dimension will be recycled as normal.</p></t
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># cbind() for dfm objects</span>
 (<span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='st'>"a b c d"</span>, <span class='st'>"c d e f"</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    a b c d e f
 #&gt;   text1 1 1 1 1 0 0
 #&gt;   text2 0 0 1 1 1 1</div><div class='input'>(<span class='no'>dfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='st'>"a b"</span>, <span class='st'>"x y z"</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    a b x y z
 #&gt;   text1 1 1 0 0 0
 #&gt;   text2 0 0 1 1 1</div><div class='input'><span class='fu'>cbind</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cbinding dfms with overlapping features will result in duplicated features</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (40.9% sparse).
-#&gt; 2 x 11 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 11 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    a b c d e f a b x y z
 #&gt;   text1 1 1 1 1 0 0 1 1 0 0 0
 #&gt;   text2 0 0 1 1 1 1 0 0 1 1 1</div><div class='input'><span class='fu'>cbind</span>(<span class='no'>dfm1</span>, <span class='fl'>100</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
-#&gt; 2 x 7 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 7 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    a b c d e f feat1
 #&gt;   text1 1 1 1 1 0 0   100
 #&gt;   text2 0 0 1 1 1 1   100</div><div class='input'><span class='fu'>cbind</span>(<span class='fl'>100</span>, <span class='no'>dfm1</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
-#&gt; 2 x 7 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 7 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    feat1 a b c d e f
 #&gt;   text1   100 1 1 1 1 0 0
 #&gt;   text2   100 0 0 1 1 1 1</div><div class='input'><span class='fu'>cbind</span>(<span class='no'>dfm1</span>, <span class='fu'>matrix</span>(<span class='fu'>c</span>(<span class='fl'>101</span>, <span class='fl'>102</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
-#&gt; 2 x 7 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 7 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    a b c d e f feat1
 #&gt;   text1 1 1 1 1 0 0   101
 #&gt;   text2 0 0 1 1 1 1   102</div><div class='input'><span class='fu'>cbind</span>(<span class='fu'>matrix</span>(<span class='fu'>c</span>(<span class='fl'>101</span>, <span class='fl'>102</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>), <span class='no'>dfm1</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
-#&gt; 2 x 7 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 7 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    feat1 a b c d e f
 #&gt;   text1   101 1 1 1 1 0 0
@@ -182,24 +157,24 @@ not confirming to the row or column dimension will be recycled as normal.</p></t
 
 <span class='co'># rbind() for dfm objects</span>
 (<span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"This is one sample text sample."</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 6 features (0% sparse).
-#&gt; 1 x 6 sparse Matrix of class "dfmSparse"
+#&gt; 1 x 6 sparse Matrix of class "dfm"
 #&gt;       features
 #&gt; docs   this is one sample text .
 #&gt;   doc1    1  1   1      2    1 1</div><div class='input'>(<span class='no'>dfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"One two three text text."</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (0% sparse).
-#&gt; 1 x 5 sparse Matrix of class "dfmSparse"
+#&gt; 1 x 5 sparse Matrix of class "dfm"
 #&gt;       features
 #&gt; docs   one two three text .
 #&gt;   doc2   1   1     1    2 1</div><div class='input'>(<span class='no'>dfm3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>doc3</span> <span class='kw'>=</span> <span class='st'>"This is the fourth sample text."</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 7 features (0% sparse).
-#&gt; 1 x 7 sparse Matrix of class "dfmSparse"
+#&gt; 1 x 7 sparse Matrix of class "dfm"
 #&gt;       features
 #&gt; docs   this is the fourth sample text .
 #&gt;   doc3    1  1   1      1      1    1 1</div><div class='input'><span class='fu'>rbind</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 8 features (31.2% sparse).
-#&gt; 2 x 8 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 8 sparse Matrix of class "dfm"
 #&gt;       features
 #&gt; docs   this is one sample text . two three
 #&gt;   doc1    1  1   1      2    1 1   0     0
 #&gt;   doc2    0  0   1      0    2 1   1     1</div><div class='input'><span class='fu'>rbind</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>, <span class='no'>dfm3</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 10 features (40% sparse).
-#&gt; 3 x 10 sparse Matrix of class "dfmSparse"
+#&gt; 3 x 10 sparse Matrix of class "dfm"
 #&gt;       features
 #&gt; docs   this is one sample text . two three the fourth
 #&gt;   doc1    1  1   1      2    1 1   0     0   0      0

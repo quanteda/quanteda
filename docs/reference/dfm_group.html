@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -52,34 +51,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -138,8 +113,9 @@ observed.  Has no effect if the <code>groups</code> variable(s) are not factors.
     <p><code>dfm_group</code> returns a <a href='dfm.html'>dfm</a> whose documents are equal to 
   the unique group combinations, and whose cell values are the sums of the 
   previous values summed by group.  This currently erases any docvars in the 
-  dfm.</p>  
-<p>Setting the <code>fill = TRUE</code> offers a way to "pad" a dfm with document
+  dfm.
+  
+  Setting the <code>fill = TRUE</code> offers a way to "pad" a dfm with document
   groups that may not have been observed, but for which an empty document is
   needed, for various reasons.  If <code>groups</code> is a factor of dates, for
   instance, then using <code>fill = TRUE</code> ensures that the new documents will
@@ -152,24 +128,24 @@ observed.  Has no effect if the <code>groups</code> variable(s) are not factors.
                    <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"grp1"</span>, <span class='st'>"grp1"</span>, <span class='st'>"grp2"</span>, <span class='st'>"grp2"</span>)))
 <span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>)
 <span class='fu'>dfm_group</span>(<span class='no'>mydfm</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;       features
 #&gt; docs   a b c d
 #&gt;   grp1 3 2 2 0
 #&gt;   grp2 2 0 3 3</div><div class='input'><span class='fu'>dfm_group</span>(<span class='no'>mydfm</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs a b c d
 #&gt;    1 3 2 2 0
 #&gt;    2 2 0 3 3</div><div class='input'>
 <span class='co'># equivalent</span>
 <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mydfm</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;       features
 #&gt; docs   a b c d
 #&gt;   grp1 3 2 2 0
 #&gt;   grp2 2 0 3 3</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mydfm</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs a b c d
 #&gt;    1 3 2 2 0

@@ -29,34 +29,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
-    </li>
-    <li>
-      <a href="../../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
-    </li>
-    <li>
-      <a href="../../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../../articles/quickstart.html">Getting Started with quanteda</a>
-    </li>
-  </ul>
+  <a href="../../articles/index.html">Articles</a>
 </li>
 <li>
   <a href="../../news/index.html">News</a>
@@ -117,7 +93,7 @@
 <li><p><code>data_</code><em>class</em><code>_</code><em>descriptor</em>: data objects are named this way to clearly distinguish them and to make them easy to identify in the index. The first part identifies them as data, the second names their object class, and the third component is a descriptor. Example: <code>data_corpus_inaugural</code> is the <strong>quanteda</strong> <code>corpus</code> class object consisting of the US presidents’ inaugural addresses.</p></li>
 <li><p><code>text</code><em>general</em><code>_</code><em>specific</em>: functions that input a <strong>quanteda</strong> object and return the result of an analysis. Only the underscored functions that begin with <code>text</code> break the previous rule about the first part of the name identifying the object class that is input and output. Examples: <code><a href="../../reference/textstat_readability.html">textstat_readability()</a></code> takes a character or corpus as input, and returns a data.frame; <code><a href="../../reference/textplot_xray.html">textplot_xray()</a></code> takes a <code>kwic</code> object as input, and generates a dispersion plot (named “x-ray” because of its similarity to the plot produced by Kindle).</p></li>
 <li><p>Extensions of R functions: These are commonly used R functions, such as <code>head()</code>, that are also defined for <strong>quanteda</strong> objects. Examples: <code><a href="../../reference/head.dfm.html">head.dfm()</a></code>, coercion functions such as <code>as.list.tokens</code>, and Boolean class type checking functions such as <code><a href="../../reference/is.dfm.html">is.dfm()</a></code>.</p></li>
-<li><p>R-like functions. These are functions for <strong>quanteda</strong> objects that follow naming conventions and functionality that should be very familiar to users of R. Example: <code><a href="../../reference/ndoc.html">ndoc()</a></code> returns the number of documents in a corpus, tokens, or dfm object, similar to <code><a href="http://www.rdocumentation.org/packages/base/topics/nrow">base::nrow()</a></code>. Note that like <code>nrow()</code>, <code><a href="../../reference/ndoc.html">ndoc()</a></code> is not plural. Other examples include <code><a href="../../reference/docnames.html">docnames()</a></code> and <code><a href="../../reference/featnames.html">featnames()</a></code> – similar to <code>rownames()</code> and <code>colnames()</code>.</p></li>
+<li><p>R-like functions. These are functions for <strong>quanteda</strong> objects that follow naming conventions and functionality that should be very familiar to users of R. Example: <code><a href="../../reference/ndoc.html">ndoc()</a></code> returns the number of documents in a corpus, tokens, or dfm object, similar to <code>base::nrow()</code>. Note that like <code>nrow()</code>, <code><a href="../../reference/ndoc.html">ndoc()</a></code> is not plural. Other examples include <code><a href="../../reference/docnames.html">docnames()</a></code> and <code><a href="../../reference/featnames.html">featnames()</a></code> – similar to <code>rownames()</code> and <code>colnames()</code>.</p></li>
 <li>
 <p>Grammatical exceptions: Every language has these, usually due to path dependency from historical development, and <strong>quanteda</strong> is no exception. The list, however, is short:</p>
 <ul>
@@ -163,12 +139,12 @@
 <h3 class="hasAnchor">
 <a href="#naming-convention" class="anchor"></a>Naming convention</h3>
 <p>All functions that begin with the name of a core object class will both <em>input</em> and <em>output</em> an object of this class, without exception.</p>
-<p>This replaces the approach in versions up to 0.9.8.5 where a general methods such as <code><a href="../../reference/selectFeatures.html">selectFeatures()</a></code> was defined for each applicable class of core object. This approach made the specific function behaviour unpredictable from the description of the general behaviour. It also made it difficult to get an overview of the functionality available for each object class. By renaming these functions following the convention of object class, followed by an underscore, followed by a verb (or verb-like statement), we could both separate the behaviours into specific functions, as well as clearly describe through the function name what action is taken on what type of object.</p>
+<p>This replaces the approach in versions up to 0.9.8.5 where a general methods such as <code>selectFeatures()</code> was defined for each applicable class of core object. This approach made the specific function behaviour unpredictable from the description of the general behaviour. It also made it difficult to get an overview of the functionality available for each object class. By renaming these functions following the convention of object class, followed by an underscore, followed by a verb (or verb-like statement), we could both separate the behaviours into specific functions, as well as clearly describe through the function name what action is taken on what type of object.</p>
 </div>
 <div id="advantages" class="section level3">
 <h3 class="hasAnchor">
 <a href="#advantages" class="anchor"></a>Advantages</h3>
-<p>In our view, the advantages of this clarity outweigh whatever advantages might be found from overloading a generic function. The functions <code>corpus_sample</code>, <code>tokens_sample</code>, and <code>dfm_sample</code>, for instance, are clearer to understand and read from a package’s function index, than the previously overloaded version of <code><a href="../../reference/sample.html">sample()</a></code> that could be dispatched on a corpus, tokenized text, or dfm object. Additionally, in the case of <code><a href="../../reference/sample.html">sample()</a></code>, we avoid the namespace “conflict” caused by redefining the function as a generic, so that it could be overloaded. Our new, more specific naming conventions therefore reduce the likelihood of namespace conflicts with other packages.</p>
+<p>In our view, the advantages of this clarity outweigh whatever advantages might be found from overloading a generic function. The functions <code>corpus_sample</code>, <code>tokens_sample</code>, and <code>dfm_sample</code>, for instance, are clearer to understand and read from a package’s function index, than the previously overloaded version of <code>sample()</code> that could be dispatched on a corpus, tokenized text, or dfm object. Additionally, in the case of <code>sample()</code>, we avoid the namespace “conflict” caused by redefining the function as a generic, so that it could be overloaded. Our new, more specific naming conventions therefore reduce the likelihood of namespace conflicts with other packages.</p>
 </div>
 <div id="why-are-some-operations-unavailable-for-specific-object-types" class="section level3">
 <h3 class="hasAnchor">
@@ -180,7 +156,7 @@
 <div id="extensions-of-core-r-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#extensions-of-core-r-functions" class="anchor"></a>Extensions of core R functions</h2>
-<p>Many simple base R functions – simpler at least than the example of <code><a href="../../reference/sample.html">sample()</a></code> cited above – are still extended to quanteda objects through overloading. The logic of allowing is that these functions, e.g. <code>cbind()</code> for a dfm, are very simple and very common, and therefore are well-known to users. Furthermore, they can operate in only one fashion on the object for which they are defined, such as <code>cbind()</code> combining two dfm objects by joining columns. Similar functions extended in this way include <code>print</code>, <code>head</code>, <code>tail</code>, and <code>t()</code>. Most of these functions are so natural that their documentation is not included in the package index.</p>
+<p>Many simple base R functions – simpler at least than the example of <code>sample()</code> cited above – are still extended to quanteda objects through overloading. The logic of allowing is that these functions, e.g. <code>cbind()</code> for a dfm, are very simple and very common, and therefore are well-known to users. Furthermore, they can operate in only one fashion on the object for which they are defined, such as <code>cbind()</code> combining two dfm objects by joining columns. Similar functions extended in this way include <code>print</code>, <code>head</code>, <code>tail</code>, and <code>t()</code>. Most of these functions are so natural that their documentation is not included in the package index.</p>
 </div>
 <div id="additions-to-core-r-like-functions" class="section level2">
 <h2 class="hasAnchor">
@@ -209,7 +185,7 @@
 <ol style="list-style-type: decimal">
 <li>
 <p><strong>Creating the corpus</strong></p>
-<p>Reading files, probably using <code><a href="../../reference/textfile.html">textfile()</a></code>, then creating a corpus using <code><a href="../../reference/corpus.html">corpus()</a></code>, making sure the texts have a common encoding, and adding document variables (<code>docvars</code>) and metadata (<code>metadoc</code> and <code>metacorpus</code>).</p>
+<p>Reading files, probably using <code>textfile()</code>, then creating a corpus using <code><a href="../../reference/corpus.html">corpus()</a></code>, making sure the texts have a common encoding, and adding document variables (<code>docvars</code>) and metadata (<code>metadoc</code> and <code>metacorpus</code>).</p>
 </li>
 <li>
 <p><strong>Defining and delimiting documents</strong></p>
@@ -301,12 +277,11 @@ We recognize however that not all sequences will make sense, for instance `words
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
         <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li>
 <a href="#introduction">Introduction</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#changes-in-v0-9-9">Changes in v0.9.9</a></li>
+<li><a href="#changes-in-v0.9.9">Changes in v0.9.9</a></li>
       <li><a href="#why-did-the-api-need-changing">Why did the API need changing?</a></li>
       </ul>
 </li>

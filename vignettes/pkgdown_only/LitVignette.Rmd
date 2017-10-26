@@ -223,7 +223,7 @@ The above plots are raw frequency plots. For relative frequency plots, (word cou
 
 ## Relative frequency barplots of whale and ahab
 ```{r eval=TRUE}
-relDfm <- weight(chapDfm, type = 'relfreq') * 100
+relDfm <- dfm_weight(chapDfm, type = 'relfreq') * 100
 head(relDfm)
 barplot(as.numeric(relDfm[, 'whale']))
 barplot(as.numeric(relDfm[, 'ahab']))

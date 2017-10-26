@@ -150,14 +150,14 @@
 #'                       mytext2 = "Short.",
 #'                       mytext3 = "Short, shorter, and shortest."))
 #' tokens(txt, remove_punct = TRUE)
-#' ### removeFeatures(tokens(txt, remove_punct = TRUE), stopwords("english"))
+#' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #' 
 #' # ngram tokenization
-#' ### tokens(txt, remove_punct = TRUE, ngrams = 2)
-#' ### tokens(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
-#' ### tokens(txt, remove_punct = TRUE, ngrams = 1:2)
+#' tokens(txt, remove_punct = TRUE, ngrams = 2)
+#' tokens(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
+#' tokens(txt, remove_punct = TRUE, ngrams = 1:2)
 #' # removing features from ngram tokens
-#' ### removeFeatures(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
+#' tokens_remove(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
 tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
                     remove_numbers = FALSE,
                     remove_punct = FALSE,
@@ -876,10 +876,20 @@ get_tokens.tokens <- function(x) {
     as.list(x)
 }
 
+#' get types of tokens from a tokens object
+#' 
+#' Get unique types of tokens from a \link{tokens} object. 
+#' @param x a tokens object
+#' @export
+#' @seealso \link{featnames}
+#' @examples 
+#' toks <- tokens(data_corpus_inaugural)
+#' types(toks)
 types <- function(x) {
     UseMethod("types")
 }
 
+#' @export
 types.tokens <- function(x) {
     attr(x, "types")
 }

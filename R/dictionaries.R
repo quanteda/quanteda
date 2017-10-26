@@ -426,7 +426,6 @@ is.dictionary <- function(x) {
 #  flatten_dictionary(hdict)
 #  flatten_dictionary(hdict, 2)
 #  flatten_dictionary(hdict, 1:2)
-
 flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '', dict_flat = list()) {
     dict <- unclass(dict)
     for (i in seq_along(dict)) {

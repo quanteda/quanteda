@@ -73,7 +73,7 @@ test_that("test plot.kwic facet order parameter", {
             plot_docnames[order(plot_docnames)] == plot_docnames
         )
     )
-
+    
 })
 
 test_that("test plot.kwic keeps order of keywords passed", {
@@ -101,7 +101,7 @@ test_that("test textplot_scale1d wordfish in the most basic way", {
     
     expect_silent(textplot_scale1d(wfm, doclabels = apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
                                                           1, paste, collapse = " ")))
-
+    
     p1 <- textplot_scale1d(wfm, margin = "features", sort = TRUE)
     p2 <- textplot_scale1d(wfm, margin = "features", sort = FALSE)
     p1$plot_env <- NULL
@@ -118,7 +118,7 @@ test_that("test textplot_scale1d wordscores in the most basic way", {
     expect_silent(textplot_scale1d(pr, sort = FALSE, groups = docvars(data_corpus_irishbudget2010, "party")))
     
     expect_silent(textplot_scale1d(pr, doclabels = apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
-                                                          1, paste, collapse = " ")))
+                                                         1, paste, collapse = " ")))
     
     p1 <- textplot_scale1d(pr, margin = "features", sort = TRUE)
     p2 <- textplot_scale1d(pr, margin = "features", sort = FALSE)
@@ -130,9 +130,9 @@ test_that("test textplot_scale1d wordscores in the most basic way", {
 test_that("test textplot_keyness ", {
     prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
     presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
-                    remove_punct = TRUE)
+                   remove_punct = TRUE)
     result <- textstat_keyness(presdfm, target = "Trump", measure = "chi2")
-
+    
     # shows the correct statistic measure 
     p3 <- textplot_keyness(result, show_reference = TRUE)
     expect_equal(p3$labels$y, colnames(result)[1])

@@ -65,7 +65,8 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
         message("Bootstrapping the sentences to create multiple dfm objects...")
         message("   ...resampling and forming dfms: 0", appendLF = FALSE)
     }
-
+    
+    x <- as.dfm(x)
     result <- list()
     # construct the original dfm
     result[['dfm_0']] <- dfm_group(x, groups = docvars(x, '_document'))

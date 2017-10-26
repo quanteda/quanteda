@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -52,34 +51,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -107,19 +82,26 @@
     
 
     <pre class="usage"><span class='co'># S4 method for dfm</span>
-<span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>show.values</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.settings</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>show.summary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ndoc</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"quanteda_print_dfm_max_ndoc"</span>),
-  <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"quanteda_print_dfm_max_nfeature"</span>), <span class='no'>...</span>)
+<span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>show.values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>show.settings</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>show.summary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ndoc</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_ndoc"</span>),
+  <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_nfeature"</span>), <span class='no'>...</span>)
 
 <span class='co'># S4 method for dfm</span>
 <span class='fu'>show</span>(<span class='no'>object</span>)
 
 <span class='co'># S4 method for fcm</span>
-<span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>show.values</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.settings</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>show.summary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fl'>20L</span>, <span class='no'>...</span>)
+<span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>show.values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>show.settings</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>show.summary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ndoc</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_ndoc"</span>),
+  <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_nfeature"</span>), <span class='no'>...</span>)
 
 <span class='co'># S4 method for fcm</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)</pre>
+<span class='fu'>show</span>(<span class='no'>object</span>)
+
+<span class='co'># S3 method for fcm</span>
+<span class='fu'>head</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>6L</span>, <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fl'>6L</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for fcm</span>
+<span class='fu'>tail</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>6L</span>, <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fl'>6L</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -135,25 +117,27 @@ all values, overriding <code>ndoc</code> and <code>nfeature</code>.</p></td>
     </tr>
     <tr>
       <th>show.settings</th>
-      <td><p>print the settings used to create the dfm.  See 
+      <td><p>print the settings used to create the dfm. See 
 <a href='settings.html'>settings</a>.</p></td>
     </tr>
     <tr>
       <th>show.summary</th>
-      <td><p>print a brief summary indicating the number of documents
+      <td><p>print a brief summary indicating the number of documents 
 and features</p></td>
     </tr>
     <tr>
       <th>ndoc</th>
-      <td><p>max number of documents to print; default is from the <code>quanteda_print_dfm_max_ndoc</code> setting</p></td>
+      <td><p>max number of documents to print; default is from the
+<code>print_dfm_max_ndoc</code> setting of <code><a href='quanteda_options.html'>quanteda_options</a></code></p></td>
     </tr>
     <tr>
       <th>nfeature</th>
-      <td><p>max number of features to print; ; default is from the <code>quanteda_print_dfm_max_nfeature</code> setting</p></td>
+      <td><p>max number of features to print; default is from the
+<code>print_dfm_max_nfeature</code> setting of <code><a href='quanteda_options.html'>quanteda_options</a></code></p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>further arguments passed to or from other methods</p></td>
+      <td><p>further arguments passed to <code>Matrix::printSpMatrix2</code></p></td>
     </tr>
     <tr>
       <th>object</th>
