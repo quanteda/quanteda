@@ -171,12 +171,7 @@ are 0).</p></td>
                            <span class='kw'>features</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>, <span class='st'>"another"</span>, <span class='st'>"example"</span>))) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='is.dfm.html'>as.dfm</a></span>()
 <span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>wiki_dfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>round</span>(<span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
-#&gt;            features
-#&gt; docs        this is    a sample another example
-#&gt;   document1    0  0 0.12   0.06    0       0   
-#&gt;   document2    0  0 0      0       0.09    0.13</div><div class='input'>
+#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>round</span>(<span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='fu'>not_run</span>({
   <span class='co'># comparison with tm</span>
   <span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"tm"</span>)) {
