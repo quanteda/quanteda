@@ -17,6 +17,10 @@ vignette: >
 
 In this vignette we show how to perform Latent Semantic Analysis using the **quanteda** package. Example is taken from Grossman and Frieder’s Information Retrieval, Algorithms and Heuristics. 
 
+LSA decomposes document-feature matrix into a reduced vector space that is assumed to reflect semantic structure.
+
+New documents or queries can be 'folded-in' to this constructed latent semantic space for downstream tasks. 
+
 # 1 Create a document-feature matrix
 
 ```{r}

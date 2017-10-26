@@ -82,6 +82,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 %\VignetteIndexEntry{Quickstart}
 -->
 <p>In this vignette we show how to perform Latent Semantic Analysis using the <strong>quanteda</strong> package. Example is taken from Grossman and Frieder’s Information Retrieval, Algorithms and Heuristics.</p>
+<p>LSA decomposes document-feature matrix into a reduced vector space that is assumed to reflect semantic structure.</p>
+<p>New documents or queries can be ‘folded-in’ to this constructed latent semantic space for downstream tasks.</p>
 <div id="create-a-document-feature-matrix" class="section level1">
 <h1>1 Create a document-feature matrix</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(quanteda, <span class="dt">quietly =</span> <span class="ot">TRUE</span>, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)</code></pre></div>
