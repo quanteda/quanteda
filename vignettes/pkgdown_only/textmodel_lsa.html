@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<title>Topic modeling - Latent Semantic Analysis(LSA)</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,%0Abody%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%200%20auto%3B%0Amax%2Dwidth%3A%20800px%3B%0Afloat%3A%20center%3B%0Amargin%2Dleft%3A%20auto%3B%0Amargin%2Dright%3A%20auto%3B%0Aoverflow%3A%20visible%3B%0A%7D%0Abody%20%23header%20%7B%0Aclear%3A%20both%3B%0Amargin%2Dbottom%3A%208px%3B%0Aborder%2Dbottom%3A%202px%20solid%20%23999%3B%0Afont%2Dsize%3A%2020px%3B%0Apadding%3A%202px%2010px%202px%2025px%3B%0A%7D%0Abody%20%23content%20%7B%0Abackground%2Dcolor%3A%20white%3B%0Aclear%3A%20both%3B%0Afloat%3A%20left%3B%0Aoverflow%3A%20visible%3B%0Apadding%3A%2010px%3B%0Aborder%3A%201px%20solid%20%23BBBBBB%3B%0Aborder%2Dradius%3A%205px%3B%0Awidth%3A%20780px%3B%0A%7D%0Abody%20%23footer%20%7B%0Abackground%2Dcolor%3A%20%2399BBDD%3B%0Aclear%3A%20both%3B%0Afloat%3A%20left%3B%0Amargin%3A%208px%200%3B%0Aborder%3A%201px%20solid%20%236688AA%3B%0Aborder%2Dradius%3A%205px%3B%0Apadding%3A%200%2010px%3B%0Awidth%3A%20780px%3B%0A%7D%0Abody%20%2Eclear%20%7B%0Aclear%3A%20both%3B%0Aborder%2Dwidth%3A%200%3B%0Amargin%3A%200%3B%0Avisibility%3A%20hidden%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%2Dleft%3A%2025px%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dspacing%3A%200px%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcolor%3A%20gray%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Abackground%2Dcolor%3A%20white%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Abackground%2Dcolor%3A%20white%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%202px%205px%3B%0A%7D%0Ap%20%7B%0Amargin%2Dleft%3A%2015px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%2013px%3B%0Apadding%2Dbottom%3A%201px%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Acolor%3A%20%23000%3B%0Apadding%3A%200px%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Acolor%3A%20%23333%3B%0Aborder%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dradius%3A%203px%3B%0Abackground%2Dcolor%3A%20%23f8f8f8%3B%0Afont%2Dsize%3A%2080%25%3B%0Apadding%3A%200px%202px%3B%0A%7D%0A%0Apre%20%7B%0Afont%2Dsize%3A%2012px%3B%0Aline%2Dheight%3A%2016px%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%2Er%20%7B%0Abackground%2Dcolor%3A%20%23F3F5F7%3B%0Apadding%3A%204px%2010px%3B%0Aborder%3A%201px%20solid%20%23AEBDCC%3B%0Aborder%2Dradius%3A%205px%3B%0Amargin%3A%205px%205px%2010px%2020px%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Abox%2Dshadow%3A%202px%202px%2012px%20%2D5px%20%23999999%3B%0Amargin%3A%200%205px%3B%0A%7D%0Abody%20%7B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2015px%3B%0Aline%2Dheight%3A%2022px%3B%0A%7D%0Abody%20%23header%20%7B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23ccc%3B%0Awidth%3A%2085%25%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%2022px%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23ccc%3B%0Awidth%3A%2075%25%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%2018px%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Awidth%3A%2060%25%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%2016px%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Awidth%3A%2060%25%3B%0Amargin%2Dleft%3A%2015px%3B%0Afont%2Dsize%3A%2016px%3B%0A%7D%0Ah4%2Eauthor%20%7B%0Aborder%2Dbottom%3A%20none%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Apre%20%2Eoperator%2C%0Apre%20%2Eparen%20%7B%0Acolor%3A%20%23888%3B%0A%7D%0Apre%20%2Eliteral%20%7B%0Acolor%3A%20%23990073%3B%0A%7D%0Apre%20%2Enumber%20%7B%0Acolor%3A%20%230080C0%3B%0A%7D%0Apre%20%2Ecomment%20%7B%0Acolor%3A%20%23008000%3B%0Afont%2Dstyle%3A%20italic%0A%7D%0Apre%20%2Ekeyword%20%7B%0Acolor%3A%20%23900%3B%0Afont%2Dweight%3A%20bold%0A%7D%0Apre%20%2Eidentifier%20%7B%0Acolor%3A%20%23000%3B%0A%7D%0Apre%20%2Estring%20%7B%0Acolor%3A%20%23b44%3B%0A%7D" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Topic modeling - Latent Semantic Analysis(LSA)</h1>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#create-a-document-feature-matrix">1 Create a document-feature matrix</a></li>
+<li><a href="#construct-a-lsa-model">2. Construct a lsa model</a></li>
+<li><a href="#apply-the-construted-lsa-model-to-new-data">3. Apply the construted lsa model to new data</a></li>
+</ul>
+</div>
+
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Quickstart}
+-->
+<p>In this vignette we show how to perform Latent Semantic Analysis using the <strong>quanteda</strong> package. Example is taken from Grossman and Frieder’s Information Retrieval, Algorithms and Heuristics.</p>
+<div id="create-a-document-feature-matrix" class="section level1">
+<h1>1 Create a document-feature matrix</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(quanteda, <span class="dt">quietly =</span> <span class="ot">TRUE</span>, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## quanteda version 0.99.9001</code></pre>
+<pre><code>## Using 7 of 8 threads for parallel computing</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">d1=</span><span class="st">&quot;Shipment of gold damaged in a fire&quot;</span>,
+<span class="dt">d2=</span><span class="st">&quot;Delivery of silver arrived in a silver truck&quot;</span>,
+<span class="dt">d3=</span><span class="st">&quot;Shipment of gold arrived in a truck&quot;</span> )
+
+mydfm &lt;-<span class="st"> </span><span class="kw">dfm</span>(txt)
+mydfm</code></pre></div>
+<pre><code>## Document-feature matrix of: 3 documents, 11 features (36.4% sparse).
+## 3 x 11 sparse Matrix of class &quot;dfm&quot;
+##     features
+## docs shipment of gold damaged in a fire delivery silver arrived truck
+##   d1        1  1    1       1  1 1    1        0      0       0     0
+##   d2        0  1    0       0  1 1    0        1      2       1     1
+##   d3        1  1    1       0  1 1    0        0      0       1     1</code></pre>
+</div>
+<div id="construct-a-lsa-model" class="section level1">
+<h1>2. Construct a lsa model</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylsa &lt;-<span class="st"> </span><span class="kw">textmodel_lsa</span>(mydfm)</code></pre></div>
+<pre><code>## Warning in fun(A, k, nu, nv, opts, mattype = &quot;dgCMatrix&quot;): all singular
+## values are requested, svd() is used instead</code></pre>
+<p>the new document vector coordinates in the reduced 2-dimensional space is:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylsa$docs[, <span class="dv">1</span>:<span class="dv">2</span>]</code></pre></div>
+<pre><code>##          [,1]       [,2]
+## d1 -0.4944666  0.6491758
+## d2 -0.6458224 -0.7194469
+## d3 -0.5817355  0.2469149</code></pre>
+</div>
+<div id="apply-the-construted-lsa-model-to-new-data" class="section level1">
+<h1>3. Apply the construted lsa model to new data</h1>
+<p>Now the new unseen document can be represented in the reduced 2-dimensional space. The unseen query document:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query &lt;-<span class="st"> </span><span class="kw">dfm</span>(<span class="kw">c</span>(<span class="st">&quot;gold silver truck&quot;</span>))
+cdfm &lt;-<span class="st"> </span><span class="kw">rbind</span>(mydfm, query)
+querydfm &lt;-<span class="st"> </span>cdfm[<span class="kw">nrow</span>(cdfm), ]
+querydfm</code></pre></div>
+<pre><code>## Document-feature matrix of: 1 document, 11 features (72.7% sparse).
+## 1 x 11 sparse Matrix of class &quot;dfm&quot;
+##        features
+## docs    shipment of gold damaged in a fire delivery silver arrived truck
+##   text1        0  0    1       0  0 0    0        0      1       0     1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">newq &lt;-<span class="st"> </span><span class="kw">predict</span>(mylsa, querydfm)
+newq$transDocs[, <span class="dv">1</span>:<span class="dv">2</span>]</code></pre></div>
+<pre><code>## [1] -0.2140026 -0.1820571</code></pre>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
