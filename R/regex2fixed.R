@@ -193,18 +193,18 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     if (is.null(valuetype)) stop('valuetype cannot be NULL')
     if (is.null(case_insensitive)) stop('case_insensitive cannot be NULL')
     
-    if (valuetype == 'regex' || length(types) == 0) {
-        index_empty <- list()
-        attr(index_empty, 'types_search') <- types
-        attr(index_empty, 'types') <- types
-        attr(index_empty, 'valuetype') <- valuetype
-        attr(index_empty, 'case_insensitive') <- case_insensitive
-        attr(index_empty, 'key') <- character()
-        return(index_empty)
-    }
-    
     # normalize unicode
     types <- stri_trans_nfc(types)
+    
+    if (valuetype == 'regex' || length(types) == 0) {
+        index <- list()
+        attr(index, 'types_search') <- types
+        attr(index, 'types') <- types
+        attr(index, 'valuetype') <- valuetype
+        attr(index, 'case_insensitive') <- case_insensitive
+        attr(index, 'key') <- character()
+        return(index)
+    }
     
     # lowercases for case-insensitive search
     if (case_insensitive) {
