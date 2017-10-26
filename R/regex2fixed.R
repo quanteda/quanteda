@@ -193,7 +193,7 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     if (is.null(valuetype)) stop('valuetype cannot be NULL')
     if (is.null(case_insensitive)) stop('case_insensitive cannot be NULL')
     
-    if (valuetype == 'regex') {
+    if (valuetype == 'regex' || length(types) == 0) {
         index_empty <- list()
         attr(index_empty, 'types_search') <- types
         attr(index_empty, 'types') <- types
@@ -211,6 +211,7 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     } else {
         types_search <- types
     }
+        
     # index for fixed patterns
     pos_tmp <- seq_along(types_search)
     key_tmp <- list(types_search)
