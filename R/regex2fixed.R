@@ -199,6 +199,7 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
         attr(index_empty, 'types') <- types
         attr(index_empty, 'valuetype') <- valuetype
         attr(index_empty, 'case_insensitive') <- case_insensitive
+        attr(index_empty, 'key') <- character()
         return(index_empty)
     }
     
@@ -246,13 +247,14 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     key <- unlist(key_tmp, use.names = FALSE) 
     pos <- unlist(pos_tmp, use.names = FALSE)
     index <- split(pos, factor(key, ordered = FALSE, levels = unique(key))) # set factor for quick split
+    key <- names(index)
     
-    attr(index, 'key') <- names(index)
+    attr(index, 'names') <- NULL # names attribute slows down
     attr(index, 'types_search') <- types_search
     attr(index, 'types') <- types
     attr(index, 'valuetype') <- valuetype
     attr(index, 'case_insensitive') <- case_insensitive
-    attr(index, 'names') <- NULL # names attribute slows down
+    attr(index, 'key') <- key
     
     return(index)
 }
