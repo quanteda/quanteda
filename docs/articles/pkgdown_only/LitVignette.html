@@ -165,7 +165,7 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<
 moby_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(novel.lower.v, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)
 moby_dfm[, <span class="st">"whale"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
-## 1 x 1 sparse Matrix of class "dfmSparse"
+## 1 x 1 sparse Matrix of class "dfm"
 ##        features
 ## docs    whale
 ##   text1   908</code></pre>
@@ -190,13 +190,13 @@ moby_dfm[, <span class="st">"whale"</span>]</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># frequencies of 'he' and 'she' - these are matrixes, not numerics</span>
 moby_dfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 4 features (0% sparse).
-## 1 x 4 sparse Matrix of class "dfmSparse"
+## 1 x 4 sparse Matrix of class "dfm"
 ##        features
 ## docs      he she  him her
 ##   text1 1758 112 1058 330</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby_dfm[, <span class="st">"her"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
-## 1 x 1 sparse Matrix of class "dfmSparse"
+## 1 x 1 sparse Matrix of class "dfm"
 ##        features
 ## docs    her
 ##   text1 330</code></pre>
@@ -217,7 +217,7 @@ moby_dfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby_dfm_pct &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(moby_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
 moby_dfm_pct[, <span class="st">"the"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
-## 1 x 1 sparse Matrix of class "dfmSparse"
+## 1 x 1 sparse Matrix of class "dfm"
 ##        features
 ## docs         the
 ##   text1 5.659308</code></pre>
@@ -284,13 +284,10 @@ chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../../refer
 <div id="relative-frequency-barplots-of-whale-and-ahab" class="section level2">
 <h2 class="hasAnchor">
 <a href="#relative-frequency-barplots-of-whale-and-ahab" class="anchor"></a>Relative frequency barplots of whale and ahab</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">relDfm &lt;-<span class="st"> </span><span class="kw">weight</span>(chapDfm, <span class="dt">type =</span> <span class="st">'relfreq'</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span></code></pre></div>
-<pre><code>## Warning: 'weight' is deprecated.
-## Use 'dfm_weight' instead.
-## See help("Deprecated")</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(relDfm)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">relDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(chapDfm, <span class="dt">type =</span> <span class="st">'relfreq'</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+<span class="kw">head</span>(relDfm)</code></pre></div>
 <pre><code>## Document-feature matrix of: 6 documents, 6 features (36.1% sparse).
-## 6 x 6 sparse Matrix of class "dfmSparse"
+## 6 x 6 sparse Matrix of class "dfm"
 ##        features
 ## docs           .   loomings       call        me    ishmael       some
 ##   text1 3.180760 0.03878976 0.03878976 0.9697440 0.07757952 0.42668735

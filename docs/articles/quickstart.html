@@ -160,7 +160,7 @@
 <a href="#creating-and-working-with-a-corpus" class="anchor"></a>Creating and Working with a Corpus</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(quanteda)
 ## Loading required package: quanteda
-## quanteda version 0.99.12
+## quanteda version 0.99.9001
 ## Using 7 of 8 threads for parallel computing
 ## 
 ## Attaching package: 'quanteda'
@@ -207,7 +207,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Tue Oct 24 18:09:55 2017
+## Created: Wed Oct 25 16:04:34 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -228,7 +228,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Tue Oct 24 18:09:55 2017
+## Created: Wed Oct 25 16:04:34 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -258,7 +258,7 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Tue Oct 24 18:09:55 2017
+## Created: Wed Oct 25 16:04:34 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -399,7 +399,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Tue Oct 24 18:09:57 2017
+## Created: Wed Oct 25 16:04:35 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -586,7 +586,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(myCorpus)
 myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]
 ## Document-feature matrix of: 7 documents, 5 features (0% sparse).
-## 7 x 5 sparse Matrix of class "dfmSparse"
+## 7 x 5 sparse Matrix of class "dfm"
 ##               features
 ## docs           my fellow citizens   , today
 ##   1993-Clinton  7      5        2 139    10
@@ -601,7 +601,7 @@ myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</sp
 myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]
 ## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
-## 7 x 5 sparse Matrix of class "dfmSparse"
+## 7 x 5 sparse Matrix of class "dfm"
 ##               features
 ## docs           fellow citizen today celebr mysteri
 ##   1993-Clinton      5       2    10      4       1
@@ -647,7 +647,7 @@ mydfm
 <p>We can sort this dfm, and inspect it:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]
 ## Document-feature matrix of: 5 documents, 10 features (0% sparse).
-## 5 x 10 sparse Matrix of class "dfmSparse"
+## 5 x 10 sparse Matrix of class "dfm"
 ##        features
 ## docs    people budget government public minister tax economy pay jobs billion
 ##   FF        23     44         47     65       11  60      37  41   41      32
@@ -670,7 +670,7 @@ mydfm
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)
 byPresMat
 ## Document-feature matrix of: 7 documents, 2 features (14.3% sparse).
-## 7 x 2 sparse Matrix of class "dfmSparse"
+## 7 x 2 sparse Matrix of class "dfm"
 ##               features
 ## docs           terror economy
 ##   1993-Clinton      0       8
@@ -755,29 +755,29 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.h
 ## Estimated document positions:
 ## 
 ##                                Documents      theta         SE       lower       upper
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209540 0.02032347  1.78111996  1.86078794
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932777 0.02818834 -0.64852685 -0.53802854
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136748 0.01540255 -1.14386384 -1.08348585
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219329 0.02846318 -0.17772071 -0.06614506
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724227 0.02364098  1.72608642  1.81875907
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145783 0.02650252 -0.76652321 -0.66263332
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844819 0.04171474 -0.56624281 -0.40272104
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616716 0.02967349 -0.61983167 -0.50351159
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703103 0.03850538 -1.04578086 -0.89483975
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589227 0.03892370 -1.03521310 -0.88263220
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807220 0.07221466  1.03918128  1.32226275
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866454 0.06294118  0.06328069  0.31001012
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421890 0.07245438  0.60017842  0.88419959
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840829 0.03666254 -0.25594150 -0.11222434
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209503 0.02032337  1.78111651  1.86078413
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932805 0.02818844 -0.64852989 -0.53803119
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136786 0.01540264 -1.14386777 -1.08348942
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219292 0.02846328 -0.17771722 -0.06614115
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724203 0.02364087  1.72608419  1.81875639
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145797 0.02650266 -0.76652487 -0.66263443
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844833 0.04171490 -0.56624446 -0.40272205
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616685 0.02967371 -0.61982896 -0.50350804
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703124 0.03850563 -1.04578349 -0.89484140
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589247 0.03892395 -1.03521560 -0.88263370
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807221 0.07221443  1.03918184  1.32226240
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866470 0.06294126  0.06328212  0.31001185
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421925 0.07245425  0.60018221  0.88420288
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840754 0.03666275 -0.25593443 -0.11221645
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the   supplementary          budget              to            this           house            last           april               , 
-##     -0.09917621      0.38805199      0.39881888      0.25597220      1.11589016      0.09918254      0.37010718      0.30696332      0.19909953      0.28974532     -0.09523471      0.34538104 
+##     -0.09921044      0.38801615      0.39878584      0.25593691      1.11585707      0.09914745      0.37007185      0.30692841      0.19906351      0.28971084     -0.09526846      0.34534565 
 ##            said              we           could            work             our             way         through          period              of          severe        economic        distress 
-##     -0.71928248      0.47995116     -0.52973668      0.58230115      0.74376194      0.33614422      0.65985458      0.55624621      0.33935124      1.27913393      0.47869879      1.84456806 
+##     -0.71931660      0.47991602     -0.52977097      0.58226687      0.74372756      0.33610897      0.65982126      0.55621155      0.33931594      1.27910159      0.47866403      1.84454250 
 ##               .           today             can          report            that notwithstanding 
-##      0.27355415      0.17422784      0.36381340      0.69179076      0.08836396      1.84456806</code></pre></div>
+##      0.27351886      0.17419085      0.36377882      0.69175500      0.08832838      1.84454250</code></pre></div>
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
@@ -798,18 +798,18 @@ quantdfm
     <span class="kw">get_terms</span>(myLDAfit20, <span class="dv">5</span>)
 }
 ## Loading required package: topicmodels
-##      Topic 1   Topic 2    Topic 3       Topic 4       Topic 5   Topic 6     Topic 7      Topic 8        Topic 9    Topic 10       Topic 11  Topic 12    Topic 13      Topic 14  Topic 15   Topic 16   
-## [1,] "welfare" "measures" "kind"        "alternative" "child"   "failed"    "welfare"    "government's" "irish"    "society"      "fianna"  "taoiseach" "taoiseach"   "levy"    "fianna"   "start"    
-## [2,] "system"  "spending" "imagination" "citizenship" "benefit" "strategy"  "million"    "earners"      "measures" "enterprising" "fáil"    "employees" "gael"        "million" "fáil"     "know"     
-## [3,] "fianna"  "review"   "policies"    "wealth"      "day"     "needed"    "energy"     "welfare"      "workers"  "sense"        "side"    "rate"      "stimulus"    "carbon"  "national" "word"     
-## [4,] "fáil"    "scheme"   "wit"         "adjustment"  "today"   "ministers" "investment" "much"         "families" "equal"        "third"   "referred"  "may"         "change"  "support"  "taoiseach"
-## [5,] "child"   "pension"  "create"      "breaks"      "bank"    "vision"    "national"   "taxation"     "carers"   "nation"       "screwed" "debate"    "opportunity" "welfare" "irish"    "person"   
-##      Topic 17    Topic 18    Topic 19    Topic 20     
-## [1,] "politics"  "care"      "day"       "support"    
-## [2,] "national"  "welfare"   "taoiseach" "million"    
-## [3,] "changes"   "allowance" "fine"      "development"
-## [4,] "important" "per"       "irish"     "back"       
-## [5,] "tell"      "million"   "bank"      "investment"</code></pre></div>
+##      Topic 1     Topic 2      Topic 3    Topic 4      Topic 5         Topic 6   Topic 7    Topic 8      Topic 9     Topic 10    Topic 11       Topic 12      Topic 13    Topic 14      Topic 15  
+## [1,] "welfare"   "much"       "system"   "million"    "sustainable"   "child"   "fianna"   "employment" "strategy"  "taoiseach" "society"      "citizenship" "care"      "kind"        "policies"
+## [2,] "education" "adjustment" "welfare"  "support"    "set"           "benefit" "fáil"     "left"       "confront"  "fine"      "enterprising" "alternative" "allowance" "imagination" "per"     
+## [3,] "home"      "benefit"    "taxation" "welfare"    "national"      "day"     "national" "expected"   "failed"    "gael"      "sense"        "side"        "welfare"   "policies"    "top"     
+## [4,] "100,000"   "fianna"     "fianna"   "investment" "approximately" "bank"    "irish"    "reform"     "vision"    "may"       "equal"        "yesterday"   "hospital"  "wit"         "benefit" 
+## [5,] "revenue"   "child"      "fáil"     "back"       "measures"      "welfare" "support"  "void"       "ministers" "irish"     "nation"       "third"       "hit"       "create"      "million" 
+##      Topic 16 Topic 17  Topic 18    Topic 19  Topic 20  
+## [1,] "fianna" "levy"    "taoiseach" "needed"  "million" 
+## [2,] "fáil"   "million" "employees" "failed"  "spending"
+## [3,] "know"   "carbon"  "rate"      "adopted" "review"  
+## [4,] "person" "change"  "referred"  "much"    "measures"
+## [5,] "exiles" "welfare" "debate"    "face"    "scheme"</code></pre></div>
 </div>
 </div>
 </div>
