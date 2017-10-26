@@ -113,3 +113,11 @@ test_that("regex2fixed converts emoji correctly", {
         ':)'
     )
 })
+
+test_that("index_types works fine with empty types", {
+
+    expect_silent(quanteda:::index_types(character(), 'glob', FALSE))
+    expect_silent(quanteda:::index_types(character(), 'fixed', FALSE))
+    expect_silent(quanteda:::index_types(character(), 'regex', FALSE))
+    
+})
