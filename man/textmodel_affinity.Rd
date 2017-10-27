@@ -40,8 +40,9 @@ bsdfm <- bootstrap_dfm(data_corpus_dailnoconf1991, n = 10, remove_punct = TRUE)
 textmodel_affinity(bsdfm, y = c("Govt", "Opp", "Opp", rep(NA, 55)))
 }
 \references{
-Perry, Patrick O. and Kenneth Benoit.  (2017)"Scaling
-  Text with the Class Affinity Model".  http://arXiv.prg/something.
+Perry, Patrick O. and Kenneth Benoit.  (2017) "Scaling Text with
+  the Class Affinity Model".
+  \href{http://arxiv.org/abs/1710.08963}{arXiv:1710.08963 [stat.ML]}.
 }
 \author{
 Patrick Perry

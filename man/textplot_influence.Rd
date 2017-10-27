@@ -2,9 +2,12 @@
 % Please edit documentation in R/textplot_influence.R
 \name{textplot_influence}
 \alias{textplot_influence}
+\alias{textplot_influence.summary_affinity_influence}
 \title{influence plot for text scaling models}
 \usage{
 textplot_influence(x, n = 30, ...)
+
+\method{textplot_influence}{summary_affinity_influence}(x, n = 30, ...)
 }
 \arguments{
 \item{x}{the fitted or predicted scaling model object to be plotted}

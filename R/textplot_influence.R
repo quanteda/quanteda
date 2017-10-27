@@ -22,7 +22,7 @@ textplot_influence.affinity_influence <- function(x, n = 30, ...) {
     plot(ans, n, ...)
 }
 
-#' @rdname textmodel_influence
+#' @rdname textplot_influence
 #' @importFrom graphics legend text points
 #' @export
 textplot_influence.summary_affinity_influence <- function(x, n = 30, ...) {
