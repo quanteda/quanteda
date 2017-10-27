@@ -6,6 +6,7 @@
 
 * `tokens_segment()` has a new `window` argument, permitting selection within an asymmetric window around the `pattern` of selection. (#521)
 * `tokens_replace()` now allows token types to be substituted directly and quickly. 
+* `textmodel_affinity()` now adds functionality to fit the Perry and Benoit (2017) class affinity model.
 
 ### Bug fixes and stability enhancements
 
