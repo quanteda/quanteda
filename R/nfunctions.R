@@ -135,6 +135,12 @@ ntoken.character <- function(x, ...) {
 
 #' @noRd
 #' @export
+ntoken.tokens <- function(x, ...) {
+    lengths(x)
+}
+
+#' @noRd
+#' @export
 ntoken.dfm <- function(x, ...) {
     x <- as.dfm(x)
     if (length(list(...)) > 0)
@@ -163,10 +169,10 @@ ntype.dfm <- function(x, ...) {
     rowSums(x > 0)
 }
 
-#' @export
 #' @noRd
-ntoken.tokens <- function(x, ...) {
-    lengths(x)
+#' @export
+ntype.tokens <- function(x, ...) {
+    length(types(x))
 }
 
 #' count the number of sentences
