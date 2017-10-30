@@ -124,8 +124,6 @@ Collate:
     'textstat_lexdiv.R'
     'textstat_readability.R'
     'textstat_simil.R'
-    'tokenize.R'
-    'tokens-old.R'
     'tokens.R'
     'tokens_compound.R'
     'tokens_group.R'

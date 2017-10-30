@@ -470,7 +470,6 @@ test_that("tokens works as expected with NA, and blanks", {
         as.list(tokens(c(d1 = NA, d2 = ""))),
         list(d1 = "NA", d2 = character())
     )
-    expect_equal(tokens_hash(list("")), tokens_hash(list("")))
     expect_equal(
         as.character(as.tokens(list(""))),
         ""
