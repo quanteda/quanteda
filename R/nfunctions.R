@@ -165,14 +165,14 @@ ntype.corpus <- function(x, ...) {
 #' @export
 ntype.dfm <- function(x, ...) {
     x <- as.dfm(x)
-    ## only returns total NON-ZERO COUNT types
+    ## only returns total non-zero features
     rowSums(x > 0)
 }
 
 #' @noRd
 #' @export
 ntype.tokens <- function(x, ...) {
-    length(types(x))
+    sapply(unclass(x), function(y) length(unique(y[y > 0])))
 }
 
 #' count the number of sentences

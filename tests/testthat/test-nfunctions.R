@@ -35,9 +35,13 @@ test_that("test ntoken tokens", {
 test_that("test ntype tokens", {
     txt <- c(d1 = "a b c a b c", 
              d2 = "a b c d e")
-    crp <- corpus(txt)
-    expect_equal(ntype(txt), c(d1 = 3, d2 = 5))
-    expect_equal(ntype(crp), c(d1 = 3, d2 = 5))
+    toks <- tokens(txt)
+    expect_equal(ntype(toks), c(d1 = 3, d2 = 5))
+    expect_equal(ntype(toks), c(d1 = 3, d2 = 5))
+    
+    toks2 <- tokens_remove(toks, 'a', padding = TRUE)
+    expect_equal(ntype(toks2), c(d1 = 2, d2 = 4))
+    expect_equal(ntype(toks2), c(d1 = 2, d2 = 4))
 })
 
 
