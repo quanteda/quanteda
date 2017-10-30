@@ -59,44 +59,6 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
 
 #' @rdname tokens_select
 #' @noRd
-#' @export
-#' @examples 
-#' \dontshow{
-#' ## tokens_select example
-#' toks <- tokens(c("This is a sentence.", "This is a second sentence."), 
-#'                  remove_punct = TRUE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", 
-#'               valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)
-#' 
-#' # how case_insensitive works
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", 
-#'                valuetype = "fixed", padding = TRUE, case_insensitive = FALSE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", 
-#'                valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", 
-#'                valuetype = "glob", padding = TRUE, case_insensitive = TRUE)
-#' tokens_select(toks, c("is", "a", "this"), selection = "remove", 
-#'                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
-#' 
-#' # with longer texts
-#' toks <- tokens(data_corpus_inaugural[1:2])
-#' tokens_select(toks, stopwords("english"), "remove")
-#' tokens_select(toks, stopwords("english"), "keep")
-#' tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-#' tokens_select(toks, stopwords("english"), "keep", padding = TRUE)
-#' tokens_select(tokensdata_corpus_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
-#' }
-tokens_select.tokenizedTexts <- function(x, pattern, selection = c("keep", "remove"), 
-                                         valuetype = c("glob", "regex", "fixed"),
-                                         case_insensitive = TRUE, padding = FALSE, window = 0, 
-                                         verbose = quanteda_options("verbose")) {
-    x <- tokens_select(as.tokens(x), pattern, selection, valuetype, case_insensitive, padding, verbose)
-    x <- as.tokenizedTexts(x)
-    return(x)
-}
-
-#' @rdname tokens_select
-#' @noRd
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 #' @examples

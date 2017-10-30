@@ -106,15 +106,6 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     return(x)
 }
 
-
-#' @rdname tokens_ngrams
-#' @noRd
-#' @export
-tokens_ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    as.tokenizedTexts(tokens_ngrams(as.tokens(x), n = n, skip = skip, concatenator = concatenator))
-}
-
-
 #' @rdname tokens_ngrams
 #' @details 
 #'   \code{\link{tokens_skipgrams}} is a wrapper to \code{\link{tokens_ngrams}}
