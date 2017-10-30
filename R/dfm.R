@@ -15,7 +15,7 @@
 #'   are only specific features that a user wishes to keep. To extract only 
 #'   Twitter usernames, for example, set \code{select = "@@*"} and make sure 
 #'   that \code{remove_twitter = FALSE} as an additional argument passed to 
-#'   \link{tokenize}.  Note: \code{select = "^@@\\\w+\\\b"} would be the regular
+#'   \link{tokens}.  Note: \code{select = "^@@\\\w+\\\b"} would be the regular
 #'   expression version of this matching pattern.  The pattern matching type 
 #'   will be set by \code{valuetype}.  See also \code{\link{tokens_remove}}.
 #' @param dictionary a \link{dictionary} object to apply to the tokens when 
