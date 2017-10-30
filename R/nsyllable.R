@@ -122,7 +122,7 @@ nsyllable.data.table <- function(x, syllable_dictionary = quanteda::data_int_syl
     syllable_dictionaryDT <- data.table(word = names(syllable_dictionary), syllables = syllable_dictionary)
     setkey(syllable_dictionaryDT, word)
     
-    # lowercase the tokenizedTexts object, needed for the matching in the next step
+    # lowercase the tokens object, needed for the matching in the next step
     x[, word := char_tolower(word)]
 
     # set the key for x
