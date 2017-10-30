@@ -27,11 +27,3 @@ test_that("tokens_tolower/tokens_toupper works", {
                  c("ACCORDING", "TO", "NATO"))
 })
 
-test_that("toLower/toUpper.tokenizedTexts works as expected", {
-    toksh <- tokenize("According to NATO")
-    expect_equal((as.list(tokens_tolower(toksh))[[1]]),
-                 c("according", "to", "nato"))
-    expect_equal((as.list(tokens_toupper(toksh))[[1]]),
-                 c("ACCORDING", "TO", "NATO"))
-})
-

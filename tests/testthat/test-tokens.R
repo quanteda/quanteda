@@ -1,16 +1,10 @@
 context("testing tokens")
 
-##
-## tokens_hashed tests
-##
-
 test_that("nsyllable works as expected", {
     txt <- c(one = "super freakily yes",
              two = "merrily all go aerodynamic")
-    toksh <- tokens(txt)
-    toks <- tokenize(txt)
+    toks <- tokens(txt)
     expect_equivalent(nsyllable(toks), list(c(2, 3, 1), c(3, 1, 1, 5)))
-    expect_equivalent(nsyllable(toksh), list(c(2, 3, 1), c(3, 1, 1, 5)))
 })
 
 test_that("nsyllable works as expected with padding = TRUE", {
@@ -20,63 +14,6 @@ test_that("nsyllable works as expected with padding = TRUE", {
     expect_equivalent(nsyllable(toks), list(c(2, 3, NA), c(NA, NA, 1, 1, 5)))
 })
 
-
-test_that("tokens_wordstem works as expected for tokens_hashed", {
-
-    txt <- c(one = "Eating eater eaters eats ate.",
-             two = "Taxing taxes taxed my tax return.")
-    toks <- tokenize(char_tolower(txt), remove_punct = TRUE)
-    toksh <- tokens(char_tolower(txt), remove_punct = TRUE)
-    classic <- tokens_wordstem(toks)
-    hashed <- tokens_wordstem(toksh)
-    expect_equivalent(classic, as.tokenizedTexts(hashed))
-})
-
-test_that("ngrams works as expected for tokens_hashed", {
-    txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),
-             two = "A B C D E")
-    toks <- tokenize(txt, remove_punct = TRUE)
-    toksh <- tokens(txt, remove_punct = TRUE)
-    classic <- tokens_ngrams(toks, n = 2:3)
-    hashed <- as.tokenizedTexts(tokens_ngrams(toksh, n = 2:3))
-    # testthat::expect_equivalent(as.list(classic),
-    #                             as.list(hashed))
-    classic <- list(sort(unlist(classic$one)), sort(unlist(classic$two)))
-    hashed <- list(sort(unlist(hashed$one)), sort(unlist(hashed$two)))
-    expect_equivalent(lapply(classic, sort),
-                      lapply(hashed, sort))
-})
-
-test_that("skipgrams works as expected for tokens_hashed", {
-    txt <- c(one = "insurgents killed in ongoing fighting")
-    toks <- tokenize(txt)
-    toksh <- tokens(txt)
-    classic <- tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
-    hashed <- tokens_skipgrams(toksh, n = 3, skip = 0:2, concatenator = " ")
-    expect_equivalent(classic, as.tokenizedTexts(hashed))
-})
-
-
-test_that("as.tokens tokenizedTexts works as expected", {
-    txt <- c(doc1 = "The first sentence is longer than the second.",
-             doc2 = "Told you so.")
-    toks <- tokenize(txt)
-    toksh <- tokens(txt) 
-    expect_equivalent(toksh, 
-                      as.tokens(toks))
-})
-
-test_that("as.tokens list version works as expected", {
-    txt <- c(doc1 = "The first sentence is longer than the second.",
-             doc2 = "Told you so.")
-    toksh <- tokens(txt) 
-    toks <- tokenize(txt)
-    attributes(toks) <- NULL
-    names(toks) <- names(txt)
-    expect_equal(class(toks), "list")
-    expect_equivalent(toksh, 
-                      as.tokens(toks))
-})
 
 test_that("as.tokens list version works as expected", {
     txt <- c(doc1 = "The first sentence is longer than the second.",
@@ -245,12 +182,7 @@ test_that("remove_url works as expected", {
              text2 = c("The", "URL", "was"), 
              text3 = c("is", "another", "URL"))
     )
-    
-    toks2 <- tokenize(txt, remove_url = TRUE)
-    expect_equivalent(
-        as.list(toks2),
-        list(c("The", "URL", "was"), c("The", "URL", "was"), c("is", "another", "URL"))
-    )
+
 })
 
 test_that("remove_punct and remove_twitter interact correctly, #607", {

@@ -588,7 +588,6 @@ test_that("dfm verbose option prints correctly", {
     expect_message(dfm(corp, verbose = TRUE), "Creating a dfm from a corpus input")
     expect_message(dfm(toks, verbose = TRUE), "Creating a dfm from a tokens input")
     expect_message(dfm(mydfm, verbose = TRUE), "Creating a dfm from a dfm input")
-    expect_message(dfm(tokens(txt, hash = FALSE), verbose = TRUE), "Creating a dfm from a tokenizedTexts input")
 })
 
 test_that("dfm works with purrr::map (#928)", {
