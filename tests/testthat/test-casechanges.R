@@ -20,10 +20,10 @@ test_that("char_tolower keeps acronyms.", {
 })
 
 test_that("tokens_tolower/tokens_toupper works", {
-    toksh <- tokens("According to NATO")
-    expect_equal((as.list(tokens_tolower(toksh))[[1]]),
+    toks <- tokens("According to NATO")
+    expect_equal((as.list(tokens_tolower(toks))[[1]]),
                       c("according", "to", "nato"))
-    expect_equal((as.list(tokens_toupper(toksh))[[1]]),
+    expect_equal((as.list(tokens_toupper(toks))[[1]]),
                  c("ACCORDING", "TO", "NATO"))
 })
 
