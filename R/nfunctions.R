@@ -41,13 +41,6 @@ ndoc.tokens <- function(x) {
     length(x)
 }
 
-#' @export
-#' @noRd
-ndoc.tokenizedTexts <- function(x) {
-    length(x)
-}
-
-
 #' @rdname ndoc
 #' @details \code{nfeature} returns the number of features from a dfm; it is an
 #'   alias for \code{ntype} when applied to dfm objects.  This function is only 
@@ -151,12 +144,6 @@ ntoken.dfm <- function(x, ...) {
 
 #' @noRd
 #' @export
-ntoken.tokenizedTexts <- function(x, ...) {
-    lengths(x)
-}
-
-#' @noRd
-#' @export
 ntype.character <- function(x, ...) {
     ntype(tokens(x, ...))
 }
@@ -174,12 +161,6 @@ ntype.dfm <- function(x, ...) {
     x <- as.dfm(x)
     ## only returns total NON-ZERO COUNT types
     rowSums(x > 0)
-}
-
-#' @noRd
-#' @export
-ntype.tokenizedTexts <- function(x, ...) {
-    vapply(lapply(x, unique), length, integer(1))
 }
 
 #' @export

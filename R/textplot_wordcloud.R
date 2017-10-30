@@ -62,7 +62,7 @@ textplot_wordcloud.dfm <- function(x, comparison = FALSE, ...) {
 
 #' @noRd
 #' @export
-textplot_wordcloud.tokenizedTexts <- function(x, comparison = FALSE, ...) {
+textplot_wordcloud.tokens <- function(x, comparison = FALSE, ...) {
     textplot_wordcloud(dfm(x, verbose = FALSE), comparison = comparison, ...)
 }
 

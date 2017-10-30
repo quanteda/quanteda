@@ -105,26 +105,6 @@ nsyllable.tokens <- function(x, syllable_dictionary = quanteda::data_int_syllabl
     }
 }
 
-#' @rdname nsyllable
-#' @noRd
-#' @export
-nsyllable.tokenizedTexts <- function(x, syllable_dictionary = quanteda::data_int_syllables, use.names = FALSE) { 
-    
-    # make tokenized list into a data table
-    syllablesDT <- data.table(docIndex = rep(seq_along(x), lengths(x)),
-                              word = unlist(x), 
-                              serial = seq_along(unlist(x)))
-    
-    # call the syllables data.table function
-    nSyllables <- nsyllable.data.table(syllablesDT, syllable_dictionary)    
-    
-    # restore names
-    names(nSyllables) <- names(x)    
-    
-    nSyllables
-}
-
-
 nsyllable.data.table <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) {
     word <- serial <- NULL
     
