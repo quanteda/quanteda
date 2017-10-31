@@ -205,7 +205,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
 #' @import data.table
 #' @import Matrix
 #' @export
-fcm.tokenizedTexts <- function(x, context = c("document", "window"), 
+fcm.tokens <- function(x, context = c("document", "window"), 
                        count = c("frequency", "boolean", "weighted"),
                        window = 5L,
                        weights = 1L,

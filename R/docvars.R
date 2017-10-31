@@ -33,7 +33,7 @@ docvars.corpus <- function(x, field = NULL) {
 
 #' @noRd
 #' @export
-docvars.tokenizedTexts <- function(x, field = NULL) {
+docvars.tokens <- function(x, field = NULL) {
     check_fields(x, field)
     dvars <- attr(x, "docvars")
     if (is.null(field))
@@ -117,7 +117,7 @@ docvars.kwic <- function(x) {
 
 
 #' @export
-"docvars<-.tokenizedTexts" <- function(x, field = NULL, value) {
+"docvars<-.tokens" <- function(x, field = NULL, value) {
     
     if (is.null(field) && (is.data.frame(value) || is.null(value))) {
         attr(x, "docvars") <- value

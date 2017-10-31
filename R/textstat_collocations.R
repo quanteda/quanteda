@@ -204,12 +204,6 @@ textstat_collocations.character <- function(x, method = "lambda", size = 2, min_
                           smoothing = smoothing, tolower = tolower, ...)
 }
 
-#' @export
-textstat_collocations.tokenizedTexts <- function(x, method = "lambda", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, ...) {
-    textstat_collocations(as.tokens(x), method = method, size = size, min_count = min_count, 
-                          smoothing = smoothing, tolower = tolower)
-}
-
 
 #' @rdname textstat_collocations
 #' @aliases is.collocations

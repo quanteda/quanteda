@@ -21,7 +21,7 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
     tcm <- tcm[order(rownames(tcm)), order(colnames(tcm))]
     tcm[lower.tri(tcm, diag = FALSE)] <- 0
     
-    toks <- tokenize(char_tolower(txt), remove_punct = TRUE)
+    toks <- tokens(char_tolower(txt), remove_punct = TRUE)
     fcm <- fcm(toks, context = "window", count = "weighted", window = 3)
     fcm <- fcm_sort(fcm)
     expect_true(all(round(fcm, 2) == round(tcm, 2)))
@@ -61,8 +61,8 @@ test_that("weighted by default",{
     fcm_s <- quanteda:::qatd_cpp_fcm(toks, length(unique(unlist(toks))), 'weighted', 3, 1, FALSE, TRUE, n)
     expect_equivalent(fcm,fcm_s)
     
-    # tokenizedTexts
-    toks <- tokenize(txt)
+    
+    toks <- tokens(txt)
     fcmTexts <- fcm(toks, context = "window", count = "weighted", window = 3) 
     expect_equivalent(round(as.matrix(fcm), 2), round(as.matrix(fcmTexts), 2))
     
@@ -87,8 +87,8 @@ test_that("customized weighting function",{
     fcm_s <- quanteda:::qatd_cpp_fcm(toks, length(unique(unlist(toks))), 'weighted', 3, c(3,2,1), FALSE, TRUE, n)
     expect_equivalent(fcm,fcm_s)
     
-    # tokenizedTexts
-    toks <- tokenize(txt)
+    
+    toks <- tokens(txt)
     fcmTexts <- fcm(toks, context = "window", count = "weighted",  weights = c(3,2,1), window = 3) 
     expect_equivalent(round(as.matrix(fcm), 2), round(as.matrix(fcmTexts), 2))
     
@@ -212,8 +212,8 @@ test_that("window = 2",{
     txts <- c("a a a b b c", "a a c e", "a c e f g")
     fcm <- fcm(txts, context = "window", count = "boolean", window = 2)           
 
-    # tokenizedTexts
-    toks <- tokenize(txts)
+    
+    toks <- tokens(txts)
     fcmTexts <- fcm(toks, context = "window", count = "boolean", window = 2) 
     expect_equivalent(as.matrix(fcm), as.matrix(fcmTexts))
     
@@ -269,7 +269,7 @@ test_that("fcm.dfm does works for context = \"document\" with weighed counts", {
 test_that("fcm works as expected for tokens_hashed", {
     txt <- c("The quick brown fox jumped over the lazy dog.",
              "The dog jumped and ate the fox.")
-    toks <- tokenize(char_tolower(txt), remove_punct = TRUE)
+    toks <- tokens(char_tolower(txt), remove_punct = TRUE)
     toksh <- tokens(char_tolower(txt), remove_punct = TRUE)
     classic <- fcm(toks, context = "window", window = 3)
     hashed <- fcm(toksh, context = "window", window = 3)

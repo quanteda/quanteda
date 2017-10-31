@@ -57,32 +57,6 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
       )
 })
 
-test_that("test `tokens_ngrams` on tokenized texts", {
-      toks <- tokenize(c('insurgents killed in ongoing fighting', 'insurgents killed in ongoing fighting'))
-      ngms <- tokens_ngrams(toks, 2, 0)
-      suppressWarnings(ngms_old <- tokens_ngrams(toks, 2, 0))
-      ngms_true <- list(
-          c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting'),
-          c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting')
-      )
-        
-      expect_that(
-          ngms,
-          is_a('tokenizedTexts')
-      )
-      
-      expect_equivalent(
-          as.list(ngms),
-          ngms_true
-      )
-      
-      expect_equivalent(
-          as.list(ngms_old),
-          ngms_true
-      )
-
-})
-
 test_that("test `tokens_ngrams` on characters", {
     ngms <- tokens_ngrams(c('insurgents','killed', 'in', 'ongoing', 'fighting'))
     charNgms <- char_ngrams(c('insurgents','killed', 'in', 'ongoing', 'fighting'))

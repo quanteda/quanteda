@@ -16,12 +16,6 @@ tokens_tolower <- function(x, keep_acronyms = FALSE, ...) {
 
 #' @noRd
 #' @export
-tokens_tolower.tokenizedTexts <- function(x, keep_acronyms = FALSE, ...) {
-    as.tokenizedTexts(tokens_tolower(as.tokens(x), keep_acronyms = keep_acronyms, ...))
-}
-
-#' @noRd
-#' @export
 tokens_tolower.tokens <- function(x, keep_acronyms = FALSE, ...) {
     types(x) <- char_tolower(types(x), keep_acronyms = keep_acronyms, ...)
     tokens_recompile(x)
@@ -33,12 +27,6 @@ tokens_tolower.tokens <- function(x, keep_acronyms = FALSE, ...) {
 #' @export
 tokens_toupper <- function(x, ...) {
     UseMethod("tokens_toupper")
-}
-
-#' @noRd
-#' @export
-tokens_toupper.tokenizedTexts <- function(x, ...) {
-    as.tokenizedTexts(tokens_toupper(as.tokens(x), ...))
 }
     
 #' @noRd

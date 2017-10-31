@@ -33,24 +33,6 @@ tokens_wordstem <- function(x, language = quanteda_options("language_stemmer")) 
     
 #' @noRd
 #' @export
-tokens_wordstem.tokenizedTexts <- function(x, language = quanteda_options("language_stemmer")) {
-    origAttrs <- attributes(x)
-    if (!stri_endswith_fixed(attr(x, "what"), "word") || any(unlist(lapply(x, function(y) stri_detect_fixed(y, " ") & !is.na(y)))))
-        stop("whitespace detected: you can only stem word-tokenized texts")
-    if (all.equal(attributes(x)$ngrams, 1))
-        result <- lapply(x, SnowballC::wordStem, language)
-    else {
-        # catm("Ngrams wordstem\n")
-        result <- wordstem_ngrams(x, attributes(x)$concatenator, language)
-    }
-    class(result) <- c("tokenizedTexts", class(result))
-    result[which(is.na(x))] <- NA
-    attributes(result) <- origAttrs
-    result
-}
-    
-#' @noRd
-#' @export
 tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stemmer")) {
     
     if (identical(as.integer(attributes(x)$ngrams), 1L))
