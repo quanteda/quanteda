@@ -17,6 +17,7 @@
 
 * All of the deprecated functions are now removed. (#991)
 * `tokens_group()` is now significantly faster.
+* The deprecated "list of characters" `tokenize()` function and all methods associated with the `tokenizedTexts` object types have been removed.
 
 
 ## Changes since v0.99.9

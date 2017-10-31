@@ -53,9 +53,6 @@
 #' @param concatenator character to use in concatenating \emph{n}-grams, default
 #'   is "\code{_}", which is recommended since this is included in the regular 
 #'   expression and Unicode definitions of "word" characters
-#' @param hash if \code{TRUE} (default), return a hashed tokens object, 
-#'   otherwise, return a classic \code{tokenizedTexts} object.  (This will be 
-#'   phased out soon in coming versions.)
 #' @param verbose if \code{TRUE}, print timing messages to the console; off by 
 #'   default
 #' @param include_docvars if \code{TRUE}, pass docvars and metadoc fields through to 
@@ -88,7 +85,7 @@
 #'   URLs.  We are working on improving this behaviour.
 #'   
 #'   See the examples below.
-#' @return \pkg{quanteda} \code{tokens} class object, by default a hashed list 
+#' @return \pkg{quanteda} \code{tokens} class object, by default a serialized list 
 #'   of integers corresponding to a vector of types.
 #' @seealso \code{\link{tokens_ngrams}}, \code{\link{tokens_skipgrams}}, \code{\link{as.list.tokens}}
 #' @keywords tokens
@@ -169,7 +166,6 @@ tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", 
                     ngrams = 1L,
                     skip = 0L,
                     concatenator = "_",
-                    hash = TRUE,
                     verbose = quanteda_options("verbose"),
                     include_docvars = TRUE,
                     ...) {
@@ -187,7 +183,7 @@ tokens.character <- function(x, ...) {
 #' @rdname tokens
 #' @export
 #' @noRd
-tokens.corpus <- function(x, ..., hash = TRUE, include_docvars = TRUE, old = FALSE) {
+tokens.corpus <- function(x, ..., include_docvars = TRUE, old = FALSE) {
     if (old) {
         result <- tokens_internal_old(texts(x), ...)
     } else {
@@ -198,16 +194,7 @@ tokens.corpus <- function(x, ..., hash = TRUE, include_docvars = TRUE, old = FAL
     } else {
         docvars(result) <- data.frame(row.names = docnames(x))
     }
-    if (hash == FALSE)
-        result <- as.tokenizedTexts(result)
     return(result)
-}
-
-#' @rdname tokens
-#' @export
-#' @noRd
-tokens.tokenizedTexts <-  function(x, ...) {
-    tokens(as.tokens(x), ...)
 }
 
 #' @rdname tokens
@@ -224,7 +211,6 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
                            ngrams = 1L,
                            skip = 0L,
                            concatenator = "_",
-                           hash = TRUE,
                            verbose = quanteda_options("verbose"),
                            include_docvars = TRUE,
                            ...) {
@@ -254,8 +240,6 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
         x <- tokens_remove(x, paste(regex, collapse = '|'), valuetype = 'regex', padding = FALSE)
     if (!identical(ngrams, 1L) || !identical(skip, 0L))
         x <- tokens_ngrams(x, n = ngrams, skip = skip, concatenator = concatenator)
-    if (hash == FALSE)
-        x <- as.tokenizedTexts(x)
     if (!include_docvars)
         docvars(x) <- data.frame(row.names = docnames(x))
     return(x)
@@ -299,8 +283,8 @@ as.tokens <- function(x, concatenator = '_') {
 #' @rdname as.tokens
 #' @export
 as.tokens.list <- function(x, concatenator = '_') {
-    result <- structure(tokens_hash(x),
-                        class = c("tokens", "tokenizedTexts"),
+    result <- structure(tokens_serialize(x),
+                        class = "tokens",
                         names = docnames(x),
                         what = "word",
                         ngrams = 1L,
@@ -318,19 +302,14 @@ as.tokens.list <- function(x, concatenator = '_') {
 #'     as.tokens(phrase(x$collocation), concatenator = concatenator)
 #' }
 
-#' @export
-#' @noRd
-as.tokens.tokenizedTexts <- function(x, ...) {
-    NextMethod("as.tokens")
-}
-
 #' @rdname as.tokens
 #' @return \code{as.list} returns a simple list of characters from a
 #'   \link{tokens} object.
 #' @method as.list tokens
 #' @export
 as.list.tokens <- function(x, ...) {
-    result <- as.tokenizedTexts(x)
+    types <- c("", types(x))
+    result <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding 
     attributes(result) <- NULL
     names(result) <- names(x)
     return(result)
@@ -365,37 +344,16 @@ is.tokens <- function(x) "tokens" %in% class(x)
 
 
 
-#' Function to hash list-of-character tokens
+#' Function to serialized list-of-character tokens
 #' 
-#' Creates a hashed object of tokens, called by \code{\link{tokens}}.
-#' @param x a source of tokenizedText
+#' Creates a serialized object of tokens, called by \code{\link{tokens}}.
+#' @param x a list of character vectors
 #' @param types_reserved optional pre-existing types for mapping of tokens
 #' @param ... additional arguments
-#' @return a list the hashed tokens found in each text
+#' @return a list the serialized tokens found in each text
 #' @importFrom fastmatch fmatch
-#' @details This was formerly used to create a \code{tokenizedTextsHashed}
-#'   object, but all tokens objects are now hashed, so this is just exported for
-#'   testing until it will become internal only.
-#' @note This will be internal only soon.
-#' @export
-#' @seealso \code{\link{tokenize}}
 #' @keywords internal tokens
-#' @examples 
-#' txt <- c(doc1 = "The quick brown fox jumped over the lazy dog.",
-#'          doc2 = "The dog jumped and ate the fox.")
-#' toks <- tokenize(char_tolower(txt), remove_punct = TRUE)
-#' toksHashed <- tokens_hash(toks)
-#' toksHashed
-#' # returned as a list
-#' as.list(toksHashed)
-#' # returned as a tokenized Text
-#' as.tokenizedTexts(toksHashed)
-#' 
-#' # change case
-#' toks <- tokens_hash(tokenize(c(one = "a b c d A B C D",
-#'                                 two = "A B C d")))
-#' 
-tokens_hash <- function(x, types_reserved, ...) {
+tokens_serialize <- function(x, types_reserved, ...) {
     
     attrs <- attributes(x)
     types <- unique(unlist(x, use.names = FALSE))
@@ -418,28 +376,15 @@ tokens_hash <- function(x, types_reserved, ...) {
     
     attributes(x) <- attrs
     attr(x, "types") <- stri_trans_nfc(types) # unicode normalization
-    class(x) <- c("tokens", 'tokenizedTexts')
+    class(x) <- "tokens"
     return(x)
 }
 
 
-#' @rdname tokenize
-#' @details \code{as.tokenizedTexts} coerces tokenizedTextsHashed to a
-#'   tokenizedText class object, making the methods available for this object
-#'   type available to this object.
-#' @keywords internal tokens
-#' @export
-as.tokenizedTexts.tokens <- function(x, ...) {
-    
-    types <- c("", types(x))
-    tokens <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding 
-    attributes(tokens) <- attributes(x)
-    class(tokens) <- c("tokenizedTexts", "list")
-    return(tokens)
-}
+
 
 #' print a tokens objects
-#' print method for a tokenizedTextsHashed object
+#' print method for a tokens object
 #' @param x a tokens object created by \code{\link{tokens}}
 #' @param ... further arguments passed to base print method
 #' @export
@@ -554,7 +499,6 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
                             ngrams = 1L,
                             skip = 0L,
                             concatenator = "_",
-                            hash = TRUE,
                             verbose = getOption("verbose"),  
                             include_docvars = TRUE, 
                             ...) {
@@ -617,16 +561,16 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
         
         if (verbose) catm("...serializing tokens ")
         if (i == 1) {
-            x[[i]] <- tokens_hash(temp)
+            x[[i]] <- tokens_serialize(temp)
         } else {
-            x[[i]] <- tokens_hash(temp, attr(x[[i - 1]], 'types'))
+            x[[i]] <- tokens_serialize(temp, attr(x[[i - 1]], 'types'))
         }
         if (verbose) catm(length(attr(x[[i]], 'types')), 'unique types\n')
 
     }
     
     x <- structure(unlist(x, recursive = FALSE), # put all the blocked results togather
-                   class = c("tokens", "tokenizedTexts"),
+                   class = "tokens",
                    names = attrs$names,
                    what = what,
                    ngrams = ngrams,
@@ -780,20 +724,18 @@ tokens_character <- function(txt,
         })
     }
     return(tok)
-    
 }
 
 
-
-#' recompile a hashed tokens object
+#' recompile a serialized tokens object
 #' 
-#' This function recompiles a hashed tokens object when the vocabulary has been
-#' changed in a way that makes some of its types identical, such as lowercasing
-#' when a lowercased version of the type already exists in the hash table, or
-#' introduces gaps in the integer map of the types.  It also reindexes the types
-#' atttribute to account for types that may have become duplicates, through a
-#' procedure such as stemming or lowercasing; or the addition of new tokens
-#' through compounding.
+#' This function recompiles a serialized tokens object when the vocabulary has
+#' been changed in a way that makes some of its types identical, such as
+#' lowercasing when a lowercased version of the type already exists in the type
+#' table, or introduces gaps in the integer map of the types.  It also reindexes
+#' the types atttribute to account for types that may have become duplicates,
+#' through a procedure such as stemming or lowercasing; or the addition of new
+#' tokens through compounding.
 #' @param x the \link{tokens} object to be recompiled
 #' @param method \code{"C++"} for C++ implementation or \code{"R"} for an older
 #'   R-based method
@@ -929,7 +871,7 @@ types.tokens <- function(x) {
     t1 <- unclass(t1)
     t2 <- lapply(t2, function(x, y) x + y, length(types1)) # shift IDs
     t1 <- c(t1, t2)
-    class(t1) <- c('tokens', 'tokenizedTexts')
+    class(t1) <- "tokens"
     types(t1) <- c(types1, types2)
     tokens_recompile(t1)
 }

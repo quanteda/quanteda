@@ -120,14 +120,6 @@ kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "
 }
 
 #' @rdname kwic
-#' @noRd
-#' @export 
-kwic.tokenizedTexts <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
-                                case_insensitive = TRUE, join = FALSE, ...) {
-    kwic(as.tokens(x), pattern, window, valuetype, case_insensitive, join, ...)
-}
-
-#' @rdname kwic
 #' @export
 #' @examples
 #' mykwic <- kwic(data_corpus_inaugural, "provident*")
@@ -174,7 +166,7 @@ as.tokens.kwic <- function(x, ...) {
     vars[['_docid']] <- attr(x, 'docid')
     vars[['_segid']] <- attr(x, 'segid')
     result <- structure(attr(x, 'tokens'), 
-                        class = c('tokens', 'tokenizedTexts', 'list'),
+                        class = 'tokens',
                         names = rownames(vars),
                         docvars = vars)
     attributes(result, FALSE) <- attributes(x)
