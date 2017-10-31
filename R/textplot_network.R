@@ -15,8 +15,8 @@
 #' toks <- tokens_remove(toks, stopwords("english"), padding = FALSE)
 #' myfcm <- fcm(toks, context = 'window', tri = FALSE)
 #' feats <- names(topfeatures(myfcm, 20))
-#' textplot_network(myfcm[feats, feats], ignore = 0.5)
-#' textplot_network(myfcm[feats, feats], ignore = 0.5, size = 20, shape = "vrectangle")
+#' textplot_network(fcm_select(myfcm, feats), ignore = 0.5)
+#' textplot_network(fcm_select(myfcm, feats), ignore = 0.5, size = 20, shape = "vrectangle")
 #' }
 #' @export
 #' @seealso \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
