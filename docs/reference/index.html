@@ -76,7 +76,7 @@
     <div class="page-header">
       <h1>
         Reference
-        <small>version&nbsp;0.9.9.67</small>
+        <small>version&nbsp;0.99.9001</small>
       </h1>
     </div>
 
@@ -142,9 +142,15 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="data_dfm_LBGexample.html">data_dfm_LBGexample</a></code> </p>
+            <p><code><a href="data_dfm_lbgexample.html">data_dfm_lbgexample</a></code> </p>
           </td>
           <td><p>dfm from data in Table 1 of Laver, Benoit, and Garry (2003)</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="data_dictionary_LSD2015.html">data_dictionary_LSD2015</a></code> </p>
+          </td>
+          <td><p>Lexicoder Sentiment Dictionary (2015)</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -170,19 +176,13 @@
           <td>
             <p><code><a href="corpus_segment.html">corpus_segment</a></code> <code><a href="corpus_segment.html">char_segment</a></code> </p>
           </td>
-          <td><p>segment texts into component elements</p></td>
+          <td><p>segment texts on a pattern match</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="corpus_subset.html">corpus_subset</a></code> </p>
           </td>
           <td><p>extract a subset of a corpus</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="corpus_trim.html">corpus_trim</a></code> <code><a href="corpus_trim.html">char_trim</a></code> </p>
-          </td>
-          <td><p>remove sentences based on their token lengths or a pattern match</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -294,7 +294,7 @@
           <td>
             <p><code><a href="corpus_segment.html">corpus_segment</a></code> <code><a href="corpus_segment.html">char_segment</a></code> </p>
           </td>
-          <td><p>segment texts into component elements</p></td>
+          <td><p>segment texts on a pattern match</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -324,9 +324,15 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="dfm_compress.html">dfm_compress</a></code> <code><a href="dfm_compress.html">dfm_group</a></code> <code><a href="dfm_compress.html">fcm_compress</a></code> </p>
+            <p><code><a href="dfm_compress.html">dfm_compress</a></code> <code><a href="dfm_compress.html">fcm_compress</a></code> </p>
           </td>
           <td><p>recombine a dfm or fcm by combining identical dimension elements</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="dfm_group.html">dfm_group</a></code> </p>
+          </td>
+          <td><p>combine documents in a dfm by a grouping variable</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -348,9 +354,39 @@
         </tr><tr>
           <!--  -->
           <td>
+            <p><code><a href="dfm_subset.html">dfm_subset</a></code> </p>
+          </td>
+          <td><p>extract a subset of a dfm</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
             <p><code><a href="dfm_sort.html">dfm_sort</a></code> </p>
           </td>
-          <td><p>sort a dfm by frequency of one or more margins</p></td>
+          <td><p>#' @noRd
+#' @export
+#' @examples 
+#' # for dfmDense
+#' mat &lt;- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
+#'              dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
+#' matd &lt;- dfm_smooth(mat)
+#' colnames(matd) &lt;- char_tolower(featnames(mat))
+#' matd
+#' dfm_compress(matd, margin = "documents")
+#' dfm_compress(matd, margin = "features")
+#' dfm_compress(matd)
+dfm_compress.dfmDense &lt;- function(x, ...) 
+    dfm_compress(new("dfm", Matrix::Matrix(as.matrix(x), sparse = TRUE),
+                     settings = x@settings,
+                     weightTf = x@weightTf,
+                     weightDf = x@weightDf,
+                     smooth = x@smooth,
+                     ngrams = x@ngrams,
+                     skip = x@skip,
+                     concatenator = x@concatenator,
+                     docvars = x@docvars),
+                 ...)
+                 
+sort a dfm by frequency of one or more margins</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -418,7 +454,13 @@
           <td>
             <p><code><a href="textstat_collocations.html">textstat_collocations</a></code> <code><a href="textstat_collocations.html">is.collocations</a></code> </p>
           </td>
-          <td><p>calculate collocation statistics</p></td>
+          <td><p>identify and score multi-word expressions</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="textstat_frequency.html">textstat_frequency</a></code> </p>
+          </td>
+          <td><p>tabulate feature frequencies</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -454,7 +496,7 @@
           <td>
             <p><code><a href="topfeatures.html">topfeatures</a></code> </p>
           </td>
-          <td><p>list the most frequent features</p></td>
+          <td><p>identify the most frequent features in a dfm</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -472,9 +514,9 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="is.dictionary.html">is.dictionary</a></code> </p>
+            <p><code><a href="as.dictionary.html">as.dictionary</a></code> <code><a href="as.dictionary.html">is.dictionary</a></code> </p>
           </td>
-          <td><p>check if an object is a dictionary</p></td>
+          <td><p>coercion and checking functions for dictionary objects</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -492,21 +534,15 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="collocations.html">collocations</a></code> </p>
+            <p><code><a href="collocations.html">collocations</a></code> <code><a href="collocations.html">sequences</a></code> </p>
           </td>
-          <td><p>detect collocations from text</p></td>
+          <td><p>deprecated function names for textstat_collocations</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="textstat_collocations.html">textstat_collocations</a></code> <code><a href="textstat_collocations.html">is.collocations</a></code> </p>
           </td>
-          <td><p>calculate collocation statistics</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="sequences.html">sequences</a></code> <code><a href="sequences.html">is.sequences</a></code> </p>
-          </td>
-          <td><p>Find variable-length collocations</p></td>
+          <td><p>identify and score multi-word expressions</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -522,6 +558,12 @@
           </th>
         </tr>
         <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="textplot_keyness.html">textplot_keyness</a></code> </p>
+          </td>
+          <td><p>plot word keyness</p></td>
+        </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="textplot_scale1d.html">textplot_scale1d</a></code> </p>
@@ -556,7 +598,7 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="textmodel_NB.html">textmodel_NB</a></code> </p>
+            <p><code><a href="textmodel-nb.html">textmodel_nb</a></code> </p>
           </td>
           <td><p>Naive Bayes classifier for texts</p></td>
         </tr><tr>
@@ -648,6 +690,12 @@
           </th>
         </tr>
         <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="phrase.html">phrase</a></code> <code><a href="phrase.html">is.phrase</a></code> </p>
+          </td>
+          <td><p>declare a compound character to be a sequence of separate pattern matches</p></td>
+        </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="as.list.dist.html">as.list</a></code> </p>

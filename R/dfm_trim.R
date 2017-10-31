@@ -16,12 +16,12 @@
 #' @return A \link{dfm} reduced in features (with the same number 
 #'   of documents)
 #' @export
-#' @note Trimming a \link{dfm} object is an operation based on the values 
-#'   in the document-feature \emph{matrix}.  To select subsets of a dfm based on
-#'   attributes of the features themselves -- such as selecting features 
+#' @note Trimming a \link{dfm} object is an operation based on the \emph{values}
+#'   in the document-feature matrix.  To select subsets of a dfm based on
+#'   the features themselves (meaning the feature labels from \code{\link{featnames}}) -- such as those   
 #'   matching a regular expression, or removing features matching a stopword 
 #'   list, use \code{\link{dfm_select}}.
-#' @author Ken Benoit and Paul Nulty, with some inspiration from Will Lowe's
+#' @author Ken Benoit and Paul Nulty, with some inspiration from Will Lowe
 #'   (see \code{trim} from the \code{austin} package)
 #' @seealso \code{\link{dfm_select}}, \code{\link{dfm_sample}}
 #' @examples
@@ -68,6 +68,8 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
     #     catm("No features removed.", appendLF = TRUE)
     #     return(x)
     # }
+    
+    x <- as.dfm(x)
     
     # initialize additional messages as empty strings
     messageSparsity <- messageMinCount <- messageMinDoc <- messageMaxCount <- messageMaxDoc <- ""
@@ -121,12 +123,11 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
     
     # in case no features were removed as a result of filtering conditions
     if (!length(c(featIndexMinCount, featIndexMaxCount, featIndexMinDoc, featIndexMaxDoc))) {
-        catm("No features removed.", appendLF = TRUE)
+        if (verbose) catm("No features removed.", appendLF = TRUE)
         return(x)
     }
     
-    if (verbose)
-        catm("Removing features occurring: ", appendLF = TRUE)
+    if (verbose) catm("Removing features occurring: ", appendLF = TRUE)
     
     # print messages about frequency count removal
     if (verbose & length(c(featIndexMinCount, featIndexMaxCount))) {
@@ -167,9 +168,10 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
              " (", format(length(featureRemoveIndex) / nfeature(x) * 100, digits = 3, nsmall = 1), "%).", 
              sep = "", appendLF = TRUE)
     }
-    if ((nfeature(x) - length(featureRemoveIndex)) == 0)  
+    if (verbose && (nfeature(x) - length(featureRemoveIndex)) == 0)
         stop("No features left after trimming.")
     
-    dfm_sort(x[, -featureRemoveIndex])
+    # dfm_sort(x[, -featureRemoveIndex])
+    x[, -featureRemoveIndex]
 }
 

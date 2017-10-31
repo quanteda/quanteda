@@ -6,7 +6,8 @@
 \usage{
 dfm_lookup(x, dictionary, levels = 1:5, exclusive = TRUE,
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  capkeys = !exclusive, verbose = quanteda_options("verbose"))
+  capkeys = !exclusive, nomatch = NULL,
+  verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{the dfm to which the dictionary will be applied}
@@ -20,31 +21,36 @@ applied}
 otherwise, replace values in dictionary with keys while leaving other 
 features unaffected}
 
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
-\item{capkeys}{if \code{TRUE}, convert dictionary keys to
-uppercase to distinguish them from other features}
+\item{capkeys}{if \code{TRUE}, convert dictionary keys to uppercase to
+distinguish them from other features}
+
+\item{nomatch}{an optional character naming a new feature that will contain 
+the counts of features of \code{x} not matched to a dictionary key.  If 
+\code{NULL} (default), do not tabulate unmatched features.}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }
 \description{
-Apply a dictionary to a dfm by looking up all dfm features for matches in a
-a set of \link{dictionary} values, and combine replace those features with a 
-count of the dictionary's keys.  If \code{exclusive = FALSE} then the 
-behaviour is to apply a "thesaurus" where each value match is replaced by 
-the dictionary key, converted to capitals if \code{capkeys = TRUE} (so that 
-the replacements are easily distinguished from features that were terms
-found originally in the document).
+Apply a dictionary to a dfm by looking up all dfm features for matches in a a
+set of \link{dictionary} values, and replace those features with a count of
+the dictionary's keys.  If \code{exclusive = FALSE} then the behaviour is to
+apply a "thesaurus", where each value match is replaced by the dictionary
+key, converted to capitals if \code{capkeys = TRUE} (so that the replacements
+are easily distinguished from features that were terms found originally in
+the document).
 }
 \note{
-\code{dfm_lookup} should not be used with dictionaries containing
-multi-word values, because dfm features will already have been fixed using
-a specific ngram value which may not match the multi-word structure of the
-dictionary.
+If using \code{dfm_lookup} with dictionaries containing multi-word
+  values, matches will only occur if the features themselves are multi-word
+  or formed from ngrams. A better way to match dictionary values that include
+  multi-word patterns is to apply \code{\link{tokens_lookup}} to the tokens,
+  and then construct the dfm.
 }
 \examples{
 myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
@@ -68,5 +74,9 @@ dfm_lookup(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
 # fixed format: no pattern matching
 dfm_lookup(myDfm, myDict, valuetype = "fixed")
 dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
+
+# show unmatched tokens
+dfm_lookup(myDfm, myDict, nomatch = "_UNMATCHED")
+
 }
 \keyword{dfm}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{attributes<-}
 \alias{attributes<-}
-\title{R-like alternative to reassign_attributes()}
+\title{function extending base::attributes()}
 \usage{
 attributes(x, overwrite = TRUE) <- value
 }
@@ -14,9 +14,6 @@ attributes(x, overwrite = TRUE) <- value
 \item{value}{new attributes}
 }
 \description{
-R-like alternative to reassign_attributes()
-}
-\author{
-Kohei Watanabe
+function extending base::attributes()
 }
 \keyword{internal}

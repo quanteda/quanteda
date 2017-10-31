@@ -11,6 +11,7 @@ reference:
     - data_corpus_inaugural
     - data_corpus_irishbudget2010
     - data_dfm_LBGexample
+    - data_dictionary_LSD2015
 - title: Corpus functions
   desc: Functions for constructing and manipulating corpus class objects.
   contents:
@@ -59,6 +60,7 @@ reference:
     - dfm_sample
     - dfm_remove
     - dfm_select
+    - dfm_subset
     - dfm_sort
     - dfm_tolower
     - dfm_toupper
@@ -108,7 +110,7 @@ reference:
   desc: Plot functions for fitting analytic models from text matrixes.
   contents:
     - textmodel_ca
-    - textmodel_NB
+    - textmodel_nb
     - textmodel_wordfish
     - textmodel_wordscores
     - textmodel_wordshoal
@@ -128,6 +130,7 @@ reference:
     - stopwords
 - title: Miscellaneous functions
   contents:
+    - phrase
     - as.list.dist
     - convert
     - bootstrap_dfm

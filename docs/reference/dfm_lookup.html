@@ -78,18 +78,19 @@
     </div>
 
     
-    <p>Apply a dictionary to a dfm by looking up all dfm features for matches in a
-a set of <a href='dictionary.html'>dictionary</a> values, and combine replace those features with a 
-count of the dictionary's keys.  If <code>exclusive = FALSE</code> then the 
-behaviour is to apply a "thesaurus" where each value match is replaced by 
-the dictionary key, converted to capitals if <code>capkeys = TRUE</code> (so that 
-the replacements are easily distinguished from features that were terms
-found originally in the document).</p>
+    <p>Apply a dictionary to a dfm by looking up all dfm features for matches in a a
+set of <a href='dictionary.html'>dictionary</a> values, and replace those features with a count of
+the dictionary's keys.  If <code>exclusive = FALSE</code> then the behaviour is to
+apply a "thesaurus", where each value match is replaced by the dictionary
+key, converted to capitals if <code>capkeys = TRUE</code> (so that the replacements
+are easily distinguished from features that were terms found originally in
+the document).</p>
     
 
     <pre class="usage"><span class='fu'>dfm_lookup</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
+  <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -115,7 +116,7 @@ features unaffected</p></td>
     </tr>
     <tr>
       <th>valuetype</th>
-      <td><p>how to interpret keyword expressions: <code>"glob"</code> for 
+      <td><p>the type of pattern matching: <code>"glob"</code> for 
 "glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
 or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
@@ -125,8 +126,14 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
     </tr>
     <tr>
       <th>capkeys</th>
-      <td><p>if <code>TRUE</code>, convert dictionary keys to
-uppercase to distinguish them from other features</p></td>
+      <td><p>if <code>TRUE</code>, convert dictionary keys to uppercase to
+distinguish them from other features</p></td>
+    </tr>
+    <tr>
+      <th>nomatch</th>
+      <td><p>an optional character naming a new feature that will contain 
+the counts of features of <code>x</code> not matched to a dictionary key.  If 
+<code>NULL</code> (default), do not tabulate unmatched features.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -136,10 +143,11 @@ uppercase to distinguish them from other features</p></td>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p><code>dfm_lookup</code> should not be used with dictionaries containing
-multi-word values, because dfm features will already have been fixed using
-a specific ngram value which may not match the multi-word structure of the
-dictionary.</p>
+    <p>If using <code>dfm_lookup</code> with dictionaries containing multi-word
+  values, matches will only occur if the features themselves are multi-word
+  or formed from ngrams. A better way to match dictionary values that include
+  multi-word patterns is to apply <code><a href='tokens_lookup.html'>tokens_lookup</a></code> to the tokens,
+  and then construct the dfm.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -152,7 +160,7 @@ dictionary.</p>
                <span class='st'>"Does the United_States or Sweden have more progressive taxation?"</span>),
              <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>myDfm</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (50% sparse).
-#&gt; 2 x 11 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 11 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    christmas ruined opposition tax plan . united_states sweden progressive
 #&gt;   text1         1      1          1   1    1 1             0      0           0
@@ -162,36 +170,14 @@ dictionary.</p>
 #&gt;   text1        0 0
 #&gt;   text2        1 1</div><div class='input'>
 <span class='co'># glob format</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
-#&gt;       christmas opposition taxglob taxregex country
-#&gt; text1         1          1       1        0       0
-#&gt; text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
-#&gt;       christmas opposition taxglob taxregex country
-#&gt; text1         1          1       1        0       0
-#&gt; text2         0          0       1        0       2</div><div class='input'>
+<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># regex v. glob format: note that "united_states" is a regex match for "tax*"</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
-#&gt;       christmas opposition taxglob taxregex country
-#&gt; text1         1          1       1        0       0
-#&gt; text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       1        0       0
-#&gt;   text2         0          0       2        1       2</div><div class='input'>
+<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># fixed format: no pattern matching</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (70% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
-#&gt;       christmas opposition taxglob taxregex country
-#&gt; text1         1          1       0        0       0
-#&gt; text2         0          0       0        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (70% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
-#&gt;       christmas opposition taxglob taxregex country
-#&gt; text1         1          1       0        0       0
-#&gt; text2         0          0       0        0       2</div></pre>
+<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='co'># show unmatched tokens</span>
+<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>nomatch</span> <span class='kw'>=</span> <span class='st'>"_UNMATCHED"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

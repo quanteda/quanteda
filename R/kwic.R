@@ -6,19 +6,31 @@
 #' line number, since the text may or may not be segmented using end-of-line 
 #' delimiters.)
 #' @param x a character, \link{corpus}, or \link{tokens} object
-#' @param keywords a keyword pattern or phrase consisting of multiple keyword 
-#'   patterns, possibly including punctuation.  If a phrase, \code{keywords} 
-#'   will be tokenized using the \code{...} options.
+#' @inheritParams pattern
 #' @param window the number of context words to be displayed around the keyword.
 #' @inheritParams valuetype
 #' @param case_insensitive match without respect to case if \code{TRUE}
+#' @param join join adjacent keywords in the concordance view if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokens}, for applicable 
 #'   object types
-#' @return A kwic object classed data.frame, with the document name 
-#'   (\code{docname}), the token index position (\code{position}), the context
-#'   before (\code{contextPre}), the keyword in its original format
-#'   (\code{keyword}, preserving case and attached punctuation), and the context
-#'   after (\code{contextPost}).
+#' @return A \code{kwic} classed data.frame, with the document name 
+#'   (\code{docname}), the token index positions (\code{from} and \code{to}, 
+#'   which will be the same for single-word patterns, or a sequence equal in 
+#'   length to the number of elements for multi-word phrases), the context 
+#'   before (\code{pre}), the keyword in its original format (\code{keyword}, 
+#'   preserving case and attached punctuation), and the context after 
+#'   (\code{post}).  The return object has its own \code{print} method, plus
+#'   some special attributes that are hidden in the print view.  If you want to
+#'   turn this into a simple data.frame, simply wrap the result in
+#'   \code{data.frame}.
+#'   
+#' @note \code{pattern} will be a keyword pattern or phrase, possibly multiple 
+#'   patterns, that may include punctuation.  If a pattern contains whitespace, 
+#'   it is best to wrap it in \code{\link{phrase}} to make this explicit. 
+#'   However if \code{pattern} is a \link[=textstat_collocations]{collocations} 
+#'   or \link{dictionary} object, then the collocations or multi-word dictionary
+#'   keys will automatically be considered phrases where each 
+#'   whitespace-separated element matches a token in sequence.
 #' @author Kenneth Benoit and Kohei Watanabe
 #' @export
 #' @examples
@@ -27,25 +39,38 @@
 #' head(kwic(data_corpus_inaugural, "security", window = 3, valuetype = "fixed"))
 #' 
 #' toks <- tokens(data_corpus_inaugural)
-#' kwic(data_corpus_inaugural, "war against")
-#' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
+#' kwic(data_corpus_inaugural, phrase("war against"))
+#' kwic(data_corpus_inaugural, phrase("war against"), valuetype = "regex")
 #' 
-kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+kwic <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+                 case_insensitive = TRUE, join = FALSE, ...) {
     UseMethod("kwic")
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export
-kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    kwic(tokens(x, ...), keywords, window, valuetype, case_insensitive)
+kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+                           case_insensitive = TRUE, join = FALSE, ...) {
+    kwic(corpus(x), pattern, window, valuetype, case_insensitive, join, ...)
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    kwic(texts(x), keywords, window, valuetype, case_insensitive, ...)
+kwic.corpus <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+                        case_insensitive = TRUE, join = FALSE, ...) {
+    #thecall <- as.list(match.call())[-1]
+    # if ("keywords" %in% names(thecall)) {
+    #     .Deprecated(msg = "keywords argument has been replaced by pattern")
+    #     names(thecall)[which(names(thecall) == "keywords")] <- "pattern"
+    #     thecall[["x"]] <- x
+    #     print(thecall)
+    #     return(do.call(kwic, thecall))
+    # }    
+    if (is.collocations(pattern) || is.dictionary(pattern))
+        pattern <- phrase(pattern) 
+    kwic(tokens(x, ...), pattern, window, valuetype, case_insensitive, join)
 }
 
 #' @rdname kwic
@@ -58,47 +83,40 @@ kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 #'          "Sometimes you don't know if this is it.",
 #'          "Is it a bird or a plane or is it a train?")
 #' kwic(txt, c("is", "a"), valuetype = "fixed")
-#' kwic(txt, list("is", "a", c("is", "it")), valuetype = "fixed")
+#' kwic(txt, phrase(c("is", "a", "is it")), valuetype = "fixed")
 #' 
 #' toks <- tokens(txt)
 #' kwic(toks, c("is", "a"), valuetype = "fixed")
-#' kwic(toks, list("is", "a", c("is", "it")), valuetype = "fixed")
+#' kwic(toks, phrase(c("is", "a", "is it")), valuetype = "fixed")
 #' @export 
-kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+                        case_insensitive = TRUE, join = FALSE, ...) {
     
-    if (!is.tokens(x))
-        stop("x must be a tokens object")
-    
-    valuetype <- match.arg(valuetype)
-    keywords <- features2list(keywords)
+    if ("keywords" %in% names(arglist <- list(...))) {
+        .Deprecated(msg = "keywords argument has been replaced by pattern")
+        return(kwic(x, pattern = arglist$keywords, window, valuetype, case_insensitive, join))
+    }    
 
+    valuetype <- match.arg(valuetype)
+    types <- types(x)
+    
     # add document names if none
     if (is.null(names(x))) {
-        names(x) <- paste("text", 1:length(x), sep="")
+        names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
     }
     
-    types <- types(x)
-    keywords_id <- regex2id(keywords, types, valuetype, case_insensitive, FALSE)
-    result <- qatd_cpp_kwic(x, types, keywords_id, window)
-    #result$docname <- as.factor(result$docname)
-    
-    # attributes for tokens object
-    attributes(attr(result, "tokens"), FALSE)  <- attributes(x)
+    keywords_id <- pattern2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
+    temp <- qatd_cpp_kwic(x, types, keywords_id, window, join)
     
     # attributes for kwic object
-    attr(result, "ntoken") <- ntoken(x)
-    attr(result, "valuetype") <- valuetype
-    attr(result, "keywords") <- sapply(keywords, paste, collapse = " ")
+    result <- structure(temp, 
+                        class = c("kwic", "data.frame"), 
+                        ntoken = ntoken(x), 
+                        valuetype = valuetype, 
+                        keywords = attr(keywords_id, 'pattern'),
+                        tokens =  attr(temp, "tokens"))
     attributes(result, FALSE)  <- attributes(x)
-    class(result) <- c("kwic", "data.frame")
     return(result)
-}
-
-#' @rdname kwic
-#' @noRd
-#' @export 
-kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    kwic(as.tokens(x), keywords, window, valuetype, case_insensitive, ...)
 }
 
 #' @rdname kwic
@@ -114,20 +132,20 @@ is.kwic <- function(x) "kwic" %in% class(x)
 #' @export
 print.kwic <- function(x, ...) {
     if (!nrow(x)) {
-        print(NULL)
+        cat("kwic object with 0 rows")
     } else {
         if (all(x$from == x$to)) {
-            labels <- stringi::stri_c("[", x$docname, ", ", x$from, "]")
+            labels <- stri_c("[", x$docname, ", ", x$from, "]")
         } else {
-            labels <- stringi::stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
+            labels <- stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
         }
         kwic <- data.frame(
             label = labels,
-            pre = format(stringi::stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify="right"),
+            pre = format(stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify="right"),
             s1 = rep('|', nrow(x)),
             keyword = format(x$keyword, justify="centre"),
             s2 = rep('|', nrow(x)),
-            post = format(stringi::stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify="left")
+            post = format(stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify="left")
         )
         colnames(kwic) <- NULL
         print(kwic, row.names = FALSE)
@@ -137,10 +155,22 @@ print.kwic <- function(x, ...) {
 #' @rdname kwic
 #' @export
 #' @method as.tokens kwic
-as.tokens.kwic <- function(x) {
-    result <- attr(x, 'tokens')
-    names(result) <- x$docname
-    docvars(result) <- data.frame('_docid' = attr(x, 'docid'),
-                                  '_segid' = attr(x, 'segid'))
+#' @return \code{as.tokens.kwic} converts the kwic object into a \link{tokens}
+#'   object, with each new "document" consisting of one keyword match, and the
+#'   contents of the \code{pre}, \code{keyword}, and \code{post} fields forming
+#'   the tokens.  This is one way to save the output for subsequent usage;
+#'   another way is to form a \link[=corpus.kwic]{corpus} from the return
+#'   object.
+as.tokens.kwic <- function(x, ...) {
+    vars <- docvars(x)
+    vars[['_docid']] <- attr(x, 'docid')
+    vars[['_segid']] <- attr(x, 'segid')
+    result <- structure(attr(x, 'tokens'), 
+                        class = 'tokens',
+                        names = rownames(vars),
+                        docvars = vars)
+    attributes(result, FALSE) <- attributes(x)
     return(result)
 }
+
+

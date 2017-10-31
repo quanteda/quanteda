@@ -16,8 +16,8 @@ tokens_skipgrams(x, n, skip, concatenator = "_")
 \item{x}{a tokens object, or a character vector, or a list of characters}
 
 \item{n}{integer vector specifying the number of elements to be concatenated 
-in each ngram.  Each element of this vector will define a $n$ in the 
-$n$-gram(s) that are produced.}
+in each ngram.  Each element of this vector will define a \eqn{n} in the 
+\eqn{n}-gram(s) that are produced.}
 
 \item{skip}{integer vector specifying the adjacency skip size for tokens 
 forming the ngrams, default is 0 for only immediately neighbouring words. 
@@ -49,10 +49,10 @@ Normally, these functions will be called through
   in case a user wants to perform lower-level ngram construction on tokenized
   texts.
 
-\code{\link{tokens_skipgrams}} is a wrapper to \code{\link{ngrams}} that requires 
-  arguments to be supplied for both \code{n} and \code{skip}.  For
-  \eqn{k}-skip skipgrams, set \code{skip} to \code{0:}\eqn{k}, in order to
-  conform to the definition of skip-grams found in Guthrie et al (2006): A
+\code{\link{tokens_skipgrams}} is a wrapper to \code{\link{tokens_ngrams}}
+  that requires arguments to be supplied for both \code{n} and \code{skip}.
+  For \eqn{k}-skip skipgrams, set \code{skip} to \code{0:}\eqn{k}, in order
+  to conform to the definition of skip-grams found in Guthrie et al (2006): A
   \eqn{k} skip-gram is an ngram which is a superset of all ngrams and each
   \eqn{(k-i)} skipgram until \eqn{(k-i)==0} (which includes 0 skip-grams).
 }

@@ -22,8 +22,10 @@ docnames will be used}
 score. If a vector, order according to these values from low to high. Only 
 applies when \code{margin = "documents"}.}
 
-\item{groups}{optional grouping variable for sorting categories of the documents.
-Only applies when \code{margin = "documents"}.}
+\item{groups}{either: a character vector containing the names of document 
+variables to be used for grouping; or a factor or object that can be 
+coerced into a factor equal in length or rows to the number of documents. 
+See \link{groups} for details.}
 
 \item{highlighted}{a vector of feature names to draw attention to in a 
 feature plot; only applies if \code{margin = "features"}}
@@ -48,6 +50,9 @@ as a plot of estimated feature-level parameters (estimated feature positions
 on the x-axis, and a measure of relative frequency or influence on the
 y-axis, with feature names replacing plotting points with some being chosen
 by the user to be highlighted).
+}
+\note{
+The \code{groups} argument only applies when \code{margin = "documents"}.
 }
 \examples{
 \dontrun{
@@ -77,7 +82,15 @@ textplot_scale1d(wfm, doclabels = doclab,
 textplot_scale1d(wfm, margin = "features", 
                  highlighted = c("government", "global", "children", 
                                  "bank", "economy", "the", "citizenship",
-                                 "productivity", "deficit")) }
+                                 "productivity", "deficit"))
+
+## correspondence analysis
+wca <- textmodel_ca(ie_dfm)
+# plot estimated document positions
+textplot_scale1d(wca, margin = "documents",
+                 doclabels = doclab,
+                 groups = docvars(data_corpus_irishbudget2010, "party"))
+}
 }
 \seealso{
 \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 

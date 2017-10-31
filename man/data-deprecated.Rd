@@ -5,7 +5,6 @@
 \alias{data-deprecated}
 \alias{ukimmigTexts}
 \alias{ie2010Corpus}
-\alias{inaugTexts}
 \alias{data_char_inaugural}
 \alias{inaugCorpus}
 \alias{LBGexample}
@@ -14,9 +13,6 @@
 \alias{data_char_mobydick}
 \title{datasets with deprecated or defunct names}
 \format{See the specific object documentation for the renamed objects.}
-\usage{
-inaugTexts
-}
 \description{
 These are datasets that have been renamed but that have been
   temporarily retained for backward compatibility, or that have been renamed
@@ -29,9 +25,6 @@ These are datasets that have been renamed but that have been
 
 \code{ie2010Corpus} is defunct; please use 
   \code{data_corpus_irishbudget2010}
-
-\code{inaugTexts} is deprecated; please use
-  \code{data_char_inaugural} instead.
 
 \code{data_char_inaugural} is defunct; please use
   \code{data_corpus_inaugural} instead.
@@ -51,6 +44,5 @@ These are datasets that have been renamed but that have been
 \code{data_char_mobydick} is defunct; please use
   \code{data(mobydick, package = "tokenizers")} instead.
 }
-\keyword{datasets}
 \keyword{deprecated}
 \keyword{internal}

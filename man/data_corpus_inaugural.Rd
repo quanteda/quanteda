@@ -4,8 +4,16 @@
 \name{data_corpus_inaugural}
 \alias{data_corpus_inaugural}
 \title{US presidential inaugural address texts}
-\format{a \link{corpus} object with docvars including year, and the last and
-  first names of the presidents delivering the inaugural address}
+\format{a \link{corpus} object with the following docvars:
+\itemize{
+\item \code{Year} a four-digit integer year
+\item \code{President} character; President's last name
+\item \code{FirstName} character; President's first name (and possibly middle initial)
+}}
+\source{
+\url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
+\url{http://www.presidency.ucsb.edu/inaugurals.php}.
+}
 \usage{
 data_corpus_inaugural
 }
@@ -22,9 +30,5 @@ US presidential inaugural address texts, and metadata (for the corpus), from
 # some operations on the inaugural corpus
 summary(data_corpus_inaugural)
 head(docvars(data_corpus_inaugural), 10)
-}
-\references{
-\url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
-\url{http://www.presidency.ucsb.edu/inaugurals.php}.
 }
 \keyword{data}

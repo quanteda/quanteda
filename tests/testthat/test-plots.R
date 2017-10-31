@@ -73,7 +73,7 @@ test_that("test plot.kwic facet order parameter", {
             plot_docnames[order(plot_docnames)] == plot_docnames
         )
     )
-
+    
 })
 
 test_that("test plot.kwic keeps order of keywords passed", {
@@ -84,8 +84,12 @@ test_that("test plot.kwic keeps order of keywords passed", {
     )
 })
 
-test_that("test textplot_wordcloud works for wordfish fitted models", {
+test_that("test textplot_wordcloud works for dfm objects", {
     expect_silent(textplot_wordcloud(dfm(data_corpus_inaugural[1:5]), min.freq = 10))
+})
+
+test_that("test textplot_wordcloud works for tokens objects", {
+    expect_silent(textplot_wordcloud(tokens(data_corpus_inaugural[1:5]), min.freq = 10))
 })
 
 test_that("test textplot_scale1d wordfish in the most basic way", {
@@ -97,7 +101,7 @@ test_that("test textplot_scale1d wordfish in the most basic way", {
     
     expect_silent(textplot_scale1d(wfm, doclabels = apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
                                                           1, paste, collapse = " ")))
-
+    
     p1 <- textplot_scale1d(wfm, margin = "features", sort = TRUE)
     p2 <- textplot_scale1d(wfm, margin = "features", sort = FALSE)
     p1$plot_env <- NULL
@@ -114,7 +118,7 @@ test_that("test textplot_scale1d wordscores in the most basic way", {
     expect_silent(textplot_scale1d(pr, sort = FALSE, groups = docvars(data_corpus_irishbudget2010, "party")))
     
     expect_silent(textplot_scale1d(pr, doclabels = apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
-                                                          1, paste, collapse = " ")))
+                                                         1, paste, collapse = " ")))
     
     p1 <- textplot_scale1d(pr, margin = "features", sort = TRUE)
     p2 <- textplot_scale1d(pr, margin = "features", sort = FALSE)
@@ -123,4 +127,34 @@ test_that("test textplot_scale1d wordscores in the most basic way", {
     expect_equivalent(p1, p2)
 })
 
+test_that("test textplot_keyness ", {
+    prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
+    presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
+                   remove_punct = TRUE)
+    result <- textstat_keyness(presdfm, target = "Trump", measure = "chi2")
+    
+    # shows the correct statistic measure 
+    p3 <- textplot_keyness(result, show_reference = TRUE)
+    expect_equal(p3$labels$y, colnames(result)[1])
+})
 
+test_that("test textplot_keyness: show_reference works correctly ", {
+    prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
+    presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
+                   remove_punct = TRUE)
+    result <- textstat_keyness(presdfm, target = "Trump")
+    
+    k = 10
+    p1 <- textplot_keyness(result, show_reference = FALSE, n = k)
+    p2 <- textplot_keyness(result, show_reference = TRUE, n = k)
+    
+    # Plot with two different fills when show_reference = TRUE
+    expect_equal(dim(table(ggplot2::ggplot_build(p1)$data[[1]]$fill)), 1)
+    expect_equal(dim(table(ggplot2::ggplot_build(p2)$data[[1]]$fill)), 2)
+
+    # number of words plotted doubled when show_reference = TRUE
+    expect_equal(nrow(ggplot2::ggplot_build(p1)$data[[1]]), k)
+    expect_equal(nrow(ggplot2::ggplot_build(p2)$data[[1]]), 2*k)
+    
+
+})

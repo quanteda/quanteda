@@ -1,12 +1,12 @@
+# metacorpus functions ---------------------
+
 #' get or set corpus metadata
 #' 
 #' Get or set the corpus-level metadata in a \link{corpus} object.
 #' @param x a \link{corpus} object
-#' @param field metadata field name(s);  if \code{NULL} (default), return all
+#' @param field metadata field name(s);  if \code{NULL} (default), return all 
 #'   metadata names
-#' @return For \code{metacorpus}, a list of the metadata fields in the corpus. 
-#'   If a list is not what you wanted, you can wrap the results in \link{unlist}, 
-#'   but this will remove any metadata field that is set to \code{NULL}.
+#' @return For \code{metacorpus}, a named list of the metadata fields in the corpus. 
 #'   
 #'   For \code{metacorpus <-}, the corpus with the updated metadata.
 #' @export
@@ -44,30 +44,16 @@ metacorpus.corpus <- function(x, field = NULL) {
     x
 }
 
-
-# internal accessor for documents object
-# @export
-documents <- function(corp) {
-    corp$documents
-}
-
-# internal replacement function for documents
-# @export
-"documents<-" <- function(corp, value) {
-    corp$documents <- value
-    corp
-}
-
+# texts() functions ----------------------------
 
 #' get or assign corpus texts
 #' 
 #' Get or replace the texts in a \link{corpus}, with grouping options. 
 #' Works for plain character vectors too, if \code{groups} is a factor.
+#' @note The \code{groups} will be used for concatenating the texts based on shared
+#' values of \code{groups}, without any specified order of aggregation.
 #' @param x a \link{corpus} or character object
-#' @param groups either: a character vector containing the names of document
-#'   variables to be used for grouping; or a factor (or object that can be
-#'   coerced into a factor) equal in length to the number of documents, used for
-#'   aggregating the texts through concatenation
+#' @inheritParams groups
 #' @param spacer when concatenating texts by using \code{groups}, this will be the 
 #'   spacing added between texts.  (Default is two spaces.)
 #' @return For \code{texts}, a character vector of the texts in the corpus.
@@ -167,55 +153,33 @@ as.character.corpus <- function(x, ...) {
     texts(x)
 }
 
-#' get or set document names
-#' 
-#' Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
-#' @param x the object with docnames
-#' @export
-#' @return \code{docnames} returns a character vector of the document names
-#' @seealso \code{\link{featnames}}
-#' @examples
-#' # query the document names of a corpus
-#' docnames(data_corpus_irishbudget2010)
-#' 
-#' # query the document names of a tokens object
-#' docnames(tokens(data_char_ukimmig2010))
-#' 
-#' # query the document names of a dfm
-#' docnames(dfm(data_corpus_inaugural[1:5]))
-#' 
-#' @keywords corpus dfm
-docnames <- function(x) {
-    UseMethod("docnames")
+# internal: documents() functions ---------------------------------
+
+# internal accessor for documents object
+# @export
+documents <- function(x) {
+    UseMethod("documents")
 }
 
-#' @noRd
-#' @export
-docnames.corpus <- function(x) {
-    # didn't use accessor documents() because didn't want to pass
-    # that large object
-    rownames(x$documents)
+documents.corpus <- function(x) {
+    x$documents
 }
 
-#' @param value a character vector of the same length as \code{x}
-#' @return \code{docnames <-} assigns new values to the document names of a corpus. (Does not work
-#' for dfm objects, whose document names are fixed.)
-#' @export
-#' @examples 
-#' # reassign the document names of the inaugural speech corpus
-#' docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")
-#' 
-#' @rdname docnames
-"docnames<-" <- function(x, value) {
-    UseMethod("docnames<-")
+documents.tokens <- function(x) {
+    docvars(x)
 }
 
-#' @noRd
-#' @export
-"docnames<-.corpus" <- function(x, value) {
-    if (!is.corpus(x))
-        stop("docnames<-  only valid for corpus objects.")
-    rownames(x$documents) <- value
-    return(x)
+documents.dfm <- function(x) {
+    docvars(x)
+}
+
+# internal replacement function for documents
+"documents<-" <- function(x, value) {
+    UseMethod("documents<-")
+}
+
+"documents<-.corpus" <- function(x, value) {
+    x$documents <- value
+    x
 }
 

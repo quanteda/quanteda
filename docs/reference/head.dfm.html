@@ -79,7 +79,7 @@
 
     
     <p>For a <a href='dfm.html'>dfm</a> object, returns the first or last <code>n</code> documents 
-and first <code>ncol</code> features for inspection.</p>
+and first <code>nfeature</code> features.</p>
     
 
     <pre class="usage"><span class='co'># S3 method for dfm</span>
@@ -97,7 +97,7 @@ and first <code>ncol</code> features for inspection.</p>
     </tr>
     <tr>
       <th>n</th>
-      <td><p>a single integer.  If positive, size for the resulting object: 
+      <td><p>a single, positive integer.  If positive, size for the resulting object: 
 number of first/last documents for the dfm. If negative, all but the n 
 last/first number of documents of x.</p></td>
     </tr>
@@ -119,35 +119,34 @@ will contain the first <code>ncol</code> features</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>head</span>(<span class='no'>myDfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 63,634 features (96.9% sparse).
-#&gt; (showing first 6 documents and first 6 features)
-#&gt;                  features
-#&gt; docs              fellow_- -_citizens citizens_of of_the the_senate senate_and
-#&gt;   1789-Washington        1          1           1     20          1          1
-#&gt;   1793-Washington        0          0           0      4          0          0
-#&gt;   1797-Adams             3          3           0     29          0          0
-#&gt;   1801-Jefferson         2          2           0     28          0          0
-#&gt;   1805-Jefferson         0          0           0     17          0          0
-#&gt;   1809-Madison           1          1           0     20          0          0</div><div class='input'><span class='fu'>tail</span>(<span class='no'>myDfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 63,634 features (96.9% sparse).
-#&gt; (showing last 6 documents and last 6 features)
-#&gt;               features
-#&gt; docs           fellow_- -_citizens citizens_of of_the the_senate senate_and
-#&gt;   1997-Clinton        0          0           0     11          0          0
-#&gt;   2001-Bush           0          0           0      2          0          0
-#&gt;   2005-Bush           0          0           0     14          0          0
-#&gt;   2009-Obama          0          0           0      4          0          0
-#&gt;   2013-Obama          0          0           0      2          0          0
-#&gt;   2017-Trump          0          0           2      3          0          0</div><div class='input'><span class='fu'>tail</span>(<span class='no'>myDfm</span>, <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 63,634 features (96.9% sparse).
-#&gt; (showing last 6 documents and last 4 features)
-#&gt;               features
-#&gt; docs           fellow_- -_citizens citizens_of of_the
-#&gt;   1997-Clinton        0          0           0     11
-#&gt;   2001-Bush           0          0           0      2
-#&gt;   2005-Bush           0          0           0     14
-#&gt;   2009-Obama          0          0           0      4
-#&gt;   2013-Obama          0          0           0      2
-#&gt;   2017-Trump          0          0           2      3</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fl'>3</span>, <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 5 features (66.7% sparse).
+#&gt; 3 x 5 sparse Matrix of class "dfm"
+#&gt;     features
+#&gt; docs A B  C  D  E
+#&gt;   R1 2 3 10 22 45
+#&gt;   R2 0 0  0  0  0
+#&gt;   R3 0 0  0  0  0</div><div class='input'><span class='fu'>head</span>(<span class='no'>data_dfm_lbgexample</span>, -<span class='fl'>4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
+#&gt; 2 x 6 sparse Matrix of class "dfm"
+#&gt;     features
+#&gt; docs A B  C  D  E  F
+#&gt;   R1 2 3 10 22 45 78
+#&gt;   R2 0 0  0  0  0  2</div><div class='input'>
+<span class='fu'>tail</span>(<span class='no'>data_dfm_lbgexample</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (80.6% sparse).
+#&gt; 6 x 6 sparse Matrix of class "dfm"
+#&gt;     features
+#&gt; docs ZF ZG ZH ZI ZJ ZK
+#&gt;   R1  0  0  0  0  0  0
+#&gt;   R2  0  0  0  0  0  0
+#&gt;   R3  0  0  0  0  0  0
+#&gt;   R4  2  0  0  0  0  0
+#&gt;   R5 78 45 22 10  3  2
+#&gt;   V1  0  0  0  0  0  0</div><div class='input'><span class='fu'>tail</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (66.7% sparse).
+#&gt; 3 x 4 sparse Matrix of class "dfm"
+#&gt;     features
+#&gt; docs ZH ZI ZJ ZK
+#&gt;   R4  0  0  0  0
+#&gt;   R5 22 10  3  2
+#&gt;   V1  0  0  0  0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

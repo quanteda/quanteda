@@ -78,41 +78,32 @@
     </div>
 
     
-    <p>The dfm class of object is a type of <a href='http://www.rdocumentation.org/packages/Matrix/topics/Matrix-class'>Matrix-class</a>
-  object with additional slots, described below.  <span class="pkg">quanteda</span> uses two 
-  subclasses of the <code>dfm</code> class, depending on whether the object can be 
-  represented by a sparse matrix, in which case it is a <code>dfmSparse</code> 
-  class object, or if dense, then a <code>dfmDense</code> object.  See Details.</p>
+    <p>The dfm class of object is a type of <a href='http://www.rdocumentation.org/packages/Matrix/topics/Matrix-class'>Matrix-class</a> object with 
+additional slots, described below.  <span class="pkg">quanteda</span> uses two subclasses of the
+<code>dfm</code> class, depending on whether the object can be represented by a 
+sparse matrix, in which case it is a <code>dfm</code> class object, or if dense, 
+then a <code>dfmDense</code> object.  See Details.</p>
     
 
-    <pre class="usage"># S4 method for dfmDense
+    <pre class="usage"># S4 method for dfm
 t(x)
 
-# S4 method for dfmSparse
-t(x)
-
-# S4 method for dfmSparse
+# S4 method for dfm
 colSums(x, na.rm = FALSE, dims = 1L, ...)
 
-# S4 method for dfmSparse
+# S4 method for dfm
 rowSums(x, na.rm = FALSE, dims = 1L, ...)
 
-# S4 method for dfmSparse
+# S4 method for dfm
 colMeans(x, na.rm = FALSE, dims = 1L, ...)
 
-# S4 method for dfmSparse
+# S4 method for dfm
 rowMeans(x, na.rm = FALSE, dims = 1L, ...)
 
-# S4 method for dfmSparse,numeric
+# S4 method for dfm,numeric
 +(e1, e2)
 
-# S4 method for numeric,dfmSparse
-+(e1, e2)
-
-# S4 method for dfmDense,numeric
-+(e1, e2)
-
-# S4 method for numeric,dfmDense
+# S4 method for numeric,dfm
 +(e1, e2)
 
 # S4 method for dfm,index,index,missing
@@ -183,25 +174,8 @@ the calculations</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>dfm</code> class is a virtual class that will contain one of two
-  subclasses for containing the cell counts of document-feature matrixes: 
-  <code>dfmSparse</code> or <code>dfmDense</code>.</p>
-<p>The <code>dfmSparse</code> class is a sparse matrix version of
-  <code>dfm-class</code>, inheriting <a href='http://www.rdocumentation.org/packages/Matrix/topics/dgCMatrix-class'>dgCMatrix-class</a> from the
-  <span class="pkg">Matrix</span> package.  It is the default object type created when feature
-  counts are the object of interest, as typical text-based feature counts
-  tend contain many zeroes.  As long as subsequent transformations of the dfm
-  preserve cells with zero counts, the dfm should remain sparse.
-    When the <span class="pkg">Matrix</span> package implements sparse integer matrixes, we will
-  switch the default object class to this object type, as integers are 4
-  bytes each (compared to the current numeric double type requiring 8 bytes
-  per cell.)</p>
-<p>The <code>dfmDense</code> class is a sparse matrix version of <code>dfm-class</code>, 
-inheriting <a href='http://www.rdocumentation.org/packages/Matrix/topics/dgeMatrix-class'>dgeMatrix-class</a> from the <span class="pkg">Matrix</span> package.  dfm objects that
-are converted through weighting or other transformations into cells without zeroes will 
-be automatically converted to the dfmDense class.  This will necessarily be a much larger sized
-object than one of <code>dfmSparse</code> class, because each cell is recorded as a numeric (double) type
-requiring 8 bytes of storage.</p>
+    <p>The <code>dfm</code> class is a virtual class that will contain 
+  <a href='http://www.rdocumentation.org/packages/Matrix/topics/dgCMatrix-class'>dgCMatrix-class</a>.</p>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
@@ -210,12 +184,12 @@ requiring 8 bytes of storage.</p>
 <dt><code>settings</code></dt><dd><p>settings that govern corpus handling and subsequent downstream
 operations, including the settings used to clean and tokenize the texts, 
 and to create the dfm.  See <code><a href='settings.html'>settings</a></code>.</p></dd>
-    <dt><code>weighting</code></dt><dd><p>the feature weighting applied to the dfm.  Default is
-<code>"frequency"</code>, indicating that the values in the cells of the dfm are
-simple feature counts.  To change this, use the <code><a href='weight.html'>weight</a></code>
+    <dt><code>weighting</code></dt><dd><p>the feature weighting applied to the dfm.  Default is 
+<code>"frequency"</code>, indicating that the values in the cells of the dfm are 
+simple feature counts. To change this, use the <code><a href='dfm_weight.html'>dfm_weight</a></code> 
 method.</p></dd>
     <dt><code>smooth</code></dt><dd><p>a smoothing parameter, defaults to zero.  Can be changed using 
-either the <code>smooth</code> or the <code><a href='weight.html'>weight</a></code> methods.</p></dd>
+either the <code>smooth</code> or the <code><a href='dfm_weight.html'>dfm_weight</a></code> methods.</p></dd>
     <dt><code>Dimnames</code></dt><dd><p>These are inherited from <a href='http://www.rdocumentation.org/packages/Matrix/topics/Matrix-class'>Matrix-class</a> but are 
 named <code>docs</code> and <code>features</code> respectively.</p></dd>
 </dl>
@@ -232,7 +206,7 @@ named <code>docs</code> and <code>features</code> respectively.</p></dd>
                   <span class='st'>"and a third document is it"</span>),
                 <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 <span class='no'>x</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, ]</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 16 features (59.4% sparse).
-#&gt; 2 x 16 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 16 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    this contains lots of stopwords no if and or but about it a third
 #&gt;   text1    1        1    1  1         1  0  0   0  0   0     0  0 0     0
@@ -241,7 +215,7 @@ named <code>docs</code> and <code>features</code> respectively.</p></dd>
 #&gt; docs    document is
 #&gt;   text1        0  0
 #&gt;   text2        0  0</div><div class='input'><span class='no'>x</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    this contains lots of stopwords
 #&gt;   text1    1        1    1  1         1

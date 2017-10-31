@@ -1,8 +1,13 @@
 Package: quanteda
-Version: 0.9.9.70
+Version: 0.99.9002
 Title: Quantitative Analysis of Textual Data
-Description: A fast, flexible framework for for the management, processing, and
-    quantitative analysis of textual data in R.
+Description: A fast, flexible, and comprehensive framework for 
+    quantitative text analysis in R.  Provides functionality for corpus management,
+    creating and manipulating tokens and ngrams, exploring keywords in context, 
+    forming and manipulating sparse matrices
+    of documents by features and feature co-occurrences, analyzing keywords, computing feature similarities and
+    distances, applying content dictionaries, applying supervised and unsupervised machine learning, 
+    visually representing text and text analyses, and more. 
 Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     c("aut", "cre", "cph")), 
     person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "ctb"), 
@@ -13,7 +18,7 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb") )
 License: GPL-3
 Depends:
-    R (>= 3.2.2),
+    R (>= 3.4.0),
     methods
 Imports:
     utils,
@@ -30,7 +35,9 @@ Imports:
     fastmatch,
     ggplot2 (>= 2.2.0),
     XML,
-    yaml
+    yaml,
+    lubridate,
+    magrittr
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     knitr,
@@ -44,7 +51,8 @@ Suggests:
     RColorBrewer,
     xtable,
     DT,
-    ca
+    ca,
+    purrr
 URL: http://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
@@ -54,15 +62,13 @@ Collate:
     'RcppExports.R'
     'View.R'
     'bootstrap_dfm.R'
+    'casechange-functions.R'
     'character-methods.R'
-    'dictionaries.R'
-    'corpus.R'
-    'collocations.R'
-    'collocations2.R'
     'convert.R'
-    'corpus-deprecated.R'
     'corpus-methods-base.R'
     'corpus-methods-quanteda.R'
+    'corpus-methods-tm.R'
+    'corpus.R'
     'corpus_reshape.R'
     'corpus_sample.R'
     'corpus_segment.R'
@@ -72,40 +78,33 @@ Collate:
     'data-deprecated.R'
     'data-documentation.R'
     'dfm-classes.R'
-    'dfm-deprecated.R'
     'dfm-methods.R'
     'dfm-print.R'
     'dfm-subsetting.R'
     'dfm.R'
     'dfm_compress.R'
+    'dfm_group.R'
     'dfm_lookup.R'
     'dfm_sample.R'
     'dfm_select.R'
+    'dfm_subset.R'
     'dfm_trim.R'
     'dfm_weight.R'
-    'dictionaries-deprecated.R'
-    'dictionaries-liwc_old.R'
+    'dictionaries.R'
+    'docnames.R'
     'docvars.R'
     'fcm-methods.R'
     'fcm.R'
-    'joinTokens-deprecated.R'
     'kwic.R'
     'nfunctions.R'
     'nscrabble.R'
     'nsyllable.R'
     'phrases.R'
-    'plots-deprecated.R'
-    'quanteda.R'
+    'quanteda-documentation.R'
     'quanteda_options.R'
     'readtext-methods.R'
     'regex2fixed.R'
-    'resample.R'
-    'selectFeatures-old.R'
-    'selectFeatures.R'
-    'sequences.R'
-    'sequences_old.R'
     'settings.R'
-    'similarity.R'
     'spacyr-methods.R'
     'stopwords.R'
     'textmodel-generics.R'
@@ -116,27 +115,26 @@ Collate:
     'textmodel_wordscores.R'
     'textmodel_wordshoal.R'
     'textplot_network.R'
+    'textplot_keyness.R'
     'textplot_scale1d.R'
     'textplot_wordcloud.R'
     'textplot_xray.R'
-    'textstat-deprecated.R'
     'textstat_collocations.R'
     'textstat_dist.R'
+    'textstat_frequency.R'
     'textstat_keyness.R'
     'textstat_lexdiv.R'
     'textstat_readability.R'
     'textstat_simil.R'
-    'toLower.R'
-    'tokenize.R'
-    'tokenize_outtakes.R'
     'tokens.R'
     'tokens_compound.R'
+    'tokens_group.R'
     'tokens_lookup.R'
     'tokens_ngrams.R'
+    'tokens_replace.R'
+    'tokens_segment.R'
     'tokens_select.R'
-    'tolower-misc.R'
     'utils.R'
-    'valuetype.R'
     'wordstem.R'
     'zzz.R'
 RcppModules: ngramMaker

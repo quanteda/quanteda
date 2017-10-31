@@ -87,7 +87,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>valuetype</th>
-      <td><p>how to interpret keyword expressions: <code>"glob"</code> for 
+      <td><p>the type of pattern matching: <code>"glob"</code> for 
 "glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
 or <code>"fixed"</code> for exact matching. See valuetype for details.</p></td>
     </tr>
@@ -111,7 +111,7 @@ or <code>"fixed"</code> for exact matching. See valuetype for details.</p></td>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>If "fixed" is used with <code>case_insensitive = TRUE</code>, the text will 
+    <p>If "fixed" is used with <code>case_insensitive = TRUE</code>, features will 
   typically be lowercased internally prior to matching.  Also, glob matches
   are converted to regular expressions (using <a href='http://www.rdocumentation.org/packages/utils/topics/glob2rx'>glob2rx</a>) when
   they contain wild card characters, and to fixed pattern matches when they
@@ -121,7 +121,7 @@ or <code>"fixed"</code> for exact matching. See valuetype for details.</p></td>
 
     <p><code><a href='http://www.rdocumentation.org/packages/utils/topics/glob2rx'>glob2rx</a></code>, 
 <a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>glob pattern matching (Wikipedia)</a>, 
-regex</p>
+<code><a href='http://www.rdocumentation.org/packages/stringi/topics/stringi-search-regex'>stringi-search-regex</a></code>, <code><a href='http://www.rdocumentation.org/packages/stringi/topics/stringi-search-fixed'>stringi-search-fixed</a></code></p>
     
 
   </div>

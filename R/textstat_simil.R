@@ -14,7 +14,8 @@
 #' These functions compute matrixes of distances and similarities between 
 #' documents or features from a \code{\link{dfm}} and return a 
 #' \code{\link[stats]{dist}} object (or a matrix if specific targets are
-#' selected).
+#' selected).  They are fast and robust because they operate directly on the sparse
+#' \link{dfm} objects.
 #' @param x a \link{dfm} object
 #' @param selection character vector of document names or feature labels from
 #'   \code{x}.  A \code{"dist"} object is returned if selection is \code{NULL}, 
@@ -34,7 +35,8 @@
 #' @note If you want to compute similarity on a "normalized" dfm object 
 #'   (controlling for variable document lengths, for methods such as correlation
 #'   for which different document lengths matter), then wrap the input dfm in 
-#'   \code{\link{weight}(x, "relFreq")}.
+#'   \code{\link{dfm_weight}(x, "relfreq")}.
+#' @return \code{textstat_simil} and \code{textstat_dist} return \code{dist} class objects.
 #' @export
 #' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
 #'   \code{\link{dist}}
@@ -68,8 +70,9 @@ textstat_simil.dfm <- function(x, selection = NULL,
                           margin = c("documents", "features"),
                           method = "correlation", 
                           upper  = FALSE, diag = FALSE) {
+    x <- as.dfm(x)
     margin <- match.arg(margin)
-   
+    
     if (!is.null(selection)) {
         if (!is.character(selection)) 
             stop("'selection' should be character or character vector of document names or feature labels.")
@@ -227,7 +230,7 @@ jaccard_sparse <- function(x, y = NULL, margin = 1) {
 # formula: eJ = |AB|/(|A|^2 + |B|^2 - |AB|)
 eJaccard_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-
+    
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     marginSums <- if (margin == 2) colSums else rowSums
     marginNames <- if (margin == 2) colnames else rownames

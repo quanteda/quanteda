@@ -4,7 +4,6 @@
 __MACOSX
 .DS_Store
 .Rproj.user
-inst/doc
 .Rhistory
 *.o
 *.so
@@ -14,6 +13,4 @@ inst/doc
 quanteda.pdf
 API_notes.md
 
-
-
-
+/revdep/.cache.rds

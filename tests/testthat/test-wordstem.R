@@ -1,9 +1,9 @@
 library(quanteda)
 
 test_that("character wordstem test to test testing.", {
-    expect_equal(char_wordstem('testing'), 'test')
+    expect_equal(char_wordstem('testing', "porter"), 'test')
+    expect_equal(char_wordstem('testing', "english"), 'test')
 })
-
 
 test_that("can wordstem dfms with zero features and zero docs", {
     
@@ -15,8 +15,8 @@ test_that("can wordstem dfms with zero features and zero docs", {
     # features with zero docfreq
     mydfm <- dfm(c("stemming porter three", "stemming four five"))
     mydfm[2, 4] <- 0
-    mydfm <- new("dfmSparse", mydfm)
-    dfm_wordstem(mydfm)
+    mydfm <- new("dfm", mydfm)
+    dfm_wordstem(mydfm, language = "english")
     expect_equal(nfeature(dfm_wordstem(mydfm)), 5)
     
 })
@@ -44,7 +44,7 @@ test_that("can wordstem dfm with unigrams", {
              d2 = "one two three")
     toks <- tokens(txt)
     dfmtoks <- dfm(toks)
-    expect_equal(featnames(dfm_wordstem(dfmtoks)),
+    expect_equal(featnames(dfm_wordstem(dfmtoks, language = "porter")),
                  c("stem", "plural", "perfectli", "on", "two", "three"))
 })
 
@@ -68,3 +68,11 @@ test_that("wordstem works with tokens with padding = TRUE", {
                       d2 = c("", "two", "")))
 })
 
+test_that("wordstem works on tokens that include separators (#909)", {
+    txt <- "Tests for developers."
+    toks <- tokens(txt, remove_separators = FALSE, remove_punct = TRUE)
+    expect_equal(
+        as.list(tokens_wordstem(toks, language = "english")),
+        list(text1 = c("Test", " ", "for", " ", "develop"))
+    )
+})

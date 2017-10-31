@@ -11,16 +11,21 @@ using namespace Rcpp;
 using namespace RcppParallel;
 using namespace std;
 
-#ifndef QUANTEDA // prevent multiple redefinition
+#ifndef QUANTEDA // prevent redefining
 #define QUANTEDA
 
-#if RCPP_PARALLEL_USE_TBB && GCC_VERSION >= 40801 // newer than gcc 4.8.1
+#define CLANG_VERSION (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__)
+
+// setting for unordered_map and unordered_set 
+const float GLOBAL_PATTERNS_MAX_LOAD_FACTOR = 0.1;
+const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.5;
+
+// compiler has to be newer than clang 3.30 or gcc 4.8.1
+#if RCPP_PARALLEL_USE_TBB && (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801) 
 #define QUANTEDA_USE_TBB true // tbb.h is loaded automatically by RcppParallel.h
 #else
 #define QUANTEDA_USE_TBB false
 #endif
-
-#define RCPP_USING_CXX11
 
 namespace quanteda{
     
@@ -30,6 +35,7 @@ namespace quanteda{
     
 #if QUANTEDA_USE_TBB
     typedef tbb::atomic<int> IntParam;
+    typedef tbb::atomic<unsigned int> UintParam;
     typedef tbb::atomic<long> LongParam;
     typedef tbb::atomic<double> DoubleParam;
     typedef tbb::concurrent_vector<int> IntParams;
@@ -38,6 +44,7 @@ namespace quanteda{
     typedef tbb::spin_mutex Mutex;
 #else
     typedef int IntParam;
+    typedef unsigned int UintParam;
     typedef long LongParam;
     typedef double DoubleParam;
     typedef std::vector<int> IntParams;
@@ -46,7 +53,7 @@ namespace quanteda{
 #endif    
     
 
-    inline String join(CharacterVector &tokens_, 
+    inline String join_strings(CharacterVector &tokens_, 
                        const String delim_ = " "){
         
         if (tokens_.size() == 0) return "";
@@ -59,7 +66,7 @@ namespace quanteda{
         return token_;
     }
     
-    inline std::string join(std::vector<std::string> &tokens, 
+    inline std::string join_strings(std::vector<std::string> &tokens, 
                             const std::string delim = " "){
         if (tokens.size() == 0) return "";
         std::string token = tokens[0];
@@ -69,7 +76,7 @@ namespace quanteda{
         return token;
     }
     
-    inline String join(std::vector<unsigned int> &tokens, 
+    inline String join_strings(std::vector<unsigned int> &tokens, 
                        CharacterVector types_, 
                        const String delim_ = " ") {
         
@@ -152,8 +159,8 @@ namespace quanteda{
 
 #if QUANTEDA_USE_TBB
     typedef tbb::atomic<unsigned int> IdNgram;
-    typedef tbb::concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
-    typedef tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
+    typedef tbb::concurrent_unordered_multimap<Ngram, UintParam, hash_ngram, equal_ngram> MultiMapNgrams;
+    typedef tbb::concurrent_unordered_map<Ngram, UintParam, hash_ngram, equal_ngram> MapNgrams;
     typedef tbb::concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
     typedef tbb::concurrent_vector<Ngram> VecNgrams;
     typedef tbb::concurrent_unordered_set<unsigned int> SetUnigrams;
@@ -165,7 +172,7 @@ namespace quanteda{
     typedef std::vector<Ngram> VecNgrams;
     typedef std::unordered_set<unsigned int> SetUnigrams;
 #endif    
-
+/*
     inline std::vector<std::size_t> register_ngrams(List words_, SetNgrams &set_words) {
         std::vector<std::size_t> spans(words_.size());
         for (unsigned int g = 0; g < (unsigned int)words_.size(); g++) {
@@ -193,6 +200,44 @@ namespace quanteda{
         std::reverse(std::begin(spans), std::end(spans));
         return spans;
     }
+*/
+    inline std::vector<std::size_t> register_ngrams(List patterns_, SetNgrams &set) {
+
+        set.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+        Ngrams patterns = Rcpp::as<Ngrams>(patterns_);
+        std::vector<std::size_t> spans(patterns.size());
+        for (size_t g = 0; g < patterns.size(); g++) {
+            set.insert(patterns[g]);
+            spans[g] = patterns[g].size();
+        }
+        sort(spans.begin(), spans.end());
+        spans.erase(unique(spans.begin(), spans.end()), spans.end());
+        std::reverse(std::begin(spans), std::end(spans));
+        return spans;
+    }
+
+    inline std::vector<std::size_t> register_ngrams(List patterns_, IntegerVector ids_, MapNgrams &map) {
+
+        map.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+        Ngrams patterns = Rcpp::as<Ngrams>(patterns_);
+        std::vector<unsigned int> ids = Rcpp::as< std::vector<unsigned int> >(ids_);
+        std::vector<std::size_t> spans(patterns.size());
+        for (size_t g = 0; g < std::min(patterns.size(), ids.size()); g++) {
+            map.insert(std::pair<Ngram, IdNgram>(patterns[g], ids[g]));
+            spans[g] = patterns[g].size();
+        }
+
+        // Rcout << "current max_load_factor: " << map.max_load_factor() << std::endl;
+        // Rcout << "current size           : " << map.size() << std::endl;
+        // Rcout << "current bucket_count   : " << map.unsafe_bucket_count() << std::endl;
+        // Rcout << "current load_factor    : " << map.load_factor() << std::endl;
+
+        sort(spans.begin(), spans.end());
+        spans.erase(unique(spans.begin(), spans.end()), spans.end());
+        std::reverse(std::begin(spans), std::end(spans));
+        return spans;
+    }
+    
 
 // These typedefs are used in fcm_mt, ca, wordfish_mt
 #if QUANTEDA_USE_TBB

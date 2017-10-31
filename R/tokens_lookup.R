@@ -5,23 +5,23 @@
 #' @param x tokens object to which dictionary or thesaurus will be supplied
 #' @param dictionary the \link{dictionary}-class object that will be applied to 
 #'   \code{x}
-#' @param levels integers specifying the levels of entries in a hierarchical
+#' @param levels integers specifying the levels of entries in a hierarchical 
 #'   dictionary that will be applied.  The top level is 1, and subsequent levels
-#'   describe lower nesting levels.  Values may be combined, even if these
-#'   levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second
-#'   level into the first, but record the third level (if present) collapsed below
-#'   the first.  (See examples.)
+#'   describe lower nesting levels.  Values may be combined, even if these 
+#'   levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second 
+#'   level into the first, but record the third level (if present) collapsed
+#'   below the first.  (See examples.)
 #' @inheritParams valuetype
-#' @param concatenator a charactor that connect words in multi-words entries in \code{x}
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE} 
 #'   uppercase to distinguish them from other features
 #' @param capkeys if TRUE, convert dictionary keys to uppercase to distinguish 
 #'   them from other features
+#' @param nomatch an optional character naming a new key for tokens that do not
+#'   matched to a dictionary values  If \code{NULL} (default), do not record
+#'   unmatched tokens.
 #' @param exclusive if \code{TRUE}, remove all features not in dictionary, 
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
-#' @param multiword if \code{FALSE}, multi-word entries in dictionary are treated
-#'   as single tokens
 #' @param verbose print status messages if \code{TRUE}
 #' @examples
 #' toks <- tokens(data_corpus_inaugural)
@@ -29,6 +29,7 @@
 #'                    law=c('law*', 'constitution'), 
 #'                    freedom=c('free*', 'libert*')))
 #' dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE))
+#' dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE, nomatch = 'NONE'))
 #' 
 #' dict_fix <- dictionary(list(country = "united states", 
 #'                        law = c('law', 'constitution'), 
@@ -51,16 +52,18 @@
 #' tokens_lookup(toks, dict, levels = 3)
 #' tokens_lookup(toks, dict, levels = c(1,3))
 #' tokens_lookup(toks, dict, levels = c(2,3))
+#' 
+#' # show unmatched tokens
+#' tokens_lookup(toks, dict, nomatch = "_UNMATCHED")
+#' 
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_lookup <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"), 
-                          concatenator = ' ',
                           case_insensitive = TRUE,
                           capkeys = !exclusive,
                           exclusive = TRUE,
-#                          overlap = FALSE,
-                          multiword = TRUE,
+                          nomatch = NULL,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_lookup")    
 }
@@ -69,11 +72,10 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
 #' @export
 tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"), 
-                          concatenator = ' ',
                           case_insensitive = TRUE,
                           capkeys = !exclusive,
                           exclusive = TRUE,
-                          multiword = TRUE,
+                          nomatch = NULL,
                           verbose = quanteda_options("verbose")) {
 
     if (!is.tokens(x))
@@ -87,46 +89,42 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     attrs <- attributes(x)
     
     # Generate all combinations of type IDs
-    entries_id <- list()
+    values_id <- list()
     keys_id <- c()
     types <- types(x)
     
-    index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
+    
     if (verbose) 
         catm("applying a dictionary consisting of ", length(dictionary), " key", 
              if (length(dictionary) > 1L) "s" else "", "\n", sep="")
     
+    index <- index_types(types, valuetype, case_insensitive) # index types before the loop
     for (h in seq_along(dictionary)) {
-        entries <- dictionary[[h]]
-        
-        # Substitute dictionary's concatenator with tokens' concatenator 
-        if (concatenator != attr(dictionary, 'concatenator'))
-            entries <- stri_replace_all_fixed(entries, attr(dictionary, 'concatenator'), concatenator)
-        
-        # Separate entries by concatenator
-        if (multiword) {
-            entries <- stringi::stri_split_fixed(entries, concatenator)
-        } else {
-            entries <- as.list(entries)
-        } 
-        entries_temp <- regex2id(entries, types, valuetype, case_insensitive, index)
-        entries_id <- c(entries_id, entries_temp)
-        keys_id <- c(keys_id, rep(h, length(entries_temp)))
+        values <- split_dictionary_values(dictionary[[h]], attr(x, 'concatenator'))
+        values_temp <- regex2id(values, index = index)
+        values_id <- c(values_id, values_temp)
+        keys_id <- c(keys_id, rep(h, length(values_temp)))
     }
-    # if (verbose) 
-    #     message('Searching ', length(entries_id), ' types of features...')
     if (capkeys) {
         keys <- char_toupper(names(dictionary))
     } else {
         keys <- names(dictionary)
     }
     if (exclusive) {
-        result <- qatd_cpp_tokens_lookup(x, keys, entries_id, keys_id, FALSE)
+        if (!is.null(nomatch)) {
+            x <- qatd_cpp_tokens_lookup(x, c(keys, nomatch[1]), values_id, keys_id, FALSE, 1)
+        } else {
+            x <- qatd_cpp_tokens_lookup(x, keys, values_id, keys_id, FALSE, 0)
+        }
     } else {
-        result <- qatd_cpp_tokens_match(x, c(types, keys), entries_id, keys_id + length(types), FALSE)
+        if (!is.null(nomatch))
+            warning("nomatch only applies if exclusive = TRUE")
+        keys_used <- unique(keys_id)
+        x <- qatd_cpp_tokens_lookup(x, c(keys[keys_used], types), values_id, match(keys_id, keys_used), FALSE, 2)
     }
-    attributes(result, FALSE) <- attrs
-    attr(result, "what") <- "dictionary"
-    attr(result, "dictionary") <- dictionary
-    return(result)
+    attr(x, "what") <- "dictionary"
+    attr(x, "dictionary") <- dictionary
+    attributes(x, FALSE) <- attrs
+    if (exclusive) attr(x, "padding") <- FALSE
+    return(x)
 }

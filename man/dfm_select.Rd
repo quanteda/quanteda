@@ -7,87 +7,81 @@
 \alias{fcm_remove}
 \title{select features from a dfm or fcm}
 \usage{
-dfm_select(x, features = NULL, documents = NULL, selection = c("keep",
-  "remove"), valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, min_nchar = 1, max_nchar = 63,
-  padding = FALSE, verbose = quanteda_options("verbose"), ...)
+dfm_select(x, pattern = NULL, selection = c("keep", "remove"),
+  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
+  min_nchar = 1L, max_nchar = 63L, verbose = quanteda_options("verbose"),
+  ...)
 
-dfm_remove(x, features = NULL, documents = NULL, ...)
+dfm_remove(x, pattern = NULL, ...)
 
-fcm_select(x, features = NULL, selection = c("keep", "remove"),
+fcm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   verbose = TRUE, ...)
 
-fcm_remove(x, features, ...)
+fcm_remove(x, pattern = NULL, ...)
 }
 \arguments{
 \item{x}{the \link{dfm} or \link{fcm} object whose features will be selected}
 
-\item{features}{one of: a character vector of features to be selected, a 
-\link{dfm} whose features will be used for selection, or a dictionary class
-object whose values (not keys) will provide the features to be selected. 
-For \link{dfm} objects, see details in the Value section below.}
-
-\item{documents}{select documents based on their document names. Works exactly 
-the same as features.}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
 \item{selection}{whether to \code{keep} or \code{remove} the features}
 
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+  wildcard expressions; \code{"regex"} for regular expressions; or
+  \code{"fixed"} for exact matching. See \link{valuetype} for details.
+
+  For \code{dfm_select}, \code{pattern} may also be a \link{dfm}; see Value
+  below.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
 \item{min_nchar, max_nchar}{numerics specifying the minimum and maximum length
 in characters for features to be removed or kept; defaults are 1 and 
 \href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
- (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are
-applied after (and hence, in addition to) any selection based on pattern
-matches. These arguments are Ignored when padding is \code{TRUE}.}
+ (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are 
+applied after (and hence, in addition to) any selection based on pattern 
+matches.}
 
-\item{padding}{if \code{TRUE} features or documents not existing in x is 
-added to \link{dfm}. This option is available only when selection is 
-\code{keep} and valuetype is \code{fixed}.}
-
-\item{verbose}{if \code{TRUE} print message about how many features were 
+\item{verbose}{if \code{TRUE} print message about how many pattern were 
 removed}
 
-\item{...}{supplementary arguments passed to the underlying functions in 
-\code{\link[stringi]{stri_detect_regex}}}
+\item{...}{used only for passing arguments from \code{*_remove} to
+\code{*_select} functions}
 }
 \value{
-A \link{dfm} or \link{fcm} object, after the feature selection has been applied.
+A \link{dfm} or \link{fcm} object, after the feature selection has 
+  been applied.
   
-  When \code{features} is a \link{dfm} object and \code{padding} is \code{TRUE}, 
-  then the returned object will be identical in its feature set to the dfm 
-  supplied as the \code{features} argument. This means that any features in 
-  \code{x} not in \code{features} will be discarded, and that any features in 
-  found in the dfm supplied as \code{features} but not found in \code{x} will 
-  be added with all zero counts.  Because selecting on a dfm is designed to produce 
-  a selected dfm with an exact feature match, when \code{features} is
-  a \link{dfm} object, then the following settings are always used: 
-  \code{padding = TRUE}, 
+  When \code{pattern} is a \link{dfm} object, then the returned object will
+  be identical in its feature set to the dfm supplied as the \code{pattern}
+  argument. This means that any features in \code{x} not in the dfm provided
+  as \code{pattern} will be discarded, and that any features in found in the
+  dfm supplied as \code{pattern} but not found in \code{x} will be added with
+  all zero counts.  Because selecting on a dfm is designed to produce a
+  selected dfm with an exact feature match, when \code{pattern} is a
+  \link{dfm} object, then the following settings are always used: 
   \code{case_insensitive = FALSE}, and \code{valuetype = "fixed"}.
   
-  Selecting on a \link{dfm} is useful when you have trained a model 
-  on one dfm, and need to project this onto a test set whose features must be 
+  Selecting on a \link{dfm} is useful when you have trained a model on one 
+  dfm, and need to project this onto a test set whose features must be 
   identical.  It is also used in \code{\link{bootstrap_dfm}}.  See examples.
 }
 \description{
-This function selects or discards features from a \link{dfm} or \link{fcm}, based on a 
-pattern match with the feature names.   The most common usages are to 
-eliminate features from a dfm already constructed, such as stopwords, or to 
-select only terms of interest from a dictionary.
+This function selects or discards features from a \link{dfm} or \link{fcm}, 
+based on feature name matches with \code{pattern}.  The most common usages 
+are to eliminate features from a dfm already constructed, such as stopwords, 
+or to select only terms of interest from a dictionary.
 }
 \details{
 \code{dfm_remove} and \code{fcm_remove} are simply a convenience
-  wrappers to calling \code{dfm_select} and \code{fcm_select} with
+  wrappers to calling \code{dfm_select} and \code{fcm_select} with 
   \code{selection = "remove"}.
 }
 \note{
 This function selects features based on their labels.  To select 
-  features based on the values of a the document-feature matrix, use 
+  features based on the values of the document-feature matrix, use 
   \code{\link{dfm_trim}}.
 }
 \examples{
@@ -111,7 +105,7 @@ dfm_select(myDfm, min_nchar = 5)
 txts <- c("This is text one", "The second text", "This is text three")
 (dfm1 <- dfm(txts[1:2]))
 (dfm2 <- dfm(txts[2:3]))
-(dfm3 <- dfm_select(dfm1, dfm2, valuetype = "fixed", padding = TRUE, verbose = TRUE))
+(dfm3 <- dfm_select(dfm1, dfm2, valuetype = "fixed", verbose = TRUE))
 setequal(featnames(dfm2), featnames(dfm3))
 
 tmpdfm <- dfm(c("This is a document with lots of stopwords.",

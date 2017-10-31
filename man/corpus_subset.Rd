@@ -7,12 +7,12 @@
 corpus_subset(x, subset, select, ...)
 }
 \arguments{
-\item{x}{corpus object to be subsetted}
+\item{x}{\link{corpus} object to be subsetted}
 
-\item{subset}{logical expression indicating elements or rows to keep: missing
+\item{subset}{logical expression indicating the documents to keep: missing
 values are taken as false}
 
-\item{select}{expression, indicating the attributes to select from the corpus}
+\item{select}{expression, indicating the docvars to select from the corpus}
 
 \item{...}{not used}
 }

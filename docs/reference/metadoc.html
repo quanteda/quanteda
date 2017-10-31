@@ -78,7 +78,14 @@
     </div>
 
     
-    <p>Get or set the document-level meta-data.</p>
+    <p>Get or set document-level meta-data.  Document-level meta-data are a special 
+type of <a href='docvars.html'>docvars</a>, meant to contain information about documents that 
+would not be used as a "variable" for analysis. An example could be the 
+source of the document, or notes pertaining to its transformation, copyright 
+information, etc.</p>
+<p>Document-level meta-data differs from corpus-level meta-data in that the 
+latter pertains to the collection of texts as a whole, whereas the 
+document-level version can differ with each document.</p>
     
 
     <pre class="usage"><span class='fu'>metadoc</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -94,7 +101,8 @@
     </tr>
     <tr>
       <th>field</th>
-      <td><p>character, the name of the metadata field(s) to be queried or set</p></td>
+      <td><p>character, the name of the metadata field(s) to be queried or 
+set</p></td>
     </tr>
     <tr>
       <th>value</th>
@@ -111,27 +119,30 @@
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Document-level meta-data names are preceded by an underscore character,
-  such as <code>_language</code>, but when named in in the <code>field</code> argument,
+  such as <code>_language</code>, but when named in in the <code>field</code> argument, 
   do <em>not</em> need the underscore character.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='metacorpus.html'>metacorpus</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mycorp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1990</span>)
-<span class='fu'>summary</span>(<span class='no'>mycorp</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 7 documents.
+<span class='fu'>summary</span>(<span class='no'>mycorp</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 7 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences Year President FirstName
-#&gt;  1993-Clinton   644   1837        81 1993   Clinton      Bill
-#&gt;  1997-Clinton   773   2451       111 1997   Clinton      Bill
-#&gt;     2001-Bush   622   1810        97 2001      Bush George W.
-#&gt;     2005-Bush   772   2325       100 2005      Bush George W.
-#&gt;    2009-Obama   939   2729       110 2009     Obama    Barack
-#&gt;    2013-Obama   814   2335        88 2013     Obama    Barack
-#&gt;    2017-Trump   582   1662        88 2017     Trump Donald J.
+#&gt;  1993-Clinton   642   1833        81 1993   Clinton      Bill
+#&gt;  1997-Clinton   773   2449       111 1997   Clinton      Bill
+#&gt;     2001-Bush   621   1808        97 2001      Bush George W.
+#&gt;     2005-Bush   773   2319       100 2005      Bush George W.
+#&gt;    2009-Obama   938   2711       110 2009     Obama    Barack
+#&gt;    2013-Obama   814   2317        88 2013     Obama    Barack
+#&gt;    2017-Trump   582   1660        88 2017     Trump Donald J.
 #&gt; 
-#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
-#&gt; Created: Fri Sep 12 12:41:17 2014
-#&gt; Notes:   
-#&gt; </div><div class='input'><span class='fu'>metadoc</span>(<span class='no'>mycorp</span>, <span class='st'>"encoding"</span>) <span class='kw'>&lt;-</span> <span class='st'>"UTF-8"</span>
+#&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
+#&gt; Created: Tue Jun 13 14:51:47 2017
+#&gt; Notes:   http://www.presidency.ucsb.edu/inaugurals.php </div><div class='input'><span class='fu'>metadoc</span>(<span class='no'>mycorp</span>, <span class='st'>"encoding"</span>) <span class='kw'>&lt;-</span> <span class='st'>"UTF-8"</span>
 <span class='fu'>metadoc</span>(<span class='no'>mycorp</span>)</div><div class='output co'>#&gt;              _encoding
 #&gt; 1993-Clinton     UTF-8
 #&gt; 1997-Clinton     UTF-8
@@ -140,16 +151,16 @@
 #&gt; 2009-Obama       UTF-8
 #&gt; 2013-Obama       UTF-8
 #&gt; 2017-Trump       UTF-8</div><div class='input'><span class='fu'>metadoc</span>(<span class='no'>mycorp</span>, <span class='st'>"language"</span>) <span class='kw'>&lt;-</span> <span class='st'>"english"</span>
-<span class='fu'>summary</span>(<span class='no'>mycorp</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 7 documents.
+<span class='fu'>summary</span>(<span class='no'>mycorp</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 7 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences Year President FirstName _encoding
-#&gt;  1993-Clinton   644   1837        81 1993   Clinton      Bill     UTF-8
-#&gt;  1997-Clinton   773   2451       111 1997   Clinton      Bill     UTF-8
-#&gt;     2001-Bush   622   1810        97 2001      Bush George W.     UTF-8
-#&gt;     2005-Bush   772   2325       100 2005      Bush George W.     UTF-8
-#&gt;    2009-Obama   939   2729       110 2009     Obama    Barack     UTF-8
-#&gt;    2013-Obama   814   2335        88 2013     Obama    Barack     UTF-8
-#&gt;    2017-Trump   582   1662        88 2017     Trump Donald J.     UTF-8
+#&gt;  1993-Clinton   642   1833        81 1993   Clinton      Bill     UTF-8
+#&gt;  1997-Clinton   773   2449       111 1997   Clinton      Bill     UTF-8
+#&gt;     2001-Bush   621   1808        97 2001      Bush George W.     UTF-8
+#&gt;     2005-Bush   773   2319       100 2005      Bush George W.     UTF-8
+#&gt;    2009-Obama   938   2711       110 2009     Obama    Barack     UTF-8
+#&gt;    2013-Obama   814   2317        88 2013     Obama    Barack     UTF-8
+#&gt;    2017-Trump   582   1660        88 2017     Trump Donald J.     UTF-8
 #&gt;  _language
 #&gt;    english
 #&gt;    english
@@ -159,10 +170,9 @@
 #&gt;    english
 #&gt;    english
 #&gt; 
-#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
-#&gt; Created: Fri Sep 12 12:41:17 2014
-#&gt; Notes:   
-#&gt; </div></pre>
+#&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
+#&gt; Created: Tue Jun 13 14:51:47 2017
+#&gt; Notes:   http://www.presidency.ucsb.edu/inaugurals.php </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -172,6 +182,8 @@
       <li><a href="#value">Value</a></li>
 
       <li><a href="#note">Note</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

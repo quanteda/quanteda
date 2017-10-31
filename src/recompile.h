@@ -27,7 +27,7 @@ inline bool is_encoded(String delim_){
 }
 
 inline bool is_encoded(CharacterVector types_){
-    for (std::size_t i = 0; i < types_.size(); i++) {
+    for (unsigned int i = 0; i < (unsigned int)types_.size(); i++) {
         String type_ = types_[i];
         if (type_.get_encoding() > 0) {
             return true;
@@ -77,7 +77,7 @@ inline Tokens recompile(Texts texts,
     std::vector<bool> flags_unique(ids_new.size(), false);
     //Rcout << setw(10) << "" << ": " << 0 << " -> " << ids_new[0] << "\n";
     
-    dev::Timer timer;
+    /// dev::Timer timer;
     
     // Check if IDs are all used
     bool all_used;
@@ -88,9 +88,10 @@ inline Tokens recompile(Texts texts,
             for (std::size_t i = 0; i < texts[h].size(); i++) {
                 unsigned int id = texts[h][i];
                 if (id > id_limit) {
-                    throw std::range_error("Invalid tokens object");    
+                    throw std::range_error("Invalid tokens object");
                 }
                 flags_used[id] = true;
+                // Rcout << setw(10) << id << ": used" << "\n";
             }
         }
         all_used = std::all_of(flags_used.begin(), flags_used.end(), [](bool v) { return v; });
@@ -108,19 +109,14 @@ inline Tokens recompile(Texts texts,
         flags_unique[0] = true; // padding is always unique
         for (std::size_t g = 1; g < ids_new.size(); g++) {
             if (types[g - 1] == "") continue; // ignore null types
+            if (!flags_used[g]) continue; // ignore unused
             auto it = types_unique.insert(std::pair<std::string, unsigned int>(types[g - 1], id_new));
             ids_new[g] = it.first->second;
             if (it.second) {
                 flags_unique[g] = true;
-                if (flags_used[g]) {
-                    id_new++; // increment iff there is no gap
-                }
+                id_new++; // increment iff there is no gap
             }
-            // if (flags_used[g]) {
-            //     Rcout << setw(10) << types[g - 1] << ": " << g << " -> " << ids_new[g] << "\n";
-            // } else {
-            //     Rcout << setw(10) << types[g - 1] << ": " << g << " ->\n";
-            // }
+            // Rcout << setw(10) << types[g - 1] << ": " << g << " -> " << ids_new[g] << "\n";
         }
         all_unique = std::all_of(flags_unique.begin(), flags_unique.end(), [](bool v) { return v; });
         // dev::stop_timer("Check duplication", timer);

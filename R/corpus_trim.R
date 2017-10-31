@@ -9,12 +9,12 @@
 #'   (excluding punctuation)
 #' @param exclude_pattern a \pkg{stringi} regular expression whose match (at the
 #'   sentence level) will be used to exclude sentences
-#' @return a \link{corpus} or character vector equal in length to the input, or
-#'   a tokenized set of sentences if .  If the input was a corpus, then the all
-#'   docvars and metadata are preserved.  For documents whose sentences have
-#'   been removed entirely, a null string (\code{""}) will be returned.
+#' @return a \link{corpus} or character vector equal in length to the input.  If
+#'   the input was a corpus, then the all docvars and metadata are preserved. 
+#'   For documents whose sentences have been removed entirely, a null string
+#'   (\code{""}) will be returned.
 #' @export
-#' @keywords corpus
+#' @keywords corpus internal
 #' @examples
 #' txt <- c("PAGE 1. This is a single sentence.  Short sentence. Three word sentence.",
 #'          "PAGE 2. Very short! Shorter.",

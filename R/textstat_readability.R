@@ -3,7 +3,8 @@
 #' Calculate the readability of text(s) using one of a variety of computed 
 #' indexes.
 #' @param x a character or \link{corpus} object containing the texts
-#' @param measure character vector defining the readability measure to calculate
+#' @param measure character vector defining the readability measure to calculate.  
+#'   Matches are case-insensitive.
 #' @param remove_hyphens if \code{TRUE}, treat constituent words in hyphenated as
 #'   separate terms, for purposes of computing word lengths, e.g.
 #'   "decision-making" as two terms of lengths 8 and 6 characters respectively,
@@ -61,16 +62,16 @@ textstat_readability <- function(x,
 #' @noRd
 #' @export
 textstat_readability.corpus <- function(x,
-                               measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
-                                           "Coleman", "Coleman.C2",
-                                           "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
-                                           "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
-                                           "Danielson.Bryan", "Danielson.Bryan.2",
-                                           "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson",
-                                           "Flesch", "Flesch.PSK", "Flesch.Kincaid",
-                                           "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
-                                           "Fucks", "Linsear.Write", "LIW",
-                                           "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", "Scrabble",
+                                        measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
+                                                    "Coleman", "Coleman.C2",
+                                                    "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
+                                                    "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
+                                                    "Danielson.Bryan", "Danielson.Bryan.2",
+                                                    "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson",
+                                                    "Flesch", "Flesch.PSK", "Flesch.Kincaid",
+                                                    "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
+                                                    "Fucks", "Linsear.Write", "LIW",
+                                                    "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", "Scrabble",
                                            "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de",
                                            "Spache", "Spache.old", "Strain",
                                            "Traenkle.Bailer", "Traenkle.Bailer.2",
@@ -128,11 +129,12 @@ textstat_readability.character <- function(x,
                        "Wheeler.Smith",
                        "meanSentenceLength",
                        "meanWordSyllables")
-    checkMeasure <- measure %in% validMeasures
+    checkMeasure <- char_tolower(measure) %in% char_tolower(validMeasures)
     if (!all(checkMeasure))
         stop("Invalid measure(s): ", measure[!checkMeasure])
     if ("all" %in% measure)
         measure <- validMeasures[-1]
+    measure <- validMeasures[char_tolower(validMeasures) %in% char_tolower(measure)]
 
     # to avoid "no visible binding for global variable" CHECK NOTE
     textID <- W <- St <- C <- Sy <- W3Sy <- W2Sy <- W_1Sy <- W6C <- W7C <- Wlt3Sy <- W_wl.Dale.Chall <-
@@ -146,7 +148,7 @@ textstat_readability.character <- function(x,
         Coleman.Liau <- meanSentenceLength <- meanWordSyllables <- NULL
 
     if (is.null(names(x)))
-        names(x) <- paste0("text", seq_along(x))
+        names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
 
     if (!missing(min_sentence_length) | !missing(max_sentence_length)) {
         x <- char_trim(x, 'sentences',
@@ -181,7 +183,7 @@ textstat_readability.character <- function(x,
                                W6C = sapply(wordLengths, function(x) sum(x >= 6)), # number of words with at least 6 letters
                                W7C = sapply(wordLengths, function(x) sum(x >= 7))) # number of words with at least 7 letters
     textFeatures[, W_wl.Dale.Chall := sapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$dalechall)))]
-    textFeatures[, Wlt3Sy := Sy - W3Sy]   # number of words with less than three syllables
+    textFeatures[, Wlt3Sy := W - W3Sy]   # number of words with less than three syllables
 
     if (any(c("all", "ARI") %in% measure))
         textFeatures[, ARI := 0.5 * W / St + 4.71 * C / W - 21.43]
@@ -364,7 +366,7 @@ textstat_readability.character <- function(x,
     }
 
     #     if (any(c("all", "TRI") %in% measure)) {
-    #         Ptn <- lengths(tokenize(x, remove_punct = FALSE)) - lengths(tokenizedWords)
+    #         Ptn <- lengths(tokens(x, remove_punct = FALSE)) - lengths(tokenizedWords)
     #         Frg <- NA  # foreign words -- cannot compute without a dictionary
     #         textFeatures[, TRI := (0.449 * W_1Sy) - (2.467 * Ptn) - (0.937 * Frg) - 14.417]
     #     }
@@ -421,25 +423,4 @@ prepositions <- c("a", "abaft", "abeam", "aboard", "about", "above", "absent", "
 #'
 #' Spache, G. 1953. "A new readability formula for primary-grade reading materials." \emph{The Elementary School Journal} 53: 410-413.
 "data_char_wordlists"
-
-# makeWordList <- function(filename) {
-#     wordList <- readtext(filename, cache = FALSE)@texts
-#     wordList <- stringi::stri_replace_all_regex(wordList, "-", "_")
-#     wordList <- tokenize(wordList, simplify = TRUE)
-#     wordList <- stringi::stri_replace_all_regex(wordList, "_", "-")
-#     wordList
-# }
-# dalechall    <- makeWordList("~/Dropbox/QUANTESS/quanteda_working_files/readability/Dale-Chall.txt")
-# spache    <- makeWordList("~/Dropbox/QUANTESS/quanteda_working_files/readability/Spache.txt")
-# wordlists <- list(dalechall = dalechall, spache = spache)
-# save(wordlists, file = "data/wordlists.RData")
-
-
-# (1 point)-A, E, I, O, U, L, N, S, T, R.
-# (2 points)-D, G.
-# (3 points)-B, C, M, P.
-# (4 points)-F, H, V, W, Y.
-# (5 points)-K.
-# (8 points)- J, X.
-# (10 points)-Q, Z.
 

@@ -5,7 +5,7 @@
 \alias{dfm_smooth}
 \title{weight the feature frequencies in a dfm}
 \usage{
-dfm_weight(x, type = c("frequency", "relFreq", "relMaxFreq", "logFreq",
+dfm_weight(x, type = c("frequency", "relfreq", "relmaxfreq", "logfreq",
   "tfidf"), weights = NULL)
 
 dfm_smooth(x, smoothing = 1)
@@ -16,9 +16,9 @@ dfm_smooth(x, smoothing = 1)
 \item{type}{a label of the weight type:
 \describe{
  \item{\code{"frequency"}}{integer feature count (default when a dfm is created)}
- \item{\code{"relFreq"}}{the proportion of the feature counts of total feature counts (aka relative frequency)}
- \item{\code{"relMaxFreq"}}{the proportion of the feature counts of the highest feature count in a document}
- \item{\code{"logFreq"}}{take the logarithm of 1 + the feature count, for base 10}
+ \item{\code{"relfreq"}}{the proportion of the feature counts of total feature counts (aka relative frequency)}
+ \item{\code{"relmaxfreq"}}{the proportion of the feature counts of the highest feature count in a document}
+ \item{\code{"logfreq"}}{take the logarithm of 1 + the feature count, for base 10}
  \item{\code{"tfidf"}}{Term-frequency * inverse document frequency. For a
   full explanation, see, for example, 
   \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
@@ -36,7 +36,12 @@ assigned a weight of 1.0 (meaning they will be unchanged).}
 \item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
 }
 \value{
-The dfm with weighted values.
+\code{dfm_weight} returns the dfm with weighted values.
+
+\code{dfm_smooth} returns a dfm whose values have been smoothed by
+  adding the \code{smoothing} amount. Note that this effectively converts a
+  matrix from sparse to dense format, so may exceed memory requirements
+  depending on the size of your input matrix.
 }
 \description{
 Returns a document by feature matrix with the feature frequencies weighted 
@@ -47,10 +52,6 @@ according to one of several common methods.  Some shortcut functions that offer 
 \item{\code{\link{docfreq}}}{  compute document frequencies of features}
 }
 }
-\details{
-This converts a matrix from sparse to dense format, so may exceed memory
-requirements depending on the size of your input matrix.
-}
 \note{
 For finer grained control, consider calling the convenience functions directly.
 }
@@ -59,19 +60,18 @@ dtm <- dfm(data_corpus_inaugural)
 
 x <- apply(dtm, 1, function(tf) tf/max(tf))
 topfeatures(dtm)
-normDtm <- dfm_weight(dtm, "relFreq")
+normDtm <- dfm_weight(dtm, "relfreq")
 topfeatures(normDtm)
-maxTfDtm <- dfm_weight(dtm, type = "relMaxFreq")
+maxTfDtm <- dfm_weight(dtm, type = "relmaxfreq")
 topfeatures(maxTfDtm)
-logTfDtm <- dfm_weight(dtm, type = "logFreq")
+logTfDtm <- dfm_weight(dtm, type = "logfreq")
 topfeatures(logTfDtm)
 tfidfDtm <- dfm_weight(dtm, type = "tfidf")
 topfeatures(tfidfDtm)
 
 # combine these methods for more complex dfm_weightings, e.g. as in Section 6.4
 # of Introduction to Information Retrieval
-head(logTfDtm <- dfm_weight(dtm, type = "logFreq"))
-head(tfidf(logTfDtm, normalize = FALSE))
+head(tfidf(dtm, scheme_tf = "log"))
 
 #' # apply numeric weights
 str <- c("apple is better than banana", "banana banana apple much better")
@@ -80,7 +80,7 @@ dfm_weight(mydfm, weights = c(apple = 5, banana = 3, much = 0.5))
 
 \dontshow{
 testdfm <- dfm(data_corpus_inaugural[1:5])
-for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
+for (w in c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf")) {
     testw <- dfm_weight(testdfm, w)
     cat("\\n\\n=== weight() TEST for:", w, "; class:", class(testw), "\\n")
     head(testw)

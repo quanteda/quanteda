@@ -1,7 +1,7 @@
 #' count the Scrabble letter values of text
 #' 
-#' Tally the Scrabble letter values of text given a user-supplied function, 
-#' such as the sum (default) or mean of the character values.
+#' Tally the Scrabble letter values of text given a user-supplied function, such
+#' as the sum (default) or mean of the character values.
 #' @param x a character vector
 #' @param FUN function to be applied to the character values in the text; 
 #'   default is \code{sum}, but could also be \code{mean} or a user-supplied 
@@ -11,6 +11,9 @@
 #'   \code{FUN}, corresponding to the input text(s)
 #' @note Character values are only defined for non-accented Latin a-z, A-Z 
 #'   letters.  Lower-casing is unnecessary.
+#'   
+#'   We would be happy to add more languages to this \emph{extremely useful
+#'   function} if you send us the values for your language!
 #' @examples
 #' nscrabble(c("muzjiks", "excellency"))
 #' nscrabble(data_corpus_inaugural[1:5], mean)
@@ -30,7 +33,7 @@ nscrabble.character <- function(x, FUN = sum) {
                              values = as.integer(rep(c(1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10), 2)))
     setkey(letterVals, letter)
     
-    textChars <- tokenize(x, what = "character", remove_punct = TRUE)
+    textChars <- as.list(tokens(x, what = "character", remove_punct = TRUE))
     textDT <- data.table(docIndex = rep(seq_along(textChars), lengths(textChars)),
                          Char = unlist(textChars, use.names = FALSE))
     setkey(textDT, Char)
@@ -51,3 +54,12 @@ scrabble <- function(x, ...) {
     .Deprecated("nscrabble")
     nscrabble(x, ...)
 }
+
+#### English scrabble values ----- 
+# (1 point)-A, E, I, O, U, L, N, S, T, R.
+# (2 points)-D, G.
+# (3 points)-B, C, M, P.
+# (4 points)-F, H, V, W, Y.
+# (5 points)-K.
+# (8 points)- J, X.
+# (10 points)-Q, Z.

@@ -4,13 +4,19 @@
 \alias{quanteda_options}
 \title{get or set package options for quanteda}
 \usage{
-quanteda_options(..., reset = FALSE)
+quanteda_options(..., reset = FALSE, initialize = FALSE)
 }
 \arguments{
-\item{...}{options to be set, as key-value pair, same as \code{\link{options}}}
+\item{...}{options to be set, as key-value pair, same as
+\code{\link{options}}. This may be a list of valid key-value pairs, useful
+for setting a group of options at once (see examples).}
 
-\item{reset}{logical; if \code{TRUE}, reset all \pkg{quanteda} options to their 
-default values}
+\item{reset}{logical; if \code{TRUE}, reset all \pkg{quanteda} options to
+their default values}
+
+\item{initialize}{logical; if \code{TRUE}, reset only the \pkg{quanteda}
+options that are not already defined.  Used for setting initial values when
+some have been defined previously, such as in `.Rprofile`.}
 }
 \value{
 When called using a \code{key = value} pair (where \code{key} can be a label or 
@@ -22,7 +28,7 @@ When called using a \code{key = value} pair (where \code{key} can be a label or
   are reset to their default values, and \code{TRUE} is returned invisibly.
 }
 \description{
-Get or set global options affecting functions across \pkg{quatneda}.
+Get or set global options affecting functions across \pkg{quanteda}.
 }
 \details{
 Currently available options are:
@@ -35,15 +41,30 @@ Currently available options are:
    to display when using the defaults for printing a dfm}
 \item{\code{print_dfm_max_nfeature}}{integer; specifies the number of features
    to display when using the defaults for printing a dfm}
+\item{\code{base_docname}}{character; stem name for documents that are
+unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
+from another object}
+\item{\code{base_featname}}{character; stem name for features that are
+unnamed when they are added, for whatever reason, to a dfm through an operation
+that adds features}
+\item{\code{base_featname}}{character; stem name for features that are
+unnamed when they are added, for whatever reason, to a dfm through an operation
+that adds features}
+\item{\code{base_featname}}{character; stem name for features that are
+unnamed when they are added, for whatever reason, to a dfm through an operation
+that adds features}
 }
 }
 \examples{
-quanteda_options()
-quanteda_options(verbose = FALSE)
+(opt <- quanteda_options())
+\donttest{
+quanteda_options(verbose = TRUE)
 quanteda_options("verbose" = FALSE)
 quanteda_options("threads")
 quanteda_options(print_dfm_max_ndoc = 50L)
-\dontrun{
-quanteda_options(reset = TRUE) 
+# reset to defaults
+quanteda_options(reset = TRUE)
+# reset to saved options
+quanteda_options(opt)
 }
 }

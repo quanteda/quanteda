@@ -17,8 +17,7 @@
 #' @param sort if \code{TRUE} (the default), order points from low to high 
 #'   score. If a vector, order according to these values from low to high. Only 
 #'   applies when \code{margin = "documents"}.
-#' @param groups optional grouping variable for sorting categories of the documents.  
-#' Only applies when \code{margin = "documents"}.
+#' @inheritParams groups 
 #' @param doclabels a vector of names for document; if left NULL (the default), 
 #'   docnames will be used
 #' @param highlighted a vector of feature names to draw attention to in a 
@@ -28,6 +27,7 @@
 #'   alpha transparency used to overplot feature names in a feature plot; only 
 #'   applies if \code{margin = "features"}
 #' @return a \pkg{ggplot2} object
+#' @note The \code{groups} argument only applies when \code{margin = "documents"}.
 #' @export
 #' @author Kenneth Benoit, Stefan Müller, and Adam Obeng
 #' @seealso \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
@@ -61,7 +61,15 @@
 #' textplot_scale1d(wfm, margin = "features", 
 #'                  highlighted = c("government", "global", "children", 
 #'                                  "bank", "economy", "the", "citizenship",
-#'                                  "productivity", "deficit")) }
+#'                                  "productivity", "deficit"))
+#'
+#' ## correspondence analysis
+#' wca <- textmodel_ca(ie_dfm)
+#' # plot estimated document positions
+#' textplot_scale1d(wca, margin = "documents",
+#'                  doclabels = doclab,
+#'                  groups = docvars(data_corpus_irishbudget2010, "party"))
+#' }
 textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels = NULL, 
                              sort = TRUE, groups = NULL, 
                              highlighted = NULL, alpha = 0.7, 
@@ -161,13 +169,14 @@ textplot_scale1d.textmodel_ca_fitted <- function(x,
 }
 
 
-##
-## internal function to plot document scaling
-##
+# internal fns --------
+
 textplot_scale1d_documents <- function(x, se, doclabels, sort = TRUE, groups = NULL) {
 
     if (!is.null(doclabels))
         stopifnot(length(doclabels) == length(x))
+    
+    if (all(is.na(se))) se <- 0
     
     if (sort & !is.null(groups)) {
         temp_medians <- aggregate(x, list(groups), median, na.rm = TRUE)
@@ -190,11 +199,12 @@ textplot_scale1d_documents <- function(x, se, doclabels, sort = TRUE, groups = N
     
     p <- p + 
         coord_flip() + 
-        { if (!is.null(groups))
-            facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free") } +       
-        geom_pointrange(aes(ymin = lower, ymax = upper), lwd = .25, fatten = .4) + 
         geom_point(size = 1) +
+        geom_pointrange(aes(ymin = lower, ymax = upper), lwd = .25, fatten = .4) +
         xlab(NULL)
+    if (!is.null(groups)) {
+        p <- p + facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free")
+    }  
     p
 }
 

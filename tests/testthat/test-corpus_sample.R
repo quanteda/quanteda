@@ -25,3 +25,8 @@ test_that("test corpus_sample to see if with grouping, documents can be oversamp
         )
     }
 })
+
+test_that("disabled nresample funtions \"work\"", {
+    expect_equal(quanteda:::nresample(data_corpus_inaugural), 0)
+    expect_equal(quanteda:::is.resampled(data_corpus_inaugural), FALSE)
+})

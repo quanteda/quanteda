@@ -188,7 +188,7 @@ sequences such as <code>2:3</code> for bigrams and trigrams only.  See
       <th>skip</th>
       <td><p>integer vector specifying the skips for skip-grams, default is 0 
 for only immediately neighbouring words. Only applies if <code>ngrams</code> is 
-different from the default of 1.  See <code><a href='ngrams.html'>skipgrams</a></code>.</p></td>
+different from the default of 1.  See <code><a href='tokens_ngrams.html'>tokens_skipgrams</a></code>.</p></td>
     </tr>
     <tr>
       <th>concatenator</th>
@@ -340,7 +340,7 @@ making the methods available for this object type available to this object.
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>text1</span><span class='kw'>=</span><span class='st'>"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
          <span class='kw'>text2</span><span class='kw'>=</span><span class='st'>"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span>)
 <span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>  ...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed: 0 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...tokenizing texts</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>  ...removing separators.</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...replacing Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed: 0 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...replacing names</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.000999999999990564 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
+#&gt; <span class='message'>  ...removing separators.</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...replacing Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed: 0 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...replacing names</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.000999999999976353 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
 #&gt; text1 :
 #&gt;  [1] "This"      "is"        "$"         "10"        "in"        "999"      
 #&gt;  [7] "different" "ways"      ","         "up"        "and"       "down"     
@@ -492,7 +492,7 @@ making the methods available for this object type available to this object.
 #&gt; 
 #&gt; mytext3 :
 #&gt; [1] "short"    "shorter"  "and"      "shortest"
-#&gt; </div><div class='input'><span class='fu'><a href='removeFeatures.html'>removeFeatures</a></span>(<span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; tokenizedTexts from 3 documents.
+#&gt; </div><div class='input'><span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; tokenizedTexts from 3 documents.
 #&gt; mytext1 :
 #&gt; [1] "short"    "test"     "sentence"
 #&gt; 
@@ -535,7 +535,7 @@ making the methods available for this object type available to this object.
 #&gt; [1] "short"         "shorter"       "and"           "shortest"     
 #&gt; [5] "short_shorter" "shorter_and"   "and_shortest" 
 #&gt; </div><div class='input'><span class='co'># removing features from ngram tokens</span>
-<span class='fu'><a href='removeFeatures.html'>removeFeatures</a></span>(<span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>), <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; tokenizedTexts from 3 documents.
+<span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>), <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; tokenizedTexts from 3 documents.
 #&gt; mytext1 :
 #&gt; [1] "short"         "test"          "sentence"      "this_is"      
 #&gt; [5] "is_a"          "a_short"       "short_test"    "test_sentence"

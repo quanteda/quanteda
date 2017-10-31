@@ -4,35 +4,32 @@
 \alias{tokens_compound}
 \title{convert token sequences into compound tokens}
 \usage{
-tokens_compound(x, sequences, concatenator = "_", valuetype = c("glob",
-  "regex", "fixed"), case_insensitive = TRUE, join = FALSE)
+tokens_compound(x, pattern, concatenator = "_", valuetype = c("glob",
+  "regex", "fixed"), case_insensitive = TRUE, join = TRUE)
 }
 \arguments{
 \item{x}{an input \link{tokens} object}
 
-\item{sequences}{the input sequence, one of: \itemize{ \item{character vector,
-}{whose elements will be split on whitespace;} \item{list of characters,
-}{consisting of a list of token patterns, separated by white space}; 
-\item{\link{tokens} object;} \item{\link{dictionary} object}{;} 
-\item{\link{collocations} object.}{} }}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+\link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
 \item{concatenator}{the concatenation character that will connect the words 
-making up the multi-word sequences.  The default \code{_} is highly 
+making up the multi-word sequences.  The default \code{_} is  
 recommended since it will not be removed during normal cleaning and 
 tokenization (while nearly all other punctuation characters, at least those
 in the Unicode punctuation class [P] will be removed).}
 
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching}
 
-\item{join}{logical; if \code{TRUE}, join overlapped compounds}
+\item{join}{logical; if \code{TRUE}, join overlapping compounds}
 }
 \value{
-a \link{tokens} object in which the token sequences matching the patterns 
-in \code{sequences} have been replaced by  compound "tokens" joined by the concatenator
+a \link{tokens} object in which the token sequences matching \code{pattern}
+have been replaced by  compound "tokens" joined by the concatenator
 }
 \description{
 Replace multi-token sequences with a multi-word, or "compound" token.  The
@@ -52,7 +49,7 @@ myseqs <- list(c("tax"), c("income", "tax"), c("capital", "gains", "tax"), c("in
 dfm(cw)
 
 # when used as a dictionary for dfm creation
-mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
+mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax*")))
 (cw2 <- tokens_compound(mytoks, mydict))
 
 # to pick up "taxes" in the second text, set valuetype = "regex"
@@ -66,11 +63,12 @@ toks <- tokens(c(txt1 = "I liked this, when we can use bad words, in awful text.
 tokens_compound(toks, myDict)
 
 # with collocations
-#cols <- textstat_collocations("capital gains taxes are worse than inheritance taxes", 
-#                              size = 2, min_count = 1)
-#toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
-#tokens_compound(toks, cols)
+cols <- 
+    textstat_collocations(tokens("capital gains taxes are worse than inheritance taxes"), 
+                                  size = 2, min_count = 1)
+toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
+tokens_compound(toks, cols)
 }
 \author{
-Kenneth Benoit (R) and Kohei Watanabe (C++)
+Kenneth Benoit and Kohei Watanabe
 }

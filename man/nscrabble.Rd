@@ -18,12 +18,15 @@ a (named) integer vector of Scabble letter values, computed using
   \code{FUN}, corresponding to the input text(s)
 }
 \description{
-Tally the Scrabble letter values of text given a user-supplied function, 
-such as the sum (default) or mean of the character values.
+Tally the Scrabble letter values of text given a user-supplied function, such
+as the sum (default) or mean of the character values.
 }
 \note{
 Character values are only defined for non-accented Latin a-z, A-Z 
   letters.  Lower-casing is unnecessary.
+  
+  We would be happy to add more languages to this \emph{extremely useful
+  function} if you send us the values for your language!
 }
 \examples{
 nscrabble(c("muzjiks", "excellency"))

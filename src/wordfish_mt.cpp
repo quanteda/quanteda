@@ -11,6 +11,7 @@ using namespace arma;
 # define OUTERITER 100
 # define INNERITER 10
 # define LASTLP -2000000000000.0
+# define SA 0.99      //simulated annealing algorithm
 
 #if !defined(ARMA_64BIT_WORD)
 #define ARMA_64BIT_WORD
@@ -135,6 +136,8 @@ struct WordPar : public Worker {
                 pars(1,0) = beta[k];
                 newpars(0,0) = pars(0,0) - stepsize * (H(1,1) * G(0,0) - H(0,1) * G(1,0)) / (H(0,0) * H(1,1) - H(0,1) * H(1,0));
                 newpars(1,0) = pars(1,0) - stepsize * (H(0,0) * G(1,0) - H(1,0) * G(0,0)) / (H(0,0) * H(1,1) - H(0,1) * H(1,0));
+                newpars(0,0) *= SA;  //simulated annealing algorithm
+                newpars(1,0) *= SA;
                 psi[k] = newpars(0,0);
                 beta[k] = newpars(1,0);
                 cc = abs(newpars - pars).max();
@@ -189,6 +192,8 @@ struct DocPar : public Worker {
                 pars(1,0) = theta[i];
                 newpars(0,0) = pars(0,0) - stepsize*(H(1,1)*G(0,0) - H(0,1)*G(1,0))/(H(0,0)*H(1,1) - H(0,1)*H(1,0));
                 newpars(1,0) = pars(1,0) - stepsize*(H(0,0)*G(1,0) - H(1,0)*G(0,0))/(H(0,0)*H(1,1) - H(0,1)*H(1,0));
+                newpars(0,0) *= SA;
+                newpars(0,0) *= SA;
                 alpha[i] = newpars(0,0);
                 theta[i] = newpars(1,0);
                 cc = abs(newpars - pars).max();	
@@ -307,7 +312,7 @@ struct DocErr : public Worker {
 };
 // [[Rcpp::export]]
 
-Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS,bool svd_sparse, double residual_floor){
+Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS,bool svd_sparse, double residual_floor){
     
     // DEFINE INPUTS
     double priorprecalpha = priorvec(0);
@@ -343,7 +348,7 @@ Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVecto
      
      //create the residual matrix
         Triplets residual_tri;
-        residual_tri.reserve(N*K);
+        // residual_tri.reserve(N*K);
     #if QUANTEDA_USE_TBB
         Residual residual(wfm, rsum, csum, asum, residual_floor, K, residual_tri);
         parallelFor(0, N, residual);
@@ -373,13 +378,12 @@ Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVecto
         arma::mat V(K, svdk);
         arma::svds(U, s, V, C, svdk);
         for (std::size_t i = 0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) * U(i, 0);
-        //Rcout<<"svd done"<<endl;
     } else {
         // Load initial values
         for (std::size_t i=0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) - dist(mt);//* U(i, 0);
     }
-    //for (int k=0; k < K; k++) beta(k) = 0; // pow(csum(k)/asum,-0.5) * V(k,0);
-    beta.fill(0.0);
+    for (std::size_t k=0; k < K; k++) beta(k) = 0;//  pow(csum(k)/asum,-0.5) * V(k,0);
+    //beta.fill(0.0);
     alpha = log(rsum);
     psi = log(csum/N);
     
@@ -410,6 +414,7 @@ Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVecto
     // BEGIN WHILE LOOP
     while(((lp - lastlp) > tolvec(0)) && outeriter < OUTERITER){	
         outeriter++;
+        //Rcout<<"alphs_b="<<mean(alpha)<<" theta_B="<<mean(theta)<<std::endl;
         
         // UPDATE WORD PARAMETERS
         NumericVector psi_N(psi.begin(), psi.end());
@@ -420,7 +425,7 @@ Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVecto
         
         psi = as<arma::rowvec>(psi_N);
         beta = as<arma::rowvec>(beta_N);
-        
+
         // UPDATE DOCUMENT PARAMETERS
         NumericVector alpha_N(alpha.begin(), alpha.end());
         NumericVector theta_N(theta.begin(), theta.end());
@@ -451,7 +456,7 @@ Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVecto
         
         alpha = alpha - mean(alpha);
         theta = (theta - mean(theta))/stddev(theta);		
-        
+
         // CHECK LOG-POSTERIOR FOR CONVERGENCE
         lastlp = lp;
         lp = -1.0*(accu(0.5 * ((alpha % alpha) * priorprecalpha)) + accu(0.5 * ((psi % psi) * priorprecpsi))
@@ -460,7 +465,6 @@ Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVecto
         LogPos logPos2(alpha, psi, beta, theta, wfm, K);
         parallelReduce(0, N, logPos2);
         lp += logPos2.lp;
-        // Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
         // END WHILE LOOP		
     } 
     

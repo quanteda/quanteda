@@ -98,10 +98,10 @@ Works for plain character vectors too, if <code>groups</code> is a factor.</p>
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>either: a character vector containing the names of document
-variables to be used for grouping; or a factor (or object that can be
-coerced into a factor) equal in length to the number of documents, used for
-aggregating the texts through concatenation</p></td>
+      <td><p>either: a character vector containing the names of document 
+variables to be used for grouping; or a factor or object that can be 
+coerced into a factor equal in length or rows to the number of documents. 
+See <a href='groups.html'>groups</a> for details.</p></td>
     </tr>
     <tr>
       <th>spacer</th>
@@ -134,7 +134,9 @@ calling <code>texts(x)</code></p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>You are strongly encouraged as a good practice of text analysis 
+    <p>The <code>groups</code> will be used for concatenating the texts based on shared
+values of <code>groups</code>, without any specified order of aggregation.</p>
+<p>You are strongly encouraged as a good practice of text analysis 
   workflow <em>not</em> to modify the substance of the texts in a corpus. 
   Rather, this sort of processing is better performed through downstream 
   operations.  For instance, do not lowercase the texts in a corpus, or you 

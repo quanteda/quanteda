@@ -3,6 +3,9 @@
 \name{coef.textmodel}
 \alias{coef.textmodel}
 \title{extract text model coefficients}
+\usage{
+coef.textmodel(object, ...)
+}
 \arguments{
 \item{object}{a fitted or predicted text model object whose coefficients will be extracted}
 

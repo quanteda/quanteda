@@ -2,14 +2,38 @@
 % Please edit documentation in R/dfm_compress.R
 \name{dfm_sort}
 \alias{dfm_sort}
-\title{sort a dfm by frequency of one or more margins}
+\title{#' @noRd
+#' @export
+#' @examples 
+#' # for dfmDense
+#' mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
+#'              dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
+#' matd <- dfm_smooth(mat)
+#' colnames(matd) <- char_tolower(featnames(mat))
+#' matd
+#' dfm_compress(matd, margin = "documents")
+#' dfm_compress(matd, margin = "features")
+#' dfm_compress(matd)
+dfm_compress.dfmDense <- function(x, ...) {
+    dfm_compress(new("dfm", Matrix::Matrix(as.matrix(x), sparse = TRUE),
+                     settings = x@settings,
+                     weightTf = x@weightTf,
+                     weightDf = x@weightDf,
+                     smooth = x@smooth,
+                     ngrams = x@ngrams,
+                     skip = x@skip,
+                     concatenator = x@concatenator,
+                     docvars = x@docvars),
+                 ...)
+}                 
+sort a dfm by frequency of one or more margins}
 \usage{
 dfm_sort(x, decreasing = TRUE, margin = c("features", "documents", "both"))
 }
 \arguments{
 \item{x}{Document-feature matrix created by \code{\link{dfm}}}
 
-\item{decreasing}{TRUE (default) if sort will be in descending order, 
+\item{decreasing}{logical; if \code{TRUE}, the sort will be in descending order,
 otherwise sort in increasing order}
 
 \item{margin}{which margin to sort on \code{features} to sort by frequency of
@@ -25,9 +49,9 @@ in documents, or both.
 }
 \examples{
 dtm <- dfm(data_corpus_inaugural)
-dtm[1:10, 1:5]
-dfm_sort(dtm)[1:10, 1:5]
-dfm_sort(dtm, decreasing = FALSE, "both")[1:10, 1:5]  
+head(dtm)
+head(dfm_sort(dtm))
+head(dfm_sort(dtm, decreasing = FALSE, "both"))
 }
 \author{
 Ken Benoit

@@ -98,20 +98,21 @@
 #' textstat_lexdiv(mydfm, "TTR", drop = TRUE)
 #' textstat_lexdiv(mydfm, "TTR", drop = FALSE)
 textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
-                   log.base = 10, drop = TRUE, ...) {
+                            log.base = 10, drop = TRUE, ...) {
     UseMethod("textstat_lexdiv")
 }
-    
-    
+
+
 #' @noRd
 #' @export
 textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
-                           log.base = 10, drop = TRUE, ...) {
-
+                                log.base = 10, drop = TRUE, ...) {
+    
+    x <- as.dfm(x)
     addedArgs <- names(list(...))
     if (length(addedArgs))
         warning("Argument", if (length(addedArgs) > 1L) "s " else " ", addedArgs, " not used.", sep = "", noBreaks. = TRUE)
-
+    
     TTR <- C <- R <- CTTR <- U <- S <- Maas <- lgV0 <- lgeV0 <- NULL
     
     

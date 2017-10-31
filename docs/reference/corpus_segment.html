@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>segment texts into component elements — corpus_segment • quanteda</title>
+<title>segment texts on a pattern match — corpus_segment • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -74,24 +74,22 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>segment texts into component elements</h1>
+    <h1>segment texts on a pattern match</h1>
     </div>
 
     
-    <p>Segment corpus text(s) or a character vector into tokens, sentences, 
-paragraphs, or other sections. <code>segment</code> works on a character vector or 
-corpus object, and allows the delimiters to be user-defined.  This is useful 
-for breaking the texts of a corpus into smaller documents based on sentences,
-or based on a user defined "tag" pattern.  See details.</p>
+    <p>Segment corpus text(s) or a character vector, splitting
+on a pattern match.  This is useful for breaking the texts into smaller
+documents based on a regular pattern (such as a speaker identifier in a
+transcript) or a user-supplied annotation (a "tag").</p>
     
 
-    <pre class="usage"><span class='fu'>corpus_segment</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"tokens"</span>, <span class='st'>"tags"</span>,
-  <span class='st'>"other"</span>), <span class='kw'>delimiter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"regex"</span>, <span class='st'>"fixed"</span>, <span class='st'>"glob"</span>),
-  <span class='kw'>omit_empty</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>corpus_segment</span>(<span class='no'>x</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"##*"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+  <span class='kw'>extract_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"before"</span>, <span class='st'>"after"</span>),
+  <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>char_segment</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"tokens"</span>, <span class='st'>"tags"</span>,
-  <span class='st'>"other"</span>), <span class='kw'>delimiter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"regex"</span>, <span class='st'>"fixed"</span>, <span class='st'>"glob"</span>),
-  <span class='kw'>omit_empty</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>char_segment</span>(<span class='no'>x</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"##*"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+  <span class='kw'>remove_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"before"</span>, <span class='st'>"after"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -101,302 +99,209 @@ or based on a user defined "tag" pattern.  See details.</p>
       <td><p>character or <a href='corpus.html'>corpus</a> object whose texts will be segmented</p></td>
     </tr>
     <tr>
-      <th>what</th>
-      <td><p>unit of segmentation.  Current options are
-<code>"sentences"</code> (default), <code>"paragraphs"</code>, <code>"tokens"</code>, 
-<code>"tags"</code>, and <code>"other"</code>.</p>
-<p>Segmenting on <code>"other"</code> allows segmentation of a text on any 
-user-defined value, and must be accompanied by the <code>delimiter</code> 
-argument.  Segmenting on <code>"tags"</code> performs the same function but 
-preserves the tags as a document variable in the segmented corpus.</p></td>
-    </tr>
-    <tr>
-      <th>delimiter</th>
-      <td><p>delimiter defined as a <code>regex</code> for 
-segmentation; only relevant for <code>what = "paragraphs"</code> (where the 
-default is two newlines), <code>"tags"</code> (where the default is a tag 
-preceded by two pound or "hash" signs <code>##</code>), and <code>"other"</code>.</p></td>
+      <th>pattern</th>
+      <td><p>a character vector, list of character vectors, <a href='dictionary.html'>dictionary</a>,
+<a href='collocations.html'>collocations</a>, or <a href='dfm.html'>dfm</a>. See <a href='pattern.html'>pattern</a> for details.</p></td>
     </tr>
     <tr>
       <th>valuetype</th>
-      <td><p>how to interpret keyword expressions: <code>"glob"</code> for 
+      <td><p>the type of pattern matching: <code>"glob"</code> for 
 "glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
 or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
     <tr>
-      <th>omit_empty</th>
-      <td><p>if <code>TRUE</code>, empty texts are removed</p></td>
+      <th>extract_pattern</th>
+      <td><p>extracts matched patterns from the texts and save in docvars if
+<code>TRUE</code></p></td>
+    </tr>
+    <tr>
+      <th>pattern_position</th>
+      <td><p>either <code>"before"</code> or <code>"after"</code>, depending 
+on whether the pattern precedes the text (as with a tag) or follows the 
+text (as with punctuation delimiters)</p></td>
     </tr>
     <tr>
       <th>use_docvars</th>
-      <td><p>(for corpus objects only) if <code>TRUE</code>, repeat the docvar 
-values for each segmented text; if <code>FALSE</code>, drop the docvars in the 
-segmented corpus. Dropping the docvars might be useful in order to conserve
-space or if these are not desired for the segmented corpus.</p></td>
+      <td><p>if <code>TRUE</code>, repeat the docvar values for each 
+segmented text; if <code>FALSE</code>, drop the docvars in the segmented corpus. 
+Dropping the docvars might be useful in order to conserve space or if these
+are not desired for the segmented corpus.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>provides additional arguments passed to <code><a href='tokens.html'>tokens</a></code>, if 
-<code>what = "tokens"</code> is used</p></td>
+      <th>remove_pattern</th>
+      <td><p>removes matched patterns from the texts if <code>TRUE</code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>corpus_segment</code> returns a corpus of segmented texts, with a 
-  <code>tag</code> docvar if <code>what = "tags"</code>.
+    <p><code>corpus_segment</code> returns a corpus of segmented texts
 
-<code>corpus_segment</code> returns a character vector of segmented texts</p>
+<code>char_segment</code> returns a character vector of segmented texts</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Tokens are delimited by separators.  For tokens and sentences, these
-  are determined by the tokenizer behaviour in <code><a href='tokens.html'>tokens</a></code>.
-    For paragraphs, the default is two carriage returns, although this could be
-  changed to a single carriage return by changing the value of 
-  <code>delimiter</code> to <code>"\\n{1}"</code> which is the R version of the 
-  <code>regex</code> for one newline character.  (You might need this if the
-  document was created in a word processor, for instance, and the lines were 
-  wrapped in the window rather than being hard-wrapped with a newline 
-  character.)</p>
+    <p>For segmentation into syntactic units defined by the locale (such as 
+sentences), use <code><a href='corpus_reshape.html'>corpus_reshape</a></code> instead.  In cases where more 
+fine-grained segmentation is needed, such as that based on commas or 
+semi-colons (phrase delimiters within a sentence), 
+<code>corpus_segment</code> offers greater user control than 
+<code><a href='corpus_reshape.html'>corpus_reshape</a></code>.</p>
     
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+    <h2 class="hasAnchor" id="boundaries-and-segmentation-explained"><a class="anchor" href="#boundaries-and-segmentation-explained"></a>Boundaries and segmentation explained</h2>
 
-    <p>Does not currently record document segments if segmenting a multi-text 
-  corpus into smaller units. For this, use <a href='corpus_reshape.html'>corpus_reshape</a> instead.</p>
+    <p>The <code>pattern</code> acts as a
+  boundary delimiter that defines the segmentation points for splitting a
+  text into new "document" units.  Boundaries are always defined as the
+  pattern matches, plus the end and beginnings of each document.  The new
+  "documents" that are created following the segmenation will then be the
+  texts found between boundaries.
+    The pattern itself will be saved as a new document variable named 
+  <code>pattern</code>.  This is most useful when segmenting a text according to 
+  tags such as names in a transcript, section titles, or user-supplied 
+  annotations.  If the beginning of the file precedes a pattern match, then 
+  the extracted text will have a <code>NA</code> for the extracted <code>pattern</code> 
+  document variable (or when <code>pattern_position = "after"</code>, this will be 
+  true for the text split between the last pattern match and the end of the 
+  document).
+    To extract syntactically defined sub-document units such as sentences and 
+  paragraphs, use <code><a href='corpus_reshape.html'>corpus_reshape</a></code> instead.</p>
     
-    <h2 class="hasAnchor" id="using-delimiters"><a class="anchor" href="#using-delimiters"></a>Using delimiters</h2>
+    <h2 class="hasAnchor" id="using-patterns"><a class="anchor" href="#using-patterns"></a>Using patterns</h2>
 
-    
-    <p>One of the most common uses for <code>corpus_segment</code> is to 
-  partition a corpus into sub-documents using tags.  By default, the tag 
-  value is any word that begins with a double "hash" sign and is followed by 
-  a whitespace.  This can be modified but be careful to use the syntax for
-  the trailing word boundary (<code>\\b</code>)
-    The default values for <code>delimiter</code> are, according to valuetype:</p><dl class='dl-horizontal'>
-  <dt>paragraphs</dt><dd><p><code>"\\n{2}"</code>, regular expression 
-    meaning two newlines.  If you wish to define a paragaph as a single 
-    newline, change the 2 to a 1.</p></dd>
-  <dt>tags</dt><dd><p><code>"##\\w+\\b"</code>, a regular expression 
-    meaning two "hash" characters followed by any number of word characters
-    followed by a word boundary (a whitespace or the end of the text).</p></dd>
-  <dt>other</dt><dd><p>No default; user must supply one.</p></dd>
-  <dt>tokens, sentences</dt><dd><p>Delimiters do not apply to these, and a warning
-    will be issued if you attempt to supply one.</p></dd>
-  </dl><p>Delimiters may be defined for different <a href='valuetype.html'>valuetypes</a> 
-  but these may produce unexpected results, for example the lack of the
-  ability in a "glob" expression to define the word boundaries.</p>
+    <p>One of the most common uses for
+  <code>corpus_segment</code> is to partition a corpus into sub-documents using
+  tags.  The default pattern value is designed for a user-annotated tag that
+  is a term begining with double "hash" signs, followed by a whitespace, for
+  instance as <code>##INTRODUCTION The text</code>.
+    Glob and fixed pattern types use a whitespace character to signal the end 
+  of the pattern.
+    For more advanced pattern matches that could include whitespace or 
+  newlines, a regex pattern type can be used, for instance a text such as
+    <code>Mr. Smith: Text</code>  <code>Mrs. Jones: More text</code>
+    could have as <code>pattern = "\\b[A-Z].+\\.\\s[A-Z][a-z]+:"</code>, which
+  would catch the title, the name, and the colon.
+    For custom boundary delimitation using punctuation characters that come 
+  come at the end of a clause or sentence (such as <code>,</code> and<code>.</code>, 
+  these can be specified manually and <code>pattern_position</code> set to 
+  <code>"after"</code>. To keep the punctuation characters in the text (as with 
+  sentence segmentation), set <code>extract_pattern = FALSE</code>.  (With most tag
+  applications, users will want to remove the patterns from the text, as they
+  are annotations rather than parts of the text itself.)</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='corpus_reshape.html'>corpus_reshape</a></code>, <code><a href='tokens.html'>tokens</a></code></p>
+    <p><code><a href='corpus_reshape.html'>corpus_reshape</a></code>, for segmenting texts into pre-defined 
+  syntactic units such as sentences, paragraphs, or fixed-length chunks</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## segmenting a corpus</span>
 
-<span class='no'>testCorpus</span> <span class='kw'>&lt;-</span>
-<span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'>c</span>(<span class='st'>"##INTRO This is the introduction.
-          ##DOC1 This is the first document.  Second sentence in Doc 1.
-          ##DOC3 Third document starts here.  End of third document."</span>,
-         <span class='st'>"##INTRO Document ##NUMBER Two starts before ##NUMBER Three."</span>))
-<span class='co'># add a docvar</span>
-<span class='no'>testCorpus</span><span class='kw'>[[</span><span class='st'>"serialno"</span>]] <span class='kw'>&lt;-</span> <span class='fu'>paste0</span>(<span class='st'>"textSerial"</span>, <span class='fl'>1</span>:<span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>testCorpus</span>))
-<span class='no'>testCorpusSeg</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>testCorpus</span>, <span class='st'>"tags"</span>)
-<span class='fu'>summary</span>(<span class='no'>testCorpusSeg</span>)</div><div class='output co'>#&gt; Corpus consisting of 6 documents.
-#&gt; 
-#&gt;     Text Types Tokens Sentences    serialno      tag
-#&gt;  text1.1     5      5         1 textSerial1  ##INTRO
-#&gt;  text1.2    11     12         2 textSerial1   ##DOC1
-#&gt;  text1.3     8     10         2 textSerial1   ##DOC3
-#&gt;  text2.1     1      1         1 textSerial2  ##INTRO
-#&gt;  text2.2     3      3         1 textSerial2 ##NUMBER
-#&gt;  text2.3     2      2         1 textSerial2 ##NUMBER
-#&gt; 
-#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Jun  5 12:01:59 2017
-#&gt; Notes:   corpus_segment.corpus(testCorpus, "tags")
-#&gt; </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>testCorpusSeg</span>)</div><div class='output co'>#&gt;                                                  text1.1 
-#&gt;                              "This is the introduction." 
-#&gt;                                                  text1.2 
-#&gt; "This is the first document.  Second sentence in Doc 1." 
-#&gt;                                                  text1.3 
-#&gt;    "Third document starts here.  End of third document." 
-#&gt;                                                  text2.1 
-#&gt;                                               "Document" 
-#&gt;                                                  text2.2 
-#&gt;                                      "Two starts before" 
-#&gt;                                                  text2.3 
-#&gt;                                                 "Three." </div><div class='input'><span class='co'># segment a corpus into sentences</span>
-<span class='no'>segmentedCorpus</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>data_char_ukimmig2010</span>), <span class='st'>"sentences"</span>)
-<span class='fu'>summary</span>(<span class='no'>segmentedCorpus</span>)</div><div class='output co'>#&gt; Corpus consisting of 207 documents, showing 100 documents.
-#&gt; 
-#&gt;            Text Types Tokens Sentences
-#&gt;           BNP.1   145    259         1
-#&gt;           BNP.2    18     18         1
-#&gt;           BNP.3    26     29         1
-#&gt;           BNP.4    31     40         1
-#&gt;           BNP.5   103    191         1
-#&gt;           BNP.6    25     29         1
-#&gt;           BNP.7    58     90         1
-#&gt;           BNP.8    40     48         1
-#&gt;           BNP.9    72    106         1
-#&gt;          BNP.10    40     69         1
-#&gt;          BNP.11    40     49         1
-#&gt;          BNP.12    44     56         1
-#&gt;          BNP.13    28     33         1
-#&gt;          BNP.14    29     31         1
-#&gt;          BNP.15    32     36         1
-#&gt;          BNP.16     9      9         1
-#&gt;          BNP.17    10     10         1
-#&gt;          BNP.18    42     67         1
-#&gt;          BNP.19    50     63         1
-#&gt;          BNP.20    41     52         1
-#&gt;          BNP.21   103    169         1
-#&gt;          BNP.22    37     42         1
-#&gt;          BNP.23    25     29         1
-#&gt;          BNP.24    45     54         1
-#&gt;          BNP.25    25     27         1
-#&gt;          BNP.26    18     19         1
-#&gt;          BNP.27    36     40         1
-#&gt;          BNP.28    29     32         1
-#&gt;          BNP.29    28     30         1
-#&gt;          BNP.30    21     22         1
-#&gt;          BNP.31    28     30         1
-#&gt;          BNP.32    29     31         1
-#&gt;          BNP.33    18     21         1
-#&gt;          BNP.34    14     14         1
-#&gt;          BNP.35    29     33         1
-#&gt;          BNP.36    30     35         1
-#&gt;          BNP.37    14     14         1
-#&gt;          BNP.38    34     40         1
-#&gt;          BNP.39     2      2         1
-#&gt;          BNP.40    16     19         1
-#&gt;          BNP.41    23     24         1
-#&gt;          BNP.42    17     18         1
-#&gt;          BNP.43    18     21         1
-#&gt;          BNP.44    28     33         1
-#&gt;          BNP.45    23     25         1
-#&gt;          BNP.46     2      2         1
-#&gt;          BNP.47    24     27         1
-#&gt;          BNP.48    20     21         1
-#&gt;          BNP.49    19     23         1
-#&gt;          BNP.50    28     34         1
-#&gt;          BNP.51    30     35         1
-#&gt;          BNP.52    25     28         1
-#&gt;          BNP.53    31     34         1
-#&gt;          BNP.54    24     26         1
-#&gt;          BNP.55     2      2         1
-#&gt;          BNP.56    39     45         1
-#&gt;          BNP.57    25     30         1
-#&gt;          BNP.58    23     24         1
-#&gt;          BNP.59     2      2         1
-#&gt;          BNP.60    26     36         1
-#&gt;          BNP.61    12     15         1
-#&gt;          BNP.62    31     35         1
-#&gt;          BNP.63     2      2         1
-#&gt;          BNP.64    20     22         1
-#&gt;          BNP.65    18     21         1
-#&gt;          BNP.66     2      2         1
-#&gt;          BNP.67    34     36         1
-#&gt;          BNP.68     2      2         1
-#&gt;          BNP.69    16     18         1
-#&gt;          BNP.70    18     21         1
-#&gt;          BNP.71     2      2         1
-#&gt;          BNP.72    83    147         1
-#&gt;          BNP.73    38     49         1
-#&gt;          BNP.74    48     64         1
-#&gt;          BNP.75    32     34         1
-#&gt;          BNP.76    25     26         1
-#&gt;          BNP.77    37     43         1
-#&gt;          BNP.78    23     26         1
-#&gt;          BNP.79    32     41         1
-#&gt;          BNP.80    34     41         1
-#&gt;          BNP.81    21     22         1
-#&gt;          BNP.82    22     23         1
-#&gt;          BNP.83    20     21         1
-#&gt;          BNP.84    18     22         1
-#&gt;          BNP.85    31     39         1
-#&gt;          BNP.86    28     30         1
-#&gt;          BNP.87    14     15         1
-#&gt;          BNP.88    30     33         1
-#&gt;     Coalition.1     2      2         1
-#&gt;     Coalition.2    26     29         1
-#&gt;     Coalition.3    72    121         1
-#&gt;     Coalition.4    74    116         1
-#&gt;  Conservative.1     9      9         1
-#&gt;  Conservative.2    25     30         1
-#&gt;  Conservative.3    12     12         1
-#&gt;  Conservative.4    24     26         1
-#&gt;  Conservative.5    22     28         1
-#&gt;  Conservative.6    58     78         1
-#&gt;  Conservative.7    34     37         1
-#&gt;  Conservative.8    16     16         1
-#&gt; 
-#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Jun  5 12:01:59 2017
-#&gt; Notes:   corpus_segment.corpus(corpus(data_char_ukimmig2010), "sentences")
-#&gt; </div><div class='input'>
-<span class='co'>## segmenting a character object</span>
+<span class='co'># segmenting a corpus using tags</span>
+<span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'>c</span>(<span class='st'>"##INTRO This is the introduction.
+                  ##DOC1 This is the first document.  Second sentence in Doc 1.
+                  ##DOC3 Third document starts here.  End of third document."</span>,
+                 <span class='st'>"##INTRO Document ##NUMBER Two starts before ##NUMBER Three."</span>))
+<span class='no'>corp_seg</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>corp</span>, <span class='st'>"##*"</span>)
+<span class='fu'>cbind</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corp_seg</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corp_seg</span>), <span class='fu'><a href='metadoc.html'>metadoc</a></span>(<span class='no'>corp_seg</span>))</div><div class='output co'>#&gt;                                                texts(corp_seg)  pattern
+#&gt; text1.1                              This is the introduction.  ##INTRO
+#&gt; text1.2 This is the first document.  Second sentence in Doc 1.   ##DOC1
+#&gt; text1.3    Third document starts here.  End of third document.   ##DOC3
+#&gt; text2.1                                               Document  ##INTRO
+#&gt; text2.2                                      Two starts before ##NUMBER
+#&gt; text2.3                                                 Three. ##NUMBER
+#&gt;         _document _docid _segid
+#&gt; text1.1     text1      1      1
+#&gt; text1.2     text1      1      2
+#&gt; text1.3     text1      1      3
+#&gt; text2.1     text2      2      1
+#&gt; text2.2     text2      2      2
+#&gt; text2.3     text2      2      3</div><div class='input'>
+<span class='co'># segmenting a transcript based on speaker identifiers</span>
+<span class='no'>corp2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='st'>"Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again."</span>)
+<span class='no'>corp_seg2</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>corp2</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"\\b[A-Z].+\\s[A-Z][a-z]+:"</span>,
+                            <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)
+<span class='fu'>cbind</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corp_seg2</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corp_seg2</span>), <span class='fu'><a href='metadoc.html'>metadoc</a></span>(<span class='no'>corp_seg2</span>))</div><div class='output co'>#&gt;             texts(corp_seg2)     pattern _document _docid _segid
+#&gt; text1.1                Text.  Mr. Smith:     text1      1      1
+#&gt; text1.2           More text. Mrs. Jones:     text1      1      2
+#&gt; text1.3 I'm speaking, again.  Mr. Smith:     text1      1      3</div><div class='input'>
+<span class='co'># segmenting a corpus using crude end-of-sentence segmentation</span>
+<span class='no'>corp_seg3</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='no'>corp</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>,
+                            <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='st'>"after"</span>, <span class='kw'>extract_pattern</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>cbind</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>corp_seg3</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corp_seg3</span>), <span class='fu'><a href='metadoc.html'>metadoc</a></span>(<span class='no'>corp_seg3</span>))</div><div class='output co'>#&gt;                                                    texts(corp_seg3) _document
+#&gt; text1.1                           ##INTRO This is the introduction.     text1
+#&gt; text1.2                          ##DOC1 This is the first document.     text1
+#&gt; text1.3                                   Second sentence in Doc 1.     text1
+#&gt; text1.4                          ##DOC3 Third document starts here.     text1
+#&gt; text1.5                                      End of third document.     text1
+#&gt; text2.1 ##INTRO Document ##NUMBER Two starts before ##NUMBER Three.     text2
+#&gt;         _docid _segid
+#&gt; text1.1      1      1
+#&gt; text1.2      1      2
+#&gt; text1.3      1      3
+#&gt; text1.4      1      4
+#&gt; text1.5      1      5
+#&gt; text2.1      2      1</div><div class='input'>
+<span class='co'>## segmenting a character vector</span>
 
-<span class='co'># same as tokenize()</span>
-<span class='fu'>identical</span>(<span class='fu'>as.character</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_char_ukimmig2010</span>)),
-          <span class='fu'>as.character</span>(<span class='fu'>char_segment</span>(<span class='no'>data_char_ukimmig2010</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"tokens"</span>)))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># segment into paragraphs</span>
-<span class='fu'>char_segment</span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>3</span>:<span class='fl'>4</span>], <span class='st'>"paragraphs"</span>)</div><div class='output co'>#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Conservative.1 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "Attract the brightest and best to our country." 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Conservative.2 
-#&gt;                                                                                                                                                                                                                                                                                                              "Immigration has enriched our nation over the years and we want to attract the brightest and the best people who can make a real difference to our economic growth. But immigration today is too high and needs to be reduced. We do not need to attract people to do jobs that could be carried out by British citizens, given the right training and support. So we will take steps to take net migration back to the levels of the 1990s - tens of thousands a year, not hundreds of thousands." 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Conservative.3 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "To help achieve this goal, we will introduce a number of measures, such as:" 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Conservative.4 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     "- Setting an annual limit on the number of non-EU economic migrants admitted into the UK to live and work;" 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Conservative.5 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     "- Limiting access only to those who will bring the most value to the British economy; and," 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Conservative.6 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             "- Applying transitional controls as a matter of course in the future for all new EU member States." 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Conservative.7 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "In addition, we will promote integration into British society, as we believe that everyone coming to this country must be ready to embrace our core values and become a part of their local community. So there will be an English language test for anyone coming here to get married." 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Conservative.8 
-#&gt;                                                                                                                                                                                                                                                                 "We want to encourage students to come to our universities and colleges, but our student visa system has become the biggest weakness in our border controls. A Conservative government will strengthen the system of granting student visas so that it is less open to abuse. We want to make it easier for reputable universities and colleges to accept applications, while putting extra scrutiny on new institutions looking to accept foreign students or existing institutions not registered with Companies house. In addition, we will:" 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Conservative.9 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "- Insist foreign students at new or unregistered institutions pay a bond in order to study in this country, to be repaid after the student has left the country at the end of their studies;" 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Conservative.10 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "- Ensure foreign students can prove that they have the financial means to support themselves in the UK; and," 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Conservative.11 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "- Require that students must usually leave the country and reapply if they want to switch to another course or apply for a work permit." 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Conservative.12 
-#&gt;                                                                                                                                                                                                                                                             "Extremists, serious criminals and others find our borders far too easy to penetrate. That is why we will create a dedicated border Police force, as part of a refocused Serious Organised Crime agency, to enhance national security, improve immigration controls, and crack down on the trafficking of people, weapons and drugs. We will work with police forces to strengthen arrangements to deal with serious crime and other cross-boundary policing challenges, and extend collaboration between forces to deliver better value for money." 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.1 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "Immigration." 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.2 
+<span class='co'># segment into paragraphs and removing the "- " bullet points</span>
+<span class='fu'>cat</span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>4</span>])</div><div class='output co'>#&gt; Immigration.
+#&gt; 
+#&gt; Migration is a fact of life.  People have always moved from one country to another, and as a practical matter the ability to control borders without oppressive measures is more limited than most politicians like to pretend. Much of our language, culture and way of life have been enriched by successive new arrivals over two thousand years. It is not just a matter of immigration: over 5 million British Citizens benefit from other countries' liberal immigration policies by living abroad.
+#&gt; 
+#&gt; The causes of a person moving to the UK are complex. For the person concerned, there may be escape from persecution and improved economic prospects, but also separation from home, friends and family. For the country of origin, there may be the loss of skilled workers, especially health professionals, but also the receipt of remittances from the immigrant, and many migrants return with improved skills. For the community that receives the immigrant there may be the benefits of getting done jobs that no one in that community wants to or can do, more taxes being paid and the creation of a more cosmopolitan atmosphere. But there may also be costs in terms of unwelcome competition for jobs, pressure on housing and other resources and longer-term pressures on overall population.
+#&gt; 
+#&gt; In deciding policy on immigration it is important that all these points are considered and balanced against each other. We must accept too our legal and moral obligations to give sanctuary to those fleeing persecution, and the principle of free movement throughout the European Union. Against this background our policy is as follows: 
+#&gt; 
+#&gt; - Where we are limiting numbers, our priority must be to meet our obligations to refugees and those seeking sanctuary, including the increasing numbers of people displaced by environmental change, above the needs of our economy.
+#&gt; 
+#&gt; - Our immigration policies must be fair and non-discriminatory, respect the integrity of families and be applied promptly and effectively.
+#&gt; 
+#&gt; - Our international policies should every- where seek to reduce the economic, political and environmental factors that force people to migrate. Emigration should be a positive choice, not the outcome of desperation. In particular, free movement within the EU is a fact. We should press for EU policies that make all parts of the EU an attractive place to live.
+#&gt; 
+#&gt; - We reject the use of immigration as a political issue to mask problems such as a lack of high-quality social housing. The proper solution is to provide enough social housing, as we propose elsewhere in this manifesto.
+#&gt; 
+#&gt; - We should not tolerate the long-term presence of large numbers of people whose immigration status is not defined. Such immigrants are vulnerable to exploitation by unscrupulous employers and others, under- mining national terms and conditions of employment. We would open up ways for existing illegal migrants who have been here for three years to become legal. In particular, a legal status must be provided for people who have not succeeded in their claim for humanitarian protection but who cannot be returned to their country of origin due to the political situation there.
+#&gt; 
+#&gt; - We would review the asylum procedures to ensure that destitution plays no role in the asylum process by allowing those seeking sanctuary to work.
+#&gt; 
+#&gt; - We would review the Nationality, Immigration and Asylum Act 2002, particularly with regard to issues of access to legal advice, childcare and levels of subsistence allowance.
+#&gt; 
+#&gt; - Those who have been trafficked should not be subject to summary deportation. They should receive a temporary right to stay and have the same right to apply to remain as others seeking to migrate.
+#&gt; 
+#&gt; - Those seeking sanctuary should not be detained, and in particular the administrative detention of children is unacceptable and should cease immediately.</div><div class='input'><span class='fu'>char_segment</span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>4</span>],
+             <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"\\n\\n(\\-\\s){0,1}"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>remove_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.1 
 #&gt;                                                                                                                                                                                                                                                                                                      "Migration is a fact of life.  People have always moved from one country to another, and as a practical matter the ability to control borders without oppressive measures is more limited than most politicians like to pretend. Much of our language, culture and way of life have been enriched by successive new arrivals over two thousand years. It is not just a matter of immigration: over 5 million British Citizens benefit from other countries' liberal immigration policies by living abroad." 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.3 
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.2 
 #&gt; "The causes of a person moving to the UK are complex. For the person concerned, there may be escape from persecution and improved economic prospects, but also separation from home, friends and family. For the country of origin, there may be the loss of skilled workers, especially health professionals, but also the receipt of remittances from the immigrant, and many migrants return with improved skills. For the community that receives the immigrant there may be the benefits of getting done jobs that no one in that community wants to or can do, more taxes being paid and the creation of a more cosmopolitan atmosphere. But there may also be costs in terms of unwelcome competition for jobs, pressure on housing and other resources and longer-term pressures on overall population." 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.4 
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.3 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "In deciding policy on immigration it is important that all these points are considered and balanced against each other. We must accept too our legal and moral obligations to give sanctuary to those fleeing persecution, and the principle of free movement throughout the European Union. Against this background our policy is as follows:" 
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.4 
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             "Where we are limiting numbers, our priority must be to meet our obligations to refugees and those seeking sanctuary, including the increasing numbers of people displaced by environmental change, above the needs of our economy." 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.5 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           "- Where we are limiting numbers, our priority must be to meet our obligations to refugees and those seeking sanctuary, including the increasing numbers of people displaced by environmental change, above the needs of our economy." 
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       "Our immigration policies must be fair and non-discriminatory, respect the integrity of families and be applied promptly and effectively." 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.6 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     "- Our immigration policies must be fair and non-discriminatory, respect the integrity of families and be applied promptly and effectively." 
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                         "Our international policies should every- where seek to reduce the economic, political and environmental factors that force people to migrate. Emigration should be a positive choice, not the outcome of desperation. In particular, free movement within the EU is a fact. We should press for EU policies that make all parts of the EU an attractive place to live." 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.7 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                       "- Our international policies should every- where seek to reduce the economic, political and environmental factors that force people to migrate. Emigration should be a positive choice, not the outcome of desperation. In particular, free movement within the EU is a fact. We should press for EU policies that make all parts of the EU an attractive place to live." 
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "We reject the use of immigration as a political issue to mask problems such as a lack of high-quality social housing. The proper solution is to provide enough social housing, as we propose elsewhere in this manifesto." 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.8 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "- We reject the use of immigration as a political issue to mask problems such as a lack of high-quality social housing. The proper solution is to provide enough social housing, as we propose elsewhere in this manifesto." 
+#&gt;                                                                                                                                                                                                              "We should not tolerate the long-term presence of large numbers of people whose immigration status is not defined. Such immigrants are vulnerable to exploitation by unscrupulous employers and others, under- mining national terms and conditions of employment. We would open up ways for existing illegal migrants who have been here for three years to become legal. In particular, a legal status must be provided for people who have not succeeded in their claim for humanitarian protection but who cannot be returned to their country of origin due to the political situation there." 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.9 
-#&gt;                                                                                                                                                                                                            "- We should not tolerate the long-term presence of large numbers of people whose immigration status is not defined. Such immigrants are vulnerable to exploitation by unscrupulous employers and others, under- mining national terms and conditions of employment. We would open up ways for existing illegal migrants who have been here for three years to become legal. In particular, a legal status must be provided for people who have not succeeded in their claim for humanitarian protection but who cannot be returned to their country of origin due to the political situation there." 
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              "We would review the asylum procedures to ensure that destitution plays no role in the asylum process by allowing those seeking sanctuary to work." 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Greens.10 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            "- We would review the asylum procedures to ensure that destitution plays no role in the asylum process by allowing those seeking sanctuary to work." 
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "We would review the Nationality, Immigration and Asylum Act 2002, particularly with regard to issues of access to legal advice, childcare and levels of subsistence allowance." 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Greens.11 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "- We would review the Nationality, Immigration and Asylum Act 2002, particularly with regard to issues of access to legal advice, childcare and levels of subsistence allowance." 
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            "Those who have been trafficked should not be subject to summary deportation. They should receive a temporary right to stay and have the same right to apply to remain as others seeking to migrate." 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Greens.12 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "- Those who have been trafficked should not be subject to summary deportation. They should receive a temporary right to stay and have the same right to apply to remain as others seeking to migrate." 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Greens.13 
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     "- Those seeking sanctuary should not be detained, and in particular the administrative detention of children is unacceptable and should cease immediately." </div><div class='input'>
-<span class='co'># segment a text into sentences</span>
-<span class='no'>segmentedChar</span> <span class='kw'>&lt;-</span> <span class='fu'>char_segment</span>(<span class='no'>data_char_ukimmig2010</span>, <span class='st'>"sentences"</span>)
-<span class='no'>segmentedChar</span>[<span class='fl'>3</span>]</div><div class='output co'>#&gt;                                                                                                                                                          BNP.3 
-#&gt; "In the absence of urgent action, we, the indigenous British people, will be reduced to minority status in our own ancestral homeland within two generations." </div></pre>
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       "Those seeking sanctuary should not be detained, and in particular the administrative detention of children is unacceptable and should cease immediately." </div><div class='input'>
+<span class='co'># segment a text into clauses</span>
+<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"This, is a sentence?  You: come here."</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"Yes, yes, okay."</span>)
+<span class='fu'>char_segment</span>(<span class='no'>txt</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"\\p{P}"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>,
+             <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='st'>"after"</span>, <span class='kw'>remove_pattern</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;             d1.1             d1.2             d1.3             d1.4 
+#&gt;          "This," "is a sentence?"           "You:"     "come here." 
+#&gt;             d2.1             d2.2             d2.3 
+#&gt;           "Yes,"           "yes,"          "okay." </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -407,18 +312,14 @@ space or if these are not desired for the segmented corpus.</p></td>
 
       <li><a href="#details">Details</a></li>
 
-      <li><a href="#note">Note</a></li>
+      <li><a href="#boundaries-and-segmentation-explained">Boundaries and segmentation explained</a></li>
 
-      <li><a href="#using-delimiters">Using delimiters</a></li>
+      <li><a href="#using-patterns">Using patterns</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
-
-    <h2>Author</h2>
-    
-Kenneth Benoit
 
   </div>
 </div>

@@ -32,15 +32,19 @@ matrix is recorded}
 
 \item{p}{The power of the Minkowski distance.}
 }
+\value{
+\code{textstat_simil} and \code{textstat_dist} return \code{dist} class objects.
+}
 \description{
 These functions compute matrixes of distances and similarities between 
 documents or features from a \code{\link{dfm}} and return a 
 \code{\link[stats]{dist}} object (or a matrix if specific targets are
-selected).
+selected).  They are fast and robust because they operate directly on the sparse
+\link{dfm} objects.
 }
 \details{
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
-  \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"},
+  \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, 
   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
   and \code{"minkowski"}.
 
@@ -53,7 +57,7 @@ selected).
 If you want to compute similarity on a "normalized" dfm object 
   (controlling for variable document lengths, for methods such as correlation
   for which different document lengths matter), then wrap the input dfm in 
-  \code{\link{weight}(x, "relFreq")}.
+  \code{\link{dfm_weight}(x, "relfreq")}.
 }
 \examples{
 # create a dfm from inaugural addresses from Reagan onwards
@@ -86,6 +90,30 @@ s2 <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine",
 head(as.matrix(s2), 10)
 as.list(s2, n = 8)
 
+}
+\references{
+The \code{"Chisquared"} metric is from Legendre, P., & Gallagher,
+  E. D. (2001).
+  "\href{http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf}{Ecologically
+   meaningful transformations for ordination of species data}".
+  \emph{Oecologia}, 129(2), 271–280. doi.org/10.1007/s004420100716
+  
+  The \code{"Chisquared2"} metric is the "Quadratic-Chi" measure from Pele,
+  O., & Werman, M. (2010). 
+  "\href{http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf}{The
+  Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision – ECCV
+  2010} (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
+  Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.
+  
+  \code{"hamming"} is \eqn{\sum{x \neq y)}}.
+
+  \code{"kullback"} is the Kullback-Leibler distance, which assumes that
+  \eqn{P(x_i) = 0} implies \eqn{P(y_i)=0}, and in case both \eqn{P(x_i)} and
+  \eqn{P(y_i)} equals to zero, then \eqn{P(x_i) * log(p(x_i)/p(y_i))} is
+  assumed to be zero as the limit value.  The formula is:
+   \deqn{\sum{P(x)*log(P(x)/p(y))}}
+   
+  All other measures are described in the \pkg{proxy} package.
 }
 \seealso{
 \code{\link{textstat_dist}}, \code{\link{as.list.dist}},

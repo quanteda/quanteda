@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>calculate collocation statistics — textstat_collocations • quanteda</title>
+<title>identify and score multi-word expressions — textstat_collocations • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -74,22 +74,15 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>calculate collocation statistics</h1>
+    <h1>identify and score multi-word expressions</h1>
     </div>
 
     
-    <p>Identify and score collocations from a corpus, character, or tokens object, 
-with targeted selection.</p>
-<p>#' @rdname textstat_collocations
-#' @noRd
-#' @export    
-textstat_collocations.character &lt;- function(x, method = c("lr", "chi2", "pmi", "dice", "bj"), ...) 
-    method &lt;- match.arg(method)
-    textstat_collocations(tokens(x), method = method, ...)</p>
+    <p>Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.</p>
     
 
-    <pre class="usage"><span class='fu'>textstat_collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lr"</span>, <span class='st'>"chi2"</span>, <span class='st'>"pmi"</span>, <span class='st'>"dice"</span>, <span class='st'>"bj_uni"</span>,
-  <span class='st'>"bj_all"</span>), <span class='kw'>min_size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>textstat_collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lambda"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='fu'>is.collocations</span>(<span class='no'>x</span>)</pre>
     
@@ -98,169 +91,132 @@ textstat_collocations.character &lt;- function(x, method = c("lr", "chi2", "pmi"
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a character, <a href='corpus.html'>corpus</a>, or <a href='tokens.html'>tokens</a> object to be mined for 
-collocations</p></td>
+      <td><p>a character, <a href='corpus.html'>corpus</a>, or <a href='tokens.html'>tokens</a> object whose
+collocations will be scored.  The tokens object should include punctuation,
+and if any words have been removed, these should have been removed with
+<code>padding = TRUE</code>.  While identifying collocations for tokens objects is 
+supported, you will get better results with character or corpus objects due
+to relatively imperfect detection of sentence boundaries from texts already 
+tokenized.</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>association measure for detecting collocations.  Let \(i\) 
-index documents, and \(j\) index features, \(n_{ij}\) refers to 
-observed counts, and \(m_{ij}\) the expected counts in a collocations 
-frequency table of dimensions \((J - size + 1)^2\). Available measures 
-are computed as:</p><dl class='dl-horizontal'>
-<dt><code>"lr"</code></dt><dd><p>The likelihood ratio 
-statistic \(G^2\), computed as: $$2 * \sum_i \sum_j ( n_{ij} * log 
-\frac{n_{ij}}{m_{ij}} )$$</p></dd> <dt><code>"chi2"</code></dt><dd><p>Pearson's \(\chi^2\) 
-statistic, computed as: $$\sum_i \sum_j \frac{(n_{ij} - 
-m_{ij})^2}{m_{ij}}$$</p></dd> <dt><code>"pmi"</code></dt><dd><p>point-wise mutual information 
-score, computed as log \(n_{11}/m_{11}\)</p></dd> <dt><code>"dice"</code></dt><dd><p>the Dice 
-coefficient, computed as \(n_{11}/n_{1.} + n_{.1}\)</p></dd> 
-<dt><code>"bj_uni"</code></dt><dd><p>unigram subtuples, Blaheta and Johnson's method (called through 
-<code><a href='sequences.html'>sequences</a></code>)</p></dd>  <dt><code>"bj_all"</code></dt><dd><p>all subtuples algorithm, 
-Blaheta and Johnson's method (called through <code><a href='sequences.html'>sequences</a></code>)</p></dd> </dl></td>
+      <td><p>association measure for detecting collocations. Currently this 
+is limited to <code>"lambda"</code>.  See Details.</p></td>
     </tr>
     <tr>
-      <th>min_size</th>
-      <td><p>minimum length of sequences which are collected</p></td>
-    </tr>
-    <tr>
-      <th>max_size</th>
-      <td><p>numeric argument representing the maximum length of the collocations
-to be scored.  The maximum size is currently 3 for all
-methods except <code>"bj_uni"</code> and <code>"bj_all"</code>, which has a maximum size of 5.</p></td>
+      <th>size</th>
+      <td><p>integer; the length of the collocations
+to be scored</p></td>
     </tr>
     <tr>
       <th>min_count</th>
-      <td><p>minimum frequency of collocations that will be scored</p></td>
+      <td><p>numeric; minimum frequency of collocations that will be scored</p></td>
+    </tr>
+    <tr>
+      <th>smoothing</th>
+      <td><p>numeric; a smoothing parameter added to the observed counts
+(default is 0.5)</p></td>
+    </tr>
+    <tr>
+      <th>tolower</th>
+      <td><p>logical; if <code>TRUE</code>, form collocations as lower-cased combinations</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to <code><a href='collocations2.html'>collocations2</a></code> for the
-first four methods, or to  <code><a href='sequences.html'>sequences</a></code> for <code>method = "bj"</code></p></td>
+      <td><p>additional arguments passed to <code><a href='tokens.html'>tokens</a></code>, if <code>x</code>
+is not a <a href='tokens.html'>tokens</a> object already</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>is.collocation</code> returns <code>TRUE</code> if the object is of class
+    <p><code>textstat_collocations</code> returns a data.frame of collocations and their
+  scores and statistsics.
+
+<code>is.collocation</code> returns <code>TRUE</code> if the object is of class
   <code>collocations</code>, <code>FALSE</code> otherwise.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>#' @rdname textstat_collocations
-#' @noRd
-#' @export    
-textstat_collocations.tokenizedTexts &lt;- function(x, method = c("lr", "chi2", "pmi", "dice", "bj"), ...) 
-    method &lt;- match.arg(method)
-    textstat_collocations(as.tokens(x), method = method, ...)</p>
-<p>check if an object is collocations object</p>
+    <p>Documents are grouped for the purposes of scoring, but collocations will not span sentences.
+If <code>x</code> is a <a href='tokens.html'>tokens</a> object and some tokens have been removed, this should be done
+using <code><a href='tokens_select.html'>tokens_remove</a>(x, pattern, padding = TRUE)</code> so that counts will still be
+accurate, but the pads will prevent those collocations from being scored.</p>
+    <p>The <code>lambda</code> computed for a size = \(K\)-word target multi-word
+expression the coefficient for the  \(K\)-way interaction parameter in the
+saturated log-linear model fitted to the counts of the terms forming the set
+of eligible multi-word expressions. This is the same as the "lambda" computed
+in Blaheta and Johnson's (2001), where all multi-word expressions are
+considered (rather than just verbs, as in that paper). The <code>z</code> is the 
+Wald \(z\)-statistic computed as the quotient of <code>lambda</code> and the Wald
+statistic for <code>lambda</code> as described below.</p>
+<p>In detail:</p>
+<p>Consider a \(K\)-word target expression \(x\), and let \(z\) be any
+\(K\)-word expression. Define a comparison function \(c(x,z)=(j_{1},
+\dots, j_{K})=c\) such that the \(k\)th element of \(c\) is 1 if the
+\(k\)th word in \(z\) is equal to the \(k\)th word in \(x\), and 0
+otherwise. Let \(c_{i}=(j_{i1}, \dots, j_{iK})\), \(i=1, \dots,
+2^{K}=M\), be the possible values of \(c(x,z)\), with \(c_{M}=(1,1,
+\dots, 1)\). Consider the set of \(c(x,z_{r})\) across all expressions
+\(z_{r}\) in a corpus of text, and let \(n_{i}\), for \(i=1,\dots,M\),
+denote the number of the \(c(x,z_{r})\) which equal \(c_{i}\), plus the
+smoothing constant <code>smoothing</code>. The \(n_{i}\) are the counts in a
+\(2^{K}\) contingency table whose dimensions are defined by the
+\(c_{i}\).
+    \(\lambda\): The \(K\)-way interaction parameter in the saturated
+loglinear model fitted to the \(n_{i}\). It can be calculated as
+    $$\lambda  = \sum_{i=1}^{M} (-1)^{K-b_{i}} \log n_{i}$$</p>
+<p>where \(b_{i}\) is the number of the elements of \(c_{i}\) which are
+equal to 1.</p>
+<p>Wald test \(z\)-statistic \(z\) is calculated as:
+    $$z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}$$</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>This function is under active development, and we aim to improve both its operation and 
-efficiency in the next release of <span class="pkg">quanteda</span>.</p>
+    <p>This function is under active development, with more measures to be added in the 
+the next release of <span class="pkg">quanteda</span>.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Blaheta, D., &amp; Johnson, M. (2001). 
   <a href = 'http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf'>Unsupervised
-   learning of multi-word verbs</a>. Presented at the ACLEACL Workshop on the 
-  Computational Extraction, Analysis and Exploitation of Collocations.
-    McInnes, B T. 2004. "Extending the Log Likelihood Measure to Improve 
-  Collocation Identification."  M.Sc. Thesis, University of Minnesota.</p>
+  learning of multi-word verbs</a>. Presented at the ACLEACL Workshop on the 
+  Computational Extraction, Analysis and Exploitation of Collocations.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>txts</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"quanteda is a package for quantitative text analysis"</span>,
-          <span class='st'>"quantitative text analysis is a rapidly growing field"</span>,
-          <span class='st'>"The population is rapidly growing"</span>)
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txts</span>)
-<span class='fu'>textstat_collocations</span>(<span class='no'>toks</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lr"</span>)</div><div class='output co'>#&gt;                  collocation length count       G2
-#&gt; 1 quantitative text analysis      3     2 23.56047
-#&gt; 2          quantitative text      2     2 12.55796
-#&gt; 3              text analysis      2     2 12.55796
-#&gt; 4            rapidly growing      2     2 12.55796
-#&gt; 5                       is a      2     2  8.73887</div><div class='input'><span class='fu'>textstat_collocations</span>(<span class='no'>toks</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lr"</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt;                   collocation length count        G2
-#&gt; 1  quantitative text analysis      3     2 23.560468
-#&gt; 2    package for quantitative      3     1 14.695802
-#&gt; 3       for quantitative text      3     1 14.695802
-#&gt; 4       rapidly growing field      3     1 14.695802
-#&gt; 5           a rapidly growing      3     1 13.736956
-#&gt; 6          is rapidly growing      3     1 12.857319
-#&gt; 7           quantitative text      2     2 12.557955
-#&gt; 8               text analysis      2     2 12.557955
-#&gt; 9             rapidly growing      2     2 12.557955
-#&gt; 10              quanteda is a      3     1 12.536461
-#&gt; 11              analysis is a      3     1 12.536461
-#&gt; 12               is a package      3     1 12.536461
-#&gt; 13              a package for      3     1 11.923213
-#&gt; 14           text analysis is      3     1 11.923213
-#&gt; 15          The population is      3     1 11.923213
-#&gt; 16               is a rapidly      3     1 10.084731
-#&gt; 17                       is a      2     2  8.738870
-#&gt; 18      population is rapidly      3     1  8.424986
-#&gt; 19                package for      2     1  7.724130
-#&gt; 20           for quantitative      2     1  7.724130
-#&gt; 21              growing field      2     1  7.724130
-#&gt; 22             The population      2     1  7.724130
-#&gt; 23                  a package      2     1  4.951541
-#&gt; 24                quanteda is      2     1  3.905045
-#&gt; 25                analysis is      2     1  3.905045
-#&gt; 26              population is      2     1  3.905045
-#&gt; 27                  a rapidly      2     1  2.304034
-#&gt; 28                 is rapidly      2     1  1.390970</div><div class='input'><span class='fu'>textstat_collocations</span>(<span class='no'>toks</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lr"</span>, <span class='kw'>max_size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt;                   collocation length count        G2
-#&gt; 1  quantitative text analysis      3     2 23.560468
-#&gt; 2    package for quantitative      3     1 14.695802
-#&gt; 3       for quantitative text      3     1 14.695802
-#&gt; 4       rapidly growing field      3     1 14.695802
-#&gt; 5           a rapidly growing      3     1 13.736956
-#&gt; 6          is rapidly growing      3     1 12.857319
-#&gt; 7           quantitative text      2     2 12.557955
-#&gt; 8               text analysis      2     2 12.557955
-#&gt; 9             rapidly growing      2     2 12.557955
-#&gt; 10              quanteda is a      3     1 12.536461
-#&gt; 11              analysis is a      3     1 12.536461
-#&gt; 12               is a package      3     1 12.536461
-#&gt; 13              a package for      3     1 11.923213
-#&gt; 14           text analysis is      3     1 11.923213
-#&gt; 15          The population is      3     1 11.923213
-#&gt; 16               is a rapidly      3     1 10.084731
-#&gt; 17                       is a      2     2  8.738870
-#&gt; 18      population is rapidly      3     1  8.424986
-#&gt; 19                package for      2     1  7.724130
-#&gt; 20           for quantitative      2     1  7.724130
-#&gt; 21              growing field      2     1  7.724130
-#&gt; 22             The population      2     1  7.724130
-#&gt; 23                  a package      2     1  4.951541
-#&gt; 24                quanteda is      2     1  3.905045
-#&gt; 25                analysis is      2     1  3.905045
-#&gt; 26              population is      2     1  3.905045
-#&gt; 27                  a rapidly      2     1  2.304034
-#&gt; 28                 is rapidly      2     1  1.390970</div><div class='input'>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>toks</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lr"</span>, <span class='kw'>max_size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt;                  collocation length count       G2
-#&gt; 1 quantitative text analysis      3     2 23.56047
-#&gt; 2          quantitative text      2     2 12.55796
-#&gt; 3              text analysis      2     2 12.55796
-#&gt; 4            rapidly growing      2     2 12.55796
-#&gt; 5                       is a      2     2  8.73887</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>txts</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]
+<span class='fu'>head</span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>txts</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;    collocation count length   lambda        z
+#&gt; 1    have been     5      2 5.704259 7.354588
+#&gt; 2     has been     3      2 5.565217 6.409333
+#&gt; 3       of the    24      2 1.673501 6.382475
+#&gt; 4       i have     5      2 3.743580 6.268303
+#&gt; 5      which i     6      2 3.172217 6.135144
+#&gt; 6      will be     4      2 3.868500 5.930143
+#&gt; 7    less than     2      2 6.279494 5.529680
+#&gt; 8  public good     2      2 6.279494 5.529680
+#&gt; 9     you will     2      2 4.917893 5.431752
+#&gt; 10      may be     3      2 4.190711 5.328038</div><div class='input'><span class='fu'>head</span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>txts</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;          collocation count length    lambda         z
+#&gt; 1       of which the     2      3 6.1259648 2.8317522
+#&gt; 2         in which i     3      3 2.1689288 1.1741918
+#&gt; 3          i have in     2      3 2.3809129 1.0618774
+#&gt; 4         and of the     2      3 0.8847383 0.7498730
+#&gt; 5          me by the     2      3 1.4726869 0.6560780
+#&gt; 6       to the great     2      3 1.2891870 0.5660311
+#&gt; 7        voice of my     2      3 1.2270130 0.5298220
+#&gt; 8     which ought to     2      3 1.4083232 0.5278314
+#&gt; 9  of the confidence     2      3 1.1220858 0.4948962
+#&gt; 10 the united states     2      3 1.2597834 0.4272349</div><div class='input'>
 <span class='co'># extracting multi-part proper nouns (capitalized terms)</span>
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='corpus_segment.html'>corpus_segment</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"sentence"</span>))
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks2</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks2</span>, <span class='st'>"^([A-Z][a-z\\-]{2,})"</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>"regex"</span>,
-                     <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>seqs</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>toks2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"bj_uni"</span>)
-<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;            collocation count length    lambda     sigma         z            p
-#&gt; 1        United States   155      2  6.212629 0.4289724 14.482583 0.000000e+00
-#&gt; 2   Federal Government    32      2  3.604058 0.3829004  9.412521 0.000000e+00
-#&gt; 3         Almighty God    15      2  6.610756 0.8324196  7.941615 9.992007e-16
-#&gt; 4        Chief Justice    11      2  5.351507 0.7455401  7.178027 3.536060e-13
-#&gt; 5        South America     6      2  6.760569 1.1181163  6.046392 7.406286e-10
-#&gt; 6     Chief Magistrate    10      2  5.388979 0.9133941  5.899950 1.818057e-09
-#&gt; 7  Vice President Bush     2      3 15.219565 2.5833183  5.891479 1.913775e-09
-#&gt; 8        Supreme Court     4      2  6.311977 1.1636470  5.424305 2.909019e-08
-#&gt; 9            Old World    10      2  8.062433 1.5468317  5.212224 9.329519e-08
-#&gt; 10      Vice President     5      2 10.427772 2.0175932  5.168422 1.180396e-07</div><div class='input'>
-<span class='co'># compounding tokens is more efficient when applied to the same tokens object </span>
-<span class='no'>toks_comp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='no'>toks2</span>, <span class='no'>seqs</span>)</div></pre>
+<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
+<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='no'>toks2</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks2</span>, <span class='st'>"^([A-Z][a-z\\-]{2,})"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>,
+                       <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>seqs</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>toks2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;              collocation count length     lambda         z
+#&gt; 1 United States Congress     2      3  -2.152404 -1.014623
+#&gt; 2    Vice President Bush     2      3 -11.582818 -4.471125</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -277,6 +233,10 @@ efficiency in the next release of <span class="pkg">quanteda</span>.</p>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
+
+    <h2>Author</h2>
+    
+Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 
   </div>
 </div>

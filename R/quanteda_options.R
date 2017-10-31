@@ -1,15 +1,14 @@
-# implement default options
-QUANTEDA_OPTION_LIST <- list(quanteda_threads = 1L,
-                             quanteda_verbose = FALSE,
-                             quanteda_print_dfm_max_ndoc = 20L,
-                             quanteda_print_dfm_max_nfeature = 20L)
-
 #' get or set package options for quanteda
 #' 
-#' Get or set global options affecting functions across \pkg{quatneda}.
-#' @param ... options to be set, as key-value pair, same as \code{\link{options}}
-#' @param reset logical; if \code{TRUE}, reset all \pkg{quanteda} options to their 
-#'   default values
+#' Get or set global options affecting functions across \pkg{quanteda}.
+#' @param ... options to be set, as key-value pair, same as
+#'   \code{\link{options}}. This may be a list of valid key-value pairs, useful
+#'   for setting a group of options at once (see examples).
+#' @param reset logical; if \code{TRUE}, reset all \pkg{quanteda} options to
+#'   their default values
+#' @param initialize logical; if \code{TRUE}, reset only the \pkg{quanteda}
+#'   options that are not already defined.  Used for setting initial values when
+#'   some have been defined previously, such as in `.Rprofile`.
 #' @details
 #' Currently available options are:
 #' \describe{
@@ -21,6 +20,18 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = 1L,
 #'    to display when using the defaults for printing a dfm}
 #' \item{\code{print_dfm_max_nfeature}}{integer; specifies the number of features
 #'    to display when using the defaults for printing a dfm}
+#' \item{\code{base_docname}}{character; stem name for documents that are
+#' unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
+#' from another object}
+#' \item{\code{base_featname}}{character; stem name for features that are
+#' unnamed when they are added, for whatever reason, to a dfm through an operation
+#' that adds features}
+#' \item{\code{base_featname}}{character; stem name for features that are
+#' unnamed when they are added, for whatever reason, to a dfm through an operation
+#' that adds features}
+#' \item{\code{base_featname}}{character; stem name for features that are
+#' unnamed when they are added, for whatever reason, to a dfm through an operation
+#' that adds features}
 #' }
 #' @return 
 #'   When called using a \code{key = value} pair (where \code{key} can be a label or 
@@ -33,83 +44,102 @@ QUANTEDA_OPTION_LIST <- list(quanteda_threads = 1L,
 #' @export
 #' @importFrom RcppParallel setThreadOptions
 #' @examples
-#' quanteda_options()
-#' quanteda_options(verbose = FALSE)
+#' (opt <- quanteda_options())
+#' \donttest{
+#' quanteda_options(verbose = TRUE)
 #' quanteda_options("verbose" = FALSE)
 #' quanteda_options("threads")
 #' quanteda_options(print_dfm_max_ndoc = 50L)
-#' \dontrun{
-#' quanteda_options(reset = TRUE) 
+#' # reset to defaults
+#' quanteda_options(reset = TRUE)
+#' # reset to saved options
+#' quanteda_options(opt)
 #' }
-quanteda_options <- function(..., reset = FALSE) {
+quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
+    
     args <- list(...)
+    # if the ... is a list already, use that
+    if (length(args) == 1 && is.list(args[[1]])) 
+        args <- args[[1]]
     
-    if ("reset" %in% names(args)) 
-        reset <- args$reset
-    if (reset) {
+    # initialize automatically it not yet done so
+    if (is.null(options('quanteda_initialized')) || !"package:quanteda" %in% search())
+        quanteda_initialize()
         
-        #########################
-        ## HARD-CODED DEFAULTS ##
-        #########################
-        options(quanteda_threads = 1L)
-        options(quanteda_verbose = FALSE)
-        options(quanteda_print_dfm_max_ndoc = 20L)
-        options(quanteda_print_dfm_max_nfeature = 20L)
-        
+    if (initialize) {
+        quanteda_initialize()
         return(invisible(TRUE))
-    }
-        
-    # if no options are specified
-    if (!length(args)) {
-        retlist <- options()[names(QUANTEDA_OPTION_LIST)]
-        names(retlist) <- stringi::stri_replace_all_fixed(names(retlist), "quanteda_", "")
-        return(retlist)
-    }
-    
-    for (i in seq_along(args)) {
-        key <- names(args)[i]
-        value <- args[[i]]
-        
-        # if the name of the argument was specified, without assigning a value
-        if (is.null(key)) {
-            key <- value
-            value <- NA
+    } else if (reset) {
+        quanteda_reset()
+        return(invisible(TRUE))
+    } else if (!length(args)) {
+        # return all option values with names
+        opts_names <- names(get_options_default())
+        opts <- options()[paste0("quanteda_", opts_names)]
+        names(opts) <- stri_sub(names(opts), 10, -1) # remove prefix
+        return(opts)
+    } else if (is.null(names(args))) {
+        # return a option value
+        return(getOption(paste0("quanteda_", args[[1]])))
+    } else {
+        # set value
+        for (key in names(args)) {
+            set_option_value(key, args[[key]])
         }
-        
-        if (key == "threads") {
-            if (is.na(value)) {
-                return(getOption("quanteda_threads"))
-            } else {
-                options(quanteda_threads = value)
-                RcppParallel::setThreadOptions(value)
-            }
-        
-        } else if (key == "verbose") {
-            if (is.na(value)) {
-                return(getOption("quanteda_verbose"))
-            } else {
-                options(quanteda_verbose = value)
-            }
-        
-        } else if (key == "print_dfm_max_ndoc"){
-            if (is.na(value)) {
-                return(getOption("quanteda_print_dfm_max_ndoc"))
-            } else {
-                options(quanteda_print_dfm_max_ndoc = value)
-            }
-        
-        } else if (key == "print_dfm_max_nfeature"){
-            if (is.na(value)) {
-                return(getOption("quanteda_print_dfm_max_nfeature"))
-            } else {
-                options(quanteda_print_dfm_max_nfeature = value)
-            }
-        
-        } else {
-            stop(key, " is not a valid quanteda option")
-        }
+        return(invisible(args))
     }
-    return(invisible(TRUE))
 }
 
+quanteda_initialize <- function() {
+    opts <- get_options_default()
+    for (key in names(opts)) {
+        if (is.null(getOption(paste0("quanteda_", key))))
+            set_option_value(key, opts[[key]])
+    }
+    options('quanteda_initialized' = TRUE)
+}
 
+quanteda_reset <- function() {
+    opts <- get_options_default()
+    for (key in names(opts)) {
+        set_option_value(key, opts[[key]])
+    }
+    options('quanteda_initialized' = TRUE)
+}
+
+set_option_value <- function(key, value) {
+    
+    opts <- get_options_default()
+    # check for key validity
+    if (!key %in% names(opts))
+        stop(key, " is not a valid quanteda option")
+    
+    # special setting for threads
+    if (key == "threads") {
+        available_threads <- RcppParallel::defaultNumThreads()
+        if (value > available_threads) {
+            warning("setting threads instead to maximum available ", available_threads)
+            value <- available_threads
+        }
+        RcppParallel::setThreadOptions(value)
+    }
+    
+    # assign the key-value
+    opts <- list(value)
+    names(opts) <- paste0("quanteda_", key)
+    options(opts)
+    
+}
+
+# returns default options
+get_options_default <- function(){
+    opts <- list(threads = max(1L, floor(RcppParallel::defaultNumThreads() - 1)),
+                 verbose = FALSE,
+                 print_dfm_max_ndoc = 20L,
+                 print_dfm_max_nfeature = 20L,
+                 base_docname = "text",
+                 base_featname = "feat",
+                 language_stemmer = "english",
+                 language_stopwords = "english")
+    return(opts)
+}

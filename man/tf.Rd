@@ -42,7 +42,7 @@ A document feature matrix to which the weighting scheme has been
 Apply varieties of term frequency weightings to a \link{dfm}.
 }
 \details{
-\code{tf(x, scheme = "prop")} is equivalent to \code{\link{weight}(x, "relFreq")}).
+\code{tf(x, scheme = "prop")} is equivalent to \code{\link{dfm_weight}(x, "relFreq")}).
 }
 \references{
 Manning, C. D., Raghavan, P., & Schutze, H. (2008). 

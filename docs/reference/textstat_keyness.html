@@ -78,11 +78,14 @@
     </div>
 
     
-    <p>calculate keyness statistics</p>
+    <p>Calculate "keyness", a score for features that occur differentially across 
+different categories.  Here, the categories are defined by reference to a
+"target" document index in the <a href='dfm.html'>dfm</a>, with the reference group
+consisting of all other documents.</p>
     
 
-    <pre class="usage"><span class='fu'>textstat_keyness</span>(<span class='no'>x</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"chi2"</span>, <span class='st'>"exact"</span>, <span class='st'>"lr"</span>),
-  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>textstat_keyness</span>(<span class='no'>x</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"chi2"</span>, <span class='st'>"exact"</span>, <span class='st'>"lr"</span>, <span class='st'>"pmi"</span>),
+  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>correction</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"default"</span>, <span class='st'>"yates"</span>, <span class='st'>"williams"</span>, <span class='st'>"none"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -93,32 +96,44 @@
     </tr>
     <tr>
       <th>target</th>
-      <td><p>the document index (numeric, character or logical) identifying the 
-document forming the "target" for computing keyness; all other documents' 
-feature frequencies will be combined for use as a reference</p></td>
+      <td><p>the document index (numeric, character or logical) identifying 
+the document forming the "target" for computing keyness; all other 
+documents' feature frequencies will be combined for use as a reference</p></td>
     </tr>
     <tr>
       <th>measure</th>
       <td><p>(signed) association measure to be used for computing keyness.
-Currenly available: <code>"chi2"</code> (\(chi^2\) with Yates correction); 
-<code>"exact"</code> (Fisher's exact test); <code>"lr"</code> for the likelihood ratio
-\(G\) statistic with Yates correction.</p></td>
+Currenly available: <code>"chi2"</code>; <code>"exact"</code> (Fisher's exact test); 
+<code>"lr"</code> for the likelihood ratio; <code>"pmi"</code> for pointwise mutual 
+information.</p></td>
     </tr>
     <tr>
       <th>sort</th>
       <td><p>logical; if <code>TRUE</code> sort features scored in descending order 
 of the measure, otherwise leave in original feature order</p></td>
     </tr>
+    <tr>
+      <th>correction</th>
+      <td><p>if <code>"default"</code>, Yates correction is applied to 
+<code>"chi2"</code>; William's correction is applied to <code>"lr"</code>; and no 
+correction is applied for the <code>"exact"</code> and <code>"pmi"</code> measures. 
+Specifying a value other than the default can be used to override the 
+defaults, for instance to apply the Williams correction to the chi2 
+measure.  Specying a correction for the <code>"exact"</code> and <code>"pmi"</code> 
+measures has no effect and produces a warning.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a data.frame of computed statistics and associated p-values, where the features 
-scored name each row, and the number of occurrences for both the target and reference groups.  
-  For <code>measure = "chi2"</code> this is the chi-squared value, signed 
-  positively if the observed value in the target exceeds its expected value; 
-  for <code>measure = "exact"</code> this is the estimate of the odds ratio; for 
-  <code>measure = "lr"</code> this is the likelihood ratio \(G\) statistic.</p>
+    <p>a data.frame of computed statistics and associated p-values, where 
+  the features scored name each row, and the number of occurrences for both 
+  the target and reference groups. For <code>measure = "chi2"</code> this is the 
+  chi-squared value, signed positively if the observed value in the target 
+  exceeds its expected value; for <code>measure = "exact"</code> this is the 
+  estimate of the odds ratio; for <code>measure = "lr"</code> this is the 
+  likelihood ratio \(G2\) statistic; for <code>"pmi"</code> this is the pointwise
+  mutual information statistics.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -129,318 +144,318 @@ scored name each row, and the number of occurrences for both the target and refe
   John Benjamins.
     Scott, M. &amp; Tribble, C. 2006.  <em>Textual Patterns: keyword and corpus 
   analysis in language education</em>.  Amsterdam: Benjamins, p. 55.
-    Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and Coincidence", 
-  <em>Computational Linguistics</em>, Vol 19, No. 1, pp. 61-74.</p>
+    Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and 
+  Coincidence", <em>Computational Linguistics</em>, Vol 19, No. 1, pp. 61-74.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># compare pre- v. post-war terms using grouping</span>
 <span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'>ifelse</span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&lt;</span> <span class='fl'>1945</span>, <span class='st'>"pre-war"</span>, <span class='st'>"post-war"</span>)
 <span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>period</span>)
-<span class='fu'>head</span>(<span class='no'>mydfm</span>) <span class='co'># make sure 'post-war' is in the first row</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9,232 features (34.6% sparse).
-#&gt; (showing first 2 documents and first 6 features)
+<span class='fu'>head</span>(<span class='no'>mydfm</span>) <span class='co'># make sure 'post-war' is in the first row</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (8.33% sparse).
+#&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;           features
-#&gt; docs       chief justice    , mr    . vice
-#&gt;   post-war    12      40 2194 25 1804   15
-#&gt;   pre-war     24      97 4832  6 3141    3</div><div class='input'><span class='fu'>head</span>(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>mydfm</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;               chi2 p n_target n_reference
-#&gt; we        701.8799 0      960         779
-#&gt; -         252.2852 0      510         532
-#&gt; .         227.2380 0     1804        3141
-#&gt; our       187.8353 0      874        1307
-#&gt; us        184.9674 0      262         216
-#&gt; :         175.7657 0      105          29
-#&gt; america   174.6586 0      130          54
-#&gt; world     169.3859 0      188         126
-#&gt; americans 147.6197 0       67           7
-#&gt; freedom   137.7030 0      122          64</div><div class='input'><span class='fu'>tail</span>(<span class='no'>result</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;                    chi2            p n_target n_reference
-#&gt; upon          -50.97048 9.376944e-13       39         332
-#&gt; it            -52.03533 5.451195e-13      257        1132
-#&gt; public        -54.79660 1.336709e-13       11         213
-#&gt; states        -58.08454 2.509104e-14       28         305
-#&gt; constitution  -59.87256 1.010303e-14        6         200
-#&gt; be            -71.67429 0.000000e+00      257        1225
-#&gt; should        -81.85968 0.000000e+00       15         309
-#&gt; which        -158.95020 0.000000e+00       95         911
-#&gt; of           -177.80869 0.000000e+00     1437        5666
-#&gt; the          -297.87187 0.000000e+00     1988        8094</div><div class='input'>
+#&gt; docs       fellow-citizens   of  the senate  and house
+#&gt;   pre-war               39 5666 8094     13 3854     8
+#&gt;   post-war               0 1437 1988      2 1456     3</div><div class='input'><span class='fu'>head</span>(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>mydfm</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                   chi2            p n_target n_reference
+#&gt; the          299.85716 0.000000e+00     8094        1988
+#&gt; of           179.17847 0.000000e+00     5666        1437
+#&gt; which        160.14560 0.000000e+00      911          95
+#&gt; should        83.10741 0.000000e+00      309          15
+#&gt; be            72.21927 0.000000e+00     1224         257
+#&gt; constitution  61.16666 5.218048e-15      200           6
+#&gt; states        59.13009 1.476597e-14      305          28
+#&gt; public        55.99225 7.271961e-14      213          11
+#&gt; it            52.69911 3.888001e-13     1132         257
+#&gt; upon          51.91189 5.804246e-13      332          39</div><div class='input'><span class='fu'>tail</span>(<span class='no'>result</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;                chi2 p n_target n_reference
+#&gt; new       -141.3690 0       97         150
+#&gt; americans -150.6480 0        7          67
+#&gt; world     -175.1354 0      123         188
+#&gt; america   -176.6114 0       54         130
+#&gt; :         -178.1283 0       29         105
+#&gt; us        -186.0132 0      216         262
+#&gt; our       -187.8329 0     1307         874
+#&gt; .         -226.6654 0     3141        1804
+#&gt; -         -395.1361 0      312         450
+#&gt; we        -702.0019 0      779         960</div><div class='input'>
 <span class='co'># compare pre- v. post-war terms using logical vector</span>
 <span class='no'>mydfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)
-<span class='fu'>textstat_keyness</span>(<span class='no'>mydfm2</span>, <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&gt;=</span> <span class='fl'>1945</span>)</div><div class='output co'>#&gt;                            chi2            p n_target n_reference
-#&gt; we                 7.018799e+02 0.000000e+00      960         779
-#&gt; -                  2.522852e+02 0.000000e+00      510         532
-#&gt; .                  2.272380e+02 0.000000e+00     1804        3141
-#&gt; our                1.878353e+02 0.000000e+00      874        1307
-#&gt; us                 1.849674e+02 0.000000e+00      262         216
-#&gt; :                  1.757657e+02 0.000000e+00      105          29
-#&gt; america            1.746586e+02 0.000000e+00      130          54
-#&gt; world              1.693859e+02 0.000000e+00      188         126
-#&gt; americans          1.476197e+02 0.000000e+00       67           7
-#&gt; freedom            1.377030e+02 0.000000e+00      122          64
-#&gt; new                1.326699e+02 0.000000e+00      150         102
-#&gt; today              1.264530e+02 0.000000e+00       76          21
-#&gt; let                1.097794e+02 0.000000e+00      100          54
-#&gt; together           1.025977e+02 0.000000e+00       64          19
-#&gt; you                1.006242e+02 0.000000e+00      116          80
-#&gt; america's          9.051114e+01 0.000000e+00       35           0
-#&gt; work               8.895165e+01 0.000000e+00       78          40
-#&gt; help               8.313975e+01 0.000000e+00       46          10
-#&gt; ,                  6.328131e+01 1.776357e-15     2194        4832
-#&gt; know               5.882108e+01 1.731948e-14       63          40
-#&gt; earth              5.821036e+01 2.353673e-14       44          18
-#&gt; history            5.607945e+01 6.961098e-14       60          38
-#&gt; god                5.485544e+01 1.296740e-13       57          35
-#&gt; live               5.124971e+01 8.133494e-13       39          16
-#&gt; do                 5.086969e+01 9.870993e-13      112         121
-#&gt; are                5.052212e+01 1.178280e-12      311         503
-#&gt; time               5.010091e+01 1.460387e-12      106         112
-#&gt; century            4.743658e+01 5.681233e-12       40          19
-#&gt; what               4.740058e+01 5.786593e-12       88          86
-#&gt; will               4.690854e+01 7.437828e-12      339         572
-#&gt; journey            4.596549e+01 1.203548e-11       20           1
-#&gt; dignity            4.577572e+01 1.325962e-11       24           4
-#&gt; promise            4.429157e+01 2.829315e-11       34          14
-#&gt; mr                 4.232395e+01 7.733958e-11       25           6
-#&gt; build              4.131706e+01 1.294346e-10       21           3
-#&gt; thank              4.064165e+01 1.828669e-10       18           1
-#&gt; challenges         3.943058e+01 3.399322e-10       16           0
-#&gt; for                3.936134e+01 3.522012e-10      421         776
-#&gt; strength           3.807069e+01 6.822725e-10       45          31
-#&gt; cannot             3.734577e+01 9.893516e-10       36          20
-#&gt; bless              3.693396e+01 1.221991e-09       18           2
-#&gt; must               3.649566e+01 1.530062e-09      151         215
-#&gt; lives              3.606755e+01 1.905946e-09       32          16
-#&gt; again              3.533471e+01 2.776398e-09       42          29
-#&gt; generation         3.512850e+01 3.086504e-09       28          12
-#&gt; across             3.499140e+01 3.311650e-09       22           6
-#&gt; moment             3.497182e+01 3.345117e-09       27          11
-#&gt; dream              3.432681e+01 4.659189e-09       17           2
-#&gt; weapons            3.406121e+01 5.340536e-09       14           0
-#&gt; young              3.311895e+01 8.668991e-09       19           4
-#&gt; words              3.275732e+01 1.044124e-08       26          11
-#&gt; faith              3.219168e+01 1.396880e-08       48          40
-#&gt; dreams             3.172895e+01 1.772601e-08       16           2
-#&gt; nation             3.163099e+01 1.864311e-08      123         171
-#&gt; role               3.137788e+01 2.123865e-08       13           0
-#&gt; heart              3.131451e+01 2.194340e-08       28          14
-#&gt; because            3.107581e+01 2.481442e-08       59          58
-#&gt; resolve            3.107201e+01 2.486304e-08       17           3
-#&gt; children           3.064151e+01 3.103816e-08       31          18
-#&gt; friends            3.056931e+01 3.221503e-08       25          11
-#&gt; your               3.039199e+01 3.529830e-08       61          62
-#&gt; meaning            2.914201e+01 6.726262e-08       15           2
-#&gt; peoples            2.893856e+01 7.471069e-08       26          13
-#&gt; communism          2.869575e+01 8.468931e-08       12           0
-#&gt; begin              2.869575e+01 8.468931e-08       12           0
-#&gt; yes                2.869575e+01 8.468931e-08       12           0
-#&gt; this               2.835429e+01 1.010229e-07      295         540
-#&gt; unity              2.789357e+01 1.281753e-07       21           8
-#&gt; story              2.740403e+01 1.650865e-07       13           1
-#&gt; families           2.656803e+01 2.544198e-07       14           2
-#&gt; forward            2.656310e+01 2.550694e-07       24          12
-#&gt; vice               2.603583e+01 3.351402e-07       15           3
-#&gt; jobs               2.601513e+01 3.387520e-07       11           0
-#&gt; president          2.601077e+01 3.395174e-07       46          43
-#&gt; join               2.571630e+01 3.954731e-07       16           4
-#&gt; world's            2.550260e+01 4.417874e-07       18           6
-#&gt; strong             2.535083e+01 4.779462e-07       32          23
-#&gt; day                2.507395e+01 5.517329e-07       46          44
-#&gt; believe            2.482330e+01 6.283320e-07       40          35
-#&gt; celebrate          2.477638e+01 6.438161e-07       12           1
-#&gt; man                2.454282e+01 7.267650e-07       45          43
-#&gt; back               2.418822e+01 8.736487e-07       22          11
-#&gt; when               2.402471e+01 9.510743e-07       90         123
-#&gt; centuries          2.400959e+01 9.585730e-07       13           2
-#&gt; seek               2.389993e+01 1.014757e-06       34          27
-#&gt; senator            2.333646e+01 1.359972e-06       10           0
-#&gt; nuclear            2.333646e+01 1.359972e-06       10           0
-#&gt; free               2.258075e+01 2.014931e-06       79         105
-#&gt; peace              2.216887e+01 2.496891e-06      103         152
-#&gt; women              2.213170e+01 2.545710e-06       21          11
-#&gt; ask                2.120608e+01 4.124532e-06       26          18
-#&gt; remember           2.107485e+01 4.416881e-06       17           7
-#&gt; challenge          2.090517e+01 4.825908e-06       14           4
-#&gt; change             2.071339e+01 5.334174e-06       36          33
-#&gt; make               2.046758e+01 6.064988e-06       64          81
-#&gt; need               1.991480e+01 8.097099e-06       38          37
-#&gt; courage            1.983500e+01 8.442242e-06       23          15
-#&gt; old                1.956841e+01 9.706070e-06       39          39
-#&gt; pledge             1.939449e+01 1.063135e-05       22          14
-#&gt; come               1.903751e+01 1.281737e-05       38          38
-#&gt; who                1.900236e+01 1.305570e-05      138         232
-#&gt; threat             1.895365e+01 1.339328e-05       11           2
-#&gt; tyranny            1.895365e+01 1.339328e-05       11           2
-#&gt; values             1.890034e+01 1.377281e-05       16           7
-#&gt; hope               1.871529e+01 1.517607e-05       53          64
-#&gt; hard               1.870461e+01 1.526132e-05       15           6
-#&gt; answer             1.865405e+01 1.567142e-05       12           3
-#&gt; renew              1.854990e+01 1.655138e-05       13           4
-#&gt; voices             1.854990e+01 1.655138e-05       13           4
-#&gt; american           1.839315e+01 1.797024e-05       69          94
-#&gt; areas              1.798786e+01 2.223178e-05        8           0
-#&gt; heal               1.798786e+01 2.223178e-05        8           0
-#&gt; define             1.798786e+01 2.223178e-05        8           0
-#&gt; compassion         1.798786e+01 2.223178e-05        8           0
-#&gt; speaker            1.798786e+01 2.223178e-05        8           0
-#&gt; quiet              1.798786e+01 2.223178e-05        8           0
-#&gt; don't              1.798786e+01 2.223178e-05        8           0
-#&gt; here               1.790667e+01 2.320065e-05       39          41
-#&gt; go                 1.754606e+01 2.804306e-05       26          21
-#&gt; but                1.735863e+01 3.094898e-05      225         429
-#&gt; each               1.723627e+01 3.300749e-05       55          70
-#&gt; founding           1.696872e+01 3.800076e-05        9           1
-#&gt; third              1.696872e+01 3.800076e-05        9           1
-#&gt; nation's           1.677276e+01 4.213381e-05       15           7
-#&gt; poverty            1.677276e+01 4.213381e-05       15           7
-#&gt; democracy          1.658033e+01 4.663221e-05       30          28
-#&gt; bring              1.652378e+01 4.804365e-05       24          19
-#&gt; creed              1.646629e+01 4.952272e-05       10           2
-#&gt; bold               1.646629e+01 4.952272e-05       10           2
-#&gt; schools            1.633698e+01 5.301924e-05       13           5
-#&gt; born               1.633698e+01 5.301924e-05       13           5
-#&gt; strive             1.633698e+01 5.301924e-05       13           5
-#&gt; friend             1.625914e+01 5.524243e-05       11           3
-#&gt; leaders            1.625914e+01 5.524243e-05       11           3
-#&gt; learned            1.625914e+01 5.524243e-05       11           3
-#&gt; man's              1.625914e+01 5.524243e-05       11           3
-#&gt; program            1.625914e+01 5.524243e-05       11           3
-#&gt; land               1.579734e+01 7.050173e-05       35          37
-#&gt; planet             1.532040e+01 9.073152e-05        7           0
-#&gt; sick               1.532040e+01 9.073152e-05        7           0
-#&gt; productivity       1.532040e+01 9.073152e-05        7           0
-#&gt; decency            1.532040e+01 9.073152e-05        7           0
-#&gt; decades            1.532040e+01 9.073152e-05        7           0
-#&gt; goals              1.532040e+01 9.073152e-05        7           0
-#&gt; \\                 1.532040e+01 9.073152e-05        7           0
-#&gt; age                1.504122e+01 1.051886e-04       15           8
-#&gt; a                  1.493629e+01 1.112029e-04      690        1556
-#&gt; factories          1.440517e+01 1.473968e-04        8           1
-#&gt; historic           1.440517e+01 1.473968e-04        8           1
-#&gt; simple             1.439612e+01 1.481074e-04       13           6
-#&gt; achieve            1.439612e+01 1.481074e-04       13           6
-#&gt; ceremony           1.401584e+01 1.812767e-04        9           2
-#&gt; decent             1.401584e+01 1.812767e-04        9           2
-#&gt; everyone           1.401584e+01 1.812767e-04        9           2
-#&gt; child              1.401584e+01 1.812767e-04        9           2
-#&gt; commitment         1.401584e+01 1.812767e-04        9           2
-#&gt; goal               1.401584e+01 1.812767e-04        9           2
-#&gt; prayer             1.397346e+01 1.854097e-04       11           4
-#&gt; move               1.397346e+01 1.854097e-04       11           4
-#&gt; can                1.385632e+01 1.973322e-04      164         307
-#&gt; is                 1.312689e+01 2.910882e-04      458        1004
-#&gt; misery             1.266050e+01 3.734626e-04        6           0
-#&gt; hunger             1.266050e+01 3.734626e-04        6           0
-#&gt; quest              1.266050e+01 3.734626e-04        6           0
-#&gt; night              1.266050e+01 3.734626e-04        6           0
-#&gt; deepest            1.266050e+01 3.734626e-04        6           0
-#&gt; celebration        1.266050e+01 3.734626e-04        6           0
-#&gt; civility           1.266050e+01 3.734626e-04        6           0
-#&gt; choices            1.266050e+01 3.734626e-04        6           0
-#&gt; ensure             1.266050e+01 3.734626e-04        6           0
-#&gt; adversaries        1.266050e+01 3.734626e-04        6           0
-#&gt; timeless           1.266050e+01 3.734626e-04        6           0
-#&gt; bush               1.266050e+01 3.734626e-04        6           0
-#&gt; workers            1.266050e+01 3.734626e-04        6           0
-#&gt; streets            1.266050e+01 3.734626e-04        6           0
-#&gt; budget             1.266050e+01 3.734626e-04        6           0
-#&gt; way                1.258826e+01 3.881768e-04       37          45
-#&gt; life               1.248016e+01 4.112963e-04       56          81
-#&gt; enemies            1.233125e+01 4.454374e-04       12           6
-#&gt; small              1.232832e+01 4.461371e-04       18          14
-#&gt; human              1.216274e+01 4.875365e-04       41          53
-#&gt; renewal            1.187330e+01 5.694447e-04        7           1
-#&gt; big                1.187330e+01 5.694447e-04        7           1
-#&gt; basic              1.187330e+01 5.694447e-04        7           1
-#&gt; lead               1.182099e+01 5.856680e-04       17          13
-#&gt; generations        1.182099e+01 5.856680e-04       17          13
-#&gt; learn              1.177142e+01 6.014701e-04       10           4
-#&gt; ideas              1.161706e+01 6.534950e-04        9           3
-#&gt; try                1.161706e+01 6.534950e-04        9           3
-#&gt; truly              1.161706e+01 6.534950e-04        9           3
-#&gt; welcome            1.161706e+01 6.534950e-04        9           3
-#&gt; play               1.161706e+01 6.534950e-04        9           3
-#&gt; shape              1.161336e+01 6.547969e-04        8           2
-#&gt; heroes             1.161336e+01 6.547969e-04        8           2
-#&gt; working            1.161336e+01 6.547969e-04        8           2
-#&gt; shared             1.161336e+01 6.547969e-04        8           2
-#&gt; anew               1.161336e+01 6.547969e-04        8           2
-#&gt; instead            1.117512e+01 8.290139e-04       13           8
-#&gt; better             1.109329e+01 8.664042e-04       34          42
-#&gt; end                1.108018e+01 8.725519e-04       23          23
-#&gt; security           1.100232e+01 9.099777e-04       30          35
-#&gt; sacrifice          1.081731e+01 1.005555e-03       15          11
-#&gt; nations            1.077426e+01 1.029212e-03       75         124
-#&gt; that               1.053397e+01 1.172002e-03      546        1243
-#&gt; proud              1.033999e+01 1.301788e-03       11           6
-#&gt; policies           1.033999e+01 1.301788e-03       11           6
-#&gt; act                1.033269e+01 1.306945e-03       26          29
-#&gt; reach              1.019109e+01 1.411209e-03       16          13
-#&gt; think              1.019109e+01 1.411209e-03       16          13
-#&gt; "                  1.015543e+01 1.438768e-03       90         158
-#&gt; stand              1.014731e+01 1.445119e-03       27          31
-#&gt; once               1.002062e+01 1.547975e-03       21          21
-#&gt; programs           1.001269e+01 1.554655e-03        5           0
-#&gt; cold               1.001269e+01 1.554655e-03        5           0
-#&gt; brothers           1.001269e+01 1.554655e-03        5           0
-#&gt; hungry             1.001269e+01 1.554655e-03        5           0
-#&gt; knows              1.001269e+01 1.554655e-03        5           0
-#&gt; ended              1.001269e+01 1.554655e-03        5           0
-#&gt; hatreds            1.001269e+01 1.554655e-03        5           0
-#&gt; dawn               1.001269e+01 1.554655e-03        5           0
-#&gt; ending             1.001269e+01 1.554655e-03        5           0
-#&gt; today's            1.001269e+01 1.554655e-03        5           0
-#&gt; breeze             1.001269e+01 1.554655e-03        5           0
-#&gt; drugs              1.001269e+01 1.554655e-03        5           0
-#&gt; edge               1.001269e+01 1.554655e-03        5           0
-#&gt; god's              9.967813e+00 1.593006e-03       10           5
-#&gt; building           9.967813e+00 1.593006e-03       10           5
-#&gt; responsibility     9.845319e+00 1.702645e-03       29          35
-#&gt; ourselves          9.843857e+00 1.703999e-03       35          46
-#&gt; fate               9.644512e+00 1.899182e-03        9           4
-#&gt; fight              9.396735e+00 2.173722e-03        8           3
-#&gt; allies             9.396735e+00 2.173722e-03        8           3
-#&gt; lift               9.396735e+00 2.173722e-03        8           3
-#&gt; turning            9.396735e+00 2.173722e-03        8           3
-#&gt; watching           9.386652e+00 2.185710e-03        6           1
-#&gt; bible              9.386652e+00 2.185710e-03        6           1
-#&gt; job                9.386652e+00 2.185710e-03        6           1
-#&gt; tens               9.386652e+00 2.185710e-03        6           1
-#&gt; feed               9.386652e+00 2.185710e-03        6           1
-#&gt; chance             9.355701e+00 2.222929e-03       12           8
-#&gt; era                9.355701e+00 2.222929e-03       12           8
-#&gt; hear               9.274825e+00 2.323249e-03        7           2
-#&gt; gift               9.274825e+00 2.323249e-03        7           2
-#&gt; loyalty            9.274825e+00 2.323249e-03        7           2
-#&gt; soul               9.274825e+00 2.323249e-03        7           2
-#&gt; (                  8.887995e+00 2.870519e-03       11           7
-#&gt; )                  8.887995e+00 2.870519e-03       11           7
-#&gt; few                8.760054e+00 3.078999e-03       17          16
-#&gt; say                8.689091e+00 3.201202e-03       20          21
-#&gt; light              8.636966e+00 3.294096e-03       15          13
-#&gt;  [ reached getOption("max.print") -- omitted 8982 rows ]</div><div class='input'>
+<span class='fu'>textstat_keyness</span>(<span class='no'>mydfm2</span>, <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&gt;=</span> <span class='fl'>1945</span>)</div><div class='output co'>#&gt;                                chi2            p n_target n_reference
+#&gt; we                     7.020019e+02 0.000000e+00      960         779
+#&gt; -                      3.951361e+02 0.000000e+00      450         312
+#&gt; .                      2.266654e+02 0.000000e+00     1804        3141
+#&gt; our                    1.878329e+02 0.000000e+00      874        1307
+#&gt; us                     1.860132e+02 0.000000e+00      262         216
+#&gt; :                      1.781283e+02 0.000000e+00      105          29
+#&gt; america                1.766114e+02 0.000000e+00      130          54
+#&gt; world                  1.751354e+02 0.000000e+00      188         123
+#&gt; americans              1.506480e+02 0.000000e+00       67           7
+#&gt; new                    1.413690e+02 0.000000e+00      150          97
+#&gt; freedom                1.373460e+02 0.000000e+00      121          64
+#&gt; today                  1.288729e+02 0.000000e+00       76          21
+#&gt; let                    1.115160e+02 0.000000e+00      100          54
+#&gt; together               1.049803e+02 0.000000e+00       64          19
+#&gt; you                    1.020667e+02 0.000000e+00      116          80
+#&gt; america's              9.406895e+01 0.000000e+00       35           0
+#&gt; help                   9.213749e+01 0.000000e+00       46           8
+#&gt; work                   9.077929e+01 0.000000e+00       78          40
+#&gt; ,                      6.285815e+01 2.220446e-15     2194        4832
+#&gt; know                   6.043361e+01 7.660539e-15       63          40
+#&gt; earth                  6.032691e+01 7.993606e-15       44          18
+#&gt; history                5.769898e+01 3.053113e-14       60          38
+#&gt; god                    5.417331e+01 1.835199e-13       55          34
+#&gt; live                   5.337023e+01 2.762235e-13       39          16
+#&gt; time                   5.273752e+01 3.812506e-13      106         110
+#&gt; do                     5.260523e+01 4.077849e-13      112         120
+#&gt; are                    5.087598e+01 9.838796e-13      311         503
+#&gt; journey                4.930187e+01 2.194578e-12       20           1
+#&gt; dignity                4.864118e+01 3.073430e-12       24           4
+#&gt; what                   4.847609e+01 3.343437e-12       88          86
+#&gt; century                4.724865e+01 6.252887e-12       39          19
+#&gt; will                   4.721042e+01 6.376122e-12      339         572
+#&gt; promise                4.641444e+01 9.570789e-12       34          14
+#&gt; mr                     4.493857e+01 2.033140e-11       25           6
+#&gt; build                  4.427129e+01 2.858780e-11       21           3
+#&gt; thank                  4.395178e+01 3.365652e-11       18           1
+#&gt; bless                  4.001006e+01 2.526580e-10       18           2
+#&gt; strength               3.961129e+01 3.098864e-10       45          31
+#&gt; for                    3.955452e+01 3.190271e-10      421         776
+#&gt; challenges             3.938908e+01 3.472338e-10       16           0
+#&gt; cannot                 3.914476e+01 3.935189e-10       36          20
+#&gt; lives                  3.798753e+01 7.119839e-10       32          16
+#&gt; across                 3.750459e+01 9.119797e-10       22           6
+#&gt; dream                  3.737566e+01 9.743051e-10       17           2
+#&gt; generation             3.721599e+01 1.057433e-09       28          12
+#&gt; moment                 3.711190e+01 1.115412e-09       27          11
+#&gt; must                   3.708654e+01 1.130010e-09      151         215
+#&gt; again                  3.687593e+01 1.258907e-09       42          29
+#&gt; young                  3.583078e+01 2.152211e-09       19           4
+#&gt; words                  3.485943e+01 3.543892e-09       26          11
+#&gt; weapons                3.402523e+01 5.440201e-09       14           0
+#&gt; resolve                3.389994e+01 5.802054e-09       17           3
+#&gt; faith                  3.350180e+01 7.119804e-09       48          40
+#&gt; heart                  3.323775e+01 8.155199e-09       28          14
+#&gt; day                    3.314882e+01 8.536828e-09       45          36
+#&gt; nation                 3.278696e+01 1.028323e-08      123         170
+#&gt; friends                3.263119e+01 1.114126e-08       25          11
+#&gt; children               3.239506e+01 1.258057e-08       31          18
+#&gt; because                3.217534e+01 1.408671e-08       59          58
+#&gt; dreams                 3.169219e+01 1.806472e-08       16           2
+#&gt; your                   3.144943e+01 2.047031e-08       61          62
+#&gt; role                   3.134467e+01 2.160514e-08       13           0
+#&gt; peoples                3.086300e+01 2.769008e-08       26          13
+#&gt; forward                3.042924e+01 3.462689e-08       24          11
+#&gt; unity                  3.010270e+01 4.097608e-08       21           8
+#&gt; meaning                2.910796e+01 6.845506e-08       15           2
+#&gt; vice                   2.910796e+01 6.845506e-08       15           2
+#&gt; communism              2.866529e+01 8.603180e-08       12           0
+#&gt; begin                  2.866529e+01 8.603180e-08       12           0
+#&gt; yes                    2.866529e+01 8.603180e-08       12           0
+#&gt; this                   2.861672e+01 8.821709e-08      295         540
+#&gt; join                   2.829580e+01 1.041215e-07       16           4
+#&gt; president              2.817897e+01 1.105997e-07       46          42
+#&gt; world's                2.783793e+01 1.319142e-07       18           6
+#&gt; man                    2.765403e+01 1.450692e-07       45          41
+#&gt; story                  2.737324e+01 1.677360e-07       13           1
+#&gt; strong                 2.685377e+01 2.194459e-07       32          23
+#&gt; families               2.653669e+01 2.585804e-07       14           2
+#&gt; back                   2.611380e+01 3.218758e-07       22          11
+#&gt; believe                2.608212e+01 3.272002e-07       40          35
+#&gt; jobs                   2.598743e+01 3.436470e-07       11           0
+#&gt; seek                   2.528140e+01 4.954634e-07       34          27
+#&gt; celebrate              2.474832e+01 6.532558e-07       12           1
+#&gt; when                   2.470883e+01 6.667808e-07       90         123
+#&gt; women                  2.400582e+01 9.604510e-07       21          11
+#&gt; senator                2.331152e+01 1.377720e-06       10           0
+#&gt; nuclear                2.331152e+01 1.377720e-06       10           0
+#&gt; remember               2.320349e+01 1.457329e-06       17           7
+#&gt; ask                    2.275731e+01 1.838035e-06       26          18
+#&gt; free                   2.227345e+01 2.364530e-06       78         105
+#&gt; change                 2.191881e+01 2.844328e-06       36          33
+#&gt; peace                  2.187335e+01 2.912502e-06      102         152
+#&gt; old                    2.157477e+01 3.402983e-06       39          38
+#&gt; courage                2.145773e+01 3.617142e-06       23          15
+#&gt; centuries              2.144407e+01 3.643011e-06       12           2
+#&gt; make                   2.126122e+01 4.007586e-06       64          81
+#&gt; born                   2.105920e+01 4.453103e-06       13           3
+#&gt; pledge                 2.104609e+01 4.483677e-06       22          14
+#&gt; need                   2.104505e+01 4.486098e-06       38          37
+#&gt; values                 2.096503e+01 4.677443e-06       16           7
+#&gt; challenge              2.087761e+01 4.895839e-06       14           4
+#&gt; hard                   2.084299e+01 4.985136e-06       14           5
+#&gt; third                  2.063821e+01 5.547786e-06        9           0
+#&gt; come                   2.013522e+01 7.215571e-06       38          38
+#&gt; hope                   1.957330e+01 9.681281e-06       53          64
+#&gt; who                    1.942958e+01 1.043780e-05      138         232
+#&gt; american               1.909708e+01 1.242349e-05       69          94
+#&gt; here                   1.894267e+01 1.347059e-05       39          41
+#&gt; threat                 1.893039e+01 1.355757e-05       11           2
+#&gt; tyranny                1.893039e+01 1.355757e-05       11           2
+#&gt; go                     1.891167e+01 1.369125e-05       26          21
+#&gt; nation's               1.876743e+01 1.476673e-05       15           7
+#&gt; poverty                1.876743e+01 1.476673e-05       15           7
+#&gt; answer                 1.862999e+01 1.587044e-05       12           3
+#&gt; renew                  1.852495e+01 1.676947e-05       13           4
+#&gt; voices                 1.852495e+01 1.676947e-05       13           4
+#&gt; each                   1.803028e+01 2.174196e-05       55          70
+#&gt; areas                  1.796844e+01 2.245982e-05        8           0
+#&gt; heal                   1.796844e+01 2.245982e-05        8           0
+#&gt; define                 1.796844e+01 2.245982e-05        8           0
+#&gt; compassion             1.796844e+01 2.245982e-05        8           0
+#&gt; speaker                1.796844e+01 2.245982e-05        8           0
+#&gt; quiet                  1.796844e+01 2.245982e-05        8           0
+#&gt; don't                  1.796844e+01 2.245982e-05        8           0
+#&gt; bring                  1.791425e+01 2.310843e-05       24          19
+#&gt; democracy              1.776756e+01 2.496034e-05       30          28
+#&gt; but                    1.762136e+01 2.695441e-05      225         429
+#&gt; child                  1.694883e+01 3.840093e-05        9           1
+#&gt; founding               1.694883e+01 3.840093e-05        9           1
+#&gt; age                    1.688978e+01 3.961438e-05       15           8
+#&gt; land                   1.682924e+01 4.089821e-05       35          37
+#&gt; creed                  1.644570e+01 5.006356e-05       10           2
+#&gt; bold                   1.644570e+01 5.006356e-05       10           2
+#&gt; simple                 1.639733e+01 5.135748e-05       13           6
+#&gt; achieve                1.639733e+01 5.135748e-05       13           6
+#&gt; schools                1.631362e+01 5.367665e-05       13           5
+#&gt; strive                 1.631362e+01 5.367665e-05       13           5
+#&gt; friend                 1.623771e+01 5.587097e-05       11           3
+#&gt; leaders                1.623771e+01 5.587097e-05       11           3
+#&gt; learned                1.623771e+01 5.587097e-05       11           3
+#&gt; man's                  1.623771e+01 5.587097e-05       11           3
+#&gt; program                1.623771e+01 5.587097e-05       11           3
+#&gt; planet                 1.530373e+01 9.153583e-05        7           0
+#&gt; sick                   1.530373e+01 9.153583e-05        7           0
+#&gt; productivity           1.530373e+01 9.153583e-05        7           0
+#&gt; decency                1.530373e+01 9.153583e-05        7           0
+#&gt; decades                1.530373e+01 9.153583e-05        7           0
+#&gt; goals                  1.530373e+01 9.153583e-05        7           0
+#&gt; \\                     1.530373e+01 9.153583e-05        7           0
+#&gt; a                      1.494622e+01 1.106196e-04      690        1556
+#&gt; factories              1.438799e+01 1.487479e-04        8           1
+#&gt; historic               1.438799e+01 1.487479e-04        8           1
+#&gt; can                    1.416408e+01 1.675387e-04      164         307
+#&gt; way                    1.411962e+01 1.715452e-04       37          44
+#&gt; ceremony               1.399790e+01 1.830146e-04        9           2
+#&gt; decent                 1.399790e+01 1.830146e-04        9           2
+#&gt; everyone               1.399790e+01 1.830146e-04        9           2
+#&gt; commitment             1.399790e+01 1.830146e-04        9           2
+#&gt; goal                   1.399790e+01 1.830146e-04        9           2
+#&gt; prayer                 1.395366e+01 1.873730e-04       11           4
+#&gt; move                   1.395366e+01 1.873730e-04       11           4
+#&gt; small                  1.373881e+01 2.100682e-04       18          14
+#&gt; lead                   1.325109e+01 2.724220e-04       17          13
+#&gt; generations            1.325109e+01 2.724220e-04       17          13
+#&gt; is                     1.320823e+01 2.787231e-04      458        1004
+#&gt; fellow                 1.316204e+01 2.856784e-04       45          60
+#&gt; life                   1.312379e+01 2.915696e-04       56          81
+#&gt; human                  1.294773e+01 3.203090e-04       41          53
+#&gt; instead                1.285562e+01 3.364677e-04       13           8
+#&gt; misery                 1.264658e+01 3.762541e-04        6           0
+#&gt; hunger                 1.264658e+01 3.762541e-04        6           0
+#&gt; quest                  1.264658e+01 3.762541e-04        6           0
+#&gt; night                  1.264658e+01 3.762541e-04        6           0
+#&gt; deepest                1.264658e+01 3.762541e-04        6           0
+#&gt; celebration            1.264658e+01 3.762541e-04        6           0
+#&gt; civility               1.264658e+01 3.762541e-04        6           0
+#&gt; choices                1.264658e+01 3.762541e-04        6           0
+#&gt; ensure                 1.264658e+01 3.762541e-04        6           0
+#&gt; adversaries            1.264658e+01 3.762541e-04        6           0
+#&gt; timeless               1.264658e+01 3.762541e-04        6           0
+#&gt; bush                   1.264658e+01 3.762541e-04        6           0
+#&gt; workers                1.264658e+01 3.762541e-04        6           0
+#&gt; streets                1.264658e+01 3.762541e-04        6           0
+#&gt; budget                 1.264658e+01 3.762541e-04        6           0
+#&gt; enemies                1.231184e+01 4.500942e-04       12           6
+#&gt; sacrifice              1.229513e+01 4.541406e-04       15          11
+#&gt; end                    1.218465e+01 4.818428e-04       23          23
+#&gt; better                 1.193654e+01 5.504353e-04       34          42
+#&gt; security               1.191654e+01 5.563759e-04       30          35
+#&gt; renewal                1.185881e+01 5.738933e-04        7           1
+#&gt; basic                  1.185881e+01 5.738933e-04        7           1
+#&gt; learn                  1.175415e+01 6.070759e-04       10           4
+#&gt; ideas                  1.160081e+01 6.592313e-04        9           3
+#&gt; try                    1.160081e+01 6.592313e-04        9           3
+#&gt; truly                  1.160081e+01 6.592313e-04        9           3
+#&gt; welcome                1.160081e+01 6.592313e-04        9           3
+#&gt; play                   1.160081e+01 6.592313e-04        9           3
+#&gt; shape                  1.159805e+01 6.602100e-04        8           2
+#&gt; heroes                 1.159805e+01 6.602100e-04        8           2
+#&gt; working                1.159805e+01 6.602100e-04        8           2
+#&gt; shared                 1.159805e+01 6.602100e-04        8           2
+#&gt; anew                   1.159805e+01 6.602100e-04        8           2
+#&gt; reach                  1.154638e+01 6.788136e-04       16          13
+#&gt; think                  1.154638e+01 6.788136e-04       16          13
+#&gt; act                    1.130290e+01 7.738603e-04       26          29
+#&gt; nations                1.125587e+01 7.937174e-04       75         124
+#&gt; once                   1.112482e+01 8.518013e-04       21          21
+#&gt; stand                  1.108194e+01 8.717236e-04       27          31
+#&gt; chance                 1.093915e+01 9.415348e-04       12           8
+#&gt; era                    1.093915e+01 9.415348e-04       12           8
+#&gt; responsibility         1.071869e+01 1.060588e-03       29          35
+#&gt; ourselves              1.061219e+01 1.123448e-03       35          46
+#&gt; that                   1.057691e+01 1.145088e-03      546        1243
+#&gt; proud                  1.032301e+01 1.313818e-03       11           6
+#&gt; policies               1.032301e+01 1.313818e-03       11           6
+#&gt; programs               1.000151e+01 1.564120e-03        5           0
+#&gt; cold                   1.000151e+01 1.564120e-03        5           0
+#&gt; brothers               1.000151e+01 1.564120e-03        5           0
+#&gt; self                   1.000151e+01 1.564120e-03        5           0
+#&gt; hungry                 1.000151e+01 1.564120e-03        5           0
+#&gt; knows                  1.000151e+01 1.564120e-03        5           0
+#&gt; ended                  1.000151e+01 1.564120e-03        5           0
+#&gt; hatreds                1.000151e+01 1.564120e-03        5           0
+#&gt; dawn                   1.000151e+01 1.564120e-03        5           0
+#&gt; today's                1.000151e+01 1.564120e-03        5           0
+#&gt; breeze                 1.000151e+01 1.564120e-03        5           0
+#&gt; drugs                  1.000151e+01 1.564120e-03        5           0
+#&gt; edge                   1.000151e+01 1.564120e-03        5           0
+#&gt; god's                  9.951952e+00 1.606790e-03       10           5
+#&gt; building               9.951952e+00 1.606790e-03       10           5
+#&gt; few                    9.936444e+00 1.620383e-03       17          16
+#&gt; light                  9.911904e+00 1.642132e-03       15          13
+#&gt; say                    9.732960e+00 1.809927e-03       20          21
+#&gt; fate                   9.629743e+00 1.914514e-03        9           4
+#&gt; choice                 9.576598e+00 1.970732e-03       12           9
+#&gt; fight                  9.383024e+00 2.190040e-03        8           3
+#&gt; allies                 9.383024e+00 2.190040e-03        8           3
+#&gt; lift                   9.383024e+00 2.190040e-03        8           3
+#&gt; turning                9.383024e+00 2.190040e-03        8           3
+#&gt; watching               9.374828e+00 2.199853e-03        6           1
+#&gt; bible                  9.374828e+00 2.199853e-03        6           1
+#&gt; big                    9.374828e+00 2.199853e-03        6           1
+#&gt; job                    9.374828e+00 2.199853e-03        6           1
+#&gt; tens                   9.374828e+00 2.199853e-03        6           1
+#&gt; feed                   9.374828e+00 2.199853e-03        6           1
+#&gt; "                      9.328459e+00 2.256220e-03       88         158
+#&gt; long                   9.304221e+00 2.286265e-03       40          58
+#&gt; hear                   9.262112e+00 2.339431e-03        7           2
+#&gt; gift                   9.262112e+00 2.339431e-03        7           2
+#&gt; loyalty                9.262112e+00 2.339431e-03        7           2
+#&gt;  [ reached getOption("max.print") -- omitted 9107 rows ]</div><div class='input'>
 <span class='co'># compare Trump 2017 to other post-war preseidents</span>
 <span class='no'>pwdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>period</span> <span class='kw'>==</span> <span class='st'>"post-war"</span>))
 <span class='fu'>head</span>(<span class='fu'>textstat_keyness</span>(<span class='no'>pwdfm</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                  chi2            p n_target n_reference
-#&gt; protected    76.79339 0.000000e+00        5           1
-#&gt; will         49.67662 1.812883e-12       40         299
-#&gt; while        48.33243 3.597567e-12        6           7
-#&gt; obama        47.94909 4.374279e-12        3           0
-#&gt; we've        47.94909 4.374279e-12        3           0
-#&gt; america      29.11681 6.814327e-08       18         112
-#&gt; again        27.88512 1.287361e-07        9          33
-#&gt; everyone     27.73848 1.388726e-07        4           5
-#&gt; your         26.75528 2.309197e-07       11          50
-#&gt; transferring 25.59527 4.210694e-07        2           0</div><div class='input'><span class='co'># using the likelihood ratio method</span>
-<span class='fu'>head</span>(<span class='fu'>textstat_keyness</span>(<span class='fu'><a href='dfm_weight.html'>dfm_smooth</a></span>(<span class='no'>pwdfm</span>), <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"lr"</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                   G            p n_target n_reference
-#&gt; will      24.653370 6.862464e-07       41         317
-#&gt; america   14.064544 1.766425e-04       19         130
-#&gt; your      11.662713 6.376529e-04       12          68
-#&gt; while     11.166438 8.329039e-04        7          25
-#&gt; again     11.083498 8.709934e-04       10          51
-#&gt; protected 10.591417 1.136138e-03        6          19
-#&gt; american   9.993537 1.570906e-03       12          76
-#&gt; back       8.209112 4.168054e-03        7          34
-#&gt; dreams     7.075173 7.815929e-03        6          29
-#&gt; country    6.800841 9.111495e-03       10          72</div></pre>
+#&gt; protected    76.64466 0.000000e+00        5           1
+#&gt; will         51.44795 7.351897e-13       40         299
+#&gt; while        48.23022 3.790079e-12        6           7
+#&gt; obama        47.85727 4.584000e-12        3           0
+#&gt; we've        47.85727 4.584000e-12        3           0
+#&gt; america      31.45537 2.040775e-08       18         112
+#&gt; again        27.81145 1.337322e-07        9          33
+#&gt; everyone     27.67876 1.432269e-07        4           5
+#&gt; your         26.67898 2.402201e-07       11          50
+#&gt; transferring 25.54569 4.320292e-07        2           0</div><div class='input'><span class='co'># using the likelihood ratio method</span>
+<span class='fu'>head</span>(<span class='fu'>textstat_keyness</span>(<span class='fu'><a href='dfm_weight.html'>dfm_smooth</a></span>(<span class='no'>pwdfm</span>), <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"lr"</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                  G2            p n_target n_reference
+#&gt; will      24.604106 7.040156e-07       41         317
+#&gt; america   14.040255 1.789387e-04       19         130
+#&gt; your      10.435140 1.236402e-03       12          68
+#&gt; again      9.758516 1.784939e-03       10          51
+#&gt; while      9.504990 2.049139e-03        7          25
+#&gt; american   8.877690 2.886766e-03       12          76
+#&gt; protected  8.820562 2.978550e-03        6          19
+#&gt; back       6.853526 8.846653e-03        7          34
+#&gt; you        6.713202 9.570175e-03       14         121
+#&gt; country    5.821599 1.583055e-02       10          72</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

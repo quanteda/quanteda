@@ -28,8 +28,8 @@ The default is to plot the word cloud of all features, summed across
   documents, you need to slice out the document(s) from the dfm or tokens
   object.
   
-  Comparison word cloud plots may be plotted by setting \code{comparison = 
-  TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
+  Comparison wordcloud plots may be plotted by setting \code{comparison = TRUE}, 
+  which plots a separate grouping for \emph{each document} in the dfm.
   This means that you will need to slice out just a few documents from the 
   dfm, or to create a dfm where the "documents" represent a subset or a 
   grouping of documents by some document variable.

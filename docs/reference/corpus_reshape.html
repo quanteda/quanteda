@@ -85,7 +85,8 @@ to move from recast units back to original units, for example from documents,
 to sentences, and then back to documents (possibly after modifying the sentences).</p>
     
 
-    <pre class="usage"><span class='fu'>corpus_reshape</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>corpus_reshape</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"documents"</span>),
+  <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -99,8 +100,16 @@ to sentences, and then back to documents (possibly after modifying the sentences
       <td><p>new document units in which the corpus will be recast</p></td>
     </tr>
     <tr>
+      <th>use_docvars</th>
+      <td><p>if <code>TRUE</code>, repeat the docvar values for each 
+segmented text; if <code>FALSE</code>, drop the docvars in the segmented corpus. 
+Dropping the docvars might be useful in order to conserve space or if these
+are not desired for the segmented corpus.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>additonal arguments passed to <a href='corpus_segment.html'>corpus_segment</a></p></td>
+      <td><p>additonal arguments passed to <code><a href='tokens.html'>tokens</a></code>, since the
+syntactic segmenter uses this function)</p></td>
     </tr>
     </table>
     
@@ -112,20 +121,19 @@ to sentences, and then back to documents (possibly after modifying the sentences
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple example</span>
-<span class='no'>mycorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'>c</span>(<span class='kw'>textone</span> <span class='kw'>=</span> <span class='st'>"This is a sentence.  Another sentence.  Yet another."</span>,
-                     <span class='kw'>textwo</span> <span class='kw'>=</span> <span class='st'>"Premiere phrase.  Deuxieme phrase."</span>),
-                   <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>country</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"UK"</span>, <span class='st'>"USA"</span>), <span class='kw'>year</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1990</span>, <span class='fl'>2000</span>)),
-                   <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>notes</span> <span class='kw'>=</span> <span class='st'>"Example showing how corpus_reshape() works."</span>))
-<span class='fu'>summary</span>(<span class='no'>mycorpus</span>)</div><div class='output co'>#&gt; Corpus consisting of 2 documents.
+<span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'>c</span>(<span class='kw'>textone</span> <span class='kw'>=</span> <span class='st'>"This is a sentence.  Another sentence.  Yet another."</span>,
+                 <span class='kw'>textwo</span> <span class='kw'>=</span> <span class='st'>"Premiere phrase.  Deuxieme phrase."</span>),
+                 <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>country</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"UK"</span>, <span class='st'>"USA"</span>), <span class='kw'>year</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1990</span>, <span class='fl'>2000</span>)),
+                 <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>notes</span> <span class='kw'>=</span> <span class='st'>"Example showing how corpus_reshape() works."</span>))
+<span class='fu'>summary</span>(<span class='no'>corp</span>)</div><div class='output co'>#&gt; Corpus consisting of 2 documents:
 #&gt; 
 #&gt;     Text Types Tokens Sentences country year
 #&gt;  textone     8     11         3      UK 1990
 #&gt;   textwo     4      6         2     USA 2000
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Jun  5 12:01:58 2017
-#&gt; Notes:   Example showing how corpus_reshape() works.
-#&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_reshape</span>(<span class='no'>mycorpus</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"sentences"</span>), <span class='kw'>showmeta</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 5 documents.
+#&gt; Created: Wed Oct 25 16:03:13 2017
+#&gt; Notes:   Example showing how corpus_reshape() works. </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_reshape</span>(<span class='no'>corp</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"sentences"</span>), <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 5 documents:
 #&gt; 
 #&gt;       Text Types Tokens Sentences country year _document _docid _segid
 #&gt;  textone.1     5      5         1      UK 1990   textone      1      1
@@ -135,26 +143,25 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;   textwo.2     3      3         1     USA 2000    textwo      2      2
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Jun  5 12:01:58 2017
-#&gt; Notes:   corpus_segment.corpus(x, what = to, ...)
-#&gt; </div><div class='input'>
+#&gt; Created: Wed Oct 25 16:03:13 2017
+#&gt; Notes:   corpus_reshape.corpus(corp, to = "sentences") </div><div class='input'>
 <span class='co'># example with inaugural corpus speeches</span>
-(<span class='no'>mycorpus2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>2004</span>))</div><div class='output co'>#&gt; Corpus consisting of 4 documents and 3 docvars.</div><div class='input'><span class='no'>paragCorpus</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_reshape</span>(<span class='no'>mycorpus2</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"paragraphs"</span>)
-<span class='no'>paragCorpus</span></div><div class='output co'>#&gt; Corpus consisting of 138 documents and 3 docvars.</div><div class='input'><span class='fu'>summary</span>(<span class='no'>paragCorpus</span>, <span class='fl'>100</span>, <span class='kw'>showmeta</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 138 documents, showing 100 documents.
+(<span class='no'>corp2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>2004</span>))</div><div class='output co'>#&gt; Corpus consisting of 4 documents and 3 docvars.</div><div class='input'><span class='no'>corp2_para</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_reshape</span>(<span class='no'>corp2</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"paragraphs"</span>)
+<span class='no'>corp2_para</span></div><div class='output co'>#&gt; Corpus consisting of 138 documents and 3 docvars.</div><div class='input'><span class='fu'>summary</span>(<span class='no'>corp2_para</span>, <span class='fl'>100</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 138 documents, showing 100 documents:
 #&gt; 
 #&gt;           Text Types Tokens Sentences Year President FirstName  _document
-#&gt;    2005-Bush.1   772   2325       100 2005      Bush George W.  2005-Bush
+#&gt;    2005-Bush.1   773   2319       100 2005      Bush George W.  2005-Bush
 #&gt;   2009-Obama.1     4      4         1 2009     Obama    Barack 2009-Obama
 #&gt;   2009-Obama.2    42     53         2 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.3    64     88         4 2009     Obama    Barack 2009-Obama
+#&gt;   2009-Obama.3    62     86         4 2009     Obama    Barack 2009-Obama
 #&gt;   2009-Obama.4    12     15         2 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.5    78    110         5 2009     Obama    Barack 2009-Obama
+#&gt;   2009-Obama.5    76    108         5 2009     Obama    Barack 2009-Obama
 #&gt;   2009-Obama.6    39     47         2 2009     Obama    Barack 2009-Obama
 #&gt;   2009-Obama.7    36     47         4 2009     Obama    Barack 2009-Obama
 #&gt;   2009-Obama.8    19     22         1 2009     Obama    Barack 2009-Obama
-#&gt;   2009-Obama.9    31     35         1 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.10    58     84         2 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.11    73    110         5 2009     Obama    Barack 2009-Obama
+#&gt;   2009-Obama.9    29     33         1 2009     Obama    Barack 2009-Obama
+#&gt;  2009-Obama.10    56     82         2 2009     Obama    Barack 2009-Obama
+#&gt;  2009-Obama.11    71    106         5 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.12    21     21         1 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.13    20     24         1 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.14    17     20         1 2009     Obama    Barack 2009-Obama
@@ -166,11 +173,11 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;  2009-Obama.20    76    117         3 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.21    90    137         4 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.22    60     83         3 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.23    93    144         5 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.24    83    128         3 2009     Obama    Barack 2009-Obama
+#&gt;  2009-Obama.23    92    142         5 2009     Obama    Barack 2009-Obama
+#&gt;  2009-Obama.24    82    126         3 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.25    65    103         3 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.26    63     84         3 2009     Obama    Barack 2009-Obama
-#&gt;  2009-Obama.27    82    117         4 2009     Obama    Barack 2009-Obama
+#&gt;  2009-Obama.27    81    115         4 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.28    69     96         3 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.29    95    158         7 2009     Obama    Barack 2009-Obama
 #&gt;  2009-Obama.30     9     10         1 2009     Obama    Barack 2009-Obama
@@ -182,10 +189,10 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;  2009-Obama.36    11     16         3 2009     Obama    Barack 2009-Obama
 #&gt;   2013-Obama.1    20     23         1 2013     Obama    Barack 2013-Obama
 #&gt;   2013-Obama.2    56     82         4 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.3    35     43         1 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.4    78    117         4 2013     Obama    Barack 2013-Obama
+#&gt;   2013-Obama.3    33     41         1 2013     Obama    Barack 2013-Obama
+#&gt;   2013-Obama.4    76    111         4 2013     Obama    Barack 2013-Obama
 #&gt;   2013-Obama.5    10     10         1 2013     Obama    Barack 2013-Obama
-#&gt;   2013-Obama.6    36     46         2 2013     Obama    Barack 2013-Obama
+#&gt;   2013-Obama.6    34     42         2 2013     Obama    Barack 2013-Obama
 #&gt;   2013-Obama.7    22     26         1 2013     Obama    Barack 2013-Obama
 #&gt;   2013-Obama.8    21     21         1 2013     Obama    Barack 2013-Obama
 #&gt;   2013-Obama.9    23     24         1 2013     Obama    Barack 2013-Obama
@@ -197,14 +204,14 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;  2013-Obama.15    66     97         4 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.16    72    109         4 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.17    54     76         3 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.18    70    104         6 2013     Obama    Barack 2013-Obama
+#&gt;  2013-Obama.18    69    102         6 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.19    81    122         5 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.20    44     56         2 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.21    92    140         4 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.22    66     98         1 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.23   110    189         6 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.24    62    101         4 2013     Obama    Barack 2013-Obama
-#&gt;  2013-Obama.25    65     95         4 2013     Obama    Barack 2013-Obama
+#&gt;  2013-Obama.24    61     99         4 2013     Obama    Barack 2013-Obama
+#&gt;  2013-Obama.25    63     93         4 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.26    75    109         4 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.27    45     72         3 2013     Obama    Barack 2013-Obama
 #&gt;  2013-Obama.28    39     52         2 2013     Obama    Barack 2013-Obama
@@ -232,7 +239,7 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;  2017-Trump.21    19     20         1 2017     Trump Donald J. 2017-Trump
 #&gt;  2017-Trump.22    16     20         1 2017     Trump Donald J. 2017-Trump
 #&gt;  2017-Trump.23    12     14         1 2017     Trump Donald J. 2017-Trump
-#&gt;  2017-Trump.24    62     84         1 2017     Trump Donald J. 2017-Trump
+#&gt;  2017-Trump.24    60     82         1 2017     Trump Donald J. 2017-Trump
 #&gt;  2017-Trump.25     9     11         1 2017     Trump Donald J. 2017-Trump
 #&gt;  2017-Trump.26    23     39         3 2017     Trump Donald J. 2017-Trump
 #&gt;  2017-Trump.27    14     16         1 2017     Trump Donald J. 2017-Trump
@@ -345,10 +352,9 @@ to sentences, and then back to documents (possibly after modifying the sentences
 #&gt;       4     33
 #&gt;       4     34
 #&gt; 
-#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
-#&gt; Created: Mon Jun  5 12:01:58 2017
-#&gt; Notes:   corpus_segment.corpus(x, what = to, ...)
-#&gt; </div><div class='input'><span class='co'>## Note that Bush 2005 is recorded as a single paragraph because that text used a single</span>
+#&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
+#&gt; Created: Wed Oct 25 16:03:13 2017
+#&gt; Notes:   corpus_reshape.corpus(corp2, to = "paragraphs") </div><div class='input'><span class='co'>## Note that Bush 2005 is recorded as a single paragraph because that text used a single</span>
 <span class='co'>## \n to mark the end of a paragraph.</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

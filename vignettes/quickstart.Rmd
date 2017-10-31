@@ -119,8 +119,6 @@ when features are abstracted from a corpus, `quanteda` provides:
    intervals on textual statistics using techniques of non-parametric
    bootstrapping, but applied to the original texts as data. 
    
-*  expansion of the document-feature matrix structure through a standard interface called `textmodel()`.  (As of version 0.8.0, textmodel works in a basic fashion only for the "Wordscores" and "wordfish" scaling models.)
-
 
 ## Working with other text analysis packages
 
@@ -244,7 +242,7 @@ summary(corpus(mytf6), 5)
 # csv file
 write.csv(data.frame(inaugSpeech = texts(data_corpus_inaugural), 
                      docvars(data_corpus_inaugural)),
-          file = "/tmp/inaug_texts.csv", row.names = FALSE)b
+          file = "/tmp/inaug_texts.csv", row.names = FALSE)
 mytf7 <- readtext("/tmp/inaug_texts.csv", textfield = "inaugSpeech")
 summary(corpus(mytf7), 5)
 ```
@@ -275,11 +273,11 @@ We can save the output from the summary command as a data frame, and plot some b
 ```{r, fig.width = 8}
 tokenInfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
-    ggplot(data=tokenInfo, aes(x=Year, y=Tokens, group=1)) + geom_line() + geom_point() +
-        scale_x_discrete(labels=c(seq(1789,2012,12)), breaks=seq(1789,2012,12) ) 
+    ggplot(data=tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
+        scale_x_discrete(labels = c(seq(1789,2012,12)), breaks = seq(1789,2012,12) ) 
 
 # Longest inaugural address: William Henry Harrison
-tokenInfo[which.max(tokenInfo$Tokens),] 
+tokenInfo[which.max(tokenInfo$Tokens), ] 
 ```
 
 
@@ -312,7 +310,7 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 
 ## Exploring corpus texts
 
-The `kwic` function (KeyWord In Context) performs a search for a word and allows us to view the contexts in which it occurs:
+The `kwic` function (keywords-in-context) performs a search for a word and allows us to view the contexts in which it occurs:
 
 ```{r}
 options(width = 200)
@@ -361,9 +359,9 @@ told to do so.
 txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!", 
          text2 = "@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
 tokens(txt)
-tokens(txt, remove_numbers = TRUE, remove_punct = TRUE)
+tokens(txt, remove_numbers = TRUE,  remove_punct = TRUE)
 tokens(txt, remove_numbers = FALSE, remove_punct = TRUE)
-tokens(txt, remove_numbers = TRUE, remove_punct = FALSE)
+tokens(txt, remove_numbers = TRUE,  remove_punct = FALSE)
 tokens(txt, remove_numbers = FALSE, remove_punct = FALSE)
 tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
 ```
@@ -422,8 +420,7 @@ head(stopwords("arabic"), 10)
 
 The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud using the [wordcloud package](link.)
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
-mydfm <- dfm(data_char_ukimmig2010, remove = c("will", stopwords("english")), 
-             remove_punct = TRUE)
+mydfm <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
 mydfm
 ```
 
@@ -450,7 +447,7 @@ byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", remove = stopwo
 
 We can sort this dfm, and inspect it:
 ```{r}
-sort(byPartyDfm)[, 1:10]
+dfm_sort(byPartyDfm)[, 1:10]
 ```
 
 Note that the most frequently occurring feature is "will", a word usually on English stop lists, but
@@ -496,9 +493,8 @@ liwcdfm[, 1:10]
 ## Similarities between texts
 
 ```{r fig.width = 6}
-presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), 
-               remove = stopwords("english"),
-               stem = TRUE, remove_punct = TRUE)
+presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+               remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
 obamaSimil <- textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), 
                              margin = "documents", method = "cosine")
 obamaSimil
@@ -508,13 +504,13 @@ obamaSimil
 
 We can use these distances to plot a dendrogram, clustering presidents:
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
-data(data_corpus_SOTU, package="quantedaData")
+data(data_corpus_SOTU, package = "quantedaData")
 presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
-               verbose = FALSE, stem = TRUE, remove_punct = TRUE,
-               remove = c("will", stopwords("english")))
+               stem = TRUE, remove_punct = TRUE,
+               remove = stopwords("english"))
 presDfm <- dfm_trim(presDfm, min_count = 5, min_docfreq = 3)
 # hierarchical clustering - get distances on normalized dfm
-presDistMat <- textstat_dist(dfm_weight(presDfm, "relFreq"))
+presDistMat <- textstat_dist(dfm_weight(presDfm, "relfreq"))
 # hiarchical clustering the distance object
 presCluster <- hclust(presDistMat)
 # label with document names
@@ -527,7 +523,7 @@ plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized 
 We can also look at term similarities:
 ```{r}
 sim <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
-as.list(sim)
+lapply(as.list(sim), head, 10)
 ```
 
 ## Scaling document positions
@@ -536,7 +532,7 @@ We have a lot of development work to do on the `textmodel()` function, but here 
 ```{r}
 # make prettier document names
 ieDfm <- dfm(data_corpus_irishbudget2010)
-textmodel(ieDfm, model = "wordfish", dir=c(2,1))
+textmodel(ieDfm, model = "wordfish", dir = c(2, 1))
 ```
 
 ## Topic models
@@ -544,12 +540,13 @@ textmodel(ieDfm, model = "wordfish", dir=c(2,1))
 **quanteda** makes it very easy to fit topic models as well, e.g.:
 
 ```{r}
-quantdfm <- dfm(data_corpus_irishbudget2010,
-                remove = c("will", stopwords("english")))
+quantdfm <- dfm(data_corpus_irishbudget2010, 
+                remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
+quantdfm <- dfm_trim(quantdfm, min_count = 4, max_docfreq = 10, verbose = TRUE)
+quantdfm
 
 if (require(topicmodels)) {
     myLDAfit20 <- LDA(convert(quantdfm, to = "topicmodels"), k = 20)
     get_terms(myLDAfit20, 5)
-    topics(myLDAfit20, 3)
 }
 ```

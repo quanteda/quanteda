@@ -81,7 +81,8 @@
     <p>These functions compute matrixes of distances and similarities between 
 documents or features from a <code><a href='dfm.html'>dfm</a></code> and return a 
 <code><a href='http://www.rdocumentation.org/packages/stats/topics/dist'>dist</a></code> object (or a matrix if specific targets are
-selected).</p>
+selected).  They are fast and robust because they operate directly on the sparse
+<a href='dfm.html'>dfm</a> objects.</p>
     
 
     <pre class="usage"><span class='fu'>textstat_dist</span>(<span class='no'>x</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>),
@@ -129,10 +130,14 @@ matrix is recorded</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>textstat_simil</code> and <code>textstat_dist</code> return <code>dist</code> class objects.</p>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>textstat_dist</code> options are: <code>"euclidean"</code> (default), 
-  <code>"Chisquared"</code>, <code>"Chisquared2"</code>, <code>"hamming"</code>,
+  <code>"Chisquared"</code>, <code>"Chisquared2"</code>, <code>"hamming"</code>, 
   <code>"kullback"</code>. <code>"manhattan"</code>, <code>"maximum"</code>, <code>"canberra"</code>,
   and <code>"minkowski"</code>.
     <code>textstat_simil</code> options are: <code>"correlation"</code> (default), 
@@ -145,7 +150,28 @@ matrix is recorded</p></td>
     <p>If you want to compute similarity on a "normalized" dfm object 
   (controlling for variable document lengths, for methods such as correlation
   for which different document lengths matter), then wrap the input dfm in 
-  <code><a href='weight.html'>weight</a>(x, "relFreq")</code>.</p>
+  <code><a href='dfm_weight.html'>dfm_weight</a>(x, "relfreq")</code>.</p>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>The <code>"Chisquared"</code> metric is from Legendre, P., &amp; Gallagher,
+  E. D. (2001).
+  "<a href = 'http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&amp;_Gallagher.pdf'>Ecologically
+   meaningful transformations for ordination of species data</a>".
+  <em>Oecologia</em>, 129(2), 271–280. doi.org/10.1007/s004420100716
+    The <code>"Chisquared2"</code> metric is the "Quadratic-Chi" measure from Pele,
+  O., &amp; Werman, M. (2010). 
+  "<a href = 'http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf'>The
+  Quadratic-Chi Histogram Distance Family</a>". In <em>Computer Vision – ECCV
+  2010</em> (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
+  Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.
+    <code>"hamming"</code> is \(\sum{x \neq y)}\).</p>
+<p><code>"kullback"</code> is the Kullback-Leibler distance, which assumes that
+  \(P(x_i) = 0\) implies \(P(y_i)=0\), and in case both \(P(x_i)\) and
+  \(P(y_i)\) equals to zero, then \(P(x_i) * log(p(x_i)/p(y_i))\) is
+  assumed to be zero as the limit value.  The formula is:
+   $$\sum{P(x)*log(P(x)/p(y))}$$
+    All other measures are described in the <span class="pkg">proxy</span> package.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -163,9 +189,9 @@ matrix is recorded</p></td>
 <span class='co'># distances for specific documents</span>
 <span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"eJaccard"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>(<span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>as.list</span>(<span class='no'>d1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.list(d1): object 'd1' not found</span></div><div class='input'>
 <span class='co'># similarities for documents</span>
-(<span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>as.matrix</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.matrix(s1): object 's1' not found</span></div><div class='input'><span class='fu'>as.list</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.list(s1): object 's1' not found</span></div><div class='input'>
+(<span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>as.matrix</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.matrix(s1): object 's1' not found</span></div><div class='input'><span class='fu'>as.list</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.list(s1): object 's1' not found</span></div><div class='input'>
 <span class='co'># similarities for for specific documents</span>
-<span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getMethod("t", "dgCMatrix"): no generic function found for 't'</span></div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
 <span class='co'># compute some term similarities</span>
 <span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>,
                       <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>head</span>(<span class='fu'>as.matrix</span>(<span class='no'>s2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.matrix(s2): object 's2' not found</span></div><div class='input'><span class='fu'>as.list</span>(<span class='no'>s2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>8</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.list(s2, n = 8): object 's2' not found</span></div><div class='input'>
@@ -176,9 +202,13 @@ matrix is recorded</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
 
       <li><a href="#note">Note</a></li>
+
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
