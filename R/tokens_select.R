@@ -138,4 +138,17 @@ tokens_remove.tokens <- function(x, pattern, valuetype = c("glob", "regex", "fix
                   case_insensitive = case_insensitive, padding = padding, window = window, verbose = verbose)
 }
 
+#' @rdname tokens_select
+#' @export
+tokens_keep <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
+                        case_insensitive = TRUE, padding = FALSE, window = 0, verbose = quanteda_options("verbose")) {
+    UseMethod("tokens_keep")
+}
 
+#' @noRd
+#' @export
+tokens_keep.tokens <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
+                                 case_insensitive = TRUE, padding = FALSE, window = 0, verbose = quanteda_options("verbose")) {
+    tokens_select(x, pattern, selection = "keep", valuetype = valuetype, 
+                  case_insensitive = case_insensitive, padding = padding, window = window, verbose = verbose)
+}

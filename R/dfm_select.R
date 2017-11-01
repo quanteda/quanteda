@@ -176,6 +176,19 @@ dfm_remove.dfm <- function(x, pattern = NULL, ...) {
     dfm_select(x, pattern, selection = "remove", ...)
 }
 
+#' @rdname dfm_select
+#' @export
+dfm_keep <- function(x, pattern = NULL, ...) {
+    UseMethod("dfm_keep")
+}
+
+#' @noRd
+#' @export
+dfm_keep.dfm <- function(x, pattern = NULL, ...) {
+    x <- as.dfm(x)
+    dfm_select(x, pattern, selection = "keep", ...)
+}
+
 
 
                        
