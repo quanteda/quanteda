@@ -3,8 +3,10 @@
 \name{dfm_select}
 \alias{dfm_select}
 \alias{dfm_remove}
+\alias{dfm_keep}
 \alias{fcm_select}
 \alias{fcm_remove}
+\alias{fcm_keep}
 \title{select features from a dfm or fcm}
 \usage{
 dfm_select(x, pattern = NULL, selection = c("keep", "remove"),
@@ -14,11 +16,15 @@ dfm_select(x, pattern = NULL, selection = c("keep", "remove"),
 
 dfm_remove(x, pattern = NULL, ...)
 
+dfm_keep(x, pattern = NULL, ...)
+
 fcm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   verbose = TRUE, ...)
 
 fcm_remove(x, pattern = NULL, ...)
+
+fcm_keep(x, pattern = NULL, ...)
 }
 \arguments{
 \item{x}{the \link{dfm} or \link{fcm} object whose features will be selected}
