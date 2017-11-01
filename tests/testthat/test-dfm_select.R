@@ -304,4 +304,11 @@ test_that("dfm_select works when selecting on collocations", {
     expect_equal(featnames(dfm_select(dfm_bi, coll_tri)), character())
 })
 
+test_that("shortcut functions works", {
+    testdfm <- dfm(data_corpus_inaugural[1:5])
+    expect_equal(dfm_select(testdfm, stopwords('english'), selection = 'keep'),
+                 dfm_keep(testdfm, stopwords('english')))
+    expect_equal(dfm_select(testdfm, stopwords('english'), selection = 'remove'),
+                 dfm_remove(testdfm, stopwords('english')))
+})
 
