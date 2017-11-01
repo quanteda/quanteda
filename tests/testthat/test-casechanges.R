@@ -23,6 +23,8 @@ test_that("tokens_tolower/tokens_toupper works", {
     toks <- tokens("According to NATO")
     expect_equal((as.list(tokens_tolower(toks))[[1]]),
                       c("according", "to", "nato"))
+    expect_equal((as.list(tokens_tolower(toks, keep_acronyms = TRUE))[[1]]),
+                 c("according", "to", "NATO"))
     expect_equal((as.list(tokens_toupper(toks))[[1]]),
                  c("ACCORDING", "TO", "NATO"))
 })

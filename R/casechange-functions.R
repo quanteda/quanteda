@@ -17,7 +17,14 @@ tokens_tolower <- function(x, keep_acronyms = FALSE, ...) {
 #' @noRd
 #' @export
 tokens_tolower.tokens <- function(x, keep_acronyms = FALSE, ...) {
-    types(x) <- char_tolower(types(x), keep_acronyms = keep_acronyms, ...)
+    type <- types(x)
+    if (keep_acronyms) {
+        is_acronyms <- stri_detect_regex(type, "^\\p{Uppercase_Letter}{2,}$", ...)
+    } else {
+        is_acronyms <- rep(FALSE, length(type))
+    }
+    type[!is_acronyms] <- stri_trans_tolower(type[!is_acronyms])
+    types(x) <- type
     tokens_recompile(x)
 }
 
