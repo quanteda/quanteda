@@ -186,3 +186,11 @@ test_that("test fcm_compress retains class", {
     newfcm <- fcm_compress(myfcm)
     expect_equivalent(class(newfcm), "fcm")
 })
+
+test_that("shortcut functions works", {
+    testfcm <- fcm(data_corpus_inaugural[1:5])
+    expect_equal(fcm_select(testfcm, stopwords('english'), selection = 'keep'),
+                 fcm_keep(testfcm, stopwords('english')))
+    expect_equal(fcm_select(testfcm, stopwords('english'), selection = 'remove'),
+                 fcm_remove(testfcm, stopwords('english')))
+})
