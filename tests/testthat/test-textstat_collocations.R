@@ -290,3 +290,15 @@ test_that("textstat_collocations.tokens works ok with zero-length documents (#94
     )
 })
 
+test_that("textstat_collocations works when texts are shorter than size", {
+    toks <- tokens(c('a', 'bb', ''))
+    expect_equivalent(
+        textstat_collocations(toks, size = 2:3, min_count = 1, tolower = TRUE),
+        data.frame(collocation = character(0), 
+                   count = integer(0), 
+                   length = numeric(0),
+                   lambda = numeric(0),
+                   z = numeric(0),
+                   stringsAsFactors = FALSE))
+})
+
