@@ -19,7 +19,7 @@ tokens_tolower <- function(x, keep_acronyms = FALSE, ...) {
 tokens_tolower.tokens <- function(x, keep_acronyms = FALSE, ...) {
     type <- types(x)
     if (keep_acronyms) {
-        is_acronyms <- stri_detect_regex(type, "^\\p{Uppercase_Letter}{2,}$", ...)
+        is_acronyms <- stri_detect_regex(type, "^\\p{Uppercase_Letter}(\\p{Uppercase_Letter}|\\d)+$", ...)
     } else {
         is_acronyms <- rep(FALSE, length(type))
     }
@@ -78,18 +78,21 @@ char_tolower <- function(x, keep_acronyms = FALSE, ...) {
 #' @noRd
 #' @export
 char_tolower.character <- function(x, keep_acronyms = FALSE, ...) {
-    savedNames <- names(x)
-    if (keep_acronyms)
-        x <- stri_replace_all_regex(x, "\\b(\\p{Uppercase_Letter}{2,})\\b",  "_$1_", ...)
-    x <- stri_trans_tolower(x, ...)
+    name <- names(x)
     if (keep_acronyms) {
-        m1 <- unique(unlist(stri_extract_all_regex(x, "\\b_\\p{Lowercase_Letter}+_\\b", omit_no_match = TRUE, ...)))
-        if (length(m1) > 0) {
-            m2 <- stri_replace_all_fixed(stri_trans_toupper(m1, ...), "_", "", ...)
-            x <- vapply(x, function(s) stri_replace_all_regex(s, m1,  m2, vectorize_all = FALSE, ...), character(1))
+        match <- stri_extract_all_regex(x, "\\b(\\p{Uppercase_Letter}(\\p{Uppercase_Letter}|\\d)+)\\b")
+        for (i in which(lengths(match) > 0)) {
+            m <- unique(match[[i]])
+            x[i] <- stri_replace_all_regex(x[i], paste0('\\b', m, '\\b'), 
+                                                 paste0('\uE000', m, '\uE001'), vectorize_all = FALSE)
+            x[i] <- stri_trans_tolower(x[i])
+            x[i] <- stri_replace_all_regex(x[i], paste0('\uE000', stri_trans_tolower(m), '\uE001'), 
+                                                 m, vectorize_all = FALSE)
         }
+    } else {
+        x <- stri_trans_tolower(x)
     }
-    names(x) <- savedNames
+    names(x) <- name
     return(x)
 }
 
@@ -102,9 +105,9 @@ char_toupper <- function(x, ...) {
 #' @noRd
 #' @export 
 char_toupper.character <- function(x, ...) {
-    savedNames <- names(x)
+    name <- names(x)
     x <- stri_trans_toupper(x, ...)
-    names(x) <- savedNames
+    names(x) <- name
     return(x)
 }
 
