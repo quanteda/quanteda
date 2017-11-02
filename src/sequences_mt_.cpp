@@ -83,7 +83,7 @@ void counts(Text text,
            SetUnigrams &set_ignore,
            const unsigned int &size){
 
-    if (text.size() == 0) return; // do nothing with empty text
+    if (text.size() < size) return; // do nothing with very short text
     for (std::size_t i = 0; i < text.size() - size + 1; i++) {
         Text text_sub(text.begin() + i, text.begin() + i + size);
         bool ignore = false;
