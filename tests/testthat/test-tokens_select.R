@@ -416,5 +416,13 @@ test_that("tokens_select error when dfm is given, #1006", {
     expect_error(tokens_select(toks, dfm('b c d')))
 })
 
+test_that("shortcut functions works", {
+    toks <- tokens(data_corpus_inaugural[1:5])
+    expect_equal(tokens_select(toks, stopwords('english'), selection = 'keep'),
+                 tokens_keep(toks, stopwords('english')))
+    expect_equal(tokens_select(toks, stopwords('english'), selection = 'remove'),
+                 tokens_remove(toks, stopwords('english')))
+})
+
 
 
