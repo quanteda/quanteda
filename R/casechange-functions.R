@@ -17,15 +17,20 @@ tokens_tolower <- function(x, keep_acronyms = FALSE, ...) {
 #' @noRd
 #' @export
 tokens_tolower.tokens <- function(x, keep_acronyms = FALSE, ...) {
-    type <- types(x)
+    types(x) <- lowercase_types(types(x), keep_acronyms)
+    tokens_recompile(x)
+}
+
+#' @noRd
+#' @keywords internal
+lowercase_types <- function(type, keep_acronyms) {
     if (keep_acronyms) {
-        is_acronyms <- stri_detect_regex(type, "^\\p{Uppercase_Letter}(\\p{Uppercase_Letter}|\\d)+$", ...)
+        is_acronyms <- stri_detect_regex(type, "^\\p{Uppercase_Letter}(\\p{Uppercase_Letter}|\\d)+$")
     } else {
         is_acronyms <- rep(FALSE, length(type))
     }
     type[!is_acronyms] <- stri_trans_tolower(type[!is_acronyms])
-    types(x) <- type
-    tokens_recompile(x)
+    return(type)
 }
 
 
@@ -134,7 +139,7 @@ dfm_tolower <- function(x, keep_acronyms = FALSE, ...) {
 #' @export
 dfm_tolower.dfm <- function(x, keep_acronyms = FALSE, ...) {
     x <- as.dfm(x)
-    colnames(x) <- char_tolower(featnames(x), keep_acronyms = keep_acronyms, ...)
+    colnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     dfm_compress(x, margin = "features")
 }
 
@@ -173,8 +178,7 @@ fcm_tolower <- function(x, keep_acronyms = FALSE, ...) {
 #' @noRd
 #' @export
 fcm_tolower.fcm <- function(x, keep_acronyms = FALSE, ...) {
-    colnames(x) <- rownames(x) <- 
-        char_tolower(colnames(x), keep_acronyms = keep_acronyms, ...)
+    colnames(x) <- rownames(x) <- lowercase_types(featnames(x), keep_acronyms)
     fcm_compress(x)
 }
 
