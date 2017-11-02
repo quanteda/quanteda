@@ -1,9 +1,10 @@
 #' select features from a dfm or fcm
 #' 
-#' This function selects or discards features from a \link{dfm} or \link{fcm}, 
+#' This function selects or removes features from a \link{dfm} or \link{fcm}, 
 #' based on feature name matches with \code{pattern}.  The most common usages 
 #' are to eliminate features from a dfm already constructed, such as stopwords, 
 #' or to select only terms of interest from a dictionary.
+#' 
 #' @param x the \link{dfm} or \link{fcm} object whose features will be selected
 #' @inheritParams pattern
 #' @param selection whether to \code{keep} or \code{remove} the features
@@ -27,6 +28,10 @@
 #' @details \code{dfm_remove} and \code{fcm_remove} are simply a convenience
 #'   wrappers to calling \code{dfm_select} and \code{fcm_select} with 
 #'   \code{selection = "remove"}.
+#'   
+#'   \code{dfm_keep} and \code{fcm_keep} are simply a convenience
+#'   wrappers to calling \code{dfm_select} and \code{fcm_select} with 
+#'   \code{selection = "keep"}.
 #' @note This function selects features based on their labels.  To select 
 #'   features based on the values of the document-feature matrix, use 
 #'   \code{\link{dfm_trim}}.
@@ -174,6 +179,19 @@ dfm_remove <- function(x, pattern = NULL, ...) {
 dfm_remove.dfm <- function(x, pattern = NULL, ...) {
     x <- as.dfm(x)
     dfm_select(x, pattern, selection = "remove", ...)
+}
+
+#' @rdname dfm_select
+#' @export
+dfm_keep <- function(x, pattern = NULL, ...) {
+    UseMethod("dfm_keep")
+}
+
+#' @noRd
+#' @export
+dfm_keep.dfm <- function(x, pattern = NULL, ...) {
+    x <- as.dfm(x)
+    dfm_select(x, pattern, selection = "keep", ...)
 }
 
 
