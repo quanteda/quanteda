@@ -75,7 +75,7 @@ A \link{dfm} or \link{fcm} object, after the feature selection has
   identical.  It is also used in \code{\link{bootstrap_dfm}}.  See examples.
 }
 \description{
-This function selects or discards features from a \link{dfm} or \link{fcm}, 
+This function selects or removes features from a \link{dfm} or \link{fcm}, 
 based on feature name matches with \code{pattern}.  The most common usages 
 are to eliminate features from a dfm already constructed, such as stopwords, 
 or to select only terms of interest from a dictionary.
@@ -84,6 +84,10 @@ or to select only terms of interest from a dictionary.
 \code{dfm_remove} and \code{fcm_remove} are simply a convenience
   wrappers to calling \code{dfm_select} and \code{fcm_select} with 
   \code{selection = "remove"}.
+  
+  \code{dfm_keep} and \code{fcm_keep} are simply a convenience
+  wrappers to calling \code{dfm_select} and \code{fcm_select} with 
+  \code{selection = "keep"}.
 }
 \note{
 This function selects features based on their labels.  To select 

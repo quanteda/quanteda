@@ -1,13 +1,15 @@
 #' select or remove tokens from a tokens object
 #' 
-#' This function selects or discards tokens from a \link{tokens} objects, with 
-#' the shortcut \code{tokens_remove(x, pattern)} defined as a shortcut for 
-#' \code{tokens_select(x, pattern, selection = "remove")}.  The most common 
+#' These function select or discard tokens from a \link{tokens} objects.  For 
+#' convenience, the functions \code{tokens_remove} and \code{tokens_keep} 
+#' are defined as shortcuts for 
+#' \code{tokens_select(x, pattern, selection = "remove")} and \code{tokens_select(x, pattern, selection = "keep")}, 
+#' respectively.  The most common 
 #' usage for \code{tokens_remove} will be to eliminate stop words from a text or
 #' text-based object, while the most common use of \code{tokens_select} will be 
 #' to select tokens with only positive pattern matches from a list of regular 
 #' expressions, including a dictionary.
-#' @param x \link{tokens} object whose token elements will be selected
+#' @param x \link{tokens} object whose token elements will be removed or kept
 #' @inheritParams pattern
 #' @param selection whether to \code{"keep"} or \code{"remove"} the tokens 
 #'   matching \code{pattern}
