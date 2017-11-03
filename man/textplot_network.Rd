@@ -29,14 +29,13 @@ using \code{\link[igraph]{igraph}}.
 toks <- tokens(corpus_subset(data_corpus_inaugural, President == "Obama"), remove_punct = TRUE)
 toks <- tokens_remove(toks, stopwords("english"), padding = FALSE)
 myfcm <- fcm(toks, context = 'window', tri = FALSE)
-feats <- names(topfeatures(myfcm, 20))
-textplot_network(fcm_select(myfcm, feats), ignore = 0.5)
-textplot_network(fcm_select(myfcm, feats), ignore = 0.5, size = 20, shape = "vrectangle")
+feat <- names(topfeatures(myfcm, 20))
+textplot_network(fcm_select(myfcm, feat), ignore = 0.5)
+textplot_network(fcm_select(myfcm, feat), ignore = 0.5, size = 20, shape = "vrectangle")
 }
 }
 \seealso{
-\code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
-  \code{\link{coef.textmodel}}
+\code{\link{fcm}}
 }
 \author{
 Kohei Watanabe and Stefan Müller

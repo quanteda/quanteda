@@ -14,13 +14,12 @@
 #' toks <- tokens(corpus_subset(data_corpus_inaugural, President == "Obama"), remove_punct = TRUE)
 #' toks <- tokens_remove(toks, stopwords("english"), padding = FALSE)
 #' myfcm <- fcm(toks, context = 'window', tri = FALSE)
-#' feats <- names(topfeatures(myfcm, 20))
-#' textplot_network(fcm_select(myfcm, feats), ignore = 0.5)
-#' textplot_network(fcm_select(myfcm, feats), ignore = 0.5, size = 20, shape = "vrectangle")
+#' feat <- names(topfeatures(myfcm, 20))
+#' textplot_network(fcm_select(myfcm, feat), ignore = 0.5)
+#' textplot_network(fcm_select(myfcm, feat), ignore = 0.5, size = 20, shape = "vrectangle")
 #' }
 #' @export
-#' @seealso \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
-#'   \code{\link{coef.textmodel}}
+#' @seealso \code{\link{fcm}}
 #' @keywords textplot
 textplot_network <- function(x, width = 10, size = 15, shape = "circle", ignore = 0.5, ...) {
     
