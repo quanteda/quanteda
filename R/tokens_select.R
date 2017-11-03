@@ -112,33 +112,41 @@ tokens_select.tokens <- function(x, pattern = NULL,
     attrs <- attributes(x)
     type <- types(x)
     
+    # selection by pattern
     if (is.null(pattern)) {
         if (selection == 'keep') {
-            pattern_id <- as.list(seq_along(type))
+            ids <- as.list(seq_along(type))
         } else {
-            pattern_id <- list()
+            ids <- list()
         }
     } else {
-        pattern_id <- pattern2id(pattern, type, valuetype, case_insensitive, attr(x, 'concatenator'))
+        ids <- pattern2id(pattern, type, valuetype, case_insensitive, attr(x, 'concatenator'))
     }
-    if ("" %in% pattern) pattern_id <- c(pattern_id, list(0)) # append padding index
+    if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
     
-    nchar_id <- as.list(which(stri_length(type) < min_nchar | max_nchar < stri_length(type)))
-    if (selection == 'keep') {
-        pattern_id <- setdiff(pattern_id, nchar_id)
-    } else {
-        pattern_id <- union(pattern_id, nchar_id)
+    # selection by nchar
+    id_out <- which(stri_length(type) < min_nchar | max_nchar < stri_length(type))
+    if (length(id_out)) {
+        if (selection == 'keep') {
+            if (all(lengths(ids) == 1)) {
+                ids <- setdiff(ids, as.list(id_out))
+            } else {
+                has_out <- unlist(lapply(ids, function(x, y) length(intersect(x, y)) > 0, id_out))
+                ids <- ids[!has_out]
+            }
+        } else {
+            ids <- union(ids, as.list(id_out))
+        }
     }
     
-    if (verbose) 
-        message_select(selection, length(pattern_id), 0)
+    if (verbose) message_select(selection, length(ids), 0)
     if (any(window < 0)) stop('window sizes cannot be negative')
     if (length(window) > 2) stop("window must be a integer vector of length 1 or 2")
     if (length(window) == 1) window <- rep(window, 2)
     if (selection == 'keep') {
-        x <- qatd_cpp_tokens_select(x, type, pattern_id, 1, padding, window[1], window[2])
+        x <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2])
     } else {
-        x <- qatd_cpp_tokens_select(x, type, pattern_id, 2, padding, window[1], window[2])
+        x <- qatd_cpp_tokens_select(x, type, ids, 2, padding, window[1], window[2])
     }
     attributes(x, FALSE) <- attrs
     return(x)

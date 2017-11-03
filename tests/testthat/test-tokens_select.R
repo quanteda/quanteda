@@ -436,13 +436,28 @@ test_that("tokens_select works with min_nchar and max_nchar", {
                       doc2 = c('BBB'), 
                       doc3 = c('Aaaa', 'BBB'))
     )
-    expect_equal(as.list(tokens_keep(toks, phrase('a b'), min_nchar = 3)),
+    expect_equal(as.list(tokens_keep(toks, phrase('a b'), min_nchar = 1)),
                  list(doc1 = c('a', 'B'), 
+                      doc2 = character(0), 
+                      doc3 = character(0))
+    )
+    expect_equal(as.list(tokens_keep(toks, phrase('a b'), min_nchar = 3)),
+                 list(doc1 = character(0), 
                       doc2 = character(0), 
                       doc3 = character(0))
     )
     expect_equal(as.list(tokens_remove(toks, min_nchar = 3)),
                  list(doc1 = character(0), 
+                      doc2 = c('BBB'), 
+                      doc3 = c('Aaaa', 'BBB'))
+    )
+    expect_equal(as.list(tokens_remove(toks, phrase('a b'), min_nchar = 1)),
+                 list(doc1 = c('c', 'D', 'e'), 
+                      doc2 = c('a', 'BBB', 'c', 'D', 'e'), 
+                      doc3 = c('Aaaa', 'BBB', 'cc'))
+    )
+    expect_equal(as.list(tokens_remove(toks, phrase('a b'), min_nchar = 3)),
+                 list(doc1 = character(0),
                       doc2 = c('BBB'), 
                       doc3 = c('Aaaa', 'BBB'))
     )
@@ -486,6 +501,9 @@ test_that("tokens_select works with min_nchar and max_nchar in the same way as d
     expect_true(setequal(featnames(dfm_keep(mt, c('a'), max_nchar = 3)),
                          types(tokens_keep(toks, c('a'), max_nchar = 3))))
     
+    expect_true(setequal(featnames(dfm_keep(mt, c('aaaa'), max_nchar = 3)),
+                         types(tokens_keep(toks, c('aaaa'), max_nchar = 3))))
+    
     expect_true(setequal(featnames(dfm_keep(mt, c('a'), min_nchar = 2, max_nchar = 3)),
                          types(tokens_keep(toks, c('a'), min_nchar = 2, max_nchar = 3))))
     
@@ -500,6 +518,9 @@ test_that("tokens_select works with min_nchar and max_nchar in the same way as d
     
     expect_true(setequal(featnames(dfm_remove(mt, c('a'), max_nchar = 3)),
                          types(tokens_remove(toks, c('a'), max_nchar = 3))))
+    
+    expect_true(setequal(featnames(dfm_remove(mt, c('aaaa'), max_nchar = 3)),
+                         types(tokens_remove(toks, c('aaaa'), max_nchar = 3))))
     
     expect_true(setequal(featnames(dfm_remove(mt, c('a'), min_nchar = 2, max_nchar = 3)),
                          types(tokens_remove(toks, c('a'), min_nchar = 2, max_nchar = 3))))
