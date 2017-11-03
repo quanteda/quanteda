@@ -62,7 +62,7 @@
 tokens_select <- function(x, pattern, selection = c("keep", "remove"), 
                           valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, window = 0, 
-                          min_nchar = 1L, max_nchar = 63L,
+                          min_nchar = 1L, max_nchar = 79L,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_select")
 }
@@ -104,7 +104,7 @@ tokens_select.tokens <- function(x, pattern = NULL,
                                  selection = c("keep", "remove"), 
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, window = 0,
-                                 min_nchar = 1L, max_nchar = 63L,
+                                 min_nchar = 1L, max_nchar = 79L,
                                  verbose = quanteda_options("verbose"), ...) {
     
     selection <- match.arg(selection)
@@ -157,7 +157,7 @@ tokens_select.tokens <- function(x, pattern = NULL,
 tokens_remove <- function(x, pattern = NULL, 
                           valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, window = 0, 
-                          min_nchar = 1L, max_nchar = 63L,
+                          min_nchar = 1L, max_nchar = 79L,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_remove")
 }
@@ -167,7 +167,7 @@ tokens_remove <- function(x, pattern = NULL,
 tokens_remove.tokens <- function(x, pattern = NULL, 
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, window = 0, 
-                                 min_nchar = 1L, max_nchar = 63L,
+                                 min_nchar = 1L, max_nchar = 79L,
                                  verbose = quanteda_options("verbose")) {
     
     tokens_select(x, pattern, selection = "remove", valuetype = valuetype, 
@@ -180,7 +180,7 @@ tokens_remove.tokens <- function(x, pattern = NULL,
 tokens_keep <- function(x, pattern = NULL, 
                         valuetype = c("glob", "regex", "fixed"),
                         case_insensitive = TRUE, padding = FALSE, window = 0, 
-                        min_nchar = 1L, max_nchar = 63L,
+                        min_nchar = 1L, max_nchar = 79L,
                         verbose = quanteda_options("verbose")) {
     UseMethod("tokens_keep")
 }
@@ -190,7 +190,7 @@ tokens_keep <- function(x, pattern = NULL,
 tokens_keep.tokens <- function(x, pattern = NULL, 
                                valuetype = c("glob", "regex", "fixed"),
                                case_insensitive = TRUE, padding = FALSE, window = 0, 
-                               min_nchar = 1L, max_nchar = 63L,
+                               min_nchar = 1L, max_nchar = 79L,
                                verbose = quanteda_options("verbose")) {
     
     tokens_select(x, pattern, selection = "keep", valuetype = valuetype, 

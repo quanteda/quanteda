@@ -81,7 +81,7 @@ dfm_select <- function(x, pattern = NULL,
                        selection = c("keep", "remove"), 
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
-                       min_nchar = 1L, max_nchar = 63L,
+                       min_nchar = 1L, max_nchar = 79L,
                        verbose = quanteda_options("verbose"), ...) {
     UseMethod("dfm_select")
 }
@@ -93,7 +93,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
                             selection = c("keep", "remove"), 
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
-                            min_nchar = 1L, max_nchar = 63L,
+                            min_nchar = 1L, max_nchar = 79L,
                             verbose = quanteda_options("verbose"), ...) {
     
     x <- as.dfm(x)
