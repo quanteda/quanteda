@@ -8,16 +8,16 @@
 \usage{
 tokens_select(x, pattern, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  padding = FALSE, window = 0, min_nchar = 1L, max_nchar = 63L,
+  padding = FALSE, window = 0, min_nchar = 1L, max_nchar = 79L,
   verbose = quanteda_options("verbose"))
 
 tokens_remove(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, padding = FALSE, window = 0, min_nchar = 1L,
-  max_nchar = 63L, verbose = quanteda_options("verbose"))
+  max_nchar = 79L, verbose = quanteda_options("verbose"))
 
 tokens_keep(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, padding = FALSE, window = 0, min_nchar = 1L,
-  max_nchar = 63L, verbose = quanteda_options("verbose"))
+  max_nchar = 79L, verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be removed or kept}
