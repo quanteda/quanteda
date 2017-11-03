@@ -32,6 +32,12 @@
 #'   Terms from overlapping windows are never double-counted, but simply
 #'   returned in the patern match. This is because \code{tokens_select} never
 #'   redefines the document units; for this, see \code{\link{kwic}}.
+#' @param min_nchar,max_nchar numerics specifying the minimum and maximum length
+#'   in characters for tokens to be removed or kept; defaults are 1 and 
+#'   \href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
+#'    (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are 
+#'   applied after (and hence, in addition to) any selection based on pattern 
+#'   matches.
 #' @return a \link{tokens} object with tokens selected or removed based on their
 #'   match to \code{pattern}
 #' @export
@@ -55,7 +61,9 @@
 #' 
 tokens_select <- function(x, pattern, selection = c("keep", "remove"), 
                           valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, window = 0, verbose = quanteda_options("verbose")) {
+                          case_insensitive = TRUE, padding = FALSE, window = 0, 
+                          min_nchar = 1L, max_nchar = 63L,
+                          verbose = quanteda_options("verbose")) {
     UseMethod("tokens_select")
 }
 
@@ -64,54 +72,73 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 #' @examples
-#' toksh <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
+#' toks <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
 #' feats <- c("this", "sample", "is")
 #' # keeping tokens
-#' tokens_select(toksh, feats, selection = "keep")
-#' tokens_select(toksh, feats, selection = "keep", padding = TRUE)
-#' tokens_select(toksh, feats, selection = "keep", case_insensitive = FALSE)
-#' tokens_select(toksh, feats, selection = "keep", padding = TRUE, case_insensitive = FALSE)
+#' tokens_select(toks, feats, selection = "keep")
+#' tokens_select(toks, feats, selection = "keep", padding = TRUE)
+#' tokens_select(toks, feats, selection = "keep", case_insensitive = FALSE)
+#' tokens_select(toks, feats, selection = "keep", padding = TRUE, case_insensitive = FALSE)
 #' # removing tokens
-#' tokens_select(toksh, feats, selection = "remove")
-#' tokens_select(toksh, feats, selection = "remove", padding = TRUE)
-#' tokens_select(toksh, feats, selection = "remove", case_insensitive = FALSE)
-#' tokens_select(toksh, feats, selection = "remove", padding = TRUE, case_insensitive = FALSE)
+#' tokens_select(toks, feats, selection = "remove")
+#' tokens_select(toks, feats, selection = "remove", padding = TRUE)
+#' tokens_select(toks, feats, selection = "remove", case_insensitive = FALSE)
+#' tokens_select(toks, feats, selection = "remove", padding = TRUE, case_insensitive = FALSE)
 #' 
 #' # With longer texts
-#' toks <- tokens(data_corpus_inaugural)
-#' tokens_select(toks, stopwords("english"), "remove")
-#' tokens_select(toks, stopwords("english"), "keep")
-#' tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-#' tokens_select(toks, stopwords("english"), "keep", padding = TRUE)
+#' toks2 <- tokens(data_corpus_inaugural)
+#' tokens_select(toks2, stopwords("english"), "remove")
+#' tokens_select(toks2, stopwords("english"), "keep")
+#' tokens_select(toks2, stopwords("english"), "remove", padding = TRUE)
+#' tokens_select(toks2, stopwords("english"), "keep", padding = TRUE)
 #' 
 #' # With multiple words
-#' tokens_select(toks, list(c('President', '*')), "keep")
-#' tokens_select(toks, 'President *', "keep") # simplified form
-#' tokens_select(toks, list(c('*', 'crisis')), "keep")
-#' tokens_select(toks, '* crisis', "keep") # simplified form
-tokens_select.tokens <- function(x, pattern, selection = c("keep", "remove"), 
+#' tokens_select(toks2, list(c('President', '*')), "keep")
+#' tokens_select(toks2, 'President *', "keep") # simplified form
+#' tokens_select(toks2, list(c('*', 'crisis')), "keep")
+#' tokens_select(toks2, '* crisis', "keep") # simplified form
+#' 
+#' # With minimun length
+#' tokens_select(toks2, min_nchar = 2, "keep") # simplified form
+tokens_select.tokens <- function(x, pattern = NULL, 
+                                 selection = c("keep", "remove"), 
                                  valuetype = c("glob", "regex", "fixed"),
-                                 case_insensitive = TRUE, padding = FALSE, window = 0, 
+                                 case_insensitive = TRUE, padding = FALSE, window = 0,
+                                 min_nchar = 1L, max_nchar = 63L,
                                  verbose = quanteda_options("verbose"), ...) {
     
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
-    types <- types(x)
+    type <- types(x)
     
-    features_id <- pattern2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
-    if ("" %in% pattern) features_id <- c(features_id, list(0)) # append padding index
-
+    if (is.null(pattern)) {
+        if (selection == 'keep') {
+            pattern_id <- as.list(seq_along(type))
+        } else {
+            pattern_id <- list()
+        }
+    } else {
+        pattern_id <- pattern2id(pattern, type, valuetype, case_insensitive, attr(x, 'concatenator'))
+    }
+    if ("" %in% pattern) pattern_id <- c(pattern_id, list(0)) # append padding index
+    
+    nchar_id <- as.list(which(stri_length(type) < min_nchar | max_nchar < stri_length(type)))
+    if (selection == 'keep') {
+        pattern_id <- setdiff(pattern_id, nchar_id)
+    } else {
+        pattern_id <- union(pattern_id, nchar_id)
+    }
+    
     if (verbose) 
-        message_select(selection, length(features_id), 0)
-    
+        message_select(selection, length(pattern_id), 0)
     if (any(window < 0)) stop('window sizes cannot be negative')
     if (length(window) > 2) stop("window must be a integer vector of length 1 or 2")
     if (length(window) == 1) window <- rep(window, 2)
     if (selection == 'keep') {
-        x <- qatd_cpp_tokens_select(x, types, features_id, 1, padding, window[1], window[2])
+        x <- qatd_cpp_tokens_select(x, type, pattern_id, 1, padding, window[1], window[2])
     } else {
-        x <- qatd_cpp_tokens_select(x, types, features_id, 2, padding, window[1], window[2])
+        x <- qatd_cpp_tokens_select(x, type, pattern_id, 2, padding, window[1], window[2])
     }
     attributes(x, FALSE) <- attrs
     return(x)
@@ -127,30 +154,46 @@ tokens_select.tokens <- function(x, pattern, selection = c("keep", "remove"),
 #'                    the high sense I entertain of this distinguished honor.")
 #' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #'
-tokens_remove <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, window = 0, verbose = quanteda_options("verbose")) {
+tokens_remove <- function(x, pattern = NULL, 
+                          valuetype = c("glob", "regex", "fixed"),
+                          case_insensitive = TRUE, padding = FALSE, window = 0, 
+                          min_nchar = 1L, max_nchar = 63L,
+                          verbose = quanteda_options("verbose")) {
     UseMethod("tokens_remove")
 }
 
 #' @noRd
 #' @export
-tokens_remove.tokens <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
-                                case_insensitive = TRUE, padding = FALSE, window = 0, verbose = quanteda_options("verbose")) {
+tokens_remove.tokens <- function(x, pattern = NULL, 
+                                 valuetype = c("glob", "regex", "fixed"),
+                                 case_insensitive = TRUE, padding = FALSE, window = 0, 
+                                 min_nchar = 1L, max_nchar = 63L,
+                                 verbose = quanteda_options("verbose")) {
+    
     tokens_select(x, pattern, selection = "remove", valuetype = valuetype, 
-                  case_insensitive = case_insensitive, padding = padding, window = window, verbose = verbose)
+                  case_insensitive = case_insensitive, padding = padding, window = window,
+                  min_nchar = min_nchar, max_nchar = max_nchar, verbose = verbose)
 }
 
 #' @rdname tokens_select
 #' @export
-tokens_keep <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
-                        case_insensitive = TRUE, padding = FALSE, window = 0, verbose = quanteda_options("verbose")) {
+tokens_keep <- function(x, pattern = NULL, 
+                        valuetype = c("glob", "regex", "fixed"),
+                        case_insensitive = TRUE, padding = FALSE, window = 0, 
+                        min_nchar = 1L, max_nchar = 63L,
+                        verbose = quanteda_options("verbose")) {
     UseMethod("tokens_keep")
 }
 
 #' @noRd
 #' @export
-tokens_keep.tokens <- function(x, pattern, valuetype = c("glob", "regex", "fixed"),
-                                 case_insensitive = TRUE, padding = FALSE, window = 0, verbose = quanteda_options("verbose")) {
+tokens_keep.tokens <- function(x, pattern = NULL, 
+                               valuetype = c("glob", "regex", "fixed"),
+                               case_insensitive = TRUE, padding = FALSE, window = 0, 
+                               min_nchar = 1L, max_nchar = 63L,
+                               verbose = quanteda_options("verbose")) {
+    
     tokens_select(x, pattern, selection = "keep", valuetype = valuetype, 
-                  case_insensitive = case_insensitive, padding = padding, window = window, verbose = verbose)
+                  case_insensitive = case_insensitive, padding = padding, window = window, 
+                  min_nchar = min_nchar, max_nchar = max_nchar, verbose = verbose)
 }

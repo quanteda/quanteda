@@ -8,15 +8,16 @@
 \usage{
 tokens_select(x, pattern, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  padding = FALSE, window = 0, verbose = quanteda_options("verbose"))
-
-tokens_remove(x, pattern, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, padding = FALSE, window = 0,
+  padding = FALSE, window = 0, min_nchar = 1L, max_nchar = 63L,
   verbose = quanteda_options("verbose"))
 
-tokens_keep(x, pattern, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, padding = FALSE, window = 0,
-  verbose = quanteda_options("verbose"))
+tokens_remove(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, padding = FALSE, window = 0, min_nchar = 1L,
+  max_nchar = 63L, verbose = quanteda_options("verbose"))
+
+tokens_keep(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, padding = FALSE, window = 0, min_nchar = 1L,
+  max_nchar = 63L, verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be removed or kept}
@@ -49,6 +50,13 @@ needs to be computed.}
   Terms from overlapping windows are never double-counted, but simply
   returned in the patern match. This is because \code{tokens_select} never
   redefines the document units; for this, see \code{\link{kwic}}.}
+
+\item{min_nchar, max_nchar}{numerics specifying the minimum and maximum length
+in characters for tokens to be removed or kept; defaults are 1 and 
+\href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
+ (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are 
+applied after (and hence, in addition to) any selection based on pattern 
+matches.}
 
 \item{verbose}{if \code{TRUE} print messages about how many tokens were 
 selected or removed}
