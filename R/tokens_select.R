@@ -121,8 +121,8 @@ tokens_select.tokens <- function(x, pattern = NULL,
         }
     } else {
         ids <- pattern2id(pattern, type, valuetype, case_insensitive, attr(x, 'concatenator'))
+        if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
     }
-    if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
     
     # selection by nchar
     id_out <- which(stri_length(type) < min_nchar | max_nchar < stri_length(type))
