@@ -86,7 +86,6 @@ Text replace(Text tokens,
     for (std::size_t i = 0; i < tokens.size(); i++) {
         auto it = set_ignore.find(tokens[i]);
         if (it != set_ignore.end()) {
-            //Rcout << "ignore " << i << "\n";
             tokens[i] = id_ignore;
         }
     }
@@ -99,13 +98,10 @@ struct replace_mt : public Worker{
     SetUnigrams &set_ignore;
     unsigned int &id_ignore;
     
-    // Constructor
     replace_mt(Texts &texts_, SetUnigrams &set_ignore_, unsigned int &id_ignore_):
-        texts(texts_), set_ignore(set_ignore_), id_ignore(id_ignore_) {}
-    
-    // parallelFor calles this function with std::size_t
+               texts(texts_), set_ignore(set_ignore_), id_ignore(id_ignore_) {}
+
     void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
             texts[h] = replace(texts[h], set_ignore, id_ignore);
         }
@@ -174,7 +170,8 @@ struct counts_mt : public Worker {
 
     counts_mt(Texts texts_, MapNgramsPair &counts_seq_, const unsigned int &size_, 
               const unsigned int &id_ignore_, const bool &nested_):
-        texts(texts_), counts_seq(counts_seq_), size(size_), id_ignore(id_ignore_), nested(nested_){}
+              texts(texts_), counts_seq(counts_seq_), size(size_), 
+              id_ignore(id_ignore_), nested(nested_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
@@ -329,12 +326,12 @@ struct estimates_mt : public Worker{
     estimates_mt(VecNgrams &seqs_np_, IntParams &cs_np_, VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_,
                  DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, const String &method,
                  const unsigned int &count_min_, const double nseqs_, const double smoothing_):
-        seqs_np(seqs_np_), cs_np(cs_np_), seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_),
-        gensim(gensim_), lfmd(lfmd_), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
+                 seqs_np(seqs_np_), cs_np(cs_np_), seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_),
+                 gensim(gensim_), lfmd(lfmd_), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
 
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-                estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, nseqs, smoothing);
+            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, nseqs, smoothing);
         }
     }
 };
