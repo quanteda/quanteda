@@ -424,5 +424,120 @@ test_that("shortcut functions works", {
                  tokens_remove(toks, stopwords('english')))
 })
 
+test_that("tokens_select works with min_nchar and max_nchar", {
+    
+    txt <- c(doc1 = "a B c D e",
+             doc2 = "a BBB c D e",
+             doc3 = "Aaaa BBB cc")
+    toks <- tokens(txt)
+    
+    expect_equal(as.list(tokens_keep(toks, min_nchar = 3)),
+                 list(doc1 = character(0), 
+                      doc2 = c('BBB'), 
+                      doc3 = c('Aaaa', 'BBB'))
+    )
+    expect_equal(as.list(tokens_keep(toks, phrase('a b'), min_nchar = 1)),
+                 list(doc1 = c('a', 'B'), 
+                      doc2 = character(0), 
+                      doc3 = character(0))
+    )
+    expect_equal(as.list(tokens_keep(toks, phrase('a b'), min_nchar = 3)),
+                 list(doc1 = character(0), 
+                      doc2 = character(0), 
+                      doc3 = character(0))
+    )
+    expect_equal(as.list(tokens_remove(toks, min_nchar = 3)),
+                 list(doc1 = character(0), 
+                      doc2 = c('BBB'), 
+                      doc3 = c('Aaaa', 'BBB'))
+    )
+    expect_equal(as.list(tokens_remove(toks, phrase('a b'), min_nchar = 1)),
+                 list(doc1 = c('c', 'D', 'e'), 
+                      doc2 = c('a', 'BBB', 'c', 'D', 'e'), 
+                      doc3 = c('Aaaa', 'BBB', 'cc'))
+    )
+    expect_equal(as.list(tokens_remove(toks, phrase('a b'), min_nchar = 3)),
+                 list(doc1 = character(0),
+                      doc2 = c('BBB'), 
+                      doc3 = c('Aaaa', 'BBB'))
+    )
+    expect_equal(as.list(tokens_keep(toks, max_nchar = 3)),
+                 list(doc1 = c('a', 'B', 'c', 'D', 'e'), 
+                      doc2 = c('a', 'BBB', 'c', 'D', 'e'), 
+                      doc3 = c('BBB', 'cc'))
+    )
+    expect_equal(as.list(tokens_keep(toks, phrase('a b'), max_nchar = 3)),
+                 list(doc1 = c('a', 'B'), 
+                      doc2 = character(0), 
+                      doc3 = character(0))
+    )
+    expect_equal(as.list(tokens_remove(toks, max_nchar = 3)),
+                 list(doc1 = c('a', 'B', 'c', 'D', 'e'), 
+                      doc2 = c('a', 'BBB', 'c', 'D', 'e'), 
+                      doc3 = c('BBB', 'cc'))
+    )
+    expect_equal(as.list(tokens_remove(toks, phrase('a b'), max_nchar = 3)),
+                 list(doc1 = c('c', 'D', 'e'), 
+                      doc2 = c('a', 'BBB', 'c', 'D', 'e'), 
+                      doc3 = c('BBB', 'cc'))
+    )
+    
+})
 
+test_that("tokens_select works with min_nchar and max_nchar in the same way as dfm_select", {
 
+    txt <- c(doc1 = "a B c D e",
+             doc2 = "a BBB c D e",
+             doc3 = "Aaaa BBB cc")
+    toks <- tokens(txt)
+    mt <- dfm(toks, tolower = FALSE)
+    
+    expect_true(setequal(featnames(dfm_keep(mt, c('a'), min_nchar = 3)),
+                         types(tokens_keep(toks, c('a'), min_nchar = 3))))
+    
+    expect_true(setequal(featnames(dfm_keep(mt, c('a'), min_nchar = 1)),
+                         types(tokens_keep(toks, c('a'), min_nchar = 1))))
+    
+    expect_true(setequal(featnames(dfm_keep(mt, c('a'), max_nchar = 3)),
+                         types(tokens_keep(toks, c('a'), max_nchar = 3))))
+    
+    expect_true(setequal(featnames(dfm_keep(mt, c('aaaa'), max_nchar = 3)),
+                         types(tokens_keep(toks, c('aaaa'), max_nchar = 3))))
+    
+    expect_true(setequal(featnames(dfm_keep(mt, c('a'), min_nchar = 2, max_nchar = 3)),
+                         types(tokens_keep(toks, c('a'), min_nchar = 2, max_nchar = 3))))
+    
+    expect_true(setequal(featnames(dfm_keep(mt, min_nchar = 2, max_nchar = 3)),
+                         types(tokens_keep(toks, min_nchar = 2, max_nchar = 3))))
+    
+    expect_true(setequal(featnames(dfm_remove(mt, c('a'), min_nchar = 3)),
+                         types(tokens_remove(toks, c('a'), min_nchar = 3))))
+    
+    expect_true(setequal(featnames(dfm_remove(mt, c('a'), min_nchar = 1)),
+                         types(tokens_remove(toks, c('a'), min_nchar = 1))))
+    
+    expect_true(setequal(featnames(dfm_remove(mt, c('a'), max_nchar = 3)),
+                         types(tokens_remove(toks, c('a'), max_nchar = 3))))
+    
+    expect_true(setequal(featnames(dfm_remove(mt, c('aaaa'), max_nchar = 3)),
+                         types(tokens_remove(toks, c('aaaa'), max_nchar = 3))))
+    
+    expect_true(setequal(featnames(dfm_remove(mt, c('a'), min_nchar = 2, max_nchar = 3)),
+                         types(tokens_remove(toks, c('a'), min_nchar = 2, max_nchar = 3))))
+    
+    expect_true(setequal(featnames(dfm_remove(mt, min_nchar = 2, max_nchar = 3)),
+                         types(tokens_remove(toks, min_nchar = 2, max_nchar = 3))))
+    
+})
+
+test_that("tokens_removekeep fail if selection argument is used", {
+    toks <- tokens("a b c d e")
+    expect_error(
+        tokens_remove(toks, c("b", "c"), selection = "remove"),
+        "tokens_remove cannot include selection argument"
+    )
+    expect_error(
+        tokens_keep(toks, c("b", "c"), selection = "keep"),
+        "tokens_keep cannot include selection argument"
+    )
+})
