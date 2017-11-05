@@ -161,7 +161,7 @@ test_that("test that collocations only include selected features", {
 test_that("bigrams and trigrams are all sorted correctly, issue #385", {
     toks <- tokens(data_corpus_inaugural[2], remove_punct = TRUE)
     toks <- tokens_remove(toks, stopwords("english"), padding = TRUE)
-    cols <- textstat_collocations(toks, method = 'lambda', size = 3)
+    cols <- textstat_collocations(toks, method = 'lambda', min_count = 1, size = 2:3)
     expect_equal(order(cols$z, decreasing = TRUE), seq_len(nrow(cols)))
 })
 
@@ -311,4 +311,24 @@ test_that("textstat_collocations error when size = 1 and warn when size > 5", {
     expect_warning(textstat_collocations(toks, size = 2:6),
                  "Computation for large collocations may take long time")
     
+})
+
+test_that("textstat_collocations works with nested argument", {
+    toks <- tokens(data_corpus_inaugural[2], remove_punct = TRUE)
+    toks <- tokens_remove(toks, stopwords("english"), padding = TRUE)
+    cols_nested <- textstat_collocations(toks, method = 'lambda', size = 2:5, min_count = 1, nested = TRUE)
+    cols_nesting <- textstat_collocations(toks, method = 'lambda', size = 2:5, min_count = 1, nested = FALSE)
+    
+    # nested = FALSE is a subset of nested = TRUE
+    expect_true(all(cols_nesting$collocation %in% cols_nested$collocation))
+    
+    # estimates are consistent 
+    cols_nested_sub <- cols_nested[match(cols_nesting$collocation, cols_nested$collocation),]
+    expect_equal(cols_nested_sub$count, cols_nesting$count)
+    expect_equal(cols_nested_sub$lambda, cols_nesting$lambda)
+    expect_equal(cols_nested_sub$z, cols_nesting$z)
+    
+    # nested collocations are all nested
+    expect_equal(lapply(cols_nested$collocation, function(x) any(stringi::stri_detect_fixed(cols_nesting$collocation, x))),
+                 as.list(rep(TRUE, nrow(cols_nested))))
 })

@@ -113,25 +113,53 @@ struct replace_mt : public Worker{
 };
 
 void counts(Text text,
-           MapNgrams &counts_seq,
-           const unsigned int &size,
-           const unsigned int &id_ignore){
-
+            MapNgramsPair &counts_seq,
+            const unsigned int &size,
+            const unsigned int &id_ignore,
+            const bool &nested){
+        
     if (text.size() < size) return; // do nothing with very short text
     for (std::size_t i = 0; i < text.size() - size + 1; i++) {
-        Text text_sub(text.begin() + i, text.begin() + i + size);
         bool ignore = false;
+        bool exclude = false;
+        
+        // Check if sequence is sorrunded by boudaries
+        bool before = i == 0 || text[i - 1] == 0 || text[i - 1] == id_ignore;
+        bool after = i + size == text.size() || text[i + size] == 0 || text[i + size] == id_ignore;
+        if (!nested) {
+            if (!before || !after) {
+                exclude = true;
+            }
+        }
+        
+        // Check if sequence has ineligible
+        Text text_sub(text.begin() + i, text.begin() + i + size);
         for (std::size_t j = 0; j < text_sub.size(); j++) {
-            if (id_ignore == text_sub[j]) {
+            if (text_sub[j] == id_ignore) {
                 //Rcout << "i:" << i  << " j:" << j << "\n";
                 //dev::print_ngram(text_sub);
                 i += j; // jump
                 ignore = true;
                 break;
             }
+            
+            // Exclude if sequence contain padding
+            if (exclude == false && text_sub[j] == 0) {
+                exclude = true;
+            }
         }
+
+    
         if (!ignore) {
-            counts_seq[text_sub]++;    
+            auto &count = counts_seq[text_sub];
+            count.first++;
+            // counts_seq[text_sub].first++;
+            // if (!padding) {
+            //     counts_seq[text_sub].second++;
+            // }
+            if (!exclude) {
+                count.second++;
+            }
         }
     }
 }
@@ -139,16 +167,18 @@ void counts(Text text,
 struct counts_mt : public Worker {
     
     Texts texts;
-    MapNgrams &counts_seq;
+    MapNgramsPair &counts_seq;
     const unsigned int &size;
     const unsigned int &id_ignore;
+    const bool &nested;
 
-    counts_mt(Texts texts_, MapNgrams &counts_seq_, const unsigned int &size_, const unsigned int &id_ignore_):
-        texts(texts_), counts_seq(counts_seq_), size(size_), id_ignore(id_ignore_){}
+    counts_mt(Texts texts_, MapNgramsPair &counts_seq_, const unsigned int &size_, 
+              const unsigned int &id_ignore_, const bool &nested_):
+        texts(texts_), counts_seq(counts_seq_), size(size_), id_ignore(id_ignore_), nested(nested_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
-            counts(texts[h], counts_seq, size, id_ignore);
+            counts(texts[h], counts_seq, size, id_ignore, nested);
         }
     }
 };
@@ -326,7 +356,8 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                              const unsigned int count_min,
                              const IntegerVector sizes_,
                              const String &method,
-                             const double smoothing){
+                             const double smoothing,
+                             const bool nested){
     
     Texts texts = as<Texts>(texts_);
     std::vector<unsigned int> sizes = as< std::vector<unsigned int> >(sizes_);
@@ -339,17 +370,16 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         set_ignore.insert(words_ignore[g]);
     }
    
-// #if QUANTEDA_USE_TBB
-//    replace_mt replace_mt(texts, set_ignore, id_ignore);
-//    parallelFor(0, texts.size(), replace_mt, id_ignore);
-// #else
+   // Replace ineligble tokens with special ID
+#if QUANTEDA_USE_TBB
+   replace_mt replace_mt(texts, set_ignore, id_ignore);
+   parallelFor(0, texts.size(), replace_mt, id_ignore);
+#else
    for (std::size_t h = 0; h < texts.size(); h++) {
        texts[h] = replace(texts[h], set_ignore, id_ignore);
    }
-// #endif
+#endif
    
-   
-    // Estimate significance of the sequences
     unsigned int len_coe = sizes.size() * types_.size();
     std::vector<double> sgma_all, lmda_all, dice_all, pmi_all, logratio_all;
     std::vector<double> chi2_all, gensim_all, lfmd_all, cs_all, ns_all;
@@ -368,24 +398,20 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     VecNgrams seqs_all;
     seqs_all.reserve(len_coe);
     
-    //output oberved counting
-    //std::vector<std::string> ob_all;
-    //ob_all.reserve(len_coe);
-    
     for (unsigned int size : sizes) {
         //unsigned int mw_len = sizes[m];
         // Collect all sequences of specified words
-        MapNgrams counts_seq;
+        MapNgramsPair counts_seq;
         // dev::Timer timer;
         // dev::start_timer("Count", timer);
-// #if QUANTEDA_USE_TBB
-//         counts_mt count_mt(texts, counts_seq, size, id_ignore);
-//         parallelFor(0, texts.size(), count_mt);
-// #else
+#if QUANTEDA_USE_TBB
+         counts_mt count_mt(texts, counts_seq, size, id_ignore, nested);
+         parallelFor(0, texts.size(), count_mt);
+#else
         for (std::size_t h = 0; h < texts.size(); h++) {
-            counts(texts[h], counts_seq, size, id_ignore);
+            counts(texts[h], counts_seq, size, id_ignore, nested);
         }
-// #endif
+#endif
         // dev::stop_timer("Count", timer);
         
         // Separate map keys and values
@@ -398,30 +424,28 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         cs.reserve(len);
         
         double total_counts = 0.0;
-        std::size_t len_nopad = 0;
+        std::size_t len_np = 0;
         for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
             seqs.push_back(it->first);
-            cs.push_back(it->second);
-            total_counts += it->second;
-            if (std::find(it->first.begin(), it->first.end(), 0) == it->first.end()) {
+            cs.push_back(it->second.first); // counts of all but ineligible
+            total_counts += it->second.first; // total counts of all but ineligible
+            if (it->second.second > 0) {
                 seqs_np.push_back(it->first);
-                cs_np.push_back(it->second);
+                cs_np.push_back(it->second.first);
                 seqs_all.push_back(it->first);
-                cs_all.push_back(it->second);
+                cs_all.push_back(it->second.first);
                 ns_all.push_back(it->first.size());
-                len_nopad++;
+                len_np++;
             }
         }
-        
-        //output counts;
-        //std::vector<std::string> ob_n(len_nopad);
+        // Rcout << "len_np: " << len_np << "\n"
         
         // adjust total_counts of MW 
         total_counts += 4 * smoothing;
         
         // Estimate significance of the sequences
-        DoubleParams sgma(len_nopad), lmda(len_nopad), dice(len_nopad), pmi(len_nopad);
-        DoubleParams logratio(len_nopad), chi2(len_nopad), gensim(len_nopad), lfmd(len_nopad);
+        DoubleParams sgma(len_np), lmda(len_np), dice(len_np), pmi(len_np);
+        DoubleParams logratio(len_np), chi2(len_np), gensim(len_np), lfmd(len_np);
         
         //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
@@ -441,9 +465,6 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         chi2_all.insert(chi2_all.end(), chi2.begin(), chi2.end());
         gensim_all.insert(gensim_all.end(), gensim.begin(), gensim.end());
         lfmd_all.insert(lfmd_all.end(), lfmd.begin(), lfmd.end());
-        
-        //output counts
-        //ob_all.insert(ob_all.end(), ob_n.begin(), ob_n.end());
         
         // Allow user to stop
         R_CheckUserInterrupt();
@@ -473,16 +494,18 @@ DataFrame qatd_cpp_sequences(const List &texts_,
 
 /***R
 require(quanteda)
-# toks <- tokens(data_corpus_inaugural)
-# #toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-# types <- attr(toks, 'types')
-# id_ignore <- unlist(quanteda:::regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
-# 
-# if (is.null(id_ignore)) id_ignore <- integer(0)
-# (out <- qatd_cpp_sequences(toks, types, id_ignore, 1, 3, "lambda", 0.0))
+toks <- tokens(data_corpus_inaugural)
+toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
+types <- attr(toks, 'types')
+id_ignore <- unlist(quanteda:::regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
+
+if (is.null(id_ignore)) id_ignore <- integer(0)
+(out <- qatd_cpp_sequences(toks, types, id_ignore, 1, 3, "lambda", 0.0, TRUE))
+(out <- qatd_cpp_sequences(toks, types, id_ignore, 1, 3, "lambda", 0.0, FALSE))
 
 txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
 toks2 <- tokens(txt)
-(out2 <- qatd_cpp_sequences(toks2, attr(toks2, 'types'), c(3), 1, 3, "lambda", 0.0))
+(out2 <- qatd_cpp_sequences(toks2, attr(toks2, 'types'), c(3), 1, 3, "lambda", 0.0, TRUE))
+(out2 <- qatd_cpp_sequences(toks2, attr(toks2, 'types'), c(3), 1, 3, "lambda", 0.0, FALSE))
 
 */

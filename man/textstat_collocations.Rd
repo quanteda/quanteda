@@ -6,7 +6,7 @@
 \title{identify and score multi-word expressions}
 \usage{
 textstat_collocations(x, method = "lambda", size = 2, min_count = 2,
-  smoothing = 0.5, tolower = TRUE, ...)
+  smoothing = 0.5, tolower = TRUE, nested = TRUE, ...)
 
 is.collocations(x)
 }
@@ -31,6 +31,8 @@ to be scored}
 (default is 0.5)}
 
 \item{tolower}{logical; if \code{TRUE}, form collocations as lower-cased combinations}
+
+\item{nested}{logical; if \code{TRUE} the output include nested collocations}
 
 \item{...}{additional arguments passed to \code{\link{tokens}}, if \code{x}
 is not a \link{tokens} object already}
