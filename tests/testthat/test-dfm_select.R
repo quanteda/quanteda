@@ -312,3 +312,14 @@ test_that("shortcut functions works", {
                  dfm_remove(testdfm, stopwords('english')))
 })
 
+test_that("dfm_remove/keep fail if selection argument is used", {
+    thedfm <- tokens(c("a b c d d", "a a b c d"))
+    expect_error(
+        dfm_remove(thedfm, c("b", "c"), selection = "remove"),
+        "dfm_remove cannot include selection argument"
+    )
+    expect_error(
+        dfm_keep(thedfm, c("b", "c"), selection = "keep"),
+        "dfm_keep cannot include selection argument"
+    )
+})

@@ -170,28 +170,21 @@ dfm_select.dfm <-  function(x, pattern = NULL,
 #'               verbose = FALSE)
 #' tmpdfm
 #' dfm_remove(tmpdfm, stopwords("english"))
-dfm_remove <- function(x, pattern = NULL, ...) {
-    UseMethod("dfm_remove")
+dfm_remove <- function(x, ...) {
+    if ("selection" %in% names(list(...))) {
+        stop("dfm_remove cannot include selection argument")
+    }
+    dfm_select(x, ..., selection = "remove")
 }
 
-#' @noRd
-#' @export
-dfm_remove.dfm <- function(x, pattern = NULL, ...) {
-    x <- as.dfm(x)
-    dfm_select(x, pattern, selection = "remove", ...)
-}
 
 #' @rdname dfm_select
 #' @export
-dfm_keep <- function(x, pattern = NULL, ...) {
-    UseMethod("dfm_keep")
-}
-
-#' @noRd
-#' @export
-dfm_keep.dfm <- function(x, pattern = NULL, ...) {
-    x <- as.dfm(x)
-    dfm_select(x, pattern, selection = "keep", ...)
+dfm_keep <- function(x, ...) {
+    if ("selection" %in% names(list(...))) {
+        stop("dfm_keep cannot include selection argument")
+    }
+    dfm_select(x, ..., selection = "keep")
 }
 
 
