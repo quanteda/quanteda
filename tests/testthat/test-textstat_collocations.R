@@ -302,3 +302,13 @@ test_that("textstat_collocations works when texts are shorter than size", {
                    stringsAsFactors = FALSE))
 })
 
+test_that("textstat_collocations error when size = 1 and warn when size > 5", {
+    
+    toks <- tokens('a b c d e f g h a b c d e f')
+    expect_silent(textstat_collocations(toks, size = 2:5))
+    expect_error(textstat_collocations(toks, size = 1:5),
+                 "Collocation sizes must be larger than 1")
+    expect_warning(textstat_collocations(toks, size = 2:6),
+                 "Computation for large collocations may take long time")
+    
+})
