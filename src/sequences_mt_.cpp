@@ -202,7 +202,7 @@ void estimates(std::size_t i,
     if (n == 1) return; // ignore single words
     if (cs_np[i] < count_min) return;
     //output counts
-    std::vector<double> counts_bit(std::pow(2, n), smoothing);// use 1/2 as smoothing
+    std::vector<double> counts_bit(std::pow(2, n), smoothing);
     for (std::size_t j = 0; j < seqs.size(); j++) {
         //if (i == j) continue; // do not compare with itself
         int bit;
@@ -342,8 +342,9 @@ struct estimates_mt : public Worker{
 * @used sequences()
 * @param texts_ tokens object
 * @param count_min sequences appear less than this are ignored
-* @param method 
-* @param smoothing
+* @param method method to estimate collocation association
+* @param smoothing this number is added to collocation counts
+* @param nested estimate parameters for nested collocations
 */
 
 // [[Rcpp::export]]
