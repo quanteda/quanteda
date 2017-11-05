@@ -189,13 +189,11 @@ void estimates(std::size_t i,
                DoubleParams &gensim,
                DoubleParams &lfmd,
                const String &method,
-               const int &count_min,
                const double nseqs,
                const double smoothing) {
     
     std::size_t n = seqs_np[i].size(); //n=2:5, seqs
     if (n == 1) return; // ignore single words
-    if (cs_np[i] < count_min) return;
     //output counts
     std::vector<double> counts_bit(std::pow(2, n), smoothing);
     for (std::size_t j = 0; j < seqs.size(); j++) {
@@ -313,20 +311,19 @@ struct estimates_mt : public Worker{
     DoubleParams &gensim;
     DoubleParams &lfmd;
     const String &method;
-    const unsigned int &count_min;
     const double nseqs;
     const double smoothing;
 
     // Constructor
     estimates_mt(VecNgrams &seqs_np_, IntParams &cs_np_, VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_,
                  DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, const String &method,
-                 const unsigned int &count_min_, const double nseqs_, const double smoothing_):
+                 const double nseqs_, const double smoothing_):
                  seqs_np(seqs_np_), cs_np(cs_np_), seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_),
-                 gensim(gensim_), lfmd(lfmd_), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
+                 gensim(gensim_), lfmd(lfmd_), method(method), nseqs(nseqs_), smoothing(smoothing_){}
 
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, nseqs, smoothing);
+            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, nseqs, smoothing);
         }
     }
 };
@@ -422,15 +419,18 @@ DataFrame qatd_cpp_sequences(const List &texts_,
             seqs.push_back(it->first);
             cs.push_back(it->second.first); // counts of all but ineligible
             total_counts += it->second.first; // total counts of all but ineligible
-            if (it->second.second > 0) {
+            if (it->second.second >= count_min) {
+                // Local values
                 seqs_np.push_back(it->first);
                 cs_np.push_back(it->second.first);
+                len_np++;
+                // Global values
                 seqs_all.push_back(it->first);
                 cs_all.push_back(it->second.first);
                 ns_all.push_back(it->first.size());
-                len_np++;
             }
         }
+        
         // Rcout << "len_np: " << len_np << "\n"
         
         // adjust total_counts of MW 
@@ -442,11 +442,11 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         
         //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
+        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, total_counts, smoothing);
         parallelFor(0, seqs_np.size(), estimate_mt);
 #else
         for (std::size_t i = 0; i < seqs_np.size(); i++) {
-            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
+            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, total_counts, smoothing);
         }
 #endif
         //dev::stop_timer("Estimate", timer);
