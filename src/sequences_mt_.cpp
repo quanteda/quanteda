@@ -128,9 +128,10 @@ void counts(Text text,
             }
         }
         
-        // Check if sequence has ineligible
         Text text_sub(text.begin() + i, text.begin() + i + size);
         for (std::size_t j = 0; j < text_sub.size(); j++) {
+            
+            // Check if sequence has ineligible
             if (text_sub[j] == id_ignore) {
                 //Rcout << "i:" << i  << " j:" << j << "\n";
                 //dev::print_ngram(text_sub);
@@ -140,7 +141,7 @@ void counts(Text text,
             }
             
             // Exclude if sequence contain padding
-            if (drop == false && text_sub[j] == 0) {
+            if (text_sub[j] == 0) {
                 drop = true;
             }
         }
