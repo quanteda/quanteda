@@ -634,5 +634,3 @@ test_that("dfm warns of argument not used", {
                    'Arguments xxxxx, yyyyy not used')
     
 })
-
-test_that()
