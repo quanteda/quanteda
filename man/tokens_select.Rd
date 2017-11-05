@@ -8,15 +8,12 @@
 \usage{
 tokens_select(x, pattern, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  padding = FALSE, window = 0, verbose = quanteda_options("verbose"))
-
-tokens_remove(x, pattern, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, padding = FALSE, window = 0,
+  padding = FALSE, window = 0, min_nchar = 1L, max_nchar = 79L,
   verbose = quanteda_options("verbose"))
 
-tokens_keep(x, pattern, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, padding = FALSE, window = 0,
-  verbose = quanteda_options("verbose"))
+tokens_remove(x, ...)
+
+tokens_keep(x, ...)
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be removed or kept}
@@ -50,8 +47,19 @@ needs to be computed.}
   returned in the patern match. This is because \code{tokens_select} never
   redefines the document units; for this, see \code{\link{kwic}}.}
 
+\item{min_nchar, max_nchar}{numerics specifying the minimum and maximum length
+in characters for tokens to be removed or kept; defaults are 1 and 
+\href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
+ (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are 
+applied after (and hence, in addition to) any selection based on pattern 
+matches.}
+
 \item{verbose}{if \code{TRUE} print messages about how many tokens were 
 selected or removed}
+
+\item{...}{additional arguments passed by \code{tokens_remove} and
+\code{tokens_keep} to \code{tokens_select}.  Cannot include
+\code{selection}.}
 }
 \value{
 a \link{tokens} object with tokens selected or removed based on their
@@ -86,11 +94,13 @@ tokens_select(toks, "second", selection = "keep", window = 1)
 tokens_select(toks, "second", selection = "remove", window = 1)
 tokens_remove(toks, "is", window = c(0, 1))
 
-## tokens_remove example
-txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
+# tokens_remove example: remove stopwords
+txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to
                    execute the functions of its Chief Magistrate.",
          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
                    the high sense I entertain of this distinguished honor.")
 tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 
+# token_keep example: keep two-letter words
+tokens_keep(tokens(txt, remove_punct = TRUE), "??")
 }

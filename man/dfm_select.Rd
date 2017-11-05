@@ -11,12 +11,12 @@
 \usage{
 dfm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  min_nchar = 1L, max_nchar = 63L, verbose = quanteda_options("verbose"),
+  min_nchar = 1L, max_nchar = 79L, verbose = quanteda_options("verbose"),
   ...)
 
-dfm_remove(x, pattern = NULL, ...)
+dfm_remove(x, ...)
 
-dfm_keep(x, pattern = NULL, ...)
+dfm_keep(x, ...)
 
 fcm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
