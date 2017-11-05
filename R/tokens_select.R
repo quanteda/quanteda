@@ -153,55 +153,35 @@ tokens_select.tokens <- function(x, pattern = NULL,
 }
 
 #' @rdname tokens_select
+#' @param ... additional arguments passed by \code{tokens_remove} and
+#'   \code{tokens_keep} to \code{tokens_select}.  Cannot include
+#'   \code{selection}.
 #' @export
 #' @examples
-#' ## tokens_remove example
-#' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
+#' # tokens_remove example: remove stopwords
+#' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to
 #'                    execute the functions of its Chief Magistrate.",
 #'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
 #'                    the high sense I entertain of this distinguished honor.")
 #' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
-#'
-tokens_remove <- function(x, pattern = NULL, 
-                          valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, window = 0, 
-                          min_nchar = 1L, max_nchar = 79L,
-                          verbose = quanteda_options("verbose")) {
-    UseMethod("tokens_remove")
+#' 
+tokens_remove <- function(x, ...) {
+    if ("selection" %in% names(list(...))) {
+        stop("tokens_remove cannot include selection argument")
+    }
+    tokens_select(x, ..., selection = "remove")
 }
 
-#' @noRd
-#' @export
-tokens_remove.tokens <- function(x, pattern = NULL, 
-                                 valuetype = c("glob", "regex", "fixed"),
-                                 case_insensitive = TRUE, padding = FALSE, window = 0, 
-                                 min_nchar = 1L, max_nchar = 79L,
-                                 verbose = quanteda_options("verbose")) {
-    
-    tokens_select(x, pattern, selection = "remove", valuetype = valuetype, 
-                  case_insensitive = case_insensitive, padding = padding, window = window,
-                  min_nchar = min_nchar, max_nchar = max_nchar, verbose = verbose)
-}
 
 #' @rdname tokens_select
 #' @export
-tokens_keep <- function(x, pattern = NULL, 
-                        valuetype = c("glob", "regex", "fixed"),
-                        case_insensitive = TRUE, padding = FALSE, window = 0, 
-                        min_nchar = 1L, max_nchar = 79L,
-                        verbose = quanteda_options("verbose")) {
-    UseMethod("tokens_keep")
+#' @examples 
+#' # token_keep example: keep two-letter words
+#' tokens_keep(tokens(txt, remove_punct = TRUE), "??")
+tokens_keep <- function(x, ...) {
+    if ("selection" %in% names(list(...))) {
+        stop("tokens_keep cannot include selection argument")
+    }
+    tokens_select(x, ..., selection = "keep")
 }
 
-#' @noRd
-#' @export
-tokens_keep.tokens <- function(x, pattern = NULL, 
-                               valuetype = c("glob", "regex", "fixed"),
-                               case_insensitive = TRUE, padding = FALSE, window = 0, 
-                               min_nchar = 1L, max_nchar = 79L,
-                               verbose = quanteda_options("verbose")) {
-    
-    tokens_select(x, pattern, selection = "keep", valuetype = valuetype, 
-                  case_insensitive = case_insensitive, padding = padding, window = window, 
-                  min_nchar = min_nchar, max_nchar = max_nchar, verbose = verbose)
-}
