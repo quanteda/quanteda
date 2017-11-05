@@ -401,6 +401,8 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         //output counts
         //ob_all.insert(ob_all.end(), ob_n.begin(), ob_n.end());
         
+        // Allow user to stop
+        R_CheckUserInterrupt();
     }
     
     // Convert sequences from integer to character
