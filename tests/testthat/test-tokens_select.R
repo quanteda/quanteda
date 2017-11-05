@@ -529,3 +529,15 @@ test_that("tokens_select works with min_nchar and max_nchar in the same way as d
                          types(tokens_remove(toks, min_nchar = 2, max_nchar = 3))))
     
 })
+
+testthat("tokens_removekeep fail if selection argument is used", {
+    toks <- tokens("a b c d e")
+    expect_error(
+        tokens_remove(toks, c("b", "c"), selection = "remove"),
+        "tokens_remove cannot include selection argument"
+    )
+    expect_error(
+        tokens_keep(toks, c("b", "c"), selection = "keep"),
+        "tokens_keep cannot include selection argument"
+    )
+})
