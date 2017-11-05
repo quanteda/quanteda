@@ -313,6 +313,21 @@ test_that("textstat_collocations error when size = 1 and warn when size > 5", {
     
 })
 
+test_that("textstat_collocations counts sequences correctly when nested = FALSE", {
+    col <- textstat_collocations(tokens('a b c d e'), size = 2:5, min_count = 1, nested = FALSE)
+    expect_equal(col$collocation, 'a b c d e')
+    
+    col2 <- textstat_collocations(tokens('a b c d e f'), size = 2:5, min_count = 1, nested = FALSE)
+    expect_equal(col2$collocation, character(0))
+    
+    col3 <- textstat_collocations(tokens('a b c, e f'), size = 2:5, min_count = 1, nested = FALSE)
+    expect_equal(col3$collocation, c('e f', 'a b c'))
+    
+    col3 <- textstat_collocations(tokens_remove(tokens('a b c e f'), 'c', padding = TRUE),
+                                  size = 2:5, min_count = 1, nested = FALSE)
+    expect_equal(col3$collocation, c('a b', 'e f'))
+})
+
 test_that("textstat_collocations works with nested argument", {
     toks <- tokens(data_corpus_inaugural[2], remove_punct = TRUE)
     toks <- tokens_remove(toks, stopwords("english"), padding = TRUE)
@@ -331,4 +346,8 @@ test_that("textstat_collocations works with nested argument", {
     # nested collocations are all nested
     expect_equal(lapply(cols_nested$collocation, function(x) any(stringi::stri_detect_fixed(cols_nesting$collocation, x))),
                  as.list(rep(TRUE, nrow(cols_nested))))
+    
+    require(quanteda)
+    toks <- tokens('a b c d e')
+    textstat_collocations(toks, size = 2:5, min_count = 1, nested = FALSE)
 })
