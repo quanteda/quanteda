@@ -77,19 +77,52 @@ double compute_dice(const std::vector<double> &counts){
     return dice;
 }
 
+Text replace(Text tokens, 
+             SetUnigrams &set_ignore,
+             unsigned int &id_ignore){
+    
+    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    
+    for (std::size_t i = 0; i < tokens.size(); i++) {
+        auto it = set_ignore.find(tokens[i]);
+        if (it != set_ignore.end()) {
+            //Rcout << "ignore " << i << "\n";
+            tokens[i] = id_ignore;
+        }
+    }
+    return tokens;
+}
+
+struct replace_mt : public Worker{
+    
+    Texts &texts;
+    SetUnigrams &set_ignore;
+    unsigned int &id_ignore;
+    
+    // Constructor
+    replace_mt(Texts &texts_, SetUnigrams &set_ignore_, unsigned int &id_ignore_):
+        texts(texts_), set_ignore(set_ignore_), id_ignore(id_ignore_) {}
+    
+    // parallelFor calles this function with std::size_t
+    void operator()(std::size_t begin, std::size_t end){
+        //Rcout << "Range " << begin << " " << end << "\n";
+        for (std::size_t h = begin; h < end; h++) {
+            texts[h] = replace(texts[h], set_ignore, id_ignore);
+        }
+    }
+};
 
 void counts(Text text,
            MapNgrams &counts_seq,
-           SetUnigrams &set_ignore,
-           const unsigned int &size){
+           const unsigned int &size,
+           const unsigned int &id_ignore){
 
     if (text.size() < size) return; // do nothing with very short text
     for (std::size_t i = 0; i < text.size() - size + 1; i++) {
         Text text_sub(text.begin() + i, text.begin() + i + size);
         bool ignore = false;
         for (std::size_t j = 0; j < text_sub.size(); j++) {
-            auto it = set_ignore.find(text_sub[j]);
-            if (it != set_ignore.end()) {
+            if (id_ignore == text_sub[j]) {
                 //Rcout << "i:" << i  << " j:" << j << "\n";
                 //dev::print_ngram(text_sub);
                 i += j; // jump
@@ -107,15 +140,15 @@ struct counts_mt : public Worker {
     
     Texts texts;
     MapNgrams &counts_seq;
-    SetUnigrams &set_ignore;
     const unsigned int &size;
+    const unsigned int &id_ignore;
 
-    counts_mt(Texts texts_, MapNgrams &counts_seq_, SetUnigrams &set_ignore_, const unsigned int &size_):
-        texts(texts_), counts_seq(counts_seq_), set_ignore(set_ignore_), size(size_){}
+    counts_mt(Texts texts_, MapNgrams &counts_seq_, const unsigned int &size_, const unsigned int &id_ignore_):
+        texts(texts_), counts_seq(counts_seq_), size(size_), id_ignore(id_ignore_){}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
-            counts(texts[h], counts_seq, set_ignore, size);
+            counts(texts[h], counts_seq, size, id_ignore);
         }
     }
 };
@@ -298,12 +331,23 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     Texts texts = as<Texts>(texts_);
     std::vector<unsigned int> sizes = as< std::vector<unsigned int> >(sizes_);
     std::vector<unsigned int> words_ignore = as< std::vector<unsigned int> >(words_ignore_);
+    unsigned int id_ignore = UINT_MAX; // use largest limit as filler
 
     SetUnigrams set_ignore;
     set_ignore.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
     for (size_t g = 0; g < words_ignore.size(); g++) {
         set_ignore.insert(words_ignore[g]);
     }
+   
+// #if QUANTEDA_USE_TBB
+//    replace_mt replace_mt(texts, set_ignore, id_ignore);
+//    parallelFor(0, texts.size(), replace_mt, id_ignore);
+// #else
+   for (std::size_t h = 0; h < texts.size(); h++) {
+       texts[h] = replace(texts[h], set_ignore, id_ignore);
+   }
+// #endif
+   
    
     // Estimate significance of the sequences
     unsigned int len_coe = sizes.size() * types_.size();
@@ -334,14 +378,14 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         MapNgrams counts_seq;
         // dev::Timer timer;
         // dev::start_timer("Count", timer);
-#if QUANTEDA_USE_TBB
-        counts_mt count_mt(texts, counts_seq, set_ignore, size);
-        parallelFor(0, texts.size(), count_mt);
-#else
+// #if QUANTEDA_USE_TBB
+//         counts_mt count_mt(texts, counts_seq, size, id_ignore);
+//         parallelFor(0, texts.size(), count_mt);
+// #else
         for (std::size_t h = 0; h < texts.size(); h++) {
-            counts(texts[h], counts_seq, set_ignore, size);
+            counts(texts[h], counts_seq, size, id_ignore);
         }
-#endif
+// #endif
         // dev::stop_timer("Count", timer);
         
         // Separate map keys and values
@@ -429,13 +473,13 @@ DataFrame qatd_cpp_sequences(const List &texts_,
 
 /***R
 require(quanteda)
-toks <- tokens(data_corpus_inaugural)
-#toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-types <- attr(toks, 'types')
-id_ignore <- unlist(quanteda:::regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
-
-if (is.null(id_ignore)) id_ignore <- integer(0)
-(out <- qatd_cpp_sequences(toks, types, id_ignore, 1, 3, "lambda", 0.0))
+# toks <- tokens(data_corpus_inaugural)
+# #toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
+# types <- attr(toks, 'types')
+# id_ignore <- unlist(quanteda:::regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
+# 
+# if (is.null(id_ignore)) id_ignore <- integer(0)
+# (out <- qatd_cpp_sequences(toks, types, id_ignore, 1, 3, "lambda", 0.0))
 
 txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
 toks2 <- tokens(txt)
