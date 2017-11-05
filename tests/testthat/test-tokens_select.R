@@ -541,3 +541,8 @@ test_that("tokens_removekeep fail if selection argument is used", {
         "tokens_keep cannot include selection argument"
     )
 })
+
+test_that("as.dfm works for dfmSparse objects", {
+    load("../data/old_dfmSparse.Rdata")
+    expect_true(is.dfm(as.dfm(old_dfmSparse)))
+})
