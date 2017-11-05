@@ -116,15 +116,15 @@ void counts(Text text,
         
     if (text.size() < size) return; // do nothing with very short text
     for (std::size_t i = 0; i < text.size() - size + 1; i++) {
-        bool ignore = false;
-        bool exclude = false;
+        bool ignore = false; // ignored in estimation
+        bool drop = false; // dropped from the output
         
-        // Check if sequence is sorrunded by boudaries
+        // Check if sequence is surrounded by boudaries
         bool before = i == 0 || text[i - 1] == 0 || text[i - 1] == id_ignore;
         bool after = i + size == text.size() || text[i + size] == 0 || text[i + size] == id_ignore;
         if (!nested) {
             if (!before || !after) {
-                exclude = true;
+                drop = true;
             }
         }
         
@@ -140,20 +140,14 @@ void counts(Text text,
             }
             
             // Exclude if sequence contain padding
-            if (exclude == false && text_sub[j] == 0) {
-                exclude = true;
+            if (drop == false && text_sub[j] == 0) {
+                drop = true;
             }
         }
-
-    
         if (!ignore) {
             auto &count = counts_seq[text_sub];
             count.first++;
-            // counts_seq[text_sub].first++;
-            // if (!padding) {
-            //     counts_seq[text_sub].second++;
-            // }
-            if (!exclude) {
+            if (!drop) {
                 count.second++;
             }
         }
