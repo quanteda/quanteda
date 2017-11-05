@@ -530,7 +530,7 @@ test_that("tokens_select works with min_nchar and max_nchar in the same way as d
     
 })
 
-testthat("tokens_removekeep fail if selection argument is used", {
+test_that("tokens_removekeep fail if selection argument is used", {
     toks <- tokens("a b c d e")
     expect_error(
         tokens_remove(toks, c("b", "c"), selection = "remove"),
