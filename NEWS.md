@@ -18,6 +18,7 @@
 * `tokens_group()` is now significantly faster.
 * The deprecated "list of characters" `tokenize()` function and all methods associated with the `tokenizedTexts` object types have been removed.
 * Added convenience functions for keeping tokens or features: `tokens_keep()`, `dfm_keep()`, and `fcm_keep()`. (#1037)
+* We changed the C++ compiler to C++14.
 
 
 ## Changes since v0.99.9
