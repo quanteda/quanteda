@@ -38,7 +38,7 @@ sequences <- collocations
 #' @param smoothing numeric; a smoothing parameter added to the observed counts
 #'   (default is 0.5)
 #' @param tolower logical; if \code{TRUE}, form collocations as lower-cased combinations
-#' @param nested logical; if \code{TRUE} the output include nested collocations
+#' @param recursive logical; if \code{TRUE} the output include nested collocations
 #' @param ... additional arguments passed to \code{\link{tokens}}, if \code{x}
 #'   is not a \link{tokens} object already
 #' @references Blaheta, D., & Johnson, M. (2001). 
@@ -107,7 +107,7 @@ textstat_collocations <- function(x, method = "lambda",
                                   min_count = 2, 
                                   smoothing = 0.5, 
                                   tolower = TRUE, 
-                                  nested = TRUE, ...) { #show_counts = FALSE, ...) {
+                                  recursive = TRUE, ...) { #show_counts = FALSE, ...) {
     UseMethod("textstat_collocations")
 }
 
@@ -120,7 +120,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
                                          min_count = 2, 
                                          smoothing = 0.5, 
                                          tolower = TRUE, 
-                                         nested = TRUE, ...) { #show_counts = FALSE, ...) {
+                                         recursive = TRUE, ...) { #show_counts = FALSE, ...) {
 
     #method <- match.arg(method, ("lambda", "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD"))
     method <- match.arg(method, c("lambda"))
@@ -139,7 +139,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     if (is.null(id_ignore)) id_ignore <- integer(0)
     result <- qatd_cpp_sequences(x, types, id_ignore, min_count, size, 
                                  if (method == "lambda1") "lambda1" else "lambda", 
-                                 smoothing, nested)
+                                 smoothing, recursive)
 
     # compute z for lambda methods
     lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
@@ -211,9 +211,9 @@ textstat_collocations.corpus <- function(x, method = "lambda",
                                          min_count = 2, 
                                          smoothing = 0.5, 
                                          tolower = TRUE, 
-                                         nested = TRUE, ...) {
+                                         recursive = TRUE, ...) {
     textstat_collocations(tokens(x, ...), method = method, size = size, min_count = min_count, 
-                          smoothing = smoothing, tolower = tolower, nested = nested)
+                          smoothing = smoothing, tolower = tolower, recursive = recursive)
 }
 
 #' @export
@@ -222,9 +222,9 @@ textstat_collocations.character <- function(x, method = "lambda",
                                             min_count = 2, 
                                             smoothing = 0.5, 
                                             tolower = TRUE, 
-                                            nested = TRUE, ...) {
+                                            recursive = TRUE, ...) {
     textstat_collocations(corpus(x), method = method, size = size, min_count = min_count, 
-                          smoothing = smoothing, tolower = tolower, nested = nested, ...)
+                          smoothing = smoothing, tolower = tolower, recursive = recursive, ...)
 }
 
 
