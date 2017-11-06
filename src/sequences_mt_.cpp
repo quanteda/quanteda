@@ -113,13 +113,13 @@ void counts(Text text,
             const unsigned int &size,
             const unsigned int &id_ignore,
             const bool &nested){
-        
+    
     if (text.size() < size) return; // do nothing with very short text
     for (std::size_t i = 0; i < text.size() - size + 1; i++) {
         bool ignore = false; // ignored in estimation
         bool drop = false; // dropped from the output
         
-        // Check if sequence is surrounded by boudaries
+        // check if sequence is surrounded by boudaries
         bool before = i == 0 || text[i - 1] == 0 || text[i - 1] == id_ignore;
         bool after = i + size == text.size() || text[i + size] == 0 || text[i + size] == id_ignore;
         if (!nested) {
@@ -128,24 +128,18 @@ void counts(Text text,
             }
         }
         
-        Text text_sub(text.begin() + i, text.begin() + i + size);
-        for (std::size_t j = 0; j < text_sub.size(); j++) {
-            
-            // Check if sequence has ineligible
-            if (text_sub[j] == id_ignore) {
-                //Rcout << "i:" << i  << " j:" << j << "\n";
-                //dev::print_ngram(text_sub);
-                i += j; // jump
+        // check if sub-vector will contain ineligible or padding
+        for (std::size_t j = i; j <  i + size; j++) {
+            if (text[j] == id_ignore) {
                 ignore = true;
-                break;
-            }
-            
-            // Exclude if sequence contain padding
-            if (text_sub[j] == 0) {
+                drop = true;
+            } else if (text[j] == 0) {
                 drop = true;
             }
         }
+        // Rcout << "@" << i << " " << ignore << " " << drop << ": ";
         if (!ignore) {
+            Text text_sub(text.begin() + i, text.begin() + i + size);
             auto &count = counts_seq[text_sub];
             count.first++;
             if (!drop) {
@@ -194,7 +188,7 @@ void estimates(std::size_t i,
     
     std::size_t n = seqs_np[i].size(); //n=2:5, seqs
     if (n == 1) return; // ignore single words
-    //output counts
+    // output counts
     std::vector<double> counts_bit(std::pow(2, n), smoothing);
     for (std::size_t j = 0; j < seqs.size(); j++) {
         //if (i == j) continue; // do not compare with itself
@@ -314,7 +308,6 @@ struct estimates_mt : public Worker{
     const double nseqs;
     const double smoothing;
 
-    // Constructor
     estimates_mt(VecNgrams &seqs_np_, IntParams &cs_np_, VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_,
                  DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, const String &method,
                  const double nseqs_, const double smoothing_):
@@ -360,7 +353,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         set_ignore.insert(words_ignore[g]);
     }
    
-   // Replace ineligble tokens with special ID
+   // replace ineligble tokens with special ID
 #if QUANTEDA_USE_TBB
    replace_mt replace_mt(texts, set_ignore, id_ignore);
    parallelFor(0, texts.size(), replace_mt, id_ignore);
@@ -389,19 +382,17 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     seqs_all.reserve(len_coe);
     
     for (unsigned int size : sizes) {
-        //unsigned int mw_len = sizes[m];
-        // Collect all sequences of specified words
         MapNgramsPair counts_seq;
         // dev::Timer timer;
         // dev::start_timer("Count", timer);
-#if QUANTEDA_USE_TBB
-         counts_mt count_mt(texts, counts_seq, size, id_ignore, nested);
-         parallelFor(0, texts.size(), count_mt);
-#else
+// #if QUANTEDA_USE_TBB
+//          counts_mt count_mt(texts, counts_seq, size, id_ignore, nested);
+//          parallelFor(0, texts.size(), count_mt);
+// #else
         for (std::size_t h = 0; h < texts.size(); h++) {
             counts(texts[h], counts_seq, size, id_ignore, nested);
         }
-#endif
+// #endif
         // dev::stop_timer("Count", timer);
         
         // Separate map keys and values
@@ -420,23 +411,21 @@ DataFrame qatd_cpp_sequences(const List &texts_,
             cs.push_back(it->second.first); // counts of all but ineligible
             total_counts += it->second.first; // total counts of all but ineligible
             if (it->second.second >= count_min) {
-                // Local values
+                // local values
                 seqs_np.push_back(it->first);
                 cs_np.push_back(it->second.first);
                 len_np++;
-                // Global values
+                // global values
                 seqs_all.push_back(it->first);
-                cs_all.push_back(it->second.first);
+                cs_all.push_back(it->second.second);
                 ns_all.push_back(it->first.size());
             }
         }
-        
-        // Rcout << "len_np: " << len_np << "\n"
-        
+
         // adjust total_counts of MW 
         total_counts += 4 * smoothing;
         
-        // Estimate significance of the sequences
+        // estimate significance of the sequences
         DoubleParams sgma(len_np), lmda(len_np), dice(len_np), pmi(len_np);
         DoubleParams logratio(len_np), chi2(len_np), gensim(len_np), lfmd(len_np);
         
@@ -463,7 +452,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         R_CheckUserInterrupt();
     }
     
-    // Convert sequences from integer to character
+    // convert sequences from integer to character
     CharacterVector seqs_(seqs_all.size());
     for (std::size_t i = 0; i < seqs_all.size(); i++) {
         seqs_[i] = join_strings(seqs_all[i], types_, " ");
