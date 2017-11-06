@@ -1,13 +1,7 @@
-
-// includes from the plugin
-#include <RcppArmadillo.h>
-
+#include "armadillo.h"
 using namespace Rcpp;
 
-// [[Rcpp::depends(RcppArmadillo)]]
-
 // [[Rcpp::export]]
-
 Rcpp::List qatd_cpp_wordfish_dense(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor, bool abs_err){
     
     // DEFINE INPUTS
