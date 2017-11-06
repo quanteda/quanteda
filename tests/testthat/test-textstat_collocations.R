@@ -313,28 +313,42 @@ test_that("textstat_collocations error when size = 1 and warn when size > 5", {
     
 })
 
-test_that("textstat_collocations counts sequences correctly when nested = FALSE", {
-    col <- textstat_collocations(tokens('a b c d e'), size = 2:5, min_count = 1, nested = FALSE)
-    expect_equal(col$collocation, 'a b c d e')
+test_that("textstat_collocations counts sequences correctly when recursive = FALSE", {
     
-    col2 <- textstat_collocations(tokens('a b c d e f'), size = 2:5, min_count = 1, nested = FALSE)
-    expect_equal(col2$collocation, character(0))
+    txt <- c("a b c . . a b c . . a b c . . . a b c",
+             "a b . . a b . . a b . . a b . a b")
+    toks <- tokens_keep(tokens(txt), c("a", "b", "c"), padding = TRUE)
     
-    col3 <- textstat_collocations(tokens('a b c, e f'), size = 2:5, min_count = 1, nested = FALSE)
-    expect_equal(col3$collocation, c('e f', 'a b c'))
+    col1 <- textstat_collocations(toks, size = 2:3, recursive = TRUE)
+    expect_equal(col1$collocation, c('a b', 'b c', 'a b c'))
+    expect_equal(col1$count, c(9, 4, 4))
     
-    col3 <- textstat_collocations(tokens_remove(tokens('a b c e f'), 'c', padding = TRUE),
-                                  size = 2:5, min_count = 1, nested = FALSE)
-    expect_equal(col3$collocation, c('a b', 'e f'))
+    col2 <- textstat_collocations(toks, size = 2:3, recursive = FALSE)
+    expect_equal(col2$collocation, c('a b', 'a b c'))
+    expect_equal(col2$count, c(5, 4))
+    
+    txt2 <- c(". . . . a b c . . a b c . . .",
+              "a b . . a b . . a b . . a b . a b",
+              "b c . . b c . b c . . . b c")
+    toks2 <- tokens_keep(tokens(txt2), c("a", "b", "c"), padding = TRUE)
+    
+    col3 <- textstat_collocations(toks2, size = 2:3, min_count = 1, recursive = TRUE)
+    expect_equal(col3$collocation, c('a b', 'b c', 'a b c'))
+    expect_equal(col3$count, c(7, 6, 2))
+    
+    col4 <- textstat_collocations(toks2, size = 2:3, min_count = 1, recursive = FALSE)
+    expect_equal(col4$collocation, c('a b', 'b c', 'a b c'))
+    expect_equal(col4$count, c(5, 4, 2))
+
 })
 
-test_that("textstat_collocations works with nested argument", {
+test_that("lambda and count does not change wien recursive is FALSE", {
     toks <- tokens(data_corpus_inaugural[2], remove_punct = TRUE)
     toks <- tokens_remove(toks, stopwords("english"), padding = TRUE)
-    cols_nested <- textstat_collocations(toks, method = 'lambda', size = 2:5, min_count = 1, nested = TRUE)
-    cols_nesting <- textstat_collocations(toks, method = 'lambda', size = 2:5, min_count = 1, nested = FALSE)
+    cols_nested <- textstat_collocations(toks, method = 'lambda', size = 2:5, min_count = 1, recursive = TRUE)
+    cols_nesting <- textstat_collocations(toks, method = 'lambda', size = 2:5, min_count = 1, recursive = FALSE)
     
-    # nested = FALSE is a subset of nested = TRUE
+    # nested = FALSE is a subset of recursive = TRUE
     expect_true(all(cols_nesting$collocation %in% cols_nested$collocation))
     
     # estimates are consistent 
@@ -349,5 +363,5 @@ test_that("textstat_collocations works with nested argument", {
     
     require(quanteda)
     toks <- tokens('a b c d e')
-    textstat_collocations(toks, size = 2:5, min_count = 1, nested = FALSE)
+    textstat_collocations(toks, size = 2:5, min_count = 1, recursive = FALSE)
 })
