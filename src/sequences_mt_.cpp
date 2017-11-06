@@ -385,14 +385,14 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         MapNgramsPair counts_seq;
         // dev::Timer timer;
         // dev::start_timer("Count", timer);
-// #if QUANTEDA_USE_TBB
-//          counts_mt count_mt(texts, counts_seq, size, id_ignore, nested);
-//          parallelFor(0, texts.size(), count_mt);
-// #else
+#if QUANTEDA_USE_TBB
+         counts_mt count_mt(texts, counts_seq, size, id_ignore, nested);
+         parallelFor(0, texts.size(), count_mt);
+#else
         for (std::size_t h = 0; h < texts.size(); h++) {
             counts(texts[h], counts_seq, size, id_ignore, nested);
         }
-// #endif
+#endif
         // dev::stop_timer("Count", timer);
         
         // Separate map keys and values
