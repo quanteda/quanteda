@@ -133,6 +133,7 @@ void counts(Text text,
             if (text[j] == id_ignore) {
                 ignore = true;
                 drop = true;
+                i = j; //jump
             } else if (text[j] == 0) {
                 drop = true;
             }
