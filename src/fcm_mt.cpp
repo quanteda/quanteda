@@ -1,4 +1,4 @@
-#include <RcppArmadillo.h>
+#include "armadillo.h"
 #include "quanteda.h"
 using namespace quanteda;
 
