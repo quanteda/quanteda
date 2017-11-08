@@ -50,6 +50,8 @@ textplot_wordcloud <- function(x, comparison = FALSE, ...) {
 #' @noRd
 #' @export
 textplot_wordcloud.dfm <- function(x, comparison = FALSE, ...) {
+    
+    x <- as.dfm(x)
     if (comparison) {
         if (ndoc(x) > 8) stop("Too many documents to plot comparison, use 8 or fewer documents.")
         wordcloud::comparison.cloud(t(as.matrix(x)), ...)
@@ -60,8 +62,8 @@ textplot_wordcloud.dfm <- function(x, comparison = FALSE, ...) {
 
 #' @noRd
 #' @export
-textplot_wordcloud.tokenizedTexts <- function(x, comparison = FALSE, ...) {
+textplot_wordcloud.tokens <- function(x, comparison = FALSE, ...) {
     textplot_wordcloud(dfm(x, verbose = FALSE), comparison = comparison, ...)
 }
-    
+
 

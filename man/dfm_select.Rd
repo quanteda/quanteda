@@ -3,22 +3,28 @@
 \name{dfm_select}
 \alias{dfm_select}
 \alias{dfm_remove}
+\alias{dfm_keep}
 \alias{fcm_select}
 \alias{fcm_remove}
+\alias{fcm_keep}
 \title{select features from a dfm or fcm}
 \usage{
-dfm_select(x, pattern, selection = c("keep", "remove"),
+dfm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  min_nchar = 1L, max_nchar = 63L, verbose = quanteda_options("verbose"),
+  min_nchar = 1L, max_nchar = 79L, verbose = quanteda_options("verbose"),
   ...)
 
-dfm_remove(x, pattern, ...)
+dfm_remove(x, ...)
+
+dfm_keep(x, ...)
 
 fcm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   verbose = TRUE, ...)
 
-fcm_remove(x, pattern, ...)
+fcm_remove(x, pattern = NULL, ...)
+
+fcm_keep(x, pattern = NULL, ...)
 }
 \arguments{
 \item{x}{the \link{dfm} or \link{fcm} object whose features will be selected}
@@ -28,9 +34,12 @@ fcm_remove(x, pattern, ...)
 
 \item{selection}{whether to \code{keep} or \code{remove} the features}
 
-\item{valuetype}{the type of pattern matching: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+  wildcard expressions; \code{"regex"} for regular expressions; or
+  \code{"fixed"} for exact matching. See \link{valuetype} for details.
+
+  For \code{dfm_select}, \code{pattern} may also be a \link{dfm}; see Value
+  below.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
@@ -66,7 +75,7 @@ A \link{dfm} or \link{fcm} object, after the feature selection has
   identical.  It is also used in \code{\link{bootstrap_dfm}}.  See examples.
 }
 \description{
-This function selects or discards features from a \link{dfm} or \link{fcm}, 
+This function selects or removes features from a \link{dfm} or \link{fcm}, 
 based on feature name matches with \code{pattern}.  The most common usages 
 are to eliminate features from a dfm already constructed, such as stopwords, 
 or to select only terms of interest from a dictionary.
@@ -75,6 +84,10 @@ or to select only terms of interest from a dictionary.
 \code{dfm_remove} and \code{fcm_remove} are simply a convenience
   wrappers to calling \code{dfm_select} and \code{fcm_select} with 
   \code{selection = "remove"}.
+  
+  \code{dfm_keep} and \code{fcm_keep} are simply a convenience
+  wrappers to calling \code{dfm_select} and \code{fcm_select} with 
+  \code{selection = "keep"}.
 }
 \note{
 This function selects features based on their labels.  To select 

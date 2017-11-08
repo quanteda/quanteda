@@ -164,7 +164,7 @@ List qatd_cpp_tokens_segment(const List &texts_,
             Segment target = targets[i];
             
             // extract text segments
-            if (-1 < std::get<0>(target) && std::get<1>(target) < tokens.size()) {
+            if (0 <= std::get<0>(target) && std::get<1>(target) < (int)tokens.size()) {
                 Text segment(tokens.begin() + std::get<0>(target), tokens.begin() + std::get<1>(target) + 1);
                 segments[j] = segment;
             } else {
@@ -172,7 +172,7 @@ List qatd_cpp_tokens_segment(const List &texts_,
             }
             
             // extract matched patterns
-            if (remove && -1 < std::get<2>(target) && -1 < std::get<3>(target)) {
+            if (remove && 0 <= std::get<2>(target) && 0 <= std::get<3>(target)) {
                 Text match(tokens.begin() + std::get<2>(target), tokens.begin() + std::get<3>(target) + 1);
                 matches_[j] = join_strings(match, types_, " ");
             } else {

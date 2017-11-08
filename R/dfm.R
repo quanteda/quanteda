@@ -15,7 +15,7 @@
 #'   are only specific features that a user wishes to keep. To extract only 
 #'   Twitter usernames, for example, set \code{select = "@@*"} and make sure 
 #'   that \code{remove_twitter = FALSE} as an additional argument passed to 
-#'   \link{tokenize}.  Note: \code{select = "^@@\\\w+\\\b"} would be the regular
+#'   \link{tokens}.  Note: \code{select = "^@@\\\w+\\\b"} would be the regular
 #'   expression version of this matching pattern.  The pattern matching type 
 #'   will be set by \code{valuetype}.  See also \code{\link{tokens_remove}}.
 #' @param dictionary a \link{dictionary} object to apply to the tokens when 
@@ -85,7 +85,7 @@
 #' 
 #' # removing stopwords before constructing ngrams
 #' tokensAll <- tokens(char_tolower(testText), remove_punct = TRUE)
-#' tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
+#' tokensNoStopwords <- tokens_remove(tokensAll, stopwords("english"))
 #' tokensNgramsNoStopwords <- tokens_ngrams(tokensNoStopwords, 2)
 #' featnames(dfm(tokensNgramsNoStopwords, verbose = FALSE))
 #' 
@@ -152,6 +152,7 @@ dfm.character <- function(x,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
+
     dfm.tokens(tokens(corpus(x)),
         tolower = tolower, 
         stem = stem, 
@@ -184,30 +185,6 @@ dfm.corpus <- function(x,
                dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
                groups = groups, 
                verbose = verbose,
-               ...)
-}    
-
-#' @noRd
-#' @importFrom utils glob2rx
-#' @export
-dfm.tokenizedTexts <- function(x, 
-                               tolower = TRUE,
-                               stem = FALSE, 
-                               select = NULL,
-                               remove = NULL,
-                               dictionary = NULL,
-                               thesaurus = NULL,
-                               valuetype = c("glob", "regex", "fixed"), 
-                               groups = NULL, 
-                               verbose = quanteda_options("verbose"), 
-                               ...) {
-    dfm.tokens(as.tokens(x),  
-               tolower = tolower, 
-               stem = stem, 
-               select = select, remove = remove, 
-               dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
-               groups = groups, 
-               verbose = verbose, 
                ...)
 }
     
@@ -244,7 +221,7 @@ dfm.tokens <- function(x,
         x <- tokens_tolower(x)
         tolower <- FALSE
     }
-
+    
     if (verbose) {
         catm("   ... found ", 
              format(length(x), big.mark = ","), " document",
@@ -318,7 +295,8 @@ dfm.dfm <- function(x,
                     groups = NULL, 
                     verbose = quanteda_options("verbose"), 
                     ...) {
-
+    
+    x <- as.dfm(x)
     valuetype <- match.arg(valuetype)
     check_dots(list(...))
 
@@ -391,40 +369,6 @@ compile_dfm <- function(x, verbose = TRUE) {
     UseMethod("compile_dfm")
 }
 
-## internal function to compile the dfm
-compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
-
-    # index documents
-    if (verbose) catm("   ... indexing documents: ", 
-                      format(length(x), big.mark=","), " document",
-                      ifelse(length(x) > 1, "s", ""), "\n", sep="")
-    nTokens <- lengths(x)
-    
-    # index features
-    if (verbose) catm("   ... indexing features: ")
-    if (sum(nTokens) == 0) {
-        catm("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
-        return(NULL)
-    }
-    allFeatures <- unlist(x, use.names=FALSE)
-    uniqueFeatures <- unique(allFeatures)
-    totalfeatures <- length(uniqueFeatures)
-    if (verbose) catm(format(totalfeatures, big.mark=","), " feature type",
-                      ifelse(totalfeatures > 1, "s", ""), "\n", sep="")
-    
-    docIndex <- c(rep(seq_along(nTokens), nTokens))
-    featureIndex <- match(allFeatures, uniqueFeatures)
-
-    # make the dfm
-    temp <- sparseMatrix(i = docIndex, 
-                         j = featureIndex, 
-                         x = 1L, 
-                         dims = c(length(x), length(uniqueFeatures)),
-                         dimnames = list(docs = names(x), 
-                                      features = uniqueFeatures))
-    new("dfmSparse", temp)
-}
-
 compile_dfm.tokens <- function(x, verbose = TRUE) {
     
     types <- types(x)
@@ -443,7 +387,7 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
                          dims = c(length(names(x)), length(types)),
                          dimnames = list(docs = names(x),
                                          features = as.character(types)))
-    new("dfmSparse", temp)
+    new("dfm", temp)
 }
 
 
@@ -464,12 +408,23 @@ make_ngram_pattern <- function(features, valuetype, concatenator) {
 
 # create an empty dfm for given features and documents
 make_null_dfm <- function(feature = NULL, document = NULL) {
-    temp <- as(sparseMatrix(
+    new("dfm", 
+        as(sparseMatrix(
         i = NULL,
         j = NULL,
         dims = c(length(document), length(feature)),
         dimnames = list(docs = document, features = feature)
     ),
-    "dgCMatrix")
-    new("dfmSparse", temp)
+    "dgCMatrix"))
 }
+
+# pad dfm with zero-count features
+pad_dfm <- function(x, feature = NULL) {
+    feat_pad <- setdiff(feature, featnames(x))
+    if (length(feat_pad)) {
+        x <- cbind(x, make_null_dfm(feat_pad, docnames(x)))
+    }
+    x <- x[,feature]
+    return(x)
+}
+

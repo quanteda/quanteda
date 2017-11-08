@@ -33,24 +33,6 @@ tokens_wordstem <- function(x, language = quanteda_options("language_stemmer")) 
     
 #' @noRd
 #' @export
-tokens_wordstem.tokenizedTexts <- function(x, language = quanteda_options("language_stemmer")) {
-    origAttrs <- attributes(x)
-    if (!stri_endswith_fixed(attr(x, "what"), "word") || any(unlist(lapply(x, function(y) stri_detect_fixed(y, " ") & !is.na(y)))))
-        stop("whitespace detected: you can only stem word-tokenized texts")
-    if (all.equal(attributes(x)$ngrams, 1))
-        result <- lapply(x, SnowballC::wordStem, language)
-    else {
-        # catm("Ngrams wordstem\n")
-        result <- wordstem_ngrams(x, attributes(x)$concatenator, language)
-    }
-    class(result) <- c("tokenizedTexts", class(result))
-    result[which(is.na(x))] <- NA
-    attributes(result) <- origAttrs
-    result
-}
-    
-#' @noRd
-#' @export
 tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stemmer")) {
     
     if (identical(as.integer(attributes(x)$ngrams), 1L))
@@ -104,6 +86,7 @@ dfm_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
 #' @noRd    
 #' @export
 dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer")) {
+    x <- as.dfm(x)
     if (identical(as.integer(x@ngrams), 1L)) 
         colnames(x) <- char_wordstem(featnames(x), language = language)
     else
@@ -112,9 +95,7 @@ dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer"))
 }
 
 
-###
-### internal functions
-###
+# internal functions -----------
 
 # stemming for ngrams, internal function
 wordstem_ngrams <- function(x, concatenator, language) {
@@ -124,50 +105,4 @@ wordstem_ngrams <- function(x, concatenator, language) {
     # simple way to return a character vector if supplied a character vector
     if (!is.list(x)) result <- unlist(result)
     result
-}
-
-
-
-###
-### Deprecated functions
-### 
-
-#' stem words
-#' 
-#' Deprecated function names to stem words.  See \code{\link{char_wordstem}}, 
-#' \code{\link{tokens_wordstem}}, and \code{\link{dfm_wordstem}} instead.
-#' @export
-#' @keywords internal deprecated
-wordstem <- function(x, language = "porter") {
-    UseMethod("wordstem")
-}
-
-#' @rdname wordstem
-#' @export
-wordstem.dfm <- function(x, language = "porter") {
-    .Deprecated("dfm_wordstem")
-    dfm_wordstem(x, language = language)
-}
-
-#' @rdname wordstem
-#' @export
-wordstem.tokens <- function(x, language = "porter") {
-    .Deprecated("dfm_tokens")
-    tokens_wordstem(x, language = language)
-}
-
-#' @rdname wordstem
-#' @import stringi 
-#' @export
-wordstem.tokenizedTexts <- function(x, language = "porter") {
-    .Deprecated("tokens_wordstem")
-    tokens_wordstem(x, language = language)
-}
-
-#' @rdname wordstem
-#' @import stringi 
-#' @export
-wordstem.character <- function(x, language = "porter") {
-    .Deprecated("char_wordstem")
-    char_wordstem(x, language = language)
 }

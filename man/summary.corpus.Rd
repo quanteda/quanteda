@@ -17,7 +17,7 @@ meta-data}
 
 \item{tolower}{convert texts to lower case before counting types}
 
-\item{...}{additional arguments passed through to \code{\link{tokenize}}}
+\item{...}{additional arguments passed through to \code{\link{tokens}}}
 }
 \description{
 Displays information about a corpus, including
@@ -29,9 +29,9 @@ summary(data_corpus_inaugural)
 summary(data_corpus_inaugural, n = 10)
 mycorpus <- corpus(data_char_ukimmig2010, 
                    docvars = data.frame(party=names(data_char_ukimmig2010))) 
-summary(mycorpus, showmeta=TRUE)  # show the meta-data
-mysummary <- summary(mycorpus)    # (quietly) assign the results
-mysummary$Types / mysummary$Tokens             # crude type-token ratio
+summary(mycorpus, showmeta=TRUE) # show the meta-data
+mysummary <- summary(mycorpus) # (quietly) assign the results
+mysummary$Types / mysummary$Tokens # crude type-token ratio
 }
 \keyword{corpus}
 \keyword{internal}

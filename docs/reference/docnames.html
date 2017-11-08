@@ -110,27 +110,18 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># query the document names of a corpus</span>
-<span class='fu'>docnames</span>(<span class='no'>data_corpus_irishbudget2010</span>)</div><div class='output co'>#&gt;  [1] "2010_BUDGET_01_Brian_Lenihan_FF"      
-#&gt;  [2] "2010_BUDGET_02_Richard_Bruton_FG"     
-#&gt;  [3] "2010_BUDGET_03_Joan_Burton_LAB"       
-#&gt;  [4] "2010_BUDGET_04_Arthur_Morgan_SF"      
-#&gt;  [5] "2010_BUDGET_05_Brian_Cowen_FF"        
-#&gt;  [6] "2010_BUDGET_06_Enda_Kenny_FG"         
-#&gt;  [7] "2010_BUDGET_07_Kieran_ODonnell_FG"    
-#&gt;  [8] "2010_BUDGET_08_Eamon_Gilmore_LAB"     
-#&gt;  [9] "2010_BUDGET_09_Michael_Higgins_LAB"   
-#&gt; [10] "2010_BUDGET_10_Ruairi_Quinn_LAB"      
-#&gt; [11] "2010_BUDGET_11_John_Gormley_Green"    
-#&gt; [12] "2010_BUDGET_12_Eamon_Ryan_Green"      
-#&gt; [13] "2010_BUDGET_13_Ciaran_Cuffe_Green"    
-#&gt; [14] "2010_BUDGET_14_Caoimhghin_OCaolain_SF"</div><div class='input'>
-<span class='co'># query the document names of a tokens object</span>
-<span class='fu'>docnames</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_char_ukimmig2010</span>))</div><div class='output co'>#&gt; [1] "BNP"          "Coalition"    "Conservative" "Greens"       "Labour"      
-#&gt; [6] "LibDem"       "PC"           "SNP"          "UKIP"        </div><div class='input'>
-<span class='co'># query the document names of a dfm</span>
-<span class='fu'>docnames</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; [1] "1789-Washington" "1793-Washington" "1797-Adams"      "1801-Jefferson" 
-#&gt; [5] "1805-Jefferson" </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='co'># get and set doument names to a corpus</span>
+<span class='no'>mycorp</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span>
+<span class='fu'>docnames</span>(<span class='no'>mycorp</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'>docnames</span>(<span class='no'>mycorp</span>))
+
+<span class='co'># get and set doument names to a tokens</span>
+<span class='no'>mytoks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
+<span class='fu'>docnames</span>(<span class='no'>mytoks</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'>docnames</span>(<span class='no'>mytoks</span>))
+
+<span class='co'># get and set doument names to a dfm</span>
+<span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
+<span class='fu'>docnames</span>(<span class='no'>mydfm</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'>docnames</span>(<span class='no'>mydfm</span>))
+
 <span class='co'># reassign the document names of the inaugural speech corpus</span>
 <span class='fu'>docnames</span>(<span class='no'>data_corpus_inaugural</span>) <span class='kw'>&lt;-</span> <span class='fu'>paste</span>(<span class='st'>"Speech"</span>, <span class='fl'>1</span>:<span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>data_corpus_inaugural</span>), <span class='kw'>sep</span><span class='kw'>=</span><span class='st'>""</span>)</div></pre>
   </div>

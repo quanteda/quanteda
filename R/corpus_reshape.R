@@ -98,16 +98,3 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     }
     return (result)
 }
-
-
-#' deprecated name for corpus_reshape
-#' 
-#' The deprecated function name for what is now \code{\link{corpus_reshape}}. 
-#' Please use that instead.
-#' @param ... all arguments
-#' @keywords internal deprecated
-#' @export
-changeunits <- function(...) {
-    .Deprecated("corpus_reshape")
-    UseMethod("corpus_reshape")
-}

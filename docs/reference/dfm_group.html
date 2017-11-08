@@ -128,24 +128,24 @@ observed.  Has no effect if the <code>groups</code> variable(s) are not factors.
                    <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"grp1"</span>, <span class='st'>"grp1"</span>, <span class='st'>"grp2"</span>, <span class='st'>"grp2"</span>)))
 <span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>)
 <span class='fu'>dfm_group</span>(<span class='no'>mydfm</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;       features
 #&gt; docs   a b c d
 #&gt;   grp1 3 2 2 0
 #&gt;   grp2 2 0 3 3</div><div class='input'><span class='fu'>dfm_group</span>(<span class='no'>mydfm</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs a b c d
 #&gt;    1 3 2 2 0
 #&gt;    2 2 0 3 3</div><div class='input'>
 <span class='co'># equivalent</span>
 <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mydfm</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;       features
 #&gt; docs   a b c d
 #&gt;   grp1 3 2 2 0
 #&gt;   grp2 2 0 3 3</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mydfm</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs a b c d
 #&gt;    1 3 2 2 0

@@ -4,7 +4,13 @@
 \name{data_dictionary_LSD2015}
 \alias{data_dictionary_LSD2015}
 \title{Lexicoder Sentiment Dictionary (2015)}
-\format{An object of class \code{dictionary2} of length 4.}
+\format{A \link{dictionary} of four keys containing glob-style \link[=valuetype]{pattern matches}.
+\describe{
+\item{\code{negative}}{2,858 word patterns indicating negative sentiment}
+\item{\code{positive}}{1,709 word patterns indicating positive sentiment}
+\item{\code{neg_positive}}{1,721 word patterns indicating a positive word preceeded by a negation (used to convey negative sentiment)}
+\item{\code{negative}}{2,860 word patterns indicating a negative word preceeded by a negation (used to convey positive sentiment)}
+}}
 \usage{
 data_dictionary_LSD2015
 }

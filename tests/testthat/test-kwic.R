@@ -40,12 +40,6 @@ test_that("test kwic general", {
     expect_equal(
         data.frame(testkwic),
         dtf)
-    
-    #tokenizedTexts
-    testkwic <- kwic(tokenize(paste(LETTERS, collapse=' ')), 'D')
-    expect_equal(
-        data.frame(testkwic),
-        dtf) 
 })
 
 
@@ -425,3 +419,7 @@ test_that("test docvar is passed through kwic()", {
     
 })
 
+test_that("kwic error when dfm is given, #1006", {
+    toks <- tokens('a b c')
+    expect_error(kwic(toks, dfm('b c d')))
+})

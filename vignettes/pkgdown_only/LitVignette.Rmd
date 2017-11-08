@@ -301,6 +301,7 @@ The above plots are raw frequency plots. For relative frequency plots, (word cou
 rel_dfm <- dfm_weight(chap_dfm, type = 'relfreq') * 100
 head(rel_dfm)
 
+
 # subset dfm and convert to data.frame object
 rel_chap_freq <- as.data.frame(rel_dfm[, c('whale', 'ahab')])
 rel_chap_freq$chapter <- 1:nrow(rel_chap_freq)
@@ -313,7 +314,6 @@ ggplot(data = rel_chap_freq, aes(x = chapter, y = ahab)) +
     geom_bar(stat = "identity") +
     labs(x = "Chapter", y = "Relative frequency",
          title = "Occurrence of 'ahab'")
-```
 
 # 5 Correlation
 

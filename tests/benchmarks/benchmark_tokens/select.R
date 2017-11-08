@@ -8,7 +8,7 @@ load("/home/kohei/Documents/Brexit/Analysis/data_tokens_guardian.RData")
 toks <- data_tokens_guardian
 toks[[1]]
 
-toks2 <- tokens_select(toks, stopwords(), valuetype='fixed')
+toks2 <- tokens_select(toks, stopwords(), valuetype='fixed', window = 2)
 toks2[[1]]
 
 toks3 <- tokens_select(toks, stopwords(), valuetype='fixed', padding = TRUE)
@@ -21,6 +21,18 @@ system.time(tokens_remove(toks, list(c('President', '*'))))
 microbenchmark::microbenchmark(
     dfm(tokens_remove(toks, stopwords(), valuetype='fixed')),
     dfm_remove(dfm(toks), stopwords(), valuetype='fixed'),
+    times=1
+)
+
+microbenchmark::microbenchmark(
+    tokens_select(toks, stopwords(), valuetype='fixed', window = 0),
+    tokens_select(toks, stopwords(), valuetype='fixed', window = 1),
+    times=1
+)
+
+microbenchmark::microbenchmark(
+    tokens_remove(toks, stopwords(), valuetype='fixed', window = 0),
+    tokens_remove(toks, stopwords(), valuetype='fixed', window = 1),
     times=1
 )
 

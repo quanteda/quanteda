@@ -134,10 +134,10 @@ Guthrie et al (2006).</p></td>
   <code><a href='tokens.html'>tokens</a>(x, ngrams = , ...)</code>, but these functions are provided 
   in case a user wants to perform lower-level ngram construction on tokenized
   texts.
-    <code>tokens_skipgrams</code> is a wrapper to <code><a href='ngrams.html'>ngrams</a></code> that requires 
-  arguments to be supplied for both <code>n</code> and <code>skip</code>.  For
-  \(k\)-skip skipgrams, set <code>skip</code> to <code>0:</code>\(k\), in order to
-  conform to the definition of skip-grams found in Guthrie et al (2006): A
+    <code>tokens_skipgrams</code> is a wrapper to <code>tokens_ngrams</code>
+  that requires arguments to be supplied for both <code>n</code> and <code>skip</code>.
+  For \(k\)-skip skipgrams, set <code>skip</code> to <code>0:</code>\(k\), in order
+  to conform to the definition of skip-grams found in Guthrie et al (2006): A
   \(k\) skip-gram is an ngram which is a superset of all ngrams and each
   \((k-i)\) skipgram until \((k-i)==0\) (which includes 0 skip-grams).</p>
     

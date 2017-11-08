@@ -8,7 +8,7 @@ tokens(x, what = c("word", "sentence", "character", "fastestword",
   "fasterword"), remove_numbers = FALSE, remove_punct = FALSE,
   remove_symbols = FALSE, remove_separators = TRUE,
   remove_twitter = FALSE, remove_hyphens = FALSE, remove_url = FALSE,
-  ngrams = 1L, skip = 0L, concatenator = "_", hash = TRUE,
+  ngrams = 1L, skip = 0L, concatenator = "_",
   verbose = quanteda_options("verbose"), include_docvars = TRUE, ...)
 }
 \arguments{
@@ -72,10 +72,6 @@ different from the default of 1.  See \code{\link{tokens_skipgrams}}.}
 is "\code{_}", which is recommended since this is included in the regular 
 expression and Unicode definitions of "word" characters}
 
-\item{hash}{if \code{TRUE} (default), return a hashed tokens object, 
-otherwise, return a classic \code{tokenizedTexts} object.  (This will be 
-phased out soon in coming versions.)}
-
 \item{verbose}{if \code{TRUE}, print timing messages to the console; off by 
 default}
 
@@ -85,7 +81,7 @@ the tokens object.  Only applies when tokenizing \link{corpus} objects.}
 \item{...}{additional arguments not used}
 }
 \value{
-\pkg{quanteda} \code{tokens} class object, by default a hashed list 
+\pkg{quanteda} \code{tokens} class object, by default a serialized list 
   of integers corresponding to a vector of types.
 }
 \description{
@@ -179,14 +175,14 @@ txt <- char_tolower(c(mytext1 = "This is a short test sentence.",
                       mytext2 = "Short.",
                       mytext3 = "Short, shorter, and shortest."))
 tokens(txt, remove_punct = TRUE)
-### removeFeatures(tokens(txt, remove_punct = TRUE), stopwords("english"))
+tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 
 # ngram tokenization
-### tokens(txt, remove_punct = TRUE, ngrams = 2)
-### tokens(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
-### tokens(txt, remove_punct = TRUE, ngrams = 1:2)
+tokens(txt, remove_punct = TRUE, ngrams = 2)
+tokens(txt, remove_punct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
+tokens(txt, remove_punct = TRUE, ngrams = 1:2)
 # removing features from ngram tokens
-### removeFeatures(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
+tokens_remove(tokens(txt, remove_punct = TRUE, ngrams = 1:2), stopwords("english"))
 }
 \seealso{
 \code{\link{tokens_ngrams}}, \code{\link{tokens_skipgrams}}, \code{\link{as.list.tokens}}

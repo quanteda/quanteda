@@ -15,7 +15,7 @@ test_that("can wordstem dfms with zero features and zero docs", {
     # features with zero docfreq
     mydfm <- dfm(c("stemming porter three", "stemming four five"))
     mydfm[2, 4] <- 0
-    mydfm <- new("dfmSparse", mydfm)
+    mydfm <- new("dfm", mydfm)
     dfm_wordstem(mydfm, language = "english")
     expect_equal(nfeature(dfm_wordstem(mydfm)), 5)
     

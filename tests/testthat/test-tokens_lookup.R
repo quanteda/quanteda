@@ -366,7 +366,7 @@ test_that("dfm_lookup match the same words in exclusive = TRUE and FALSE, #970",
 
 })
 
-test_that("dfm_lookup works exclusive = FALSE, #970", {
+test_that("tokens_lookup works when exclusive = FALSE, #970", {
     
     dict <- dictionary(list(sequence1 = "a b", sequence2 = "x y", notseq = c("d", "e")))
     txt <- c(d1 = "a b c d e f g x y z",
@@ -380,5 +380,22 @@ test_that("dfm_lookup works exclusive = FALSE, #970", {
                       d3 = c("SEQUENCE2"),
                       d4 = c("f", "g"))
                  )
+    
+})
+
+test_that("tokens_lookup works when there is a key with non-existent values and when exclusive = FALSE, #1011", {
+    
+    dict <- dictionary(list(sequence1 = "a b", sequence2 = "x y", notseq = c("d", "e"), notexist = c("zzz")))
+    txt <- c(d1 = "a b c d e f g x y z",
+             d2 = "a c d x z",
+             d3 = "x y",
+             d4 = "f g")
+    toks <- tokens(txt)
+    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE)),
+                 list(d1 = c("SEQUENCE1", "c", "NOTSEQ", "NOTSEQ", "f", "g", "SEQUENCE2", "z"), 
+                      d2 = c("a","c", "NOTSEQ", "x", "z"),
+                      d3 = c("SEQUENCE2"),
+                      d4 = c("f", "g"))
+    )
     
 })

@@ -57,6 +57,8 @@ textstat_dist.dfm <- function(x, selection = NULL,
                           margin = c("documents", "features"),
                           method = "euclidean",
                           upper = FALSE, diag = FALSE, p = 2) {
+    
+    x <- as.dfm(x)
     margin <- match.arg(margin)
     
     if (!is.null(selection)) {

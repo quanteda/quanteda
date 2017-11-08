@@ -118,14 +118,14 @@ vector being sampled.</p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='sample.html'>sample</a></p>
+    <p>sample</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>10</span>)
 <span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>10</span>])
 <span class='fu'>head</span>(<span class='no'>myDfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (30.6% sparse).
-#&gt; 6 x 6 sparse Matrix of class "dfmSparse"
+#&gt; 6 x 6 sparse Matrix of class "dfm"
 #&gt;                  features
 #&gt; docs              fellow-citizens  of the senate and house
 #&gt;   1789-Washington               1  71 116      1  48     2
@@ -134,7 +134,7 @@ vector being sampled.</p></td>
 #&gt;   1801-Jefferson                2 104 130      0  81     0
 #&gt;   1805-Jefferson                0 101 143      0  93     0
 #&gt;   1809-Madison                  1  69 104      0  43     0</div><div class='input'><span class='fu'>head</span>(<span class='fu'>dfm_sample</span>(<span class='no'>myDfm</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (30.6% sparse).
-#&gt; 6 x 6 sparse Matrix of class "dfmSparse"
+#&gt; 6 x 6 sparse Matrix of class "dfm"
 #&gt;                  features
 #&gt; docs              fellow-citizens  of the senate and house
 #&gt;   1809-Madison                  1  69 104      0  43     0
@@ -143,7 +143,7 @@ vector being sampled.</p></td>
 #&gt;   1805-Jefferson                0 101 143      0  93     0
 #&gt;   1789-Washington               1  71 116      1  48     2
 #&gt;   1793-Washington               0  11  13      0   2     0</div><div class='input'><span class='fu'>head</span>(<span class='fu'>dfm_sample</span>(<span class='no'>myDfm</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (38.9% sparse).
-#&gt; 6 x 6 sparse Matrix of class "dfmSparse"
+#&gt; 6 x 6 sparse Matrix of class "dfm"
 #&gt;                  features
 #&gt; docs              fellow-citizens  of the senate and house
 #&gt;   1813-Madison                  1  65 100      0  44     0
@@ -152,7 +152,7 @@ vector being sampled.</p></td>
 #&gt;   1809-Madison                  1  69 104      0  43     0
 #&gt;   1801-Jefferson                2 104 130      0  81     0
 #&gt;   1805-Jefferson                0 101 143      0  93     0</div><div class='input'><span class='fu'>head</span>(<span class='fu'>dfm_sample</span>(<span class='no'>myDfm</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (91.7% sparse).
-#&gt; 6 x 6 sparse Matrix of class "dfmSparse"
+#&gt; 6 x 6 sparse Matrix of class "dfm"
 #&gt;                  features
 #&gt; docs              reciprocated savage accomplishing anxious representative vows
 #&gt;   1789-Washington            0      0             0       0              0    0

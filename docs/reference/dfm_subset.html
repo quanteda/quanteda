@@ -137,13 +137,13 @@ original dfm, even if these are empty.  See Details.</p></td>
 <span class='no'>testdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>testcorp</span>)
 <span class='co'># selecting on a docvars condition</span>
 <span class='fu'>dfm_subset</span>(<span class='no'>testdfm</span>, <span class='no'>grp</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs a b c d e f
 #&gt;   d3 0 2 1 0 1 0
 #&gt;   d4 1 1 0 0 2 1</div><div class='input'><span class='co'># selecting on a supplied vector</span>
 <span class='fu'>dfm_subset</span>(<span class='no'>testdfm</span>, <span class='fu'>c</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs a b c d e f
 #&gt;   d1 1 1 1 1 0 0

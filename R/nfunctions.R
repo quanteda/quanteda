@@ -31,6 +31,7 @@ ndoc.corpus <- function(x) {
 #' @noRd
 #' @export
 ndoc.dfm <- function(x) {
+    x <- as.dfm(x)
     nrow(x)
 }
 
@@ -39,13 +40,6 @@ ndoc.dfm <- function(x) {
 ndoc.tokens <- function(x) {
     length(x)
 }
-
-#' @export
-#' @noRd
-ndoc.tokenizedTexts <- function(x) {
-    length(x)
-}
-
 
 #' @rdname ndoc
 #' @details \code{nfeature} returns the number of features from a dfm; it is an
@@ -65,6 +59,7 @@ nfeature <- function(x) {
 #' @noRd
 #' @export
 nfeature.dfm <- function(x) {
+    x <- as.dfm(x)
     ncol(x)
 }
 
@@ -140,16 +135,17 @@ ntoken.character <- function(x, ...) {
 
 #' @noRd
 #' @export
-ntoken.dfm <- function(x, ...) {
-    if (length(list(...)) > 0)
-        warning("additional arguments not used for ntoken.dfm()")
-    rowSums(x)
+ntoken.tokens <- function(x, ...) {
+    lengths(x)
 }
 
 #' @noRd
 #' @export
-ntoken.tokenizedTexts <- function(x, ...) {
-    lengths(x)
+ntoken.dfm <- function(x, ...) {
+    x <- as.dfm(x)
+    if (length(list(...)) > 0)
+        warning("additional arguments not used for ntoken.dfm()")
+    rowSums(x)
 }
 
 #' @noRd
@@ -168,20 +164,15 @@ ntype.corpus <- function(x, ...) {
 #' @noRd
 #' @export
 ntype.dfm <- function(x, ...) {
-    ## only returns total NON-ZERO COUNT types
+    x <- as.dfm(x)
+    ## only returns total non-zero features
     rowSums(x > 0)
 }
 
 #' @noRd
 #' @export
-ntype.tokenizedTexts <- function(x, ...) {
-    vapply(lapply(x, unique), length, integer(1))
-}
-
-#' @export
-#' @noRd
-ntoken.tokens <- function(x, ...) {
-    lengths(x)
+ntype.tokens <- function(x, ...) {
+    sapply(unclass(x), function(y) length(unique(y[y > 0])))
 }
 
 #' count the number of sentences

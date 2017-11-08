@@ -119,7 +119,8 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     } else {
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
-        x <- qatd_cpp_tokens_lookup(x, c(keys, types), values_id, keys_id, FALSE, 2)
+        keys_used <- unique(keys_id)
+        x <- qatd_cpp_tokens_lookup(x, c(keys[keys_used], types), values_id, match(keys_id, keys_used), FALSE, 2)
     }
     attr(x, "what") <- "dictionary"
     attr(x, "dictionary") <- dictionary

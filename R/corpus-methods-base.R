@@ -57,7 +57,7 @@ is.corpuszip <- function(x) {
 #' @param showmeta set to \code{TRUE} to include document-level
 #'   meta-data
 #' @param tolower convert texts to lower case before counting types
-#' @param ... additional arguments passed through to \code{\link{tokenize}}
+#' @param ... additional arguments passed through to \code{\link{tokens}}
 #' @export
 #' @method summary corpus
 #' @keywords internal corpus
@@ -66,9 +66,9 @@ is.corpuszip <- function(x) {
 #' summary(data_corpus_inaugural, n = 10)
 #' mycorpus <- corpus(data_char_ukimmig2010, 
 #'                    docvars = data.frame(party=names(data_char_ukimmig2010))) 
-#' summary(mycorpus, showmeta=TRUE)  # show the meta-data
-#' mysummary <- summary(mycorpus)    # (quietly) assign the results
-#' mysummary$Types / mysummary$Tokens             # crude type-token ratio
+#' summary(mycorpus, showmeta=TRUE) # show the meta-data
+#' mysummary <- summary(mycorpus) # (quietly) assign the results
+#' mysummary$Types / mysummary$Tokens # crude type-token ratio
 summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, ...) {
     outputdf <- data.frame(summary(texts(object), n, tolower = tolower, ...))
     if (!is.null(docvars(object)))
@@ -174,12 +174,11 @@ tail.corpus <- function(x, n = 6L, ...) {
             metacorpus(c1, field) <- paste(metacorpus(c1, field), metacorpus(c2, field))
     }
     
-    row.names <- c(rownames(c1$documents), rownames(c2$documents))
-    c1$documents <- data.frame(
-        data.table::rbindlist(list(c1$documents, c2$documents), use.names = TRUE, fill = TRUE)
-    )
+    #rowname <- c(rownames(c1$documents), rownames(c2$documents))
+    c1$documents <- rbind(c1$documents, c2$documents)
+
     #  Put rownames back in because the hadleyverse discards them
-    rownames(c1$documents) <- make.unique(row.names, sep='')
+    #rownames(c1$documents) <- make.unique(rowname, sep='')
     
     # settings
     ### currently just use the c1 settings
@@ -218,14 +217,14 @@ c.corpus <- function(..., recursive = FALSE) {
 }
 
 
+#' @rdname corpus-class
+#' @method [ corpus
 #' @export
 #' @param i index for documents or rows of document variables
 #' @param j index for column of document variables
 #' @param drop if \code{TRUE}, return a vector if extracting a single document
 #'   variable; if \code{FALSE}, return it as a single-column data.frame.  See
 #'   \code{\link{drop}} for further details.
-#' @method [ corpus
-#' @rdname corpus-class
 #' @examples 
 #' 
 #' # ways to index corpus elements
