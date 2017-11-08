@@ -116,7 +116,7 @@ pattern2id <- function(pattern, types, valuetype, case_insensitive,
     if (is.dfm(pattern)) 
         stop('dfm cannot be used as pattern')
     
-    if (is.sequences(pattern) || is.collocations(pattern)) {
+    if (is.collocations(pattern) || is.collocations(pattern)) {
         pattern <- stri_split_charclass(pattern$collocation, "\\p{Z}")
         pattern_id <- lapply(pattern, function(x) fastmatch::fmatch(x, types))
         pattern_id <- pattern_id[sapply(pattern_id, function(x) all(!is.na(x)))]

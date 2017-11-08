@@ -254,21 +254,21 @@ test_that("lambda & [ function",{
     expect_equal(class(a_seq), c("collocations", 'data.frame'))
 })
 
-test_that("deprecated collocations function works", {
-    txts <- data_corpus_inaugural[1:2]
-    expect_equal(
-        suppressWarnings(collocations(txts, size = 2, min_count = 2)),
-        textstat_collocations(txts, size = 2, min_count = 2)
-    )
-    expect_warning(
-        collocations(txts, size = 2, min_count = 2),
-        "'collocations' is deprecated"
-    )
-    expect_warning(
-        sequences(txts, size = 2, min_count = 2),
-        "'sequences' is deprecated"
-    )
-})
+# test_that("deprecated collocations function works", {
+#     txts <- data_corpus_inaugural[1:2]
+#     expect_equal(
+#         suppressWarnings(collocations(txts, size = 2, min_count = 2)),
+#         textstat_collocations(txts, size = 2, min_count = 2)
+#     )
+#     expect_warning(
+#         collocations(txts, size = 2, min_count = 2),
+#         "'collocations' is deprecated"
+#     )
+#     expect_warning(
+#         sequences(txts, size = 2, min_count = 2),
+#         "'sequences' is deprecated"
+#     )
+# })
 
 test_that("textstat_collocations.tokens works ok with zero-length documents (#940)", {
     txt <- c('I like good ice cream.', 'Me too!  I like good ice cream.', '')

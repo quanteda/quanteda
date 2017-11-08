@@ -1,20 +1,3 @@
-#' deprecated function names for textstat_collocations
-#' 
-#' Use \code{\link{textstat_collocations}} instead.
-#' @param x a character, \link{corpus}, \link{tokens} object
-#' @param ... other arguments passed to  \code{\link{textstat_collocations}}
-#' @export
-#' @seealso \link{textstat_collocations}
-#' @keywords collocations internal deprecated
-collocations <- function(x, ...) {
-    .Deprecated("textstat_collocations")
-    UseMethod("textstat_collocations")
-}
-
-#' @rdname collocations
-#' @export
-sequences <- collocations
-
 #' identify and score multi-word expressions
 #' 
 #' Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.  
@@ -38,7 +21,11 @@ sequences <- collocations
 #' @param smoothing numeric; a smoothing parameter added to the observed counts
 #'   (default is 0.5)
 #' @param tolower logical; if \code{TRUE}, form collocations as lower-cased combinations
-#' @param recursive logical; if \code{TRUE} the output include nested collocations
+#' @param recursive logical; if \code{TRUE} and \code{size} is a vector, then count
+#'   collocations of each size separately, meaning that a tri-gram collocation will 
+#'   also (recursively) include its bigram collocations in the counts.  When 
+#'   \code{recursive = FALSE}, shorter collocation sequences that occur within
+#'   longer collocations sequences will not be counted separately.
 #' @param ... additional arguments passed to \code{\link{tokens}}, if \code{x}
 #'   is not a \link{tokens} object already
 #' @references Blaheta, D., & Johnson, M. (2001). 
@@ -102,6 +89,15 @@ sequences <- collocations
 #'                        case_insensitive = FALSE, padding = TRUE)
 #' seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
 #' head(seqs, 10)
+#' 
+#' # recursive = FALSE
+#' txt <- c(". . . . a b c . . a b c . . .",
+#'          "a b . . a b . . a b . . a b . a b",
+#'          "b c . . b c . b c . . . b c")
+#' toks <- tokens(txt) %>% tokens_keep(c("a", "b", "c"), padding = TRUE)
+#' textstat_collocations(toks2, size = 2:3, recursive = TRUE)
+#' textstat_collocations(toks2, size = 2:3, recursive = FALSE)
+#' 
 textstat_collocations <- function(x, method = "lambda", 
                                   size = 2, 
                                   min_count = 2, 
@@ -121,7 +117,8 @@ textstat_collocations.tokens <- function(x, method = "lambda",
                                          smoothing = 0.5, 
                                          tolower = TRUE, 
                                          recursive = TRUE, ...) { #show_counts = FALSE, ...) {
-
+    check_dots(list(...), NULL)
+    
     #method <- match.arg(method, ("lambda", "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD"))
     method <- match.arg(method, c("lambda"))
     
@@ -248,9 +245,6 @@ is.collocations <- function(x) {
 #     return(x)
 # }
  
-# returns TRUE if the object is of class sequences, FALSE otherwise
-is.sequences <- function(x) "sequences" %in% class(x)
-
 # Internal Functions ------------------------------------------------------
 
 # function to get lower-order interactions for k-grams

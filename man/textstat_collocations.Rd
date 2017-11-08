@@ -32,7 +32,11 @@ to be scored}
 
 \item{tolower}{logical; if \code{TRUE}, form collocations as lower-cased combinations}
 
-\item{recursive}{logical; if \code{TRUE} the output include nested collocations}
+\item{recursive}{logical; if \code{TRUE} and \code{size} is a vector, then count
+collocations of each size separately, meaning that a tri-gram collocation will 
+also (recursively) include its bigram collocations in the counts.  When 
+\code{recursive = FALSE}, shorter collocation sequences that occur within
+longer collocations sequences will not be counted separately.}
 
 \item{...}{additional arguments passed to \code{\link{tokens}}, if \code{x}
 is not a \link{tokens} object already}
@@ -106,6 +110,15 @@ toks2 <- tokens_select(toks2, "^([A-Z][a-z\\\\-]{2,})", valuetype = "regex",
                        case_insensitive = FALSE, padding = TRUE)
 seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
 head(seqs, 10)
+
+# recursive = FALSE
+txt <- c(". . . . a b c . . a b c . . .",
+         "a b . . a b . . a b . . a b . a b",
+         "b c . . b c . b c . . . b c")
+toks <- tokens(txt) \%>\% tokens_keep(c("a", "b", "c"), padding = TRUE)
+textstat_collocations(toks2, size = 2:3, recursive = TRUE)
+textstat_collocations(toks2, size = 2:3, recursive = FALSE)
+
 }
 \references{
 Blaheta, D., & Johnson, M. (2001). 
