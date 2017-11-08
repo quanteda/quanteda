@@ -1,10 +1,6 @@
-
-// includes from the plugin
-#include <RcppArmadillo.h>
+#include "armadillo.h"
 #include "quanteda.h"
 using namespace quanteda;
-using namespace RcppParallel;
-using namespace Rcpp;
 using namespace arma;
 
 #if !defined(ARMA_64BIT_WORD)
