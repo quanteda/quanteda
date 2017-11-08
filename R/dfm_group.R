@@ -39,6 +39,7 @@ dfm_group <- function(x, groups = NULL, fill = FALSE) {
 #' @export
 dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
     
+    x <- as.dfm(x)
     if (is.character(groups) & all(groups %in% names(docvars(x)))) {
         groups <- interaction(docvars(x)[, groups], drop = FALSE)
     }
@@ -108,7 +109,7 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
     dims <- c(length(documents_name), length(features_name))
     dimnames <- list(docs = documents_name, features = features_name)
     
-    result <- new("dfmSparse", 
+    result <- new("dfm", 
                   sparseMatrix(i = i_new, j = j_new, x = x_new, dims = dims, dimnames = dimnames),
                   settings = x@settings,
                   weightTf = x@weightTf,

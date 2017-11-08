@@ -131,24 +131,24 @@ document context.</p>
              <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"A C C C C C"</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))
 <span class='fu'>colnames</span>(<span class='no'>mat</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>mat</span>))
 <span class='no'>mat</span></div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 5 features (46.7% sparse).
-#&gt; 3 x 5 sparse Matrix of class "dfmSparse"
+#&gt; 3 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    b a c a b
 #&gt;   text1 1 2 0 0 0
 #&gt;   text2 1 0 2 1 1
 #&gt;   text1 0 1 5 0 0</div><div class='input'><span class='fu'>dfm_compress</span>(<span class='no'>mat</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (30% sparse).
-#&gt; 2 x 5 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 5 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    b a c a b
 #&gt;   text1 1 3 5 0 0
 #&gt;   text2 1 0 2 1 1</div><div class='input'><span class='fu'>dfm_compress</span>(<span class='no'>mat</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 3 features (22.2% sparse).
-#&gt; 3 x 3 sparse Matrix of class "dfmSparse"
+#&gt; 3 x 3 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    b a c
 #&gt;   text1 1 2 0
 #&gt;   text2 2 1 2
 #&gt;   text1 0 1 5</div><div class='input'><span class='fu'>dfm_compress</span>(<span class='no'>mat</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (0% sparse).
-#&gt; 2 x 3 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 3 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    b a c
 #&gt;   text1 1 3 5
@@ -171,15 +171,15 @@ document context.</p>
 #&gt; 9 x 9 sparse Matrix of class "fcm"
 #&gt;         features
 #&gt; features a d a c fox d f e b
-#&gt;      a   . 2 1 2   1 . 1 1 1
-#&gt;      d   . . 1 2   2 . . . .
-#&gt;      a   . . 1 2   2 1 1 1 .
-#&gt;      c   . . . .   2 1 . 1 1
-#&gt;      fox . . . .   . 1 1 . 1
-#&gt;      d   . . . .   . . 1 1 1
-#&gt;      f   . . . .   . . . 1 1
-#&gt;      e   . . . .   . . . . 1
-#&gt;      b   . . . .   . . . . .</div><div class='input'><span class='fu'>fcm_compress</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_compress.fcm(myfcm): compress_fcm invalid if fcm was created with a window context</span></div></pre>
+#&gt;      a   0 2 1 2   1 0 1 1 1
+#&gt;      d   0 0 1 2   2 0 0 0 0
+#&gt;      a   0 0 1 2   2 1 1 1 0
+#&gt;      c   0 0 0 0   2 1 0 1 1
+#&gt;      fox 0 0 0 0   0 1 1 0 1
+#&gt;      d   0 0 0 0   0 0 1 1 1
+#&gt;      f   0 0 0 0   0 0 0 1 1
+#&gt;      e   0 0 0 0   0 0 0 0 1
+#&gt;      b   0 0 0 0   0 0 0 0 0</div><div class='input'><span class='fu'>fcm_compress</span>(<span class='no'>myfcm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fcm_compress.fcm(myfcm): compress_fcm invalid if fcm was created with a window context</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

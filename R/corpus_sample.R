@@ -60,3 +60,8 @@ corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL
     x
 }
 
+# internal functions from older resample.R
+
+is.resampled <- function(x) { FALSE }
+
+nresample <- function(x) { 0 }

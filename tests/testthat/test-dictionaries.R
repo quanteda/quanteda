@@ -270,9 +270,9 @@ test_that("dictionary constructor works with LIWC format w/extra codes", {
         c("verb", "past", "whatever", "family", "affect", "posemo", "cogmech", "tentat", "whatever2", "time")
     ))
     
-    dict1 <- quanteda:::read_dict_liwc("../data/dictionaries/liwc_extracodes.dic")
-    dict2 <- quanteda:::list2dictionary(quanteda:::read_dict_liwc_old("../data/dictionaries/liwc_extracodes.dic"))
-    expect_equal(dict1[order(names(dict1))], dict2[order(names(dict2))])
+    # dict1 <- quanteda:::read_dict_liwc("../data/dictionaries/liwc_extracodes.dic")
+    # dict2 <- quanteda:::list2dictionary(quanteda:::read_dict_liwc_old("../data/dictionaries/liwc_extracodes.dic"))
+    # expect_equal(dict1[order(names(dict1))], dict2[order(names(dict2))])
 })
 
 test_that("dictionary constructor works with LIWC format w/extra codes and nesting", {

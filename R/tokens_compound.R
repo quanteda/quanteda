@@ -77,15 +77,4 @@ tokens_compound.tokens <- function(x, pattern,
 }
 
 
-#' @noRd
-#' @rdname tokens_compound
-#' @export
-tokens_compound.tokenizedTexts <- function(x, pattern, 
-                                           concatenator = "_", valuetype = c("glob", "regex", "fixed"),
-                                           case_insensitive = TRUE, join = FALSE) {
-    as.tokenizedTexts(tokens_compound(as.tokens(x), pattern = pattern, 
-                                      concatenator = concatenator, valuetype = valuetype,
-                                      case_insensitive = TRUE, join = join))
-}
-
 

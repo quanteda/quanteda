@@ -146,12 +146,12 @@ codes)</p></td>
 <span class='fu'>char_wordstem</span>(<span class='fu'>c</span>(<span class='st'>"win"</span>, <span class='st'>"winning"</span>, <span class='st'>"wins"</span>, <span class='st'>"won"</span>, <span class='st'>"winner"</span>))</div><div class='output co'>#&gt; [1] "win"    "win"    "win"    "won"    "winner"</div><div class='input'>
 <span class='co'># example applied to a dfm</span>
 (<span class='no'>origdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>txt</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (50% sparse).
-#&gt; 2 x 11 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 11 sparse Matrix of class "dfm"
 #&gt;      features
 #&gt; docs  eating eater eaters eats ate taxing taxes taxed my tax return
 #&gt;   one      1     1      1    1   1      0     0     0  0   0      0
 #&gt;   two      0     0      0    0   0      1     1     1  1   1      1</div><div class='input'><span class='fu'>dfm_wordstem</span>(<span class='no'>origdfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (50% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;      features
 #&gt; docs  eat eater ate tax my return
 #&gt;   one   2     2   1   0  0      0

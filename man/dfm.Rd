@@ -20,7 +20,7 @@ excluding all others.  This can be used in lieu of a dictionary if there
 are only specific features that a user wishes to keep. To extract only 
 Twitter usernames, for example, set \code{select = "@*"} and make sure 
 that \code{remove_twitter = FALSE} as an additional argument passed to 
-\link{tokenize}.  Note: \code{select = "^@\\\w+\\\b"} would be the regular
+\link{tokens}.  Note: \code{select = "^@\\\w+\\\b"} would be the regular
 expression version of this matching pattern.  The pattern matching type 
 will be set by \code{valuetype}.  See also \code{\link{tokens_remove}}.}
 
@@ -113,7 +113,7 @@ featnames(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), remove_pu
 
 # removing stopwords before constructing ngrams
 tokensAll <- tokens(char_tolower(testText), remove_punct = TRUE)
-tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
+tokensNoStopwords <- tokens_remove(tokensAll, stopwords("english"))
 tokensNgramsNoStopwords <- tokens_ngrams(tokensNoStopwords, 2)
 featnames(dfm(tokensNgramsNoStopwords, verbose = FALSE))
 

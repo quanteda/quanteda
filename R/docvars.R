@@ -1,3 +1,5 @@
+# docvars ------
+
 #' get or set for document-level variables
 #' 
 #' Get or set variables associated with a document in a \link{corpus},
@@ -31,7 +33,7 @@ docvars.corpus <- function(x, field = NULL) {
 
 #' @noRd
 #' @export
-docvars.tokenizedTexts <- function(x, field = NULL) {
+docvars.tokens <- function(x, field = NULL) {
     check_fields(x, field)
     dvars <- attr(x, "docvars")
     if (is.null(field))
@@ -61,19 +63,7 @@ docvars.kwic <- function(x) {
     select_fields(dvars)
 }
 
-## internal function to return the docvars for all docvars functions
-get_docvars <- function(dvars, field = NULL) {
-    if (is.null(field)) {
-        if (is.null(dvars)) {
-            return(data.frame())
-        } else {
-            return(dvars)
-        }
-    } else {
-        return(dvars[, field, drop = TRUE])
-    }
-}
-
+# docvars<- ------
 
 #' @rdname docvars
 #' @param value the new values of the document-level variable
@@ -127,7 +117,7 @@ get_docvars <- function(dvars, field = NULL) {
 
 
 #' @export
-"docvars<-.tokenizedTexts" <- function(x, field = NULL, value) {
+"docvars<-.tokens" <- function(x, field = NULL, value) {
     
     if (is.null(field) && (is.data.frame(value) || is.null(value))) {
         attr(x, "docvars") <- value
@@ -159,6 +149,8 @@ get_docvars <- function(dvars, field = NULL) {
     }
     return(x)
 }
+
+# metadoc -------
 
 #' get or set document-level meta-data
 #' 
@@ -250,6 +242,21 @@ metadoc.dfm <- function(x, field = NULL) {
     x
 }
 
+# Internal functions -----
+
+## internal function to return the docvars for all docvars functions
+get_docvars <- function(dvars, field = NULL) {
+    if (is.null(field)) {
+        if (is.null(dvars)) {
+            return(data.frame())
+        } else {
+            return(dvars)
+        }
+    } else {
+        return(dvars[, field, drop = TRUE])
+    }
+}
+
 ## helper function to check fields and report error message if
 ## a field is not a valid docvar name
 check_fields <- function(x, field = NULL) {
@@ -259,7 +266,7 @@ check_fields <- function(x, field = NULL) {
     }
 }
 
-# New docvar functions -----------------------------------------
+# new docvar functions
 
 ## helper function to get all docvars
 docvars_internal <- function(x) {

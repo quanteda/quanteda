@@ -140,18 +140,19 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_sequences
-DataFrame qatd_cpp_sequences(const List& texts_, const CharacterVector& types_, const unsigned int count_min, const IntegerVector sizes_, const String& method, const double smoothing);
-RcppExport SEXP _quanteda_qatd_cpp_sequences(SEXP texts_SEXP, SEXP types_SEXP, SEXP count_minSEXP, SEXP sizes_SEXP, SEXP methodSEXP, SEXP smoothingSEXP) {
+DataFrame qatd_cpp_sequences(const List& texts_, const CharacterVector& types_, const IntegerVector& words_ignore_, const unsigned int count_min, const IntegerVector sizes_, const String& method, const double smoothing);
+RcppExport SEXP _quanteda_qatd_cpp_sequences(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_ignore_SEXP, SEXP count_minSEXP, SEXP sizes_SEXP, SEXP methodSEXP, SEXP smoothingSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
     Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type words_ignore_(words_ignore_SEXP);
     Rcpp::traits::input_parameter< const unsigned int >::type count_min(count_minSEXP);
     Rcpp::traits::input_parameter< const IntegerVector >::type sizes_(sizes_SEXP);
     Rcpp::traits::input_parameter< const String& >::type method(methodSEXP);
     Rcpp::traits::input_parameter< const double >::type smoothing(smoothingSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_sequences(texts_, types_, count_min, sizes_, method, smoothing));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_sequences(texts_, types_, words_ignore_, count_min, sizes_, method, smoothing));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -167,18 +168,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const String& >::type delim_(delim_SEXP);
     Rcpp::traits::input_parameter< const bool& >::type join(joinSEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_compound(texts_, comps_, types_, delim_, join));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_tokens_detect
-List qatd_cpp_tokens_detect(const List& texts_, const List& words_);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_detect(SEXP texts_SEXP, SEXP words_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_detect(texts_, words_));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -240,20 +229,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_tokens_replace
-List qatd_cpp_tokens_replace(const List& texts_, const CharacterVector types_, const List& words_, const IntegerVector& ids_);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_replace(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP ids_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
-    Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type ids_(ids_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_replace(texts_, types_, words_, ids_));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_tokens_segment
 List qatd_cpp_tokens_segment(const List& texts_, const CharacterVector types_, const List& patterns_, const bool& remove, const int& position);
 RcppExport SEXP _quanteda_qatd_cpp_tokens_segment(SEXP texts_SEXP, SEXP types_SEXP, SEXP patterns_SEXP, SEXP removeSEXP, SEXP positionSEXP) {
@@ -270,8 +245,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_select
-List qatd_cpp_tokens_select(const List& texts_, const CharacterVector types_, const List& words_, int mode, bool padding);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_select(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP modeSEXP, SEXP paddingSEXP) {
+List qatd_cpp_tokens_select(const List& texts_, const CharacterVector types_, const List& words_, int mode, bool padding, int window_left, int window_right);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_select(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP modeSEXP, SEXP paddingSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -280,7 +255,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
     Rcpp::traits::input_parameter< int >::type mode(modeSEXP);
     Rcpp::traits::input_parameter< bool >::type padding(paddingSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_select(texts_, types_, words_, mode, padding));
+    Rcpp::traits::input_parameter< int >::type window_left(window_leftSEXP);
+    Rcpp::traits::input_parameter< int >::type window_right(window_rightSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_select(texts_, types_, words_, mode, padding, window_left, window_right));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -306,28 +283,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// wordfishcpp
-Rcpp::List wordfishcpp(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS, bool svd_on, double residual_floor);
-RcppExport SEXP _quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP, SEXP ABSSEXP, SEXP svd_onSEXP, SEXP residual_floorSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::sp_mat& >::type wfm(wfmSEXP);
-    Rcpp::traits::input_parameter< IntegerVector& >::type dirvec(dirvecSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type priorvec(priorvecSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type tolvec(tolvecSEXP);
-    Rcpp::traits::input_parameter< IntegerVector& >::type disptype(disptypeSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type dispmin(dispminSEXP);
-    Rcpp::traits::input_parameter< bool >::type ABS(ABSSEXP);
-    Rcpp::traits::input_parameter< bool >::type svd_on(svd_onSEXP);
-    Rcpp::traits::input_parameter< double >::type residual_floor(residual_floorSEXP);
-    rcpp_result_gen = Rcpp::wrap(wordfishcpp(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor));
-    return rcpp_result_gen;
-END_RCPP
-}
-// wordfishcpp_dense
-Rcpp::List wordfishcpp_dense(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor, bool abs_err);
-RcppExport SEXP _quanteda_wordfishcpp_dense(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP, SEXP abs_errSEXP) {
+// qatd_cpp_wordfish_dense
+Rcpp::List qatd_cpp_wordfish_dense(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor, bool abs_err);
+RcppExport SEXP _quanteda_qatd_cpp_wordfish_dense(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP, SEXP abs_errSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -338,13 +296,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type disp(dispSEXP);
     Rcpp::traits::input_parameter< SEXP >::type dispfloor(dispfloorSEXP);
     Rcpp::traits::input_parameter< bool >::type abs_err(abs_errSEXP);
-    rcpp_result_gen = Rcpp::wrap(wordfishcpp_dense(wfm, dir, priors, tol, disp, dispfloor, abs_err));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_wordfish_dense(wfm, dir, priors, tol, disp, dispfloor, abs_err));
     return rcpp_result_gen;
 END_RCPP
 }
-// wordfishcpp_mt
-Rcpp::List wordfishcpp_mt(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS, bool svd_sparse, double residual_floor);
-RcppExport SEXP _quanteda_wordfishcpp_mt(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP, SEXP ABSSEXP, SEXP svd_sparseSEXP, SEXP residual_floorSEXP) {
+// qatd_cpp_wordfish
+Rcpp::List qatd_cpp_wordfish(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS, bool svd_sparse, double residual_floor);
+RcppExport SEXP _quanteda_qatd_cpp_wordfish(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP, SEXP ABSSEXP, SEXP svd_sparseSEXP, SEXP residual_floorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -357,7 +315,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type ABS(ABSSEXP);
     Rcpp::traits::input_parameter< bool >::type svd_sparse(svd_sparseSEXP);
     Rcpp::traits::input_parameter< double >::type residual_floor(residual_floorSEXP);
-    rcpp_result_gen = Rcpp::wrap(wordfishcpp_mt(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_wordfish(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_sparse, residual_floor));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -373,21 +331,18 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_MinkowskiPara_cpp", (DL_FUNC) &_quanteda_qatd_MinkowskiPara_cpp, 3},
     {"_quanteda_qatd_MinkowskiPara_cpp2", (DL_FUNC) &_quanteda_qatd_MinkowskiPara_cpp2, 4},
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 8},
-    {"_quanteda_qatd_cpp_sequences", (DL_FUNC) &_quanteda_qatd_cpp_sequences, 6},
+    {"_quanteda_qatd_cpp_sequences", (DL_FUNC) &_quanteda_qatd_cpp_sequences, 7},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},
-    {"_quanteda_qatd_cpp_tokens_detect", (DL_FUNC) &_quanteda_qatd_cpp_tokens_detect, 2},
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 5},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
     {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 2},
-    {"_quanteda_qatd_cpp_tokens_replace", (DL_FUNC) &_quanteda_qatd_cpp_tokens_replace, 4},
     {"_quanteda_qatd_cpp_tokens_segment", (DL_FUNC) &_quanteda_qatd_cpp_tokens_segment, 5},
-    {"_quanteda_qatd_cpp_tokens_select", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select, 5},
+    {"_quanteda_qatd_cpp_tokens_select", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select, 7},
     {"_quanteda_qatd_cpp_chars_remove", (DL_FUNC) &_quanteda_qatd_cpp_chars_remove, 2},
     {"_quanteda_qatd_cpp_tbb_enabled", (DL_FUNC) &_quanteda_qatd_cpp_tbb_enabled, 0},
-    {"_quanteda_wordfishcpp", (DL_FUNC) &_quanteda_wordfishcpp, 9},
-    {"_quanteda_wordfishcpp_dense", (DL_FUNC) &_quanteda_wordfishcpp_dense, 7},
-    {"_quanteda_wordfishcpp_mt", (DL_FUNC) &_quanteda_wordfishcpp_mt, 9},
+    {"_quanteda_qatd_cpp_wordfish_dense", (DL_FUNC) &_quanteda_qatd_cpp_wordfish_dense, 7},
+    {"_quanteda_qatd_cpp_wordfish", (DL_FUNC) &_quanteda_qatd_cpp_wordfish, 9},
     {NULL, NULL, 0}
 };
 

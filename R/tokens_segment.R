@@ -44,19 +44,6 @@ tokens_segment <- function(x, pattern,
     UseMethod("tokens_segment")
 }
 
-#' @rdname tokens_segment
-#' @noRd
-#' @export
-tokens_segment.tokenizedTexts <- function(x, pattern,
-                                          valuetype = c("glob", "regex", "fixed"),
-                                          case_insensitive = TRUE, 
-                                          extract_pattern = FALSE,
-                                          pattern_position = c("before", "after"), 
-                                          use_docvars = TRUE) {
-    x <- tokens_segment(as.tokens(x), pattern, valuetype, case_insensitive, extract_pattern, use_docvars)
-    x <- as.tokenizedTexts(x)
-    return(x)
-}
 
 #' @rdname tokens_segment
 #' @noRd

@@ -8,31 +8,58 @@
 #'   in \code{train}.  (These will be converted to factors if not already 
 #'   factors.)
 #' @param smooth smoothing parameter for feature counts by class
-#' @param prior prior distribution on texts; see Details
+#' @param prior prior distribution on texts; one of \code{"uniform"},
+#'   \code{"docfreq"}, or \code{"termfreq"}.  See Prior Distributions below.
 #' @param distribution count model for text features, can be \code{multinomial} 
 #'   or \code{Bernoulli}.  To fit a "binary multinomial" model, first convert the 
 #'   dfm to a binary matrix using \code{\link{tf}(x, "boolean")}.
 #' @param ... more arguments passed through
-#' @return A list of return values, consisting of:
+#' @return A list of return values, consisting of (where \eqn{I} is the total
+#'   number of documents, \eqn{J} is the total numebr features, and \eqn{k} is
+#'   the total number of training classes):
 #' @return \item{call}{original function call}
-#' @return \item{PwGc}{probability of the word given the class (empirical 
+#' @return \item{PwGc}{\eqn{k \times J}; probability of the word given the class (empirical 
 #'   likelihood)}
-#' @return \item{Pc}{class prior probability}
-#' @return \item{PcGw}{posterior class probability given the word}
-#' @return \item{Pw}{baseline probability of the word}
-#' @return \item{data}{list consisting of \code{x} training class, and \code{y} 
-#'   test class}
+#' @return \item{Pc}{\eqn{k}-length named numeric vector of class prior probabilities}
+#' @return \item{PcGw}{\eqn{k \times J}; posterior class probability given the word}
+#' @return \item{Pw}{\eqn{J \times 1}; baseline probability of the word}
+#' @return \item{data}{list consisting of the \eqn{I \times J} training dfm
+#'   \code{x}, and the \eqn{I}-length \code{y} training class vector}
 #' @return \item{distribution}{the distribution argument}
-#' @return \item{prior}{argument passed as a prior}
-#' @return \item{smooth}{smoothing parameter}
+#' @return \item{prior}{the prior argument}
+#' @return \item{smooth}{the value of the smoothing parameter}
 #' @section Predict Methods: A \code{predict} method is also available for a 
 #'   fitted Naive Bayes object, see \code{\link{predict.textmodel_NB_fitted}}.
+#' @section Prior distributions:
+#' 
+#' Prior distributions refer to the prior probabilities assigned to the training
+#' classes, and the choice of prior distribution affects the calculation of the
+#' fitted probabilities.  The default is uniform priors, which sets the
+#' unconditional probability of observing the one class to be the same as
+#' observing any other class.
+#'
+#' "Document frequency" means that the class priors will be taken from the
+#' relative proportions of the class documents used in the training set.  This
+#' approach is so common that it is assumed in many examples, such as the worked
+#' example from Manning, Raghavan, and Schütze (2008) below.  It is not the
+#' default in \pkg{quanteda}, however, since there may be nothing informative in
+#' the relative numbers of documents used to train a classifier other than the
+#' relative availability of the documents.  When training classes are balanced
+#' in their number of documents (usually advisable), however, then the
+#' empirically computed "docfreq" would be equivalent to "uniform" priors.
+#'
+#' Setting \code{prior} to "termfreq" makes the priors equal to the proportions
+#' of total feature counts found in the grouped documents in each training
+#' class, so that the classes with the largest number of features are assigned
+#' the largest priors. If the total count of features in each training class was
+#' the same, then "uniform" and "termfreq" would be the same.
 #' @references Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction
 #'   to Information Retrieval. Cambridge University Press.
 #'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 #'   
 #'   Jurafsky, Daniel and James H. Martin. (2016) \emph{Speech and Language Processing.}  Draft of November 7, 2016.
 #'   \url{https://web.stanford.edu/~jurafsky/slp3/6.pdf}
+#' @name textmodel-nb
 #' @author Kenneth Benoit
 #' @examples
 #' ## Example from 13.1 of _An Introduction to Information Retrieval_
@@ -45,30 +72,32 @@
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #'  
 #' ## replicate IIR p261 prediction for test set (document 5)
-#' (nb.p261 <- textmodel_NB(trainingset, trainingclass, prior = "docfreq"))
+#' (nb.p261 <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
 #' predict(nb.p261, newdata = trainingset[5, ])
 #' 
 #' # contrast with other priors
-#' predict(textmodel_NB(trainingset, trainingclass, prior = "uniform"))
-#' predict(textmodel_NB(trainingset, trainingclass, prior = "termfreq"))
+#' predict(textmodel_nb(trainingset, trainingclass, prior = "uniform"))
+#' predict(textmodel_nb(trainingset, trainingclass, prior = "termfreq"))
 #' 
 #' ## replicate IIR p264 Bernoulli Naive Bayes
-#' (nb.p261.bern <- textmodel_NB(trainingset, trainingclass, distribution = "Bernoulli", 
+#' (nb.p261.bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
 #'                               prior = "docfreq"))
 #' predict(nb.p261.bern, newdata = trainingset[5, ])
 #' @export
-textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
+textmodel_nb <- textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
                          distribution = c("multinomial", "Bernoulli"), ...) {
-    UseMethod("textmodel_NB")
+    UseMethod("textmodel_nb")
 }
 
 #' @noRd
 #' @export
-textmodel_NB.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
+textmodel_nb.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
                              distribution = c("multinomial", "Bernoulli"), ...) {
-    call <- match.call()
+    
+    x <- as.dfm(x)
     prior <- match.arg(prior)
     distribution <- match.arg(distribution)
+    call <- match.call()
     
     y <- factor(y) # no effect if already a factor    
     x.trset <- x[which(!is.na(y)), ]
@@ -133,8 +162,12 @@ textmodel_NB.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "
     ## P(w)
     Pw <- t(PwGc) %*% as.numeric(Pc)
     
-    ll <- list(call=call, PwGc=PwGc, Pc=Pc, PcGw = PcGw, Pw = Pw, 
-               data = list(x=x, y=y), 
+    ll <- list(call = call, 
+               PwGc = as.matrix(PwGc), 
+               Pc = Pc, 
+               PcGw = as.matrix(PcGw), 
+               Pw = as.matrix(Pw), 
+               data = list(x = x, y = y), 
                distribution = distribution, prior = prior, smooth = smooth)
     class(ll) <- c("textmodel_NB_fitted", class(ll))
     return(ll)
@@ -158,14 +191,14 @@ textmodel_NB.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "
 #' @author Kenneth Benoit
 #' @rdname predict.textmodel
 #' @examples 
-#' (nbfit <- textmodel_NB(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
+#' (nbfit <- textmodel_nb(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
 #' (nbpred <- predict(nbfit))
 #' @keywords internal textmodel
 #' @export
 predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
     
     call <- match.call()
-    if (is.null(newdata)) newdata <- object$data$x
+    if (is.null(newdata)) newdata <- as.dfm(object$data$x)
 
     # remove any words for which zero probabilities exist in training set --
     # would happen if smooth=0

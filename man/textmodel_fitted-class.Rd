@@ -23,7 +23,7 @@ Available types currently include...
 
 \item{\code{call}}{the function call that fitted the model}
 
-\item{\code{method}}{the type of textmodel, e.g. wordfish, wordscores, NB-}
+\item{\code{method}}{the type of textmodel, e.g. wordfish, wordscores, nb}
 }}
 
 \keyword{internal}

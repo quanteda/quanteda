@@ -89,10 +89,10 @@ expressions, including a dictionary.</p>
 
     <pre class="usage"><span class='fu'>tokens_select</span>(<span class='no'>x</span>, <span class='no'>pattern</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))
+  <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))
 
 <span class='fu'>tokens_remove</span>(<span class='no'>x</span>, <span class='no'>pattern</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -128,6 +128,19 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
 previously existed.  This is useful if a positional match is needed between
 the pre- and post-selected tokens, for instance if a window of adjacency 
 needs to be computed.</p></td>
+    </tr>
+    <tr>
+      <th>window</th>
+      <td><p>integer of length 1 or 2; the size of the window of tokens
+  adjacent to <code>pattern</code> that will be selected. The window is symmetric
+  unless a vector of two elements is supplied, in which case the first
+  element will be the token length of the window before <code>pattern</code>, and
+  the second will be the token length of the window after <code>pattern</code>.
+  The default is <code>0</code>, meaning that only the pattern matched token(s) are
+  selected, with no adjacent terms.</p>
+<p>Terms from overlapping windows are never double-counted, but simply
+  returned in the patern match. This is because <code>tokens_select</code> never
+  redefines the document units; for this, see <code><a href='kwic.html'>kwic</a></code>.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -179,6 +192,26 @@ selected or removed</p></td>
 #&gt; text2 :
 #&gt; [1] "second"   "sentence"
 #&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"this"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; text1 :
+#&gt; [1] "This"     "sentence"
+#&gt; 
+#&gt; text2 :
+#&gt; [1] "This"     "second"   "sentence"
+#&gt; </div><div class='input'>
+<span class='co'># use window</span>
+<span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='st'>"second"</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; text1 :
+#&gt; character(0)
+#&gt; 
+#&gt; text2 :
+#&gt; [1] "a"        "second"   "sentence"
+#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='st'>"second"</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; text1 :
+#&gt; [1] "This"     "is"       "a"        "sentence"
+#&gt; 
+#&gt; text2 :
+#&gt; [1] "This" "is"  
+#&gt; </div><div class='input'><span class='fu'>tokens_remove</span>(<span class='no'>toks</span>, <span class='st'>"is"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt; [1] "This"     "sentence"
 #&gt; 

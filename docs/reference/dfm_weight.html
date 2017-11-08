@@ -162,7 +162,7 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
 <span class='co'># combine these methods for more complex dfm_weightings, e.g. as in Section 6.4</span>
 <span class='co'># of Introduction to Information Retrieval</span>
 <span class='fu'>head</span>(<span class='fu'><a href='tfidf.html'>tfidf</a></span>(<span class='no'>dtm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"log"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (30.6% sparse).
-#&gt; 6 x 6 sparse Matrix of class "dfmSparse"
+#&gt; 6 x 6 sparse Matrix of class "dfm"
 #&gt;                  features
 #&gt; docs              fellow-citizens of the    senate and    house
 #&gt;   1789-Washington       0.4846744  0   0 0.8091855   0 1.119326
@@ -174,12 +174,12 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
 <span class='co'>#' # apply numeric weights</span>
 <span class='no'>str</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"apple is better than banana"</span>, <span class='st'>"banana banana apple much better"</span>)
 (<span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>str</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    apple better banana much
 #&gt;   text1     1      1      1    0
 #&gt;   text2     1      1      2    1</div><div class='input'><span class='fu'>dfm_weight</span>(<span class='no'>mydfm</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>apple</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>banana</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>much</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    apple better banana much
 #&gt;   text1     5      1      3  0  
@@ -187,7 +187,7 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
 
 <span class='co'># smooth the dfm</span>
 <span class='fu'>dfm_smooth</span>(<span class='no'>mydfm</span>, <span class='fl'>0.5</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (0% sparse).
-#&gt; 2 x 4 Matrix of class "dfmDense"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    apple better banana much
 #&gt;   text1   1.5    1.5    1.5  0.5

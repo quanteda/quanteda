@@ -1,15 +1,10 @@
 context("testing tokens")
 
-##
-## tokens_hashed tests
-##
-
 test_that("nsyllable works as expected", {
     txt <- c(one = "super freakily yes",
              two = "merrily all go aerodynamic")
-    toksh <- tokens(txt)
-    toks <- tokenize(txt)
-    expect_equivalent(nsyllable(toks), nsyllable(toksh), list(c(2, 3, 1), c(3, 1, 1, 5)))
+    toks <- tokens(txt)
+    expect_equivalent(nsyllable(toks), list(c(2, 3, 1), c(3, 1, 1, 5)))
 })
 
 test_that("nsyllable works as expected with padding = TRUE", {
@@ -20,76 +15,19 @@ test_that("nsyllable works as expected with padding = TRUE", {
 })
 
 
-test_that("tokens_wordstem works as expected for tokens_hashed", {
-
-    txt <- c(one = "Eating eater eaters eats ate.",
-             two = "Taxing taxes taxed my tax return.")
-    toks <- tokenize(char_tolower(txt), remove_punct = TRUE)
-    toksh <- tokens(char_tolower(txt), remove_punct = TRUE)
-    classic <- tokens_wordstem(toks)
-    hashed <- tokens_wordstem(toksh)
-    expect_equivalent(classic, as.tokenizedTexts(hashed))
-})
-
-test_that("ngrams works as expected for tokens_hashed", {
-    txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),
-             two = "A B C D E")
-    toks <- tokenize(txt, remove_punct = TRUE)
-    toksh <- tokens(txt, remove_punct = TRUE)
-    classic <- tokens_ngrams(toks, n = 2:3)
-    hashed <- as.tokenizedTexts(tokens_ngrams(toksh, n = 2:3))
-    # testthat::expect_equivalent(as.list(classic),
-    #                             as.list(hashed))
-    classic <- list(sort(unlist(classic$one)), sort(unlist(classic$two)))
-    hashed <- list(sort(unlist(hashed$one)), sort(unlist(hashed$two)))
-    expect_equivalent(lapply(classic, sort),
-                      lapply(hashed, sort))
-})
-
-test_that("skipgrams works as expected for tokens_hashed", {
-    txt <- c(one = "insurgents killed in ongoing fighting")
-    toks <- tokenize(txt)
-    toksh <- tokens(txt)
-    classic <- skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
-    hashed <- skipgrams(toksh, n = 3, skip = 0:2, concatenator = " ")
-    expect_equivalent(classic, as.tokenizedTexts(hashed))
-})
-
-
-test_that("as.tokens tokenizedTexts works as expected", {
-    txt <- c(doc1 = "The first sentence is longer than the second.",
-             doc2 = "Told you so.")
-    toks <- tokenize(txt)
-    toksh <- tokens(txt) 
-    expect_equivalent(toksh, 
-                      as.tokens(toks))
-})
-
-test_that("as.tokens list version works as expected", {
-    txt <- c(doc1 = "The first sentence is longer than the second.",
-             doc2 = "Told you so.")
-    toksh <- tokens(txt) 
-    toks <- tokenize(txt)
-    attributes(toks) <- NULL
-    names(toks) <- names(txt)
-    expect_equal(class(toks), "list")
-    expect_equivalent(toksh, 
-                      as.tokens(toks))
-})
-
 test_that("as.tokens list version works as expected", {
     txt <- c(doc1 = "The first sentence is longer than the second.",
              doc2 = "Told you so.")
     tokslist <- as.list(tokens(txt))
     toks <- tokens(txt)
     expect_equal(as.tokens(tokslist), 
-                      toks)
+                 toks)
 })
 
 
 test_that("tokens indexing works as expected", {
     toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
-
+    
     expect_equal(toks$d1, c("one", "two", "three"))
     expect_equal(toks[[1]], c("one", "two", "three"))
     
@@ -104,12 +42,12 @@ test_that("tokens indexing works as expected", {
 test_that("tokens_recompile combine duplicates is working", {
     toksh <- tokens(c(one = "a b c d A B C D", two = "A B C d"))
     expect_equivalent(attr(toksh, "types"),
-                    c("a", "b", "c", "d", "A", "B", "C", "D"))
+                      c("a", "b", "c", "d", "A", "B", "C", "D"))
     expect_equivalent(attr(tokens_tolower(toksh), "types"),
-                    c("a", "b", "c", "d"))
+                      c("a", "b", "c", "d"))
     attr(toksh, "types") <- char_tolower(attr(toksh, "types"))
     expect_equivalent(attr(quanteda:::tokens_recompile(toksh), "types"),
-                    c("a", "b", "c", "d"))
+                      c("a", "b", "c", "d"))
     
 })
 
@@ -245,11 +183,6 @@ test_that("remove_url works as expected", {
              text3 = c("is", "another", "URL"))
     )
 
-    toks2 <- tokenize(txt, remove_url = TRUE)
-    expect_equivalent(
-        as.list(toks2),
-        list(c("The", "URL", "was"), c("The", "URL", "was"), c("is", "another", "URL"))
-    )
 })
 
 test_that("remove_punct and remove_twitter interact correctly, #607", {
@@ -292,7 +225,7 @@ test_that("+ operator works with tokens", {
 })
 
 test_that("c() works with tokens", {
-
+    
     txt1 <- c(d1 = "This is sample document one.",
               d2 = "Here is the second sample document.")
     txt2 <- c(d3 = "And the third document.")
@@ -318,7 +251,7 @@ test_that("c() works with tokens", {
 test_that("docvars are erased for tokens added", {
     mycorpus <- corpus(c(d1 = "This is sample document one.",
                          d2 = "Here is the second sample document."), 
-                        docvars = data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2)))
+                       docvars = data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2)))
     expect_equivalent(
         docvars(tokens(mycorpus, include_docvars = TRUE)),
         data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2))
@@ -334,11 +267,11 @@ test_that("what = character works with @ and #, issue #637", {
     expect_equal(as.list(tokens("This: is, a @test! #tag", what = "character", remove_punct = FALSE)),
                  list(text1 = c("T", "h", "i", "s", ":", "i", "s", ",", 
                                 "a", "@", "t", "e", "s", "t", "!", "#", "t", "a", "g")))
-                      
+    
     expect_equal(as.list(tokens("This: is, a @test! #tag", what = "character", remove_punct = TRUE)),
                  list(text1 = c("T", "h", "i", "s", "i", "s", 
                                 "a", "t", "e", "s", "t", "t", "a", "g")))
-
+    
 })
 
 test_that("unlist retuns character vector, issue #716", {
@@ -351,7 +284,7 @@ test_that("unlist retuns character vector, issue #716", {
 
 
 test_that("deprecated tokens arguments still work", {
-
+    
     expect_warning(
         tokens("This contains 99 numbers.", removeNumbers = TRUE),
         "removeNumbers is deprecated"
@@ -383,7 +316,7 @@ test_that("tokens arguments works with values from parent frame (#721)", {
         dfm("This contains 99 numbers.", remove_numbers = T),
         dfm("This contains 99 numbers.", remove_numbers = TRUE)
     )
-
+    
     val <- FALSE
     expect_identical(
         tokens("This contains 99 numbers.", remove_numbers = val),
@@ -509,7 +442,7 @@ test_that("remove_hyphens is working correctly", {
     expect_equal(dfm(corp, remove_punct = TRUE), dfm(toks, remove_punct = TRUE))
     expect_equal(setdiff(featnames(dfm(corp, ngrams = 2)), featnames(dfm(toks, ngrams = 2))),
                  character())
-
+    
 })
 
 test_that("tokens works as expected with NA, and blanks", {
@@ -537,7 +470,6 @@ test_that("tokens works as expected with NA, and blanks", {
         as.list(tokens(c(d1 = NA, d2 = ""))),
         list(d1 = "NA", d2 = character())
     )
-    expect_equal(tokens_hash(list("")), tokens_hash(list("")))
     expect_equal(
         as.character(as.tokens(list(""))),
         ""
@@ -554,4 +486,4 @@ test_that("assignment operators are disabled for tokens object", {
     expect_error(toks[[1]] <- c(6, 100, 'z'), 'assignment to tokens objects is not allowed')
     expect_error(toks[1] <- list(c(6, 100, 'z')), 'assignment to tokens objects is not allowed')
 })
-    
+
