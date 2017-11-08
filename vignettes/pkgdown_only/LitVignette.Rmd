@@ -406,7 +406,7 @@ dfm(chapters_corp) %>%
     head(n = 10)
 ```
 
-# 7. Hapax Richness
+# 7 Hapax Richness
 
 Another measure of lexical diversity is Hapax richness, defined as the number of words that occur only once divided by the total number of words. We can calculate Hapax richness very simply by using a logical operation on the document-feature matrix, to return a logical value for each term that occurs once, and then sum these to get a count.
 ```{r}
@@ -453,7 +453,7 @@ textplot_xray(dogkwic, scale = "absolute")
 
 # 10 Text Quality, Text Variety, and Parsing XML
 
-We should be able to put `melville1.xml` in the vignette folder, access it from GitHub, and demonstrate how easy this is to do using **readtext**.
+
 
 # 11 Clustering
 
@@ -481,7 +481,6 @@ plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized
 
 # 12 Classification
 
-_To be added._
 
 # 13 Topic Modeling
 
