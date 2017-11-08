@@ -1,4 +1,4 @@
-context("test textmodel_NB")
+context("test textmodel_nb")
 
 ## Example from 13.1 of _An Introduction to Information Retrieval_
 txt <- c(d1 = "Chinese Beijing Chinese",
@@ -10,20 +10,20 @@ trainingset <- dfm(txt, tolower = FALSE)
 trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 
 nb_multi_smooth <- 
-    textmodel_NB(trainingset, trainingclass, prior = "docfreq", distribution = "multinomial", smooth = 1)
+    textmodel_nb(trainingset, trainingclass, prior = "docfreq", distribution = "multinomial", smooth = 1)
 nb_multi_nosmooth <- 
-    textmodel_NB(trainingset, trainingclass, prior = "docfreq", distribution = "multinomial", smooth = 0)
+    textmodel_nb(trainingset, trainingclass, prior = "docfreq", distribution = "multinomial", smooth = 0)
 nb_bern_smooth <- 
-    textmodel_NB(trainingset, trainingclass, prior = "docfreq", distribution = "Bernoulli", smooth = 1)
+    textmodel_nb(trainingset, trainingclass, prior = "docfreq", distribution = "Bernoulli", smooth = 1)
 nb_bern_nosmooth <- 
-    textmodel_NB(trainingset, trainingclass, prior = "docfreq", distribution = "Bernoulli", smooth = 0)
+    textmodel_nb(trainingset, trainingclass, prior = "docfreq", distribution = "Bernoulli", smooth = 0)
 
 test_that("class priors are preserved in correct order", {
-    expect_equal(textmodel_NB(trainingset, trainingclass, prior = "uniform")$Pc,
+    expect_equal(textmodel_nb(trainingset, trainingclass, prior = "uniform")$Pc,
                  c(Y = 0.5, N = 0.5))
-    expect_equal(textmodel_NB(trainingset, trainingclass, prior = "docfreq")$Pc,
+    expect_equal(textmodel_nb(trainingset, trainingclass, prior = "docfreq")$Pc,
                  c(Y = 0.75, N = 0.25))
-    expect_equal(round(textmodel_NB(trainingset, trainingclass, prior = "termfreq")$Pc, 2),
+    expect_equal(round(textmodel_nb(trainingset, trainingclass, prior = "termfreq")$Pc, 2),
                  c(Y = 0.73, N = 0.27))
 })
 
