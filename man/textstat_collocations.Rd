@@ -2,6 +2,7 @@
 % Please edit documentation in R/textstat_collocations.R
 \name{textstat_collocations}
 \alias{textstat_collocations}
+\alias{collocations}
 \alias{is.collocations}
 \title{identify and score multi-word expressions}
 \usage{

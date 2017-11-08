@@ -74,6 +74,7 @@
 #' 
 #' @return \code{textstat_collocations} returns a data.frame of collocations and their
 #'   scores and statistsics.
+#' @aliases collocations
 #' @export
 #' @keywords textstat collocations experimental
 #' @author Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
