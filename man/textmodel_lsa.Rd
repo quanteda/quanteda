@@ -30,8 +30,8 @@ Transformation method for Latent Sementic Analysis objects
 }
 \note{
 The number of dimensions \code{nd} retained in LSA is an empirical
-  issue. While a reduction in \deqn{k} can remove much of the noise, keeping
-  too few dimensions or factors may loose important information.
+  issue. While a reduction in \eqn{k} can remove much of the noise, keeping
+  too few dimensions or factors may lose important information.
 }
 \examples{
 ieDfm <- dfm(data_corpus_irishbudget2010)

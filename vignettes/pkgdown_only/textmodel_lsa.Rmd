@@ -1,11 +1,11 @@
 ---
-title: "Topic modeling - Latent Semantic Analysis(LSA) "
+title: "Topic modeling - Latent Semantic Analysis (LSA)"
 output: 
   rmarkdown::html_vignette:
     css: mystyle.css
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{Text Analysis for Literature}
+  %\VignetteIndexEntry{Latent Semantic Analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,7 +21,7 @@ LSA decomposes document-feature matrix into a reduced vector space that is assum
 
 New documents or queries can be 'folded-in' to this constructed latent semantic space for downstream tasks. 
 
-# 1 Create a document-feature matrix
+## 1. Create a document-feature matrix
 
 ```{r}
 require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
@@ -35,7 +35,7 @@ mydfm
 
 
 
-# 2. Construct a lsa model
+## 2. Construct the LSA model
 ```{r}
 mylsa <- textmodel_lsa(mydfm)
 ```
@@ -45,13 +45,12 @@ mylsa <- textmodel_lsa(mydfm)
 mylsa$docs[, 1:2]
 ```
 
-# 3. Apply the construted lsa model to new data
+## 3. Apply the constructed LSA model to new data
 Now the new unseen document can be represented in the reduced 2-dimensional space.
 The unseen query document:
 ```{r}
-query <- dfm(c("gold silver truck"))
-cdfm <- rbind(mydfm, query)
-querydfm <- cdfm[nrow(cdfm), ]
+querydfm <- dfm(c("gold silver truck")) %>%
+    dfm_select(pattern = mydfm)
 querydfm
 ```
 ```{r}
