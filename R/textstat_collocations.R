@@ -92,12 +92,12 @@
 #' head(seqs, 10)
 #' 
 #' # recursive = FALSE
-#' txt <- c(". . . . a b c . . a b c . . .",
+#' txt <- c(". . . . a b c . . a b c . . . c d e",
 #'          "a b . . a b . . a b . . a b . a b",
-#'          "b c . . b c . b c . . . b c")
-#' toks <- tokens(txt) %>% tokens_keep(c("a", "b", "c"), padding = TRUE)
-#' textstat_collocations(toks2, size = 2:3, recursive = TRUE)
-#' textstat_collocations(toks2, size = 2:3, recursive = FALSE)
+#'          "b c d . . b c . b c . . . b c")
+#' toks <- tokens(txt) %>% tokens_keep(c("a", "b", "c", "d", "e"), padding = TRUE)
+#' textstat_collocations(toks, size = 2:3, recursive = TRUE)
+#' textstat_collocations(toks, size = 2:3, recursive = FALSE)
 #' 
 textstat_collocations <- function(x, method = "lambda", 
                                   size = 2, 

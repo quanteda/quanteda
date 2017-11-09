@@ -411,14 +411,15 @@ DataFrame qatd_cpp_sequences(const List &texts_,
             seqs.push_back(it->first);
             cs.push_back(it->second.first); // counts of all but ineligible
             total_counts += it->second.first; // total counts of all but ineligible
-            if (it->second.second >= count_min) {
+            //if (it->second.second >= count_min) {
+            if (it->second.first >= count_min && it->second.second > 0) {
                 // local values
                 seqs_np.push_back(it->first);
                 cs_np.push_back(it->second.first);
                 len_np++;
                 // global values
                 seqs_all.push_back(it->first);
-                cs_all.push_back(it->second.second);
+                cs_all.push_back(it->second.first);
                 ns_all.push_back(it->first.size());
             }
         }
