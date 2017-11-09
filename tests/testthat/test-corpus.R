@@ -287,3 +287,18 @@ test_that("internal documents fn works", {
         c(3, 3)
     )
 })
+
+test_that("corpus constructor works with tibbles", {
+    skip_if_not_installed("tibble")
+    dd <- tibble::data_frame(a=1:3, text=c("Hello", "quanteda", "world"))
+    expect_is(
+        corpus(dd),
+        "corpus"
+    )
+    expect_equal(
+        texts(corpus(dd)),
+        c(text1 = "Hello", text2 = "quanteda", text3 = "world")
+    )
+})
+
+

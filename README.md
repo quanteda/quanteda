@@ -1,5 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 ### [![quanteda: quantitative analysis of textual data](https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
 
 [![CRAN Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master) [![codecov](https://codecov.io/gh/kbenoit/quanteda/branch/master/graph/badge.svg)](https://codecov.io/gh/kbenoit/quanteda) [![DOI](https://zenodo.org/badge/5424649.svg)](https://zenodo.org/badge/latestdoi/5424649)
@@ -18,7 +17,7 @@ How to cite the package:
     Benoit K (2017). _quanteda: Quantitative Analysis of Textual
     Data_. doi: doi.org/10.5281/zenodo.1004683 (URL:
     http://doi.org/doi.org/10.5281/zenodo.1004683), R package version
-    0.99.9001, <URL: http://quanteda.io>.
+    0.99.9004, <URL: http://quanteda.io>.
 
     A BibTeX entry for LaTeX users is
 
@@ -28,7 +27,7 @@ How to cite the package:
         year = {2017},
         doi = {doi.org/10.5281/zenodo.1004683},
         url = {http://quanteda.io},
-        note = {R package version 0.99.9001},
+        note = {R package version 0.99.9004},
       }
 
 How to Install
@@ -47,7 +46,9 @@ How to Install
     devtools::install_github("kbenoit/quanteda") 
     ```
 
-    Because this compiles some C++ source code, you will need a compiler installed. If you are using a Windows platform, this means you will need also to install the [Rtools](https://CRAN.R-project.org/bin/windows/Rtools/) software available from CRAN. If you are using OS X, you will need to to install XCode, available for free from the App Store, or if you prefer a lighter footprint set of tools, [just the Xcode command line tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/), using the command `xcode-select --install` from the Terminal.
+    Because this compiles some C++ source code, you will need a compiler installed. If you are using a Windows platform, this means you will need also to install the [Rtools](https://CRAN.R-project.org/bin/windows/Rtools/) software available from CRAN. **If you are using macOS**, you will need to to install XCode, available for free from the App Store, or if you prefer a lighter footprint set of tools, [just the Xcode command line tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/), using the command `xcode-select --install` from the Terminal.
+
+    Also, you might need to upgrade your compiler. @kbenoit found that his macOS build only worked reliably after upgrading the default Xcode compiler to clang4, following [these instructions](http://thecoatlessprofessor.com/programming/openmp-in-r-on-os-x/#after-3-4-0).
 
 3.  Additional recommended packages:
 

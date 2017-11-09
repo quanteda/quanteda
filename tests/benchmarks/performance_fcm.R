@@ -1,6 +1,6 @@
 #' fcm performance test
 #' 
-#' @param x tokenizedTexts
+#' @param x tokens
 #' @export
 #' @examples 
 #' devtools::install_github("kbenoit/quantedaData")

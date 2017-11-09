@@ -6,6 +6,7 @@
 
 * `tokens_segment()` has a new `window` argument, permitting selection within an asymmetric window around the `pattern` of selection. (#521)
 * `tokens_replace()` now allows token types to be substituted directly and quickly. 
+* Added a `spacy_parse` method for corpus objects.  Also restored quanteda methods for **spacyr** `spacy_parsed` objects.
 
 ### Bug fixes and stability enhancements
 
@@ -16,6 +17,8 @@
 
 * All of the deprecated functions are now removed. (#991)
 * `tokens_group()` is now significantly faster.
+* The deprecated "list of characters" `tokenize()` function and all methods associated with the `tokenizedTexts` object types have been removed.
+* Added convenience functions for keeping tokens or features: `tokens_keep()`, `dfm_keep()`, and `fcm_keep()`. (#1037)
 
 
 ## Changes since v0.99.9

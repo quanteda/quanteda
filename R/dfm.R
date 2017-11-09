@@ -15,7 +15,7 @@
 #'   are only specific features that a user wishes to keep. To extract only 
 #'   Twitter usernames, for example, set \code{select = "@@*"} and make sure 
 #'   that \code{remove_twitter = FALSE} as an additional argument passed to 
-#'   \link{tokenize}.  Note: \code{select = "^@@\\\w+\\\b"} would be the regular
+#'   \link{tokens}.  Note: \code{select = "^@@\\\w+\\\b"} would be the regular
 #'   expression version of this matching pattern.  The pattern matching type 
 #'   will be set by \code{valuetype}.  See also \code{\link{tokens_remove}}.
 #' @param dictionary a \link{dictionary} object to apply to the tokens when 
@@ -185,30 +185,6 @@ dfm.corpus <- function(x,
                dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
                groups = groups, 
                verbose = verbose,
-               ...)
-}    
-
-#' @noRd
-#' @importFrom utils glob2rx
-#' @export
-dfm.tokenizedTexts <- function(x, 
-                               tolower = TRUE,
-                               stem = FALSE, 
-                               select = NULL,
-                               remove = NULL,
-                               dictionary = NULL,
-                               thesaurus = NULL,
-                               valuetype = c("glob", "regex", "fixed"), 
-                               groups = NULL, 
-                               verbose = quanteda_options("verbose"), 
-                               ...) {
-    dfm.tokens(as.tokens(x),  
-               tolower = tolower, 
-               stem = stem, 
-               select = select, remove = remove, 
-               dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
-               groups = groups, 
-               verbose = verbose, 
                ...)
 }
     
@@ -391,40 +367,6 @@ dfm.dfm <- function(x,
 ## internal function to compile the dfm
 compile_dfm <- function(x, verbose = TRUE) {
     UseMethod("compile_dfm")
-}
-
-## internal function to compile the dfm
-compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
-
-    # index documents
-    if (verbose) catm("   ... indexing documents: ", 
-                      format(length(x), big.mark=","), " document",
-                      ifelse(length(x) > 1, "s", ""), "\n", sep="")
-    nTokens <- lengths(x)
-    
-    # index features
-    if (verbose) catm("   ... indexing features: ")
-    if (sum(nTokens) == 0) {
-        catm("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
-        return(NULL)
-    }
-    allFeatures <- unlist(x, use.names=FALSE)
-    uniqueFeatures <- unique(allFeatures)
-    totalfeatures <- length(uniqueFeatures)
-    if (verbose) catm(format(totalfeatures, big.mark=","), " feature type",
-                      ifelse(totalfeatures > 1, "s", ""), "\n", sep="")
-    
-    docIndex <- c(rep(seq_along(nTokens), nTokens))
-    featureIndex <- match(allFeatures, uniqueFeatures)
-
-    # make the dfm
-    temp <- sparseMatrix(i = docIndex, 
-                         j = featureIndex, 
-                         x = 1L, 
-                         dims = c(length(x), length(uniqueFeatures)),
-                         dimnames = list(docs = names(x), 
-                                      features = uniqueFeatures))
-    new("dfm", temp)
 }
 
 compile_dfm.tokens <- function(x, verbose = TRUE) {

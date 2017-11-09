@@ -114,8 +114,10 @@ textstat_collocations.tokens <- function(x, method = "lambda", size = 2, min_cou
     #method <- match.arg(method, ("lambda", "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD"))
     method <- match.arg(method, c("lambda"))
     
-    if (any(!(size %in% 2:5)))
-        stop("Only bigram, trigram, 4-gram and 5-gram collocations implemented so far.")
+    if (any(size == 1))
+        stop("Collocation sizes must be larger than 1")
+    if (any(size > 5))
+        warning("Computation for large collocations may take long time")
 
     # lower case if requested
     if (tolower) x <- tokens_tolower(x, keep_acronyms = TRUE)
@@ -202,12 +204,6 @@ textstat_collocations.corpus <- function(x, method = "lambda", size = 2, min_cou
 textstat_collocations.character <- function(x, method = "lambda", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, ...) {
     textstat_collocations(corpus(x), method = method, size = size, min_count = min_count, 
                           smoothing = smoothing, tolower = tolower, ...)
-}
-
-#' @export
-textstat_collocations.tokenizedTexts <- function(x, method = "lambda", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, ...) {
-    textstat_collocations(as.tokens(x), method = method, size = size, min_count = min_count, 
-                          smoothing = smoothing, tolower = tolower)
 }
 
 

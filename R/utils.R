@@ -91,7 +91,7 @@ reassign_slots <- function(x_new, x_org, exceptions = NULL) {
 #' @keywords internal
 create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
     if (what == 'tokens') {
-        class <- c('tokens', 'tokenizedTexts', 'list')
+        class <- c('tokens', 'list')
     }
     x <- structure(x, class = class, ...)
     if (!is.null(attrs)) {

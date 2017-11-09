@@ -40,12 +40,6 @@ test_that("test kwic general", {
     expect_equal(
         data.frame(testkwic),
         dtf)
-    
-    #tokenizedTexts
-    testkwic <- kwic(tokenize(paste(LETTERS, collapse=' ')), 'D')
-    expect_equal(
-        data.frame(testkwic),
-        dtf) 
 })
 
 
