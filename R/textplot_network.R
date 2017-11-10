@@ -12,36 +12,44 @@
 #' @author Kohei Watanabe and Stefan Müller
 #' @examples
 #' \dontrun{
-#' toks <- corpus_subset(data_corpus_inaugural, President == "Obama") %>%
+#' toks <- corpus_subset(data_corpus_irishbudget2010) %>%
 #'     tokens(remove_punct = TRUE) %>%
+#'     tokens_tolower() %>%
 #'     tokens_remove(stopwords("english"), padding = FALSE)
 #' myfcm <- fcm(toks, context = "window", tri = FALSE)
-#' feat <- names(topfeatures(myfcm, 20))
-#' fcm_select(myfcm, feat, verbose = FALSE) %>% textplot_network()
-#' fcm_select(myfcm, feat, verbose = FALSE) %>% 
-#'     textplot_network(size = 20, shape = "vrectangle")
+#' feat <- names(topfeatures(myfcm, 30))
+#' fcm_select(myfcm, feat, verbose = FALSE) %>% textplot_network(ignore = 0.5)
+#' fcm_select(myfcm, feat, verbose = FALSE) %>% textplot_network(ignore = 0.8)
 #' }
 #' @export
 #' @seealso \code{\link{fcm}}
 #' @keywords textplot
-textplot_network <- function(x, width = 10, size = 15, shape = "circle", ignore = 0.5, ...) {
+textplot_network <- function(x, color = 'sky blue', ignore = 0.5, omit_isolated = TRUE, ...) {
     
     if (!is.fcm(x))
         stop("x must be a fcm object")
     
-    diag(x) <- 0
-    suppressMessages(
-        x[x < quantile(as.vector(x), ignore)] <- 0
-    )
-    temp <- igraph::graph_from_adjacency_matrix(x, weighted = TRUE, diag = FALSE, mode = 'undirected')
-    igraph::igraph_options(plot.layout = igraph::layout_with_fr, vertex.label.family = 'sans', 
-                           vertex.label.color = 'black',
-                           vertex.size = size,
-                           vertex.shape = shape,
-                           edge.color = adjustcolor('sky blue', 0.5),
-                           vertex.color = adjustcolor('white', 1.0),
-                           vertex.frame.color = adjustcolor('sky blue', 1.0),
-                           edge.curved = 0.3)
-    igraph::plot.igraph(temp, edge.width = igraph::E(temp)$weight / max(igraph::E(temp)$weight) * width, ...)
+    x <- as.matrix(x)
+    x[lower.tri(x, diag = FALSE)] <- 0
+    
+    # drop weak ties
+    if (ignore > 0) {
+        x[x < quantile(as.vector(x[x > 0]), ignore)] <- 0
+    }
+    
+    # drop isolated words 
+    if (omit_isolated) {
+        f <- rowSums(x)
+        x <- x[f > 0,f > 0]
+    }
+    
+    n <- as.network(x, matrix.type = 'adjacency', directed = FALSE, ignore.eval = FALSE, names.eval = 'weight')
+    network.vertex.names(n) <- colnames(x)
+    ggplot(n, aes(x = x, y = y, xend = xend, yend = yend), arrow.gap = 0.00) +
+           geom_edges(color = adjustcolor(color, 0.5), curvature = 0.2, alpha = 0.3, aes(size = weight), 
+                      angle = 90, show.legend = FALSE) +
+           theme_blank() +
+           geom_nodelabel(aes(label = vertex.names), label.size = 0.05) +
+           theme_blank()
 }
 
