@@ -12,7 +12,7 @@
 \title{coercion, checking, and combining functions for tokens objects}
 \usage{
 \method{as.tokens}{spacyr_parsed}(x, concatenator = "/",
-  include_pos = c("none", "pos", "tag"), use_lemma = FALSE)
+  include_pos = c("none", "pos", "tag"), use_lemma = FALSE, ...)
 
 as.tokens(x, concatenator = "_", ...)
 
@@ -42,7 +42,8 @@ will be added to the token after \code{"concatenator"}.}
 \item{use_lemma}{logical; if \code{TRUE}, use the lemma rather than the raw
 token}
 
-\item{...}{additional arguments used by specific methods}
+\item{...}{additional arguments used by specific methods.  For
+\link{c.tokens}, these are the \link{tokens} objects to be concatenated.}
 
 \item{recursive}{a required argument for \link{unlist} but inapplicable to
 \link{tokens} objects}
@@ -53,8 +54,6 @@ token}
 \item{t1}{tokens one to be added}
 
 \item{t2}{tokens two to be added}
-
-\item{...}{for \link{c.tokens} only, \link{tokens} objects to be concatenated}
 }
 \value{
 \code{as.tokens} returns a quanteda \link{tokens} object.

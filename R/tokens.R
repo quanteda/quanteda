@@ -250,7 +250,8 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
 #' @param x object to be coerced or checked
 #' @param concatenator character between multi-word expressions, default is the
 #'   underscore character.  See Details.
-#' @param ... additional arguments used by specific methods
+#' @param ... additional arguments used by specific methods.  For
+#'   \link{c.tokens}, these are the \link{tokens} objects to be concatenated.
 #' @return \code{as.tokens} returns a quanteda \link{tokens} object.
 #' @details The \code{concatenator} is used to automatically generate dictionary
 #'   values for multi-word expressions in \code{\link{tokens_lookup}} and
@@ -889,7 +890,6 @@ types.tokens <- function(x) {
 }
 
 #' @rdname as.tokens
-#' @param ... for \link{c.tokens} only, \link{tokens} objects to be concatenated
 #' @export
 c.tokens <- function(...) {
     x <- list(...)

@@ -100,7 +100,7 @@ spacy_parse.corpus <- function(x, ...) spacy_parse(texts(x), ...)
 #' @export
 as.tokens.spacyr_parsed <- function(x, concatenator = "/", 
                                     include_pos = c("none", "pos", "tag"), 
-                                    use_lemma = FALSE) {
+                                    use_lemma = FALSE, ...) {
     token_index <-  if (use_lemma) "lemma" else "token"
     
     include_pos <- match.arg(include_pos)
