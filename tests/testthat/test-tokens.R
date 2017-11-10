@@ -285,20 +285,20 @@ test_that("unlist retuns character vector, issue #716", {
 
 test_that("deprecated tokens arguments still work", {
     
-    expect_warning(
-        tokens("This contains 99 numbers.", removeNumbers = TRUE),
-        "removeNumbers is deprecated"
-    )
+    # expect_warning(
+    #     tokens("This contains 99 numbers.", removeNumbers = TRUE),
+    #     "removeNumbers is deprecated"
+    # )
     
     # for tokens
     expect_identical(
         as.character(tokens(c(d1 = "This: punctuation"), remove_punct = TRUE)),
         c("This", "punctuation")
     )
-    expect_identical(
-        as.character(tokens(c(d1 = "This: punctuation"), remove_punct = TRUE)),
-        as.character(tokens(c(d1 = "This: punctuation"), removePunct = TRUE))
-    )
+    # expect_identical(
+    #     as.character(tokens(c(d1 = "This: punctuation"), remove_punct = TRUE)),
+    #     as.character(tokens(c(d1 = "This: punctuation"), removePunct = TRUE))
+    # )
     expect_warning(
         tokens(c(d1 = "This: punctuation"), notanargument = TRUE),
         "Argument notanargument not used"

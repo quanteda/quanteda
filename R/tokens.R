@@ -499,17 +499,17 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
                             include_docvars = TRUE, 
                             ...) {
     
-    # trap older arguments, issue a warning, and call with correct arguments
-    thecall <- as.list(match.call())[-1]
-    oldargindex <- 
-        stri_detect_regex(names(thecall), 
-                          "remove(Numbers|Punct|Symbols|Separators|Twitter|Hyphens|URL)$")
-    if (any(oldargindex)) {
-        warning(names(thecall)[oldargindex], " is deprecated; use ",
-                tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex])), " instead", call. = FALSE)
-        names(thecall)[oldargindex] <- tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex]))
-        return(do.call(tokens, thecall))
-    }
+    # # trap older arguments, issue a warning, and call with correct arguments
+    # thecall <- as.list(match.call())[-1]
+    # oldargindex <- 
+    #     stri_detect_regex(names(thecall), 
+    #                       "remove(Numbers|Punct|Symbols|Separators|Twitter|Hyphens|URL)$")
+    # if (any(oldargindex)) {
+    #     warning(names(thecall)[oldargindex], " is deprecated; use ",
+    #             tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex])), " instead", call. = FALSE)
+    #     names(thecall)[oldargindex] <- tolower(gsub("([A-Z]+)", "_\\1", names(thecall)[oldargindex]))
+    #     return(do.call(tokens, thecall))
+    # }
     
     what <- match.arg(what)
     attrs <- attributes(x)
