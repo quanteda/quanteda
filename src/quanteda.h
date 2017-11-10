@@ -238,7 +238,6 @@ namespace quanteda{
         return spans;
     }
     
-
 // These typedefs are used in fcm_mt, ca, wordfish_mt
 #if QUANTEDA_USE_TBB
     typedef std::tuple<unsigned int, unsigned int, double> Triplet;

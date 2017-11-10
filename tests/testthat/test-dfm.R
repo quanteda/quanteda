@@ -634,3 +634,9 @@ test_that("dfm warns of argument not used", {
                    'Arguments xxxxx, yyyyy not used')
     
 })
+
+test_that("as.dfm works for dfmSparse objects", {
+    load("../data/old_dfmSparse.RData")
+    expect_true(is.dfm(as.dfm(old_dfmSparse)))
+})
+

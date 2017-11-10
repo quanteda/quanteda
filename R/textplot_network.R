@@ -1,26 +1,28 @@
-#' plot semantic network based on collocations
+#' plot a semantic network of feature co-occurrences
 #' 
-#' Plot \link{fcm} as a network, where vertices are features and edges are cooccuraces 
-#' using \code{\link[igraph]{igraph}}.
-#' @param x a dfm object
+#' Plot an \link{fcm} object as a network, where vertices are features and edges
+#' are co-occurrences, using \code{\link[igraph]{igraph}}.
+#' @param x a \link{dfm} object
 #' @param width the maximum width of links that connects words
 #' @param size size of the vertices
 #' @param shape shape of the vertices
 #' @param ignore a thread for infrequent collocations to be ignored
-#' @param ... additional parameters passed to \code{\link[igraph]{plot.igraph}}. Note that the 'vertex.' prefix needs to be added.
+#' @param ... additional parameters passed to \code{\link[igraph]{plot.igraph}}.
+#'   Note that the 'vertex.' prefix needs to be added.
 #' @author Kohei Watanabe and Stefan Müller
 #' @examples
 #' \dontrun{
-#' toks <- tokens(corpus_subset(data_corpus_inaugural, President == "Obama"), remove_punct = TRUE)
-#' toks <- tokens_remove(toks, stopwords("english"), padding = FALSE)
-#' myfcm <- fcm(toks, context = 'window', tri = FALSE)
-#' feats <- names(topfeatures(myfcm, 20))
-#' textplot_network(fcm_select(myfcm, feats), ignore = 0.5)
-#' textplot_network(fcm_select(myfcm, feats), ignore = 0.5, size = 20, shape = "vrectangle")
+#' toks <- corpus_subset(data_corpus_inaugural, President == "Obama") %>%
+#'     tokens(remove_punct = TRUE) %>%
+#'     tokens_remove(stopwords("english"), padding = FALSE)
+#' myfcm <- fcm(toks, context = "window", tri = FALSE)
+#' feat <- names(topfeatures(myfcm, 20))
+#' fcm_select(myfcm, feat, verbose = FALSE) %>% textplot_network()
+#' fcm_select(myfcm, feat, verbose = FALSE) %>% 
+#'     textplot_network(size = 20, shape = "vrectangle")
 #' }
 #' @export
-#' @seealso \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
-#'   \code{\link{coef.textmodel}}
+#' @seealso \code{\link{fcm}}
 #' @keywords textplot
 textplot_network <- function(x, width = 10, size = 15, shape = "circle", ignore = 0.5, ...) {
     

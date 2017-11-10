@@ -2,13 +2,13 @@
 % Please edit documentation in R/textplot_network.R
 \name{textplot_network}
 \alias{textplot_network}
-\title{plot semantic network based on collocations}
+\title{plot a semantic network of feature co-occurrences}
 \usage{
 textplot_network(x, width = 10, size = 15, shape = "circle",
   ignore = 0.5, ...)
 }
 \arguments{
-\item{x}{a dfm object}
+\item{x}{a \link{dfm} object}
 
 \item{width}{the maximum width of links that connects words}
 
@@ -18,25 +18,27 @@ textplot_network(x, width = 10, size = 15, shape = "circle",
 
 \item{ignore}{a thread for infrequent collocations to be ignored}
 
-\item{...}{additional parameters passed to \code{\link[igraph]{plot.igraph}}. Note that the 'vertex.' prefix needs to be added.}
+\item{...}{additional parameters passed to \code{\link[igraph]{plot.igraph}}.
+Note that the 'vertex.' prefix needs to be added.}
 }
 \description{
-Plot \link{fcm} as a network, where vertices are features and edges are cooccuraces 
-using \code{\link[igraph]{igraph}}.
+Plot an \link{fcm} object as a network, where vertices are features and edges
+are co-occurrences, using \code{\link[igraph]{igraph}}.
 }
 \examples{
 \dontrun{
-toks <- tokens(corpus_subset(data_corpus_inaugural, President == "Obama"), remove_punct = TRUE)
-toks <- tokens_remove(toks, stopwords("english"), padding = FALSE)
-myfcm <- fcm(toks, context = 'window', tri = FALSE)
-feats <- names(topfeatures(myfcm, 20))
-textplot_network(fcm_select(myfcm, feats), ignore = 0.5)
-textplot_network(fcm_select(myfcm, feats), ignore = 0.5, size = 20, shape = "vrectangle")
+toks <- corpus_subset(data_corpus_inaugural, President == "Obama") \%>\%
+    tokens(remove_punct = TRUE) \%>\%
+    tokens_remove(stopwords("english"), padding = FALSE)
+myfcm <- fcm(toks, context = "window", tri = FALSE)
+feat <- names(topfeatures(myfcm, 20))
+fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network()
+fcm_select(myfcm, feat, verbose = FALSE) \%>\% 
+    textplot_network(size = 20, shape = "vrectangle")
 }
 }
 \seealso{
-\code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
-  \code{\link{coef.textmodel}}
+\code{\link{fcm}}
 }
 \author{
 Kohei Watanabe and Stefan Müller
