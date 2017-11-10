@@ -1,4 +1,3 @@
-
 #' tokenize a set of texts
 #'
 #' Tokenize the texts from a character vector or from a corpus.
@@ -283,7 +282,7 @@ as.tokens <- function(x, concatenator = "_", ...) {
 #' @export
 as.tokens.default <- function(x, concatenator = "", ...) {
     valid_object_types <- 
-        methods(as.tokens) %>% 
+        utils::methods(as.tokens) %>% 
         as.character() %>% 
         stringi::stri_extract_last_regex("\\w+$")
     valid_object_types <- valid_object_types[valid_object_types != "default"]
@@ -308,12 +307,35 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
     return(result)
 }
 
-#' #' @export
-#' #' @method as.tokens collocations
-#' #' @rdname as.tokens
-#' as.tokens.collocations <- function(x, concatenator = '_') {
-#'     as.tokens(phrase(x$collocation), concatenator = concatenator)
-#' }
+# # @export
+# # @method as.tokens collocations
+# # @rdname as.tokens
+# as.tokens.collocations <- function(x, concatenator = '_') {
+#     as.tokens(phrase(x$collocation), concatenator = concatenator)
+# }
+
+#' @rdname as.tokens
+#' @param use_lemma logical; if \code{TRUE}, use the lemma rather than the raw
+#'   token
+#' @param include_pos character; whether and which part-of-speech tag to use:
+#'   \code{"none"} do not use any part of speech indicator, \code{"pos"} use the
+#'   \code{pos} variable, \code{"tag"} use the \code{tag} variable.  The POS
+#'   will be added to the token after \code{"concatenator"}.
+#' @export
+as.tokens.spacyr_parsed <- function(x, concatenator = "/", 
+                                    include_pos = c("none", "pos", "tag"), 
+                                    use_lemma = FALSE, ...) {
+    token_index <-  if (use_lemma) "lemma" else "token"
+    
+    include_pos <- match.arg(include_pos)
+    if (include_pos != "none") {
+        x[[token_index]] <- 
+            paste(x[[token_index]], x[[include_pos]], sep = concatenator)
+    }
+    
+    as.tokens(base::split(x[[token_index]], 
+                          factor(x[["doc_id"]], levels = unique(x[["doc_id"]]))))
+}
 
 #' @rdname as.tokens
 #' @return \code{as.list} returns a simple list of characters from a
