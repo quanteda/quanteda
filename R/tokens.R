@@ -1,4 +1,3 @@
-
 #' tokenize a set of texts
 #'
 #' Tokenize the texts from a character vector or from a corpus.
@@ -250,6 +249,8 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
 #' @param x object to be coerced or checked
 #' @param concatenator character between multi-word expressions, default is the
 #'   underscore character.  See Details.
+#' @param ... additional arguments used by specific methods.  For
+#'   \link{c.tokens}, these are the \link{tokens} objects to be concatenated.
 #' @return \code{as.tokens} returns a quanteda \link{tokens} object.
 #' @details The \code{concatenator} is used to automatically generate dictionary
 #'   values for multi-word expressions in \code{\link{tokens_lookup}} and
@@ -265,20 +266,35 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
 #' @examples 
 #' 
 #' # create tokens object from list of characters with custom concatenator
-#' dict <- dictionary(list(country = 'United States', 
-#'                    sea = c('Atlantic Ocean', 'Pacific Ocean')))
-#' lis <- list(c('The', 'United-States', 'has', 'the', 'Atlantic-Ocean', 
-#'               'and', 'the', 'Pacific-Ocean', '.'))
-#' toks <- as.tokens(lis, concatenator = '-')
+#' dict <- dictionary(list(country = "United States", 
+#'                    sea = c("Atlantic Ocean", "Pacific Ocean")))
+#' lis <- list(c("The", "United-States", "has", "the", "Atlantic-Ocean", 
+#'               "and", "the", "Pacific-Ocean", "."))
+#' toks <- as.tokens(lis, concatenator = "-")
 #' tokens_lookup(toks, dict)
 #' 
-as.tokens <- function(x, concatenator = '_') {
+as.tokens <- function(x, concatenator = "_", ...) {
     UseMethod("as.tokens")
 }
 
 #' @rdname as.tokens
+#' @noRd
 #' @export
-as.tokens.list <- function(x, concatenator = '_') {
+as.tokens.default <- function(x, concatenator = "", ...) {
+    valid_object_types <- 
+        utils::methods(as.tokens) %>% 
+        as.character() %>% 
+        stringi::stri_extract_last_regex("\\w+$")
+    valid_object_types <- valid_object_types[valid_object_types != "default"]
+    stop("as.tokens() only works on ", 
+         paste(valid_object_types, collapse = ", "),
+         " objects.")
+}
+
+#' @rdname as.tokens
+#' @noRd
+#' @export
+as.tokens.list <- function(x, concatenator = "_", ...) {
     result <- structure(tokens_serialize(x),
                         class = "tokens",
                         names = docnames(x),
@@ -291,12 +307,35 @@ as.tokens.list <- function(x, concatenator = '_') {
     return(result)
 }
 
-#' #' @export
-#' #' @method as.tokens collocations
-#' #' @rdname as.tokens
-#' as.tokens.collocations <- function(x, concatenator = '_') {
-#'     as.tokens(phrase(x$collocation), concatenator = concatenator)
-#' }
+# # @export
+# # @method as.tokens collocations
+# # @rdname as.tokens
+# as.tokens.collocations <- function(x, concatenator = '_') {
+#     as.tokens(phrase(x$collocation), concatenator = concatenator)
+# }
+
+#' @rdname as.tokens
+#' @param use_lemma logical; if \code{TRUE}, use the lemma rather than the raw
+#'   token
+#' @param include_pos character; whether and which part-of-speech tag to use:
+#'   \code{"none"} do not use any part of speech indicator, \code{"pos"} use the
+#'   \code{pos} variable, \code{"tag"} use the \code{tag} variable.  The POS
+#'   will be added to the token after \code{"concatenator"}.
+#' @export
+as.tokens.spacyr_parsed <- function(x, concatenator = "/", 
+                                    include_pos = c("none", "pos", "tag"), 
+                                    use_lemma = FALSE, ...) {
+    token_index <-  if (use_lemma) "lemma" else "token"
+    
+    include_pos <- match.arg(include_pos)
+    if (include_pos != "none") {
+        x[[token_index]] <- 
+            paste(x[[token_index]], x[[include_pos]], sep = concatenator)
+    }
+    
+    as.tokens(base::split(x[[token_index]], 
+                          factor(x[["doc_id"]], levels = unique(x[["doc_id"]]))))
+}
 
 #' @rdname as.tokens
 #' @return \code{as.list} returns a simple list of characters from a
@@ -873,7 +912,6 @@ types.tokens <- function(x) {
 }
 
 #' @rdname as.tokens
-#' @param ... for \link{c.tokens} only, \link{tokens} objects to be concatenated
 #' @export
 c.tokens <- function(...) {
     x <- list(...)
