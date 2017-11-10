@@ -250,6 +250,7 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
 #' @param x object to be coerced or checked
 #' @param concatenator character between multi-word expressions, default is the
 #'   underscore character.  See Details.
+#' @param ... additional arguments used by specific methods
 #' @return \code{as.tokens} returns a quanteda \link{tokens} object.
 #' @details The \code{concatenator} is used to automatically generate dictionary
 #'   values for multi-word expressions in \code{\link{tokens_lookup}} and
@@ -265,20 +266,35 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
 #' @examples 
 #' 
 #' # create tokens object from list of characters with custom concatenator
-#' dict <- dictionary(list(country = 'United States', 
-#'                    sea = c('Atlantic Ocean', 'Pacific Ocean')))
-#' lis <- list(c('The', 'United-States', 'has', 'the', 'Atlantic-Ocean', 
-#'               'and', 'the', 'Pacific-Ocean', '.'))
-#' toks <- as.tokens(lis, concatenator = '-')
+#' dict <- dictionary(list(country = "United States", 
+#'                    sea = c("Atlantic Ocean", "Pacific Ocean")))
+#' lis <- list(c("The", "United-States", "has", "the", "Atlantic-Ocean", 
+#'               "and", "the", "Pacific-Ocean", "."))
+#' toks <- as.tokens(lis, concatenator = "-")
 #' tokens_lookup(toks, dict)
 #' 
-as.tokens <- function(x, concatenator = '_') {
+as.tokens <- function(x, concatenator = "_", ...) {
     UseMethod("as.tokens")
 }
 
 #' @rdname as.tokens
+#' @noRd
 #' @export
-as.tokens.list <- function(x, concatenator = '_') {
+as.tokens.default <- function(x, concatenator = "", ...) {
+    valid_object_types <- 
+        methods(as.tokens) %>% 
+        as.character() %>% 
+        stringi::stri_extract_last_regex("\\w+$")
+    valid_object_types <- valid_object_types[valid_object_types != "default"]
+    stop("as.tokens() only works on ", 
+         paste(valid_object_types, collapse = ", "),
+         " objects.")
+}
+
+#' @rdname as.tokens
+#' @noRd
+#' @export
+as.tokens.list <- function(x, concatenator = "_", ...) {
     result <- structure(tokens_serialize(x),
                         class = "tokens",
                         names = docnames(x),

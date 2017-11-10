@@ -90,3 +90,25 @@ spacyr::spacy_parse
 #' @export
 spacy_parse.corpus <- function(x, ...) spacy_parse(texts(x), ...)
 
+#' @rdname as.tokens
+#' @param use_lemma logical; if \code{TRUE}, use the lemma rather than the raw
+#'   token
+#' @param include_pos character; whether and which part-of-speech tag to use:
+#'   \code{"none"} do not use any part of speech indicator, \code{"pos"} use the
+#'   \code{pos} variable, \code{"tag"} use the \code{tag} variable.  The POS
+#'   will be added to the token after \code{"concatenator"}.
+#' @export
+as.tokens.spacy_parsed <- function(x, concatenator = "/", 
+                                    include_pos = c("none", "pos", "tag"), 
+                                    use_lemma = FALSE) {
+    include_pos <- match.arg(include_pos)
+    token_index <-  if (use_lemma) "lemma" else "token"
+    doc_id_factor <- factor(x[["doc_id"]], levels = unique(x[["doc_id"]]))
+    result <- as.tokens(base::split(x[[token_index]], doc_id_factor))
+    if (include_pos != "none") {
+        pos <- as.tokens(base::split(x[[include_pos]], doc_id_factor))
+        result <- mapply(paste, result, pos, sep = concatenator)
+    }
+    result
+}
+
