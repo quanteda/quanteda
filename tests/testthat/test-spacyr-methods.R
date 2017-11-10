@@ -14,4 +14,18 @@ test_that("test as.tokens works for spacy_parsed objects", {
         as.tokens(data_spacy_parsed) %>% as.list(),
         list(text1 = c("And", "now", "for", "something", "completely", "different", "."))
     )
+    expect_equal(
+        as.tokens(data_spacy_parsed, include_pos = "pos") %>% as.list(),
+        list(text1 = c("And/CCONJ", "now/ADV", "for/ADP", "something/NOUN", 
+                       "completely/ADV", "different/ADJ", "./PUNCT"))
+    )
+    expect_equal(
+        as.tokens(data_spacy_parsed, include_pos = "tag") %>% as.list(),
+        list(text1 = c("And/CC", "now/RB", "for/IN", "something/NN", 
+                       "completely/RB", "different/JJ", "./."))
+    )
+    expect_equal(
+        as.tokens(data_spacy_parsed, use_lemma = TRUE) %>% as.list(),
+        list(text1 = c("and", "now", "for", "something", "completely", "different", "."))
+    )
 })
