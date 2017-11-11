@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -124,14 +149,14 @@ application of <a href='http://www.rdocumentation.org/packages/stats/topics/fish
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p><a href = 'https://en.wikipedia.org/wiki/Yates's_correction_for_continuity'>https://en.wikipedia.org/wiki/Yates's_correction_for_continuity</a>
-    <a href = 'http://influentialpoints.com/Training/g-likelihood_ratio_test.htm'>http://influentialpoints.com/Training/g-likelihood_ratio_test.htm</a></p>
+    <p><a href='https://en.wikipedia.org/wiki/Yates's_correction_for_continuity'>https://en.wikipedia.org/wiki/Yates's_correction_for_continuity</a>
+    <a href='http://influentialpoints.com/Training/g-likelihood_ratio_test.htm'>http://influentialpoints.com/Training/g-likelihood_ratio_test.htm</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a a a b b c c c c c c d e f g h h"</span>,
                <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a a b c c d d d d e f h"</span>))
-<span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_chi2_dt</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;           chi2         p target reference
+<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_chi2_dt</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;           chi2         p target reference
 #&gt; a  0.004738562 0.9451192      3         2
 #&gt; b  0.089303670 0.7650643      2         1
 #&gt; c  0.467298378 0.4942327      6         2
@@ -139,7 +164,23 @@ application of <a href='http://www.rdocumentation.org/packages/stats/topics/fish
 #&gt; e -0.065813362 0.7975330      1         1
 #&gt; f -0.065813362 0.7975330      1         1
 #&gt; g  0.731092437 0.3925293      1         0
-#&gt; h  0.089303670 0.7650643      2         1</div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_chi2_stats</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_exact</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_lr</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;             G2         p target reference
+#&gt; h  0.089303670 0.7650643      2         1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_chi2_stats</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;            chi2         p target reference
+#&gt; a  1.626059e-31         1      3         2
+#&gt; b  6.775245e-32         1      2         1
+#&gt; c     0.4672984 0.4942327      6         2
+#&gt; d     -2.040247 0.1531848      1         4
+#&gt; e -2.242191e-32         1      1         1
+#&gt; f -2.242191e-32         1      1         1
+#&gt; g   2.20717e-31         1      1         0
+#&gt; h  6.775245e-32         1      2         1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_exact</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;          or         p target reference
+#&gt; a 1.0689130 1.0000000      3         2
+#&gt; b 1.4480473 1.0000000      2         1
+#&gt; c 2.6375984 0.4083471      6         2
+#&gt; d 0.1347360 0.1296366      1         4
+#&gt; e 0.6966446 1.0000000      1         1
+#&gt; f 0.6966446 1.0000000      1         1
+#&gt; g       Inf 1.0000000      1         0
+#&gt; h 1.4480473 1.0000000      2         1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_lr</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;             G2         p target reference
 #&gt; a  0.004751467 0.9450446      3         2
 #&gt; b  0.091241952 0.7626042      2         1
 #&gt; c  0.477346514 0.4896267      6         2
@@ -147,7 +188,7 @@ application of <a href='http://www.rdocumentation.org/packages/stats/topics/fish
 #&gt; e -0.064900531 0.7989117      1         1
 #&gt; f -0.064900531 0.7989117      1         1
 #&gt; g  1.093291040 0.2957432      1         0
-#&gt; h  0.091241952 0.7626042      2         1</div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_pmi</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;           pmi         p target reference
+#&gt; h  0.091241952 0.7626042      2         1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/keyness'>keyness_pmi</a></span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;           pmi         p target reference
 #&gt; a  0.02325686 0.8787910      3         2
 #&gt; b  0.12861738 0.7198699      2         1
 #&gt; c  0.24640041 0.6196211      6         2
