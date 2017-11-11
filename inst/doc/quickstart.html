@@ -495,7 +495,7 @@ color: #b44;
 <div class="sourceLine" id="14" href="#14" data-line-number="14">##          UKIP   346    723        27</div>
 <div class="sourceLine" id="15" href="#15" data-line-number="15">## </div>
 <div class="sourceLine" id="16" href="#16" data-line-number="16">## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/vignettes/* on x86_64 by kbenoit</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">## Created: Sat Nov 11 08:39:55 2017</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">## Created: Sat Nov 11 10:17:04 2017</div>
 <div class="sourceLine" id="18" href="#18" data-line-number="18">## Notes:</div></code></pre>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -516,7 +516,7 @@ color: #b44;
 <div class="sourceLine" id="15" href="#15" data-line-number="15">##          UKIP   346    723        27         UKIP 2010</div>
 <div class="sourceLine" id="16" href="#16" data-line-number="16">## </div>
 <div class="sourceLine" id="17" href="#17" data-line-number="17">## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/vignettes/* on x86_64 by kbenoit</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">## Created: Sat Nov 11 08:39:55 2017</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">## Created: Sat Nov 11 10:17:04 2017</div>
 <div class="sourceLine" id="19" href="#19" data-line-number="19">## Notes:</div></code></pre>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="kw">metadoc</span>(myCorpus, <span class="st">&quot;language&quot;</span>) &lt;-<span class="st"> &quot;english&quot;</span></div>
@@ -546,7 +546,7 @@ color: #b44;
 <div class="sourceLine" id="25" href="#25" data-line-number="25">##  data_char_ukimmig2010_9</div>
 <div class="sourceLine" id="26" href="#26" data-line-number="26">## </div>
 <div class="sourceLine" id="27" href="#27" data-line-number="27">## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/vignettes/* on x86_64 by kbenoit</div>
-<div class="sourceLine" id="28" href="#28" data-line-number="28">## Created: Sat Nov 11 08:39:55 2017</div>
+<div class="sourceLine" id="28" href="#28" data-line-number="28">## Created: Sat Nov 11 10:17:04 2017</div>
 <div class="sourceLine" id="29" href="#29" data-line-number="29">## Notes:</div></code></pre>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>&quot;english&quot;</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code>ndoc()</code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </section>
@@ -682,7 +682,7 @@ color: #b44;
 <div class="sourceLine" id="23" href="#23" data-line-number="23">##       2017-Trump   582   1660        88</div>
 <div class="sourceLine" id="24" href="#24" data-line-number="24">## </div>
 <div class="sourceLine" id="25" href="#25" data-line-number="25">## Source:  Combination of corpuses mycorpus1 and mycorpus2</div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26">## Created: Sat Nov 11 08:39:57 2017</div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">## Created: Sat Nov 11 10:17:06 2017</div>
 <div class="sourceLine" id="27" href="#27" data-line-number="27">## Notes:</div></code></pre>
 </section>
 <section id="subsetting-corpus-objects" class="level3">
@@ -1027,29 +1027,29 @@ color: #b44;
 <div class="sourceLine" id="8" href="#8" data-line-number="8">## Estimated document positions:</div>
 <div class="sourceLine" id="9" href="#9" data-line-number="9">## </div>
 <div class="sourceLine" id="10" href="#10" data-line-number="10">##                                Documents      theta         SE       lower       upper</div>
-<div class="sourceLine" id="11" href="#11" data-line-number="11">## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209479 0.02032331  1.78111416  1.86078154</div>
-<div class="sourceLine" id="12" href="#12" data-line-number="12">## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932821 0.02818852 -0.64853157 -0.53803258</div>
-<div class="sourceLine" id="13" href="#13" data-line-number="13">## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136811 0.01540270 -1.14387036 -1.08349176</div>
-<div class="sourceLine" id="14" href="#14" data-line-number="14">## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219268 0.02846335 -0.17771494 -0.06613859</div>
-<div class="sourceLine" id="15" href="#15" data-line-number="15">## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724186 0.02364079  1.72608269  1.81875458</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145805 0.02650276 -0.76652594 -0.66263512</div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844841 0.04171501 -0.56624554 -0.40272270</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616666 0.02967385 -0.61982730 -0.50350583</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703140 0.03850580 -1.04578534 -0.89484261</div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589261 0.03892412 -1.03521737 -0.88263482</div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">## 11     2010_BUDGET_11_John_Gormley_Green  1.1807222 0.07221427  1.03918218  1.32226213</div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866482 0.06294131  0.06328326  0.31001319</div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421950 0.07245416  0.60018487  0.88420519</div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840707 0.03666289 -0.25592996 -0.11221145</div>
+<div class="sourceLine" id="11" href="#11" data-line-number="11">## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209503 0.02032337  1.78111649  1.86078411</div>
+<div class="sourceLine" id="12" href="#12" data-line-number="12">## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932803 0.02818845 -0.64852970 -0.53803099</div>
+<div class="sourceLine" id="13" href="#13" data-line-number="13">## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136786 0.01540264 -1.14386774 -1.08348938</div>
+<div class="sourceLine" id="14" href="#14" data-line-number="14">## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219292 0.02846328 -0.17771724 -0.06614117</div>
+<div class="sourceLine" id="15" href="#15" data-line-number="15">## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724203 0.02364087  1.72608418  1.81875638</div>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145796 0.02650266 -0.76652483 -0.66263439</div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844832 0.04171490 -0.56624444 -0.40272203</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616686 0.02967370 -0.61982903 -0.50350812</div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703125 0.03850563 -1.04578357 -0.89484150</div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589247 0.03892395 -1.03521567 -0.88263378</div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">## 11     2010_BUDGET_11_John_Gormley_Green  1.1807221 0.07221443  1.03918182  1.32226238</div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866471 0.06294126  0.06328221  0.31001194</div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421926 0.07245425  0.60018227  0.88420293</div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840756 0.03666275 -0.25593455 -0.11221658</div>
 <div class="sourceLine" id="25" href="#25" data-line-number="25">## </div>
 <div class="sourceLine" id="26" href="#26" data-line-number="26">## Estimated feature scores: showing first 30 beta-hats for features</div>
 <div class="sourceLine" id="27" href="#27" data-line-number="27">## </div>
 <div class="sourceLine" id="28" href="#28" data-line-number="28">##            when               i       presented             the   supplementary          budget              to            this           house            last           april               , </div>
-<div class="sourceLine" id="29" href="#29" data-line-number="29">##     -0.09923358      0.38799198      0.39876347      0.25591310      1.11583470      0.09912378      0.37004803      0.30690486      0.19903916      0.28968756     -0.09529123      0.34532178 </div>
+<div class="sourceLine" id="29" href="#29" data-line-number="29">##     -0.09921061      0.38801600      0.39878567      0.25593676      1.11585692      0.09914730      0.37007171      0.30692827      0.19906333      0.28971069     -0.09526860      0.34534551 </div>
 <div class="sourceLine" id="30" href="#30" data-line-number="30">##            said              we           could            work             our             way         through          period              of          severe        economic        distress </div>
-<div class="sourceLine" id="31" href="#31" data-line-number="31">##     -0.71933971      0.47989235     -0.52979411      0.58224375      0.74370438      0.33608520      0.65979877      0.55618818      0.33929211      1.27907972      0.47864058      1.84452523 </div>
+<div class="sourceLine" id="31" href="#31" data-line-number="31">##     -0.71931679      0.47991589     -0.52977113      0.58226673      0.74372743      0.33610883      0.65982112      0.55621141      0.33931579      1.27910143      0.47866388      1.84454238 </div>
 <div class="sourceLine" id="32" href="#32" data-line-number="32">##               .           today             can          report            that notwithstanding </div>
-<div class="sourceLine" id="33" href="#33" data-line-number="33">##      0.27349505      0.17416596      0.36375550      0.69173101      0.08830442      1.84452523</div></code></pre>
+<div class="sourceLine" id="33" href="#33" data-line-number="33">##      0.27351871      0.17419073      0.36377868      0.69175492      0.08832825      1.84454238</div></code></pre>
 </section>
 <section id="topic-models" class="level2">
 <h2>Topic models</h2>
@@ -1069,18 +1069,18 @@ color: #b44;
 <div class="sourceLine" id="13" href="#13" data-line-number="13">    <span class="kw">get_terms</span>(myLDAfit20, <span class="dv">5</span>)</div>
 <div class="sourceLine" id="14" href="#14" data-line-number="14">}</div>
 <div class="sourceLine" id="15" href="#15" data-line-number="15">## Loading required package: topicmodels</div>
-<div class="sourceLine" id="16" href="#16" data-line-number="16">##      Topic 1   Topic 2     Topic 3   Topic 4    Topic 5    Topic 6        Topic 7   Topic 8    Topic 9     Topic 10     Topic 11      Topic 12    Topic 13    Topic 14     Topic 15     Topic 16     </div>
-<div class="sourceLine" id="17" href="#17" data-line-number="17">## [1,] &quot;levy&quot;    &quot;welfare&quot;   &quot;benefit&quot; &quot;million&quot;  &quot;welfare&quot;  &quot;equal&quot;        &quot;fianna&quot;  &quot;fianna&quot;   &quot;welfare&quot;   &quot;support&quot;    &quot;kind&quot;        &quot;taoiseach&quot; &quot;taoiseach&quot; &quot;failed&quot;     &quot;strategy&quot;   &quot;alternative&quot;</div>
-<div class="sourceLine" id="18" href="#18" data-line-number="18">## [2,] &quot;million&quot; &quot;review&quot;    &quot;child&quot;   &quot;measures&quot; &quot;system&quot;   &quot;society&quot;      &quot;fáil&quot;    &quot;fáil&quot;     &quot;recovery&quot;  &quot;back&quot;       &quot;imagination&quot; &quot;fine&quot;      &quot;employees&quot; &quot;system&quot;     &quot;ministers&quot;  &quot;citizenship&quot;</div>
-<div class="sourceLine" id="19" href="#19" data-line-number="19">## [3,] &quot;carbon&quot;  &quot;rates&quot;     &quot;day&quot;     &quot;spending&quot; &quot;taxation&quot; &quot;enterprising&quot; &quot;worst&quot;   &quot;national&quot; &quot;taoiseach&quot; &quot;million&quot;    &quot;policies&quot;    &quot;gael&quot;      &quot;rate&quot;      &quot;employment&quot; &quot;leadership&quot; &quot;wealth&quot;     </div>
-<div class="sourceLine" id="20" href="#20" data-line-number="20">## [4,] &quot;change&quot;  &quot;reduction&quot; &quot;per&quot;     &quot;scheme&quot;   &quot;stimulus&quot; &quot;nation&quot;       &quot;taxes&quot;   &quot;irish&quot;    &quot;set&quot;       &quot;energy&quot;     &quot;wit&quot;         &quot;may&quot;       &quot;referred&quot;  &quot;vision&quot;     &quot;needed&quot;     &quot;adjustment&quot; </div>
-<div class="sourceLine" id="21" href="#21" data-line-number="21">## [5,] &quot;welfare&quot; &quot;million&quot;   &quot;welfare&quot; &quot;level&quot;    &quot;deficit&quot;  &quot;sense&quot;        &quot;nothing&quot; &quot;support&quot;  &quot;child&quot;     &quot;investment&quot; &quot;create&quot;      &quot;irish&quot;     &quot;debate&quot;    &quot;sort&quot;       &quot;expected&quot;   &quot;breaks&quot;     </div>
-<div class="sourceLine" id="22" href="#22" data-line-number="22">##      Topic 17       Topic 18    Topic 19 Topic 20     </div>
-<div class="sourceLine" id="23" href="#23" data-line-number="23">## [1,] &quot;welfare&quot;      &quot;care&quot;      &quot;bank&quot;   &quot;million&quot;    </div>
-<div class="sourceLine" id="24" href="#24" data-line-number="24">## [2,] &quot;local&quot;        &quot;welfare&quot;   &quot;child&quot;  &quot;development&quot;</div>
-<div class="sourceLine" id="25" href="#25" data-line-number="25">## [3,] &quot;savings&quot;      &quot;per&quot;       &quot;face&quot;   &quot;continue&quot;   </div>
-<div class="sourceLine" id="26" href="#26" data-line-number="26">## [4,] &quot;contribution&quot; &quot;allowance&quot; &quot;just&quot;   &quot;welfare&quot;    </div>
-<div class="sourceLine" id="27" href="#27" data-line-number="27">## [5,] &quot;scheme&quot;       &quot;hit&quot;       &quot;today&quot;  &quot;investment&quot;</div></code></pre>
+<div class="sourceLine" id="16" href="#16" data-line-number="16">##      Topic 1  Topic 2     Topic 3     Topic 4    Topic 5       Topic 6     Topic 7    Topic 8    Topic 9    Topic 10     Topic 11    Topic 12        Topic 13  Topic 14  Topic 15      Topic 16     </div>
+<div class="sourceLine" id="17" href="#17" data-line-number="17">## [1,] &quot;fianna&quot; &quot;welfare&quot;   &quot;taoiseach&quot; &quot;may&quot;      &quot;alternative&quot; &quot;taoiseach&quot; &quot;million&quot;  &quot;vision&quot;   &quot;fianna&quot;   &quot;million&quot;    &quot;care&quot;      &quot;fáil&quot;          &quot;child&quot;   &quot;levy&quot;    &quot;kind&quot;        &quot;development&quot;</div>
+<div class="sourceLine" id="18" href="#18" data-line-number="18">## [2,] &quot;fáil&quot;   &quot;recent&quot;    &quot;employees&quot; &quot;benefit&quot;  &quot;citizenship&quot; &quot;fine&quot;      &quot;spending&quot; &quot;strategy&quot; &quot;fáil&quot;     &quot;support&quot;    &quot;welfare&quot;   &quot;national&quot;      &quot;benefit&quot; &quot;million&quot; &quot;imagination&quot; &quot;future&quot;     </div>
+<div class="sourceLine" id="19" href="#19" data-line-number="19">## [3,] &quot;side&quot;   &quot;level&quot;     &quot;rate&quot;      &quot;spending&quot; &quot;wealth&quot;      &quot;gael&quot;      &quot;measures&quot; &quot;address&quot;  &quot;irish&quot;    &quot;back&quot;       &quot;per&quot;       &quot;fianna&quot;        &quot;day&quot;     &quot;carbon&quot;  &quot;policies&quot;    &quot;welfare&quot;    </div>
+<div class="sourceLine" id="20" href="#20" data-line-number="20">## [4,] &quot;level&quot;  &quot;scheme&quot;    &quot;referred&quot;  &quot;scale&quot;    &quot;adjustment&quot;  &quot;may&quot;       &quot;review&quot;   &quot;face&quot;     &quot;national&quot; &quot;investment&quot; &quot;allowance&quot; &quot;international&quot; &quot;today&quot;   &quot;change&quot;  &quot;wit&quot;         &quot;million&quot;    </div>
+<div class="sourceLine" id="21" href="#21" data-line-number="21">## [5,] &quot;third&quot;  &quot;reduction&quot; &quot;debate&quot;    &quot;welfare&quot;  &quot;breaks&quot;      &quot;irish&quot;     &quot;details&quot;  &quot;needed&quot;   &quot;support&quot;  &quot;welfare&quot;    &quot;hit&quot;       &quot;person&quot;        &quot;bank&quot;    &quot;welfare&quot; &quot;create&quot;      &quot;scheme&quot;     </div>
+<div class="sourceLine" id="22" href="#22" data-line-number="22">##      Topic 17       Topic 18   Topic 19      Topic 20 </div>
+<div class="sourceLine" id="23" href="#23" data-line-number="23">## [1,] &quot;society&quot;      &quot;welfare&quot;  &quot;alternative&quot; &quot;system&quot; </div>
+<div class="sourceLine" id="24" href="#24" data-line-number="24">## [2,] &quot;enterprising&quot; &quot;system&quot;   &quot;live&quot;        &quot;failed&quot; </div>
+<div class="sourceLine" id="25" href="#25" data-line-number="25">## [3,] &quot;sense&quot;        &quot;fianna&quot;   &quot;ability&quot;     &quot;asking&quot; </div>
+<div class="sourceLine" id="26" href="#26" data-line-number="26">## [4,] &quot;equal&quot;        &quot;taxation&quot; &quot;worse&quot;       &quot;real&quot;   </div>
+<div class="sourceLine" id="27" href="#27" data-line-number="27">## [5,] &quot;nation&quot;       &quot;fáil&quot;     &quot;delivered&quot;   &quot;private&quot;</div></code></pre>
 </section>
 </section>
 
