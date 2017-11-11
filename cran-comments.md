@@ -1,6 +1,14 @@
 ## Submission notes
 
-Bug fixes and stability improvements to existing 0.99.12 CRAN version.
+NOTE: SUPERCEDES previous 0.99.20 submission, as I discovered a bug related to 
+the case of a function, that for some reasons did not show up on previous
+tests.
+
+### Purpose
+
+- Bug fixes and stability improvements to existing 0.99.12 CRAN version.
+- To ensure compatibility with imminent **testthat** 2.0 package update.
+
 
 ## Test environments
 
