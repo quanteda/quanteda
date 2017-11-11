@@ -16,7 +16,7 @@ How to cite the package:
 
     Benoit K (2017). _quanteda: Quantitative Analysis of Textual
     Data_. doi: 10.5281/zenodo.1004683 (URL:
-    http://doi.org/10.5281/zenodo.1004683), R package version 0.99.20,
+    http://doi.org/10.5281/zenodo.1004683), R package version 0.99.21,
     <URL: http://quanteda.io>.
 
     A BibTeX entry for LaTeX users is
@@ -27,7 +27,7 @@ How to cite the package:
         year = {2017},
         doi = {http://doi.org/10.5281/zenodo.1004683},
         url = {http://quanteda.io},
-        note = {R package version 0.99.20},
+        note = {R package version 0.99.21},
       }
 
 How to Install
