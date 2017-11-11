@@ -9,7 +9,7 @@
 #'   the document forming the "target" for computing keyness; all other 
 #'   documents' feature frequencies will be combined for use as a reference
 #' @param measure (signed) association measure to be used for computing keyness.
-#'   Currenly available: \code{"chi2"}; \code{"exact"} (Fisher's exact test); 
+#'   Currently available: \code{"chi2"}; \code{"exact"} (Fisher's exact test); 
 #'   \code{"lr"} for the likelihood ratio; \code{"pmi"} for pointwise mutual 
 #'   information.
 #' @param sort logical; if \code{TRUE} sort features scored in descending order 

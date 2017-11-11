@@ -26,7 +26,7 @@ regex2fixed <- function(pattern, types = NULL, valuetype = NULL, case_insensitiv
 #'   tokens object are matched. This function constructs index of glob patterns
 #'   for faster matching.
 #' @inheritParams pattern
-#' @param types unique types of tokens obtaine by \code{quanteda:::types()}
+#' @param types unique types of tokens obtained by \code{quanteda:::types()}
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param index If TRUE, index is constructed automatically. It also accept

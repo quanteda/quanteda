@@ -35,7 +35,7 @@ setClass("fcm",
 #' @param context the context in which to consider term co-occurrence: 
 #'   \code{"document"} for co-occurrence counts within document; \code{"window"}
 #'   for co-occurrence within a defined window of words, which requires a 
-#'   postive integer value for \code{window}.  Note: if \code{x} is a dfm object, then
+#'   positive integer value for \code{window}.  Note: if \code{x} is a dfm object, then
 #'   \code{context} can only be \code{"document"}.
 #' @param window positive integer value for the size of a window on either side 
 #'   of the target feature, default is 5, meaning 5 words before and after the 

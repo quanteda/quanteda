@@ -29,8 +29,8 @@ dfm to a binary matrix using \code{\link{tf}(x, "boolean")}.}
 }
 \value{
 A list of return values, consisting of (where \eqn{I} is the total
-  number of documents, \eqn{J} is the total numebr features, and \eqn{k} is
-  the total number of training classes):
+  number of documents, \eqn{J} is the total number of features, and \eqn{k}
+  is the total number of training classes):
 
 \item{call}{original function call}
 

@@ -29,7 +29,7 @@ A converted object determined by the value of \code{to} (see above).
 \description{
 To make the usage as consistent as possible with other packages, quanteda
 also provides shortcut wrappers to \code{\link{convert}}, designed to be
-similar in syntax to analagous commands in the packages to whose format they
+similar in syntax to analogous commands in the packages to whose format they
 are converting.
 }
 \details{

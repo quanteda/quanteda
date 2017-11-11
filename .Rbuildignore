@@ -31,4 +31,3 @@ __MACOSX
 ^vignettes/demo/
 ^revdep$
 ^CNAME$
-^inst/doc/

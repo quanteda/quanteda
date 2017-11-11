@@ -36,7 +36,7 @@ is_indexed(pattern)
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 \link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
-\item{types}{unique types of tokens obtaine by \code{quanteda:::types()}}
+\item{types}{unique types of tokens obtained by \code{quanteda:::types()}}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;

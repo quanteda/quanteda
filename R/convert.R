@@ -106,7 +106,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "
 #' 
 #' To make the usage as consistent as possible with other packages, quanteda
 #' also provides shortcut wrappers to \code{\link{convert}}, designed to be
-#' similar in syntax to analagous commands in the packages to whose format they
+#' similar in syntax to analogous commands in the packages to whose format they
 #' are converting.
 #' @param x the dfm to be converted
 #' @param ... additional arguments used only by \code{as.DocumentTermMatrix}

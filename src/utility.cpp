@@ -2,7 +2,7 @@
 using namespace quanteda;
 
 /* 
- * This funciton removes a string from of a list of string vectors.
+ * This function removes a string from of a list of string vectors.
  * @used tokens()
  * @creator Kohei Watanabe
  * @param input_ list of string vectors

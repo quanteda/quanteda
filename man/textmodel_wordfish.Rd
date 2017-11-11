@@ -26,7 +26,7 @@ tolerance in the difference in parameter values from the iterative
 conditional maximum likelihood (from conditionally estimating 
 document-level, then feature-level parameters).}
 
-\item{dispersion}{sets whether a quasi-poisson quasi-likelihood should be 
+\item{dispersion}{sets whether a quasi-Poisson quasi-likelihood should be 
 used based on a single dispersion parameter (\code{"poisson"}), or 
 quasi-Poisson (\code{"quasipoisson"})}
 
