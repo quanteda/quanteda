@@ -38,3 +38,6 @@ This was because **tidytext** uses a function call that has been deprecated for 
 
 We are updating our CRAN version because of a messaged from Hadley Wickham that he will soon (13 November) update **testthat** and that our package tests will fail unless we change to the new **testthat** 2.0 syntax.  So while we will break one test in **tidytext**, we will break a **testthat** test in our own package without the update.
 
+## Other
+
+We have tried hard to investigate the UBSan issues indicated from our previous release, and believe that we have found the source of the problem and fixed it.  However if this is not the problem - which we cannot replicate exactly on any of our own tests - then the issue is something in RcppParallel and its interaction with the TBB library and the precise choice of compiler that is used.  On our tests (on the systems above) we have been unable to reproduce the exact issue.
