@@ -29,7 +29,7 @@
 #' @return \item{prior}{the prior argument}
 #' @return \item{smooth}{the value of the smoothing parameter}
 #' @section Predict Methods: A \code{predict} method is also available for a 
-#'   fitted Naive Bayes object, see \code{\link{predict.textmodel_NB_fitted}}.
+#'   fitted Naive Bayes object, see \code{\link{predict.textmodel_nb_fitted}}.
 #' @section Prior distributions:
 #' 
 #' Prior distributions refer to the prior probabilities assigned to the training
@@ -59,7 +59,6 @@
 #'   
 #'   Jurafsky, Daniel and James H. Martin. (2016) \emph{Speech and Language Processing.}  Draft of November 7, 2016.
 #'   \url{https://web.stanford.edu/~jurafsky/slp3/6.pdf}
-#' @name textmodel-nb
 #' @author Kenneth Benoit
 #' @examples
 #' ## Example from 13.1 of _An Introduction to Information Retrieval_
@@ -84,7 +83,7 @@
 #'                               prior = "docfreq"))
 #' predict(nb.p261.bern, newdata = trainingset[5, ])
 #' @export
-textmodel_nb <- textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
+textmodel_nb <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
                          distribution = c("multinomial", "Bernoulli"), ...) {
     UseMethod("textmodel_nb")
 }
@@ -169,10 +168,9 @@ textmodel_nb.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "
                Pw = as.matrix(Pw), 
                data = list(x = x, y = y), 
                distribution = distribution, prior = prior, smooth = smooth)
-    class(ll) <- c("textmodel_NB_fitted", class(ll))
+    class(ll) <- c("textmodel_nb_fitted", class(ll))
     return(ll)
 }
-
 
 #' prediction method for Naive Bayes classifier objects
 #'
@@ -195,7 +193,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "
 #' (nbpred <- predict(nbfit))
 #' @keywords internal textmodel
 #' @export
-predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
+predict.textmodel_nb_fitted <- function(object, newdata = NULL, ...) {
     
     call <- match.call()
     if (is.null(newdata)) newdata <- as.dfm(object$data$x)
@@ -272,7 +270,7 @@ predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
                    Pc = object$Pc, 
                    classlabels = names(object$Pc), 
                    call = call)
-    class(result) <- c("textmodel_NB_predicted", class(result))
+    class(result) <- c("textmodel_nb_predicted", class(result))
     result
 }
 
@@ -284,8 +282,8 @@ logsumexp <- function(x) {
 
 # @rdname print.textmodel
 #' @export
-#' @method print textmodel_NB_fitted
-print.textmodel_NB_fitted <- function(x, n=30L, ...) {
+#' @method print textmodel_nb_fitted
+print.textmodel_nb_fitted <- function(x, n=30L, ...) {
     cat("Fitted Naive Bayes model:\n")
     cat("Call:\n\t")
     print(x$call)
@@ -307,8 +305,8 @@ print.textmodel_NB_fitted <- function(x, n=30L, ...) {
 # @param ... not used in \code{print.textmodel_wordscores_fitted}
 
 #' @export
-#' @method print textmodel_NB_predicted
-print.textmodel_NB_predicted <- function(x, n = 30L, digits = 4, ...) {
+#' @method print textmodel_nb_predicted
+print.textmodel_nb_predicted <- function(x, n = 30L, digits = 4, ...) {
     
     cat("Predicted textmodel of type: Naive Bayes\n")
     # cat("Call:\n\t")

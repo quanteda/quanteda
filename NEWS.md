@@ -19,7 +19,7 @@
 * `tokens_group()` is now significantly faster.
 * The deprecated "list of characters" `tokenize()` function and all methods associated with the `tokenizedTexts` object types have been removed.
 * Added convenience functions for keeping tokens or features: `tokens_keep()`, `dfm_keep()`, and `fcm_keep()`. (#1037)
-
+* `textmodel_NB()` has been replaced by `textmodel_nb()`.
 
 ## Changes since v0.99.9
 
