@@ -292,7 +292,6 @@ as.tokens.default <- function(x, concatenator = "", ...) {
 }
 
 #' @rdname as.tokens
-#' @noRd
 #' @export
 as.tokens.list <- function(x, concatenator = "_", ...) {
     result <- structure(tokens_serialize(x),

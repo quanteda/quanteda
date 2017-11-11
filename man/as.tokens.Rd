@@ -2,6 +2,7 @@
 % Please edit documentation in R/tokens.R
 \name{as.tokens}
 \alias{as.tokens}
+\alias{as.tokens.list}
 \alias{as.tokens.spacyr_parsed}
 \alias{as.list.tokens}
 \alias{unlist.tokens}
@@ -12,6 +13,8 @@
 \title{coercion, checking, and combining functions for tokens objects}
 \usage{
 as.tokens(x, concatenator = "_", ...)
+
+\method{as.tokens}{list}(x, concatenator = "_", ...)
 
 \method{as.tokens}{spacyr_parsed}(x, concatenator = "/",
   include_pos = c("none", "pos", "tag"), use_lemma = FALSE, ...)
