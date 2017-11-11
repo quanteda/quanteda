@@ -22,11 +22,11 @@ a \link{dictionary}, then \code{replacement} should not be used.}
 \item{verbose}{print status messages if \code{TRUE}}
 }
 \description{
-This funciton substitutes token types based on vectorized one-to-one matching.
-Since this function is created for lemmatization or user-defined stemming, it
-does not support multi-word features, or glob and regex patterns. Please use
-\code{tokens_lookup} with \code{exclusive = FALSE} for substitutions of more
-complex patterns.
+Substitute token types based on vectorized one-to-one matching. Since this
+function is created for lemmatization or user-defined stemming, it does not
+support multi-word features, or glob and regex patterns. Please use
+\code{\link{tokens_lookup}} with \code{exclusive = FALSE} for substitutions
+of more complex patterns.
 }
 \examples{
 toks <- tokens(data_corpus_irishbudget2010)

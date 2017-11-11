@@ -150,7 +150,7 @@ struct compound_mt : public Worker{
 };
 
 /* 
- * This funciton substitutes features in tokens object with new IDs. 
+ * This function substitutes features in tokens object with new IDs. 
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_compound()
  * @creator Kohei Watanabe

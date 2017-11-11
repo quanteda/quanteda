@@ -2,7 +2,7 @@ bibentry(bibtype = "Manual",
          title = "quanteda: Quantitative Analysis of Textual Data",
          author = c(person("Kenneth", "Benoit")),
          year = format(Sys.Date(), "%Y"),
-         doi = "doi.org/10.5281/zenodo.1004683",
+         doi = "http://doi.org/10.5281/zenodo.1004683",
          url = "http://quanteda.io",
-         note = paste("R package version", packageVersion("quanteda"))
+         note = "R package version 0.99.20"
 )

@@ -15,8 +15,8 @@
 #'   dfm to a binary matrix using \code{\link{tf}(x, "boolean")}.
 #' @param ... more arguments passed through
 #' @return A list of return values, consisting of (where \eqn{I} is the total
-#'   number of documents, \eqn{J} is the total numebr features, and \eqn{k} is
-#'   the total number of training classes):
+#'   number of documents, \eqn{J} is the total number of features, and \eqn{k}
+#'   is the total number of training classes):
 #' @return \item{call}{original function call}
 #' @return \item{PwGc}{\eqn{k \times J}; probability of the word given the class (empirical 
 #'   likelihood)}

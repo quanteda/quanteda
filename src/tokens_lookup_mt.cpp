@@ -124,7 +124,7 @@ struct lookup_mt : public Worker{
 };
 
 /* 
-* This funciton finds patterns in tokens object. This is similar to tokens_replace, 
+* This function finds patterns in tokens object. This is similar to tokens_replace, 
 * but all overlapping or nested patterns are detected and recorded by IDs.
 * The number of threads is set by RcppParallel::setThreadOptions()
 * @used tokens_lookup()

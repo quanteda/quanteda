@@ -37,7 +37,7 @@ is not a \link{tokens} object already}
 }
 \value{
 \code{textstat_collocations} returns a data.frame of collocations and their
-  scores and statistsics.
+  scores and statistics.
 
 \code{is.collocation} returns \code{TRUE} if the object is of class
   \code{collocations}, \code{FALSE} otherwise.

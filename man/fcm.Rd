@@ -16,7 +16,7 @@ the feature co-occurrence matrix}
 \item{context}{the context in which to consider term co-occurrence: 
 \code{"document"} for co-occurrence counts within document; \code{"window"}
 for co-occurrence within a defined window of words, which requires a 
-postive integer value for \code{window}.  Note: if \code{x} is a dfm object, then
+positive integer value for \code{window}.  Note: if \code{x} is a dfm object, then
 \code{context} can only be \code{"document"}.}
 
 \item{count}{how to count co-occurrences:
@@ -37,7 +37,7 @@ target feature}
 \code{length(weights)}}
 
 \item{ordered}{if \code{TRUE} the number of times that a term appears before or after the target feature 
-are counted seperately. Only makes sense for context = "window".}
+are counted separately. Only makes sense for context = "window".}
 
 \item{span_sentence}{if \code{FALSE}, then word windows will not span 
 sentences}
@@ -57,7 +57,7 @@ The function \code{\link{fcm}} provides a very general
   implementation of a "context-feature" matrix, consisting of a count of
   feature co-occurrence within a defined context.  This context, following
   Momtazi et. al. (2010), can be defined as the \emph{document},
-  \emph{sentences} within documents, \emph{syntactic relationships} beteeen
+  \emph{sentences} within documents, \emph{syntactic relationships} between
   features (nouns within a sentence, for instance), or according to a
   \emph{window}.  When the context is a window, a weighting function is
   typically applied that is a function of distance from the target word (see
