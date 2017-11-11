@@ -1,12 +1,3 @@
-docs/* linguist-vendored
-inst/docs/* linguist-vendored
-
-# Source files
-# ============
-*.Rdata     text
-*.rdb       binary
-*.rds       binary
-*.Rd        text
-*.Rdx       binary
-*.Rmd		text
-*.R  		text
+vignettes/*	linguist-documentation
+docs/*	linguist-documentation
+man/*	linguist-documentation
