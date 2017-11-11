@@ -204,7 +204,7 @@ as.dist.dist <- function(m, diag = FALSE, upper = FALSE) {
 
 #' coerce a dist_selection object into a list
 #' 
-#' Coerce a dist_selection matrix into a list of selected terms and tarhet terms in
+#' Coerce a dist_selection matrix into a list of selected terms and target terms in
 #' descending order.  Can be used after calling \code{\link{textstat_simil}} or
 #' \code{\link{textstat_dist}} when selection is not NULL
 #' @param x dist_selection class object

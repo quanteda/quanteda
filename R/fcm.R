@@ -11,7 +11,7 @@
 #' @slot weights context weighting for distance from target feature, equal in length to \code{window}
 #' @slot tri whether the lower triangle of the symmetric \eqn{V \times V} matrix is recorded
 #' @slot ordered whether a term appears before or after the target feature 
-#'      are counted seperately
+#'      are counted separately
 #' @seealso \link{fcm}
 #' @export
 #' @import methods
@@ -52,7 +52,7 @@ setClass("fcm",
 #'   \code{1:window}, strictly decreasing by default; can be a custom-defined vector of the same length as 
 #'   \code{length(weights)}
 #' @param ordered if \code{TRUE} the number of times that a term appears before or after the target feature 
-#'      are counted seperately. Only makes sense for context = "window".
+#'      are counted separately. Only makes sense for context = "window".
 #' @param span_sentence if \code{FALSE}, then word windows will not span 
 #'   sentences
 #' @param tri if \code{TRUE} return only upper triangle (including diagonal)
@@ -65,7 +65,7 @@ setClass("fcm",
 #'   implementation of a "context-feature" matrix, consisting of a count of
 #'   feature co-occurrence within a defined context.  This context, following
 #'   Momtazi et. al. (2010), can be defined as the \emph{document},
-#'   \emph{sentences} within documents, \emph{syntactic relationships} beteeen
+#'   \emph{sentences} within documents, \emph{syntactic relationships} between
 #'   features (nouns within a sentence, for instance), or according to a
 #'   \emph{window}.  When the context is a window, a weighting function is
 #'   typically applied that is a function of distance from the target word (see

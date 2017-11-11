@@ -79,8 +79,8 @@ setClass("textmodel_wordfish_predicted",
 #'   implementation of the model that used a regularization parameter of 
 #'   se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
 #'   
-#' @note In the rare situation where a warning message of "The algorighm did not converge." shows up, removing 
-#'   some documents may work. 
+#' @note In the rare situation where a warning message of "The algorithm did not
+#'   converge." shows up, removing some documents may work.
 #'   
 #' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
 #'   for Estimating Time-Series Party Positions from Texts." \emph{American 

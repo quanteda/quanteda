@@ -13,7 +13,7 @@
 #' @rdname stopwords
 #' @section A note of caution: Stop words are an arbitrary choice imposed by the
 #'   user, and accessing a pre-defined list of words to ignore does not mean 
-#'   that it will perfectly fit your needs. You are strongly encourged to 
+#'   that it will perfectly fit your needs. You are strongly encouraged to 
 #'   inspect the list and to make sure it fits your particular requirements.
 #' @param kind The pre-set kind of stopwords (as a character string).  Allowed 
 #'   values are \code{english}, \code{SMART}, \code{danish}, \code{french}, 

@@ -19,7 +19,7 @@
 #'   correction is applied for the \code{"exact"} and \code{"pmi"} measures. 
 #'   Specifying a value other than the default can be used to override the 
 #'   defaults, for instance to apply the Williams correction to the chi2 
-#'   measure.  Specying a correction for the \code{"exact"} and \code{"pmi"} 
+#'   measure.  Specifying a correction for the \code{"exact"} and \code{"pmi"} 
 #'   measures has no effect and produces a warning.
 #' @references Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
 #'   Texts}. Amsterdam, Philadelphia: John Benjamins, 2010.

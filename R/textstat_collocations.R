@@ -85,7 +85,7 @@ sequences <- collocations
 #' \deqn{z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}}
 #' 
 #' @return \code{textstat_collocations} returns a data.frame of collocations and their
-#'   scores and statistsics.
+#'   scores and statistics.
 #' @export
 #' @keywords textstat collocations experimental
 #' @author Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe

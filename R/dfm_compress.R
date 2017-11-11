@@ -52,31 +52,6 @@ dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
     return(result)
 }
 
-#' #' @noRd
-#' #' @export
-#' #' @examples 
-#' #' # for dfmDense
-#' #' mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
-#' #'              dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
-#' #' matd <- dfm_smooth(mat)
-#' #' colnames(matd) <- char_tolower(featnames(mat))
-#' #' matd
-#' #' dfm_compress(matd, margin = "documents")
-#' #' dfm_compress(matd, margin = "features")
-#' #' dfm_compress(matd)
-#' dfm_compress.dfmDense <- function(x, ...) {
-#'     dfm_compress(new("dfm", Matrix::Matrix(as.matrix(x), sparse = TRUE),
-#'                      settings = x@settings,
-#'                      weightTf = x@weightTf,
-#'                      weightDf = x@weightDf,
-#'                      smooth = x@smooth,
-#'                      ngrams = x@ngrams,
-#'                      skip = x@skip,
-#'                      concatenator = x@concatenator,
-#'                      docvars = x@docvars),
-#'                  ...)
-#' }                 
-
 #' sort a dfm by frequency of one or more margins
 #' 
 #' Sorts a \link{dfm} by descending frequency of total features, total features

@@ -47,7 +47,7 @@ are converting.
   \code{\link[tm]{TermDocumentMatrix}}.
 
 \code{dfm2ldaformat} provides converts a \link{dfm} into the list representation
-of terms in documents used by tghe \pkg{lda} package (a list with components 
+of terms in documents used by the \pkg{lda} package (a list with components 
 "documents" and "vocab" as needed by 
   \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
 

@@ -787,7 +787,7 @@ nodes2list <- function(node, dict = list()){
 #' 
 #' Converts a \pkg{quanteda} dictionary object constructed by the 
 #' \link{dictionary} function into the YAML format. The YAML 
-#' files can be editied in text editors and imported into 
+#' files can be edited in text editors and imported into 
 #' \pkg{quanteda} again.
 #' @param x a \link{dictionary} object
 #' @return \code{as.yaml} a dictionary in the YAML format, as a character object

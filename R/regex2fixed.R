@@ -22,7 +22,7 @@ regex2fixed <- function(pattern, types = NULL, valuetype = NULL, case_insensitiv
 #'
 #' @description \code{regex2id} converts regex or glob to type IDs to allow C++
 #'   function to perform fast searches in tokens object. C++ functions use a
-#'   list of type IDs to construct a hash table, agaist which sub-vectors of
+#'   list of type IDs to construct a hash table, against which sub-vectors of
 #'   tokens object are matched. This function constructs index of glob patterns
 #'   for faster matching.
 #' @inheritParams pattern
@@ -259,7 +259,8 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     return(index)
 }
 
-#' internal function for \code{select_types()} to seach the index using fastmatch.
+#' internal function for \code{select_types()} to search the index using
+#' fastmatch.
 #' @rdname regex2id
 #' @param regex a glob expression to search
 #' @param index an index object created by \code{index_types()}

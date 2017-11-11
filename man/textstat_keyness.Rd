@@ -27,7 +27,7 @@ of the measure, otherwise leave in original feature order}
 correction is applied for the \code{"exact"} and \code{"pmi"} measures. 
 Specifying a value other than the default can be used to override the 
 defaults, for instance to apply the Williams correction to the chi2 
-measure.  Specying a correction for the \code{"exact"} and \code{"pmi"} 
+measure.  Specifying a correction for the \code{"exact"} and \code{"pmi"} 
 measures has no effect and produces a warning.}
 }
 \value{

@@ -47,7 +47,7 @@
 #' str(stmdfm2)
 #'  
 #' \dontrun{
-#' #' # tm's DocumentTermMatrix format
+#' # tm's DocumentTermMatrix format
 #' tmdfm <- convert(quantdfm, to = "tm")
 #' str(tmdfm)
 #' 
@@ -198,7 +198,7 @@ as.DocumentTermMatrix.dfm <- function(x, ...) {
 #' @rdname convert-wrappers
 #' @details
 #' \code{dfm2ldaformat} provides converts a \link{dfm} into the list representation
-#' of terms in documents used by tghe \pkg{lda} package (a list with components 
+#' of terms in documents used by the \pkg{lda} package (a list with components 
 #' "documents" and "vocab" as needed by 
 #'   \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
 #' @export

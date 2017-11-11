@@ -77,8 +77,8 @@ The returns match those of Will Lowe's R implementation of
   se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
 }
 \note{
-In the rare situation where a warning message of "The algorighm did not converge." shows up, removing 
-  some documents may work.
+In the rare situation where a warning message of "The algorithm did not
+  converge." shows up, removing some documents may work.
 }
 \examples{
 textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5))

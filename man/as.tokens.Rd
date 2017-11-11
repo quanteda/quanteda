@@ -67,13 +67,6 @@ underscore character.  See Details.}
 Coercion functions to and from \link{tokens} objects, checks for whether an 
 object is a \link{tokens} object, and functions to combine \link{tokens} 
 objects.
-
-#' @export
-#' @method as.tokens collocations
-#' @rdname as.tokens
-as.tokens.collocations <- function(x, concatenator = '_') {
-    as.tokens(phrase(x$collocation), concatenator = concatenator)
-}
 }
 \details{
 The \code{concatenator} is used to automatically generate dictionary

@@ -291,12 +291,12 @@ as.tokens.list <- function(x, concatenator = '_') {
     return(result)
 }
 
-#' #' @export
-#' #' @method as.tokens collocations
-#' #' @rdname as.tokens
-#' as.tokens.collocations <- function(x, concatenator = '_') {
-#'     as.tokens(phrase(x$collocation), concatenator = concatenator)
-#' }
+# # @export
+# # @method as.tokens collocations
+# # @rdname as.tokens
+# as.tokens.collocations <- function(x, concatenator = '_') {
+#     as.tokens(phrase(x$collocation), concatenator = concatenator)
+# }
 
 #' @rdname as.tokens
 #' @return \code{as.list} returns a simple list of characters from a
