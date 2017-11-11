@@ -54,25 +54,18 @@
     
     
 <div class="contents">
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-<div id="quanteda-quantitative-analysis-of-textual-data" class="section level3">
-<h3 class="hasAnchor">
-<a href="#quanteda-quantitative-analysis-of-textual-data" class="anchor"></a><a href="http://quanteda.io"><img src="https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg" alt="quanteda: quantitative analysis of textual data"></a>
-</h3>
 
-</div>
-<div id="about" class="section level2">
-<h2 class="hasAnchor">
-<a href="#about" class="anchor"></a>About</h2>
+<p><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://www.r-pkg.org/badges/version/quanteda" alt="CRAN Version"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a> <a href="https://travis-ci.org/kbenoit/quanteda"><img src="https://travis-ci.org/kbenoit/quanteda.svg?branch=master" alt="Travis-CI Build Status"></a> <a href="https://ci.appveyor.com/project/kbenoit/quanteda/branch/master"><img src="https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true" alt="Appveyor Build status"></a> <a href="https://codecov.io/gh/kbenoit/quanteda"><img src="https://codecov.io/gh/kbenoit/quanteda/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://zenodo.org/badge/latestdoi/5424649"><img src="https://zenodo.org/badge/5424649.svg" alt="DOI"></a></p>
+<section id="about" class="level2"><h2>About</h2>
 <p>An R package for managing and analyzing text, created by <a href="http://kenbenoit.net">Kenneth Benoit</a> in collaboration with a team of core <a href="https://github.com/kbenoit/quanteda/graphs/contributors">contributors</a>: <a href="https://github.com/koheiw">Kohei Watanabe</a>, <a href="https://github.com/pnulty">Paul Nulty</a>, <a href="https://github.com/adamobeng">Adam Obeng</a>, <a href="https://github.com/HaiyanLW">Haiyan Wang</a>, <a href="https://github.com/lauderdale">Ben Lauderdale</a>, and <a href="https://github.com/conjugateprior">Will Lowe</a>.<br>
 Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
 <p>For more details, see <a href="http://quanteda.io" class="uri">http://quanteda.io</a>.</p>
 <p>How to cite the package:</p>
 <pre><code>
 Benoit K (2017). _quanteda: Quantitative Analysis of Textual
-Data_. doi: doi.org/10.5281/zenodo.1004683 (URL:
-http://doi.org/doi.org/10.5281/zenodo.1004683), R package version
-0.99.9001, &lt;URL: http://quanteda.io&gt;.
+Data_. doi: 10.5281/zenodo.1004683 (URL:
+http://doi.org/10.5281/zenodo.1004683), R package version 0.99.20,
+&lt;URL: http://quanteda.io&gt;.
 
 A BibTeX entry for LaTeX users is
 
@@ -80,24 +73,23 @@ A BibTeX entry for LaTeX users is
     title = {quanteda: Quantitative Analysis of Textual Data},
     author = {Kenneth Benoit},
     year = {2017},
-    doi = {doi.org/10.5281/zenodo.1004683},
+    doi = {http://doi.org/10.5281/zenodo.1004683},
     url = {http://quanteda.io},
-    note = {R package version 0.99.9001},
+    note = {R package version 0.99.20},
   }</code></pre>
-</div>
-<div id="how-to-install" class="section level2">
-<h2 class="hasAnchor">
-<a href="#how-to-install" class="anchor"></a>How to Install</h2>
-<ol style="list-style-type: decimal">
+</section><section id="how-to-install" class="level2"><h2>How to Install</h2>
+<ol type="1">
 <li>
 <p>From <a href="https://CRAN.R-project.org/package=quanteda">CRAN</a>: Use your GUI’s R package installer, or execute:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>) </code></pre></div>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><div class="sourceLine" id="cb2-1" data-line-number="1">
+<span class="kw">install.packages</span>(<span class="st">"quanteda"</span>) </div></code></pre>
 </li>
 <li>
 <p>From <a href="https://github.com/kbenoit/quanteda">GitHub</a>, using:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># devtools packaged required to install quanteda from Github </span>
-devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kbenoit/quanteda"</span>) </code></pre></div>
-<p>Because this compiles some C++ source code, you will need a compiler installed. If you are using a Windows platform, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN. If you are using OS X, you will need to to install XCode, available for free from the App Store, or if you prefer a lighter footprint set of tools, <a href="http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">just the Xcode command line tools</a>, using the command <code>xcode-select --install</code> from the Terminal.</p>
+<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><div class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># devtools packaged required to install quanteda from Github </span></div>
+<div class="sourceLine" id="cb3-2" data-line-number="2">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kbenoit/quanteda"</span>) </div></code></pre>
+<p>Because this compiles some C++ source code, you will need a compiler installed. If you are using a Windows platform, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN. <strong>If you are using macOS</strong>, you will need to to install XCode, available for free from the App Store, or if you prefer a lighter footprint set of tools, <a href="http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">just the Xcode command line tools</a>, using the command <code>xcode-select --install</code> from the Terminal.</p>
+<p>Also, you might need to upgrade your compiler. <span class="citation" data-cites="kbenoit">@kbenoit</span> found that his macOS build only worked reliably after upgrading the default Xcode compiler to clang4, following <a href="http://thecoatlessprofessor.com/programming/openmp-in-r-on-os-x/#after-3-4-0">these instructions</a>.</p>
 </li>
 <li>
 <p>Additional recommended packages:</p>
@@ -107,32 +99,24 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <li><p><a href="https://github.com/kbenoit/spacyr"><strong>spacyr</strong></a>: NLP using the <a href="http://spacy.io">spaCy</a> library, including part-of-speech tagging, entity recognition, and dependency parsing.</p></li>
 <li>
 <p><a href="https://github.com/kbenoit/quantedaData"><strong>quantedaData</strong></a>: Additional textual data for use with <strong>quanteda</strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kbenoit/quantedaData"</span>)</code></pre></div>
+<code>r  devtools::install_github("kbenoit/quantedaData")</code>
 </li>
 <li>
 <p><a href="https://github.com/kbenoit/LIWCalike"><strong>LIWCalike</strong></a>: An R implementation of the <a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a> approach to text analysis.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kbenoit/LIWCalike"</span>)</code></pre></div>
+<p><code>r  devtools::install_github("kbenoit/LIWCalike")</code></p>
 </li>
 </ul>
 </li>
-</ol>
-</div>
-<div id="leaving-feedback" class="section level2">
-<h2 class="hasAnchor">
-<a href="#leaving-feedback" class="anchor"></a>Leaving feedback</h2>
+</ol></section><section id="leaving-feedback" class="level2"><h2>Leaving feedback</h2>
 <p>If you like <strong>quanteda</strong>, please consider leaving <a href="https://github.com/kbenoit/quanteda/issues/461">feedback or a testimonial here</a>.</p>
-</div>
-<div id="contributing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contributing" class="anchor"></a>Contributing</h2>
+</section><section id="contributing" class="level2"><h2>Contributing</h2>
 <p>Contributions in the form of feedback, comments, code, and bug reports are most welcome. How to contribute:</p>
 <ul>
 <li>Fork the source code, modify, and issue a <a href="https://help.github.com/articles/creating-a-pull-request-from-a-fork/">pull request</a> through the <a href="https://github.com/kbenoit/quanteda">project GitHub page</a>. See our <a href="https://github.com/kbenoit/quanteda/blob/master/CONDUCT.md">Contributor Code of Conduct</a> and the all-important <strong>quanteda</strong> <a href="https://github.com/kbenoit/quanteda/wiki/Style-guide">Style Guide</a>.</li>
 <li>Issues, bug reports, and wish lists: <a href="https://github.com/kbenoit/quanteda/issues">File a GitHub issue</a>.</li>
 <li>Usage questions: Submit a question on the <a href="http://stackoverflow.com/questions/tagged/quanteda"><strong>quanteda</strong> channel on StackOverflow</a>.</li>
 <li>Contact <a href="kbenoit@lse.ac.uk">the maintainer</a> by email.</li>
-</ul>
-</div>
+</ul></section>
 </div>
   </div>
 
@@ -153,13 +137,7 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 </ul>
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://www.r-pkg.org/badges/version/quanteda" alt="CRAN Version"></a></li>
-<li><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"></a></li>
-<li><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a></li>
-<li><a href="https://travis-ci.org/kbenoit/quanteda"><img src="https://travis-ci.org/kbenoit/quanteda.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://ci.appveyor.com/project/kbenoit/quanteda/branch/master"><img src="https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true" alt="Appveyor Build status"></a></li>
-<li><a href="https://codecov.io/gh/kbenoit/quanteda"><img src="https://codecov.io/gh/kbenoit/quanteda/branch/master/graph/badge.svg" alt="codecov"></a></li>
-<li><a href="https://zenodo.org/badge/latestdoi/5424649"><img src="https://zenodo.org/badge/5424649.svg" alt="DOI"></a></li>
+<li><a href="http://quanteda.io"><img src="https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg" alt="quanteda: quantitative analysis of textual data"></a></li>
 </ul>
 </div>
 
