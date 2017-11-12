@@ -25,7 +25,7 @@ How to cite the package:
         title = {quanteda: Quantitative Analysis of Textual Data},
         author = {Kenneth Benoit},
         year = {2017},
-        doi = {http://doi.org/10.5281/zenodo.1004683},
+        doi = {10.5281/zenodo.1004683},
         url = {http://quanteda.io},
         note = {R package version 0.99.22},
       }
