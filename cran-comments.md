@@ -1,6 +1,10 @@
 ## Submission notes
 
-NOTE: SUPERCEDES previous 0.99.20 submission, as I discovered a bug related to 
+RESUBMISSION: Removes the "http://" from the doi in CITATION (as instructed 
+following earlier submission of v0.9.21).  UPDATED:  Incremented version 
+to 0.99.22 in DESCRIPTION.
+
+NOTE: SUPERCEDES previous 0.99.20 and 0.99.21 submissions, as I discovered a bug related to 
 the case of a function, that for some reasons did not show up on previous
 tests.
 
@@ -12,10 +16,10 @@ tests.
 
 ## Test environments
 
-* local OS X install, R 3.4.1
-* ubuntu Ubuntu 14.04.5 LTS (on travis-ci), R 3.4.1
-* Windows Server 2012 R2 x64 (build 9600), R 3.4.1 (on Appveyor)
-* local Windows 10, R 3.4.1
+* local OS X install, R 3.4.2
+* ubuntu Ubuntu 14.04.5 LTS (on travis-ci), R 3.4.2
+* Windows Server 2012 R2 x64 (build 9600), R 3.4.2 (on Appveyor)
+* local Windows 10, R 3.4.2
 * win-builder (devel and release)
 
 ## R CMD check results
