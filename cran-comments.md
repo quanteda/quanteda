@@ -1,12 +1,7 @@
 ## Submission notes
 
-RESUBMISSION: Removes the "http://" from the doi in CITATION (as instructed 
-following earlier submission of v0.9.21).  UPDATED:  Incremented version 
-to 0.99.22 in DESCRIPTION.
-
-NOTE: SUPERCEDES previous 0.99.20 and 0.99.21 submissions, as I discovered a bug related to 
-the case of a function, that for some reasons did not show up on previous
-tests.
+RESUBMISSION: Removes the "http://doi.org" from the doi in CITATION (as instructed 
+following earlier submission of v0.9.22).
 
 ### Purpose
 
