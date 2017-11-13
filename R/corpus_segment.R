@@ -29,7 +29,7 @@
 #'   boundary delimiter that defines the segmentation points for splitting a
 #'   text into new "document" units.  Boundaries are always defined as the
 #'   pattern matches, plus the end and beginnings of each document.  The new
-#'   "documents" that are created following the segmenation will then be the
+#'   "documents" that are created following the segmentation will then be the
 #'   texts found between boundaries.
 #'   
 #'   The pattern itself will be saved as a new document variable named 
@@ -46,7 +46,7 @@
 #' @section Using patterns: One of the most common uses for
 #'   \code{corpus_segment} is to partition a corpus into sub-documents using
 #'   tags.  The default pattern value is designed for a user-annotated tag that
-#'   is a term begining with double "hash" signs, followed by a whitespace, for
+#'   is a term beginning with double "hash" signs, followed by a whitespace, for
 #'   instance as \code{##INTRODUCTION The text}.
 #'   
 #'   Glob and fixed pattern types use a whitespace character to signal the end 

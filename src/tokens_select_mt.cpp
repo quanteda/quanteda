@@ -126,7 +126,7 @@ struct select_mt : public Worker{
 };
 
 /* 
- * This funciton select features in tokens object with multiple threads. 
+ * This function selects features in tokens object with multiple threads. 
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_select()
  * @creator Kohei Watanabe

@@ -1,5 +1,5 @@
 
-### [![quanteda: quantitative analysis of textual data](https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
+[![quanteda: quantitative analysis of textual data](https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
 
 [![CRAN Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master) [![codecov](https://codecov.io/gh/kbenoit/quanteda/branch/master/graph/badge.svg)](https://codecov.io/gh/kbenoit/quanteda) [![DOI](https://zenodo.org/badge/5424649.svg)](https://zenodo.org/badge/latestdoi/5424649)
 
@@ -15,9 +15,9 @@ How to cite the package:
 
 
     Benoit K (2017). _quanteda: Quantitative Analysis of Textual
-    Data_. doi: doi.org/10.5281/zenodo.1004683 (URL:
-    http://doi.org/doi.org/10.5281/zenodo.1004683), R package version
-    0.99.9004, <URL: http://quanteda.io>.
+    Data_. doi: 10.5281/zenodo.1004683 (URL:
+    http://doi.org/10.5281/zenodo.1004683), R package version 0.99.22,
+    <URL: http://quanteda.io>.
 
     A BibTeX entry for LaTeX users is
 
@@ -25,9 +25,9 @@ How to cite the package:
         title = {quanteda: Quantitative Analysis of Textual Data},
         author = {Kenneth Benoit},
         year = {2017},
-        doi = {doi.org/10.5281/zenodo.1004683},
+        doi = {10.5281/zenodo.1004683},
         url = {http://quanteda.io},
-        note = {R package version 0.99.9004},
+        note = {R package version 0.99.22},
       }
 
 How to Install

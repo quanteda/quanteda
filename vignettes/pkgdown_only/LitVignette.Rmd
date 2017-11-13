@@ -314,6 +314,7 @@ ggplot(data = rel_chap_freq, aes(x = chapter, y = ahab)) +
     geom_bar(stat = "identity") +
     labs(x = "Chapter", y = "Relative frequency",
          title = "Occurrence of 'ahab'")
+```
 
 # 5 Correlation
 

@@ -1,5 +1,6 @@
-docs/* linguist-vendored
-inst/docs/* linguist-vendored
+vignettes/*	linguist-documentation
+docs/*	linguist-documentation
+man/*	linguist-documentation
 
 # Source files
 # ============

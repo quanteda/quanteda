@@ -157,7 +157,7 @@ struct type_mt : public Worker{
 
 
 /* 
-* This funciton generates ngrams/skipgrams from tokens object. 
+* This function generates ngrams/skipgrams from tokens object. 
 * The number of threads is set by RcppParallel::setThreadOptions()
 * @used tokens_ngrams()
 * @creator Kohei Watanabe

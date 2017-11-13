@@ -15,7 +15,7 @@ as.yaml(x)
 \description{
 Converts a \pkg{quanteda} dictionary object constructed by the 
 \link{dictionary} function into the YAML format. The YAML 
-files can be editied in text editors and imported into 
+files can be edited in text editors and imported into 
 \pkg{quanteda} again.
 }
 \examples{

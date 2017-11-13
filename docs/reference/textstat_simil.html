@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -156,22 +181,22 @@ matrix is recorded</p></td>
 
     <p>The <code>"Chisquared"</code> metric is from Legendre, P., &amp; Gallagher,
   E. D. (2001).
-  "<a href = 'http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&amp;_Gallagher.pdf'>Ecologically
+  "<a href='http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&amp;_Gallagher.pdf'>Ecologically
    meaningful transformations for ordination of species data</a>".
-  <em>Oecologia</em>, 129(2), 271–280. doi.org/10.1007/s004420100716
-    The <code>"Chisquared2"</code> metric is the "Quadratic-Chi" measure from Pele,
+  <em>Oecologia</em>, 129(2), 271–280. doi.org/10.1007/s004420100716</p>  
+<p>The <code>"Chisquared2"</code> metric is the "Quadratic-Chi" measure from Pele,
   O., &amp; Werman, M. (2010). 
-  "<a href = 'http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf'>The
+  "<a href='https://link.springer.com/chapter/10.1007/978-3-642-15552-9_54'>The
   Quadratic-Chi Histogram Distance Family</a>". In <em>Computer Vision – ECCV
   2010</em> (Vol. 6312, pp. 749–762). Berlin, Heidelberg: Springer, Berlin,
-  Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.
-    <code>"hamming"</code> is \(\sum{x \neq y)}\).</p>
+  Heidelberg. doi.org/10.1007/978-3-642-15552-9_54.</p>  
+<p><code>"hamming"</code> is \(\sum{x \neq y)}\).</p>
 <p><code>"kullback"</code> is the Kullback-Leibler distance, which assumes that
   \(P(x_i) = 0\) implies \(P(y_i)=0\), and in case both \(P(x_i)\) and
   \(P(y_i)\) equals to zero, then \(P(x_i) * log(p(x_i)/p(y_i))\) is
   assumed to be zero as the limit value.  The formula is:
-   $$\sum{P(x)*log(P(x)/p(y))}$$
-    All other measures are described in the <span class="pkg">proxy</span> package.</p>
+   $$\sum{P(x)*log(P(x)/p(y))}$$</p>   
+<p>All other measures are described in the <span class="pkg">proxy</span> package.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -185,16 +210,190 @@ matrix is recorded</p></td>
                <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># distances for documents </span>
-(<span class='no'>d1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>as.matrix</span>(<span class='no'>d1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.matrix(d1): object 'd1' not found</span></div><div class='input'>
+(<span class='no'>d1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              1993-Clinton 1997-Clinton 2001-Bush 2005-Bush 2009-Obama
+#&gt; 1997-Clinton     58.90671                                            
+#&gt; 2001-Bush        52.82045     63.63961                               
+#&gt; 2005-Bush        62.79331     73.38256  54.32311                     
+#&gt; 2009-Obama       51.66237     59.95832  50.70503  62.33779           
+#&gt; 2013-Obama       51.30302     60.81118  49.03060  57.90509   48.48711
+#&gt; 2017-Trump       52.14403     65.85590  48.79549  58.00000   55.65968
+#&gt;              2013-Obama
+#&gt; 1997-Clinton           
+#&gt; 2001-Bush              
+#&gt; 2005-Bush              
+#&gt; 2009-Obama             
+#&gt; 2013-Obama             
+#&gt; 2017-Trump     55.21775</div><div class='input'><span class='fu'>as.matrix</span>(<span class='no'>d1</span>)</div><div class='output co'>#&gt;              1993-Clinton 1997-Clinton 2001-Bush 2005-Bush 2009-Obama
+#&gt; 1993-Clinton      0.00000     58.90671  52.82045  62.79331   51.66237
+#&gt; 1997-Clinton     58.90671      0.00000  63.63961  73.38256   59.95832
+#&gt; 2001-Bush        52.82045     63.63961   0.00000  54.32311   50.70503
+#&gt; 2005-Bush        62.79331     73.38256  54.32311   0.00000   62.33779
+#&gt; 2009-Obama       51.66237     59.95832  50.70503  62.33779    0.00000
+#&gt; 2013-Obama       51.30302     60.81118  49.03060  57.90509   48.48711
+#&gt; 2017-Trump       52.14403     65.85590  48.79549  58.00000   55.65968
+#&gt;              2013-Obama 2017-Trump
+#&gt; 1993-Clinton   51.30302   52.14403
+#&gt; 1997-Clinton   60.81118   65.85590
+#&gt; 2001-Bush      49.03060   48.79549
+#&gt; 2005-Bush      57.90509   58.00000
+#&gt; 2009-Obama     48.48711   55.65968
+#&gt; 2013-Obama      0.00000   55.21775
+#&gt; 2017-Trump     55.21775    0.00000</div><div class='input'>
 <span class='co'># distances for specific documents</span>
-<span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"eJaccard"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>(<span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>as.list</span>(<span class='no'>d1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.list(d1): object 'd1' not found</span></div><div class='input'>
+<span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2017-Trump
+#&gt; 2017-Trump      0.00000
+#&gt; 1993-Clinton   52.14403
+#&gt; 1997-Clinton   65.85590
+#&gt; 2001-Bush      48.79549
+#&gt; 2005-Bush      58.00000
+#&gt; 2009-Obama     55.65968
+#&gt; 2013-Obama     55.21775</div><div class='input'><span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"eJaccard"</span>)</div><div class='output co'>#&gt;              2005-Bush
+#&gt; 2005-Bush    1.0000000
+#&gt; 1993-Clinton 0.3306739
+#&gt; 1997-Clinton 0.3276314
+#&gt; 2001-Bush    0.4038384
+#&gt; 2009-Obama   0.3557692
+#&gt; 2013-Obama   0.4122699
+#&gt; 2017-Trump   0.3508298</div><div class='input'>(<span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              2009-Obama 2013-Obama
+#&gt; 2009-Obama      0.00000   48.48711
+#&gt; 2013-Obama     48.48711    0.00000
+#&gt; 1993-Clinton   51.66237   51.30302
+#&gt; 1997-Clinton   59.95832   60.81118
+#&gt; 2001-Bush      50.70503   49.03060
+#&gt; 2005-Bush      62.33779   57.90509
+#&gt; 2017-Trump     55.65968   55.21775</div><div class='input'><span class='fu'>as.list</span>(<span class='no'>d1</span>)</div><div class='output co'>#&gt; $`1993-Clinton`
+#&gt;    2005-Bush 1997-Clinton    2001-Bush   2017-Trump   2009-Obama   2013-Obama 
+#&gt;     62.79331     58.90671     52.82045     52.14403     51.66237     51.30302 
+#&gt; 
+#&gt; $`1997-Clinton`
+#&gt;    2005-Bush   2017-Trump    2001-Bush   2013-Obama   2009-Obama 1993-Clinton 
+#&gt;     73.38256     65.85590     63.63961     60.81118     59.95832     58.90671 
+#&gt; 
+#&gt; $`2001-Bush`
+#&gt; 1997-Clinton    2005-Bush 1993-Clinton   2009-Obama   2013-Obama   2017-Trump 
+#&gt;     63.63961     54.32311     52.82045     50.70503     49.03060     48.79549 
+#&gt; 
+#&gt; $`2005-Bush`
+#&gt; 1997-Clinton 1993-Clinton   2009-Obama   2017-Trump   2013-Obama    2001-Bush 
+#&gt;     73.38256     62.79331     62.33779     58.00000     57.90509     54.32311 
+#&gt; 
+#&gt; $`2009-Obama`
+#&gt;    2005-Bush 1997-Clinton   2017-Trump 1993-Clinton    2001-Bush   2013-Obama 
+#&gt;     62.33779     59.95832     55.65968     51.66237     50.70503     48.48711 
+#&gt; 
+#&gt; $`2013-Obama`
+#&gt; 1997-Clinton    2005-Bush   2017-Trump 1993-Clinton    2001-Bush   2009-Obama 
+#&gt;     60.81118     57.90509     55.21775     51.30302     49.03060     48.48711 
+#&gt; 
+#&gt; $`2017-Trump`
+#&gt; 1997-Clinton    2005-Bush   2009-Obama   2013-Obama 1993-Clinton    2001-Bush 
+#&gt;     65.85590     58.00000     55.65968     55.21775     52.14403     48.79549 
+#&gt; </div><div class='input'>
 <span class='co'># similarities for documents</span>
-(<span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>as.matrix</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.matrix(s1): object 's1' not found</span></div><div class='input'><span class='fu'>as.list</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.list(s1): object 's1' not found</span></div><div class='input'>
+(<span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              1993-Clinton 1997-Clinton 2001-Bush 2005-Bush 2009-Obama
+#&gt; 1997-Clinton    0.6680262                                            
+#&gt; 2001-Bush       0.5358898    0.5912236                               
+#&gt; 2005-Bush       0.5012215    0.5006142 0.5982538                     
+#&gt; 2009-Obama      0.6280946    0.6593018 0.6018113 0.5266249           
+#&gt; 2013-Obama      0.6265428    0.6466030 0.6193608 0.5867178  0.6815711
+#&gt; 2017-Trump      0.5511398    0.5558054 0.5327058 0.5386656  0.5192075
+#&gt;              2013-Obama
+#&gt; 1997-Clinton           
+#&gt; 2001-Bush              
+#&gt; 2005-Bush              
+#&gt; 2009-Obama             
+#&gt; 2013-Obama             
+#&gt; 2017-Trump    0.5160104</div><div class='input'><span class='fu'>as.matrix</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt;              1993-Clinton 1997-Clinton 2001-Bush 2005-Bush 2009-Obama
+#&gt; 1993-Clinton    1.0000000    0.6680262 0.5358898 0.5012215  0.6280946
+#&gt; 1997-Clinton    0.6680262    1.0000000 0.5912236 0.5006142  0.6593018
+#&gt; 2001-Bush       0.5358898    0.5912236 1.0000000 0.5982538  0.6018113
+#&gt; 2005-Bush       0.5012215    0.5006142 0.5982538 1.0000000  0.5266249
+#&gt; 2009-Obama      0.6280946    0.6593018 0.6018113 0.5266249  1.0000000
+#&gt; 2013-Obama      0.6265428    0.6466030 0.6193608 0.5867178  0.6815711
+#&gt; 2017-Trump      0.5511398    0.5558054 0.5327058 0.5386656  0.5192075
+#&gt;              2013-Obama 2017-Trump
+#&gt; 1993-Clinton  0.6265428  0.5511398
+#&gt; 1997-Clinton  0.6466030  0.5558054
+#&gt; 2001-Bush     0.6193608  0.5327058
+#&gt; 2005-Bush     0.5867178  0.5386656
+#&gt; 2009-Obama    0.6815711  0.5192075
+#&gt; 2013-Obama    1.0000000  0.5160104
+#&gt; 2017-Trump    0.5160104  1.0000000</div><div class='input'><span class='fu'>as.list</span>(<span class='no'>s1</span>)</div><div class='output co'>#&gt; $`1993-Clinton`
+#&gt; 1997-Clinton   2009-Obama   2013-Obama   2017-Trump    2001-Bush    2005-Bush 
+#&gt;    0.6680262    0.6280946    0.6265428    0.5511398    0.5358898    0.5012215 
+#&gt; 
+#&gt; $`1997-Clinton`
+#&gt; 1993-Clinton   2009-Obama   2013-Obama    2001-Bush   2017-Trump    2005-Bush 
+#&gt;    0.6680262    0.6593018    0.6466030    0.5912236    0.5558054    0.5006142 
+#&gt; 
+#&gt; $`2001-Bush`
+#&gt;   2013-Obama   2009-Obama    2005-Bush 1997-Clinton 1993-Clinton   2017-Trump 
+#&gt;    0.6193608    0.6018113    0.5982538    0.5912236    0.5358898    0.5327058 
+#&gt; 
+#&gt; $`2005-Bush`
+#&gt;    2001-Bush   2013-Obama   2017-Trump   2009-Obama 1993-Clinton 1997-Clinton 
+#&gt;    0.5982538    0.5867178    0.5386656    0.5266249    0.5012215    0.5006142 
+#&gt; 
+#&gt; $`2009-Obama`
+#&gt;   2013-Obama 1997-Clinton 1993-Clinton    2001-Bush    2005-Bush   2017-Trump 
+#&gt;    0.6815711    0.6593018    0.6280946    0.6018113    0.5266249    0.5192075 
+#&gt; 
+#&gt; $`2013-Obama`
+#&gt;   2009-Obama 1997-Clinton 1993-Clinton    2001-Bush    2005-Bush   2017-Trump 
+#&gt;    0.6815711    0.6466030    0.6265428    0.6193608    0.5867178    0.5160104 
+#&gt; 
+#&gt; $`2017-Trump`
+#&gt; 1997-Clinton 1993-Clinton    2005-Bush    2001-Bush   2009-Obama   2013-Obama 
+#&gt;    0.5558054    0.5511398    0.5386656    0.5327058    0.5192075    0.5160104 
+#&gt; </div><div class='input'>
 <span class='co'># similarities for for specific documents</span>
-<span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2017-Trump
+#&gt; 2017-Trump    1.0000000
+#&gt; 1993-Clinton  0.4967910
+#&gt; 1997-Clinton  0.4989669
+#&gt; 2001-Bush     0.4672634
+#&gt; 2005-Bush     0.4739241
+#&gt; 2009-Obama    0.4377484
+#&gt; 2013-Obama    0.4414144</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='st'>"2017-Trump"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2017-Trump
+#&gt; 2017-Trump    1.0000000
+#&gt; 1993-Clinton  0.5511398
+#&gt; 1997-Clinton  0.5558054
+#&gt; 2001-Bush     0.5327058
+#&gt; 2005-Bush     0.5386656
+#&gt; 2009-Obama    0.5192075
+#&gt; 2013-Obama    0.5160104</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2009-Obama 2013-Obama
+#&gt; 2009-Obama    1.0000000  0.6103693
+#&gt; 2013-Obama    0.6103693  1.0000000
+#&gt; 1993-Clinton  0.5707623  0.5725041
+#&gt; 1997-Clinton  0.6026942  0.5916516
+#&gt; 2001-Bush     0.5241995  0.5523905
+#&gt; 2005-Bush     0.4330978  0.5137096
+#&gt; 2017-Trump    0.4377484  0.4414144</div><div class='input'>
 <span class='co'># compute some term similarities</span>
 <span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>,
-                      <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>head</span>(<span class='fu'>as.matrix</span>(<span class='no'>s2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.matrix(s2): object 's2' not found</span></div><div class='input'><span class='fu'>as.list</span>(<span class='no'>s2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>8</span>)</div><div class='output co'>#&gt; <span class='error'>Error in as.list(s2, n = 8): object 's2' not found</span></div><div class='input'>
+                      <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>)
+<span class='fu'>head</span>(<span class='fu'>as.matrix</span>(<span class='no'>s2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;               fair    health     terror
+#&gt; fair     1.0000000 0.7559289 0.15430335
+#&gt; health   0.7559289 1.0000000 0.54433105
+#&gt; terror   0.1543033 0.5443311 1.00000000
+#&gt; fellow   0.4265617 0.7181848 0.67016625
+#&gt; citizen  0.6787417 0.7144508 0.49663296
+#&gt; today    0.6265515 0.8288497 0.59866609
+#&gt; celebr   0.4472136 0.6761234 0.48304589
+#&gt; mysteri  0.2672612 0.2357023 0.28867513
+#&gt; american 0.5665941 0.7335861 0.67709711
+#&gt; renew    0.5041842 0.4850713 0.09901475</div><div class='input'><span class='fu'>as.list</span>(<span class='no'>s2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>8</span>)</div><div class='output co'>#&gt; $fair
+#&gt;   continu    purpos    travel    failur      lead     begin    courag      call 
+#&gt; 1.0000000 0.9636241 0.9561829 0.9449112 0.9166985 0.9091373 0.9091373 0.8971226 
+#&gt; 
+#&gt; $health
+#&gt;       can      work     faith       see    danger   generat     stand       end 
+#&gt; 0.9950372 0.9602106 0.9578949 0.9456109 0.9428090 0.9404079 0.9315943 0.9238116 
+#&gt; 
+#&gt; $terror
+#&gt;       big   shutter   destroy      rich       yes     offic     bridg   potenti 
+#&gt; 0.9525793 0.9428090 0.9428090 0.9428090 0.9365858 0.9258201 0.9258201 0.9128709 
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -323,7 +323,7 @@ struct estimates_mt : public Worker{
 };
 
 /* 
-* This funciton estimate the strength of association between specified words 
+* This function estimates the strength of association between specified words 
 * that appear in sequences. 
 * @used sequences()
 * @param texts_ tokens object

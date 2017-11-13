@@ -12,7 +12,7 @@ dfmJM <- dfm(txt, verbose = FALSE)
 
 # NB
 trainclass <- factor(c(rep("N", 3), "P", "P", NA))
-(nbJM7_1 <- textmodel_NB(dfmJM, trainclass, prior = "docfreq"))
+(nbJM7_1 <- textmodel_nb(dfmJM, trainclass, prior = "docfreq"))
 predict(nbJM7_1)
 # from the text: pretty close posteriors for class of test1
 c(1.8e-6, 5.7e-7) / (1.8e-6 + 5.7e-7)
