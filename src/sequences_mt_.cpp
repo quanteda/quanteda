@@ -83,7 +83,7 @@ void counts(Text text,
            SetUnigrams &set_ignore,
            const unsigned int &size){
 
-    if (text.size() == 0) return; // do nothing with empty text
+    if (text.size() < size) return; // do nothing with very short text
     for (std::size_t i = 0; i < text.size() - size + 1; i++) {
         Text text_sub(text.begin() + i, text.begin() + i + size);
         bool ignore = false;
@@ -277,7 +277,7 @@ struct estimates_mt : public Worker{
 };
 
 /* 
-* This funciton estimate the strength of association between specified words 
+* This function estimates the strength of association between specified words 
 * that appear in sequences. 
 * @used sequences()
 * @param texts_ tokens object
@@ -401,6 +401,8 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         //output counts
         //ob_all.insert(ob_all.end(), ob_n.begin(), ob_n.end());
         
+        // Allow user to stop
+        R_CheckUserInterrupt();
     }
     
     // Convert sequences from integer to character

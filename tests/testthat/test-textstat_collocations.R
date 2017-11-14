@@ -290,3 +290,25 @@ test_that("textstat_collocations.tokens works ok with zero-length documents (#94
     )
 })
 
+test_that("textstat_collocations works when texts are shorter than size", {
+    toks <- tokens(c('a', 'bb', ''))
+    expect_equivalent(
+        textstat_collocations(toks, size = 2:3, min_count = 1, tolower = TRUE),
+        data.frame(collocation = character(0), 
+                   count = integer(0), 
+                   length = numeric(0),
+                   lambda = numeric(0),
+                   z = numeric(0),
+                   stringsAsFactors = FALSE))
+})
+
+test_that("textstat_collocations error when size = 1 and warn when size > 5", {
+    
+    toks <- tokens('a b c d e f g h a b c d e f')
+    expect_silent(textstat_collocations(toks, size = 2:5))
+    expect_error(textstat_collocations(toks, size = 1:5),
+                 "Collocation sizes must be larger than 1")
+    expect_warning(textstat_collocations(toks, size = 2:6),
+                 "Computation for large collocations may take long time")
+    
+})

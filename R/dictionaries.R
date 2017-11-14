@@ -404,7 +404,7 @@ is.dictionary <- function(x) {
 #  @param levels integer vector indicating levels in the dictionary
 #  @param level internal argument to pass current levels
 #  @param key_tree internal argument to pass for parent keys
-#  @param dict internal argument to pass flattend dicitonary
+#  @param dict internal argument to pass flattend dictionary
 #  @return A dictionary flattened to variable levels
 #  @keywords internal
 #  @author Kohei Watanabe
@@ -474,7 +474,7 @@ lowercase_dictionary_values <- function(dict) {
 }
 
 #' internal function to replace dictionary values
-#' @param dict a dicitonary object
+#' @param dict a \link{dictionary} object
 #' @keywords internal
 #' @examples
 #' dict <- list(KEY1 = list(SUBKEY1 = list("A_B"),
@@ -498,8 +498,8 @@ replace_dictionary_values <- function(dict, from, to) {
     return(dict)
 }
 
-#' internal function to mege values of duplicated keys
-#' @param dict a dicitonary object
+#' internal function to merge values of duplicated keys
+#' @param dict a dictionary object
 #' @keywords internal
 #' @examples
 #' dict <- list('A' = list(AA = list('aaaaa'), 'a'), 
@@ -637,10 +637,10 @@ remove_empty_keys <- function(dict) {
 #' @examples
 #' list_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'), 'D' = c('ddd'))
 #' dict_flat <- quanteda:::list2dictionary(list_flat)
-#' quanteda:::nest_dicitonary(dict_flat, c(1, 1, 2, 2))
-#' quanteda:::nest_dicitonary(dict_flat, c(1, 2, 1, 2))
+#' quanteda:::nest_dictionary(dict_flat, c(1, 1, 2, 2))
+#' quanteda:::nest_dictionary(dict_flat, c(1, 2, 1, 2))
 #' 
-nest_dicitonary <- function (dict, depth) {
+nest_dictionary <- function (dict, depth) {
     
     if (length(dict) != length(depth))
         stop('Depth vectot must have the same length as dictionary')
@@ -748,9 +748,9 @@ read_dict_liwc <- function(path, encoding = 'auto') {
     dict <- lapply(dict, function(x) sort(unique(x))) # remove duplicated and sort values
     dict <- list2dictionary(dict)
     
-    # create hierachical structure of the LIWC 2015 format
+    # create hieraechical structure of the LIWC 2015 format
     if (any(depth != max(depth))) {
-        dict <- nest_dicitonary(dict, depth)
+        dict <- nest_dictionary(dict, depth)
     }
     dict <- remove_empty_keys(dict)
     
@@ -787,7 +787,7 @@ nodes2list <- function(node, dict = list()){
 #' 
 #' Converts a \pkg{quanteda} dictionary object constructed by the 
 #' \link{dictionary} function into the YAML format. The YAML 
-#' files can be editied in text editors and imported into 
+#' files can be edited in text editors and imported into 
 #' \pkg{quanteda} again.
 #' @param x a \link{dictionary} object
 #' @return \code{as.yaml} a dictionary in the YAML format, as a character object

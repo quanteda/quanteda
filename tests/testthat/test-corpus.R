@@ -186,7 +186,7 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
 
 test_that("test corpus constructor works for complex VCorpus (#849)", {
     skip_if_not_installed("tm")
-    load("../data/corpora/complex_Corpus.RData")
+    load("../data/corpora/complex_Corpus.rda")
     qc <- corpus(complex_Corpus)
     expect_equal(
         head(docnames(qc), 3),
@@ -287,3 +287,18 @@ test_that("internal documents fn works", {
         c(3, 3)
     )
 })
+
+test_that("corpus constructor works with tibbles", {
+    skip_if_not_installed("tibble")
+    dd <- tibble::data_frame(a=1:3, text=c("Hello", "quanteda", "world"))
+    expect_is(
+        corpus(dd),
+        "corpus"
+    )
+    expect_equal(
+        texts(corpus(dd)),
+        c(text1 = "Hello", text2 = "quanteda", text3 = "world")
+    )
+})
+
+

@@ -30,10 +30,10 @@ corpus(x, ...)
 
 \item{...}{not used directly}
 
-\item{docnames}{Names to be assigned to the texts.  Defaults to the names of 
+\item{docnames}{Names to be assigned to the texts.  Defaults to the names of
 the character vector (if any); \code{doc_id} for a data.frame; the document
-names in a \pkg{tm} corpus; or a vector of user-supplied labels equal in 
-length to the number of documents.  If none of these are round, then 
+names in a \pkg{tm} corpus; or a vector of user-supplied labels equal in
+length to the number of documents.  If none of these are round, then
 "text1", "text2", etc. are assigned automatically.}
 
 \item{docvars}{a data.frame of document-level variables associated with each text}
@@ -42,10 +42,10 @@ length to the number of documents.  If none of these are round, then
   to be added to the corpus as corpus-level metadata.  Special fields
   recognized in the \code{\link{summary.corpus}} are:
 \itemize{
-\item{\code{source }}{a description of the source of the texts, used for 
+\item{\code{source }}{a description of the source of the texts, used for
   referencing;}
 \item{\code{citation }}{information on how to cite the corpus; and}
-\item{\code{notes }}{any additional information about who created the text, warnings, 
+\item{\code{notes }}{any additional information about who created the text, warnings,
   to do lists, etc.}
 }}
 
@@ -54,8 +54,8 @@ gzip compression. This significantly reduces the size of the corpus in
 memory, but will slow down operations that require the texts to be
 extracted.}
 
-\item{docid_field}{optional column index of a document identifier; if 
-\code{NULL}, the constructor will use the row.names of the data.frame (if 
+\item{docid_field}{optional column index of a document identifier; if
+\code{NULL}, the constructor will use the row.names of the data.frame (if
 found)}
 
 \item{text_field}{the character name or numeric index of the source
@@ -70,47 +70,47 @@ A \link{corpus-class} class object containing the original texts,
   and default settings for subsequent processing of the corpus.
 }
 \description{
-Creates a corpus object from available sources.  The currently available  
-sources are: 
-\itemize{ 
-\item a \link{character} vector, consisting of one document per element; if 
+Creates a corpus object from available sources.  The currently available
+sources are:
+\itemize{
+\item a \link{character} vector, consisting of one document per element; if
   the elements are named, these names will be used as document names.
-\item a \link{data.frame}, whose default document id is a variable identified
-by \code{docid_field}; the text of the document is a variable identified by
-\code{textid_field}; and other variables are imported as document-level
-meta-data.  This matches the format of data.frames constructed by the the
-\pkg{readtext} package.
+\item a \link{data.frame} (or a \pkg{tibble} \code{tbl_df}), whose default
+document id is a variable identified by \code{docid_field}; the text of the
+document is a variable identified by \code{textid_field}; and other variables
+are imported as document-level meta-data.  This matches the format of
+data.frames constructed by the the \pkg{readtext} package.
 \item a \link{kwic} object constructed by \code{\link{kwic}}.
-\item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object, 
-  with the fixed metadata 
+\item a \pkg{tm} \link[tm]{VCorpus} or \link[tm]{SimpleCorpus} class  object,
+  with the fixed metadata
   fields imported as \link{docvars} and corpus-level metadata imported
   as \link{metacorpus} information.
 \item a \link{corpus} object.
 }
 }
 \details{
-The texts and document variables of corpus objects can also be 
-  accessed using index notation. Indexing a corpus object as a vector will 
-  return its text, equivalent to \code{texts(x)}.  Note that this is not the 
-  same as subsetting the entire corpus -- this should be done using the 
+The texts and document variables of corpus objects can also be
+  accessed using index notation. Indexing a corpus object as a vector will
+  return its text, equivalent to \code{texts(x)}.  Note that this is not the
+  same as subsetting the entire corpus -- this should be done using the
   \code{\link{subset}} method for a corpus.
-  
-  Indexing a corpus using two indexes (integers or column names) will return 
+
+  Indexing a corpus using two indexes (integers or column names) will return
   the document variables, equivalent to \code{docvars(x)}.  It is also
   possible to access, create, or replace docvars using list notation, e.g.
-  
-  \code{myCorpus[["newSerialDocvar"]] <- 
+
+  \code{myCorpus[["newSerialDocvar"]] <-
   paste0("tag", 1:ndoc(myCorpus))}.
-  
+
   For details, see \link{corpus-class}.
 }
 \section{A warning on accessing corpus elements}{
  A corpus currently consists
-  of an S3 specially classed list of elements, but \strong{you should not 
-  access these elements directly}. Use the extractor and replacement 
-  functions instead, or else your code is not only going to be uglier, but 
-  also likely to break should the internal structure of a corpus object 
-  change (as it inevitably will as we continue to develop the package, 
+  of an S3 specially classed list of elements, but \strong{you should not
+  access these elements directly}. Use the extractor and replacement
+  functions instead, or else your code is not only going to be uglier, but
+  also likely to break should the internal structure of a corpus object
+  change (as it inevitably will as we continue to develop the package,
   including moving corpus objects to the S4 class system).
 }
 
@@ -119,8 +119,8 @@ The texts and document variables of corpus objects can also be
 corpus(data_char_ukimmig2010)
 
 # create a corpus from texts and assign meta-data and document variables
-summary(corpus(data_char_ukimmig2010, 
-               docvars = data.frame(party = names(data_char_ukimmig2010))), 5) 
+summary(corpus(data_char_ukimmig2010,
+               docvars = data.frame(party = names(data_char_ukimmig2010))), 5)
 
 corpus(texts(data_corpus_irishbudget2010))
 
@@ -129,10 +129,10 @@ if (requireNamespace("tm", quietly = TRUE)) {
     data(crude, package = "tm")    # load in a tm example VCorpus
     mytmCorpus <- corpus(crude)
     summary(mytmCorpus, showmeta=TRUE)
-    
+
     data(acq, package = "tm")
     summary(corpus(acq), 5, showmeta=TRUE)
-    
+
     tmCorp <- tm::VCorpus(tm::VectorSource(data_char_ukimmig2010))
     quantCorp <- corpus(tmCorp)
     summary(quantCorp)
@@ -145,7 +145,7 @@ mydf <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
                   stringsAsFactors = FALSE,
                   row.names = paste0("fromDf_", 1:6))
 mydf
-summary(corpus(mydf, text_field = "some_text", 
+summary(corpus(mydf, text_field = "some_text",
                metacorpus = list(source = "From a data.frame called mydf.")))
 
 # construct a corpus from a kwic object
@@ -153,9 +153,9 @@ mykwic <- kwic(data_corpus_inaugural, "southern")
 summary(corpus(mykwic))
 }
 \seealso{
-\link{corpus-class}, \code{\link{docvars}}, \code{\link{metadoc}}, 
-  \code{\link{metacorpus}}, 
-  \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}}, 
+\link{corpus-class}, \code{\link{docvars}}, \code{\link{metadoc}},
+  \code{\link{metacorpus}},
+  \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}},
   \code{\link{docnames}}
 }
 \author{

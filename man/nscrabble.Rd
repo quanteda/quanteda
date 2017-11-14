@@ -14,7 +14,7 @@ default is \code{sum}, but could also be \code{mean} or a user-supplied
 function}
 }
 \value{
-a (named) integer vector of Scabble letter values, computed using 
+a (named) integer vector of Scrabble letter values, computed using 
   \code{FUN}, corresponding to the input text(s)
 }
 \description{

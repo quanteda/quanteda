@@ -64,7 +64,7 @@ stmdfm2 <- convert(quantdfm2, to = "stm", docvars = docvars(mycorpus))
 str(stmdfm2)
  
 \dontrun{
-#' # tm's DocumentTermMatrix format
+# tm's DocumentTermMatrix format
 tmdfm <- convert(quantdfm, to = "tm")
 str(tmdfm)
 

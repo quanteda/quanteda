@@ -30,7 +30,7 @@ dfm_smooth(x, smoothing = 1)
 a named numeric vector of weights to be applied to the dfm, 
 where the names of the vector correspond to feature labels of the dfm, and 
 the weights will be applied as multipliers to the existing feature counts 
-for the corresponding named fatures.  Any features not named will be 
+for the corresponding named features.  Any features not named will be 
 assigned a weight of 1.0 (meaning they will be unchanged).}
 
 \item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
@@ -73,7 +73,7 @@ topfeatures(tfidfDtm)
 # of Introduction to Information Retrieval
 head(tfidf(dtm, scheme_tf = "log"))
 
-#' # apply numeric weights
+# apply numeric weights
 str <- c("apple is better than banana", "banana banana apple much better")
 (mydfm <- dfm(str, remove = stopwords("english")))
 dfm_weight(mydfm, weights = c(apple = 5, banana = 3, much = 0.5))

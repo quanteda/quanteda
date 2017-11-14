@@ -119,11 +119,23 @@ fcm_select.fcm <- function(x, pattern = NULL, selection = c("keep", "remove"),
 #' @rdname dfm_select
 #' @export
 fcm_remove <- function(x, pattern = NULL, ...) {
-    UseMethod("fcm_select")
+    UseMethod("fcm_remove")
 }
 
 #' @noRd
 #' @export
 fcm_remove.fcm <- function(x, pattern = NULL, ...) {
     fcm_select(x, pattern, selection = "remove", ...)
+}
+
+#' @rdname dfm_select
+#' @export
+fcm_keep <- function(x, pattern = NULL, ...) {
+    UseMethod("fcm_keep")
+}
+
+#' @noRd
+#' @export
+fcm_keep.fcm <- function(x, pattern = NULL, ...) {
+    fcm_select(x, pattern, selection = "keep", ...)
 }

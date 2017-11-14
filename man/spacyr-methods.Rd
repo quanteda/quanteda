@@ -2,15 +2,21 @@
 % Please edit documentation in R/spacyr-methods.R
 \name{spacyr-methods}
 \alias{spacyr-methods}
-\title{extensions of methods defined in the quanteda package}
+\alias{spacy_parse.corpus}
+\title{extensions for and from spacy_parse objects}
+\usage{
+\method{spacy_parse}{corpus}(x, ...)
+}
 \arguments{
-\item{x}{an object returned by \code{spacy_parse}}
+\item{x}{an object returned by \code{spacy_parse}, or (for
+\code{spacy_parse}) a \link{corpus} object}
 
-\item{...}{unused}
+\item{...}{unused except for \code{spacy_parse}, in which case it passes
+through extra arguments to that function}
 }
 \description{
-Extensions to quanteda functions.  You must have attached \pkg{quanteda} for these
-to work.
+These functions provide \pkg{quanteda} methods for \pkg{spacyr} objects, and
+also extend \link[spacyr]{spacy_parse} to work with \link{corpus} objects.
 }
 \section{Usage}{
 
@@ -21,12 +27,15 @@ to work.
 \code{ntoken(x, ...)} returns the number of tokens by document
 
 \code{ntype(x, ...)} returns the number of types (unique tokens) by document
+
+\code{spacy_parse(x, ...)} is also defined for a \pkg{quanteda} \link{corpus}
 }
 
 \examples{
 \dontrun{
-require(spacyr)
+library("spacyr")
 spacy_initialize()
+
 txt <- c(doc1 = "And now, now, now for something completely different.",
          doc2 = "Jack and Jill are children.")
 parsed <- spacy_parse(txt)
@@ -34,5 +43,7 @@ ntype(parsed)
 ntoken(parsed)
 ndoc(parsed)
 docnames(parsed)
+
+corpus_subset(data_corpus_inaugural, Year <= 1793) \%>\% spacy_parse()
 }
 }

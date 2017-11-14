@@ -1,4 +1,4 @@
-#include <RcppArmadillo.h>
+#include "armadillo.h"
 #include "quanteda.h"
 using namespace quanteda;
 //#include <ctime>
@@ -322,6 +322,7 @@ Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVe
     
     // random engine
     std::random_device rd;
+    // std::mt19937 mt(time(0));  // issue #1063
     std::mt19937 mt(rd());
     std::uniform_real_distribution<double> dist(0.0, 1.0);
     

@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -80,7 +105,7 @@
     
     <p>To make the usage as consistent as possible with other packages, quanteda
 also provides shortcut wrappers to <code><a href='convert.html'>convert</a></code>, designed to be
-similar in syntax to analagous commands in the packages to whose format they
+similar in syntax to analogous commands in the packages to whose format they
 are converting.</p>
     
 
@@ -125,7 +150,7 @@ are converting.</p>
   weighting functions from the <span class="pkg">tm</span> package, see 
   <code><a href='http://www.rdocumentation.org/packages/tm/topics/matrix'>TermDocumentMatrix</a></code>.
     <code>dfm2ldaformat</code> provides converts a <a href='dfm.html'>dfm</a> into the list representation
-of terms in documents used by tghe <span class="pkg">lda</span> package (a list with components 
+of terms in documents used by the <span class="pkg">lda</span> package (a list with components 
 "documents" and "vocab" as needed by 
   <code><a href='http://www.rdocumentation.org/packages/lda/topics/lda.collapsed.gibbs.sampler'>lda.collapsed.gibbs.sampler</a></code>).
     <code>quantedaformat2dtm</code> provides converts a <a href='dfm.html'>dfm</a> into the
@@ -147,21 +172,20 @@ sparse simple triplet matrix representation of terms in documents used by the
 
 <span class='co'># shortcut conversion to austin package's wfm format</span>
 <span class='fu'>identical</span>(<span class='fu'>as.wfm</span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"austin"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='fu'>not_run</span>({
-  <span class='co'># shortcut conversion to tm package's DocumentTermMatrix format</span>
-  <span class='fu'>identical</span>(<span class='fu'>as.DocumentTermMatrix</span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>))
-})
-
-<span class='fu'>not_run</span>({
-  <span class='co'># shortcut conversion to lda package list format</span>
-  <span class='fu'>identical</span>(<span class='fu'>dfm2ldaformat</span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))
-})
-
-<span class='co'># shortcut conversion to topicmodels package format</span>
-<span class='fu'>not_run</span>({
-  <span class='fu'>identical</span>(<span class='fu'>quantedaformat2dtm</span>(<span class='no'>quantdfm</span>),
-            <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"topicmodels"</span>))
-})</div></pre>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># shortcut conversion to tm package's DocumentTermMatrix format</span>
+<span class='fu'>identical</span>(<span class='fu'>as.DocumentTermMatrix</span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>))
+<span class='co'># }</span><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># shortcut conversion to lda package list format</span>
+<span class='fu'>identical</span>(<span class='fu'>dfm2ldaformat</span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))
+<span class='co'># }</span><div class='input'>
+# shortcut conversion to topicmodels package format
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'>identical</span>(<span class='fu'>quantedaformat2dtm</span>(<span class='no'>quantdfm</span>),
+          <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"topicmodels"</span>))
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
