@@ -44,7 +44,7 @@ setClass("textmodel_wordfish_predicted",
 #'   tolerance in the difference in parameter values from the iterative 
 #'   conditional maximum likelihood (from conditionally estimating 
 #'   document-level, then feature-level parameters).
-#' @param dispersion sets whether a quasi-poisson quasi-likelihood should be 
+#' @param dispersion sets whether a quasi-Poisson quasi-likelihood should be 
 #'   used based on a single dispersion parameter (\code{"poisson"}), or 
 #'   quasi-Poisson (\code{"quasipoisson"})
 #' @param dispersion_level sets the unit level for the dispersion parameter, 
@@ -79,8 +79,8 @@ setClass("textmodel_wordfish_predicted",
 #'   implementation of the model that used a regularization parameter of 
 #'   se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
 #'   
-#' @note In the rare situation where a warning message of "The algorighm did not converge." shows up, removing 
-#'   some documents may work. 
+#' @note In the rare situation where a warning message of "The algorithm did not
+#'   converge." shows up, removing some documents may work.
 #'   
 #' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
 #'   for Estimating Time-Series Party Positions from Texts." \emph{American 

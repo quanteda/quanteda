@@ -7,7 +7,7 @@
 replace_dictionary_values(dict, from, to)
 }
 \arguments{
-\item{dict}{a dicitonary object}
+\item{dict}{a \link{dictionary} object}
 }
 \description{
 internal function to replace dictionary values

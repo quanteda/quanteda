@@ -95,7 +95,7 @@ struct kwic_mt : public Worker{
 
 
 /* 
- * This funciton generate generates keyword-in-contexts. 
+ * This function generate generates keyword-in-contexts. 
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used kwic()
  * @creator Kohei Watanabe

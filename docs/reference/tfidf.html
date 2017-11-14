@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -100,7 +125,7 @@ matrix)</p></td>
       <th>scheme_df</th>
       <td><p>scheme for <code><a href='docfreq.html'>docfreq</a></code>; defaults to
 <code>"inverse"</code>.  Other options to <code><a href='docfreq.html'>docfreq</a></code> can be passed through
-the elipsis (<code>...</code>).</p></td>
+the ellipsis (<code>...</code>).</p></td>
     </tr>
     <tr>
       <th>base</th>
@@ -171,15 +196,20 @@ are 0).</p></td>
                            <span class='kw'>features</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>, <span class='st'>"another"</span>, <span class='st'>"example"</span>))) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='is.dfm.html'>as.dfm</a></span>()
 <span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>wiki_dfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>round</span>(<span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
-<span class='fu'>not_run</span>({
-  <span class='co'># comparison with tm</span>
-  <span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"tm"</span>)) {
-      <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>wiki_dfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>weightTfIdf</span>() <span class='kw'>%&gt;%</span> <span class='fu'>as.matrix</span>()
-      <span class='co'># same as:</span>
-      <span class='fu'>tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
-  }
-})</div></pre>
+#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>round</span>(<span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
+#&gt; 2 x 6 sparse Matrix of class "dfm"
+#&gt;            features
+#&gt; docs        this is    a sample another example
+#&gt;   document1    0  0 0.12   0.06    0       0   
+#&gt;   document2    0  0 0      0       0.09    0.13</div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># comparison with tm</span>
+<span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"tm"</span>)) {
+    <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>wiki_dfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>weightTfIdf</span>() <span class='kw'>%&gt;%</span> <span class='fu'>as.matrix</span>()
+    <span class='co'># same as:</span>
+    <span class='fu'>tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
+}
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

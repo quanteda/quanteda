@@ -1,11 +1,11 @@
 
 #' replace types in tokens object
 #'
-#' This funciton substitutes token types based on vectorized one-to-one matching.
-#' Since this function is created for lemmatization or user-defined stemming, it
-#' does not support multi-word features, or glob and regex patterns. Please use
-#' \code{tokens_lookup} with \code{exclusive = FALSE} for substitutions of more
-#' complex patterns.
+#' Substitute token types based on vectorized one-to-one matching. Since this
+#' function is created for lemmatization or user-defined stemming, it does not
+#' support multi-word features, or glob and regex patterns. Please use
+#' \code{\link{tokens_lookup}} with \code{exclusive = FALSE} for substitutions
+#' of more complex patterns.
 #' @param x \link{tokens} object whose token elements will be replaced
 #' @param pattern a character vector or \link{dictionary}.  See \link{pattern}
 #'   for more details.

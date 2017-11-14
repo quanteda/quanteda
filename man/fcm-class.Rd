@@ -22,7 +22,7 @@ The fcm class of object is a special type of \link{dfm}
 \item{\code{tri}}{whether the lower triangle of the symmetric \eqn{V \times V} matrix is recorded}
 
 \item{\code{ordered}}{whether a term appears before or after the target feature 
-are counted seperately}
+are counted separately}
 }}
 
 \seealso{

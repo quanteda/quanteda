@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -117,7 +142,7 @@ serial version of the function; only applicable when <code>sparse = TRUE</code><
       <th>residual_floor</th>
       <td><p>specifies the threshold for the residual matrix for 
 calculating the truncated svd.Larger value will reduce memory and time cost
-but might sacrify the accuracy; only applicable when <code>sparse = TRUE</code></p></td>
+but might reduce accuracy; only applicable when <code>sparse = TRUE</code></p></td>
     </tr>
     </table>
     
@@ -132,8 +157,8 @@ but might sacrify the accuracy; only applicable when <code>sparse = TRUE</code><
   parallel computation, which retains sparsity of all involved matrices. You 
   may need to increase the value of <code>residual_floor</code> to ignore less 
   important information and hence to reduce the memory cost when you have a 
-  very big <a href='dfm.html'>dfm</a>.
-    If your attempt to fit the model fails due to the matrix being too large, 
+  very big <a href='dfm.html'>dfm</a>.</p>  
+<p>If your attempt to fit the model fails due to the matrix being too large, 
   this is probably because of the memory demands of computing the \(V
   \times V\) residual matrix.  To avoid this, consider increasing the value of
   <code>residual_floor</code> by 0.1, until the model can be fit.</p>
@@ -142,12 +167,28 @@ but might sacrify the accuracy; only applicable when <code>sparse = TRUE</code><
 
     <p>Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in 
   R, with two- and three-dimensional graphics: The ca package. <em>Journal 
-  of Statistical Software</em>, 20 (3), <a href = 'http://www.jstatsoft.org/v20/i03/'>http://www.jstatsoft.org/v20/i03/</a>.</p>
+  of Statistical Software</em>, 20 (3), <a href='http://www.jstatsoft.org/v20/i03/'>http://www.jstatsoft.org/v20/i03/</a>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>ieDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>)
-<span class='no'>wca</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_ca</span>(<span class='no'>ieDfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>summary</span>(<span class='no'>wca</span>)</div><div class='output co'>#&gt; <span class='error'>Error in summary(wca): object 'wca' not found</span></div></pre>
+<span class='no'>wca</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_ca</span>(<span class='no'>ieDfm</span>)
+<span class='fu'>summary</span>(<span class='no'>wca</span>)</div><div class='output co'>#&gt;            Length Class  Mode     
+#&gt; sv             7  -none- numeric  
+#&gt; nd             1  -none- numeric  
+#&gt; rownames      14  -none- character
+#&gt; rowmass       14  -none- numeric  
+#&gt; rowdist       14  -none- numeric  
+#&gt; rowinertia    14  -none- numeric  
+#&gt; rowcoord      98  -none- numeric  
+#&gt; rowsup         0  -none- logical  
+#&gt; colnames    5140  -none- character
+#&gt; colmass     5140  -none- numeric  
+#&gt; coldist     5140  -none- numeric  
+#&gt; colinertia  5140  -none- numeric  
+#&gt; colcoord   35980  -none- numeric  
+#&gt; colsup         0  -none- logical  
+#&gt; call           2  -none- call     </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

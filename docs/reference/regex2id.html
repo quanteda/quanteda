@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -82,7 +107,7 @@
 
     <code>regex2id</code> converts regex or glob to type IDs to allow C++
   function to perform fast searches in tokens object. C++ functions use a
-  list of type IDs to construct a hash table, agaist which sub-vectors of
+  list of type IDs to construct a hash table, against which sub-vectors of
   tokens object are matched. This function constructs index of glob patterns
   for faster matching.</p>
 <p>This is an internal function for <code>regex2id()</code> that select types using an
@@ -90,7 +115,8 @@ index of types by reular expressions.</p>
 <p>An internal function for <code>regex2id</code> that constructs an index of
 regex patterns (e.g. <code>^xxxx</code>, <code>xxxx$</code> and <code>^xxxx$</code>) to avoid
 expensive sequential search by <a href='http://www.rdocumentation.org/packages/stringi/topics/stri_detect'>stri_detect_regex</a>.</p>
-<p>internal function for <code>select_types()</code> to seach the index using fastmatch.</p>
+<p>internal function for <code>select_types()</code> to search the index using
+fastmatch.</p>
 <p>simpler and faster version of expand.grid() in base package</p>
 <p>internal function for select_types() to check if a glob pattern is indexed by <code>index_types()</code></p>
     
@@ -125,7 +151,7 @@ expensive sequential search by <a href='http://www.rdocumentation.org/packages/s
     </tr>
     <tr>
       <th>types</th>
-      <td><p>unique types of tokens obtaine by <code>quanteda:::types()</code></p></td>
+      <td><p>unique types of tokens obtained by <code>quanteda:::types()</code></p></td>
     </tr>
     <tr>
       <th>valuetype</th>
@@ -208,7 +234,7 @@ used in glob and fixed matching as types are lowercased in the index.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>pattern</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>'^a$'</span>, <span class='st'>'^b'</span>), <span class='fu'>c</span>(<span class='st'>'c'</span>), <span class='fu'>c</span>(<span class='st'>'d'</span>))
 <span class='no'>types</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'A'</span>, <span class='st'>'AA'</span>, <span class='st'>'B'</span>, <span class='st'>'BB'</span>, <span class='st'>'BBB'</span>, <span class='st'>'C'</span>, <span class='st'>'CC'</span>)
-<span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>regex2fixed</span>(<span class='no'>pattern</span>, <span class='no'>types</span>, <span class='st'>'regex'</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/regex2id'>regex2fixed</a></span>(<span class='no'>pattern</span>, <span class='no'>types</span>, <span class='st'>'regex'</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "A" "B"
 #&gt; 
 #&gt; [[2]]
@@ -222,8 +248,8 @@ used in glob and fixed matching as types are lowercased in the index.</p></td>
 #&gt; 
 #&gt; [[5]]
 #&gt; [1] "CC"
-#&gt; </div><div class='input'><span class='no'>index</span> <span class='kw'>&lt;-</span> <span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>index_types</span>(<span class='no'>types</span>, <span class='st'>'regex'</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>regex2fixed</span>(<span class='no'>pattern</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>index</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; </div><div class='input'><span class='no'>index</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/regex2id'>index_types</a></span>(<span class='no'>types</span>, <span class='st'>'regex'</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/regex2id'>regex2fixed</a></span>(<span class='no'>pattern</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>index</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "A" "B"
 #&gt; 
 #&gt; [[2]]
@@ -240,7 +266,7 @@ used in glob and fixed matching as types are lowercased in the index.</p></td>
 #&gt; </div><div class='input'><span class='no'>types</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'A'</span>, <span class='st'>'AA'</span>, <span class='st'>'B'</span>, <span class='st'>'BB'</span>, <span class='st'>'BBB'</span>, <span class='st'>'C'</span>, <span class='st'>'CC'</span>)
 
 <span class='no'>pats_regex</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>'^a$'</span>, <span class='st'>'^b'</span>), <span class='fu'>c</span>(<span class='st'>'c'</span>), <span class='fu'>c</span>(<span class='st'>'d'</span>))
-<span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>regex2id</span>(<span class='no'>pats_regex</span>, <span class='no'>types</span>, <span class='st'>'regex'</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/regex2id'>regex2id</a></span>(<span class='no'>pats_regex</span>, <span class='no'>types</span>, <span class='st'>'regex'</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1 3
 #&gt; 
 #&gt; [[2]]
@@ -256,7 +282,7 @@ used in glob and fixed matching as types are lowercased in the index.</p></td>
 #&gt; [1] 7
 #&gt; </div><div class='input'>
 <span class='no'>pats_glob</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>'a*'</span>, <span class='st'>'b*'</span>), <span class='fu'>c</span>(<span class='st'>'c'</span>), <span class='fu'>c</span>(<span class='st'>'d'</span>))
-<span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>regex2id</span>(<span class='no'>pats_glob</span>, <span class='no'>types</span>, <span class='st'>'glob'</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/regex2id'>regex2id</a></span>(<span class='no'>pats_glob</span>, <span class='no'>types</span>, <span class='st'>'glob'</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1 3
 #&gt; 
 #&gt; [[2]]
@@ -277,10 +303,10 @@ used in glob and fixed matching as types are lowercased in the index.</p></td>
 #&gt; [[7]]
 #&gt; [1] 6
 #&gt; </div><div class='input'>
-<span class='no'>index</span> <span class='kw'>&lt;-</span> <span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>index_types</span>(<span class='fu'>c</span>(<span class='st'>'xxx'</span>, <span class='st'>'yyyy'</span>, <span class='st'>'ZZZ'</span>), <span class='st'>'glob'</span>, <span class='fl'>FALSE</span>, <span class='fl'>3</span>)
-<span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>search_glob</span>(<span class='st'>'yy*'</span>, <span class='fu'>attr</span>(<span class='no'>index</span>, <span class='st'>'type_search'</span>), <span class='no'>index</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='no'>index</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/regex2id'>index_types</a></span>(<span class='fu'>c</span>(<span class='st'>'xxx'</span>, <span class='st'>'yyyy'</span>, <span class='st'>'ZZZ'</span>), <span class='st'>'glob'</span>, <span class='fl'>FALSE</span>, <span class='fl'>3</span>)
+<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/regex2id'>search_glob</a></span>(<span class='st'>'yy*'</span>, <span class='fu'>attr</span>(<span class='no'>index</span>, <span class='st'>'type_search'</span>), <span class='no'>index</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 2
-#&gt; </div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>expand</span>(<span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>'a'</span>, <span class='st'>'b'</span>, <span class='st'>'c'</span>), <span class='fu'>c</span>(<span class='st'>'x'</span>, <span class='st'>'y'</span>)))</div><div class='output co'>#&gt; [[1]]
+#&gt; </div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/regex2id'>expand</a></span>(<span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>'a'</span>, <span class='st'>'b'</span>, <span class='st'>'c'</span>), <span class='fu'>c</span>(<span class='st'>'x'</span>, <span class='st'>'y'</span>)))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "a" "x"
 #&gt; 
 #&gt; [[2]]
