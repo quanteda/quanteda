@@ -15,12 +15,10 @@ textplot_network(x, color = "sky blue", ignore = 0.5,
 \item{ignore}{needs description}
 
 \item{omit_isolated}{needs description}
-
-\item{ignore}{a thread for infrequent collocations to be ignored}
 }
 \description{
 Plot an \link{fcm} object as a network, where vertices are features and edges
-are co-occurrences, using \code{\link[igraph]{igraph}}.
+are co-occurrences.
 }
 \examples{
 \dontrun{
