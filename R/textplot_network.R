@@ -1,14 +1,11 @@
 #' plot a semantic network of feature co-occurrences
 #' 
 #' Plot an \link{fcm} object as a network, where vertices are features and edges
-#' are co-occurrences, using \code{\link[igraph]{igraph}}.
+#' are co-occurrences.
 #' @param x a \link{dfm} object
-#' @param width the maximum width of links that connects words
-#' @param size size of the vertices
-#' @param shape shape of the vertices
-#' @param ignore a thread for infrequent collocations to be ignored
-#' @param ... additional parameters passed to \code{\link[igraph]{plot.igraph}}.
-#'   Note that the 'vertex.' prefix needs to be added.
+#' @param color needs description
+#' @param ignore needs description
+#' @param omit_isolated needs description
 #' @author Kohei Watanabe and Stefan Müller
 #' @examples
 #' \dontrun{
@@ -23,11 +20,17 @@
 #' }
 #' @export
 #' @seealso \code{\link{fcm}}
+#' @importFrom network as.network network.vertex.names "network.vertex.names<-"
+#' @importFrom grDevices adjustcolor
 #' @keywords textplot
-textplot_network <- function(x, color = 'sky blue', ignore = 0.5, omit_isolated = TRUE, ...) {
+textplot_network <- function(x, color = 'sky blue', ignore = 0.5, omit_isolated = TRUE) {
+    UseMethod("textplot_network")
+}
     
-    if (!is.fcm(x))
-        stop("x must be a fcm object")
+#' @rdname textplot_network
+#' @noRd
+#' @export
+textplot_network.fcm <- function(x, color = 'sky blue', ignore = 0.5, omit_isolated = TRUE) {
     
     x <- as.matrix(x)
     x[lower.tri(x, diag = FALSE)] <- 0
@@ -42,6 +45,9 @@ textplot_network <- function(x, color = 'sky blue', ignore = 0.5, omit_isolated 
         f <- rowSums(x)
         x <- x[f > 0,f > 0]
     }
+    
+    geom_edges <- theme_blank <- geom_nodelabel <- vertex.names  <- weight <- 
+        xend <- y <- yend <- NULL
     
     n <- as.network(x, matrix.type = 'adjacency', directed = FALSE, ignore.eval = FALSE, names.eval = 'weight')
     network.vertex.names(n) <- colnames(x)

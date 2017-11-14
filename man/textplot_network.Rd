@@ -4,22 +4,19 @@
 \alias{textplot_network}
 \title{plot a semantic network of feature co-occurrences}
 \usage{
-textplot_network(x, width = 10, size = 15, shape = "circle",
-  ignore = 0.5, ...)
+textplot_network(x, color = "sky blue", ignore = 0.5,
+  omit_isolated = TRUE)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
 
-\item{width}{the maximum width of links that connects words}
+\item{color}{needs description}
 
-\item{size}{size of the vertices}
+\item{ignore}{needs description}
 
-\item{shape}{shape of the vertices}
+\item{omit_isolated}{needs description}
 
 \item{ignore}{a thread for infrequent collocations to be ignored}
-
-\item{...}{additional parameters passed to \code{\link[igraph]{plot.igraph}}.
-Note that the 'vertex.' prefix needs to be added.}
 }
 \description{
 Plot an \link{fcm} object as a network, where vertices are features and edges
@@ -27,14 +24,14 @@ are co-occurrences, using \code{\link[igraph]{igraph}}.
 }
 \examples{
 \dontrun{
-toks <- corpus_subset(data_corpus_inaugural, President == "Obama") \%>\%
+toks <- corpus_subset(data_corpus_irishbudget2010) \%>\%
     tokens(remove_punct = TRUE) \%>\%
+    tokens_tolower() \%>\%
     tokens_remove(stopwords("english"), padding = FALSE)
 myfcm <- fcm(toks, context = "window", tri = FALSE)
-feat <- names(topfeatures(myfcm, 20))
-fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network()
-fcm_select(myfcm, feat, verbose = FALSE) \%>\% 
-    textplot_network(size = 20, shape = "vrectangle")
+feat <- names(topfeatures(myfcm, 30))
+fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(ignore = 0.5)
+fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(ignore = 0.8)
 }
 }
 \seealso{
