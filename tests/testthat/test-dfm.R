@@ -640,3 +640,20 @@ test_that("as.dfm works for dfmSparse objects", {
     expect_true(is.dfm(as.dfm(old_dfmSparse)))
 })
 
+test_that("dfm error when a dfm is given to for feature selection when x is not a dfm, #1067", {
+    
+    txt <- c(d1 = "a b c d e", d2 = "a a b c c c")
+    corp <- corpus(txt)
+    toks <- tokens(txt)
+    mx <- dfm(toks)
+    mx2 <- dfm(c('a b', 'c'))
+    
+    expect_error(dfm(txt, select = mx2), 
+                'Feature selection by a dfm is possible only on a dfm')
+    expect_error(dfm(corp, select = mx2), 
+                'Feature selection by a dfm is possible only on a dfm')
+    expect_error(dfm(toks, select = mx2), 
+                'Feature selection by a dfm is possible only on a dfm')
+    expect_silent(dfm(mx, select = mx2))
+    
+})

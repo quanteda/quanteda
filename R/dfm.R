@@ -129,14 +129,6 @@ dfm <- function(x,
 dfm_env <- new.env()
 dfm_env$START_TIME <- NULL  
 
-# dfm function to check that any ellipsis arguments belong only to tokens formals
-# check_dfm_dots <-  function(dots, permissible_args = NULL) {
-#     if (length(dots) && any(!(names(dots)) %in% permissible_args))
-#         warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", 
-#                 noBreaks. = TRUE, call. = FALSE)
-# }
-
-
 
 #' @rdname dfm
 #' @noRd
@@ -152,7 +144,10 @@ dfm.character <- function(x,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
-
+    
+    if (is.dfm(select))
+        stop('Feature selection by a dfm is possible only on a dfm')
+    
     dfm.tokens(tokens(corpus(x)),
         tolower = tolower, 
         stem = stem, 
@@ -178,6 +173,10 @@ dfm.corpus <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"),
                        ...) {
+    
+    if (is.dfm(select))
+        stop('Feature selection by a dfm is possible only on a dfm')
+    
     dfm.tokens(tokens(x),  
                tolower = tolower, 
                stem = stem, 
@@ -202,7 +201,10 @@ dfm.tokens <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"), 
                        ...) {
-
+    
+    if (is.dfm(select))
+        stop('Feature selection by a dfm is possible only on a dfm')
+    
     valuetype <- match.arg(valuetype)
     check_dots(list(...), names(formals('tokens')))
     
