@@ -1,5 +1,5 @@
 ---
-title: "Comparing quanteda with Other Packages for Quantitative Text Analysis"
+title: "Comparing quanteda to other packages"
 author: Stefan Müller, Kenneth Benoit, and Kohei Watanabe
 output: 
   rmarkdown::html_vignette:
