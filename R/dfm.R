@@ -42,6 +42,9 @@
 #'   the texts with ngrams, then remove the features to be ignored, and then 
 #'   construct the dfm using this modified tokenization object.  See the code 
 #'   examples for an illustration.
+#'   
+#'   To select on and match the features of a another \link{dfm}, \code{x} must
+#'   also be a \link{dfm}.
 #' @return a \link{dfm-class} object
 #' @import Matrix
 #' @export
@@ -118,6 +121,11 @@ dfm <- function(x,
                 groups = NULL, 
                 verbose = quanteda_options("verbose"), 
                 ...) {
+
+    if (!is.dfm(x) && is.dfm(select)) {
+        stop("selection on a dfm is only available when x is a dfm")
+    }
+    
     dfm_env$START_TIME <- proc.time()
     object_class <- class(x)[1]
     if (object_class == "dfmSparse") object_class <- "dfm"
@@ -144,10 +152,6 @@ dfm.character <- function(x,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
-    
-    if (is.dfm(select))
-        stop('Feature selection by a dfm is possible only on a dfm')
-    
     dfm.tokens(tokens(corpus(x)),
         tolower = tolower, 
         stem = stem, 
@@ -173,10 +177,6 @@ dfm.corpus <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"),
                        ...) {
-    
-    if (is.dfm(select))
-        stop('Feature selection by a dfm is possible only on a dfm')
-    
     dfm.tokens(tokens(x),  
                tolower = tolower, 
                stem = stem, 
@@ -201,10 +201,6 @@ dfm.tokens <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"), 
                        ...) {
-    
-    if (is.dfm(select))
-        stop('Feature selection by a dfm is possible only on a dfm')
-    
     valuetype <- match.arg(valuetype)
     check_dots(list(...), names(formals('tokens')))
     
