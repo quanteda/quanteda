@@ -1,0 +1,28 @@
+---
+title: "Comparing quanteda to other packages"
+author: Stefan Müller, Kenneth Benoit, and Kohei Watanabe
+output: 
+  rmarkdown::html_vignette:
+    css: mystyle.css
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Comparsion}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r eval=TRUE, message = FALSE, warning = FALSE, echo = FALSE}
+library(quanteda)
+library(knitr)
+```
+This article compares **quanteda** to alternative R packages for quantitative text analysis ([**tm**](https://cran.r-project.org/web/packages/tm/index.html), [**tidytext**](https://cran.r-project.org/web/packages/tidytext/index.html), [**corpus**](https://cran.r-project.org/web/packages/corpus/index.html), and [**koRpus**](https://cran.r-project.org/web/packages/koRpus/)) and the [Natural Language Toolkit](http://www.nltk.org/index.html) for Python. If a function is available in another package, we provide the respective command. 
+
+Note that we have used the package manuals for the comparison. If we have overlooked certain functions, please let us know - either by editing the table and issuing a Pull Request or by contacting the [maintainer](K.R.Benoit@lse.ac.uk).
+
+```{r eval=TRUE, message = FALSE, echo = FALSE, results = 'asis'}
+dta_table <- read.csv(url("https://raw.githubusercontent.com/stefan-mueller/table-compare-quanteda/master/compare_quanteda.csv"))
+dta_table <- dta_table[-2] # exclude "Category" to save space
+kable(dta_table, format = "markdown")
+```
+
+
