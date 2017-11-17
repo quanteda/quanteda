@@ -24,7 +24,7 @@ serial version of the function; only applicable when \code{sparse = TRUE}}
 
 \item{residual_floor}{specifies the threshold for the residual matrix for 
 calculating the truncated svd.Larger value will reduce memory and time cost
-but might sacrify the accuracy; only applicable when \code{sparse = TRUE}}
+but might reduce accuracy; only applicable when \code{sparse = TRUE}}
 }
 \description{
 \code{textmodel_ca} implements correspondence analysis scaling on a 

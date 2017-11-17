@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -83,10 +108,14 @@ object is a <a href='tokens.html'>tokens</a> object, and functions to combine <a
 objects.</p>
     
 
-    <pre class="usage">as.tokens(x, concatenator = "_")
+    <pre class="usage">as.tokens(x, concatenator = "_", ...)
 
 # S3 method for list
-as.tokens(x, concatenator = "_")
+as.tokens(x, concatenator = "_", ...)
+
+# S3 method for spacyr_parsed
+as.tokens(x, concatenator = "/",
+  include_pos = c("none", "pos", "tag"), use_lemma = FALSE, ...)
 
 # S3 method for tokens
 as.list(x, ...)
@@ -119,7 +148,20 @@ underscore character.  See Details.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>for c.tokens only, <a href='tokens.html'>tokens</a> objects to be concatenated</p></td>
+      <td><p>additional arguments used by specific methods.  For
+c.tokens, these are the <a href='tokens.html'>tokens</a> objects to be concatenated.</p></td>
+    </tr>
+    <tr>
+      <th>include_pos</th>
+      <td><p>character; whether and which part-of-speech tag to use:
+<code>"none"</code> do not use any part of speech indicator, <code>"pos"</code> use the
+<code>pos</code> variable, <code>"tag"</code> use the <code>tag</code> variable.  The POS
+will be added to the token after <code>"concatenator"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>use_lemma</th>
+      <td><p>logical; if <code>TRUE</code>, use the lemma rather than the raw
+token</p></td>
     </tr>
     <tr>
       <th>recursive</th>
@@ -176,11 +218,11 @@ underscore character.  See Details.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># create tokens object from list of characters with custom concatenator</span>
-<span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>'United States'</span>,
-                   <span class='kw'>sea</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'Atlantic Ocean'</span>, <span class='st'>'Pacific Ocean'</span>)))
-<span class='no'>lis</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>'The'</span>, <span class='st'>'United-States'</span>, <span class='st'>'has'</span>, <span class='st'>'the'</span>, <span class='st'>'Atlantic-Ocean'</span>,
-              <span class='st'>'and'</span>, <span class='st'>'the'</span>, <span class='st'>'Pacific-Ocean'</span>, <span class='st'>'.'</span>))
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'>as.tokens</span>(<span class='no'>lis</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>'-'</span>)
+<span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"United States"</span>,
+                   <span class='kw'>sea</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Atlantic Ocean"</span>, <span class='st'>"Pacific Ocean"</span>)))
+<span class='no'>lis</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>"The"</span>, <span class='st'>"United-States"</span>, <span class='st'>"has"</span>, <span class='st'>"the"</span>, <span class='st'>"Atlantic-Ocean"</span>,
+              <span class='st'>"and"</span>, <span class='st'>"the"</span>, <span class='st'>"Pacific-Ocean"</span>, <span class='st'>"."</span>))
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'>as.tokens</span>(<span class='no'>lis</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"-"</span>)
 <span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='no'>toks</span>, <span class='no'>dict</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt; [1] "country" "sea"     "sea"    

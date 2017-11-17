@@ -6,7 +6,7 @@
 #' @param ... additional arguments passed to \code{\link{dfm}}
 #' @param verbose if \code{TRUE} print status messages
 #' @details Function produces multiple, resampled \link{dfm} objects, based on 
-#'   resampling sentences (wth replacement) from each document, recombining
+#'   resampling sentences (with replacement) from each document, recombining
 #'   these into new "documents" and computing a dfm for each. Resampling of
 #'   sentences is done strictly within document, so that every resampled
 #'   document will contain at least some of its original tokens.

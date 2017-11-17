@@ -186,7 +186,7 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
 
 test_that("test corpus constructor works for complex VCorpus (#849)", {
     skip_if_not_installed("tm")
-    load("../data/corpora/complex_Corpus.RData")
+    load("../data/corpora/complex_Corpus.rda")
     qc <- corpus(complex_Corpus)
     expect_equal(
         head(docnames(qc), 3),

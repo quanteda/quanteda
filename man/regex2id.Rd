@@ -36,7 +36,7 @@ is_indexed(pattern)
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 \link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
-\item{types}{unique types of tokens obtaine by \code{quanteda:::types()}}
+\item{types}{unique types of tokens obtained by \code{quanteda:::types()}}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
@@ -86,7 +86,7 @@ a list of integer vectors containing type IDs with index keys as an
 
 \code{regex2id} converts regex or glob to type IDs to allow C++
   function to perform fast searches in tokens object. C++ functions use a
-  list of type IDs to construct a hash table, agaist which sub-vectors of
+  list of type IDs to construct a hash table, against which sub-vectors of
   tokens object are matched. This function constructs index of glob patterns
   for faster matching.
 
@@ -97,7 +97,8 @@ An internal function for \code{\link{regex2id}} that constructs an index of
 regex patterns (e.g. \code{^xxxx}, \code{xxxx$} and \code{^xxxx$}) to avoid
 expensive sequential search by \link[stringi]{stri_detect_regex}.
 
-internal function for \code{select_types()} to seach the index using fastmatch.
+internal function for \code{select_types()} to search the index using
+fastmatch.
 
 simpler and faster version of expand.grid() in base package
 

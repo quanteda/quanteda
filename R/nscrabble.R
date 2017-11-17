@@ -7,7 +7,7 @@
 #'   default is \code{sum}, but could also be \code{mean} or a user-supplied 
 #'   function
 #' @author Kenneth Benoit
-#' @return a (named) integer vector of Scabble letter values, computed using 
+#' @return a (named) integer vector of Scrabble letter values, computed using 
 #'   \code{FUN}, corresponding to the input text(s)
 #' @note Character values are only defined for non-accented Latin a-z, A-Z 
 #'   letters.  Lower-casing is unnecessary.

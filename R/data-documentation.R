@@ -137,8 +137,8 @@ NULL
 #' \describe{
 #' \item{\code{negative}}{2,858 word patterns indicating negative sentiment}
 #' \item{\code{positive}}{1,709 word patterns indicating positive sentiment}
-#' \item{\code{neg_positive}}{1,721 word patterns indicating a positive word preceeded by a negation (used to convey negative sentiment)}
-#' \item{\code{negative}}{2,860 word patterns indicating a negative word preceeded by a negation (used to convey positive sentiment)}
+#' \item{\code{neg_positive}}{1,721 word patterns indicating a positive word preceded by a negation (used to convey negative sentiment)}
+#' \item{\code{negative}}{2,860 word patterns indicating a negative word preceded by a negation (used to convey positive sentiment)}
 #' }
 #' @references 
 #'   The objectives, development and reliability of the dictionary are discussed

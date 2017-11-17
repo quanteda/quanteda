@@ -16,7 +16,7 @@ knitr::opts_chunk$set(collapse = TRUE,
                       comment = "##")
 ```
 
-This vignette provides a basic overview of **quanteda**'s features and capabilities.  For additional vignettes, see the [articles at quanteda.io](http://quanteda.io/articles/index.html).  
+This vignette provides a basic overview of **quanteda**'s features and capabilities.  For additional vignettes, see the [articles at quanteda.io](http://docs.quanteda.io/articles/index.html).  
 
 # Introduction
 
@@ -447,7 +447,7 @@ byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", remove = stopwo
 
 We can sort this dfm, and inspect it:
 ```{r}
-sort(byPartyDfm)[, 1:10]
+dfm_sort(byPartyDfm)[, 1:10]
 ```
 
 Note that the most frequently occurring feature is "will", a word usually on English stop lists, but
@@ -532,7 +532,7 @@ We have a lot of development work to do on the `textmodel()` function, but here 
 ```{r}
 # make prettier document names
 ieDfm <- dfm(data_corpus_irishbudget2010)
-textmodel(ieDfm, model = "wordfish", dir = c(2, 1))
+textmodel_wordfish(ieDfm, dir = c(2, 1))
 ```
 
 ## Topic models

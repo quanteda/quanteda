@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -108,7 +133,7 @@ excluding all others.  This can be used in lieu of a dictionary if there
 are only specific features that a user wishes to keep. To extract only 
 Twitter usernames, for example, set <code>select = "@*"</code> and make sure 
 that <code>remove_twitter = FALSE</code> as an additional argument passed to 
-<a href='tokenize.html'>tokenize</a>.  Note: <code>select = "^@\\w+\\b"</code> would be the regular
+<a href='tokens.html'>tokens</a>.  Note: <code>select = "^@\\w+\\b"</code> would be the regular
 expression version of this matching pattern.  The pattern matching type 
 will be set by <code>valuetype</code>.  See also <code><a href='tokens_select.html'>tokens_remove</a></code>.</p></td>
     </tr>
@@ -191,11 +216,11 @@ is a dfm</p></td>
 <span class='co'># grouping documents by docvars in a corpus</span>
 <span class='fu'>dfm</span>(<span class='no'>corpus_post80inaug</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus input...</span></div><div class='output co'>#&gt; <span class='message'>   ... lowercasing</span></div><div class='output co'>#&gt; <span class='message'>   ... found 10 documents, 3,260 features</span></div><div class='output co'>#&gt; <span class='message'>   ... grouping texts</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 5 x 3,260 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.039 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 3,260 features (64.2% sparse).</div><div class='input'>
+#&gt; <span class='message'>Elapsed time: 0.072 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 3,260 features (64.2% sparse).</div><div class='input'>
 <span class='co'># with English stopwords and stemming</span>
 <span class='fu'>dfm</span>(<span class='no'>corpus_post80inaug</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus input...</span></div><div class='output co'>#&gt; <span class='message'>   ... lowercasing</span></div><div class='output co'>#&gt; <span class='message'>   ... found 10 documents, 3,260 features</span></div><div class='output co'>#&gt; <span class='message'>   ... </span></div><div class='output co'>#&gt; <span class='message'>removed 131 features</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>   ... stemming features (English)</span></div><div class='output co'>#&gt; <span class='message'>, trimmed 826 feature variants</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 10 x 2,303 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.056 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 2,303 features (75.1% sparse).</div><div class='input'><span class='co'># works for both words in ngrams too</span>
+#&gt; <span class='message'>Elapsed time: 0.061 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 2,303 features (75.1% sparse).</div><div class='input'><span class='co'># works for both words in ngrams too</span>
 <span class='fu'>dfm</span>(<span class='st'>"Banking industry"</span>, <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 1 feature (0% sparse).
 #&gt; 1 x 1 sparse Matrix of class "dfm"
 #&gt;        features

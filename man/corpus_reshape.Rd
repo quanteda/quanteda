@@ -17,7 +17,7 @@ segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.
 Dropping the docvars might be useful in order to conserve space or if these
 are not desired for the segmented corpus.}
 
-\item{...}{additonal arguments passed to \code{\link{tokens}}, since the
+\item{...}{additional arguments passed to \code{\link{tokens}}, since the
 syntactic segmenter uses this function)}
 }
 \value{
