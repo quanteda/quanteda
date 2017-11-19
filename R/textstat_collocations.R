@@ -21,11 +21,6 @@
 #' @param smoothing numeric; a smoothing parameter added to the observed counts
 #'   (default is 0.5)
 #' @param tolower logical; if \code{TRUE}, form collocations as lower-cased combinations
-#' @param recursive logical; if \code{TRUE} and \code{size} is a vector, then count
-#'   collocations of each size separately, meaning that a tri-gram collocation will 
-#'   also (recursively) include its bigram collocations in the counts.  When 
-#'   \code{recursive = FALSE}, shorter collocation sequences that occur within
-#'   longer collocations sequences will not be counted separately.
 #' @param ... additional arguments passed to \code{\link{tokens}}, if \code{x}
 #'   is not a \link{tokens} object already
 #' @references Blaheta, D., & Johnson, M. (2001). 
@@ -95,16 +90,14 @@
 #' txt <- c(". . . . a b c . . a b c . . . c d e",
 #'          "a b . . a b . . a b . . a b . a b",
 #'          "b c d . . b c . b c . . . b c")
-#' toks <- tokens(txt) %>% tokens_keep(c("a", "b", "c", "d", "e"), padding = TRUE)
-#' textstat_collocations(toks, size = 2:3, recursive = TRUE)
-#' textstat_collocations(toks, size = 2:3, recursive = FALSE)
+#' textstat_collocations(txt, size = 2:3)
 #' 
 textstat_collocations <- function(x, method = "lambda", 
                                   size = 2, 
                                   min_count = 2, 
                                   smoothing = 0.5, 
                                   tolower = TRUE, 
-                                  recursive = TRUE, ...) { #show_counts = FALSE, ...) {
+                                  ...) { #show_counts = FALSE, ...) {
     UseMethod("textstat_collocations")
 }
 
@@ -117,7 +110,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
                                          min_count = 2, 
                                          smoothing = 0.5, 
                                          tolower = TRUE, 
-                                         recursive = TRUE, ...) { #show_counts = FALSE, ...) {
+                                         ...) { #show_counts = FALSE, ...) {
     check_dots(list(...), NULL)
     
     #method <- match.arg(method, ("lambda", "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD"))
@@ -126,8 +119,8 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     if (any(size == 1))
         stop("Collocation sizes must be larger than 1")
     if (any(size > 5))
-        warning("Computation for large collocations may take long time")
-
+        warning("Computation for large collocations may take long time", immediate. = TRUE)
+    
     # lower case if requested
     if (tolower) x <- tokens_tolower(x, keep_acronyms = TRUE)
     
@@ -137,7 +130,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     if (is.null(id_ignore)) id_ignore <- integer(0)
     result <- qatd_cpp_sequences(x, types, id_ignore, min_count, size, 
                                  if (method == "lambda1") "lambda1" else "lambda", 
-                                 smoothing, recursive)
+                                 smoothing)
 
     # compute z for lambda methods
     lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
@@ -177,7 +170,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
 
     # remove other measures if not specified
 #    if (method == "lambda" | method == "lambda1")
-        result[c("pmi", "chi2", "G2", "sigma")] <- NULL
+    #    result[c("pmi", "chi2", "G2", "sigma")] <- NULL
     # if (!method %in% c("lambda", "lambda1", "all"))
     #     result[c("lambda", "lambda1", "sigma", "z")] <- NULL
     #if (method == "chi2") result[c("pmi", "G2")] <- NULL
@@ -185,7 +178,8 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     #if (method == "pmi") result[c("G2", "chi2")] <- NULL
     
     # reorder columns
-    result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
+    result <- result[, stats::na.omit(match(c("collocation", "count",  "count_nested", "length", 
+                                              "lambda", "lambda1", "sigma", "z", 
                                               "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
                                      names(result)))]
     rownames(result) <- NULL
@@ -211,7 +205,7 @@ textstat_collocations.corpus <- function(x, method = "lambda",
                                          tolower = TRUE, 
                                          recursive = TRUE, ...) {
     textstat_collocations(tokens(x, ...), method = method, size = size, min_count = min_count, 
-                          smoothing = smoothing, tolower = tolower, recursive = recursive)
+                          smoothing = smoothing, tolower = tolower)
 }
 
 #' @export
@@ -222,7 +216,7 @@ textstat_collocations.character <- function(x, method = "lambda",
                                             tolower = TRUE, 
                                             recursive = TRUE, ...) {
     textstat_collocations(corpus(x), method = method, size = size, min_count = min_count, 
-                          smoothing = smoothing, tolower = tolower, recursive = recursive, ...)
+                          smoothing = smoothing, tolower = tolower, ...)
 }
 
 

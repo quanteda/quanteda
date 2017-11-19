@@ -7,7 +7,7 @@
 \title{identify and score multi-word expressions}
 \usage{
 textstat_collocations(x, method = "lambda", size = 2, min_count = 2,
-  smoothing = 0.5, tolower = TRUE, recursive = TRUE, ...)
+  smoothing = 0.5, tolower = TRUE, ...)
 
 is.collocations(x)
 }
@@ -32,12 +32,6 @@ to be scored}
 (default is 0.5)}
 
 \item{tolower}{logical; if \code{TRUE}, form collocations as lower-cased combinations}
-
-\item{recursive}{logical; if \code{TRUE} and \code{size} is a vector, then count
-collocations of each size separately, meaning that a tri-gram collocation will 
-also (recursively) include its bigram collocations in the counts.  When 
-\code{recursive = FALSE}, shorter collocation sequences that occur within
-longer collocations sequences will not be counted separately.}
 
 \item{...}{additional arguments passed to \code{\link{tokens}}, if \code{x}
 is not a \link{tokens} object already}
@@ -116,9 +110,7 @@ head(seqs, 10)
 txt <- c(". . . . a b c . . a b c . . . c d e",
          "a b . . a b . . a b . . a b . a b",
          "b c d . . b c . b c . . . b c")
-toks <- tokens(txt) \%>\% tokens_keep(c("a", "b", "c", "d", "e"), padding = TRUE)
-textstat_collocations(toks, size = 2:3, recursive = TRUE)
-textstat_collocations(toks, size = 2:3, recursive = FALSE)
+textstat_collocations(txt, size = 2:3)
 
 }
 \references{

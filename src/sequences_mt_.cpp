@@ -3,6 +3,14 @@
 #include <bitset>
 using namespace quanteda;
 
+#if QUANTEDA_USE_TBB
+typedef tbb::concurrent_vector<std::pair<Ngram, UintParam>> VecPair;
+typedef tbb::concurrent_unordered_map<Ngram, std::pair<UintParam, UintParam>, hash_ngram, equal_ngram> MapNgramsPair;
+#else
+typedef std::vector<std::pair<Ngram, UintParam>> VecPair;
+typedef std::unordered_map<Ngram, std::pair<unsigned int, unsigned int>, hash_ngram, equal_ngram> MapNgramsPair;
+#endif    
+
 // return the matching pattern between two words at each position, 0 for matching, 1 for not matching.
 // for example, for 3-gram, bit = 000, 001, 010 ... 111 eg. 0-7
 int match_bit2(const std::vector<unsigned int> &tokens1, 
@@ -79,14 +87,14 @@ double compute_dice(const std::vector<double> &counts){
 
 Text replace(Text tokens, 
              SetUnigrams &set_ignore,
-             unsigned int &id_ignore){
+             unsigned int &id_mark){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     for (std::size_t i = 0; i < tokens.size(); i++) {
         auto it = set_ignore.find(tokens[i]);
         if (it != set_ignore.end()) {
-            tokens[i] = id_ignore;
+            tokens[i] = id_mark;
         }
     }
     return tokens;
@@ -96,14 +104,14 @@ struct replace_mt : public Worker{
     
     Texts &texts;
     SetUnigrams &set_ignore;
-    unsigned int &id_ignore;
+    unsigned int &id_mark;
     
-    replace_mt(Texts &texts_, SetUnigrams &set_ignore_, unsigned int &id_ignore_):
-               texts(texts_), set_ignore(set_ignore_), id_ignore(id_ignore_) {}
+    replace_mt(Texts &texts_, SetUnigrams &set_ignore_, unsigned int &id_mark_):
+               texts(texts_), set_ignore(set_ignore_), id_mark(id_mark_) {}
 
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++) {
-            texts[h] = replace(texts[h], set_ignore, id_ignore);
+            texts[h] = replace(texts[h], set_ignore, id_mark);
         }
     }
 };
@@ -111,22 +119,25 @@ struct replace_mt : public Worker{
 void counts(Text text,
             MapNgramsPair &counts_seq,
             const std::vector<unsigned int> &sizes,
-            const unsigned int &id_ignore){
+            const unsigned int &id_mark){
     
     std::vector<bool> flags_nested(text.size(), false);
-    std::vector<bool> flags_nested_temp(text.size(), false);
+    std::vector<bool> flags_temp(text.size(), false);
     
     for (auto size : sizes) { // start from the largest size
         if (text.size() < size) continue;
         for (std::size_t i = 0; i < text.size() - size + 1; i++) {
             
-            bool dirty = false; // if the segment contain ineligible
+            bool marked = false; // if the segment contain ineligible
             bool nested = false;
+            bool padded = false;
             
             // check if sub-vector will contain ineligible
             for (std::size_t j = i; j <  i + size; j++) {
-                if (text[j] == id_ignore) {
-                    dirty = true;
+                if (text[j] == 0) {
+                    padded = true;
+                } else if (text[j] == id_mark) {
+                    marked = true;
                     i = j; // jump
                     break;
                 }
@@ -135,19 +146,21 @@ void counts(Text text,
                 }
             }
             
-            if (!dirty) {
+            if (!marked) {
                 Text text_sub(text.begin() + i, text.begin() + i + size);
                 //Rcout << "@" << i << " " <<  nested << ": ";
                 //dev::print_ngram(text_sub);
                 auto &count = counts_seq[text_sub];
                 count.first++;
-                if (nested) {
-                    count.second++;
+                if (!padded) {
+                    if (nested) {
+                        count.second++;
+                    }
+                    std::fill(flags_temp.begin() + i, flags_temp.begin() + i + size, true);
                 }
-                std::fill(flags_nested_temp.begin() + i, flags_nested_temp.begin() + i + size, true);
             }
         }
-        flags_nested = flags_nested_temp;
+        flags_nested = flags_temp;
     }
 }
 
@@ -156,16 +169,16 @@ struct counts_mt : public Worker {
     Texts texts;
     MapNgramsPair &counts_seq;
     const std::vector<unsigned int> &sizes;
-    const unsigned int &id_ignore;
+    const unsigned int &id_mark;
 
     counts_mt(Texts texts_, MapNgramsPair &counts_seq_, const std::vector<unsigned int> &sizes_, 
-              const unsigned int &id_ignore_):
+              const unsigned int &id_mark_):
               texts(texts_), counts_seq(counts_seq_), sizes(sizes_), 
-              id_ignore(id_ignore_) {}
+              id_mark(id_mark_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
-            counts(texts[h], counts_seq, sizes, id_ignore);
+            counts(texts[h], counts_seq, sizes, id_mark);
         }
     }
 };
@@ -187,6 +200,7 @@ void estimates(std::size_t i,
     // output counts
     std::vector<double> counts_bit(std::pow(2, n), smoothing);
     for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
+        if (it->first.size() != n) continue; // skip different lengths
         int bit;
         bit = match_bit2(seqs[i], it->first);
         counts_bit[bit] += it->second.first;
@@ -302,8 +316,8 @@ struct estimates_mt : public Worker{
 };
 
 void estimates_lambda(std::size_t i,
-                      VecNgrams &seqs,
-                      MapNgramsPair counts_seq,
+                      const VecNgrams &seqs,
+                      const VecPair &seqs_all,
                       DoubleParams &sgma, 
                       DoubleParams &lmda,
                       const String &method,
@@ -313,10 +327,10 @@ void estimates_lambda(std::size_t i,
     if (n == 1) return; // ignore single words
     
     std::vector<double> counts_bit(std::pow(2, n), smoothing);
-    for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
-        int bit;
-        bit = match_bit2(seqs[i], it->first);
-        counts_bit[bit] += it->second.first;
+    for (std::size_t j = 0; j < seqs_all.size(); j++) {
+        if (seqs_all[j].first.size() != n) continue; // skip different lengths
+        int bit = match_bit2(seqs[i], seqs_all[j].first);
+        counts_bit[bit] += seqs_all[j].second;
     }
     
     //B-J algorithm    
@@ -330,21 +344,21 @@ void estimates_lambda(std::size_t i,
 }
 
 struct estimates_lambda_mt : public Worker{
-    VecNgrams &seqs;
-    MapNgramsPair &counts_seq;
+    const VecNgrams &seqs;
+    const VecPair &seq_all;
     DoubleParams &sgma;
     DoubleParams &lmda;
     const String &method;
     const double smoothing;
     
-    estimates_lambda_mt(VecNgrams &seqs_, MapNgramsPair &counts_seq_, DoubleParams &sgma_, DoubleParams &lmda_, 
+    estimates_lambda_mt(const VecNgrams &seqs_, const VecPair &seq_all_, DoubleParams &sgma_, DoubleParams &lmda_, 
                         const String &method, const double smoothing_) :
-                        seqs(seqs_), counts_seq(counts_seq_), sgma(sgma_), lmda(lmda_), 
+                        seqs(seqs_), seq_all(seq_all_), sgma(sgma_), lmda(lmda_), 
                         method(method), smoothing(smoothing_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimates_lambda(i, seqs, counts_seq, sgma, lmda, method, smoothing);
+            estimates_lambda(i, seqs, seq_all, sgma, lmda, method, smoothing);
         }
     }
 };
@@ -373,7 +387,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     std::vector<unsigned int> sizes = as< std::vector<unsigned int> >(sizes_);
     std::sort(sizes.begin(), sizes.end(), std::greater<unsigned int>()); // sort in descending order
     std::vector<unsigned int> words_ignore = as< std::vector<unsigned int> >(words_ignore_);
-    unsigned int id_ignore = UINT_MAX; // use largest limit as filler
+    unsigned int id_mark = UINT_MAX; // use largest limit as filler
 
     SetUnigrams set_ignore;
     set_ignore.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
@@ -383,36 +397,43 @@ DataFrame qatd_cpp_sequences(const List &texts_,
    
    // replace ineligble tokens with special ID
 #if QUANTEDA_USE_TBB
-   replace_mt replace_mt(texts, set_ignore, id_ignore);
-   parallelFor(0, texts.size(), replace_mt, id_ignore);
+    replace_mt replace_mt(texts, set_ignore, id_mark);
+    parallelFor(0, texts.size(), replace_mt, id_mark);
 #else
-   for (std::size_t h = 0; h < texts.size(); h++) {
-       texts[h] = replace(texts[h], set_ignore, id_ignore);
-   }
+    for (std::size_t h = 0; h < texts.size(); h++) {
+        texts[h] = replace(texts[h], set_ignore, id_mark);
+    }
 #endif
    
     MapNgramsPair counts_seq;
-    // dev::Timer timer;
-    // dev::start_timer("Count", timer);
+    counts_seq.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+   
+    //dev::Timer timer;
+    //dev::start_timer("Count", timer);
 #if QUANTEDA_USE_TBB
-     counts_mt count_mt(texts, counts_seq, sizes, id_ignore);
-     parallelFor(0, texts.size(), count_mt);
+    counts_mt count_mt(texts, counts_seq, sizes, id_mark);
+    parallelFor(0, texts.size(), count_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        counts(texts[h], counts_seq, sizes, id_ignore);
+        counts(texts[h], counts_seq, sizes, id_mark);
     }
 #endif
-    // dev::stop_timer("Count", timer);
+    //dev::stop_timer("Count", timer);
 
     VecNgrams seqs;
+    VecPair seqs_all;
     IntParams counts, counts_nested, lengths;
     std::size_t len = counts_seq.size();
     seqs.reserve(len);
+    seqs_all.reserve(len);
     counts.reserve(len);
     counts_nested.reserve(len);
     lengths.reserve(len);
     for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
+        // conver to a vector for faster itteration
+        seqs_all.push_back(std::make_pair(it->first, it->second.first)); 
         if (it->second.first < count_min) continue;
+        // estimate only sequences without padding
         if (std::none_of(it->first.begin(), it->first.end(), [](unsigned int v){ return v == 0; })) {
             seqs.push_back(it->first);
             lengths.push_back(it->first.size());
@@ -424,15 +445,18 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     std::size_t len_np = seqs.size();
     DoubleParams sgma(len_np), lmda(len_np);
     //DoubleParams dice(len_np), pmi(len_np), logratio(len_np), chi2(len_np), gensim(len_np), lfmd(len_np);
-        
+    
+    //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-    estimates_lambda_mt estimate_mt(seqs, counts_seq, sgma, lmda, method, smoothing);
+    estimates_lambda_mt estimate_mt(seqs, seqs_all, sgma, lmda, method, smoothing);
     parallelFor(0, seqs.size(), estimate_mt);
 #else
-   for (std::size_t i = 0; i < seqs.size(); i++) {
-       estimates_lambda(i, seqs, counts_seq, sgma, lmda, method, smoothing);
-   }
+    for (std::size_t i = 0; i < seqs.size(); i++) {
+        estimates_lambda(i, seqs, seqs_all, sgma, lmda, method, smoothing);
+    }
 #endif
+    //dev::stop_timer("Estimate", timer);
+
         
     // convert sequences from integer to character
     CharacterVector seqs_(seqs.size());
@@ -464,11 +488,12 @@ DataFrame qatd_cpp_sequences(const List &texts_,
 require(quanteda)
 toks <- tokens(data_corpus_inaugural)
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-id_ignore <- unlist(quanteda:::regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
+id_mark <- unlist(quanteda:::regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
 
-if (is.null(id_ignore)) id_ignore <- integer(0)
-(out <- qatd_cpp_sequences(toks, types(toks), id_ignore, 2, 2:3, "lambda", 0.5))
+if (is.null(id_mark)) id_mark <- integer(0)
+(out <- qatd_cpp_sequences(toks, types(toks), id_mark, 2, 2:3, "lambda", 0.5))
 (out <- out[order(out$lambda, decreasing = TRUE),])
+(out <- out[out$count != out$count_nested & out$length < max(out$length),])
 
 txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
 toks2 <- tokens(txt)
