@@ -1,3 +1,6 @@
+template:
+  params:
+    ganalytics: UA-144616-24
 reference:
 - title: Package-level
   contents:
