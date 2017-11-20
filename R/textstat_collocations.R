@@ -179,7 +179,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     
     # reorder columns
     result <- result[, stats::na.omit(match(c("collocation", "count",  "count_nested", "length", 
-                                              "lambda", "lambda1", "sigma", "z", 
+                                              "lambda", "lambda1", "z", 
                                               "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
                                      names(result)))]
     rownames(result) <- NULL
