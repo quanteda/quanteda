@@ -296,6 +296,7 @@ test_that("textstat_collocations works when texts are shorter than size", {
         textstat_collocations(toks, size = 2:3, min_count = 1, tolower = TRUE),
         data.frame(collocation = character(0), 
                    count = integer(0), 
+                   count_nested = integer(0), 
                    length = numeric(0),
                    lambda = numeric(0),
                    z = numeric(0),
@@ -319,49 +320,38 @@ test_that("textstat_collocations counts sequences correctly when recursive = FAL
              "a b . . a b . . a b . . a b . a b")
     toks <- tokens_keep(tokens(txt), c("a", "b", "c"), padding = TRUE)
     
-    col1 <- textstat_collocations(toks, size = 2:3, recursive = TRUE)
+    col1 <- textstat_collocations(toks, size = 2:3)
     expect_equal(col1$collocation, c('a b', 'b c', 'a b c'))
     expect_equal(col1$count, c(9, 4, 4))
-    
-    col2 <- textstat_collocations(toks, size = 2:3, recursive = FALSE)
-    expect_equal(col2$collocation, c('a b', 'a b c'))
-    expect_equal(col2$count, c(5, 4))
+    expect_equal(col1$count_nested, c(4, 4, 0))
     
     txt2 <- c(". . . . a b c . . a b c . . .",
               "a b . . a b . . a b . . a b . a b",
               "b c . . b c . b c . . . b c")
     toks2 <- tokens_keep(tokens(txt2), c("a", "b", "c"), padding = TRUE)
     
-    col3 <- textstat_collocations(toks2, size = 2:3, min_count = 1, recursive = TRUE)
-    expect_equal(col3$collocation, c('a b', 'b c', 'a b c'))
-    expect_equal(col3$count, c(7, 6, 2))
+    col2 <- textstat_collocations(toks2, size = 2:3, min_count = 1)
+    expect_equal(col2$collocation, c('a b', 'b c', 'a b c'))
+    expect_equal(col2$count, c(7, 6, 2))
+    expect_equal(col2$count_nested, c(2, 2, 0))
     
-    col4 <- textstat_collocations(toks2, size = 2:3, min_count = 1, recursive = FALSE)
-    expect_equal(col4$collocation, c('a b', 'b c', 'a b c'))
-    expect_equal(col4$count, c(5, 4, 2))
+    txt3 <- c(". . . . a b c d . . a b c d . . .",
+              "a b . . a b . . a b . . a b . a b",
+              "b c . . b c . b c . . . b c")
+    toks3 <- tokens_keep(tokens(txt3), c("a", "b", "c", "d"), padding = TRUE)
+    
+    col3 <- textstat_collocations(toks3, size = c(2, 4), min_count = 1)
+    expect_equal(col3$collocation, c('a b', 'b c', 'c d', 'a b c d'))
+    expect_equal(col3$count, c(7, 6, 2, 2))
+    expect_equal(col3$count_nested, c(2, 2, 2, 0))
+    
+    txt4 <- c(". . . . a b c d . . a b c . . .")
+    toks4 <- tokens_keep(tokens(txt4), c("a", "b", "c", "d"), padding = TRUE)
+    
+    col4 <- textstat_collocations(toks4, size = c(2:4), min_count = 1)
+    expect_equal(col4$collocation, c('b c', 'a b', 'c d', 'a b c d', 'a b c', 'b c d'))
+    expect_equal(col4$count, c(2, 2, 1, 1, 2, 1))
+    expect_equal(col4$count_nested, c(2, 2, 1, 0, 1, 1))
 
 })
 
-test_that("lambda and count does not change wien recursive is FALSE", {
-    toks <- tokens(data_corpus_inaugural[2], remove_punct = TRUE)
-    toks <- tokens_remove(toks, stopwords("english"), padding = TRUE)
-    cols_nested <- textstat_collocations(toks, method = 'lambda', size = 2:5, min_count = 1, recursive = TRUE)
-    cols_nesting <- textstat_collocations(toks, method = 'lambda', size = 2:5, min_count = 1, recursive = FALSE)
-    
-    # nested = FALSE is a subset of recursive = TRUE
-    expect_true(all(cols_nesting$collocation %in% cols_nested$collocation))
-    
-    # estimates are consistent 
-    cols_nested_sub <- cols_nested[match(cols_nesting$collocation, cols_nested$collocation),]
-    expect_equal(cols_nested_sub$count, cols_nesting$count)
-    expect_equal(cols_nested_sub$lambda, cols_nesting$lambda)
-    expect_equal(cols_nested_sub$z, cols_nesting$z)
-    
-    # nested collocations are all nested
-    expect_equal(lapply(cols_nested$collocation, function(x) any(stringi::stri_detect_fixed(cols_nesting$collocation, x))),
-                 as.list(rep(TRUE, nrow(cols_nested))))
-    
-    require(quanteda)
-    toks <- tokens('a b c d e')
-    textstat_collocations(toks, size = 2:5, min_count = 1, recursive = FALSE)
-})
