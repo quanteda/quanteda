@@ -29,7 +29,7 @@ wiki_toks <- tokens(wiki) %>% tokens_select(features_to_keep, padding = TRUE)
 ```
 Constructing the fcm:
 ```{r}
-fcm(context = "window", count = "weighted", weights = 1/(1:5), tri = TRUE)
+fcm(wiki_toks, context = "window", count = "weighted", weights = 1/(1:5), tri = TRUE)
 ```
 
 
