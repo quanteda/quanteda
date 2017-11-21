@@ -1,5 +1,12 @@
 # quanteda 0.99
 
+## Changes since v0.99.22
+
+### New Features
+
+* Added `textmodel_lsa()` for Latent Semantic Analysis models.
+
+
 ## Changes since v0.99.12
 
 ### New Features
