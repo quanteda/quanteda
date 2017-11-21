@@ -2,6 +2,7 @@
 #include "quanteda.h"
 using namespace quanteda;
 
+
 struct hash_pair {
   size_t operator()(const pair<unsigned int, unsigned int> &p) const {
     
@@ -161,6 +162,7 @@ arma::sp_mat qatd_cpp_fcm(const Rcpp::List &texts_,
     
     // Convert to Rcpp objects
     std::size_t mat_size = fcm_tri.size();
+    Rcout << "mat_size: " << mat_size << "\n";
     arma::umat index_mat(2, mat_size, arma::fill::zeros);
     arma::vec w_values(mat_size, arma::fill::zeros);
     for (std::size_t k = 0; k < fcm_tri.size(); k++) {
@@ -171,6 +173,7 @@ arma::sp_mat qatd_cpp_fcm(const Rcpp::List &texts_,
     
     // constract the sparse matrix
     arma::sp_mat fcm(TRUE, index_mat, w_values, n_types, n_types);
+    Rcout << "fcm: done\n";
     return fcm;
 }
 
