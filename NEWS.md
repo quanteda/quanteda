@@ -4,7 +4,8 @@
 
 ### New Features
 
-* Added `textmodel_lsa()` for Latent Semantic Analysis models.
+* Added `textmodel_lsa()` for Latent Semantic Analysis models.  
+* Added `textmodel_affinity()` for the Perry and Benoit (2017) class affinity scaling model.  
 
 
 ## Changes since v0.99.12
