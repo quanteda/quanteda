@@ -55,6 +55,8 @@ setClass("textmodel_fitted",
 #'   
 #'   \item{\code{ca}}{Correspondence analysis scaling of the dfm.}
 #'   
+#'   \item{\code{lsa}}{Correspondence Latent Semantic Analysis.}
+#'   
 #'   \item{\code{lda}}{Fit a topic model based on latent Dirichlet allocation.  
 #'   Not yet implemented -- use \code{\link{convert}}
 #'   to convert a dfm into the applicable input format and then use your favourite 
@@ -68,7 +70,7 @@ setClass("textmodel_fitted",
 #'   etc.
 #' @param ... additional arguments to be passed to specific model types
 #' @seealso \code{\link{textmodel}}, \code{\link{textmodel_wordscores}}
-# , \code{\link{textmodel_nb}}, 
+# , \code{\link{textmodel_nb}}, \code{\link{textmodel_ca}, \code{\link{textmodel_lsa},
 #   \code{\link{textmodel_wordfish}}, \code{\link{textmodel_lda}}, 
 #' @section Class hierarchy: Here will go the description of the class hierarchy
 #'   that governs dispatch for the predict, print, summary methods, since this 
@@ -94,13 +96,12 @@ setClass("textmodel_fitted",
 #' @export
 #' @keywords internal textmodel
 setGeneric("textmodel", 
-    function(x, y=NULL, data=NULL, model=c("wordscores", "nb", "wordfish", "ca"), ...)
+    function(x, y=NULL, data=NULL, model=c("wordscores", "nb", "wordfish", "ca", "lsa"), ...)
              standardGeneric("textmodel"))
 
 #' @rdname textmodel
 setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "character"),
-          definition = 
-              function(x, y=NULL, model=c("wordscores", "nb", "wordfish", "ca"), ...) {
+          definition = function(x, y=NULL, model=c("wordscores", "nb", "wordfish", "ca", "lsa"), ...) {
                   #catm("x is:"); print(x)
                   #catm("y is:"); print(y)
                   #catm("model is:", model, "\n")
@@ -124,6 +125,10 @@ setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "ch
                       if (!is.null(y))
                           warning("y values not used with ca model. ")
                       result <- textmodel_ca(x, ...)
+                  } else if (model=="lsa") {
+                      if (!is.null(y))
+                          warning("y values not used with lsa model. ")
+                      result <- textmodel_lsa(x, ...)
                   } else {
                       stop(paste("model", model, "not implemented."))
                   }
@@ -140,8 +145,8 @@ setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "ch
 #' @param data dfm or data.frame from which to take the formula
 #' @importFrom stats model.frame model.response
 setMethod("textmodel", signature(x = "formula", y="missing", data="dfm", model = "character"),
-          definition = 
-              function(x, data, model=c("wordscores", "nb", "wordfish", "lda", "ca"), ...) {
+          definition = function(x, data, model=c("wordscores", "nb", "wordfish", "lda", "ca", "lsa"), ...) {
+
                   model <- match.arg(model)
                   if (isS4(data))  # is it a new type dfm class object
                       mf <- stats::model.frame(formula=x, data=as.data.frame(as.matrix(data)))

@@ -1,11 +1,20 @@
 # quanteda 0.99
 
+## Changes since v0.99.22
+
+### New Features
+
+* Added `textmodel_lsa()` for Latent Semantic Analysis models.  
+* Added `textmodel_affinity()` for the Perry and Benoit (2017) class affinity scaling model.  
+
+
 ## Changes since v0.99.12
 
 ### New Features
 
 * `tokens_segment()` has a new `window` argument, permitting selection within an asymmetric window around the `pattern` of selection. (#521)
 * `tokens_replace()` now allows token types to be substituted directly and quickly. 
+* `textmodel_affinity()` now adds functionality to fit the Perry and Benoit (2017) class affinity model.
 * Added a `spacy_parse` method for corpus objects.  Also restored quanteda methods for **spacyr** `spacy_parsed` objects.
 
 ### Bug fixes and stability enhancements
@@ -26,6 +35,7 @@
 ### New Features
 
 * Added methods for changing the docnames of tokens and dfm objects (#987).
+* Added new function `textmodel_lsa()` for Latent Semantic Analysis.
 
 ### Bug fixes and stability enhancements
 
