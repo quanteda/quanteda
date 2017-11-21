@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Stefan Müller, Kenneth Benoit, and Kohei Watanabe" />
+
+
+<title>Comparing quanteda with Other Packages for Quantitative Text Analysis</title>
+
+
+
+
+
+
+<link href="data:text/css;charset=utf-8,%0Abody%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%200%20auto%3B%0Amax%2Dwidth%3A%20800px%3B%0Afloat%3A%20center%3B%0Amargin%2Dleft%3A%20auto%3B%0Amargin%2Dright%3A%20auto%3B%0Aoverflow%3A%20visible%3B%0A%7D%0Abody%20%23header%20%7B%0Aclear%3A%20both%3B%0Amargin%2Dbottom%3A%208px%3B%0Aborder%2Dbottom%3A%202px%20solid%20%23999%3B%0Afont%2Dsize%3A%2020px%3B%0Apadding%3A%202px%2010px%202px%2025px%3B%0A%7D%0Abody%20%23content%20%7B%0Abackground%2Dcolor%3A%20white%3B%0Aclear%3A%20both%3B%0Afloat%3A%20left%3B%0Aoverflow%3A%20visible%3B%0Apadding%3A%2010px%3B%0Aborder%3A%201px%20solid%20%23BBBBBB%3B%0Aborder%2Dradius%3A%205px%3B%0Awidth%3A%20780px%3B%0A%7D%0Abody%20%23footer%20%7B%0Abackground%2Dcolor%3A%20%2399BBDD%3B%0Aclear%3A%20both%3B%0Afloat%3A%20left%3B%0Amargin%3A%208px%200%3B%0Aborder%3A%201px%20solid%20%236688AA%3B%0Aborder%2Dradius%3A%205px%3B%0Apadding%3A%200%2010px%3B%0Awidth%3A%20780px%3B%0A%7D%0Abody%20%2Eclear%20%7B%0Aclear%3A%20both%3B%0Aborder%2Dwidth%3A%200%3B%0Amargin%3A%200%3B%0Avisibility%3A%20hidden%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%2Dleft%3A%2025px%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dspacing%3A%200px%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcolor%3A%20gray%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Abackground%2Dcolor%3A%20white%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Abackground%2Dcolor%3A%20white%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%202px%205px%3B%0A%7D%0Ap%20%7B%0Amargin%2Dleft%3A%2015px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%2013px%3B%0Apadding%2Dbottom%3A%201px%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Acolor%3A%20%23000%3B%0Apadding%3A%200px%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Acolor%3A%20%23333%3B%0Aborder%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dradius%3A%203px%3B%0Abackground%2Dcolor%3A%20%23f8f8f8%3B%0Afont%2Dsize%3A%2080%25%3B%0Apadding%3A%200px%202px%3B%0A%7D%0A%0Apre%20%7B%0Afont%2Dsize%3A%2012px%3B%0Aline%2Dheight%3A%2016px%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%2Er%20%7B%0Abackground%2Dcolor%3A%20%23F3F5F7%3B%0Apadding%3A%204px%2010px%3B%0Aborder%3A%201px%20solid%20%23AEBDCC%3B%0Aborder%2Dradius%3A%205px%3B%0Amargin%3A%205px%205px%2010px%2020px%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Abox%2Dshadow%3A%202px%202px%2012px%20%2D5px%20%23999999%3B%0Amargin%3A%200%205px%3B%0A%7D%0Abody%20%7B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2015px%3B%0Aline%2Dheight%3A%2022px%3B%0A%7D%0Abody%20%23header%20%7B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23ccc%3B%0Awidth%3A%2085%25%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%2022px%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23ccc%3B%0Awidth%3A%2075%25%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%2018px%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Awidth%3A%2060%25%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%2016px%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Awidth%3A%2060%25%3B%0Amargin%2Dleft%3A%2015px%3B%0Afont%2Dsize%3A%2016px%3B%0A%7D%0Ah4%2Eauthor%20%7B%0Aborder%2Dbottom%3A%20none%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Apre%20%2Eoperator%2C%0Apre%20%2Eparen%20%7B%0Acolor%3A%20%23888%3B%0A%7D%0Apre%20%2Eliteral%20%7B%0Acolor%3A%20%23990073%3B%0A%7D%0Apre%20%2Enumber%20%7B%0Acolor%3A%20%230080C0%3B%0A%7D%0Apre%20%2Ecomment%20%7B%0Acolor%3A%20%23008000%3B%0Afont%2Dstyle%3A%20italic%0A%7D%0Apre%20%2Ekeyword%20%7B%0Acolor%3A%20%23900%3B%0Afont%2Dweight%3A%20bold%0A%7D%0Apre%20%2Eidentifier%20%7B%0Acolor%3A%20%23000%3B%0A%7D%0Apre%20%2Estring%20%7B%0Acolor%3A%20%23b44%3B%0A%7D" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Comparing quanteda with Other Packages for Quantitative Text Analysis</h1>
+<h4 class="author"><em>Stefan Müller, Kenneth Benoit, and Kohei Watanabe</em></h4>
+
+
+
+<p>This article compares <strong>quanteda</strong> to alternative R packages for quantitative text analysis (<a href="https://cran.r-project.org/web/packages/tm/index.html"><strong>tm</strong></a>, <a href="https://cran.r-project.org/web/packages/tidytext/index.html"><strong>tidytext</strong></a>, <a href="https://cran.r-project.org/web/packages/corpus/index.html"><strong>corpus</strong></a>, and <a href="https://cran.r-project.org/web/packages/koRpus/"><strong>koRpus</strong></a>) and the <a href="http://www.nltk.org/index.html">Natural Language Toolkit</a> for Python. If a function is available in another package, we provide the respective command.</p>
+<p>Note that we have used the package manuals for the comparison. If we have overlooked certain functions, please let us know - either by editing the table and issuing a Pull Request or by contacting the <a href="K.R.Benoit@lse.ac.uk">maintainer</a>.</p>
+<table>
+<colgroup>
+<col width="15%"></col>
+<col width="18%"></col>
+<col width="10%"></col>
+<col width="15%"></col>
+<col width="21%"></col>
+<col width="8%"></col>
+<col width="10%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Function</th>
+<th align="left">quanteda</th>
+<th align="left">tm</th>
+<th align="left">tidytext</th>
+<th align="left">corpus</th>
+<th align="left">koRpus</th>
+<th align="left">NLTK</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Create corpus</td>
+<td align="left">corpus()</td>
+<td align="left">Corpus()</td>
+<td align="left"></td>
+<td align="left">corpus_frame()</td>
+<td align="left">read.corp.custom()</td>
+<td align="left">PlaintextCorpusReader()</td>
+</tr>
+<tr class="even">
+<td align="left">Bind/subset corpora</td>
+<td align="left">corpus_subset()</td>
+<td align="left">tm_combine(); tm_filter()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Reshape corpus into smaller units</td>
+<td align="left">corpus_reshape()/corpus_segment()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">text_split()</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Take random sample of corpus texts</td>
+<td align="left">corpus_sample()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Keywords-in-context</td>
+<td align="left">kwic()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">text_locate()</td>
+<td align="left"></td>
+<td align="left">common_contexts()</td>
+</tr>
+<tr class="even">
+<td align="left">Tokenize texts</td>
+<td align="left">tokens()</td>
+<td align="left">tokenizer()</td>
+<td align="left">unnest_tokens()</td>
+<td align="left">text_tokens()</td>
+<td align="left">tokenize()</td>
+<td align="left">nltk.word_tokenize</td>
+</tr>
+<tr class="odd">
+<td align="left">Stem features</td>
+<td align="left">tokens_wordstem()</td>
+<td align="left">stemDocument()</td>
+<td align="left"></td>
+<td align="left">stem_snowball()</td>
+<td align="left">treetag()</td>
+<td align="left">stem()</td>
+</tr>
+<tr class="even">
+<td align="left">Define multi-word sequences</td>
+<td align="left">phrase()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">MWETokenizer</td>
+</tr>
+<tr class="odd">
+<td align="left">Create document-feature matrix</td>
+<td align="left">dfm()</td>
+<td align="left">TermDocumentMatrix()</td>
+<td align="left">unnest_tokens()</td>
+<td align="left">term_matrix()</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Create a feature co-occurence matrix</td>
+<td align="left">fcm()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Weight a dfm/fcm</td>
+<td align="left">dfm_weight(); fcm_weight()</td>
+<td align="left">weightTf(); weightTfIdf()</td>
+<td align="left">bind_tf_idf()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Create a custom dictionary</td>
+<td align="left">dictionary()</td>
+<td align="left"></td>
+<td align="left">dictionary always a data.frame object</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">SentimentAnalyzer</td>
+</tr>
+<tr class="odd">
+<td align="left">Included dictionaries</td>
+<td align="left">Lexicoder</td>
+<td align="left"></td>
+<td align="left">AFINN, Bing, NRC</td>
+<td align="left">AFINN Sentiment dictionary, WordNet-Affect Lexicon</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Apply custom dictionaries</td>
+<td align="left">dfm_lookup()</td>
+<td align="left"></td>
+<td align="left">dplyr::inner_join()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">SentimentAnalyzer</td>
+</tr>
+<tr class="odd">
+<td align="left">Supported dictionary formats</td>
+<td align="left">Wordstat, LIWC, yoshicoder, lexicoder, YAML</td>
+<td align="left"></td>
+<td align="left">data.frame objects</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Calculate feature frequencies</td>
+<td align="left">textstat_frequency()</td>
+<td align="left">FindMostFreqTerms()</td>
+<td align="left">dplyr::count()</td>
+<td align="left">term_stats()</td>
+<td align="left">freq.analysis()</td>
+<td align="left">FreqDist()</td>
+</tr>
+<tr class="odd">
+<td align="left">Extract collocations</td>
+<td align="left">textstat_collocations()</td>
+<td align="left"></td>
+<td align="left">unnest_tokens(token = “ngrams”)</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">collocations()</td>
+</tr>
+<tr class="even">
+<td align="left">Readability scores</td>
+<td align="left">textstat_readability()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">readability()</td>
+<td align="left">nltk_contrib.readability</td>
+</tr>
+<tr class="odd">
+<td align="left">Lexical diversity</td>
+<td align="left">textstat_lexdiv()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">various measures</td>
+<td align="left">lexical_diversity()</td>
+</tr>
+<tr class="even">
+<td align="left">Distance/similarity measures</td>
+<td align="left">textstat_simil(); textstat_dist()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Keyness statistics</td>
+<td align="left">textstat_keyness()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Wordcloud</td>
+<td align="left">textplot_wordcloud()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Correspondence Analysis</td>
+<td align="left">textmodel_ca()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Naïve Bayes</td>
+<td align="left">textmodel_NB()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NaiveBayesClassifier</td>
+</tr>
+<tr class="odd">
+<td align="left">Wordscores</td>
+<td align="left">textmodel_wordscores()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Wordfish</td>
+<td align="left">textmodel_wordfish()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Convert dfm to other format</td>
+<td align="left">convert()</td>
+<td align="left"></td>
+<td align="left">cast_tdm()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">POS-tagging</td>
+<td align="left">spacyr package</td>
+<td align="left"></td>
+<td align="left">parts_of_speech()</td>
+<td align="left"></td>
+<td align="left">kRp.POS.tags()</td>
+<td align="left">nltk.pos_tag</td>
+</tr>
+<tr class="odd">
+<td align="left">Import texts</td>
+<td align="left">readtext package</td>
+<td align="left">Reader()</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">read()</td>
+</tr>
+</tbody>
+</table>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

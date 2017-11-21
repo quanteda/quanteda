@@ -107,7 +107,7 @@ Covington, M.A. & McFall, J.D. (2010). Cutting the Gordian Knot:
   evaluation. \emph{Language Testing}, 24(4), 459--488.
   
   McCarthy, P.M. & Jarvis, S. (2010). MTLD, vocd-D, and HD-D: A validation 
-  study of sophisticated approaces to lexical diversity assessment. 
+  study of sophisticated approaches to lexical diversity assessment. 
   \emph{Behaviour Research Methods}, 42(2), 381--392.
   
   Michalke, Meik.  (2014) \emph{koRpus: An R Package for Text Analysis}. 

@@ -44,7 +44,7 @@ needs to be computed.}
   selected, with no adjacent terms.
 
   Terms from overlapping windows are never double-counted, but simply
-  returned in the patern match. This is because \code{tokens_select} never
+  returned in the pattern match. This is because \code{tokens_select} never
   redefines the document units; for this, see \code{\link{kwic}}.}
 
 \item{min_nchar, max_nchar}{numerics specifying the minimum and maximum length

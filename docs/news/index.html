@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -93,13 +118,14 @@
 <code><a href="../reference/tokens_segment.html">tokens_segment()</a></code> has a new <code>window</code> argument, permitting selection within an asymmetric window around the <code>pattern</code> of selection. (#521)</li>
 <li>
 <code><a href="../reference/tokens_replace.html">tokens_replace()</a></code> now allows token types to be substituted directly and quickly.</li>
+<li>Added a <code>spacy_parse</code> method for corpus objects. Also restored quanteda methods for <strong>spacyr</strong> <code>spacy_parsed</code> objects.</li>
 </ul>
 </div>
 <div id="bug-fixes-and-stability-enhancements" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h3>
 <ul>
-<li>Improved documentation for <code><a href="../reference/textmodel-nb.html">textmodel_nb()</a></code> (#1010), and made output quantities from the fitted NB model regular matrix objects instead of <strong>Matrix</strong> classes.</li>
+<li>Improved documentation for <code><a href="../reference/textmodel_nb.html">textmodel_nb()</a></code> (#1010), and made output quantities from the fitted NB model regular matrix objects instead of <strong>Matrix</strong> classes.</li>
 </ul>
 </div>
 <div id="behaviour-changes" class="section level3">
@@ -109,6 +135,10 @@
 <li>All of the deprecated functions are now removed. (#991)</li>
 <li>
 <code><a href="../reference/tokens_group.html">tokens_group()</a></code> is now significantly faster.</li>
+<li>The deprecated “list of characters” <code>tokenize()</code> function and all methods associated with the <code>tokenizedTexts</code> object types have been removed.</li>
+<li>Added convenience functions for keeping tokens or features: <code><a href="../reference/tokens_select.html">tokens_keep()</a></code>, <code><a href="../reference/dfm_select.html">dfm_keep()</a></code>, and <code><a href="../reference/dfm_select.html">fcm_keep()</a></code>. (#1037)</li>
+<li>
+<code>textmodel_NB()</code> has been replaced by <code><a href="../reference/textmodel_nb.html">textmodel_nb()</a></code>.</li>
 </ul>
 </div>
 </div>
@@ -152,7 +182,7 @@
 <h3 class="hasAnchor">
 <a href="#bug-fixes-and-stability-enhancements-2" class="anchor"></a>Bug fixes and stability enhancements</h3>
 <ul>
-<li>Fixed a problem when applying <code>purrr::map()</code> to <code><a href="../reference/dfm.html">dfm()</a></code> (#928).</li>
+<li>Fixed a problem when applying <code><a href="http://www.rdocumentation.org/packages/purrr/topics/map">purrr::map()</a></code> to <code><a href="../reference/dfm.html">dfm()</a></code> (#928).</li>
 <li>Added documentation for <code><a href="../reference/regex2id.html">regex2fixed()</a></code> and associated functions.</li>
 <li>Fixed a bug in <code>textstat_collocations.tokens()</code> caused by “documents” containing only <code>""</code> as tokens. (#940)</li>
 <li>Fixed a bug caused by <code><a href="../reference/cbind.dfm.html">cbind.dfm()</a></code> when features shared a name starting with <code><a href="../reference/quanteda_options.html">quanteda_options("base_featname")</a></code> (#946)</li>
@@ -247,7 +277,7 @@
 <h3 class="hasAnchor">
 <a href="#new-features-4" class="anchor"></a>New features</h3>
 <ul>
-<li>Corpus construction using <code><a href="../reference/corpus.html">corpus()</a></code> now works for a <code>tm::SimpleCorpus</code> object. (#680)</li>
+<li>Corpus construction using <code><a href="../reference/corpus.html">corpus()</a></code> now works for a <code><a href="http://www.rdocumentation.org/packages/tm/topics/SimpleCorpus">tm::SimpleCorpus</a></code> object. (#680)</li>
 <li>Added <code><a href="../reference/corpus_trim.html">corpus_trim()</a></code> and <code><a href="../reference/corpus_trim.html">char_trim()</a></code> functions for selecting documents or subsets of documents based on sentence, paragraph, or document lengths.</li>
 <li>Conversion of a dfm to an stm object now passes docvars through in the <code>$meta</code> of the return object.</li>
 <li>New <code><a href="../reference/dfm_group.html">dfm_group(x, groups = )</a></code> command, a convenience wrapper around <code>dfm.dfm(x, groups = )</code> (#725).</li>
@@ -539,7 +569,7 @@
 <tbody>
 <tr class="odd">
 <td align="left"><code>tokens</code></td>
-<td align="left"><code><a href="../reference/tokenize.html">tokenize()</a></code></td>
+<td align="left"><code>tokenize()</code></td>
 <td align="left">
 <code>tokens</code> class object</td>
 </tr>
@@ -996,7 +1026,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>Fixed a bug in applyDictionary(x, dictionary, exclusive = FALSE) when the dictionary produced no matches at all, caused by an attempt to negative index a NULL. #115</p></li>
 <li><p>Fixed #117, a bug where wordstem.tokenizedTexts() removed attributes from the object, causing a failure of dfm.tokenizedTexts().</p></li>
 <li><p>Fixed #119, a bug in selectFeatures.tokenizedTexts(x, features, selection = “remove”) that returned a NULL for a document’s tokens when no matching pattern for removal was found.</p></li>
-<li><p>Improved the behaviour of the <code>removeHyphens</code> option to <code><a href="../reference/tokenize.html">tokenize()</a></code> when <code>what = "fasterword"</code> or <code>what "fastestword"</code>.</p></li>
+<li><p>Improved the behaviour of the <code>removeHyphens</code> option to <code>tokenize()</code> when <code>what = "fasterword"</code> or <code>what "fastestword"</code>.</p></li>
 <li><p>readability() now returns measures in order called, not function definition order.</p></li>
 <li><p>textmodel(x, model = “wordfish”) now removes zero-frequency documents and words prior to calling Rcpp.</p></li>
 <li><p>Fixed a bug in sample.corpus() that caused an error when no docvars existed. #128</p></li>
@@ -1030,7 +1060,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>Fixed a bug in <code>as.matrix.similMatrix()</code> that caused scrambled conversion when feature sets compared were unequal, which normally occurs when setting <code>similarity(x, n = &lt;something&gt;)</code> when n &lt; nfeature(x)</p></li>
 <li><p>Fixed a bug in which a corpusSource object (from <code>textfile()</code>) with empty docvars prevented this argument from being supplied to <code><a href="../reference/corpus.html">corpus(corpusSourceObject, docvars = something)</a></code>.</p></li>
 <li><p>Fixed inaccurate documentation for <code>weight()</code>, which previously listed unavailable options.</p></li>
-<li><p>More accurate and complete documentation for <code><a href="../reference/tokenize.html">tokenize()</a></code>.</p></li>
+<li><p>More accurate and complete documentation for <code>tokenize()</code>.</p></li>
 <li><p>traps an exception when calling wordstem.tokenizedTexts(x) where x was not word tokenized.</p></li>
 <li><p>Fixed a bug in <code>textfile()</code> that prevented passthrough arguments in …, such as <code>fileEncoding =</code> or <code>encoding =</code></p></li>
 <li><p>Fixed a bug in <code>textfile()</code> that caused exceptions with input documents containing docvars when there was only a single column of docvars (such as .csv files)</p></li>
@@ -1224,7 +1254,7 @@ Code is also much simpler, based on using three new functions that are also avai
 <li><p>new methods for <code>tokenizedTexts</code> objects: <code><a href="../reference/dfm.html">dfm()</a></code>, <code>removeFeatures()</code>, and <code><a href="../reference/syllables.html">syllables()</a></code></p></li>
 <li><p><code><a href="../reference/syllables.html">syllables()</a></code> is now much faster, using matching through <code>stringi</code> and merging using <code>data.table</code>.</p></li>
 <li><p>added <code>readability()</code> to compute (fast!) readability indexes on a text or corpus</p></li>
-<li><p>tokenize() now creates ngrams of any length, with two new arguments: <code>ngrams =</code> <integer vector> and <code>concatenator = "_"</code>. The new arguments to <code><a href="../reference/tokenize.html">tokenize()</a></code> can be passed through from <code><a href="../reference/dfm.html">dfm()</a></code>.</integer></p></li>
+<li><p>tokenize() now creates ngrams of any length, with two new arguments: <code>ngrams =</code> <integer vector> and <code>concatenator = "_"</code>. The new arguments to <code>tokenize()</code> can be passed through from <code><a href="../reference/dfm.html">dfm()</a></code>.</integer></p></li>
 </ul>
 </div>
 <div id="bug-fixes-11" class="section level2">

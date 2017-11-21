@@ -90,3 +90,4 @@ spacyr::spacy_parse
 #' @export
 spacy_parse.corpus <- function(x, ...) spacy_parse(texts(x), ...)
 
+

@@ -70,6 +70,9 @@ The default behavior for \code{remove}/\code{select} when
   the texts with ngrams, then remove the features to be ignored, and then 
   construct the dfm using this modified tokenization object.  See the code 
   examples for an illustration.
+  
+  To select on and match the features of a another \link{dfm}, \code{x} must
+  also be a \link{dfm}.
 }
 \note{
 When \code{x} is a \link{dfm}, \code{groups} provides a convenient and
