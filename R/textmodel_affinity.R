@@ -63,7 +63,7 @@ setClass("textmodel_affinity_predicted",
 #' bsdfm <- bootstrap_dfm(data_corpus_dailnoconf1991, n = 10, remove_punct = TRUE)
 #' textmodel_affinity(bsdfm, y = c("Govt", "Opp", "Opp", rep(NA, 55)))
 #' @export
-#' @keywords textmodel
+#' @keywords textmodel experimental
 #' @importFrom methods as
 #' @importFrom stats sd predict
 textmodel_affinity <- function(x, y, exclude = NULL,

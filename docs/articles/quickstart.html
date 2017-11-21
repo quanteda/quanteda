@@ -66,6 +66,9 @@
       <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
     </li>
     <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
+    </li>
+    <li>
       <a href="../articles/quickstart.html">Getting Started with quanteda</a>
     </li>
   </ul>
@@ -166,7 +169,7 @@
 <pre class="sourceCode r" id="cb1"><code class="sourceCode r"><div class="sourceLine" id="cb1-1" data-line-number="1">
 <span class="kw">require</span>(quanteda)</div>
 <div class="sourceLine" id="cb1-2" data-line-number="2">## Loading required package: quanteda</div>
-<div class="sourceLine" id="cb1-3" data-line-number="3">## quanteda version 0.99.9022</div>
+<div class="sourceLine" id="cb1-3" data-line-number="3">## quanteda version 0.99.9023</div>
 <div class="sourceLine" id="cb1-4" data-line-number="4">## Using 7 of 8 threads for parallel computing</div>
 <div class="sourceLine" id="cb1-5" data-line-number="5">## </div>
 <div class="sourceLine" id="cb1-6" data-line-number="6">## Attaching package: 'quanteda'</div>
@@ -211,7 +214,7 @@
 <div class="sourceLine" id="cb2-14" data-line-number="14">##          UKIP   346    723        27</div>
 <div class="sourceLine" id="cb2-15" data-line-number="15">## </div>
 <div class="sourceLine" id="cb2-16" data-line-number="16">## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit</div>
-<div class="sourceLine" id="cb2-17" data-line-number="17">## Created: Tue Nov 21 15:16:42 2017</div>
+<div class="sourceLine" id="cb2-17" data-line-number="17">## Created: Tue Nov 21 15:55:33 2017</div>
 <div class="sourceLine" id="cb2-18" data-line-number="18">## Notes:</div></code></pre>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -236,7 +239,7 @@
 <div class="sourceLine" id="cb3-15" data-line-number="15">##          UKIP   346    723        27         UKIP 2010</div>
 <div class="sourceLine" id="cb3-16" data-line-number="16">## </div>
 <div class="sourceLine" id="cb3-17" data-line-number="17">## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit</div>
-<div class="sourceLine" id="cb3-18" data-line-number="18">## Created: Tue Nov 21 15:16:42 2017</div>
+<div class="sourceLine" id="cb3-18" data-line-number="18">## Created: Tue Nov 21 15:55:33 2017</div>
 <div class="sourceLine" id="cb3-19" data-line-number="19">## Notes:</div></code></pre>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <pre class="sourceCode r" id="cb4"><code class="sourceCode r"><div class="sourceLine" id="cb4-1" data-line-number="1">
@@ -270,7 +273,7 @@
 <div class="sourceLine" id="cb4-25" data-line-number="25">##  data_char_ukimmig2010_9</div>
 <div class="sourceLine" id="cb4-26" data-line-number="26">## </div>
 <div class="sourceLine" id="cb4-27" data-line-number="27">## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit</div>
-<div class="sourceLine" id="cb4-28" data-line-number="28">## Created: Tue Nov 21 15:16:42 2017</div>
+<div class="sourceLine" id="cb4-28" data-line-number="28">## Created: Tue Nov 21 15:55:33 2017</div>
 <div class="sourceLine" id="cb4-29" data-line-number="29">## Notes:</div></code></pre>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </section><section id="example-loading-in-files-using-the-readtext-package" class="level3"><h3>Example: loading in files using the <strong>readtext</strong> package</h3>
@@ -412,7 +415,7 @@
 <div class="sourceLine" id="cb10-23" data-line-number="23">##       2017-Trump   582   1660        88</div>
 <div class="sourceLine" id="cb10-24" data-line-number="24">## </div>
 <div class="sourceLine" id="cb10-25" data-line-number="25">## Source:  Combination of corpuses mycorpus1 and mycorpus2</div>
-<div class="sourceLine" id="cb10-26" data-line-number="26">## Created: Tue Nov 21 15:16:44 2017</div>
+<div class="sourceLine" id="cb10-26" data-line-number="26">## Created: Tue Nov 21 15:55:35 2017</div>
 <div class="sourceLine" id="cb10-27" data-line-number="27">## Notes:</div></code></pre>
 </section><section id="subsetting-corpus-objects" class="level3"><h3>subsetting corpus objects</h3>
 <p>There is a method of the <code><a href="../reference/corpus_subset.html">corpus_subset()</a></code> function defined for corpus objects, where a new corpus can be extracted based on logical conditions applied to docvars:</p>
@@ -763,29 +766,29 @@
 <div class="sourceLine" id="cb32-8" data-line-number="8">## Estimated document positions:</div>
 <div class="sourceLine" id="cb32-9" data-line-number="9">## </div>
 <div class="sourceLine" id="cb32-10" data-line-number="10">##                                Documents      theta         SE       lower       upper</div>
-<div class="sourceLine" id="cb32-11" data-line-number="11">## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209507 0.02032338  1.78111691  1.86078457</div>
-<div class="sourceLine" id="cb32-12" data-line-number="12">## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932804 0.02818843 -0.64852969 -0.53803104</div>
-<div class="sourceLine" id="cb32-13" data-line-number="13">## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136782 0.01540263 -1.14386740 -1.08348908</div>
-<div class="sourceLine" id="cb32-14" data-line-number="14">## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219296 0.02846327 -0.17771764 -0.06614161</div>
-<div class="sourceLine" id="cb32-15" data-line-number="15">## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724206 0.02364088  1.72608446  1.81875670</div>
-<div class="sourceLine" id="cb32-16" data-line-number="16">## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145796 0.02650265 -0.76652474 -0.66263436</div>
-<div class="sourceLine" id="cb32-17" data-line-number="17">## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844831 0.04171488 -0.56624430 -0.40272196</div>
-<div class="sourceLine" id="cb32-18" data-line-number="18">## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616688 0.02967368 -0.61982926 -0.50350843</div>
-<div class="sourceLine" id="cb32-19" data-line-number="19">## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703120 0.03850561 -1.04578304 -0.89484104</div>
-<div class="sourceLine" id="cb32-20" data-line-number="20">## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589243 0.03892393 -1.03521523 -0.88263343</div>
-<div class="sourceLine" id="cb32-21" data-line-number="21">## 11     2010_BUDGET_11_John_Gormley_Green  1.1807221 0.07221446  1.03918179  1.32226246</div>
-<div class="sourceLine" id="cb32-22" data-line-number="22">## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866468 0.06294125  0.06328195  0.31001165</div>
-<div class="sourceLine" id="cb32-23" data-line-number="23">## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421921 0.07245427  0.60018176  0.88420249</div>
-<div class="sourceLine" id="cb32-24" data-line-number="24">## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840763 0.03666273 -0.25593520 -0.11221731</div>
+<div class="sourceLine" id="cb32-11" data-line-number="11">## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209537 0.02032346  1.78111973  1.86078769</div>
+<div class="sourceLine" id="cb32-12" data-line-number="12">## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932778 0.02818835 -0.64852693 -0.53802859</div>
+<div class="sourceLine" id="cb32-13" data-line-number="13">## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136750 0.01540256 -1.14386406 -1.08348604</div>
+<div class="sourceLine" id="cb32-14" data-line-number="14">## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219327 0.02846318 -0.17772050 -0.06614482</div>
+<div class="sourceLine" id="cb32-15" data-line-number="15">## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724226 0.02364097  1.72608627  1.81875889</div>
+<div class="sourceLine" id="cb32-16" data-line-number="16">## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145783 0.02650253 -0.76652325 -0.66263333</div>
+<div class="sourceLine" id="cb32-17" data-line-number="17">## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844820 0.04171475 -0.56624289 -0.40272108</div>
+<div class="sourceLine" id="cb32-18" data-line-number="18">## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616715 0.02967350 -0.61983155 -0.50351143</div>
+<div class="sourceLine" id="cb32-19" data-line-number="19">## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703105 0.03850540 -1.04578110 -0.89483994</div>
+<div class="sourceLine" id="cb32-20" data-line-number="20">## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589228 0.03892371 -1.03521331 -0.88263236</div>
+<div class="sourceLine" id="cb32-21" data-line-number="21">## 11     2010_BUDGET_11_John_Gormley_Green  1.1807220 0.07221465  1.03918131  1.32226272</div>
+<div class="sourceLine" id="cb32-22" data-line-number="22">## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866456 0.06294118  0.06328083  0.31001027</div>
+<div class="sourceLine" id="cb32-23" data-line-number="23">## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421893 0.07245437  0.60017869  0.88419983</div>
+<div class="sourceLine" id="cb32-24" data-line-number="24">## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840825 0.03666255 -0.25594113 -0.11222392</div>
 <div class="sourceLine" id="cb32-25" data-line-number="25">## </div>
 <div class="sourceLine" id="cb32-26" data-line-number="26">## Estimated feature scores: showing first 30 beta-hats for features</div>
 <div class="sourceLine" id="cb32-27" data-line-number="27">## </div>
 <div class="sourceLine" id="cb32-28" data-line-number="28">##            when               i       presented             the   supplementary          budget              to            this           house            last           april               , </div>
-<div class="sourceLine" id="cb32-29" data-line-number="29">##     -0.09920647      0.38802028      0.39878966      0.25594098      1.11586088      0.09915149      0.37007592      0.30693243      0.19906771      0.28971482     -0.09526458      0.34534973 </div>
+<div class="sourceLine" id="cb32-29" data-line-number="29">##     -0.09917847      0.38804963      0.39881669      0.25596988      1.11588798      0.09918023      0.37010486      0.30696102      0.19909713      0.28974304     -0.09523692      0.34537871 </div>
 <div class="sourceLine" id="cb32-30" data-line-number="30">##            said              we           could            work             our             way         through          period              of          severe        economic        distress </div>
-<div class="sourceLine" id="cb32-31" data-line-number="31">##     -0.71931263      0.47992006     -0.52976698      0.58227082      0.74373151      0.33611302      0.65982510      0.55621553      0.33932001      1.27910531      0.47866802      1.84454543 </div>
+<div class="sourceLine" id="cb32-31" data-line-number="31">##     -0.71928474      0.47994885     -0.52973896      0.58229890      0.74375968      0.33614191      0.65985239      0.55624394      0.33934892      1.27913178      0.47869650      1.84456637 </div>
 <div class="sourceLine" id="cb32-32" data-line-number="32">##               .           today             can          report            that notwithstanding </div>
-<div class="sourceLine" id="cb32-33" data-line-number="33">##      0.27352293      0.17419508      0.36378280      0.69175908      0.08833247      1.84454543</div></code></pre>
+<div class="sourceLine" id="cb32-33" data-line-number="33">##      0.27355183      0.17422543      0.36381113      0.69178845      0.08836163      1.84456637</div></code></pre>
 </section><section id="topic-models" class="level2"><h2>Topic models</h2>
 <p><strong>quanteda</strong> makes it very easy to fit topic models as well, e.g.:</p>
 <pre class="sourceCode r" id="cb33"><code class="sourceCode r"><div class="sourceLine" id="cb33-1" data-line-number="1">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, </div>
@@ -804,18 +807,18 @@
 <div class="sourceLine" id="cb33-13" data-line-number="13">    <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)</div>
 <div class="sourceLine" id="cb33-14" data-line-number="14">}</div>
 <div class="sourceLine" id="cb33-15" data-line-number="15">## Loading required package: topicmodels</div>
-<div class="sourceLine" id="cb33-16" data-line-number="16">##      Topic 1         Topic 2  Topic 3     Topic 4      Topic 5     Topic 6    Topic 7       Topic 8     Topic 9    Topic 10  Topic 11     Topic 12  Topic 13  Topic 14     Topic 15    Topic 16    </div>
-<div class="sourceLine" id="cb33-17" data-line-number="17">## [1,] "million"       "fianna" "failed"    "welfare"    "per"       "system"   "fianna"      "taoiseach" "fianna"   "child"   "support"    "benefit" "welfare" "irish"      "taoiseach" "spending"  </div>
-<div class="sourceLine" id="cb33-18" data-line-number="18">## [2,] "forward"       "day"    "strategy"  "per"        "care"      "welfare"  "fáil"        "fine"      "fáil"     "today"   "welfare"    "child"   "child"   "fianna"     "employees" "investment"</div>
-<div class="sourceLine" id="cb33-19" data-line-number="19">## [3,] "incomes"       "child"  "ministers" "reality"    "families"  "fianna"   "citizenship" "gael"      "national" "benefit" "investment" "welfare" "real"    "fáil"       "rate"      "scheme"    </div>
-<div class="sourceLine" id="cb33-20" data-line-number="20">## [4,] "back"          "much"   "needed"    "today"      "million"   "taxation" "side"        "may"       "ted"      "day"     "continue"   "bank"    "irish"   "adjustment" "referred"  "reduction" </div>
-<div class="sourceLine" id="cb33-21" data-line-number="21">## [5,] "international" "fáil"   "system"    "investment" "allowance" "fáil"     "alternative" "irish"     "strategy" "society" "million"    "per"     "benefit" "poor"       "debate"    "million"   </div>
-<div class="sourceLine" id="cb33-22" data-line-number="22">##      Topic 17  Topic 18      Topic 19       Topic 20  </div>
-<div class="sourceLine" id="cb33-23" data-line-number="23">## [1,] "levy"    "kind"        "society"      "measures"</div>
-<div class="sourceLine" id="cb33-24" data-line-number="24">## [2,] "million" "imagination" "enterprising" "million" </div>
-<div class="sourceLine" id="cb33-25" data-line-number="25">## [3,] "carbon"  "policies"    "sense"        "welfare" </div>
-<div class="sourceLine" id="cb33-26" data-line-number="26">## [4,] "change"  "wit"         "equal"        "per"     </div>
-<div class="sourceLine" id="cb33-27" data-line-number="27">## [5,] "welfare" "create"      "nation"       "level"</div></code></pre>
+<div class="sourceLine" id="cb33-16" data-line-number="16">##      Topic 1      Topic 2     Topic 3      Topic 4     Topic 5    Topic 6   Topic 7    Topic 8      Topic 9     Topic 10    Topic 11     Topic 12  Topic 13       Topic 14  Topic 15 Topic 16    </div>
+<div class="sourceLine" id="cb33-17" data-line-number="17">## [1,] "million"    "care"      "welfare"    "taoiseach" "million"  "bank"    "welfare"  "fáil"       "measures"  "taoiseach" "support"    "benefit" "society"      "system"  "fianna" "fianna"    </div>
+<div class="sourceLine" id="cb33-18" data-line-number="18">## [2,] "scheme"     "welfare"   "investment" "employees" "welfare"  "child"   "system"   "irish"      "review"    "fine"      "investment" "child"   "enterprising" "fianna"  "fáil"   "fáil"      </div>
+<div class="sourceLine" id="cb33-19" data-line-number="19">## [3,] "welfare"    "per"       "million"    "rate"      "benefit"  "welfare" "taxation" "confidence" "spending"  "gael"      "confidence" "day"     "sense"        "worst"   "side"   "national"  </div>
+<div class="sourceLine" id="cb33-20" data-line-number="20">## [4,] "investment" "allowance" "reduced"    "referred"  "support"  "fáil"    "parties"  "measures"   "reduction" "may"       "welfare"    "banks"   "equal"        "fáil"    "level"  "strategy"  </div>
+<div class="sourceLine" id="cb33-21" data-line-number="21">## [5,] "taken"      "hit"       "prices"     "debate"    "recovery" "day"     "high"     "child"      "pension"   "irish"     "employment" "today"   "nation"       "package" "third"  "adjustment"</div>
+<div class="sourceLine" id="cb33-22" data-line-number="22">##      Topic 17      Topic 18      Topic 19   Topic 20   </div>
+<div class="sourceLine" id="cb33-23" data-line-number="23">## [1,] "alternative" "kind"        "failed"   "adopted"  </div>
+<div class="sourceLine" id="cb33-24" data-line-number="24">## [2,] "citizenship" "imagination" "needed"   "face"     </div>
+<div class="sourceLine" id="cb33-25" data-line-number="25">## [3,] "levy"        "policies"    "strategy" "ministers"</div>
+<div class="sourceLine" id="cb33-26" data-line-number="26">## [4,] "wealth"      "wit"         "sort"     "vision"   </div>
+<div class="sourceLine" id="cb33-27" data-line-number="27">## [5,] "position"    "create"      "address"  "today"</div></code></pre>
 </section></section>
 </div>
   </div>

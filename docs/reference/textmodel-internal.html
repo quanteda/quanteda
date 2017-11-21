@@ -92,6 +92,9 @@
       <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
     </li>
     <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
+    </li>
+    <li>
       <a href="../articles/quickstart.html">Getting Started with quanteda</a>
     </li>
   </ul>
@@ -157,6 +160,13 @@
 <span class='fu'>coef</span>(<span class='no'>object</span>, <span class='kw'>doc_dim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>feat_dim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for textmodel_ca_fitted</span>
+<span class='fu'>coefficients</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for textmodel_lsa_fitted</span>
+<span class='fu'>coef</span>(<span class='no'>object</span>, <span class='kw'>doc_dim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>feat_dim</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='no'>...</span>)
+
+<span class='co'># S4 method for textmodel_lsa_fitted</span>
 <span class='fu'>coefficients</span>(<span class='no'>object</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for textmodel_wordfish_fitted</span>
@@ -258,6 +268,11 @@ rescaling; or <code>"mv"</code> for the rescaling proposed by Martin and Vanberg
     <tr>
       <th>digits</th>
       <td><p>number of decimal places to print for print methods</p></td>
+    </tr>
+    <tr>
+      <th>doc_dim, feat_dim</th>
+      <td><p>the document and feature dimension scores to be 
+extracted as coefficients</p></td>
     </tr>
     <tr>
       <th>object</th>

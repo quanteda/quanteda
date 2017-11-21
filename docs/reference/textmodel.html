@@ -92,6 +92,9 @@
       <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
     </li>
     <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
+    </li>
+    <li>
       <a href="../articles/quickstart.html">Getting Started with quanteda</a>
     </li>
   </ul>
@@ -124,15 +127,15 @@ will depend on which model was called (see <code>model</code> types below).</p>
     
 
     <pre class="usage"><span class='fu'>textmodel</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wordscores"</span>, <span class='st'>"nb"</span>,
-  <span class='st'>"wordfish"</span>, <span class='st'>"ca"</span>), <span class='no'>...</span>)
+  <span class='st'>"wordfish"</span>, <span class='st'>"ca"</span>, <span class='st'>"lsa"</span>), <span class='no'>...</span>)
 
 <span class='co'># S4 method for dfm,ANY,missing,character</span>
 <span class='fu'>textmodel</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wordscores"</span>, <span class='st'>"nb"</span>, <span class='st'>"wordfish"</span>, <span class='st'>"ca"</span>), <span class='no'>...</span>)
+  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wordscores"</span>, <span class='st'>"nb"</span>, <span class='st'>"wordfish"</span>, <span class='st'>"ca"</span>, <span class='st'>"lsa"</span>), <span class='no'>...</span>)
 
 <span class='co'># S4 method for formula,missing,dfm,character</span>
 <span class='fu'>textmodel</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wordscores"</span>, <span class='st'>"nb"</span>, <span class='st'>"wordfish"</span>, <span class='st'>"ca"</span>), <span class='no'>...</span>)</pre>
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wordscores"</span>, <span class='st'>"nb"</span>, <span class='st'>"wordfish"</span>, <span class='st'>"ca"</span>, <span class='st'>"lsa"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -167,6 +170,8 @@ probabilities.  See <a href='textmodel_nb.html'>textmodel_nb</a>.</p></dd>
 See <a href='textmodel_wordfish.html'>textmodel_wordfish</a>.</p></dd>
 
 <dt><code>ca</code></dt><dd><p>Correspondence analysis scaling of the dfm.</p></dd>
+
+<dt><code>lsa</code></dt><dd><p>Correspondence Latent Semantic Analysis.</p></dd>
 
 <dt><code>lda</code></dt><dd><p>Fit a topic model based on latent Dirichlet allocation.  
 Not yet implemented -- use <code><a href='convert.html'>convert</a></code>

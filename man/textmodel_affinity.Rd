@@ -47,4 +47,5 @@ Perry, Patrick O. and Kenneth Benoit.  (2017) "Scaling Text with
 \author{
 Patrick Perry
 }
+\keyword{experimental}
 \keyword{textmodel}
