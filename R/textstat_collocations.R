@@ -66,9 +66,13 @@
 #' Wald test \eqn{z}-statistic \eqn{z} is calculated as:
 #' 
 #' \deqn{z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}}
-#' 
-#' @return \code{textstat_collocations} returns a data.frame of collocations and their
-#'   scores and statistics.
+#'
+#' @return \code{textstat_collocations} returns a data.frame of collocations and
+#'   their scores and statistics.  This consists of the collocations, their
+#'   counts, length, and \eqn{\lambda} and \eqn{z} statistics.  When \code{size}
+#'   is a vector, then \code{count_nested} counts the lower-order collocations
+#'   that occur within a higher-order collocation (but this does not affect the
+#'   statistics).
 #' @aliases collocations
 #' @export
 #' @keywords textstat collocations experimental
@@ -86,7 +90,7 @@
 #' seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
 #' head(seqs, 10)
 #' 
-#' # recursive = FALSE
+#' # vectorized size
 #' txt <- c(". . . . a b c . . a b c . . . c d e",
 #'          "a b . . a b . . a b . . a b . a b",
 #'          "b c d . . b c . b c . . . b c")

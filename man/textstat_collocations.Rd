@@ -37,8 +37,12 @@ to be scored}
 is not a \link{tokens} object already}
 }
 \value{
-\code{textstat_collocations} returns a data.frame of collocations and their
-  scores and statistics.
+\code{textstat_collocations} returns a data.frame of collocations and
+  their scores and statistics.  This consists of the collocations, their
+  counts, length, and \eqn{\lambda} and \eqn{z} statistics.  When \code{size}
+  is a vector, then \code{count_nested} counts the lower-order collocations
+  that occur within a higher-order collocation (but this does not affect the
+  statistics).
 
 \code{is.collocation} returns \code{TRUE} if the object is of class
   \code{collocations}, \code{FALSE} otherwise.
@@ -106,7 +110,7 @@ toks2 <- tokens_select(toks2, "^([A-Z][a-z\\\\-]{2,})", valuetype = "regex",
 seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
 head(seqs, 10)
 
-# recursive = FALSE
+# vectorized size
 txt <- c(". . . . a b c . . a b c . . . c d e",
          "a b . . a b . . a b . . a b . a b",
          "b c d . . b c . b c . . . b c")
