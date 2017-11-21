@@ -1,5 +1,6 @@
 ---
 title: "Topic modeling - Latent Semantic Analysis (LSA)"
+author: Haiyan Wang
 output: 
   rmarkdown::html_vignette:
     css: mystyle.css
@@ -15,7 +16,7 @@ vignette: >
 %\VignetteIndexEntry{Quickstart}
 -->
 
-In this vignette we show how to perform Latent Semantic Analysis using the **quanteda** package. Example is taken from Grossman and Frieder’s Information Retrieval, Algorithms and Heuristics. 
+In this vignette we show how to perform Latent Semantic Analysis using the **quanteda** package. Example is taken from Grossman and Frieder’s _Information Retrieval, Algorithms and Heuristics_, based on the worked example (here)[http://www1.se.cuhk.edu.hk/%7Eseem5680/lecture/LSI-Eg.pdf].
 
 LSA decomposes document-feature matrix into a reduced vector space that is assumed to reflect semantic structure.
 
@@ -55,5 +56,5 @@ querydfm
 ```
 ```{r}
 newq <- predict(mylsa, querydfm)
-newq$transDocs[, 1:2]
+newq$docs_newspace[, 1:2]
 ```
