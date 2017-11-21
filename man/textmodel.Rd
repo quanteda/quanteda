@@ -28,7 +28,7 @@ training set; for unsupervised models, this will be left \code{NULL}.}
 \item{model}{the model type to be fit.  Currently implemented methods are: 
 \describe{ \item{\code{wordscores}}{Fits the "wordscores" model of Laver, 
 Benoit, and Garry (2003). Options include the original linear scale of LBG 
-or the logit scale proposed by Beauchamps (2001).  See 
+or the logit scale proposed by Beauchamp (2001).  See 
 \link{textmodel_wordscores}.}
 
 \item{\code{nb}}{Fits a Naive Bayes model to the dfm, with options for 

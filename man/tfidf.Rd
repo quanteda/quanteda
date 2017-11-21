@@ -14,7 +14,7 @@ matrix)}
 
 \item{scheme_df}{scheme for \code{\link{docfreq}}; defaults to
 \code{"inverse"}.  Other options to \code{\link{docfreq}} can be passed through
-the elipsis (\code{...}).}
+the ellipsis (\code{...}).}
 
 \item{base}{the base for the logarithms in the \code{\link{tf}} and \code{\link{docfreq}} calls; default is 10}
 

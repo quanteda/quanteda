@@ -46,7 +46,7 @@ languages (see \url{http://snowballstem.org/projects.html}).  See
 \section{A note of caution}{
  Stop words are an arbitrary choice imposed by the
   user, and accessing a pre-defined list of words to ignore does not mean 
-  that it will perfectly fit your needs. You are strongly encourged to 
+  that it will perfectly fit your needs. You are strongly encouraged to 
   inspect the list and to make sure it fits your particular requirements.
 }
 
