@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digital Humanities Use Case: Replication of analyses from <em>Text Analysis with R for Students of Literature</em> • quanteda</title>
+<title>Replicating <em>Text Analysis with R for Students of Literature</em> • quanteda</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
@@ -45,10 +45,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+    </li>
+    <li>
       <a href="../../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
     </li>
     <li>
-      <a href="../../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+      <a href="../../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
     </li>
     <li>
       <a href="../../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
@@ -74,7 +77,7 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Digital Humanities Use Case: Replication of analyses from <em>Text Analysis with R for Students of Literature</em>
+      <h1>Replicating <em>Text Analysis with R for Students of Literature</em>
 </h1>
                         <h4 class="author">Kenneth Benoit, Stefan Müller, and Paul Nulty</h4>
             
@@ -87,8 +90,12 @@
 %\VignetteEngine{knitr::rmarkdown}
 %\VignetteIndexEntry{Quickstart}
 -->
+<div id="digital-humanities-use-case-replication-of-analyses-from-text-analysis-with-r-for-students-of-literature-by-matthew-jockers" class="section level2">
+<h2 class="hasAnchor">
+<a href="#digital-humanities-use-case-replication-of-analyses-from-text-analysis-with-r-for-students-of-literature-by-matthew-jockers" class="anchor"></a>Digital Humanities Use Case: Replication of analyses from <em>Text Analysis with R for Students of Literature</em>, by Matthew Jockers</h2>
 <p>In this vignette we show how the <strong>quanteda</strong> package can be used to replicate the analysis from Matthew Jockers’ book <a href="http://doi.org/10.1007/978-3-319-03164-4"><em>Text Analysis with R for Students of Literature</em></a> (London: Springer, 2014). Most of the Jockers book consists of loading, transforming, and analyzing quantities derived from text and data from text. Because <strong>quanteda</strong> has built in most of the code to perform these data transformations and analyses, it makes it possible to replicate the results from the book with far less code. Throughout this vignette, we name objects based on Jockers’ book, but follow the <strong>quanteda</strong> <a href="https://github.com/kbenoit/quanteda/wiki/Style-guide">style guide</a>.</p>
 <p>In what follows, each section corresponds to the respective chapter in the book.</p>
+</div>
 <div id="r-basics" class="section level1">
 <h1 class="hasAnchor">
 <a href="#r-basics" class="anchor"></a>1 R Basics</h1>
@@ -346,8 +353,8 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../r
 ##   mobydick.9  1260   4284       166      CHAPTER 9. The Sermon.\n
 ##  mobydick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
 ## 
-## Source:  /home/kbenoit/GitHub/quanteda/docs/articles/pkgdown_only/* on x86_64 by kbenoit
-## Created: Sat Nov 11 14:00:28 2017
+## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/pkgdown_only/* on x86_64 by kbenoit
+## Created: Mon Nov 20 12:05:02 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right</a></span>(<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))
@@ -359,8 +366,8 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../r
 ##  mobydick.2   651   1700        60  CHAPTER 2. The Carpet-Bag.
 ##  mobydick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
 ## 
-## Source:  /home/kbenoit/GitHub/quanteda/docs/articles/pkgdown_only/* on x86_64 by kbenoit
-## Created: Sat Nov 11 14:00:28 2017
+## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/pkgdown_only/* on x86_64 by kbenoit
+## Created: Mon Nov 20 12:05:02 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</code></pre></div>
@@ -667,30 +674,30 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
 
 <span class="co"># get top five terms per topic</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</code></pre></div>
-<pre><code>##      Topic 1       Topic 2      Topic 3       Topic 4    Topic 5    
-## [1,] "citizenship" "million"    "kind"        "spending" "fianna"   
-## [2,] "alternative" "increases"  "imagination" "scheme"   "workers"  
-## [3,] "yesterday"   "measures"   "wit"         "million"  "care"     
-## [4,] "wealth"      "welfare"    "moral"       "review"   "families" 
-## [5,] "adjustment"  "investment" "tackle"      "measures" "allowance"
-##      Topic 6     Topic 7   Topic 8   Topic 9     Topic 10   Topic 11    
-## [1,] "taoiseach" "welfare" "child"   "fáil"      "welfare"  "million"   
-## [2,] "employees" "per"     "benefit" "fianna"    "system"   "support"   
-## [3,] "rate"      "child"   "day"     "societies" "taxation" "welfare"   
-## [4,] "referred"  "benefit" "bank"    "side"      "fianna"   "investment"
-## [5,] "debate"    "million" "today"   "education" "fáil"     "back"      
-##      Topic 12    Topic 13       Topic 14    Topic 15     Topic 16   
-## [1,] "taoiseach" "society"      "welfare"   "policies"   "failed"   
-## [2,] "fine"      "enterprising" "reduction" "part"       "strategy" 
-## [3,] "gael"      "sense"        "increases" "businesses" "system"   
-## [4,] "may"       "equal"        "measures"  "create"     "address"  
-## [5,] "day"       "nation"       "rate"      "national"   "ministers"
-##      Topic 17    Topic 18   Topic 19   Topic 20 
-## [1,] "taoiseach" "fianna"   "asking"   "levy"   
-## [2,] "irish"     "fáil"     "face"     "million"
-## [3,] "benefit"   "national" "left"     "carbon" 
-## [4,] "provided"  "irish"    "strategy" "change" 
-## [5,] "back"      "support"  "needed"   "welfare"</code></pre>
+<pre><code>##      Topic 1       Topic 2     Topic 3      Topic 4   Topic 5    
+## [1,] "alternative" "failed"    "investment" "levy"    "taoiseach"
+## [2,] "citizenship" "strategy"  "employment" "million" "employees"
+## [3,] "wealth"      "needed"    "measures"   "carbon"  "rate"     
+## [4,] "adjustment"  "ministers" "welfare"    "change"  "referred" 
+## [5,] "breaks"      "system"    "benefit"    "welfare" "debate"   
+##      Topic 6     Topic 7     Topic 8      Topic 9   Topic 10   Topic 11  
+## [1,] "taoiseach" "pension"   "support"    "welfare" "measures" "irish"   
+## [2,] "fine"      "review"    "million"    "package" "months"   "support" 
+## [3,] "gael"      "measures"  "welfare"    "million" "create"   "measures"
+## [4,] "may"       "details"   "confidence" "try"     "recent"   "supports"
+## [5,] "irish"     "increases" "back"       "want"    "spending" "child"   
+##      Topic 12 Topic 13    Topic 14        Topic 15   Topic 16   Topic 17  
+## [1,] "day"    "care"      "million"       "welfare"  "spending" "fianna"  
+## [2,] "child"  "welfare"   "investment"    "system"   "welfare"  "fáil"    
+## [3,] "today"  "per"       "international" "taxation" "scheme"   "national"
+## [4,] "bank"   "allowance" "level"         "fianna"   "recent"   "whether" 
+## [5,] "banks"  "hit"       "future"        "fáil"     "measures" "strategy"
+##      Topic 18       Topic 19  Topic 20
+## [1,] "society"      "benefit" "fianna"
+## [2,] "enterprising" "child"   "fáil"  
+## [3,] "create"       "burden"  "side"  
+## [4,] "kind"         "fianna"  "level" 
+## [5,] "sense"        "million" "third"</code></pre>
 </div>
 </div>
   </div>
@@ -700,7 +707,8 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#r-basics">1 R Basics</a></li>
+<li><a href="#digital-humanities-use-case-replication-of-analyses-from-text-analysis-with-r-for-students-of-literature-by-matthew-jockers">Digital Humanities Use Case: Replication of analyses from <em>Text Analysis with R for Students of Literature</em>, by Matthew Jockers</a></li>
+      <li><a href="#r-basics">1 R Basics</a></li>
       <li>
 <a href="#first-foray">2 First Foray</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#loading-the-first-text-file">2.1 Loading the first text file</a></li>
