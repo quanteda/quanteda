@@ -113,6 +113,7 @@ reference:
   desc: Plot functions for fitting analytic models from text matrixes.
   contents:
     - textmodel_ca
+    - textmodel_lsa
     - textmodel_nb
     - textmodel_wordfish
     - textmodel_wordscores

@@ -1,0 +1,60 @@
+---
+title: "Topic modeling - Latent Semantic Analysis (LSA)"
+author: Haiyan Wang
+output: 
+  rmarkdown::html_vignette:
+    css: mystyle.css
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Latent Semantic Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Quickstart}
+-->
+
+In this vignette we show how to perform Latent Semantic Analysis using the **quanteda** package. Example is taken from Grossman and Frieder’s _Information Retrieval, Algorithms and Heuristics_, based on the worked example (here)[http://www1.se.cuhk.edu.hk/%7Eseem5680/lecture/LSI-Eg.pdf].
+
+LSA decomposes document-feature matrix into a reduced vector space that is assumed to reflect semantic structure.
+
+New documents or queries can be 'folded-in' to this constructed latent semantic space for downstream tasks. 
+
+## 1. Create a document-feature matrix
+
+```{r}
+require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+txt <- c(d1="Shipment of gold damaged in a fire",
+d2="Delivery of silver arrived in a silver truck",
+d3="Shipment of gold arrived in a truck" )
+
+mydfm <- dfm(txt)
+mydfm
+```
+
+
+
+## 2. Construct the LSA model
+```{r}
+mylsa <- textmodel_lsa(mydfm)
+```
+
+ the new document vector coordinates in the reduced 2-dimensional space is:
+```{r}
+mylsa$docs[, 1:2]
+```
+
+## 3. Apply the constructed LSA model to new data
+Now the new unseen document can be represented in the reduced 2-dimensional space.
+The unseen query document:
+```{r}
+querydfm <- dfm(c("gold silver truck")) %>%
+    dfm_select(pattern = mydfm)
+querydfm
+```
+```{r}
+newq <- predict(mylsa, querydfm)
+newq$docs_newspace[, 1:2]
+```
