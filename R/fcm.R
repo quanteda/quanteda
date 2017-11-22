@@ -232,8 +232,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
         if (!is.tokens(x)) x <- as.tokens(x)
         types <- types(x)
         n <- sum(lengths(x)) * window * 2
-        result <- qatd_cpp_fcm(x, length(types), count, window, weights, ordered, tri, n)
-        # set the dimnames of result
+        result <- as(qatd_cpp_fcm(x, length(types), count, window, weights, ordered, tri, n), "dgCMatrix")
         dimnames(result) <- list(features = types, features = types)
     }
 
