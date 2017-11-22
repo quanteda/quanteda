@@ -1,4 +1,3 @@
-#include "armadillo.h"
 #include "quanteda.h"
 #include "dev.h"
 using namespace quanteda;
