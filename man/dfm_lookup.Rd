@@ -14,14 +14,14 @@ dfm_lookup(x, dictionary, levels = 1:5, exclusive = TRUE,
 
 \item{dictionary}{a \link{dictionary} class object}
 
-\item{levels}{levels of entries in a hierachical dictionary that will be 
+\item{levels}{levels of entries in a hierarchical dictionary that will be 
 applied}
 
 \item{exclusive}{if \code{TRUE}, remove all features not in dictionary, 
 otherwise, replace values in dictionary with keys while leaving other 
 features unaffected}
 
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 

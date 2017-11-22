@@ -25,7 +25,7 @@ setClass("textmodel_ca_fitted",
 #'   serial version of the function; only applicable when \code{sparse = TRUE}
 #' @param residual_floor specifies the threshold for the residual matrix for 
 #'   calculating the truncated svd.Larger value will reduce memory and time cost
-#'   but might sacrify the accuracy; only applicable when \code{sparse = TRUE}
+#'   but might reduce accuracy; only applicable when \code{sparse = TRUE}
 
 #' @author Kenneth Benoit and Haiyan Wang
 #' @references Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in 
@@ -63,6 +63,7 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
                              threads = 1,
                              residual_floor = 0.1) {
     
+    x <- as.dfm(x)
     x <- x + smooth  # smooth by the specified amount
     
     I <- dim(x)[1] 
@@ -97,7 +98,7 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
         S  <- (P - eP) / sqrt(eP)
     } else {
         # c++ function to keep the residual matrix sparse
-        S <- cacpp(P, threads, residual_floor/sqrt(n))
+        S <- qutd_cpp_ca(P, threads, residual_floor/sqrt(n))
     }
     
     #dec <- rsvd::rsvd(S, nd)   #rsvd is not as stable as RSpectra

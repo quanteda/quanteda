@@ -4,7 +4,7 @@
 \alias{valuetype}
 \title{pattern matching using valuetype}
 \arguments{
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 }
@@ -38,6 +38,6 @@ If "fixed" is used with \code{case_insensitive = TRUE}, features will
 \seealso{
 \code{\link[utils]{glob2rx}}, 
 \href{https://en.wikipedia.org/wiki/Glob_(programming)}{glob pattern matching (Wikipedia)}, 
-\link{regex}
+\code{\link[stringi]{stringi-search-regex}}, \code{\link[stringi]{stringi-search-fixed}}
 }
 \keyword{internal}

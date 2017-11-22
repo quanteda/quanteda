@@ -3,6 +3,7 @@
 \name{as.tokens}
 \alias{as.tokens}
 \alias{as.tokens.list}
+\alias{as.tokens.spacyr_parsed}
 \alias{as.list.tokens}
 \alias{unlist.tokens}
 \alias{as.character.tokens}
@@ -11,9 +12,12 @@
 \alias{c.tokens}
 \title{coercion, checking, and combining functions for tokens objects}
 \usage{
-as.tokens(x, concatenator = "_")
+as.tokens(x, concatenator = "_", ...)
 
-\method{as.tokens}{list}(x, concatenator = "_")
+\method{as.tokens}{list}(x, concatenator = "_", ...)
+
+\method{as.tokens}{spacyr_parsed}(x, concatenator = "/",
+  include_pos = c("none", "pos", "tag"), use_lemma = FALSE, ...)
 
 \method{as.list}{tokens}(x, ...)
 
@@ -33,7 +37,16 @@ is.tokens(x)
 \item{concatenator}{character between multi-word expressions, default is the
 underscore character.  See Details.}
 
-\item{...}{for \link{c.tokens} only, \link{tokens} objects to be concatenated}
+\item{...}{additional arguments used by specific methods.  For
+\link{c.tokens}, these are the \link{tokens} objects to be concatenated.}
+
+\item{include_pos}{character; whether and which part-of-speech tag to use:
+\code{"none"} do not use any part of speech indicator, \code{"pos"} use the
+\code{pos} variable, \code{"tag"} use the \code{tag} variable.  The POS
+will be added to the token after \code{"concatenator"}.}
+
+\item{use_lemma}{logical; if \code{TRUE}, use the lemma rather than the raw
+token}
 
 \item{recursive}{a required argument for \link{unlist} but inapplicable to
 \link{tokens} objects}
@@ -82,11 +95,11 @@ The \code{concatenator} is used to automatically generate dictionary
 \examples{
 
 # create tokens object from list of characters with custom concatenator
-dict <- dictionary(list(country = 'United States', 
-                   sea = c('Atlantic Ocean', 'Pacific Ocean')))
-lis <- list(c('The', 'United-States', 'has', 'the', 'Atlantic-Ocean', 
-              'and', 'the', 'Pacific-Ocean', '.'))
-toks <- as.tokens(lis, concatenator = '-')
+dict <- dictionary(list(country = "United States", 
+                   sea = c("Atlantic Ocean", "Pacific Ocean")))
+lis <- list(c("The", "United-States", "has", "the", "Atlantic-Ocean", 
+              "and", "the", "Pacific-Ocean", "."))
+toks <- as.tokens(lis, concatenator = "-")
 tokens_lookup(toks, dict)
 
 # combining tokens

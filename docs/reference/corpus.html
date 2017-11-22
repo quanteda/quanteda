@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +33,18 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-144616-24', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
   </head>
 
@@ -51,10 +64,40 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -78,18 +121,18 @@
     </div>
 
     
-    <p>Creates a corpus object from available sources.  The currently available  
+    <p>Creates a corpus object from available sources.  The currently available
 sources are:</p><ul>
-<li><p>a character vector, consisting of one document per element; if 
+<li><p>a character vector, consisting of one document per element; if
   the elements are named, these names will be used as document names.</p></li>
-<li><p>a data.frame, whose default document id is a variable identified
-by <code>docid_field</code>; the text of the document is a variable identified by
-<code>textid_field</code>; and other variables are imported as document-level
-meta-data.  This matches the format of data.frames constructed by the the
-<span class="pkg">readtext</span> package.</p></li>
+<li><p>a data.frame (or a <span class="pkg">tibble</span> <code>tbl_df</code>), whose default
+document id is a variable identified by <code>docid_field</code>; the text of the
+document is a variable identified by <code>textid_field</code>; and other variables
+are imported as document-level meta-data.  This matches the format of
+data.frames constructed by the the <span class="pkg">readtext</span> package.</p></li>
 <li><p>a <a href='kwic.html'>kwic</a> object constructed by <code><a href='kwic.html'>kwic</a></code>.</p></li>
-<li><p>a <span class="pkg">tm</span> <a href='http://www.rdocumentation.org/packages/tm/topics/VCorpus'>VCorpus</a> or <a href='http://www.rdocumentation.org/packages/tm/topics/SimpleCorpus'>SimpleCorpus</a> class  object, 
-  with the fixed metadata 
+<li><p>a <span class="pkg">tm</span> <a href='http://www.rdocumentation.org/packages/tm/topics/VCorpus'>VCorpus</a> or <a href='http://www.rdocumentation.org/packages/tm/topics/SimpleCorpus'>SimpleCorpus</a> class  object,
+  with the fixed metadata
   fields imported as <a href='docvars.html'>docvars</a> and corpus-level metadata imported
   as <a href='metacorpus.html'>metacorpus</a> information.</p></li>
 <li><p>a corpus object.</p></li>
@@ -99,8 +142,8 @@ meta-data.  This matches the format of data.frames constructed by the the
     <pre class="usage"><span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for corpus</span>
-<span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='kw'>docnames</span> <span class='kw'>=</span> <span class='kw'>quanteda</span><span class='kw'>::</span><span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>x</span>),
-  <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>quanteda</span><span class='kw'>::</span><span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>x</span>), <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='kw'>quanteda</span><span class='kw'>::</span><span class='fu'><a href='metacorpus.html'>metacorpus</a></span>(<span class='no'>x</span>),
+<span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='kw'>docnames</span> <span class='kw'>=</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/docnames'>docnames</a></span>(<span class='no'>x</span>),
+  <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/docvars'>docvars</a></span>(<span class='no'>x</span>), <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/metacorpus'>metacorpus</a></span>(<span class='no'>x</span>),
   <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for character</span>
@@ -108,7 +151,7 @@ meta-data.  This matches the format of data.frames constructed by the the
   <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for data.frame</span>
-<span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='kw'>docid_field</span> <span class='kw'>=</span> <span class='st'>"doc_id"</span>, <span class='kw'>text_field</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
+<span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='kw'>docid_field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>text_field</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
   <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for kwic</span>
@@ -130,10 +173,10 @@ meta-data.  This matches the format of data.frames constructed by the the
     </tr>
     <tr>
       <th>docnames</th>
-      <td><p>Names to be assigned to the texts.  Defaults to the names of 
+      <td><p>Names to be assigned to the texts.  Defaults to the names of
 the character vector (if any); <code>doc_id</code> for a data.frame; the document
-names in a <span class="pkg">tm</span> corpus; or a vector of user-supplied labels equal in 
-length to the number of documents.  If none of these are round, then 
+names in a <span class="pkg">tm</span> corpus; or a vector of user-supplied labels equal in
+length to the number of documents.  If none of these are round, then
 "text1", "text2", etc. are assigned automatically.</p></td>
     </tr>
     <tr>
@@ -145,10 +188,10 @@ length to the number of documents.  If none of these are round, then
       <td><p>a named list containing additional (character) information
   to be added to the corpus as corpus-level metadata.  Special fields
   recognized in the <code><a href='summary.corpus.html'>summary.corpus</a></code> are:</p><ul>
-<li><p><code>source </code>a description of the source of the texts, used for 
+<li><p><code>source </code>a description of the source of the texts, used for
   referencing;</p></li>
 <li><p><code>citation </code>information on how to cite the corpus; and</p></li>
-<li><p><code>notes </code>any additional information about who created the text, warnings, 
+<li><p><code>notes </code>any additional information about who created the text, warnings,
   to do lists, etc.</p></li>
 </ul></td>
     </tr>
@@ -161,9 +204,9 @@ extracted.</p></td>
     </tr>
     <tr>
       <th>docid_field</th>
-      <td><p>column index of a document
-identifier; defaults to <code>doc_id</code> but if this is not found, will use
-the row.names of the data.frame if these are assigned</p></td>
+      <td><p>optional column index of a document identifier; if
+<code>NULL</code>, the constructor will use the row.names of the data.frame (if
+found)</p></td>
     </tr>
     <tr>
       <th>text_field</th>
@@ -183,33 +226,33 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The texts and document variables of corpus objects can also be 
-  accessed using index notation. Indexing a corpus object as a vector will 
-  return its text, equivalent to <code>texts(x)</code>.  Note that this is not the 
-  same as subsetting the entire corpus -- this should be done using the 
-  <code>subset</code> method for a corpus.
-    Indexing a corpus using two indexes (integers or column names) will return 
-  the document variables, equivalent to <code>docvars(x)</code>.  It is also
-  possible to access, create, or replace docvars using list notation, e.g.
-    <code>myCorpus[["newSerialDocvar"]] &lt;- 
-  paste0("tag", 1:ndoc(myCorpus))</code>.
-    For details, see <a href='corpus-class.html'>corpus-class</a>.</p>
+    <p>The texts and document variables of corpus objects can also be
+  accessed using index notation. Indexing a corpus object as a vector will
+  return its text, equivalent to <code><a href='texts.html'>texts(x)</a></code>.  Note that this is not the
+  same as subsetting the entire corpus -- this should be done using the
+  <code>subset</code> method for a corpus.</p>
+<p>Indexing a corpus using two indexes (integers or column names) will return
+  the document variables, equivalent to <code><a href='docvars.html'>docvars(x)</a></code>.  It is also
+  possible to access, create, or replace docvars using list notation, e.g.</p>
+<p><code>myCorpus[["newSerialDocvar"]] &lt;-
+  paste0("tag", 1:ndoc(myCorpus))</code>.</p>
+<p>For details, see <a href='corpus-class.html'>corpus-class</a>.</p>
     
     <h2 class="hasAnchor" id="a-warning-on-accessing-corpus-elements"><a class="anchor" href="#a-warning-on-accessing-corpus-elements"></a>A warning on accessing corpus elements</h2>
 
     <p>A corpus currently consists
-  of an S3 specially classed list of elements, but <strong>you should not 
-  access these elements directly</strong>. Use the extractor and replacement 
-  functions instead, or else your code is not only going to be uglier, but 
-  also likely to break should the internal structure of a corpus object 
-  change (as it inevitably will as we continue to develop the package, 
+  of an S3 specially classed list of elements, but <strong>you should not
+  access these elements directly</strong>. Use the extractor and replacement
+  functions instead, or else your code is not only going to be uglier, but
+  also likely to break should the internal structure of a corpus object
+  change (as it inevitably will as we continue to develop the package,
   including moving corpus objects to the S4 class system).</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='corpus-class.html'>corpus-class</a>, <code><a href='docvars.html'>docvars</a></code>, <code><a href='metadoc.html'>metadoc</a></code>, 
-  <code><a href='metacorpus.html'>metacorpus</a></code>, 
-  <code><a href='settings.html'>settings</a></code>, <code><a href='texts.html'>texts</a></code>, <code><a href='ndoc.html'>ndoc</a></code>, 
+    <p><a href='corpus-class.html'>corpus-class</a>, <code><a href='docvars.html'>docvars</a></code>, <code><a href='metadoc.html'>metadoc</a></code>,
+  <code><a href='metacorpus.html'>metacorpus</a></code>,
+  <code><a href='settings.html'>settings</a></code>, <code><a href='texts.html'>texts</a></code>, <code><a href='ndoc.html'>ndoc</a></code>,
   <code><a href='docnames.html'>docnames</a></code></p>
     
 
@@ -218,7 +261,7 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 <span class='fu'>corpus</span>(<span class='no'>data_char_ukimmig2010</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents and 0 docvars.</div><div class='input'>
 <span class='co'># create a corpus from texts and assign meta-data and document variables</span>
 <span class='fu'>summary</span>(<span class='fu'>corpus</span>(<span class='no'>data_char_ukimmig2010</span>,
-               <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>party</span> <span class='kw'>=</span> <span class='fu'>names</span>(<span class='no'>data_char_ukimmig2010</span>))), <span class='fl'>5</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 5 documents.
+               <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>party</span> <span class='kw'>=</span> <span class='fu'>names</span>(<span class='no'>data_char_ukimmig2010</span>))), <span class='fl'>5</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 5 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences        party
 #&gt;           BNP  1125   3280        88          BNP
@@ -227,10 +270,9 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;        Greens   322    679        21       Greens
 #&gt;        Labour   298    683        29       Labour
 #&gt; 
-#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Thu Aug 10 12:42:43 2017
-#&gt; Notes:   
-#&gt; </div><div class='input'>
+#&gt; Source:  /Users/kbenoit/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
+#&gt; Created: Tue Nov 21 15:53:07 2017
+#&gt; Notes:    </div><div class='input'>
 <span class='fu'>corpus</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>data_corpus_irishbudget2010</span>))</div><div class='output co'>#&gt; Corpus consisting of 14 documents and 0 docvars.</div><div class='input'>
 <span class='co'># import a tm VCorpus</span>
 <span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"tm"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
@@ -241,163 +283,25 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
     <span class='fu'>data</span>(<span class='no'>acq</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
     <span class='fu'>summary</span>(<span class='fu'>corpus</span>(<span class='no'>acq</span>), <span class='fl'>5</span>, <span class='kw'>showmeta</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
-    <span class='no'>tmCorp</span> <span class='kw'>&lt;-</span> <span class='kw'>tm</span><span class='kw'>::</span><span class='fu'>VCorpus</span>(<span class='kw'>tm</span><span class='kw'>::</span><span class='fu'>VectorSource</span>(<span class='no'>data_char_ukimmig2010</span>))
+    <span class='no'>tmCorp</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tm</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tm/topics/VCorpus'>VCorpus</a></span>(<span class='kw pkg'>tm</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tm/topics/VectorSource'>VectorSource</a></span>(<span class='no'>data_char_ukimmig2010</span>))
     <span class='no'>quantCorp</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus</span>(<span class='no'>tmCorp</span>)
     <span class='fu'>summary</span>(<span class='no'>quantCorp</span>)
-}</div><div class='output co'>#&gt; Corpus consisting of 20 documents.
-#&gt; 
-#&gt;  Text Types Tokens Sentences       datetimestamp description
-#&gt;   127    62    103         5 1987-02-26 17:00:56            
-#&gt;   144   238    495        19 1987-02-26 17:34:11            
-#&gt;   191    47     62         4 1987-02-26 18:18:00            
-#&gt;   194    55     74         5 1987-02-26 18:21:01            
-#&gt;   211    67     97         4 1987-02-26 19:00:57            
-#&gt;   236   256    519        22 1987-03-01 03:25:46            
-#&gt;   237   252    494        22 1987-03-01 03:39:14            
-#&gt;   242   116    179         8 1987-03-01 05:27:27            
-#&gt;   246   193    366        16 1987-03-01 08:22:30            
-#&gt;   248   201    386        16 1987-03-01 18:31:44            
-#&gt;   273   203    410        14 1987-03-02 01:05:49            
-#&gt;   349    72    106         4 1987-03-02 07:39:23            
-#&gt;   352    75    115         4 1987-03-02 07:43:22            
-#&gt;   353    77    106         5 1987-03-02 07:43:41            
-#&gt;   368    76    118         5 1987-03-02 08:25:42            
-#&gt;   489    98    160         6 1987-03-02 11:20:05            
-#&gt;   502   126    215         8 1987-03-02 11:28:26            
-#&gt;   543    54     94         5 1987-03-02 12:13:46            
-#&gt;   704   153    321        11 1987-03-02 14:38:34            
-#&gt;   708    40     59         3 1987-03-02 14:49:06            
-#&gt;                                            heading  id language
-#&gt;           DIAMOND SHAMROCK (DIA) CUTS CRUDE PRICES 127       en
-#&gt;    OPEC MAY HAVE TO MEET TO FIRM PRICES - ANALYSTS 144       en
-#&gt;          TEXACO CANADA &lt;TXC&gt; LOWERS CRUDE POSTINGS 191       en
-#&gt;          MARATHON PETROLEUM REDUCES CRUDE POSTINGS 194       en
-#&gt;          HOUSTON OIL &lt;HO&gt; RESERVES STUDY COMPLETED 211       en
-#&gt;      KUWAIT SAYS NO PLANS FOR EMERGENCY OPEC TALKS 236       en
-#&gt;  INDONESIA SEEN AT CROSSROADS OVER ECONOMIC CHANGE 237       en
-#&gt;              SAUDI RIYAL DEPOSIT RATES REMAIN FIRM 242       en
-#&gt;            QATAR UNVEILS BUDGET FOR FISCAL 1987/88 246       en
-#&gt;    SAUDI ARABIA REITERATES COMMITMENT TO OPEC PACT 248       en
-#&gt;     SAUDI FEBRUARY CRUDE OUTPUT PUT AT 3.5 MLN BPD 273       en
-#&gt;  GULF ARAB DEPUTY OIL MINISTERS TO MEET IN BAHRAIN 349       en
-#&gt;  SAUDI ARABIA REITERATES COMMITMENT TO OPEC ACCORD 352       en
-#&gt;   KUWAIT MINISTER SAYS NO EMERGENCY OPEC TALKS SET 353       en
-#&gt;           PHILADELPHIA PORT CLOSED BY TANKER CRASH 368       en
-#&gt;      STUDY GROUP URGES INCREASED U.S. OIL RESERVES 489       en
-#&gt;      STUDY GROUP URGES INCREASED U.S. OIL RESERVES 502       en
-#&gt;     UNOCAL &lt;UCL&gt; UNIT CUTS CRUDE OIL POSTED PRICES 543       en
-#&gt;       NYMEX WILL EXPAND OFF-HOUR TRADING APRIL ONE 704       en
-#&gt;      ARGENTINE OIL PRODUCTION DOWN IN JANUARY 1987 708       en
-#&gt;             origin topics lewissplit     cgisplit oldid
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  5670
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  5687
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  5734
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  5737
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  5754
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  8321
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  8322
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  8327
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  8331
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET  8333
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12456
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12532
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12535
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12536
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12550
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12672
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12685
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12726
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12887
-#&gt;  Reuters-21578 XML    YES      TRAIN TRAINING-SET 12891
-#&gt;                                 places                     author      orgs
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa BY TED D'AFFLISIO, Reuters      opec
-#&gt;                                 canada                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                         kuwait ecuador                       &lt;NA&gt;      opec
-#&gt;                          indonesia usa   By Jeremy Clift, Reuters worldbank
-#&gt;                   bahrain saudi-arabia                       &lt;NA&gt;      opec
-#&gt;                                  qatar                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                   bahrain saudi-arabia                       &lt;NA&gt;      opec
-#&gt;                       saudi-arabia uae                       &lt;NA&gt;      opec
-#&gt;  uae bahrain saudi-arabia kuwait qatar                       &lt;NA&gt;      opec
-#&gt;                   saudi-arabia bahrain                       &lt;NA&gt;      opec
-#&gt;                                 kuwait                       &lt;NA&gt;      opec
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;                                    usa By BERNICE NAPACH, Reuters      &lt;NA&gt;
-#&gt;                              argentina                       &lt;NA&gt;      &lt;NA&gt;
-#&gt;        people exchanges
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;  hisham-nazer      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;  hisham-nazer      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt;          &lt;NA&gt;     nymex
-#&gt;          &lt;NA&gt;      &lt;NA&gt;
-#&gt; 
-#&gt; Source:  Converted from tm Corpus 'crude'
-#&gt; Created: Thu Aug 10 12:42:43 2017
-#&gt; Notes:   
-#&gt; 
-#&gt; Corpus consisting of 50 documents, showing 5 documents.
-#&gt; 
-#&gt;  Text Types Tokens Sentences       datetimestamp description
-#&gt;    10   120    233         9 1987-02-26 15:18:06            
-#&gt;    12    89    146         6 1987-02-26 15:19:15            
-#&gt;    44    62     86         6 1987-02-26 15:49:56            
-#&gt;    45   229    421        22 1987-02-26 15:51:17            
-#&gt;    68    39     55         3 1987-02-26 16:08:33            
-#&gt;                                          heading id language            origin
-#&gt;  COMPUTER TERMINAL SYSTEMS &lt;CPML&gt; COMPLETES SALE 10       en Reuters-21578 XML
-#&gt;   OHIO MATTRESS &lt;OMT&gt; MAY HAVE LOWER 1ST QTR NET 12       en Reuters-21578 XML
-#&gt;    MCLEAN'S &lt;MII&gt; U.S. LINES SETS ASSET TRANSFER 44       en Reuters-21578 XML
-#&gt;   CHEMLAWN &lt;CHEM&gt; RISES ON HOPES FOR HIGHER BIDS 45       en Reuters-21578 XML
-#&gt;   &lt;COFAB INC&gt; BUYS GULFEX FOR UNDISCLOSED AMOUNT 68       en Reuters-21578 XML
-#&gt;  topics lewissplit     cgisplit oldid places                    author
-#&gt;     YES      TRAIN TRAINING-SET  5553    usa                      &lt;NA&gt;
-#&gt;     YES      TRAIN TRAINING-SET  5555    usa                      &lt;NA&gt;
-#&gt;     YES      TRAIN TRAINING-SET  5587    usa                      &lt;NA&gt;
-#&gt;     YES      TRAIN TRAINING-SET  5588    usa By Cal Mankowski, Reuters
-#&gt;     YES      TRAIN TRAINING-SET  5611    usa                      &lt;NA&gt;
-#&gt; 
-#&gt; Source:  Converted from tm Corpus 'acq'
-#&gt; Created: Thu Aug 10 12:42:43 2017
-#&gt; Notes:   
-#&gt; 
-#&gt; Corpus consisting of 9 documents.
+}</div><div class='output co'>#&gt; Corpus consisting of 9 documents:
 #&gt; 
 #&gt;   Text Types Tokens Sentences       datetimestamp id language
-#&gt;  text1  1125   3280        88 2017-08-10 11:42:43  1       en
-#&gt;  text2   142    260         4 2017-08-10 11:42:43  2       en
-#&gt;  text3   251    499        15 2017-08-10 11:42:43  3       en
-#&gt;  text4   322    679        21 2017-08-10 11:42:43  4       en
-#&gt;  text5   298    683        29 2017-08-10 11:42:43  5       en
-#&gt;  text6   251    483        14 2017-08-10 11:42:43  6       en
-#&gt;  text7    77    114         5 2017-08-10 11:42:43  7       en
-#&gt;  text8    88    134         4 2017-08-10 11:42:43  8       en
-#&gt;  text9   346    723        27 2017-08-10 11:42:43  9       en
+#&gt;  text1  1125   3280        88 2017-11-21 15:53:07  1       en
+#&gt;  text2   142    260         4 2017-11-21 15:53:07  2       en
+#&gt;  text3   251    499        15 2017-11-21 15:53:07  3       en
+#&gt;  text4   322    679        21 2017-11-21 15:53:07  4       en
+#&gt;  text5   298    683        29 2017-11-21 15:53:07  5       en
+#&gt;  text6   251    483        14 2017-11-21 15:53:07  6       en
+#&gt;  text7    77    114         5 2017-11-21 15:53:07  7       en
+#&gt;  text8    88    134         4 2017-11-21 15:53:07  8       en
+#&gt;  text9   346    723        27 2017-11-21 15:53:07  9       en
 #&gt; 
 #&gt; Source:  Converted from tm Corpus 'tmCorp'
-#&gt; Created: Thu Aug 10 12:42:43 2017
-#&gt; Notes:   
-#&gt; </div><div class='input'>
+#&gt; Created: Tue Nov 21 15:53:07 2017
+#&gt; Notes:    </div><div class='input'>
 <span class='co'># construct a corpus from a data.frame</span>
 <span class='no'>mydf</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>letter_factor</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='fu'>rep</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>2</span>)),
                   <span class='kw'>some_ints</span> <span class='kw'>=</span> <span class='fl'>1L</span>:<span class='fl'>6L</span>,
@@ -411,7 +315,7 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt; fromDf_4             b         4 This is text number 4.
 #&gt; fromDf_5             c         5 This is text number 5.
 #&gt; fromDf_6             c         6 This is text number 6.</div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus</span>(<span class='no'>mydf</span>, <span class='kw'>text_field</span> <span class='kw'>=</span> <span class='st'>"some_text"</span>,
-               <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>source</span> <span class='kw'>=</span> <span class='st'>"From a data.frame called mydf."</span>)))</div><div class='output co'>#&gt; Corpus consisting of 6 documents.
+               <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>source</span> <span class='kw'>=</span> <span class='st'>"From a data.frame called mydf."</span>)))</div><div class='output co'>#&gt; Corpus consisting of 6 documents:
 #&gt; 
 #&gt;      Text Types Tokens Sentences letter_factor some_ints
 #&gt;  fromDf_1     6      6         1             a         1
@@ -422,12 +326,11 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;  fromDf_6     6      6         1             c         6
 #&gt; 
 #&gt; Source:  From a data.frame called mydf.
-#&gt; Created: Thu Aug 10 12:42:43 2017
-#&gt; Notes:   
-#&gt; </div><div class='input'>
+#&gt; Created: Tue Nov 21 15:53:07 2017
+#&gt; Notes:    </div><div class='input'>
 <span class='co'># construct a corpus from a kwic object</span>
 <span class='no'>mykwic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"southern"</span>)
-<span class='fu'>summary</span>(<span class='fu'>corpus</span>(<span class='no'>mykwic</span>))</div><div class='output co'>#&gt; Corpus consisting of 28 documents.
+<span class='fu'>summary</span>(<span class='fu'>corpus</span>(<span class='no'>mykwic</span>))</div><div class='output co'>#&gt; Corpus consisting of 28 documents:
 #&gt; 
 #&gt;         Text Types Tokens Sentences         docname from   to  keyword context
 #&gt;    text1.pre     5      5         1      1797-Adams 1803 1803 southern     pre
@@ -460,9 +363,8 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;  text14.post     5      5         1 1953-Eisenhower 1226 1226 southern    post
 #&gt; 
 #&gt; Source:  Corpus created from kwic(x, keywords = "southern")
-#&gt; Created: Thu Aug 10 12:42:43 2017
-#&gt; Notes:   
-#&gt; </div></pre>
+#&gt; Created: Tue Nov 21 15:53:07 2017
+#&gt; Notes:    </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

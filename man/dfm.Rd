@@ -20,7 +20,7 @@ excluding all others.  This can be used in lieu of a dictionary if there
 are only specific features that a user wishes to keep. To extract only 
 Twitter usernames, for example, set \code{select = "@*"} and make sure 
 that \code{remove_twitter = FALSE} as an additional argument passed to 
-\link{tokenize}.  Note: \code{select = "^@\\\w+\\\b"} would be the regular
+\link{tokens}.  Note: \code{select = "^@\\\w+\\\b"} would be the regular
 expression version of this matching pattern.  The pattern matching type 
 will be set by \code{valuetype}.  See also \code{\link{tokens_remove}}.}
 
@@ -41,7 +41,7 @@ creating the dfm first, and then applying \code{\link{dfm_lookup}}
 separately, or using \code{\link{tokens_lookup}} on the tokenized text
 before calling \code{dfm}.}
 
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
@@ -70,6 +70,9 @@ The default behavior for \code{remove}/\code{select} when
   the texts with ngrams, then remove the features to be ignored, and then 
   construct the dfm using this modified tokenization object.  See the code 
   examples for an illustration.
+  
+  To select on and match the features of a another \link{dfm}, \code{x} must
+  also be a \link{dfm}.
 }
 \note{
 When \code{x} is a \link{dfm}, \code{groups} provides a convenient and
@@ -113,7 +116,7 @@ featnames(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), remove_pu
 
 # removing stopwords before constructing ngrams
 tokensAll <- tokens(char_tolower(testText), remove_punct = TRUE)
-tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
+tokensNoStopwords <- tokens_remove(tokensAll, stopwords("english"))
 tokensNgramsNoStopwords <- tokens_ngrams(tokensNoStopwords, 2)
 featnames(dfm(tokensNgramsNoStopwords, verbose = FALSE))
 

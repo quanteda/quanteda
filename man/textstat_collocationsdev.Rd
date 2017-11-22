@@ -2,13 +2,13 @@
 % Please edit documentation in R/textstat_collocationsdev.R
 \name{textstat_collocationsdev}
 \alias{textstat_collocationsdev}
-\alias{is.collocations}
+\alias{is.collocationsdev}
 \title{identify and score multi-word expressions}
 \usage{
 textstat_collocationsdev(x, method = "all", size = 2, min_count = 2,
   smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...)
 
-is.collocations(x)
+is.collocationsdev(x)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object whose
@@ -42,8 +42,8 @@ is not a \link{tokens} object already}
 \code{textstat_collocationsdev} returns a data.frame of collocations and their
   scores and statistsics.
 
-\code{is.collocation} returns \code{TRUE} if the object is of class
-  \code{collocations}, \code{FALSE} otherwise.
+\code{is.collocationdev} returns \code{TRUE} if the object is of class
+  \code{collocationsdev}, \code{FALSE} otherwise.
 }
 \description{
 Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.

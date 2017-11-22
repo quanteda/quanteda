@@ -44,28 +44,27 @@ test_that("test c.corpus", {
     expected_docvars <-rbind(docvars(data_corpus_inaugural), docvars(data_corpus_inaugural), docvars(data_corpus_inaugural))
     rownames(expected_docvars) <- make.unique(rep(rownames(docvars(data_corpus_inaugural)), 3), sep='')
 
-    expect_that(
+    expect_equal(
         docvars(concat.corpus),
-        equals(expected_docvars)
+        expected_docvars
     )
 
-    expect_that(
+    expect_is(
         docvars(concat.corpus),
-        is_a('data.frame')
+        'data.frame'
     )
 
-    
     expected_texts <- c(texts(data_corpus_inaugural), texts(data_corpus_inaugural), texts(data_corpus_inaugural))
     names(expected_texts) <- make.unique(rep(names(texts(data_corpus_inaugural)), 3), sep='')
   
-    expect_that(
+    expect_equal(
         texts(concat.corpus),
-        equals(expected_texts)
+        expected_texts
     )
 
-    expect_that(
+    expect_is(
         texts(concat.corpus),
-        is_a('character')
+        'character'
     )
 
 
@@ -79,8 +78,8 @@ test_that("test corpus constructors works for kwic", {
     
     kwiccorpus <- corpus(kwic(data_corpus_inaugural, "christmas"))
     expect_that(kwiccorpus, is_a("corpus"))
-    expect_equal(sort(names(docvars(kwiccorpus))),
-                 c("context", "docname", "from", "keyword", "to"))
+    expect_equal(names(docvars(kwiccorpus)),
+                 c("docname", "from", "to", "keyword", "context"))
 })
 
 
@@ -109,39 +108,33 @@ test_that("test corpus constructors works for data.frame", {
     names(mydf2)[3] <- "text"
     expect_equal(corpus(mydf, text_field = "some_text"),
                  corpus(mydf2))
-    
-    mydf3 <- mydf2
-    mydf3$doc_id <- row.names(mydf3)
-    row.names(mydf3) <- NULL
-    expect_equal(corpus(mydf, text_field = "some_text"),
-                 corpus(mydf3))
-    
-    expect_error(
-        corpus(mydf3, docid_field = paste0("d", 1:6)),
-        "docid_field must refer to a single column"
-    )
-    
-    # expect_error(
-    #     corpus(mydf3, docnames = paste0("d", 1:5)),
-    #     "user-supplied docnames must be the same as the number of documents"
-    # )
-    
     expect_equal(corpus(mydf, text_field = "some_text"),
                  corpus(mydf, text_field = 3))
     
     expect_error(corpus(mydf, text_field = "some_ints"),
                  "text_field must refer to a character mode column")
     expect_error(corpus(mydf, text_field = c(1,3)),
-                 "only one text_field may be specified")
+                 "text_field must refer to a single column")
     expect_error(corpus(mydf, text_field = c("some_text", "letter_factor")),
-                 "only one text_field may be specified")
-    expect_error(corpus(mydf, text_field = 3.1),
-                 "text_field index refers to an invalid column")
+                 "text_field must refer to a single column")
     expect_error(corpus(mydf, text_field = 0),
                  "text_field index refers to an invalid column")
     expect_error(corpus(mydf, text_field = -1),
                  "text_field index refers to an invalid column")
     expect_error(corpus(mydf, text_field = "notfound"),
+                 "column name notfound not found")
+    
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = "some_ints"),
+                 "docid_field must refer to a character mode column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = c(1,3)),
+                 "docid_field must refer to a single column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = c("some_text", "letter_factor")),
+                 "docid_field must refer to a single column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = 0),
+                 "docid_field index refers to an invalid column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = -1),
+                 "docid_field index refers to an invalid column")
+    expect_error(corpus(mydf, text_field = "some_text", docid_field = "notfound"),
                  "column name notfound not found")
 
 })
@@ -193,7 +186,7 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
 
 test_that("test corpus constructor works for complex VCorpus (#849)", {
     skip_if_not_installed("tm")
-    load("../data/corpora/complex_Corpus.RData")
+    load("../data/corpora/complex_Corpus.rda")
     qc <- corpus(complex_Corpus)
     expect_equal(
         head(docnames(qc), 3),
@@ -225,23 +218,9 @@ test_that("corpus_subset works", {
     expect_equal(docnames(corpus_subset(data_corpus_test_nodv, LETTERS[1:4] == "B")), c("doc2"))
 
 })
-    
-test_that("corpus_segment works", {
-    txt <- c(doc1 = "This is a sample text.\nIt has three lines.\nThe third line.",
-             doc2 = "one\ntwo\tpart two\nthree\nfour.",
-             doc3 = "A single sentence.",
-             doc4 = "A sentence with \"escaped quotes\".")
-    dv <- data.frame(varnumeric = 10:13, varfactor = factor(c("A", "B", "A", "B")), varchar = letters[1:4])
-    
-    data_corpus_test_nodv  <- corpus(txt, metacorpus = list(source = "From test-corpus.R"))
-    expect_equal(ndoc(corpus_segment(data_corpus_test_nodv, "sentences")), 6)
-    
-    data_corpus_test <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpus.R"))
-    expect_equal(ndoc(corpus_segment(data_corpus_test, "sentences")), 6)
-})
 
 test_that("summary method works for corpus", {
-    expect_output(summary(data_corpus_irishbudget2010, verbose = TRUE), regexp = "^Corpus consisting of 14 documents\\.")
+    expect_output(summary(print(data_corpus_irishbudget2010)), regexp = "^Corpus consisting of 14 documents")
 })
 
 test_that("corpus works for texts with duplicate filenames", {
@@ -271,3 +250,55 @@ test_that("create a corpus on a corpus", {
                compress = TRUE)
     )
 })
+
+test_that("summary.corpus with verbose prints warning", {
+    expect_warning(
+        summary(data_corpus_irishbudget2010, verbose = FALSE),
+        "verbose argument is defunct"
+    )        
+})
+
+test_that("head, tail.corpus work as expected", {
+    crp <- corpus_subset(data_corpus_inaugural, Year < 2018)
+    
+    expect_equal(
+        docnames(head(crp, 3)),
+        c("1789-Washington", "1793-Washington", "1797-Adams")
+    )
+    expect_equal(
+        docnames(head(crp, -55)),
+        c("1789-Washington", "1793-Washington", "1797-Adams")
+    )
+    expect_equal(
+        docnames(tail(crp, 3)),
+        c("2009-Obama", "2013-Obama", "2017-Trump")
+    )
+    expect_equal(
+        docnames(tail(crp, -55)),
+        c("2009-Obama", "2013-Obama", "2017-Trump")
+    )
+})
+
+test_that("internal documents fn works", {
+    mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year < 1800))
+    expect_is(quanteda:::documents.dfm(mydfm), "data.frame")
+    expect_equal(
+        dim(quanteda:::documents.dfm(mydfm)),
+        c(3, 3)
+    )
+})
+
+test_that("corpus constructor works with tibbles", {
+    skip_if_not_installed("tibble")
+    dd <- tibble::data_frame(a=1:3, text=c("Hello", "quanteda", "world"))
+    expect_is(
+        corpus(dd),
+        "corpus"
+    )
+    expect_equal(
+        texts(corpus(dd)),
+        c(text1 = "Hello", text2 = "quanteda", text3 = "world")
+    )
+})
+
+

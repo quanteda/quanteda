@@ -7,14 +7,14 @@
 \alias{textmodel,formula,missing,dfm,character-method}
 \title{fit a text model}
 \usage{
-textmodel(x, y = NULL, data = NULL, model = c("wordscores", "NB",
-  "wordfish", "ca"), ...)
+textmodel(x, y = NULL, data = NULL, model = c("wordscores", "nb",
+  "wordfish", "ca", "lsa"), ...)
 
 \S4method{textmodel}{dfm,ANY,missing,character}(x, y = NULL, data = NULL,
-  model = c("wordscores", "NB", "wordfish", "ca"), ...)
+  model = c("wordscores", "nb", "wordfish", "ca", "lsa"), ...)
 
 \S4method{textmodel}{formula,missing,dfm,character}(x, y = NULL,
-  data = NULL, model = c("wordscores", "NB", "wordfish", "ca"), ...)
+  data = NULL, model = c("wordscores", "nb", "wordfish", "ca", "lsa"), ...)
 }
 \arguments{
 \item{x}{a quanteda \link{dfm} object containing feature counts by document}
@@ -28,17 +28,19 @@ training set; for unsupervised models, this will be left \code{NULL}.}
 \item{model}{the model type to be fit.  Currently implemented methods are: 
 \describe{ \item{\code{wordscores}}{Fits the "wordscores" model of Laver, 
 Benoit, and Garry (2003). Options include the original linear scale of LBG 
-or the logit scale proposed by Beauchamps (2001).  See 
+or the logit scale proposed by Beauchamp (2001).  See 
 \link{textmodel_wordscores}.}
 
-\item{\code{NB}}{Fits a Naive Bayes model to the dfm, with options for 
+\item{\code{nb}}{Fits a Naive Bayes model to the dfm, with options for 
 smoothing, setting class priors, and a choice of multinomial or binomial 
-probabilities.  See \link{textmodel_NB}.}
+probabilities.  See \link{textmodel_nb}.}
 
 \item{\code{wordfish}}{Fits the "wordfish" model of Slapin and Proksch (2008).  
 See \link{textmodel_wordfish}.}
 
 \item{\code{ca}}{Correspondence analysis scaling of the dfm.}
+
+\item{\code{lsa}}{Correspondence Latent Semantic Analysis.}
 
 \item{\code{lda}}{Fit a topic model based on latent Dirichlet allocation.  
 Not yet implemented -- use \code{\link{convert}}

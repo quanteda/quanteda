@@ -27,5 +27,7 @@ __MACOSX
 ^tests/misc/
 ^css/
 ^vignettes/pkgdown_only/
-
+^vignettes/cheatsheet/
+^vignettes/demo/
 ^revdep$
+^CNAME$

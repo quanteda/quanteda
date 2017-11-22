@@ -97,22 +97,22 @@ test_that("docfreq works as expected", {
     )
 })
 
-test_that("deprecated normalize argument still works in tfidf", {
-    mydfm <- dfm(c("He went out to buy a car", 
-                   "He went out and bought pickles and onions"))
-    expect_equal(
-        tfidf(mydfm),
-        suppressWarnings(tfidf(mydfm, normalize = FALSE))
-    )
-    expect_equal(
-        tfidf(mydfm, scheme_tf = "prop"),
-        suppressWarnings(tfidf(mydfm, normalize = TRUE))
-    )
-    expect_warning(
-        tfidf(mydfm, normalize = TRUE),
-        "normalize is deprecated"
-    )
-})
+# test_that("deprecated normalize argument still works in tfidf", {
+#     mydfm <- dfm(c("He went out to buy a car", 
+#                    "He went out and bought pickles and onions"))
+#     expect_equal(
+#         tfidf(mydfm),
+#         suppressWarnings(tfidf(mydfm, normalize = FALSE))
+#     )
+#     expect_equal(
+#         tfidf(mydfm, scheme_tf = "prop"),
+#         suppressWarnings(tfidf(mydfm, normalize = TRUE))
+#     )
+#     expect_warning(
+#         tfidf(mydfm, normalize = TRUE),
+#         "normalize is deprecated"
+#     )
+# })
 
 test_that("new tfidf returns same results as older one", {
     mydfm <- dfm(c("He went out to buy a car", 
@@ -157,5 +157,29 @@ test_that("docfreq works when features have duplicated names (#829)", {
     expect_equal(
         docfreq(mydfm, USE.NAMES = FALSE),
         c(2, 3, 1, 1, 3, 2)
+    )
+})
+
+test_that("dfm_weight works with zero-frequency features (#929)", {
+    d1 <- dfm(c("a b c", "a b c d"))
+    d2 <- dfm(letters[1:6])
+    
+    dtest <- dfm_select(d1, d2)
+    
+    expect_equal(
+        as.matrix(tf(dtest, "prop")),
+        matrix(c(0.33, 0.25, 0.33, 0.25, 0.33, 0.25, 0, 0.25, 0, 0, 0, 0), nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = letters[1:6])),
+        tolerance = .01
+    )
+    expect_equal(
+        docfreq(dtest),
+        c(a = 2, b = 2, c = 2, d = 1, e = 0, f = 0)
+    )
+    expect_equal(
+        as.matrix(tfidf(dtest, "prop")),
+        matrix(c(rep(0, 6), 0.000, 0.07525, rep(0, 4)), nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = letters[1:6])),
+        tolerance = .001
     )
 })

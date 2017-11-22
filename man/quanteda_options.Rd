@@ -56,7 +56,7 @@ that adds features}
 }
 }
 \examples{
-(qopts <- quanteda_options())
+(opt <- quanteda_options())
 \donttest{
 quanteda_options(verbose = TRUE)
 quanteda_options("verbose" = FALSE)
@@ -64,7 +64,7 @@ quanteda_options("threads")
 quanteda_options(print_dfm_max_ndoc = 50L)
 # reset to defaults
 quanteda_options(reset = TRUE)
-# reset to saved values 
-quanteda_options(qopts)
+# reset to saved options
+quanteda_options(opt)
 }
 }

@@ -1,26 +1,8 @@
-citHeader("To cite package 'quanteda' in publications please use the following:")
-
-if (!exists("meta") || is.null(meta)) 
-    meta <- packageDescription("quanteda")
-year <- substring(meta$Date, 1, 4)
-note <- paste("R package version", meta$Version)
-url <- "http://quanteda.io"
-
-citEntry(entry = "Manual",
+bibentry(bibtype = "Manual",
          title = "quanteda: Quantitative Analysis of Textual Data",
-         author = personList(as.person("Kenneth Benoit"),
-                             as.person("Kohei Watanabe"),
-                             as.person("Paul Nulty"),
-                             as.person("Adam Obeng"),
-                             as.person("Haiyan Wang"),
-                             as.person("Benjamin Lauderdale"),
-                             as.person("Will Lowe")),
-         year = year,
-         note = note,
-         url = url,
-         textVersion = 
-             paste0("Benoit, Kenneth et. al. (", year, 
-                    ").  \"quanteda: Quantitative Analysis of Textual Data\".  R package version: ", 
-                    meta$Version, ".  ", url, ".")
+         author = c(person("Kenneth", "Benoit")),
+         year = format(Sys.Date(), "%Y"),
+         doi = "10.5281/zenodo.1004683",
+         url = "http://quanteda.io",
+         note = "R package version 0.99.22"
 )
-

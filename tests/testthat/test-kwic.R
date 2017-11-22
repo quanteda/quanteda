@@ -11,17 +11,17 @@ test_that("test attr(kwic, 'ntoken') with un-named texts", {
     testntokens <- c(9, 4, 9, 1)
     names(testntokens) <- c('text1', 'text2', 'text3', 'text4')
     
-    expect_that(
+    expect_equal(
         attr(testkwic, 'ntoken'),
-        equals(testntokens)
+        testntokens
     )
 })
 
 test_that("test attr(kwic, 'ntoken') text names", {
     testkwic <- kwic(data_corpus_inaugural, 'american')
-    expect_that(
+    expect_equal(
         names(attr(testkwic, 'ntoken')),
-        equals(names(texts(data_corpus_inaugural)))
+        names(texts(data_corpus_inaugural))
     )
 })
     
@@ -40,12 +40,6 @@ test_that("test kwic general", {
     expect_equal(
         data.frame(testkwic),
         dtf)
-    
-    #tokenizedTexts
-    testkwic <- kwic(tokenize(paste(LETTERS, collapse=' ')), 'D')
-    expect_equal(
-        data.frame(testkwic),
-        dtf) 
 })
 
 
@@ -425,3 +419,7 @@ test_that("test docvar is passed through kwic()", {
     
 })
 
+test_that("kwic error when dfm is given, #1006", {
+    toks <- tokens('a b c')
+    expect_error(kwic(toks, dfm('b c d')))
+})

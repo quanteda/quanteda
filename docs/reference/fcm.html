@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +33,18 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-144616-24', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
   </head>
 
@@ -51,10 +64,40 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -101,7 +144,7 @@ the feature co-occurrence matrix</p></td>
       <td><p>the context in which to consider term co-occurrence: 
 <code>"document"</code> for co-occurrence counts within document; <code>"window"</code>
 for co-occurrence within a defined window of words, which requires a 
-postive integer value for <code>window</code>.  Note: if <code>x</code> is a dfm object, then
+positive integer value for <code>window</code>.  Note: if <code>x</code> is a dfm object, then
 <code>context</code> can only be <code>"document"</code>.</p></td>
     </tr>
     <tr>
@@ -129,7 +172,7 @@ target feature</p></td>
     <tr>
       <th>ordered</th>
       <td><p>if <code>TRUE</code> the number of times that a term appears before or after the target feature 
-are counted seperately. Only makes sense for context = "window".</p></td>
+are counted separately. Only makes sense for context = "window".</p></td>
     </tr>
     <tr>
       <th>span_sentence</th>
@@ -152,37 +195,37 @@ sentences</p></td>
   implementation of a "context-feature" matrix, consisting of a count of
   feature co-occurrence within a defined context.  This context, following
   Momtazi et. al. (2010), can be defined as the <em>document</em>,
-  <em>sentences</em> within documents, <em>syntactic relationships</em> beteeen
+  <em>sentences</em> within documents, <em>syntactic relationships</em> between
   features (nouns within a sentence, for instance), or according to a
   <em>window</em>.  When the context is a window, a weighting function is
   typically applied that is a function of distance from the target word (see
   Jurafsky and Martin 2015, Ch. 16) and ordered co-occurrence of the two
-  features is considered (see Church &amp; Hanks 1990).
-    fcm provides all of this functionality, returning a \(V * V\)
+  features is considered (see Church &amp; Hanks 1990).</p>  
+<p>fcm provides all of this functionality, returning a \(V * V\)
   matrix (where \(V\) is the vocabulary size, returned by
   <code><a href='ndoc.html'>nfeature</a></code>). The <code>tri = TRUE</code> option will only return the
-  upper part of the matrix.
-    Unlike some implementations of co-occurrences, fcm counts feature
-  co-occurrences with themselves, meaning that the diagonal will not be zero.
-    fcm also provides "boolean" counting within the context of "window",
-  which differs from the counting within "document".
-    <code>is.fcm(x)</code> returns <code>TRUE</code> if and only if its x is an object of 
+  upper part of the matrix.</p>  
+<p>Unlike some implementations of co-occurrences, fcm counts feature
+  co-occurrences with themselves, meaning that the diagonal will not be zero.</p>  
+<p>fcm also provides "boolean" counting within the context of "window",
+  which differs from the counting within "document".</p>  
+<p><code>is.fcm(x)</code> returns <code>TRUE</code> if and only if its x is an object of 
   type fcm.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Momtazi, S., Khudanpur, S., &amp; Klakow, D. (2010). 
-  "<a href = 'https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf'>A
+  "<a href='https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf'>A
    comparative study of word co-occurrence for term clustering in language 
   model-based sentence retrieval.</a>" <em>Human Language Technologies: The 
   2010 Annual Conference of the North American Chapter of the ACL</em>, Los 
-  Angeles, California, June 2010, pp. 325-328.
-    Daniel Jurafsky &amp; James H. Martin. (2015) <em>Speech and Language 
+  Angeles, California, June 2010, pp. 325-328.</p>  
+<p>Daniel Jurafsky &amp; James H. Martin. (2015) <em>Speech and Language 
   Processing</em>.  Draft of April 11, 2016. 
-  <a href = 'https://web.stanford.edu/~jurafsky/slp3/16.pdf'>Chapter 16, Semantics
-  with Dense Vectors.</a>
-    Church, K. W. &amp; P. Hanks (1990) 
-  "<a href = 'http://dl.acm.org/citation.cfm?id=89095'>Word association norms,
+  <a href='https://web.stanford.edu/~jurafsky/slp3/16.pdf'>Chapter 16, Semantics
+  with Dense Vectors.</a></p>  
+<p>Church, K. W. &amp; P. Hanks (1990) 
+  "<a href='http://dl.acm.org/citation.cfm?id=89095'>Word association norms,
   mutual information, and lexicography</a>" <em>Computational Linguistics</em>,
   16(1):22–29.</p>
     
@@ -195,20 +238,20 @@ sentences</p></td>
 #&gt;         features
 #&gt; features A D C E F B
 #&gt;        A 1 3 3 4 1 1
-#&gt;        D . . 2 3 1 .
-#&gt;        C . . . 2 . 1
-#&gt;        E . . . . 1 1
-#&gt;        F . . . . . 1
-#&gt;        B . . . . . .</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
+#&gt;        D 0 0 2 3 1 0
+#&gt;        C 0 0 0 2 0 1
+#&gt;        E 0 0 0 0 1 1
+#&gt;        F 0 0 0 0 0 1
+#&gt;        B 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt; 6 x 6 sparse Matrix of class "fcm"
 #&gt;         features
 #&gt; features         A        D        C        E         F         B
 #&gt;        A 0.8333333 3.333333 2.833333 2.833333 0.8333333 1.0000000
-#&gt;        D .         .        1.333333 2.333333 1.0000000 0.3333333
-#&gt;        C .         .        .        2.333333 .         0.5000000
-#&gt;        E .         .        .        .        1.3333333 1.3333333
-#&gt;        F .         .        .        .        .         0.5000000
-#&gt;        B .         .        .        .        .         .        </div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+#&gt;        D 0         0        1.333333 2.333333 1.0000000 0.3333333
+#&gt;        C 0         0        0        2.333333 0         0.5000000
+#&gt;        E 0         0        0        0        1.3333333 1.3333333
+#&gt;        F 0         0        0        0        0         0.5000000
+#&gt;        B 0         0        0        0        0         0        </div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>,
              <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt; 6 x 6 sparse Matrix of class "fcm"
 #&gt;         features
@@ -221,44 +264,66 @@ sentences</p></td>
 #&gt;        B 3 0 2 1 0 0</div><div class='input'>
 <span class='co'># with multiple documents</span>
 <span class='no'>txts</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"a a a b b c"</span>, <span class='st'>"a a c e"</span>, <span class='st'>"a c e f g"</span>)
-<span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"frequency"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"boolean"</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
+<span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"frequency"</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
+#&gt; 6 x 6 sparse Matrix of class "fcm"
+#&gt;         features
+#&gt; features a b c e f g
+#&gt;        a 4 6 6 3 1 1
+#&gt;        b 0 1 2 0 0 0
+#&gt;        c 0 0 0 2 1 1
+#&gt;        e 0 0 0 0 1 1
+#&gt;        f 0 0 0 0 0 1
+#&gt;        g 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"boolean"</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt; 6 x 6 sparse Matrix of class "fcm"
 #&gt;         features
 #&gt; features a b c e f g
 #&gt;        a 2 1 3 2 1 1
-#&gt;        b . 1 1 . . .
-#&gt;        c . . 0 2 1 1
-#&gt;        e . . . 0 1 1
-#&gt;        f . . . . 0 1
-#&gt;        g . . . . . 0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
+#&gt;        b 0 1 1 0 0 0
+#&gt;        c 0 0 0 2 1 1
+#&gt;        e 0 0 0 0 1 1
+#&gt;        f 0 0 0 0 0 1
+#&gt;        g 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt; 6 x 6 sparse Matrix of class "fcm"
 #&gt;         features
 #&gt; features a b c e f g
-#&gt;        a 4 3 3 2 . .
-#&gt;        b . 1 2 . . .
-#&gt;        c . . . 2 1 .
-#&gt;        e . . . . 1 1
-#&gt;        f . . . . . 1
-#&gt;        g . . . . . .</div><div class='input'>
+#&gt;        a 4 3 3 2 0 0
+#&gt;        b 0 1 2 0 0 0
+#&gt;        c 0 0 0 2 1 0
+#&gt;        e 0 0 0 0 1 1
+#&gt;        f 0 0 0 0 0 1
+#&gt;        g 0 0 0 0 0 0</div><div class='input'>
 
 <span class='co'># from tokens</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"The quick brown fox jumped over the lazy dog."</span>,
          <span class='st'>"The dog jumped and ate the fox."</span>)
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='no'>txt</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>fcm</span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>fcm</span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 10 by 10 features.
+<span class='fu'>fcm</span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 10 by 10 features.
 #&gt; 10 x 10 sparse Matrix of class "fcm"
 #&gt;         features
 #&gt; features the quick brown fox jumped over lazy dog and ate
-#&gt;   the      .     1     1   3      3    1    1   2   2   1
-#&gt;   quick    .     .     1   1      1    .    .   .   .   .
-#&gt;   brown    .     .     .   1      1    1    .   .   .   .
-#&gt;   fox      .     .     .   .      1    1    .   .   1   1
-#&gt;   jumped   .     .     .   .      .    1    1   1   1   1
-#&gt;   over     .     .     .   .      .    .    1   1   .   .
-#&gt;   lazy     .     .     .   .      .    .    .   1   .   .
-#&gt;   dog      .     .     .   .      .    .    .   .   1   1
-#&gt;   and      .     .     .   .      .    .    .   .   .   1
-#&gt;   ate      .     .     .   .      .    .    .   .   .   .</div></pre>
+#&gt;   the      2     2     2   4      4    2    2   4   2   2
+#&gt;   quick    0     0     1   1      1    1    1   1   0   0
+#&gt;   brown    0     0     0   1      1    1    1   1   0   0
+#&gt;   fox      0     0     0   0      2    1    1   2   1   1
+#&gt;   jumped   0     0     0   0      0    1    1   2   1   1
+#&gt;   over     0     0     0   0      0    0    1   1   0   0
+#&gt;   lazy     0     0     0   0      0    0    0   1   0   0
+#&gt;   dog      0     0     0   0      0    0    0   0   1   1
+#&gt;   and      0     0     0   0      0    0    0   0   0   1
+#&gt;   ate      0     0     0   0      0    0    0   0   0   0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 10 by 10 features.
+#&gt; 10 x 10 sparse Matrix of class "fcm"
+#&gt;         features
+#&gt; features the quick brown fox jumped over lazy dog and ate
+#&gt;   the      0     1     1   3      3    1    1   2   2   1
+#&gt;   quick    0     0     1   1      1    0    0   0   0   0
+#&gt;   brown    0     0     0   1      1    1    0   0   0   0
+#&gt;   fox      0     0     0   0      1    1    0   0   1   1
+#&gt;   jumped   0     0     0   0      0    1    1   1   1   1
+#&gt;   over     0     0     0   0      0    0    1   1   0   0
+#&gt;   lazy     0     0     0   0      0    0    0   1   0   0
+#&gt;   dog      0     0     0   0      0    0    0   0   1   1
+#&gt;   and      0     0     0   0      0    0    0   0   0   1
+#&gt;   ate      0     0     0   0      0    0    0   0   0   0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

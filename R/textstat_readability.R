@@ -62,16 +62,16 @@ textstat_readability <- function(x,
 #' @noRd
 #' @export
 textstat_readability.corpus <- function(x,
-                               measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
-                                           "Coleman", "Coleman.C2",
-                                           "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
-                                           "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
-                                           "Danielson.Bryan", "Danielson.Bryan.2",
-                                           "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson",
-                                           "Flesch", "Flesch.PSK", "Flesch.Kincaid",
-                                           "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
-                                           "Fucks", "Linsear.Write", "LIW",
-                                           "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", "Scrabble",
+                                        measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
+                                                    "Coleman", "Coleman.C2",
+                                                    "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
+                                                    "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
+                                                    "Danielson.Bryan", "Danielson.Bryan.2",
+                                                    "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson",
+                                                    "Flesch", "Flesch.PSK", "Flesch.Kincaid",
+                                                    "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
+                                                    "Fucks", "Linsear.Write", "LIW",
+                                                    "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", "Scrabble",
                                            "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de",
                                            "Spache", "Spache.old", "Strain",
                                            "Traenkle.Bailer", "Traenkle.Bailer.2",
@@ -423,25 +423,4 @@ prepositions <- c("a", "abaft", "abeam", "aboard", "about", "above", "absent", "
 #'
 #' Spache, G. 1953. "A new readability formula for primary-grade reading materials." \emph{The Elementary School Journal} 53: 410-413.
 "data_char_wordlists"
-
-# makeWordList <- function(filename) {
-#     wordList <- readtext(filename, cache = FALSE)@texts
-#     wordList <- stringi::stri_replace_all_regex(wordList, "-", "_")
-#     wordList <- tokens(wordList, simplify = TRUE)
-#     wordList <- stringi::stri_replace_all_regex(wordList, "_", "-")
-#     wordList
-# }
-# dalechall    <- makeWordList("~/Dropbox/QUANTESS/quanteda_working_files/readability/Dale-Chall.txt")
-# spache    <- makeWordList("~/Dropbox/QUANTESS/quanteda_working_files/readability/Spache.txt")
-# wordlists <- list(dalechall = dalechall, spache = spache)
-# save(wordlists, file = "data/wordlists.RData")
-
-
-# (1 point)-A, E, I, O, U, L, N, S, T, R.
-# (2 points)-D, G.
-# (3 points)-B, C, M, P.
-# (4 points)-F, H, V, W, Y.
-# (5 points)-K.
-# (8 points)- J, X.
-# (10 points)-Q, Z.
 

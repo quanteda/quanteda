@@ -107,4 +107,100 @@ NULL
 #' @keywords data
 "data_corpus_inaugural"
 
+#' Lexicoder Sentiment Dictionary (2015)
+#' 
+#' The 2015 Lexicoder Sentiment Dictionary in \pkg{quanteda} \link{dictionary}
+#' format.  
+#' 
+#' @details
+#' The dictionary consists of 2,858 "negative" sentiment words and 1,709
+#' "positive" sentiment words. A further set of 2,860 and 1,721 negations of
+#' negative and positive words, respectively, is also included. While many users
+#' will find the non-negation sentiment forms of the LSD adequate for sentiment
+#' analysis, Young and Soroka (2012) did find a small, but non-negligible
+#' increase in performance when accounting for negations.  Users wishing to test
+#' this or include the negations are encouraged to subtract negated positive
+#' words from the count of positive words, and subtract the negated negative
+#' words from the negative count.  
+#' 
+#' Young and Soroka (2012) also suggest the use of a pre-processing script to
+#' remove specific cases of some words (i.e., "good bye", or "nobody better",
+#' which should not be counted as positive). Pre-processing scripts are
+#' available at \url{http://lexicoder.com}.
+#' @section License and Conditions: 
+#'   The LSD is available for non-commercial academic purposes only. By using
+#'   \code{data_dictionary_LSD2015}, you accept these terms.
+#'   
+#'   Please cite the references below when using the dictionary.
+#' @format 
+#' A \link{dictionary} of four keys containing glob-style \link[=valuetype]{pattern matches}.
+#' \describe{
+#' \item{\code{negative}}{2,858 word patterns indicating negative sentiment}
+#' \item{\code{positive}}{1,709 word patterns indicating positive sentiment}
+#' \item{\code{neg_positive}}{1,721 word patterns indicating a positive word preceded by a negation (used to convey negative sentiment)}
+#' \item{\code{negative}}{2,860 word patterns indicating a negative word preceded by a negation (used to convey positive sentiment)}
+#' }
+#' @references 
+#'   The objectives, development and reliability of the dictionary are discussed
+#'   in detail in Young and Soroka (2012). Please cite this article when using the
+#'   Lexicoder Sentiment Dictionary and related resources.
+#
+#'   Young, Lori and Stuart Soroka. 2012. \emph{Lexicoder Sentiment
+#'   Dictionary}. Available at \url{http://lexicoder.com}.
+#'   
+#'   Young, Lori and Stuart Soroka.  2012.  "Affective News: The Automated
+#'   Coding of Sentiment in Political Texts." \emph{Political Communication} 29(2):
+#'   205-231.
+#' @keywords data
+#' @examples 
+#' # simple example
+#' txt <- "This aggressive policy will not win friends."
+#' tokens_lookup(tokens(txt), dictionary = data_dictionary_LSD2015, exclusive = FALSE)
+#' ## tokens from 1 document.
+#' ## text1 :
+#' ## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE" "."
+#' 
+#' # on larger examples - notice that few negations are used
+#' dfm(data_char_ukimmig2010, dictionary = data_dictionary_LSD2015)
+#' kwic(data_char_ukimmig2010, "not")
+"data_dictionary_LSD2015"
+
+#' confidence debate from 1991 Irish Parliament
+#' 
+#' Texts of speeches from a no-confidence motion debated in the Irish Dail in
+#' October 1991 over the future of the Fianna Fail-Progressive Democrat
+#' coalition.  (See Laver and Benoit 2002 for details.)
+#' @format \code{data_corpus_dailnoconf1991} is a corpus with 58 texts, 
+#'   including docvars for \code{name}, \code{party}, and \code{position}.
+#' @references Laver, Michael, and Kenneth Benoit. 2002. 
+#'   "\href{http://www.kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf}{Locating 
+#'   TDs in Policy Spaces: Wordscoring Dail Speeches}." \emph{Irish Political 
+#'   Studies} 17 (Summer): 59-73.
+#'   
+#'   Laver, Michael, Kenneth Benoit, and John Garry. 2003. 
+#'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy 
+#'   positions from political text using words as data.}" \emph{American 
+#'   Political Science Review} 97(2): 311-331.
+#' @keywords data
+#' @examples
+#' \dontrun{
+#' data_dfm_dailnoconf1991 <- dfm(data_corpus_dailnoconf1991, removePunct = TRUE)
+#' fitted <- textmodel_mixfit(data_dfm_dailnoconf1991, 
+#'                            c("Govt", "Opp", "Opp", rep(NA, 55)))
+#' (pred <- predict(fitted))
+#' tmpdf <- 
+#'     data.frame(party = as.character(docvars(data_corpus_dailnoconf1991, "party")),
+#'                govt = coef(pred)[,"Govt"],
+#'                position = as.character(docvars(data_corpus_dailnoconf1991, "position")),
+#'                stringsAsFactors = FALSE)
+#' bymedian <- with(tmpdf, reorder(paste(party, position), govt, median))
+#' par(mar = c(5, 6, 4, 2)+.1)
+#' boxplot(govt ~ bymedian, data = tmpdf,
+#'         horizontal = TRUE, las = 1,
+#'         xlab = "Degree of support for government")
+#' abline(h = 7.5, col = "red", lty = "dashed")
+#' text(c(0.9, 0.9), c(8.5, 6.5), c("Goverment", "Opposition"))
+#' }
+"data_corpus_dailnoconf1991"
+
 

@@ -6,7 +6,7 @@
 #' @param ... additional arguments passed to \code{\link{dfm}}
 #' @param verbose if \code{TRUE} print status messages
 #' @details Function produces multiple, resampled \link{dfm} objects, based on 
-#'   resampling sentences (wth replacement) from each document, recombining
+#'   resampling sentences (with replacement) from each document, recombining
 #'   these into new "documents" and computing a dfm for each. Resampling of
 #'   sentences is done strictly within document, so that every resampled
 #'   document will contain at least some of its original tokens.
@@ -65,7 +65,8 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
         message("Bootstrapping the sentences to create multiple dfm objects...")
         message("   ...resampling and forming dfms: 0", appendLF = FALSE)
     }
-
+    
+    x <- as.dfm(x)
     result <- list()
     # construct the original dfm
     result[['dfm_0']] <- dfm_group(x, groups = docvars(x, '_document'))

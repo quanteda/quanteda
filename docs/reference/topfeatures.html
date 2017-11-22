@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +33,18 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-144616-24', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
   </head>
 
@@ -51,10 +64,40 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -127,13 +170,76 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 <span class='no'>mydfm_nostopw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm_select.html'>dfm_remove</a></span>(<span class='no'>mydfm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
 
 <span class='co'># most frequent features</span>
-<span class='fu'>topfeatures</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'>topfeatures</span>(<span class='no'>mydfm_nostopw</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>topfeatures</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;  the  and   of   to  our   we    a   in   is that 
+#&gt; 1100  927  761  584  565  539  426  337  300  293 </div><div class='input'><span class='fu'>topfeatures</span>(<span class='no'>mydfm_nostopw</span>)</div><div class='output co'>#&gt;      us    must america     new  people   world  nation    time     can freedom 
+#&gt;     165      99      98      93      90      87      79      73      72      71 </div><div class='input'>
 <span class='co'># least frequent features</span>
-<span class='fu'>topfeatures</span>(<span class='no'>mydfm_nostopw</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>topfeatures</span>(<span class='no'>mydfm_nostopw</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;     hatfield      mondale        baker       moomaw    momentous   occurrence 
+#&gt;            1            1            1            1            1            1 
+#&gt;    routinely       unique       really every-4-year 
+#&gt;            1            1            1            1 </div><div class='input'>
 <span class='co'># top features of individual documents  </span>
-<span class='fu'>topfeatures</span>(<span class='no'>mydfm_nostopw</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>mydfm_nostopw</span>))</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>topfeatures</span>(<span class='no'>mydfm_nostopw</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>mydfm_nostopw</span>))</div><div class='output co'>#&gt; $`1981-Reagan`
+#&gt;         us government       must    believe     people 
+#&gt;         25         16         10         10          9 
+#&gt; 
+#&gt; $`1985-Reagan`
+#&gt;      us  people   world     one freedom 
+#&gt;      27      16      15      14      13 
+#&gt; 
+#&gt; $`1989-Bush`
+#&gt;    new     us    can nation  world 
+#&gt;     14     13     11     10     10 
+#&gt; 
+#&gt; $`1993-Clinton`
+#&gt;   world    must america      us  people 
+#&gt;      18      18      15      13      12 
+#&gt; 
+#&gt; $`1997-Clinton`
+#&gt;     new      us century  nation    time 
+#&gt;      29      27      20      13      12 
+#&gt; 
+#&gt; $`2001-Bush`
+#&gt;       us citizens  country    story   nation 
+#&gt;       11        9        9        9        8 
+#&gt; 
+#&gt; $`2005-Bush`
+#&gt; freedom liberty america   every  nation 
+#&gt;      25      15      12      10       9 
+#&gt; 
+#&gt; $`2009-Obama`
+#&gt;     us    can nation    new   must 
+#&gt;     23     13     12     11      8 
+#&gt; 
+#&gt; $`2013-Obama`
+#&gt;     us   must people   time    can 
+#&gt;     21     17     11     10      7 
+#&gt; 
+#&gt; $`2017-Trump`
+#&gt;  america american   people  country      one 
+#&gt;       18       11       10        9        8 
+#&gt; </div><div class='input'>
 <span class='co'># grouping by president last name</span>
-<span class='fu'>topfeatures</span>(<span class='no'>mydfm_nostopw</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'>topfeatures</span>(<span class='no'>mydfm_nostopw</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)</div><div class='output co'>#&gt; $Reagan
+#&gt;         us government     people      world        one 
+#&gt;         52         29         25         23         22 
+#&gt; 
+#&gt; $Bush
+#&gt; freedom      us  nation america     can 
+#&gt;      36      27      27      27      24 
+#&gt; 
+#&gt; $Clinton
+#&gt;      us     new   world    must america 
+#&gt;      40      38      28      28      26 
+#&gt; 
+#&gt; $Obama
+#&gt;     us   must    can nation people 
+#&gt;     44     25     20     18     18 
+#&gt; 
+#&gt; $Trump
+#&gt;  america american   people  country      one 
+#&gt;       18       11       10        9        8 
+#&gt; </div><div class='input'>
 <span class='co'># features by document frequencies</span>
 <span class='fu'>tail</span>(<span class='fu'>topfeatures</span>(<span class='no'>mydfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"docfreq"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>200</span>))</div><div class='output co'>#&gt;   congress       said throughout       came      heart       find 
 #&gt;          7          7          7          7          7          7 </div></pre>

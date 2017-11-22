@@ -70,8 +70,9 @@ textstat_simil.dfm <- function(x, selection = NULL,
                           margin = c("documents", "features"),
                           method = "correlation", 
                           upper  = FALSE, diag = FALSE) {
+    x <- as.dfm(x)
     margin <- match.arg(margin)
-   
+    
     if (!is.null(selection)) {
         if (!is.character(selection)) 
             stop("'selection' should be character or character vector of document names or feature labels.")
@@ -229,7 +230,7 @@ jaccard_sparse <- function(x, y = NULL, margin = 1) {
 # formula: eJ = |AB|/(|A|^2 + |B|^2 - |AB|)
 eJaccard_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-
+    
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     marginSums <- if (margin == 2) colSums else rowSums
     marginNames <- if (margin == 2) colnames else rownames

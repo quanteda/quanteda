@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +33,18 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-144616-24', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
   </head>
 
@@ -51,10 +64,40 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -118,18 +161,18 @@ and reference categories, for a feature to be included in the plot</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='co'># compare Trump v. Obama speeches</span>
-  <span class='no'>prescorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>,
-                              <span class='no'>President</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"Obama"</span>, <span class='st'>"Trump"</span>))
-  <span class='no'>presdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>prescorpus</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>),
-                 <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_keyness.html'>textstat_keyness</a></span>(<span class='no'>presdfm</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"Trump"</span>)
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># compare Trump v. Obama speeches</span>
+<span class='no'>prescorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>,
+                            <span class='no'>President</span> <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"Obama"</span>, <span class='st'>"Trump"</span>))
+<span class='no'>presdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>prescorpus</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>),
+               <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_keyness.html'>textstat_keyness</a></span>(<span class='no'>presdfm</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"Trump"</span>)
 
-  <span class='co'># plot estimated word keyness</span>
-  <span class='fu'>textplot_keyness</span>(<span class='no'>result</span>)
-  <span class='fu'>textplot_keyness</span>(<span class='no'>result</span>, <span class='kw'>show_reference</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-})</div></pre>
+<span class='co'># plot estimated word keyness</span>
+<span class='fu'>textplot_keyness</span>(<span class='no'>result</span>)
+<span class='fu'>textplot_keyness</span>(<span class='no'>result</span>, <span class='kw'>show_reference</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

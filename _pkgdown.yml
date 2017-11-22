@@ -1,3 +1,6 @@
+template:
+  params:
+    ganalytics: UA-144616-24
 reference:
 - title: Package-level
   contents:
@@ -11,6 +14,7 @@ reference:
     - data_corpus_inaugural
     - data_corpus_irishbudget2010
     - data_dfm_LBGexample
+    - data_dictionary_LSD2015
 - title: Corpus functions
   desc: Functions for constructing and manipulating corpus class objects.
   contents:
@@ -108,11 +112,7 @@ reference:
 - title: Text Model Functions
   desc: Plot functions for fitting analytic models from text matrixes.
   contents:
-    - textmodel_ca
-    - textmodel_NB
-    - textmodel_wordfish
-    - textmodel_wordscores
-    - textmodel_wordshoal
+    - starts_with("textmodel_")
     - coef.textmodel
 - title: Utility functions
   desc: R-like functions to return counts and object information.

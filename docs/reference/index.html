@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +33,18 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-144616-24', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
   </head>
 
@@ -51,10 +64,40 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -76,7 +119,7 @@
     <div class="page-header">
       <h1>
         Reference
-        <small>version&nbsp;0.9.9000</small>
+        <small>version&nbsp;0.99.9023</small>
       </h1>
     </div>
 
@@ -145,6 +188,12 @@
             <p><code><a href="data_dfm_lbgexample.html">data_dfm_lbgexample</a></code> </p>
           </td>
           <td><p>dfm from data in Table 1 of Laver, Benoit, and Garry (2003)</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="data_dictionary_LSD2015.html">data_dictionary_LSD2015</a></code> </p>
+          </td>
+          <td><p>Lexicoder Sentiment Dictionary (2015)</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -170,7 +219,7 @@
           <td>
             <p><code><a href="corpus_segment.html">corpus_segment</a></code> <code><a href="corpus_segment.html">char_segment</a></code> </p>
           </td>
-          <td><p>segment texts into component elements</p></td>
+          <td><p>segment texts on a pattern match</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -180,37 +229,31 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="corpus_trim.html">corpus_trim</a></code> <code><a href="corpus_trim.html">char_trim</a></code> </p>
-          </td>
-          <td><p>remove sentences based on their token lengths or a pattern match</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
             <p><code><a href="corpus.html">corpus</a></code> </p>
           </td>
           <td><p>construct a corpus object</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="metacorpus.html">metacorpus</a></code> <code><a href="metacorpus.html">&amp;</a></code> <code><a href="metacorpus.html">-</a></code> </p>
+            <p><code><a href="metacorpus.html">metacorpus</a></code> <code><a href="metacorpus.html">metacorpus<-</a></code> </p>
           </td>
           <td><p>get or set corpus metadata</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="docvars.html">docvars</a></code> <code><a href="docvars.html">&amp;</a></code> <code><a href="docvars.html">-</a></code> </p>
+            <p><code><a href="docvars.html">docvars</a></code> <code><a href="docvars.html">docvars<-</a></code> </p>
           </td>
           <td><p>get or set for document-level variables</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="metadoc.html">metadoc</a></code> <code><a href="metadoc.html">&amp;</a></code> <code><a href="metadoc.html">-</a></code> </p>
+            <p><code><a href="metadoc.html">metadoc</a></code> <code><a href="metadoc.html">metadoc<-</a></code> </p>
           </td>
           <td><p>get or set document-level meta-data</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="texts.html">texts</a></code> <code><a href="texts.html">&amp;</a></code> <code><a href="texts.html">-</a></code> <code><a href="texts.html">as.character</a></code> </p>
+            <p><code><a href="texts.html">texts</a></code> <code><a href="texts.html">texts<-</a></code> <code><a href="texts.html">as.character</a></code> </p>
           </td>
           <td><p>get or assign corpus texts</p></td>
         </tr><tr>
@@ -254,7 +297,7 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="tokens_select.html">tokens_select</a></code> <code><a href="tokens_select.html">tokens_remove</a></code> </p>
+            <p><code><a href="tokens_select.html">tokens_select</a></code> <code><a href="tokens_select.html">tokens_remove</a></code> <code><a href="tokens_select.html">tokens_keep</a></code> </p>
           </td>
           <td><p>select or remove tokens from a tokens object</p></td>
         </tr><tr>
@@ -294,7 +337,7 @@
           <td>
             <p><code><a href="corpus_segment.html">corpus_segment</a></code> <code><a href="corpus_segment.html">char_segment</a></code> </p>
           </td>
-          <td><p>segment texts into component elements</p></td>
+          <td><p>segment texts on a pattern match</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -348,7 +391,7 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="dfm_select.html">dfm_select</a></code> <code><a href="dfm_select.html">dfm_remove</a></code> <code><a href="dfm_select.html">fcm_select</a></code> <code><a href="dfm_select.html">fcm_remove</a></code> </p>
+            <p><code><a href="dfm_select.html">dfm_select</a></code> <code><a href="dfm_select.html">dfm_remove</a></code> <code><a href="dfm_select.html">dfm_keep</a></code> <code><a href="dfm_select.html">fcm_select</a></code> <code><a href="dfm_select.html">fcm_remove</a></code> <code><a href="dfm_select.html">fcm_keep</a></code> </p>
           </td>
           <td><p>select features from a dfm or fcm</p></td>
         </tr><tr>
@@ -536,6 +579,12 @@
         <tr>
           <!--  -->
           <td>
+            <p><code><a href="textplot_influence.html">textplot_influence</a></code> </p>
+          </td>
+          <td><p>influence plot for text scaling models</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
             <p><code><a href="textplot_keyness.html">textplot_keyness</a></code> </p>
           </td>
           <td><p>plot word keyness</p></td>
@@ -568,13 +617,19 @@
         <tr>
           <!--  -->
           <td>
+            <p><code><a href="textmodel_affinity.html">textmodel_affinity</a></code> </p>
+          </td>
+          <td><p>class affinity maximum likelihood text scaling model</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
             <p><code><a href="textmodel_ca.html">textmodel_ca</a></code> </p>
           </td>
           <td><p>correspondence analysis of a document-feature matrix</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="textmodel_NB.html">textmodel_NB</a></code> </p>
+            <p><code><a href="textmodel_nb.html">textmodel_nb</a></code> </p>
           </td>
           <td><p>Naive Bayes classifier for texts</p></td>
         </tr><tr>
@@ -642,7 +697,7 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="docnames.html">docnames</a></code> <code><a href="docnames.html">&amp;</a></code> <code><a href="docnames.html">-</a></code> </p>
+            <p><code><a href="docnames.html">docnames</a></code> <code><a href="docnames.html">docnames<-</a></code> </p>
           </td>
           <td><p>get or set document names</p></td>
         </tr><tr>

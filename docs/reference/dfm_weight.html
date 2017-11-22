@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +33,18 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-144616-24', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
   </head>
 
@@ -51,10 +64,40 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -107,7 +150,7 @@ according to one of several common methods.  Some shortcut functions that offer 
  <dt><code>"logfreq"</code></dt><dd><p>take the logarithm of 1 + the feature count, for base 10</p></dd>
  <dt><code>"tfidf"</code></dt><dd><p>Term-frequency * inverse document frequency. For a
   full explanation, see, for example, 
-  <a href = 'http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html'>http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html</a>.
+  <a href='http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html'>http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html</a>.
    This implementation will not return negative values.  For finer-grained
   control, call <code><a href='tfidf.html'>tfidf</a></code> directly.</p></dd>
   </dl></td>
@@ -118,7 +161,7 @@ according to one of several common methods.  Some shortcut functions that offer 
 a named numeric vector of weights to be applied to the dfm, 
 where the names of the vector correspond to feature labels of the dfm, and 
 the weights will be applied as multipliers to the existing feature counts 
-for the corresponding named fatures.  Any features not named will be 
+for the corresponding named features.  Any features not named will be 
 assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
     </tr>
     <tr>
@@ -155,39 +198,52 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
     <pre class="examples"><div class='input'><span class='no'>dtm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)
 
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>dtm</span>, <span class='fl'>1</span>, <span class='kw'>function</span>(<span class='no'>tf</span>) <span class='no'>tf</span>/<span class='fu'>max</span>(<span class='no'>tf</span>))
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>dtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>normDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='st'>"relfreq"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>normDtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in topfeatures(normDtm): object 'normDtm' not found</span></div><div class='input'><span class='no'>maxTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relmaxfreq"</span>)
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>maxTfDtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>logTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"logfreq"</span>)
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>logTfDtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'><span class='no'>tfidfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"tfidf"</span>)
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>tfidfDtm</span>)</div><div class='output co'>#&gt; <span class='error'>Error in get(".SigLength", envir = env): object '.SigLength' not found</span></div><div class='input'>
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>dtm</span>)</div><div class='output co'>#&gt;   the    of     ,   and     .    to    in     a   our  that 
+#&gt; 10082  7103  7026  5310  4945  4526  2785  2246  2181  1789 </div><div class='input'><span class='no'>normDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='st'>"relfreq"</span>)
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>normDtm</span>)</div><div class='output co'>#&gt;       the         ,        of       and         .        to        in       our 
+#&gt; 3.7910332 2.7639649 2.6821863 2.0782035 1.9594539 1.7643366 1.0695645 0.8731637 
+#&gt;         a        we 
+#&gt; 0.8593092 0.7726443 </div><div class='input'><span class='no'>maxTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relmaxfreq"</span>)
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>maxTfDtm</span>)</div><div class='output co'>#&gt;      the        ,       of      and        .       to       in        a 
+#&gt; 73.96822 52.12615 51.41366 40.28646 37.08884 33.58442 20.21474 16.49134 
+#&gt;      our       we 
+#&gt; 16.07124 14.34774 </div><div class='input'><span class='no'>logTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"logfreq"</span>)
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>logTfDtm</span>)</div><div class='output co'>#&gt;      the        ,       of      and        .       to       in        a 
+#&gt; 182.1856 174.3182 173.3837 167.1782 164.9945 163.2151 150.4070 143.6032 
+#&gt;      our     that 
+#&gt; 140.7424 138.9939 </div><div class='input'><span class='no'>tfidfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"tfidf"</span>)
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>tfidfDtm</span>)</div><div class='output co'>#&gt;            -      america        union            "       should constitution 
+#&gt;     55.80272     52.68044     51.14846     48.02566     42.10689     40.21661 
+#&gt;     congress      freedom          you      revenue 
+#&gt;     39.13390     38.31822     35.99430     34.11779 </div><div class='input'>
 <span class='co'># combine these methods for more complex dfm_weightings, e.g. as in Section 6.4</span>
 <span class='co'># of Introduction to Information Retrieval</span>
-<span class='fu'>head</span>(<span class='fu'><a href='tfidf.html'>tfidf</a></span>(<span class='no'>dtm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"log"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 9,357 features (91.8% sparse).
-#&gt; (showing first 6 documents and first 6 features)
+<span class='fu'>head</span>(<span class='fu'><a href='tfidf.html'>tfidf</a></span>(<span class='no'>dtm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"log"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (30.6% sparse).
+#&gt; 6 x 6 sparse Matrix of class "dfm"
 #&gt;                  features
 #&gt; docs              fellow-citizens of the    senate and    house
 #&gt;   1789-Washington       0.4846744  0   0 0.8091855   0 1.119326
-#&gt;   1793-Washington       0.0000000  0   0 0.0000000   0 0.000000
-#&gt;   1797-Adams            0.7159228  0   0 0.8091855   0 0.000000
-#&gt;   1801-Jefferson        0.6305759  0   0 0.0000000   0 0.000000
-#&gt;   1805-Jefferson        0.0000000  0   0 0.0000000   0 0.000000
-#&gt;   1809-Madison          0.4846744  0   0 0.0000000   0 0.000000</div><div class='input'>
-<span class='co'>#' # apply numeric weights</span>
+#&gt;   1793-Washington       0          0   0 0           0 0       
+#&gt;   1797-Adams            0.7159228  0   0 0.8091855   0 0       
+#&gt;   1801-Jefferson        0.6305759  0   0 0           0 0       
+#&gt;   1805-Jefferson        0          0   0 0           0 0       
+#&gt;   1809-Madison          0.4846744  0   0 0           0 0       </div><div class='input'>
+<span class='co'># apply numeric weights</span>
 <span class='no'>str</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"apple is better than banana"</span>, <span class='st'>"banana banana apple much better"</span>)
 (<span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>str</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    apple better banana much
 #&gt;   text1     1      1      1    0
 #&gt;   text2     1      1      2    1</div><div class='input'><span class='fu'>dfm_weight</span>(<span class='no'>mydfm</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>apple</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>banana</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>much</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
-#&gt; 2 x 4 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    apple better banana much
 #&gt;   text1     5      1      3  0  
 #&gt;   text2     5      1      6  0.5</div><div class='input'>
-
-<span class='co'># smooth the dfm</span>
+</div><div class='input'><span class='co'># smooth the dfm</span>
 <span class='fu'>dfm_smooth</span>(<span class='no'>mydfm</span>, <span class='fl'>0.5</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (0% sparse).
-#&gt; 2 x 4 Matrix of class "dfmDense"
+#&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    apple better banana much
 #&gt;   text1   1.5    1.5    1.5  0.5

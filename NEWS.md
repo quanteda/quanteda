@@ -1,12 +1,77 @@
 # quanteda 0.99
 
+## Changes since v0.99.22
+
+### New Features
+
+* Added `textmodel_lsa()` for Latent Semantic Analysis models.  
+* Added `textmodel_affinity()` for the Perry and Benoit (2017) class affinity scaling model.  
+
+
+## Changes since v0.99.12
+
+### New Features
+
+* `tokens_segment()` has a new `window` argument, permitting selection within an asymmetric window around the `pattern` of selection. (#521)
+* `tokens_replace()` now allows token types to be substituted directly and quickly. 
+* `textmodel_affinity()` now adds functionality to fit the Perry and Benoit (2017) class affinity model.
+* Added a `spacy_parse` method for corpus objects.  Also restored quanteda methods for **spacyr** `spacy_parsed` objects.
+
+### Bug fixes and stability enhancements
+
+* Improved documentation for `textmodel_nb()` (#1010), and made output quantities from the fitted NB model regular matrix objects instead of **Matrix** classes.
+
+
+### Behaviour Changes
+
+* All of the deprecated functions are now removed. (#991)
+* `tokens_group()` is now significantly faster.
+* The deprecated "list of characters" `tokenize()` function and all methods associated with the `tokenizedTexts` object types have been removed.
+* Added convenience functions for keeping tokens or features: `tokens_keep()`, `dfm_keep()`, and `fcm_keep()`. (#1037)
+* `textmodel_NB()` has been replaced by `textmodel_nb()`.
+
+## Changes since v0.99.9
+
+### New Features
+
+* Added methods for changing the docnames of tokens and dfm objects (#987).
+* Added new function `textmodel_lsa()` for Latent Semantic Analysis.
+
+### Bug fixes and stability enhancements
+
+* The computation of tfidf has been more thoroughly described in the documentation for this function (#997).
+* Fixed a bug discovered in #1011 for unused keys in `tokens_lookup(..., exclusive = FALSE)`.
+
+
 ## Changes since v0.99
+
+### New Features
+
+* Added `tokens_segment()`, which works on tokens objects in the same way as `corpus_segment()` does on corpus objects (#902).
+* Added **magrittr** pipe support (#927).  `%>%` can now be used with **quanteda** without needing to attach **magrittr** (or, as many users apparently believe, the entire tidyverse.)  
+* `corpus_segment()` now behaves more logically and flexibly, and is clearly differentiated from `corpus_reshape()` in terms of its functionality.  Its documentation is also vastly improved.  (#908)
+* Added `data_dictionary_LSD2015`, the Lexicoder Sentiment 2015 dictionary (#963).
+* Significant improvements to the performance of `tokens_lookup()` and `dfm_lookup()` (#960).
+* New functions `head.corpus()`, `tail.corpus()` provide fast subsetting of the first or last documents in a corpus. (#952)
 
 ### Bug fixes and stability enhancements
 
 * Fixed a problem when applying `purrr::map()` to `dfm()` (#928).
 * Added documentation for `regex2fixed()` and associated functions.
 * Fixed a bug in `textstat_collocations.tokens()` caused by "documents" containing only `""` as tokens. (#940)
+* Fixed a bug caused by `cbind.dfm()` when features shared a name starting with `quanteda_options("base_featname")` (#946)
+* Improved dictionary handling and creation now correctly handles nested LIWC 2015 categories. (#941)
+* Number of threads now set correctly by `quanteda_options()`. (#966)
+
+
+### Behaviour changes
+
+* `summary.corpus()` now generates a special data.frame, which has its own print method, rather than requiring `verbose = FALSE` to suppress output (#926).
+* `textstat_collocations()` is now multi-threaded.
+* `head.dfm()`, `tail.dfm()` now behave consistently with base R methods for matrix, with the added argument `nfeature`.  Previously, these methods printed the subset and invisibly returned it.  Now, they simply return the subset. (#952)
+*  Dictionary keys are now unique, and if multiple, identical keys are defined for a dictionary when constructed, the values will be merged into the consolidated key. (#959)
+
+
 
 
 ## Changes since v0.9.9-65

@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +33,18 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-144616-24', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
   </head>
 
@@ -51,10 +64,40 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -87,7 +130,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>valuetype</th>
-      <td><p>how to interpret keyword expressions: <code>"glob"</code> for 
+      <td><p>the type of pattern matching: <code>"glob"</code> for 
 "glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
 or <code>"fixed"</code> for exact matching. See valuetype for details.</p></td>
     </tr>
@@ -100,7 +143,8 @@ or <code>"fixed"</code> for exact matching. See valuetype for details.</p></td>
   matching while addressing most users' needs.  It is also has the advantage
   of being identical to fixed pattern matching when the wildcard characters
   (`*` and `?`) are not used. Finally, most <a href='dictionary.html'>dictionary</a> formats use
-  glob matching.</p><dl class='dl-horizontal'>
+  glob matching.</p>  
+<p></p><dl class='dl-horizontal'>
   <dt><code>"glob"</code></dt><dd><p>"glob"-style wildcard expressions, the quanteda default.  
     The implementation used in <span class="pkg">quanteda</span> uses `*` to match any number of any 
     characters including none, and `?` to match any single character.  See also 
@@ -120,8 +164,8 @@ or <code>"fixed"</code> for exact matching. See valuetype for details.</p></td>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p><code><a href='http://www.rdocumentation.org/packages/utils/topics/glob2rx'>glob2rx</a></code>, 
-<a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>glob pattern matching (Wikipedia)</a>, 
-regex</p>
+<a href='https://en.wikipedia.org/wiki/Glob_(programming)'>glob pattern matching (Wikipedia)</a>, 
+<code><a href='http://www.rdocumentation.org/packages/stringi/topics/stringi-search-regex'>stringi-search-regex</a></code>, <code><a href='http://www.rdocumentation.org/packages/stringi/topics/stringi-search-fixed'>stringi-search-fixed</a></code></p>
     
 
   </div>

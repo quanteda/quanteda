@@ -3,11 +3,12 @@
 ### spacy_parsed objects
 ###
 
-#' extensions of methods defined in the quanteda package
+#' extensions for and from spacy_parse objects
 #' 
-#' Extensions to quanteda functions.  You must have attached \pkg{quanteda} for these
-#' to work.
+#' These functions provide \pkg{quanteda} methods for \pkg{spacyr} objects, and
+#' also extend \link[spacyr]{spacy_parse} to work with \link{corpus} objects.
 #' @name spacyr-methods
+#' @importFrom spacyr spacy_parse
 #' @section Usage:
 #' \code{docnames(x)} returns the document names
 #' 
@@ -17,12 +18,17 @@
 #' 
 #' \code{ntype(x, ...)} returns the number of types (unique tokens) by document
 #' 
-#' @param x an object returned by \code{spacy_parse}
-#' @param ... unused
+#' \code{spacy_parse(x, ...)} is also defined for a \pkg{quanteda} \link{corpus}
+#' 
+#' @param x an object returned by \code{spacy_parse}, or (for
+#'   \code{spacy_parse}) a \link{corpus} object
+#' @param ... unused except for \code{spacy_parse}, in which case it passes
+#'   through extra arguments to that function
 #' @examples 
 #' \dontrun{
-#' require(spacyr)
+#' library("spacyr")
 #' spacy_initialize()
+#' 
 #' txt <- c(doc1 = "And now, now, now for something completely different.",
 #'          doc2 = "Jack and Jill are children.")
 #' parsed <- spacy_parse(txt)
@@ -30,6 +36,8 @@
 #' ntoken(parsed)
 #' ndoc(parsed)
 #' docnames(parsed)
+#' 
+#' corpus_subset(data_corpus_inaugural, Year <= 1793) %>% spacy_parse()
 #' }
 NULL
 
@@ -74,74 +82,12 @@ ntype.spacyr_parsed <- function(x, ...) {
     sapply(split(x$token, x$doc_id), function(y) length(unique(y)))
 }
 
-#' #' @noRd
-#' #' @export
-#' spacy_parse.corpus <- function(x, ...) {
-#'     spacy_parse(texts(x), ...)
-#' }
+#' @export
+spacyr::spacy_parse
 
+#' @rdname spacyr-methods
+#' @importFrom spacyr spacy_parse
+#' @export
+spacy_parse.corpus <- function(x, ...) spacy_parse(texts(x), ...)
 
-# print a tokenizedTexts objects
-# 
-# print method for a \link{tokenize}dText object
-# param x a tokenizedText_tagged object created by \link{tokens_tags_out}
-# @param sep separator for printing tokens and tags, default is \code{"_"}.  If
-#   \code{NULL}, print tokens and tags separately.
-# @param ... further arguments passed to base print method
-# @export
-# @keywords internal
-# @method print tokenizedTexts_tagged
-# print.tokenizedTexts_tagged <- function(x, sep = "_", ...) {
-#     ndocuments <- ifelse(is.list(x), length(x), 1)
-#     if( "token" %in% class(x)) {
-#         x <- as.tokenizedTexts(x)
-#         class(x) <- c("tokenizedTexts_tagged", class(x))   
-#     }
-#     cat("tokenizedText_tagged object from ", ndocuments, " document", 
-#         ifelse(ndocuments > 1, "s", ""), 
-#         " (tagset = ", attr(x, "tagset"), ").\n", 
-#         sep = "")
-#     
-#     if (!is.null(sep)) {
-#         
-#         docs <- factor(rep(docnames(x), times = ntoken(x)), levels = docnames(x))
-#         tmp <- split(paste(unlist(x), unlist(attr(x, "tags")), sep = sep),  docs)
-#         class(tmp) <- "listof"
-#         print(tmp)
-#         
-#     } else {
-#         
-#         for (e in docnames(x)) {
-#             cat(paste0(e, ":\n"))
-#             if (is.list(x[[tolower(e)]])) { 
-#                 class(x[[tolower(e)]]) <- "listof"
-#                 print(x[[tolower(e)]], ...)
-#             } else {
-#                 print(as.character(x[[tolower(e)]]), ...)
-#             }
-#         }
-#         
-#     }
-# }
-
-
-# summarize a tagged tokenizedTexts object
-# 
-# Generate frequency counts of POS by document, returning a data.frame.
-# @param object tokenizedTexts_tagged object to be summarized
-# @param ... unused
-# @importFrom data.table rbindlist
-# @export
-# @method summary spacyr_parsed
-# summary.spacyr_parsed <- function(object, ...) {
-#     object <- data.table(object)
-#     result <- data.frame(
-#         data.table::rbindlist(lapply(attr(object, "tags"), function(doc) as.list(table(doc))), 
-#                               use.names = TRUE, fill = TRUE)
-#     )
-#     result[is.na(result)] <- 0
-#     row.names(result) <- docnames(object)
-#     
-#     result
-# }
 

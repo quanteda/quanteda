@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +33,18 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-144616-24', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
   </head>
 
@@ -51,10 +64,40 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -81,7 +124,7 @@
     <p>Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.</p>
     
 
-    <pre class="usage"><span class='fu'>textstat_collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lambda"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+    <pre class="usage"><span class='fu'>textstat_collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lambda"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='fu'>is.collocations</span>(<span class='no'>x</span>)</pre>
@@ -132,7 +175,7 @@ is not a <a href='tokens.html'>tokens</a> object already</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>textstat_collocations</code> returns a data.frame of collocations and their
-  scores and statistsics.
+  scores and statistics.
 
 <code>is.collocation</code> returns <code>TRUE</code> if the object is of class
   <code>collocations</code>, <code>FALSE</code> otherwise.</p>
@@ -180,7 +223,7 @@ the next release of <span class="pkg">quanteda</span>.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Blaheta, D., &amp; Johnson, M. (2001). 
-  <a href = 'http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf'>Unsupervised
+  <a href='http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf'>Unsupervised
   learning of multi-word verbs</a>. Presented at the ACLEACL Workshop on the 
   Computational Extraction, Analysis and Exploitation of Collocations.</p>
     
@@ -188,43 +231,35 @@ the next release of <span class="pkg">quanteda</span>.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>txts</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]
 <span class='fu'>head</span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>txts</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;    collocation count length   lambda        z
-#&gt; 1    have been     5      2 5.706351 7.357294
-#&gt; 2     has been     3      2 5.567303 6.411742
-#&gt; 3       of the    24      2 1.675867 6.391585
-#&gt; 4       i have     5      2 3.745703 6.271872
-#&gt; 5      which i     6      2 3.174358 6.139303
-#&gt; 6      will be     4      2 3.870615 5.933394
-#&gt; 7  public good     2      2 6.281574 5.531515
-#&gt; 8    less than     2      2 6.281574 5.531515
-#&gt; 9     you will     2      2 4.919981 5.434062
-#&gt; 10      may be     3      2 4.192821 5.330726</div><div class='input'><span class='fu'>head</span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>txts</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;          collocation count length    lambda         z
-#&gt; 1       of which the     2      3 6.1223981 2.8301045
-#&gt; 2         in which i     3      3 2.1657555 1.1724743
-#&gt; 3          i have in     2      3 2.3777916 1.0604856
-#&gt; 4         and of the     2      3 0.8812063 0.7468802
-#&gt; 5          me by the     2      3 1.4693825 0.6546061
-#&gt; 6       to the great     2      3 1.2857928 0.5645410
-#&gt; 7        voice of my     2      3 1.2237754 0.5284241
-#&gt; 8     which ought to     2      3 1.4051321 0.5266355
-#&gt; 9  of the confidence     2      3 1.1186300 0.4933722
-#&gt; 10 the united states     2      3 1.2564735 0.4261125</div><div class='input'>
+#&gt; 1    have been     5      2 5.704259 7.354588
+#&gt; 2     has been     3      2 5.565217 6.409333
+#&gt; 3       of the    24      2 1.673501 6.382475
+#&gt; 4       i have     5      2 3.743580 6.268303
+#&gt; 5      which i     6      2 3.172217 6.135144
+#&gt; 6      will be     4      2 3.868500 5.930143
+#&gt; 7    less than     2      2 6.279494 5.529680
+#&gt; 8  public good     2      2 6.279494 5.529680
+#&gt; 9     you will     2      2 4.917893 5.431752
+#&gt; 10      may be     3      2 4.190711 5.328038</div><div class='input'><span class='fu'>head</span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>txts</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;          collocation count length    lambda         z
+#&gt; 1       of which the     2      3 6.1259648 2.8317522
+#&gt; 2         in which i     3      3 2.1689288 1.1741918
+#&gt; 3          i have in     2      3 2.3809129 1.0618774
+#&gt; 4         and of the     2      3 0.8847383 0.7498730
+#&gt; 5          me by the     2      3 1.4726869 0.6560780
+#&gt; 6       to the great     2      3 1.2891870 0.5660311
+#&gt; 7        voice of my     2      3 1.2270130 0.5298220
+#&gt; 8     which ought to     2      3 1.4083232 0.5278314
+#&gt; 9  of the confidence     2      3 1.1220858 0.4948962
+#&gt; 10 the united states     2      3 1.2597834 0.4272349</div><div class='input'>
 <span class='co'># extracting multi-part proper nouns (capitalized terms)</span>
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='no'>toks2</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks2</span>, <span class='st'>"^([A-Z][a-z\\-]{2,})"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>,
                        <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>seqs</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>toks2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;                       collocation count length     lambda           z
-#&gt; 1              New England States     1      3 -0.1881325 -0.07035895
-#&gt; 2          United States Congress     2      3 -2.1524035 -1.01462267
-#&gt; 3     Arlington National Cemetery     1      3 -6.7967700 -2.21834991
-#&gt; 4          United Nations Charter     1      3 -6.3698206 -2.40537228
-#&gt; 5            Senator John Stennis     1      3 -7.4633094 -2.42928003
-#&gt; 6                Second World War     1      3 -5.8388183 -2.43007317
-#&gt; 7  Interstate Commerce Commission     1      3 -9.3091763 -2.82110557
-#&gt; 8             First Lady Michelle     1      3 -9.5604975 -2.88885728
-#&gt; 9       Franklin Delano Roosevelt     1      3 -9.3091897 -2.94382329
-#&gt; 10            Lady Michelle Obama     1      3 -9.8969764 -2.97504808</div></pre>
+<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;              collocation count length     lambda         z
+#&gt; 1 United States Congress     2      3  -2.152404 -1.014623
+#&gt; 2    Vice President Bush     2      3 -11.582818 -4.471125</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

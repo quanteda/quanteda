@@ -68,7 +68,7 @@ tokens_compound.tokens <- function(x, pattern,
     attrs <- attributes(x)
     types <- types(x)
     
-    seqs_id <- features2id(pattern, types, valuetype, case_insensitive, remove_unigram = TRUE)
+    seqs_id <- pattern2id(pattern, types, valuetype, case_insensitive, remove_unigram = TRUE)
     if (length(seqs_id) == 0) return(x) # do nothing
     x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
     attributes(x, FALSE) <- attrs
@@ -76,16 +76,5 @@ tokens_compound.tokens <- function(x, pattern,
     return(x)
 }
 
-
-#' @noRd
-#' @rdname tokens_compound
-#' @export
-tokens_compound.tokenizedTexts <- function(x, pattern, 
-                                           concatenator = "_", valuetype = c("glob", "regex", "fixed"),
-                                           case_insensitive = TRUE, join = FALSE) {
-    as.tokenizedTexts(tokens_compound(as.tokens(x), pattern = pattern, 
-                                      concatenator = concatenator, valuetype = valuetype,
-                                      case_insensitive = TRUE, join = join))
-}
 
 

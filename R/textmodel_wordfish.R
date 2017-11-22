@@ -44,7 +44,7 @@ setClass("textmodel_wordfish_predicted",
 #'   tolerance in the difference in parameter values from the iterative 
 #'   conditional maximum likelihood (from conditionally estimating 
 #'   document-level, then feature-level parameters).
-#' @param dispersion sets whether a quasi-poisson quasi-likelihood should be 
+#' @param dispersion sets whether a quasi-Poisson quasi-likelihood should be 
 #'   used based on a single dispersion parameter (\code{"poisson"}), or 
 #'   quasi-Poisson (\code{"quasipoisson"})
 #' @param dispersion_level sets the unit level for the dispersion parameter, 
@@ -79,8 +79,8 @@ setClass("textmodel_wordfish_predicted",
 #'   implementation of the model that used a regularization parameter of 
 #'   se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
 #'   
-#' @note In the rare situation where a warning message of "The algorighm did not converge." shows up, removing 
-#'   some documents may work. 
+#' @note In the rare situation where a warning message of "The algorithm did not
+#'   converge." shows up, removing some documents may work.
 #'   
 #' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
 #'   for Estimating Time-Series Party Positions from Texts." \emph{American 
@@ -139,6 +139,8 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
                                abs_err = FALSE,
                                svd_sparse = TRUE,
                                residual_floor = 0.5) {
+    
+    x <- as.dfm(x)
     dispersion <- match.arg(dispersion)
     dispersion_level <- match.arg(dispersion_level)
     
@@ -154,7 +156,7 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
         x <- x[, -zeroLengthFeatures]
     }
     if (length(zeroLengthDocs) | length(zeroLengthFeatures)) catm("\n")
-
+    
     # some error checking
     if (length(priors) != 4)
         stop("priors requires 4 elements")
@@ -168,9 +170,9 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
     if (dispersion == "poisson" & dispersion_floor != 0)
         warning("dispersion_floor argument ignored for poisson")
     
-#     if (length(addedArgs <- list(...)))
-#         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-
+    #     if (length(addedArgs <- list(...)))
+    #         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+    
     # check quasi-poisson settings and translate into numerical values  
     # 1 = Poisson, 2 = quasi-Poisson, overall dispersion, 
     # 3 = quasi-Poisson, term dispersion, 4 = quasi-Poisson, term dispersion w/floor
@@ -181,20 +183,16 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
         else disp <- 3L
     } else
         stop("Illegal option combination.")
-
+    
     # catm("disp = ", disp, "\n")
     if (sparse == TRUE){
-        if (threads == 1){
-            wfresult <- wordfishcpp(x, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
-        } else {
-            wfresult <- wordfishcpp_mt(x, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
-        }
+        result <- qatd_cpp_wordfish(x, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
     } else{
-        wfresult <- wordfishcpp_dense(as.matrix(x), as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err)
+        result <- qatd_cpp_wordfish_dense(as.matrix(x), as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err)
     }
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
-    if (any(is.nan(wfresult$theta))) warning("Warning: The algorithm did not converge.")
+    if (any(is.nan(result$theta))) warning("Warning: The algorithm did not converge.")
     new("textmodel_wordfish_fitted", 
         x = x,
         docs = docnames(x), 
@@ -202,12 +200,12 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
         dir = dir,
         dispersion = dispersion,
         priors = priors,
-        theta = as.numeric(wfresult$theta),
-        beta = as.numeric(wfresult$beta),
-        psi = as.numeric(wfresult$psi),
-        alpha = as.numeric(wfresult$alpha),
-        phi = as.numeric(wfresult$phi),
-        se.theta = as.numeric(wfresult$thetaSE) ,
+        theta = as.numeric(result$theta),
+        beta = as.numeric(result$beta),
+        psi = as.numeric(result$psi),
+        alpha = as.numeric(result$alpha),
+        phi = as.numeric(result$phi),
+        se.theta = as.numeric(result$thetaSE) ,
         call = match.call())
 }
 

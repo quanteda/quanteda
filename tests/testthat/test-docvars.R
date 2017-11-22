@@ -217,7 +217,7 @@ test_that("object always have docvars in the same rows as documents", {
     expect_true(nrow(docvars(corp1)) == ndoc(corp1))
     expect_true(all(rownames(docvars(corp1)) == docnames(corp1)))
     
-    corp2 <- corpus_segment(corp1, what = "sentences")
+    corp2 <- corpus_segment(corp1, "\\p{P}", valuetype = "regex")
     expect_true(nrow(docvars(corp2)) == ndoc(corp2))
     expect_true(all(rownames(docvars(corp2)) == docnames(corp2)))
     

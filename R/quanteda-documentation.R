@@ -60,7 +60,7 @@
 #'   \item{the ability to explore texts using \link[=kwic]{key-words-in-context};}
 #'   \item{fast computation of a variety of \link[=textstat_readability]{readability indexes};}
 #'   \item{fast computation of a variety of \link[=textstat_lexdiv]{lexical diversity measures};}
-#'   \item{quick computation of word or document \link[=similarity]{similarities}, for clustering or to compute distances for other purposes;}
+#'   \item{quick computation of word or document \link[=textstat_simil]{similarities}, for clustering or to compute distances for other purposes;}
 #'   \item{a comprehensive suite of \link[=summary.corpus]{descriptive statistics on text} such as the number of sentences, words, characters, or
 #'   syllables per document; and}
 #'   \item{flexible, easy to use graphical tools to portray many of the analyses available in the package.}
@@ -75,7 +75,7 @@
 #' pattern matching using valuetype
 #' 
 #' Pattern matching in \pkg{quanteda} using the \code{valuetype} argument.
-#' @param valuetype how to interpret keyword expressions: \code{"glob"} for 
+#' @param valuetype the type of pattern matching: \code{"glob"} for 
 #'   "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 #'   or \code{"fixed"} for exact matching. See \link{valuetype} for details.
 #' @details Pattern matching in in \pkg{quanteda} uses "glob"-style pattern
@@ -101,7 +101,7 @@
 #' @name valuetype
 #' @seealso \code{\link[utils]{glob2rx}}, 
 #' \href{https://en.wikipedia.org/wiki/Glob_(programming)}{glob pattern matching (Wikipedia)}, 
-#' \link{regex}
+#' \code{\link[stringi]{stringi-search-regex}}, \code{\link[stringi]{stringi-search-fixed}}
 #' @keywords internal
 NULL
 

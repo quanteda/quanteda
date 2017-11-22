@@ -6,14 +6,11 @@
 #' @export
 #' @seealso \link{textstat_collocationsdev}
 #' @keywords collocations internal deprecated
-collocations <- function(x,  ...) {
+collocationsdev <- function(x,  ...) {
     .Deprecated("textstat_collocationsdev")
     UseMethod("textstat_collocationsdev")
 }
 
-#' @rdname collocations
-#' @export
-sequences <- collocations
 
 #' identify and score multi-word expressions
 #' 
@@ -122,15 +119,20 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
     if (tolower) x <- tokens_tolower(x, keep_acronyms = TRUE)
     
     # segment by sentences, if the call started with a tokens object
-    if (who_called_me_first(sys.calls(), "textstat_collocationsdev") %in% c("tokens", "tokenizedTexts")) {
-        x <- tokens_segment_by_punctuation(x, remove_delimiter = TRUE)
-    }
+    #if (who_called_me_first(sys.calls(), "textstat_collocationsdev") %in% c("tokens", "tokenizedTexts")) {
+    #    x <- tokens_segment_by_punctuation(x, remove_delimiter = TRUE)
+    #}
     
-    attrs_org <- attributes(x)
+    attrs <- attributes(x)
     types <- types(x)
+    id_ignore <- unlist(regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
+    if (is.null(id_ignore)) id_ignore <- integer(0)
     
     result <- qatd_cpp_collocations(x, types, min_count, size, method, smoothing) 
-    result <- result[result$count > 1, ]
+    
+    # remove results whose counts are less than min_count
+    result <- result[result$count >= min_count, ]
+    
     # compute z for lambda methods
     if (method %in% c("lambda", "lambda1", "all")){
         
@@ -183,11 +185,10 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
     # # add counts to output if requested
     if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
     
-    # remove results whose counts are less than min_count
-    result <- result[result$count >= min_count, ]
+    
     # tag attributes and class, and return
     attr(result, 'types') <- types
-    class(result) <- c("collocations", 'data.frame')
+    class(result) <- c("collocationsdev", 'data.frame')
     return(result)
 }
 
@@ -195,9 +196,9 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
 #' @export
 textstat_collocationsdev.corpus <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
     # segment into units not including punctuation, to avoid identifying collocations that are not adjacent
-    texts(x) <- paste(".", texts(x))
+    #texts(x) <- paste(".", texts(x))
     # separate each line except those where the punctuation is a hyphen or apostrophe
-    x <- corpus_segment(x, "tag", delimiter =  "[^\\P{P}#@'-]", valuetype = "regex")
+    #x <- corpus_segment(x, "tag", delimiter =  "[^\\P{P}#@'-]", valuetype = "regex")
     # tokenize the texts
     x <- tokens(x, ...)
     textstat_collocationsdev(x, method = method, size = size, min_count = min_count, smoothing = smoothing, tolower = tolower, show_counts = show_counts)
@@ -217,12 +218,12 @@ textstat_collocationsdev.tokenizedTexts <- function(x, method = "all", size = 2,
 
 
 #' @rdname textstat_collocationsdev
-#' @aliases is.collocations
+#' @aliases is.collocationsdev
 #' @export
-#' @return \code{is.collocation} returns \code{TRUE} if the object is of class
-#'   \code{collocations}, \code{FALSE} otherwise.
-is.collocations <- function(x) {
-    "collocations" %in% class(x)
+#' @return \code{is.collocationdev} returns \code{TRUE} if the object is of class
+#'   \code{collocationsdev}, \code{FALSE} otherwise.
+is.collocationsdev <- function(x) {
+    "collocationsdev" %in% class(x)
 }
 
 #  @method "[" collocations

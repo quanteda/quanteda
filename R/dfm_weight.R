@@ -25,7 +25,7 @@
 #'   a named numeric vector of weights to be applied to the dfm, 
 #'   where the names of the vector correspond to feature labels of the dfm, and 
 #'   the weights will be applied as multipliers to the existing feature counts 
-#'   for the corresponding named fatures.  Any features not named will be 
+#'   for the corresponding named features.  Any features not named will be 
 #'   assigned a weight of 1.0 (meaning they will be unchanged).
 #' @note For finer grained control, consider calling the convenience functions directly.
 #' @return \code{dfm_weight} returns the dfm with weighted values.
@@ -51,7 +51,7 @@
 #' # of Introduction to Information Retrieval
 #' head(tfidf(dtm, scheme_tf = "log"))
 #' 
-#' #' # apply numeric weights
+#' # apply numeric weights
 #' str <- c("apple is better than banana", "banana banana apple much better")
 #' (mydfm <- dfm(str, remove = stopwords("english")))
 #' dfm_weight(mydfm, weights = c(apple = 5, banana = 3, much = 0.5))
@@ -77,6 +77,9 @@ dfm_weight <- function(x,
 dfm_weight.dfm <- function(x, 
                            type = c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf"),
                            weights = NULL) {
+    
+    x <- as.dfm(x)
+    
     # for numeric weights
     if (!is.null(weights)) {
         if (!missing(type)) warning("type is ignored when numeric weights are supplied")
@@ -134,6 +137,7 @@ dfm_smooth <- function(x, smoothing = 1) {
 #' @noRd
 #' @export
 dfm_smooth.dfm <- function(x, smoothing = 1) {
+    x <- as.dfm(x)
     x + smoothing
 }
 
@@ -169,7 +173,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-#' wikiDfm <- new("dfmSparse", 
+#' wikiDfm <- new("dfm", 
 #'                Matrix::Matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
 #'                               byrow = TRUE, nrow = 2,  
 #'                               dimnames = list(docs = c("document1", "document2"),
@@ -194,7 +198,8 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 #' @export
 docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob", "unary"),
                         smoothing = 0, k = 0, base = 10, threshold = 0, USE.NAMES = TRUE) {
-
+    
+    x <- as.dfm(x)
     scheme <- match.arg(scheme)
     args <- as.list(match.call(expand.dots=FALSE))
     if ("base" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
@@ -214,7 +219,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
         result <- rep(1, nfeature(x))
         
     } else if (scheme == "count") {
-        if (is(x, "dfmSparse")) {
+        if (is(x, "dfm")) {
             result <- colSums(x > threshold)
             # tx <- t(x)
             # featfactor <- factor(tx@i, 0:(nfeature(x)-1), labels = featnames(x))
@@ -244,7 +249,6 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
 }
 
 
-
 #' compute tf-idf weights from a dfm
 #' 
 #' Weight a dfm by term frequency-inverse document frequency (tf-idf) using
@@ -252,11 +256,13 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
 #' @param x object for which idf or tf-idf will be computed (a document-feature 
 #'   matrix)
 #' @param scheme_tf scheme for \code{\link{tf}}; defaults to \code{"count"}
-#' @param scheme_df scheme for \code{link{docfreq}}; defaults to
-#'   \code{"inverse"}
-#' @param base for the logarithms in the \code{tf} and \code{docfreq} calls
+#' @param scheme_df scheme for \code{\link{docfreq}}; defaults to
+#'   \code{"inverse"}.  Other options to \code{\link{docfreq}} can be passed through
+#'   the ellipsis (\code{...}).
+#' @param base the base for the logarithms in the \code{\link{tf}} and \code{\link{docfreq}} calls; default is 10
 #' @param ... additional arguments passed to \code{\link{docfreq}} when calling 
-#'   \code{tfidf}
+#'   \code{tfidf}; these can be used to fix smoothing constants (default values 
+#'   are 0).  
 #' @details \code{tfidf} computes term frequency-inverse document frequency 
 #'   weighting.  The default is not to normalize term frequency (by computing 
 #'   relative term frequency within document) but this will be performed if 
@@ -266,44 +272,54 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
 #' @seealso \code{\link{tf}}, \code{\link{docfreq}}
 #' @keywords internal weighting dfm
 #' @examples 
-#' head(data_dfm_lbgexample[, 5:10])
-#' head(tfidf(data_dfm_lbgexample)[, 5:10])
-#' docfreq(data_dfm_lbgexample)[5:15]
-#' head(tf(data_dfm_lbgexample)[, 5:10])
+#' mydfm <- as.dfm(data_dfm_lbgexample)
+#' head(mydfm[, 5:10])
+#' head(tfidf(mydfm)[, 5:10])
+#' docfreq(mydfm)[5:15]
+#' head(tf(mydfm)[, 5:10])
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-#' (wikiDfm <- new("dfmSparse", 
-#'                 Matrix::Matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
-#'                    byrow = TRUE, nrow = 2,  
-#'                    dimnames = list(docs = c("document1", "document2"), 
-#'                      features = c("this", "is", "a", "sample", "another",
-#'                                   "example")), sparse = TRUE)))
-#' docfreq(wikiDfm)
-#' tfidf(wikiDfm)
+#' wiki_dfm <- 
+#'     matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
+#'            byrow = TRUE, nrow = 2,
+#'            dimnames = list(docs = c("document1", "document2"),
+#'                            features = c("this", "is", "a", "sample", "another", "example"))) %>%
+#'     as.dfm()
+#' docfreq(wiki_dfm)
+#' tfidf(wiki_dfm, scheme_tf = "prop") %>% round(digits = 2)
+#' 
+#' \dontrun{
+#' # comparison with tm
+#' if (requireNamespace("tm")) {
+#'     convert(wiki_dfm, to = "tm") %>% weightTfIdf() %>% as.matrix()
+#'     # same as:
+#'     tfidf(wiki_dfm, base = 2, scheme_tf = "prop")
+#' }
+#' }
 #' @keywords internal weighting
 #' @export
-tfidf <- function(x, scheme_tf = "prop", scheme_df = "inverse", base = 10, ...) {
+tfidf <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
     UseMethod("tfidf")
 }
 
 #' @noRd
 #' @export
 tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
-
+    
+    x <- as.dfm(x)
     args <- list(...)
-    if ("normalize" %in% names(args)) {
-        warning("normalize is deprecated; use scheme_tf = \"prop\" instead")
-        scheme_tf <- if (args[["normalize"]] == TRUE) "prop" else "count"
-        return(tfidf(x, scheme_tf = scheme_tf, scheme_df = scheme_df, base = base))
-    }
+    check_dots(args, names(formals(docfreq)))
 
     dfreq <- docfreq(x, scheme = scheme_df, base = base, ...)
     tfreq <- tf(x, scheme = scheme_tf, base = base)
+    
     if (nfeature(x) != length(dfreq)) 
         stop("missing some values in idf calculation")
+    
     # get the document indexes
     j <- as(tfreq, "dgTMatrix")@j + 1
+    
     # replace just the non-zero values by product with idf
     x@x <- tfreq@x * dfreq[j]
     x
@@ -340,7 +356,7 @@ tfidf_old <- function(x, normalize = FALSE, scheme = "inverse", ...) {
 #'   \item{\code{augmented}}{equivalent to K + (1 - K) * \code{tf(x, "propmax")}}
 #'   \item{\code{logave}}{(1 + the log of the counts) / (1 + log of the counts / the average count within document)} 
 #'   }
-#' @details \code{tf(x, scheme = "prop")} is equivalent to \code{\link{weight}(x, "relFreq")}).
+#' @details \code{tf(x, scheme = "prop")} is equivalent to \code{\link{dfm_weight}(x, "relFreq")}).
 #' @param base base for the logarithm when \code{scheme} is \code{"log"} or 
 #'   \code{logave}
 #' @param K the K for the augmentation when \code{scheme = "augmented"}
@@ -361,7 +377,9 @@ tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augm
 #' @noRd
 #' @export
 tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
-               base = 10, K = 0.5) {
+                   base = 10, K = 0.5) {
+    
+    x <- as.dfm(x)
     if (!is.dfm(x))
         stop("x must be a dfm object")
     
@@ -382,14 +400,14 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
         
     } else if (scheme == "prop") {
         div <- rowSums(x)
-        if (is(x, "dfmSparse"))
+        if (is(x, "dfm"))
             x@x <- x@x / div[x@i+1]
         else
             x <- x / div
         
     } else if (scheme == "propmax") {
         div <- maxtf(x)
-        if (is(x, "dfmSparse"))
+        if (is(x, "dfm"))
             x@x <- x@x / div[x@i+1]
         else 
             x <- x / div
@@ -399,12 +417,13 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
         
     } else if (scheme == "log") {
         x@x <- 1 + log(x@x, base)
+        #x@x <- log(x@x + 1, base)
         x@x[is.infinite(x@x)] <- 0
         x@weightTf[["base"]] <- base
         
     } else if (scheme == "augmented") {
         maxtf <- maxtf(x)
-        if (is(x, "dfmSparse"))
+        if (is(x, "dfm"))
             x@x <- K + (1 - K) * x@x / maxtf[x@i+1]
         else
             x <- K + (1 - K) * x / maxtf
@@ -412,7 +431,7 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
         
     } else if (scheme == "logave") {
         meantf <- Matrix::rowSums(x) / Matrix::rowSums(tf(x, "boolean"))
-        if (is(x, "dfmSparse"))
+        if (is(x, "dfm"))
             x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i+1], base))
         else
             x <- (1 + log(x, base)) / (1 + log(meantf, base))
@@ -427,10 +446,10 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
 
 
 ## internal function to get maximum term frequency by document
-## only applies to CsparseMatrix formats (dfmSparse)
+## only applies to CsparseMatrix formats (dfm)
 setGeneric("maxtf", function(x) standardGeneric("maxtf"))
 
-setMethod("maxtf", signature(x = "dfmSparse"), definition = function(x) {
+setMethod("maxtf", signature(x = "dfm"), definition = function(x) {
     freq <- doc <- V1 <- NULL 
 #    dt <- data.table(doc = t(x)@i, freq = x@x)
     dt <- data.table(doc = x@i, freq = x@x)
@@ -439,8 +458,8 @@ setMethod("maxtf", signature(x = "dfmSparse"), definition = function(x) {
     # sapply(split(x@x, x@i), max)
 })
 
-setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
-    apply(x, 1, max)
-})
+# setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
+#     apply(x, 1, max)
+# })
 
 

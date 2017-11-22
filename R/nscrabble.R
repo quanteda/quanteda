@@ -7,7 +7,7 @@
 #'   default is \code{sum}, but could also be \code{mean} or a user-supplied 
 #'   function
 #' @author Kenneth Benoit
-#' @return a (named) integer vector of Scabble letter values, computed using 
+#' @return a (named) integer vector of Scrabble letter values, computed using 
 #'   \code{FUN}, corresponding to the input text(s)
 #' @note Character values are only defined for non-accented Latin a-z, A-Z 
 #'   letters.  Lower-casing is unnecessary.
@@ -33,7 +33,7 @@ nscrabble.character <- function(x, FUN = sum) {
                              values = as.integer(rep(c(1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10), 2)))
     setkey(letterVals, letter)
     
-    textChars <- tokenize(x, what = "character", remove_punct = TRUE)
+    textChars <- as.list(tokens(x, what = "character", remove_punct = TRUE))
     textDT <- data.table(docIndex = rep(seq_along(textChars), lengths(textChars)),
                          Char = unlist(textChars, use.names = FALSE))
     setkey(textDT, Char)
@@ -54,3 +54,12 @@ scrabble <- function(x, ...) {
     .Deprecated("nscrabble")
     nscrabble(x, ...)
 }
+
+#### English scrabble values ----- 
+# (1 point)-A, E, I, O, U, L, N, S, T, R.
+# (2 points)-D, G.
+# (3 points)-B, C, M, P.
+# (4 points)-F, H, V, W, Y.
+# (5 points)-K.
+# (8 points)- J, X.
+# (10 points)-Q, Z.

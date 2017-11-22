@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -32,6 +33,18 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-144616-24', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
   </head>
 
@@ -51,10 +64,40 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
+    </li>
+    <li>
+      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -113,7 +156,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Function produces multiple, resampled <a href='dfm.html'>dfm</a> objects, based on 
-  resampling sentences (wth replacement) from each document, recombining
+  resampling sentences (with replacement) from each document, recombining
   these into new "documents" and computing a dfm for each. Resampling of
   sentences is done strictly within document, so that every resampled
   document will contain at least some of its original tokens.</p>
@@ -125,7 +168,7 @@
          <span class='kw'>texttwo</span> <span class='kw'>=</span> <span class='st'>"Premiere phrase.  Deuxieme phrase."</span>)
 <span class='fu'>bootstrap_dfm</span>(<span class='no'>txt</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; $dfm_0
 #&gt; Document-feature matrix of: 2 documents, 10 features (45% sparse).
-#&gt; 2 x 10 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 10 sparse Matrix of class "dfm"
 #&gt;          features
 #&gt; docs      this is a sentence . another yet premiere phrase deuxieme
 #&gt;   textone    1  1 1        2 3       2   1        0      0        0
@@ -133,7 +176,7 @@
 #&gt; 
 #&gt; $dfm_1
 #&gt; Document-feature matrix of: 2 documents, 10 features (50% sparse).
-#&gt; 2 x 10 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 10 sparse Matrix of class "dfm"
 #&gt;          features
 #&gt; docs      this is a sentence . another yet premiere phrase deuxieme
 #&gt;   textone    1  1 1        2 3       2   1        0      0        0
@@ -141,7 +184,7 @@
 #&gt; 
 #&gt; $dfm_2
 #&gt; Document-feature matrix of: 2 documents, 10 features (55% sparse).
-#&gt; 2 x 10 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 10 sparse Matrix of class "dfm"
 #&gt;          features
 #&gt; docs      this is a sentence . another yet premiere phrase deuxieme
 #&gt;   textone    1  1 1        3 3       2   0        0      0        0
@@ -149,7 +192,7 @@
 #&gt; 
 #&gt; $dfm_3
 #&gt; Document-feature matrix of: 2 documents, 10 features (50% sparse).
-#&gt; 2 x 10 sparse Matrix of class "dfmSparse"
+#&gt; 2 x 10 sparse Matrix of class "dfm"
 #&gt;          features
 #&gt; docs      this is a sentence . another yet premiere phrase deuxieme
 #&gt;   textone    2  2 2        2 3       1   1        0      0        0

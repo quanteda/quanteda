@@ -38,7 +38,9 @@ dfm_compress <- function(x, margin = c("both", "documents", "features")) {
     
 #' @noRd
 #' @export
-dfm_compress.dfmSparse <- function(x, margin = c("both", "documents", "features")) {
+dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
+    
+    x <- as.dfm(x)
     margin <- match.arg(margin)
     if (margin == 'documents') {
         result <- group_dfm(x, NULL, docnames(x))
@@ -49,31 +51,6 @@ dfm_compress.dfmSparse <- function(x, margin = c("both", "documents", "features"
     }
     return(result)
 }
-
-#' @noRd
-#' @export
-#' @examples 
-#' # for dfmDense
-#' mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
-#'              dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
-#' matd <- dfm_smooth(mat)
-#' colnames(matd) <- char_tolower(featnames(mat))
-#' matd
-#' dfm_compress(matd, margin = "documents")
-#' dfm_compress(matd, margin = "features")
-#' dfm_compress(matd)
-dfm_compress.dfmDense <- function(x, ...) {
-    dfm_compress(new("dfmSparse", Matrix::Matrix(as.matrix(x), sparse = TRUE),
-                     settings = x@settings,
-                     weightTf = x@weightTf,
-                     weightDf = x@weightDf,
-                     smooth = x@smooth,
-                     ngrams = x@ngrams,
-                     skip = x@skip,
-                     concatenator = x@concatenator,
-                     docvars = x@docvars),
-                 ...)
-}                 
 
 #' sort a dfm by frequency of one or more margins
 #' 
@@ -101,8 +78,10 @@ dfm_sort <- function(x, decreasing = TRUE,
 
 #' @noRd
 #' @export
-dfm_sort <- function(x, decreasing = TRUE, 
-                     margin = c("features", "documents", "both")) {
+dfm_sort.dfm <- function(x, decreasing = TRUE, 
+                         margin = c("features", "documents", "both")) {
+    
+    x <- as.dfm(x)
     margin <- match.arg(margin)
     class_org <- class(x)
     if (margin=="features") {

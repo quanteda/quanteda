@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokens.R
 \name{tokens_recompile}
 \alias{tokens_recompile}
-\title{recompile a hashed tokens object}
+\title{recompile a serialized tokens object}
 \usage{
 tokens_recompile(x, method = c("C++", "R"))
 }
@@ -13,13 +13,13 @@ tokens_recompile(x, method = c("C++", "R"))
 R-based method}
 }
 \description{
-This function recompiles a hashed tokens object when the vocabulary has been
-changed in a way that makes some of its types identical, such as lowercasing
-when a lowercased version of the type already exists in the hash table, or
-introduces gaps in the integer map of the types.  It also reindexes the types
-atttribute to account for types that may have become duplicates, through a
-procedure such as stemming or lowercasing; or the addition of new tokens
-through compounding.
+This function recompiles a serialized tokens object when the vocabulary has
+been changed in a way that makes some of its types identical, such as
+lowercasing when a lowercased version of the type already exists in the type
+table, or introduces gaps in the integer map of the types.  It also reindexes
+the types attribute to account for types that may have become duplicates,
+through a procedure such as stemming or lowercasing; or the addition of new
+tokens through compounding.
 }
 \examples{
 # lowercasing

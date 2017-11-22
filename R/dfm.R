@@ -15,7 +15,7 @@
 #'   are only specific features that a user wishes to keep. To extract only 
 #'   Twitter usernames, for example, set \code{select = "@@*"} and make sure 
 #'   that \code{remove_twitter = FALSE} as an additional argument passed to 
-#'   \link{tokenize}.  Note: \code{select = "^@@\\\w+\\\b"} would be the regular
+#'   \link{tokens}.  Note: \code{select = "^@@\\\w+\\\b"} would be the regular
 #'   expression version of this matching pattern.  The pattern matching type 
 #'   will be set by \code{valuetype}.  See also \code{\link{tokens_remove}}.
 #' @param dictionary a \link{dictionary} object to apply to the tokens when 
@@ -42,6 +42,9 @@
 #'   the texts with ngrams, then remove the features to be ignored, and then 
 #'   construct the dfm using this modified tokenization object.  See the code 
 #'   examples for an illustration.
+#'   
+#'   To select on and match the features of a another \link{dfm}, \code{x} must
+#'   also be a \link{dfm}.
 #' @return a \link{dfm-class} object
 #' @import Matrix
 #' @export
@@ -85,7 +88,7 @@
 #' 
 #' # removing stopwords before constructing ngrams
 #' tokensAll <- tokens(char_tolower(testText), remove_punct = TRUE)
-#' tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
+#' tokensNoStopwords <- tokens_remove(tokensAll, stopwords("english"))
 #' tokensNgramsNoStopwords <- tokens_ngrams(tokensNoStopwords, 2)
 #' featnames(dfm(tokensNgramsNoStopwords, verbose = FALSE))
 #' 
@@ -118,6 +121,11 @@ dfm <- function(x,
                 groups = NULL, 
                 verbose = quanteda_options("verbose"), 
                 ...) {
+
+    if (!is.dfm(x) && is.dfm(select)) {
+        stop("selection on a dfm is only available when x is a dfm")
+    }
+    
     dfm_env$START_TIME <- proc.time()
     object_class <- class(x)[1]
     if (object_class == "dfmSparse") object_class <- "dfm"
@@ -128,13 +136,6 @@ dfm <- function(x,
 # GLOBAL FOR dfm THAT FUNCTIONS CAN RESET AS NEEDED TO RECORD TIME ELAPSED
 dfm_env <- new.env()
 dfm_env$START_TIME <- NULL  
-
-# dfm function to check that any ellipsis arguments belong only to tokens formals
-check_dfm_dots <-  function(dots, permissible_args = NULL) {
-    if (length(dots) && any(!(names(dots)) %in% permissible_args))
-        warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", 
-                noBreaks. = TRUE, call. = FALSE)
-}
 
 
 #' @rdname dfm
@@ -151,13 +152,13 @@ dfm.character <- function(x,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
-    dfm.corpus(corpus(x),
+    dfm.tokens(tokens(corpus(x)),
         tolower = tolower, 
         stem = stem, 
         select = select, remove = remove, 
         dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
         groups = groups, 
-        verbose = verbose,
+        verbose = verbose, 
         ...)
 }
 
@@ -176,39 +177,40 @@ dfm.corpus <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"),
                        ...) {
-    dfm.tokenizedTexts(tokens(x, ...),  
-        tolower = tolower, 
-        stem = stem, 
-        select = select, remove = remove, 
-        dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
-        groups = groups, 
-        verbose = verbose)
-}    
-
+    dfm.tokens(tokens(x),  
+               tolower = tolower, 
+               stem = stem, 
+               select = select, remove = remove, 
+               dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
+               groups = groups, 
+               verbose = verbose,
+               ...)
+}
     
 #' @noRd
 #' @importFrom utils glob2rx
 #' @export
-dfm.tokenizedTexts <- function(x, 
-                               tolower = TRUE,
-                               stem = FALSE, 
-                               select = NULL,
-                               remove = NULL,
-                               dictionary = NULL,
-                               thesaurus = NULL,
-                               valuetype = c("glob", "regex", "fixed"), 
-                               groups = NULL, 
-                               verbose = quanteda_options("verbose"), 
-                               ...) {
-
+dfm.tokens <- function(x, 
+                       tolower = TRUE,
+                       stem = FALSE, 
+                       select = NULL,
+                       remove = NULL,
+                       dictionary = NULL,
+                       thesaurus = NULL,
+                       valuetype = c("glob", "regex", "fixed"), 
+                       groups = NULL, 
+                       verbose = quanteda_options("verbose"), 
+                       ...) {
     valuetype <- match.arg(valuetype)
+    check_dots(list(...), names(formals('tokens')))
+    
     # set document names if none
     if (is.null(names(x))) {
         names(x) <- paste0(quanteda_options("base_docname"), seq_along(x))
     } 
-
-    if (who_called_me_first(sys.calls(), "dfm") %in% c("tokens", "tokenizedTexts")) {
-        check_dfm_dots(list(...), permissible_args = names(formals(tokens)))
+    
+    # call tokens only if options given
+    if (length(intersect(names(list(...)), names(formals('tokens'))))) {
         x <- tokens(x, ...)
     }
     
@@ -217,7 +219,7 @@ dfm.tokenizedTexts <- function(x,
         x <- tokens_tolower(x)
         tolower <- FALSE
     }
-
+    
     if (verbose) {
         catm("   ... found ", 
              format(length(x), big.mark = ","), " document",
@@ -291,9 +293,10 @@ dfm.dfm <- function(x,
                     groups = NULL, 
                     verbose = quanteda_options("verbose"), 
                     ...) {
-
+    
+    x <- as.dfm(x)
     valuetype <- match.arg(valuetype)
-    check_dfm_dots(list(...))
+    check_dots(list(...))
 
     if (tolower) {
         if (verbose) catm("   ... lowercasing\n", sep="")
@@ -364,40 +367,6 @@ compile_dfm <- function(x, verbose = TRUE) {
     UseMethod("compile_dfm")
 }
 
-## internal function to compile the dfm
-compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
-
-    # index documents
-    if (verbose) catm("   ... indexing documents: ", 
-                      format(length(x), big.mark=","), " document",
-                      ifelse(length(x) > 1, "s", ""), "\n", sep="")
-    nTokens <- lengths(x)
-    
-    # index features
-    if (verbose) catm("   ... indexing features: ")
-    if (sum(nTokens) == 0) {
-        catm("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
-        return(NULL)
-    }
-    allFeatures <- unlist(x, use.names=FALSE)
-    uniqueFeatures <- unique(allFeatures)
-    totalfeatures <- length(uniqueFeatures)
-    if (verbose) catm(format(totalfeatures, big.mark=","), " feature type",
-                      ifelse(totalfeatures > 1, "s", ""), "\n", sep="")
-    
-    docIndex <- c(rep(seq_along(nTokens), nTokens))
-    featureIndex <- match(allFeatures, uniqueFeatures)
-
-    # make the dfm
-    temp <- sparseMatrix(i = docIndex, 
-                         j = featureIndex, 
-                         x = 1L, 
-                         dims = c(length(x), length(uniqueFeatures)),
-                         dimnames = list(docs = names(x), 
-                                      features = uniqueFeatures))
-    new("dfmSparse", temp)
-}
-
 compile_dfm.tokens <- function(x, verbose = TRUE) {
     
     types <- types(x)
@@ -416,7 +385,7 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
                          dims = c(length(names(x)), length(types)),
                          dimnames = list(docs = names(x),
                                          features = as.character(types)))
-    new("dfmSparse", temp)
+    new("dfm", temp)
 }
 
 
@@ -433,5 +402,27 @@ make_ngram_pattern <- function(features, valuetype, concatenator) {
     features <- paste0("(\\b|(\\w+", concatenator, ")+)", 
                        features, "(\\b|(", concatenator, "\\w+)+)")
     features
+}
+
+# create an empty dfm for given features and documents
+make_null_dfm <- function(feature = NULL, document = NULL) {
+    new("dfm", 
+        as(sparseMatrix(
+        i = NULL,
+        j = NULL,
+        dims = c(length(document), length(feature)),
+        dimnames = list(docs = document, features = feature)
+    ),
+    "dgCMatrix"))
+}
+
+# pad dfm with zero-count features
+pad_dfm <- function(x, feature = NULL) {
+    feat_pad <- setdiff(feature, featnames(x))
+    if (length(feat_pad)) {
+        x <- cbind(x, make_null_dfm(feat_pad, docnames(x)))
+    }
+    x <- x[,feature]
+    return(x)
 }
 
