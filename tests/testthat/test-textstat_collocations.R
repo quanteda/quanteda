@@ -161,7 +161,7 @@ test_that("test that collocations only include selected features", {
 test_that("bigrams and trigrams are all sorted correctly, issue #385", {
     toks <- tokens(data_corpus_inaugural[2], remove_punct = TRUE)
     toks <- tokens_remove(toks, stopwords("english"), padding = TRUE)
-    cols <- textstat_collocations(toks, method = 'lambda', size = 3)
+    cols <- textstat_collocations(toks, method = 'lambda', min_count = 1, size = 2:3)
     expect_equal(order(cols$z, decreasing = TRUE), seq_len(nrow(cols)))
 })
 
@@ -254,21 +254,21 @@ test_that("lambda & [ function",{
     expect_equal(class(a_seq), c("collocations", 'data.frame'))
 })
 
-test_that("deprecated collocations function works", {
-    txts <- data_corpus_inaugural[1:2]
-    expect_equal(
-        suppressWarnings(collocations(txts, size = 2, min_count = 2)),
-        textstat_collocations(txts, size = 2, min_count = 2)
-    )
-    expect_warning(
-        collocations(txts, size = 2, min_count = 2),
-        "'collocations' is deprecated"
-    )
-    expect_warning(
-        sequences(txts, size = 2, min_count = 2),
-        "'sequences' is deprecated"
-    )
-})
+# test_that("deprecated collocations function works", {
+#     txts <- data_corpus_inaugural[1:2]
+#     expect_equal(
+#         suppressWarnings(collocations(txts, size = 2, min_count = 2)),
+#         textstat_collocations(txts, size = 2, min_count = 2)
+#     )
+#     expect_warning(
+#         collocations(txts, size = 2, min_count = 2),
+#         "'collocations' is deprecated"
+#     )
+#     expect_warning(
+#         sequences(txts, size = 2, min_count = 2),
+#         "'sequences' is deprecated"
+#     )
+# })
 
 test_that("textstat_collocations.tokens works ok with zero-length documents (#940)", {
     txt <- c('I like good ice cream.', 'Me too!  I like good ice cream.', '')
@@ -296,6 +296,7 @@ test_that("textstat_collocations works when texts are shorter than size", {
         textstat_collocations(toks, size = 2:3, min_count = 1, tolower = TRUE),
         data.frame(collocation = character(0), 
                    count = integer(0), 
+                   count_nested = integer(0), 
                    length = numeric(0),
                    lambda = numeric(0),
                    z = numeric(0),
@@ -312,3 +313,45 @@ test_that("textstat_collocations error when size = 1 and warn when size > 5", {
                  "Computation for large collocations may take long time")
     
 })
+
+test_that("textstat_collocations counts sequences correctly when recursive = FALSE", {
+    
+    txt <- c("a b c . . a b c . . a b c . . . a b c",
+             "a b . . a b . . a b . . a b . a b")
+    toks <- tokens_keep(tokens(txt), c("a", "b", "c"), padding = TRUE)
+    
+    col1 <- textstat_collocations(toks, size = 2:3)
+    expect_equal(col1$collocation, c('a b', 'b c', 'a b c'))
+    expect_equal(col1$count, c(9, 4, 4))
+    expect_equal(col1$count_nested, c(4, 4, 0))
+    
+    txt2 <- c(". . . . a b c . . a b c . . .",
+              "a b . . a b . . a b . . a b . a b",
+              "b c . . b c . b c . . . b c")
+    toks2 <- tokens_keep(tokens(txt2), c("a", "b", "c"), padding = TRUE)
+    
+    col2 <- textstat_collocations(toks2, size = 2:3, min_count = 1)
+    expect_equal(col2$collocation, c('a b', 'b c', 'a b c'))
+    expect_equal(col2$count, c(7, 6, 2))
+    expect_equal(col2$count_nested, c(2, 2, 0))
+    
+    txt3 <- c(". . . . a b c d . . a b c d . . .",
+              "a b . . a b . . a b . . a b . a b",
+              "b c . . b c . b c . . . b c")
+    toks3 <- tokens_keep(tokens(txt3), c("a", "b", "c", "d"), padding = TRUE)
+    
+    col3 <- textstat_collocations(toks3, size = c(2, 4), min_count = 1)
+    expect_equal(col3$collocation, c('a b', 'b c', 'c d', 'a b c d'))
+    expect_equal(col3$count, c(7, 6, 2, 2))
+    expect_equal(col3$count_nested, c(2, 2, 2, 0))
+    
+    txt4 <- c(". . . . a b c d . . a b c . . .")
+    toks4 <- tokens_keep(tokens(txt4), c("a", "b", "c", "d"), padding = TRUE)
+    
+    col4 <- textstat_collocations(toks4, size = c(2:4), min_count = 1)
+    expect_equal(col4$collocation, c('b c', 'a b', 'c d', 'a b c d', 'a b c', 'b c d'))
+    expect_equal(col4$count, c(2, 2, 1, 1, 2, 1))
+    expect_equal(col4$count_nested, c(2, 2, 1, 0, 1, 1))
+
+})
+

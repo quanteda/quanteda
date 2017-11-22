@@ -1,20 +1,3 @@
-#' deprecated function names for textstat_collocations
-#' 
-#' Use \code{\link{textstat_collocations}} instead.
-#' @param x a character, \link{corpus}, \link{tokens} object
-#' @param ... other arguments passed to  \code{\link{textstat_collocations}}
-#' @export
-#' @seealso \link{textstat_collocations}
-#' @keywords collocations internal deprecated
-collocations <- function(x, ...) {
-    .Deprecated("textstat_collocations")
-    UseMethod("textstat_collocations")
-}
-
-#' @rdname collocations
-#' @export
-sequences <- collocations
-
 #' identify and score multi-word expressions
 #' 
 #' Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.  
@@ -83,9 +66,14 @@ sequences <- collocations
 #' Wald test \eqn{z}-statistic \eqn{z} is calculated as:
 #' 
 #' \deqn{z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}}
-#' 
-#' @return \code{textstat_collocations} returns a data.frame of collocations and their
-#'   scores and statistics.
+#'
+#' @return \code{textstat_collocations} returns a data.frame of collocations and
+#'   their scores and statistics.  This consists of the collocations, their
+#'   counts, length, and \eqn{\lambda} and \eqn{z} statistics.  When \code{size}
+#'   is a vector, then \code{count_nested} counts the lower-order collocations
+#'   that occur within a higher-order collocation (but this does not affect the
+#'   statistics).
+#' @aliases collocations
 #' @export
 #' @keywords textstat collocations experimental
 #' @author Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
@@ -101,7 +89,19 @@ sequences <- collocations
 #'                        case_insensitive = FALSE, padding = TRUE)
 #' seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
 #' head(seqs, 10)
-textstat_collocations <- function(x, method = "lambda", size = 2, min_count = 2, smoothing = 0.5,  tolower = TRUE, ...) { #show_counts = FALSE, ...) {
+#' 
+#' # vectorized size
+#' txt <- c(". . . . a b c . . a b c . . . c d e",
+#'          "a b . . a b . . a b . . a b . a b",
+#'          "b c d . . b c . b c . . . b c")
+#' textstat_collocations(txt, size = 2:3)
+#' 
+textstat_collocations <- function(x, method = "lambda", 
+                                  size = 2, 
+                                  min_count = 2, 
+                                  smoothing = 0.5, 
+                                  tolower = TRUE, 
+                                  ...) { #show_counts = FALSE, ...) {
     UseMethod("textstat_collocations")
 }
 
@@ -109,16 +109,22 @@ textstat_collocations <- function(x, method = "lambda", size = 2, min_count = 2,
 #' @noRd
 #' @export
 #' @importFrom stats na.omit
-textstat_collocations.tokens <- function(x, method = "lambda", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, ...) { #show_counts = FALSE, ...) {
-
+textstat_collocations.tokens <- function(x, method = "lambda", 
+                                         size = 2, 
+                                         min_count = 2, 
+                                         smoothing = 0.5, 
+                                         tolower = TRUE, 
+                                         ...) { #show_counts = FALSE, ...) {
+    check_dots(list(...), NULL)
+    
     #method <- match.arg(method, ("lambda", "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD"))
     method <- match.arg(method, c("lambda"))
     
     if (any(size == 1))
         stop("Collocation sizes must be larger than 1")
     if (any(size > 5))
-        warning("Computation for large collocations may take long time")
-
+        warning("Computation for large collocations may take long time", immediate. = TRUE)
+    
     # lower case if requested
     if (tolower) x <- tokens_tolower(x, keep_acronyms = TRUE)
     
@@ -168,7 +174,7 @@ textstat_collocations.tokens <- function(x, method = "lambda", size = 2, min_cou
 
     # remove other measures if not specified
 #    if (method == "lambda" | method == "lambda1")
-        result[c("pmi", "chi2", "G2", "sigma")] <- NULL
+    #    result[c("pmi", "chi2", "G2", "sigma")] <- NULL
     # if (!method %in% c("lambda", "lambda1", "all"))
     #     result[c("lambda", "lambda1", "sigma", "z")] <- NULL
     #if (method == "chi2") result[c("pmi", "G2")] <- NULL
@@ -176,7 +182,8 @@ textstat_collocations.tokens <- function(x, method = "lambda", size = 2, min_cou
     #if (method == "pmi") result[c("G2", "chi2")] <- NULL
     
     # reorder columns
-    result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
+    result <- result[, stats::na.omit(match(c("collocation", "count",  "count_nested", "length", 
+                                              "lambda", "lambda1", "z", 
                                               "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
                                      names(result)))]
     rownames(result) <- NULL
@@ -195,13 +202,23 @@ textstat_collocations.tokens <- function(x, method = "lambda", size = 2, min_cou
 
 
 #' @export
-textstat_collocations.corpus <- function(x, method = "lambda", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, ...) {
+textstat_collocations.corpus <- function(x, method = "lambda", 
+                                         size = 2, 
+                                         min_count = 2, 
+                                         smoothing = 0.5, 
+                                         tolower = TRUE, 
+                                         recursive = TRUE, ...) {
     textstat_collocations(tokens(x, ...), method = method, size = size, min_count = min_count, 
                           smoothing = smoothing, tolower = tolower)
 }
 
 #' @export
-textstat_collocations.character <- function(x, method = "lambda", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, ...) {
+textstat_collocations.character <- function(x, method = "lambda", 
+                                            size = 2, 
+                                            min_count = 2, 
+                                            smoothing = 0.5, 
+                                            tolower = TRUE, 
+                                            recursive = TRUE, ...) {
     textstat_collocations(corpus(x), method = method, size = size, min_count = min_count, 
                           smoothing = smoothing, tolower = tolower, ...)
 }
@@ -227,9 +244,6 @@ is.collocations <- function(x) {
 #     return(x)
 # }
  
-# returns TRUE if the object is of class sequences, FALSE otherwise
-is.sequences <- function(x) "sequences" %in% class(x)
-
 # Internal Functions ------------------------------------------------------
 
 # function to get lower-order interactions for k-grams

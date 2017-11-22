@@ -34,6 +34,18 @@
 <![endif]-->
 
 
+<!-- Google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-144616-24', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
   </head>
 
   <body>
@@ -68,13 +80,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+    </li>
+    <li>
       <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
     </li>
     <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a>
+      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
     </li>
     <li>
       <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
       <a href="../articles/quickstart.html">Getting Started with quanteda</a>
@@ -109,15 +127,15 @@ will depend on which model was called (see <code>model</code> types below).</p>
     
 
     <pre class="usage"><span class='fu'>textmodel</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wordscores"</span>, <span class='st'>"nb"</span>,
-  <span class='st'>"wordfish"</span>, <span class='st'>"ca"</span>), <span class='no'>...</span>)
+  <span class='st'>"wordfish"</span>, <span class='st'>"ca"</span>, <span class='st'>"lsa"</span>), <span class='no'>...</span>)
 
 <span class='co'># S4 method for dfm,ANY,missing,character</span>
 <span class='fu'>textmodel</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wordscores"</span>, <span class='st'>"nb"</span>, <span class='st'>"wordfish"</span>, <span class='st'>"ca"</span>), <span class='no'>...</span>)
+  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wordscores"</span>, <span class='st'>"nb"</span>, <span class='st'>"wordfish"</span>, <span class='st'>"ca"</span>, <span class='st'>"lsa"</span>), <span class='no'>...</span>)
 
 <span class='co'># S4 method for formula,missing,dfm,character</span>
 <span class='fu'>textmodel</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wordscores"</span>, <span class='st'>"nb"</span>, <span class='st'>"wordfish"</span>, <span class='st'>"ca"</span>), <span class='no'>...</span>)</pre>
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wordscores"</span>, <span class='st'>"nb"</span>, <span class='st'>"wordfish"</span>, <span class='st'>"ca"</span>, <span class='st'>"lsa"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -152,6 +170,8 @@ probabilities.  See <a href='textmodel_nb.html'>textmodel_nb</a>.</p></dd>
 See <a href='textmodel_wordfish.html'>textmodel_wordfish</a>.</p></dd>
 
 <dt><code>ca</code></dt><dd><p>Correspondence analysis scaling of the dfm.</p></dd>
+
+<dt><code>lsa</code></dt><dd><p>Correspondence Latent Semantic Analysis.</p></dd>
 
 <dt><code>lda</code></dt><dd><p>Fit a topic model based on latent Dirichlet allocation.  
 Not yet implemented -- use <code><a href='convert.html'>convert</a></code>

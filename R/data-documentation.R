@@ -165,4 +165,42 @@ NULL
 #' kwic(data_char_ukimmig2010, "not")
 "data_dictionary_LSD2015"
 
+#' confidence debate from 1991 Irish Parliament
+#' 
+#' Texts of speeches from a no-confidence motion debated in the Irish Dail in
+#' October 1991 over the future of the Fianna Fail-Progressive Democrat
+#' coalition.  (See Laver and Benoit 2002 for details.)
+#' @format \code{data_corpus_dailnoconf1991} is a corpus with 58 texts, 
+#'   including docvars for \code{name}, \code{party}, and \code{position}.
+#' @references Laver, Michael, and Kenneth Benoit. 2002. 
+#'   "\href{http://www.kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf}{Locating 
+#'   TDs in Policy Spaces: Wordscoring Dail Speeches}." \emph{Irish Political 
+#'   Studies} 17 (Summer): 59-73.
+#'   
+#'   Laver, Michael, Kenneth Benoit, and John Garry. 2003. 
+#'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy 
+#'   positions from political text using words as data.}" \emph{American 
+#'   Political Science Review} 97(2): 311-331.
+#' @keywords data
+#' @examples
+#' \dontrun{
+#' data_dfm_dailnoconf1991 <- dfm(data_corpus_dailnoconf1991, removePunct = TRUE)
+#' fitted <- textmodel_mixfit(data_dfm_dailnoconf1991, 
+#'                            c("Govt", "Opp", "Opp", rep(NA, 55)))
+#' (pred <- predict(fitted))
+#' tmpdf <- 
+#'     data.frame(party = as.character(docvars(data_corpus_dailnoconf1991, "party")),
+#'                govt = coef(pred)[,"Govt"],
+#'                position = as.character(docvars(data_corpus_dailnoconf1991, "position")),
+#'                stringsAsFactors = FALSE)
+#' bymedian <- with(tmpdf, reorder(paste(party, position), govt, median))
+#' par(mar = c(5, 6, 4, 2)+.1)
+#' boxplot(govt ~ bymedian, data = tmpdf,
+#'         horizontal = TRUE, las = 1,
+#'         xlab = "Degree of support for government")
+#' abline(h = 7.5, col = "red", lty = "dashed")
+#' text(c(0.9, 0.9), c(8.5, 6.5), c("Goverment", "Opposition"))
+#' }
+"data_corpus_dailnoconf1991"
+
 
