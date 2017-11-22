@@ -3,11 +3,6 @@
 using namespace quanteda;
 using namespace arma;
 
-#if !defined(ARMA_64BIT_WORD)
-#define ARMA_64BIT_WORD
-#endif
-
-
 // #if QUANTEDA_USE_TBB
 // typedef std::tuple<unsigned int, unsigned int, double> Triplet;
 // typedef tbb::concurrent_vector<Triplet> Triplets;
