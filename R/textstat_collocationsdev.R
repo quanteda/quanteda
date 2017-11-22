@@ -40,7 +40,6 @@ sequences <- collocations
 #'   (default is 0.5)
 #' @param tolower logical; if \code{TRUE}, form collocations as lower-cased combinations
 #' @param show_counts logical; if \code{TRUE}, output observed and expected counts
-#' @param path default to 1 to apply stats::loglin
 #' @param ... additional arguments passed to \code{\link{tokens}}, if \code{x}
 #'   is not a \link{tokens} object already
 #' @references Blaheta, D., & Johnson, M. (2001). 
@@ -104,7 +103,7 @@ sequences <- collocations
 #'                        case_insensitive = FALSE, padding = TRUE)
 #' seqs <- textstat_collocationsdev(toks2, size = 3, tolower = FALSE)
 #' head(seqs, 10)
-textstat_collocationsdev <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5,  tolower = TRUE, show_counts = FALSE, path = 1, ...) {
+textstat_collocationsdev <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5,  tolower = TRUE, show_counts = FALSE, ...) {
     UseMethod("textstat_collocationsdev")
 }
 
@@ -113,7 +112,7 @@ VALID_SCORING_METHODS <- c("lambda", "lambda1", "lr", "chi2", "pmi", "LFMD") #, 
 #' @noRd
 #' @export
 #' @importFrom stats na.omit
-textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...) {
+textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
     
     method <- match.arg(method, c("all", VALID_SCORING_METHODS))
     if (any(!(size %in% 2:5)))
@@ -129,126 +128,61 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
     
     attrs_org <- attributes(x)
     types <- types(x)
-    if (path == 1){
-        result <- qatd_cpp_sequences(x, types, min_count, size, 
-                                     if (method == "lambda1") "lambda1" else "lambda", 
-                                     smoothing)
-        result <- result[result$count > 1, ]
-        # compute z for lambda methods
-        lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
-        result["z"] <- result[lambda_index] / result[["sigma"]]
-        # result$p <- 1 - stats::pnorm(result$z)
+    
+    result <- qatd_cpp_collocations(x, types, min_count, size, method, smoothing) 
+    result <- result[result$count > 1, ]
+    # compute z for lambda methods
+    if (method %in% c("lambda", "lambda1", "all")){
         
-        # remove gensim and LFMD for now
-        result[c("gensim", "LFMD", "dice", "sigma")] <- NULL
+        result["z"] <- result[["method"]] / result[["sigma"]]
+        # result$p <- 1 - stats::pnorm(result$z)
+        if (method == "all"){
+            colnames(result)[colnames(result) == "method"] <- "lambda";
+        } else {
+            colnames(result)[colnames(result) == "method"] <- method;
+        }
+        
+        # remove gensim and dice for now
+        result[c("gensim", "dice", "sigma")] <- NULL
         
         # sort by decreasing z
         result <- result[order(result[["z"]], decreasing = TRUE), ]
-        
-        # compute statistics that require expected counts
-        if (method %in% c("all", "lr", "chi2", "pmi", "LFMD") | show_counts) {
-            # get observed counts and compute expected counts
-            # split the string into n00, n01, n10, etc
-            counts_n <- strsplit(result[, "observed_counts"], "_")
-            df_counts_n <- data.frame(t(sapply(counts_n, as.numeric)))
-            names(df_counts_n) <- make_count_names(size, "n")
-            # compute expected counts
-            df_counts_e <- get_expected_values(df_counts_n, size = size)
-            # remove observed counts character
-            result <- result[, -which(names(result)=="observed_counts")]
-            
-            # "pmi_2", "chi2_2" and "G2_2" are verified, remove the result from cpp
-            result[c("pmi", "chi2", "G2", "LFMD")] <- NULL
-            
-            # recompute dice, pmi, G2, chi2, LFMD
-            if (method %in% c("all", "lr"))
-                result["G2"] <- 2 * rowSums(df_counts_n * log(df_counts_n / df_counts_e))
-            if (method %in% c("all", "chi2"))
-                result["chi2"] <- rowSums((df_counts_n - df_counts_e)^2 / df_counts_e)
-            if (method %in% c("all", "pmi"))
-                result["pmi"] <- log(df_counts_n[[ncol(df_counts_n)]] / df_counts_e[[ncol(df_counts_e)]], base = 2)
-            if (method %in% c("all", "LFMD"))
-                result["LFMD"] <- log(df_counts_n[[ncol(df_counts_n)]]^2 / df_counts_e[[ncol(df_counts_e)]], base = 2) + 
-                                    log(df_counts_n[[ncol(df_counts_n)]], base = 2)
-        }
-        
-        # remove other measures if not specified
-        if (method == "lambda" | method == "lambda1")
-            result[c("pmi", "chi2", "G2", "sigma", "LFMD")] <- NULL
-        if (!method %in% c("lambda", "lambda1", "all"))
-            result[c("lambda", "lambda1", "sigma", "z")] <- NULL
-        if (method == "chi2") result[c("pmi", "G2", "LFMD")] <- NULL
-        if (method == "lr") result[c("pmi", "chi2", "LFMD")] <- NULL
-        if (method == "pmi") result[c("G2", "chi2", "LFMD")] <- NULL
-        if (method == "LFMD") result[c("G2", "chi2", "pmi")] <- NULL
-        
-        # reorder columns
-        result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
-                                                  "G2", "chi2", "pmi", "LFMD"), 
-                                                names(result)))]
-        rownames(result) <- NULL
-        
-        # # add counts to output if requested
-        if (show_counts) result <- cbind(result, df_counts_n, round(df_counts_e, 1))
-        
-    } else if (path == 2){
-        result <- qatd_cpp_collocations(x, types, min_count, size, 
-                                        method, 
-                                        smoothing) 
-        result <- result[result$count > 1, ]
-        # compute z for lambda methods
-        if (method %in% c("lambda", "lambda1", "all")){
-            
-            result["z"] <- result[["method"]] / result[["sigma"]]
-            # result$p <- 1 - stats::pnorm(result$z)
-            if (method == "all"){
-                colnames(result)[colnames(result) == "method"] <- "lambda";
-            } else {
-                colnames(result)[colnames(result) == "method"] <- method;
-            }
-            
-            # remove gensim and dice for now
-            result[c("gensim", "dice", "sigma")] <- NULL
-            
-            # sort by decreasing z
-            result <- result[order(result[["z"]], decreasing = TRUE), ]
-        }
-        
-        if (method %in% c("all", "lr", "chi2", "pmi", "LFMD") | show_counts) {
-            # get observed counts and compute expected counts
-            # split the string into n00, n01, n10, etc
-            counts_n <- strsplit(result[, "observed_counts"], "_")
-            df_counts_n <- data.frame(t(sapply(counts_n, as.numeric)))
-            names(df_counts_n) <- make_count_names(size, "n")
-            # get expected counts
-            counts_e <- strsplit(result[, "expected_counts"], "_")
-            df_counts_e <- data.frame(t(sapply(counts_e, as.numeric)))
-            names(df_counts_e) <- make_count_names(size, "e")
-            # remove counts character
-            result <- result[, -which(names(result)=="observed_counts")]
-            result <- result[, -which(names(result)=="expected_counts")]
-            
-        }
-        
-        # remove other measures if not specified
-        if (method == "lambda" | method == "lambda1")
-            result[c("pmi", "chi2", "G2", "sigma", "LFMD")] <- NULL
-        if (!method %in% c("lambda", "lambda1", "all"))
-            result[c("method", "sigma", "z")] <- NULL
-        if (method == "chi2") result[c("pmi", "G2", "LFMD")] <- NULL
-        if (method == "lr") result[c("pmi", "chi2", "LFMD")] <- NULL
-        if (method == "pmi") result[c("G2", "chi2", "LFMD")] <- NULL
-        if (method == "LFMD") result[c("G2", "chi2", "pmi")] <- NULL
-        
-        
-        # reorder columns
-        result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
-                                                  "G2", "chi2", "pmi", "LFMD"), 
-                                                names(result)))]
-        rownames(result) <- NULL
-        # # add counts to output if requested
-        if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
     }
+    
+    if (method %in% c("all", "lr", "chi2", "pmi", "LFMD") | show_counts) {
+        # get observed counts and compute expected counts
+        # split the string into n00, n01, n10, etc
+        counts_n <- strsplit(result[, "observed_counts"], "_")
+        df_counts_n <- data.frame(t(sapply(counts_n, as.numeric)))
+        names(df_counts_n) <- make_count_names(size, "n")
+        # get expected counts
+        counts_e <- strsplit(result[, "expected_counts"], "_")
+        df_counts_e <- data.frame(t(sapply(counts_e, as.numeric)))
+        names(df_counts_e) <- make_count_names(size, "e")
+        # remove counts character
+        result <- result[, -which(names(result)=="observed_counts")]
+        result <- result[, -which(names(result)=="expected_counts")]
+    }
+    
+    # remove other measures if not specified
+    if (method == "lambda" | method == "lambda1")
+        result[c("pmi", "chi2", "G2", "sigma", "LFMD")] <- NULL
+    if (!method %in% c("lambda", "lambda1", "all"))
+        result[c("method", "sigma", "z")] <- NULL
+    if (method == "chi2") result[c("pmi", "G2", "LFMD")] <- NULL
+    if (method == "lr") result[c("pmi", "chi2", "LFMD")] <- NULL
+    if (method == "pmi") result[c("G2", "chi2", "LFMD")] <- NULL
+    if (method == "LFMD") result[c("G2", "chi2", "pmi")] <- NULL
+    
+    
+    # reorder columns
+    result <- result[, stats::na.omit(match(c("collocation", "count", "length", "lambda", "lambda1", "sigma", "z", 
+                                              "G2", "chi2", "pmi", "LFMD"), 
+                                            names(result)))]
+    rownames(result) <- NULL
+    # # add counts to output if requested
+    if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
+    
     # remove results whose counts are less than min_count
     result <- result[result$count >= min_count, ]
     # tag attributes and class, and return
@@ -259,26 +193,26 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
 
 
 #' @export
-textstat_collocationsdev.corpus <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE,  path = 1, ...) {
+textstat_collocationsdev.corpus <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
     # segment into units not including punctuation, to avoid identifying collocations that are not adjacent
     texts(x) <- paste(".", texts(x))
     # separate each line except those where the punctuation is a hyphen or apostrophe
     x <- corpus_segment(x, "tag", delimiter =  "[^\\P{P}#@'-]", valuetype = "regex")
     # tokenize the texts
     x <- tokens(x, ...)
-    textstat_collocationsdev(x, method = method, size = size, min_count = min_count, smoothing = smoothing, tolower = tolower, show_counts = show_counts, path = path)
+    textstat_collocationsdev(x, method = method, size = size, min_count = min_count, smoothing = smoothing, tolower = tolower, show_counts = show_counts)
 }
 
 #' @export
 textstat_collocationsdev.character <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
     textstat_collocationsdev(corpus(x), method = method, size = size, min_count = min_count, 
-                          smoothing = smoothing, tolower = tolower, show_counts = show_counts, ...)
+                             smoothing = smoothing, tolower = tolower, show_counts = show_counts, ...)
 }
 
 #' @export
-textstat_collocationsdev.tokenizedTexts <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...) {
+textstat_collocationsdev.tokenizedTexts <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
     textstat_collocationsdev(as.tokens(x), method = method, size = size, min_count = min_count, 
-                          smoothing = smoothing, tolower = tolower, show_counts = show_counts, path = path)
+                             smoothing = smoothing, tolower = tolower, show_counts = show_counts)
 }
 
 
@@ -392,8 +326,8 @@ get_expected_values <- function(df, size) {
             counts_table <- array(countsnum, dim = rep(2, size), dimnames = array_dimnames)
             
             counts_expected <- stats::loglin(counts_table,
-                                              margin =  marginalfun(size),
-                                              fit = TRUE, print = FALSE)$fit
+                                             margin =  marginalfun(size),
+                                             fit = TRUE, print = FALSE)$fit
             
             counts_expected <- as.numeric(counts_expected)
             names(counts_expected) <- gsub("e", "n", names(counts))

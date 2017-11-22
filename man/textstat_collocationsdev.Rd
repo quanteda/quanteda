@@ -6,7 +6,7 @@
 \title{identify and score multi-word expressions}
 \usage{
 textstat_collocationsdev(x, method = "all", size = 2, min_count = 2,
-  smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...)
+  smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...)
 
 is.collocations(x)
 }
@@ -34,8 +34,6 @@ to be scored}
 \item{tolower}{logical; if \code{TRUE}, form collocations as lower-cased combinations}
 
 \item{show_counts}{logical; if \code{TRUE}, output observed and expected counts}
-
-\item{path}{default to 1 to apply stats::loglin}
 
 \item{...}{additional arguments passed to \code{\link{tokens}}, if \code{x}
 is not a \link{tokens} object already}
