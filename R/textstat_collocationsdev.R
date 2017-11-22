@@ -1,14 +1,14 @@
-#' deprecated function names for textstat_collocations
+#' deprecated function names for textstat_collocationsdev
 #' 
-#' Use \code{\link{textstat_collocations}} instead.
+#' Use \code{\link{textstat_collocationsdev}} instead.
 #' @param x a character, \link{corpus}, \link{tokens} object
-#' @param ... other arguments passed to  \code{\link{textstat_collocations}}
+#' @param ... other arguments passed to  \code{\link{textstat_collocationsdev}}
 #' @export
-#' @seealso \link{textstat_collocations}
+#' @seealso \link{textstat_collocationsdev}
 #' @keywords collocations internal deprecated
 collocations <- function(x,  ...) {
-    .Deprecated("textstat_collocations")
-    UseMethod("textstat_collocations")
+    .Deprecated("textstat_collocationsdev")
+    UseMethod("textstat_collocationsdev")
 }
 
 #' @rdname collocations
@@ -87,25 +87,25 @@ sequences <- collocations
 #' 
 #' \deqn{z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}}
 #' 
-#' @return \code{textstat_collocations} returns a data.frame of collocations and their
+#' @return \code{textstat_collocationsdev} returns a data.frame of collocations and their
 #'   scores and statistsics.
 #' @export
 #' @keywords textstat collocations experimental
 #' @author Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 #' @examples
 #' txts <- data_corpus_inaugural[1:2]
-#' head(cols <- textstat_collocations(txts, size = 2, min_count = 2), 10)
-#' head(cols <- textstat_collocations(txts, size = 3, min_count = 2), 10)
+#' head(cols <- textstat_collocationsdev(txts, size = 2, min_count = 2), 10)
+#' head(cols <- textstat_collocationsdev(txts, size = 3, min_count = 2), 10)
 #' 
 #' # extracting multi-part proper nouns (capitalized terms)
 #' toks2 <- tokens(data_corpus_inaugural)
 #' toks2 <- tokens_remove(toks2, stopwords("english"), padding = TRUE)
 #' toks2 <- tokens_select(toks2, "^([A-Z][a-z\\-]{2,})", valuetype = "regex", 
 #'                        case_insensitive = FALSE, padding = TRUE)
-#' seqs <- textstat_collocations(toks2, size = 3, tolower = FALSE)
+#' seqs <- textstat_collocationsdev(toks2, size = 3, tolower = FALSE)
 #' head(seqs, 10)
-textstat_collocations <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5,  tolower = TRUE, show_counts = FALSE, path = 1, ...) {
-    UseMethod("textstat_collocations")
+textstat_collocationsdev <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5,  tolower = TRUE, show_counts = FALSE, path = 1, ...) {
+    UseMethod("textstat_collocationsdev")
 }
 
 VALID_SCORING_METHODS <- c("lambda", "lambda1", "lr", "chi2", "pmi", "LFMD") #, "dice", "gensim")
@@ -113,7 +113,7 @@ VALID_SCORING_METHODS <- c("lambda", "lambda1", "lr", "chi2", "pmi", "LFMD") #, 
 #' @noRd
 #' @export
 #' @importFrom stats na.omit
-textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...) {
+textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...) {
     
     method <- match.arg(method, c("all", VALID_SCORING_METHODS))
     if (any(!(size %in% 2:5)))
@@ -123,7 +123,7 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
     if (tolower) x <- tokens_tolower(x, keep_acronyms = TRUE)
     
     # segment by sentences, if the call started with a tokens object
-    if (who_called_me_first(sys.calls(), "textstat_collocations") %in% c("tokens", "tokenizedTexts")) {
+    if (who_called_me_first(sys.calls(), "textstat_collocationsdev") %in% c("tokens", "tokenizedTexts")) {
         x <- tokens_segment_by_punctuation(x, remove_delimiter = TRUE)
     }
     
@@ -133,7 +133,7 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
         result <- qatd_cpp_sequences(x, types, min_count, size, 
                                      if (method == "lambda1") "lambda1" else "lambda", 
                                      smoothing)
-        
+        result <- result[result$count > 1, ]
         # compute z for lambda methods
         lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
         result["z"] <- result[lambda_index] / result[["sigma"]]
@@ -195,7 +195,7 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
         result <- qatd_cpp_collocations(x, types, min_count, size, 
                                         method, 
                                         smoothing) 
-        
+        result <- result[result$count > 1, ]
         # compute z for lambda methods
         if (method %in% c("lambda", "lambda1", "all")){
             
@@ -259,30 +259,30 @@ textstat_collocations.tokens <- function(x, method = "all", size = 2, min_count 
 
 
 #' @export
-textstat_collocations.corpus <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE,  path = 1, ...) {
+textstat_collocationsdev.corpus <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE,  path = 1, ...) {
     # segment into units not including punctuation, to avoid identifying collocations that are not adjacent
     texts(x) <- paste(".", texts(x))
     # separate each line except those where the punctuation is a hyphen or apostrophe
     x <- corpus_segment(x, "tag", delimiter =  "[^\\P{P}#@'-]", valuetype = "regex")
     # tokenize the texts
     x <- tokens(x, ...)
-    textstat_collocations(x, method = method, size = size, min_count = min_count, smoothing = smoothing, tolower = tolower, show_counts = show_counts, path = path)
+    textstat_collocationsdev(x, method = method, size = size, min_count = min_count, smoothing = smoothing, tolower = tolower, show_counts = show_counts, path = path)
 }
 
 #' @export
-textstat_collocations.character <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
-    textstat_collocations(corpus(x), method = method, size = size, min_count = min_count, 
+textstat_collocationsdev.character <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
+    textstat_collocationsdev(corpus(x), method = method, size = size, min_count = min_count, 
                           smoothing = smoothing, tolower = tolower, show_counts = show_counts, ...)
 }
 
 #' @export
-textstat_collocations.tokenizedTexts <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...) {
-    textstat_collocations(as.tokens(x), method = method, size = size, min_count = min_count, 
+textstat_collocationsdev.tokenizedTexts <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, path = 1, ...) {
+    textstat_collocationsdev(as.tokens(x), method = method, size = size, min_count = min_count, 
                           smoothing = smoothing, tolower = tolower, show_counts = show_counts, path = path)
 }
 
 
-#' @rdname textstat_collocations
+#' @rdname textstat_collocationsdev
 #' @aliases is.collocations
 #' @export
 #' @return \code{is.collocation} returns \code{TRUE} if the object is of class
@@ -390,9 +390,7 @@ get_expected_values <- function(df, size) {
             array_dimnames <- c(rep(list(c("0", "1")), size))
             names(array_dimnames) <- paste0("W", size:1)
             counts_table <- array(countsnum, dim = rep(2, size), dimnames = array_dimnames)
-            # counts_expected <- stats::loglin(counts_table,
-            #                                  margin =  marginalfun(size),
-            #                                  fit = TRUE, print = FALSE)$fit
+            
             counts_expected <- stats::loglin(counts_table,
                                               margin =  marginalfun(size),
                                               fit = TRUE, print = FALSE)$fit
@@ -408,138 +406,5 @@ get_expected_values <- function(df, size) {
     result
 }
 
-#  File src/library/stats/R/loglin.R
-#  Part of the R package, https://www.R-project.org
-#
-#  Copyright (C) 1995-2013 The R Core Team
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  A copy of the GNU General Public License is available at
-#  https://www.R-project.org/Licenses/
-
-loglin_local_2 <- function(countvec, table, margin, start = rep(1, length(table)), fit =
-                               FALSE, eps = 0.1, iter = 20L, param = FALSE, print =
-                               TRUE) {
-    rfit <- fit
-    
-    dtab <- dim(table)
-    nvar <- length(dtab)
-    
-    ncon <- length(margin)
-    conf <- matrix(0L, nrow = nvar, ncol = ncon)
-    nmar <- 0
-    varnames <- names(dimnames(table))
-    for (k in seq_along(margin)) {
-        tmp <- margin[[k]]
-        if (is.character(tmp)) {
-            ## Rewrite margin names to numbers
-            tmp <- match(tmp, varnames)
-            margin[[k]] <- tmp
-        }
-        if (!is.numeric(tmp) || any(is.na(tmp) | tmp <= 0))
-            stop("'margin' must contain names or numbers corresponding to 'table'")
-        conf[seq_along(tmp), k] <- tmp
-        nmar <- nmar + prod(dtab[tmp])
-    }
-    
-    ntab <- length(table)
-    if (length(start) != ntab ) stop("'start' and 'table' must be same length")
-    
-    #z <- .Call(stats:::C_LogLin, dtab, conf, table, start, nmar, eps, iter)
-    z <- loglin_cpp_2(dtab, conf, countvec, start, nmar, eps, iter)
-    
-    if (print)
-        cat(z$nlast, "iterations: deviation", z$dev[z$nlast], "\n")
-    
-    fit <- z$fit
-    attributes(fit) <- attributes(table)
-    
-    # ## Pearson chi-sq test statistic
-    # observed <- as.vector(table[start > 0])
-    # expected <- as.vector(fit[start > 0])
-    # pearson <- sum((observed - expected)^2 / expected)
-    # 
-    # ## Likelihood Ratio Test statistic
-    # observed <- as.vector(table[table * fit > 0])
-    # expected <- as.vector(fit[table * fit > 0])
-    # lrt <- 2 * sum(observed * log(observed / expected))
-    # 
-    # ## Compute degrees of freedom.
-    # ## Use a dyadic-style representation for the (possible) subsets B.
-    # ## Let u_i(B) = 1 if i is contained in B and 0 otherwise.  Then B
-    # ## <-> u(B) = (u_1(B),...,u_N(B)) <-> \sum_{i=1}^N u_i(B) 2^{i-1}.
-    # ## See also the code for 'dyadic' below which computes the u_i(B).
-    # subsets <- function(x) {
-    #     y <- list(vector(mode(x), length = 0))
-    #     for (i in seq_along(x)) {
-    #         y <- c(y, lapply(y, "c", x[i]))
-    #     }
-    #     y[-1L]
-    # }
-    # df <- rep.int(0, 2^nvar)
-    # for (k in seq_along(margin)) {
-    #     terms <- subsets(margin[[k]])
-    #     for (j in seq_along(terms))
-    #         df[sum(2 ^ (terms[[j]] - 1))] <- prod(dtab[terms[[j]]] - 1)
-    # }
-    # 
-    # ## Rewrite margin numbers to names if possible
-    # if (!is.null(varnames) && all(nzchar(varnames))) {
-    #     for (k in seq_along(margin))
-    #         margin[[k]] <- varnames[margin[[k]]]
-    # } else {
-    #     varnames <- as.character(1 : ntab)
-    # }
-    # 
-    # y <- list(lrt = lrt,
-    #           pearson = pearson,
-    #           df = ntab - sum(df) - 1,
-    #           margin = margin)
-    # 
-    if (rfit)
-        y <- list(fit = fit)
-    
-    # if (param) {
-    #     fit <- log(fit)
-    #     terms <- seq_along(df)[df > 0]
-    #     
-    #     parlen <- length(terms) + 1
-    #     parval <- list(parlen)
-    #     parnam <- character(parlen)
-    #     
-    #     parval[[1L]] <- mean(fit)
-    #     parnam[1L] <- "(Intercept)"
-    #     fit <- fit - parval[[1L]]
-    #     
-    #     ## Get the u_i(B) in the rows of 'dyadic', see above.
-    #     dyadic <- NULL
-    #     while(any(terms > 0)) {
-    #         dyadic <- cbind(dyadic, terms %% 2)
-    #         terms <- terms %/% 2
-    #     }
-    #     dyadic <- dyadic[order(rowSums(dyadic)), , drop = FALSE]
-    #     
-    #     for (i in 2 : parlen) {
-    #         vars <- which(dyadic[i - 1, ] > 0)
-    #         parval[[i]] <- apply(fit, vars, mean)
-    #         parnam[i] <- paste(varnames[vars], collapse = ".")
-    #         fit <- sweep(fit, vars, parval[[i]], check.margin=FALSE)
-    #     }
-    #     
-    #     names(parval) <- parnam
-    #     y$param <- parval
-    # }
-    
-    return(y)
-}
 
 
