@@ -164,6 +164,8 @@ namespace quanteda{
     typedef tbb::concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
     typedef tbb::concurrent_vector<Ngram> VecNgrams;
     typedef tbb::concurrent_unordered_set<unsigned int> SetUnigrams;
+    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
+    typedef tbb::concurrent_vector<Triplet> Triplets; // for fcm_mt, ca_mt, wordfish_mt
 #else
     typedef unsigned int IdNgram;
     typedef std::unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
@@ -171,6 +173,8 @@ namespace quanteda{
     typedef std::unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
     typedef std::vector<Ngram> VecNgrams;
     typedef std::unordered_set<unsigned int> SetUnigrams;
+    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
+    typedef std::vector<Triplet> Triplets; // for fcm_mt, ca_mt, wordfish_mt
 #endif    
 /*
     inline std::vector<std::size_t> register_ngrams(List words_, SetNgrams &set_words) {
@@ -238,14 +242,6 @@ namespace quanteda{
         return spans;
     }
     
-// These typedefs are used in fcm_mt, ca, wordfish_mt
-#if QUANTEDA_USE_TBB
-    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
-    typedef tbb::concurrent_vector<Triplet> Triplets;
-#else
-    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
-    typedef std::vector<Triplet> Triplets;
-#endif
 }
 
 #endif
