@@ -3,13 +3,6 @@
 using namespace quanteda;
 using namespace arma;
 
-// #if QUANTEDA_USE_TBB
-// typedef std::tuple<unsigned int, unsigned int, double> Triplet;
-// typedef tbb::concurrent_vector<Triplet> Triplets;
-// #else
-// typedef std::tuple<unsigned int, unsigned int, double> Triplet;
-// typedef std::vector<Triplet> Triplets;
-// #endif
 
 //find the principle elements for the sparse residual matrix
 void create_residual_ca(std::size_t row_num, const arma::sp_mat& objm, const arma::colvec &rsum, const arma::rowvec &csum,
