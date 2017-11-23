@@ -670,6 +670,6 @@ test_that("test new dfm methods", {
 test_that("test new as.dfm methods", {
     expect_error(
         as.dfm(TRUE),
-        "as.dfm\\(\\) only works on data\\.frame.*dfm.*Matrix.*objects"
+        "as\\.dfm\\(\\) only works on data\\.frame.*dfm.*matrix.*objects"
     )   
 })
