@@ -117,6 +117,13 @@ corpus <- function(x, ...) {
 }
 
 #' @rdname corpus
+#' @noRd
+#' @export
+corpus.default <- function(x, concatenator = "", ...) {
+    stop(friendly_class_undefined_message(class(x), "corpus"))
+}
+
+#' @rdname corpus
 #' @export
 corpus.corpus <- function(x, docnames = quanteda::docnames(x), docvars = quanteda::docvars(x), metacorpus = quanteda::metacorpus(x), compress = FALSE, ...) {
     if (!compress) {

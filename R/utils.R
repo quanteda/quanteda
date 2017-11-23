@@ -172,6 +172,10 @@ check_dots <-  function(dots, permissible_args = NULL) {
 #' @param object_class character describing the object class
 #' @param function_name character which is the function name
 #' @keywords internal
+#' @examples 
+#' # as.tokens.default <- function(x, concatenator = "", ...) {
+#' #     stop(friendly_class_undefined_message(class(x), "as.tokens"))
+#' # }
 friendly_class_undefined_message <- function(object_class, function_name) {
     valid_object_types <- 
         utils::methods(function_name) %>% 
