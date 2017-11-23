@@ -26,6 +26,11 @@ bootstrap_dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose"))
     UseMethod("bootstrap_dfm")
 }
 
+#' @export
+bootstrap_dfm.default <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
+    stop(friendly_class_undefined_message(class(x), "bootstrap_dfm"))
+}
+
 #' @noRd
 #' @export
 bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {

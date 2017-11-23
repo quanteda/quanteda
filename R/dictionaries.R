@@ -366,9 +366,7 @@ as.dictionary <- function(x) {
     UseMethod("as.dictionary")
 }
 
-# @rdname as.dictionary
-# @method as.dictionary default
-# @noRd
+
 #' @export
 as.dictionary.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "as.dictionary"))
