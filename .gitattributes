@@ -1,6 +1,8 @@
-vignettes/*	linguist-documentation
-docs/*	linguist-documentation
-man/*	linguist-documentation
+# Fix GitHub Linguist language detection
+# docs/ and man/ are automatically excluded
+vignettes/*       linguist-documentation
+tests/**/*.html   linguist-generated
+inst/doc/quickstart.html    linguist-generated
 
 # Source files
 # ============
@@ -9,5 +11,5 @@ man/*	linguist-documentation
 *.rds       binary
 *.Rd        text
 *.Rdx       binary
-*.Rmd		text
-*.R  		text
+*.Rmd       text
+*.R         text
