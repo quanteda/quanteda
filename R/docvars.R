@@ -21,6 +21,11 @@ docvars <- function(x, field = NULL) {
     UseMethod("docvars")
 }
 
+#' @export
+docvars.default <- function(x, field = NULL) {
+    stop(friendly_class_undefined_message(class(x), "docvars"))
+}
+
 #' @noRd
 #' @export
 docvars.corpus <- function(x, field = NULL) {

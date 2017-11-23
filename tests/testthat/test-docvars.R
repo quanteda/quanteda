@@ -275,4 +275,9 @@ test_that("object always have docvars in the same rows as documents", {
 
 })
 
-
+test_that("test new docvars methods", {
+    expect_error(
+        docvars(0),
+        "docvars\\(\\) only works on.*corpus.*tokens objects"
+    )   
+})
