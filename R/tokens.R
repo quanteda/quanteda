@@ -281,14 +281,7 @@ as.tokens <- function(x, concatenator = "_", ...) {
 #' @noRd
 #' @export
 as.tokens.default <- function(x, concatenator = "", ...) {
-    valid_object_types <- 
-        utils::methods(as.tokens) %>% 
-        as.character() %>% 
-        stringi::stri_extract_last_regex("\\w+$")
-    valid_object_types <- valid_object_types[valid_object_types != "default"]
-    stop("as.tokens() only works on ", 
-         paste(valid_object_types, collapse = ", "),
-         " objects.")
+    stop(friendly_class_undefined_message(class(x), "as.tokens"))
 }
 
 #' @rdname as.tokens
