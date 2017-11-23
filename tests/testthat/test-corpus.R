@@ -304,6 +304,6 @@ test_that("corpus constructor works with tibbles", {
 test_that("test new corpus methods", {
     expect_error(
         corpus(TRUE),
-        "corpus\\(\\) only works on.*character.*Corpus.*objects"
+        "corpus\\(\\) only works on.*character.*corpus.*objects"
     )   
 })

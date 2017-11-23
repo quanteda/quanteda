@@ -59,7 +59,7 @@ as.corpus <- function(x) {
 #' @rdname as.corpus
 #' @noRd
 #' @export
-as.corpus.default <- function(x, concatenator = "", ...) {
+as.corpus.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "as.corpus"))
 }
 

@@ -119,7 +119,7 @@ corpus <- function(x, ...) {
 #' @rdname corpus
 #' @noRd
 #' @export
-corpus.default <- function(x, concatenator = "", ...) {
+corpus.default <- function(x, ...) {
     stop(friendly_class_undefined_message(class(x), "corpus"))
 }
 
