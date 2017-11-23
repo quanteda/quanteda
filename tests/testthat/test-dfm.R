@@ -659,3 +659,10 @@ test_that("dfm error when a dfm is given to for feature selection when x is not 
         matrix(c(1,2,1,1,1,3), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = letters[1:3]))
     )
 })
+
+test_that("test new dfm methods", {
+    expect_error(
+        dfm(TRUE),
+        "dfm\\(\\) only works on character.*corpus.*tokens.*objects"
+    )   
+})
