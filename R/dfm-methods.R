@@ -83,6 +83,14 @@ as.dfm <- function(x) {
     UseMethod("as.dfm")
 }
 
+#' @rdname is.dfm
+#' @method as.dfm default
+#' @noRd
+#' @export
+as.dfm.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "as.dfm"))
+}
+
 #' @noRd
 #' @method as.dfm dfm
 #' @export
