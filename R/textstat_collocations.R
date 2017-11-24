@@ -135,7 +135,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     result <- qatd_cpp_sequences(x, types, id_ignore, min_count, size, 
                                  if (method == "lambda1") "lambda1" else "lambda", 
                                  smoothing)
-
+    
     # compute z for lambda methods
     lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
     result["z"] <- result[lambda_index] / result[["sigma"]]
@@ -146,7 +146,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     
     # sort by decreasing z
     result <- result[order(result[["z"]], decreasing = TRUE), ]
-
+    
     # # compute statistics that require expected counts
     # if (method %in% c("all", "lr", "chi2", "pmi") | show_counts) {
     #     # get observed counts and compute expected counts
@@ -171,9 +171,9 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     #     if (method %in% c("all", "pmi"))
     #         result["pmi"] <- log(df_counts_n[[ncol(df_counts_n)]] / df_counts_e[[ncol(df_counts_e)]], base = 2)
     # }
-
+    
     # remove other measures if not specified
-#    if (method == "lambda" | method == "lambda1")
+    #    if (method == "lambda" | method == "lambda1")
     #    result[c("pmi", "chi2", "G2", "sigma")] <- NULL
     # if (!method %in% c("lambda", "lambda1", "all"))
     #     result[c("lambda", "lambda1", "sigma", "z")] <- NULL
@@ -185,12 +185,12 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     result <- result[, stats::na.omit(match(c("collocation", "count",  "count_nested", "length", 
                                               "lambda", "lambda1", "z", 
                                               "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
-                                     names(result)))]
+                                            names(result)))]
     rownames(result) <- NULL
     
     # # add counts to output if requested
     # if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
-
+    
     # remove results whose counts are less than min_count
     result <- result[result$count >= min_count, ]
     
@@ -243,7 +243,7 @@ is.collocations <- function(x) {
 #     class(x) <- c("collocations", 'data.frame')
 #     return(x)
 # }
- 
+
 # Internal Functions ------------------------------------------------------
 
 # function to get lower-order interactions for k-grams
@@ -296,6 +296,3 @@ get_expected_values <- function(df, size) {
     
     data.frame(t(expected_counts_list))
 }
-
-
-

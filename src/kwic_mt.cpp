@@ -6,43 +6,8 @@ using namespace quanteda;
 typedef pair<size_t, size_t> Target;
 typedef std::vector<Target> Targets;
 
-Targets kwic_range(Text tokens,
-                   const std::vector<std::size_t> &spans,
-                   const SetNgrams &set_words){
-    
-    if(tokens.size() == 0) return {}; // return empty vector for empty text
-    
-    // This part is the same as tokens_detect 
-    Text tokens_pos(tokens.size(), 0);
-    for (std::size_t span : spans) { // substitution starts from the longest sequences
-        if (tokens.size() < span) continue;
-        for (size_t i = 0; i < tokens.size() - (span - 1); i++) {
-            Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
-            bool is_in = set_words.find(ngram) != set_words.end();
-            if (is_in) {
-                std::fill(tokens_pos.begin() + i, tokens_pos.begin() + i + span, 1);
-            }
-        }
-    }
-    
-    Targets targets;
-    size_t start, end;
-    size_t last = tokens_pos.size() - 1;
-    for (size_t k = 0; k < tokens_pos.size(); k++) {
-        if ((k == 0 || tokens_pos[k - 1] == 0) && tokens_pos[k] == 1) {
-            start = k;
-            //Rcout << "starts " << start << "\n";
-        }
-        if (tokens_pos[k] == 1 && (k == last || tokens_pos[k + 1] == 0)) {
-            end = k;
-            //Rcout << "ends " << end << "\n";
-            targets.push_back(make_pair(start, end));
-        }
-    }
-    return targets;
-}
 
-Targets kwic_match(Text tokens,
+Targets kwic(Text tokens,
                    const std::vector<std::size_t> &spans,
                    const SetNgrams &set_words){
     
@@ -73,22 +38,17 @@ struct kwic_mt : public Worker{
     std::vector<Targets> &temp;
     const std::vector<std::size_t> &spans;
     const SetNgrams &set_words;
-    const bool &join;
     
     // Constructor
     kwic_mt(Texts &texts_, std::vector<Targets> &temp_,
-            const std::vector<std::size_t> &spans_, const SetNgrams &set_words_, const bool &join_):
-            texts(texts_), temp(temp_), spans(spans_), set_words(set_words_), join(join_){}
+            const std::vector<std::size_t> &spans_, const SetNgrams &set_words_):
+            texts(texts_), temp(temp_), spans(spans_), set_words(set_words_) {}
     
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++){
-            if (join) {
-                temp[h] = kwic_range(texts[h], spans, set_words);
-            } else {
-                temp[h] = kwic_match(texts[h], spans, set_words);
-            }
+            temp[h] = kwic(texts[h], spans, set_words);
         }
     }
 };
@@ -102,15 +62,13 @@ struct kwic_mt : public Worker{
  * @param texts_ tokens ojbect
  * @param types_ types
  * @param words_ list of target features
- * @param join join adjacent keywords
  */
 
 // [[Rcpp::export]]
 DataFrame qatd_cpp_kwic(const List &texts_,
                         const CharacterVector types_,
                         const List &words_,
-                        const unsigned int &window,
-                        const bool &join){
+                        const unsigned int &window){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as< Types >(types_);
@@ -124,15 +82,11 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     
     // dev::start_timer("Dictionary detect", timer);
 #if QUANTEDA_USE_TBB
-    kwic_mt kwic_mt(texts, temp, spans, set_words, join);
+    kwic_mt kwic_mt(texts, temp, spans, set_words);
     parallelFor(0, texts.size(), kwic_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        if (join) {
-            temp[h] = kwic_range(texts[h], spans, set_words);
-        } else {
-            temp[h] = kwic_match(texts[h], spans, set_words);
-        }
+        temp[h] = kwic(texts[h], spans, set_words);
     }
 #endif
     
@@ -142,7 +96,6 @@ DataFrame qatd_cpp_kwic(const List &texts_,
         len += temp[h].size();
     }
     
-    Texts contexts(len);
     IntegerVector documents_(len), segments_(len);
     IntegerVector pos_from_(len), pos_to_(len);
     CharacterVector coxs_name_(len), coxs_pre_(len), coxs_target_(len), coxs_post_(len);
@@ -159,8 +112,6 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             //Rcout << j << " " << targets[i].first << ":" << targets[i].second << "\n";
             
             // Save as intergers
-            Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
-            contexts[j] = context;
             documents_[j] = (int)h + 1;
             segments_[j] = (int)i + 1;
             
@@ -179,10 +130,6 @@ DataFrame qatd_cpp_kwic(const List &texts_,
         }
     }
     
-
-    Tokens tokens_ = recompile(contexts, types, true, true, is_encoded(types_));
-    tokens_.attr("names") = coxs_name_;
-    
     DataFrame output_ = DataFrame::create(_["docname"] = coxs_name_,
                                           _["from"]    = pos_from_,
                                           _["to"]      = pos_to_,
@@ -191,7 +138,6 @@ DataFrame qatd_cpp_kwic(const List &texts_,
                                           _["post"]    = coxs_post_,
                                           _["stringsAsFactors"] = false);
     
-    output_.attr("tokens") = tokens_;
     output_.attr("docid") = documents_;
     output_.attr("segid") = segments_;
     return output_;

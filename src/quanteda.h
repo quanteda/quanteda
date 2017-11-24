@@ -41,6 +41,7 @@ namespace quanteda{
     typedef tbb::concurrent_vector<int> IntParams;
     typedef tbb::concurrent_vector<long> LongParams;
     typedef tbb::concurrent_vector<double> DoubleParams;
+    typedef tbb::concurrent_vector<std::string> StringParams;
     typedef tbb::spin_mutex Mutex;
 #else
     typedef int IntParam;
@@ -50,6 +51,7 @@ namespace quanteda{
     typedef std::vector<int> IntParams;
     typedef std::vector<long> LongParams;
     typedef std::vector<double> DoubleParams;
+    typedef std::vector<std::string> StringParams;
 #endif    
     
 
