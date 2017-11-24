@@ -19,6 +19,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_collocations
+DataFrame qatd_cpp_collocations(const List& texts_, const CharacterVector& types_, const unsigned int count_min, const IntegerVector sizes_, const std::string method, const double smoothing);
+RcppExport SEXP _quanteda_qatd_cpp_collocations(SEXP texts_SEXP, SEXP types_SEXP, SEXP count_minSEXP, SEXP sizes_SEXP, SEXP methodSEXP, SEXP smoothingSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< const unsigned int >::type count_min(count_minSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type sizes_(sizes_SEXP);
+    Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< const double >::type smoothing(smoothingSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_collocations(texts_, types_, count_min, sizes_, method, smoothing));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_ManhattanPara_cpp
 NumericMatrix qatd_ManhattanPara_cpp(const arma::sp_mat& A, const int margin);
 RcppExport SEXP _quanteda_qatd_ManhattanPara_cpp(SEXP ASEXP, SEXP marginSEXP) {
@@ -321,6 +337,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qutd_cpp_ca", (DL_FUNC) &_quanteda_qutd_cpp_ca, 3},
+    {"_quanteda_qatd_cpp_collocations", (DL_FUNC) &_quanteda_qatd_cpp_collocations, 6},
     {"_quanteda_qatd_ManhattanPara_cpp", (DL_FUNC) &_quanteda_qatd_ManhattanPara_cpp, 2},
     {"_quanteda_qatd_ManhattanPara_cpp2", (DL_FUNC) &_quanteda_qatd_ManhattanPara_cpp2, 3},
     {"_quanteda_qatd_MaximumPara_cpp", (DL_FUNC) &_quanteda_qatd_MaximumPara_cpp, 2},

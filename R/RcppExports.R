@@ -5,6 +5,10 @@ qutd_cpp_ca <- function(objm, threads, residual_floor) {
     .Call(`_quanteda_qutd_cpp_ca`, objm, threads, residual_floor)
 }
 
+qatd_cpp_collocations <- function(texts_, types_, count_min, sizes_, method, smoothing) {
+    .Call(`_quanteda_qatd_cpp_collocations`, texts_, types_, count_min, sizes_, method, smoothing)
+}
+
 qatd_ManhattanPara_cpp <- function(A, margin = 1L) {
     .Call(`_quanteda_qatd_ManhattanPara_cpp`, A, margin)
 }
