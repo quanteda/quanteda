@@ -37,3 +37,10 @@ test_that("test new docnames methods", {
         "docnames\\(\\) only works on.*corpus.*tokens objects"
     )   
 })
+
+test_that("test new docnames<- methods", {
+    expect_error(
+        docnames(data_char_sampletext) <- "X",
+        "docnames<-\\(\\) only works on.*corpus.*tokens objects"
+    )   
+})

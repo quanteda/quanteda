@@ -106,6 +106,10 @@ docvars.kwic <- function(x) {
     UseMethod("docvars<-")
 }
 
+#' @export
+"docvars<-.default" <- function(x, field = NULL, value) {
+    stop(friendly_class_undefined_message(class(x), "docvars<-"))
+}
 
 #' @noRd
 #' @export

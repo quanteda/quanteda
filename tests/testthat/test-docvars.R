@@ -281,3 +281,11 @@ test_that("test new docvars methods", {
         "docvars\\(\\) only works on.*corpus.*tokens objects"
     )   
 })
+
+test_that("test new docvars<- methods", {
+    expect_error(
+        docvars(data_char_sampletext) <- "X",
+        "docvars<-\\(\\) only works on.*corpus.*tokens objects"
+    )   
+})
+
