@@ -56,8 +56,6 @@ as.corpus <- function(x) {
     UseMethod("as.corpus")
 }
 
-#' @rdname as.corpus
-#' @noRd
 #' @export
 as.corpus.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "as.corpus"))

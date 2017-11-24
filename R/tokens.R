@@ -277,8 +277,6 @@ as.tokens <- function(x, concatenator = "_", ...) {
     UseMethod("as.tokens")
 }
 
-#' @rdname as.tokens
-#' @noRd
 #' @export
 as.tokens.default <- function(x, concatenator = "", ...) {
     stop(friendly_class_undefined_message(class(x), "as.tokens"))
