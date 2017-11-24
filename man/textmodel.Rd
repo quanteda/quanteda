@@ -8,13 +8,13 @@
 \title{fit a text model}
 \usage{
 textmodel(x, y = NULL, data = NULL, model = c("wordscores", "nb",
-  "wordfish", "ca"), ...)
+  "wordfish", "ca", "lsa"), ...)
 
 \S4method{textmodel}{dfm,ANY,missing,character}(x, y = NULL, data = NULL,
-  model = c("wordscores", "nb", "wordfish", "ca"), ...)
+  model = c("wordscores", "nb", "wordfish", "ca", "lsa"), ...)
 
 \S4method{textmodel}{formula,missing,dfm,character}(x, y = NULL,
-  data = NULL, model = c("wordscores", "nb", "wordfish", "ca"), ...)
+  data = NULL, model = c("wordscores", "nb", "wordfish", "ca", "lsa"), ...)
 }
 \arguments{
 \item{x}{a quanteda \link{dfm} object containing feature counts by document}
@@ -39,6 +39,8 @@ probabilities.  See \link{textmodel_nb}.}
 See \link{textmodel_wordfish}.}
 
 \item{\code{ca}}{Correspondence analysis scaling of the dfm.}
+
+\item{\code{lsa}}{Correspondence Latent Semantic Analysis.}
 
 \item{\code{lda}}{Fit a topic model based on latent Dirichlet allocation.  
 Not yet implemented -- use \code{\link{convert}}

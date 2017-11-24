@@ -3,6 +3,14 @@
 #include <bitset>
 using namespace quanteda;
 
+#if QUANTEDA_USE_TBB
+typedef tbb::concurrent_vector<std::pair<Ngram, UintParam>> VecPair;
+typedef tbb::concurrent_unordered_map<Ngram, std::pair<UintParam, UintParam>, hash_ngram, equal_ngram> MapNgramsPair;
+#else
+typedef std::vector<std::pair<Ngram, UintParam>> VecPair;
+typedef std::unordered_map<Ngram, std::pair<unsigned int, unsigned int>, hash_ngram, equal_ngram> MapNgramsPair;
+#endif    
+
 // return the matching pattern between two words at each position, 0 for matching, 1 for not matching.
 // for example, for 3-gram, bit = 000, 001, 010 ... 111 eg. 0-7
 int match_bit2(const std::vector<unsigned int> &tokens1, 
@@ -77,56 +85,107 @@ double compute_dice(const std::vector<double> &counts){
     return dice;
 }
 
+Text replace(Text tokens, 
+             SetUnigrams &set_ignore,
+             unsigned int &id_mark){
+    
+    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    
+    for (std::size_t i = 0; i < tokens.size(); i++) {
+        auto it = set_ignore.find(tokens[i]);
+        if (it != set_ignore.end()) {
+            tokens[i] = id_mark;
+        }
+    }
+    return tokens;
+}
+
+struct replace_mt : public Worker{
+    
+    Texts &texts;
+    SetUnigrams &set_ignore;
+    unsigned int &id_mark;
+    
+    replace_mt(Texts &texts_, SetUnigrams &set_ignore_, unsigned int &id_mark_):
+               texts(texts_), set_ignore(set_ignore_), id_mark(id_mark_) {}
+
+    void operator()(std::size_t begin, std::size_t end){
+        for (std::size_t h = begin; h < end; h++) {
+            texts[h] = replace(texts[h], set_ignore, id_mark);
+        }
+    }
+};
 
 void counts(Text text,
-           MapNgrams &counts_seq,
-           SetUnigrams &set_ignore,
-           const unsigned int &size){
-
-    if (text.size() < size) return; // do nothing with very short text
-    for (std::size_t i = 0; i < text.size() - size + 1; i++) {
-        Text text_sub(text.begin() + i, text.begin() + i + size);
-        bool ignore = false;
-        for (std::size_t j = 0; j < text_sub.size(); j++) {
-            auto it = set_ignore.find(text_sub[j]);
-            if (it != set_ignore.end()) {
-                //Rcout << "i:" << i  << " j:" << j << "\n";
+            MapNgramsPair &counts_seq,
+            const std::vector<unsigned int> &sizes,
+            const unsigned int &id_mark){
+    
+    std::vector<bool> flags_nested(text.size(), false);
+    std::vector<bool> flags_temp(text.size(), false);
+    
+    for (auto size : sizes) { // start from the largest size
+        if (text.size() < size) continue;
+        for (std::size_t i = 0; i < text.size() - size + 1; i++) {
+            
+            bool marked = false; // if the segment contain ineligible
+            bool nested = false;
+            bool padded = false;
+            
+            // check if sub-vector will contain ineligible
+            for (std::size_t j = i; j <  i + size; j++) {
+                if (text[j] == 0) {
+                    padded = true;
+                } else if (text[j] == id_mark) {
+                    marked = true;
+                    i = j; // jump
+                    break;
+                }
+                if (flags_nested[j]) {
+                    nested = true;
+                }
+            }
+            
+            if (!marked) {
+                Text text_sub(text.begin() + i, text.begin() + i + size);
+                //Rcout << "@" << i << " " <<  nested << ": ";
                 //dev::print_ngram(text_sub);
-                i += j; // jump
-                ignore = true;
-                break;
+                auto &count = counts_seq[text_sub];
+                count.first++;
+                if (!padded) {
+                    if (nested) {
+                        count.second++;
+                    }
+                    std::fill(flags_temp.begin() + i, flags_temp.begin() + i + size, true);
+                }
             }
         }
-        if (!ignore) {
-            counts_seq[text_sub]++;    
-        }
+        flags_nested = flags_temp;
     }
 }
 
 struct counts_mt : public Worker {
     
     Texts texts;
-    MapNgrams &counts_seq;
-    SetUnigrams &set_ignore;
-    const unsigned int &size;
+    MapNgramsPair &counts_seq;
+    const std::vector<unsigned int> &sizes;
+    const unsigned int &id_mark;
 
-    counts_mt(Texts texts_, MapNgrams &counts_seq_, SetUnigrams &set_ignore_, const unsigned int &size_):
-        texts(texts_), counts_seq(counts_seq_), set_ignore(set_ignore_), size(size_){}
+    counts_mt(Texts texts_, MapNgramsPair &counts_seq_, const std::vector<unsigned int> &sizes_, 
+              const unsigned int &id_mark_):
+              texts(texts_), counts_seq(counts_seq_), sizes(sizes_), 
+              id_mark(id_mark_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
-            counts(texts[h], counts_seq, set_ignore, size);
+            counts(texts[h], counts_seq, sizes, id_mark);
         }
     }
 };
 
 void estimates(std::size_t i,
-               VecNgrams &seqs_np,  // seqs without padding
-               IntParams &cs_np,
-               VecNgrams &seqs,
-               IntParams &cs, 
-               DoubleParams &sgma, 
-               DoubleParams &lmda, 
+               VecNgrams &seqs,  // seqs without padding
+               MapNgramsPair counts_seq,
                DoubleParams &dice,
                DoubleParams &pmi,
                DoubleParams &logratio,
@@ -134,31 +193,19 @@ void estimates(std::size_t i,
                DoubleParams &gensim,
                DoubleParams &lfmd,
                const String &method,
-               const int &count_min,
-               const double nseqs,
                const double smoothing) {
     
-    std::size_t n = seqs_np[i].size(); //n=2:5, seqs
+    std::size_t n = seqs[i].size(); //n=2:5, seqs
     if (n == 1) return; // ignore single words
-    if (cs_np[i] < count_min) return;
-    //output counts
-    std::vector<double> counts_bit(std::pow(2, n), smoothing);// use 1/2 as smoothing
-    for (std::size_t j = 0; j < seqs.size(); j++) {
-        //if (i == j) continue; // do not compare with itself
+    // output counts
+    std::vector<double> counts_bit(std::pow(2, n), smoothing);
+    for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
+        if (it->first.size() != n) continue; // skip different lengths
         int bit;
-        bit = match_bit2(seqs_np[i], seqs[j]);
-        counts_bit[bit] += cs[j];
+        bit = match_bit2(seqs[i], it->first);
+        counts_bit[bit] += it->second.first;
     }
     //counts_bit[std::pow(2, n)-1]  += cs_np[i];//  c(2^n-1) += number of itself  
-    
-    //B-J algorithm    
-    if (method == "lambda1"){
-        sgma[i] = sigma_uni(counts_bit, n);
-        lmda[i] = lambda_uni(counts_bit, n);
-    } else {
-        sgma[i] = sigma_all(counts_bit);
-        lmda[i] = lambda_all(counts_bit, n);
-    }
     
     // // Dice coefficient
     // dice[i] = n * compute_dice(counts_bit);
@@ -243,14 +290,9 @@ void estimates(std::size_t i,
     // }
 }
 
-//diable templately for output counts
 struct estimates_mt : public Worker{
-    VecNgrams &seqs_np;
-    IntParams &cs_np;
     VecNgrams &seqs;
-    IntParams &cs;
-    DoubleParams &sgma;
-    DoubleParams &lmda;
+    MapNgramsPair &counts_seq;
     DoubleParams &dice;
     DoubleParams &pmi;
     DoubleParams &logratio;
@@ -258,23 +300,69 @@ struct estimates_mt : public Worker{
     DoubleParams &gensim;
     DoubleParams &lfmd;
     const String &method;
-    const unsigned int &count_min;
-    const double nseqs;
     const double smoothing;
 
-    // Constructor
-    estimates_mt(VecNgrams &seqs_np_, IntParams &cs_np_, VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, DoubleParams &dice_,
+    estimates_mt(VecNgrams &seqs_, MapNgramsPair &counts_seq_, DoubleParams &dice_,
                  DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, const String &method,
-                 const unsigned int &count_min_, const double nseqs_, const double smoothing_):
-        seqs_np(seqs_np_), cs_np(cs_np_), seqs(seqs_), cs(cs_), sgma(ss_), lmda(ls_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_),
-        gensim(gensim_), lfmd(lfmd_), method(method), count_min(count_min_), nseqs(nseqs_), smoothing(smoothing_){}
+                 const double smoothing_):
+                 seqs(seqs_), counts_seq(counts_seq_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_),
+                 gensim(gensim_), lfmd(lfmd_), method(method), smoothing(smoothing_){}
 
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-                estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, nseqs, smoothing);
+            estimates(i, seqs, counts_seq, dice, pmi, logratio, chi2, gensim, lfmd, method, smoothing);
         }
     }
 };
+
+void estimates_lambda(std::size_t i,
+                      const VecNgrams &seqs,
+                      const VecPair &seqs_all,
+                      DoubleParams &sgma, 
+                      DoubleParams &lmda,
+                      const String &method,
+                      const double smoothing) {
+    
+    std::size_t n = seqs[i].size();
+    if (n == 1) return; // ignore single words
+    
+    std::vector<double> counts_bit(std::pow(2, n), smoothing);
+    for (std::size_t j = 0; j < seqs_all.size(); j++) {
+        if (seqs_all[j].first.size() != n) continue; // skip different lengths
+        int bit = match_bit2(seqs[i], seqs_all[j].first);
+        counts_bit[bit] += seqs_all[j].second;
+    }
+    
+    //B-J algorithm    
+    if (method == "lambda1"){
+        sgma[i] = sigma_uni(counts_bit, n);
+        lmda[i] = lambda_uni(counts_bit, n);
+    } else {
+        sgma[i] = sigma_all(counts_bit);
+        lmda[i] = lambda_all(counts_bit, n);
+    }
+}
+
+struct estimates_lambda_mt : public Worker{
+    const VecNgrams &seqs;
+    const VecPair &seq_all;
+    DoubleParams &sgma;
+    DoubleParams &lmda;
+    const String &method;
+    const double smoothing;
+    
+    estimates_lambda_mt(const VecNgrams &seqs_, const VecPair &seq_all_, DoubleParams &sgma_, DoubleParams &lmda_, 
+                        const String &method, const double smoothing_) :
+                        seqs(seqs_), seq_all(seq_all_), sgma(sgma_), lmda(lmda_), 
+                        method(method), smoothing(smoothing_) {}
+    
+    void operator()(std::size_t begin, std::size_t end){
+        for (std::size_t i = begin; i < end; i++) {
+            estimates_lambda(i, seqs, seq_all, sgma, lmda, method, smoothing);
+        }
+    }
+};
+
 
 /* 
 * This function estimates the strength of association between specified words 
@@ -282,10 +370,10 @@ struct estimates_mt : public Worker{
 * @used sequences()
 * @param texts_ tokens object
 * @param count_min sequences appear less than this are ignored
-* @param method 
-* @param smoothing
+* @param method method to estimate collocation association
+* @param smoothing this number is added to collocation counts
+* @param nested estimate parameters for nested collocations
 */
-
 // [[Rcpp::export]]
 DataFrame qatd_cpp_sequences(const List &texts_,
                              const CharacterVector &types_,
@@ -297,7 +385,9 @@ DataFrame qatd_cpp_sequences(const List &texts_,
     
     Texts texts = as<Texts>(texts_);
     std::vector<unsigned int> sizes = as< std::vector<unsigned int> >(sizes_);
+    std::sort(sizes.begin(), sizes.end(), std::greater<unsigned int>()); // sort in descending order
     std::vector<unsigned int> words_ignore = as< std::vector<unsigned int> >(words_ignore_);
+    unsigned int id_mark = UINT_MAX; // use largest limit as filler
 
     SetUnigrams set_ignore;
     set_ignore.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
@@ -305,140 +395,111 @@ DataFrame qatd_cpp_sequences(const List &texts_,
         set_ignore.insert(words_ignore[g]);
     }
    
-    // Estimate significance of the sequences
-    unsigned int len_coe = sizes.size() * types_.size();
-    std::vector<double> sgma_all, lmda_all, dice_all, pmi_all, logratio_all;
-    std::vector<double> chi2_all, gensim_all, lfmd_all, cs_all, ns_all;
-    
-    sgma_all.reserve(len_coe);
-    lmda_all.reserve(len_coe);
-    dice_all.reserve(len_coe);
-    pmi_all.reserve(len_coe);
-    logratio_all.reserve(len_coe);
-    chi2_all.reserve(len_coe);
-    gensim_all.reserve(len_coe);
-    lfmd_all.reserve(len_coe);
-    cs_all.reserve(len_coe);
-    ns_all.reserve(len_coe);
-    
-    VecNgrams seqs_all;
-    seqs_all.reserve(len_coe);
-    
-    //output oberved counting
-    //std::vector<std::string> ob_all;
-    //ob_all.reserve(len_coe);
-    
-    for (unsigned int size : sizes) {
-        //unsigned int mw_len = sizes[m];
-        // Collect all sequences of specified words
-        MapNgrams counts_seq;
-        // dev::Timer timer;
-        // dev::start_timer("Count", timer);
+   // replace ineligble tokens with special ID
 #if QUANTEDA_USE_TBB
-        counts_mt count_mt(texts, counts_seq, set_ignore, size);
-        parallelFor(0, texts.size(), count_mt);
+    replace_mt replace_mt(texts, set_ignore, id_mark);
+    parallelFor(0, texts.size(), replace_mt, id_mark);
 #else
-        for (std::size_t h = 0; h < texts.size(); h++) {
-            counts(texts[h], counts_seq, set_ignore, size);
-        }
+    for (std::size_t h = 0; h < texts.size(); h++) {
+        texts[h] = replace(texts[h], set_ignore, id_mark);
+    }
 #endif
-        // dev::stop_timer("Count", timer);
-        
-        // Separate map keys and values
-        std::size_t len = counts_seq.size();
-        VecNgrams seqs, seqs_np;   //seqs_np sequences without padding
-        IntParams cs, cs_np;    // cs: count of sequences;  
-        seqs.reserve(len);
-        seqs_np.reserve(len);
-        cs_np.reserve(len);
-        cs.reserve(len);
-        
-        double total_counts = 0.0;
-        std::size_t len_nopad = 0;
-        for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
+   
+    MapNgramsPair counts_seq;
+    counts_seq.max_load_factor(GLOBAL_PATTERNS_MAX_LOAD_FACTOR);
+   
+    //dev::Timer timer;
+    //dev::start_timer("Count", timer);
+#if QUANTEDA_USE_TBB
+    counts_mt count_mt(texts, counts_seq, sizes, id_mark);
+    parallelFor(0, texts.size(), count_mt);
+#else
+    for (std::size_t h = 0; h < texts.size(); h++) {
+        counts(texts[h], counts_seq, sizes, id_mark);
+    }
+#endif
+    //dev::stop_timer("Count", timer);
+
+    VecNgrams seqs;
+    VecPair seqs_all;
+    IntParams counts, counts_nested, lengths;
+    std::size_t len = counts_seq.size();
+    seqs.reserve(len);
+    seqs_all.reserve(len);
+    counts.reserve(len);
+    counts_nested.reserve(len);
+    lengths.reserve(len);
+    for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
+        // conver to a vector for faster itteration
+        seqs_all.push_back(std::make_pair(it->first, it->second.first)); 
+        if (it->second.first < count_min) continue;
+        // estimate only sequences without padding
+        if (std::none_of(it->first.begin(), it->first.end(), [](unsigned int v){ return v == 0; })) {
             seqs.push_back(it->first);
-            cs.push_back(it->second);
-            total_counts += it->second;
-            if (std::find(it->first.begin(), it->first.end(), 0) == it->first.end()) {
-                seqs_np.push_back(it->first);
-                cs_np.push_back(it->second);
-                seqs_all.push_back(it->first);
-                cs_all.push_back(it->second);
-                ns_all.push_back(it->first.size());
-                len_nopad++;
-            }
+            lengths.push_back(it->first.size());
+            counts.push_back(it->second.first);
+            counts_nested.push_back(it->second.second);
         }
-        
-        //output counts;
-        //std::vector<std::string> ob_n(len_nopad);
-        
-        // adjust total_counts of MW 
-        total_counts += 4 * smoothing;
-        
-        // Estimate significance of the sequences
-        DoubleParams sgma(len_nopad), lmda(len_nopad), dice(len_nopad), pmi(len_nopad);
-        DoubleParams logratio(len_nopad), chi2(len_nopad), gensim(len_nopad), lfmd(len_nopad);
-        
-        //dev::start_timer("Estimate", timer);
+    }
+    
+    std::size_t len_np = seqs.size();
+    DoubleParams sgma(len_np), lmda(len_np);
+    //DoubleParams dice(len_np), pmi(len_np), logratio(len_np), chi2(len_np), gensim(len_np), lfmd(len_np);
+    
+    //dev::start_timer("Estimate", timer);
 #if QUANTEDA_USE_TBB
-        estimates_mt estimate_mt(seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
-        parallelFor(0, seqs_np.size(), estimate_mt);
+    estimates_lambda_mt estimate_mt(seqs, seqs_all, sgma, lmda, method, smoothing);
+    parallelFor(0, seqs.size(), estimate_mt);
 #else
-        for (std::size_t i = 0; i < seqs_np.size(); i++) {
-            estimates(i, seqs_np, cs_np, seqs, cs, sgma, lmda, dice, pmi, logratio, chi2, gensim, lfmd, method, count_min, total_counts, smoothing);
-        }
+    for (std::size_t i = 0; i < seqs.size(); i++) {
+        estimates_lambda(i, seqs, seqs_all, sgma, lmda, method, smoothing);
+    }
 #endif
-        //dev::stop_timer("Estimate", timer);
-        sgma_all.insert(sgma_all.end(), sgma.begin(), sgma.end());
-        lmda_all.insert(lmda_all.end(), lmda.begin(), lmda.end());
-        dice_all.insert(dice_all.end(), dice.begin(), dice.end());
-        pmi_all.insert(pmi_all.end(), pmi.begin(), pmi.end());
-        logratio_all.insert(logratio_all.end(), logratio.begin(), logratio.end());
-        chi2_all.insert(chi2_all.end(), chi2.begin(), chi2.end());
-        gensim_all.insert(gensim_all.end(), gensim.begin(), gensim.end());
-        lfmd_all.insert(lfmd_all.end(), lfmd.begin(), lfmd.end());
+    //dev::stop_timer("Estimate", timer);
+
         
-        //output counts
-        //ob_all.insert(ob_all.end(), ob_n.begin(), ob_n.end());
-        
-        // Allow user to stop
-        R_CheckUserInterrupt();
+    // convert sequences from integer to character
+    CharacterVector seqs_(seqs.size());
+    for (std::size_t i = 0; i < seqs.size(); i++) {
+        seqs_[i] = join_strings(seqs[i], types_, " ");
     }
     
-    // Convert sequences from integer to character
-    CharacterVector seqs_(seqs_all.size());
-    for (std::size_t i = 0; i < seqs_all.size(); i++) {
-        seqs_[i] = join_strings(seqs_all[i], types_, " ");
-    }
+    // Rcout << "collocation: " << seqs_.size() << "\n";
+    // Rcout << "count: " << counts.size() << "\n";
+    // Rcout << "count_nested: " << counts_nested.size() << "\n";
+    // Rcout << "lmda: " << lmda.size() << "\n";
+    // Rcout << "sgma: " << sgma.size() << "\n";
     
-    DataFrame output_ = DataFrame::create(_["collocation"] = seqs_,
-                                          _["count"] = as<IntegerVector>(wrap(cs_all)),
-                                          _["length"] = as<NumericVector>(wrap(ns_all)),
-                                          _[method] = as<NumericVector>(wrap(lmda_all)),
-                                          _["sigma"] = as<NumericVector>(wrap(sgma_all)),
-                                          _["dice"] = as<NumericVector>(wrap(dice_all)),
-                                          _["gensim"] = as<NumericVector>(wrap(gensim_all)),
-                                          _["pmi"] = as<NumericVector>(wrap(pmi_all)),
-                                          _["G2"] = as<NumericVector>(wrap(logratio_all)),
-                                          _["chi2"] = as<NumericVector>(wrap(chi2_all)),
-                                          _["LFMD"] = as<NumericVector>(wrap(lfmd_all)),
-                                          _["stringsAsFactors"] = false);
+    DataFrame output_ = DataFrame::create(
+         _["collocation"] = seqs_,
+         _["count"] = as<IntegerVector>(wrap(counts)),
+         _["count_nested"] = as<IntegerVector>(wrap(counts_nested)),
+         _["length"] = as<NumericVector>(wrap(lengths)),
+         _[method] = as<NumericVector>(wrap(lmda)),
+         _["sigma"] = as<NumericVector>(wrap(sgma)),
+         _["stringsAsFactors"] = false);
+    
     return output_;
+         
 }
 
 
 /***R
 require(quanteda)
 toks <- tokens(data_corpus_inaugural)
-#toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-types <- attr(toks, 'types')
-id_ignore <- unlist(quanteda:::regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
+toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
+id_mark <- unlist(quanteda:::regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
 
-if (is.null(id_ignore)) id_ignore <- integer(0)
-(out <- qatd_cpp_sequences(toks, types, id_ignore, 1, 3, "lambda", 0.0))
+if (is.null(id_mark)) id_mark <- integer(0)
+(out <- qatd_cpp_sequences(toks, types(toks), id_mark, 2, 2:3, "lambda", 0.5))
+(out <- out[order(out$lambda, decreasing = TRUE),])
+(out <- out[out$count != out$count_nested & out$length < max(out$length),])
 
 txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
 toks2 <- tokens(txt)
-(out2 <- qatd_cpp_sequences(toks2, attr(toks2, 'types'), c(3), 1, 3, "lambda", 0.0))
+(out2 <- qatd_cpp_sequences(toks2, types(toks2), numeric(), 1, 3, "lambda", 0.0))
+
+toks3 <- tokens('a b c . d e f')
+(out3 <- qatd_cpp_sequences(toks3, types(toks3), 4, 1, 2:3, "lambda", 0.0))
 
 */
