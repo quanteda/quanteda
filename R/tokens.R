@@ -171,6 +171,11 @@ tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", 
     UseMethod("tokens")
 }
 
+#' @export
+tokens.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "tokens"))
+}
+
 #' @rdname tokens
 #' @noRd
 #' @export

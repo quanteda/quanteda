@@ -493,3 +493,10 @@ test_that("test new as.tokens methods", {
         "as.tokens\\(\\) only works on.*list"
     )   
 })
+
+test_that("test new tokens methods", {
+    expect_error(
+        tokens(TRUE),
+        "tokens\\(\\) only works on character, corpus, tokens objects"
+    )   
+})
