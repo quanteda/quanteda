@@ -131,6 +131,13 @@ predict.textmodel_lsa_fitted <- function(object, newdata = NULL, ...) {
     return (result)
 }
 
+#' @rdname textmodel_lsa
+#' @method as.dfm textmodel_lsa_fitted
+#' @export
+as.dfm.textmodel_lsa_fitted <- function(x) {
+    as.dfm(x$matrix_low_rank)
+}
+
 #' @rdname textmodel-internal
 #' @param doc_dim,feat_dim the document and feature dimension scores to be 
 #'   extracted as coefficients
@@ -148,3 +155,4 @@ setMethod("coef", signature(object = "textmodel_lsa_fitted"),
 #' @export
 setMethod("coefficients", signature(object = "textmodel_lsa_fitted"),
           function(object, ...) coef(object, ...))
+

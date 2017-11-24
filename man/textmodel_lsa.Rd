@@ -3,11 +3,14 @@
 \name{textmodel_lsa}
 \alias{textmodel_lsa}
 \alias{predict.textmodel_lsa_fitted}
+\alias{as.dfm.textmodel_lsa_fitted}
 \title{Latent Semantic Analysis}
 \usage{
 textmodel_lsa(x, nd = 10, margin = c("both", "documents", "features"))
 
 \method{predict}{textmodel_lsa_fitted}(object, newdata = NULL, ...)
+
+\method{as.dfm}{textmodel_lsa_fitted}(x)
 }
 \arguments{
 \item{x}{the \link{dfm} on which the model will be fit}
