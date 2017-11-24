@@ -65,3 +65,16 @@ test_that("textmodel-lsa (rsvd) works as expected as lsa::as.textmatrix()", {
     
     expect_equivalent(round(abs(qtd_lsa$matrix_low_rank), 3), round(abs(t(foxlsaMatrix_lowRank)), 3))
 })
+
+test_that("textmodel-lsa works with margin argument", {
+
+    ie_dfm <- dfm(data_corpus_irishbudget2010)
+    ie_lsa1 <- textmodel_lsa(ie_dfm, margin = 'both')
+    expect_equal(dim(ie_lsa1$matrix_low_rank), dim(ie_dfm))
+    
+    ie_lsa2 <- textmodel_lsa(ie_dfm, margin = 'documents')
+    expect_equal(dim(ie_lsa2$matrix_low_rank), c(10, nfeature(ie_dfm)))
+    
+    ie_lsa3 <- textmodel_lsa(ie_dfm, margin = 'features')
+    expect_equal(dim(ie_lsa3$matrix_low_rank), c(ndoc(ie_dfm), 10))
+})
