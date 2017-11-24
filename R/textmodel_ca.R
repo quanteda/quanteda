@@ -98,7 +98,7 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
         S  <- (P - eP) / sqrt(eP)
     } else {
         # c++ function to keep the residual matrix sparse
-        S <- as(qutd_cpp_ca(P, threads, residual_floor/sqrt(n)), 'dgCMagtrix')
+        S <- qutd_cpp_ca(P, threads, residual_floor/sqrt(n))
     }
     
     #dec <- rsvd::rsvd(S, nd)   #rsvd is not as stable as RSpectra

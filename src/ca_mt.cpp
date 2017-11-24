@@ -3,6 +3,18 @@
 using namespace quanteda;
 using namespace arma;
 
+#if !defined(ARMA_64BIT_WORD)
+#define ARMA_64BIT_WORD
+#endif
+
+
+// #if QUANTEDA_USE_TBB
+// typedef std::tuple<unsigned int, unsigned int, double> Triplet;
+// typedef tbb::concurrent_vector<Triplet> Triplets;
+// #else
+// typedef std::tuple<unsigned int, unsigned int, double> Triplet;
+// typedef std::vector<Triplet> Triplets;
+// #endif
 
 //find the principle elements for the sparse residual matrix
 void create_residual_ca(std::size_t row_num, const arma::sp_mat& objm, const arma::colvec &rsum, const arma::rowvec &csum,
@@ -40,7 +52,7 @@ struct Res : public Worker {
 };
 // [[Rcpp::export]]
 
-S4 qutd_cpp_ca(const arma::sp_mat &objm, unsigned int threads, const double residual_floor){
+arma::sp_mat qutd_cpp_ca(const arma::sp_mat &objm, unsigned int threads, const double residual_floor){
     
     const std::size_t N = objm.n_rows;
     const std::size_t K = objm.n_cols;
@@ -69,33 +81,26 @@ S4 qutd_cpp_ca(const arma::sp_mat &objm, unsigned int threads, const double resi
 #endif
     }
     
+    // Convert to Rcpp objects
     std::size_t mat_size = residual_tri.size();
-    IntegerVector dim_ = IntegerVector::create(N, K);
-    IntegerVector i_(mat_size), j_(mat_size);
-    NumericVector x_(mat_size);
-    
+    arma::umat index_mat(2, mat_size, arma::fill::zeros);
+    arma::vec w_values(mat_size, arma::fill::zeros);
     for (std::size_t k = 0; k < residual_tri.size(); k++) {
-        i_[k] = std::get<0>(residual_tri[k]);
-        j_[k] = std::get<1>(residual_tri[k]);
-        x_[k] = std::get<2>(residual_tri[k]);
+        index_mat(0,k) = std::get<0>(residual_tri[k]);
+        index_mat(1,k) = std::get<1>(residual_tri[k]);
+        w_values(k) = std::get<2>(residual_tri[k]);
     }
     
-    S4 mat_("dgTMatrix");
-    mat_.slot("i") = i_;
-    mat_.slot("j") = j_;
-    mat_.slot("x") = x_;
-    mat_.slot("Dim") = dim_;
-    
-    //dev::stop_timer("Convert", timer);
-    
-    return mat_;
+    // constract the sparse matrix
+    arma::sp_mat spm(index_mat, w_values, N, K);
+    return spm;
 }
 
 /***R
-smoke <- matrix(c(4,2,3,2, 4,5,7,4,25,10,12,4,18,24,33,13,10,6,7,2), nrow = 5, ncol = 4, byrow = T)
+smoke<-matrix(c(4,2,3,2, 4,5,7,4,25,10,12,4,18,24,33,13,10,6,7,2), nrow = 5, ncol = 4, byrow = T)
 threads = 7
 residual_floor = 0.1
 n = 195
 P <- as.dfm(smoke)/n
-qutd_cpp_ca(P, threads, residual_floor/sqrt(n))
+quatd_cpp_ca(P, threads, residual_floor/sqrt(n))
 */
