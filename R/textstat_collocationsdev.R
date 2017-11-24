@@ -123,11 +123,6 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
     # lower case if requested
     if (tolower) x <- tokens_tolower(x, keep_acronyms = TRUE)
     
-    # segment by sentences, if the call started with a tokens object
-    #if (who_called_me_first(sys.calls(), "textstat_collocationsdev") %in% c("tokens", "tokenizedTexts")) {
-    #    x <- tokens_segment_by_punctuation(x, remove_delimiter = TRUE)
-    #}
-    
     attrs <- attributes(x)
     types <- types(x)
     id_ignore <- unlist(regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
@@ -252,36 +247,6 @@ is.sequences <- function(x) "sequences" %in% class(x)
 
 # Internal Functions ------------------------------------------------------
 
-## function to segment tokens sequences into separate objects, based on 
-## punctuation.  Mimics tokens_segment() but provides a temporary
-## workaround with specific functionality.  See tests at the end of
-## test-textstat_collocations.R
-tokens_segment_by_punctuation <- function(x, remove_delimiter = TRUE) {
-    len_original <- length(x)
-    names_original <- names(x)
-    x <- lapply(x, function(y) {
-        y <- c(y, ".")  # make sure every sequence ends with a punct character
-        punct_index <- which(stringi::stri_detect_regex(y, "^\\p{P}+$"))
-        if (!length(punct_index)) return(y) # should never happen now
-        punct_reps <- punct_index - c(0, punct_index[-length(punct_index)])
-        y <- split(y, rep(1:length(punct_index), punct_reps))
-        if (remove_delimiter) y <- lapply(y, function(z) z[-length(z)])
-        y <- y[lengths(y) > 0]    # remove any zero-length elements
-        if (!length(y)) return(list(""))
-        names(y) <- 1:length(y)  # rename in sequence
-        y
-    })
-    
-    # remove top level of list
-    x <- unlist(x, recursive = FALSE)
-    # convert any "tokens" left as "" that are empty into character(0)
-    x <- lapply(x, function(y) if (all(y == "")) character(0) else y)
-    # make into tokens
-    x <- as.tokens(x)
-    if (length(x) == len_original) names(x) <- names_original
-    x
-}
-
 # function to get lower-order interactions for k-grams
 # example:
 #  marginalfun(3)
@@ -308,48 +273,4 @@ make_count_names <- function(size, label = c("n", "e")) {
     combinations <- apply(combinations, 1, paste, collapse = "")
     sort(combinations)
 }
-
-# function to get expected counts from IPF
-get_expected_values <- function(df, size) {
-    # get the columns of the data.frame that are the n* counts
-    counts <- df[, grep("^n\\d+", names(df))]
-    # sort the counts alphabetically
-    counts <- df[, sort(names(counts))]
-    
-    n <- n00 <- n01 <- n10 <- n11 <- e00 <- e01 <- e10 <- e11 <- NULL
-    
-    if (size == 2) {
-        result <- data.table(counts)
-        result[, n := rowSums(result)]
-        result[, c("e00", "e01", "e10", "e11") := 
-                   list((n00 + n01) * (n00 + n10) / n,
-                        (n00 + n01) * (n01 + n11) / n,
-                        (n10 + n11) * (n00 + n10) / n,
-                        (n10 + n11) * (n01 + n11) / n)]
-        result <- as.data.frame(result[, list(e00, e01, e10, e11)])
-        
-    } else {
-        expected_counts_list <- apply(counts, 1, function(x) {
-            countsnum <- as.numeric(x)
-            names(countsnum) <- names(counts)
-            array_dimnames <- c(rep(list(c("0", "1")), size))
-            names(array_dimnames) <- paste0("W", size:1)
-            counts_table <- array(countsnum, dim = rep(2, size), dimnames = array_dimnames)
-            
-            counts_expected <- stats::loglin(counts_table,
-                                             margin =  marginalfun(size),
-                                             fit = TRUE, print = FALSE)$fit
-            
-            counts_expected <- as.numeric(counts_expected)
-            names(counts_expected) <- gsub("e", "n", names(counts))
-            counts_expected
-        })
-        result <- data.frame(t(expected_counts_list))
-        names(result) <- make_count_names(size, "e")
-    }
-    
-    result
-}
-
-
 

@@ -45,10 +45,6 @@ qatd_cpp_fcm <- function(texts_, n_types, count, window, weights, ordered, tri, 
     .Call(`_quanteda_qatd_cpp_fcm`, texts_, n_types, count, window, weights, ordered, tri, nvec)
 }
 
-loglin_cpp_2 <- function(dtab_, conf, table_, start, snmar, eps, iter) {
-    .Call(`_quanteda_loglin_cpp_2`, dtab_, conf, table_, start, snmar, eps, iter)
-}
-
 qatd_cpp_sequences <- function(texts_, types_, words_ignore_, count_min, sizes_, method, smoothing) {
     .Call(`_quanteda_qatd_cpp_sequences`, texts_, types_, words_ignore_, count_min, sizes_, method, smoothing)
 }

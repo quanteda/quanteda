@@ -211,37 +211,36 @@ test_that("collocation is counted correctly in racing conditions, issue #381", {
     
 })
 
-# Broken
-# test_that("textstat_collocationsdev works with corpus, character, tokens objects", {
-#     txt <- data_char_sampletext
-#     corp <- corpus(txt)
-#     expect_equal(
-#         textstat_collocationsdev(txt, min_count = 2, size = 3),
-#         textstat_collocationsdev(corp, min_count = 2, size = 3)
-#     )
-#     expect_equal(
-#         textstat_collocationsdev(tokens(txt), min_count = 2, size = 3),
-#         textstat_collocationsdev(tokens(txt, hash = FALSE), min_count = 2, size = 3)
-#     )
-#     
-#     ## THIS SHOULD BE THE SAME, BUT IS NOT BECAUSE THE REMOVED PUNCTUATION BECOMES
-#     ## PADS, AND IS COUNTED, WHEN IT SHOULD NOT BE COUNTED AT ALL
-#     
-#     toks <- tokens(txt)
-#     seqs_corp <- textstat_collocationsdev(corp, method = "lambda", min_count = 2, size = 3)
-#     seqs_toks <- textstat_collocationsdev(tokens_remove(toks, "\\p{P}", valuetype = "regex", padding = TRUE), method = "lambda", min_count = 2, size = 3)
-#     expect_equal(
-#         seqs_corp[, 1:3],
-#         seqs_toks[match(seqs_corp$collocation, seqs_toks$collocation), 1:3],
-#         check.attributes = FALSE
-#     )
-# })
+test_that("textstat_collocationsdev works with corpus, character, tokens objects", {
+    txt <- data_char_sampletext
+    corp <- corpus(txt)
+    expect_equal(
+        textstat_collocationsdev(txt, min_count = 2, size = 3),
+        textstat_collocationsdev(corp, min_count = 2, size = 3)
+    )
+    # expect_equal(
+    #     textstat_collocationsdev(tokens(txt), min_count = 2, size = 3),
+    #     textstat_collocationsdev(tokens(txt, hash = FALSE), min_count = 2, size = 3)
+    # )
+    # 
+    # ## THIS SHOULD BE THE SAME, BUT IS NOT BECAUSE THE REMOVED PUNCTUATION BECOMES
+    # ## PADS, AND IS COUNTED, WHEN IT SHOULD NOT BE COUNTED AT ALL
+    # 
+    # toks <- tokens(txt)
+    # seqs_corp <- textstat_collocationsdev(corp, method = "lambda", min_count = 2, size = 3)
+    # seqs_toks <- textstat_collocationsdev(tokens_remove(toks, "\\p{P}", valuetype = "regex", padding = TRUE), method = "lambda", min_count = 2, size = 3)
+    # expect_equal(
+    #     seqs_corp[, 1:3],
+    #     seqs_toks[match(seqs_corp$collocation, seqs_toks$collocation), 1:3],
+    #     check.attributes = FALSE
+    # )
+})
 
 test_that("lambda & [ function",{
     toks <- tokens('E E G F a b c E E G G f E E f f G G')
     toks_capital <- tokens_select(toks, "^[A-Z]$", valuetype="regex", 
                                   case_insensitive = FALSE, padding = TRUE)
-    seqs <- textstat_collocationsdev(toks_capital, min_count = 1)
+    seqs <- textstat_collocationsdev(toks_capital, min_count = 1, show_counts = TRUE)
     a_seq <- seqs[1, ]
     
     #call Jouni's implementation
@@ -252,6 +251,8 @@ test_that("lambda & [ function",{
     expect_equal(a_seq$collocation, 'g f')
     expect_equal(a_seq$lambda, test2_stat[2])
     expect_equal(class(a_seq), c("collocationsdev", 'data.frame'))
+    expect_equal(a_seq$n00, test2_stat[10]+0.5)
+    expect_equal(a_seq$n11, test2_stat[13]+0.5)
 })
 
 # test_that("deprecated collocations function works", {
