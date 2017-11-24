@@ -112,8 +112,13 @@ VALID_SCORING_METHODS <- c("lambda", "lambda1", "lr", "chi2", "pmi", "LFMD") #, 
 textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_count = 2, smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...) {
     
     method <- match.arg(method, c("all", VALID_SCORING_METHODS))
-    if (any(!(size %in% 2:5)))
-        stop("Only bigram, trigram, 4-gram and 5-gram collocations implemented so far.")
+    if (any(size == 1))
+        stop("Collocation sizes must be larger than 1")
+    if (any(size > 5))
+        stop("Collocation sizes must be smaller than 6")
+    
+    if (length(size) > 1 & show_counts == TRUE)
+        stop("show_counts only works when the size of the collocation is fixed")
     
     # lower case if requested
     if (tolower) x <- tokens_tolower(x, keep_acronyms = TRUE)
@@ -151,7 +156,7 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
         result <- result[order(result[["z"]], decreasing = TRUE), ]
     }
     
-    if (method %in% c("all", "lr", "chi2", "pmi", "LFMD") | show_counts) {
+    if (method %in% c("all", "lr", "chi2", "pmi", "LFMD") & show_counts) {
         # get observed counts and compute expected counts
         # split the string into n00, n01, n10, etc
         counts_n <- strsplit(result[, "observed_counts"], "_")
@@ -166,6 +171,11 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
         result <- result[, -which(names(result)=="expected_counts")]
     }
     
+    if (!show_counts){
+        # remove counts character
+        result <- result[, -which(names(result)=="observed_counts")]
+        result <- result[, -which(names(result)=="expected_counts")]
+    }
     # remove other measures if not specified
     if (method == "lambda" | method == "lambda1")
         result[c("pmi", "chi2", "G2", "sigma", "LFMD")] <- NULL
