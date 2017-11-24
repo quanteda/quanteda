@@ -34,6 +34,6 @@ test_that("docnames<- works with corpus, tokens and dfm (#987)", {
 test_that("test new docnames methods", {
     expect_error(
         docnames(0),
-        "docnames\\(\\) only works on corpus.*tokens objects"
+        "docnames\\(\\) only works on.*corpus.*tokens objects"
     )   
 })
