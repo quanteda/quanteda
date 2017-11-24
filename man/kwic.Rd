@@ -3,15 +3,12 @@
 \name{kwic}
 \alias{kwic}
 \alias{is.kwic}
-\alias{as.tokens.kwic}
 \title{locate keywords-in-context}
 \usage{
 kwic(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, join = FALSE, ...)
+  case_insensitive = TRUE, ...)
 
 is.kwic(x)
-
-\method{as.tokens}{kwic}(x, ...)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
@@ -27,8 +24,6 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{match without respect to case if \code{TRUE}}
 
-\item{join}{join adjacent keywords in the concordance view if \code{TRUE}}
-
 \item{...}{additional arguments passed to \link{tokens}, for applicable 
 object types}
 }
@@ -43,13 +38,6 @@ A \code{kwic} classed data.frame, with the document name
   some special attributes that are hidden in the print view.  If you want to
   turn this into a simple data.frame, simply wrap the result in
   \code{data.frame}.
-
-\code{as.tokens.kwic} converts the kwic object into a \link{tokens}
-  object, with each new "document" consisting of one keyword match, and the
-  contents of the \code{pre}, \code{keyword}, and \code{post} fields forming
-  the tokens.  This is one way to save the output for subsequent usage;
-  another way is to form a \link[=corpus.kwic]{corpus} from the return
-  object.
 }
 \description{
 For a text or a collection of texts (in a quanteda corpus object), return a 

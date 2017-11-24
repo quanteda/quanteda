@@ -1,0 +1,49 @@
+---
+title: "benchmark_textstat_collocations.Rmd"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(quanteda)
+```
+
+## R Markdown
+### bigram
+```{r}
+toks2 <- tokens(data_corpus_inaugural)
+toks2 <- tokens_remove(toks2, stopwords("english"), padding = TRUE)
+microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 2, tolower = FALSE, method="all", path=1),  
+path_C = textstat_collocations(toks2, size = 2, tolower = FALSE, method="all", path=2), 
+times = 2, unit = "relative")
+```
+
+### compare minimum counts
+```{r}
+toks2 <- tokens(quantedaData::data_corpus_SOTU)
+toks2 <- tokens_remove(toks2, stopwords("english"), padding = TRUE)
+microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 3, tolower = FALSE, method="lambda", min_count = 2, path=2),  
+path_C = textstat_collocations(toks2, size = 3, tolower = FALSE, method="lambda", min_count = 1,  path=2), 
+times = 2, unit = "relative")
+```
+
+
+###trigram
+```{r}
+toks2 <- tokens(data_corpus_inaugural)
+toks2 <- tokens_remove(toks2, stopwords("english"), padding = TRUE)
+
+microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 3, tolower = FALSE, method="all", path=1),  
+path_C = textstat_collocations(toks2, size = 3, tolower = FALSE, method="all", path=2), 
+times = 2, unit = "relative")
+```
+
+###4-grams
+```{r}
+toks2 <- tokens(data_corpus_inaugural)
+toks2 <- tokens_remove(toks2, stopwords("english"), padding = TRUE)
+
+microbenchmark::microbenchmark(path_R = textstat_collocations(toks2, size = 4, tolower = FALSE, method="all", path=1),  
+path_C = textstat_collocations(toks2, size = 4, tolower = FALSE, method="all", path=2), 
+times = 2, unit = "relative")
+```
