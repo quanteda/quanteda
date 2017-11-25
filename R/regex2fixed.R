@@ -136,7 +136,7 @@ search_glob <- function(patterns, types_search, index) {
                 return(pos)
             } else if (!is_indexed(pattern)) {
                 #cat('Regex search', pattern, '\n')
-                return(which(stri_detect_regex(types_search, utils::glob2rx(escape_regex(pattern)), 
+                return(which(stri_detect_regex(types_search, utils::glob2rx(pattern), 
                                                case_insensitive = FALSE)))
             } else {
                 #cat("Not found\n")

@@ -121,3 +121,23 @@ test_that("index_types works fine with empty types", {
     expect_silent(quanteda:::index_types(character(), 'regex', FALSE))
     
 })
+
+test_that("glob patterns that contain regex special characters works", {
+    
+    expect_equal(quanteda:::regex2fixed('*.aaa', 'bbb.aaa', 'glob', FALSE),
+                 list('bbb.aaa'))
+    expect_equal(quanteda:::regex2fixed('*[aaa', 'bbb[aaa', 'glob', FALSE),
+                 list('bbb[aaa'))
+    expect_equal(quanteda:::regex2fixed('?a(aa', 'ba(aa', 'glob', FALSE),
+                 list('ba(aa'))
+    expect_equal(quanteda:::regex2fixed('.aaa*', '.aaabbb', 'glob', FALSE),
+                 list('.aaabbb'))
+    expect_equal(quanteda:::regex2fixed('[aaa*', '[aaabbb', 'glob', FALSE),
+                 list('[aaabbb'))
+    expect_equal(quanteda:::regex2fixed('a(aa?', 'a(aab', 'glob', FALSE),
+                 list('a(aab'))
+    
+})
+
+
+
