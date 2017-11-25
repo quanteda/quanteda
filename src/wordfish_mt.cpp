@@ -11,12 +11,7 @@ using namespace arma;
 # define OUTERITER 100
 # define INNERITER 10
 # define LASTLP -2000000000000.0
-# define SA 0.99      //simulated annealing algorithm
-
-#if !defined(ARMA_64BIT_WORD)
-#define ARMA_64BIT_WORD
-#endif
-
+# define SA 0.99 //simulated annealing algorithm
 
 //find the principle elements for the sparse residual matrix
 void create_residual(const std::size_t row_num, const arma::sp_mat& wfm, const arma::colvec &rsum, const arma::rowvec &csum, const double &asum,
