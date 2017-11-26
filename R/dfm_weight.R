@@ -33,7 +33,6 @@
 #' @export
 #' @seealso \code{\link{tf}},  \code{\link{tfidf}}, \code{\link{docfreq}}
 #' @keywords dfm
-#' @author Paul Nulty and Kenneth Benoit
 #' @examples
 #' dtm <- dfm(data_corpus_inaugural)
 #' 
@@ -84,19 +83,15 @@ dfm_weight.dfm <- function(x,
     # for numeric weights
     if (!is.null(weights)) {
         if (!missing(type)) warning("type is ignored when numeric weights are supplied")
-        if (any(l <- sum(!(matchedWeights <- names(weights) %in% featnames(x))))) {
-            warning("dfm_weight(): ignoring ", format(l, big.mark=","), " unmatched weight feature", 
-                    ifelse(l==1, "", "s"), noBreaks. = TRUE, call. = FALSE)
-            weights <- weights[matchedWeights]
+        
+        ignore <- sum(!names(weights) %in% featnames(x))
+        if (ignore) {
+            warning("dfm_weight(): ignoring ", format(ignore, big.mark=","), " unmatched weight feature", 
+                    ifelse(ignore == 1, "", "s"), noBreaks. = TRUE, call. = FALSE)
         }
-        
-        ## set weighting slot/attribute -- NEED TO ADD
-        
-        # use name matching for indexing, sorts too, returns NA where no match is found
-        weights <- weights[featnames(x)]
-        # reassign 1 to non-matched NAs
-        weights[is.na(weights)] <- 1
-        return(x * rep(weights, each = nrow(x)))
+        w <- dfm_select(as.dfm(rbind(weights)), x)
+        w[,!featnames(w) %in% names(weights)] <- 1
+        return(as.dfm(x %*% diag(as.vector(w))))
         
     } else {
         # named type weights
@@ -204,7 +199,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
     
     x <- as.dfm(x)
     scheme <- match.arg(scheme)
-    args <- as.list(match.call(expand.dots=FALSE))
+    args <- as.list(match.call(expand.dots = FALSE))
     if ("base" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
         warning("base not used for this scheme")
     if ("k" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
@@ -365,10 +360,10 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
         stop("x must be a dfm object")
     
     scheme <- match.arg(scheme)
-    args <- as.list(match.call(expand.dots=FALSE))
+    args <- as.list(match.call(expand.dots = FALSE))
     # if ("base" %in% names(args) & !(scheme %in% c("log", "logave")))
     #     warning("base not used for this scheme")
-    if ("K" %in% names(args) & scheme != "augmented")
+    if ("K" %in% names(args) && scheme != "augmented")
         warning("K not used for this scheme")
     if (K < 0 | K > 1.0)
         stop("K must be in the [0, 1] interval")
