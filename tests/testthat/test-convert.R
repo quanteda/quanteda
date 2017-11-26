@@ -67,12 +67,12 @@ test_that("test tm package converter", {
 
 test_that("test lda package converter", {
     skip_if_not_installed("tm")
-    expect_identical(convert(d, to = "topicmodels"), quantedaformat2dtm(d))
+    expect_identical(convert(d, to = "topicmodels"), quanteda:::dfm2dtm(d))
 })
 
 test_that("test topicmodels package converter", {
     skip_if_not_installed("tm")
-    expect_identical(convert(d, to = "lda"), dfm2ldaformat(d))
+    expect_identical(convert(d, to = "lda"), quanteda:::dfm2lda(d))
 })
 
 test_that("test austin package converter", {

@@ -27,7 +27,7 @@ used by the \pkg{lsa} package} }}
 in selecting the document variables only corresponding to the documents
 with non-zero counts.}
 
-\item{...}{unused}
+\item{...}{parameter passed to underlying conversion functions}
 }
 \value{
 A converted object determined by the value of \code{to} (see above). 

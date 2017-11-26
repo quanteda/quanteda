@@ -22,7 +22,7 @@
 #'   \code{meta} information in conversion to the STM package format.  This aids
 #'   in selecting the document variables only corresponding to the documents
 #'   with non-zero counts.
-#' @param ... unused
+#' @param ... parameter passed to underlying conversion functions
 #' @return A converted object determined by the value of \code{to} (see above). 
 #'   See conversion target package documentation for more detailed descriptions 
 #'   of the return formats.
@@ -59,7 +59,7 @@
 #' str(ldadfm)
 #' }
 convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
-                         "matrix", "data.frame"), docvars = NULL, ...) {
+                              "matrix", "data.frame"), docvars = NULL, ...) {
     UseMethod("convert")
 }
 
@@ -81,21 +81,21 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "
     }
     
     if (to == "tm") 
-        return(dfm2tmformat(x, ...))
+        return(dfm2tm(x, ...))
     else if (to == "lda")
-        return(dfm2ldaformat(x))
+        return(dfm2lda(x, ...))
     else if (to == "stm")
-        return(dfm2stmformat(x, docvars))
+        return(dfm2stm(x, docvars, ...))
     else if (to == "austin")
-        return(dfm2austinformat(x))
+        return(dfm2austin(x, ...))
     else if (to == "topicmodels")
-        return(quantedaformat2dtm(x))
+        return(dfm2dtm(x, ...))
     else if (to == "lsa")
-        return(dfm2lsa(x))
+        return(dfm2lsa(x, ...))
     else if (to == "data.frame")
-        return(as.data.frame(x))
+        return(as.data.frame(x, ...))
     else if (to == "matrix")
-        return(as.matrix(x))
+        return(as.matrix(x, ...))
     else
         stop("invalid \"to\" format")
         
@@ -144,26 +144,7 @@ as.wfm <- function(x) {
 #' @method as.wfm dfm
 #' @export
 as.wfm.dfm <- function(x) {
-    x <- as.dfm(x)
-    convert(x, to = "austin")
-}
-
-dfm2austinformat <- function(d) {
-    d <- as.matrix(as(d, 'dgeMatrix'))
-    names(dimnames(d))[2] <- "words"
-    class(d) <- c("wfm", "matrix")
-    d
-}
-
-## convert to tm format
-dfm2tmformat <- function(x, weighting = tm::weightTf) {
-    if (!requireNamespace("tm", quietly = TRUE)) 
-        stop("You must install the tm package installed for this conversion.")
-    if (!requireNamespace("slam", quietly = TRUE))
-        stop("You must install the slam package installed for this conversion.")
-    sl <- slam::as.simple_triplet_matrix(x)
-    td <- tm::as.DocumentTermMatrix(sl, weighting = weighting)
-    return(td)
+    convert(as.dfm(x), to = "austin")
 }
 
 #' @export
@@ -191,8 +172,46 @@ as.DocumentTermMatrix <- function(x, ...) {
 #' @method as.DocumentTermMatrix dfm
 #' @export
 as.DocumentTermMatrix.dfm <- function(x, ...) {
+    convert(as.dfm(x), to = "tm", ...)
+}
+
+#' @keywords internal
+dfm2austin <- function(x, ...) {
+    result <- as.matrix(as(x, 'dgeMatrix'))
+    names(dimnames(result))[2] <- "words"
+    class(result) <- c("wfm", "matrix")
+    result
+}
+
+#' @keywords internal
+dfm2tm <- function(x, weighting = tm::weightTf, ...) {
+    if (!requireNamespace("tm", quietly = TRUE)) 
+        stop("You must install the tm package installed for this conversion.")
+    if (!requireNamespace("slam", quietly = TRUE))
+        stop("You must install the slam package installed for this conversion.")
+    
+    tm::as.DocumentTermMatrix(slam::as.simple_triplet_matrix(x),
+                              weighting = weighting)
+}
+
+#' @rdname convert-wrappers
+#' @details
+#' \code{dfm2lda} provides converts a \link{dfm} into the list representation
+#' of terms in documents used by the \pkg{lda} package (a list with components 
+#' "documents" and "vocab" as needed by 
+#'   \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
+#' @examples
+#' \dontrun{
+#' # shortcut conversion to lda package list format
+#' identical(dfm2lda(quantdfm), convert(quantdfm, to = "lda")) 
+#' }
+#' 
+#' @keywords internal
+dfm2lda <- function(x, ...) {
     x <- as.dfm(x)
-    convert(x, to = "tm", ...)
+    if (!requireNamespace("tm", quietly = TRUE))
+        stop("You must install the slam package installed for this conversion.")
+    dtm2lda(dfm2dtm(x))
 }
 
 #' @rdname convert-wrappers
@@ -201,124 +220,79 @@ as.DocumentTermMatrix.dfm <- function(x, ...) {
 #' of terms in documents used by the \pkg{lda} package (a list with components 
 #' "documents" and "vocab" as needed by 
 #'   \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
-#' @export
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to lda package list format
 #' identical(dfm2ldaformat(quantdfm), convert(quantdfm, to = "lda")) 
 #' }
-#' 
-dfm2ldaformat <- function(x) {
-    UseMethod("dfm2ldaformat")
-}
-
-#' @noRd
-#' @export
-dfm2ldaformat.dfm <- function(x) {
-    x <- as.dfm(x)
-    if (!requireNamespace("tm", quietly = TRUE))
-        stop("You must install the slam package installed for this conversion.")
-    tmDTM <- dfm2tmformat(x)
-    return(dtm2ldaformat(tmDTM))
-}
-
-
-## from the package topicmodels
-dtm2ldaformat <- function (x, omit_empty = TRUE) {
+#' @keywords internal
+dtm2lda <- function (x, omit_empty = TRUE) {
     if (!requireNamespace("slam", quietly = TRUE))
         stop("You must install the slam package installed for this conversion.")
     
-    split.matrix <- function(x, f, drop = FALSE, ...) lapply(split(seq_len(ncol(x)), 
-                                                                   f, drop = drop, ...), function(ind) x[, ind, drop = FALSE])
-    documents <- vector(mode = "list", length = nrow(x))
-    names(documents) <- rownames(x)
-    documents[slam::row_sums(x) > 0] <- split(rbind(as.integer(x$j) - 
-                                                        1L, as.integer(x$v)), as.integer(x$i))
+    docs <- vector(mode = "list", length = nrow(x))
+    names(docs) <- rownames(x)
+
+    docs[slam::row_sums(x) > 0] <- split.matrix(rbind(as.integer(x$j) - 1L, as.integer(x$v)), as.integer(x$i))
     if (omit_empty) 
-        documents[slam::row_sums(x) == 0] <- NULL
-    else documents[slam::row_sums(x) == 0] <- rep(list(matrix(integer(), 
-                                                              ncol = 0, nrow = 2)), sum(slam::row_sums(x) == 0))
-    list(documents = documents, vocab = colnames(x))
+        docs[slam::row_sums(x) == 0] <- NULL
+    else docs[slam::row_sums(x) == 0] <- rep(list(matrix(integer(), ncol = 0, nrow = 2)), 
+                                             sum(slam::row_sums(x) == 0))
+    list(documents = docs, vocab = colnames(x))
 }
 
-#' @rdname convert-wrappers
-#' @export
-#' @details \code{quantedaformat2dtm} provides converts a \link{dfm} into the
-#' sparse simple triplet matrix representation of terms in documents used by the
-#' \pkg{topicmodels} package.
-#' @examples 
-#' # shortcut conversion to topicmodels package format
-#' \dontrun{
-#' identical(quantedaformat2dtm(quantdfm), 
-#'           convert(quantdfm, to = "topicmodels")) 
-#' }
-#' 
-quantedaformat2dtm <- function(x) {
-    UseMethod("quantedaformat2dtm")
+# internal function for dtm2lda
+split.matrix <- function(x, f, drop = FALSE, ...) {
+    lapply(split(seq_len(ncol(x)), 
+                 f, drop = drop, ...), function(ind) x[, ind, drop = FALSE])
 }
 
-#' @noRd
-#' @export
-quantedaformat2dtm.dfm <- function(x) {
-    x <- as.dfm(x)
-    d_lda <- convert(x, to = "lda")
-    ldaformat2dtm(d_lda$documents, d_lda$vocab)
-}
+#' @keywords internal
+dfm2dtm <- function(x, omit_empty = TRUE) {
 
-ldaformat2dtm <- function (documents, vocab, omit_empty = TRUE) {
     if (!requireNamespace("tm", quietly = TRUE))
         stop("You must install the tm package installed for this conversion.")
     if (!requireNamespace("slam", quietly = TRUE))
         stop("You must install the slam package installed for this conversion.")
     
-    stm <- slam::simple_triplet_matrix(i = rep(seq_along(documents), vapply(documents, ncol, integer(1))), 
-                                       j = as.integer(unlist(lapply(documents, "[", 1, )) + 1L),
-                                       v = as.integer(unlist(lapply(documents, "[", 2, ))), nrow = length(documents), ncol = length(vocab),
-                                       dimnames = list(names(documents), vocab))
-    dtm <- tm::as.DocumentTermMatrix(stm, tm::weightTf)
+    x <- as.dfm(x)
+    x <- as(x, 'dgTMatrix')
     if (omit_empty) 
-        dtm <- dtm[slam::row_sums(dtm) > 0, ]
-    dtm
+        x <- x[rowSums(x) > 0, ]
+    tm::as.DocumentTermMatrix(slam::as.simple_triplet_matrix(x), tm::weightTf)
 }
 
-dfm2stmformat <- function(data, meta) {
+
+#' @keywords internal
+dfm2stm <- function(x, docvars, omit_empty = TRUE, ...) {
     # get docvars (if any)
-    dvars <- docvars(data)
+    if (is.null(docvars))
+        docvars <- docvars(x)
     
     # sort features into alphabetical order
-    data <- data[, order(featnames(data))]
-    data <- as(data, "dgTMatrix")
-    
-    # find out which documents are not empty
-    non_empty_docs <- which(rowSums(data) != 0)
-    non_empty_feats <- which(colSums(data) != 0)
-    
-    # find out which documents are empty
-    empty_docs <- which(rowSums(data) == 0)
-    if (length(empty_docs) > 0) warning("Dropped empty document(s): ", paste0(names(empty_docs), collapse=", "))
-    
-    # find out which feature are empty across all documents
-    empty_feats <- which(colSums(data) == 0)
-    if (length(empty_feats) > 0) warning("zero-count features: ", paste0(names(empty_feats), collapse=", "))
-    
-    # convert counts to STM documents format
-    documents <- ijv.to.doc(data[non_empty_docs, non_empty_feats]@i+1, data[non_empty_docs, non_empty_feats]@j+1, data[non_empty_docs, non_empty_feats]@x) 
-    names(documents) <- rownames(data)[non_empty_docs]
-    
-    # select docvars for non-empty docs or from dfm
-    # meta takes priority over built-in docvars
-    if (!is.null(meta)) {
-        meta <- meta[non_empty_docs, , drop = FALSE]
-    } else if (length(dvars)) {
-        meta <- dvars[non_empty_docs, , drop = FALSE]
+    x <- x[, order(featnames(x))]
+    if (omit_empty) {
+        
+        empty_docs <- rowSums(x) == 0
+        if (sum(empty_docs) > 0) 
+            warning("Dropped empty document(s): ", paste0(docnames(x)[empty_docs], collapse = ", "))
+        
+        empty_feats <- colSums(x) == 0
+        if (sum(empty_feats) > 0) 
+            warning("zero-count features: ", paste0(featnames(x)[empty_feats], collapse = ", "))
+        
+        x <- x[!empty_docs, !empty_feats]
+        docvars <- docvars[!empty_docs,, drop = FALSE]
     }
     
-    # return the object
-    list(documents = documents, vocab = colnames(data)[non_empty_feats], meta = meta)
+    # convert counts to STM documents format
+    x <- as(x, "dgTMatrix")
+    docs <- ijv.to.doc(x@i + 1, x@j + 1, x@x) 
+    names(docs) <- rownames(x)
+    list(documents = docs, vocab = colnames(x), meta = docvars)
 }
 
-
-# borrowed from the STM package
+# internal function for dfm2stm
 ijv.to.doc <- function(i, j, v) {
     index <- split(j, i)
     index <- lapply(index, as.integer)
@@ -339,11 +313,9 @@ ijv.to.doc <- function(i, j, v) {
 #' @keywords internal
 dfm2lsa <- function(x) {
     x <- as.matrix(x)
-    # convert to integer
-    x <- apply(x, c(1,2), as.integer)
-    class(x) <- "textmatrix"
-    names(dimnames(x)) <- c("docs", "terms") 
-    t(x)
+    result <- apply(x, c(1,2), as.integer) # convert to integer
+    names(dimnames(result)) <- c("docs", "terms") 
+    class(result) <- "textmatrix"
+    t(result)
 }
     
-
