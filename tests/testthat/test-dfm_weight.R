@@ -51,7 +51,7 @@ test_that("dfm_weight exceptions work", {
     mydfm <- dfm(c("He went out to buy a car", 
                    "He went out and bought pickles and onions"))
     mydfm_tfprop <- dfm_weight(mydfm, "relFreq")
-    expect_message(
+    expect_error(
         dfm_weight(mydfm_tfprop, "tfidf"),
         "No weighting applied: you should not weight an already weighted dfm\\."
     )

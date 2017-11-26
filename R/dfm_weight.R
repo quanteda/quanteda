@@ -102,9 +102,10 @@ dfm_weight.dfm <- function(x,
         type <- char_tolower(type)
         type <- match.arg(type)
         
-        if (x@weightTf[["scheme"]] != "count") {
-            catm("  No weighting applied: you should not weight an already weighted dfm.\n")
-        } else if (type=="relfreq") {
+        if (x@weightTf[["scheme"]] != "count")
+            stop("No weighting applied: you should not weight an already weighted dfm.\n")
+
+        if (type=="relfreq") {
             return(tf(x, "prop"))
         } else if (type=="relmaxfreq") {
             return(tf(x, "propmax"))
