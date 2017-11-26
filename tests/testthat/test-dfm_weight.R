@@ -114,15 +114,6 @@ test_that("docfreq works as expected", {
 #     )
 # })
 
-test_that("new tfidf returns same results as older one", {
-    mydfm <- dfm(c("He went out to buy a car", 
-                   "He went out and bought pickles and onions",
-                   "He ate pickles in the car."))
-    expect_equivalent(
-        tfidf(mydfm),
-        quanteda:::tfidf_old(mydfm)
-    )
-})
 
 test_that("tf with logave now working as expected", {
     mydfm <- dfm(c("He went out to buy a car", 

@@ -1,3 +1,4 @@
+
 #' weight the feature frequencies in a dfm
 #' 
 #' Returns a document by feature matrix with the feature frequencies weighted 
@@ -104,19 +105,20 @@ dfm_weight.dfm <- function(x,
         
         if (x@weightTf[["scheme"]] != "count")
             stop("No weighting applied: you should not weight an already weighted dfm.\n")
-
-        if (type=="relfreq") {
+        
+        if (type == "relfreq") {
             return(tf(x, "prop"))
-        } else if (type=="relmaxfreq") {
+        } else if (type == "relmaxfreq") {
             return(tf(x, "propmax"))
-        } else if (type=="logfreq") {
+        } else if (type == "logfreq") {
             return(tf(x, "log"))
-        } else if (type=="tfidf") {
+        } else if (type == "tfidf") {
             return(tfidf(x))
         } else if (type == "frequency") {
             return(x)
-        } else stop("unknown weighting type")
-
+        } else {
+            stop("unknown weighting type")
+        }
     }
 }
 
@@ -311,7 +313,7 @@ tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, 
     x <- as.dfm(x)
     args <- list(...)
     check_dots(args, names(formals(docfreq)))
-
+    
     dfreq <- docfreq(x, scheme = scheme_df, base = base, ...)
     tfreq <- tf(x, scheme = scheme_tf, base = base)
     
@@ -324,14 +326,6 @@ tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, 
     # replace just the non-zero values by product with idf
     x@x <- tfreq@x * dfreq[j]
     x
-}
-
-tfidf_old <- function(x, normalize = FALSE, scheme = "inverse", ...) {
-    invdocfr <- docfreq(x, scheme = scheme, ...)
-    if (normalize) x <- tf(x, "prop")
-    if (nfeature(x) != length(invdocfr)) 
-        stop("missing some values in idf calculation")
-    t(t(x) * invdocfr)
 }
 
 
@@ -401,17 +395,11 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
         
     } else if (scheme == "prop") {
         div <- rowSums(x)
-        if (is(x, "dfm"))
-            x@x <- x@x / div[x@i+1]
-        else
-            x <- x / div
+        x@x <- x@x / div[x@i+1]
         
     } else if (scheme == "propmax") {
         div <- maxtf(x)
-        if (is(x, "dfm"))
-            x@x <- x@x / div[x@i+1]
-        else 
-            x <- x / div
+        x@x <- x@x / div[x@i+1]
         
     } else if (scheme == "boolean") {
         x@x <- as.numeric(x@x > 0)
@@ -424,22 +412,16 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
         
     } else if (scheme == "augmented") {
         maxtf <- maxtf(x)
-        if (is(x, "dfm"))
-            x@x <- K + (1 - K) * x@x / maxtf[x@i+1]
-        else
-            x <- K + (1 - K) * x / maxtf
+        x@x <- K + (1 - K) * x@x / maxtf[x@i+1]
         x@weightTf[["K"]] <- K
         
     } else if (scheme == "logave") {
         meantf <- Matrix::rowSums(x) / Matrix::rowSums(tf(x, "boolean"))
-        if (is(x, "dfm"))
-            x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i+1], base))
-        else
-            x <- (1 + log(x, base)) / (1 + log(meantf, base))
+        x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i+1], base))
         x@weightTf[["base"]] <- base
         
     } else stop("invalid tf scheme")
-
+    
     x@weightTf[["scheme"]] <- scheme
     return(x)
 }
@@ -451,16 +433,8 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
 setGeneric("maxtf", function(x) standardGeneric("maxtf"))
 
 setMethod("maxtf", signature(x = "dfm"), definition = function(x) {
-    freq <- doc <- V1 <- NULL 
-#    dt <- data.table(doc = t(x)@i, freq = x@x)
-    dt <- data.table(doc = x@i, freq = x@x)
-    dt[, max(freq), by = doc][, V1]
-    ## note: this is faster for small dfms:
-    # sapply(split(x@x, x@i), max)
+    sapply(split(x@x, x@i), max)
 })
 
-# setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
-#     apply(x, 1, max)
-# })
 
 
