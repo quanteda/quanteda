@@ -155,7 +155,7 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
     
     if (verbose) {
         catm("  Total features removed: ", format(sum(flag_all), big.mark=","), 
-             " (", format(length(featureRemoveIndex) / nfeature(x) * 100, digits = 3, nsmall = 1), "%).", 
+             " (", format(sum(flag_all) / nfeature(x) * 100, digits = 3, nsmall = 1), "%).", 
              sep = "", appendLF = TRUE)
     }
        
