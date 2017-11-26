@@ -232,7 +232,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
     if (USE.NAMES) {
         names(result) <- featnames(x)
     } else {
-        result <- unnames(result)
+        result <- unname(result)
     }
     result
 }
