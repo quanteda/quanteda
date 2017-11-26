@@ -211,43 +211,29 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
         warning("k not used for this scheme")
     if ("smoothing" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
         warning("smoothing not used for this scheme")
-    
     if (k < 0)
         stop("k must be >= 0")
-    
     if (x@weightDf[["scheme"]] != "unary")
         stop("this dfm has already been term weighted as:", x@weightDf)
     
     if (scheme == "unary") {
         result <- rep(1, nfeature(x))
-        
     } else if (scheme == "count") {
-        if (is(x, "dfm")) {
-            result <- colSums(x > threshold)
-            # tx <- t(x)
-            # featfactor <- factor(tx@i, 0:(nfeature(x)-1), labels = featnames(x))
-            # result <- as.integer(table(featfactor[tx@x > threshold]))
-        } else {
-            if (!any(x@x <= threshold)) 
-                result <- rep(ndoc(x), nfeature(x))
-            else
-                result <- colSums(as.matrix(x) > threshold)
-        }
-        
+        result <- colSums(x > threshold)
     } else if (scheme == "inverse") {
         result <- log(smoothing + (ndoc(x) / (k + docfreq(x, "count", USE.NAMES = FALSE))), base = base)
-        
     } else if (scheme == "inversemax") {
-        dftmp <- docfreq(x, "count", USE.NAMES = FALSE)
-        result <- log(smoothing + (max(dftmp) / (k + dftmp)), base = base)
-        
+        temp <- docfreq(x, "count", USE.NAMES = FALSE)
+        result <- log(smoothing + (max(temp) / (k + temp)), base = base)
     } else if (scheme == "inverseprob") {
-        dftmp <- docfreq(x, "count", USE.NAMES = FALSE)
-        result <- log((ndoc(x) - dftmp) / (k + dftmp), base = base)
-        result <- pmax(0, result)
+        temp <- docfreq(x, "count", USE.NAMES = FALSE)
+        result <- pmax(0, log((ndoc(x) - temp) / (k + temp), base = base))
     }
-    
-    if (USE.NAMES) names(result) <- featnames(x) else names(result) <- NULL
+    if (USE.NAMES) {
+        names(result) <- featnames(x)
+    } else {
+        result <- unnames(result)
+    }
     result
 }
 
