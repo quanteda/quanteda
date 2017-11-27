@@ -311,3 +311,10 @@ test_that("fcm works tokens with paddings, #788", {
     testfcm <- fcm(toks, context = "window", window = 3)
     expect_equal(sort(colnames(testfcm)), sort(attr(toks, 'types')))
 })
+
+test_that("test default fcm method", {
+    expect_error(
+        fcm(0),
+        "fcm\\(\\) only works on character.*tokens objects"
+    )   
+})

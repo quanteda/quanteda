@@ -133,6 +133,11 @@ fcm <- function(x, context = c("document", "window"),
     UseMethod("fcm")
 }
 
+#' @export
+fcm.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "fcm"))
+}
+
 #' @noRd
 #' @export
 fcm.character <- function(x, ...) {
