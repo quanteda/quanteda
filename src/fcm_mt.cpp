@@ -1,15 +1,10 @@
-#include "armadillo.h"
 #include "quanteda.h"
+#include "dev.h"
 using namespace quanteda;
+
 
 struct hash_pair {
   size_t operator()(const pair<unsigned int, unsigned int> &p) const {
-    
-    // Old potentially broken
-    // unsigned int hash = 0;
-    // hash ^= std::hash<unsigned int>()(p.first) + 0x9e3779b9;
-    // hash ^= std::hash<unsigned int>()(p.second) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-    // return hash;
     
     unsigned int seed = 0;
     seed = p.first;
@@ -47,6 +42,7 @@ void count_col(const Text &text,
     
     const unsigned int len = text.size();
     SetPair set_pair;
+    set_pair.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
     
     for (unsigned int i = 0; i < text.size(); i++) {
         if (text[i] == 0) continue; // skip padding
@@ -121,14 +117,14 @@ struct count_col_mt : public Worker{
 
 
 // [[Rcpp::export]]
-arma::sp_mat qatd_cpp_fcm(const Rcpp::List &texts_,
-                             const int n_types,
-                             const String &count,
-                             const unsigned int window,
-                             const NumericVector &weights,
-                             const bool ordered,
-                             const bool tri,
-                             const unsigned int nvec){
+S4 qatd_cpp_fcm(const Rcpp::List &texts_,
+                const int n_types,
+                const String &count,
+                const unsigned int window,
+                const NumericVector &weights,
+                const bool ordered,
+                const bool tri,
+                const unsigned int nvec){
     
     // triplets are constructed according to tri & ordered settings to be efficient
     Texts texts = Rcpp::as<Texts>(texts_);
@@ -150,6 +146,9 @@ arma::sp_mat qatd_cpp_fcm(const Rcpp::List &texts_,
     Triplets fcm_tri;
     fcm_tri.reserve(nvec);
     
+    //dev::Timer timer;
+    //dev::start_timer("Count", timer);
+    
 #if QUANTEDA_USE_TBB
     count_col_mt count_col_mt(texts, window_weights, window, tri, ordered, boolean, fcm_tri);
     parallelFor(0, texts.size(), count_col_mt);
@@ -159,19 +158,29 @@ arma::sp_mat qatd_cpp_fcm(const Rcpp::List &texts_,
     }
 #endif
     
-    // Convert to Rcpp objects
-    std::size_t mat_size = fcm_tri.size();
-    arma::umat index_mat(2, mat_size, arma::fill::zeros);
-    arma::vec w_values(mat_size, arma::fill::zeros);
+    //dev::stop_timer("Count", timer);
+    //dev::start_timer("Convert", timer);
+    
+    std::size_t fcm_size = fcm_tri.size();
+    IntegerVector dim_ = IntegerVector::create(n_types, n_types);
+    IntegerVector i_(fcm_size), j_(fcm_size);
+    NumericVector x_(fcm_size);
+    
     for (std::size_t k = 0; k < fcm_tri.size(); k++) {
-        index_mat(0,k) = std::get<0>(fcm_tri[k]);
-        index_mat(1,k) = std::get<1>(fcm_tri[k]);
-        w_values(k) = std::get<2>(fcm_tri[k]);
+        i_[k] = std::get<0>(fcm_tri[k]);
+        j_[k] = std::get<1>(fcm_tri[k]);
+        x_[k] = std::get<2>(fcm_tri[k]);
     }
     
-    // constract the sparse matrix
-    arma::sp_mat fcm(TRUE, index_mat, w_values, n_types, n_types);
-    return fcm;
+    S4 fcm_("dgTMatrix");
+    fcm_.slot("i") = i_;
+    fcm_.slot("j") = j_;
+    fcm_.slot("x") = x_;
+    fcm_.slot("Dim") = dim_;
+    
+    //dev::stop_timer("Convert", timer);
+    
+    return fcm_;
 }
 
 
