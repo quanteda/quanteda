@@ -275,17 +275,35 @@ test_that("object always have docvars in the same rows as documents", {
 
 })
 
-test_that("test new docvars methods", {
+test_that("test default docvars methods", {
     expect_error(
         docvars(0),
         "docvars\\(\\) only works on.*corpus.*tokens objects"
     )   
-})
-
-test_that("test new docvars<- methods", {
     expect_error(
         docvars(data_char_sampletext) <- "X",
         "docvars<-\\(\\) only works on.*corpus.*tokens objects"
-    )   
+    )
 })
 
+test_that("test default metadoc methods", {
+    expect_error(
+        metadoc(0),
+        "metadoc\\(\\) only works on.*corpus.*tokens objects"
+    )   
+    expect_error(
+        metadoc(data_char_sampletext) <- "X",
+        "metadoc<-\\(\\) only works on corpus objects"
+    )
+})
+
+test_that("test default metacorpus method", {
+    expect_error(
+        metacorpus(0),
+        "metacorpus\\(\\) only works on corpus objects"
+    )   
+    expect_error(
+        metacorpus(data_char_sampletext) <- "X",
+        "metacorpus<-\\(\\) only works on corpus objects"
+    )
+})

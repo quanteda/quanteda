@@ -111,7 +111,6 @@ docvars.kwic <- function(x) {
     stop(friendly_class_undefined_message(class(x), "docvars<-"))
 }
 
-#' @noRd
 #' @export
 "docvars<-.corpus" <- function(x, field = NULL, value) {
     if ("texts" %in% field) stop("You should use texts() instead to replace the corpus texts.")
@@ -124,10 +123,8 @@ docvars.kwic <- function(x) {
     x
 }
 
-
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
-    
     if (is.null(field) && (is.data.frame(value) || is.null(value))) {
         attr(x, "docvars") <- value
     } else {
@@ -195,6 +192,10 @@ docvars.kwic <- function(x) {
 metadoc <- function(x, field = NULL) 
     UseMethod("metadoc")
 
+#' @export
+metadoc.default <- function(x, field = NULL) {
+    stop(friendly_class_undefined_message(class(x), "metadoc"))
+}
 
 #' @noRd
 #' @export
@@ -233,11 +234,16 @@ metadoc.dfm <- function(x, field = NULL) {
 #' @param value the new value of the new meta-data field
 #' @export
 "metadoc<-" <- function(x, field = NULL, value) 
-    UseMethod("metadoc")
+    UseMethod("metadoc<-")
+
+#' @export
+"metadoc<-.default" <- function(x, field = NULL, value) {
+    stop(friendly_class_undefined_message(class(x), "metadoc<-"))
+}
 
 #' @noRd
 #' @export
-"metadoc<-" <- function(x, field = NULL, value) {
+"metadoc<-.corpus" <- function(x, field = NULL, value) {
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
     # (this check not yet implemented)
     if (is.null(field)) {
