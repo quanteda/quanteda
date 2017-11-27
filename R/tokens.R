@@ -862,6 +862,11 @@ types <- function(x) {
 }
 
 #' @export
+types.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "types"))
+}
+
+#' @export
 types.tokens <- function(x) {
     attr(x, "types")
 }
@@ -869,6 +874,10 @@ types.tokens <- function(x) {
 "types<-" <- function(x, value) {
     UseMethod("types<-")
 }
+
+# "types<-.default" <- function(x, value) {
+#     stop(friendly_class_undefined_message(class(x), "types<-"))
+# }
 
 "types<-.tokens" <- function(x, value) {
     if (!is.character(value))
@@ -917,5 +926,3 @@ c.tokens <- function(...) {
         result <- result + x[[i]]
     return(result)
 }
-
-

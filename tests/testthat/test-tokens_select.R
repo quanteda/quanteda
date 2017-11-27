@@ -541,3 +541,14 @@ test_that("tokens_removekeep fail if selection argument is used", {
         "tokens_keep cannot include selection argument"
     )
 })
+
+test_that("types defaults work", {
+    expect_error(
+        types(TRUE),
+        "types\\(\\) only works on tokens objects"
+    )
+    # expect_error(
+    #     quanteda:::types(data_char_sampletext) <- c("a", "b"),
+    #     "types<-\\(\\) only works on tokens objects"
+    # )
+})
