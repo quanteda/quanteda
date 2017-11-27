@@ -80,7 +80,7 @@ test_that("helper functions for phrase() work", {
     )
 })
 
-test_that("phrase default work", {
+test_that("phrase default works", {
     expect_error(
         phrase(TRUE),
         "phrase\\(\\) only works on character.*tokens objects"
