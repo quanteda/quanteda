@@ -673,3 +673,31 @@ test_that("test new as.dfm methods", {
         "as\\.dfm\\(\\) only works on.*data\\.frame.*dfm.*matrix.*objects"
     )   
 })
+
+test_that("test topfeatures", {
+    expect_equal(
+        topfeatures(dfm("a a a a b b b c c d"), "count"),
+        c(a = 4, b = 3, c = 2, d = 1)
+    )
+})
+
+test_that("test topfeatures default", {
+    expect_error(
+        topfeatures(TRUE),
+        "topfeatures\\(\\) only works on dfm objects"
+    )   
+})
+
+test_that("test sparsity", {
+    expect_equal(
+        sparsity(dfm(c("a a a a  c c d", "b b b"))),
+        0.5
+    )
+})
+
+test_that("test sparsity default", {
+    expect_error(
+        sparsity(TRUE),
+        "sparsity\\(\\) only works on dfm objects"
+    )   
+})

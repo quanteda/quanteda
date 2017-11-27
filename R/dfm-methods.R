@@ -173,6 +173,11 @@ topfeatures <- function(x, n = 10, decreasing = TRUE, scheme = c("count", "docfr
 }
 
 #' @export
+topfeatures.default <- function(x, n = 10, decreasing = TRUE, scheme = c("count", "docfreq"), groups = NULL) {
+    stop(friendly_class_undefined_message(class(x), "topfeatures"))
+}
+
+#' @export
 #' @noRd
 #' @importFrom stats quantile
 topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,  scheme = c("count", "docfreq"), groups = NULL) {
@@ -228,10 +233,21 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,  scheme = c("count", "
 #' sparsity(dfm_trim(inaug_dfm, min_count = 5))
 #' @export
 sparsity <- function(x) {
-    if (!is.dfm(x))
-        stop("sparsity is only defined for dfm objects")
+    UseMethod("sparsity")
+}
+
+#' @export
+sparsity.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "sparsity"))
+}
+
+#' @export
+sparsity.dfm <- function(x) {
     (1 - length(x@x) / prod(dim(x)))
 }
+
+
+# ------------ Internal --------
 
 #' internal functions for dfm objects
 #' 
