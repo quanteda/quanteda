@@ -92,10 +92,13 @@
       <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
     </li>
     <li>
+      <a href="../articles/pkgdown_only/quanteda_and_text2vec.html">Using quanteda with text2vec</a>
+    </li>
+    <li>
       <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+      <a href="../articles/quickstart.html">Getting started</a>
     </li>
   </ul>
 </li>
@@ -129,12 +132,9 @@ delimiters.)</p>
     
 
     <pre class="usage"><span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>pattern</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
-<span class='fu'>is.kwic</span>(<span class='no'>x</span>)
-
-<span class='co'># S3 method for kwic</span>
-<span class='fu'><a href='as.tokens.html'>as.tokens</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>is.kwic</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -146,7 +146,7 @@ delimiters.)</p>
     <tr>
       <th>pattern</th>
       <td><p>a character vector, list of character vectors, <a href='dictionary.html'>dictionary</a>,
-<a href='collocations.html'>collocations</a>, or <a href='dfm.html'>dfm</a>. See <a href='pattern.html'>pattern</a> for details.</p></td>
+<a href='textstat_collocations.html'>collocations</a>, or <a href='dfm.html'>dfm</a>. See <a href='pattern.html'>pattern</a> for details.</p></td>
     </tr>
     <tr>
       <th>window</th>
@@ -161,10 +161,6 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
     <tr>
       <th>case_insensitive</th>
       <td><p>match without respect to case if <code>TRUE</code></p></td>
-    </tr>
-    <tr>
-      <th>join</th>
-      <td><p>join adjacent keywords in the concordance view if <code>TRUE</code></p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -184,14 +180,7 @@ object types</p></td>
   (<code>post</code>).  The return object has its own <code>print</code> method, plus
   some special attributes that are hidden in the print view.  If you want to
   turn this into a simple data.frame, simply wrap the result in
-  <code>data.frame</code>.
-
-<code>as.tokens.kwic</code> converts the kwic object into a <a href='tokens.html'>tokens</a>
-  object, with each new "document" consisting of one keyword match, and the
-  contents of the <code>pre</code>, <code>keyword</code>, and <code>post</code> fields forming
-  the tokens.  This is one way to save the output for subsequent usage;
-  another way is to form a <a href='corpus.html'>corpus</a> from the return
-  object.</p>
+  <code>data.frame</code>.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 

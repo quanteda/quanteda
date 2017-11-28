@@ -92,10 +92,13 @@
       <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
     </li>
     <li>
+      <a href="../articles/pkgdown_only/quanteda_and_text2vec.html">Using quanteda with text2vec</a>
+    </li>
+    <li>
       <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+      <a href="../articles/quickstart.html">Getting started</a>
     </li>
   </ul>
 </li>
@@ -150,36 +153,36 @@ some have been defined previously, such as in `.Rprofile`.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>When called using a <code>key = value</code> pair (where <code>key</code> can be a label or 
-  quoted character name)), the option is set and <code>TRUE</code> is returned invisibly.</p>
-<p>When called with no arguments, a named list of the package options is returned.</p>  
-<p>When called with <code>reset = TRUE</code> as an argument, all arguments are options 
-  are reset to their default values, and <code>TRUE</code> is returned invisibly.</p>
+    <p>When called using a <code>key = value</code> pair (where <code>key</code> can be
+a label or quoted character name)), the option is set and <code>TRUE</code> is
+returned invisibly.</p>
+<p>When called with no arguments, a named list of the package options is
+returned.</p>
+<p>When called with <code>reset = TRUE</code> as an argument, all arguments are
+options are reset to their default values, and <code>TRUE</code> is returned
+invisibly.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Currently available options are:</p><dl class='dl-horizontal'>
 <dt><code>verbose</code></dt><dd><p>logical; if <code>TRUE</code> then use this as the default
-   for all functions with a <code>verbose</code> argument</p></dd>
-<dt><code>threads</code></dt><dd><p>integer; specifies the number of threads to use in
-   use this as the setting in all functions that uee parallelization</p></dd>
+for all functions with a <code>verbose</code> argument</p></dd>
+<dt><code>threads</code></dt><dd><p>integer; specifies the number of threads to use in use
+this as the setting in all functions that uee parallelization</p></dd>
 <dt><code>print_dfm_max_ndoc</code></dt><dd><p>integer; specifies the number of documents
-   to display when using the defaults for printing a dfm</p></dd>
-<dt><code>print_dfm_max_nfeature</code></dt><dd><p>integer; specifies the number of features
-   to display when using the defaults for printing a dfm</p></dd>
+to display when using the defaults for printing a dfm</p></dd>
+<dt><code>print_dfm_max_nfeature</code></dt><dd><p>integer; specifies the number of
+features to display when using the defaults for printing a dfm</p></dd>
 <dt><code>base_docname</code></dt><dd><p>character; stem name for documents that are
 unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
-from another object</p></dd>
-<dt><code>base_featname</code></dt><dd><p>character; stem name for features that are
-unnamed when they are added, for whatever reason, to a dfm through an operation
-that adds features</p></dd>
-<dt><code>base_featname</code></dt><dd><p>character; stem name for features that are
-unnamed when they are added, for whatever reason, to a dfm through an operation
-that adds features</p></dd>
-<dt><code>base_featname</code></dt><dd><p>character; stem name for features that are
-unnamed when they are added, for whatever reason, to a dfm through an operation
-that adds features</p></dd>
-</dl>
+from another object</p></dd> <dt><code>base_featname</code></dt><dd><p>character; stem name for
+features that are unnamed when they are added, for whatever reason, to a dfm
+through an operation that adds features</p></dd>
+<dt><code>base_compname</code></dt><dd><p>character; stem name for components that are
+created by matrix factorization</p></dd> 
+<dt><code>language_stemmer</code></dt><dd><p>character; language option for <a href='tokens_wordstem.html'>char_wordstem</a>, 
+<a href='tokens_wordstem.html'>tokens_wordstem</a>, and <a href='tokens_wordstem.html'>dfm_wordstem</a></p></dd>
+<dt><code>language_stopwords</code></dt><dd><p>character; language option for <a href='stopwords.html'>stopwords</a></p></dd> </dl>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -200,6 +203,9 @@ that adds features</p></dd>
 #&gt; 
 #&gt; $base_featname
 #&gt; [1] "feat"
+#&gt; 
+#&gt; $base_compname
+#&gt; [1] "comp"
 #&gt; 
 #&gt; $language_stemmer
 #&gt; [1] "english"

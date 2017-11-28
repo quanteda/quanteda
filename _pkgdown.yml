@@ -102,7 +102,6 @@ reference:
   contents:
     - collocations
     - is.collocations
-    - sequences
     - is.kwic
     - kwic
 - title: Text plot functions

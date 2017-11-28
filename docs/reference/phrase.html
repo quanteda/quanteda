@@ -92,10 +92,13 @@
       <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
     </li>
     <li>
+      <a href="../articles/pkgdown_only/quanteda_and_text2vec.html">Using quanteda with text2vec</a>
+    </li>
+    <li>
       <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+      <a href="../articles/quickstart.html">Getting started</a>
     </li>
   </ul>
 </li>
@@ -173,9 +176,9 @@ separating the patterns</p></td>
 #&gt; [1] "f"
 #&gt; </div><div class='input'>
 <span class='co'># from a collocations object</span>
-(<span class='no'>coll</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_collocations.html'>textstat_collocations</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"a b c a b d e b d a b"</span>)))</div><div class='output co'>#&gt;   collocation count length   lambda        z
-#&gt; 1         a b     3      2 3.412247 1.936083
-#&gt; 2         b d     2      2 3.218876 1.799406</div><div class='input'><span class='fu'>phrase</span>(<span class='no'>coll</span>)</div><div class='output co'>#&gt; [[1]]
+(<span class='no'>coll</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_collocations.html'>textstat_collocations</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"a b c a b d e b d a b"</span>)))</div><div class='output co'>#&gt;   collocation count count_nested length   lambda        z
+#&gt; 1         a b     3            0      2 3.412247 1.936083
+#&gt; 2         b d     2            0      2 3.218876 1.799406</div><div class='input'><span class='fu'>phrase</span>(<span class='no'>coll</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "a" "b"
 #&gt; 
 #&gt; [[2]]
