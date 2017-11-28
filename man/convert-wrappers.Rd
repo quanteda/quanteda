@@ -4,17 +4,14 @@
 \alias{convert-wrappers}
 \alias{as.wfm}
 \alias{as.DocumentTermMatrix}
-\alias{dfm2ldaformat}
-\alias{quantedaformat2dtm}
+\alias{dfm2lda}
 \title{convenience wrappers for dfm convert}
 \usage{
 as.wfm(x)
 
-as.DocumentTermMatrix(x, ...)
+as.DocumentTermMatrix(x)
 
-dfm2ldaformat(x)
-
-quantedaformat2dtm(x)
+dfm2lda(x)
 }
 \arguments{
 \item{x}{the dfm to be converted}
@@ -46,14 +43,10 @@ are converting.
   weighting functions from the \pkg{tm} package, see 
   \code{\link[tm]{TermDocumentMatrix}}.
 
-\code{dfm2ldaformat} provides converts a \link{dfm} into the list representation
+\code{dfm2lda} provides converts a \link{dfm} into the list representation
 of terms in documents used by the \pkg{lda} package (a list with components 
 "documents" and "vocab" as needed by 
   \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
-
-\code{quantedaformat2dtm} provides converts a \link{dfm} into the
-sparse simple triplet matrix representation of terms in documents used by the
-\pkg{topicmodels} package.
 }
 \note{
 Additional coercion methods to base R objects are also available: 
@@ -77,13 +70,7 @@ identical(as.DocumentTermMatrix(quantdfm), convert(quantdfm, to = "tm"))
 
 \dontrun{
 # shortcut conversion to lda package list format
-identical(dfm2ldaformat(quantdfm), convert(quantdfm, to = "lda")) 
-}
-
-# shortcut conversion to topicmodels package format
-\dontrun{
-identical(quantedaformat2dtm(quantdfm), 
-          convert(quantdfm, to = "topicmodels")) 
+identical(dfm2lda(quantdfm), convert(quantdfm, to = "lda")) 
 }
 
 }
