@@ -63,6 +63,11 @@ nsyllable <- function(x, syllable_dictionary = quanteda::data_int_syllables, use
     UseMethod("nsyllable")
 }
 
+#' @export
+nsyllable.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "nsyllable"))
+}
+
 #' @rdname nsyllable
 #' @noRd
 #' @export

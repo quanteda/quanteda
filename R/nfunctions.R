@@ -22,6 +22,11 @@ ndoc <- function(x) {
     UseMethod("ndoc")
 }
 
+#' @export
+ndoc.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "ndoc"))
+}
+
 #' @noRd
 #' @export
 ndoc.corpus <- function(x) {
@@ -54,6 +59,11 @@ ndoc.tokens <- function(x) {
 #' nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE))
 nfeature <- function(x) {
     UseMethod("nfeature")
+}
+
+#' @export
+nfeature.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "nfeature"))
 }
 
 #' @noRd
@@ -111,6 +121,11 @@ ntoken <- function(x, ...) {
     UseMethod("ntoken")
 }
 
+#' @export
+ntoken.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "ntoken"))
+}
+
 #' @rdname ntoken
 #' @details 
 #' For \link{dfm} objects, \code{ntype} will only return the count of features
@@ -120,12 +135,16 @@ ntype <- function(x, ...) {
     UseMethod("ntype")
 }
 
+#' @export
+ntype.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "ntype"))
+}
+
 #' @noRd
 #' @export
 ntoken.corpus <- function(x, ...) {
     ntoken(texts(x), ...)
 }
-
 
 #' @noRd
 #' @export
@@ -195,6 +214,11 @@ ntype.tokens <- function(x, ...) {
 #' @export
 nsentence <- function(x, ...) {
     UseMethod("nsentence")
+}
+
+#' @export
+nsentence.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "nsentence"))
 }
 
 #' @noRd
