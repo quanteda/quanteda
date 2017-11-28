@@ -56,7 +56,14 @@ textmodel_ca <- function(x, smooth = 0, nd = NA,
     UseMethod("textmodel_ca")
 }
 
-#' @noRd
+#' @export
+textmodel_ca.default <- function(x, smooth = 0, nd = NA,
+                             sparse = FALSE,
+                             threads = 1,
+                             residual_floor = 0.1) {
+    stop(friendly_class_undefined_message(class(x), "textmodel_ca"))
+}
+    
 #' @export
 textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
                              sparse = FALSE,
