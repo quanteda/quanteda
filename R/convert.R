@@ -3,10 +3,8 @@
 #' Convert a quanteda \link{dfm} object to a format useable by other text
 #' analysis packages.  The general function \code{convert} provides easy
 #' conversion from a dfm to the document-term representations used in all other
-#' text analysis packages for which conversions are defined.    See also
-#' \link{convert-wrappers} for convenience functions for specific package
-#' converters.
-#' @param x dfm to be converted
+#' text analysis packages for which conversions are defined.
+#' @param x a \link{dfm} to be converted
 #' @param to target conversion format, consisting of the name of the package 
 #'   into whose document-term matrix representation the dfm will be converted: 
 #'   \describe{ \item{\code{"lda"}}{a list with components "documents" and 
@@ -19,16 +17,12 @@
 #'   \item{\code{"lsa"}}{the "textmatrix" format as 
 #'   used by the \pkg{lsa} package} }
 #' @param docvars optional data.frame of document variables used as the
-#'   \code{meta} information in conversion to the STM package format.  This aids
-#'   in selecting the document variables only corresponding to the documents
-#'   with non-zero counts.
-#' @param ... parameter passed to underlying conversion functions
+#'   \code{meta} information in conversion to the \pkg{stm} package format.
+#'   This aids in selecting the document variables only corresponding to the
+#'   documents with non-zero counts.
 #' @return A converted object determined by the value of \code{to} (see above). 
 #'   See conversion target package documentation for more detailed descriptions 
 #'   of the return formats.
-#' @note There also exist a variety of converter shortcut commands, designed to 
-#' mimic the idioms of the packages into whose format they convert.  
-#' See \link{convert-wrappers} for details.
 #' @export
 #' @examples
 #' mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1970)
@@ -59,20 +53,17 @@
 #' str(ldadfm)
 #' }
 convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
-                              "matrix", "data.frame"), docvars = NULL, ...) {
+                              "matrix", "data.frame"), docvars = NULL) {
     UseMethod("convert")
 }
 
 #' @noRd
 #' @export
 convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
-                                  "matrix", "data.frame"), docvars = NULL, ...) {
-    
+                                  "matrix", "data.frame"), docvars = NULL) {
     x <- as.dfm(x)
     to <- match.arg(to)
-    if (length(addedArgs <- list(...)))
-        warning("Argument", if (length(addedArgs) > 1L) "s " else " ", names(addedArgs), " not used.", sep = "")
-    
+
     if (!is.null(docvars)) {
         if (!is.data.frame(docvars))
             stop("docvars must be a data.frame")
@@ -81,21 +72,21 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "
     }
     
     if (to == "tm") 
-        return(dfm2tm(x, ...))
+        return(dfm2tm(x))
     else if (to == "lda")
-        return(dfm2lda(x, ...))
+        return(dfm2lda(x))
     else if (to == "stm")
-        return(dfm2stm(x, docvars, ...))
+        return(dfm2stm(x, docvars))
     else if (to == "austin")
-        return(dfm2austin(x, ...))
+        return(dfm2austin(x))
     else if (to == "topicmodels")
-        return(dfm2dtm(x, ...))
+        return(dfm2dtm(x))
     else if (to == "lsa")
-        return(dfm2lsa(x, ...))
+        return(dfm2lsa(x))
     else if (to == "data.frame")
-        return(as.data.frame(x, ...))
+        return(as.data.frame(x))
     else if (to == "matrix")
-        return(as.matrix(x, ...))
+        return(as.matrix(x))
     else
         stop("invalid \"to\" format")
         
@@ -164,19 +155,19 @@ as.wfm.dfm <- function(x) {
 #' identical(as.DocumentTermMatrix(quantdfm), convert(quantdfm, to = "tm"))
 #' }
 #' 
-as.DocumentTermMatrix <- function(x, ...) {
+as.DocumentTermMatrix <- function(x) {
     UseMethod("as.DocumentTermMatrix")
 }
 
 #' @noRd
 #' @method as.DocumentTermMatrix dfm
 #' @export
-as.DocumentTermMatrix.dfm <- function(x, ...) {
-    convert(as.dfm(x), to = "tm", ...)
+as.DocumentTermMatrix.dfm <- function(x) {
+    convert(as.dfm(x), to = "tm")
 }
 
 #' @keywords internal
-dfm2austin <- function(x, ...) {
+dfm2austin <- function(x) {
     result <- as.matrix(as(x, 'dgeMatrix'))
     names(dimnames(result))[2] <- "words"
     class(result) <- c("wfm", "matrix")
@@ -184,7 +175,7 @@ dfm2austin <- function(x, ...) {
 }
 
 #' @keywords internal
-dfm2tm <- function(x, weighting = tm::weightTf, ...) {
+dfm2tm <- function(x, weighting = tm::weightTf) {
     if (!requireNamespace("tm", quietly = TRUE)) 
         stop("You must install the tm package installed for this conversion.")
     if (!requireNamespace("slam", quietly = TRUE))
@@ -207,14 +198,14 @@ dfm2tm <- function(x, weighting = tm::weightTf, ...) {
 #' }
 #' 
 #' @keywords internal
-dfm2lda <- function(x, ...) {
+dfm2lda <- function(x) {
     x <- as.dfm(x)
     if (!requireNamespace("tm", quietly = TRUE))
         stop("You must install the slam package installed for this conversion.")
     dtm2lda(dfm2dtm(x))
 }
 
-#' @rdname convert-wrappers
+#' @noRd
 #' @details
 #' \code{dfm2ldaformat} provides converts a \link{dfm} into the list representation
 #' of terms in documents used by the \pkg{lda} package (a list with components 
@@ -264,7 +255,7 @@ dfm2dtm <- function(x, omit_empty = TRUE) {
 
 
 #' @keywords internal
-dfm2stm <- function(x, docvars, omit_empty = TRUE, ...) {
+dfm2stm <- function(x, docvars, omit_empty = TRUE) {
     # get docvars (if any)
     if (is.null(docvars))
         docvars <- docvars(x)
@@ -318,4 +309,3 @@ dfm2lsa <- function(x) {
     class(result) <- "textmatrix"
     t(result)
 }
-    

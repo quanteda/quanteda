@@ -5,16 +5,13 @@
 \alias{as.wfm}
 \alias{as.DocumentTermMatrix}
 \alias{dfm2lda}
-\alias{dtm2lda}
 \title{convenience wrappers for dfm convert}
 \usage{
 as.wfm(x)
 
-as.DocumentTermMatrix(x, ...)
+as.DocumentTermMatrix(x)
 
-dfm2lda(x, ...)
-
-dtm2lda(x, omit_empty = TRUE)
+dfm2lda(x)
 }
 \arguments{
 \item{x}{the dfm to be converted}
@@ -50,11 +47,6 @@ are converting.
 of terms in documents used by the \pkg{lda} package (a list with components 
 "documents" and "vocab" as needed by 
   \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
-
-\code{dfm2ldaformat} provides converts a \link{dfm} into the list representation
-of terms in documents used by the \pkg{lda} package (a list with components 
-"documents" and "vocab" as needed by 
-  \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
 }
 \note{
 Additional coercion methods to base R objects are also available: 
@@ -81,9 +73,5 @@ identical(as.DocumentTermMatrix(quantdfm), convert(quantdfm, to = "tm"))
 identical(dfm2lda(quantdfm), convert(quantdfm, to = "lda")) 
 }
 
-\dontrun{
-# shortcut conversion to lda package list format
-identical(dfm2ldaformat(quantdfm), convert(quantdfm, to = "lda")) 
-}
 }
 \keyword{internal}
