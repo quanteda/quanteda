@@ -55,9 +55,13 @@ tokens_compound <- function(x, pattern,
     UseMethod("tokens_compound")
 }
 
+#' @export
+tokens_compound.default <- function(x, pattern,
+                                   concatenator = "_", valuetype = c("glob", "regex", "fixed"),
+                                   case_insensitive = TRUE, join = TRUE) {
+    stop(friendly_class_undefined_message(class(x), "tokens_compound"))
+}
 
-#' @rdname tokens_compound
-#' @noRd
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_compound.tokens <- function(x, pattern,
@@ -75,6 +79,3 @@ tokens_compound.tokens <- function(x, pattern,
     attr(x, "concatenator") <- concatenator
     return(x)
 }
-
-
-

@@ -65,8 +65,11 @@ textstat_frequency <- function(x, n = NULL, groups = NULL) {
     UseMethod("textstat_frequency")
 }
     
-#' @rdname textplot_frequency
-#' @noRd
+#' @export
+textstat_frequency.default <- function(x, n = NULL, groups = NULL) { 
+    stop(friendly_class_undefined_message(class(x), "textstat_frequency"))
+}
+
 #' @importFrom data.table data.table setorder setcolorder
 #' @export
 textstat_frequency.dfm <- function(x, n = NULL, groups = NULL) { 

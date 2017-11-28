@@ -51,7 +51,14 @@ textstat_dist <- function(x, selection = NULL,
     UseMethod("textstat_dist")
 }
     
-#' @noRd
+#' @export
+textstat_dist.default <- function(x, selection = NULL, 
+                              margin = c("documents", "features"),
+                              method = "euclidean",
+                              upper = FALSE, diag = FALSE, p = 2) {
+    stop(friendly_class_undefined_message(class(x), "textstat_dist"))
+}
+    
 #' @export
 textstat_dist.dfm <- function(x, selection = NULL, 
                           margin = c("documents", "features"),
@@ -321,10 +328,12 @@ hamming_sparse <- function(x, y = NULL, margin = 1) {
     hammat
 }
 
-#Chi-squared distance:divide by row sums and square root of column sums, and adjust for square root of matrix total (Legendre & Gallagher 2001, Bruce McCune & James b. Grace 2002). 
-#http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf
+# Chi-squared distance:divide by row sums and square root of column sums, 
+# and adjust for square root of matrix total (Legendre & Gallagher 2001, 
+# Bruce McCune & James b. Grace 2002). 
+# http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf
 # https://www.pcord.com/book.htm
-#formula: Chi = sum((x/rowsum(x_i) - y/rowsum(y_i))^2/(colsum(i)/total))
+# formula: Chi = sum((x/rowsum(x_i) - y/rowsum(y_i))^2/(colsum(i)/total))
 Chisquared_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
@@ -379,8 +388,8 @@ Chisquared_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     chimat
 }
 
-## This chi-squared method is used for histogram: sum((x-y)^2/((x+y)))/2
-##http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf
+# This chi-squared method is used for histogram: sum((x-y)^2/((x+y)))/2
+# http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf
 Chisquared2_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums

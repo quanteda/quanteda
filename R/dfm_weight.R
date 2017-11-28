@@ -72,7 +72,14 @@ dfm_weight <- function(x,
     UseMethod("dfm_weight")
 }
 
-#' @noRd
+#' @export
+dfm_weight.default <- function(x, 
+                       type = c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf"),
+                       weights = NULL) {
+    stop(friendly_class_undefined_message(class(x), "dfm_weight"))
+}
+
+
 #' @export
 dfm_weight.dfm <- function(x, 
                            type = c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf"),
@@ -132,7 +139,11 @@ dfm_smooth <- function(x, smoothing = 1) {
     UseMethod("dfm_smooth")
 }
 
-#' @noRd
+#' @export
+dfm_smooth.default <- function(x, smoothing = 1) {
+    stop(friendly_class_undefined_message(class(x), "dfm_smooth"))
+}
+
 #' @export
 dfm_smooth.dfm <- function(x, smoothing = 1) {
     x <- as.dfm(x)
@@ -192,7 +203,13 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
     UseMethod("docfreq")
 }
 
-#' @noRd
+#' @export
+docfreq.default <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob", "unary"),
+                        smoothing = 0, k = 0, base = 10, threshold = 0, USE.NAMES = TRUE) {
+    stop(friendly_class_undefined_message(class(x), "docfreq"))
+}
+
+    
 #' @export
 docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob", "unary"),
                         smoothing = 0, k = 0, base = 10, threshold = 0, USE.NAMES = TRUE) {
@@ -287,7 +304,11 @@ tfidf <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...)
     UseMethod("tfidf")
 }
 
-#' @noRd
+#' @export
+tfidf.default <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
+    stop(friendly_class_undefined_message(class(x), "tfidf"))
+}
+    
 #' @export
 tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
     
@@ -350,7 +371,12 @@ tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augm
     UseMethod("tf")
 }
 
-#' @noRd
+#' @export
+tf.default <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
+                       base = 10, K = 0.5) {
+    stop(friendly_class_undefined_message(class(x), "tf"))
+}
+
 #' @export
 tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
                    base = 10, K = 0.5) {
@@ -416,6 +442,3 @@ setGeneric("maxtf", function(x) standardGeneric("maxtf"))
 setMethod("maxtf", signature(x = "dfm"), definition = function(x) {
     sapply(split(x@x, x@i), max)
 })
-
-
-

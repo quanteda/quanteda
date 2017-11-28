@@ -77,7 +77,11 @@ textmodel_wordshoal <- function(x, groups, authors, dir = c(1,2), tol = 1e-3) {
     UseMethod("textmodel_wordshoal")
 }
 
-#' @noRd
+#' @export
+textmodel_wordshoal.default <- function(x, groups, authors, dir = c(1,2), tol = 1e-3) {
+    stop(friendly_class_undefined_message(class(x), "textmodel_wordshoal"))
+}
+
 #' @export
 textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3) {
     
@@ -282,7 +286,3 @@ summary.textmodel_wordshoal_fitted <- function(object, ...) {
     print(results, ...)
     invisible(results)
 }
-
-
-
-

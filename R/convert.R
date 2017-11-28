@@ -57,6 +57,11 @@ convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa"
     UseMethod("convert")
 }
 
+#' @export
+convert.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "convert"))
+}
+
 #' @noRd
 #' @export
 convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",

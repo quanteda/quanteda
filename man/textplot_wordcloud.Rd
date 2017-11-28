@@ -58,4 +58,4 @@ textplot_wordcloud(govtoppDfm, comparison = TRUE)
 \code{\link[wordcloud]{wordcloud}}, 
   \code{\link[wordcloud]{comparison.cloud}}
 }
-\keyword{plot}
+\keyword{textplot}

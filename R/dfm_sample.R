@@ -24,7 +24,12 @@ dfm_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL,
     UseMethod("dfm_sample")
 }
 
-#' @noRd
+#' @export
+dfm_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, 
+                               margin = c("documents", "features")) {
+    stop(friendly_class_undefined_message(class(x), "dfm_sample"))
+}
+    
 #' @export
 dfm_sample.dfm <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, 
                            margin = c("documents", "features")) {
@@ -42,4 +47,3 @@ dfm_sample.dfm <- function(x, size = ndoc(x), replace = FALSE, prob = NULL,
     } 
     x
 }
-
