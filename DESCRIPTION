@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.99.9023
+Version: 0.99.9025
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -122,6 +122,7 @@ Collate:
     'textplot_wordcloud.R'
     'textplot_xray.R'
     'textstat_collocations.R'
+    'textstat_collocationsdev.R'
     'textstat_dist.R'
     'textstat_frequency.R'
     'textstat_keyness.R'

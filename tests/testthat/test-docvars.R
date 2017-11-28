@@ -244,10 +244,6 @@ test_that("object always have docvars in the same rows as documents", {
     toks4 <- tokens_select(toks1, stopwords())
     expect_true(nrow(docvars(toks4)) == ndoc(toks4))
     expect_true(all(rownames(docvars(toks4)) == docnames(toks4)))
-  
-    toks5 <- as.tokens(kwic(txts, 'immigra*'))
-    expect_true(nrow(docvars(toks5)) == ndoc(toks5))
-    expect_true(all(rownames(docvars(toks5)) == docnames(toks5)))
     
     dfm1 <- dfm(txts)
     expect_true(nrow(docvars(dfm1)) == ndoc(dfm1))

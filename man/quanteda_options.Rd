@@ -19,41 +19,40 @@ options that are not already defined.  Used for setting initial values when
 some have been defined previously, such as in `.Rprofile`.}
 }
 \value{
-When called using a \code{key = value} pair (where \code{key} can be a label or 
-  quoted character name)), the option is set and \code{TRUE} is returned invisibly.
+When called using a \code{key = value} pair (where \code{key} can be
+a label or quoted character name)), the option is set and \code{TRUE} is
+returned invisibly.
 
-  When called with no arguments, a named list of the package options is returned.
-  
-  When called with \code{reset = TRUE} as an argument, all arguments are options 
-  are reset to their default values, and \code{TRUE} is returned invisibly.
+When called with no arguments, a named list of the package options is
+returned.
+
+When called with \code{reset = TRUE} as an argument, all arguments are
+options are reset to their default values, and \code{TRUE} is returned
+invisibly.
 }
 \description{
 Get or set global options affecting functions across \pkg{quanteda}.
 }
 \details{
-Currently available options are:
-\describe{
+Currently available options are: \describe{
 \item{\code{verbose}}{logical; if \code{TRUE} then use this as the default
-   for all functions with a \code{verbose} argument}
-\item{\code{threads}}{integer; specifies the number of threads to use in
-   use this as the setting in all functions that uee parallelization}
+for all functions with a \code{verbose} argument}
+\item{\code{threads}}{integer; specifies the number of threads to use in use
+this as the setting in all functions that uee parallelization}
 \item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
-   to display when using the defaults for printing a dfm}
-\item{\code{print_dfm_max_nfeature}}{integer; specifies the number of features
-   to display when using the defaults for printing a dfm}
+to display when using the defaults for printing a dfm}
+\item{\code{print_dfm_max_nfeature}}{integer; specifies the number of
+features to display when using the defaults for printing a dfm}
 \item{\code{base_docname}}{character; stem name for documents that are
 unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
-from another object}
-\item{\code{base_featname}}{character; stem name for features that are
-unnamed when they are added, for whatever reason, to a dfm through an operation
-that adds features}
-\item{\code{base_featname}}{character; stem name for features that are
-unnamed when they are added, for whatever reason, to a dfm through an operation
-that adds features}
-\item{\code{base_featname}}{character; stem name for features that are
-unnamed when they are added, for whatever reason, to a dfm through an operation
-that adds features}
-}
+from another object} \item{\code{base_featname}}{character; stem name for
+features that are unnamed when they are added, for whatever reason, to a dfm
+through an operation that adds features}
+\item{\code{base_compname}}{character; stem name for components that are
+created by matrix factorization} 
+\item{\code{language_stemmer}}{character; language option for \link{char_wordstem}, 
+\link{tokens_wordstem}, and \link{dfm_wordstem}}
+\item{\code{language_stopwords}}{character; language option for \link{stopwords}} }
 }
 \examples{
 (opt <- quanteda_options())

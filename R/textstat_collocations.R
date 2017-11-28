@@ -143,7 +143,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     result <- qatd_cpp_sequences(x, types, id_ignore, min_count, size, 
                                  if (method == "lambda1") "lambda1" else "lambda", 
                                  smoothing)
-
+    
     # compute z for lambda methods
     lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
     result["z"] <- result[lambda_index] / result[["sigma"]]
@@ -154,12 +154,11 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     
     # sort by decreasing z
     result <- result[order(result[["z"]], decreasing = TRUE), ]
-
     # reorder columns
     result <- result[, stats::na.omit(match(c("collocation", "count",  "count_nested", "length", 
                                               "lambda", "lambda1", "z", 
                                               "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
-                                     names(result)))]
+                                            names(result)))]
     rownames(result) <- NULL
     
     # remove results whose counts are less than min_count
@@ -214,7 +213,7 @@ is.collocations <- function(x) {
 #     class(x) <- c("collocations", 'data.frame')
 #     return(x)
 # }
- 
+
 # Internal Functions ------------------------------------------------------
 
 # function to get lower-order interactions for k-grams

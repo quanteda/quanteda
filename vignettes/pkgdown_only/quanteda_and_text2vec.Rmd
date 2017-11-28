@@ -1,0 +1,36 @@
+---
+title: "Using quanteda with text2vec"
+author: Kenneth Benoit, Haiyan Wang
+output: rmarkdown::html_vignette
+toc: no
+vignette: >
+    %\VignetteIndexEntry{Using quanteda with text2vec}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+    
+```{r echo = FALSE}
+library("quanteda")
+load("~/tmp/wiki.RData")
+```
+
+Reading the corpus from the [**text2vec** vignette](http://text2vec.org/glove.html):
+```{r eval = FALSE}
+library("quanteda")
+wiki <- corpus(readtext::readtext("http://mattmahoney.net/dc/text8.zip"))
+```
+(for local use, you should execute that once, and then save the object as `~/tmp/wiki.RData`.)
+
+Trimming the features before constructing the fcm:
+```{r}
+wiki_dfm <- dfm(wiki, verbose = TRUE)
+features_to_keep <- featnames(dfm_trim(wiki_dfm, min_count = 5, verbose = TRUE))
+wiki_toks <- tokens(wiki) %>% tokens_select(features_to_keep, padding = TRUE)
+```
+Constructing the fcm:
+```{r}
+qtcm <- fcm(wiki_toks, context = "window", count = "weighted", weights = 1/(1:5), tri = TRUE)
+```
+
+
+

@@ -85,16 +85,6 @@ test_that("dfm_lookup raises error when dictionary has multi-word entries", {
     )
 })
 
-test_that("dfm_lookup works with tokens created by kwic, issue #697", {
-    toks <- as.tokens(kwic(tokens(data_corpus_inaugural[1:5]), 'america'))
-    dict <- dictionary(list(awords = "a*",
-                            bwords = "b*",
-                            cwords = "c*"))
-    testdfm <- dfm(toks)
-    expect_equal(featnames(dfm_lookup(testdfm, dictionary = dict)),
-                 c("awords", "bwords", "cwords"))
-})
-
 test_that("dfm_lookup works with multi-word keys, issue #704", {
     
     dict <- dictionary(list('en'=list('foreign policy' = 'foreign', 'domestic politics' = 'domestic')))
