@@ -64,6 +64,6 @@ test_that("pipes work", {
 test_that("friendly_class_undefined_message", {
     expect_error(
         as.tokens(data_dfm_lbgexample),
-        "as.tokens\\(\\) only works on kwic.*list.*spacyr_parsed.*objects"
+        "as.tokens\\(\\) only works on.*list.*spacyr_parsed.*objects"
     )
 })
