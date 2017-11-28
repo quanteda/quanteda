@@ -9,8 +9,8 @@ dfm_sort(x, decreasing = TRUE, margin = c("features", "documents", "both"))
 \arguments{
 \item{x}{Document-feature matrix created by \code{\link{dfm}}}
 
-\item{decreasing}{logical; if \code{TRUE}, the sort will be in descending order,
-otherwise sort in increasing order}
+\item{decreasing}{logical; if \code{TRUE}, the sort will be in descending
+order, otherwise sort in increasing order}
 
 \item{margin}{which margin to sort on \code{features} to sort by frequency of
 features, \code{documents} to sort by total feature counts in documents,

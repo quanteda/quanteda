@@ -193,7 +193,79 @@ test_that("test new dfm methods", {
     expect_error(
         dfm(TRUE),
         "dfm\\(\\) only works on character.*corpus.*tokens.*objects"
-    )   
+    )
+    expect_error(
+        dfm_compress(TRUE),
+        "dfm_compress\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_group(TRUE),
+        "dfm_group\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_keep(TRUE),
+        "dfm_select\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_lookup(TRUE),
+        "dfm_lookup\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_remove(TRUE),
+        "dfm_select\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_sample(TRUE),
+        "dfm_sample\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_select(TRUE),
+        "dfm_select\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_smooth(TRUE),
+        "dfm_smooth\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_sort(TRUE),
+        "dfm_sort\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_subset(TRUE),
+        "dfm_subset\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_tolower(TRUE),
+        "dfm_tolower\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_toupper(TRUE),
+        "dfm_toupper\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_trim(TRUE),
+        "dfm_trim\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_weight(TRUE),
+        "dfm_weight\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_wordstem(TRUE),
+        "dfm_wordstem\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        tfidf(TRUE),
+        "tfidf\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        tf(TRUE),
+        "tf\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        docfreq(TRUE),
+        "docfreq\\(\\) only works on dfm objects"
+    )
 })
 
 test_that("test new as.dfm methods", {

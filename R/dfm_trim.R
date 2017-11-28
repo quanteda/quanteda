@@ -58,10 +58,13 @@
 dfm_trim <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = quanteda_options("verbose")) {
     UseMethod("dfm_trim")
 }
- 
+
 #' @export
-#' @rdname dfm_trim
-#' @noRd
+dfm_trim.default <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = quanteda_options("verbose")) {
+    stop(friendly_class_undefined_message(class(x), "dfm_trim"))
+}
+    
+#' @export
 dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = quanteda_options("verbose")) {
 
     # if (missing(min_count) & missing(min_docfreq) & missing(max_count) & missing(max_docfreq) & missing(sparsity)) {
@@ -174,4 +177,3 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
     # dfm_sort(x[, -featureRemoveIndex])
     x[, -featureRemoveIndex]
 }
-
