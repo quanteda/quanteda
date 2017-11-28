@@ -366,6 +366,12 @@ as.dictionary <- function(x) {
     UseMethod("as.dictionary")
 }
 
+
+#' @export
+as.dictionary.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "as.dictionary"))
+}
+
 #' @noRd
 #' @method as.dictionary data.frame
 #' @export

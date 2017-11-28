@@ -14,15 +14,17 @@ tokens_tolower <- function(x, keep_acronyms = FALSE, ...) {
     UseMethod("tokens_tolower")
 }
 
-#' @noRd
+#' @export
+tokens_tolower.default <- function(x, keep_acronyms = FALSE, ...) {
+    stop(friendly_class_undefined_message(class(x), "tokens_tolower"))
+}
+
 #' @export
 tokens_tolower.tokens <- function(x, keep_acronyms = FALSE, ...) {
     types(x) <- lowercase_types(types(x), keep_acronyms)
     tokens_recompile(x)
 }
 
-#' @noRd
-#' @keywords internal
 lowercase_types <- function(type, keep_acronyms) {
     if (keep_acronyms) {
         is_acronyms <- stri_detect_regex(type, "^\\p{Uppercase_Letter}(\\p{Uppercase_Letter}|\\d)+$")
@@ -33,7 +35,6 @@ lowercase_types <- function(type, keep_acronyms) {
     return(type)
 }
 
-
 #' @rdname tokens_tolower
 #' @importFrom stringi stri_trans_toupper
 #' @export
@@ -41,6 +42,11 @@ tokens_toupper <- function(x, ...) {
     UseMethod("tokens_toupper")
 }
     
+#' @export
+tokens_toupper.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "tokens_toupper"))
+}
+
 #' @noRd
 #' @export
 tokens_toupper.tokens <- function(x, ...) {
@@ -80,7 +86,11 @@ char_tolower <- function(x, keep_acronyms = FALSE, ...) {
     UseMethod("char_tolower")
 }
 
-#' @noRd
+#' @export
+char_tolower.default <- function(x, keep_acronyms = FALSE, ...) {
+    stop(friendly_class_undefined_message(class(x), "char_tolower"))
+}
+
 #' @export
 char_tolower.character <- function(x, keep_acronyms = FALSE, ...) {
     name <- names(x)
@@ -107,7 +117,11 @@ char_toupper <- function(x, ...) {
     UseMethod("char_toupper")
 }
 
-#' @noRd
+#' @export
+char_toupper.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "char_toupper"))
+}
+
 #' @export 
 char_toupper.character <- function(x, ...) {
     name <- names(x)
@@ -135,7 +149,11 @@ dfm_tolower <- function(x, keep_acronyms = FALSE, ...) {
     UseMethod("dfm_tolower")
 }
 
-#' @noRd
+#' @export
+dfm_tolower.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "dfm_tolower"))
+}
+
 #' @export
 dfm_tolower.dfm <- function(x, keep_acronyms = FALSE, ...) {
     x <- as.dfm(x)
@@ -150,7 +168,11 @@ dfm_toupper <- function(x, ...) {
     UseMethod("dfm_toupper")
 }
 
-#' @noRd
+#' @export
+dfm_toupper.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "dfm_toupper"))
+}
+
 #' @export
 dfm_toupper.dfm <- function(x, ...) {
     x <- as.dfm(x)
@@ -175,7 +197,11 @@ fcm_tolower <- function(x, keep_acronyms = FALSE, ...) {
     UseMethod("fcm_tolower")   
 }
 
-#' @noRd
+#' @export
+fcm_tolower.default <- function(x, keep_acronyms = FALSE, ...) {
+    stop(friendly_class_undefined_message(class(x), "fcm_tolower"))
+}
+
 #' @export
 fcm_tolower.fcm <- function(x, keep_acronyms = FALSE, ...) {
     colnames(x) <- rownames(x) <- lowercase_types(featnames(x), keep_acronyms)
@@ -189,7 +215,11 @@ fcm_toupper <- function(x, ...) {
     UseMethod("fcm_toupper")   
 }
 
-#' @noRd
+#' @export
+fcm_toupper.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "fcm_toupper"))
+}
+
 #' @export
 fcm_toupper.fcm <- function(x, ...) {
     colnames(x) <- rownames(x) <-

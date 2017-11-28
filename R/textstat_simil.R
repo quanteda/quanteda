@@ -64,7 +64,15 @@ textstat_simil <- function(x, selection = NULL,
     UseMethod("textstat_simil")
 }
     
-#' @noRd
+
+#' @export    
+textstat_simil.default <- function(x, selection = NULL,
+                               margin = c("documents", "features"),
+                               method = "correlation", 
+                               upper  = FALSE, diag = FALSE) {
+    stop(friendly_class_undefined_message(class(x), "textstat_simil"))
+}
+    
 #' @export    
 textstat_simil.dfm <- function(x, selection = NULL,
                           margin = c("documents", "features"),
@@ -134,11 +142,11 @@ textstat_simil.dfm <- function(x, selection = NULL,
 ## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
 
 # L2 norm
-#norm2 <- function(x,s) { drop(Matrix::crossprod(x^2, s)) ^ 0.5 }
+# norm2 <- function(x,s) { drop(Matrix::crossprod(x^2, s)) ^ 0.5 }
 # L1 norm
-##norm1 <- function(x,s) { drop(Matrix::crossprod(abs(x),s)) }
+# norm1 <- function(x,s) { drop(Matrix::crossprod(abs(x),s)) }
 
-#cosine similarity: xy / sqrt(xx * yy)
+# cosine similarity: xy / sqrt(xx * yy)
 cosine_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     if (margin == 1) x <- t(x)
@@ -453,4 +461,3 @@ as.matrix.simil <- function(x, Diag = 1L, ...) {
     diag(df) <- Diag
     df
 }
-

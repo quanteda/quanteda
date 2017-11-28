@@ -383,4 +383,3 @@ test_that("dictionary merge values in duplicate keys", {
                                  C = 'c')))
     
 })
-

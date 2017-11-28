@@ -48,4 +48,4 @@ g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 \author{
 Adam Obeng
 }
-\keyword{plot}
+\keyword{textplot}

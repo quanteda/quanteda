@@ -165,3 +165,25 @@ check_dots <-  function(dots, permissible_args = NULL) {
                 noBreaks. = TRUE, call. = FALSE)
 }
 
+#' Print friendly object class not defined message
+#' 
+#' Checks valid methods and issues a friendlier error message in case the method is 
+#' undefined for the supplied object type.
+#' @param object_class character describing the object class
+#' @param function_name character which is the function name
+#' @keywords internal
+#' @examples 
+#' # as.tokens.default <- function(x, concatenator = "", ...) {
+#' #     stop(friendly_class_undefined_message(class(x), "as.tokens"))
+#' # }
+friendly_class_undefined_message <- function(object_class, function_name) {
+    valid_object_types <- 
+        utils::methods(function_name) %>% 
+        as.character() %>% 
+        stringi::stri_extract_last_regex("(data\\.){0,1}\\w+$")
+    valid_object_types <- valid_object_types[valid_object_types != "default"]
+    paste0(function_name, "() only works on ", 
+         paste(valid_object_types, collapse = ", "),
+         " objects.")
+}
+

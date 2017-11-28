@@ -363,3 +363,4 @@ test_that("kwic error when dfm is given, #1006", {
     toks <- tokens('a b c')
     expect_error(kwic(toks, dfm('b c d')))
 })
+

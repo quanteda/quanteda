@@ -19,6 +19,11 @@
 metacorpus <- function(x, field = NULL)
     UseMethod("metacorpus")
 
+#' @export
+metacorpus.default <- function(x, field = NULL) {
+    stop(friendly_class_undefined_message(class(x), "metacorpus"))
+}
+
 #' @noRd
 #' @export
 metacorpus.corpus <- function(x, field = NULL) {
@@ -36,6 +41,16 @@ metacorpus.corpus <- function(x, field = NULL) {
 #' @export
 #' @rdname metacorpus
 "metacorpus<-" <- function(x, field, value) {
+    UseMethod("metacorpus<-")
+}
+
+#' @export
+"metacorpus<-.default" <- function(x, field, value) {
+    stop(friendly_class_undefined_message(class(x), "metacorpus<-"))
+}
+
+#' @export
+"metacorpus<-.corpus" <- function(x, field, value) {
     if (!is.null(field)) {
         stopifnot(TRUE)
         ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
@@ -43,6 +58,7 @@ metacorpus.corpus <- function(x, field = NULL) {
     x$metadata[field] <- value
     x
 }
+
 
 # texts() functions ----------------------------
 

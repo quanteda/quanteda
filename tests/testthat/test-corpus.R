@@ -300,5 +300,3 @@ test_that("corpus constructor works with tibbles", {
         c(text1 = "Hello", text2 = "quanteda", text3 = "world")
     )
 })
-
-

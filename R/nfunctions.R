@@ -22,13 +22,16 @@ ndoc <- function(x) {
     UseMethod("ndoc")
 }
 
-#' @noRd
+#' @export
+ndoc.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "ndoc"))
+}
+
 #' @export
 ndoc.corpus <- function(x) {
     nrow(documents(x))
 }
 
-#' @noRd
 #' @export
 ndoc.dfm <- function(x) {
     x <- as.dfm(x)
@@ -36,7 +39,6 @@ ndoc.dfm <- function(x) {
 }
 
 #' @export
-#' @noRd
 ndoc.tokens <- function(x) {
     length(x)
 }
@@ -56,14 +58,17 @@ nfeature <- function(x) {
     UseMethod("nfeature")
 }
 
-#' @noRd
+#' @export
+nfeature.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "nfeature"))
+}
+
 #' @export
 nfeature.dfm <- function(x) {
     x <- as.dfm(x)
     ncol(x)
 }
 
-#' @noRd
 #' @export
 nfeature.tokens <- function(x) {
     if (attr(x, 'padding')) {
@@ -111,6 +116,11 @@ ntoken <- function(x, ...) {
     UseMethod("ntoken")
 }
 
+#' @export
+ntoken.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "ntoken"))
+}
+
 #' @rdname ntoken
 #' @details 
 #' For \link{dfm} objects, \code{ntype} will only return the count of features
@@ -120,26 +130,26 @@ ntype <- function(x, ...) {
     UseMethod("ntype")
 }
 
-#' @noRd
+#' @export
+ntype.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "ntype"))
+}
+
 #' @export
 ntoken.corpus <- function(x, ...) {
     ntoken(texts(x), ...)
 }
 
-
-#' @noRd
 #' @export
 ntoken.character <- function(x, ...) {
     ntoken(tokens(x, ...))
 }
 
-#' @noRd
 #' @export
 ntoken.tokens <- function(x, ...) {
     lengths(x)
 }
 
-#' @noRd
 #' @export
 ntoken.dfm <- function(x, ...) {
     x <- as.dfm(x)
@@ -148,20 +158,17 @@ ntoken.dfm <- function(x, ...) {
     rowSums(x)
 }
 
-#' @noRd
 #' @export
 ntype.character <- function(x, ...) {
     ntype(tokens(x, ...))
 }
 
-#' @noRd
 #' @export
 ntype.corpus <- function(x, ...) {
     ntype(texts(x), ...)
 }
 
 
-#' @noRd
 #' @export
 ntype.dfm <- function(x, ...) {
     x <- as.dfm(x)
@@ -169,7 +176,6 @@ ntype.dfm <- function(x, ...) {
     rowSums(x > 0)
 }
 
-#' @noRd
 #' @export
 ntype.tokens <- function(x, ...) {
     sapply(unclass(x), function(y) length(unique(y[y > 0])))
@@ -197,7 +203,11 @@ nsentence <- function(x, ...) {
     UseMethod("nsentence")
 }
 
-#' @noRd
+#' @export
+nsentence.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "nsentence"))
+}
+
 #' @export
 nsentence.character <- function(x, ...) {
     upcase <- try(any(stringi::stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
@@ -208,13 +218,11 @@ nsentence.character <- function(x, ...) {
     lengths(tokens(x, what = "sentence", ...))
 }
 
-#' @noRd
 #' @export
 nsentence.corpus <- function(x, ...) {
     nsentence(texts(x), ...)
 }
 
-#' @noRd
 #' @export
 nsentence.tokens <- function(x, ...) {
     if (attr(x, "what") != "sentence")

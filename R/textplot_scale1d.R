@@ -77,7 +77,16 @@ textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels =
     UseMethod("textplot_scale1d")
 }
 
-#' @noRd
+#' @export
+textplot_scale1d.default <-  function(x, 
+                                                        margin = c("documents", "features"), 
+                                                        doclabels = NULL, 
+                                                        sort = TRUE, groups = NULL, 
+                                                        highlighted = NULL, alpha = 0.7, 
+                                                        highlighted_color = "black") {
+    stop(friendly_class_undefined_message(class(x), "textplot_scale1d"))
+}
+
 #' @importFrom stats reorder aggregate
 #' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
@@ -109,7 +118,6 @@ textplot_scale1d.textmodel_wordfish_fitted <-  function(x,
 } 
 
      
-#' @noRd
 #' @importFrom stats reorder aggregate
 #' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
@@ -142,7 +150,6 @@ textplot_scale1d.textmodel_wordscores_predicted <- function(x,
     apply_theme(p)
 }
 
-#' @noRd
 #' @importFrom stats reorder aggregate
 #' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point

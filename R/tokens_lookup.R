@@ -68,7 +68,17 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
     UseMethod("tokens_lookup")    
 }
 
-#' @noRd
+#' @export
+tokens_lookup.default <- function(x, dictionary, levels = 1:5,
+                                 valuetype = c("glob", "regex", "fixed"), 
+                                 case_insensitive = TRUE,
+                                 capkeys = !exclusive,
+                                 exclusive = TRUE,
+                                 nomatch = NULL,
+                                 verbose = quanteda_options("verbose")) {
+    stop(friendly_class_undefined_message(class(x), "tokens_lookup"))
+}
+
 #' @export
 tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"), 
@@ -77,7 +87,6 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           exclusive = TRUE,
                           nomatch = NULL,
                           verbose = quanteda_options("verbose")) {
-
     if (!is.tokens(x))
         stop("x must be a tokens object")
     
