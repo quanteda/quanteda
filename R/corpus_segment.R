@@ -102,6 +102,15 @@ corpus_segment <- function(x, pattern = "##*",
 }
 
 #' @export    
+corpus_segment.default <- function(x, pattern = "##*",
+                                  valuetype = c("glob", "regex", "fixed"),
+                                  extract_pattern = TRUE,
+                                  pattern_position = c("before", "after"),
+                                  use_docvars = TRUE) {
+    stop(friendly_class_undefined_message(class(x), "corpus_segment"))
+}
+    
+#' @export    
 corpus_segment.corpus <- function(x, pattern = "##*",
                                   valuetype = c("glob", "regex", "fixed"),
                                   extract_pattern = TRUE,

@@ -1,10 +1,30 @@
 context("test default methods for nice error messages")
 
-test_that("test default fcm method", {
+test_that("test detault corpus* methods", {
     expect_error(
-        fcm(0),
-        "fcm\\(\\) only works on character.*tokens objects"
+        corpus(TRUE),
+        "corpus\\(\\) only works on.*character.*corpus.*objects"
     )   
+    expect_error(
+        as.corpus(c(1, 2, 3)),
+        "as.corpus\\(\\) only works on.*corpuszip"
+    )   
+    expect_error(
+        corpus_reshape(1),
+        "corpus_reshape\\(\\) only works on corpus objects"
+    )
+    expect_error(
+        corpus_sample(1),
+        "corpus_sample\\(\\) only works on corpus objects"
+    )    
+    expect_error(
+        corpus_segment(1),
+        "corpus_segment\\(\\) only works on corpus objects"
+    )
+    expect_error(
+        corpus_subset(1),
+        "corpus_subset\\(\\) only works on corpus objects"
+    )
 })
 
 test_that("test detault n-methods", {
@@ -61,7 +81,11 @@ test_that("test detault char_* methods", {
     )
 })
 
-test_that("test detault fcm_* methods", {
+test_that("test detault fcm* methods", {
+    expect_error(
+        fcm(0),
+        "fcm\\(\\) only works on character.*tokens objects"
+    )   
     expect_error(
         fcm_compress(1),
         "fcm_compress\\(\\) only works on fcm objects"
@@ -125,13 +149,6 @@ test_that("test default metacorpus method", {
     )
 })
 
-test_that("test new corpus methods", {
-    expect_error(
-        corpus(TRUE),
-        "corpus\\(\\) only works on.*character.*corpus.*objects"
-    )   
-})
-
 test_that("kwic default works", {
     expect_error(
         kwic(TRUE),
@@ -171,12 +188,6 @@ test_that("test new convert methods", {
     )   
 })
 
-test_that("test new as.corpus methods", { 
-    expect_error(
-        as.corpus(c(1, 2, 3)),
-        "as.corpus\\(\\) only works on.*corpuszip"
-    )   
-})
 
 test_that("test new dfm methods", {
     expect_error(
