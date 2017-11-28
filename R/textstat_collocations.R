@@ -101,23 +101,31 @@ textstat_collocations <- function(x, method = "lambda",
                                   min_count = 2, 
                                   smoothing = 0.5, 
                                   tolower = TRUE, 
-                                  ...) { #show_counts = FALSE, ...) {
+                                  ...) { 
     UseMethod("textstat_collocations")
 }
 
-
-#' @noRd
 #' @export
+textstat_collocations.default <- function(x, method = "lambda", 
+                                         size = 2, 
+                                         min_count = 2, 
+                                         smoothing = 0.5, 
+                                         tolower = TRUE, 
+                                         ...) {
+    stop(friendly_class_undefined_message(class(x), "textstat_collocations"))
+}
+    
+
 #' @importFrom stats na.omit
+#' @export
 textstat_collocations.tokens <- function(x, method = "lambda", 
                                          size = 2, 
                                          min_count = 2, 
                                          smoothing = 0.5, 
                                          tolower = TRUE, 
-                                         ...) { #show_counts = FALSE, ...) {
+                                         ...) {
     check_dots(list(...), NULL)
     
-    #method <- match.arg(method, ("lambda", "lambda1", "lr", "chi2", "pmi") #, "dice", "gensim", "LFMD"))
     method <- match.arg(method, c("lambda"))
     
     if (any(size == 1))
@@ -147,40 +155,6 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     # sort by decreasing z
     result <- result[order(result[["z"]], decreasing = TRUE), ]
 
-    # # compute statistics that require expected counts
-    # if (method %in% c("all", "lr", "chi2", "pmi") | show_counts) {
-    #     # get observed counts and compute expected counts
-    #     # split the string into n00, n01, n10, etc
-    #     counts_n <- strsplit(result[, "observed_counts"], "_")
-    #     df_counts_n <- data.frame(t(sapply(counts_n, as.numeric)))
-    #     names(df_counts_n) <- make_count_names(size, "n")
-    #     # compute expected counts
-    #     df_counts_e <- get_expected_values(df_counts_n, size = size)
-    #     names(df_counts_e) <- make_count_names(size, "e")
-    #     # remove observed counts character
-    #     result <- result[, -which(names(result)=="observed_counts")]
-    #     
-    #     # "pmi_2", "chi2_2" and "G2_2" are verified, remove the result from cpp
-    #     result[c("pmi", "chi2", "G2")] <- NULL
-    #     
-    #     # recompute dice, pmi, G2, chi2
-    #     if (method %in% c("all", "lr"))
-    #         result["G2"] <- 2 * rowSums(df_counts_n * log(df_counts_n / df_counts_e))
-    #     if (method %in% c("all", "chi2"))
-    #         result["chi2"] <- rowSums((df_counts_n - df_counts_e)^2 / df_counts_e)
-    #     if (method %in% c("all", "pmi"))
-    #         result["pmi"] <- log(df_counts_n[[ncol(df_counts_n)]] / df_counts_e[[ncol(df_counts_e)]], base = 2)
-    # }
-
-    # remove other measures if not specified
-#    if (method == "lambda" | method == "lambda1")
-    #    result[c("pmi", "chi2", "G2", "sigma")] <- NULL
-    # if (!method %in% c("lambda", "lambda1", "all"))
-    #     result[c("lambda", "lambda1", "sigma", "z")] <- NULL
-    #if (method == "chi2") result[c("pmi", "G2")] <- NULL
-    #if (method == "lr") result[c("pmi", "chi2")] <- NULL
-    #if (method == "pmi") result[c("G2", "chi2")] <- NULL
-    
     # reorder columns
     result <- result[, stats::na.omit(match(c("collocation", "count",  "count_nested", "length", 
                                               "lambda", "lambda1", "z", 
@@ -188,9 +162,6 @@ textstat_collocations.tokens <- function(x, method = "lambda",
                                      names(result)))]
     rownames(result) <- NULL
     
-    # # add counts to output if requested
-    # if (show_counts) result <- cbind(result, df_counts_n, df_counts_e)
-
     # remove results whose counts are less than min_count
     result <- result[result$count >= min_count, ]
     
@@ -296,6 +267,3 @@ get_expected_values <- function(df, size) {
     
     data.frame(t(expected_counts_list))
 }
-
-
-

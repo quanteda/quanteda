@@ -391,3 +391,33 @@ test_that("test default textmodel methods", {
     )
 })
 
+test_that("test default textstat methods", {
+    expect_error(
+        textstat_dist(TRUE),
+        "textstat_dist\\(\\) only works on dfm objects"
+    )   
+    expect_error(
+        textstat_frequency(TRUE),
+        "textstat_frequency\\(\\) only works on dfm objects"
+    )   
+    expect_error(
+        textstat_keyness(TRUE),
+        "textstat_keyness\\(\\) only works on dfm objects"
+    )   
+    expect_error(
+        textstat_lexdiv(TRUE),
+        "textstat_lexdiv\\(\\) only works on dfm objects"
+    )   
+    expect_error(
+        textstat_readability(TRUE),
+        "textstat_readability\\(\\) only works on character, corpus objects"
+    )   
+    expect_error(
+        textstat_simil(TRUE),
+        "textstat_simil\\(\\) only works on dfm objects"
+    )   
+    expect_error(
+        textstat_collocations(TRUE),
+        "textstat_collocations\\(\\) only works on.*tokens objects"
+    )
+})
