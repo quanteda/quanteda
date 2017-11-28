@@ -421,3 +421,26 @@ test_that("test default textstat methods", {
         "textstat_collocations\\(\\) only works on.*tokens objects"
     )
 })
+
+test_that("test default textplot methods", {
+    expect_error(
+        textplot_influence(TRUE),
+        "textplot_influence\\(\\) only works on affinity_influence.*objects"
+    )   
+    expect_error(
+        textplot_keyness(TRUE),
+        "textplot_keyness\\(\\) only works on data.frame objects"
+    )   
+    expect_error(
+        textplot_scale1d(TRUE),
+        "textplot_scale1d\\(\\) only works on textmodel.*objects"
+    )   
+    expect_error(
+        textplot_wordcloud(TRUE),
+        "textplot_wordcloud\\(\\) only works on dfm, tokens objects"
+    )   
+    expect_error(
+        textplot_xray(TRUE),
+        "textplot_xray\\(\\) only works on kwic objects"
+    )   
+})

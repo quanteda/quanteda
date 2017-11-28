@@ -455,6 +455,7 @@ affinity1 <- function(p, x, smooth, verbose) {
 #'   list of format...
 #' @method predict textmodel_affinity_fitted
 #' @importFrom methods new
+#' @keywords textmodel internal
 #' @export
 predict.textmodel_affinity_fitted <- function(object, newdata = NULL,
                                             level = 0.95, verbose = FALSE, ...) {
