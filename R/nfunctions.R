@@ -27,13 +27,11 @@ ndoc.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "ndoc"))
 }
 
-#' @noRd
 #' @export
 ndoc.corpus <- function(x) {
     nrow(documents(x))
 }
 
-#' @noRd
 #' @export
 ndoc.dfm <- function(x) {
     x <- as.dfm(x)
@@ -41,7 +39,6 @@ ndoc.dfm <- function(x) {
 }
 
 #' @export
-#' @noRd
 ndoc.tokens <- function(x) {
     length(x)
 }
@@ -66,14 +63,12 @@ nfeature.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "nfeature"))
 }
 
-#' @noRd
 #' @export
 nfeature.dfm <- function(x) {
     x <- as.dfm(x)
     ncol(x)
 }
 
-#' @noRd
 #' @export
 nfeature.tokens <- function(x) {
     if (attr(x, 'padding')) {
@@ -122,7 +117,7 @@ ntoken <- function(x, ...) {
 }
 
 #' @export
-ntoken.default <- function(x) {
+ntoken.default <- function(x, ...) {
     stop(friendly_class_undefined_message(class(x), "ntoken"))
 }
 
@@ -136,29 +131,25 @@ ntype <- function(x, ...) {
 }
 
 #' @export
-ntype.default <- function(x) {
+ntype.default <- function(x, ...) {
     stop(friendly_class_undefined_message(class(x), "ntype"))
 }
 
-#' @noRd
 #' @export
 ntoken.corpus <- function(x, ...) {
     ntoken(texts(x), ...)
 }
 
-#' @noRd
 #' @export
 ntoken.character <- function(x, ...) {
     ntoken(tokens(x, ...))
 }
 
-#' @noRd
 #' @export
 ntoken.tokens <- function(x, ...) {
     lengths(x)
 }
 
-#' @noRd
 #' @export
 ntoken.dfm <- function(x, ...) {
     x <- as.dfm(x)
@@ -167,20 +158,17 @@ ntoken.dfm <- function(x, ...) {
     rowSums(x)
 }
 
-#' @noRd
 #' @export
 ntype.character <- function(x, ...) {
     ntype(tokens(x, ...))
 }
 
-#' @noRd
 #' @export
 ntype.corpus <- function(x, ...) {
     ntype(texts(x), ...)
 }
 
 
-#' @noRd
 #' @export
 ntype.dfm <- function(x, ...) {
     x <- as.dfm(x)
@@ -188,7 +176,6 @@ ntype.dfm <- function(x, ...) {
     rowSums(x > 0)
 }
 
-#' @noRd
 #' @export
 ntype.tokens <- function(x, ...) {
     sapply(unclass(x), function(y) length(unique(y[y > 0])))
@@ -217,11 +204,10 @@ nsentence <- function(x, ...) {
 }
 
 #' @export
-nsentence.default <- function(x) {
+nsentence.default <- function(x, ...) {
     stop(friendly_class_undefined_message(class(x), "nsentence"))
 }
 
-#' @noRd
 #' @export
 nsentence.character <- function(x, ...) {
     upcase <- try(any(stringi::stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
@@ -232,13 +218,11 @@ nsentence.character <- function(x, ...) {
     lengths(tokens(x, what = "sentence", ...))
 }
 
-#' @noRd
 #' @export
 nsentence.corpus <- function(x, ...) {
     nsentence(texts(x), ...)
 }
 
-#' @noRd
 #' @export
 nsentence.tokens <- function(x, ...) {
     if (attr(x, "what") != "sentence")

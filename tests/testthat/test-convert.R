@@ -229,10 +229,3 @@ test_that("tm converter works under extreme situations", {
     tmdfm <- convert(as.dfm(cmatrix), to = "tm")
     expect_equivalent(tm::inspect(tmdfm[,]), cmatrix)
 })
-
-test_that("test new convert methods", {
-    expect_error(
-        convert(TRUE),
-        "convert\\(\\) only works on .*dfm.*objects"
-    )   
-})

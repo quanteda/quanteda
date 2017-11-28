@@ -1,0 +1,243 @@
+context("test default methods for nice error messages")
+
+test_that("test default fcm method", {
+    expect_error(
+        fcm(0),
+        "fcm\\(\\) only works on character.*tokens objects"
+    )   
+})
+
+test_that("test detault n-methods", {
+    expect_error(
+        ndoc(TRUE),
+        "ndoc\\(\\) only works on.*corpus.*tokens.*objects"
+    )
+    expect_error(
+        nfeature(TRUE),
+        "nfeature\\(\\) only works on dfm, tokens objects"
+    )    
+    expect_error(
+        nscrabble(TRUE),
+        "nscrabble\\(\\) only works on character.*objects"
+    )
+    expect_error(
+        nsentence(TRUE),
+        "nsentence\\(\\) only works on.*corpus.*tokens objects"
+    )
+    expect_error(
+        nsyllable(TRUE),
+        "nsyllable\\(\\) only works on character, tokens objects"
+    )
+    expect_error(
+        ntoken(TRUE),
+        "ntoken\\(\\) only works on character.*tokens objects"
+    )
+    expect_error(
+        ntype(TRUE),
+        "ntype\\(\\) only works on character.*tokens objects"
+    )
+})
+
+test_that("test detault char_* methods", {
+    expect_error(
+        char_ngrams(1),
+        "char_ngrams\\(\\) only works on character objects"
+    )
+    expect_error(
+        char_segment(1),
+        "char_segment\\(\\) only works on character objects"
+    )    
+    expect_error(
+        char_tolower(1),
+        "char_tolower\\(\\) only works on character objects"
+    )
+    expect_error(
+        char_toupper(1),
+        "char_toupper\\(\\) only works on character objects"
+    )
+    expect_error(
+        char_wordstem(1),
+        "char_wordstem\\(\\) only works on character objects"
+    )
+})
+
+test_that("test detault fcm_* methods", {
+    expect_error(
+        fcm_compress(1),
+        "fcm_compress\\(\\) only works on fcm objects"
+    )
+    expect_error(
+        fcm_keep(1),
+        "fcm_keep\\(\\) only works on fcm objects"
+    )    
+    expect_error(
+        fcm_remove(1),
+        "fcm_remove\\(\\) only works on fcm objects"
+    )
+    expect_error(
+        fcm_select(1),
+        "fcm_select\\(\\) only works on fcm objects"
+    )
+    expect_error(
+        fcm_sort(1),
+        "fcm_sort\\(\\) only works on fcm objects"
+    )
+    expect_error(
+        fcm_tolower(1),
+        "fcm_tolower\\(\\) only works on fcm objects"
+    )
+    expect_error(
+        fcm_toupper(1),
+        "fcm_toupper\\(\\) only works on fcm objects"
+    )
+})
+
+test_that("test default docvars methods", {
+    expect_error(
+        docvars(0),
+        "docvars\\(\\) only works on.*corpus.*tokens objects"
+    )   
+    expect_error(
+        docvars(data_char_sampletext) <- "X",
+        "docvars<-\\(\\) only works on.*corpus.*tokens objects"
+    )
+})
+
+test_that("test default metadoc methods", {
+    expect_error(
+        metadoc(0),
+        "metadoc\\(\\) only works on.*corpus.*tokens objects"
+    )   
+    expect_error(
+        metadoc(data_char_sampletext) <- "X",
+        "metadoc<-\\(\\) only works on corpus objects"
+    )
+})
+
+test_that("test default metacorpus method", {
+    expect_error(
+        metacorpus(0),
+        "metacorpus\\(\\) only works on corpus objects"
+    )   
+    expect_error(
+        metacorpus(data_char_sampletext) <- "X",
+        "metacorpus<-\\(\\) only works on corpus objects"
+    )
+})
+
+test_that("test new corpus methods", {
+    expect_error(
+        corpus(TRUE),
+        "corpus\\(\\) only works on.*character.*corpus.*objects"
+    )   
+})
+
+test_that("kwic default works", {
+    expect_error(
+        kwic(TRUE),
+        "kwic\\(\\) only works on character, corpus, tokens objects"
+    )
+})
+
+test_that("phrase default works", {
+    expect_error(
+        phrase(TRUE),
+        "phrase\\(\\) only works on character.*tokens objects"
+    )
+})
+
+test_that("types defaults work", {
+    expect_error(
+        types(TRUE),
+        "types\\(\\) only works on tokens objects"
+    )
+    # expect_error(
+    #     quanteda:::types(data_char_sampletext) <- c("a", "b"),
+    #     "types<-\\(\\) only works on tokens objects"
+    # )
+})
+
+test_that("test new bootstrap_dfm methods", {
+    expect_error(
+        bootstrap_dfm(TRUE),
+        "bootstrap_dfm\\(\\) only works on character.*dfm.*objects"
+    )   
+})
+
+test_that("test new convert methods", {
+    expect_error(
+        convert(TRUE),
+        "convert\\(\\) only works on .*dfm.*objects"
+    )   
+})
+
+test_that("test new as.corpus methods", { 
+    expect_error(
+        as.corpus(c(1, 2, 3)),
+        "as.corpus\\(\\) only works on.*corpuszip"
+    )   
+})
+
+test_that("test new dfm methods", {
+    expect_error(
+        dfm(TRUE),
+        "dfm\\(\\) only works on character.*corpus.*tokens.*objects"
+    )   
+})
+
+test_that("test new as.dfm methods", {
+    expect_error(
+        as.dfm(TRUE),
+        "as\\.dfm\\(\\) only works on.*data\\.frame.*dfm.*matrix.*objects"
+    )   
+})
+
+test_that("test sparsity default", {
+    expect_error(
+        sparsity(TRUE),
+        "sparsity\\(\\) only works on dfm objects"
+    )   
+})
+
+test_that("test topfeatures default", {
+    expect_error(
+        topfeatures(TRUE),
+        "topfeatures\\(\\) only works on dfm objects"
+    )   
+})
+
+test_that("test new as.dictionary methods", {
+    expect_error(
+        as.dictionary(TRUE),
+        "as\\.dictionary\\(\\) only works on data\\.frame objects"
+    )   
+})
+
+test_that("test new docnames methods", {
+    expect_error(
+        docnames(0),
+        "docnames\\(\\) only works on.*corpus.*tokens objects"
+    )   
+})
+
+test_that("test new docnames<- methods", {
+    expect_error(
+        docnames(data_char_sampletext) <- "X",
+        "docnames<-\\(\\) only works on.*corpus.*tokens objects"
+    )   
+})
+
+test_that("test new as.tokens methods", {
+    expect_error(
+        as.tokens(c(1, 2, 3)),
+        "as.tokens\\(\\) only works on.*list"
+    )   
+})
+
+test_that("test new tokens methods", {
+    expect_error(
+        tokens(TRUE),
+        "tokens\\(\\) only works on character, corpus, tokens objects"
+    )   
+})
+

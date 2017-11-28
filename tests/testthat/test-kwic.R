@@ -424,9 +424,3 @@ test_that("kwic error when dfm is given, #1006", {
     expect_error(kwic(toks, dfm('b c d')))
 })
 
-test_that("kwic default works", {
-    expect_error(
-        kwic(TRUE),
-        "kwic\\(\\) only works on character, corpus, tokens objects"
-    )
-})

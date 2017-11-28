@@ -101,8 +101,6 @@ corpus_segment <- function(x, pattern = "##*",
     UseMethod("corpus_segment")
 }
 
-#' @noRd
-#' @rdname corpus_segment
 #' @export    
 corpus_segment.corpus <- function(x, pattern = "##*",
                                   valuetype = c("glob", "regex", "fixed"),
@@ -166,8 +164,15 @@ char_segment <- function(x, pattern = "##*",
                          pattern_position = c("before", "after")) {
     UseMethod("char_segment")
 }
+
+#' @export
+char_segment.default <- function(x, pattern = "##*",
+                                   valuetype = c("glob", "regex", "fixed"),
+                                   remove_pattern = TRUE,
+                                   pattern_position = c("before", "after")) {
+    stop(friendly_class_undefined_message(class(x), "char_segment"))
+}
         
-#' @noRd
 #' @export
 char_segment.character <- function(x, pattern = "##*",
                                    valuetype = c("glob", "regex", "fixed"),

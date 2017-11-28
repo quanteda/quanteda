@@ -15,13 +15,6 @@ test_that("as.corpus.corpuszip works", {
     expect_equal(data_corpus_test, as.corpus(data_corpuszip_test))
 })
 
-test_that("test new as.corpus methods", { 
-    expect_error(
-        as.corpus(c(1, 2, 3)),
-        "as.corpus\\(\\) only works on.*corpuszip"
-    )   
-})
-
 test_that("print method works for corpuszip", {
     expect_output(print(data_corpus_test), regexp = "^Corpus consisting of 4 documents and 3 docvars\\.$")
     expect_output(print(data_corpuszip_test), regexp = "^Corpus consisting of 4 documents and 3 docvars \\(compressed")

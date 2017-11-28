@@ -660,32 +660,11 @@ test_that("dfm error when a dfm is given to for feature selection when x is not 
     )
 })
 
-test_that("test new dfm methods", {
-    expect_error(
-        dfm(TRUE),
-        "dfm\\(\\) only works on character.*corpus.*tokens.*objects"
-    )   
-})
-
-test_that("test new as.dfm methods", {
-    expect_error(
-        as.dfm(TRUE),
-        "as\\.dfm\\(\\) only works on.*data\\.frame.*dfm.*matrix.*objects"
-    )   
-})
-
 test_that("test topfeatures", {
     expect_equal(
         topfeatures(dfm("a a a a b b b c c d"), "count"),
         c(a = 4, b = 3, c = 2, d = 1)
     )
-})
-
-test_that("test topfeatures default", {
-    expect_error(
-        topfeatures(TRUE),
-        "topfeatures\\(\\) only works on dfm objects"
-    )   
 })
 
 test_that("test sparsity", {
@@ -695,9 +674,3 @@ test_that("test sparsity", {
     )
 })
 
-test_that("test sparsity default", {
-    expect_error(
-        sparsity(TRUE),
-        "sparsity\\(\\) only works on dfm objects"
-    )   
-})

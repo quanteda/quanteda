@@ -23,7 +23,7 @@ nscrabble <- function(x, FUN = sum) {
 }
 
 #' @export
-nscrabble.default <- function(x) {
+nscrabble.default <- function(x, FUN = sum) {
     stop(friendly_class_undefined_message(class(x), "nscrabble"))
 }
 

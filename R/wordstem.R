@@ -58,7 +58,11 @@ char_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
     UseMethod("char_wordstem")
 }
 
-#' @noRd
+#' @export
+char_wordstem.default <- function(x, language = quanteda_options("language_stemmer")) {
+    stop(friendly_class_undefined_message(class(x), "char_wordstem"))
+}
+
 #' @export
 char_wordstem.character <- function(x, language = quanteda_options("language_stemmer")) {
     if (any(stringi::stri_detect_regex(x, "^\\P{Z}+\\p{Z}+") & !is.na(x)))
@@ -81,6 +85,11 @@ char_wordstem.character <- function(x, language = quanteda_options("language_ste
 #' @export
 dfm_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
     UseMethod("dfm_wordstem")
+}
+
+#' @export
+dfm_wordstem.default <- function(x, language = quanteda_options("language_stemmer")) {
+    stop(friendly_class_undefined_message(class(x), "dfm_wordstem"))
 }
 
 #' @noRd    

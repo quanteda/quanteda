@@ -383,11 +383,3 @@ test_that("dictionary merge values in duplicate keys", {
                                  C = 'c')))
     
 })
-
-test_that("test new as.dictionary methods", {
-    expect_error(
-        as.dictionary(TRUE),
-        "as\\.dictionary\\(\\) only works on data\\.frame objects"
-    )   
-})
-

@@ -43,34 +43,3 @@ test_that("test ntype tokens", {
     expect_equal(ntype(toks2), c(d1 = 2, d2 = 4))
     expect_equal(ntype(toks2), c(d1 = 2, d2 = 4))
 })
-
-test_that("test detault n-methods", {
-    expect_error(
-        ndoc(TRUE),
-        "ndoc\\(\\) only works on tokens objects"
-    )
-    expect_error(
-        nfeature(TRUE),
-        "nfeature\\(\\) only works on tokens objects"
-    )    
-    expect_error(
-        nscrabble(TRUE),
-        "nscrabble\\(\\) only works on tokens objects"
-    )
-    expect_error(
-        nsentence(TRUE),
-        "nsentence\\(\\) only works on tokens objects"
-    )
-    expect_error(
-        nsyllable(TRUE),
-        "nsyllable\\(\\) only works on tokens objects"
-    )
-    expect_error(
-        ntoken(TRUE),
-        "ntoken\\(\\) only works on tokens objects"
-    )
-    expect_error(
-        ntype(TRUE),
-        "ntype\\(\\) only works on tokens objects"
-    )
-})

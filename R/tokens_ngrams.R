@@ -74,7 +74,11 @@ char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     UseMethod("char_ngrams")
 }
 
-#' @noRd
+#' @export
+char_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+    stop(friendly_class_undefined_message(class(x), "char_ngrams"))
+}
+
 #' @export
 char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     as.character(tokens_ngrams(x, n, skip, concatenator))

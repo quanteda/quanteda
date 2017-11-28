@@ -30,17 +30,3 @@ test_that("docnames<- works with corpus, tokens and dfm (#987)", {
     expect_equal(docvars(mx, '_document'), name_new)
     
 })
-
-test_that("test new docnames methods", {
-    expect_error(
-        docnames(0),
-        "docnames\\(\\) only works on.*corpus.*tokens objects"
-    )   
-})
-
-test_that("test new docnames<- methods", {
-    expect_error(
-        docnames(data_char_sampletext) <- "X",
-        "docnames<-\\(\\) only works on.*corpus.*tokens objects"
-    )   
-})

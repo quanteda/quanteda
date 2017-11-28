@@ -23,7 +23,11 @@ fcm_compress <- function(x) {
     UseMethod("fcm_compress")
 }
 
-#' @noRd
+#' @export
+fcm_compress.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "fcm_compress"))
+}
+
 #' @export
 fcm_compress.fcm <- function(x) {
     if (!is.fcm(x))
@@ -64,8 +68,12 @@ fcm_compress.fcm <- function(x) {
 fcm_sort <- function(x) {
     UseMethod("fcm_sort")    
 }
-    
-#' @noRd
+
+#' @export
+fcm_sort.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "fcm_sort"))
+}
+
 #' @export
 fcm_sort.fcm <- function(x) {
     attrs <- attributes(x)
@@ -99,7 +107,14 @@ fcm_select <- function(x, pattern = NULL, selection = c("keep", "remove"),
     UseMethod("fcm_select")
 }
 
-#' @noRd
+#' @export
+fcm_select.default <- function(x, pattern = NULL, selection = c("keep", "remove"), 
+                               valuetype = c("glob", "regex", "fixed"),
+                               case_insensitive = TRUE,
+                               verbose = TRUE, ...) {
+    stop(friendly_class_undefined_message(class(x), "fcm_select"))
+}
+
 #' @export
 fcm_select.fcm <- function(x, pattern = NULL, selection = c("keep", "remove"), 
                            valuetype = c("glob", "regex", "fixed"),
@@ -122,7 +137,11 @@ fcm_remove <- function(x, pattern = NULL, ...) {
     UseMethod("fcm_remove")
 }
 
-#' @noRd
+#' @export
+fcm_remove.default <- function(x, pattern = NULL, ...) {
+    stop(friendly_class_undefined_message(class(x), "fcm_remove"))
+}
+
 #' @export
 fcm_remove.fcm <- function(x, pattern = NULL, ...) {
     fcm_select(x, pattern, selection = "remove", ...)
@@ -132,6 +151,11 @@ fcm_remove.fcm <- function(x, pattern = NULL, ...) {
 #' @export
 fcm_keep <- function(x, pattern = NULL, ...) {
     UseMethod("fcm_keep")
+}
+
+#' @export
+fcm_keep.default <- function(x, pattern = NULL, ...) {
+    stop(friendly_class_undefined_message(class(x), "fcm_keep"))
 }
 
 #' @noRd

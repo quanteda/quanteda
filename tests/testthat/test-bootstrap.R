@@ -56,10 +56,3 @@ test_that("bootstrap_dfm works as planned with dfm", {
         docnames(dfmresamp2[[2]])
     )
 })
-
-test_that("test new bootstrap_dfm methods", {
-    expect_error(
-        bootstrap_dfm(TRUE),
-        "bootstrap_dfm\\(\\) only works on character.*dfm.*objects"
-    )   
-})
