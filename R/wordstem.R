@@ -30,8 +30,12 @@
 tokens_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
     UseMethod("tokens_wordstem")
 }
-    
-#' @noRd
+
+#' @export
+tokens_wordstem.default <- function(x, language = quanteda_options("language_stemmer")) {
+    stop(friendly_class_undefined_message(class(x), "tokens_wordstem"))
+}
+
 #' @export
 tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stemmer")) {
     

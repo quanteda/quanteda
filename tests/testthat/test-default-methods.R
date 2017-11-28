@@ -188,7 +188,6 @@ test_that("test new convert methods", {
     )   
 })
 
-
 test_that("test new dfm methods", {
     expect_error(
         dfm(TRUE),
@@ -268,6 +267,61 @@ test_that("test new dfm methods", {
     )
 })
 
+test_that("test token default methods", {
+    expect_error(
+        as.tokens(c(1, 2, 3)),
+        "as.tokens\\(\\) only works on.*list"
+    )   
+    expect_error(
+        tokens(TRUE),
+        "tokens\\(\\) only works on character, corpus, tokens objects"
+    )   
+    expect_error(
+        tokens_compound(TRUE),
+        "tokens_compound\\(\\) only works on tokens objects"
+    )
+    expect_error(
+        tokens_keep(TRUE),
+        "tokens_select\\(\\) only works on tokens objects"
+    )
+    expect_error(
+        tokens_lookup(TRUE),
+        "tokens_lookup\\(\\) only works on tokens objects"
+    )
+    expect_error(
+        tokens_ngrams(TRUE),
+        "tokens_ngrams\\(\\) only works on.*tokens objects"
+    )
+    expect_error(
+        tokens_remove(TRUE),
+        "tokens_select\\(\\) only works on tokens objects"
+    )
+    expect_error(
+        tokens_replace(TRUE),
+        "tokens_replace\\(\\) only works on tokens objects"
+    )
+    expect_error(
+        tokens_select(TRUE),
+        "tokens_select\\(\\) only works on tokens objects"
+    )
+    expect_error(
+        tokens_skipgrams(TRUE),
+        "tokens_skipgrams\\(\\) only works on tokens objects"
+    )
+    expect_error(
+        tokens_tolower(TRUE),
+        "tokens_tolower\\(\\) only works on tokens objects"
+    )
+    expect_error(
+        tokens_toupper(TRUE),
+        "tokens_toupper\\(\\) only works on tokens objects"
+    )
+    expect_error(
+        tokens_wordstem(TRUE),
+        "tokens_wordstem\\(\\) only works on tokens objects"
+    )
+})
+
 test_that("test new as.dfm methods", {
     expect_error(
         as.dfm(TRUE),
@@ -307,20 +361,6 @@ test_that("test new docnames<- methods", {
     expect_error(
         docnames(data_char_sampletext) <- "X",
         "docnames<-\\(\\) only works on.*corpus.*tokens objects"
-    )   
-})
-
-test_that("test new as.tokens methods", {
-    expect_error(
-        as.tokens(c(1, 2, 3)),
-        "as.tokens\\(\\) only works on.*list"
-    )   
-})
-
-test_that("test new tokens methods", {
-    expect_error(
-        tokens(TRUE),
-        "tokens\\(\\) only works on character, corpus, tokens objects"
     )   
 })
 

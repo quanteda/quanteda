@@ -41,10 +41,12 @@ tokens_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     UseMethod("tokens_ngrams")
 }
 
-#' @rdname ngrams
-#' @importFrom stats complete.cases
-#' @noRd
 #' @export
+tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+    stop(friendly_class_undefined_message(class(x), "tokens_ngrams"))
+}
+
+#' @importFrom stats complete.cases
 tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     # trap condition where a "text" is a single NA
     if (is.na(x[1]) && length(x)==1) return(NULL)
@@ -134,8 +136,12 @@ tokens_skipgrams <- function(x, n, skip, concatenator="_") {
     UseMethod("tokens_skipgrams")
 }
 
-#' @noRd
 #' @export
-tokens_skipgrams <- function(x, n, skip, concatenator="_") {
+tokens_skipgrams.default <- function(x, n, skip, concatenator="_") {
+    stop(friendly_class_undefined_message(class(x), "tokens_skipgrams"))
+}
+
+#' @export
+tokens_skipgrams.tokens <- function(x, n, skip, concatenator="_") {
     tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
 }
