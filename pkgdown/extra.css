@@ -1,0 +1,33 @@
+/* Edit pkgdown/extra.css to customize the theme */
+
+div#quanteda-quantitative-analysis-of-textual-data h1 {
+    padding-top: 40px;
+}
+
+div.page-header h1 {
+    font-size: 250%;
+    color: dimgray;
+}
+
+div.page-header h4 {
+    padding-top: 10px;
+    font-size: 120%;
+}
+
+div.contents h1 {
+    color: dimgray;
+    font-size: 200%;
+    padding-top: 80px;
+}
+
+div.contents h2 {
+    font-size: 150%;
+    padding-top: 60px;
+}
+
+pre.sourceCode {
+    overflow-x: auto;
+    font-size: 80%;
+}
+
+
