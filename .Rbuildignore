@@ -26,9 +26,11 @@ __MACOSX
 ^tests/benchmarks/
 ^tests/misc/
 ^css/
-^vignettes/pkgdown_only/
+^vignettes/
 ^vignettes/cheatsheet/
 ^vignettes/demo/
 ^revdep$
 ^CNAME$
 ^pkgdown$
+^index.html$
+^index.Rmd$
