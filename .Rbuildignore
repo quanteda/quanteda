@@ -31,3 +31,4 @@ __MACOSX
 ^vignettes/demo/
 ^revdep$
 ^CNAME$
+^pkgdown$

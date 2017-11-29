@@ -214,10 +214,14 @@ values of <code>groups</code>, without any specified order of aggregation.</p>
                                    <span class='fu'>c</span>(<span class='st'>"ise"</span>, <span class='st'>"([nlb])our"</span>, <span class='st'>"nium"</span>),
                                    <span class='fu'>c</span>(<span class='st'>"ize"</span>, <span class='st'>"$1or"</span>, <span class='st'>"num"</span>),
                                    <span class='kw'>vectorize_all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>texts</span>(<span class='no'>BritCorpus</span>)</div><div class='output co'>#&gt;                                           text1                                           text2 
-#&gt; "We must prioritize honor in our neighborhood."                 "Aluminum is a valorous metal." </div><div class='input'><span class='fu'>texts</span>(<span class='no'>BritCorpus</span>)[<span class='fl'>2</span>] <span class='kw'>&lt;-</span> <span class='st'>"New text number 2."</span>
-<span class='fu'>texts</span>(<span class='no'>BritCorpus</span>)</div><div class='output co'>#&gt;                                           text1                                           text2 
-#&gt; "We must prioritize honor in our neighborhood."                            "New text number 2." </div></pre>
+<span class='fu'>texts</span>(<span class='no'>BritCorpus</span>)</div><div class='output co'>#&gt;                                           text1 
+#&gt; "We must prioritize honor in our neighborhood." 
+#&gt;                                           text2 
+#&gt;                 "Aluminum is a valorous metal." </div><div class='input'><span class='fu'>texts</span>(<span class='no'>BritCorpus</span>)[<span class='fl'>2</span>] <span class='kw'>&lt;-</span> <span class='st'>"New text number 2."</span>
+<span class='fu'>texts</span>(<span class='no'>BritCorpus</span>)</div><div class='output co'>#&gt;                                           text1 
+#&gt; "We must prioritize honor in our neighborhood." 
+#&gt;                                           text2 
+#&gt;                            "New text number 2." </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
