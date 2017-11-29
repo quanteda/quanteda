@@ -22,8 +22,11 @@ corpus_subset <- function(x, subset, select, ...) {
     UseMethod("corpus_subset")
 }
     
-#' @rdname corpus_subset
-#' @noRd    
+#' @export
+corpus_subset.default <- function(x, subset, select, ...) {
+    stop(friendly_class_undefined_message(class(x), "corpus_subset"))
+}
+
 #' @export
 corpus_subset.corpus <- function(x, subset, select, ...) {
     

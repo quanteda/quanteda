@@ -86,8 +86,16 @@ dfm_select <- function(x, pattern = NULL,
     UseMethod("dfm_select")
 }
 
-#' @rdname dfm_select
-#' @noRd
+#' @export
+dfm_select.default <-  function(x, pattern = NULL, 
+                            selection = c("keep", "remove"), 
+                            valuetype = c("glob", "regex", "fixed"),
+                            case_insensitive = TRUE,
+                            min_nchar = 1L, max_nchar = 79L,
+                            verbose = quanteda_options("verbose"), ...) {
+    stop(friendly_class_undefined_message(class(x), "dfm_select"))
+}
+
 #' @export
 dfm_select.dfm <-  function(x, pattern = NULL, 
                             selection = c("keep", "remove"), 
@@ -114,9 +122,6 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             padding <- TRUE
             case_insensitive <- FALSE
         } else if (is.dictionary(pattern)) {
-            # if (has_multiword(features) && x@ngrams == 1) {
-            #     stop("dfm_select not implemented for ngrams > 1 and multi-word dictionary values")
-            # }
             pattern <- stri_replace_all_fixed(unlist(pattern, use.names = FALSE), ' ', attr(x, 'concatenator'))
         }
         features_id <- unlist(regex2id(pattern, featnames(x), valuetype, case_insensitive), use.names = FALSE)
@@ -161,7 +166,6 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     return(result)
 }
 
-
 #' @rdname dfm_select
 #' @export
 #' @examples 
@@ -177,7 +181,6 @@ dfm_remove <- function(x, ...) {
     dfm_select(x, ..., selection = "remove")
 }
 
-
 #' @rdname dfm_select
 #' @export
 dfm_keep <- function(x, ...) {
@@ -186,7 +189,3 @@ dfm_keep <- function(x, ...) {
     }
     dfm_select(x, ..., selection = "keep")
 }
-
-
-
-                       

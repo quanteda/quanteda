@@ -11,6 +11,11 @@
 
 * Performance has been improved for `fcm()` and for `textmodel_wordfish()`.
 
+### Behaviour Changes
+
+* The convenience wrappers to `convert()` are simplified and no longer exported.  To convert a dfm, `convert()` is now the only official function.
+
+
 ## Changes since v0.99.12
 
 ### New Features
@@ -23,7 +28,6 @@
 ### Bug fixes and stability enhancements
 
 * Improved documentation for `textmodel_nb()` (#1010), and made output quantities from the fitted NB model regular matrix objects instead of **Matrix** classes.
-
 
 ### Behaviour Changes
 

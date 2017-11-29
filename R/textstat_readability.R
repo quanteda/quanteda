@@ -59,7 +59,29 @@ textstat_readability <- function(x,
     UseMethod("textstat_readability")
 }
 
-#' @noRd
+#' @export
+textstat_readability.default <- function(x,
+                                        measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
+                                                    "Coleman", "Coleman.C2",
+                                                    "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
+                                                    "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
+                                                    "Danielson.Bryan", "Danielson.Bryan.2",
+                                                    "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson",
+                                                    "Flesch", "Flesch.PSK", "Flesch.Kincaid",
+                                                    "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
+                                                    "Fucks", "Linsear.Write", "LIW",
+                                                    "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", "Scrabble",
+                                                    "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de",
+                                                    "Spache", "Spache.old", "Strain",
+                                                    "Traenkle.Bailer", "Traenkle.Bailer.2",
+                                                    "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
+                                        remove_hyphens = TRUE,
+                                        min_sentence_length = 1, 
+                                        max_sentence_length = 10000,
+                                        drop = TRUE, ...) {
+    stop(friendly_class_undefined_message(class(x), "textstat_readability"))
+}    
+
 #' @export
 textstat_readability.corpus <- function(x,
                                         measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",

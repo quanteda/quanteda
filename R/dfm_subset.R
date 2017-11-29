@@ -43,8 +43,11 @@ dfm_subset <- function(x, subset, select, ...) {
     UseMethod("dfm_subset")
 }
     
-#' @rdname dfm_subset
-#' @noRd    
+#' @export
+dfm_subset.default <- function(x, subset, select, ...) {
+    stop(friendly_class_undefined_message(class(x), "dfm_subset"))
+}
+    
 #' @export
 dfm_subset.dfm <- function(x, subset, select, ...) {
     
@@ -80,4 +83,3 @@ dfm_subset.dfm <- function(x, subset, select, ...) {
     
     x[which(r), ]
 }
-

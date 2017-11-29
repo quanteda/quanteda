@@ -35,7 +35,11 @@ dfm_group <- function(x, groups = NULL, fill = FALSE) {
     UseMethod("dfm_group")
 }
 
-#' @noRd
+#' @export
+dfm_group.default <- function(x, groups = NULL, fill = FALSE) {
+    stop(friendly_class_undefined_message(class(x), "dfm_group"))
+}
+    
 #' @export
 dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
     
@@ -56,8 +60,8 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
 }
 
 
+# ----- internal -------
 
-#
 # internal code to perform dfm compression and grouping
 # on features and/or documents
 group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {

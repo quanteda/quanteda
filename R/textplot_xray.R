@@ -32,13 +32,16 @@
 #' g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 #' }
 #' @export
-#' @keywords plot
+#' @keywords textplot
 textplot_xray <- function(..., scale = c("absolute", "relative"), sort = FALSE) {
     UseMethod("textplot_xray")
 }
     
-#' @rdname textplot_xray
-#' @noRd
+#' @export
+textplot_xray.default <- function(..., scale = c("absolute", "relative"), sort = FALSE) {
+    stop(friendly_class_undefined_message(class(x), "textplot_xray"))
+}
+
 #' @export
 textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FALSE) {
     
@@ -139,5 +142,3 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
 
     plot
 }
-
-

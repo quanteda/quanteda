@@ -486,10 +486,3 @@ test_that("assignment operators are disabled for tokens object", {
     expect_error(toks[[1]] <- c(6, 100, 'z'), 'assignment to tokens objects is not allowed')
     expect_error(toks[1] <- list(c(6, 100, 'z')), 'assignment to tokens objects is not allowed')
 })
-
-test_that("test new as.tokens methods", {
-    expect_error(
-        as.tokens(c(1, 2, 3)),
-        "as.tokens\\(\\) only works on.*list"
-    )   
-})

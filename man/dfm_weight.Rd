@@ -96,7 +96,4 @@ Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
 \seealso{
 \code{\link{tf}},  \code{\link{tfidf}}, \code{\link{docfreq}}
 }
-\author{
-Paul Nulty and Kenneth Benoit
-}
 \keyword{dfm}
