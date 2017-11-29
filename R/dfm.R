@@ -133,6 +133,13 @@ dfm <- function(x,
     UseMethod("dfm")
 }
 
+#' @rdname dfm
+#' @noRd
+#' @export
+dfm.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "dfm"))
+}
+
 # GLOBAL FOR dfm THAT FUNCTIONS CAN RESET AS NEEDED TO RECORD TIME ELAPSED
 dfm_env <- new.env()
 dfm_env$START_TIME <- NULL  

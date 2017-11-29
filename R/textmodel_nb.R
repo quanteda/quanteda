@@ -88,7 +88,12 @@ textmodel_nb <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     UseMethod("textmodel_nb")
 }
 
-#' @noRd
+#' @export
+textmodel_nb.default <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
+                             distribution = c("multinomial", "Bernoulli"), ...) {
+    stop(friendly_class_undefined_message(class(x), "textmodel_nb"))
+}    
+    
 #' @export
 textmodel_nb.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
                              distribution = c("multinomial", "Bernoulli"), ...) {
@@ -210,7 +215,6 @@ predict.textmodel_nb_fitted <- function(object, newdata = NULL, ...) {
         newdata <- newdata[, -notinref] 
     }
 
-    
     # make sure feature set is ordered the same in test and training set (#490)
     if (ncol(object$PcGw) != ncol(newdata))
         stop("feature set in newdata different from that in training set")
@@ -274,11 +278,11 @@ predict.textmodel_nb_fitted <- function(object, newdata = NULL, ...) {
     result
 }
 
-# not used any more
-logsumexp <- function(x) {
-    xmax <- which.max(x)
-    log1p(sum(exp(x[-xmax] - x[xmax]))) + x[xmax]
-}
+# # not used any more
+# logsumexp <- function(x) {
+#     xmax <- which.max(x)
+#     log1p(sum(exp(x[-xmax] - x[xmax]))) + x[xmax]
+# }
 
 # @rdname print.textmodel
 #' @export

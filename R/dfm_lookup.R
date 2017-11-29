@@ -64,7 +64,16 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     UseMethod("dfm_lookup")
 }
  
-#' @noRd
+#' @export
+dfm_lookup.default <- function(x, dictionary, levels = 1:5,
+                           exclusive = TRUE, valuetype = c("glob", "regex", "fixed"), 
+                           case_insensitive = TRUE,
+                           capkeys = !exclusive,
+                           nomatch = NULL,
+                           verbose = quanteda_options("verbose")) {
+    stop(friendly_class_undefined_message(class(x), "dfm_lookup"))
+}
+
 #' @export
 dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
                            exclusive = TRUE, valuetype = c("glob", "regex", "fixed"), 
@@ -140,4 +149,3 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     attributes(result, FALSE) <- attrs
     return(result)
 }
-

@@ -270,5 +270,3 @@ test_that("object always have docvars in the same rows as documents", {
     expect_true(all(rownames(docvars(dfm6)) == docnames(dfm6)))
 
 })
-
-
