@@ -1,5 +1,5 @@
 ---
-title: "Demon in Chinses-language Texts"
+title: "Demo in Chinses-language Texts"
 author: Haiyan Wang
 output: 
     rmarkdown::html_vignette:
@@ -40,7 +40,7 @@ tokens_select(tokens("中华人民共和国成立于1949 年"), csw, selection =
 ## Example application on a set of text files in Chinese
 
 49 "REPORT ON THE WORK OF THE GOVERNMENT" by Premier of the State Council, 1954 - 2017 
-```{r}
+```{r fig1, fig.height = 5, fig.width = 5, fig.align = "center"}
 #read text files
 data(data_corpus_chinesegovreport)
 head(summary(ch_gov_Corpus))
@@ -78,10 +78,20 @@ topfeatures(chfcm["改革", ])
 ```
 
 ### Scaling Model
-```{r}
+```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
 wfm <- textmodel_wordfish(chdfm)
 y <- 1954:2017
-y<-y[-which(y==1963 | y==1961 |y==1962 | (y>1964 & y<1975) | y==1976 |y==1977)]
+y <- y[-which(y==1963 | y==1961 |y==1962 | (y>1964 & y<1975) | y==1976 |y==1977)]
 plot(y, wfm@theta, xlab = "Year", ylab = "Position")
 ```
 
+### Collocations - bigrams/trigrams etc. 
+```{r}
+#bigrams cross the whole dataset
+ch_mw <- textstat_collocations(chtoks, size = 2, min_count = 20, tolower = TRUE)
+head(ch_mw, 10)
+
+# bigrams in 2017 report
+ch_mw17 <- textstat_collocations(ch17toks, size = 2, tolower = TRUE)
+head(ch_mw17, 10)
+```
