@@ -1,6 +1,31 @@
 template:
   params:
+    bootswatch: readable
     ganalytics: UA-144616-24
+navbar:
+  title: "Quanteda documents"
+  type: inverse
+  left:
+    - text: "Quick Start"
+      href: articles/quickstart.html
+    - text: "Comparison"
+      href: articles/comparison.html
+    - text: "Examples"
+      menu:
+        - text: "Latent Semantic Analysis (LSA)"
+          href: articles/examples/lsa.html
+        - text: "Word embedding (word2vec)"
+          href: articles/examples/text2vec.html
+        - text: "Text vidualization"
+          href: articles/examples/plotting.html
+    - text: "Replication"
+      menu:
+        - text: "Text Analysis with R for Students of Literature"
+          href: articles/examples/digital-humanities.html
+    - text: "Desgin"
+      href: articles/design.html
+    - text: "Reference"
+      href: reference/index.html
 reference:
 - title: Package-level
   contents:
