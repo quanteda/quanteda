@@ -33,44 +33,28 @@ How to cite the package:
 How to Install
 --------------
 
-1.  From [CRAN](https://CRAN.R-project.org/package=quanteda): Use your GUI's R package installer, or execute:
+``` r
+# devtools packaged required to install quanteda from Github 
+devtools::install_github("kbenoit/quanteda") 
+```
 
-    ``` r
-    install.packages("quanteda") 
-    ```
+    Because this compiles some C++ source code, you will need a compiler installed. 
+    If you are using a Windows platform, this means you will need also to install 
+    the [Rtools](https://CRAN.R-project.org/bin/windows/Rtools/) software available 
+    from CRAN.  **If you are using macOS**, you will need to to install XCode, available 
+    for free from the App Store, or if you prefer a lighter footprint set of tools, 
+    [just the Xcode command line 
+    tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/ ), 
+    using the command `xcode-select --install` from the Terminal.
 
-2.  From [GitHub](https://github.com/kbenoit/quanteda), using:
+    Also, you might need to upgrade your compiler.  @kbenoit found that his macOS build only worked reliably after upgrading the default Xcode compiler to clang4, following [these instructions](http://thecoatlessprofessor.com/programming/openmp-in-r-on-os-x/#after-3-4-0).
 
-    ``` r
-    # devtools packaged required to install quanteda from Github 
-    devtools::install_github("kbenoit/quanteda") 
-    ```
+How to Use
+----------
 
-    Because this compiles some C++ source code, you will need a compiler installed. If you are using a Windows platform, this means you will need also to install the [Rtools](https://CRAN.R-project.org/bin/windows/Rtools/) software available from CRAN. **If you are using macOS**, you will need to to install XCode, available for free from the App Store, or if you prefer a lighter footprint set of tools, [just the Xcode command line tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/), using the command `xcode-select --install` from the Terminal.
+See the [quick start quide](http://docs.quanteda.io/articles/quickstart.html) to learn how to use **quanteda**.
 
-    Also, you might need to upgrade your compiler. @kbenoit found that his macOS build only worked reliably after upgrading the default Xcode compiler to clang4, following [these instructions](http://thecoatlessprofessor.com/programming/openmp-in-r-on-os-x/#after-3-4-0).
-
-3.  Additional recommended packages:
-
-    The following packages work well with or extend **quanteda** and we recommend that you also install them:
-
-    -   [**readtext**](https://github.com/kbenoit/readtext): An easy way to read text data into R, from almost any input format.
-
-    -   [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library, including part-of-speech tagging, entity recognition, and dependency parsing.
-
-    -   [**quantedaData**](https://github.com/kbenoit/quantedaData): Additional textual data for use with **quanteda**.
-
-        ``` r
-        devtools::install_github("kbenoit/quantedaData")
-        ```
-
-    -   [**LIWCalike**](https://github.com/kbenoit/LIWCalike): An R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
-
-        ``` r
-        devtools::install_github("kbenoit/LIWCalike")
-        ```
-
-Leaving feedback
+Leaving Feedback
 ----------------
 
 If you like **quanteda**, please consider leaving [feedback or a testimonial here](https://github.com/kbenoit/quanteda/issues/461).
