@@ -659,3 +659,18 @@ test_that("dfm error when a dfm is given to for feature selection when x is not 
         matrix(c(1,2,1,1,1,3), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = letters[1:3]))
     )
 })
+
+test_that("test topfeatures", {
+    expect_equal(
+        topfeatures(dfm("a a a a b b b c c d"), "count"),
+        c(a = 4, b = 3, c = 2, d = 1)
+    )
+})
+
+test_that("test sparsity", {
+    expect_equal(
+        sparsity(dfm(c("a a a a  c c d", "b b b"))),
+        0.5
+    )
+})
+

@@ -71,7 +71,11 @@ textmodel_wordscores <- function(x, y, scale = c("linear", "logit"), smooth = 0)
     UseMethod("textmodel_wordscores")
 }
 
-#' @noRd
+#' @export
+textmodel_wordscores.default <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
+    stop(friendly_class_undefined_message(class(x), "textmodel_wordscores"))
+}    
+
 #' @export
 textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
     

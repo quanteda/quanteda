@@ -7,13 +7,13 @@ test_that("dfm_weight works", {
     expect_equivalent(round(as.matrix(dfm_weight(mydfm, type = "frequency")), 2),
                       matrix(c(1, 1, 1, 1, 1, 2, 0, 1), nrow = 2))
     
-    expect_equivalent(round(as.matrix(dfm_weight(mydfm, type = "relFreq")), 2),
+    expect_equivalent(round(as.matrix(dfm_weight(mydfm, type = "relfreq")), 2),
                       matrix(c(0.33, 0.2, 0.33, 0.2, 0.33, 0.4, 0, 0.2), nrow = 2))
     
-    expect_equivalent(round(as.matrix(dfm_weight(mydfm, type = "relMaxFreq")), 2),
+    expect_equivalent(round(as.matrix(dfm_weight(mydfm, type = "relmaxfreq")), 2),
                       matrix(c(1, 0.5, 1, 0.5, 1, 1, 0, 0.5), nrow = 2))
     
-    expect_equivalent(round(as.matrix(dfm_weight(mydfm, type = "logFreq")), 2),
+    expect_equivalent(round(as.matrix(dfm_weight(mydfm, type = "logfreq")), 2),
                       matrix(c(1, 1, 1, 1, 1, 1.30, 0, 1), nrow = 2))
     
     # replication of worked example from
@@ -33,7 +33,7 @@ test_that("dfm_weight works with weights", {
                       matrix(c(5, 5, 1, 1, 3, 6, 0, 0.5), nrow = 2))
 
     expect_warning(
-        dfm_weight(mydfm, type = "relFreq", weights = w),
+        dfm_weight(mydfm, type = "relfreq", weights = w),
         "type is ignored when numeric weights are supplied"
     )
     
@@ -50,8 +50,8 @@ test_that("dfm_weight works with weights", {
 test_that("dfm_weight exceptions work", {
     mydfm <- dfm(c("He went out to buy a car", 
                    "He went out and bought pickles and onions"))
-    mydfm_tfprop <- dfm_weight(mydfm, "relFreq")
-    expect_message(
+    mydfm_tfprop <- dfm_weight(mydfm, "relfreq")
+    expect_error(
         dfm_weight(mydfm_tfprop, "tfidf"),
         "No weighting applied: you should not weight an already weighted dfm\\."
     )
@@ -114,15 +114,6 @@ test_that("docfreq works as expected", {
 #     )
 # })
 
-test_that("new tfidf returns same results as older one", {
-    mydfm <- dfm(c("He went out to buy a car", 
-                   "He went out and bought pickles and onions",
-                   "He ate pickles in the car."))
-    expect_equivalent(
-        tfidf(mydfm),
-        quanteda:::tfidf_old(mydfm)
-    )
-})
 
 test_that("tf with logave now working as expected", {
     mydfm <- dfm(c("He went out to buy a car", 

@@ -66,7 +66,12 @@ textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr", 
     UseMethod("textstat_keyness")
 }
 
-#' @noRd
+#' @export
+textstat_keyness.default <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), 
+                                 sort = TRUE, correction = c("default", "yates", "williams", "none")) {
+    stop(friendly_class_undefined_message(class(x), "textstat_keyness"))
+}
+
 #' @export
 textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), 
                                  sort = TRUE, correction = c("default", "yates", "williams", "none")) {
@@ -332,5 +337,3 @@ keyness_pmi <- function(x) {
     result$reference = as.vector(x[2,])
     return(result)
 }
-
-

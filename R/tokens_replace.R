@@ -34,8 +34,12 @@ tokens_replace <- function(x, pattern, replacement = NULL, case_insensitive = TR
     UseMethod("tokens_replace")
 }
 
-#' @rdname tokens_replace
-#' @noRd
+#' @export
+tokens_replace.default <- function(x, pattern, replacement = NULL, case_insensitive = TRUE, 
+                                  verbose = quanteda_options("verbose")) {
+    stop(friendly_class_undefined_message(class(x), "tokens_replace"))
+}
+    
 #' @export
 tokens_replace.tokens <- function(x, pattern, replacement = NULL, case_insensitive = TRUE, 
                                   verbose = quanteda_options("verbose")) {

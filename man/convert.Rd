@@ -5,10 +5,10 @@
 \title{convert a dfm to a non-quanteda format}
 \usage{
 convert(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
-  "matrix", "data.frame"), docvars = NULL, ...)
+  "matrix", "data.frame"), docvars = NULL)
 }
 \arguments{
-\item{x}{dfm to be converted}
+\item{x}{a \link{dfm} to be converted}
 
 \item{to}{target conversion format, consisting of the name of the package 
 into whose document-term matrix representation the dfm will be converted: 
@@ -23,11 +23,9 @@ used by the \pkg{topicmodels} package}
 used by the \pkg{lsa} package} }}
 
 \item{docvars}{optional data.frame of document variables used as the
-\code{meta} information in conversion to the STM package format.  This aids
-in selecting the document variables only corresponding to the documents
-with non-zero counts.}
-
-\item{...}{unused}
+\code{meta} information in conversion to the \pkg{stm} package format.
+This aids in selecting the document variables only corresponding to the
+documents with non-zero counts.}
 }
 \value{
 A converted object determined by the value of \code{to} (see above). 
@@ -38,14 +36,7 @@ A converted object determined by the value of \code{to} (see above).
 Convert a quanteda \link{dfm} object to a format useable by other text
 analysis packages.  The general function \code{convert} provides easy
 conversion from a dfm to the document-term representations used in all other
-text analysis packages for which conversions are defined.    See also
-\link{convert-wrappers} for convenience functions for specific package
-converters.
-}
-\note{
-There also exist a variety of converter shortcut commands, designed to 
-mimic the idioms of the packages into whose format they convert.  
-See \link{convert-wrappers} for details.
+text analysis packages for which conversions are defined.
 }
 \examples{
 mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1970)

@@ -31,7 +31,11 @@ textplot_keyness <-  function(x, show_reference = TRUE, n = 20L, min_count = 2L)
     UseMethod("textplot_keyness")
 }
 
-#' @noRd
+#' @export
+textplot_keyness.default <- function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
+    stop(friendly_class_undefined_message(class(x), "textplot_keyness"))
+}
+
 #' @importFrom stats reorder aggregate
 #' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point

@@ -36,7 +36,12 @@ dfm_compress <- function(x, margin = c("both", "documents", "features")) {
     UseMethod("dfm_compress")
 }
     
-#' @noRd
+#' @export
+dfm_compress.default <- function(x, 
+                                 margin = c("both", "documents", "features")) {
+    stop(friendly_class_undefined_message(class(x), "dfm_compress"))
+}
+
 #' @export
 dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
     
@@ -56,13 +61,12 @@ dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
 #' 
 #' Sorts a \link{dfm} by descending frequency of total features, total features
 #' in documents, or both.
-#' 
 #' @param x Document-feature matrix created by \code{\link{dfm}}
 #' @param margin which margin to sort on \code{features} to sort by frequency of
 #'   features, \code{documents} to sort by total feature counts in documents,
 #'   and \code{both} to sort by both
-#' @param decreasing logical; if \code{TRUE}, the sort will be in descending order,
-#'   otherwise sort in increasing order
+#' @param decreasing logical; if \code{TRUE}, the sort will be in descending
+#'   order, otherwise sort in increasing order
 #' @return A sorted \link{dfm} matrix object
 #' @export
 #' @author Ken Benoit
@@ -76,7 +80,12 @@ dfm_sort <- function(x, decreasing = TRUE,
     UseMethod("dfm_sort")
 }
 
-#' @noRd
+#' @export
+dfm_sort.default <- function(x, decreasing = TRUE, 
+                         margin = c("features", "documents", "both")) {
+    stop(friendly_class_undefined_message(class(x), "dfm_sort"))
+}
+    
 #' @export
 dfm_sort.dfm <- function(x, decreasing = TRUE, 
                          margin = c("features", "documents", "both")) {
@@ -95,4 +104,3 @@ dfm_sort.dfm <- function(x, decreasing = TRUE,
     class(x) <- class_org
     return(x)
 }
-

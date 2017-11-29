@@ -14,15 +14,17 @@ textplot_influence <- function(x, n = 30, ...) {
     UseMethod("textplot_influence")
 }
 
+#' @export
+textplot_influence.default <- function(x, n = 30, ...) {
+    stop(friendly_class_undefined_message(class(x), "textplot_influence"))
+}
 
-#' @rdname textplot_influence
-#' @noRd
+#' @export
 textplot_influence.affinity_influence <- function(x, n = 30, ...) {
     ans <- summary(x, ...)
     plot(ans, n, ...)
 }
 
-#' @rdname textplot_influence
 #' @importFrom graphics legend text points
 #' @export
 textplot_influence.summary_affinity_influence <- function(x, n = 30, ...) {

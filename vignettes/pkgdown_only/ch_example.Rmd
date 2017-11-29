@@ -1,5 +1,5 @@
 ---
-title: "Demo in Chinses-language Texts"
+title: "quanteda Demo in Chinese-language Texts"
 author: Haiyan Wang
 output: 
     rmarkdown::html_vignette:
@@ -14,8 +14,8 @@ vignette: >
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-"
+  comment = "##",
+  fig.path = "images"
 )
 ```
 

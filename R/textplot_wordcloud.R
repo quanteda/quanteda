@@ -42,12 +42,16 @@
 #' textplot_wordcloud(govtoppDfm, comparison = TRUE)
 #' }
 #' @export
-#' @keywords plot
+#' @keywords textplot
 textplot_wordcloud <- function(x, comparison = FALSE, ...) {
     UseMethod("textplot_wordcloud")
 }
 
-#' @noRd
+#' @export
+textplot_wordcloud.default <- function(x, comparison = FALSE, ...) {
+    stop(friendly_class_undefined_message(class(x), "textplot_wordcloud"))
+}
+
 #' @export
 textplot_wordcloud.dfm <- function(x, comparison = FALSE, ...) {
     
@@ -60,10 +64,7 @@ textplot_wordcloud.dfm <- function(x, comparison = FALSE, ...) {
     }
 }
 
-#' @noRd
 #' @export
 textplot_wordcloud.tokens <- function(x, comparison = FALSE, ...) {
     textplot_wordcloud(dfm(x, verbose = FALSE), comparison = comparison, ...)
 }
-
-

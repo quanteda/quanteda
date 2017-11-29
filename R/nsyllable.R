@@ -6,16 +6,6 @@
 #' \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
 "data_int_syllables"
 
-#' deprecated name for nsyllable
-#' 
-#' Deprecated function name; use \code{\link{nsyllable}} instead.
-#' @export
-#' @keywords internal deprecated
-syllables <- function(x, ...) {
-    .Deprecated("nsyllable")
-    nsyllable(x, ...)
-}
-
 #' count syllables in a text
 #' 
 #' @description Returns a count of the number of syllables in texts. For English
@@ -63,6 +53,11 @@ nsyllable <- function(x, syllable_dictionary = quanteda::data_int_syllables, use
     UseMethod("nsyllable")
 }
 
+#' @export
+nsyllable.default <- function(x, syllable_dictionary = quanteda::data_int_syllables, use.names = FALSE) {
+    stop(friendly_class_undefined_message(class(x), "nsyllable"))
+}
+
 #' @rdname nsyllable
 #' @noRd
 #' @export
@@ -106,7 +101,7 @@ nsyllable.tokens <- function(x, syllable_dictionary = quanteda::data_int_syllabl
 }
 
 nsyllable.data.table <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) {
-    word <- serial <- NULL
+    word <- serial <- syllables <- NULL
     
     # retrieve or validate syllable list
     data_int_syllables <- NULL

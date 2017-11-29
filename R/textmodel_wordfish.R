@@ -128,7 +128,19 @@ textmodel_wordfish <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol
     UseMethod("textmodel_wordfish")
 }
     
-#' @noRd
+#' @export
+textmodel_wordfish.default <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8),
+                                   dispersion = c("poisson", "quasipoisson"), 
+                                   dispersion_level = c("feature", "overall"),
+                                   dispersion_floor = 0,
+                                   sparse = TRUE, 
+                                   threads = quanteda_options("threads"),
+                                   abs_err = FALSE,
+                                   svd_sparse = TRUE,
+                                   residual_floor = 0.5) {
+    stop(friendly_class_undefined_message(class(x), "textmodel_wordfish"))
+}
+
 #' @export
 textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 
                                dispersion = c("poisson", "quasipoisson"), 
@@ -280,8 +292,3 @@ setMethod("coef", signature(object = "textmodel_wordfish_fitted"),
 #' @export
 setMethod("coefficients", signature(object = "textmodel_wordfish_fitted"),
           function(object, ...) coef(object, ...))
-
-
-
-
-
