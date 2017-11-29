@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -23,7 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
+  <link href="../extra.css" rel="stylesheet">
   
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -51,7 +51,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -59,53 +59,61 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">quanteda</a>
+      <a class="navbar-brand" href="../index.html">Overview</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/quickstart.html">Quick Start</a>
+</li>
+<li>
+  <a href="../articles/comparison.html">Features</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Examples
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+      <a href="../articles/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+      <a href="../articles/examples/text2vec.html">Word embedding (word2vec)</a>
     </li>
     <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+      <a href="../articles/examples/plotting.html">Textual data visualization</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Replication
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+      <a href="../articles/replication/digital-humanities.html">Text Analysis with R for Students of Literature</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../articles/design.html">Design</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/kbenoit/quanteda">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -174,8 +182,12 @@ is not a <a href='tokens.html'>tokens</a> object already</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>textstat_collocations</code> returns a data.frame of collocations and their
-  scores and statistics.
+    <p><code>textstat_collocations</code> returns a data.frame of collocations and
+  their scores and statistics.  This consists of the collocations, their
+  counts, length, and \(\lambda\) and \(z\) statistics.  When <code>size</code>
+  is a vector, then <code>count_nested</code> counts the lower-order collocations
+  that occur within a higher-order collocation (but this does not affect the
+  statistics).
 
 <code>is.collocation</code> returns <code>TRUE</code> if the object is of class
   <code>collocations</code>, <code>FALSE</code> otherwise.</p>
@@ -230,36 +242,46 @@ the next release of <span class="pkg">quanteda</span>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>txts</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]
-<span class='fu'>head</span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>txts</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;    collocation count length   lambda        z
-#&gt; 1    have been     5      2 5.704259 7.354588
-#&gt; 2     has been     3      2 5.565217 6.409333
-#&gt; 3       of the    24      2 1.673501 6.382475
-#&gt; 4       i have     5      2 3.743580 6.268303
-#&gt; 5      which i     6      2 3.172217 6.135144
-#&gt; 6      will be     4      2 3.868500 5.930143
-#&gt; 7    less than     2      2 6.279494 5.529680
-#&gt; 8  public good     2      2 6.279494 5.529680
-#&gt; 9     you will     2      2 4.917893 5.431752
-#&gt; 10      may be     3      2 4.190711 5.328038</div><div class='input'><span class='fu'>head</span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>txts</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;          collocation count length    lambda         z
-#&gt; 1       of which the     2      3 6.1259648 2.8317522
-#&gt; 2         in which i     3      3 2.1689288 1.1741918
-#&gt; 3          i have in     2      3 2.3809129 1.0618774
-#&gt; 4         and of the     2      3 0.8847383 0.7498730
-#&gt; 5          me by the     2      3 1.4726869 0.6560780
-#&gt; 6       to the great     2      3 1.2891870 0.5660311
-#&gt; 7        voice of my     2      3 1.2270130 0.5298220
-#&gt; 8     which ought to     2      3 1.4083232 0.5278314
-#&gt; 9  of the confidence     2      3 1.1220858 0.4948962
-#&gt; 10 the united states     2      3 1.2597834 0.4272349</div><div class='input'>
+<span class='fu'>head</span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>txts</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;    collocation count count_nested length   lambda        z
+#&gt; 1    have been     5            0      2 5.704259 7.354588
+#&gt; 2     has been     3            0      2 5.565217 6.409333
+#&gt; 3       of the    24            0      2 1.673501 6.382475
+#&gt; 4       i have     5            0      2 3.743580 6.268303
+#&gt; 5      which i     6            0      2 3.172217 6.135144
+#&gt; 6      will be     4            0      2 3.868500 5.930143
+#&gt; 7    less than     2            0      2 6.279494 5.529680
+#&gt; 8  public good     2            0      2 6.279494 5.529680
+#&gt; 9     you will     2            0      2 4.917893 5.431752
+#&gt; 10      may be     3            0      2 4.190711 5.328038</div><div class='input'><span class='fu'>head</span>(<span class='no'>cols</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>txts</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;          collocation count count_nested length    lambda         z
+#&gt; 1       of which the     2            0      3 6.1259648 2.8317522
+#&gt; 2         in which i     3            0      3 2.1689288 1.1741918
+#&gt; 3          i have in     2            0      3 2.3809129 1.0618774
+#&gt; 4         and of the     2            0      3 0.8847383 0.7498730
+#&gt; 5          me by the     2            0      3 1.4726869 0.6560780
+#&gt; 6       to the great     2            0      3 1.2891870 0.5660311
+#&gt; 7        voice of my     2            0      3 1.2270130 0.5298220
+#&gt; 8     which ought to     2            0      3 1.4083232 0.5278314
+#&gt; 9  of the confidence     2            0      3 1.1220858 0.4948962
+#&gt; 10 the united states     2            0      3 1.2597834 0.4272349</div><div class='input'>
 <span class='co'># extracting multi-part proper nouns (capitalized terms)</span>
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='no'>toks2</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks2</span>, <span class='st'>"^([A-Z][a-z\\-]{2,})"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>,
                        <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>seqs</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_collocations</span>(<span class='no'>toks2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;              collocation count length     lambda         z
-#&gt; 1 United States Congress     2      3  -2.152404 -1.014623
-#&gt; 2    Vice President Bush     2      3 -11.582818 -4.471125</div></pre>
+<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;              collocation count count_nested length     lambda         z
+#&gt; 1 United States Congress     2            0      3  -2.152404 -1.014623
+#&gt; 2    Vice President Bush     2            0      3 -11.582818 -4.471125</div><div class='input'>
+<span class='co'># vectorized size</span>
+<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>". . . . a b c . . a b c . . . c d e"</span>,
+         <span class='st'>"a b . . a b . . a b . . a b . a b"</span>,
+         <span class='st'>"b c d . . b c . b c . . . b c"</span>)
+<span class='fu'>textstat_collocations</span>(<span class='no'>txt</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt;   collocation count count_nested length        lambda             z
+#&gt; 1         a b     7            2      2  5.652489e+00  2.745546e+00
+#&gt; 2         b c     6            3      2  5.609472e+00  2.721287e+00
+#&gt; 3         c d     2            2      2  4.976734e+00  2.354187e+00
+#&gt; 4       a b c     2            0      3 -1.110223e-16 -3.103168e-17</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

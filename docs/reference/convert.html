@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -23,7 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
+  <link href="../extra.css" rel="stylesheet">
   
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -51,7 +51,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -59,53 +59,61 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">quanteda</a>
+      <a class="navbar-brand" href="../index.html">Overview</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/quickstart.html">Quick Start</a>
+</li>
+<li>
+  <a href="../articles/comparison.html">Features</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Examples
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+      <a href="../articles/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+      <a href="../articles/examples/text2vec.html">Word embedding (word2vec)</a>
     </li>
     <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+      <a href="../articles/examples/plotting.html">Textual data visualization</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Replication
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+      <a href="../articles/replication/digital-humanities.html">Text Analysis with R for Students of Literature</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../articles/design.html">Design</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/kbenoit/quanteda">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -124,20 +132,18 @@
     <p>Convert a quanteda <a href='dfm.html'>dfm</a> object to a format useable by other text
 analysis packages.  The general function <code>convert</code> provides easy
 conversion from a dfm to the document-term representations used in all other
-text analysis packages for which conversions are defined.    See also
-<a href='convert-wrappers.html'>convert-wrappers</a> for convenience functions for specific package
-converters.</p>
+text analysis packages for which conversions are defined.</p>
     
 
     <pre class="usage"><span class='fu'>convert</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lda"</span>, <span class='st'>"tm"</span>, <span class='st'>"stm"</span>, <span class='st'>"austin"</span>, <span class='st'>"topicmodels"</span>, <span class='st'>"lsa"</span>,
-  <span class='st'>"matrix"</span>, <span class='st'>"data.frame"</span>), <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+  <span class='st'>"matrix"</span>, <span class='st'>"data.frame"</span>), <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>dfm to be converted</p></td>
+      <td><p>a <a href='dfm.html'>dfm</a> to be converted</p></td>
     </tr>
     <tr>
       <th>to</th>
@@ -156,13 +162,9 @@ used by the <span class="pkg">lsa</span> package</p></dd> </dl></td>
     <tr>
       <th>docvars</th>
       <td><p>optional data.frame of document variables used as the
-<code>meta</code> information in conversion to the STM package format.  This aids
-in selecting the document variables only corresponding to the documents
-with non-zero counts.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>unused</p></td>
+<code>meta</code> information in conversion to the <span class="pkg">stm</span> package format.
+This aids in selecting the document variables only corresponding to the
+documents with non-zero counts.</p></td>
     </tr>
     </table>
     
@@ -171,12 +173,6 @@ with non-zero counts.</p></td>
     <p>A converted object determined by the value of <code>to</code> (see above). 
   See conversion target package documentation for more detailed descriptions 
   of the return formats.</p>
-    
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>There also exist a variety of converter shortcut commands, designed to 
-mimic the idioms of the packages into whose format they convert.  
-See <a href='convert-wrappers.html'>convert-wrappers</a> for details.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -249,8 +245,6 @@ See <a href='convert-wrappers.html'>convert-wrappers</a> for details.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#note">Note</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -23,7 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
+  <link href="../extra.css" rel="stylesheet">
   
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -51,7 +51,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -59,53 +59,61 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">quanteda</a>
+      <a class="navbar-brand" href="../index.html">Overview</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/quickstart.html">Quick Start</a>
+</li>
+<li>
+  <a href="../articles/comparison.html">Features</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Examples
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+      <a href="../articles/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+      <a href="../articles/examples/text2vec.html">Word embedding (word2vec)</a>
     </li>
     <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+      <a href="../articles/examples/plotting.html">Textual data visualization</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Replication
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+      <a href="../articles/replication/digital-humanities.html">Text Analysis with R for Students of Literature</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../articles/design.html">Design</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/kbenoit/quanteda">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -129,12 +137,9 @@ delimiters.)</p>
     
 
     <pre class="usage"><span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>pattern</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
-<span class='fu'>is.kwic</span>(<span class='no'>x</span>)
-
-<span class='co'># S3 method for kwic</span>
-<span class='fu'><a href='as.tokens.html'>as.tokens</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>is.kwic</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -146,7 +151,7 @@ delimiters.)</p>
     <tr>
       <th>pattern</th>
       <td><p>a character vector, list of character vectors, <a href='dictionary.html'>dictionary</a>,
-<a href='collocations.html'>collocations</a>, or <a href='dfm.html'>dfm</a>. See <a href='pattern.html'>pattern</a> for details.</p></td>
+<a href='textstat_collocations.html'>collocations</a>, or <a href='dfm.html'>dfm</a>. See <a href='pattern.html'>pattern</a> for details.</p></td>
     </tr>
     <tr>
       <th>window</th>
@@ -161,10 +166,6 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
     <tr>
       <th>case_insensitive</th>
       <td><p>match without respect to case if <code>TRUE</code></p></td>
-    </tr>
-    <tr>
-      <th>join</th>
-      <td><p>join adjacent keywords in the concordance view if <code>TRUE</code></p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -184,14 +185,7 @@ object types</p></td>
   (<code>post</code>).  The return object has its own <code>print</code> method, plus
   some special attributes that are hidden in the print view.  If you want to
   turn this into a simple data.frame, simply wrap the result in
-  <code>data.frame</code>.
-
-<code>as.tokens.kwic</code> converts the kwic object into a <a href='tokens.html'>tokens</a>
-  object, with each new "document" consisting of one keyword match, and the
-  contents of the <code>pre</code>, <code>keyword</code>, and <code>post</code> fields forming
-  the tokens.  This is one way to save the output for subsequent usage;
-  another way is to form a <a href='corpus.html'>corpus</a> from the return
-  object.</p>
+  <code>data.frame</code>.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 

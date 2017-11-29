@@ -33,9 +33,9 @@ tokens_remove(toks, stopwords("english"))
 
 
 # extract a document-feature matrix
-immigDfm <- dfm(subset(immigCorpus, party=="BNP"))
+immigDfm <- dfm(corpus_subset(immigCorpus, party=="BNP"))
 textplot_wordcloud(immigDfm)
-immigDfm <- dfm(subset(immigCorpus, party=="BNP"), remove = stopwords("english"))
+immigDfm <- dfm(corpus_subset(immigCorpus, party=="BNP"), remove = stopwords("english"))
 textplot_wordcloud(immigDfm, random.color = TRUE, rot.per = .25, colors = sample(colors()[2:128], 5))
 
 # change units to sentences
@@ -73,7 +73,7 @@ docnames(presDfm)
 ## show some selection capabilities on Irish budget corpus
 data(iebudgetsCorpus, package = "quantedaData")
 summary(iebudgetsCorpus, 10)
-ieFinMin <- subset(iebudgetsCorpus, number=="01" & debate == "BUDGET")
+ieFinMin <- corpus_subset(iebudgetsCorpus, number=="01" & debate == "BUDGET")
 summary(ieFinMin)
 dfmFM <- dfm(ieFinMin)
 plot(2008:2012, textstat_lexdiv(dfmFM, "C"), xlab="Year", ylab="Herndan's C", type="b",
@@ -139,6 +139,3 @@ head(collocs2, 20)
 collocs3 <- textstat_collocations(data_corpus_inaugural, size = 3, method = "all")
 head(collocs3, 20)
 
-# remove parts of speech and inspect
-head(removeFeatures(collocs2, stopwords("english")), 20)
-head(removeFeatures(collocs3, stopwords("english")), 20)

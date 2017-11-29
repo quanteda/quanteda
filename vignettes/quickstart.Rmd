@@ -1,162 +1,47 @@
 ---
-title: "Getting Started with quanteda"
+title: "Quick Start Guide"
 output: 
   rmarkdown::html_vignette:
-    css: mystyle.css
     toc: yes
-vignette: >
-  %\VignetteIndexEntry{Getting Started Guide}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
-
-```{r echo = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, 
-                      comment = "##")
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
-This vignette provides a basic overview of **quanteda**'s features and capabilities.  For additional vignettes, see the [articles at quanteda.io](http://docs.quanteda.io/articles/index.html).  
+This vignette provides a basic overview of **quanteda**'s features and capabilities. For additional vignettes, see the [articles at quanteda.io](http://docs.quanteda.io/articles/index.html).  
 
-# Introduction
+# Installing the package
 
-An R package for managing and analyzing text.
+Since **quanteda** is available on [CRAN](https://CRAN.R-project.org/package=quanteda), you can install  by using your GUI's R package installer, or execute:
 
-**quanteda** makes it easy to manage texts in the form of a
-corpus, defined as a collection of texts that includes document-level
-variables specific to each text, as well as meta-data for documents
-and for the collection as a whole.  **quanteda** includes tools to make it
-easy and fast to manuipulate the texts in a corpus, by performing the most common
-natural language processing tasks simply and quickly, such as tokenizing,
-stemming, or forming ngrams.  **quanteda**'s functions for tokenizing texts
-and forming multiple tokenized documents into a *document-feature matrix* are
-both extremely fast and extremely simple to use.  **quanteda** can segment texts
-easily by words, paragraphs, sentences, or even user-supplied delimiters and tags.
-
-Built on the text processing
-functions in the **stringi** package,
-which is in turn built on C++ implementation of the [ICU](http://www.icu-project.org/)
-libraries for Unicode text handling, **quanteda** pays special attention to fast and correct
-implementation of Unicode and the handling of text in any character set, following conversion
-internally to UTF-8.
-
-**quanteda** is built for efficiency and speed, through its design around three infrastructures: the **stringi** package for text processing, the **data.table** package for indexing large documents efficiently, and the **Matrix** package for sparse matrix objects.  If you can fit it into memory, **quanteda** will handle it quickly.  (And eventually, we will make it possible to process objects even larger than available memory.)
-
-**quanteda** is principally designed to allow users a fast and convenient method to go from 
-a corpus of texts to a selected matrix of documents by features, after defining what 
-the documents and features.  The package makes it easy to redefine documents, for instance by splitting them into sentences or paragraphs, or by tags, as well as to group them into larger documents by document variables, or to subset them based on logical conditions or combinations of document variables.  The package also implements common NLP feature selection functions, such as removing stopwords and stemming in numerous languages, selecting words found in dictionaries, treating words as equivalent based on a user-defined "thesaurus", and trimming and weighting features based on document frequency, feature frequency, and related measures such as *tf-idf*.
- 
-# quanteda Features
-
-## Corpus management tools
-
-The tools for getting texts into a corpus object include: 
-
-* loading texts from directories of individual files
-* loading texts ``manually'' by inserting them into a corpus using
-  helper functions
-*  managing text encodings and conversions from source files into
-  corpus texts
-* attaching variables to each text that can be used for grouping,
-  reorganizing a corpus, or simply recording additional information to
-  supplement quantitative analyses with non-textual data
-* recording meta-data about the sources and creation details for
-  the corpus.
-  
-The tools for working with a corpus include:
-
-* summarizing the corpus in terms of its language units
-* reshaping the corpus into smaller units or more aggregated units
-* adding to or extracting subsets of a corpus
-* resampling texts of the corpus, for example for use in
-  non-parametric bootstrapping of the texts
-* Easy extraction and saving, as a new data frame or corpus, key
-    words in context (KWIC)
-
-## Natural-Language Processing tools
-
-For extracting features from a corpus, `quanteda` provides the following tools:
-
-* extraction of word types
-* extraction of word n-grams
-* extraction of dictionary entries from user-defined dictionaries
-* feature selection through
-    - stemming
-    - random selection
-    - document frequency
-    - word frequency
-* and a variety of options for cleaning word types, such as
-    capitalization and rules for handling punctuation.
-
-## Document-Feature Matrix analysis tools
-
-For analyzing the resulting *document-feature* matrix created
-when features are abstracted from a corpus, `quanteda` provides:
-
-* scaling methods, such as correspondence analysis, Wordfish, and Wordscores
-* topic models, such as LDA
-* classifiers, such as Naive Bayes or k-nearest neighbour
-* sentiment analysis, using dictionaries
-
-## Additional and planned features
-
-**Additional features** of quanteda include:
-
-*  the ability to explore texts using *key-words-in-context*;
-
-*  fast computation of a variety of readability indexes;
-
-*  fast computation of a variety of lexical diversity measures;
-
-*  quick computation of word or document association measures, for clustering or to compute similarity scores for other purposes; and
-
-*  a comprehensive suite of descriptive statistics on text such as the number of sentences, words, characters, or syllables per document.
-
-**Planned features** coming soon to **quanteda** are:
-
-*  bootstrapping methods for texts that makes it easy to resample texts
-   from pre-defined units, to facilitate computation of confidence
-   intervals on textual statistics using techniques of non-parametric
-   bootstrapping, but applied to the original texts as data. 
-   
-
-## Working with other text analysis packages
-
-`quanteda` is hardly unique in providing facilities for working with
-text -- the excellent *tm* package already provides many of the
-features we have described.  `quanteda` is designed to complement those
-packages, as well to simplify the implementation of the
-text-to-analysis workflow.  `quanteda` corpus structures are simpler
-objects than in *tm*s, as are the document-feature matrix
-objects from `quanteda`, compared to the sparse matrix implementation
-found in *tm*.  However, there is no need to choose only one
-package, since we provide translator functions from one matrix or
-corpus object to the other in `quanteda`.
-
-Once constructed, a **quanteda** "dfm"" can be easily passed to other text-analysis packages for 
-additional analysis of topic models or scaling, such as:
-
-*  topic models (including converters for direct use with the **topicmodels**, **LDA**, and **stm** packages)
-
-*  document scaling using **quanteda**'s own functions for the "wordfish" and "Wordscores" models, and a sparse method for correspondence analysis
-
-*  document classification methods, using (for example) Naive Bayes, k-nearest neighbour, or Support Vector Machines
-
-*  more sophisticated machine learning through a variety of other packages that take matrix or matrix-like inputs.
-
-*  graphical analysis, including word clouds and strip plots for selected themes or words.
-
-
-# How to Install
-
-Through a normal installation of the package from CRAN, or for the GitHub version, see the installation instructions at https://github.com/kbenoit/quanteda.
-
-# Creating and Working with a Corpus
-
-```{r show=FALSE}
-require(quanteda)
+```{r, eval = FALSE}
+install.packages("quanteda") 
 ```
+See an instructions at https://github.com/kbenoit/quanteda to install the GitHub version, 
 
+## Additional recommended packages:
+
+The following packages work well with or extend **quanteda** and we recommend that you also install them:
+
+*  [**readtext**](https://github.com/kbenoit/readtext):  An easy way to read text data into R, from almost any input format.
+*  [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library, including part-of-speech tagging, entity recognition, and dependency parsing.
+*  [**quantedaData**](https://github.com/kbenoit/quantedaData): Additional textual data for use with **quanteda**.
+    ```{r eval = FALSE}
+    devtools::install_github("kbenoit/quantedaData")
+    ```
+*  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): An R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
+    ```{r eval = FALSE}
+    devtools::install_github("kbenoit/LIWCalike")
+    ```
+
+# Creating a Corpus
+
+You load the package to access to functions and data in the package.
+
+```{r, message = FALSE}
+library(quanteda)
+```
 
 ## Currently available corpus sources
 
@@ -291,13 +176,13 @@ that no information is lost.  Corpus-level medata data is also concatenated.
 
 ```{r}
 library(quanteda)
-mycorpus1 <- corpus(data_corpus_inaugural[1:5], note = "First five inaug speeches.")
-mycorpus2 <- corpus(data_corpus_inaugural[53:58], note = "Last five inaug speeches.")
+mycorpus1 <- corpus(data_corpus_inaugural[1:5])
+mycorpus2 <- corpus(data_corpus_inaugural[53:58])
 mycorpus3 <- mycorpus1 + mycorpus2
 summary(mycorpus3)
 ```
 
-### subsetting corpus objects
+### Subsetting corpus objects
 
 There is a method of the `corpus_subset()` function defined for corpus objects, where a new corpus can 
 be extracted based on logical conditions applied to docvars:
@@ -312,10 +197,15 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 
 The `kwic` function (keywords-in-context) performs a search for a word and allows us to view the contexts in which it occurs:
 
-```{r}
-options(width = 200)
+```{r, tidy=TRUE}
 kwic(data_corpus_inaugural, "terror")
+```
+
+```{r}
 kwic(data_corpus_inaugural, "terror", valuetype = "regex")
+```
+
+```{r}
 kwic(data_corpus_inaugural, "communist*")
 ```
 

@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -23,7 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
+  <link href="../extra.css" rel="stylesheet">
   
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -51,7 +51,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -59,53 +59,61 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">quanteda</a>
+      <a class="navbar-brand" href="../index.html">Overview</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/quickstart.html">Quick Start</a>
+</li>
+<li>
+  <a href="../articles/comparison.html">Features</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Examples
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+      <a href="../articles/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+      <a href="../articles/examples/text2vec.html">Word embedding (word2vec)</a>
     </li>
     <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+      <a href="../articles/examples/plotting.html">Textual data visualization</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Replication
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+      <a href="../articles/replication/digital-humanities.html">Text Analysis with R for Students of Literature</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../articles/design.html">Design</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/kbenoit/quanteda">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -175,7 +183,7 @@ syntactic segmenter uses this function)</p></td>
 #&gt;   textwo     4      6         2     USA 2000
 #&gt; 
 #&gt; Source:  /Users/kbenoit/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Tue Nov 21 15:53:04 2017
+#&gt; Created: Wed Nov 29 14:39:35 2017
 #&gt; Notes:   Example showing how corpus_reshape() works. </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_reshape</span>(<span class='no'>corp</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"sentences"</span>), <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 5 documents:
 #&gt; 
 #&gt;       Text Types Tokens Sentences country year _document _docid _segid
@@ -186,7 +194,7 @@ syntactic segmenter uses this function)</p></td>
 #&gt;   textwo.2     3      3         1     USA 2000    textwo      2      2
 #&gt; 
 #&gt; Source:  /Users/kbenoit/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Tue Nov 21 15:53:05 2017
+#&gt; Created: Wed Nov 29 14:39:35 2017
 #&gt; Notes:   corpus_reshape.corpus(corp, to = "sentences") </div><div class='input'>
 <span class='co'># example with inaugural corpus speeches</span>
 (<span class='no'>corp2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>2004</span>))</div><div class='output co'>#&gt; Corpus consisting of 4 documents and 3 docvars.</div><div class='input'><span class='no'>corp2_para</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus_reshape</span>(<span class='no'>corp2</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"paragraphs"</span>)
@@ -396,7 +404,7 @@ syntactic segmenter uses this function)</p></td>
 #&gt;       4     34
 #&gt; 
 #&gt; Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
-#&gt; Created: Tue Nov 21 15:53:05 2017
+#&gt; Created: Wed Nov 29 14:39:35 2017
 #&gt; Notes:   corpus_reshape.corpus(corp2, to = "paragraphs") </div><div class='input'>## Note that Bush 2005 is recorded as a single paragraph because that text used a single
 ## \n to mark the end of a paragraph.
 </div></pre>

@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -23,7 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
+  <link href="../extra.css" rel="stylesheet">
   
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -51,7 +51,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -59,53 +59,61 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">quanteda</a>
+      <a class="navbar-brand" href="../index.html">Overview</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/quickstart.html">Quick Start</a>
+</li>
+<li>
+  <a href="../articles/comparison.html">Features</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Examples
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown_only/comparison-packages.html">Comparing quanteda to other packages</a>
+      <a href="../articles/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../articles/pkgdown_only/design.html">quanteda Structure and Design</a>
+      <a href="../articles/examples/text2vec.html">Word embedding (word2vec)</a>
     </li>
     <li>
-      <a href="../articles/pkgdown_only/LitVignette.html">Replicating *Text Analysis with R for Students of Literature*</a>
+      <a href="../articles/examples/plotting.html">Textual data visualization</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Replication
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown_only/plotting.html">Plotting with quanteda</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown_only/textmodel_lsa.html">Topic modeling - Latent Semantic Analysis (LSA)</a>
-    </li>
-    <li>
-      <a href="../articles/quickstart.html">Getting Started with quanteda</a>
+      <a href="../articles/replication/digital-humanities.html">Text Analysis with R for Students of Literature</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../articles/design.html">Design</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/kbenoit/quanteda">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -122,14 +130,19 @@
 
     
     <p>Fit the Latent Semantic Analysis scaling model to a <a href='dfm.html'>dfm</a>, which may be
-weighted (for instance using <code><a href='tfidf.html'>tfidf</a></code>).</p>
-<p>Transformation method for Latent Sementic Analysis objects</p>
+weighted (for instance using <code><a href='tfidf.html'>tfidf</a></code>).
+
+    <code>predict</code> for fitted textmodel_lsa objects projects the patterns onto
+new data.</p>
     
 
-    <pre class="usage"><span class='fu'>textmodel_lsa</span>(<span class='no'>x</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+    <pre class="usage"><span class='fu'>textmodel_lsa</span>(<span class='no'>x</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"both"</span>, <span class='st'>"documents"</span>, <span class='st'>"features"</span>))
 
 <span class='co'># S3 method for textmodel_lsa_fitted</span>
-<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for textmodel_lsa_fitted</span>
+<span class='fu'><a href='is.dfm.html'>as.dfm</a></span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -141,6 +154,10 @@ weighted (for instance using <code><a href='tfidf.html'>tfidf</a></code>).</p>
     <tr>
       <th>nd</th>
       <td><p>the number of dimensions to be included in output</p></td>
+    </tr>
+    <tr>
+      <th>margin</th>
+      <td><p>margin to be smoothed by the SVD</p></td>
     </tr>
     <tr>
       <th>object</th>
@@ -177,9 +194,9 @@ weighted (for instance using <code><a href='tfidf.html'>tfidf</a></code>).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>ieDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>)
+    <pre class="examples"><div class='input'><span class='no'>ie_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>)
 <span class='co'># create an LSA space and return its truncated representation in the low-rank space</span>
-<span class='no'>mylsa</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_lsa</span>(<span class='no'>ieDfm</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ])</div><div class='output co'>#&gt; <span class='warning'>Warning: all singular values are requested, svd() is used instead</span></div><div class='input'><span class='fu'>head</span>(<span class='no'>mylsa</span>$<span class='no'>docs</span>)</div><div class='output co'>#&gt;                                        [,1]       [,2]       [,3]        [,4]
+<span class='no'>ie_lsa</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_lsa</span>(<span class='no'>ie_dfm</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ])</div><div class='output co'>#&gt; <span class='warning'>Warning: all singular values are requested, svd() is used instead</span></div><div class='input'><span class='fu'>head</span>(<span class='no'>ie_lsa</span>$<span class='no'>docs</span>)</div><div class='output co'>#&gt;                                        [,1]       [,2]       [,3]        [,4]
 #&gt; 2010_BUDGET_01_Brian_Lenihan_FF  -0.5132082  0.6611990  0.5010158  0.03718041
 #&gt; 2010_BUDGET_02_Richard_Bruton_FG -0.2774006 -0.3444475  0.1538104  0.84969109
 #&gt; 2010_BUDGET_03_Joan_Burton_LAB   -0.3840362 -0.3455358 -0.1080534 -0.22254097
@@ -199,8 +216,9 @@ weighted (for instance using <code><a href='tfidf.html'>tfidf</a></code>).</p>
 #&gt; 2010_BUDGET_03_Joan_Burton_LAB    0.04871506 -0.02433495 -0.071523773
 #&gt; 2010_BUDGET_04_Arthur_Morgan_SF   0.10149400  0.01181985  0.039985771
 #&gt; 2010_BUDGET_05_Brian_Cowen_FF    -0.19256676  0.01576936 -0.110120661
-#&gt; 2010_BUDGET_06_Enda_Kenny_FG      0.08277396 -0.23320209 -0.131952742</div><div class='input'><span class='co'>#matrix in low_rank LSA space</span>
-<span class='no'>mylsa</span>$<span class='no'>matrix_low_rank</span>[,<span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt;                                    when  i     presented the supplementary
+#&gt; 2010_BUDGET_06_Enda_Kenny_FG      0.08277396 -0.23320209 -0.131952742</div><div class='input'>
+<span class='co'># matrix in low_rank LSA space</span>
+<span class='no'>ie_lsa</span>$<span class='no'>matrix_low_rank</span>[,<span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt;                                    when  i     presented the supplementary
 #&gt; 2010_BUDGET_01_Brian_Lenihan_FF       5 73  1.000000e+00 539  7.000000e+00
 #&gt; 2010_BUDGET_02_Richard_Bruton_FG      2  6  1.725749e-14 305  1.214406e-13
 #&gt; 2010_BUDGET_03_Joan_Burton_LAB       11 40  1.110657e-14 428  1.812092e-13
@@ -210,10 +228,11 @@ weighted (for instance using <code><a href='tfidf.html'>tfidf</a></code>).</p>
 #&gt; 2010_BUDGET_07_Kieran_ODonnell_FG     5 11 -2.284291e-12 193  5.337258e-13
 #&gt; 2010_BUDGET_08_Eamon_Gilmore_LAB      6 10  2.470182e-12 270 -8.729094e-13
 #&gt; 2010_BUDGET_09_Michael_Higgins_LAB    3  7 -1.068381e-13  78 -4.569123e-13
-#&gt; 2010_BUDGET_10_Ruairi_Quinn_LAB       5 19  1.203898e-13  80  3.574918e-14</div><div class='input'><span class='co'># fold queries into the space generated by ieDfm[1:10,]</span>
+#&gt; 2010_BUDGET_10_Ruairi_Quinn_LAB       5 19  1.203898e-13  80  3.574918e-14</div><div class='input'>
+<span class='co'># fold queries into the space generated by ie_dfm[1:10,]</span>
 <span class='co'># and return its truncated versions of its representation in the new low-rank space</span>
-<span class='no'>newlsa</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>mylsa</span>, <span class='no'>ieDfm</span>[<span class='fl'>11</span>:<span class='fl'>14</span>, ])
-<span class='no'>newlsa</span>$<span class='no'>docs_newspace</span></div><div class='output co'>#&gt; 4 x 10 Matrix of class "dgeMatrix"
+<span class='no'>new_lsa</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>ie_lsa</span>, <span class='no'>ie_dfm</span>[<span class='fl'>11</span>:<span class='fl'>14</span>, ])
+<span class='no'>new_lsa</span>$<span class='no'>docs_newspace</span></div><div class='output co'>#&gt; 4 x 10 Matrix of class "dgeMatrix"
 #&gt;                                              [,1]        [,2]        [,3]
 #&gt; 2010_BUDGET_11_John_Gormley_Green     -0.06232233  0.02556855  0.01586808
 #&gt; 2010_BUDGET_12_Eamon_Ryan_Green       -0.09764584 -0.05532927 -0.03798847
@@ -233,7 +252,8 @@ weighted (for instance using <code><a href='tfidf.html'>tfidf</a></code>).</p>
 #&gt; 2010_BUDGET_11_John_Gormley_Green     -0.04928801
 #&gt; 2010_BUDGET_12_Eamon_Ryan_Green       -0.19176318
 #&gt; 2010_BUDGET_13_Ciaran_Cuffe_Green     -0.18028126
-#&gt; 2010_BUDGET_14_Caoimhghin_OCaolain_SF  0.23586845</div></pre>
+#&gt; 2010_BUDGET_14_Caoimhghin_OCaolain_SF  0.23586845</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -251,7 +271,7 @@ weighted (for instance using <code><a href='tfidf.html'>tfidf</a></code>).</p>
 
     <h2>Author</h2>
     
-Haiyan Wang
+Haiyan Wang and Kohei Watanabe
 
   </div>
 </div>
