@@ -13,7 +13,7 @@ This vignette provides a basic overview of **quanteda**'s features and capabilit
 
 # Installing the package
 
-Since **quangteda** is available on [CRAN](https://CRAN.R-project.org/package=quanteda), you can install  by using your GUI's R package installer, or execute:
+Since **quanteda** is available on [CRAN](https://CRAN.R-project.org/package=quanteda), you can install  by using your GUI's R package installer, or execute:
 
 ```{r, eval = FALSE}
 install.packages("quanteda") 
