@@ -212,10 +212,10 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
 #&gt; 3.7910332 2.7639649 2.6821863 2.0782035 1.9594539 1.7643366 1.0695645 0.8731637 
 #&gt;         a        we 
 #&gt; 0.8593092 0.7726443 </div><div class='input'><span class='no'>maxTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relmaxfreq"</span>)
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>maxTfDtm</span>)</div><div class='output co'>#&gt;      the        ,       of      and        .       to       in        a 
-#&gt; 73.96822 52.12615 51.41366 40.28646 37.08884 33.58442 20.21474 16.49134 
-#&gt;      our       we 
-#&gt; 16.07124 14.34774 </div><div class='input'><span class='no'>logTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"logfreq"</span>)
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>maxTfDtm</span>)</div><div class='output co'>#&gt;      the        ,       of      and        .       to       in      our 
+#&gt; 55.13499 42.22681 39.34995 31.43686 30.76141 26.37869 16.08336 13.97242 
+#&gt;        a       we 
+#&gt; 13.38024 13.21974 </div><div class='input'><span class='no'>logTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"logfreq"</span>)
 <span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>logTfDtm</span>)</div><div class='output co'>#&gt;      the        ,       of      and        .       to       in        a 
 #&gt; 182.1856 174.3182 173.3837 167.1782 164.9945 163.2151 150.4070 143.6032 
 #&gt;      our     that 
@@ -246,9 +246,9 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
 #&gt;   text2     1      1      2    1</div><div class='input'><span class='fu'>dfm_weight</span>(<span class='no'>mydfm</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>apple</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>banana</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>much</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
 #&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
-#&gt; docs    apple better banana much
-#&gt;   text1     5      1      3  0  
-#&gt;   text2     5      1      6  0.5</div><div class='input'>
+#&gt; docs    feat1 feat2 feat3 feat4
+#&gt;   text1     5     1     3   0  
+#&gt;   text2     5     1     6   0.5</div><div class='input'>
 </div><div class='input'><span class='co'># smooth the dfm</span>
 <span class='fu'>dfm_smooth</span>(<span class='no'>mydfm</span>, <span class='fl'>0.5</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (0% sparse).
 #&gt; 2 x 4 sparse Matrix of class "dfm"
@@ -272,10 +272,6 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
-
-    <h2>Author</h2>
-    
-Paul Nulty and Kenneth Benoit
 
   </div>
 </div>

@@ -137,11 +137,9 @@ are converting.</p>
 
     <pre class="usage"><span class='fu'>as.wfm</span>(<span class='no'>x</span>)
 
-<span class='fu'>as.DocumentTermMatrix</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>as.DocumentTermMatrix</span>(<span class='no'>x</span>)
 
-<span class='fu'>dfm2ldaformat</span>(<span class='no'>x</span>)
-
-<span class='fu'>quantedaformat2dtm</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>dfm2lda</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -175,13 +173,10 @@ are converting.</p>
   converting using one of the <span class="pkg">tm</span> functions. For other available
   weighting functions from the <span class="pkg">tm</span> package, see 
   <code><a href='http://www.rdocumentation.org/packages/tm/topics/matrix'>TermDocumentMatrix</a></code>.
-    <code>dfm2ldaformat</code> provides converts a <a href='dfm.html'>dfm</a> into the list representation
+    <code>dfm2lda</code> provides converts a <a href='dfm.html'>dfm</a> into the list representation
 of terms in documents used by the <span class="pkg">lda</span> package (a list with components 
 "documents" and "vocab" as needed by 
-  <code><a href='http://www.rdocumentation.org/packages/lda/topics/lda.collapsed.gibbs.sampler'>lda.collapsed.gibbs.sampler</a></code>).
-    <code>quantedaformat2dtm</code> provides converts a <a href='dfm.html'>dfm</a> into the
-sparse simple triplet matrix representation of terms in documents used by the
-<span class="pkg">topicmodels</span> package.</p>
+  <code><a href='http://www.rdocumentation.org/packages/lda/topics/lda.collapsed.gibbs.sampler'>lda.collapsed.gibbs.sampler</a></code>).</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -204,12 +199,7 @@ sparse simple triplet matrix representation of terms in documents used by the
 <span class='co'># }</span><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># shortcut conversion to lda package list format</span>
-<span class='fu'>identical</span>(<span class='fu'>dfm2ldaformat</span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))
-<span class='co'># }</span><div class='input'>
-# shortcut conversion to topicmodels package format
-</div><span class='co'># NOT RUN {</span>
-<span class='fu'>identical</span>(<span class='fu'>quantedaformat2dtm</span>(<span class='no'>quantdfm</span>),
-          <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"topicmodels"</span>))
+<span class='fu'>identical</span>(<span class='fu'>dfm2lda</span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

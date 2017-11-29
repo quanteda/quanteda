@@ -15,10 +15,9 @@ This vignette provides a basic overview of **quanteda**'s features and capabilit
 
 Since **quangteda** is available on [CRAN](https://CRAN.R-project.org/package=quanteda), you can install  by using your GUI's R package installer, or execute:
 
-```{r, message = FALSE}
+```{r, eval = FALSE}
 install.packages("quanteda") 
 ```
-
 See an instructions at https://github.com/kbenoit/quanteda to install the GitHub version, 
 
 ## Additional recommended packages:
@@ -37,6 +36,12 @@ The following packages work well with or extend **quanteda** and we recommend th
     ```
 
 # Creating a Corpus
+
+You load the package to access to functions and data in the package.
+
+```{r, message = FALSE}
+library(quanteda)
+```
 
 ## Currently available corpus sources
 

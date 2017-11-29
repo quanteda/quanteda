@@ -132,20 +132,18 @@
     <p>Convert a quanteda <a href='dfm.html'>dfm</a> object to a format useable by other text
 analysis packages.  The general function <code>convert</code> provides easy
 conversion from a dfm to the document-term representations used in all other
-text analysis packages for which conversions are defined.    See also
-<a href='convert-wrappers.html'>convert-wrappers</a> for convenience functions for specific package
-converters.</p>
+text analysis packages for which conversions are defined.</p>
     
 
     <pre class="usage"><span class='fu'>convert</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lda"</span>, <span class='st'>"tm"</span>, <span class='st'>"stm"</span>, <span class='st'>"austin"</span>, <span class='st'>"topicmodels"</span>, <span class='st'>"lsa"</span>,
-  <span class='st'>"matrix"</span>, <span class='st'>"data.frame"</span>), <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+  <span class='st'>"matrix"</span>, <span class='st'>"data.frame"</span>), <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>dfm to be converted</p></td>
+      <td><p>a <a href='dfm.html'>dfm</a> to be converted</p></td>
     </tr>
     <tr>
       <th>to</th>
@@ -164,13 +162,9 @@ used by the <span class="pkg">lsa</span> package</p></dd> </dl></td>
     <tr>
       <th>docvars</th>
       <td><p>optional data.frame of document variables used as the
-<code>meta</code> information in conversion to the STM package format.  This aids
-in selecting the document variables only corresponding to the documents
-with non-zero counts.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>unused</p></td>
+<code>meta</code> information in conversion to the <span class="pkg">stm</span> package format.
+This aids in selecting the document variables only corresponding to the
+documents with non-zero counts.</p></td>
     </tr>
     </table>
     
@@ -179,12 +173,6 @@ with non-zero counts.</p></td>
     <p>A converted object determined by the value of <code>to</code> (see above). 
   See conversion target package documentation for more detailed descriptions 
   of the return formats.</p>
-    
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>There also exist a variety of converter shortcut commands, designed to 
-mimic the idioms of the packages into whose format they convert.  
-See <a href='convert-wrappers.html'>convert-wrappers</a> for details.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -257,8 +245,6 @@ See <a href='convert-wrappers.html'>convert-wrappers</a> for details.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#note">Note</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
