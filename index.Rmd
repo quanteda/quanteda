@@ -1,87 +1,88 @@
 ---
-title: "Quanteda"
+title: "Home"
 output: 
   rmarkdown::html_vignette:
     toc: yes
-vignette: >
-  %\VignetteIndexEntry{Getting Started}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
-```{r, echo=FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "##",
-  fig.path = "man/images/"
-)
-```
+# ![quanteda: quantitative analysis of textual data](https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg){.logo}
 
-```{r, echo=FALSE}
-knitr::include_graphics("https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg")
-```
+# Introduction
 
+**quanteda** is an R package for managing and analyzing text. This package makes it easy to manage texts in the form of a corpus, defined as a collection of texts that includes document-level variables specific to each text, as well as meta-data for documents and for the collection as a whole.  **quanteda** includes tools to make it easy and fast to manuipulate the texts in a corpus, by performing the most common natural language processing tasks simply and quickly, such as tokenizing, stemming, or forming ngrams.  **quanteda**'s functions for tokenizing texts and forming multiple tokenized documents into a *document-feature matrix* are both extremely fast and extremely simple to use.  **quanteda** can segment texts easily by words, paragraphs, sentences, or even user-supplied delimiters and tags.
 
-## About
+Built on the text processing
+functions in the **stringi** package,
+which is in turn built on C++ implementation of the [ICU](http://www.icu-project.org/) libraries for Unicode text handling, **quanteda** pays special attention to fast and correct implementation of Unicode and the handling of text in any character set, following conversion internally to UTF-8.
 
-An R package for managing and analyzing text, created by [Kenneth Benoit](http://kenbenoit.net) in 
-collaboration with a team of core 
-[contributors](https://github.com/kbenoit/quanteda/graphs/contributors): 
-[Kohei Watanabe](https://github.com/koheiw), 
-[Paul Nulty](https://github.com/pnulty), 
-[Adam Obeng](https://github.com/adamobeng), 
-[Haiyan Wang](https://github.com/HaiyanLW), 
-[Ben Lauderdale](https://github.com/lauderdale), 
-and [Will Lowe](https://github.com/conjugateprior).  
-Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
+**quanteda** is built for efficiency and speed, through its design around three infrastructures: the **stringi** package for text processing, the **data.table** package for indexing large documents efficiently, and the **Matrix** package for sparse matrix objects.  If you can fit it into memory, **quanteda** will handle it quickly.  (And eventually, we will make it possible to process objects even larger than available memory.)
 
-For more details, see http://quanteda.io.
+**quanteda** is principally designed to allow users a fast and convenient method to go from a corpus of texts to a selected matrix of documents by features, after defining what the documents and features.  The package makes it easy to redefine documents, for instance by splitting them into sentences or paragraphs, or by tags, as well as to group them into larger documents by document variables, or to subset them based on logical conditions or combinations of document variables.  The package also implements common NLP feature selection functions, such as removing stopwords and stemming in numerous languages, selecting words found in dictionaries, treating words as equivalent based on a user-defined "thesaurus", and trimming and weighting features based on document frequency, feature frequency, and related measures such as *tf-idf*.
+ 
+# Features
 
-How to cite the package:
+## Corpus Management Tools
 
-```{r echo = FALSE, out.width = 80, comment = NA}
-citation("quanteda")
-```
+The tools for getting texts into a corpus object include: 
 
-## How to Install
+* loading texts from directories of individual files
+* loading texts ``manually'' by inserting them into a corpus using helper functions
+*  managing text encodings and conversions from source files into corpus texts
+* attaching variables to each text that can be used for grouping, reorganizing a corpus, or simply recording additional information to supplement quantitative analyses with non-textual data
+* recording meta-data about the sources and creation details for the corpus.
+  
+The tools for working with a corpus include:
 
-1.  From [CRAN](https://CRAN.R-project.org/package=quanteda): Use your GUI's R package installer, or execute:
+* summarizing the corpus in terms of its language units
+* reshaping the corpus into smaller units or more aggregated units
+* adding to or extracting subsets of a corpus
+* resampling texts of the corpus, for example for use in non-parametric bootstrapping of the texts
+* Easy extraction and saving, as a new data frame or corpus, key words in context (KWIC)
 
-    ```{r eval = FALSE}
-    install.packages("quanteda") 
-    ```
+## Natural-Language Processing tools
 
-2.  From [GitHub](https://github.com/kbenoit/quanteda), using:
+For extracting features from a corpus, **quanteda** provides the following tools:
 
-    ```{r eval = FALSE}
-    # devtools packaged required to install quanteda from Github 
-    devtools::install_github("kbenoit/quanteda") 
-    ```
+* extraction of word types
+* extraction of word n-grams
+* extraction of dictionary entries from user-defined dictionaries
+* feature selection through
+    - stemming
+    - random selection
+    - document frequency
+    - word frequency
+* and a variety of options for cleaning word types, such as capitalization and rules for handling punctuation.
 
-    Because this compiles some C++ source code, you will need a compiler installed. 
-    If you are using a Windows platform, this means you will need also to install 
-    the [Rtools](https://CRAN.R-project.org/bin/windows/Rtools/) software available 
-    from CRAN.  **If you are using macOS**, you will need to to install XCode, available 
-    for free from the App Store, or if you prefer a lighter footprint set of tools, 
-    [just the Xcode command line 
-    tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/ ), 
-    using the command `xcode-select --install` from the Terminal.
-    
-    Also, you might need to upgrade your compiler.  @kbenoit found that his macOS build only worked reliably after upgrading the default Xcode compiler to clang4, following [these instructions](http://thecoatlessprofessor.com/programming/openmp-in-r-on-os-x/#after-3-4-0).
+## Document-Feature Matrix analysis tools
 
+For analyzing the resulting *document-feature* matrix created when features are abstracted from a corpus, **quanteda** provides:
 
-## Leaving feedback
+* scaling methods, such as correspondence analysis, Wordfish, and Wordscores
+* topic models, such as LDA
+* classifiers, such as Naive Bayes or k-nearest neighbour
+* sentiment analysis, using dictionaries
 
-If you like **quanteda**, please consider leaving [feedback or a testimonial here](https://github.com/kbenoit/quanteda/issues/461).
+## Additional and Planned Features
 
+**Additional features** of quanteda include:
 
+*  the ability to explore texts using *key-words-in-context*
+*  fast computation of a variety of readability indexes
+*  fast computation of a variety of lexical diversity measures
+*  quick computation of word or document association measures, for clustering or to compute similarity scores for other purposes
+*  a comprehensive suite of descriptive statistics on text such as the number of sentences, words, characters, or syllables per document
 
-## Contributing
+## Working with other packages
 
-Contributions in the form of feedback, comments, code, and bug reports are most welcome.  How to contribute:
+**quanteda** is hardly unique in providing facilities for working with text -- the excellent *tm* package already provides many of the features we have described.  **quanteda** is designed to complement those packages, as well to simplify the implementation of the text-to-analysis workflow.  **quanteda** corpus structures are simpler objects than in *tm*s, as are the document-feature matrix
+objects from `quanteda`, compared to the sparse matrix implementation found in *tm*.  However, there is no need to choose only one package, since we provide translator functions from one matrix or
+corpus object to the other in `quanteda`.
 
-*  Fork the source code, modify, and issue a [pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) through the [project GitHub page](https://github.com/kbenoit/quanteda).  See our [Contributor Code of Conduct](https://github.com/kbenoit/quanteda/blob/master/CONDUCT.md) and the all-important **quanteda** [Style Guide](https://github.com/kbenoit/quanteda/wiki/Style-guide).
-*  Issues, bug reports, and wish lists: [File a GitHub issue](https://github.com/kbenoit/quanteda/issues).
-*  Usage questions:  Submit a question on the [**quanteda** channel on StackOverflow](http://stackoverflow.com/questions/tagged/quanteda).
-*  Contact [the maintainer](kbenoit@lse.ac.uk) by email.
+Once constructed, a **quanteda** "dfm"" can be easily passed to other text-analysis packages for 
+additional analysis of topic models or scaling, such as:
 
+*  topic models (including converters for direct use with the **topicmodels**, **LDA**, and **stm** packages)
+*  document scaling using **quanteda**'s own functions for the "wordfish" and "Wordscores" models, and a sparse method for correspondence analysis
+*  document classification methods, using (for example) Naive Bayes, k-nearest neighbour, or Support Vector Machines
+*  more sophisticated machine learning through a variety of other packages that take matrix or matrix-like inputs.
+*  graphical analysis, including word clouds and strip plots for selected themes or words.
