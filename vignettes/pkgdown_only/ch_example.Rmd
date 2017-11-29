@@ -58,6 +58,7 @@ topfeatures(chdfm)
 # plot a word cloud
 set.seed(100)
 chdfm_tf <- dfm_trim(chdfm, min_count = 500)
+par(family = "STKaiti") # "楷体“ this line is necessary for Mac
 textplot_wordcloud(chdfm_tf, min.freq = 6, random.order = FALSE,
                    rot.per = .25, max.words = 100, scale = c(2.8, .5),
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
