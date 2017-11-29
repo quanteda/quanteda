@@ -34,15 +34,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../../index.html">Quanteda documents</a>
+      <a class="navbar-brand" href="../../index.html">Overview</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
+  <a href="../../reference/index.html">Reference</a>
+</li>
+<li>
   <a href="../../articles/quickstart.html">Quick Start</a>
 </li>
 <li>
-  <a href="../../articles/comparison.html">Comparison</a>
+  <a href="../../articles/comparison.html">Features</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -75,10 +78,7 @@
   </ul>
 </li>
 <li>
-  <a href="../../articles/design.html">Desgin</a>
-</li>
-<li>
-  <a href="../../reference/index.html">Reference</a>
+  <a href="../../articles/design.html">Design</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -367,8 +367,8 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../r
 ##   mobydick.9  1260   4284       166      CHAPTER 9. The Sermon.\n
 ##  mobydick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
 ## 
-## Source:  /home/kohei/packages/quanteda/docs/articles/replication/* on x86_64 by kohei
-## Created: Wed Nov 29 14:04:42 2017
+## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/replication/* on x86_64 by kbenoit
+## Created: Wed Nov 29 14:42:32 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right</a></span>(<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))
@@ -380,8 +380,8 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../r
 ##  mobydick.2   651   1700        60  CHAPTER 2. The Carpet-Bag.
 ##  mobydick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
 ## 
-## Source:  /home/kohei/packages/quanteda/docs/articles/replication/* on x86_64 by kohei
-## Created: Wed Nov 29 14:04:42 2017
+## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/replication/* on x86_64 by kbenoit
+## Created: Wed Nov 29 14:42:32 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</code></pre></div>
@@ -688,30 +688,30 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
 
 <span class="co"># get top five terms per topic</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</code></pre></div>
-<pre><code>##      Topic 1     Topic 2       Topic 3   Topic 4        Topic 5   
-## [1,] "per"       "alternative" "child"   "society"      "fianna"  
-## [2,] "welfare"   "citizenship" "benefit" "enterprising" "fáil"    
-## [3,] "allowance" "wealth"      "day"     "sense"        "national"
-## [4,] "care"      "adjustment"  "today"   "equal"        "irish"   
-## [5,] "child"     "breaks"      "bank"    "nation"       "support" 
-##      Topic 6      Topic 7       Topic 8    Topic 9     Topic 10   
-## [1,] "deficit"    "scheme"      "failed"   "million"   "taoiseach"
-## [2,] "better"     "investment"  "seen"     "measures"  "employees"
-## [3,] "even"       "bill"        "strategy" "review"    "rate"     
-## [4,] "investment" "level"       "face"     "spending"  "referred" 
-## [5,] "bill"       "sustainable" "radical"  "reduction" "debate"   
-##      Topic 11    Topic 12   Topic 13     Topic 14      Topic 15 
-## [1,] "taoiseach" "welfare"  "family"     "imagination" "levy"   
-## [2,] "fine"      "system"   "unemployed" "wit"         "million"
-## [3,] "gael"      "taxation" "back"       "policies"    "carbon" 
-## [4,] "may"       "fianna"   "hospital"   "education"   "change" 
-## [5,] "irish"     "fáil"     "care"       "comes"       "welfare"
-##      Topic 16    Topic 17     Topic 18 Topic 19    Topic 20  
-## [1,] "kind"      "million"    "fianna" "job"       "confront"
-## [2,] "create"    "support"    "fáil"   "welfare"   "cycle"   
-## [3,] "authority" "welfare"    "side"   "much"      "adopted" 
-## [4,] "far"       "investment" "level"  "fáil"      "strategy"
-## [5,] "real"      "back"       "third"  "increased" "failed"</code></pre>
+<pre><code>##      Topic 1    Topic 2      Topic 3      Topic 4     Topic 5   Topic 6   
+## [1,] "fianna"   "investment" "created"    "failed"    "child"   "care"    
+## [2,] "fáil"     "scheme"     "colleagues" "strategy"  "benefit" "welfare" 
+## [3,] "national" "recent"     "placing"    "needed"    "today"   "per"     
+## [4,] "irish"    "necessary"  "paid"       "ministers" "day"     "workers" 
+## [5,] "support"  "protect"    "change"     "system"    "fianna"  "hospital"
+##      Topic 7       Topic 8    Topic 9    Topic 10    Topic 11   
+## [1,] "fianna"      "levy"     "measures" "taoiseach" "taoiseach"
+## [2,] "fáil"        "million"  "set"      "fine"      "employees"
+## [3,] "citizenship" "price"    "prices"   "irish"     "rate"     
+## [4,] "side"        "climate"  "details"  "stimulus"  "referred" 
+## [5,] "alternative" "continue" "credit"   "know"      "debate"   
+##      Topic 12   Topic 13   Topic 14  Topic 15    Topic 16     
+## [1,] "million"  "million"  "benefit" "allowance" "kind"       
+## [2,] "spending" "support"  "bank"    "system"    "imagination"
+## [3,] "review"   "welfare"  "per"     "fianna"    "policies"   
+## [4,] "scheme"   "back"     "society" "million"   "wit"        
+## [5,] "system"   "continue" "child"   "top"       "authority"  
+##      Topic 17       Topic 18       Topic 19   Topic 20   
+## [1,] "society"      "measures"     "welfare"  "taoiseach"
+## [2,] "enterprising" "increases"    "system"   "gael"     
+## [3,] "sense"        "contribution" "fianna"   "may"      
+## [4,] "equal"        "details"      "taxation" "day"      
+## [5,] "nation"       "spending"     "fáil"     "fine"</code></pre>
 </div>
 </div>
   </div>

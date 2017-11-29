@@ -3,12 +3,14 @@ template:
     bootswatch: readable
     ganalytics: UA-144616-24
 navbar:
-  title: "Quanteda documents"
+  title: "Overview"
   type: inverse
   left:
+    - text: "Reference"
+      href: reference/index.html
     - text: "Quick Start"
       href: articles/quickstart.html
-    - text: "Comparison"
+    - text: "Features"
       href: articles/comparison.html
     - text: "Examples"
       menu:
@@ -22,10 +24,8 @@ navbar:
       menu:
         - text: "Text Analysis with R for Students of Literature"
           href: articles/replication/digital-humanities.html
-    - text: "Desgin"
+    - text: "Design"
       href: articles/design.html
-    - text: "Reference"
-      href: reference/index.html
   right:
     - icon: fa-github fa-lg
       href: https://github.com/kbenoit/quanteda

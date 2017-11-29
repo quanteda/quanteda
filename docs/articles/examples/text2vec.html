@@ -34,15 +34,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../../index.html">Quanteda documents</a>
+      <a class="navbar-brand" href="../../index.html">Overview</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
+  <a href="../../reference/index.html">Reference</a>
+</li>
+<li>
   <a href="../../articles/quickstart.html">Quick Start</a>
 </li>
 <li>
-  <a href="../../articles/comparison.html">Comparison</a>
+  <a href="../../articles/comparison.html">Features</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -75,10 +78,7 @@
   </ul>
 </li>
 <li>
-  <a href="../../articles/design.html">Desgin</a>
-</li>
-<li>
-  <a href="../../reference/index.html">Reference</a>
+  <a href="../../articles/design.html">Design</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -124,7 +124,7 @@
 <pre><code>##    ... found 1 document, 253,853 features</code></pre>
 <pre><code>##    ... created a 1 x 253,853 sparse dfm
 ##    ... complete. 
-## Elapsed time: 19.4 seconds.</code></pre>
+## Elapsed time: 13.4 seconds.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">feat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/featnames.html">featnames</a></span>(<span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(wiki_dfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>))</code></pre></div>
 <pre><code>## Removing features occurring:</code></pre>
 <pre><code>##   - fewer than 5 times: 182,563</code></pre>

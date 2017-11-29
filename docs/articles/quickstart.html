@@ -34,15 +34,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Quanteda documents</a>
+      <a class="navbar-brand" href="../index.html">Overview</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li>
   <a href="../articles/quickstart.html">Quick Start</a>
 </li>
 <li>
-  <a href="../articles/comparison.html">Comparison</a>
+  <a href="../articles/comparison.html">Features</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -75,10 +78,7 @@
   </ul>
 </li>
 <li>
-  <a href="../articles/design.html">Desgin</a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/design.html">Design</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -111,7 +111,7 @@
 <div id="installing-the-package" class="section level1">
 <h1 class="hasAnchor">
 <a href="#installing-the-package" class="anchor"></a>Installing the package</h1>
-<p>Since <strong>quangteda</strong> is available on <a href="https://CRAN.R-project.org/package=quanteda">CRAN</a>, you can install by using your GUI’s R package installer, or execute:</p>
+<p>Since <strong>quanteda</strong> is available on <a href="https://CRAN.R-project.org/package=quanteda">CRAN</a>, you can install by using your GUI’s R package installer, or execute:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>) </code></pre></div>
 <p>See an instructions at <a href="https://github.com/kbenoit/quanteda" class="uri">https://github.com/kbenoit/quanteda</a> to install the GitHub version,</p>
 <div id="additional-recommended-packages" class="section level2">
@@ -178,8 +178,8 @@
 ##           SNP    88    134         4
 ##          UKIP   346    723        27
 ## 
-## Source:  /home/kohei/packages/quanteda/docs/articles/* on x86_64 by kohei
-## Created: Wed Nov 29 14:04:00 2017
+## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
+## Created: Wed Nov 29 14:42:16 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -199,8 +199,8 @@
 ##           SNP    88    134         4          SNP 2010
 ##          UKIP   346    723        27         UKIP 2010
 ## 
-## Source:  /home/kohei/packages/quanteda/docs/articles/* on x86_64 by kohei
-## Created: Wed Nov 29 14:04:00 2017
+## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
+## Created: Wed Nov 29 14:42:16 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -229,8 +229,8 @@
 ##  data_char_ukimmig2010_8
 ##  data_char_ukimmig2010_9
 ## 
-## Source:  /home/kohei/packages/quanteda/docs/articles/* on x86_64 by kohei
-## Created: Wed Nov 29 14:04:00 2017
+## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
+## Created: Wed Nov 29 14:42:16 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -367,7 +367,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Wed Nov 29 14:04:02 2017
+## Created: Wed Nov 29 14:42:17 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -798,55 +798,55 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.h
 ## 
 ## Estimated document positions:
 ## 
-##                                Documents      theta         SE       lower
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209251 0.02032273  1.78109256
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932990 0.02818917 -0.64854975
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1137045 0.01540328 -1.14389497
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219040 0.02846402 -0.17769344
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724033 0.02364007  1.72606878
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145892 0.02650365 -0.76653637
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844924 0.04171603 -0.56625581
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616476 0.02967519 -0.61981099
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703271 0.03850738 -1.04580153
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589386 0.03892572 -1.03523301
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807227 0.07221282  1.03918561
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866587 0.06294180  0.06329282
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7422175 0.07245336  0.60020889
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840250 0.03666419 -0.25588679
+##                                Documents      theta         SE      lower
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209494 0.02032335  1.7811156
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932813 0.02818847 -0.6485307
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136796 0.01540266 -1.1438688
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219283 0.02846331 -0.1777163
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724197 0.02364084  1.7260836
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145800 0.02650270 -0.7665253
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844836 0.04171494 -0.5662449
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616677 0.02967376 -0.6198283
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703129 0.03850570 -1.0457841
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589251 0.03892402 -1.0352162
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807222 0.07221437  1.0391820
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866474 0.06294128  0.0632825
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421934 0.07245422  0.6001832
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840735 0.03666280 -0.2559326
 ##          upper
-## 1   1.86075765
-## 2  -0.53804821
-## 3  -1.08351412
-## 4  -0.06611447
-## 5   1.81873786
-## 6  -0.66264206
-## 7  -0.40272896
-## 8  -0.50348426
-## 9  -0.89485262
-## 10 -0.88264420
-## 11  1.32225985
-## 12  0.31002467
-## 13  0.88422605
-## 14 -0.11216318
+## 1   1.86078316
+## 2  -0.53803192
+## 3  -1.08349036
+## 4  -0.06614016
+## 5   1.81875571
+## 6  -0.66263474
+## 7  -0.40272232
+## 8  -0.50350713
+## 9  -0.89484174
+## 10 -0.88263404
+## 11  1.32226232
+## 12  0.31001231
+## 13  0.88420372
+## 14 -0.11221444
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the 
-##     -0.09944752      0.38776814      0.39855680      0.25569262 
+##     -0.09921915      0.38800702      0.39877742      0.25592792 
 ##   supplementary          budget              to            this 
-##      1.11562777      0.09890457      0.36982736      0.30668678 
+##      1.11584864      0.09913851      0.37006285      0.30691952 
 ##           house            last           april               , 
-##      0.19881412      0.28947211     -0.09550211      0.34510071 
+##      0.19905436      0.28970206     -0.09527706      0.34533664 
 ##            said              we           could            work 
-##     -0.71955306      0.47967294     -0.53000818      0.58202964 
+##     -0.71932527      0.47990707     -0.52977969      0.58225813 
 ##             our             way         through          period 
-##      0.74348965      0.33586501      0.65959056      0.55597168 
+##      0.74371880      0.33609999      0.65981278      0.55620272 
 ##              of          severe        economic        distress 
-##      0.33907155      1.27887747      0.47842340      1.84436541 
+##      0.33930695      1.27909335      0.47865517      1.84453598 
 ##               .           today             can          report 
-##      0.27327460      0.17393502      0.36353946      0.69150795 
+##      0.27350987      0.17418142      0.36377001      0.69174588 
 ##            that notwithstanding 
-##      0.08808232      1.84436541</code></pre></div>
+##      0.08831932      1.84453598</code></pre></div>
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
@@ -867,30 +867,30 @@ quantdfm
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }
 ## Loading required package: topicmodels
-##      Topic 1      Topic 2     Topic 3   Topic 4   Topic 5 Topic 6   
-## [1,] "investment" "taoiseach" "system"  "child"   "per"   "million" 
-## [2,] "confidence" "fine"      "live"    "benefit" "never" "back"    
-## [3,] "support"    "gael"      "result"  "today"   "bank"  "welfare" 
-## [4,] "welfare"    "irish"     "back"    "day"     "even"  "support" 
-## [5,] "including"  "may"       "welfare" "welfare" "seen"  "continue"
-##      Topic 7   Topic 8     Topic 9    Topic 10    Topic 11      
-## [1,] "banks"   "care"      "review"   "taoiseach" "society"     
-## [2,] "benefit" "welfare"   "million"  "employees" "enterprising"
-## [3,] "bank"    "per"       "spending" "rate"      "sense"       
-## [4,] "fianna"  "allowance" "details"  "referred"  "equal"       
-## [5,] "society" "hit"       "recent"   "debate"    "nation"      
-##      Topic 12   Topic 13     Topic 14  Topic 15 Topic 16   Topic 17   
-## [1,] "system"   "million"    "levy"    "fianna" "fianna"   "failed"   
-## [2,] "welfare"  "measures"   "million" "fáil"   "fáil"     "strategy" 
-## [3,] "fianna"   "investment" "carbon"  "side"   "national" "needed"   
-## [4,] "taxation" "level"      "welfare" "level"  "irish"    "ministers"
-## [5,] "worst"    "spending"   "future"  "third"  "support"  "system"   
-##      Topic 18      Topic 19    Topic 20     
-## [1,] "welfare"     "welfare"   "alternative"
-## [2,] "system"      "measures"  "citizenship"
-## [3,] "fáil"        "system"    "wealth"     
-## [4,] "cutting"     "reduction" "adjustment" 
-## [5,] "all-ireland" "pension"   "breaks"</code></pre></div>
+##      Topic 1   Topic 2      Topic 3  Topic 4   Topic 5        Topic 6     
+## [1,] "levy"    "million"    "carers" "benefit" "society"      "million"   
+## [2,] "million" "investment" "per"    "fáil"    "enterprising" "scheme"    
+## [3,] "carbon"  "welfare"    "wrong"  "day"     "sense"        "investment"
+## [4,] "change"  "details"    "nama"   "today"   "equal"        "support"   
+## [5,] "welfare" "review"     "family" "know"    "nation"       "employment"
+##      Topic 7     Topic 8     Topic 9    Topic 10   Topic 11   Topic 12    
+## [1,] "care"      "taoiseach" "spending" "welfare"  "fianna"   "support"   
+## [2,] "welfare"   "fine"      "measures" "worst"    "fáil"     "million"   
+## [3,] "allowance" "gael"      "scheme"   "taxation" "national" "welfare"   
+## [4,] "child"     "may"       "pension"  "recovery" "irish"    "back"      
+## [5,] "million"   "irish"     "rate"     "deficit"  "support"  "investment"
+##      Topic 13    Topic 14       Topic 15    Topic 16  Topic 17   Topic 18
+## [1,] "taoiseach" "welfare"      "failed"    "child"   "payments" "fianna"
+## [2,] "employees" "system"       "strategy"  "benefit" "aged"     "fáil"  
+## [3,] "rate"      "child"        "needed"    "society" "rate"     "side"  
+## [4,] "referred"  "fianna"       "ministers" "banks"   "servants" "level" 
+## [5,] "debate"    "government's" "system"    "welfare" "welfare"  "third" 
+##      Topic 19      Topic 20     
+## [1,] "alternative" "kind"       
+## [2,] "citizenship" "imagination"
+## [3,] "wealth"      "policies"   
+## [4,] "adjustment"  "wit"        
+## [5,] "breaks"      "create"</code></pre></div>
 </div>
 </div>
 </div>
