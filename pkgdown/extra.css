@@ -25,6 +25,16 @@ div.contents h2 {
     padding-top: 60px;
 }
 
+div.contents h3 {
+    font-size: 120%;
+    padding-top: 60px;
+}
+
+div.contents h4 {
+    font-size: 100%;
+    padding-top: 60px;
+}
+
 pre.sourceCode {
     overflow-x: auto;
     font-size: 80%;
