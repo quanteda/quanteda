@@ -15,7 +15,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "##",
-  fig.path = "images"
+  fig.path = "images/chinese-demo-"
 )
 ```
 
@@ -41,15 +41,16 @@ tokens_select(tokens("中华人民共和国成立于1949 年"), csw, selection =
 
 49 "REPORT ON THE WORK OF THE GOVERNMENT" by Premier of the State Council, 1954 - 2017 
 ```{r fig1, fig.height = 5, fig.width = 5, fig.align = "center"}
-#read text files
+# read text files
 data(data_corpus_chinesegovreport)
-head(summary(ch_gov_Corpus))
+summary(ch_gov_Corpus, 10)
 
-#tokenize
-chtoks <- tokens(ch_gov_Corpus, remove_punct = TRUE)
-chtoks <- tokens_remove(chtoks, stopwords("chinese"))
+# tokenize
+chtoks <- 
+    tokens(ch_gov_Corpus, remove_punct = TRUE) %>%
+    tokens_remove(stopwords("chinese"))
 
-#dfm
+# construct a dfm
 chdfm <- dfm(chtoks)
 topfeatures(chdfm)
 #发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
@@ -58,27 +59,31 @@ topfeatures(chdfm)
 # plot a word cloud
 set.seed(100)
 chdfm_tf <- dfm_trim(chdfm, min_count = 500)
-par(family = "STKaiti") # "楷体“ this line is necessary for Mac
+# to set the font correctly for macOS
+if (Sys.info()['sysname'] == "Darwin") par(family = "STSong") 
 textplot_wordcloud(chdfm_tf, min.freq = 6, random.order = FALSE,
                    rot.per = .25, max.words = 100, scale = c(2.8, .5),
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
 ### Feature co-occurrence matrix
+
 ```{r}
-#fcm within the window size of 5
+# fcm within the window size of 5
 ch17txt <- corpus_subset(ch_gov_Corpus, Year == "2017")
-ch17toks <- tokens(ch17txt, remove_punct = TRUE)
-ch17toks <- tokens_remove(ch17toks, stopwords("chinese"))
+ch17toks <- 
+    tokens(ch17txt, remove_punct = TRUE) %>% 
+    tokens_remove(stopwords("chinese"))
 chfcm <- fcm(ch17toks, context = "window")  
 topfeatures(chfcm["改革", ])
 
-# fcm within window: "改革"+ “xx”
-chfcm <- fcm(ch17toks, context = "window", ordered = TRUE, tri = FALSE)  # default window size = 5
+# fcm within window: "改革" + “xx”
+chfcm <- fcm(ch17toks, context = "window", ordered = TRUE, tri = FALSE)
 topfeatures(chfcm["改革", ])
 ```
 
 ### Scaling Model
+
 ```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
 wfm <- textmodel_wordfish(chdfm)
 y <- 1954:2017
@@ -87,8 +92,9 @@ plot(y, wfm@theta, xlab = "Year", ylab = "Position")
 ```
 
 ### Collocations - bigrams/trigrams etc. 
+
 ```{r}
-#bigrams cross the whole dataset
+# bigrams cross the whole dataset
 ch_mw <- textstat_collocations(chtoks, size = 2, min_count = 20, tolower = TRUE)
 head(ch_mw, 10)
 
