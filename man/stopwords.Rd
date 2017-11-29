@@ -15,17 +15,20 @@ The English stopwords are taken from the SMART information retrieval
   
   The Greek stopwords were supplied by Carsten Schwemmer (see 
   \href{https://github.com/kbenoit/quanteda/issues/282}{GitHub issue #282}).
+  
+  The Chinese stopwords are taken from the
+  \href{http://www.baiduguide.com/baidu-stopwords/}{Baidu stopword list}.
 }
 \usage{
 stopwords(kind = quanteda_options("language_stopwords"))
 }
 \arguments{
-\item{kind}{The pre-set kind of stopwords (as a character string).  Allowed 
-values are \code{english}, \code{SMART}, \code{danish}, \code{french}, 
-\code{greek}, \code{hungarian}, \code{norwegian}, \code{russian}, 
-\code{swedish}, \code{catalan}, \code{dutch}, \code{finnish}, 
-\code{german}, \code{italian}, \code{portuguese}, \code{spanish}, 
-\code{arabic}.}
+\item{kind}{The pre-set kind of stopwords (as a character string).  Allowed
+values are \code{english}, \code{SMART}, \code{chinese}, \code{danish},
+\code{french}, \code{greek}, \code{hungarian}, \code{norwegian},
+\code{russian}, \code{swedish}, \code{catalan}, \code{dutch},
+\code{finnish}, \code{german}, \code{italian}, \code{portuguese},
+\code{spanish}, \code{arabic}.}
 }
 \value{
 a character vector of stopwords
@@ -54,6 +57,7 @@ languages (see \url{http://snowballstem.org/projects.html}).  See
 head(stopwords("english"))
 head(stopwords("italian"))
 head(stopwords("arabic"))
+head(stopwords("chinese"))
 head(stopwords("SMART"))
 
 # adding to the built-in stopword list
