@@ -16,16 +16,19 @@ navbar:
           href: articles/examples/lsa.html
         - text: "Word embedding (word2vec)"
           href: articles/examples/text2vec.html
-        - text: "Text vidualization"
+        - text: "Textual data visualization"
           href: articles/examples/plotting.html
     - text: "Replication"
       menu:
         - text: "Text Analysis with R for Students of Literature"
-          href: articles/examples/digital-humanities.html
+          href: articles/replication/digital-humanities.html
     - text: "Desgin"
       href: articles/design.html
     - text: "Reference"
       href: reference/index.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/kbenoit/quanteda
 reference:
 - title: Package-level
   contents:
