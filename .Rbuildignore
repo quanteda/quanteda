@@ -26,9 +26,7 @@ __MACOSX
 ^tests/benchmarks/
 ^tests/misc/
 ^css/
-^vignettes/
-^vignettes/cheatsheet/
-^vignettes/demo/
+^vignettes/pkgdown/
 ^revdep$
 ^CNAME$
 ^pkgdown$

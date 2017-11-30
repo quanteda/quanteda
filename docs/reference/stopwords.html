@@ -59,15 +59,15 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Overview</a>
+      <a class="navbar-brand" href="../index.html">Quanteda</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/quickstart.html">Quick Start</a>
 </li>
 <li>
-  <a href="../articles/quickstart.html">Quick Start</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../articles/comparison.html">Features</a>
@@ -83,10 +83,10 @@
       <a href="../articles/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../articles/examples/text2vec.html">Word embedding (word2vec)</a>
+      <a href="../articles/examples/plotting.html">Textual data visualization</a>
     </li>
     <li>
-      <a href="../articles/examples/plotting.html">Textual data visualization</a>
+      <a href="../articles/examples/chinese.html">Chinese text analysis</a>
     </li>
   </ul>
 </li>
@@ -99,6 +99,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/replication/digital-humanities.html">Text Analysis with R for Students of Literature</a>
+    </li>
+    <li>
+      <a href="../articles/replication/text2vec.html">Word embedding (word2vec)</a>
     </li>
   </ul>
 </li>
@@ -141,12 +144,12 @@ English.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>kind</th>
-      <td><p>The pre-set kind of stopwords (as a character string).  Allowed 
-values are <code>english</code>, <code>SMART</code>, <code>danish</code>, <code>french</code>, 
-<code>greek</code>, <code>hungarian</code>, <code>norwegian</code>, <code>russian</code>, 
-<code>swedish</code>, <code>catalan</code>, <code>dutch</code>, <code>finnish</code>, 
-<code>german</code>, <code>italian</code>, <code>portuguese</code>, <code>spanish</code>, 
-<code>arabic</code>.</p></td>
+      <td><p>The pre-set kind of stopwords (as a character string).  Allowed
+values are <code>english</code>, <code>SMART</code>, <code>chinese</code>, <code>danish</code>,
+<code>french</code>, <code>greek</code>, <code>hungarian</code>, <code>norwegian</code>,
+<code>russian</code>, <code>swedish</code>, <code>catalan</code>, <code>dutch</code>,
+<code>finnish</code>, <code>german</code>, <code>italian</code>, <code>portuguese</code>,
+<code>spanish</code>, <code>arabic</code>.</p></td>
     </tr>
     </table>
     
@@ -160,7 +163,9 @@ values are <code>english</code>, <code>SMART</code>, <code>danish</code>, <code>
 <p>Additional stopword lists are taken from the Snowball stemmer project in 
   different languages (see <a href='http://snowballstem.org/projects.html'>http://snowballstem.org/projects.html</a>).</p>  
 <p>The Greek stopwords were supplied by Carsten Schwemmer (see 
-  <a href='https://github.com/kbenoit/quanteda/issues/282'>GitHub issue #282</a>).</p>
+  <a href='https://github.com/kbenoit/quanteda/issues/282'>GitHub issue #282</a>).</p>  
+<p>The Chinese stopwords are taken from the
+  <a href='http://www.baiduguide.com/baidu-stopwords/'>Baidu stopword list</a>.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -184,7 +189,7 @@ languages (see <a href='http://snowballstem.org/projects.html'>http://snowballst
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; [1] "i"      "me"     "my"     "myself" "we"     "our"   </div><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"italian"</span>))</div><div class='output co'>#&gt; [1] "ad"   "al"   "allo" "ai"   "agli" "all" </div><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"arabic"</span>))</div><div class='output co'>#&gt; [1] "فى" "في" "كل" "لم" "لن" "له"</div><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"SMART"</span>))</div><div class='output co'>#&gt; [1] "a"         "a's"       "able"      "about"     "above"     "according"</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; [1] "i"      "me"     "my"     "myself" "we"     "our"   </div><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"italian"</span>))</div><div class='output co'>#&gt; [1] "ad"   "al"   "allo" "ai"   "agli" "all" </div><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"arabic"</span>))</div><div class='output co'>#&gt; [1] "فى" "في" "كل" "لم" "لن" "له"</div><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"chinese"</span>))</div><div class='output co'>#&gt; [1] "按"   "按照" "俺"   "俺"   "们"   "阿"  </div><div class='input'><span class='fu'>head</span>(<span class='fu'>stopwords</span>(<span class='st'>"SMART"</span>))</div><div class='output co'>#&gt; [1] "a"         "a's"       "able"      "about"     "above"     "according"</div><div class='input'>
 <span class='co'># adding to the built-in stopword list</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"The judge will sentence Mr. Adams to nine years in prison"</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='fu'>stopwords</span>(<span class='st'>"english"</span>), <span class='st'>"will"</span>, <span class='st'>"mr"</span>, <span class='st'>"nine"</span>))</div><div class='output co'>#&gt; tokens from 1 document.

@@ -1,26 +1,24 @@
 ---
-title: "Structure and Design"
+title: "The Structure of quanteda"
 author: Kenneth Benoit
-output:
-  rmarkdown::html_vignette:
-    toc: yes
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
 # Introduction
 
-## Changes in v0.9.9
-
-In v0.9.9, we have made some major changes to the **quanteda**'s API.  While this "breaks" some of the commands used previously, it has the advantage going forward of making the function names much more consistent.  As a consequence, we hope that the new API will be easier to learn, as well as easier to extend.  The changes follow long discussions with the core contributors, reflections on user experiences following many training sessions, classes taught using the package, and  feedback received through various on-line forums.  This document explains the new, more consistent overall logic and grammar of the package.
-
-## Why did the API need changing?
-
-As of 0.9.8.5, **quanteda** started to get a bit haphazard in terms of names and functionality, defeating some of the purposes for which it was designed (to be simple to use and intuitive).  In addition, renaming and reorganizing makes it easier:
-
-1.  To comply more with [standards recommended by ROpenSci](https://github.com/ropensci/onboarding/blob/master/packaging_guide.md#funvar), the functions and their operation have been renamed.  
-2.  To interface more easily with other packages, such as **tokenizers**, to do some of the lower-level work without reinventing it.  
-3.  To make the package easier to extend, for instance by writing companion packages that depend on **quanteda**, such as **readtext**.
-
-# The new logic of Quanteda's design
+# The logic of Quanteda's design
 
 ## Grammatical rules
 
@@ -51,12 +49,11 @@ The **quanteda** package consists of a few core data types, created by calling c
 Core object types and their constructor functions:
 
 * `corpus`  
-* `tokens` (in <= 0.9.8.5, `tokenize` to produce a `tokenizedTexts` class object)
+* `tokens`
 * `dfm`  
 * `fcm`
 * `kwic`
 * `dictionary`  
-* `collocations`
 
 Note that a core object class in **quanteda** is also the `character` atomic type, for which there is no constructor function, and is abbreviated as `char` in the function nomenclature.
 

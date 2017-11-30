@@ -1,8 +1,20 @@
 /* Edit pkgdown/extra.css to customize the theme */
 
-div#quanteda-quantitative-analysis-of-textual-data h1 {
-    padding-top: 40px;
+div#overview h1 {
+    font-size: 250%;
+    padding-top: 60px;
 }
+
+
+.navbar-inverse .navbar-brand {
+    background-image: url(https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo_small.svg);
+    background-repeat: no-repeat;
+    background-position: 15px 10px;
+    background-size: 150px auto;
+    text-indent: -9999px;
+    padding-left: 155px;
+}
+
 
 div.page-header h1 {
     font-size: 250%;
@@ -35,7 +47,7 @@ div.contents h4 {
     padding-top: 60px;
 }
 
-pre.sourceCode {
+pre {
     overflow-x: auto;
     font-size: 80%;
 }
