@@ -1,6 +1,7 @@
 /* Edit pkgdown/extra.css to customize the theme */
 
-div#overview h1 {
+/* this block can be section or div */
+#overview h1 {
     font-size: 250%;
     padding-top: 60px;
 }
