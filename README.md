@@ -38,16 +38,9 @@ How to Install
 devtools::install_github("kbenoit/quanteda") 
 ```
 
-    Because this compiles some C++ source code, you will need a compiler installed. 
-    If you are using a Windows platform, this means you will need also to install 
-    the [Rtools](https://CRAN.R-project.org/bin/windows/Rtools/) software available 
-    from CRAN.  **If you are using macOS**, you will need to to install XCode, available 
-    for free from the App Store, or if you prefer a lighter footprint set of tools, 
-    [just the Xcode command line 
-    tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/ ), 
-    using the command `xcode-select --install` from the Terminal.
+Because this compiles some C++ source code, you will need a compiler installed. If you are using a Windows platform, this means you will need also to install the [Rtools](https://CRAN.R-project.org/bin/windows/Rtools/) software available from CRAN. **If you are using macOS**, you will need to to install XCode, available for free from the App Store, or if you prefer a lighter footprint set of tools, [just the Xcode command line tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/ ), using the command `xcode-select --install` from the Terminal.
 
-    Also, you might need to upgrade your compiler.  @kbenoit found that his macOS build only worked reliably after upgrading the default Xcode compiler to clang4, following [these instructions](http://thecoatlessprofessor.com/programming/openmp-in-r-on-os-x/#after-3-4-0).
+Also, you might need to upgrade your compiler. @kbenoit found that his macOS build only worked reliably after upgrading the default Xcode compiler to clang4, following [these instructions](http://thecoatlessprofessor.com/programming/openmp-in-r-on-os-x/#after-3-4-0).
 
 How to Use
 ----------
