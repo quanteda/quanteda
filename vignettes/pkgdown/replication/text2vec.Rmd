@@ -1,10 +1,9 @@
 ---
-title: "Example: word embedding (gloVe/word2vec)"
+title: "Replication: word embedding (gloVe/word2vec)"
 author: Kenneth Benoit, Haiyan Wang and Kohei Watanabe
 output: 
-  rmarkdown::html_vignette:
-    toc: no
-    number_sections: false
+  html_document:
+    toc: true
 ---
 
 ```{r, echo = FALSE}
