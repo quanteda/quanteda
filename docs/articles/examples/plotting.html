@@ -39,10 +39,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../../reference/index.html">Reference</a>
+  <a href="../../articles/quickstart.html">Quick Start</a>
 </li>
 <li>
-  <a href="../../articles/quickstart.html">Quick Start</a>
+  <a href="../../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../../articles/comparison.html">Features</a>
@@ -58,10 +58,10 @@
       <a href="../../articles/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../../articles/examples/text2vec.html">Word embedding (word2vec)</a>
+      <a href="../../articles/examples/plotting.html">Textual data visualization</a>
     </li>
     <li>
-      <a href="../../articles/examples/plotting.html">Textual data visualization</a>
+      <a href="../../articles/examples/chinese.html">Chinese text analysis</a>
     </li>
   </ul>
 </li>
@@ -112,7 +112,7 @@
 <p>This vignette walks through various plot options available in <strong>quanteda</strong> through the <code>textplot_*</code> functions.</p>
 <div id="wordcloud" class="section level1">
 <h1 class="hasAnchor">
-<a href="#wordcloud" class="anchor"></a>1. Wordcloud</h1>
+<a href="#wordcloud" class="anchor"></a>Wordcloud</h1>
 <p>Plotting a <code>dfm</code> object will create a wordcloud using the <strong>wordcloud</strong> pacakge.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfm_inaug &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1826</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">'english'</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
@@ -134,7 +134,7 @@
 </div>
 <div id="lexical-dispersion-plot" class="section level1">
 <h1 class="hasAnchor">
-<a href="#lexical-dispersion-plot" class="anchor"></a>2. Lexical dispersion plot</h1>
+<a href="#lexical-dispersion-plot" class="anchor"></a>Lexical dispersion plot</h1>
 <p>Plotting a <code>kwic</code> object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text. We call these “x-ray” plots due to their similarity to the data produced by <a href="https://en.wikipedia.org/wiki/X-Ray_(Amazon_Kindle)">Amazon’s “x-ray” feature for Kindle books</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_corpus_inaugural_subset &lt;-<span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1949</span>)
@@ -183,7 +183,7 @@ g <span class="op">+</span><span class="st"> </span><span class="kw"><a href="ht
 </div>
 <div id="frequency-plots" class="section level1">
 <h1 class="hasAnchor">
-<a href="#frequency-plots" class="anchor"></a>3. Frequency plots</h1>
+<a href="#frequency-plots" class="anchor"></a>Frequency plots</h1>
 <p>You can plot the frequency of the top features in a text using <code>topfeatures</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">features_dfm_inaug &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_frequency.html">textstat_frequency</a></span>(dfm_inaug, <span class="dt">n =</span> <span class="dv">100</span>)
 
@@ -262,7 +262,7 @@ freq_weight &lt;-<span class="st"> </span><span class="kw"><a href="../../refere
 </div>
 <div id="plot-keyness-in-a-target-and-reference-group" class="section level1">
 <h1 class="hasAnchor">
-<a href="#plot-keyness-in-a-target-and-reference-group" class="anchor"></a>4. Plot “keyness” in a target and reference group</h1>
+<a href="#plot-keyness-in-a-target-and-reference-group" class="anchor"></a>Plot “keyness” in a target and reference group</h1>
 <p>If you want to compare the differential associations of keywords in a target and reference group, you can calculate “keyness” which is based on <code>textstat_keyness</code>. In this example, we compare the inaugural speech by Donald Trump with the speeches by Barack Obama.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Only select speeches by Obama and Trump</span>
 pres_corpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, 
@@ -284,11 +284,11 @@ result_keyness &lt;-<span class="st"> </span><span class="kw"><a href="../../ref
 </div>
 <div id="plot-fitted-scaling-models" class="section level1">
 <h1 class="hasAnchor">
-<a href="#plot-fitted-scaling-models" class="anchor"></a>5. Plot fitted scaling models</h1>
+<a href="#plot-fitted-scaling-models" class="anchor"></a>Plot fitted scaling models</h1>
 <p>You can also plot fitted Wordscores (Laver et al., 2003) or Wordfish scaling models (Proksch and Slapin, 2008). To use the following functions, currently you need to download the development version of <strong>quanteda</strong>.</p>
 <div id="wordscores" class="section level2">
 <h2 class="hasAnchor">
-<a href="#wordscores" class="anchor"></a>5.1. Wordscores</h2>
+<a href="#wordscores" class="anchor"></a>Wordscores</h2>
 <p>Wordscores is a scaling procedure for estimating policy positions or scores (Laver et al., 2003). Known scores are assigned to so called reference texts in order to infer the positions of new documents (“virgin texts”). You can plot the position of words (features) against the logged term frequency, or the position of the documents.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Transform corpus to dfm</span>
 ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">verbose=</span><span class="ot">FALSE</span>)
@@ -327,7 +327,7 @@ pred_lbg &lt;-<span class="st"> </span><span class="kw">predict</span>(ws, <span
 </div>
 <div id="wordfish" class="section level2">
 <h2 class="hasAnchor">
-<a href="#wordfish" class="anchor"></a>5.2. Wordfish</h2>
+<a href="#wordfish" class="anchor"></a>Wordfish</h2>
 <p>Wordfish is a Poisson scaling model that estimates one-dimension document positions using maximum likelihood (Slapin and Proksch, 2008). Both the estimated position of words and the positions of the documents can be plotted.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Estimate Wordfish model</span>
 wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010), <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">6</span>,<span class="dv">5</span>))
@@ -346,7 +346,7 @@ wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/text
 </div>
 <div id="correspondence-analysis" class="section level2">
 <h2 class="hasAnchor">
-<a href="#correspondence-analysis" class="anchor"></a>5.3. Correspondence Analysis</h2>
+<a href="#correspondence-analysis" class="anchor"></a>Correspondence Analysis</h2>
 <p>You can also plot the estimated document positions of a correspodence analysis (Nenadic and Greenacre 2007).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Transform corpus to dfm</span>
 ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)
@@ -380,19 +380,19 @@ doclab &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#wordcloud">1. Wordcloud</a></li>
+<li><a href="#wordcloud">Wordcloud</a></li>
       <li>
-<a href="#lexical-dispersion-plot">2. Lexical dispersion plot</a><ul class="nav nav-pills nav-stacked">
+<a href="#lexical-dispersion-plot">Lexical dispersion plot</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#modifying-lexical-dispersion-plots">Modifying lexical dispersion plots</a></li>
       </ul>
 </li>
-      <li><a href="#frequency-plots">3. Frequency plots</a></li>
-      <li><a href="#plot-keyness-in-a-target-and-reference-group">4. Plot “keyness” in a target and reference group</a></li>
+      <li><a href="#frequency-plots">Frequency plots</a></li>
+      <li><a href="#plot-keyness-in-a-target-and-reference-group">Plot “keyness” in a target and reference group</a></li>
       <li>
-<a href="#plot-fitted-scaling-models">5. Plot fitted scaling models</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#wordscores">5.1. Wordscores</a></li>
-      <li><a href="#wordfish">5.2. Wordfish</a></li>
-      <li><a href="#correspondence-analysis">5.3. Correspondence Analysis</a></li>
+<a href="#plot-fitted-scaling-models">Plot fitted scaling models</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#wordscores">Wordscores</a></li>
+      <li><a href="#wordfish">Wordfish</a></li>
+      <li><a href="#correspondence-analysis">Correspondence Analysis</a></li>
       </ul>
 </li>
       <li><a href="#references">References</a></li>

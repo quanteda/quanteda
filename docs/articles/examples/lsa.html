@@ -39,10 +39,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../../reference/index.html">Reference</a>
+  <a href="../../articles/quickstart.html">Quick Start</a>
 </li>
 <li>
-  <a href="../../articles/quickstart.html">Quick Start</a>
+  <a href="../../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../../articles/comparison.html">Features</a>
@@ -58,10 +58,10 @@
       <a href="../../articles/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../../articles/examples/text2vec.html">Word embedding (word2vec)</a>
+      <a href="../../articles/examples/plotting.html">Textual data visualization</a>
     </li>
     <li>
-      <a href="../../articles/examples/plotting.html">Textual data visualization</a>
+      <a href="../../articles/examples/chinese.html">Chinese text analysis</a>
     </li>
   </ul>
 </li>
@@ -114,7 +114,7 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
 <div id="create-a-document-feature-matrix" class="section level1">
 <h1 class="hasAnchor">
-<a href="#create-a-document-feature-matrix" class="anchor"></a>1. Create a document-feature matrix</h1>
+<a href="#create-a-document-feature-matrix" class="anchor"></a>Create a document-feature matrix</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">d1=</span><span class="st">"Shipment of gold damaged in a fire"</span>,
          <span class="dt">d2=</span><span class="st">"Delivery of silver arrived in a silver truck"</span>,
          <span class="dt">d3=</span><span class="st">"Shipment of gold arrived in a truck"</span> )
@@ -131,7 +131,7 @@ mydfm</code></pre></div>
 </div>
 <div id="construct-the-lsa-model" class="section level1">
 <h1 class="hasAnchor">
-<a href="#construct-the-lsa-model" class="anchor"></a>2. Construct the LSA model</h1>
+<a href="#construct-the-lsa-model" class="anchor"></a>Construct the LSA model</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylsa &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textmodel_lsa.html">textmodel_lsa</a></span>(mydfm)</code></pre></div>
 <pre><code>## Warning in fun(A, k, nu, nv, opts, mattype = "dgCMatrix"): all singular
 ## values are requested, svd() is used instead</code></pre>
@@ -144,7 +144,7 @@ mydfm</code></pre></div>
 </div>
 <div id="apply-the-constructed-lsa-model-to-new-data" class="section level1">
 <h1 class="hasAnchor">
-<a href="#apply-the-constructed-lsa-model-to-new-data" class="anchor"></a>3. Apply the constructed LSA model to new data</h1>
+<a href="#apply-the-constructed-lsa-model-to-new-data" class="anchor"></a>Apply the constructed LSA model to new data</h1>
 <p>Now the new unseen document can be represented in the reduced 2-dimensional space. The unseen query document:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">querydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw">c</span>(<span class="st">"gold silver truck"</span>)) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../../reference/dfm_select.html">dfm_select</a></span>(<span class="dt">pattern =</span> mydfm)
@@ -166,9 +166,9 @@ newq<span class="op">$</span>docs_newspace[, <span class="dv">1</span><span clas
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#create-a-document-feature-matrix">1. Create a document-feature matrix</a></li>
-      <li><a href="#construct-the-lsa-model">2. Construct the LSA model</a></li>
-      <li><a href="#apply-the-constructed-lsa-model-to-new-data">3. Apply the constructed LSA model to new data</a></li>
+<li><a href="#create-a-document-feature-matrix">Create a document-feature matrix</a></li>
+      <li><a href="#construct-the-lsa-model">Construct the LSA model</a></li>
+      <li><a href="#apply-the-constructed-lsa-model-to-new-data">Apply the constructed LSA model to new data</a></li>
       </ul>
 </div>
       </div>

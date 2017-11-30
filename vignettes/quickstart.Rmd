@@ -1,12 +1,13 @@
 ---
 title: "Quick Start Guide"
 output: 
-  rmarkdown::html_vignette:
-    toc: yes
+  html_document:
+    toc: true
 ---
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "##")
+knitr::opts_chunk$set(collapse = FALSE, 
+                      comment = "##")
 ```
 
 This vignette provides a basic overview of **quanteda**'s features and capabilities. For additional vignettes, see the [articles at quanteda.io](http://docs.quanteda.io/articles/index.html).  
@@ -332,7 +333,8 @@ textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
 Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:
 
 ```{r}
-byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", remove = stopwords("english"), remove_punct = TRUE)
+byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", 
+                  remove = stopwords("english"), remove_punct = TRUE)
 ```
 
 We can sort this dfm, and inspect it:
@@ -372,7 +374,7 @@ LIWC and Provalis Research's Wordstat format.  For instance, we can load the LIW
 ```{r, eval = FALSE}
 liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
                        format = "LIWC")
-liwcdfm <- dfm(data_corpus_inaugural[52:58], dictionary = liwcdict, verbose = FALSE)
+liwcdfm <- dfm(data_corpus_inaugural[52:58], dictionary = liwcdict)
 liwcdfm[, 1:10]
 ```
 
@@ -432,7 +434,7 @@ textmodel_wordfish(ieDfm, dir = c(2, 1))
 ```{r}
 quantdfm <- dfm(data_corpus_irishbudget2010, 
                 remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
-quantdfm <- dfm_trim(quantdfm, min_count = 4, max_docfreq = 10, verbose = TRUE)
+quantdfm <- dfm_trim(quantdfm, min_count = 4, max_docfreq = 10)
 quantdfm
 
 if (require(topicmodels)) {

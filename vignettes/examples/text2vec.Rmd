@@ -4,6 +4,7 @@ author: Kenneth Benoit, Haiyan Wang and Kohei Watanabe
 output: 
   rmarkdown::html_vignette:
     toc: no
+    number_sections: true
 ---
     
 ```{r, message = FALSE}

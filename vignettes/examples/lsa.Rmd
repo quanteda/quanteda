@@ -2,8 +2,9 @@
 title: "Example: Latent Semantic Analysis (LSA)"
 author: Haiyan Wang
 output: 
-  rmarkdown::html_vignette:
-    toc: yes
+  html_document:
+    toc: true
+    number_sections: true
 ---
 
 In this vignette, we show how to perform Latent Semantic Analysis using the **quanteda** package based on Grossman and Frieder’s  [*Information Retrieval, Algorithms and Heuristics*](http://www1.se.cuhk.edu.hk/%7Eseem5680/lecture/LSI-Eg.pdf).
@@ -16,7 +17,7 @@ New documents or queries can be 'folded-in' to this constructed latent semantic 
 library(quanteda)
 ```
 
-# 1. Create a document-feature matrix
+# Create a document-feature matrix
 
 ```{r}
 txt <- c(d1="Shipment of gold damaged in a fire",
@@ -27,9 +28,7 @@ mydfm <- dfm(txt)
 mydfm
 ```
 
-
-
-# 2. Construct the LSA model
+# Construct the LSA model
 ```{r}
 mylsa <- textmodel_lsa(mydfm)
 ```
@@ -39,7 +38,7 @@ mylsa <- textmodel_lsa(mydfm)
 mylsa$docs[, 1:2]
 ```
 
-# 3. Apply the constructed LSA model to new data
+# Apply the constructed LSA model to new data
 Now the new unseen document can be represented in the reduced 2-dimensional space.
 The unseen query document:
 ```{r}

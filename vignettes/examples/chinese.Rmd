@@ -1,28 +1,19 @@
 ---
-title: "quanteda Demo in Chinese-language Texts"
+title: "Example: Chinese text analysis"
 author: Haiyan Wang
 output: 
-    rmarkdown::html_vignette:
-        css: mystyle.css
-        toc: yes
-vignette: >
-  %\VignetteIndexEntry{Demo in Chinese}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  html_document:
+    toc: true
 ---
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "##",
-  fig.path = "images/chinese-demo-"
+  collapse = FALSE,
+  comment = "##"
 )
 ```
 
----
-title: "Application of quanteda: Chinese"
-date: "27/11/2017"
----
+# Pre-process texts
 
 ## Chinese Stop words: Baidu Stopwords
 ```{r}
@@ -66,7 +57,9 @@ textplot_wordcloud(chdfm_tf, min.freq = 6, random.order = FALSE,
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
-### Feature co-occurrence matrix
+# Analysis
+
+## Feature co-occurrence matrix
 
 ```{r}
 # fcm within the window size of 5
@@ -82,7 +75,7 @@ chfcm <- fcm(ch17toks, context = "window", ordered = TRUE, tri = FALSE)
 topfeatures(chfcm["改革", ])
 ```
 
-### Scaling Model
+## Scaling Model
 
 ```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
 wfm <- textmodel_wordfish(chdfm)
@@ -91,7 +84,7 @@ y <- y[-which(y==1963 | y==1961 |y==1962 | (y>1964 & y<1975) | y==1976 |y==1977)
 plot(y, wfm@theta, xlab = "Year", ylab = "Position")
 ```
 
-### Collocations - bigrams/trigrams etc. 
+## Collocations - bigrams/trigrams etc. 
 
 ```{r}
 # bigrams cross the whole dataset

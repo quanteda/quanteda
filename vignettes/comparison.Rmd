@@ -2,8 +2,8 @@
 title: "Comaprison to other packages"
 author: Stefan Müller, Kenneth Benoit, and Kohei Watanabe
 output: 
-  rmarkdown::html_vignette:
-    toc: yes
+  html_document:
+    toc: true
 ---
 
 ```{r eval = TRUE, message = FALSE, warning = FALSE, echo = FALSE}

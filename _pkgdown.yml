@@ -6,12 +6,10 @@ navbar:
   title: "Quanteda"
   type: inverse
   left:
-    - text: "Overview"
-      href: index.html
-    - text: "Reference"
-      href: reference/index.html
     - text: "Quick Start"
       href: articles/quickstart.html
+    - text: "Reference"
+      href: reference/index.html
     - text: "Features"
       href: articles/comparison.html
     - text: "Examples"

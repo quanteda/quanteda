@@ -2,15 +2,15 @@
 title: "Replication: *Text Analysis with R for Students of Literature*"
 author: Kenneth Benoit, Stefan Müller, and Paul Nulty
 output: 
-  rmarkdown::html_vignette:
-    toc: yes
+  html_document:
+    toc: true
 ---
 
 In this vignette we show how the **quanteda** package can be used to replicate the analysis from Matthew Jockers' book [*Text Analysis with R for Students of Literature*](http://doi.org/10.1007/978-3-319-03164-4) (London: Springer, 2014). Most of the Jockers book consists of loading, transforming, and analyzing quantities derived from text and data from text.  Because **quanteda** has built in most of the code to perform these data transformations and analyses, it makes it possible to replicate the results from the book with far less code. Throughout this vignette, we name objects based on Jockers' book, but follow the **quanteda** [style guide](https://github.com/kbenoit/quanteda/wiki/Style-guide).
 
 In what follows, each section corresponds to the respective chapter in the book.
 
-# 1. R Basics
+# 1 R Basics
 
 Our closest equivalent is simply:
 ```{r eval=FALSE}
@@ -21,9 +21,9 @@ install.packages("readtext")
 But if you are reading this vignette, than chances are that you have already completed this step.
 
 
-# 2. First Foray
+# 2 First Foray
 
-## 2.1. Loading the first text file
+## 2.1 Loading the first text file
 
 ```{r message=FALSE}
 library(quanteda)
@@ -43,7 +43,7 @@ library(stringi)
 stri_sub(data_char_mobydick, 1, 75)
 ```
 
-## 2.2. Separate content from metadata
+## 2.2 Separate content from metadata
 
 The Gutenburg edition of the text contains some metadata before and after the text of the novel. The code below uses the `regexec` and `substring` functions to separate this from the text.
 ```{r}
@@ -77,7 +77,7 @@ stri_sub(novel_v, 1, 94) %>% cat()
 ```
 
 
-## 2.3. Reprocessing the content
+## 2.3 Reprocessing the content
 
 We begin processing the text by converting to lower case. **quanteda**'s `*_tolower()` functions work like the built-in `tolower()`, with an extra option to preserve upper-case acronyms when detected.  For `character` objects, we use `char_tolower()`:
 
@@ -100,7 +100,7 @@ moby_word_v[c(4,5,6)]
 which(moby_word_v == "whale") %>% head()
 ```
 
-## 2.4. Beginning the analysis
+## 2.4 Beginning the analysis
 
 The code below uses the tokenized text to the occurrence of the word *whale*. To include the possessive form *whale's*, we may sum the counts of both forms, count the keyword-in-context matches by regular expression or glob. A *glob* is a simple wildcard matching pattern common on Unix systems -- asterisks match zero or more characters.  
 
@@ -158,9 +158,9 @@ sorted_moby_freqs_t <- topfeatures(moby_dfm, n = nfeature(moby_dfm))
 ```
 
 
-# 3. Accessing and Comparing Word Frequency Data
+# 3 Accessing and Comparing Word Frequency Data
 
-## 3.1. Accessing Word Data
+## 3.1 Accessing Word Data
 
 We can query the document-frequency matrix to retrieve word frequencies, as with a normal matrix:
 ```{r eval=TRUE}
@@ -183,7 +183,7 @@ sum(sorted_moby_freqs_t)
 ```
 
 
-## 3.2.Recycling
+## 3.2 Recycling
 
 Relative term frequencies:
 ```{r}
@@ -210,9 +210,9 @@ textstat_frequency(moby_dfm_pct, n = 10) %>%
   labs(x = "", y = "Term Frequency as a Percentage")
 ```
 
-# 4. Token Distribution Analysis
+# 4 Token Distribution Analysis
 
-## 4.1. Dispersion plots
+## 4.1 Dispersion plots
 
 A dispersion plot allows us to visualize the occurrences of particular terms throughout the text. The object returned by the `kwic` function can be plotted to display a dispersion plot. The **quanteda** `textplot_` objects are based on **ggplot2**, so you can easily change the plot, for example by adding custom title.
 ```{r eval=TRUE, fig.width=8, fig.height=1.5}
@@ -228,7 +228,7 @@ textplot_xray(
 ) + ggtitle("Lexical dispersion")
 ```
 
-## 4.2. Searching with regular expression
+## 4.2 Searching with regular expression
 
 ```{r}
 # identify the chapter break locations
@@ -237,7 +237,7 @@ head(chap_positions_v)
 ```
 
 
-## 4.2. Identifying chapter breaks
+## 4.2 Identifying chapter breaks
 
 Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `char_segment()` function to split this by the string which specifies the chapter breaks. 
 ```{r}
@@ -257,7 +257,7 @@ For better reference, let's also rename the document labels with these chapter h
 docnames(chapters_corp) <- docvars(chapters_corp, "pattern")
 ```
 
-### 4.4.5. barplots of whale and ahab
+### 4.4.5 barplots of whale and ahab
 
 With the corpus split into chapters, we can use the `dfm()` function to create a matrix of counts of each word in each chapter -- a document-frequency matrix.
 
@@ -306,9 +306,9 @@ ggplot(data = rel_chap_freq, aes(x = chapter, y = ahab)) +
          title = "Occurrence of 'ahab'")
 ```
 
-# 5. Correlation
+# 5 Correlation
 
-## 5.2. Correlation Analysis
+## 5.2 Correlation Analysis
 
 Correlation analysis (and many other similarity measures) can be constructed using fast, sparse means through the `textstat_simil()` function.  Here, we select feature comparisons for just "whale" and "ahab", and convert this into a matrix as in the book.  Because correlations are sensitive to document length, we first convert this into a relative frequency using `dfm_weight()`.
 ```{r}
@@ -320,7 +320,7 @@ dfm_weight(chap_dfm, type = "relfreq") %>%
 
 With the ahab frequency and whale frequency vectors extracted from the dfm, it is easy to calculate the significance of the correlation.
 
-##  5.4. Testing Correlation with Randomization
+##  5.4 Testing Correlation with Randomization
 
 ```{r, fig.width=8}
 cor_data_df <- dfm_weight(chap_dfm, type = "relfreq")[, c("ahab", "whale")] %>%
@@ -342,9 +342,9 @@ ggplot(data = samples, aes(x = cor_sample, y = ..density..)) +
 ```
 
 
-# 6. Measures of Lexical Variety
+# 6 Measures of Lexical Variety
 
-## 6.2. Mean word frequency
+## 6.2 Mean word frequency
 
 ```{r}
 # length of the book in chapters
@@ -363,8 +363,7 @@ ntoken(chapters_corp) %>% head()
 (ntoken(chapters_corp) / ntype(chapters_corp)) %>% head()
 ```
 
-
-## 6.3. Extracting Word Usage Means
+## 6.3 Extracting Word Usage Means
 
 Since the quotient of the number of tokens and number of types is a vector, we 
 can simply feed this to `plot()` using the pipe operator:
@@ -380,14 +379,14 @@ For the scaled plot:
     plot(type = "h", ylab = "Scaled mean word frequency")
 ```
 
-## 6.4. Ranking the values
+## 6.4 Ranking the values
 
 ```{r}
 mean_word_use_m <- (ntoken(chapters_corp) / ntype(chapters_corp))
 sort(mean_word_use_m, decreasing = TRUE) %>% head()
 ```
 
-## 6.5. Calculating the TTR 
+## 6.5 Calculating the TTR 
 
 Measures of lexical diversity can be estimated using `textstat_lexdiv()`. The TTR (Type-Token Ratio), a measure used in section 6.5, can be calculcated for each document of the `dfm`.
 
@@ -397,7 +396,7 @@ dfm(chapters_corp) %>%
     head(n = 10)
 ```
 
-# 7. Hapax Richness
+# 7 Hapax Richness
 
 Another measure of lexical diversity is Hapax richness, defined as the number of words that occur only once divided by the total number of words. We can calculate Hapax richness very simply by using a logical operation on the document-feature matrix, to return a logical value for each term that occurs once, and then sum these to get a count.
 ```{r}
@@ -415,7 +414,7 @@ barplot(hapax_proportion, beside = TRUE, col = "grey", names.arg = seq_len(ndoc(
 ```
 
 
-# 8. Do it KWIC
+# 8 Do it KWIC
 
 For this, and the next chapter, we simply use **quanteda**'s excellent `kwic()` function.  To find the indexes of the token positions for "gutenberg", for instance, we use the following, which returns a data.frame with the name `from` indicating the index position of the start of the token match:
 ```{r}
@@ -423,7 +422,7 @@ gutenberg_kwic <- kwic(data_char_mobydick, pattern = "gutenberg")
 head(gutenberg_kwic$from, 10)
 ```
 
-# 9. Do it KWIC (Better)
+# 9 Do it KWIC (Better)
 
 This is going to be super easy since we don't need to reinvent the wheel here, since `kwic()` already does all that we need.
 
@@ -442,11 +441,11 @@ We can plot this easily too, as a lexical dispersion plot.  By specifying the sc
 textplot_xray(dogkwic, scale = "absolute")
 ```
 
-# 10. Text Quality, Text Variety, and Parsing XML
+# 10 Text Quality, Text Variety, and Parsing XML
 
 
 
-# 11. Clustering
+# 11 Clustering
 
 Chapter 11 describes how to detect clusters in a corpus. While the book uses the `XMLAuthorCorpus`, we describe clustering using U.S. State of the Union addresses included in the **quantedaData** package. We trim the corpus with `dfm_trim()` by keeping only those words that occur at least five times in the corpus and in at least three speeches.
 
@@ -455,7 +454,7 @@ library(quantedaData)
 pres_dfm <- dfm(corpus_subset(data_corpus_SOTU, Date > "1980-01-01"), 
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english")) %>% 
-  dfm_trim(min_count = 5, min_docfreq = 3)
+    dfm_trim(min_count = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
 pres_dist_mat <- textstat_dist(dfm_weight(pres_dfm, "relfreq"))
@@ -470,21 +469,21 @@ pres_cluster$labels <- docnames(pres_dfm)
 plot(pres_cluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
-# 12. Classification
+# 12 Classification
 
 
-# 13. Topic Modeling
+# 13 Topic Modeling
 
 Finally, Jockers' book introduces topic modeling of a corpus and the visualisation through wordclouds. In our example, we use the State of the Union addresses again. We can easily apply functions from the **topicmodels** package by using **quanteda**'s `convert()` function. In our example, we use the Irish budget speeches from 2010 and classify 20 topics using Latent Dirichlet Allocation.
 
 ```{r}
 dfm_speeches <- dfm(data_corpus_irishbudget2010, 
                 remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english")) %>% 
-  dfm_trim( min_count = 4, max_docfreq = 10)
+    dfm_trim(min_count = 4, max_docfreq = 10)
 
 library(topicmodels)
 LDA_fit_20 <- convert(dfm_speeches, to = "topicmodels") %>% 
-  LDA(k = 20)
+    LDA(k = 20)
 
 # get top five terms per topic
 get_terms(LDA_fit_20, 5)

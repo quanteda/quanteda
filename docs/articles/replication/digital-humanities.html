@@ -39,10 +39,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../../reference/index.html">Reference</a>
+  <a href="../../articles/quickstart.html">Quick Start</a>
 </li>
 <li>
-  <a href="../../articles/quickstart.html">Quick Start</a>
+  <a href="../../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../../articles/comparison.html">Features</a>
@@ -58,10 +58,10 @@
       <a href="../../articles/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../../articles/examples/text2vec.html">Word embedding (word2vec)</a>
+      <a href="../../articles/examples/plotting.html">Textual data visualization</a>
     </li>
     <li>
-      <a href="../../articles/examples/plotting.html">Textual data visualization</a>
+      <a href="../../articles/examples/chinese.html">Chinese text analysis</a>
     </li>
   </ul>
 </li>
@@ -113,7 +113,7 @@
 <p>In what follows, each section corresponds to the respective chapter in the book.</p>
 <div id="r-basics" class="section level1">
 <h1 class="hasAnchor">
-<a href="#r-basics" class="anchor"></a>1. R Basics</h1>
+<a href="#r-basics" class="anchor"></a>1 R Basics</h1>
 <p>Our closest equivalent is simply:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>)
 <span class="kw">install.packages</span>(<span class="st">"readtext"</span>)</code></pre></div>
@@ -121,10 +121,10 @@
 </div>
 <div id="first-foray" class="section level1">
 <h1 class="hasAnchor">
-<a href="#first-foray" class="anchor"></a>2. First Foray</h1>
+<a href="#first-foray" class="anchor"></a>2 First Foray</h1>
 <div id="loading-the-first-text-file" class="section level2">
 <h2 class="hasAnchor">
-<a href="#loading-the-first-text-file" class="anchor"></a>2.1. Loading the first text file</h2>
+<a href="#loading-the-first-text-file" class="anchor"></a>2.1 Loading the first text file</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
 <p>We can load the text from <em>Moby Dick</em> using the <strong>readtext</strong> package, directly from the <a href="https://www.gutenberg.org/ebooks/2701">Project Gutenberg website</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readtext)
@@ -137,7 +137,7 @@ data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../..
 </div>
 <div id="separate-content-from-metadata" class="section level2">
 <h2 class="hasAnchor">
-<a href="#separate-content-from-metadata" class="anchor"></a>2.2. Separate content from metadata</h2>
+<a href="#separate-content-from-metadata" class="anchor"></a>2.2 Separate content from metadata</h2>
 <p>The Gutenburg edition of the text contains some metadata before and after the text of the novel. The code below uses the <code>regexec</code> and <code>substring</code> functions to separate this from the text.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># extract the header information</span>
 (start_v &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_locate">stri_locate_first_fixed</a></span>(data_char_mobydick, <span class="st">"CHAPTER 1. Loomings."</span>)[<span class="dv">1</span>])</code></pre></div>
@@ -170,7 +170,7 @@ data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../..
 </div>
 <div id="reprocessing-the-content" class="section level2">
 <h2 class="hasAnchor">
-<a href="#reprocessing-the-content" class="anchor"></a>2.3. Reprocessing the content</h2>
+<a href="#reprocessing-the-content" class="anchor"></a>2.3 Reprocessing the content</h2>
 <p>We begin processing the text by converting to lower case. <strong>quanteda</strong>’s <code>*_tolower()</code> functions work like the built-in <code>tolower()</code>, with an extra option to preserve upper-case acronyms when detected. For <code>character</code> objects, we use <code><a href="../../reference/char_tolower.html">char_tolower()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># lowercase text</span>
 novel_lower_v &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/char_tolower.html">char_tolower</a></span>(novel_v)</code></pre></div>
@@ -192,7 +192,7 @@ novel_lower_v &lt;-<span class="st"> </span><span class="kw"><a href="../../refe
 </div>
 <div id="beginning-the-analysis" class="section level2">
 <h2 class="hasAnchor">
-<a href="#beginning-the-analysis" class="anchor"></a>2.4. Beginning the analysis</h2>
+<a href="#beginning-the-analysis" class="anchor"></a>2.4 Beginning the analysis</h2>
 <p>The code below uses the tokenized text to the occurrence of the word <em>whale</em>. To include the possessive form <em>whale’s</em>, we may sum the counts of both forms, count the keyword-in-context matches by regular expression or glob. A <em>glob</em> is a simple wildcard matching pattern common on Unix systems – asterisks match zero or more characters.</p>
 <p>Note that the counts below do not match those in the book, due to differences in how the book has split on any non-word character, while <strong>quanteda</strong>’s tokenizer splits on a more comprehensive set of “word boundaries”. <strong>quanteda</strong>’s <code><a href="../../reference/tokens.html">tokens()</a></code> function by default does not remove punctuation or numbers (both defined as “non-word” characters) by default. To more closely match the counts in the book, we have removed punctuation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(moby_word_v[<span class="kw">which</span>(moby_word_v <span class="op">==</span><span class="st"> "whale"</span>)])</code></pre></div>
@@ -255,10 +255,10 @@ moby_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference
 </div>
 <div id="accessing-and-comparing-word-frequency-data" class="section level1">
 <h1 class="hasAnchor">
-<a href="#accessing-and-comparing-word-frequency-data" class="anchor"></a>3. Accessing and Comparing Word Frequency Data</h1>
+<a href="#accessing-and-comparing-word-frequency-data" class="anchor"></a>3 Accessing and Comparing Word Frequency Data</h1>
 <div id="accessing-word-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#accessing-word-data" class="anchor"></a>3.1. Accessing Word Data</h2>
+<a href="#accessing-word-data" class="anchor"></a>3.1 Accessing Word Data</h2>
 <p>We can query the document-frequency matrix to retrieve word frequencies, as with a normal matrix:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># frequencies of 'he' and 'she' - these are matrixes, not numerics</span>
 sorted_moby_freqs_t[<span class="kw">c</span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</code></pre></div>
@@ -293,7 +293,7 @@ sorted_moby_freqs_t[<span class="st">"him"</span>] <span class="op">/</span><spa
 </div>
 <div id="recycling" class="section level2">
 <h2 class="hasAnchor">
-<a href="#recycling" class="anchor"></a>3.2.Recycling</h2>
+<a href="#recycling" class="anchor"></a>3.2 Recycling</h2>
 <p>Relative term frequencies:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sorted_moby_rel_freqs_t &lt;-<span class="st"> </span>sorted_moby_freqs_t <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(sorted_moby_freqs_t) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
 sorted_moby_rel_freqs_t[<span class="st">"the"</span>]</code></pre></div>
@@ -322,10 +322,10 @@ moby_dfm_pct[, <span class="st">"the"</span>]</code></pre></div>
 </div>
 <div id="token-distribution-analysis" class="section level1">
 <h1 class="hasAnchor">
-<a href="#token-distribution-analysis" class="anchor"></a>4. Token Distribution Analysis</h1>
+<a href="#token-distribution-analysis" class="anchor"></a>4 Token Distribution Analysis</h1>
 <div id="dispersion-plots" class="section level2">
 <h2 class="hasAnchor">
-<a href="#dispersion-plots" class="anchor"></a>4.1. Dispersion plots</h2>
+<a href="#dispersion-plots" class="anchor"></a>4.1 Dispersion plots</h2>
 <p>A dispersion plot allows us to visualize the occurrences of particular terms throughout the text. The object returned by the <code>kwic</code> function can be plotted to display a dispersion plot. The <strong>quanteda</strong> <code>textplot_</code> objects are based on <strong>ggplot2</strong>, so you can easily change the plot, for example by adding custom title.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># using words from tokenized corpus for dispersion</span>
 <span class="kw"><a href="../../reference/textplot_xray.html">textplot_xray</a></span>(<span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel_v, <span class="st">"whale"</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Lexical dispersion"</span>)</code></pre></div>
@@ -339,7 +339,7 @@ moby_dfm_pct[, <span class="st">"the"</span>]</code></pre></div>
 </div>
 <div id="searching-with-regular-expression" class="section level2">
 <h2 class="hasAnchor">
-<a href="#searching-with-regular-expression" class="anchor"></a>4.2. Searching with regular expression</h2>
+<a href="#searching-with-regular-expression" class="anchor"></a>4.2 Searching with regular expression</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># identify the chapter break locations</span>
 chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(novel_v, <span class="kw"><a href="../../reference/phrase.html">phrase</a></span>(<span class="kw">c</span>(<span class="st">"CHAPTER </span><span class="ch">\\</span><span class="st">d"</span>)), <span class="dt">valuetype =</span> <span class="st">"regex"</span>)<span class="op">$</span>from
 <span class="kw">head</span>(chap_positions_v)</code></pre></div>
@@ -347,7 +347,7 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../r
 </div>
 <div id="identifying-chapter-breaks" class="section level2">
 <h2 class="hasAnchor">
-<a href="#identifying-chapter-breaks" class="anchor"></a>4.2. Identifying chapter breaks</h2>
+<a href="#identifying-chapter-breaks" class="anchor"></a>4.2 Identifying chapter breaks</h2>
 <p>Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a <code>corpus</code> object to hold the texts. Initially, we make a single-document corpus, and then use the <code><a href="../../reference/corpus_segment.html">char_segment()</a></code> function to split this by the string which specifies the chapter breaks.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chapters_corp &lt;-<span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_char_mobydick) <span class="op">%&gt;%</span>
@@ -368,7 +368,7 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../r
 ##  mobydick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/replication/* on x86_64 by kohei
-## Created: Thu Nov 30 07:44:29 2017
+## Created: Thu Nov 30 10:18:42 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right</a></span>(<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))
@@ -381,13 +381,13 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../r
 ##  mobydick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/replication/* on x86_64 by kohei
-## Created: Thu Nov 30 07:44:29 2017
+## Created: Thu Nov 30 10:18:42 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</code></pre></div>
 <div id="barplots-of-whale-and-ahab" class="section level3">
 <h3 class="hasAnchor">
-<a href="#barplots-of-whale-and-ahab" class="anchor"></a>4.4.5. barplots of whale and ahab</h3>
+<a href="#barplots-of-whale-and-ahab" class="anchor"></a>4.4.5 barplots of whale and ahab</h3>
 <p>With the corpus split into chapters, we can use the <code><a href="../../reference/dfm.html">dfm()</a></code> function to create a matrix of counts of each word in each chapter – a document-frequency matrix.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create a dfm</span>
 chap_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(chapters_corp)
@@ -449,10 +449,10 @@ rel_chap_freq<span class="op">$</span>chapter &lt;-<span class="st"> </span><spa
 </div>
 <div id="correlation" class="section level1">
 <h1 class="hasAnchor">
-<a href="#correlation" class="anchor"></a>5. Correlation</h1>
+<a href="#correlation" class="anchor"></a>5 Correlation</h1>
 <div id="correlation-analysis" class="section level2">
 <h2 class="hasAnchor">
-<a href="#correlation-analysis" class="anchor"></a>5.2. Correlation Analysis</h2>
+<a href="#correlation-analysis" class="anchor"></a>5.2 Correlation Analysis</h2>
 <p>Correlation analysis (and many other similarity measures) can be constructed using fast, sparse means through the <code><a href="../../reference/textstat_simil.html">textstat_simil()</a></code> function. Here, we select feature comparisons for just “whale” and “ahab”, and convert this into a matrix as in the book. Because correlations are sensitive to document length, we first convert this into a relative frequency using <code><a href="../../reference/dfm_weight.html">dfm_weight()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(<span class="dt">selection =</span> <span class="kw">c</span>(<span class="st">"whale"</span>, <span class="st">"ahab"</span>), <span class="dt">method =</span> <span class="st">"correlation"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>) <span class="op">%&gt;%</span>
@@ -465,7 +465,7 @@ rel_chap_freq<span class="op">$</span>chapter &lt;-<span class="st"> </span><spa
 </div>
 <div id="testing-correlation-with-randomization" class="section level2">
 <h2 class="hasAnchor">
-<a href="#testing-correlation-with-randomization" class="anchor"></a>5.4. Testing Correlation with Randomization</h2>
+<a href="#testing-correlation-with-randomization" class="anchor"></a>5.4 Testing Correlation with Randomization</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cor_data_df &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>)[, <span class="kw">c</span>(<span class="st">"ahab"</span>, <span class="st">"whale"</span>)] <span class="op">%&gt;%</span>
 <span class="st">    </span>as.data.frame
 
@@ -487,10 +487,10 @@ samples &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 </div>
 <div id="measures-of-lexical-variety" class="section level1">
 <h1 class="hasAnchor">
-<a href="#measures-of-lexical-variety" class="anchor"></a>6. Measures of Lexical Variety</h1>
+<a href="#measures-of-lexical-variety" class="anchor"></a>6 Measures of Lexical Variety</h1>
 <div id="mean-word-frequency" class="section level2">
 <h2 class="hasAnchor">
-<a href="#mean-word-frequency" class="anchor"></a>6.2. Mean word frequency</h2>
+<a href="#mean-word-frequency" class="anchor"></a>6.2 Mean word frequency</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># length of the book in chapters</span>
 <span class="kw"><a href="../../reference/ndoc.html">ndoc</a></span>(chapters_corp)</code></pre></div>
 <pre><code>## [1] 136</code></pre>
@@ -519,7 +519,7 @@ samples &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 </div>
 <div id="extracting-word-usage-means" class="section level2">
 <h2 class="hasAnchor">
-<a href="#extracting-word-usage-means" class="anchor"></a>6.3. Extracting Word Usage Means</h2>
+<a href="#extracting-word-usage-means" class="anchor"></a>6.3 Extracting Word Usage Means</h2>
 <p>Since the quotient of the number of tokens and number of types is a vector, we can simply feed this to <code>plot()</code> using the pipe operator:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(<span class="kw"><a href="../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(chapters_corp)) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">plot</span>(<span class="dt">type =</span> <span class="st">"h"</span>, <span class="dt">ylab =</span> <span class="st">"Mean word frequency"</span>)</code></pre></div>
@@ -532,7 +532,7 @@ samples &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 </div>
 <div id="ranking-the-values" class="section level2">
 <h2 class="hasAnchor">
-<a href="#ranking-the-values" class="anchor"></a>6.4. Ranking the values</h2>
+<a href="#ranking-the-values" class="anchor"></a>6.4 Ranking the values</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mean_word_use_m &lt;-<span class="st"> </span>(<span class="kw"><a href="../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../reference/ntoken.html">ntype</a></span>(chapters_corp))
 <span class="kw">sort</span>(mean_word_use_m, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</code></pre></div>
 <pre><code>## CHAPTER 135. The Chase.--Third Day.    CHAPTER 54. The Town-Ho's Story. 
@@ -544,7 +544,7 @@ samples &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 </div>
 <div id="calculating-the-ttr" class="section level2">
 <h2 class="hasAnchor">
-<a href="#calculating-the-ttr" class="anchor"></a>6.5. Calculating the TTR</h2>
+<a href="#calculating-the-ttr" class="anchor"></a>6.5 Calculating the TTR</h2>
 <p>Measures of lexical diversity can be estimated using <code><a href="../../reference/textstat_lexdiv.html">textstat_lexdiv()</a></code>. The TTR (Type-Token Ratio), a measure used in section 6.5, can be calculcated for each document of the <code>dfm</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(chapters_corp) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../reference/textstat_lexdiv.html">textstat_lexdiv</a></span>(<span class="dt">measure =</span> <span class="st">"TTR"</span>) <span class="op">%&gt;%</span>
@@ -563,7 +563,7 @@ samples &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 </div>
 <div id="hapax-richness" class="section level1">
 <h1 class="hasAnchor">
-<a href="#hapax-richness" class="anchor"></a>7. Hapax Richness</h1>
+<a href="#hapax-richness" class="anchor"></a>7 Hapax Richness</h1>
 <p>Another measure of lexical diversity is Hapax richness, defined as the number of words that occur only once divided by the total number of words. We can calculate Hapax richness very simply by using a logical operation on the document-feature matrix, to return a logical value for each term that occurs once, and then sum these to get a count.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># hapaxes per document</span>
 <span class="kw">rowSums</span>(chap_dfm <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</code></pre></div>
@@ -588,7 +588,7 @@ hapax_proportion &lt;-<span class="st"> </span><span class="kw">rowSums</span>(c
 </div>
 <div id="do-it-kwic" class="section level1">
 <h1 class="hasAnchor">
-<a href="#do-it-kwic" class="anchor"></a>8. Do it KWIC</h1>
+<a href="#do-it-kwic" class="anchor"></a>8 Do it KWIC</h1>
 <p>For this, and the next chapter, we simply use <strong>quanteda</strong>’s excellent <code><a href="../../reference/kwic.html">kwic()</a></code> function. To find the indexes of the token positions for “gutenberg”, for instance, we use the following, which returns a data.frame with the name <code>from</code> indicating the index position of the start of the token match:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gutenberg_kwic &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="dt">pattern =</span> <span class="st">"gutenberg"</span>)
 <span class="kw">head</span>(gutenberg_kwic<span class="op">$</span>from, <span class="dv">10</span>)</code></pre></div>
@@ -596,7 +596,7 @@ hapax_proportion &lt;-<span class="st"> </span><span class="kw">rowSums</span>(c
 </div>
 <div id="do-it-kwic-better" class="section level1">
 <h1 class="hasAnchor">
-<a href="#do-it-kwic-better" class="anchor"></a>9. Do it KWIC (Better)</h1>
+<a href="#do-it-kwic-better" class="anchor"></a>9 Do it KWIC (Better)</h1>
 <p>This is going to be super easy since we don’t need to reinvent the wheel here, since <code><a href="../../reference/kwic.html">kwic()</a></code> already does all that we need.</p>
 <p>Let’s create a corpus containing <em>Moby Dick</em> but also Jane Austen’s <em>Sense and Sensibility</em>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_char_senseandsensibility &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/texts.html">texts</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"http://www.gutenberg.org/files/161/161.txt"</span>))
@@ -645,11 +645,11 @@ litcorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../referenc
 </div>
 <div id="text-quality-text-variety-and-parsing-xml" class="section level1">
 <h1 class="hasAnchor">
-<a href="#text-quality-text-variety-and-parsing-xml" class="anchor"></a>10. Text Quality, Text Variety, and Parsing XML</h1>
+<a href="#text-quality-text-variety-and-parsing-xml" class="anchor"></a>10 Text Quality, Text Variety, and Parsing XML</h1>
 </div>
 <div id="clustering" class="section level1">
 <h1 class="hasAnchor">
-<a href="#clustering" class="anchor"></a>11. Clustering</h1>
+<a href="#clustering" class="anchor"></a>11 Clustering</h1>
 <p>Chapter 11 describes how to detect clusters in a corpus. While the book uses the <code>XMLAuthorCorpus</code>, we describe clustering using U.S. State of the Union addresses included in the <strong>quantedaData</strong> package. We trim the corpus with <code><a href="../../reference/dfm_trim.html">dfm_trim()</a></code> by keeping only those words that occur at least five times in the corpus and in at least three speeches.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quantedaData)
 pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> "1980-01-01"</span>), 
@@ -672,11 +672,11 @@ pres_cluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span 
 </div>
 <div id="classification" class="section level1">
 <h1 class="hasAnchor">
-<a href="#classification" class="anchor"></a>12. Classification</h1>
+<a href="#classification" class="anchor"></a>12 Classification</h1>
 </div>
 <div id="topic-modeling" class="section level1">
 <h1 class="hasAnchor">
-<a href="#topic-modeling" class="anchor"></a>13. Topic Modeling</h1>
+<a href="#topic-modeling" class="anchor"></a>13 Topic Modeling</h1>
 <p>Finally, Jockers’ book introduces topic modeling of a corpus and the visualisation through wordclouds. In our example, we use the State of the Union addresses again. We can easily apply functions from the <strong>topicmodels</strong> package by using <strong>quanteda</strong>’s <code><a href="../../reference/convert.html">convert()</a></code> function. In our example, we use the Irish budget speeches from 2010 and classify 20 topics using Latent Dirichlet Allocation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfm_speeches &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, 
                 <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -688,30 +688,30 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
 
 <span class="co"># get top five terms per topic</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</code></pre></div>
-<pre><code>##      Topic 1    Topic 2   Topic 3     Topic 4     Topic 5       
-## [1,] "failed"   "fianna"  "million"   "vision"    "equal"       
-## [2,] "strategy" "welfare" "support"   "change"    "enterprising"
-## [3,] "adopted"  "child"   "welfare"   "line"      "society"     
-## [4,] "sort"     "banks"   "back"      "nation"    "sense"       
-## [5,] "problems" "workers" "increased" "difficult" "going"       
-##      Topic 6       Topic 7    Topic 8     Topic 9    Topic 10    Topic 11
-## [1,] "development" "million"  "care"      "fianna"   "taoiseach" "fianna"
-## [2,] "investment"  "measures" "workers"   "fáil"     "fine"      "fáil"  
-## [3,] "employment"  "welfare"  "hospital"  "national" "gael"      "side"  
-## [4,] "key"         "spending" "allowance" "families" "may"       "level" 
-## [5,] "continue"    "details"  "million"   "benefit"  "irish"     "third" 
-##      Topic 12      Topic 13    Topic 14   Topic 15  Topic 16    Topic 17  
-## [1,] "kind"        "taoiseach" "system"   "child"   "needed"    "fáil"    
-## [2,] "imagination" "employees" "welfare"  "benefit" "confront"  "fianna"  
-## [3,] "alternative" "rate"      "taxation" "day"     "vision"    "irish"   
-## [4,] "moral"       "referred"  "stimulus" "today"   "change"    "support" 
-## [5,] "citizenship" "debate"    "worst"    "bank"    "ministers" "national"
-##      Topic 18  Topic 19   Topic 20      
-## [1,] "levy"    "per"      "scheme"      
-## [2,] "million" "measures" "investment"  
-## [3,] "carbon"  "welfare"  "system"      
-## [4,] "change"  "families" "level"       
-## [5,] "welfare" "policies" "contribution"</code></pre>
+<pre><code>##      Topic 1       Topic 2        Topic 3     Topic 4     Topic 5       
+## [1,] "citizenship" "society"      "taoiseach" "fáil"      "welfare"     
+## [2,] "alternative" "enterprising" "gael"      "fianna"    "system"      
+## [3,] "wealth"      "sense"        "irish"     "societies" "government's"
+## [4,] "adjustment"  "equal"        "fine"      "side"      "stimulus"    
+## [5,] "breaks"      "nation"       "may"       "third"     "deficit"     
+##      Topic 6    Topic 7      Topic 8   Topic 9     Topic 10      Topic 11 
+## [1,] "fianna"   "million"    "levy"    "taoiseach" "local"       "needed" 
+## [2,] "taxation" "employment" "million" "day"       "opportunity" "address"
+## [3,] "fáil"     "future"     "carbon"  "say"       "created"     "rebuild"
+## [4,] "child"    "including"  "change"  "system"    "ministers"   "failed" 
+## [5,] "nothing"  "continue"   "welfare" "interest"  "measures"    "brought"
+##      Topic 12   Topic 13      Topic 14     Topic 15    Topic 16 
+## [1,] "fianna"   "kind"        "measures"   "system"    "child"  
+## [2,] "fáil"     "imagination" "investment" "strategy"  "benefit"
+## [3,] "national" "policies"    "spending"   "failed"    "day"    
+## [4,] "irish"    "wit"         "million"    "ministers" "today"  
+## [5,] "support"  "create"      "scheme"     "confront"  "bank"   
+##      Topic 17     Topic 18    Topic 19  Topic 20   
+## [1,] "support"    "taoiseach" "review"  "care"     
+## [2,] "back"       "employees" "welfare" "welfare"  
+## [3,] "welfare"    "rate"      "million" "per"      
+## [4,] "million"    "referred"  "details" "allowance"
+## [5,] "investment" "debate"    "per"     "hit"</code></pre>
 </div>
 </div>
   </div>
@@ -721,49 +721,49 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#r-basics">1. R Basics</a></li>
+<li><a href="#r-basics">1 R Basics</a></li>
       <li>
-<a href="#first-foray">2. First Foray</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#loading-the-first-text-file">2.1. Loading the first text file</a></li>
-      <li><a href="#separate-content-from-metadata">2.2. Separate content from metadata</a></li>
-      <li><a href="#reprocessing-the-content">2.3. Reprocessing the content</a></li>
-      <li><a href="#beginning-the-analysis">2.4. Beginning the analysis</a></li>
+<a href="#first-foray">2 First Foray</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#loading-the-first-text-file">2.1 Loading the first text file</a></li>
+      <li><a href="#separate-content-from-metadata">2.2 Separate content from metadata</a></li>
+      <li><a href="#reprocessing-the-content">2.3 Reprocessing the content</a></li>
+      <li><a href="#beginning-the-analysis">2.4 Beginning the analysis</a></li>
       </ul>
 </li>
       <li>
-<a href="#accessing-and-comparing-word-frequency-data">3. Accessing and Comparing Word Frequency Data</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#accessing-word-data">3.1. Accessing Word Data</a></li>
-      <li><a href="#recycling">3.2.Recycling</a></li>
+<a href="#accessing-and-comparing-word-frequency-data">3 Accessing and Comparing Word Frequency Data</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#accessing-word-data">3.1 Accessing Word Data</a></li>
+      <li><a href="#recycling">3.2 Recycling</a></li>
       </ul>
 </li>
       <li>
-<a href="#token-distribution-analysis">4. Token Distribution Analysis</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#dispersion-plots">4.1. Dispersion plots</a></li>
-      <li><a href="#searching-with-regular-expression">4.2. Searching with regular expression</a></li>
-      <li><a href="#identifying-chapter-breaks">4.2. Identifying chapter breaks</a></li>
+<a href="#token-distribution-analysis">4 Token Distribution Analysis</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#dispersion-plots">4.1 Dispersion plots</a></li>
+      <li><a href="#searching-with-regular-expression">4.2 Searching with regular expression</a></li>
+      <li><a href="#identifying-chapter-breaks">4.2 Identifying chapter breaks</a></li>
       </ul>
 </li>
       <li>
-<a href="#correlation">5. Correlation</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#correlation-analysis">5.2. Correlation Analysis</a></li>
-      <li><a href="#testing-correlation-with-randomization">5.4. Testing Correlation with Randomization</a></li>
+<a href="#correlation">5 Correlation</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#correlation-analysis">5.2 Correlation Analysis</a></li>
+      <li><a href="#testing-correlation-with-randomization">5.4 Testing Correlation with Randomization</a></li>
       </ul>
 </li>
       <li>
-<a href="#measures-of-lexical-variety">6. Measures of Lexical Variety</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#mean-word-frequency">6.2. Mean word frequency</a></li>
-      <li><a href="#extracting-word-usage-means">6.3. Extracting Word Usage Means</a></li>
-      <li><a href="#ranking-the-values">6.4. Ranking the values</a></li>
-      <li><a href="#calculating-the-ttr">6.5. Calculating the TTR</a></li>
+<a href="#measures-of-lexical-variety">6 Measures of Lexical Variety</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#mean-word-frequency">6.2 Mean word frequency</a></li>
+      <li><a href="#extracting-word-usage-means">6.3 Extracting Word Usage Means</a></li>
+      <li><a href="#ranking-the-values">6.4 Ranking the values</a></li>
+      <li><a href="#calculating-the-ttr">6.5 Calculating the TTR</a></li>
       </ul>
 </li>
-      <li><a href="#hapax-richness">7. Hapax Richness</a></li>
-      <li><a href="#do-it-kwic">8. Do it KWIC</a></li>
-      <li><a href="#do-it-kwic-better">9. Do it KWIC (Better)</a></li>
-      <li><a href="#text-quality-text-variety-and-parsing-xml">10. Text Quality, Text Variety, and Parsing XML</a></li>
-      <li><a href="#clustering">11. Clustering</a></li>
-      <li><a href="#classification">12. Classification</a></li>
-      <li><a href="#topic-modeling">13. Topic Modeling</a></li>
+      <li><a href="#hapax-richness">7 Hapax Richness</a></li>
+      <li><a href="#do-it-kwic">8 Do it KWIC</a></li>
+      <li><a href="#do-it-kwic-better">9 Do it KWIC (Better)</a></li>
+      <li><a href="#text-quality-text-variety-and-parsing-xml">10 Text Quality, Text Variety, and Parsing XML</a></li>
+      <li><a href="#clustering">11 Clustering</a></li>
+      <li><a href="#classification">12 Classification</a></li>
+      <li><a href="#topic-modeling">13 Topic Modeling</a></li>
       </ul>
 </div>
       </div>

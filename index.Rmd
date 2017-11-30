@@ -1,8 +1,8 @@
 ---
 title: "Home"
 output: 
-  rmarkdown::html_vignette:
-    toc: yes
+  html_document:
+    toc: true
 ---
 
 # Overview
