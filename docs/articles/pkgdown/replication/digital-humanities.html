@@ -39,7 +39,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../../../articles/quickstart.html">Quick Start</a>
+  <a href="../../../articles/pkgdown/quickstart.html">Quick Start</a>
 </li>
 <li>
   <a href="../../../reference/index.html">Reference</a>
@@ -389,7 +389,7 @@
 ##  mobydick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
 ## 
 ## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kbenoit
-## Created: Thu Nov 30 12:27:58 2017
+## Created: Thu Nov 30 17:20:37 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <pre class="sourceCode r" id="cb81"><code class="sourceCode r"><div class="sourceLine" id="cb81-1" data-line-number="1">
@@ -404,7 +404,7 @@
 ##  mobydick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
 ## 
 ## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kbenoit
-## Created: Thu Nov 30 12:27:58 2017
+## Created: Thu Nov 30 17:20:37 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <pre class="sourceCode r" id="cb83"><code class="sourceCode r"><div class="sourceLine" id="cb83-1" data-line-number="1">
@@ -732,30 +732,30 @@
 <div class="sourceLine" id="cb119-9" data-line-number="9"><span class="co"># get top five terms per topic</span></div>
 <div class="sourceLine" id="cb119-10" data-line-number="10">
 <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</div></code></pre>
-<pre><code>##      Topic 1     Topic 2      Topic 3       Topic 4      Topic 5       
-## [1,] "taoiseach" "welfare"    "kind"        "fianna"     "society"     
-## [2,] "rate"      "million"    "referred"    "child"      "enterprising"
-## [3,] "stimulus"  "support"    "imagination" "irish"      "sense"       
-## [4,] "nama"      "continue"   "change"      "adjustment" "equal"       
-## [5,] "three"     "employment" "problem"     "measures"   "nation"      
-##      Topic 6    Topic 7   Topic 8     Topic 9    Topic 10 Topic 11  
-## [1,] "fáil"     "benefit" "per"       "measures" "fianna" "scheme"  
-## [2,] "fianna"   "child"   "care"      "million"  "fáil"   "spending"
-## [3,] "national" "welfare" "million"   "rate"     "side"   "welfare" 
-## [4,] "support"  "fáil"    "allowance" "recovery" "level"  "million" 
-## [5,] "irish"    "let"     "families"  "review"   "third"  "pension" 
-##      Topic 12   Topic 13 Topic 14      Topic 15    Topic 16    Topic 17 
-## [1,] "welfare"  "bank"   "alternative" "taoiseach" "failed"    "today"  
-## [2,] "system"   "day"    "citizenship" "fine"      "strategy"  "society"
-## [3,] "fianna"   "may"    "wealth"      "gael"      "needed"    "face"   
-## [4,] "taxation" "just"   "adjustment"  "stimulus"  "ministers" "banks"  
-## [5,] "fáil"     "anglo"  "breaks"      "local"     "system"    "child"  
-##      Topic 18     Topic 19  Topic 20 
-## [1,] "confidence" "levy"    "system" 
-## [2,] "million"    "million" "welfare"
-## [3,] "investment" "carbon"  "child"  
-## [4,] "support"    "change"  "hit"    
-## [5,] "programme"  "welfare" "fianna"</code></pre>
+<pre><code>##      Topic 1      Topic 2     Topic 3    Topic 4   Topic 5     Topic 6   
+## [1,] "top"        "failed"    "care"     "benefit" "taoiseach" "per"     
+## [2,] "businesses" "strategy"  "earners"  "child"   "employees" "families"
+## [3,] "person"     "needed"    "welfare"  "per"     "rate"      "care"    
+## [4,] "reduction"  "ministers" "policies" "fianna"  "referred"  "welfare" 
+## [5,] "fianna"     "system"    "incomes"  "fáil"    "debate"    "hit"     
+##      Topic 7    Topic 8   Topic 9     Topic 10    Topic 11   Topic 12 
+## [1,] "welfare"  "child"   "gael"      "fianna"    "million"  "levy"   
+## [2,] "system"   "bank"    "may"       "fáil"      "spending" "million"
+## [3,] "taxation" "day"     "fine"      "never"     "scheme"   "carbon" 
+## [4,] "fianna"   "society" "irish"     "taoiseach" "review"   "change" 
+## [5,] "fáil"     "today"   "taoiseach" "person"    "measures" "welfare"
+##      Topic 13   Topic 14      Topic 15        Topic 16    Topic 17   
+## [1,] "fianna"   "alternative" "measures"      "taoiseach" "allowance"
+## [2,] "fáil"     "citizenship" "full"          "stimulus"  "workers"  
+## [3,] "national" "wealth"      "approximately" "problem"   "child"    
+## [4,] "irish"    "adjustment"  "taxes"         "employees" "million"  
+## [5,] "support"  "breaks"      "benefit"       "fine"      "fianna"   
+##      Topic 18      Topic 19     Topic 20      
+## [1,] "kind"        "million"    "society"     
+## [2,] "imagination" "support"    "enterprising"
+## [3,] "policies"    "welfare"    "sense"       
+## [4,] "wit"         "investment" "equal"       
+## [5,] "create"      "back"       "nation"</code></pre>
 </section>
 </div>
   </div>

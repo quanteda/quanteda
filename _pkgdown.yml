@@ -7,7 +7,7 @@ navbar:
   type: inverse
   left:
     - text: "Quick Start"
-      href: articles/quickstart.html
+      href: articles/pkgdown/quickstart.html
     - text: "Reference"
       href: reference/index.html
     - text: "Features"
