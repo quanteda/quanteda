@@ -6,6 +6,8 @@ navbar:
   title: "Quanteda"
   type: inverse
   left:
+    - text: "Overview"
+      href: index.html
     - text: "Reference"
       href: reference/index.html
     - text: "Quick Start"
@@ -16,10 +18,12 @@ navbar:
       menu:
         - text: "Latent Semantic Analysis (LSA)"
           href: articles/examples/lsa.html
-        - text: "Word embedding (word2vec)"
-          href: articles/examples/text2vec.html
+#        - text: "Word embedding (word2vec)"
+#          href: articles/examples/text2vec.html
         - text: "Textual data visualization"
           href: articles/examples/plotting.html
+        - text: "Chinese text analysis"
+          href: articles/examples/chinese.html
     - text: "Replication"
       menu:
         - text: "Text Analysis with R for Students of Literature"
