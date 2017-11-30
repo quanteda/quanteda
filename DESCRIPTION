@@ -14,6 +14,7 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "ctb"), 
     person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "ctb"),
     person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
+    person("Stefan", "Müller", email = "mullers@tcd.ie", role = "ctb"),
     person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
     person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb") )
 License: GPL-3
