@@ -3,7 +3,7 @@ title: "Example: fcm for word embedding "
 author: Kenneth Benoit, Haiyan Wang and Kohei Watanabe
 output: 
   rmarkdown::html_vignette:
-    toc: yes
+    toc: no
 ---
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "##")
@@ -37,7 +37,8 @@ wiki_toks <- tokens(wiki) %>% tokens_select(feat, padding = TRUE)
 
 ##Constructing the feature co-occurrence matrix(fcm):
 ```{r}
-wiki_fcm <- fcm(wiki_toks, context = "window", count = "weighted", weights = 1/(1:5), tri = TRUE)
+wiki_fcm <- fcm(wiki_toks, context = "window", count = "weighted", 
+                weights = 1/(1:5), tri = TRUE)
 ```
 
 ## Fit the [GloVe model](https://nlp.stanford.edu/pubs/glove.pdf) using package [text2vec](http://text2vec.org)
