@@ -11,21 +11,21 @@ navbar:
     - text: "Reference"
       href: reference/index.html
     - text: "Features"
-      href: articles/comparison.html
+      href: articles/pkgdown/comparison.html
     - text: "Examples"
       menu:
         - text: "Latent Semantic Analysis (LSA)"
-          href: articles/examples/lsa.html
-#        - text: "Word embedding (word2vec)"
-#          href: articles/examples/text2vec.html
+          href: articles/pkgdown/examples/lsa.html
         - text: "Textual data visualization"
-          href: articles/examples/plotting.html
+          href: articles/pkgdown/examples/plotting.html
         - text: "Chinese text analysis"
-          href: articles/examples/chinese.html
+          href: articles/pkgdown/examples/chinese.html
     - text: "Replication"
       menu:
         - text: "Text Analysis with R for Students of Literature"
-          href: articles/replication/digital-humanities.html
+          href: articles/pkgdown/replication/digital-humanities.html
+        - text: "Word embedding (word2vec)"
+          href: articles/pkgdown/replication/text2vec.html
     - text: "Design"
       href: articles/design.html
   right:
