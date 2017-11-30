@@ -228,3 +228,16 @@ test_that("tm converter works under extreme situations", {
     tmdfm <- convert(as.dfm(cmatrix), to = "tm")
     expect_equivalent(as.matrix(tmdfm), cmatrix)
 })
+
+test_that("weighted dfm is not convertible to a topic model format (#1091)", {
+    err_msg <- "cannot convert a non-count dfm to a topic model format"
+
+    expect_error(convert(tf(d, "prop"), to = "stm"), err_msg)
+    expect_error(convert(tf(d, "prop"), to = "topicmodels"), err_msg)
+    expect_error(convert(tf(d, "prop"), to = "lda"), err_msg)
+    expect_error(convert(dfm_weight(d, "relfreq"), to = "stm"), err_msg)
+    expect_error(convert(dfm_weight(d, "logfreq"), to = "stm"), err_msg)
+    
+    expect_error(convert(dfm_weight(d, "tfidf"), to = "stm"), err_msg)
+    expect_error(convert(tfidf(d), to = "stm"), err_msg)
+})

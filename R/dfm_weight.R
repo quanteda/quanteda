@@ -312,6 +312,7 @@ tfidf.default <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 
 #' @export
 tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
     
+    attrs <- attributes(x)
     x <- as.dfm(x)
     args <- list(...)
     check_dots(args, names(formals(docfreq)))
@@ -327,6 +328,12 @@ tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, 
     
     # replace just the non-zero values by product with idf
     x@x <- tfreq@x * dfreq[j]
+    
+    # record attributes
+    attributes(x, FALSE) <- attrs
+    x@weightTf <- tfreq@weightTf
+    x@weightDf <- c(list(scheme = scheme_df, base = base), args)
+    
     x
 }
 

@@ -174,3 +174,23 @@ test_that("dfm_weight works with zero-frequency features (#929)", {
         tolerance = .001
     )
 })
+
+test_that("settings are recorded for tf-idf weightings", {
+    mytexts <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
+                 text2 = "New York City has raised a taxes: an income tax and a sales tax.")
+    d <- dfm(mytexts, remove_punct = TRUE)
+    
+    expect_equal(dfm_weight(d, "tfidf")@weightTf[["scheme"]], "count")
+    expect_equal(dfm_weight(d, "tfidf")@weightDf[["scheme"]], "inverse")
+    expect_equal(dfm_weight(d, "tfidf")@weightDf[["base"]], 10)
+    
+    expect_equal(tfidf(d)@weightTf[["scheme"]], "count")
+    expect_equal(tfidf(d)@weightDf[["scheme"]], "inverse")
+    expect_equal(tfidf(d, base = 10)@weightDf[["base"]], 10)
+    expect_equal(tfidf(d, base = 2)@weightDf[["base"]], 2)
+    expect_equal(tfidf(d, scheme_tf = "prop", base = 2)@weightTf[["scheme"]], "prop")
+    expect_equal(tfidf(d, scheme_tf = "prop", base = 2)@weightDf[["base"]], 2)
+    
+    expect_equal(tfidf(d, scheme_df = "inversemax")@weightDf[["scheme"]], "inversemax")
+    expect_equal(tfidf(d, scheme_df = "inversemax", k = 1)@weightDf[["k"]], 1)
+})

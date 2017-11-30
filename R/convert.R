@@ -76,6 +76,11 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "
             stop("docvars must have the same number of rows as ndoc(x)")
     }
     
+    if ((to %in% c("stm", "lda", "topicmodels")) &&
+        (x@weightTf$scheme != "count" || x@weightDf$scheme != "unary")) {
+        stop("cannot convert a non-count dfm to a topic model format")
+    }
+    
     if (to == "tm") 
         return(dfm2tm(x))
     else if (to == "lda")
@@ -186,9 +191,23 @@ dfm2tm <- function(x, weighting = tm::weightTf) {
     if (!requireNamespace("slam", quietly = TRUE))
         stop("You must install the slam package installed for this conversion.")
     
+    if (!(x@weightTf$scheme == "count" && x@weightDf$scheme == "unary")) {
+        warning("converted DocumentTermMatrix will not have weight attributes set correctly")
+    }
     tm::as.DocumentTermMatrix(slam::as.simple_triplet_matrix(x),
                               weighting = weighting)
 }
+
+## TODO: 
+## Implement weight recordings for 
+## weightTfIdf
+## - attr(*, "weighting")= chr [1:2] "term frequency - inverse document frequency" "tf-idf"
+## - attr(*, "weighting")= chr [1:2] "term frequency - inverse document frequency (normalized)" "tf-idf"
+## weightTf
+## - attr(*, "weighting")= chr [1:2] "term frequency" "tf"
+## weightSMART
+## - attr(*, "weighting")= chr [1:2] "SMART ntc" "SMART"  (e.g.)
+
 
 #' @rdname convert-wrappers
 #' @details
