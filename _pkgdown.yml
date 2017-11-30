@@ -3,7 +3,7 @@ template:
     bootswatch: readable
     ganalytics: UA-144616-24
 navbar:
-  title: "Overview"
+  title: "Quanteda"
   type: inverse
   left:
     - text: "Reference"
