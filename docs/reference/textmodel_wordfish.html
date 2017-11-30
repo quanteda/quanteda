@@ -59,7 +59,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">Overview</a>
+      <a class="navbar-brand" href="../index.html">Quanteda</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -255,26 +255,26 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
 #&gt; 
 #&gt; Estimated document positions:
 #&gt; 
-#&gt;   Documents       theta         SE       lower       upper
-#&gt; 1        R1 -1.33131165 0.01573056 -1.36214354 -1.30047976
-#&gt; 2        R2 -0.60626099 0.01215647 -0.63008768 -0.58243431
-#&gt; 3        R3  0.06333876 0.01129471  0.04120113  0.08547638
-#&gt; 4        R4  0.70266922 0.01266595  0.67784396  0.72749449
-#&gt; 5        R5  1.50121097 0.01775921  1.46640292  1.53601903
-#&gt; 6        V1 -0.32964631 0.01194628 -0.35306102 -0.30623160
+#&gt;   Documents      theta         SE       lower       upper
+#&gt; 1        R1 -1.3313048 0.01573041 -1.36213639 -1.30047320
+#&gt; 2        R2 -0.6062622 0.01215635 -0.63008869 -0.58243581
+#&gt; 3        R3  0.0633333 0.01129470  0.04119568  0.08547092
+#&gt; 4        R4  0.7026670 0.01266606  0.67784154  0.72749248
+#&gt; 5        R5  1.5012169 0.01775937  1.46640858  1.53602532
+#&gt; 6        V1 -0.3296502 0.01194619 -0.35306476 -0.30623567
 #&gt; 
 #&gt; Estimated feature scores: showing first 30 beta-hats for features
 #&gt; 
 #&gt;           A           B           C           D           E           F 
-#&gt;  -7.4063895  -8.0775924  -9.7349535 -10.7145506 -11.5831040 -11.3611894 
+#&gt;  -7.4064147  -8.0776293  -9.7350140 -10.7146230 -11.5831863 -11.3612818 
 #&gt;           G           H           I           J           K           L 
-#&gt; -11.5593130 -10.4554714  -9.7337818  -8.6723950  -7.6191299  -6.6315299 
+#&gt; -11.5594101 -10.4555625  -9.7338662  -8.6724682  -7.6191912  -6.6315801 
 #&gt;           M           N           O           P           Q           R 
-#&gt;  -5.6178342  -4.6855285  -3.7792695  -2.7246933  -1.8090859  -0.7117889 
+#&gt;  -5.6178729  -4.6855572  -3.7792893  -2.7247041  -1.8090906  -0.7117878 
 #&gt;           S           T           U           V           W           X 
-#&gt;   0.2594633   1.2559777   2.3935724   3.3679880   4.4773805   5.2773882 
+#&gt;   0.2594671   1.2559814   2.3935729   3.3679841   4.4773694   5.2773707 
 #&gt;           Y           Z          ZA          ZB          ZC          ZD 
-#&gt;   6.1121292   6.9830389   7.8338818   8.8092652   9.7279658  10.4987267 </div><div class='input'>
+#&gt;   6.1121034   6.9830039   7.8338379   8.8092111   9.7279027  10.4986569 </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='no'>ie2010dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 (<span class='no'>wfm1</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>)))
