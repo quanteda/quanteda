@@ -14,7 +14,7 @@ library(quanteda)
 library(text2vec)
 ```
 
-This vignette provides a basic overview on how to apply **quanteda**'s feature co-occurrence matrix for **GloVe** word embedding.  
+Unsupervisedly learned word embeddings have seen tremendous success in numerous NLP tasks in recent years.This vignette provides a basic overview on how to apply **quanteda**'s feature co-occurrence matrix for **GloVe** word embedding.  
 
 ###Read the corpus 
 from the [**text2vec** vignette](http://text2vec.org/glove.html):
@@ -41,6 +41,10 @@ wiki_fcm <- fcm(wiki_toks, context = "window", count = "weighted", weights = 1/(
 ```
 
 ## Fit the [GloVe model](https://nlp.stanford.edu/pubs/glove.pdf) using package [text2vec](http://text2vec.org)
+
+GloVe is an unsupervised learning algorithm for obtaining vector representations for words. Training is performed on aggregated global word-word co-occurrence statistics from a corpus, and the resulting representations showcase interesting linear substructures of the word vector space.
+
+Glove encodes the ratios of word-word co-occurrence probabilities, which is thought to represent some crude form of meaning associated with the abstract concept of the word, as vector difference. The training objective of GloVe is to learn word vectors such that their dot product equals the logarithm of the words' probability of co-occurrence.  
 ```{r}
 glove = GlobalVectors$new(word_vectors_size = 50, vocabulary = types(wiki_toks), x_max = 10)
 wiki_main = fit_transform(wiki_fcm, glove, n_iter = 20)
