@@ -114,133 +114,124 @@
 <div class="contents">
 <p>In this vignette we show how the <strong>quanteda</strong> package can be used to replicate the analysis from Matthew Jockers’ book <a href="http://doi.org/10.1007/978-3-319-03164-4"><em>Text Analysis with R for Students of Literature</em></a> (London: Springer, 2014). Most of the Jockers book consists of loading, transforming, and analyzing quantities derived from text and data from text. Because <strong>quanteda</strong> has built in most of the code to perform these data transformations and analyses, it makes it possible to replicate the results from the book with far less code. Throughout this vignette, we name objects based on Jockers’ book, but follow the <strong>quanteda</strong> <a href="https://github.com/kbenoit/quanteda/wiki/Style-guide">style guide</a>.</p>
 <p>In what follows, each section corresponds to the respective chapter in the book.</p>
-<section id="r-basics" class="level1"><h1>1 R Basics</h1>
+<div id="r-basics" class="section level1">
+<h1 class="hasAnchor">
+<a href="#r-basics" class="anchor"></a>1 R Basics</h1>
 <p>Our closest equivalent is simply:</p>
-<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><div class="sourceLine" id="cb1-1" data-line-number="1">
-<span class="kw">install.packages</span>(<span class="st">"quanteda"</span>)</div>
-<div class="sourceLine" id="cb1-2" data-line-number="2">
-<span class="kw">install.packages</span>(<span class="st">"readtext"</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>)
+<span class="kw">install.packages</span>(<span class="st">"readtext"</span>)</code></pre></div>
 <p>But if you are reading this vignette, than chances are that you have already completed this step.</p>
-</section><section id="first-foray" class="level1"><h1>2 First Foray</h1>
-<section id="loading-the-first-text-file" class="level2"><h2>2.1 Loading the first text file</h2>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><div class="sourceLine" id="cb2-1" data-line-number="1">
-<span class="kw">library</span>(quanteda)</div></code></pre>
+</div>
+<div id="first-foray" class="section level1">
+<h1 class="hasAnchor">
+<a href="#first-foray" class="anchor"></a>2 First Foray</h1>
+<div id="loading-the-first-text-file" class="section level2">
+<h2 class="hasAnchor">
+<a href="#loading-the-first-text-file" class="anchor"></a>2.1 Loading the first text file</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
 <p>We can load the text from <em>Moby Dick</em> using the <strong>readtext</strong> package, directly from the <a href="https://www.gutenberg.org/ebooks/2701">Project Gutenberg website</a>.</p>
-<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><div class="sourceLine" id="cb3-1" data-line-number="1">
-<span class="kw">library</span>(readtext)</div>
-<div class="sourceLine" id="cb3-2" data-line-number="2">data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span>))</div>
-<div class="sourceLine" id="cb3-3" data-line-number="3">
-<span class="kw">names</span>(data_char_mobydick) &lt;-<span class="st"> "mobydick"</span>
-</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readtext)
+data_char_mobydick &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span>))
+<span class="kw">names</span>(data_char_mobydick) &lt;-<span class="st"> "mobydick"</span></code></pre></div>
 <p>The <code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code> function from the <strong>readtext</strong> package loads the text files into a <code>data.frame</code> object. We can access the text from a <code>data.frame</code> object (and also, as we will see, a <code>corpus</code> class object), using the <code><a href="../../../reference/texts.html">texts()</a></code> or the <code><a href="../../../reference/View.html">View()</a></code> method. Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel. We do this using the <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub()</a></code> function from the <strong>stringi</strong> package, which shows the 1st through the 75th characters of the texts of our new object <code>data_char_mobydick</code>. Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.</p>
-<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><div class="sourceLine" id="cb4-1" data-line-number="1">
-<span class="kw">library</span>(stringi)</div>
-<div class="sourceLine" id="cb4-2" data-line-number="2">
-<span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub</a></span>(data_char_mobydick, <span class="dv">1</span>, <span class="dv">75</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(stringi)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub</a></span>(data_char_mobydick, <span class="dv">1</span>, <span class="dv">75</span>)</code></pre></div>
 <pre><code>## [1] "The Project Gutenberg EBook of Moby Dick; or The Whale, by Herman Melville\n"</code></pre>
-</section><section id="separate-content-from-metadata" class="level2"><h2>2.2 Separate content from metadata</h2>
+</div>
+<div id="separate-content-from-metadata" class="section level2">
+<h2 class="hasAnchor">
+<a href="#separate-content-from-metadata" class="anchor"></a>2.2 Separate content from metadata</h2>
 <p>The Gutenburg edition of the text contains some metadata before and after the text of the novel. The code below uses the <code>regexec</code> and <code>substring</code> functions to separate this from the text.</p>
-<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><div class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># extract the header information</span></div>
-<div class="sourceLine" id="cb6-2" data-line-number="2">(start_v &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_locate">stri_locate_first_fixed</a></span>(data_char_mobydick, <span class="st">"CHAPTER 1. Loomings."</span>)[<span class="dv">1</span>])</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># extract the header information</span>
+(start_v &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_locate">stri_locate_first_fixed</a></span>(data_char_mobydick, <span class="st">"CHAPTER 1. Loomings."</span>)[<span class="dv">1</span>])</code></pre></div>
 <pre><code>## [1] 23018</code></pre>
-<pre class="sourceCode r" id="cb8"><code class="sourceCode r"><div class="sourceLine" id="cb8-1" data-line-number="1">(end_v &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_locate">stri_locate_last_fixed</a></span>(data_char_mobydick, <span class="st">"orphan."</span>)[<span class="dv">1</span>])</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(end_v &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_locate">stri_locate_last_fixed</a></span>(data_char_mobydick, <span class="st">"orphan."</span>)[<span class="dv">1</span>])</code></pre></div>
 <pre><code>## [1] 1216393</code></pre>
 <p>Here, we found the character index of the beginning and end of the novel, rather than counting the lines as in the book, but the result will be very similar. If we want to verify that “orpan.” is the end of the novel, we can use the <code><a href="../../../reference/kwic.html">kwic()</a></code> function:</p>
-<pre class="sourceCode r" id="cb10"><code class="sourceCode r"><div class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># verify that "orphan" is the end of the novel</span></div>
-<div class="sourceLine" id="cb10-2" data-line-number="2">
-<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"orphan"</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># verify that "orphan" is the end of the novel</span>
+<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"orphan"</span>)</code></pre></div>
 <pre><code>##                                                            
 ##  [mobydick, 255352] children, only found another | orphan |
 ##                              
 ##  . End of Project Gutenberg's</code></pre>
 <p>If we want to count the number of lines, we can do so by counting the newlines in the text.</p>
-<pre class="sourceCode r" id="cb12"><code class="sourceCode r"><div class="sourceLine" id="cb12-1" data-line-number="1">
-<span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_count">stri_count_fixed</a></span>(data_char_mobydick, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_count">stri_count_fixed</a></span>(data_char_mobydick, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</code></pre></div>
 <pre><code>## [1] 22107</code></pre>
 <p>To measure just the number lines in the novel itself, without the metadata, we can subset the text from the start and end of the novel part, as identified above.</p>
-<pre class="sourceCode r" id="cb14"><code class="sourceCode r"><div class="sourceLine" id="cb14-1" data-line-number="1">
-<span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub</a></span>(data_char_mobydick, <span class="dt">from =</span> start_v, <span class="dt">to =</span> end_v) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb14-2" data-line-number="2">
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_count">stri_count_fixed</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub</a></span>(data_char_mobydick, <span class="dt">from =</span> start_v, <span class="dt">to =</span> end_v) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_count">stri_count_fixed</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</code></pre></div>
 <pre><code>## [1] 21206</code></pre>
 <p>To trim the non-book content, we use <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub()</a></code> to extract the text between the beginning and ending indexes found above:</p>
-<pre class="sourceCode r" id="cb16"><code class="sourceCode r"><div class="sourceLine" id="cb16-1" data-line-number="1">novel_v &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub</a></span>(data_char_mobydick, start_v, end_v)</div>
-<div class="sourceLine" id="cb16-2" data-line-number="2">
-<span class="kw">length</span>(novel_v)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">novel_v &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub</a></span>(data_char_mobydick, start_v, end_v)
+<span class="kw">length</span>(novel_v)</code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<pre class="sourceCode r" id="cb18"><code class="sourceCode r"><div class="sourceLine" id="cb18-1" data-line-number="1">
-<span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub</a></span>(novel_v, <span class="dv">1</span>, <span class="dv">94</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cat</span>()</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_sub">stri_sub</a></span>(novel_v, <span class="dv">1</span>, <span class="dv">94</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cat</span>()</code></pre></div>
 <pre><code>## CHAPTER 1. Loomings.
 ## 
 ## 
 ## Call me Ishmael. Some years ago--never mind how long precisely--having</code></pre>
-</section><section id="reprocessing-the-content" class="level2"><h2>2.3 Reprocessing the content</h2>
+</div>
+<div id="reprocessing-the-content" class="section level2">
+<h2 class="hasAnchor">
+<a href="#reprocessing-the-content" class="anchor"></a>2.3 Reprocessing the content</h2>
 <p>We begin processing the text by converting to lower case. <strong>quanteda</strong>’s <code>*_tolower()</code> functions work like the built-in <code>tolower()</code>, with an extra option to preserve upper-case acronyms when detected. For <code>character</code> objects, we use <code><a href="../../../reference/char_tolower.html">char_tolower()</a></code>:</p>
-<pre class="sourceCode r" id="cb20"><code class="sourceCode r"><div class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># lowercase text</span></div>
-<div class="sourceLine" id="cb20-2" data-line-number="2">novel_lower_v &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/char_tolower.html">char_tolower</a></span>(novel_v)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># lowercase text</span>
+novel_lower_v &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/char_tolower.html">char_tolower</a></span>(novel_v)</code></pre></div>
 <p><strong>quanteda</strong>’s <code><a href="../../../reference/tokens.html">tokens()</a></code> function splits the text into words, with many options available for which characters should be preserved, and which should be used to define word boundaries. The default behaviour works similarly to splitting on the regular expression for non-word characters (<code>\W</code> as in the book), but it much smarter. For instance, it does not treat apostrophes as word boundaries, meaning that <code>'s</code> and <code>'t</code> are not treated as whole words from possessive forms and contractions.</p>
 <p>We will skip straight to getting the character vector of tokens:</p>
-<pre class="sourceCode r" id="cb21"><code class="sourceCode r"><div class="sourceLine" id="cb21-1" data-line-number="1">moby_word_v &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(novel_lower_v, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.character</span>()</div>
-<div class="sourceLine" id="cb21-2" data-line-number="2">(total_length &lt;-<span class="st"> </span><span class="kw">length</span>(moby_word_v))</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby_word_v &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(novel_lower_v, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.character</span>()
+(total_length &lt;-<span class="st"> </span><span class="kw">length</span>(moby_word_v))</code></pre></div>
 <pre><code>## [1] 210000</code></pre>
-<pre class="sourceCode r" id="cb23"><code class="sourceCode r"><div class="sourceLine" id="cb23-1" data-line-number="1">moby_word_v[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby_word_v[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
 <pre><code>##  [1] "chapter"  "1"        "loomings" "call"     "me"       "ishmael" 
 ##  [7] "some"     "years"    "ago"      "never"</code></pre>
-<pre class="sourceCode r" id="cb25"><code class="sourceCode r"><div class="sourceLine" id="cb25-1" data-line-number="1">moby_word_v[<span class="dv">99986</span>] </div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby_word_v[<span class="dv">99986</span>] </code></pre></div>
 <pre><code>## [1] "in"</code></pre>
-<pre class="sourceCode r" id="cb27"><code class="sourceCode r"><div class="sourceLine" id="cb27-1" data-line-number="1">moby_word_v[<span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby_word_v[<span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</code></pre></div>
 <pre><code>## [1] "call"    "me"      "ishmael"</code></pre>
-<pre class="sourceCode r" id="cb29"><code class="sourceCode r"><div class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># check positions of "whale"</span></div>
-<div class="sourceLine" id="cb29-2" data-line-number="2">
-<span class="kw">which</span>(moby_word_v <span class="op">==</span><span class="st"> "whale"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># check positions of "whale"</span>
+<span class="kw">which</span>(moby_word_v <span class="op">==</span><span class="st"> "whale"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</code></pre></div>
 <pre><code>## [1] 2030 2060 2203 2415 4048 4211</code></pre>
-</section><section id="beginning-the-analysis" class="level2"><h2>2.4 Beginning the analysis</h2>
+</div>
+<div id="beginning-the-analysis" class="section level2">
+<h2 class="hasAnchor">
+<a href="#beginning-the-analysis" class="anchor"></a>2.4 Beginning the analysis</h2>
 <p>The code below uses the tokenized text to the occurrence of the word <em>whale</em>. To include the possessive form <em>whale’s</em>, we may sum the counts of both forms, count the keyword-in-context matches by regular expression or glob. A <em>glob</em> is a simple wildcard matching pattern common on Unix systems – asterisks match zero or more characters.</p>
 <p>Note that the counts below do not match those in the book, due to differences in how the book has split on any non-word character, while <strong>quanteda</strong>’s tokenizer splits on a more comprehensive set of “word boundaries”. <strong>quanteda</strong>’s <code><a href="../../../reference/tokens.html">tokens()</a></code> function by default does not remove punctuation or numbers (both defined as “non-word” characters) by default. To more closely match the counts in the book, we have removed punctuation.</p>
-<pre class="sourceCode r" id="cb31"><code class="sourceCode r"><div class="sourceLine" id="cb31-1" data-line-number="1">
-<span class="kw">length</span>(moby_word_v[<span class="kw">which</span>(moby_word_v <span class="op">==</span><span class="st"> "whale"</span>)])</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(moby_word_v[<span class="kw">which</span>(moby_word_v <span class="op">==</span><span class="st"> "whale"</span>)])</code></pre></div>
 <pre><code>## [1] 908</code></pre>
-<pre class="sourceCode r" id="cb33"><code class="sourceCode r"><div class="sourceLine" id="cb33-1" data-line-number="1"><span class="co"># total occurrences of 'whale' including possessive</span></div>
-<div class="sourceLine" id="cb33-2" data-line-number="2">
-<span class="kw">length</span>(moby_word_v[<span class="kw">which</span>(moby_word_v <span class="op">==</span><span class="st"> "whale"</span>)]) <span class="op">+</span><span class="st"> </span><span class="kw">length</span>(moby_word_v[<span class="kw">which</span>(moby_word_v <span class="op">==</span><span class="st"> "whale's"</span>)])</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total occurrences of 'whale' including possessive</span>
+<span class="kw">length</span>(moby_word_v[<span class="kw">which</span>(moby_word_v <span class="op">==</span><span class="st"> "whale"</span>)]) <span class="op">+</span><span class="st"> </span><span class="kw">length</span>(moby_word_v[<span class="kw">which</span>(moby_word_v <span class="op">==</span><span class="st"> "whale's"</span>)])</code></pre></div>
 <pre><code>## [1] 1028</code></pre>
-<pre class="sourceCode r" id="cb35"><code class="sourceCode r"><div class="sourceLine" id="cb35-1" data-line-number="1"><span class="co"># same thing using kwic()</span></div>
-<div class="sourceLine" id="cb35-2" data-line-number="2">
-<span class="kw">nrow</span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_lower_v, <span class="st">"whale"</span>))</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># same thing using kwic()</span>
+<span class="kw">nrow</span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_lower_v, <span class="st">"whale"</span>))</code></pre></div>
 <pre><code>## [1] 908</code></pre>
-<pre class="sourceCode r" id="cb37"><code class="sourceCode r"><div class="sourceLine" id="cb37-1" data-line-number="1">
-<span class="kw">nrow</span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_lower_v, <span class="st">"whale*"</span>)) <span class="co"># includes words like "whalemen"</span>
-</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_lower_v, <span class="st">"whale*"</span>)) <span class="co"># includes words like "whalemen"</span></code></pre></div>
 <pre><code>## [1] 1565</code></pre>
-<pre class="sourceCode r" id="cb39"><code class="sourceCode r"><div class="sourceLine" id="cb39-1" data-line-number="1">(total_whale_hits &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_lower_v, <span class="dt">pattern =</span> <span class="st">"^whale('s){0,1}$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)))</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(total_whale_hits &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_lower_v, <span class="dt">pattern =</span> <span class="st">"^whale('s){0,1}$"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)))</code></pre></div>
 <pre><code>## [1] 1028</code></pre>
 <p>What fraction of the total words (excluding punctuation) in the novel are “whale”?</p>
-<pre class="sourceCode r" id="cb41"><code class="sourceCode r"><div class="sourceLine" id="cb41-1" data-line-number="1">total_whale_hits <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(novel_lower_v, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)  </div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">total_whale_hits <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(novel_lower_v, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)  </code></pre></div>
 <pre><code>##       text1 
 ## 0.004895238</code></pre>
 <p>With <code><a href="../../../reference/ntoken.html">ntype()</a></code> we can calculate the size of the vocabulary – includes possessive forms, but excludes punctuation, symbols and numbers.</p>
-<pre class="sourceCode r" id="cb43"><code class="sourceCode r"><div class="sourceLine" id="cb43-1" data-line-number="1"><span class="co"># total unique words</span></div>
-<div class="sourceLine" id="cb43-2" data-line-number="2">
-<span class="kw">length</span>(<span class="kw">unique</span>(moby_word_v))</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total unique words</span>
+<span class="kw">length</span>(<span class="kw">unique</span>(moby_word_v))</code></pre></div>
 <pre><code>## [1] 18524</code></pre>
-<pre class="sourceCode r" id="cb45"><code class="sourceCode r"><div class="sourceLine" id="cb45-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(<span class="kw"><a href="../../../reference/char_tolower.html">char_tolower</a></span>(novel_v), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(<span class="kw"><a href="../../../reference/char_tolower.html">char_tolower</a></span>(novel_v), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## text1 
 ## 18524</code></pre>
 <p>To quickly sort the word types by their frequency, we can use the <code><a href="../../../reference/dfm.html">dfm()</a></code> command to create a matrix of counts of each word type – a document-frequency matrix. In this case there is only one document, the entire book.</p>
-<pre class="sourceCode r" id="cb47"><code class="sourceCode r"><div class="sourceLine" id="cb47-1" data-line-number="1"><span class="co"># ten most frequent words</span></div>
-<div class="sourceLine" id="cb47-2" data-line-number="2">moby_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(novel_lower_v, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</div>
-<div class="sourceLine" id="cb47-3" data-line-number="3">
-<span class="kw">head</span>(moby_dfm, <span class="dt">nfeature =</span> <span class="dv">10</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ten most frequent words</span>
+moby_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(novel_lower_v, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+<span class="kw">head</span>(moby_dfm, <span class="dt">nfeature =</span> <span class="dv">10</span>)</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 10 features (0% sparse).
 ## 1 x 10 sparse Matrix of class "dfm"
 ##        features
 ## docs    chapter 1 loomings call  me ishmael some years ago never
 ##   text1     172 2        1   54 628      19  608    91  35   203</code></pre>
 <p>Getting the list of the most frequent 10 terms is easy, using <code><a href="../../../reference/textstat_frequency.html">textstat_frequency()</a></code>.</p>
-<pre class="sourceCode r" id="cb49"><code class="sourceCode r"><div class="sourceLine" id="cb49-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm, <span class="dt">n =</span> <span class="dv">10</span>) </div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm, <span class="dt">n =</span> <span class="dv">10</span>) </code></pre></div>
 <pre><code>##    feature frequency rank docfreq
 ## 1      the     14173    1       1
 ## 2       of      6446    2       1
@@ -253,127 +244,118 @@
 ## 9       it      2394    9       1
 ## 10       i      1976   10       1</code></pre>
 <p>Finally, if we wish to plot the most frequent (50) terms, we can supply the results of <code><a href="../../../reference/textstat_frequency.html">textstat_frequency()</a></code> to <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> to plot their frequency by their rank:</p>
-<pre class="sourceCode r" id="cb51"><code class="sourceCode r"><div class="sourceLine" id="cb51-1" data-line-number="1"><span class="co"># plot frequency of 50 most frequent terms </span></div>
-<div class="sourceLine" id="cb51-2" data-line-number="2">
-<span class="kw">library</span>(ggplot2)</div>
-<div class="sourceLine" id="cb51-3" data-line-number="3">
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme_get">theme_set</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_minimal</a></span>())</div>
-<div class="sourceLine" id="cb51-4" data-line-number="4">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot frequency of 50 most frequent terms </span>
+<span class="kw">library</span>(ggplot2)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme_get">theme_set</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_minimal</a></span>())
 <span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm, <span class="dt">n =</span> <span class="dv">50</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb51-5" data-line-number="5">
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> rank, <span class="dt">y =</span> frequency)) <span class="op">+</span>
-</div>
-<div class="sourceLine" id="cb51-6" data-line-number="6">
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
-</div>
-<div class="sourceLine" id="cb51-7" data-line-number="7">
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Frequency rank"</span>, <span class="dt">y =</span> <span class="st">"Term frequency"</span>)</div></code></pre>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Frequency rank"</span>, <span class="dt">y =</span> <span class="st">"Term frequency"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-17-1.png" width="768"></p>
 <p>For direct comparison with the next chapter, we also create the sorted list of the most frequently found words using this:</p>
-<pre class="sourceCode r" id="cb52"><code class="sourceCode r"><div class="sourceLine" id="cb52-1" data-line-number="1">sorted_moby_freqs_t &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(moby_dfm, <span class="dt">n =</span> <span class="kw"><a href="../../../reference/ndoc.html">nfeature</a></span>(moby_dfm))</div></code></pre>
-</section></section><section id="accessing-and-comparing-word-frequency-data" class="level1"><h1>3 Accessing and Comparing Word Frequency Data</h1>
-<section id="accessing-word-data" class="level2"><h2>3.1 Accessing Word Data</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sorted_moby_freqs_t &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(moby_dfm, <span class="dt">n =</span> <span class="kw"><a href="../../../reference/ndoc.html">nfeature</a></span>(moby_dfm))</code></pre></div>
+</div>
+</div>
+<div id="accessing-and-comparing-word-frequency-data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#accessing-and-comparing-word-frequency-data" class="anchor"></a>3 Accessing and Comparing Word Frequency Data</h1>
+<div id="accessing-word-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#accessing-word-data" class="anchor"></a>3.1 Accessing Word Data</h2>
 <p>We can query the document-frequency matrix to retrieve word frequencies, as with a normal matrix:</p>
-<pre class="sourceCode r" id="cb53"><code class="sourceCode r"><div class="sourceLine" id="cb53-1" data-line-number="1"><span class="co"># frequencies of 'he' and 'she' - these are matrixes, not numerics</span></div>
-<div class="sourceLine" id="cb53-2" data-line-number="2">sorted_moby_freqs_t[<span class="kw">c</span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># frequencies of 'he' and 'she' - these are matrixes, not numerics</span>
+sorted_moby_freqs_t[<span class="kw">c</span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</code></pre></div>
 <pre><code>##   he  she  him  her 
 ## 1758  112 1058  330</code></pre>
-<pre class="sourceCode r" id="cb55"><code class="sourceCode r"><div class="sourceLine" id="cb55-1" data-line-number="1"><span class="co"># another method: indexing the dfm</span></div>
-<div class="sourceLine" id="cb55-2" data-line-number="2">moby_dfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># another method: indexing the dfm</span>
+moby_dfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 4 features (0% sparse).
 ## 1 x 4 sparse Matrix of class "dfm"
 ##        features
 ## docs      he she  him her
 ##   text1 1758 112 1058 330</code></pre>
-<pre class="sourceCode r" id="cb57"><code class="sourceCode r"><div class="sourceLine" id="cb57-1" data-line-number="1">sorted_moby_freqs_t[<span class="dv">1</span>]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sorted_moby_freqs_t[<span class="dv">1</span>]</code></pre></div>
 <pre><code>##   the 
 ## 14173</code></pre>
-<pre class="sourceCode r" id="cb59"><code class="sourceCode r"><div class="sourceLine" id="cb59-1" data-line-number="1">sorted_moby_freqs_t[<span class="st">"the"</span>]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sorted_moby_freqs_t[<span class="st">"the"</span>]</code></pre></div>
 <pre><code>##   the 
 ## 14173</code></pre>
-<pre class="sourceCode r" id="cb61"><code class="sourceCode r"><div class="sourceLine" id="cb61-1" data-line-number="1"><span class="co"># term frequency ratios</span></div>
-<div class="sourceLine" id="cb61-2" data-line-number="2">sorted_moby_freqs_t[<span class="st">"him"</span>] <span class="op">/</span><span class="st"> </span>sorted_moby_freqs_t[<span class="st">"her"</span>]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># term frequency ratios</span>
+sorted_moby_freqs_t[<span class="st">"him"</span>] <span class="op">/</span><span class="st"> </span>sorted_moby_freqs_t[<span class="st">"her"</span>]</code></pre></div>
 <pre><code>##      him 
 ## 3.206061</code></pre>
-<pre class="sourceCode r" id="cb63"><code class="sourceCode r"><div class="sourceLine" id="cb63-1" data-line-number="1">sorted_moby_freqs_t[<span class="st">"he"</span>] <span class="op">/</span><span class="st"> </span>sorted_moby_freqs_t[<span class="st">"she"</span>]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sorted_moby_freqs_t[<span class="st">"he"</span>] <span class="op">/</span><span class="st"> </span>sorted_moby_freqs_t[<span class="st">"she"</span>]</code></pre></div>
 <pre><code>##       he 
 ## 15.69643</code></pre>
 <p>Total number of tokens:</p>
-<pre class="sourceCode r" id="cb65"><code class="sourceCode r"><div class="sourceLine" id="cb65-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(moby_dfm)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(moby_dfm)</code></pre></div>
 <pre><code>##  text1 
 ## 210000</code></pre>
-<pre class="sourceCode r" id="cb67"><code class="sourceCode r"><div class="sourceLine" id="cb67-1" data-line-number="1">
-<span class="kw">sum</span>(sorted_moby_freqs_t)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(sorted_moby_freqs_t)</code></pre></div>
 <pre><code>## [1] 210000</code></pre>
-</section><section id="recycling" class="level2"><h2>3.2 Recycling</h2>
-<p>Relative term frequencies:</p>
-<pre class="sourceCode r" id="cb69"><code class="sourceCode r"><div class="sourceLine" id="cb69-1" data-line-number="1">sorted_moby_rel_freqs_t &lt;-<span class="st"> </span>sorted_moby_freqs_t <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(sorted_moby_freqs_t) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
 </div>
-<div class="sourceLine" id="cb69-2" data-line-number="2">sorted_moby_rel_freqs_t[<span class="st">"the"</span>]</div></code></pre>
+<div id="recycling" class="section level2">
+<h2 class="hasAnchor">
+<a href="#recycling" class="anchor"></a>3.2 Recycling</h2>
+<p>Relative term frequencies:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sorted_moby_rel_freqs_t &lt;-<span class="st"> </span>sorted_moby_freqs_t <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(sorted_moby_freqs_t) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+sorted_moby_rel_freqs_t[<span class="st">"the"</span>]</code></pre></div>
 <pre><code>##      the 
 ## 6.749048</code></pre>
-<pre class="sourceCode r" id="cb71"><code class="sourceCode r"><div class="sourceLine" id="cb71-1" data-line-number="1"><span class="co"># by weighting the dfm directly</span></div>
-<div class="sourceLine" id="cb71-2" data-line-number="2">moby_dfm_pct &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(moby_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
-</div>
-<div class="sourceLine" id="cb71-3" data-line-number="3">moby_dfm_pct[, <span class="st">"the"</span>]</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># by weighting the dfm directly</span>
+moby_dfm_pct &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(moby_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+moby_dfm_pct[, <span class="st">"the"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
 ## 1 x 1 sparse Matrix of class "dfm"
 ##        features
 ## docs         the
 ##   text1 6.749048</code></pre>
 <p>Plotting the most frequent terms, replicating the plot from the book:</p>
-<pre class="sourceCode r" id="cb73"><code class="sourceCode r"><div class="sourceLine" id="cb73-1" data-line-number="1">
-<span class="kw">plot</span>(sorted_moby_rel_freqs_t[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>], <span class="dt">type =</span> <span class="st">"b"</span>,</div>
-<div class="sourceLine" id="cb73-2" data-line-number="2">     <span class="dt">xlab =</span> <span class="st">"Top Ten Words"</span>, <span class="dt">ylab =</span> <span class="st">"Percentage of Full Text"</span>, <span class="dt">xaxt =</span> <span class="st">"n"</span>)</div>
-<div class="sourceLine" id="cb73-3" data-line-number="3">
-<span class="kw">axis</span>(<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">labels =</span> <span class="kw">names</span>(sorted_moby_rel_freqs_t[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]))</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(sorted_moby_rel_freqs_t[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>], <span class="dt">type =</span> <span class="st">"b"</span>,
+     <span class="dt">xlab =</span> <span class="st">"Top Ten Words"</span>, <span class="dt">ylab =</span> <span class="st">"Percentage of Full Text"</span>, <span class="dt">xaxt =</span> <span class="st">"n"</span>)
+<span class="kw">axis</span>(<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">labels =</span> <span class="kw">names</span>(sorted_moby_rel_freqs_t[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]))</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
 <p>Plotting the most frequent terms using <strong>ggplot2</strong>:</p>
-<pre class="sourceCode r" id="cb74"><code class="sourceCode r"><div class="sourceLine" id="cb74-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm_pct, <span class="dt">n =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb74-2" data-line-number="2">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm_pct, <span class="dt">n =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> <span class="kw">reorder</span>(feature, <span class="op">-</span>rank), <span class="dt">y =</span> frequency)) <span class="op">+</span>
-</div>
-<div class="sourceLine" id="cb74-3" data-line-number="3">
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/coord_flip">coord_flip</a></span>() <span class="op">+</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb74-4" data-line-number="4">
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">""</span>, <span class="dt">y =</span> <span class="st">"Term Frequency as a Percentage"</span>)</div></code></pre>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">""</span>, <span class="dt">y =</span> <span class="st">"Term Frequency as a Percentage"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
-</section></section><section id="token-distribution-analysis" class="level1"><h1>4 Token Distribution Analysis</h1>
-<section id="dispersion-plots" class="level2"><h2>4.1 Dispersion plots</h2>
+</div>
+</div>
+<div id="token-distribution-analysis" class="section level1">
+<h1 class="hasAnchor">
+<a href="#token-distribution-analysis" class="anchor"></a>4 Token Distribution Analysis</h1>
+<div id="dispersion-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#dispersion-plots" class="anchor"></a>4.1 Dispersion plots</h2>
 <p>A dispersion plot allows us to visualize the occurrences of particular terms throughout the text. The object returned by the <code>kwic</code> function can be plotted to display a dispersion plot. The <strong>quanteda</strong> <code>textplot_</code> objects are based on <strong>ggplot2</strong>, so you can easily change the plot, for example by adding custom title.</p>
-<pre class="sourceCode r" id="cb75"><code class="sourceCode r"><div class="sourceLine" id="cb75-1" data-line-number="1"><span class="co"># using words from tokenized corpus for dispersion</span></div>
-<div class="sourceLine" id="cb75-2" data-line-number="2">
-<span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="st">"whale"</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Lexical dispersion"</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># using words from tokenized corpus for dispersion</span>
+<span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(<span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="st">"whale"</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Lexical dispersion"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-24-1.png" width="768"></p>
 <p>To produce multiple dispersion plots for comparison, you can simply send more than one <code><a href="../../../reference/kwic.html">kwic()</a></code> output to <code><a href="../../../reference/textplot_xray.html">textplot_xray()</a></code>:</p>
-<pre class="sourceCode r" id="cb76"><code class="sourceCode r"><div class="sourceLine" id="cb76-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(</div>
-<div class="sourceLine" id="cb76-2" data-line-number="2">     <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="st">"whale"</span>),</div>
-<div class="sourceLine" id="cb76-3" data-line-number="3">     <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="st">"Ahab"</span>)</div>
-<div class="sourceLine" id="cb76-4" data-line-number="4">) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Lexical dispersion"</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(
+     <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="st">"whale"</span>),
+     <span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="st">"Ahab"</span>)
+) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Lexical dispersion"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-25-1.png" width="768"></p>
-</section><section id="searching-with-regular-expression" class="level2"><h2>4.2 Searching with regular expression</h2>
-<pre class="sourceCode r" id="cb77"><code class="sourceCode r"><div class="sourceLine" id="cb77-1" data-line-number="1"><span class="co"># identify the chapter break locations</span></div>
-<div class="sourceLine" id="cb77-2" data-line-number="2">chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="kw">c</span>(<span class="st">"CHAPTER </span><span class="ch">\\</span><span class="st">d"</span>)), <span class="dt">valuetype =</span> <span class="st">"regex"</span>)<span class="op">$</span>from</div>
-<div class="sourceLine" id="cb77-3" data-line-number="3">
-<span class="kw">head</span>(chap_positions_v)</div></code></pre>
+</div>
+<div id="searching-with-regular-expression" class="section level2">
+<h2 class="hasAnchor">
+<a href="#searching-with-regular-expression" class="anchor"></a>4.2 Searching with regular expression</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># identify the chapter break locations</span>
+chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(novel_v, <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="kw">c</span>(<span class="st">"CHAPTER </span><span class="ch">\\</span><span class="st">d"</span>)), <span class="dt">valuetype =</span> <span class="st">"regex"</span>)<span class="op">$</span>from
+<span class="kw">head</span>(chap_positions_v)</code></pre></div>
 <pre><code>## [1]     1  2581  4287 11236 13169 14043</code></pre>
-</section><section id="identifying-chapter-breaks" class="level2"><h2>4.2 Identifying chapter breaks</h2>
+</div>
+<div id="identifying-chapter-breaks" class="section level2">
+<h2 class="hasAnchor">
+<a href="#identifying-chapter-breaks" class="anchor"></a>4.2 Identifying chapter breaks</h2>
 <p>Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a <code>corpus</code> object to hold the texts. Initially, we make a single-document corpus, and then use the <code><a href="../../../reference/corpus_segment.html">char_segment()</a></code> function to split this by the string which specifies the chapter breaks.</p>
-<pre class="sourceCode r" id="cb79"><code class="sourceCode r"><div class="sourceLine" id="cb79-1" data-line-number="1">chapters_corp &lt;-<span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb79-2" data-line-number="2">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chapters_corp &lt;-<span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_char_mobydick) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb79-3" data-line-number="3">
-<span class="st">    </span><span class="kw"><a href="../../../reference/corpus_segment.html">corpus_segment</a></span>(<span class="dt">pattern =</span> <span class="st">"CHAPTER</span><span class="ch">\\</span><span class="st">s</span><span class="ch">\\</span><span class="st">d+.*</span><span class="ch">\\</span><span class="st">n"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)</div>
-<div class="sourceLine" id="cb79-4" data-line-number="4">
-<span class="kw">summary</span>(chapters_corp, <span class="dv">10</span>)</div></code></pre>
+<span class="st">    </span><span class="kw"><a href="../../../reference/corpus_segment.html">corpus_segment</a></span>(<span class="dt">pattern =</span> <span class="st">"CHAPTER</span><span class="ch">\\</span><span class="st">s</span><span class="ch">\\</span><span class="st">d+.*</span><span class="ch">\\</span><span class="st">n"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)
+<span class="kw">summary</span>(chapters_corp, <span class="dv">10</span>)</code></pre></div>
 <pre><code>## Corpus consisting of 136 documents, showing 10 documents:
 ## 
 ##         Text Types Tokens Sentences                       pattern
@@ -388,14 +370,12 @@
 ##   mobydick.9  1260   4284       166      CHAPTER 9. The Sermon.\n
 ##  mobydick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
 ## 
-## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kbenoit
-## Created: Thu Nov 30 17:20:37 2017
+## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kohei
+## Created: Thu Nov 30 18:27:27 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
-<pre class="sourceCode r" id="cb81"><code class="sourceCode r"><div class="sourceLine" id="cb81-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))</div>
-<div class="sourceLine" id="cb81-2" data-line-number="2">
-<span class="kw">summary</span>(chapters_corp, <span class="dt">n =</span> <span class="dv">3</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))
+<span class="kw">summary</span>(chapters_corp, <span class="dt">n =</span> <span class="dv">3</span>)</code></pre></div>
 <pre><code>## Corpus consisting of 136 documents, showing 3 documents:
 ## 
 ##        Text Types Tokens Sentences                     pattern
@@ -403,50 +383,39 @@
 ##  mobydick.2   651   1700        60  CHAPTER 2. The Carpet-Bag.
 ##  mobydick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
 ## 
-## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kbenoit
-## Created: Thu Nov 30 17:20:37 2017
+## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kohei
+## Created: Thu Nov 30 18:27:27 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
-<pre class="sourceCode r" id="cb83"><code class="sourceCode r"><div class="sourceLine" id="cb83-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</div></code></pre>
-<section id="barplots-of-whale-and-ahab" class="level3"><h3>4.4.5 barplots of whale and ahab</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</code></pre></div>
+<div id="barplots-of-whale-and-ahab" class="section level3">
+<h3 class="hasAnchor">
+<a href="#barplots-of-whale-and-ahab" class="anchor"></a>4.4.5 barplots of whale and ahab</h3>
 <p>With the corpus split into chapters, we can use the <code><a href="../../../reference/dfm.html">dfm()</a></code> function to create a matrix of counts of each word in each chapter – a document-frequency matrix.</p>
-<pre class="sourceCode r" id="cb84"><code class="sourceCode r"><div class="sourceLine" id="cb84-1" data-line-number="1"><span class="co"># create a dfm</span></div>
-<div class="sourceLine" id="cb84-2" data-line-number="2">chap_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(chapters_corp)</div>
-<div class="sourceLine" id="cb84-3" data-line-number="3"></div>
-<div class="sourceLine" id="cb84-4" data-line-number="4"><span class="co"># extract row with count for "whale"/"ahab" in each chapter</span></div>
-<div class="sourceLine" id="cb84-5" data-line-number="5"><span class="co"># and convert to data frame for plotting</span></div>
-<div class="sourceLine" id="cb84-6" data-line-number="6">whales_ahabs_df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(chap_dfm[, <span class="kw">c</span>(<span class="st">'whale'</span>, <span class="st">'ahab'</span>)])</div>
-<div class="sourceLine" id="cb84-7" data-line-number="7">    </div>
-<div class="sourceLine" id="cb84-8" data-line-number="8">whales_ahabs_df<span class="op">$</span>chapter &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(whales_ahabs_df)</div>
-<div class="sourceLine" id="cb84-9" data-line-number="9"></div>
-<div class="sourceLine" id="cb84-10" data-line-number="10">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create a dfm</span>
+chap_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(chapters_corp)
+
+<span class="co"># extract row with count for "whale"/"ahab" in each chapter</span>
+<span class="co"># and convert to data frame for plotting</span>
+whales_ahabs_df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(chap_dfm[, <span class="kw">c</span>(<span class="st">'whale'</span>, <span class="st">'ahab'</span>)])
+    
+whales_ahabs_df<span class="op">$</span>chapter &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(whales_ahabs_df)
+
 <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> whales_ahabs_df, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> whale)) <span class="op">+</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb84-11" data-line-number="11">
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span>
-</div>
-<div class="sourceLine" id="cb84-12" data-line-number="12">
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, </div>
-<div class="sourceLine" id="cb84-13" data-line-number="13">         <span class="dt">y =</span> <span class="st">"Frequency"</span>,</div>
-<div class="sourceLine" id="cb84-14" data-line-number="14">         <span class="dt">title =</span> <span class="st">"Occurrence of 'whale'"</span>)</div></code></pre>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, 
+         <span class="dt">y =</span> <span class="st">"Frequency"</span>,
+         <span class="dt">title =</span> <span class="st">"Occurrence of 'whale'"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-30-1.png" width="768"></p>
-<pre class="sourceCode r" id="cb85"><code class="sourceCode r"><div class="sourceLine" id="cb85-1" data-line-number="1">
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> whales_ahabs_df, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> ahab)) <span class="op">+</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb85-2" data-line-number="2">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> whales_ahabs_df, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> ahab)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span>
-</div>
-<div class="sourceLine" id="cb85-3" data-line-number="3">
-<span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, </div>
-<div class="sourceLine" id="cb85-4" data-line-number="4">         <span class="dt">y =</span> <span class="st">"Frequency"</span>,</div>
-<div class="sourceLine" id="cb85-5" data-line-number="5">         <span class="dt">title =</span> <span class="st">"Occurrence of 'ahab'"</span>)</div></code></pre>
+<span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, 
+         <span class="dt">y =</span> <span class="st">"Frequency"</span>,
+         <span class="dt">title =</span> <span class="st">"Occurrence of 'ahab'"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-30-2.png" width="768"></p>
 <p>The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. To get a feel for what the resulting weighted dfm (document-feature matrix) looks like, you can inspect it with the <code>head</code> function, which prints the first few rows and columns.</p>
-<pre class="sourceCode r" id="cb86"><code class="sourceCode r"><div class="sourceLine" id="cb86-1" data-line-number="1">rel_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">type =</span> <span class="st">'relfreq'</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
-</div>
-<div class="sourceLine" id="cb86-2" data-line-number="2">
-<span class="kw">head</span>(rel_dfm)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rel_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">type =</span> <span class="st">'relfreq'</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+<span class="kw">head</span>(rel_dfm)</code></pre></div>
 <pre><code>## Document-feature matrix of: 6 documents, 6 features (30.6% sparse).
 ## 6 x 6 sparse Matrix of class "dfm"
 ##                              features
@@ -465,141 +434,124 @@
 ##   CHAPTER 4. The Counterpane. 0.05189414 0         
 ##   CHAPTER 5. Breakfast.       0.23014960 0         
 ##   CHAPTER 6. The Street.      0.10615711 0</code></pre>
-<pre class="sourceCode r" id="cb88"><code class="sourceCode r"><div class="sourceLine" id="cb88-1" data-line-number="1"><span class="co"># subset dfm and convert to data.frame object</span></div>
-<div class="sourceLine" id="cb88-2" data-line-number="2">rel_chap_freq &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(rel_dfm[, <span class="kw">c</span>(<span class="st">'whale'</span>, <span class="st">'ahab'</span>)])</div>
-<div class="sourceLine" id="cb88-3" data-line-number="3">rel_chap_freq<span class="op">$</span>chapter &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(rel_chap_freq)</div>
-<div class="sourceLine" id="cb88-4" data-line-number="4">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># subset dfm and convert to data.frame object</span>
+rel_chap_freq &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(rel_dfm[, <span class="kw">c</span>(<span class="st">'whale'</span>, <span class="st">'ahab'</span>)])
+rel_chap_freq<span class="op">$</span>chapter &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(rel_chap_freq)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> rel_chap_freq, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> whale)) <span class="op">+</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb88-5" data-line-number="5">
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span>
-</div>
-<div class="sourceLine" id="cb88-6" data-line-number="6">
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>,</div>
-<div class="sourceLine" id="cb88-7" data-line-number="7">         <span class="dt">title =</span> <span class="st">"Occurrence of 'whale'"</span>)</div></code></pre>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>,
+         <span class="dt">title =</span> <span class="st">"Occurrence of 'whale'"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-31-1.png" width="768"></p>
-<pre class="sourceCode r" id="cb89"><code class="sourceCode r"><div class="sourceLine" id="cb89-1" data-line-number="1">
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> rel_chap_freq, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> ahab)) <span class="op">+</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb89-2" data-line-number="2">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> rel_chap_freq, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> ahab)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span>
-</div>
-<div class="sourceLine" id="cb89-3" data-line-number="3">
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>,</div>
-<div class="sourceLine" id="cb89-4" data-line-number="4">         <span class="dt">title =</span> <span class="st">"Occurrence of 'ahab'"</span>)</div></code></pre>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>,
+         <span class="dt">title =</span> <span class="st">"Occurrence of 'ahab'"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-31-2.png" width="768"></p>
-</section></section></section><section id="correlation" class="level1"><h1>5 Correlation</h1>
-<section id="correlation-analysis" class="level2"><h2>5.2 Correlation Analysis</h2>
+</div>
+</div>
+</div>
+<div id="correlation" class="section level1">
+<h1 class="hasAnchor">
+<a href="#correlation" class="anchor"></a>5 Correlation</h1>
+<div id="correlation-analysis" class="section level2">
+<h2 class="hasAnchor">
+<a href="#correlation-analysis" class="anchor"></a>5.2 Correlation Analysis</h2>
 <p>Correlation analysis (and many other similarity measures) can be constructed using fast, sparse means through the <code><a href="../../../reference/textstat_simil.html">textstat_simil()</a></code> function. Here, we select feature comparisons for just “whale” and “ahab”, and convert this into a matrix as in the book. Because correlations are sensitive to document length, we first convert this into a relative frequency using <code><a href="../../../reference/dfm_weight.html">dfm_weight()</a></code>.</p>
-<pre class="sourceCode r" id="cb90"><code class="sourceCode r"><div class="sourceLine" id="cb90-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb90-2" data-line-number="2">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(<span class="dt">selection =</span> <span class="kw">c</span>(<span class="st">"whale"</span>, <span class="st">"ahab"</span>), <span class="dt">method =</span> <span class="st">"correlation"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb90-3" data-line-number="3">
 <span class="st">    </span><span class="kw">as.matrix</span>() <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb90-4" data-line-number="4">
-<span class="st">    </span><span class="kw">head</span>(<span class="dv">2</span>)</div></code></pre>
+<span class="st">    </span><span class="kw">head</span>(<span class="dv">2</span>)</code></pre></div>
 <pre><code>##            whale       ahab
 ## whale  1.0000000 -0.2495543
 ## ahab  -0.2495543  1.0000000</code></pre>
 <p>With the ahab frequency and whale frequency vectors extracted from the dfm, it is easy to calculate the significance of the correlation.</p>
-</section><section id="testing-correlation-with-randomization" class="level2"><h2>5.4 Testing Correlation with Randomization</h2>
-<pre class="sourceCode r" id="cb92"><code class="sourceCode r"><div class="sourceLine" id="cb92-1" data-line-number="1">cor_data_df &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>)[, <span class="kw">c</span>(<span class="st">"ahab"</span>, <span class="st">"whale"</span>)] <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb92-2" data-line-number="2">
-<span class="st">    </span>as.data.frame</div>
-<div class="sourceLine" id="cb92-3" data-line-number="3"></div>
-<div class="sourceLine" id="cb92-4" data-line-number="4"><span class="co"># sample 1000 replicates and create data frame</span></div>
-<div class="sourceLine" id="cb92-5" data-line-number="5">n &lt;-<span class="st"> </span><span class="dv">1000</span>
-</div>
-<div class="sourceLine" id="cb92-6" data-line-number="6">samples &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</div>
-<div class="sourceLine" id="cb92-7" data-line-number="7">    <span class="dt">cor_sample =</span> <span class="kw">replicate</span>(n, <span class="kw">cor</span>(<span class="kw">sample</span>(cor_data_df<span class="op">$</span>whale), cor_data_df<span class="op">$</span>ahab)),</div>
-<div class="sourceLine" id="cb92-8" data-line-number="8">    <span class="dt">id_sample =</span> <span class="dv">1</span><span class="op">:</span>n</div>
-<div class="sourceLine" id="cb92-9" data-line-number="9">)</div>
-<div class="sourceLine" id="cb92-10" data-line-number="10"></div>
-<div class="sourceLine" id="cb92-11" data-line-number="11"><span class="co"># plot distribution of resampled correlations</span></div>
-<div class="sourceLine" id="cb92-12" data-line-number="12">
+<div id="testing-correlation-with-randomization" class="section level2">
+<h2 class="hasAnchor">
+<a href="#testing-correlation-with-randomization" class="anchor"></a>5.4 Testing Correlation with Randomization</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cor_data_df &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>)[, <span class="kw">c</span>(<span class="st">"ahab"</span>, <span class="st">"whale"</span>)] <span class="op">%&gt;%</span>
+<span class="st">    </span>as.data.frame
+
+<span class="co"># sample 1000 replicates and create data frame</span>
+n &lt;-<span class="st"> </span><span class="dv">1000</span>
+samples &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+    <span class="dt">cor_sample =</span> <span class="kw">replicate</span>(n, <span class="kw">cor</span>(<span class="kw">sample</span>(cor_data_df<span class="op">$</span>whale), cor_data_df<span class="op">$</span>ahab)),
+    <span class="dt">id_sample =</span> <span class="dv">1</span><span class="op">:</span>n
+)
+
+<span class="co"># plot distribution of resampled correlations</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> samples, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> cor_sample, <span class="dt">y =</span> ..density..)) <span class="op">+</span>
-</div>
-<div class="sourceLine" id="cb92-13" data-line-number="13">
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram">geom_histogram</a></span>(<span class="dt">colour =</span> <span class="st">"black"</span>, <span class="dt">binwidth =</span> <span class="fl">0.01</span>) <span class="op">+</span>
-</div>
-<div class="sourceLine" id="cb92-14" data-line-number="14">
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_density">geom_density</a></span>(<span class="dt">colour =</span> <span class="st">"red"</span>) <span class="op">+</span>
-</div>
-<div class="sourceLine" id="cb92-15" data-line-number="15">
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Correlation Coefficient"</span>, <span class="dt">y =</span> <span class="ot">NULL</span>,</div>
-<div class="sourceLine" id="cb92-16" data-line-number="16">         <span class="dt">title =</span> <span class="st">"Histogram of Random Correlation Coefficients with Normal Curve"</span>)</div></code></pre>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Correlation Coefficient"</span>, <span class="dt">y =</span> <span class="ot">NULL</span>,
+         <span class="dt">title =</span> <span class="st">"Histogram of Random Correlation Coefficients with Normal Curve"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-33-1.png" width="768"></p>
-</section></section><section id="measures-of-lexical-variety" class="level1"><h1>6 Measures of Lexical Variety</h1>
-<section id="mean-word-frequency" class="level2"><h2>6.2 Mean word frequency</h2>
-<pre class="sourceCode r" id="cb93"><code class="sourceCode r"><div class="sourceLine" id="cb93-1" data-line-number="1"><span class="co"># length of the book in chapters</span></div>
-<div class="sourceLine" id="cb93-2" data-line-number="2">
-<span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(chapters_corp)</div></code></pre>
+</div>
+</div>
+<div id="measures-of-lexical-variety" class="section level1">
+<h1 class="hasAnchor">
+<a href="#measures-of-lexical-variety" class="anchor"></a>6 Measures of Lexical Variety</h1>
+<div id="mean-word-frequency" class="section level2">
+<h2 class="hasAnchor">
+<a href="#mean-word-frequency" class="anchor"></a>6.2 Mean word frequency</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># length of the book in chapters</span>
+<span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(chapters_corp)</code></pre></div>
 <pre><code>## [1] 136</code></pre>
-<pre class="sourceCode r" id="cb95"><code class="sourceCode r"><div class="sourceLine" id="cb95-1" data-line-number="1"><span class="co"># chapter names</span></div>
-<div class="sourceLine" id="cb95-2" data-line-number="2">
-<span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># chapter names</span>
+<span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</code></pre></div>
 <pre><code>## [1] "CHAPTER 1. Loomings."        "CHAPTER 2. The Carpet-Bag." 
 ## [3] "CHAPTER 3. The Spouter-Inn." "CHAPTER 4. The Counterpane."
 ## [5] "CHAPTER 5. Breakfast."       "CHAPTER 6. The Street."</code></pre>
 <p>Calculating the mean word frequencies is easy:</p>
-<pre class="sourceCode r" id="cb97"><code class="sourceCode r"><div class="sourceLine" id="cb97-1" data-line-number="1"><span class="co"># for first few chapters</span></div>
-<div class="sourceLine" id="cb97-2" data-line-number="2">
-<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># for first few chapters</span>
+<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</code></pre></div>
 <pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
 ##                        2575                        1700 
 ## CHAPTER 3. The Spouter-Inn. CHAPTER 4. The Counterpane. 
 ##                        6943                        1927 
 ##       CHAPTER 5. Breakfast.      CHAPTER 6. The Street. 
 ##                         869                         942</code></pre>
-<pre class="sourceCode r" id="cb99"><code class="sourceCode r"><div class="sourceLine" id="cb99-1" data-line-number="1"><span class="co"># average</span></div>
-<div class="sourceLine" id="cb99-2" data-line-number="2">(<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(chapters_corp)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># average</span>
+(<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(chapters_corp)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</code></pre></div>
 <pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
 ##                    2.808070                    2.611367 
 ## CHAPTER 3. The Spouter-Inn. CHAPTER 4. The Counterpane. 
 ##                    3.981078                    2.829662 
 ##       CHAPTER 5. Breakfast.      CHAPTER 6. The Street. 
 ##                    2.145679                    2.021459</code></pre>
-</section><section id="extracting-word-usage-means" class="level2"><h2>6.3 Extracting Word Usage Means</h2>
-<p>Since the quotient of the number of tokens and number of types is a vector, we can simply feed this to <code>plot()</code> using the pipe operator:</p>
-<pre class="sourceCode r" id="cb101"><code class="sourceCode r"><div class="sourceLine" id="cb101-1" data-line-number="1">(<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(chapters_corp)) <span class="op">%&gt;%</span>
 </div>
-<div class="sourceLine" id="cb101-2" data-line-number="2">
-<span class="st">    </span><span class="kw">plot</span>(<span class="dt">type =</span> <span class="st">"h"</span>, <span class="dt">ylab =</span> <span class="st">"Mean word frequency"</span>)</div></code></pre>
+<div id="extracting-word-usage-means" class="section level2">
+<h2 class="hasAnchor">
+<a href="#extracting-word-usage-means" class="anchor"></a>6.3 Extracting Word Usage Means</h2>
+<p>Since the quotient of the number of tokens and number of types is a vector, we can simply feed this to <code>plot()</code> using the pipe operator:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(chapters_corp)) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">plot</span>(<span class="dt">type =</span> <span class="st">"h"</span>, <span class="dt">ylab =</span> <span class="st">"Mean word frequency"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-36-1.png" width="768"></p>
 <p>For the scaled plot:</p>
-<pre class="sourceCode r" id="cb102"><code class="sourceCode r"><div class="sourceLine" id="cb102-1" data-line-number="1">(<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(chapters_corp)) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb102-2" data-line-number="2">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(chapters_corp)) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">scale</span>() <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb102-3" data-line-number="3">
-<span class="st">    </span><span class="kw">plot</span>(<span class="dt">type =</span> <span class="st">"h"</span>, <span class="dt">ylab =</span> <span class="st">"Scaled mean word frequency"</span>)</div></code></pre>
+<span class="st">    </span><span class="kw">plot</span>(<span class="dt">type =</span> <span class="st">"h"</span>, <span class="dt">ylab =</span> <span class="st">"Scaled mean word frequency"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-37-1.png" width="768"></p>
-</section><section id="ranking-the-values" class="level2"><h2>6.4 Ranking the values</h2>
-<pre class="sourceCode r" id="cb103"><code class="sourceCode r"><div class="sourceLine" id="cb103-1" data-line-number="1">mean_word_use_m &lt;-<span class="st"> </span>(<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(chapters_corp))</div>
-<div class="sourceLine" id="cb103-2" data-line-number="2">
-<span class="kw">sort</span>(mean_word_use_m, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</div></code></pre>
+</div>
+<div id="ranking-the-values" class="section level2">
+<h2 class="hasAnchor">
+<a href="#ranking-the-values" class="anchor"></a>6.4 Ranking the values</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mean_word_use_m &lt;-<span class="st"> </span>(<span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chapters_corp) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntype</a></span>(chapters_corp))
+<span class="kw">sort</span>(mean_word_use_m, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</code></pre></div>
 <pre><code>## CHAPTER 135. The Chase.--Third Day.    CHAPTER 54. The Town-Ho's Story. 
 ##                            4.169544                            4.150151 
 ##               CHAPTER 16. The Ship.         CHAPTER 3. The Spouter-Inn. 
 ##                            4.051861                            3.981078 
 ##               CHAPTER 32. Cetology.         CHAPTER 64. Stubb's Supper. 
 ##                            3.542857                            3.468721</code></pre>
-</section><section id="calculating-the-ttr" class="level2"><h2>6.5 Calculating the TTR</h2>
+</div>
+<div id="calculating-the-ttr" class="section level2">
+<h2 class="hasAnchor">
+<a href="#calculating-the-ttr" class="anchor"></a>6.5 Calculating the TTR</h2>
 <p>Measures of lexical diversity can be estimated using <code><a href="../../../reference/textstat_lexdiv.html">textstat_lexdiv()</a></code>. The TTR (Type-Token Ratio), a measure used in section 6.5, can be calculcated for each document of the <code>dfm</code>.</p>
-<pre class="sourceCode r" id="cb105"><code class="sourceCode r"><div class="sourceLine" id="cb105-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(chapters_corp) <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb105-2" data-line-number="2">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(chapters_corp) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/textstat_lexdiv.html">textstat_lexdiv</a></span>(<span class="dt">measure =</span> <span class="st">"TTR"</span>) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb105-3" data-line-number="3">
-<span class="st">    </span><span class="kw">head</span>(<span class="dt">n =</span> <span class="dv">10</span>)</div></code></pre>
+<span class="st">    </span><span class="kw">head</span>(<span class="dt">n =</span> <span class="dv">10</span>)</code></pre></div>
 <pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
 ##                   0.3332039                   0.3688235 
 ## CHAPTER 3. The Spouter-Inn. CHAPTER 4. The Counterpane. 
@@ -610,21 +562,23 @@
 ##                   0.4528651                   0.4314815 
 ##      CHAPTER 9. The Sermon. CHAPTER 10. A Bosom Friend. 
 ##                   0.2789449                   0.3481153</code></pre>
-</section></section><section id="hapax-richness" class="level1"><h1>7 Hapax Richness</h1>
+</div>
+</div>
+<div id="hapax-richness" class="section level1">
+<h1 class="hasAnchor">
+<a href="#hapax-richness" class="anchor"></a>7 Hapax Richness</h1>
 <p>Another measure of lexical diversity is Hapax richness, defined as the number of words that occur only once divided by the total number of words. We can calculate Hapax richness very simply by using a logical operation on the document-feature matrix, to return a logical value for each term that occurs once, and then sum these to get a count.</p>
-<pre class="sourceCode r" id="cb107"><code class="sourceCode r"><div class="sourceLine" id="cb107-1" data-line-number="1"><span class="co"># hapaxes per document</span></div>
-<div class="sourceLine" id="cb107-2" data-line-number="2">
-<span class="kw">rowSums</span>(chap_dfm <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># hapaxes per document</span>
+<span class="kw">rowSums</span>(chap_dfm <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</code></pre></div>
 <pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
 ##                         609                         437 
 ## CHAPTER 3. The Spouter-Inn. CHAPTER 4. The Counterpane. 
 ##                        1084                         464 
 ##       CHAPTER 5. Breakfast.      CHAPTER 6. The Street. 
 ##                         276                         343</code></pre>
-<pre class="sourceCode r" id="cb109"><code class="sourceCode r"><div class="sourceLine" id="cb109-1" data-line-number="1"><span class="co"># as a proportion</span></div>
-<div class="sourceLine" id="cb109-2" data-line-number="2">hapax_proportion &lt;-<span class="st"> </span><span class="kw">rowSums</span>(chap_dfm <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chap_dfm)</div>
-<div class="sourceLine" id="cb109-3" data-line-number="3">
-<span class="kw">head</span>(hapax_proportion)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># as a proportion</span>
+hapax_proportion &lt;-<span class="st"> </span><span class="kw">rowSums</span>(chap_dfm <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="../../../reference/ntoken.html">ntoken</a></span>(chap_dfm)
+<span class="kw">head</span>(hapax_proportion)</code></pre></div>
 <pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
 ##                   0.2365049                   0.2570588 
 ## CHAPTER 3. The Spouter-Inn. CHAPTER 4. The Counterpane. 
@@ -632,22 +586,26 @@
 ##       CHAPTER 5. Breakfast.      CHAPTER 6. The Street. 
 ##                   0.3176064                   0.3641189</code></pre>
 <p>To plot this:</p>
-<pre class="sourceCode r" id="cb111"><code class="sourceCode r"><div class="sourceLine" id="cb111-1" data-line-number="1">
-<span class="kw">barplot</span>(hapax_proportion, <span class="dt">beside =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">names.arg =</span> <span class="kw">seq_len</span>(<span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(chap_dfm)))</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">barplot</span>(hapax_proportion, <span class="dt">beside =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">names.arg =</span> <span class="kw">seq_len</span>(<span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(chap_dfm)))</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-41-1.png" width="768"></p>
-</section><section id="do-it-kwic" class="level1"><h1>8 Do it KWIC</h1>
+</div>
+<div id="do-it-kwic" class="section level1">
+<h1 class="hasAnchor">
+<a href="#do-it-kwic" class="anchor"></a>8 Do it KWIC</h1>
 <p>For this, and the next chapter, we simply use <strong>quanteda</strong>’s excellent <code><a href="../../../reference/kwic.html">kwic()</a></code> function. To find the indexes of the token positions for “gutenberg”, for instance, we use the following, which returns a data.frame with the name <code>from</code> indicating the index position of the start of the token match:</p>
-<pre class="sourceCode r" id="cb112"><code class="sourceCode r"><div class="sourceLine" id="cb112-1" data-line-number="1">gutenberg_kwic &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="dt">pattern =</span> <span class="st">"gutenberg"</span>)</div>
-<div class="sourceLine" id="cb112-2" data-line-number="2">
-<span class="kw">head</span>(gutenberg_kwic<span class="op">$</span>from, <span class="dv">10</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gutenberg_kwic &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="dt">pattern =</span> <span class="st">"gutenberg"</span>)
+<span class="kw">head</span>(gutenberg_kwic<span class="op">$</span>from, <span class="dv">10</span>)</code></pre></div>
 <pre><code>##  [1]      3     52    108 255375 255538 255650 255697 255891 256007 256105</code></pre>
-</section><section id="do-it-kwic-better" class="level1"><h1>9 Do it KWIC (Better)</h1>
+</div>
+<div id="do-it-kwic-better" class="section level1">
+<h1 class="hasAnchor">
+<a href="#do-it-kwic-better" class="anchor"></a>9 Do it KWIC (Better)</h1>
 <p>This is going to be super easy since we don’t need to reinvent the wheel here, since <code><a href="../../../reference/kwic.html">kwic()</a></code> already does all that we need.</p>
 <p>Let’s create a corpus containing <em>Moby Dick</em> but also Jane Austen’s <em>Sense and Sensibility</em>.</p>
-<pre class="sourceCode r" id="cb114"><code class="sourceCode r"><div class="sourceLine" id="cb114-1" data-line-number="1">data_char_senseandsensibility &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"http://www.gutenberg.org/files/161/161.txt"</span>))</div>
-<div class="sourceLine" id="cb114-2" data-line-number="2">litcorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(<span class="kw">c</span>(data_char_mobydick, <span class="dt">austen =</span> data_char_senseandsensibility))</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_char_senseandsensibility &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"http://www.gutenberg.org/files/161/161.txt"</span>))
+litcorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(<span class="kw">c</span>(data_char_mobydick, <span class="dt">austen =</span> data_char_senseandsensibility))</code></pre></div>
 <p>Now we can use <code><a href="../../../reference/kwic.html">kwic()</a></code> to find out where in each novel this occurred:</p>
-<pre class="sourceCode r" id="cb115"><code class="sourceCode r"><div class="sourceLine" id="cb115-1" data-line-number="1">(dogkwic &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(litcorpus, <span class="st">"dog"</span>))</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(dogkwic &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(litcorpus, <span class="st">"dog"</span>))</code></pre></div>
 <pre><code>##                                                                 
 ##        [mobydick, 17213]    all over like a Newfoundland | dog |
 ##        [mobydick, 31814]        was seen swimming like a | dog |
@@ -685,78 +643,79 @@
 ##  will, in drawing nigh     
 ##  ! It was only the</code></pre>
 <p>We can plot this easily too, as a lexical dispersion plot. By specifying the scale as “absolute”, we are looking at absolute token index position rather than relative position, and therefore we see that <em>Moby Dick</em> is nearly twice as long as <em>Sense and Sensibility</em>.</p>
-<pre class="sourceCode r" id="cb117"><code class="sourceCode r"><div class="sourceLine" id="cb117-1" data-line-number="1">
-<span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(dogkwic, <span class="dt">scale =</span> <span class="st">"absolute"</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/textplot_xray.html">textplot_xray</a></span>(dogkwic, <span class="dt">scale =</span> <span class="st">"absolute"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-45-1.png" width="768"></p>
-</section><section id="text-quality-text-variety-and-parsing-xml" class="level1"><h1>10 Text Quality, Text Variety, and Parsing XML</h1>
-</section><section id="clustering" class="level1"><h1>11 Clustering</h1>
+</div>
+<div id="text-quality-text-variety-and-parsing-xml" class="section level1">
+<h1 class="hasAnchor">
+<a href="#text-quality-text-variety-and-parsing-xml" class="anchor"></a>10 Text Quality, Text Variety, and Parsing XML</h1>
+</div>
+<div id="clustering" class="section level1">
+<h1 class="hasAnchor">
+<a href="#clustering" class="anchor"></a>11 Clustering</h1>
 <p>Chapter 11 describes how to detect clusters in a corpus. While the book uses the <code>XMLAuthorCorpus</code>, we describe clustering using U.S. State of the Union addresses included in the <strong>quantedaData</strong> package. We trim the corpus with <code><a href="../../../reference/dfm_trim.html">dfm_trim()</a></code> by keeping only those words that occur at least five times in the corpus and in at least three speeches.</p>
-<pre class="sourceCode r" id="cb118"><code class="sourceCode r"><div class="sourceLine" id="cb118-1" data-line-number="1">
-<span class="kw">library</span>(quantedaData)</div>
-<div class="sourceLine" id="cb118-2" data-line-number="2">pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> "1980-01-01"</span>), </div>
-<div class="sourceLine" id="cb118-3" data-line-number="3">               <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,</div>
-<div class="sourceLine" id="cb118-4" data-line-number="4">               <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb118-5" data-line-number="5">
-<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)</div>
-<div class="sourceLine" id="cb118-6" data-line-number="6"></div>
-<div class="sourceLine" id="cb118-7" data-line-number="7"><span class="co"># hierarchical clustering - get distances on normalized dfm</span></div>
-<div class="sourceLine" id="cb118-8" data-line-number="8">pres_dist_mat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(pres_dfm, <span class="st">"relfreq"</span>))</div>
-<div class="sourceLine" id="cb118-9" data-line-number="9"></div>
-<div class="sourceLine" id="cb118-10" data-line-number="10"><span class="co"># hiarchical clustering the distance object</span></div>
-<div class="sourceLine" id="cb118-11" data-line-number="11">pres_cluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(pres_dist_mat)</div>
-<div class="sourceLine" id="cb118-12" data-line-number="12"></div>
-<div class="sourceLine" id="cb118-13" data-line-number="13"><span class="co"># label with document names</span></div>
-<div class="sourceLine" id="cb118-14" data-line-number="14">pres_cluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(pres_dfm)</div>
-<div class="sourceLine" id="cb118-15" data-line-number="15"></div>
-<div class="sourceLine" id="cb118-16" data-line-number="16"><span class="co"># plot as a dendrogram</span></div>
-<div class="sourceLine" id="cb118-17" data-line-number="17">
-<span class="kw">plot</span>(pres_cluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quantedaData)
+pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> "1980-01-01"</span>), 
+               <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
+               <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
+
+<span class="co"># hierarchical clustering - get distances on normalized dfm</span>
+pres_dist_mat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(pres_dfm, <span class="st">"relfreq"</span>))
+
+<span class="co"># hiarchical clustering the distance object</span>
+pres_cluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(pres_dist_mat)
+
+<span class="co"># label with document names</span>
+pres_cluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(pres_dfm)
+
+<span class="co"># plot as a dendrogram</span>
+<span class="kw">plot</span>(pres_cluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-46-1.png" width="672"></p>
-</section><section id="classification" class="level1"><h1>12 Classification</h1>
-</section><section id="topic-modeling" class="level1"><h1>13 Topic Modeling</h1>
+</div>
+<div id="classification" class="section level1">
+<h1 class="hasAnchor">
+<a href="#classification" class="anchor"></a>12 Classification</h1>
+</div>
+<div id="topic-modeling" class="section level1">
+<h1 class="hasAnchor">
+<a href="#topic-modeling" class="anchor"></a>13 Topic Modeling</h1>
 <p>Finally, Jockers’ book introduces topic modeling of a corpus and the visualisation through wordclouds. In our example, we use the State of the Union addresses again. We can easily apply functions from the <strong>topicmodels</strong> package by using <strong>quanteda</strong>’s <code><a href="../../../reference/convert.html">convert()</a></code> function. In our example, we use the Irish budget speeches from 2010 and classify 20 topics using Latent Dirichlet Allocation.</p>
-<pre class="sourceCode r" id="cb119"><code class="sourceCode r"><div class="sourceLine" id="cb119-1" data-line-number="1">dfm_speeches &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, </div>
-<div class="sourceLine" id="cb119-2" data-line-number="2">                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfm_speeches &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, 
+                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)
+
+<span class="kw">library</span>(topicmodels)
+LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/convert.html">convert</a></span>(dfm_speeches, <span class="dt">to =</span> <span class="st">"topicmodels"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="dt">k =</span> <span class="dv">20</span>)
+
+<span class="co"># get top five terms per topic</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</code></pre></div>
+<pre><code>##      Topic 1    Topic 2        Topic 3    Topic 4     Topic 5    
+## [1,] "system"   "society"      "fáil"     "failed"    "taoiseach"
+## [2,] "welfare"  "enterprising" "fianna"   "strategy"  "fine"     
+## [3,] "worst"    "sense"        "child"    "needed"    "gael"     
+## [4,] "stimulus" "equal"        "deficit"  "ministers" "may"      
+## [5,] "nothing"  "nation"       "measures" "system"    "irish"    
+##      Topic 6     Topic 7   Topic 8  Topic 9       Topic 10    Topic 11  
+## [1,] "million"   "bank"    "fianna" "alternative" "taoiseach" "welfare" 
+## [2,] "measures"  "benefit" "fáil"   "citizenship" "employees" "taxation"
+## [3,] "reduced"   "banks"   "side"   "wealth"      "rate"      "system"  
+## [4,] "reduction" "case"    "level"  "adjustment"  "referred"  "high"    
+## [5,] "recent"    "less"    "third"  "breaks"      "debate"    "taxes"   
+##      Topic 12   Topic 13  Topic 14      Topic 15   Topic 16    
+## [1,] "fianna"   "child"   "kind"        "hospital" "spending"  
+## [2,] "fáil"     "day"     "imagination" "families" "investment"
+## [3,] "national" "benefit" "policies"    "hit"      "scheme"    
+## [4,] "irish"    "welfare" "wit"         "fianna"   "rate"      
+## [5,] "support"  "fianna"  "create"      "system"   "deficit"   
+##      Topic 17    Topic 18  Topic 19     Topic 20 
+## [1,] "care"      "create"  "million"    "levy"   
+## [2,] "welfare"   "value"   "support"    "million"
+## [3,] "allowance" "hope"    "welfare"    "carbon" 
+## [4,] "child"     "system"  "investment" "change" 
+## [5,] "per"       "society" "back"       "welfare"</code></pre>
 </div>
-<div class="sourceLine" id="cb119-3" data-line-number="3">
-<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)</div>
-<div class="sourceLine" id="cb119-4" data-line-number="4"></div>
-<div class="sourceLine" id="cb119-5" data-line-number="5">
-<span class="kw">library</span>(topicmodels)</div>
-<div class="sourceLine" id="cb119-6" data-line-number="6">LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/convert.html">convert</a></span>(dfm_speeches, <span class="dt">to =</span> <span class="st">"topicmodels"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb119-7" data-line-number="7">
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="dt">k =</span> <span class="dv">20</span>)</div>
-<div class="sourceLine" id="cb119-8" data-line-number="8"></div>
-<div class="sourceLine" id="cb119-9" data-line-number="9"><span class="co"># get top five terms per topic</span></div>
-<div class="sourceLine" id="cb119-10" data-line-number="10">
-<span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</div></code></pre>
-<pre><code>##      Topic 1      Topic 2     Topic 3    Topic 4   Topic 5     Topic 6   
-## [1,] "top"        "failed"    "care"     "benefit" "taoiseach" "per"     
-## [2,] "businesses" "strategy"  "earners"  "child"   "employees" "families"
-## [3,] "person"     "needed"    "welfare"  "per"     "rate"      "care"    
-## [4,] "reduction"  "ministers" "policies" "fianna"  "referred"  "welfare" 
-## [5,] "fianna"     "system"    "incomes"  "fáil"    "debate"    "hit"     
-##      Topic 7    Topic 8   Topic 9     Topic 10    Topic 11   Topic 12 
-## [1,] "welfare"  "child"   "gael"      "fianna"    "million"  "levy"   
-## [2,] "system"   "bank"    "may"       "fáil"      "spending" "million"
-## [3,] "taxation" "day"     "fine"      "never"     "scheme"   "carbon" 
-## [4,] "fianna"   "society" "irish"     "taoiseach" "review"   "change" 
-## [5,] "fáil"     "today"   "taoiseach" "person"    "measures" "welfare"
-##      Topic 13   Topic 14      Topic 15        Topic 16    Topic 17   
-## [1,] "fianna"   "alternative" "measures"      "taoiseach" "allowance"
-## [2,] "fáil"     "citizenship" "full"          "stimulus"  "workers"  
-## [3,] "national" "wealth"      "approximately" "problem"   "child"    
-## [4,] "irish"    "adjustment"  "taxes"         "employees" "million"  
-## [5,] "support"  "breaks"      "benefit"       "fine"      "fianna"   
-##      Topic 18      Topic 19     Topic 20      
-## [1,] "kind"        "million"    "society"     
-## [2,] "imagination" "support"    "enterprising"
-## [3,] "policies"    "welfare"    "sense"       
-## [4,] "wit"         "investment" "equal"       
-## [5,] "create"      "back"       "nation"</code></pre>
-</section>
 </div>
   </div>
 
