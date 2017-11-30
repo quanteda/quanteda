@@ -84,4 +84,5 @@ wiki_vector_dfm <- as.dfm(rbind(wiki_vectors, london))
 wiki_vector_dfm@Dimnames$docs[dim(wiki_vector_dfm)[1]] <- "new_london"
 cos_sim <-  textstat_simil(wiki_vector_dfm, "new_london", 
                            margin = "documents", method= "cosine")
+head(sort(cos_sim[,1], decreasing = TRUE), 5)
 ```
