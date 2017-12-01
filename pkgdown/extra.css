@@ -35,7 +35,7 @@ div.contents h1 {
 
 div.contents h2 {
     font-size: 150%;
-    padding-top: 60px;
+    padding-top: 70px;
 }
 
 div.contents h3 {
@@ -51,6 +51,7 @@ div.contents h4 {
 pre {
     overflow-x: auto;
     font-size: 80%;
+    line-height: 150%;
 }
 
 

@@ -1,5 +1,5 @@
 ---
-title: "Replication: *Text Analysis with R for Students of Literature*"
+title: "Replication: Text Analysis with R for Students of Literature"
 author: Kenneth Benoit, Stefan Müller, and Paul Nulty
 output: 
   html_document:

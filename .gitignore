@@ -1,17 +1,27 @@
-.R*
-*.Rproj
-.Rd2pdf*
-__MACOSX
-.DS_Store
-.Rproj.user
-.Rhistory
+# Binary files
 *.o
 *.so
 .httr-oauth
-*Rcheck*
 *.dll
+
+# Documents
+.Rd2pdf*
 quanteda.pdf
 API_notes.md
 
+# Tests
 /revdep/.cache.rds
+*Rcheck*
+
+# R or RStudio
+*.Rproj
+.Rproj.user
+.Rhistory
+
+# OS
+__MACOSX
+.DS_Store
+
+# Vignette
+docs/articles/pkgdown/replication/text2vec_cache/*
 inst/doc

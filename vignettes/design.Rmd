@@ -1,5 +1,5 @@
 ---
-title: "The Structure of quanteda"
+title: "The Structure of Quanteda"
 author: Kenneth Benoit
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

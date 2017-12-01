@@ -258,26 +258,26 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
 #&gt; 
 #&gt; Estimated document positions:
 #&gt; 
-#&gt;   Documents      theta         SE       lower       upper
-#&gt; 1        R1 -1.3313078 0.01573047 -1.36213953 -1.30047608
-#&gt; 2        R2 -0.6062617 0.01215640 -0.63008825 -0.58243515
-#&gt; 3        R3  0.0633357 0.01129471  0.04119808  0.08547332
-#&gt; 4        R4  0.7026680 0.01266601  0.67784258  0.72749334
-#&gt; 5        R5  1.5012143 0.01775930  1.46640610  1.53602257
-#&gt; 6        V1 -0.3296485 0.01194623 -0.35306311 -0.30623388
+#&gt;   Documents       theta         SE       lower       upper
+#&gt; 1        R1 -1.33131085 0.01573054 -1.36214271 -1.30047899
+#&gt; 2        R2 -0.60626114 0.01215646 -0.63008780 -0.58243448
+#&gt; 3        R3  0.06333812 0.01129471  0.04120049  0.08547575
+#&gt; 4        R4  0.70266896 0.01266596  0.67784367  0.72749425
+#&gt; 5        R5  1.50121167 0.01775923  1.46640358  1.53601976
+#&gt; 6        V1 -0.32964676 0.01194627 -0.35306145 -0.30623207
 #&gt; 
 #&gt; Estimated feature scores: showing first 30 beta-hats for features
 #&gt; 
 #&gt;           A           B           C           D           E           F 
-#&gt;  -7.4063972  -8.0776062  -9.7349801 -10.7145837 -11.5831425 -11.3612332 
+#&gt;  -7.4063910  -8.0775952  -9.7349589 -10.7145574 -11.5831119 -11.3611984 
 #&gt;           G           H           I           J           K           L 
-#&gt; -11.5593593 -10.4555141  -9.7338207  -8.6724276  -7.6191558  -6.6315496 
+#&gt; -11.5593225 -10.4554802  -9.7337897  -8.6724016  -7.6191351  -6.6315339 
 #&gt;           M           N           O           P           Q           R 
-#&gt;  -5.6178475  -4.6855361  -3.7792722  -2.7246909  -1.8090802  -0.7117799 
+#&gt;  -5.6178369  -4.6855300  -3.7792700  -2.7246927  -1.8090846  -0.7117870 
 #&gt;           S           T           U           V           W           X 
-#&gt;   0.2594738   1.2559882   2.3935811   3.3679943   4.4773827   5.2773869 
+#&gt;   0.2594656   1.2559800   2.3935743   3.3679894   4.4773810   5.2773881 
 #&gt;           Y           Z          ZA          ZB          ZC          ZD 
-#&gt;   6.1121231   6.9830277   7.8338656   8.8092432   9.7279387  10.4986957 </div><div class='input'>
+#&gt;   6.1121280   6.9830367   7.8338785   8.8092608   9.7279603  10.4987204 </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='no'>ie2010dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 (<span class='no'>wfm1</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>)))
