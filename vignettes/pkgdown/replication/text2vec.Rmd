@@ -7,7 +7,7 @@ output:
 ---
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, 
+knitr::opts_chunk$set(collapse = FALSE, 
                       comment = "##")
 ```
 
@@ -62,7 +62,7 @@ GloVe is an unsupervised learning algorithm for obtaining vector representations
 
 GloVe encodes the ratios of word-word co-occurrence probabilities, which is thought to represent some crude form of meaning associated with the abstract concept of the word, as vector difference. The training objective of GloVe is to learn word vectors such that their dot product equals the logarithm of the words' probability of co-occurrence.  
 
-```{r}
+```{r, cache=TRUE}
 glove <- GlobalVectors$new(word_vectors_size = 50, vocabulary = featnames(wiki_fcm), x_max = 10)
 wiki_main <- fit_transform(wiki_fcm, glove, n_iter = 20)
 ```
