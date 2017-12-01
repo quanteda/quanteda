@@ -63,7 +63,7 @@ using the command `xcode-select --install` from the Terminal.
 
 ## How to Use 
 
-See the [quick start quide](http://docs.quanteda.io/articles/quickstart.html) to learn how to use **quanteda**.
+See the [quick start quide](http://docs.quanteda.io/articles/pkgdown/quickstart.html) to learn how to use **quanteda**.
 
 ## Leaving Feedback
 
