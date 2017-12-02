@@ -39,8 +39,8 @@ toks <- corpus_subset(data_corpus_irishbudget2010) \%>\%
     tokens_remove(stopwords("english"), padding = FALSE)
 myfcm <- fcm(toks, context = "window", tri = FALSE)
 feat <- names(topfeatures(myfcm, 30))
-textplot_network(myfcm, min_freq = 50)
-fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(min_freq = 0.5, offset = 2)
+textplot_network(myfcm, min_freq = 10)
+fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(min_freq = 0.5)
 fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(min_freq = 0.8)
 }
 }
