@@ -149,9 +149,9 @@ toptag &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="
 <pre><code>## [1] "#ep2014"       "#salvini"      "#fdian"        "#ukip"        
 ## [5] "#caraacaratve" "#alzalatesta"</code></pre>
 </div>
-<div id="construct-featrure-cooccrance-matrix-of-hashtags" class="section level2">
+<div id="construct-feature-occurrence-matrix-of-hashtags" class="section level2">
 <h2 class="hasAnchor">
-<a href="#construct-featrure-cooccrance-matrix-of-hashtags" class="anchor"></a>Construct featrure-cooccrance matrix of hashtags</h2>
+<a href="#construct-feature-occurrence-matrix-of-hashtags" class="anchor"></a>Construct feature-occurrence matrix of hashtags</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tag_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(tag_dfm)
 <span class="kw">head</span>(tag_fcm)</code></pre></div>
 <pre><code>## Feature co-occurrence matrix of: 6 by 6 features.
@@ -189,9 +189,9 @@ topuser &lt;-<span class="st"> </span><span class="kw">names</span>(<span class=
 <pre><code>## [1] "@pablo_iglesias_" "@elenavalenciano" "@canete2014_"    
 ## [4] "@nigel_farage"    "@martinschulz"    "@mlp_officiel"</code></pre>
 </div>
-<div id="construct-featrure-cooccrance-matrix-of-usernames" class="section level2">
+<div id="construct-feature-occurrence-matrix-of-usernames" class="section level2">
 <h2 class="hasAnchor">
-<a href="#construct-featrure-cooccrance-matrix-of-usernames" class="anchor"></a>Construct featrure-cooccrance matrix of usernames</h2>
+<a href="#construct-feature-occurrence-matrix-of-usernames" class="anchor"></a>Construct feature-occurrence matrix of usernames</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">user_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(user_dfm)
 <span class="kw">head</span>(user_fcm)</code></pre></div>
 <pre><code>## Feature co-occurrence matrix of: 6 by 6 features.
@@ -230,13 +230,13 @@ topuser &lt;-<span class="st"> </span><span class="kw">names</span>(<span class=
 <li><a href="#load-sample-data">Load sample data</a></li>
       <li><a href="#construct-a-document-feature-matrix-of-twitter-posts">Construct a document-feature matrix of Twitter posts</a></li>
       <li><a href="#extract-most-common-hashtags">Extract most common hashtags</a></li>
-      <li><a href="#construct-featrure-cooccrance-matrix-of-hashtags">Construct featrure-cooccrance matrix of hashtags</a></li>
+      <li><a href="#construct-feature-occurrence-matrix-of-hashtags">Construct feature-occurrence matrix of hashtags</a></li>
       </ul>
 </li>
       <li>
 <a href="#usernames">Usernames</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#extract-most-frequently-mentioned-usernames">Extract most frequently mentioned usernames</a></li>
-      <li><a href="#construct-featrure-cooccrance-matrix-of-usernames">Construct featrure-cooccrance matrix of usernames</a></li>
+      <li><a href="#construct-feature-occurrence-matrix-of-usernames">Construct feature-occurrence matrix of usernames</a></li>
       </ul>
 </li>
       </ul>

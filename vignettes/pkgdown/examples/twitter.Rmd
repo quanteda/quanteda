@@ -39,7 +39,7 @@ toptag <- names(topfeatures(tag_dfm, 50))
 head(toptag)
 ```
 
-## Construct featrure-cooccrance matrix of hashtags
+## Construct feature-occurrence matrix of hashtags
 ```{r}
 tag_fcm <- fcm(tag_dfm)
 head(tag_fcm)
@@ -56,7 +56,7 @@ topuser <- names(topfeatures(user_dfm, 50))
 head(topuser)
 ```
 
-## Construct featrure-cooccrance matrix of usernames
+## Construct feature-occurrence matrix of usernames
 ```{r}
 user_fcm <- fcm(user_dfm)
 head(user_fcm)
