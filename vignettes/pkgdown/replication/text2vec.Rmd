@@ -52,7 +52,9 @@ wiki_toks <- tokens_select(wiki_toks, feats, padding = TRUE)
 wiki_fcm <- fcm(wiki_toks, context = "window", count = "weighted", weights = 1/(1:5), tri = TRUE)
 ```
 
-## Fit the [GloVe model](https://nlp.stanford.edu/pubs/glove.pdf) using [**text2vec**](http://text2vec.org)
+## Fit word embedding model
+
+Fit the [GloVe model](https://nlp.stanford.edu/pubs/glove.pdf) using [**text2vec**](http://text2vec.org).
 
 ```{r, message = FALSE}
 library(text2vec)

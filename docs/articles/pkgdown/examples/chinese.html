@@ -63,6 +63,9 @@
     <li>
       <a href="../../../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
+    <li>
+      <a href="../../../articles/pkgdown/examples/twitter.html">Social media analysis</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -137,7 +140,7 @@ csw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/s
 <a href="#example-application-on-a-set-of-text-files-in-chinese" class="anchor"></a>Example application on a set of text files in Chinese</h2>
 <p>49 “REPORT ON THE WORK OF THE GOVERNMENT” by Premier of the State Council, 1954 - 2017</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># read text files</span>
-<span class="kw">load</span>(<span class="st">"data/data_corpus_chinesegovreport.rda"</span>)
+<span class="kw">load</span>(<span class="st">"data/data_corpus_chinesegovreport.RData"</span>)
 <span class="kw">summary</span>(data_corpus_chinesegovreport, <span class="dv">10</span>)</code></pre></div>
 <pre><code>## Warning in nsentence.character(object, ...): nsentence() does not correctly
 ## count sentences in all lower-cased text</code></pre>

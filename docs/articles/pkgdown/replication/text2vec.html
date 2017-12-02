@@ -63,6 +63,9 @@
     <li>
       <a href="../../../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
+    <li>
+      <a href="../../../articles/pkgdown/examples/twitter.html">Social media analysis</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -136,7 +139,7 @@
 <pre><code>##    ... found 1 document, 253,853 features</code></pre>
 <pre><code>##    ... created a 1 x 253,853 sparse dfm
 ##    ... complete. 
-## Elapsed time: 16.5 seconds.</code></pre>
+## Elapsed time: 15 seconds.</code></pre>
 <pre><code>## Document-feature matrix of: 1 document, 253,853 features (0% sparse).</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">feats &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(wiki_toks, <span class="dt">verbose =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span>
@@ -146,7 +149,7 @@
 <pre><code>##    ... found 1 document, 253,853 features</code></pre>
 <pre><code>##    ... created a 1 x 253,853 sparse dfm
 ##    ... complete. 
-## Elapsed time: 1.33 seconds.</code></pre>
+## Elapsed time: 1.13 seconds.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># leave the pads so that non-adjacent words will not become adjacent</span>
 wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(wiki_toks, feats, <span class="dt">padding =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
@@ -155,10 +158,10 @@ wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../refer
 <a href="#construct-the-feature-co-occurrence-matrix" class="anchor"></a>Construct the feature co-occurrence matrix</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wiki_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(wiki_toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">count =</span> <span class="st">"weighted"</span>, <span class="dt">weights =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>), <span class="dt">tri =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
-<div id="fit-the-glove-model-using-text2vec" class="section level2">
+<div id="fit-word-embedding-model" class="section level2">
 <h2 class="hasAnchor">
-<a href="#fit-the-glove-model-using-text2vec" class="anchor"></a>Fit the <a href="https://nlp.stanford.edu/pubs/glove.pdf">GloVe model</a> using <a href="http://text2vec.org"><strong>text2vec</strong></a>
-</h2>
+<a href="#fit-word-embedding-model" class="anchor"></a>Fit word embedding model</h2>
+<p>Fit the <a href="https://nlp.stanford.edu/pubs/glove.pdf">GloVe model</a> using <a href="http://text2vec.org"><strong>text2vec</strong></a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(text2vec)</code></pre></div>
 <p>GloVe is an unsupervised learning algorithm for obtaining vector representations for words. Training is performed on aggregated global word-word co-occurrence statistics from a corpus, and the resulting representations showcase interesting linear substructures of the word vector space.</p>
 <p>GloVe encodes the ratios of word-word co-occurrence probabilities, which is thought to represent some crude form of meaning associated with the abstract concept of the word, as vector difference. The training objective of GloVe is to learn word vectors such that their dot product equals the logarithm of the words’ probability of co-occurrence.</p>
@@ -235,9 +238,7 @@ cos_sim &lt;-<span class="st">  </span><span class="kw"><a href="../../../refere
 <li><a href="#read-in-the-corpus">Read in the corpus</a></li>
       <li><a href="#select-features">Select features</a></li>
       <li><a href="#construct-the-feature-co-occurrence-matrix">Construct the feature co-occurrence matrix</a></li>
-      <li>
-<a href="#fit-the-glove-model-using-text2vec">Fit the </a><a href="https://nlp-stanford-edu/pubs/glove-pdf">GloVe model</a> using <a href="http://text2vec-org"><strong>text2vec</strong></a>
-</li>
+      <li><a href="#fit-word-embedding-model">Fit word embedding model</a></li>
       <li><a href="#averaging-learned-word-vectors">Averaging learned word vectors</a></li>
       <li><a href="#examining-term-representations">Examining term representations</a></li>
       </ul>

@@ -38,7 +38,7 @@ tokens("中华人民共和国成立于1949 年") %>%
 49 "REPORT ON THE WORK OF THE GOVERNMENT" by Premier of the State Council, 1954 - 2017 
 ```{r fig1, fig.height = 5, fig.width = 5, fig.align = "center"}
 # read text files
-load("data/data_corpus_chinesegovreport.rda")
+load("data/data_corpus_chinesegovreport.RData")
 summary(data_corpus_chinesegovreport, 10)
 
 # tokenize

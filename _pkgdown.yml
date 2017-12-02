@@ -20,6 +20,8 @@ navbar:
           href: articles/pkgdown/examples/plotting.html
         - text: "Chinese text analysis"
           href: articles/pkgdown/examples/chinese.html
+        - text: "Social media analysis"
+          href: articles/pkgdown/examples/twitter.html
     - text: "Replication"
       menu:
         - text: "Text Analysis with R for Students of Literature"

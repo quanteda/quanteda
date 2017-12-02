@@ -1,24 +1,30 @@
 ---
-title: "Example: Social media analysis"
-author: "KoheiWatanabe"
+title: "Example: Social media analysis (Twitter)"
+author: "Kohei Watanabe"
 output: 
   html_document:
     toc: true
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-require(quanteda)
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "##"
+)
 ```
 
-Using **quanteda**'s `fcm` and `textplot_network()`, you can perform visual analysis of social media posts in terms of cooccurances in a few steps. The sampled dataset for this example only contains 10,000 Twitter posts, but you can analyze more a million posts on your laptop computer.
+Using **quanteda**'s `fcm()` and `textplot_network()`, you can perform visual analysis of social media posts in terms of cooccurances of hashtags or usernames in a few steps. The dataset for this example contains only 10,000 Twitter posts, but you can easily analyze more one million posts on your laptop computer.
 
-# Load sample data
+# Hashtags
+
+```{r, message = FALSE}
+library(quanteda)
+```
+
+## Load sample data
 ```{r}
 load("data/data_corpus_tweets.RData")
 ```
-
-# Hash tags
 
 ## Construct a document-feature matrix of Twitter posts
 ```{r}
@@ -26,14 +32,14 @@ tweet_dfm <- dfm(data_corpus_tweets, remove_punct = TRUE)
 head(tweet_dfm)
 ```
 
-## Select hash tags and extract most common tags 
+## Extract most common hashtags
 ```{r}
 tag_dfm <- dfm_select(tweet_dfm, ('#*'))
 toptag <- names(topfeatures(tag_dfm, 50))
 head(toptag)
 ```
 
-## Construct featrure-cooccrance matrix of hash tags
+## Construct featrure-cooccrance matrix of hashtags
 ```{r}
 tag_fcm <- fcm(tag_dfm)
 head(tag_fcm)
@@ -41,16 +47,16 @@ topgat_fcm <- fcm_select(tag_fcm, toptag)
 textplot_network(topgat_fcm, min_freq = 0.1, alpha = 0.8, width = 5)
 ```
 
-# User names
+# Usernames
 
-## Select hash tags and extract 50 most frequently mentioned users 
+## Extract most frequently mentioned usernames 
 ```{r}
 user_dfm <- dfm_select(tweet_dfm, ('@*'))
 topuser <- names(topfeatures(user_dfm, 50))
 head(topuser)
 ```
 
-## Construct featrure-cooccrance matrix of user names
+## Construct featrure-cooccrance matrix of usernames
 ```{r}
 user_fcm <- fcm(user_dfm)
 head(user_fcm)

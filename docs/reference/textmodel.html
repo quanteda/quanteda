@@ -88,6 +88,9 @@
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -236,7 +239,7 @@ training values associated with each document.</p></td>
 
 <span class='co'># compare the logit and linear wordscores</span>
 <span class='no'>bs</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel</span>(<span class='no'>ieDfm</span>[<span class='fl'>5</span>:<span class='fl'>6</span>,], <span class='no'>refscores</span>[<span class='fl'>5</span>:<span class='fl'>6</span>], <span class='kw'>model</span><span class='kw'>=</span><span class='st'>"wordscores"</span>, <span class='kw'>scale</span><span class='kw'>=</span><span class='st'>"logit"</span>, <span class='kw'>smooth</span><span class='kw'>=</span><span class='fl'>1</span>)
-<span class='fu'>plot</span>(<span class='no'>ws</span>@<span class='kw'>Sw</span>, <span class='no'>bs</span>@<span class='kw'>Sw</span>, <span class='kw'>xlim</span><span class='kw'>=</span><span class='fu'>c</span>(-<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='kw'>xlab</span><span class='kw'>=</span><span class='st'>"Linear word score"</span>, <span class='kw'>ylab</span><span class='kw'>=</span><span class='st'>"Logit word score"</span>)</div><div class='img'><img src='textmodel-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>ws</span>@<span class='kw'>Sw</span>, <span class='no'>bs</span>@<span class='kw'>Sw</span>, <span class='kw'>xlim</span><span class='kw'>=</span><span class='fu'>c</span>(-<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='kw'>xlab</span><span class='kw'>=</span><span class='st'>"Linear word score"</span>, <span class='kw'>ylab</span><span class='kw'>=</span><span class='st'>"Logit word score"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in plot.new(): figure margins too large</span></div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='no'>wf</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel</span>(<span class='no'>ieDfm</span>, <span class='kw'>model</span><span class='kw'>=</span><span class='st'>"wordfish"</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
 <span class='no'>wf</span>
