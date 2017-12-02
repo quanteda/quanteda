@@ -163,7 +163,15 @@ test_that("test textplot_network", {
     txt <- "A D A C E A D F E B A C E D"
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
     testdfm <- dfm(txt)
-    # expect_silent(textplot_network(testfcm))
-    # expect_error(textplot_network(testdfm), 'x must be a fcm object')
+    expect_silent(textplot_network(testfcm, col = 'red', offset = 0.1))
+    expect_silent(textplot_network(testdfm, offset = 0.1))
+    expect_error(textplot_network(testfcm, min_freq = 100), 
+                 'There is no coocurance higher than the threashold')
+})
+
+test_that("textplot_network error when fcm is too large", {
+    testdfm <- dfm(data_corpus_irishbudget2010)
+    expect_error(textplot_network(testdfm, min_freq = 1, offset = 0, omit_isolated = FALSE),
+                   'fcm is too large for a network plot')
 })
 

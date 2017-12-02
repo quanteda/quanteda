@@ -4,17 +4,28 @@
 \alias{textplot_network}
 \title{plot a semantic network of feature co-occurrences}
 \usage{
-textplot_network(x, color = "sky blue", ignore = 0.5,
-  omit_isolated = TRUE)
+textplot_network(x, min_freq = 0.5, omit_isolated = TRUE, col = "skyblue",
+  alpha = 0.5, size = 2, width = 2, offset = NULL)
 }
 \arguments{
-\item{x}{a \link{dfm} object}
+\item{x}{a \link{fcm} or \link{dfm}  object}
 
-\item{color}{needs description}
+\item{min_freq}{a percentail or frequency count threashold for cooccurances
+of features to be plotted.}
 
-\item{ignore}{needs description}
+\item{omit_isolated}{if \code{TRUE}, features do not occuare more frequent
+than \code{min_freq} will be omitted from the plot}
 
-\item{omit_isolated}{needs description}
+\item{col}{color of edges}
+
+\item{alpha}{opacity of edges}
+
+\item{size}{size of vertices}
+
+\item{width}{width of edges}
+
+\item{offset}{if \code{NULL}, distances between vertices and labels are
+determined automatically as far as the number of vertices is less than 100.}
 }
 \description{
 Plot an \link{fcm} object as a network, where vertices are features and edges
@@ -28,8 +39,9 @@ toks <- corpus_subset(data_corpus_irishbudget2010) \%>\%
     tokens_remove(stopwords("english"), padding = FALSE)
 myfcm <- fcm(toks, context = "window", tri = FALSE)
 feat <- names(topfeatures(myfcm, 30))
-fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(ignore = 0.5)
-fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(ignore = 0.8)
+textplot_network(myfcm, min_freq = 50)
+fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(min_freq = 0.5, offset = 2)
+fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(min_freq = 0.8)
 }
 }
 \seealso{

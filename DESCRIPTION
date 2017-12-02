@@ -30,6 +30,7 @@ Imports:
     wordcloud,
     sna,
     network,
+    ggrepel,
     Rcpp,
     RcppParallel,
     RSpectra,
