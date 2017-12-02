@@ -35,8 +35,11 @@ corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), us
     UseMethod("corpus_reshape")
 }
     
-#' @noRd
-#' @rdname corpus_reshape
+#' @export
+corpus_reshape.default <- function(x, to = c("sentences", "paragraphs", "documents"), use_docvars = TRUE, ...) {
+    stop(friendly_class_undefined_message(class(x), "corpus_reshape"))
+}
+
 #' @export
 corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), use_docvars = TRUE, ...) {
     

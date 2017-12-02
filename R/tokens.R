@@ -171,6 +171,11 @@ tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", 
     UseMethod("tokens")
 }
 
+#' @export
+tokens.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "tokens"))
+}
+
 #' @rdname tokens
 #' @noRd
 #' @export
@@ -277,18 +282,9 @@ as.tokens <- function(x, concatenator = "_", ...) {
     UseMethod("as.tokens")
 }
 
-#' @rdname as.tokens
-#' @noRd
 #' @export
 as.tokens.default <- function(x, concatenator = "", ...) {
-    valid_object_types <- 
-        utils::methods(as.tokens) %>% 
-        as.character() %>% 
-        stringi::stri_extract_last_regex("\\w+$")
-    valid_object_types <- valid_object_types[valid_object_types != "default"]
-    stop("as.tokens() only works on ", 
-         paste(valid_object_types, collapse = ", "),
-         " objects.")
+    stop(friendly_class_undefined_message(class(x), "as.tokens"))
 }
 
 #' @rdname as.tokens
@@ -866,6 +862,11 @@ types <- function(x) {
 }
 
 #' @export
+types.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "types"))
+}
+
+#' @export
 types.tokens <- function(x) {
     attr(x, "types")
 }
@@ -873,6 +874,10 @@ types.tokens <- function(x) {
 "types<-" <- function(x, value) {
     UseMethod("types<-")
 }
+
+# "types<-.default" <- function(x, value) {
+#     stop(friendly_class_undefined_message(class(x), "types<-"))
+# }
 
 "types<-.tokens" <- function(x, value) {
     if (!is.character(value))
@@ -921,5 +926,3 @@ c.tokens <- function(...) {
         result <- result + x[[i]]
     return(result)
 }
-
-

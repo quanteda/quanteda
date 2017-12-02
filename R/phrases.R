@@ -24,6 +24,11 @@ phrase <- function(x) {
     UseMethod("phrase")
 }
 
+#' @export
+phrase.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "phrase"))
+}
+
 #' @noRd
 #' @export
 phrase.character <- function(x) {

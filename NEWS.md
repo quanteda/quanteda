@@ -5,7 +5,17 @@
 ### New Features
 
 * Added `textmodel_lsa()` for Latent Semantic Analysis models.  
-* Added `textmodel_affinity()` for the Perry and Benoit (2017) class affinity scaling model.  
+* Added `textmodel_affinity()` for the Perry and Benoit (2017) class affinity scaling model.
+* Added Chinese stopwords.
+* Added a pkgdown vignette for applications in the Chinese language.
+
+### Bug fixes and stability enhancements
+
+* Performance has been improved for `fcm()` and for `textmodel_wordfish()`.
+
+### Behaviour Changes
+
+* The convenience wrappers to `convert()` are simplified and no longer exported.  To convert a dfm, `convert()` is now the only official function.
 
 
 ## Changes since v0.99.12
@@ -20,7 +30,6 @@
 ### Bug fixes and stability enhancements
 
 * Improved documentation for `textmodel_nb()` (#1010), and made output quantities from the fitted NB model regular matrix objects instead of **Matrix** classes.
-
 
 ### Behaviour Changes
 

@@ -1,4 +1,3 @@
-
 context("test convert function and shortcuts")
 
 mytexts <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
@@ -10,7 +9,7 @@ test_that("test STM package converter", {
     skip_if_not_installed("tm")
     
     dSTM <- convert(d, to = "stm")
-    tP <- stm::textProcessor(mytexts, removestopwords = FALSE, 
+    tP <- stm::textProcessor(mytexts, removestopwords = FALSE, verbose = FALSE, 
                              stem = FALSE, wordLengths = c(1, Inf))
     expect_equivalent(dSTM$documents[1], tP$documents[1])
     expect_equivalent(dSTM$documents[2], tP$documents[2])
@@ -24,7 +23,7 @@ test_that("test STM package converter with metadata", {
     mycorpus <- corpus(mytexts, docvars = dv)
     dm <- dfm(mycorpus, remove_punct = TRUE)
     dSTM <- convert(dm, to = "stm")
-    tP <- stm::textProcessor(mytexts, removestopwords = FALSE, 
+    tP <- stm::textProcessor(mytexts, removestopwords = FALSE, verbose = FALSE, 
                              stem = FALSE, wordLengths = c(1, Inf))
     expect_equivalent(dSTM$documents[1], tP$documents[1])
     expect_equivalent(dSTM$documents[2], tP$documents[2])
@@ -44,7 +43,7 @@ test_that("test STM package converter with metadata w/zero-count document", {
     expect_true(ntoken(dm)[2] == 0)
     
     dSTM <- suppressWarnings(convert(dm, to = "stm"))
-    tP <- stm::textProcessor(mytexts, removestopwords = FALSE, 
+    tP <- stm::textProcessor(mytexts, removestopwords = FALSE, verbose = FALSE, 
                              stem = FALSE, wordLengths = c(1, Inf))
     expect_equivalent(dSTM$documents[1], tP$documents[1])
     expect_equivalent(dSTM$documents[2], tP$documents[2])
@@ -67,12 +66,12 @@ test_that("test tm package converter", {
 
 test_that("test lda package converter", {
     skip_if_not_installed("tm")
-    expect_identical(convert(d, to = "topicmodels"), quantedaformat2dtm(d))
+    expect_identical(convert(d, to = "topicmodels"), quanteda:::dfm2dtm(d))
 })
 
 test_that("test topicmodels package converter", {
     skip_if_not_installed("tm")
-    expect_identical(convert(d, to = "lda"), dfm2ldaformat(d))
+    expect_identical(convert(d, to = "lda"), quanteda:::dfm2lda(d))
 })
 
 test_that("test austin package converter", {
@@ -214,7 +213,7 @@ test_that("tm converter works under extreme situations", {
                         0, 0, 0, 0, 
                         1, 2, 3, 4), byrow = TRUE, nrow = 4)
     tmdfm <- convert(as.dfm(amatrix), to = "tm")
-    expect_equivalent(tm::inspect(tmdfm[,]), amatrix)
+    expect_equivalent(as.matrix(tmdfm), amatrix)
     
     #zero-count feature:
     bmatrix <- matrix(c(1, 0, 2, 0, 
@@ -222,10 +221,23 @@ test_that("tm converter works under extreme situations", {
                         1, 0, 0, 0, 
                         1, 0, 3, 4), byrow = TRUE, nrow = 4)
     tmdfm <- convert(as.dfm(bmatrix), to = "tm")
-    expect_equivalent(tm::inspect(tmdfm[,]), bmatrix)
+    expect_equivalent(as.matrix(tmdfm), bmatrix)
     
     #when dfm is 0% sparse
     cmatrix <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)
     tmdfm <- convert(as.dfm(cmatrix), to = "tm")
-    expect_equivalent(tm::inspect(tmdfm[,]), cmatrix)
+    expect_equivalent(as.matrix(tmdfm), cmatrix)
+})
+
+test_that("weighted dfm is not convertible to a topic model format (#1091)", {
+    err_msg <- "cannot convert a non-count dfm to a topic model format"
+
+    expect_error(convert(tf(d, "prop"), to = "stm"), err_msg)
+    expect_error(convert(tf(d, "prop"), to = "topicmodels"), err_msg)
+    expect_error(convert(tf(d, "prop"), to = "lda"), err_msg)
+    expect_error(convert(dfm_weight(d, "relfreq"), to = "stm"), err_msg)
+    expect_error(convert(dfm_weight(d, "logfreq"), to = "stm"), err_msg)
+    
+    expect_error(convert(dfm_weight(d, "tfidf"), to = "stm"), err_msg)
+    expect_error(convert(tfidf(d), to = "stm"), err_msg)
 })

@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.99.9023
+Version: 0.99.9026
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -14,6 +14,7 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "ctb"), 
     person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "ctb"),
     person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
+    person("Stefan", "Müller", email = "mullers@tcd.ie", role = "ctb"),
     person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
     person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb") )
 License: GPL-3
@@ -27,7 +28,7 @@ Imports:
     data.table (>= 1.9.6),
     SnowballC,
     wordcloud,
-    ggnetwork,
+    sna,
     network,
     Rcpp,
     RcppParallel,

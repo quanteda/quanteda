@@ -1,6 +1,36 @@
 template:
   params:
+    bootswatch: readable
     ganalytics: UA-144616-24
+navbar:
+  title: "Quanteda"
+  type: inverse
+  left:
+    - text: "Quick Start"
+      href: articles/pkgdown/quickstart.html
+    - text: "Reference"
+      href: reference/index.html
+    - text: "Features"
+      href: articles/pkgdown/comparison.html
+    - text: "Examples"
+      menu:
+        - text: "Latent Semantic Analysis (LSA)"
+          href: articles/pkgdown/examples/lsa.html
+        - text: "Textual data visualization"
+          href: articles/pkgdown/examples/plotting.html
+        - text: "Chinese text analysis"
+          href: articles/pkgdown/examples/chinese.html
+    - text: "Replication"
+      menu:
+        - text: "Text Analysis with R for Students of Literature"
+          href: articles/pkgdown/replication/digital-humanities.html
+        - text: "Word embedding (word2vec)"
+          href: articles/pkgdown/replication/text2vec.html
+    - text: "Design"
+      href: articles/design.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/kbenoit/quanteda
 reference:
 - title: Package-level
   contents:
@@ -102,7 +132,6 @@ reference:
   contents:
     - collocations
     - is.collocations
-    - sequences
     - is.kwic
     - kwic
 - title: Text plot functions

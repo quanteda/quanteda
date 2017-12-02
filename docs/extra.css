@@ -1,0 +1,57 @@
+/* Edit pkgdown/extra.css to customize the theme */
+
+/* this block can be section or div */
+#overview h1 {
+    font-size: 250%;
+    padding-top: 60px;
+}
+
+
+.navbar-inverse .navbar-brand {
+    background-image: url(https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo_small.svg);
+    background-repeat: no-repeat;
+    background-position: 15px 10px;
+    background-size: 150px auto;
+    text-indent: -9999px;
+    padding-left: 155px;
+}
+
+
+div.page-header h1 {
+    font-size: 250%;
+    color: dimgray;
+}
+
+div.page-header h4 {
+    padding-top: 10px;
+    font-size: 120%;
+}
+
+div.contents h1 {
+    color: dimgray;
+    font-size: 200%;
+    padding-top: 80px;
+}
+
+div.contents h2 {
+    font-size: 150%;
+    padding-top: 70px;
+}
+
+div.contents h3 {
+    font-size: 120%;
+    padding-top: 60px;
+}
+
+div.contents h4 {
+    font-size: 100%;
+    padding-top: 60px;
+}
+
+pre {
+    overflow-x: auto;
+    font-size: 80%;
+    line-height: 150%;
+}
+
+

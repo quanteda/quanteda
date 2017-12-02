@@ -46,6 +46,11 @@ kwic <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed")
     UseMethod("kwic")
 }
 
+#' @export
+kwic.default <- function(x, ...) {
+    stop(friendly_class_undefined_message(class(x), "kwic"))
+}
+
 #' @rdname kwic
 #' @noRd
 #' @export

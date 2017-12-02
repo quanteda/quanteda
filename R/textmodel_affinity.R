@@ -59,9 +59,11 @@ setClass("textmodel_affinity_predicted",
 #' predict(fitted)
 #' predict(fitted, newdata = data_dfm_lbgexample[6, ])
 #'
+#' \dontrun{
 #' # compute bootstrapped SEs
 #' bsdfm <- bootstrap_dfm(data_corpus_dailnoconf1991, n = 10, remove_punct = TRUE)
 #' textmodel_affinity(bsdfm, y = c("Govt", "Opp", "Opp", rep(NA, 55)))
+#' }
 #' @export
 #' @keywords textmodel experimental
 #' @importFrom methods as
@@ -72,8 +74,14 @@ textmodel_affinity <- function(x, y, exclude = NULL,
     UseMethod("textmodel_affinity")
 }
 
+#' @export
+textmodel_affinity.default <- function(x, y, exclude = NULL,
+                                   smooth = 0.5, ref_smooth = 0.5,
+                                   verbose = FALSE) {
+    stop(friendly_class_undefined_message(class(x), "textmodel_affinity"))
+}
+    
 
-#' @noRd
 #' @export
 textmodel_affinity.dfm <- function(x, y, exclude = NULL,
                                  smooth = 0.5, ref_smooth = 0.5,
@@ -115,7 +123,6 @@ textmodel_affinity.dfm <- function(x, y, exclude = NULL,
         call = match.call())
 }
 
-#' @noRd
 #' @export
 textmodel_affinity.dfm_bootstrap <- function(x, y, exclude = NULL,
                                            smooth = 0.5, ref_smooth = 0.5,
@@ -167,7 +174,7 @@ textmodel_affinity.dfm_bootstrap <- function(x, y, exclude = NULL,
 #' q <- drop(p %*% theta)
 #' x <- 2 * q
 #' (fit <- affinity(p, x))
-#' @keywords internal
+#' @keywords internal textmodel
 #' @export
 affinity <- function(p, x, smooth = 0.5, verbose = FALSE) {
     p <- as.matrix(p)
@@ -448,6 +455,7 @@ affinity1 <- function(p, x, smooth, verbose) {
 #'   list of format...
 #' @method predict textmodel_affinity_fitted
 #' @importFrom methods new
+#' @keywords textmodel internal
 #' @export
 predict.textmodel_affinity_fitted <- function(object, newdata = NULL,
                                             level = 0.95, verbose = FALSE, ...) {

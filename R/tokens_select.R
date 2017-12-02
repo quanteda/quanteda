@@ -67,6 +67,16 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
     UseMethod("tokens_select")
 }
 
+#' @export
+tokens_select.default <- function(x, pattern = NULL, 
+                                 selection = c("keep", "remove"), 
+                                 valuetype = c("glob", "regex", "fixed"),
+                                 case_insensitive = TRUE, padding = FALSE, window = 0,
+                                 min_nchar = 1L, max_nchar = 79L,
+                                 verbose = quanteda_options("verbose"), ...) {
+    stop(friendly_class_undefined_message(class(x), "tokens_select"))
+}
+
 #' @rdname tokens_select
 #' @noRd
 #' @importFrom RcppParallel RcppParallelLibs
@@ -172,7 +182,6 @@ tokens_remove <- function(x, ...) {
     tokens_select(x, ..., selection = "remove")
 }
 
-
 #' @rdname tokens_select
 #' @export
 #' @examples 
@@ -184,4 +193,3 @@ tokens_keep <- function(x, ...) {
     }
     tokens_select(x, ..., selection = "keep")
 }
-

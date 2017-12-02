@@ -55,5 +55,4 @@ test_that("bootstrap_dfm works as planned with dfm", {
         docnames(dfmresamp2[[1]]),
         docnames(dfmresamp2[[2]])
     )
-    
 })

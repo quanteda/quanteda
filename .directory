@@ -1,5 +1,9 @@
 [Dolphin]
+<<<<<<< HEAD
 SortRole=size
 Timestamp=2017,11,10,17,49,33
+=======
+Timestamp=2017,11,29,8,48,48
+>>>>>>> master
 Version=4
 ViewMode=1

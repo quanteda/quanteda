@@ -103,7 +103,12 @@ textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", 
 }
 
 
-#' @noRd
+#' @export
+textstat_lexdiv.default <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
+                                log.base = 10, drop = TRUE, ...) {
+    stop(friendly_class_undefined_message(class(x), "textstat_lexdiv"))
+}
+
 #' @export
 textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
                                 log.base = 10, drop = TRUE, ...) {
@@ -172,4 +177,3 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
     }
     results
 }
-

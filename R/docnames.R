@@ -24,6 +24,11 @@ docnames <- function(x) {
     UseMethod("docnames")
 }
 
+#' @export
+docnames.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "docnames"))
+}
+
 #' @noRd
 #' @export
 docnames.corpus <- function(x) {
@@ -46,6 +51,11 @@ docnames.corpus <- function(x) {
 #' @rdname docnames
 "docnames<-" <- function(x, value) {
     UseMethod("docnames<-")
+}
+
+#' @export
+"docnames<-.default" <- function(x, value) {
+    stop(friendly_class_undefined_message(class(x), "docnames<-"))
 }
 
 #' @noRd

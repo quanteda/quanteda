@@ -138,7 +138,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_fcm
-arma::sp_mat qatd_cpp_fcm(const Rcpp::List& texts_, const int n_types, const String& count, const unsigned int window, const NumericVector& weights, const bool ordered, const bool tri, const unsigned int nvec);
+S4 qatd_cpp_fcm(const Rcpp::List& texts_, const int n_types, const String& count, const unsigned int window, const NumericVector& weights, const bool ordered, const bool tri, const unsigned int nvec);
 RcppExport SEXP _quanteda_qatd_cpp_fcm(SEXP texts_SEXP, SEXP n_typesSEXP, SEXP countSEXP, SEXP windowSEXP, SEXP weightsSEXP, SEXP orderedSEXP, SEXP triSEXP, SEXP nvecSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

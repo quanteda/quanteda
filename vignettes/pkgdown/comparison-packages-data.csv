@@ -1,0 +1,33 @@
+Function,Category,quanteda,tm,tidytext,corpus,koRpus,NLTK
+Create corpus,Corpus,corpus(),Corpus(),,corpus_frame(),read.corp.custom(),PlaintextCorpusReader()
+Bind/subset corpora,Corpus,corpus_subset(),"tm_combine(); tm_filter() 
+",,,,
+Reshape corpus into smaller units,Corpus,corpus_reshape()/corpus_segment(),,,text_split(),,
+Take random sample of corpus texts,Corpus,corpus_sample(),,,,,
+Keywords-in-context,Corpus,kwic(),,,text_locate(),,common_contexts()
+Tokenize texts,Edit features,tokens(),tokenizer(),unnest_tokens(),text_tokens(),tokenize(),nltk.word_tokenize
+Stem features,Edit features,tokens_wordstem(),stemDocument(),,stem_snowball(),treetag(),stem()
+Define multi-word sequences,Edit features,phrase(),,,,,MWETokenizer
+Create document-feature matrix,Extract features,dfm(),TermDocumentMatrix(),unnest_tokens(),term_matrix(),,
+Create a feature co-occurence matrix,Extract features,fcm(),,,,,
+Weight a dfm/fcm,Extract features,dfm_weight(); fcm_weight(),"weightTf(); weightTfIdf()
+","bind_tf_idf()
+",,,
+Create a custom dictionary,Dictionary analysis,dictionary(),,dictionary always a data.frame object,,,SentimentAnalyzer
+Included dictionaries,Dictionary analysis,Lexicoder,,"AFINN, Bing, NRC","AFINN Sentiment dictionary, WordNet-Affect Lexicon",,
+Apply custom dictionaries,Dictionary analysis,dfm_lookup(),,dplyr::inner_join(),,,SentimentAnalyzer
+Supported dictionary formats,Dictionary analysis,"Wordstat, LIWC, yoshicoder, lexicoder, YAML",,data.frame objects,,,
+Calculate feature frequencies,Text statistics,textstat_frequency(),FindMostFreqTerms(),dplyr::count(),term_stats(),freq.analysis(),FreqDist()
+Extract collocations,Text statistics,textstat_collocations(),,"unnest_tokens(token = ""ngrams"")",,,collocations()
+Readability scores,Text statistics,textstat_readability(),,,,readability(),nltk_contrib.readability
+Lexical diversity,Text statistics,textstat_lexdiv(),,,,various measures,lexical_diversity()
+Distance/similarity measures,Text statistics,textstat_simil(); textstat_dist(),,,,,
+Keyness statistics,Text statistics,textstat_keyness(),,,,,
+Wordcloud,Text statistics,textplot_wordcloud(),,,,,
+Correspondence Analysis,Text scaling models,textmodel_ca(),,,,,
+Naïve Bayes,Text scaling models,textmodel_NB(),,,,,NaiveBayesClassifier
+Wordscores,Text scaling models,textmodel_wordscores(),,,,,
+Wordfish,Text scaling models,textmodel_wordfish(),,,,,
+Convert dfm to other format,Additional functions,convert(),,cast_tdm(),,,
+POS-tagging,Additional functions,spacyr package,,parts_of_speech(),,kRp.POS.tags(),nltk.pos_tag
+Import texts,Additional functions,readtext package,Reader(),,,,read()

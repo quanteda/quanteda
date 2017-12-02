@@ -10,6 +10,7 @@ knitr::opts_chunk$set(
   fig.path = "man/images/"
 )
 ```
+
 [![quanteda: quantitative analysis of textual data](https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
 
 [![CRAN Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
@@ -28,70 +29,45 @@ collaboration with a team of core
 [Kohei Watanabe](https://github.com/koheiw), 
 [Paul Nulty](https://github.com/pnulty), 
 [Adam Obeng](https://github.com/adamobeng), 
+[Stefan Müller](http://muellerstefan.net),
 [Haiyan Wang](https://github.com/HaiyanLW), 
 [Ben Lauderdale](https://github.com/lauderdale), 
 and [Will Lowe](https://github.com/conjugateprior).  
 Supported by the European Research Council grant ERC-2011-StG 
 283794-QUANTESS.
 
-For more details, see http://quanteda.io.
-
-How to cite the package:
-
-```{r echo = FALSE, out.width = 80, comment = NA}
-citation("quanteda")
-```
+For more details, see http://docs.quanteda.io.
 
 ## How to Install
 
-1.  From [CRAN](https://CRAN.R-project.org/package=quanteda): Use your GUI's R package installer, or execute:
+The normal way from CRAN, using your R GUI or 
+```{r eval = FALSE}
+install.packages("quanteda") 
+```
 
-    ```{r eval = FALSE}
-    install.packages("quanteda") 
-    ```
+Or for the latest development version:
+```{r eval = FALSE}
+# devtools packaged required to install quanteda from Github 
+devtools::install_github("kbenoit/quanteda") 
+```
 
-2.  From [GitHub](https://github.com/kbenoit/quanteda), using:
-
-    ```{r eval = FALSE}
-    # devtools packaged required to install quanteda from Github 
-    devtools::install_github("kbenoit/quanteda") 
-    ```
-
-    Because this compiles some C++ source code, you will need a compiler installed. 
-    If you are using a Windows platform, this means you will need also to install 
-    the [Rtools](https://CRAN.R-project.org/bin/windows/Rtools/) software available 
-    from CRAN.  **If you are using macOS**, you will need to to install XCode, available 
-    for free from the App Store, or if you prefer a lighter footprint set of tools, 
-    [just the Xcode command line 
-    tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/ ), 
-    using the command `xcode-select --install` from the Terminal.
+Because this compiles some C++ source code, you will need a compiler installed.
+**If you are using a Windows platform**, this means you will need also to install
+the [Rtools](https://CRAN.R-project.org/bin/windows/Rtools/) software available
+from CRAN.  **If you are using macOS**, you will need to to install XCode,
+available for free from the App Store, or if you prefer a lighter footprint set
+of tools, [just the Xcode command line
+tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/ ),
+using the command `xcode-select --install` from the Terminal.
     
-    Also, you might need to upgrade your compiler.  @kbenoit found that his macOS build only worked reliably after upgrading the default Xcode compiler to clang4, following [these instructions](http://thecoatlessprofessor.com/programming/openmp-in-r-on-os-x/#after-3-4-0).
 
-3.  Additional recommended packages:
+## How to Use 
 
-    The following packages work well with or extend **quanteda** and we recommend that you also install them:
-    
-    *  [**readtext**](https://github.com/kbenoit/readtext):  An easy way to read text data into R, from almost any input format.
-    
-    *  [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library, including part-of-speech tagging, entity recognition, and dependency parsing.
+See the [quick start quide](http://docs.quanteda.io/articles/pkgdown/quickstart.html) to learn how to use **quanteda**.
 
-    *  [**quantedaData**](https://github.com/kbenoit/quantedaData): Additional textual data for use with **quanteda**.
-
-        ```{r eval = FALSE}
-        devtools::install_github("kbenoit/quantedaData")
-        ```
-    *  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): An R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
-    
-        ```{r eval = FALSE}
-        devtools::install_github("kbenoit/LIWCalike")
-        ```
-
-## Leaving feedback
+## Leaving Feedback
 
 If you like **quanteda**, please consider leaving [feedback or a testimonial here](https://github.com/kbenoit/quanteda/issues/461).
-
-
 
 ## Contributing
 

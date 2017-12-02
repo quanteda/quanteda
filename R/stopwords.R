@@ -15,12 +15,12 @@
 #'   user, and accessing a pre-defined list of words to ignore does not mean 
 #'   that it will perfectly fit your needs. You are strongly encouraged to 
 #'   inspect the list and to make sure it fits your particular requirements.
-#' @param kind The pre-set kind of stopwords (as a character string).  Allowed 
-#'   values are \code{english}, \code{SMART}, \code{danish}, \code{french}, 
-#'   \code{greek}, \code{hungarian}, \code{norwegian}, \code{russian}, 
-#'   \code{swedish}, \code{catalan}, \code{dutch}, \code{finnish}, 
-#'   \code{german}, \code{italian}, \code{portuguese}, \code{spanish}, 
-#'   \code{arabic}.
+#' @param kind The pre-set kind of stopwords (as a character string).  Allowed
+#'   values are \code{english}, \code{SMART}, \code{chinese}, \code{danish},
+#'   \code{french}, \code{greek}, \code{hungarian}, \code{norwegian},
+#'   \code{russian}, \code{swedish}, \code{catalan}, \code{dutch},
+#'   \code{finnish}, \code{german}, \code{italian}, \code{portuguese},
+#'   \code{spanish}, \code{arabic}.
 #' @return a character vector of stopwords
 #' @source The English stopwords are taken from the SMART information retrieval 
 #'   system (obtained from Lewis, David D., et al. 
@@ -33,12 +33,16 @@
 #'   
 #'   The Greek stopwords were supplied by Carsten Schwemmer (see 
 #'   \href{https://github.com/kbenoit/quanteda/issues/282}{GitHub issue #282}).
+#'   
+#'   The Chinese stopwords are taken from the
+#'   \href{http://www.baiduguide.com/baidu-stopwords/}{Baidu stopword list}.
 #' @name stopwords
 #' @export
 #' @examples
 #' head(stopwords("english"))
 #' head(stopwords("italian"))
 #' head(stopwords("arabic"))
+#' head(stopwords("chinese"))
 #' head(stopwords("SMART"))
 #' 
 #' # adding to the built-in stopword list
