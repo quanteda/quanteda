@@ -124,7 +124,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     
         if (is.null(offset)) {
             plot <- plot + geom_text_repel(data = vertex, aes(x, y, label = label),
-                                           segment.color = vertex_color,
+                                           segment.color = vertex_color, segment.size = 0.2,
                                            color = text_color)
         } else {
             plot <- plot + geom_text(data = vertex, aes(x, y, label = label),
