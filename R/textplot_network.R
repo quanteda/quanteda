@@ -1,7 +1,7 @@
-#' plot a semantic network of feature co-occurrences
+#' plot a network of feature co-occurrences
 #'
-#' Plot an \link{fcm} object as a network, where vertices are features and edges
-#' are co-occurrences.
+#' Plot an \link{fcm} object as a network, where edges show co-occurrences of
+#' features.
 #' @param x a \link{fcm} or \link{dfm}  object
 #' @param min_freq a percentail or frequency count threashold for cooccurances
 #'   of features to be plotted.
@@ -103,31 +103,31 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     n <- network(as.matrix(x), matrix.type = 'adjacency', directed = FALSE, 
                  ignore.eval = FALSE, names.eval = 'weight')
     vertex <- data.frame(sna::gplot.layout.fruchtermanreingold(n, NULL))
+    colnames(vertex) <- c('x', 'y')
     vertex$label <- colnames(x)
-
 
     weight <- get.edge.attribute(n, "weight")
     weight <- weight / max(weight)
     
     index <- as.edgelist(n)
-    edge <- data.frame(X1 = vertex[,1][index[,1]], 
-                       Y1 = vertex[,2][index[,1]],
-                       X2 = vertex[,1][index[,2]], 
-                       Y2 = vertex[,2][index[,2]],
+    edge <- data.frame(x1 = vertex[,1][index[,1]], 
+                       y1 = vertex[,2][index[,1]],
+                       x2 = vertex[,1][index[,2]], 
+                       y2 = vertex[,2][index[,2]],
                        weight = weight[index[,1]])
     
     plot <- ggplot() + 
-        geom_curve(data = edge, aes(x = X1, y = Y1, xend = X2, yend = Y2), 
+        geom_curve(data = edge, aes(x = x1, y = y1, xend = x2, yend = y2), 
                    color = edge_color, curvature = 0.2, alpha = edge_alpha, lineend = "round",
                    angle = 90, size = weight * edge_size) + 
-        geom_point(data = vertex, aes(X1, X2), color = vertex_color, size = vertex_size, shape = 19)
+        geom_point(data = vertex, aes(x, y), color = vertex_color, size = vertex_size, shape = 19)
     
         if (is.null(offset)) {
-            plot <- plot + geom_text_repel(data = vertex, aes(X1, X2, label = label),
+            plot <- plot + geom_text_repel(data = vertex, aes(x, y, label = label),
                                            segment.color = vertex_color,
                                            color = text_color)
         } else {
-            plot <- plot + geom_text(data = vertex, aes(X1, X2, label = label),
+            plot <- plot + geom_text(data = vertex, aes(x, y, label = label),
                                      nudge_y = offset, color = text_color)
         }
 
