@@ -53,7 +53,7 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  text_color = NULL,
                                  offset = NULL) {
 
-    textplot_network(fcm(x), x, min_freq = min_freq, omit_isolated = omit_isolated, 
+    textplot_network(fcm(x), min_freq = min_freq, omit_isolated = omit_isolated, 
                      edge_color = edge_color, edge_alpha = edge_alpha, edge_size = edge_size, 
                      vertex_color = vertex_color, vertex_size = vertex_size,
                      text_color = text_color,
