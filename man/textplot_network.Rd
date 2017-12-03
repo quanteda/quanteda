@@ -2,7 +2,7 @@
 % Please edit documentation in R/textplot_network.R
 \name{textplot_network}
 \alias{textplot_network}
-\title{plot a semantic network of feature co-occurrences}
+\title{plot a network of feature co-occurrences}
 \usage{
 textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
   edge_color = "skyblue", edge_alpha = 0.5, edge_size = 2,
@@ -36,8 +36,8 @@ If \code{NA} is given, texts are not rendered.}
 determined automatically.}
 }
 \description{
-Plot an \link{fcm} object as a network, where vertices are features and edges
-are co-occurrences.
+Plot an \link{fcm} object as a network, where edges show co-occurrences of
+features.
 }
 \examples{
 \dontrun{

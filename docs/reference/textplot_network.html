@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>plot a semantic network of feature co-occurrences — textplot_network • quanteda</title>
+<title>plot a network of feature co-occurrences — textplot_network • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -131,16 +131,18 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>plot a semantic network of feature co-occurrences</h1>
+    <h1>plot a network of feature co-occurrences</h1>
     </div>
 
     
-    <p>Plot an <a href='fcm.html'>fcm</a> object as a network, where vertices are features and edges
-are co-occurrences.</p>
+    <p>Plot an <a href='fcm.html'>fcm</a> object as a network, where edges show co-occurrences of
+features.</p>
     
 
-    <pre class="usage"><span class='fu'>textplot_network</span>(<span class='no'>x</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"skyblue"</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>offset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>textplot_network</span>(<span class='no'>x</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>edge_color</span> <span class='kw'>=</span> <span class='st'>"skyblue"</span>, <span class='kw'>edge_alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>edge_size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>vertex_color</span> <span class='kw'>=</span> <span class='st'>"gray40"</span>, <span class='kw'>vertex_size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>text_color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>offset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -160,25 +162,35 @@ of features to be plotted.</p></td>
 than <code>min_freq</code> will be omitted from the plot</p></td>
     </tr>
     <tr>
-      <th>col</th>
-      <td><p>color of edges</p></td>
+      <th>edge_color</th>
+      <td><p>color of edges that connect vertices.</p></td>
     </tr>
     <tr>
-      <th>alpha</th>
-      <td><p>opacity of edges</p></td>
+      <th>edge_alpha</th>
+      <td><p>opacity of edges ranging from 0 to 1.0.</p></td>
     </tr>
     <tr>
-      <th>size</th>
-      <td><p>size of vertices</p></td>
+      <th>edge_size</th>
+      <td><p>size of edges for most frequent cooccurances. The size of
+other edges are determined proportionally to the highest frequency.</p></td>
     </tr>
     <tr>
-      <th>width</th>
-      <td><p>width of edges</p></td>
+      <th>vertex_color</th>
+      <td><p>color of vertices.</p></td>
+    </tr>
+    <tr>
+      <th>vertex_size</th>
+      <td><p>size of vertices.</p></td>
+    </tr>
+    <tr>
+      <th>text_color</th>
+      <td><p>color of texts. Default to the same as <code>vertex_color</code>.
+If <code>NA</code> is given, texts are not rendered.</p></td>
     </tr>
     <tr>
       <th>offset</th>
-      <td><p>if <code>NULL</code>, distances between vertices and labels are
-determined automatically as far as the number of vertices is less than 100.</p></td>
+      <td><p>if <code>NULL</code>, the distance between vertices and texts are
+determined automatically.</p></td>
     </tr>
     </table>
     
@@ -198,6 +210,8 @@ determined automatically as far as the number of vertices is less than 100.</p><
 <span class='fu'>textplot_network</span>(<span class='no'>myfcm</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 <span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span> <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
 <span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span> <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
+<span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+        <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>text_color</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>'gray40'</span>, <span class='fl'>NA</span>), <span class='fl'>15</span>))
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
