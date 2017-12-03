@@ -7,12 +7,16 @@
 #'   of features to be plotted.
 #' @param omit_isolated if \code{TRUE}, features do not occuare more frequent
 #'   than \code{min_freq} will be omitted from the plot
-#' @param col color of edges
-#' @param alpha opacity of edges
-#' @param size size of vertices
-#' @param width width of edges
-#' @param offset if \code{NULL}, distances between vertices and labels are
-#'   determined automatically as far as the number of vertices is less than 100.
+#' @param edge_color color of edges that connect vertices.
+#' @param edge_alpha opacity of edges ranging from 0 to 1.0.
+#' @param edge_size size of edges for most frequent cooccurances. The size of
+#'   other edges are determined proportionally to the highest frequency.
+#' @param vertex_size size of vertices.
+#' @param vertex_color color of vertices.
+#' @param text_color color of texts. Default to the same as \code{vertex_color}.
+#'   If \code{NA} is given, texts are not rendered.
+#' @param offset if \code{NULL}, the distance between vertices and texts are
+#'   determined automatically.
 #' @author Kohei Watanabe and Stefan Müller
 #' @examples
 #' \dontrun{
@@ -25,13 +29,17 @@
 #' textplot_network(myfcm, min_freq = 10)
 #' fcm_select(myfcm, feat, verbose = FALSE) %>% textplot_network(min_freq = 0.5)
 #' fcm_select(myfcm, feat, verbose = FALSE) %>% textplot_network(min_freq = 0.8)
+#' fcm_select(myfcm, feat, verbose = FALSE) %>%
+#'         textplot_network(min_freq = 0.8, text_color = rep(c('gray40', NA), 15))
 #' }
 #' @export
 #' @seealso \code{\link{fcm}}
 #' @import network ggplot2 ggrepel
 #' @keywords textplot
 textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                             col = 'skyblue', alpha = 0.5, size = 2, width = 2, 
+                             edge_color = 'skyblue', edge_alpha = 0.5, edge_size = 2, 
+                             vertex_color = 'gray40', vertex_size = 2,
+                             text_color = NULL,
                              offset = NULL) {
     UseMethod("textplot_network")
 }
@@ -40,10 +48,16 @@ textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE,
 #' @noRd
 #' @export
 textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                                 col = 'skyblue', alpha = 0.5, size = 2, width = 2, 
+                                 edge_color = 'skyblue', edge_alpha = 0.5, edge_size = 2, 
+                                 vertex_color = 'gray40', vertex_size = 2,
+                                 text_color = NULL,
                                  offset = NULL) {
 
-    textplot_network(fcm(x), min_freq, omit_isolated, col, alpha, size, width, offset)
+    textplot_network(fcm(x), x, min_freq = min_freq, omit_isolated = omit_isolated, 
+                     edge_color = edge_color, edge_alpha = edge_alpha, edge_size = edge_size, 
+                     vertex_color = vertex_color, vertex_size = vertex_size,
+                     text_color = text_color,
+                     offset = NULL)
 }
 
     
@@ -51,10 +65,15 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
 #' @noRd
 #' @export
 textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                                 col = 'skyblue', alpha = 0.5, size = 2, width = 2, 
+                                 edge_color = 'skyblue', edge_alpha = 0.5, edge_size = 2, 
+                                 vertex_color = 'gray40', vertex_size = 2,
+                                 text_color = NULL,
                                  offset = NULL) {
 
     x <- as(x, 'dgTMatrix')
+    
+    if (is.null(text_color))
+        text_color <- vertex_color
     
     # drop weak ties
     if (min_freq > 0) {
@@ -71,6 +90,8 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     if (omit_isolated) {
         i <- which(rowSums(x) > 0)
         x <- x[i, i]
+        if (length(text_color) > 1) text_color <- text_color[i]
+        if (length(vertex_color) > 1) vertex_color <- vertex_color[i]
     }
     
     if (nrow(x) > 1000)
@@ -83,7 +104,8 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                  ignore.eval = FALSE, names.eval = 'weight')
     vertex <- data.frame(sna::gplot.layout.fruchtermanreingold(n, NULL))
     vertex$label <- colnames(x)
-    
+
+
     weight <- get.edge.attribute(n, "weight")
     weight <- weight / max(weight)
     
@@ -96,25 +118,26 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     
     plot <- ggplot() + 
         geom_curve(data = edge, aes(x = X1, y = Y1, xend = X2, yend = Y2), 
-                   colour = col,  curvature = 0.2, alpha = alpha, lineend = "round",
-                   angle = 90, size = weight * width) + 
-        geom_point(data = vertex, aes(X1, X2), color = 'gray40', size = size, shape = 19)
+                   color = edge_color, curvature = 0.2, alpha = edge_alpha, lineend = "round",
+                   angle = 90, size = weight * edge_size) + 
+        geom_point(data = vertex, aes(X1, X2), color = vertex_color, size = vertex_size, shape = 19)
     
-        if (is.null(offset)) { 
-            plot <- plot + geom_text_repel(data = vertex, aes(X1, X2, label = label), 
-                                           segment.size = 0, color = 'gray40')
+        if (is.null(offset)) {
+            plot <- plot + geom_text_repel(data = vertex, aes(X1, X2, label = label),
+                                           segment.color = vertex_color,
+                                           color = text_color)
         } else {
-            plot <- plot + geom_text(data = vertex, aes(X1, X2, label = label), 
-                                     nudge_y = offset, color = 'gray40')
+            plot <- plot + geom_text(data = vertex, aes(X1, X2, label = label),
+                                     nudge_y = offset, color = text_color)
         }
-    
+
     plot <- plot + 
         scale_x_continuous(breaks = NULL) + scale_y_continuous(breaks = NULL) +
         theme(panel.background = element_blank()) + 
         theme(legend.position = "none") +
         theme(axis.title.x = element_blank(), axis.title.y = element_blank()) +
-        theme(legend.background = element_rect(colour = NA)) + 
-        theme(panel.background = element_rect(fill = "white", colour = NA)) +
+        theme(legend.background = element_rect(color = NA)) + 
+        theme(panel.background = element_rect(fill = "white", color = NA)) +
         theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank())
     
     return(plot)

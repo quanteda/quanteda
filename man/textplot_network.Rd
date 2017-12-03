@@ -4,8 +4,10 @@
 \alias{textplot_network}
 \title{plot a semantic network of feature co-occurrences}
 \usage{
-textplot_network(x, min_freq = 0.5, omit_isolated = TRUE, col = "skyblue",
-  alpha = 0.5, size = 2, width = 2, offset = NULL)
+textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
+  edge_color = "skyblue", edge_alpha = 0.5, edge_size = 2,
+  vertex_color = "gray40", vertex_size = 2, text_color = NULL,
+  offset = NULL)
 }
 \arguments{
 \item{x}{a \link{fcm} or \link{dfm}  object}
@@ -16,13 +18,19 @@ of features to be plotted.}
 \item{omit_isolated}{if \code{TRUE}, features do not occuare more frequent
 than \code{min_freq} will be omitted from the plot}
 
-\item{col}{color of edges}
+\item{edge_color}{color of edges connecting vertices.}
 
-\item{alpha}{opacity of edges}
+\item{edge_alpha}{opacity of edges rangeing from 0 to 1.0.}
 
-\item{size}{size of vertices}
+\item{edge_size}{size of edges for most frequent cooccurances. The size of
+other edges are determined proportionally to the highest number.}
 
-\item{width}{width of edges}
+\item{vertex_color}{color of vertices.}
+
+\item{vertex_size}{size of vertices.}
+
+\item{text_color}{color of texts. Default the same as \code{vertex_color} if
+not specified. If \code{NA}, texts are not rendered.}
 
 \item{offset}{if \code{NULL}, distances between vertices and labels are
 determined automatically as far as the number of vertices is less than 100.}
@@ -42,6 +50,8 @@ feat <- names(topfeatures(myfcm, 30))
 textplot_network(myfcm, min_freq = 10)
 fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(min_freq = 0.5)
 fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(min_freq = 0.8)
+fcm_select(myfcm, feat, verbose = FALSE) \%>\% 
+        textplot_network(min_freq = 0.8, text_color = rep(c('gray40', NA), 15))
 }
 }
 \seealso{

@@ -163,7 +163,7 @@ test_that("test textplot_network", {
     txt <- "A D A C E A D F E B A C E D"
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
     testdfm <- dfm(txt)
-    expect_silent(textplot_network(testfcm, col = 'red', offset = 0.1))
+    expect_silent(textplot_network(testfcm, vertex_color = 'red', offset = 0.1))
     expect_silent(textplot_network(testdfm, offset = 0.1))
     expect_error(textplot_network(testfcm, min_freq = 100), 
                  'There is no coocurance higher than the threashold')
