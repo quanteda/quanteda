@@ -44,7 +44,7 @@ head(toptag)
 tag_fcm <- fcm(tag_dfm)
 head(tag_fcm)
 topgat_fcm <- fcm_select(tag_fcm, toptag)
-textplot_network(topgat_fcm, min_freq = 0.1, alpha = 0.8, width = 5)
+textplot_network(topgat_fcm, min_freq = 0.1, edge_alpha = 0.8, edge_size = 5)
 ```
 
 # Usernames
@@ -61,6 +61,6 @@ head(topuser)
 user_fcm <- fcm(user_dfm)
 head(user_fcm)
 user_fcm <- fcm_select(user_fcm, topuser)
-textplot_network(user_fcm, min_freq = 0.1, col = 'orange', alpha = 0.8, width = 5)
+textplot_network(user_fcm, min_freq = 0.1, edge_color = 'orange', edge_alpha = 0.8, edge_size = 5)
 ```
 
