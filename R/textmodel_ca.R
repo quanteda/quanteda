@@ -5,7 +5,6 @@ setClass("textmodel_ca_fitted",
          slots = c(smooth = "numeric", 
                    nd = "numeric",
                    sparse = "logical",
-                   threads = "numeric",
                    residual_floor = "numeric"),
          contains = "textmodel_fitted")
 
@@ -21,8 +20,6 @@ setClass("textmodel_ca_fitted",
 #' @param sparse retains the sparsity if set to \code{TRUE}; set it to 
 #'   \code{TRUE} if \code{x} (the \link{dfm}) is too big to be allocated after
 #'   converting to dense
-#' @param threads the number of threads to be used; set to 1 to use a 
-#'   serial version of the function; only applicable when \code{sparse = TRUE}
 #' @param residual_floor specifies the threshold for the residual matrix for 
 #'   calculating the truncated svd.Larger value will reduce memory and time cost
 #'   but might reduce accuracy; only applicable when \code{sparse = TRUE}
@@ -34,12 +31,10 @@ setClass("textmodel_ca_fitted",
 #'   
 #' @details \link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
 #'   enable the fast computation of the SVD.
-#' @note Setting threads larger than 1 (when \code{sparse = TRUE}) will trigger 
-#'   parallel computation, which retains sparsity of all involved matrices. You 
-#'   may need to increase the value of \code{residual_floor} to ignore less 
-#'   important information and hence to reduce the memory cost when you have a 
-#'   very big \link{dfm}.
-#'   
+#' @note You may need to set \code{sparse = TRUE}) and
+#'   increase the value of \code{residual_floor} to ignore less important
+#'   information and hence to reduce the memory cost when you have a very big
+#'   \link{dfm}.
 #'   If your attempt to fit the model fails due to the matrix being too large, 
 #'   this is probably because of the memory demands of computing the \eqn{V
 #'   \times V} residual matrix.  To avoid this, consider increasing the value of
@@ -51,23 +46,20 @@ setClass("textmodel_ca_fitted",
 #' @export
 textmodel_ca <- function(x, smooth = 0, nd = NA,
                          sparse = FALSE,
-                         threads = 1,
                          residual_floor = 0.1) {
     UseMethod("textmodel_ca")
 }
 
 #' @export
 textmodel_ca.default <- function(x, smooth = 0, nd = NA,
-                             sparse = FALSE,
-                             threads = 1,
-                             residual_floor = 0.1) {
+                                 sparse = FALSE,
+                                 residual_floor = 0.1) {
     stop(friendly_class_undefined_message(class(x), "textmodel_ca"))
 }
     
 #' @export
 textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
                              sparse = FALSE,
-                             threads = 1,
                              residual_floor = 0.1) {
     
     x <- as.dfm(x)
@@ -88,35 +80,27 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
     }
     nd0 <- nd
     
-    # Init:
     n <- sum(x) 
-    P <- x/n
+    P <- x / n
     rm <- rowSums(P) 
     cm <- colSums(P)
     
-    # SVD:
     if (sparse == FALSE){
         # generally fast for a not-so-large dfm
-        if (threads > 1){
-            threads <- 1
-            warning("threads reset to 1 when sparse = FALSE", call. = FALSE)
-        }
         eP <- Matrix::tcrossprod(rm, cm)
         S  <- (P - eP) / sqrt(eP)
     } else {
-        # c++ function to keep the residual matrix sparse
-        S <- qutd_cpp_ca(P, threads, residual_floor/sqrt(n))
+        # keep the residual matrix sparse
+        S <- as(qutd_cpp_ca(P, residual_floor / sqrt(n)), 'dgCMatrix')
     }
     
-    #dec <- rsvd::rsvd(S, nd)   #rsvd is not as stable as RSpectra
-    #dec <- irlba::irlba(S, nd)
     dec <- RSpectra::svds(S, nd)   
     
-    chimat <- S^2 * n
+    chimat <- S ^ 2 * n
     sv     <- dec$d[1:nd]
     u      <- dec$u
     v      <- dec$v
-    ev     <- sv^2
+    ev     <- sv ^ 2
     cumev  <- cumsum(ev)
     
     # Inertia:

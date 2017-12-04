@@ -4,7 +4,7 @@
 \alias{textmodel_ca}
 \title{correspondence analysis of a document-feature matrix}
 \usage{
-textmodel_ca(x, smooth = 0, nd = NA, sparse = FALSE, threads = 1,
+textmodel_ca(x, smooth = 0, nd = NA, sparse = FALSE,
   residual_floor = 0.1)
 }
 \arguments{
@@ -18,9 +18,6 @@ default) then the maximum possible dimensions are included.}
 \item{sparse}{retains the sparsity if set to \code{TRUE}; set it to 
 \code{TRUE} if \code{x} (the \link{dfm}) is too big to be allocated after
 converting to dense}
-
-\item{threads}{the number of threads to be used; set to 1 to use a 
-serial version of the function; only applicable when \code{sparse = TRUE}}
 
 \item{residual_floor}{specifies the threshold for the residual matrix for 
 calculating the truncated svd.Larger value will reduce memory and time cost
@@ -36,12 +33,10 @@ returns a special class of \pkg{ca} object.
   enable the fast computation of the SVD.
 }
 \note{
-Setting threads larger than 1 (when \code{sparse = TRUE}) will trigger 
-  parallel computation, which retains sparsity of all involved matrices. You 
-  may need to increase the value of \code{residual_floor} to ignore less 
-  important information and hence to reduce the memory cost when you have a 
-  very big \link{dfm}.
-  
+You may need to set \code{sparse = TRUE}) and
+  increase the value of \code{residual_floor} to ignore less important
+  information and hence to reduce the memory cost when you have a very big
+  \link{dfm}.
   If your attempt to fit the model fails due to the matrix being too large, 
   this is probably because of the memory demands of computing the \eqn{V
   \times V} residual matrix.  To avoid this, consider increasing the value of
