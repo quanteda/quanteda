@@ -140,9 +140,9 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     types <- types(x)
     id_ignore <- unlist(regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
     if (is.null(id_ignore)) id_ignore <- integer(0)
-    result <- qatd_cpp_sequences(x, types, id_ignore, min_count, size, 
-                                 if (method == "lambda1") "lambda1" else "lambda", 
-                                 smoothing)
+    result <- qatd_cpp_collocations(x, types, id_ignore, min_count, size, 
+                                    if (method == "lambda1") "lambda1" else "lambda", 
+                                    smoothing)
     
     # compute z for lambda methods
     lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
