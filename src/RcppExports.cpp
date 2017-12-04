@@ -51,97 +51,97 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_ManhattanPara_cpp
-NumericMatrix qatd_ManhattanPara_cpp(const arma::sp_mat& A, const int margin);
-RcppExport SEXP _quanteda_qatd_ManhattanPara_cpp(SEXP ASEXP, SEXP marginSEXP) {
+// qatd_cpp_manhattan
+NumericMatrix qatd_cpp_manhattan(const arma::sp_mat& A, const int margin);
+RcppExport SEXP _quanteda_qatd_cpp_manhattan(SEXP ASEXP, SEXP marginSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
     Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_ManhattanPara_cpp(A, margin));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_manhattan(A, margin));
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_ManhattanPara_cpp2
-NumericMatrix qatd_ManhattanPara_cpp2(const arma::sp_mat& A, const arma::sp_mat& B, const int margin);
-RcppExport SEXP _quanteda_qatd_ManhattanPara_cpp2(SEXP ASEXP, SEXP BSEXP, SEXP marginSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type B(BSEXP);
-    Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_ManhattanPara_cpp2(A, B, margin));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_MaximumPara_cpp
-NumericMatrix qatd_MaximumPara_cpp(const arma::sp_mat& A, const int margin);
-RcppExport SEXP _quanteda_qatd_MaximumPara_cpp(SEXP ASEXP, SEXP marginSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
-    Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_MaximumPara_cpp(A, margin));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_MaximumPara_cpp2
-NumericMatrix qatd_MaximumPara_cpp2(const arma::sp_mat& A, const arma::sp_mat& B, const int margin);
-RcppExport SEXP _quanteda_qatd_MaximumPara_cpp2(SEXP ASEXP, SEXP BSEXP, SEXP marginSEXP) {
+// qatd_cpp_manhattan2
+NumericMatrix qatd_cpp_manhattan2(const arma::sp_mat& A, const arma::sp_mat& B, const int margin);
+RcppExport SEXP _quanteda_qatd_cpp_manhattan2(SEXP ASEXP, SEXP BSEXP, SEXP marginSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type B(BSEXP);
     Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_MaximumPara_cpp2(A, B, margin));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_manhattan2(A, B, margin));
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_CanberraPara_cpp
-NumericMatrix qatd_CanberraPara_cpp(const arma::sp_mat& A, const int margin);
-RcppExport SEXP _quanteda_qatd_CanberraPara_cpp(SEXP ASEXP, SEXP marginSEXP) {
+// qatd_cpp_maximum
+NumericMatrix qatd_cpp_maximum(const arma::sp_mat& A, const int margin);
+RcppExport SEXP _quanteda_qatd_cpp_maximum(SEXP ASEXP, SEXP marginSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
     Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_CanberraPara_cpp(A, margin));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_maximum(A, margin));
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_CanberraPara_cpp2
-NumericMatrix qatd_CanberraPara_cpp2(const arma::sp_mat& A, const arma::sp_mat& B, const int margin);
-RcppExport SEXP _quanteda_qatd_CanberraPara_cpp2(SEXP ASEXP, SEXP BSEXP, SEXP marginSEXP) {
+// qatd_cpp_maximum2
+NumericMatrix qatd_cpp_maximum2(const arma::sp_mat& A, const arma::sp_mat& B, const int margin);
+RcppExport SEXP _quanteda_qatd_cpp_maximum2(SEXP ASEXP, SEXP BSEXP, SEXP marginSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type B(BSEXP);
     Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_CanberraPara_cpp2(A, B, margin));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_maximum2(A, B, margin));
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_MinkowskiPara_cpp
-NumericMatrix qatd_MinkowskiPara_cpp(const arma::sp_mat& A, const int margin, const double p);
-RcppExport SEXP _quanteda_qatd_MinkowskiPara_cpp(SEXP ASEXP, SEXP marginSEXP, SEXP pSEXP) {
+// qatd_cpp_canberra
+NumericMatrix qatd_cpp_canberra(const arma::sp_mat& A, const int margin);
+RcppExport SEXP _quanteda_qatd_cpp_canberra(SEXP ASEXP, SEXP marginSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_canberra(A, margin));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_canberra2
+NumericMatrix qatd_cpp_canberra2(const arma::sp_mat& A, const arma::sp_mat& B, const int margin);
+RcppExport SEXP _quanteda_qatd_cpp_canberra2(SEXP ASEXP, SEXP BSEXP, SEXP marginSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_canberra2(A, B, margin));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_minkowski
+NumericMatrix qatd_cpp_minkowski(const arma::sp_mat& A, const int margin, const double p);
+RcppExport SEXP _quanteda_qatd_cpp_minkowski(SEXP ASEXP, SEXP marginSEXP, SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
     Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
     Rcpp::traits::input_parameter< const double >::type p(pSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_MinkowskiPara_cpp(A, margin, p));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_minkowski(A, margin, p));
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_MinkowskiPara_cpp2
-NumericMatrix qatd_MinkowskiPara_cpp2(const arma::sp_mat& A, const arma::sp_mat& B, const int margin, const double p);
-RcppExport SEXP _quanteda_qatd_MinkowskiPara_cpp2(SEXP ASEXP, SEXP BSEXP, SEXP marginSEXP, SEXP pSEXP) {
+// qatd_cpp_minkowski2
+NumericMatrix qatd_cpp_minkowski2(const arma::sp_mat& A, const arma::sp_mat& B, const int margin, const double p);
+RcppExport SEXP _quanteda_qatd_cpp_minkowski2(SEXP ASEXP, SEXP BSEXP, SEXP marginSEXP, SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -149,7 +149,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type B(BSEXP);
     Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
     Rcpp::traits::input_parameter< const double >::type p(pSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_MinkowskiPara_cpp2(A, B, margin, p));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_minkowski2(A, B, margin, p));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -183,16 +183,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const unsigned int& >::type window(windowSEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_kwic(texts_, types_, words_, window));
     return rcpp_result_gen;
-END_RCPP
-}
-// qutd_cpp_matrix_test
-void qutd_cpp_matrix_test(const arma::sp_mat& dfm);
-RcppExport SEXP _quanteda_qutd_cpp_matrix_test(SEXP dfmSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type dfm(dfmSEXP);
-    qutd_cpp_matrix_test(dfm);
-    return R_NilValue;
 END_RCPP
 }
 // qatd_cpp_tokens_compound
@@ -348,17 +338,16 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qutd_cpp_ca", (DL_FUNC) &_quanteda_qutd_cpp_ca, 2},
     {"_quanteda_qatd_cpp_collocations", (DL_FUNC) &_quanteda_qatd_cpp_collocations, 7},
     {"_quanteda_qatd_cpp_collocations_dev", (DL_FUNC) &_quanteda_qatd_cpp_collocations_dev, 6},
-    {"_quanteda_qatd_ManhattanPara_cpp", (DL_FUNC) &_quanteda_qatd_ManhattanPara_cpp, 2},
-    {"_quanteda_qatd_ManhattanPara_cpp2", (DL_FUNC) &_quanteda_qatd_ManhattanPara_cpp2, 3},
-    {"_quanteda_qatd_MaximumPara_cpp", (DL_FUNC) &_quanteda_qatd_MaximumPara_cpp, 2},
-    {"_quanteda_qatd_MaximumPara_cpp2", (DL_FUNC) &_quanteda_qatd_MaximumPara_cpp2, 3},
-    {"_quanteda_qatd_CanberraPara_cpp", (DL_FUNC) &_quanteda_qatd_CanberraPara_cpp, 2},
-    {"_quanteda_qatd_CanberraPara_cpp2", (DL_FUNC) &_quanteda_qatd_CanberraPara_cpp2, 3},
-    {"_quanteda_qatd_MinkowskiPara_cpp", (DL_FUNC) &_quanteda_qatd_MinkowskiPara_cpp, 3},
-    {"_quanteda_qatd_MinkowskiPara_cpp2", (DL_FUNC) &_quanteda_qatd_MinkowskiPara_cpp2, 4},
+    {"_quanteda_qatd_cpp_manhattan", (DL_FUNC) &_quanteda_qatd_cpp_manhattan, 2},
+    {"_quanteda_qatd_cpp_manhattan2", (DL_FUNC) &_quanteda_qatd_cpp_manhattan2, 3},
+    {"_quanteda_qatd_cpp_maximum", (DL_FUNC) &_quanteda_qatd_cpp_maximum, 2},
+    {"_quanteda_qatd_cpp_maximum2", (DL_FUNC) &_quanteda_qatd_cpp_maximum2, 3},
+    {"_quanteda_qatd_cpp_canberra", (DL_FUNC) &_quanteda_qatd_cpp_canberra, 2},
+    {"_quanteda_qatd_cpp_canberra2", (DL_FUNC) &_quanteda_qatd_cpp_canberra2, 3},
+    {"_quanteda_qatd_cpp_minkowski", (DL_FUNC) &_quanteda_qatd_cpp_minkowski, 3},
+    {"_quanteda_qatd_cpp_minkowski2", (DL_FUNC) &_quanteda_qatd_cpp_minkowski2, 4},
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 8},
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 4},
-    {"_quanteda_qutd_cpp_matrix_test", (DL_FUNC) &_quanteda_qutd_cpp_matrix_test, 1},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},

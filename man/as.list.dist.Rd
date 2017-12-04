@@ -37,7 +37,7 @@ findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
 
 # in quanteda
 quantedaDfm <- as.dfm(t(as.matrix(tdm)))
-as.list(textstat_simil(quantedaDfm, c("oil", "opec", "xyz"), margin = "features"), n = 14)
+as.list(textstat_dist(quantedaDfm, c("oil", "opec", "xyz"), margin = "features"), n = 14)
 
 # in base R
 corMat <- as.matrix(proxy::simil(as.matrix(quantedaDfm), by_rows = FALSE))

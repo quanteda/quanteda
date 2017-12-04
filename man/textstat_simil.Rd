@@ -44,7 +44,7 @@ selected).  They are fast and robust because they operate directly on the sparse
 }
 \details{
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
-  \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, 
+  \code{"chisquared"}, \code{"chisquared2"}, \code{"hamming"}, 
   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
   and \code{"minkowski"}.
 
@@ -70,7 +70,7 @@ as.matrix(d1)
 
 # distances for specific documents
 textstat_dist(presDfm, "2017-Trump", margin = "documents")
-textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
+textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "jaccard")
 (d2 <- textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents"))
 as.list(d1)
 
@@ -92,13 +92,13 @@ as.list(s2, n = 8)
 
 }
 \references{
-The \code{"Chisquared"} metric is from Legendre, P., & Gallagher,
+The \code{"chisquared"} metric is from Legendre, P., & Gallagher,
   E. D. (2001).
   "\href{http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf}{Ecologically
    meaningful transformations for ordination of species data}".
   \emph{Oecologia}, 129(2), 271–280. doi.org/10.1007/s004420100716
   
-  The \code{"Chisquared2"} metric is the "Quadratic-Chi" measure from Pele,
+  The \code{"chisquared2"} metric is the "Quadratic-Chi" measure from Pele,
   O., & Werman, M. (2010). 
   "\href{https://link.springer.com/chapter/10.1007/978-3-642-15552-9_54}{The
   Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision – ECCV

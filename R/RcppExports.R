@@ -13,36 +13,36 @@ qatd_cpp_collocations_dev <- function(texts_, types_, count_min, sizes_, method,
     .Call(`_quanteda_qatd_cpp_collocations_dev`, texts_, types_, count_min, sizes_, method, smoothing)
 }
 
-qatd_ManhattanPara_cpp <- function(A, margin = 1L) {
-    .Call(`_quanteda_qatd_ManhattanPara_cpp`, A, margin)
+qatd_cpp_manhattan <- function(A, margin = 1L) {
+    .Call(`_quanteda_qatd_cpp_manhattan`, A, margin)
 }
 
-qatd_ManhattanPara_cpp2 <- function(A, B, margin = 1L) {
-    .Call(`_quanteda_qatd_ManhattanPara_cpp2`, A, B, margin)
+qatd_cpp_manhattan2 <- function(A, B, margin = 1L) {
+    .Call(`_quanteda_qatd_cpp_manhattan2`, A, B, margin)
 }
 
-qatd_MaximumPara_cpp <- function(A, margin = 1L) {
-    .Call(`_quanteda_qatd_MaximumPara_cpp`, A, margin)
+qatd_cpp_maximum <- function(A, margin = 1L) {
+    .Call(`_quanteda_qatd_cpp_maximum`, A, margin)
 }
 
-qatd_MaximumPara_cpp2 <- function(A, B, margin = 1L) {
-    .Call(`_quanteda_qatd_MaximumPara_cpp2`, A, B, margin)
+qatd_cpp_maximum2 <- function(A, B, margin = 1L) {
+    .Call(`_quanteda_qatd_cpp_maximum2`, A, B, margin)
 }
 
-qatd_CanberraPara_cpp <- function(A, margin = 1L) {
-    .Call(`_quanteda_qatd_CanberraPara_cpp`, A, margin)
+qatd_cpp_canberra <- function(A, margin = 1L) {
+    .Call(`_quanteda_qatd_cpp_canberra`, A, margin)
 }
 
-qatd_CanberraPara_cpp2 <- function(A, B, margin = 1L) {
-    .Call(`_quanteda_qatd_CanberraPara_cpp2`, A, B, margin)
+qatd_cpp_canberra2 <- function(A, B, margin = 1L) {
+    .Call(`_quanteda_qatd_cpp_canberra2`, A, B, margin)
 }
 
-qatd_MinkowskiPara_cpp <- function(A, margin = 1L, p = 2) {
-    .Call(`_quanteda_qatd_MinkowskiPara_cpp`, A, margin, p)
+qatd_cpp_minkowski <- function(A, margin = 1L, p = 2) {
+    .Call(`_quanteda_qatd_cpp_minkowski`, A, margin, p)
 }
 
-qatd_MinkowskiPara_cpp2 <- function(A, B, margin = 1L, p = 2) {
-    .Call(`_quanteda_qatd_MinkowskiPara_cpp2`, A, B, margin, p)
+qatd_cpp_minkowski2 <- function(A, B, margin = 1L, p = 2) {
+    .Call(`_quanteda_qatd_cpp_minkowski2`, A, B, margin, p)
 }
 
 qatd_cpp_fcm <- function(texts_, n_types, count, window, weights, ordered, tri, nvec) {
@@ -51,10 +51,6 @@ qatd_cpp_fcm <- function(texts_, n_types, count, window, weights, ordered, tri, 
 
 qatd_cpp_kwic <- function(texts_, types_, words_, window) {
     .Call(`_quanteda_qatd_cpp_kwic`, texts_, types_, words_, window)
-}
-
-qutd_cpp_matrix_test <- function(dfm) {
-    invisible(.Call(`_quanteda_qutd_cpp_matrix_test`, dfm))
 }
 
 qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {

@@ -27,7 +27,7 @@
 #'    \deqn{\sum{P(x)*log(P(x)/p(y))}}
 #'    
 #'   All other measures are described in the \pkg{proxy} package.
-#' @importFrom RcppParallel
+#' @importFrom RcppParallel RcppParallelLibs
 #' @author Kenneth Benoit, Haiyan Wang
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
@@ -96,12 +96,12 @@ textstat_dist.dfm <- function(x, selection = NULL,
     # method <- char_tolower(method)
     
     if (method %in% methods1) {
-        temp <- get(paste0(method, "_sparse"))(x, y, margin = m)
+        temp <- get(paste0(method, "_distance"))(x, y, margin = m)
     } else if (method == "minkowski") {
-        temp <- get(paste0(method, "_sparse"))(x, y, margin = m, p = p)
+        temp <- get(paste0(method, "_distance"))(x, y, margin = m, p = p)
     } else if (method %in% methods2) {
         if (method == "binary") method = "jaccard"
-        temp <- get(paste0(method, "_sparse"))(x, y, margin = m)
+        temp <- get(paste0(method, "_sparse"))(x, y, margin = m) # textstat_simil
     } else {
         stop(method, " is not implemented; consider trying proxy::dist().")
     }
@@ -169,18 +169,17 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #' } 
 as.list.dist <- function(x, sorted = TRUE, n = NULL, ...) {
     # convert the matrix to a list of similarities
-    if (!is.null(attr(x, "Labels"))) xLabels <- attr(x, "Labels")
+    if (!is.null(attr(x, "Labels"))) label <- attr(x, "Labels")
+    
     result <- lapply(seq_len(ncol(as.matrix(x))), function(i) as.matrix(x)[, i])
     attributes(x) <- NULL
-    names(result) <- if (!is.null(xLabels)) xLabels
+    names(result) <- if (!is.null(label)) label
     
     # remove the element of each similarity vector equal to the item itself
-    tempseq <- seq_along(result)
-    names(tempseq) <- names(result)
-    result <- lapply(tempseq, function(i) {
-        result[[i]] <- result[[i]][-which(names(result[[i]]) == names(result)[i])]
-        })
-    
+    for (m in names(result)) {
+        result[[m]] <- result[[m]][m != names(result[[m]])]
+    }
+
     # sort each element of the list and return only first n results if n not NULL
     if (sorted == TRUE)
         result <- lapply(result, sort, decreasing=TRUE, na.last = TRUE)
@@ -221,21 +220,19 @@ as.dist.dist <- function(m, diag = FALSE, upper = FALSE) {
 #' @export
 as.list.dist_selection <- function(x, sorted = TRUE, n = NULL, ...) {
     # convert the matrix to a list of similarities
-    if (!is.null(attr(x, "Labels"))) xLabels <- attr(x, "Labels")
+    if (!is.null(attr(x, "Labels"))) label <- attr(x, "Labels")
     result <- lapply(seq_len(ncol(as.matrix(x))), function(i) as.matrix(x)[, i])
-    #attributes(x) <- NULL
-    names(result) <- if (!is.null(xLabels)) xLabels[1:ncol(as.matrix(x))]
+    attributes(x) <- NULL
+    names(result) <- if (!is.null(label)) label[seq_len(ncol(as.matrix(x)))]
     
     # remove the element of each similarity vector equal to the item itself
-    tempseq <- seq_along(result)
-    names(tempseq) <- names(result)
-    result <- lapply( tempseq, function(i) {
-        result[[i]] <- result[[i]][-which(names(result[[i]]) == names(result)[i])]
-        })
+    for (m in names(result)) {
+        result[[m]] <- result[[m]][m != names(result[[m]])]
+    }
     
     # sort each element of the list and return only first n results if n not NULL
     if (sorted == TRUE)
-        result <- lapply(result, sort, decreasing=TRUE, na.last = TRUE)
+        result <- lapply(result, sort, decreasing = TRUE, na.last = TRUE)
     
     # truncate to n if n is not NULL
     if (!is.null(n))
@@ -269,60 +266,62 @@ as.matrix.dist_selection <- function(x, ...) {
 
 
 ## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
-euclidean_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+euclidean_distance <- function(x, y = NULL, sIndex = NULL, margin = 1){
+    
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    marginSums <- if (margin == 2) colSums else rowSums
-    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
+    func_sum <- if (margin == 2) colSums else rowSums
+    func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
     n <- if (margin == 2) ncol(x) else nrow(x)
     
     if (!is.null(y)) {
         stopifnot(if (margin == 2) nrow(x) == nrow(y) else ncol(x) == ncol(y))
-        an <- marginSums(x ^ 2)
-        bn <- marginSums(y ^ 2)
+        an <- func_sum(x ^ 2)
+        bn <- func_sum(y ^ 2)
         
         # number of features
         kk <- y@Dim[margin]
         tmp <- matrix(rep(an, kk), nrow = n) 
         tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
-        eucmat <- sqrt( tmp - 2 * as.matrix(cpFun(x, y)) )
+        eucmat <- sqrt(tmp - 2 * as.matrix(func_cp(x, y)))
     } else {
-        an <- marginSums(x ^ 2)
+        an <- func_sum(x ^ 2)
         tmp <- matrix(rep(an, n), nrow = n) 
         tmp <-  tmp +  matrix(rep(an, n), nrow = n, byrow=TRUE)
-        eucmat <- sqrt( tmp - 2 * as.matrix(cpFun(x)))
+        eucmat <- sqrt(tmp - 2 * as.matrix(func_cp(x)))
     }
     eucmat
 }
 
 # Hamming distance
 # formula: hamming = sum(x .!= y)
-hamming_sparse <- function(x, y = NULL, margin = 1) {
+hamming_distance <- function(x, y = NULL, margin = 1) {
+    
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
     x <- tf(x, "boolean") 
     x0 <- 1 - x
-    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
-    marginSums <- if (margin == 2) nrow else ncol
-    marginNames <- if (margin == 2) colnames else rownames
+    func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    func_sum <- if (margin == 2) nrow else ncol
+    func_name <- if (margin == 2) colnames else rownames
     # union 
-    an <- marginSums(x)
+    an <- func_sum(x)
     if (!is.null(y)) {
         y <- tf(y, "boolean")
         y0 <- 1 - y
-        A <- cpFun(x, y)
-        A0 <- cpFun(x0, y0)
-        colNm <- marginNames(y)
+        A <- func_cp(x, y)
+        A0 <- func_cp(x0, y0)
+        colname <- func_name(y)
     } else {
-        A <- cpFun(x)
-        A0 <- cpFun(x0)
-        colNm <- marginNames(x)
+        A <- func_cp(x)
+        A0 <- func_cp(x0)
+        colname <- func_name(x)
     }
-    rowNm <- marginNames(x)
+    rowname <- func_name(x)
     # common values
     A <- A + A0
     hammat <- an -A
-    dimnames(hammat) <- list(rowNm,  colNm)
+    dimnames(hammat) <- list(rowname,  colname)
     hammat
 }
 
@@ -332,87 +331,88 @@ hamming_sparse <- function(x, y = NULL, margin = 1) {
 # http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf
 # https://www.pcord.com/book.htm
 # formula: Chi = sum((x/rowsum(x_i) - y/rowsum(y_i)) ^ 2/(colsum(i)/total))
-chisquared_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+chisquared_distance <- function(x, y = NULL, sIndex = NULL, margin = 1){
+    
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    marginSums <- if (margin == 2) colSums else rowSums
-    marginNames <- if (margin == 2) colnames else rownames
-    aveProfile <- if (margin == 2) sqrt(rowSums(x)/sum(x)) else sqrt(colSums(x)/sum(x))
-    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
+    func_sum <- if (margin == 2) colSums else rowSums
+    func_name <- if (margin == 2) colnames else rownames
+    func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    avg <- if (margin == 2) sqrt(rowSums(x) / sum(x)) else sqrt(colSums(x) / sum(x))
     n <- if (margin == 2) ncol(x) else nrow(x)
-    rowNm <- marginNames(x)
-    colNm <- marginNames(x)
+    rowname <- func_name(x)
+    colname <- func_name(x)
     if (margin == 1 ) {
         # convert into profiles
-        x <- x/marginSums(x)
+        x <- x/func_sum(x)
         
         # weighted by the average profiles
-        x <- x %*% diag(1/aveProfile)
+        x <- x %*% diag(1/avg)
     } else {
-        x <- x %*% diag(1/marginSums(x))
+        x <- x %*% diag(1/func_sum(x))
         x <- x / aveProfile
     }
     
     if (!is.null(y)) {
         stopifnot(if (margin == 2) nrow(x) == nrow(y) else ncol(x) == ncol(y))
-        colNm <- marginNames(y)
+        colname <- func_name(y)
         # aveProfile is same as that for x 
         if (margin == 1 ) {
             # convert into profiles
-            y <- y/marginSums(y)
+            y <- y/ func_sum(y)
             
             # weighted by the average profiles
-            y <- y %*% diag(1/aveProfile)
+            y <- y %*% diag(1 / avg)
         } else {
-            y <- if (dim(y)[margin] > 1) y %*% diag(1/marginSums(y)) else y %*% (1/marginSums(y))
+            y <- if (dim(y)[margin] > 1) y %*% diag(1/func_sum(y)) else y %*% (1/func_sum(y))
             y <- y / aveProfile
         }
-        an <- marginSums(x ^ 2)
-        bn <- marginSums(y ^ 2)
+        an <- func_sum(x ^ 2)
+        bn <- func_sum(y ^ 2)
         
         # number of features
         kk <- y@Dim[margin]
         tmp <- matrix(rep(an, kk), nrow = n) 
-        tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
-        chimat <- tmp - 2 * as.matrix(cpFun(x, y))
+        tmp <-  tmp + matrix(rep(bn, n), nrow = n, byrow = TRUE)
+        chimat <- tmp - 2 * as.matrix(func_cp(x, y))
         #chimat <-  sqrt(round(chimat, 2)) 
     } else {
-        an <- marginSums(x ^ 2)
+        an <- func_sum(x ^ 2)
         tmp <- matrix(rep(an, n), nrow = n) 
-        tmp <-  tmp +  matrix(rep(an, n), nrow = n, byrow=TRUE)
-        chimat <-  tmp - 2 * as.matrix(cpFun(x))
+        tmp <- tmp + matrix(rep(an, n), nrow = n, byrow = TRUE)
+        chimat <- tmp - 2 * as.matrix(func_cp(x))
         #chimat <-  sqrt(round(chimat, 2)) 
     }
-    dimnames(chimat) <- list(rowNm,  colNm)
+    dimnames(chimat) <- list(rowname, colname)
     chimat
 }
 
 # This chi-squared method is used for histogram: sum((x-y) ^ 2/((x+y)))/2
 # http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf
-chisquared2_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+chisquared2_distance <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    marginSums <- if (margin == 2) colSums else rowSums
-    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
+    func_sum <- if (margin == 2) colSums else rowSums
+    func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
     n <- if (margin == 2) ncol(x) else nrow(x)
     
     if (!is.null(y)) {
         stopifnot(if (margin == 2) nrow(x) == nrow(y) else ncol(x) == ncol(y))
-        an <- marginSums(x ^ 2)
-        bn <- marginSums(y ^ 2)
+        an <- func_sum(x ^ 2)
+        bn <- func_sum(y ^ 2)
         
         # number of features
         kk <- y@Dim[1]
         tmp <- matrix(rep(an, kk), nrow = n) 
         tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
-        chimat <- sqrt( tmp - 2 * as.matrix(cpFun(x, y)) )
+        chimat <- sqrt( tmp - 2 * as.matrix(func_cp(x, y)) )
     } else {
-        an <- marginSums(x ^ 2)
+        an <- func_sum(x ^ 2)
         tmp <- matrix(rep(an, n), nrow = n) 
         tmp <-  tmp +  matrix(rep(an, n), nrow = n, byrow=TRUE)
         
-        a1 <- marginSums(x)
+        a1 <- func_sum(x)
         sumij <- matrix(rep(a1, n), nrow = n) + matrix(rep(a1, n), nrow = n, byrow=TRUE)
         
-        chimat <- ( tmp - 2 * as.matrix(cpFun(x)))/sumij/2
+        chimat <- (tmp - 2 * as.matrix(func_cp(x))) / sumij / 2
     }
     chimat
 }
@@ -423,87 +423,87 @@ chisquared2_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
 # assumption: p(x_i) = 0 implies p(y_i)=0 and in case both p(x_i) and p(y_i) equals to zero, 
 # p(x_i)*log(p(x_i)/p(y_i)) is assumed to be zero as the limit value.
 # formula: sum(p(x)*log(p(x)/p(y)))
-kullback_sparse <- function(x, y = NULL, margin = 1) {
+kullback_distance <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
-    marginSums <- if (margin == 2) colSums else rowSums
-    marginNames <- if (margin == 2) colnames else rownames
+    func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    func_sum <- if (margin == 2) colSums else rowSums
+    func_name <- if (margin == 2) colnames else rownames
     
     # probability
-    x <- x/marginSums(x)
+    x <- x / func_sum(x)
     logx <- log(x)
     logx[is.na(logx)] <- 0L
     logx[is.infinite(logx)] <- 0L
     if (!is.null(y)) {
-        y <- y/marginSums(y)
+        y <- y / func_sum(y)
         logy <- log(y)
         logy[is.na(logy)] <- 0L
         logy[is.infinite(logy)] <- 0L
-        kullmat <- marginSums(x*logx) - cpFun(x, logy)
-        colNm <- marginNames(y)
+        kullmat <- func_sum(x*logx) - func_cp(x, logy)
+        colname <- func_name(y)
     } else {
-        kullmat <- marginSums(x*logx) - cpFun(x, logx)
-        colNm <- marginNames(x)
+        kullmat <- func_sum(x*logx) - func_cp(x, logx)
+        colname <- func_name(x)
     }
-    rowNm <- marginNames(x)
-    dimnames(kullmat) <- list(rowNm,  colNm)
+    rowname <- func_name(x)
+    dimnames(kullmat) <- list(rowname,  colname)
     kullmat
 }
 
 # Manhattan distance: sum_i |x_i - y_i|
-manhattan_sparse <- function(x, y=NULL, margin = 1){
-    marginNames <- if (margin == 2) colnames else rownames
+manhattan_distance <- function(x, y=NULL, margin = 1){
+    func_name <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
-        colNm <- marginNames(y)
+        colname <- func_name(y)
         manmat <- qatd_cpp_manhattan2(x, y, margin)
     } else {
-        colNm <- marginNames(x)
+        colname <- func_name(x)
         manmat <- qatd_cpp_manhattan(x, margin)
     }
-    dimnames(manmat) <- list(marginNames(x),  colNm)
+    dimnames(manmat) <- list(func_name(x),  colname)
     manmat
 }
 
 # Maximum/Supremum distance: max_i |x_i - y_i|
-maximum_sparse <- function(x, y=NULL, margin = 1){
-    marginNames <- if (margin == 2) colnames else rownames
+maximum_distance <- function(x, y=NULL, margin = 1){
+    func_name <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
-        colNm <- marginNames(y)
+        colname <- func_name(y)
         maxmat <- qatd_cpp_maximum2(x, y, margin)
     } else {
-        colNm <- marginNames(x)
+        colname <- func_name(x)
         maxmat <- qatd_cpp_maximum(x, margin)
     }
-    dimnames(maxmat) <- list(marginNames(x),  colNm)
+    dimnames(maxmat) <- list(func_name(x),  colname)
     maxmat
 }
 
 # Canberra distance: sum_i |x_i - y_i| / |x_i + y_i|
 # Weighted by num_nonzeros_elementsum/num_element
-canberra_sparse <- function(x, y = NULL, margin = 1){
-    marginNames <- if (margin == 2) colnames else rownames
+canberra_distance <- function(x, y = NULL, margin = 1){
+    func_name <- if (margin == 2) colnames else rownames
     
     if (!is.null(y)) {
-        colNm <- marginNames(y)
+        colname <- func_name(y)
         canmat <- qatd_cpp_canberra2(x, y, margin)
     } else {
-        colNm <- marginNames(x)
+        colname <- func_name(x)
         canmat <- qatd_cpp_canberra(x, margin)
     }
-    dimnames(canmat) <- list(marginNames(x),  colNm)
+    dimnames(canmat) <- list(func_name(x),  colname)
     canmat
 }
 
 # Minkowski distance: (sum_i (x_i - y_i)^p)^(1/p)
-minkowski_sparse <- function(x, y = NULL, margin = 1, p = 2){
-    marginNames <- if (margin == 2) colnames else rownames
+minkowski_distance <- function(x, y = NULL, margin = 1, p = 2){
+    func_name <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
-        colNm <- marginNames(y)
+        colname <- func_name(y)
         minkmat <- qatd_cpp_minkowski2(x, y, margin, p)
     } else {
-        colNm <- marginNames(x)
+        colname <- func_name(x)
         minkmat <- qatd_cpp_minkowski(x, margin, p)
     }
-    dimnames(minkmat) <- list(marginNames(x),  colNm)
+    dimnames(minkmat) <- list(func_name(x),  colname)
     minkmat
 }
