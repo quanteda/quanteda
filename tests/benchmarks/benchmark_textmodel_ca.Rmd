@@ -31,3 +31,10 @@ microbenchmark::microbenchmark(
 ```
 
     
+```{r,eval=FALSE}
+load("/home/kohei/Documents/Brexit/Analysis/data_tokens_guardian.RData")
+toks <- data_tokens_guardian
+large_dfm <- dfm(toks)
+textmodel_ca(large_dfm, sparse = TRUE)
+```
+
