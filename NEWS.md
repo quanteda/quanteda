@@ -8,6 +8,7 @@
 * Added `textmodel_affinity()` for the Perry and Benoit (2017) class affinity scaling model.
 * Added Chinese stopwords.
 * Added a pkgdown vignette for applications in the Chinese language.
+* Added `textplot_network()` function.
 
 ### Bug fixes and stability enhancements
 

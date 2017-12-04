@@ -63,6 +63,9 @@
     <li>
       <a href="../../../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
+    <li>
+      <a href="../../../articles/pkgdown/examples/twitter.html">Social media analysis</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -370,7 +373,7 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../.
 ##  mobydick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kohei
-## Created: Fri Dec  1 06:59:57 2017
+## Created: Sun Dec  3 18:00:49 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))
@@ -383,7 +386,7 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../.
 ##  mobydick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kohei
-## Created: Fri Dec  1 06:59:57 2017
+## Created: Sun Dec  3 18:00:49 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</code></pre></div>
@@ -690,30 +693,30 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
 
 <span class="co"># get top five terms per topic</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</code></pre></div>
-<pre><code>##      Topic 1    Topic 2     Topic 3    Topic 4  Topic 5       
-## [1,] "welfare"  "reduction" "system"   "fianna" "society"     
-## [2,] "fianna"   "pension"   "taxation" "fáil"   "enterprising"
-## [3,] "stimulus" "review"    "fáil"     "side"   "sense"       
-## [4,] "child"    "measures"  "hope"     "level"  "equal"       
-## [5,] "taken"    "reduce"    "welfare"  "third"  "nation"      
-##      Topic 6       Topic 7       Topic 8         Topic 9    Topic 10   
-## [1,] "alternative" "national"    "irish"         "fianna"   "care"     
-## [2,] "citizenship" "system"      "support"       "fáil"     "welfare"  
-## [3,] "wealth"      "million"     "pension"       "irish"    "per"      
-## [4,] "adjustment"  "successful"  "times"         "national" "allowance"
-## [5,] "breaks"      "development" "international" "support"  "hit"      
-##      Topic 11    Topic 12      Topic 13      Topic 14   Topic 15 
-## [1,] "taoiseach" "investment"  "kind"        "just"     "today"  
-## [2,] "employees" "support"     "carbon"      "value"    "benefit"
-## [3,] "rate"      "million"     "imagination" "say"      "day"    
-## [4,] "referred"  "back"        "change"      "hospital" "bank"   
-## [5,] "debate"    "development" "levy"        "mothers"  "face"   
-##      Topic 16    Topic 17     Topic 18    Topic 19     Topic 20 
-## [1,] "taoiseach" "welfare"    "failed"    "million"    "child"  
-## [2,] "gael"      "scheme"     "strategy"  "measures"   "benefit"
-## [3,] "fine"      "million"    "needed"    "scheme"     "fianna" 
-## [4,] "may"       "continue"   "ministers" "investment" "fáil"   
-## [5,] "irish"     "employment" "system"    "spending"   "irish"</code></pre>
+<pre><code>##      Topic 1     Topic 2    Topic 3   Topic 4     Topic 5  Topic 6  
+## [1,] "taoiseach" "system"   "benefit" "care"      "fianna" "million"
+## [2,] "fine"      "welfare"  "day"     "allowance" "fáil"   "bill"   
+## [3,] "gael"      "child"    "fianna"  "per"       "side"   "credit" 
+## [4,] "may"       "taxation" "child"   "million"   "level"  "energy" 
+## [5,] "irish"     "measures" "banks"   "welfare"   "third"  "current"
+##      Topic 7       Topic 8     Topic 9      Topic 10      Topic 11 
+## [1,] "million"     "welfare"   "support"    "kind"        "child"  
+## [2,] "areas"       "support"   "investment" "imagination" "today"  
+## [3,] "national"    "million"   "million"    "policies"    "benefit"
+## [4,] "scheme"      "future"    "welfare"    "wit"         "much"   
+## [5,] "development" "programme" "capital"    "create"      "welfare"
+##      Topic 12    Topic 13      Topic 14   Topic 15   Topic 16  
+## [1,] "taoiseach" "alternative" "system"   "fianna"   "welfare" 
+## [2,] "employees" "citizenship" "benefit"  "fáil"     "fianna"  
+## [3,] "rate"      "wealth"      "workers"  "national" "live"    
+## [4,] "referred"  "adjustment"  "measures" "irish"    "worst"   
+## [5,] "debate"    "breaks"      "policies" "support"  "recovery"
+##      Topic 17       Topic 18   Topic 19     Topic 20    
+## [1,] "society"      "measures" "failed"     "strategy"  
+## [2,] "enterprising" "spending" "needed"     "leadership"
+## [3,] "sense"        "scheme"   "vision"     "banks"     
+## [4,] "equal"        "million"  "employment" "sort"      
+## [5,] "nation"       "review"   "confront"   "welfare"</code></pre>
 </div>
 </div>
   </div>
