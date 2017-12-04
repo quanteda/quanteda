@@ -18,7 +18,7 @@
 #' \link{dfm} objects.
 #' @param x a \link{dfm} object
 #' @param selection character vector of document names or feature labels from
-#'   \code{x}.  A \code{"dist"} object is returned if selection is \code{NULL}, 
+#'   \code{x} or a numeric vector/matrix which is conform to x. A \code{"dist"} object is returned if selection is \code{NULL}, 
 #'   otherwise, a matrix is returned.
 #' @param margin identifies the margin of the dfm on which similarity or 
 #'   difference will be computed:  \code{documents} for documents or 
@@ -82,18 +82,29 @@ textstat_simil.dfm <- function(x, selection = NULL,
     margin <- match.arg(margin)
     
     if (!is.null(selection)) {
-        if (!is.character(selection)) 
-            stop("'selection' should be character or character vector of document names or feature labels.")
-        if (margin == "features") {
-            selection <- intersect(selection, featnames(x))
-            if (!length(selection))
-                stop("The features specified by 'selection' do not exist.")
-            y <- x[, selection, drop = FALSE]
-        } else {
-            selection <- intersect(selection, docnames(x))
-            if (!length(selection))
-                stop("The documents specified by 'selection' do not exist.")
-            y <- x[selection, , drop = FALSE]
+        if (!is.character(selection)){
+            selection_dfm <- as.dfm(as.matrix(selection))
+            if (margin == "features") {
+                if (dim(selection_dfm)[1] != dim(x)[1])
+                    stop("The vector/matrix specified by 'selection' must be conform to the object x in rows.")
+                y <- selection_dfm
+            } else {
+                if (dim(selection_dfm)[2] != dim(x)[2])
+                    stop("The vector/matrix specified by 'selection' must be conform to the object x in columns.")
+                y <- selection_dfm
+            }
+        } else {    
+            if (margin == "features") {
+                selection <- intersect(selection, featnames(x))
+                if (!length(selection))
+                    stop("The features specified by 'selection' do not exist.")
+                y <- x[, selection, drop = FALSE]
+            } else {
+                selection <- intersect(selection, docnames(x))
+                if (!length(selection))
+                    stop("The documents specified by 'selection' do not exist.")
+                y <- x[selection, , drop = FALSE]
+            }
         }
     } else {
         y <- NULL
@@ -112,8 +123,10 @@ textstat_simil.dfm <- function(x, selection = NULL,
     # similmatrix[is.nan(similmatrix)] <- NA
     
     if (!is.null(selection)) {
-        names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
-        temp <- temp[names, , drop = FALSE] # sort for as.dist()
+        if (is.character(selection)){
+            names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
+            temp <- temp[names, , drop = FALSE] # sort for as.dist()
+        } 
     }
     
     # create a new dist object
