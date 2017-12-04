@@ -44,23 +44,17 @@ setClass("textmodel_ca_fitted",
 #' wca <- textmodel_ca(ieDfm)
 #' summary(wca) 
 #' @export
-textmodel_ca <- function(x, smooth = 0, nd = NA,
-                         sparse = FALSE,
-                         residual_floor = 0.1) {
+textmodel_ca <- function(x, smooth = 0, nd = NA, sparse = FALSE, residual_floor = 0.1) {
     UseMethod("textmodel_ca")
 }
 
 #' @export
-textmodel_ca.default <- function(x, smooth = 0, nd = NA,
-                                 sparse = FALSE,
-                                 residual_floor = 0.1) {
+textmodel_ca.default <- function(x, smooth = 0, nd = NA, sparse = FALSE, residual_floor = 0.1) {
     stop(friendly_class_undefined_message(class(x), "textmodel_ca"))
 }
     
 #' @export
-textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
-                             sparse = FALSE,
-                             residual_floor = 0.1) {
+textmodel_ca.dfm <- function(x, smooth = 0, nd = NA, sparse = FALSE, residual_floor = 0.1) {
     
     x <- as.dfm(x)
     x <- x + smooth  # smooth by the specified amount
@@ -73,7 +67,7 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
     # default value of rank k
     if (is.na(nd)){
         #nd <- max(floor(min(I, J)/4), 1)  
-        nd <- max(floor(3*log(min(I, J))), 1) 
+        nd <- max(floor(3 * log(min(I, J))), 1) 
     } else {
         nd.max <- min(dim(x)) - 1
         if (nd > nd.max ) nd <- nd.max
@@ -84,7 +78,7 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
     P <- x / n
     rm <- rowSums(P) 
     cm <- colSums(P)
-    
+
     if (sparse == FALSE){
         # generally fast for a not-so-large dfm
         eP <- Matrix::tcrossprod(rm, cm)
@@ -105,8 +99,8 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA,
     
     # Inertia:
     totin <- sum(ev)
-    rin <- rowSums(S^2)
-    cin <- colSums(S^2)
+    rin <- rowSums(S ^ 2)
+    cin <- colSums(S ^ 2)
     
     # chidist
     rachidist <- sqrt(rin / rm)

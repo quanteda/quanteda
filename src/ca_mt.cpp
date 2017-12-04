@@ -49,11 +49,10 @@ S4 qutd_cpp_ca(const arma::sp_mat &dfm, const double residual_floor){
     // Construct Chi-Sq Residuals	
     const arma::colvec rsum(sum(dfm,1));
     const arma::rowvec csum(sum(dfm,0));
-    //double asum = accu(dfm);	
     
     //create the residual matrix
     Triplets residual_tri;
-    residual_tri.reserve(N * K);
+    residual_tri.reserve(N * K / 1000); // assume 99.9% sparsity
 
 #if QUANTEDA_USE_TBB
     Res res(dfm, rsum, csum, residual_floor, K, residual_tri);

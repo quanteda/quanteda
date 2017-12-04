@@ -17,7 +17,7 @@ ie2010dfm_dense <- as.matrix(ie2010dfm)
 microbenchmark::microbenchmark(
     ca = ca::ca(ie2010dfm_dense), 
     ca_textmodel = textmodel_ca(ie2010dfm),
-    times=10, unit = 'relative')
+    times = 10, unit = 'relative')
 ```
 
 ```{r}
@@ -27,14 +27,13 @@ SOTUdfm_dense <- as.matrix(SOTUdfm)
 microbenchmark::microbenchmark(
     ca = ca::ca(SOTUdfm_dense), 
     ca_textmodel = textmodel_ca(SOTUdfm),
-    times=10, unit = 'relative')
+    times = 10, unit = 'relative')
 ```
 
     
 ```{r,eval=FALSE}
-load("/home/kohei/Documents/Brexit/Analysis/data_tokens_guardian.RData")
-toks <- data_tokens_guardian
-large_dfm <- dfm(toks)
-textmodel_ca(large_dfm, sparse = TRUE)
+load("/home/kohei/Documents/Brexit/Analysis/data_dfm_guardian.RData")
+gud_ca <- textmodel_ca(head(data_dfm_guardian, 1000000), sparse = TRUE, residual_floor = 0.5)
+summary(gud_ca)
 ```
 

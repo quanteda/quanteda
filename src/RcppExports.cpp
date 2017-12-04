@@ -7,14 +7,14 @@
 using namespace Rcpp;
 
 // qutd_cpp_ca
-S4 qutd_cpp_ca(SEXP dfm_, const double residual_floor);
-RcppExport SEXP _quanteda_qutd_cpp_ca(SEXP dfm_SEXP, SEXP residual_floorSEXP) {
+S4 qutd_cpp_ca(const arma::sp_mat& dfm, const double residual_floor);
+RcppExport SEXP _quanteda_qutd_cpp_ca(SEXP dfmSEXP, SEXP residual_floorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type dfm_(dfm_SEXP);
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type dfm(dfmSEXP);
     Rcpp::traits::input_parameter< const double >::type residual_floor(residual_floorSEXP);
-    rcpp_result_gen = Rcpp::wrap(qutd_cpp_ca(dfm_, residual_floor));
+    rcpp_result_gen = Rcpp::wrap(qutd_cpp_ca(dfm, residual_floor));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -185,6 +185,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qutd_cpp_matrix_test
+void qutd_cpp_matrix_test(const arma::sp_mat& dfm);
+RcppExport SEXP _quanteda_qutd_cpp_matrix_test(SEXP dfmSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type dfm(dfmSEXP);
+    qutd_cpp_matrix_test(dfm);
+    return R_NilValue;
+END_RCPP
+}
 // qatd_cpp_tokens_compound
 List qatd_cpp_tokens_compound(const List& texts_, const List& comps_, const CharacterVector& types_, const String& delim_, const bool& join);
 RcppExport SEXP _quanteda_qatd_cpp_tokens_compound(SEXP texts_SEXP, SEXP comps_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP joinSEXP) {
@@ -348,6 +358,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_MinkowskiPara_cpp2", (DL_FUNC) &_quanteda_qatd_MinkowskiPara_cpp2, 4},
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 8},
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 4},
+    {"_quanteda_qutd_cpp_matrix_test", (DL_FUNC) &_quanteda_qutd_cpp_matrix_test, 1},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
