@@ -2,16 +2,16 @@
 #' @export
 #' @param p The power of the Minkowski distance.
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
-#'   \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, 
+#'   \code{"chisquared"}, \code{"chisquared2"}, \code{"hamming"}, 
 #'   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
 #'   and \code{"minkowski"}.
-#' @references The \code{"Chisquared"} metric is from Legendre, P., & Gallagher,
+#' @references The \code{"chisquared"} metric is from Legendre, P., & Gallagher,
 #'   E. D. (2001).
 #'   "\href{http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf}{Ecologically
 #'    meaningful transformations for ordination of species data}".
 #'   \emph{Oecologia}, 129(2), 271–280. doi.org/10.1007/s004420100716
 #'   
-#'   The \code{"Chisquared2"} metric is the "Quadratic-Chi" measure from Pele,
+#'   The \code{"chisquared2"} metric is the "Quadratic-Chi" measure from Pele,
 #'   O., & Werman, M. (2010). 
 #'   "\href{https://link.springer.com/chapter/10.1007/978-3-642-15552-9_54}{The
 #'   Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision – ECCV
@@ -27,7 +27,7 @@
 #'    \deqn{\sum{P(x)*log(P(x)/p(y))}}
 #'    
 #'   All other measures are described in the \pkg{proxy} package.
-#' @importFrom RcppParallel RcppParallelLibs
+#' @importFrom RcppParallel
 #' @author Kenneth Benoit, Haiyan Wang
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
@@ -40,7 +40,7 @@
 #' 
 #' # distances for specific documents
 #' textstat_dist(presDfm, "2017-Trump", margin = "documents")
-#' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
+#' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "jaccard")
 #' (d2 <- textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents"))
 #' as.list(d1)
 #' 
@@ -88,8 +88,8 @@ textstat_dist.dfm <- function(x, selection = NULL,
     
     m <- if (margin == "documents") 1 else 2
     
-    methods1 <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")
-    methods2 <- c("jaccard", "binary", "eJaccard", "simple matching")
+    methods1 <- c("euclidean", "hamming", "chisquared", "chisquared2", "kullback", "manhattan", "maximum", "canberra")
+    methods2 <- c("jaccard", "binary", "ejaccard", "simple matching")
     
     # methods1 <- char_tolower(methods1)
     # methods1 <- char_tolower(methods2)
@@ -109,10 +109,6 @@ textstat_dist.dfm <- function(x, selection = NULL,
     if (!is.null(selection)) {
         names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
         temp <- temp[names, , drop = FALSE] # sort for as.dist()
-        #temp2 <- sparseMatrix(i = rep(seq_len(nrow(temp)), times = ncol(temp)),
-        #                      j = rep(seq_len(ncol(temp)), each = nrow(temp)),
-        #                      x = as.vector(temp), dims = c(length(names), length(names)),
-        #                      dimnames = list(names, names))
     }
     
     # create a new dist object
@@ -164,7 +160,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
 #' 
 #' # in quanteda
 #' quantedaDfm <- as.dfm(t(as.matrix(tdm)))
-#' as.list(textstat_simil(quantedaDfm, c("oil", "opec", "xyz"), margin = "features"), n = 14)
+#' as.list(textstat_dist(quantedaDfm, c("oil", "opec", "xyz"), margin = "features"), n = 14)
 #' 
 #' # in base R
 #' corMat <- as.matrix(proxy::simil(as.matrix(quantedaDfm), by_rows = FALSE))
@@ -181,8 +177,9 @@ as.list.dist <- function(x, sorted = TRUE, n = NULL, ...) {
     # remove the element of each similarity vector equal to the item itself
     tempseq <- seq_along(result)
     names(tempseq) <- names(result)
-    result <- lapply( tempseq, function(i)
-        result[[i]] <- result[[i]][-which(names(result[[i]]) == names(result)[i])] )
+    result <- lapply(tempseq, function(i) {
+        result[[i]] <- result[[i]][-which(names(result[[i]]) == names(result)[i])]
+        })
     
     # sort each element of the list and return only first n results if n not NULL
     if (sorted == TRUE)
@@ -232,8 +229,9 @@ as.list.dist_selection <- function(x, sorted = TRUE, n = NULL, ...) {
     # remove the element of each similarity vector equal to the item itself
     tempseq <- seq_along(result)
     names(tempseq) <- names(result)
-    result <- lapply( tempseq, function(i)
-        result[[i]] <- result[[i]][-which(names(result[[i]]) == names(result)[i])] )
+    result <- lapply( tempseq, function(i) {
+        result[[i]] <- result[[i]][-which(names(result[[i]]) == names(result)[i])]
+        })
     
     # sort each element of the list and return only first n results if n not NULL
     if (sorted == TRUE)
@@ -279,8 +277,8 @@ euclidean_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     
     if (!is.null(y)) {
         stopifnot(if (margin == 2) nrow(x) == nrow(y) else ncol(x) == ncol(y))
-        an <- marginSums(x^2)
-        bn <- marginSums(y^2)
+        an <- marginSums(x ^ 2)
+        bn <- marginSums(y ^ 2)
         
         # number of features
         kk <- y@Dim[margin]
@@ -288,7 +286,7 @@ euclidean_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
         tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
         eucmat <- sqrt( tmp - 2 * as.matrix(cpFun(x, y)) )
     } else {
-        an <- marginSums(x^2)
+        an <- marginSums(x ^ 2)
         tmp <- matrix(rep(an, n), nrow = n) 
         tmp <-  tmp +  matrix(rep(an, n), nrow = n, byrow=TRUE)
         eucmat <- sqrt( tmp - 2 * as.matrix(cpFun(x)))
@@ -333,8 +331,8 @@ hamming_sparse <- function(x, y = NULL, margin = 1) {
 # Bruce McCune & James b. Grace 2002). 
 # http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf
 # https://www.pcord.com/book.htm
-# formula: Chi = sum((x/rowsum(x_i) - y/rowsum(y_i))^2/(colsum(i)/total))
-Chisquared_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+# formula: Chi = sum((x/rowsum(x_i) - y/rowsum(y_i)) ^ 2/(colsum(i)/total))
+chisquared_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
     marginNames <- if (margin == 2) colnames else rownames
@@ -368,8 +366,8 @@ Chisquared_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
             y <- if (dim(y)[margin] > 1) y %*% diag(1/marginSums(y)) else y %*% (1/marginSums(y))
             y <- y / aveProfile
         }
-        an <- marginSums(x^2)
-        bn <- marginSums(y^2)
+        an <- marginSums(x ^ 2)
+        bn <- marginSums(y ^ 2)
         
         # number of features
         kk <- y@Dim[margin]
@@ -378,7 +376,7 @@ Chisquared_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
         chimat <- tmp - 2 * as.matrix(cpFun(x, y))
         #chimat <-  sqrt(round(chimat, 2)) 
     } else {
-        an <- marginSums(x^2)
+        an <- marginSums(x ^ 2)
         tmp <- matrix(rep(an, n), nrow = n) 
         tmp <-  tmp +  matrix(rep(an, n), nrow = n, byrow=TRUE)
         chimat <-  tmp - 2 * as.matrix(cpFun(x))
@@ -388,9 +386,9 @@ Chisquared_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     chimat
 }
 
-# This chi-squared method is used for histogram: sum((x-y)^2/((x+y)))/2
+# This chi-squared method is used for histogram: sum((x-y) ^ 2/((x+y)))/2
 # http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf
-Chisquared2_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+chisquared2_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
@@ -398,8 +396,8 @@ Chisquared2_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     
     if (!is.null(y)) {
         stopifnot(if (margin == 2) nrow(x) == nrow(y) else ncol(x) == ncol(y))
-        an <- marginSums(x^2)
-        bn <- marginSums(y^2)
+        an <- marginSums(x ^ 2)
+        bn <- marginSums(y ^ 2)
         
         # number of features
         kk <- y@Dim[1]
@@ -407,7 +405,7 @@ Chisquared2_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
         tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
         chimat <- sqrt( tmp - 2 * as.matrix(cpFun(x, y)) )
     } else {
-        an <- marginSums(x^2)
+        an <- marginSums(x ^ 2)
         tmp <- matrix(rep(an, n), nrow = n) 
         tmp <-  tmp +  matrix(rep(an, n), nrow = n, byrow=TRUE)
         
@@ -457,10 +455,10 @@ manhattan_sparse <- function(x, y=NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
         colNm <- marginNames(y)
-        manmat <- qatd_ManhattanPara_cpp2(x, y, margin)
+        manmat <- qatd_cpp_manhattan2(x, y, margin)
     } else {
         colNm <- marginNames(x)
-        manmat <- qatd_ManhattanPara_cpp(x, margin)
+        manmat <- qatd_cpp_manhattan(x, margin)
     }
     dimnames(manmat) <- list(marginNames(x),  colNm)
     manmat
@@ -471,10 +469,10 @@ maximum_sparse <- function(x, y=NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
         colNm <- marginNames(y)
-        maxmat <- qatd_MaximumPara_cpp2(x, y, margin)
+        maxmat <- qatd_cpp_maximum2(x, y, margin)
     } else {
         colNm <- marginNames(x)
-        maxmat <- qatd_MaximumPara_cpp(x, margin)
+        maxmat <- qatd_cpp_maximum(x, margin)
     }
     dimnames(maxmat) <- list(marginNames(x),  colNm)
     maxmat
@@ -482,28 +480,29 @@ maximum_sparse <- function(x, y=NULL, margin = 1){
 
 # Canberra distance: sum_i |x_i - y_i| / |x_i + y_i|
 # Weighted by num_nonzeros_elementsum/num_element
-canberra_sparse <- function(x, y=NULL, margin = 1){
+canberra_sparse <- function(x, y = NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
+    
     if (!is.null(y)) {
         colNm <- marginNames(y)
-        canmat <- qatd_CanberraPara_cpp2(x, y, margin)
+        canmat <- qatd_cpp_canberra2(x, y, margin)
     } else {
         colNm <- marginNames(x)
-        canmat <- qatd_CanberraPara_cpp(x, margin)
+        canmat <- qatd_cpp_canberra(x, margin)
     }
     dimnames(canmat) <- list(marginNames(x),  colNm)
     canmat
 }
 
 # Minkowski distance: (sum_i (x_i - y_i)^p)^(1/p)
-minkowski_sparse <- function(x, y=NULL, margin = 1, p = 2){
+minkowski_sparse <- function(x, y = NULL, margin = 1, p = 2){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
         colNm <- marginNames(y)
-        minkmat <- qatd_MinkowskiPara_cpp2(x, y, margin, p)
+        minkmat <- qatd_cpp_minkowski2(x, y, margin, p)
     } else {
         colNm <- marginNames(x)
-        minkmat <- qatd_MinkowskiPara_cpp(x, margin, p)
+        minkmat <- qatd_cpp_minkowski(x, margin, p)
     }
     dimnames(minkmat) <- list(marginNames(x),  colNm)
     minkmat
