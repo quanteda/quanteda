@@ -91,7 +91,7 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA, sparse = FALSE, residual_fl
     dec <- RSpectra::svds(S, nd)   
     
     chimat <- S ^ 2 * n
-    sv     <- dec$d[1:nd]
+    sv     <- dec$d[seq_len(nd)]
     u      <- dec$u
     v      <- dec$v
     ev     <- sv ^ 2
@@ -109,13 +109,13 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA, sparse = FALSE, residual_fl
     cchidist <- cachidist
     
     # Standard coordinates:
-    phi <- as.matrix(u[,1:nd]) / sqrt(rm)
+    phi <- as.matrix(u[,seq_len(nd)]) / sqrt(rm)
     rownames(phi) <- rn
-    colnames(phi) <- paste("Dim",1:ncol(phi), sep="")
+    colnames(phi) <- paste("Dim", seq_len(ncol(phi)), sep="")
     
     gam <- as.matrix(v[,1:nd]) / sqrt(cm)
     rownames(gam) <- cn
-    colnames(gam) <- paste("Dim",1:ncol(gam), sep="")
+    colnames(gam) <- paste("Dim", seq_len(ncol(gam)), sep="")
     # remove attributes
     attr(rm, "names") <- NULL
     attr(cm, "names") <- NULL
