@@ -6,7 +6,7 @@
 \usage{
 textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
   edge_color = "skyblue", edge_alpha = 0.5, edge_size = 2,
-  vertex_color = "gray40", vertex_size = 2, text_color = NULL,
+  vertex_color = "gray40", vertex_size = 2, vertext_labelcolor = NULL,
   offset = NULL)
 }
 \arguments{
@@ -15,7 +15,7 @@ textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
 \item{min_freq}{a percentail or frequency count threashold for cooccurances
 of features to be plotted.}
 
-\item{omit_isolated}{if \code{TRUE}, features do not occuare more frequent
+\item{omit_isolated}{if \code{TRUE}, features do not occur more frequent
 than \code{min_freq} will be omitted from the plot}
 
 \item{edge_color}{color of edges that connect vertices.}
@@ -29,7 +29,7 @@ other edges are determined proportionally to the highest frequency.}
 
 \item{vertex_size}{size of vertices.}
 
-\item{text_color}{color of texts. Default to the same as \code{vertex_color}.
+\item{vertext_labelcolor}{color of texts. Default to the same as \code{vertex_color}.
 If \code{NA} is given, texts are not rendered.}
 
 \item{offset}{if \code{NULL}, the distance between vertices and texts are
@@ -51,7 +51,7 @@ textplot_network(myfcm, min_freq = 10)
 fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(min_freq = 0.5)
 fcm_select(myfcm, feat, verbose = FALSE) \%>\% textplot_network(min_freq = 0.8)
 fcm_select(myfcm, feat, verbose = FALSE) \%>\%
-        textplot_network(min_freq = 0.8, text_color = rep(c('gray40', NA), 15))
+        textplot_network(min_freq = 0.8, vertext_labelcolor = rep(c('gray40', NA), 15))
 }
 }
 \seealso{

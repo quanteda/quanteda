@@ -65,6 +65,8 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  vertex_color = 'gray40', vertex_size = 2,
                                  vertext_labelcolor = NULL,
                                  offset = NULL) {
+    
+    label <- x1 <- x2 <- y <- y1 <- y2 <- NULL
     x <- as(x, 'dgTMatrix')
     
     if (is.null(vertext_labelcolor))
