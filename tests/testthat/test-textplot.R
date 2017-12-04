@@ -166,7 +166,7 @@ test_that("test textplot_network", {
     expect_silent(textplot_network(testfcm, vertex_color = 'red', offset = 0.1))
     expect_silent(textplot_network(testdfm, offset = 0.1))
     expect_error(textplot_network(testfcm, min_freq = 100), 
-                 'There is no coocurance higher than the threashold')
+                 'There is no co-occurence higher than the threshold')
 })
 
 test_that("textplot_network error when fcm is too large", {
