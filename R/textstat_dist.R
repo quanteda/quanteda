@@ -69,14 +69,14 @@ textstat_dist.dfm <- function(x, selection = NULL,
     margin <- match.arg(margin)
     
     if (!is.null(selection)) {
-        if (!is.character(selection)){
-            selection_dfm <- as.dfm(as.matrix(selection))
+        if (!is.character(selection)) {
+            if (!is.dfm(selection)) selection_dfm <- as.dfm(as.matrix(selection))
             if (margin == "features") {
-                if (dim(selection_dfm)[1] != dim(x)[1])
+                if (ndoc(selection_dfm) != ndoc(x))
                     stop("The vector/matrix specified by 'selection' must be conform to the object x in rows.")
                 y <- selection_dfm
             } else {
-                if (dim(selection_dfm)[2] != dim(x)[2])
+                if (nfeature(selection_dfm) != nfeature(x))
                     stop("The vector/matrix specified by 'selection' must be conform to the object x in columns.")
                 y <- selection_dfm
             }
@@ -118,7 +118,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
     }
     
     if (!is.null(selection)) {
-        if (is.character(selection)){
+        if (is.character(selection)) {
             names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
             temp <- temp[names, , drop = FALSE] # sort for as.dist()
         }                   
