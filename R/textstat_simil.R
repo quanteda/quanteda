@@ -18,8 +18,8 @@
 #' \link{dfm} objects.
 #' @param x a \link{dfm} object
 #' @param selection character vector of document names or feature labels from
-#'   \code{x} or a numeric vector/matrix which is conform to x. A \code{"dist"} object is returned if selection is \code{NULL}, 
-#'   otherwise, a matrix is returned.
+#'   \code{x} or a numeric vector/matrix which is conform to x. A \code{"dist"} object 
+#'   is returned if selection is \code{NULL}, otherwise, a matrix is returned.
 #' @param margin identifies the margin of the dfm on which similarity or 
 #'   difference will be computed:  \code{documents} for documents or 
 #'   \code{features} for word/term features.
