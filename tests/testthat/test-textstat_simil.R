@@ -380,3 +380,10 @@ test_that("textstat_simil works on zero-feature documents (#952)", {
     )    
 })
 
+test_that("selection offers option to enable an alien vector/matrix", {
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    expect_error(textstat_simil(presDfm, c(1,2,3,4,5,6,7), margin = "features"), NA)
+    
+})
