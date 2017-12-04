@@ -283,3 +283,11 @@ test_that("as.dist on a dist returns a dist", {
     expect_equivalent(textstat_dist(presDfm, upper = TRUE, diag = TRUE), 
                       as.dist(distmat, upper = TRUE, diag = TRUE)) 
 })
+
+test_that("selection offers option to enable an alien vector/matrix", {
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    expect_error(textstat_dist(presDfm, c(1,2,3,4,5,6,7), margin = "features"), NA)
+    
+})
