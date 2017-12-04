@@ -17,6 +17,7 @@ API_notes.md
 *.Rproj
 .Rproj.user
 .Rhistory
+.RData
 
 # OS
 __MACOSX
