@@ -51,8 +51,8 @@ selected).  They are fast and robust because they operate directly on the sparse
   and \code{"minkowski"}.
 
 \code{textstat_simil} options are: \code{"correlation"} (default), 
-  \code{"cosine"}, \code{"jaccard"}, \code{"eJaccard"}, \code{"dice"},
-  \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and 
+  \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
+  \code{"edice"}, \code{"simple matching"}, \code{"hamann"}, and 
   \code{"faith"}.
 }
 \note{
