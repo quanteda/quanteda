@@ -20,7 +20,7 @@ dfm_keep(x, ...)
 
 fcm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  verbose = TRUE, ...)
+  verbose = quanteda_options("verbose"), ...)
 
 fcm_remove(x, pattern = NULL, ...)
 

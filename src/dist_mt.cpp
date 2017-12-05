@@ -14,8 +14,8 @@ struct manhattan_distance : public Worker {
     arma::uword nrow, ncol;
     
     // initialize from Rcpp input and output matrixes 
-    manhattan_distance(const arma::sp_mat& amat, NumericMatrix& rmat, arma::uword nrow, arma::uword ncol)
-        : amat(amat), rmat(rmat), nrow(nrow), ncol(ncol) {}
+    manhattan_distance(const arma::sp_mat& amat, NumericMatrix& rmat, arma::uword nrow, arma::uword ncol) :
+                       amat(amat), rmat(rmat), nrow(nrow), ncol(ncol) {}
     
     // function call operator that work for the specified range (begin/end)
     void operator()(std::size_t begin, std::size_t end) {
@@ -112,8 +112,8 @@ struct maximum_distance : public Worker {
     arma::uword nrow, ncol;
     
     // initialize from Rcpp input and output matrixes 
-    maximum_distance(const arma::sp_mat& amat, NumericMatrix& rmat, arma::uword nrow, arma::uword ncol)
-        : amat(amat), rmat(rmat), nrow(nrow), ncol(ncol) {}
+    maximum_distance(const arma::sp_mat& amat, NumericMatrix& rmat, arma::uword nrow, arma::uword ncol) :
+                     amat(amat), rmat(rmat), nrow(nrow), ncol(ncol) {}
     
     // function call operator that work for the specified range (begin/end)
     void operator()(std::size_t begin, std::size_t end) {
@@ -136,8 +136,9 @@ struct maximum_distance2 : public Worker {
     arma::uword nrow, ncol;
     
     // initialize from Rcpp input and output matrixes 
-    maximum_distance2(const arma::sp_mat& amat, const arma::sp_mat& bmat, NumericMatrix& rmat, arma::uword nrow, arma::uword ncol)
-        : amat(amat), bmat(bmat), rmat(rmat), nrow(nrow), ncol(ncol) {}
+    maximum_distance2(const arma::sp_mat& amat, const arma::sp_mat& bmat, NumericMatrix& rmat, 
+                      arma::uword nrow, arma::uword ncol) :
+                      amat(amat), bmat(bmat), rmat(rmat), nrow(nrow), ncol(ncol) {}
     
     // function call operator that work for the specified range (begin/end)
     void operator()(std::size_t begin, std::size_t end) {
