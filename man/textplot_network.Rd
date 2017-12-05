@@ -32,13 +32,13 @@ other edges are determined proportionally to the highest frequency.}
 
 \item{vertex_size}{size of vertices.}
 
+\item{vertex_labelcolor}{color of texts. Default to the same as
+\code{vertex_color}. If \code{NA} is given, texts are not rendered.}
+
 \item{offset}{if \code{NULL}, the distance between vertices and texts are
 determined automatically.}
 
-\item{...}{additional arguments passed to \link{netowrk::network}.}
-
-\item{vertext_labelcolor}{color of texts. Default to the same as
-\code{vertex_color}. If \code{NA} is given, texts are not rendered.}
+\item{...}{additional arguments passed to \link[network]{network}.}
 }
 \description{
 Plot an \link{fcm} object as a network, where edges show co-occurrences of
@@ -48,9 +48,9 @@ features.
 Currently the size of the network is limited to 1000 to avoide slows
   down of users computers. When \link{fcm} is large, users have to select
   features using \link{fcm_select} or set high threshold to \code{min_freq},
-  or use \code{as.network} to impliment a custom ploting function.
+  or impliment own plotting function using \code{as.network}.
 
-Note that \link{network} needs to be loaded to use \code{as.network}
+Note that \link[network]{as.network} needs to be accessible to use \code{as.network}
   for \link{fcm}.
 }
 \examples{
