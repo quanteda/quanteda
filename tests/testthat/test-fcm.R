@@ -314,6 +314,10 @@ test_that("fcm works tokens with paddings, #788", {
 
 test_that("as.network.fcm works", {
     txt <- c("a a a b b c", "a a c e", "a c e f g")
-    net <- network::as.network(fcm(txt))
-    expect_true( network::is.network(net))
+    mat <- fcm(txt)
+    net <- network::as.network(mat, min_freq = 1, omit_isolated = FALSE)
+    expect_true(network::is.network(net))
+    expect_equal(network::network.vertex.names(net), featnames(mat))
 })
+
+
