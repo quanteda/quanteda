@@ -67,3 +67,36 @@ test_that("friendly_class_undefined_message", {
         "as.tokens\\(\\) only works on.*list.*spacyr_parsed.*objects"
     )
 })
+
+
+test_that("pattern2id is working with collocations", {
+    
+    txt <- c(". . . . a b c . . a b c . . . c d e",
+             "a b . . a b . . a b . . a b . a b",
+             "b c d . . b c . b c . . . b c")
+    toks <- tokens(txt)
+    type <- types(toks)
+    col <- textstat_collocations(toks, size = 2:3)
+    ids <- quanteda:::pattern2id(col, type, 'fixed', TRUE)
+    expect_equal(col$collocation, sapply(ids, function(x, y) paste0(y[x], collapse = ' '), type))
+    
+})
+
+test_that("pattern2id is working with a list", {
+    
+    type <- letters
+    pat <- c('a b', 'c d', 'e f g')
+    ids <- quanteda:::pattern2id(phrase(pat), type, 'fixed', TRUE)
+    expect_equal(pat, sapply(ids, function(x, y) paste0(y[x], collapse = ' '), type))
+    
+})
+
+test_that("pattern2id is working with empty patterns", {
+    
+    col <- data.frame()
+    class(col) <- c('collocations', 'data.frame')
+    pat <- list()
+    expect_silent(quanteda:::pattern2id(col, types(toks), 'fixed', TRUE))
+    expect_silent(quanteda:::pattern2id(pat, types(toks), 'fixed', TRUE))
+    
+})
