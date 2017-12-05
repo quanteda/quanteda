@@ -294,6 +294,14 @@ is.fcm <- function(x) {
     is(x, "fcm")
 }
 
-
+#' @noRd
+#' @rdname fcm-class
+#' @import network
+#' @method as.network fcm
+#' @export
+as.network.fcm <- function(x, ...) {
+    network(as.matrix(x), matrix.type = 'adjacency', directed = FALSE, 
+            ignore.eval = FALSE, names.eval = 'weight', ...)
+}
 
 
