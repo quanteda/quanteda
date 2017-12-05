@@ -116,11 +116,13 @@ pattern2id <- function(pattern, types, valuetype, case_insensitive,
     if (is.dfm(pattern)) 
         stop('dfm cannot be used as pattern')
     
-    if (is.collocations(pattern) || is.collocations(pattern)) {
+    if (is.collocations(pattern)) {
+        if (nrow(pattern) == 0) return(list())
         pattern <- stri_split_charclass(pattern$collocation, "\\p{Z}")
         pattern_id <- lapply(pattern, function(x) fastmatch::fmatch(x, types))
         pattern_id <- pattern_id[sapply(pattern_id, function(x) all(!is.na(x)))]
     } else {
+        if (length(pattern) == 0) return(list())
         if (is.dictionary(pattern)) {
             pattern <- unlist(pattern, use.names = FALSE)
             pattern <- split_dictionary_values(pattern, concatenator)
