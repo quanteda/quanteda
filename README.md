@@ -29,7 +29,8 @@ Lowe](https://github.com/conjugateprior).
 Supported by the European Research Council grant ERC-2011-StG
 283794-QUANTESS.
 
-For more details, see <http://docs.quanteda.io>.
+For more details, see <http://docs.quanteda.io> and the **quanteda**
+[vignettes](https://quanteda.io/help/).
 
 ## How to Install
 
@@ -42,7 +43,7 @@ install.packages("quanteda")
 Or for the latest development version:
 
 ``` r
-# devtools packaged required to install quanteda from Github 
+# devtools package required to install quanteda from Github 
 devtools::install_github("kbenoit/quanteda") 
 ```
 
@@ -59,8 +60,8 @@ using the command `xcode-select --install` from the Terminal.
 ## How to Use
 
 See the [quick start
-quide](http://docs.quanteda.io/articles/pkgdown/quickstart.html) to learn how to
-use **quanteda**.
+quide](http://docs.quanteda.io/articles/pkgdown/quickstart.html) to
+learn how to use **quanteda**.
 
 ## Leaving Feedback
 
