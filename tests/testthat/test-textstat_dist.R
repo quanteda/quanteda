@@ -260,7 +260,11 @@ test_that("textstat_dist stops as expected for wrong selections",{
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     expect_error(textstat_dist(presDfm, 5), 
-                 "'selection' should be character or character vector of document names or feature labels.")
+                 "The vector/matrix specified by 'selection' must be conform to the object x in columns")
+    expect_error(textstat_dist(presDfm, 5, margin = "features"), 
+                 "The vector/matrix specified by 'selection' must be conform to the object x in rows")
+    
+    
     
     expect_error(textstat_dist(presDfm, margin = "documents", "2009-Obamaa"), 
                  "The documents specified by 'selection' do not exist.")
@@ -278,4 +282,12 @@ test_that("as.dist on a dist returns a dist", {
                       as.dist(distmat, upper = TRUE)) 
     expect_equivalent(textstat_dist(presDfm, upper = TRUE, diag = TRUE), 
                       as.dist(distmat, upper = TRUE, diag = TRUE)) 
+})
+
+test_that("selection offers option to enable an alien vector/matrix", {
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    expect_error(textstat_dist(presDfm, c(1,2,3,4,5,6,7), margin = "features"), NA)
+    
 })

@@ -103,7 +103,7 @@ fcm_sort.fcm <- function(x) {
 fcm_select <- function(x, pattern = NULL, selection = c("keep", "remove"), 
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
-                       verbose = TRUE, ...) {
+                       verbose = quanteda_options("verbose"), ...) {
     UseMethod("fcm_select")
 }
 
@@ -111,7 +111,7 @@ fcm_select <- function(x, pattern = NULL, selection = c("keep", "remove"),
 fcm_select.default <- function(x, pattern = NULL, selection = c("keep", "remove"), 
                                valuetype = c("glob", "regex", "fixed"),
                                case_insensitive = TRUE,
-                               verbose = TRUE, ...) {
+                               verbose = quanteda_options("verbose"), ...) {
     stop(friendly_class_undefined_message(class(x), "fcm_select"))
 }
 
@@ -119,7 +119,7 @@ fcm_select.default <- function(x, pattern = NULL, selection = c("keep", "remove"
 fcm_select.fcm <- function(x, pattern = NULL, selection = c("keep", "remove"), 
                            valuetype = c("glob", "regex", "fixed"),
                            case_insensitive = TRUE,
-                           verbose = TRUE, ...) {
+                           verbose = quanteda_options("verbose"), ...) {
     
     attrs <- attributes(x)
     x <- t(dfm_select(x, pattern, selection, valuetype, case_insensitive, verbose = verbose, ...))

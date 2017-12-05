@@ -88,6 +88,9 @@
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -149,7 +152,7 @@ or to select only terms of interest from a dictionary.</p>
 
 <span class='fu'>fcm_select</span>(<span class='no'>x</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>), <span class='no'>...</span>)
 
 <span class='fu'>fcm_remove</span>(<span class='no'>x</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
@@ -344,7 +347,7 @@ removed</p></td>
 #&gt;   or           0        0    0  0         0  0  0   0  0   1     1  1
 #&gt;   but          0        0    0  0         0  0  0   0  0   0     1  1
 #&gt;   about        0        0    0  0         0  0  0   0  0   0     0  1
-#&gt;   it           0        0    0  0         0  0  0   0  0   0     0  0</div><div class='input'><span class='fu'>fcm_remove</span>(<span class='no'>tmpfcm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; <span class='message'>removed 9 features</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 3 features.
+#&gt;   it           0        0    0  0         0  0  0   0  0   0     0  0</div><div class='input'><span class='fu'>fcm_remove</span>(<span class='no'>tmpfcm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 3 features.
 #&gt; 3 x 3 sparse Matrix of class "fcm"
 #&gt;            features
 #&gt; features    contains lots stopwords

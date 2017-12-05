@@ -69,18 +69,29 @@ textstat_dist.dfm <- function(x, selection = NULL,
     margin <- match.arg(margin)
     
     if (!is.null(selection)) {
-        if (!is.character(selection)) 
-            stop("'selection' should be character or character vector of document names or feature labels.")
-        if (margin == "features") {
-            selection <- intersect(selection, featnames(x))
-            if (!length(selection))
-                stop("The features specified by 'selection' do not exist.")
-            y <- x[, selection, drop = FALSE]
-        } else {
-            selection <- intersect(selection, docnames(x))
-            if (!length(selection))
-                stop("The documents specified by 'selection' do not exist.")
-            y <- x[selection, , drop = FALSE]
+        if (!is.character(selection)) {
+            if (!is.dfm(selection)) selection_dfm <- as.dfm(as.matrix(selection))
+            if (margin == "features") {
+                if (ndoc(selection_dfm) != ndoc(x))
+                    stop("The vector/matrix specified by 'selection' must be conform to the object x in rows.")
+                y <- selection_dfm
+            } else {
+                if (nfeature(selection_dfm) != nfeature(x))
+                    stop("The vector/matrix specified by 'selection' must be conform to the object x in columns.")
+                y <- selection_dfm
+            }
+        } else {    
+            if (margin == "features") {
+                selection <- intersect(selection, featnames(x))
+                if (!length(selection))
+                    stop("The features specified by 'selection' do not exist.")
+                y <- x[, selection, drop = FALSE]
+            } else {
+                selection <- intersect(selection, docnames(x))
+                if (!length(selection))
+                    stop("The documents specified by 'selection' do not exist.")
+                y <- x[selection, , drop = FALSE]
+            }
         }
     } else {
         y <- NULL
@@ -107,12 +118,10 @@ textstat_dist.dfm <- function(x, selection = NULL,
     }
     
     if (!is.null(selection)) {
-        names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
-        temp <- temp[names, , drop = FALSE] # sort for as.dist()
-        #temp2 <- sparseMatrix(i = rep(seq_len(nrow(temp)), times = ncol(temp)),
-        #                      j = rep(seq_len(ncol(temp)), each = nrow(temp)),
-        #                      x = as.vector(temp), dims = c(length(names), length(names)),
-        #                      dimnames = list(names, names))
+        if (is.character(selection)) {
+            names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
+            temp <- temp[names, , drop = FALSE] # sort for as.dist()
+        }                   
     }
     
     # create a new dist object

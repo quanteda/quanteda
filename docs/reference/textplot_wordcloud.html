@@ -88,6 +88,9 @@
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -155,7 +158,7 @@ one grouping per document</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional parameters passed to to <a href='http://www.rdocumentation.org/packages/wordcloud/topics/wordcloud'>wordcloud</a> or 
+      <td><p>additional parameters passed to <a href='http://www.rdocumentation.org/packages/wordcloud/topics/wordcloud'>wordcloud</a> or 
 to text (and strheight, strwidth)</p></td>
     </tr>
     </table>
@@ -182,10 +185,10 @@ to text (and strheight, strwidth)</p></td>
     <pre class="examples"><div class='input'><span class='co'># plot the features (without stopwords) from Obama's two inaugural addresses</span>
 <span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>President</span><span class='kw'>==</span><span class='st'>"Obama"</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
              <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
-<span class='fu'>textplot_wordcloud</span>(<span class='no'>mydfm</span>)</div><div class='img'><img src='textplot_wordcloud-13.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>textplot_wordcloud</span>(<span class='no'>mydfm</span>)</div><div class='img'><img src='textplot_wordcloud-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># plot in colors with some additional options passed to wordcloud</span>
 <span class='fu'>textplot_wordcloud</span>(<span class='no'>mydfm</span>, <span class='kw'>random.color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>rot.per</span> <span class='kw'>=</span> <span class='fl'>.25</span>,
-                   <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>colors</span>()[<span class='fl'>2</span>:<span class='fl'>128</span>], <span class='fl'>5</span>))</div><div class='img'><img src='textplot_wordcloud-14.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+                   <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fu'>colors</span>()[<span class='fl'>2</span>:<span class='fl'>128</span>], <span class='fl'>5</span>))</div><div class='img'><img src='textplot_wordcloud-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># comparison plot of Irish government vs opposition</span>
 <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='st'>"govtopp"</span>) <span class='kw'>&lt;-</span>
