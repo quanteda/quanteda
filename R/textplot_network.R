@@ -99,6 +99,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     
     n <- network(as.matrix(x), matrix.type = 'adjacency', directed = FALSE, 
                  ignore.eval = FALSE, names.eval = 'weight')
+    
     vertex <- data.frame(sna::gplot.layout.fruchtermanreingold(n, NULL))
     colnames(vertex) <- c('x', 'y')
     vertex$label <- colnames(x)

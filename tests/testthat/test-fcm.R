@@ -290,15 +290,15 @@ test_that("fcm print works as expected", {
 })
 
 test_that("fcm works the same for different object types", {
-    txts <- c("a a a b b c", "a a c e", "a c e f g")
-    expect_identical(fcm(txts), fcm(corpus(txts)))
-    expect_identical(fcm(tokens(txts)), fcm(corpus(txts)))
-    expect_identical(fcm(txts), fcm(tokens(txts)))
+    txt <- c("a a a b b c", "a a c e", "a c e f g")
+    expect_identical(fcm(txt), fcm(corpus(txt)))
+    expect_identical(fcm(tokens(txt)), fcm(corpus(txt)))
+    expect_identical(fcm(txt), fcm(tokens(txt)))
 })
 
 test_that("fcm expects warning for a wrong weights length", {
-    xts <- c("a a a b b c", "a a c e", "a c e f g")
-    expect_warning(fcm(tokens(xts), context = "window", window = 2, count = "weighted", weights = c(1,2,3)),
+    txt <- c("a a a b b c", "a a c e", "a c e f g")
+    expect_warning(fcm(tokens(txt), context = "window", window = 2, count = "weighted", weights = c(1,2,3)),
                  "weights length is not equal to the window size, weights are assigned by default!")
 })
 
@@ -310,4 +310,10 @@ test_that("fcm works tokens with paddings, #788", {
     toks <- tokens_remove(toks, pattern = stopwords(), padding = TRUE)
     testfcm <- fcm(toks, context = "window", window = 3)
     expect_equal(sort(colnames(testfcm)), sort(attr(toks, 'types')))
+})
+
+test_that("as.network.fcm works", {
+    txt <- c("a a a b b c", "a a c e", "a c e f g")
+    net <- network::as.network(fcm(txt))
+    expect_true( network::is.network(net))
 })
