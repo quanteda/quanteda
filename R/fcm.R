@@ -293,7 +293,3 @@ tail.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
 is.fcm <- function(x) {
     is(x, "fcm")
 }
-
-
-
-
