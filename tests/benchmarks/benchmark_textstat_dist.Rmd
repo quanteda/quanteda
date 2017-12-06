@@ -43,3 +43,13 @@ microbenchmark::microbenchmark(manhaQuanteda = textstat_dist(SOTUDfm, method ="m
 manhaProxy = proxy::dist(as.matrix(SOTUDfm), "Manhattan", diag = FALSE, upper = FALSE), 
 times = 10, unit = "relative")
 ```
+
+
+```{r}
+load("/home/kohei/Documents/Brexit/Analysis/data_dfm_guardian.RData")
+ndoc(data_dfm_guardian)
+gud_dist <- textstat_dist(data_dfm_guardian[1:100], method ="manhattan", 
+                          margin = "documents", upper = FALSE)
+summary(gud_dist)
+```
+
