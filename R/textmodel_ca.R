@@ -85,7 +85,7 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA, sparse = FALSE, residual_fl
         S  <- (P - eP) / sqrt(eP)
     } else {
         # keep the residual matrix sparse
-        S <- as(qutd_cpp_ca(P, residual_floor / sqrt(n)), 'dgCMatrix')
+        S <- as(qatd_cpp_ca(P, residual_floor / sqrt(n)), 'dgCMatrix')
     }
     
     dec <- RSpectra::svds(S, nd)   

@@ -6,15 +6,15 @@
 
 using namespace Rcpp;
 
-// qutd_cpp_ca
-S4 qutd_cpp_ca(const arma::sp_mat& dfm, const double residual_floor);
-RcppExport SEXP _quanteda_qutd_cpp_ca(SEXP dfmSEXP, SEXP residual_floorSEXP) {
+// qatd_cpp_ca
+S4 qatd_cpp_ca(const arma::sp_mat& dfm, const double residual_floor);
+RcppExport SEXP _quanteda_qatd_cpp_ca(SEXP dfmSEXP, SEXP residual_floorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type dfm(dfmSEXP);
     Rcpp::traits::input_parameter< const double >::type residual_floor(residual_floorSEXP);
-    rcpp_result_gen = Rcpp::wrap(qutd_cpp_ca(dfm, residual_floor));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_ca(dfm, residual_floor));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -335,7 +335,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_quanteda_qutd_cpp_ca", (DL_FUNC) &_quanteda_qutd_cpp_ca, 2},
+    {"_quanteda_qatd_cpp_ca", (DL_FUNC) &_quanteda_qatd_cpp_ca, 2},
     {"_quanteda_qatd_cpp_collocations", (DL_FUNC) &_quanteda_qatd_cpp_collocations, 7},
     {"_quanteda_qatd_cpp_collocations_dev", (DL_FUNC) &_quanteda_qatd_cpp_collocations_dev, 6},
     {"_quanteda_qatd_cpp_manhattan", (DL_FUNC) &_quanteda_qatd_cpp_manhattan, 2},
