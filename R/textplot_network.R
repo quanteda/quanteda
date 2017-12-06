@@ -3,8 +3,8 @@
 #' Plot an \link{fcm} object as a network, where edges show co-occurrences of
 #' features.
 #' @param x a \link{fcm} or \link{dfm}  object
-#' @param min_freq a percentail or frequency count threashold for cooccurances
-#'   of features to be plotted.
+#' @param min_freq a frequency count threshold or proportion for co-occurance
+#'   frequencies of features to be plotted.
 #' @param omit_isolated if \code{TRUE}, features do not occur more frequent than
 #'   \code{min_freq} will be omitted from the plot
 #' @param edge_color color of edges that connect vertices.
@@ -13,15 +13,16 @@
 #'   other edges are determined proportionally to the highest frequency.
 #' @param vertex_size size of vertices.
 #' @param vertex_color color of vertices.
-#' @param vertex_labelcolor color of texts. Default to the same as
+#' @param vertex_labelcolor color of texts. Defaults to the same as
 #'   \code{vertex_color}. If \code{NA} is given, texts are not rendered.
 #' @param offset if \code{NULL}, the distance between vertices and texts are
 #'   determined automatically.
 #' @param ... additional arguments passed to \link[network]{network}.
-#' @details Currently the size of the network is limited to 1000 to avoide slows
-#'   down of users computers. When \link{fcm} is large, users have to select
-#'   features using \link{fcm_select} or set high threshold to \code{min_freq},
-#'   or impliment own plotting function using \code{as.network}.
+#' @details Currently the size of the network is limited to 1000, because of the
+#'   computationally intensive nature of network formation for larger matrices.
+#'   When the \link{fcm} is large, users should select features using
+#'   \link{fcm_select}, set the threshold using \code{min_freq}, or implement
+#'   own plotting function using \code{\link[=as.network.fcm]{as.network}}.
 #' @author Kohei Watanabe and Stefan Müller
 #' @examples
 #' \dontrun{
@@ -74,9 +75,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     label <- x1 <- x2 <- y <- y1 <- y2 <- NULL
     
     n <- as.network(x, min_freq = min_freq, omit_isolated = omit_isolated, ...)
-    if (network.size(n) > 1000)
-        stop('fcm is too large for a network plot')
-    
+
     vertex <- data.frame(sna::gplot.layout.fruchtermanreingold(n, NULL))
     colnames(vertex) <- c('x', 'y')
     vertex$label <- network.vertex.names(n)
@@ -126,15 +125,16 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     return(plot)
 }
 
+#' @export
+network::as.network
+
 #' @rdname textplot_network
-#' @import network
 #' @method as.network fcm
-#' @details Note that \link[network]{as.network} needs to be accessible to use \code{as.network}
-#'   for \link{fcm}.
 #' @export
 as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
-    
-    
+
+    if (nfeature(x) > 1000) stop('fcm is too large for a network plot')
+
     x <- as(x, 'dgTMatrix')
     
     # drop weak edges
@@ -157,6 +157,6 @@ as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
     if (all(x@x == 0))
         stop('There is no co-occurence higher than the threshold')
     
-    network(as.matrix(x), matrix.type = 'adjacency', directed = FALSE, 
+    network::network(as.matrix(x), matrix.type = 'adjacency', directed = FALSE, 
             ignore.eval = FALSE, names.eval = 'weight', ...)
 }
