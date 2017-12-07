@@ -257,7 +257,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
 setMethod("print", signature(x = "fcm"), 
           function(x, show.values = NULL, show.settings = FALSE, show.summary = TRUE, 
                    ndoc = quanteda_options("print_dfm_max_ndoc"), 
-                   nfeature = quanteda_options("print_dfm_max_nfeature"), ...) {
+                   nfeature = quanteda_options("print_dfm_max_nfeat"), ...) {
               if (show.summary) {
                   cat("Feature co-occurrence matrix of: ",
                       format(ndoc(x), big.mark = ","), " by ",
