@@ -64,6 +64,9 @@
       <a href="../../../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
     <li>
+      <a href="../../../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
       <a href="../../../articles/pkgdown/examples/twitter.html">Social media analysis</a>
     </li>
   </ul>
@@ -114,34 +117,34 @@
     
     
 <div class="contents">
-<div id="pre-process-texts" class="section level1">
-<h1 class="hasAnchor">
-<a href="#pre-process-texts" class="anchor"></a>Pre-process texts</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
-<div id="chinese-stop-words-baidu-stopwords" class="section level2">
-<h2 class="hasAnchor">
-<a href="#chinese-stop-words-baidu-stopwords" class="anchor"></a>Chinese Stop words: Baidu Stopwords</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># read Chinese stop words</span>
-csw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>)
-
-<span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>)</code></pre></div>
+<section id="pre-process-texts" class="level1"><h1>Pre-process texts</h1>
+<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><div class="sourceLine" id="cb1-1" data-line-number="1">
+<span class="kw">library</span>(quanteda)</div></code></pre>
+<section id="chinese-stop-words-baidu-stopwords" class="level2"><h2>Chinese Stop words: Baidu Stopwords</h2>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><div class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># read Chinese stop words</span></div>
+<div class="sourceLine" id="cb2-2" data-line-number="2">csw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>)</div>
+<div class="sourceLine" id="cb2-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb2-4" data-line-number="4">
+<span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>)</div></code></pre>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ## [1] "中华"   "人民"   "共和国" "成立"   "于"     "1949"   "年"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># with stopwords removed</span>
+<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><div class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># with stopwords removed</span></div>
+<div class="sourceLine" id="cb4-2" data-line-number="2">
 <span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))</code></pre></div>
+</div>
+<div class="sourceLine" id="cb4-3" data-line-number="3">
+<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))</div></code></pre>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ## [1] "中华"   "人民"   "共和国" "成立"   "1949"</code></pre>
-</div>
-<div id="example-application-on-a-set-of-text-files-in-chinese" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-application-on-a-set-of-text-files-in-chinese" class="anchor"></a>Example application on a set of text files in Chinese</h2>
+</section><section id="example-application-on-a-set-of-text-files-in-chinese" class="level2"><h2>Example application on a set of text files in Chinese</h2>
 <p>49 “REPORT ON THE WORK OF THE GOVERNMENT” by Premier of the State Council, 1954 - 2017</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># read text files</span>
-<span class="kw">load</span>(<span class="st">"data/data_corpus_chinesegovreport.rda"</span>)
-<span class="kw">summary</span>(data_corpus_chinesegovreport, <span class="dv">10</span>)</code></pre></div>
+<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><div class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># read text files</span></div>
+<div class="sourceLine" id="cb6-2" data-line-number="2">
+<span class="kw">load</span>(<span class="st">"data/data_corpus_chinesegovreport.rda"</span>)</div>
+<div class="sourceLine" id="cb6-3" data-line-number="3">
+<span class="kw">summary</span>(data_corpus_chinesegovreport, <span class="dv">10</span>)</div></code></pre>
 <pre><code>## Warning in nsentence.character(object, ...): nsentence() does not correctly
 ## count sentences in all lower-cased text</code></pre>
 <pre><code>## Corpus consisting of 49 documents, showing 10 documents:
@@ -172,66 +175,71 @@ csw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/s
 ## Source:  /home/wangh52/quanteda_2/vignettes/pkgdown_only/* on x86_64 by wangh52
 ## Created: Mon Nov 27 13:29:27 2017
 ## Notes:</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># tokenize</span>
-chtoks &lt;-<span class="st"> </span>
+<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><div class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># tokenize</span></div>
+<div class="sourceLine" id="cb9-2" data-line-number="2">chtoks &lt;-<span class="st"> </span>
+</div>
+<div class="sourceLine" id="cb9-3" data-line-number="3">
 <span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(data_corpus_chinesegovreport, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))
-
-<span class="co"># construct a dfm</span>
-chdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(chtoks)
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chdfm)</code></pre></div>
+</div>
+<div class="sourceLine" id="cb9-4" data-line-number="4">
+<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))</div>
+<div class="sourceLine" id="cb9-5" data-line-number="5"></div>
+<div class="sourceLine" id="cb9-6" data-line-number="6"><span class="co"># construct a dfm</span></div>
+<div class="sourceLine" id="cb9-7" data-line-number="7">chdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(chtoks)</div>
+<div class="sourceLine" id="cb9-8" data-line-number="8">
+<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chdfm)</div></code></pre>
 <pre><code>## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
 ## 5627 5036 4255 4248 2931 2897 2817 2642 2627 2595</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span>
-<span class="co">#5627 5036 4255 4248 2931 2897 2817 2642 2627 2595 </span>
-
-<span class="co"># plot a word cloud</span>
-<span class="kw">set.seed</span>(<span class="dv">100</span>)
-chdfm_tf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(chdfm, <span class="dt">min_count =</span> <span class="dv">500</span>)
-<span class="co"># to set the font correctly for macOS</span>
-<span class="cf">if</span> (<span class="kw">Sys.info</span>()[<span class="st">'sysname'</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="kw">par</span>(<span class="dt">family =</span> <span class="st">"STSong"</span>) 
-<span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(chdfm_tf, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
-                   <span class="dt">rot.per =</span> .<span class="dv">25</span>, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">scale =</span> <span class="kw">c</span>(<span class="fl">2.8</span>, .<span class="dv">5</span>),
-                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
+<pre class="sourceCode r" id="cb11"><code class="sourceCode r"><div class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span></div>
+<div class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#5627 5036 4255 4248 2931 2897 2817 2642 2627 2595 </span></div>
+<div class="sourceLine" id="cb11-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb11-4" data-line-number="4"><span class="co"># plot a word cloud</span></div>
+<div class="sourceLine" id="cb11-5" data-line-number="5">
+<span class="kw">set.seed</span>(<span class="dv">100</span>)</div>
+<div class="sourceLine" id="cb11-6" data-line-number="6">chdfm_tf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(chdfm, <span class="dt">min_count =</span> <span class="dv">500</span>)</div>
+<div class="sourceLine" id="cb11-7" data-line-number="7"><span class="co"># to set the font correctly for macOS</span></div>
+<div class="sourceLine" id="cb11-8" data-line-number="8">
+<span class="cf">if</span> (<span class="kw">Sys.info</span>()[<span class="st">'sysname'</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="kw">par</span>(<span class="dt">family =</span> <span class="st">"STSong"</span>) </div>
+<div class="sourceLine" id="cb11-9" data-line-number="9">
+<span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(chdfm_tf, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,</div>
+<div class="sourceLine" id="cb11-10" data-line-number="10">                   <span class="dt">rot.per =</span> <span class="fl">.25</span>, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">scale =</span> <span class="kw">c</span>(<span class="fl">2.8</span>, <span class="fl">.5</span>),</div>
+<div class="sourceLine" id="cb11-11" data-line-number="11">                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</div></code></pre>
 <p><img src="chinese_files/figure-html/fig1-1.png" width="480" style="display: block; margin: auto;"></p>
+</section></section><section id="analysis" class="level1"><h1>Analysis</h1>
+<section id="feature-co-occurrence-matrix" class="level2"><h2>Feature co-occurrence matrix</h2>
+<pre class="sourceCode r" id="cb12"><code class="sourceCode r"><div class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># fcm within the window size of 5</span></div>
+<div class="sourceLine" id="cb12-2" data-line-number="2">ch17txt &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_chinesegovreport, Year <span class="op">==</span><span class="st"> "2017"</span>)</div>
+<div class="sourceLine" id="cb12-3" data-line-number="3">ch17toks &lt;-<span class="st"> </span>
 </div>
-</div>
-<div id="analysis" class="section level1">
-<h1 class="hasAnchor">
-<a href="#analysis" class="anchor"></a>Analysis</h1>
-<div id="feature-co-occurrence-matrix" class="section level2">
-<h2 class="hasAnchor">
-<a href="#feature-co-occurrence-matrix" class="anchor"></a>Feature co-occurrence matrix</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fcm within the window size of 5</span>
-ch17txt &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_chinesegovreport, Year <span class="op">==</span><span class="st"> "2017"</span>)
-ch17toks &lt;-<span class="st"> </span>
+<div class="sourceLine" id="cb12-4" data-line-number="4">
 <span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(ch17txt, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))
-chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</code></pre></div>
+</div>
+<div class="sourceLine" id="cb12-5" data-line-number="5">
+<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))</div>
+<div class="sourceLine" id="cb12-6" data-line-number="6">chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  </div>
+<div class="sourceLine" id="cb12-7" data-line-number="7">
+<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</div></code></pre>
 <pre><code>## 推进 制度   性 体制 完善   试   点 供给   侧 结构 
 ##   23   19   11   11   10    8    8    7    7    7</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fcm within window: "改革" + “xx”</span>
-chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>, <span class="dt">tri =</span> <span class="ot">FALSE</span>)
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</code></pre></div>
+<pre class="sourceCode r" id="cb14"><code class="sourceCode r"><div class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># fcm within window: "改革" + “xx”</span></div>
+<div class="sourceLine" id="cb14-2" data-line-number="2">chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>, <span class="dt">tri =</span> <span class="ot">FALSE</span>)</div>
+<div class="sourceLine" id="cb14-3" data-line-number="3">
+<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</div></code></pre>
 <pre><code>## 完善 发展   试   点 制度 全面 推进 深化 社会 开放 
 ##   10    8    8    8    8    7    7    6    5    5</code></pre>
+</section><section id="scaling-model" class="level2"><h2>Scaling Model</h2>
+<pre class="sourceCode r" id="cb16"><code class="sourceCode r"><div class="sourceLine" id="cb16-1" data-line-number="1">wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(chdfm)</div>
+<div class="sourceLine" id="cb16-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span>
 </div>
-<div id="scaling-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#scaling-model" class="anchor"></a>Scaling Model</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(chdfm)
-y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span>
-y &lt;-<span class="st"> </span>y[<span class="op">-</span><span class="kw">which</span>(y<span class="op">==</span><span class="dv">1963</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1961</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1962</span> <span class="op">|</span><span class="st"> </span>(y<span class="op">&gt;</span><span class="dv">1964</span> <span class="op">&amp;</span><span class="st"> </span>y<span class="op">&lt;</span><span class="dv">1975</span>) <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1976</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1977</span>)]
-<span class="kw">plot</span>(y, wfm<span class="op">@</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</code></pre></div>
+<div class="sourceLine" id="cb16-3" data-line-number="3">y &lt;-<span class="st"> </span>y[<span class="op">-</span><span class="kw">which</span>(y<span class="op">==</span><span class="dv">1963</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1961</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1962</span> <span class="op">|</span><span class="st"> </span>(y<span class="op">&gt;</span><span class="dv">1964</span> <span class="op">&amp;</span><span class="st"> </span>y<span class="op">&lt;</span><span class="dv">1975</span>) <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1976</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1977</span>)]</div>
+<div class="sourceLine" id="cb16-4" data-line-number="4">
+<span class="kw">plot</span>(y, wfm<span class="op">@</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</div></code></pre>
 <p><img src="chinese_files/figure-html/fig2-1.png" width="576" style="display: block; margin: auto;"></p>
-</div>
-<div id="collocations---bigramstrigrams-etc-" class="section level2">
-<h2 class="hasAnchor">
-<a href="#collocations---bigramstrigrams-etc-" class="anchor"></a>Collocations - bigrams/trigrams etc.</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># bigrams cross the whole dataset</span>
-ch_mw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(chtoks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)
-<span class="kw">head</span>(ch_mw, <span class="dv">10</span>)</code></pre></div>
+</section><section id="collocations---bigramstrigrams-etc." class="level2"><h2>Collocations - bigrams/trigrams etc.</h2>
+<pre class="sourceCode r" id="cb17"><code class="sourceCode r"><div class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># bigrams cross the whole dataset</span></div>
+<div class="sourceLine" id="cb17-2" data-line-number="2">ch_mw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(chtoks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)</div>
+<div class="sourceLine" id="cb17-3" data-line-number="3">
+<span class="kw">head</span>(ch_mw, <span class="dv">10</span>)</div></code></pre>
 <pre><code>##    collocation count count_nested length   lambda         z
 ## 1    社会 主义  1787            0      2 5.661200 128.61741
 ## 2        亿 元   689            0      2 7.445259  93.01487
@@ -243,9 +251,10 @@ ch_mw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference
 ## 8        万 吨   212            0      2 6.589957  62.56344
 ## 9    国民 经济   589            0      2 6.014672  61.80426
 ## 10   充分 发挥   191            0      2 6.584129  61.24885</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># bigrams in 2017 report</span>
-ch_mw17 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)
-<span class="kw">head</span>(ch_mw17, <span class="dv">10</span>)</code></pre></div>
+<pre class="sourceCode r" id="cb19"><code class="sourceCode r"><div class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># bigrams in 2017 report</span></div>
+<div class="sourceLine" id="cb19-2" data-line-number="2">ch_mw17 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)</div>
+<div class="sourceLine" id="cb19-3" data-line-number="3">
+<span class="kw">head</span>(ch_mw17, <span class="dv">10</span>)</div></code></pre>
 <pre><code>##    collocation count count_nested length   lambda        z
 ## 1    人民 群众    12            0      2 5.406485 12.89405
 ## 2        亿 元    14            0      2 8.302483 12.62130
@@ -257,8 +266,7 @@ ch_mw17 &lt;-<span class="st"> </span><span class="kw"><a href="../../../referen
 ## 8    国内 生产     6            0      2 6.166520 10.48816
 ## 9      现代 化     8            0      2 5.705688 10.43435
 ## 10   基础 设施     7            0      2 7.549273 10.42465</code></pre>
-</div>
-</div>
+</section></section>
 </div>
   </div>
 

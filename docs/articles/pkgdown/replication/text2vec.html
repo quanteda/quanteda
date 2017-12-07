@@ -64,6 +64,9 @@
       <a href="../../../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
     <li>
+      <a href="../../../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
       <a href="../../../articles/pkgdown/examples/twitter.html">Social media analysis</a>
     </li>
   </ul>
@@ -114,119 +117,126 @@
     
     
 <div class="contents">
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
+<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><div class="sourceLine" id="cb1-1" data-line-number="1">
+<span class="kw">library</span>(quanteda)</div></code></pre>
 <p>This is intended to show how <strong>quanteda</strong> can be used with the <a href="http://text2vec.org"><strong>text2vec</strong></a> package in order to replicate its <a href="http://text2vec.org/glove.html">gloVe example</a>.</p>
-<div id="read-in-the-corpus" class="section level2">
-<h2 class="hasAnchor">
-<a href="#read-in-the-corpus" class="anchor"></a>Read in the corpus</h2>
+<section id="read-in-the-corpus" class="level2"><h2>Read in the corpus</h2>
 <p>Reading the corpus from the <a href="http://text2vec.org/glove.html"><strong>text2vec</strong> vignette</a>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp_file &lt;-<span class="st"> "/tmp/wiki.RDS"</span>
-<span class="cf">if</span> (<span class="op">!</span><span class="kw">file.exists</span>(temp_file)) {
-    wiki &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(readtext<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"http://mattmahoney.net/dc/text8.zip"</span>, <span class="dt">verbosity =</span> <span class="dv">0</span>))
-    <span class="kw">saveRDS</span>(wiki, <span class="dt">file =</span> <span class="kw">paste0</span>(temp_file))
-} <span class="cf">else</span> {
-    wiki &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">paste0</span>(temp_file))
-}</code></pre></div>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><div class="sourceLine" id="cb2-1" data-line-number="1">temp_file &lt;-<span class="st"> "/tmp/wiki.RDS"</span>
 </div>
-<div id="select-features" class="section level2">
-<h2 class="hasAnchor">
-<a href="#select-features" class="anchor"></a>Select features</h2>
+<div class="sourceLine" id="cb2-2" data-line-number="2">
+<span class="cf">if</span> (<span class="op">!</span><span class="kw">file.exists</span>(temp_file)) {</div>
+<div class="sourceLine" id="cb2-3" data-line-number="3">    wiki &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(readtext<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"http://mattmahoney.net/dc/text8.zip"</span>, <span class="dt">verbosity =</span> <span class="dv">0</span>))</div>
+<div class="sourceLine" id="cb2-4" data-line-number="4">    <span class="kw">saveRDS</span>(wiki, <span class="dt">file =</span> <span class="kw">paste0</span>(temp_file))</div>
+<div class="sourceLine" id="cb2-5" data-line-number="5">} <span class="cf">else</span> {</div>
+<div class="sourceLine" id="cb2-6" data-line-number="6">    wiki &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">paste0</span>(temp_file))</div>
+<div class="sourceLine" id="cb2-7" data-line-number="7">}</div></code></pre>
+</section><section id="select-features" class="level2"><h2>Select features</h2>
 <p>First, we tokenize the corpus, and then get the names of the features that occur five times or more. Trimming the features before constructing the fcm:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(wiki)
-<span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(wiki, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><div class="sourceLine" id="cb3-1" data-line-number="1">wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(wiki)</div>
+<div class="sourceLine" id="cb3-2" data-line-number="2">
+<span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(wiki, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</div></code></pre>
 <pre><code>## Creating a dfm from a corpus input...</code></pre>
 <pre><code>##    ... lowercasing</code></pre>
 <pre><code>##    ... found 1 document, 253,853 features</code></pre>
 <pre><code>##    ... created a 1 x 253,853 sparse dfm
 ##    ... complete. 
-## Elapsed time: 18.9 seconds.</code></pre>
+## Elapsed time: 18.4 seconds.</code></pre>
 <pre><code>## Document-feature matrix of: 1 document, 253,853 features (0% sparse).</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">feats &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(wiki_toks, <span class="dt">verbose =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><div class="sourceLine" id="cb9-1" data-line-number="1">feats &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(wiki_toks, <span class="dt">verbose =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+</div>
+<div class="sourceLine" id="cb9-2" data-line-number="2">
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>()</code></pre></div>
+</div>
+<div class="sourceLine" id="cb9-3" data-line-number="3">
+<span class="st">    </span><span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>()</div></code></pre>
 <pre><code>## Creating a dfm from a tokens input...</code></pre>
 <pre><code>##    ... lowercasing</code></pre>
 <pre><code>##    ... found 1 document, 253,853 features</code></pre>
 <pre><code>##    ... created a 1 x 253,853 sparse dfm
 ##    ... complete. 
-## Elapsed time: 1.39 seconds.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># leave the pads so that non-adjacent words will not become adjacent</span>
-wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(wiki_toks, feats, <span class="dt">padding =</span> <span class="ot">TRUE</span>)</code></pre></div>
-</div>
-<div id="construct-the-feature-co-occurrence-matrix" class="section level2">
-<h2 class="hasAnchor">
-<a href="#construct-the-feature-co-occurrence-matrix" class="anchor"></a>Construct the feature co-occurrence matrix</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wiki_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(wiki_toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">count =</span> <span class="st">"weighted"</span>, <span class="dt">weights =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>), <span class="dt">tri =</span> <span class="ot">TRUE</span>)</code></pre></div>
-</div>
-<div id="fit-word-embedding-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fit-word-embedding-model" class="anchor"></a>Fit word embedding model</h2>
+## Elapsed time: 1.9 seconds.</code></pre>
+<pre class="sourceCode r" id="cb14"><code class="sourceCode r"><div class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># leave the pads so that non-adjacent words will not become adjacent</span></div>
+<div class="sourceLine" id="cb14-2" data-line-number="2">wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(wiki_toks, feats, <span class="dt">padding =</span> <span class="ot">TRUE</span>)</div></code></pre>
+</section><section id="construct-the-feature-co-occurrence-matrix" class="level2"><h2>Construct the feature co-occurrence matrix</h2>
+<pre class="sourceCode r" id="cb15"><code class="sourceCode r"><div class="sourceLine" id="cb15-1" data-line-number="1">wiki_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(wiki_toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">count =</span> <span class="st">"weighted"</span>, <span class="dt">weights =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>), <span class="dt">tri =</span> <span class="ot">TRUE</span>)</div></code></pre>
+</section><section id="fit-word-embedding-model" class="level2"><h2>Fit word embedding model</h2>
 <p>Fit the <a href="https://nlp.stanford.edu/pubs/glove.pdf">GloVe model</a> using <a href="http://text2vec.org"><strong>text2vec</strong></a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(text2vec)</code></pre></div>
+<pre class="sourceCode r" id="cb16"><code class="sourceCode r"><div class="sourceLine" id="cb16-1" data-line-number="1">
+<span class="kw">library</span>(text2vec)</div></code></pre>
 <p>GloVe is an unsupervised learning algorithm for obtaining vector representations for words. Training is performed on aggregated global word-word co-occurrence statistics from a corpus, and the resulting representations showcase interesting linear substructures of the word vector space.</p>
 <p>GloVe encodes the ratios of word-word co-occurrence probabilities, which is thought to represent some crude form of meaning associated with the abstract concept of the word, as vector difference. The training objective of GloVe is to learn word vectors such that their dot product equals the logarithm of the words’ probability of co-occurrence.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">glove &lt;-<span class="st"> </span>GlobalVectors<span class="op">$</span><span class="kw">new</span>(<span class="dt">word_vectors_size =</span> <span class="dv">50</span>, <span class="dt">vocabulary =</span> <span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(wiki_fcm), <span class="dt">x_max =</span> <span class="dv">10</span>)
-wiki_main &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/text2vec/topics/fit_transform">fit_transform</a></span>(wiki_fcm, glove, <span class="dt">n_iter =</span> <span class="dv">20</span>)</code></pre></div>
-<pre><code>## INFO [2017-12-01 07:01:29] 2017-12-01 07:01:29 - epoch 1, expected cost 0.0819
-## INFO [2017-12-01 07:01:42] 2017-12-01 07:01:42 - epoch 2, expected cost 0.0618
-## INFO [2017-12-01 07:01:54] 2017-12-01 07:01:54 - epoch 3, expected cost 0.0542
-## INFO [2017-12-01 07:02:06] 2017-12-01 07:02:06 - epoch 4, expected cost 0.0499
-## INFO [2017-12-01 07:02:17] 2017-12-01 07:02:17 - epoch 5, expected cost 0.0475
-## INFO [2017-12-01 07:02:29] 2017-12-01 07:02:29 - epoch 6, expected cost 0.0457
-## INFO [2017-12-01 07:02:42] 2017-12-01 07:02:42 - epoch 7, expected cost 0.0444
-## INFO [2017-12-01 07:02:55] 2017-12-01 07:02:55 - epoch 8, expected cost 0.0433
-## INFO [2017-12-01 07:03:08] 2017-12-01 07:03:08 - epoch 9, expected cost 0.0424
-## INFO [2017-12-01 07:03:20] 2017-12-01 07:03:20 - epoch 10, expected cost 0.0417
-## INFO [2017-12-01 07:03:32] 2017-12-01 07:03:32 - epoch 11, expected cost 0.0411
-## INFO [2017-12-01 07:03:45] 2017-12-01 07:03:45 - epoch 12, expected cost 0.0406
-## INFO [2017-12-01 07:04:00] 2017-12-01 07:04:00 - epoch 13, expected cost 0.0401
-## INFO [2017-12-01 07:04:18] 2017-12-01 07:04:18 - epoch 14, expected cost 0.0398
-## INFO [2017-12-01 07:04:37] 2017-12-01 07:04:37 - epoch 15, expected cost 0.0393
-## INFO [2017-12-01 07:04:53] 2017-12-01 07:04:53 - epoch 16, expected cost 0.0391
-## INFO [2017-12-01 07:05:10] 2017-12-01 07:05:10 - epoch 17, expected cost 0.0388
-## INFO [2017-12-01 07:05:28] 2017-12-01 07:05:28 - epoch 18, expected cost 0.0385
-## INFO [2017-12-01 07:05:48] 2017-12-01 07:05:48 - epoch 19, expected cost 0.0383
-## INFO [2017-12-01 07:06:06] 2017-12-01 07:06:06 - epoch 20, expected cost 0.0381</code></pre>
-</div>
-<div id="averaging-learned-word-vectors" class="section level2">
-<h2 class="hasAnchor">
-<a href="#averaging-learned-word-vectors" class="anchor"></a>Averaging learned word vectors</h2>
+<pre class="sourceCode r" id="cb17"><code class="sourceCode r"><div class="sourceLine" id="cb17-1" data-line-number="1">glove &lt;-<span class="st"> </span>GlobalVectors<span class="op">$</span><span class="kw">new</span>(<span class="dt">word_vectors_size =</span> <span class="dv">50</span>, <span class="dt">vocabulary =</span> <span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(wiki_fcm), <span class="dt">x_max =</span> <span class="dv">10</span>)</div>
+<div class="sourceLine" id="cb17-2" data-line-number="2">wiki_main &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/text2vec/topics/fit_transform">fit_transform</a></span>(wiki_fcm, glove, <span class="dt">n_iter =</span> <span class="dv">20</span>)</div></code></pre>
+<pre><code>## INFO [2017-12-07 15:39:54] 2017-12-07 15:39:54 - epoch 1, expected cost 0.0831
+## INFO [2017-12-07 15:39:58] 2017-12-07 15:39:58 - epoch 2, expected cost 0.0615
+## INFO [2017-12-07 15:40:02] 2017-12-07 15:40:02 - epoch 3, expected cost 0.0544
+## INFO [2017-12-07 15:40:07] 2017-12-07 15:40:07 - epoch 4, expected cost 0.0503
+## INFO [2017-12-07 15:40:12] 2017-12-07 15:40:12 - epoch 5, expected cost 0.0478
+## INFO [2017-12-07 15:40:17] 2017-12-07 15:40:17 - epoch 6, expected cost 0.0460
+## INFO [2017-12-07 15:40:21] 2017-12-07 15:40:21 - epoch 7, expected cost 0.0446
+## INFO [2017-12-07 15:40:26] 2017-12-07 15:40:26 - epoch 8, expected cost 0.0435
+## INFO [2017-12-07 15:40:34] 2017-12-07 15:40:34 - epoch 9, expected cost 0.0426
+## INFO [2017-12-07 15:40:39] 2017-12-07 15:40:39 - epoch 10, expected cost 0.0419
+## INFO [2017-12-07 15:40:45] 2017-12-07 15:40:45 - epoch 11, expected cost 0.0413
+## INFO [2017-12-07 15:40:50] 2017-12-07 15:40:50 - epoch 12, expected cost 0.0408
+## INFO [2017-12-07 15:40:54] 2017-12-07 15:40:54 - epoch 13, expected cost 0.0403
+## INFO [2017-12-07 15:40:58] 2017-12-07 15:40:58 - epoch 14, expected cost 0.0399
+## INFO [2017-12-07 15:41:02] 2017-12-07 15:41:02 - epoch 15, expected cost 0.0395
+## INFO [2017-12-07 15:41:06] 2017-12-07 15:41:06 - epoch 16, expected cost 0.0392
+## INFO [2017-12-07 15:41:10] 2017-12-07 15:41:10 - epoch 17, expected cost 0.0389
+## INFO [2017-12-07 15:41:15] 2017-12-07 15:41:15 - epoch 18, expected cost 0.0387
+## INFO [2017-12-07 15:41:19] 2017-12-07 15:41:19 - epoch 19, expected cost 0.0384
+## INFO [2017-12-07 15:41:23] 2017-12-07 15:41:23 - epoch 20, expected cost 0.0382</code></pre>
+</section><section id="averaging-learned-word-vectors" class="level2"><h2>Averaging learned word vectors</h2>
 <p>The two vectors are main and context. According to the Glove paper, averaging the two word vectors results in more accurate representation.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wiki_context &lt;-<span class="st"> </span>glove<span class="op">$</span>components
-<span class="kw">dim</span>(wiki_context)</code></pre></div>
+<pre class="sourceCode r" id="cb19"><code class="sourceCode r"><div class="sourceLine" id="cb19-1" data-line-number="1">wiki_context &lt;-<span class="st"> </span>glove<span class="op">$</span>components</div>
+<div class="sourceLine" id="cb19-2" data-line-number="2">
+<span class="kw">dim</span>(wiki_context)</div></code></pre>
 <pre><code>## [1]    50 71290</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wiki_vectors =<span class="st"> </span>wiki_main <span class="op">+</span><span class="st"> </span><span class="kw">t</span>(wiki_context)</code></pre></div>
-</div>
-<div id="examining-term-representations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#examining-term-representations" class="anchor"></a>Examining term representations</h2>
+<pre class="sourceCode r" id="cb21"><code class="sourceCode r"><div class="sourceLine" id="cb21-1" data-line-number="1">wiki_vectors =<span class="st"> </span>wiki_main <span class="op">+</span><span class="st"> </span><span class="kw">t</span>(wiki_context)</div></code></pre>
+</section><section id="examining-term-representations" class="level2"><h2>Examining term representations</h2>
 <p>Now we can find the closest word vectors for <code>paris - france + germany</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">berlin &lt;-<span class="st">  </span>wiki_vectors[<span class="st">"paris"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">-</span><span class="st"> </span>
-<span class="st">    </span>wiki_vectors[<span class="st">"france"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span>wiki_vectors[<span class="st">"germany"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>]
-
-<span class="co"># calculate the similarity</span>
-wiki_vector_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/is.dfm.html">as.dfm</a></span>(<span class="kw">rbind</span>(wiki_vectors, berlin))
-wiki_vector_dfm<span class="op">@</span>Dimnames<span class="op">$</span>docs[<span class="kw">dim</span>(wiki_vector_dfm)[<span class="dv">1</span>]] &lt;-<span class="st"> "new_berlin"</span>
-cos_sim &lt;-<span class="st">  </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(wiki_vector_dfm, <span class="st">"new_berlin"</span>, 
-                           <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method=</span> <span class="st">"cosine"</span>)
-<span class="kw">head</span>(<span class="kw">sort</span>(cos_sim[,<span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</code></pre></div>
-<pre><code>## new_berlin      paris     berlin    germany     munich 
-##  1.0000000  0.7959675  0.6939732  0.6558543  0.6385232</code></pre>
-<p>Here is another example for <code>london = paris - france + uk + england</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">london &lt;-<span class="st">  </span>wiki_vectors[<span class="st">"paris"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">-</span><span class="st"> </span>
-<span class="st">    </span>wiki_vectors[<span class="st">"france"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span>wiki_vectors[<span class="st">"uk"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span>wiki_vectors[<span class="st">"england"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] 
-
-wiki_vector_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/is.dfm.html">as.dfm</a></span>(<span class="kw">rbind</span>(wiki_vectors, london))
-wiki_vector_dfm<span class="op">@</span>Dimnames<span class="op">$</span>docs[<span class="kw">dim</span>(wiki_vector_dfm)[<span class="dv">1</span>]] &lt;-<span class="st"> "new_london"</span>
-cos_sim &lt;-<span class="st">  </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(wiki_vector_dfm, <span class="st">"new_london"</span>, 
-                           <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method=</span> <span class="st">"cosine"</span>)
-<span class="kw">head</span>(<span class="kw">sort</span>(cos_sim[,<span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</code></pre></div>
-<pre><code>## new_london     london         uk    england       york 
-##  1.0000000  0.7840872  0.7504674  0.7380408  0.7281383</code></pre>
+<pre class="sourceCode r" id="cb22"><code class="sourceCode r"><div class="sourceLine" id="cb22-1" data-line-number="1">berlin &lt;-<span class="st">  </span>wiki_vectors[<span class="st">"paris"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">-</span><span class="st"> </span>
 </div>
+<div class="sourceLine" id="cb22-2" data-line-number="2">
+<span class="st">    </span>wiki_vectors[<span class="st">"france"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">+</span><span class="st"> </span>
+</div>
+<div class="sourceLine" id="cb22-3" data-line-number="3">
+<span class="st">    </span>wiki_vectors[<span class="st">"germany"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>]</div>
+<div class="sourceLine" id="cb22-4" data-line-number="4"></div>
+<div class="sourceLine" id="cb22-5" data-line-number="5"><span class="co"># calculate the similarity</span></div>
+<div class="sourceLine" id="cb22-6" data-line-number="6">wiki_vector_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/is.dfm.html">as.dfm</a></span>(<span class="kw">rbind</span>(wiki_vectors, berlin))</div>
+<div class="sourceLine" id="cb22-7" data-line-number="7">wiki_vector_dfm<span class="op">@</span>Dimnames<span class="op">$</span>docs[<span class="kw">dim</span>(wiki_vector_dfm)[<span class="dv">1</span>]] &lt;-<span class="st"> "new_berlin"</span>
+</div>
+<div class="sourceLine" id="cb22-8" data-line-number="8">cos_sim &lt;-<span class="st">  </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(wiki_vector_dfm, <span class="st">"new_berlin"</span>, </div>
+<div class="sourceLine" id="cb22-9" data-line-number="9">                           <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method=</span> <span class="st">"cosine"</span>)</div>
+<div class="sourceLine" id="cb22-10" data-line-number="10">
+<span class="kw">head</span>(<span class="kw">sort</span>(cos_sim[,<span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</div></code></pre>
+<pre><code>## new_berlin     berlin     munich      paris    germany 
+##  1.0000000  0.7734271  0.7343173  0.7327437  0.6806264</code></pre>
+<p>Here is another example for <code>london = paris - france + uk + england</code></p>
+<pre class="sourceCode r" id="cb24"><code class="sourceCode r"><div class="sourceLine" id="cb24-1" data-line-number="1">london &lt;-<span class="st">  </span>wiki_vectors[<span class="st">"paris"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">-</span><span class="st"> </span>
+</div>
+<div class="sourceLine" id="cb24-2" data-line-number="2">
+<span class="st">    </span>wiki_vectors[<span class="st">"france"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">+</span><span class="st"> </span>
+</div>
+<div class="sourceLine" id="cb24-3" data-line-number="3">
+<span class="st">    </span>wiki_vectors[<span class="st">"uk"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">+</span><span class="st"> </span>
+</div>
+<div class="sourceLine" id="cb24-4" data-line-number="4">
+<span class="st">    </span>wiki_vectors[<span class="st">"england"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] </div>
+<div class="sourceLine" id="cb24-5" data-line-number="5"></div>
+<div class="sourceLine" id="cb24-6" data-line-number="6">wiki_vector_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/is.dfm.html">as.dfm</a></span>(<span class="kw">rbind</span>(wiki_vectors, london))</div>
+<div class="sourceLine" id="cb24-7" data-line-number="7">wiki_vector_dfm<span class="op">@</span>Dimnames<span class="op">$</span>docs[<span class="kw">dim</span>(wiki_vector_dfm)[<span class="dv">1</span>]] &lt;-<span class="st"> "new_london"</span>
+</div>
+<div class="sourceLine" id="cb24-8" data-line-number="8">cos_sim &lt;-<span class="st">  </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(wiki_vector_dfm, <span class="st">"new_london"</span>, </div>
+<div class="sourceLine" id="cb24-9" data-line-number="9">                           <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method=</span> <span class="st">"cosine"</span>)</div>
+<div class="sourceLine" id="cb24-10" data-line-number="10">
+<span class="kw">head</span>(<span class="kw">sort</span>(cos_sim[,<span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</div></code></pre>
+<pre><code>## new_london         uk     london    england         at 
+##  1.0000000  0.7722497  0.7690377  0.7399987  0.7278628</code></pre>
+</section>
 </div>
   </div>
 
