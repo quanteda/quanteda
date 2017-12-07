@@ -173,7 +173,7 @@ test_that("test textplot_network works with vectorlized argument", {
     txt <- "A D A C E A D F E B A C E D"
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
     expect_silent(textplot_network(testfcm, vertex_color = rep(c(1, 2), nrow(testfcm) / 2)))
-    expect_silent(textplot_network(testdfm, vertex_size = rowSums(testfcm) / 5))
+    expect_silent(textplot_network(testfcm, vertex_size = rowSums(testfcm) / 5))
     expect_silent(textplot_network(testfcm, vertex_labelcolor = rep(c(1, NA), nrow(testfcm) / 2)))
 })
 
