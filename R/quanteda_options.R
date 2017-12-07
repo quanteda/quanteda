@@ -16,7 +16,7 @@
 #' this as the setting in all functions that uee parallelization}
 #' \item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
 #' to display when using the defaults for printing a dfm}
-#' \item{\code{print_dfm_max_nfeature}}{integer; specifies the number of
+#' \item{\code{print_dfm_max_nfeat}}{integer; specifies the number of
 #' features to display when using the defaults for printing a dfm}
 #' \item{\code{base_docname}}{character; stem name for documents that are
 #' unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
@@ -133,7 +133,7 @@ get_options_default <- function(){
     opts <- list(threads = max(1L, floor(RcppParallel::defaultNumThreads() - 1)),
                  verbose = FALSE,
                  print_dfm_max_ndoc = 20L,
-                 print_dfm_max_nfeature = 20L,
+                 print_dfm_max_nfeat = 20L,
                  base_docname = "text",
                  base_featname = "feat",
                  base_compname = "comp",
