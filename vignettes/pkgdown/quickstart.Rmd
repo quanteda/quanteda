@@ -231,7 +231,7 @@ More corpora are available from the [quantedaData](http://github.com/kbenoit/qua
 In order to perform statistical analysis such as document scaling, we
 must extract a matrix associating values for certain features with each
 document. In quanteda, we use the `dfm` function to produce such a matrix.  "dfm" is short for *document-feature matrix*, and always refers to documents
-in rows and "features" as columns.  We fix this dimensional orientation because is is 
+in rows and "features" as columns.  We fix this dimensional orientation because it is 
 standard in data analysis to have a unit of analysis as a row, and features or variables
 pertaining to each unit as columns.  We call them "features" rather than terms, because
 features are more general than terms: they can be defined as raw terms, stemmed terms, the parts of speech of terms, terms after stopwords have been removed,
@@ -273,7 +273,7 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
           what = "sentence")
 ```
 
-## Constructing a document-frequency matrix
+## Constructing a document-feature matrix
 
 Tokenizing texts is an intermediate option, and most users will want to skip straight to constructing
 a document-feature matrix.  For this, we have a Swiss-army knife function, called `dfm()`, which performs
@@ -307,7 +307,7 @@ head(stopwords("arabic"), 10)
 
 
 
-### Viewing the document-frequency matrix
+### Viewing the document-feature matrix
 
 The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud using the [wordcloud package](link.)
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
