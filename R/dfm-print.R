@@ -119,3 +119,10 @@ tail.dfm <- function(x, n = 6L, nfeat = nfeature(x), ...) {
     sel_feat <- as.integer(seq.int(to = ncl, length.out = nfeat))
     x[sel_doc, sel_feat]
 }
+
+setMethod("head", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) {
+    UseMethod("head")
+})
+setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) {
+    UseMethod("tail")
+})
