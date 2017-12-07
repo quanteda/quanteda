@@ -67,6 +67,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
     
     x <- as.dfm(x)
     margin <- match.arg(margin)
+    method <- char_tolower(method)
     
     if (!is.null(selection)) {
         if (!is.character(selection)) {
@@ -363,13 +364,13 @@ chisquared_dist <- function(x, y = NULL, margin = 1){
         x <- x %*% diag(1/avg)
     } else {
         x <- x %*% diag(1/func_sum(x))
-        x <- x / aveProfile
+        x <- x / avg
     }
     
     if (!is.null(y)) {
         stopifnot(if (margin == 2) nrow(x) == nrow(y) else ncol(x) == ncol(y))
        colname <- func_name(y)
-        # aveProfile is same as that for x 
+        # avg is same as that for x 
         if (margin == 1 ) {
             # convert into profiles
             y <- y/ func_sum(y)
@@ -378,7 +379,7 @@ chisquared_dist <- function(x, y = NULL, margin = 1){
             y <- y %*% diag(1 / avg)
         } else {
             y <- if (dim(y)[margin] > 1) y %*% diag(1/func_sum(y)) else y %*% (1/func_sum(y))
-            y <- y / aveProfile
+            y <- y / avg
         }
         an <- func_sum(x ^ 2)
         bn <- func_sum(y ^ 2)

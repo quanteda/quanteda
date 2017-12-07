@@ -253,7 +253,7 @@ test_that("textstat_dist stops as expected for methods not supported",{
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     expect_error(textstat_dist(presDfm, method = "Yule"), 
-                 "Yule is not implemented; consider trying proxy::dist\\(\\)")
+                 "yule is not implemented; consider trying proxy::dist\\(\\)")
 })
 
 test_that("textstat_dist stops as expected for wrong selections",{
