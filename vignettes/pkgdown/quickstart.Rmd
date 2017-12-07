@@ -142,7 +142,7 @@ A corpus is designed to be a "library" of original documents that have been conv
 
 A corpus is designed to be a more or less static container of texts with respect to processing and analysis.  This means that the texts in corpus are not designed to be changed internally through (for example) cleaning or pre-processing steps, such as stemming or removing punctuation.  Rather, texts can be extracted from the corpus as part of processing, and assigned to new objects, but the idea is that the corpus will remain as an original reference copy so that other analyses -- for instance those in which stems and punctuation were required, such as analyzing a reading ease index -- can be performed on the same corpus.
 
-To extract texts from a a corpus, we use an extractor, called `texts()`.  
+To extract texts from a corpus, we use an extractor, called `texts()`.  
 
 ```{r}
 texts(data_corpus_inaugural)[2]
