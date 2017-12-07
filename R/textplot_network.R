@@ -97,6 +97,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     l <- featnames(x) %in% network.vertex.names(n)
     if (length(vertex_labelcolor) > 1) vertex_labelcolor <- vertex_labelcolor[l]
     if (length(vertex_color) > 1) vertex_color <- vertex_color[l]
+    if (length(vertex_size) > 1) vertex_size <- vertex_size[l]
     
     plot <- ggplot() + 
         geom_curve(data = edge, aes(x = x1, y = y1, xend = x2, yend = y2), 
