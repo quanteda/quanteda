@@ -8,6 +8,7 @@ output:
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(collapse = FALSE, 
                       comment = "##")
+
 ```
 
 本指南概述了**quanteda**的基本特性和功能。 其他更详细的介绍，请参见[quanteda.io上的文章](http://docs.quanteda.io/articles/index.html).  
@@ -138,7 +139,7 @@ summary(corpus(mytf7), 5)
 
 ### 语料库的原则
 
-语料库被设计成原始文档的“库”，该文档被转换为UTF-8编码的纯文本，并与元数据一起存储在语料库级和文档级。我们给文档级元数据一个特殊的名字：docvars。这些变量或特征描述了每个文档的属性。
+语料库被设计成原始文档的“库”，该文档被转换为UTF-8编码的纯文本文件，并与元数据一起分别存储于语料库级和文档级。我们给文档级元数据一个特殊的名字：docvars。这些变量或特征描述了每个文档的属性。
 
 从处理和分析的角度，语料库被设计成相对静态的文本容器。这意味着语料库中的文本不能从内部通过（例如）清理或预处理改变，比如词干提取或去除标点符号。相反，作为处理过程的一部分文本可以从语料库中提取，并赋值给新的对象，但是设计的思路是将语料库作为原始参考副本保留下来，以便于其他分析 - 例如那些需要词干和标点符号的分析-比如分析阅读难易指数 - 可以在相同的语料库上执行。
 
@@ -226,7 +227,7 @@ metacorpus(data_corpus_inaugural)
 
 ## 文本分词
 
-为了简单地对文本分词，quanteda提供了一个强大的命令`tokens（）`。这产生了一个由字符向量形式存在的分词列表组成的中间对象，其中列表的每个元素
+为了简单地对文本分词，quanteda提供了一个强大的命令`tokens（）`。这个命令会产生了一个以字符向量形式存在的分词表，表中的每单元元素
 都对应于一个输入文档。
 
 `tokens（）`有意设计成保守的，意味着除非有指令，它不会从文本中删除任何东西。
@@ -242,14 +243,14 @@ tokens(txt, remove_numbers = FALSE, remove_punct = FALSE)
 tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
 ```
 
-我们也提供字符分词的选项：
+也可以按字符分词：
 ```{r}
 tokens("Great website: http://textasdata.com?page=123.", what = "character")
 tokens("Great website: http://textasdata.com?page=123.", what = "character", 
          remove_separators = FALSE)
 ```
 
-以及句子分词的选项：
+以及按句子分词：
 ```{r}
 # sentence level         
 tokens(c("Kurt Vongeut said; only assholes use semi-colons.", 
@@ -260,7 +261,7 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 
 ## 构建文档特征矩阵
 
-分词是一个中间结果，而大多数用户都希望直接构建一个文档特征矩阵。为此，我们提供一个瑞士军刀功能`dfm()`，此项功能执行分词并将所提取的特征归纳成文档特征矩阵。不同于`tokens()`所采用的保守方法，`dfm（）`函数默认某些应用选项，比如`toLower（）` - 一个单独的用于转换为小写的函数，以及 - 删除标点符号。不过`tokens（）`的所有选项都可以传递给`dfm（）`。
+分词只是一个中间结果，而大多数用户都希望直接构建一个文档特征矩阵。为此，我们提供一个瑞士军刀功能`dfm()`，此项功能执行分词并将所提取的特征归纳成文档特征矩阵。不同于`tokens()`所采用的保守方法，`dfm（）`函数默认某些应用选项，比如`toLower（）` - 一个单独的用于转换为小写的函数，以及 - 删除标点符号。不过`tokens（）`的所有选项都可以传递给`dfm（）`。
 
 ```{r}
 myCorpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
@@ -423,4 +424,88 @@ if (require(topicmodels)) {
     get_terms(myLDAfit20, 5)
 }
 ```
-注：这个指南翻译于英文版\link{quicksart}：版本号0.99.9023
+注：以上这个指南翻译于英文版[quickstart](quickstart.html)：版本号0.99.9023
+
+
+# **quanteda**处理中文文档
+
+## 中文停用词： 取自百度停用词
+
+```{r}
+# 读取中文停用词
+csw <- stopwords("chinese")
+
+tokens("中华人民共和国成立于1949 年")
+
+# 除去停用词
+tokens("中华人民共和国成立于1949 年") %>%
+    tokens_remove(stopwords("chinese"))
+```
+
+## 例子：应用于中文文档
+
+四十九份中国总理的“政府工作报告”， 1954 - 2017
+```{r fig1, fig.height = 5, fig.width = 5, fig.align = "center"}
+# 读取文件
+load("data/data_corpus_chinesegovreport.rda")
+summary(data_corpus_chinesegovreport, 10)
+
+# 分词
+chtoks <- 
+    tokens(data_corpus_chinesegovreport, remove_punct = TRUE) %>%
+    tokens_remove(stopwords("chinese"))
+
+# 创建 dfm
+chdfm <- dfm(chtoks)
+topfeatures(chdfm)
+#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
+#5627 5036 4255 4248 2931 2897 2817 2642 2627 2595 
+
+# 绘制词云图
+set.seed(100)
+chdfm_tf <- dfm_trim(chdfm, min_count = 500)
+# 设置适用于MacOS的字体
+if (Sys.info()['sysname'] == "Darwin") par(family = "STSong") 
+textplot_wordcloud(chdfm_tf, min.freq = 6, random.order = FALSE,
+                   rot.per = .25, max.words = 100, scale = c(2.8, .5),
+                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
+```
+
+
+## 特征共现矩阵 
+
+```{r}
+# fcm -共现窗口为5， 2017政府工作报告
+ch17txt <- corpus_subset(data_corpus_chinesegovreport, Year == "2017")
+ch17toks <- 
+    tokens(ch17txt, remove_punct = TRUE) %>% 
+    tokens_remove(stopwords("chinese"))
+chfcm <- fcm(ch17toks, context = "window")  
+topfeatures(chfcm["改革", ])
+
+# fcm 共现窗口为："改革" + “xx”
+chfcm <- fcm(ch17toks, context = "window", ordered = TRUE, tri = FALSE)
+topfeatures(chfcm["改革", ])
+```
+
+## 文本缩放模型
+
+```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
+wfm <- textmodel_wordfish(chdfm)
+y <- 1954:2017
+y <- y[-which(y==1963 | y==1961 |y==1962 | (y>1964 & y<1975) | y==1976 |y==1977)]
+plot(y, wfm@theta, xlab = "Year", ylab = "Position")
+```
+
+## 词组 - 双词词组/三词词组等 
+
+```{r}
+# 所有报告中的双词词组
+ch_mw <- textstat_collocations(chtoks, size = 2, min_count = 20, tolower = TRUE)
+head(ch_mw, 10)
+
+# 2017 报告中的双词词组
+ch_mw17 <- textstat_collocations(ch17toks, size = 2, tolower = TRUE)
+head(ch_mw17, 10)
+```
+注：以上这部分介绍翻译于英文版[chinese](chinese.html)：版本号0.99.9023
