@@ -61,8 +61,6 @@ setClass("textmodel_wordfish_predicted",
 #'   only applies when \code{sparse = TRUE}
 #' @param residual_floor specifies the threshold for residual matrix when 
 #'   calculating the svds, only applies when \code{sparse = TRUE}
-#' @param threads specifies the number of threads to use; set to 1 to override
-#'   the package settings and use a serial version of the function
 #' @return An object of class \code{textmodel_fitted_wordfish}.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
@@ -121,7 +119,6 @@ textmodel_wordfish <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol
                                dispersion_level = c("feature", "overall"),
                                dispersion_floor = 0,
                                sparse = TRUE, 
-                               threads = quanteda_options("threads"),
                                abs_err = FALSE,
                                svd_sparse = TRUE,
                                residual_floor = 0.5) {
@@ -134,7 +131,6 @@ textmodel_wordfish.default <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3,
                                    dispersion_level = c("feature", "overall"),
                                    dispersion_floor = 0,
                                    sparse = TRUE, 
-                                   threads = quanteda_options("threads"),
                                    abs_err = FALSE,
                                    svd_sparse = TRUE,
                                    residual_floor = 0.5) {
@@ -147,7 +143,6 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
                                dispersion_level = c("feature", "overall"),
                                dispersion_floor = 0,
                                sparse = TRUE, 
-                               threads = quanteda_options("threads"),
                                abs_err = FALSE,
                                svd_sparse = TRUE,
                                residual_floor = 0.5) {
@@ -157,54 +152,59 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
     dispersion_level <- match.arg(dispersion_level)
     
     # check that no rows or columns are all zero
-    zeroLengthDocs <- which(ntoken(x) == 0)
-    if (length(zeroLengthDocs)) {
-        catm("Note: removed the following zero-token documents:", docnames(x)[zeroLengthDocs], "\n")
-        x <- x[-zeroLengthDocs, ]
+    empty_docs <- which(ntoken(x) == 0)
+    if (length(empty_docs)) {
+        catm("Note: removed the following zero-token documents:", docnames(x)[empty_docs], "\n")
+        x <- x[empty_docs * -1, ]
     }
-    zeroLengthFeatures <- which(docfreq(x) == 0)
-    if (length(zeroLengthFeatures)) {
-        catm("Note: removed the following zero-count features:", featnames(x)[zeroLengthFeatures], "\n")
-        x <- x[, -zeroLengthFeatures]
+    empty_feats <- which(docfreq(x) == 0)
+    if (length(empty_feats)) {
+        catm("Note: removed the following zero-count features:", featnames(x)[empty_feats], "\n")
+        x <- x[, empty_feats * -1]
     }
-    if (length(zeroLengthDocs) | length(zeroLengthFeatures)) catm("\n")
+    if (length(empty_docs) || length(empty_feats)) catm("\n")
     
     # some error checking
     if (length(priors) != 4)
         stop("priors requires 4 elements")
     if (length(tol) != 2)
         stop("tol requires 2 elements")
-    if (!is.numeric(priors) | !is.numeric(tol))
+    if (!is.numeric(priors) || !is.numeric(tol))
         stop("priors and tol must be numeric")
-    if (dispersion_floor < 0 | dispersion_floor > 1.0)
+    if (dispersion_floor < 0 || dispersion_floor > 1.0)
         stop("dispersion_floor must be between 0 and 1.0")
     
-    if (dispersion == "poisson" & dispersion_floor != 0)
+    if (dispersion == "poisson" && dispersion_floor != 0)
         warning("dispersion_floor argument ignored for poisson")
-    
-    #     if (length(addedArgs <- list(...)))
-    #         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
     # check quasi-poisson settings and translate into numerical values  
     # 1 = Poisson, 2 = quasi-Poisson, overall dispersion, 
     # 3 = quasi-Poisson, term dispersion, 4 = quasi-Poisson, term dispersion w/floor
-    if (dispersion == "poisson") disp <- 1L
-    else if (dispersion == "quasipoisson" & dispersion_level == "overall") disp <- 2L
-    else if (dispersion == "quasipoisson" & dispersion_level == "feature") {
-        if (dispersion_floor) disp <- 4L
-        else disp <- 3L
-    } else
+    if (dispersion == "poisson") {
+        disp <- 1L
+    } else if (dispersion == "quasipoisson" && dispersion_level == "overall") {
+        disp <- 2L
+    } else if (dispersion == "quasipoisson" && dispersion_level == "feature") {
+        if (dispersion_floor) {
+            disp <- 4L
+        } else {
+            disp <- 3L
+        }
+    } else {
         stop("Illegal option combination.")
-    
-    # catm("disp = ", disp, "\n")
-    if (sparse == TRUE){
-        result <- qatd_cpp_wordfish(x, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err, svd_sparse, residual_floor)
+    }
+    if (sparse == TRUE) {
+        result <- qatd_cpp_wordfish(x, as.integer(dir), 1 / (priors ^ 2), tol, disp, 
+                                    dispersion_floor, abs_err, svd_sparse, residual_floor)
     } else{
-        result <- qatd_cpp_wordfish_dense(as.matrix(x), as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, abs_err)
+        result <- qatd_cpp_wordfish_dense(as.matrix(x), as.integer(dir), 1 / (priors ^ 2), tol, disp, 
+                                          dispersion_floor, abs_err)
     }
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
-    if (any(is.nan(result$theta))) warning("Warning: The algorithm did not converge.")
+    if (any(is.nan(result$theta))) 
+        warning("Warning: The algorithm did not converge.")
+    
     new("textmodel_wordfish_fitted", 
         x = x,
         docs = docnames(x), 

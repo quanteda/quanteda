@@ -631,12 +631,12 @@ Function warningR("warning");
  */
 
 // [[Rcpp::export]]
-DataFrame qatd_cpp_collocations(const List &texts_,
-                                const CharacterVector &types_,
-                                const unsigned int count_min,
-                                const IntegerVector sizes_,
-                                const std::string method,
-                                const double smoothing){
+DataFrame qatd_cpp_collocations_dev(const List &texts_,
+                                    const CharacterVector &types_,
+                                    const unsigned int count_min,
+                                    const IntegerVector sizes_,
+                                    const std::string method,
+                                    const double smoothing){
     
     Texts texts = as<Texts>(texts_);
     std::vector<unsigned int> sizes = as< std::vector<unsigned int> >(sizes_);
