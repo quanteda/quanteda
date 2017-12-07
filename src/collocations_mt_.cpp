@@ -292,13 +292,13 @@ struct estimates_lambda_mt2 : public Worker{
 * @param nested estimate parameters for nested collocations
 */
 // [[Rcpp::export]]
-DataFrame qatd_cpp_sequences(const List &texts_,
-                             const CharacterVector &types_,
-                             const IntegerVector &words_ignore_,
-                             const unsigned int count_min,
-                             const IntegerVector sizes_,
-                             const String &method,
-                             const double smoothing){
+DataFrame qatd_cpp_collocations(const List &texts_,
+                                const CharacterVector &types_,
+                                const IntegerVector &words_ignore_,
+                                const unsigned int count_min,
+                                const IntegerVector sizes_,
+                                const String &method,
+                                const double smoothing){
     
     Texts texts = as<Texts>(texts_);
     std::vector<unsigned int> sizes = as< std::vector<unsigned int> >(sizes_);
@@ -407,12 +407,12 @@ toks <- tokens(data_corpus_inaugural)
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 id_mark <- unlist(quanteda:::regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
 if (is.null(id_mark)) id_mark <- integer(0)
-(out <- qatd_cpp_sequences(toks, types(toks), id_mark, 2, 2:3, "lambda", 0.5))
+(out <- qatd_cpp_collocations(toks, types(toks), id_mark, 2, 2:3, "lambda", 0.5))
 (out <- out[order(out$lambda, decreasing = TRUE),])
 (out <- out[out$count != out$count_nested & out$length < max(out$length),])
 txt <- "A gains capital B C capital gains A B capital C capital gains tax gains tax gains B gains C capital gains tax"
 toks2 <- tokens(txt)
-(out2 <- qatd_cpp_sequences(toks2, types(toks2), numeric(), 1, 3, "lambda", 0.0))
+(out2 <- qatd_cpp_collocations(toks2, types(toks2), numeric(), 1, 3, "lambda", 0.0))
 toks3 <- tokens('a b c . d e f')
-(out3 <- qatd_cpp_sequences(toks3, types(toks3), 4, 1, 2:3, "lambda", 0.0))
+(out3 <- qatd_cpp_collocations(toks3, types(toks3), 4, 1, 2:3, "lambda", 0.0))
 */

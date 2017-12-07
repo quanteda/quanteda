@@ -7,8 +7,8 @@
 textmodel_wordfish(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
   dispersion_level = c("feature", "overall"), dispersion_floor = 0,
-  sparse = TRUE, threads = quanteda_options("threads"), abs_err = FALSE,
-  svd_sparse = TRUE, residual_floor = 0.5)
+  sparse = TRUE, abs_err = FALSE, svd_sparse = TRUE,
+  residual_floor = 0.5)
 }
 \arguments{
 \item{x}{the dfm on which the model will be fit}
@@ -41,9 +41,6 @@ underdispersed.  Default is 0, but this only applies if \code{dispersion =
 "quasipoisson"}.}
 
 \item{sparse}{specifies whether the \code{"dfm"} is coerced to dense}
-
-\item{threads}{specifies the number of threads to use; set to 1 to override
-the package settings and use a serial version of the function}
 
 \item{abs_err}{specifies how the convergence is considered}
 

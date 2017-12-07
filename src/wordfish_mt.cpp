@@ -1,7 +1,6 @@
 #include "armadillo.h"
 #include "quanteda.h"
 using namespace quanteda;
-//#include <ctime>
 using namespace RcppParallel;
 using namespace Rcpp;
 using namespace arma;
@@ -15,9 +14,8 @@ using namespace arma;
 
 //find the principle elements for the sparse residual matrix
 void create_residual(const std::size_t row_num, const arma::sp_mat& wfm, const arma::colvec &rsum, const arma::rowvec &csum, const double &asum,
-                const double residual_floor, const std::size_t K, Triplets &residual_tri)
-{
-    for (std::size_t k = 0; k < K; k++){
+                     const double residual_floor, const std::size_t K, Triplets &residual_tri) {
+    for (std::size_t k = 0; k < K; k++) {
         double residual = (wfm(row_num, k) - rsum(row_num) * csum(k) / asum) / sqrt(rsum(row_num) * csum(k) / asum);
         if (fabs(residual) > residual_floor) {
             Triplet mat_triplet = std::make_tuple(row_num, k, residual);
@@ -40,7 +38,8 @@ struct Residual : public Worker {
     //constructor
     Residual(const arma::sp_mat& wfm, const arma::colvec &rsum, const arma::rowvec &csum, const double asum,
              const double residual_floor, const std::size_t K, Triplets &residual_tri):
-        wfm(wfm), rsum(rsum), csum(csum), asum(asum), residual_floor(residual_floor), K(K), residual_tri(residual_tri) {}
+             wfm(wfm), rsum(rsum), csum(csum), asum(asum), residual_floor(residual_floor), 
+             K(K), residual_tri(residual_tri) {}
 
     
     void operator() (std::size_t begin, std::size_t end) {
@@ -49,6 +48,7 @@ struct Residual : public Worker {
         }
     }
 };
+
 //Compute LOG-POSTERIOR 
 struct LogPos : public Worker {
     const arma::colvec& alpha; 
@@ -63,10 +63,12 @@ struct LogPos : public Worker {
     
     // constructors
     LogPos(const arma::colvec& alpha, const arma::rowvec& psi, const arma::rowvec& beta, 
-           const arma::colvec& theta, const arma::sp_mat& wfm, const std::size_t K) 
-        : alpha(alpha), psi(psi), beta(beta), theta(theta), wfm(wfm), K(K), lp(0) {}
-    LogPos(const LogPos& sum, Split) : alpha(sum.alpha), psi(sum.psi), beta(sum.beta),
-    theta(sum.theta), wfm(sum.wfm), K(sum.K), lp(0) {}
+           const arma::colvec& theta, const arma::sp_mat& wfm, const std::size_t K) :
+           alpha(alpha), psi(psi), beta(beta), theta(theta), wfm(wfm), K(K), lp(0) {}
+    
+    LogPos(const LogPos& sum, Split) : 
+           alpha(sum.alpha), psi(sum.psi), beta(sum.beta),
+           theta(sum.theta), wfm(sum.wfm), K(sum.K), lp(0) {}
     
     
     void operator() (std::size_t begin, std::size_t end) {
@@ -103,9 +105,9 @@ struct WordPar : public Worker {
     WordPar(const arma::colvec& alpha,  NumericVector& psi,  NumericVector& beta, 
             const arma::colvec& theta, const arma::rowvec& phi, const arma::sp_mat& wfm,
             const NumericVector& tolvec, const int outeriter, 
-            const double priorprecpsi, const double priorprecbeta, double stepsize) 
-        : alpha(alpha), psi(psi), beta(beta), theta(theta), phi(phi), wfm(wfm), tolvec(tolvec), 
-          outeriter(outeriter), priorprecpsi(priorprecpsi), priorprecbeta(priorprecbeta), stepsize(stepsize) {}
+            const double priorprecpsi, const double priorprecbeta, double stepsize) :
+            alpha(alpha), psi(psi), beta(beta), theta(theta), phi(phi), wfm(wfm), tolvec(tolvec), 
+            outeriter(outeriter), priorprecpsi(priorprecpsi), priorprecbeta(priorprecbeta), stepsize(stepsize) {}
     
     void operator() (std::size_t begin, std::size_t end) {
         for (std::size_t k = begin; k < end; k++) {
@@ -158,10 +160,10 @@ struct DocPar : public Worker {
     
     DocPar(NumericVector& alpha,  const arma::rowvec& psi,  const arma::rowvec& beta, 
            NumericVector& theta, const arma::rowvec& phi, const arma::sp_mat& wfm,
-            const NumericVector& tolvec, const int outeriter, 
-            const double priorprecalpha, const double priorprectheta, double stepsize) 
-        : alpha(alpha), psi(psi), beta(beta), theta(theta), phi(phi), wfm(wfm), tolvec(tolvec), 
-          outeriter(outeriter), priorprecalpha(priorprecalpha), priorprectheta(priorprectheta), stepsize(stepsize) {}
+           const NumericVector& tolvec, const int outeriter, 
+           const double priorprecalpha, const double priorprectheta, double stepsize) :
+           alpha(alpha), psi(psi), beta(beta), theta(theta), phi(phi), wfm(wfm), tolvec(tolvec), 
+           outeriter(outeriter), priorprecalpha(priorprecalpha), priorprectheta(priorprectheta), stepsize(stepsize) {}
     
     void operator() (std::size_t begin, std::size_t end) {
         for (std::size_t i = begin; i < end; i++) {
@@ -185,8 +187,8 @@ struct DocPar : public Worker {
                 H(1,1) = -accu(((beta % beta) % lambdai) / phi) - priorprectheta;
                 pars(0,0) = alpha[i];
                 pars(1,0) = theta[i];
-                newpars(0,0) = pars(0,0) - stepsize*(H(1,1)*G(0,0) - H(0,1)*G(1,0))/(H(0,0)*H(1,1) - H(0,1)*H(1,0));
-                newpars(1,0) = pars(1,0) - stepsize*(H(0,0)*G(1,0) - H(1,0)*G(0,0))/(H(0,0)*H(1,1) - H(0,1)*H(1,0));
+                newpars(0,0) = pars(0,0) - stepsize*(H(1,1) * G(0,0) - H(0,1) * G(1,0)) / (H(0,0) * H(1,1) - H(0,1) * H(1,0));
+                newpars(1,0) = pars(1,0) - stepsize*(H(0,0) * G(1,0) - H(1,0) * G(0,0)) / (H(0,0) * H(1,1) - H(0,1) * H(1,0));
                 newpars(0,0) *= SA;
                 newpars(0,0) *= SA;
                 alpha[i] = newpars(0,0);
@@ -212,10 +214,12 @@ struct DispPar : public Worker {
     
     // constructors
     DispPar(const arma::colvec& alpha, const arma::rowvec& psi, const arma::rowvec& beta, 
-           const arma::colvec& theta, const arma::sp_mat& wfm, const std::size_t& N) 
-        : alpha(alpha), psi(psi), beta(beta), theta(theta), wfm(wfm), N(N), phitmp(0) {}
-    DispPar(const DispPar& sum, Split) : alpha(sum.alpha), psi(sum.psi), beta(sum.beta),
-    theta(sum.theta), wfm(sum.wfm), N(sum.N), phitmp(0) {}
+            const arma::colvec& theta, const arma::sp_mat& wfm, const std::size_t& N) :
+            alpha(alpha), psi(psi), beta(beta), theta(theta), wfm(wfm), N(N), phitmp(0) {}
+    
+    DispPar(const DispPar& sum, Split) : 
+            alpha(sum.alpha), psi(sum.psi), beta(sum.beta),
+            theta(sum.theta), wfm(sum.wfm), N(sum.N), phitmp(0) {}
     
     
     void operator() (std::size_t begin, std::size_t end) {
@@ -251,10 +255,10 @@ struct DispPar2 : public Worker {
     
     // constructors
     DispPar2(const arma::colvec& alpha, const arma::rowvec& psi, const arma::rowvec& beta, 
-            const arma::colvec& theta, const arma::sp_mat& wfm, const IntegerVector& disptype,
-            const NumericVector& dispmin, const std::size_t& N, const std::size_t& K, NumericVector& phi) 
-        : alpha(alpha), psi(psi), beta(beta), theta(theta), wfm(wfm), disptype(disptype), 
-          dispmin(dispmin), N(N), K(K), phi(phi){}
+             const arma::colvec& theta, const arma::sp_mat& wfm, const IntegerVector& disptype,
+             const NumericVector& dispmin, const std::size_t& N, const std::size_t& K, NumericVector& phi) :
+             alpha(alpha), psi(psi), beta(beta), theta(theta), wfm(wfm), disptype(disptype), 
+             dispmin(dispmin), N(N), K(K), phi(phi){}
     
     void operator() (std::size_t begin, std::size_t end) {
         for (std::size_t k = begin; k < end; k++) {
@@ -263,7 +267,7 @@ struct DispPar2 : public Worker {
                 double mutmp = exp(alpha(i) + psi(k) + beta(k) * theta(i));
                 phitmp += (wfm(i,k) - mutmp) * (wfm(i,k) - mutmp) / mutmp;
             }
-            phitmp = ((K)*phitmp)/(N*K - 2*N - 2*K);
+            phitmp = ((K)*phitmp)/(N * K - 2 * N - 2 * K);
             if (disptype(0) == 4) {
                 phi[k] = fmax(dispmin(0), phitmp);
             }else{
@@ -287,10 +291,10 @@ struct DocErr : public Worker {
     
     // constructors
     DocErr(const arma::colvec& alpha, const arma::rowvec& psi, const arma::rowvec& beta, 
-             const arma::colvec& theta, const arma::rowvec& phi, 
-             const double& priorprecalpha, const double& priorprectheta, NumericVector& thetaSE) 
-        : alpha(alpha), psi(psi), beta(beta), theta(theta), phi(phi), 
-          priorprecalpha(priorprecalpha), priorprectheta(priorprectheta), thetaSE(thetaSE){}
+           const arma::colvec& theta, const arma::rowvec& phi, 
+           const double& priorprecalpha, const double& priorprectheta, NumericVector& thetaSE) :
+           alpha(alpha), psi(psi), beta(beta), theta(theta), phi(phi), 
+           priorprecalpha(priorprecalpha), priorprectheta(priorprectheta), thetaSE(thetaSE){}
     
     void operator() (std::size_t begin, std::size_t end) {
         arma::rowvec lambdai(alpha.size());
@@ -307,7 +311,14 @@ struct DocErr : public Worker {
 };
 // [[Rcpp::export]]
 
-Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS,bool svd_sparse, double residual_floor){
+Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, 
+                             IntegerVector& dirvec, 
+                             NumericVector& priorvec, 
+                             NumericVector& tolvec, 
+                             IntegerVector& disptype, 
+                             NumericVector& dispmin, 
+                             bool ABS,bool svd_sparse, 
+                             double residual_floor){
     
     // DEFINE INPUTS
     double priorprecalpha = priorvec(0);
@@ -315,17 +326,15 @@ Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVe
     double priorprecbeta = priorvec(2);
     double priorprectheta = priorvec(3);		
     
-    // random engine
-    std::random_device rd;
-    // std::mt19937 mt(time(0));  // issue #1063
-    std::mt19937 mt(rd());
+    // std::random_device rd; // random engine
+    // std::mt19937 mt(rd());
+    std::mt19937 mt(time(0)); // issue #1063
     std::uniform_real_distribution<double> dist(0.0, 1.0);
     
     std::size_t N = wfm.n_rows;
     std::size_t K = wfm.n_cols;
     
-    // SET INITIAL VALUES
-    
+    // Set initial values
     arma::colvec alpha(N); 
     arma::rowvec psi(K); 
     arma::rowvec beta(K); 
@@ -335,26 +344,24 @@ Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVe
     phi.fill(1.0);
  
     // Construct Chi-Sq Residuals	
-     //arma::sp_mat C(N, K); 
-     arma::colvec rsum(sum(wfm,1));
-     arma::rowvec csum(sum(wfm,0));
-     double asum = accu(wfm);
+    arma::colvec rsum(sum(wfm,1));
+    arma::rowvec csum(sum(wfm,0));
+    double asum = accu(wfm);
     if (svd_sparse == true){
-        //std::clock_t begin = clock();
      
-     //create the residual matrix
+        //create the residual matrix
         Triplets residual_tri;
-        // residual_tri.reserve(N*K);
-    #if QUANTEDA_USE_TBB
+
+#if QUANTEDA_USE_TBB
         Residual residual(wfm, rsum, csum, asum, residual_floor, K, residual_tri);
         parallelFor(0, N, residual);
         //Rcout<<"used TBB"<<std::endl;
-    #else        
+#else        
         for (std::size_t i = 0; i < N; i++) {
             create_residual(i, wfm, rsum, csum, asum, residual_floor, K, residual_tri);
         }
         //Rcout<<"not use TBB"<<std::endl;
-    #endif
+#endif
         // Convert to Rcpp objects
         std::size_t mat_size = residual_tri.size();
         arma::umat index_mat(2, mat_size, arma::fill::zeros);
@@ -373,12 +380,12 @@ Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVe
         arma::vec s(svdk);
         arma::mat V(K, svdk);
         arma::svds(U, s, V, C, svdk);
-        for (std::size_t i = 0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) * U(i, 0);
+        for (std::size_t i = 0; i < N; i++) theta(i) = pow(rsum(i) / asum, -0.5) * U(i, 0);
     } else {
         // Load initial values
-        for (std::size_t i=0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) - dist(mt);//* U(i, 0);
+        for (std::size_t i=0; i < N; i++) theta(i) = pow(rsum(i) / asum, -0.5) - dist(mt);//* U(i, 0);
     }
-    for (std::size_t k=0; k < K; k++) beta(k) = 0;//  pow(csum(k)/asum,-0.5) * V(k,0);
+    for (std::size_t k = 0; k < K; k++) beta(k) = 0;//  pow(csum(k)/asum,-0.5) * V(k,0);
     //beta.fill(0.0);
     alpha = log(rsum);
     psi = log(csum/N);
@@ -398,7 +405,7 @@ Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVe
 
     //Initialize LOG-POSTERIOR 
     double lastlp = LASTLP;
-    double lp = -1.0*(accu(0.5 * ((alpha % alpha) * priorprecalpha)) + accu(0.5 * ((psi  % psi) * priorprecpsi)) 
+    double lp = -1.0 * (accu(0.5 * ((alpha % alpha) * priorprecalpha)) + accu(0.5 * ((psi  % psi) * priorprecpsi)) 
                           + accu(0.5 * ((beta  % beta) * priorprecbeta)) + accu(0.5 * ((theta % theta) * priorprectheta)));
     
     // compute LOG posterior
@@ -408,7 +415,7 @@ Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVe
     
     
     // BEGIN WHILE LOOP
-    while(((lp - lastlp) > tolvec(0)) && outeriter < OUTERITER){	
+    while (((lp - lastlp) > tolvec(0)) && outeriter < OUTERITER) {	
         outeriter++;
         //Rcout<<"alphs_b="<<mean(alpha)<<" theta_B="<<mean(theta)<<std::endl;
         
@@ -439,7 +446,7 @@ Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVe
             DispPar dispPar(alpha, psi, beta, theta, wfm, N);
             parallelReduce(0, K, dispPar);
             double phitmp = dispPar.phitmp;
-            phitmp /= N*K - 2*N - 2*K;
+            phitmp /= N * K - 2 * N - 2 * K;
             phi.fill(phitmp);
         }
         
@@ -455,8 +462,8 @@ Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVe
 
         // CHECK LOG-POSTERIOR FOR CONVERGENCE
         lastlp = lp;
-        lp = -1.0*(accu(0.5 * ((alpha % alpha) * priorprecalpha)) + accu(0.5 * ((psi % psi) * priorprecpsi))
-                       + accu(0.5 * ((beta % beta) * priorprecbeta)) + accu(0.5 * ((theta % theta) * priorprectheta)));
+        lp = -1.0 * (accu(0.5 * ((alpha % alpha) * priorprecalpha)) + accu(0.5 * ((psi % psi) * priorprecpsi)) +
+                     accu(0.5 * ((beta % beta) * priorprecbeta)) + accu(0.5 * ((theta % theta) * priorprectheta)));
 
         LogPos logPos2(alpha, psi, beta, theta, wfm, K);
         parallelReduce(0, N, logPos2);
@@ -467,7 +474,7 @@ Rcpp::List qatd_cpp_wordfish(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVe
     // Fix Global Polarity  
     //Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
     // added the -1 because C counts from ZERO...  -- KB
-    if (theta(dirvec(0)-1) > theta(dirvec(1)-1)) {
+    if (theta(dirvec(0) - 1) > theta(dirvec(1) - 1)) {
         beta = -beta;
         theta = -theta;
     }
