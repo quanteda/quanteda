@@ -20,6 +20,8 @@ navbar:
           href: articles/pkgdown/examples/plotting.html
         - text: "Chinese text analysis"
           href: articles/pkgdown/examples/chinese.html
+        - text: "快速入门指南"
+          href: articles/pkgdown/examples/quickstart_cn.html
         - text: "Social media analysis"
           href: articles/pkgdown/examples/twitter.html
     - text: "Replication"

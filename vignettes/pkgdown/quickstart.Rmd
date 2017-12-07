@@ -142,7 +142,7 @@ A corpus is designed to be a "library" of original documents that have been conv
 
 A corpus is designed to be a more or less static container of texts with respect to processing and analysis.  This means that the texts in corpus are not designed to be changed internally through (for example) cleaning or pre-processing steps, such as stemming or removing punctuation.  Rather, texts can be extracted from the corpus as part of processing, and assigned to new objects, but the idea is that the corpus will remain as an original reference copy so that other analyses -- for instance those in which stems and punctuation were required, such as analyzing a reading ease index -- can be performed on the same corpus.
 
-To extract texts from a a corpus, we use an extractor, called `texts()`.  
+To extract texts from a corpus, we use an extractor, called `texts()`.  
 
 ```{r}
 texts(data_corpus_inaugural)[2]
@@ -231,7 +231,7 @@ More corpora are available from the [quantedaData](http://github.com/kbenoit/qua
 In order to perform statistical analysis such as document scaling, we
 must extract a matrix associating values for certain features with each
 document. In quanteda, we use the `dfm` function to produce such a matrix.  "dfm" is short for *document-feature matrix*, and always refers to documents
-in rows and "features" as columns.  We fix this dimensional orientation because is is 
+in rows and "features" as columns.  We fix this dimensional orientation because it is 
 standard in data analysis to have a unit of analysis as a row, and features or variables
 pertaining to each unit as columns.  We call them "features" rather than terms, because
 features are more general than terms: they can be defined as raw terms, stemmed terms, the parts of speech of terms, terms after stopwords have been removed,
@@ -273,7 +273,7 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
           what = "sentence")
 ```
 
-## Constructing a document-frequency matrix
+## Constructing a document-feature matrix
 
 Tokenizing texts is an intermediate option, and most users will want to skip straight to constructing
 a document-feature matrix.  For this, we have a Swiss-army knife function, called `dfm()`, which performs
@@ -307,9 +307,9 @@ head(stopwords("arabic"), 10)
 
 
 
-### Viewing the document-frequency matrix
+### Viewing the document-feature matrix
 
-The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud using the [wordcloud package](link.)
+The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud using the [wordcloud package](https://cran.r-project.org/web/packages/wordcloud)
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
 mydfm <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
 mydfm
