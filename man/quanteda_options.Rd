@@ -41,7 +41,7 @@ for all functions with a \code{verbose} argument}
 this as the setting in all functions that uee parallelization}
 \item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
 to display when using the defaults for printing a dfm}
-\item{\code{print_dfm_max_nfeature}}{integer; specifies the number of
+\item{\code{print_dfm_max_nfeat}}{integer; specifies the number of
 features to display when using the defaults for printing a dfm}
 \item{\code{base_docname}}{character; stem name for documents that are
 unnamed when a corpus, tokens, or dfm are created or when a dfm is converted

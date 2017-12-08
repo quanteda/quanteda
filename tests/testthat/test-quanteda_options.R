@@ -40,10 +40,10 @@ test_that("quanteda_options works correctly to set options", {
         getOption("quanteda_print_dfm_max_ndoc")
     )
     
-    quanteda_options(print_dfm_max_nfeature = 13L)
+    quanteda_options(print_dfm_max_nfeat = 13L)
     expect_equal(
-        quanteda_options("print_dfm_max_nfeature"),
-        getOption("quanteda_print_dfm_max_nfeature")
+        quanteda_options("print_dfm_max_nfeat"),
+        getOption("quanteda_print_dfm_max_nfeat")
     )
 })
 
