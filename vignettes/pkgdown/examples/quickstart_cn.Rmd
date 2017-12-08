@@ -424,7 +424,7 @@ if (require(topicmodels)) {
     get_terms(myLDAfit20, 5)
 }
 ```
-注：以上这个指南翻译于英文版[quickstart](quickstart.html)：版本号0.99.9023
+注：以上这个指南翻译于英文版[quickstart](http://docs.quanteda.io/articles/pkgdown/quickstart.html)：版本号0.99.9023
 
 
 # **quanteda**处理中文文档
@@ -508,4 +508,4 @@ head(ch_mw, 10)
 ch_mw17 <- textstat_collocations(ch17toks, size = 2, tolower = TRUE)
 head(ch_mw17, 10)
 ```
-注：以上这部分介绍翻译于英文版[chinese](chinese.html)：版本号0.99.9023
+注：以上这部分介绍翻译于英文版[chinese](http://docs.quanteda.io/articles/pkgdown/examples/chinese.html)：版本号0.99.9023
