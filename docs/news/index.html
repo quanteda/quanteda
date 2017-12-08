@@ -89,6 +89,9 @@
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
     <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
     </li>
   </ul>
@@ -151,6 +154,7 @@
 <li>Added <code><a href="../reference/textmodel_affinity.html">textmodel_affinity()</a></code> for the Perry and Benoit (2017) class affinity scaling model.</li>
 <li>Added Chinese stopwords.</li>
 <li>Added a pkgdown vignette for applications in the Chinese language.</li>
+<li>Added <code><a href="../reference/textplot_network.html">textplot_network()</a></code> function.</li>
 </ul>
 </div>
 <div id="bug-fixes-and-stability-enhancements" class="section level3">
@@ -158,6 +162,8 @@
 <a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h3>
 <ul>
 <li>Performance has been improved for <code><a href="../reference/fcm.html">fcm()</a></code> and for <code><a href="../reference/textmodel_wordfish.html">textmodel_wordfish()</a></code>.</li>
+<li>
+<code><a href="../reference/dfm.html">dfm()</a></code> now correctly passes through all <code>...</code> arguments to <code><a href="../reference/tokens.html">tokens()</a></code>. (#1121)</li>
 </ul>
 </div>
 <div id="behaviour-changes" class="section level3">

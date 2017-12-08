@@ -89,6 +89,9 @@
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
     <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
     </li>
   </ul>
@@ -209,12 +212,7 @@ measures has no effect and produces a warning.</p></td>
     <pre class="examples"><div class='input'><span class='co'># compare pre- v. post-war terms using grouping</span>
 <span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'>ifelse</span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&lt;</span> <span class='fl'>1945</span>, <span class='st'>"pre-war"</span>, <span class='st'>"post-war"</span>)
 <span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>period</span>)
-<span class='fu'>head</span>(<span class='no'>mydfm</span>) <span class='co'># make sure 'post-war' is in the first row</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (8.33% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
-#&gt;           features
-#&gt; docs       fellow-citizens   of  the senate  and house
-#&gt;   pre-war               39 5666 8094     13 3854     8
-#&gt;   post-war               0 1437 1988      2 1456     3</div><div class='input'><span class='fu'>head</span>(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>mydfm</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                   chi2            p n_target n_reference
+<span class='fu'>head</span>(<span class='no'>mydfm</span>) <span class='co'># make sure 'post-war' is in the first row</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9,357 features (34.9% sparse).</div><div class='input'><span class='fu'>head</span>(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>mydfm</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                   chi2            p n_target n_reference
 #&gt; the          299.85716 0.000000e+00     8094        1988
 #&gt; of           179.17847 0.000000e+00     5666        1437
 #&gt; which        160.14560 0.000000e+00      911          95
