@@ -84,7 +84,7 @@ smoothing constant \code{smoothing}. The \eqn{n_{i}} are the counts in a
 \eqn{\lambda}: The \eqn{K}-way interaction parameter in the saturated
 loglinear model fitted to the \eqn{n_{i}}. It can be calculated as
 
-\deqn{\lambda  = \sum_{i=1}^{M} (-1)^{K-b_{i}} \log n_{i}}
+\deqn{\lambda  = \sum_{i=1}^{M} (-1)^{K-b_{i}} * log n_{i}}
 
 where \eqn{b_{i}} is the number of the elements of \eqn{c_{i}} which are
 equal to 1.
