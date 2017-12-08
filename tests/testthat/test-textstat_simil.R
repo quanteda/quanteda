@@ -90,7 +90,7 @@ test_that("test textstat_simil method = \"ejaccard\" against proxy::simil(): doc
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    ejacQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "eJaccard", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    ejacQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "ejaccard", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     ejacQuanteda <- ejacQuanteda[-which(names(ejacQuanteda) == "1981-Reagan")]
     ejacProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "ejaccard", diag = FALSE, upper = FALSE, p = 2))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(ejacProxy)) ejacProxy <- ejacProxy[-which(names(ejacProxy) == "1981-Reagan")]
@@ -102,7 +102,7 @@ test_that("test textstat_simil method = \"ejaccard\" against proxy::simil(): fea
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    ejacQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "eJaccard", margin = "features"))[,"soviet"], 2)
+    ejacQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "ejaccard", margin = "features"))[,"soviet"], 2)
     ejacQuanteda <- ejacQuanteda[order(names(ejacQuanteda))]
     ejacQuanteda <- ejacQuanteda[-which(names(ejacQuanteda) == "soviet")]
     
@@ -113,7 +113,7 @@ test_that("test textstat_simil method = \"ejaccard\" against proxy::simil(): fea
     expect_equal(ejacQuanteda, ejacProxy)
     
     # slow way -- y is null
-    ejacQuanteda <- round(as.matrix(textstat_simil(presDfm, method = "eJaccard", margin = "features"))[,"soviet"], 2)
+    ejacQuanteda <- round(as.matrix(textstat_simil(presDfm, method = "ejaccard", margin = "features"))[,"soviet"], 2)
     ejacQuanteda <- ejacQuanteda[order(names(ejacQuanteda))]
     ejacQuanteda <- ejacQuanteda[-which(names(ejacQuanteda) == "soviet")]
     expect_equal(ejacQuanteda, ejacProxy)
@@ -159,14 +159,14 @@ test_that("test textstat_simil method = \"edice\" against proxy::simil(): docume
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    ediceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "eDice", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    ediceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "edice", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     ediceQuanteda <- ediceQuanteda[-which(names(ediceQuanteda) == "1981-Reagan")]
     ediceProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "edice", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(ediceProxy)) ediceProxy <- ediceProxy[-which(names(ediceProxy) == "1981-Reagan")]
     expect_equal(ediceQuanteda, ediceProxy)
     
     # y is null
-    ediceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, method = "eDice", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    ediceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, method = "edice", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     ediceQuanteda <- ediceQuanteda[-which(names(ediceQuanteda) == "1981-Reagan")]
     expect_equal(ediceQuanteda, ediceProxy)
 })
@@ -176,7 +176,7 @@ test_that("test textstat_simil method = \"edice\" against proxy::simil(): featur
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    ediceQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "eDice", margin = "features"))[,"soviet"], 2)
+    ediceQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "edice", margin = "features"))[,"soviet"], 2)
     ediceQuanteda <- ediceQuanteda[order(names(ediceQuanteda))]
     ediceQuanteda <- ediceQuanteda[-which(names(ediceQuanteda) == "soviet")]
     
@@ -313,7 +313,9 @@ test_that("textstat_simil stops as expected for wrong selections",{
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     expect_error(textstat_simil(presDfm, 5), 
-                 "'selection' should be character or character vector of document names or feature labels.")
+                 "The vector/matrix specified by 'selection' must be conform to the object x in columns")
+    expect_error(textstat_simil(presDfm, 5, margin = "features"), 
+                 "The vector/matrix specified by 'selection' must be conform to the object x in rows")
     
     expect_error(textstat_simil(presDfm, margin = "documents", "2009-Obamaa"), 
                  "The documents specified by 'selection' do not exist.")
@@ -378,3 +380,10 @@ test_that("textstat_simil works on zero-feature documents (#952)", {
     )    
 })
 
+test_that("selection offers option to enable an alien vector/matrix", {
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    expect_error(textstat_simil(presDfm, c(1,2,3,4,5,6,7), margin = "features"), NA)
+    
+})

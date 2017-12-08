@@ -18,7 +18,7 @@
 #' @param comparison if \code{TRUE}, plot a 
 #'   \code{\link[wordcloud]{comparison.cloud}} instead of a simple wordcloud, 
 #'   one grouping per document
-#' @param ... additional parameters passed to to \link[wordcloud]{wordcloud} or 
+#' @param ... additional parameters passed to \link[wordcloud]{wordcloud} or 
 #'   to \link{text} (and \link{strheight}, \link{strwidth})
 #' @seealso \code{\link[wordcloud]{wordcloud}}, 
 #'   \code{\link[wordcloud]{comparison.cloud}}
@@ -54,7 +54,7 @@ textplot_wordcloud.default <- function(x, comparison = FALSE, ...) {
 
 #' @export
 textplot_wordcloud.dfm <- function(x, comparison = FALSE, ...) {
-    
+
     x <- as.dfm(x)
     if (comparison) {
         if (ndoc(x) > 8) stop("Too many documents to plot comparison, use 8 or fewer documents.")

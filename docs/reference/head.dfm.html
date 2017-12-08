@@ -88,6 +88,12 @@
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -133,14 +139,14 @@
 
     
     <p>For a <a href='dfm.html'>dfm</a> object, returns the first or last <code>n</code> documents 
-and first <code>nfeature</code> features.</p>
+and first <code>nfeat</code> features.</p>
     
 
     <pre class="usage"><span class='co'># S3 method for dfm</span>
-<span class='fu'>head</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>6L</span>, <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fl'>6L</span>, <span class='no'>...</span>)
+<span class='fu'>head</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>6L</span>, <span class='kw'>nfeat</span> <span class='kw'>=</span> <span class='fu'><a href='ndoc.html'>nfeature</a></span>(<span class='no'>x</span>), <span class='no'>...</span>)
 
 <span class='co'># S3 method for dfm</span>
-<span class='fu'>tail</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>6L</span>, <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fl'>6L</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>tail</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>6L</span>, <span class='kw'>nfeat</span> <span class='kw'>=</span> <span class='fu'><a href='ndoc.html'>nfeature</a></span>(<span class='no'>x</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -156,9 +162,9 @@ number of first/last documents for the dfm. If negative, all but the n
 last/first number of documents of x.</p></td>
     </tr>
     <tr>
-      <th>nfeature</th>
+      <th>nfeat</th>
       <td><p>the number of features to return, where the resulting object 
-will contain the first <code>ncol</code> features</p></td>
+will contain the first <code>ncol</code> features; default is all features</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -169,32 +175,18 @@ will contain the first <code>ncol</code> features</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <a href='dfm.html'>dfm</a> class object corresponding to the subset defined 
-  by <code>n</code> and <code>nfeature</code>.</p>
+  by <code>n</code> and <code>nfeat</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fl'>3</span>, <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 5 features (66.7% sparse).
+    <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fl'>3</span>, <span class='kw'>nfeat</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 5 features (66.7% sparse).
 #&gt; 3 x 5 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs A B  C  D  E
 #&gt;   R1 2 3 10 22 45
 #&gt;   R2 0 0  0  0  0
-#&gt;   R3 0 0  0  0  0</div><div class='input'><span class='fu'>head</span>(<span class='no'>data_dfm_lbgexample</span>, -<span class='fl'>4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
-#&gt;     features
-#&gt; docs A B  C  D  E  F
-#&gt;   R1 2 3 10 22 45 78
-#&gt;   R2 0 0  0  0  0  2</div><div class='input'>
-<span class='fu'>tail</span>(<span class='no'>data_dfm_lbgexample</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (80.6% sparse).
-#&gt; 6 x 6 sparse Matrix of class "dfm"
-#&gt;     features
-#&gt; docs ZF ZG ZH ZI ZJ ZK
-#&gt;   R1  0  0  0  0  0  0
-#&gt;   R2  0  0  0  0  0  0
-#&gt;   R3  0  0  0  0  0  0
-#&gt;   R4  2  0  0  0  0  0
-#&gt;   R5 78 45 22 10  3  2
-#&gt;   V1  0  0  0  0  0  0</div><div class='input'><span class='fu'>tail</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (66.7% sparse).
+#&gt;   R3 0 0  0  0  0</div><div class='input'><span class='fu'>head</span>(<span class='no'>data_dfm_lbgexample</span>, -<span class='fl'>4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 37 features (54.1% sparse).</div><div class='input'>
+<span class='fu'>tail</span>(<span class='no'>data_dfm_lbgexample</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 37 features (54.1% sparse).</div><div class='input'><span class='fu'>tail</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>nfeat</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (66.7% sparse).
 #&gt; 3 x 4 sparse Matrix of class "dfm"
 #&gt;     features
 #&gt; docs ZH ZI ZJ ZK

@@ -158,3 +158,28 @@ test_that("test textplot_keyness: show_reference works correctly ", {
     
 
 })
+
+test_that("test textplot_network", {
+    txt <- "A D A C E A D F E B A C E D"
+    testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
+    testdfm <- dfm(txt)
+    expect_silent(textplot_network(testfcm, vertex_color = 'red', offset = 0.1))
+    expect_silent(textplot_network(testdfm, offset = 0.1))
+    expect_error(textplot_network(testfcm, min_freq = 100), 
+                 'There is no co-occurence higher than the threshold')
+})
+
+test_that("test textplot_network works with vectorlized argument", {
+    txt <- "A D A C E A D F E B A C E D"
+    testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
+    expect_silent(textplot_network(testfcm, vertex_color = rep(c(1, 2), nrow(testfcm) / 2)))
+    expect_silent(textplot_network(testfcm, vertex_size = rowSums(testfcm) / 5))
+    expect_silent(textplot_network(testfcm, vertex_labelcolor = rep(c(1, NA), nrow(testfcm) / 2)))
+})
+
+test_that("textplot_network error when fcm is too large", {
+    testdfm <- dfm(data_corpus_irishbudget2010)
+    expect_error(textplot_network(testdfm, min_freq = 1, offset = 0, omit_isolated = FALSE),
+                   'fcm is too large for a network plot')
+})
+

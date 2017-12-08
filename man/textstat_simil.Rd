@@ -15,12 +15,14 @@ textstat_simil(x, selection = NULL, margin = c("documents", "features"),
 \item{x}{a \link{dfm} object}
 
 \item{selection}{character vector of document names or feature labels from
-\code{x}.  A \code{"dist"} object is returned if selection is \code{NULL}, 
-otherwise, a matrix is returned.}
+\code{x}; or, a numeric vector or matrix which is conforms to \code{x}. A
+\code{"dist"} object is returned if selection is \code{NULL}, otherwise, a
+matrix is returned matching distances to the documents or features identified
+in the selection.}
 
 \item{margin}{identifies the margin of the dfm on which similarity or 
-difference will be computed:  \code{documents} for documents or 
-\code{features} for word/term features.}
+difference will be computed:  \code{"documents"} for documents or 
+\code{"features"} for word/term features.}
 
 \item{method}{method the similarity or distance measure to be used; see
 Details}
@@ -44,13 +46,13 @@ selected).  They are fast and robust because they operate directly on the sparse
 }
 \details{
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
-  \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, 
+  \code{"chisquared"}, \code{"chisquared2"}, \code{"hamming"}, 
   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
   and \code{"minkowski"}.
 
 \code{textstat_simil} options are: \code{"correlation"} (default), 
-  \code{"cosine"}, \code{"jaccard"}, \code{"eJaccard"}, \code{"dice"},
-  \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and 
+  \code{"cosine"}, \code{"jaccard"}, \code{"ejaccard"}, \code{"dice"},
+  \code{"edice"}, \code{"simple matching"}, \code{"hamann"}, and 
   \code{"faith"}.
 }
 \note{
@@ -70,7 +72,7 @@ as.matrix(d1)
 
 # distances for specific documents
 textstat_dist(presDfm, "2017-Trump", margin = "documents")
-textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
+textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "jaccard")
 (d2 <- textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents"))
 as.list(d1)
 
@@ -92,13 +94,13 @@ as.list(s2, n = 8)
 
 }
 \references{
-The \code{"Chisquared"} metric is from Legendre, P., & Gallagher,
+The \code{"chisquared"} metric is from Legendre, P., & Gallagher,
   E. D. (2001).
   "\href{http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf}{Ecologically
    meaningful transformations for ordination of species data}".
   \emph{Oecologia}, 129(2), 271–280. doi.org/10.1007/s004420100716
   
-  The \code{"Chisquared2"} metric is the "Quadratic-Chi" measure from Pele,
+  The \code{"chisquared2"} metric is the "Quadratic-Chi" measure from Pele,
   O., & Werman, M. (2010). 
   "\href{https://link.springer.com/chapter/10.1007/978-3-642-15552-9_54}{The
   Quadratic-Chi Histogram Distance Family}". In \emph{Computer Vision – ECCV

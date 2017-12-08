@@ -100,41 +100,41 @@ nsyllable.tokens <- function(x, syllable_dictionary = quanteda::data_int_syllabl
     }
 }
 
-nsyllable.data.table <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) {
-    word <- serial <- syllables <- NULL
-    
-    # retrieve or validate syllable list
-    data_int_syllables <- NULL
-    if (is.null(syllable_dictionary)) {
-        #data(data_int_syllables, envir = environment())
-        #syllable_dictionary <- data_int_syllables
-    } else {
-        if (!is.integer(syllable_dictionary))
-            stop("user-supplied syllable_dictionary must be named integer vector.")
-    }
-    
-    # make syllable list into a data table
-    syllable_dictionaryDT <- data.table(word = names(syllable_dictionary), syllables = syllable_dictionary)
-    setkey(syllable_dictionaryDT, word)
-    
-    # lowercase the tokens object, needed for the matching in the next step
-    x[, word := char_tolower(word)]
-
-    # set the key for x
-    setkey(x, word)
-    
-    # merge words to get syllables
-    # suppressWarnings so it won't complain about mixed encodings
-    suppressWarnings(syllDT <- syllable_dictionaryDT[x])
-    
-    # look up vowel counts for those not in the syllables list
-    syllDT[is.na(syllables), syllables := stringi::stri_count_regex(word, "[aeiouy]+")]
-    # put back into original order
-    syllDT <- syllDT[order(serial)]
-    # split back to a list
-    syllcount <- split(syllDT[, syllables], syllDT$docIndex)
-
-    syllcount
-}
+# nsyllable.data.table <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) {
+#     word <- serial <- syllables <- NULL
+#     
+#     # retrieve or validate syllable list
+#     data_int_syllables <- NULL
+#     if (is.null(syllable_dictionary)) {
+#         #data(data_int_syllables, envir = environment())
+#         #syllable_dictionary <- data_int_syllables
+#     } else {
+#         if (!is.integer(syllable_dictionary))
+#             stop("user-supplied syllable_dictionary must be named integer vector.")
+#     }
+#     
+#     # make syllable list into a data table
+#     syllable_dictionaryDT <- data.table(word = names(syllable_dictionary), syllables = syllable_dictionary)
+#     setkey(syllable_dictionaryDT, word)
+#     
+#     # lowercase the tokens object, needed for the matching in the next step
+#     x[, word := char_tolower(word)]
+# 
+#     # set the key for x
+#     setkey(x, word)
+#     
+#     # merge words to get syllables
+#     # suppressWarnings so it won't complain about mixed encodings
+#     suppressWarnings(syllDT <- syllable_dictionaryDT[x])
+#     
+#     # look up vowel counts for those not in the syllables list
+#     syllDT[is.na(syllables), syllables := stringi::stri_count_regex(word, "[aeiouy]+")]
+#     # put back into original order
+#     syllDT <- syllDT[order(serial)]
+#     # split back to a list
+#     syllcount <- split(syllDT[, syllables], syllDT$docIndex)
+# 
+#     syllcount
+# }
 
 

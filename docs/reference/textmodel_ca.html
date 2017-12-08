@@ -88,6 +88,12 @@
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -137,7 +143,7 @@
 returns a special class of <span class="pkg">ca</span> object.</p>
     
 
-    <pre class="usage"><span class='fu'>textmodel_ca</span>(<span class='no'>x</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>threads</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+    <pre class="usage"><span class='fu'>textmodel_ca</span>(<span class='no'>x</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>residual_floor</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -163,11 +169,6 @@ default) then the maximum possible dimensions are included.</p></td>
 converting to dense</p></td>
     </tr>
     <tr>
-      <th>threads</th>
-      <td><p>the number of threads to be used; set to 1 to use a 
-serial version of the function; only applicable when <code>sparse = TRUE</code></p></td>
-    </tr>
-    <tr>
       <th>residual_floor</th>
       <td><p>specifies the threshold for the residual matrix for 
 calculating the truncated svd.Larger value will reduce memory and time cost
@@ -182,12 +183,11 @@ but might reduce accuracy; only applicable when <code>sparse = TRUE</code></p></
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Setting threads larger than 1 (when <code>sparse = TRUE</code>) will trigger 
-  parallel computation, which retains sparsity of all involved matrices. You 
-  may need to increase the value of <code>residual_floor</code> to ignore less 
-  important information and hence to reduce the memory cost when you have a 
-  very big <a href='dfm.html'>dfm</a>.</p>  
-<p>If your attempt to fit the model fails due to the matrix being too large, 
+    <p>You may need to set <code>sparse = TRUE</code>) and
+  increase the value of <code>residual_floor</code> to ignore less important
+  information and hence to reduce the memory cost when you have a very big
+  <a href='dfm.html'>dfm</a>.
+  If your attempt to fit the model fails due to the matrix being too large, 
   this is probably because of the memory demands of computing the \(V
   \times V\) residual matrix.  To avoid this, consider increasing the value of
   <code>residual_floor</code> by 0.1, until the model can be fit.</p>

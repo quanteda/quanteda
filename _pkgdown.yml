@@ -20,6 +20,10 @@ navbar:
           href: articles/pkgdown/examples/plotting.html
         - text: "Chinese text analysis"
           href: articles/pkgdown/examples/chinese.html
+        - text: "快速入门指南"
+          href: articles/pkgdown/examples/quickstart_cn.html
+        - text: "Social media analysis"
+          href: articles/pkgdown/examples/twitter.html
     - text: "Replication"
       menu:
         - text: "Text Analysis with R for Students of Literature"
@@ -41,6 +45,7 @@ reference:
   contents:
     - data_char_sampletext
     - data_char_ukimmig2010
+    - data_corpus_dailnoconf1991
     - data_corpus_inaugural
     - data_corpus_irishbudget2010
     - data_dfm_LBGexample
@@ -65,6 +70,7 @@ reference:
     - tokens_ngrams
     - tokens_skipgrams
     - tokens_remove
+    - tokens_replace
     - tokens_select
     - tokens_tolower
     - tokens_toupper

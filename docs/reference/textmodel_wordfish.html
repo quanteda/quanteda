@@ -88,6 +88,12 @@
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -139,8 +145,8 @@ one-dimensional document positions using conditional maximum likelihood.</p>
     <pre class="usage"><span class='fu'>textmodel_wordfish</span>(<span class='no'>x</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>Inf</span>, <span class='fl'>Inf</span>, <span class='fl'>3</span>, <span class='fl'>1</span>),
   <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1e-06</span>, <span class='fl'>1e-08</span>), <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"poisson"</span>, <span class='st'>"quasipoisson"</span>),
   <span class='kw'>dispersion_level</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"feature"</span>, <span class='st'>"overall"</span>), <span class='kw'>dispersion_floor</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>threads</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"threads"</span>), <span class='kw'>abs_err</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>svd_sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>residual_floor</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
+  <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>abs_err</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>svd_sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>residual_floor</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -191,11 +197,6 @@ underdispersed.  Default is 0, but this only applies if <code>dispersion =
     <tr>
       <th>sparse</th>
       <td><p>specifies whether the <code>"dfm"</code> is coerced to dense</p></td>
-    </tr>
-    <tr>
-      <th>threads</th>
-      <td><p>specifies the number of threads to use; set to 1 to override
-the package settings and use a serial version of the function</p></td>
     </tr>
     <tr>
       <th>abs_err</th>
@@ -259,25 +260,25 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
 #&gt; Estimated document positions:
 #&gt; 
 #&gt;   Documents       theta         SE       lower       upper
-#&gt; 1        R1 -1.33131085 0.01573054 -1.36214271 -1.30047899
-#&gt; 2        R2 -0.60626114 0.01215646 -0.63008780 -0.58243448
-#&gt; 3        R3  0.06333812 0.01129471  0.04120049  0.08547575
-#&gt; 4        R4  0.70266896 0.01266596  0.67784367  0.72749425
-#&gt; 5        R5  1.50121167 0.01775923  1.46640358  1.53601976
-#&gt; 6        V1 -0.32964676 0.01194627 -0.35306145 -0.30623207
+#&gt; 1        R1 -1.33142448 0.01573305 -1.36226126 -1.30058771
+#&gt; 2        R2 -0.60624022 0.01215849 -0.63007085 -0.58240958
+#&gt; 3        R3  0.06342846 0.01129482  0.04129062  0.08556631
+#&gt; 4        R4  0.70270608 0.01266420  0.67788424  0.72752791
+#&gt; 5        R5  1.50111233 0.01775656  1.46630948  1.53591519
+#&gt; 6        V1 -0.32958218 0.01194768 -0.35299963 -0.30616472
 #&gt; 
 #&gt; Estimated feature scores: showing first 30 beta-hats for features
 #&gt; 
 #&gt;           A           B           C           D           E           F 
-#&gt;  -7.4063910  -8.0775952  -9.7349589 -10.7145574 -11.5831119 -11.3611984 
+#&gt;  -7.4061183  -8.0771378  -9.7341220 -10.7135268 -11.5819180 -11.3598481 
 #&gt;           G           H           I           J           K           L 
-#&gt; -11.5593225 -10.4554802  -9.7337897  -8.6724016  -7.6191351  -6.6315339 
+#&gt; -11.5578973 -10.4541579  -9.7325788  -8.6713784  -7.6183087  -6.6308915 
 #&gt;           M           N           O           P           Q           R 
-#&gt;  -5.6178369  -4.6855300  -3.7792700  -2.7246927  -1.8090846  -0.7117870 
+#&gt;  -5.6173853  -4.6852444  -3.7791312  -2.7247019  -1.8091959  -0.7119934 
 #&gt;           S           T           U           V           W           X 
-#&gt;   0.2594656   1.2559800   2.3935743   3.3679894   4.4773810   5.2773881 
+#&gt;   0.2592159   1.2557311   2.3933771   3.3678646   4.4773747   5.2774893 
 #&gt;           Y           Z          ZA          ZB          ZC          ZD 
-#&gt;   6.1121280   6.9830367   7.8338785   8.8092608   9.7279603  10.4987204 </div><div class='input'>
+#&gt;   6.1123668   6.9834270   7.8344169   8.8099707   9.7288217  10.4996934 </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='no'>ie2010dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 (<span class='no'>wfm1</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>)))
@@ -297,7 +298,7 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
      <span class='no'>wfm2a</span>@<span class='kw'>features</span>[<span class='no'>underdispersedTerms</span>],
      <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.8</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>)
 <span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>austin</span>)) {
-    <span class='no'>wfmodelAustin</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>austin</span><span class='kw ns'>::</span><span class='fu'>wordfish</span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/convert-wrappers'>as.wfm</a></span>(<span class='no'>ie2010dfm</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
+    <span class='no'>wfmodelAustin</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>austin</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/austin/topics/wordfish'>wordfish</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/convert-wrappers'>as.wfm</a></span>(<span class='no'>ie2010dfm</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
     <span class='fu'>cor</span>(<span class='no'>wfm1</span>@<span class='kw'>theta</span>, <span class='no'>wfmodelAustin</span>$<span class='no'>theta</span>)
 }
 <span class='co'># }</span></pre>

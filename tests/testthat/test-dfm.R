@@ -209,11 +209,12 @@ test_that("dfm print works as expected", {
     expect_output(print(testdfm[1:5, 1:5]),
                   "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\).*")
     
-    expect_equal(dim(head(testdfm, 2)), c(2, 6))
+    expect_equal(dim(head(testdfm[,1:100], 2)), c(2, 100))
     expect_is(head(testdfm, 2), "dfm")
     
     expect_equal(dim(tail(testdfm, 2, 8)), c(2, 8))
-    expect_is(tail(testdfm, 2), "dfm")
+    expect_equal(dim(tail(testdfm[, 1:100], 2)), c(2, 100))
+    expect_is(tail(testdfm[, 1:100], 2), "dfm")
 })
 
 
@@ -421,19 +422,19 @@ test_that("dfm's document counts in verbose message is correct", {
 })
 
 test_that("dfm head, tail work as expected", {
-    tmp <- head(data_dfm_lbgexample, 4, nfeature = 3)
+    tmp <- head(data_dfm_lbgexample, 4, nfeat = 3)
     expect_equal(featnames(tmp), LETTERS[1:3])
     expect_equal(docnames(tmp), paste0("R", 1:4))
     
-    tmp <- head(data_dfm_lbgexample, -4, nfeature = -30)
+    tmp <- head(data_dfm_lbgexample, -4, nfeat = -30)
     expect_equal(featnames(tmp), LETTERS[1:7])
     expect_equal(docnames(tmp), paste0("R", 1:2))
     
-    tmp <- tail(data_dfm_lbgexample, 4, nfeature = 3)
+    tmp <- tail(data_dfm_lbgexample, 4, nfeat = 3)
     expect_equal(featnames(tmp), c("ZI", "ZJ", "ZK"))
     expect_equal(docnames(tmp), c("R3", "R4", "R5", "V1"))
     
-    tmp <- tail(data_dfm_lbgexample, -4, nfeature = -34)
+    tmp <- tail(data_dfm_lbgexample, -4, nfeat = -34)
     expect_equal(featnames(tmp), c("ZI", "ZJ", "ZK"))
     expect_equal(docnames(tmp), c("R5", "V1"))
 })
@@ -449,11 +450,11 @@ test_that("dfm print works with options as expected", {
         "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\)\\.$"
     )
     expect_output(
-        print(tmp[1:3, 1:3], ndoc = 2, nfeature = 2, show.values = TRUE),
+        print(tmp[1:3, 1:3], ndoc = 2, nfeat = 2, show.values = TRUE),
         "^Document-feature matrix of: 3 documents, 3 features.*3 x 3 sparse Matrix.*features"
     )
     expect_output(
-        print(tmp[1:3, 1:3], ndoc = 2, nfeature = 2),
+        print(tmp[1:3, 1:3], ndoc = 2, nfeat = 2),
         "^Document-feature matrix of: 3 documents, 3 features \\(22.2% sparse\\)\\.$"
     )
     expect_output(
@@ -463,7 +464,7 @@ test_that("dfm print works with options as expected", {
 
     # with options (#756)
     quanteda_options(print_dfm_max_ndoc = 22L)
-    quanteda_options(print_dfm_max_nfeature = 22L)
+    quanteda_options(print_dfm_max_nfeat = 22L)
     expect_output(
         print(tmp),
         "Document-feature matrix of: 14 documents, 5,\\d{3} features \\(8\\d\\.\\d% sparse\\)\\.$"
@@ -632,6 +633,25 @@ test_that("dfm warns of argument not used", {
                    'Arguments xxxxx, yyyyy not used')
     expect_warning(dfm(mx, xxxxx = 'something', yyyyy = 'else'), 
                    'Arguments xxxxx, yyyyy not used')
+    
+})
+
+test_that("dfm pass arguments to tokens, issue #1121", {
+    
+    txt <- data_char_sampletext
+    corp <- corpus(txt)
+    
+    expect_equal(dfm(txt, what = 'character'),
+                 dfm(tokens(corp, what = 'character')))
+    
+    expect_equal(dfm(txt, what = 'character'),
+                 dfm(tokens(txt, what = 'character')))
+
+    expect_equal(dfm(txt, remove_punct = TRUE),
+                 dfm(tokens(corp, remove_punct = TRUE)))
+        
+    expect_equal(dfm(txt, remove_punct = TRUE),
+                 dfm(tokens(txt, remove_punct = TRUE)))
     
 })
 

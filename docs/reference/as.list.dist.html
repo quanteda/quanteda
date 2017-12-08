@@ -88,6 +88,12 @@
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -179,7 +185,7 @@ in descending order of similarity.  Can be used after calling
 
 <span class='co'># in quanteda</span>
 <span class='no'>quantedaDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='is.dfm.html'>as.dfm</a></span>(<span class='fu'>t</span>(<span class='fu'>as.matrix</span>(<span class='no'>tdm</span>)))
-<span class='fu'>as.list</span>(<span class='fu'><a href='textstat_simil.html'>textstat_simil</a></span>(<span class='no'>quantedaDfm</span>, <span class='fu'>c</span>(<span class='st'>"oil"</span>, <span class='st'>"opec"</span>, <span class='st'>"xyz"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>14</span>)
+<span class='fu'>as.list</span>(<span class='fu'><a href='textstat_simil.html'>textstat_dist</a></span>(<span class='no'>quantedaDfm</span>, <span class='fu'>c</span>(<span class='st'>"oil"</span>, <span class='st'>"opec"</span>, <span class='st'>"xyz"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>14</span>)
 
 <span class='co'># in base R</span>
 <span class='no'>corMat</span> <span class='kw'>&lt;-</span> <span class='fu'>as.matrix</span>(<span class='kw pkg'>proxy</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/proxy/topics/dist'>simil</a></span>(<span class='fu'>as.matrix</span>(<span class='no'>quantedaDfm</span>), <span class='kw'>by_rows</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))

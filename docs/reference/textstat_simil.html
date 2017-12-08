@@ -88,6 +88,12 @@
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -155,14 +161,16 @@ selected).  They are fast and robust because they operate directly on the sparse
     <tr>
       <th>selection</th>
       <td><p>character vector of document names or feature labels from
-<code>x</code>.  A <code>"dist"</code> object is returned if selection is <code>NULL</code>, 
-otherwise, a matrix is returned.</p></td>
+<code>x</code>; or, a numeric vector or matrix which is conforms to <code>x</code>. A
+<code>"dist"</code> object is returned if selection is <code>NULL</code>, otherwise, a
+matrix is returned matching distances to the documents or features identified
+in the selection.</p></td>
     </tr>
     <tr>
       <th>margin</th>
       <td><p>identifies the margin of the dfm on which similarity or 
-difference will be computed:  <code>documents</code> for documents or 
-<code>features</code> for word/term features.</p></td>
+difference will be computed:  <code>"documents"</code> for documents or 
+<code>"features"</code> for word/term features.</p></td>
     </tr>
     <tr>
       <th>method</th>
@@ -191,12 +199,12 @@ matrix is recorded</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>textstat_dist</code> options are: <code>"euclidean"</code> (default), 
-  <code>"Chisquared"</code>, <code>"Chisquared2"</code>, <code>"hamming"</code>, 
+  <code>"chisquared"</code>, <code>"chisquared2"</code>, <code>"hamming"</code>, 
   <code>"kullback"</code>. <code>"manhattan"</code>, <code>"maximum"</code>, <code>"canberra"</code>,
   and <code>"minkowski"</code>.
     <code>textstat_simil</code> options are: <code>"correlation"</code> (default), 
-  <code>"cosine"</code>, <code>"jaccard"</code>, <code>"eJaccard"</code>, <code>"dice"</code>,
-  <code>"eDice"</code>, <code>"simple matching"</code>, <code>"hamann"</code>, and 
+  <code>"cosine"</code>, <code>"jaccard"</code>, <code>"ejaccard"</code>, <code>"dice"</code>,
+  <code>"edice"</code>, <code>"simple matching"</code>, <code>"hamann"</code>, and 
   <code>"faith"</code>.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
@@ -208,12 +216,12 @@ matrix is recorded</p></td>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>The <code>"Chisquared"</code> metric is from Legendre, P., &amp; Gallagher,
+    <p>The <code>"chisquared"</code> metric is from Legendre, P., &amp; Gallagher,
   E. D. (2001).
   "<a href='http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&amp;_Gallagher.pdf'>Ecologically
    meaningful transformations for ordination of species data</a>".
   <em>Oecologia</em>, 129(2), 271–280. doi.org/10.1007/s004420100716</p>  
-<p>The <code>"Chisquared2"</code> metric is the "Quadratic-Chi" measure from Pele,
+<p>The <code>"chisquared2"</code> metric is the "Quadratic-Chi" measure from Pele,
   O., &amp; Werman, M. (2010). 
   "<a href='https://link.springer.com/chapter/10.1007/978-3-642-15552-9_54'>The
   Quadratic-Chi Histogram Distance Family</a>". In <em>Computer Vision – ECCV
@@ -276,14 +284,14 @@ matrix is recorded</p></td>
 #&gt; 2001-Bush      48.79549
 #&gt; 2005-Bush      58.00000
 #&gt; 2009-Obama     55.65968
-#&gt; 2013-Obama     55.21775</div><div class='input'><span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"eJaccard"</span>)</div><div class='output co'>#&gt;              2005-Bush
+#&gt; 2013-Obama     55.21775</div><div class='input'><span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"jaccard"</span>)</div><div class='output co'>#&gt;              2005-Bush
 #&gt; 2005-Bush    1.0000000
-#&gt; 1993-Clinton 0.3306739
-#&gt; 1997-Clinton 0.3276314
-#&gt; 2001-Bush    0.4038384
-#&gt; 2009-Obama   0.3557692
-#&gt; 2013-Obama   0.4122699
-#&gt; 2017-Trump   0.3508298</div><div class='input'>(<span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              2009-Obama 2013-Obama
+#&gt; 1993-Clinton 0.2216867
+#&gt; 1997-Clinton 0.2392503
+#&gt; 2001-Bush    0.2591195
+#&gt; 2009-Obama   0.2502483
+#&gt; 2013-Obama   0.2505353
+#&gt; 2017-Trump   0.1852761</div><div class='input'>(<span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              2009-Obama 2013-Obama
 #&gt; 2009-Obama      0.00000   48.48711
 #&gt; 2013-Obama     48.48711    0.00000
 #&gt; 1993-Clinton   51.66237   51.30302
@@ -414,14 +422,6 @@ matrix is recorded</p></td>
 #&gt; renew    0.5041842 0.4850713 0.09901475</div><div class='input'><span class='fu'>as.list</span>(<span class='no'>s2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>8</span>)</div><div class='output co'>#&gt; $fair
 #&gt;   continu    purpos    travel    failur      lead     begin    courag      call 
 #&gt; 1.0000000 0.9636241 0.9561829 0.9449112 0.9166985 0.9091373 0.9091373 0.8971226 
-#&gt; 
-#&gt; $health
-#&gt;       can      work     faith       see    danger   generat     stand       end 
-#&gt; 0.9950372 0.9602106 0.9578949 0.9456109 0.9428090 0.9404079 0.9315943 0.9238116 
-#&gt; 
-#&gt; $terror
-#&gt;       big   shutter   destroy      rich       yes     offic     bridg   potenti 
-#&gt; 0.9525793 0.9428090 0.9428090 0.9428090 0.9365858 0.9258201 0.9258201 0.9128709 
 #&gt; </div><div class='input'>
 </div></pre>
   </div>

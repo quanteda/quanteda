@@ -5,9 +5,9 @@
 \alias{tail.dfm}
 \title{return the first or last part of a dfm}
 \usage{
-\method{head}{dfm}(x, n = 6L, nfeature = 6L, ...)
+\method{head}{dfm}(x, n = 6L, nfeat = nfeature(x), ...)
 
-\method{tail}{dfm}(x, n = 6L, nfeature = 6L, ...)
+\method{tail}{dfm}(x, n = 6L, nfeat = nfeature(x), ...)
 }
 \arguments{
 \item{x}{a dfm object}
@@ -16,24 +16,24 @@
 number of first/last documents for the dfm. If negative, all but the n 
 last/first number of documents of x.}
 
-\item{nfeature}{the number of features to return, where the resulting object 
-will contain the first \code{ncol} features}
+\item{nfeat}{the number of features to return, where the resulting object 
+will contain the first \code{ncol} features; default is all features}
 
 \item{...}{additional arguments passed to other functions}
 }
 \value{
 A \link{dfm} class object corresponding to the subset defined 
-  by \code{n} and \code{nfeature}.
+  by \code{n} and \code{nfeat}.
 }
 \description{
 For a \link{dfm} object, returns the first or last \code{n} documents 
-and first \code{nfeature} features.
+and first \code{nfeat} features.
 }
 \examples{
-head(data_dfm_lbgexample, 3, nfeature = 5)
+head(data_dfm_lbgexample, 3, nfeat = 5)
 head(data_dfm_lbgexample, -4)
 
 tail(data_dfm_lbgexample)
-tail(data_dfm_lbgexample, n = 3, nfeature = 4)
+tail(data_dfm_lbgexample, n = 3, nfeat = 4)
 }
 \keyword{dfm}
