@@ -13,6 +13,7 @@
 ### Bug fixes and stability enhancements
 
 * Performance has been improved for `fcm()` and for `textmodel_wordfish()`.
+* `dfm()` now correctly passes through all `...` arguments to `tokens()`.  (#1121)
 
 ### Behaviour Changes
 

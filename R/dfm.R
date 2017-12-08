@@ -159,14 +159,15 @@ dfm.character <- function(x,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
-    dfm.tokens(tokens(corpus(x)),
+    
+    check_dots(list(...), names(formals('tokens')))
+    dfm.tokens(tokens(corpus(x), ...),
         tolower = tolower, 
         stem = stem, 
         select = select, remove = remove, 
         dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
         groups = groups, 
-        verbose = verbose, 
-        ...)
+        verbose = verbose)
 }
 
 
@@ -184,14 +185,15 @@ dfm.corpus <- function(x,
                        groups = NULL, 
                        verbose = quanteda_options("verbose"),
                        ...) {
-    dfm.tokens(tokens(x),  
+    
+    check_dots(list(...), names(formals('tokens')))
+    dfm.tokens(tokens(x, ...),  
                tolower = tolower, 
                stem = stem, 
                select = select, remove = remove, 
                dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
                groups = groups, 
-               verbose = verbose,
-               ...)
+               verbose = verbose)
 }
     
 #' @noRd

@@ -636,6 +636,25 @@ test_that("dfm warns of argument not used", {
     
 })
 
+test_that("dfm pass arguments to tokens, issue #1121", {
+    
+    txt <- data_char_sampletext
+    corp <- corpus(txt)
+    
+    expect_equal(dfm(txt, what = 'character'),
+                 dfm(tokens(corp, what = 'character')))
+    
+    expect_equal(dfm(txt, what = 'character'),
+                 dfm(tokens(txt, what = 'character')))
+
+    expect_equal(dfm(txt, remove_punct = TRUE),
+                 dfm(tokens(corp, remove_punct = TRUE)))
+        
+    expect_equal(dfm(txt, remove_punct = TRUE),
+                 dfm(tokens(txt, remove_punct = TRUE)))
+    
+})
+
 test_that("as.dfm works for dfmSparse objects", {
     load("../data/old_dfmSparse.RData")
     expect_true(is.dfm(as.dfm(old_dfmSparse)))
