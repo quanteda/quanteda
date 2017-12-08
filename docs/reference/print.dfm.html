@@ -89,6 +89,9 @@
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
     <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
     </li>
   </ul>
@@ -141,7 +144,7 @@
     <pre class="usage"><span class='co'># S4 method for dfm</span>
 <span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>show.values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>show.settings</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>show.summary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ndoc</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_ndoc"</span>),
-  <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_nfeature"</span>), <span class='no'>...</span>)
+  <span class='kw'>nfeat</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_nfeat"</span>), <span class='no'>...</span>)
 
 <span class='co'># S4 method for dfm</span>
 <span class='fu'>show</span>(<span class='no'>object</span>)
@@ -149,7 +152,7 @@
 <span class='co'># S4 method for fcm</span>
 <span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>show.values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>show.settings</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>show.summary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ndoc</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_ndoc"</span>),
-  <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_nfeature"</span>), <span class='no'>...</span>)
+  <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"print_dfm_max_nfeat"</span>), <span class='no'>...</span>)
 
 <span class='co'># S4 method for fcm</span>
 <span class='fu'>show</span>(<span class='no'>object</span>)
@@ -170,7 +173,7 @@
     <tr>
       <th>show.values</th>
       <td><p>print the dfm values; if called explicitly this will print
-all values, overriding <code>ndoc</code> and <code>nfeature</code>.</p></td>
+all values, overriding <code>ndoc</code> and <code>nfeat</code>.</p></td>
     </tr>
     <tr>
       <th>show.settings</th>
@@ -188,9 +191,9 @@ and features</p></td>
 <code>print_dfm_max_ndoc</code> setting of <code><a href='quanteda_options.html'>quanteda_options</a></code></p></td>
     </tr>
     <tr>
-      <th>nfeature</th>
+      <th>nfeat</th>
       <td><p>max number of features to print; default is from the
-<code>print_dfm_max_nfeature</code> setting of <code><a href='quanteda_options.html'>quanteda_options</a></code></p></td>
+<code>print_dfm_max_nfeat</code> setting of <code><a href='quanteda_options.html'>quanteda_options</a></code></p></td>
     </tr>
     <tr>
       <th>...</th>

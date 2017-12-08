@@ -89,6 +89,9 @@
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
     <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
     </li>
   </ul>
@@ -141,8 +144,11 @@ features.</p>
 
     <pre class="usage"><span class='fu'>textplot_network</span>(<span class='no'>x</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>edge_color</span> <span class='kw'>=</span> <span class='st'>"skyblue"</span>, <span class='kw'>edge_alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>edge_size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>vertex_color</span> <span class='kw'>=</span> <span class='st'>"gray40"</span>, <span class='kw'>vertex_size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>text_color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>offset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>vertex_color</span> <span class='kw'>=</span> <span class='st'>"gray40"</span>, <span class='kw'>vertex_size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>vertex_labelcolor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>offset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for fcm</span>
+<span class='fu'><a href='http://www.rdocumentation.org/packages/network/topics/network'>as.network</a></span>(<span class='no'>x</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -153,13 +159,13 @@ features.</p>
     </tr>
     <tr>
       <th>min_freq</th>
-      <td><p>a percentail or frequency count threashold for cooccurances
-of features to be plotted.</p></td>
+      <td><p>a frequency count threshold or proportion for co-occurance
+frequencies of features to be plotted.</p></td>
     </tr>
     <tr>
       <th>omit_isolated</th>
-      <td><p>if <code>TRUE</code>, features do not occuare more frequent
-than <code>min_freq</code> will be omitted from the plot</p></td>
+      <td><p>if <code>TRUE</code>, features do not occur more frequent than
+<code>min_freq</code> will be omitted from the plot</p></td>
     </tr>
     <tr>
       <th>edge_color</th>
@@ -183,16 +189,28 @@ other edges are determined proportionally to the highest frequency.</p></td>
       <td><p>size of vertices.</p></td>
     </tr>
     <tr>
-      <th>text_color</th>
-      <td><p>color of texts. Default to the same as <code>vertex_color</code>.
-If <code>NA</code> is given, texts are not rendered.</p></td>
+      <th>vertex_labelcolor</th>
+      <td><p>color of texts. Defaults to the same as
+<code>vertex_color</code>. If <code>NA</code> is given, texts are not rendered.</p></td>
     </tr>
     <tr>
       <th>offset</th>
       <td><p>if <code>NULL</code>, the distance between vertices and texts are
 determined automatically.</p></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments passed to <a href='http://www.rdocumentation.org/packages/network/topics/network'>network</a>.</p></td>
+    </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Currently the size of the network is limited to 1000, because of the
+  computationally intensive nature of network formation for larger matrices.
+  When the <a href='fcm.html'>fcm</a> is large, users should select features using
+  <a href='dfm_select.html'>fcm_select</a>, set the threshold using <code>min_freq</code>, or implement
+  own plotting function using <code>as.network</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -211,7 +229,7 @@ determined automatically.</p></td>
 <span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span> <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
 <span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span> <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
 <span class='fu'><a href='dfm_select.html'>fcm_select</a></span>(<span class='no'>myfcm</span>, <span class='no'>feat</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
-        <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>text_color</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>'gray40'</span>, <span class='fl'>NA</span>), <span class='fl'>15</span>))
+        <span class='fu'>textplot_network</span>(<span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>vertex_labelcolor</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>'gray40'</span>, <span class='fl'>NA</span>), <span class='fl'>15</span>))
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -219,6 +237,8 @@ determined automatically.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
