@@ -10,121 +10,76 @@ knitr::opts_chunk$set(collapse = FALSE,
                       comment = "##")
 ```
 
-This vignette provides a basic overview of **quanteda**'s features and capabilities. For additional vignettes, see the [articles at quanteda.io](http://docs.quanteda.io/articles/index.html).  
-
-# Installing the package
-
-Since **quanteda** is available on [CRAN](https://CRAN.R-project.org/package=quanteda), you can install  by using your GUI's R package installer, or execute:
-
-このビネットは、**quanteda**の特徴と機能の基本的な概要を提供します。 追加のビネットについては、[articles at quanteda.io](http://docs.quanteda.io/articles/index.html)を参照してください。
+このビネットでは、**quanteda**の特徴と機能の基本的な概要を解説します。 追加のビネットについては、[ quanteda.ioにあるその他の記事](http://docs.quanteda.io/articles/index.html)を参照してください。
 
 # パッケージのインストール
 
-**quanteda**は[CRAN](https://CRAN.R-project.org/package=quanteda)で利用できるので、GUIのRパッケージインストーラを使用してインストールするか、次のコマンドを実行します。
+**quanteda**は[CRAN](https://CRAN.R-project.org/package=quanteda)からインストールできます。GUIのRパッケージインストーラを使用してインストールするか、次のコマンドを実行します。
 
 ```{r, eval = FALSE}
 install.packages("quanteda") 
 ```
-See an instructions at https://github.com/kbenoit/quanteda to install the GitHub version, 
 
-GitHubのバージョンをインストールする方法については、https：//github.com/kbenoit/quantedaを参照してください。
-
-## Additional recommended packages:
-
-The following packages work well with or extend **quanteda** and we recommend that you also install them:
+GitHubから最新の開発バージョンをインストールする方法については、https://github.com/kbenoit/quanteda を参照してください。
 
 ## インストールが推奨されるパッケージ
 
-以下のパッケージは**quanteda**とうまくいったり、**quanteda**拡張されていますので、それらもインストールすることをお勧めします：
+**quanteda**には**quanteda**と連携して機能を拡張する、一連のパッケージがあります。それらもインストールすることをお勧めします：
 
-*  [**readtext**](https://github.com/kbenoit/readtext):  An easy way to read text data into R, from almost any input format.
-*  [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library, including part-of-speech tagging, entity recognition, and dependency parsing.
-*  [**quantedaData**](https://github.com/kbenoit/quantedaData): Additional textual data for use with **quanteda**.
-
-* [**readtext**](https://github.com/kbenoit/readtext)：ほぼすべての入力形式からテキストデータをRに読み込む簡単な方法。
-* [**spacyr**](https://github.com/kbenoit/spacyr)：品詞タグ付け、エンティティー認識、エンティティの認識など、[spaCy](http://spacy.io)ライブラリを使用したNLP および依存関係の解析。
-* [**quantedaData**](https://github.com/kbenoit/quantedaData)：** quantedaで使用する追加のテキストデータ**。
+* [**readtext**](https://github.com/kbenoit/readtext)：多くの入力形式からテキストデータをRに簡単に読み込むパッケージ。
+* [**spacyr**](https://github.com/kbenoit/spacyr)：pythonの[spaCy](http://spacy.io)ライブラリを使用した自然言語解析のためのパッケージ。品詞タグ付け、固有表現抽出、および係り受け関係の解析など。
+* [**quantedaData**](https://github.com/kbenoit/quantedaData)：**quanteda**のビネット等で使用する追加のテキストデータ。
 
     ```{r eval = FALSE}
     devtools::install_github("kbenoit/quantedaData")
     ```
-*  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): An R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
+*  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) (LIWC) アプローチによるテキスト分析のR実装.
     ```{r eval = FALSE}
     devtools::install_github("kbenoit/LIWCalike")
     ```
 
-# Creating a Corpus
-
-You load the package to access to functions and data in the package.
-
 # コーパスの作成
 
-パッケージをロードして、パッケージ内の関数とデータにアクセスします。
+まず、パッケージをロードして、パッケージ内の関数とデータにアクセスできるようにします。
 
 ```{r, message = FALSE}
 library(quanteda)
 ```
 
-## Currently available corpus sources
+## 利用可能なコーパス
 
-**quanteda** has a simple and powerful companion package for loading texts: [**readtext**](https://github.com/kbenoit/readtext).  The main function in this package, `readtext()`,  takes a file or fileset from disk or a URL, and returns a type of data.frame that can be used directly with the `corpus()` constructor function, to create a **quanteda** corpus object.
+**quanteda**にはテキストを読み込むためのシンプルで強力なコンパニオンパッケージ、[**readtext**](https://github.com/kbenoit/readtext)があります。
+このパッケージのmain関数`readtext()`は、ディスクやURLからファイルやファイルセットを取り出し、**quanteda**の`corpus()`コンストラクタ関数から直接呼び出せる形式の、data.frameを返します。
 
-**quanteda**にはテキストをロードするためのシンプルで強力なコンパニオンパッケージがあります：[**readtext**](https://github.com/kbenoit/readtext) このパッケージのmain関数`readtext()`は、ディスクやURLからファイルやファイルセットを取り出し、 `corpus()`コンストラクタ関数で直接使用できるdata.frameの型を返します。 **quanteda**コーパスオブジェクト。
-
-`readtext()` works on:
-
-* text (`.txt`) files;
-* comma-separated-value (`.csv`) files;
-* XML formatted data;
-* data from the Facebook API, in JSON format;
-* data from the Twitter API, in JSON format; and
-* generic JSON data.
-
-The corpus constructor command `corpus()` works directly on:
-
-* a vector of character objects, for instance that you have already loaded into the workspace using other tools;
-* a `VCorpus` corpus object from the **tm** package.
-* a data.frame containing a text column and any other document-level metadata.
+`readtext()`で利用可能なファイルやデータの形式:
 
 * テキスト(`.txt`)ファイル
 * コンマ区切り値(`.csv`)ファイル
 * XML形式のデータ
 * JSON形式のFacebook APIのデータ
 * JSON形式のTwitter APIのデータ
-* ジェネリックJSONデータ
+* より一般的なJSONデータ
 
-コーパスコンストラクタコマンド `corpus()`は、次のものに対して直接働きます：
+**quanteda**のコーパスコンストラクタコマンド `corpus()`は、次のクラスのオブジェクトを受け付けます：
 
-* 他のツールを使用してすでにワークスペースにロードしているなど、キャラクタオブジェクトのベクトル
+* キャラクタオブジェクトのベクトル(例:他のツールを使用してすでにワークスペースにロードしたテキスト)
 * **tm**パッケージの `VCorpus`コーパスオブジェクト
 * テキスト列と他のドキュメントレベルのメタデータを含むdata.frame
 
-### Example: building a corpus from a character vector
-
-The simplest case is to create a corpus from a vector of texts already in memory in R.  This gives the advanced R user complete flexbility with his or her choice of text inputs, as there are almost endless
-ways to get a vector of texts into R.
-
-If we already have the texts in this form, we can call the corpus constructor function directly.  We can demonstrate this on the built-in character object of the texts about immigration policy extracted from the 2010 election manifestos of the UK political parties (called `data_char_ukimmig2010`).
-
 ### 例：文字列からコーパスを作成
 
-最も単純なケースは、すでにRのメモリにあるテキストのベクトルからコーパスを作成することです。これにより、高度なRユーザーは、テキスト入力を自由に選択できるようになります。
-テキストのベクトルをRに入れる方法
+最も単純なケースは、すでにRのメモリにあるテキストのベクトルからコーパスを作成することです。テキストのベクトルをRに取り込む方法は実にたくさんあるので、高度なRユーザーは、入力するテキストをいろいろな方法で作り出せます。
 
-すでにこの形式のテキストがある場合は、コーパスコンストラクタ関数を直接呼び出すことができます。 英国政党の2010年選挙宣言(「data_char_ukimmig2010」と呼ばれる)から抽出された移民政策に関するテキストの組み込みキャラクターオブジェクトでこれを実証することができます。
+すでにテキストベクトル形式のテキストがある場合は、コーパスコンストラクタ関数を直接呼び出すことができます。 次の例では、**quanteda**パッケージと一緒に配布される、イギリスの政党の2010年の選挙マニフェストから抽出されたテキストオブジェクト(`data_char_ukimmig2010`)をつかって、コーパスを作成しています。
 
 ```{r}
-myCorpus <- corpus(data_char_ukimmig2010)  # build a new corpus from the texts
+myCorpus <- corpus(data_char_ukimmig2010)  # テキストからコーパスを作成
 summary(myCorpus)
 ```
 
-If we wanted, we could add some document-level variables -- what quanteda calls `docvars` -- to this corpus.
+コーパスを作成したあとで、もし必要ならば、ドキュメントレベルの変数(`docvars`と呼ばれるもの)をこのコーパスに追加することができます。
 
-We can do this using the R's `names()` function to get the names of the character vector `data_char_ukimmig2010`, and assign this to a document variable (`docvar`).
-
-私たちが望むなら、いくつかのドキュメントレベルの変数(`docvars`と呼ばれるもの)をこのコーパスに追加することができます。
-
-Rの`names()`関数を使って文字ベクトル`data_char_ukimmig2010`の名前を取得し、これをドキュメント変数(`docvar`)に代入することができます。
+たとえば、Rの`names()`関数を使って文字ベクトル`data_char_ukimmig2010`の名前を取得し、これをドキュメント変数(`docvar`)に追加することができます。
 
 ```{r}
 docvars(myCorpus, "Party") <- names(data_char_ukimmig2010)
@@ -132,11 +87,7 @@ docvars(myCorpus, "Year") <- 2010
 summary(myCorpus)
 ```
 
-If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also 
-add those to our corpus.
-
-それぞれのドキュメントに、解析の対象となるドキュメント変数ではなく、ドキュメントの属性として知っておく必要があると思われる追加のメタデータをタグ付けしたい場合は、
-それらを私たちのコーパスに追加してください。
+分析の対象となるドキュメント変数では必ずしもないけれども、ドキュメントの属性として残しておきたいと思う追加のメタデータも、`docvars()`を使って、コーパスに追加することができます。
 
 ```{r}
 metadoc(myCorpus, "language") <- "english"
@@ -144,15 +95,8 @@ metadoc(myCorpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(myCorpu
 summary(myCorpus, showmeta = TRUE)
 ```
 
-The last command, `metadoc`, allows you to define your own document meta-data fields.  Note that in assiging just the single value of `"english"`, R has recycled the value until it matches the number of documents in the corpus.  In creating
-a simple tag for our custom metadoc field `docsource`, we used the quanteda function `ndoc()` to retrieve
-the number of documents in our corpus.  This function is deliberately designed to work in a way similar to 
-functions you may already use in R, such as `nrow()` and `ncol()`.
-
-最後のコマンド `metadoc`では、独自のドキュメントメタデータフィールドを定義することができます。 `english`の単一の値を保証する際、Rはコーパス内の文書の数と一致するまで値を再利用していることに注意してください。 作成時私たちのカスタムmetadocフィールド `docsource`のための単純なタグである、私たちはquanteda関数` ndoc() `を使ってコーパス内の文書数。 この関数は、次のような方法で動作するよう意図的に設計されています。
-`nrow()`や `ncol()`のように、すでにRで使用している関数です。
-
-### Example: loading in files using the **readtext** package
+このコマンド `metadoc`では、ドキュメントメタデータフィールドを自由に定義することができます。 `language`フィールドに、単一の値`english`をアサインするときには、Rはコーパス内の文書の数と一致するまで値を再利用していることに注意してください。
+独自のmetadocフィールド`docsource`のタグを作成する際には、quanteda関数`ndoc()`を使ってコーパスの文書数を取り出しました。この関数`ndoc()`は、`nrow()`や `ncol()`のようなR標準の関数と同じような方法で動作するように意図して設計されています。
 
 ### 例：**readtext**パッケージを用いたファイルの読み込み
 
@@ -189,40 +133,28 @@ mytf7 <- readtext("/tmp/inaug_texts.csv", textfield = "inaugSpeech")
 summary(corpus(mytf7), 5)
 ```
 
-
-## How a quanteda corpus works
-
-### Corpus principles
-
-A corpus is designed to be a "library" of original documents that have been converted to plain, UTF-8 encoded text, and stored along with meta-data at the corpus level and at the document-level.  We have a special name for document-level meta-data: *docvars*.  These are variables or features that describe attributes of each document.
-
-A corpus is designed to be a more or less static container of texts with respect to processing and analysis.  This means that the texts in corpus are not designed to be changed internally through (for example) cleaning or pre-processing steps, such as stemming or removing punctuation.  Rather, texts can be extracted from the corpus as part of processing, and assigned to new objects, but the idea is that the corpus will remain as an original reference copy so that other analyses -- for instance those in which stems and punctuation were required, such as analyzing a reading ease index -- can be performed on the same corpus.
-
-To extract texts from a corpus, we use an extractor, called `texts()`.  
-
 ## コーパスオブジェクトの使い方
 
 ### コーパスの原理
 
-コーパスは、プレーンなUTF-8エンコードされたテキストに変換され、コーパスレベルとドキュメントレベルのメタデータとともに格納された元のドキュメントの「ライブラリ」として設計されています。ドキュメントレベルのメタデータには特別な名前があります：* docvars *。これらは、各文書の属性を記述する変数または機能です。
+コーパスは、元になったドキュメントを、プレーンなUTF-8でエンコードされたテキストに変換し、コーパスレベルおよびドキュメントレベルのメタデータと一緒に格納する、ドキュメントの「ライブラリ」として設計されています。ドキュメントレベルのメタデータには*docvars*という名前がつけられています。*docvars*は、各文書の属性を記述する変数（あるいは特徴）です。
 
-コーパスは、処理および分析に関して、テキストの多かれ少なかれ静的なコンテナになるように設計されています。これは、コーパス内のテキストが、句読点の省略や削除などの(たとえば)クリーニングや前処理ステップによって内部的に変更されるようには設計されていないことを意味します。むしろ、処理の一部としてコーパスからテキストを抽出して新しいオブジェクトに割り当てることができますが、コーパスは元の参照コピーとして残り、他の分析 - たとえば茎と句読点が必要なもの - 例えば、読書の容易さの指標を分析することは、同じコーパス上で実行することができる。
+コーパスは基本的には、処理および分析に関して、テキストの静的なコンテナになるように設計されています。これが意味するのは、コーパス内のテキストは、ステミングや句読点の削除などのテキストのクリーニングや前処理ステップによって内部的に変更されるようには設計されていない、ということです。このことで、処理の一部としてコーパスからテキストを抽出して新しいオブジェクトに割り当てた後でも、コーパスは元のテキストの参照コピーとして残り、たとえばステミング前の単語や句読点を必要とする可読性の分析などの分析を、同じコーパス上で実行することができるようになるのです。
 
-コーパスからテキストを抽出するために、我々は `texts()`と呼ばれる抽出子を使用します。
+コーパスからテキストを抽出するためには、`texts()`と呼ばれる抽出子を使用します。
 
 ```{r}
 texts(data_corpus_inaugural)[2]
 ```
 
-To summarize the texts from a corpus, we can call a `summary()` method defined for a corpus.
+
+`summary()`メソッドにより、コーパス内のテキストの要約を行うことができます。
 
 ```{r}
 summary(data_corpus_irishbudget2010)
 ```
 
-We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
-
-summaryコマンドの出力をデータフレームとして保存し、この情報を使っていくつかの基本的な記述統計をプロットすることができます：
+summaryコマンドの出力をデータフレームとして保存し、この情報を使って基本的な記述統計をプロットすることができます：
 
 ```{r, fig.width = 8}
 tokenInfo <- summary(data_corpus_inaugural)
@@ -235,19 +167,11 @@ tokenInfo[which.max(tokenInfo$Tokens), ]
 ```
 
 
-## Tools for handling corpus objects
-
-### Adding two corpus objects together
-
-The `+` operator provides a simple method for concatenating two corpus objects.  If they contain
-different sets of document-level variables, these will be stitched together in a fashion that guarantees
-that no information is lost.  Corpus-level medata data is also concatenated.
-
 ## コーパスに対する操作
 
 ### コーパスの結合
 
-`+`演算子は、2つのコーパスオブジェクトを連結する簡単な方法を提供します。含まれている場合ドキュメントレベルの変数の異なるセットは、これらは、保証された方法で一緒に縫い合わされます情報が失われないこと。 コーパスレベルのメデアデータも連結されています。
+`+`演算子で、2つのコーパスオブジェクトを簡単に連結できます。ドキュメントレベルの変数が2つのコーパスで異なる場合には、ドキュメント変数は継ぎ接ぎされて、情報が失われることを防ぎます。コーパスレベルのメタデータも結合されます。
 
 ```{r}
 library(quanteda)
@@ -257,15 +181,10 @@ mycorpus3 <- mycorpus1 + mycorpus2
 summary(mycorpus3)
 ```
 
-### Subsetting corpus objects
+### コーパス内の文書の一部の文書の抽出
 
-There is a method of the `corpus_subset()` function defined for corpus objects, where a new corpus can 
-be extracted based on logical conditions applied to docvars:
-
-### コーパス内の文書の選択
-
-コーパスオブジェクトのために定義された `corpus_subset()`関数のメソッドがあります。ここでは新しいコーパスが
-docvarsに適用される論理条件に基づいて抽出されます。
+コーパスオブジェクトに対して定義された `corpus_subset()`関数のメソッドがあります。この関数により、ドキュメント変数
+docvarsに適用される論理条件に基づいて文書を抽出します。
 
 ```{r}
 summary(corpus_subset(data_corpus_inaugural, Year > 1990))
@@ -273,13 +192,9 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ```
 
 
-## Exploring corpus texts
+## コーパス内の文書の探索
 
-The `kwic` function (keywords-in-context) performs a search for a word and allows us to view the contexts in which it occurs:
-
-## コーパス内の文書の探検
-
-`kwic`関数(文脈の中のキーワード)は単語の検索を行い、それが起こっている文脈を見ることができます：
+`kwic`(KeyWords-In-Context)関数は単語の検索を行い、その単語が生起する文脈を表示します：
 
 ```{r, tidy=TRUE}
 kwic(data_corpus_inaugural, "terror")
@@ -296,7 +211,7 @@ kwic(data_corpus_inaugural, "communist*")
 
 In the above summary, `Year` and `President` are variables associated with each document. We can access such variables with the `docvars()` function.
 
-上記の要約では、「年」と「社長」は各文書に関連する変数です。 `docvars()`関数でこのような変数にアクセスできます。
+上記の要約では、「Year」と「President」は各文書に結び付けられた変数です。 `docvars()`関数でこのような変数にアクセスできます。
 
 ```{r}
 # inspect the document-level variables
@@ -306,7 +221,7 @@ head(docvars(data_corpus_inaugural))
 metacorpus(data_corpus_inaugural)
 ```
 
-More corpora are available from the [quantedaData](http://github.com/kbenoit/quantedaData) package.
+[quantedaData](http://github.com/kbenoit/quantedaData)パッケージをインストールすることにより、もっとたくさんのコーパスを試すことができます。
 
 
 
