@@ -24,7 +24,7 @@ GitHubから最新の開発バージョンをインストールする方法に�
 
 ## インストールが推奨されるパッケージ
 
-**quanteda**には**quanteda**と連携して機能を拡張する、一連のパッケージがあります。それらもインストールすることをお勧めします：
+**quanteda**には**quanteda**と連携して機能を拡張する、一連のパッケージがあります。それらもインストールすることを推奨します：
 
 * [**readtext**](https://github.com/kbenoit/readtext)：多くの入力形式からテキストデータをRに簡単に読み込むパッケージ。
 * [**spacyr**](https://github.com/kbenoit/spacyr)：pythonの[spaCy](http://spacy.io)ライブラリを使用した自然言語解析のためのパッケージ。品詞タグ付け、固有表現抽出、および係り受け関係の解析など。
@@ -95,7 +95,8 @@ metadoc(myCorpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(myCorpu
 summary(myCorpus, showmeta = TRUE)
 ```
 
-このコマンド `metadoc`では、ドキュメントメタデータフィールドを自由に定義することができます。 `language`フィールドに、単一の値`english`をアサインするときには、Rはコーパス内の文書の数と一致するまで値を再利用していることに注意してください。
+このコマンド `metadoc`では、ドキュメントメタデータフィールドを自由に定義することができます。 `language`フィールドに、単一の値`english`をアサインするときには、Rは値を再利用してステベのドキュメントにアサインしていることに注意してください。
+
 独自のmetadocフィールド`docsource`のタグを作成する際には、quanteda関数`ndoc()`を使ってコーパスの文書数を取り出しました。この関数`ndoc()`は、`nrow()`や `ncol()`のようなR標準の関数と同じような方法で動作するように意図して設計されています。
 
 ### 例：**readtext**パッケージを用いたファイルの読み込み
@@ -137,7 +138,7 @@ summary(corpus(mytf7), 5)
 
 ### コーパスの原理
 
-コーパスは、元になったドキュメントを、プレーンなUTF-8でエンコードされたテキストに変換し、コーパスレベルおよびドキュメントレベルのメタデータと一緒に格納する、ドキュメントの「ライブラリ」として設計されています。ドキュメントレベルのメタデータには*docvars*という名前がつけられています。*docvars*は、各文書の属性を記述する変数（あるいは特徴）です。
+コーパスを設計するのにあたりquantedaでは、元になったドキュメントをプレーンなUTF-8でエンコードされたテキストに変換し、コーパスレベルおよびドキュメントレベルのメタデータと一緒に格納する、ドキュメントの「ライブラリ」としてコーパスが機能するようにしました。ドキュメントレベルのメタデータには*docvars*という名前がつけられています。*docvars*は、各文書の属性を記述する変数（あるいはフィーチャー）です。
 
 コーパスは基本的には、処理および分析に関して、テキストの静的なコンテナになるように設計されています。これが意味するのは、コーパス内のテキストは、ステミングや句読点の削除などのテキストのクリーニングや前処理ステップによって内部的に変更されるようには設計されていない、ということです。このことで、処理の一部としてコーパスからテキストを抽出して新しいオブジェクトに割り当てた後でも、コーパスは元のテキストの参照コピーとして残り、たとえばステミング前の単語や句読点を必要とする可読性の分析などの分析を、同じコーパス上で実行することができるようになるのです。
 
@@ -160,7 +161,7 @@ summaryコマンドの出力をデータフレームとして保存し、この�
 tokenInfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
     ggplot(data=tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
-        scale_x_discrete(labels = c(seq(1789,2012,12)), breaks = seq(1789,2012,12) ) 
+        scale_x_continuous(labels = c(seq(1789,2012,12)), breaks = seq(1789,2012,12) ) 
 
 # Longest inaugural address: William Henry Harrison
 tokenInfo[which.max(tokenInfo$Tokens), ] 
@@ -209,8 +210,6 @@ kwic(data_corpus_inaugural, "communist*")
 ```
 
 
-In the above summary, `Year` and `President` are variables associated with each document. We can access such variables with the `docvars()` function.
-
 上記の要約では、「Year」と「President」は各文書に結び付けられた変数です。 `docvars()`関数でこのような変数にアクセスできます。
 
 ```{r}
@@ -224,42 +223,15 @@ metacorpus(data_corpus_inaugural)
 [quantedaData](http://github.com/kbenoit/quantedaData)パッケージをインストールすることにより、もっとたくさんのコーパスを試すことができます。
 
 
+# コーパスからフィーチャーを抽出
 
-
-# Extracting Features from a Corpus
-
-In order to perform statistical analysis such as document scaling, we
-must extract a matrix associating values for certain features with each
-document. In quanteda, we use the `dfm` function to produce such a matrix.  "dfm" is short for *document-feature matrix*, and always refers to documents
-in rows and "features" as columns.  We fix this dimensional orientation because it is 
-standard in data analysis to have a unit of analysis as a row, and features or variables
-pertaining to each unit as columns.  We call them "features" rather than terms, because
-features are more general than terms: they can be defined as raw terms, stemmed terms, the parts of speech of terms, terms after stopwords have been removed,
-or a dictionary class to which a term belongs.  Features can be entirely general, such as ngrams or syntactic dependencies, and we leave this open-ended.
-
-# コーパスから特徴を抽出
-
-文書スケーリングなどの統計分析を行うために、特定のフィーチャの値をそれぞれに関連付ける行列を抽出する必要があります資料。 quantedaでは、このような行列を生成するために `dfm`関数を使います。 "dfm"は*document-feature matrix *の略で、常にドキュメントを参照します
-列には「フィーチャ」が表示されます。 この次元の向きは固定されています
-データ分析の標準であり、分析単位を行として持ち、特徴または変数
-列として各ユニットに関連する。 我々はそれらを用語ではなく「機能」と呼んでいる。
-機能は用語よりも一般的です：それらは、生の用語、ステムされた用語、用語の品詞、ストップワードが削除された後の用語、
-または用語が属する辞書クラスである。 機能は、ngramsや構文依存性などの一般的なものにすることができ、私たちはこれをオープンエンドにします。
-
-## Tokenizing texts
-
-To simply tokenize a text, quanteda provides a powerful command called `tokens()`.  This produces an 
-intermediate object, consisting of a list of tokens in the form of character vectors, where each element
-of the list corresponds to an input document.
-
-`tokens()` is deliberately conservative, meaning that it does not remove anything from the text unless
-told to do so.
+文書のスケーリングなどの統計分析を行うためには、各ドキュメントについて特定のフィーチャーの値を関連付けた行列を抽出する必要があります。 quantedaでは、このような行列を生成するために `dfm`関数を使います。 "dfm"は*document-feature matrix*の略で、各行が一つのドキュメント、各列が「フィーチャー」となる行列です。 行と列をこのように規定する理由は、データ分析では行が分析単位になり、各列が分析対象になる変数となるのが通常だからです。 他のソフトウェアのように、「ターム」という用語を用いず「フィーチャー」という用語を使う理由は、フィーチャーのほうが一般性を持つ用語だからです。様々なものがフィーチャーとなります。元の単語、ステムされた単語、品詞解析された単語、ストップワードが削除された後の単語、あるいは、辞書分析によりその単語が属するとされたクラス、などです。 更にはngramsや構文の係り受けの関係などをフィーチャーとするなどいろいろな可能性がありえ、`quanteda`は何がフィーチャーになるかを細かく規定せずオープンに受け入れます。
 
 ## 文書のトークン化
 
-単純にテキストをトークン化するために、quantedaは `tokens()`と呼ばれる強力なコマンドを提供します。 これにより、中間オブジェクト。文字ベクトルの形式のトークンのリストで構成され、各要素リストのうちの1つは入力文書に対応する。
+テキストを簡単にトークン化するために、quantedaは `tokens()`と呼ばれる強力なコマンドを提供します。 この関数は、文字ベクトルのトークンのリストからなる中間オブジェクトを生成します。ここで、リストの一つ一つの要素は入力されたドキュメントに対応しています。
 
-`tokens()`は故意に保守的です。つまり、そうするように言われた。
+`tokens()`は意図して保守的に設計されています。ユーザーが明示的に指示を与えないかぎりは、要素を削除しません。
 
 ```{r}
 txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!", 
@@ -272,14 +244,14 @@ tokens(txt, remove_numbers = FALSE, remove_punct = FALSE)
 tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
 ```
 
-We also have the option to tokenize characters:
+`tokens`には個々の文字をトークン化するオプションもあります:
 ```{r}
 tokens("Great website: http://textasdata.com?page=123.", what = "character")
 tokens("Great website: http://textasdata.com?page=123.", what = "character", 
          remove_separators = FALSE)
 ```
 
-and sentences:
+もしくは、一文ごとにトークン化するオプションもあります。
 ```{r}
 # sentence level         
 tokens(c("Kurt Vongeut said; only assholes use semi-colons.", 
@@ -288,21 +260,9 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
           what = "sentence")
 ```
 
-## Constructing a document-feature matrix
+## ドキュメント-フィーチャー行列の作成
 
-Tokenizing texts is an intermediate option, and most users will want to skip straight to constructing
-a document-feature matrix.  For this, we have a Swiss-army knife function, called `dfm()`, which performs
-tokenization and tabulates the extracted features into a matrix of documents by features.  Unlike
-the conservative approach taken by `tokens()`, the `dfm()` function applies certain options by default,
-such as `toLower()` -- a separate function for lower-casing texts -- and removes punctuation.  All of the options to `tokens()` can be passed to `dfm()`, however.
-
-## 文書行列の作成
-
-テキストをトークン化することは中間的な選択肢であり、ほとんどのユーザーはスキップして直感的に
-ドキュメントフィーチャマトリックス このために、私たちは `dfm()`と呼ばれるスイス軍ナイフ機能を持っています。
-抽出された特徴をフィーチャによって文書のマトリックスに集計する。 とは異なり
-`tokens()`、 `dfm()`関数が保守的に取り組んでいるアプローチは、デフォルトでいくつかのオプションを適用しています。
-`toLower()` - 小文字のテキストのための別の関数 - や句読点を削除するなど)。 ただし、 `tokens()`のオプションはすべて `dfm()`に渡すことができます。
+テキストをトークン化することは中間的な選択肢であり、ほとんどのユーザーはこれをスキップしてドキュメント-フィーチャー行列を作成したいと考えるでしょう。 このために、quantedaはワンステップで、トークン化を実行し、抽出されたフィーチャーをドキュメントｘフィーチャーのマトリックスに集計する `dfm()`と呼ばれるスイスアーミーナイフのように便利な関数を持っています。 `tokens()`の保守的なアプローチとは異なり、 `dfm()`関数はデフォルトで `tolower`（大文字を小文字へと置き換える独立の関数）や句読点を取り除くなどのオプションを適用します。  `tokens()`のオプションはすべて `dfm()`に渡すことができます。
 
 ```{r}
 myCorpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
@@ -312,23 +272,19 @@ myDfm <- dfm(myCorpus)
 myDfm[, 1:5]
 ```
 
-Other options for a `dfm()` include removing stopwords, and stemming the tokens.
-
 `dfm()`のその他のオプションには、ストップワードの削除やトークンのステミングが含まれます。
 
 ```{r}
 # make a dfm, removing stopwords and applying stemming
-myStemMat <- dfm(myCorpus, remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
+myStemMat <- dfm(myCorpus, remove = stopwords("english"), 
+                 stem = TRUE, remove_punct = TRUE)
 myStemMat[, 1:5]
 ```
 
-The option `remove` provides a list of tokens to be ignored.  Most users will 
-supply a list of pre-defined "stop words", defined for numerous languages, accessed through 
-the `stopwords()` function:
 
-`remove`オプションは、無視されるトークンのリストを提供します。 ほとんどのユーザーは
-多数の言語に定義された定義済みの「ストップワード」のリストを、
-`stopwords()`関数：
+`remove`オプションは、ドキュメント-フィーチャー行列から除外するトークンのリストを提供します。 多くのユーザーはすでに定義された「ストップワード」のリストを使うことになるでしょう。
+
+`stopwords()`関数は、幾つかの言語で定義された、ストップワードの辞書を提供します（残念ながら日本語は含まれていませんが、ユーザーが定義した辞書を使うことはできます）。
 
 ```{r}
 head(stopwords("english"), 20)
@@ -336,27 +292,21 @@ head(stopwords("russian"), 10)
 head(stopwords("arabic"), 10)
 ```
 
-
-
-### Viewing the document-feature matrix
-
-The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud using the [wordcloud package](https://cran.r-project.org/web/packages/wordcloud)
-
 ### 文書行列の表示
 
-dfmは、RStudioの環境ペインで、またはRの `View`関数を呼び出すことで調べることができます。 dfmで `plot`を呼び出すと、[wordcloudパッケージ](https://cran.r-project.org/web/packages/wordcloud)を使ってワードクラウドが表示されます。
+dfmは、RStudioのEnvironmentペインで、またはRの `View`関数を呼び出すことで調べることができます。 dfmで `plot`を呼び出すと、[wordcloudパッケージ](https://cran.r-project.org/web/packages/wordcloud)を使ってワードクラウドが表示されます。
 
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
 mydfm <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
 mydfm
 ```
 
-To access a list of the most frequently occurring features, we can use `topfeatures()`:
+頻度が最も高いフィーチャーを見るには、`topfeatures()`を使います:
 ```{r}
 topfeatures(mydfm, 20)  # 20 top words
 ```
 
-Plotting a word cloud is done using `textplot_wordcloud()`, for a `dfm` class object.  This function passes arguments through to `wordcloud()` from the **wordcloud** package, and can prettify the plot using the same arguments:
+`dfm`オブジェクトを`textplot_wordcloud()`に渡すことで、ワードクラウドをプロットできます。この関数は、オブジェクトや引数を**wordcloud**パッケージの`wordcloud()`関数に送るので、ワードクラウドのプロットを変更することもできます。
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
 textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
@@ -364,64 +314,48 @@ textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
-### Grouping documents by document variable 
+### ドキュメント変数による文書のグループ化
 
-Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:
-
-### 文書変数による文書のグループ化
-
-多くの場合、文書ファイルの境界線ではなく、文書変数でエンコードされる可能性のある実質的要因によってテキストがどのように異なるかを分析することに興味があります。 dfmを作成するときに、ドキュメント変数と同じ値を共有するドキュメントをグループ化できます。
+多くの場合で、ドキュメントごとではなく、ドキュメント変数の値によってグループを作って分析したい、と思うこともあるでしょう。quantedaでは、dfmを作るときに、ドキュメント変数のそれぞれの値ごとにドキュメントをグループ化するすることができます。
 
 ```{r}
 byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", 
                   remove = stopwords("english"), remove_punct = TRUE)
 ```
 
-We can sort this dfm, and inspect it:
+以下のように、dfmをソートして、中身を確かめられます。
 ```{r}
 dfm_sort(byPartyDfm)[, 1:10]
 ```
 
-Note that the most frequently occurring feature is "will", a word usually on English stop lists, but
-one that is not included in quanteda's built-in English stopword list.  
-
-最も頻繁に出現する特徴は、「英語」のストップリストにある単語である「意志」ですが、
-quantedaの組み込み英語ストップワードリストには含まれていません。
-
-### Grouping words by dictionary or equivalence class
-
-For some applications we have prior knowledge of sets of words that are indicative of traits we would like to measure from the text. For example, a general list of positive words might indicate positive sentiment in a movie review, or we might have a dictionary of political terms which are associated with a particular ideological stance. In these cases, it is sometimes useful to treat these groups of words as equivalent for the purposes of analysis, and sum their counts into classes. 
-
-For example, let's look at how words associated with terrorism and words associated with the economy vary by President in the inaugural speeches corpus. From the original corpus, we select Presidents since Clinton:
+この例で、最頻出のフィーチャーは、多くの場合英語のストップリストにある単語である「will」ですが、
+quantedaの組み込み英語ストップワードリストには、この単語は含まれていません。
 
 ### 辞書を用いた語のグループ化
 
-いくつかのアプリケーションでは、テキストから測定したい形質の指標である単語のセットについての事前知識があります。 たとえば、肯定的な言葉の一般的なリストは、映画レビューの肯定的な感情を示すかもしれない、または我々は特定のイデオロギー的なスタンスに関連付けられている政治用語の辞書を持っている可能性があります。 このような場合、分析目的でこれらの単語のグループを同等のものとして扱い、カウントをクラスに合計すると便利な場合があります。
+テキストから測定して指標化したい特徴的な単語の集合についての事前知識を持っている場合を考えてみましょう。 たとえば、映画レビューで好意的な感情に関連するような、好意的単語の辞書をすでに持っている、または特定のイデオロギー的なスタンスに関連する政治用語の辞書を持っているというような場合です。 このような場合、これらの単語のグループをまとめて一つのものとして取り扱い、これらの単語を合計して一つのクラスとしてカウントして分析すると上手くいくかもしれません。
 
-たとえば、テロリズムに関連する言葉や経済に関連する言葉が、演説コーパスで大統領によってどのように異なるかを見てみましょう。 元のコーパスからは、クリントン以来の大統領選を選びます：
+次の例では、テロリズムに関連する言葉や経済に関連する言葉が、演説コーパスで大統領によってどのように異なるかを見てみます。 クリントン以来の大統領の就任演説をコーパスとして使います：
 
 ```{r}
 recentCorpus <- corpus_subset(data_corpus_inaugural, Year > 1991)
 ```
 
-Now we define a demonstration dictionary:
+テロリズムと経済という2つのリストからなる辞書を作成します:
 ```{r}
 myDict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
                           economy = c("jobs", "business", "grow", "work")))
 ```
 
 
-We can use the dictionary when making the dfm:
+dfmを作成するときに、この辞書を使います:
 ```{r}
 byPresMat <- dfm(recentCorpus, dictionary = myDict)
 byPresMat
 ```
 
-The constructor function `dictionary()` also works with two common "foreign" dictionary formats: the 
-LIWC and Provalis Research's Wordstat format.  For instance, we can load the LIWC and apply this to the Presidential inaugural speech corpus:
-
-コンストラクタ関数 `dictionary()`は、2つの一般的な "外部"辞書形式でも動作します。
-LIWCとProvalis ResearchのWordstat形式。 たとえば、LIWCを読み込み、これを大統領就任演説コーパスに適用することができます。
+辞書のコンストラクタ関数 `dictionary()`は、2つの一般的な "外部"辞書形式でも動作します。
+LIWCとWordstat (Provalis Research)形式です。 以下では、LIWCの辞書を読み込み、これを大統領就任演説コーパスに適用しています。
 
 ```{r, eval = FALSE}
 liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
@@ -431,10 +365,6 @@ liwcdfm[, 1:10]
 ```
 
 
-
-# Further Examples
-
-## Similarities between texts
 
 # 追加の事例
 
@@ -450,7 +380,7 @@ obamaSimil
 ```
 
 
-We can use these distances to plot a dendrogram, clustering presidents:
+上記の、ドキュメント間の距離から樹形図を作成して、大統領をクラスター分類することができます:
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
 data(data_corpus_SOTU, package = "quantedaData")
 presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
@@ -468,19 +398,15 @@ plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized 
 ```
 (try it!)
 
-We can also look at term similarities:
+用語の類似性も確かめられます:
 ```{r}
 sim <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
 lapply(as.list(sim), head, 10)
 ```
 
-## Scaling document positions
+## ドキュメントのスケーリング
 
-We have a lot of development work to do on the `textmodel()` function, but here is a demonstration of unsupervised document scaling comparing the "wordfish" model: 
-
-## 文書の位置の特定
-
-`textmodel()`関数にはたくさんの開発作業がありますが、ここでは "wordfish"モデルを比較した教師なしの文書スケーリングのデモンストレーションがあります：
+`textmodel()`関数にはたくさんのモデルが含まれています、ここでは "wordfish"モデルを比較した教師なしの文書スケーリングを使ってみます：
 
 ```{r}
 # make prettier document names
@@ -488,13 +414,9 @@ ieDfm <- dfm(data_corpus_irishbudget2010)
 textmodel_wordfish(ieDfm, dir = c(2, 1))
 ```
 
-## Topic models
-
-**quanteda** makes it very easy to fit topic models as well, e.g.:
-
 ## トピックモデル
 
-**quanteda**を使用すると、トピックモデルにも簡単にフィットできます(例：
+**quanteda**を使用すると、dfmを**topicmodels**の`LDA()`形式のデータに転換して、トピックモデルを簡単に推定できます：
 
 ```{r}
 quantdfm <- dfm(data_corpus_irishbudget2010, 
