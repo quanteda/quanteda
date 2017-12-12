@@ -160,7 +160,7 @@ We can save the output from the summary command as a data frame, and plot some b
 tokenInfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
     ggplot(data=tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
-        scale_x_discrete(labels = c(seq(1789,2012,12)), breaks = seq(1789,2012,12) ) 
+        scale_x_continuous(labels = c(seq(1789,2012,12)), breaks = seq(1789,2012,12) ) 
 
 # Longest inaugural address: William Henry Harrison
 tokenInfo[which.max(tokenInfo$Tokens), ] 
@@ -279,7 +279,7 @@ Tokenizing texts is an intermediate option, and most users will want to skip str
 a document-feature matrix.  For this, we have a Swiss-army knife function, called `dfm()`, which performs
 tokenization and tabulates the extracted features into a matrix of documents by features.  Unlike
 the conservative approach taken by `tokens()`, the `dfm()` function applies certain options by default,
-such as `toLower()` -- a separate function for lower-casing texts -- and removes punctuation.  All of the options to `tokens()` can be passed to `dfm()`, however.
+such as `tolower()` -- a separate function for lower-casing texts -- and removes punctuation.  All of the options to `tokens()` can be passed to `dfm()`, however.
 
 ```{r}
 myCorpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
