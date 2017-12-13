@@ -24,7 +24,7 @@ Get the number of documents or features in an object.
   \link{dfm}, or \link{tokens} object, or a readtext object from the
   \pkg{readtext} package
   
-  \code{nfeature} returns the number of features in a \link{dfm}
+  \code{nfeat} returns the number of features in a \link{dfm}
 
 \code{nfeat} returns the number of features from a dfm; it is an
   alias for \code{ntype} when applied to dfm objects.  This function is only 

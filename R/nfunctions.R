@@ -6,7 +6,7 @@
 #'   \link{dfm}, or \link{tokens} object, or a readtext object from the
 #'   \pkg{readtext} package
 #'   
-#'   \code{nfeature} returns the number of features in a \link{dfm}
+#'   \code{nfeat} returns the number of features in a \link{dfm}
 #' @param x a \pkg{quanteda} object: a \link{corpus}, \link{dfm}, or
 #'   \link{tokens} object, or a readtext object from the \pkg{readtext} package.
 #' @return an integer (count) of the number of documents or features
@@ -55,7 +55,7 @@ ndoc.tokens <- function(x) {
 #' # number of features
 #' nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE))
 #' nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE))
-nfeat <- function(x) {
+nfeat <- function(x) {  # TODO: nfeature has to deplicate one day
     UseMethod("nfeat")
 }
 
@@ -79,8 +79,9 @@ nfeat.tokens <- function(x) {
     }
 }
 
+#' @noRd
 #' @export
-nfeature <- nfeat # TODO: has to deplicate one day
+nfeature <- nfeat
 
 #' count the number of tokens or types
 #' 
