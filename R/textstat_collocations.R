@@ -73,9 +73,8 @@
 #'   is a vector, then \code{count_nested} counts the lower-order collocations
 #'   that occur within a higher-order collocation (but this does not affect the
 #'   statistics).
-#' @aliases collocations
-#' @export
-#' @keywords textstat collocations experimental
+#' @exports
+#' @keywords textstat collocations
 #' @author Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 #' @examples
 #' txts <- data_corpus_inaugural[1:2]

@@ -1,17 +1,3 @@
-#' deprecated function names for textstat_collocationsdev
-#' 
-#' Use \code{\link{textstat_collocationsdev}} instead.
-#' @param x a character, \link{corpus}, \link{tokens} object
-#' @param ... other arguments passed to  \code{\link{textstat_collocationsdev}}
-#' @export
-#' @seealso \link{textstat_collocationsdev}
-#' @keywords collocations internal deprecated
-collocationsdev <- function(x,  ...) {
-    .Deprecated("textstat_collocationsdev")
-    UseMethod("textstat_collocationsdev")
-}
-
-
 #' identify and score multi-word expressions
 #' 
 #' Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.  
