@@ -29,8 +29,8 @@ setMethod("print", signature(x = "dfm"),
                   cat("Document-feature matrix of: ",
                       format(ndoc(x), , big.mark = ","), " document",
                       if (ndoc(x) > 1L || ndoc(x) == 0L) "s, " else ", ",
-                      format(nfeature(x), big.mark=","), " feature",
-                      if (nfeature(x) > 1L || nfeature(x) == 0L) "s" else "",
+                      format(nfeat(x), big.mark=","), " feature",
+                      if (nfeat(x) > 1L || nfeat(x) == 0L) "s" else "",
                       if (is.resampled(x)) paste0(", ", nresample(x), " resamples") else "",
                       if (prod(dim(x))) paste0(" (", format(sparsity(x)*100, digits = 3), "% sparse)"),
                       ".\n", sep = "")
@@ -89,13 +89,13 @@ print_dfm <- function(x, ndoc, nfeat, show_values, show_settings, ...) {
 #' head(data_dfm_lbgexample, 3, nfeat = 5)
 #' head(data_dfm_lbgexample, -4)
 #' 
-head.dfm <- function(x, n = 6L, nfeat = nfeature(x), ...) {
+head.dfm <- function(x, n = 6L, nfeat = nfeat(x), ...) {
     x <- as.dfm(x)
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     stopifnot(length(n) == 1L || length(nfeat) == 1L)
     n <- if (n < 0L)  max(ndoc(x) + n, 0L) else min(n, ndoc(x))
-    nfeat <- if (nfeat < 0L)  max(nfeature(x) + nfeat, 0L) else min(nfeat, nfeature(x))
+    nfeat <- if (nfeat < 0L)  max(nfeat(x) + nfeat, 0L) else min(nfeat, nfeat(x))
     x[seq_len(n), seq_len(nfeat)]
 }
 
@@ -106,13 +106,13 @@ head.dfm <- function(x, n = 6L, nfeat = nfeature(x), ...) {
 #' @examples 
 #' tail(data_dfm_lbgexample)
 #' tail(data_dfm_lbgexample, n = 3, nfeat = 4)
-tail.dfm <- function(x, n = 6L, nfeat = nfeature(x), ...) {
+tail.dfm <- function(x, n = 6L, nfeat = nfeat(x), ...) {
     x <- as.dfm(x)
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     stopifnot(length(n) == 1L || length(nfeat) == 1L)
     nrx <- ndoc(x)
-    ncl <- nfeature(x)
+    ncl <- nfeat(x)
     n <- if (n < 0L) max(nrx + n, 0L) else min(n, nrx)
     nfeat <- if (nfeat < 0L) max(ncl + nfeat, 0L) else min(nfeat, ncl)
     sel_doc <- as.integer(seq.int(to = nrx, length.out = n))
@@ -120,9 +120,9 @@ tail.dfm <- function(x, n = 6L, nfeat = nfeature(x), ...) {
     x[sel_doc, sel_feat]
 }
 
-setMethod("head", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) {
+setMethod("head", signature(x = "dfm"), function(x, n = 6L, nfeat = 6L, ...) {
     UseMethod("head")
 })
-setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) {
+setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nfeat = 6L, ...) {
     UseMethod("tail")
 })

@@ -134,7 +134,7 @@ network::as.network
 #' @export
 as.network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, ...) {
 
-    if (nfeature(x) > 1000) stop('fcm is too large for a network plot')
+    if (nfeat(x) > 1000) stop('fcm is too large for a network plot')
 
     x <- as(x, 'dgTMatrix')
     

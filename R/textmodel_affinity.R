@@ -184,7 +184,7 @@ affinity <- function(p, x, smooth = 0.5, verbose = FALSE) {
 
     distnames <- colnames(p)  # class labels in the training set
 
-    xdim <- dim(x)  # dim of the test set (nfeature x ndoc)
+    xdim <- dim(x)  # dim of the test set (nfeat x ndoc)
     stopifnot(NROW(x) == ncat)
 
     if (length(smooth) == 1) {
@@ -475,8 +475,8 @@ predict.textmodel_affinity_fitted <- function(object, newdata = NULL,
   scorable <- which(char_tolower(colnames(data)) %in% char_tolower(rownames(object@p)))
 
   if (verbose)
-    message(paste(length(scorable), " of ", nfeature(data), " features (",
-                  round(100*length(scorable)/nfeature(data), 2),
+    message(paste(length(scorable), " of ", nfeat(data), " features (",
+                  round(100*length(scorable) / nfeat(data), 2),
                   "%) can be scored\n\n", sep=""))
 
   predicted <- affinity(object@p, t(newdata), smooth = object@smooth, verbose = verbose)

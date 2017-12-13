@@ -112,7 +112,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     padding <- FALSE
     
     # select features based on "pattern"
-    features_keep <- seq_len(nfeature(x))
+    features_keep <- seq_len(nfeat(x))
     if (!is.null(pattern)) {
         # special handling if pattern is a dfm
         if (is.dfm(pattern)) {
@@ -128,7 +128,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
         if (!is.null(features_id)) features_id <- sort(features_id) # keep the original column order
     } else {
         if (selection == "keep") {
-            features_id <- seq_len(nfeature(x))
+            features_id <- seq_len(nfeat(x))
         } else {
             features_id <- NULL
         }
@@ -160,7 +160,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     }
     
     if (verbose) {
-        message_select(selection, length(features_id), 0, nfeature(temp) - nfeature(x), 0)
+        message_select(selection, length(features_id), 0, nfeat(temp) - nfeat(x), 0)
     }
     attributes(x, FALSE) <- attrs
     return(result)

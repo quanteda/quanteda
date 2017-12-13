@@ -200,7 +200,7 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
         result <- qatd_cpp_wordfish_dense(as.matrix(x), as.integer(dir), 1 / (priors ^ 2), tol, disp, 
                                           dispersion_floor, abs_err)
     }
-    # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
+    # NOTE: psi is a 1 x nfeat matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
     if (any(is.nan(result$theta))) 
         warning("Warning: The algorithm did not converge.")

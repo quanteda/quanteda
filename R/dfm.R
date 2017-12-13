@@ -345,12 +345,12 @@ dfm.dfm <- function(x,
     language <- quanteda_options("language_stemmer")
     if (stem) {
         if (verbose) catm("   ... stemming features (", stri_trans_totitle(language), ")\n", sep="")
-        oldNfeature <- nfeature(x)
+        oldNfeature <- nfeat(x)
         x <- dfm_wordstem(x, language)
         if (verbose) 
-            if (oldNfeature - nfeature(x) > 0) 
-                catm(", trimmed ", oldNfeature - nfeature(x), " feature variant",
-                     ifelse(oldNfeature - nfeature(x) != 1, "s", ""), "\n", sep = "")
+            if (oldNfeature - nfeat(x) > 0) 
+                catm(", trimmed ", oldNfeature - nfeat(x), " feature variant",
+                     ifelse(oldNfeature - nfeat(x) != 1, "s", ""), "\n", sep = "")
     }
     
     # remove any NA named columns
