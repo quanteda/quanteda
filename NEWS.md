@@ -14,10 +14,13 @@
 
 * Performance has been improved for `fcm()` and for `textmodel_wordfish()`.
 * `dfm()` now correctly passes through all `...` arguments to `tokens()`.  (#1121)
+* All `dfm_*()` functions now work correctly with empty dfm objects.  (#1133)
+
 
 ### Behaviour Changes
 
 * The convenience wrappers to `convert()` are simplified and no longer exported.  To convert a dfm, `convert()` is now the only official function.
+* `nfeat()` replaces `nfeature()`, which is now deprecated. (#1134)
 
 
 ## Changes since v0.99.12
