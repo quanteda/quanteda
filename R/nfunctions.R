@@ -2,7 +2,7 @@
 #' count the number of documents or features
 #' 
 #' Get the number of documents or features in an object.
-#' @details \code{ndocument} returns the number of documents in a  \link{corpus},
+#' @details \code{ndoc} returns the number of documents in a  \link{corpus},
 #'   \link{dfm}, or \link{tokens} object, or a readtext object from the
 #'   \pkg{readtext} package
 #'   
@@ -18,36 +18,34 @@
 #' ndoc(tokens(data_corpus_inaugural))
 #' ndoc(dfm(corpus_subset(data_corpus_inaugural, Year > 1980)))
 #' 
-ndocument <- function(x) {
-    UseMethod("ndocument")
+ndoc <- function(x) {
+    UseMethod("ndoc")
 }
 
 #' @export
-ndocument.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "ndocument"))
+ndoc.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "ndoc"))
 }
 
 #' @export
-ndocument.corpus <- function(x) {
+ndoc.corpus <- function(x) {
     nrow(documents(x))
 }
 
 #' @export
-ndocument.dfm <- function(x) {
+ndoc.dfm <- function(x) {
     x <- as.dfm(x)
     nrow(x)
 }
 
 #' @export
-ndocument.tokens <- function(x) {
+ndoc.tokens <- function(x) {
     length(x)
 }
 
-#' @export
-ndoc <- ndocument
 
 #' @rdname ndoc
-#' @details \code{nfeature} returns the number of features from a dfm; it is an
+#' @details \code{nfeat} returns the number of features from a dfm; it is an
 #'   alias for \code{ntype} when applied to dfm objects.  This function is only 
 #'   defined for \link{dfm} objects because only these have "features".  (To count
 #'   tokens, see \code{\link{ntoken}}.)
@@ -55,25 +53,25 @@ ndoc <- ndocument
 #' @seealso \code{\link{ntoken}}
 #' @examples
 #' # number of features
-#' nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE))
-#' nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE))
-nfeature <- function(x) {
-    UseMethod("nfeature")
+#' nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE))
+#' nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE))
+nfeat <- function(x) {
+    UseMethod("nfeat")
 }
 
 #' @export
-nfeature.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "nfeature"))
+nfeat.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "nfeat"))
 }
 
 #' @export
-nfeature.dfm <- function(x) {
+nfeat.dfm <- function(x) {
     x <- as.dfm(x)
     ncol(x)
 }
 
 #' @export
-nfeature.tokens <- function(x) {
+nfeat.tokens <- function(x) {
     if (attr(x, 'padding')) {
         length(types(x)) + 1
     } else {
@@ -82,7 +80,7 @@ nfeature.tokens <- function(x) {
 }
 
 #' @export
-nfeat <- nfeature
+nfeature <- nfeat # TODO: has to deplicate one day
 
 #' count the number of tokens or types
 #' 
