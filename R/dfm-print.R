@@ -27,7 +27,7 @@ setMethod("print", signature(x = "dfm"),
                    nfeat = quanteda_options("print_dfm_max_nfeat"), ...) {
               if (show.summary) {
                   cat("Document-feature matrix of: ",
-                      format(ndoc(x), , big.mark = ","), " document",
+                      format(ndoc(x), big.mark = ","), " document",
                       if (ndoc(x) > 1L || ndoc(x) == 0L) "s, " else ", ",
                       format(nfeat(x), big.mark=","), " feature",
                       if (nfeat(x) > 1L || nfeat(x) == 0L) "s" else "",
@@ -89,10 +89,10 @@ print_dfm <- function(x, ndoc, nfeat, show_values, show_settings, ...) {
 #' head(data_dfm_lbgexample, 3, nfeat = 5)
 #' head(data_dfm_lbgexample, -4)
 #' 
-head.dfm <- function(x, n = 6L, nfeat = nfeat(x), ...) {
+head.dfm <- function(x, n = 6L, nfeat = nfeature(x), ...) { # TODO: should be nfeat
     x <- as.dfm(x)
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+        warning("Argument", ifelse(length(addedArgs) > 1, "s ", " "), names(addedArgs), " not used.", sep = "")
     stopifnot(length(n) == 1L || length(nfeat) == 1L)
     n <- if (n < 0L)  max(ndoc(x) + n, 0L) else min(n, ndoc(x))
     nfeat <- if (nfeat < 0L)  max(nfeat(x) + nfeat, 0L) else min(nfeat, nfeat(x))
@@ -106,10 +106,10 @@ head.dfm <- function(x, n = 6L, nfeat = nfeat(x), ...) {
 #' @examples 
 #' tail(data_dfm_lbgexample)
 #' tail(data_dfm_lbgexample, n = 3, nfeat = 4)
-tail.dfm <- function(x, n = 6L, nfeat = nfeat(x), ...) {
+tail.dfm <- function(x, n = 6L, nfeat = nfeature(x), ...) { # TODO: should be nfeat
     x <- as.dfm(x)
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+        warning("Argument", ifelse(length(addedArgs) > 1, "s ", " "), names(addedArgs), " not used.", sep = "")
     stopifnot(length(n) == 1L || length(nfeat) == 1L)
     nrx <- ndoc(x)
     ncl <- nfeat(x)
@@ -120,9 +120,9 @@ tail.dfm <- function(x, n = 6L, nfeat = nfeat(x), ...) {
     x[sel_doc, sel_feat]
 }
 
-setMethod("head", signature(x = "dfm"), function(x, n = 6L, nfeat = 6L, ...) {
+setMethod("head", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) { # TODO: should be nfeat
     UseMethod("head")
 })
-setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nfeat = 6L, ...) {
+setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) { # TODO: should be nfeat
     UseMethod("tail")
 })
