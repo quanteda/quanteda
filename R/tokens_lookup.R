@@ -99,7 +99,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     
     # Generate all combinations of type IDs
     values_id <- list()
-    keys_id <- integer()
+    keys_id <- integer(0)
     types <- types(x)
     
     if (verbose) 

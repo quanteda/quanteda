@@ -251,7 +251,7 @@ dtm2lda <- function (x, omit_empty = TRUE) {
     docs[slam::row_sums(x) > 0] <- split.matrix(rbind(as.integer(x$j) - 1L, as.integer(x$v)), as.integer(x$i))
     if (omit_empty) 
         docs[slam::row_sums(x) == 0] <- NULL
-    else docs[slam::row_sums(x) == 0] <- rep(list(matrix(integer(), ncol = 0, nrow = 2)), 
+    else docs[slam::row_sums(x) == 0] <- rep(list(matrix(integer(0), ncol = 0, nrow = 2)), 
                                              sum(slam::row_sums(x) == 0))
     list(documents = docs, vocab = colnames(x))
 }

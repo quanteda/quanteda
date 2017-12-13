@@ -217,7 +217,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
                         smoothing = 0, k = 0, base = 10, threshold = 0, USE.NAMES = TRUE) {
     
     x <- as.dfm(x)
-    if (!nfeat(x) || !ndoc(x)) return(numeric())
+    if (!nfeat(x) || !ndoc(x)) return(numeric(0))
     scheme <- match.arg(scheme)
     args <- as.list(match.call(expand.dots = FALSE))
     if ("base" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
