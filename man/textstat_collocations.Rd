@@ -2,7 +2,6 @@
 % Please edit documentation in R/textstat_collocations.R
 \name{textstat_collocations}
 \alias{textstat_collocations}
-\alias{collocations}
 \alias{is.collocations}
 \title{identify and score multi-word expressions}
 \usage{
@@ -127,5 +126,4 @@ Blaheta, D., & Johnson, M. (2001).
 Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 }
 \keyword{collocations}
-\keyword{experimental}
 \keyword{textstat}
