@@ -2,11 +2,11 @@
 #' count the number of documents or features
 #' 
 #' Get the number of documents or features in an object.
-#' @details \code{ndoc} returns the number of documents in a  \link{corpus},
-#'   \link{dfm}, or \link{tokens} object, or a readtext object from the
-#'   \pkg{readtext} package
+#' @details \code{ndoc} returns the number of documents in an object
+#'   whose texts are organized as "documents" (a \link{corpus},
+#'   \link{dfm}, or \link{tokens} object, a readtext object from the
+#'   \pkg{readtext} package).
 #'   
-#'   \code{nfeat} returns the number of features in a \link{dfm}
 #' @param x a \pkg{quanteda} object: a \link{corpus}, \link{dfm}, or
 #'   \link{tokens} object, or a readtext object from the \pkg{readtext} package.
 #' @return an integer (count) of the number of documents or features
@@ -70,7 +70,6 @@ nfeat.dfm <- function(x) {
     ncol(x)
 }
 
-#' @export
 nfeat.tokens <- function(x) {
     if (attr(x, 'padding')) {
         length(types(x)) + 1
@@ -79,9 +78,13 @@ nfeat.tokens <- function(x) {
     }
 }
 
-#' @noRd
+#' @rdname ndoc
+#' @details \code{nfeature} is the deprecated form of \code{nfeat}.
 #' @export
-nfeature <- nfeat
+nfeature <- function(x) {
+    .Deprecated("nfeat")
+    UseMethod("nfeat")
+}
 
 #' count the number of tokens or types
 #' 
