@@ -86,7 +86,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
-    
+
     dictionary <- flatten_dictionary(dictionary, levels)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)

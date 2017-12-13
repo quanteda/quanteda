@@ -437,9 +437,9 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
     for (i in seq_along(dict)) {
         key <- names(dict[i])
         entry <- dict[[i]]
-        if (!length(entry)) next
+        if (key == '' || !length(entry)) next
         if (level %in% levels) {
-            if (key_parent != '' && key != '') {
+            if (key_parent != '') {
                 key_entry <- paste(key_parent, key, sep = '.')
             } else {
                 key_entry <- key
@@ -451,6 +451,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
         dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], unlist(entry[!is_category], use.names = FALSE))
         dict_flat <- flatten_dictionary(entry[is_category], levels, level + 1, key_entry, dict_flat)
     }
+    dict_flat <- dict_flat[names(dict_flat) != '']
     attributes(dict_flat, FALSE) <- attributes(dict)
     return(dict_flat)
 }
