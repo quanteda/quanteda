@@ -73,8 +73,9 @@
 #'   is a vector, then \code{count_nested} counts the lower-order collocations
 #'   that occur within a higher-order collocation (but this does not affect the
 #'   statistics).
-#' @exports
+#' @export
 #' @keywords textstat collocations
+#' @aliases collocations
 #' @author Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 #' @examples
 #' txts <- data_corpus_inaugural[1:2]
@@ -194,7 +195,6 @@ textstat_collocations.character <- function(x, method = "lambda",
 
 
 #' @rdname textstat_collocations
-#' @aliases is.collocations
 #' @export
 #' @return \code{is.collocation} returns \code{TRUE} if the object is of class
 #'   \code{collocations}, \code{FALSE} otherwise.
