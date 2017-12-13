@@ -7,7 +7,7 @@ NULL
 
 #' @param x the dfm to be printed
 #' @param show.values print the dfm values; if called explicitly this will print
-#'   all values, overriding \code{ndoc} and \code{nfeat}.
+#'   all values.
 #' @param show.settings print the settings used to create the dfm. See 
 #'   \link{settings}.
 #' @param show.summary print a brief summary indicating the number of documents 
@@ -76,7 +76,7 @@ print_dfm <- function(x, ndoc, nfeat, show_values, show_settings, ...) {
 #' @param n a single, positive integer.  If positive, size for the resulting object: 
 #'   number of first/last documents for the dfm. If negative, all but the n 
 #'   last/first number of documents of x.
-#' @param nfeat the number of features to return, where the resulting object 
+#' @param nf the number of features to return, where the resulting object 
 #'   will contain the first \code{ncol} features; default is all features
 #' @param ... additional arguments passed to other functions
 #' @return A \link{dfm} class object corresponding to the subset defined 
@@ -86,17 +86,17 @@ print_dfm <- function(x, ndoc, nfeat, show_values, show_settings, ...) {
 #' @method head dfm
 #' @keywords dfm
 #' @examples
-#' head(data_dfm_lbgexample, 3, nfeat = 5)
+#' head(data_dfm_lbgexample, 3, nf = 5)
 #' head(data_dfm_lbgexample, -4)
 #' 
-head.dfm <- function(x, n = 6L, nfeat = nfeature(x), ...) { # TODO: should be nfeat
+head.dfm <- function(x, n = 6L, nf = nfeat(x), ...) { 
     x <- as.dfm(x)
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs) > 1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    stopifnot(length(n) == 1L || length(nfeat) == 1L)
+    stopifnot(length(n) == 1L || length(nf) == 1L)
     n <- if (n < 0L)  max(ndoc(x) + n, 0L) else min(n, ndoc(x))
-    nfeat <- if (nfeat < 0L)  max(nfeat(x) + nfeat, 0L) else min(nfeat, nfeat(x))
-    x[seq_len(n), seq_len(nfeat)]
+    nf <- if (nf < 0L)  max(nfeat(x) + nf, 0L) else min(nf, nfeat(x))
+    x[seq_len(n), seq_len(nf)]
 }
 
 
@@ -105,24 +105,24 @@ head.dfm <- function(x, n = 6L, nfeat = nfeature(x), ...) { # TODO: should be nf
 #' @export
 #' @examples 
 #' tail(data_dfm_lbgexample)
-#' tail(data_dfm_lbgexample, n = 3, nfeat = 4)
-tail.dfm <- function(x, n = 6L, nfeat = nfeature(x), ...) { # TODO: should be nfeat
+#' tail(data_dfm_lbgexample, n = 3, nf = 4)
+tail.dfm <- function(x, n = 6L, nf = nfeat(x), ...) { 
     x <- as.dfm(x)
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs) > 1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    stopifnot(length(n) == 1L || length(nfeat) == 1L)
+    stopifnot(length(n) == 1L || length(nf) == 1L)
     nrx <- ndoc(x)
     ncl <- nfeat(x)
     n <- if (n < 0L) max(nrx + n, 0L) else min(n, nrx)
-    nfeat <- if (nfeat < 0L) max(ncl + nfeat, 0L) else min(nfeat, ncl)
+    nf <- if (nf < 0L) max(ncl + nf, 0L) else min(nf, ncl)
     sel_doc <- as.integer(seq.int(to = nrx, length.out = n))
-    sel_feat <- as.integer(seq.int(to = ncl, length.out = nfeat))
+    sel_feat <- as.integer(seq.int(to = ncl, length.out = nf))
     x[sel_doc, sel_feat]
 }
 
-setMethod("head", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) { # TODO: should be nfeat
+setMethod("head", signature(x = "dfm"), function(x, n = 6L, nf = nfeat(x), ...) { 
     UseMethod("head")
 })
-setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) { # TODO: should be nfeat
+setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nf = nfeat(x), ...) { 
     UseMethod("tail")
 })

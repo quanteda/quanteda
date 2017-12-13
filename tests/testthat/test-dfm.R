@@ -422,19 +422,19 @@ test_that("dfm's document counts in verbose message is correct", {
 })
 
 test_that("dfm head, tail work as expected", {
-    tmp <- head(data_dfm_lbgexample, 4, nfeat = 3)
+    tmp <- head(data_dfm_lbgexample, 4, nf = 3)
     expect_equal(featnames(tmp), LETTERS[1:3])
     expect_equal(docnames(tmp), paste0("R", 1:4))
     
-    tmp <- head(data_dfm_lbgexample, -4, nfeat = -30)
+    tmp <- head(data_dfm_lbgexample, -4, nf = -30)
     expect_equal(featnames(tmp), LETTERS[1:7])
     expect_equal(docnames(tmp), paste0("R", 1:2))
     
-    tmp <- tail(data_dfm_lbgexample, 4, nfeat = 3)
+    tmp <- tail(data_dfm_lbgexample, 4, nf = 3)
     expect_equal(featnames(tmp), c("ZI", "ZJ", "ZK"))
     expect_equal(docnames(tmp), c("R3", "R4", "R5", "V1"))
     
-    tmp <- tail(data_dfm_lbgexample, -4, nfeat = -34)
+    tmp <- tail(data_dfm_lbgexample, -4, nf = -34)
     expect_equal(featnames(tmp), c("ZI", "ZJ", "ZK"))
     expect_equal(docnames(tmp), c("R5", "V1"))
 })
