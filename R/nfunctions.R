@@ -2,7 +2,7 @@
 #' count the number of documents or features
 #' 
 #' Get the number of documents or features in an object.
-#' @details \code{ndoc} returns the number of documents in a  \link{corpus},
+#' @details \code{ndocument} returns the number of documents in a  \link{corpus},
 #'   \link{dfm}, or \link{tokens} object, or a readtext object from the
 #'   \pkg{readtext} package
 #'   
@@ -18,30 +18,33 @@
 #' ndoc(tokens(data_corpus_inaugural))
 #' ndoc(dfm(corpus_subset(data_corpus_inaugural, Year > 1980)))
 #' 
-ndoc <- function(x) {
-    UseMethod("ndoc")
+ndocument <- function(x) {
+    UseMethod("ndocument")
 }
 
 #' @export
-ndoc.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "ndoc"))
+ndocument.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "ndocument"))
 }
 
 #' @export
-ndoc.corpus <- function(x) {
+ndocument.corpus <- function(x) {
     nrow(documents(x))
 }
 
 #' @export
-ndoc.dfm <- function(x) {
+ndocument.dfm <- function(x) {
     x <- as.dfm(x)
     nrow(x)
 }
 
 #' @export
-ndoc.tokens <- function(x) {
+ndocument.tokens <- function(x) {
     length(x)
 }
+
+#' @export
+ndoc <- ndocument
 
 #' @rdname ndoc
 #' @details \code{nfeature} returns the number of features from a dfm; it is an
@@ -78,7 +81,8 @@ nfeature.tokens <- function(x) {
     }
 }
 
-
+#' @export
+nfeat <- nfeature
 
 #' count the number of tokens or types
 #' 
