@@ -157,6 +157,7 @@ dfm_tolower.default <- function(x, ...) {
 #' @export
 dfm_tolower.dfm <- function(x, keep_acronyms = FALSE, ...) {
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(x)
     colnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     dfm_compress(x, margin = "features")
 }
@@ -176,6 +177,7 @@ dfm_toupper.default <- function(x, ...) {
 #' @export
 dfm_toupper.dfm <- function(x, ...) {
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(x)
     colnames(x) <- char_toupper(featnames(x), ...)
     dfm_compress(x, margin = "features")
 }

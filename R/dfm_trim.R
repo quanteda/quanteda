@@ -66,7 +66,9 @@ dfm_trim.default <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL
 #' @export
 dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, 
                          sparsity = NULL, verbose = quanteda_options("verbose")) {
+    
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(x)
     
     # initialize additional messages as empty strings
     msg_sparsity <- msg_min_count <- msg_min_doc <- msg_max_count <- msg_max_doc <- ""

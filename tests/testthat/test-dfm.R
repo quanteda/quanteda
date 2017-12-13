@@ -694,3 +694,50 @@ test_that("test sparsity", {
     )
 })
 
+
+test_that("test empty dfm is handled properly", {
+    
+    mx <- quanteda:::make_null_dfm()
+    
+    expect_equal(dfm_select(mx), mx)
+    expect_equal(dfm_select(mx, 'a'), mx)
+    expect_equal(dfm_trim(mx), mx)
+    expect_equal(dfm_weight(mx, 'frequency'), mx)
+    expect_equal(dfm_weight(mx, 'relfreq'), mx)
+    expect_equal(dfm_weight(mx, 'relmaxfreq'), mx)
+    expect_equal(dfm_weight(mx, 'logfreq'), mx)
+    
+    expect_equal(tf(mx), mx)
+    expect_equal(tf(mx, 'prop'), mx)
+    expect_equal(tf(mx, 'propmax'), mx)
+    expect_equal(tf(mx, 'boolean'), mx)
+    expect_equal(tf(mx, 'log'), mx)
+    expect_equal(tf(mx, 'augmented'), mx)
+    expect_equal(tf(mx, 'logave'), mx)
+    expect_equal(tfidf(mx), mx)
+    expect_equal(docfreq(mx), numeric())
+    expect_equal(topfeatures(mx), numeric())
+    
+    expect_equal(dfm_smooth(mx), mx)
+    expect_equal(dfm_sample(mx), mx)
+    expect_equal(dfm_subset(mx), mx)
+    expect_equal(dfm_compress(mx, 'both'), mx)
+    expect_equal(dfm_compress(mx, 'features'), mx)
+    expect_equal(dfm_compress(mx, 'documents'), mx)
+    expect_equal(dfm_sort(mx, 'both'), mx)
+    expect_equal(dfm_sort(mx, 'features'), mx)
+    expect_equal(dfm_sort(mx, 'documents'), mx)
+    expect_equal(dfm_lookup(mx, dictionary(list(A ='a'))), mx)
+    expect_equal(dfm_group(mx), mx)
+    
+    expect_equal(dfm_tolower(mx), mx)
+    expect_equal(dfm_toupper(mx), mx)
+    
+    expect_equal(rbind(mx, mx), mx)
+    expect_equal(cbind(mx, mx), mx)
+    
+    expect_equal(head(mx), mx)
+    expect_equal(tail(mx), mx)
+    
+    expect_output(print(mx), 'Document-feature matrix of: 0 documents, 0 features.')
+})

@@ -183,6 +183,7 @@ topfeatures.default <- function(x, n = 10, decreasing = TRUE, scheme = c("count"
 topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,  scheme = c("count", "docfreq"), groups = NULL) {
     
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(numeric())
     scheme <- match.arg(scheme)
     
     if (!is.null(groups)) {
