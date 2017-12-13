@@ -85,6 +85,8 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         stop("dictionary must be a dictionary object")
     
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(x)
+
     dictionary <- flatten_dictionary(dictionary, levels)
     valuetype <- match.arg(valuetype)
     attrs <- attributes(x)
@@ -112,7 +114,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             keys <- char_toupper(keys)
         if (exclusive) {
             if (!is.null(nomatch)) {
-                values_id_nomatch <- setdiff(seq_len(nfeature(x)), values_id)
+                values_id_nomatch <- setdiff(seq_len(nfeat(x)), values_id)
                 values_id <- c(values_id, values_id_nomatch)
                 keys_id <- c(keys_id, rep(max(keys_id) + 1, length(values_id_nomatch)))
                 keys <- c(keys, nomatch[1])

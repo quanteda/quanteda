@@ -132,7 +132,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "
         # (the probability that any given word is in a particular class)
         temp <- x.trset
         rownames(temp) <- y.trclass
-        colnames(temp) <- rep("all_same", nfeature(temp))
+        colnames(temp) <- rep("all_same", nfeat(temp))
         temp <- dfm_compress(temp)
         Pc <- prop.table(as.matrix(temp))
         Pc_names <- rownames(Pc)

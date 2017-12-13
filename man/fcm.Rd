@@ -66,7 +66,7 @@ The function \code{\link{fcm}} provides a very general
   
   \link{fcm} provides all of this functionality, returning a \eqn{V * V}
   matrix (where \eqn{V} is the vocabulary size, returned by
-  \code{\link{nfeature}}). The \code{tri = TRUE} option will only return the
+  \code{\link{nfeat}}). The \code{tri = TRUE} option will only return the
   upper part of the matrix.
   
   Unlike some implementations of co-occurrences, \link{fcm} counts feature

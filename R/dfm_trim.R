@@ -66,7 +66,9 @@ dfm_trim.default <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL
 #' @export
 dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, 
                          sparsity = NULL, verbose = quanteda_options("verbose")) {
+    
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(x)
     
     # initialize additional messages as empty strings
     msg_sparsity <- msg_min_count <- msg_min_doc <- msg_max_count <- msg_max_doc <- ""
@@ -86,8 +88,8 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
 
     # convert fractions into counts
     if (min_count < 1.0) {
-        msg_min_count <- paste0(format(min_count, big.mark=","), " * ", format(nfeature(x), big.mark=","), " = ")
-        min_count <- nfeature(x) * min_count
+        msg_min_count <- paste0(format(min_count, big.mark=","), " * ", format(nfeat(x), big.mark=","), " = ")
+        min_count <- nfeat(x) * min_count
     }
     if (min_docfreq < 1.0) {
         msg_min_doc <- paste0(format(min_docfreq, big.mark=","), " * ", format(ndoc(x), big.mark=","), " = ")
@@ -95,8 +97,8 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
     }
  
     if (max_count < 1.0) {
-        msg_max_count <- paste0(format(max_count, big.mark=","), " * ", format(nfeature(x), big.mark=","), " = ")
-        max_count <- nfeature(x) * max_count
+        msg_max_count <- paste0(format(max_count, big.mark=","), " * ", format(nfeat(x), big.mark=","), " = ")
+        max_count <- nfeat(x) * max_count
     }
     if (max_docfreq < 1.0) {
         msg_max_doc <- paste0(format(max_docfreq, big.mark=","), " * ", format(ndoc(x), big.mark=","), " = ")
@@ -157,7 +159,7 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
     
     if (verbose) {
         catm("  Total features removed: ", format(sum(flag_all), big.mark=","), 
-             " (", format(sum(flag_all) / nfeature(x) * 100, digits = 3, nsmall = 1), "%).", 
+             " (", format(sum(flag_all) / nfeat(x) * 100, digits = 3, nsmall = 1), "%).", 
              sep = "", appendLF = TRUE)
     }
        

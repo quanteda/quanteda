@@ -201,6 +201,7 @@ cbind.dfm <- function(...) {
     }
     
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
+    if (!nfeat(x) || !ndoc(x)) return(x)
     if (any(docnames(x) != docnames(y)))
         warning("cbinding dfms with different docnames", noBreaks. = TRUE, call. = FALSE)
     
@@ -247,12 +248,13 @@ rbind.dfm <- function(...) {
     
     args <- list(...)
     if (length(args) == 1) return(args[[1]])
-    
+
     x <- args[[1]]
     y <- args[[2]]
     attrs <- attributes(x)
     
     if (!is.dfm(x) || !is.dfm(y)) stop("all arguments must be dfm objects")
+    if (!nfeat(x) || !ndoc(x)) return(x)
     
     feature <- union(featnames(x), featnames(y))
     result <- new("dfm", Matrix::rbind2(pad_dfm(x, feature), pad_dfm(y, feature)))

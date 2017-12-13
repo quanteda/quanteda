@@ -31,7 +31,7 @@
 \item{x}{the dfm to be printed}
 
 \item{show.values}{print the dfm values; if called explicitly this will print
-all values, overriding \code{ndoc} and \code{nfeat}.}
+all values.}
 
 \item{show.settings}{print the settings used to create the dfm. See 
 \link{settings}.}

@@ -46,6 +46,7 @@ dfm_compress.default <- function(x,
 dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
     
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(x)
     margin <- match.arg(margin)
     if (margin == 'documents') {
         result <- group_dfm(x, NULL, docnames(x))
@@ -91,15 +92,16 @@ dfm_sort.dfm <- function(x, decreasing = TRUE,
                          margin = c("features", "documents", "both")) {
     
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(x)
     margin <- match.arg(margin)
     class_org <- class(x)
-    if (margin=="features") {
-        x <- x[, order(colSums(x), decreasing=decreasing)]
-    } else if (margin=="documents") {
-        x <- x[order(rowSums(x), decreasing=decreasing), ]
-    } else if (margin=="both") {
-        x <- x[order(rowSums(x), decreasing=decreasing),
-               order(colSums(x), decreasing=decreasing)]
+    if (margin == "features") {
+        x <- x[, order(colSums(x), decreasing = decreasing)]
+    } else if (margin == "documents") {
+        x <- x[order(rowSums(x), decreasing = decreasing), ]
+    } else if (margin == "both") {
+        x <- x[order(rowSums(x), decreasing = decreasing),
+               order(colSums(x), decreasing = decreasing)]
     }
     class(x) <- class_org
     return(x)

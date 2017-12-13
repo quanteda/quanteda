@@ -112,7 +112,7 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
     attrs <- attributes(x)
     types <- types(x)
     id_ignore <- unlist(regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
-    if (is.null(id_ignore)) id_ignore <- integer(0)
+    if (is.null(id_ignore)) id_ignore <- integer()
     
     result <- qatd_cpp_collocations_dev(x, types, min_count, size, method, smoothing) 
     

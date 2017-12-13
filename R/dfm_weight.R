@@ -86,6 +86,7 @@ dfm_weight.dfm <- function(x,
                            weights = NULL) {
     
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(x)
     
     # for numeric weights
     if (!is.null(weights)) {
@@ -147,6 +148,7 @@ dfm_smooth.default <- function(x, smoothing = 1) {
 #' @export
 dfm_smooth.dfm <- function(x, smoothing = 1) {
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(x)
     x + smoothing
 }
 
@@ -215,6 +217,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
                         smoothing = 0, k = 0, base = 10, threshold = 0, USE.NAMES = TRUE) {
     
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(numeric())
     scheme <- match.arg(scheme)
     args <- as.list(match.call(expand.dots = FALSE))
     if ("base" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
@@ -229,7 +232,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", "inverse
         stop("this dfm has already been term weighted as:", x@weightDf)
     
     if (scheme == "unary") {
-        result <- rep(1, nfeature(x))
+        result <- rep(1, nfeat(x))
     } else if (scheme == "count") {
         result <- colSums(x > threshold)
     } else if (scheme == "inverse") {
@@ -314,13 +317,15 @@ tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, 
     
     attrs <- attributes(x)
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(x)
+    
     args <- list(...)
     check_dots(args, names(formals(docfreq)))
     
     dfreq <- docfreq(x, scheme = scheme_df, base = base, ...)
     tfreq <- tf(x, scheme = scheme_tf, base = base)
     
-    if (nfeature(x) != length(dfreq)) 
+    if (nfeat(x) != length(dfreq)) 
         stop("missing some values in idf calculation")
     
     # get the document indexes
@@ -333,8 +338,7 @@ tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, 
     attributes(x, FALSE) <- attrs
     x@weightTf <- tfreq@weightTf
     x@weightDf <- c(list(scheme = scheme_df, base = base), args)
-    
-    x
+    return(x)
 }
 
 
@@ -389,8 +393,7 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
                    base = 10, K = 0.5) {
     
     x <- as.dfm(x)
-    if (!is.dfm(x))
-        stop("x must be a dfm object")
+    if (!nfeat(x) || !ndoc(x)) return(x)
     
     scheme <- match.arg(scheme)
     args <- as.list(match.call(expand.dots = FALSE))
