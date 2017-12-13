@@ -34,7 +34,7 @@ test_that("test detault n-methods", {
     )
     expect_error(
         nfeature(TRUE),
-        "nfeature\\(\\) only works on dfm, tokens objects"
+        "nfeat\\(\\) only works on dfm, tokens objects"
     )    
     expect_error(
         nscrabble(TRUE),
