@@ -336,6 +336,7 @@ as.tokens.spacyr_parsed <- function(x, concatenator = "/",
 #' @return \code{as.list} returns a simple list of characters from a
 #'   \link{tokens} object.
 #' @method as.list tokens
+#' @seealso \code{\link{as.keras}}
 #' @export
 as.list.tokens <- function(x, ...) {
     types <- c("", types(x))
@@ -345,10 +346,13 @@ as.list.tokens <- function(x, ...) {
     return(result)
 }
 
-#' @rdname as.tokens
+#' coerce tokens to sequences for Keras 
+#' 
+#' \code{as.keras} converts \link{tokens} into sequences of integers for
+#'   \code{keras} models. 
+#' @param x object coerced to Keras sequences
 #' @return a Python list object
-#' @details \code{as.karas} converts \link{tokens} into sequences of integers for
-#'   \code{karas} models. Conversion of R objects to Python objects is performed 
+#' @details Conversion of R objects to Python objects is performed 
 #'   using the \code{reticulate} package.
 #' @method as.keras tokens
 #' @export
@@ -356,7 +360,7 @@ as.list.tokens <- function(x, ...) {
 #' \dontrun{
 #' txt <- data_char_ukimmig2010
 #'
-#' # use karas' tokenizer
+#' # use keras' tokenizer
 #' keras_tokenizer <-
 #'     keras::text_tokenizer() %>%
 #'     keras::fit_text_tokenizer(txt)
@@ -370,6 +374,8 @@ as.keras <- function(x) {
     UseMethod("as.keras")
 }
 
+#' @rdname as.keras
+#' @export
 as.keras.tokens <- function(x) {
     x <- unname(unclass(x))
     reticulate::r_to_py(x)

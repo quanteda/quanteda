@@ -79,3 +79,6 @@ tokens_lookup(toks, dict, levels = c(2,3))
 tokens_lookup(toks, dict, nomatch = "_UNMATCHED")
 
 }
+\seealso{
+\code{\link{tokens_convert}}
+}

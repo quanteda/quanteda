@@ -37,7 +37,9 @@ A \code{kwic} classed data.frame, with the document name
   (\code{post}).  The return object has its own \code{print} method, plus
   some special attributes that are hidden in the print view.  If you want to
   turn this into a simple data.frame, simply wrap the result in
-  \code{data.frame}.
+  \code{data.frame}. If you wish to perform analysis of keywords-in-context, 
+  use \code{\link{tokens_select}} with the \code{window} argument instead of 
+  \code{kwic}.
 }
 \description{
 For a text or a collection of texts (in a quanteda corpus object), return a 

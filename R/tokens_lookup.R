@@ -23,6 +23,7 @@
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
 #' @param verbose print status messages if \code{TRUE}
+#' @seealso \code{\link{tokens_convert}}
 #' @examples
 #' toks <- tokens(data_corpus_inaugural)
 #' dict <- dictionary(list(country = "united states", 

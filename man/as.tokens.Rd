@@ -5,7 +5,6 @@
 \alias{as.tokens.list}
 \alias{as.tokens.spacyr_parsed}
 \alias{as.list.tokens}
-\alias{as.keras}
 \alias{unlist.tokens}
 \alias{as.character.tokens}
 \alias{is.tokens}
@@ -21,8 +20,6 @@ as.tokens(x, concatenator = "_", ...)
   include_pos = c("none", "pos", "tag"), use_lemma = FALSE, ...)
 
 \method{as.list}{tokens}(x, ...)
-
-\method{as.keras}{tokens}(x)
 
 \method{unlist}{tokens}(x, recursive = FALSE, use.names = TRUE)
 
@@ -67,8 +64,6 @@ token}
 \code{as.list} returns a simple list of characters from a
   \link{tokens} object.
 
-a Python list object
-
 \code{unlist} returns a simple vector of characters from a 
   \link{tokens} object.
 
@@ -96,10 +91,6 @@ The \code{concatenator} is used to automatically generate dictionary
   your tokens so that the conversion knows to treat this character as the
   inter-word delimiter, when reading in the elements that will become the
   tokens.
-
-\code{as.karas} converts \link{tokens} into sequences of integers for
-  \code{karas} models. Conversion of R objects to Python objects is performed 
-  using the \code{reticulate} package.
 }
 \examples{
 
@@ -111,23 +102,13 @@ lis <- list(c("The", "United-States", "has", "the", "Atlantic-Ocean",
 toks <- as.tokens(lis, concatenator = "-")
 tokens_lookup(toks, dict)
 
-\dontrun{
-txt <- data_char_ukimmig2010
-
-# use karas' tokenizer
-keras_tokenizer <-
-    keras::text_tokenizer() \%>\%
-    keras::fit_text_tokenizer(txt)
-seqs <- keras::texts_to_sequences(keras_tokenizer, txt)
-
-# use quanteda's tokenizer
-seqs <- as.keras(tokens(data_char_ukimmig2010))
-
-}
 # combining tokens
 toks1 <- tokens(c(doc1 = "a b c d e", doc2 = "f g h"))
 toks2 <- tokens(c(doc3 = "1 2 3"))
 toks1 + toks2
 c(toks1, toks2)
 
+}
+\seealso{
+\code{\link{as.keras}}
 }
