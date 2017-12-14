@@ -133,13 +133,15 @@ textmodel_affinity.dfm_bootstrap <- function(x, y, exclude = NULL,
     # compute the model for the original corpus
     if (verbose)
         message("   ...computing model for dfm from original texts")
-    fitted <- textmodel_affinity(x[[1]], y, exclude, smooth, ref_smooth, verbose = FALSE)
+    fitted <- textmodel_affinity(x[[1]], y, exclude, smooth, ref_smooth, 
+                                 verbose = FALSE)
     predicted <- predict(fitted)
 
     # compute the replicates, save coefficients to an array
     coeff_replicates <- array(NA, dim = c(dim(coef(predicted)), length(x)))
     if (verbose)
-        message("   ...computing bootstrapped models and saving coefficients\n     ", appendLF = FALSE)
+        message("   ...computing bootstrapped models and saving coefficients\n     ", 
+                appendLF = FALSE)
     for (i in seq_len(length(x))) {
         message(" ", i, appendLF = FALSE)
         coeff_replicates[, , i] <-
@@ -164,7 +166,8 @@ textmodel_affinity.dfm_bootstrap <- function(x, y, exclude = NULL,
 #' Ken recommends you use \code{\link{textmodel_affinity}} instead.
 #' @param p word likelihoods within classes, estimated from training data
 #' @param x term-document matrix for document(s) to be scaled
-#' @param smooth a misnamed smoothing parameter, either a scalar or a vector equal in length to the number of documents
+#' @param smooth a misnamed smoothing parameter, either a scalar or a vector
+#'   equal in length to the number of documents
 #' @author Patrick Perry
 #' @return a list with stuff
 #' @examples
@@ -445,7 +448,8 @@ affinity1 <- function(p, x, smooth, verbose) {
 
 #' prediction for a fitted affinity textmodel
 #'
-#' Estimate \eqn{\theta_i} for each document, from a fitted \link{textmodel_affinity} object.
+#' Estimate \eqn{\theta_i} for each document, from a fitted
+#' \link{textmodel_affinity} object.
 #' @param object a fitted affinity textmodel
 #' @param level probability level for confidence interval width
 #' @param newdata dfm on which prediction should be made
@@ -472,14 +476,16 @@ predict.textmodel_affinity_fitted <- function(object, newdata = NULL,
   }
 
   featureIndex <- match(rownames(object@p), featnames(data))
-  scorable <- which(char_tolower(colnames(data)) %in% char_tolower(rownames(object@p)))
+  scorable <- 
+      which(char_tolower(colnames(data)) %in% char_tolower(rownames(object@p)))
 
   if (verbose)
     message(paste(length(scorable), " of ", nfeat(data), " features (",
                   round(100*length(scorable) / nfeat(data), 2),
                   "%) can be scored\n\n", sep=""))
 
-  predicted <- affinity(object@p, t(newdata), smooth = object@smooth, verbose = verbose)
+  predicted <- 
+      affinity(object@p, t(newdata), smooth = object@smooth, verbose = verbose)
 
   new("textmodel_affinity_predicted",
       coefficients = predicted$coefficients,
@@ -526,10 +532,12 @@ setMethod("show", signature(object = "textmodel_affinity_predicted"),
 
             cat("\nEstimated coefficients:\n\n")
             coeff <- cbind(coef(object), object@se)
-            coeff <- coeff[, interleave(1:ncol(coef(object)), (ncol(coef(object))+1):ncol(coeff)), drop = FALSE]
+            coeff <- coeff[, interleave(seq_len(ncol(coef(object))), 
+                                        (ncol(coef(object))+1):ncol(coeff)), 
+                           drop = FALSE]
             coeff <- cbind(coeff, gof_chi2(object))
-            colnames(coeff) <- c(interleave(colnames(coef(object)), rep("s.e.", 2)),
-                                 "chi2")
+            colnames(coeff) <- 
+                c(interleave(colnames(coef(object)), rep("s.e.", 2)), "chi2")
             print(coeff, digits = 2)
 
             cat("\nSome diagnostics here about how many words were not found in training vocabulary.\n")
@@ -593,9 +601,11 @@ gof_chi2.textmodel_affinity_predicted <- function(x) {
 
 #' compute feature influence from a predicted textmodel_affinity object
 #'
-#' Computes the influence of features on scaled \link{textmodel_affinity} applications.
+#' Computes the influence of features on scaled \link{textmodel_affinity}
+#' applications.
 #' @param model a fitted \link{textmodel_affinity} object
-#' @param subset whether to use all data or a subset (for instance, exclude the training set)
+#' @param subset whether to use all data or a subset (for instance, exclude the
+#'   training set)
 #' @param ... unused
 #' @seealso \code{\link{influence.lm}}
 #' @keywords textmodel_affinity
@@ -807,8 +817,8 @@ print.summary_affinity_influence <- function(x, n = 30, ...) {
 # interleave(letters[1:3], 1:3)
 # ## [1] "a" "1" "b" "2" "c" "3"
 interleave <- function(v1, v2) {
-    ord1 <- 2*(1:length(v1)) - 1
-    ord2 <- 2*(1:length(v2))
+    ord1 <- 2*(seq_along(v1)) - 1
+    ord2 <- 2*(seq_along(v2))
     c(v1, v2)[order(c(ord1, ord2))]
 }
 

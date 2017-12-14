@@ -292,7 +292,7 @@ test_that("test textstat_simil method = \"faith\" against proxy::simil(): featur
 })
 
 test_that("as.matrix.simil works as expected",{
-    documents = c('Bacon ipsum dolor amet tenderloin hamburger bacon t-bone, ', 
+    documents <- c('Bacon ipsum dolor amet tenderloin hamburger bacon t-bone, ', 
                   'Tenderloin turducken corned beef bacon. ', 
                   ' Burgdoggen venison tail, hamburger filet mignon capicola meatloaf pig pork belly. ')
     dtm <- dfm(tokens(documents))

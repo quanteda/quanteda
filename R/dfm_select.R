@@ -122,10 +122,16 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             padding <- TRUE
             case_insensitive <- FALSE
         } else if (is.dictionary(pattern)) {
-            pattern <- stri_replace_all_fixed(unlist(pattern, use.names = FALSE), ' ', attr(x, 'concatenator'))
+            pattern <- 
+                stri_replace_all_fixed(unlist(pattern, use.names = FALSE), 
+                                       ' ', 
+                                       attr(x, 'concatenator'))
         }
-        features_id <- unlist(regex2id(pattern, featnames(x), valuetype, case_insensitive), use.names = FALSE)
-        if (!is.null(features_id)) features_id <- sort(features_id) # keep the original column order
+        features_id <- unlist(regex2id(pattern, featnames(x), valuetype, 
+                                       case_insensitive), use.names = FALSE)
+        
+        if (!is.null(features_id)) 
+            features_id <- sort(features_id) # keep the original column order
     } else {
         if (selection == "keep") {
             features_id <- seq_len(nfeat(x))
@@ -160,7 +166,8 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     }
     
     if (verbose) {
-        message_select(selection, length(features_id), 0, nfeat(temp) - nfeat(x), 0)
+        message_select(selection, 
+                       length(features_id), 0, nfeat(temp) - nfeat(x), 0)
     }
     attributes(x, FALSE) <- attrs
     return(result)

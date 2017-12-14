@@ -161,8 +161,8 @@ textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3
     lp <- lp + sum(dnorm(theta,0,priortheta,log=TRUE))
     lp <- lp + sum(dgamma(tau,1,1,log=TRUE))
     for (s in 1:S) {
-        lps = alpha[jVec[s]] + beta[jVec[s]] * theta[iVec[s]]
-        lp = lp + dnorm(psi[s], lps, (tau[iVec[s]])^(-1/2), log=TRUE)
+        lps <- alpha[jVec[s]] + beta[jVec[s]] * theta[iVec[s]]
+        lp <- lp + dnorm(psi[s], lps, (tau[iVec[s]])^(-1/2), log=TRUE)
     }
     
     # Until log-posterior stops changing...
@@ -206,8 +206,8 @@ textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3
         lp <- lp + sum(dnorm(theta, 0, priortheta, log = TRUE))
         lp <- lp + sum(dgamma(tau, priortau, priortau, log = TRUE))
         for (s in 1:S){
-            lps = alpha[jVec[s]] + beta[jVec[s]] * theta[iVec[s]]
-            lp = lp + dnorm(psi[s], lps, (tau[iVec[s]])^(-1/2), log = TRUE)
+            lps <- alpha[jVec[s]] + beta[jVec[s]] * theta[iVec[s]]
+            lp <- lp + dnorm(psi[s], lps, (tau[iVec[s]])^(-1/2), log = TRUE)
         }  
         
     } # end while  

@@ -112,7 +112,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
     } else if (method == "minkowski") {
         temp <- get(paste0(method, "_dist"))(x, y, margin = m, p = p)
     } else if (method %in% methods2) {
-        if (method == "binary") method = "jaccard"
+        if (method == "binary") method <- "jaccard"
         temp <- get(paste0(method, "_simil"))(x, y, margin = m)
     } else {
         stop(method, " is not implemented; consider trying proxy::dist().")

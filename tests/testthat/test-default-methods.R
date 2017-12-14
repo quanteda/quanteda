@@ -33,7 +33,7 @@ test_that("test detault n-methods", {
         "ndoc\\(\\) only works on.*corpus.*tokens.*objects"
     )
     expect_error(
-        nfeature(TRUE),
+        nfeat(TRUE),
         "nfeat\\(\\) only works on dfm objects"
     )    
     expect_error(

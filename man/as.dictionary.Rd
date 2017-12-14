@@ -15,10 +15,10 @@ data.frame with the fields \code{word} and \code{sentiment} (as per the
 \strong{tidytext} package)}
 }
 \value{
-\code{as.dictionary} returns a \link{dictionary} object.  This conversion
-function differs from the \code{\link{dictionary}} constructor function in that it
-converts an existing object rather than creates one from components or from a
-file.
+\code{as.dictionary} returns a \link{dictionary} object.  This
+  conversion function differs from the \code{\link{dictionary}} constructor
+  function in that it converts an existing object rather than creates one
+  from components or from a file.
 
 \code{is.dictionary} returns \code{TRUE} if an object is a
   \pkg{quanteda} \link{dictionary}.

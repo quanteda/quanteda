@@ -20,18 +20,18 @@ returning a dfm with the combined documents or features, respectively.
 }
 \details{
 \code{cbind(x, y, ...)} combines dfm objects by columns, returning a
-  dfm object with combined features from input dfm objects.  Note that this 
-  should be used with extreme caution, as joining dfms with different 
-  documents will result in a new row with the docname(s) of the first dfm, 
-  merging in those from the second.  Furthermore, if features are shared 
-  between the dfms being cbinded, then duplicate feature labels will result. 
+  dfm object with combined features from input dfm objects.  Note that this
+  should be used with extreme caution, as joining dfms with different
+  documents will result in a new row with the docname(s) of the first dfm,
+  merging in those from the second.  Furthermore, if features are shared
+  between the dfms being cbinded, then duplicate feature labels will result.
   In both instances, warning messages will result.
 
-\code{rbind(x, y, ...)} combines dfm objects by rows, returning a dfm
-  object with combined features from input dfm objects.  Features are matched
-  between the two dfm objects, so that the order and names of the features
-  do not need to match.  The order of the features in the resulting dfm
-  is not guaranteed.  The attributes and settings of this new dfm are not
+\code{rbind(x, y, ...)} combines dfm objects by rows, returning a
+  dfm object with combined features from input dfm objects.  Features are
+  matched between the two dfm objects, so that the order and names of the
+  features do not need to match.  The order of the features in the resulting
+  dfm is not guaranteed.  The attributes and settings of this new dfm are not
   currently preserved.
 }
 \examples{

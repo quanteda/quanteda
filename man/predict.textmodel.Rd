@@ -14,13 +14,13 @@
 \item{...}{not used}
 }
 \value{
-A list of two data frames, named \code{docs} and \code{words} corresponding
-to word- and document-level predicted quantities
+A list of two data frames, named \code{docs} and \code{words}
+  corresponding to word- and document-level predicted quantities
 
-\item{docs}{data frame with document-level predictive quantities: 
-nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc, bayesscore.doc, 
-posterior.diff, posterior.logdiff.  Note that the diff quantities are currently 
-implemented only for two-class solutions.}
+\item{docs}{data frame with document-level predictive quantities:
+  nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc,
+  bayesscore.doc, posterior.diff, posterior.logdiff.  Note that the diff
+  quantities are currently implemented only for two-class solutions.}
 
 \item{words}{data-frame with word-level predictive quantities: 
 wordscore.word, bayesscore.word}

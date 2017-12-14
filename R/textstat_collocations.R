@@ -178,7 +178,8 @@ textstat_collocations.corpus <- function(x, method = "lambda",
                                          smoothing = 0.5, 
                                          tolower = TRUE, 
                                          recursive = TRUE, ...) {
-    textstat_collocations(tokens(x, ...), method = method, size = size, min_count = min_count, 
+    textstat_collocations(tokens(x, ...), method = method, size = size, 
+                          min_count = min_count, 
                           smoothing = smoothing, tolower = tolower)
 }
 
@@ -189,7 +190,8 @@ textstat_collocations.character <- function(x, method = "lambda",
                                             smoothing = 0.5, 
                                             tolower = TRUE, 
                                             recursive = TRUE, ...) {
-    textstat_collocations(corpus(x), method = method, size = size, min_count = min_count, 
+    textstat_collocations(corpus(x), method = method, size = size, 
+                          min_count = min_count, 
                           smoothing = smoothing, tolower = tolower, ...)
 }
 
@@ -252,7 +254,8 @@ get_expected_values <- function(df, size) {
         names(countsnum) <- names(counts)
         array_dimnames <- c(rep(list(c("0", "1")), size))
         names(array_dimnames) <- paste0("W", size:1)
-        counts_table <- array(countsnum, dim = rep(2, size), dimnames = array_dimnames)
+        counts_table <- array(countsnum, dim = rep(2, size), 
+                              dimnames = array_dimnames)
         counts_expected <- stats::loglin(counts_table,
                                          margin =  marginalfun(size),
                                          fit = TRUE, print = FALSE)$fit

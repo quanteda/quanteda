@@ -28,15 +28,15 @@ The default is to plot the word cloud of all features, summed across
   documents, you need to slice out the document(s) from the dfm or tokens
   object.
   
-  Comparison wordcloud plots may be plotted by setting \code{comparison = TRUE}, 
-  which plots a separate grouping for \emph{each document} in the dfm.
-  This means that you will need to slice out just a few documents from the 
-  dfm, or to create a dfm where the "documents" represent a subset or a 
+  Comparison wordcloud plots may be plotted by setting \code{comparison =
+  TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
+  This means that you will need to slice out just a few documents from the
+  dfm, or to create a dfm where the "documents" represent a subset or a
   grouping of documents by some document variable.
 }
 \examples{
 # plot the features (without stopwords) from Obama's two inaugural addresses
-mydfm <- dfm(corpus_subset(data_corpus_inaugural, President=="Obama"), verbose = FALSE,
+mydfm <- dfm(corpus_subset(data_corpus_inaugural, President=="Obama"), 
              remove = stopwords("english"))
 textplot_wordcloud(mydfm)
 

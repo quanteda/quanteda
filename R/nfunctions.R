@@ -185,7 +185,7 @@ ntype.dfm <- function(x, ...) {
 
 #' @export
 ntype.tokens <- function(x, ...) {
-    sapply(unclass(x), function(y) length(unique(y[y > 0])))
+    vapply(unclass(x), function(y) length(unique(y[y > 0])), numeric(1))
 }
 
 #' count the number of sentences
@@ -217,7 +217,8 @@ nsentence.default <- function(x, ...) {
 
 #' @export
 nsentence.character <- function(x, ...) {
-    upcase <- try(any(stringi::stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
+    upcase <- 
+        try(any(stringi::stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
     if (!is.logical(upcase)) {
         # warning("Input text contains non-UTF-8 characters.")
     } else if (!upcase)

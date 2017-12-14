@@ -120,7 +120,7 @@ pattern2id <- function(pattern, types, valuetype, case_insensitive,
         if (nrow(pattern) == 0) return(list())
         pattern <- stri_split_charclass(pattern$collocation, "\\p{Z}")
         pattern_id <- lapply(pattern, function(x) fastmatch::fmatch(x, types))
-        pattern_id <- pattern_id[sapply(pattern_id, function(x) all(!is.na(x)))]
+        pattern_id <- pattern_id[vapply(pattern_id, function(x) all(!is.na(x)), logical(1))]
     } else {
         if (length(pattern) == 0) return(list())
         if (is.dictionary(pattern)) {
