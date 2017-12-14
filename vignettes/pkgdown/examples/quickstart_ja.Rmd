@@ -1,5 +1,5 @@
 ---
-title: "Quick Start Guide"
+title: "クイック・スタートガイド"
 output: 
   html_document:
     toc: true
@@ -10,37 +10,37 @@ knitr::opts_chunk$set(collapse = FALSE,
                       comment = "##")
 ```
 
-このビネットでは、**quanteda**の特徴と機能の基本的な概要を解説します。 追加のビネットについては、[ quanteda.ioにあるその他の記事](http://docs.quanteda.io/articles/index.html)を参照してください。
+この記事では，**quanteda**の特徴と機能の概要を説明します．より詳しい説明は，[ quanteda.ioにある記事](http://docs.quanteda.io/articles/index.html)を参照してください．
 
 # パッケージのインストール
 
-**quanteda**は[CRAN](https://CRAN.R-project.org/package=quanteda)からインストールできます。GUIのRパッケージインストーラを使用してインストールするか、次のコマンドを実行します。
+**quanteda**は[CRAN](https://CRAN.R-project.org/package=quanteda)からインストールできます．GUIのRパッケージインストーラを使用してインストールするか，次のコマンドを実行します．
 
 ```{r, eval = FALSE}
 install.packages("quanteda") 
 ```
 
-GitHubから最新の開発バージョンをインストールする方法については、https://github.com/kbenoit/quanteda を参照してください。
+GitHubから最新の開発バージョンをインストールする方法については，https://github.com/kbenoit/quanteda を参照してください．
 
 ## インストールが推奨されるパッケージ
 
-**quanteda**には**quanteda**と連携して機能を拡張する、一連のパッケージがあります。それらもインストールすることを推奨します：
+**quanteda**には連携して機能を拡張する一連のパッケージがあり，それらをインストールすることをお薦めします．
 
-* [**readtext**](https://github.com/kbenoit/readtext)：多くの入力形式からテキストデータをRに簡単に読み込むパッケージ。
-* [**spacyr**](https://github.com/kbenoit/spacyr)：pythonの[spaCy](http://spacy.io)ライブラリを使用した自然言語解析のためのパッケージ。品詞タグ付け、固有表現抽出、および係り受け関係の解析など。
-* [**quantedaData**](https://github.com/kbenoit/quantedaData)：**quanteda**のビネット等で使用する追加のテキストデータ。
+* [**readtext**](https://github.com/kbenoit/readtext)：多くの入力形式からテキストデータをRに簡単に読み込むパッケージ
+* [**spacyr**](https://github.com/kbenoit/spacyr)：pythonの[spaCy](http://spacy.io)ライブラリを使用した自然言語解析のためのパッケージで，品詞タグ付け，固有表現抽出，および係り受け関係の解析などができる
+* [**quantedaData**](https://github.com/kbenoit/quantedaData)：**quanteda**の本記事内の説明で使用する追加のテキストデータ
 
     ```{r eval = FALSE}
     devtools::install_github("kbenoit/quantedaData")
     ```
-*  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) (LIWC) アプローチによるテキスト分析のR実装.
+*  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) (LIWC) アプローチによるテキスト分析のR実装
     ```{r eval = FALSE}
     devtools::install_github("kbenoit/LIWCalike")
     ```
 
 # コーパスの作成
 
-まず、パッケージをロードして、パッケージ内の関数とデータにアクセスできるようにします。
+まず，**quanteda**を読み込んで，パッケージの関数とデータにアクセスできるようにします．
 
 ```{r, message = FALSE}
 library(quanteda)
@@ -48,8 +48,7 @@ library(quanteda)
 
 ## 利用可能なコーパス
 
-**quanteda**にはテキストを読み込むためのシンプルで強力なコンパニオンパッケージ、[**readtext**](https://github.com/kbenoit/readtext)があります。
-このパッケージのmain関数`readtext()`は、ディスクやURLからファイルやファイルセットを取り出し、**quanteda**の`corpus()`コンストラクタ関数から直接呼び出せる形式の、data.frameを返します。
+**quanteda**にはテキストを読み込むためのシンプルで強力なパッケージ，[**readtext**](https://github.com/kbenoit/readtext)があります．このパッケージの`readtext()`は，ローカス・ストレージやインターネットからファイル読み込み，`corpus()`にデータ・フレームを返します．
 
 `readtext()`で利用可能なファイルやデータの形式:
 
@@ -58,28 +57,28 @@ library(quanteda)
 * XML形式のデータ
 * JSON形式のFacebook APIのデータ
 * JSON形式のTwitter APIのデータ
-* より一般的なJSONデータ
+* 一般的なJSONデータ
 
-**quanteda**のコーパスコンストラクタコマンド `corpus()`は、次のクラスのオブジェクトを受け付けます：
+**quanteda**のコーパスを生成する関数である `corpus()`は，以下の種類のデータを読み込むことができます．
 
-* キャラクタオブジェクトのベクトル(例:他のツールを使用してすでにワークスペースにロードしたテキスト)
+* 文字列ベクトル (例：**readtext**以外のツールを使用して読み込んだテキスト)
 * **tm**パッケージの `VCorpus`コーパスオブジェクト
-* テキスト列と他のドキュメントレベルのメタデータを含むdata.frame
+* テキスト列と他のドキュメントレベルのメタデータを含むデータ・フレーム
 
-### 例：文字列からコーパスを作成
+### 文字列からコーパスを作成
 
-最も単純なケースは、すでにRのメモリにあるテキストのベクトルからコーパスを作成することです。テキストのベクトルをRに取り込む方法は実にたくさんあるので、高度なRユーザーは、入力するテキストをいろいろな方法で作り出せます。
+コーパスを作成する最も簡単な方法は，`corpus()`を用いて，すでにRに読み込まれた文字列ベクトル作成することです．文字列ベクトルをRに取り込む方法はさまざまなので，高度なRユーザーは，コーパスをいろいろな方法で作り出せます．
 
-すでにテキストベクトル形式のテキストがある場合は、コーパスコンストラクタ関数を直接呼び出すことができます。 次の例では、**quanteda**パッケージと一緒に配布される、イギリスの政党の2010年の選挙マニフェストから抽出されたテキストオブジェクト(`data_char_ukimmig2010`)をつかって、コーパスを作成しています。
+次の例では，**quanteda**パッケージに含まれているイギリスの政党の2010年の選挙マニフェストのテキスト(`data_char_ukimmig2010`)からコーパスを作成しています．
 
 ```{r}
 myCorpus <- corpus(data_char_ukimmig2010)  # テキストからコーパスを作成
 summary(myCorpus)
 ```
 
-コーパスを作成したあとで、もし必要ならば、ドキュメントレベルの変数(`docvars`と呼ばれるもの)をこのコーパスに追加することができます。
+コーパスを作成したあとでも，`docvars`を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができます．
 
-たとえば、Rの`names()`関数を使って文字ベクトル`data_char_ukimmig2010`の名前を取得し、これをドキュメント変数(`docvar`)に追加することができます。
+たとえば，Rの`names()`関数を使って文字ベクトル`data_char_ukimmig2010`の名前を取得し，これをドキュメント変数(`docvar()`)に追加することができます．
 
 ```{r}
 docvars(myCorpus, "Party") <- names(data_char_ukimmig2010)
@@ -87,7 +86,7 @@ docvars(myCorpus, "Year") <- 2010
 summary(myCorpus)
 ```
 
-分析の対象となるドキュメント変数では必ずしもないけれども、ドキュメントの属性として残しておきたいと思う追加のメタデータも、`docvars()`を使って、コーパスに追加することができます。
+分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，`docvars()`を使って，コーパスに追加することができます．
 
 ```{r}
 metadoc(myCorpus, "language") <- "english"
@@ -95,11 +94,11 @@ metadoc(myCorpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(myCorpu
 summary(myCorpus, showmeta = TRUE)
 ```
 
-このコマンド `metadoc`では、ドキュメントメタデータフィールドを自由に定義することができます。 `language`フィールドに、単一の値`english`をアサインするときには、Rは値を再利用してステベのドキュメントにアサインしていることに注意してください。
+`metadoc()`を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値("english")をフィールド"language"に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意してください．
 
-独自のmetadocフィールド`docsource`のタグを作成する際には、quanteda関数`ndoc()`を使ってコーパスの文書数を取り出しました。この関数`ndoc()`は、`nrow()`や `ncol()`のようなR標準の関数と同じような方法で動作するように意図して設計されています。
+独自の文書メタデータのフィールド(`docsource`)を作成するために，**quanteda**関数である`ndoc()`を使ってコーパスに含まれる文書の総数を取得しています．`ndoc()`は，`nrow()`や`ncol()`などのRの標準の関数と同じような方法で動作するように設計されています．
 
-### 例：**readtext**パッケージを用いたファイルの読み込み
+### readtextパッケージを用いたファイルの読み込み
 
 ```{r, eval=FALSE}
 require(readtext)
@@ -138,24 +137,22 @@ summary(corpus(mytf7), 5)
 
 ### コーパスの原理
 
-コーパスを設計するのにあたりquantedaでは、元になったドキュメントをプレーンなUTF-8でエンコードされたテキストに変換し、コーパスレベルおよびドキュメントレベルのメタデータと一緒に格納する、ドキュメントの「ライブラリ」としてコーパスが機能するようにしました。ドキュメントレベルのメタデータには*docvars*という名前がつけられています。*docvars*は、各文書の属性を記述する変数（あるいはフィーチャー）です。
+**quanteda**のコーパスは，元の文書をユニコード(UTF-8)に変換し，文書に対するメタデータと一緒に格納しすることで、ステミングや句読点の削除などの処理よって変更されないテキストデータの静的な保管庫になるように設計されています．これによって，コーパスから文書を抽出して新しいオブジェクトを作成した後でも，コーパスには元のデータが残り，別の分析を，同じコーパスを用いて行うことができます．
 
-コーパスは基本的には、処理および分析に関して、テキストの静的なコンテナになるように設計されています。これが意味するのは、コーパス内のテキストは、ステミングや句読点の削除などのテキストのクリーニングや前処理ステップによって内部的に変更されるようには設計されていない、ということです。このことで、処理の一部としてコーパスからテキストを抽出して新しいオブジェクトに割り当てた後でも、コーパスは元のテキストの参照コピーとして残り、たとえばステミング前の単語や句読点を必要とする可読性の分析などの分析を、同じコーパス上で実行することができるようになるのです。
-
-コーパスからテキストを抽出するためには、`texts()`と呼ばれる抽出子を使用します。
+コーパスから文書を取り出すためには，`texts()`と呼ばれる関数を使用します．
 
 ```{r}
 texts(data_corpus_inaugural)[2]
 ```
 
 
-`summary()`メソッドにより、コーパス内のテキストの要約を行うことができます。
+`summary()`により，コーパス内のテキストの要約を行うことができます．
 
 ```{r}
 summary(data_corpus_irishbudget2010)
 ```
 
-summaryコマンドの出力をデータフレームとして保存し、この情報を使って基本的な記述統計をプロットすることができます：
+`summary()`の出力をデータ・フレームとして保存し，基本的な記述統計を描画することができます．
 
 ```{r, fig.width = 8}
 tokenInfo <- summary(data_corpus_inaugural)
@@ -172,7 +169,7 @@ tokenInfo[which.max(tokenInfo$Tokens), ]
 
 ### コーパスの結合
 
-`+`演算子で、2つのコーパスオブジェクトを簡単に連結できます。ドキュメントレベルの変数が2つのコーパスで異なる場合には、ドキュメント変数は継ぎ接ぎされて、情報が失われることを防ぎます。コーパスレベルのメタデータも結合されます。
+`+`演算子を用いると，簡単に二個のコーパスを連結できます．コーパスが異なる構造を持つ場合でも，文書変数が失われることはなく，コーパスのメタデータも引き継がれます．
 
 ```{r}
 library(quanteda)
@@ -184,18 +181,16 @@ summary(mycorpus3)
 
 ### コーパス内の文書の一部の文書の抽出
 
-コーパスオブジェクトに対して定義された `corpus_subset()`関数のメソッドがあります。この関数により、ドキュメント変数
-docvarsに適用される論理条件に基づいて文書を抽出します。
+`corpus_subset()`により，文書変数に適用される論理条件に基づいて文書を抽出することができます．
 
 ```{r}
 summary(corpus_subset(data_corpus_inaugural, Year > 1990))
 summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ```
 
-
 ## コーパス内の文書の探索
 
-`kwic`(KeyWords-In-Context)関数は単語の検索を行い、その単語が生起する文脈を表示します：
+`kwic()`(keywords-in-context)は単語の検索を行い，その単語が現れる文脈を表示します．
 
 ```{r, tidy=TRUE}
 kwic(data_corpus_inaugural, "terror")
@@ -210,7 +205,7 @@ kwic(data_corpus_inaugural, "communist*")
 ```
 
 
-上記の要約では、「Year」と「President」は各文書に結び付けられた変数です。 `docvars()`関数でこのような変数にアクセスできます。
+上記の要約では，"Year"と"President"は各文書に結び付けられた変数です． `docvars()`でこのような変数にアクセスできます．
 
 ```{r}
 # inspect the document-level variables
@@ -220,18 +215,18 @@ head(docvars(data_corpus_inaugural))
 metacorpus(data_corpus_inaugural)
 ```
 
-[quantedaData](http://github.com/kbenoit/quantedaData)パッケージをインストールすることにより、もっとたくさんのコーパスを試すことができます。
+[**quantedaData**](http://github.com/kbenoit/quantedaData)をインストールすることにより，より多くのコーパスを試すことができます．
 
 
-# コーパスからフィーチャーを抽出
+# コーパスから特長を抽出
 
-文書のスケーリングなどの統計分析を行うためには、各ドキュメントについて特定のフィーチャーの値を関連付けた行列を抽出する必要があります。 quantedaでは、このような行列を生成するために `dfm`関数を使います。 "dfm"は*document-feature matrix*の略で、各行が一つのドキュメント、各列が「フィーチャー」となる行列です。 行と列をこのように規定する理由は、データ分析では行が分析単位になり、各列が分析対象になる変数となるのが通常だからです。 他のソフトウェアのように、「ターム」という用語を用いず「フィーチャー」という用語を使う理由は、フィーチャーのほうが一般性を持つ用語だからです。様々なものがフィーチャーとなります。元の単語、ステムされた単語、品詞解析された単語、ストップワードが削除された後の単語、あるいは、辞書分析によりその単語が属するとされたクラス、などです。 更にはngramsや構文の係り受けの関係などをフィーチャーとするなどいろいろな可能性がありえ、`quanteda`は何がフィーチャーになるかを細かく規定せずオープンに受け入れます。
+文書のスケーリングなどの統計分析を行うためには，それぞれの文書の特長をまとめた行列を作成する必要があります． **quanteda**では，このような行列を生成するために `dfm()`を使います． dfmは*document-feature  matrix*の略で，行が文書(document)，列が特長(feature)となる行列です．行と列をこのように定義する理由は，データ分析では行が分析単位になり，各列が分析対象になる変数となるのが一般的だからです．他のソフトウェアとは異なり，`quanteda`が語(term)でなはく特長(feature)という用語を使うのは，特長のほうが一般性を持つ用語だからです．テキスト分析では，単語，語幹，単語の集合，Nグラム，品詞など様々なものが文書の特長となります．
 
 ## 文書のトークン化
 
-テキストを簡単にトークン化するために、quantedaは `tokens()`と呼ばれる強力なコマンドを提供します。 この関数は、文字ベクトルのトークンのリストからなる中間オブジェクトを生成します。ここで、リストの一つ一つの要素は入力されたドキュメントに対応しています。
+テキストを簡単にトークン化するために，**quanteda**は `tokens()`と呼ばれる強力なコマンドを提供します．この関数は，文字ベクトルのトークンのリストからなる中間オブジェクトを生成します．ここで，リストの一つ一つの要素は入力されたドキュメントに対応しています．
 
-`tokens()`は意図して保守的に設計されています。ユーザーが明示的に指示を与えないかぎりは、要素を削除しません。
+`tokens()`は意図して保守的に設計されており、ユーザーが明示的に指示を与えないかぎりは，要素を削除しません．
 
 ```{r}
 txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!", 
@@ -244,25 +239,25 @@ tokens(txt, remove_numbers = FALSE, remove_punct = FALSE)
 tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
 ```
 
-`tokens`には個々の文字をトークン化するオプションもあります:
+`tokens`には個々の文字をトークン化するオプションもあります．
 ```{r}
 tokens("Great website: http://textasdata.com?page=123.", what = "character")
 tokens("Great website: http://textasdata.com?page=123.", what = "character", 
          remove_separators = FALSE)
 ```
 
-もしくは、一文ごとにトークン化するオプションもあります。
+もしくは，一文ごとにトークン化するオプションもあります．
 ```{r}
 # sentence level         
 tokens(c("Kurt Vongeut said; only assholes use semi-colons.", 
-           "Today is Thursday in Canberra:  It is yesterday in London.", 
-           "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"), 
-          what = "sentence")
+         "Today is Thursday in Canberra:  It is yesterday in London.", 
+         "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"), 
+         what = "sentence")
 ```
 
-## ドキュメント-フィーチャー行列の作成
+## 文書行列の作成
 
-テキストをトークン化することは中間的な選択肢であり、ほとんどのユーザーはこれをスキップしてドキュメント-フィーチャー行列を作成したいと考えるでしょう。 このために、quantedaはワンステップで、トークン化を実行し、抽出されたフィーチャーをドキュメントｘフィーチャーのマトリックスに集計する `dfm()`と呼ばれるスイスアーミーナイフのように便利な関数を持っています。 `tokens()`の保守的なアプローチとは異なり、 `dfm()`関数はデフォルトで `tolower`（大文字を小文字へと置き換える独立の関数）や句読点を取り除くなどのオプションを適用します。  `tokens()`のオプションはすべて `dfm()`に渡すことができます。
+文書をトークン化は中間的な処理であり，ほとんどのユーザーはこれを省いて、すぐに文書行列を作成したいと考えるでしょう． このために，**quanteda**は，自動的にトークン化を実行し，文書行列を作成する`dfm()`と呼ばれるスイスアーミーナイフのように便利な関数を持っています．保守的な`tokens()`とは異なり，`dfm()`はデフォルトで大文字を小文字へと置き換えや，句読点を取り除くなどの操作を適用します．また，`dfm()`から`tokens()`の全てのオプションを利用できます．
 
 ```{r}
 myCorpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
@@ -272,7 +267,7 @@ myDfm <- dfm(myCorpus)
 myDfm[, 1:5]
 ```
 
-`dfm()`のその他のオプションには、ストップワードの削除やトークンのステミングが含まれます。
+`dfm()`の追加のオプションには，ストップワードの削除(`remove`)や語のステミング(`stem`)が含まれます．
 
 ```{r}
 # make a dfm, removing stopwords and applying stemming
@@ -281,10 +276,7 @@ myStemMat <- dfm(myCorpus, remove = stopwords("english"),
 myStemMat[, 1:5]
 ```
 
-
-`remove`オプションは、ドキュメント-フィーチャー行列から除外するトークンのリストを提供します。 多くのユーザーはすでに定義された「ストップワード」のリストを使うことになるでしょう。
-
-`stopwords()`関数は、幾つかの言語で定義された、ストップワードの辞書を提供します（残念ながら日本語は含まれていませんが、ユーザーが定義した辞書を使うことはできます）。
+`remove`によっては，文書行列から除外するトークンを指定します．`stopwords()`は，幾つかの言語で定義されたストップワードのリストを返します（残念ながら日本語は含まれていませんが，ユーザーが定義した辞書を使うことはできます）．
 
 ```{r}
 head(stopwords("english"), 20)
@@ -294,19 +286,21 @@ head(stopwords("arabic"), 10)
 
 ### 文書行列の表示
 
-dfmは、RStudioのEnvironmentペインで、またはRの `View`関数を呼び出すことで調べることができます。 dfmで `plot`を呼び出すと、[wordcloudパッケージ](https://cran.r-project.org/web/packages/wordcloud)を使ってワードクラウドが表示されます。
+RStudioの"Environment"パネル，またはRの`View()`を用いることで，dfmに格納された値を見ることができます．dfmに対して`plot()`を用いると，[**wordcloud**](https://cran.r-project.org/web/packages/wordcloud)を使ってワードクラウドが表示されます．
 
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
 mydfm <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
 mydfm
 ```
 
-頻度が最も高いフィーチャーを見るには、`topfeatures()`を使います:
+頻度が最も高い特長語を見るには，`topfeatures()`を使います．
+
 ```{r}
 topfeatures(mydfm, 20)  # 20 top words
 ```
 
-`dfm`オブジェクトを`textplot_wordcloud()`に渡すことで、ワードクラウドをプロットできます。この関数は、オブジェクトや引数を**wordcloud**パッケージの`wordcloud()`関数に送るので、ワードクラウドのプロットを変更することもできます。
+dfmを`textplot_wordcloud()`に渡すことで，ワードクラウドをプロットできます．この関数は，オブジェクトや引数を**wordcloud**パッケージの`wordcloud()`に送るので，ワードクラウドのプロットを変更することもできます．
+
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
 textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
@@ -314,48 +308,48 @@ textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
-### ドキュメント変数による文書のグループ化
+### 変数による文書のグループ化
 
-多くの場合で、ドキュメントごとではなく、ドキュメント変数の値によってグループを作って分析したい、と思うこともあるでしょう。quantedaでは、dfmを作るときに、ドキュメント変数のそれぞれの値ごとにドキュメントをグループ化するすることができます。
+**quanteda**では，dfmを作成する際に，文書変数の値によって文書をグループ化するすることができます．
 
 ```{r}
 byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", 
                   remove = stopwords("english"), remove_punct = TRUE)
 ```
 
-以下のように、dfmをソートして、中身を確かめられます。
+また、以下のように，dfmを語の頻度順に並べ替えて，中身を確かめられます．
+
 ```{r}
 dfm_sort(byPartyDfm)[, 1:10]
 ```
 
-この例で、最頻出のフィーチャーは、多くの場合英語のストップリストにある単語である「will」ですが、
-quantedaの組み込み英語ストップワードリストには、この単語は含まれていません。
 
-### 辞書を用いた語のグループ化
+### 辞書による語のグループ化
 
-テキストから測定して指標化したい特徴的な単語の集合についての事前知識を持っている場合を考えてみましょう。 たとえば、映画レビューで好意的な感情に関連するような、好意的単語の辞書をすでに持っている、または特定のイデオロギー的なスタンスに関連する政治用語の辞書を持っているというような場合です。 このような場合、これらの単語のグループをまとめて一つのものとして取り扱い、これらの単語を合計して一つのクラスとしてカウントして分析すると上手くいくかもしれません。
+肯定的な映画のレビューや，特定の政治意識に関する語があらかじめ分かっている場合，語のグループをまとめて一つのものとして取り扱い，これらを合計して単一の特徴して分析すると上手くいくかもしれません．
 
-次の例では、テロリズムに関連する言葉や経済に関連する言葉が、演説コーパスで大統領によってどのように異なるかを見てみます。 クリントン以来の大統領の就任演説をコーパスとして使います：
+次の例では，テロリズムに関連する言葉や経済に関連する言葉が，クリントン以降の大統領演説コーパスでどのように異なるかを見てみます．
 
 ```{r}
 recentCorpus <- corpus_subset(data_corpus_inaugural, Year > 1991)
 ```
 
-テロリズムと経済という2つのリストからなる辞書を作成します:
+テロリズムと経済という2つのリストからなる辞書を作成します．
+
 ```{r}
 myDict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
                           economy = c("jobs", "business", "grow", "work")))
 ```
 
 
-dfmを作成するときに、この辞書を使います:
+文書行列を作成するときに，この辞書を`dfm()`の`dictionary`に渡します．
+
 ```{r}
 byPresMat <- dfm(recentCorpus, dictionary = myDict)
 byPresMat
 ```
 
-辞書のコンストラクタ関数 `dictionary()`は、2つの一般的な "外部"辞書形式でも動作します。
-LIWCとWordstat (Provalis Research)形式です。 以下では、LIWCの辞書を読み込み、これを大統領就任演説コーパスに適用しています。
+`dictionary()`は，LIWCやWordstatなどの一般的な辞書ファイルを読み込むことができますです．以下では，LIWCの辞書を大統領就任演説コーパスに適用しています．
 
 ```{r, eval = FALSE}
 liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
@@ -363,7 +357,6 @@ liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_Eng
 liwcdfm <- dfm(data_corpus_inaugural[52:58], dictionary = liwcdict)
 liwcdfm[, 1:10]
 ```
-
 
 
 # 追加の事例
@@ -380,7 +373,7 @@ obamaSimil
 ```
 
 
-上記の、ドキュメント間の距離から樹形図を作成して、大統領をクラスター分類することができます:
+上記の，文書間の類似性から樹形図を作成して，大統領を分類することができます．
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
 data(data_corpus_SOTU, package = "quantedaData")
 presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
@@ -396,17 +389,16 @@ presCluster$labels <- docnames(presDfm)
 # plot as a dendrogram
 plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 ```
-(try it!)
 
-用語の類似性も確かめられます:
+文書間と同様に用語間の類似性も測定できます．
 ```{r}
 sim <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features")
 lapply(as.list(sim), head, 10)
 ```
 
-## ドキュメントのスケーリング
+## 文書のスケーリング
 
-`textmodel()`関数にはたくさんのモデルが含まれています、ここでは "wordfish"モデルを比較した教師なしの文書スケーリングを使ってみます：
+**quanteda**にはたくさんの計量テキスト分析のためのモデルが含まれていますが，ワードフィッシュ(`textmodel_wordfish()`)によるを教師なしの文書のスケーリングを使ってみます．
 
 ```{r}
 # make prettier document names
@@ -416,7 +408,7 @@ textmodel_wordfish(ieDfm, dir = c(2, 1))
 
 ## トピックモデル
 
-**quanteda**を使用すると、dfmを**topicmodels**の`LDA()`形式のデータに転換して、トピックモデルを簡単に推定できます：
+`convert()`を用いると，dfmを**topicmodels**の`LDA()`形式のデータに転換して，簡単にトピックモデルを適用できます．
 
 ```{r}
 quantdfm <- dfm(data_corpus_irishbudget2010, 
