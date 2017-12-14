@@ -342,10 +342,6 @@ We can sort this dfm, and inspect it:
 dfm_sort(byPartyDfm)[, 1:10]
 ```
 
-Note that the most frequently occurring feature is "will", a word usually on English stop lists, but
-one that is not included in quanteda's built-in English stopword list.  
-
-
 ### Grouping words by dictionary or equivalence class
 
 For some applications we have prior knowledge of sets of words that are indicative of traits we would like to measure from the text. For example, a general list of positive words might indicate positive sentiment in a movie review, or we might have a dictionary of political terms which are associated with a particular ideological stance. In these cases, it is sometimes useful to treat these groups of words as equivalent for the purposes of analysis, and sum their counts into classes. 
