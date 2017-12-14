@@ -20,8 +20,8 @@ regex2fixed = unlist(regex2fixed5(regex_liwc, types, 'regex', case_insensitive=T
 times=1
 )
 
-out1 = unique(unlist(lapply(head(regex_liwc, 1000), function(x, y) stri_subset_regex(y, x, case_insensitive=TRUE), types)))
-out2 = unlist(regex2fixed5(head(regex_liwc, 1000), types, 'regex', case_insensitive=TRUE))
+out1 <- unique(unlist(lapply(head(regex_liwc, 1000), function(x, y) stri_subset_regex(y, x, case_insensitive=TRUE), types)))
+out2 <- unlist(regex2fixed5(head(regex_liwc, 1000), types, 'regex', case_insensitive=TRUE))
 identical(out1, out2)
 setdiff(out1, out2)
 setdiff(out2, out1)

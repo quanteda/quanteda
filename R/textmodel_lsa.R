@@ -103,7 +103,7 @@ textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "featu
     
     # keep the input matrix
     result$data <- x
-    class(result) = c("textmodel_lsa_fitted")
+    class(result) <- c("textmodel_lsa_fitted")
     
     # return the LSA space
     return (result)
@@ -121,8 +121,8 @@ predict.textmodel_lsa_fitted <- function(object, newdata = NULL, ...) {
     call <- match.call()
     if (is.null(newdata)) newdata <- object$data
     
-    tsa =  newdata %*% object$features %*% solve(diag(object$sk))
-    transfed =  t(object$features %*% diag(object$sk) %*% t(tsa)) 
+    tsa <-  newdata %*% object$features %*% solve(diag(object$sk))
+    transfed <- t(object$features %*% diag(object$sk) %*% t(tsa)) 
     
     colnames(transfed) <- rownames(object$features)
     rownames(transfed) <- rownames(newdata)

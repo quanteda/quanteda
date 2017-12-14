@@ -185,8 +185,8 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
     
     result <- as.data.frame(dt[, list(chi2, p)])
     rownames(result) <- dt$feature
-    result$target = as.vector(x[1,])
-    result$reference = as.vector(x[2,])
+    result$target <- as.vector(x[1,])
+    result$reference <- as.vector(x[2,])
     return(result)
 }
 
@@ -215,8 +215,8 @@ keyness_chi2_stats <- function(x) {
                                                        as.numeric(y[2]), 
                                                        sums[1], sums[2])))
     )
-    result$target = as.vector(x[1,])
-    result$reference = as.vector(x[2,])
+    result$target <- as.vector(x[1,])
+    result$reference <- as.vector(x[2,])
     return(result)
 }
 
@@ -237,8 +237,8 @@ keyness_exact <- function(x) {
                     data.frame(or = as.numeric(et$estimate), p = et$p.value)
                 }))
     )
-    result$target = as.vector(x[1,])
-    result$reference = as.vector(x[2,])
+    result$target <- as.vector(x[1,])
+    result$reference <- as.vector(x[2,])
     return(result)
 }
 
@@ -300,8 +300,8 @@ keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")
     
     result <- as.data.frame(dt[, list(G2, p)])
     rownames(result) <- dt$feature
-    result$target = as.vector(x[1,])
-    result$reference = as.vector(x[2,])
+    result$target <- as.vector(x[1,])
+    result$reference <- as.vector(x[2,])
     return(result)
 }
 
@@ -333,7 +333,7 @@ keyness_pmi <- function(x) {
     
     result <- as.data.frame(dt[, list(pmi, p)])
     rownames(result) <- dt$feature
-    result$target = as.vector(x[1,])
-    result$reference = as.vector(x[2,])
+    result$target <- as.vector(x[1,])
+    result$reference <- as.vector(x[2,])
     return(result)
 }

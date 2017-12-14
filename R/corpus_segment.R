@@ -259,7 +259,7 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
     
     result <- data.frame(texts = unlist(temp, use.names = FALSE), stringsAsFactors = FALSE)
     result$docid <- rep(seq_len(length(temp)), lengths(temp))
-    if (!is.null(docname)) result$docname = rep(docname, lengths(temp))
+    if (!is.null(docname)) result$docname <- rep(docname, lengths(temp))
     
     if (!is.null(pattern)) {    
         if (extract_pattern) {

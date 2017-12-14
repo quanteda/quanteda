@@ -306,7 +306,7 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
     if (!is.character(separator) || stri_length(separator) == 0)
         stop("separator must be a non-empty character")
     
-    x@separator = separator
+    x@separator <- separator
     if (tolower) x <- lowercase_dictionary_values(x)
     x <- merge_dictionary_values(x)
     return(x)
