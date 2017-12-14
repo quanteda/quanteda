@@ -83,14 +83,16 @@ textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "featu
         result$features <- dec$v
         rownames(result$features) <- colnames(x)
         result$matrix_low_rank <- t(dec$v * dec$d)
-        rownames(result$matrix_low_rank) <- paste0(quanteda_options("base_compname"), seq_len(nrow(result$matrix_low_rank)))
+        rownames(result$matrix_low_rank) <- 
+            paste0(quanteda_options("base_compname"), seq_len(nrow(result$matrix_low_rank)))
         colnames(result$matrix_low_rank) <- colnames(x)
     } else if (margin == "features") {
         result$docs <- dec$u
         rownames(result$docs) <- rownames(x)
         result$matrix_low_rank <- dec$u * dec$d
         rownames(result$matrix_low_rank) <- rownames(x)
-        colnames(result$matrix_low_rank) <- paste0(quanteda_options("base_compname"), seq_len(ncol(result$matrix_low_rank)))
+        colnames(result$matrix_low_rank) <- 
+            paste0(quanteda_options("base_compname"), seq_len(ncol(result$matrix_low_rank)))
     } else {
         result$docs <- dec$u
         result$features <- dec$v

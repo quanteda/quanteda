@@ -22,7 +22,8 @@ NULL
 #' @rdname print.dfm
 #' @keywords dfm
 setMethod("print", signature(x = "dfm"), 
-          function(x, show.values = NULL, show.settings = FALSE, show.summary = TRUE, 
+          function(x, show.values = NULL, show.settings = FALSE, 
+                   show.summary = TRUE, 
                    ndoc = quanteda_options("print_dfm_max_ndoc"), 
                    nfeat = quanteda_options("print_dfm_max_nfeat"), ...) {
               if (show.summary) {
@@ -73,9 +74,9 @@ print_dfm <- function(x, ndoc, nfeat, show_values, show_settings, ...) {
 #' For a \link{dfm} object, returns the first or last \code{n} documents 
 #' and first \code{nfeat} features.
 #' @param x a dfm object
-#' @param n a single, positive integer.  If positive, size for the resulting object: 
-#'   number of first/last documents for the dfm. If negative, all but the n 
-#'   last/first number of documents of x.
+#' @param n a single, positive integer.  If positive, size for the resulting
+#'   object: number of first/last documents for the dfm. If negative, all but
+#'   the n last/first number of documents of x.
 #' @param nf the number of features to return, where the resulting object 
 #'   will contain the first \code{ncol} features; default is all features
 #' @param ... additional arguments passed to other functions
@@ -92,7 +93,8 @@ print_dfm <- function(x, ndoc, nfeat, show_values, show_settings, ...) {
 head.dfm <- function(x, n = 6L, nf = nfeat(x), ...) { 
     x <- as.dfm(x)
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs) > 1, "s ", " "), names(addedArgs), " not used.", sep = "")
+        warning("Argument", ifelse(length(addedArgs) > 1, "s ", " "), 
+                names(addedArgs), " not used.", sep = "")
     stopifnot(length(n) == 1L || length(nf) == 1L)
     n <- if (n < 0L)  max(ndoc(x) + n, 0L) else min(n, ndoc(x))
     nf <- if (nf < 0L)  max(nfeat(x) + nf, 0L) else min(nf, nfeat(x))
@@ -109,7 +111,8 @@ head.dfm <- function(x, n = 6L, nf = nfeat(x), ...) {
 tail.dfm <- function(x, n = 6L, nf = nfeat(x), ...) { 
     x <- as.dfm(x)
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs) > 1, "s ", " "), names(addedArgs), " not used.", sep = "")
+        warning("Argument", ifelse(length(addedArgs) > 1, "s ", " "), 
+                names(addedArgs), " not used.", sep = "")
     stopifnot(length(n) == 1L || length(nf) == 1L)
     nrx <- ndoc(x)
     ncl <- nfeat(x)

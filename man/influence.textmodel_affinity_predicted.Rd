@@ -9,12 +9,14 @@
 \arguments{
 \item{model}{a fitted \link{textmodel_affinity} object}
 
-\item{subset}{whether to use all data or a subset (for instance, exclude the training set)}
+\item{subset}{whether to use all data or a subset (for instance, exclude the
+training set)}
 
 \item{...}{unused}
 }
 \description{
-Computes the influence of features on scaled \link{textmodel_affinity} applications.
+Computes the influence of features on scaled \link{textmodel_affinity}
+applications.
 }
 \seealso{
 \code{\link{influence.lm}}

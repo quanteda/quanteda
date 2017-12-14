@@ -11,7 +11,8 @@ affinity(p, x, smooth = 0.5, verbose = FALSE)
 
 \item{x}{term-document matrix for document(s) to be scaled}
 
-\item{smooth}{a misnamed smoothing parameter, either a scalar or a vector equal in length to the number of documents}
+\item{smooth}{a misnamed smoothing parameter, either a scalar or a vector
+equal in length to the number of documents}
 }
 \value{
 a list with stuff

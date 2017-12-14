@@ -4,28 +4,28 @@
 ## Ken Benoit
 ####################################################################
 
-setClassUnion("dframe", members = c("data.frame", "NULL")) # TODO should not allow docvars to be NULL
+setClassUnion("dframe", members = c("data.frame", "NULL")) 
 
 #' Virtual class "dfm" for a document-feature matrix
 #' 
-#' The dfm class of object is a type of \link[Matrix]{Matrix-class} object with 
+#' The dfm class of object is a type of \link[Matrix]{Matrix-class} object with
 #' additional slots, described below.  \pkg{quanteda} uses two subclasses of the
-#' \code{dfm} class, depending on whether the object can be represented by a 
-#' sparse matrix, in which case it is a \code{dfm} class object, or if dense, 
+#' \code{dfm} class, depending on whether the object can be represented by a
+#' sparse matrix, in which case it is a \code{dfm} class object, or if dense,
 #' then a \code{dfmDense} object.  See Details.
-#' 
+#'
 #' @slot settings settings that govern corpus handling and subsequent downstream
-#'   operations, including the settings used to clean and tokenize the texts, 
+#'   operations, including the settings used to clean and tokenize the texts,
 #'   and to create the dfm.  See \code{\link{settings}}.
-#' @slot weighting the feature weighting applied to the dfm.  Default is 
-#'   \code{"frequency"}, indicating that the values in the cells of the dfm are 
-#'   simple feature counts. To change this, use the \code{\link{dfm_weight}} 
+#' @slot weighting the feature weighting applied to the dfm.  Default is
+#'   \code{"frequency"}, indicating that the values in the cells of the dfm are
+#'   simple feature counts. To change this, use the \code{\link{dfm_weight}}
 #'   method.
-#' @slot smooth a smoothing parameter, defaults to zero.  Can be changed using 
+#' @slot smooth a smoothing parameter, defaults to zero.  Can be changed using
 #'   either the \code{\link{smooth}} or the \code{\link{dfm_weight}} methods.
-#' @slot Dimnames  These are inherited from \link[Matrix]{Matrix-class} but are 
+#' @slot Dimnames  These are inherited from \link[Matrix]{Matrix-class} but are
 #'   named \code{docs} and \code{features} respectively.
-#' @details The \code{dfm} class is a virtual class that will contain 
+#' @details The \code{dfm} class is a virtual class that will contain
 #'   \link[Matrix]{dgCMatrix-class}.
 #' @seealso \link{dfm}
 #' @name dfm-class
@@ -33,14 +33,17 @@ setClassUnion("dframe", members = c("data.frame", "NULL")) # TODO should not all
 #' @import methods
 #' @keywords internal dfm
 setClass("dfm",
-         slots = c(settings = "list", weightTf = "list", weightDf = "list", smooth = "numeric", # TODO stop using camel-case
-                   ngrams = "integer", skip = "integer", concatenator = "character", version = "integer",
+         slots = c(settings = "list", weightTf = "list", weightDf = "list", 
+                   smooth = "numeric", 
+                   ngrams = "integer", skip = "integer", 
+                   concatenator = "character", version = "integer",
                    docvars = "dframe"),
          prototype = list(settings = list(NULL),
                           Dim = integer(2), 
                           Dimnames = list(docs = NULL, features = NULL),
                           weightTf = list(scheme = "count", base = NULL, K = NULL),
-                          weightDf = list(scheme = "unary", base = NULL, c = NULL, smoothing = NULL, threshold = NULL),
+                          weightDf = list(scheme = "unary", base = NULL, c = NULL,
+                                          smoothing = NULL, threshold = NULL),
                           smooth = 0,
                           ngrams = 1L,
                           skip = 0L,
@@ -154,11 +157,11 @@ as.data.frame.dfm <- function(x, row.names = NULL, ...) {
 #'   (\code{cbind}) or row-wise (\code{rbind}) to the first.  Numeric objects
 #'   not confirming to the row or column dimension will be recycled as normal.
 #' @details \code{cbind(x, y, ...)} combines dfm objects by columns, returning a
-#'   dfm object with combined features from input dfm objects.  Note that this 
-#'   should be used with extreme caution, as joining dfms with different 
-#'   documents will result in a new row with the docname(s) of the first dfm, 
-#'   merging in those from the second.  Furthermore, if features are shared 
-#'   between the dfms being cbinded, then duplicate feature labels will result. 
+#'   dfm object with combined features from input dfm objects.  Note that this
+#'   should be used with extreme caution, as joining dfms with different
+#'   documents will result in a new row with the docname(s) of the first dfm,
+#'   merging in those from the second.  Furthermore, if features are shared
+#'   between the dfms being cbinded, then duplicate feature labels will result.
 #'   In both instances, warning messages will result.
 #' @export
 #' @method cbind dfm
@@ -178,7 +181,8 @@ cbind.dfm <- function(...) {
     args <- list(...)
     names <- names(args) # for non-dfm objects
     
-    if (!any(vapply(args, is.dfm, logical(1)))) stop("at least one input object must be a dfm")
+    if (!any(vapply(args, is.dfm, logical(1)))) 
+        stop("at least one input object must be a dfm")
 
     if (length(args) == 1) return(args[[1]])
     
@@ -213,14 +217,18 @@ cbind.dfm <- function(...) {
     }
     
     # make any added feature names unique
-    index_added <- stri_startswith_fixed(colnames(result), quanteda_options("base_featname"))
-    colnames(result)[index_added] <- make.unique(colnames(result)[index_added], sep = "")
+    index_added <- stri_startswith_fixed(colnames(result), 
+                                         quanteda_options("base_featname"))
+    colnames(result)[index_added] <- 
+        make.unique(colnames(result)[index_added], sep = "")
     
     # only issue warning if these did not come from added feature names
     if (any(duplicated(colnames(result))))
-        warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE, call. = FALSE)
+        warning("cbinding dfms with overlapping features will result in duplicated features", 
+                noBreaks. = TRUE, call. = FALSE)
     
-    names(dimnames(result)) <- c("docs", "features") # TODO could be removed after upgrading as.dfm()
+    # TODO could be removed after upgrading as.dfm()
+    names(dimnames(result)) <- c("docs", "features") 
     slots(result) <- attrs
     return(result)
 
@@ -228,11 +236,11 @@ cbind.dfm <- function(...) {
 
 
 #' @rdname cbind.dfm
-#' @details  \code{rbind(x, y, ...)} combines dfm objects by rows, returning a dfm
-#'   object with combined features from input dfm objects.  Features are matched
-#'   between the two dfm objects, so that the order and names of the features
-#'   do not need to match.  The order of the features in the resulting dfm
-#'   is not guaranteed.  The attributes and settings of this new dfm are not
+#' @details  \code{rbind(x, y, ...)} combines dfm objects by rows, returning a
+#'   dfm object with combined features from input dfm objects.  Features are
+#'   matched between the two dfm objects, so that the order and names of the
+#'   features do not need to match.  The order of the features in the resulting
+#'   dfm is not guaranteed.  The attributes and settings of this new dfm are not
 #'   currently preserved.
 #' @export
 #' @method rbind dfm
@@ -257,14 +265,16 @@ rbind.dfm <- function(...) {
     if (!nfeat(x) || !ndoc(x)) return(x)
     
     feature <- union(featnames(x), featnames(y))
-    result <- new("dfm", Matrix::rbind2(pad_dfm(x, feature), pad_dfm(y, feature)))
+    result <- 
+        new("dfm", Matrix::rbind2(pad_dfm(x, feature), pad_dfm(y, feature)))
     if (length(args) > 2) {
         for (i in seq(3, length(args))) {
             result <- rbind(result, args[[i]])
         }
     }
     
-    names(dimnames(result)) <- c("docs", "features") # TODO could be removed after upgrading as.dfm()
+    # TODO could be removed after upgrading as.dfm()
+    names(dimnames(result)) <- c("docs", "features") 
     slots(result) <- attrs
     return(result)
 }

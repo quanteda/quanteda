@@ -49,8 +49,8 @@ index constructed by index_types().}
 
 \item{patterns}{a list of regular expressions}
 
-\item{types_search}{lowercased types when \code{case_insensitive=TRUE}, but not
-used in glob and fixed matching as types are in the index.}
+\item{types_search}{lowercased types when \code{case_insensitive=TRUE}, but
+not used in glob and fixed matching as types are in the index.}
 
 \item{max_len}{maximum length of types to be indexed}
 
@@ -102,7 +102,8 @@ fastmatch.
 
 simpler and faster version of expand.grid() in base package
 
-internal function for select_types() to check if a glob pattern is indexed by \code{index_types()}
+Internal function for select_types() to check if a glob pattern is indexed by
+\code{index_types()}.
 }
 \examples{
 pattern <- list(c('^a$', '^b'), c('c'), c('d'))

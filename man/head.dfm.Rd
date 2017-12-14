@@ -12,9 +12,9 @@
 \arguments{
 \item{x}{a dfm object}
 
-\item{n}{a single, positive integer.  If positive, size for the resulting object: 
-number of first/last documents for the dfm. If negative, all but the n 
-last/first number of documents of x.}
+\item{n}{a single, positive integer.  If positive, size for the resulting
+object: number of first/last documents for the dfm. If negative, all but
+the n last/first number of documents of x.}
 
 \item{nf}{the number of features to return, where the resulting object 
 will contain the first \code{ncol} features; default is all features}

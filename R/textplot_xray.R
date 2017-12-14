@@ -33,17 +33,20 @@
 #' }
 #' @export
 #' @keywords textplot
-textplot_xray <- function(..., scale = c("absolute", "relative"), sort = FALSE) {
+textplot_xray <- function(..., scale = c("absolute", "relative"), 
+                          sort = FALSE) {
     UseMethod("textplot_xray")
 }
     
 #' @export
-textplot_xray.default <- function(..., scale = c("absolute", "relative"), sort = FALSE) {
+textplot_xray.default <- function(..., scale = c("absolute", "relative"), 
+                                  sort = FALSE) {
     stop(friendly_class_undefined_message(class(x), "textplot_xray"))
 }
 
 #' @export
-textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FALSE) {
+textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), 
+                               sort = FALSE) {
     
     if (!requireNamespace("ggplot2", quietly = TRUE))
         stop("You must have ggplot2 installed to make a dispersion plot.")
@@ -66,7 +69,8 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
     x[, ntokens := ntokensByDoc[as.character(x[, docname])]]
     
     # replace "found" keyword with patterned keyword
-    x[, keyword := unlist(sapply(kwics, function(l) rep(attr(l, "keyword"), nrow(l))))]
+    x[, keyword := unlist(sapply(kwics, 
+                                 function(l) rep(attr(l, "keyword"), nrow(l))))]
 
     # pre-emptively convert keyword to factor before ggplot does it, so that we
     # can keep the order of the factor the same as the order of the kwic objects
@@ -75,8 +79,9 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
     multiple_documents <- length(unique(x$docname)) > 1
 
     # Deal with the scale argument:
-    # if there is a user-supplied value, use that after passing through match.argj
-    # if not, use relative for multiple documents and absolute for single documents
+    # if there is a user-supplied value, use that after passing through 
+    # match.argj; if not, use relative for multiple documents and absolute 
+    # for single documents
     if (!missing(scale)) {
         scale <- match.arg(scale)
     }
@@ -113,31 +118,32 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
                        axis.ticks.y = ggplot2::element_blank(), 
                        axis.text.y = ggplot2::element_blank(),
                        panel.spacing = grid::unit(0.1, "lines"), 
-                       panel.border = ggplot2::element_rect(colour = "gray", fill=NA),
+                       panel.border = ggplot2::element_rect(colour = "gray", fill = NA),
                        strip.text.y = ggplot2::element_text(angle=0)
         ) 
     
     if (scale == 'absolute')
-        plot <- plot + ggplot2::geom_rect(ggplot2::aes(xmin=ntokens, xmax=max(x$ntokens), 
-                                                       ymin=0, ymax=1), fill = 'gray90')
-
+        plot <- plot + 
+          ggplot2::geom_rect(ggplot2::aes(xmin = ntokens, xmax = max(x$ntokens), 
+                                          ymin = 0, ymax = 1), fill = 'gray90')
+    
     if (multiple_documents) {
-        # If there is more than one document, put documents on the panel y-axis and keyword(s)
-        # on the panel x-axis
+        # If there is more than one document, put documents on the panel y-axis 
+        # and keyword(s) on the panel x-axis
         plot <- plot + ggplot2::facet_grid(docname ~ keyword) + 
             ggplot2::labs(y = 'Document', title = paste('Lexical dispersion plot'))
     }
     else {
-        # If not, put keywords on the panel y-axis and the document name in the title
+        # If not, put keywords on the panel y-axis and the doc name in the title
         plot <- plot + ggplot2::facet_grid(keyword~.) + 
             ggplot2::labs(y = '', title = paste('Lexical dispersion plot, document:', x$docname[[1]]))
     }
     
     if (scale == 'relative') {
-        plot <- plot + ggplot2::labs(x='Relative token index')
+        plot <- plot + ggplot2::labs(x = 'Relative token index')
     }
     else {
-        plot <- plot + ggplot2::labs(x='Token index')
+        plot <- plot + ggplot2::labs(x = 'Token index')
     }
 
     plot

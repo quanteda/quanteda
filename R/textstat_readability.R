@@ -194,16 +194,17 @@ textstat_readability.character <- function(x,
     wordLengths <- lapply(tokenizedWords, stringi::stri_length)
 
     # common statistics required by (nearly all) indexes
-    textFeatures <- data.table(textID = names(x),
-                               W = lengths(tokenizedWords),  # number of words
-                               St = St,            # number of sentences
-                               C = vapply(wordLengths, sum, numeric(1)), # number of characters (letters)
-                               Sy = vapply(tmpSyll, sum, numeric(1)),    # number of syllables
-                               W3Sy = vapply(tmpSyll, function(x) sum(x >= 3), numeric(1)),    # number words with >= 3 syllables
-                               W2Sy = vapply(tmpSyll, function(x) sum(x >= 2), numeric(1)),    # number words with >= 2 syllables
-                               W_1Sy = vapply(tmpSyll, function(x) sum(x == 1), numeric(1)),    # number words with 1 syllable
-                               W6C = vapply(wordLengths, function(x) sum(x >= 6), numeric(1)),  # number of words with at least 6 letters
-                               W7C = vapply(wordLengths, function(x) sum(x >= 7), numeric(1)))# number of words with at least 7 letters
+    textFeatures <- 
+        data.table(textID = names(x),
+                   W = lengths(tokenizedWords),  # number of words
+                   St = St,            # number of sentences
+                   C = vapply(wordLengths, sum, numeric(1)), # number of characters (letters)
+                   Sy = vapply(tmpSyll, sum, numeric(1)),    # number of syllables
+                   W3Sy = vapply(tmpSyll, function(x) sum(x >= 3), numeric(1)),    # number words with >= 3 syllables
+                   W2Sy = vapply(tmpSyll, function(x) sum(x >= 2), numeric(1)),    # number words with >= 2 syllables
+                   W_1Sy = vapply(tmpSyll, function(x) sum(x == 1), numeric(1)),    # number words with 1 syllable
+                   W6C = vapply(wordLengths, function(x) sum(x >= 6), numeric(1)),  # number of words with at least 6 letters
+                   W7C = vapply(wordLengths, function(x) sum(x >= 7), numeric(1)))# number of words with at least 7 letters
     textFeatures[, W_wl.Dale.Chall := vapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$dalechall)), numeric(1))]
     textFeatures[, Wlt3Sy := W - W3Sy]   # number of words with less than three syllables
 

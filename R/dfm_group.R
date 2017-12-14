@@ -87,8 +87,9 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
             features <- factor(features, levels = features_unique)
         features_name <- as.character(features_unique)
         if (fill && !identical(levels(features), features_unique)) {
-            features_name <- c(features_name, setdiff(as.character(levels(features)), 
-                                                      as.character(features_unique)))
+            features_name <- 
+                c(features_name, setdiff(as.character(levels(features)), 
+                                         as.character(features_unique)))
         }
     }
     if (is.null(documents)) {
@@ -105,8 +106,9 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
             documents <- factor(documents, levels = documents_unique)
         documents_name <- as.character(documents_unique)
         if (fill && !identical(levels(documents), documents_unique)) {
-            documents_name <- c(documents_name, setdiff(as.character(levels(documents)), 
-                                                        as.character(documents_unique)))
+            documents_name <- 
+                c(documents_name, setdiff(as.character(levels(documents)), 
+                                          as.character(documents_unique)))
         }
     }
     
@@ -115,7 +117,8 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
     dimnames <- list(docs = documents_name, features = features_name)
     
     result <- new("dfm", 
-                  sparseMatrix(i = i_new, j = j_new, x = x_new, dims = dims, dimnames = dimnames),
+                  sparseMatrix(i = i_new, j = j_new, x = x_new, 
+                               dims = dims, dimnames = dimnames),
                   settings = x@settings,
                   weightTf = x@weightTf,
                   weightDf = x@weightDf,

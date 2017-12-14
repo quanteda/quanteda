@@ -216,7 +216,8 @@ nsentence.default <- function(x, ...) {
 
 #' @export
 nsentence.character <- function(x, ...) {
-    upcase <- try(any(stringi::stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
+    upcase <- 
+        try(any(stringi::stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
     if (!is.logical(upcase)) {
         # warning("Input text contains non-UTF-8 characters.")
     } else if (!upcase)

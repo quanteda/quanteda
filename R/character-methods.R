@@ -21,7 +21,8 @@ summary.character <- function(object, n = 100, tolower = FALSE, ...) {
     
     object <- object[1 : min(c(n, length(object)))]
     if (is.null(names(object))) 
-        names(object) <- paste(quanteda_options("base_docname"), seq_along(object), sep = "")
+        names(object) <- paste(quanteda_options("base_docname"), 
+                               seq_along(object), sep = "")
     nsents  <- nsentence(object, ...)
     if (tolower) object <- char_tolower(object)
     toks <- tokens(object, ...)
