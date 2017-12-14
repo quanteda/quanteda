@@ -43,7 +43,8 @@
 #' @import network ggplot2 ggrepel
 #' @keywords textplot
 textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                             edge_color = 'skyblue', edge_alpha = 0.5, edge_size = 2, 
+                             edge_color = 'skyblue', edge_alpha = 0.5, 
+                             edge_size = 2, 
                              vertex_color = 'gray40', vertex_size = 2,
                              vertex_labelcolor = NULL,
                              offset = NULL, ...) {
@@ -52,13 +53,15 @@ textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE,
 
 #' @export
 textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                                 edge_color = 'skyblue', edge_alpha = 0.5, edge_size = 2, 
+                                 edge_color = 'skyblue', edge_alpha = 0.5, 
+                                 edge_size = 2, 
                                  vertex_color = 'gray40', vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  offset = NULL, ...) {
 
     textplot_network(fcm(x), min_freq = min_freq, omit_isolated = omit_isolated, 
-                     edge_color = edge_color, edge_alpha = edge_alpha, edge_size = edge_size, 
+                     edge_color = edge_color, edge_alpha = edge_alpha, 
+                     edge_size = edge_size, 
                      vertex_color = vertex_color, vertex_size = vertex_size,
                      vertex_labelcolor = vertex_labelcolor,
                      offset = NULL, ...)
@@ -67,7 +70,8 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     
 #' @export
 textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE, 
-                                 edge_color = 'skyblue', edge_alpha = 0.5, edge_size = 2, 
+                                 edge_color = 'skyblue', edge_alpha = 0.5, 
+                                 edge_size = 2, 
                                  vertex_color = 'gray40', vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  offset = NULL, ...) {
@@ -101,17 +105,22 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     
     plot <- ggplot() + 
         geom_curve(data = edge, aes(x = x1, y = y1, xend = x2, yend = y2), 
-                   color = edge_color, curvature = 0.2, alpha = edge_alpha, lineend = "round",
+                   color = edge_color, curvature = 0.2, 
+                   alpha = edge_alpha, lineend = "round",
                    angle = 90, size = weight * edge_size) + 
-        geom_point(data = vertex, aes(x, y), color = vertex_color, size = vertex_size, shape = 19)
+        geom_point(data = vertex, aes(x, y), color = vertex_color, 
+                   size = vertex_size, shape = 19)
     
         if (is.null(offset)) {
-            plot <- plot + geom_text_repel(data = vertex, aes(x, y, label = label),
-                                           segment.color = vertex_color, segment.size = 0.2,
+            plot <- plot + geom_text_repel(data = vertex, 
+                                           aes(x, y, label = label),
+                                           segment.color = vertex_color, 
+                                           segment.size = 0.2,
                                            color = vertex_labelcolor)
         } else {
             plot <- plot + geom_text(data = vertex, aes(x, y, label = label),
-                                     nudge_y = offset, color = vertex_labelcolor)
+                                     nudge_y = offset, 
+                                     color = vertex_labelcolor)
         }
 
     plot <- plot + 

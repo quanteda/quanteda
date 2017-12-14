@@ -114,7 +114,9 @@ setClass("textmodel_wordfish_predicted",
 #'     cor(wfm1@theta, wfmodelAustin$theta)
 #' }}
 #' @export
-textmodel_wordfish <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 
+textmodel_wordfish <- function(x, dir = c(1, 2), 
+                               priors = c(Inf, Inf, 3, 1), 
+                               tol = c(1e-6, 1e-8), 
                                dispersion = c("poisson", "quasipoisson"), 
                                dispersion_level = c("feature", "overall"),
                                dispersion_floor = 0,
@@ -126,7 +128,23 @@ textmodel_wordfish <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol
 }
     
 #' @export
-textmodel_wordfish.default <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8),
+textmodel_wordfish.default <- function(x, dir = c(1, 2), 
+                                       priors = c(Inf, Inf, 3, 1), 
+                                       tol = c(1e-6, 1e-8),
+                                       dispersion = c("poisson", "quasipoisson"), 
+                                       dispersion_level = c("feature", "overall"),
+                                       dispersion_floor = 0,
+                                       sparse = TRUE, 
+                                       abs_err = FALSE,
+                                       svd_sparse = TRUE,
+                                       residual_floor = 0.5) {
+    stop(friendly_class_undefined_message(class(x), "textmodel_wordfish"))
+}
+
+#' @export
+textmodel_wordfish.dfm <- function(x, dir = c(1, 2), 
+                                   priors = c(Inf, Inf, 3, 1), 
+                                   tol = c(1e-6, 1e-8), 
                                    dispersion = c("poisson", "quasipoisson"), 
                                    dispersion_level = c("feature", "overall"),
                                    dispersion_floor = 0,
@@ -134,18 +152,6 @@ textmodel_wordfish.default <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3,
                                    abs_err = FALSE,
                                    svd_sparse = TRUE,
                                    residual_floor = 0.5) {
-    stop(friendly_class_undefined_message(class(x), "textmodel_wordfish"))
-}
-
-#' @export
-textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 
-                               dispersion = c("poisson", "quasipoisson"), 
-                               dispersion_level = c("feature", "overall"),
-                               dispersion_floor = 0,
-                               sparse = TRUE, 
-                               abs_err = FALSE,
-                               svd_sparse = TRUE,
-                               residual_floor = 0.5) {
     
     x <- as.dfm(x)
     dispersion <- match.arg(dispersion)
@@ -154,12 +160,14 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
     # check that no rows or columns are all zero
     empty_docs <- which(ntoken(x) == 0)
     if (length(empty_docs)) {
-        catm("Note: removed the following zero-token documents:", docnames(x)[empty_docs], "\n")
+        catm("Note: removed the following zero-token documents:", 
+             docnames(x)[empty_docs], "\n")
         x <- x[empty_docs * -1, ]
     }
     empty_feats <- which(docfreq(x) == 0)
     if (length(empty_feats)) {
-        catm("Note: removed the following zero-count features:", featnames(x)[empty_feats], "\n")
+        catm("Note: removed the following zero-count features:", 
+             featnames(x)[empty_feats], "\n")
         x <- x[, empty_feats * -1]
     }
     if (length(empty_docs) || length(empty_feats)) catm("\n")
@@ -178,8 +186,10 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
         warning("dispersion_floor argument ignored for poisson")
     
     # check quasi-poisson settings and translate into numerical values  
-    # 1 = Poisson, 2 = quasi-Poisson, overall dispersion, 
-    # 3 = quasi-Poisson, term dispersion, 4 = quasi-Poisson, term dispersion w/floor
+    # 1 = Poisson, 
+    # 2 = quasi-Poisson, overall dispersion, 
+    # 3 = quasi-Poisson, term dispersion, 
+    # 4 = quasi-Poisson, term dispersion w/floor
     if (dispersion == "poisson") {
         disp <- 1L
     } else if (dispersion == "quasipoisson" && dispersion_level == "overall") {
@@ -194,10 +204,14 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
         stop("Illegal option combination.")
     }
     if (sparse == TRUE) {
-        result <- qatd_cpp_wordfish(x, as.integer(dir), 1 / (priors ^ 2), tol, disp, 
-                                    dispersion_floor, abs_err, svd_sparse, residual_floor)
+        result <- qatd_cpp_wordfish(x, as.integer(dir), 1 / (priors ^ 2), 
+                                    tol, disp, 
+                                    dispersion_floor, abs_err, svd_sparse, 
+                                    residual_floor)
     } else{
-        result <- qatd_cpp_wordfish_dense(as.matrix(x), as.integer(dir), 1 / (priors ^ 2), tol, disp, 
+        result <- qatd_cpp_wordfish_dense(as.matrix(x), 
+                                          as.integer(dir), 1 / (priors ^ 2), 
+                                          tol, disp, 
                                           dispersion_floor, abs_err)
     }
     # NOTE: psi is a 1 x nfeat matrix, not a numeric vector
@@ -253,11 +267,13 @@ print.textmodel_wordfish_fitted <- function(x, n=30L, ...) {
 #' @rdname textmodel-internal
 #' @param object wordfish fitted or predicted object to be shown
 #' @export
-setMethod("show", signature(object = "textmodel_wordfish_fitted"), function(object) print(object))
+setMethod("show", signature(object = "textmodel_wordfish_fitted"), 
+          function(object) print(object))
 
 #' @rdname textmodel-internal
 #' @export
-setMethod("show", signature(object = "textmodel_wordfish_predicted"), function(object) print(object))
+setMethod("show", signature(object = "textmodel_wordfish_predicted"), 
+          function(object) print(object))
 
 
 #' @export

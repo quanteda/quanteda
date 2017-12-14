@@ -36,7 +36,8 @@ bootstrap_dfm.default <- function(x, n = 10, ..., verbose = quanteda_options("ve
 bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     if (verbose) 
         message("Segmenting the ", 
-                stringi::stri_replace_all_fixed(as.character(sys.calls()[2][[1]])[1], "bootstrap_dfm.", ""),
+                stri_replace_all_fixed(as.character(sys.calls()[2][[1]])[1], 
+                                       "bootstrap_dfm.", ""),
                 " into sentences...", appendLF = FALSE)
     corp_sentences <- corpus_reshape(x, to = "sentences")
     if (verbose) message("done.")

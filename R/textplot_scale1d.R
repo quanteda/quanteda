@@ -70,7 +70,9 @@
 #'                  doclabels = doclab,
 #'                  groups = docvars(data_corpus_irishbudget2010, "party"))
 #' }
-textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels = NULL, 
+textplot_scale1d <- function(x, 
+                             margin = c("documents", "features"), 
+                             doclabels = NULL, 
                              sort = TRUE, groups = NULL, 
                              highlighted = NULL, alpha = 0.7, 
                              highlighted_color = "black") {
@@ -78,12 +80,12 @@ textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels =
 }
 
 #' @export
-textplot_scale1d.default <-  function(x, 
-                                                        margin = c("documents", "features"), 
-                                                        doclabels = NULL, 
-                                                        sort = TRUE, groups = NULL, 
-                                                        highlighted = NULL, alpha = 0.7, 
-                                                        highlighted_color = "black") {
+textplot_scale1d.default <-  function(x,
+                                      margin = c("documents", "features"), 
+                                      doclabels = NULL, 
+                                      sort = TRUE, groups = NULL, 
+                                      highlighted = NULL, alpha = 0.7, 
+                                      highlighted_color = "black") {
     stop(friendly_class_undefined_message(class(x), "textplot_scale1d"))
 }
 
@@ -95,15 +97,20 @@ textplot_scale1d.default <-  function(x,
 textplot_scale1d.textmodel_wordfish_fitted <-  function(x, 
                                                         margin = c("documents", "features"), 
                                                         doclabels = NULL, 
-                                                        sort = TRUE, groups = NULL, 
-                                                        highlighted = NULL, alpha = 0.7, 
+                                                        sort = TRUE, 
+                                                        groups = NULL, 
+                                                        highlighted = NULL, 
+                                                        alpha = 0.7, 
                                                         highlighted_color = "black") {
     margin <- match.arg(margin)
     if (is.null(doclabels)) doclabels <- x@docs
     
     if (margin == "documents") {
-        p <- textplot_scale1d_documents(coef(x)$coef_document, coef(x)$coef_document_se, 
-                                        doclabels = doclabels, sort = sort, groups = groups) +
+        p <- textplot_scale1d_documents(coef(x)$coef_document, 
+                                        coef(x)$coef_document_se, 
+                                        doclabels = doclabels, 
+                                        sort = sort, 
+                                        groups = groups) +
             ylab("Estimated theta")
     } else if (margin == "features") {
         p <- textplot_scale1d_features(coef(x)$coef_feature, 
@@ -126,15 +133,19 @@ textplot_scale1d.textmodel_wordfish_fitted <-  function(x,
 textplot_scale1d.textmodel_wordscores_predicted <- function(x, 
                                                             margin = c("documents", "features"), 
                                                             doclabels = NULL, 
-                                                            sort = TRUE, groups = NULL, 
-                                                            highlighted = NULL, alpha = 0.7, 
+                                                            sort = TRUE, 
+                                                            groups = NULL, 
+                                                            highlighted = NULL, 
+                                                            alpha = 0.7, 
                                                             highlighted_color = "black") {
     margin <- match.arg(margin)
     if (is.null(doclabels)) doclabels <- docnames(x@newdata)
     
     if (margin == "documents") {
-        p <- textplot_scale1d_documents(coef(x)$coef_document, coef(x)$coef_document_se, 
-                                        doclabels = doclabels, sort = sort, groups = groups) +
+        p <- textplot_scale1d_documents(coef(x)$coef_document, 
+                                        coef(x)$coef_document_se, 
+                                        doclabels = doclabels, 
+                                        sort = sort, groups = groups) +
             
               ylab("Document position")
         
@@ -156,17 +167,22 @@ textplot_scale1d.textmodel_wordscores_predicted <- function(x,
 #' @importFrom ggplot2 facet_grid element_line
 #' @export
 textplot_scale1d.textmodel_ca_fitted <- function(x, 
-                                                    margin = c("documents", "features"), 
-                                                    doclabels = NULL, 
-                                                    sort = TRUE, groups = NULL, 
-                                                    highlighted = NULL, alpha = 0.7, 
-                                                    highlighted_color = "black") {
+                                                 margin = c("documents", "features"), 
+                                                 doclabels = NULL, 
+                                                 sort = TRUE, 
+                                                 groups = NULL, 
+                                                 highlighted = NULL, 
+                                                 alpha = 0.7, 
+                                                 highlighted_color = "black") {
     margin <- match.arg(margin)
     if (is.null(doclabels)) doclabels <- x$rownames
     
     if (margin == "documents") {
-        p <- textplot_scale1d_documents(coef(x)$coef_document, coef(x)$coef_document_se, 
-                                        doclabels = doclabels, sort = sort, groups = groups) +
+        p <- textplot_scale1d_documents(coef(x)$coef_document, 
+                                        coef(x)$coef_document_se, 
+                                        doclabels = doclabels, 
+                                        sort = sort, 
+                                        groups = groups) +
             ylab("Document position")
         
     } else {
@@ -178,7 +194,8 @@ textplot_scale1d.textmodel_ca_fitted <- function(x,
 
 # internal fns --------
 
-textplot_scale1d_documents <- function(x, se, doclabels, sort = TRUE, groups = NULL) {
+textplot_scale1d_documents <- function(x, se, doclabels, sort = TRUE, 
+                                       groups = NULL) {
 
     if (!is.null(doclabels))
         stopifnot(length(doclabels) == length(x))
@@ -187,7 +204,8 @@ textplot_scale1d_documents <- function(x, se, doclabels, sort = TRUE, groups = N
     
     if (sort & !is.null(groups)) {
         temp_medians <- aggregate(x, list(groups), median, na.rm = TRUE)
-        groups <- factor(groups, levels = temp_medians[order(temp_medians$x, decreasing = TRUE), 1])
+        groups <- factor(groups, 
+                         levels = temp_medians[order(temp_medians$x, decreasing = TRUE), 1])
     }
     
     theta <- lower <- upper <- NULL
@@ -207,10 +225,12 @@ textplot_scale1d_documents <- function(x, se, doclabels, sort = TRUE, groups = N
     p <- p + 
         coord_flip() + 
         geom_point(size = 1) +
-        geom_pointrange(aes(ymin = lower, ymax = upper), lwd = .25, fatten = .4) +
+        geom_pointrange(aes(ymin = lower, ymax = upper), 
+                        lwd = .25, fatten = .4) +
         xlab(NULL)
     if (!is.null(groups)) {
-        p <- p + facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free")
+        p <- p + 
+            facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free")
     }  
     p
 }
@@ -233,7 +253,8 @@ textplot_scale1d_features <- function(x, weight, featlabels,
                   color = highlighted_color) +
         xlab("Beta") +
         ylab("Psi") + 
-        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+        theme(panel.grid.major = element_blank(), 
+              panel.grid.minor = element_blank())
     p
 }
 

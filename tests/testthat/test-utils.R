@@ -78,7 +78,7 @@ test_that("pattern2id is working with collocations", {
     type <- types(toks)
     col <- textstat_collocations(toks, size = 2:3)
     ids <- quanteda:::pattern2id(col, type, 'fixed', TRUE)
-    expect_equal(col$collocation, sapply(ids, function(x, y) paste0(y[x], collapse = ' '), type))
+    expect_equal(col$collocation, vapply(ids, function(x, y) paste0(y[x], collapse = ' '), character(1), type))
     
 })
 
@@ -87,7 +87,7 @@ test_that("pattern2id is working with a list", {
     type <- letters
     pat <- c('a b', 'c d', 'e f g')
     ids <- quanteda:::pattern2id(phrase(pat), type, 'fixed', TRUE)
-    expect_equal(pat, sapply(ids, function(x, y) paste0(y[x], collapse = ' '), type))
+    expect_equal(pat, vapply(ids, function(x, y) paste0(y[x], collapse = ' '), character(1), type))
     
 })
 

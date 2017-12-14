@@ -53,7 +53,8 @@ dfm_subset.dfm <- function(x, subset, select, ...) {
     
     x <- as.dfm(x)
     if (length(addedArgs <- list(...)))
-        warning("Argument", if (length(addedArgs) > 1L) "s " else " ", names(addedArgs), " not used.", sep = "")
+        warning("Argument", if (length(addedArgs) > 1L) "s " else " ",
+                names(addedArgs), " not used.", sep = "")
     
     r <- if (missing(subset)) {
         rep_len(TRUE, nrow(docvars(x)))
@@ -63,7 +64,8 @@ dfm_subset.dfm <- function(x, subset, select, ...) {
         if (is.dfm(r)) {
             if (!missing(select)) stop("cannot select docvars if subset is a dfm")
             x <- x[which(docnames(x) %in% docnames(r)), ]
-            return(dfm_group(dfm_trim(x, min_count = 1, min_docfreq = 1, verbose = FALSE), 
+            return(dfm_group(dfm_trim(x, min_count = 1, min_docfreq = 1, 
+                                      verbose = FALSE), 
                              groups = factor(docnames(x), levels = docnames(r)),
                              fill = TRUE))
         } else {

@@ -35,13 +35,13 @@ Removes sentences from a corpus or a character vector shorter than a
 specified length.
 }
 \note{
-This function has been superceded by \code{\link{corpus_trim}}; use that
-  function instead.
+This function has been superceded by \code{\link{corpus_trim}}; use
+  that function instead.
 }
 \examples{
-txt <- c("PAGE 1. This is a single sentence.  Short sentence. Three word sentence.",
+txt <- c("PAGE 1. A single sentence.  Short sentence. Three word sentence.",
          "PAGE 2. Very short! Shorter.",
-         "Very long sentence, with multiple parts, separated by commas.  PAGE 3.")
+         "Very long sentence, with three parts, separated by commas.  PAGE 3.")
 mycorp <- corpus(txt, docvars = data.frame(serial = 1:3))
 texts(mycorp)
 

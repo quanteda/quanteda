@@ -12,9 +12,9 @@
 \arguments{
 \item{x}{a dfm object}
 
-\item{n}{a single integer.  If positive, the number of documents for the resulting object: 
-number of first/last documents for the dfm.  If negative, all but the n 
-last/first number of documents of x.}
+\item{n}{a single integer.  If positive, the number of documents for the
+resulting object: number of first/last documents for the dfm.  If negative,
+all but the n last/first number of documents of x.}
 
 \item{...}{additional arguments passed to other functions}
 }

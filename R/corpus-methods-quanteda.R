@@ -133,9 +133,8 @@ texts.character <- function(x, groups = NULL, spacer = "  ") {
 #'   Rather, this sort of processing is better performed through downstream 
 #'   operations.  For instance, do not lowercase the texts in a corpus, or you 
 #'   will never be able to recover the original case.  Rather, apply 
-#'   \code{\link{tokens_tolower}} after applying 
-#'   \code{\link{tokens}} to a corpus, or use the option \code{tolower = TRUE} in 
-#'   \code{\link{dfm}}..
+#'   \code{\link{tokens_tolower}} after applying \code{\link{tokens}} to a
+#'   corpus, or use the option \code{tolower = TRUE} in \code{\link{dfm}}.
 #' @examples
 #' BritCorpus <- corpus(c("We must prioritise honour in our neighbourhood.", 
 #'                        "Aluminium is a valourous metal."))

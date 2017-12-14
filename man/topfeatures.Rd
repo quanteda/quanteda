@@ -33,7 +33,8 @@ List the most (or least) frequently occuring features in a \link{dfm}, either
 as a whole or separated by document.
 }
 \examples{
-mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE)
+mydfm <- corpus_subset(data_corpus_inaugural, Year > 1980) \%>\%
+    dfm(remove_punct = TRUE)
 mydfm_nostopw <- dfm_remove(mydfm, stopwords("english"))
 
 # most frequent features

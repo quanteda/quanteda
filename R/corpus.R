@@ -125,7 +125,10 @@ corpus.default <- function(x, ...) {
 
 #' @rdname corpus
 #' @export
-corpus.corpus <- function(x, docnames = quanteda::docnames(x), docvars = quanteda::docvars(x), metacorpus = quanteda::metacorpus(x), compress = FALSE, ...) {
+corpus.corpus <- function(x, docnames = quanteda::docnames(x), 
+                          docvars = quanteda::docvars(x), 
+                          metacorpus = quanteda::metacorpus(x), 
+                          compress = FALSE, ...) {
     if (!compress) {
         if (!missing(docnames)) docnames(x) <- docnames
         if (!missing(docvars)) docnames(x) <- docvars
@@ -138,19 +141,23 @@ corpus.corpus <- function(x, docnames = quanteda::docnames(x), docvars = quanted
 
 #' @rdname corpus
 #' @export
-corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NULL, compress = FALSE, ...) {
+corpus.character <- function(x, docnames = NULL, 
+                             docvars = NULL, 
+                             metacorpus = NULL, 
+                             compress = FALSE, ...) {
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), 
+                names(addedArgs), " not used.", sep = "")
 
     x_names <- names(x)
 
     # convert the dreaded "curly quotes" to ASCII equivalents
     x <- stri_replace_all_fixed(x,
-                                         c("\u201C", "\u201D", "\u201F",
-                                           "\u2018", "\u201B", "\u2019"),
-                                         c("\"", "\"", "\"",
-                                           "\'", "\'", "\'"), vectorize_all = FALSE)
-
+                                c("\u201C", "\u201D", "\u201F",
+                                  "\u2018", "\u201B", "\u2019"),
+                                c("\"", "\"", "\"",
+                                  "\'", "\'", "\'"), vectorize_all = FALSE)
+    
     # replace all hyphens with simple hyphen
     x <- stri_replace_all_regex(x, "\\p{Pd}", "-")
 
@@ -175,13 +182,15 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NU
 
     # create document-meta-data
     if (is.null(metacorpus$source)) {
-        metacorpus$source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
+        metacorpus$source <- paste(getwd(), "/* ", "on ",  
+                                   Sys.info()["machine"], " by ", 
+                                   Sys.info()["user"], sep="")
     }
     if (is.null(metacorpus$created)) {
         metacorpus$created <- date()
     }
 
-    # create the documents data frame starting with the texts, using an empty field
+    # create the documents dframe starting with the texts, using an empty field
     # this saves space if it needs to be separated later
     documents <- data.frame(texts = rep(NA, length(x)),
                             row.names = names(x),
@@ -201,7 +210,8 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NU
     ## compress and separate texts if compress == TRUE
     # paste delimiters into object to be compressed
     if (compress) {
-        x[1 : (length(x)-1)] <- paste0(x[1 : (length(x)-1)], quanteda_document_delimiter)
+        x[1 : (length(x)-1)] <- 
+            paste0(x[1 : (length(x)-1)], quanteda_document_delimiter)
         # remove texts from documents
         documents$texts <- NULL
         temp <- c(temp, list(texts = memCompress(x, "gzip")))
@@ -220,7 +230,8 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, metacorpus = NU
     if (compress) {
         temp$docnames <- names(x)
         # compute the compression %
-        temp$compression_rate <- utils::object.size(temp$texts) / utils::object.size(unname(x)) * 100
+        temp$compression_rate <- utils::object.size(temp$texts) / 
+            utils::object.size(unname(x)) * 100
     }
 
     class(temp) <- c("corpus", class(temp))
@@ -241,7 +252,8 @@ corpus.data.frame <- function(x, docid_field = NULL, text_field = "text",
                               metacorpus = NULL, compress = FALSE, ...) {
 
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), 
+                names(addedArgs), " not used.", sep = "")
 
     args <- list(...)
 
@@ -287,7 +299,8 @@ corpus.data.frame <- function(x, docid_field = NULL, text_field = "text",
     }
 
     corpus(x[[text_field]],
-           docvars = x[, match(c(text_field, docid_field), names(x)) * -1, drop = FALSE],
+           docvars = x[, match(c(text_field, docid_field), 
+                               names(x)) * -1, drop = FALSE],
            docnames = docname,
            metacorpus = metacorpus, compress = compress)
 }
@@ -298,7 +311,8 @@ corpus.data.frame <- function(x, docid_field = NULL, text_field = "text",
 #' @export
 corpus.kwic <- function(x, ...) {
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), 
+                names(addedArgs), " not used.", sep = "")
 
     class(x) <- "data.frame"
 
@@ -314,9 +328,10 @@ corpus.kwic <- function(x, ...) {
     docnames(post) <- paste0(docnames(post), ".post")
 
     result <- pre + post
-    metacorpus(result, "source") <- paste0("Corpus created from kwic(x, keywords = \"",
-                                           paste(attr(x, "keywords"), collapse = ", "),
-                                           "\")")
+    metacorpus(result, "source") <- 
+        paste0("Corpus created from kwic(x, keywords = \"",
+               paste(attr(x, "keywords"), collapse = ", "),
+               "\")")
     return(result)
 }
 
@@ -328,7 +343,8 @@ corpus.kwic <- function(x, ...) {
 corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
 
     if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), 
+                names(addedArgs), " not used.", sep = "")
 
     # special handling for VCorpus meta-data
     if (inherits(x, what = "VCorpus")) {
@@ -348,7 +364,8 @@ corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
             if (any(lengths(texts) > 1))
                 texts <- vapply(texts, paste, character(1), collapse = " ")
             doc_lengths <- 1
-            df <- data.frame(text = texts, stringsAsFactors = FALSE, row.names = names_tmCorpus(x))
+            df <- data.frame(text = texts, stringsAsFactors = FALSE, 
+                             row.names = names_tmCorpus(x))
         }
 
         # document-level metadata
@@ -362,7 +379,8 @@ corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
         df <- cbind(df, metad[rep(seq_len(nrow(metad)), times = doc_lengths), ])
 
     } else if (inherits(x, what = "SimpleCorpus")) {
-        df <- data.frame(text = as.character(x$content), stringsAsFactors = FALSE,
+        df <- data.frame(text = as.character(x$content), 
+                         stringsAsFactors = FALSE,
                          row.names = names(x$content))
         if (length(x$dmeta)) df <- cbind(df, x$dmeta)
     } else {
@@ -372,7 +390,9 @@ corpus.Corpus <- function(x, metacorpus = NULL, compress = FALSE, ...) {
     # corpus-level meta-data
     if (is.null(metacorpus)) metacorpus <- x$meta
     metacorpus <- c(metacorpus,
-                    list(source = paste("Converted from tm Corpus \'", as.character(match.call())[2], "\'", sep="")))
+                    list(source = paste("Converted from tm Corpus \'", 
+                                        as.character(match.call())[2], 
+                                        "\'", sep="")))
 
     corpus(df, metacorpus = metacorpus, compress = compress)
 }

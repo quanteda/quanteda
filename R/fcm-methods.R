@@ -38,7 +38,8 @@ fcm_compress.fcm <- function(x) {
     attrs <- attributes(x)
     x <- dfm_compress(x, margin = "both")
     result <- new("fcm", as(x, 'dgCMatrix'), count = attrs$count,
-                  context = attrs$context, window = attrs$window, weights = attrs$weights, tri = attrs$tri)
+                  context = attrs$context, window = attrs$window,
+                  weights = attrs$weights, tri = attrs$tri)
     names(result@Dimnames) <- c("features", "features")
     return(result)
 } 
@@ -108,7 +109,8 @@ fcm_select <- function(x, pattern = NULL, selection = c("keep", "remove"),
 }
 
 #' @export
-fcm_select.default <- function(x, pattern = NULL, selection = c("keep", "remove"), 
+fcm_select.default <- function(x, pattern = NULL, 
+                               selection = c("keep", "remove"), 
                                valuetype = c("glob", "regex", "fixed"),
                                case_insensitive = TRUE,
                                verbose = quanteda_options("verbose"), ...) {
@@ -116,16 +118,21 @@ fcm_select.default <- function(x, pattern = NULL, selection = c("keep", "remove"
 }
 
 #' @export
-fcm_select.fcm <- function(x, pattern = NULL, selection = c("keep", "remove"), 
+fcm_select.fcm <- function(x, pattern = NULL, 
+                           selection = c("keep", "remove"), 
                            valuetype = c("glob", "regex", "fixed"),
                            case_insensitive = TRUE,
                            verbose = quanteda_options("verbose"), ...) {
     
     attrs <- attributes(x)
-    x <- t(dfm_select(x, pattern, selection, valuetype, case_insensitive, verbose = verbose, ...))
-    x <- t(dfm_select(x, pattern, selection, valuetype, case_insensitive, verbose = FALSE, ...))
+    x <- t(dfm_select(x, pattern, selection, valuetype, 
+                      case_insensitive, verbose = verbose, ...))
+    x <- t(dfm_select(x, pattern, selection, valuetype, 
+                      case_insensitive, verbose = FALSE, ...))
     result <- new("fcm", as(x, 'dgCMatrix'), count = attrs$count,
-                  context = attrs$context, window = attrs$window, weights = attrs$weights, tri = attrs$tri)
+                  context = attrs$context, 
+                  window = attrs$window, 
+                  weights = attrs$weights, tri = attrs$tri)
     names(result@Dimnames) <- c("features", "features")
     return(result)
 }

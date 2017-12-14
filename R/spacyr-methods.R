@@ -79,7 +79,7 @@ ntoken.spacyr_parsed <- function(x, ...) {
 #' @noRd
 #' @export
 ntype.spacyr_parsed <- function(x, ...) {
-    sapply(split(x$token, x$doc_id), function(y) length(unique(y)))
+    vapply(split(x$token, x$doc_id), function(y) length(unique(y)), numeric(1))
 }
 
 #' @export

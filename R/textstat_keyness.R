@@ -61,20 +61,26 @@
 #' head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
 #' # using the likelihood ratio method
 #' head(textstat_keyness(dfm_smooth(pwdfm), measure = "lr", target = "2017-Trump"), 10)
-textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), sort = TRUE, 
+textstat_keyness <- function(x, target = 1L, 
+                             measure = c("chi2", "exact", "lr", "pmi"), 
+                             sort = TRUE, 
                              correction = c("default", "yates", "williams", "none")) {
     UseMethod("textstat_keyness")
 }
 
 #' @export
-textstat_keyness.default <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), 
-                                 sort = TRUE, correction = c("default", "yates", "williams", "none")) {
+textstat_keyness.default <- function(x, target = 1L, 
+                                     measure = c("chi2", "exact", "lr", "pmi"), 
+                                     sort = TRUE, 
+                                     correction = c("default", "yates", "williams", "none")) {
     stop(friendly_class_undefined_message(class(x), "textstat_keyness"))
 }
 
 #' @export
-textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"), 
-                                 sort = TRUE, correction = c("default", "yates", "williams", "none")) {
+textstat_keyness.dfm <- function(x, target = 1L, 
+                                 measure = c("chi2", "exact", "lr", "pmi"), 
+                                 sort = TRUE, 
+                                 correction = c("default", "yates", "williams", "none")) {
     
     
     x <- as.dfm(x)
@@ -185,8 +191,8 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
     
     result <- as.data.frame(dt[, list(chi2, p)])
     rownames(result) <- dt$feature
-    result$target = as.vector(x[1,])
-    result$reference = as.vector(x[2,])
+    result$target <- as.vector(x[1,])
+    result$reference <- as.vector(x[2,])
     return(result)
 }
 
@@ -215,8 +221,8 @@ keyness_chi2_stats <- function(x) {
                                                        as.numeric(y[2]), 
                                                        sums[1], sums[2])))
     )
-    result$target = as.vector(x[1,])
-    result$reference = as.vector(x[2,])
+    result$target <- as.vector(x[1,])
+    result$reference <- as.vector(x[2,])
     return(result)
 }
 
@@ -233,12 +239,14 @@ keyness_exact <- function(x) {
     result <- as.data.frame(
         do.call(rbind, 
                 apply(x, 2, function(y) { 
-                    et <- stats::fisher.test(matrix(c(as.numeric(y), as.numeric(sums - y)), nrow = 2))
+                    et <- stats::fisher.test(matrix(c(as.numeric(y), 
+                                                      as.numeric(sums - y)), 
+                                                    nrow = 2))
                     data.frame(or = as.numeric(et$estimate), p = et$p.value)
                 }))
     )
-    result$target = as.vector(x[1,])
-    result$reference = as.vector(x[2,])
+    result$target <- as.vector(x[1,])
+    result$reference <- as.vector(x[2,])
     return(result)
 }
 
@@ -291,7 +299,9 @@ keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")
     if (correction == "williams"){
         # William's correction cannot be used if there are any zeros in the table
         # \url{http://influentialpoints.com/Training/g-likelihood_ratio_test.htm}
-        dt[, q := ifelse(a * b * c * d == 0, 1, 1 + (N/(a + b) + N/(c + d) - 1) * (N/(a + c) + N/(b + d) - 1) / (6 * N) )]
+        dt[, q := ifelse(a * b * c * d == 0, 
+                         1, 
+                         1 + (N/(a + b) + N/(c + d) - 1) * (N/(a + c) + N/(b + d) - 1) / (6 * N) )]
         dt[, G2 := G2 / q]
     }
     
@@ -300,13 +310,13 @@ keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")
     
     result <- as.data.frame(dt[, list(G2, p)])
     rownames(result) <- dt$feature
-    result$target = as.vector(x[1,])
-    result$reference = as.vector(x[2,])
+    result$target <- as.vector(x[1,])
+    result$reference <- as.vector(x[2,])
     return(result)
 }
 
 #' @rdname keyness
-#' @details \code{keyness_pmi} computes the Pointwise Mutual Information statistic
+#' @details \code{keyness_pmi} computes the Pointwise Mutual Information stat
 #'   using vectorized computation
 #' @examples
 #' quanteda:::keyness_pmi(mydfm)
@@ -333,7 +343,7 @@ keyness_pmi <- function(x) {
     
     result <- as.data.frame(dt[, list(pmi, p)])
     rownames(result) <- dt$feature
-    result$target = as.vector(x[1,])
-    result$reference = as.vector(x[2,])
+    result$target <- as.vector(x[1,])
+    result$reference <- as.vector(x[2,])
     return(result)
 }

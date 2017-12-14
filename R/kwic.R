@@ -43,7 +43,8 @@
 #' kwic(data_corpus_inaugural, phrase("war against"))
 #' kwic(data_corpus_inaugural, phrase("war against"), valuetype = "regex")
 #' 
-kwic <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic <- function(x, pattern, window = 5, 
+                 valuetype = c("glob", "regex", "fixed"), 
                  case_insensitive = TRUE, ...) {
     UseMethod("kwic")
 }
@@ -56,7 +57,8 @@ kwic.default <- function(x, ...) {
 #' @rdname kwic
 #' @noRd
 #' @export
-kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic.character <- function(x, pattern, window = 5, 
+                           valuetype = c("glob", "regex", "fixed"), 
                            case_insensitive = TRUE, ...) {
     kwic(corpus(x), pattern, window, valuetype, case_insensitive, ...)
 }
@@ -64,7 +66,8 @@ kwic.character <- function(x, pattern, window = 5, valuetype = c("glob", "regex"
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.corpus <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic.corpus <- function(x, pattern, window = 5, 
+                        valuetype = c("glob", "regex", "fixed"), 
                         case_insensitive = TRUE, ...) {
  
     if (is.collocations(pattern) || is.dictionary(pattern))
@@ -88,12 +91,14 @@ kwic.corpus <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "
 #' kwic(toks, c("is", "a"), valuetype = "fixed")
 #' kwic(toks, phrase(c("is", "a", "is it")), valuetype = "fixed")
 #' @export 
-kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"), 
+kwic.tokens <- function(x, pattern, window = 5, 
+                        valuetype = c("glob", "regex", "fixed"), 
                         case_insensitive = TRUE, ...) {
     
     if ("keywords" %in% names(arglist <- list(...))) {
         .Deprecated(msg = "keywords argument has been replaced by pattern")
-        return(kwic(x, pattern = arglist$keywords, window, valuetype, case_insensitive))
+        return(kwic(x, pattern = arglist$keywords, window, 
+                    valuetype, case_insensitive))
     }    
 
     valuetype <- match.arg(valuetype)
@@ -104,7 +109,8 @@ kwic.tokens <- function(x, pattern, window = 5, valuetype = c("glob", "regex", "
         names(x) <- paste0(quanteda_options("base_docname"), seq_len(x))
     }
     
-    keywords_id <- pattern2id(pattern, types, valuetype, case_insensitive, attr(x, 'concatenator'))
+    keywords_id <- pattern2id(pattern, types, 
+                              valuetype, case_insensitive, attr(x, 'concatenator'))
     temp <- qatd_cpp_kwic(x, types, keywords_id, window)
     
     # attributes for kwic object
