@@ -354,7 +354,6 @@ as.list.tokens <- function(x, ...) {
 #' @return a Python list object
 #' @details Conversion of R objects to Python objects is performed 
 #'   using the \code{reticulate} package.
-#' @method as.keras tokens
 #' @export
 #' @examples
 #' \dontrun{
@@ -375,6 +374,7 @@ as.keras <- function(x) {
 }
 
 #' @rdname as.keras
+#' @method as.keras tokens
 #' @export
 as.keras.tokens <- function(x) {
     x <- unname(unclass(x))

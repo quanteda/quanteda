@@ -70,6 +70,7 @@ nfeat.dfm <- function(x) {
     ncol(x)
 }
 
+#' @export
 nfeat.tokens <- function(x) {
     if (attr(x, 'padding')) {
         length(types(x)) + 1
