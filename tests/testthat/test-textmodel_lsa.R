@@ -11,7 +11,7 @@ test_that("textmodel-lsa (rsvd) works as expected as lsa", {
     foxlsaMatrix <- as.textmatrix(t(foxmatrix))
     #myMatrix <- lw_logtf(foxlsaMatrix) * gw_idf(foxlsaMatrix)
     
-    myLSAspace <- lsa(foxlsaMatrix, dims = 2)
+    myLSAspace <- suppressWarnings(lsa(foxlsaMatrix, dims = 2))
     
     #quanteda
     foxdfm <- as.dfm(foxmatrix)
@@ -34,7 +34,7 @@ test_that("predict works as expected as lsa::fold_in()", {
     rownames(newfox) <- paste0("D", c(4:5))
     #{lsa}
     foxlsaMatrix <- as.textmatrix(t(foxmatrix))
-    myLSAspace <- lsa(foxlsaMatrix, dims = 2)
+    myLSAspace <- suppressWarnings(lsa(foxlsaMatrix, dims = 2))
     newSpace <- t(fold_in(t(newfox), myLSAspace))
     newSpace <- newSpace[ , ]
     #quanteda
@@ -74,7 +74,7 @@ test_that("textmodel-lsa works with margin argument", {
     expect_true(is.dfm(as.dfm(ie_lsa1)))
     
     ie_lsa2 <- textmodel_lsa(ie_dfm, margin = 'documents')
-    expect_equal(dim(ie_lsa2$matrix_low_rank), c(10, nfeature(ie_dfm)))
+    expect_equal(dim(ie_lsa2$matrix_low_rank), c(10, nfeat(ie_dfm)))
     expect_true(is.dfm(as.dfm(ie_lsa2)))
     
     ie_lsa3 <- textmodel_lsa(ie_dfm, margin = 'features')

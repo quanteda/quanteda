@@ -44,17 +44,20 @@ setClass("textmodel_ca_fitted",
 #' wca <- textmodel_ca(ieDfm)
 #' summary(wca) 
 #' @export
-textmodel_ca <- function(x, smooth = 0, nd = NA, sparse = FALSE, residual_floor = 0.1) {
+textmodel_ca <- function(x, smooth = 0, nd = NA, sparse = FALSE, 
+                         residual_floor = 0.1) {
     UseMethod("textmodel_ca")
 }
 
 #' @export
-textmodel_ca.default <- function(x, smooth = 0, nd = NA, sparse = FALSE, residual_floor = 0.1) {
+textmodel_ca.default <- function(x, smooth = 0, nd = NA, sparse = FALSE, 
+                                 residual_floor = 0.1) {
     stop(friendly_class_undefined_message(class(x), "textmodel_ca"))
 }
     
 #' @export
-textmodel_ca.dfm <- function(x, smooth = 0, nd = NA, sparse = FALSE, residual_floor = 0.1) {
+textmodel_ca.dfm <- function(x, smooth = 0, nd = NA, sparse = FALSE, 
+                             residual_floor = 0.1) {
     
     x <- as.dfm(x)
     x <- x + smooth  # smooth by the specified amount

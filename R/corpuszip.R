@@ -23,8 +23,8 @@ as.character.corpuszip <- function(x, ...) {
 "texts<-.corpuszip" <- function(x, value) { 
     temp_texts <- texts(x)
     temp_texts <- value
-    temp_texts[1 : (length(temp_texts)-1)] <- paste0(temp_texts[1 : (length(temp_texts)-1)], 
-                                                     quanteda_document_delimiter)
+    temp_texts[1 : (length(temp_texts)-1)] <- 
+        paste0(temp_texts[1 : (length(temp_texts)-1)], quanteda_document_delimiter)
     x$texts <- memCompress(temp_texts, 'gzip')
     # NOTE: this will not replace named elements in docnames
     x
@@ -48,7 +48,8 @@ docnames.corpuszip <- function(x) {
 
 #' coerce a compressed corpus to a standard corpus
 #' 
-#' Recast a compressed corpus object into a standard (uncompressed) corpus object.
+#' Recast a compressed corpus object into a standard (uncompressed) corpus
+#' object.
 #' @param x a compressed \link{corpus} object
 #' @export
 #' @keywords internal
@@ -62,8 +63,9 @@ as.corpus.default <- function(x) {
 }
 
 #' coerce a compressed corpus to a standard corpus
-#' 
-#' Recast a compressed corpus object into a standard (uncompressed) corpus object.
+#'
+#' Recast a compressed corpus object into a standard (uncompressed) corpus
+#' object.
 #' @param x a compressed \link{corpus} object
 #' @method as.corpus corpuszip
 #' @export

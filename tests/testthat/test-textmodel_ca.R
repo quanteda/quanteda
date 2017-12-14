@@ -18,7 +18,7 @@ test_that("textmodel-ca (rsvd) works as expected as ca::ca", {
     expect_equal(wca$rowinertia, wtca$rowinertia, tolerance = 1e-6)
     expect_equal(wca$colinertia, wtca$colinertia, tolerance = 1e-6)
     
-    expect_equal(wca$sv[1:length(wtca$sv)], wtca$sv, tolerance = 1e-6)
+    expect_equal(wca$sv[seq_along(wtca$sv)], wtca$sv, tolerance = 1e-6)
 })
 
 test_that("textmodel-ca works as expected as ca::ca : use mt", {
@@ -38,7 +38,7 @@ test_that("textmodel-ca works as expected as ca::ca : use mt", {
     expect_gt(cor(wca$rowinertia, wtca$rowinertia), 0.99)
     expect_gt(cor(wca$colinertia, wtca$colinertia), 0.99)
     
-    cc <- cor(wca$sv[1:length(wtca$sv)], wtca$sv)
+    cc <- cor(wca$sv[seq_along(wtca$sv)], wtca$sv)
     expect_gt(cc, 0.99)
 })
 
@@ -58,7 +58,7 @@ test_that("textmodel-ca works as expected as ca::ca: for given number of dimensi
     expect_equal(wca$rowinertia, wtca$rowinertia, tolerance = 1e-6)
     expect_equal(wca$colinertia, wtca$colinertia, tolerance = 1e-6)
     
-    expect_equal(wca$sv[1:length(wtca$sv)], wtca$sv, tolerance = 1e-6)
+    expect_equal(wca$sv[seq_along(wtca$sv)], wtca$sv, tolerance = 1e-6)
 })
 
 test_that("textmodel-ca(sparse) works as expected on another dataset", {
@@ -79,7 +79,7 @@ test_that("textmodel-ca(sparse) works as expected on another dataset", {
     expect_gt(cor(wca$rowinertia, wtca$rowinertia), 0.99)
     expect_gt(cor(wca$colinertia, wtca$colinertia), 0.99)
     
-    cc <- cor(wca$sv[1:length(wtca$sv)], wtca$sv)
+    cc <- cor(wca$sv[seq_along(wtca$sv)], wtca$sv)
     expect_gt(cc, 0.99)
 })
 

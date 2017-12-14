@@ -83,19 +83,22 @@
 #'                               prior = "docfreq"))
 #' predict(nb.p261.bern, newdata = trainingset[5, ])
 #' @export
-textmodel_nb <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
+textmodel_nb <- function(x, y, smooth = 1, 
+                         prior = c("uniform", "docfreq", "termfreq"), 
                          distribution = c("multinomial", "Bernoulli"), ...) {
     UseMethod("textmodel_nb")
 }
 
 #' @export
-textmodel_nb.default <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
-                             distribution = c("multinomial", "Bernoulli"), ...) {
+textmodel_nb.default <- function(x, y, smooth = 1, 
+                                 prior = c("uniform", "docfreq", "termfreq"), 
+                                 distribution = c("multinomial", "Bernoulli"), ...) {
     stop(friendly_class_undefined_message(class(x), "textmodel_nb"))
 }    
     
 #' @export
-textmodel_nb.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
+textmodel_nb.dfm <- function(x, y, smooth = 1, 
+                             prior = c("uniform", "docfreq", "termfreq"), 
                              distribution = c("multinomial", "Bernoulli"), ...) {
     
     x <- as.dfm(x)
@@ -149,10 +152,12 @@ textmodel_nb.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "
         PwGc <- rowNorm(d + smooth)
     } else if (distribution == "Bernoulli") {
         # if (smooth != 1) {
-        #     warning("smoothing of 0 makes little sense for Bernoulli NB", call. = FALSE, noBreaks. = TRUE)
+        #     warning("smoothing of 0 makes little sense for Bernoulli NB", 
+        #             call. = FALSE, noBreaks. = TRUE)
         # }
         # denominator here is same as IIR Fig 13.3 line 8 - see also Eq. 13.7
-        PwGc <- (d + smooth) / (as.vector(table(docnames(x.trset))[docnames(d)]) + smooth * ndoc(d))
+        PwGc <- (d + smooth) / 
+            (as.vector(table(docnames(x.trset))[docnames(d)]) + smooth * ndoc(d))
         PwGc <- as(PwGc, "dgeMatrix")
     }
     
@@ -183,12 +188,12 @@ textmodel_nb.dfm <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "
 #' @param object a fitted Naive Bayes textmodel 
 #' @param newdata dfm on which prediction should be made
 #' @param ... not used
-#' @return A list of two data frames, named \code{docs} and \code{words} corresponding
-#' to word- and document-level predicted quantities
-#' @return \item{docs}{data frame with document-level predictive quantities: 
-#' nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc, bayesscore.doc, 
-#' posterior.diff, posterior.logdiff.  Note that the diff quantities are currently 
-#' implemented only for two-class solutions.}
+#' @return A list of two data frames, named \code{docs} and \code{words}
+#'   corresponding to word- and document-level predicted quantities
+#' @return \item{docs}{data frame with document-level predictive quantities:
+#'   nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc,
+#'   bayesscore.doc, posterior.diff, posterior.logdiff.  Note that the diff
+#'   quantities are currently implemented only for two-class solutions.}
 #' @return \item{words}{data-frame with word-level predictive quantities: 
 #' wordscore.word, bayesscore.word}
 #' @author Kenneth Benoit
@@ -205,8 +210,8 @@ predict.textmodel_nb_fitted <- function(object, newdata = NULL, ...) {
 
     # remove any words for which zero probabilities exist in training set --
     # would happen if smooth=0
-    # the condition assigns the index of zero occurring words to vector "notinref" and only 
-    # trims the objects if this index has length>0
+    # the condition assigns the index of zero occurring words to vector 
+    # "notinref" and only trims the objects if this index has length > 0
     if (length(notinref <- which(colSums(object$PwGc)==0))) {
         object$PwGc <- object$PwGc[-notinref]
         object$PcGw <- object$PcGw[-notinref]
@@ -218,7 +223,8 @@ predict.textmodel_nb_fitted <- function(object, newdata = NULL, ...) {
     # make sure feature set is ordered the same in test and training set (#490)
     if (ncol(object$PcGw) != ncol(newdata))
         stop("feature set in newdata different from that in training set")
-    if (!identical(colnames(object$PcGw), colnames(newdata)) | setequal(colnames(object$PcGw), colnames(newdata))) {
+    if (!identical(colnames(object$PcGw), colnames(newdata)) || 
+        setequal(colnames(object$PcGw), colnames(newdata))) {
         # if feature names are the same but diff order, reorder
         newdata <- newdata[, colnames(object$PcGw)]
     } else {
@@ -238,7 +244,8 @@ predict.textmodel_nb_fitted <- function(object, newdata = NULL, ...) {
         Nc <- length(object$Pc)
         
         # initialize log posteriors with class priors
-        log.posterior.lik <- matrix(log(object$Pc), byrow = TRUE, ncol = Nc, nrow = nrow(newdata),
+        log.posterior.lik <- matrix(log(object$Pc), byrow = TRUE, 
+                                    ncol = Nc, nrow = nrow(newdata),
                                     dimnames = list(rownames(newdata), names(object$Pc)))
         # APPLYBERNOULLINB from IIR Fig 13.3
         for (c in seq_len(Nc)) {
@@ -265,7 +272,8 @@ predict.textmodel_nb_fitted <- function(object, newdata = NULL, ...) {
     # compute posterior probabilities
     for (j in seq_len(ncol(log.posterior.lik))) {
         base.lpl <- log.posterior.lik[, j]
-        posterior.prob[, j] <- 1 / (1 + rowSums(exp(log.posterior.lik[, -j, drop = FALSE] - base.lpl)))
+        posterior.prob[, j] <- 1 / 
+            (1 + rowSums(exp(log.posterior.lik[, -j, drop = FALSE] - base.lpl)))
     }
 
     result <- list(log.posterior.lik = log.posterior.lik, 
@@ -324,9 +332,9 @@ print.textmodel_nb_predicted <- function(x, n = 30L, digits = 4, ...) {
                        paste0("Pr(", x$classlabels, ")"),
                        "Predicted")
     k <- length(x$classlabels)
-    docsDf[, 1:k] <- format(docsDf[, 1:k], nsmall = digits) #digits = digits + 6)
-    docsDf[, (k+1):(2*k)] <- round(docsDf[, (k+1):(2*k)], digits) #, digits = digits)
-    docsDf[, (k+1):(2*k)] <- format(docsDf[, (k+1):(2*k)], nsmall = digits) #, digits = digits)
+    docsDf[, 1:k] <- format(docsDf[, 1:k], nsmall = digits) 
+    docsDf[, (k+1):(2*k)] <- round(docsDf[, (k+1):(2*k)], digits)
+    docsDf[, (k+1):(2*k)] <- format(docsDf[, (k+1):(2*k)], nsmall = digits)
     
     # add a whitespace column for visual padding
     docsDf <- cbind(docsDf[, 1:k], " " = rep("  ", nrow(docsDf)), docsDf[, (k+1):(2*k+1)])

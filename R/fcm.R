@@ -19,7 +19,9 @@
 #' @name fcm-class
 #' @keywords internal
 setClass("fcm",
-         slots = c(context = "character", window = "integer", count = "character", weights = "numeric", ordered = "logical", tri = "logical"),
+         slots = c(context = "character", window = "integer", 
+                   count = "character", weights = "numeric", 
+                   ordered = "logical", tri = "logical"),
          # prototype = list(Dimnames = list(contexts = NULL, features = NULL)),
          #contains = c("dfm", "dgCMatrix", "dtCMatrix"))
          contains = c("dfm", "dgCMatrix"))
@@ -30,30 +32,33 @@ setClass("fcm",
 #' features within a user-defined context. The context can be defined as a
 #' document or a window within a collection of documents, with an optional
 #' vector of weights applied to the co-occurrence counts.
-#' @param x character, \link{corpus}, \link{tokens}, or \link{dfm} object from which to generate 
-#'   the feature co-occurrence matrix
-#' @param context the context in which to consider term co-occurrence: 
+#' @param x character, \link{corpus}, \link{tokens}, or \link{dfm} object from
+#'   which to generate the feature co-occurrence matrix
+#' @param context the context in which to consider term co-occurrence:
 #'   \code{"document"} for co-occurrence counts within document; \code{"window"}
-#'   for co-occurrence within a defined window of words, which requires a 
-#'   positive integer value for \code{window}.  Note: if \code{x} is a dfm object, then
-#'   \code{context} can only be \code{"document"}.
-#' @param window positive integer value for the size of a window on either side 
-#'   of the target feature, default is 5, meaning 5 words before and after the 
+#'   for co-occurrence within a defined window of words, which requires a
+#'   positive integer value for \code{window}.  Note: if \code{x} is a dfm
+#'   object, then \code{context} can only be \code{"document"}.
+#' @param window positive integer value for the size of a window on either side
+#'   of the target feature, default is 5, meaning 5 words before and after the
 #'   target feature
 #' @param count how to count co-occurrences:
 #'   \describe{
-#'   \item{\code{"frequency"}}{count the number of co-occurrences within the context}
-#'   \item{\code{"boolean"}}{count only the co-occurrence or not within the context, 
-#'    irrespective of how many times it occurs.}
-#'   \item{\code{"weighted"}}{count a weighted function of counts, typically as a 
-#'   function of distance from the target feature.  Only makes sense for \code{context = "window"}.}
+#'   \item{\code{"frequency"}}{count the number of co-occurrences within the
+#'   context}
+#'   \item{\code{"boolean"}}{count only the co-occurrence or not within the
+#'   context, irrespective of how many times it occurs.}
+#'   \item{\code{"weighted"}}{count a weighted function of counts, typically as
+#'   a function of distance from the target feature.  Only makes sense for
+#'   \code{context = "window"}.}
 #'   }
-#' @param weights a vector of weights applied to each distance from 
-#'   \code{1:window}, strictly decreasing by default; can be a custom-defined vector of the same length as 
-#'   \code{length(weights)}
-#' @param ordered if \code{TRUE} the number of times that a term appears before or after the target feature 
-#'      are counted separately. Only makes sense for context = "window".
-#' @param span_sentence if \code{FALSE}, then word windows will not span 
+#' @param weights a vector of weights applied to each distance from
+#'   \code{1:window}, strictly decreasing by default; can be a custom-defined
+#'   vector of the same length as \code{length(weights)}
+#' @param ordered if \code{TRUE} the number of times that a term appears before
+#'   or after the target feature are counted separately. Only makes sense for
+#'   context = "window".
+#' @param span_sentence if \code{FALSE}, then word windows will not span
 #'   sentences
 #' @param tri if \code{TRUE} return only upper triangle (including diagonal)
 #' @param ... not used here
@@ -199,7 +204,8 @@ fcm.dfm <- function(x, context = c("document", "window"),
 
     # create a new feature context matrix
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
-                  context = context, window = window, weights = weights, tri = tri)
+                  context = context, window = window, 
+                  weights = weights, tri = tri)
     # set the names 
     names(result@Dimnames) <- c("features", "features")
     result
@@ -218,7 +224,8 @@ fcm.tokens <- function(x, context = c("document", "window"),
                        span_sentence = TRUE, tri = TRUE, ...) {
     context <- match.arg(context)
     count <- match.arg(count)
-    window <- as.integer(window) # TODO could add a warning if not roundly coerced to integer
+    window <- as.integer(window) 
+    # TODO could add a warning if not roundly coerced to integer
     
     if (!span_sentence) 
         warning("spanSentence = FALSE not yet implemented")
@@ -237,7 +244,8 @@ fcm.tokens <- function(x, context = c("document", "window"),
         if (!is.tokens(x)) x <- as.tokens(x)
         types <- types(x)
         n <- sum(lengths(x)) * window * 2
-        result <- as(qatd_cpp_fcm(x, length(types), count, window, weights, ordered, tri, n), "dgCMatrix")
+        result <- as(qatd_cpp_fcm(x, length(types), count, window, 
+                                  weights, ordered, tri, n), "dgCMatrix")
         dimnames(result) <- list(features = types, features = types)
     }
 
@@ -246,7 +254,8 @@ fcm.tokens <- function(x, context = c("document", "window"),
     
     # create a new feature context matrix
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
-                  context = context, window = window, weights = weights, tri = tri)
+                  context = context, window = window, 
+                  weights = weights, tri = tri)
     # set the names 
     names(result@Dimnames) <- c("features", "features")
     result
@@ -255,7 +264,8 @@ fcm.tokens <- function(x, context = c("document", "window"),
 #' @rdname print.dfm
 #' @export
 setMethod("print", signature(x = "fcm"), 
-          function(x, show.values = NULL, show.settings = FALSE, show.summary = TRUE, 
+          function(x, show.values = NULL, show.settings = FALSE, 
+                   show.summary = TRUE, 
                    ndoc = quanteda_options("print_dfm_max_ndoc"), 
                    nfeature = quanteda_options("print_dfm_max_nfeat"), ...) {
               if (show.summary) {

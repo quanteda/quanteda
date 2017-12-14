@@ -74,7 +74,7 @@ textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "featu
     }
     
     if (any(dec$d <= sqrt(.Machine$double.eps))) {
-        warning("[lsa] - there are singular values which are zero.");
+        warning("[lsa] - there are singular values which are zero.")
     }
     
     result <- list(sk = dec$d, docs = NULL, features = NULL)
@@ -83,14 +83,16 @@ textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "featu
         result$features <- dec$v
         rownames(result$features) <- colnames(x)
         result$matrix_low_rank <- t(dec$v * dec$d)
-        rownames(result$matrix_low_rank) <- paste0(quanteda_options("base_compname"), seq_len(nrow(result$matrix_low_rank)))
+        rownames(result$matrix_low_rank) <- 
+            paste0(quanteda_options("base_compname"), seq_len(nrow(result$matrix_low_rank)))
         colnames(result$matrix_low_rank) <- colnames(x)
     } else if (margin == "features") {
         result$docs <- dec$u
         rownames(result$docs) <- rownames(x)
         result$matrix_low_rank <- dec$u * dec$d
         rownames(result$matrix_low_rank) <- rownames(x)
-        colnames(result$matrix_low_rank) <- paste0(quanteda_options("base_compname"), seq_len(ncol(result$matrix_low_rank)))
+        colnames(result$matrix_low_rank) <- 
+            paste0(quanteda_options("base_compname"), seq_len(ncol(result$matrix_low_rank)))
     } else {
         result$docs <- dec$u
         result$features <- dec$v
@@ -103,7 +105,7 @@ textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "featu
     
     # keep the input matrix
     result$data <- x
-    class(result) = c("textmodel_lsa_fitted")
+    class(result) <- c("textmodel_lsa_fitted")
     
     # return the LSA space
     return (result)
@@ -121,8 +123,8 @@ predict.textmodel_lsa_fitted <- function(object, newdata = NULL, ...) {
     call <- match.call()
     if (is.null(newdata)) newdata <- object$data
     
-    tsa =  newdata %*% object$features %*% solve(diag(object$sk))
-    transfed =  t(object$features %*% diag(object$sk) %*% t(tsa)) 
+    tsa <-  newdata %*% object$features %*% solve(diag(object$sk))
+    transfed <- t(object$features %*% diag(object$sk) %*% t(tsa)) 
     
     colnames(transfed) <- rownames(object$features)
     rownames(transfed) <- rownames(newdata)

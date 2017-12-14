@@ -72,10 +72,12 @@ is.corpuszip <- function(x) {
 summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, ...) {
     outputdf <- data.frame(summary(texts(object), n, tolower = tolower, ...))
     if (!is.null(docvars(object)))
-        outputdf <- cbind(outputdf, docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
+        outputdf <- cbind(outputdf, 
+                          docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
     # if (detail) outputdf <- cbind(outputdf, metadoc(object))
     if (showmeta)
-        outputdf[names(metadoc(object))] <- metadoc(object)[1:min(c(n, ndoc(object))),,drop=FALSE]
+        outputdf[names(metadoc(object))] <- 
+            metadoc(object)[1:min(c(n, ndoc(object))),,drop=FALSE]
     # invisibly pass the summary of the texts
     class(outputdf) <- c("summary.corpus", class(outputdf))
     
@@ -97,7 +99,8 @@ summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, .
 #' @method print summary.corpus
 print.summary.corpus <- function(x, ...) {
     ndoc_original <- attr(x, "ndoc_original")
-    cat("Corpus consisting of ", ndoc_original, " document", if (ndoc_original > 1) "s" else "", 
+    cat("Corpus consisting of ", ndoc_original, " document", 
+        if (ndoc_original > 1) "s" else "", 
         attr(x, "showing"), ":\n\n", sep = "")
     print.data.frame(x, row.names = FALSE)
     cat(attr(x, "meta"), "\n")
@@ -107,9 +110,9 @@ print.summary.corpus <- function(x, ...) {
 #' 
 #' For a \link{corpus} object, returns the first or last \code{n} documents.
 #' @param x a dfm object
-#' @param n a single integer.  If positive, the number of documents for the resulting object: 
-#'   number of first/last documents for the dfm.  If negative, all but the n 
-#'   last/first number of documents of x.
+#' @param n a single integer.  If positive, the number of documents for the
+#'   resulting object: number of first/last documents for the dfm.  If negative,
+#'   all but the n last/first number of documents of x.
 #' @param ... additional arguments passed to other functions
 #' @return A \link{corpus} class object corresponding to the subset defined 
 #'   by \code{n}.
@@ -164,14 +167,16 @@ tail.corpus <- function(x, n = 6L, ...) {
 `+.corpus` <- function(c1, c2) {
     ## deal with metadata first
     # note the source and date/time-stamp the creation
-    metacorpus(c1, "source") <- paste("Combination of corpuses", deparse(substitute(c1)),
+    metacorpus(c1, "source") <- paste("Combination of corpuses", 
+                                      deparse(substitute(c1)),
                                       "and", deparse(substitute(c2)))
     metacorpus(c1, "created") <- date()
     # concatenate the other fields if not identical already
     for (field in names(metacorpus(c2))) {
         if (field %in% c("source", "created")) next
         if (!identical(metacorpus(c1, field), metacorpus(c2, field)))
-            metacorpus(c1, field) <- paste(metacorpus(c1, field), metacorpus(c2, field))
+            metacorpus(c1, field) <- 
+                paste(metacorpus(c1, field), metacorpus(c2, field))
     }
     
     #rowname <- c(rownames(c1$documents), rownames(c2$documents))
@@ -186,7 +191,8 @@ tail.corpus <- function(x, n = 6L, ...) {
     # special handling for docnames if item is corpuszip
     if (is.corpuszip(c1)) {
         x <- c(texts(c1), texts(c2))
-        x[1 : (length(x)-1)] <- paste0(x[1 : (length(x)-1)], quanteda_document_delimiter)
+        x[1 : (length(x)-1)] <- 
+            paste0(x[1 : (length(x)-1)], quanteda_document_delimiter)
         c1$texts <- memCompress(x, 'gzip')
         c1$docnames <- rownames(c1$documents)
     }
@@ -212,7 +218,8 @@ c.corpus <- function(..., recursive = FALSE) {
     if (length(x) == 2) return(result)
     for (i in 3:length(x))
         result <- result + x[[i]]
-    metacorpus(result, "source") <- paste0("Concatenation by c.corpus(", names(x), ")")
+    metacorpus(result, "source") <- 
+        paste0("Concatenation by c.corpus(", names(x), ")")
     return(result)
 }
 
@@ -275,7 +282,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @importFrom utils str
 #' @rdname corpus-class
 str.corpus <- function(object, ...) {
-    # message("OK, but note: accessing corpus internals directly voids your warranty.")
+  # message("Warning: accessing corpus internals directly voids your warranty.")
     str(unclass(object))
 }
 

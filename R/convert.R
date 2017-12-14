@@ -52,8 +52,8 @@
 #' ldadfm <- convert(quantdfm, to = "lda")
 #' str(ldadfm)
 #' }
-convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
-                              "matrix", "data.frame"), docvars = NULL) {
+convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", 
+                              "lsa", "matrix", "data.frame"), docvars = NULL) {
     UseMethod("convert")
 }
 
@@ -64,13 +64,14 @@ convert.default <- function(x, ...) {
 
 #' @noRd
 #' @export
-convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
-                                  "matrix", "data.frame"), docvars = NULL) {
+convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", 
+                                  "lsa", "matrix", "data.frame"), 
+                        docvars = NULL) {
     x <- as.dfm(x)
     to <- match.arg(to)
 
     if (!is.null(docvars)) {
-        if (!is.data.frame(docvars))
+        if (!is.data.frame(docvars)) 
             stop("docvars must be a data.frame")
         if (nrow(docvars) != ndoc(x))
             stop("docvars must have the same number of rows as ndoc(x)")
@@ -231,10 +232,10 @@ dfm2lda <- function(x) {
 
 #' @noRd
 #' @details
-#' \code{dfm2ldaformat} provides converts a \link{dfm} into the list representation
-#' of terms in documents used by the \pkg{lda} package (a list with components 
-#' "documents" and "vocab" as needed by 
-#'   \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
+#' \code{dfm2ldaformat} provides converts a \link{dfm} into the list
+#' representation of terms in documents used by the \pkg{lda} package (a list
+#' with components "documents" and "vocab" as needed by
+#' \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
 #' @examples
 #' \dontrun{
 #' # shortcut conversion to lda package list format
@@ -248,10 +249,13 @@ dtm2lda <- function (x, omit_empty = TRUE) {
     docs <- vector(mode = "list", length = nrow(x))
     names(docs) <- rownames(x)
 
-    docs[slam::row_sums(x) > 0] <- split.matrix(rbind(as.integer(x$j) - 1L, as.integer(x$v)), as.integer(x$i))
+    docs[slam::row_sums(x) > 0] <- split.matrix(rbind(as.integer(x$j) - 1L, 
+                                                      as.integer(x$v)), 
+                                                as.integer(x$i))
     if (omit_empty) 
         docs[slam::row_sums(x) == 0] <- NULL
-    else docs[slam::row_sums(x) == 0] <- rep(list(matrix(integer(), ncol = 0, nrow = 2)), 
+    else docs[slam::row_sums(x) == 0] <- rep(list(matrix(integer(), 
+                                                         ncol = 0, nrow = 2)), 
                                              sum(slam::row_sums(x) == 0))
     list(documents = docs, vocab = colnames(x))
 }
@@ -290,11 +294,13 @@ dfm2stm <- function(x, docvars, omit_empty = TRUE) {
         
         empty_docs <- rowSums(x) == 0
         if (sum(empty_docs) > 0) 
-            warning("Dropped empty document(s): ", paste0(docnames(x)[empty_docs], collapse = ", "))
+            warning("Dropped empty document(s): ", 
+                    paste0(docnames(x)[empty_docs], collapse = ", "))
         
         empty_feats <- colSums(x) == 0
         if (sum(empty_feats) > 0) 
-            warning("zero-count features: ", paste0(featnames(x)[empty_feats], collapse = ", "))
+            warning("zero-count features: ", 
+                    paste0(featnames(x)[empty_feats], collapse = ", "))
         
         x <- x[!empty_docs, !empty_feats]
         docvars <- docvars[!empty_docs,, drop = FALSE]
@@ -322,7 +328,8 @@ ijv.to.doc <- function(i, j, v) {
 #' @param x dfm to be converted
 #' @examples
 #' \dontrun{
-#' (mydfm <- dfm(c(d1 = "this is a first matrix", d2 = "this is second matrix as example")))
+#' (mydfm <- dfm(c(d1 = "this is a first matrix", 
+#'                 d2 = "this is second matrix as example")))
 #' lsa::lsa(convert(mydfm, to = "lsa"))
 #' }
 #' @keywords internal

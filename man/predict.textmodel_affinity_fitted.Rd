@@ -23,7 +23,8 @@ The \code{predict} method for a affinity fitted object returns a
   list of format...
 }
 \description{
-Estimate \eqn{\theta_i} for each document, from a fitted \link{textmodel_affinity} object.
+Estimate \eqn{\theta_i} for each document, from a fitted
+\link{textmodel_affinity} object.
 }
 \keyword{internal}
 \keyword{textmodel}

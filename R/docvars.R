@@ -113,11 +113,13 @@ docvars.kwic <- function(x) {
 
 #' @export
 "docvars<-.corpus" <- function(x, field = NULL, value) {
-    if ("texts" %in% field) stop("You should use texts() instead to replace the corpus texts.")
+    if ("texts" %in% field) 
+        stop("You should use texts() instead to replace the corpus texts.")
     if (is.null(field)) {
         field <- names(value)
         if (is.null(field))
-            field <- paste("docvar", seq_len(ncol(as.data.frame(value))), sep="")
+            field <- paste("docvar", seq_len(ncol(as.data.frame(value))), 
+                           sep = "")
     }
     documents(x)[field] <- value
     x
@@ -204,7 +206,8 @@ metadoc.corpus <- function(x, field = NULL) {
         field <- paste0("_", field)
         check_fields(x, field)
     }
-    dvars <- documents(x)[, which(substring(names(documents(x)), 1, 1) == "_"), drop = FALSE]
+    dvars <- documents(x)[, which(substring(names(documents(x)), 1, 1) == "_"), 
+                          drop = FALSE]
     get_docvars(dvars, field)
 }
 
