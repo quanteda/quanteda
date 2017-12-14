@@ -22,7 +22,7 @@
 #'   the counts of features of \code{x} not matched to a dictionary key.  If 
 #'   \code{NULL} (default), do not tabulate unmatched features.
 #' @param verbose print status messages if \code{TRUE}
-#' @seealso \code{\link{tokens_replace}}
+#' @seealso \code{\link{tokens_lookup}}
 #' @export
 #' @note If using \code{dfm_lookup} with dictionaries containing multi-word
 #'   values, matches will only occur if the features themselves are multi-word

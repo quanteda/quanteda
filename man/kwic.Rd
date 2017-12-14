@@ -24,37 +24,35 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{match without respect to case if \code{TRUE}}
 
-\item{...}{additional arguments passed to \link{tokens}, for applicable 
+\item{...}{additional arguments passed to \link{tokens}, for applicable
 object types}
 }
 \value{
-A \code{kwic} classed data.frame, with the document name 
-  (\code{docname}), the token index positions (\code{from} and \code{to}, 
-  which will be the same for single-word patterns, or a sequence equal in 
-  length to the number of elements for multi-word phrases), the context 
-  before (\code{pre}), the keyword in its original format (\code{keyword}, 
-  preserving case and attached punctuation), and the context after 
+A \code{kwic} classed data.frame, with the document name
+  (\code{docname}), the token index positions (\code{from} and \code{to},
+  which will be the same for single-word patterns, or a sequence equal in
+  length to the number of elements for multi-word phrases), the context
+  before (\code{pre}), the keyword in its original format (\code{keyword},
+  preserving case and attached punctuation), and the context after
   (\code{post}).  The return object has its own \code{print} method, plus
   some special attributes that are hidden in the print view.  If you want to
   turn this into a simple data.frame, simply wrap the result in
-  \code{data.frame}. If you wish to perform analysis of keywords-in-context, 
-  use \code{\link{tokens_select}} with the \code{window} argument instead of 
-  \code{kwic}.
+  \code{data.frame}. #'
 }
 \description{
-For a text or a collection of texts (in a quanteda corpus object), return a 
-list of a keyword supplied by the user in its immediate context, identifying 
-the source text and the word index number within the source text.  (Not the 
-line number, since the text may or may not be segmented using end-of-line 
+For a text or a collection of texts (in a quanteda corpus object), return a
+list of a keyword supplied by the user in its immediate context, identifying
+the source text and the word index number within the source text.  (Not the
+line number, since the text may or may not be segmented using end-of-line
 delimiters.)
 }
 \note{
-\code{pattern} will be a keyword pattern or phrase, possibly multiple 
-  patterns, that may include punctuation.  If a pattern contains whitespace, 
-  it is best to wrap it in \code{\link{phrase}} to make this explicit. 
-  However if \code{pattern} is a \link[=textstat_collocations]{collocations} 
+\code{pattern} will be a keyword pattern or phrase, possibly multiple
+  patterns, that may include punctuation.  If a pattern contains whitespace,
+  it is best to wrap it in \code{\link{phrase}} to make this explicit.
+  However if \code{pattern} is a \link[=textstat_collocations]{collocations}
   or \link{dictionary} object, then the collocations or multi-word dictionary
-  keys will automatically be considered phrases where each 
+  keys will automatically be considered phrases where each
   whitespace-separated element matches a token in sequence.
 }
 \examples{
@@ -69,6 +67,11 @@ kwic(data_corpus_inaugural, phrase("war against"), valuetype = "regex")
 mykwic <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(mykwic)
 is.kwic("Not a kwic")
+}
+\seealso{
+If you wish to perform analysis of keywords-in-context, use
+  \code{\link{tokens_select}} with the \code{window} argument instead of
+  \code{kwic}.
 }
 \author{
 Kenneth Benoit and Kohei Watanabe

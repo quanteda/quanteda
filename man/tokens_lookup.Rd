@@ -80,5 +80,5 @@ tokens_lookup(toks, dict, nomatch = "_UNMATCHED")
 
 }
 \seealso{
-\code{\link{tokens_convert}}
+\code{\link{tokens_replace}}
 }
