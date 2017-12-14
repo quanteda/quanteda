@@ -526,7 +526,7 @@ setMethod("show", signature(object = "textmodel_affinity_predicted"),
 
             cat("\nEstimated coefficients:\n\n")
             coeff <- cbind(coef(object), object@se)
-            coeff <- coeff[, interleave(1:ncol(coef(object)), (ncol(coef(object))+1):ncol(coeff)), drop = FALSE]
+            coeff <- coeff[, interleave(seq_len(ncol(coef(object))), (ncol(coef(object))+1):ncol(coeff)), drop = FALSE]
             coeff <- cbind(coeff, gof_chi2(object))
             colnames(coeff) <- c(interleave(colnames(coef(object)), rep("s.e.", 2)),
                                  "chi2")
@@ -807,8 +807,8 @@ print.summary_affinity_influence <- function(x, n = 30, ...) {
 # interleave(letters[1:3], 1:3)
 # ## [1] "a" "1" "b" "2" "c" "3"
 interleave <- function(v1, v2) {
-    ord1 <- 2*(1:length(v1)) - 1
-    ord2 <- 2*(1:length(v2))
+    ord1 <- 2*(seq_along(v1)) - 1
+    ord2 <- 2*(seq_along(v2))
     c(v1, v2)[order(c(ord1, ord2))]
 }
 
