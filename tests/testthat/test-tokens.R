@@ -486,3 +486,13 @@ test_that("assignment operators are disabled for tokens object", {
     expect_error(toks[[1]] <- c(6, 100, 'z'), 'assignment to tokens objects is not allowed')
     expect_error(toks[1] <- list(c(6, 100, 'z')), 'assignment to tokens objects is not allowed')
 })
+
+test_that("as.keras is working", {
+    skip_if_not_installed('reticulate')
+    
+    toks <- tokens(c(d1 = "a b c d", d2 = "c d e"))
+    expect_equivalent(
+        reticulate::py_to_r(as.keras(toks)),
+        unname(unclass(toks))
+    )
+})
