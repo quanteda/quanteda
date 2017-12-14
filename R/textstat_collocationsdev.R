@@ -125,9 +125,9 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
         result["z"] <- result[["method"]] / result[["sigma"]]
         # result$p <- 1 - stats::pnorm(result$z)
         if (method == "all"){
-            colnames(result)[colnames(result) == "method"] <- "lambda";
+            colnames(result)[colnames(result) == "method"] <- "lambda"
         } else {
-            colnames(result)[colnames(result) == "method"] <- method;
+            colnames(result)[colnames(result) == "method"] <- method
         }
         
         # remove gensim and dice for now
