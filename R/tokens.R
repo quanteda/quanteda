@@ -346,6 +346,37 @@ as.list.tokens <- function(x, ...) {
 }
 
 #' @rdname as.tokens
+#' @return a Python list object
+#' @details \code{as.karas} converts \link{tokens} into sequences of integers for
+#'   \code{karas} models. Conversion of R objects to Python objects is performed 
+#'   using the \code{reticulate} package.
+#' @method as.keras tokens
+#' @export
+#' @examples
+#' \dontrun{
+#' txt <- data_char_ukimmig2010
+#'
+#' # use karas' tokenizer
+#' keras_tokenizer <-
+#'     keras::text_tokenizer() %>%
+#'     keras::fit_text_tokenizer(txt)
+#' seqs <- keras::texts_to_sequences(keras_tokenizer, txt)
+#'
+#' # use quanteda's tokenizer
+#' seqs <- as.keras(tokens(data_char_ukimmig2010))
+#'
+#' }
+as.keras <- function(x) {
+    UseMethod("as.keras")
+}
+
+as.keras.tokens <- function(x) {
+    x <- unname(unclass(x))
+    reticulate::r_to_py(x)
+}
+
+
+#' @rdname as.tokens
 #' @return \code{unlist} returns a simple vector of characters from a 
 #'   \link{tokens} object.
 #' @param recursive a required argument for \link{unlist} but inapplicable to

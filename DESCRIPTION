@@ -56,7 +56,8 @@ Suggests:
     xtable,
     DT,
     ca,
-    purrr
+    purrr,
+    reticulate
 URL: http://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
