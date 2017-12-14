@@ -2,9 +2,12 @@
 % Please edit documentation in R/tokens.R
 \name{as.keras}
 \alias{as.keras}
+\alias{as.keras.tokens}
 \title{coerce tokens to sequences for Keras}
 \usage{
 as.keras(x)
+
+\method{as.keras}{tokens}(x)
 }
 \arguments{
 \item{x}{object coerced to Keras sequences}
