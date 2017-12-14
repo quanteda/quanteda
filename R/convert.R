@@ -71,7 +71,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
     to <- match.arg(to)
 
     if (!is.null(docvars)) {
-        if (!is.data.frame(docvars))
+        if (!is.data.frame(docvars)) 
             stop("docvars must be a data.frame")
         if (nrow(docvars) != ndoc(x))
             stop("docvars must have the same number of rows as ndoc(x)")

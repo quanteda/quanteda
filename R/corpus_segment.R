@@ -221,9 +221,10 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
     
     if (is.null(pattern)) {
         
-        if (what == "tokens") {
-            temp <- as.list(tokens(x, ...))
-        } else if (what == "sentences") {
+        # if (what == "tokens") {
+        #     temp <- as.list(tokens(x, ...))
+        # } else 
+        if (what == "sentences") {
             temp <- as.list(tokens(x, what = "sentence", ...))
         }
         

@@ -31,3 +31,14 @@ test_that("tokens_tolower/tokens_toupper works", {
                       text2 = c("THERE", "IS", "G7", "MEETING")))
 })
 
+test_that("tokens_tolower/tokens_toupper works", {
+    dfm1 <- dfm(txt, tolower = FALSE)
+    expect_equal(featnames(dfm_tolower(dfm1)),
+                 c("according", "to", "nato", "there", "is", "g7", "meeting"))
+    expect_equal(featnames(dfm_tolower(dfm1, keep_acronyms = TRUE)),
+                 c("according", "to", "NATO", "there", "is", "G7", "meeting"))
+    expect_equal(featnames(dfm_toupper(dfm1)),
+                 c("ACCORDING", "TO", "NATO", "THERE", "IS", "G7", "MEETING"))
+})
+
+

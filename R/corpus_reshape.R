@@ -100,8 +100,6 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             stop("reshape to sentences or paragraphs only goes from documents")
         }
         
-    } else {
-        stop("reshape to", to, "is not supported")
-    }
+    } 
     return (result)
 }

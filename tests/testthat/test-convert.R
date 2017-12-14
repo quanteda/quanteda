@@ -16,6 +16,17 @@ test_that("test STM package converter", {
     expect_equivalent(dSTM$vocab, tP$vocab)
 })
 
+test_that("docvars error traps work", {
+    expect_error(
+        convert(data_dfm_lbgexample, docvars = "ERROR"),
+        "docvars must be a data.frame"
+    )
+    expect_error(
+        convert(data_dfm_lbgexample, docvars = data.frame(error = c(1,2))),
+        "docvars must have the same number of rows as ndoc\\(x\\)"
+    )
+})
+
 test_that("test STM package converter with metadata", {
     skip_if_not_installed("stm")
     skip_if_not_installed("tm")
