@@ -62,7 +62,7 @@ test_that("quanteda_options reset works correctly", {
     opts <- quanteda:::get_options_default()
     expect_equal(
         quanteda_options(),
-        opts        
+        opts
     )
 })
 

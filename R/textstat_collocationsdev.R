@@ -141,11 +141,11 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
         # get observed counts and compute expected counts
         # split the string into n00, n01, n10, etc
         counts_n <- strsplit(result[, "observed_counts"], "_")
-        df_counts_n <- data.frame(t(sapply(counts_n, as.numeric)))
+        df_counts_n <- data.frame(t(vapply(counts_n, as.numeric, numeric(2^size))))
         names(df_counts_n) <- make_count_names(size, "n")
         # get expected counts
         counts_e <- strsplit(result[, "expected_counts"], "_")
-        df_counts_e <- data.frame(t(sapply(counts_e, as.numeric)))
+        df_counts_e <- data.frame(t(vapply(counts_e, as.numeric, numeric(2^size))))
         names(df_counts_e) <- make_count_names(size, "e")
         # remove counts character
         result <- result[, -which(names(result)=="observed_counts")]

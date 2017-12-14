@@ -11,7 +11,7 @@ test_that("oldest dfm test", {
     dictDfm <- dfm(mycorpus, dictionary = mydict, valuetype = "glob")
     dictDfm <- dictDfm[1:10, ]
     dictDfm <- thesDfm <- dfm(mycorpus, thesaurus = mydict, valuetype = "glob")
-    dictDfm <- thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
+    dictDfm <- thesDfm[1:10, (nfeat(thesDfm)-8) : nfeat(thesDfm)]
     
     preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE)
     dfm_lookup(preDictDfm, mydict)
@@ -189,8 +189,8 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (a)", {
     generate_testdfm <- function(n) {
         dfm(paste('X', 1:n, sep=''))
     }
-    expect_equal(nfeature(generate_testdfm(10000)), 10000)
-    expect_equal(nfeature(generate_testdfm(20000)), 20000)
+    expect_equal(nfeat(generate_testdfm(10000)), 10000)
+    expect_equal(nfeat(generate_testdfm(20000)), 20000)
 })
 
 test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
@@ -198,8 +198,8 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
     generate_testdfm <- function(n) {
         dfm(paste(sample(letters, n, replace = TRUE), 1:n))
     }
-    expect_equal(nfeature(generate_testdfm(10000)), 10026)
-    expect_equal(nfeature(generate_testdfm(10001)), 10027)
+    expect_equal(nfeat(generate_testdfm(10000)), 10026)
+    expect_equal(nfeat(generate_testdfm(10001)), 10027)
 })
 
 test_that("dfm print works as expected", {
@@ -256,7 +256,7 @@ test_that("cbind.dfm works as expected",{
     dfm2 <- dfm("More words here")
     dfm12 <- cbind(dfm1, dfm2)
     
-    expect_equal(nfeature(dfm12), 8)
+    expect_equal(nfeat(dfm12), 8)
     expect_equal(names(dimnames(dfm12)),
                  c("docs", "features"))
 })
@@ -359,7 +359,7 @@ test_that("rbind.dfm works as expected",{
     dfm2 <- dfm("More words here")
     dfm12 <- rbind(dfm1, dfm2)
     
-    expect_equal(nfeature(dfm12), 8)
+    expect_equal(nfeat(dfm12), 8)
     expect_equal(ndoc(dfm12), 2)
     expect_equal(names(dimnames(dfm12)),
                  c("docs", "features"))
@@ -584,19 +584,19 @@ test_that("dfm works with purrr::map (#928)", {
     a <- "a b"
     b <- "a a a b b"
     expect_identical(
-        sapply(purrr::map(list(a, b), dfm), is.dfm),
+        vapply(purrr::map(list(a, b), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
     )
     expect_identical(
-        sapply(purrr::map(list(corpus(a), corpus(b)), dfm), is.dfm),
+        vapply(purrr::map(list(corpus(a), corpus(b)), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
     )
     expect_identical(
-        sapply(purrr::map(list(tokens(a), tokens(b)), dfm), is.dfm),
+        vapply(purrr::map(list(tokens(a), tokens(b)), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
     )
     expect_identical(
-        sapply(purrr::map(list(dfm(a), dfm(b)), dfm), is.dfm),
+        vapply(purrr::map(list(dfm(a), dfm(b)), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
     )
 })

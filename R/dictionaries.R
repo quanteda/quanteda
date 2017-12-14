@@ -37,7 +37,7 @@ validate_dictionary <- function(dict){
 check_entries <- function (dict) {
     for (i in seq_along(dict)) {
         entry <- dict[[i]]
-        is_category <- sapply(entry, is.list)
+        is_category <- vapply(entry, is.list, logical(1))
         if (any(!is_category)) {
             word <- unlist(entry[!is_category], use.names = FALSE)
             if (any(!is.character(word))) {
@@ -56,7 +56,7 @@ check_entries <- function (dict) {
 print_dictionary <- function(entry, level = 1) {
     entry <- unclass(entry)
     if (!length(entry)) return()
-    is_category <- sapply(entry, is.list)
+    is_category <- vapply(entry, is.list, logical(1))
     category <- entry[is_category]
     word <- unlist(entry[!is_category], use.names = FALSE)
     if (length(word)) {
@@ -107,7 +107,7 @@ setMethod("[",
           signature = c("dictionary2", i = "index"),
           function(x, i) {
               x <- unclass(x)
-              is_category <- sapply(x[i], function(y) is.list(y))
+              is_category <- vapply(x[i], function(y) is.list(y), logical(1))
               new('dictionary2', x[i][is_category], concatenator = x@concatenator)
           })
 
@@ -120,7 +120,7 @@ setMethod("[[",
           signature = c("dictionary2", i = "index"),
           function(x, i) {
               x <- unclass(x)
-              is_category <- sapply(x[[i]], function(y) is.list(y))
+              is_category <- vapply(x[[i]], function(y) is.list(y), logical(1))
               if (all(is_category == FALSE)) {
                   unlist(x[[i]], use.names = FALSE)
               } else {
@@ -447,7 +447,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key_parent = '',
         } else {
             key_entry <- key_parent
         }
-        is_category <- sapply(entry, is.list)
+        is_category <- vapply(entry, is.list, logical(1))
         dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], unlist(entry[!is_category], use.names = FALSE))
         dict_flat <- flatten_dictionary(entry[is_category], levels, level + 1, key_entry, dict_flat)
     }
@@ -608,7 +608,7 @@ list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
         }
     } else {
         if (length(entry)) {
-            is_category <- sapply(entry, is.list)
+            is_category <- vapply(entry, is.list, logical(1))
             category <- entry[is_category]
             for (i in seq_along(category)) {
                 dict <- list2dictionary_wordstat(category[[i]], TRUE, dict)
@@ -826,7 +826,7 @@ simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
         dict <- simplify_dictionary(entry, FALSE)
     } else {
         if (length(entry)) {
-            is_category <- sapply(entry, is.list)
+            is_category <- vapply(entry, is.list, logical(1))
             category <- entry[is_category]
             if (any(is_category)) {
                 for (i in seq_along(category)) {

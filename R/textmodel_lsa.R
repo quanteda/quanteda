@@ -74,7 +74,7 @@ textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "featu
     }
     
     if (any(dec$d <= sqrt(.Machine$double.eps))) {
-        warning("[lsa] - there are singular values which are zero.");
+        warning("[lsa] - there are singular values which are zero.")
     }
     
     result <- list(sk = dec$d, docs = NULL, features = NULL)

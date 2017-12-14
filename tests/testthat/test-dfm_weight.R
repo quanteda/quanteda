@@ -38,8 +38,10 @@ test_that("dfm_weight works with weights", {
     )
     
     w <- c(apple = 5, banana = 3, much = 0.5, notfound = 10)
-    expect_equivalent(as.matrix(dfm_weight(mydfm, weights = w)),
-                      matrix(c(5, 5, 1, 1, 3, 6, 0, 0.5), nrow = 2))
+    suppressWarnings(
+        expect_equivalent(as.matrix(dfm_weight(mydfm, weights = w)),
+                          matrix(c(5, 5, 1, 1, 3, 6, 0, 0.5), nrow = 2))
+    )
     expect_warning(
         dfm_weight(mydfm, weights = w),
         "ignoring 1 unmatched weight feature"

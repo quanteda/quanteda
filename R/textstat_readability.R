@@ -197,14 +197,14 @@ textstat_readability.character <- function(x,
     textFeatures <- data.table(textID = names(x),
                                W = lengths(tokenizedWords),  # number of words
                                St = St,            # number of sentences
-                               C = sapply(wordLengths, sum), # number of characters (letters)
-                               Sy = sapply(tmpSyll, sum),    # number of syllables
-                               W3Sy = sapply(tmpSyll, function(x) sum(x >= 3)),    # number words with >= 3 syllables
-                               W2Sy = sapply(tmpSyll, function(x) sum(x >= 2)),    # number words with >= 2 syllables
-                               W_1Sy = sapply(tmpSyll, function(x) sum(x == 1)),   # number words with 1 syllable
-                               W6C = sapply(wordLengths, function(x) sum(x >= 6)), # number of words with at least 6 letters
-                               W7C = sapply(wordLengths, function(x) sum(x >= 7))) # number of words with at least 7 letters
-    textFeatures[, W_wl.Dale.Chall := sapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$dalechall)))]
+                               C = vapply(wordLengths, sum, numeric(1)), # number of characters (letters)
+                               Sy = vapply(tmpSyll, sum, numeric(1)),    # number of syllables
+                               W3Sy = vapply(tmpSyll, function(x) sum(x >= 3), numeric(1)),    # number words with >= 3 syllables
+                               W2Sy = vapply(tmpSyll, function(x) sum(x >= 2), numeric(1)),    # number words with >= 2 syllables
+                               W_1Sy = vapply(tmpSyll, function(x) sum(x == 1), numeric(1)),    # number words with 1 syllable
+                               W6C = vapply(wordLengths, function(x) sum(x >= 6), numeric(1)),  # number of words with at least 6 letters
+                               W7C = vapply(wordLengths, function(x) sum(x >= 7), numeric(1)))# number of words with at least 7 letters
+    textFeatures[, W_wl.Dale.Chall := vapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$dalechall)), numeric(1))]
     textFeatures[, Wlt3Sy := W - W3Sy]   # number of words with less than three syllables
 
     if (any(c("all", "ARI") %in% measure))
@@ -360,14 +360,14 @@ textstat_readability.character <- function(x,
 
     if (any(c("all", "Spache") %in% measure)) {
         # number of words which are not in the Spache word list
-        textFeatures[, W_wl.Spache := sapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$spache)))]
+        textFeatures[, W_wl.Spache := vapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$spache)), numeric(1))]
         textFeatures[, Spache := 0.121 * W / St + 0.082 * (100 * W_wl.Spache / W) + 0.659]
         textFeatures[, W_wl.Spache := NULL]
     }
 
     if (any(c("all", "Spache.old") %in% measure)) {
         # number of words which are not in the Spache word list
-        textFeatures[, W_wl.Spache := sapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$spache)))]
+        textFeatures[, W_wl.Spache := vapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$spache)), numeric(1))]
         textFeatures[, Spache.old := 0.141 * W / St + 0.086 * (100 * W_wl.Spache / W) + 0.839]
         textFeatures[, W_wl.Spache := NULL]
     }
@@ -376,14 +376,14 @@ textstat_readability.character <- function(x,
         textFeatures[, Strain := Sy * 1 / (St/3) / 10]
 
     if (any(c("all", "Traenkle.Bailer") %in% measure)) {
-        Wprep <- sapply(tokenizedWords, function(x) sum(x %in% prepositions))  # English prepositions
-        Wconj <- sapply(tokenizedWords, function(x) sum(x %in% conjunctions))  # English conjunctions
+        Wprep <- vapply(tokenizedWords, function(x) sum(x %in% prepositions), numeric(1))  # English prepositions
+        Wconj <- vapply(tokenizedWords, function(x) sum(x %in% conjunctions), numeric(1))  # English conjunctions
         textFeatures[, Traenkle.Bailer := 224.6814 - (79.8304 * C / W) - (12.24032 * W / St) - (1.292857 * 100 * Wprep / W)]
     }
 
     if (any(c("all", "Traenkle.Bailer.2") %in% measure)) {
-        Wprep <- sapply(tokenizedWords, function(x) sum(x %in% prepositions))  # English prepositions
-        Wconj <- sapply(tokenizedWords, function(x) sum(x %in% conjunctions))  # English conjunctions
+        Wprep <- vapply(tokenizedWords, function(x) sum(x %in% prepositions), numeric(1))  # English prepositions
+        Wconj <- vapply(tokenizedWords, function(x) sum(x %in% conjunctions), numeric(1))  # English conjunctions
         textFeatures[, Traenkle.Bailer.2 := 234.1063 - (96.11069 * C / W) - (2.05444 * 100 * Wprep / W) - (1.02805 * 100 * Wconj / W)]
     }
 

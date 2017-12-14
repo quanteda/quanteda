@@ -450,5 +450,5 @@ tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "
 setGeneric("maxtf", function(x) standardGeneric("maxtf"))
 
 setMethod("maxtf", signature(x = "dfm"), definition = function(x) {
-    sapply(split(x@x, x@i), max)
+    vapply(split(x@x, x@i), max, numeric(1))
 })

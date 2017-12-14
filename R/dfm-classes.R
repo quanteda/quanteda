@@ -178,7 +178,7 @@ cbind.dfm <- function(...) {
     args <- list(...)
     names <- names(args) # for non-dfm objects
     
-    if (!any(sapply(args, is.dfm))) stop("at least one input object must be a dfm")
+    if (!any(vapply(args, is.dfm, logical(1)))) stop("at least one input object must be a dfm")
 
     if (length(args) == 1) return(args[[1]])
     

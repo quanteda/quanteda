@@ -184,7 +184,7 @@ ntype.dfm <- function(x, ...) {
 
 #' @export
 ntype.tokens <- function(x, ...) {
-    sapply(unclass(x), function(y) length(unique(y[y > 0])))
+    vapply(unclass(x), function(y) length(unique(y[y > 0])), numeric(1))
 }
 
 #' count the number of sentences
