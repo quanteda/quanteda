@@ -11,9 +11,9 @@ navbar:
         - text: "Quick Start Guide"
           href: articles/pkgdown/quickstart.html
         - text: "快速入门指南"
-          href: articles/pkgdown/quickstart_cn.html
+          href: articles/pkgdown/examples/quickstart_cn.html
         - text: "クイック・スタートガイド"
-          href: articles/pkgdown/quickstart_ja.html
+          href: articles/pkgdown/examples/quickstart_ja.html
     - text: "Reference"
       href: reference/index.html
     - text: "Features"

@@ -444,7 +444,7 @@ tokens("中华人民共和国成立于1949 年") %>%
 四十九份中国总理的“政府工作报告”，1954 - 2017
 ```{r fig1, fig.height = 5, fig.width = 5, fig.align = "center"}
 # 读取文件
-load("examples/data/data_corpus_chinesegovreport.rda")
+load("data/data_corpus_chinesegovreport.rda")
 summary(data_corpus_chinesegovreport, 10)
 
 # 分词
@@ -490,7 +490,7 @@ topfeatures(chfcm["改革", ])
 ```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
 wfm <- textmodel_wordfish(chdfm)
 y <- 1954:2017
-y <- y[-which(y==1963 | y==1961 |y==1962 | (y>1964 & y<1975) | y==1976 |y==1977)]
+y <- y[-which(y==1963 | y==1961 |y==1962 | (y>1964 & y<1975) | y==1976 | y==1977)]
 plot(y, wfm@theta, xlab = "Year", ylab = "Position")
 ```
 
