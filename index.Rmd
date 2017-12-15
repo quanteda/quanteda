@@ -74,12 +74,9 @@ For analyzing the resulting *document-feature* matrix created when features are 
 
 ### Working with other packages
 
-**quanteda** is hardly unique in providing facilities for working with text -- the excellent *tm* package already provides many of the features we have described.  **quanteda** is designed to complement those packages, as well to simplify the implementation of the text-to-analysis workflow.  **quanteda** corpus structures are simpler objects than in *tm*s, as are the document-feature matrix
-objects from `quanteda`, compared to the sparse matrix implementation found in *tm*.  However, there is no need to choose only one package, since we provide translator functions from one matrix or
-corpus object to the other in `quanteda`.
+**quanteda** is hardly unique in providing facilities for working with text -- the excellent *tm* package already provides many of the features we have described.  **quanteda** is designed to complement those packages, as well to simplify the implementation of the text-to-analysis workflow.  **quanteda** corpus structures are simpler objects than in *tm*s, as are the document-feature matrix objects from **quanteda**, compared to the sparse matrix implementation found in *tm*.  However, there is no need to choose only one package, since we provide translator functions from one matrix or corpus object to the other in **quanteda**.
 
-Once constructed, a **quanteda** "dfm"" can be easily passed to other text-analysis packages for 
-additional analysis of topic models or scaling, such as:
+Once constructed, a **quanteda** dfm can be easily passed to other text-analysis packages for additional analysis of topic models or scaling, such as:
 
 *  topic models (including converters for direct use with the **topicmodels**, **LDA**, and **stm** packages)
 *  document scaling using **quanteda**'s own functions for the "wordfish" and "Wordscores" models, and a sparse method for correspondence analysis
