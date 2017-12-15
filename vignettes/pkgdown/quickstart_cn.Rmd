@@ -11,7 +11,7 @@ knitr::opts_chunk$set(collapse = FALSE,
 
 ```
 
-本指南概述了**quanteda**的基本特性和功能。 其他更详细的介绍，请参见[quanteda.io上的文章](http://docs.quanteda.io/articles/index.html).  
+本指南概述了**quanteda**的基本特性和功能。其他更详细的介绍，请参见[quanteda.io上的文章](http://docs.quanteda.io/articles/index.html)。
 
 # 软件包安装
 
@@ -20,16 +20,15 @@ knitr::opts_chunk$set(collapse = FALSE,
 ```{r, eval = FALSE}
 install.packages("quanteda") 
 ```
-请参阅 https://github.com/kbenoit/quanteda 上的说明来安装GitHub版本。 
+请参阅https://github.com/kbenoit/quanteda上的说明来安装GitHub版本。 
 
-## 推荐安装:
+## 推荐安装
 
-我们建议安装以下软件包， 以便更好地支持和扩展
- **quanteda** 的功能：
+我们建议安装以下软件包，以便更好地支持和扩展**quanteda**的功能：
 
-*  [**readtext**](https://github.com/kbenoit/readtext):  可将几乎任何格式的文本文件读入R。
-*  [**spacyr**](https://github.com/kbenoit/spacyr): 使用 [spaCy](http://spacy.io) 库的NLP， 包括词性标注、命名实体和依存语法。
-*  [**quantedaData**](https://github.com/kbenoit/quantedaData): 用于** quanteda **的附加文本数据。
+*  [**readtext**](https://github.com/kbenoit/readtext): 可将几乎任何格式的文本文件读入R
+*  [**spacyr**](https://github.com/kbenoit/spacyr): 使用[spaCy](http://spacy.io)库的NLP，包括词性标注，命名实体和依存语法
+*  [**quantedaData**](https://github.com/kbenoit/quantedaData): 用于**quanteda**的附加文本数据
 
     ```{r eval = FALSE}
     devtools::install_github("kbenoit/quantedaData")
@@ -50,28 +49,28 @@ library(quanteda)
 
 ## 目前可用的语料库资源
 
-**quanteda** 有一个简单而强大的配套软件包用于加载文本文件: [**readtext**](https://github.com/kbenoit/readtext).  这个软件包的主函数`readtext()`从磁盘或者URL中读取文件或者文件集，并且返回一个可以直接和`corpus（）`构造函数一起使用的data.frame， 可用来创建一个**quanteda** 语料库.
+**quanteda**有一个简单而强大的配套软件包用于加载文本文件: [**readtext**](https://github.com/kbenoit/readtext)。 这个软件包的主函数`readtext()`从磁盘或者URL中读取文件或者文件集，并且返回一个可以直接和`corpus()`构造函数一起使用的data.frame，可用来创建一个**quanteda** 语料库。
 
-`readtext()` 可读取：
+`readtext()`可读取：
 
-* 文本文件 (`.txt`);
-* 逗号分割的(`.csv`)文本文件 ;
-* XML 数据;
-* 取自脸书API的JSON格式的数据；
-* 取自twitter API的JSON格式的数据 
-* 常用的JSON数据.
+* 文本文件 (`.txt`)
+* 逗号分割的（`.csv`）文本文件
+* XML数据
+* 取自脸书API的JSON格式的数据
+* 取自TwitterAPI的JSON格式的数据 
+* 常用的JSON数据
 
 语料库创建函数`corpus()`可用于：
 
-* 字符类向量，比如你使用其他工具已经加载到R工作空间的;
-* **tm** 软件包中`VCorpus`语料库对象；
-* data.frame 包含文本列和其他任何文件级元数据。
+* 字符类向量，比如你使用其他工具已经加载到R工作空间的
+* **tm** 软件包中`VCorpus`语料库对象
+* data.frame 包含文本列和其他任何文件级元数据
 
 ### 例子：从字符向量构建语料库
 
 最简单的方式是从R中已经存在的文本向量创建一个语料库。这使得高级R用户可以灵活地选择文本输入，因为R有很多可以读取文本向量的方法。
 
-一旦我们有了这种格式的文本数据，我们就可以直接调用语料库构造函数。以从内置的英国政党2010年选举宣言（data_char_ukimmig2010`）中提取的有关移民政策的文本为例:
+一旦我们有了这种格式的文本数据，我们就可以直接调用语料库构造函数。以从内置的英国政党2010年选举宣言（`data_char_ukimmig2010`）中提取的有关移民政策的文本为例：
 
 ```{r}
 myCorpus <- corpus(data_char_ukimmig2010)  # 从文本构建语料库
@@ -80,7 +79,7 @@ summary(myCorpus)
 
 我们也可以添加一些文档变量-- **quanteda** 称之为此语料库的`docvars`。
 
-我们可以使用R的`names()`函数来读取字符向量`data_char_ukimmig2010`的名称，并且将其给文档变量(`docvar`)赋值。
+我们可以使用R的`names()`函数来读取字符向量`data_char_ukimmig2010`的名称，并且将其给文档变量（`docvars()`）赋值。
 
 ```{r}
 docvars(myCorpus, "Party") <- names(data_char_ukimmig2010)
@@ -88,8 +87,7 @@ docvars(myCorpus, "Year") <- 2010
 summary(myCorpus)
 ```
 
-如果我们想要为每个文档添加额外的元数据， 而这些元数据是我们需要知道的文档属性，我们也可以
-添加到语料库中。
+如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。
 
 ```{r}
 metadoc(myCorpus, "language") <- "english"
@@ -97,9 +95,9 @@ metadoc(myCorpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(myCorpu
 summary(myCorpus, showmeta = TRUE)
 ```
 
-上面的命令`metadoc`允许您定义自己的文档元数据域。 请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。 在给上述定制的metadoc域`docsource`创建一个简单的标签时，我们使用了quanteda函数`ndoc（）`来提取语料库中的文件数量。 这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如`nrow（）`和`ncol（）`。
+上面的命令`metadoc()`允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域`docsource`创建一个简单的标签时，我们使用了quanteda函数`ndoc()`来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如`nrow()`和`ncol()`。
 
-### 例子: 用**readtext** 软件包加载文件
+### readtext软件包加载文件
 
 ```{r, eval=FALSE}
 require(readtext)
@@ -135,11 +133,11 @@ summary(corpus(mytf7), 5)
 ```
 
 
-## quanteda 语料库工作方式
+## quanteda语料库工作方式
 
 ### 语料库的原则
 
-语料库被设计成原始文档的“库”，该文档被转换为UTF-8编码的纯文本文件，并与元数据一起分别存储于语料库级和文档级。我们给文档级元数据一个特殊的名字：docvars。这些变量或特征描述了每个文档的属性。
+语料库被设计成原始文档的“库”，该文档被转换为UTF-8编码的纯文本文件，并与元数据一起分别存储于语料库级和文档级。我们给文档级元数据一个特殊的名字：`docvars()`。这些变量或特征描述了每个文档的属性。
 
 从处理和分析的角度，语料库被设计成相对静态的文本容器。这意味着语料库中的文本不能从内部通过（例如）清理或预处理改变，比如词干提取或去除标点符号。相反，作为处理过程的一部分文本可以从语料库中提取，并赋值给新的对象，但是设计的思路是将语料库作为原始参考副本保留下来，以便于其他分析 - 例如那些需要词干和标点符号的分析-比如分析阅读难易指数 - 可以在相同的语料库上执行。
 
@@ -149,13 +147,13 @@ summary(corpus(mytf7), 5)
 texts(data_corpus_inaugural)[2]
 ```
 
-为了总结语料库中的文本，我们可以调用一个为语料库定义的函数`summary（）`。
+为了总结语料库中的文本，我们可以调用一个为语料库定义的函数`summary()`。
 
 ```{r}
 summary(data_corpus_irishbudget2010)
 ```
 
-我们可以将汇总命令的输出保存为data frame，并用这些信息绘制出一些基本的描述性统计信息：
+我们可以将汇总命令的输出保存为data.frame，并用这些信息绘制出一些基本的描述性统计信息：
 
 ```{r, fig.width = 8}
 tokenInfo <- summary(data_corpus_inaugural)
@@ -172,7 +170,7 @@ tokenInfo[which.max(tokenInfo$Tokens), ]
 
 ### 合并两个语料库对象
 
-`+`运算符提供了一个连接两个语料库对象的简单方法。 如果它们包含了不同的文档级别的变量，这些也将被合并起来以保证不丢失任何信息。语料库级别的元数据也被连接在一起。
+`+`运算符提供了一个连接两个语料库对象的简单方法。如果它们包含了不同的文档级别的变量，这些也将被合并起来以保证不丢失任何信息。语料库级别的元数据也被连接在一起。
 
 ```{r}
 library(quanteda)
@@ -184,8 +182,7 @@ summary(mycorpus3)
 
 ### 提取语料库的子集
 
-`corpus_subset()`是为语料库定义的一个函数， 用于
-根据基于docvars的逻辑条件提取语料库子集：
+`corpus_subset()`是为语料库定义的一个函数，用于根据基于`docvars()`的逻辑条件提取语料库子集：
 
 ```{r}
 summary(corpus_subset(data_corpus_inaugural, Year > 1990))
@@ -209,7 +206,7 @@ kwic(data_corpus_inaugural, "terror", valuetype = "regex")
 kwic(data_corpus_inaugural, "communist*")
 ```
 
-在上面的汇总中，`Year`和`President`是与每个文档相关的变量。我们可以用`docvars（）`函数访问这些变量。
+在上面的汇总中，`Year`和`President`是与每个文档相关的变量。我们可以用`docvars()`函数访问这些变量。
 
 ```{r}
 # 浏览文档变量
@@ -219,7 +216,7 @@ head(docvars(data_corpus_inaugural))
 metacorpus(data_corpus_inaugural)
 ```
 
-[quantedaData](http://github.com/kbenoit/quantedaData) 软件包提供更多语料库资源.
+[quantedaData](http://github.com/kbenoit/quantedaData)软件包提供更多语料库资源。
 
 # 从语料库中提取特征
 
@@ -227,10 +224,10 @@ metacorpus(data_corpus_inaugural)
 
 ## 文本分词
 
-为了简单地对文本分词，quanteda提供了一个强大的命令`tokens（）`。这个命令会产生了一个以字符向量形式存在的分词表，表中的每单元元素
+为了简单地对文本分词，quanteda提供了一个强大的命令`tokens()`。这个命令会产生了一个以字符向量形式存在的分词表，表中的每单元元素
 都对应于一个输入文档。
 
-`tokens（）`有意设计成保守的，意味着除非有指令，它不会从文本中删除任何东西。
+`tokens()`有意设计成保守的，意味着除非有指令，它不会从文本中删除任何东西。
 
 ```{r}
 txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!", 
@@ -261,7 +258,7 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 
 ## 构建文档特征矩阵
 
-分词只是一个中间结果，而大多数用户都希望直接构建一个文档特征矩阵。为此，我们提供一个瑞士军刀功能`dfm()`，此项功能执行分词并将所提取的特征归纳成文档特征矩阵。不同于`tokens()`所采用的保守方法，`dfm（）`函数默认某些应用选项，比如`toLower（）` - 一个单独的用于转换为小写的函数，以及 - 删除标点符号。不过`tokens（）`的所有选项都可以传递给`dfm（）`。
+分词只是一个中间结果，而大多数用户都希望直接构建一个文档特征矩阵。为此，我们提供一个瑞士军刀功能`dfm()`，此项功能执行分词并将所提取的特征归纳成文档特征矩阵。不同于`tokens()`所采用的保守方法，`dfm()`函数默认某些应用选项，比如`toLower()` - 一个单独的用于转换为小写的函数，以及 - 删除标点符号。不过`tokens()`的所有选项都可以传递给`dfm()`。
 
 ```{r}
 myCorpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
@@ -290,7 +287,7 @@ head(stopwords("arabic"), 10)
 
 ### 查看文档特征矩阵
 
-可以在RStudio 的Enviroment pane中查看dfm,或者调用R的View功能。 调用`plot`dfm将调用[wordcloud软件包](https://cran.r-project.org/web/packages/wordcloud/index.html)绘制词云图。
+可以在RStudio 的Enviroment pane中查看dfm,或者调用R的View功能。调用`plot`dfm将调用[wordcloud软件包](https://cran.r-project.org/web/packages/wordcloud/index.html)绘制词云图。
 
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
 mydfm <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
@@ -303,7 +300,7 @@ mydfm
 topfeatures(mydfm, 20)  # 20 词频最高的词
 ```
 
-使用`textplot_wordcloud（）`可以绘制`dfm`对象的词云图。这个函数将参数传递给**wordcloud**包的`wordcloud（）`函数，并且可以使用相同的参数来对图进行美化：
+使用`textplot_wordcloud()`可以绘制`dfm`对象的词云图。这个函数将参数传递给**wordcloud**包的`wordcloud()`函数，并且可以使用相同的参数来对图进行美化：
 
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
@@ -314,7 +311,7 @@ textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
 
 ### 按文档变量对文档分组
 
-通常，我们感兴趣的是根据可能存在于文档变量中实质性因素来分析文本是如何不同的，而不仅仅是根据文档文件的边界。 创建dfm时，我们可以将具有相同文档变量的文档分成一组：
+通常，我们感兴趣的是根据可能存在于文档变量中实质性因素来分析文本是如何不同的，而不仅仅是根据文档文件的边界。创建dfm时，我们可以将具有相同文档变量的文档分成一组：
 
 ```{r}
 byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", 
@@ -330,7 +327,7 @@ dfm_sort(byPartyDfm)[, 1:10]
 
 ### 按字典或等价的类别对词汇分组
 
-在某些应用中，关于文本中我们感兴趣的单词集合我们有先验知识。 例如，在电影评论中，通用的正面词汇的列表可能表示对电影正面的评价，或者我们可能会有一个与特定的意识形态立场相关的政治词汇的字典。 在这些情况下，为了分析的目的，将这些词组等同处理并将其计数归类是有用的。
+在某些应用中，关于文本中我们感兴趣的单词集合我们有先验知识。例如，在电影评论中，通用的正面词汇的列表可能表示对电影正面的评价，或者我们可能会有一个与特定的意识形态立场相关的政治词汇的字典。在这些情况下，为了分析的目的，将这些词组等同处理并将其计数归类是有用的。
 
 例如，我们来看看总统在就职演讲的语料库中，与恐怖主义有关的词汇和与经济相关的词语在总统之间是如何变化的。从原语料库中，我们选择自克林顿以来的总统：
 
@@ -338,19 +335,19 @@ dfm_sort(byPartyDfm)[, 1:10]
 recentCorpus <- corpus_subset(data_corpus_inaugural, Year > 1991)
 ```
 
-现在我们定义一个用于展示的字典:
+现在我们定义一个用于展示的字典：
 ```{r}
 myDict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
                           economy = c("jobs", "business", "grow", "work")))
 ```
 
-我们也可在构建dfm时使用字典:
+我们也可在构建dfm时使用字典：
 ```{r}
 byPresMat <- dfm(recentCorpus, dictionary = myDict)
 byPresMat
 ```
 
-构造函数`dictionary（）`也适用于两种常见的“外来”字典格式：LIWC 和 Provalis Research' Wordstat。例如，我们可以加载 LIWC 并将其应用于总统就职演讲语料库：
+构造函数`dictionary()`也适用于两种常见的“外来”字典格式：LIWC 和 Provalis Research' Wordstat。例如，我们可以加载 LIWC 并将其应用于总统就职演讲语料库：
 
 ```{r, eval = FALSE}
 liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
@@ -401,7 +398,7 @@ lapply(as.list(sim), head, 10)
 
 ## 文档位置的缩放分析
 
-我们在`textmodel（）`功能上做了大量的开发工作，这里仅演示“wordfish”模型的无监督文档缩放分析：
+我们在`textmodel()`功能上做了大量的开发工作，这里仅演示“wordfish”模型的无监督文档缩放分析：
 
 ```{r}
 # make prettier document names
@@ -444,7 +441,7 @@ tokens("中华人民共和国成立于1949 年") %>%
 
 ## 例子：应用于中文文档
 
-四十九份中国总理的“政府工作报告”， 1954 - 2017
+四十九份中国总理的“政府工作报告”，1954 - 2017
 ```{r fig1, fig.height = 5, fig.width = 5, fig.align = "center"}
 # 读取文件
 load("data/data_corpus_chinesegovreport.rda")
@@ -475,7 +472,7 @@ textplot_wordcloud(chdfm_tf, min.freq = 6, random.order = FALSE,
 ## 特征共现矩阵 
 
 ```{r}
-# fcm -共现窗口为5， 2017政府工作报告
+# fcm -共现窗口为5，2017政府工作报告
 ch17txt <- corpus_subset(data_corpus_chinesegovreport, Year == "2017")
 ch17toks <- 
     tokens(ch17txt, remove_punct = TRUE) %>% 
