@@ -3,6 +3,7 @@ title: "クイック・スタートガイド"
 output: 
   html_document:
     toc: true
+    css: ja.css
 ---
 
 ```{r, echo = FALSE}
@@ -27,7 +28,7 @@ GitHubから最新の開発バージョンをインストールする方法に�
 **quanteda**には連携して機能を拡張する一連のパッケージがあり，それらをインストールすることをお薦めします．
 
 * [**readtext**](https://github.com/kbenoit/readtext)：多くの入力形式からテキストデータをRに簡単に読み込むパッケージ
-* [**spacyr**](https://github.com/kbenoit/spacyr)：pythonの[spaCy](http://spacy.io)ライブラリを使用した自然言語解析のためのパッケージで，品詞タグ付け，固有表現抽出，および係り受け関係の解析などができる
+* [**spacyr**](https://github.com/kbenoit/spacyr)：Pythonの[spaCy](http://spacy.io)ライブラリを使用した自然言語解析のためのパッケージで，品詞タグ付け，固有表現抽出，および係り受け関係の解析などができる
 * [**quantedaData**](https://github.com/kbenoit/quantedaData)：**quanteda**の本記事内の説明で使用する追加のテキストデータ
 
     ```{r eval = FALSE}
@@ -52,8 +53,8 @@ library(quanteda)
 
 `readtext()`で利用可能なファイルやデータの形式:
 
-* テキスト(`.txt`)ファイル
-* コンマ区切り値(`.csv`)ファイル
+* テキスト（`.txt`）ファイル
+* コンマ区切り値（`.csv`）ファイル
 * XML形式のデータ
 * JSON形式のFacebook APIのデータ
 * JSON形式のTwitter APIのデータ
@@ -61,7 +62,7 @@ library(quanteda)
 
 **quanteda**のコーパスを生成する関数である `corpus()`は，以下の種類のデータを読み込むことができます．
 
-* 文字列ベクトル (例：**readtext**以外のツールを使用して読み込んだテキスト)
+* 文字列ベクトル（例：**readtext**以外のツールを使用して読み込んだテキスト）
 * **tm**パッケージの `VCorpus`コーパスオブジェクト
 * テキスト列と他の文書に対応したメタデータを含むデータ・フレーム
 
@@ -69,7 +70,7 @@ library(quanteda)
 
 コーパスを作成する最も簡単な方法は，`corpus()`を用いて，すでにRに読み込まれた文字列ベクトル作成することです．文字列ベクトルをRに取り込む方法はさまざまなので，高度なRユーザーは，コーパスをいろいろな方法で作り出せます．
 
-次の例では，**quanteda**パッケージに含まれているイギリスの政党が2010年の総選挙のために発行したマニフェストのテキストデータ(`data_char_ukimmig2010`)からコーパスを作成しています．
+次の例では，**quanteda**パッケージに含まれているイギリスの政党が2010年の総選挙のために発行したマニフェストのテキストデータ（`data_char_ukimmig2010`）からコーパスを作成しています．
 
 ```{r}
 myCorpus <- corpus(data_char_ukimmig2010)  # テキストからコーパスを作成
@@ -78,7 +79,7 @@ summary(myCorpus)
 
 コーパスを作成したあとでも，`docvars`を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができます．
 
-たとえば，Rの`names()`関数を使って文字ベクトル(`data_char_ukimmig2010`)の名前を取得し，これを文書変数(`docvar()`)に追加することができます．
+たとえば，Rの`names()`関数を使って文字ベクトル（`data_char_ukimmig2010`）の名前を取得し，これを文書変数（`docvar()`）に追加することができます．
 
 ```{r}
 docvars(myCorpus, "Party") <- names(data_char_ukimmig2010)
@@ -94,9 +95,9 @@ metadoc(myCorpus, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(myCorpu
 summary(myCorpus, showmeta = TRUE)
 ```
 
-`metadoc()`を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値("english")をフィールド"language"に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意してください．
+`metadoc()`を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（"english"）を文書変数（"language"）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意してください．
 
-独自の文書メタデータのフィールド(`docsource`)を作成するために，**quanteda**関数である`ndoc()`を使ってコーパスに含まれる文書の総数を取得しています．`ndoc()`は，`nrow()`や`ncol()`などのRの標準の関数と同じような方法で動作するように設計されています．
+独自の文書メタデータのフィールド（`docsource`）を作成するために，**quanteda**の関数である`ndoc()`を使ってコーパスに含まれる文書の総数を取得しています．`ndoc()`は，`nrow()`や`ncol()`などのRの標準の関数と同じような方法で動作するように設計されています．
 
 ### readtextパッケージを用いたファイルの読み込み
 
@@ -137,7 +138,7 @@ summary(corpus(mytf7), 5)
 
 ### コーパスの原理
 
-**quanteda**のコーパスは，元の文書をユニコード(UTF-8)に変換し，文書に対するメタデータと一緒に格納しすることで、ステミングや句読点の削除などの処理よって変更されないテキストデータの静的な保管庫になるように設計されています．これによって，コーパスから文書を抽出して新しいオブジェクトを作成した後でも，コーパスには元のデータが残り，別の分析を，同じコーパスを用いて行うことができます．
+**quanteda**のコーパスは，元の文書をユニコード（UTF-8）に変換し，文書に対するメタデータと一緒に格納しすることで、ステミングや句読点の削除などの処理よって変更されないテキストデータの静的な保管庫になるように設計されています．これによって，コーパスから文書を抽出して新しいオブジェクトを作成した後でも，コーパスには元のデータが残り，別の分析を，同じコーパスを用いて行うことができます．
 
 コーパスから文書を取り出すためには，`texts()`と呼ばれる関数を使用します．
 
@@ -190,7 +191,7 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 
 ## コーパス内の文書の探索
 
-`kwic()`(keywords-in-context)は単語の検索を行い，その単語が現れる文脈を表示します．
+`kwic()`（keywords-in-context）は単語の検索を行い，その単語が現れる文脈を表示します．
 
 ```{r, tidy=TRUE}
 kwic(data_corpus_inaugural, "terror")
@@ -215,12 +216,12 @@ head(docvars(data_corpus_inaugural))
 metacorpus(data_corpus_inaugural)
 ```
 
-[**quantedaData**](http://github.com/kbenoit/quantedaData)をインストールすることにより，より多くのコーパスを試すことができます．
+[**quantedaData**](http://github.com/kbenoit/quantedaData)をインストールすることで，より多くのコーパスを試すことができます．
 
 
 # コーパスから特長を抽出
 
-文書のスケーリングなどの統計分析を行うためには，それぞれの文書の特長をまとめた行列を作成する必要があります． **quanteda**では，このような行列を生成するために `dfm()`を使います． dfmは*document-feature  matrix*の略で，行が文書(document)，列が特長(feature)となる行列です．行と列をこのように定義する理由は，データ分析では行が分析単位になり，各列が分析対象になる変数となるのが一般的だからです．多くのソフトウェアでは，この行列を*document-term matrix*と呼びます．`quanteda`が語(term)でなはく特長(feature)という用語を使うのは，特長のほうが一般性を持つ用語だからです．テキスト分析では，単語，語幹，単語の集合，Nグラム，品詞など様々なものが文書の特長となります．
+文書のスケーリングなどの統計分析を行うためには，それぞれの文書の特長をまとめた行列を作成する必要があります． **quanteda**では，このような行列を生成するために `dfm()`を使います． dfmは*document-feature  matrix*の略で，行が文書（document），列が特長（feature）となる行列です．行と列をこのように定義する理由は，データ分析では行が分析単位になり，各列が分析対象になる変数となるのが一般的だからです．多くのソフトウェアでは，この行列を*document-term matrix*と呼びます．**quanteda**が語（term）でなはく特長（feature）という用語を使うのは，特長のほうが一般性を持つ用語だからです．テキスト分析では，単語，語幹，単語の集合，Nグラム，品詞など様々なものが文書の特長となります．
 
 ## 文書のトークン化
 
@@ -267,7 +268,7 @@ myDfm <- dfm(myCorpus)
 myDfm[, 1:5]
 ```
 
-`dfm()`の追加のオプションには，ストップワードの削除(`remove`)や語のステミング(`stem`)が含まれます．
+`dfm()`の追加のオプションには，ストップワードの削除（`remove`）や語のステミング（`stem`）が含まれます．
 
 ```{r}
 # make a dfm, removing stopwords and applying stemming
@@ -373,7 +374,7 @@ obamaSimil
 ```
 
 
-上記の，文書間の類似性から樹形図を作成して，大統領を分類することができます．
+上記の文書間の類似性から樹形図を作成して，大統領を分類することができます．
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
 data(data_corpus_SOTU, package = "quantedaData")
 presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
@@ -398,7 +399,7 @@ lapply(as.list(sim), head, 10)
 
 ## 文書のスケーリング
 
-**quanteda**にはたくさんの計量テキスト分析のためのモデルが含まれていますが，ワードフィッシュ(`textmodel_wordfish()`)による教師なしの文書のスケーリングを使ってみます．
+**quanteda**にはたくさんの計量テキスト分析のためのモデルが含まれていますが，ワードフィッシュ（`textmodel_wordfish()`）による教師なしの文書のスケーリングを使ってみます．
 
 ```{r}
 # make prettier document names

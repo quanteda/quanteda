@@ -8,8 +8,8 @@
 <title>快速入门指南 • quanteda</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
-<script src="../../../jquery.sticky-kit.min.js"></script><script src="../../../pkgdown.js"></script><link href="../../../extra.css" rel="stylesheet">
+<!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
+<script src="../../jquery.sticky-kit.min.js"></script><script src="../../pkgdown.js"></script><link href="../../extra.css" rel="stylesheet">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -34,7 +34,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../../../index.html">Quanteda</a>
+      <a class="navbar-brand" href="../../index.html">Quanteda</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -46,21 +46,21 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+      <a href="../../articles/pkgdown/quickstart.html">Quick Start Guide</a>
     </li>
     <li>
-      <a href="../../../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+      <a href="../../articles/pkgdown/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
-      <a href="../../../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+      <a href="../../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../../../reference/index.html">Reference</a>
+  <a href="../../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../../../articles/pkgdown/comparison.html">Features</a>
+  <a href="../../articles/pkgdown/comparison.html">Features</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -70,16 +70,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
+      <a href="../../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
-      <a href="../../../articles/pkgdown/examples/plotting.html">Textual data visualization</a>
+      <a href="../../articles/pkgdown/examples/plotting.html">Textual data visualization</a>
     </li>
     <li>
-      <a href="../../../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
+      <a href="../../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
     </li>
     <li>
-      <a href="../../../articles/pkgdown/examples/twitter.html">Social media analysis</a>
+      <a href="../../articles/pkgdown/examples/twitter.html">Social media analysis</a>
     </li>
   </ul>
 </li>
@@ -91,15 +91,15 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../../articles/pkgdown/replication/digital-humanities.html">Text Analysis with R for Students of Literature</a>
+      <a href="../../articles/pkgdown/replication/digital-humanities.html">Text Analysis with R for Students of Literature</a>
     </li>
     <li>
-      <a href="../../../articles/pkgdown/replication/text2vec.html">Word embedding (word2vec)</a>
+      <a href="../../articles/pkgdown/replication/text2vec.html">Word embedding (word2vec)</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../../../articles/design.html">Design</a>
+  <a href="../../articles/design.html">Design</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -159,7 +159,7 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
 <div class="section level2">
 <h2>目前可用的语料库资源</h2>
-<p><strong>quanteda</strong>有一个简单而强大的配套软件包用于加载文本文件: <a href="https://github.com/kbenoit/readtext"><strong>readtext</strong></a>。 这个软件包的主函数<code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code>从磁盘或者URL中读取文件或者文件集，并且返回一个可以直接和<code><a href="../../../reference/corpus.html">corpus()</a></code>构造函数一起使用的data.frame，可用来创建一个<strong>quanteda</strong> 语料库。</p>
+<p><strong>quanteda</strong>有一个简单而强大的配套软件包用于加载文本文件: <a href="https://github.com/kbenoit/readtext"><strong>readtext</strong></a>。 这个软件包的主函数<code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code>从磁盘或者URL中读取文件或者文件集，并且返回一个可以直接和<code><a href="../../reference/corpus.html">corpus()</a></code>构造函数一起使用的data.frame，可用来创建一个<strong>quanteda</strong> 语料库。</p>
 <p><code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code>可读取：</p>
 <ul>
 <li>文本文件 (<code>.txt</code>)</li>
@@ -169,7 +169,7 @@
 <li>取自TwitterAPI的JSON格式的数据</li>
 <li>常用的JSON数据</li>
 </ul>
-<p>语料库创建函数<code><a href="../../../reference/corpus.html">corpus()</a></code>可用于：</p>
+<p>语料库创建函数<code><a href="../../reference/corpus.html">corpus()</a></code>可用于：</p>
 <ul>
 <li>字符类向量，比如你使用其他工具已经加载到R工作空间的</li>
 <li>
@@ -180,7 +180,7 @@
 <h3>例子：从字符向量构建语料库</h3>
 <p>最简单的方式是从R中已经存在的文本向量创建一个语料库。这使得高级R用户可以灵活地选择文本输入，因为R有很多可以读取文本向量的方法。</p>
 <p>一旦我们有了这种格式的文本数据，我们就可以直接调用语料库构造函数。以从内置的英国政党2010年选举宣言（<code>data_char_ukimmig2010</code>）中提取的有关移民政策的文本为例：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># 从文本构建语料库</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># 从文本构建语料库</span>
 <span class="kw">summary</span>(myCorpus)</code></pre></div>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
@@ -195,13 +195,13 @@
 ##           SNP    88    134         4
 ##          UKIP   346    723        27
 ## 
-## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Fri Dec 15 13:47:16 2017
+## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
+## Created: Fri Dec 15 11:53:59 2017
 ## Notes:</code></pre>
-<p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../../reference/docvars.html">docvars()</a></code>。</p>
+<p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../reference/docvars.html">docvars()</a></code>。</p>
 <p>我们可以使用R的<code>names()</code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量赋值。</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Party"</span>) &lt;-<span class="st"> </span><span class="kw">names</span>(data_char_ukimmig2010)
-<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="dv">2010</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Party"</span>) &lt;-<span class="st"> </span><span class="kw">names</span>(data_char_ukimmig2010)
+<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="dv">2010</span>
 <span class="kw">summary</span>(myCorpus)</code></pre></div>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
@@ -216,12 +216,12 @@
 ##           SNP    88    134         4          SNP 2010
 ##          UKIP   346    723        27         UKIP 2010
 ## 
-## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Fri Dec 15 13:47:16 2017
+## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
+## Created: Fri Dec 15 11:53:59 2017
 ## Notes:</code></pre>
 <p>如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
-<span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
+<span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="../../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)
 <span class="kw">summary</span>(myCorpus, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
@@ -246,10 +246,10 @@
 ##  data_char_ukimmig2010_8
 ##  data_char_ukimmig2010_9
 ## 
-## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Fri Dec 15 13:47:16 2017
+## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
+## Created: Fri Dec 15 11:53:59 2017
 ## Notes:</code></pre>
-<p>上面的命令<code><a href="../../../reference/metadoc.html">metadoc()</a></code>允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code><a href="../../../reference/ndoc.html">ndoc()</a></code>来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code>nrow()</code>和<code>ncol()</code>。</p>
+<p>上面的命令<code><a href="../../reference/metadoc.html">metadoc()</a></code>允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code><a href="../../reference/ndoc.html">ndoc()</a></code>来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code>nrow()</code>和<code>ncol()</code>。</p>
 </div>
 <div id="readtext" class="section level3">
 <h3 class="hasAnchor">
@@ -258,32 +258,32 @@
 
 <span class="co"># Twitter json</span>
 mytf1 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span>)
-myCorpusTwitter &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf1)
+myCorpusTwitter &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf1)
 <span class="kw">summary</span>(myCorpusTwitter, <span class="dv">5</span>)
 <span class="co"># 通用json - 需要“textfield”说明符</span>
 mytf2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,
                   <span class="dt">textfield =</span> <span class="st">"text"</span>)
-<span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf2), <span class="dv">5</span>)
+<span class="kw">summary</span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf2), <span class="dv">5</span>)
 <span class="co"># 文本文件</span>
 mytf3 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)
-<span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf3), <span class="dv">5</span>)
+<span class="kw">summary</span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf3), <span class="dv">5</span>)
 <span class="co"># 多文本文件</span>
 mytf4 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)
-<span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf4), <span class="dv">5</span>)
+<span class="kw">summary</span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf4), <span class="dv">5</span>)
 <span class="co"># 包含取自文件名的docvars的多个文本文件</span>
 mytf5 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, 
                   <span class="dt">docvarsfrom =</span> <span class="st">"filenames"</span>, <span class="dt">sep =</span> <span class="st">"-"</span>, <span class="dt">docvarnames =</span> <span class="kw">c</span>(<span class="st">"Year"</span>, <span class="st">"President"</span>))
-<span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf5), <span class="dv">5</span>)
+<span class="kw">summary</span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf5), <span class="dv">5</span>)
 <span class="co"># XML 数据</span>
 mytf6 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>, 
                   <span class="dt">textfield =</span> <span class="st">"COMMON"</span>)
-<span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf6), <span class="dv">5</span>)
+<span class="kw">summary</span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf6), <span class="dv">5</span>)
 <span class="co"># csv 文件</span>
-<span class="kw">write.csv</span>(<span class="kw">data.frame</span>(<span class="dt">inaugSpeech =</span> <span class="kw"><a href="../../../reference/texts.html">texts</a></span>(data_corpus_inaugural), 
-                     <span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_inaugural)),
+<span class="kw">write.csv</span>(<span class="kw">data.frame</span>(<span class="dt">inaugSpeech =</span> <span class="kw"><a href="../../reference/texts.html">texts</a></span>(data_corpus_inaugural), 
+                     <span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_inaugural)),
           <span class="dt">file =</span> <span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)
 mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">textfield =</span> <span class="st">"inaugSpeech"</span>)
-<span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf7), <span class="dv">5</span>)</code></pre></div>
+<span class="kw">summary</span>(<span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(mytf7), <span class="dv">5</span>)</code></pre></div>
 </div>
 </div>
 <div id="quanteda" class="section level2">
@@ -291,10 +291,10 @@ mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocume
 <a href="#quanteda" class="anchor"></a>quanteda语料库工作方式</h2>
 <div class="section level3">
 <h3>语料库的原则</h3>
-<p>语料库被设计成原始文档的“库”，该文档被转换为UTF-8编码的纯文本文件，并与元数据一起分别存储于语料库级和文档级。我们给文档级元数据一个特殊的名字：<code><a href="../../../reference/docvars.html">docvars()</a></code>。这些变量或特征描述了每个文档的属性。</p>
+<p>语料库被设计成原始文档的“库”，该文档被转换为UTF-8编码的纯文本文件，并与元数据一起分别存储于语料库级和文档级。我们给文档级元数据一个特殊的名字：<code><a href="../../reference/docvars.html">docvars()</a></code>。这些变量或特征描述了每个文档的属性。</p>
 <p>从处理和分析的角度，语料库被设计成相对静态的文本容器。这意味着语料库中的文本不能从内部通过（例如）清理或预处理改变，比如词干提取或去除标点符号。相反，作为处理过程的一部分文本可以从语料库中提取，并赋值给新的对象，但是设计的思路是将语料库作为原始参考副本保留下来，以便于其他分析 - 例如那些需要词干和标点符号的分析-比如分析阅读难易指数 - 可以在相同的语料库上执行。</p>
-<p>为了从语料库中提取文本，我们使用一个名为<code><a href="../../../reference/texts.html">texts()</a></code>的提取器。</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(data_corpus_inaugural)[<span class="dv">2</span>]</code></pre></div>
+<p>为了从语料库中提取文本，我们使用一个名为<code><a href="../../reference/texts.html">texts()</a></code>的提取器。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/texts.html">texts</a></span>(data_corpus_inaugural)[<span class="dv">2</span>]</code></pre></div>
 <pre><code>##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1793-Washington 
 ## "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</code></pre>
 <p>为了总结语料库中的文本，我们可以调用一个为语料库定义的函数<code>summary()</code>。</p>
@@ -360,8 +360,8 @@ tokenInfo[<span class="kw">which.max</span>(tokenInfo<span class="op">$</span>To
 <h3>合并两个语料库对象</h3>
 <p><code>+</code>运算符提供了一个连接两个语料库对象的简单方法。如果它们包含了不同的文档级别的变量，这些也将被合并起来以保证不丢失任何信息。语料库级别的元数据也被连接在一起。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
-mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])
-mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span><span class="op">:</span><span class="dv">58</span>])
+mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])
+mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span><span class="op">:</span><span class="dv">58</span>])
 mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span class="st"> </span>mycorpus2
 <span class="kw">summary</span>(mycorpus3)</code></pre></div>
 <pre><code>## Corpus consisting of 11 documents:
@@ -380,13 +380,13 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Fri Dec 15 13:47:19 2017
+## Created: Fri Dec 15 11:54:01 2017
 ## Notes:</code></pre>
 </div>
 <div class="section level3">
 <h3>提取语料库的子集</h3>
-<p><code><a href="../../../reference/corpus_subset.html">corpus_subset()</a></code>是为语料库定义的一个函数，用于根据基于<code><a href="../../../reference/docvars.html">docvars()</a></code>的逻辑条件提取语料库子集：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>))</code></pre></div>
+<p><code><a href="../../reference/corpus_subset.html">corpus_subset()</a></code>是为语料库定义的一个函数，用于根据基于<code><a href="../../reference/docvars.html">docvars()</a></code>的逻辑条件提取语料库子集：</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>))</code></pre></div>
 <pre><code>## Corpus consisting of 7 documents:
 ## 
 ##          Text Types Tokens Sentences Year President FirstName
@@ -401,7 +401,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
 ## Created: Tue Jun 13 14:51:47 2017
 ## Notes:   http://www.presidency.ucsb.edu/inaugurals.php</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, President <span class="op">==</span><span class="st"> "Adams"</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, President <span class="op">==</span><span class="st"> "Adams"</span>))</code></pre></div>
 <pre><code>## Corpus consisting of 2 documents:
 ## 
 ##        Text Types Tokens Sentences Year President   FirstName
@@ -416,7 +416,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 <div class="section level2">
 <h2>浏览语料库文本</h2>
 <p><code>kwic</code>功能（keywords-in-context）可以搜索一个指定的词并显示它的上下文：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>)</code></pre></div>
 <pre><code>##                                                                     
 ##     [1797-Adams, 1325]              fraud or violence, by | terror |
 ##  [1933-Roosevelt, 112] nameless, unreasoning, unjustified | terror |
@@ -435,7 +435,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  . And they torment the           
 ##  and destruction. Our children    
 ##  and slaughtering innocents, we</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)</code></pre></div>
 <pre><code>##                                                                           
 ##     [1797-Adams, 1325]                   fraud or violence, by |  terror  
 ##  [1933-Roosevelt, 112]      nameless, unreasoning, unjustified |  terror  
@@ -460,16 +460,16 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  | and destruction. Our children    
 ##  | and slaughtering innocents, we   
 ##  | , which we will eradicate</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"communist*"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"communist*"</span>)</code></pre></div>
 <pre><code>##                                                                   
 ##   [1949-Truman, 834] the actions resulting from the | Communist  |
 ##  [1961-Kennedy, 519]             -- not because the | Communists |
 ##                            
 ##  philosophy are a threat to
 ##  may be doing it,</code></pre>
-<p>在上面的汇总中，<code>Year</code>和<code>President</code>是与每个文档相关的变量。我们可以用<code><a href="../../../reference/docvars.html">docvars()</a></code>函数访问这些变量。</p>
+<p>在上面的汇总中，<code>Year</code>和<code>President</code>是与每个文档相关的变量。我们可以用<code><a href="../../reference/docvars.html">docvars()</a></code>函数访问这些变量。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 浏览文档变量</span>
-<span class="kw">head</span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_inaugural))</code></pre></div>
+<span class="kw">head</span>(<span class="kw"><a href="../../reference/docvars.html">docvars</a></span>(data_corpus_inaugural))</code></pre></div>
 <pre><code>##                 Year  President FirstName
 ## 1789-Washington 1789 Washington    George
 ## 1793-Washington 1793 Washington    George
@@ -478,7 +478,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## 1805-Jefferson  1805  Jefferson    Thomas
 ## 1809-Madison    1809    Madison     James</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 浏览语料库变量</span>
-<span class="kw"><a href="../../../reference/metacorpus.html">metacorpus</a></span>(data_corpus_inaugural)</code></pre></div>
+<span class="kw"><a href="../../reference/metacorpus.html">metacorpus</a></span>(data_corpus_inaugural)</code></pre></div>
 <pre><code>## $source
 ## [1] "Gerhard Peters and John T. Woolley. The American Presidency Project."
 ## 
@@ -495,11 +495,11 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 <p>为了执行文档缩放等统计分析，我们必须提取一个将某些特征与文档关联起来矩阵。在quanteda中，dfm函数用来生成这样一个矩阵。“dfm”是文档特征矩阵的缩写，矩阵的行总是为文档而列为“特征”。我们这样定义矩阵的行与列是因为在数据分析中标准的做法是将一个分析单元作为行，而将与每个单元有关的特征或变量作为列。我们称之为“特征”而不是“词项”，因为特征比词项更通用：词项可以被定义为原始词项，词干词项，词性词项，停用词去除后的词项，或者词项归属的字典。而特征可以是完全通用的，例如ngram或者句法依存，我们对矩阵的定义持开放式态度。</p>
 <div class="section level2">
 <h2>文本分词</h2>
-<p>为了简单地对文本分词，quanteda提供了一个强大的命令<code><a href="../../../reference/tokens.html">tokens()</a></code>。这个命令会产生了一个以字符向量形式存在的分词表，表中的每单元元素 都对应于一个输入文档。</p>
-<p><code><a href="../../../reference/tokens.html">tokens()</a></code>有意设计成保守的，意味着除非有指令，它不会从文本中删除任何东西。</p>
+<p>为了简单地对文本分词，quanteda提供了一个强大的命令<code><a href="../../reference/tokens.html">tokens()</a></code>。这个命令会产生了一个以字符向量形式存在的分词表，表中的每单元元素 都对应于一个输入文档。</p>
+<p><code><a href="../../reference/tokens.html">tokens()</a></code>有意设计成保守的，意味着除非有指令，它不会从文本中删除任何东西。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">text1 =</span> <span class="st">"This is $10 in 999 different ways,</span><span class="ch">\n</span><span class="st"> up and down; left and right!"</span>, 
          <span class="dt">text2 =</span> <span class="st">"@kenbenoit working: on #quanteda 2day</span><span class="ch">\t</span><span class="st">4ever, http://textasdata.com?page=123."</span>)
-<span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(txt)</code></pre></div>
+<span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt)</code></pre></div>
 <pre><code>## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "10"        "in"       
@@ -513,7 +513,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  [9] "http"           ":"              "/"              "/"             
 ## [13] "textasdata.com" "?"              "page"           "="             
 ## [17] "123"            "."</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>,  <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>,  <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "in"        "different" "ways"     
@@ -524,7 +524,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## [1] "@kenbenoit"     "working"        "on"             "#quanteda"     
 ## [5] "2day"           "4ever"          "http"           "textasdata.com"
 ## [9] "page"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "10"        "in"        "999"      
@@ -535,7 +535,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  [1] "@kenbenoit"     "working"        "on"             "#quanteda"     
 ##  [5] "2day"           "4ever"          "http"           "textasdata.com"
 ##  [9] "page"           "123"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>,  <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>,  <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <pre><code>## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "in"        "different"
@@ -548,7 +548,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  [9] "http"           ":"              "/"              "/"             
 ## [13] "textasdata.com" "?"              "page"           "="             
 ## [17] "."</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <pre><code>## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "10"        "in"       
@@ -562,7 +562,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  [9] "http"           ":"              "/"              "/"             
 ## [13] "textasdata.com" "?"              "page"           "="             
 ## [17] "123"            "."</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>, <span class="dt">remove_separators =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(txt, <span class="dt">remove_numbers =</span> <span class="ot">FALSE</span>, <span class="dt">remove_punct =</span> <span class="ot">FALSE</span>, <span class="dt">remove_separators =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <pre><code>## tokens from 2 documents.
 ## text1 :
 ##  [1] "This"      " "         "is"        " "         "$"        
@@ -580,13 +580,13 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## [17] "/"              "/"              "textasdata.com" "?"             
 ## [21] "page"           "="              "123"            "."</code></pre>
 <p>也可以按字符分词：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>)</code></pre></div>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ##  [1] "G" "r" "e" "a" "t" "w" "e" "b" "s" "i" "t" "e" ":" "h" "t" "t" "p"
 ## [18] ":" "/" "/" "t" "e" "x" "t" "a" "s" "d" "a" "t" "a" "." "c" "o" "m"
 ## [35] "?" "p" "a" "g" "e" "=" "1" "2" "3" "."</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>, 
          <span class="dt">remove_separators =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <pre><code>## tokens from 1 document.
 ## text1 :
@@ -595,7 +595,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## [35] "o" "m" "?" "p" "a" "g" "e" "=" "1" "2" "3" "."</code></pre>
 <p>以及按句子分词：</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># sentence level         </span>
-<span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="kw">c</span>(<span class="st">"Kurt Vongeut said; only assholes use semi-colons."</span>, 
+<span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="kw">c</span>(<span class="st">"Kurt Vongeut said; only assholes use semi-colons."</span>, 
            <span class="st">"Today is Thursday in Canberra:  It is yesterday in London."</span>, 
            <span class="st">"En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"</span>), 
           <span class="dt">what =</span> <span class="st">"sentence"</span>)</code></pre></div>
@@ -611,11 +611,11 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 </div>
 <div class="section level2">
 <h2>构建文档特征矩阵</h2>
-<p>分词只是一个中间结果，而大多数用户都希望直接构建一个文档特征矩阵。为此，我们提供一个瑞士军刀功能<code><a href="../../../reference/dfm.html">dfm()</a></code>，此项功能执行分词并将所提取的特征归纳成文档特征矩阵。不同于<code><a href="../../../reference/tokens.html">tokens()</a></code>所采用的保守方法，<code><a href="../../../reference/dfm.html">dfm()</a></code>函数默认某些应用选项，比如<code>toLower()</code> - 一个单独的用于转换为小写的函数，以及 - 删除标点符号。不过<code><a href="../../../reference/tokens.html">tokens()</a></code>的所有选项都可以传递给<code><a href="../../../reference/dfm.html">dfm()</a></code>。</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>)
+<p>分词只是一个中间结果，而大多数用户都希望直接构建一个文档特征矩阵。为此，我们提供一个瑞士军刀功能<code><a href="../../reference/dfm.html">dfm()</a></code>，此项功能执行分词并将所提取的特征归纳成文档特征矩阵。不同于<code><a href="../../reference/tokens.html">tokens()</a></code>所采用的保守方法，<code><a href="../../reference/dfm.html">dfm()</a></code>函数默认某些应用选项，比如<code>toLower()</code> - 一个单独的用于转换为小写的函数，以及 - 删除标点符号。不过<code><a href="../../reference/tokens.html">tokens()</a></code>的所有选项都可以传递给<code><a href="../../reference/dfm.html">dfm()</a></code>。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>)
 
 <span class="co"># 构建dfm</span>
-myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus)
+myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(myCorpus)
 myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (0% sparse).
 ## 7 x 5 sparse Matrix of class "dfm"
@@ -628,10 +628,10 @@ myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</sp
 ##   2009-Obama    2      1        1 130     6
 ##   2013-Obama    3      3        6  99     4
 ##   2017-Trump    1      1        4  96     4</code></pre>
-<p><code><a href="../../../reference/dfm.html">dfm()</a></code>的其他选项还包括去除停用词和分词的词干提取。</p>
+<p><code><a href="../../reference/dfm.html">dfm()</a></code>的其他选项还包括去除停用词和分词的词干提取。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 构建dfm, 去除停用词以及提取词干</span>
 
-myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
 ## 7 x 5 sparse Matrix of class "dfm"
@@ -644,24 +644,24 @@ myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5
 ##   2009-Obama        1       1     6      2       0
 ##   2013-Obama        3       8     6      1       0
 ##   2017-Trump        1       4     5      3       1</code></pre>
-<p><code>remove</code>选项提供一个需要被去除的分词的列表。大多数用户会提供一个为多语种预定义的“停用词”的列表，可通过<code><a href="../../../reference/stopwords.html">stopwords()</a></code>函数获取：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)</code></pre></div>
+<p><code>remove</code>选项提供一个需要被去除的分词的列表。大多数用户会提供一个为多语种预定义的“停用词”的列表，可通过<code><a href="../../reference/stopwords.html">stopwords()</a></code>函数获取：</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)</code></pre></div>
 <pre><code>##  [1] "i"          "me"         "my"         "myself"     "we"        
 ##  [6] "our"        "ours"       "ourselves"  "you"        "your"      
 ## [11] "yours"      "yourself"   "yourselves" "he"         "him"       
 ## [16] "his"        "himself"    "she"        "her"        "hers"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"russian"</span>), <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"russian"</span>), <span class="dv">10</span>)</code></pre></div>
 <pre><code>##  [1] "и"   "в"   "во"  "не"  "что" "он"  "на"  "я"   "с"   "со"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)</code></pre></div>
 <pre><code>##  [1] "فى"  "في"  "كل"  "لم"  "لن"  "له"  "من"  "هو"  "هي"  "قوة"</code></pre>
 <div class="section level3">
 <h3>查看文档特征矩阵</h3>
 <p>可以在RStudio 的Enviroment pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调用<a href="https://cran.r-project.org/web/packages/wordcloud/index.html">wordcloud软件包</a>绘制词云图。</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 mydfm</code></pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre>
-<p>使用<code><a href="../../../reference/topfeatures.html">topfeatures()</a></code>可以访问出现频率最高的特征：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(mydfm, <span class="dv">20</span>)  <span class="co"># 20 词频最高的词</span></code></pre></div>
+<p>使用<code><a href="../../reference/topfeatures.html">topfeatures()</a></code>可以访问出现频率最高的特征：</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(mydfm, <span class="dv">20</span>)  <span class="co"># 20 词频最高的词</span></code></pre></div>
 <pre><code>## immigration     british      people      asylum     britain          uk 
 ##          66          37          35          29          28          27 
 ##      system  population     country         new  immigrants      ensure 
@@ -670,9 +670,9 @@ mydfm</code></pre></div>
 ##          17          16          14          14          13          13 
 ##        work     percent 
 ##          13          12</code></pre>
-<p>使用<code><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>可以绘制<code>dfm</code>对象的词云图。这个函数将参数传递给<strong>wordcloud</strong>包的<code>wordcloud()</code>函数，并且可以使用相同的参数来对图进行美化：</p>
+<p>使用<code><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>可以绘制<code>dfm</code>对象的词云图。这个函数将参数传递给<strong>wordcloud</strong>包的<code>wordcloud()</code>函数，并且可以使用相同的参数来对图进行美化：</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">100</span>)
-<span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
+<span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
                    <span class="dt">rot.per =</span> .<span class="dv">25</span>, 
                    <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
 <p><img src="quickstart_cn_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
@@ -680,10 +680,10 @@ mydfm</code></pre></div>
 <div class="section level3">
 <h3>按文档变量对文档分组</h3>
 <p>通常，我们感兴趣的是根据可能存在于文档变量中实质性因素来分析文本是如何不同的，而不仅仅是根据文档文件的边界。创建dfm时，我们可以将具有相同文档变量的文档分成一组：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, 
-                  <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, 
+                  <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>我们可以对这个dfm进行排序，并查看：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 5 documents, 10 features (0% sparse).
 ## 5 x 10 sparse Matrix of class "dfm"
 ##        features
@@ -706,12 +706,12 @@ mydfm</code></pre></div>
 <h3>按字典或等价的类别对词汇分组</h3>
 <p>在某些应用中，关于文本中我们感兴趣的单词集合我们有先验知识。例如，在电影评论中，通用的正面词汇的列表可能表示对电影正面的评价，或者我们可能会有一个与特定的意识形态立场相关的政治词汇的字典。在这些情况下，为了分析的目的，将这些词组等同处理并将其计数归类是有用的。</p>
 <p>例如，我们来看看总统在就职演讲的语料库中，与恐怖主义有关的词汇和与经济相关的词语在总统之间是如何变化的。从原语料库中，我们选择自克林顿以来的总统：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</code></pre></div>
 <p>现在我们定义一个用于展示的字典：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myDict &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dictionary.html">dictionary</a></span>(<span class="kw">list</span>(<span class="dt">terror =</span> <span class="kw">c</span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myDict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="kw">list</span>(<span class="dt">terror =</span> <span class="kw">c</span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),
                           <span class="dt">economy =</span> <span class="kw">c</span>(<span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span>)))</code></pre></div>
 <p>我们也可在构建dfm时使用字典：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)
 byPresMat</code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 2 features (14.3% sparse).
 ## 7 x 2 sparse Matrix of class "dfm"
@@ -724,10 +724,10 @@ byPresMat</code></pre></div>
 ##   2009-Obama        1      10
 ##   2013-Obama        1       6
 ##   2017-Trump        1       5</code></pre>
-<p>构造函数<code><a href="../../../reference/dictionary.html">dictionary()</a></code>也适用于两种常见的“外来”字典格式：LIWC 和 Provalis Research’ Wordstat。例如，我们可以加载 LIWC 并将其应用于总统就职演讲语料库：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,
+<p>构造函数<code><a href="../../reference/dictionary.html">dictionary()</a></code>也适用于两种常见的“外来”字典格式：LIWC 和 Provalis Research’ Wordstat。例如，我们可以加载 LIWC 并将其应用于总统就职演讲语料库：</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,
                        <span class="dt">format =</span> <span class="st">"LIWC"</span>)
-liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span><span class="op">:</span><span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict)
+liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span><span class="op">:</span><span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict)
 liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
 </div>
 </div>
@@ -736,9 +736,9 @@ liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10<
 <h1>更多范例</h1>
 <div class="section level2">
 <h2>文本之间的相似度</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), 
-               <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
-obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), 
+               <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), 
                              <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)
 obamaSimil</code></pre></div>
 <pre><code>##              2009-Obama 2013-Obama
@@ -755,22 +755,22 @@ obamaSimil</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")</span></code></pre></div>
 <p>我们可以用这些距离来绘制树状图，聚类分析总统：</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quantedaData"</span>)
-presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
+presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
-               <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
-presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
+               <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
+presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
 
 <span class="co">#分层聚类 -  在归一化dfm上计算距离</span>
-presDistMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(presDfm, <span class="st">"relfreq"</span>))
+presDistMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(presDfm, <span class="st">"relfreq"</span>))
 <span class="co"># 聚类分析文本距离</span>
 presCluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(presDistMat)
 <span class="co"># 按文档名标注</span>
-presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(presDfm)
+presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/docnames.html">docnames</a></span>(presDfm)
 <span class="co"># 绘制树状图</span>
 <span class="kw">plot</span>(presCluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</code></pre></div>
 <p>(请尝试!)</p>
 <p>我们也可查看特征相似度:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)
 <span class="kw">lapply</span>(<span class="kw">as.list</span>(sim), head, <span class="dv">10</span>)</code></pre></div>
 <pre><code>## $fair
 ##   economi     begin jefferson    author     faith      call   struggl 
@@ -780,10 +780,10 @@ presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span c
 </div>
 <div class="section level2">
 <h2>文档位置的缩放分析</h2>
-<p>我们在<code><a href="../../../reference/textmodel.html">textmodel()</a></code>功能上做了大量的开发工作，这里仅演示“wordfish”模型的无监督文档缩放分析：</p>
+<p>我们在<code><a href="../../reference/textmodel.html">textmodel()</a></code>功能上做了大量的开发工作，这里仅演示“wordfish”模型的无监督文档缩放分析：</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make prettier document names</span>
-ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)
-<span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ieDfm, <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</code></pre></div>
+ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)
+<span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ieDfm, <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</code></pre></div>
 <pre><code>## Fitted wordfish model:
 ## Call:
 ##  textmodel_wordfish.dfm(x = ieDfm, dir = c(2, 1))
@@ -791,92 +791,92 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference
 ## Estimated document positions:
 ## 
 ##                                Documents      theta         SE       lower
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209387 0.02032308  1.78110546
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932891 0.02818878 -0.64853913
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136906 0.01540293 -1.14388038
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219176 0.02846363 -0.17770627
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724125 0.02364050  1.72607709
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145841 0.02650312 -0.76653022
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844875 0.04171542 -0.56624972
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616589 0.02967439 -0.61982069
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703191 0.03850644 -1.04579169
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589310 0.03892477 -1.03522357
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807224 0.07221369  1.03918359
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866524 0.06294151  0.06328707
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7422040 0.07245384  0.60019452
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840522 0.03666341 -0.25591246
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209529 0.02032344  1.78111901
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932786 0.02818837 -0.64852776
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136759 0.01540258 -1.14386495
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219319 0.02846321 -0.17771974
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724221 0.02364095  1.72608581
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145787 0.02650256 -0.76652368
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844823 0.04171478 -0.56624328
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616707 0.02967355 -0.61983089
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703109 0.03850545 -1.04578156
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589232 0.03892377 -1.03521377
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807221 0.07221460  1.03918144
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866458 0.06294120  0.06328106
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421900 0.07245434  0.60017945
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840808 0.03666260 -0.25593950
 ##          upper
-## 1   1.86077192
-## 2  -0.53803912
-## 3  -1.08350087
-## 4  -0.06612886
-## 5   1.81874785
-## 6  -0.66263799
-## 7  -0.40272526
-## 8  -0.50349709
-## 9  -0.89484643
-## 10 -0.88263846
-## 11  1.32226123
-## 12  0.31001779
-## 13  0.88421357
-## 14 -0.11219188
+## 1   1.86078689
+## 2  -0.53802935
+## 3  -1.08348685
+## 4  -0.06614397
+## 5   1.81875833
+## 6  -0.66263364
+## 7  -0.40272133
+## 8  -0.50351058
+## 9  -0.89484018
+## 10 -0.88263259
+## 11  1.32226266
+## 12  0.31001057
+## 13  0.88420048
+## 14 -0.11222211
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the 
-##     -0.09931977      0.38790177      0.39868020      0.25582424 
+##     -0.09918566      0.38804208      0.39880975      0.25596244 
 ##   supplementary          budget              to            this 
-##      1.11575130      0.09903542      0.36995908      0.30681696 
+##      1.11588102      0.09917283      0.37009741      0.30695366 
 ##           house            last           april               , 
-##      0.19894852      0.28960073     -0.09537624      0.34523268 
+##      0.19908958      0.28973579     -0.09524405      0.34537125 
 ##            said              we           could            work 
-##     -0.71942565      0.47980390     -0.52988034      0.58215745 
+##     -0.71929190      0.47994143     -0.52974616      0.58229166 
 ##             our             way         through          period 
-##      0.74361782      0.33599645      0.65971485      0.55610091 
+##      0.74375243      0.33613447      0.65984537      0.55623662 
 ##              of          severe        economic        distress 
-##      0.33920322      1.27899820      0.47855303      1.84446080 
+##      0.33934148      1.27912499      0.47868917      1.84456099 
 ##               .           today             can          report 
-##      0.27340620      0.17407283      0.36366842      0.69164104 
+##      0.27354439      0.17421759      0.36380384      0.69178084 
 ##            that notwithstanding 
-##      0.08821489      1.84446080</code></pre>
+##      0.08835411      1.84456099</code></pre>
 </div>
 <div class="section level2">
 <h2>主题模型</h2>
 <p><strong>quanteda</strong>可以很轻松训练主题模型：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, 
-                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
-quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(quantdfm, <span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, 
+                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
+quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(quantdfm, <span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)
 quantdfm</code></pre></div>
 <pre><code>## Document-feature matrix of: 14 documents, 1,263 features (64.5% sparse).</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="kw">require</span>(topicmodels)) {
-    myLDAfit20 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../../reference/convert.html">convert</a></span>(quantdfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)
+    myLDAfit20 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA</a></span>(<span class="kw"><a href="../../reference/convert.html">convert</a></span>(quantdfm, <span class="dt">to =</span> <span class="st">"topicmodels"</span>), <span class="dt">k =</span> <span class="dv">20</span>)
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1    Topic 2     Topic 3        Topic 4     Topic 5   
-## [1,] "fianna"   "care"      "investment"   "taoiseach" "happened"
-## [2,] "fáil"     "welfare"   "contribution" "fine"      "per"     
-## [3,] "national" "per"       "spending"     "gael"      "problems"
-## [4,] "irish"    "allowance" "european"     "may"       "system"  
-## [5,] "support"  "hit"       "measures"     "irish"     "fine"    
-##      Topic 6       Topic 7         Topic 8   Topic 9        Topic 10  
-## [1,] "alternative" "taoiseach"     "levy"    "society"      "welfare" 
-## [2,] "citizenship" "rate"          "million" "enterprising" "reduce"  
-## [3,] "wealth"      "prescriptions" "carbon"  "sense"        "million" 
-## [4,] "adjustment"  "taoiseach's"   "change"  "equal"        "set"     
-## [5,] "breaks"      "benefit"       "welfare" "nation"       "payments"
-##      Topic 11     Topic 12   Topic 13      Topic 14     Topic 15 
-## [1,] "million"    "million"  "kind"        "support"    "bank"   
-## [2,] "scheme"     "scheme"   "imagination" "confidence" "child"  
-## [3,] "investment" "review"   "policies"    "million"    "welfare"
-## [4,] "reductions" "measures" "wit"         "welfare"    "day"    
-## [5,] "welfare"    "spending" "create"      "energy"     "society"
-##      Topic 16  Topic 17 Topic 18   Topic 19    Topic 20  
-## [1,] "benefit" "fianna" "strategy" "taoiseach" "welfare" 
-## [2,] "child"   "fáil"   "failed"   "employees" "system"  
-## [3,] "today"   "side"   "needed"   "referred"  "taxation"
-## [4,] "banks"   "level"  "vision"   "debate"    "fianna"  
-## [5,] "just"    "third"  "confront" "problem"   "fáil"</code></pre>
+<pre><code>##      Topic 1     Topic 2        Topic 3    Topic 4         Topic 5     
+## [1,] "failed"    "society"      "scheme"   "welfare"       "million"   
+## [2,] "strategy"  "enterprising" "million"  "stimulus"      "support"   
+## [3,] "face"      "sense"        "welfare"  "international" "investment"
+## [4,] "needed"    "equal"        "benefit"  "system"        "back"      
+## [5,] "ministers" "nation"       "measures" "adjustment"    "welfare"   
+##      Topic 6     Topic 7       Topic 8     Topic 9     Topic 10     
+## [1,] "fianna"    "alternative" "spending"  "taoiseach" "societies"  
+## [2,] "fáil"      "citizenship" "million"   "employees" "taoiseach"  
+## [3,] "side"      "wealth"      "measures"  "rate"      "legislation"
+## [4,] "level"     "adjustment"  "review"    "referred"  "consider"   
+## [5,] "education" "breaks"      "reduction" "debate"    "speech"     
+##      Topic 11  Topic 12   Topic 13     Topic 14  Topic 15    Topic 16   
+## [1,] "fianna"  "fianna"   "continue"   "benefit" "care"      "system"   
+## [2,] "child"   "fáil"     "enterprise" "child"   "welfare"   "taxation" 
+## [3,] "much"    "national" "reductions" "day"     "per"       "policies" 
+## [4,] "share"   "irish"    "employment" "bank"    "allowance" "fianna"   
+## [5,] "million" "support"  "future"     "today"   "hit"       "education"
+##      Topic 17   Topic 18    Topic 19  Topic 20 
+## [1,] "welfare"  "taoiseach" "levy"    "fáil"   
+## [2,] "high"     "fine"      "million" "child"  
+## [3,] "job"      "gael"      "carbon"  "fianna" 
+## [4,] "stimulus" "may"       "change"  "system" 
+## [5,] "hope"     "irish"     "welfare" "workers"</code></pre>
 <p>注：以上这个指南翻译于英文版<a href="http://docs.quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>
@@ -887,15 +887,15 @@ quantdfm</code></pre></div>
 <h2 class="hasAnchor">
 <a href="#-" class="anchor"></a>中文停用词： 取自百度停用词</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 读取中文停用词</span>
-csw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>)
+csw &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>)
 
-<span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>)</code></pre></div>
+<span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>)</code></pre></div>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ## [1] "中华"   "人民"   "共和国" "成立"   "于"     "1949"   "年"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 除去停用词</span>
-<span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))</code></pre></div>
+<span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))</code></pre></div>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ## [1] "中华"   "人民"   "共和国" "成立"   "1949"</code></pre>
@@ -904,7 +904,7 @@ csw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/s
 <h2>例子：应用于中文文档</h2>
 <p>四十九份中国总理的“政府工作报告”，1954 - 2017</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 读取文件</span>
-<span class="kw">load</span>(<span class="st">"data/data_corpus_chinesegovreport.rda"</span>)
+<span class="kw">load</span>(<span class="st">"examples/data/data_corpus_chinesegovreport.rda"</span>)
 <span class="kw">summary</span>(data_corpus_chinesegovreport, <span class="dv">10</span>)</code></pre></div>
 <pre><code>## Warning in nsentence.character(object, ...): nsentence() does not correctly
 ## count sentences in all lower-cased text</code></pre>
@@ -938,12 +938,12 @@ csw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/s
 ## Notes:</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 分词</span>
 chtoks &lt;-<span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(data_corpus_chinesegovreport, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))
+<span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(data_corpus_chinesegovreport, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))
 
 <span class="co"># 创建 dfm</span>
-chdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(chtoks)
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chdfm)</code></pre></div>
+chdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(chtoks)
+<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chdfm)</code></pre></div>
 <pre><code>## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
 ## 5627 5036 4255 4248 2931 2897 2817 2642 2627 2595</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span>
@@ -951,10 +951,10 @@ chdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference
 
 <span class="co"># 绘制词云图</span>
 <span class="kw">set.seed</span>(<span class="dv">100</span>)
-chdfm_tf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(chdfm, <span class="dt">min_count =</span> <span class="dv">500</span>)
+chdfm_tf &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(chdfm, <span class="dt">min_count =</span> <span class="dv">500</span>)
 <span class="co"># 设置适用于MacOS的字体</span>
 <span class="cf">if</span> (<span class="kw">Sys.info</span>()[<span class="st">'sysname'</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="kw">par</span>(<span class="dt">family =</span> <span class="st">"STSong"</span>) 
-<span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(chdfm_tf, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
+<span class="kw"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(chdfm_tf, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
                    <span class="dt">rot.per =</span> .<span class="dv">25</span>, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">scale =</span> <span class="kw">c</span>(<span class="fl">2.8</span>, .<span class="dv">5</span>),
                    <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
 <p><img src="quickstart_cn_files/figure-html/fig1-1.png" width="480" style="display: block; margin: auto;"></p>
@@ -962,25 +962,25 @@ chdfm_tf &lt;-<span class="st"> </span><span class="kw"><a href="../../../refere
 <div class="section level2">
 <h2>特征共现矩阵</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fcm -共现窗口为5，2017政府工作报告</span>
-ch17txt &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_chinesegovreport, Year <span class="op">==</span><span class="st"> "2017"</span>)
+ch17txt &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_chinesegovreport, Year <span class="op">==</span><span class="st"> "2017"</span>)
 ch17toks &lt;-<span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(ch17txt, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))
-chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</code></pre></div>
+<span class="st">    </span><span class="kw"><a href="../../reference/tokens.html">tokens</a></span>(ch17txt, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))
+chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  
+<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</code></pre></div>
 <pre><code>## 推进 制度   性 体制 完善   试   点 供给   侧 结构 
 ##   23   19   11   11   10    8    8    7    7    7</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fcm 共现窗口为："改革" + “xx”</span>
-chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>, <span class="dt">tri =</span> <span class="ot">FALSE</span>)
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</code></pre></div>
+chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>, <span class="dt">tri =</span> <span class="ot">FALSE</span>)
+<span class="kw"><a href="../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</code></pre></div>
 <pre><code>## 完善 发展   试   点 制度 全面 推进 深化 社会 开放 
 ##   10    8    8    8    8    7    7    6    5    5</code></pre>
 </div>
 <div class="section level2">
 <h2>文本缩放模型</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(chdfm)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(chdfm)
 y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span>
-y &lt;-<span class="st"> </span>y[<span class="op">-</span><span class="kw">which</span>(y<span class="op">==</span><span class="dv">1963</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1961</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1962</span> <span class="op">|</span><span class="st"> </span>(y<span class="op">&gt;</span><span class="dv">1964</span> <span class="op">&amp;</span><span class="st"> </span>y<span class="op">&lt;</span><span class="dv">1975</span>) <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1976</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1977</span>)]
+y &lt;-<span class="st"> </span>y[<span class="op">-</span><span class="kw">which</span>(y<span class="op">==</span><span class="dv">1963</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1961</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1962</span> <span class="op">|</span><span class="st"> </span>(y<span class="op">&gt;</span><span class="dv">1964</span> <span class="op">&amp;</span><span class="st"> </span>y<span class="op">&lt;</span><span class="dv">1975</span>) <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1976</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1977</span>)]
 <span class="kw">plot</span>(y, wfm<span class="op">@</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</code></pre></div>
 <p><img src="quickstart_cn_files/figure-html/fig2-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
@@ -988,7 +988,7 @@ y &lt;-<span class="st"> </span>y[<span class="op">-</span><span class="kw">whic
 <h2 class="hasAnchor">
 <a href="#---" class="anchor"></a>词组 - 双词词组/三词词组等</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 所有报告中的双词词组</span>
-ch_mw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(chtoks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)
+ch_mw &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_collocations.html">textstat_collocations</a></span>(chtoks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)
 <span class="kw">head</span>(ch_mw, <span class="dv">10</span>)</code></pre></div>
 <pre><code>##    collocation count count_nested length   lambda         z
 ## 1    社会 主义  1787            0      2 5.661200 128.61741
@@ -1002,7 +1002,7 @@ ch_mw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference
 ## 9    国民 经济   589            0      2 6.014672  61.80426
 ## 10   充分 发挥   191            0      2 6.584129  61.24885</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 2017 报告中的双词词组</span>
-ch_mw17 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)
+ch_mw17 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)
 <span class="kw">head</span>(ch_mw17, <span class="dv">10</span>)</code></pre></div>
 <pre><code>##    collocation count count_nested length   lambda        z
 ## 1    人民 群众    12            0      2 5.406485 12.89405

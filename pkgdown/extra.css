@@ -1,11 +1,16 @@
 /* Edit pkgdown/extra.css to customize the theme */
 
-/* this block can be section or div */
-#overview h1 {
-    font-size: 250%;
-    padding-top: 60px;
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
+@import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
+@import url(http://fonts.googleapis.com/earlyaccess/notosansscsliced.css); 
+
+body { 
+    font-family: 'Open Sans', 'Noto Sans SC Sliced', 'Noto Sans Japanese', serif; font-weight: 300;
 }
 
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Noto Sans SC Sliced', 'Noto Sans Japanese', serif; font-weight: 500;
+}
 
 .navbar-inverse .navbar-brand {
     background-image: url(https://cdn.rawgit.com/kbenoit/quanteda/master/images/quanteda_logo_small.svg);
@@ -16,6 +21,12 @@
     padding-left: 155px;
 }
 
+div#overview div.page-header h1 {
+    margin-top: 22px;
+    padding: 0;
+    font-size: 250%;
+    color: dimgray;
+}
 
 div.page-header h1 {
     font-size: 250%;
@@ -53,5 +64,6 @@ pre {
     font-size: 80%;
     line-height: 150%;
 }
+
 
 

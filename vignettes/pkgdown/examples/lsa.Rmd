@@ -7,7 +7,7 @@ output:
     number_sections: true
 ---
 
-In this vignette, we show how to perform Latent Semantic Analysis using the **quanteda** package based on Grossman and Frieder’s  [*Information Retrieval, Algorithms and Heuristics*](http://www1.se.cuhk.edu.hk/%7Eseem5680/lecture/LSI-Eg.pdf).
+In this vignette, we show how to perform Latent Semantic Analysis using the **quanteda** package based on Grossman and Frieder's  [*Information Retrieval, Algorithms and Heuristics*](http://www1.se.cuhk.edu.hk/%7Eseem5680/lecture/LSI-Eg.pdf).
 
 LSA decomposes document-feature matrix into a reduced vector space that is assumed to reflect semantic structure.
 
