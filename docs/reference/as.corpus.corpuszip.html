@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -138,7 +150,8 @@
     </div>
 
     
-    <p>Recast a compressed corpus object into a standard (uncompressed) corpus object.</p>
+    <p>Recast a compressed corpus object into a standard (uncompressed) corpus
+object.</p>
     
 
     <pre class="usage"><span class='co'># S3 method for corpuszip</span>

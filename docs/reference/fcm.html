@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -153,47 +165,50 @@ vector of weights applied to the co-occurrence counts.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>character, <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object from which to generate 
-the feature co-occurrence matrix</p></td>
+      <td><p>character, <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object from
+which to generate the feature co-occurrence matrix</p></td>
     </tr>
     <tr>
       <th>context</th>
-      <td><p>the context in which to consider term co-occurrence: 
+      <td><p>the context in which to consider term co-occurrence:
 <code>"document"</code> for co-occurrence counts within document; <code>"window"</code>
-for co-occurrence within a defined window of words, which requires a 
-positive integer value for <code>window</code>.  Note: if <code>x</code> is a dfm object, then
-<code>context</code> can only be <code>"document"</code>.</p></td>
+for co-occurrence within a defined window of words, which requires a
+positive integer value for <code>window</code>.  Note: if <code>x</code> is a dfm
+object, then <code>context</code> can only be <code>"document"</code>.</p></td>
     </tr>
     <tr>
       <th>count</th>
       <td><p>how to count co-occurrences:</p><dl class='dl-horizontal'>
-<dt><code>"frequency"</code></dt><dd><p>count the number of co-occurrences within the context</p></dd>
-<dt><code>"boolean"</code></dt><dd><p>count only the co-occurrence or not within the context, 
- irrespective of how many times it occurs.</p></dd>
-<dt><code>"weighted"</code></dt><dd><p>count a weighted function of counts, typically as a 
-function of distance from the target feature.  Only makes sense for <code>context = "window"</code>.</p></dd>
+<dt><code>"frequency"</code></dt><dd><p>count the number of co-occurrences within the
+context</p></dd>
+<dt><code>"boolean"</code></dt><dd><p>count only the co-occurrence or not within the
+context, irrespective of how many times it occurs.</p></dd>
+<dt><code>"weighted"</code></dt><dd><p>count a weighted function of counts, typically as
+a function of distance from the target feature.  Only makes sense for
+<code>context = "window"</code>.</p></dd>
 </dl></td>
     </tr>
     <tr>
       <th>window</th>
-      <td><p>positive integer value for the size of a window on either side 
-of the target feature, default is 5, meaning 5 words before and after the 
+      <td><p>positive integer value for the size of a window on either side
+of the target feature, default is 5, meaning 5 words before and after the
 target feature</p></td>
     </tr>
     <tr>
       <th>weights</th>
-      <td><p>a vector of weights applied to each distance from 
-<code>1:window</code>, strictly decreasing by default; can be a custom-defined vector of the same length as 
-<code>length(weights)</code></p></td>
+      <td><p>a vector of weights applied to each distance from
+<code>1:window</code>, strictly decreasing by default; can be a custom-defined
+vector of the same length as <code>length(weights)</code></p></td>
     </tr>
     <tr>
       <th>ordered</th>
-      <td><p>if <code>TRUE</code> the number of times that a term appears before or after the target feature 
-are counted separately. Only makes sense for context = "window".</p></td>
+      <td><p>if <code>TRUE</code> the number of times that a term appears before
+or after the target feature are counted separately. Only makes sense for
+context = "window".</p></td>
     </tr>
     <tr>
       <th>span_sentence</th>
-      <td><p>if <code>FALSE</code>, then word windows will not span 
+      <td><p>if <code>FALSE</code>, then word windows will not span
 sentences</p></td>
     </tr>
     <tr>
@@ -220,7 +235,7 @@ sentences</p></td>
   features is considered (see Church &amp; Hanks 1990).</p>  
 <p>fcm provides all of this functionality, returning a \(V * V\)
   matrix (where \(V\) is the vocabulary size, returned by
-  <code><a href='ndoc.html'>nfeature</a></code>). The <code>tri = TRUE</code> option will only return the
+  <code><a href='ndoc.html'>nfeat</a></code>). The <code>tri = TRUE</code> option will only return the
   upper part of the matrix.</p>  
 <p>Unlike some implementations of co-occurrences, fcm counts feature
   co-occurrences with themselves, meaning that the diagonal will not be zero.</p>  

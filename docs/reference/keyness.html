@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -179,7 +191,7 @@ objects.
 application of <a href='http://www.rdocumentation.org/packages/stats/topics/fisher.test'>fisher.test</a>, returning the odds ratio.
     <code>keyness_lr</code> computes the \(G^2\) likelihood ratio statistic
   using vectorized computation
-    <code>keyness_pmi</code> computes the Pointwise Mutual Information statistic
+    <code>keyness_pmi</code> computes the Pointwise Mutual Information stat
   using vectorized computation</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>

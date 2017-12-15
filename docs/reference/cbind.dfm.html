@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -162,17 +174,17 @@ not confirming to the row or column dimension will be recycled as normal.</p></t
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>cbind(x, y, ...)</code> combines dfm objects by columns, returning a
-  dfm object with combined features from input dfm objects.  Note that this 
-  should be used with extreme caution, as joining dfms with different 
-  documents will result in a new row with the docname(s) of the first dfm, 
-  merging in those from the second.  Furthermore, if features are shared 
-  between the dfms being cbinded, then duplicate feature labels will result. 
+  dfm object with combined features from input dfm objects.  Note that this
+  should be used with extreme caution, as joining dfms with different
+  documents will result in a new row with the docname(s) of the first dfm,
+  merging in those from the second.  Furthermore, if features are shared
+  between the dfms being cbinded, then duplicate feature labels will result.
   In both instances, warning messages will result.
-    <code>rbind(x, y, ...)</code> combines dfm objects by rows, returning a dfm
-  object with combined features from input dfm objects.  Features are matched
-  between the two dfm objects, so that the order and names of the features
-  do not need to match.  The order of the features in the resulting dfm
-  is not guaranteed.  The attributes and settings of this new dfm are not
+    <code>rbind(x, y, ...)</code> combines dfm objects by rows, returning a
+  dfm object with combined features from input dfm objects.  Features are
+  matched between the two dfm objects, so that the order and names of the
+  features do not need to match.  The order of the features in the resulting
+  dfm is not guaranteed.  The attributes and settings of this new dfm are not
   currently preserved.</p>
     
 

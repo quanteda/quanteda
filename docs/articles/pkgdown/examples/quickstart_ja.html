@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>快速入门指南 • quanteda</title>
+<title>クイック・スタートガイド • quanteda</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
@@ -121,66 +121,66 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>快速入门指南</h1>
+      <h1>クイック・スタートガイド</h1>
             
           </div>
 
     
     
 <div class="contents">
-<p>本指南概述了<strong>quanteda</strong>的基本特性和功能。 其他更详细的介绍，请参见<a href="http://docs.quanteda.io/articles/index.html">quanteda.io上的文章</a>.</p>
+<p>この記事では，<strong>quanteda</strong>の特徴と機能の概要を説明します．より詳しい説明は，<a href="http://docs.quanteda.io/articles/index.html">quanteda.ioにある記事</a>を参照してください．</p>
 <div class="section level1">
-<h1>软件包安装</h1>
-<p><strong>quanteda</strong>已上传在<a href="https://CRAN.R-project.org/package=quanteda">CRAN</a>上，所以可以使用GUI的R软件包安装程序进行安装，或执行：</p>
+<h1>パッケージのインストール</h1>
+<p><strong>quanteda</strong>は<a href="https://CRAN.R-project.org/package=quanteda">CRAN</a>からインストールできます．GUIのRパッケージインストーラを使用してインストールするか，次のコマンドを実行します．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>) </code></pre></div>
-<p>请参阅 <a href="https://github.com/kbenoit/quanteda" class="uri">https://github.com/kbenoit/quanteda</a> 上的说明来安装GitHub版本。</p>
+<p>GitHubから最新の開発バージョンをインストールする方法については，<a href="https://github.com/kbenoit/quanteda" class="uri">https://github.com/kbenoit/quanteda</a> を参照してください．</p>
 <div class="section level2">
-<h2>推荐安装:</h2>
-<p>我们建议安装以下软件包， 以便更好地支持和扩展 <strong>quanteda</strong> 的功能：</p>
+<h2>インストールが推奨されるパッケージ</h2>
+<p><strong>quanteda</strong>には連携して機能を拡張する一連のパッケージがあり，それらをインストールすることをお薦めします．</p>
 <ul>
 <li>
-<a href="https://github.com/kbenoit/readtext"><strong>readtext</strong></a>: 可将几乎任何格式的文本文件读入R。</li>
+<a href="https://github.com/kbenoit/readtext"><strong>readtext</strong></a>：多くの入力形式からテキストデータをRに簡単に読み込むパッケージ</li>
 <li>
-<a href="https://github.com/kbenoit/spacyr"><strong>spacyr</strong></a>: 使用 <a href="http://spacy.io">spaCy</a> 库的NLP， 包括词性标注、命名实体和依存语法。</li>
+<a href="https://github.com/kbenoit/spacyr"><strong>spacyr</strong></a>：pythonの<a href="http://spacy.io">spaCy</a>ライブラリを使用した自然言語解析のためのパッケージで，品詞タグ付け，固有表現抽出，および係り受け関係の解析などができる</li>
 <li>
-<p><a href="https://github.com/kbenoit/quantedaData"><strong>quantedaData</strong></a>: 用于** quanteda **的附加文本数据。</p>
+<p><a href="https://github.com/kbenoit/quantedaData"><strong>quantedaData</strong></a>：<strong>quanteda</strong>の本記事内の説明で使用する追加のテキストデータ</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"kbenoit/quantedaData"</span>)</code></pre></div>
 </li>
 <li>
-<p><a href="https://github.com/kbenoit/LIWCalike"><strong>LIWCalike</strong></a>: R版<a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a> 文本分析软件。</p>
+<p><a href="https://github.com/kbenoit/LIWCalike"><strong>LIWCalike</strong></a>: <a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a> (LIWC) アプローチによるテキスト分析のR実装</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"kbenoit/LIWCalike"</span>)</code></pre></div>
 </li>
 </ul>
 </div>
 </div>
 <div class="section level1">
-<h1>创建语料库</h1>
-<p>加载<strong>quanteda</strong>以便使用软件包中的数据和功能。</p>
+<h1>コーパスの作成</h1>
+<p>まず，<strong>quanteda</strong>を読み込んで，パッケージの関数とデータにアクセスできるようにします．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
 <div class="section level2">
-<h2>目前可用的语料库资源</h2>
-<p><strong>quanteda</strong> 有一个简单而强大的配套软件包用于加载文本文件: <a href="https://github.com/kbenoit/readtext"><strong>readtext</strong></a>. 这个软件包的主函数<code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code>从磁盘或者URL中读取文件或者文件集，并且返回一个可以直接和<code>corpus（）</code>构造函数一起使用的data.frame， 可用来创建一个<strong>quanteda</strong> 语料库.</p>
-<p><code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code> 可读取：</p>
+<h2>利用可能なコーパス</h2>
+<p><strong>quanteda</strong>にはテキストを読み込むためのシンプルで強力なパッケージ，<a href="https://github.com/kbenoit/readtext"><strong>readtext</strong></a>があります．このパッケージの<code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code>は，ローカス・ストレージやインターネットからファイル読み込み，<code><a href="../../../reference/corpus.html">corpus()</a></code>にデータ・フレームを返します．</p>
+<p><code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code>で利用可能なファイルやデータの形式:</p>
 <ul>
-<li>文本文件 (<code>.txt</code>);</li>
-<li>逗号分割的(<code>.csv</code>)文本文件 ;</li>
-<li>XML 数据;</li>
-<li>取自脸书API的JSON格式的数据；</li>
-<li>取自twitter API的JSON格式的数据</li>
-<li>常用的JSON数据.</li>
+<li>テキスト(<code>.txt</code>)ファイル</li>
+<li>コンマ区切り値(<code>.csv</code>)ファイル</li>
+<li>XML形式のデータ</li>
+<li>JSON形式のFacebook APIのデータ</li>
+<li>JSON形式のTwitter APIのデータ</li>
+<li>一般的なJSONデータ</li>
 </ul>
-<p>语料库创建函数<code><a href="../../../reference/corpus.html">corpus()</a></code>可用于：</p>
+<p><strong>quanteda</strong>のコーパスを生成する関数である <code><a href="../../../reference/corpus.html">corpus()</a></code>は，以下の種類のデータを読み込むことができます．</p>
 <ul>
-<li>字符类向量，比如你使用其他工具已经加载到R工作空间的;</li>
+<li>文字列ベクトル (例：<strong>readtext</strong>以外のツールを使用して読み込んだテキスト)</li>
 <li>
-<strong>tm</strong> 软件包中<code>VCorpus</code>语料库对象；</li>
-<li>data.frame 包含文本列和其他任何文件级元数据。</li>
+<strong>tm</strong>パッケージの <code>VCorpus</code>コーパスオブジェクト</li>
+<li>テキスト列と他の文書に対応したメタデータを含むデータ・フレーム</li>
 </ul>
 <div class="section level3">
-<h3>例子：从字符向量构建语料库</h3>
-<p>最简单的方式是从R中已经存在的文本向量创建一个语料库。这使得高级R用户可以灵活地选择文本输入，因为R有很多可以读取文本向量的方法。</p>
-<p>一旦我们有了这种格式的文本数据，我们就可以直接调用语料库构造函数。以从内置的英国政党2010年选举宣言（data_char_ukimmig2010`）中提取的有关移民政策的文本为例:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># 从文本构建语料库</span>
+<h3>文字列からコーパスを作成</h3>
+<p>コーパスを作成する最も簡単な方法は，<code><a href="../../../reference/corpus.html">corpus()</a></code>を用いて，すでにRに読み込まれた文字列ベクトル作成することです．文字列ベクトルをRに取り込む方法はさまざまなので，高度なRユーザーは，コーパスをいろいろな方法で作り出せます．</p>
+<p>次の例では，<strong>quanteda</strong>パッケージに含まれているイギリスの政党が2010年の総選挙のために発行したマニフェストのテキストデータ(<code>data_char_ukimmig2010</code>)からコーパスを作成しています．</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># テキストからコーパスを作成</span>
 <span class="kw">summary</span>(myCorpus)</code></pre></div>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
@@ -196,10 +196,10 @@
 ##          UKIP   346    723        27
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Fri Dec 15 08:30:00 2017
+## Created: Fri Dec 15 08:30:29 2017
 ## Notes:</code></pre>
-<p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code>docvars</code>。</p>
-<p>我们可以使用R的<code>names()</code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量(<code>docvar</code>)赋值。</p>
+<p>コーパスを作成したあとでも，<code>docvars</code>を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができます．</p>
+<p>たとえば，Rの<code>names()</code>関数を使って文字ベクトル(<code>data_char_ukimmig2010</code>)の名前を取得し，これを文書変数(<code>docvar()</code>)に追加することができます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Party"</span>) &lt;-<span class="st"> </span><span class="kw">names</span>(data_char_ukimmig2010)
 <span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="dv">2010</span>
 <span class="kw">summary</span>(myCorpus)</code></pre></div>
@@ -217,9 +217,9 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Fri Dec 15 08:30:00 2017
+## Created: Fri Dec 15 08:30:29 2017
 ## Notes:</code></pre>
-<p>如果我们想要为每个文档添加额外的元数据， 而这些元数据是我们需要知道的文档属性，我们也可以 添加到语料库中。</p>
+<p>分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，<code><a href="../../../reference/docvars.html">docvars()</a></code>を使って，コーパスに追加することができます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
 <span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)
 <span class="kw">summary</span>(myCorpus, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)</code></pre></div>
@@ -247,38 +247,39 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Fri Dec 15 08:30:00 2017
+## Created: Fri Dec 15 08:30:29 2017
 ## Notes:</code></pre>
-<p>上面的命令<code>metadoc</code>允许您定义自己的文档元数据域。 请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。 在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code>ndoc（）</code>来提取语料库中的文件数量。 这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code>nrow（）</code>和<code>ncol（）</code>。</p>
+<p><code><a href="../../../reference/metadoc.html">metadoc()</a></code>を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値(“english”)をフィールド“language”に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意してください．</p>
+<p>独自の文書メタデータのフィールド(<code>docsource</code>)を作成するために，<strong>quanteda</strong>関数である<code><a href="../../../reference/ndoc.html">ndoc()</a></code>を使ってコーパスに含まれる文書の総数を取得しています．<code><a href="../../../reference/ndoc.html">ndoc()</a></code>は，<code>nrow()</code>や<code>ncol()</code>などのRの標準の関数と同じような方法で動作するように設計されています．</p>
 </div>
-<div id="-readtext-" class="section level3">
+<div id="readtext" class="section level3">
 <h3 class="hasAnchor">
-<a href="#-readtext-" class="anchor"></a>例子: 用<strong>readtext</strong> 软件包加载文件</h3>
+<a href="#readtext" class="anchor"></a>readtextパッケージを用いたファイルの読み込み</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(readtext)
 
 <span class="co"># Twitter json</span>
 mytf1 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span>)
 myCorpusTwitter &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf1)
 <span class="kw">summary</span>(myCorpusTwitter, <span class="dv">5</span>)
-<span class="co"># 通用json - 需要“textfield”说明符</span>
+<span class="co"># generic json - needs a textfield specifier</span>
 mytf2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,
                   <span class="dt">textfield =</span> <span class="st">"text"</span>)
 <span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf2), <span class="dv">5</span>)
-<span class="co"># 文本文件</span>
+<span class="co"># text file</span>
 mytf3 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)
 <span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf3), <span class="dv">5</span>)
-<span class="co"># 多文本文件</span>
+<span class="co"># multiple text files</span>
 mytf4 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)
 <span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf4), <span class="dv">5</span>)
-<span class="co"># 包含取自文件名的docvars的多个文本文件</span>
+<span class="co"># multiple text files with docvars from filenames</span>
 mytf5 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, 
                   <span class="dt">docvarsfrom =</span> <span class="st">"filenames"</span>, <span class="dt">sep =</span> <span class="st">"-"</span>, <span class="dt">docvarnames =</span> <span class="kw">c</span>(<span class="st">"Year"</span>, <span class="st">"President"</span>))
 <span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf5), <span class="dv">5</span>)
-<span class="co"># XML 数据</span>
+<span class="co"># XML data</span>
 mytf6 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>, 
                   <span class="dt">textfield =</span> <span class="st">"COMMON"</span>)
 <span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf6), <span class="dv">5</span>)
-<span class="co"># csv 文件</span>
+<span class="co"># csv file</span>
 <span class="kw">write.csv</span>(<span class="kw">data.frame</span>(<span class="dt">inaugSpeech =</span> <span class="kw"><a href="../../../reference/texts.html">texts</a></span>(data_corpus_inaugural), 
                      <span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_inaugural)),
           <span class="dt">file =</span> <span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)
@@ -286,18 +287,16 @@ mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocume
 <span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf7), <span class="dv">5</span>)</code></pre></div>
 </div>
 </div>
-<div id="quanteda-" class="section level2">
-<h2 class="hasAnchor">
-<a href="#quanteda-" class="anchor"></a>quanteda 语料库工作方式</h2>
+<div class="section level2">
+<h2>コーパスオブジェクトの使い方</h2>
 <div class="section level3">
-<h3>语料库的原则</h3>
-<p>语料库被设计成原始文档的“库”，该文档被转换为UTF-8编码的纯文本文件，并与元数据一起分别存储于语料库级和文档级。我们给文档级元数据一个特殊的名字：docvars。这些变量或特征描述了每个文档的属性。</p>
-<p>从处理和分析的角度，语料库被设计成相对静态的文本容器。这意味着语料库中的文本不能从内部通过（例如）清理或预处理改变，比如词干提取或去除标点符号。相反，作为处理过程的一部分文本可以从语料库中提取，并赋值给新的对象，但是设计的思路是将语料库作为原始参考副本保留下来，以便于其他分析 - 例如那些需要词干和标点符号的分析-比如分析阅读难易指数 - 可以在相同的语料库上执行。</p>
-<p>为了从语料库中提取文本，我们使用一个名为<code><a href="../../../reference/texts.html">texts()</a></code>的提取器。</p>
+<h3>コーパスの原理</h3>
+<p><strong>quanteda</strong>のコーパスは，元の文書をユニコード(UTF-8)に変換し，文書に対するメタデータと一緒に格納しすることで、ステミングや句読点の削除などの処理よって変更されないテキストデータの静的な保管庫になるように設計されています．これによって，コーパスから文書を抽出して新しいオブジェクトを作成した後でも，コーパスには元のデータが残り，別の分析を，同じコーパスを用いて行うことができます．</p>
+<p>コーパスから文書を取り出すためには，<code><a href="../../../reference/texts.html">texts()</a></code>と呼ばれる関数を使用します．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(data_corpus_inaugural)[<span class="dv">2</span>]</code></pre></div>
 <pre><code>##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1793-Washington 
 ## "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</code></pre>
-<p>为了总结语料库中的文本，我们可以调用一个为语料库定义的函数<code>summary（）</code>。</p>
+<p><code>summary()</code>により，コーパス内のテキストの要約を行うことができます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(data_corpus_irishbudget2010)</code></pre></div>
 <pre><code>## Corpus consisting of 14 documents:
 ## 
@@ -335,14 +334,14 @@ mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocume
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
 ## Created: Wed Jun 28 22:04:18 2017
 ## Notes:</code></pre>
-<p>我们可以将汇总命令的输出保存为data frame，并用这些信息绘制出一些基本的描述性统计信息：</p>
+<p><code>summary()</code>の出力をデータ・フレームとして保存し，基本的な記述統計を描画することができます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tokenInfo &lt;-<span class="st"> </span><span class="kw">summary</span>(data_corpus_inaugural)
 <span class="cf">if</span> (<span class="kw">require</span>(ggplot2))
     <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data=</span>tokenInfo, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
 <span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>) ) </code></pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
-<p><img src="quickstart_cn_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 最长的就职演说: William Henry Harrison</span>
+<p><img src="quickstart_ja_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Longest inaugural address: William Henry Harrison</span>
 tokenInfo[<span class="kw">which.max</span>(tokenInfo<span class="op">$</span>Tokens), ] </code></pre></div>
 <pre><code>## Corpus consisting of 58 documents:
 ## 
@@ -355,10 +354,10 @@ tokenInfo[<span class="kw">which.max</span>(tokenInfo<span class="op">$</span>To
 </div>
 </div>
 <div class="section level2">
-<h2>处理语料库对象的功能</h2>
+<h2>コーパスに対する操作</h2>
 <div class="section level3">
-<h3>合并两个语料库对象</h3>
-<p><code>+</code>运算符提供了一个连接两个语料库对象的简单方法。 如果它们包含了不同的文档级别的变量，这些也将被合并起来以保证不丢失任何信息。语料库级别的元数据也被连接在一起。</p>
+<h3>コーパスの結合</h3>
+<p><code>+</code>演算子を用いると，簡単に二個のコーパスを連結できます．コーパスが異なる構造を持つ場合でも，文書変数が失われることはなく，コーパスのメタデータも引き継がれます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
 mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])
 mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">53</span><span class="op">:</span><span class="dv">58</span>])
@@ -380,12 +379,12 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Fri Dec 15 08:30:02 2017
+## Created: Fri Dec 15 08:30:31 2017
 ## Notes:</code></pre>
 </div>
 <div class="section level3">
-<h3>提取语料库的子集</h3>
-<p><code><a href="../../../reference/corpus_subset.html">corpus_subset()</a></code>是为语料库定义的一个函数， 用于 根据基于docvars的逻辑条件提取语料库子集：</p>
+<h3>コーパス内の文書の一部の文書の抽出</h3>
+<p><code><a href="../../../reference/corpus_subset.html">corpus_subset()</a></code>により，文書変数に適用される論理条件に基づいて文書を抽出することができます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>))</code></pre></div>
 <pre><code>## Corpus consisting of 7 documents:
 ## 
@@ -414,8 +413,8 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 </div>
 </div>
 <div class="section level2">
-<h2>浏览语料库文本</h2>
-<p><code>kwic</code>功能（keywords-in-context）可以搜索一个指定的词并显示它的上下文：</p>
+<h2>コーパス内の文書の探索</h2>
+<p><code><a href="../../../reference/kwic.html">kwic()</a></code>(keywords-in-context)は単語の検索を行い，その単語が現れる文脈を表示します．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>)</code></pre></div>
 <pre><code>##                                                                     
 ##     [1797-Adams, 1325]              fraud or violence, by | terror |
@@ -467,8 +466,8 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##                            
 ##  philosophy are a threat to
 ##  may be doing it,</code></pre>
-<p>在上面的汇总中，<code>Year</code>和<code>President</code>是与每个文档相关的变量。我们可以用<code>docvars（）</code>函数访问这些变量。</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 浏览文档变量</span>
+<p>上記の要約では，“Year”と“President”は各文書に結び付けられた変数です． <code><a href="../../../reference/docvars.html">docvars()</a></code>でこのような変数にアクセスできます．</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># inspect the document-level variables</span>
 <span class="kw">head</span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_inaugural))</code></pre></div>
 <pre><code>##                 Year  President FirstName
 ## 1789-Washington 1789 Washington    George
@@ -477,7 +476,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## 1801-Jefferson  1801  Jefferson    Thomas
 ## 1805-Jefferson  1805  Jefferson    Thomas
 ## 1809-Madison    1809    Madison     James</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 浏览语料库变量</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># inspect the corpus-level metadata</span>
 <span class="kw"><a href="../../../reference/metacorpus.html">metacorpus</a></span>(data_corpus_inaugural)</code></pre></div>
 <pre><code>## $source
 ## [1] "Gerhard Peters and John T. Woolley. The American Presidency Project."
@@ -487,16 +486,16 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## 
 ## $created
 ## [1] "Tue Jun 13 14:51:47 2017"</code></pre>
-<p><a href="http://github.com/kbenoit/quantedaData">quantedaData</a> 软件包提供更多语料库资源.</p>
+<p><a href="http://github.com/kbenoit/quantedaData"><strong>quantedaData</strong></a>をインストールすることにより，より多くのコーパスを試すことができます．</p>
 </div>
 </div>
 <div class="section level1">
-<h1>从语料库中提取特征</h1>
-<p>为了执行文档缩放等统计分析，我们必须提取一个将某些特征与文档关联起来矩阵。在quanteda中，dfm函数用来生成这样一个矩阵。“dfm”是文档特征矩阵的缩写，矩阵的行总是为文档而列为“特征”。我们这样定义矩阵的行与列是因为在数据分析中标准的做法是将一个分析单元作为行，而将与每个单元有关的特征或变量作为列。我们称之为“特征”而不是“词项”，因为特征比词项更通用：词项可以被定义为原始词项，词干词项，词性词项，停用词去除后的词项，或者词项归属的字典。而特征可以是完全通用的，例如ngram或者句法依存，我们对矩阵的定义持开放式态度。</p>
+<h1>コーパスから特長を抽出</h1>
+<p>文書のスケーリングなどの統計分析を行うためには，それぞれの文書の特長をまとめた行列を作成する必要があります． <strong>quanteda</strong>では，このような行列を生成するために <code><a href="../../../reference/dfm.html">dfm()</a></code>を使います． dfmは<em>document-feature matrix</em>の略で，行が文書(document)，列が特長(feature)となる行列です．行と列をこのように定義する理由は，データ分析では行が分析単位になり，各列が分析対象になる変数となるのが一般的だからです．多くのソフトウェアでは，この行列を<em>document-term matrix</em>と呼びます．<code>quanteda</code>が語(term)でなはく特長(feature)という用語を使うのは，特長のほうが一般性を持つ用語だからです．テキスト分析では，単語，語幹，単語の集合，Nグラム，品詞など様々なものが文書の特長となります．</p>
 <div class="section level2">
-<h2>文本分词</h2>
-<p>为了简单地对文本分词，quanteda提供了一个强大的命令<code>tokens（）</code>。这个命令会产生了一个以字符向量形式存在的分词表，表中的每单元元素 都对应于一个输入文档。</p>
-<p><code>tokens（）</code>有意设计成保守的，意味着除非有指令，它不会从文本中删除任何东西。</p>
+<h2>文書のトークン化</h2>
+<p>テキストを簡単にトークン化するために，<strong>quanteda</strong>は <code><a href="../../../reference/tokens.html">tokens()</a></code>と呼ばれる強力なコマンドを提供します．この関数は，文字ベクトルのトークンのリストからなる中間オブジェクトを生成します．ここで，リストの一つ一つの要素は入力された文書に対応しています．</p>
+<p><code><a href="../../../reference/tokens.html">tokens()</a></code>は意図して保守的に設計されており、ユーザーが明示的に指示を与えないかぎりは，要素を削除しません．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">text1 =</span> <span class="st">"This is $10 in 999 different ways,</span><span class="ch">\n</span><span class="st"> up and down; left and right!"</span>, 
          <span class="dt">text2 =</span> <span class="st">"@kenbenoit working: on #quanteda 2day</span><span class="ch">\t</span><span class="st">4ever, http://textasdata.com?page=123."</span>)
 <span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(txt)</code></pre></div>
@@ -579,7 +578,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## [13] ","              " "              "http"           ":"             
 ## [17] "/"              "/"              "textasdata.com" "?"             
 ## [21] "page"           "="              "123"            "."</code></pre>
-<p>也可以按字符分词：</p>
+<p><code>tokens</code>には個々の文字をトークン化するオプションもあります．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>)</code></pre></div>
 <pre><code>## tokens from 1 document.
 ## text1 :
@@ -593,12 +592,12 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  [1] "G" "r" "e" "a" "t" " " "w" "e" "b" "s" "i" "t" "e" ":" " " "h" "t"
 ## [18] "t" "p" ":" "/" "/" "t" "e" "x" "t" "a" "s" "d" "a" "t" "a" "." "c"
 ## [35] "o" "m" "?" "p" "a" "g" "e" "=" "1" "2" "3" "."</code></pre>
-<p>以及按句子分词：</p>
+<p>もしくは，一文ごとにトークン化するオプションもあります．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># sentence level         </span>
 <span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="kw">c</span>(<span class="st">"Kurt Vongeut said; only assholes use semi-colons."</span>, 
-           <span class="st">"Today is Thursday in Canberra:  It is yesterday in London."</span>, 
-           <span class="st">"En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"</span>), 
-          <span class="dt">what =</span> <span class="st">"sentence"</span>)</code></pre></div>
+         <span class="st">"Today is Thursday in Canberra:  It is yesterday in London."</span>, 
+         <span class="st">"En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"</span>), 
+         <span class="dt">what =</span> <span class="st">"sentence"</span>)</code></pre></div>
 <pre><code>## tokens from 3 documents.
 ## text1 :
 ## [1] "Kurt Vongeut said; only assholes use semi-colons."
@@ -610,11 +609,11 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## [1] "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"</code></pre>
 </div>
 <div class="section level2">
-<h2>构建文档特征矩阵</h2>
-<p>分词只是一个中间结果，而大多数用户都希望直接构建一个文档特征矩阵。为此，我们提供一个瑞士军刀功能<code><a href="../../../reference/dfm.html">dfm()</a></code>，此项功能执行分词并将所提取的特征归纳成文档特征矩阵。不同于<code><a href="../../../reference/tokens.html">tokens()</a></code>所采用的保守方法，<code>dfm（）</code>函数默认某些应用选项，比如<code>toLower（）</code> - 一个单独的用于转换为小写的函数，以及 - 删除标点符号。不过<code>tokens（）</code>的所有选项都可以传递给<code>dfm（）</code>。</p>
+<h2>文書行列の作成</h2>
+<p>文書をトークン化は中間的な処理であり，ほとんどのユーザーはこれを省いて、すぐに文書行列を作成したいと考えるでしょう． このために，<strong>quanteda</strong>は，自動的にトークン化を実行し，文書行列を作成する<code><a href="../../../reference/dfm.html">dfm()</a></code>と呼ばれるスイスアーミーナイフのように便利な関数を持っています．保守的な<code><a href="../../../reference/tokens.html">tokens()</a></code>とは異なり，<code><a href="../../../reference/dfm.html">dfm()</a></code>はデフォルトで大文字から小文字への置換や，句読点を除去などの操作を適用します．また，<code><a href="../../../reference/dfm.html">dfm()</a></code>から<code><a href="../../../reference/tokens.html">tokens()</a></code>の全てのオプションを利用できます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>)
 
-<span class="co"># 构建dfm</span>
+<span class="co"># make a dfm</span>
 myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus)
 myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (0% sparse).
@@ -628,10 +627,10 @@ myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</sp
 ##   2009-Obama    2      1        1 130     6
 ##   2013-Obama    3      3        6  99     4
 ##   2017-Trump    1      1        4  96     4</code></pre>
-<p><code><a href="../../../reference/dfm.html">dfm()</a></code>的其他选项还包括去除停用词和分词的词干提取。</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 构建dfm, 去除停用词以及提取词干</span>
-
-myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+<p><code><a href="../../../reference/dfm.html">dfm()</a></code>の追加のオプションには，ストップワードの削除(<code>remove</code>)や語のステミング(<code>stem</code>)が含まれます．</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make a dfm, removing stopwords and applying stemming</span>
+myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), 
+                 <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
 ## 7 x 5 sparse Matrix of class "dfm"
@@ -644,7 +643,7 @@ myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5
 ##   2009-Obama        1       1     6      2       0
 ##   2013-Obama        3       8     6      1       0
 ##   2017-Trump        1       4     5      3       1</code></pre>
-<p><code>remove</code>选项提供一个需要被去除的分词的列表。大多数用户会提供一个为多语种预定义的“停用词”的列表，可通过<code><a href="../../../reference/stopwords.html">stopwords()</a></code>函数获取：</p>
+<p><code>remove</code>によっては，文書行列から除外するトークンを指定します．<code><a href="../../../reference/stopwords.html">stopwords()</a></code>は，幾つかの言語で定義されたストップワードのリストを返します（残念ながら日本語は含まれていませんが，ユーザーが定義した辞書を使うことはできます）．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)</code></pre></div>
 <pre><code>##  [1] "i"          "me"         "my"         "myself"     "we"        
 ##  [6] "our"        "ours"       "ourselves"  "you"        "your"      
@@ -655,13 +654,13 @@ myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)</code></pre></div>
 <pre><code>##  [1] "فى"  "في"  "كل"  "لم"  "لن"  "له"  "من"  "هو"  "هي"  "قوة"</code></pre>
 <div class="section level3">
-<h3>查看文档特征矩阵</h3>
-<p>可以在RStudio 的Enviroment pane中查看dfm,或者调用R的View功能。 调用<code>plot</code>dfm将调用<a href="https://cran.r-project.org/web/packages/wordcloud/index.html">wordcloud软件包</a>绘制词云图。</p>
+<h3>文書行列の表示</h3>
+<p>RStudioの“Environment”パネル，またはRの<code><a href="../../../reference/View.html">View()</a></code>を用いることで，dfmに格納された値を見ることができます．dfmに対して<code>plot()</code>を用いると，<a href="https://cran.r-project.org/web/packages/wordcloud"><strong>wordcloud</strong></a>を使ってワードクラウドが表示されます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 mydfm</code></pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre>
-<p>使用<code><a href="../../../reference/topfeatures.html">topfeatures()</a></code>可以访问出现频率最高的特征：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(mydfm, <span class="dv">20</span>)  <span class="co"># 20 词频最高的词</span></code></pre></div>
+<p>頻度が最も高い特長を見るには，<code><a href="../../../reference/topfeatures.html">topfeatures()</a></code>を使います．</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(mydfm, <span class="dv">20</span>)  <span class="co"># 20 top words</span></code></pre></div>
 <pre><code>## immigration     british      people      asylum     britain          uk 
 ##          66          37          35          29          28          27 
 ##      system  population     country         new  immigrants      ensure 
@@ -670,19 +669,19 @@ mydfm</code></pre></div>
 ##          17          16          14          14          13          13 
 ##        work     percent 
 ##          13          12</code></pre>
-<p>使用<code>textplot_wordcloud（）</code>可以绘制<code>dfm</code>对象的词云图。这个函数将参数传递给<strong>wordcloud</strong>包的<code>wordcloud（）</code>函数，并且可以使用相同的参数来对图进行美化：</p>
+<p>dfmを<code><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>に渡すことで，ワードクラウドを描画できます．この関数は，オブジェクトや引数を<strong>wordcloud</strong>パッケージの<code>wordcloud()</code>に送るので，ワードクラウドの表示を変更することもできます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">100</span>)
 <span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
                    <span class="dt">rot.per =</span> .<span class="dv">25</span>, 
                    <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
-<p><img src="quickstart_cn_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
+<p><img src="quickstart_ja_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 </div>
 <div class="section level3">
-<h3>按文档变量对文档分组</h3>
-<p>通常，我们感兴趣的是根据可能存在于文档变量中实质性因素来分析文本是如何不同的，而不仅仅是根据文档文件的边界。 创建dfm时，我们可以将具有相同文档变量的文档分成一组：</p>
+<h3>変数による文書のグループ化</h3>
+<p><strong>quanteda</strong>では，dfmを作成する際に，文書変数の値によって文書をグループ化するすることができます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, 
                   <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p>我们可以对这个dfm进行排序，并查看：</p>
+<p>また、以下のように，dfmを語の頻度順に並べ替えて，中身を確かめられます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 5 documents, 10 features (0% sparse).
 ## 5 x 10 sparse Matrix of class "dfm"
@@ -700,17 +699,16 @@ mydfm</code></pre></div>
 ##   LAB        34
 ##   SF         29
 ##   Green       3</code></pre>
-<p>请注意，最常出现的特征是“will”，这个词通常出现在英语停用词表中，但是并不包含在quanteda的内置英语停用词表中。</p>
 </div>
 <div class="section level3">
-<h3>按字典或等价的类别对词汇分组</h3>
-<p>在某些应用中，关于文本中我们感兴趣的单词集合我们有先验知识。 例如，在电影评论中，通用的正面词汇的列表可能表示对电影正面的评价，或者我们可能会有一个与特定的意识形态立场相关的政治词汇的字典。 在这些情况下，为了分析的目的，将这些词组等同处理并将其计数归类是有用的。</p>
-<p>例如，我们来看看总统在就职演讲的语料库中，与恐怖主义有关的词汇和与经济相关的词语在总统之间是如何变化的。从原语料库中，我们选择自克林顿以来的总统：</p>
+<h3>辞書による語のグループ化</h3>
+<p>肯定的な映画のレビューや，特定の政治意識に関する語があらかじめ分かっている場合，語のグループをまとめて一つのものとして取り扱い，これらを合計して単一の特長として分析すると上手くいくかもしれません．</p>
+<p>次の例では，テロリズムに関連する言葉や経済に関連する言葉が，クリントン以降の大統領演説コーパスでどのように異なるかを見てみます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</code></pre></div>
-<p>现在我们定义一个用于展示的字典:</p>
+<p>テロリズムと経済という2つのリストからなる辞書を作成します．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myDict &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dictionary.html">dictionary</a></span>(<span class="kw">list</span>(<span class="dt">terror =</span> <span class="kw">c</span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),
                           <span class="dt">economy =</span> <span class="kw">c</span>(<span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span>)))</code></pre></div>
-<p>我们也可在构建dfm时使用字典:</p>
+<p>文書行列を作成するときに，この辞書を<code><a href="../../../reference/dfm.html">dfm()</a></code>の<code>dictionary</code>に渡します．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)
 byPresMat</code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 2 features (14.3% sparse).
@@ -724,7 +722,7 @@ byPresMat</code></pre></div>
 ##   2009-Obama        1      10
 ##   2013-Obama        1       6
 ##   2017-Trump        1       5</code></pre>
-<p>构造函数<code>dictionary（）</code>也适用于两种常见的“外来”字典格式：LIWC 和 Provalis Research’ Wordstat。例如，我们可以加载 LIWC 并将其应用于总统就职演讲语料库：</p>
+<p><code><a href="../../../reference/dictionary.html">dictionary()</a></code>は，LIWCやWordstatなどの一般的な辞書ファイルを読み込むことができますです．以下では，LIWCの辞書を大統領就任演説コーパスに適用しています．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,
                        <span class="dt">format =</span> <span class="st">"LIWC"</span>)
 liwcdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">52</span><span class="op">:</span><span class="dv">58</span>], <span class="dt">dictionary =</span> liwcdict)
@@ -733,9 +731,9 @@ liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10<
 </div>
 </div>
 <div class="section level1">
-<h1>更多范例</h1>
+<h1>追加の事例</h1>
 <div class="section level2">
-<h2>文本之间的相似度</h2>
+<h2>文書の類似性</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), 
                <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), 
@@ -753,23 +751,21 @@ obamaSimil</code></pre></div>
 ## 2005-Bush     0.5266249  0.5867178
 ## 2017-Trump    0.5192075  0.5160104</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")</span></code></pre></div>
-<p>我们可以用这些距离来绘制树状图，聚类分析总统：</p>
+<p>上記の，文書間の類似性から樹形図を作成して，大統領を分類することができます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quantedaData"</span>)
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
                <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
-
-<span class="co">#分层聚类 -  在归一化dfm上计算距离</span>
+<span class="co"># hierarchical clustering - get distances on normalized dfm</span>
 presDistMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(presDfm, <span class="st">"relfreq"</span>))
-<span class="co"># 聚类分析文本距离</span>
+<span class="co"># hiarchical clustering the distance object</span>
 presCluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(presDistMat)
-<span class="co"># 按文档名标注</span>
+<span class="co"># label with document names</span>
 presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(presDfm)
-<span class="co"># 绘制树状图</span>
+<span class="co"># plot as a dendrogram</span>
 <span class="kw">plot</span>(presCluster, <span class="dt">xlab =</span> <span class="st">""</span>, <span class="dt">sub =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</code></pre></div>
-<p>(请尝试!)</p>
-<p>我们也可查看特征相似度:</p>
+<p>文書間と同様に用語間の類似性も測定できます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>)
 <span class="kw">lapply</span>(<span class="kw">as.list</span>(sim), head, <span class="dv">10</span>)</code></pre></div>
 <pre><code>## $fair
@@ -779,8 +775,8 @@ presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span c
 ## 0.8366600 0.8347300 0.8326664</code></pre>
 </div>
 <div class="section level2">
-<h2>文档位置的缩放分析</h2>
-<p>我们在<code>textmodel（）</code>功能上做了大量的开发工作，这里仅演示“wordfish”模型的无监督文档缩放分析：</p>
+<h2>文書のスケーリング</h2>
+<p><strong>quanteda</strong>にはたくさんの計量テキスト分析のためのモデルが含まれていますが，ワードフィッシュ(<code><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish()</a></code>)による教師なしの文書のスケーリングを使ってみます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make prettier document names</span>
 ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)
 <span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ieDfm, <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</code></pre></div>
@@ -790,59 +786,59 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference
 ## 
 ## Estimated document positions:
 ## 
-##                                Documents      theta         SE       lower
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209747 0.02032399  1.78113964
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932625 0.02818775 -0.64851049
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136535 0.01540203 -1.14384144
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219536 0.02846257 -0.17774022
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724367 0.02364163  1.72609908
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145704 0.02650171 -0.76651371
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844744 0.04171381 -0.56623347
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616887 0.02967227 -0.61984640
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9702984 0.03850395 -1.04576616
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589113 0.03892225 -1.03519886
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807215 0.07221599  1.03917818
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866357 0.06294073  0.06327186
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421685 0.07245511  0.60015648
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1841243 0.03666136 -0.25598060
+##                                Documents      theta         SE      lower
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209537 0.02032346  1.7811198
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932778 0.02818835 -0.6485270
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136750 0.01540255 -1.1438640
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219327 0.02846318 -0.1777205
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724226 0.02364097  1.7260863
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145783 0.02650253 -0.7665233
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844820 0.04171475 -0.5662429
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616715 0.02967350 -0.6198315
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703105 0.03850540 -1.0457810
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589228 0.03892371 -1.0352133
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807220 0.07221465  1.0391813
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866455 0.06294118  0.0632808
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421892 0.07245437  0.6001787
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840825 0.03666255 -0.2559411
 ##          upper
-## 1   1.86080970
-## 2  -0.53801452
-## 3  -1.08346549
-## 4  -0.06616695
-## 5   1.81877428
-## 6  -0.66262700
-## 7  -0.40271534
-## 8  -0.50353109
-## 9  -0.89483068
-## 10 -0.88262365
-## 11  1.32226484
-## 12  0.30999954
-## 13  0.88418053
-## 14 -0.11226807
+## 1   1.86078772
+## 2  -0.53802862
+## 3  -1.08348603
+## 4  -0.06614485
+## 5   1.81875891
+## 6  -0.66263336
+## 7  -0.40272109
+## 8  -0.50351142
+## 9  -0.89483989
+## 10 -0.88263232
+## 11  1.32226273
+## 12  0.31001024
+## 13  0.88419979
+## 14 -0.11222394
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the 
-##     -0.09898143      0.38825576      0.39900708      0.25617292 
+##     -0.09917820      0.38804991      0.39881695      0.25597016 
 ##   supplementary          budget              to            this 
-##      1.11607859      0.09938210      0.37030806      0.30716185 
+##      1.11588824      0.09918050      0.37010514      0.30696129 
 ##           house            last           april               , 
-##      0.19930440      0.28994147     -0.09504272      0.34558229 
+##      0.19909743      0.28974332     -0.09523666      0.34537899 
 ##            said              we           could            work 
-##     -0.71908819      0.48015087     -0.52954184      0.58249605 
+##     -0.71928447      0.47994913     -0.52973868      0.58229916 
 ##             our             way         through          period 
-##      0.74395741      0.33634466      0.66004414      0.55644329 
+##      0.74375995      0.33614218      0.65985265      0.55624420 
 ##              of          severe        economic        distress 
-##      0.33955204      1.27931809      0.47889650      1.84471357 
+##      0.33934919      1.27913204      0.47869677      1.84456657 
 ##               .           today             can          report 
-##      0.27375483      0.17443804      0.36401007      0.69199374 
+##      0.27355210      0.17422571      0.36381140      0.69178871 
 ##            that notwithstanding 
-##      0.08856611      1.84471357</code></pre>
+##      0.08836190      1.84456657</code></pre>
 </div>
 <div class="section level2">
-<h2>主题模型</h2>
-<p><strong>quanteda</strong>可以很轻松训练主题模型：</p>
+<h2>トピックモデル</h2>
+<p><code><a href="../../../reference/convert.html">convert()</a></code>を用いると，dfmを<strong>topicmodels</strong>の<code><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA()</a></code>形式のデータに転換して，簡単にトピックモデルを適用できます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, 
                 <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
 quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(quantdfm, <span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)
@@ -853,169 +849,30 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1  Topic 2    Topic 3     Topic 4    Topic 5    Topic 6   
-## [1,] "fianna" "system"   "taoiseach" "welfare"  "welfare"  "fianna"  
-## [2,] "fáil"   "welfare"  "fine"      "fianna"   "measures" "per"     
-## [3,] "side"   "much"     "gael"      "taxation" "spending" "fáil"    
-## [4,] "level"  "policies" "may"       "stimulus" "million"  "national"
-## [5,] "third"  "package"  "irish"     "fáil"     "level"    "person"  
-##      Topic 7   Topic 8        Topic 9    Topic 10  Topic 11   
-## [1,] "child"   "society"      "families" "levy"    "taoiseach"
-## [2,] "benefit" "enterprising" "care"     "carbon"  "employees"
-## [3,] "bank"    "sense"        "welfare"  "million" "referred" 
-## [4,] "day"     "equal"        "fianna"   "welfare" "debate"   
-## [5,] "today"   "nation"       "hospital" "future"  "rate"     
-##      Topic 12     Topic 13   Topic 14    Topic 15     Topic 16     
-## [1,] "investment" "fianna"   "allowance" "million"    "alternative"
-## [2,] "welfare"    "fáil"     "system"    "confidence" "citizenship"
-## [3,] "bill"       "national" "per"       "scheme"     "wealth"     
-## [4,] "reduce"     "irish"    "child"     "welfare"    "adjustment" 
-## [5,] "taken"      "support"  "million"   "energy"     "breaks"     
-##      Topic 17    Topic 18     Topic 19      Topic 20    
-## [1,] "failed"    "support"    "kind"        "investment"
-## [2,] "strategy"  "investment" "imagination" "review"    
-## [3,] "needed"    "continue"   "policies"    "scheme"    
-## [4,] "ministers" "back"       "wit"         "rate"      
-## [5,] "system"    "welfare"    "create"      "spending"</code></pre>
-<p>注：以上这个指南翻译于英文版<a href="http://docs.quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
-</div>
-</div>
-<div id="quanteda" class="section level1">
-<h1 class="hasAnchor">
-<a href="#quanteda" class="anchor"></a><strong>quanteda</strong>处理中文文档</h1>
-<div id="-" class="section level2">
-<h2 class="hasAnchor">
-<a href="#-" class="anchor"></a>中文停用词： 取自百度停用词</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 读取中文停用词</span>
-csw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>)
-
-<span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>)</code></pre></div>
-<pre><code>## tokens from 1 document.
-## text1 :
-## [1] "中华"   "人民"   "共和国" "成立"   "于"     "1949"   "年"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 除去停用词</span>
-<span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))</code></pre></div>
-<pre><code>## tokens from 1 document.
-## text1 :
-## [1] "中华"   "人民"   "共和国" "成立"   "1949"</code></pre>
-</div>
-<div class="section level2">
-<h2>例子：应用于中文文档</h2>
-<p>四十九份中国总理的“政府工作报告”， 1954 - 2017</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 读取文件</span>
-<span class="kw">load</span>(<span class="st">"data/data_corpus_chinesegovreport.rda"</span>)
-<span class="kw">summary</span>(data_corpus_chinesegovreport, <span class="dv">10</span>)</code></pre></div>
-<pre><code>## Warning in nsentence.character(object, ...): nsentence() does not correctly
-## count sentences in all lower-cased text</code></pre>
-<pre><code>## Corpus consisting of 49 documents, showing 10 documents:
-## 
-##    Text Types Tokens Sentences                           doc_id Year
-##   text1  2230  14093       453      1954政府工作报告_周恩来.txt 1954
-##   text2  3053  35127       981      1955政府工作报告_李富春.txt 1955
-##   text3  1514  13164       495      1956政府工作报告_李先念.txt 1956
-##   text4  2585  21737       704      1957政府工作报告_周恩来.txt 1957
-##   text5  2185  15164       412      1958政府工作报告_薄一波.txt 1958
-##   text6  2512  19217       577      1959政府工作报告_周恩来.txt 1959
-##   text7  1302   6268       164      1960政府工作报告_谭震林.txt 1960
-##   text8  1892  11676       387 1964政府工作报告_周恩来_摘要.txt 1964
-##   text9   966   3187       125      1975政府工作报告_周恩来.txt 1975
-##  text10  2964  19119       659      1978政府工作报告_华国锋.txt 1978
-##  Premier
-##   周恩来
-##   李富春
-##   李先念
-##   周恩来
-##   薄一波
-##   周恩来
-##   谭震林
-##   周恩来
-##   周恩来
-##   华国锋
-## 
-## Source:  /home/wangh52/quanteda_2/vignettes/pkgdown_only/* on x86_64 by wangh52
-## Created: Mon Nov 27 13:29:27 2017
-## Notes:</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 分词</span>
-chtoks &lt;-<span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(data_corpus_chinesegovreport, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))
-
-<span class="co"># 创建 dfm</span>
-chdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(chtoks)
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chdfm)</code></pre></div>
-<pre><code>## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
-## 5627 5036 4255 4248 2931 2897 2817 2642 2627 2595</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span>
-<span class="co">#5627 5036 4255 4248 2931 2897 2817 2642 2627 2595 </span>
-
-<span class="co"># 绘制词云图</span>
-<span class="kw">set.seed</span>(<span class="dv">100</span>)
-chdfm_tf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(chdfm, <span class="dt">min_count =</span> <span class="dv">500</span>)
-<span class="co"># 设置适用于MacOS的字体</span>
-<span class="cf">if</span> (<span class="kw">Sys.info</span>()[<span class="st">'sysname'</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="kw">par</span>(<span class="dt">family =</span> <span class="st">"STSong"</span>) 
-<span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(chdfm_tf, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
-                   <span class="dt">rot.per =</span> .<span class="dv">25</span>, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">scale =</span> <span class="kw">c</span>(<span class="fl">2.8</span>, .<span class="dv">5</span>),
-                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
-<p><img src="quickstart_cn_files/figure-html/fig1-1.png" width="480" style="display: block; margin: auto;"></p>
-</div>
-<div class="section level2">
-<h2>特征共现矩阵</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fcm -共现窗口为5， 2017政府工作报告</span>
-ch17txt &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_chinesegovreport, Year <span class="op">==</span><span class="st"> "2017"</span>)
-ch17toks &lt;-<span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(ch17txt, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))
-chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</code></pre></div>
-<pre><code>## 推进 制度   性 体制 完善   试   点 供给   侧 结构 
-##   23   19   11   11   10    8    8    7    7    7</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fcm 共现窗口为："改革" + “xx”</span>
-chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>, <span class="dt">tri =</span> <span class="ot">FALSE</span>)
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</code></pre></div>
-<pre><code>## 完善 发展   试   点 制度 全面 推进 深化 社会 开放 
-##   10    8    8    8    8    7    7    6    5    5</code></pre>
-</div>
-<div class="section level2">
-<h2>文本缩放模型</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(chdfm)
-y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span>
-y &lt;-<span class="st"> </span>y[<span class="op">-</span><span class="kw">which</span>(y<span class="op">==</span><span class="dv">1963</span> <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1961</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1962</span> <span class="op">|</span><span class="st"> </span>(y<span class="op">&gt;</span><span class="dv">1964</span> <span class="op">&amp;</span><span class="st"> </span>y<span class="op">&lt;</span><span class="dv">1975</span>) <span class="op">|</span><span class="st"> </span>y<span class="op">==</span><span class="dv">1976</span> <span class="op">|</span>y<span class="op">==</span><span class="dv">1977</span>)]
-<span class="kw">plot</span>(y, wfm<span class="op">@</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</code></pre></div>
-<p><img src="quickstart_cn_files/figure-html/fig2-1.png" width="576" style="display: block; margin: auto;"></p>
-</div>
-<div id="---" class="section level2">
-<h2 class="hasAnchor">
-<a href="#---" class="anchor"></a>词组 - 双词词组/三词词组等</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 所有报告中的双词词组</span>
-ch_mw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(chtoks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)
-<span class="kw">head</span>(ch_mw, <span class="dv">10</span>)</code></pre></div>
-<pre><code>##    collocation count count_nested length   lambda         z
-## 1    社会 主义  1787            0      2 5.661200 128.61741
-## 2        亿 元   689            0      2 7.445259  93.01487
-## 3      现代 化   632            0      2 6.950471  83.55186
-## 4    体制 改革   504            0      2 5.193065  77.37908
-## 5    五年 计划   341            0      2 5.359068  71.64727
-## 6    各级 政府   306            0      2 6.110596  66.63454
-## 7    增长 百分   300            0      2 5.520761  65.88051
-## 8        万 吨   212            0      2 6.589957  62.56344
-## 9    国民 经济   589            0      2 6.014672  61.80426
-## 10   充分 发挥   191            0      2 6.584129  61.24885</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 2017 报告中的双词词组</span>
-ch_mw17 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">tolower =</span> <span class="ot">TRUE</span>)
-<span class="kw">head</span>(ch_mw17, <span class="dv">10</span>)</code></pre></div>
-<pre><code>##    collocation count count_nested length   lambda        z
-## 1    人民 群众    12            0      2 5.406485 12.89405
-## 2        亿 元    14            0      2 8.302483 12.62130
-## 3        调 控    11            0      2 7.593472 12.41243
-## 4    政府 工作     9            0      2 4.709870 11.07905
-## 5    深入 实施     8            0      2 5.018234 10.92377
-## 6      党 中央     7            0      2 5.746878 10.90837
-## 7    体制 改革    11            0      2 5.317035 10.53518
-## 8    国内 生产     6            0      2 6.166520 10.48816
-## 9      现代 化     8            0      2 5.705688 10.43435
-## 10   基础 设施     7            0      2 7.549273 10.42465</code></pre>
-<p>注：以上这部分介绍翻译于英文版<a href="http://docs.quanteda.io/articles/pkgdown/examples/chinese.html">chinese</a>.</p>
+<pre><code>##      Topic 1     Topic 2   Topic 3       Topic 4    Topic 5    
+## [1,] "taoiseach" "fianna"  "kind"        "fianna"   "spending" 
+## [2,] "employees" "fáil"    "imagination" "fáil"     "measures" 
+## [3,] "rate"      "welfare" "policies"    "national" "reduction"
+## [4,] "referred"  "live"    "wit"         "irish"    "review"   
+## [5,] "debate"    "taxes"   "create"      "support"  "welfare"  
+##      Topic 6     Topic 7     Topic 8       Topic 9    Topic 10    
+## [1,] "care"      "strategy"  "local"       "system"   "million"   
+## [2,] "allowance" "ministers" "departments" "welfare"  "support"   
+## [3,] "hospital"  "expected"  "taoiseach"   "taxation" "welfare"   
+## [4,] "per"       "confront"  "million"     "recovery" "investment"
+## [5,] "million"   "real"      "levies"      "worst"    "back"      
+##      Topic 11    Topic 12  Topic 13      Topic 14   Topic 15  Topic 16 
+## [1,] "taoiseach" "levy"    "alternative" "welfare"  "child"   "needed" 
+## [2,] "fine"      "million" "citizenship" "system"   "welfare" "failed" 
+## [3,] "gael"      "carbon"  "wealth"      "continue" "today"   "vision" 
+## [4,] "may"       "change"  "adjustment"  "féin"     "society" "system" 
+## [5,] "irish"     "welfare" "breaks"      "shame"    "burden"  "private"
+##      Topic 17  Topic 18     Topic 19 Topic 20      
+## [1,] "benefit" "million"    "fianna" "society"     
+## [2,] "day"     "scheme"     "fáil"   "enterprising"
+## [3,] "child"   "system"     "side"   "sense"       
+## [4,] "bank"    "reduce"     "level"  "equal"       
+## [5,] "fianna"  "investment" "third"  "nation"</code></pre>
 </div>
 </div>
 </div>
@@ -1027,38 +884,29 @@ ch_mw17 &lt;-<span class="st"> </span><span class="kw"><a href="../../../referen
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li>
-<a href="NA">软件包安装</a><ul class="nav nav-pills nav-stacked">
-<li><a href="NA">推荐安装:</a></li>
+<a href="NA">パッケージのインストール</a><ul class="nav nav-pills nav-stacked">
+<li><a href="NA">インストールが推奨されるパッケージ</a></li>
       </ul>
 </li>
       <li>
-<a href="NA">创建语料库</a><ul class="nav nav-pills nav-stacked">
-<li><a href="NA">目前可用的语料库资源</a></li>
-      <li><a href="#quanteda-">quanteda 语料库工作方式</a></li>
-      <li><a href="NA">处理语料库对象的功能</a></li>
-      <li><a href="NA">浏览语料库文本</a></li>
+<a href="NA">コーパスの作成</a><ul class="nav nav-pills nav-stacked">
+<li><a href="NA">利用可能なコーパス</a></li>
+      <li><a href="NA">コーパスオブジェクトの使い方</a></li>
+      <li><a href="NA">コーパスに対する操作</a></li>
+      <li><a href="NA">コーパス内の文書の探索</a></li>
       </ul>
 </li>
       <li>
-<a href="NA">从语料库中提取特征</a><ul class="nav nav-pills nav-stacked">
-<li><a href="NA">文本分词</a></li>
-      <li><a href="NA">构建文档特征矩阵</a></li>
+<a href="NA">コーパスから特長を抽出</a><ul class="nav nav-pills nav-stacked">
+<li><a href="NA">文書のトークン化</a></li>
+      <li><a href="NA">文書行列の作成</a></li>
       </ul>
 </li>
       <li>
-<a href="NA">更多范例</a><ul class="nav nav-pills nav-stacked">
-<li><a href="NA">文本之间的相似度</a></li>
-      <li><a href="NA">文档位置的缩放分析</a></li>
-      <li><a href="NA">主题模型</a></li>
-      </ul>
-</li>
-      <li>
-<a href="#quanteda"><strong>quanteda</strong>处理中文文档</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#-">中文停用词： 取自百度停用词</a></li>
-      <li><a href="NA">例子：应用于中文文档</a></li>
-      <li><a href="NA">特征共现矩阵</a></li>
-      <li><a href="NA">文本缩放模型</a></li>
-      <li><a href="#---">词组 - 双词词组/三词词组等</a></li>
+<a href="NA">追加の事例</a><ul class="nav nav-pills nav-stacked">
+<li><a href="NA">文書の類似性</a></li>
+      <li><a href="NA">文書のスケーリング</a></li>
+      <li><a href="NA">トピックモデル</a></li>
       </ul>
 </li>
       </ul>

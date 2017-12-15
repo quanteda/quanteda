@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -153,7 +165,8 @@ expensive sequential search by <a href='http://www.rdocumentation.org/packages/s
 <p>internal function for <code>select_types()</code> to search the index using
 fastmatch.</p>
 <p>simpler and faster version of expand.grid() in base package</p>
-<p>internal function for select_types() to check if a glob pattern is indexed by <code>index_types()</code></p>
+<p>Internal function for select_types() to check if a glob pattern is indexed by
+<code>index_types()</code>.</p>
     
 
     <pre class="usage"><span class='fu'>regex2fixed</span>(<span class='no'>pattern</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -209,8 +222,8 @@ index constructed by index_types().</p></td>
     </tr>
     <tr>
       <th>types_search</th>
-      <td><p>lowercased types when <code>case_insensitive=TRUE</code>, but not
-used in glob and fixed matching as types are in the index.</p></td>
+      <td><p>lowercased types when <code>case_insensitive=TRUE</code>, but
+not used in glob and fixed matching as types are in the index.</p></td>
     </tr>
     <tr>
       <th>max_len</th>
