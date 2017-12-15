@@ -99,9 +99,8 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     
     # Generate all combinations of type IDs
     values_id <- list()
-    keys_id <- c()
+    keys_id <- integer()
     types <- types(x)
-    
     
     if (verbose) 
         catm("applying a dictionary consisting of ", length(dictionary), " key", 
@@ -114,6 +113,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         values_id <- c(values_id, values_temp)
         keys_id <- c(keys_id, rep(h, length(values_temp)))
     }
+    
     if (capkeys) {
         keys <- char_toupper(names(dictionary))
     } else {

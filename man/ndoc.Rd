@@ -2,10 +2,13 @@
 % Please edit documentation in R/nfunctions.R
 \name{ndoc}
 \alias{ndoc}
+\alias{nfeat}
 \alias{nfeature}
 \title{count the number of documents or features}
 \usage{
 ndoc(x)
+
+nfeat(x)
 
 nfeature(x)
 }
@@ -20,16 +23,17 @@ an integer (count) of the number of documents or features
 Get the number of documents or features in an object.
 }
 \details{
-\code{ndoc} returns the number of documents in a  \link{corpus},
-  \link{dfm}, or \link{tokens} object, or a readtext object from the
-  \pkg{readtext} package
-  
-  \code{nfeature} returns the number of features in a \link{dfm}
+\code{ndoc} returns the number of documents in an object
+  whose texts are organized as "documents" (a \link{corpus},
+  \link{dfm}, or \link{tokens} object, a readtext object from the
+  \pkg{readtext} package).
 
-\code{nfeature} returns the number of features from a dfm; it is an
+\code{nfeat} returns the number of features from a dfm; it is an
   alias for \code{ntype} when applied to dfm objects.  This function is only 
   defined for \link{dfm} objects because only these have "features".  (To count
   tokens, see \code{\link{ntoken}}.)
+
+\code{nfeature} is the deprecated form of \code{nfeat}.
 }
 \examples{
 # number of documents
@@ -39,8 +43,8 @@ ndoc(tokens(data_corpus_inaugural))
 ndoc(dfm(corpus_subset(data_corpus_inaugural, Year > 1980)))
 
 # number of features
-nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE))
-nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE))
+nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE))
+nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE))
 }
 \seealso{
 \code{\link{ntoken}}

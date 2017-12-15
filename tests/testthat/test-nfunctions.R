@@ -43,3 +43,10 @@ test_that("test ntype tokens", {
     expect_equal(ntype(toks2), c(d1 = 2, d2 = 4))
     expect_equal(ntype(toks2), c(d1 = 2, d2 = 4))
 })
+
+test_that("deprecated nfeature still works", {
+    suppressWarnings(
+        expect_identical(nfeat(data_dfm_lbgexample), nfeature(data_dfm_lbgexample))
+    )
+    expect_warning(nfeature(data_dfm_lbgexample), "Use 'nfeat' instead")
+})

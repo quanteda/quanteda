@@ -11,7 +11,7 @@ test_that("oldest dfm test", {
     dictDfm <- dfm(mycorpus, dictionary = mydict, valuetype = "glob")
     dictDfm <- dictDfm[1:10, ]
     dictDfm <- thesDfm <- dfm(mycorpus, thesaurus = mydict, valuetype = "glob")
-    dictDfm <- thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
+    dictDfm <- thesDfm[1:10, (nfeat(thesDfm)-8) : nfeat(thesDfm)]
     
     preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE)
     dfm_lookup(preDictDfm, mydict)
@@ -189,8 +189,8 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (a)", {
     generate_testdfm <- function(n) {
         dfm(paste('X', 1:n, sep=''))
     }
-    expect_equal(nfeature(generate_testdfm(10000)), 10000)
-    expect_equal(nfeature(generate_testdfm(20000)), 20000)
+    expect_equal(nfeat(generate_testdfm(10000)), 10000)
+    expect_equal(nfeat(generate_testdfm(20000)), 20000)
 })
 
 test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
@@ -198,8 +198,8 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
     generate_testdfm <- function(n) {
         dfm(paste(sample(letters, n, replace = TRUE), 1:n))
     }
-    expect_equal(nfeature(generate_testdfm(10000)), 10026)
-    expect_equal(nfeature(generate_testdfm(10001)), 10027)
+    expect_equal(nfeat(generate_testdfm(10000)), 10026)
+    expect_equal(nfeat(generate_testdfm(10001)), 10027)
 })
 
 test_that("dfm print works as expected", {
@@ -256,7 +256,7 @@ test_that("cbind.dfm works as expected",{
     dfm2 <- dfm("More words here")
     dfm12 <- cbind(dfm1, dfm2)
     
-    expect_equal(nfeature(dfm12), 8)
+    expect_equal(nfeat(dfm12), 8)
     expect_equal(names(dimnames(dfm12)),
                  c("docs", "features"))
 })
@@ -359,7 +359,7 @@ test_that("rbind.dfm works as expected",{
     dfm2 <- dfm("More words here")
     dfm12 <- rbind(dfm1, dfm2)
     
-    expect_equal(nfeature(dfm12), 8)
+    expect_equal(nfeat(dfm12), 8)
     expect_equal(ndoc(dfm12), 2)
     expect_equal(names(dimnames(dfm12)),
                  c("docs", "features"))
@@ -422,19 +422,19 @@ test_that("dfm's document counts in verbose message is correct", {
 })
 
 test_that("dfm head, tail work as expected", {
-    tmp <- head(data_dfm_lbgexample, 4, nfeat = 3)
+    tmp <- head(data_dfm_lbgexample, 4, nf = 3)
     expect_equal(featnames(tmp), LETTERS[1:3])
     expect_equal(docnames(tmp), paste0("R", 1:4))
     
-    tmp <- head(data_dfm_lbgexample, -4, nfeat = -30)
+    tmp <- head(data_dfm_lbgexample, -4, nf = -30)
     expect_equal(featnames(tmp), LETTERS[1:7])
     expect_equal(docnames(tmp), paste0("R", 1:2))
     
-    tmp <- tail(data_dfm_lbgexample, 4, nfeat = 3)
+    tmp <- tail(data_dfm_lbgexample, 4, nf = 3)
     expect_equal(featnames(tmp), c("ZI", "ZJ", "ZK"))
     expect_equal(docnames(tmp), c("R3", "R4", "R5", "V1"))
     
-    tmp <- tail(data_dfm_lbgexample, -4, nfeat = -34)
+    tmp <- tail(data_dfm_lbgexample, -4, nf = -34)
     expect_equal(featnames(tmp), c("ZI", "ZJ", "ZK"))
     expect_equal(docnames(tmp), c("R5", "V1"))
 })
@@ -584,19 +584,19 @@ test_that("dfm works with purrr::map (#928)", {
     a <- "a b"
     b <- "a a a b b"
     expect_identical(
-        sapply(purrr::map(list(a, b), dfm), is.dfm),
+        vapply(purrr::map(list(a, b), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
     )
     expect_identical(
-        sapply(purrr::map(list(corpus(a), corpus(b)), dfm), is.dfm),
+        vapply(purrr::map(list(corpus(a), corpus(b)), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
     )
     expect_identical(
-        sapply(purrr::map(list(tokens(a), tokens(b)), dfm), is.dfm),
+        vapply(purrr::map(list(tokens(a), tokens(b)), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
     )
     expect_identical(
-        sapply(purrr::map(list(dfm(a), dfm(b)), dfm), is.dfm),
+        vapply(purrr::map(list(dfm(a), dfm(b)), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
     )
 })
@@ -694,3 +694,52 @@ test_that("test sparsity", {
     )
 })
 
+
+test_that("test empty dfm is handled properly", {
+    
+    mx <- quanteda:::make_null_dfm()
+    
+    # selection/grouping
+    expect_equal(dfm_select(mx), mx)
+    expect_equal(dfm_select(mx, 'a'), mx)
+    expect_equal(dfm_trim(mx), mx)
+    expect_equal(dfm_sample(mx), mx)
+    expect_equal(dfm_subset(mx), mx)
+    expect_equal(dfm_compress(mx, 'both'), mx)
+    expect_equal(dfm_compress(mx, 'features'), mx)
+    expect_equal(dfm_compress(mx, 'documents'), mx)
+    expect_equal(dfm_sort(mx, 'both'), mx)
+    expect_equal(dfm_sort(mx, 'features'), mx)
+    expect_equal(dfm_sort(mx, 'documents'), mx)
+    expect_equal(dfm_lookup(mx, dictionary(list(A ='a'))), mx)
+    expect_equal(dfm_group(mx), mx)
+    
+    # weighting
+    expect_equal(topfeatures(mx), numeric())
+    expect_equal(dfm_weight(mx, 'frequency'), mx)
+    expect_equal(dfm_weight(mx, 'relfreq'), mx)
+    expect_equal(dfm_weight(mx, 'relmaxfreq'), mx)
+    expect_equal(dfm_weight(mx, 'logfreq'), mx)
+    expect_equal(tf(mx), mx)
+    expect_equal(tf(mx, 'prop'), mx)
+    expect_equal(tf(mx, 'propmax'), mx)
+    expect_equal(tf(mx, 'boolean'), mx)
+    expect_equal(tf(mx, 'log'), mx)
+    expect_equal(tf(mx, 'augmented'), mx)
+    expect_equal(tf(mx, 'logave'), mx)
+    expect_equal(tfidf(mx), mx)
+    expect_equal(docfreq(mx), numeric())
+    expect_equal(dfm_smooth(mx), mx)
+    
+    
+    expect_equal(dfm_tolower(mx), mx)
+    expect_equal(dfm_toupper(mx), mx)
+    
+    expect_equal(rbind(mx, mx), mx)
+    expect_equal(cbind(mx, mx), mx)
+    
+    expect_equal(head(mx), mx)
+    expect_equal(tail(mx), mx)
+    
+    expect_output(print(mx), 'Document-feature matrix of: 0 documents, 0 features.')
+})

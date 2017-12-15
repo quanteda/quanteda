@@ -26,22 +26,25 @@
 #' corp2_para <- corpus_reshape(corp2, to="paragraphs")
 #' corp2_para
 #' summary(corp2_para, 100, showmeta = TRUE)
-#' ## Note that Bush 2005 is recorded as a single paragraph because that text used a single
-#' ## \n to mark the end of a paragraph.
+#' ## Note that Bush 2005 is recorded as a single paragraph because that text 
+#' ## used a single \n to mark the end of a paragraph.
 #' @export
 #' @import stringi
 #' @keywords corpus
-corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), use_docvars = TRUE, ...) {
+corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), 
+                           use_docvars = TRUE, ...) {
     UseMethod("corpus_reshape")
 }
     
 #' @export
-corpus_reshape.default <- function(x, to = c("sentences", "paragraphs", "documents"), use_docvars = TRUE, ...) {
+corpus_reshape.default <- function(x, to = c("sentences", "paragraphs", "documents"), 
+                                   use_docvars = TRUE, ...) {
     stop(friendly_class_undefined_message(class(x), "corpus_reshape"))
 }
 
 #' @export
-corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), use_docvars = TRUE, ...) {
+corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), 
+                                  use_docvars = TRUE, ...) {
     
     to <- match.arg(to)
     
@@ -75,7 +78,8 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             commands <- as.character(sys.calls())
             commands <- commands[stri_detect_regex(commands, "reshape\\.corpus")]
             
-            temp <- segment_texts(texts(x), pattern = NULL, omit_empty = FALSE, what = to, ...)
+            temp <- segment_texts(texts(x), pattern = NULL, omit_empty = FALSE, 
+                                  what = to, ...)
             
             result <- corpus(temp$texts, docnames = rownames(temp),
                              metacorpus = list(source = metacorpus(x, "source"),
@@ -96,8 +100,6 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
             stop("reshape to sentences or paragraphs only goes from documents")
         }
         
-    } else {
-        stop("reshape to", to, "is not supported")
-    }
+    } 
     return (result)
 }

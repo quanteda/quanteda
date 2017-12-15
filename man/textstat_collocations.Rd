@@ -127,5 +127,4 @@ Blaheta, D., & Johnson, M. (2001).
 Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 }
 \keyword{collocations}
-\keyword{experimental}
 \keyword{textstat}

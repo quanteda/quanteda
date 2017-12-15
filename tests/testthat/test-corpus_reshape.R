@@ -63,3 +63,18 @@ test_that("corpus_reshape works with empty documents, issue #670", {
     expect_equal(docvars(mycorpus),
                  docvars(mycorpus_unshaped))
 })
+
+test_that("corpus_reshape produces error message for non-available to values", {
+    mycorpus <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+                         texttwo = "Premiere phrase.  Deuxieme phrase."), 
+                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
+                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+    expect_error(
+        corpus_reshape(mycorpus, to = "documents"),
+        "reshape to documents only goes from sentences or paragraphs"
+    )
+    expect_error(
+        corpus_reshape(corpus_reshape(mycorpus, to = "sentences"), to = "sentences"),
+        "reshape to sentences or paragraphs only goes from documents"
+    )
+})

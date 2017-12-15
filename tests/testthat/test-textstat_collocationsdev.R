@@ -200,17 +200,6 @@ test_that("test the correctness of significant", {
 })
 
 
-test_that("collocation is counted correctly in racing conditions, issue #381", {
-    
-    toks <- tokens(rep(texts(data_corpus_inaugural)[1], 2))
-    out1 <- textstat_collocationsdev(toks[1], size = 2, min_count = 1)
-    out100 <- textstat_collocationsdev(toks, size = 2, min_count = 1)
-    out1 <- out1[order(out1$collocation),]
-    out100 <- out100[order(out100$collocation),]
-    # expect_true(all(out1$count * 100 == out100$count))
-    
-})
-
 test_that("textstat_collocationsdev works with corpus, character, tokens objects", {
     txt <- data_char_sampletext
     corp <- corpus(txt)
@@ -317,45 +306,3 @@ test_that("textstat_collocationsdev error when size = 1 and warn when size > 5",
                    "Collocation sizes must be smaller than 6")
     
 })
-
-# test_that("textstat_collocationsdev counts sequences correctly when recursive = FALSE", {
-#     
-#     txt <- c("a b c . . a b c . . a b c . . . a b c",
-#              "a b . . a b . . a b . . a b . a b")
-#     toks <- tokens_keep(tokens(txt), c("a", "b", "c"), padding = TRUE)
-#     
-#     col1 <- textstat_collocationsdev(toks, size = 2:3)
-#     expect_equal(col1$collocation, c('a b', 'b c', 'a b c'))
-#     expect_equal(col1$count, c(9, 4, 4))
-#     expect_equal(col1$count_nested, c(4, 4, 0))
-#     
-#     txt2 <- c(". . . . a b c . . a b c . . .",
-#               "a b . . a b . . a b . . a b . a b",
-#               "b c . . b c . b c . . . b c")
-#     toks2 <- tokens_keep(tokens(txt2), c("a", "b", "c"), padding = TRUE)
-#     
-#     col2 <- textstat_collocationsdev(toks2, size = 2:3, min_count = 1)
-#     expect_equal(col2$collocation, c('a b', 'b c', 'a b c'))
-#     expect_equal(col2$count, c(7, 6, 2))
-#     expect_equal(col2$count_nested, c(2, 2, 0))
-#     
-#     txt3 <- c(". . . . a b c d . . a b c d . . .",
-#               "a b . . a b . . a b . . a b . a b",
-#               "b c . . b c . b c . . . b c")
-#     toks3 <- tokens_keep(tokens(txt3), c("a", "b", "c", "d"), padding = TRUE)
-#     
-#     col3 <- textstat_collocationsdev(toks3, size = c(2, 4), min_count = 1)
-#     expect_equal(col3$collocation, c('a b', 'b c', 'c d', 'a b c d'))
-#     expect_equal(col3$count, c(7, 6, 2, 2))
-#     expect_equal(col3$count_nested, c(2, 2, 2, 0))
-#     
-#     txt4 <- c(". . . . a b c d . . a b c . . .")
-#     toks4 <- tokens_keep(tokens(txt4), c("a", "b", "c", "d"), padding = TRUE)
-#     
-#     col4 <- textstat_collocationsdev(toks4, size = c(2:4), min_count = 1)
-#     expect_equal(col4$collocation, c('b c', 'a b', 'c d', 'a b c d', 'a b c', 'b c d'))
-#     expect_equal(col4$count, c(2, 2, 1, 1, 2, 1))
-#     expect_equal(col4$count_nested, c(2, 2, 1, 0, 1, 1))
-#     
-# })
-

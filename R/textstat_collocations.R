@@ -73,9 +73,9 @@
 #'   is a vector, then \code{count_nested} counts the lower-order collocations
 #'   that occur within a higher-order collocation (but this does not affect the
 #'   statistics).
-#' @aliases collocations
 #' @export
-#' @keywords textstat collocations experimental
+#' @keywords textstat collocations
+#' @aliases collocations
 #' @author Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 #' @examples
 #' txts <- data_corpus_inaugural[1:2]
@@ -139,7 +139,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     attrs <- attributes(x)
     types <- types(x)
     id_ignore <- unlist(regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
-    if (is.null(id_ignore)) id_ignore <- integer(0)
+    if (is.null(id_ignore)) id_ignore <- integer()
     result <- qatd_cpp_collocations(x, types, id_ignore, min_count, size, 
                                     if (method == "lambda1") "lambda1" else "lambda", 
                                     smoothing)
@@ -178,7 +178,8 @@ textstat_collocations.corpus <- function(x, method = "lambda",
                                          smoothing = 0.5, 
                                          tolower = TRUE, 
                                          recursive = TRUE, ...) {
-    textstat_collocations(tokens(x, ...), method = method, size = size, min_count = min_count, 
+    textstat_collocations(tokens(x, ...), method = method, size = size, 
+                          min_count = min_count, 
                           smoothing = smoothing, tolower = tolower)
 }
 
@@ -189,13 +190,13 @@ textstat_collocations.character <- function(x, method = "lambda",
                                             smoothing = 0.5, 
                                             tolower = TRUE, 
                                             recursive = TRUE, ...) {
-    textstat_collocations(corpus(x), method = method, size = size, min_count = min_count, 
+    textstat_collocations(corpus(x), method = method, size = size, 
+                          min_count = min_count, 
                           smoothing = smoothing, tolower = tolower, ...)
 }
 
 
 #' @rdname textstat_collocations
-#' @aliases is.collocations
 #' @export
 #' @return \code{is.collocation} returns \code{TRUE} if the object is of class
 #'   \code{collocations}, \code{FALSE} otherwise.
@@ -253,7 +254,8 @@ get_expected_values <- function(df, size) {
         names(countsnum) <- names(counts)
         array_dimnames <- c(rep(list(c("0", "1")), size))
         names(array_dimnames) <- paste0("W", size:1)
-        counts_table <- array(countsnum, dim = rep(2, size), dimnames = array_dimnames)
+        counts_table <- array(countsnum, dim = rep(2, size), 
+                              dimnames = array_dimnames)
         counts_expected <- stats::loglin(counts_table,
                                          margin =  marginalfun(size),
                                          fit = TRUE, print = FALSE)$fit

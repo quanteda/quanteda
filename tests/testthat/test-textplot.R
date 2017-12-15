@@ -144,7 +144,7 @@ test_that("test textplot_keyness: show_reference works correctly ", {
                    remove_punct = TRUE)
     result <- textstat_keyness(presdfm, target = "Trump")
     
-    k = 10
+    k <- 10
     p1 <- textplot_keyness(result, show_reference = FALSE, n = k)
     p2 <- textplot_keyness(result, show_reference = TRUE, n = k)
     

@@ -99,8 +99,16 @@ char_tolower.character <- function(x, keep_acronyms = FALSE, ...) {
         for (i in which(lengths(match) > 0)) {
             m <- unique(match[[i]])
             x[i] <- stri_replace_all_regex(x[i], paste0('\\b', m, '\\b'), 
-                                                 paste0('\uE000', m, '\uE001'), vectorize_all = FALSE)
-            x[i] <- stri_trans_tolower(x[i])
+                                                 paste0('\uE000', m, '\uE001'), 
+                                           vectorize_all = FALSE)
+            x[i] <- stri_trans_tolower(x[i]
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       )
             x[i] <- stri_replace_all_regex(x[i], paste0('\uE000', stri_trans_tolower(m), '\uE001'), 
                                                  m, vectorize_all = FALSE)
         }
@@ -157,6 +165,7 @@ dfm_tolower.default <- function(x, ...) {
 #' @export
 dfm_tolower.dfm <- function(x, keep_acronyms = FALSE, ...) {
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(x)
     colnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     dfm_compress(x, margin = "features")
 }
@@ -176,6 +185,7 @@ dfm_toupper.default <- function(x, ...) {
 #' @export
 dfm_toupper.dfm <- function(x, ...) {
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(x)
     colnames(x) <- char_toupper(featnames(x), ...)
     dfm_compress(x, margin = "features")
 }

@@ -1,17 +1,3 @@
-#' deprecated function names for textstat_collocationsdev
-#' 
-#' Use \code{\link{textstat_collocationsdev}} instead.
-#' @param x a character, \link{corpus}, \link{tokens} object
-#' @param ... other arguments passed to  \code{\link{textstat_collocationsdev}}
-#' @export
-#' @seealso \link{textstat_collocationsdev}
-#' @keywords collocations internal deprecated
-collocationsdev <- function(x,  ...) {
-    .Deprecated("textstat_collocationsdev")
-    UseMethod("textstat_collocationsdev")
-}
-
-
 #' identify and score multi-word expressions
 #' 
 #' Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.  
@@ -126,7 +112,7 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
     attrs <- attributes(x)
     types <- types(x)
     id_ignore <- unlist(regex2id("^\\p{P}+$", types, 'regex', FALSE), use.names = FALSE)
-    if (is.null(id_ignore)) id_ignore <- integer(0)
+    if (is.null(id_ignore)) id_ignore <- integer()
     
     result <- qatd_cpp_collocations_dev(x, types, min_count, size, method, smoothing) 
     
@@ -139,9 +125,9 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
         result["z"] <- result[["method"]] / result[["sigma"]]
         # result$p <- 1 - stats::pnorm(result$z)
         if (method == "all"){
-            colnames(result)[colnames(result) == "method"] <- "lambda";
+            colnames(result)[colnames(result) == "method"] <- "lambda"
         } else {
-            colnames(result)[colnames(result) == "method"] <- method;
+            colnames(result)[colnames(result) == "method"] <- method
         }
         
         # remove gensim and dice for now
@@ -155,11 +141,11 @@ textstat_collocationsdev.tokens <- function(x, method = "all", size = 2, min_cou
         # get observed counts and compute expected counts
         # split the string into n00, n01, n10, etc
         counts_n <- strsplit(result[, "observed_counts"], "_")
-        df_counts_n <- data.frame(t(sapply(counts_n, as.numeric)))
+        df_counts_n <- data.frame(t(vapply(counts_n, as.numeric, numeric(2^size))))
         names(df_counts_n) <- make_count_names(size, "n")
         # get expected counts
         counts_e <- strsplit(result[, "expected_counts"], "_")
-        df_counts_e <- data.frame(t(sapply(counts_e, as.numeric)))
+        df_counts_e <- data.frame(t(vapply(counts_e, as.numeric, numeric(2^size))))
         names(df_counts_e) <- make_count_names(size, "e")
         # remove counts character
         result <- result[, -which(names(result)=="observed_counts")]

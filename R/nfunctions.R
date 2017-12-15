@@ -2,11 +2,11 @@
 #' count the number of documents or features
 #' 
 #' Get the number of documents or features in an object.
-#' @details \code{ndoc} returns the number of documents in a  \link{corpus},
-#'   \link{dfm}, or \link{tokens} object, or a readtext object from the
-#'   \pkg{readtext} package
+#' @details \code{ndoc} returns the number of documents in an object
+#'   whose texts are organized as "documents" (a \link{corpus},
+#'   \link{dfm}, or \link{tokens} object, a readtext object from the
+#'   \pkg{readtext} package).
 #'   
-#'   \code{nfeature} returns the number of features in a \link{dfm}
 #' @param x a \pkg{quanteda} object: a \link{corpus}, \link{dfm}, or
 #'   \link{tokens} object, or a readtext object from the \pkg{readtext} package.
 #' @return an integer (count) of the number of documents or features
@@ -43,8 +43,9 @@ ndoc.tokens <- function(x) {
     length(x)
 }
 
+
 #' @rdname ndoc
-#' @details \code{nfeature} returns the number of features from a dfm; it is an
+#' @details \code{nfeat} returns the number of features from a dfm; it is an
 #'   alias for \code{ntype} when applied to dfm objects.  This function is only 
 #'   defined for \link{dfm} objects because only these have "features".  (To count
 #'   tokens, see \code{\link{ntoken}}.)
@@ -52,25 +53,24 @@ ndoc.tokens <- function(x) {
 #' @seealso \code{\link{ntoken}}
 #' @examples
 #' # number of features
-#' nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE))
-#' nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE))
-nfeature <- function(x) {
-    UseMethod("nfeature")
+#' nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE))
+#' nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE))
+nfeat <- function(x) {  # TODO: nfeature has to deplicate one day
+    UseMethod("nfeat")
 }
 
 #' @export
-nfeature.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "nfeature"))
+nfeat.default <- function(x) {
+    stop(friendly_class_undefined_message(class(x), "nfeat"))
 }
 
 #' @export
-nfeature.dfm <- function(x) {
+nfeat.dfm <- function(x) {
     x <- as.dfm(x)
     ncol(x)
 }
 
-#' @export
-nfeature.tokens <- function(x) {
+nfeat.tokens <- function(x) {
     if (attr(x, 'padding')) {
         length(types(x)) + 1
     } else {
@@ -78,7 +78,13 @@ nfeature.tokens <- function(x) {
     }
 }
 
-
+#' @rdname ndoc
+#' @details \code{nfeature} is the deprecated form of \code{nfeat}.
+#' @export
+nfeature <- function(x) {
+    .Deprecated("nfeat")
+    UseMethod("nfeat")
+}
 
 #' count the number of tokens or types
 #' 
@@ -178,7 +184,7 @@ ntype.dfm <- function(x, ...) {
 
 #' @export
 ntype.tokens <- function(x, ...) {
-    sapply(unclass(x), function(y) length(unique(y[y > 0])))
+    vapply(unclass(x), function(y) length(unique(y[y > 0])), numeric(1))
 }
 
 #' count the number of sentences
@@ -210,7 +216,8 @@ nsentence.default <- function(x, ...) {
 
 #' @export
 nsentence.character <- function(x, ...) {
-    upcase <- try(any(stringi::stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
+    upcase <- 
+        try(any(stringi::stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
     if (!is.logical(upcase)) {
         # warning("Input text contains non-UTF-8 characters.")
     } else if (!upcase)

@@ -149,7 +149,8 @@ as_dfm_constructor <- function(x) {
 #' @return A named numeric vector of feature counts, where the names are the 
 #'   feature labels, or a list of these if \code{groups} is given.
 #' @examples
-#' mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE)
+#' mydfm <- corpus_subset(data_corpus_inaugural, Year > 1980) %>%
+#'     dfm(remove_punct = TRUE)
 #' mydfm_nostopw <- dfm_remove(mydfm, stopwords("english"))
 #' 
 #' # most frequent features
@@ -168,21 +169,25 @@ as_dfm_constructor <- function(x) {
 #' # features by document frequencies
 #' tail(topfeatures(mydfm, scheme = "docfreq", n = 200))
 #' @export
-topfeatures <- function(x, n = 10, decreasing = TRUE, scheme = c("count", "docfreq"), groups = NULL) {
+topfeatures <- function(x, n = 10, decreasing = TRUE, 
+                        scheme = c("count", "docfreq"), groups = NULL) {
     UseMethod("topfeatures")
 }
 
 #' @export
-topfeatures.default <- function(x, n = 10, decreasing = TRUE, scheme = c("count", "docfreq"), groups = NULL) {
+topfeatures.default <- function(x, n = 10, decreasing = TRUE, 
+                                scheme = c("count", "docfreq"), groups = NULL) {
     stop(friendly_class_undefined_message(class(x), "topfeatures"))
 }
 
 #' @export
 #' @noRd
 #' @importFrom stats quantile
-topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,  scheme = c("count", "docfreq"), groups = NULL) {
+topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,  
+                            scheme = c("count", "docfreq"), groups = NULL) {
     
     x <- as.dfm(x)
+    if (!nfeat(x) || !ndoc(x)) return(numeric())
     scheme <- match.arg(scheme)
     
     if (!is.null(groups)) {
@@ -196,7 +201,7 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,  scheme = c("count", "
         return(result)
     }
     
-    if (n > nfeature(x)) n <- nfeature(x)
+    if (n > nfeat(x)) n <- nfeat(x)
     
     if (scheme == "count") {
         wght <- colSums(x)

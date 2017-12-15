@@ -45,7 +45,7 @@ summary(corpus_reshape(corp, to = "sentences"), showmeta = TRUE)
 corp2_para <- corpus_reshape(corp2, to="paragraphs")
 corp2_para
 summary(corp2_para, 100, showmeta = TRUE)
-## Note that Bush 2005 is recorded as a single paragraph because that text used a single
-## \\n to mark the end of a paragraph.
+## Note that Bush 2005 is recorded as a single paragraph because that text 
+## used a single \\n to mark the end of a paragraph.
 }
 \keyword{corpus}

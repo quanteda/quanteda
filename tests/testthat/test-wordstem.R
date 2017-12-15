@@ -17,7 +17,7 @@ test_that("can wordstem dfms with zero features and zero docs", {
     mydfm[2, 4] <- 0
     mydfm <- new("dfm", mydfm)
     dfm_wordstem(mydfm, language = "english")
-    expect_equal(nfeature(dfm_wordstem(mydfm)), 5)
+    expect_equal(nfeat(dfm_wordstem(mydfm)), 5)
     
 })
 

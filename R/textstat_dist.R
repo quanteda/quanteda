@@ -77,7 +77,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
                     stop("The vector/matrix specified by 'selection' must be conform to the object x in rows.")
                 y <- selection_dfm
             } else {
-                if (nfeature(selection_dfm) != nfeature(x))
+                if (nfeat(selection_dfm) != nfeat(x))
                     stop("The vector/matrix specified by 'selection' must be conform to the object x in columns.")
                 y <- selection_dfm
             }
@@ -112,7 +112,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
     } else if (method == "minkowski") {
         temp <- get(paste0(method, "_dist"))(x, y, margin = m, p = p)
     } else if (method %in% methods2) {
-        if (method == "binary") method = "jaccard"
+        if (method == "binary") method <- "jaccard"
         temp <- get(paste0(method, "_simil"))(x, y, margin = m)
     } else {
         stop(method, " is not implemented; consider trying proxy::dist().")

@@ -101,10 +101,10 @@ test_that("test verious functions with padded tokens, padding = FALSE", {
     toks <- tokens(c(doc1 = 'A b c d E f g',
                      doc2 = 'a b c g'))
     toks3 <- tokens_remove(toks, c('b', 'e'), padding = FALSE)
-    expect_equivalent(nfeature(toks3), 6)
-    expect_equivalent(nfeature(tokens_tolower(toks3)), 5)
-    expect_equivalent(nfeature(tokens_toupper(toks3)), 5)
-    expect_equivalent(as.character(toks3),
+    expect_equal(quanteda:::nfeat.tokens(toks3), 6)
+    expect_equal(quanteda:::nfeat.tokens(tokens_tolower(toks3)), 5)
+    expect_equal(quanteda:::nfeat.tokens(tokens_toupper(toks3)), 5)
+    expect_equal(as.character(toks3),
                       c("A", "c", "d", "f", "g", "a", "c", "g"))
 })
 
@@ -112,10 +112,10 @@ test_that("test verious functions with padded tokens, padding = TRUE", {
     toks <- tokens(c(doc1 = 'A b c d E f g',
                      doc2 = 'a b c g'))
     toks3 <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
-    expect_equivalent(nfeature(toks3), 7)
-    expect_equivalent(nfeature(tokens_tolower(toks3)), 6)
-    expect_equivalent(nfeature(tokens_toupper(toks3)), 6)
-    expect_equivalent(as.character(toks3),
+    expect_equal(quanteda:::nfeat.tokens(toks3), 7)
+    expect_equal(quanteda:::nfeat.tokens(tokens_tolower(toks3)), 6)
+    expect_equal(quanteda:::nfeat.tokens(tokens_toupper(toks3)), 6)
+    expect_equal(as.character(toks3),
                       c("A", "", "c", "d", "", "f", "g", "a", "", "c", "g"))
 })
 

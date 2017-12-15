@@ -191,7 +191,8 @@ dfm.corpus <- function(x,
                tolower = tolower, 
                stem = stem, 
                select = select, remove = remove, 
-               dictionary = dictionary, thesaurus = thesaurus, valuetype = valuetype, 
+               dictionary = dictionary, thesaurus = thesaurus, 
+               valuetype = valuetype, 
                groups = groups, 
                verbose = verbose)
 }
@@ -232,9 +233,9 @@ dfm.tokens <- function(x,
     if (verbose) {
         catm("   ... found ", 
              format(length(x), big.mark = ","), " document",
-             ifelse(length(x) > 1, "s", ""), ### replace with: ntoken()
+             ifelse(length(x) > 1, "s", ""), ### TODO: replace with: ntoken()
              ", ",
-             format(length(types(x)), big.mark = ","),  ### replace with: ntype()
+             format(length(types(x)), big.mark = ","),  # TODO: replace with: ntype()
              " feature",
              ifelse(length(types(x)) > 1, "s", ""),
              "\n", sep="")
@@ -258,7 +259,8 @@ dfm.tokens <- function(x,
     
     # use tokens_select for tokens objects
     if (!is.null(c(remove, select))) {
-        if (!is.null(remove) & !is.null(select)) stop("only one of select and remove may be supplied at once")
+        if (!is.null(remove) & !is.null(select)) 
+            stop("only one of select and remove may be supplied at once")
         if (verbose) catm("   ... ")
         x <- tokens_select(x, 
                            pattern = if (!is.null(remove)) remove else select,
@@ -327,10 +329,11 @@ dfm.dfm <- function(x,
     }
     
     if (!is.null(c(remove, select))) {
-        if (!is.null(remove) & !is.null(select)) stop("only one of select and remove may be supplied at once")
+        if (!is.null(remove) & !is.null(select)) 
+            stop("only one of select and remove may be supplied at once")
         if (verbose) catm("   ... ")
-        # if ngrams > 1 and remove or selct is specified, then convert these into a
-        # regex that will remove any ngram containing one of the words
+        # if ngrams > 1 and remove or selct is specified, then convert these 
+        # into a regex that will remove any ngram containing one of the words
         if (!identical(x@ngrams, 1L)) {
             remove <- make_ngram_pattern(remove, valuetype, x@concatenator)
             valuetype <- "regex"
@@ -344,13 +347,16 @@ dfm.dfm <- function(x,
     
     language <- quanteda_options("language_stemmer")
     if (stem) {
-        if (verbose) catm("   ... stemming features (", stri_trans_totitle(language), ")\n", sep="")
-        oldNfeature <- nfeature(x)
+        if (verbose) 
+            catm("   ... stemming features (", stri_trans_totitle(language), 
+                 ")\n", sep="")
+        oldNfeature <- nfeat(x)
         x <- dfm_wordstem(x, language)
         if (verbose) 
-            if (oldNfeature - nfeature(x) > 0) 
-                catm(", trimmed ", oldNfeature - nfeature(x), " feature variant",
-                     ifelse(oldNfeature - nfeature(x) != 1, "s", ""), "\n", sep = "")
+            if (oldNfeature - nfeat(x) > 0) 
+                catm(", trimmed ", oldNfeature - nfeat(x), " feature variant",
+                     ifelse(oldNfeature - nfeat(x) != 1, "s", ""), 
+                     "\n", sep = "")
     }
     
     # remove any NA named columns
@@ -358,8 +364,8 @@ dfm.dfm <- function(x,
         x <- x[, -which(naFeatures), drop = FALSE]
 
     if (verbose) 
-        catm("   ... created a", paste(format(dim(x), big.mark=",", trim = TRUE), 
-                                       collapse=" x "), 
+        catm("   ... created a", 
+             paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "), 
              "sparse dfm\n   ... complete. \nElapsed time:", 
              format((proc.time() - dfm_env$START_TIME)[3], digits = 3),
              "seconds.\n")

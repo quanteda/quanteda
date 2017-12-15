@@ -169,8 +169,8 @@ predict.textmodel_wordscores_fitted <-
         scorable <- which(colnames(data) %in% names(object@Sw))
         Sw <- object@Sw[featnames(data)[scorable]]
         if (verbose)
-            catm(paste(length(scorable), " of ", nfeature(data), " features (",
-                       round(100*length(scorable)/nfeature(data), 2),
+            catm(paste(length(scorable), " of ", nfeat(data), " features (",
+                       round(100*length(scorable) / nfeat(data), 2),
                        "%) can be scored\n\n", sep=""))
         
         # compute text scores as weighted mean of word scores in "virgin" document
@@ -274,12 +274,14 @@ print.textmodel_wordscores_fitted <- function(x, n = 30L, digits = 2, ...) {
 #' @rdname textmodel-internal
 #' @keywords internal
 #' @export
-setMethod("show", signature(object = "textmodel_wordscores_fitted"), function(object) print(object))
+setMethod("show", signature(object = "textmodel_wordscores_fitted"), 
+          function(object) print(object))
 
 #' @rdname textmodel-internal
 #' @keywords internal
 #' @export
-setMethod("show", signature(object = "textmodel_wordscores_predicted"), function(object) print(object))
+setMethod("show", signature(object = "textmodel_wordscores_predicted"), 
+          function(object) print(object))
 
 
 #' @export
