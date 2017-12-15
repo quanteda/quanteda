@@ -49,10 +49,10 @@
       <a href="../../../articles/pkgdown/quickstart.html">Quick Start Guide</a>
     </li>
     <li>
-      <a href="../../../articles/pkgdown/quickstart_cn.html">快速入门指南</a>
+      <a href="../../../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
-      <a href="../../../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
+      <a href="../../../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
     </li>
   </ul>
 </li>
@@ -388,7 +388,7 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../.
 ##  mobydick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kohei
-## Created: Fri Dec 15 11:55:15 2017
+## Created: Fri Dec 15 13:48:53 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))
@@ -401,7 +401,7 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../.
 ##  mobydick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kohei
-## Created: Fri Dec 15 11:55:15 2017
+## Created: Fri Dec 15 13:48:53 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</code></pre></div>
@@ -691,30 +691,30 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
 
 <span class="co"># get top five terms per topic</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</code></pre></div>
-<pre><code>##      Topic 1     Topic 2    Topic 3   Topic 4     Topic 5  Topic 6   
-## [1,] "taoiseach" "welfare"  "system"  "care"      "fianna" "fianna"  
-## [2,] "fine"      "system"   "told"    "allowance" "fáil"   "fáil"    
-## [3,] "gael"      "fianna"   "hit"     "per"       "side"   "irish"   
-## [4,] "may"       "taxation" "welfare" "hospital"  "level"  "poor"    
-## [5,] "irish"     "fáil"     "fáil"    "million"   "third"  "strategy"
-##      Topic 7         Topic 8       Topic 9      Topic 10      Topic 11 
-## [1,] "measures"      "kind"        "million"    "alternative" "levy"   
-## [2,] "per"           "imagination" "investment" "citizenship" "million"
-## [3,] "approximately" "policies"    "welfare"    "wealth"      "carbon" 
-## [4,] "investment"    "wit"         "reductions" "adjustment"  "change" 
-## [5,] "spending"      "create"      "rate"       "breaks"      "welfare"
-##      Topic 12  Topic 13       Topic 14     Topic 15    Topic 16  
-## [1,] "child"   "society"      "fáil"       "taoiseach" "welfare" 
-## [2,] "benefit" "enterprising" "fianna"     "employees" "review"  
-## [3,] "day"     "sense"        "national"   "rate"      "million" 
-## [4,] "today"   "equal"        "confidence" "referred"  "reduced" 
-## [5,] "bank"    "nation"       "support"    "debate"    "pensions"
-##      Topic 17    Topic 18    Topic 19   Topic 20    
-## [1,] "million"   "failed"    "support"  "banks"     
-## [2,] "spending"  "strategy"  "continue" "welfare"   
-## [3,] "scheme"    "needed"    "welfare"  "investment"
-## [4,] "measures"  "ministers" "scheme"   "per"       
-## [5,] "reduction" "system"    "million"  "million"</code></pre>
+<pre><code>##      Topic 1   Topic 2      Topic 3      Topic 4       Topic 5    
+## [1,] "levy"    "welfare"    "million"    "alternative" "reduction"
+## [2,] "million" "system"     "support"    "citizenship" "million"  
+## [3,] "carbon"  "fianna"     "welfare"    "wealth"      "benefit"  
+## [4,] "change"  "stimulus"   "create"     "adjustment"  "review"   
+## [5,] "welfare" "pre-budget" "investment" "breaks"      "spending" 
+##      Topic 6    Topic 7      Topic 8  Topic 9        Topic 10    Topic 11 
+## [1,] "failed"   "million"    "fianna" "fáil"         "care"      "bank"   
+## [2,] "strategy" "investment" "fáil"   "taxation"     "policies"  "benefit"
+## [3,] "needed"   "support"    "side"   "government's" "welfare"   "anglo"  
+## [4,] "vision"   "employment" "level"  "welfare"      "per"       "today"  
+## [5,] "system"   "including"  "third"  "system"       "allowance" "welfare"
+##      Topic 12   Topic 13    Topic 14    Topic 15     Topic 16  Topic 17   
+## [1,] "measures" "taoiseach" "ministers" "welfare"    "child"   "taoiseach"
+## [2,] "spending" "employees" "expected"  "support"    "benefit" "fine"     
+## [3,] "pension"  "rate"      "simply"    "million"    "day"     "gael"     
+## [4,] "scheme"   "referred"  "confront"  "back"       "fianna"  "may"      
+## [5,] "details"  "debate"    "start"     "confidence" "banks"   "irish"    
+##      Topic 18   Topic 19  Topic 20      
+## [1,] "fianna"   "call"    "enterprising"
+## [2,] "fáil"     "nation"  "society"     
+## [3,] "national" "society" "sense"       
+## [4,] "irish"    "parents" "equal"       
+## [5,] "support"  "hard"    "difficult"</code></pre>
 </div>
 </div>
   </div>
