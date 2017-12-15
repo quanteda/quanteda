@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -259,26 +271,26 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
 #&gt; 
 #&gt; Estimated document positions:
 #&gt; 
-#&gt;   Documents      theta         SE       lower       upper
-#&gt; 1        R1 -1.3313038 0.01573038 -1.36213533 -1.30047223
-#&gt; 2        R2 -0.6062624 0.01215633 -0.63008885 -0.58243603
-#&gt; 3        R3  0.0633325 0.01129470  0.04119488  0.08547011
-#&gt; 4        R4  0.7026667 0.01266607  0.67784116  0.72749217
-#&gt; 5        R5  1.5012178 0.01775940  1.46640943  1.53602626
-#&gt; 6        V1 -0.3296508 0.01194618 -0.35306530 -0.30623627
+#&gt;   Documents       theta         SE      lower       upper
+#&gt; 1        R1 -1.33131136 0.01573055 -1.3621432 -1.30047948
+#&gt; 2        R2 -0.60626104 0.01215647 -0.6300877 -0.58243437
+#&gt; 3        R3  0.06333853 0.01129471  0.0412009  0.08547616
+#&gt; 4        R4  0.70266913 0.01266596  0.6778439  0.72749440
+#&gt; 5        R5  1.50121122 0.01775922  1.4664032  1.53601929
+#&gt; 6        V1 -0.32964647 0.01194628 -0.3530612 -0.30623177
 #&gt; 
 #&gt; Estimated feature scores: showing first 30 beta-hats for features
 #&gt; 
 #&gt;           A           B           C           D           E           F 
-#&gt;  -7.4064130  -8.0776290  -9.7350167 -10.7146273 -11.5831921 -11.3612887 
+#&gt;  -7.4063892  -8.0775925  -9.7349545 -10.7145521 -11.5831058 -11.3611916 
 #&gt;           G           H           I           J           K           L 
-#&gt; -11.5594175 -10.4555689  -9.7338716  -8.6724718  -7.6191931  -6.6315804 
+#&gt; -11.5593154 -10.4554735  -9.7337836  -8.6723963  -7.6191307  -6.6315302 
 #&gt;           M           N           O           P           Q           R 
-#&gt;  -5.6178715  -4.6855543  -3.7792851  -2.7246986  -1.8090842  -0.7117806 
+#&gt;  -5.6178341  -4.6855280  -3.7792686  -2.7246920  -1.8090844  -0.7117872 
 #&gt;           S           T           U           V           W           X 
-#&gt;   0.2594746   1.2559890   2.3935800   3.3679906   4.4773749   5.2773752 
+#&gt;   0.2594652   1.2559796   2.3935741   3.3679896   4.4773817   5.2773892 
 #&gt;           Y           Z          ZA          ZB          ZC          ZD 
-#&gt;   6.1121066   6.9830059   7.8338385   8.8092101   9.7279003  10.4986535 </div><div class='input'>
+#&gt;   6.1121298   6.9830391   7.8338816   8.8092647   9.7279649  10.4987254 </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='no'>ie2010dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 (<span class='no'>wfm1</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>)))

@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -260,7 +272,8 @@ dictionaries. This uses the iconv labels for encoding.  See the
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># import the Laver-Garry dictionary from Provalis Research</span>
 <span class='no'>dictfile</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>()
-<span class='fu'>download.file</span>(<span class='st'>"https://provalisresearch.com/Download/LaverGarry.zip"</span>, <span class='no'>dictfile</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"wb"</span>)
+<span class='fu'>download.file</span>(<span class='st'>"https://provalisresearch.com/Download/LaverGarry.zip"</span>,
+              <span class='no'>dictfile</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"wb"</span>)
 <span class='fu'>unzip</span>(<span class='no'>dictfile</span>, <span class='kw'>exdir</span> <span class='kw'>=</span> (<span class='no'>td</span> <span class='kw'>&lt;-</span> <span class='fu'>tempdir</span>()))
 <span class='no'>lgdict</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='no'>td</span>, <span class='st'>"LaverGarry.cat"</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"/"</span>))
 <span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>lgdict</span>))

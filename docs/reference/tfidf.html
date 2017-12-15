@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -159,17 +171,18 @@ matrix)</p></td>
     <tr>
       <th>scheme_df</th>
       <td><p>scheme for <code><a href='docfreq.html'>docfreq</a></code>; defaults to
-<code>"inverse"</code>.  Other options to <code><a href='docfreq.html'>docfreq</a></code> can be passed through
-the ellipsis (<code>...</code>).</p></td>
+<code>"inverse"</code>.  Other options to <code><a href='docfreq.html'>docfreq</a></code> can be passed
+through the ellipsis (<code>...</code>).</p></td>
     </tr>
     <tr>
       <th>base</th>
-      <td><p>the base for the logarithms in the <code><a href='tf.html'>tf</a></code> and <code><a href='docfreq.html'>docfreq</a></code> calls; default is 10</p></td>
+      <td><p>the base for the logarithms in the <code><a href='tf.html'>tf</a></code> and
+<code><a href='docfreq.html'>docfreq</a></code> calls; default is 10</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to <code><a href='docfreq.html'>docfreq</a></code> when calling 
-<code>tfidf</code>; these can be used to fix smoothing constants (default values 
+      <td><p>additional arguments passed to <code><a href='docfreq.html'>docfreq</a></code> when calling
+<code>tfidf</code>; these can be used to fix smoothing constants (default values
 are 0).</p></td>
     </tr>
     </table>
@@ -228,9 +241,15 @@ are 0).</p></td>
     <span class='fu'>matrix</span>(<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>, <span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
            <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
            <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>docs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"document1"</span>, <span class='st'>"document2"</span>),
-                           <span class='kw'>features</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>, <span class='st'>"another"</span>, <span class='st'>"example"</span>))) <span class='kw'>%&gt;%</span>
+                           <span class='kw'>features</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>,
+                                        <span class='st'>"another"</span>, <span class='st'>"example"</span>))) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='is.dfm.html'>as.dfm</a></span>()
-<span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>wiki_dfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+<span class='no'>wiki_dfm</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
+#&gt; 2 x 6 sparse Matrix of class "dfm"
+#&gt;            features
+#&gt; docs        this is a sample another example
+#&gt;   document1    1  1 2      1       0       0
+#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>wiki_dfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
 #&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>round</span>(<span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
 #&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;            features

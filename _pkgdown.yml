@@ -7,7 +7,13 @@ navbar:
   type: inverse
   left:
     - text: "Quick Start"
-      href: articles/pkgdown/quickstart.html
+      menu:
+        - text: "Quick Start Guide"
+          href: articles/pkgdown/quickstart.html
+        - text: "快速入门指南"
+          href: articles/pkgdown/examples/quickstart_cn.html
+        - text: "クイック・スタートガイド"
+          href: articles/pkgdown/examples/quickstart_ja.html
     - text: "Reference"
       href: reference/index.html
     - text: "Features"
@@ -20,8 +26,6 @@ navbar:
           href: articles/pkgdown/examples/plotting.html
         - text: "Chinese text analysis"
           href: articles/pkgdown/examples/chinese.html
-        - text: "快速入门指南"
-          href: articles/pkgdown/examples/quickstart_cn.html
         - text: "Social media analysis"
           href: articles/pkgdown/examples/twitter.html
     - text: "Replication"

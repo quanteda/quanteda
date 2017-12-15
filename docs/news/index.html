@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -164,6 +176,7 @@
 <li>Performance has been improved for <code><a href="../reference/fcm.html">fcm()</a></code> and for <code><a href="../reference/textmodel_wordfish.html">textmodel_wordfish()</a></code>.</li>
 <li>
 <code><a href="../reference/dfm.html">dfm()</a></code> now correctly passes through all <code>...</code> arguments to <code><a href="../reference/tokens.html">tokens()</a></code>. (#1121)</li>
+<li>All <code>dfm_*()</code> functions now work correctly with empty dfm objects. (#1133)</li>
 </ul>
 </div>
 <div id="behaviour-changes" class="section level3">
@@ -171,6 +184,8 @@
 <a href="#behaviour-changes" class="anchor"></a>Behaviour Changes</h3>
 <ul>
 <li>The convenience wrappers to <code><a href="../reference/convert.html">convert()</a></code> are simplified and no longer exported. To convert a dfm, <code><a href="../reference/convert.html">convert()</a></code> is now the only official function.</li>
+<li>
+<code><a href="../reference/ndoc.html">nfeat()</a></code> replaces <code><a href="../reference/ndoc.html">nfeature()</a></code>, which is now deprecated. (#1134)</li>
 </ul>
 </div>
 </div>
