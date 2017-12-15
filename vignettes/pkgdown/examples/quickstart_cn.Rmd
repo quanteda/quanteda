@@ -161,7 +161,7 @@ summary(data_corpus_irishbudget2010)
 tokenInfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
     ggplot(data=tokenInfo, aes(x = Year, y = Tokens, group = 1)) + geom_line() + geom_point() +
-        scale_x_discrete(labels = c(seq(1789,2012,12)), breaks = seq(1789,2012,12) ) 
+        scale_x_continuous(labels = c(seq(1789,2012,12)), breaks = seq(1789,2012,12) ) 
 
 # 最长的就职演说: William Henry Harrison
 tokenInfo[which.max(tokenInfo$Tokens), ] 
