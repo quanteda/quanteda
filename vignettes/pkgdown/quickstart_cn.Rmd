@@ -33,7 +33,7 @@ install.packages("quanteda")
     ```{r eval = FALSE}
     devtools::install_github("kbenoit/quantedaData")
     ```
-*  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): R版[Linguistic Inquiry and Word Count](http://liwc.wpengine.com) 文本分析软件。
+*  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): R版[Linguistic Inquiry and Word Count](http://liwc.wpengine.com) 文本分析软件
 
     ```{r eval = FALSE}
     devtools::install_github("kbenoit/LIWCalike")
@@ -77,9 +77,9 @@ myCorpus <- corpus(data_char_ukimmig2010)  # 从文本构建语料库
 summary(myCorpus)
 ```
 
-我们也可以添加一些文档变量-- **quanteda** 称之为此语料库的`docvars`。
+我们也可以添加一些文档变量-- **quanteda** 称之为此语料库的`docvars()`。
 
-我们可以使用R的`names()`函数来读取字符向量`data_char_ukimmig2010`的名称，并且将其给文档变量（`docvars()`）赋值。
+我们可以使用R的`names()`函数来读取字符向量`data_char_ukimmig2010`的名称，并且将其给文档变量赋值。
 
 ```{r}
 docvars(myCorpus, "Party") <- names(data_char_ukimmig2010)
@@ -216,7 +216,7 @@ head(docvars(data_corpus_inaugural))
 metacorpus(data_corpus_inaugural)
 ```
 
-[quantedaData](http://github.com/kbenoit/quantedaData)软件包提供更多语料库资源。
+[**quantedaData**](http://github.com/kbenoit/quantedaData)软件包提供更多语料库资源。
 
 # 从语料库中提取特征
 

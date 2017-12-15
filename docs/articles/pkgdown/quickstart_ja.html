@@ -196,7 +196,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Fri Dec 15 11:30:53 2017
+## Created: Fri Dec 15 11:54:28 2017
 ## Notes:</code></pre>
 <p>コーパスを作成したあとでも，<code>docvars</code>を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができます．</p>
 <p>たとえば，Rの<code>names()</code>関数を使って文字ベクトル（<code>data_char_ukimmig2010</code>）の名前を取得し，これを文書変数（<code>docvar()</code>）に追加することができます．</p>
@@ -217,7 +217,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Fri Dec 15 11:30:53 2017
+## Created: Fri Dec 15 11:54:28 2017
 ## Notes:</code></pre>
 <p>分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，<code><a href="../../reference/docvars.html">docvars()</a></code>を使って，コーパスに追加することができます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -247,7 +247,7 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/* on x86_64 by kohei
-## Created: Fri Dec 15 11:30:53 2017
+## Created: Fri Dec 15 11:54:28 2017
 ## Notes:</code></pre>
 <p><code><a href="../../reference/metadoc.html">metadoc()</a></code>を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（“english”）を文書変数（“language”）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意してください．</p>
 <p>独自の文書メタデータのフィールド（<code>docsource</code>）を作成するために，<strong>quanteda</strong>の関数である<code><a href="../../reference/ndoc.html">ndoc()</a></code>を使ってコーパスに含まれる文書の総数を取得しています．<code><a href="../../reference/ndoc.html">ndoc()</a></code>は，<code>nrow()</code>や<code>ncol()</code>などのRの標準の関数と同じような方法で動作するように設計されています．</p>
@@ -379,7 +379,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Fri Dec 15 11:30:55 2017
+## Created: Fri Dec 15 11:54:30 2017
 ## Notes:</code></pre>
 </div>
 <div class="section level3">
@@ -486,12 +486,12 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## 
 ## $created
 ## [1] "Tue Jun 13 14:51:47 2017"</code></pre>
-<p><a href="http://github.com/kbenoit/quantedaData"><strong>quantedaData</strong></a>をインストールすることにより，より多くのコーパスを試すことができます．</p>
+<p><a href="http://github.com/kbenoit/quantedaData"><strong>quantedaData</strong></a>をインストールすることで，より多くのコーパスを試すことができます．</p>
 </div>
 </div>
 <div class="section level1">
 <h1>コーパスから特長を抽出</h1>
-<p>文書のスケーリングなどの統計分析を行うためには，それぞれの文書の特長をまとめた行列を作成する必要があります． <strong>quanteda</strong>では，このような行列を生成するために <code><a href="../../reference/dfm.html">dfm()</a></code>を使います． dfmは<em>document-feature matrix</em>の略で，行が文書（document），列が特長（feature）となる行列です．行と列をこのように定義する理由は，データ分析では行が分析単位になり，各列が分析対象になる変数となるのが一般的だからです．多くのソフトウェアでは，この行列を<em>document-term matrix</em>と呼びます．<code>quanteda</code>が語（term）でなはく特長（feature）という用語を使うのは，特長のほうが一般性を持つ用語だからです．テキスト分析では，単語，語幹，単語の集合，Nグラム，品詞など様々なものが文書の特長となります．</p>
+<p>文書のスケーリングなどの統計分析を行うためには，それぞれの文書の特長をまとめた行列を作成する必要があります． <strong>quanteda</strong>では，このような行列を生成するために <code><a href="../../reference/dfm.html">dfm()</a></code>を使います． dfmは<em>document-feature matrix</em>の略で，行が文書（document），列が特長（feature）となる行列です．行と列をこのように定義する理由は，データ分析では行が分析単位になり，各列が分析対象になる変数となるのが一般的だからです．多くのソフトウェアでは，この行列を<em>document-term matrix</em>と呼びます．<strong>quanteda</strong>が語（term）でなはく特長（feature）という用語を使うのは，特長のほうが一般性を持つ用語だからです．テキスト分析では，単語，語幹，単語の集合，Nグラム，品詞など様々なものが文書の特長となります．</p>
 <div class="section level2">
 <h2>文書のトークン化</h2>
 <p>テキストを簡単にトークン化するために，<strong>quanteda</strong>は <code><a href="../../reference/tokens.html">tokens()</a></code>と呼ばれる強力なコマンドを提供します．この関数は，文字ベクトルのトークンのリストからなる中間オブジェクトを生成します．ここで，リストの一つ一つの要素は入力された文書に対応しています．</p>
@@ -751,7 +751,7 @@ obamaSimil</code></pre></div>
 ## 2005-Bush     0.5266249  0.5867178
 ## 2017-Trump    0.5192075  0.5160104</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")</span></code></pre></div>
-<p>上記の，文書間の類似性から樹形図を作成して，大統領を分類することができます．</p>
+<p>上記の文書間の類似性から樹形図を作成して，大統領を分類することができます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quantedaData"</span>)
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
@@ -787,54 +787,54 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/df
 ## Estimated document positions:
 ## 
 ##                                Documents      theta         SE       lower
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209651 0.02032375  1.78113051
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932696 0.02818802 -0.64851814
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136634 0.01540227 -1.14385185
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219440 0.02846285 -0.17773116
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724302 0.02364133  1.72609321
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145741 0.02650209 -0.76651814
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844779 0.04171424 -0.56623782
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616808 0.02967284 -0.61983953
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703039 0.03850462 -1.04577296
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589165 0.03892292 -1.03520545
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807218 0.07221537  1.03917962
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866402 0.06294094  0.06327593
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421780 0.07245477  0.60016665
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1841051 0.03666191 -0.25596240
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209499 0.02032336  1.78111612
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932807 0.02818846 -0.64853012
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136790 0.01540265 -1.14386823
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219288 0.02846330 -0.17771690
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724200 0.02364085  1.72608396
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145798 0.02650268 -0.76652507
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844834 0.04171492 -0.56624464
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616683 0.02967373 -0.61982877
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703126 0.03850567 -1.04578369
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589248 0.03892398 -1.03521585
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807221 0.07221440  1.03918189
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866473 0.06294127  0.06328239
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421930 0.07245424  0.60018268
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840748 0.03666277 -0.25593382
 ##          upper
-## 1   1.86079961
-## 2  -0.53802109
-## 3  -1.08347495
-## 4  -0.06615678
-## 5   1.81876722
-## 6  -0.66262996
-## 7  -0.40271800
-## 8  -0.50352201
-## 9  -0.89483486
-## 10 -0.88262759
-## 11  1.32226388
-## 12  0.31000442
-## 13  0.88418936
-## 14 -0.11224771
+## 1   1.86078371
+## 2  -0.53803137
+## 3  -1.08348984
+## 4  -0.06614078
+## 5   1.81875610
+## 6  -0.66263457
+## 7  -0.40272216
+## 8  -0.50350776
+## 9  -0.89484148
+## 10 -0.88263383
+## 11  1.32226236
+## 12  0.31001215
+## 13  0.88420329
+## 14 -0.11221576
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the 
-##     -0.09907182      0.38816119      0.39891975      0.25607977 
+##     -0.09921416      0.38801227      0.39878221      0.25593308 
 ##   supplementary          budget              to            this 
-##      1.11599115      0.09928948      0.37021483      0.30706971 
+##      1.11585345      0.09914364      0.37006803      0.30692462 
 ##           house            last           april               , 
-##      0.19920934      0.28985044     -0.09513183      0.34548889 
+##      0.19905962      0.28970709     -0.09527213      0.34534182 
 ##            said              we           could            work 
-##     -0.71917835      0.48005818     -0.52963226      0.58240559 
+##     -0.71932033      0.47991222     -0.52977465      0.58226316 
 ##             our             way         through          period 
-##      0.74386669      0.33625164      0.65995617      0.55635182 
+##      0.74372383      0.33610515      0.65981764      0.55620779 
 ##              of          severe        economic        distress 
-##      0.33945885      1.27923263      0.47880474      1.84464604 
+##      0.33931211      1.27909804      0.47866025      1.84453970 
 ##               .           today             can          report 
-##      0.27366170      0.17434048      0.36391880      0.69189951 
+##      0.27351503      0.17418685      0.36377507      0.69175117 
 ##            that notwithstanding 
-##      0.08847229      1.84464604</code></pre>
+##      0.08832455      1.84453970</code></pre>
 </div>
 <div class="section level2">
 <h2>トピックモデル</h2>
@@ -849,30 +849,30 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1     Topic 2     Topic 3    Topic 4      Topic 5    
-## [1,] "taoiseach" "care"      "welfare"  "measures"   "taoiseach"
-## [2,] "fine"      "welfare"   "stimulus" "scheme"     "employees"
-## [3,] "gael"      "per"       "fianna"   "investment" "rate"     
-## [4,] "may"       "allowance" "system"   "parties"    "referred" 
-## [5,] "irish"     "hit"       "policies" "welfare"    "debate"   
-##      Topic 6      Topic 7    Topic 8      Topic 9       Topic 10    
-## [1,] "measures"   "face"     "anglo"      "kind"        "million"   
-## [2,] "million"    "child"    "day"        "imagination" "support"   
-## [3,] "welfare"    "per"      "businesses" "policies"    "welfare"   
-## [4,] "investment" "today"    "bank"       "wit"         "continue"  
-## [5,] "review"     "national" "home"       "create"      "investment"
-##      Topic 11 Topic 12   Topic 13      Topic 14 Topic 15  Topic 16 
-## [1,] "system" "fáil"     "alternative" "fianna" "benefit" "levy"   
-## [2,] "create" "system"   "citizenship" "fáil"   "child"   "million"
-## [3,] "going"  "taxation" "wealth"      "side"   "day"     "carbon" 
-## [4,] "local"  "low"      "adjustment"  "level"  "bank"    "change" 
-## [5,] "sense"  "welfare"  "breaks"      "third"  "society" "welfare"
-##      Topic 17    Topic 18       Topic 19   Topic 20  
-## [1,] "failed"    "society"      "spending" "fianna"  
-## [2,] "strategy"  "enterprising" "pensions" "fáil"    
-## [3,] "needed"    "sense"        "recent"   "national"
-## [4,] "ministers" "equal"        "deficit"  "irish"   
-## [5,] "system"    "nation"       "national" "support"</code></pre>
+<pre><code>##      Topic 1     Topic 2       Topic 3        Topic 4    Topic 5     
+## [1,] "failed"    "kind"        "society"      "welfare"  "levy"      
+## [2,] "strategy"  "imagination" "enterprising" "system"   "million"   
+## [3,] "needed"    "policies"    "sense"        "taxation" "carbon"    
+## [4,] "ministers" "wit"         "equal"        "fáil"     "colleagues"
+## [5,] "system"    "face"        "nation"       "live"     "placing"   
+##      Topic 6       Topic 7    Topic 8      Topic 9     Topic 10  
+## [1,] "alternative" "fianna"   "reduction"  "fianna"    "spending"
+## [2,] "citizenship" "fáil"     "million"    "prsi"      "measures"
+## [3,] "wealth"      "national" "investment" "earning"   "pension" 
+## [4,] "adjustment"  "irish"    "rates"      "taoiseach" "million" 
+## [5,] "breaks"      "support"  "scheme"     "top"       "review"  
+##      Topic 11  Topic 12  Topic 13     Topic 14    Topic 15   Topic 16   
+## [1,] "welfare" "child"   "measures"   "taoiseach" "million"  "taoiseach"
+## [2,] "system"  "benefit" "support"    "fine"      "welfare"  "employees"
+## [3,] "parties" "today"   "investment" "gael"      "support"  "rate"     
+## [4,] "child"   "welfare" "recovery"   "may"       "back"     "referred" 
+## [5,] "sinn"    "per"     "action"     "irish"     "continue" "debate"   
+##      Topic 17    Topic 18  Topic 19    Topic 20 
+## [1,] "sustained" "benefit" "care"      "fianna" 
+## [2,] "person"    "day"     "welfare"   "child"  
+## [3,] "believe"   "fáil"    "per"       "taxes"  
+## [4,] "raising"   "lenihan" "allowance" "earning"
+## [5,] "continue"  "bank"    "hit"       "better"</code></pre>
 </div>
 </div>
 </div>

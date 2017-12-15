@@ -216,12 +216,12 @@ head(docvars(data_corpus_inaugural))
 metacorpus(data_corpus_inaugural)
 ```
 
-[**quantedaData**](http://github.com/kbenoit/quantedaData)をインストールすることにより，より多くのコーパスを試すことができます．
+[**quantedaData**](http://github.com/kbenoit/quantedaData)をインストールすることで，より多くのコーパスを試すことができます．
 
 
 # コーパスから特長を抽出
 
-文書のスケーリングなどの統計分析を行うためには，それぞれの文書の特長をまとめた行列を作成する必要があります． **quanteda**では，このような行列を生成するために `dfm()`を使います． dfmは*document-feature  matrix*の略で，行が文書（document），列が特長（feature）となる行列です．行と列をこのように定義する理由は，データ分析では行が分析単位になり，各列が分析対象になる変数となるのが一般的だからです．多くのソフトウェアでは，この行列を*document-term matrix*と呼びます．`quanteda`が語（term）でなはく特長（feature）という用語を使うのは，特長のほうが一般性を持つ用語だからです．テキスト分析では，単語，語幹，単語の集合，Nグラム，品詞など様々なものが文書の特長となります．
+文書のスケーリングなどの統計分析を行うためには，それぞれの文書の特長をまとめた行列を作成する必要があります． **quanteda**では，このような行列を生成するために `dfm()`を使います． dfmは*document-feature  matrix*の略で，行が文書（document），列が特長（feature）となる行列です．行と列をこのように定義する理由は，データ分析では行が分析単位になり，各列が分析対象になる変数となるのが一般的だからです．多くのソフトウェアでは，この行列を*document-term matrix*と呼びます．**quanteda**が語（term）でなはく特長（feature）という用語を使うのは，特長のほうが一般性を持つ用語だからです．テキスト分析では，単語，語幹，単語の集合，Nグラム，品詞など様々なものが文書の特長となります．
 
 ## 文書のトークン化
 
@@ -374,7 +374,7 @@ obamaSimil
 ```
 
 
-上記の，文書間の類似性から樹形図を作成して，大統領を分類することができます．
+上記の文書間の類似性から樹形図を作成して，大統領を分類することができます．
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
 data(data_corpus_SOTU, package = "quantedaData")
 presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
