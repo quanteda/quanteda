@@ -3,7 +3,6 @@ title: "クイック・スタートガイド"
 output: 
   html_document:
     toc: true
-    css: ja.css
 ---
 
 ```{r, echo = FALSE}
@@ -11,9 +10,7 @@ knitr::opts_chunk$set(collapse = FALSE,
                       comment = "##")
 ```
 
-この記事では，**quanteda**の特徴と機能の概要を説明します．より詳しい説明は，[ quanteda.ioにある記事](http://docs.quanteda.io/articles/index.html)を参照してください．
-
-# パッケージのインストール
+# パッケージのインストール {#installing-the-package}
 
 **quanteda**は[CRAN](https://CRAN.R-project.org/package=quanteda)からインストールできます．GUIのRパッケージインストーラを使用してインストールするか，次のコマンドを実行します．
 
@@ -23,7 +20,7 @@ install.packages("quanteda")
 
 GitHubから最新の開発バージョンをインストールする方法については，https://github.com/kbenoit/quanteda を参照してください．
 
-## インストールが推奨されるパッケージ
+## インストールが推奨されるパッケージ {#additional-recommended-packages}
 
 **quanteda**には連携して機能を拡張する一連のパッケージがあり，それらをインストールすることをお薦めします．
 
@@ -39,7 +36,7 @@ GitHubから最新の開発バージョンをインストールする方法に�
     devtools::install_github("kbenoit/LIWCalike")
     ```
 
-# コーパスの作成
+# コーパスの作成 {#creating-a-corpus}
 
 まず，**quanteda**を読み込んで，パッケージの関数とデータにアクセスできるようにします．
 
@@ -47,7 +44,7 @@ GitHubから最新の開発バージョンをインストールする方法に�
 library(quanteda)
 ```
 
-## 利用可能なコーパス
+## 利用可能なコーパス {#currently-available-corpus-sources}
 
 **quanteda**にはテキストを読み込むためのシンプルで強力なパッケージ，[**readtext**](https://github.com/kbenoit/readtext)があります．このパッケージの`readtext()`は，ローカス・ストレージやインターネットからファイル読み込み，`corpus()`にデータ・フレームを返します．
 
@@ -66,7 +63,7 @@ library(quanteda)
 * **tm**パッケージの `VCorpus`コーパスオブジェクト
 * テキスト列と他の文書に対応したメタデータを含むデータ・フレーム
 
-### 文字列からコーパスを作成
+### 文字列からコーパスを作成 {#building-a-corpus-from-a-character-vector}
 
 コーパスを作成する最も簡単な方法は，`corpus()`を用いて，すでにRに読み込まれた文字列ベクトル作成することです．文字列ベクトルをRに取り込む方法はさまざまなので，高度なRユーザーは，コーパスをいろいろな方法で作り出せます．
 
@@ -99,7 +96,7 @@ summary(myCorpus, showmeta = TRUE)
 
 独自の文書メタデータのフィールド（`docsource`）を作成するために，**quanteda**の関数である`ndoc()`を使ってコーパスに含まれる文書の総数を取得しています．`ndoc()`は，`nrow()`や`ncol()`などのRの標準の関数と同じような方法で動作するように設計されています．
 
-### readtextパッケージを用いたファイルの読み込み
+### readtextパッケージを用いたファイルの読み込み {#loading-in-files-using-the-readtext-package}
 
 ```{r, eval=FALSE}
 require(readtext)
@@ -134,9 +131,9 @@ mytf7 <- readtext("/tmp/inaug_texts.csv", textfield = "inaugSpeech")
 summary(corpus(mytf7), 5)
 ```
 
-## コーパスオブジェクトの使い方
+## コーパスオブジェクトの使い方 {#how-a-quanteda-corpus-works}
 
-### コーパスの原理
+### コーパスの原理 {#corpus-principles}
 
 **quanteda**のコーパスは，元の文書をユニコード（UTF-8）に変換し，文書に対するメタデータと一緒に格納しすることで、ステミングや句読点の削除などの処理よって変更されないテキストデータの静的な保管庫になるように設計されています．これによって，コーパスから文書を抽出して新しいオブジェクトを作成した後でも，コーパスには元のデータが残り，別の分析を，同じコーパスを用いて行うことができます．
 
@@ -166,9 +163,9 @@ tokenInfo[which.max(tokenInfo$Tokens), ]
 ```
 
 
-## コーパスに対する操作
+## コーパスに対する操作 {#tools-for-handling-corpus-objects}
 
-### コーパスの結合
+### コーパスの結合 {#adding-two-corpus-objects-together}
 
 `+`演算子を用いると，簡単に二個のコーパスを連結できます．コーパスが異なる構造を持つ場合でも，文書変数が失われることはなく，コーパスのメタデータも引き継がれます．
 
@@ -180,7 +177,7 @@ mycorpus3 <- mycorpus1 + mycorpus2
 summary(mycorpus3)
 ```
 
-### コーパス内の文書の一部の文書の抽出
+### コーパス内の文書の一部の文書の抽出 {#subsetting-corpus-objects}
 
 `corpus_subset()`により，文書変数に適用される論理条件に基づいて文書を抽出することができます．
 
@@ -189,7 +186,7 @@ summary(corpus_subset(data_corpus_inaugural, Year > 1990))
 summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ```
 
-## コーパス内の文書の探索
+## コーパス内の文書の探索 {#exploring-corpus-texts}
 
 `kwic()`（keywords-in-context）は単語の検索を行い，その単語が現れる文脈を表示します．
 
@@ -219,11 +216,11 @@ metacorpus(data_corpus_inaugural)
 [**quantedaData**](http://github.com/kbenoit/quantedaData)をインストールすることで，より多くのコーパスを試すことができます．
 
 
-# コーパスから特長を抽出
+# コーパスから特長を抽出 {#extracting-features-from-a-corpus}
 
 文書のスケーリングなどの統計分析を行うためには，それぞれの文書の特長をまとめた行列を作成する必要があります． **quanteda**では，このような行列を生成するために `dfm()`を使います． dfmは*document-feature  matrix*の略で，行が文書（document），列が特長（feature）となる行列です．行と列をこのように定義する理由は，データ分析では行が分析単位になり，各列が分析対象になる変数となるのが一般的だからです．多くのソフトウェアでは，この行列を*document-term matrix*と呼びます．**quanteda**が語（term）でなはく特長（feature）という用語を使うのは，特長のほうが一般性を持つ用語だからです．テキスト分析では，単語，語幹，単語の集合，Nグラム，品詞など様々なものが文書の特長となります．
 
-## 文書のトークン化
+## 文書のトークン化 {#tokenizing-texts}
 
 テキストを簡単にトークン化するために，**quanteda**は `tokens()`と呼ばれる強力なコマンドを提供します．この関数は，文字ベクトルのトークンのリストからなる中間オブジェクトを生成します．ここで，リストの一つ一つの要素は入力された文書に対応しています．
 
@@ -256,7 +253,7 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
          what = "sentence")
 ```
 
-## 文書行列の作成
+## 文書行列の作成 {#constructing-a-document-feature-matrix}
 
 文書をトークン化は中間的な処理であり，ほとんどのユーザーはこれを省いて、すぐに文書行列を作成したいと考えるでしょう． このために，**quanteda**は，自動的にトークン化を実行し，文書行列を作成する`dfm()`と呼ばれるスイスアーミーナイフのように便利な関数を持っています．保守的な`tokens()`とは異なり，`dfm()`はデフォルトで大文字から小文字への置換や，句読点を除去などの操作を適用します．また，`dfm()`から`tokens()`の全てのオプションを利用できます．
 
@@ -285,7 +282,7 @@ head(stopwords("russian"), 10)
 head(stopwords("arabic"), 10)
 ```
 
-### 文書行列の表示
+### 文書行列の表示 {#viewing-the-document-feature-matrix}
 
 RStudioの"Environment"パネル，またはRの`View()`を用いることで，dfmに格納された値を見ることができます．dfmに対して`plot()`を用いると，[**wordcloud**](https://cran.r-project.org/web/packages/wordcloud)を使ってワードクラウドが表示されます．
 
@@ -309,7 +306,7 @@ textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
-### 変数による文書のグループ化
+### 変数による文書のグループ化 {#grouping-documents-by-document-variable}
 
 **quanteda**では，dfmを作成する際に，文書変数の値によって文書をグループ化するすることができます．
 
@@ -325,7 +322,7 @@ dfm_sort(byPartyDfm)[, 1:10]
 ```
 
 
-### 辞書による語のグループ化
+### 辞書による語のグループ化 {#grouping-words-by-dictionary-or-equivalence-class}
 
 肯定的な映画のレビューや，特定の政治意識に関する語があらかじめ分かっている場合，語のグループをまとめて一つのものとして取り扱い，これらを合計して単一の特長として分析すると上手くいくかもしれません．
 
@@ -360,9 +357,9 @@ liwcdfm[, 1:10]
 ```
 
 
-# 追加の事例
+# 追加の事例 {#further-examples}
 
-## 文書の類似性
+## 文書の類似性 {#similarities-between-texts}
 
 ```{r fig.width = 6}
 presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
@@ -372,7 +369,6 @@ obamaSimil <- textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"),
 obamaSimil
 # dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
 ```
-
 
 上記の文書間の類似性から樹形図を作成して，大統領を分類することができます．
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
@@ -397,7 +393,7 @@ sim <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine",
 lapply(as.list(sim), head, 10)
 ```
 
-## 文書のスケーリング
+## 文書のスケーリング {#scaling-document-positions}
 
 **quanteda**にはたくさんの計量テキスト分析のためのモデルが含まれていますが，ワードフィッシュ（`textmodel_wordfish()`）による教師なしの文書のスケーリングを使ってみます．
 
@@ -407,7 +403,7 @@ ieDfm <- dfm(data_corpus_irishbudget2010)
 textmodel_wordfish(ieDfm, dir = c(2, 1))
 ```
 
-## トピックモデル
+## トピックモデル {#topic-models}
 
 `convert()`を用いると，dfmを**topicmodels**の`LDA()`形式のデータに転換して，簡単にトピックモデルを適用できます．
 

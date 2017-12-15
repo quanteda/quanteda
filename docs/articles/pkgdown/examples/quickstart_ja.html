@@ -128,14 +128,15 @@
     
     
 <div class="contents">
-<p>この記事では，<strong>quanteda</strong>の特徴と機能の概要を説明します．より詳しい説明は，<a href="http://docs.quanteda.io/articles/index.html">quanteda.ioにある記事</a>を参照してください．</p>
-<div class="section level1">
-<h1>パッケージのインストール</h1>
+<div id="installing-the-package" class="section level1">
+<h1 class="hasAnchor">
+<a href="#installing-the-package" class="anchor"></a>パッケージのインストール</h1>
 <p><strong>quanteda</strong>は<a href="https://CRAN.R-project.org/package=quanteda">CRAN</a>からインストールできます．GUIのRパッケージインストーラを使用してインストールするか，次のコマンドを実行します．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>) </code></pre></div>
 <p>GitHubから最新の開発バージョンをインストールする方法については，<a href="https://github.com/kbenoit/quanteda" class="uri">https://github.com/kbenoit/quanteda</a> を参照してください．</p>
-<div class="section level2">
-<h2>インストールが推奨されるパッケージ</h2>
+<div id="additional-recommended-packages" class="section level2">
+<h2 class="hasAnchor">
+<a href="#additional-recommended-packages" class="anchor"></a>インストールが推奨されるパッケージ</h2>
 <p><strong>quanteda</strong>には連携して機能を拡張する一連のパッケージがあり，それらをインストールすることをお薦めします．</p>
 <ul>
 <li>
@@ -153,12 +154,14 @@
 </ul>
 </div>
 </div>
-<div class="section level1">
-<h1>コーパスの作成</h1>
+<div id="creating-a-corpus" class="section level1">
+<h1 class="hasAnchor">
+<a href="#creating-a-corpus" class="anchor"></a>コーパスの作成</h1>
 <p>まず，<strong>quanteda</strong>を読み込んで，パッケージの関数とデータにアクセスできるようにします．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
-<div class="section level2">
-<h2>利用可能なコーパス</h2>
+<div id="currently-available-corpus-sources" class="section level2">
+<h2 class="hasAnchor">
+<a href="#currently-available-corpus-sources" class="anchor"></a>利用可能なコーパス</h2>
 <p><strong>quanteda</strong>にはテキストを読み込むためのシンプルで強力なパッケージ，<a href="https://github.com/kbenoit/readtext"><strong>readtext</strong></a>があります．このパッケージの<code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code>は，ローカス・ストレージやインターネットからファイル読み込み，<code><a href="../../../reference/corpus.html">corpus()</a></code>にデータ・フレームを返します．</p>
 <p><code><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext()</a></code>で利用可能なファイルやデータの形式:</p>
 <ul>
@@ -176,8 +179,9 @@
 <strong>tm</strong>パッケージの <code>VCorpus</code>コーパスオブジェクト</li>
 <li>テキスト列と他の文書に対応したメタデータを含むデータ・フレーム</li>
 </ul>
-<div class="section level3">
-<h3>文字列からコーパスを作成</h3>
+<div id="building-a-corpus-from-a-character-vector" class="section level3">
+<h3 class="hasAnchor">
+<a href="#building-a-corpus-from-a-character-vector" class="anchor"></a>文字列からコーパスを作成</h3>
 <p>コーパスを作成する最も簡単な方法は，<code><a href="../../../reference/corpus.html">corpus()</a></code>を用いて，すでにRに読み込まれた文字列ベクトル作成することです．文字列ベクトルをRに取り込む方法はさまざまなので，高度なRユーザーは，コーパスをいろいろな方法で作り出せます．</p>
 <p>次の例では，<strong>quanteda</strong>パッケージに含まれているイギリスの政党が2010年の総選挙のために発行したマニフェストのテキストデータ（<code>data_char_ukimmig2010</code>）からコーパスを作成しています．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_char_ukimmig2010)  <span class="co"># テキストからコーパスを作成</span>
@@ -196,7 +200,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Fri Dec 15 13:48:00 2017
+## Created: Fri Dec 15 19:30:02 2017
 ## Notes:</code></pre>
 <p>コーパスを作成したあとでも，<code>docvars</code>を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができます．</p>
 <p>たとえば，Rの<code>names()</code>関数を使って文字ベクトル（<code>data_char_ukimmig2010</code>）の名前を取得し，これを文書変数（<code>docvar()</code>）に追加することができます．</p>
@@ -217,7 +221,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Fri Dec 15 13:48:00 2017
+## Created: Fri Dec 15 19:30:02 2017
 ## Notes:</code></pre>
 <p>分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，<code><a href="../../../reference/docvars.html">docvars()</a></code>を使って，コーパスに追加することができます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -247,14 +251,14 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Fri Dec 15 13:48:00 2017
+## Created: Fri Dec 15 19:30:02 2017
 ## Notes:</code></pre>
 <p><code><a href="../../../reference/metadoc.html">metadoc()</a></code>を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（“english”）を文書変数（“language”）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意してください．</p>
 <p>独自の文書メタデータのフィールド（<code>docsource</code>）を作成するために，<strong>quanteda</strong>の関数である<code><a href="../../../reference/ndoc.html">ndoc()</a></code>を使ってコーパスに含まれる文書の総数を取得しています．<code><a href="../../../reference/ndoc.html">ndoc()</a></code>は，<code>nrow()</code>や<code>ncol()</code>などのRの標準の関数と同じような方法で動作するように設計されています．</p>
 </div>
-<div id="readtext" class="section level3">
+<div id="loading-in-files-using-the-readtext-package" class="section level3">
 <h3 class="hasAnchor">
-<a href="#readtext" class="anchor"></a>readtextパッケージを用いたファイルの読み込み</h3>
+<a href="#loading-in-files-using-the-readtext-package" class="anchor"></a>readtextパッケージを用いたファイルの読み込み</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(readtext)
 
 <span class="co"># Twitter json</span>
@@ -287,10 +291,12 @@ mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocume
 <span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(mytf7), <span class="dv">5</span>)</code></pre></div>
 </div>
 </div>
-<div class="section level2">
-<h2>コーパスオブジェクトの使い方</h2>
-<div class="section level3">
-<h3>コーパスの原理</h3>
+<div id="how-a-quanteda-corpus-works" class="section level2">
+<h2 class="hasAnchor">
+<a href="#how-a-quanteda-corpus-works" class="anchor"></a>コーパスオブジェクトの使い方</h2>
+<div id="corpus-principles" class="section level3">
+<h3 class="hasAnchor">
+<a href="#corpus-principles" class="anchor"></a>コーパスの原理</h3>
 <p><strong>quanteda</strong>のコーパスは，元の文書をユニコード（UTF-8）に変換し，文書に対するメタデータと一緒に格納しすることで、ステミングや句読点の削除などの処理よって変更されないテキストデータの静的な保管庫になるように設計されています．これによって，コーパスから文書を抽出して新しいオブジェクトを作成した後でも，コーパスには元のデータが残り，別の分析を，同じコーパスを用いて行うことができます．</p>
 <p>コーパスから文書を取り出すためには，<code><a href="../../../reference/texts.html">texts()</a></code>と呼ばれる関数を使用します．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/texts.html">texts</a></span>(data_corpus_inaugural)[<span class="dv">2</span>]</code></pre></div>
@@ -353,10 +359,12 @@ tokenInfo[<span class="kw">which.max</span>(tokenInfo<span class="op">$</span>To
 ## Notes:   http://www.presidency.ucsb.edu/inaugurals.php</code></pre>
 </div>
 </div>
-<div class="section level2">
-<h2>コーパスに対する操作</h2>
-<div class="section level3">
-<h3>コーパスの結合</h3>
+<div id="tools-for-handling-corpus-objects" class="section level2">
+<h2 class="hasAnchor">
+<a href="#tools-for-handling-corpus-objects" class="anchor"></a>コーパスに対する操作</h2>
+<div id="adding-two-corpus-objects-together" class="section level3">
+<h3 class="hasAnchor">
+<a href="#adding-two-corpus-objects-together" class="anchor"></a>コーパスの結合</h3>
 <p><code>+</code>演算子を用いると，簡単に二個のコーパスを連結できます．コーパスが異なる構造を持つ場合でも，文書変数が失われることはなく，コーパスのメタデータも引き継がれます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
 mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(data_corpus_inaugural[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])
@@ -379,11 +387,12 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Fri Dec 15 13:48:02 2017
+## Created: Fri Dec 15 19:30:04 2017
 ## Notes:</code></pre>
 </div>
-<div class="section level3">
-<h3>コーパス内の文書の一部の文書の抽出</h3>
+<div id="subsetting-corpus-objects" class="section level3">
+<h3 class="hasAnchor">
+<a href="#subsetting-corpus-objects" class="anchor"></a>コーパス内の文書の一部の文書の抽出</h3>
 <p><code><a href="../../../reference/corpus_subset.html">corpus_subset()</a></code>により，文書変数に適用される論理条件に基づいて文書を抽出することができます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>))</code></pre></div>
 <pre><code>## Corpus consisting of 7 documents:
@@ -412,8 +421,9 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## Notes:   http://www.presidency.ucsb.edu/inaugurals.php</code></pre>
 </div>
 </div>
-<div class="section level2">
-<h2>コーパス内の文書の探索</h2>
+<div id="exploring-corpus-texts" class="section level2">
+<h2 class="hasAnchor">
+<a href="#exploring-corpus-texts" class="anchor"></a>コーパス内の文書の探索</h2>
 <p><code><a href="../../../reference/kwic.html">kwic()</a></code>（keywords-in-context）は単語の検索を行い，その単語が現れる文脈を表示します．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>)</code></pre></div>
 <pre><code>##                                                                     
@@ -489,11 +499,13 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 <p><a href="http://github.com/kbenoit/quantedaData"><strong>quantedaData</strong></a>をインストールすることで，より多くのコーパスを試すことができます．</p>
 </div>
 </div>
-<div class="section level1">
-<h1>コーパスから特長を抽出</h1>
+<div id="extracting-features-from-a-corpus" class="section level1">
+<h1 class="hasAnchor">
+<a href="#extracting-features-from-a-corpus" class="anchor"></a>コーパスから特長を抽出</h1>
 <p>文書のスケーリングなどの統計分析を行うためには，それぞれの文書の特長をまとめた行列を作成する必要があります． <strong>quanteda</strong>では，このような行列を生成するために <code><a href="../../../reference/dfm.html">dfm()</a></code>を使います． dfmは<em>document-feature matrix</em>の略で，行が文書（document），列が特長（feature）となる行列です．行と列をこのように定義する理由は，データ分析では行が分析単位になり，各列が分析対象になる変数となるのが一般的だからです．多くのソフトウェアでは，この行列を<em>document-term matrix</em>と呼びます．<strong>quanteda</strong>が語（term）でなはく特長（feature）という用語を使うのは，特長のほうが一般性を持つ用語だからです．テキスト分析では，単語，語幹，単語の集合，Nグラム，品詞など様々なものが文書の特長となります．</p>
-<div class="section level2">
-<h2>文書のトークン化</h2>
+<div id="tokenizing-texts" class="section level2">
+<h2 class="hasAnchor">
+<a href="#tokenizing-texts" class="anchor"></a>文書のトークン化</h2>
 <p>テキストを簡単にトークン化するために，<strong>quanteda</strong>は <code><a href="../../../reference/tokens.html">tokens()</a></code>と呼ばれる強力なコマンドを提供します．この関数は，文字ベクトルのトークンのリストからなる中間オブジェクトを生成します．ここで，リストの一つ一つの要素は入力された文書に対応しています．</p>
 <p><code><a href="../../../reference/tokens.html">tokens()</a></code>は意図して保守的に設計されており、ユーザーが明示的に指示を与えないかぎりは，要素を削除しません．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">text1 =</span> <span class="st">"This is $10 in 999 different ways,</span><span class="ch">\n</span><span class="st"> up and down; left and right!"</span>, 
@@ -608,8 +620,9 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## text3 :
 ## [1] "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"</code></pre>
 </div>
-<div class="section level2">
-<h2>文書行列の作成</h2>
+<div id="constructing-a-document-feature-matrix" class="section level2">
+<h2 class="hasAnchor">
+<a href="#constructing-a-document-feature-matrix" class="anchor"></a>文書行列の作成</h2>
 <p>文書をトークン化は中間的な処理であり，ほとんどのユーザーはこれを省いて、すぐに文書行列を作成したいと考えるでしょう． このために，<strong>quanteda</strong>は，自動的にトークン化を実行し，文書行列を作成する<code><a href="../../../reference/dfm.html">dfm()</a></code>と呼ばれるスイスアーミーナイフのように便利な関数を持っています．保守的な<code><a href="../../../reference/tokens.html">tokens()</a></code>とは異なり，<code><a href="../../../reference/dfm.html">dfm()</a></code>はデフォルトで大文字から小文字への置換や，句読点を除去などの操作を適用します．また，<code><a href="../../../reference/dfm.html">dfm()</a></code>から<code><a href="../../../reference/tokens.html">tokens()</a></code>の全てのオプションを利用できます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1990</span>)
 
@@ -653,8 +666,9 @@ myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5
 <pre><code>##  [1] "и"   "в"   "во"  "не"  "что" "он"  "на"  "я"   "с"   "со"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)</code></pre></div>
 <pre><code>##  [1] "فى"  "في"  "كل"  "لم"  "لن"  "له"  "من"  "هو"  "هي"  "قوة"</code></pre>
-<div class="section level3">
-<h3>文書行列の表示</h3>
+<div id="viewing-the-document-feature-matrix" class="section level3">
+<h3 class="hasAnchor">
+<a href="#viewing-the-document-feature-matrix" class="anchor"></a>文書行列の表示</h3>
 <p>RStudioの“Environment”パネル，またはRの<code><a href="../../../reference/View.html">View()</a></code>を用いることで，dfmに格納された値を見ることができます．dfmに対して<code>plot()</code>を用いると，<a href="https://cran.r-project.org/web/packages/wordcloud"><strong>wordcloud</strong></a>を使ってワードクラウドが表示されます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 mydfm</code></pre></div>
@@ -676,8 +690,9 @@ mydfm</code></pre></div>
                    <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
 <p><img src="quickstart_ja_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 </div>
-<div class="section level3">
-<h3>変数による文書のグループ化</h3>
+<div id="grouping-documents-by-document-variable" class="section level3">
+<h3 class="hasAnchor">
+<a href="#grouping-documents-by-document-variable" class="anchor"></a>変数による文書のグループ化</h3>
 <p><strong>quanteda</strong>では，dfmを作成する際に，文書変数の値によって文書をグループ化するすることができます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, 
                   <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
@@ -700,8 +715,9 @@ mydfm</code></pre></div>
 ##   SF         29
 ##   Green       3</code></pre>
 </div>
-<div class="section level3">
-<h3>辞書による語のグループ化</h3>
+<div id="grouping-words-by-dictionary-or-equivalence-class" class="section level3">
+<h3 class="hasAnchor">
+<a href="#grouping-words-by-dictionary-or-equivalence-class" class="anchor"></a>辞書による語のグループ化</h3>
 <p>肯定的な映画のレビューや，特定の政治意識に関する語があらかじめ分かっている場合，語のグループをまとめて一つのものとして取り扱い，これらを合計して単一の特長として分析すると上手くいくかもしれません．</p>
 <p>次の例では，テロリズムに関連する言葉や経済に関連する言葉が，クリントン以降の大統領演説コーパスでどのように異なるかを見てみます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recentCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1991</span>)</code></pre></div>
@@ -730,10 +746,12 @@ liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10<
 </div>
 </div>
 </div>
-<div class="section level1">
-<h1>追加の事例</h1>
-<div class="section level2">
-<h2>文書の類似性</h2>
+<div id="further-examples" class="section level1">
+<h1 class="hasAnchor">
+<a href="#further-examples" class="anchor"></a>追加の事例</h1>
+<div id="similarities-between-texts" class="section level2">
+<h2 class="hasAnchor">
+<a href="#similarities-between-texts" class="anchor"></a>文書の類似性</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), 
                <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), 
@@ -774,8 +792,9 @@ presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span c
 ##      best     creat    courag 
 ## 0.8366600 0.8347300 0.8326664</code></pre>
 </div>
-<div class="section level2">
-<h2>文書のスケーリング</h2>
+<div id="scaling-document-positions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#scaling-document-positions" class="anchor"></a>文書のスケーリング</h2>
 <p><strong>quanteda</strong>にはたくさんの計量テキスト分析のためのモデルが含まれていますが，ワードフィッシュ（<code><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish()</a></code>）による教師なしの文書のスケーリングを使ってみます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make prettier document names</span>
 ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)
@@ -787,57 +806,58 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference
 ## Estimated document positions:
 ## 
 ##                                Documents      theta         SE       lower
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209514 0.02032340  1.78111751
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932797 0.02818842 -0.64852897
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136775 0.01540261 -1.14386663
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219303 0.02846325 -0.17771826
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724210 0.02364090  1.72608484
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145792 0.02650262 -0.76652438
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844829 0.04171485 -0.56624398
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616694 0.02967364 -0.61982978
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703118 0.03850556 -1.04578271
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589241 0.03892388 -1.03521488
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807221 0.07221450  1.03918167
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866466 0.06294124  0.06328174
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421915 0.07245429  0.60018113
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840777 0.03666269 -0.25593654
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209797 0.02032412  1.78114443
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932580 0.02818761 -0.64850577
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136481 0.01540190 -1.14383583
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219588 0.02846242 -0.17774515
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724401 0.02364179  1.72610218
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145683 0.02650151 -0.76651128
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844725 0.04171358 -0.56623111
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616933 0.02967196 -0.61985034
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9702957 0.03850358 -1.04576269
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589086 0.03892188 -1.03519551
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807213 0.07221631  1.03917735
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866337 0.06294062  0.06327003
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421637 0.07245529  0.60015129
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1841351 0.03666106 -0.25599076
 ##          upper
-## 1   1.86078524
-## 2  -0.53803038
-## 3  -1.08348838
-## 4  -0.06614231
-## 5   1.81875717
-## 6  -0.66263410
-## 7  -0.40272175
-## 8  -0.50350911
-## 9  -0.89484091
-## 10 -0.88263327
-## 11  1.32226250
-## 12  0.31001139
-## 13  0.88420194
-## 14 -0.11221880
+## 1   1.86081500
+## 2  -0.53801032
+## 3  -1.08346038
+## 4  -0.06617247
+## 5   1.81877801
+## 6  -0.66262537
+## 7  -0.40271388
+## 8  -0.50353624
+## 9  -0.89482864
+## 10 -0.88262174
+## 11  1.32226529
+## 12  0.30999727
+## 13  0.88417603
+## 14 -0.11227941
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the 
-##     -0.09920050      0.38802656      0.39879542      0.25594716 
+##     -0.09893376      0.38830573      0.39905307      0.25622213 
 ##   supplementary          budget              to            this 
-##      1.11586667      0.09915764      0.37008211      0.30693855 
+##      1.11612471      0.09943103      0.37035735      0.30721053 
 ##           house            last           april               , 
-##      0.19907397      0.28972085     -0.09525866      0.34535593 
+##      0.19935454      0.28998952     -0.09499566      0.34563163 
 ##            said              we           could            work 
-##     -0.71930669      0.47992623     -0.52976101      0.58227683 
+##     -0.71904074      0.48019991     -0.52949407      0.58254387 
 ##             our             way         through          period 
-##      0.74373755      0.33611921      0.65983094      0.55622162 
+##      0.74400539      0.33639385      0.66009059      0.55649165 
 ##              of          severe        economic        distress 
-##      0.33932619      1.27911097      0.47867412      1.84454991 
+##      0.33960127      1.27936314      0.47894499      1.84474921 
 ##               .           today             can          report 
-##      0.27352911      0.17420160      0.36378887      0.69176540 
+##      0.27380404      0.17448972      0.36405830      0.69204376 
 ##            that notwithstanding 
-##      0.08833872      1.84454991</code></pre>
+##      0.08861578      1.84474921</code></pre>
 </div>
-<div class="section level2">
-<h2>トピックモデル</h2>
+<div id="topic-models" class="section level2">
+<h2 class="hasAnchor">
+<a href="#topic-models" class="anchor"></a>トピックモデル</h2>
 <p><code><a href="../../../reference/convert.html">convert()</a></code>を用いると，dfmを<strong>topicmodels</strong>の<code><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA()</a></code>形式のデータに転換して，簡単にトピックモデルを適用できます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, 
                 <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
@@ -849,30 +869,30 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1       Topic 2        Topic 3     Topic 4   Topic 5   
-## [1,] "kind"        "society"      "failed"    "banks"   "breaks"  
-## [2,] "imagination" "enterprising" "strategy"  "bank"    "got"     
-## [3,] "policies"    "sense"        "needed"    "child"   "position"
-## [4,] "wit"         "equal"        "ministers" "case"    "example" 
-## [5,] "create"      "nation"       "system"    "benefit" "matter"  
-##      Topic 6     Topic 7     Topic 8      Topic 9  Topic 10    Topic 11  
-## [1,] "welfare"   "taoiseach" "spending"   "fianna" "million"   "fianna"  
-## [2,] "allowance" "fine"      "review"     "fáil"   "reduction" "fáil"    
-## [3,] "benefit"   "gael"      "measures"   "side"   "prices"    "national"
-## [4,] "carers"    "may"       "scheme"     "level"  "benefit"   "irish"   
-## [5,] "per"       "irish"     "investment" "third"  "level"     "support" 
-##      Topic 12       Topic 13      Topic 14     Topic 15    Topic 16  
-## [1,] "system"       "alternative" "support"    "taoiseach" "welfare" 
-## [2,] "welfare"      "citizenship" "back"       "employees" "fianna"  
-## [3,] "stimulus"     "wealth"      "million"    "rate"      "fáil"    
-## [4,] "recovery"     "since"       "confidence" "referred"  "child"   
-## [5,] "government's" "speak"       "enterprise" "debate"    "taxation"
-##      Topic 17      Topic 18  Topic 19     Topic 20  
-## [1,] "million"     "benefit" "welfare"    "care"    
-## [2,] "development" "child"   "continue"   "fianna"  
-## [3,] "level"       "today"   "support"    "hit"     
-## [4,] "welfare"     "society" "million"    "workers" 
-## [5,] "future"      "welfare" "investment" "hospital"</code></pre>
+<pre><code>##      Topic 1    Topic 2   Topic 3          Topic 4       Topic 5       
+## [1,] "fianna"   "child"   "allowance"      "alternative" "society"     
+## [2,] "fáil"     "benefit" "per"            "citizenship" "enterprising"
+## [3,] "national" "day"     "unemployed"     "wealth"      "sense"       
+## [4,] "irish"    "bank"    "hospital"       "adjustment"  "equal"       
+## [5,] "support"  "today"   "infrastructure" "breaks"      "nation"      
+##      Topic 6      Topic 7      Topic 8    Topic 9     Topic 10    
+## [1,] "level"      "million"    "care"     "failed"    "million"   
+## [2,] "mortgage"   "system"     "million"  "strategy"  "support"   
+## [3,] "investment" "welfare"    "welfare"  "needed"    "welfare"   
+## [4,] "bill"       "investment" "fianna"   "ministers" "investment"
+## [5,] "reductions" "scheme"     "families" "system"    "back"      
+##      Topic 11  Topic 12 Topic 13 Topic 14   Topic 15      Topic 16  
+## [1,] "levy"    "fáil"   "fianna" "system"   "kind"        "welfare" 
+## [2,] "million" "know"   "fáil"   "high"     "imagination" "system"  
+## [3,] "carbon"  "child"  "side"   "fáil"     "policies"    "taxation"
+## [4,] "change"  "fianna" "level"  "order"    "wit"         "fianna"  
+## [5,] "welfare" "per"    "third"  "measures" "create"      "stimulus"
+##      Topic 17  Topic 18    Topic 19    Topic 20   
+## [1,] "high"    "taoiseach" "taoiseach" "measures" 
+## [2,] "care"    "employees" "fine"      "review"   
+## [3,] "order"   "rate"      "gael"      "spending" 
+## [4,] "fáil"    "referred"  "may"       "million"  
+## [5,] "workers" "debate"    "irish"     "reduction"</code></pre>
 </div>
 </div>
 </div>
@@ -884,29 +904,29 @@ quantdfm</code></pre></div>
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li>
-<a href="NA">パッケージのインストール</a><ul class="nav nav-pills nav-stacked">
-<li><a href="NA">インストールが推奨されるパッケージ</a></li>
+<a href="#installing-the-package">パッケージのインストール</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#additional-recommended-packages">インストールが推奨されるパッケージ</a></li>
       </ul>
 </li>
       <li>
-<a href="NA">コーパスの作成</a><ul class="nav nav-pills nav-stacked">
-<li><a href="NA">利用可能なコーパス</a></li>
-      <li><a href="NA">コーパスオブジェクトの使い方</a></li>
-      <li><a href="NA">コーパスに対する操作</a></li>
-      <li><a href="NA">コーパス内の文書の探索</a></li>
+<a href="#creating-a-corpus">コーパスの作成</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#currently-available-corpus-sources">利用可能なコーパス</a></li>
+      <li><a href="#how-a-quanteda-corpus-works">コーパスオブジェクトの使い方</a></li>
+      <li><a href="#tools-for-handling-corpus-objects">コーパスに対する操作</a></li>
+      <li><a href="#exploring-corpus-texts">コーパス内の文書の探索</a></li>
       </ul>
 </li>
       <li>
-<a href="NA">コーパスから特長を抽出</a><ul class="nav nav-pills nav-stacked">
-<li><a href="NA">文書のトークン化</a></li>
-      <li><a href="NA">文書行列の作成</a></li>
+<a href="#extracting-features-from-a-corpus">コーパスから特長を抽出</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#tokenizing-texts">文書のトークン化</a></li>
+      <li><a href="#constructing-a-document-feature-matrix">文書行列の作成</a></li>
       </ul>
 </li>
       <li>
-<a href="NA">追加の事例</a><ul class="nav nav-pills nav-stacked">
-<li><a href="NA">文書の類似性</a></li>
-      <li><a href="NA">文書のスケーリング</a></li>
-      <li><a href="NA">トピックモデル</a></li>
+<a href="#further-examples">追加の事例</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#similarities-between-texts">文書の類似性</a></li>
+      <li><a href="#scaling-document-positions">文書のスケーリング</a></li>
+      <li><a href="#topic-models">トピックモデル</a></li>
       </ul>
 </li>
       </ul>

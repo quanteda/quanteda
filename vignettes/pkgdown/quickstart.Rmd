@@ -10,8 +10,6 @@ knitr::opts_chunk$set(collapse = FALSE,
                       comment = "##")
 ```
 
-This vignette provides a basic overview of **quanteda**'s features and capabilities. For additional vignettes, see the [articles at quanteda.io](http://docs.quanteda.io/articles/index.html).  
-
 # Installing the package
 
 Since **quanteda** is available on [CRAN](https://CRAN.R-project.org/package=quanteda), you can install  by using your GUI's R package installer, or execute:
@@ -385,7 +383,6 @@ presCluster$labels <- docnames(presDfm)
 # plot as a dendrogram
 plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 ```
-(try it!)
 
 We can also look at term similarities:
 ```{r}
