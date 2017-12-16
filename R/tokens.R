@@ -420,7 +420,7 @@ is.tokens <- function(x) "tokens" %in% class(x)
 #' @return a list the serialized tokens found in each text
 #' @importFrom fastmatch fmatch
 #' @keywords internal tokens
-tokens_serialize <- function(x, types_reserved, ...) {
+tokens_serialize <- function(x, types_reserved = NULL) {
     
     attrs <- attributes(x)
     types <- unique(unlist(x, use.names = FALSE))
@@ -430,7 +430,7 @@ tokens_serialize <- function(x, types_reserved, ...) {
         types <- c("", setdiff(types, ""))
     }
 
-    if (!missing(types_reserved)) {
+    if (!is.null(types_reserved)) {
         types <- c(types_reserved, setdiff(types, types_reserved))
     }
     x <- lapply(x, function(x) {
