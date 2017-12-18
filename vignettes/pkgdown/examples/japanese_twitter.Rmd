@@ -1,0 +1,59 @@
+---
+title: "事例: 安倍晋三に関するツイート"
+author: Kohei Watanabe and Akitaka Matsuo
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "##"
+)
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## パッケージの読み込み
+```{r, message = FALSE}
+library(quanteda)
+```
+
+
+## 安倍晋三についてツイッターコーパスをダウンロード
+等で
+```{r}
+corp <- data_download(url = 'https://www.dropbox.com/s/zek14n7ovtt25ek/data_corpus_abetweets.rds?dl=1')
+
+texts(corp) <- stringi::stri_trans_nfkc(texts(corp))
+
+
+```
+
+
+## 投稿の数と期間を取得
+```{r}
+ndoc(corp)
+range(docvars(corp, 'created_at'))
+```
+
+
+# 前処理
+
+## 語の分割と結合
+
+```{r}
+
+mt <- dfm(corp, select = c('#*', '@*'))
+mt <- dfm_select(mt, min_nchar = 2)
+mt <- dfm_trim(mt, min_count = 5)
+mt_col <- fcm(mt)
+feat <- names(topfeatures(mt_col, 100))
+textplot_network(fcm_select(mt_col,  feat))
+
+```
+

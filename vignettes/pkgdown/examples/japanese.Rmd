@@ -1,5 +1,5 @@
 ---
-title: "Example: Japanese text analysis"
+title: "事例: 衆議院外務委員会の議事録"
 author: Kohei Watanabe and Akitaka Matsuo
 output: 
   html_document:
@@ -24,7 +24,7 @@ library(quanteda)
 ```
 
 
-## 衆議院外務委員会議事録のコーパスのダウンロード
+## 衆議院外務委員会議事録のコーパスをダウンロード
 等で
 ```{r}
 corp_full <- data_download('data_corpus_foreignaffairscommittee')
@@ -43,9 +43,11 @@ range(docvars(corp_full, 'date'))
 corp <- corpus_subset(corp_full, 1991 <= year & year <= 2010)
 ```
 
-## 語の分割と結合
-```{r}
+# 前処理
 
+## 語の分割と結合
+日本語の分析では，形態素解析ツールを用いて分かち書きを行うことが多いが，**quanteda**の`tokens()`は，[ICU](http://site.icu-project.org/)で定義された規則に従って文を語に分割することができる．さらに，漢字やカタカナの連続的共起を`textstat_collocations()`を用いて抽出し，`tokens_compound()`によって統計的に優位な組み合わせを結合すると，より質の高いトークン化を実現できる．`textstat_collocations()`を用いる場合は，事前に`tokens_select()`と正規表現で，対象とする語だけを選択する．この際，`padding = TRUE`とし，語の間の距離が維持されるように注意する．
+```{r}
 toks <- tokens(corp)
 toks <- tokens_select(toks, '^[０-９ぁ-んァ-ヶー一-龠]+$', valuetype = 'regex', padding = TRUE)
 toks <- tokens_remove(toks, c('御', '君'), padding = TRUE)
@@ -66,28 +68,38 @@ toks <- tokens_compound(toks, col_kana[col_kana$z > 3,], concatenator = '')
 toks_any <- tokens_select(toks, '^[０-９ァ-ヶー一-龠]+$', valuetype = 'regex', padding = TRUE)
 col_any <- textstat_collocations(toks_any, min_count = min_count)
 toks <- tokens_compound(toks, col_any[col_any$z > 3,], concatenator = '')
-
-
 ```
 
-## 文書行列を作成
+## 文書行列の作成
+`dfm()`によって文書行列を作成した後でも，`dfm_*()`と命名された関数を用いると分析に必要な文書の特徴を自由に選択できる．ここでは，平仮名のみもしくは一語のみから構成されたトークンを`dfm_remove()`によって，頻度が極端に低い語もしくは高い語を`dfm_trim()`によって削除している．
 ```{r}
-mt <- dfm(toks)
-mt <- dfm_remove(mt, '')
-mt <- dfm_remove(mt, '^[ぁ-ん]+$', valuetype = 'regex')
-mt <- dfm_select(mt, min_nchar = 2)
+mt <- dfm(toks, remove = '')
+mt <- dfm_remove(mt, '^[ぁ-ん]+$', valuetype = 'regex', min_nchar = 2)
 mt <- dfm_trim(mt, min_count = 10, max_count = 0.1)
 
 ```
 
+# 分析
 
-## Keynessにより同時多発テロの前後の比較
+## Keynessによる相対頻度分析
+
+`textstat_keyness()`は語の頻度を文書のグループ間で比較し，統計的に有意に頻度が高いものを選択する．ここでは，同時多発テロが発生した2001年以降に頻度が高くなった30語を示してある．
+
 ```{r}
 key <- textstat_keyness(mt, docvars(mt, 'year') >= 2001)
-knitr::kable(head(key, 30))
+knitr::kable(head(key, 20))
 ```
 
+上の表では，委員会出席者の名前が多く含まれるので，それらを取り除くと議論の主題が明確になる．
+
+```{r}
+key <- key[!stringi::stri_detect_regex(rownames(key), '委員|大臣'),]
+knitr::kable(head(key, 20))
+```
+
+
 ## 共起ネットワーク分析による視覚化
+`fcm()`によって作成した共起行列に対して，`textplot_network()`を用いると語の関係が視覚化でき，文書の内容の全体像を容易に把握できる．
 ```{r}
 feat <- head(rownames(key), 100)
 mt_col <- fcm(dfm_select(mt, feat))
