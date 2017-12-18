@@ -165,10 +165,18 @@ fcm.dfm <- function(x, context = c("document", "window"),
                        ordered = FALSE,
                        span_sentence = TRUE, tri = TRUE, ...) {
     
-    x <- as.dfm(x)
     context <- match.arg(context)
     count <- match.arg(count)
     window <- as.integer(window)
+    x <- as.dfm(x)
+    
+    if (!nfeat(x)) {
+        result <- new("fcm", as(make_null_dfm(), "dgCMatrix"), count = count,
+                      context = context, window = window, 
+                      weights = weights, tri = tri)
+        return(result)
+    }
+    
     if (!span_sentence) 
         warning("spanSentence = FALSE not yet implemented")
     if (context != "document") 
