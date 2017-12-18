@@ -1,0 +1,97 @@
+---
+title: "Example: Japanese text analysis"
+author: Kohei Watanabe and Akitaka Matsuo
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "##"
+)
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## パッケージの読み込み
+```{r, message = FALSE}
+library(quanteda)
+```
+
+
+## 衆議院外務委員会議事録のコーパスのダウンロード
+等で
+```{r}
+corp_full <- data_download('data_corpus_foreignaffairscommittee')
+```
+
+
+## 議事録の数と期間を取得
+```{r}
+ndoc(corp_full)
+range(docvars(corp_full, 'date'))
+```
+
+
+## 1991から2010年までの期間の議事録を選択
+```{r}
+corp <- corpus_subset(corp_full, 1991 <= year & year <= 2010)
+```
+
+## 語の分割と結合
+```{r}
+
+toks <- tokens(corp)
+toks <- tokens_select(toks, '^[０-９ぁ-んァ-ヶー一-龠]+$', valuetype = 'regex', padding = TRUE)
+toks <- tokens_remove(toks, c('御', '君'), padding = TRUE)
+
+min_count <- 10
+
+# 漢字
+toks_kanji <- tokens_select(toks, '^[一-龠]+$', valuetype = 'regex', padding = TRUE)
+col_kanji <- textstat_collocations(toks_kanji, min_count = min_count)
+toks <- tokens_compound(toks, col_kanji[col_kanji$z > 3,], concatenator = '')
+
+# カタカナ
+toks_kana <- tokens_select(toks, '^[ァ-ヶー]+$', valuetype = 'regex', padding = TRUE)
+col_kana <- textstat_collocations(toks_kana, min_count = min_count)
+toks <- tokens_compound(toks, col_kana[col_kana$z > 3,], concatenator = '')
+
+# 漢字，カタカナおよび数字
+toks_any <- tokens_select(toks, '^[０-９ァ-ヶー一-龠]+$', valuetype = 'regex', padding = TRUE)
+col_any <- textstat_collocations(toks_any, min_count = min_count)
+toks <- tokens_compound(toks, col_any[col_any$z > 3,], concatenator = '')
+
+
+```
+
+## 文書行列を作成
+```{r}
+mt <- dfm(toks)
+mt <- dfm_remove(mt, '')
+mt <- dfm_remove(mt, '^[ぁ-ん]+$', valuetype = 'regex')
+mt <- dfm_select(mt, min_nchar = 2)
+mt <- dfm_trim(mt, min_count = 10, max_count = 0.1)
+
+```
+
+
+## Keynessにより同時多発テロの前後の比較
+```{r}
+key <- textstat_keyness(mt, docvars(mt, 'year') >= 2001)
+knitr::kable(head(key, 30))
+```
+
+## 共起ネットワーク分析による視覚化
+```{r}
+feat <- head(rownames(key), 100)
+mt_col <- fcm(dfm_select(mt, feat))
+size <- sqrt(rowSums(mt_col))
+textplot_network(mt_col, min_freq = 0.95, edge_alpha = 0.9, vertex_size = size / max(size) * 3)
+```
+
