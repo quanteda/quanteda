@@ -22,10 +22,12 @@ data_download <- function(name = NULL, url = NULL, cache = TRUE, ...) {
                      'data_corpus_guardian' = 
                          'https://www.dropbox.com/s/7mu92jzodpq11zc/data_corpus_guardian.rds?dl=1&v=1')
     
-    if (name %in% names(location)) {
-        url <- location[[name]]
-    } else {
-        stop(name, "is not available\n")
+    if (!is.null(name)) {
+        if (name %in% names(location)) {
+            url <- location[[name]]
+        } else {
+            stop(name, "is not available\n")
+        }
     }
     if (is.null(url)) {
         stop("name or url needs to be specified\n")
