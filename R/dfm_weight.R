@@ -103,7 +103,7 @@ dfm_weight.dfm <-
                     ifelse(sum(ignore) == 1, "", "s"), 
                     noBreaks. = TRUE, call. = FALSE)
         }
-        
+
         weight <- rep(1, nfeat(x)) 
         names(weight) <- featnames(x)
         weights <- weights[!ignore]
@@ -111,6 +111,7 @@ dfm_weight.dfm <-
         weight <- diag(weight)
         colnames(weight) <- colnames(x)
         return(as.dfm(x %*% weight))
+
         
     } else {
         # named type weights
