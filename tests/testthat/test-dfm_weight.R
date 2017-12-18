@@ -196,3 +196,24 @@ test_that("settings are recorded for tf-idf weightings", {
     expect_equal(tfidf(d, scheme_df = "inversemax")@weightDf[["scheme"]], "inversemax")
     expect_equal(tfidf(d, scheme_df = "inversemax", k = 1)@weightDf[["k"]], 1)
 })
+
+test_that("dfm weight works for named features (#1150)", {
+    testText <- c(d1 = "brown brown yellow green", d2 = "yellow green blue")
+    testDfm <- dfm(testText)
+    w <- c(green = .1, blue = .2, brown = .3, yellow = .4)
+    
+    expect_equal(
+        as.matrix(dfm_weight(testDfm, weights = w)),
+        matrix(c(.6, 0, .4, .4, .1, .1, 0, .2), nrow = 2, 
+               dimnames = list(docs = c("d1", "d2"), features = c("brown", "yellow", "green", "blue")))
+    )
+    
+    testText2 <- c(d1 = "brown brown yellow green black", d2 = "yellow green blue")
+    testDfm2 <- dfm(testText2)
+    expect_equal(
+        as.matrix(dfm_weight(testDfm2, weights = w)),
+        matrix(c(.6, 0, .4, .4, .1, .1, 1, 0, 0, .2), nrow = 2, 
+               dimnames = list(docs = c("d1", "d2"), features = c("brown", "yellow", "green", "black", "blue")))
+    )
+
+})

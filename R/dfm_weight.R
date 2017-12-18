@@ -104,8 +104,14 @@ dfm_weight.dfm <-
                     noBreaks. = TRUE, call. = FALSE)
         }
         w <- dfm_select(as.dfm(rbind(weights)), x)
-        w[,!featnames(w) %in% names(weights)] <- 1
-        return(as.dfm(x %*% diag(as.vector(w))))
+        # features not named are not weighted
+        notnamed <- !(featnames(w) %in% names(weights))
+        if (any(notnamed)) {
+            w[, notnamed] <- 1
+        }
+        retval <- as.dfm(x %*% diag(as.vector(w)))
+        colnames(retval) <- featnames(x)
+        return(retval)
         
     } else {
         # named type weights
