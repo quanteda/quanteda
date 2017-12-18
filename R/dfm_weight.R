@@ -103,9 +103,13 @@ dfm_weight.dfm <-
                     ifelse(ignore == 1, "", "s"), 
                     noBreaks. = TRUE, call. = FALSE)
         }
-        w <- dfm_select(as.dfm(rbind(weights)), x)
-        w[,!featnames(w) %in% names(weights)] <- 1
-        return(as.dfm(x %*% diag(as.vector(w))))
+        
+        weight <- rep(1, nfeat(x)) 
+        names(weight) <- featnames(x)
+        weight[match(names(weights), names(weight))] <- weights
+        weight <- diag(weight)
+        colnames(weight) <- colnames(x)
+        return(as.dfm(x %*% weight))
         
     } else {
         # named type weights
