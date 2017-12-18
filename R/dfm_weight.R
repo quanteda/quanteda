@@ -96,16 +96,17 @@ dfm_weight.dfm <-
         if (!missing(type)) 
             warning("type is ignored when numeric weights are supplied")
         
-        ignore <- sum(!names(weights) %in% featnames(x))
-        if (ignore) {
-            warning("dfm_weight(): ignoring ", format(ignore, big.mark=","), 
+        ignore <- !names(weights) %in% featnames(x)
+        if (any(ignore)) {
+            warning("dfm_weight(): ignoring ", format(sum(ignore), big.mark=","), 
                     " unmatched weight feature", 
-                    ifelse(ignore == 1, "", "s"), 
+                    ifelse(sum(ignore) == 1, "", "s"), 
                     noBreaks. = TRUE, call. = FALSE)
         }
         
         weight <- rep(1, nfeat(x)) 
         names(weight) <- featnames(x)
+        weights <- weights[!ignore]
         weight[match(names(weights), names(weight))] <- weights
         weight <- diag(weight)
         colnames(weight) <- colnames(x)
