@@ -107,31 +107,31 @@ textstat_keyness.dfm <- function(x, target = 1L,
     x <- x[order(docnames(x)), ]
     
     if (measure == "chi2") {
-        keywords <- keyness_chi2_dt(x, correction)
+        result <- keyness_chi2_dt(x, correction)
     } else if (measure == "lr") {
-        keywords <- keyness_lr(x, correction)
+        result <- keyness_lr(x, correction)
     } else if (measure == "exact") {
         if (!correction %in% c("default", "none"))
             warning("correction is always none for measure exact")
-        keywords <- keyness_exact(x)
+        result <- keyness_exact(x)
     } else if (measure == "pmi") {
         if (!correction %in% c("default", "none"))
             warning("correction is always none for measure pmi")
-        keywords <- keyness_pmi(x)
+        result <- keyness_pmi(x)
     } else {
         stop(measure, " not yet implemented for textstat_keyness")
     }
     
     if (sort)
-        keywords <- keywords[order(keywords[, 1], decreasing = TRUE), ]
+        result <- result[order(result[, 1], decreasing = TRUE), ]
     
-    names(keywords)[which(names(keywords) == "target")] <- "n_target"
-    names(keywords)[which(names(keywords) == "reference")] <- "n_reference"
+    names(result)[which(names(result) == "target")] <- "n_target"
+    names(result)[which(names(result) == "reference")] <- "n_reference"
     
     doc_names <- grouping[order(grouping)]
-    attr(keywords, "documents") <- names(doc_names)
-    
-    return(keywords)
+    attr(result, "documents") <- names(doc_names)
+    class(result) <- c('collocations', 'textstat', 'data.frame')
+    return(result)
 }
 
 
@@ -193,6 +193,7 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
     rownames(result) <- dt$feature
     result$target <- as.vector(x[1,])
     result$reference <- as.vector(x[2,])
+    
     return(result)
 }
 

@@ -166,7 +166,7 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     
     # tag attributes and class, and return
     attr(result, 'types') <- types
-    class(result) <- c("collocations", 'data.frame')
+    class(result) <- c('collocations', 'textstat', 'data.frame')
     return(result)
 }
 
@@ -209,7 +209,7 @@ is.collocations <- function(x) {
 #' @noRd
 "[.collocations" <- function(x, i = TRUE, j = TRUE, ...) {
     x <- as.data.frame(x)[i, j, ...]
-    class(x) <- c("collocations", 'data.frame')
+    class(x) <- c('collocations', 'textstat', 'data.frame')
     return(x)
 }
 
