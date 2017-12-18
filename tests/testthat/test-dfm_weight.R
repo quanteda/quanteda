@@ -224,4 +224,13 @@ test_that("weights argument works, issue 1150", {
                dimnames = list(docs = c("text1", "text2"), 
                                features = c("brown", "yellow", "green", "blue")))
     )
+    
+    # test when a feature is not assigned a weight
+    txt2 <- c(d1 = "brown brown yellow green black", d2 = "yellow green blue")
+    mt2 <- dfm(txt2)
+    expect_equal(
+        as.matrix(dfm_weight(mt2, weights = w)),
+        matrix(c(.6, 0, .4, .4, .1, .1, 1, 0, 0, .2), nrow = 2, 
+               dimnames = list(docs = c("d1", "d2"), features = c("brown", "yellow", "green", "black", "blue")))
+    )
 })
