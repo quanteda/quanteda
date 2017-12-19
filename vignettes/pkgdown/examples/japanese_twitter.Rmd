@@ -20,6 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## パッケージの読み込み
 ```{r, message = FALSE}
+devtools::install_github("quanteda/quanteda.data")
 library(quanteda)
 library(quanteda.data)
 ```
@@ -49,9 +50,9 @@ range(docvars(corp, 'created_at'))
 
 ```{r}
 
-mt <- dfm(corp, select = c('#*', '@*'))
+mt <- dfm(corp, select = c('#*'))
 mt <- dfm_select(mt, min_nchar = 2)
-mt <- dfm_trim(mt, min_count = 5)
+mt <- dfm_trim(mt, min_count = 100)
 mt_col <- fcm(mt)
 feat <- names(topfeatures(mt_col, 100))
 textplot_network(fcm_select(mt_col,  feat))

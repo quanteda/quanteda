@@ -20,6 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## パッケージの読み込み
 ```{r, message = FALSE}
+devtools::install_github("quanteda/quanteda.data")
 library(quanteda)
 library(quanteda.data)
 ```
