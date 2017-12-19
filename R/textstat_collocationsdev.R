@@ -72,7 +72,7 @@
 #' @return \code{textstat_collocationsdev} returns a data.frame of collocations and their
 #'   scores and statistsics.
 #' @export
-#' @keywords textstat collocations experimental
+#' @keywords textstat collocations experimental internal
 #' @author Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 #' @examples
 #' txts <- data_corpus_inaugural[1:2]
