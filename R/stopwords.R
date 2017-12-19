@@ -1,3 +1,7 @@
+#' @import stopwords
+#' @export 
+stopwords::stopwords
+
 #' access built-in stopwords
 #' 
 #' This function retrieves stopwords from the type specified in the \code{kind} 
@@ -37,7 +41,7 @@
 #'   The Chinese stopwords are taken from the
 #'   \href{http://www.baiduguide.com/baidu-stopwords/}{Baidu stopword list}.
 #' @name stopwords
-#' @export
+#' @keywords internal
 #' @examples
 #' head(stopwords("english"))
 #' head(stopwords("italian"))
@@ -48,7 +52,7 @@
 #' # adding to the built-in stopword list
 #' toks <- tokens("The judge will sentence Mr. Adams to nine years in prison", remove_punct = TRUE)
 #' tokens_remove(toks, c(stopwords("english"), "will", "mr", "nine"))
-stopwords <- function(kind = quanteda_options("language_stopwords")) {
+stopwords_old <- function(kind = quanteda_options("language_stopwords")) {
     if (!(kind %in% names(quanteda::data_char_stopwords)))
         stop(paste0("\"", kind, "\" is not a recognized stopword list name."))
     quanteda::data_char_stopwords[[kind]]

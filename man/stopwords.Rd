@@ -2,6 +2,7 @@
 % Please edit documentation in R/stopwords.R
 \name{stopwords}
 \alias{stopwords}
+\alias{stopwords_old}
 \title{access built-in stopwords}
 \source{
 The English stopwords are taken from the SMART information retrieval 
@@ -20,7 +21,7 @@ The English stopwords are taken from the SMART information retrieval
   \href{http://www.baiduguide.com/baidu-stopwords/}{Baidu stopword list}.
 }
 \usage{
-stopwords(kind = quanteda_options("language_stopwords"))
+stopwords_old(kind = quanteda_options("language_stopwords"))
 }
 \arguments{
 \item{kind}{The pre-set kind of stopwords (as a character string).  Allowed
@@ -64,3 +65,4 @@ head(stopwords("SMART"))
 toks <- tokens("The judge will sentence Mr. Adams to nine years in prison", remove_punct = TRUE)
 tokens_remove(toks, c(stopwords("english"), "will", "mr", "nine"))
 }
+\keyword{internal}
