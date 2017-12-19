@@ -21,6 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## パッケージの読み込み
 ```{r, message = FALSE}
 library(quanteda)
+library(quanteda.data)
 ```
 
 

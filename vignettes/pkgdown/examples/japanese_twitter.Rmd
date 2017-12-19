@@ -21,13 +21,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ## パッケージの読み込み
 ```{r, message = FALSE}
 library(quanteda)
+library(quanteda.data)
 ```
 
 
 ## 安倍晋三についてツイッターコーパスをダウンロード
 等で
 ```{r}
-corp <- data_download(url = 'https://www.dropbox.com/s/zek14n7ovtt25ek/data_corpus_abetweets.rds?dl=1')
+corp <- data_download(url = 'https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1')
 
 texts(corp) <- stringi::stri_trans_nfkc(texts(corp))
 
