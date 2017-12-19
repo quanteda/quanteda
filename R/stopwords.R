@@ -40,7 +40,6 @@ stopwords::stopwords
 #'   
 #'   The Chinese stopwords are taken from the
 #'   \href{http://www.baiduguide.com/baidu-stopwords/}{Baidu stopword list}.
-#' @name stopwords
 #' @keywords internal
 #' @examples
 #' head(stopwords("english"))
