@@ -9,6 +9,7 @@
 * Added Chinese stopwords.
 * Added a pkgdown vignette for applications in the Chinese language.
 * Added `textplot_network()` function.
+* The `stopwords()` function and the associated internal data object `data_char_stopwords` have been removed from **quanteda**, and replaced by equivalent functionality in the `stopwords()` package.
 
 ### Bug fixes and stability enhancements
 
