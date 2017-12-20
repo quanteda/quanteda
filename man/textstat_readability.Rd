@@ -37,10 +37,6 @@ For finer-grained control, consider filtering sentences prior first,
 including through pattern-matching, using \code{\link{corpus_trim}}.}
 
 \item{...}{not used}
-
-\item{drop}{if \code{TRUE}, the result is returned as a numeric vector if
-only a single measure is requested; otherwise, a data.frame is returned
-with each column consisting of a requested measure.}
 }
 \value{
 \code{textstat_readability} returns a data.frame of documents and
@@ -53,7 +49,6 @@ indexes.
 \examples{
 txt <- c("Readability zero one.  Ten, Eleven.", "The cat in a dilapidated tophat.")
 textstat_readability(txt, "Flesch.Kincaid")
-textstat_readability(txt, "Flesch.Kincaid", drop = FALSE)
 textstat_readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
 inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
 round(cor(inaugReadability), 2)
