@@ -1,5 +1,5 @@
 ---
-title: "事例: 安倍晋三に関するツイート"
+title: "事例: 2017年総選挙に関するツイート"
 author: Kohei Watanabe and Akitaka Matsuo
 output: 
   html_document:
@@ -50,12 +50,39 @@ range(docvars(corp, 'created_at'))
 
 ```{r}
 
-mt <- dfm(corp, select = c('#*'))
-mt <- dfm_select(mt, min_nchar = 2)
-mt <- dfm_trim(mt, min_count = 100)
-mt_col <- fcm(mt)
-feat <- names(topfeatures(mt_col, 100))
-textplot_network(fcm_select(mt_col,  feat))
+toks <- tokens(corp, remove_separator = FALSE, remove_url = TRUE)
+toks <- tokens_select(toks, '^[\\w#@]+$', valuetype = 'regex', padding = TRUE)
+toks <- tokens_remove(toks, '^[:hira:]$', valuetype = 'regex', padding = TRUE)
+
+col <- textstat_collocations(toks, min_count = 100)
+col <- col[stringi::stri_detect_regex(col$collocation, '([:number:]|[:kana:]|[:han:])'),]
+
+toks <- tokens_compound(toks, col[col$z > 3,], concatenator = '')
+#toks2 <- tokens_compound(toks, col[col$z > 3,], concatenator = '', join = FALSE)
+toks <- tokens_compound(toks, phrase('# *'), concatenator = '')
+mt <- dfm(toks)
+```
+
+```{r}
+mt_tag <- dfm_select(mt, '#*')
+mt_tag <- dfm_remove(mt_tag, c('*選挙*', '*衆院選*', '*衆議院*', '*投票*'))
+
+mt_tag <- dfm_select(mt_tag, min_nchar = 2)
+mt_tag <- dfm_trim(mt_tag, min_count = 10)
+mt_co <- fcm(mt_tag)
+feat <- names(topfeatures(mt_co, 100))
+textplot_network(fcm_select(mt_co,  feat), min_freq = 0.8)
+```
+
+```{r}
+mt_msg <- dfm_remove(mt, c('#*', '@*'))
+mt_msg <- dfm_remove(mt_msg, '^[ぁ-ん]+$', 'regex')
+
+mt_msg <- dfm_select(mt_msg, min_nchar = 2)
+mt_msg <- dfm_trim(mt_msg, min_count = 10)
+mt_co <- fcm(mt_msg)
+feat <- names(topfeatures(mt_co, 100))
+textplot_network(fcm_select(mt_co,  feat), min_freq = 0.7)
 
 ```
 

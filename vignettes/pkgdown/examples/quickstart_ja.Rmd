@@ -13,7 +13,7 @@ knitr::opts_chunk$set(collapse = FALSE,
 本ページは[Quic Start Guide](http://docs.quanteda.io/articles/pkgdown/quickstart.html)の日本語訳であり，英語のデータの分析を通じて**quanteda**の基本的な使い方を説明する．日本語のデータの分析法に関しては，以下のページを参照．
 
 * [事例: 衆議院外務委員会の議事録](http://docs.quanteda.io/articles/pkgdown/examples/japanese.html)
-* [事例: 安倍晋三に関するツイート](http://docs.quanteda.io/articles/pkgdown/examples/japanese_twitter.html)
+* [事例: 2017年総選挙に関するツイート](http://docs.quanteda.io/articles/pkgdown/examples/japanese_twitter.html)
 
 # パッケージのインストール {#installing-the-package}
 

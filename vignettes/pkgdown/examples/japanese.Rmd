@@ -104,8 +104,8 @@ knitr::kable(head(key, 20))
 `fcm()`によって作成した共起行列に対して，`textplot_network()`を用いると語の関係が視覚化でき，文書の内容の全体像を容易に把握できる．
 ```{r}
 feat <- head(rownames(key), 100)
-mt_col <- fcm(dfm_select(mt, feat))
-size <- sqrt(rowSums(mt_col))
-textplot_network(mt_col, min_freq = 0.95, edge_alpha = 0.9, vertex_size = size / max(size) * 3)
+mt_co <- fcm(dfm_select(mt, feat))
+size <- sqrt(rowSums(mt_co))
+textplot_network(mt_co, min_freq = 0.95, edge_alpha = 0.9, vertex_size = size / max(size) * 3)
 ```
 
