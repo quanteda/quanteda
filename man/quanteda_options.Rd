@@ -51,8 +51,8 @@ through an operation that adds features}
 \item{\code{base_compname}}{character; stem name for components that are
 created by matrix factorization} 
 \item{\code{language_stemmer}}{character; language option for \link{char_wordstem}, 
-\link{tokens_wordstem}, and \link{dfm_wordstem}}
-\item{\code{language_stopwords}}{character; language option for \link{stopwords}} }
+\link{tokens_wordstem}, and \link{dfm_wordstem}} 
+}
 }
 \examples{
 (opt <- quanteda_options())

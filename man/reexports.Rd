@@ -12,6 +12,13 @@
 \alias{reexports}
 \alias{\%>\%}
 \title{Objects exported from other packages}
+\section{Stopwords}{
+ 
+
+Stopword lists were formerly built into \pkg{quanteda}, but have been moved to the 
+\pkg{stopwords} package.  See \code{\link[stopwords]{stopwords}}.
+}
+
 \keyword{internal}
 \description{
 These objects are imported from other packages. Follow the links
