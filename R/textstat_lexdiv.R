@@ -83,8 +83,6 @@
 #'   Tweedie. F.J. & Baayen, R.H. (1998). How Variable May a Constant Be? 
 #'   Measures of Lexical Richness in Perspective. \emph{Computers and the 
 #'   Humanities}, 32(5), 323--352.
-#' @return a data.frame or vector of lexical diversity statistics, each row or
-#'   vector element corresponding to an input document
 #' @return \code{textstat_lexdiv} returns a data.frame of documents and
 #'   their lexical diversity scores.
 #' @export
