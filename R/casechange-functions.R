@@ -1,4 +1,4 @@
-#' convert the case of tokens
+#' Convert the case of tokens
 #' 
 #' \code{tokens_tolower} and \code{tokens_toupper} convert the features of a
 #' \link{tokens} object and reindex the types.
