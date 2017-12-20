@@ -123,14 +123,11 @@ textstat_keyness.dfm <- function(x, target = 1L,
     }
     
     if (sort)
-        result <- result[order(result[, 1], decreasing = TRUE), ]
+        result <- result[order(result[, 2], decreasing = TRUE), ]
     
-    names(result)[which(names(result) == "target")] <- "n_target"
-    names(result)[which(names(result) == "reference")] <- "n_reference"
-    
-    doc_names <- grouping[order(grouping)]
-    attr(result, "documents") <- names(doc_names)
-    class(result) <- c('collocations', 'textstat', 'data.frame')
+    attr(result, "documents") <- names(grouping[order(grouping)])
+    class(result) <- c('keyness', 'textstat', 'data.frame')
+    rownames(result) <- as.character(seq_len(nrow(result)))
     return(result)
 }
 
@@ -189,12 +186,12 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
     # compute p-values
     dt[, p := 1 - stats::pchisq(abs(chi2), 1)]
     
-    result <- as.data.frame(dt[, list(chi2, p)])
-    rownames(result) <- dt$feature
-    result$target <- as.vector(x[1,])
-    result$reference <- as.vector(x[2,])
-    
-    return(result)
+    data.frame(feature = dt$feature, 
+               chi2 = dt[, chi2],
+               p = dt[, p],
+               n_target = as.vector(x[1,]),
+               n_reference = as.vector(x[2,]),
+               stringsAsFactors = FALSE)
 }
 
 #' @rdname keyness
@@ -205,28 +202,35 @@ keyness_chi2_dt <- function(x, correction = c("default", "yates", "williams", "n
 #' @examples 
 #' quanteda:::keyness_chi2_stats(mydfm)
 keyness_chi2_stats <- function(x) {
-    keyness <- function(t, f, sum_t, sum_f) {
-        # @param t (scalar) frequency of target 
-        # @param f (scalar) frequency of reference
-        # @param sum_t total of all target words
-        # @param sum_f total of all reference words
-        tb <- as.table(rbind(c(t, f), c(sum_t - t, sum_f - f)))
-        suppressWarnings(chi <- stats::chisq.test(tb))
-        t_exp <- chi$expected[1,1]
-        list(chi2 = unname(chi$statistic) * ifelse(t > t_exp, 1, -1),
-             p = unname(chi$p.value))
-    }
+    
     sums <- rowSums(x)
     result <- as.data.frame(
         do.call(rbind, apply(x, 2, function(y) keyness(as.numeric(y[1]), 
-                                                       as.numeric(y[2]), 
-                                                       sums[1], sums[2])))
+                                                              as.numeric(y[2]), 
+                                                              sums[1], sums[2])))
     )
-    result$target <- as.vector(x[1,])
-    result$reference <- as.vector(x[2,])
-    return(result)
+
+    data.frame(feature = colnames(x), 
+               chi2 = result$chi2,
+               p = result$p,
+               n_target = as.vector(x[1,]),
+               n_reference = as.vector(x[2,]),
+               stringsAsFactors = FALSE)
 }
 
+#' @param t (scalar) frequency of target 
+#' @param f (scalar) frequency of reference
+#' @param sum_t total of all target words
+#' @param sum_f total of all reference words
+#' @keywords internal
+keyness <- function(t, f, sum_t, sum_f) {
+
+    tb <- as.table(rbind(c(t, f), c(sum_t - t, sum_f - f)))
+    suppressWarnings(chi <- stats::chisq.test(tb))
+    t_exp <- chi$expected[1,1]
+    list(chi2 = unname(chi$statistic) * ifelse(t > t_exp, 1, -1),
+         p = unname(chi$p.value))
+}
 
 #' @rdname keyness
 #' @details 
@@ -246,9 +250,13 @@ keyness_exact <- function(x) {
                     data.frame(or = as.numeric(et$estimate), p = et$p.value)
                 }))
     )
-    result$target <- as.vector(x[1,])
-    result$reference <- as.vector(x[2,])
-    return(result)
+
+    data.frame(feature = colnames(x), 
+               or = result$or,
+               p = result$p,
+               n_target = as.vector(x[1,]),
+               n_reference = as.vector(x[2,]),
+               stringsAsFactors = FALSE)
 }
 
 
@@ -309,11 +317,12 @@ keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")
     # compute p-values
     dt[, p := 1 - stats::pchisq(abs(G2), 1)]
     
-    result <- as.data.frame(dt[, list(G2, p)])
-    rownames(result) <- dt$feature
-    result$target <- as.vector(x[1,])
-    result$reference <- as.vector(x[2,])
-    return(result)
+    data.frame(feature = dt$feature, 
+               G2 = dt[, G2],
+               p = dt[, p],
+               n_target = as.vector(x[1,]),
+               n_reference = as.vector(x[2,]),
+               stringsAsFactors = FALSE)
 }
 
 #' @rdname keyness
@@ -338,13 +347,13 @@ keyness_pmi <- function(x) {
     #normalized pmi
     #dt[, pmi :=   log(a  / E11) * ifelse(a > E11, 1, -1)/(-log(a/N)) ]
     
-    
     # compute p-values
     dt[, p := 1 - stats::pchisq(abs(pmi), 1)]
     
-    result <- as.data.frame(dt[, list(pmi, p)])
-    rownames(result) <- dt$feature
-    result$target <- as.vector(x[1,])
-    result$reference <- as.vector(x[2,])
-    return(result)
+    data.frame(feature = dt$feature, 
+               pmi = dt[, pmi],
+               p = dt[, p],
+               n_target = as.vector(x[1,]),
+               n_reference = as.vector(x[2,]),
+               stringsAsFactors = FALSE)
 }
