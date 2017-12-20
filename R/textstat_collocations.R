@@ -68,7 +68,7 @@
 #' \deqn{z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}}
 #'
 #' @return \code{textstat_collocations} returns a data.frame of collocations and
-#'   their scores and statistics.  This consists of the collocations, their
+#'   their scores and statistics. This consists of the collocations, their
 #'   counts, length, and \eqn{\lambda} and \eqn{z} statistics.  When \code{size}
 #'   is a vector, then \code{count_nested} counts the lower-order collocations
 #'   that occur within a higher-order collocation (but this does not affect the
@@ -148,19 +148,8 @@ textstat_collocations.tokens <- function(x, method = "lambda",
     lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
     result["z"] <- result[lambda_index] / result[["sigma"]]
     # result$p <- 1 - stats::pnorm(result$z)
-    
-    # remove gensim and LFMD for now
-    result[c("gensim", "LFMD", "dice")] <- NULL
-    
-    # sort by decreasing z
     result <- result[order(result[["z"]], decreasing = TRUE), ]
-    # reorder columns
-    result <- result[, stats::na.omit(match(c("collocation", "count",  "count_nested", "length", 
-                                              "lambda", "lambda1", "z", 
-                                              "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
-                                            names(result)))]
-    rownames(result) <- NULL
-    
+
     # remove results whose counts are less than min_count
     result <- result[result$count >= min_count, ]
     
