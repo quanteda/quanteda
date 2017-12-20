@@ -30,7 +30,7 @@
 #' mydfm <- dfm(data_corpus_inaugural, groups = period)
 #' result <- textstat_keyness(mydfm)
 #' subset(result, pattern = 'america*')
-subset.textstat <- function(x, pattern, 
+subset.textstat <- function(x, subset, select, pattern,
                             selection = c("keep", "remove"), 
                             valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     
@@ -38,11 +38,17 @@ subset.textstat <- function(x, pattern,
     valuetype <- match.arg(valuetype)
     
     attrs <- attributes(x)
-    id <- unlist(regex2id(pattern, x[[1]], valuetype, case_insensitive))
-    if (selection == 'keep') {
-        x <- x[id ,]
-    } else {
-        x <- x[id * -1,]
+    if (missing(subset)) subset <- TRUE
+    if (missing(select)) select <- TRUE
+    x <- subset(as.data.frame(x), subset, select, drop = FALSE)
+    
+    if (!missing(pattern)) {
+        id <- unlist(regex2id(pattern, x[[1]], valuetype, case_insensitive))
+        if (selection == 'keep') {
+            x <- x[id,]
+        } else {
+            x <- x[id * -1,]
+        }
     }
     class(x) <- attrs$class
     return(x)

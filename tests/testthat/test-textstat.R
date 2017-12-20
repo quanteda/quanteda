@@ -56,15 +56,24 @@ test_that("test textstat_* keeps the class after extraction", {
     key <- textstat_keyness(mt)
     frq <- textstat_frequency(mt)
     
-    col_test <- subset(col, "*political*")
+    expect_equivalent(subset(col, col$count > 3),
+                      subset(as.data.frame(col), col$count > 3))
+    
+    expect_equivalent(subset(key, select = 1:3),
+                      subset(as.data.frame(key), select = 1:3))
+
+    expect_equivalent(subset(frq, frq$docfreq > 10, 2:3),
+                      subset(as.data.frame(frq), frq$docfreq > 10, 2:3))
+    
+    col_test <- subset(col, pattern = "*political*")
     expect_equal(col_test$collocation,
                  col$collocation[stringi::stri_detect_regex(col$collocation, "political")])
     
-    key_test <- subset(key, "poli*")
+    key_test <- subset(key, pattern = "poli*")
     expect_equal(key_test$feature,
                  key$feature[stringi::stri_detect_regex(key$feature, "^poli")])
     
-    frq_test <- subset(frq, "poli*")
+    frq_test <- subset(frq, pattern = "poli*")
     expect_equal(frq_test$feature,
                  frq$feature[stringi::stri_detect_regex(frq$feature, "^poli")])
     
