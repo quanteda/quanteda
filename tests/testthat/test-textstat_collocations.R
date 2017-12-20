@@ -252,7 +252,7 @@ test_that("lambda & [ function",{
     
     expect_equal(a_seq$collocation, 'g f')
     expect_equal(a_seq$lambda, test2_stat[2])
-    expect_equal(class(a_seq), c("collocations", 'data.frame'))
+    expect_equal(class(a_seq), c("collocations", "textstat", "data.frame"))
 })
 
 # test_that("deprecated collocations function works", {
