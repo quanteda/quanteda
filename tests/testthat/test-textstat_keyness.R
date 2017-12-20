@@ -7,7 +7,7 @@ test_that("keyness_textstat chi2 computation is correct", {
     )
     expect_equivalent(
         result$statistic,
-        textstat_keyness(mydfm, sort = FALSE, correction = "default")[1, 2]
+        textstat_keyness(mydfm, sort = FALSE, correction = "default")[[1, 2]]
     )
     
     # without Yates correction
@@ -16,7 +16,7 @@ test_that("keyness_textstat chi2 computation is correct", {
     )
     expect_equivalent(
         result$statistic,
-        textstat_keyness(mydfm, sort = FALSE, correction = "none")[1, 2]
+        textstat_keyness(mydfm, sort = FALSE, correction = "none")[[1, 2]]
     )
 })
 
@@ -103,11 +103,11 @@ test_that("keyness_textstat exact computation is correct", {
     result <- stats::fisher.test(as.matrix(mydfm))
     expect_equivalent(
         result$estimate,
-        textstat_keyness(mydfm, measure = "exact", sort = FALSE)[1, 2]
+        textstat_keyness(mydfm, measure = "exact", sort = FALSE)[[1, 2]]
     )
     expect_equivalent(
         result$p.value,
-        textstat_keyness(mydfm, measure = "exact", sort = FALSE)[1, 3]
+        textstat_keyness(mydfm, measure = "exact", sort = FALSE)[[1, 3]]
     )
 })
 
@@ -196,22 +196,22 @@ test_that("keyness_textstat lr computation is correct", {
     result <- likelihood.test(as.matrix(mydfm))
     expect_equivalent(
         result$statistic,
-        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "none")[1, 2]
+        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "none")[[1, 2]]
     )
     expect_equal(
         as.vector(result$p.value),
-        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "none")[1, 3]
+        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "none")[[1, 3]]
     )
     
     # with william's correction
     result <- likelihood.test(as.matrix(mydfm), conservative = TRUE)
     expect_equivalent(
         result$statistic,
-        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "williams")[1, 2]
+        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "williams")[[1, 2]]
     )
     expect_equal(
         as.vector(result$p.value),
-        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "williams")[1, 3]
+        textstat_keyness(mydfm, measure = "lr", sort = FALSE, correction = "williams")[[1, 3]]
     )
 })
 
