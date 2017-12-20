@@ -4,7 +4,7 @@
 ## Ken Benoit
 ####################################################################
 
-#' get the feature labels from a dfm
+#' Get the feature labels from a dfm
 #' 
 #' Get the features from a document-feature matrix, which are stored as the
 #' column names of the \link{dfm} object.
@@ -253,7 +253,7 @@ sparsity.dfm <- function(x) {
 
 # ------------ Internal --------
 
-#' internal functions for dfm objects
+#' Internal functions for dfm objects
 #' 
 #' Internal function documentation for \link{dfm} objects.
 #' @name dfm-internal

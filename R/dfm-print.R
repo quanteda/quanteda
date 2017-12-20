@@ -1,6 +1,6 @@
 #' Print a dfm object
 #'
-#' print methods for document-feature matrices
+#' Print methods for document-feature matrices
 #' @name print.dfm
 #' @keywords internal dfm
 NULL
@@ -69,7 +69,7 @@ print_dfm <- function(x, ndoc, nfeat, show_values, show_settings, ...) {
     }
 }
 
-#' return the first or last part of a dfm
+#' Return the first or last part of a dfm
 #' 
 #' For a \link{dfm} object, returns the first or last \code{n} documents 
 #' and first \code{nfeat} features.

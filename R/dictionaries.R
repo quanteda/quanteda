@@ -1,4 +1,3 @@
-
 #' @rdname dictionary-class
 #' @export
 #' @keywords internal dictionary
@@ -81,7 +80,7 @@ split_dictionary_values <- function(value, concatenator) {
 }
 
 
-#' print a dictionary object
+#' Print a dictionary object
 #' 
 #' Print/show method for dictionary objects.
 #' @param object the dictionary to be printed
