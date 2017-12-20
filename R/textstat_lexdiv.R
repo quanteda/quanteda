@@ -113,7 +113,6 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
         warning("Argument", if (length(added_args) > 1L) "s " else " ", 
                 added_args, " not used.", sep = "", noBreaks. = TRUE)
     
-    TTR <- C <- R <- CTTR <- U <- S <- Maas <- lgV0 <- lgeV0 <- NULL
     
     measure_option <- c("TTR", "C", "R", "CTTR", "U", "S", "Maas")
     if (measure[1] == 'all') {
@@ -124,6 +123,7 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
             stop("Invalid measure(s): ", measure[!is_valid])
     }
     
+    n_tokens <- n_types <- TTR <- C <- R <- CTTR <- U <- S <- Maas <- lgV0 <- lgeV0 <- NULL
     temp <- data.table(n_tokens = ntoken(x), n_types = ntype(x))
                                
     if ("TTR" %in% measure) {

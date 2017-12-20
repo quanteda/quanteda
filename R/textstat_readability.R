@@ -127,17 +127,6 @@ textstat_readability.corpus <- function(x,
             stop("Invalid measure(s): ", measure[!is_valid])
     }
     
-    # to avoid "no visible binding for global variable" CHECK NOTE
-    textID <- W <- St <- C <- Sy <- W3Sy <- W2Sy <- W_1Sy <- W6C <- W7C <- Wlt3Sy <- W_wl.Dale.Chall <-
-        W_wl.Spache <- ARI <- ARI.NRI <- ARI.simple <- Bormuth.GP <- Coleman <- Coleman.C2 <-
-        Coleman.Liau.ECP <- Coleman.Liau.grade <- Coleman.Liau.short <- Dale.Chall <- Dale.Chall.old <-
-        Dale.Chall.PSK <- Danielson.Bryan <- Danielson.Bryan.2 <- Dickes.Steiwer <- DRP <- ELF <-
-        Farr.Jenkins.Paterson <- Flesch <- Flesch.PSK <- Flesch.Kincaid <- FOG <- FOG.PSK <- FOG.NRI <-
-        FORCAST <- FORCAST.RGL <- Fucks <- Linsear.Write <- LIW <- nWS <- nWS.2 <- nWS.3 <- nWS.4 <-
-        RIX <- SMOG <- SMOG.C <- SMOG.simple <- SMOG.de <- Spache <- Spache.old <- Strain <- Wheeler.Smith <-
-        data_char_wordlists <- Bormuth.MC <- Bl <- Traenkle.Bailer <- Traenkle.Bailer.2 <- Bormuth <-
-        Coleman.Liau <- meanSentenceLength <- meanWordSyllables <- NULL
-    
     x <- texts(x)
     if (!missing(min_sentence_length) | !missing(max_sentence_length)) {
         x <- char_trim(x, 'sentences',
@@ -158,7 +147,18 @@ textstat_readability.corpus <- function(x,
     tmpSyll <- lapply(tmpSyll, function(y) { y[is.na(y)] <- 1; y })
     
     # lengths in characters of the words
-    wordLengths <- lapply(tokenizedWords, stringi::stri_length)
+    wordLengths <- lapply(tokenizedWords, stri_length)
+    
+    # to avoid "no visible binding for global variable" CHECK NOTE
+    textID <- W <- St <- C <- Sy <- W3Sy <- W2Sy <- W_1Sy <- W6C <- W7C <- Wlt3Sy <- W_wl.Dale.Chall <-
+        W_wl.Spache <- ARI <- ARI.NRI <- ARI.simple <- Bormuth.GP <- Coleman <- Coleman.C2 <-
+        Coleman.Liau.ECP <- Coleman.Liau.grade <- Coleman.Liau.short <- Dale.Chall <- Dale.Chall.old <-
+        Dale.Chall.PSK <- Danielson.Bryan <- Danielson.Bryan.2 <- Dickes.Steiwer <- DRP <- ELF <-
+        Farr.Jenkins.Paterson <- Flesch <- Flesch.PSK <- Flesch.Kincaid <- FOG <- FOG.PSK <- FOG.NRI <-
+        FORCAST <- FORCAST.RGL <- Fucks <- Linsear.Write <- LIW <- nWS <- nWS.2 <- nWS.3 <- nWS.4 <-
+        RIX <- SMOG <- SMOG.C <- SMOG.simple <- SMOG.de <- Spache <- Spache.old <- Strain <- Wheeler.Smith <-
+        data_char_wordlists <- Bormuth.MC <- Bl <- Traenkle.Bailer <- Traenkle.Bailer.2 <- Bormuth <-
+        Coleman.Liau <- meanSentenceLength <- meanWordSyllables <- NULL
     
     # common statistics required by (nearly all) indexes
     temp <- 
