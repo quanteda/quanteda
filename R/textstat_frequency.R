@@ -59,6 +59,8 @@
 #'                        labels = freq_weight$feature) +
 #'     labs(x = NULL, y = "Relative frequency")
 #' }
+#' @return \code{textstat_frequency} returns a data.frame of features and
+#'   their term and document frequencies within groups.
 #' @export
 #' @keywords plot
 textstat_frequency <- function(x, n = NULL, groups = NULL) {
@@ -75,34 +77,30 @@ textstat_frequency.default <- function(x, n = NULL, groups = NULL) {
 textstat_frequency.dfm <- function(x, n = NULL, groups = NULL) { 
     
     x <- as.dfm(x)
-    group <- frequency <- NULL
-  
-    groupsadded <- FALSE
-    if (is.null(groups)) {
-        groupsadded <- TRUE
+    x@weightTf[["scheme"]] <- "count" # reset for docfreq
+    
+    if (is.null(groups))
         groups <- rep("all", ndoc(x))
-    }
+
+    docfreq <- dfm_group(tf(x, "boolean"), groups)@x
+    x <- as(dfm_group(x, groups), "dgTMatrix")
+    temp <- data.table(feature = colnames(x)[x@j + 1],
+                       frequency = x@x,
+                       docfreq = docfreq,
+                       group = rownames(x)[x@i + 1])
     
-    # get document frequency, override weight check
-    x_docfreq <- x
-    x_docfreq@weightTf[["scheme"]] <- "count"
-    x_docfreq <- dfm_group(tf(x_docfreq, "boolean"), groups)
+    group <- frequency <- NULL
+    setorder(temp, group, -frequency)
+    temp[, rank := 1:.N, by = group]
+    if (!is.null(n)) temp <- temp[rank <= n]
     
-    x <- dfm_group(x, groups)
-    ngroups <- ndoc(x)
-    
-    
-    x_dgt <- as(x, "dgTMatrix")
-    result <- data.table(feature = featnames(x)[x_dgt@j+1],
-                         frequency = x_dgt@x,
-                         docfreq = x_docfreq@x,
-                         group = docnames(x)[x_dgt@i+1])
-    setorder(result, group, -frequency)
-    # result[, ngrp := ifelse(is.null(n), .N, min(c(n, .N))), by = group]
-    result[, rank := 1:.N, by = group]
-    # result[, ngrp := NULL]
-    setcolorder(result, c("feature", "frequency", "rank", "docfreq", "group"))
-    if (groupsadded) result[, group := NULL]
-    if (!is.null(n)) result <- result[rank <= n]
-    as.data.frame(result)
+    result <- data.frame(feature = temp$feature,
+                         frequency = temp$frequency,
+                         rank = temp$rank,
+                         docfreq = temp$docfreq,
+                         group = temp$group,
+                         stringsAsFactors = FALSE)
+    class(result) <- c('frequency', 'textstat', 'data.frame')
+    rownames(result) <- as.character(seq_len(nrow(result)))
+    return(result)
 }
