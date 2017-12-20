@@ -115,7 +115,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     
     ## distribution
     if (distribution == "Bernoulli") {
-        x.trset <- tf(x.trset, "boolean")
+        x.trset <- dfm_weight(x.trset, "boolean")
     } else {
         if (distribution != "multinomial")
             stop("Distribution can only be multinomial or Bernoulli.")
@@ -240,7 +240,7 @@ predict.textmodel_nb_fitted <- function(object, newdata = NULL, ...) {
         
     } else if (object$distribution == "Bernoulli") {
         
-        newdata <- tf(newdata, "boolean")
+        newdata <- dfm_weight(newdata, "boolean")
         Nc <- length(object$Pc)
         
         # initialize log posteriors with class priors

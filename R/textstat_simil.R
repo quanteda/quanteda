@@ -199,7 +199,7 @@ jaccard_simil <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
-    x <- tf(x, "boolean") 
+    x <- dfm_weight(x, "boolean") 
     
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) colSums else rowSums
@@ -208,7 +208,7 @@ jaccard_simil <- function(x, y = NULL, margin = 1) {
     # union 
     an <- func_sum(x)
     if (!is.null(y)) {
-        y <- tf(y, "boolean")
+        y <- dfm_weight(y, "boolean")
         a <- func_cp(x, y)
         bn <- func_sum(y)
         colname <- func_name(y)
@@ -268,7 +268,7 @@ dice_simil <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
-    x <- tf(x, "boolean") 
+    x <- dfm_weight(x, "boolean") 
     
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) colSums else rowSums
@@ -277,7 +277,7 @@ dice_simil <- function(x, y = NULL, margin = 1) {
     # union 
     an <- func_sum(x)
     if (!is.null(y)) {
-        y <- tf(y, "boolean")
+        y <- dfm_weight(y, "boolean")
         a <- func_cp(x, y)
         bn <- func_sum(y)
         kk <- y@Dim[margin]
@@ -334,7 +334,7 @@ smc_simil <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
-    x <- tf(x, "boolean") 
+    x <- dfm_weight(x, "boolean") 
     x0 <- 1 - x
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) nrow else ncol
@@ -342,7 +342,7 @@ smc_simil <- function(x, y = NULL, margin = 1) {
     # union 
     an <- func_sum(x)
     if (!is.null(y)) {
-        y <- tf(y, "boolean")
+        y <- dfm_weight(y, "boolean")
         y0 <- 1 - y
         a <- func_cp(x, y)
         a0 <- func_cp(x0, y0)
@@ -370,7 +370,7 @@ hamann_simil <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
-    x <- tf(x, "boolean") 
+    x <- dfm_weight(x, "boolean") 
     x0 <- 1 - x
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) nrow else ncol
@@ -378,7 +378,7 @@ hamann_simil <- function(x, y = NULL, margin = 1) {
     # union 
     an <- func_sum(x)
     if (!is.null(y)) {
-        y <- tf(y, "boolean")
+        y <- dfm_weight(y, "boolean")
         y0 <- 1 - y
         a <- func_cp(x, y)
         a0 <- func_cp(x0, y0)
@@ -403,7 +403,7 @@ faith_simil <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
-    x <- tf(x, "boolean") 
+    x <- dfm_weight(x, "boolean") 
     x0 <- 1 - x
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) nrow else ncol
@@ -411,7 +411,7 @@ faith_simil <- function(x, y = NULL, margin = 1) {
     # union 
     an <- func_sum(x)
     if (!is.null(y)) {
-        y <- tf(y, "boolean")
+        y <- dfm_weight(y, "boolean")
         y0 <- 1 - y
         a <- func_cp(x, y)
         a0 <- func_cp(x0, y0)
