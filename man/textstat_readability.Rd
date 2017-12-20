@@ -43,8 +43,8 @@ only a single measure is requested; otherwise, a data.frame is returned
 with each column consisting of a requested measure.}
 }
 \value{
-a data.frame object consisting of the documents as rows, and the
-  readability statistics as columns
+\code{textstat_readability} returns a data.frame of documents and
+  their readability scores.
 }
 \description{
 Calculate the readability of text(s) using one of a variety of computed 

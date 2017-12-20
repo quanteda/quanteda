@@ -19,9 +19,6 @@ measures using logs)}
 \item{...}{not used}
 }
 \value{
-a data.frame or vector of lexical diversity statistics, each row or
-  vector element corresponding to an input document
-
 \code{textstat_lexdiv} returns a data.frame of documents and
   their lexical diversity scores.
 }
