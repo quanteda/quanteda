@@ -28,11 +28,11 @@
 #' textstat_readability(txt, "Flesch.Kincaid")
 #' textstat_readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
 #' inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
-#' round(cor(inaugReadability), 2)
+#' cor(inaugReadability[,-1])
 #' 
 #' textstat_readability(data_corpus_inaugural, measure = "Flesch.Kincaid")
 #' inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
-#' round(cor(inaugReadability), 2)
+#' cor(inaugReadability[,-1])
 textstat_readability <- function(x,
                         measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
                                     "Coleman", "Coleman.C2",
@@ -128,26 +128,26 @@ textstat_readability.corpus <- function(x,
     }
     
     x <- texts(x)
-    if (!missing(min_sentence_length) | !missing(max_sentence_length)) {
+    if (!is.null(min_sentence_length) || !is.null(max_sentence_length)) {
         x <- char_trim(x, 'sentences',
                        min_ntoken = min_sentence_length,
                        max_ntoken = max_sentence_length)
     }
     
     # get sentence lengths - BEFORE lower-casing
-    St <- nsentence(x)
+    n_sent <- nsentence(x)
     
     # get the word length and syllable info for use in computing quantities
     x <- char_tolower(x)
-    tokenizedWords <- tokens(x, remove_punct = TRUE, remove_hyphens = remove_hyphens)
+    toks <- tokens(x, remove_punct = TRUE, remove_hyphens = remove_hyphens)
     
     # number of syllables
-    tmpSyll <- nsyllable(tokenizedWords)
+    n_syll <- nsyllable(toks)
     # replace any NAs with a single count (most of these will be numbers)
-    tmpSyll <- lapply(tmpSyll, function(y) { y[is.na(y)] <- 1; y })
+    n_syll <- lapply(n_syll, function(y) ifelse(is.na(y), 1, y))
     
     # lengths in characters of the words
-    wordLengths <- lapply(tokenizedWords, stri_length)
+    len_token <- lapply(toks, stri_length)
     
     # to avoid "no visible binding for global variable" CHECK NOTE
     textID <- W <- St <- C <- Sy <- W3Sy <- W2Sy <- W_1Sy <- W6C <- W7C <- Wlt3Sy <- W_wl.Dale.Chall <-
@@ -161,18 +161,18 @@ textstat_readability.corpus <- function(x,
         Coleman.Liau <- meanSentenceLength <- meanWordSyllables <- NULL
     
     # common statistics required by (nearly all) indexes
-    temp <- 
-        data.table(textID = names(x),
-                   W = lengths(tokenizedWords),  # number of words
-                   St = St,            # number of sentences
-                   C = vapply(wordLengths, sum, numeric(1)), # number of characters (letters)
-                   Sy = vapply(tmpSyll, sum, numeric(1)),    # number of syllables
-                   W3Sy = vapply(tmpSyll, function(x) sum(x >= 3), numeric(1)),    # number words with >= 3 syllables
-                   W2Sy = vapply(tmpSyll, function(x) sum(x >= 2), numeric(1)),    # number words with >= 2 syllables
-                   W_1Sy = vapply(tmpSyll, function(x) sum(x == 1), numeric(1)),    # number words with 1 syllable
-                   W6C = vapply(wordLengths, function(x) sum(x >= 6), numeric(1)),  # number of words with at least 6 letters
-                   W7C = vapply(wordLengths, function(x) sum(x >= 7), numeric(1)))# number of words with at least 7 letters
-    temp[, W_wl.Dale.Chall := vapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$dalechall)), numeric(1))]
+    temp <- data.table(textID = names(x),
+                       W = lengths(toks),  # number of words
+                       St = n_sent,            # number of sentences
+                       C = vapply(len_token, sum, numeric(1)), # number of characters (letters)
+                       Sy = vapply(n_syll, sum, numeric(1)),    # number of syllables
+                       W3Sy = vapply(n_syll, function(x) sum(x >= 3), numeric(1)),    # number words with >= 3 syllables
+                       W2Sy = vapply(n_syll, function(x) sum(x >= 2), numeric(1)),    # number words with >= 2 syllables
+                       W_1Sy = vapply(n_syll, function(x) sum(x == 1), numeric(1)),    # number words with 1 syllable
+                       W6C = vapply(len_token, function(x) sum(x >= 6), numeric(1)),  # number of words with at least 6 letters
+                       W7C = vapply(len_token, function(x) sum(x >= 7), numeric(1))) # number of words with at least 7 letters
+    
+    temp[, W_wl.Dale.Chall := vapply(toks, function(x) sum(!(x %in% data_char_wordlists$dalechall)), numeric(1))]
     temp[, Wlt3Sy := W - W3Sy]   # number of words with less than three syllables
     
     if ("ARI" %in% measure)
@@ -184,12 +184,12 @@ textstat_readability.corpus <- function(x,
     if ("ARI.simple" %in% measure)
         temp[, ARI.simple := W / St + 9 * C / W]
     
-    CCS <- 35 # Cloze criterion score, percent as integer
     if ("Bormuth" %in% measure) {
         temp[, Bormuth := 0.886593 - (0.08364 * C/W) + 0.161911 *
                          (W_wl.Dale.Chall / W)^3 - 0.21401 * (W/St) + 0.000577 * (W/St)^2 - 0.000005 * (W/St)^3]
     }
     if ("Bormuth.GP" %in% measure) {
+        CCS <- 35 # Cloze criterion score, percent as integer
         temp[, Bormuth.MC := 0.886593 - (0.08364 * C/W) + 0.161911 *
                          (W_wl.Dale.Chall / W)^3 - 0.21401 * (W/St) + 0.000577 * (W/St)^2 - 0.000005 * (W/St)^3]
         temp[, Bormuth.GP := 4.275 + 12.881 * Bormuth.MC - (34.934 * Bormuth.MC^2) + (20.388 * Bormuth.MC^3) +
@@ -328,14 +328,14 @@ textstat_readability.corpus <- function(x,
     
     if ("Spache" %in% measure) {
         # number of words which are not in the Spache word list
-        temp[, W_wl.Spache := vapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$spache)), numeric(1))]
+        temp[, W_wl.Spache := vapply(toks, function(x) sum(!(x %in% data_char_wordlists$spache)), numeric(1))]
         temp[, Spache := 0.121 * W / St + 0.082 * (100 * W_wl.Spache / W) + 0.659]
         temp[, W_wl.Spache := NULL]
     }
     
     if ("Spache.old" %in% measure) {
         # number of words which are not in the Spache word list
-        temp[, W_wl.Spache := vapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$spache)), numeric(1))]
+        temp[, W_wl.Spache := vapply(toks, function(x) sum(!(x %in% data_char_wordlists$spache)), numeric(1))]
         temp[, Spache.old := 0.141 * W / St + 0.086 * (100 * W_wl.Spache / W) + 0.839]
         temp[, W_wl.Spache := NULL]
     }
@@ -344,19 +344,19 @@ textstat_readability.corpus <- function(x,
         temp[, Strain := Sy * 1 / (St/3) / 10]
     
     if ("Traenkle.Bailer" %in% measure) {
-        Wprep <- vapply(tokenizedWords, function(x) sum(x %in% prepositions), numeric(1))  # English prepositions
-        Wconj <- vapply(tokenizedWords, function(x) sum(x %in% conjunctions), numeric(1))  # English conjunctions
+        Wprep <- vapply(toks, function(x) sum(x %in% prepositions), numeric(1))  # English prepositions
+        Wconj <- vapply(toks, function(x) sum(x %in% conjunctions), numeric(1))  # English conjunctions
         temp[, Traenkle.Bailer := 224.6814 - (79.8304 * C / W) - (12.24032 * W / St) - (1.292857 * 100 * Wprep / W)]
     }
     
     if ("Traenkle.Bailer.2" %in% measure) {
-        Wprep <- vapply(tokenizedWords, function(x) sum(x %in% prepositions), numeric(1))  # English prepositions
-        Wconj <- vapply(tokenizedWords, function(x) sum(x %in% conjunctions), numeric(1))  # English conjunctions
+        Wprep <- vapply(toks, function(x) sum(x %in% prepositions), numeric(1))  # English prepositions
+        Wconj <- vapply(toks, function(x) sum(x %in% conjunctions), numeric(1))  # English conjunctions
         temp[, Traenkle.Bailer.2 := 234.1063 - (96.11069 * C / W) - (2.05444 * 100 * Wprep / W) - (1.02805 * 100 * Wconj / W)]
     }
     
     #     if ("TRI" %in% measure) {
-    #         Ptn <- lengths(tokens(x, remove_punct = FALSE)) - lengths(tokenizedWords)
+    #         Ptn <- lengths(tokens(x, remove_punct = FALSE)) - lengths(toks)
     #         Frg <- NA  # foreign words -- cannot compute without a dictionary
     #         temp[, TRI := (0.449 * W_1Sy) - (2.467 * Ptn) - (0.937 * Frg) - 14.417]
     #     }
