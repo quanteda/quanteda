@@ -165,7 +165,7 @@ setMethod("c",
               return(new('dictionary2', result))
           })
 
-#' create a dictionary
+#' Create a dictionary
 #'
 #' Create a \pkg{quanteda} dictionary class object, either from a list or by
 #' importing from a foreign format.  Currently supported input file formats are
@@ -343,7 +343,7 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
                encoding = encoding)
 }
 
-#' coercion and checking functions for dictionary objects
+#' Coercion and checking functions for dictionary objects
 #' 
 #' Convert a dictionary from a different format into a \pkg{quanteda} 
 #' dictionary, or check to see if an object is a dictionary.  
@@ -494,7 +494,7 @@ lowercase_dictionary_values <- function(dict) {
     return(dict)
 }
 
-#' internal function to replace dictionary values
+#' Internal function to replace dictionary values
 #' @param dict a \link{dictionary} object
 #' @keywords internal
 #' @examples
@@ -519,7 +519,7 @@ replace_dictionary_values <- function(dict, from, to) {
     return(dict)
 }
 
-#' internal function to merge values of duplicated keys
+#' Internal function to merge values of duplicated keys
 #' @param dict a dictionary object
 #' @keywords internal
 #' @examples
@@ -553,7 +553,7 @@ merge_dictionary_values <- function(dict) {
     return(dict_unique)
 }
 
-#' internal function to convert a list to a dictionary
+#' Internal function to convert a list to a dictionary
 #' 
 #' A dictionary is internally a list of list to keys and values to coexist in
 #' the same level.
@@ -633,7 +633,7 @@ list2dictionary_wordstat <- function(entry, omit = TRUE, dict = list()) {
     return(dict)
 }
 
-#' utility function to remove empty keys
+#' Utility function to remove empty keys
 #' @param dict a flat or hierarchical dictionary
 #' @keywords internal
 #' 
@@ -651,7 +651,7 @@ remove_empty_keys <- function(dict) {
     return(dict)
 }
 
-#' utility function to generate a nested list
+#' Utility function to generate a nested list
 #' @param dict a flat dictionary
 #' @param depth depths of nested element
 #' @keywords internal
@@ -804,7 +804,7 @@ nodes2list <- function(node, dict = list()){
     return(dict)
 }
 
-#' convert quanteda dictionary objects to the YAML format
+#' Convert quanteda dictionary objects to the YAML format
 #' 
 #' Converts a \pkg{quanteda} dictionary object constructed by the 
 #' \link{dictionary} function into the YAML format. The YAML 

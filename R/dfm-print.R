@@ -1,4 +1,4 @@
-#' print a dfm object
+#' Print a dfm object
 #'
 #' print methods for document-feature matrices
 #' @name print.dfm

@@ -62,7 +62,7 @@ as.corpus.default <- function(x) {
     stop(friendly_class_undefined_message(class(x), "as.corpus"))
 }
 
-#' coerce a compressed corpus to a standard corpus
+#' Coerce a compressed corpus to a standard corpus
 #'
 #' Recast a compressed corpus object into a standard (uncompressed) corpus
 #' object.

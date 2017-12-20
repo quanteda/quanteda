@@ -1,4 +1,4 @@
-#' extract a subset of a corpus
+#' Extract a subset of a corpus
 #' 
 #' Returns subsets of a corpus that meet certain conditions, including direct 
 #' logical operations on docvars (document-level variables).  \code{corpus_subset}

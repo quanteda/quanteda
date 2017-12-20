@@ -165,7 +165,7 @@ NULL
 #' kwic(data_char_ukimmig2010, "not")
 "data_dictionary_LSD2015"
 
-#' confidence debate from 1991 Irish Parliament
+#' Confidence debate from 1991 Irish Parliament
 #' 
 #' Texts of speeches from a no-confidence motion debated in the Irish Dail in
 #' October 1991 over the future of the Fianna Fail-Progressive Democrat

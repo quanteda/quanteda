@@ -1,4 +1,4 @@
-#' construct a corpus object
+#' Construct a corpus object
 #'
 #' Creates a corpus object from available sources.  The currently available
 #' sources are:

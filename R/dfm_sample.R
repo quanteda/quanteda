@@ -1,4 +1,4 @@
-#' randomly sample documents or features from a dfm
+#' Randomly sample documents or features from a dfm
 #' 
 #' Sample randomly from a dfm object, from documents or features.
 #' @param x the dfm object whose documents or features will be sampled

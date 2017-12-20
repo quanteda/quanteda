@@ -1,5 +1,4 @@
-
-#' weight the feature frequencies in a dfm
+#' Weight the feature frequencies in a dfm
 #' 
 #' Returns a document by feature matrix with the feature frequencies weighted 
 #' according to one of several common methods.  Some shortcut functions that offer finer-grained control are:
@@ -165,7 +164,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 }
 
 
-#' compute the (weighted) document frequency of a feature
+#' Compute the (weighted) document frequency of a feature
 #' 
 #' For a \link{dfm} object, returns a (weighted) document frequency for each
 #' term.  The default is a simple count of the number of documents in which a
@@ -273,7 +272,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
 }
 
 
-#' compute tf-idf weights from a dfm
+#' Compute tf-idf weights from a dfm
 #' 
 #' Weight a dfm by term frequency-inverse document frequency (tf-idf) using
 #' fully sparse methods.
@@ -365,7 +364,7 @@ tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, 
 }
 
 
-#' compute (weighted) term frequency from a dfm
+#' Compute (weighted) term frequency from a dfm
 #' 
 #' Apply varieties of term frequency weightings to a \link{dfm}.
 #' @param x object for which idf or tf-idf will be computed (a document-feature 

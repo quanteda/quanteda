@@ -1,4 +1,4 @@
-#' recast the document units of a corpus
+#' Recast the document units of a corpus
 #' 
 #' For a corpus, reshape (or recast) the documents to a different level of aggregation.  
 #' Units of aggregation can be defined as documents, paragraphs, or sentences.

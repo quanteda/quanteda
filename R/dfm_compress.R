@@ -1,4 +1,4 @@
-#' recombine a dfm or fcm by combining identical dimension elements
+#' Recombine a dfm or fcm by combining identical dimension elements
 #' 
 #' "Compresses" or groups a \link{dfm} or \link{fcm} whose dimension names are
 #' the same, for either documents or features.  This may happen, for instance,
@@ -58,7 +58,7 @@ dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
     return(result)
 }
 
-#' sort a dfm by frequency of one or more margins
+#' Sort a dfm by frequency of one or more margins
 #' 
 #' Sorts a \link{dfm} by descending frequency of total features, total features
 #' in documents, or both.
