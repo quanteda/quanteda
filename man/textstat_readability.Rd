@@ -51,11 +51,11 @@ txt <- c("Readability zero one.  Ten, Eleven.", "The cat in a dilapidated tophat
 textstat_readability(txt, "Flesch.Kincaid")
 textstat_readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
 inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
-round(cor(inaugReadability), 2)
+cor(inaugReadability[,-1])
 
 textstat_readability(data_corpus_inaugural, measure = "Flesch.Kincaid")
 inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
-round(cor(inaugReadability), 2)
+cor(inaugReadability[,-1])
 }
 \author{
 Kenneth Benoit, re-engineered from the function of the same name by

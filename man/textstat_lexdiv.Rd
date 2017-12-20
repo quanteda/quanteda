@@ -84,7 +84,7 @@ This implements only the static measures of lexical diversity, not more
 \examples{
 mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE)
 (result <- textstat_lexdiv(mydfm, c("CTTR", "TTR", "U")))
-cor(textstat_lexdiv(mydfm, "all"))
+cor(textstat_lexdiv(mydfm, "all")[,-1])
 
 }
 \references{

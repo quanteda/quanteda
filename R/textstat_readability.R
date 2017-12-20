@@ -139,7 +139,7 @@ textstat_readability.corpus <- function(x,
     
     # get the word length and syllable info for use in computing quantities
     x <- char_tolower(x)
-    toks <- as.list(tokens(x, remove_punct = TRUE, remove_hyphens = remove_hyphens))
+    toks <- tokens(x, remove_punct = TRUE, remove_hyphens = remove_hyphens)
     
     # number of syllables
     n_syll <- nsyllable(toks)
