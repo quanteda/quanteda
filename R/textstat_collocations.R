@@ -145,17 +145,17 @@ textstat_collocations.tokens <- function(x, method = "lambda",
                                     smoothing)
     
     # compute z for lambda methods
-    lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
-    result["z"] <- result[lambda_index] / result[["sigma"]]
+    result$z <- result$lambda / result$sigma
+    result$sigma <- NULL
     # result$p <- 1 - stats::pnorm(result$z)
-    result <- result[order(result[["z"]], decreasing = TRUE), ]
+    result <- result[order(result$z, decreasing = TRUE), ]
 
     # remove results whose counts are less than min_count
     result <- result[result$count >= min_count, ]
-    
     # tag attributes and class, and return
     attr(result, 'types') <- types
     class(result) <- c('collocations', 'textstat', 'data.frame')
+    rownames(result) <- as.character(seq_len(nrow(result)))
     return(result)
 }
 
@@ -191,15 +191,6 @@ textstat_collocations.character <- function(x, method = "lambda",
 #'   \code{collocations}, \code{FALSE} otherwise.
 is.collocations <- function(x) {
     "collocations" %in% class(x)
-}
-
-#' @method "[" collocations
-#' @export
-#' @noRd
-"[.collocations" <- function(x, i = TRUE, j = TRUE, ...) {
-    x <- as.data.frame(x)[i, j, ...]
-    class(x) <- c('collocations', 'textstat', 'data.frame')
-    return(x)
 }
 
 # Internal Functions ------------------------------------------------------
