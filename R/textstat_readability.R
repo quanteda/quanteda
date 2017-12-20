@@ -179,21 +179,21 @@ textstat_readability.corpus <- function(x,
     temp[, W_wl.Dale.Chall := vapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$dalechall)), numeric(1))]
     temp[, Wlt3Sy := W - W3Sy]   # number of words with less than three syllables
     
-    if (any(c("all", "ARI") %in% measure))
+    if ("ARI" %in% measure)
         temp[, ARI := 0.5 * W / St + 4.71 * C / W - 21.43]
     
-    if (any(c("all", "ARI.NRI") %in% measure))
+    if ("ARI.NRI" %in% measure)
         temp[, ARI.NRI := 0.4 * W / St + 6 * C / W - 27.4]
     
-    if (any(c("all", "ARI.simple") %in% measure))
+    if ("ARI.simple" %in% measure)
         temp[, ARI.simple := W / St + 9 * C / W]
     
     CCS <- 35 # Cloze criterion score, percent as integer
-    if (any(c("all", "Bormuth") %in% measure)) {
+    if ("Bormuth" %in% measure) {
         temp[, Bormuth := 0.886593 - (0.08364 * C/W) + 0.161911 *
                          (W_wl.Dale.Chall / W)^3 - 0.21401 * (W/St) + 0.000577 * (W/St)^2 - 0.000005 * (W/St)^3]
     }
-    if (any(c("all", "Bormuth.GP") %in% measure)) {
+    if ("Bormuth.GP" %in% measure) {
         temp[, Bormuth.MC := 0.886593 - (0.08364 * C/W) + 0.161911 *
                          (W_wl.Dale.Chall / W)^3 - 0.21401 * (W/St) + 0.000577 * (W/St)^2 - 0.000005 * (W/St)^3]
         temp[, Bormuth.GP := 4.275 + 12.881 * Bormuth.MC - (34.934 * Bormuth.MC^2) + (20.388 * Bormuth.MC^3) +
@@ -202,170 +202,170 @@ textstat_readability.corpus <- function(x,
         temp[, Bormuth.MC := NULL]
     }
     
-    if (any(c("all", "Coleman") %in% measure))
+    if ("Coleman" %in% measure)
         temp[, Coleman := 1.29 * (100 * W_1Sy / W) - 38.45]
     
-    if (any(c("all", "Coleman.C2") %in% measure))
+    if ("Coleman.C2" %in% measure)
         temp[, Coleman.C2 := 1.16 * (100 * W_1Sy / W) + 1.48 * (100 * St / W) - 37.95]
     
     ## cannot compute Coleman.C3, Coleman.C4 without knowing the number of pronouns or prepositions
     
-    if (any(c("all", "Coleman.Liau") %in% measure))
+    if ("Coleman.Liau" %in% measure)
         temp[, Coleman.Liau   := 141.8401 - 0.214590 * (100 * C / W) + 1.079812 * (100 * St / W)]
     
-    if (any(c("all", "Coleman.Liau.grade") %in% measure)) {
+    if ("Coleman.Liau.grade" %in% measure) {
         temp[, Coleman.Liau.ECP   := 141.8401 - 0.214590 * (100 * C / W) + 1.079812 * (100 * St / W)]
         temp[, Coleman.Liau.grade := -27.4004 * Coleman.Liau.ECP / 100 + 23.06395]
         temp[, Coleman.Liau.ECP   := NULL]
     }
     
-    if (any(c("all", "Coleman.Liau.short") %in% measure))
+    if ("Coleman.Liau.short" %in% measure)
         temp[, Coleman.Liau.short := 5.88 * C / W - 29.6 * St / W - 15.8]
     
-    if (any(c("all", "Dale.Chall") %in% measure))
+    if ("Dale.Chall" %in% measure)
         temp[, Dale.Chall := 64 - 0.95 * 100 * W_wl.Dale.Chall / W - 0.69 * W / St]
     
-    if (any(c("all", "Dale.Chall.old") %in% measure))
+    if ("Dale.Chall.old" %in% measure)
         temp[, Dale.Chall.old := 0.1579 * 100 * W_wl.Dale.Chall / W + 0.0496 * W / St + 3.6365]
     
-    if (any(c("all", "Dale.Chall.PSK") %in% measure))
+    if ("Dale.Chall.PSK" %in% measure)
         temp[, Dale.Chall.PSK := 0.1155 * 100 * W_wl.Dale.Chall / W + 0.0596 * W / St + 3.2672]
     
-    if (any(c("all", "Danielson.Bryan") %in% measure)) {
+    if ("Danielson.Bryan" %in% measure) {
         temp[, Bl := W - 1]  # could be more accurate if count spaces
         temp[, Danielson.Bryan := (1.0364 * C / Bl) + (0.0194 * C / St) - 0.6059]
         temp[, Bl := NULL]
     }
     
-    if (any(c("all", "Danielson.Bryan.2") %in% measure)) {
+    if ("Danielson.Bryan.2" %in% measure) {
         temp[, Bl := W - 1]  # could be more accurate if count spaces
         temp[, Danielson.Bryan.2 := 131.059 - (10.364 * C / Bl) + (0.0194 * C / St)]
         temp[, Bl := NULL]
     }
     
-    if (any(c("all", "Dickes.Steiwer") %in% measure)) {
+    if ("Dickes.Steiwer" %in% measure) {
         TTR <- textstat_lexdiv(dfm(x, verbose = FALSE), measure = "TTR")$TTR
         temp[, Dickes.Steiwer := 235.95993 - (73.021 * C / W) - (12.56438 * W / St) - (50.03293 * TTR)]
     }
     
-    if (any(c("all", "DRP") %in% measure)) {
+    if ("DRP" %in% measure) {
         temp[, Bormuth.MC := 0.886593 - (0.08364 * C/W) + 0.161911 *
                          (W_wl.Dale.Chall / W)^3 - 0.21401 * (W/St) + 0.000577 * (W/St)^2 - 0.000005 * (W/St)^3]
         temp[, DRP := (1 - Bormuth.MC) * 100]
         temp[, Bormuth.MC := NULL]
     }
     
-    if (any(c("all", "ELF") %in% measure))
+    if ("ELF" %in% measure)
         temp[, ELF := W2Sy / St]
     
-    if (any(c("all", "Farr.Jenkins.Paterson") %in% measure))
+    if ("Farr.Jenkins.Paterson" %in% measure)
         temp[, Farr.Jenkins.Paterson := -31.517 - 1.015 * W / St + 1.599 * W_1Sy / W]
     
-    if (any(c("all", "Flesch") %in% measure))
+    if ("Flesch" %in% measure)
         temp[, Flesch := 206.835 - 1.015 * W / St - 84.6 * Sy / W ]
     
-    if (any(c("all", "Flesch.PSK") %in% measure))
+    if ("Flesch.PSK" %in% measure)
         temp[, Flesch.PSK := 0.0778 * W / St + 4.55 * Sy / W - 2.2029]
     
-    if (any(c("all", "Flesch.Kincaid") %in% measure))
+    if ("Flesch.Kincaid" %in% measure)
         temp[, Flesch.Kincaid := 0.39 * W / St + 11.8 * Sy / W - 15.59]
     
-    if (any(c("all", "meanSentenceLength") %in% measure))
+    if ("meanSentenceLength" %in% measure)
         temp[, meanSentenceLength := W / St]
     
-    if (any(c("all", "meanWordSyllables") %in% measure))
+    if ("meanWordSyllables" %in% measure)
         temp[, meanWordSyllables := Sy / W]
     
-    if (any(c("all", "FOG") %in% measure))
+    if ("FOG" %in% measure)
         temp[, FOG := 0.4 * ( W / St + 100 * W3Sy / W )]
     # If the text was POS-tagged accordingly, proper nouns and combinations of only easy words
     # will not be counted as hard words, and the syllables of verbs ending in "-ed", "-es" or
     # "-ing" will be counted without these suffixes.
     
-    if (any(c("all", "FOG.PSK") %in% measure))
+    if ("FOG.PSK" %in% measure)
         temp[, FOG.PSK := 3.0680 * ( 0.0877 * W / St ) + (0.0984 * 100 * W3Sy / W )]
     
-    if (any(c("all", "FOG.NRI") %in% measure))
+    if ("FOG.NRI" %in% measure)
         temp[, FOG.NRI := ((( Wlt3Sy + 3 * W3Sy ) / (100 * St / W)) - 3) / 2]
     
-    if (any(c("all", "FORCAST") %in% measure))
+    if ("FORCAST" %in% measure)
         temp[, FORCAST := 20 - (W_1Sy * 150 / W) / 10]
     
-    if (any(c("all", "FORCAST.RGL") %in% measure))
+    if ("FORCAST.RGL" %in% measure)
         temp[, FORCAST.RGL := 20.43 - 0.11 * W_1Sy * 150 / W]
     
-    if (any(c("all", "Fucks") %in% measure))
+    if ("Fucks" %in% measure)
         temp[, Fucks := C / W * W / St]
     
-    if (any(c("all", "Linsear.Write") %in% measure))
+    if ("Linsear.Write" %in% measure)
         temp[, Linsear.Write := ((100 - (100 * Wlt3Sy)/W) + (3 * 100 * W3Sy / W)) / (100 * St / W)]
     
-    if (any(c("all", "LIW") %in% measure))
+    if ("LIW" %in% measure)
         temp[, LIW := (W / St) + (100 * W7C) / W]
     
-    if (any(c("all", "nWS") %in% measure))
+    if ("nWS" %in% measure)
         temp[, nWS := 19.35 * W3Sy / W + 0.1672 * W / St + 12.97 * W6C / W - 3.27 * W_1Sy / W - 0.875]
     
-    if (any(c("all", "nWS.2") %in% measure))
+    if ("nWS.2" %in% measure)
         temp[, nWS.2 := 20.07 * W3Sy / W + 0.1682 * W / St + 13.73 * W6C / W - 2.779]
     
-    if (any(c("all", "nWS.3") %in% measure))
+    if ("nWS.3" %in% measure)
         temp[, nWS.3 := 29.63 * W3Sy / W + 0.1905 * W / St - 1.1144]
     
-    if (any(c("all", "nWS.4") %in% measure))
+    if ("nWS.4" %in% measure)
         temp[, nWS.4 := 27.44 * W3Sy / W + 0.2656 * W / St - 1.693]
     
-    if (any(c("all", "RIX") %in% measure))
+    if ("RIX" %in% measure)
         temp[, RIX := W7C / St]
     
-    if (any(c("all", "SMOG") %in% measure))
+    if ("SMOG" %in% measure)
         temp[, SMOG := 1.043 * sqrt(W3Sy * 30 / St) + 3.1291]
     
-    if (any(c("all", "SMOG.C") %in% measure))
+    if ("SMOG.C" %in% measure)
         temp[, SMOG.C := 0.9986 * sqrt(W3Sy * 30 / St + 5) + 2.8795]
     
-    if (any(c("all", "SMOG.simple") %in% measure))
+    if ("SMOG.simple" %in% measure)
         temp[, SMOG.simple := sqrt(W3Sy * 30 / St) + 3]
     
-    if (any(c("all", "SMOG.de") %in% measure))
+    if ("SMOG.de" %in% measure)
         temp[, SMOG.de := sqrt(W3Sy * 30 / St) - 2]
     
-    if (any(c("all", "Spache") %in% measure)) {
+    if ("Spache" %in% measure) {
         # number of words which are not in the Spache word list
         temp[, W_wl.Spache := vapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$spache)), numeric(1))]
         temp[, Spache := 0.121 * W / St + 0.082 * (100 * W_wl.Spache / W) + 0.659]
         temp[, W_wl.Spache := NULL]
     }
     
-    if (any(c("all", "Spache.old") %in% measure)) {
+    if ("Spache.old" %in% measure) {
         # number of words which are not in the Spache word list
         temp[, W_wl.Spache := vapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$spache)), numeric(1))]
         temp[, Spache.old := 0.141 * W / St + 0.086 * (100 * W_wl.Spache / W) + 0.839]
         temp[, W_wl.Spache := NULL]
     }
     
-    if (any(c("all", "Strain") %in% measure))
+    if ("Strain" %in% measure)
         temp[, Strain := Sy * 1 / (St/3) / 10]
     
-    if (any(c("all", "Traenkle.Bailer") %in% measure)) {
+    if ("Traenkle.Bailer" %in% measure) {
         Wprep <- vapply(tokenizedWords, function(x) sum(x %in% prepositions), numeric(1))  # English prepositions
         Wconj <- vapply(tokenizedWords, function(x) sum(x %in% conjunctions), numeric(1))  # English conjunctions
         temp[, Traenkle.Bailer := 224.6814 - (79.8304 * C / W) - (12.24032 * W / St) - (1.292857 * 100 * Wprep / W)]
     }
     
-    if (any(c("all", "Traenkle.Bailer.2") %in% measure)) {
+    if ("Traenkle.Bailer.2" %in% measure) {
         Wprep <- vapply(tokenizedWords, function(x) sum(x %in% prepositions), numeric(1))  # English prepositions
         Wconj <- vapply(tokenizedWords, function(x) sum(x %in% conjunctions), numeric(1))  # English conjunctions
         temp[, Traenkle.Bailer.2 := 234.1063 - (96.11069 * C / W) - (2.05444 * 100 * Wprep / W) - (1.02805 * 100 * Wconj / W)]
     }
     
-    #     if (any(c("all", "TRI") %in% measure)) {
+    #     if ("TRI" %in% measure) {
     #         Ptn <- lengths(tokens(x, remove_punct = FALSE)) - lengths(tokenizedWords)
     #         Frg <- NA  # foreign words -- cannot compute without a dictionary
     #         temp[, TRI := (0.449 * W_1Sy) - (2.467 * Ptn) - (0.937 * Frg) - 14.417]
     #     }
     
-    if (any(c("all", "Wheeler.Smith") %in% measure))
+    if ("Wheeler.Smith" %in% measure)
         temp[, Wheeler.Smith := W / St * (10 * W2Sy) / W]
     
     Scrabble <- NULL
