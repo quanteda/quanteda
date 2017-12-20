@@ -3,7 +3,7 @@
 #' @noRd
 "[.textstat" <- function(x, i, j, ...) {
     if (missing(i)) i <- seq_len(nrow(x))
-    if (missing(j)) j <- seql_len(ncol(x))
+    if (missing(j)) j <- seq_len(ncol(x))
     l <- class(x)
     x <- as.data.frame(x)[i, j, drop = FALSE]
     class(x) <- l
