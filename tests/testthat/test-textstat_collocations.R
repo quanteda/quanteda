@@ -203,12 +203,13 @@ test_that("test the correctness of significant", {
 
 test_that("collocation is counted correctly in racing conditions, issue #381", {
 
-    toks <- tokens(rep(texts(data_corpus_inaugural)[1], 2))
+    n <- 100 # NOTE: n must be large number to create racing conditionc
+    toks <- tokens(rep(texts(data_corpus_inaugural)[1], n)) 
     out1 <- textstat_collocations(toks[1], size = 2, min_count = 1)
     out100 <- textstat_collocations(toks, size = 2, min_count = 1)
     out1 <- out1[order(out1$collocation),]
     out100 <- out100[order(out100$collocation),]
-    # expect_true(all(out1$count * 100 == out100$count))
+    expect_true(all(out1$count * n == out100$count))
 
 })
 

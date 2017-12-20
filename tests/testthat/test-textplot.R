@@ -135,7 +135,7 @@ test_that("test textplot_keyness ", {
     
     # shows the correct statistic measure 
     p3 <- textplot_keyness(result, show_reference = TRUE)
-    expect_equal(p3$labels$y, colnames(result)[1])
+    expect_equal(p3$labels$y, colnames(result)[2])
 })
 
 test_that("test textplot_keyness: show_reference works correctly ", {
