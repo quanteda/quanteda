@@ -42,6 +42,8 @@
 #'   likelihood ratio \eqn{G2} statistic; for \code{"pmi"} this is the pointwise
 #'   mutual information statistics.
 #' @export
+#' @return \code{textstat_keyness} returns a data.frame of features and
+#'   their keyness scores and frequency counts.
 #' @keywords textstat
 #' @importFrom stats chisq.test
 #' @examples
@@ -218,6 +220,7 @@ keyness_chi2_stats <- function(x) {
                stringsAsFactors = FALSE)
 }
 
+#' @rdname keyness
 #' @param t (scalar) frequency of target 
 #' @param f (scalar) frequency of reference
 #' @param sum_t total of all target words
