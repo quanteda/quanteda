@@ -89,7 +89,7 @@
 #' @examples
 #' mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE)
 #' (result <- textstat_lexdiv(mydfm, c("CTTR", "TTR", "U")))
-#' cor(textstat_lexdiv(mydfm, "all"))
+#' cor(textstat_lexdiv(mydfm, "all")[,-1])
 #' 
 textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
                             log.base = 10, ...) {
@@ -113,7 +113,6 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
         warning("Argument", if (length(added_args) > 1L) "s " else " ", 
                 added_args, " not used.", sep = "", noBreaks. = TRUE)
     
-    
     measure_option <- c("TTR", "C", "R", "CTTR", "U", "S", "Maas")
     if (measure[1] == 'all') {
         measure <- measure_option
@@ -126,21 +125,17 @@ textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "
     n_tokens <- n_types <- TTR <- C <- R <- CTTR <- U <- S <- Maas <- lgV0 <- lgeV0 <- NULL
     temp <- data.table(n_tokens = ntoken(x), n_types = ntype(x))
                                
-    if ("TTR" %in% measure) {
+    if ("TTR" %in% measure)
         temp[, TTR := n_types / n_tokens]
-    }
     
-    if ("C" %in% measure) {
+    if ("C" %in% measure)
         temp[, C := log(n_types, base = log.base) / log(n_tokens, base = log.base)]
-    }
 
-    if ("R" %in% measure) {
+    if ("R" %in% measure)
         temp[, R := n_types / sqrt(n_tokens)]
-    }
     
-    if ("CTTR" %in% measure) {
+    if ("CTTR" %in% measure)
         temp[, CTTR := n_types / sqrt(2 * n_tokens)]
-    }
 
     if ("U" %in% measure) 
         temp[, U := log(n_tokens, base = log.base) ^ 2 / 
