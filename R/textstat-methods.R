@@ -1,9 +1,11 @@
 #' @method "[" textstat
 #' @export
 #' @noRd
-"[.textstat" <- function(x, i = TRUE, j = TRUE, ...) {
+"[.textstat" <- function(x, i, j, ...) {
+    if (missing(i)) i <- seq_len(nrow(x))
+    if (missing(j)) j <- seql_len(ncol(x))
     l <- class(x)
-    x <- as.data.frame(x)[i, j, ...]
+    x <- as.data.frame(x)[i, j, drop = FALSE]
     class(x) <- l
     return(x)
 }
@@ -19,6 +21,7 @@
 #' @param selection whether to \code{"keep"} or \code{"remove"} the rows that
 #'   match the pattern
 #' @inheritParams valuetype
+#' @param ... additional arguments not used
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @noRd
 #' @export
@@ -29,7 +32,7 @@
 #' subset(result, pattern = 'america*')
 subset.textstat <- function(x, pattern, 
                             selection = c("keep", "remove"), 
-                            valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE) {
+                            valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)

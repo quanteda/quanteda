@@ -44,7 +44,6 @@ textplot_keyness.default <- function(x, show_reference = TRUE, n = 20L, min_coun
 textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
     
     # filter out the rare words
-    x <- as.data.frame(x)
     x <- x[(x$n_target + x$n_reference) >= min_count, ]
     
     if (nrow(x) < 1) {
