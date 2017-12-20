@@ -139,7 +139,7 @@ textstat_readability.corpus <- function(x,
     
     # get the word length and syllable info for use in computing quantities
     x <- char_tolower(x)
-    toks <- tokens(x, remove_punct = TRUE, remove_hyphens = remove_hyphens)
+    toks <- as.list(tokens(x, remove_punct = TRUE, remove_hyphens = remove_hyphens))
     
     # number of syllables
     n_syll <- nsyllable(toks)
@@ -164,12 +164,12 @@ textstat_readability.corpus <- function(x,
     temp <- data.table(textID = names(x),
                        W = lengths(toks),  # number of words
                        St = n_sent,            # number of sentences
-                       C = vapply(len_token, sum, numeric(1)), # number of characters (letters)
+                       C =  vapply(len_token, sum, numeric(1)), # number of characters (letters)
                        Sy = vapply(n_syll, sum, numeric(1)),    # number of syllables
-                       W3Sy = vapply(n_syll, function(x) sum(x >= 3), numeric(1)),    # number words with >= 3 syllables
-                       W2Sy = vapply(n_syll, function(x) sum(x >= 2), numeric(1)),    # number words with >= 2 syllables
-                       W_1Sy = vapply(n_syll, function(x) sum(x == 1), numeric(1)),    # number words with 1 syllable
-                       W6C = vapply(len_token, function(x) sum(x >= 6), numeric(1)),  # number of words with at least 6 letters
+                       W3Sy =  vapply(n_syll, function(x) sum(x >= 3), numeric(1)),  # number words with >= 3 syllables
+                       W2Sy =  vapply(n_syll, function(x) sum(x >= 2), numeric(1)),  # number words with >= 2 syllables
+                       W_1Sy = vapply(n_syll, function(x) sum(x == 1), numeric(1)),  # number words with 1 syllable
+                       W6C = vapply(len_token, function(x) sum(x >= 6), numeric(1)), # number of words with at least 6 letters
                        W7C = vapply(len_token, function(x) sum(x >= 7), numeric(1))) # number of words with at least 7 letters
     
     temp[, W_wl.Dale.Chall := vapply(toks, function(x) sum(!(x %in% data_char_wordlists$dalechall)), numeric(1))]
@@ -186,14 +186,14 @@ textstat_readability.corpus <- function(x,
     
     if ("Bormuth" %in% measure) {
         temp[, Bormuth := 0.886593 - (0.08364 * C/W) + 0.161911 *
-                         (W_wl.Dale.Chall / W)^3 - 0.21401 * (W/St) + 0.000577 * (W/St)^2 - 0.000005 * (W/St)^3]
+                         (W_wl.Dale.Chall / W) ^ 3 - 0.21401 * (W/St) + 0.000577 * (W/St) ^ 2 - 0.000005 * (W/St) ^ 3]
     }
     if ("Bormuth.GP" %in% measure) {
         CCS <- 35 # Cloze criterion score, percent as integer
         temp[, Bormuth.MC := 0.886593 - (0.08364 * C/W) + 0.161911 *
-                         (W_wl.Dale.Chall / W)^3 - 0.21401 * (W/St) + 0.000577 * (W/St)^2 - 0.000005 * (W/St)^3]
+                         (W_wl.Dale.Chall / W) ^ 3 - 0.21401 * (W/St) + 0.000577 * (W/St) ^ 2 - 0.000005 * (W/St) ^ 3]
         temp[, Bormuth.GP := 4.275 + 12.881 * Bormuth.MC - (34.934 * Bormuth.MC^2) + (20.388 * Bormuth.MC^3) +
-                         (26.194 * C - 2.046 * CCS^2) - (11.767 * CCS^3) - (44.285 * Bormuth.MC * CCS) +
+                         (26.194 * C - 2.046 * CCS ^ 2) - (11.767 * CCS ^ 3) - (44.285 * Bormuth.MC * CCS) +
                          (97.620 * (Bormuth.MC * CCS)^2) - (59.538 * (Bormuth.MC * CCS)^3)]
         temp[, Bormuth.MC := NULL]
     }
@@ -246,7 +246,7 @@ textstat_readability.corpus <- function(x,
     
     if ("DRP" %in% measure) {
         temp[, Bormuth.MC := 0.886593 - (0.08364 * C/W) + 0.161911 *
-                         (W_wl.Dale.Chall / W)^3 - 0.21401 * (W/St) + 0.000577 * (W/St)^2 - 0.000005 * (W/St)^3]
+                         (W_wl.Dale.Chall / W) ^ 3 - 0.21401 * (W/St) + 0.000577 * (W/St) ^ 2 - 0.000005 * (W/St) ^ 3]
         temp[, DRP := (1 - Bormuth.MC) * 100]
         temp[, Bormuth.MC := NULL]
     }
