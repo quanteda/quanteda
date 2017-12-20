@@ -44,6 +44,7 @@ textplot_keyness.default <- function(x, show_reference = TRUE, n = 20L, min_coun
 textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
     
     # filter out the rare words
+    x <- as.data.frame(x)
     x <- x[(x$n_target + x$n_reference) >= min_count, ]
     
     if (nrow(x) < 1) {
@@ -54,7 +55,7 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_coun
     n <- min(n, nrow(x))
     if (!show_reference) {
         x <- head(x, n)
-        x  <- data.frame(words = x$feature, val = x[, 2])
+        x  <- data.frame(words = x$feature, val = x[[2]])
         x$words <- factor(x$words, levels = x$words[order(x$val)])
         
         p <- ggplot(data = x, aes(x = x$words, y = x$val))
@@ -77,20 +78,20 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_coun
             neg_n <- min(n, nrow(x) / 2)
             topn <- head(x, pos_n)
             tailn <- tail(x, neg_n)
-            max_Y <- max(topn[, 2])
-            min_Y <- min(tailn[, 2])
+            max_Y <- max(topn[[2]])
+            min_Y <- min(tailn[[2]])
         } else {
-            pos_n <- min(n, sum(x[ ,2] >= 0))
-            neg_n <- min(n, sum(x[ ,2] < 0))
+            pos_n <- min(n, sum(x[[2]] >= 0))
+            neg_n <- min(n, sum(x[[2]] < 0))
             if ((pos_n == 0) || (neg_n == 0)) 
                 stop (" Better plot for one Doc.")
             topn <- head(x, pos_n)
             tailn <- tail(x, neg_n)
-            max_Y <- max(topn[, 2])
-            min_Y <- min(tailn[, 2])
+            max_Y <- max(topn[[2]])
+            min_Y <- min(tailn[[2]])
         }   
-        topn  <- topn[order(-topn[, 2]), ]
-        tailn <- tailn[order(tailn[, 2]), ]
+        topn  <- topn[order(-topn[[2]]), ]
+        tailn <- tailn[order(tailn[[2]]), ]
         
         Tars <- attr(x, "documents")[1]
         if (length(attr(x, "documents")) == 2){
@@ -99,7 +100,7 @@ textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_coun
             Refs <- "Reference"
         }
         p1 <- data.frame(x = (neg_n + pos_n) : (1 + neg_n), y = topn[,2])
-        p2 <- data.frame(x = 1 : neg_n, y = tailn[,2])
+        p2 <- data.frame(x = 1 : neg_n, y = tailn[[2]])
         p <- melt(list(Refs = p2, Tars = p1), id.vars = "x")
         colnames(p)[4] <- "Document"
         p[p == "Refs"] <- Refs
