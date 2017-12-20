@@ -14,7 +14,7 @@ textstat_readability(x, measure = c("all", "ARI", "ARI.simple", "Bormuth",
   "SMOG.simple",      "SMOG.de", "Spache", "Spache.old", "Strain",
   "Traenkle.Bailer", "Traenkle.Bailer.2", "Wheeler.Smith", "meanSentenceLength",
   "meanWordSyllables"), remove_hyphens = TRUE, min_sentence_length = 1,
-  max_sentence_length = 10000, drop = TRUE, ...)
+  max_sentence_length = 10000, ...)
 }
 \arguments{
 \item{x}{a character or \link{corpus} object containing the texts}
@@ -36,11 +36,11 @@ other cruft that might be in the texts following conversion.
 For finer-grained control, consider filtering sentences prior first, 
 including through pattern-matching, using \code{\link{corpus_trim}}.}
 
+\item{...}{not used}
+
 \item{drop}{if \code{TRUE}, the result is returned as a numeric vector if
 only a single measure is requested; otherwise, a data.frame is returned
 with each column consisting of a requested measure.}
-
-\item{...}{not used}
 }
 \value{
 a data.frame object consisting of the documents as rows, and the
