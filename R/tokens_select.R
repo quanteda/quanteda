@@ -1,4 +1,4 @@
-#' select or remove tokens from a tokens object
+#' Select or remove tokens from a tokens object
 #' 
 #' These function select or discard tokens from a \link{tokens} objects.  For 
 #' convenience, the functions \code{tokens_remove} and \code{tokens_keep} 

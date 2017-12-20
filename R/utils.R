@@ -55,7 +55,7 @@ reassign_slots <- function(x_new, x_org, exceptions = NULL) {
 }
 
 
-#' function extending base::attributes()
+#' Function extending base::attributes()
 #' @param x an object
 #' @param overwrite if \code{TRUE}, overwrite old attributes
 #' @param value new attributes
@@ -69,7 +69,7 @@ reassign_slots <- function(x_new, x_org, exceptions = NULL) {
     return(x)
 }
 
-#' function to assign multiple slots to a S4 object
+#' Function to assign multiple slots to a S4 object
 #' @param x an S4 object
 #' @param exceptions slots to ignore
 #' @param value a list of attributes extracted by attributes()
@@ -101,7 +101,7 @@ create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
 }
 
 
-#' convert various input as pattern to a vector used in tokens_select, 
+#' Convert various input as pattern to a vector used in tokens_select, 
 #' tokens_compound and kwic.
 #' @inheritParams pattern
 #' @inheritParams valuetype
@@ -138,14 +138,14 @@ pattern2id <- function(pattern, types, valuetype, case_insensitive,
 }
 
 
-#' internal function for \code{select_types()} to check if a string is a regular expression
+#' Internal function for \code{select_types()} to check if a string is a regular expression
 #' @param x a character string to be tested
 #' @keywords internal
 is_regex <- function(x){
     any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
 }
 
-#' internal function for \code{select_types()} to escape regular expressions 
+#' Internal function for \code{select_types()} to escape regular expressions 
 #' 
 #' This function escapes glob patterns before \code{utils:glob2rx()}, therefore * and ?
 #' are unescaped.

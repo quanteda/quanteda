@@ -1,4 +1,4 @@
-#' tabulate feature frequencies
+#' Tabulate feature frequencies
 #' 
 #' Produces counts and document frequencies summaries of the features in a
 #' \link{dfm}, optionally grouped by a \link{docvars} variable or other supplied

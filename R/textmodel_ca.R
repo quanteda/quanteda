@@ -8,7 +8,7 @@ setClass("textmodel_ca_fitted",
                    residual_floor = "numeric"),
          contains = "textmodel_fitted")
 
-#' correspondence analysis of a document-feature matrix
+#' Correspondence analysis of a document-feature matrix
 #' 
 #' \code{textmodel_ca} implements correspondence analysis scaling on a 
 #' \link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca}, and

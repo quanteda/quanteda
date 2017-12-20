@@ -1,4 +1,4 @@
-#' locate keywords-in-context
+#' Locate keywords-in-context
 #' 
 #' For a text or a collection of texts (in a quanteda corpus object), return a 
 #' list of a keyword supplied by the user in its immediate context, identifying 

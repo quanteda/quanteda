@@ -1,6 +1,6 @@
-# Metacorpus functions ---------------------
+# metacorpus functions ---------------------
 
-#' get or set corpus metadata
+#' Get or set corpus metadata
 #' 
 #' Get or set the corpus-level metadata in a \link{corpus} object.
 #' @param x a \link{corpus} object
@@ -36,7 +36,7 @@ metacorpus.corpus <- function(x, field = NULL) {
     }
 }
 
-# Replacement function for corpus-level data
+#' Replacement function for corpus-level data
 #' @param value new value of the corpus metadata field
 #' @export
 #' @rdname metacorpus

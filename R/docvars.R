@@ -1,6 +1,6 @@
 # docvars ------
 
-#' get or set for document-level variables
+#' Get or set for document-level variables
 #' 
 #' Get or set variables associated with a document in a \link{corpus},
 #' \link{tokens} or \link{dfm} object.
@@ -160,7 +160,7 @@ docvars.kwic <- function(x) {
 
 # metadoc -------
 
-#' get or set document-level meta-data
+#' Get or set document-level meta-data
 #' 
 #' @description
 #' Get or set document-level meta-data.  Document-level meta-data are a special 
