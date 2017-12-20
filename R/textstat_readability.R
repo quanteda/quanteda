@@ -17,9 +17,6 @@
 #'   
 #'   For finer-grained control, consider filtering sentences prior first, 
 #'   including through pattern-matching, using \code{\link{corpus_trim}}.
-#' @param drop  if \code{TRUE}, the result is returned as a numeric vector if
-#'   only a single measure is requested; otherwise, a data.frame is returned
-#'   with each column consisting of a requested measure.
 #' @param ... not used
 #' @author Kenneth Benoit, re-engineered from the function of the same name by
 #'   Meik Michalke in the \pkg{koRpus} package.
@@ -29,7 +26,6 @@
 #' @examples
 #' txt <- c("Readability zero one.  Ten, Eleven.", "The cat in a dilapidated tophat.")
 #' textstat_readability(txt, "Flesch.Kincaid")
-#' textstat_readability(txt, "Flesch.Kincaid", drop = FALSE)
 #' textstat_readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
 #' inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
 #' round(cor(inaugReadability), 2)
@@ -371,19 +367,6 @@ textstat_readability.corpus <- function(x,
     Scrabble <- NULL
     if ("Scrabble" %in% measure)
         temp[, Scrabble := nscrabble(x, mean)]
-    
-    # # return a data.frame of the indexes
-    # tempIndex <- which(names(temp) == "Wlt3Sy")
-    # temp <- as.data.frame(temp)
-    # if (nrow(temp) == 1) drop <- FALSE
-    # ret <- temp[, (tempIndex+1) : ncol(temp), drop = drop]
-    # if (!is.vector(ret) & !("all" %in% measure)) {
-    #     row.names(ret) <- temp$textID
-    #     ret <- ret[, measure, drop = drop] # put in order of measures specified in call
-    # } else {
-    #     names(ret) <- temp$textID
-    # }
-    # ret
     
     result <- data.frame(document = names(x), stringsAsFactors = FALSE)
     result <- cbind(result, as.data.frame(temp[,measure, with = FALSE]))
