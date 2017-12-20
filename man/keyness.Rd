@@ -4,6 +4,7 @@
 \alias{keyness}
 \alias{keyness_chi2_dt}
 \alias{keyness_chi2_stats}
+\alias{keyness}
 \alias{keyness_exact}
 \alias{keyness_lr}
 \alias{keyness_pmi}
@@ -12,6 +13,8 @@
 keyness_chi2_dt(x, correction = c("default", "yates", "williams", "none"))
 
 keyness_chi2_stats(x)
+
+keyness(t, f, sum_t, sum_f)
 
 keyness_exact(x)
 
@@ -23,6 +26,14 @@ keyness_pmi(x)
 \item{x}{a \link{dfm} object}
 
 \item{correction}{implement the Yates correction for 2x2 tables}
+
+\item{t}{(scalar) frequency of target}
+
+\item{f}{(scalar) frequency of reference}
+
+\item{sum_t}{total of all target words}
+
+\item{sum_f}{total of all reference words}
 }
 \value{
 a data.frame of chi2 and p-values with rows named for each feature
