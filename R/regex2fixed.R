@@ -116,7 +116,7 @@ regex2id <- function(pattern, types = NULL, valuetype = NULL,
 #' Select types without performing slow regex search
 #' 
 #' This is an internal function for \code{regex2id()} that select types using an
-#' index of types by reular expressions.
+#' index of types by regular expressions.
 #' @rdname regex2id
 #' @param patterns a list of regular expressions
 #' @param types_search lowercased types when \code{case_insensitive=TRUE}, but

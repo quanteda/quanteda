@@ -199,7 +199,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/* on x86_64 by kbenoit
-## Created: Tue Dec 19 15:40:05 2017
+## Created: Thu Dec 21 12:37:45 2017
 ## Notes:</code></pre>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -220,7 +220,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/* on x86_64 by kbenoit
-## Created: Tue Dec 19 15:40:05 2017
+## Created: Thu Dec 21 12:37:45 2017
 ## Notes:</code></pre>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -250,7 +250,7 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/* on x86_64 by kbenoit
-## Created: Tue Dec 19 15:40:05 2017
+## Created: Thu Dec 21 12:37:45 2017
 ## Notes:</code></pre>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -386,7 +386,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Tue Dec 19 15:40:06 2017
+## Created: Thu Dec 21 12:37:46 2017
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -641,7 +641,7 @@ myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</sp
 ##   2017-Trump    1      1        4  96     4</code></pre>
 <p>Other options for a <code><a href="../../reference/dfm.html">dfm()</a></code> include removing stopwords, and stemming the tokens.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make a dfm, removing stopwords and applying stemming</span>
-myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
 ## 7 x 5 sparse Matrix of class "dfm"
@@ -654,21 +654,24 @@ myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5
 ##   2009-Obama        1       1     6      2       0
 ##   2013-Obama        3       8     6      1       0
 ##   2017-Trump        1       4     5      3       1</code></pre>
-<p>The option <code>remove</code> provides a list of tokens to be ignored. Most users will supply a list of pre-defined “stop words”, defined for numerous languages, accessed through the <code><a href="../../reference/stopwords.html">stopwords()</a></code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)</code></pre></div>
+<p>The option <code>remove</code> provides a list of tokens to be ignored. Most users will supply a list of pre-defined “stop words”, defined for numerous languages, accessed through the <code><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords()</a></code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)</code></pre></div>
 <pre><code>##  [1] "i"          "me"         "my"         "myself"     "we"        
 ##  [6] "our"        "ours"       "ourselves"  "you"        "your"      
 ## [11] "yours"      "yourself"   "yourselves" "he"         "him"       
 ## [16] "his"        "himself"    "she"        "her"        "hers"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"russian"</span>), <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"russian"</span>), <span class="dv">10</span>)</code></pre></div>
 <pre><code>##  [1] "и"   "в"   "во"  "не"  "что" "он"  "на"  "я"   "с"   "со"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)</code></pre></div>
+<pre><code>## Warning: 'stopwords(language = "ar")' is deprecated.
+## Use 'stopwords(language = "ar", source = "misc")' instead.
+## See help("Deprecated")</code></pre>
 <pre><code>##  [1] "فى"  "في"  "كل"  "لم"  "لن"  "له"  "من"  "هو"  "هي"  "قوة"</code></pre>
 <div id="viewing-the-document-feature-matrix" class="section level3">
 <h3 class="hasAnchor">
 <a href="#viewing-the-document-feature-matrix" class="anchor"></a>Viewing the document-feature matrix</h3>
 <p>The dfm can be inspected in the Enviroment pane in RStudio, or by calling R’s <code>View</code> function. Calling <code>plot</code> on a dfm will display a wordcloud using the <a href="https://cran.r-project.org/web/packages/wordcloud">wordcloud package</a></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 mydfm</code></pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre>
 <p>To access a list of the most frequently occurring features, we can use <code><a href="../../reference/topfeatures.html">topfeatures()</a></code>:</p>
@@ -693,7 +696,7 @@ mydfm</code></pre></div>
 <a href="#grouping-documents-by-document-variable" class="anchor"></a>Grouping documents by document variable</h3>
 <p>Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, 
-                  <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+                  <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>We can sort this dfm, and inspect it:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 5 documents, 10 features (0% sparse).
@@ -751,7 +754,7 @@ liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10<
 <h2 class="hasAnchor">
 <a href="#similarities-between-texts" class="anchor"></a>Similarities between texts</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), 
-               <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), 
                              <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)
 obamaSimil</code></pre></div>
@@ -771,7 +774,7 @@ obamaSimil</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quantedaData"</span>)
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
-               <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
+               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
 <span class="co"># hierarchical clustering - get distances on normalized dfm</span>
 presDistMat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(presDfm, <span class="st">"relfreq"</span>))
@@ -804,61 +807,61 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/df
 ## Estimated document positions:
 ## 
 ##                                Documents      theta         SE       lower
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209531 0.02032344  1.78111912
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932781 0.02818837 -0.64852735
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136757 0.01540257 -1.14386475
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219321 0.02846320 -0.17771994
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724222 0.02364095  1.72608589
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145786 0.02650255 -0.76652356
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844822 0.04171478 -0.56624318
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616710 0.02967354 -0.61983115
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703108 0.03850544 -1.04578151
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589232 0.03892376 -1.03521373
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807220 0.07221461  1.03918139
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866459 0.06294120  0.06328115
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421899 0.07245435  0.60017938
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840814 0.03666259 -0.25594002
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209535 0.02032345  1.78111953
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932779 0.02818836 -0.64852710
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136752 0.01540256 -1.14386423
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219324 0.02846319 -0.17772026
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724224 0.02364097  1.72608614
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145784 0.02650254 -0.76652333
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844821 0.04171476 -0.56624298
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616712 0.02967351 -0.61983132
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703108 0.03850541 -1.04578136
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589230 0.03892372 -1.03521351
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807220 0.07221463  1.03918134
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866456 0.06294119  0.06328084
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421894 0.07245436  0.60017888
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840820 0.03666256 -0.25594062
 ##          upper
-## 1   1.86078702
-## 2  -0.53802893
-## 3  -1.08348667
-## 4  -0.06614419
-## 5   1.81875843
-## 6  -0.66263355
-## 7  -0.40272126
-## 8  -0.50351089
+## 1   1.86078747
+## 2  -0.53802874
+## 3  -1.08348619
+## 4  -0.06614455
+## 5   1.81875873
+## 6  -0.66263338
+## 7  -0.40272114
+## 8  -0.50351114
 ## 9  -0.89484018
-## 10 -0.88263261
-## 11  1.32226265
-## 12  0.31001065
-## 13  0.88420043
-## 14 -0.11222268
+## 10 -0.88263251
+## 11  1.32226270
+## 12  0.31001029
+## 13  0.88419998
+## 14 -0.11222337
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the 
-##     -0.09918437      0.38804348      0.39881097      0.25596381 
+##     -0.09918045      0.38804757      0.39881482      0.25596786 
 ##   supplementary          budget              to            this 
-##      1.11588227      0.09917419      0.37009879      0.30695502 
+##      1.11588611      0.09917822      0.37010283      0.30695902 
 ##           house            last           april               , 
-##      0.19909094      0.28973711     -0.09524274      0.34537263 
+##      0.19909504      0.28974108     -0.09523885      0.34537668 
 ##            said              we           could            work 
-##     -0.71929065      0.47994283     -0.52974483      0.58229301 
+##     -0.71928670      0.47994683     -0.52974097      0.58229692 
 ##             our             way         through          period 
-##      0.74375378      0.33613585      0.65984665      0.55623798 
+##      0.74375771      0.33613989      0.65985048      0.55624195 
 ##              of          severe        economic        distress 
-##      0.33934285      1.27912620      0.47869052      1.84456196 
+##      0.33934690      1.27912996      0.47869452      1.84456493 
 ##               .           today             can          report 
-##      0.27354576      0.17421908      0.36380518      0.69178234 
+##      0.27354980      0.17422331      0.36380915      0.69178638 
 ##            that notwithstanding 
-##      0.08835553      1.84456196</code></pre>
+##      0.08835957      1.84456493</code></pre>
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
 <a href="#topic-models" class="anchor"></a>Topic models</h2>
 <p><strong>quanteda</strong> makes it very easy to fit topic models as well, e.g.:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, 
-                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
+                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))
 quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(quantdfm, <span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)
 quantdfm</code></pre></div>
 <pre><code>## Document-feature matrix of: 14 documents, 1,263 features (64.5% sparse).</code></pre>
@@ -867,30 +870,30 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1  Topic 2      Topic 3     Topic 4       Topic 5      
-## [1,] "fianna" "investment" "spending"  "level"       "kind"       
-## [2,] "fáil"   "scheme"     "review"    "investment"  "imagination"
-## [3,] "side"   "reductions" "million"   "introducing" "policies"   
-## [4,] "level"  "reduction"  "reduction" "welfare"     "wit"        
-## [5,] "third"  "spending"   "per"       "introduce"   "create"     
-##      Topic 6      Topic 7     Topic 8        Topic 9      Topic 10  
-## [1,] "million"    "taoiseach" "society"      "confidence" "fáil"    
-## [2,] "welfare"    "day"       "enterprising" "incomes"    "fianna"  
-## [3,] "support"    "gael"      "sense"        "future"     "national"
-## [4,] "back"       "case"      "equal"        "reductions" "irish"   
-## [5,] "investment" "banks"     "nation"       "million"    "ted"     
-##      Topic 11    Topic 12   Topic 13    Topic 14  Topic 15    Topic 16  
-## [1,] "taoiseach" "welfare"  "taoiseach" "levy"    "care"      "million" 
-## [2,] "may"       "system"   "employees" "million" "welfare"   "measures"
-## [3,] "fine"      "taxation" "rate"      "carbon"  "per"       "recent"  
-## [4,] "irish"     "fianna"   "referred"  "change"  "allowance" "scheme"  
-## [5,] "stimulus"  "fáil"     "debate"    "welfare" "hit"       "reduce"  
-##      Topic 17  Topic 18      Topic 19  Topic 20   
-## [1,] "live"    "alternative" "child"   "failed"   
-## [2,] "support" "citizenship" "benefit" "strategy" 
-## [3,] "second"  "wealth"      "day"     "needed"   
-## [4,] "fianna"  "adjustment"  "today"   "ministers"
-## [5,] "based"   "breaks"      "bank"    "system"</code></pre>
+<pre><code>##      Topic 1     Topic 2     Topic 3  Topic 4     Topic 5      
+## [1,] "taoiseach" "fianna"    "fianna" "taoiseach" "hope"       
+## [2,] "fine"      "policies"  "fáil"   "employees" "opportunity"
+## [3,] "gael"      "million"   "side"   "rate"      "tough"      
+## [4,] "may"       "allowance" "level"  "referred"  "order"      
+## [5,] "irish"     "child"     "third"  "debate"    "created"    
+##      Topic 6      Topic 7   Topic 8        Topic 9     Topic 10   
+## [1,] "measures"   "welfare" "welfare"      "spending"  "failed"   
+## [2,] "million"    "workers" "system"       "welfare"   "strategy" 
+## [3,] "investment" "care"    "taxation"     "level"     "needed"   
+## [4,] "details"    "system"  "government's" "reduced"   "ministers"
+## [5,] "scheme"     "per"     "high"         "reduction" "system"   
+##      Topic 11     Topic 12       Topic 13     Topic 14      Topic 15 
+## [1,] "investment" "society"      "million"    "alternative" "child"  
+## [2,] "future"     "enterprising" "support"    "citizenship" "benefit"
+## [3,] "continue"   "sense"        "key"        "wealth"      "day"    
+## [4,] "rate"       "equal"        "adjustment" "adjustment"  "today"  
+## [5,] "level"      "nation"       "welfare"    "breaks"      "bank"   
+##      Topic 16      Topic 17   Topic 18 Topic 19  Topic 20    
+## [1,] "kind"        "fianna"   "child"  "levy"    "welfare"   
+## [2,] "imagination" "fáil"     "fianna" "carbon"  "confidence"
+## [3,] "policies"    "national" "want"   "million" "back"      
+## [4,] "wit"         "irish"    "banks"  "change"  "investment"
+## [5,] "create"      "support"  "fáil"   "ensure"  "support"</code></pre>
 </div>
 </div>
 </div>

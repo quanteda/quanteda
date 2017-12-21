@@ -15,7 +15,6 @@ data_char_sampletext
 }
 \description{
 This is a long paragraph (2,914 characters) of text taken from a debate on
-the Irish budget in \emph{Dáil Éireann} by Socialist \emph{Teachta Dála} (TD)
 Joe Higgins, delivered December 8, 2011.
 }
 \examples{

@@ -91,7 +91,7 @@ a list of integer vectors containing type IDs with index keys as an
   for faster matching.
 
 This is an internal function for \code{regex2id()} that select types using an
-index of types by reular expressions.
+index of types by regular expressions.
 
 An internal function for \code{\link{regex2id}} that constructs an index of
 regex patterns (e.g. \code{^xxxx}, \code{xxxx$} and \code{^xxxx$}) to avoid

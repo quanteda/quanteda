@@ -240,7 +240,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' For a \link{dfm} object, returns a (weighted) document frequency for each
 #' term.  The default is a simple count of the number of documents in which a
 #' feature occurs more than a given frequency threshold.  (The default threshold
-#' is  zero, meaning that any feature occuring at least once in a document will
+#' is  zero, meaning that any feature occurring at least once in a document will
 #' be counted.)
 #' @param x a \link{dfm}
 #' @param scheme type of document frequency weighting

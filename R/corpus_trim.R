@@ -3,7 +3,7 @@
 #' Removes sentences from a corpus or a character vector shorter than a 
 #' specified length.
 #' @param x \link{corpus} or character object whose sentences will be selected.
-#' @param what units of triming, \code{"sentences"} or \code{"paragraphs"}, or
+#' @param what units of trimming, \code{"sentences"} or \code{"paragraphs"}, or
 #'   \code{"documents"}
 #' @param min_ntoken,max_ntoken minimum and maximum lengths in word tokens 
 #'   (excluding punctuation)
