@@ -23,6 +23,7 @@ knitr::opts_chunk$set(echo = TRUE)
 devtools::install_github("quanteda/quanteda.data")
 library(quanteda)
 library(quanteda.data)
+library(stringi)
 ```
 
 
@@ -30,8 +31,7 @@ library(quanteda.data)
 等で
 ```{r}
 corp <- data_download(url = 'https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1')
-
-texts(corp) <- stringi::stri_trans_nfkc(texts(corp))
+texts(corp) <- stri_trans_nfkc(texts(corp))
 
 
 ```
@@ -51,13 +51,28 @@ range(docvars(corp, 'created_at'))
 ```{r}
 
 toks <- tokens(corp, remove_separator = FALSE, remove_url = TRUE)
-toks <- tokens_select(toks, '^[\\w#@]+$', valuetype = 'regex', padding = TRUE)
-toks <- tokens_remove(toks, '^[:hira:]$', valuetype = 'regex', padding = TRUE)
+toks <- tokens_remove(toks, '^[\\b\\s]+$', valuetype = 'regex', padding = TRUE)
 
-col <- textstat_collocations(toks, min_count = 100)
-col <- col[stringi::stri_detect_regex(col$collocation, '([:number:]|[:kana:]|[:han:])'),]
+head(toks)
+#toks <- tokens_select(toks, '^[\\w#@]+$', valuetype = 'regex', padding = TRUE)
+#toks <- tokens_remove(toks, '^[:hira:]$', valuetype = 'regex', padding = TRUE)
 
+toks_hira <- tokens_keep(toks, '^[:hira:]+$', valuetype = 'regex', padding = TRUE)
+col_hira <- textstat_collocations(toks_hira, min_count = 10, size = 2)
+
+stop <- featnames(dfm_trim(dfm(toks_hira), min_docfreq = 0.05))
+
+toks <- tokens_remove(toks, stop, padding = TRUE)
+toks <- tokens_compound(toks, col_hira[col_hira$z > 3,], concatenator = '')
+
+#toks <- tokens_remove(toks, feat, valuetype = 'fixed', padding = TRUE)
+#toks <- tokens_remove(toks, '\\W', valuetype = 'regex', padding = TRUE)
+
+
+col <- textstat_collocations(toks, min_count = 10)
+#col <- col[stri_detect_regex(col$collocation, '([:number:]|[:kana:]|[:han:])'),]
 toks <- tokens_compound(toks, col[col$z > 3,], concatenator = '')
+
 #toks2 <- tokens_compound(toks, col[col$z > 3,], concatenator = '', join = FALSE)
 toks <- tokens_compound(toks, phrase('# *'), concatenator = '')
 mt <- dfm(toks)
