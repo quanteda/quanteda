@@ -258,9 +258,9 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
 #&gt;   text2     1      1      2    1</div><div class='input'><span class='fu'>dfm_weight</span>(<span class='no'>mydfm</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>apple</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>banana</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>much</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
 #&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
-#&gt; docs    feat1 feat2 feat3 feat4
-#&gt;   text1     5     1     3   0  
-#&gt;   text2     5     1     6   0.5</div><div class='input'>
+#&gt; docs    apple better banana much
+#&gt;   text1     5      1      3  0  
+#&gt;   text2     5      1      6  0.5</div><div class='input'>
 </div><div class='input'><span class='co'># smooth the dfm</span>
 <span class='fu'>dfm_smooth</span>(<span class='no'>mydfm</span>, <span class='fl'>0.5</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (0% sparse).
 #&gt; 2 x 4 sparse Matrix of class "dfm"

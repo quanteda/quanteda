@@ -119,4 +119,5 @@ Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 }
 \keyword{collocations}
 \keyword{experimental}
+\keyword{internal}
 \keyword{textstat}

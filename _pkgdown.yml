@@ -128,7 +128,13 @@ reference:
 - title: Text Statistics
   desc: Functions for computing statistics from texts and dfm objects.
   contents:
-    - starts_with("textstat_")
+    - textstat_collocations
+    - textstat_dist
+    - textstat_lexdiv
+    - textstat_simil
+    - textstat_frequency
+    - textstat_keyness
+    - textstat_readability
     - sparsity
     - topfeatures
 - title: Dictionary functions
