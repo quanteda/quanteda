@@ -42,22 +42,22 @@ Trimming a \link{dfm} object is an operation based on the \emph{values}
 \examples{
 (myDfm <- dfm(data_corpus_inaugural[1:5]))
 
-# keep only words occuring >=10 times and in >=2 docs
+# keep only words occurring >=10 times and in >=2 docs
 dfm_trim(myDfm, min_count = 10, min_docfreq = 2) 
 
-# keep only words occuring >=10 times and in at least 0.4 of the documents
+# keep only words occurring >=10 times and in at least 0.4 of the documents
 dfm_trim(myDfm, min_count = 10, min_docfreq = 0.4)
 
-# keep only words occuring <=10 times and in <=2 docs
+# keep only words occurring <=10 times and in <=2 docs
 dfm_trim(myDfm, max_count = 10, max_docfreq = 2) 
 
-# keep only words occuring <=10 times and in at most 3/4 of the documents
+# keep only words occurring <=10 times and in at most 3/4 of the documents
 dfm_trim(myDfm, max_count = 10, max_docfreq = 0.75)
 
-# keep only words occuring at least 0.01 times and in >=2 documents
+# keep only words occurring at least 0.01 times and in >=2 documents
 dfm_trim(myDfm, min_count = .01, min_docfreq = 2)
 
-# keep only words occuring 5 times in 1000, and in 2 of 5 of documents
+# keep only words occurring 5 times in 1000, and in 2 of 5 of documents
 dfm_trim(myDfm, min_docfreq = 0.4, min_count = 0.005)
 
 \dontrun{

@@ -29,7 +29,7 @@ A named numeric vector of feature counts, where the names are the
   feature labels, or a list of these if \code{groups} is given.
 }
 \description{
-List the most (or least) frequently occuring features in a \link{dfm}, either
+List the most (or least) frequently occurring features in a \link{dfm}, either
 as a whole or separated by document.
 }
 \examples{

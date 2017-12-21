@@ -1,7 +1,6 @@
 #' A paragraph of text for testing various text-based functions
 #' 
 #' This is a long paragraph (2,914 characters) of text taken from a debate on
-#' the Irish budget in \emph{Dáil Éireann} by Socialist \emph{Teachta Dála} (TD)
 #' Joe Higgins, delivered December 8, 2011.
 #' @format character vector with one element
 #' @keywords data
@@ -167,14 +166,14 @@ NULL
 
 #' Confidence debate from 1991 Irish Parliament
 #' 
-#' Texts of speeches from a no-confidence motion debated in the Irish Dail in
+#' Texts of speeches from a no-confidence motion debated in the Irish Dáil in
 #' October 1991 over the future of the Fianna Fail-Progressive Democrat
 #' coalition.  (See Laver and Benoit 2002 for details.)
 #' @format \code{data_corpus_dailnoconf1991} is a corpus with 58 texts, 
 #'   including docvars for \code{name}, \code{party}, and \code{position}.
 #' @references Laver, Michael, and Kenneth Benoit. 2002. 
 #'   "\href{http://www.kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf}{Locating 
-#'   TDs in Policy Spaces: Wordscoring Dail Speeches}." \emph{Irish Political 
+#'   TDs in Policy Spaces: Wordscoring Dáil Speeches}." \emph{Irish Political 
 #'   Studies} 17 (Summer): 59-73.
 #'   
 #'   Laver, Michael, Kenneth Benoit, and John Garry. 2003. 

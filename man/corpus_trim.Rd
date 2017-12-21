@@ -14,7 +14,7 @@ char_trim(x, what = c("sentences", "paragraphs", "documents"),
 \arguments{
 \item{x}{\link{corpus} or character object whose sentences will be selected.}
 
-\item{what}{units of triming, \code{"sentences"} or \code{"paragraphs"}, or
+\item{what}{units of trimming, \code{"sentences"} or \code{"paragraphs"}, or
 \code{"documents"}}
 
 \item{min_ntoken, max_ntoken}{minimum and maximum lengths in word tokens 
