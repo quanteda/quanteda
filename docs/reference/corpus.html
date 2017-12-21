@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>construct a corpus object — corpus • quanteda</title>
+<title>Construct a corpus object — corpus • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -146,7 +146,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>construct a corpus object</h1>
+    <h1>Construct a corpus object</h1>
     </div>
 
     
@@ -300,7 +300,7 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;        Labour   298    683        29       Labour
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Tue Dec 19 15:37:54 2017
+#&gt; Created: Thu Dec 21 10:34:03 2017
 #&gt; Notes:    </div><div class='input'>
 <span class='fu'>corpus</span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>data_corpus_irishbudget2010</span>))</div><div class='output co'>#&gt; Corpus consisting of 14 documents and 0 docvars.</div><div class='input'>
 <span class='co'># import a tm VCorpus</span>
@@ -318,18 +318,18 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 }</div><div class='output co'>#&gt; Corpus consisting of 9 documents:
 #&gt; 
 #&gt;   Text Types Tokens Sentences       datetimestamp id language
-#&gt;  text1  1125   3280        88 2017-12-19 15:37:54  1       en
-#&gt;  text2   142    260         4 2017-12-19 15:37:54  2       en
-#&gt;  text3   251    499        15 2017-12-19 15:37:54  3       en
-#&gt;  text4   322    679        21 2017-12-19 15:37:54  4       en
-#&gt;  text5   298    683        29 2017-12-19 15:37:54  5       en
-#&gt;  text6   251    483        14 2017-12-19 15:37:54  6       en
-#&gt;  text7    77    114         5 2017-12-19 15:37:54  7       en
-#&gt;  text8    88    134         4 2017-12-19 15:37:54  8       en
-#&gt;  text9   346    723        27 2017-12-19 15:37:54  9       en
+#&gt;  text1  1125   3280        88 2017-12-21 10:34:03  1       en
+#&gt;  text2   142    260         4 2017-12-21 10:34:03  2       en
+#&gt;  text3   251    499        15 2017-12-21 10:34:03  3       en
+#&gt;  text4   322    679        21 2017-12-21 10:34:03  4       en
+#&gt;  text5   298    683        29 2017-12-21 10:34:03  5       en
+#&gt;  text6   251    483        14 2017-12-21 10:34:03  6       en
+#&gt;  text7    77    114         5 2017-12-21 10:34:03  7       en
+#&gt;  text8    88    134         4 2017-12-21 10:34:03  8       en
+#&gt;  text9   346    723        27 2017-12-21 10:34:03  9       en
 #&gt; 
 #&gt; Source:  Converted from tm Corpus 'tmCorp'
-#&gt; Created: Tue Dec 19 15:37:54 2017
+#&gt; Created: Thu Dec 21 10:34:03 2017
 #&gt; Notes:    </div><div class='input'>
 <span class='co'># construct a corpus from a data.frame</span>
 <span class='no'>mydf</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>letter_factor</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='fu'>rep</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>2</span>)),
@@ -355,7 +355,7 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;  fromDf_6     6      6         1             c         6
 #&gt; 
 #&gt; Source:  From a data.frame called mydf.
-#&gt; Created: Tue Dec 19 15:37:54 2017
+#&gt; Created: Thu Dec 21 10:34:03 2017
 #&gt; Notes:    </div><div class='input'>
 <span class='co'># construct a corpus from a kwic object</span>
 <span class='no'>mykwic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"southern"</span>)
@@ -392,7 +392,7 @@ objects (including those created by <span class="pkg">readtext</span>).</p></td>
 #&gt;  text14.post     5      5         1 1953-Eisenhower 1226 1226 southern    post
 #&gt; 
 #&gt; Source:  Corpus created from kwic(x, keywords = "southern")
-#&gt; Created: Tue Dec 19 15:37:54 2017
+#&gt; Created: Thu Dec 21 10:34:03 2017
 #&gt; Notes:    </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

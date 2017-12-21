@@ -58,8 +58,8 @@ reference:
   desc: Functions for constructing and manipulating corpus class objects.
   contents:
     - starts_with("corpus")
-    - metacorpus
     - docvars
+    - head.corpus
     - metacorpus
     - metadoc
     - texts
@@ -79,6 +79,7 @@ reference:
     - tokens_tolower
     - tokens_toupper
     - tokens_wordstem
+    - types
     - as.character.tokens
     - as.list.tokens
     - as.tokens
@@ -105,12 +106,14 @@ reference:
     - dfm_select
     - dfm_subset
     - dfm_sort
+    - dfm_tfidf
     - dfm_tolower
     - dfm_toupper
     - dfm_trim
     - dfm_smooth
     - dfm_weight
     - dfm_wordstem
+    - docfreq
     - head.dfm
     - tail.dfm
     - as.dfm
@@ -171,11 +174,11 @@ reference:
     - ntype
     - starts_with("docnames")
     - featnames
-    - stopwords
 - title: Miscellaneous functions
   contents:
     - phrase
     - as.list.dist
     - convert
     - bootstrap_dfm
+    - spacyr-methods
 

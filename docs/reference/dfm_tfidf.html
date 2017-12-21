@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compute the (weighted) document frequency of a feature — docfreq • quanteda</title>
+<title>Weight a dfm by <em>tf-idf</em> — dfm_tfidf • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -146,85 +146,93 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Compute the (weighted) document frequency of a feature</h1>
+    <h1>Weight a dfm by <em>tf-idf</em></h1>
     </div>
 
     
-    <p>For a <a href='dfm.html'>dfm</a> object, returns a (weighted) document frequency for each
-term.  The default is a simple count of the number of documents in which a
-feature occurs more than a given frequency threshold.  (The default threshold
-is  zero, meaning that any feature occuring at least once in a document will
-be counted.)</p>
+    <p>Weight a dfm by term frequency-inverse document frequency (<em>tf-idf</em>), 
+with full control over options.  Uses fully sparse methods for efficiency.</p>
     
 
-    <pre class="usage"><span class='fu'>docfreq</span>(<span class='no'>x</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"inverse"</span>, <span class='st'>"inversemax"</span>, <span class='st'>"inverseprob"</span>,
-  <span class='st'>"unary"</span>), <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>use.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>dfm_tfidf</span>(<span class='no'>x</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"count"</span>, <span class='kw'>scheme_df</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a <a href='dfm.html'>dfm</a></p></td>
+      <td><p>object for which idf or tf-idf will be computed (a document-feature 
+matrix)</p></td>
     </tr>
     <tr>
-      <th>scheme</th>
-      <td><p>type of document frequency weighting</p></td>
+      <th>scheme_tf</th>
+      <td><p>scheme for <code><a href='dfm_weight.html'>dfm_weight</a></code>; defaults to <code>"count"</code></p></td>
     </tr>
     <tr>
-      <th>smoothing</th>
-      <td><p>added to the quotient before taking the logarithm</p></td>
-    </tr>
-    <tr>
-      <th>k</th>
-      <td><p>added to the denominator in the "inverse" weighting types, to 
-prevent a zero document count for a term</p></td>
+      <th>scheme_df</th>
+      <td><p>scheme for <code><a href='docfreq.html'>docfreq</a></code>; defaults to
+<code>"inverse"</code>.  Other options to <code><a href='docfreq.html'>docfreq</a></code> can be passed
+through the ellipsis (<code>...</code>).</p></td>
     </tr>
     <tr>
       <th>base</th>
-      <td><p>the base with respect to which logarithms in the inverse document
-frequency weightings are computed; default is 10 (see Manning, 
-  Raghavan, and Schutze 2008, p123).</p></td>
-    </tr>
-    <tr>
-      <th>threshold</th>
-      <td><p>numeric value of the threshold <em>above which</em> a feature 
-will considered in the computation of document frequency.  The default is 
-0, meaning that a feature's document frequency will be the number of 
-documents in which it occurs greater than zero times.</p></td>
-    </tr>
-    <tr>
-      <th>use.names</th>
-      <td><p>logical; if <code>TRUE</code> attach feature labels as names of 
-the resulting numeric vector</p></td>
+      <td><p>the base for the logarithms in the <code><a href='tf.html'>tf</a></code> and
+<code><a href='docfreq.html'>docfreq</a></code> calls; default is 10</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>not used</p></td>
+      <td><p>additional arguments passed to <code><a href='docfreq.html'>docfreq</a></code>.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>a numeric vector of document frequencies for each feature</p>
+    <p><code>dfm_tfidf</code> computes term frequency-inverse document frequency
+  weighting.  The default is to use counts instead of normalized term
+  frequency (the relative term frequency within document), but this
+  can be overridden using <code>scheme_tf = "prop"</code>.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Manning, C. D., Raghavan, P., &amp; Schutze, H. (2008). 
   <em>Introduction to Information Retrieval</em>. Cambridge University Press.</p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='dfm_weight.html'>dfm_weight</a></code>, <code><a href='docfreq.html'>docfreq</a></code></p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>2</span>])
-<span class='fu'>docfreq</span>(<span class='no'>mydfm</span>[, <span class='fl'>1</span>:<span class='fl'>20</span>])</div><div class='output co'>#&gt; fellow-citizens              of             the          senate             and 
-#&gt;               1               2               2               1               2 
-#&gt;           house representatives               :           among    vicissitudes 
-#&gt;               1               1               2               1               1 
-#&gt;        incident              to            life              no           event 
-#&gt;               1               2               1               1               1 
-#&gt;           could            have          filled              me            with 
-#&gt;               1               2               1               2               1 </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='is.dfm.html'>as.dfm</a></span>(<span class='no'>data_dfm_lbgexample</span>)
+<span class='fu'>head</span>(<span class='no'>mydfm</span>[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
+#&gt; 6 x 6 sparse Matrix of class "dfm"
+#&gt;     features
+#&gt; docs  E  F   G   H   I   J
+#&gt;   R1 45 78 115 146 158 146
+#&gt;   R2  0  2   3  10  22  45
+#&gt;   R3  0  0   0   0   0   0
+#&gt;   R4  0  0   0   0   0   0
+#&gt;   R5  0  0   0   0   0   0
+#&gt;   V1  0  0   0   2   3  10</div><div class='input'><span class='fu'>head</span>(<span class='fu'>dfm_tfidf</span>(<span class='no'>mydfm</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
+#&gt; 6 x 6 sparse Matrix of class "dfm"
+#&gt;     features
+#&gt; docs        E          F         G        H        I        J
+#&gt;   R1 35.01681 37.2154579 54.868944 43.95038 47.56274 43.95038
+#&gt;   R2  0        0.9542425  1.431364  3.01030  6.62266 13.54635
+#&gt;   R3  0        0          0         0        0        0      
+#&gt;   R4  0        0          0         0        0        0      
+#&gt;   R5  0        0          0         0        0        0      
+#&gt;   V1  0        0          0         0.60206  0.90309  3.01030</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>mydfm</span>)[<span class='fl'>5</span>:<span class='fl'>15</span>]</div><div class='output co'>#&gt; E F G H I J K L M N O 
+#&gt; 1 2 2 3 3 3 4 4 4 4 4 </div><div class='input'><span class='fu'>head</span>(<span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span>(<span class='no'>mydfm</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
+#&gt; 6 x 6 sparse Matrix of class "dfm"
+#&gt;     features
+#&gt; docs  E  F   G   H   I   J
+#&gt;   R1 45 78 115 146 158 146
+#&gt;   R2  0  2   3  10  22  45
+#&gt;   R3  0  0   0   0   0   0
+#&gt;   R4  0  0   0   0   0   0
+#&gt;   R5  0  0   0   0   0   0
+#&gt;   V1  0  0   0   2   3  10</div><div class='input'>
 <span class='co'># replication of worked example from</span>
 <span class='co'># https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf</span>
 <span class='no'>wiki_dfm</span> <span class='kw'>&lt;-</span>
@@ -239,22 +247,32 @@ the resulting numeric vector</p></td>
 #&gt;            features
 #&gt; docs        this is a sample another example
 #&gt;   document1    1  1 2      1       0       0
-#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wiki_dfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt; 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt;      this        is         a    sample   another   example 
-#&gt; 0.2218487 0.2218487 0.3010300 0.3010300 0.3010300 0.3010300 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"unary"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       1       1       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inversemax"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt; 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverseprob"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       0       0       0       0       0       0 </div></pre>
+#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>wiki_dfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>dfm_tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>round</span>(<span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
+#&gt; 2 x 6 sparse Matrix of class "dfm"
+#&gt;            features
+#&gt; docs        this is    a sample another example
+#&gt;   document1    0  0 0.12   0.06    0       0   
+#&gt;   document2    0  0 0      0       0.09    0.13</div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># comparison with tm</span>
+<span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"tm"</span>)) {
+    <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>wiki_dfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>weightTfIdf</span>() <span class='kw'>%&gt;%</span> <span class='fu'>as.matrix</span>()
+    <span class='co'># same as:</span>
+    <span class='fu'>dfm_tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
+}
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
