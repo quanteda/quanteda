@@ -1,3 +1,5 @@
+# base methods --------------
+
 #' @method "[" textstat
 #' @export
 #' @noRd
@@ -10,14 +12,14 @@
     return(x)
 }
 
+# textstat_select ------------
+
 #' Select rows of textstat objects by glob, regex or fixed patterns
 #'
 #' Users can subset output object of \code{textstat_collocations},
 #' \code{textstat_keyness} or \code{textstat_frequency} based on
 #' \code{"glob"}, \code{"regex"} or \code{"fixed"} patterns using this method.
-#' @method textstat_select textstat
 #' @param x a \code{textstat} object
-#' @inheritParams corpus_subset 
 #' @inheritParams pattern
 #' @param selection whether to \code{"keep"} or \code{"remove"} the rows that
 #'   match the pattern
@@ -31,7 +33,9 @@
 #' keyness <- textstat_keyness(mydfm)
 #' textstat_select(keyness, 'america*')
 #' 
-textstat_select <- function(x, pattern = NULL, selection = c("keep", "remove"), 
+textstat_select <- function(x, 
+                            pattern = NULL, 
+                            selection = c("keep", "remove"), 
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE) {
     UseMethod("textstat_select")
