@@ -25,7 +25,7 @@
 #'   match the pattern
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
-#' @keywords textstat
+#' @keywords textstat internal
 #' @export
 #' @examples
 #' period <- ifelse(docvars(data_corpus_inaugural, "Year") < 1945, "pre-war", "post-war")

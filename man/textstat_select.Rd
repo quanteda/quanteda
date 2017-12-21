@@ -34,4 +34,5 @@ keyness <- textstat_keyness(mydfm)
 textstat_select(keyness, 'america*')
 
 }
+\keyword{internal}
 \keyword{textstat}
