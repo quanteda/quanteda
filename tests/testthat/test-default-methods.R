@@ -254,13 +254,13 @@ test_that("test new dfm methods", {
         "dfm_wordstem\\(\\) only works on dfm objects"
     )
     expect_error(
-        tfidf(TRUE),
-        "tfidf\\(\\) only works on dfm objects"
+        dfm_tfidf(TRUE),
+        "dfm_tfidf\\(\\) only works on dfm objects"
     )
-    expect_error(
-        tf(TRUE),
-        "tf\\(\\) only works on dfm objects"
-    )
+    # expect_error(
+    #     tf(TRUE),
+    #     "tf\\(\\) only works on dfm objects"
+    # )
     expect_error(
         docfreq(TRUE),
         "docfreq\\(\\) only works on dfm objects"

@@ -61,7 +61,7 @@ test_that("test textstat_frequency works with weights", {
     corp1 <- corpus(txt, docvars = data.frame(grp2 = grp1))
     
     dfm1 <- dfm(corp1)
-    dfm1weighted <- dfm_weight(dfm1, "relfreq")
+    dfm1weighted <- dfm_weight(dfm1, "prop")
     
     expect_equivalent(
         textstat_frequency(dfm1weighted),
