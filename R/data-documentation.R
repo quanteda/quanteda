@@ -1,4 +1,4 @@
-#' a paragraph of text for testing various text-based functions
+#' A paragraph of text for testing various text-based functions
 #' 
 #' This is a long paragraph (2,914 characters) of text taken from a debate on
 #' the Irish budget in \emph{Dáil Éireann} by Socialist \emph{Teachta Dála} (TD)
@@ -12,7 +12,7 @@
 #' tokens(data_char_sampletext, remove_punct = TRUE)
 "data_char_sampletext"
 
-#' immigration-related sections of 2010 UK party manifestos
+#' Immigration-related sections of 2010 UK party manifestos
 #' 
 #' Extracts from the election manifestos of 9 UK political parties from 2010, related
 #' to immigration or asylum-seekers.
@@ -75,7 +75,7 @@
 # save(data_corpus_irishbudget2010, file="data/data_corpus_irishbudget2010.RData")
 
 
-#' internal data sets
+#' Internal data sets
 #' 
 #' Data sets used for mainly internal purposes by the \pkg{quanteda} package.
 #' @name data-internal

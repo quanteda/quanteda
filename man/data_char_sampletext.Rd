@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_char_sampletext}
 \alias{data_char_sampletext}
-\title{a paragraph of text for testing various text-based functions}
+\title{A paragraph of text for testing various text-based functions}
 \format{character vector with one element}
 \source{
 Dáil Éireann Debate, 
