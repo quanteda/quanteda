@@ -12,7 +12,7 @@ corpus_subset(x, subset, select, ...)
 \item{subset}{logical expression indicating the documents to keep: missing
 values are taken as false}
 
-\item{select}{expression, indicating the docvars to select from the corpus}
+\item{select}{expression, indicating the \link{docvars} to keep}
 
 \item{...}{not used}
 }

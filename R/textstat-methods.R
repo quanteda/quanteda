@@ -17,13 +17,14 @@
 #' \code{"glob"}, \code{"regex"} or \code{"fixed"} patterns using this method.
 #' @method subset textstat
 #' @param x a \code{textstat} object
+#' @inheritParams corpus_subset 
 #' @inheritParams pattern
 #' @param selection whether to \code{"keep"} or \code{"remove"} the rows that
 #'   match the pattern
 #' @inheritParams valuetype
 #' @param ... additional arguments not used
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
-#' @noRd
+#' @keywords internal textstat
 #' @export
 #' @examples
 #' period <- ifelse(docvars(data_corpus_inaugural, "Year") < 1945, "pre-war", "post-war")
