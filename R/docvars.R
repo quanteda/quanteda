@@ -1,6 +1,6 @@
 # docvars ------
 
-#' Get or set for document-level variables
+#' Get or set document-level variables
 #' 
 #' Get or set variables associated with a document in a \link{corpus},
 #' \link{tokens} or \link{dfm} object.
