@@ -23,13 +23,56 @@ knitr::opts_chunk$set(echo = TRUE)
 devtools::install_github("quanteda/quanteda.data")
 library(quanteda)
 library(quanteda.data)
+library(dplyr)
+library(stringr)
+library(lubridate)
 ```
 
 
 ## 衆議院外務委員会議事録のコーパスをダウンロード
-等で
+国会会議録のダウンロードには`kaigiroku`パッケージを使う。
+```{r eval = FALSE}
+devtools::install_github("amatsuo/kaigiroku")
+library(kaigiroku)
+
+tmp_dl_folder <- "~/Desktop/temp/foreign_affairs_committee/"
+# ここでは年ごとのスピーチデータを作成してそれをあとで連結している
+# APIが応答しない場合に途中からダウンロードをやり直す必要があるため
+current_committee <- "外務"
+for(year in c(1947:2017)) {
+  cat(paste0(Sys.time() %>% as.character(), " ", year, current_committee, "\n"))
+  speech_data <- get_meeting(meetingName = current_committee, year = year)
+  if(is.null(speech_data)) next
+  outfile <- sprintf("%s/%s_%s.Rdata", tmp_dl_folder, year, current_committee)
+  save(speech_data, file = outfile, compress = "bzip2")
+  Sys.sleep(10)
+}
+
+files <- list.files(tmp_dl_folder, 
+                    full = TRUE, pattern = "Rdata")
+
+foreign_affairs_committee_speeches <- 
+  lapply(as.list(files), function(x){load(x); return(speech_data)}) %>%
+  bind_rows()
+save(foreign_affairs_committee_speeches, 
+     file = paste0(tmp_dl_folder, "foreign_affairs_committee_speeches.rda"))
+```
+
+### データのロード、quantedaコーパスの作成
 ```{r}
-corp_full <- data_download('data_corpus_foreignaffairscommittee')
+data_folder <- "~/Dropbox/temp/"
+
+load(paste0(data_folder, "foreign_affairs_committee_speeches.rda"))
+## 不要な変数を消去、変数をリネーム（テキストフィールドの変数名を"text"としておくと
+## corpus()は自動で判別し、"text"からコーパスを作成し、
+## 残りの変数をdocvarに格納してくれる
+foreign_affairs_committee_speeches <- 
+  foreign_affairs_committee_speeches %>% 
+  select(-c(meetingURL, pdfURL)) %>% 
+  rename(text = speech)
+  
+corp_full <- corpus(foreign_affairs_committee_speeches)
+
 ```
 
 
@@ -40,12 +83,39 @@ range(docvars(corp_full, 'date'))
 ```
 
 
-## 1991から2010年までの期間の議事録を選択
-```{r}
-corp <- corpus_subset(corp_full, 1991 <= year & year <= 2010)
-```
 
 # 前処理
+発言者のいないレコード（典型的には各議事録の0番目の出席者、議題等の部分）を取り除く、また、各発言の冒頭は発言者の名前＋役職名なので、その部分から役職を取り出して新しい`docvar`を作る。
+
+```{r}
+corp_full <- corpus_subset(corp_full, speaker != "")
+
+## capacity変数の作成
+capacity <- corp_full %>%
+  str_sub(1, 20) %>%
+  str_replace_all("\\s+.+|\n", "") %>% # 冒頭の名前部分の取り出し
+  str_replace( "^.+?(参事|政府特別補佐人|内閣官房|会計検査院|最高裁判所長官代理者|主査|議員|副?大臣|副?議長|委員|参考人|分科員|公述人|君(（.+）)?$)", "\\1") %>% # 冒頭の○から、名前部分までを消去
+  str_replace("（.+）", "")
+capacity <- str_replace(capacity, "^○.+", "Other") # マイナーな役職名は一括して"Other"に
+knitr::kable(as.data.frame(table(capacity)))
+
+docvars(corp_full, 'capacity') <- capacity
+```
+
+## 1991から2010年までの期間の議事録を選択
+```{r}
+docvars(corp_full, "year") <- docvars(corp_full, "date") %>% year() %>% as.numeric()
+corp <- corpus_subset(corp_full, 1991 <= year & year <= 2010)
+
+ndoc(corp)
+```
+
+## 委員、大臣、副大臣の発言を選択
+```{r}
+corp <- corpus_subset(corp, capacity %in% c("委員", "大臣", "副大臣"))
+ndoc(corp)
+```
+
 
 ## 語の分割と結合
 日本語の分析では，形態素解析ツールを用いて分かち書きを行うことが多いが，**quanteda**の`tokens()`は，[ICU](http://site.icu-project.org/)で定義された規則に従って文を語に分割することができる．さらに，漢字やカタカナの連続的共起を`textstat_collocations()`を用いて抽出し，`tokens_compound()`によって統計的に優位な組み合わせを結合すると，より質の高いトークン化を実現できる．`textstat_collocations()`を用いる場合は，事前に`tokens_select()`と正規表現で，対象とする語だけを選択する．この際，`padding = TRUE`とし，語の間の距離が維持されるように注意する．
@@ -109,3 +179,11 @@ size <- sqrt(rowSums(mt_co))
 textplot_network(mt_co, min_freq = 0.95, edge_alpha = 0.9, vertex_size = size / max(size) * 3)
 ```
 
+## トピックモデルの推定
+`convert()`を利用して、データ形式を変換し、`topicmodels::LDA`で推定する。
+```{r eval = FALSE}
+require(topicmodels)
+
+model_lda_foreign_affairs <- LDA(convert(mt, to = "topicmodels"), k = 10)
+get_terms(model_lda_foreign_affairs, 10)
+```
