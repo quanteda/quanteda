@@ -15,7 +15,7 @@ textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
 \arguments{
 \item{x}{a \link{fcm} or \link{dfm}  object}
 
-\item{min_freq}{a frequency count threshold or proportion for co-occurance
+\item{min_freq}{a frequency count threshold or proportion for co-occurrence
 frequencies of features to be plotted.}
 
 \item{omit_isolated}{if \code{TRUE}, features do not occur more frequent than
@@ -25,7 +25,7 @@ frequencies of features to be plotted.}
 
 \item{edge_alpha}{opacity of edges ranging from 0 to 1.0.}
 
-\item{edge_size}{size of edges for most frequent cooccurances. The size of
+\item{edge_size}{size of edges for most frequent co-occurrence The size of
 other edges are determined proportionally to the highest frequency.}
 
 \item{vertex_color}{color of vertices.}

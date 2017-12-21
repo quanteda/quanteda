@@ -134,7 +134,7 @@ as_dfm_constructor <- function(x) {
 
 #' Identify the most frequent features in a dfm
 #' 
-#' List the most (or least) frequently occuring features in a \link{dfm}, either
+#' List the most (or least) frequently occurring features in a \link{dfm}, either
 #' as a whole or separated by document.
 #' @name topfeatures
 #' @param x the object whose features will be returned

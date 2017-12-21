@@ -167,6 +167,7 @@
 <li>Added Chinese stopwords.</li>
 <li>Added a pkgdown vignette for applications in the Chinese language.</li>
 <li>Added <code><a href="../reference/textplot_network.html">textplot_network()</a></code> function.</li>
+<li>The <code><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords()</a></code> function and the associated internal data object <code>data_char_stopwords</code> have been removed from <strong>quanteda</strong>, and replaced by equivalent functionality in the <strong>stopwords</strong> package.</li>
 </ul>
 </div>
 <div id="bug-fixes-and-stability-enhancements" class="section level3">
@@ -314,7 +315,7 @@
 <li>Added corpus constructor for corpus objects (#690).</li>
 <li>Added dictionary constructor for dictionary objects (#690).</li>
 <li>Added a tokens constructor for tokens objects (#690), including updates to <code><a href="../reference/tokens.html">tokens()</a></code> that improve the consistency and efficiency of the tokenization.</li>
-<li>Added new <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>: <code>language_stemmer</code> and <code>language_stopwords</code>, now used for default in <code>*_wordstem</code> functions and <code><a href="../reference/stopwords.html">stopwords()</a></code> for defaults, respectively. Also uses this option in <code><a href="../reference/dfm.html">dfm()</a></code> when <code>stem = TRUE</code>, rather than hard-wiring in the “english” stemmer (#386).</li>
+<li>Added new <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>: <code>language_stemmer</code> and <code>language_stopwords</code>, now used for default in <code>*_wordstem</code> functions and <code><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords()</a></code> for defaults, respectively. Also uses this option in <code><a href="../reference/dfm.html">dfm()</a></code> when <code>stem = TRUE</code>, rather than hard-wiring in the “english” stemmer (#386).</li>
 <li>Added a new function <code><a href="../reference/textstat_frequency.html">textstat_frequency()</a></code> to compile feature frequencies, possibly by groups. (#825)</li>
 <li>Added <code>nomatch</code> option to <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> and <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code>, to provide tokens or feature counts for categories not matched to any dictionary key. (#496)</li>
 </ul>
@@ -596,7 +597,7 @@
 <tr class="odd">
 <td align="left"><code>data_char_stopwords</code></td>
 <td align="left"><code>.stopwords</code></td>
-<td align="left">(used by <code><a href="../reference/stopwords.html">stopwords()</a></code>
+<td align="left">(used by <code><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords()</a></code>
 </td>
 </tr>
 </tbody>

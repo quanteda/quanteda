@@ -37,8 +37,8 @@ Get or set global options affecting functions across \pkg{quanteda}.
 Currently available options are: \describe{
 \item{\code{verbose}}{logical; if \code{TRUE} then use this as the default
 for all functions with a \code{verbose} argument}
-\item{\code{threads}}{integer; specifies the number of threads to use in use
-this as the setting in all functions that uee parallelization}
+\item{\code{threads}}{integer; specifies the number of threads to use in
+parallelized functions}
 \item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
 to display when using the defaults for printing a dfm}
 \item{\code{print_dfm_max_nfeat}}{integer; specifies the number of

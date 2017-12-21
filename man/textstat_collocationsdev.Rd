@@ -40,7 +40,7 @@ is not a \link{tokens} object already}
 }
 \value{
 \code{textstat_collocationsdev} returns a data.frame of collocations and their
-  scores and statistsics.
+  scores and statistics.
 
 \code{is.collocationdev} returns \code{TRUE} if the object is of class
   \code{collocationsdev}, \code{FALSE} otherwise.
