@@ -1,4 +1,4 @@
-#' stem the terms in an object
+#' Stem the terms in an object
 #' 
 #' Apply a stemmer to words.  This is a wrapper to \link[SnowballC]{wordStem} 
 #' designed to allow this function to be called without loading the entire 

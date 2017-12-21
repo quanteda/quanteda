@@ -3,7 +3,7 @@
 \name{corpus_segment}
 \alias{corpus_segment}
 \alias{char_segment}
-\title{segment texts on a pattern match}
+\title{Segment texts on a pattern match}
 \usage{
 corpus_segment(x, pattern = "##*", valuetype = c("glob", "regex", "fixed"),
   extract_pattern = TRUE, pattern_position = c("before", "after"),

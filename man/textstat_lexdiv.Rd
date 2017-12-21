@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_lexdiv.R
 \name{textstat_lexdiv}
 \alias{textstat_lexdiv}
-\title{calculate lexical diversity}
+\title{Calculate lexical diversity}
 \usage{
 textstat_lexdiv(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S",
   "Maas"), log.base = 10, ...)

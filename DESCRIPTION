@@ -92,6 +92,7 @@ Collate:
     'dfm_lookup.R'
     'dfm_sample.R'
     'dfm_select.R'
+    'dfm_sort.R'
     'dfm_subset.R'
     'dfm_trim.R'
     'dfm_weight.R'

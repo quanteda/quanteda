@@ -4,7 +4,7 @@
 ## Ken Benoit
 ####################################################################
 
-#' get the feature labels from a dfm
+#' Get the feature labels from a dfm
 #' 
 #' Get the features from a document-feature matrix, which are stored as the
 #' column names of the \link{dfm} object.
@@ -60,8 +60,7 @@ docnames.dfm <- function(x) {
 docnames.NULL <- function(x) {
     NULL
 }
-
-#' coercion and checking functions for dfm objects
+#' Coercion and checking functions for dfm objects
 #' 
 #' Check for a dfm, or convert
 #' a matrix into a dfm.
@@ -133,7 +132,7 @@ as_dfm_constructor <- function(x) {
     new("dfm", x)
 }
 
-#' identify the most frequent features in a dfm
+#' Identify the most frequent features in a dfm
 #' 
 #' List the most (or least) frequently occuring features in a \link{dfm}, either
 #' as a whole or separated by document.
@@ -227,7 +226,7 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
 }
 
 
-#' compute the sparsity of a document-feature matrix
+#' Compute the sparsity of a document-feature matrix
 #'
 #' Return the proportion of sparseness of a document-feature matrix, equal
 #' to the proportion of cells that have zero counts.
@@ -254,7 +253,7 @@ sparsity.dfm <- function(x) {
 
 # ------------ Internal --------
 
-#' internal functions for dfm objects
+#' Internal functions for dfm objects
 #' 
 #' Internal function documentation for \link{dfm} objects.
 #' @name dfm-internal

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfm-methods.R
 \name{featnames}
 \alias{featnames}
-\title{get the feature labels from a dfm}
+\title{Get the feature labels from a dfm}
 \usage{
 featnames(x)
 }

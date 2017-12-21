@@ -2,7 +2,7 @@
 % Please edit documentation in R/dictionaries.R
 \name{replace_dictionary_values}
 \alias{replace_dictionary_values}
-\title{internal function to replace dictionary values}
+\title{Internal function to replace dictionary values}
 \usage{
 replace_dictionary_values(dict, from, to)
 }
@@ -10,7 +10,7 @@ replace_dictionary_values(dict, from, to)
 \item{dict}{a \link{dictionary} object}
 }
 \description{
-internal function to replace dictionary values
+Internal function to replace dictionary values
 }
 \examples{
 dict <- list(KEY1 = list(SUBKEY1 = list("A_B"),

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>wordfish text model — textmodel_wordfish • quanteda</title>
+<title>Wordfish text model — textmodel_wordfish • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -146,7 +146,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>wordfish text model</h1>
+    <h1>Wordfish text model</h1>
     </div>
 
     
@@ -271,26 +271,26 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
 #&gt; 
 #&gt; Estimated document positions:
 #&gt; 
-#&gt;   Documents       theta         SE       lower       upper
-#&gt; 1        R1 -1.33131121 0.01573055 -1.36214309 -1.30047934
-#&gt; 2        R2 -0.60626107 0.01215646 -0.63008774 -0.58243440
-#&gt; 3        R3  0.06333841 0.01129471  0.04120078  0.08547604
-#&gt; 4        R4  0.70266908 0.01266596  0.67784381  0.72749436
-#&gt; 5        R5  1.50121135 0.01775922  1.46640328  1.53601942
-#&gt; 6        V1 -0.32964656 0.01194627 -0.35306126 -0.30623186
+#&gt;   Documents      theta         SE       lower       upper
+#&gt; 1        R1 -1.3313113 0.01573055 -1.36214320 -1.30047945
+#&gt; 2        R2 -0.6062611 0.01215647 -0.63008772 -0.58243438
+#&gt; 3        R3  0.0633385 0.01129471  0.04120087  0.08547613
+#&gt; 4        R4  0.7026691 0.01266596  0.67784384  0.72749439
+#&gt; 5        R5  1.5012113 0.01775922  1.46640318  1.53601932
+#&gt; 6        V1 -0.3296465 0.01194628 -0.35306120 -0.30623179
 #&gt; 
 #&gt; Estimated feature scores: showing first 30 beta-hats for features
 #&gt; 
 #&gt;           A           B           C           D           E           F 
-#&gt;  -7.4063908  -8.0775945  -9.7349570 -10.7145549 -11.5831089 -11.3611949 
+#&gt;  -7.4063899  -8.0775932  -9.7349554 -10.7145530 -11.5831068 -11.3611927 
 #&gt;           G           H           I           J           K           L 
-#&gt; -11.5593188 -10.4554768  -9.7337868  -8.6723992  -7.6191334  -6.6315327 
+#&gt; -11.5593165 -10.4554746  -9.7337846  -8.6723973  -7.6191316  -6.6315311 
 #&gt;           M           N           O           P           Q           R 
-#&gt;  -5.6178363  -4.6855300  -3.7792704  -2.7246936  -1.8090859  -0.7117885 
+#&gt;  -5.6178349  -4.6855287  -3.7792693  -2.7246927  -1.8090850  -0.7117878 
 #&gt;           S           T           U           V           W           X 
-#&gt;   0.2594639   1.2559783   2.3935728   3.3679881   4.4773801   5.2773875 
+#&gt;   0.2594646   1.2559790   2.3935735   3.3679889   4.4773811   5.2773885 
 #&gt;           Y           Z          ZA          ZB          ZC          ZD 
-#&gt;   6.1121279   6.9830370   7.8338793   8.8092621   9.7279622  10.4987226 </div><div class='input'>
+#&gt;   6.1121291   6.9830383   7.8338808   8.8092638   9.7279640  10.4987245 </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='no'>ie2010dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 (<span class='no'>wfm1</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>)))

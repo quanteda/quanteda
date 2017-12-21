@@ -45,7 +45,7 @@
 \alias{print.textmodel_wordshoal_fitted}
 \alias{show,textmodel_wordshoal_fitted-method}
 \alias{show,textmodel_wordshoal_predicted-method}
-\title{internal functions for textmodel objects}
+\title{Internal functions for textmodel objects}
 \usage{
 \S4method{show}{textmodel_affinity_fitted}(object)
 

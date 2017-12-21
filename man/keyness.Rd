@@ -8,7 +8,7 @@
 \alias{keyness_exact}
 \alias{keyness_lr}
 \alias{keyness_pmi}
-\title{compute keyness (internal functions)}
+\title{Compute keyness (internal functions)}
 \usage{
 keyness_chi2_dt(x, correction = c("default", "yates", "williams", "none"))
 

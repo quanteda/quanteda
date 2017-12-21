@@ -3,7 +3,7 @@
 \name{as.matrix.dfm}
 \alias{as.matrix.dfm}
 \alias{as.data.frame.dfm}
-\title{coerce a dfm to a matrix or data.frame}
+\title{Coerce a dfm to a matrix or data.frame}
 \usage{
 \method{as.matrix}{dfm}(x, ...)
 

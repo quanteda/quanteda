@@ -2,7 +2,7 @@
 % Please edit documentation in R/corpus_subset.R
 \name{corpus_subset}
 \alias{corpus_subset}
-\title{extract a subset of a corpus}
+\title{Extract a subset of a corpus}
 \usage{
 corpus_subset(x, subset, select, ...)
 }

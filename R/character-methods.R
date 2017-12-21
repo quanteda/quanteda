@@ -1,4 +1,4 @@
-#' summary statistics on a character vector
+#' Summary statistics on a character vector
 #' 
 #' Internal-only function to compute summary statistics on a character object.
 #' @method summary character

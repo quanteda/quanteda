@@ -1,4 +1,4 @@
-#' influence plot for text scaling models
+#' Influence plot for text scaling models
 #' 
 #' Plot the results of a fitted scaling model, from (e.g.) a predicted 
 #' \link{textmodel_affinity} model.

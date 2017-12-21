@@ -1,4 +1,4 @@
-#' identify and score multi-word expressions
+#' Identify and score multi-word expressions
 #' 
 #' Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.  
 #' 

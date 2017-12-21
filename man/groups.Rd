@@ -2,7 +2,7 @@
 % Please edit documentation in R/quanteda-documentation.R
 \name{groups}
 \alias{groups}
-\title{grouping variable(s) for various functions}
+\title{Grouping variable(s) for various functions}
 \arguments{
 \item{groups}{either: a character vector containing the names of document 
 variables to be used for grouping; or a factor or object that can be 

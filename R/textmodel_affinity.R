@@ -34,7 +34,7 @@ setClass("textmodel_affinity_predicted",
 
 ## ======= Main Functions ==========
 
-#' class affinity maximum likelihood text scaling model
+#' Class affinity maximum likelihood text scaling model
 #'
 #' \code{textmodel_affinity} implements the maximum likelihood supervised text
 #' scaling method described in Perry and Benoit (2017).
@@ -446,7 +446,7 @@ affinity1 <- function(p, x, smooth, verbose) {
 
 ## ============== Helper Methods =======================================
 
-#' prediction for a fitted affinity textmodel
+#' Prediction for a fitted affinity textmodel
 #'
 #' Estimate \eqn{\theta_i} for each document, from a fitted
 #' \link{textmodel_affinity} object.
@@ -599,7 +599,7 @@ gof_chi2.textmodel_affinity_predicted <- function(x) {
 }
 
 
-#' compute feature influence from a predicted textmodel_affinity object
+#' Compute feature influence from a predicted textmodel_affinity object
 #'
 #' Computes the influence of features on scaled \link{textmodel_affinity}
 #' applications.

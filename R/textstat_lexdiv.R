@@ -1,4 +1,4 @@
-#' calculate lexical diversity
+#' Calculate lexical diversity
 #' 
 #' Calculate the lexical diversity or complexity of text(s).
 #' @details \code{textstat_lexdiv} calculates a variety of proposed indices for lexical

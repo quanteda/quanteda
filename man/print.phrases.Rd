@@ -2,7 +2,7 @@
 % Please edit documentation in R/phrases.R
 \name{print.phrases}
 \alias{print.phrases}
-\title{print a phrase object}
+\title{Print a phrase object}
 \usage{
 \method{print}{phrases}(x, ...)
 }

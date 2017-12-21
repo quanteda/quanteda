@@ -2,7 +2,7 @@
 % Please edit documentation in R/nscrabble.R
 \name{scrabble}
 \alias{scrabble}
-\title{deprecated name for nscrabble}
+\title{Deprecated name for nscrabble}
 \usage{
 scrabble(x, ...)
 }

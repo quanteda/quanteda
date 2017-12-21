@@ -1,5 +1,4 @@
-
-#' replace types in tokens object
+#' Replace types in tokens object
 #'
 #' Substitute token types based on vectorized one-to-one matching. Since this
 #' function is created for lemmatization or user-defined stemming, it does not

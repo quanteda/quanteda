@@ -4,7 +4,7 @@
 \alias{ndoc}
 \alias{nfeat}
 \alias{nfeature}
-\title{count the number of documents or features}
+\title{Count the number of documents or features}
 \usage{
 ndoc(x)
 

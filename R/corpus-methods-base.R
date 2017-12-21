@@ -1,4 +1,4 @@
-#' base method extensions for corpus objects
+#' Base method extensions for corpus objects
 #' 
 #' Extensions of base R functions for corpus objects.
 #' @name corpus-class
@@ -46,7 +46,7 @@ is.corpuszip <- function(x) {
 }
 
 
-#' summarize a corpus
+#' Summarize a corpus
 #' 
 #' Displays information about a corpus, including
 #' includes attributes and metadata such as date of number of texts, creation 
@@ -106,7 +106,7 @@ print.summary.corpus <- function(x, ...) {
     cat(attr(x, "meta"), "\n")
 }
 
-#' return the first or last part of a corpus
+#' Return the first or last part of a corpus
 #' 
 #' For a \link{corpus} object, returns the first or last \code{n} documents.
 #' @param x a dfm object

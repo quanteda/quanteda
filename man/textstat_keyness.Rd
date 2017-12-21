@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_keyness.R
 \name{textstat_keyness}
 \alias{textstat_keyness}
-\title{calculate keyness statistics}
+\title{Calculate keyness statistics}
 \usage{
 textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"),
   sort = TRUE, correction = c("default", "yates", "williams", "none"))

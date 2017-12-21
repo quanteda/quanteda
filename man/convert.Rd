@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert.R
 \name{convert}
 \alias{convert}
-\title{convert a dfm to a non-quanteda format}
+\title{Convert a dfm to a non-quanteda format}
 \usage{
 convert(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
   "matrix", "data.frame"), docvars = NULL)

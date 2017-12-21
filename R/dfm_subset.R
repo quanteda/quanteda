@@ -1,4 +1,4 @@
-#' extract a subset of a dfm
+#' Extract a subset of a dfm
 #' 
 #' Returns document subsets of a dfm that meet certain conditions,
 #' including direct logical operations on docvars (document-level variables). 

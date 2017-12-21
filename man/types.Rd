@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokens.R
 \name{types}
 \alias{types}
-\title{get types of tokens from a tokens object}
+\title{Get word types from a tokens object}
 \usage{
 types(x)
 }

@@ -44,7 +44,7 @@ fcm_compress.fcm <- function(x) {
     return(result)
 } 
 
-#' sort an fcm in alphabetical order of the features
+#' Sort an fcm in alphabetical order of the features
 #' 
 #' Sorts an \link{fcm} in alphabetical order of the features.
 #' 

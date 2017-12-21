@@ -2,7 +2,7 @@
 % Please edit documentation in R/dictionaries.R
 \name{list2dictionary}
 \alias{list2dictionary}
-\title{internal function to convert a list to a dictionary}
+\title{Internal function to convert a list to a dictionary}
 \usage{
 list2dictionary(dict)
 }

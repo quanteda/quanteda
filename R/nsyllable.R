@@ -6,7 +6,7 @@
 #' \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
 "data_int_syllables"
 
-#' count syllables in a text
+#' Count syllables in a text
 #' 
 #' @description Returns a count of the number of syllables in texts. For English
 #'   words, the syllable count is exact and looked up from the CMU pronunciation

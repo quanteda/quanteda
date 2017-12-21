@@ -3,7 +3,7 @@
 \name{metadoc}
 \alias{metadoc}
 \alias{metadoc<-}
-\title{get or set document-level meta-data}
+\title{Get or set document-level meta-data}
 \usage{
 metadoc(x, field = NULL)
 

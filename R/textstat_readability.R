@@ -1,4 +1,4 @@
-#' calculate readability
+#' Calculate readability
 #'
 #' Calculate the readability of text(s) using one of a variety of computed 
 #' indexes.

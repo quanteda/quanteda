@@ -1,4 +1,4 @@
-#' recombine documents tokens by groups
+#' Recombine documents tokens by groups
 #' 
 #' @param x \link{tokens} object
 #' @inheritParams groups

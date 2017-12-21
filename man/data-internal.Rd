@@ -6,7 +6,7 @@
 \alias{data-internal}
 \alias{data_int_syllables}
 \alias{data_char_wordlists}
-\title{internal data sets}
+\title{Internal data sets}
 \format{An object of class \code{integer} of length 133245.}
 \usage{
 data_int_syllables

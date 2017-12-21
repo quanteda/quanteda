@@ -1,4 +1,4 @@
-#' segment tokens object by patterns
+#' Segment tokens object by patterns
 #' 
 #' Segment tokens by splitting
 #' on a pattern match. This is useful for breaking the tokenized texts into smaller

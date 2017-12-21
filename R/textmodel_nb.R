@@ -182,7 +182,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     return(ll)
 }
 
-#' prediction method for Naive Bayes classifier objects
+#' Prediction method for Naive Bayes classifier objects
 #'
 #' implements class predictions using trained Naive Bayes examples 
 #' @param object a fitted Naive Bayes textmodel 

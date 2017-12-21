@@ -3,7 +3,7 @@
 \name{ntoken}
 \alias{ntoken}
 \alias{ntype}
-\title{count the number of tokens or types}
+\title{Count the number of tokens or types}
 \usage{
 ntoken(x, ...)
 

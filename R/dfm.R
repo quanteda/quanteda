@@ -1,4 +1,4 @@
-#' create a document-feature matrix
+#' Create a document-feature matrix
 #' 
 #' Construct a sparse document-feature matrix, from a character, \link{corpus}, 
 #' \link{tokens}, or even other \link{dfm} object.
