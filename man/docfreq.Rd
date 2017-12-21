@@ -6,7 +6,7 @@
 \usage{
 docfreq(x, scheme = c("count", "inverse", "inversemax", "inverseprob",
   "unary"), smoothing = 0, k = 0, base = 10, threshold = 0,
-  USE.NAMES = TRUE)
+  use.names = TRUE)
 }
 \arguments{
 \item{x}{a \link{dfm}}
@@ -27,7 +27,7 @@ will considered in the computation of document frequency.  The default is
 0, meaning that a feature's document frequency will be the number of 
 documents in which it occurs greater than zero times.}
 
-\item{USE.NAMES}{logical; if \code{TRUE} attach feature labels as names of 
+\item{use.names}{logical; if \code{TRUE} attach feature labels as names of 
 the resulting numeric vector}
 
 \item{...}{not used}
@@ -68,5 +68,4 @@ Manning, C. D., Raghavan, P., & Schutze, H. (2008).
   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 }
 \keyword{dfm}
-\keyword{internal}
 \keyword{weighting}

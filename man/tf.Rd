@@ -2,57 +2,15 @@
 % Please edit documentation in R/dfm_weight.R
 \name{tf}
 \alias{tf}
-\title{compute (weighted) term frequency from a dfm}
+\title{deprecated name for dfm_weight}
 \usage{
-tf(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented",
-  "logave"), base = 10, K = 0.5)
+tf(...)
 }
 \arguments{
-\item{x}{object for which idf or tf-idf will be computed (a document-feature 
-matrix)}
-
-\item{scheme}{divisor for the normalization of feature frequencies by 
-document.  Valid types include: 
-\describe{ 
-\item{\code{count}}{default, 
-each feature count will remain as feature counts, equivalent to dividing by
-1} 
-\item{\code{prop}}{feature proportions within document, equivalent to 
-dividing each term by the total count of features in the document.} 
-\item{\code{propmax}}{feature proportions relative to the most frequent
-term of the document, equivalent to dividing term counts by the frequency
-of the most frequent term in the document.} 
-\item{\code{boolean}}{recode all non-zero counts as 1} 
-\item{\code{log}}{take the logarithm of 1 + each
-count, for base \code{base}}
-\item{\code{augmented}}{equivalent to K + (1 - K) * \code{tf(x, "propmax")}}
-\item{\code{logave}}{(1 + the log of the counts) / (1 + log of the counts / the average count within document)} 
-}}
-
-\item{base}{base for the logarithm when \code{scheme} is \code{"log"} or 
-\code{logave}}
-
-\item{K}{the K for the augmentation when \code{scheme = "augmented"}}
-}
-\value{
-A document feature matrix to which the weighting scheme has been 
-  applied.
+\item{...}{arguments passed to \code{\link{dfm_weight}}}
 }
 \description{
-Apply varieties of term frequency weightings to a \link{dfm}.
+Deprecated function name for \code{\link{dfm_weight}}.
 }
-\details{
-\code{tf(x, scheme = "prop")} is equivalent to \code{\link{dfm_weight}(x, "relFreq")}).
-}
-\references{
-Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
-  \emph{Introduction to Information Retrieval}. Cambridge University Press.
-  
-  \url{https://en.wikipedia.org/wiki/Tf-idf#Term_frequency_2}
-}
-\author{
-Kenneth Benoit and Paul Nulty
-}
-\keyword{dfm}
+\keyword{deprecated}
 \keyword{internal}
-\keyword{weighting}
