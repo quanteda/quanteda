@@ -82,7 +82,7 @@ textstat_frequency.dfm <- function(x, n = NULL, groups = NULL) {
     if (is.null(groups))
         groups <- rep("all", ndoc(x))
 
-    docfreq <- dfm_group(dfm_weight(x_docfreq, "boolean"), groups)@x
+    docfreq <- dfm_group(dfm_weight(x, "boolean"), groups)@x
     x <- as(dfm_group(x, groups), "dgTMatrix")
     temp <- data.table(feature = colnames(x)[x@j + 1],
                        frequency = x@x,
