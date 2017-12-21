@@ -6,7 +6,7 @@
 \alias{tokens_keep}
 \title{Select or remove tokens from a tokens object}
 \usage{
-tokens_select(x, pattern, selection = c("keep", "remove"),
+tokens_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   padding = FALSE, window = 0, min_nchar = 1L, max_nchar = 79L,
   verbose = quanteda_options("verbose"))
