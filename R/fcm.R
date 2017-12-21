@@ -184,7 +184,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
 
     if (count == "boolean") {
         temp <- x > 1
-        x <- tf(x, "boolean") 
+        x <- dfm_weight(x, "boolean") 
     } else if (count == "frequency") {
         temp <- x
         temp@x <- choose(temp@x, 2)

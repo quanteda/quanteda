@@ -1,54 +1,57 @@
+# dfm_weight -------------
+
 #' Weight the feature frequencies in a dfm
-#' 
-#' Returns a document by feature matrix with the feature frequencies weighted 
-#' according to one of several common methods.  Some shortcut functions that offer finer-grained control are:
-#' \itemize{
-#' \item{\code{\link{tf}}}{  compute term frequency weights}
-#' \item{\code{\link{tfidf}}}{  compute term frequency-inverse document frequency weights}
-#' \item{\code{\link{docfreq}}}{  compute document frequencies of features}
-#' }
-#' 
+
 #' @param x document-feature matrix created by \link{dfm}
-#' @param type a label of the weight type:
+#' @param scheme a label of the weight type:
 #' \describe{
-#'  \item{\code{"frequency"}}{integer feature count (default when a dfm is created)}
-#'  \item{\code{"relfreq"}}{the proportion of the feature counts of total feature counts (aka relative frequency)}
-#'  \item{\code{"relmaxfreq"}}{the proportion of the feature counts of the highest feature count in a document}
-#'  \item{\code{"logfreq"}}{take the logarithm of 1 + the feature count, for base 10}
-#'  \item{\code{"tfidf"}}{Term-frequency * inverse document frequency. For a
-#'   full explanation, see, for example, 
-#'   \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
-#'    This implementation will not return negative values.  For finer-grained
-#'   control, call \code{\link{tfidf}} directly.}
-#'   }
-#' @param weights if \code{type} is unused, then \code{weights} can be 
-#'   a named numeric vector of weights to be applied to the dfm, 
-#'   where the names of the vector correspond to feature labels of the dfm, and 
-#'   the weights will be applied as multipliers to the existing feature counts 
-#'   for the corresponding named features.  Any features not named will be 
-#'   assigned a weight of 1.0 (meaning they will be unchanged).
-#' @note For finer grained control, consider calling the convenience functions directly.
-#' @return \code{dfm_weight} returns the dfm with weighted values.
+#'   \item{\code{"count"}}{integer feature count (default when a dfm is created)}
+#'   \item{\code{"prop"}}{the proportion of the feature counts of total feature
+#'   counts (aka relative frequency)}
+#'   \item{\code{"propmax"}}{the proportion of the feature counts of the highest
+#'   feature count in a document}
+#'   \item{\code{log}}{take the logarithm of 1 + each count, for base
+#'   \code{base}}
+#'   \item{\code{boolean}}{recode all non-zero counts as 1} 
+#'   \item{\code{augmented}}{equivalent to K + (1 - K) * \code{dfm_weight(x,
+#'   "propmax")}}
+#'   \item{\code{logave}}{(1 + the log of the counts) / (1 + log of the counts /
+#'   the average count within document)}
+#' }
+#' @param weights if \code{scheme} is unused, then \code{weights} can be a named
+#'   numeric vector of weights to be applied to the dfm, where the names of the
+#'   vector correspond to feature labels of the dfm, and the weights will be
+#'   applied as multipliers to the existing feature counts for the corresponding
+#'   named features.  Any features not named will be assigned a weight of 1.0
+#'   (meaning they will be unchanged).
+#' @param base base for the logarithm when \code{scheme} is \code{"logcount"} or 
+#'   \code{logave}
+#' @param K the K for the augmentation when \code{scheme = "augmented"}
+#' @return \code{dfm_weight} returns the dfm with weighted values.  Note the
+#'   because the default weighting scheme is \code{"count"}, simply calling this
+#'   function on an unweighted dfm will return the same object.  Many users will
+#'   want the normalized dfm consisting of the proportions of the feature counts
+#'   within each document, which requires setting \code{scheme = "prop"}.
 #' @export
-#' @seealso \code{\link{tf}},  \code{\link{tfidf}}, \code{\link{docfreq}}
+#' @seealso \code{\link{dfm_tfidf}}, \code{\link{docfreq}}
 #' @keywords dfm
 #' @examples
 #' dtm <- dfm(data_corpus_inaugural)
 #' 
 #' x <- apply(dtm, 1, function(tf) tf/max(tf))
 #' topfeatures(dtm)
-#' normDtm <- dfm_weight(dtm, "relfreq")
+#' normDtm <- dfm_weight(dtm, "prop")
 #' topfeatures(normDtm)
-#' maxTfDtm <- dfm_weight(dtm, type = "relmaxfreq")
+#' maxTfDtm <- dfm_weight(dtm, scheme = "propmax")
 #' topfeatures(maxTfDtm)
-#' logTfDtm <- dfm_weight(dtm, type = "logfreq")
+#' logTfDtm <- dfm_weight(dtm, scheme = "logcount")
 #' topfeatures(logTfDtm)
-#' tfidfDtm <- dfm_weight(dtm, type = "tfidf")
-#' topfeatures(tfidfDtm)
+#' logaveDtm <- dfm_weight(dtm, scheme = "logave")
+#' topfeatures(logaveDtm)
 #' 
 #' # combine these methods for more complex dfm_weightings, e.g. as in Section 6.4
 #' # of Introduction to Information Retrieval
-#' head(tfidf(dtm, scheme_tf = "log"))
+#' head(dfm_tfidf(dtm, scheme_tf = "logcount"))
 #' 
 #' # apply numeric weights
 #' str <- c("apple is better than banana", "banana banana apple much better")
@@ -57,7 +60,7 @@
 #' 
 #' \dontshow{
 #' testdfm <- dfm(data_corpus_inaugural[1:5])
-#' for (w in c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf")) {
+#' for (w in  c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave")) {
 #'     testw <- dfm_weight(testdfm, w)
 #'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
 #'     head(testw)
@@ -65,35 +68,62 @@
 #' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
 #'   \emph{Introduction to Information Retrieval}. Vol. 1. Cambridge: Cambridge 
 #'   University Press, 2008.
-dfm_weight <- 
-    function(x, 
-             type = c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf"),
-             weights = NULL) {
-        UseMethod("dfm_weight")
+dfm_weight <- function(
+    x, 
+    scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
+    weights = NULL,
+    base = 10,
+    K = 0.5) {
+    UseMethod("dfm_weight")
 }
 
 #' @export
-dfm_weight.default <- 
-    function(x, 
-             type = c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf"),
-             weights = NULL) {
-        stop(friendly_class_undefined_message(class(x), "dfm_weight"))
+dfm_weight.default <- function(
+    x, 
+    scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
+    weights = NULL,
+    base = 10,
+    K = 0.5) {
+    stop(friendly_class_undefined_message(class(x), "dfm_weight"))
 }
 
-
 #' @export
-dfm_weight.dfm <- 
-    function(x, 
-             type = c("frequency", "relfreq", "relmaxfreq", "logfreq", "tfidf"),
-             weights = NULL) {
-        
+dfm_weight.dfm <- function(
+    x, 
+    scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
+    weights = NULL,
+    base = 10,
+    K = 0.5) {
+
+    # traps for deprecated scheme values
+    if (!missing(scheme)) {
+        scheme <- tolower(scheme)
+        if (scheme == "frequency") {
+            .Deprecated(msg = 'scheme = "frequency" is deprecated; use dfm_weight(x, scheme = "count") instead')
+            return(dfm_weight(x, scheme = "count", base = base, weights = weights))
+        } else if (scheme == "relfreq") {
+            .Deprecated(msg = 'scheme = "relfreq" is deprecated; use dfm_weight(x, scheme = "prop") instead')
+            return(dfm_weight(x, scheme = "prop", base = base, weights = weights))
+        } else if (scheme == "relmaxfreq") {
+            .Deprecated(msg = 'scheme = "relmaxfreq" is deprecated; use dfm_weight(x, scheme = "propmax") instead')
+            return(dfm_weight(x, scheme = "propmax", base = base, weights = weights))
+        } else if (scheme == "logfreq") {
+            .Deprecated(msg = 'scheme = "logfreq" is deprecated; use dfm_weight(x, scheme = "logcount") instead')
+            return(dfm_weight(x, scheme = "logcount", base = base, weights = weights))
+        } else if (scheme == "tfidf") {
+            .Deprecated(msg = 'scheme = "tfidf" is deprecated; use dfm_tfidf(x) instead')
+            return(dfm_tfidf(x, base = base))
+        }
+    }
+    
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
     
-    # for numeric weights
+    ### for numeric weights
     if (!is.null(weights)) {
-        if (!missing(type)) 
-            warning("type is ignored when numeric weights are supplied")
+        if (!missing(scheme)) 
+            warning("scheme is ignored when numeric weights are supplied", 
+                    call. = FALSE)
         
         ignore <- !names(weights) %in% featnames(x)
         if (any(ignore)) {
@@ -102,7 +132,7 @@ dfm_weight.dfm <-
                     ifelse(sum(ignore) == 1, "", "s"), 
                     noBreaks. = TRUE, call. = FALSE)
         }
-
+        
         weight <- rep(1, nfeat(x)) 
         names(weight) <- featnames(x)
         weights <- weights[!ignore]
@@ -110,32 +140,72 @@ dfm_weight.dfm <-
         weight <- diag(weight)
         colnames(weight) <- colnames(x)
         return(as.dfm(x %*% weight))
-
         
-    } else {
-        # named type weights
-        type <- char_tolower(type)
-        type <- match.arg(type)
+    ### for scheme weights
+    } else {      
+        scheme <- match.arg(scheme)
+        args <- as.list(match.call(expand.dots = FALSE))
+        
+        if ("K" %in% names(args) && scheme != "augmented")
+            warning("K not used for this scheme")
+        if (K < 0 | K > 1.0)
+            stop("K must be in the [0, 1] interval")
         
         if (x@weightTf[["scheme"]] != "count")
-            stop("No weighting applied: you should not weight an already weighted dfm.\n")
+            stop("this dfm has already been term weighted as: ", 
+                 x@weightTf[["scheme"]])
         
-        if (type == "relfreq") {
-            return(tf(x, "prop"))
-        } else if (type == "relmaxfreq") {
-            return(tf(x, "propmax"))
-        } else if (type == "logfreq") {
-            return(tf(x, "log"))
-        } else if (type == "tfidf") {
-            return(tfidf(x))
-        } else if (type == "frequency") {
+        if (scheme == "count") {
             return(x)
-        } else {
-            stop("unknown weighting type")
-        }
+            
+        } else if (scheme == "prop") {
+            div <- rowSums(x)
+            x@x <- x@x / div[x@i+1]
+            
+        } else if (scheme == "propmax") {
+            div <- maxtf(x)
+            x@x <- x@x / div[x@i+1]
+            
+        } else if (scheme == "boolean") {
+            x@x <- as.numeric(x@x > 0)
+            
+        } else if (scheme == "logcount") {
+            x@x <- 1 + log(x@x, base)
+            #x@x <- log(x@x + 1, base)
+            x@x[is.infinite(x@x)] <- 0
+            x@weightTf[["base"]] <- base
+            
+        } else if (scheme == "augmented") {
+            maxtf <- maxtf(x)
+            x@x <- K + (1 - K) * x@x / maxtf[x@i+1]
+            x@weightTf[["K"]] <- K
+            
+        } else if (scheme == "logave") {
+            meantf <- Matrix::rowSums(x) / Matrix::rowSums(dfm_weight(x, "boolean"))
+            x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i+1], base))
+            x@weightTf[["base"]] <- base
+            
+        } else stop("invalid scheme")
+        
+        x@weightTf[["scheme"]] <- scheme
+        return(x)
     }
 }
 
+#' deprecated name for dfm_weight
+#' 
+#' Deprecated function name for \code{\link{dfm_weight}}. 
+#' @param ... arguments passed to \code{\link{dfm_weight}}
+#' @export
+#' @keywords internal deprecated
+tf <- function(...) {
+    .Deprecated("dfm_weight")
+    UseMethod("dfm_weight")
+}
+
+
+
+# dfm_smooth --------------
 
 #' @rdname dfm_weight
 #' @param smoothing constant added to the dfm cells for smoothing, default is 1
@@ -163,6 +233,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
     x + smoothing
 }
 
+# docfreq -------------
 
 #' Compute the (weighted) document frequency of a feature
 #' 
@@ -183,11 +254,11 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #'   will considered in the computation of document frequency.  The default is 
 #'   0, meaning that a feature's document frequency will be the number of 
 #'   documents in which it occurs greater than zero times.
-#' @param USE.NAMES	logical; if \code{TRUE} attach feature labels as names of 
+#' @param use.names	logical; if \code{TRUE} attach feature labels as names of 
 #'   the resulting numeric vector
 #' @param ... not used
 #' @return a numeric vector of document frequencies for each feature
-#' @keywords internal weighting dfm
+#' @keywords weighting dfm
 #' @export
 #' @examples 
 #' mydfm <- dfm(data_corpus_inaugural[1:2])
@@ -214,7 +285,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 docfreq <- function(x, scheme = c("count", "inverse", "inversemax", 
                                   "inverseprob", "unary"),
                     smoothing = 0, k = 0, base = 10, threshold = 0, 
-                    USE.NAMES = TRUE) {
+                    use.names = TRUE) {
     UseMethod("docfreq")
 }
 
@@ -222,7 +293,7 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax",
 docfreq.default <- function(x, scheme = c("count", "inverse", "inversemax", 
                                           "inverseprob", "unary"),
                         smoothing = 0, k = 0, base = 10, threshold = 0, 
-                        USE.NAMES = TRUE) {
+                        use.names = TRUE) {
     stop(friendly_class_undefined_message(class(x), "docfreq"))
 }
 
@@ -231,7 +302,7 @@ docfreq.default <- function(x, scheme = c("count", "inverse", "inversemax",
 docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax", 
                                       "inverseprob", "unary"),
                         smoothing = 0, k = 0, base = 10, threshold = 0, 
-                        USE.NAMES = TRUE) {
+                        use.names = TRUE) {
     
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(numeric())
@@ -254,16 +325,16 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
         result <- colSums(x > threshold)
     } else if (scheme == "inverse") {
         result <- log(smoothing + (ndoc(x) / (k + docfreq(x, "count", 
-                                                          USE.NAMES = FALSE))), 
+                                                          use.names = FALSE))), 
                       base = base)
     } else if (scheme == "inversemax") {
-        temp <- docfreq(x, "count", USE.NAMES = FALSE)
+        temp <- docfreq(x, "count", use.names = FALSE)
         result <- log(smoothing + (max(temp) / (k + temp)), base = base)
     } else if (scheme == "inverseprob") {
-        temp <- docfreq(x, "count", USE.NAMES = FALSE)
+        temp <- docfreq(x, "count", use.names = FALSE)
         result <- pmax(0, log((ndoc(x) - temp) / (k + temp), base = base))
     }
-    if (USE.NAMES) {
+    if (use.names) {
         names(result) <- featnames(x)
     } else {
         result <- unname(result)
@@ -271,36 +342,35 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
     result
 }
 
+# dfm_tfidf ---------------
 
-#' Compute tf-idf weights from a dfm
+#' Weight a dfm by \emph{tf-idf}
 #' 
-#' Weight a dfm by term frequency-inverse document frequency (tf-idf) using
-#' fully sparse methods.
+#' Weight a dfm by term frequency-inverse document frequency (\emph{tf-idf}), 
+#' with full control over options.  Uses fully sparse methods for efficiency.
 #' @param x object for which idf or tf-idf will be computed (a document-feature 
 #'   matrix)
-#' @param scheme_tf scheme for \code{\link{tf}}; defaults to \code{"count"}
+#' @param scheme_tf scheme for \code{\link{dfm_weight}}; defaults to \code{"count"}
 #' @param scheme_df scheme for \code{\link{docfreq}}; defaults to
 #'   \code{"inverse"}.  Other options to \code{\link{docfreq}} can be passed
 #'   through the ellipsis (\code{...}).
 #' @param base the base for the logarithms in the \code{\link{tf}} and
 #'   \code{\link{docfreq}} calls; default is 10
-#' @param ... additional arguments passed to \code{\link{docfreq}} when calling
-#'   \code{tfidf}; these can be used to fix smoothing constants (default values
-#'   are 0).
-#' @details \code{tfidf} computes term frequency-inverse document frequency 
-#'   weighting.  The default is not to normalize term frequency (by computing 
-#'   relative term frequency within document) but this will be performed if 
-#'   \code{scheme_tf = "prop"}.
+#' @param ... additional arguments passed to \code{\link{docfreq}}.
+#' @details \code{dfm_tfidf} computes term frequency-inverse document frequency
+#'   weighting.  The default is to use counts instead of normalized term
+#'   frequency (the relative term frequency within document), but this
+#'   can be overridden using \code{scheme_tf = "prop"}.
 #' @references Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
 #'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
-#' @seealso \code{\link{tf}}, \code{\link{docfreq}}
-#' @keywords internal weighting dfm
+#' @seealso \code{\link{dfm_weight}}, \code{\link{docfreq}}
+#' @keywords dfm weighting
 #' @examples 
 #' mydfm <- as.dfm(data_dfm_lbgexample)
 #' head(mydfm[, 5:10])
-#' head(tfidf(mydfm)[, 5:10])
+#' head(dfm_tfidf(mydfm)[, 5:10])
 #' docfreq(mydfm)[5:15]
-#' head(tf(mydfm)[, 5:10])
+#' head(dfm_weight(mydfm)[, 5:10])
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
@@ -313,29 +383,29 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
 #'     as.dfm()
 #' wiki_dfm    
 #' docfreq(wiki_dfm)
-#' tfidf(wiki_dfm, scheme_tf = "prop") %>% round(digits = 2)
+#' dfm_tfidf(wiki_dfm, scheme_tf = "prop") %>% round(digits = 2)
 #' 
 #' \dontrun{
 #' # comparison with tm
 #' if (requireNamespace("tm")) {
 #'     convert(wiki_dfm, to = "tm") %>% weightTfIdf() %>% as.matrix()
 #'     # same as:
-#'     tfidf(wiki_dfm, base = 2, scheme_tf = "prop")
+#'     dfm_tfidf(wiki_dfm, base = 2, scheme_tf = "prop")
 #' }
 #' }
-#' @keywords internal weighting
+#' @keywords dfm weighting
 #' @export
-tfidf <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
-    UseMethod("tfidf")
+dfm_tfidf <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
+    UseMethod("dfm_tfidf")
 }
 
 #' @export
-tfidf.default <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
-    stop(friendly_class_undefined_message(class(x), "tfidf"))
+dfm_tfidf.default <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
+    stop(friendly_class_undefined_message(class(x), "dfm_tfidf"))
 }
     
 #' @export
-tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
+dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...) {
     
     attrs <- attributes(x)
     x <- as.dfm(x)
@@ -345,7 +415,7 @@ tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, 
     check_dots(args, names(formals(docfreq)))
     
     dfreq <- docfreq(x, scheme = scheme_df, base = base, ...)
-    tfreq <- tf(x, scheme = scheme_tf, base = base)
+    tfreq <- dfm_weight(x, scheme = scheme_tf, base = base)
     
     if (nfeat(x) != length(dfreq)) 
         stop("missing some values in idf calculation")
@@ -363,112 +433,19 @@ tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse", base = 10, 
     return(x)
 }
 
-
-#' Compute (weighted) term frequency from a dfm
+#' Deprecated form of \code{\link{dfm_tfidf}}
 #' 
-#' Apply varieties of term frequency weightings to a \link{dfm}.
-#' @param x object for which idf or tf-idf will be computed (a document-feature 
-#'   matrix)
-#' @param scheme divisor for the normalization of feature frequencies by 
-#'   document.  Valid types include: 
-#'   \describe{ 
-#'   \item{\code{count}}{default, 
-#'   each feature count will remain as feature counts, equivalent to dividing by
-#'   1} 
-#'   \item{\code{prop}}{feature proportions within document, equivalent to 
-#'   dividing each term by the total count of features in the document.} 
-#'   \item{\code{propmax}}{feature proportions relative to the most frequent
-#'   term of the document, equivalent to dividing term counts by the frequency
-#'   of the most frequent term in the document.} 
-#'   \item{\code{boolean}}{recode all non-zero counts as 1} 
-#'   \item{\code{log}}{take the logarithm of 1 + each
-#'   count, for base \code{base}}
-#'   \item{\code{augmented}}{equivalent to K + (1 - K) * \code{tf(x, "propmax")}}
-#'   \item{\code{logave}}{(1 + the log of the counts) / (1 + log of the counts / the average count within document)} 
-#'   }
-#' @details \code{tf(x, scheme = "prop")} is equivalent to \code{\link{dfm_weight}(x, "relFreq")}).
-#' @param base base for the logarithm when \code{scheme} is \code{"log"} or 
-#'   \code{logave}
-#' @param K the K for the augmentation when \code{scheme = "augmented"}
-#' @return A document feature matrix to which the weighting scheme has been 
-#'   applied.
-#' @author Kenneth Benoit and Paul Nulty
-#' @references Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
-#'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
-#'   
-#'   \url{https://en.wikipedia.org/wiki/Tf-idf#Term_frequency_2}
+#' Deprecated function name for \emph{tf-idf} weighting of a
+#' document-feature matrix.
+#' @param ... arguments passed to \code{\link{dfm_tfidf}}
+#' @keywords dfm internal deprecated
 #' @export
-#' @keywords internal weighting dfm
-tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", 
-                             "log", "augmented", "logave"),
-               base = 10, K = 0.5) {
-    UseMethod("tf")
+tfidf <- function(...) {
+    .Deprecated("dfm_tfidf")
+    UseMethod("dfm_tfidf")
 }
 
-#' @export
-tf.default <- function(x, scheme = c("count", "prop", "propmax", "boolean", 
-                                     "log", "augmented", "logave"),
-                       base = 10, K = 0.5) {
-    stop(friendly_class_undefined_message(class(x), "tf"))
-}
-
-#' @export
-tf.dfm <- function(x, scheme = c("count", "prop", "propmax", "boolean", 
-                                 "log", "augmented", "logave"),
-                   base = 10, K = 0.5) {
-    
-    x <- as.dfm(x)
-    if (!nfeat(x) || !ndoc(x)) return(x)
-    
-    scheme <- match.arg(scheme)
-    args <- as.list(match.call(expand.dots = FALSE))
-    # if ("base" %in% names(args) & !(scheme %in% c("log", "logave")))
-    #     warning("base not used for this scheme")
-    if ("K" %in% names(args) && scheme != "augmented")
-        warning("K not used for this scheme")
-    if (K < 0 | K > 1.0)
-        stop("K must be in the [0, 1] interval")
-    
-    if (x@weightTf[["scheme"]] != "count")
-        stop("this dfm has already been term weighted as:", x@weightTf)
-    
-    if (scheme == "count") {
-        return(x)
-        
-    } else if (scheme == "prop") {
-        div <- rowSums(x)
-        x@x <- x@x / div[x@i+1]
-        
-    } else if (scheme == "propmax") {
-        div <- maxtf(x)
-        x@x <- x@x / div[x@i+1]
-        
-    } else if (scheme == "boolean") {
-        x@x <- as.numeric(x@x > 0)
-        
-    } else if (scheme == "log") {
-        x@x <- 1 + log(x@x, base)
-        #x@x <- log(x@x + 1, base)
-        x@x[is.infinite(x@x)] <- 0
-        x@weightTf[["base"]] <- base
-        
-    } else if (scheme == "augmented") {
-        maxtf <- maxtf(x)
-        x@x <- K + (1 - K) * x@x / maxtf[x@i+1]
-        x@weightTf[["K"]] <- K
-        
-    } else if (scheme == "logave") {
-        meantf <- Matrix::rowSums(x) / Matrix::rowSums(tf(x, "boolean"))
-        x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i+1], base))
-        x@weightTf[["base"]] <- base
-        
-    } else stop("invalid tf scheme")
-    
-    x@weightTf[["scheme"]] <- scheme
-    return(x)
-}
-
-
+# internal --------------
 
 ## internal function to get maximum term frequency by document
 ## only applies to CsparseMatrix formats (dfm)
