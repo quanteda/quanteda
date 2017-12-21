@@ -3,7 +3,7 @@
 \name{corpus_trimsentences}
 \alias{corpus_trimsentences}
 \alias{char_trimsentences}
-\title{remove sentences based on their token lengths or a pattern match}
+\title{Remove sentences based on their token lengths or a pattern match}
 \usage{
 corpus_trimsentences(x, min_length = 1, max_length = 10000,
   exclude_pattern = NULL, return_tokens = FALSE)

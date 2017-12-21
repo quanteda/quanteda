@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{is_regex}
 \alias{is_regex}
-\title{internal function for \code{select_types()} to check if a string is a regular expression}
+\title{Internal function for \code{select_types()} to check if a string is a regular expression}
 \usage{
 is_regex(x)
 }
@@ -10,6 +10,6 @@ is_regex(x)
 \item{x}{a character string to be tested}
 }
 \description{
-internal function for \code{select_types()} to check if a string is a regular expression
+Internal function for \code{select_types()} to check if a string is a regular expression
 }
 \keyword{internal}

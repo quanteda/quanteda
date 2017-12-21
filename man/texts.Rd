@@ -4,7 +4,7 @@
 \alias{texts}
 \alias{texts<-}
 \alias{as.character.corpus}
-\title{get or assign corpus texts}
+\title{Get or assign corpus texts}
 \usage{
 texts(x, groups = NULL, spacer = "  ")
 

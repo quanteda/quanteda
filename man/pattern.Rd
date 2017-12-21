@@ -2,7 +2,7 @@
 % Please edit documentation in R/quanteda-documentation.R
 \name{pattern}
 \alias{pattern}
-\title{pattern for feature, token and keyword matching}
+\title{Pattern for feature, token and keyword matching}
 \arguments{
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 \link{collocations}, or \link{dfm}. See \link{pattern} for details.}

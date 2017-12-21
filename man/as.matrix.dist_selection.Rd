@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_dist.R
 \name{as.matrix.dist_selection}
 \alias{as.matrix.dist_selection}
-\title{coerce a dist_selection object to a matrix}
+\title{Coerce a dist_selection object to a matrix}
 \usage{
 \method{as.matrix}{dist_selection}(x, ...)
 }

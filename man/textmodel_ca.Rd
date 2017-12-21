@@ -2,7 +2,7 @@
 % Please edit documentation in R/textmodel_ca.R
 \name{textmodel_ca}
 \alias{textmodel_ca}
-\title{correspondence analysis of a document-feature matrix}
+\title{Correspondence analysis of a document-feature matrix}
 \usage{
 textmodel_ca(x, smooth = 0, nd = NA, sparse = FALSE,
   residual_floor = 0.1)

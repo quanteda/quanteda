@@ -2,7 +2,7 @@
 % Please edit documentation in R/textmodel-generics.R
 \name{coef.textmodel}
 \alias{coef.textmodel}
-\title{extract text model coefficients}
+\title{Extract text model coefficients}
 \usage{
 coef.textmodel(object, ...)
 }

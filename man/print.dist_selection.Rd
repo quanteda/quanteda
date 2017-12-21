@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_dist.R
 \name{print.dist_selection}
 \alias{print.dist_selection}
-\title{print a dist_selection object}
+\title{Print a dist_selection object}
 \usage{
 \method{print}{dist_selection}(x, ...)
 }

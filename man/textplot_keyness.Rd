@@ -2,7 +2,7 @@
 % Please edit documentation in R/textplot_keyness.R
 \name{textplot_keyness}
 \alias{textplot_keyness}
-\title{plot word keyness}
+\title{Plot word keyness}
 \usage{
 textplot_keyness(x, show_reference = TRUE, n = 20L, min_count = 2L)
 }

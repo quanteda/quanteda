@@ -3,7 +3,7 @@
 \name{textplot_network}
 \alias{textplot_network}
 \alias{as.network.fcm}
-\title{plot a network of feature co-occurrences}
+\title{Plot a network of feature co-occurrences}
 \usage{
 textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
   edge_color = "skyblue", edge_alpha = 0.5, edge_size = 2,

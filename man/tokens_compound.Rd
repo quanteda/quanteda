@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokens_compound.R
 \name{tokens_compound}
 \alias{tokens_compound}
-\title{convert token sequences into compound tokens}
+\title{Convert token sequences into compound tokens}
 \usage{
 tokens_compound(x, pattern, concatenator = "_", valuetype = c("glob",
   "regex", "fixed"), case_insensitive = TRUE, join = TRUE)

@@ -7,7 +7,7 @@
 \alias{fcm_select}
 \alias{fcm_remove}
 \alias{fcm_keep}
-\title{select features from a dfm or fcm}
+\title{Select features from a dfm or fcm}
 \usage{
 dfm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,

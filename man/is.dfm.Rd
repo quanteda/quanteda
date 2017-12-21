@@ -3,7 +3,7 @@
 \name{is.dfm}
 \alias{is.dfm}
 \alias{as.dfm}
-\title{coercion and checking functions for dfm objects}
+\title{Coercion and checking functions for dfm objects}
 \usage{
 is.dfm(x)
 

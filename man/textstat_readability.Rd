@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_readability.R
 \name{textstat_readability}
 \alias{textstat_readability}
-\title{calculate readability}
+\title{Calculate readability}
 \usage{
 textstat_readability(x, measure = c("all", "ARI", "ARI.simple", "Bormuth",
   "Bormuth.GP", "Coleman", "Coleman.C2", "Coleman.Liau", "Coleman.Liau.grade",

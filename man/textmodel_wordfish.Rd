@@ -2,7 +2,7 @@
 % Please edit documentation in R/textmodel_wordfish.R
 \name{textmodel_wordfish}
 \alias{textmodel_wordfish}
-\title{wordfish text model}
+\title{Wordfish text model}
 \usage{
 textmodel_wordfish(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),

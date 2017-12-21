@@ -2,7 +2,7 @@
 % Please edit documentation in R/dictionaries.R
 \name{dictionary}
 \alias{dictionary}
-\title{create a dictionary}
+\title{Create a dictionary}
 \usage{
 dictionary(x, file = NULL, format = NULL, separator = " ",
   tolower = TRUE, encoding = "auto")

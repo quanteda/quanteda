@@ -2,7 +2,7 @@
 % Please edit documentation in R/textmodel_affinity.R
 \name{textmodel_affinity}
 \alias{textmodel_affinity}
-\title{class affinity maximum likelihood text scaling model}
+\title{Class affinity maximum likelihood text scaling model}
 \usage{
 textmodel_affinity(x, y, exclude = NULL, smooth = 0.5, ref_smooth = 0.5,
   verbose = FALSE)

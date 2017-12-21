@@ -2,7 +2,7 @@
 % Please edit documentation in R/textmodel_affinity.R
 \name{predict.textmodel_affinity_fitted}
 \alias{predict.textmodel_affinity_fitted}
-\title{prediction for a fitted affinity textmodel}
+\title{Prediction for a fitted affinity textmodel}
 \usage{
 \method{predict}{textmodel_affinity_fitted}(object, newdata = NULL,
   level = 0.95, verbose = FALSE, ...)

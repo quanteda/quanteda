@@ -3,7 +3,7 @@
 \name{head.dfm}
 \alias{head.dfm}
 \alias{tail.dfm}
-\title{return the first or last part of a dfm}
+\title{Return the first or last part of a dfm}
 \usage{
 \method{head}{dfm}(x, n = 6L, nf = nfeat(x), ...)
 

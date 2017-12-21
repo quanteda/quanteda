@@ -2,7 +2,7 @@
 % Please edit documentation in R/textplot_wordcloud.R
 \name{textplot_wordcloud}
 \alias{textplot_wordcloud}
-\title{plot features as a wordcloud}
+\title{Plot features as a wordcloud}
 \usage{
 textplot_wordcloud(x, comparison = FALSE, ...)
 }

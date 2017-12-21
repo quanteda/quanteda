@@ -3,7 +3,7 @@
 \name{textstat_collocationsdev}
 \alias{textstat_collocationsdev}
 \alias{is.collocationsdev}
-\title{identify and score multi-word expressions}
+\title{Identify and score multi-word expressions}
 \usage{
 textstat_collocationsdev(x, method = "all", size = 2, min_count = 2,
   smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...)

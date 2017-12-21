@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert.R
 \name{dfm2lsa}
 \alias{dfm2lsa}
-\title{convert a dfm to an lsa "textmatrix"}
+\title{Convert a dfm to an lsa "textmatrix"}
 \usage{
 dfm2lsa(x)
 }
