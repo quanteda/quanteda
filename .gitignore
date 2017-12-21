@@ -25,4 +25,5 @@ __MACOSX
 
 # Vignette
 docs/articles/pkgdown/replication/text2vec_cache/*
+docs/articles/pkgdown/examples/japanese_cache/*
 inst/doc

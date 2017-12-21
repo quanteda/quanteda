@@ -47,6 +47,7 @@ corp_full <- data_download('data_corpus_foreignaffairscommittee')
 
 ```{r eval = FALSE}
 devtools::install_github("amatsuo/kaigiroku")
+#options(stringsAsFactors = FALSE)
 library(kaigiroku)
 
 # 年ごとに議事録をダウンロード
@@ -64,12 +65,12 @@ for (year in 1947:2017) {
 # ファイルを結合して保存
 file_all <- list.files(folder_download, full = TRUE, pattern = ".rds")
 speech <- lapply(as.list(file_all), readRDS) %>% bind_rows()
-saveRDS(speech, file = paste0(folder_download, "committee_speeches.rds"))
+saveRDS(speech, file = paste0(folder_download, "foreign_affairs_committee_speeches.rds"))
 ```
 
 #### コーパスの作成
 ```{r eval = FALSE}
-load("temp/committee_speeches.rda")
+load("temp/reign_affairs_committee_speeches.rda")
 corp_full <- corpus(foreign_affairs_committee_speeches, text_field = 'speech')
 
 ```
@@ -114,8 +115,7 @@ ndoc(corp)
 
 
 ## 語の分割と結合
-日本語の分析では，形態素解析ツールを用いて分かち書きを行うことが多いが，**quanteda**の`tokens()`は，[ICU](http://site.icu-project.org/)で定義された規則に従って文を語に分割することができる．さらに，漢字やカタカナの連続的共起を`textstat_collocations()`を用いて抽出し，`tokens_compound()`によって統計的に優位な組み合わせを結合すると，より質の高いトークン化を実現できる．`textstat_collocations()`を用いる場合は，事前に`tokens_select()`と正規表現で，対象とする語だけを選択する．この際，`padding = TRUE`とし，語の間の距離が維持されるように注意する
-
+日本語の分析では，形態素解析ツールを用いて分かち書きを行うことが多いが，**quanteda**の`tokens()`は，[ICU](http://site.icu-project.org/)で定義された規則に従って文を語に分割することができる．さらに，漢字やカタカナの連続的共起を`textstat_collocations()`を用いて抽出し，`tokens_compound()`によって統計的に優位な組み合わせを結合すると，より質の高いトークン化を実現できる．`textstat_collocations()`を用いる場合は，事前に`tokens_select()`と正規表現で，対象とする語だけを選択する．この際，`padding = TRUE`とし，語の間の距離が維持されるように注意する．
 ```{r}
 toks <- tokens(corp)
 toks <- tokens_select(toks, '^[０-９ぁ-んァ-ヶー一-龠]+$', valuetype = 'regex', padding = TRUE)
@@ -141,11 +141,11 @@ toks <- tokens_compound(toks, col_any[col_any$z > 3,], concatenator = '')
 
 ## 文書行列の作成
 `dfm()`によって文書行列を作成した後でも，`dfm_*()`と命名された関数を用いると分析に必要な文書の特徴を自由に選択できる．ここでは，平仮名のみもしくは一語のみから構成されたトークンを`dfm_remove()`によって，頻度が極端に低い語もしくは高い語を`dfm_trim()`によって削除している．
-
 ```{r}
 mt <- dfm(toks, remove = '')
 mt <- dfm_remove(mt, '^[ぁ-ん]+$', valuetype = 'regex', min_nchar = 2)
 mt <- dfm_trim(mt, min_count = 10, max_count = 0.1)
+
 ```
 
 # 分析
@@ -156,14 +156,14 @@ mt <- dfm_trim(mt, min_count = 10, max_count = 0.1)
 
 ```{r}
 key <- textstat_keyness(mt, docvars(mt, 'year') >= 2001)
-head(key, 20) %>% knitr::kable()
+knitr::kable(head(key, 20))
 ```
 
 上の表では，委員会出席者の名前が多く含まれるので，それらを取り除くと議論の主題が明確になる．
 
 ```{r}
-key <- key[!str_detect(rownames(key), regex('委員|大臣')),]
-head(key, 20) %>% knitr::kable()
+key <- key[!stringi::stri_detect_regex(rownames(key), '委員|大臣'),]
+knitr::kable(head(key, 20))
 ```
 
 
@@ -182,6 +182,6 @@ textplot_network(mt_co, min_freq = 0.95, edge_alpha = 0.9, vertex_size = size / 
 **quanteda**のdfmを`convert()`で変換し，**topicmodels**をパッケージを用いて潜在的な話題を推定する．
 ```{r, cache=TRUE}
 lda <- LDA(convert(mt, to = "topicmodels"), k = 10)
-get_terms(lda, 10) %>% knitr::kable()
+knitr::kable(get_terms(lda, 10))
 get_topics(lda) %>% table() %>% barplot(xlab = 'Topic', ylab = "Frequency") 
 ```

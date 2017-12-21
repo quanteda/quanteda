@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>事例: 安倍晋三に関するツイート • quanteda</title>
+<title>事例: 2017年総選挙に関するツイート • quanteda</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
@@ -121,7 +121,7 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>事例: 安倍晋三に関するツイート</h1>
+      <h1>事例: 2017年総選挙に関するツイート</h1>
                         <h4 class="author">Kohei Watanabe and Akitaka Matsuo</h4>
             
           </div>
@@ -131,33 +131,57 @@
 <div class="contents">
 <div class="section level2">
 <h2>パッケージの読み込み</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.data"</span>)
+<span class="kw">library</span>(quanteda)
+<span class="kw">library</span>(quanteda.data)</code></pre></div>
 </div>
 <div class="section level2">
 <h2>安倍晋三についてツイッターコーパスをダウンロード</h2>
 <p>等で</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/data_download.html">data_download</a></span>(<span class="dt">url =</span> <span class="st">'https://www.dropbox.com/s/zek14n7ovtt25ek/data_corpus_abetweets.rds?dl=1'</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/data_download.html">data_download</a></span>(<span class="dt">url =</span> <span class="st">'https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1'</span>)
 
 <span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corp) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trans_nf">stri_trans_nfkc</a></span>(<span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corp))</code></pre></div>
 </div>
 <div class="section level2">
 <h2>投稿の数と期間を取得</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/ndoc.html">ndoc</a></span>(corp)</code></pre></div>
-<pre><code>## [1] 8411</code></pre>
+<pre><code>## [1] 132346</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(corp, <span class="st">'created_at'</span>))</code></pre></div>
-<pre><code>## [1] "2017-12-16 12:14:46 GMT" "2017-12-18 10:50:08 GMT"</code></pre>
+<pre><code>## [1] "2017-10-19 16:55:25 GMT" "2017-10-31 15:09:19 GMT"</code></pre>
 </div>
 <div class="section level1">
 <h1>前処理</h1>
 <div class="section level2">
 <h2>語の分割と結合</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mt &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(corp, <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">'#*'</span>, <span class="st">'@*'</span>))
-mt &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(mt, <span class="dt">min_nchar =</span> <span class="dv">2</span>)
-mt &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(mt, <span class="dt">min_count =</span> <span class="dv">5</span>)
-mt_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(mt)
-feat &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(mt_col, <span class="dv">100</span>))
-<span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(mt_col,  feat))</code></pre></div>
-<p><img src="japanese_twitter_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(corp, <span class="dt">remove_separator =</span> <span class="ot">FALSE</span>, <span class="dt">remove_url =</span> <span class="ot">TRUE</span>)
+toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(toks, <span class="st">'^[</span><span class="ch">\\</span><span class="st">w#@]+$'</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>)
+toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(toks, <span class="st">'^[:hira:]$'</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>)
+
+col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(toks, <span class="dt">min_count =</span> <span class="dv">100</span>)
+col &lt;-<span class="st"> </span>col[stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_detect">stri_detect_regex</a></span>(col<span class="op">$</span>collocation, <span class="st">'([:number:]|[:kana:]|[:han:])'</span>),]
+
+toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, col[col<span class="op">$</span>z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,], <span class="dt">concatenator =</span> <span class="st">''</span>)
+<span class="co">#toks2 &lt;- tokens_compound(toks, col[col$z &gt; 3,], concatenator = '', join = FALSE)</span>
+toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="st">'# *'</span>), <span class="dt">concatenator =</span> <span class="st">''</span>)
+mt &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(toks)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mt_tag &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(mt, <span class="st">'#*'</span>)
+mt_tag &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(mt_tag, <span class="kw">c</span>(<span class="st">'*選挙*'</span>, <span class="st">'*衆院選*'</span>, <span class="st">'*衆議院*'</span>, <span class="st">'*投票*'</span>))
+
+mt_tag &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(mt_tag, <span class="dt">min_nchar =</span> <span class="dv">2</span>)
+mt_tag &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(mt_tag, <span class="dt">min_count =</span> <span class="dv">10</span>)
+mt_co &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(mt_tag)
+feat &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(mt_co, <span class="dv">100</span>))
+<span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(mt_co,  feat), <span class="dt">min_freq =</span> <span class="fl">0.8</span>)</code></pre></div>
+<p><img src="japanese_twitter_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mt_msg &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(mt, <span class="kw">c</span>(<span class="st">'#*'</span>, <span class="st">'@*'</span>))
+mt_msg &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(mt_msg, <span class="st">'^[ぁ-ん]+$'</span>, <span class="st">'regex'</span>)
+
+mt_msg &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(mt_msg, <span class="dt">min_nchar =</span> <span class="dv">2</span>)
+mt_msg &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(mt_msg, <span class="dt">min_count =</span> <span class="dv">10</span>)
+mt_co &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(mt_msg)
+feat &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(mt_co, <span class="dv">100</span>))
+<span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(mt_co,  feat), <span class="dt">min_freq =</span> <span class="fl">0.7</span>)</code></pre></div>
+<p><img src="japanese_twitter_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 </div>
 </div>
 </div>
