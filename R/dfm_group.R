@@ -1,4 +1,4 @@
-#' combine documents in a dfm by a grouping variable
+#' Combine documents in a dfm by a grouping variable
 #' 
 #' Combine documents in a \link{dfm} by a grouping variable, which can also be 
 #' one of the \link{docvars} attached to the dfm. This is identical in 

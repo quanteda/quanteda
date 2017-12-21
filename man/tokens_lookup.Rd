@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokens_lookup.R
 \name{tokens_lookup}
 \alias{tokens_lookup}
-\title{apply a dictionary to a tokens object}
+\title{Apply a dictionary to a tokens object}
 \usage{
 tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
   "fixed"), case_insensitive = TRUE, capkeys = !exclusive,
@@ -19,7 +19,7 @@ dictionary that will be applied.  The top level is 1, and subsequent levels
 describe lower nesting levels.  Values may be combined, even if these 
 levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second 
 level into the first, but record the third level (if present) collapsed
-below the first.  (See examples.)}
+below the first (see examples).}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;

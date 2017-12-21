@@ -2,7 +2,7 @@
 % Please edit documentation in R/bootstrap_dfm.R
 \name{bootstrap_dfm}
 \alias{bootstrap_dfm}
-\title{bootstrap a dfm}
+\title{Bootstrap a dfm}
 \usage{
 bootstrap_dfm(x, n = 10, ..., verbose = quanteda_options("verbose"))
 }

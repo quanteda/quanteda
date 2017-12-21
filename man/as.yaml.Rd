@@ -2,7 +2,7 @@
 % Please edit documentation in R/dictionaries.R
 \name{as.yaml}
 \alias{as.yaml}
-\title{convert quanteda dictionary objects to the YAML format}
+\title{Convert quanteda dictionary objects to the YAML format}
 \usage{
 as.yaml(x)
 }

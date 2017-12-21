@@ -3,7 +3,7 @@
 \name{metacorpus}
 \alias{metacorpus}
 \alias{metacorpus<-}
-\title{get or set corpus metadata}
+\title{Get or set corpus metadata}
 \usage{
 metacorpus(x, field = NULL)
 
@@ -24,6 +24,8 @@ For \code{metacorpus}, a named list of the metadata fields in the corpus.
 }
 \description{
 Get or set the corpus-level metadata in a \link{corpus} object.
+
+Replacement function for corpus-level data
 }
 \examples{
 metacorpus(data_corpus_inaugural)

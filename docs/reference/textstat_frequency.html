@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>tabulate feature frequencies — textstat_frequency • quanteda</title>
+<title>Tabulate feature frequencies — textstat_frequency • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -146,7 +146,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>tabulate feature frequencies</h1>
+    <h1>Tabulate feature frequencies</h1>
     </div>
 
     
@@ -211,7 +211,7 @@ column is omitted from the returned data.frame.</p></dd>
 #&gt; 6       a         1    2       1   two</div><div class='input'>
 <span class='no'>obamadfm</span> <span class='kw'>&lt;-</span>
     <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>President</span> <span class='kw'>==</span> <span class='st'>"Obama"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
+    <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>))
 <span class='no'>freq</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_frequency</span>(<span class='no'>obamadfm</span>)
 <span class='fu'>head</span>(<span class='no'>freq</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;    feature frequency rank docfreq
 #&gt; 1       us        44    1       2
@@ -233,13 +233,11 @@ column is omitted from the returned data.frame.</p></dd>
 <span class='co'># plot relative frequencies by group</span>
 <span class='no'>dfm_weight_pres</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>2000</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relfreq"</span>)
-
+    <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relfreq"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in dfm_weight(., type = "relfreq"): unused argument (type = "relfreq")</span></div><div class='input'>
 <span class='co'># calculate relative frequency by president</span>
 <span class='no'>freq_weight</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_frequency</span>(<span class='no'>dfm_weight_pres</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-                                  <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)
-
+                                  <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in textstat_frequency(dfm_weight_pres, n = 10, groups = "President"): object 'dfm_weight_pres' not found</span></div><div class='input'>
 <span class='co'># plot frequencies</span>
 <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>freq_weight</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>nrow</span>(<span class='no'>freq_weight</span>):<span class='fl'>1</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>frequency</span>)) +
     <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></span>() +
@@ -247,7 +245,7 @@ column is omitted from the returned data.frame.</p></dd>
     <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/coord_flip'>coord_flip</a></span>() +
     <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous'>scale_x_continuous</a></span>(<span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fu'>nrow</span>(<span class='no'>freq_weight</span>):<span class='fl'>1</span>,
                        <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>freq_weight</span>$<span class='no'>feature</span>) +
-    <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Relative frequency"</span>)</div><div class='img'><img src='textstat_frequency-2.png' alt='' width='700' height='432.632880098887' /></div></pre>
+    <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Relative frequency"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ggplot(data = freq_weight, aes(x = nrow(freq_weight):1, y = frequency)): object 'freq_weight' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

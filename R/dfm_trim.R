@@ -1,5 +1,4 @@
-
-#' trim a dfm using frequency threshold-based feature selection
+#' Trim a dfm using frequency threshold-based feature selection
 #' 
 #' Returns a document by feature matrix reduced in size based on document and 
 #' term frequency, usually in terms of a minimum frequencies, but may also be in

@@ -3,7 +3,7 @@
 \name{dfm_compress}
 \alias{dfm_compress}
 \alias{fcm_compress}
-\title{recombine a dfm or fcm by combining identical dimension elements}
+\title{Recombine a dfm or fcm by combining identical dimension elements}
 \usage{
 dfm_compress(x, margin = c("both", "documents", "features"))
 

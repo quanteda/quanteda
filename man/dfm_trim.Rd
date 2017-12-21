@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfm_trim.R
 \name{dfm_trim}
 \alias{dfm_trim}
-\title{trim a dfm using frequency threshold-based feature selection}
+\title{Trim a dfm using frequency threshold-based feature selection}
 \usage{
 dfm_trim(x, min_count = 1, min_docfreq = 1, max_count = NULL,
   max_docfreq = NULL, sparsity = NULL,

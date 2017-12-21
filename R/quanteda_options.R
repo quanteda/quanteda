@@ -1,4 +1,4 @@
-#' get or set package options for quanteda
+#' Get or set package options for quanteda
 #'
 #' Get or set global options affecting functions across \pkg{quanteda}.
 #' @param ... options to be set, as key-value pair, same as

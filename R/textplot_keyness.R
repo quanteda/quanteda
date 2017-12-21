@@ -1,4 +1,4 @@
-#' plot word keyness
+#' Plot word keyness
 #' 
 #' Plot the results of a "keyword" of features comparing their differential 
 #' associations with a target and a reference group, after calculating keyness

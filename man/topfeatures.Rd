@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfm-methods.R
 \name{topfeatures}
 \alias{topfeatures}
-\title{identify the most frequent features in a dfm}
+\title{Identify the most frequent features in a dfm}
 \usage{
 topfeatures(x, n = 10, decreasing = TRUE, scheme = c("count", "docfreq"),
   groups = NULL)

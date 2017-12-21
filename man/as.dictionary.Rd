@@ -3,7 +3,7 @@
 \name{as.dictionary}
 \alias{as.dictionary}
 \alias{is.dictionary}
-\title{coercion and checking functions for dictionary objects}
+\title{Coercion and checking functions for dictionary objects}
 \usage{
 as.dictionary(x)
 

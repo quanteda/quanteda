@@ -9,7 +9,7 @@
 \alias{show,fcm-method}
 \alias{head.fcm}
 \alias{tail.fcm}
-\title{print a dfm object}
+\title{Print a dfm object}
 \usage{
 \S4method{print}{dfm}(x, show.values = NULL, show.settings = FALSE,
   show.summary = TRUE, ndoc = quanteda_options("print_dfm_max_ndoc"),
@@ -50,7 +50,7 @@ and features}
 \item{object}{the item to be printed}
 }
 \description{
-print methods for document-feature matrices
+Print methods for document-feature matrices
 }
 \seealso{
 \code{\link{quanteda_options}}

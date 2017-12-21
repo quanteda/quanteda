@@ -1,4 +1,4 @@
-#' plot a network of feature co-occurrences
+#' Plot a network of feature co-occurrences
 #'
 #' Plot an \link{fcm} object as a network, where edges show co-occurrences of
 #' features.

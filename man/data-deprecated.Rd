@@ -11,7 +11,7 @@
 \alias{exampleString}
 \alias{data_char_inaugural}
 \alias{data_char_mobydick}
-\title{datasets with deprecated or defunct names}
+\title{Datasets with deprecated or defunct names}
 \format{See the specific object documentation for the renamed objects.}
 \description{
 These are datasets that have been renamed but that have been

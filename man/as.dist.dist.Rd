@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_dist.R
 \name{as.dist.dist}
 \alias{as.dist.dist}
-\title{coerce a dist into a dist}
+\title{Coerce a dist into a dist}
 \usage{
 \method{as.dist}{dist}(m, diag = FALSE, upper = FALSE)
 }

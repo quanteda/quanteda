@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{escape_regex}
 \alias{escape_regex}
-\title{internal function for \code{select_types()} to escape regular expressions}
+\title{Internal function for \code{select_types()} to escape regular expressions}
 \usage{
 escape_regex(x)
 }

@@ -1,4 +1,4 @@
-#' remove sentences based on their token lengths or a pattern match
+#' Remove sentences based on their token lengths or a pattern match
 #' 
 #' Removes sentences from a corpus or a character vector shorter than a 
 #' specified length.
@@ -90,7 +90,7 @@ char_trim.character <- function(x, what = c("sentences", "paragraphs", "document
 }
 
 
-#' remove sentences based on their token lengths or a pattern match
+#' Remove sentences based on their token lengths or a pattern match
 #' 
 #' Removes sentences from a corpus or a character vector shorter than a 
 #' specified length.

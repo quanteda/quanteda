@@ -5,7 +5,7 @@
 \alias{dfm_toupper}
 \alias{fcm_tolower}
 \alias{fcm_toupper}
-\title{convert the case of the features of a dfm and combine}
+\title{Convert the case of the features of a dfm and combine}
 \usage{
 dfm_tolower(x, keep_acronyms = FALSE, ...)
 

@@ -4,7 +4,7 @@
 \alias{textstat_collocations}
 \alias{collocations}
 \alias{is.collocations}
-\title{identify and score multi-word expressions}
+\title{Identify and score multi-word expressions}
 \usage{
 textstat_collocations(x, method = "lambda", size = 2, min_count = 2,
   smoothing = 0.5, tolower = TRUE, ...)

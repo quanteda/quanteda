@@ -3,7 +3,7 @@
 \name{phrase}
 \alias{phrase}
 \alias{is.phrase}
-\title{declare a compound character to be a sequence of separate pattern matches}
+\title{Declare a compound character to be a sequence of separate pattern matches}
 \usage{
 phrase(x)
 

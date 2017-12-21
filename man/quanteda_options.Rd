@@ -2,7 +2,7 @@
 % Please edit documentation in R/quanteda_options.R
 \name{quanteda_options}
 \alias{quanteda_options}
-\title{get or set package options for quanteda}
+\title{Get or set package options for quanteda}
 \usage{
 quanteda_options(..., reset = FALSE, initialize = FALSE)
 }

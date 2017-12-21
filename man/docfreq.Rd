@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfm_weight.R
 \name{docfreq}
 \alias{docfreq}
-\title{compute the (weighted) document frequency of a feature}
+\title{Compute the (weighted) document frequency of a feature}
 \usage{
 docfreq(x, scheme = c("count", "inverse", "inversemax", "inverseprob",
   "unary"), smoothing = 0, k = 0, base = 10, threshold = 0,

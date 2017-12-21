@@ -3,7 +3,7 @@
 \name{fcm}
 \alias{fcm}
 \alias{is.fcm}
-\title{create a feature co-occurrence matrix}
+\title{Create a feature co-occurrence matrix}
 \usage{
 fcm(x, context = c("document", "window"), count = c("frequency", "boolean",
   "weighted"), window = 5L, weights = 1L, ordered = FALSE,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfm_group.R
 \name{dfm_group}
 \alias{dfm_group}
-\title{combine documents in a dfm by a grouping variable}
+\title{Combine documents in a dfm by a grouping variable}
 \usage{
 dfm_group(x, groups = NULL, fill = FALSE)
 }

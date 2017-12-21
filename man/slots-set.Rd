@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{slots<-}
 \alias{slots<-}
-\title{function to assign multiple slots to a S4 object}
+\title{Function to assign multiple slots to a S4 object}
 \usage{
 slots(x, exceptions = c("Dim", "Dimnames", "i", "p", "x",
   "factors")) <- value
@@ -15,6 +15,6 @@ slots(x, exceptions = c("Dim", "Dimnames", "i", "p", "x",
 \item{value}{a list of attributes extracted by attributes()}
 }
 \description{
-function to assign multiple slots to a S4 object
+Function to assign multiple slots to a S4 object
 }
 \keyword{internal}

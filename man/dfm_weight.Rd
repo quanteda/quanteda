@@ -56,10 +56,7 @@ named features.  Any features not named will be assigned a weight of 1.0
   depending on the size of your input matrix.
 }
 \description{
-Returns a \link{dfm} matrix with the feature frequencies weighted.  For
-document frequencies (which does not return a \link{dfm}, see
-\code{\link{docfreq}}.  For \emph{tf-idf} weighting, see
-\code{\link{dfm_tfidf}}.
+Weight the feature frequencies in a dfm
 }
 \examples{
 dtm <- dfm(data_corpus_inaugural)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{attributes<-}
 \alias{attributes<-}
-\title{function extending base::attributes()}
+\title{Function extending base::attributes()}
 \usage{
 attributes(x, overwrite = TRUE) <- value
 }
@@ -14,6 +14,6 @@ attributes(x, overwrite = TRUE) <- value
 \item{value}{new attributes}
 }
 \description{
-function extending base::attributes()
+Function extending base::attributes()
 }
 \keyword{internal}

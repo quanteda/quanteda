@@ -1,4 +1,4 @@
-#' convert the case of tokens
+#' Convert the case of tokens
 #' 
 #' \code{tokens_tolower} and \code{tokens_toupper} convert the features of a
 #' \link{tokens} object and reindex the types.
@@ -55,7 +55,7 @@ tokens_toupper.tokens <- function(x, ...) {
 }
 
 
-#' convert the case of character objects
+#' Convert the case of character objects
 #' 
 #' \code{char_tolower} and \code{char_toupper} are replacements for 
 #' \link[base]{tolower} and \link[base]{toupper} based on the \pkg{stringi} 
@@ -138,7 +138,7 @@ char_toupper.character <- function(x, ...) {
     return(x)
 }
 
-#' convert the case of the features of a dfm and combine
+#' Convert the case of the features of a dfm and combine
 #' 
 #' \code{dfm_tolower} and \code{dfm_toupper} convert the features of the dfm or
 #' fcm to lower and upper case, respectively, and then recombine the counts.

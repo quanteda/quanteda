@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>internal data sets — data-internal • quanteda</title>
+<title>Internal data sets — data-internal • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -146,7 +146,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>internal data sets</h1>
+    <h1>Internal data sets</h1>
     </div>
 
     
@@ -155,25 +155,11 @@
 
     <pre class="usage"><span class='no'>data_int_syllables</span>
 
-<span class='no'>data_char_stopwords</span>
-
 <span class='no'>data_char_wordlists</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>An object of class <code>integer</code> of length 133245.</p>
-    
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    <p>The English stopwords are taken from the SMART information retrieval 
-  system (obtained from Lewis, David D., et al. 
-  "<a href='http://www.jmlr.org/papers/volume5/lewis04a/lewis04a.pdf'>Rcv1: A 
-  new benchmark collection for text categorization research.</a>" <em>Journal 
-  of machine learning research</em> (2004, 5 April): 361-397.</p>  
-<p>Additional stopword lists are taken from the Snowball stemmer project in 
-  different languages (see <a href='http://snowballstem.org/projects.html'>http://snowballstem.org/projects.html</a>).</p>  
-<p>The Greek stopwords were supplied by Carsten Schwemmer (see 
-  <a href='https://github.com/kbenoit/quanteda/issues/282'>GitHub issue #282</a>).</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -181,12 +167,6 @@
 an integer vector whose element names correspond to English words. Built from
 the freely available CMU pronunciation dictionary at 
 <code>http://www.speech.cs.cmu.edu/cgi-bin/cmudict</code>.
-    <code>data_char_stopwords</code> provides stopword lists in multiple 
-  languages; it is a named list of characters with the lowercase language 
-  name (in English) as the name of each list element.  
-  Supported languages are Arabic, Danish, Dutch, English, Finnish, French, 
-  German, Greek, Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish,
-  and Swedish.
     <code>data_char_wordlists</code> provides word lists used in some readability indexes; 
 it is a named list of character vectors where each list element 
 corresponds to a different readability index.</p>
@@ -201,10 +181,6 @@ corresponds to a different readability index.</p>
 <p>Klare, G. R. 1975. "Assessing readability." <em>Reading Research Quarterly</em> 10(1): 62-102.</p>
 <p>Spache, G. 1953. "A new readability formula for primary-grade reading materials." <em>The Elementary School Journal</em> 53: 410-413.</p>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code><a href='stopwords.html'>stopwords</a></code></p>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -213,13 +189,9 @@ corresponds to a different readability index.</p>
       
       <li><a href="#format">Format</a></li>
 
-      <li><a href="#source">Source</a></li>
-
       <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

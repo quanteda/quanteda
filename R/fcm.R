@@ -26,7 +26,7 @@ setClass("fcm",
          #contains = c("dfm", "dgCMatrix", "dtCMatrix"))
          contains = c("dfm", "dgCMatrix"))
 
-#' create a feature co-occurrence matrix
+#' Create a feature co-occurrence matrix
 #' 
 #' Create a sparse feature co-occurrence matrix, measuring co-occurrences of
 #' features within a user-defined context. The context can be defined as a

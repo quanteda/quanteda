@@ -1,11 +1,7 @@
 # dfm_weight -------------
 
 #' Weight the feature frequencies in a dfm
-#' 
-#' Returns a \link{dfm} matrix with the feature frequencies weighted.  For
-#' document frequencies (which does not return a \link{dfm}, see
-#' \code{\link{docfreq}}.  For \emph{tf-idf} weighting, see
-#' \code{\link{dfm_tfidf}}.
+
 #' @param x document-feature matrix created by \link{dfm}
 #' @param scheme a label of the weight type:
 #' \describe{
@@ -239,7 +235,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 
 # docfreq -------------
 
-#' compute the (weighted) document frequency of a feature
+#' Compute the (weighted) document frequency of a feature
 #' 
 #' For a \link{dfm} object, returns a (weighted) document frequency for each
 #' term.  The default is a simple count of the number of documents in which a

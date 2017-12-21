@@ -2,7 +2,7 @@
 % Please edit documentation in R/dictionaries.R
 \name{merge_dictionary_values}
 \alias{merge_dictionary_values}
-\title{internal function to merge values of duplicated keys}
+\title{Internal function to merge values of duplicated keys}
 \usage{
 merge_dictionary_values(dict)
 }
@@ -10,7 +10,7 @@ merge_dictionary_values(dict)
 \item{dict}{a dictionary object}
 }
 \description{
-internal function to merge values of duplicated keys
+Internal function to merge values of duplicated keys
 }
 \examples{
 dict <- list('A' = list(AA = list('aaaaa'), 'a'), 

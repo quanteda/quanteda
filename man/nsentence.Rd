@@ -2,7 +2,7 @@
 % Please edit documentation in R/nfunctions.R
 \name{nsentence}
 \alias{nsentence}
-\title{count the number of sentences}
+\title{Count the number of sentences}
 \usage{
 nsentence(x, ...)
 }

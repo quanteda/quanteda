@@ -7,7 +7,7 @@
 \alias{corpus.data.frame}
 \alias{corpus.kwic}
 \alias{corpus.Corpus}
-\title{construct a corpus object}
+\title{Construct a corpus object}
 \usage{
 corpus(x, ...)
 
