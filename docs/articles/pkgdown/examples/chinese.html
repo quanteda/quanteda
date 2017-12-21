@@ -137,15 +137,20 @@
 <h2 class="hasAnchor">
 <a href="#chinese-stop-words-baidu-stopwords" class="anchor"></a>Chinese Stop words: Baidu Stopwords</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># read Chinese stop words</span>
-csw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>)
-
-<span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>)</code></pre></div>
+csw &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>)</code></pre></div>
+<pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
+## Use 'stopwords(language = "zh", source = "misc")' instead.
+## See help("Deprecated")</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>)</code></pre></div>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ## [1] "中华"   "人民"   "共和国" "成立"   "于"     "1949"   "年"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># with stopwords removed</span>
 <span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))</code></pre></div>
+<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>))</code></pre></div>
+<pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
+## Use 'stopwords(language = "zh", source = "misc")' instead.
+## See help("Deprecated")</code></pre>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ## [1] "中华"   "人民"   "共和国" "成立"   "1949"</code></pre>
@@ -190,9 +195,11 @@ csw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># tokenize</span>
 chtoks &lt;-<span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(data_corpus_chinesegovreport, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))
-
-<span class="co"># construct a dfm</span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>))</code></pre></div>
+<pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
+## Use 'stopwords(language = "zh", source = "misc")' instead.
+## See help("Deprecated")</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># construct a dfm</span>
 chdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(chtoks)
 <span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chdfm)</code></pre></div>
 <pre><code>## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
@@ -221,8 +228,11 @@ chdfm_tf &lt;-<span class="st"> </span><span class="kw"><a href="../../../refere
 ch17txt &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_chinesegovreport, Year <span class="op">==</span><span class="st"> "2017"</span>)
 ch17toks &lt;-<span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(ch17txt, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))
-chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  
+<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>))</code></pre></div>
+<pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
+## Use 'stopwords(language = "zh", source = "misc")' instead.
+## See help("Deprecated")</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  
 <span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</code></pre></div>
 <pre><code>## 推进 制度   性 体制 完善   试   点 供给   侧 结构 
 ##   23   19   11   11   10    8    8    7    7    7</code></pre>
