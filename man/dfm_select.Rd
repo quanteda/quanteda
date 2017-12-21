@@ -11,8 +11,7 @@
 \usage{
 dfm_select(x, pattern = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  min_nchar = 1L, max_nchar = 79L, verbose = quanteda_options("verbose"),
-  ...)
+  min_nchar = 1L, max_nchar = 79L, verbose = quanteda_options("verbose"))
 
 dfm_remove(x, ...)
 
@@ -44,22 +43,23 @@ fcm_keep(x, pattern = NULL, ...)
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
 \item{min_nchar, max_nchar}{numerics specifying the minimum and maximum length
-in characters for features to be removed or kept; defaults are 1 and 
+in characters for features to be removed or kept; defaults are 1 and
 \href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
- (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are 
-applied after (and hence, in addition to) any selection based on pattern 
+ (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are
+applied after (and hence, in addition to) any selection based on pattern
 matches.}
 
-\item{verbose}{if \code{TRUE} print message about how many pattern were 
+\item{verbose}{if \code{TRUE} print message about how many pattern were
 removed}
 
-\item{...}{used only for passing arguments from \code{*_remove} to
-\code{*_select} functions}
+\item{...}{used only for passing arguments from \code{dfm_remove} or
+\code{dfm_keep} to \code{dfm_select}. Cannot include
+\code{selection}.}
 }
 \value{
-A \link{dfm} or \link{fcm} object, after the feature selection has 
+A \link{dfm} or \link{fcm} object, after the feature selection has
   been applied.
-  
+
   When \code{pattern} is a \link{dfm} object, then the returned object will
   be identical in its feature set to the dfm supplied as the \code{pattern}
   argument. This means that any features in \code{x} not in the dfm provided
@@ -67,35 +67,35 @@ A \link{dfm} or \link{fcm} object, after the feature selection has
   dfm supplied as \code{pattern} but not found in \code{x} will be added with
   all zero counts.  Because selecting on a dfm is designed to produce a
   selected dfm with an exact feature match, when \code{pattern} is a
-  \link{dfm} object, then the following settings are always used: 
+  \link{dfm} object, then the following settings are always used:
   \code{case_insensitive = FALSE}, and \code{valuetype = "fixed"}.
-  
-  Selecting on a \link{dfm} is useful when you have trained a model on one 
-  dfm, and need to project this onto a test set whose features must be 
+
+  Selecting on a \link{dfm} is useful when you have trained a model on one
+  dfm, and need to project this onto a test set whose features must be
   identical.  It is also used in \code{\link{bootstrap_dfm}}.  See examples.
 }
 \description{
-This function selects or removes features from a \link{dfm} or \link{fcm}, 
-based on feature name matches with \code{pattern}.  The most common usages 
-are to eliminate features from a dfm already constructed, such as stopwords, 
+This function selects or removes features from a \link{dfm} or \link{fcm},
+based on feature name matches with \code{pattern}.  The most common usages
+are to eliminate features from a dfm already constructed, such as stopwords,
 or to select only terms of interest from a dictionary.
 }
 \details{
 \code{dfm_remove} and \code{fcm_remove} are simply a convenience
-  wrappers to calling \code{dfm_select} and \code{fcm_select} with 
+  wrappers to calling \code{dfm_select} and \code{fcm_select} with
   \code{selection = "remove"}.
-  
-  \code{dfm_keep} and \code{fcm_keep} are simply a convenience
-  wrappers to calling \code{dfm_select} and \code{fcm_select} with 
-  \code{selection = "keep"}.
+
+  \code{dfm_keep} and \code{fcm_keep} are simply a convenience wrappers to
+  calling \code{dfm_select} and \code{fcm_select} with \code{selection =
+  "keep"}.
 }
 \note{
-This function selects features based on their labels.  To select 
-  features based on the values of the document-feature matrix, use 
+This function selects features based on their labels.  To select
+  features based on the values of the document-feature matrix, use
   \code{\link{dfm_trim}}.
 }
 \examples{
-myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
+myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.",
                "Does the United_States or Sweden have more progressive taxation?"),
              tolower = FALSE, verbose = FALSE)
 mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
