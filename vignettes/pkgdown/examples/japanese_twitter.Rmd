@@ -20,9 +20,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## パッケージの読み込み
 ```{r, message = FALSE}
-devtools::install_github("quanteda/quanteda.data")
+devtools::install_github("quanteda/quanteda.corpora")
 library(quanteda)
-library(quanteda.data)
 library(stringi)
 ```
 
@@ -30,7 +29,7 @@ library(stringi)
 ## 安倍晋三についてツイッターコーパスをダウンロード
 等で
 ```{r}
-corp <- data_download(url = 'https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1')
+corp <- quanteda.corpora::download(url = 'https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1')
 texts(corp) <- stri_trans_nfkc(texts(corp))
 
 

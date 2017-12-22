@@ -20,15 +20,10 @@ This is intended to show how **quanteda** can be used with the [**text2vec**](ht
 
 ## Read in the corpus
 
-Reading the corpus from the [**text2vec** vignette](http://text2vec.org/glove.html):
-```{r eval = TRUE}
-temp_file <- "/tmp/wiki.RDS"
-if (!file.exists(temp_file)) {
-    wiki <- corpus(readtext::readtext("http://mattmahoney.net/dc/text8.zip", verbosity = 0))
-    saveRDS(wiki, file = paste0(temp_file))
-} else {
-    wiki <- readRDS(paste0(temp_file))
-}
+Reading the corpus constructed from [texts](http://mattmahoney.net/dc/text8.zip), which were used in the [**text2vec** vignette](http://text2vec.org/glove.html):
+```{r eval=TRUE, message=FALSE}
+devtools::install_github("quanteda/quanteda.corpora")
+wiki_corp <- quanteda.corpora::download(url = 'https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1')
 ```
 
 ## Select features
@@ -36,7 +31,7 @@ if (!file.exists(temp_file)) {
 First, we tokenize the corpus, and then get the names of the features that occur five times or more.
 Trimming the features before constructing the fcm:
 ```{r}
-wiki_toks <- tokens(wiki)
+wiki_toks <- tokens(wiki_corp)
 dfm(wiki, verbose = TRUE)
 feats <- dfm(wiki_toks, verbose = TRUE) %>% 
     dfm_trim(min_count = 5) %>%
