@@ -131,16 +131,14 @@
 <div class="contents">
 <div class="section level2">
 <h2>パッケージの読み込み</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.data"</span>)
-<span class="kw">library</span>(quanteda)
-<span class="kw">library</span>(quanteda.data)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
 </div>
 <div class="section level2">
-<h2>安倍晋三についてツイッターコーパスをダウンロード</h2>
-<p>等で</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/data_download.html">data_download</a></span>(<span class="dt">url =</span> <span class="st">'https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1'</span>)
-
-<span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corp) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trans_nf">stri_trans_nfkc</a></span>(<span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corp))</code></pre></div>
+<h2>データをダウンロード</h2>
+<p>本コーパスは，***によって2017年総選挙の際に収集されたツイートを含んでいる．インターネット上で収集されたテキストは，英数字の全半角が統一されていないので，<code>stri_trans_nfkc()</code>によって表記を標準化すると良い．</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)
+corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">'https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1'</span>)
+<span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corp) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trans_nf">stri_trans_nfkc</a></span>(<span class="kw"><a href="../../../reference/texts.html">texts</a></span>(corp)) <span class="co"># 表記を標準化</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2>投稿の数と期間を取得</h2>
@@ -153,34 +151,60 @@
 <h1>前処理</h1>
 <div class="section level2">
 <h2>語の分割と結合</h2>
+<p>ツイートのトークン化では，ハッシュタグの後に続く改行を保持するために<code>remove_separator = FALSE</code>とし，次の<code><a href="../../../reference/tokens_select.html">tokens_remove()</a></code>で，語の位置関係を維持しながら，改行，空白，‘#’<a href="mailto:%E3%81%A8'@'%E4%BB%A5%E5%A4%96%E3%81%AE%E8%A8%98%E5%8F%B7%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B">と'@'以外の記号を削除する</a>．日本語のハッシュタグは，’#’とそれの続く語が分離されてしまうので，それらを<code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code>で文書行列を作成する前に結合する．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(corp, <span class="dt">remove_separator =</span> <span class="ot">FALSE</span>, <span class="dt">remove_url =</span> <span class="ot">TRUE</span>)
 toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(toks, <span class="st">'^[</span><span class="ch">\\</span><span class="st">w#@]+$'</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>)
-toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(toks, <span class="st">'^[:hira:]$'</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>)
 
-col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(toks, <span class="dt">min_count =</span> <span class="dv">100</span>)
-col &lt;-<span class="st"> </span>col[stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_detect">stri_detect_regex</a></span>(col<span class="op">$</span>collocation, <span class="st">'([:number:]|[:kana:]|[:han:])'</span>),]
+min_count &lt;-<span class="st"> </span><span class="dv">10</span>
 
-toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, col[col<span class="op">$</span>z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,], <span class="dt">concatenator =</span> <span class="st">''</span>)
-<span class="co">#toks2 &lt;- tokens_compound(toks, col[col$z &gt; 3,], concatenator = '', join = FALSE)</span>
-toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="st">'# *'</span>), <span class="dt">concatenator =</span> <span class="st">''</span>)
-mt &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(toks)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mt_tag &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(mt, <span class="st">'#*'</span>)
-mt_tag &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(mt_tag, <span class="kw">c</span>(<span class="st">'*選挙*'</span>, <span class="st">'*衆院選*'</span>, <span class="st">'*衆議院*'</span>, <span class="st">'*投票*'</span>))
+<span class="co"># 漢字</span>
+kanji_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_keep</a></span>(toks, <span class="st">'^[一-龠]+$'</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">             </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="dt">min_count =</span> min_count)
+toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, kanji_col[kanji_col<span class="op">$</span>z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,], <span class="dt">concatenator =</span> <span class="st">''</span>)
 
-mt_tag &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(mt_tag, <span class="dt">min_nchar =</span> <span class="dv">2</span>)
-mt_tag &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(mt_tag, <span class="dt">min_count =</span> <span class="dv">10</span>)
-mt_co &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(mt_tag)
-feat &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(mt_co, <span class="dv">100</span>))
-<span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(mt_co,  feat), <span class="dt">min_freq =</span> <span class="fl">0.8</span>)</code></pre></div>
+<span class="co"># カタカナ</span>
+kana_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_keep</a></span>(toks, <span class="st">'^[ァ-ヶー]+$'</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">            </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="dt">min_count =</span> min_count)
+toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, kana_col[kana_col<span class="op">$</span>z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,], <span class="dt">concatenator =</span> <span class="st">''</span>)
+
+<span class="co"># 漢字，カタカナおよび数字</span>
+any_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(toks, <span class="st">'^[0-9ァ-ヶー一-龠]+$'</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">            </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="dt">min_count =</span> min_count)
+toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, any_col[any_col<span class="op">$</span>z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,], <span class="dt">concatenator =</span> <span class="st">''</span>)
+
+<span class="co"># ハッシュと語の結合</span>
+toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(toks, <span class="kw"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="st">'# *'</span>)) 
+
+tweet_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(toks)</code></pre></div>
+</div>
+</div>
+<div class="section level1">
+<h1>分析</h1>
+<div class="section level2">
+<h2>タグの共起ネットワーク</h2>
+<p>ここでは，<code><a href="../../../reference/dfm_select.html">dfm_select()</a></code>によってハッシュタグを選択しているが，そこに多くに含まれる’#選挙’や’#衆院選’などのハッシュタグは，クラスターを明確にするために削除している．</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tag_fcm &lt;-<span class="st"> </span>
+<span class="st">    </span>tweet_dfm <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(<span class="st">'#*'</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="kw">c</span>(<span class="st">'*選挙*'</span>, <span class="st">'*衆院選*'</span>, <span class="st">'*衆議院*'</span>, <span class="st">'*投票*'</span>), <span class="dt">min_nchar =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>()
+feat &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(tag_fcm, <span class="dv">100</span>))
+<span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(tag_fcm,  feat), <span class="dt">min_freq =</span> <span class="fl">0.8</span>)</code></pre></div>
 <p><img src="japanese_twitter_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mt_msg &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(mt, <span class="kw">c</span>(<span class="st">'#*'</span>, <span class="st">'@*'</span>))
-mt_msg &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(mt_msg, <span class="st">'^[ぁ-ん]+$'</span>, <span class="st">'regex'</span>)
-
-mt_msg &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(mt_msg, <span class="dt">min_nchar =</span> <span class="dv">2</span>)
-mt_msg &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(mt_msg, <span class="dt">min_count =</span> <span class="dv">10</span>)
-mt_co &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(mt_msg)
-feat &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(mt_co, <span class="dv">100</span>))
-<span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(mt_co,  feat), <span class="dt">min_freq =</span> <span class="fl">0.7</span>)</code></pre></div>
+</div>
+<div class="section level2">
+<h2>語の共起ネットワーク</h2>
+<p>ツイートのメッセージを分析するためには，<code><a href="../../../reference/dfm_select.html">dfm_remove()</a></code>でハッシュタグやユーザー名を削除する．ここでは，平仮名だけからなる特徴は文法的な要素であることが多く，話題を理解するのに役に立たないので削除している．</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">msg_fcm &lt;-<span class="st"> </span>
+<span class="st">    </span>tweet_dfm <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="kw">c</span>(<span class="st">'#*'</span>, <span class="st">'@*'</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="st">'^[ぁ-ん]+$'</span>, <span class="st">'regex'</span>, <span class="dt">min_nchar =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/dfm_tolower.html">dfm_toupper</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>()
+feat &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(msg_fcm, <span class="dv">50</span>))
+<span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw"><a href="../../../reference/dfm_select.html">fcm_select</a></span>(msg_fcm,  feat), <span class="dt">min_freq =</span> <span class="fl">0.3</span>)</code></pre></div>
 <p><img src="japanese_twitter_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 </div>
 </div>
@@ -193,11 +217,17 @@ feat &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="kw
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="NA">パッケージの読み込み</a></li>
-      <li><a href="NA">安倍晋三についてツイッターコーパスをダウンロード</a></li>
+      <li><a href="NA">データをダウンロード</a></li>
       <li><a href="NA">投稿の数と期間を取得</a></li>
       <li>
 <a href="NA">前処理</a><ul class="nav nav-pills nav-stacked">
 <li><a href="NA">語の分割と結合</a></li>
+      </ul>
+</li>
+      <li>
+<a href="NA">分析</a><ul class="nav nav-pills nav-stacked">
+<li><a href="NA">タグの共起ネットワーク</a></li>
+      <li><a href="NA">語の共起ネットワーク</a></li>
       </ul>
 </li>
       </ul>
