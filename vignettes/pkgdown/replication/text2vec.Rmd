@@ -18,9 +18,9 @@ library(quanteda)
 
 This is intended to show how **quanteda** can be used with the [**text2vec**](http://text2vec.org) package in order to replicate its [gloVe example](http://text2vec.org/glove.html).
 
-## Read in the corpus
+## Download the corpus
 
-Reading the corpus of texts used in the [**text2vec** vignette](http://text2vec.org/glove.html):
+Download a corpus comprised of the texts used in the [**text2vec** vignette](http://text2vec.org/glove.html):
 ```{r eval = TRUE}
 wiki_corp <- quanteda.corpora::download(url = 'https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1')
 ```

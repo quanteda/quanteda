@@ -123,18 +123,18 @@ toks <- tokens_remove(toks, c('御', '君'), padding = TRUE)
 min_count <- 10
 
 # 漢字
-kanji_toks <- tokens_select(toks, '^[一-龠]+$', valuetype = 'regex', padding = TRUE)
-kanji_col <- textstat_collocations(kanji_toks, min_count = min_count)
+kanji_col <- tokens_select(toks, '^[一-龠]+$', valuetype = 'regex', padding = TRUE) %>% 
+             textstat_collocations(kanji_toks, min_count = min_count)
 toks <- tokens_compound(toks, kanji_col[kanji_col$z > 3,], concatenator = '')
 
 # カタカナ
-kana_toks <- tokens_select(toks, '^[ァ-ヶー]+$', valuetype = 'regex', padding = TRUE)
-kana_col <- textstat_collocations(kana_toks, min_count = min_count)
+kana_col <- tokens_select(toks, '^[ァ-ヶー]+$', valuetype = 'regex', padding = TRUE) %>% 
+            textstat_collocations(kana_toks, min_count = min_count)
 toks <- tokens_compound(toks, kana_col[kana_col$z > 3,], concatenator = '')
 
 # 漢字，カタカナおよび数字
-any_toks <- tokens_select(toks, '^[０-９ァ-ヶー一-龠]+$', valuetype = 'regex', padding = TRUE)
-any_col <- textstat_collocations(any_toks, min_count = min_count)
+any_col <- tokens_select(toks, '^[０-９ァ-ヶー一-龠]+$', valuetype = 'regex', padding = TRUE) %>% 
+           textstat_collocations(any_toks, min_count = min_count)
 toks <- tokens_compound(toks, any_col[any_col$z > 3,], concatenator = '')
 ```
 
@@ -142,7 +142,7 @@ toks <- tokens_compound(toks, any_col[any_col$z > 3,], concatenator = '')
 `dfm()`によって文書行列を作成した後でも，`dfm_*()`と命名された関数を用いると分析に必要な文書の特徴を自由に選択できる．ここでは，平仮名のみもしくは一語のみから構成されたトークンを`dfm_remove()`によって，頻度が極端に低い語もしくは高い語を`dfm_trim()`によって削除している．
 
 ```{r}
-speec_dfm <- 
+speech_dfm <- 
     dfm(toks, remove = '') %>% 
     dfm_remove('^[ぁ-ん]+$', valuetype = 'regex', min_nchar = 2) %>% 
     dfm_trim(min_count = 10, max_count = 0.1)
@@ -155,7 +155,7 @@ speec_dfm <-
 `textstat_keyness()`は語の頻度を文書のグループ間で比較し，統計的に有意に頻度が高いものを選択する．ここでは，同時多発テロが発生した2001年以降に頻度が高くなった30語を示してある．
 
 ```{r}
-key <- textstat_keyness(speec_dfm, docvars(speec_dfm, 'year') >= 2001)
+key <- textstat_keyness(speech_dfm, docvars(speech_dfm, 'year') >= 2001)
 head(key, 20) %>% knitr::kable()
 ```
 
@@ -172,7 +172,7 @@ head(key, 20) %>% knitr::kable()
 `fcm()`によって作成した共起行列に対して，`textplot_network()`を用いると語の関係が視覚化でき，文書の内容の全体像を容易に把握できる．
 
 ```{r}
-feat <- head(rownames(key), 100)
+feat <- head(key$feature, 100)
 speech_fcm <- dfm_select(speech_dfm, feat) %>% fcm()
 size <- sqrt(rowSums(speech_fcm))
 textplot_network(speech_fcm, min_freq = 0.95, edge_alpha = 0.9, vertex_size = size / max(size) * 3)
