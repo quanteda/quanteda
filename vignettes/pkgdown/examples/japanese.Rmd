@@ -33,7 +33,7 @@ library(topicmodels)
 
 ```{r, message=FALSE}
 devtools::install_github("quanteda/quanteda.corpora")
-corp_full <-  quanteda.corpora::download('data_corpus_foreignaffairscommittee')
+full_corp <-  quanteda.corpora::download('data_corpus_foreignaffairscommittee')
 ```
 
 ### 議事録コーパスの作成手順
@@ -69,24 +69,24 @@ saveRDS(speech, file = paste0(folder_download, "committee_speeches.rds"))
 #### コーパスの作成
 ```{r eval = FALSE}
 load("temp/committee_speeches.rda")
-corp_full <- corpus(foreign_affairs_committee_speeches, text_field = 'speech')
+full_corp <- corpus(foreign_affairs_committee_speeches, text_field = 'speech')
 
 ```
 
 ## 議事録の数と期間を取得
 ```{r}
-ndoc(corp_full)
-range(docvars(corp_full, 'date'))
+ndoc(full_corp)
+range(docvars(full_corp, 'date'))
 ```
 
 # 前処理
 発言者のいないレコード（典型的には各議事録の0番目の出席者，議題等の部分）を取り除く，また，各発言の冒頭は発言者の氏名と役職名なので，その部分から役職名を取り出して新しい`docvar`を作る．
 
 ```{r}
-corp_full <- corpus_subset(corp_full, speaker != "")
+full_corp <- corpus_subset(full_corp, speaker != "")
 
 ## capacity変数の作成
-capacity <- corp_full %>%
+capacity <- full_corp %>%
   str_sub(1, 20) %>%
   str_replace_all("\\s+.+|\n", "") %>% # 冒頭の名前部分の取り出し
   str_replace( "^.+?(参事|政府特別補佐人|内閣官房|会計検査院|最高裁判所長官代理者|主査|議員|副?大臣|副?議長|委員|参考人|分科員|公述人|君(（.+）)?$)", "\\1") %>% # 冒頭の○から，名前部分までを消去
@@ -94,13 +94,13 @@ capacity <- corp_full %>%
 capacity <- str_replace(capacity, "^○.+", "Other") # マイナーな役職名は一括して"Other"に
 knitr::kable(as.data.frame(table(capacity)))
 
-docvars(corp_full, 'capacity') <- capacity
+docvars(full_corp, 'capacity') <- capacity
 ```
 
 ## 1991から2010年までの期間の議事録を選択
 ```{r}
-docvars(corp_full, "year") <- docvars(corp_full, "date") %>% year() %>% as.numeric()
-corp <- corpus_subset(corp_full, 1991 <= year & year <= 2010)
+docvars(full_corp, "year") <- docvars(full_corp, "date") %>% year() %>% as.numeric()
+corp <- corpus_subset(full_corp, 1991 <= year & year <= 2010)
 
 ndoc(corp)
 ```
@@ -123,28 +123,29 @@ toks <- tokens_remove(toks, c('御', '君'), padding = TRUE)
 min_count <- 10
 
 # 漢字
-toks_kanji <- tokens_select(toks, '^[一-龠]+$', valuetype = 'regex', padding = TRUE)
-col_kanji <- textstat_collocations(toks_kanji, min_count = min_count)
-toks <- tokens_compound(toks, col_kanji[col_kanji$z > 3,], concatenator = '')
+kanji_toks <- tokens_select(toks, '^[一-龠]+$', valuetype = 'regex', padding = TRUE)
+kanji_col <- textstat_collocations(kanji_toks, min_count = min_count)
+toks <- tokens_compound(toks, kanji_col[kanji_col$z > 3,], concatenator = '')
 
 # カタカナ
-toks_kana <- tokens_select(toks, '^[ァ-ヶー]+$', valuetype = 'regex', padding = TRUE)
-col_kana <- textstat_collocations(toks_kana, min_count = min_count)
-toks <- tokens_compound(toks, col_kana[col_kana$z > 3,], concatenator = '')
+kana_toks <- tokens_select(toks, '^[ァ-ヶー]+$', valuetype = 'regex', padding = TRUE)
+kana_col <- textstat_collocations(kana_toks, min_count = min_count)
+toks <- tokens_compound(toks, kana_col[kana_col$z > 3,], concatenator = '')
 
 # 漢字，カタカナおよび数字
-toks_any <- tokens_select(toks, '^[０-９ァ-ヶー一-龠]+$', valuetype = 'regex', padding = TRUE)
-col_any <- textstat_collocations(toks_any, min_count = min_count)
-toks <- tokens_compound(toks, col_any[col_any$z > 3,], concatenator = '')
+any_toks <- tokens_select(toks, '^[０-９ァ-ヶー一-龠]+$', valuetype = 'regex', padding = TRUE)
+any_col <- textstat_collocations(any_toks, min_count = min_count)
+toks <- tokens_compound(toks, any_col[any_col$z > 3,], concatenator = '')
 ```
 
 ## 文書行列の作成
 `dfm()`によって文書行列を作成した後でも，`dfm_*()`と命名された関数を用いると分析に必要な文書の特徴を自由に選択できる．ここでは，平仮名のみもしくは一語のみから構成されたトークンを`dfm_remove()`によって，頻度が極端に低い語もしくは高い語を`dfm_trim()`によって削除している．
 
 ```{r}
-mt <- dfm(toks, remove = '')
-mt <- dfm_remove(mt, '^[ぁ-ん]+$', valuetype = 'regex', min_nchar = 2)
-mt <- dfm_trim(mt, min_count = 10, max_count = 0.1)
+speec_dfm <- 
+    dfm(toks, remove = '') %>% 
+    dfm_remove('^[ぁ-ん]+$', valuetype = 'regex', min_nchar = 2) %>% 
+    dfm_trim(min_count = 10, max_count = 0.1)
 ```
 
 # 分析
@@ -154,7 +155,7 @@ mt <- dfm_trim(mt, min_count = 10, max_count = 0.1)
 `textstat_keyness()`は語の頻度を文書のグループ間で比較し，統計的に有意に頻度が高いものを選択する．ここでは，同時多発テロが発生した2001年以降に頻度が高くなった30語を示してある．
 
 ```{r}
-key <- textstat_keyness(mt, docvars(mt, 'year') >= 2001)
+key <- textstat_keyness(speec_dfm, docvars(speec_dfm, 'year') >= 2001)
 head(key, 20) %>% knitr::kable()
 ```
 
@@ -169,11 +170,12 @@ head(key, 20) %>% knitr::kable()
 ## 共起ネットワーク分析による視覚化
 
 `fcm()`によって作成した共起行列に対して，`textplot_network()`を用いると語の関係が視覚化でき，文書の内容の全体像を容易に把握できる．
+
 ```{r}
 feat <- head(rownames(key), 100)
-mt_co <- fcm(dfm_select(mt, feat))
-size <- sqrt(rowSums(mt_co))
-textplot_network(mt_co, min_freq = 0.95, edge_alpha = 0.9, vertex_size = size / max(size) * 3)
+speech_fcm <- dfm_select(speech_dfm, feat) %>% fcm()
+size <- sqrt(rowSums(speech_fcm))
+textplot_network(speech_fcm, min_freq = 0.95, edge_alpha = 0.9, vertex_size = size / max(size) * 3)
 ```
 
 ## トピックモデルの推定
