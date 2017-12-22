@@ -51,15 +51,24 @@ range(docvars(corp, 'created_at'))
 ```{r}
 
 toks <- tokens(corp, remove_separator = FALSE, remove_url = TRUE)
+toks <- tokens_remove(toks, '^[\\b\\s]+$', valuetype = 'regex', padding = TRUE)
 toks <- tokens_select(toks, '^[\\w#@]+$', valuetype = 'regex', padding = TRUE)
-toks <- tokens_remove(toks, '^[:hira:]$', valuetype = 'regex', padding = TRUE)
 
-col <- textstat_collocations(toks, min_count = 100)
-col <- col[stringi::stri_detect_regex(col$collocation, '([:number:]|[:kana:]|[:han:])'),]
+min_count <- 10
 
-toks <- tokens_compound(toks, col[col$z > 3,], concatenator = '')
-#toks2 <- tokens_compound(toks, col[col$z > 3,], concatenator = '', join = FALSE)
-toks <- tokens_compound(toks, phrase('# *'), concatenator = '')
+toks_kana <- tokens_keep(toks, '^[ァ-ヶー]+$', valuetype = 'regex', padding = TRUE)
+col_kana <- textstat_collocations(toks_kana, min_count = min_count, size = 2)
+toks <- tokens_compound(toks, col_kana[col_kana$z > 3,], concatenator = '')
+
+toks_kanji <- tokens_keep(toks, '^[一-龠]+$', valuetype = 'regex', padding = TRUE)
+col_kanji <- textstat_collocations(toks_kanji, min_count = min_count, size = 2)
+toks <- tokens_compound(toks, col_kanji[col_kanji$z > 3,], concatenator = '')
+
+
+toks_any <- tokens_select(toks, '^[0-9ァ-ヶー一-龠]+$', valuetype = 'regex', padding = TRUE)
+col_any <- textstat_collocations(toks_any, min_count = min_count)
+toks <- tokens_compound(toks, col_any[col_any$z > 3,], concatenator = '')
+
 mt <- dfm(toks)
 ```
 
@@ -75,14 +84,16 @@ textplot_network(fcm_select(mt_co,  feat), min_freq = 0.8)
 ```
 
 ```{r}
+
 mt_msg <- dfm_remove(mt, c('#*', '@*'))
+mt_msg <- dfm_toupper(mt_msg)
 mt_msg <- dfm_remove(mt_msg, '^[ぁ-ん]+$', 'regex')
 
 mt_msg <- dfm_select(mt_msg, min_nchar = 2)
 mt_msg <- dfm_trim(mt_msg, min_count = 10)
 mt_co <- fcm(mt_msg)
-feat <- names(topfeatures(mt_co, 100))
-textplot_network(fcm_select(mt_co,  feat), min_freq = 0.7)
+feat <- names(topfeatures(mt_co, 50))
+textplot_network(fcm_select(mt_co,  feat), min_freq = 0.3)
 
 ```
 
