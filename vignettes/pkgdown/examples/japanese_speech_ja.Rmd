@@ -32,7 +32,7 @@ full_corp <- quanteda.corpora::download('data_corpus_foreignaffairscommittee')
 
 ### コーパスの作成手順 {#how-to-make-corpus}
 
-読者が独自のコーパスを作成できるように，本例のコーパスを作成した手順を以下にしてしてある．
+読者が独自のコーパスを作成できるように，本例のコーパスを作成した手順を以下に示してある．
 
 #### 議事録をダウンロード {#download-speeches}
 
