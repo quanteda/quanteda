@@ -129,7 +129,6 @@ Collate:
     'textplot_wordcloud.R'
     'textplot_xray.R'
     'textstat_collocations.R'
-    'textstat_collocationsdev.R'
     'textstat_dist.R'
     'textstat_frequency.R'
     'textstat_keyness.R'
