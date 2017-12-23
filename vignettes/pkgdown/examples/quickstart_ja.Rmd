@@ -182,7 +182,7 @@ mycorpus3 <- mycorpus1 + mycorpus2
 summary(mycorpus3)
 ```
 
-### コーパス内の文書の一部の文書の抽出 {#subsetting-corpus-objects}
+### コーパスから文書を抽出 {#subsetting-corpus-objects}
 
 `corpus_subset()`により，文書変数に適用される論理条件に基づいて文書を抽出することができる．
 
