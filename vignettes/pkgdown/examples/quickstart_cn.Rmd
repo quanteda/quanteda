@@ -5,10 +5,6 @@ output:
     toc: true
 ---
 
-```{r, echo=FALSE, results = 'asis'}
-cat('<link href="../../../cn.css" rel="text/css">')
-```
-
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(collapse = FALSE, 
                       comment = "##")

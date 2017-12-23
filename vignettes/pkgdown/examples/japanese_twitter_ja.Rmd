@@ -6,10 +6,6 @@ output:
     toc: true
 ---
 
-```{r, echo=FALSE, results = 'asis'}
-cat('<link href="../../../ja.css" rel="text/css">')
-```
-
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = FALSE,

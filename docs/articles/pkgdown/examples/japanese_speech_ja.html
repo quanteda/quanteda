@@ -129,7 +129,6 @@
     
     
 <div class="contents">
-<p><link href="../../../ja.css" rel="text/css"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
 <span class="kw">library</span>(stringr)
 <span class="kw">library</span>(dplyr)
@@ -504,10 +503,11 @@ toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/
 </tbody>
 </table>
 <p>上の表では，委員会出席者の名前が多く含まれるので，それらを取り除くと議論の主題が明確になる．</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">key &lt;-<span class="st"> </span>key[<span class="op">!</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_detect">str_detect</a></span>(<span class="kw">rownames</span>(key), <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/modifiers">regex</a></span>(<span class="st">'委員|大臣'</span>)),]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">key &lt;-<span class="st"> </span>key[<span class="op">!</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_detect">str_detect</a></span>(key<span class="op">$</span>feature, <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/modifiers">regex</a></span>(<span class="st">'委員|大臣'</span>)),]
 <span class="kw">head</span>(key, <span class="dv">20</span>) <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</code></pre></div>
 <table class="table">
 <thead><tr class="header">
+<th></th>
 <th align="left">feature</th>
 <th align="right">chi2</th>
 <th align="right">p</th>
@@ -516,83 +516,31 @@ toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">川口国務大臣</td>
-<td align="right">1047.1985</td>
-<td align="right">0</td>
-<td align="right">1463</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">副大臣</td>
-<td align="right">654.6900</td>
-<td align="right">0</td>
-<td align="right">930</td>
-<td align="right">4</td>
-</tr>
-<tr class="odd">
-<td align="left">田中国務大臣</td>
-<td align="right">641.8587</td>
-<td align="right">0</td>
-<td align="right">897</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
+<td>4</td>
 <td align="left">拉致問題</td>
 <td align="right">572.5654</td>
 <td align="right">0</td>
 <td align="right">966</td>
 <td align="right">47</td>
 </tr>
-<tr class="odd">
+<tr class="even">
+<td>5</td>
 <td align="left">拉致</td>
 <td align="right">562.4267</td>
 <td align="right">0</td>
 <td align="right">1088</td>
 <td align="right">90</td>
 </tr>
-<tr class="even">
-<td align="left">麻生国務大臣</td>
-<td align="right">560.9647</td>
-<td align="right">0</td>
-<td align="right">784</td>
-<td align="right">0</td>
-</tr>
 <tr class="odd">
-<td align="left">松原委員</td>
-<td align="right">544.5462</td>
-<td align="right">0</td>
-<td align="right">946</td>
-<td align="right">53</td>
-</tr>
-<tr class="even">
+<td>8</td>
 <td align="left">資料</td>
 <td align="right">477.4649</td>
 <td align="right">0</td>
 <td align="right">1649</td>
 <td align="right">353</td>
 </tr>
-<tr class="odd">
-<td align="left">武正委員</td>
-<td align="right">473.6394</td>
-<td align="right">0</td>
-<td align="right">662</td>
-<td align="right">0</td>
-</tr>
 <tr class="even">
-<td align="left">東門委員</td>
-<td align="right">454.8126</td>
-<td align="right">0</td>
-<td align="right">647</td>
-<td align="right">3</td>
-</tr>
-<tr class="odd">
-<td align="left">笠井委員</td>
-<td align="right">438.5694</td>
-<td align="right">0</td>
-<td align="right">613</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
+<td>12</td>
 <td align="left">イラク</td>
 <td align="right">405.9557</td>
 <td align="right">0</td>
@@ -600,6 +548,7 @@ toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/
 <td align="right">577</td>
 </tr>
 <tr class="odd">
+<td>13</td>
 <td align="left">アフガニスタン</td>
 <td align="right">369.7194</td>
 <td align="right">0</td>
@@ -607,6 +556,7 @@ toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/
 <td align="right">18</td>
 </tr>
 <tr class="even">
+<td>14</td>
 <td align="left">に関して</td>
 <td align="right">362.4056</td>
 <td align="right">0</td>
@@ -614,6 +564,7 @@ toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/
 <td align="right">839</td>
 </tr>
 <tr class="odd">
+<td>15</td>
 <td align="left">グアム</td>
 <td align="right">359.7264</td>
 <td align="right">0</td>
@@ -621,6 +572,7 @@ toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/
 <td align="right">16</td>
 </tr>
 <tr class="even">
+<td>16</td>
 <td align="left">防衛省</td>
 <td align="right">348.3984</td>
 <td align="right">0</td>
@@ -628,6 +580,7 @@ toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/
 <td align="right">0</td>
 </tr>
 <tr class="odd">
+<td>17</td>
 <td align="left">小泉総理</td>
 <td align="right">346.9672</td>
 <td align="right">0</td>
@@ -635,6 +588,7 @@ toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/
 <td align="right">0</td>
 </tr>
 <tr class="even">
+<td>18</td>
 <td align="left">近藤</td>
 <td align="right">341.3977</td>
 <td align="right">0</td>
@@ -642,18 +596,84 @@ toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="left">中曽根国務大臣</td>
-<td align="right">336.2335</td>
+<td>22</td>
+<td align="left">民主党</td>
+<td align="right">308.2693</td>
 <td align="right">0</td>
-<td align="right">470</td>
-<td align="right">0</td>
+<td align="right">678</td>
+<td align="right">77</td>
 </tr>
 <tr class="even">
-<td align="left">町村国務大臣</td>
-<td align="right">331.2244</td>
+<td>23</td>
+<td align="left">軽減</td>
+<td align="right">307.9044</td>
+<td align="right">0</td>
+<td align="right">666</td>
+<td align="right">73</td>
+</tr>
+<tr class="odd">
+<td>26</td>
+<td align="left">政務官</td>
+<td align="right">297.3748</td>
+<td align="right">0</td>
+<td align="right">438</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td>28</td>
+<td align="left">密約</td>
+<td align="right">275.5839</td>
 <td align="right">0</td>
 <td align="right">463</td>
+<td align="right">22</td>
+</tr>
+<tr class="odd">
+<td>29</td>
+<td align="left">テロ</td>
+<td align="right">272.3576</td>
 <td align="right">0</td>
+<td align="right">940</td>
+<td align="right">201</td>
+</tr>
+<tr class="even">
+<td>31</td>
+<td align="left">発言</td>
+<td align="right">264.7858</td>
+<td align="right">0</td>
+<td align="right">2879</td>
+<td align="right">1183</td>
+</tr>
+<tr class="odd">
+<td>32</td>
+<td align="left">アフリカ</td>
+<td align="right">240.3484</td>
+<td align="right">0</td>
+<td align="right">812</td>
+<td align="right">170</td>
+</tr>
+<tr class="even">
+<td>33</td>
+<td align="left">犯罪</td>
+<td align="right">225.7539</td>
+<td align="right">0</td>
+<td align="right">698</td>
+<td align="right">133</td>
+</tr>
+<tr class="odd">
+<td>34</td>
+<td align="left">財務省</td>
+<td align="right">224.7721</td>
+<td align="right">0</td>
+<td align="right">318</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td>37</td>
+<td align="left">移転</td>
+<td align="right">216.9689</td>
+<td align="right">0</td>
+<td align="right">853</td>
+<td align="right">205</td>
 </tr>
 </tbody>
 </table>
@@ -666,7 +686,7 @@ toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/
 speech_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(speech_dfm, feat) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>()
 size &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">rowSums</span>(speech_fcm))
 <span class="kw"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(speech_fcm, <span class="dt">min_freq =</span> <span class="fl">0.95</span>, <span class="dt">edge_alpha =</span> <span class="fl">0.9</span>, <span class="dt">vertex_size =</span> size <span class="op">/</span><span class="st"> </span><span class="kw">max</span>(size) <span class="op">*</span><span class="st"> </span><span class="dv">3</span>)</code></pre></div>
-<p><img src="japanese_speech_ja_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
+<p><img src="japanese_speech_ja_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 </div>
 <div id="topicmodel" class="section level2">
 <h2 class="hasAnchor">
@@ -689,129 +709,129 @@ size &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw"
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">意見</td>
-<td align="left">協議</td>
-<td align="left">発言</td>
-<td align="left">出し</td>
-<td align="left">発言</td>
-<td align="left">時間</td>
-<td align="left">解決</td>
-<td align="left">重要</td>
-<td align="left">協定</td>
-<td align="left">国連</td>
-</tr>
-<tr class="even">
-<td align="left">支援</td>
 <td align="left">外交</td>
-<td align="left">大きな</td>
-<td align="left">国民</td>
-<td align="left">国民</td>
-<td align="left">当然</td>
-<td align="left">特に</td>
-<td align="left">大きな</td>
 <td align="left">締結</td>
-<td align="left">同じ</td>
-</tr>
-<tr class="odd">
 <td align="left">お願い</td>
-<td align="left">重要</td>
-<td align="left">当然</td>
-<td align="left">現在</td>
+<td align="left">時間</td>
+<td align="left">大きな</td>
 <td align="left">受け</td>
-<td align="left">報道</td>
-<td align="left">確認</td>
-<td align="left">協力</td>
-<td align="left">及び</td>
-<td align="left">沖縄</td>
-</tr>
-<tr class="even">
-<td align="left">考え方</td>
-<td align="left">沖縄</td>
-<td align="left">イラク</td>
-<td align="left">ロシア</td>
-<td align="left">情報</td>
-<td align="left">以上</td>
-<td align="left">国民</td>
-<td align="left">承知</td>
-<td align="left">に関する</td>
-<td align="left">特に</td>
-</tr>
-<tr class="odd">
-<td align="left">実は</td>
-<td align="left">特に</td>
-<td align="left">報道</td>
-<td align="left">事実</td>
-<td align="left">既に</td>
-<td align="left">情報</td>
-<td align="left">お願い</td>
-<td align="left">積極的</td>
-<td align="left">承認</td>
-<td align="left">お話</td>
-</tr>
-<tr class="even">
-<td align="left">重要</td>
-<td align="left">お答え</td>
-<td align="left">特に</td>
-<td align="left">大きな</td>
-<td align="left">お話</td>
-<td align="left">お答え</td>
-<td align="left">大きな</td>
-<td align="left">現在</td>
-<td align="left">次第</td>
-<td align="left">発言</td>
-</tr>
-<tr class="odd">
-<td align="left">承知</td>
-<td align="left">判断</td>
+<td align="left">米軍</td>
+<td align="left">同じ</td>
 <td align="left">時間</td>
 <td align="left">韓国</td>
-<td align="left">日本政府</td>
-<td align="left">意見</td>
-<td align="left">協力</td>
-<td align="left">平和</td>
-<td align="left">求める</td>
-<td align="left">大事</td>
 </tr>
 <tr class="even">
-<td align="left">地域</td>
-<td align="left">お話</td>
-<td align="left">判断</td>
-<td align="left">検討</td>
+<td align="left">当然</td>
+<td align="left">及び</td>
+<td align="left">当然</td>
+<td align="left">発言</td>
+<td align="left">解決</td>
+<td align="left">大きな</td>
+<td align="left">国民</td>
+<td align="left">国連</td>
+<td align="left">特に</td>
 <td align="left">重要</td>
-<td align="left">同じ</td>
-<td align="left">外交</td>
-<td align="left">強化</td>
-<td align="left">説明</td>
-<td align="left">外交</td>
 </tr>
 <tr class="odd">
-<td align="left">極めて</td>
-<td align="left">国民</td>
-<td align="left">韓国</td>
 <td align="left">沖縄</td>
-<td align="left">検討</td>
-<td align="left">考え方</td>
-<td align="left">合意</td>
-<td align="left">向け</td>
-<td align="left">改正</td>
-<td align="left">イラク</td>
+<td align="left">協定</td>
+<td align="left">情報</td>
+<td align="left">世界</td>
+<td align="left">受け</td>
+<td align="left">重要</td>
+<td align="left">日本政府</td>
+<td align="left">言う</td>
+<td align="left">言う</td>
+<td align="left">特に</td>
 </tr>
 <tr class="even">
-<td align="left">言う</td>
-<td align="left">大きな</td>
-<td align="left">お願い</td>
+<td align="left">韓国</td>
+<td align="left">に関する</td>
+<td align="left">実は</td>
+<td align="left">協力</td>
+<td align="left">交渉</td>
+<td align="left">お話</td>
+<td align="left">協力</td>
+<td align="left">国民</td>
+<td align="left">お話</td>
+<td align="left">感じ</td>
+</tr>
+<tr class="odd">
+<td align="left">意見</td>
+<td align="left">説明</td>
+<td align="left">支援</td>
+<td align="left">大事</td>
 <td align="left">お答え</td>
 <td align="left">合意</td>
+<td align="left">参加</td>
+<td align="left">時間</td>
 <td align="left">外交</td>
+<td align="left">発言</td>
+</tr>
+<tr class="even">
+<td align="left">発言</td>
+<td align="left">承認</td>
+<td align="left">重要</td>
+<td align="left">判断</td>
 <td align="left">総理</td>
+<td align="left">判断</td>
+<td align="left">世界</td>
+<td align="left">重要</td>
+<td align="left">大きな</td>
 <td align="left">交渉</td>
-<td align="left">次に</td>
+</tr>
+<tr class="odd">
+<td align="left">自分</td>
+<td align="left">求める</td>
+<td align="left">承知</td>
+<td align="left">交渉</td>
+<td align="left">大事</td>
+<td align="left">外交</td>
+<td align="left">平和</td>
+<td align="left">情報</td>
+<td align="left">意見</td>
+<td align="left">沖縄</td>
+</tr>
+<tr class="even">
+<td align="left">枠組み</td>
+<td align="left">次第</td>
+<td align="left">国連</td>
+<td align="left">外交</td>
+<td align="left">結果</td>
+<td align="left">確認</td>
+<td align="left">委員会</td>
+<td align="left">当然</td>
+<td align="left">現在</td>
+<td align="left">事実</td>
+</tr>
+<tr class="odd">
+<td align="left">世界</td>
+<td align="left">行う</td>
+<td align="left">報道</td>
+<td align="left">基本的</td>
+<td align="left">発言</td>
+<td align="left">当然</td>
+<td align="left">同じ</td>
+<td align="left">日本政府</td>
 <td align="left">お答え</td>
+<td align="left">お話</td>
+</tr>
+<tr class="even">
+<td align="left">アジア</td>
+<td align="left">議定書</td>
+<td align="left">確認</td>
+<td align="left">現在</td>
+<td align="left">観点</td>
+<td align="left">交渉</td>
+<td align="left">観点</td>
+<td align="left">お答え</td>
+<td align="left">同じ</td>
+<td align="left">考え方</td>
 </tr>
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_topics</a></span>(lda) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">table</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">barplot</span>(<span class="dt">xlab =</span> <span class="st">'Topic'</span>, <span class="dt">ylab =</span> <span class="st">"Frequency"</span>) </code></pre></div>
-<p><img src="japanese_speech_ja_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
+<p><img src="japanese_speech_ja_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 </div>
 </div>
 </div>

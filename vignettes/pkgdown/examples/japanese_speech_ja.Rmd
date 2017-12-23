@@ -6,10 +6,6 @@ output:
     toc: true
 ---
 
-```{r, echo=FALSE, results = 'asis'}
-cat('<link href="../../../ja.css" rel="text/css">')
-```
-
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = FALSE,
@@ -167,7 +163,7 @@ head(key, 20) %>% knitr::kable()
 上の表では，委員会出席者の名前が多く含まれるので，それらを取り除くと議論の主題が明確になる．
 
 ```{r}
-key <- key[!str_detect(rownames(key), regex('委員|大臣')),]
+key <- key[!str_detect(key$feature, regex('委員|大臣')),]
 head(key, 20) %>% knitr::kable()
 ```
 
