@@ -9,10 +9,6 @@ qatd_cpp_collocations <- function(texts_, types_, words_ignore_, count_min, size
     .Call(`_quanteda_qatd_cpp_collocations`, texts_, types_, words_ignore_, count_min, sizes_, method, smoothing)
 }
 
-qatd_cpp_collocations_dev <- function(texts_, types_, count_min, sizes_, method, smoothing) {
-    .Call(`_quanteda_qatd_cpp_collocations_dev`, texts_, types_, count_min, sizes_, method, smoothing)
-}
-
 qatd_cpp_manhattan <- function(A, margin = 1L) {
     .Call(`_quanteda_qatd_cpp_manhattan`, A, margin)
 }
