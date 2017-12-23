@@ -146,7 +146,7 @@ textstat_dist.dfm <- function(x, selection = NULL,
 }
 
 
-#' coerce a dist object into a list
+#' Coerce a dist object into a list
 #' 
 #' Coerce a dist matrix into a list of selected target terms and similar terms,
 #' in descending order of similarity.  Can be used after calling
@@ -205,7 +205,7 @@ as.list.dist <- function(x, sorted = TRUE, n = NULL, ...) {
     
 }
 
-#' coerce a dist into a dist
+#' Coerce a dist into a dist
 #' 
 #' Internal function to guarantee that a dist remains a dist, if for some reason
 #' a user wants to coerce a dist into a dist.
@@ -218,7 +218,7 @@ as.dist.dist <- function(m, diag = FALSE, upper = FALSE) {
 }
 
 
-#' coerce a dist_selection object into a list
+#' Coerce a dist_selection object into a list
 #' 
 #' Coerce a dist_selection matrix into a list of selected terms and target terms in
 #' descending order.  Can be used after calling \code{\link{textstat_simil}} or
@@ -254,7 +254,7 @@ as.list.dist_selection <- function(x, sorted = TRUE, n = NULL, ...) {
     result
 }
 
-#' print a dist_selection object
+#' Print a dist_selection object
 #' 
 #' Print method for a dist_selection object, to make it appear as a data.frame.
 #' @export
@@ -264,7 +264,7 @@ print.dist_selection <- function(x, ...) {
     print(as.matrix(x))
 }
 
-#' coerce a dist_selection object to a matrix
+#' Coerce a dist_selection object to a matrix
 #' 
 #' Coerce a dist_selection object to a plain matrix.
 #' @export
@@ -313,7 +313,7 @@ hamming_dist <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
-    x <- tf(x, "boolean") 
+    x <- dfm_weight(x, "boolean") 
     x0 <- 1 - x
     func_cp <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     func_sum <- if (margin == 2) nrow else ncol
@@ -321,7 +321,7 @@ hamming_dist <- function(x, y = NULL, margin = 1) {
     # union 
     an <- func_sum(x)
     if (!is.null(y)) {
-        y <- tf(y, "boolean")
+        y <- dfm_weight(y, "boolean")
         y0 <- 1 - y
         a <- func_cp(x, y)
         a0 <- func_cp(x0, y0)

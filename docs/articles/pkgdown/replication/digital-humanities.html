@@ -217,7 +217,7 @@ novel_lower_v &lt;-<span class="st"> </span><span class="kw"><a href="../../../r
 <p>Note that the counts below do not match those in the book, due to differences in how the book has split on any non-word character, while <strong>quanteda</strong>’s tokenizer splits on a more comprehensive set of “word boundaries”. <strong>quanteda</strong>’s <code><a href="../../../reference/tokens.html">tokens()</a></code> function by default does not remove punctuation or numbers (both defined as “non-word” characters) by default. To more closely match the counts in the book, we have removed punctuation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(moby_word_v[<span class="kw">which</span>(moby_word_v <span class="op">==</span><span class="st"> "whale"</span>)])</code></pre></div>
 <pre><code>## [1] 908</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total occurrences of 'whale' including possessive</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total occurrences of "whale" including possessive</span>
 <span class="kw">length</span>(moby_word_v[<span class="kw">which</span>(moby_word_v <span class="op">==</span><span class="st"> "whale"</span>)]) <span class="op">+</span><span class="st"> </span><span class="kw">length</span>(moby_word_v[<span class="kw">which</span>(moby_word_v <span class="op">==</span><span class="st"> "whale's"</span>)])</code></pre></div>
 <pre><code>## [1] 1028</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># same thing using kwic()</span>
@@ -280,7 +280,7 @@ moby_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../refere
 <h2 class="hasAnchor">
 <a href="#accessing-word-data" class="anchor"></a>3.1 Accessing Word Data</h2>
 <p>We can query the document-frequency matrix to retrieve word frequencies, as with a normal matrix:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># frequencies of 'he' and 'she' - these are matrixes, not numerics</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># frequencies of "he" and "she" - these are matrixes, not numerics</span>
 sorted_moby_freqs_t[<span class="kw">c</span>(<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span>)]</code></pre></div>
 <pre><code>##   he  she  him  her 
 ## 1758  112 1058  330</code></pre>
@@ -320,7 +320,7 @@ sorted_moby_rel_freqs_t[<span class="st">"the"</span>]</code></pre></div>
 <pre><code>##      the 
 ## 6.749048</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># by weighting the dfm directly</span>
-moby_dfm_pct &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(moby_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+moby_dfm_pct &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(moby_dfm, <span class="dt">scheme =</span> <span class="st">"prop"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
 moby_dfm_pct[, <span class="st">"the"</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 1 feature (0% sparse).
 ## 1 x 1 sparse Matrix of class "dfm"
@@ -387,8 +387,13 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../.
 ##   mobydick.9  1260   4284       166      CHAPTER 9. The Sermon.\n
 ##  mobydick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
 ## 
+<<<<<<< HEAD
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kohei
 ## Created: Mon Dec 18 17:34:44 2017
+=======
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kbenoit
+## Created: Thu Dec 21 12:38:01 2017
+>>>>>>> master
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))
@@ -400,8 +405,13 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../.
 ##  mobydick.2   651   1700        60  CHAPTER 2. The Carpet-Bag.
 ##  mobydick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
 ## 
+<<<<<<< HEAD
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kohei
 ## Created: Mon Dec 18 17:34:44 2017
+=======
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kbenoit
+## Created: Thu Dec 21 12:38:01 2017
+>>>>>>> master
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</code></pre></div>
@@ -414,7 +424,7 @@ chap_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../refere
 
 <span class="co"># extract row with count for "whale"/"ahab" in each chapter</span>
 <span class="co"># and convert to data frame for plotting</span>
-whales_ahabs_df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(chap_dfm[, <span class="kw">c</span>(<span class="st">'whale'</span>, <span class="st">'ahab'</span>)])
+whales_ahabs_df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(chap_dfm[, <span class="kw">c</span>(<span class="st">"whale"</span>, <span class="st">"ahab"</span>)])
     
 whales_ahabs_df<span class="op">$</span>chapter &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(whales_ahabs_df)
 
@@ -422,30 +432,30 @@ whales_ahabs_df<span class="op">$</span>chapter &lt;-<span class="st"> </span><s
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span>
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, 
          <span class="dt">y =</span> <span class="st">"Frequency"</span>,
-         <span class="dt">title =</span> <span class="st">"Occurrence of 'whale'"</span>)</code></pre></div>
+         <span class="dt">title =</span> <span class="st">'Occurrence of "whale"'</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-30-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> whales_ahabs_df, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> ahab)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span>
 <span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, 
          <span class="dt">y =</span> <span class="st">"Frequency"</span>,
-         <span class="dt">title =</span> <span class="st">"Occurrence of 'ahab'"</span>)</code></pre></div>
+         <span class="dt">title =</span> <span class="st">'Occurrence of "ahab"'</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-30-2.png" width="768"></p>
 <p>The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. To get a feel for what the resulting weighted dfm (document-feature matrix) looks like, you can inspect it with the <code>head</code> function, which prints the first few rows and columns.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rel_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">type =</span> <span class="st">'relfreq'</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rel_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">scheme =</span> <span class="st">"prop"</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
 <span class="kw">head</span>(rel_dfm)</code></pre></div>
 <pre><code>## Document-feature matrix of: 6 documents, 18,629 features (95.9% sparse).</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># subset dfm and convert to data.frame object</span>
-rel_chap_freq &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(rel_dfm[, <span class="kw">c</span>(<span class="st">'whale'</span>, <span class="st">'ahab'</span>)])
+rel_chap_freq &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(rel_dfm[, <span class="kw">c</span>(<span class="st">"whale"</span>, <span class="st">"ahab"</span>)])
 rel_chap_freq<span class="op">$</span>chapter &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(rel_chap_freq)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> rel_chap_freq, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> whale)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span>
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>,
-         <span class="dt">title =</span> <span class="st">"Occurrence of 'whale'"</span>)</code></pre></div>
+         <span class="dt">title =</span> <span class="st">'Occurrence of "whale"'</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-31-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> rel_chap_freq, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> chapter, <span class="dt">y =</span> ahab)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span>
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Chapter"</span>, <span class="dt">y =</span> <span class="st">"Relative frequency"</span>,
-         <span class="dt">title =</span> <span class="st">"Occurrence of 'ahab'"</span>)</code></pre></div>
+         <span class="dt">title =</span> <span class="st">'Occurrence of "ahab"'</span>)</code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-31-2.png" width="768"></p>
 </div>
 </div>
@@ -457,7 +467,7 @@ rel_chap_freq<span class="op">$</span>chapter &lt;-<span class="st"> </span><spa
 <h2 class="hasAnchor">
 <a href="#correlation-analysis" class="anchor"></a>5.2 Correlation Analysis</h2>
 <p>Correlation analysis (and many other similarity measures) can be constructed using fast, sparse means through the <code><a href="../../../reference/textstat_simil.html">textstat_simil()</a></code> function. Here, we select feature comparisons for just “whale” and “ahab”, and convert this into a matrix as in the book. Because correlations are sensitive to document length, we first convert this into a relative frequency using <code><a href="../../../reference/dfm_weight.html">dfm_weight()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">scheme =</span> <span class="st">"prop"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(<span class="dt">selection =</span> <span class="kw">c</span>(<span class="st">"whale"</span>, <span class="st">"ahab"</span>), <span class="dt">method =</span> <span class="st">"correlation"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">as.matrix</span>() <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">head</span>(<span class="dv">2</span>)</code></pre></div>
@@ -469,7 +479,7 @@ rel_chap_freq<span class="op">$</span>chapter &lt;-<span class="st"> </span><spa
 <div id="testing-correlation-with-randomization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#testing-correlation-with-randomization" class="anchor"></a>5.4 Testing Correlation with Randomization</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cor_data_df &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">type =</span> <span class="st">"relfreq"</span>)[, <span class="kw">c</span>(<span class="st">"ahab"</span>, <span class="st">"whale"</span>)] <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cor_data_df &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(chap_dfm, <span class="dt">scheme =</span> <span class="st">"prop"</span>)[, <span class="kw">c</span>(<span class="st">"ahab"</span>, <span class="st">"whale"</span>)] <span class="op">%&gt;%</span>
 <span class="st">    </span>as.data.frame
 
 <span class="co"># sample 1000 replicates and create data frame</span>
@@ -657,11 +667,11 @@ litcorpus &lt;-<span class="st"> </span><span class="kw"><a href="../../../refer
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quantedaData)
 pres_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> "1980-01-01"</span>), 
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
-               <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
 
 <span class="co"># hierarchical clustering - get distances on normalized dfm</span>
-pres_dist_mat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(pres_dfm, <span class="st">"relfreq"</span>))
+pres_dist_mat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(pres_dfm, <span class="st">"prop"</span>))
 
 <span class="co"># hiarchical clustering the distance object</span>
 pres_cluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(pres_dist_mat)
@@ -682,7 +692,7 @@ pres_cluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span 
 <a href="#topic-modeling" class="anchor"></a>13 Topic Modeling</h1>
 <p>Finally, Jockers’ book introduces topic modeling of a corpus and the visualisation through wordclouds. In our example, we use the State of the Union addresses again. We can easily apply functions from the <strong>topicmodels</strong> package by using <strong>quanteda</strong>’s <code><a href="../../../reference/convert.html">convert()</a></code> function. In our example, we use the Irish budget speeches from 2010 and classify 20 topics using Latent Dirichlet Allocation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfm_speeches &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, 
-                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)
 
 <span class="kw">library</span>(topicmodels)
@@ -691,6 +701,7 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
 
 <span class="co"># get top five terms per topic</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</code></pre></div>
+<<<<<<< HEAD
 <pre><code>##      Topic 1     Topic 2      Topic 3   Topic 4       Topic 5       
 ## [1,] "taoiseach" "fianna"     "face"    "kind"        "society"     
 ## [2,] "fine"      "adjustment" "vision"  "imagination" "enterprising"
@@ -715,6 +726,32 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
 ## [3,] "million"    "ministers" "measures"  
 ## [4,] "deficit"    "needed"    "investment"
 ## [5,] "support"    "expected"  "scheme"</code></pre>
+=======
+<pre><code>##      Topic 1      Topic 2      Topic 3      Topic 4    Topic 5     
+## [1,] "welfare"    "future"     "million"    "fáil"     "strategy"  
+## [2,] "deficit"    "employment" "support"    "fianna"   "employment"
+## [3,] "hit"        "enterprise" "welfare"    "irish"    "seen"      
+## [4,] "job"        "energy"     "back"       "national" "modern"    
+## [5,] "vulnerable" "investment" "investment" "ted"      "face"      
+##      Topic 6       Topic 7    Topic 8      Topic 9    Topic 10     
+## [1,] "kind"        "bank"     "confidence" "order"    "fianna"     
+## [2,] "imagination" "society"  "national"   "deficit"  "fáil"       
+## [3,] "policies"    "day"      "fianna"     "rate"     "citizenship"
+## [4,] "wit"         "banks"    "deal"       "per"      "side"       
+## [5,] "create"      "fairness" "adjustment" "payments" "alternative"
+##      Topic 11    Topic 12       Topic 13  Topic 14    Topic 15 
+## [1,] "failed"    "society"      "child"   "care"      "levy"   
+## [2,] "needed"    "enterprising" "benefit" "per"       "million"
+## [3,] "ministers" "sense"        "today"   "allowance" "carbon" 
+## [4,] "vision"    "equal"        "welfare" "welfare"   "change" 
+## [5,] "change"    "nation"       "fianna"  "child"     "welfare"
+##      Topic 16    Topic 17     Topic 18   Topic 19    Topic 20   
+## [1,] "taoiseach" "support"    "system"   "taoiseach" "million"  
+## [2,] "employees" "investment" "welfare"  "fine"      "spending" 
+## [3,] "rate"      "welfare"    "taxation" "gael"      "review"   
+## [4,] "referred"  "months"     "fianna"   "may"       "measures" 
+## [5,] "debate"    "scheme"     "stimulus" "irish"     "reduction"</code></pre>
+>>>>>>> master
 </div>
 </div>
   </div>

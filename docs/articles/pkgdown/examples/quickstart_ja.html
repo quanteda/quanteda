@@ -204,8 +204,13 @@
 ##           SNP    88    134         4
 ##          UKIP   346    723        27
 ## 
+<<<<<<< HEAD
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
 ## Created: Mon Dec 18 17:34:01 2017
+=======
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
+## Created: Thu Dec 21 12:37:31 2017
+>>>>>>> master
 ## Notes:</code></pre>
 <p>コーパスを作成したあとでも，<code>docvars</code>を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができる．</p>
 <p>たとえば，Rの<code>names()</code>関数を使って文字ベクトル（<code>data_char_ukimmig2010</code>）の名前を取得し，これを文書変数（<code>docvar()</code>）に追加することができる．</p>
@@ -225,8 +230,13 @@
 ##           SNP    88    134         4          SNP 2010
 ##          UKIP   346    723        27         UKIP 2010
 ## 
+<<<<<<< HEAD
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
 ## Created: Mon Dec 18 17:34:01 2017
+=======
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
+## Created: Thu Dec 21 12:37:31 2017
+>>>>>>> master
 ## Notes:</code></pre>
 <p>分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，<code><a href="../../../reference/docvars.html">docvars()</a></code>を使って，コーパスに追加することができる．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -255,8 +265,13 @@
 ##  data_char_ukimmig2010_8
 ##  data_char_ukimmig2010_9
 ## 
+<<<<<<< HEAD
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
 ## Created: Mon Dec 18 17:34:01 2017
+=======
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
+## Created: Thu Dec 21 12:37:31 2017
+>>>>>>> master
 ## Notes:</code></pre>
 <p><code><a href="../../../reference/metadoc.html">metadoc()</a></code>を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（“english”）を文書変数（“language”）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意する必要がある．</p>
 <p>独自の文書メタデータのフィールド（<code>docsource</code>）を作成するために，<strong>quanteda</strong>の関数である<code><a href="../../../reference/ndoc.html">ndoc()</a></code>を使ってコーパスに含まれる文書の総数を取得している．<code><a href="../../../reference/ndoc.html">ndoc()</a></code>は，<code>nrow()</code>や<code>ncol()</code>などのRの標準の関数と同じような方法で動作するように設計されている．</p>
@@ -392,7 +407,11 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
+<<<<<<< HEAD
 ## Created: Mon Dec 18 17:34:03 2017
+=======
+## Created: Thu Dec 21 12:37:32 2017
+>>>>>>> master
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -632,8 +651,14 @@ myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</sp
 ##   2009-Obama    2      1        1 130     6
 ##   2013-Obama    3      3        6  99     4
 ##   2017-Trump    1      1        4  96     4</code></pre>
+<<<<<<< HEAD
 <p>以下の例では<code><a href="../../../reference/dfm.html">dfm()</a></code>の追加のオプションを用いて、ストップワードの削除（<code>remove</code>）と語のステミング（<code>stem</code>）を行っている．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), 
+=======
+<p><code><a href="../../../reference/dfm.html">dfm()</a></code>の追加のオプションには，ストップワードの削除（<code>remove</code>）や語のステミング（<code>stem</code>）が含まれます．</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make a dfm, removing stopwords and applying stemming</span>
+myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), 
+>>>>>>> master
                  <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
@@ -647,21 +672,34 @@ myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5
 ##   2009-Obama        1       1     6      2       0
 ##   2013-Obama        3       8     6      1       0
 ##   2017-Trump        1       4     5      3       1</code></pre>
+<<<<<<< HEAD
 <p><code>remove</code>によって，文書行列から除外するトークンを指定する．<code><a href="../../../reference/stopwords.html">stopwords()</a></code>は，幾つかの言語で定義されたストップワードのリストを返す．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)</code></pre></div>
+=======
+<p><code>remove</code>によっては，文書行列から除外するトークンを指定します．<code><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords()</a></code>は，幾つかの言語で定義されたストップワードのリストを返します（残念ながら日本語は含まれていませんが，ユーザーが定義した辞書を使うことはできます）．</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)</code></pre></div>
+>>>>>>> master
 <pre><code>##  [1] "i"          "me"         "my"         "myself"     "we"        
 ##  [6] "our"        "ours"       "ourselves"  "you"        "your"      
 ## [11] "yours"      "yourself"   "yourselves" "he"         "him"       
 ## [16] "his"        "himself"    "she"        "her"        "hers"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"russian"</span>), <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"russian"</span>), <span class="dv">10</span>)</code></pre></div>
 <pre><code>##  [1] "и"   "в"   "во"  "не"  "что" "он"  "на"  "я"   "с"   "со"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)</code></pre></div>
+<pre><code>## Warning: 'stopwords(language = "ar")' is deprecated.
+## Use 'stopwords(language = "ar", source = "misc")' instead.
+## See help("Deprecated")</code></pre>
 <pre><code>##  [1] "فى"  "في"  "كل"  "لم"  "لن"  "له"  "من"  "هو"  "هي"  "قوة"</code></pre>
 <div id="viewing-the-document-feature-matrix" class="section level3">
 <h3 class="hasAnchor">
 <a href="#viewing-the-document-feature-matrix" class="anchor"></a>文書行列の表示</h3>
+<<<<<<< HEAD
 <p>RStudioの“Environment”パネル，またはRの<code><a href="../../../reference/View.html">View()</a></code>を用いることで，dfmに格納された値を見ることができる．dfmに対して<code>plot()</code>を用いると，<a href="https://cran.r-project.org/web/packages/wordcloud"><strong>wordcloud</strong></a>を使ってワードクラウドが表示される．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+=======
+<p>RStudioの“Environment”パネル，またはRの<code><a href="../../../reference/View.html">View()</a></code>を用いることで，dfmに格納された値を見ることができます．dfmに対して<code>plot()</code>を用いると，<a href="https://cran.r-project.org/web/packages/wordcloud"><strong>wordcloud</strong></a>を使ってワードクラウドが表示されます．</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+>>>>>>> master
 mydfm</code></pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre>
 <p>頻度が最も高い特長を見るには，<code><a href="../../../reference/topfeatures.html">topfeatures()</a></code>を用いる．</p>
@@ -686,8 +724,13 @@ mydfm</code></pre></div>
 <a href="#grouping-documents-by-document-variable" class="anchor"></a>変数による文書のグループ化</h3>
 <p><strong>quanteda</strong>では，dfmを作成する際に，文書変数の値によって文書をグループ化するすることができる．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, 
+<<<<<<< HEAD
                   <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>また、以下のように，dfmを語の頻度順に並べ替えて，中身を確かめられる．</p>
+=======
+                  <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>また、以下のように，dfmを語の頻度順に並べ替えて，中身を確かめられます．</p>
+>>>>>>> master
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 5 documents, 10 features (0% sparse).
 ## 5 x 10 sparse Matrix of class "dfm"
@@ -743,7 +786,7 @@ liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10<
 <h2 class="hasAnchor">
 <a href="#similarities-between-texts" class="anchor"></a>文書の類似性</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), 
-               <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), 
                              <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)
 obamaSimil</code></pre></div>
@@ -763,7 +806,7 @@ obamaSimil</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quantedaData"</span>)
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
-               <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
+               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
 <span class="co"># hierarchical clustering - get distances on normalized dfm</span>
 presDistMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="kw"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span>(presDfm, <span class="st">"relfreq"</span>))
@@ -795,6 +838,7 @@ presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span c
 ## Estimated document positions:
 ## 
 ##                                Documents      theta         SE       lower
+<<<<<<< HEAD
 ## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8210060 0.02032480  1.78116943
 ## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932391 0.02818685 -0.64848537
 ## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136211 0.01540124 -1.14380756
@@ -824,10 +868,42 @@ presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span c
 ## 12  0.30998382
 ## 13  0.88415181
 ## 14 -0.11233479
+=======
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209743 0.02032398  1.78113927
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932628 0.02818776 -0.64851078
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136539 0.01540204 -1.14384185
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219532 0.02846258 -0.17773986
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724364 0.02364162  1.72609884
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145705 0.02650173 -0.76651389
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844745 0.04171382 -0.56623364
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616884 0.02967230 -0.61984611
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9702987 0.03850397 -1.04576645
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589115 0.03892227 -1.03519914
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807215 0.07221596  1.03917824
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866359 0.06294074  0.06327203
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421689 0.07245510  0.60015689
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1841236 0.03666138 -0.25597986
+##          upper
+## 1   1.86080929
+## 2  -0.53801476
+## 3  -1.08346586
+## 4  -0.06616654
+## 5   1.81877400
+## 6  -0.66262713
+## 7  -0.40271545
+## 8  -0.50353072
+## 9  -0.89483087
+## 10 -0.88262382
+## 11  1.32226480
+## 12  0.30999973
+## 13  0.88418089
+## 14 -0.11226725
+>>>>>>> master
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the 
+<<<<<<< HEAD
 ##     -0.09868637      0.38856449      0.39929207      0.25647700 
 ##   supplementary          budget              to            this 
 ##      1.11636395      0.09968442      0.37061241      0.30746261 
@@ -843,13 +919,30 @@ presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span c
 ##      0.27405887      0.17475656      0.36430801      0.69230140 
 ##            that notwithstanding 
 ##      0.08887246      1.84493397</code></pre>
+=======
+##     -0.09898507      0.38825195      0.39900356      0.25616917 
+##   supplementary          budget              to            this 
+##      1.11607507      0.09937837      0.37030431      0.30715814 
+##           house            last           april               , 
+##      0.19930057      0.28993781     -0.09504631      0.34557853 
+##            said              we           could            work 
+##     -0.71909183      0.48014714     -0.52954548      0.58249241 
+##             our             way         through          period 
+##      0.74395376      0.33634092      0.66004060      0.55643961 
+##              of          severe        economic        distress 
+##      0.33954829      1.27931465      0.47889281      1.84471086 
+##               .           today             can          report 
+##      0.27375108      0.17443412      0.36400639      0.69198995 
+##            that notwithstanding 
+##      0.08856234      1.84471086</code></pre>
+>>>>>>> master
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
 <a href="#topic-models" class="anchor"></a>トピックモデル</h2>
 <p><code><a href="../../../reference/convert.html">convert()</a></code>を用いると，dfmを<strong>topicmodels</strong>の<code><a href="http://www.rdocumentation.org/packages/topicmodels/topics/lda">LDA()</a></code>形式のデータに転換し，簡単にトピックモデルを適用できる．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, 
-                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
+                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))
 quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(quantdfm, <span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)
 quantdfm</code></pre></div>
 <pre><code>## Document-feature matrix of: 14 documents, 1,263 features (64.5% sparse).</code></pre>
@@ -858,6 +951,7 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
+<<<<<<< HEAD
 <pre><code>##      Topic 1     Topic 2    Topic 3    Topic 4       Topic 5     
 ## [1,] "care"      "welfare"  "fáil"     "million"     "spending"  
 ## [2,] "welfare"   "taxation" "national" "welfare"     "investment"
@@ -882,6 +976,32 @@ quantdfm</code></pre></div>
 ## [3,] "needed"    "impact"      "set"         "policies"   
 ## [4,] "ministers" "ministers"   "opportunity" "wit"        
 ## [5,] "system"    "citizenship" "want"        "create"</code></pre>
+=======
+<pre><code>##      Topic 1       Topic 2   Topic 3         Topic 4     Topic 5     
+## [1,] "alternative" "welfare" "investment"    "care"      "million"   
+## [2,] "citizenship" "system"  "international" "welfare"   "welfare"   
+## [3,] "wealth"      "hit"     "reductions"    "per"       "support"   
+## [4,] "adjustment"  "back"    "rates"         "allowance" "enterprise"
+## [5,] "breaks"      "job"     "employment"    "hit"       "level"     
+##      Topic 6   Topic 7    Topic 8    Topic 9        Topic 10    Topic 11
+## [1,] "system"  "stimulus" "fianna"   "taoiseach"    "failed"    "fianna"
+## [2,] "per"     "system"   "fáil"     "debate"       "strategy"  "fáil"  
+## [3,] "prices"  "fáil"     "national" "society"      "needed"    "side"  
+## [4,] "million" "fianna"   "irish"    "enterprising" "ministers" "level" 
+## [5,] "local"   "taxation" "support"  "difficult"    "system"    "third" 
+##      Topic 12    Topic 13  Topic 14      Topic 15      Topic 16    
+## [1,] "taoiseach" "benefit" "investment"  "create"      "measures"  
+## [2,] "fine"      "day"     "support"     "wit"         "rates"     
+## [3,] "gael"      "child"   "development" "imagination" "adjustment"
+## [4,] "may"       "today"   "including"   "authority"   "taxation"  
+## [5,] "irish"     "bank"    "confidence"  "programme"   "help"      
+##      Topic 17      Topic 18  Topic 19  Topic 20  
+## [1,] "kind"        "levy"    "child"   "measures"
+## [2,] "imagination" "million" "benefit" "scheme"  
+## [3,] "education"   "carbon"  "much"    "review"  
+## [4,] "side"        "change"  "society" "spending"
+## [5,] "tackle"      "welfare" "welfare" "million"</code></pre>
+>>>>>>> master
 </div>
 </div>
 </div>

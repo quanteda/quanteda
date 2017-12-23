@@ -2,7 +2,7 @@
 % Please edit documentation in R/fcm-methods.R
 \name{fcm_sort}
 \alias{fcm_sort}
-\title{sort an fcm in alphabetical order of the features}
+\title{Sort an fcm in alphabetical order of the features}
 \usage{
 fcm_sort(x)
 }

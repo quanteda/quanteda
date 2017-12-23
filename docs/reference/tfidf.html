@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>compute tf-idf weights from a dfm — tfidf • quanteda</title>
+<title>Deprecated form of <code><a href='dfm_tfidf.html'>dfm_tfidf</a></code> — tfidf • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -146,138 +146,32 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>compute tf-idf weights from a dfm</h1>
+    <h1>Deprecated form of <code><a href='dfm_tfidf.html'>dfm_tfidf</a></code></h1>
     </div>
 
     
-    <p>Weight a dfm by term frequency-inverse document frequency (tf-idf) using
-fully sparse methods.</p>
+    <p>Deprecated function name for <em>tf-idf</em> weighting of a
+document-feature matrix.</p>
     
 
-    <pre class="usage"><span class='fu'>tfidf</span>(<span class='no'>x</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"count"</span>, <span class='kw'>scheme_df</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>tfidf</span>(<span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>object for which idf or tf-idf will be computed (a document-feature 
-matrix)</p></td>
-    </tr>
-    <tr>
-      <th>scheme_tf</th>
-      <td><p>scheme for <code><a href='tf.html'>tf</a></code>; defaults to <code>"count"</code></p></td>
-    </tr>
-    <tr>
-      <th>scheme_df</th>
-      <td><p>scheme for <code><a href='docfreq.html'>docfreq</a></code>; defaults to
-<code>"inverse"</code>.  Other options to <code><a href='docfreq.html'>docfreq</a></code> can be passed
-through the ellipsis (<code>...</code>).</p></td>
-    </tr>
-    <tr>
-      <th>base</th>
-      <td><p>the base for the logarithms in the <code><a href='tf.html'>tf</a></code> and
-<code><a href='docfreq.html'>docfreq</a></code> calls; default is 10</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>additional arguments passed to <code><a href='docfreq.html'>docfreq</a></code> when calling
-<code>tfidf</code>; these can be used to fix smoothing constants (default values
-are 0).</p></td>
+      <td><p>arguments passed to <code><a href='dfm_tfidf.html'>dfm_tfidf</a></code></p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>tfidf</code> computes term frequency-inverse document frequency 
-  weighting.  The default is not to normalize term frequency (by computing 
-  relative term frequency within document) but this will be performed if 
-  <code>scheme_tf = "prop"</code>.</p>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Manning, C. D., Raghavan, P., &amp; Schutze, H. (2008). 
-  <em>Introduction to Information Retrieval</em>. Cambridge University Press.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code><a href='tf.html'>tf</a></code>, <code><a href='docfreq.html'>docfreq</a></code></p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='is.dfm.html'>as.dfm</a></span>(<span class='no'>data_dfm_lbgexample</span>)
-<span class='fu'>head</span>(<span class='no'>mydfm</span>[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
-#&gt; 6 x 6 sparse Matrix of class "dfm"
-#&gt;     features
-#&gt; docs  E  F   G   H   I   J
-#&gt;   R1 45 78 115 146 158 146
-#&gt;   R2  0  2   3  10  22  45
-#&gt;   R3  0  0   0   0   0   0
-#&gt;   R4  0  0   0   0   0   0
-#&gt;   R5  0  0   0   0   0   0
-#&gt;   V1  0  0   0   2   3  10</div><div class='input'><span class='fu'>head</span>(<span class='fu'>tfidf</span>(<span class='no'>mydfm</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
-#&gt; 6 x 6 sparse Matrix of class "dfm"
-#&gt;     features
-#&gt; docs        E          F         G        H        I        J
-#&gt;   R1 35.01681 37.2154579 54.868944 43.95038 47.56274 43.95038
-#&gt;   R2  0        0.9542425  1.431364  3.01030  6.62266 13.54635
-#&gt;   R3  0        0          0         0        0        0      
-#&gt;   R4  0        0          0         0        0        0      
-#&gt;   R5  0        0          0         0        0        0      
-#&gt;   V1  0        0          0         0.60206  0.90309  3.01030</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>mydfm</span>)[<span class='fl'>5</span>:<span class='fl'>15</span>]</div><div class='output co'>#&gt; E F G H I J K L M N O 
-#&gt; 1 2 2 3 3 3 4 4 4 4 4 </div><div class='input'><span class='fu'>head</span>(<span class='fu'><a href='tf.html'>tf</a></span>(<span class='no'>mydfm</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
-#&gt; 6 x 6 sparse Matrix of class "dfm"
-#&gt;     features
-#&gt; docs  E  F   G   H   I   J
-#&gt;   R1 45 78 115 146 158 146
-#&gt;   R2  0  2   3  10  22  45
-#&gt;   R3  0  0   0   0   0   0
-#&gt;   R4  0  0   0   0   0   0
-#&gt;   R5  0  0   0   0   0   0
-#&gt;   V1  0  0   0   2   3  10</div><div class='input'>
-<span class='co'># replication of worked example from</span>
-<span class='co'># https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf</span>
-<span class='no'>wiki_dfm</span> <span class='kw'>&lt;-</span>
-    <span class='fu'>matrix</span>(<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>, <span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
-           <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-           <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>docs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"document1"</span>, <span class='st'>"document2"</span>),
-                           <span class='kw'>features</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>,
-                                        <span class='st'>"another"</span>, <span class='st'>"example"</span>))) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='is.dfm.html'>as.dfm</a></span>()
-<span class='no'>wiki_dfm</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
-#&gt;            features
-#&gt; docs        this is a sample another example
-#&gt;   document1    1  1 2      1       0       0
-#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>wiki_dfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>round</span>(<span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
-#&gt;            features
-#&gt; docs        this is    a sample another example
-#&gt;   document1    0  0 0.12   0.06    0       0   
-#&gt;   document2    0  0 0      0       0.09    0.13</div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='co'># comparison with tm</span>
-<span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"tm"</span>)) {
-    <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>wiki_dfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>weightTfIdf</span>() <span class='kw'>%&gt;%</span> <span class='fu'>as.matrix</span>()
-    <span class='co'># same as:</span>
-    <span class='fu'>tfidf</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
-}
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
   </div>
 </div>

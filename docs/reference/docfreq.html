@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>compute the (weighted) document frequency of a feature — docfreq • quanteda</title>
+<title>Compute the (weighted) document frequency of a feature — docfreq • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -146,20 +146,20 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>compute the (weighted) document frequency of a feature</h1>
+    <h1>Compute the (weighted) document frequency of a feature</h1>
     </div>
 
     
     <p>For a <a href='dfm.html'>dfm</a> object, returns a (weighted) document frequency for each
 term.  The default is a simple count of the number of documents in which a
 feature occurs more than a given frequency threshold.  (The default threshold
-is  zero, meaning that any feature occuring at least once in a document will
+is  zero, meaning that any feature occurring at least once in a document will
 be counted.)</p>
     
 
     <pre class="usage"><span class='fu'>docfreq</span>(<span class='no'>x</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"inverse"</span>, <span class='st'>"inversemax"</span>, <span class='st'>"inverseprob"</span>,
   <span class='st'>"unary"</span>), <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>USE.NAMES</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>use.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -195,7 +195,7 @@ will considered in the computation of document frequency.  The default is
 documents in which it occurs greater than zero times.</p></td>
     </tr>
     <tr>
-      <th>USE.NAMES</th>
+      <th>use.names</th>
       <td><p>logical; if <code>TRUE</code> attach feature labels as names of 
 the resulting numeric vector</p></td>
     </tr>

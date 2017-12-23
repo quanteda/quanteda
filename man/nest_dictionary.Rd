@@ -2,7 +2,7 @@
 % Please edit documentation in R/dictionaries.R
 \name{nest_dictionary}
 \alias{nest_dictionary}
-\title{utility function to generate a nested list}
+\title{Utility function to generate a nested list}
 \usage{
 nest_dictionary(dict, depth)
 }
@@ -12,7 +12,7 @@ nest_dictionary(dict, depth)
 \item{depth}{depths of nested element}
 }
 \description{
-utility function to generate a nested list
+Utility function to generate a nested list
 }
 \examples{
 list_flat <- list('A' = c('a', 'aa', 'aaa'), 'B' = c('b', 'bb'), 'C' = c('c', 'cc'), 'D' = c('ddd'))

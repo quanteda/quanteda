@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>select features from a dfm or fcm — dfm_select • quanteda</title>
+<title>Select features from a dfm or fcm — dfm_select • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -146,7 +146,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>select features from a dfm or fcm</h1>
+    <h1>Select features from a dfm or fcm</h1>
     </div>
 
     
@@ -286,12 +286,12 @@ removed</p></td>
 #&gt;        features
 #&gt; docs    taxation ?
 #&gt;   text1        0 0
-#&gt;   text2        1 1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9 features (50% sparse).
+#&gt;   text2        1 1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9 features (50% sparse).
 #&gt; 2 x 9 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    My was by your Does the or have more
 #&gt;   text1  1   1  1    1    0   0  0    0    0
-#&gt;   text2  0   0  0    0    1   1  1    1    1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (50% sparse).
+#&gt;   text2  0   0  0    0    1   1  1    1    1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (50% sparse).
 #&gt; 2 x 11 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    Christmas ruined opposition tax plan . United_States Sweden progressive
@@ -338,7 +338,7 @@ removed</p></td>
 #&gt;        features
 #&gt; docs    :
 #&gt;   text1 0
-#&gt;   text2 1</div><div class='input'><span class='fu'>dfm_remove</span>(<span class='no'>tmpdfm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (25% sparse).
+#&gt;   text2 1</div><div class='input'><span class='fu'>dfm_remove</span>(<span class='no'>tmpdfm</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (25% sparse).
 #&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    document lots stopwords . , :
@@ -362,7 +362,7 @@ removed</p></td>
 #&gt;   or           0        0    0  0         0  0  0   0  0   1     1  1
 #&gt;   but          0        0    0  0         0  0  0   0  0   0     1  1
 #&gt;   about        0        0    0  0         0  0  0   0  0   0     0  1
-#&gt;   it           0        0    0  0         0  0  0   0  0   0     0  0</div><div class='input'><span class='fu'>fcm_remove</span>(<span class='no'>tmpfcm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 3 features.
+#&gt;   it           0        0    0  0         0  0  0   0  0   0     0  0</div><div class='input'><span class='fu'>fcm_remove</span>(<span class='no'>tmpfcm</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 3 features.
 #&gt; 3 x 3 sparse Matrix of class "fcm"
 #&gt;            features
 #&gt; features    contains lots stopwords

@@ -2,7 +2,7 @@
 % Please edit documentation in R/corpus_reshape.R
 \name{corpus_reshape}
 \alias{corpus_reshape}
-\title{recast the document units of a corpus}
+\title{Recast the document units of a corpus}
 \usage{
 corpus_reshape(x, to = c("sentences", "paragraphs", "documents"),
   use_docvars = TRUE, ...)

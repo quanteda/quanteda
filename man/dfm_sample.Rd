@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfm_sample.R
 \name{dfm_sample}
 \alias{dfm_sample}
-\title{randomly sample documents or features from a dfm}
+\title{Randomly sample documents or features from a dfm}
 \usage{
 dfm_sample(x, size = ndoc(x), replace = FALSE, prob = NULL,
   margin = c("documents", "features"))

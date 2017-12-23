@@ -2,7 +2,7 @@
 % Please edit documentation in R/nsyllable.R
 \name{nsyllable}
 \alias{nsyllable}
-\title{count syllables in a text}
+\title{Count syllables in a text}
 \usage{
 nsyllable(x, syllable_dictionary = quanteda::data_int_syllables,
   use.names = FALSE)

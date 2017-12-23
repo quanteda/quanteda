@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{pattern2id}
 \alias{pattern2id}
-\title{convert various input as pattern to a vector used in tokens_select, 
+\title{Convert various input as pattern to a vector used in tokens_select, 
 tokens_compound and kwic.}
 \usage{
 pattern2id(pattern, types, valuetype, case_insensitive, concatenator = "_",
@@ -23,7 +23,7 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 \item{remove_unigram}{ignore single-word patterns if \code{TRUE}}
 }
 \description{
-convert various input as pattern to a vector used in tokens_select, 
+Convert various input as pattern to a vector used in tokens_select, 
 tokens_compound and kwic.
 }
 \seealso{

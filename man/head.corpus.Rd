@@ -3,7 +3,7 @@
 \name{head.corpus}
 \alias{head.corpus}
 \alias{tail.corpus}
-\title{return the first or last part of a corpus}
+\title{Return the first or last part of a corpus}
 \usage{
 \method{head}{corpus}(x, n = 6L, ...)
 

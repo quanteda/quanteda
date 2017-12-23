@@ -3,7 +3,7 @@
 \name{char_tolower}
 \alias{char_tolower}
 \alias{char_toupper}
-\title{convert the case of character objects}
+\title{Convert the case of character objects}
 \usage{
 char_tolower(x, keep_acronyms = FALSE, ...)
 

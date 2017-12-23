@@ -1,4 +1,4 @@
-#' get or set package options for quanteda
+#' Get or set package options for quanteda
 #'
 #' Get or set global options affecting functions across \pkg{quanteda}.
 #' @param ... options to be set, as key-value pair, same as
@@ -12,8 +12,8 @@
 #' @details Currently available options are: \describe{
 #' \item{\code{verbose}}{logical; if \code{TRUE} then use this as the default
 #' for all functions with a \code{verbose} argument}
-#' \item{\code{threads}}{integer; specifies the number of threads to use in use
-#' this as the setting in all functions that uee parallelization}
+#' \item{\code{threads}}{integer; specifies the number of threads to use in
+#' parallelized functions}
 #' \item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
 #' to display when using the defaults for printing a dfm}
 #' \item{\code{print_dfm_max_nfeat}}{integer; specifies the number of
@@ -26,8 +26,8 @@
 #' \item{\code{base_compname}}{character; stem name for components that are
 #' created by matrix factorization} 
 #' \item{\code{language_stemmer}}{character; language option for \link{char_wordstem}, 
-#' \link{tokens_wordstem}, and \link{dfm_wordstem}}
-#' \item{\code{language_stopwords}}{character; language option for \link{stopwords}} }
+#' \link{tokens_wordstem}, and \link{dfm_wordstem}} 
+#' }
 #' @return When called using a \code{key = value} pair (where \code{key} can be
 #' a label or quoted character name)), the option is set and \code{TRUE} is
 #' returned invisibly.
@@ -137,7 +137,6 @@ get_options_default <- function(){
                  base_docname = "text",
                  base_featname = "feat",
                  base_compname = "comp",
-                 language_stemmer = "english",
-                 language_stopwords = "english")
+                 language_stemmer = "english")
     return(opts)
 }

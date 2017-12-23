@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_dist.R
 \name{as.list.dist}
 \alias{as.list.dist}
-\title{coerce a dist object into a list}
+\title{Coerce a dist object into a list}
 \usage{
 \method{as.list}{dist}(x, sorted = TRUE, n = NULL, ...)
 }

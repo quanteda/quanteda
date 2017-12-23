@@ -1,4 +1,4 @@
-#' select features from a dfm or fcm
+#' Select features from a dfm or fcm
 #' 
 #' This function selects or removes features from a \link{dfm} or \link{fcm}, 
 #' based on feature name matches with \code{pattern}.  The most common usages 

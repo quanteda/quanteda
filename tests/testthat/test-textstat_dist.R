@@ -191,7 +191,7 @@ test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distan
     hammingQuanteda <- hammingQuanteda[-which(names(hammingQuanteda) == "1981-Reagan")]
     
     if (requireNamespace("e1071", quietly = TRUE)) {
-        hammingE1071 <- sort(e1071::hamming.distance(as.matrix(tf(presDfm, "boolean")))[, "1981-Reagan"], decreasing = FALSE)
+        hammingE1071 <- sort(e1071::hamming.distance(as.matrix(dfm_weight(presDfm, "boolean")))[, "1981-Reagan"], decreasing = FALSE)
         if("1981-Reagan" %in% names(hammingE1071)) hammingE1071 <- hammingE1071[-which(names(hammingE1071) == "1981-Reagan")]
     } else {
         hammingE1071 <- c(712, 723, 746, 769, 774, 781, 784, 812, 857)
@@ -208,7 +208,7 @@ test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distan
     hammingQuanteda <- hammingQuanteda[order(names(hammingQuanteda))]
     hammingQuanteda <- hammingQuanteda[-which(names(hammingQuanteda) == "soviet")]
     
-    presM <- t(as.matrix(tf(presDfm, "boolean")))
+    presM <- t(as.matrix(dfm_weight(presDfm, "boolean")))
     hammingE1071 <- e1071::hamming.distance(presM)[, "soviet"]
     hammingE1071 <- hammingE1071[order(names(hammingE1071))]
     if("soviet" %in% names(hammingE1071)) hammingE1071 <- hammingE1071[-which(names(hammingE1071) == "soviet")]

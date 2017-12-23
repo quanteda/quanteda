@@ -2,7 +2,7 @@
 % Please edit documentation in R/quanteda_options.R
 \name{quanteda_options}
 \alias{quanteda_options}
-\title{get or set package options for quanteda}
+\title{Get or set package options for quanteda}
 \usage{
 quanteda_options(..., reset = FALSE, initialize = FALSE)
 }
@@ -37,8 +37,8 @@ Get or set global options affecting functions across \pkg{quanteda}.
 Currently available options are: \describe{
 \item{\code{verbose}}{logical; if \code{TRUE} then use this as the default
 for all functions with a \code{verbose} argument}
-\item{\code{threads}}{integer; specifies the number of threads to use in use
-this as the setting in all functions that uee parallelization}
+\item{\code{threads}}{integer; specifies the number of threads to use in
+parallelized functions}
 \item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
 to display when using the defaults for printing a dfm}
 \item{\code{print_dfm_max_nfeat}}{integer; specifies the number of
@@ -51,8 +51,8 @@ through an operation that adds features}
 \item{\code{base_compname}}{character; stem name for components that are
 created by matrix factorization} 
 \item{\code{language_stemmer}}{character; language option for \link{char_wordstem}, 
-\link{tokens_wordstem}, and \link{dfm_wordstem}}
-\item{\code{language_stopwords}}{character; language option for \link{stopwords}} }
+\link{tokens_wordstem}, and \link{dfm_wordstem}} 
+}
 }
 \examples{
 (opt <- quanteda_options())

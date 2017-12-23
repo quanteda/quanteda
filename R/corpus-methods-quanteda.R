@@ -1,6 +1,6 @@
 # metacorpus functions ---------------------
 
-#' get or set corpus metadata
+#' Get or set corpus metadata
 #' 
 #' Get or set the corpus-level metadata in a \link{corpus} object.
 #' @param x a \link{corpus} object
@@ -36,7 +36,7 @@ metacorpus.corpus <- function(x, field = NULL) {
     }
 }
 
-# replacement function for corpus-level data
+#' Replacement function for corpus-level data
 #' @param value new value of the corpus metadata field
 #' @export
 #' @rdname metacorpus
@@ -62,7 +62,7 @@ metacorpus.corpus <- function(x, field = NULL) {
 
 # texts() functions ----------------------------
 
-#' get or assign corpus texts
+#' Get or assign corpus texts
 #' 
 #' Get or replace the texts in a \link{corpus}, with grouping options. 
 #' Works for plain character vectors too, if \code{groups} is a factor.

@@ -1,4 +1,4 @@
-#' identify and score multi-word expressions
+#' Identify and score multi-word expressions
 #' 
 #' Identify and score multi-word expressions, or adjacent fixed-length collocations, from text.  
 #' 
@@ -70,9 +70,9 @@
 #' \deqn{z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}}
 #' 
 #' @return \code{textstat_collocationsdev} returns a data.frame of collocations and their
-#'   scores and statistsics.
+#'   scores and statistics.
 #' @export
-#' @keywords textstat collocations experimental
+#' @keywords textstat collocations experimental internal
 #' @author Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 #' @examples
 #' txts <- data_corpus_inaugural[1:2]

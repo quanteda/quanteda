@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfm.R
 \name{dfm}
 \alias{dfm}
-\title{create a document-feature matrix}
+\title{Create a document-feature matrix}
 \usage{
 dfm(x, tolower = TRUE, stem = FALSE, select = NULL, remove = NULL,
   dictionary = NULL, thesaurus = NULL, valuetype = c("glob", "regex",

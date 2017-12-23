@@ -1,4 +1,4 @@
-#' calculate keyness statistics
+#' Calculate keyness statistics
 #' 
 #' Calculate "keyness", a score for features that occur differentially across 
 #' different categories.  Here, the categories are defined by reference to a
@@ -135,7 +135,7 @@ textstat_keyness.dfm <- function(x, target = 1L,
 }
 
 
-#' compute keyness (internal functions)
+#' Compute keyness (internal functions)
 #' 
 #' Internal function used in textstat_keyness.  Computes \eqn{chi^2} with Yates'
 #' continuity correction for 2x2 tables.

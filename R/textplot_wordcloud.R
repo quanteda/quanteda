@@ -1,4 +1,4 @@
-#' plot features as a wordcloud
+#' Plot features as a wordcloud
 #' 
 #' Plot a \link{dfm} or \link{tokens} object as a wordcloud, where the feature 
 #' labels are plotted with their sizes proportional to their numerical values in

@@ -3,7 +3,7 @@
 \name{kwic}
 \alias{kwic}
 \alias{is.kwic}
-\title{locate keywords-in-context}
+\title{Locate keywords-in-context}
 \usage{
 kwic(x, pattern, window = 5, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, ...)

@@ -3,7 +3,7 @@
 \name{textstat_collocationsdev}
 \alias{textstat_collocationsdev}
 \alias{is.collocationsdev}
-\title{identify and score multi-word expressions}
+\title{Identify and score multi-word expressions}
 \usage{
 textstat_collocationsdev(x, method = "all", size = 2, min_count = 2,
   smoothing = 0.5, tolower = TRUE, show_counts = FALSE, ...)
@@ -40,7 +40,7 @@ is not a \link{tokens} object already}
 }
 \value{
 \code{textstat_collocationsdev} returns a data.frame of collocations and their
-  scores and statistsics.
+  scores and statistics.
 
 \code{is.collocationdev} returns \code{TRUE} if the object is of class
   \code{collocationsdev}, \code{FALSE} otherwise.
@@ -119,4 +119,5 @@ Kenneth Benoit, Jouni Kuha, Haiyan Wang, and Kohei Watanabe
 }
 \keyword{collocations}
 \keyword{experimental}
+\keyword{internal}
 \keyword{textstat}

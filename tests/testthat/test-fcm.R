@@ -320,4 +320,16 @@ test_that("as.network.fcm works", {
     expect_equal(network::network.vertex.names(net), featnames(mat))
 })
 
+test_that("test empty object is handled properly", {
+    
+    mat <- quanteda:::make_null_dfm()
+    expect_equal(dim(fcm(mat)), c(0, 0))
+    expect_true(is.fcm(fcm(mat)))
+    
+    toks <- tokens(c('', ''))
+    expect_equal(dim(fcm(toks)), c(0, 0))
+    expect_true(is.fcm(fcm(toks)))
+})
+
+
 

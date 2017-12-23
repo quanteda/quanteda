@@ -1,15 +1,15 @@
-#' plot a network of feature co-occurrences
+#' Plot a network of feature co-occurrences
 #'
 #' Plot an \link{fcm} object as a network, where edges show co-occurrences of
 #' features.
 #' @param x a \link{fcm} or \link{dfm}  object
-#' @param min_freq a frequency count threshold or proportion for co-occurance
+#' @param min_freq a frequency count threshold or proportion for co-occurrence
 #'   frequencies of features to be plotted.
 #' @param omit_isolated if \code{TRUE}, features do not occur more frequent than
 #'   \code{min_freq} will be omitted from the plot
 #' @param edge_color color of edges that connect vertices.
 #' @param edge_alpha opacity of edges ranging from 0 to 1.0.
-#' @param edge_size size of edges for most frequent cooccurances. The size of
+#' @param edge_size size of edges for most frequent co-occurrence The size of
 #'   other edges are determined proportionally to the highest frequency.
 #' @param vertex_size size of vertices.
 #' @param vertex_color color of vertices.

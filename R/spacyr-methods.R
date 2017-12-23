@@ -3,7 +3,7 @@
 ### spacy_parsed objects
 ###
 
-#' extensions for and from spacy_parse objects
+#' Extensions for and from spacy_parse objects
 #' 
 #' These functions provide \pkg{quanteda} methods for \pkg{spacyr} objects, and
 #' also extend \link[spacyr]{spacy_parse} to work with \link{corpus} objects.

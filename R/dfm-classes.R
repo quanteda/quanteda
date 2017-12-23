@@ -111,7 +111,7 @@ setMethod("+", signature(e1 = "numeric", e2 = "dfm"),
           })
 
 
-#' coerce a dfm to a matrix or data.frame
+#' Coerce a dfm to a matrix or data.frame
 #' 
 #' Methods for coercing a \link{dfm} object to a matrix or data.frame object.
 #' @rdname as.matrix.dfm

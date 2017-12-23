@@ -5,7 +5,7 @@
 \alias{textmodel}
 \alias{textmodel,dfm,ANY,missing,character-method}
 \alias{textmodel,formula,missing,dfm,character-method}
-\title{fit a text model}
+\title{Fit a text model}
 \usage{
 textmodel(x, y = NULL, data = NULL, model = c("wordscores", "nb",
   "wordfish", "ca", "lsa"), ...)

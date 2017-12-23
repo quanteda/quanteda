@@ -2,7 +2,7 @@
 % Please edit documentation in R/textmodel_affinity.R
 \name{influence.textmodel_affinity_predicted}
 \alias{influence.textmodel_affinity_predicted}
-\title{compute feature influence from a predicted textmodel_affinity object}
+\title{Compute feature influence from a predicted textmodel_affinity object}
 \usage{
 \method{influence}{textmodel_affinity_predicted}(model, subset = !train, ...)
 }

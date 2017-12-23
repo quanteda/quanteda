@@ -19,7 +19,7 @@ regex2fixed <- function(pattern, types = NULL, valuetype = NULL,
     return(fixed)
 }
 
-#' convert regex and glob patterns to type IDs or fixed patterns
+#' Convert regex and glob patterns to type IDs or fixed patterns
 #'
 #' @description \code{regex2id} converts regex or glob to type IDs to allow C++
 #'   function to perform fast searches in tokens object. C++ functions use a
@@ -113,10 +113,10 @@ regex2id <- function(pattern, types = NULL, valuetype = NULL,
     return(unique(ids))
 }
 
-#' select types without performing slow regex search
+#' Select types without performing slow regex search
 #' 
 #' This is an internal function for \code{regex2id()} that select types using an
-#' index of types by reular expressions.
+#' index of types by regular expressions.
 #' @rdname regex2id
 #' @param patterns a list of regular expressions
 #' @param types_search lowercased types when \code{case_insensitive=TRUE}, but
@@ -173,7 +173,7 @@ search_fixed <- function(patterns, types_search, index) {
     }, types_search, index)
 }
 
-#' index types for fastest regular expression matches
+#' Index types for fastest regular expression matches
 #'
 #' An internal function for \code{\link{regex2id}} that constructs an index of
 #' regex patterns (e.g. \code{^xxxx}, \code{xxxx$} and \code{^xxxx$}) to avoid
@@ -264,7 +264,7 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL){
     return(index)
 }
 
-#' internal function for \code{select_types()} to search the index using
+#' Internal function for \code{select_types()} to search the index using
 #' fastmatch.
 #' @rdname regex2id
 #' @param regex a glob expression to search
@@ -276,7 +276,7 @@ search_index <- function(pattern, index){
     index[[fastmatch::fmatch(pattern, attr(index, 'key'))]] 
 }
 
-#' simpler and faster version of expand.grid() in base package
+#' Simpler and faster version of expand.grid() in base package
 #' @rdname regex2id
 #' @param elem list of elements to be combined
 #' @keywords internal
@@ -302,7 +302,7 @@ expand <- function(elem){
 }
 
 
-#' check if a glob pattern is indexed by index_types
+#' Check if a glob pattern is indexed by index_types
 #' 
 #' Internal function for select_types() to check if a glob pattern is indexed by
 #' \code{index_types()}.

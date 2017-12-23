@@ -9,12 +9,14 @@
 * Added Chinese stopwords.
 * Added a pkgdown vignette for applications in the Chinese language.
 * Added `textplot_network()` function.
+* The `stopwords()` function and the associated internal data object `data_char_stopwords` have been removed from **quanteda**, and replaced by equivalent functionality in the **stopwords** package.
 
 ### Bug fixes and stability enhancements
 
 * Performance has been improved for `fcm()` and for `textmodel_wordfish()`.
 * `dfm()` now correctly passes through all `...` arguments to `tokens()`.  (#1121)
 * All `dfm_*()` functions now work correctly with empty dfm objects.  (#1133)
+* Fixed a bug in `dfm_weight()` for named weight vectors (#1150)
 
 
 ### Behaviour Changes

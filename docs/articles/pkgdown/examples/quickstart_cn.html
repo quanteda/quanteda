@@ -199,8 +199,13 @@
 ##           SNP    88    134         4
 ##          UKIP   346    723        27
 ## 
+<<<<<<< HEAD
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
 ## Created: Mon Dec 18 17:33:36 2017
+=======
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
+## Created: Thu Dec 21 12:37:16 2017
+>>>>>>> master
 ## Notes:</code></pre>
 <p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../../reference/docvars.html">docvars()</a></code>。</p>
 <p>我们可以使用R的<code>names()</code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量赋值。</p>
@@ -220,8 +225,13 @@
 ##           SNP    88    134         4          SNP 2010
 ##          UKIP   346    723        27         UKIP 2010
 ## 
+<<<<<<< HEAD
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
 ## Created: Mon Dec 18 17:33:36 2017
+=======
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
+## Created: Thu Dec 21 12:37:16 2017
+>>>>>>> master
 ## Notes:</code></pre>
 <p>如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -250,8 +260,13 @@
 ##  data_char_ukimmig2010_8
 ##  data_char_ukimmig2010_9
 ## 
+<<<<<<< HEAD
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
 ## Created: Mon Dec 18 17:33:36 2017
+=======
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
+## Created: Thu Dec 21 12:37:16 2017
+>>>>>>> master
 ## Notes:</code></pre>
 <p>上面的命令<code><a href="../../../reference/metadoc.html">metadoc()</a></code>允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code><a href="../../../reference/ndoc.html">ndoc()</a></code>来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code>nrow()</code>和<code>ncol()</code>。</p>
 </div>
@@ -387,7 +402,11 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
+<<<<<<< HEAD
 ## Created: Mon Dec 18 17:33:37 2017
+=======
+## Created: Thu Dec 21 12:37:18 2017
+>>>>>>> master
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -643,7 +662,7 @@ myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</sp
 <p><code><a href="../../../reference/dfm.html">dfm()</a></code>的其他选项还包括去除停用词和分词的词干提取。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 构建dfm, 去除停用词以及提取词干</span>
 
-myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
 ## 7 x 5 sparse Matrix of class "dfm"
@@ -656,21 +675,24 @@ myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5
 ##   2009-Obama        1       1     6      2       0
 ##   2013-Obama        3       8     6      1       0
 ##   2017-Trump        1       4     5      3       1</code></pre>
-<p><code>remove</code>选项提供一个需要被去除的分词的列表。大多数用户会提供一个为多语种预定义的“停用词”的列表，可通过<code><a href="../../../reference/stopwords.html">stopwords()</a></code>函数获取：</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)</code></pre></div>
+<p><code>remove</code>选项提供一个需要被去除的分词的列表。大多数用户会提供一个为多语种预定义的“停用词”的列表，可通过<code><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords()</a></code>函数获取：</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)</code></pre></div>
 <pre><code>##  [1] "i"          "me"         "my"         "myself"     "we"        
 ##  [6] "our"        "ours"       "ourselves"  "you"        "your"      
 ## [11] "yours"      "yourself"   "yourselves" "he"         "him"       
 ## [16] "his"        "himself"    "she"        "her"        "hers"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"russian"</span>), <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"russian"</span>), <span class="dv">10</span>)</code></pre></div>
 <pre><code>##  [1] "и"   "в"   "во"  "не"  "что" "он"  "на"  "я"   "с"   "со"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)</code></pre></div>
+<pre><code>## Warning: 'stopwords(language = "ar")' is deprecated.
+## Use 'stopwords(language = "ar", source = "misc")' instead.
+## See help("Deprecated")</code></pre>
 <pre><code>##  [1] "فى"  "في"  "كل"  "لم"  "لن"  "له"  "من"  "هو"  "هي"  "قوة"</code></pre>
 <div id="viewing-the-document-feature-matrix" class="section level3">
 <h3 class="hasAnchor">
 <a href="#viewing-the-document-feature-matrix" class="anchor"></a>查看文档特征矩阵</h3>
 <p>可以在RStudio 的Enviroment pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调用<a href="https://cran.r-project.org/web/packages/wordcloud/index.html">wordcloud软件包</a>绘制词云图。</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 mydfm</code></pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre>
 <p>使用<code><a href="../../../reference/topfeatures.html">topfeatures()</a></code>可以访问出现频率最高的特征：</p>
@@ -695,7 +717,7 @@ mydfm</code></pre></div>
 <a href="#grouping-documents-by-document-variable" class="anchor"></a>按文档变量对文档分组</h3>
 <p>通常，我们感兴趣的是根据可能存在于文档变量中实质性因素来分析文本是如何不同的，而不仅仅是根据文档文件的边界。创建dfm时，我们可以将具有相同文档变量的文档分成一组：</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, 
-                  <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+                  <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>我们可以对这个dfm进行排序，并查看：</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 5 documents, 10 features (0% sparse).
@@ -754,7 +776,7 @@ liwcdfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">10<
 <h2 class="hasAnchor">
 <a href="#similarities-between-texts" class="anchor"></a>文本之间的相似度</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year <span class="op">&gt;</span><span class="st"> </span><span class="dv">1980</span>), 
-               <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
+               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), 
                              <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)
 obamaSimil</code></pre></div>
@@ -774,7 +796,7 @@ obamaSimil</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quantedaData"</span>)
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
-               <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
+               <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(presDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">min_docfreq =</span> <span class="dv">3</span>)
 
 <span class="co">#分层聚类 -  在归一化dfm上计算距离</span>
@@ -808,6 +830,7 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference
 ## Estimated document positions:
 ## 
 ##                                Documents      theta         SE       lower
+<<<<<<< HEAD
 ## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209519 0.02032341  1.78111802
 ## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932792 0.02818840 -0.64852846
 ## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136769 0.01540260 -1.14386604
@@ -837,10 +860,42 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference
 ## 12  0.3100112
 ## 13  0.8842015
 ## 14 -0.1122200
+=======
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209394 0.02032310  1.78110618
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932884 0.02818876 -0.64853832
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136898 0.01540291 -1.14387949
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219184 0.02846360 -0.17770702
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724130 0.02364052  1.72607756
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145838 0.02650309 -0.76652983
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844872 0.04171539 -0.56624935
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616596 0.02967434 -0.61982130
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703187 0.03850639 -1.04579123
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589307 0.03892471 -1.03522310
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807224 0.07221373  1.03918345
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866521 0.06294149  0.06328682
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7422033 0.07245387  0.60019375
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840538 0.03666337 -0.25591404
+##         upper
+## 1   1.8607727
+## 2  -0.5380384
+## 3  -1.0835001
+## 4  -0.0661297
+## 5   1.8187484
+## 6  -0.6626377
+## 7  -0.4027250
+## 8  -0.5034979
+## 9  -0.8948462
+## 10 -0.8826382
+## 11  1.3222613
+## 12  0.3100175
+## 13  0.8842129
+## 14 -0.1121936
+>>>>>>> master
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the 
+<<<<<<< HEAD
 ##     -0.09919539      0.38803192      0.39880034      0.25595243 
 ##   supplementary          budget              to            this 
 ##      1.11587161      0.09916288      0.37008739      0.30694376 
@@ -856,13 +911,30 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference
 ##      0.27353438      0.17420713      0.36379403      0.69177076 
 ##            that notwithstanding 
 ##      0.08834404      1.84455372</code></pre>
+=======
+##     -0.09931260      0.38790930      0.39868712      0.25583166 
+##   supplementary          budget              to            this 
+##      1.11575825      0.09904280      0.36996652      0.30682430 
+##           house            last           april               , 
+##      0.19895606      0.28960798     -0.09536914      0.34524012 
+##            said              we           could            work 
+##     -0.71941852      0.47981130     -0.52987315      0.58216467 
+##             our             way         through          period 
+##      0.74362506      0.33600387      0.65972186      0.55610821 
+##              of          severe        economic        distress 
+##      0.33921064      1.27900500      0.47856035      1.84446618 
+##               .           today             can          report 
+##      0.27341362      0.17408064      0.36367570      0.69164861 
+##            that notwithstanding 
+##      0.08822239      1.84446618</code></pre>
+>>>>>>> master
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
 <a href="#topic-models" class="anchor"></a>主题模型</h2>
 <p><strong>quanteda</strong>可以很轻松训练主题模型：</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, 
-                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
+                <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>, <span class="dt">remove_numbers =</span> <span class="ot">TRUE</span>, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))
 quantdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(quantdfm, <span class="dt">min_count =</span> <span class="dv">4</span>, <span class="dt">max_docfreq =</span> <span class="dv">10</span>)
 quantdfm</code></pre></div>
 <pre><code>## Document-feature matrix of: 14 documents, 1,263 features (64.5% sparse).</code></pre>
@@ -871,6 +943,7 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
+<<<<<<< HEAD
 <pre><code>##      Topic 1       Topic 2      Topic 3     Topic 4       Topic 5  
 ## [1,] "help"        "million"    "taoiseach" "alternative" "levy"   
 ## [2,] "introduced"  "support"    "fine"      "citizenship" "million"
@@ -895,6 +968,32 @@ quantdfm</code></pre></div>
 ## [3,] "policies"    "welfare"   "confront" 
 ## [4,] "wit"         "allowance" "vision"   
 ## [5,] "create"      "hospital"  "seen"</code></pre>
+=======
+<pre><code>##      Topic 1     Topic 2     Topic 3       Topic 4   Topic 5    
+## [1,] "system"    "million"   "kind"        "levy"    "support"  
+## [2,] "failed"    "providing" "imagination" "million" "million"  
+## [3,] "programme" "per"       "policies"    "carbon"  "future"   
+## [4,] "face"      "measures"  "wit"         "change"  "including"
+## [5,] "courage"   "single"    "create"      "welfare" "continue" 
+##      Topic 6      Topic 7    Topic 8      Topic 9     Topic 10      
+## [1,] "welfare"    "fianna"   "real"       "know"      "society"     
+## [2,] "investment" "fáil"     "system"     "benefit"   "enterprising"
+## [3,] "scheme"     "national" "commitment" "top"       "sense"       
+## [4,] "pension"    "irish"    "investment" "full-time" "equal"       
+## [5,] "spending"   "support"  "families"   "irish"     "nation"      
+##      Topic 11    Topic 12   Topic 13   Topic 14    Topic 15   
+## [1,] "taoiseach" "measures" "welfare"  "taoiseach" "care"     
+## [2,] "employees" "million"  "system"   "fine"      "welfare"  
+## [3,] "rate"      "review"   "taxation" "gael"      "hospital" 
+## [4,] "referred"  "spending" "fianna"   "may"       "allowance"
+## [5,] "debate"    "details"  "fáil"     "stimulus"  "hit"      
+##      Topic 16      Topic 17      Topic 18 Topic 19    Topic 20 
+## [1,] "investment"  "alternative" "fianna" "failed"    "child"  
+## [2,] "welfare"     "citizenship" "fáil"   "strategy"  "benefit"
+## [3,] "back"        "wealth"      "side"   "ministers" "day"    
+## [4,] "million"     "adjustment"  "level"  "vision"    "today"  
+## [5,] "development" "breaks"      "third"  "needed"    "bank"</code></pre>
+>>>>>>> master
 <p>注：以上这个指南翻译于英文版<a href="http://docs.quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>
@@ -905,15 +1004,20 @@ quantdfm</code></pre></div>
 <h2 class="hasAnchor">
 <a href="#chinese-stop-words" class="anchor"></a>中文停用词：取自百度停用词</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 读取中文停用词</span>
-csw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>)
-
-<span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>)</code></pre></div>
+csw &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>)</code></pre></div>
+<pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
+## Use 'stopwords(language = "zh", source = "misc")' instead.
+## See help("Deprecated")</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>)</code></pre></div>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ## [1] "中华"   "人民"   "共和国" "成立"   "于"     "1949"   "年"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 除去停用词</span>
 <span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="st">"中华人民共和国成立于1949 年"</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))</code></pre></div>
+<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>))</code></pre></div>
+<pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
+## Use 'stopwords(language = "zh", source = "misc")' instead.
+## See help("Deprecated")</code></pre>
 <pre><code>## tokens from 1 document.
 ## text1 :
 ## [1] "中华"   "人民"   "共和国" "成立"   "1949"</code></pre>
@@ -958,9 +1062,11 @@ csw &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 分词</span>
 chtoks &lt;-<span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(data_corpus_chinesegovreport, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))
-
-<span class="co"># 创建 dfm</span>
+<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>))</code></pre></div>
+<pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
+## Use 'stopwords(language = "zh", source = "misc")' instead.
+## See help("Deprecated")</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 创建 dfm</span>
 chdfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(chtoks)
 <span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chdfm)</code></pre></div>
 <pre><code>## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
@@ -985,8 +1091,11 @@ chdfm_tf &lt;-<span class="st"> </span><span class="kw"><a href="../../../refere
 ch17txt &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_chinesegovreport, Year <span class="op">==</span><span class="st"> "2017"</span>)
 ch17toks &lt;-<span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(ch17txt, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"chinese"</span>))
-chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  
+<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"chinese"</span>))</code></pre></div>
+<pre><code>## Warning: 'stopwords(language = "zh")' is deprecated.
+## Use 'stopwords(language = "zh", source = "misc")' instead.
+## See help("Deprecated")</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chfcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17toks, <span class="dt">context =</span> <span class="st">"window"</span>)  
 <span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(chfcm[<span class="st">"改革"</span>, ])</code></pre></div>
 <pre><code>## 推进 制度   性 体制 完善   试   点 供给   侧 结构 
 ##   23   19   11   11   10    8    8    7    7    7</code></pre>

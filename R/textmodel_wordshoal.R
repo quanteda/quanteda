@@ -22,7 +22,7 @@ setClass("textmodel_wordshoal_predicted",
          contains = "textmodel_wordfish_fitted")
 
 
-#' wordshoal text model
+#' Wordshoal text model
 #' 
 #' Estimate Lauderdale and Herzog's (2016) model for one-dimensional document
 #' author (e.g. speakers) positions based on multiple groups of texts (e.g.

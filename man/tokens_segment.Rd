@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokens_segment.R
 \name{tokens_segment}
 \alias{tokens_segment}
-\title{segment tokens object by patterns}
+\title{Segment tokens object by patterns}
 \usage{
 tokens_segment(x, pattern, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, extract_pattern = FALSE,

@@ -1,5 +1,4 @@
-
-#' get or set document names
+#' Get or set document names
 #' 
 #' Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
 #' @param x the object with docnames

@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_frequency.R
 \name{textstat_frequency}
 \alias{textstat_frequency}
-\title{tabulate feature frequencies}
+\title{Tabulate feature frequencies}
 \usage{
 textstat_frequency(x, n = NULL, groups = NULL)
 }

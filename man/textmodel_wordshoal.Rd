@@ -2,7 +2,7 @@
 % Please edit documentation in R/textmodel_wordshoal.R
 \name{textmodel_wordshoal}
 \alias{textmodel_wordshoal}
-\title{wordshoal text model}
+\title{Wordshoal text model}
 \usage{
 textmodel_wordshoal(x, groups, authors, dir = c(1, 2), tol = 0.001)
 }

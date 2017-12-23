@@ -4,7 +4,7 @@
 \alias{tokens_wordstem}
 \alias{char_wordstem}
 \alias{dfm_wordstem}
-\title{stem the terms in an object}
+\title{Stem the terms in an object}
 \usage{
 tokens_wordstem(x, language = quanteda_options("language_stemmer"))
 
