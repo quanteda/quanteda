@@ -25,6 +25,5 @@ __MACOSX
 .DS_Store
 
 # Vignette
-/*_cache/
-/cache/
+**_cache/
 /inst/doc
