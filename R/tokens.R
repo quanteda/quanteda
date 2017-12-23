@@ -1,4 +1,4 @@
-#' tokenize a set of texts
+#' Tokenize a set of texts
 #'
 #' Tokenize the texts from a character vector or from a corpus.
 #' @rdname tokens
