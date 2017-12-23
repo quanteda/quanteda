@@ -52,9 +52,6 @@
 #' @param measure a character vector defining the measure to calculate.
 #' @param log.base a numeric value defining the base of the logarithm (for
 #'   measures using logs)
-#' @param drop if \code{TRUE}, the result is returned as a numeric vector if 
-#'   only a single measure is requested; otherwise, a data.frame is returned 
-#'   with each column consisting of a requested measure.
 #' @param ... not used
 #' @author Kenneth Benoit, adapted from the S4 class implementation written by 
 #'   Meik Michalke in the \pkg{koRpus} package.
@@ -86,95 +83,78 @@
 #'   Tweedie. F.J. & Baayen, R.H. (1998). How Variable May a Constant Be? 
 #'   Measures of Lexical Richness in Perspective. \emph{Computers and the 
 #'   Humanities}, 32(5), 323--352.
-#' @return a data.frame or vector of lexical diversity statistics, each row or
-#'   vector element corresponding to an input document
+#' @return \code{textstat_lexdiv} returns a data.frame of documents and
+#'   their lexical diversity scores.
 #' @export
 #' @examples
 #' mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE)
-#' (results <- textstat_lexdiv(mydfm, c("CTTR", "TTR", "U")))
-#' cor(textstat_lexdiv(mydfm, "all"))
+#' (result <- textstat_lexdiv(mydfm, c("CTTR", "TTR", "U")))
+#' cor(textstat_lexdiv(mydfm, "all")[,-1])
 #' 
-#' # with different settings of drop
-#' textstat_lexdiv(mydfm, "TTR", drop = TRUE)
-#' textstat_lexdiv(mydfm, "TTR", drop = FALSE)
 textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
-                            log.base = 10, drop = TRUE, ...) {
+                            log.base = 10, ...) {
     UseMethod("textstat_lexdiv")
 }
 
 
 #' @export
 textstat_lexdiv.default <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
-                                log.base = 10, drop = TRUE, ...) {
+                                log.base = 10, ...) {
     stop(friendly_class_undefined_message(class(x), "textstat_lexdiv"))
 }
 
 #' @export
 textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
-                                log.base = 10, drop = TRUE, ...) {
+                                log.base = 10, ...) {
     
     x <- as.dfm(x)
-    addedArgs <- names(list(...))
-    if (length(addedArgs))
-        warning("Argument", if (length(addedArgs) > 1L) "s " else " ", 
-                addedArgs, " not used.", sep = "", noBreaks. = TRUE)
+    added_args <- names(list(...))
+    if (length(added_args))
+        warning("Argument", if (length(added_args) > 1L) "s " else " ", 
+                added_args, " not used.", sep = "", noBreaks. = TRUE)
     
-    TTR <- C <- R <- CTTR <- U <- S <- Maas <- lgV0 <- lgeV0 <- NULL
+    measure_option <- c("TTR", "C", "R", "CTTR", "U", "S", "Maas")
+    if (measure[1] == 'all') {
+        measure <- measure_option
+    } else {
+        is_valid <- measure %in% measure_option
+        if (!all(is_valid))
+            stop("Invalid measure(s): ", measure[!is_valid])
+    }
     
-    
-    # check that all measures are legal values
-    validMeasures <- c("all", "TTR", "C", "R", "CTTR", "U", "S", "Maas")
-    checkMeasure <- measure %in% validMeasures
-    if (!all(checkMeasure))
-        stop("Invalid measure(s): ", measure[!checkMeasure])
-    if ("all" %in% measure) 
-        measure <- validMeasures[-1]
-
-    # nTokens <- ntoken(x)
-    # nTypes <- ntype(x)
-    
-    # set up the data.table for results
-    results <- data.table(textID = docnames(x), nTokens <- ntoken(x), nTypes <- ntype(x))
+    n_tokens <- n_types <- TTR <- C <- R <- CTTR <- U <- S <- Maas <- lgV0 <- lgeV0 <- NULL
+    temp <- data.table(n_tokens = ntoken(x), n_types = ntype(x))
                                
-    if ("TTR" %in% measure) {
-        results[, TTR := nTypes / nTokens]
-    }
+    if ("TTR" %in% measure)
+        temp[, TTR := n_types / n_tokens]
     
-    if ("C" %in% measure) {
-        results[, C := log(nTypes, base = log.base) / log(nTokens, base = log.base)]
-    }
+    if ("C" %in% measure)
+        temp[, C := log(n_types, base = log.base) / log(n_tokens, base = log.base)]
 
-    if ("R" %in% measure) {
-        results[, R := nTypes / sqrt(nTokens)]
-    }
+    if ("R" %in% measure)
+        temp[, R := n_types / sqrt(n_tokens)]
     
-    if ("CTTR" %in% measure) {
-        results[, CTTR := nTypes / sqrt(2 * nTokens)]
-    }
+    if ("CTTR" %in% measure)
+        temp[, CTTR := n_types / sqrt(2 * n_tokens)]
 
     if ("U" %in% measure) 
-        results[, U := log(nTokens, base = log.base)^2 / (log(nTokens, base = log.base) - log(nTypes, base = log.base))]
+        temp[, U := log(n_tokens, base = log.base) ^ 2 / 
+                   (log(n_tokens, base = log.base) - log(n_types, base = log.base))]
 
     if ("S" %in% measure) 
-        results[, S := log(log(nTypes, base = log.base), base = log.base) / 
-                       log(log(nTokens, base = log.base), base = log.base)]
+        temp[, S := log(log(n_types, base = log.base), base = log.base) / 
+                       log(log(n_tokens, base = log.base), base = log.base)]
     
     if ("Maas" %in% measure) {
         measure <- c(measure, "lgV0", "lgeV0")
-        results[, Maas := sqrt((log(nTokens, base = log.base) - log(nTypes, base = log.base)) / 
-                               log(nTokens, base = log.base)^2)]
-        results[, lgV0 := log10(nTypes) / sqrt(1 - (log10(nTypes) / (log10(nTokens) + 0))^2)]
-        results[, lgeV0 := log(nTypes) / sqrt(1 - (log(nTypes) / (log(nTokens) + 0))^2)]
+        temp[, Maas := sqrt((log(n_tokens, base = log.base) - log(n_types, base = log.base)) / 
+                             log(n_tokens, base = log.base) ^ 2)]
+        temp[, lgV0 := log10(n_types) / sqrt(1 - (log10(n_types) / (log10(n_tokens) + 0)) ^ 2)]
+        temp[, lgeV0 := log(n_types) / sqrt(1 - (log(n_types) / (log(n_tokens) + 0)) ^ 2)]
     }
-
-    # return a data.frame of the measures
-    results <- as.data.frame(results)
-    if (nrow(results) == 1) drop <- FALSE
-    results <- results[, measure, drop = drop]
-    if (!is.vector(results) & !("all" %in% measure)) {
-        row.names(results) <- docnames(x)
-    } else {
-        names(results) <- docnames(x)
-    }
-    results
+    result <- data.frame(document = docnames(x), stringsAsFactors = FALSE)
+    result <- cbind(result, as.data.frame(temp[,measure, with = FALSE]))
+    class(result) <- c('lexdiv', 'textstat', 'data.frame')
+    rownames(result) <- as.character(seq_len(nrow(result)))
+    return(result)
 }

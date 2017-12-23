@@ -68,7 +68,7 @@
 #' \deqn{z = \frac{\lambda}{[\sum_{i=1}^{M} n_{i}^{-1}]^{(1/2)}}}
 #'
 #' @return \code{textstat_collocations} returns a data.frame of collocations and
-#'   their scores and statistics.  This consists of the collocations, their
+#'   their scores and statistics. This consists of the collocations, their
 #'   counts, length, and \eqn{\lambda} and \eqn{z} statistics.  When \code{size}
 #'   is a vector, then \code{count_nested} counts the lower-order collocations
 #'   that occur within a higher-order collocation (but this does not affect the
@@ -145,28 +145,17 @@ textstat_collocations.tokens <- function(x, method = "lambda",
                                     smoothing)
     
     # compute z for lambda methods
-    lambda_index <- which(stri_startswith_fixed(names(result), "lambda"))
-    result["z"] <- result[lambda_index] / result[["sigma"]]
+    result$z <- result$lambda / result$sigma
+    result$sigma <- NULL
     # result$p <- 1 - stats::pnorm(result$z)
-    
-    # remove gensim and LFMD for now
-    result[c("gensim", "LFMD", "dice")] <- NULL
-    
-    # sort by decreasing z
-    result <- result[order(result[["z"]], decreasing = TRUE), ]
-    # reorder columns
-    result <- result[, stats::na.omit(match(c("collocation", "count",  "count_nested", "length", 
-                                              "lambda", "lambda1", "z", 
-                                              "G2", "G2_2", "chi2", "chi2_2", "pmi", "pmi_2"), 
-                                            names(result)))]
-    rownames(result) <- NULL
-    
+    result <- result[order(result$z, decreasing = TRUE), ]
+
     # remove results whose counts are less than min_count
     result <- result[result$count >= min_count, ]
-    
     # tag attributes and class, and return
     attr(result, 'types') <- types
-    class(result) <- c("collocations", 'data.frame')
+    class(result) <- c('collocations', 'textstat', 'data.frame')
+    rownames(result) <- as.character(seq_len(nrow(result)))
     return(result)
 }
 
@@ -202,15 +191,6 @@ textstat_collocations.character <- function(x, method = "lambda",
 #'   \code{collocations}, \code{FALSE} otherwise.
 is.collocations <- function(x) {
     "collocations" %in% class(x)
-}
-
-#' @method "[" collocations
-#' @export
-#' @noRd
-"[.collocations" <- function(x, i = TRUE, j = TRUE, ...) {
-    x <- as.data.frame(x)[i, j, ...]
-    class(x) <- c("collocations", 'data.frame')
-    return(x)
 }
 
 # Internal Functions ------------------------------------------------------

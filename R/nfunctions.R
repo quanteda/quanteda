@@ -69,13 +69,13 @@ nfeat.dfm <- function(x) {
     ncol(x)
 }
 
-nfeat.tokens <- function(x) {
-    if (attr(x, 'padding')) {
-        length(types(x)) + 1
-    } else {
-        length(types(x))
-    }
-}
+# nfeat.tokens <- function(x) {
+#     if (attr(x, 'padding')) {
+#         length(types(x)) + 1
+#     } else {
+#         length(types(x))
+#     }
+# }
 
 #' @rdname ndoc
 #' @details \code{nfeature} is the deprecated form of \code{nfeat}.

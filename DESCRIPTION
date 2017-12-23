@@ -128,6 +128,7 @@ Collate:
     'textplot_scale1d.R'
     'textplot_wordcloud.R'
     'textplot_xray.R'
+    'textstat-methods.R'
     'textstat_collocations.R'
     'textstat_collocationsdev.R'
     'textstat_dist.R'

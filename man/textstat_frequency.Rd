@@ -32,6 +32,9 @@ If the features have been grouped, then all counts, ranks, and document
 frequencies are within group.  If groups is not specified, the \code{group}
 column is omitted from the returned data.frame.}
 }
+
+\code{textstat_frequency} returns a data.frame of features and
+  their term and document frequencies within groups.
 }
 \description{
 Produces counts and document frequencies summaries of the features in a

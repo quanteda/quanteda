@@ -135,11 +135,6 @@ test_that("[[ and [ methods are the same for corpus and corpuszip", {
 
 })
 
-test_that("textstat_readability same for corpus and corpuszip", {
-    expect_equal(textstat_readability(data_corpus_test),
-                 textstat_readability(data_corpuszip_test))
-})
-
 test_that("n* methods are the same for corpus and corpuszip", {
     expect_equal(ndoc(data_corpus_test), ndoc(data_corpuszip_test))
     expect_equal(nsentence(data_corpus_test), nsentence(data_corpuszip_test))

@@ -429,7 +429,7 @@ test_that("test default textplot methods", {
     )   
     expect_error(
         textplot_keyness(TRUE),
-        "textplot_keyness\\(\\) only works on data.frame objects"
+        "textplot_keyness\\(\\) only works on keyness objects"
     )   
     expect_error(
         textplot_scale1d(TRUE),

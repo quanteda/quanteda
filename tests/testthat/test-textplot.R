@@ -135,7 +135,7 @@ test_that("test textplot_keyness ", {
     
     # shows the correct statistic measure 
     p3 <- textplot_keyness(result, show_reference = TRUE)
-    expect_equal(p3$labels$y, colnames(result)[1])
+    expect_equal(p3$labels$y, colnames(result)[2])
 })
 
 test_that("test textplot_keyness: show_reference works correctly ", {
@@ -154,7 +154,7 @@ test_that("test textplot_keyness: show_reference works correctly ", {
 
     # number of words plotted doubled when show_reference = TRUE
     expect_equal(nrow(ggplot2::ggplot_build(p1)$data[[1]]), k)
-    expect_equal(nrow(ggplot2::ggplot_build(p2)$data[[1]]), 2*k)
+    expect_equal(nrow(ggplot2::ggplot_build(p2)$data[[1]]), 2 * k)
     
 
 })
@@ -171,6 +171,7 @@ test_that("test textplot_network", {
 
 test_that("test textplot_network works with vectorlized argument", {
     txt <- "A D A C E A D F E B A C E D"
+    
     testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
     expect_silent(textplot_network(testfcm, vertex_color = rep(c(1, 2), nrow(testfcm) / 2)))
     expect_silent(textplot_network(testfcm, vertex_size = rowSums(testfcm) / 5))

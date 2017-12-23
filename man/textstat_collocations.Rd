@@ -38,7 +38,7 @@ is not a \link{tokens} object already}
 }
 \value{
 \code{textstat_collocations} returns a data.frame of collocations and
-  their scores and statistics.  This consists of the collocations, their
+  their scores and statistics. This consists of the collocations, their
   counts, length, and \eqn{\lambda} and \eqn{z} statistics.  When \code{size}
   is a vector, then \code{count_nested} counts the lower-order collocations
   that occur within a higher-order collocation (but this does not affect the

@@ -58,7 +58,7 @@ matches.}
 selected or removed}
 
 \item{...}{additional arguments passed by \code{tokens_remove} and
-\code{tokens_keep} to \code{tokens_select}.  Cannot include
+\code{tokens_keep} to \code{tokens_select}. Cannot include
 \code{selection}.}
 }
 \value{
