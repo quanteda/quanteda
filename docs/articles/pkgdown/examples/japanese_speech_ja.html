@@ -10,7 +10,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
 <script src="../../../jquery.sticky-kit.min.js"></script><script src="../../../pkgdown.js"></script><link href="../../../extra.css" rel="stylesheet">
-<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../../../extra.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Google analytics --><script>
@@ -130,19 +130,15 @@
     
 <div class="contents">
 <p><link href="../../../ja.css" rel="text/css"></p>
-<div id="load-package" class="section level2">
-<h2 class="hasAnchor">
-<a href="#load-package" class="anchor"></a>パッケージの読み込み</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
 <span class="kw">library</span>(stringr)
 <span class="kw">library</span>(dplyr)
 <span class="kw">library</span>(lubridate)
 <span class="kw">library</span>(topicmodels)</code></pre></div>
-</div>
 <div id="download" class="section level2">
 <h2 class="hasAnchor">
 <a href="#download" class="anchor"></a>コーパスのダウンロード</h2>
-<p>本例で用いる衆議院外務委員会の議事録は，1947年から2017年の間のすべての発言を含んでいる．このコーパスは<strong>quanteda.corpora</strong>を通じてダウンロードできる．</p>
+<p>本例で用いる衆議院外務委員会の議事録は，1947年から2017年の間のすべての発言を含んでいる．このコーパスは<strong>quanteda.corpora</strong>を用いてダウンロードできる．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)
 full_corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="st">'data_corpus_foreignaffairscommittee'</span>)</code></pre></div>
 <div id="how-to-make-corpus" class="section level3">
@@ -152,7 +148,7 @@ full_corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</spa
 <div id="download-speeches" class="section level4">
 <h4 class="hasAnchor">
 <a href="#download-speeches" class="anchor"></a>議事録をダウンロード</h4>
-<p>国会会議録のダウンロードには<strong>kaigiroku</strong>パッケージを使う．APIが応答しない場合に途中からダウンロードをやり直す必要がないように，年ごとにファイルに保存し，それらをあとで連結すると良い．</p>
+<p>国会会議録のダウンロードには<strong>kaigiroku</strong>パッケージを使う．APIが応答しない場合に途中からダウンロードをやり直す必要がないように，年ごとにファイルに保存し，それらを最後に連結すると良い．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"amatsuo/kaigiroku"</span>)
 <span class="kw">library</span>(kaigiroku)
 
@@ -170,7 +166,7 @@ committee &lt;-<span class="st"> "外務"</span>
 
 <span class="co"># ファイルを結合して保存</span>
 file_all &lt;-<span class="st"> </span><span class="kw">list.files</span>(folder_download, <span class="dt">full =</span> <span class="ot">TRUE</span>, <span class="dt">pattern =</span> <span class="st">".rds"</span>)
-speech &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">as.list</span>(file_all), readRDS) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/bind">bind_rows</a></span>()
+speech &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">as.list</span>(file_all), readRDS) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>()
 <span class="kw">saveRDS</span>(speech, <span class="dt">file =</span> <span class="kw">paste0</span>(folder_download, <span class="st">"committee_speeches.rds"</span>))</code></pre></div>
 </div>
 <div id="create-corpus" class="section level4">
@@ -314,7 +310,7 @@ corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/
 </div>
 <div id="tokenization" class="section level2">
 <h2 class="hasAnchor">
-<a href="#tokenization" class="anchor"></a>トークン化：語の分割と結合</h2>
+<a href="#tokenization" class="anchor"></a>トークン化</h2>
 <p>日本語の分析では，形態素解析ツールを用いて分かち書きを行うことが多いが，<strong>quanteda</strong>の<code><a href="../../../reference/tokens.html">tokens()</a></code>は，<a href="http://site.icu-project.org/">ICU</a>で定義された規則に従って文を語に分割することができる．さらに，漢字やカタカナの連続的共起を<code><a href="../../../reference/textstat_collocations.html">textstat_collocations()</a></code>を用いて抽出し，<code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code>によって統計的に優位な組み合わせを結合すると，より質の高いトークン化を実現できる．<code><a href="../../../reference/textstat_collocations.html">textstat_collocations()</a></code>を用いる場合は，事前に<code><a href="../../../reference/tokens_select.html">tokens_select()</a></code>と正規表現で，対象とする語だけを選択する．この際，<code>padding = TRUE</code>とし，語の間の距離が維持されるように注意する</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(corp)
 toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(toks, <span class="st">'^[０-９ぁ-んァ-ヶー一-龠]+$'</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>)
@@ -352,7 +348,7 @@ toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/
 <a href="#analysis" class="anchor"></a>分析</h1>
 <div id="keyness" class="section level2">
 <h2 class="hasAnchor">
-<a href="#keyness" class="anchor"></a>対頻度分析</h2>
+<a href="#keyness" class="anchor"></a>相対頻度分析</h2>
 <p><code><a href="../../../reference/textstat_keyness.html">textstat_keyness()</a></code>は語の頻度を文書のグループ間で比較し，統計的に有意に頻度が高いものを選択する．ここでは，同時多発テロが発生した2001年以降に頻度が高くなった30語を示してある．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">key &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_keyness.html">textstat_keyness</a></span>(speech_dfm, <span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(speech_dfm, <span class="st">'year'</span>) <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2001</span>)
 <span class="kw">head</span>(key, <span class="dv">20</span>) <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</code></pre></div>
@@ -693,124 +689,124 @@ size &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw"
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">承知</td>
-<td align="left">韓国</td>
-<td align="left">お願い</td>
-<td align="left">受け</td>
-<td align="left">言う</td>
-<td align="left">沖縄</td>
-<td align="left">協定</td>
+<td align="left">意見</td>
+<td align="left">協議</td>
+<td align="left">発言</td>
+<td align="left">出し</td>
+<td align="left">発言</td>
+<td align="left">時間</td>
 <td align="left">解決</td>
-<td align="left">沖縄</td>
-<td align="left">韓国</td>
+<td align="left">重要</td>
+<td align="left">協定</td>
+<td align="left">国連</td>
 </tr>
 <tr class="even">
-<td align="left">ロシア</td>
-<td align="left">時間</td>
-<td align="left">調査</td>
-<td align="left">国連</td>
-<td align="left">米国</td>
-<td align="left">米軍</td>
-<td align="left">締結</td>
-<td align="left">十分</td>
+<td align="left">支援</td>
+<td align="left">外交</td>
 <td align="left">大きな</td>
-<td align="left">合意</td>
+<td align="left">国民</td>
+<td align="left">国民</td>
+<td align="left">当然</td>
+<td align="left">特に</td>
+<td align="left">大きな</td>
+<td align="left">締結</td>
+<td align="left">同じ</td>
 </tr>
 <tr class="odd">
-<td align="left">総理</td>
-<td align="left">強化</td>
-<td align="left">国連</td>
+<td align="left">お願い</td>
 <td align="left">重要</td>
-<td align="left">大きな</td>
-<td align="left">特に</td>
-<td align="left">及び</td>
-<td align="left">大きな</td>
-<td align="left">イラク</td>
 <td align="left">当然</td>
+<td align="left">現在</td>
+<td align="left">受け</td>
+<td align="left">報道</td>
+<td align="left">確認</td>
+<td align="left">協力</td>
+<td align="left">及び</td>
+<td align="left">沖縄</td>
 </tr>
 <tr class="even">
+<td align="left">考え方</td>
+<td align="left">沖縄</td>
+<td align="left">イラク</td>
+<td align="left">ロシア</td>
+<td align="left">情報</td>
+<td align="left">以上</td>
 <td align="left">国民</td>
-<td align="left">お答え</td>
-<td align="left">検討</td>
-<td align="left">判断</td>
-<td align="left">負担</td>
-<td align="left">国民</td>
+<td align="left">承知</td>
 <td align="left">に関する</td>
 <td align="left">特に</td>
-<td align="left">考え方</td>
-<td align="left">発言</td>
 </tr>
 <tr class="odd">
 <td align="left">実は</td>
-<td align="left">外交</td>
-<td align="left">合意</td>
-<td align="left">調査</td>
-<td align="left">協力</td>
-<td align="left">お答え</td>
-<td align="left">承認</td>
-<td align="left">確認</td>
-<td align="left">重要</td>
-<td align="left">言葉</td>
-</tr>
-<tr class="even">
-<td align="left">意見</td>
-<td align="left">説明</td>
-<td align="left">説明</td>
-<td align="left">報告</td>
-<td align="left">ロシア</td>
-<td align="left">基地</td>
-<td align="left">求める</td>
-<td align="left">お答え</td>
-<td align="left">受け</td>
-<td align="left">時間</td>
-</tr>
-<tr class="odd">
-<td align="left">大きな</td>
-<td align="left">受け</td>
-<td align="left">確か</td>
-<td align="left">行う</td>
-<td align="left">事実</td>
-<td align="left">お願い</td>
-<td align="left">次第</td>
-<td align="left">交渉</td>
-<td align="left">国民</td>
-<td align="left">お答え</td>
-</tr>
-<tr class="even">
-<td align="left">世界</td>
 <td align="left">特に</td>
-<td align="left">現在</td>
-<td align="left">大事</td>
-<td align="left">地域</td>
-<td align="left">世界</td>
-<td align="left">情報</td>
-<td align="left">部分</td>
-<td align="left">協力</td>
-<td align="left">実施</td>
-</tr>
-<tr class="odd">
 <td align="left">報道</td>
-<td align="left">アジア</td>
-<td align="left">国会</td>
-<td align="left">内容</td>
-<td align="left">外交</td>
-<td align="left">交渉</td>
-<td align="left">交渉</td>
-<td align="left">意見</td>
-<td align="left">出し</td>
-<td align="left">検討</td>
+<td align="left">事実</td>
+<td align="left">既に</td>
+<td align="left">情報</td>
+<td align="left">お願い</td>
+<td align="left">積極的</td>
+<td align="left">承認</td>
+<td align="left">お話</td>
 </tr>
 <tr class="even">
+<td align="left">重要</td>
+<td align="left">お答え</td>
+<td align="left">特に</td>
+<td align="left">大きな</td>
+<td align="left">お話</td>
+<td align="left">お答え</td>
+<td align="left">大きな</td>
 <td align="left">現在</td>
-<td align="left">に関する</td>
-<td align="left">及び</td>
-<td align="left">取り</td>
-<td align="left">受け</td>
-<td align="left">当然</td>
-<td align="left">目的</td>
+<td align="left">次第</td>
 <td align="left">発言</td>
-<td align="left">国際社会</td>
-<td align="left">米国</td>
+</tr>
+<tr class="odd">
+<td align="left">承知</td>
+<td align="left">判断</td>
+<td align="left">時間</td>
+<td align="left">韓国</td>
+<td align="left">日本政府</td>
+<td align="left">意見</td>
+<td align="left">協力</td>
+<td align="left">平和</td>
+<td align="left">求める</td>
+<td align="left">大事</td>
+</tr>
+<tr class="even">
+<td align="left">地域</td>
+<td align="left">お話</td>
+<td align="left">判断</td>
+<td align="left">検討</td>
+<td align="left">重要</td>
+<td align="left">同じ</td>
+<td align="left">外交</td>
+<td align="left">強化</td>
+<td align="left">説明</td>
+<td align="left">外交</td>
+</tr>
+<tr class="odd">
+<td align="left">極めて</td>
+<td align="left">国民</td>
+<td align="left">韓国</td>
+<td align="left">沖縄</td>
+<td align="left">検討</td>
+<td align="left">考え方</td>
+<td align="left">合意</td>
+<td align="left">向け</td>
+<td align="left">改正</td>
+<td align="left">イラク</td>
+</tr>
+<tr class="even">
+<td align="left">言う</td>
+<td align="left">大きな</td>
+<td align="left">お願い</td>
+<td align="left">お答え</td>
+<td align="left">合意</td>
+<td align="left">外交</td>
+<td align="left">総理</td>
+<td align="left">交渉</td>
+<td align="left">次に</td>
+<td align="left">お答え</td>
 </tr>
 </tbody>
 </table>
@@ -826,20 +822,19 @@ size &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw"
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#load-package">パッケージの読み込み</a></li>
-      <li><a href="#download">コーパスのダウンロード</a></li>
+<li><a href="#download">コーパスのダウンロード</a></li>
       <li><a href="#number-of-speeches">議事録の数と期間を取得</a></li>
       <li>
 <a href="#pre-processing">前処理</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#select-speeches-1991-2010">1991から2010年までの期間の議事録を選択</a></li>
       <li><a href="#select-speeches-ministers">委員，大臣，副大臣の発言を選択</a></li>
-      <li><a href="#tokenization">トークン化：語の分割と結合</a></li>
+      <li><a href="#tokenization">トークン化</a></li>
       <li><a href="#create-dfm">文書行列の作成</a></li>
       </ul>
 </li>
       <li>
 <a href="#analysis">分析</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#keyness">対頻度分析</a></li>
+<li><a href="#keyness">相対頻度分析</a></li>
       <li><a href="#network">共起ネットワーク分析</a></li>
       <li><a href="#topicmodel">トピックモデル</a></li>
       </ul>

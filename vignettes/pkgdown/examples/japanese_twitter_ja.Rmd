@@ -17,14 +17,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-## パッケージの読み込み {#load-package}
 
 ```{r, message = FALSE}
 library(quanteda)
 ```
 
 
-## データをダウンロード {#download}
+## コーパスのダウンロード {#download}
 
 本コーパスは，2017年総選挙の際に収集されたツイートから構成されている．ツイートは，TwitterのStrem APIから、キーワード"選挙"を使い，10月20日から10月31日の期間にダウンロードした．インターネット上で収集されたテキストは，英数字の全半角が統一されていないので，`stri_trans_nfkc()`によって表記を標準化すると良い．
 
@@ -44,7 +43,7 @@ range(docvars(corp, 'created_at'))
 
 # 前処理 {#pre-processing}
 
-## トークン化：語の分割と結合 {#tokenization}
+## トークン化 {#tokenization}
 
 ツイートのトークン化では，ハッシュタグの後に続く改行を保持するために`remove_separator = FALSE`とし，次の`tokens_remove()`で，語の位置関係を維持しながら，改行，空白，'#'と'@'以外の記号を削除する．日本語のハッシュタグは，’#’とそれの続く語が分離されてしまうので，それらを`tokens_compound()`で文書行列を作成する前に結合する．
 

@@ -129,17 +129,18 @@
     
     
 <div class="contents">
-<div id="pre-process-texts" class="section level1">
-<h1 class="hasAnchor">
-<a href="#pre-process-texts" class="anchor"></a>Pre-process texts</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
-<div id="example-reports-by-the-premier-of-the-state-council" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-reports-by-the-premier-of-the-state-council" class="anchor"></a>Example: Reports by the Premier of the State Council</h2>
-<p>Download corpus constructed from <em>Report on the Work of the Government</em> published by Premier of the State Council between 1954 and 2017.</p>
+<div id="download-corpus" class="section level1">
+<h1 class="hasAnchor">
+<a href="#download-corpus" class="anchor"></a>Download corpus</h1>
+<p>Download corpus constructed from <em>Report on the Work of the Government</em> published by Premier of the State Council between 1954 and 2017. You can download the corpus using the <strong>quanteda.corpora</strong> package.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># read text files</span>
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)
 corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">"https://www.dropbox.com/s/37ojd5knz1qeyul/data_corpus_chinesegovreport.rds?dl=1"</span>)</code></pre></div>
+</div>
+<div id="tokenization" class="section level1">
+<h1 class="hasAnchor">
+<a href="#tokenization" class="anchor"></a>Tokenization</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Chinese stopwords</span>
 ch_stop &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>)
 
@@ -153,6 +154,13 @@ ch_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../referenc
 <span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_dfm)</code></pre></div>
 <pre><code>## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
 ## 5627 5036 4255 4248 2931 2897 2817 2642 2627 2595</code></pre>
+</div>
+<div id="analysis" class="section level1">
+<h1 class="hasAnchor">
+<a href="#analysis" class="anchor"></a>Analysis</h1>
+<div id="word-cloud" class="section level2">
+<h2 class="hasAnchor">
+<a href="#word-cloud" class="anchor"></a>Word cloud</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot a word cloud</span>
 <span class="kw">set.seed</span>(<span class="dv">100</span>)
 
@@ -164,10 +172,6 @@ ch_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../referenc
                    <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
 <p><img src="chinese_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
-</div>
-<div id="analysis" class="section level1">
-<h1 class="hasAnchor">
-<a href="#analysis" class="anchor"></a>Analysis</h1>
 <div id="feature-co-occurrence-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#feature-co-occurrence-matrix" class="anchor"></a>Feature co-occurrence matrix</h2>
@@ -180,11 +184,6 @@ ch_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../referenc
 <span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_fcm[<span class="st">"改革"</span>, ])</code></pre></div>
 <pre><code>## 推进 制度   性 体制 完善   试   点 供给   侧 结构 
 ##   23   19   11   11   10    8    8    7    7    7</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fcm within window: "改革" + “xx”</span>
-ch_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17_toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>, <span class="dt">tri =</span> <span class="ot">FALSE</span>)
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_fcm[<span class="st">"改革"</span>, ])</code></pre></div>
-<pre><code>## 完善 发展   试   点 制度 全面 推进 深化 社会 开放 
-##   10    8    8    8    8    7    7    6    5    5</code></pre>
 </div>
 <div id="unsupervised-document-scaling" class="section level2">
 <h2 class="hasAnchor">
@@ -399,14 +398,12 @@ knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentati
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li>
-<a href="#pre-process-texts">Pre-process texts</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#example-reports-by-the-premier-of-the-state-council">Example: Reports by the Premier of the State Council</a></li>
-      </ul>
-</li>
+<li><a href="#download-corpus">Download corpus</a></li>
+      <li><a href="#tokenization">Tokenization</a></li>
       <li>
 <a href="#analysis">Analysis</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#feature-co-occurrence-matrix">Feature co-occurrence matrix</a></li>
+<li><a href="#word-cloud">Word cloud</a></li>
+      <li><a href="#feature-co-occurrence-matrix">Feature co-occurrence matrix</a></li>
       <li><a href="#unsupervised-document-scaling">Unsupervised document scaling</a></li>
       <li><a href="#collocations">Collocations</a></li>
       </ul>

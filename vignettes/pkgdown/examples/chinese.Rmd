@@ -13,21 +13,21 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Pre-process texts
-
 ```{r, message=FALSE}
 library(quanteda)
 ```
 
-## Example: Reports by the Premier of the State Council
+# Download corpus
 
-Download corpus constructed from *Report on the Work of the Government* published by Premier of the State Council between 1954 and 2017.
+Download corpus constructed from *Report on the Work of the Government* published by Premier of the State Council between 1954 and 2017. You can download the corpus using the **quanteda.corpora** package.
 
 ```{r, message=FALSE}
 # read text files
 devtools::install_github("quanteda/quanteda.corpora")
 corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/37ojd5knz1qeyul/data_corpus_chinesegovreport.rds?dl=1")
 ```
+
+# Tokenization
 
 ```{r}
 # Chinese stopwords
@@ -43,8 +43,9 @@ ch_dfm <- dfm(ch_toks)
 topfeatures(ch_dfm)
 ```
 
+# Analysis
 
-
+## Word cloud
 
 ```{r, fig.height = 5, fig.width = 5, fig.align = "center"}
 # plot a word cloud
@@ -58,8 +59,6 @@ textplot_wordcloud(min.freq = 6, random.order = FALSE,
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
-# Analysis
-
 ## Feature co-occurrence matrix
 
 ```{r}
@@ -69,10 +68,6 @@ ch17_toks <-
     tokens(ch17_corp, remove_punct = TRUE) %>% 
     tokens_remove(ch_stop)
 ch_fcm <- fcm(ch17_toks, context = "window")  
-topfeatures(ch_fcm["改革", ])
-
-# fcm within window: "改革" + “xx”
-ch_fcm <- fcm(ch17_toks, context = "window", ordered = TRUE, tri = FALSE)
 topfeatures(ch_fcm["改革", ])
 ```
 

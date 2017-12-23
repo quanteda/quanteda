@@ -14,7 +14,7 @@ if (file.endsWith("_ja.html")) {
 // insert language-specific css
 if (lang != "en") {
     var link = document.createElement("link");
-    link.href = "file:///home/kohei/packages/quanteda/docs/" + lang + ".css";
+    link.href = "../../../" + lang + ".css";
     link.type = "text/css";
     link.rel = "stylesheet";
     link.media = "screen,print";

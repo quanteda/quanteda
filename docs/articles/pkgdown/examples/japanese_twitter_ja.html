@@ -10,7 +10,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
 <script src="../../../jquery.sticky-kit.min.js"></script><script src="../../../pkgdown.js"></script><link href="../../../extra.css" rel="stylesheet">
-<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../../../extra.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Google analytics --><script>
@@ -130,14 +130,10 @@
     
 <div class="contents">
 <p><link href="../../../ja.css" rel="text/css"></p>
-<div id="load-package" class="section level2">
-<h2 class="hasAnchor">
-<a href="#load-package" class="anchor"></a>パッケージの読み込み</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
-</div>
 <div id="download" class="section level2">
 <h2 class="hasAnchor">
-<a href="#download" class="anchor"></a>データをダウンロード</h2>
+<a href="#download" class="anchor"></a>コーパスのダウンロード</h2>
 <p>本コーパスは，2017年総選挙の際に収集されたツイートから構成されている．ツイートは，TwitterのStrem APIから、キーワード“選挙”を使い，10月20日から10月31日の期間にダウンロードした．インターネット上で収集されたテキストは，英数字の全半角が統一されていないので，<code>stri_trans_nfkc()</code>によって表記を標準化すると良い．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)
 corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">'https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1'</span>)
@@ -156,7 +152,7 @@ corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><sp
 <a href="#pre-processing" class="anchor"></a>前処理</h1>
 <div id="tokenization" class="section level2">
 <h2 class="hasAnchor">
-<a href="#tokenization" class="anchor"></a>トークン化：語の分割と結合</h2>
+<a href="#tokenization" class="anchor"></a>トークン化</h2>
 <p>ツイートのトークン化では，ハッシュタグの後に続く改行を保持するために<code>remove_separator = FALSE</code>とし，次の<code><a href="../../../reference/tokens_select.html">tokens_remove()</a></code>で，語の位置関係を維持しながら，改行，空白，‘#’<a href="mailto:%E3%81%A8'@'%E4%BB%A5%E5%A4%96%E3%81%AE%E8%A8%98%E5%8F%B7%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B">と'@'以外の記号を削除する</a>．日本語のハッシュタグは，’#’とそれの続く語が分離されてしまうので，それらを<code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code>で文書行列を作成する前に結合する．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(corp, <span class="dt">remove_separator =</span> <span class="ot">FALSE</span>, <span class="dt">remove_url =</span> <span class="ot">TRUE</span>)
 toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(toks, <span class="st">'^[</span><span class="ch">\\</span><span class="st">w#@]+$'</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>, <span class="dt">padding =</span> <span class="ot">TRUE</span>)
@@ -225,12 +221,11 @@ feat &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="kw
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#load-package">パッケージの読み込み</a></li>
-      <li><a href="#download">データをダウンロード</a></li>
+<li><a href="#download">コーパスのダウンロード</a></li>
       <li><a href="#number-of-tweets">投稿の数と期間を取得</a></li>
       <li>
 <a href="#pre-processing">前処理</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#tokenization">トークン化：語の分割と結合</a></li>
+<li><a href="#tokenization">トークン化</a></li>
       </ul>
 </li>
       <li>

@@ -10,7 +10,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
 <script src="../../../jquery.sticky-kit.min.js"></script><script src="../../../pkgdown.js"></script><link href="../../../extra.css" rel="stylesheet">
-<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../../../extra.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Google analytics --><script>
@@ -201,7 +201,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Sat Dec 23 13:28:24 2017
+## Created: Sat Dec 23 16:19:52 2017
 ## Notes:</code></pre>
 <p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../../reference/docvars.html">docvars()</a></code>。</p>
 <p>我们可以使用R的<code>names()</code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量赋值。</p>
@@ -222,7 +222,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Sat Dec 23 13:28:24 2017
+## Created: Sat Dec 23 16:19:52 2017
 ## Notes:</code></pre>
 <p>如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -252,7 +252,7 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Sat Dec 23 13:28:24 2017
+## Created: Sat Dec 23 16:19:52 2017
 ## Notes:</code></pre>
 <p>上面的命令<code><a href="../../../reference/metadoc.html">metadoc()</a></code>允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code><a href="../../../reference/ndoc.html">ndoc()</a></code>来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code>nrow()</code>和<code>ncol()</code>。</p>
 </div>
@@ -388,7 +388,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Sat Dec 23 13:28:27 2017
+## Created: Sat Dec 23 16:19:54 2017
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -812,54 +812,54 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference
 ## Estimated document positions:
 ## 
 ##                                Documents      theta         SE       lower
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209767 0.02032405  1.78114161
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932608 0.02818769 -0.64850865
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136513 0.01540198 -1.14383917
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219557 0.02846251 -0.17774225
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724381 0.02364170  1.72610036
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145696 0.02650163 -0.76651276
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844736 0.04171371 -0.56623252
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616906 0.02967215 -0.61984798
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9702972 0.03850380 -1.04576465
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589101 0.03892210 -1.03519744
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807214 0.07221612  1.03917785
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866348 0.06294069  0.06327109
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421665 0.07245519  0.60015433
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1841287 0.03666124 -0.25598473
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209871 0.02032431  1.78115144
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932531 0.02818740 -0.64850035
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136406 0.01540172 -1.14382795
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219661 0.02846220 -0.17775202
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724451 0.02364203  1.72610668
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145656 0.02650122 -0.76650799
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844699 0.04171325 -0.56622784
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616992 0.02967154 -0.61985540
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9702913 0.03850308 -1.04575735
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589045 0.03892137 -1.03519035
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807212 0.07221678  1.03917628
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866300 0.06294046  0.06326672
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421563 0.07245555  0.60014339
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1841495 0.03666065 -0.25600436
 ##          upper
-## 1   1.86081188
-## 2  -0.53801290
-## 3  -1.08346343
-## 4  -0.06616922
-## 5   1.81877582
-## 6  -0.66262638
-## 7  -0.40271477
-## 8  -0.50353316
-## 9  -0.89482975
-## 10 -0.88262281
-## 11  1.32226504
-## 12  0.30999859
-## 13  0.88417867
-## 14 -0.11227268
+## 1   1.86082275
+## 2  -0.53800576
+## 3  -1.08345322
+## 4  -0.06618018
+## 5   1.81878343
+## 6  -0.66262320
+## 7  -0.40271190
+## 8  -0.50354297
+## 9  -0.89482526
+## 10 -0.88261857
+## 11  1.32226607
+## 12  0.30999335
+## 13  0.88416917
+## 14 -0.11229462
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the 
-##     -0.09896178      0.38827634      0.39902603      0.25619319 
+##     -0.09886446      0.38837817      0.39912006      0.25629349 
 ##   supplementary          budget              to            this 
-##      1.11609758      0.09940225      0.37032836      0.30718190 
+##      1.11619173      0.09950198      0.37042875      0.30728111 
 ##           house            last           april               , 
-##      0.19932508      0.28996126     -0.09502335      0.34560261 
+##      0.19942745      0.29005928     -0.09492740      0.34570318 
 ##            said              we           could            work 
-##     -0.71906863      0.48017106     -0.52952214      0.58251574 
+##     -0.71897157      0.48027088     -0.52942477      0.58261315 
 ##             our             way         through          period 
-##      0.74397717      0.33636491      0.66006328      0.55646320 
+##      0.74407486      0.33646509      0.66015800      0.55656170 
 ##              of          severe        economic        distress 
-##      0.33957232      1.27933666      0.47891646      1.84472825 
+##      0.33967266      1.27942867      0.47901527      1.84480096 
 ##               .           today             can          report 
-##      0.27377510      0.17445931      0.36402993      0.69201431 
+##      0.27387539      0.17456438      0.36412821      0.69211579 
 ##            that notwithstanding 
-##      0.08858656      1.84472825</code></pre>
+##      0.08868760      1.84480096</code></pre>
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
@@ -875,30 +875,30 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1   Topic 2    Topic 3       Topic 4     Topic 5      Topic 6  
-## [1,] "million" "welfare"  "kind"        "taoiseach" "support"    "child"  
-## [2,] "scheme"  "fianna"   "imagination" "employees" "million"    "benefit"
-## [3,] "details" "taxation" "policies"    "rate"      "welfare"    "day"    
-## [4,] "level"   "fáil"     "wit"         "referred"  "confidence" "today"  
-## [5,] "reduced" "system"   "create"      "debate"    "back"       "bank"   
-##      Topic 7     Topic 8  Topic 9      Topic 10   Topic 11  Topic 12   
-## [1,] "care"      "fianna" "million"    "system"   "levy"    "failed"   
-## [2,] "welfare"   "fáil"   "measures"   "welfare"  "million" "strategy" 
-## [3,] "per"       "side"   "spending"   "recovery" "carbon"  "needed"   
-## [4,] "allowance" "level"  "investment" "workers"  "change"  "ministers"
-## [5,] "hit"       "third"  "levy"       "stimulus" "welfare" "system"   
-##      Topic 13    Topic 14   Topic 15     Topic 16      Topic 17    
-## [1,] "taoiseach" "fianna"   "million"    "alternative" "review"    
-## [2,] "fine"      "fáil"     "investment" "citizenship" "spending"  
-## [3,] "gael"      "national" "reduction"  "wealth"      "pension"   
-## [4,] "may"       "support"  "recent"     "adjustment"  "measures"  
-## [5,] "irish"     "strategy" "welfare"    "breaks"      "investment"
-##      Topic 18     Topic 19   Topic 20      
-## [1,] "investment" "irish"    "society"     
-## [2,] "stimulus"   "fáil"     "enterprising"
-## [3,] "help"       "property" "sense"       
-## [4,] "areas"      "national" "equal"       
-## [5,] "high"       "poor"     "nation"</code></pre>
+<pre><code>##      Topic 1      Topic 2    Topic 3     Topic 4     Topic 5     
+## [1,] "measures"   "welfare"  "failed"    "taoiseach" "million"   
+## [2,] "benefit"    "taxation" "strategy"  "employees" "support"   
+## [3,] "incomes"    "system"   "needed"    "rate"      "welfare"   
+## [4,] "irish"      "fianna"   "ministers" "referred"  "confidence"
+## [5,] "adjustment" "fáil"     "system"    "debate"    "back"      
+##      Topic 6     Topic 7    Topic 8   Topic 9   Topic 10       Topic 11  
+## [1,] "taoiseach" "fianna"   "system"  "child"   "society"      "spending"
+## [2,] "fine"      "fáil"     "welfare" "benefit" "enterprising" "million" 
+## [3,] "gael"      "national" "rate"    "hear"    "sense"        "review"  
+## [4,] "may"       "irish"    "workers" "per"     "equal"        "measures"
+## [5,] "irish"     "strategy" "benefit" "nama"    "nation"       "scheme"  
+##      Topic 12  Topic 13    Topic 14     Topic 15      Topic 16  Topic 17
+## [1,] "levy"    "plan"      "fáil"       "alternative" "child"   "fianna"
+## [2,] "million" "set"       "fianna"     "citizenship" "benefit" "fáil"  
+## [3,] "carbon"  "welfare"   "support"    "wealth"      "day"     "side"  
+## [4,] "change"  "reduction" "benefit"    "adjustment"  "society" "level" 
+## [5,] "welfare" "million"   "adjustment" "breaks"      "today"   "third" 
+##      Topic 18      Topic 19    Topic 20  
+## [1,] "kind"        "care"      "pension" 
+## [2,] "imagination" "welfare"   "welfare" 
+## [3,] "policies"    "per"       "measures"
+## [4,] "wit"         "allowance" "million" 
+## [5,] "create"      "hit"       "reduce"</code></pre>
 <p>注：以上这个指南翻译于英文版<a href="http://docs.quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>

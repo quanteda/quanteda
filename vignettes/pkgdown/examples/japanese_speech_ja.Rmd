@@ -17,8 +17,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-## パッケージの読み込み {#load-package}
-
 ```{r, message = FALSE}
 library(quanteda)
 library(stringr)
@@ -29,7 +27,7 @@ library(topicmodels)
 
 ## コーパスのダウンロード {#download}
 
-本例で用いる衆議院外務委員会の議事録は，1947年から2017年の間のすべての発言を含んでいる．このコーパスは**quanteda.corpora**を通じてダウンロードできる．
+本例で用いる衆議院外務委員会の議事録は，1947年から2017年の間のすべての発言を含んでいる．このコーパスは**quanteda.corpora**を用いてダウンロードできる．
 
 ```{r, message=FALSE}
 devtools::install_github("quanteda/quanteda.corpora")
@@ -42,7 +40,7 @@ full_corp <- quanteda.corpora::download('data_corpus_foreignaffairscommittee')
 
 #### 議事録をダウンロード {#download-speeches}
 
-国会会議録のダウンロードには**kaigiroku**パッケージを使う．APIが応答しない場合に途中からダウンロードをやり直す必要がないように，年ごとにファイルに保存し，それらをあとで連結すると良い．
+国会会議録のダウンロードには**kaigiroku**パッケージを使う．APIが応答しない場合に途中からダウンロードをやり直す必要がないように，年ごとにファイルに保存し，それらを最後に連結すると良い．
 
 ```{r eval = FALSE}
 devtools::install_github("amatsuo/kaigiroku")
@@ -117,7 +115,7 @@ ndoc(corp)
 ```
 
 
-## トークン化：語の分割と結合 {#tokenization}
+## トークン化 {#tokenization}
 
 日本語の分析では，形態素解析ツールを用いて分かち書きを行うことが多いが，**quanteda**の`tokens()`は，[ICU](http://site.icu-project.org/)で定義された規則に従って文を語に分割することができる．さらに，漢字やカタカナの連続的共起を`textstat_collocations()`を用いて抽出し，`tokens_compound()`によって統計的に優位な組み合わせを結合すると，より質の高いトークン化を実現できる．`textstat_collocations()`を用いる場合は，事前に`tokens_select()`と正規表現で，対象とする語だけを選択する．この際，`padding = TRUE`とし，語の間の距離が維持されるように注意する
 
@@ -157,7 +155,7 @@ speech_dfm <-
 
 # 分析 {#analysis}
 
-## 対頻度分析 {#keyness}
+## 相対頻度分析 {#keyness}
 
 `textstat_keyness()`は語の頻度を文書のグループ間で比較し，統計的に有意に頻度が高いものを選択する．ここでは，同時多発テロが発生した2001年以降に頻度が高くなった30語を示してある．
 
