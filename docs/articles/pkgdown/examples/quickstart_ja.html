@@ -128,10 +128,11 @@
     
     
 <div class="contents">
-<p>本ページは<a href="http://docs.quanteda.io/articles/pkgdown/quickstart.html">Quic Start Guide</a>の日本語訳であり，英語のデータの分析を通じて<strong>quanteda</strong>の基本的な使い方を説明する．日本語のデータの分析法に関しては，以下のページを参照．</p>
+<p><link href="../../../ja.css" rel="text/css"></p>
+<p>本ページは<a href="../quickstart.html">Quic Start Guide</a>の日本語訳であり，英語のテキスト分析を通じて<strong>quanteda</strong>の基本的な使い方を説明する．日本語の分析法に関しては，以下のページを参照．</p>
 <ul>
-<li><a href="http://docs.quanteda.io/articles/pkgdown/examples/japanese.html">事例: 衆議院外務委員会の議事録</a></li>
-<li><a href="http://docs.quanteda.io/articles/pkgdown/examples/japanese_twitter.html">事例: 安倍晋三に関するツイート</a></li>
+<li><a href="japanese_speech_ja.html">事例: 衆議院外務委員会の議事録</a></li>
+<li><a href="japanese_twitter_ja.html">事例: 2017年総選挙に関するツイート</a></li>
 </ul>
 <div id="installing-the-package" class="section level1">
 <h1 class="hasAnchor">
@@ -204,13 +205,8 @@
 ##           SNP    88    134         4
 ##          UKIP   346    723        27
 ## 
-<<<<<<< HEAD
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Mon Dec 18 17:34:01 2017
-=======
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Thu Dec 21 12:37:31 2017
->>>>>>> master
+## Created: Sat Dec 23 13:28:59 2017
 ## Notes:</code></pre>
 <p>コーパスを作成したあとでも，<code>docvars</code>を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができる．</p>
 <p>たとえば，Rの<code>names()</code>関数を使って文字ベクトル（<code>data_char_ukimmig2010</code>）の名前を取得し，これを文書変数（<code>docvar()</code>）に追加することができる．</p>
@@ -230,13 +226,8 @@
 ##           SNP    88    134         4          SNP 2010
 ##          UKIP   346    723        27         UKIP 2010
 ## 
-<<<<<<< HEAD
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Mon Dec 18 17:34:01 2017
-=======
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Thu Dec 21 12:37:31 2017
->>>>>>> master
+## Created: Sat Dec 23 13:28:59 2017
 ## Notes:</code></pre>
 <p>分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，<code><a href="../../../reference/docvars.html">docvars()</a></code>を使って，コーパスに追加することができる．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -265,13 +256,8 @@
 ##  data_char_ukimmig2010_8
 ##  data_char_ukimmig2010_9
 ## 
-<<<<<<< HEAD
 ## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Mon Dec 18 17:34:01 2017
-=======
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Thu Dec 21 12:37:31 2017
->>>>>>> master
+## Created: Sat Dec 23 13:28:59 2017
 ## Notes:</code></pre>
 <p><code><a href="../../../reference/metadoc.html">metadoc()</a></code>を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（“english”）を文書変数（“language”）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意する必要がある．</p>
 <p>独自の文書メタデータのフィールド（<code>docsource</code>）を作成するために，<strong>quanteda</strong>の関数である<code><a href="../../../reference/ndoc.html">ndoc()</a></code>を使ってコーパスに含まれる文書の総数を取得している．<code><a href="../../../reference/ndoc.html">ndoc()</a></code>は，<code>nrow()</code>や<code>ncol()</code>などのRの標準の関数と同じような方法で動作するように設計されている．</p>
@@ -366,7 +352,7 @@ mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocume
     <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data=</span>tokenInfo, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Tokens, <span class="dt">group =</span> <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
 <span class="st">        </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_continuous</a></span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>) ) </code></pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
-<p><img src="quickstart_ja_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
+<p><img src="quickstart_ja_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Longest inaugural address: William Henry Harrison</span>
 tokenInfo[<span class="kw">which.max</span>(tokenInfo<span class="op">$</span>Tokens), ] </code></pre></div>
 <pre><code>## Corpus consisting of 58 documents:
@@ -407,11 +393,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-<<<<<<< HEAD
-## Created: Mon Dec 18 17:34:03 2017
-=======
-## Created: Thu Dec 21 12:37:32 2017
->>>>>>> master
+## Created: Sat Dec 23 13:29:01 2017
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -651,14 +633,8 @@ myDfm[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</sp
 ##   2009-Obama    2      1        1 130     6
 ##   2013-Obama    3      3        6  99     4
 ##   2017-Trump    1      1        4  96     4</code></pre>
-<<<<<<< HEAD
 <p>以下の例では<code><a href="../../../reference/dfm.html">dfm()</a></code>の追加のオプションを用いて、ストップワードの削除（<code>remove</code>）と語のステミング（<code>stem</code>）を行っている．</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), 
-=======
-<p><code><a href="../../../reference/dfm.html">dfm()</a></code>の追加のオプションには，ストップワードの削除（<code>remove</code>）や語のステミング（<code>stem</code>）が含まれます．</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make a dfm, removing stopwords and applying stemming</span>
-myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), 
->>>>>>> master
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), 
                  <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
 myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
@@ -672,13 +648,8 @@ myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5
 ##   2009-Obama        1       1     6      2       0
 ##   2013-Obama        3       8     6      1       0
 ##   2017-Trump        1       4     5      3       1</code></pre>
-<<<<<<< HEAD
-<p><code>remove</code>によって，文書行列から除外するトークンを指定する．<code><a href="../../../reference/stopwords.html">stopwords()</a></code>は，幾つかの言語で定義されたストップワードのリストを返す．</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)</code></pre></div>
-=======
-<p><code>remove</code>によっては，文書行列から除外するトークンを指定します．<code><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords()</a></code>は，幾つかの言語で定義されたストップワードのリストを返します（残念ながら日本語は含まれていませんが，ユーザーが定義した辞書を使うことはできます）．</p>
+<p><code>remove</code>によって，文書行列から除外するトークンを指定する．<code><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords()</a></code>は，幾つかの言語で定義されたストップワードのリストを返す．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)</code></pre></div>
->>>>>>> master
 <pre><code>##  [1] "i"          "me"         "my"         "myself"     "we"        
 ##  [6] "our"        "ours"       "ourselves"  "you"        "your"      
 ## [11] "yours"      "yourself"   "yourselves" "he"         "him"       
@@ -693,13 +664,8 @@ myStemMat[, <span class="dv">1</span><span class="op">:</span><span class="dv">5
 <div id="viewing-the-document-feature-matrix" class="section level3">
 <h3 class="hasAnchor">
 <a href="#viewing-the-document-feature-matrix" class="anchor"></a>文書行列の表示</h3>
-<<<<<<< HEAD
 <p>RStudioの“Environment”パネル，またはRの<code><a href="../../../reference/View.html">View()</a></code>を用いることで，dfmに格納された値を見ることができる．dfmに対して<code>plot()</code>を用いると，<a href="https://cran.r-project.org/web/packages/wordcloud"><strong>wordcloud</strong></a>を使ってワードクラウドが表示される．</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
-=======
-<p>RStudioの“Environment”パネル，またはRの<code><a href="../../../reference/View.html">View()</a></code>を用いることで，dfmに格納された値を見ることができます．dfmに対して<code>plot()</code>を用いると，<a href="https://cran.r-project.org/web/packages/wordcloud"><strong>wordcloud</strong></a>を使ってワードクラウドが表示されます．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)
->>>>>>> master
 mydfm</code></pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre>
 <p>頻度が最も高い特長を見るには，<code><a href="../../../reference/topfeatures.html">topfeatures()</a></code>を用いる．</p>
@@ -717,20 +683,15 @@ mydfm</code></pre></div>
 <span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
                    <span class="dt">rot.per =</span> .<span class="dv">25</span>, 
                    <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
-<p><img src="quickstart_ja_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
+<p><img src="quickstart_ja_files/figure-html/unnamed-chunk-28-1.png" width="672"></p>
 </div>
 <div id="grouping-documents-by-document-variable" class="section level3">
 <h3 class="hasAnchor">
 <a href="#grouping-documents-by-document-variable" class="anchor"></a>変数による文書のグループ化</h3>
 <p><strong>quanteda</strong>では，dfmを作成する際に，文書変数の値によって文書をグループ化するすることができる．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, 
-<<<<<<< HEAD
-                  <span class="dt">remove =</span> <span class="kw"><a href="../../../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p>また、以下のように，dfmを語の頻度順に並べ替えて，中身を確かめられる．</p>
-=======
                   <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p>また、以下のように，dfmを語の頻度順に並べ替えて，中身を確かめられます．</p>
->>>>>>> master
+<p>また、以下のように，dfmを語の頻度順に並べ替えて，中身を確かめられる．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/dfm_sort.html">dfm_sort</a></span>(byPartyDfm)[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
 <pre><code>## Document-feature matrix of: 5 documents, 10 features (0% sparse).
 ## 5 x 10 sparse Matrix of class "dfm"
@@ -838,104 +799,54 @@ presCluster<span class="op">$</span>labels &lt;-<span class="st"> </span><span c
 ## Estimated document positions:
 ## 
 ##                                Documents      theta         SE       lower
-<<<<<<< HEAD
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8210060 0.02032480  1.78116943
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932391 0.02818685 -0.64848537
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136211 0.01540124 -1.14380756
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219851 0.02846165 -0.17776994
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724578 0.02364262  1.72611826
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145584 0.02650048 -0.76649937
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844630 0.04171240 -0.56621931
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5617150 0.02967042 -0.61986899
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9702802 0.03850178 -1.04574370
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9588939 0.03892005 -1.03517724
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807207 0.07221799  1.03917344
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866213 0.06294006  0.06325879
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421376 0.07245623  0.60012340
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1841875 0.03665957 -0.25604029
-##          upper
-## 1   1.86084263
-## 2  -0.53799290
-## 3  -1.08343471
-## 4  -0.06620027
-## 5   1.81879735
-## 6  -0.66261748
-## 7  -0.40270671
-## 8  -0.50356092
-## 9  -0.89481672
-## 10 -0.88261065
-## 11  1.32226798
-## 12  0.30998382
-## 13  0.88415181
-## 14 -0.11233479
-=======
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209743 0.02032398  1.78113927
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932628 0.02818776 -0.64851078
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136539 0.01540204 -1.14384185
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219532 0.02846258 -0.17773986
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724364 0.02364162  1.72609884
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145705 0.02650173 -0.76651389
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844745 0.04171382 -0.56623364
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616884 0.02967230 -0.61984611
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9702987 0.03850397 -1.04576645
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589115 0.03892227 -1.03519914
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807215 0.07221596  1.03917824
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866359 0.06294074  0.06327203
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421689 0.07245510  0.60015689
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1841236 0.03666138 -0.25597986
-##          upper
-## 1   1.86080929
-## 2  -0.53801476
-## 3  -1.08346586
-## 4  -0.06616654
-## 5   1.81877400
-## 6  -0.66262713
-## 7  -0.40271545
-## 8  -0.50353072
-## 9  -0.89483087
-## 10 -0.88262382
-## 11  1.32226480
-## 12  0.30999973
-## 13  0.88418089
-## 14 -0.11226725
->>>>>>> master
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209525 0.02032343  1.78111857
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932788 0.02818838 -0.64852805
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136763 0.01540259 -1.14386542
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219314 0.02846322 -0.17771932
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724218 0.02364093  1.72608553
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145788 0.02650258 -0.76652385
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844824 0.04171480 -0.56624346
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616704 0.02967358 -0.61983061
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703112 0.03850548 -1.04578192
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589235 0.03892380 -1.03521411
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807221 0.07221457  1.03918150
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866461 0.06294121  0.06328129
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421904 0.07245433  0.60017995
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840799 0.03666262 -0.25593869
+##         upper
+## 1   1.8607864
+## 2  -0.5380296
+## 3  -1.0834873
+## 4  -0.0661435
+## 5   1.8187580
+## 6  -0.6626337
+## 7  -0.4027214
+## 8  -0.5035102
+## 9  -0.8948404
+## 10 -0.8826328
+## 11  1.3222626
+## 12  0.3100108
+## 13  0.8842009
+## 14 -0.1122212
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the 
-<<<<<<< HEAD
-##     -0.09868637      0.38856449      0.39929207      0.25647700 
+##     -0.09918996      0.38803759      0.39880560      0.25595802 
 ##   supplementary          budget              to            this 
-##      1.11636395      0.09968442      0.37061241      0.30746261 
+##      1.11587686      0.09916844      0.37009298      0.30694929 
 ##           house            last           april               , 
-##      0.19961479      0.29023860     -0.09475189      0.34588718 
+##      0.19908505      0.28973146     -0.09524826      0.34536682 
 ##            said              we           could            work 
-##     -0.71879395      0.48045349     -0.52924654      0.58279135 
+##     -0.71929618      0.47993704     -0.52975047      0.58228737 
 ##             our             way         through          period 
-##      0.74425358      0.33664835      0.66033129      0.55674188 
+##      0.74374812      0.33613006      0.65984119      0.55623228 
 ##              of          severe        economic        distress 
-##      0.33985624      1.27959699      0.47919602      1.84493397 
+##      0.33933706      1.27912092      0.47868482      1.84455778 
 ##               .           today             can          report 
-##      0.27405887      0.17475656      0.36430801      0.69230140 
+##      0.27353997      0.17421298      0.36379951      0.69177640 
 ##            that notwithstanding 
-##      0.08887246      1.84493397</code></pre>
-=======
-##     -0.09898507      0.38825195      0.39900356      0.25616917 
-##   supplementary          budget              to            this 
-##      1.11607507      0.09937837      0.37030431      0.30715814 
-##           house            last           april               , 
-##      0.19930057      0.28993781     -0.09504631      0.34557853 
-##            said              we           could            work 
-##     -0.71909183      0.48014714     -0.52954548      0.58249241 
-##             our             way         through          period 
-##      0.74395376      0.33634092      0.66004060      0.55643961 
-##              of          severe        economic        distress 
-##      0.33954829      1.27931465      0.47889281      1.84471086 
-##               .           today             can          report 
-##      0.27375108      0.17443412      0.36400639      0.69198995 
-##            that notwithstanding 
-##      0.08856234      1.84471086</code></pre>
->>>>>>> master
+##      0.08834966      1.84455778</code></pre>
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
@@ -951,57 +862,30 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<<<<<<< HEAD
-<pre><code>##      Topic 1     Topic 2    Topic 3    Topic 4       Topic 5     
-## [1,] "care"      "welfare"  "fáil"     "million"     "spending"  
-## [2,] "welfare"   "taxation" "national" "welfare"     "investment"
-## [3,] "per"       "system"   "child"    "back"        "welfare"   
-## [4,] "allowance" "stimulus" "fianna"   "confidence"  "scheme"    
-## [5,] "hit"       "worst"    "support"  "development" "million"   
-##      Topic 6   Topic 7       Topic 8        Topic 9      Topic 10      
-## [1,] "child"   "alternative" "society"      "support"    "system"      
-## [2,] "benefit" "citizenship" "enterprising" "adjustment" "government's"
-## [3,] "day"     "wealth"      "sense"        "welfare"    "fianna"      
-## [4,] "today"   "adjustment"  "equal"        "investment" "welfare"     
-## [5,] "bank"    "breaks"      "nation"       "employment" "measures"    
-##      Topic 11    Topic 12   Topic 13    Topic 14    Topic 15     Topic 16 
-## [1,] "taoiseach" "measures" "fáil"      "taoiseach" "fianna"     "levy"   
-## [2,] "employees" "pension"  "fianna"    "fine"      "irish"      "million"
-## [3,] "rate"      "million"  "third"     "may"       "national"   "carbon" 
-## [4,] "referred"  "system"   "level"     "gael"      "confidence" "change" 
-## [5,] "debate"    "deficit"  "societies" "day"       "whether"    "welfare"
-##      Topic 17    Topic 18      Topic 19      Topic 20     
-## [1,] "failed"    "side"        "irish"       "kind"       
-## [2,] "strategy"  "start"       "private"     "imagination"
-## [3,] "needed"    "impact"      "set"         "policies"   
-## [4,] "ministers" "ministers"   "opportunity" "wit"        
-## [5,] "system"    "citizenship" "want"        "create"</code></pre>
-=======
-<pre><code>##      Topic 1       Topic 2   Topic 3         Topic 4     Topic 5     
-## [1,] "alternative" "welfare" "investment"    "care"      "million"   
-## [2,] "citizenship" "system"  "international" "welfare"   "welfare"   
-## [3,] "wealth"      "hit"     "reductions"    "per"       "support"   
-## [4,] "adjustment"  "back"    "rates"         "allowance" "enterprise"
-## [5,] "breaks"      "job"     "employment"    "hit"       "level"     
-##      Topic 6   Topic 7    Topic 8    Topic 9        Topic 10    Topic 11
-## [1,] "system"  "stimulus" "fianna"   "taoiseach"    "failed"    "fianna"
-## [2,] "per"     "system"   "fáil"     "debate"       "strategy"  "fáil"  
-## [3,] "prices"  "fáil"     "national" "society"      "needed"    "side"  
-## [4,] "million" "fianna"   "irish"    "enterprising" "ministers" "level" 
-## [5,] "local"   "taxation" "support"  "difficult"    "system"    "third" 
-##      Topic 12    Topic 13  Topic 14      Topic 15      Topic 16    
-## [1,] "taoiseach" "benefit" "investment"  "create"      "measures"  
-## [2,] "fine"      "day"     "support"     "wit"         "rates"     
-## [3,] "gael"      "child"   "development" "imagination" "adjustment"
-## [4,] "may"       "today"   "including"   "authority"   "taxation"  
-## [5,] "irish"     "bank"    "confidence"  "programme"   "help"      
-##      Topic 17      Topic 18  Topic 19  Topic 20  
-## [1,] "kind"        "levy"    "child"   "measures"
-## [2,] "imagination" "million" "benefit" "scheme"  
-## [3,] "education"   "carbon"  "much"    "review"  
-## [4,] "side"        "change"  "society" "spending"
-## [5,] "tackle"      "welfare" "welfare" "million"</code></pre>
->>>>>>> master
+<pre><code>##      Topic 1       Topic 2       Topic 3   Topic 4    Topic 5  
+## [1,] "kind"        "citizenship" "low"     "welfare"  "child"  
+## [2,] "imagination" "position"    "welfare" "system"   "know"   
+## [3,] "policies"    "wealth"      "price"   "taxation" "welfare"
+## [4,] "wit"         "used"        "water"   "fianna"   "benefit"
+## [5,] "create"      "breaks"      "costs"   "fáil"     "day"    
+##      Topic 6        Topic 7   Topic 8     Topic 9    Topic 10 
+## [1,] "review"       "levy"    "taoiseach" "failed"   "benefit"
+## [2,] "spending"     "million" "fine"      "strategy" "child"  
+## [3,] "reduction"    "carbon"  "gael"      "vision"   "today"  
+## [4,] "measures"     "change"  "may"       "system"   "much"   
+## [5,] "contribution" "welfare" "irish"     "needed"   "day"    
+##      Topic 11     Topic 12     Topic 13        Topic 14    Topic 15      
+## [1,] "back"       "million"    "million"       "taoiseach" "society"     
+## [2,] "increased"  "welfare"    "details"       "employees" "enterprising"
+## [3,] "national"   "support"    "investment"    "rate"      "sense"       
+## [4,] "investment" "investment" "welfare"       "referred"  "equal"       
+## [5,] "continue"   "reductions" "international" "debate"    "nation"      
+##      Topic 16   Topic 17   Topic 18    Topic 19 Topic 20     
+## [1,] "care"     "fianna"   "ministers" "fianna" "alternative"
+## [2,] "per"      "fáil"     "happened"  "fáil"   "yesterday"  
+## [3,] "million"  "national" "strategy"  "side"   "speak"      
+## [4,] "hospital" "irish"    "million"   "level"  "citizenship"
+## [5,] "welfare"  "support"  "policies"  "third"  "since"</code></pre>
 </div>
 </div>
 </div>

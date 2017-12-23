@@ -5,15 +5,19 @@ output:
     toc: true
 ---
 
+```{r, echo=FALSE, results = 'asis'}
+cat('<link href="../../../ja.css" rel="text/css">')
+```
+
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(collapse = FALSE, 
                       comment = "##")
 ```
 
-本ページは[Quic Start Guide](../quickstart.html)の日本語訳であり，英語のデータの分析を通じて**quanteda**の基本的な使い方を説明する．日本語のデータの分析法に関しては，以下のページを参照．
+本ページは[Quic Start Guide](../quickstart.html)の日本語訳であり，英語のテキスト分析を通じて**quanteda**の基本的な使い方を説明する．日本語の分析法に関しては，以下のページを参照．
 
-* [事例: 衆議院外務委員会の議事録](japanese.html)
-* [事例: 2017年総選挙に関するツイート](japanese_twitter.html)
+* [事例: 衆議院外務委員会の議事録](japanese_speech_ja.html)
+* [事例: 2017年総選挙に関するツイート](japanese_twitter_ja.html)
 
 # パッケージのインストール {#installing-the-package}
 

@@ -6,6 +6,10 @@ output:
     toc: true
 ---
 
+```{r, echo=FALSE, results = 'asis'}
+cat('<link href="../../../ja.css" rel="text/css">')
+```
+
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = FALSE,
@@ -13,12 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## パッケージの読み込み {load-package}
+## パッケージの読み込み {#load-package}
 
 ```{r, message = FALSE}
 library(quanteda)
@@ -28,7 +27,7 @@ library(lubridate)
 library(topicmodels)
 ```
 
-## コーパスのダウンロード {download}
+## コーパスのダウンロード {#download}
 
 本例で用いる衆議院外務委員会の議事録は，1947年から2017年の間のすべての発言を含んでいる．このコーパスは**quanteda.corpora**を通じてダウンロードできる．
 
@@ -37,11 +36,11 @@ devtools::install_github("quanteda/quanteda.corpora")
 full_corp <- quanteda.corpora::download('data_corpus_foreignaffairscommittee')
 ```
 
-### コーパスの作成手順 {how-to-make-corpus}
+### コーパスの作成手順 {#how-to-make-corpus}
 
 読者が独自のコーパスを作成できるように，本例のコーパスを作成した手順を以下にしてしてある．
 
-#### 議事録をダウンロード {download-speeches}
+#### 議事録をダウンロード {#download-speeches}
 
 国会会議録のダウンロードには**kaigiroku**パッケージを使う．APIが応答しない場合に途中からダウンロードをやり直す必要がないように，年ごとにファイルに保存し，それらをあとで連結すると良い．
 
@@ -67,7 +66,7 @@ speech <- lapply(as.list(file_all), readRDS) %>% bind_rows()
 saveRDS(speech, file = paste0(folder_download, "committee_speeches.rds"))
 ```
 
-#### コーパスの作成 {create-corpus}
+#### コーパスの作成 {#create-corpus}
 
 ```{r eval = FALSE}
 load("temp/committee_speeches.rda")
@@ -75,14 +74,14 @@ full_corp <- corpus(foreign_affairs_committee_speeches, text_field = 'speech')
 
 ```
 
-## 議事録の数と期間を取得 {number-of-speeches}
+## 議事録の数と期間を取得 {#number-of-speeches}
 
 ```{r}
 ndoc(full_corp)
 range(docvars(full_corp, 'date'))
 ```
 
-# 前処理 {pre-processing}
+# 前処理 {#pre-processing}
 
 発言者のいないレコード（典型的には各議事録の0番目の出席者，議題等の部分）を取り除く，また，各発言の冒頭は発言者の氏名と役職名なので，その部分から役職名を取り出して新しい`docvar`を作る．
 
@@ -101,7 +100,7 @@ knitr::kable(as.data.frame(table(capacity)))
 docvars(full_corp, 'capacity') <- capacity
 ```
 
-## 1991から2010年までの期間の議事録を選択 {select-speeches-1991-2010}
+## 1991から2010年までの期間の議事録を選択 {#select-speeches-1991-2010}
 
 ```{r}
 docvars(full_corp, "year") <- docvars(full_corp, "date") %>% year() %>% as.numeric()
@@ -110,7 +109,7 @@ corp <- corpus_subset(full_corp, 1991 <= year & year <= 2010)
 ndoc(corp)
 ```
 
-## 委員，大臣，副大臣の発言を選択 {select-speeches-ministers}
+## 委員，大臣，副大臣の発言を選択 {#select-speeches-ministers}
 
 ```{r}
 corp <- corpus_subset(corp, capacity %in% c("委員", "大臣", "副大臣"))
@@ -118,7 +117,7 @@ ndoc(corp)
 ```
 
 
-## トークン化：語の分割と結合 {tokenization}
+## トークン化：語の分割と結合 {#tokenization}
 
 日本語の分析では，形態素解析ツールを用いて分かち書きを行うことが多いが，**quanteda**の`tokens()`は，[ICU](http://site.icu-project.org/)で定義された規則に従って文を語に分割することができる．さらに，漢字やカタカナの連続的共起を`textstat_collocations()`を用いて抽出し，`tokens_compound()`によって統計的に優位な組み合わせを結合すると，より質の高いトークン化を実現できる．`textstat_collocations()`を用いる場合は，事前に`tokens_select()`と正規表現で，対象とする語だけを選択する．この際，`padding = TRUE`とし，語の間の距離が維持されるように注意する
 
@@ -145,7 +144,7 @@ any_col <- tokens_select(toks, '^[０-９ァ-ヶー一-龠]+$', valuetype = 'reg
 toks <- tokens_compound(toks, any_col[any_col$z > 3,], concatenator = '')
 ```
 
-## 文書行列の作成 {create-dfm}
+## 文書行列の作成 {#create-dfm}
 
 `dfm()`によって文書行列を作成した後でも，`dfm_*()`と命名された関数を用いると分析に必要な文書の特徴を自由に選択できる．ここでは，平仮名のみもしくは一語のみから構成されたトークンを`dfm_remove()`によって，頻度が極端に低い語もしくは高い語を`dfm_trim()`によって削除している．
 
@@ -156,9 +155,9 @@ speech_dfm <-
     dfm_trim(min_count = 10, max_count = 0.1)
 ```
 
-# 分析 {analysis}
+# 分析 {#analysis}
 
-## Keynessによる相対頻度分析 {keyness}
+## 対頻度分析 {#keyness}
 
 `textstat_keyness()`は語の頻度を文書のグループ間で比較し，統計的に有意に頻度が高いものを選択する．ここでは，同時多発テロが発生した2001年以降に頻度が高くなった30語を示してある．
 
@@ -175,7 +174,7 @@ head(key, 20) %>% knitr::kable()
 ```
 
 
-## 共起ネットワーク分析 {network}
+## 共起ネットワーク分析 {#network}
 
 `fcm()`によって作成した共起行列に対して，`textplot_network()`を用いると語の関係が視覚化でき，文書の内容の全体像を容易に把握できる．
 
@@ -186,7 +185,7 @@ size <- sqrt(rowSums(speech_fcm))
 textplot_network(speech_fcm, min_freq = 0.95, edge_alpha = 0.9, vertex_size = size / max(size) * 3)
 ```
 
-## トピックモデル {topicmodel}
+## トピックモデル {#topicmodel}
 
 **quanteda**のdfmを`convert()`で変換し，**topicmodels**をパッケージを用いて潜在的な話題を推定する．
 

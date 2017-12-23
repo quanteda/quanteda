@@ -130,9 +130,6 @@
     
 <div class="contents">
 <p>Using <strong>quanteda</strong>’s <code><a href="../../../reference/fcm.html">fcm()</a></code> and <code><a href="../../../reference/textplot_network.html">textplot_network()</a></code>, you can perform visual analysis of social media posts in terms of cooccurances of hashtags or usernames in a few steps. The dataset for this example contains only 10,000 Twitter posts, but you can easily analyze more one million posts on your laptop computer.</p>
-<div id="hashtags" class="section level1">
-<h1 class="hasAnchor">
-<a href="#hashtags" class="anchor"></a>Hashtags</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
 <div id="load-sample-data" class="section level2">
 <h2 class="hasAnchor">
@@ -146,6 +143,9 @@
 <span class="kw">head</span>(tweet_dfm)</code></pre></div>
 <pre><code>## Document-feature matrix of: 6 documents, 42,327 features (100% sparse).</code></pre>
 </div>
+<div id="hashtags" class="section level1">
+<h1 class="hasAnchor">
+<a href="#hashtags" class="anchor"></a>Hashtags</h1>
 <div id="extract-most-common-hashtags" class="section level2">
 <h2 class="hasAnchor">
 <a href="#extract-most-common-hashtags" class="anchor"></a>Extract most common hashtags</h2>
@@ -231,11 +231,11 @@ topuser &lt;-<span class="st"> </span><span class="kw">names</span>(<span class=
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li>
-<a href="#hashtags">Hashtags</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#load-sample-data">Load sample data</a></li>
       <li><a href="#construct-a-document-feature-matrix-of-twitter-posts">Construct a document-feature matrix of Twitter posts</a></li>
-      <li><a href="#extract-most-common-hashtags">Extract most common hashtags</a></li>
+      <li>
+<a href="#hashtags">Hashtags</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#extract-most-common-hashtags">Extract most common hashtags</a></li>
       <li><a href="#construct-feature-occurrence-matrix-of-hashtags">Construct feature-occurrence matrix of hashtags</a></li>
       </ul>
 </li>

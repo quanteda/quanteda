@@ -6,16 +6,15 @@ output:
     toc: true
 ---
 
+```{r, echo=FALSE, results = 'asis'}
+cat('<link href="../../../ja.css" rel="text/css">')
+```
+
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = FALSE,
   comment = "##"
 )
-```
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## パッケージの読み込み {#load-package}
@@ -43,7 +42,7 @@ ndoc(corp)
 range(docvars(corp, 'created_at'))
 ```
 
-# 前処理 {pre-processing}
+# 前処理 {#pre-processing}
 
 ## トークン化：語の分割と結合 {#tokenization}
 
@@ -77,7 +76,7 @@ toks <- tokens_compound(toks, phrase('# *'), concatenator = '')
 tweet_dfm <- dfm(toks)
 ```
 
-# 分析 {analysis}
+# 分析 {#analysis}
 
 ## タグの共起ネットワーク {#network-tag}
 

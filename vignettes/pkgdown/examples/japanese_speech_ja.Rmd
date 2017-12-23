@@ -6,16 +6,15 @@ output:
     toc: true
 ---
 
+```{r, echo=FALSE, results = 'asis'}
+cat('<link href="../../../ja.css" rel="text/css">')
+```
+
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = FALSE,
   comment = "##"
 )
-```
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## パッケージの読み込み {#load-package}
@@ -156,9 +155,9 @@ speech_dfm <-
     dfm_trim(min_count = 10, max_count = 0.1)
 ```
 
-# 分析 {$analysis}
+# 分析 {#analysis}
 
-## Keynessによる相対頻度分析 {#keyness}
+## 対頻度分析 {#keyness}
 
 `textstat_keyness()`は語の頻度を文書のグループ間で比較し，統計的に有意に頻度が高いものを選択する．ここでは，同時多発テロが発生した2001年以降に頻度が高くなった30語を示してある．
 

@@ -31,7 +31,7 @@ corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/37ojd5knz1qe
 
 ```{r}
 # Chinese stopwords
-ch_stop <- stopwords::stopwords("zh", source = "misc")
+ch_stop <- stopwords("zh", source = "misc")
 
 # tokenize
 ch_toks <- 
