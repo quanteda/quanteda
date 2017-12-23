@@ -1,15 +1,19 @@
 /* Edit pkgdown/extra.css to customize the theme */
 
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
-@import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
-@import url(http://fonts.googleapis.com/earlyaccess/notosansscsliced.css); 
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,500');
 
 body { 
-    font-family: 'Open Sans', 'Noto Sans SC Sliced', 'Noto Sans Japanese', serif; font-weight: 300;
+    font-family: 'Roboto', sans-serif; 
+    font-weight: 300;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-family: 'Noto Sans SC Sliced', 'Noto Sans Japanese', serif; font-weight: 500;
+    font-family: 'Roboto', sans-serif; 
+    font-weight: 500;
+}
+
+b, strong, th {
+    font-weight: 500;
 }
 
 .navbar-inverse .navbar-brand {

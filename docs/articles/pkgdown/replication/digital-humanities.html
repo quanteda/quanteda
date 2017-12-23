@@ -10,7 +10,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
 <script src="../../../jquery.sticky-kit.min.js"></script><script src="../../../pkgdown.js"></script><link href="../../../extra.css" rel="stylesheet">
-<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../../../extra.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Google analytics --><script>
@@ -246,17 +246,17 @@ moby_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../refere
 <pre><code>## Document-feature matrix of: 1 document, 18,524 features (0% sparse).</code></pre>
 <p>Getting the list of the most frequent 10 terms is easy, using <code><a href="../../../reference/textstat_frequency.html">textstat_frequency()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/textstat_frequency.html">textstat_frequency</a></span>(moby_dfm, <span class="dt">n =</span> <span class="dv">10</span>) </code></pre></div>
-<pre><code>##    feature frequency rank docfreq
-## 1      the     14173    1       1
-## 2       of      6446    2       1
-## 3      and      6311    3       1
-## 4        a      4605    4       1
-## 5       to      4511    5       1
-## 6       in      4071    6       1
-## 7     that      2950    7       1
-## 8      his      2495    8       1
-## 9       it      2394    9       1
-## 10       i      1976   10       1</code></pre>
+<pre><code>##    feature frequency rank docfreq group
+## 1      the     14173    1       1   all
+## 2       of      6446    2       1   all
+## 3      and      6311    3       1   all
+## 4        a      4605    4       1   all
+## 5       to      4511    5       1   all
+## 6       in      4071    6       1   all
+## 7     that      2950    7       1   all
+## 8      his      2495    8       1   all
+## 9       it      2394    9       1   all
+## 10       i      1976   10       1   all</code></pre>
 <p>Finally, if we wish to plot the most frequent (50) terms, we can supply the results of <code><a href="../../../reference/textstat_frequency.html">textstat_frequency()</a></code> to <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> to plot their frequency by their rank:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot frequency of 50 most frequent terms </span>
 <span class="kw">library</span>(ggplot2)
@@ -387,8 +387,8 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../.
 ##   mobydick.9  1260   4284       166      CHAPTER 9. The Sermon.\n
 ##  mobydick.10   658   1804        66 CHAPTER 10. A Bosom Friend.\n
 ## 
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kbenoit
-## Created: Thu Dec 21 12:38:01 2017
+## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kohei
+## Created: Sat Dec 23 16:46:04 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>) &lt;-<span class="st"> </span>stringi<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringi/topics/stri_trim">stri_trim_right</a></span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>))
@@ -400,8 +400,8 @@ chap_positions_v &lt;-<span class="st"> </span><span class="kw"><a href="../../.
 ##  mobydick.2   651   1700        60  CHAPTER 2. The Carpet-Bag.
 ##  mobydick.3  1744   6943       264 CHAPTER 3. The Spouter-Inn.
 ## 
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kbenoit
-## Created: Thu Dec 21 12:38:01 2017
+## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/replication/* on x86_64 by kohei
+## Created: Sat Dec 23 16:46:04 2017
 ## Notes:   corpus_segment.corpus(., pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/docnames.html">docnames</a></span>(chapters_corp) &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(chapters_corp, <span class="st">"pattern"</span>)</code></pre></div>
@@ -552,16 +552,17 @@ samples &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(chapters_corp) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/textstat_lexdiv.html">textstat_lexdiv</a></span>(<span class="dt">measure =</span> <span class="st">"TTR"</span>) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">head</span>(<span class="dt">n =</span> <span class="dv">10</span>)</code></pre></div>
-<pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
-##                   0.3332039                   0.3688235 
-## CHAPTER 3. The Spouter-Inn. CHAPTER 4. The Counterpane. 
-##                   0.2376494                   0.3435392 
-##       CHAPTER 5. Breakfast.      CHAPTER 6. The Street. 
-##                   0.4453395                   0.4702760 
-##      CHAPTER 7. The Chapel.      CHAPTER 8. The Pulpit. 
-##                   0.4528651                   0.4314815 
-##      CHAPTER 9. The Sermon. CHAPTER 10. A Bosom Friend. 
-##                   0.2789449                   0.3481153</code></pre>
+<pre><code>##                       document       TTR
+## 1         CHAPTER 1. Loomings. 0.3332039
+## 2   CHAPTER 2. The Carpet-Bag. 0.3688235
+## 3  CHAPTER 3. The Spouter-Inn. 0.2376494
+## 4  CHAPTER 4. The Counterpane. 0.3435392
+## 5        CHAPTER 5. Breakfast. 0.4453395
+## 6       CHAPTER 6. The Street. 0.4702760
+## 7       CHAPTER 7. The Chapel. 0.4528651
+## 8       CHAPTER 8. The Pulpit. 0.4314815
+## 9       CHAPTER 9. The Sermon. 0.2789449
+## 10 CHAPTER 10. A Bosom Friend. 0.3481153</code></pre>
 </div>
 </div>
 <div id="hapax-richness" class="section level1">
@@ -691,30 +692,30 @@ LDA_fit_<span class="dv">20</span> &lt;-<span class="st"> </span><span class="kw
 
 <span class="co"># get top five terms per topic</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(LDA_fit_<span class="dv">20</span>, <span class="dv">5</span>)</code></pre></div>
-<pre><code>##      Topic 1      Topic 2      Topic 3      Topic 4    Topic 5     
-## [1,] "welfare"    "future"     "million"    "fáil"     "strategy"  
-## [2,] "deficit"    "employment" "support"    "fianna"   "employment"
-## [3,] "hit"        "enterprise" "welfare"    "irish"    "seen"      
-## [4,] "job"        "energy"     "back"       "national" "modern"    
-## [5,] "vulnerable" "investment" "investment" "ted"      "face"      
-##      Topic 6       Topic 7    Topic 8      Topic 9    Topic 10     
-## [1,] "kind"        "bank"     "confidence" "order"    "fianna"     
-## [2,] "imagination" "society"  "national"   "deficit"  "fáil"       
-## [3,] "policies"    "day"      "fianna"     "rate"     "citizenship"
-## [4,] "wit"         "banks"    "deal"       "per"      "side"       
-## [5,] "create"      "fairness" "adjustment" "payments" "alternative"
-##      Topic 11    Topic 12       Topic 13  Topic 14    Topic 15 
-## [1,] "failed"    "society"      "child"   "care"      "levy"   
-## [2,] "needed"    "enterprising" "benefit" "per"       "million"
-## [3,] "ministers" "sense"        "today"   "allowance" "carbon" 
-## [4,] "vision"    "equal"        "welfare" "welfare"   "change" 
-## [5,] "change"    "nation"       "fianna"  "child"     "welfare"
-##      Topic 16    Topic 17     Topic 18   Topic 19    Topic 20   
-## [1,] "taoiseach" "support"    "system"   "taoiseach" "million"  
-## [2,] "employees" "investment" "welfare"  "fine"      "spending" 
-## [3,] "rate"      "welfare"    "taxation" "gael"      "review"   
-## [4,] "referred"  "months"     "fianna"   "may"       "measures" 
-## [5,] "debate"    "scheme"     "stimulus" "irish"     "reduction"</code></pre>
+<pre><code>##      Topic 1     Topic 2    Topic 3       Topic 4    Topic 5  Topic 6    
+## [1,] "measures"  "system"   "alternative" "fianna"   "fáil"   "taoiseach"
+## [2,] "million"   "strategy" "citizenship" "fáil"     "fianna" "employees"
+## [3,] "reduction" "vision"   "wealth"      "national" "side"   "rate"     
+## [4,] "pension"   "start"    "adjustment"  "irish"    "third"  "referred" 
+## [5,] "spending"  "costs"    "breaks"      "support"  "level"  "debate"   
+##      Topic 7    Topic 8      Topic 9       Topic 10     Topic 11       
+## [1,] "much"     "failed"     "fine"        "million"    "child"        
+## [2,] "single"   "ministers"  "gael"        "support"    "million"      
+## [3,] "child"    "employment" "may"         "enterprise" "approximately"
+## [4,] "welfare"  "face"       "set"         "investment" "full"         
+## [5,] "interest" "confront"   "opportunity" "future"     "increasing"   
+##      Topic 12   Topic 13    Topic 14     Topic 15    Topic 16     
+## [1,] "welfare"  "details"   "welfare"    "taoiseach" "kind"       
+## [2,] "system"   "reduce"    "support"    "day"       "carbon"     
+## [3,] "taxation" "spending"  "increased"  "irish"     "imagination"
+## [4,] "fianna"   "increases" "scheme"     "case"      "change"     
+## [5,] "fáil"     "scheme"    "investment" "stimulus"  "levy"       
+##      Topic 17       Topic 18   Topic 19  Topic 20   
+## [1,] "society"      "just"     "benefit" "care"     
+## [2,] "enterprising" "fairness" "child"   "welfare"  
+## [3,] "sense"        "society"  "day"     "per"      
+## [4,] "equal"        "today"    "bank"    "allowance"
+## [5,] "nation"       "burden"   "fianna"  "hit"</code></pre>
 </div>
 </div>
   </div>

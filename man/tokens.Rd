@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokens.R
 \name{tokens}
 \alias{tokens}
-\title{tokenize a set of texts}
+\title{Tokenize a set of texts}
 \usage{
 tokens(x, what = c("word", "sentence", "character", "fastestword",
   "fasterword"), remove_numbers = FALSE, remove_punct = FALSE,

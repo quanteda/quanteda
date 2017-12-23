@@ -23,6 +23,7 @@ Depends:
     methods
 Imports:
     utils,
+    digest,
     stats,
     Matrix (>= 1.2),
     data.table (>= 1.9.6),

@@ -6,7 +6,7 @@ output:
     toc: true
 ---
 
-```{r, message = FALSE}
+```{r, message=FALSE}
 library(quanteda)
 ```
 
@@ -124,7 +124,7 @@ freq_grouped <- textstat_frequency(dfm(data_corpus_inaugural_subset),
                                    groups = "President")
 
 # Filter the term "american"
-freq_american <- subset(freq_grouped, feature %in% "american")  
+freq_american <- subset(freq_grouped, freq_grouped$feature %in% "american")  
 
 ggplot(freq_american, aes(x = group, y = frequency)) +
     geom_point() + 

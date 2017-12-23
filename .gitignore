@@ -9,6 +9,7 @@
 quanteda.pdf
 API_notes.md
 
+
 # Tests
 /revdep/.cache.rds
 *Rcheck*
@@ -24,5 +25,5 @@ __MACOSX
 .DS_Store
 
 # Vignette
-docs/articles/pkgdown/replication/text2vec_cache/*
-inst/doc
+**_cache/
+/inst/doc
