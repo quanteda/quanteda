@@ -194,7 +194,7 @@ test_that("test textplot_network font-selection", {
                                    vertex_labelfont = "sans"))
     expect_error(plot(textplot_network(testfcm, min_freq = 0.1, 
                                        vertex_labelfont = "not_a_real_font")),
-                 "polygon edge not found")
+                 "invalid font type")
 })
 
 
