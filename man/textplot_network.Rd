@@ -8,7 +8,7 @@
 textplot_network(x, min_freq = 0.5, omit_isolated = TRUE,
   edge_color = "skyblue", edge_alpha = 0.5, edge_size = 2,
   vertex_color = "gray40", vertex_size = 2, vertex_labelcolor = NULL,
-  offset = NULL, family = NULL, ...)
+  offset = NULL, vertex_labelfont = "", ...)
 
 \method{as.network}{fcm}(x, min_freq = 0.5, omit_isolated = TRUE, ...)
 }
@@ -38,7 +38,7 @@ other edges are determined proportionally to the highest frequency.}
 \item{offset}{if \code{NULL}, the distance between vertices and texts are
 determined automatically.}
 
-\item{family}{font-family of texts. Default is NULL (using system default).}
+\item{vertex_labelfont}{font-family of texts. Default is "" (using default font).}
 
 \item{...}{additional arguments passed to \link[network]{network}.}
 }
