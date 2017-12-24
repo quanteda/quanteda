@@ -184,3 +184,17 @@ test_that("textplot_network error when fcm is too large", {
                    'fcm is too large for a network plot')
 })
 
+test_that("test textplot_network font-selection", {
+    txt <- "A D A C E A D F E B A C E D"
+    testfcm <- fcm(txt, context = "window", window = 3, tri = FALSE)
+    testdfm <- dfm(txt)
+    expect_silent(textplot_network(testfcm, offset = 0.1, 
+                                   vertex_labelfont = "serif"))
+    expect_silent(textplot_network(testdfm, offset = 0.1, 
+                                   vertex_labelfont = "sans"))
+    expect_error(plot(textplot_network(testfcm, min_freq = 0.1, 
+                                       vertex_labelfont = "not_a_real_font")),
+                 "polygon edge not found")
+})
+
+
