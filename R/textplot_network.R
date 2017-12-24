@@ -17,6 +17,7 @@
 #'   \code{vertex_color}. If \code{NA} is given, texts are not rendered.
 #' @param offset if \code{NULL}, the distance between vertices and texts are
 #'   determined automatically.
+#' @param family font-family of texts. Default is NULL (using system default).
 #' @param ... additional arguments passed to \link[network]{network}.
 #' @details Currently the size of the network is limited to 1000, because of the
 #'   computationally intensive nature of network formation for larger matrices.
@@ -47,7 +48,8 @@ textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                              edge_size = 2, 
                              vertex_color = 'gray40', vertex_size = 2,
                              vertex_labelcolor = NULL,
-                             offset = NULL, ...) {
+                             offset = NULL, 
+                             family = NULL, ...) {
     UseMethod("textplot_network")
 }
 
@@ -57,14 +59,16 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  edge_size = 2, 
                                  vertex_color = 'gray40', vertex_size = 2,
                                  vertex_labelcolor = NULL,
-                                 offset = NULL, ...) {
+                                 offset = NULL, 
+                                 family = NULL, ...) {
 
     textplot_network(fcm(x), min_freq = min_freq, omit_isolated = omit_isolated, 
                      edge_color = edge_color, edge_alpha = edge_alpha, 
                      edge_size = edge_size, 
                      vertex_color = vertex_color, vertex_size = vertex_size,
                      vertex_labelcolor = vertex_labelcolor,
-                     offset = NULL, ...)
+                     offset = NULL, 
+                     family = family, ...)
 }
 
     
@@ -74,7 +78,8 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  edge_size = 2, 
                                  vertex_color = 'gray40', vertex_size = 2,
                                  vertex_labelcolor = NULL,
-                                 offset = NULL, ...) {
+                                 offset = NULL, 
+                                 family = NULL, ...) {
     
     label <- x1 <- x2 <- y <- y1 <- y2 <- NULL
     
@@ -112,15 +117,34 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                    size = vertex_size, shape = 19)
     
         if (is.null(offset)) {
-            plot <- plot + geom_text_repel(data = vertex, 
-                                           aes(x, y, label = label),
-                                           segment.color = vertex_color, 
-                                           segment.size = 0.2,
-                                           color = vertex_labelcolor)
+            plot <- plot + 
+                if(is.null(family)) {
+                    geom_text_repel(data = vertex, 
+                                    aes(x, y, label = label),
+                                    segment.color = vertex_color, 
+                                    segment.size = 0.2,
+                                    color = vertex_labelcolor)
+                } else {
+                    geom_text_repel(data = vertex, 
+                                    aes(x, y, label = label),
+                                    segment.color = vertex_color, 
+                                    segment.size = 0.2,
+                                    color = vertex_labelcolor,
+                                    family = family)
+                }
+            
         } else {
-            plot <- plot + geom_text(data = vertex, aes(x, y, label = label),
-                                     nudge_y = offset, 
-                                     color = vertex_labelcolor)
+            plot <- plot + 
+                if(is.null(family)) {
+                    geom_text(data = vertex, aes(x, y, label = label),
+                              nudge_y = offset, 
+                              color = vertex_labelcolor) 
+                } else {
+                    geom_text(data = vertex, aes(x, y, label = label),
+                              nudge_y = offset, 
+                              color = vertex_labelcolor,
+                              family = family)
+                }
         }
 
     plot <- plot + 
