@@ -118,11 +118,10 @@ textstat_dist.dfm <- function(x, selection = NULL,
         stop(method, " is not implemented; consider trying proxy::dist().")
     }
     
-    if (!is.null(selection)) {
-        if (is.character(selection)) {
-            names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
-            temp <- temp[names, , drop = FALSE] # sort for as.dist()
-        }                   
+    if (is.character(selection)) {
+        name <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
+        # NOTE dense matrix does not accept "" as rowname
+        temp <- temp[match(name, rownames(temp)), , drop = FALSE] # sort for as.dist()
     }
     
     # create a new dist object
