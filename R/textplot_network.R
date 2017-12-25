@@ -17,7 +17,7 @@
 #'   \code{vertex_color}. If \code{NA} is given, texts are not rendered.
 #' @param offset if \code{NULL}, the distance between vertices and texts are
 #'   determined automatically.
-#' @param vertex_labelfont font-family of texts. Default is "" (using default font).
+#' @param vertex_labelfont font-family of texts. Use default font if \code{NULL}.
 #' @param ... additional arguments passed to \link[network]{network}.
 #' @details Currently the size of the network is limited to 1000, because of the
 #'   computationally intensive nature of network formation for larger matrices.
@@ -49,7 +49,7 @@ textplot_network <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                              vertex_color = 'gray40', vertex_size = 2,
                              vertex_labelcolor = NULL,
                              offset = NULL, 
-                             vertex_labelfont = "", ...) {
+                             vertex_labelfont = NULL, ...) {
     UseMethod("textplot_network")
 }
 
@@ -60,7 +60,7 @@ textplot_network.dfm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  vertex_color = 'gray40', vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  offset = NULL, 
-                                 vertex_labelfont = "", ...) {
+                                 vertex_labelfont = NULL, ...) {
 
     textplot_network(fcm(x), min_freq = min_freq, omit_isolated = omit_isolated, 
                      edge_color = edge_color, edge_alpha = edge_alpha, 
@@ -79,9 +79,11 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  vertex_color = 'gray40', vertex_size = 2,
                                  vertex_labelcolor = NULL,
                                  offset = NULL, 
-                                 vertex_labelfont = "", ...) {
+                                 vertex_labelfont = NULL, ...) {
     
     label <- x1 <- x2 <- y <- y1 <- y2 <- NULL
+    if (is.null(vertex_labelfont))
+        vertex_labelfont <- ""
     
     n <- as.network(x, min_freq = min_freq, omit_isolated = omit_isolated, ...)
 
