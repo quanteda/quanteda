@@ -4,6 +4,7 @@
 
 ### New Features
 
+* Added `vertex_labelfont` to `textplot_network()`.
 * Added `textmodel_lsa()` for Latent Semantic Analysis models.  
 * Added `textmodel_affinity()` for the Perry and Benoit (2017) class affinity scaling model.
 * Added Chinese stopwords.
