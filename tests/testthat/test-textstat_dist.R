@@ -291,3 +291,15 @@ test_that("selection offers option to enable an alien vector/matrix", {
     expect_error(textstat_dist(presDfm, c(1,2,3,4,5,6,7), margin = "features"), NA)
     
 })
+
+
+test_that("selection works with dfm with padding", {
+    
+    toks <- tokens(c(doc1 = 'a b c d e', doc2 = 'b c f e'), remove_punct = TRUE)
+    toks <- tokens_remove(toks, 'b', padding = TRUE)
+    mt <- dfm(toks)
+    expect_silent(textstat_dist(mt, selection = c('c'), margin = 'features'))
+    expect_silent(textstat_dist(mt, selection = c(''), margin = 'features'))
+    expect_silent(textstat_dist(mt, selection = c('doc2'), margin = 'documents'))
+    
+})

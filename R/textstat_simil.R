@@ -110,11 +110,10 @@ textstat_simil.dfm <- function(x, selection = NULL,
         stop(method, " is not implemented; consider trying proxy::simil().")
     }
     
-    if (!is.null(selection)) {
-        if (is.character(selection)) {
-            names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
-            temp <- temp[names, , drop = FALSE] # sort for as.dist()
-        } 
+    if (is.character(selection)) {
+        name <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
+        # NOTE dense matrix does not accept "" as rowname
+        temp <- temp[match(name, rownames(temp)), , drop = FALSE] # sort for as.dist()
     }
     
     # create a new dist object
@@ -154,13 +153,13 @@ cosine_simil <- function(x, y = NULL, margin = 1) {
     
     if (margin == 1) x <- t(x)
     S <- rep(1, nrow(x))
-    N <- Matrix::Diagonal( x = sqrt(colSums(x ^ 2))^-1 )
+    N <- Matrix::Diagonal(x = sqrt(colSums(x ^ 2)) ^ -1)
     x <- x %*% N
     if (!is.null(y)) {
         if (margin == 1) y <- t(y)
-        N <- Matrix::Diagonal( x = sqrt(colSums(y ^ 2))^-1 )
+        N <- Matrix::Diagonal(x = sqrt(colSums(y ^ 2)) ^ -1)
         y <- y %*% N
-        return(as.matrix(Matrix::crossprod(x,y)))
+        return(as.matrix(Matrix::crossprod(x, y)))
     } else
         return(as.matrix(Matrix::crossprod(x)))
 }
