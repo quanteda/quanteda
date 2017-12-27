@@ -19,11 +19,11 @@
 * All `dfm_*()` functions now work correctly with empty dfm objects.  (#1133)
 * Fixed a bug in `dfm_weight()` for named weight vectors (#1150)
 
-
 ### Behaviour Changes
 
 * The convenience wrappers to `convert()` are simplified and no longer exported.  To convert a dfm, `convert()` is now the only official function.
 * `nfeat()` replaces `nfeature()`, which is now deprecated. (#1134)
+* `textmodel_wordshoal()` has been removed, and relocated to a new package (**wordshoal**).
 
 
 ## Changes since v0.99.12
