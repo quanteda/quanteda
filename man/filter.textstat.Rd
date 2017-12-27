@@ -11,6 +11,8 @@
 \item{.data}{a \code{textstat} object returned from one of the applicable
 \code{textstat_*} functions in \pkg{quanteda}}
 
+\item{...}{filter conditions passed to \pkg{dplyr} \code{\link[dplyr]{filter}}}
+
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 \link{collocations}, or \link{dfm}. See \link{pattern} for details.}
 
@@ -30,8 +32,8 @@ period <- ifelse(docvars(data_corpus_inaugural, "Year") < 1945, "pre-war", "post
 mydfm <- dfm(data_corpus_inaugural, groups = period)
 keyness <- textstat_keyness(mydfm)
 filter(keyness, pattern = "america*")
-filter(keyness, p < .00001) \%>\% head()
 filter(keyness, p < .00001, pattern = "america*") 
+filter(keyness, p < .00001) \%>\% head()
 }
 \seealso{
 \code{\link{textstat_collocations}},

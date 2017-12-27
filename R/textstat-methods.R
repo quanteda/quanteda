@@ -11,6 +11,7 @@ dplyr::filter
 #' \code{"glob"}, \code{"regex"} or \code{"fixed"} patterns.
 #' @param .data a \code{textstat} object returned from one of the applicable
 #' \code{textstat_*} functions in \pkg{quanteda}
+#' @param ... filter conditions passed to \pkg{dplyr} \code{\link[dplyr]{filter}}
 #' @inheritParams pattern
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
@@ -23,19 +24,22 @@ dplyr::filter
 #' mydfm <- dfm(data_corpus_inaugural, groups = period)
 #' keyness <- textstat_keyness(mydfm)
 #' filter(keyness, pattern = "america*")
-#' filter(keyness, p < .00001) %>% head()
 #' filter(keyness, p < .00001, pattern = "america*") 
+#' filter(keyness, p < .00001) %>% head()
 filter.textstat <- function(.data, ...,
                             pattern = NULL, 
-                            # selection = c("keep", "remove"), 
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE) {
     
     attrs <- attributes(.data)
     
-    # call dplyr filter
-    .data <- as.data.frame(dplyr::filter(dplyr:::tbl_df(.data), ...))
-    
+    # call dplyr filter, if ... arguments are supplied
+    if (length(list(substitute(...)))) {
+        if (!requireNamespace("dplyr", quietly = TRUE)) 
+            stop("You must install the dplyr package to use filter.textstat")
+        .data <- as.data.frame(dplyr::filter(dplyr::tbl_df(.data), ...))
+    }
+
     # select on features if specified
     if (!missing(pattern)) {
         valuetype <- match.arg(valuetype)
