@@ -43,7 +43,8 @@ Imports:
     lubridate,
     magrittr,
     spacyr,
-    stopwords
+    stopwords,
+    dplyr
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     knitr,
