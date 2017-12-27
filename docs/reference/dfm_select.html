@@ -150,16 +150,15 @@
     </div>
 
     
-    <p>This function selects or removes features from a <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a>, 
-based on feature name matches with <code>pattern</code>.  The most common usages 
-are to eliminate features from a dfm already constructed, such as stopwords, 
+    <p>This function selects or removes features from a <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a>,
+based on feature name matches with <code>pattern</code>.  The most common usages
+are to eliminate features from a dfm already constructed, such as stopwords,
 or to select only terms of interest from a dictionary.</p>
     
 
     <pre class="usage"><span class='fu'>dfm_select</span>(<span class='no'>x</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>min_nchar</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>max_nchar</span> <span class='kw'>=</span> <span class='fl'>79L</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>),
-  <span class='no'>...</span>)
+  <span class='kw'>min_nchar</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>max_nchar</span> <span class='kw'>=</span> <span class='fl'>79L</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))
 
 <span class='fu'>dfm_remove</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
@@ -204,28 +203,29 @@ or to select only terms of interest from a dictionary.</p>
     <tr>
       <th>min_nchar, max_nchar</th>
       <td><p>numerics specifying the minimum and maximum length
-in characters for features to be removed or kept; defaults are 1 and 
+in characters for features to be removed or kept; defaults are 1 and
 <a href='https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft'>79</a>.
- (Set <code>max_nchar</code> to <code>NULL</code> for no upper limit.) These are 
-applied after (and hence, in addition to) any selection based on pattern 
+ (Set <code>max_nchar</code> to <code>NULL</code> for no upper limit.) These are
+applied after (and hence, in addition to) any selection based on pattern
 matches.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>if <code>TRUE</code> print message about how many pattern were 
+      <td><p>if <code>TRUE</code> print message about how many pattern were
 removed</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>used only for passing arguments from <code>*_remove</code> to
-<code>*_select</code> functions</p></td>
+      <td><p>used only for passing arguments from <code>dfm_remove</code> or
+<code>dfm_keep</code> to <code>dfm_select</code>. Cannot include
+<code>selection</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a> object, after the feature selection has 
-  been applied.</p>  
+    <p>A <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a> object, after the feature selection has
+  been applied.</p>
 <p>When <code>pattern</code> is a <a href='dfm.html'>dfm</a> object, then the returned object will
   be identical in its feature set to the dfm supplied as the <code>pattern</code>
   argument. This means that any features in <code>x</code> not in the dfm provided
@@ -233,25 +233,25 @@ removed</p></td>
   dfm supplied as <code>pattern</code> but not found in <code>x</code> will be added with
   all zero counts.  Because selecting on a dfm is designed to produce a
   selected dfm with an exact feature match, when <code>pattern</code> is a
-  <a href='dfm.html'>dfm</a> object, then the following settings are always used: 
-  <code>case_insensitive = FALSE</code>, and <code>valuetype = "fixed"</code>.</p>  
-<p>Selecting on a <a href='dfm.html'>dfm</a> is useful when you have trained a model on one 
-  dfm, and need to project this onto a test set whose features must be 
+  <a href='dfm.html'>dfm</a> object, then the following settings are always used:
+  <code>case_insensitive = FALSE</code>, and <code>valuetype = "fixed"</code>.</p>
+<p>Selecting on a <a href='dfm.html'>dfm</a> is useful when you have trained a model on one
+  dfm, and need to project this onto a test set whose features must be
   identical.  It is also used in <code><a href='bootstrap_dfm.html'>bootstrap_dfm</a></code>.  See examples.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>dfm_remove</code> and <code>fcm_remove</code> are simply a convenience
-  wrappers to calling <code>dfm_select</code> and <code>fcm_select</code> with 
-  <code>selection = "remove"</code>.</p>  
-<p><code>dfm_keep</code> and <code>fcm_keep</code> are simply a convenience
-  wrappers to calling <code>dfm_select</code> and <code>fcm_select</code> with 
-  <code>selection = "keep"</code>.</p>
+  wrappers to calling <code>dfm_select</code> and <code>fcm_select</code> with
+  <code>selection = "remove"</code>.</p>
+<p><code>dfm_keep</code> and <code>fcm_keep</code> are simply a convenience wrappers to
+  calling <code>dfm_select</code> and <code>fcm_select</code> with <code>selection =
+  "keep"</code>.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>This function selects features based on their labels.  To select 
-  features based on the values of the document-feature matrix, use 
+    <p>This function selects features based on their labels.  To select
+  features based on the values of the document-feature matrix, use
   <code><a href='dfm_trim.html'>dfm_trim</a></code>.</p>
     
 
