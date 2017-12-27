@@ -83,6 +83,7 @@ Collate:
     'corpuszip.R'
     'data-deprecated.R'
     'data-documentation.R'
+    'defunct-functions.R'
     'dfm-classes.R'
     'dfm-methods.R'
     'dfm-print.R'
