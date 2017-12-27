@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • quanteda</title>
+<title>Select rows of textstat objects by glob, regex or fixed patterns — textstat_select • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -49,7 +49,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -144,24 +144,73 @@
       </header>
 
       <div class="row">
-
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+    <h1>Select rows of textstat objects by glob, regex or fixed patterns</h1>
     </div>
 
-    <div class="contents">
-    </div>
+    
+    <p>Users can subset output object of <code>textstat_collocations</code>,
+<code>textstat_keyness</code> or <code>textstat_frequency</code> based on
+<code>"glob"</code>, <code>"regex"</code> or <code>"fixed"</code> patterns using this method.</p>
+    
+
+    <pre class="usage"><span class='fu'>textstat_select</span>(<span class='no'>x</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
+  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>a <code>textstat</code> object</p></td>
+    </tr>
+    <tr>
+      <th>pattern</th>
+      <td><p>a character vector, list of character vectors, <a href='dictionary.html'>dictionary</a>,
+<a href='textstat_collocations.html'>collocations</a>, or <a href='dfm.html'>dfm</a>. See <a href='pattern.html'>pattern</a> for details.</p></td>
+    </tr>
+    <tr>
+      <th>selection</th>
+      <td><p>whether to <code>"keep"</code> or <code>"remove"</code> the rows that
+match the pattern</p></td>
+    </tr>
+    <tr>
+      <th>valuetype</th>
+      <td><p>the type of pattern matching: <code>"glob"</code> for 
+"glob"-style wildcard expressions; <code>"regex"</code> for regular expressions;
+or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
+    </tr>
+    <tr>
+      <th>case_insensitive</th>
+      <td><p>ignore case when matching, if <code>TRUE</code></p></td>
+    </tr>
+    </table>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'>ifelse</span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&lt;</span> <span class='fl'>1945</span>, <span class='st'>"pre-war"</span>, <span class='st'>"post-war"</span>)
+<span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>period</span>)
+<span class='no'>keyness</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_keyness.html'>textstat_keyness</a></span>(<span class='no'>mydfm</span>)
+<span class='fu'>textstat_select</span>(<span class='no'>keyness</span>, <span class='st'>'america*'</span>)</div><div class='output co'>#&gt;          feature         chi2            p n_target n_reference
+#&gt; 3238 americanism    0.3721574 5.418307e-01        1           0
+#&gt; 7314  american's   -0.2648039 6.068389e-01        0           1
+#&gt; 8324    americas   -0.7944222 3.727663e-01        1           2
+#&gt; 9251    american  -19.0970791 1.242349e-05       94          69
+#&gt; 9342   america's  -94.0689468 0.000000e+00        0          35
+#&gt; 9349   americans -150.6479704 0.000000e+00        7          67
+#&gt; 9351     america -176.6114029 0.000000e+00       54         130</div><div class='input'>
+</div></pre>
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
+  </div>
 </div>
 
       <footer>

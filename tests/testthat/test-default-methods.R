@@ -385,10 +385,6 @@ test_that("test default textmodel methods", {
         textmodel_wordscores(TRUE),
         "textmodel_wordscores\\(\\) only works on dfm.*objects"
     )
-    expect_error(
-        textmodel_wordshoal(TRUE),
-        "textmodel_wordshoal\\(\\) only works on dfm.*objects"
-    )
 })
 
 test_that("test default textstat methods", {
