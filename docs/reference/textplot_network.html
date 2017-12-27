@@ -157,7 +157,7 @@ features.</p>
     <pre class="usage"><span class='fu'>textplot_network</span>(<span class='no'>x</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>edge_color</span> <span class='kw'>=</span> <span class='st'>"skyblue"</span>, <span class='kw'>edge_alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>edge_size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>vertex_color</span> <span class='kw'>=</span> <span class='st'>"gray40"</span>, <span class='kw'>vertex_size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>vertex_labelcolor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>offset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+  <span class='kw'>offset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>vertex_labelfont</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for fcm</span>
 <span class='fu'><a href='http://www.rdocumentation.org/packages/network/topics/network'>as.network</a></span>(<span class='no'>x</span>, <span class='kw'>min_freq</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>omit_isolated</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
@@ -209,6 +209,10 @@ other edges are determined proportionally to the highest frequency.</p></td>
       <th>offset</th>
       <td><p>if <code>NULL</code>, the distance between vertices and texts are
 determined automatically.</p></td>
+    </tr>
+    <tr>
+      <th>vertex_labelfont</th>
+      <td><p>font-family of texts. Use default font if <code>NULL</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>

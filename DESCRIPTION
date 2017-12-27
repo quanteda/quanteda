@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.99.32
+Version: 0.99.33
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -84,6 +84,7 @@ Collate:
     'corpuszip.R'
     'data-deprecated.R'
     'data-documentation.R'
+    'defunct-functions.R'
     'dfm-classes.R'
     'dfm-methods.R'
     'dfm-print.R'
@@ -123,7 +124,6 @@ Collate:
     'textmodel_nb.R'
     'textmodel_wordfish.R'
     'textmodel_wordscores.R'
-    'textmodel_wordshoal.R'
     'textplot_influence.R'
     'textplot_keyness.R'
     'textplot_network.R'
