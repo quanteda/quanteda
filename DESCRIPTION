@@ -122,7 +122,6 @@ Collate:
     'textmodel_nb.R'
     'textmodel_wordfish.R'
     'textmodel_wordscores.R'
-    'textmodel_wordshoal.R'
     'textplot_influence.R'
     'textplot_keyness.R'
     'textplot_network.R'
