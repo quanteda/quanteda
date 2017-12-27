@@ -24,7 +24,7 @@
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
-  
+  <script src="../extra.js"></script>
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -145,16 +157,26 @@ below to see their documentation.</p><dl class='dl-horizontal'>
     <dt>network</dt><dd><p><code><a href='http://www.rdocumentation.org/packages/network/topics/network'>as.network</a></code></p></dd>
 
     <dt>spacyr</dt><dd><p><code><a href='http://www.rdocumentation.org/packages/spacyr/topics/spacy_parse'>spacy_parse</a></code></p></dd>
+
+    <dt>stopwords</dt><dd><p><code><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></code></p></dd>
 </dl>
     
 
         
+    <h2 class="hasAnchor" id="stopwords"><a class="anchor" href="#stopwords"></a>Stopwords</h2>
+
+    
+    <p>Stopword lists were formerly built into <span class="pkg">quanteda</span>, but have been moved to the 
+<span class="pkg">stopwords</span> package.  See <code><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></code>.</p>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      
+      <li><a href="#stopwords">Stopwords</a></li>
+          </ul>
 
   </div>
 </div>

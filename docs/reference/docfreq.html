@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>compute the (weighted) document frequency of a feature — docfreq • quanteda</title>
+<title>Compute the (weighted) document frequency of a feature — docfreq • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -24,7 +24,7 @@
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
-  
+  <script src="../extra.js"></script>
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -134,20 +146,20 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>compute the (weighted) document frequency of a feature</h1>
+    <h1>Compute the (weighted) document frequency of a feature</h1>
     </div>
 
     
-    <p>For a <a href='dfm.html'>dfm</a> object, returns a (weighted) document frequency for 
-each term.  The default is a simple count of the number of documents in which
-a feature occurs more than a given frequency threshold.  (The default 
-threshold is  zero, meaning that any feature occuring at least once in a 
-document will be counted.)</p>
+    <p>For a <a href='dfm.html'>dfm</a> object, returns a (weighted) document frequency for each
+term.  The default is a simple count of the number of documents in which a
+feature occurs more than a given frequency threshold.  (The default threshold
+is  zero, meaning that any feature occurring at least once in a document will
+be counted.)</p>
     
 
     <pre class="usage"><span class='fu'>docfreq</span>(<span class='no'>x</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"inverse"</span>, <span class='st'>"inversemax"</span>, <span class='st'>"inverseprob"</span>,
   <span class='st'>"unary"</span>), <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>USE.NAMES</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>use.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -183,7 +195,7 @@ will considered in the computation of document frequency.  The default is
 documents in which it occurs greater than zero times.</p></td>
     </tr>
     <tr>
-      <th>USE.NAMES</th>
+      <th>use.names</th>
       <td><p>logical; if <code>TRUE</code> attach feature labels as names of 
 the resulting numeric vector</p></td>
     </tr>
@@ -215,24 +227,24 @@ the resulting numeric vector</p></td>
 #&gt;               1               2               1               2               1 </div><div class='input'>
 <span class='co'># replication of worked example from</span>
 <span class='co'># https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf</span>
-<span class='no'>wikiDfm</span> <span class='kw'>&lt;-</span> <span class='fu'>new</span>(<span class='st'>"dfm"</span>,
-               <span class='kw pkg'>Matrix</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/Matrix/topics/Matrix'>Matrix</a></span>(<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>, <span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
-                              <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                              <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>docs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"document1"</span>, <span class='st'>"document2"</span>),
-                                              <span class='kw'>features</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>,
-                                                           <span class='st'>"another"</span>, <span class='st'>"example"</span>)),
-                              <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-<span class='no'>wikiDfm</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
+<span class='no'>wiki_dfm</span> <span class='kw'>&lt;-</span>
+    <span class='fu'>matrix</span>(<span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>, <span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
+           <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+           <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>docs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"document1"</span>, <span class='st'>"document2"</span>),
+                           <span class='kw'>features</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>,
+                                        <span class='st'>"another"</span>, <span class='st'>"example"</span>))) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='is.dfm.html'>as.dfm</a></span>()
+<span class='no'>wiki_dfm</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
 #&gt; 2 x 6 sparse Matrix of class "dfm"
 #&gt;            features
 #&gt; docs        this is a sample another example
 #&gt;   document1    1  1 2      1       0       0
-#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt; 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt;      this        is         a    sample   another   example 
-#&gt; 0.2218487 0.2218487 0.3010300 0.3010300 0.3010300 0.3010300 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"unary"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       1       1       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inversemax"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt; 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wikiDfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverseprob"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wiki_dfm</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt; 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt;      this        is         a    sample   another   example 
+#&gt; 0.2218487 0.2218487 0.3010300 0.3010300 0.3010300 0.3010300 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"unary"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt;       1       1       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inversemax"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt; 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </div><div class='input'><span class='fu'>docfreq</span>(<span class='no'>wiki_dfm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"inverseprob"</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
 #&gt;       0       0       0       0       0       0 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

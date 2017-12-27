@@ -2,7 +2,7 @@
 % Please edit documentation in R/corpus_subset.R
 \name{corpus_subset}
 \alias{corpus_subset}
-\title{extract a subset of a corpus}
+\title{Extract a subset of a corpus}
 \usage{
 corpus_subset(x, subset, select, ...)
 }
@@ -12,7 +12,7 @@ corpus_subset(x, subset, select, ...)
 \item{subset}{logical expression indicating the documents to keep: missing
 values are taken as false}
 
-\item{select}{expression, indicating the docvars to select from the corpus}
+\item{select}{expression, indicating the \link{docvars} to keep}
 
 \item{...}{not used}
 }

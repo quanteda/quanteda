@@ -3,7 +3,7 @@
 \name{docvars}
 \alias{docvars}
 \alias{docvars<-}
-\title{get or set for document-level variables}
+\title{Get or set document-level variables}
 \usage{
 docvars(x, field = NULL)
 

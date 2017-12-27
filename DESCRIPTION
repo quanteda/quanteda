@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.99.9029
+Version: 0.99.33
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -23,6 +23,7 @@ Depends:
     methods
 Imports:
     utils,
+    digest,
     stats,
     Matrix (>= 1.2),
     data.table (>= 1.9.6),
@@ -41,7 +42,8 @@ Imports:
     yaml,
     lubridate,
     magrittr,
-    spacyr
+    spacyr,
+    stopwords
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     knitr,
@@ -82,6 +84,7 @@ Collate:
     'corpuszip.R'
     'data-deprecated.R'
     'data-documentation.R'
+    'defunct-functions.R'
     'dfm-classes.R'
     'dfm-methods.R'
     'dfm-print.R'
@@ -92,6 +95,7 @@ Collate:
     'dfm_lookup.R'
     'dfm_sample.R'
     'dfm_select.R'
+    'dfm_sort.R'
     'dfm_subset.R'
     'dfm_trim.R'
     'dfm_weight.R'
@@ -120,15 +124,14 @@ Collate:
     'textmodel_nb.R'
     'textmodel_wordfish.R'
     'textmodel_wordscores.R'
-    'textmodel_wordshoal.R'
     'textplot_influence.R'
     'textplot_keyness.R'
     'textplot_network.R'
     'textplot_scale1d.R'
     'textplot_wordcloud.R'
     'textplot_xray.R'
+    'textstat-methods.R'
     'textstat_collocations.R'
-    'textstat_collocationsdev.R'
     'textstat_dist.R'
     'textstat_frequency.R'
     'textstat_keyness.R'

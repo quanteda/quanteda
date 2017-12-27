@@ -10,7 +10,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../extra.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Google analytics --><script>
@@ -38,8 +38,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
 <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -62,9 +77,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -112,7 +124,6 @@
       <h1>The Structure of Quanteda</h1>
                         <h4 class="author">Kenneth Benoit</h4>
             
-            <h4 class="date">2017-12-08</h4>
           </div>
 
     
@@ -188,7 +199,7 @@
 <h3 class="hasAnchor">
 <a href="#why-are-some-operations-unavailable-for-specific-object-types" class="anchor"></a>Why are some operations unavailable for specific object types?</h3>
 <p>Because not every operation makes sense for every object type. Take the example of a “feature co-occurrence matrix”, or <code>fcm</code>. Construction of a feature co-occurrence matrix is be slightly different from constructing a dfm. Unlike the “Swiss-army” knife approach of <code><a href="../reference/dfm.html">dfm()</a></code>, which can operate directly on texts, <code><a href="../reference/fcm.html">fcm()</a></code> works only on tokens, since the definition of how the context of co-occurrence is defined is dependent on token sequences and therefore highly dependent on tokenization options. In addition, <code><a href="../reference/fcm.html">fcm()</a></code> is likely to be used a lot less frequently, and primarily by more expert users.</p>
-<p>Futhermore, many functions defined for <code><a href="../reference/fcm.html">fcm()</a></code> objects <em>should</em> be unavailable, because they violate the principles of the object. For instance, <code>fcm_wordstem()</code> and <code><a href="../reference/dfm_tolower.html">fcm_tolower()</a></code> should not be applied to <code><a href="../reference/fcm.html">fcm()</a></code> objects, because collapsing these and treating them as equivalent (as for a dfm object) is incorrect for the context in which co-occurrence is defined, such as a +/- 5 token window.</p>
+<p>Furthermore, many functions defined for <code><a href="../reference/fcm.html">fcm()</a></code> objects <em>should</em> be unavailable, because they violate the principles of the object. For instance, <code>fcm_wordstem()</code> and <code><a href="../reference/dfm_tolower.html">fcm_tolower()</a></code> should not be applied to <code><a href="../reference/fcm.html">fcm()</a></code> objects, because collapsing these and treating them as equivalent (as for a dfm object) is incorrect for the context in which co-occurrence is defined, such as a +/- 5 token window.</p>
 </div>
 </div>
 <div id="extensions-of-core-r-functions" class="section level2">
@@ -231,7 +242,7 @@
 </li>
 <li>
 <p><strong>Defining and delimiting textual features</strong></p>
-This step involves defining and extracting the relevant features from each document, using <code><a href="../reference/tokens.html">tokens()</a></code>, the main function for this step, involves indentifying instances of defined features (“tokens”) and extracting them as vectors. Usually these will consist of words, but may also consist of:
+This step involves defining and extracting the relevant features from each document, using <code><a href="../reference/tokens.html">tokens()</a></code>, the main function for this step, involves identifying instances of defined features (“tokens”) and extracting them as vectors. Usually these will consist of words, but may also consist of:
 <ul>
 <li>
 <code>ngrams</code>: adjacent sequences of words, not separated by punctuation marks or sentence boundaries; including</li>
@@ -253,8 +264,8 @@ For converting to lowercase, it is actually <em>faster</em> to perform this step
 <li>a tokens object</li>
 <li>a dfm object</li>
 </ul>
-<p>Since the tokenizer we will use may not distinguish the puncutation characters used in constructs such as URLs, email addresses, Twitter handles, or digits prefixed by currency symbols, we will mostly need to use a substitution strategy to replace these with alternative characters prior to tokenization, and then replace the substitutions with the original characters. This will slow down processing but will only be active by explicit user request for this type of handling to take place.</p>
-<p>Note that that defining and delimiting features may alao include their <em>parts of speech</em>, meaning we will need to add functionality for POS tagging and extraction in this step.</p>
+<p>Since the tokenizer we will use may not distinguish the punctuation characters used in constructs such as URLs, email addresses, Twitter handles, or digits prefixed by currency symbols, we will mostly need to use a substitution strategy to replace these with alternative characters prior to tokenization, and then replace the substitutions with the original characters. This will slow down processing but will only be active by explicit user request for this type of handling to take place.</p>
+<p>Note that that defining and delimiting features may also include their <em>parts of speech</em>, meaning we will need to add functionality for POS tagging and extraction in this step.</p>
 </li>
 <li>
 <p><strong>Further feature selection</strong></p>
@@ -302,7 +313,7 @@ These steps don’t necessarily require the processing steps above.
 <span class="st">    </span><span class="kw"><a href="../reference/char_tolower.html">char_tolower</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../reference/tokens.html">tokens</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../reference/tokens_wordstem.html">tokens_wordstem</a></span>() <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>()</code></pre></div>
 <p>We recognize however that not all sequences will make sense, for instance <code><a href="../reference/tokens_wordstem.html">tokens_wordstem()</a></code> will only work <em>after</em> tokenization, and will try to catch these errors and make the proper sequence clear to users.</p>
 </div>

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfm-methods.R
 \name{sparsity}
 \alias{sparsity}
-\title{compute the sparsity of a document-feature matrix}
+\title{Compute the sparsity of a document-feature matrix}
 \usage{
 sparsity(x)
 }

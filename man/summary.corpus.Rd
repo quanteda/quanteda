@@ -2,7 +2,7 @@
 % Please edit documentation in R/corpus-methods-base.R
 \name{summary.corpus}
 \alias{summary.corpus}
-\title{summarize a corpus}
+\title{Summarize a corpus}
 \usage{
 \method{summary}{corpus}(object, n = 100, showmeta = FALSE,
   tolower = FALSE, ...)

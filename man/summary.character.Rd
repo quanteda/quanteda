@@ -2,7 +2,7 @@
 % Please edit documentation in R/character-methods.R
 \name{summary.character}
 \alias{summary.character}
-\title{summary statistics on a character vector}
+\title{Summary statistics on a character vector}
 \usage{
 \method{summary}{character}(object, n = 100, tolower = FALSE, ...)
 }

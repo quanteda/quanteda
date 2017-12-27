@@ -2,7 +2,7 @@
 % Please edit documentation in R/quanteda-documentation.R
 \name{valuetype}
 \alias{valuetype}
-\title{pattern matching using valuetype}
+\title{Pattern matching using valuetype}
 \arguments{
 \item{valuetype}{the type of pattern matching: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;

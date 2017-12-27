@@ -2,7 +2,7 @@
 % Please edit documentation in R/textmodel_nb.R
 \name{predict.textmodel_nb_fitted}
 \alias{predict.textmodel_nb_fitted}
-\title{prediction method for Naive Bayes classifier objects}
+\title{Prediction method for Naive Bayes classifier objects}
 \usage{
 \method{predict}{textmodel_nb_fitted}(object, newdata = NULL, ...)
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>segment texts on a pattern match — corpus_segment • quanteda</title>
+<title>Segment texts on a pattern match — corpus_segment • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -24,7 +24,7 @@
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
-  
+  <script src="../extra.js"></script>
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -134,7 +146,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>segment texts on a pattern match</h1>
+    <h1>Segment texts on a pattern match</h1>
     </div>
 
     
@@ -331,7 +343,8 @@ semi-colons (phrase delimiters within a sentence),
 #&gt; - Those who have been trafficked should not be subject to summary deportation. They should receive a temporary right to stay and have the same right to apply to remain as others seeking to migrate.
 #&gt; 
 #&gt; - Those seeking sanctuary should not be detained, and in particular the administrative detention of children is unacceptable and should cease immediately.</div><div class='input'><span class='fu'>char_segment</span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>4</span>],
-             <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"\\n\\n(\\-\\s){0,1}"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>remove_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.1 
+             <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"\\n\\n(\\-\\s){0,1}"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>,
+             <span class='kw'>remove_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.1 
 #&gt;                                                                                                                                                                                                                                                                                                      "Migration is a fact of life.  People have always moved from one country to another, and as a practical matter the ability to control borders without oppressive measures is more limited than most politicians like to pretend. Much of our language, culture and way of life have been enriched by successive new arrivals over two thousand years. It is not just a matter of immigration: over 5 million British Citizens benefit from other countries' liberal immigration policies by living abroad." 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.2 
 #&gt; "The causes of a person moving to the UK are complex. For the person concerned, there may be escape from persecution and improved economic prospects, but also separation from home, friends and family. For the country of origin, there may be the loss of skilled workers, especially health professionals, but also the receipt of remittances from the immigrant, and many migrants return with improved skills. For the community that receives the immigrant there may be the benefits of getting done jobs that no one in that community wants to or can do, more taxes being paid and the creation of a more cosmopolitan atmosphere. But there may also be costs in terms of unwelcome competition for jobs, pressure on housing and other resources and longer-term pressures on overall population." 
@@ -356,12 +369,12 @@ semi-colons (phrase delimiters within a sentence),
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Greens.12 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       "Those seeking sanctuary should not be detained, and in particular the administrative detention of children is unacceptable and should cease immediately." </div><div class='input'>
 <span class='co'># segment a text into clauses</span>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"This, is a sentence?  You: come here."</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"Yes, yes, okay."</span>)
+<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"This, is a sentence?  You: come here."</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"Yes, yes okay."</span>)
 <span class='fu'>char_segment</span>(<span class='no'>txt</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"\\p{P}"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>,
              <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='st'>"after"</span>, <span class='kw'>remove_pattern</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;             d1.1             d1.2             d1.3             d1.4 
 #&gt;          "This," "is a sentence?"           "You:"     "come here." 
-#&gt;             d2.1             d2.2             d2.3 
-#&gt;           "Yes,"           "yes,"          "okay." </div></pre>
+#&gt;             d2.1             d2.2 
+#&gt;           "Yes,"      "yes okay." </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

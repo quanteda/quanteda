@@ -10,7 +10,7 @@
 \alias{is.tokens}
 \alias{+.tokens}
 \alias{c.tokens}
-\title{coercion, checking, and combining functions for tokens objects}
+\title{Coercion, checking, and combining functions for tokens objects}
 \usage{
 as.tokens(x, concatenator = "_", ...)
 

@@ -15,8 +15,6 @@ knitr::opts_chunk$set(
 
 Using **quanteda**'s `fcm()` and `textplot_network()`, you can perform visual analysis of social media posts in terms of cooccurances of hashtags or usernames in a few steps. The dataset for this example contains only 10,000 Twitter posts, but you can easily analyze more one million posts on your laptop computer.
 
-# Hashtags
-
 ```{r, message = FALSE}
 library(quanteda)
 ```
@@ -31,6 +29,8 @@ load("data/data_corpus_tweets.rda")
 tweet_dfm <- dfm(data_corpus_tweets, remove_punct = TRUE)
 head(tweet_dfm)
 ```
+
+# Hashtags
 
 ## Extract most common hashtags
 ```{r}

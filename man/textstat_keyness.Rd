@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_keyness.R
 \name{textstat_keyness}
 \alias{textstat_keyness}
-\title{calculate keyness statistics}
+\title{Calculate keyness statistics}
 \usage{
 textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"),
   sort = TRUE, correction = c("default", "yates", "williams", "none"))
@@ -39,6 +39,9 @@ a data.frame of computed statistics and associated p-values, where
   estimate of the odds ratio; for \code{measure = "lr"} this is the 
   likelihood ratio \eqn{G2} statistic; for \code{"pmi"} this is the pointwise
   mutual information statistics.
+
+\code{textstat_keyness} returns a data.frame of features and
+  their keyness scores and frequency counts.
 }
 \description{
 Calculate "keyness", a score for features that occur differentially across 

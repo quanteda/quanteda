@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>calculate lexical diversity — textstat_lexdiv • quanteda</title>
+<title>Calculate lexical diversity — textstat_lexdiv • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -24,7 +24,7 @@
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
-  
+  <script src="../extra.js"></script>
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -134,7 +146,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>calculate lexical diversity</h1>
+    <h1>Calculate lexical diversity</h1>
     </div>
 
     
@@ -142,7 +154,7 @@
     
 
     <pre class="usage"><span class='fu'>textstat_lexdiv</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"all"</span>, <span class='st'>"TTR"</span>, <span class='st'>"C"</span>, <span class='st'>"R"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"U"</span>, <span class='st'>"S"</span>,
-  <span class='st'>"Maas"</span>), <span class='kw'>log.base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+  <span class='st'>"Maas"</span>), <span class='kw'>log.base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -162,12 +174,6 @@ object</p></td>
 measures using logs)</p></td>
     </tr>
     <tr>
-      <th>drop</th>
-      <td><p>if <code>TRUE</code>, the result is returned as a numeric vector if 
-only a single measure is requested; otherwise, a data.frame is returned 
-with each column consisting of a requested measure.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>not used</p></td>
     </tr>
@@ -175,8 +181,8 @@ with each column consisting of a requested measure.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a data.frame or vector of lexical diversity statistics, each row or
-  vector element corresponding to an input document</p>
+    <p><code>textstat_lexdiv</code> returns a data.frame of documents and
+  their lexical diversity scores.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -246,17 +252,17 @@ with each column consisting of a requested measure.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-(<span class='no'>results</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='fu'>c</span>(<span class='st'>"CTTR"</span>, <span class='st'>"TTR"</span>, <span class='st'>"U"</span>)))</div><div class='output co'>#&gt;                   CTTR       TTR        U
-#&gt; 1981-Reagan  11.378940 0.3046595 22.99986
-#&gt; 1985-Reagan  11.461022 0.2998973 22.96229
-#&gt; 1989-Bush    10.324247 0.2819843 21.37823
-#&gt; 1993-Clinton  9.992155 0.3300600 22.11897
-#&gt; 1997-Clinton 10.373546 0.2964475 21.75021
-#&gt; 2001-Bush     9.844814 0.3274336 21.88049
-#&gt; 2005-Bush    10.792498 0.3169470 22.69528
-#&gt; 2009-Obama   12.222576 0.3319808 24.61202
-#&gt; 2013-Obama   11.546345 0.3392318 24.11639
-#&gt; 2017-Trump    9.493324 0.3295181 21.50726</div><div class='input'><span class='fu'>cor</span>(<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"all"</span>))</div><div class='output co'>#&gt;               TTR          C           R        CTTR          U          S
+(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='fu'>c</span>(<span class='st'>"CTTR"</span>, <span class='st'>"TTR"</span>, <span class='st'>"U"</span>)))</div><div class='output co'>#&gt;        document      CTTR       TTR        U
+#&gt; 1   1981-Reagan 11.378940 0.3046595 22.99986
+#&gt; 2   1985-Reagan 11.461022 0.2998973 22.96229
+#&gt; 3     1989-Bush 10.324247 0.2819843 21.37823
+#&gt; 4  1993-Clinton  9.992155 0.3300600 22.11897
+#&gt; 5  1997-Clinton 10.373546 0.2964475 21.75021
+#&gt; 6     2001-Bush  9.844814 0.3274336 21.88049
+#&gt; 7     2005-Bush 10.792498 0.3169470 22.69528
+#&gt; 8    2009-Obama 12.222576 0.3319808 24.61202
+#&gt; 9    2013-Obama 11.546345 0.3392318 24.11639
+#&gt; 10   2017-Trump  9.493324 0.3295181 21.50726</div><div class='input'><span class='fu'>cor</span>(<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"all"</span>)[,-<span class='fl'>1</span>])</div><div class='output co'>#&gt;               TTR          C           R        CTTR          U          S
 #&gt; TTR    1.00000000  0.8718973  0.04870698  0.04870698  0.4574744  0.5625226
 #&gt; C      0.87189735  1.0000000  0.53081068  0.53081068  0.8331756  0.8951709
 #&gt; R      0.04870698  0.5308107  1.00000000  1.00000000  0.9097523  0.8520574
@@ -276,21 +282,7 @@ with each column consisting of a requested measure.</p></td>
 #&gt; Maas   1.0000000 -0.9734910 -0.9734910
 #&gt; lgV0  -0.9734910  1.0000000  1.0000000
 #&gt; lgeV0 -0.9734910  1.0000000  1.0000000</div><div class='input'>
-<span class='co'># with different settings of drop</span>
-<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 1997-Clinton    2001-Bush 
-#&gt;    0.3046595    0.2998973    0.2819843    0.3300600    0.2964475    0.3274336 
-#&gt;    2005-Bush   2009-Obama   2013-Obama   2017-Trump 
-#&gt;    0.3169470    0.3319808    0.3392318    0.3295181 </div><div class='input'><span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;                    TTR
-#&gt; 1981-Reagan  0.3046595
-#&gt; 1985-Reagan  0.2998973
-#&gt; 1989-Bush    0.2819843
-#&gt; 1993-Clinton 0.3300600
-#&gt; 1997-Clinton 0.2964475
-#&gt; 2001-Bush    0.3274336
-#&gt; 2005-Bush    0.3169470
-#&gt; 2009-Obama   0.3319808
-#&gt; 2013-Obama   0.3392318
-#&gt; 2017-Trump   0.3295181</div></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -2,7 +2,7 @@
 % Please edit documentation in R/textplot_scale1d.R
 \name{textplot_scale1d}
 \alias{textplot_scale1d}
-\title{plot a fitted scaling model}
+\title{Plot a fitted scaling model}
 \usage{
 textplot_scale1d(x, margin = c("documents", "features"), doclabels = NULL,
   sort = TRUE, groups = NULL, highlighted = NULL, alpha = 0.7,

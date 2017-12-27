@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>convert regex and glob patterns to type IDs or fixed patterns — regex2fixed • quanteda</title>
+<title>Convert regex and glob patterns to type IDs or fixed patterns — regex2fixed • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -24,7 +24,7 @@
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
-  
+  <script src="../extra.js"></script>
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -134,7 +146,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>convert regex and glob patterns to type IDs or fixed patterns</h1>
+    <h1>Convert regex and glob patterns to type IDs or fixed patterns</h1>
     </div>
 
     
@@ -146,14 +158,15 @@
   tokens object are matched. This function constructs index of glob patterns
   for faster matching.</p>
 <p>This is an internal function for <code>regex2id()</code> that select types using an
-index of types by reular expressions.</p>
+index of types by regular expressions.</p>
 <p>An internal function for <code>regex2id</code> that constructs an index of
 regex patterns (e.g. <code>^xxxx</code>, <code>xxxx$</code> and <code>^xxxx$</code>) to avoid
 expensive sequential search by <a href='http://www.rdocumentation.org/packages/stringi/topics/stri_detect'>stri_detect_regex</a>.</p>
-<p>internal function for <code>select_types()</code> to search the index using
+<p>Internal function for <code>select_types()</code> to search the index using
 fastmatch.</p>
-<p>simpler and faster version of expand.grid() in base package</p>
-<p>internal function for select_types() to check if a glob pattern is indexed by <code>index_types()</code></p>
+<p>Simpler and faster version of expand.grid() in base package</p>
+<p>Internal function for select_types() to check if a glob pattern is indexed by
+<code>index_types()</code>.</p>
     
 
     <pre class="usage"><span class='fu'>regex2fixed</span>(<span class='no'>pattern</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -209,8 +222,8 @@ index constructed by index_types().</p></td>
     </tr>
     <tr>
       <th>types_search</th>
-      <td><p>lowercased types when <code>case_insensitive=TRUE</code>, but not
-used in glob and fixed matching as types are in the index.</p></td>
+      <td><p>lowercased types when <code>case_insensitive=TRUE</code>, but
+not used in glob and fixed matching as types are in the index.</p></td>
     </tr>
     <tr>
       <th>max_len</th>

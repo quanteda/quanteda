@@ -1,4 +1,4 @@
-#' create ngrams and skipgrams from tokens
+#' Create ngrams and skipgrams from tokens
 #' 
 #' Create a set of ngrams (tokens in sequence) from already tokenized text
 #' objects, with an optional skip argument to form skipgrams. Both the ngram

@@ -1,4 +1,4 @@
-#' bootstrap a dfm
+#' Bootstrap a dfm
 #' 
 #' Create an array of resampled dfms.
 #' @param x a character or \link{corpus} object

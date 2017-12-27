@@ -1,7 +1,6 @@
 ---
 title: "The Structure of Quanteda"
 author: Kenneth Benoit
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
@@ -73,7 +72,7 @@ In our view, the advantages of this clarity outweigh whatever advantages might b
 
 Because not every operation makes sense for every object type.  Take the example of a "feature co-occurrence matrix", or `fcm`.  Construction of a feature co-occurrence matrix is be slightly different from constructing a dfm. Unlike the "Swiss-army" knife approach of `dfm()`, which can operate directly on texts, `fcm()` works only on tokens, since the definition of how the context of co-occurrence is defined is dependent on token sequences and therefore highly dependent on tokenization options.  In addition, `fcm()` is likely to be used a lot less frequently, and primarily by more expert users.
 
-Futhermore, many functions defined for `fcm()` objects _should_ be unavailable, because they violate the principles of the object.  For instance, `fcm_wordstem()` and `fcm_tolower()` should not be applied to `fcm()` objects, because collapsing these and treating them as equivalent (as for a dfm object) is incorrect for the context in which co-occurrence is defined, such as a +/- 5 token window.
+Furthermore, many functions defined for `fcm()` objects _should_ be unavailable, because they violate the principles of the object.  For instance, `fcm_wordstem()` and `fcm_tolower()` should not be applied to `fcm()` objects, because collapsing these and treating them as equivalent (as for a dfm object) is incorrect for the context in which co-occurrence is defined, such as a +/- 5 token window.
 
 
 ## Extensions of core R functions
@@ -115,7 +114,7 @@ Additional functions have been defined for **quanteda** objects that are [very s
 1.  **Defining and delimiting textual features**
 
     This step involves defining and extracting the relevant features from each document, using
-    `tokens()`, the main function for this step, involves indentifying instances of defined features ("tokens") and extracting them as vectors.  Usually these will consist of words, but may also consist of:
+    `tokens()`, the main function for this step, involves identifying instances of defined features ("tokens") and extracting them as vectors.  Usually these will consist of words, but may also consist of:
     *   `ngrams`: adjacent sequences of words, not separated by punctuation marks or sentence boundaries; including
     *   multi-word expressions, through `tokens_compound`, for selected word ngrams as identified in selected lists rather than simply using all adjacent word pairs or n-sequences.
     
@@ -135,9 +134,9 @@ Additional functions have been defined for **quanteda** objects that are [very s
     *   a tokens object
     *   a dfm object
     
-    Since the tokenizer we will use may not distinguish the puncutation characters used in constructs such as URLs, email addresses, Twitter handles, or digits prefixed by currency symbols, we will mostly need to use a substitution strategy to replace these with alternative characters prior to tokenization, and then replace the substitutions with the original characters.  This will slow down processing but will only be active by explicit user request for this type of handling to take place. 
+    Since the tokenizer we will use may not distinguish the punctuation characters used in constructs such as URLs, email addresses, Twitter handles, or digits prefixed by currency symbols, we will mostly need to use a substitution strategy to replace these with alternative characters prior to tokenization, and then replace the substitutions with the original characters.  This will slow down processing but will only be active by explicit user request for this type of handling to take place. 
     
-    Note that that defining and delimiting features may alao include their *parts of speech*, meaning we will need to add functionality for POS tagging and extraction in this step.
+    Note that that defining and delimiting features may also include their *parts of speech*, meaning we will need to add functionality for POS tagging and extraction in this step.
 
 
 1.  **Further feature selection**

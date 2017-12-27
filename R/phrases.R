@@ -1,4 +1,4 @@
-#' declare a compound character to be a sequence of separate pattern matches
+#' Declare a compound character to be a sequence of separate pattern matches
 #' 
 #' Declares that a whitespace-separated expression consists of multiple 
 #' patterns, separated by whitespace.  This is typically used as a wrapper 
@@ -71,7 +71,7 @@ is.phrase <- function(x) {
     "phrases" %in% class(x)
 }
 
-#' print a phrase object
+#' Print a phrase object
 #' 
 #' prints a phrase object in a way that looks like a standard list.
 #' @keywords internal

@@ -2,7 +2,7 @@
 % Please edit documentation in R/corpus_sample.R
 \name{corpus_sample}
 \alias{corpus_sample}
-\title{randomly sample documents from a corpus}
+\title{Randomly sample documents from a corpus}
 \usage{
 corpus_sample(x, size = ndoc(x), replace = FALSE, prob = NULL,
   by = NULL, ...)

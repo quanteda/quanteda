@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokens_group.R
 \name{tokens_group}
 \alias{tokens_group}
-\title{recombine documents tokens by groups}
+\title{Recombine documents tokens by groups}
 \usage{
 tokens_group(x, groups = NULL)
 }
@@ -15,7 +15,7 @@ coerced into a factor equal in length or rows to the number of documents.
 See \link{groups} for details.}
 }
 \description{
-recombine documents tokens by groups
+Recombine documents tokens by groups
 }
 \examples{
 # dfm_group examples

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dictionaries.R
 \name{remove_empty_keys}
 \alias{remove_empty_keys}
-\title{utility function to remove empty keys}
+\title{Utility function to remove empty keys}
 \usage{
 remove_empty_keys(dict)
 }
@@ -10,6 +10,6 @@ remove_empty_keys(dict)
 \item{dict}{a flat or hierarchical dictionary}
 }
 \description{
-utility function to remove empty keys
+Utility function to remove empty keys
 }
 \keyword{internal}

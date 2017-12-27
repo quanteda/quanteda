@@ -1,4 +1,4 @@
-#' plot a fitted scaling model
+#' Plot a fitted scaling model
 #' 
 #' Plot the results of a fitted scaling model, from (e.g.) a predicted 
 #' \link{textmodel_wordscores} model or a fitted \link{textmodel_wordfish} 

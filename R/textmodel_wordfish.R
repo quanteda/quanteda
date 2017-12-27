@@ -28,7 +28,7 @@ setClass("textmodel_wordfish_predicted",
          contains = "textmodel_wordfish_fitted")
 
 
-#' wordfish text model
+#' Wordfish text model
 #' 
 #' Estimate Slapin and Proksch's (2008) "wordfish" Poisson scaling model of 
 #' one-dimensional document positions using conditional maximum likelihood.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/textstat_readability.R
 \name{textstat_readability}
 \alias{textstat_readability}
-\title{calculate readability}
+\title{Calculate readability}
 \usage{
 textstat_readability(x, measure = c("all", "ARI", "ARI.simple", "Bormuth",
   "Bormuth.GP", "Coleman", "Coleman.C2", "Coleman.Liau", "Coleman.Liau.grade",
@@ -14,7 +14,7 @@ textstat_readability(x, measure = c("all", "ARI", "ARI.simple", "Bormuth",
   "SMOG.simple",      "SMOG.de", "Spache", "Spache.old", "Strain",
   "Traenkle.Bailer", "Traenkle.Bailer.2", "Wheeler.Smith", "meanSentenceLength",
   "meanWordSyllables"), remove_hyphens = TRUE, min_sentence_length = 1,
-  max_sentence_length = 10000, drop = TRUE, ...)
+  max_sentence_length = 10000, ...)
 }
 \arguments{
 \item{x}{a character or \link{corpus} object containing the texts}
@@ -36,15 +36,11 @@ other cruft that might be in the texts following conversion.
 For finer-grained control, consider filtering sentences prior first, 
 including through pattern-matching, using \code{\link{corpus_trim}}.}
 
-\item{drop}{if \code{TRUE}, the result is returned as a numeric vector if
-only a single measure is requested; otherwise, a data.frame is returned
-with each column consisting of a requested measure.}
-
 \item{...}{not used}
 }
 \value{
-a data.frame object consisting of the documents as rows, and the
-  readability statistics as columns
+\code{textstat_readability} returns a data.frame of documents and
+  their readability scores.
 }
 \description{
 Calculate the readability of text(s) using one of a variety of computed 
@@ -53,14 +49,13 @@ indexes.
 \examples{
 txt <- c("Readability zero one.  Ten, Eleven.", "The cat in a dilapidated tophat.")
 textstat_readability(txt, "Flesch.Kincaid")
-textstat_readability(txt, "Flesch.Kincaid", drop = FALSE)
 textstat_readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
 inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
-round(cor(inaugReadability), 2)
+cor(inaugReadability[,-1])
 
 textstat_readability(data_corpus_inaugural, measure = "Flesch.Kincaid")
 inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
-round(cor(inaugReadability), 2)
+cor(inaugReadability[,-1])
 }
 \author{
 Kenneth Benoit, re-engineered from the function of the same name by

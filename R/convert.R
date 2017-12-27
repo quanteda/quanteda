@@ -1,4 +1,4 @@
-#' convert a dfm to a non-quanteda format
+#' Convert a dfm to a non-quanteda format
 #' 
 #' Convert a quanteda \link{dfm} object to a format useable by other text
 #' analysis packages.  The general function \code{convert} provides easy
@@ -104,7 +104,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 }
 
 
-#' convenience wrappers for dfm convert
+#' Convenience wrappers for dfm convert
 #' 
 #' To make the usage as consistent as possible with other packages, quanteda
 #' also provides shortcut wrappers to \code{\link{convert}}, designed to be
@@ -322,7 +322,7 @@ ijv.to.doc <- function(i, j, v) {
     mapply(rbind, index, count, SIMPLIFY = FALSE)
 }
 
-#' convert a dfm to an lsa "textmatrix"
+#' Convert a dfm to an lsa "textmatrix"
 #' 
 #' Converts a dfm to a textmatrix for use with the lsa package.
 #' @param x dfm to be converted

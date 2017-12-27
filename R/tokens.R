@@ -1,4 +1,4 @@
-#' tokenize a set of texts
+#' Tokenize a set of texts
 #'
 #' Tokenize the texts from a character vector or from a corpus.
 #' @rdname tokens
@@ -246,7 +246,7 @@ tokens.tokens <-  function(x, what = c("word", "sentence", "character", "fastest
 }
 
 
-#' coercion, checking, and combining functions for tokens objects
+#' Coercion, checking, and combining functions for tokens objects
 #' 
 #' Coercion functions to and from \link{tokens} objects, checks for whether an 
 #' object is a \link{tokens} object, and functions to combine \link{tokens} 
@@ -885,7 +885,7 @@ get_tokens.tokens <- function(x) {
     as.list(x)
 }
 
-#' get types of tokens from a tokens object
+#' Get word types from a tokens object
 #' 
 #' Get unique types of tokens from a \link{tokens} object. 
 #' @param x a tokens object

@@ -2,73 +2,17 @@
 % Please edit documentation in R/dfm_weight.R
 \name{tfidf}
 \alias{tfidf}
-\title{compute tf-idf weights from a dfm}
+\title{Deprecated form of \code{\link{dfm_tfidf}}}
 \usage{
-tfidf(x, scheme_tf = "count", scheme_df = "inverse", base = 10, ...)
+tfidf(...)
 }
 \arguments{
-\item{x}{object for which idf or tf-idf will be computed (a document-feature 
-matrix)}
-
-\item{scheme_tf}{scheme for \code{\link{tf}}; defaults to \code{"count"}}
-
-\item{scheme_df}{scheme for \code{\link{docfreq}}; defaults to
-\code{"inverse"}.  Other options to \code{\link{docfreq}} can be passed
-through the ellipsis (\code{...}).}
-
-\item{base}{the base for the logarithms in the \code{\link{tf}} and
-\code{\link{docfreq}} calls; default is 10}
-
-\item{...}{additional arguments passed to \code{\link{docfreq}} when calling
-\code{tfidf}; these can be used to fix smoothing constants (default values
-are 0).}
+\item{...}{arguments passed to \code{\link{dfm_tfidf}}}
 }
 \description{
-Weight a dfm by term frequency-inverse document frequency (tf-idf) using
-fully sparse methods.
+Deprecated function name for \emph{tf-idf} weighting of a
+document-feature matrix.
 }
-\details{
-\code{tfidf} computes term frequency-inverse document frequency 
-  weighting.  The default is not to normalize term frequency (by computing 
-  relative term frequency within document) but this will be performed if 
-  \code{scheme_tf = "prop"}.
-}
-\examples{
-mydfm <- as.dfm(data_dfm_lbgexample)
-head(mydfm[, 5:10])
-head(tfidf(mydfm)[, 5:10])
-docfreq(mydfm)[5:15]
-head(tf(mydfm)[, 5:10])
-
-# replication of worked example from
-# https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
-wiki_dfm <- 
-    matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
-           byrow = TRUE, nrow = 2,
-           dimnames = list(docs = c("document1", "document2"),
-                           features = c("this", "is", "a", "sample", 
-                                        "another", "example"))) \%>\%
-    as.dfm()
-wiki_dfm    
-docfreq(wiki_dfm)
-tfidf(wiki_dfm, scheme_tf = "prop") \%>\% round(digits = 2)
-
-\dontrun{
-# comparison with tm
-if (requireNamespace("tm")) {
-    convert(wiki_dfm, to = "tm") \%>\% weightTfIdf() \%>\% as.matrix()
-    # same as:
-    tfidf(wiki_dfm, base = 2, scheme_tf = "prop")
-}
-}
-}
-\references{
-Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
-  \emph{Introduction to Information Retrieval}. Cambridge University Press.
-}
-\seealso{
-\code{\link{tf}}, \code{\link{docfreq}}
-}
+\keyword{deprecated}
 \keyword{dfm}
 \keyword{internal}
-\keyword{weighting}

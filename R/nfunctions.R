@@ -1,5 +1,4 @@
-
-#' count the number of documents or features
+#' Count the number of documents or features
 #' 
 #' Get the number of documents or features in an object.
 #' @details \code{ndoc} returns the number of documents in an object
@@ -70,14 +69,13 @@ nfeat.dfm <- function(x) {
     ncol(x)
 }
 
-#' @keywords internal
-nfeat.tokens <- function(x) {
-    if (attr(x, 'padding')) {
-        length(types(x)) + 1
-    } else {
-        length(types(x))
-    }
-}
+# nfeat.tokens <- function(x) {
+#     if (attr(x, 'padding')) {
+#         length(types(x)) + 1
+#     } else {
+#         length(types(x))
+#     }
+# }
 
 #' @rdname ndoc
 #' @details \code{nfeature} is the deprecated form of \code{nfeat}.
@@ -87,7 +85,7 @@ nfeature <- function(x) {
     UseMethod("nfeat")
 }
 
-#' count the number of tokens or types
+#' Count the number of tokens or types
 #' 
 #' Get the count of tokens (total features) or types (unique tokens).
 #' @param x a \pkg{quanteda} object: a character, \link{corpus}, 
@@ -188,7 +186,7 @@ ntype.tokens <- function(x, ...) {
     vapply(unclass(x), function(y) length(unique(y[y > 0])), numeric(1))
 }
 
-#' count the number of sentences
+#' Count the number of sentences
 #' 
 #' Return the count of sentences in a corpus or character object.
 #' @param x a character or \link{corpus} whose sentences will be counted

@@ -1,4 +1,4 @@
-#' apply a dictionary to a dfm
+#' Apply a dictionary to a dfm
 #' 
 #' Apply a dictionary to a dfm by looking up all dfm features for matches in a a
 #' set of \link{dictionary} values, and replace those features with a count of

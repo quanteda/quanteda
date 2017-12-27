@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>weight the feature frequencies in a dfm — dfm_weight • quanteda</title>
+<title>Weight the feature frequencies in a dfm — dfm_weight • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -24,7 +24,7 @@
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
-  
+  <script src="../extra.js"></script>
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -134,20 +146,15 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>weight the feature frequencies in a dfm</h1>
+    <h1>Weight the feature frequencies in a dfm</h1>
     </div>
 
     
-    <p>Returns a document by feature matrix with the feature frequencies weighted 
-according to one of several common methods.  Some shortcut functions that offer finer-grained control are:</p><ul>
-<li><p><code><a href='tf.html'>tf</a></code>  compute term frequency weights</p></li>
-<li><p><code><a href='tfidf.html'>tfidf</a></code>  compute term frequency-inverse document frequency weights</p></li>
-<li><p><code><a href='docfreq.html'>docfreq</a></code>  compute document frequencies of features</p></li>
-</ul>
+    <p>Weight the feature frequencies in a dfm</p>
     
 
-    <pre class="usage"><span class='fu'>dfm_weight</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"frequency"</span>, <span class='st'>"relfreq"</span>, <span class='st'>"relmaxfreq"</span>, <span class='st'>"logfreq"</span>,
-  <span class='st'>"tfidf"</span>), <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>dfm_weight</span>(<span class='no'>x</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"count"</span>, <span class='st'>"prop"</span>, <span class='st'>"propmax"</span>, <span class='st'>"logcount"</span>, <span class='st'>"boolean"</span>,
+  <span class='st'>"augmented"</span>, <span class='st'>"logave"</span>), <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
 
 <span class='fu'>dfm_smooth</span>(<span class='no'>x</span>, <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
@@ -159,27 +166,39 @@ according to one of several common methods.  Some shortcut functions that offer 
       <td><p>document-feature matrix created by <a href='dfm.html'>dfm</a></p></td>
     </tr>
     <tr>
-      <th>type</th>
+      <th>scheme</th>
       <td><p>a label of the weight type:</p><dl class='dl-horizontal'>
- <dt><code>"frequency"</code></dt><dd><p>integer feature count (default when a dfm is created)</p></dd>
- <dt><code>"relfreq"</code></dt><dd><p>the proportion of the feature counts of total feature counts (aka relative frequency)</p></dd>
- <dt><code>"relmaxfreq"</code></dt><dd><p>the proportion of the feature counts of the highest feature count in a document</p></dd>
- <dt><code>"logfreq"</code></dt><dd><p>take the logarithm of 1 + the feature count, for base 10</p></dd>
- <dt><code>"tfidf"</code></dt><dd><p>Term-frequency * inverse document frequency. For a
-  full explanation, see, for example, 
-  <a href='http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html'>http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html</a>.
-   This implementation will not return negative values.  For finer-grained
-  control, call <code><a href='tfidf.html'>tfidf</a></code> directly.</p></dd>
-  </dl></td>
+  <dt><code>"count"</code></dt><dd><p>integer feature count (default when a dfm is created)</p></dd>
+  <dt><code>"prop"</code></dt><dd><p>the proportion of the feature counts of total feature
+  counts (aka relative frequency)</p></dd>
+  <dt><code>"propmax"</code></dt><dd><p>the proportion of the feature counts of the highest
+  feature count in a document</p></dd>
+  <dt><code>log</code></dt><dd><p>take the logarithm of 1 + each count, for base
+  <code>base</code></p></dd>
+  <dt><code>boolean</code></dt><dd><p>recode all non-zero counts as 1</p></dd> 
+  <dt><code>augmented</code></dt><dd><p>equivalent to K + (1 - K) * <code>dfm_weight(x,
+  "propmax")</code></p></dd>
+  <dt><code>logave</code></dt><dd><p>(1 + the log of the counts) / (1 + log of the counts /
+  the average count within document)</p></dd>
+</dl></td>
     </tr>
     <tr>
       <th>weights</th>
-      <td><p>if <code>type</code> is unused, then <code>weights</code> can be 
-a named numeric vector of weights to be applied to the dfm, 
-where the names of the vector correspond to feature labels of the dfm, and 
-the weights will be applied as multipliers to the existing feature counts 
-for the corresponding named features.  Any features not named will be 
-assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
+      <td><p>if <code>scheme</code> is unused, then <code>weights</code> can be a named
+numeric vector of weights to be applied to the dfm, where the names of the
+vector correspond to feature labels of the dfm, and the weights will be
+applied as multipliers to the existing feature counts for the corresponding
+named features.  Any features not named will be assigned a weight of 1.0
+(meaning they will be unchanged).</p></td>
+    </tr>
+    <tr>
+      <th>base</th>
+      <td><p>base for the logarithm when <code>scheme</code> is <code>"logcount"</code> or 
+<code>logave</code></p></td>
+    </tr>
+    <tr>
+      <th>K</th>
+      <td><p>the K for the augmentation when <code>scheme = "augmented"</code></p></td>
     </tr>
     <tr>
       <th>smoothing</th>
@@ -189,16 +208,16 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>dfm_weight</code> returns the dfm with weighted values.
+    <p><code>dfm_weight</code> returns the dfm with weighted values.  Note the
+  because the default weighting scheme is <code>"count"</code>, simply calling this
+  function on an unweighted dfm will return the same object.  Many users will
+  want the normalized dfm consisting of the proportions of the feature counts
+  within each document, which requires setting <code>scheme = "prop"</code>.
 
 <code>dfm_smooth</code> returns a dfm whose values have been smoothed by
   adding the <code>smoothing</code> amount. Note that this effectively converts a
   matrix from sparse to dense format, so may exceed memory requirements
   depending on the size of your input matrix.</p>
-    
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>For finer grained control, consider calling the convenience functions directly.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -208,7 +227,7 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='tf.html'>tf</a></code>,  <code><a href='tfidf.html'>tfidf</a></code>, <code><a href='docfreq.html'>docfreq</a></code></p>
+    <p><code><a href='dfm_tfidf.html'>dfm_tfidf</a></code>, <code><a href='docfreq.html'>docfreq</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -216,29 +235,29 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
 
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='no'>dtm</span>, <span class='fl'>1</span>, <span class='kw'>function</span>(<span class='no'>tf</span>) <span class='no'>tf</span>/<span class='fu'>max</span>(<span class='no'>tf</span>))
 <span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>dtm</span>)</div><div class='output co'>#&gt;   the    of     ,   and     .    to    in     a   our  that 
-#&gt; 10082  7103  7026  5310  4945  4526  2785  2246  2181  1789 </div><div class='input'><span class='no'>normDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='st'>"relfreq"</span>)
+#&gt; 10082  7103  7026  5310  4945  4526  2785  2246  2181  1789 </div><div class='input'><span class='no'>normDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='st'>"prop"</span>)
 <span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>normDtm</span>)</div><div class='output co'>#&gt;       the         ,        of       and         .        to        in       our 
 #&gt; 3.7910332 2.7639649 2.6821863 2.0782035 1.9594539 1.7643366 1.0695645 0.8731637 
 #&gt;         a        we 
-#&gt; 0.8593092 0.7726443 </div><div class='input'><span class='no'>maxTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relmaxfreq"</span>)
+#&gt; 0.8593092 0.7726443 </div><div class='input'><span class='no'>maxTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"propmax"</span>)
 <span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>maxTfDtm</span>)</div><div class='output co'>#&gt;      the        ,       of      and        .       to       in      our 
 #&gt; 55.13499 42.22681 39.34995 31.43686 30.76141 26.37869 16.08336 13.97242 
 #&gt;        a       we 
-#&gt; 13.38024 13.21974 </div><div class='input'><span class='no'>logTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"logfreq"</span>)
+#&gt; 13.38024 13.21974 </div><div class='input'><span class='no'>logTfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"logcount"</span>)
 <span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>logTfDtm</span>)</div><div class='output co'>#&gt;      the        ,       of      and        .       to       in        a 
 #&gt; 182.1856 174.3182 173.3837 167.1782 164.9945 163.2151 150.4070 143.6032 
 #&gt;      our     that 
-#&gt; 140.7424 138.9939 </div><div class='input'><span class='no'>tfidfDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"tfidf"</span>)
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>tfidfDtm</span>)</div><div class='output co'>#&gt;            -      america        union            "       should constitution 
-#&gt;     55.80272     52.68044     51.14846     48.02566     42.10689     40.21661 
-#&gt;     congress      freedom          you      revenue 
-#&gt;     39.13390     38.31822     35.99430     34.11779 </div><div class='input'>
+#&gt; 140.7424 138.9939 </div><div class='input'><span class='no'>logaveDtm</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_weight</span>(<span class='no'>dtm</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"logave"</span>)
+<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>logaveDtm</span>)</div><div class='output co'>#&gt;       the         ,        of       and         .        to        in         a 
+#&gt; 121.98599 116.64229 116.06902 111.83340 110.34098 109.25338 100.55961  95.75088 
+#&gt;       our      that 
+#&gt;  93.81347  92.88474 </div><div class='input'>
 <span class='co'># combine these methods for more complex dfm_weightings, e.g. as in Section 6.4</span>
 <span class='co'># of Introduction to Information Retrieval</span>
-<span class='fu'>head</span>(<span class='fu'><a href='tfidf.html'>tfidf</a></span>(<span class='no'>dtm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"log"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,357 features (93.8% sparse).</div><div class='input'>
+<span class='fu'>head</span>(<span class='fu'><a href='dfm_tfidf.html'>dfm_tfidf</a></span>(<span class='no'>dtm</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"logcount"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,357 features (93.8% sparse).</div><div class='input'>
 <span class='co'># apply numeric weights</span>
 <span class='no'>str</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"apple is better than banana"</span>, <span class='st'>"banana banana apple much better"</span>)
-(<span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>str</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
+(<span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>str</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/stopwords/topics/stopwords'>stopwords</a></span>(<span class='st'>"english"</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
 #&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
 #&gt; docs    apple better banana much
@@ -246,9 +265,9 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
 #&gt;   text2     1      1      2    1</div><div class='input'><span class='fu'>dfm_weight</span>(<span class='no'>mydfm</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>apple</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>banana</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>much</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.5% sparse).
 #&gt; 2 x 4 sparse Matrix of class "dfm"
 #&gt;        features
-#&gt; docs    feat1 feat2 feat3 feat4
-#&gt;   text1     5     1     3   0  
-#&gt;   text2     5     1     6   0.5</div><div class='input'>
+#&gt; docs    apple better banana much
+#&gt;   text1     5      1      3  0  
+#&gt;   text2     5      1      6  0.5</div><div class='input'>
 </div><div class='input'><span class='co'># smooth the dfm</span>
 <span class='fu'>dfm_smooth</span>(<span class='no'>mydfm</span>, <span class='fl'>0.5</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (0% sparse).
 #&gt; 2 x 4 sparse Matrix of class "dfm"
@@ -263,8 +282,6 @@ assigned a weight of 1.0 (meaning they will be unchanged).</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#note">Note</a></li>
 
       <li><a href="#references">References</a></li>
 

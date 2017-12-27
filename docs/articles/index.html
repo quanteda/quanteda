@@ -24,7 +24,7 @@
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
-  
+  <script src="../extra.js"></script>
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -132,7 +144,7 @@
       </header>
 
       <div class="page-header">
-  <h1>Articles <small>version&nbsp;0.99.9028</small></h1>
+  <h1>Articles <small>version&nbsp;0.99.31</small></h1>
 </div>
 
 <div class="row">
@@ -145,9 +157,12 @@
         <li><a href="design.html">The Structure of Quanteda</a></li>
         <li><a href="pkgdown/comparison.html">Comparison to other packages</a></li>
         <li><a href="pkgdown/examples/chinese.html">Example: Chinese text analysis</a></li>
+        <li><a href="pkgdown/examples/japanese_speech_ja.html">事例: 衆議院外務委員会の議事録</a></li>
+        <li><a href="pkgdown/examples/japanese_twitter_ja.html">事例: 2017年総選挙に関するツイート</a></li>
         <li><a href="pkgdown/examples/lsa.html">Example: Latent Semantic Analysis (LSA)</a></li>
         <li><a href="pkgdown/examples/plotting.html">Example: textual data visualization</a></li>
         <li><a href="pkgdown/examples/quickstart_cn.html">快速入门指南</a></li>
+        <li><a href="pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a></li>
         <li><a href="pkgdown/examples/twitter.html">Example: Social media analysis (Twitter)</a></li>
         <li><a href="pkgdown/quickstart.html">Quick Start Guide</a></li>
         <li><a href="pkgdown/replication/digital-humanities.html">Replication: Text Analysis with R for Students of Literature</a></li>

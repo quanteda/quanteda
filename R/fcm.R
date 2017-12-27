@@ -26,7 +26,7 @@ setClass("fcm",
          #contains = c("dfm", "dgCMatrix", "dtCMatrix"))
          contains = c("dfm", "dgCMatrix"))
 
-#' create a feature co-occurrence matrix
+#' Create a feature co-occurrence matrix
 #' 
 #' Create a sparse feature co-occurrence matrix, measuring co-occurrences of
 #' features within a user-defined context. The context can be defined as a
@@ -165,10 +165,18 @@ fcm.dfm <- function(x, context = c("document", "window"),
                        ordered = FALSE,
                        span_sentence = TRUE, tri = TRUE, ...) {
     
-    x <- as.dfm(x)
     context <- match.arg(context)
     count <- match.arg(count)
     window <- as.integer(window)
+    x <- as.dfm(x)
+    
+    if (!nfeat(x)) {
+        result <- new("fcm", as(make_null_dfm(), "dgCMatrix"), count = count,
+                      context = context, window = window, 
+                      weights = weights, tri = tri)
+        return(result)
+    }
+    
     if (!span_sentence) 
         warning("spanSentence = FALSE not yet implemented")
     if (context != "document") 
@@ -176,7 +184,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
 
     if (count == "boolean") {
         temp <- x > 1
-        x <- tf(x, "boolean") 
+        x <- dfm_weight(x, "boolean") 
     } else if (count == "frequency") {
         temp <- x
         temp@x <- choose(temp@x, 2)

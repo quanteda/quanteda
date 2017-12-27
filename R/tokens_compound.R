@@ -1,4 +1,4 @@
-#' convert token sequences into compound tokens
+#' Convert token sequences into compound tokens
 #' 
 #' Replace multi-token sequences with a multi-word, or "compound" token.  The
 #' resulting compound tokens will represent a phrase or multi-word expression, 

@@ -1,4 +1,4 @@
-#' select or remove tokens from a tokens object
+#' Select or remove tokens from a tokens object
 #' 
 #' These function select or discard tokens from a \link{tokens} objects.  For 
 #' convenience, the functions \code{tokens_remove} and \code{tokens_keep} 
@@ -69,11 +69,11 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
 
 #' @export
 tokens_select.default <- function(x, pattern = NULL, 
-                                 selection = c("keep", "remove"), 
-                                 valuetype = c("glob", "regex", "fixed"),
-                                 case_insensitive = TRUE, padding = FALSE, window = 0,
-                                 min_nchar = 1L, max_nchar = 79L,
-                                 verbose = quanteda_options("verbose"), ...) {
+                                  selection = c("keep", "remove"), 
+                                  valuetype = c("glob", "regex", "fixed"),
+                                  case_insensitive = TRUE, padding = FALSE, window = 0,
+                                  min_nchar = 1L, max_nchar = 79L,
+                                  verbose = quanteda_options("verbose")) {
     stop(friendly_class_undefined_message(class(x), "tokens_select"))
 }
 
@@ -115,7 +115,7 @@ tokens_select.tokens <- function(x, pattern = NULL,
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, window = 0,
                                  min_nchar = 1L, max_nchar = 79L,
-                                 verbose = quanteda_options("verbose"), ...) {
+                                 verbose = quanteda_options("verbose")) {
     
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
@@ -164,7 +164,7 @@ tokens_select.tokens <- function(x, pattern = NULL,
 
 #' @rdname tokens_select
 #' @param ... additional arguments passed by \code{tokens_remove} and
-#'   \code{tokens_keep} to \code{tokens_select}.  Cannot include
+#'   \code{tokens_keep} to \code{tokens_select}. Cannot include
 #'   \code{selection}.
 #' @export
 #' @examples

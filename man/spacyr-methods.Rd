@@ -3,7 +3,7 @@
 \name{spacyr-methods}
 \alias{spacyr-methods}
 \alias{spacy_parse.corpus}
-\title{extensions for and from spacy_parse objects}
+\title{Extensions for and from spacy_parse objects}
 \usage{
 \method{spacy_parse}{corpus}(x, ...)
 }

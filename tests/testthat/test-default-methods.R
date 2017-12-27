@@ -254,13 +254,13 @@ test_that("test new dfm methods", {
         "dfm_wordstem\\(\\) only works on dfm objects"
     )
     expect_error(
-        tfidf(TRUE),
-        "tfidf\\(\\) only works on dfm objects"
+        dfm_tfidf(TRUE),
+        "dfm_tfidf\\(\\) only works on dfm objects"
     )
-    expect_error(
-        tf(TRUE),
-        "tf\\(\\) only works on dfm objects"
-    )
+    # expect_error(
+    #     tf(TRUE),
+    #     "tf\\(\\) only works on dfm objects"
+    # )
     expect_error(
         docfreq(TRUE),
         "docfreq\\(\\) only works on dfm objects"
@@ -385,10 +385,6 @@ test_that("test default textmodel methods", {
         textmodel_wordscores(TRUE),
         "textmodel_wordscores\\(\\) only works on dfm.*objects"
     )
-    expect_error(
-        textmodel_wordshoal(TRUE),
-        "textmodel_wordshoal\\(\\) only works on dfm.*objects"
-    )
 })
 
 test_that("test default textstat methods", {
@@ -429,7 +425,7 @@ test_that("test default textplot methods", {
     )   
     expect_error(
         textplot_keyness(TRUE),
-        "textplot_keyness\\(\\) only works on data.frame objects"
+        "textplot_keyness\\(\\) only works on keyness objects"
     )   
     expect_error(
         textplot_scale1d(TRUE),

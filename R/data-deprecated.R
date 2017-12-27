@@ -1,4 +1,4 @@
-#' @title datasets with deprecated or defunct names
+#' @title Datasets with deprecated or defunct names
 #'   
 #' @description These are datasets that have been renamed but that have been
 #'   temporarily retained for backward compatibility, or that have been renamed

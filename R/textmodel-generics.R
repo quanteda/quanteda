@@ -6,14 +6,14 @@
 ### summary, etc. are now more specific and defined in the model-specific
 ### R files (see textmodel-wordscoresS4.R.
 
-#' internal functions for textmodel objects
+#' Internal functions for textmodel objects
 #' 
 #' Internal function documentation for textmodel objects.
 #' @name textmodel-internal
 #' @keywords internal 
 NULL
 
-#' the fitted textmodel classes
+#' The fitted textmodel classes
 #' 
 #' The \code{textmodel} virtual class is a parent class for more specific fitted text models,
 #' which are the result of a quantitative text analysis applied to a document-feature
@@ -31,7 +31,7 @@ setClass("textmodel_fitted",
          slots = c(x = "dfm", y = "ANY", call = "call", method = "character"))
 
 
-#' fit a text model
+#' Fit a text model
 #' 
 #' Fit a text model to a dfm.  Creates an object of virtual class 
 #' \link{textmodel_fitted-class}, whose exact properties (slots and methods)
@@ -161,7 +161,7 @@ setMethod("textmodel", signature(x = "formula", y="missing", data="dfm", model =
                             y, model = model, ...)
               })
 
-#' extract text model coefficients
+#' Extract text model coefficients
 #' 
 #' Extract text model coefficients for documents and features, in a manner
 #' similar to \link{coef} and \link{coefficients}. (\code{coefficients} is an

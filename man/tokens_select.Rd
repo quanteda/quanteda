@@ -4,7 +4,7 @@
 \alias{tokens_select}
 \alias{tokens_remove}
 \alias{tokens_keep}
-\title{select or remove tokens from a tokens object}
+\title{Select or remove tokens from a tokens object}
 \usage{
 tokens_select(x, pattern, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
@@ -58,7 +58,7 @@ matches.}
 selected or removed}
 
 \item{...}{additional arguments passed by \code{tokens_remove} and
-\code{tokens_keep} to \code{tokens_select}.  Cannot include
+\code{tokens_keep} to \code{tokens_select}. Cannot include
 \code{selection}.}
 }
 \value{

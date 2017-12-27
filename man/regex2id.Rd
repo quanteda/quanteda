@@ -10,7 +10,7 @@
 \alias{search_index}
 \alias{expand}
 \alias{is_indexed}
-\title{convert regex and glob patterns to type IDs or fixed patterns}
+\title{Convert regex and glob patterns to type IDs or fixed patterns}
 \usage{
 regex2fixed(pattern, types = NULL, valuetype = NULL,
   case_insensitive = NULL, index = NULL)
@@ -91,16 +91,16 @@ a list of integer vectors containing type IDs with index keys as an
   for faster matching.
 
 This is an internal function for \code{regex2id()} that select types using an
-index of types by reular expressions.
+index of types by regular expressions.
 
 An internal function for \code{\link{regex2id}} that constructs an index of
 regex patterns (e.g. \code{^xxxx}, \code{xxxx$} and \code{^xxxx$}) to avoid
 expensive sequential search by \link[stringi]{stri_detect_regex}.
 
-internal function for \code{select_types()} to search the index using
+Internal function for \code{select_types()} to search the index using
 fastmatch.
 
-simpler and faster version of expand.grid() in base package
+Simpler and faster version of expand.grid() in base package
 
 Internal function for select_types() to check if a glob pattern is indexed by
 \code{index_types()}.

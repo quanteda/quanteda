@@ -1,4 +1,4 @@
-#' randomly sample documents from a corpus
+#' Randomly sample documents from a corpus
 #' 
 #' Take a random sample or documents of the specified size from a corpus or
 #' document-feature matrix, with or without replacement.  Works just as

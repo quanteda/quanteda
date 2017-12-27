@@ -10,7 +10,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
 <script src="../../../jquery.sticky-kit.min.js"></script><script src="../../../pkgdown.js"></script><link href="../../../extra.css" rel="stylesheet">
-<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../../../extra.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Google analytics --><script>
@@ -38,8 +38,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
 <li>
-  <a href="../../../articles/pkgdown/quickstart.html">Quick Start</a>
+      <a href="../../../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../../../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../../../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../../../reference/index.html">Reference</a>
@@ -62,9 +77,6 @@
     </li>
     <li>
       <a href="../../../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../../../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../../../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -119,32 +131,18 @@
 <div class="contents">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
 <p>This is intended to show how <strong>quanteda</strong> can be used with the <a href="http://text2vec.org"><strong>text2vec</strong></a> package in order to replicate its <a href="http://text2vec.org/glove.html">gloVe example</a>.</p>
-<div id="read-in-the-corpus" class="section level2">
+<div id="download-the-corpus" class="section level2">
 <h2 class="hasAnchor">
-<a href="#read-in-the-corpus" class="anchor"></a>Read in the corpus</h2>
-<p>Reading the corpus from the <a href="http://text2vec.org/glove.html"><strong>text2vec</strong> vignette</a>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp_file &lt;-<span class="st"> "/tmp/wiki.RDS"</span>
-<span class="cf">if</span> (<span class="op">!</span><span class="kw">file.exists</span>(temp_file)) {
-    wiki &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus.html">corpus</a></span>(readtext<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readtext/topics/readtext">readtext</a></span>(<span class="st">"http://mattmahoney.net/dc/text8.zip"</span>, <span class="dt">verbosity =</span> <span class="dv">0</span>))
-    <span class="kw">saveRDS</span>(wiki, <span class="dt">file =</span> <span class="kw">paste0</span>(temp_file))
-} <span class="cf">else</span> {
-    wiki &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">paste0</span>(temp_file))
-}</code></pre></div>
+<a href="#download-the-corpus" class="anchor"></a>Download the corpus</h2>
+<p>Download a corpus comprised of the texts used in the <a href="http://text2vec.org/glove.html"><strong>text2vec</strong> vignette</a>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wiki_corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">'https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1'</span>)</code></pre></div>
 </div>
 <div id="select-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#select-features" class="anchor"></a>Select features</h2>
 <p>First, we tokenize the corpus, and then get the names of the features that occur five times or more. Trimming the features before constructing the fcm:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(wiki)
-<span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(wiki, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## Creating a dfm from a corpus input...</code></pre>
-<pre><code>##    ... lowercasing</code></pre>
-<pre><code>##    ... found 1 document, 253,853 features</code></pre>
-<pre><code>##    ... created a 1 x 253,853 sparse dfm
-##    ... complete. 
-## Elapsed time: 15.2 seconds.</code></pre>
-<pre><code>## Document-feature matrix of: 1 document, 253,853 features (0% sparse).</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">feats &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(wiki_toks, <span class="dt">verbose =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(wiki_corp)
+feats &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(wiki_toks, <span class="dt">verbose =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="dt">min_count =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>()</code></pre></div>
 <pre><code>## Creating a dfm from a tokens input...</code></pre>
@@ -152,14 +150,14 @@
 <pre><code>##    ... found 1 document, 253,853 features</code></pre>
 <pre><code>##    ... created a 1 x 253,853 sparse dfm
 ##    ... complete. 
-## Elapsed time: 1.38 seconds.</code></pre>
+## Elapsed time: 2.21 seconds.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># leave the pads so that non-adjacent words will not become adjacent</span>
 wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(wiki_toks, feats, <span class="dt">padding =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
 <div id="construct-the-feature-co-occurrence-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#construct-the-feature-co-occurrence-matrix" class="anchor"></a>Construct the feature co-occurrence matrix</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wiki_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(wiki_toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">count =</span> <span class="st">"weighted"</span>, <span class="dt">weights =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>), <span class="dt">tri =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wiki_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(wiki_toks, <span class="dt">context =</span> <span class="st">"window"</span>, <span class="dt">count =</span> <span class="st">"weighted"</span>, <span class="dt">weights =</span> <span class="dv">1</span> <span class="op">/</span><span class="st"> </span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>), <span class="dt">tri =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
 <div id="fit-word-embedding-model" class="section level2">
 <h2 class="hasAnchor">
@@ -170,26 +168,26 @@ wiki_toks &lt;-<span class="st"> </span><span class="kw"><a href="../../../refer
 <p>GloVe encodes the ratios of word-word co-occurrence probabilities, which is thought to represent some crude form of meaning associated with the abstract concept of the word, as vector difference. The training objective of GloVe is to learn word vectors such that their dot product equals the logarithm of the words’ probability of co-occurrence.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">glove &lt;-<span class="st"> </span>GlobalVectors<span class="op">$</span><span class="kw">new</span>(<span class="dt">word_vectors_size =</span> <span class="dv">50</span>, <span class="dt">vocabulary =</span> <span class="kw"><a href="../../../reference/featnames.html">featnames</a></span>(wiki_fcm), <span class="dt">x_max =</span> <span class="dv">10</span>)
 wiki_main &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/text2vec/topics/fit_transform">fit_transform</a></span>(wiki_fcm, glove, <span class="dt">n_iter =</span> <span class="dv">20</span>)</code></pre></div>
-<pre><code>## INFO [2017-12-08 16:40:07] 2017-12-08 16:40:07 - epoch 1, expected cost 0.0832
-## INFO [2017-12-08 16:40:09] 2017-12-08 16:40:09 - epoch 2, expected cost 0.0622
-## INFO [2017-12-08 16:40:11] 2017-12-08 16:40:11 - epoch 3, expected cost 0.0540
-## INFO [2017-12-08 16:40:12] 2017-12-08 16:40:12 - epoch 4, expected cost 0.0502
-## INFO [2017-12-08 16:40:14] 2017-12-08 16:40:14 - epoch 5, expected cost 0.0477
-## INFO [2017-12-08 16:40:16] 2017-12-08 16:40:16 - epoch 6, expected cost 0.0459
-## INFO [2017-12-08 16:40:18] 2017-12-08 16:40:18 - epoch 7, expected cost 0.0446
-## INFO [2017-12-08 16:40:19] 2017-12-08 16:40:19 - epoch 8, expected cost 0.0435
-## INFO [2017-12-08 16:40:21] 2017-12-08 16:40:21 - epoch 9, expected cost 0.0426
-## INFO [2017-12-08 16:40:23] 2017-12-08 16:40:23 - epoch 10, expected cost 0.0419
-## INFO [2017-12-08 16:40:25] 2017-12-08 16:40:25 - epoch 11, expected cost 0.0413
-## INFO [2017-12-08 16:40:26] 2017-12-08 16:40:26 - epoch 12, expected cost 0.0407
-## INFO [2017-12-08 16:40:28] 2017-12-08 16:40:28 - epoch 13, expected cost 0.0403
-## INFO [2017-12-08 16:40:30] 2017-12-08 16:40:30 - epoch 14, expected cost 0.0399
-## INFO [2017-12-08 16:40:32] 2017-12-08 16:40:32 - epoch 15, expected cost 0.0395
-## INFO [2017-12-08 16:40:34] 2017-12-08 16:40:34 - epoch 16, expected cost 0.0392
-## INFO [2017-12-08 16:40:35] 2017-12-08 16:40:35 - epoch 17, expected cost 0.0389
-## INFO [2017-12-08 16:40:37] 2017-12-08 16:40:37 - epoch 18, expected cost 0.0386
-## INFO [2017-12-08 16:40:39] 2017-12-08 16:40:39 - epoch 19, expected cost 0.0384
-## INFO [2017-12-08 16:40:41] 2017-12-08 16:40:41 - epoch 20, expected cost 0.0382</code></pre>
+<pre><code>## INFO [2017-12-23 10:38:30] 2017-12-23 10:38:30 - epoch 1, expected cost 0.0825
+## INFO [2017-12-23 10:38:43] 2017-12-23 10:38:43 - epoch 2, expected cost 0.0616
+## INFO [2017-12-23 10:38:59] 2017-12-23 10:38:59 - epoch 3, expected cost 0.0539
+## INFO [2017-12-23 10:39:17] 2017-12-23 10:39:17 - epoch 4, expected cost 0.0501
+## INFO [2017-12-23 10:39:32] 2017-12-23 10:39:32 - epoch 5, expected cost 0.0476
+## INFO [2017-12-23 10:39:45] 2017-12-23 10:39:45 - epoch 6, expected cost 0.0459
+## INFO [2017-12-23 10:39:58] 2017-12-23 10:39:58 - epoch 7, expected cost 0.0445
+## INFO [2017-12-23 10:40:12] 2017-12-23 10:40:12 - epoch 8, expected cost 0.0434
+## INFO [2017-12-23 10:40:25] 2017-12-23 10:40:25 - epoch 9, expected cost 0.0426
+## INFO [2017-12-23 10:40:39] 2017-12-23 10:40:39 - epoch 10, expected cost 0.0418
+## INFO [2017-12-23 10:40:52] 2017-12-23 10:40:52 - epoch 11, expected cost 0.0412
+## INFO [2017-12-23 10:41:05] 2017-12-23 10:41:05 - epoch 12, expected cost 0.0407
+## INFO [2017-12-23 10:41:18] 2017-12-23 10:41:18 - epoch 13, expected cost 0.0402
+## INFO [2017-12-23 10:41:31] 2017-12-23 10:41:31 - epoch 14, expected cost 0.0398
+## INFO [2017-12-23 10:41:45] 2017-12-23 10:41:45 - epoch 15, expected cost 0.0395
+## INFO [2017-12-23 10:41:58] 2017-12-23 10:41:58 - epoch 16, expected cost 0.0391
+## INFO [2017-12-23 10:42:11] 2017-12-23 10:42:11 - epoch 17, expected cost 0.0389
+## INFO [2017-12-23 10:42:24] 2017-12-23 10:42:24 - epoch 18, expected cost 0.0386
+## INFO [2017-12-23 10:42:38] 2017-12-23 10:42:38 - epoch 19, expected cost 0.0384
+## INFO [2017-12-23 10:42:51] 2017-12-23 10:42:51 - epoch 20, expected cost 0.0381</code></pre>
 </div>
 <div id="averaging-learned-word-vectors" class="section level2">
 <h2 class="hasAnchor">
@@ -214,8 +212,8 @@ wiki_vector_dfm<span class="op">@</span>Dimnames<span class="op">$</span>docs[<s
 cos_sim &lt;-<span class="st">  </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(wiki_vector_dfm, <span class="st">"new_berlin"</span>, 
                            <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method=</span> <span class="st">"cosine"</span>)
 <span class="kw">head</span>(<span class="kw">sort</span>(cos_sim[,<span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</code></pre></div>
-<pre><code>## new_berlin      paris     berlin     munich    germany 
-##  1.0000000  0.7776876  0.7690844  0.7209527  0.7123541</code></pre>
+<pre><code>## new_berlin     berlin     munich      paris    germany 
+##  1.0000000  0.7765259  0.7416148  0.6994924  0.6859999</code></pre>
 <p>Here is another example for <code>london = paris - france + uk + england</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">london &lt;-<span class="st">  </span>wiki_vectors[<span class="st">"paris"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">-</span><span class="st"> </span>
 <span class="st">    </span>wiki_vectors[<span class="st">"france"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">+</span><span class="st"> </span>
@@ -227,8 +225,8 @@ wiki_vector_dfm<span class="op">@</span>Dimnames<span class="op">$</span>docs[<s
 cos_sim &lt;-<span class="st">  </span><span class="kw"><a href="../../../reference/textstat_simil.html">textstat_simil</a></span>(wiki_vector_dfm, <span class="st">"new_london"</span>, 
                            <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method=</span> <span class="st">"cosine"</span>)
 <span class="kw">head</span>(<span class="kw">sort</span>(cos_sim[,<span class="dv">1</span>], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dv">5</span>)</code></pre></div>
-<pre><code>## new_london         uk    england       york     london 
-##  1.0000000  0.7823298  0.7599103  0.7451288  0.7413701</code></pre>
+<pre><code>## new_london       york         uk    england     london 
+##  1.0000000  0.7542970  0.7527810  0.7516039  0.7352784</code></pre>
 </div>
 </div>
   </div>
@@ -238,7 +236,7 @@ cos_sim &lt;-<span class="st">  </span><span class="kw"><a href="../../../refere
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#read-in-the-corpus">Read in the corpus</a></li>
+<li><a href="#download-the-corpus">Download the corpus</a></li>
       <li><a href="#select-features">Select features</a></li>
       <li><a href="#construct-the-feature-co-occurrence-matrix">Construct the feature co-occurrence matrix</a></li>
       <li><a href="#fit-word-embedding-model">Fit word embedding model</a></li>

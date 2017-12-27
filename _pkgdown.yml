@@ -7,7 +7,13 @@ navbar:
   type: inverse
   left:
     - text: "Quick Start"
-      href: articles/pkgdown/quickstart.html
+      menu:
+        - text: "Quick Start Guide"
+          href: articles/pkgdown/quickstart.html
+        - text: "快速入门指南"
+          href: articles/pkgdown/examples/quickstart_cn.html
+        - text: "クイック・スタートガイド"
+          href: articles/pkgdown/examples/quickstart_ja.html
     - text: "Reference"
       href: reference/index.html
     - text: "Features"
@@ -20,8 +26,6 @@ navbar:
           href: articles/pkgdown/examples/plotting.html
         - text: "Chinese text analysis"
           href: articles/pkgdown/examples/chinese.html
-        - text: "快速入门指南"
-          href: articles/pkgdown/examples/quickstart_cn.html
         - text: "Social media analysis"
           href: articles/pkgdown/examples/twitter.html
     - text: "Replication"
@@ -54,8 +58,8 @@ reference:
   desc: Functions for constructing and manipulating corpus class objects.
   contents:
     - starts_with("corpus")
-    - metacorpus
     - docvars
+    - head.corpus
     - metacorpus
     - metadoc
     - texts
@@ -75,6 +79,7 @@ reference:
     - tokens_tolower
     - tokens_toupper
     - tokens_wordstem
+    - types
     - as.character.tokens
     - as.list.tokens
     - as.tokens
@@ -101,12 +106,14 @@ reference:
     - dfm_select
     - dfm_subset
     - dfm_sort
+    - dfm_tfidf
     - dfm_tolower
     - dfm_toupper
     - dfm_trim
     - dfm_smooth
     - dfm_weight
     - dfm_wordstem
+    - docfreq
     - head.dfm
     - tail.dfm
     - as.dfm
@@ -124,7 +131,13 @@ reference:
 - title: Text Statistics
   desc: Functions for computing statistics from texts and dfm objects.
   contents:
-    - starts_with("textstat_")
+    - textstat_collocations
+    - textstat_dist
+    - textstat_lexdiv
+    - textstat_simil
+    - textstat_frequency
+    - textstat_keyness
+    - textstat_readability
     - sparsity
     - topfeatures
 - title: Dictionary functions
@@ -161,11 +174,11 @@ reference:
     - ntype
     - starts_with("docnames")
     - featnames
-    - stopwords
 - title: Miscellaneous functions
   contents:
     - phrase
     - as.list.dist
     - convert
     - bootstrap_dfm
+    - spacyr-methods
 

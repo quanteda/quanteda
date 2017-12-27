@@ -6,7 +6,7 @@ output:
     toc: true
 ---
 
-```{r, message = FALSE}
+```{r, message=FALSE}
 library(quanteda)
 ```
 
@@ -124,7 +124,7 @@ freq_grouped <- textstat_frequency(dfm(data_corpus_inaugural_subset),
                                    groups = "President")
 
 # Filter the term "american"
-freq_american <- subset(freq_grouped, feature %in% "american")  
+freq_american <- subset(freq_grouped, freq_grouped$feature %in% "american")  
 
 ggplot(freq_american, aes(x = group, y = frequency)) +
     geom_point() + 
@@ -137,7 +137,7 @@ ggplot(freq_american, aes(x = group, y = frequency)) +
 The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we need to weight the document-frequency matrix first. To obtain expected word frequency per 100 words, we multiply by 100. 
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-dfm_rel_freq <- dfm_weight(dfm(data_corpus_inaugural_subset), type='relFreq') * 100
+dfm_rel_freq <- dfm_weight(dfm(data_corpus_inaugural_subset), scheme = "prop") * 100
 head(dfm_rel_freq)
 
 rel_freq <- textstat_frequency(dfm_rel_freq, groups = "President")
@@ -159,7 +159,7 @@ Finally, `texstat_frequency` allows to plot the most frequent words in terms of 
 dfm_weight_pres <- data_corpus_inaugural %>%
      corpus_subset(Year > 2000) %>%
      dfm(remove = stopwords("english"), remove_punct = TRUE) %>%
-     dfm_weight(type = "relfreq")
+     dfm_weight(scheme = "prop")
 
 # Calculate relative frequency by president
 freq_weight <- textstat_frequency(dfm_weight_pres, n = 10, groups = "President")

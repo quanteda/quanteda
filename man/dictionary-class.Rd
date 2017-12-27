@@ -9,7 +9,7 @@
 \alias{$.dictionary2}
 \alias{as.list,dictionary2-method}
 \alias{c,dictionary2-method}
-\title{print a dictionary object}
+\title{Print a dictionary object}
 \usage{
 \S4method{show}{dictionary2}(object)
 

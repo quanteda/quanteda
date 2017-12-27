@@ -2,11 +2,11 @@
 % Please edit documentation in R/dfm_weight.R
 \name{docfreq}
 \alias{docfreq}
-\title{compute the (weighted) document frequency of a feature}
+\title{Compute the (weighted) document frequency of a feature}
 \usage{
 docfreq(x, scheme = c("count", "inverse", "inversemax", "inverseprob",
   "unary"), smoothing = 0, k = 0, base = 10, threshold = 0,
-  USE.NAMES = TRUE)
+  use.names = TRUE)
 }
 \arguments{
 \item{x}{a \link{dfm}}
@@ -27,7 +27,7 @@ will considered in the computation of document frequency.  The default is
 0, meaning that a feature's document frequency will be the number of 
 documents in which it occurs greater than zero times.}
 
-\item{USE.NAMES}{logical; if \code{TRUE} attach feature labels as names of 
+\item{use.names}{logical; if \code{TRUE} attach feature labels as names of 
 the resulting numeric vector}
 
 \item{...}{not used}
@@ -39,7 +39,7 @@ a numeric vector of document frequencies for each feature
 For a \link{dfm} object, returns a (weighted) document frequency for each
 term.  The default is a simple count of the number of documents in which a
 feature occurs more than a given frequency threshold.  (The default threshold
-is  zero, meaning that any feature occuring at least once in a document will
+is  zero, meaning that any feature occurring at least once in a document will
 be counted.)
 }
 \examples{
@@ -68,5 +68,4 @@ Manning, C. D., Raghavan, P., & Schutze, H. (2008).
   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 }
 \keyword{dfm}
-\keyword{internal}
 \keyword{weighting}

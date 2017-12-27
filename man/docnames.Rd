@@ -3,7 +3,7 @@
 \name{docnames}
 \alias{docnames}
 \alias{docnames<-}
-\title{get or set document names}
+\title{Get or set document names}
 \usage{
 docnames(x)
 

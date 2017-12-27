@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokens_replace.R
 \name{tokens_replace}
 \alias{tokens_replace}
-\title{replace types in tokens object}
+\title{Replace types in tokens object}
 \usage{
 tokens_replace(x, pattern, replacement = NULL, case_insensitive = TRUE,
   verbose = quanteda_options("verbose"))

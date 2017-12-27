@@ -24,7 +24,7 @@
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
-  
+  <script src="../extra.js"></script>
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -63,8 +63,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../articles/pkgdown/quickstart.html">Quick Start</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Quick Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgdown/quickstart.html">Quick Start Guide</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/quickstart_ja.html">クイック・スタートガイド</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -87,9 +102,6 @@
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/quickstart_cn.html">快速入门指南</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
@@ -136,7 +148,7 @@
     <div class="page-header">
       <h1>
         Reference
-        <small>version&nbsp;0.99.9028</small>
+        <small>version&nbsp;0.99.32</small>
       </h1>
     </div>
 
@@ -166,7 +178,7 @@
           <td>
             <p><code><a href="quanteda_options.html">quanteda_options</a></code> </p>
           </td>
-          <td><p>get or set package options for quanteda</p></td>
+          <td><p>Get or set package options for quanteda</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -180,19 +192,19 @@
           <td>
             <p><code><a href="data_char_sampletext.html">data_char_sampletext</a></code> </p>
           </td>
-          <td><p>a paragraph of text for testing various text-based functions</p></td>
+          <td><p>A paragraph of text for testing various text-based functions</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="data_char_ukimmig2010.html">data_char_ukimmig2010</a></code> </p>
           </td>
-          <td><p>immigration-related sections of 2010 UK party manifestos</p></td>
+          <td><p>Immigration-related sections of 2010 UK party manifestos</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="data_corpus_dailnoconf1991.html">data_corpus_dailnoconf1991</a></code> </p>
           </td>
-          <td><p>confidence debate from 1991 Irish Parliament</p></td>
+          <td><p>Confidence debate from 1991 Irish Parliament</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -230,61 +242,67 @@
           <td>
             <p><code><a href="corpus_reshape.html">corpus_reshape</a></code> </p>
           </td>
-          <td><p>recast the document units of a corpus</p></td>
+          <td><p>Recast the document units of a corpus</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="corpus_sample.html">corpus_sample</a></code> </p>
           </td>
-          <td><p>randomly sample documents from a corpus</p></td>
+          <td><p>Randomly sample documents from a corpus</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="corpus_segment.html">corpus_segment</a></code> <code><a href="corpus_segment.html">char_segment</a></code> </p>
           </td>
-          <td><p>segment texts on a pattern match</p></td>
+          <td><p>Segment texts on a pattern match</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="corpus_subset.html">corpus_subset</a></code> </p>
           </td>
-          <td><p>extract a subset of a corpus</p></td>
+          <td><p>Extract a subset of a corpus</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="corpus.html">corpus</a></code> </p>
           </td>
-          <td><p>construct a corpus object</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="metacorpus.html">metacorpus</a></code> <code><a href="metacorpus.html">metacorpus<-</a></code> </p>
-          </td>
-          <td><p>get or set corpus metadata</p></td>
+          <td><p>Construct a corpus object</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="docvars.html">docvars</a></code> <code><a href="docvars.html">docvars<-</a></code> </p>
           </td>
-          <td><p>get or set for document-level variables</p></td>
+          <td><p>Get or set document-level variables</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="head.corpus.html">head</a></code> <code><a href="head.corpus.html">tail</a></code> </p>
+          </td>
+          <td><p>Return the first or last part of a corpus</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="metacorpus.html">metacorpus</a></code> <code><a href="metacorpus.html">metacorpus<-</a></code> </p>
+          </td>
+          <td><p>Get or set corpus metadata</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="metadoc.html">metadoc</a></code> <code><a href="metadoc.html">metadoc<-</a></code> </p>
           </td>
-          <td><p>get or set document-level meta-data</p></td>
+          <td><p>Get or set document-level meta-data</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="texts.html">texts</a></code> <code><a href="texts.html">texts<-</a></code> <code><a href="texts.html">as.character</a></code> </p>
           </td>
-          <td><p>get or assign corpus texts</p></td>
+          <td><p>Get or assign corpus texts</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="as.corpus.corpuszip.html">as.corpus</a></code> </p>
           </td>
-          <td><p>coerce a compressed corpus to a standard corpus</p></td>
+          <td><p>Coerce a compressed corpus to a standard corpus</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -298,55 +316,61 @@
           <td>
             <p><code><a href="tokens.html">tokens</a></code> </p>
           </td>
-          <td><p>tokenize a set of texts</p></td>
+          <td><p>Tokenize a set of texts</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="tokens_compound.html">tokens_compound</a></code> </p>
           </td>
-          <td><p>convert token sequences into compound tokens</p></td>
+          <td><p>Convert token sequences into compound tokens</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="tokens_lookup.html">tokens_lookup</a></code> </p>
           </td>
-          <td><p>apply a dictionary to a tokens object</p></td>
+          <td><p>Apply a dictionary to a tokens object</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="tokens_ngrams.html">tokens_ngrams</a></code> <code><a href="tokens_ngrams.html">char_ngrams</a></code> <code><a href="tokens_ngrams.html">tokens_skipgrams</a></code> </p>
           </td>
-          <td><p>create ngrams and skipgrams from tokens</p></td>
+          <td><p>Create ngrams and skipgrams from tokens</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="tokens_select.html">tokens_select</a></code> <code><a href="tokens_select.html">tokens_remove</a></code> <code><a href="tokens_select.html">tokens_keep</a></code> </p>
           </td>
-          <td><p>select or remove tokens from a tokens object</p></td>
+          <td><p>Select or remove tokens from a tokens object</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="tokens_replace.html">tokens_replace</a></code> </p>
           </td>
-          <td><p>replace types in tokens object</p></td>
+          <td><p>Replace types in tokens object</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="tokens_tolower.html">tokens_tolower</a></code> <code><a href="tokens_tolower.html">tokens_toupper</a></code> </p>
           </td>
-          <td><p>convert the case of tokens</p></td>
+          <td><p>Convert the case of tokens</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="tokens_wordstem.html">tokens_wordstem</a></code> <code><a href="tokens_wordstem.html">char_wordstem</a></code> <code><a href="tokens_wordstem.html">dfm_wordstem</a></code> </p>
           </td>
-          <td><p>stem the terms in an object</p></td>
+          <td><p>Stem the terms in an object</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="types.html">types</a></code> </p>
+          </td>
+          <td><p>Get word types from a tokens object</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="as.tokens.html">as.tokens</a></code> </p>
           </td>
-          <td><p>coercion, checking, and combining functions for tokens objects</p></td>
+          <td><p>Coercion, checking, and combining functions for tokens objects</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -360,25 +384,25 @@
           <td>
             <p><code><a href="char_tolower.html">char_tolower</a></code> <code><a href="char_tolower.html">char_toupper</a></code> </p>
           </td>
-          <td><p>convert the case of character objects</p></td>
+          <td><p>Convert the case of character objects</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="corpus_segment.html">corpus_segment</a></code> <code><a href="corpus_segment.html">char_segment</a></code> </p>
           </td>
-          <td><p>segment texts on a pattern match</p></td>
+          <td><p>Segment texts on a pattern match</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="tokens_ngrams.html">tokens_ngrams</a></code> <code><a href="tokens_ngrams.html">char_ngrams</a></code> <code><a href="tokens_ngrams.html">tokens_skipgrams</a></code> </p>
           </td>
-          <td><p>create ngrams and skipgrams from tokens</p></td>
+          <td><p>Create ngrams and skipgrams from tokens</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="tokens_wordstem.html">tokens_wordstem</a></code> <code><a href="tokens_wordstem.html">char_wordstem</a></code> <code><a href="tokens_wordstem.html">dfm_wordstem</a></code> </p>
           </td>
-          <td><p>stem the terms in an object</p></td>
+          <td><p>Stem the terms in an object</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -392,103 +416,115 @@
           <td>
             <p><code><a href="dfm.html">dfm</a></code> </p>
           </td>
-          <td><p>create a document-feature matrix</p></td>
+          <td><p>Create a document-feature matrix</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="dfm_compress.html">dfm_compress</a></code> <code><a href="dfm_compress.html">fcm_compress</a></code> </p>
           </td>
-          <td><p>recombine a dfm or fcm by combining identical dimension elements</p></td>
+          <td><p>Recombine a dfm or fcm by combining identical dimension elements</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="dfm_group.html">dfm_group</a></code> </p>
           </td>
-          <td><p>combine documents in a dfm by a grouping variable</p></td>
+          <td><p>Combine documents in a dfm by a grouping variable</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="dfm_lookup.html">dfm_lookup</a></code> </p>
           </td>
-          <td><p>apply a dictionary to a dfm</p></td>
+          <td><p>Apply a dictionary to a dfm</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="dfm_sample.html">dfm_sample</a></code> </p>
           </td>
-          <td><p>randomly sample documents or features from a dfm</p></td>
+          <td><p>Randomly sample documents or features from a dfm</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="dfm_select.html">dfm_select</a></code> <code><a href="dfm_select.html">dfm_remove</a></code> <code><a href="dfm_select.html">dfm_keep</a></code> <code><a href="dfm_select.html">fcm_select</a></code> <code><a href="dfm_select.html">fcm_remove</a></code> <code><a href="dfm_select.html">fcm_keep</a></code> </p>
           </td>
-          <td><p>select features from a dfm or fcm</p></td>
+          <td><p>Select features from a dfm or fcm</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="dfm_subset.html">dfm_subset</a></code> </p>
           </td>
-          <td><p>extract a subset of a dfm</p></td>
+          <td><p>Extract a subset of a dfm</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="dfm_sort.html">dfm_sort</a></code> </p>
           </td>
-          <td><p>sort a dfm by frequency of one or more margins</p></td>
+          <td><p>Sort a dfm by frequency of one or more margins</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="dfm_tfidf.html">dfm_tfidf</a></code> </p>
+          </td>
+          <td><p>Weight a dfm by <em>tf-idf</em></p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="dfm_tolower.html">dfm_tolower</a></code> <code><a href="dfm_tolower.html">dfm_toupper</a></code> <code><a href="dfm_tolower.html">fcm_tolower</a></code> <code><a href="dfm_tolower.html">fcm_toupper</a></code> </p>
           </td>
-          <td><p>convert the case of the features of a dfm and combine</p></td>
+          <td><p>Convert the case of the features of a dfm and combine</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="dfm_trim.html">dfm_trim</a></code> </p>
           </td>
-          <td><p>trim a dfm using frequency threshold-based feature selection</p></td>
+          <td><p>Trim a dfm using frequency threshold-based feature selection</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="dfm_weight.html">dfm_weight</a></code> <code><a href="dfm_weight.html">dfm_smooth</a></code> </p>
           </td>
-          <td><p>weight the feature frequencies in a dfm</p></td>
+          <td><p>Weight the feature frequencies in a dfm</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="tokens_wordstem.html">tokens_wordstem</a></code> <code><a href="tokens_wordstem.html">char_wordstem</a></code> <code><a href="tokens_wordstem.html">dfm_wordstem</a></code> </p>
           </td>
-          <td><p>stem the terms in an object</p></td>
+          <td><p>Stem the terms in an object</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="docfreq.html">docfreq</a></code> </p>
+          </td>
+          <td><p>Compute the (weighted) document frequency of a feature</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="head.dfm.html">head</a></code> <code><a href="head.dfm.html">tail</a></code> </p>
           </td>
-          <td><p>return the first or last part of a dfm</p></td>
+          <td><p>Return the first or last part of a dfm</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="is.dfm.html">is.dfm</a></code> <code><a href="is.dfm.html">as.dfm</a></code> </p>
           </td>
-          <td><p>coercion and checking functions for dfm objects</p></td>
+          <td><p>Coercion and checking functions for dfm objects</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="as.matrix.dfm.html">as.matrix</a></code> <code><a href="as.matrix.dfm.html">as.data.frame</a></code> </p>
           </td>
-          <td><p>coerce a dfm to a matrix or data.frame</p></td>
+          <td><p>Coerce a dfm to a matrix or data.frame</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="fcm.html">fcm</a></code> </p>
           </td>
-          <td><p>create a feature co-occurrence matrix</p></td>
+          <td><p>Create a feature co-occurrence matrix</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="fcm_sort.html">fcm_sort</a></code> </p>
           </td>
-          <td><p>sort an fcm in alphabetical order of the features</p></td>
+          <td><p>Sort an fcm in alphabetical order of the features</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -502,37 +538,7 @@
           <td>
             <p><code><a href="textstat_collocations.html">textstat_collocations</a></code> <code><a href="textstat_collocations.html">is.collocations</a></code> </p>
           </td>
-          <td><p>identify and score multi-word expressions</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="textstat_collocationsdev.html">textstat_collocationsdev</a></code> <code><a href="textstat_collocationsdev.html">is.collocationsdev</a></code> </p>
-          </td>
-          <td><p>identify and score multi-word expressions</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="textstat_frequency.html">textstat_frequency</a></code> </p>
-          </td>
-          <td><p>tabulate feature frequencies</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="textstat_keyness.html">textstat_keyness</a></code> </p>
-          </td>
-          <td><p>calculate keyness statistics</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="textstat_lexdiv.html">textstat_lexdiv</a></code> </p>
-          </td>
-          <td><p>calculate lexical diversity</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="textstat_readability.html">textstat_readability</a></code> </p>
-          </td>
-          <td><p>calculate readability</p></td>
+          <td><p>Identify and score multi-word expressions</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -542,15 +548,39 @@
         </tr><tr>
           <!--  -->
           <td>
+            <p><code><a href="textstat_lexdiv.html">textstat_lexdiv</a></code> </p>
+          </td>
+          <td><p>Calculate lexical diversity</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="textstat_frequency.html">textstat_frequency</a></code> </p>
+          </td>
+          <td><p>Tabulate feature frequencies</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="textstat_keyness.html">textstat_keyness</a></code> </p>
+          </td>
+          <td><p>Calculate keyness statistics</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="textstat_readability.html">textstat_readability</a></code> </p>
+          </td>
+          <td><p>Calculate readability</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
             <p><code><a href="sparsity.html">sparsity</a></code> </p>
           </td>
-          <td><p>compute the sparsity of a document-feature matrix</p></td>
+          <td><p>Compute the sparsity of a document-feature matrix</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="topfeatures.html">topfeatures</a></code> </p>
           </td>
-          <td><p>identify the most frequent features in a dfm</p></td>
+          <td><p>Identify the most frequent features in a dfm</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -564,19 +594,19 @@
           <td>
             <p><code><a href="dictionary.html">dictionary</a></code> </p>
           </td>
-          <td><p>create a dictionary</p></td>
+          <td><p>Create a dictionary</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="as.dictionary.html">as.dictionary</a></code> <code><a href="as.dictionary.html">is.dictionary</a></code> </p>
           </td>
-          <td><p>coercion and checking functions for dictionary objects</p></td>
+          <td><p>Coercion and checking functions for dictionary objects</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="as.yaml.html">as.yaml</a></code> </p>
           </td>
-          <td><p>convert quanteda dictionary objects to the YAML format</p></td>
+          <td><p>Convert quanteda dictionary objects to the YAML format</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -590,13 +620,13 @@
           <td>
             <p><code><a href="textstat_collocations.html">textstat_collocations</a></code> <code><a href="textstat_collocations.html">is.collocations</a></code> </p>
           </td>
-          <td><p>identify and score multi-word expressions</p></td>
+          <td><p>Identify and score multi-word expressions</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="kwic.html">kwic</a></code> <code><a href="kwic.html">is.kwic</a></code> </p>
           </td>
-          <td><p>locate keywords-in-context</p></td>
+          <td><p>Locate keywords-in-context</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -610,37 +640,37 @@
           <td>
             <p><code><a href="textplot_influence.html">textplot_influence</a></code> </p>
           </td>
-          <td><p>influence plot for text scaling models</p></td>
+          <td><p>Influence plot for text scaling models</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="textplot_keyness.html">textplot_keyness</a></code> </p>
           </td>
-          <td><p>plot word keyness</p></td>
+          <td><p>Plot word keyness</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="textplot_network.html">textplot_network</a></code> <code><a href="textplot_network.html">as.network</a></code> </p>
           </td>
-          <td><p>plot a network of feature co-occurrences</p></td>
+          <td><p>Plot a network of feature co-occurrences</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="textplot_scale1d.html">textplot_scale1d</a></code> </p>
           </td>
-          <td><p>plot a fitted scaling model</p></td>
+          <td><p>Plot a fitted scaling model</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="textplot_wordcloud.html">textplot_wordcloud</a></code> </p>
           </td>
-          <td><p>plot features as a wordcloud</p></td>
+          <td><p>Plot features as a wordcloud</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="textplot_xray.html">textplot_xray</a></code> </p>
           </td>
-          <td><p>plot the dispersion of key word(s)</p></td>
+          <td><p>Plot the dispersion of key word(s)</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -654,13 +684,13 @@
           <td>
             <p><code><a href="textmodel_affinity.html">textmodel_affinity</a></code> </p>
           </td>
-          <td><p>class affinity maximum likelihood text scaling model</p></td>
+          <td><p>Class affinity maximum likelihood text scaling model</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="textmodel_ca.html">textmodel_ca</a></code> </p>
           </td>
-          <td><p>correspondence analysis of a document-feature matrix</p></td>
+          <td><p>Correspondence analysis of a document-feature matrix</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -672,7 +702,7 @@
           <td>
             <p><code><a href="textmodel_wordfish.html">textmodel_wordfish</a></code> </p>
           </td>
-          <td><p>wordfish text model</p></td>
+          <td><p>Wordfish text model</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -682,15 +712,9 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="textmodel_wordshoal.html">textmodel_wordshoal</a></code> </p>
-          </td>
-          <td><p>wordshoal text model</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
             <p><code><a href="coef.textmodel.html">coef.textmodel</a></code> </p>
           </td>
-          <td><p>extract text model coefficients</p></td>
+          <td><p>Extract text model coefficients</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -702,51 +726,45 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="ndoc.html">ndoc</a></code> <code><a href="ndoc.html">nfeature</a></code> </p>
+            <p><code><a href="ndoc.html">ndoc</a></code> <code><a href="ndoc.html">nfeat</a></code> <code><a href="ndoc.html">nfeature</a></code> </p>
           </td>
-          <td><p>count the number of documents or features</p></td>
+          <td><p>Count the number of documents or features</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="nscrabble.html">nscrabble</a></code> </p>
           </td>
-          <td><p>count the Scrabble letter values of text</p></td>
+          <td><p>Count the Scrabble letter values of text</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="nsentence.html">nsentence</a></code> </p>
           </td>
-          <td><p>count the number of sentences</p></td>
+          <td><p>Count the number of sentences</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="nsyllable.html">nsyllable</a></code> </p>
           </td>
-          <td><p>count syllables in a text</p></td>
+          <td><p>Count syllables in a text</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="ntoken.html">ntoken</a></code> <code><a href="ntoken.html">ntype</a></code> </p>
           </td>
-          <td><p>count the number of tokens or types</p></td>
+          <td><p>Count the number of tokens or types</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="docnames.html">docnames</a></code> <code><a href="docnames.html">docnames<-</a></code> </p>
           </td>
-          <td><p>get or set document names</p></td>
+          <td><p>Get or set document names</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="featnames.html">featnames</a></code> </p>
           </td>
-          <td><p>get the feature labels from a dfm</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="stopwords.html">stopwords</a></code> </p>
-          </td>
-          <td><p>access built-in stopwords</p></td>
+          <td><p>Get the feature labels from a dfm</p></td>
         </tr>
       </tbody><tbody>
         <tr>
@@ -760,25 +778,31 @@
           <td>
             <p><code><a href="phrase.html">phrase</a></code> <code><a href="phrase.html">is.phrase</a></code> </p>
           </td>
-          <td><p>declare a compound character to be a sequence of separate pattern matches</p></td>
+          <td><p>Declare a compound character to be a sequence of separate pattern matches</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="as.list.dist.html">as.list</a></code> </p>
           </td>
-          <td><p>coerce a dist object into a list</p></td>
+          <td><p>Coerce a dist object into a list</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="convert.html">convert</a></code> </p>
           </td>
-          <td><p>convert a dfm to a non-quanteda format</p></td>
+          <td><p>Convert a dfm to a non-quanteda format</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="bootstrap_dfm.html">bootstrap_dfm</a></code> </p>
           </td>
-          <td><p>bootstrap a dfm</p></td>
+          <td><p>Bootstrap a dfm</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="spacyr-methods.html">spacy_parse</a></code> </p>
+          </td>
+          <td><p>Extensions for and from spacy_parse objects</p></td>
         </tr>
       </tbody>
       </table>

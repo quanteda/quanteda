@@ -4,23 +4,26 @@
 
 ### New Features
 
+* Added `vertex_labelfont` to `textplot_network()`.
 * Added `textmodel_lsa()` for Latent Semantic Analysis models.  
 * Added `textmodel_affinity()` for the Perry and Benoit (2017) class affinity scaling model.
 * Added Chinese stopwords.
 * Added a pkgdown vignette for applications in the Chinese language.
 * Added `textplot_network()` function.
+* The `stopwords()` function and the associated internal data object `data_char_stopwords` have been removed from **quanteda**, and replaced by equivalent functionality in the **stopwords** package.
 
 ### Bug fixes and stability enhancements
 
 * Performance has been improved for `fcm()` and for `textmodel_wordfish()`.
 * `dfm()` now correctly passes through all `...` arguments to `tokens()`.  (#1121)
 * All `dfm_*()` functions now work correctly with empty dfm objects.  (#1133)
-
+* Fixed a bug in `dfm_weight()` for named weight vectors (#1150)
 
 ### Behaviour Changes
 
 * The convenience wrappers to `convert()` are simplified and no longer exported.  To convert a dfm, `convert()` is now the only official function.
 * `nfeat()` replaces `nfeature()`, which is now deprecated. (#1134)
+* `textmodel_wordshoal()` has been removed, and relocated to a new package (**wordshoal**).
 
 
 ## Changes since v0.99.12

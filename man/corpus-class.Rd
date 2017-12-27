@@ -12,7 +12,7 @@
 \alias{[[.corpus}
 \alias{[[<-.corpus}
 \alias{str.corpus}
-\title{base method extensions for corpus objects}
+\title{Base method extensions for corpus objects}
 \usage{
 \method{print}{corpus}(x, ...)
 

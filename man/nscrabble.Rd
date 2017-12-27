@@ -2,7 +2,7 @@
 % Please edit documentation in R/nscrabble.R
 \name{nscrabble}
 \alias{nscrabble}
-\title{count the Scrabble letter values of text}
+\title{Count the Scrabble letter values of text}
 \usage{
 nscrabble(x, FUN = sum)
 }

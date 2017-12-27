@@ -4,7 +4,7 @@
 \alias{tokens_ngrams}
 \alias{char_ngrams}
 \alias{tokens_skipgrams}
-\title{create ngrams and skipgrams from tokens}
+\title{Create ngrams and skipgrams from tokens}
 \usage{
 tokens_ngrams(x, n = 2L, skip = 0L, concatenator = "_")
 

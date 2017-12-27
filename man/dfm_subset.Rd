@@ -2,15 +2,15 @@
 % Please edit documentation in R/dfm_subset.R
 \name{dfm_subset}
 \alias{dfm_subset}
-\title{extract a subset of a dfm}
+\title{Extract a subset of a dfm}
 \usage{
 dfm_subset(x, subset, select, ...)
 }
 \arguments{
 \item{x}{\link{dfm} object to be subsetted}
 
-\item{subset}{logical expression indicating the documents to keep: missing 
-values are taken as \code{FALSE}}
+\item{subset}{logical expression indicating the documents to keep: missing
+values are taken as false}
 
 \item{select}{expression, indicating the docvars to select from the dfm; or a
 dfm, in which case the returned dfm will contain the same documents as the

@@ -3,14 +3,14 @@
 \docType{data}
 \name{data_corpus_dailnoconf1991}
 \alias{data_corpus_dailnoconf1991}
-\title{confidence debate from 1991 Irish Parliament}
+\title{Confidence debate from 1991 Irish Parliament}
 \format{\code{data_corpus_dailnoconf1991} is a corpus with 58 texts, 
   including docvars for \code{name}, \code{party}, and \code{position}.}
 \usage{
 data_corpus_dailnoconf1991
 }
 \description{
-Texts of speeches from a no-confidence motion debated in the Irish Dail in
+Texts of speeches from a no-confidence motion debated in the Irish Dáil in
 October 1991 over the future of the Fianna Fail-Progressive Democrat
 coalition.  (See Laver and Benoit 2002 for details.)
 }
@@ -37,7 +37,7 @@ text(c(0.9, 0.9), c(8.5, 6.5), c("Goverment", "Opposition"))
 \references{
 Laver, Michael, and Kenneth Benoit. 2002. 
   "\href{http://www.kenbenoit.net/pdfs/Laver_Benoit_IPS_2002.pdf}{Locating 
-  TDs in Policy Spaces: Wordscoring Dail Speeches}." \emph{Irish Political 
+  TDs in Policy Spaces: Wordscoring Dáil Speeches}." \emph{Irish Political 
   Studies} 17 (Summer): 59-73.
   
   Laver, Michael, Kenneth Benoit, and John Garry. 2003. 

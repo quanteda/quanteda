@@ -1,4 +1,4 @@
-#' segment texts on a pattern match
+#' Segment texts on a pattern match
 #' 
 #' Segment corpus text(s) or a character vector, splitting
 #' on a pattern match.  This is useful for breaking the texts into smaller

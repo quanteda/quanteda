@@ -4,7 +4,7 @@
 \name{dfm-internal}
 \alias{dfm-internal}
 \alias{Compare,dfm,numeric-method}
-\title{internal functions for dfm objects}
+\title{Internal functions for dfm objects}
 \usage{
 \S4method{Compare}{dfm,numeric}(e1, e2)
 }

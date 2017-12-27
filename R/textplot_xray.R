@@ -1,4 +1,4 @@
-#' plot the dispersion of key word(s)
+#' Plot the dispersion of key word(s)
 #' 
 #' Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or 
 #' more texts. The format of the plot depends on the number of \link{kwic} class

@@ -1,4 +1,4 @@
-#' plot word keyness
+#' Plot word keyness
 #' 
 #' Plot the results of a "keyword" of features comparing their differential 
 #' associations with a target and a reference group, after calculating keyness
@@ -41,73 +41,72 @@ textplot_keyness.default <- function(x, show_reference = TRUE, n = 20L, min_coun
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
 #' @importFrom ggplot2 facet_grid element_line geom_bar ylim aes_
 #' @export
-textplot_keyness.data.frame <- function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
+textplot_keyness.keyness <- function(x, show_reference = TRUE, n = 20L, min_count = 2L) {
     
-    if (!all(c("p", "n_target", "n_reference") %in% names(x)) | ncol(x) != 4) {
-        stop("x must be a return from textstat_keyness")
-    }
+    # extract attribute befor subsetting
+    doc <- attr(x, "documents")[1]
     
-    # filter out the rare words
+    # drop infrequent words
     x <- x[(x$n_target + x$n_reference) >= min_count, ]
     
     if (nrow(x) < 1) {
         stop ("Too few words in the documents.")
     }
     
+    measure <- colnames(x)[2]
     n <- min(n, nrow(x))
     if (!show_reference) {
         x <- head(x, n)
-        measure <- colnames(x)[1]
-        x  <- data.frame(words = rownames(x), val = x[, 1])
+        x <- data.frame(words = x$feature, val = x[[2]])
         x$words <- factor(x$words, levels = x$words[order(x$val)])
         
-        p <- ggplot(data = x, aes(x = x$words, y = x$val))
-        
-        p   + coord_flip() +
-            geom_bar(stat="identity") +
-            ylab(measure) +
-            geom_text(aes(label= x$words), hjust = -0.2, vjust = 0.5, size = 3) + 
-            theme_bw() +
-            theme(axis.line = ggplot2::element_blank(),
-                  axis.title.y = ggplot2::element_blank(),
-                  axis.text.y = ggplot2::element_blank(),
-                  axis.ticks.y = ggplot2::element_blank(),
-                  panel.grid.minor.y = ggplot2::element_blank(), 
-                  plot.background = ggplot2::element_blank(),
-                  panel.grid.major.y = element_line(linetype = "dotted"))
+        p <- ggplot(data = x, aes(x = x$words, y = x$val)) +
+             coord_flip() +
+             geom_bar(stat = "identity") +
+             ylab(measure) +
+             geom_text(aes(label= x$words), hjust = -0.2, vjust = 0.5, size = 3) + 
+             theme_bw() +
+             theme(axis.line = ggplot2::element_blank(),
+                   axis.title.y = ggplot2::element_blank(),
+                   axis.text.y = ggplot2::element_blank(),
+                   axis.ticks.y = ggplot2::element_blank(),
+                   panel.grid.minor.y = ggplot2::element_blank(), 
+                   plot.background = ggplot2::element_blank(),
+                   panel.grid.major.y = element_line(linetype = "dotted"))
     } else {
-        if (colnames(x)[1] == "pmi"){
-            pos_n <- min(n, nrow(x)/2)
-            neg_n <- min(n, nrow(x)/2)
-            topn <- head(x, pos_n)
-            tailn <- tail(x, neg_n)
-            max_Y <- max(topn[, 1])
-            min_Y <- min(tailn[, 1])
+        if (measure == "pmi") {
+            pos_n <- min(n, nrow(x) / 2)
+            neg_n <- min(n, nrow(x) / 2)
+            feat_top <- head(x, pos_n)
+            feat_bottom <- tail(x, neg_n)
+            max_y <- max(feat_top[[2]])
+            min_y <- min(feat_bottom[[2]])
         } else {
-            pos_n <- min(n, sum(x[ ,1] >= 0))
-            neg_n <- min(n, sum(x[ ,1] < 0))
-            if ((pos_n == 0) | (neg_n == 0)) 
+            pos_n <- min(n, sum(x[[2]] >= 0))
+            neg_n <- min(n, sum(x[[2]] < 0))
+            if ((pos_n == 0) || (neg_n == 0)) 
                 stop (" Better plot for one Doc.")
-            topn <- head(x, pos_n)
-            tailn <- tail(x, neg_n)
-            max_Y <- max(topn[, 1])
-            min_Y <- min(tailn[, 1])
-        }   
-        topn  <- topn[order(-topn[, 1]), ]
-        tailn <- tailn[order(tailn[, 1]), ]
-        
-        Tars <- attr(x, "documents")[1]
-        if (length(attr(x, "documents")) == 2){
-            Refs <- attr(x, "documents")[2]
-        } else {
-            Refs <- "Reference"
+            feat_top <- head(x, pos_n)
+            feat_bottom <- tail(x, neg_n)
+            max_y <- max(feat_top[[2]])
+            min_y <- min(feat_bottom[[2]])
         }
-        p1 <- data.frame(x = (neg_n + pos_n) : (1 + neg_n), y = topn[,1])
-        p2 <- data.frame(x = 1 : neg_n, y = tailn[,1])
-        p <- melt(list(Refs = p2, Tars = p1), id.vars = "x")
+        
+        feat_top  <- feat_top[order(feat_top[[2]], decreasing = TRUE), ]
+        feat_bottom <- feat_bottom[order(feat_bottom[[2]]), ]
+        
+        tars <- doc[1]
+        if (length(doc) == 2) {
+            refs <- doc[2]
+        } else {
+            refs <- "Reference"
+        }
+        p1 <- data.frame(x = seq(neg_n + pos_n, 1 + neg_n), y = feat_top[[2]])
+        p2 <- data.frame(x = seq(1, neg_n), y = feat_bottom[[2]])
+        p <- melt(list(refs = p2, tars = p1), id.vars = "x")
         colnames(p)[4] <- "Document"
-        p[p=="Refs"] <- Refs
-        p[p=="Tars"] <- Tars
+        p[p == "refs"] <- refs
+        p[p == "tars"] <- tars
 
         
         ggplot(p, aes_(x = ~x, y = p$value, fill = ~Document)) +  
@@ -115,12 +114,12 @@ textplot_keyness.data.frame <- function(x, show_reference = TRUE, n = 20L, min_c
             ggplot2::scale_fill_manual("Document", values = c("#003366", "#CC3333")) +
             coord_flip() + 
             # allow extra space for displaying text next to the point
-            ylim(min_Y * 1.1 , max_Y * 1.1) +  
-            ylab(colnames(topn)[1]) +
-            geom_text(aes(label= c(rownames(tailn), rownames(topn))), 
-                      hjust = ifelse( p$Document == Tars, -0.2, 1.2),
+            ylim(min_y * 1.1 , max_y * 1.1) +  
+            ylab(measure) +
+            geom_text(aes(label = c(feat_bottom$feature, feat_top$feature)), 
+                      hjust = ifelse(p$Document == tars, -0.2, 1.2),
                       vjust = 0.5, 
-                      colour = ifelse(p$Document == Tars, "#CC3333", "#003366"), 
+                      colour = ifelse(p$Document == tars, "#CC3333", "#003366"), 
                       size = 3) +
             theme_bw() +
             theme(axis.line = ggplot2::element_blank(),

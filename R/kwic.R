@@ -1,9 +1,10 @@
-#' locate keywords-in-context
-#'
-#' For a text or a collection of texts (in a quanteda corpus object), return a
-#' list of a keyword supplied by the user in its immediate context, identifying
-#' the source text and the word index number within the source text.  (Not the
-#' line number, since the text may or may not be segmented using end-of-line
+
+#' Locate keywords-in-context
+#' 
+#' For a text or a collection of texts (in a quanteda corpus object), return a 
+#' list of a keyword supplied by the user in its immediate context, identifying 
+#' the source text and the word index number within the source text.  (Not the 
+#' line number, since the text may or may not be segmented using end-of-line 
 #' delimiters.)
 #' @param x a character, \link{corpus}, or \link{tokens} object
 #' @inheritParams pattern

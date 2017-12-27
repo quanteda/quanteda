@@ -5,7 +5,7 @@
 \alias{as.wfm}
 \alias{as.DocumentTermMatrix}
 \alias{dfm2lda}
-\title{convenience wrappers for dfm convert}
+\title{Convenience wrappers for dfm convert}
 \usage{
 as.wfm(x)
 
