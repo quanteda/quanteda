@@ -109,3 +109,6 @@ toks1 + toks2
 c(toks1, toks2)
 
 }
+\seealso{
+\code{\link{as.keras}}
+}

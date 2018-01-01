@@ -179,13 +179,11 @@ check_dots <-  function(dots, permissible_args = NULL) {
 #' #     stop(friendly_class_undefined_message(class(x), "as.tokens"))
 #' # }
 friendly_class_undefined_message <- function(object_class, function_name) {
-    valid_object_types <- 
-        utils::methods(function_name) %>% 
-        as.character() %>% 
-        stringi::stri_extract_last_regex("(data\\.){0,1}\\w+$")
-    valid_object_types <- valid_object_types[valid_object_types != "default"]
+    valid_class <- stri_extract_last_regex(as.character(utils::methods(function_name)),
+                                           "(data\\.){0,1}\\w+$")
+    valid_class <- valid_class[valid_class != "default"]
     paste0(function_name, "() only works on ", 
-         paste(valid_object_types, collapse = ", "),
-         " objects.")
+           paste(valid_class, collapse = ", "),
+           " objects.")
 }
 

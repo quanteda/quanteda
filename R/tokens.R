@@ -336,6 +336,7 @@ as.tokens.spacyr_parsed <- function(x, concatenator = "/",
 #' @return \code{as.list} returns a simple list of characters from a
 #'   \link{tokens} object.
 #' @method as.list tokens
+#' @seealso \code{\link{as.keras}}
 #' @export
 as.list.tokens <- function(x, ...) {
     types <- c("", types(x))
@@ -344,6 +345,42 @@ as.list.tokens <- function(x, ...) {
     names(result) <- names(x)
     return(result)
 }
+
+#' coerce tokens to sequences for Keras 
+#' 
+#' \code{as.keras} converts \link{tokens} into sequences of integers for
+#'   \code{keras} models. 
+#' @param x object coerced to Keras sequences
+#' @return a Python list object
+#' @details Conversion of R objects to Python objects is performed 
+#'   using the \code{reticulate} package.
+#' @export
+#' @examples
+#' \dontrun{
+#' txt <- data_char_ukimmig2010
+#'
+#' # use keras' tokenizer
+#' keras_tokenizer <-
+#'     keras::text_tokenizer() %>%
+#'     keras::fit_text_tokenizer(txt)
+#' seqs <- keras::texts_to_sequences(keras_tokenizer, txt)
+#'
+#' # use quanteda's tokenizer
+#' seqs <- as.keras(tokens(data_char_ukimmig2010))
+#'
+#' }
+as.keras <- function(x) {
+    UseMethod("as.keras")
+}
+
+#' @rdname as.keras
+#' @method as.keras tokens
+#' @export
+as.keras.tokens <- function(x) {
+    x <- unname(unclass(x))
+    reticulate::r_to_py(x)
+}
+
 
 #' @rdname as.tokens
 #' @return \code{unlist} returns a simple vector of characters from a 
@@ -383,7 +420,7 @@ is.tokens <- function(x) "tokens" %in% class(x)
 #' @return a list the serialized tokens found in each text
 #' @importFrom fastmatch fmatch
 #' @keywords internal tokens
-tokens_serialize <- function(x, types_reserved, ...) {
+tokens_serialize <- function(x, types_reserved = NULL) {
     
     attrs <- attributes(x)
     types <- unique(unlist(x, use.names = FALSE))
@@ -393,7 +430,7 @@ tokens_serialize <- function(x, types_reserved, ...) {
         types <- c("", setdiff(types, ""))
     }
 
-    if (!missing(types_reserved)) {
+    if (!is.null(types_reserved)) {
         types <- c(types_reserved, setdiff(types, types_reserved))
     }
     x <- lapply(x, function(x) {
