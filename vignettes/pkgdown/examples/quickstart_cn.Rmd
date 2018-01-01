@@ -393,7 +393,7 @@ lapply(as.list(sim), head, 10)
 
 ## 文档位置的缩放分析 {#scaling-document-positions}
 
-我们在`textmodel()`功能上做了大量的开发工作，这里仅演示“wordfish”模型的无监督文档缩放分析：
+我们在`textmodel_wordfish()`功能上做了大量的开发工作，这里仅演示“wordfish”模型的无监督文档缩放分析：
 
 ```{r}
 # make prettier document names

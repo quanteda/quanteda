@@ -14,7 +14,7 @@ test_that("a warning occurs for mv with multiple ref scores", {
 
 test_that("test wordscores on LBG data, MV rescaling", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
-    pr <- predict(ws, rescaling = "mv")
+    pr <- suppressWarnings(predict(ws, rescaling = "mv"))
     expect_equal(round(pr@textscores["V1", "textscore_mv"], 2), -.51)
 })
 
@@ -51,8 +51,11 @@ test_that("coef works for wordscores predicted, rescaling = none", {
 })
 
 test_that("coef works for wordscores predicted, rescaling = mv", {
-    pr <- predict(textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)), 
-                  rescaling = "mv")
+    pr <- suppressWarnings(
+        predict(textmodel_wordscores(data_dfm_lbgexample, 
+                                     c(seq(-1.5, 1.5, .75), NA)), 
+                rescaling = "mv")
+    )
     expect_equal(coef(pr)$coef_document, pr@textscores$textscore_mv)
     expect_equal(
         coef(pr)$coef_document_se, 

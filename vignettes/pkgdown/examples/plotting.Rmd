@@ -213,7 +213,7 @@ ie_dfm <- dfm(data_corpus_irishbudget2010, verbose=FALSE)
 refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 
 # Predict Wordscores model
-ws <- textmodel(ie_dfm, refscores, model = "wordscores", smooth = 1)
+ws <- textmodel_wordscores(ie_dfm, refscores, smooth = 1)
 
 # Get predictions
 pred <- predict(ws)
