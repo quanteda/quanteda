@@ -236,7 +236,7 @@ applies if <code>margin = "features"</code></p></td>
 
 <span class='co'>## wordscores</span>
 <span class='no'>refscores</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fu'>rep</span>(<span class='fl'>NA</span>, <span class='fl'>4</span>), -<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fu'>rep</span>(<span class='fl'>NA</span>, <span class='fl'>8</span>))
-<span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel.html'>textmodel</a></span>(<span class='no'>ie_dfm</span>, <span class='no'>refscores</span>, <span class='kw'>model</span><span class='kw'>=</span><span class='st'>"wordscores"</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_wordscores.html'>textmodel_wordscores</a></span>(<span class='no'>ie_dfm</span>, <span class='no'>refscores</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='no'>pred</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>ws</span>)
 <span class='co'># plot estimated word positions</span>
 <span class='fu'>textplot_scale1d</span>(<span class='no'>pred</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>,
