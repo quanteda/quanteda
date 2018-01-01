@@ -209,6 +209,18 @@ the resulting numeric vector</p></td>
 
     <p>a numeric vector of document frequencies for each feature</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The document frequency scheme returns a weight for each feature, computed as
+follows, where \(N\) is defined as the number of documents in the dfm and
+\(s\) is the smoothing constant:</p><dl class='dl-horizontal'>
+<dt><code>"count"</code></dt><dd><p>\(df_j\), the number of documents for which \(n_{ij} &gt; threshold\)</p></dd>
+<dt><code>"inverse"</code></dt><dd><p>$$\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)$$</p></dd>
+<dt><code>"inversemax"</code></dt><dd><p>$$\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)$$</p></dd>
+<dt><code>"inverseprob"</code></dt><dd><p>$$\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)$$</p></dd>
+<dt><code>"unary"</code></dt><dd><p>1 for each feature</p></dd>
+</dl>
+    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Manning, C. D., Raghavan, P., &amp; Schutze, H. (2008). 
@@ -253,6 +265,8 @@ the resulting numeric vector</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>
       

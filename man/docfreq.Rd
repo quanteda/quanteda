@@ -42,6 +42,18 @@ feature occurs more than a given frequency threshold.  (The default threshold
 is  zero, meaning that any feature occurring at least once in a document will
 be counted.)
 }
+\details{
+The document frequency scheme returns a weight for each feature, computed as
+follows, where \eqn{N} is defined as the number of documents in the dfm and
+\eqn{s} is the smoothing constant:
+\describe{
+\item{\code{"count"}}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
+\item{\code{"inverse"}}{\deqn{\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)}}
+\item{\code{"inversemax"}}{\deqn{\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)}}
+\item{\code{"inverseprob"}}{\deqn{\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)}}
+\item{\code{"unary"}}{1 for each feature}
+}
+}
 \examples{
 mydfm <- dfm(data_corpus_inaugural[1:2])
 docfreq(mydfm[, 1:20])
