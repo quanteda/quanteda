@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wordshoal text model — textmodel_wordshoal • quanteda</title>
+<title>Wordshoal text model (redirect) — textmodel_wordshoal • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -146,68 +146,14 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Wordshoal text model</h1>
+    <h1>Wordshoal text model (redirect)</h1>
     </div>
 
     
-    <p>Estimate Lauderdale and Herzog's (2016) model for one-dimensional document
-author (e.g. speakers) positions based on multiple groups of texts (e.g.
-debates).  Each group of texts is scaled using Slapin and Proksch's (2008)
-"wordfish" Poisson scaling model of one-dimensional document positions, and
-then the positions from a particular author are scaled across groups using a
-second-level linear factor model, using conditional maximum likelihood.</p>
+    <p>This model has been moved to the <a href='https://github.com/kbenoit/wordshoal'><span class="pkg">wordshoal</span></a> package.</p>
     
 
-    <pre class="usage"><span class='fu'>textmodel_wordshoal</span>(<span class='no'>x</span>, <span class='no'>groups</span>, <span class='no'>authors</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fl'>0.001</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>the <a href='dfm.html'>dfm</a> from which the model will be fit</p></td>
-    </tr>
-    <tr>
-      <th>groups</th>
-      <td><p>the name of a variable in the document variables for data
-giving the document group for each document</p></td>
-    </tr>
-    <tr>
-      <th>authors</th>
-      <td><p>the name of a variable in the document variables for data
-giving the author of each document</p></td>
-    </tr>
-    <tr>
-      <th>dir</th>
-      <td><p>set global identification by specifying the indexes for a pair of 
-authors such that \(\hat{\theta}_{dir[1]} &lt; \hat{\theta}_{dir[2]}\)</p></td>
-    </tr>
-    <tr>
-      <th>tol</th>
-      <td><p>a convergence threshold for the
-log-posterior of the model</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>An object of class textmodel_fitted_wordshoal.  This is a list 
-  containing:</p>
-<dt>tol</dt><dd><p>log-posterior tolerance used in fitting</p></dd> 
-  <dt>dir</dt><dd><p>global identification of the dimension</p></dd> <dt>theta</dt><dd><p>estimated
-  document positions</p></dd> <dt>beta</dt><dd><p>debate marginal effects</p></dd> 
-  <dt>alpha</dt><dd><p>estimated document fixed effects</p></dd> <dt>psi</dt><dd><p>estimated
-  document debate-level positions</p></dd> <dt>groups</dt><dd><p>document groups</p></dd> 
-  <dt>authors</dt><dd><p>document authors</p></dd> <dt>ll</dt><dd><p>log likelihood at convergence</p></dd> 
-  <dt>se.theta</dt><dd><p>standard errors for theta-hats</p></dd> <dt>data</dt><dd><p>corpus to which
-  the model was fit</p></dd>
-
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Returns estimates of relative author positions across the full
-  corpus of texts.</p>
-    
+        
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Benjamin E. Lauderdale and Alexander Herzog.  2016.
@@ -216,38 +162,13 @@ log-posterior of the model</p></td>
   24 (3, July): 374-394.</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>data</span>(<span class='no'>data_corpus_irish30</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"quantedaData"</span>)
-<span class='no'>iedfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irish30</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>wordshoalfit</span> <span class='kw'>&lt;-</span>
-    <span class='fu'>textmodel_wordshoal</span>(<span class='no'>iedfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>7</span>,<span class='fl'>1</span>),
-                        <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irish30</span>, <span class='st'>"debateID"</span>),
-                        <span class='kw'>authors</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irish30</span>, <span class='st'>"member.name"</span>))
-<span class='no'>fitdf</span> <span class='kw'>&lt;-</span> <span class='fu'>merge</span>(<span class='fu'>as.data.frame</span>(<span class='fu'>summary</span>(<span class='no'>wordshoalfit</span>)),
-               <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irish30</span>),
-               <span class='kw'>by.x</span> <span class='kw'>=</span> <span class='st'>"row.names"</span>, <span class='kw'>by.y</span> <span class='kw'>=</span> <span class='st'>"member.name"</span>)
-<span class='no'>fitdf</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>fitdf</span>, !<span class='fu'>duplicated</span>(<span class='no'>memberID</span>))
-<span class='fu'>aggregate</span>(<span class='no'>theta</span> ~ <span class='no'>party.name</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>fitdf</span>, <span class='no'>mean</span>)
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    
-Benjamin Lauderdale and Kenneth Benoit
+          </ul>
 
   </div>
 </div>

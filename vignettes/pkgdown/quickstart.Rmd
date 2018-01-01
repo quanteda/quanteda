@@ -392,7 +392,7 @@ lapply(as.list(sim), head, 10)
 
 ## Scaling document positions
 
-We have a lot of development work to do on the `textmodel()` function, but here is a demonstration of unsupervised document scaling comparing the "wordfish" model: 
+Here is a demonstration of unsupervised document scaling comparing the "wordfish" model: 
 ```{r}
 # make prettier document names
 ieDfm <- dfm(data_corpus_irishbudget2010)

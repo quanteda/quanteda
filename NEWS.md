@@ -24,6 +24,7 @@
 * The convenience wrappers to `convert()` are simplified and no longer exported.  To convert a dfm, `convert()` is now the only official function.
 * `nfeat()` replaces `nfeature()`, which is now deprecated. (#1134)
 * `textmodel_wordshoal()` has been removed, and relocated to a new package (**wordshoal**).
+* The generic wrapper function `textmodel()`, which used to be a gateway to specific `textmodel_*()` functions, has been removed.
 
 
 ## Changes since v0.99.12
