@@ -26,7 +26,7 @@ dfm_smooth(x, smoothing = 1)
   \item{\code{augmented}}{equivalent to \eqn{K + (1 - K) *} \code{dfm_weight(x,
   "propmax")}}
   \item{\code{logave}}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
-  \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i}}}
+  \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
 }}
 
 \item{weights}{if \code{scheme} is unused, then \code{weights} can be a named

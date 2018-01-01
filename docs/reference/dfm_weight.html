@@ -168,18 +168,18 @@
     <tr>
       <th>scheme</th>
       <td><p>a label of the weight type:</p><dl class='dl-horizontal'>
-  <dt><code>"count"</code></dt><dd><p>integer feature count (default when a dfm is created)</p></dd>
-  <dt><code>"prop"</code></dt><dd><p>the proportion of the feature counts of total feature
-  counts (aka relative frequency)</p></dd>
-  <dt><code>"propmax"</code></dt><dd><p>the proportion of the feature counts of the highest
-  feature count in a document</p></dd>
+  <dt><code>count</code></dt><dd><p>\(tf_{ij}\), an integer feature count (default when a dfm is created)</p></dd>
+  <dt><code>prop</code></dt><dd><p>the proportion of the feature counts of total feature
+  counts (aka relative frequency), calculated as \(tf_{ij} / \sum_j tf_{ij}\)</p></dd>
+  <dt><code>propmax</code></dt><dd><p>the proportion of the feature counts of the highest
+  feature count in a document, \(tf_{ij} / \textrm{max}_j tf_{ij}\)</p></dd>
   <dt><code>log</code></dt><dd><p>take the logarithm of 1 + each count, for base
-  <code>base</code></p></dd>
-  <dt><code>boolean</code></dt><dd><p>recode all non-zero counts as 1</p></dd> 
-  <dt><code>augmented</code></dt><dd><p>equivalent to K + (1 - K) * <code>dfm_weight(x,
+  <code>base</code>: \(\textrm{log}_{base}(1 + tf_{ij})\)</p></dd>
+  <dt><code>boolean</code></dt><dd><p>recode all non-zero counts as 1</p></dd>
+  <dt><code>augmented</code></dt><dd><p>equivalent to \(K + (1 - K) *\) <code>dfm_weight(x,
   "propmax")</code></p></dd>
-  <dt><code>logave</code></dt><dd><p>(1 + the log of the counts) / (1 + log of the counts /
-  the average count within document)</p></dd>
+  <dt><code>logave</code></dt><dd><p>1 + the log of the counts) / (1 + log of the counts / the average count within document), or
+  $$\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}$$</p></dd>
 </dl></td>
     </tr>
     <tr>

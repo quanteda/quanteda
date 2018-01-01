@@ -16,7 +16,7 @@
 #'   \item{\code{augmented}}{equivalent to \eqn{K + (1 - K) *} \code{dfm_weight(x,
 #'   "propmax")}}
 #'   \item{\code{logave}}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
-#'   \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i}}}
+#'   \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
 #' }
 #' @param weights if \code{scheme} is unused, then \code{weights} can be a named
 #'   numeric vector of weights to be applied to the dfm, where the names of the
@@ -247,11 +247,11 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' follows, where \eqn{N} is defined as the number of documents in the dfm and
 #' \eqn{s} is the smoothing constant:
 #' \describe{
-#' \item{\code{"count"}}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
-#' \item{\code{"inverse"}}{\deqn{\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)}}
-#' \item{\code{"inversemax"}}{\deqn{\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)}}
-#' \item{\code{"inverseprob"}}{\deqn{\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)}}
-#' \item{\code{"unary"}}{1 for each feature}
+#' \item{\code{count}}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
+#' \item{\code{inverse}}{\deqn{\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)}}
+#' \item{\code{inversemax}}{\deqn{\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)}}
+#' \item{\code{inverseprob}}{\deqn{\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)}}
+#' \item{\code{unary}}{1 for each feature}
 #' }
 #' @param smoothing added to the quotient before taking the logarithm
 #' @param k added to the denominator in the "inverse" weighting types, to 
