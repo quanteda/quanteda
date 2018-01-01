@@ -170,7 +170,15 @@ be counted.)</p>
     </tr>
     <tr>
       <th>scheme</th>
-      <td><p>type of document frequency weighting</p></td>
+      <td><p>type of document frequency weighting, computed as
+follows, where \(N\) is defined as the number of documents in the dfm and
+\(s\) is the smoothing constant:</p><dl class='dl-horizontal'>
+<dt><code>count</code></dt><dd><p>\(df_j\), the number of documents for which \(n_{ij} &gt; threshold\)</p></dd>
+<dt><code>inverse</code></dt><dd><p>$$\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)$$</p></dd>
+<dt><code>inversemax</code></dt><dd><p>$$\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)$$</p></dd>
+<dt><code>inverseprob</code></dt><dd><p>$$\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)$$</p></dd>
+<dt><code>unary</code></dt><dd><p>1 for each feature</p></dd>
+</dl></td>
     </tr>
     <tr>
       <th>smoothing</th>
