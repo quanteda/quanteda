@@ -5,18 +5,18 @@
 #' @param x document-feature matrix created by \link{dfm}
 #' @param scheme a label of the weight type:
 #' \describe{
-#'   \item{\code{"count"}}{integer feature count (default when a dfm is created)}
-#'   \item{\code{"prop"}}{the proportion of the feature counts of total feature
-#'   counts (aka relative frequency)}
-#'   \item{\code{"propmax"}}{the proportion of the feature counts of the highest
-#'   feature count in a document}
+#'   \item{\code{count}}{\eqn{tf_{ij}}, an integer feature count (default when a dfm is created)}
+#'   \item{\code{prop}}{the proportion of the feature counts of total feature
+#'   counts (aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
+#'   \item{\code{propmax}}{the proportion of the feature counts of the highest
+#'   feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
 #'   \item{\code{log}}{take the logarithm of 1 + each count, for base
-#'   \code{base}}
-#'   \item{\code{boolean}}{recode all non-zero counts as 1} 
-#'   \item{\code{augmented}}{equivalent to K + (1 - K) * \code{dfm_weight(x,
+#'   \code{base}: \eqn{\textrm{log}_{base}(1 + tf_{ij})}}
+#'   \item{\code{boolean}}{recode all non-zero counts as 1}
+#'   \item{\code{augmented}}{equivalent to \eqn{K + (1 - K) *} \code{dfm_weight(x,
 #'   "propmax")}}
-#'   \item{\code{logave}}{(1 + the log of the counts) / (1 + log of the counts /
-#'   the average count within document)}
+#'   \item{\code{logave}}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
+#'   \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i}}}
 #' }
 #' @param weights if \code{scheme} is unused, then \code{weights} can be a named
 #'   numeric vector of weights to be applied to the dfm, where the names of the
@@ -243,7 +243,16 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' is  zero, meaning that any feature occurring at least once in a document will
 #' be counted.)
 #' @param x a \link{dfm}
-#' @param scheme type of document frequency weighting
+#' @param scheme type of document frequency weighting, computed as
+#' follows, where \eqn{N} is defined as the number of documents in the dfm and
+#' \eqn{s} is the smoothing constant:
+#' \describe{
+#' \item{\code{"count"}}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
+#' \item{\code{"inverse"}}{\deqn{\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)}}
+#' \item{\code{"inversemax"}}{\deqn{\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)}}
+#' \item{\code{"inverseprob"}}{\deqn{\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)}}
+#' \item{\code{"unary"}}{1 for each feature}
+#' }
 #' @param smoothing added to the quotient before taking the logarithm
 #' @param k added to the denominator in the "inverse" weighting types, to 
 #'   prevent a zero document count for a term
@@ -258,17 +267,6 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #'   the resulting numeric vector
 #' @param ... not used
 #' @return a numeric vector of document frequencies for each feature
-#' @details 
-#' The document frequency scheme returns a weight for each feature, computed as
-#' follows, where \eqn{N} is defined as the number of documents in the dfm and
-#' \eqn{s} is the smoothing constant:
-#' \describe{
-#' \item{\code{"count"}}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
-#' \item{\code{"inverse"}}{\deqn{\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)}}
-#' \item{\code{"inversemax"}}{\deqn{\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)}}
-#' \item{\code{"inverseprob"}}{\deqn{\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)}}
-#' \item{\code{"unary"}}{1 for each feature}
-#' }
 #' @keywords weighting dfm
 #' @export
 #' @examples 

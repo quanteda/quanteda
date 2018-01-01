@@ -15,18 +15,18 @@ dfm_smooth(x, smoothing = 1)
 
 \item{scheme}{a label of the weight type:
 \describe{
-  \item{\code{"count"}}{integer feature count (default when a dfm is created)}
-  \item{\code{"prop"}}{the proportion of the feature counts of total feature
-  counts (aka relative frequency)}
-  \item{\code{"propmax"}}{the proportion of the feature counts of the highest
-  feature count in a document}
+  \item{\code{count}}{\eqn{tf_{ij}}, an integer feature count (default when a dfm is created)}
+  \item{\code{prop}}{the proportion of the feature counts of total feature
+  counts (aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
+  \item{\code{propmax}}{the proportion of the feature counts of the highest
+  feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
   \item{\code{log}}{take the logarithm of 1 + each count, for base
-  \code{base}}
-  \item{\code{boolean}}{recode all non-zero counts as 1} 
-  \item{\code{augmented}}{equivalent to K + (1 - K) * \code{dfm_weight(x,
+  \code{base}: \eqn{\textrm{log}_{base}(1 + tf_{ij})}}
+  \item{\code{boolean}}{recode all non-zero counts as 1}
+  \item{\code{augmented}}{equivalent to \eqn{K + (1 - K) *} \code{dfm_weight(x,
   "propmax")}}
-  \item{\code{logave}}{(1 + the log of the counts) / (1 + log of the counts /
-  the average count within document)}
+  \item{\code{logave}}{1 + the log of the counts) / (1 + log of the counts / the average count within document), or
+  \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 + \textrm{log}_{base}(\sum_j tf_{ij} / N_i}}}
 }}
 
 \item{weights}{if \code{scheme} is unused, then \code{weights} can be a named
