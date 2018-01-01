@@ -180,7 +180,7 @@ test_that("remove_punct and remove_twitter interact correctly, #607", {
     )
     # remove_twitter should be inactive if remove_punct is FALSE
     expect_equal(
-        as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = TRUE)),
+        suppressWarnings(as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = TRUE))),
         as.character(tokens(txt, what = "word", remove_punct = FALSE, remove_twitter = FALSE))
     )
     expect_warning(
