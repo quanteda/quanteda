@@ -129,264 +129,267 @@
     
     
 <div class="contents">
-<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><div class="sourceLine" id="cb1-1" data-line-number="1">
-<span class="kw">library</span>(quanteda)</div></code></pre>
-<section id="download-corpus" class="level1"><h1>Download corpus</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
+<div id="download-corpus" class="section level1">
+<h1 class="hasAnchor">
+<a href="#download-corpus" class="anchor"></a>Download corpus</h1>
 <p>Download corpus constructed from <em>Report on the Work of the Government</em> published by Premier of the State Council between 1954 and 2017. You can download the corpus using the <strong>quanteda.corpora</strong> package.</p>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><div class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># read text files</span></div>
-<div class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</div>
-<div class="sourceLine" id="cb2-3" data-line-number="3">corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">"https://www.dropbox.com/s/37ojd5knz1qeyul/data_corpus_chinesegovreport.rds?dl=1"</span>)</div></code></pre>
-</section><section id="tokenization" class="level1"><h1>Tokenization</h1>
-<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><div class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Chinese stopwords</span></div>
-<div class="sourceLine" id="cb3-2" data-line-number="2">ch_stop &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>)</div>
-<div class="sourceLine" id="cb3-3" data-line-number="3"></div>
-<div class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># tokenize</span></div>
-<div class="sourceLine" id="cb3-5" data-line-number="5">ch_toks &lt;-<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># read text files</span>
+devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)
+corp &lt;-<span class="st"> </span>quanteda.corpora<span class="op">::</span><span class="kw">download</span>(<span class="dt">url =</span> <span class="st">"https://www.dropbox.com/s/37ojd5knz1qeyul/data_corpus_chinesegovreport.rds?dl=1"</span>)</code></pre></div>
 </div>
-<div class="sourceLine" id="cb3-6" data-line-number="6">
+<div id="tokenization" class="section level1">
+<h1 class="hasAnchor">
+<a href="#tokenization" class="anchor"></a>Tokenization</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Chinese stopwords</span>
+ch_stop &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"zh"</span>, <span class="dt">source =</span> <span class="st">"misc"</span>)
+
+<span class="co"># tokenize</span>
+ch_toks &lt;-<span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(corp, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-</div>
-<div class="sourceLine" id="cb3-7" data-line-number="7">
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(ch_stop)</div>
-<div class="sourceLine" id="cb3-8" data-line-number="8"></div>
-<div class="sourceLine" id="cb3-9" data-line-number="9"><span class="co"># construct a dfm</span></div>
-<div class="sourceLine" id="cb3-10" data-line-number="10">ch_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(ch_toks)</div>
-<div class="sourceLine" id="cb3-11" data-line-number="11">
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_dfm)</div></code></pre>
+<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(ch_stop)
+
+<span class="co"># construct a dfm</span>
+ch_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(ch_toks)
+<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_dfm)</code></pre></div>
 <pre><code>## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 
 ## 5627 5036 4255 4248 2931 2897 2817 2642 2627 2595</code></pre>
-</section><section id="analysis" class="level1"><h1>Analysis</h1>
-<section id="word-cloud" class="level2"><h2>Word cloud</h2>
-<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><div class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># plot a word cloud</span></div>
-<div class="sourceLine" id="cb5-2" data-line-number="2">
-<span class="kw">set.seed</span>(<span class="dv">100</span>)</div>
-<div class="sourceLine" id="cb5-3" data-line-number="3"></div>
-<div class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># to set the font correctly for macOS</span></div>
-<div class="sourceLine" id="cb5-5" data-line-number="5">
-<span class="cf">if</span> (<span class="kw">Sys.info</span>()[<span class="st">'sysname'</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="kw">par</span>(<span class="dt">family =</span> <span class="st">"STSong"</span>) </div>
-<div class="sourceLine" id="cb5-6" data-line-number="6">
+</div>
+<div id="analysis" class="section level1">
+<h1 class="hasAnchor">
+<a href="#analysis" class="anchor"></a>Analysis</h1>
+<div id="word-cloud" class="section level2">
+<h2 class="hasAnchor">
+<a href="#word-cloud" class="anchor"></a>Word cloud</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot a word cloud</span>
+<span class="kw">set.seed</span>(<span class="dv">100</span>)
+
+<span class="co"># to set the font correctly for macOS</span>
+<span class="cf">if</span> (<span class="kw">Sys.info</span>()[<span class="st">'sysname'</span>] <span class="op">==</span><span class="st"> "Darwin"</span>) <span class="kw">par</span>(<span class="dt">family =</span> <span class="st">"STSong"</span>) 
 <span class="kw"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(ch_dfm, <span class="dt">min_count =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb5-7" data-line-number="7">
-<span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(<span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,</div>
-<div class="sourceLine" id="cb5-8" data-line-number="8">                   <span class="dt">rot.per =</span> <span class="fl">.25</span>, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">scale =</span> <span class="kw">c</span>(<span class="fl">2.8</span>, <span class="fl">.5</span>),</div>
-<div class="sourceLine" id="cb5-9" data-line-number="9">                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</div></code></pre>
+<span class="kw"><a href="../../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(<span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
+                   <span class="dt">rot.per =</span> .<span class="dv">25</span>, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">scale =</span> <span class="kw">c</span>(<span class="fl">2.8</span>, .<span class="dv">5</span>),
+                   <span class="dt">colors =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
 <p><img src="chinese_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;"></p>
-</section><section id="feature-co-occurrence-matrix" class="level2"><h2>Feature co-occurrence matrix</h2>
-<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><div class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># fcm within the window size of 5</span></div>
-<div class="sourceLine" id="cb6-2" data-line-number="2">ch17_corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(corp, Year <span class="op">==</span><span class="st"> "2017"</span>)</div>
-<div class="sourceLine" id="cb6-3" data-line-number="3">ch17_toks &lt;-<span class="st"> </span>
 </div>
-<div class="sourceLine" id="cb6-4" data-line-number="4">
+<div id="feature-co-occurrence-matrix" class="section level2">
+<h2 class="hasAnchor">
+<a href="#feature-co-occurrence-matrix" class="anchor"></a>Feature co-occurrence matrix</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fcm within the window size of 5</span>
+ch17_corp &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(corp, Year <span class="op">==</span><span class="st"> "2017"</span>)
+ch17_toks &lt;-<span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../../../reference/tokens.html">tokens</a></span>(ch17_corp, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-</div>
-<div class="sourceLine" id="cb6-5" data-line-number="5">
-<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(ch_stop)</div>
-<div class="sourceLine" id="cb6-6" data-line-number="6">ch_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17_toks, <span class="dt">context =</span> <span class="st">"window"</span>)  </div>
-<div class="sourceLine" id="cb6-7" data-line-number="7">
-<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_fcm[<span class="st">"改革"</span>, ])</div></code></pre>
+<span class="st">    </span><span class="kw"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(ch_stop)
+ch_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/fcm.html">fcm</a></span>(ch17_toks, <span class="dt">context =</span> <span class="st">"window"</span>)  
+<span class="kw"><a href="../../../reference/topfeatures.html">topfeatures</a></span>(ch_fcm[<span class="st">"改革"</span>, ])</code></pre></div>
 <pre><code>## 推进 制度   性 体制 完善   试   点 供给   侧 结构 
 ##   23   19   11   11   10    8    8    7    7    7</code></pre>
-</section><section id="unsupervised-document-scaling" class="level2"><h2>Unsupervised document scaling</h2>
-<pre class="sourceCode r" id="cb8"><code class="sourceCode r"><div class="sourceLine" id="cb8-1" data-line-number="1">wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ch_dfm)</div>
-<div class="sourceLine" id="cb8-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span>
 </div>
-<div class="sourceLine" id="cb8-3" data-line-number="3">y &lt;-<span class="st"> </span>y[y <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1964</span> <span class="op">|</span><span class="st"> </span>y <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1975</span>]</div>
-<div class="sourceLine" id="cb8-4" data-line-number="4">y &lt;-<span class="st"> </span>y[<span class="op">!</span>y <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1963</span>, <span class="dv">1961</span>, <span class="dv">1962</span>, <span class="dv">1976</span>, <span class="dv">1977</span>)]</div>
-<div class="sourceLine" id="cb8-5" data-line-number="5">
-<span class="kw">plot</span>(y, wfm<span class="op">@</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</div></code></pre>
+<div id="unsupervised-document-scaling" class="section level2">
+<h2 class="hasAnchor">
+<a href="#unsupervised-document-scaling" class="anchor"></a>Unsupervised document scaling</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ch_dfm)
+y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span>
+y &lt;-<span class="st"> </span>y[y <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1964</span> <span class="op">|</span><span class="st"> </span>y <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1975</span>]
+y &lt;-<span class="st"> </span>y[<span class="op">!</span>y <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1963</span>, <span class="dv">1961</span>, <span class="dv">1962</span>, <span class="dv">1976</span>, <span class="dv">1977</span>)]
+<span class="kw">plot</span>(y, wfm<span class="op">@</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</code></pre></div>
 <p><img src="chinese_files/figure-html/fig2-1.png" width="576" style="display: block; margin: auto;"></p>
-</section><section id="collocations" class="level2"><h2>Collocations</h2>
-<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><div class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># bigrams cross the whole dataset</span></div>
-<div class="sourceLine" id="cb9-2" data-line-number="2">ch_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch_toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>)</div>
-<div class="sourceLine" id="cb9-3" data-line-number="3">knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw">head</span>(ch_col, <span class="dv">10</span>))</div></code></pre>
+</div>
+<div id="collocations" class="section level2">
+<h2 class="hasAnchor">
+<a href="#collocations" class="anchor"></a>Collocations</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># bigrams cross the whole dataset</span>
+ch_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch_toks, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">min_count =</span> <span class="dv">20</span>)
+knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw">head</span>(ch_col, <span class="dv">10</span>))</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th style="text-align: left;">collocation</th>
-<th style="text-align: right;">count</th>
-<th style="text-align: right;">count_nested</th>
-<th style="text-align: right;">length</th>
-<th style="text-align: right;">lambda</th>
-<th style="text-align: right;">z</th>
+<th align="left">collocation</th>
+<th align="right">count</th>
+<th align="right">count_nested</th>
+<th align="right">length</th>
+<th align="right">lambda</th>
+<th align="right">z</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">社会 主义</td>
-<td style="text-align: right;">1787</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5.661200</td>
-<td style="text-align: right;">128.61741</td>
+<td align="left">社会 主义</td>
+<td align="right">1787</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">5.661200</td>
+<td align="right">128.61741</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">亿 元</td>
-<td style="text-align: right;">689</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">7.445259</td>
-<td style="text-align: right;">93.01487</td>
+<td align="left">亿 元</td>
+<td align="right">689</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">7.445259</td>
+<td align="right">93.01487</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">现代 化</td>
-<td style="text-align: right;">632</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">6.950471</td>
-<td style="text-align: right;">83.55186</td>
+<td align="left">现代 化</td>
+<td align="right">632</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">6.950471</td>
+<td align="right">83.55186</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">体制 改革</td>
-<td style="text-align: right;">504</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5.193066</td>
-<td style="text-align: right;">77.37908</td>
+<td align="left">体制 改革</td>
+<td align="right">504</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">5.193066</td>
+<td align="right">77.37908</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">五年 计划</td>
-<td style="text-align: right;">341</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5.359068</td>
-<td style="text-align: right;">71.64727</td>
+<td align="left">五年 计划</td>
+<td align="right">341</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">5.359068</td>
+<td align="right">71.64727</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">各级 政府</td>
-<td style="text-align: right;">306</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">6.110596</td>
-<td style="text-align: right;">66.63454</td>
+<td align="left">各级 政府</td>
+<td align="right">306</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">6.110596</td>
+<td align="right">66.63454</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">增长 百分</td>
-<td style="text-align: right;">300</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5.520761</td>
-<td style="text-align: right;">65.88051</td>
+<td align="left">增长 百分</td>
+<td align="right">300</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">5.520761</td>
+<td align="right">65.88051</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">万 吨</td>
-<td style="text-align: right;">212</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">6.589957</td>
-<td style="text-align: right;">62.56344</td>
+<td align="left">万 吨</td>
+<td align="right">212</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">6.589957</td>
+<td align="right">62.56344</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">国民 经济</td>
-<td style="text-align: right;">589</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">6.014672</td>
-<td style="text-align: right;">61.80426</td>
+<td align="left">国民 经济</td>
+<td align="right">589</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">6.014672</td>
+<td align="right">61.80426</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">充分 发挥</td>
-<td style="text-align: right;">191</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">6.584129</td>
-<td style="text-align: right;">61.24885</td>
+<td align="left">充分 发挥</td>
+<td align="right">191</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">6.584129</td>
+<td align="right">61.24885</td>
 </tr>
 </tbody>
 </table>
-<pre class="sourceCode r" id="cb10"><code class="sourceCode r"><div class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># bigrams in 2017 report</span></div>
-<div class="sourceLine" id="cb10-2" data-line-number="2">ch17_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17_toks, <span class="dt">size =</span> <span class="dv">2</span>)</div>
-<div class="sourceLine" id="cb10-3" data-line-number="3">knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw">head</span>(ch17_col, <span class="dv">10</span>))</div></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># bigrams in 2017 report</span>
+ch17_col &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(ch17_toks, <span class="dt">size =</span> <span class="dv">2</span>)
+knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw">head</span>(ch17_col, <span class="dv">10</span>))</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th style="text-align: left;">collocation</th>
-<th style="text-align: right;">count</th>
-<th style="text-align: right;">count_nested</th>
-<th style="text-align: right;">length</th>
-<th style="text-align: right;">lambda</th>
-<th style="text-align: right;">z</th>
+<th align="left">collocation</th>
+<th align="right">count</th>
+<th align="right">count_nested</th>
+<th align="right">length</th>
+<th align="right">lambda</th>
+<th align="right">z</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">人民 群众</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5.406485</td>
-<td style="text-align: right;">12.89405</td>
+<td align="left">人民 群众</td>
+<td align="right">12</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">5.406485</td>
+<td align="right">12.89405</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">亿 元</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">8.302483</td>
-<td style="text-align: right;">12.62130</td>
+<td align="left">亿 元</td>
+<td align="right">14</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">8.302483</td>
+<td align="right">12.62130</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">调 控</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">7.593472</td>
-<td style="text-align: right;">12.41243</td>
+<td align="left">调 控</td>
+<td align="right">11</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">7.593472</td>
+<td align="right">12.41243</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">政府 工作</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">4.709869</td>
-<td style="text-align: right;">11.07905</td>
+<td align="left">政府 工作</td>
+<td align="right">9</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">4.709869</td>
+<td align="right">11.07905</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">深入 实施</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5.018234</td>
-<td style="text-align: right;">10.92377</td>
+<td align="left">深入 实施</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">5.018234</td>
+<td align="right">10.92377</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">党 中央</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5.746878</td>
-<td style="text-align: right;">10.90837</td>
+<td align="left">党 中央</td>
+<td align="right">7</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">5.746878</td>
+<td align="right">10.90837</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">体制 改革</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5.317035</td>
-<td style="text-align: right;">10.53518</td>
+<td align="left">体制 改革</td>
+<td align="right">11</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">5.317035</td>
+<td align="right">10.53518</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">国内 生产</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">6.166520</td>
-<td style="text-align: right;">10.48816</td>
+<td align="left">国内 生产</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">6.166520</td>
+<td align="right">10.48816</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">现代 化</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5.705688</td>
-<td style="text-align: right;">10.43435</td>
+<td align="left">现代 化</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">5.705688</td>
+<td align="right">10.43435</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">基础 设施</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">7.549273</td>
-<td style="text-align: right;">10.42465</td>
+<td align="left">基础 设施</td>
+<td align="right">7</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">7.549273</td>
+<td align="right">10.42465</td>
 </tr>
 </tbody>
-</table></section></section>
+</table>
+</div>
+</div>
 </div>
   </div>
 
