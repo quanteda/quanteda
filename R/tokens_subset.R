@@ -9,7 +9,7 @@
 #' @param x \link{tokens} object to be subsetted
 #' @inheritParams corpus_subset
 #' @param select expression, indicating the docvars to select from the tokens;
-#'   or a tokens, in which case the returned tokens will contain the same
+#'   or a \link{tokens} object, in which case the returned tokens will contain the same
 #'   documents in the same order as the original tokens, even if these are empty.
 #' @return \link{tokens} object, with a subset of documents (and docvars)
 #'   selected according to arguments

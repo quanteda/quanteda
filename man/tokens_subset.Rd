@@ -13,7 +13,7 @@ tokens_subset(x, subset, select, ...)
 values are taken as false}
 
 \item{select}{expression, indicating the docvars to select from the tokens;
-or a tokens, in which case the returned tokens will contain the same
+or a \link{tokens} object, in which case the returned tokens will contain the same
 documents in the same order as the original tokens, even if these are empty.}
 
 \item{...}{not used}

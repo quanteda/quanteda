@@ -10,8 +10,8 @@
 #' @param x \link{dfm} object to be subsetted
 #' @inheritParams corpus_subset
 #' @param select expression, indicating the docvars to select from the dfm; or a
-#'   dfm, in which case the returned dfm will contain the same documents as the
-#'   original dfm, even if these are empty.  See Details.
+#'   \link{dfm} object, in which case the returned dfm will contain the same
+#'   documents as the original dfm, even if these are empty.  See Details.
 #' @return \link{dfm} object, with a subset of documents (and docvars) selected
 #'   according to arguments
 #' @details When \code{select} is a dfm, then the returned dfm will be equal in

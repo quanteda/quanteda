@@ -55,7 +55,7 @@ test_that("tokens_subset NSE works", {
     )
 })
 
-test_that("tokens_subset works with subset as a dfm", {
+test_that("tokens_subset works with subset as a tokens object", {
     toks1 <- tokens(c(d1 = "a b b c", d2 = "b b c d"))
     toks2 <- tokens(c(d1 = "x y z", d2 = "a b c c d", d3 = "a b c", d4 = "x x x"))
     expect_equal(
