@@ -21,7 +21,7 @@
 #'   \code{dfm_subset} will match documents.
 #' @export
 #' @seealso \code{\link{subset.data.frame}}
-#' @keywords corpus
+#' @keywords dfm
 #' @examples
 #' testcorp <- corpus(c(d1 = "a b c d", d2 = "a a b e",
 #'                      d3 = "b b c e", d4 = "e e f a b"),
