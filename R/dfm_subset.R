@@ -15,7 +15,7 @@
 #' @return \link{dfm} object, with a subset of documents (and docvars) selected
 #'   according to arguments
 #' @details When \code{select} is a dfm, then the returned dfm will be equal in
-#'   row dimensions and order to the dfm used for selection.  This is the
+#'   document dimension and order to the dfm used for selection.  This is the
 #'   document-level version of using \code{\link{dfm_select}} where
 #'   \code{pattern} is a dfm: that function matches features, while
 #'   \code{dfm_subset} will match documents.
@@ -50,9 +50,9 @@ dfm_subset.default <- function(x, subset, select, ...) {
 dfm_subset.dfm <- function(x, subset, select, ...) {
     
     x <- as.dfm(x)
-    if (length(addedArgs <- list(...)))
-        warning("Argument", if (length(addedArgs) > 1L) "s " else " ",
-                names(addedArgs), " not used.", sep = "")
+    if (length(args_added <- list(...)))
+        warning("Argument", if (length(args_added) > 1L) "s " else " ",
+                names(args_added), " not used.", sep = "")
     
     r <- if (missing(subset)) {
         rep_len(TRUE, nrow(docvars(x)))
