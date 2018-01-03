@@ -33,7 +33,7 @@ using non-standard evaluation to evaluate conditions based on the
 To select or subset \emph{features}, see \code{\link{dfm_select}} instead.
 
 When \code{select} is a dfm, then the returned dfm will be equal in
-  row dimensions and order to the dfm used for selection.  This is the
+  document dimension and order to the dfm used for selection.  This is the
   document-level version of using \code{\link{dfm_select}} where
   \code{pattern} is a dfm: that function matches features, while
   \code{dfm_subset} will match documents.
@@ -57,4 +57,4 @@ dfm_subset(dfm1, subset = dfm2[c(3,1,2), ])
 \seealso{
 \code{\link{subset.data.frame}}
 }
-\keyword{corpus}
+\keyword{dfm}
