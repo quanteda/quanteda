@@ -86,8 +86,14 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     if (is.null(vertex_labelfont)) {
         vertex_labelfont <- ""
     } else {
-        if (!vertex_labelfont %in% c('sans', 'serif', extrafont::fonts()))
-            stop(vertex_labelfont, ' is not found on your system. Use the extrafont::import_font() to use custom fonts.')
+        msg <- paste(vertex_labelfont, 'is not found on your system.')
+        if (Sys.info()['sysname'] == 'Windows') {
+            if (!vertex_labelfont %in% names(windowsFonts()))
+                stop(msg, 'Run extrafont::import_font() and extrafont::loadfonts(device = "win") to use custom fonts.')
+        } else {
+            if (!vertex_labelfont %in% c('sans', 'serif', extrafont::fonts()))
+                stop(msg, 'Run extrafont::import_font() to use custom fonts.')
+        }
     }
     
     n <- as.network(x, min_freq = min_freq, omit_isolated = omit_isolated, ...)
