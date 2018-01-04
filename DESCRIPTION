@@ -23,6 +23,7 @@ Depends:
     methods
 Imports:
     utils,
+    extrafont,
     digest,
     stats,
     Matrix (>= 1.2),
