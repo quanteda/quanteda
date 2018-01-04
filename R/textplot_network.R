@@ -82,8 +82,13 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
                                  vertex_labelfont = NULL, ...) {
     
     label <- x1 <- x2 <- y <- y1 <- y2 <- NULL
-    if (is.null(vertex_labelfont))
+    
+    if (is.null(vertex_labelfont)) {
         vertex_labelfont <- ""
+    } else {
+        if (!vertex_labelfont %in% c('sans', 'serif', extrafont::fonts()))
+            stop(vertex_labelfont, ' is not found on your system. Use the extrafont::import_font() to use custom fonts.')
+    }
     
     n <- as.network(x, min_freq = min_freq, omit_isolated = omit_isolated, ...)
 
