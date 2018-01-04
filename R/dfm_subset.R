@@ -10,18 +10,18 @@
 #' @param x \link{dfm} object to be subsetted
 #' @inheritParams corpus_subset
 #' @param select expression, indicating the docvars to select from the dfm; or a
-#'   dfm, in which case the returned dfm will contain the same documents as the
-#'   original dfm, even if these are empty.  See Details.
+#'   \link{dfm} object, in which case the returned dfm will contain the same
+#'   documents as the original dfm, even if these are empty.  See Details.
 #' @return \link{dfm} object, with a subset of documents (and docvars) selected
 #'   according to arguments
 #' @details When \code{select} is a dfm, then the returned dfm will be equal in
-#'   row dimensions and order to the dfm used for selection.  This is the
+#'   document dimension and order to the dfm used for selection.  This is the
 #'   document-level version of using \code{\link{dfm_select}} where
 #'   \code{pattern} is a dfm: that function matches features, while
 #'   \code{dfm_subset} will match documents.
 #' @export
 #' @seealso \code{\link{subset.data.frame}}
-#' @keywords corpus
+#' @keywords dfm
 #' @examples
 #' testcorp <- corpus(c(d1 = "a b c d", d2 = "a a b e",
 #'                      d3 = "b b c e", d4 = "e e f a b"),
@@ -50,9 +50,9 @@ dfm_subset.default <- function(x, subset, select, ...) {
 dfm_subset.dfm <- function(x, subset, select, ...) {
     
     x <- as.dfm(x)
-    if (length(addedArgs <- list(...)))
-        warning("Argument", if (length(addedArgs) > 1L) "s " else " ",
-                names(addedArgs), " not used.", sep = "")
+    if (length(args_added <- list(...)))
+        warning("Argument", if (length(args_added) > 1L) "s " else " ",
+                names(args_added), " not used.", sep = "")
     
     r <- if (missing(subset)) {
         rep_len(TRUE, nrow(docvars(x)))
