@@ -214,20 +214,38 @@ test_that("#459 extract the lower levels of a dictionary using tokens_lookup", {
     txt <- c(d1 = "The United States has the Atlantic Ocean and the Pacific Ocean.",
              d2 = "Britain and Ireland have the Irish Sea and the English Channel.")
     toks <- tokens(txt)
-    dict <- dictionary(list('US'=list(
-        Countries = c("States"),
-        oceans = c("Atlantic", "Pacific")),
-        'Europe'=list(
-            Countries = c("Britain", "Ireland"),
-            oceans = list(west = "Irish Sea", east = "English Channel"))))
-    tokens_lookup(toks, dict, levels = 1)
-    tokens_lookup(toks, dict, levels = 2)
-    tokens_lookup(toks, dict, levels = 1:2)
-    tokens_lookup(toks, dict, levels = 3)
-    tokens_lookup(toks, dict, levels = c(1,3))
-    tokens_lookup(toks, dict, levels = c(2,3))
-    tokens_lookup(toks, dict, levels = c(1,4))
-    tokens_lookup(toks, dict, levels = 4)
+    dict <- dictionary(list('US' = list(
+                                    Countries = c("States"),
+                                    oceans = c("Atlantic", "Pacific")),
+                            'Europe' = list(
+                                Countries = c("Britain", "Ireland"),
+                                oceans = list(west = "Irish Sea", 
+                                              east = "English Channel"))))
+
+    expect_equal(as.list(tokens_lookup(toks, dict, levels = 1)),
+                 list(d1 = c('US', 'US', 'US'), 
+                      d2 = c('Europe', 'Europe', 'Europe', 'Europe')))
+    expect_equal(as.list(tokens_lookup(toks, dict, levels = 2)),
+                 list(d1 = c('Countries', 'oceans', 'oceans'), 
+                      d2 = c('Countries', 'Countries', 'oceans', 'oceans')))
+    expect_equal(as.list(tokens_lookup(toks, dict, levels = 1:2)),
+                 list(d1 = c('US.Countries', 'US.oceans', 'US.oceans'), 
+                      d2 = c('Europe.Countries', 'Europe.Countries', 'Europe.oceans', 'Europe.oceans')))
+    expect_equal(as.list(tokens_lookup(toks, dict, levels = 3)),
+                 list(d1 = character(), 
+                      d2 = c('west', 'east')))
+    expect_equal(as.list(tokens_lookup(toks, dict, levels = c(1,3))),
+                 list(d1 = c('US', 'US', 'US'), 
+                      d2 = c('Europe', 'Europe', 'Europe.west', 'Europe.east')))
+    expect_equal(as.list(tokens_lookup(toks, dict, levels = c(2,3))),
+                 list(d1 = c('Countries', 'oceans', 'oceans'), 
+                      d2 = c('Countries', 'Countries', 'oceans.west', 'oceans.east')))
+    expect_equal(as.list(tokens_lookup(toks, dict, levels = c(1, 4))),
+                 list(d1 = c('US', 'US', 'US'), 
+                      d2 = c('Europe', 'Europe', 'Europe', 'Europe')))
+    expect_equal(as.list(tokens_lookup(toks, dict, levels = 4)),
+                 list(d1 = character(), 
+                      d2 = character()))
 })
 
 test_that("#480 reset padding flag", {
