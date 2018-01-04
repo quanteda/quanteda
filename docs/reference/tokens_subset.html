@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract a subset of a dfm — dfm_subset • quanteda</title>
+<title>Extract a subset of a tokens — tokens_subset • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -146,25 +146,25 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract a subset of a dfm</h1>
+    <h1>Extract a subset of a tokens</h1>
     </div>
 
     
-    <p>Returns document subsets of a dfm that meet certain conditions,
-including direct logical operations on docvars (document-level variables). 
-<code>dfm_subset</code> functions identically to <code>subset.data.frame</code>,
-using non-standard evaluation to evaluate conditions based on the
-<a href='docvars.html'>docvars</a> in the dfm.</p>
+    <p>Returns document subsets of a tokens that meet certain conditions, including
+direct logical operations on docvars (document-level variables).
+<code>tokens_subset</code> functions identically to
+<code>subset.data.frame</code>, using non-standard evaluation to evaluate
+conditions based on the <a href='docvars.html'>docvars</a> in the tokens.</p>
     
 
-    <pre class="usage"><span class='fu'>dfm_subset</span>(<span class='no'>x</span>, <span class='no'>subset</span>, <span class='no'>select</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>tokens_subset</span>(<span class='no'>x</span>, <span class='no'>subset</span>, <span class='no'>select</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><a href='dfm.html'>dfm</a> object to be subsetted</p></td>
+      <td><p><a href='tokens.html'>tokens</a> object to be subsetted</p></td>
     </tr>
     <tr>
       <th>subset</th>
@@ -173,9 +173,9 @@ values are taken as false</p></td>
     </tr>
     <tr>
       <th>select</th>
-      <td><p>expression, indicating the docvars to select from the dfm; or a
-<a href='dfm.html'>dfm</a> object, in which case the returned dfm will contain the same
-documents as the original dfm, even if these are empty.  See Details.</p></td>
+      <td><p>expression, indicating the docvars to select from the tokens;
+or a <a href='tokens.html'>tokens</a> object, in which case the returned tokens will contain the same
+documents in the same order as the original tokens, even if these are empty.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -185,17 +185,8 @@ documents as the original dfm, even if these are empty.  See Details.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><a href='dfm.html'>dfm</a> object, with a subset of documents (and docvars) selected
-  according to arguments</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>To select or subset <em>features</em>, see <code><a href='dfm_select.html'>dfm_select</a></code> instead.</p>
-<p>When <code>select</code> is a dfm, then the returned dfm will be equal in
-  document dimension and order to the dfm used for selection.  This is the
-  document-level version of using <code><a href='dfm_select.html'>dfm_select</a></code> where
-  <code>pattern</code> is a dfm: that function matches features, while
-  <code>dfm_subset</code> will match documents.</p>
+    <p><a href='tokens.html'>tokens</a> object, with a subset of documents (and docvars)
+  selected according to arguments</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -203,39 +194,47 @@ documents as the original dfm, even if these are empty.  See Details.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>testcorp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b c d"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a a b e"</span>,
-                     <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"b b c e"</span>, <span class='kw'>d4</span> <span class='kw'>=</span> <span class='st'>"e e f a b"</span>),
-                   <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>)))
-<span class='no'>testdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>testcorp</span>)
+    <pre class="examples"><div class='input'><span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b c d"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a a b e"</span>,
+                 <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"b b c e"</span>, <span class='kw'>d4</span> <span class='kw'>=</span> <span class='st'>"e e f a b"</span>),
+                 <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>)))
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>corp</span>)
 <span class='co'># selecting on a docvars condition</span>
-<span class='fu'>dfm_subset</span>(<span class='no'>testdfm</span>, <span class='no'>grp</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
-#&gt;     features
-#&gt; docs a b c d e f
-#&gt;   d3 0 2 1 0 1 0
-#&gt;   d4 1 1 0 0 2 1</div><div class='input'><span class='co'># selecting on a supplied vector</span>
-<span class='fu'>dfm_subset</span>(<span class='no'>testdfm</span>, <span class='fu'>c</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
-#&gt; 2 x 6 sparse Matrix of class "dfm"
-#&gt;     features
-#&gt; docs a b c d e f
-#&gt;   d1 1 1 1 1 0 0
-#&gt;   d3 0 2 1 0 1 0</div><div class='input'>
-<span class='co'># selecting on a dfm</span>
-<span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b b c"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"b b c d"</span>))
-<span class='no'>dfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"x y z"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a b c c d"</span>, <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"x x x"</span>))
-<span class='fu'>dfm_subset</span>(<span class='no'>dfm1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (50% sparse).
-#&gt; 3 x 4 sparse Matrix of class "dfm"
-#&gt;     features
-#&gt; docs a b c d
-#&gt;   d1 1 2 1 0
-#&gt;   d2 0 2 1 1
-#&gt;   d3 0 0 0 0</div><div class='input'><span class='fu'>dfm_subset</span>(<span class='no'>dfm1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>dfm2</span>[<span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>1</span>,<span class='fl'>2</span>), ])</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (50% sparse).
-#&gt; 3 x 4 sparse Matrix of class "dfm"
-#&gt;     features
-#&gt; docs a b c d
-#&gt;   d3 0 0 0 0
-#&gt;   d1 1 2 1 0
-#&gt;   d2 0 2 1 1</div></pre>
+<span class='fu'>tokens_subset</span>(<span class='no'>toks</span>, <span class='no'>grp</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; d3 :
+#&gt; [1] "b" "b" "c" "e"
+#&gt; 
+#&gt; d4 :
+#&gt; [1] "e" "e" "f" "a" "b"
+#&gt; </div><div class='input'><span class='co'># selecting on a supplied vector</span>
+<span class='fu'>tokens_subset</span>(<span class='no'>toks</span>, <span class='fu'>c</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; d1 :
+#&gt; [1] "a" "b" "c" "d"
+#&gt; 
+#&gt; d3 :
+#&gt; [1] "b" "b" "c" "e"
+#&gt; </div><div class='input'>
+<span class='co'># selecting on a tokens</span>
+<span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a b b c"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"b b c d"</span>))
+<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"x y z"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a b c c d"</span>, <span class='kw'>d3</span> <span class='kw'>=</span> <span class='st'>"x x x"</span>))
+<span class='fu'>tokens_subset</span>(<span class='no'>toks1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>toks2</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
+#&gt; d1 :
+#&gt; [1] "a" "b" "b" "c"
+#&gt; 
+#&gt; d2 :
+#&gt; [1] "b" "b" "c" "d"
+#&gt; 
+#&gt; d3 :
+#&gt; character(0)
+#&gt; </div><div class='input'><span class='fu'>tokens_subset</span>(<span class='no'>toks1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='no'>toks2</span>[<span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>1</span>,<span class='fl'>2</span>)])</div><div class='output co'>#&gt; tokens from 3 documents.
+#&gt; d3 :
+#&gt; character(0)
+#&gt; 
+#&gt; d1 :
+#&gt; [1] "a" "b" "b" "c"
+#&gt; 
+#&gt; d2 :
+#&gt; [1] "b" "b" "c" "d"
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -243,8 +242,6 @@ documents as the original dfm, even if these are empty.  See Details.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

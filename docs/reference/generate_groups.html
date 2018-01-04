@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Recombine documents tokens by groups — tokens_group • quanteda</title>
+<title>Generate a grouping vector from docvars — generate_groups • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -146,67 +146,42 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Recombine documents tokens by groups</h1>
+    <h1>Generate a grouping vector from docvars</h1>
     </div>
 
     
-    <p>Recombine documents tokens by groups</p>
+    <p>Internal function to generate a grouping vector from docvars used in
+dfm.corpus, dfm.tokens, dfm.group, and tokens_group</p>
     
 
-    <pre class="usage"><span class='fu'>tokens_group</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>generate_groups</span>(<span class='no'>x</span>, <span class='no'>groups</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><a href='tokens.html'>tokens</a> object</p></td>
+      <td><p>corpus, tokens or dfm</p></td>
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>either: a character vector containing the names of document 
-variables to be used for grouping; or a factor or object that can be 
-coerced into a factor equal in length or rows to the number of documents. 
-See <a href='groups.html'>groups</a> for details.</p></td>
+      <td><p>names of docvars or vector that can be coerced to a factor</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># dfm_group examples</span>
-<span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'>c</span>(<span class='st'>"a a b"</span>, <span class='st'>"a b c c"</span>, <span class='st'>"a c d d"</span>, <span class='st'>"a c c d"</span>),
-                   <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"grp1"</span>, <span class='st'>"grp1"</span>, <span class='st'>"grp2"</span>, <span class='st'>"grp2"</span>)))
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>corp</span>)
-<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/tokens_group'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"grp"</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; grp1 :
-#&gt; [1] "a" "a" "b" "a" "b" "c" "c"
-#&gt; 
-#&gt; grp2 :
-#&gt; [1] "a" "c" "d" "d" "a" "c" "c" "d"
-#&gt; </div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/tokens_group'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
-#&gt; 1 :
-#&gt; [1] "a" "a" "b" "a" "b" "c" "c"
-#&gt; 
-#&gt; 2 :
-#&gt; [1] "a" "c" "d" "d" "a" "c" "c" "d"
-#&gt; </div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/tokens_group'>tokens_group</a></span>(<span class='no'>toks</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>), <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>))</div><div class='output co'>#&gt; tokens from 3 documents.
-#&gt; 1 :
-#&gt; [1] "a" "a" "b" "a" "b" "c" "c"
-#&gt; 
-#&gt; 2 :
-#&gt; [1] "a" "c" "d" "d" "a" "c" "c" "d"
-#&gt; 
-#&gt; 3 :
-#&gt; character(0)
-#&gt; </div></pre>
+    <p>a factor</p>
+    
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>
