@@ -204,9 +204,9 @@ predict.textmodel_wordscores <- function(object,
             if (sum(!is.na(object@y)) > 2)
                 warning("More than two reference scores found with MV rescaling; using only min, max values.")
             result <- list(
-                textscore_mv = mv_transform(temp$textscore_raw),
-                textscore_mv_lo = mv_transform(temp$textscore_raw_lo),
-                textscore_mv_hi = mv_transform(temp$textscore_raw_hi)
+                textscore_mv = mv_transform(temp$textscore_raw, object@y, temp$textscore_raw),
+                textscore_mv_lo = mv_transform(temp$textscore_raw_lo, object@y, temp$textscore_raw),
+                textscore_mv_hi = mv_transform(temp$textscore_raw_hi, object@y, temp$textscore_raw)
             )
         } else if (rescaling == "lbg") {
             SDr <- stats::sd(object@y, na.rm=TRUE)
@@ -240,20 +240,18 @@ predict.textmodel_wordscores <- function(object,
 
 
 ## rescale a vector so that the endpoints match scale.min, scale.max
-rescaler <- function(x, scale.min=-1, scale.max=1) {
+rescaler <- function(x, scale.min = -1, scale.max = 1) {
     scale.width <- scale.max - scale.min
     scale.factor <- scale.width / (max(x) - min(x))
     return((x-min(x)) * scale.factor - scale.max)
 }
 
 ## internal function for MV rescaling
-mv_transform <- function(x) {
-    lowerIndex <- which(object@y == min(object@y, na.rm = TRUE))
-    upperIndex <- which(object@y == max(object@y, na.rm = TRUE))
-    as.numeric((x - result$textscore_raw[lowerIndex]) *
-                   (max(object@y, na.rm = TRUE) - min(object@y, na.rm = TRUE)) /
-                   (result$textscore_raw[upperIndex] - result$textscore_raw[lowerIndex]) +
-                   min(object@y, na.rm = TRUE))
+mv_transform <- function(x, y, z) {
+    i_low <- which(y == min(y, na.rm = TRUE))
+    i_high <- which(y == max(y, na.rm = TRUE))
+    as.numeric((x - z[i_low]) * (max(y, na.rm = TRUE) - min(y, na.rm = TRUE)) /
+               (z[i_high] - z[i_low]) + min(y, na.rm = TRUE))
 }
 
 
