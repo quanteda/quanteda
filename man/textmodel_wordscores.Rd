@@ -25,7 +25,7 @@ wordscores method for scaling of a single dimension.
 }
 \details{
 Fitting a \code{textmodel_wordscores} results in an object of class 
-  \code{textmodel_wordscores_fitted} containing the following slots:
+  \code{textmodel_wordscores} containing the following slots:
 }
 \section{Slots}{
 
@@ -47,12 +47,13 @@ Fitting a \code{textmodel_wordscores} results in an object of class
 \section{Predict Methods}{
  A \code{predict} method is also available for a 
   fitted wordscores object, see 
-  \code{\link{predict.textmodel_wordscores_fitted}}.
+  \code{\link{predict.textmodel_wordscores}}.
 }
 
 \examples{
 (ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
 
+summary(ws)
 predict(ws)
 predict(ws, rescaling = "mv")
 predict(ws, rescaling = "lbg")
@@ -69,7 +70,7 @@ Laver, Michael, Kenneth R Benoit, and John Garry. 2003.
   Interpreting Political Text." \emph{Political Analysis} 16(1): 93-100.
 }
 \seealso{
-\code{\link{predict.textmodel_wordscores_fitted}}
+\code{\link{predict.textmodel_wordscores}}
 }
 \author{
 Kenneth Benoit

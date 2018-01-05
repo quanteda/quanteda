@@ -31,16 +31,12 @@
 \alias{show,textmodel_wordfish_predicted-method}
 \alias{coef,textmodel_wordfish_fitted-method}
 \alias{coefficients,textmodel_wordfish_fitted-method}
-\alias{textmodel_wordscores_fitted-class}
-\alias{textmodel_wordscores_predicted-class}
-\alias{predict.textmodel_wordscores_fitted}
-\alias{print.textmodel_wordscores_fitted}
-\alias{show,textmodel_wordscores_fitted-method}
-\alias{show,textmodel_wordscores_predicted-method}
-\alias{coef,textmodel_wordscores_fitted-method}
-\alias{coefficients,textmodel_wordscores_fitted-method}
-\alias{coef,textmodel_wordscores_predicted-method}
-\alias{coefficients,textmodel_wordscores_predicted-method}
+\alias{textmodel_wordscores-class}
+\alias{predict.textmodel_wordscores}
+\alias{print.textmodel_wordscores}
+\alias{show,textmodel_wordscores-method}
+\alias{coef,textmodel_wordscores-method}
+\alias{coefficients,textmodel_wordscores-method}
 \title{Internal functions for textmodel objects}
 \usage{
 \S4method{show}{textmodel_affinity_fitted}(object)
@@ -83,23 +79,17 @@
 
 \S4method{coefficients}{textmodel_wordfish_fitted}(object, ...)
 
-\method{predict}{textmodel_wordscores_fitted}(object, newdata = NULL,
-  rescaling = c("none", "lbg", "mv"), level = 0.95,
+\method{predict}{textmodel_wordscores}(object, newdata = NULL,
+  se.fit = FALSE, rescaling = c("none", "lbg", "mv"), level = 0.95,
   verbose = quanteda_options("verbose"), ...)
 
-\method{print}{textmodel_wordscores_fitted}(x, n = 30L, digits = 2, ...)
+\method{print}{textmodel_wordscores}(x, n = 30L, digits = 2, ...)
 
-\S4method{show}{textmodel_wordscores_fitted}(object)
+\S4method{show}{textmodel_wordscores}(object)
 
-\S4method{show}{textmodel_wordscores_predicted}(object)
+\S4method{coef}{textmodel_wordscores}(object, ...)
 
-\S4method{coef}{textmodel_wordscores_fitted}(object, ...)
-
-\S4method{coefficients}{textmodel_wordscores_fitted}(object, ...)
-
-\S4method{coef}{textmodel_wordscores_predicted}(object, ...)
-
-\S4method{coefficients}{textmodel_wordscores_predicted}(object, ...)
+\S4method{coefficients}{textmodel_wordscores}(object, ...)
 }
 \arguments{
 \item{object}{wordfish fitted or predicted object to be shown}
