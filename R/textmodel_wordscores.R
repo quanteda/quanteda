@@ -8,7 +8,6 @@
 ### do not dispatch properly unless print() (e.g.) is called specifically, 
 ### but this could be easily solved by writing appropriate methods in S4.
 
-#setClass("textmodel_wordscore_predictions", contains = "data.frame")
 setClass("textmodel_wordscore_statistics", contains = "data.frame")
 
 #' @rdname textmodel-internal
@@ -53,7 +52,7 @@ setClass("textmodel_wordscores",
 #'   \code{\link{predict.textmodel_wordscores}}.
 #' @author Kenneth Benoit
 #' @examples 
-#' (ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
+#' ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
 #' 
 #' summary(ws)
 #' predict(ws)
@@ -264,22 +263,17 @@ mv_transform <- function(x) {
 #' @param digits number of decimal places to print for print methods
 #' @export
 #' @method print textmodel_wordscores
-print.textmodel_wordscores <- function(x, n = 30L, digits = 2, ...) {
+print.textmodel_wordscores <- function(x, digits = 2, ...) {
     cat("Fitted wordscores model:\n")
-    cat("Call:\n\t")
+    cat("Call:\n")
     print(x@call)
-    cat("\nReference documents and reference scores:\n\n")
-    refscores <- data.frame(Documents = docnames(x@x),
-                            "Ref scores" = x@y)
-    refscores$Ref.scores <- format(refscores$Ref.scores, digits=digits)
-    refscores$Ref.scores[stri_detect_fixed(refscores$Ref.scores, "NA")] <- "."
-    names(refscores)[2] <- "Ref scores"
-    print(refscores, row.names=FALSE, digits=digits)
-    cat("\nWord scores: ")
-    if (length(x@Sw) > n)
-        cat("showing first", n, "scored features")
-    cat("\n\n")
-    print(head(x@Sw, n), digits = digits)
+    cat("\n")
+    cat("Reference Documents and Reference Scores:\n\n")
+    temp <- data.frame(Document = docnames(x@x),
+                       Score = x@y, 
+                       stringsAsFactors = FALSE)
+    print(temp, digits = digits, row.names = FALSE)
+    cat("\n")
 }
 
 #' @rdname textmodel-internal
@@ -298,19 +292,20 @@ setMethod("show", signature(object = "textmodel_wordscores"),
 #' @export
 #' @noRd
 #' @method summary textmodel_wordscores
-summary.textmodel_wordscores <- function(object, ...) {
+summary.textmodel_wordscores <- function(object, n = 30L, ...) {
 
-    dd <- data.frame(Score = object@y,
-                     Total = apply(object@x, 1, sum),
-                     Min = apply(object@x, 1, min),
-                     Max = apply(object@x, 1, max),
-                     Mean = apply(object@x, 1, mean),
-                     Median = apply(object@x, 1, stats::median))
-    rownames(dd) <- docnames(object@x)
+    temp <- data.frame(Document = docnames(object@x),
+                       Score = object@y,
+                       Total = apply(object@x, 1, sum),
+                       Min = apply(object@x, 1, min),
+                       Max = apply(object@x, 1, max),
+                       Mean = apply(object@x, 1, mean),
+                       Median = apply(object@x, 1, stats::median),
+                       stringsAsFactors = FALSE)
     result <- list('call' = object@call,
-                   'reference document statistics' = new('textmodel_wordscore_statistics', dd))
-    class(result) <- 'textmodel_summary'
-    return(result)
+                   'reference document statistics' = new('textmodel_wordscore_statistics', temp),
+                   'word scores' = structure(class = 'textmodel_features', head(object@Sw, n)))
+    new('textmodel_summary', result)
 }
 
 # #' @export
@@ -378,10 +373,9 @@ setMethod("coefficients", signature(object = "textmodel_wordscores"),
 #' @param x a textmodel_wordscore_statistics object
 #' @param ... additional arguments not used
 #' @export
-print.textmodel_wordscore_statistics <- function(x, ...) {
-    cat("(ref scores and feature count statistics)\n\n")
-    print(round(x, 4))
-    cat('\n')
+print.textmodel_wordscore_statistics <- function(x, digits = digits, ...) {
+    cat("(reference scores and feature count statistics)\n\n")
+    NextMethod(digits = digits, row.names = FALSE)
 }
 
 # #' Impliments print methods for textmodel_wordscore_predictions
