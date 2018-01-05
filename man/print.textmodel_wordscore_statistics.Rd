@@ -4,7 +4,7 @@
 \alias{print.textmodel_wordscore_statistics}
 \title{Impliments print methods for textmodel_wordscore_statistics}
 \usage{
-print.textmodel_wordscore_statistics(x, ...)
+print.textmodel_wordscore_statistics(x, digits = digits, ...)
 }
 \arguments{
 \item{x}{a textmodel_wordscore_statistics object}
