@@ -304,7 +304,7 @@ summary.textmodel_wordscores <- function(object, n = 30L, ...) {
                        stringsAsFactors = FALSE)
     result <- list('call' = object@call,
                    'reference document statistics' = new('textmodel_wordscore_statistics', temp),
-                   'word scores' = structure(class = 'textmodel_features', head(object@Sw, n)))
+                   'word scores' = new('textmodel_features', head(object@Sw, n)))
     new('textmodel_summary', result)
 }
 
