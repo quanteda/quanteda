@@ -207,38 +207,41 @@ predict.textmodel_wordscores <- function(object,
     for (i in seq_along(raw_se))
         raw_se[i] <- sqrt(sum(as.numeric(fwv[i,]) * (raw[i] - sw) ^ 2)) / sqrt(rowSums(data)[[i]])
     
-    if (rescaling == "mv") {
-        result$se <- rep(NA, length(raw))
-    } else if (rescaling == "lbg") {
-        result$se <- raw_se
-    } else {
-        result$se <- raw_se
-    }
-    
-    if (interval == 'none') 
+    if (interval == 'none') {
+        
+        if (rescaling == "mv") {
+            result$se <- rep(NA, length(raw))
+        } else if (rescaling == "lbg") {
+            result$se <- raw_se
+        } else {
+            result$se <- raw_se
+        }
         return(result)
+        
+    } else {
     
-    # Compute confidence intervals
-    z <- stats::qnorm(1 - (1 - level) / 2)
-    raw <- unname(raw)
-    
-    if (rescaling == "mv") {
-        result$lo <- mv_transform(raw - z * raw_se, object@y, raw)
-        result$hi <- mv_transform(raw + z * raw_se, object@y, raw)
-    } else if (rescaling == "lbg") {
-        if (lbg_mult == 0) {
+        # Compute confidence intervals
+        z <- stats::qnorm(1 - (1 - level) / 2)
+        raw <- unname(raw)
+        
+        if (rescaling == "mv") {
+            result$lo <- mv_transform(raw - z * raw_se, object@y, raw)
+            result$hi <- mv_transform(raw + z * raw_se, object@y, raw)
+        } else if (rescaling == "lbg") {
+            if (lbg_mult == 0) {
+                result$lwr <- raw - z * raw_se
+                result$upr <- raw + z * raw_se
+            } else {
+                result$lwr = ((raw - z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
+                result$upr = ((raw + z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
+            }
+        } else {
             result$lwr <- raw - z * raw_se
             result$upr <- raw + z * raw_se
-        } else {
-            result$lwr = ((raw - z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
-            result$upr = ((raw + z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
         }
-    } else {
-        result$lwr <- raw - z * raw_se
-        result$upr <- raw + z * raw_se
+        return(as.matrix(as.data.frame(result)))
+        
     }
-    
-    return(as.matrix(as.data.frame(result)))
 }
 
 
