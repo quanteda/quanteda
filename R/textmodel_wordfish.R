@@ -1,7 +1,7 @@
 #' @rdname textmodel-internal
 #' @keywords internal textmodel
 #' @export
-setClass("textmodel_wordfish_fitted",
+setClass("textmodel_wordfish",
          slots = c(priors = "numeric", 
                    tol = "numeric",
                    dir = "numeric",
@@ -17,16 +17,7 @@ setClass("textmodel_wordfish_fitted",
                    dispersion = "character",
                    se.theta = "numeric"),
          contains = "textmodel_fitted")
-
-#' @rdname textmodel-internal
-#' @keywords internal
-#' @export
-setClass("textmodel_wordfish_predicted",
-         slots = c(newdata = "dfm", level = "numeric",
-                   predvals = "data.frame"),
-         prototype = list(level = 0.95),
-         contains = "textmodel_wordfish_fitted")
-
+ 
 
 #' Wordfish text model
 #' 
@@ -219,7 +210,7 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2),
     if (any(is.nan(result$theta))) 
         warning("Warning: The algorithm did not converge.")
     
-    new("textmodel_wordfish_fitted", 
+    new("textmodel_wordfish", 
         x = x,
         docs = docnames(x), 
         features = featnames(x),
@@ -235,76 +226,80 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2),
         call = match.call())
 }
 
+#' @export
+predict.textmodel_wordfish <- function(object, 
+                                       newdata = NULL, 
+                                       se.fit = FALSE,
+                                       interval = c("none", "confidence"), level = 0.95,
+                                       ...) {
+    
+    interval <- match.arg(interval)
+    
+    if (!is.null(newdata))
+        stop('Prediction by newdata is not yet implimented\n')
+    
+    z <- stats::qnorm(1 - (1 - level) / 2)
+    result <- list(fit = object@theta)
+    
+    if (!se.fit && interval == 'none')
+        return(result[[1]])
+    
+    if (interval == 'none') {
+        result$se <- object@se.theta
+        return(result)
+    } else {
+        result$lwr <- object@theta - z * object@se.theta
+        result$upr <- object@theta + z * object@se.theta
+        return(result)
+    }
+}
 
 #' @rdname textmodel-internal
 #' @param x for print method, the object to be printed
 #' @param n max rows of dfm to print
 #' @param ... additional arguments passed to \code{\link{print}}
 #' @export
-#' @method print textmodel_wordfish_fitted
-print.textmodel_wordfish_fitted <- function(x, n=30L, ...) {
+#' @method print textmodel_wordfish
+print.textmodel_wordfish <- function(x, ...) {
     cat("Fitted wordfish model:\n")
-    cat("Call:\n\t")
     print(x@call)
-    cat("\nEstimated document positions:\n\n")
-    results <- data.frame(Documents=docnames(x@x),
-                          theta = x@theta,
-                          SE = x@se.theta,
-                          lower = x@theta - 1.96*x@se.theta,
-                          upper = x@theta + 1.96*x@se.theta)
-    print(results, ...)
-    if (n>0) {
-        cat("\nEstimated feature scores: ")
-        if (length(x@psi) > n)
-            cat("showing first", n, "beta-hats for features")
-        cat("\n\n")
-        tempBetas <- x@beta
-        names(tempBetas) <- x@features
-        print(head(tempBetas, n), ...)
-    }
+    cat("\n")
 }
 
 #' @rdname textmodel-internal
 #' @param object wordfish fitted or predicted object to be shown
 #' @export
-setMethod("show", signature(object = "textmodel_wordfish_fitted"), 
+setMethod("show", signature(object = "textmodel_wordfish"), 
           function(object) print(object))
 
-#' @rdname textmodel-internal
 #' @export
-setMethod("show", signature(object = "textmodel_wordfish_predicted"), 
-          function(object) print(object))
-
-
-#' @export
-#' @method summary textmodel_wordfish_fitted
-summary.textmodel_wordfish_fitted <- function(object, ...) {
-    cat("Call:\n\t")
-    print(object@call)
+#' @method summary textmodel_wordfish
+summary.textmodel_wordfish <- function(object, n = 30, ...) {
     
-    cat("\nEstimated document positions:\n")
-    results <- data.frame(theta = object@theta,
-                          SE = object@se.theta,
-                          lower = object@theta - 1.96*object@se.theta,
-                          upper = object@theta + 1.96*object@se.theta)
+    stat <- data.frame(document = object@docs,
+                       theta = object@theta,
+                       se = object@se.theta, 
+                       stringsAsFactors = FALSE)
     
-    rownames(results) <- object@docs
-    print(results, ...)
-    invisible(results)
+    coef <- object@beta
+    names(coef) <- object@features
+    result <- list('call' = object@call,
+                   'estimated document positions' = new('textmodel_statistics', stat),
+                   'estimated feature scores' = new('textmodel_coefficients', head(coef, n)))
+    new('textmodel_summary', result)
 }
 
 #' @rdname textmodel-internal
 #' @export
-setMethod("coef", signature(object = "textmodel_wordfish_fitted"),
-          function(object, ...) list(coef_feature = object@beta,
-                                     coef_feature_se = NULL,
-                                     coef_document = object@theta,
-                                     coef_document_se = object@se.theta,
-                                     coef_feature_offset = object@psi,
-                                     coef_document_offset = object@alpha)
+setMethod("coef", signature(object = "textmodel_wordfish"),
+          function(object, ...) list(beta = object@beta,
+                                     theta = object@theta,
+                                     se.theta = object@se.theta,
+                                     psi = object@psi,
+                                     alpha = object@alpha)
 )
 
 #' @rdname textmodel-internal
 #' @export
-setMethod("coefficients", signature(object = "textmodel_wordfish_fitted"),
+setMethod("coefficients", signature(object = "textmodel_wordfish"),
           function(object, ...) coef(object, ...))

@@ -8,8 +8,6 @@
 ### do not dispatch properly unless print() (e.g.) is called specifically, 
 ### but this could be easily solved by writing appropriate methods in S4.
 
-setClass("textmodel_wordscore_statistics", contains = "data.frame")
-
 #' @rdname textmodel-internal
 #' @export
 setClass("textmodel_wordscores",
@@ -158,8 +156,8 @@ predict.textmodel_wordscores <- function(object,
                                          rescaling = c("none", "lbg", "mv"),
                                          ...) {
     
-    if (length(list(...)) > 0) 
-        stop("Arguments:", names(list(...)), "not supported.\n")
+    #if (length(list(...)) > 0) 
+    #    stop("Arguments:", names(list(...)), "not supported.\n")
         
     interval <- match.arg(interval)
     rescaling <- match.arg(rescaling)
@@ -196,7 +194,7 @@ predict.textmodel_wordscores <- function(object,
     }
     
     if (!se.fit && interval == 'none')
-        return(result[[1]])    
+        return(result[[1]])
     
     # Compute standard error
     raw_se <- rep(NA, length(raw))
@@ -222,8 +220,8 @@ predict.textmodel_wordscores <- function(object,
         raw <- unname(raw)
         
         if (rescaling == "mv") {
-            result$lo <- mv_transform(raw - z * raw_se, object@y, raw)
-            result$hi <- mv_transform(raw + z * raw_se, object@y, raw)
+            result$lwr <- mv_transform(raw - z * raw_se, object@y, raw)
+            result$upr <- mv_transform(raw + z * raw_se, object@y, raw)
         } else if (rescaling == "lbg") {
             if (lbg_mult == 0) {
                 result$lwr <- raw - z * raw_se
@@ -266,14 +264,7 @@ mv_transform <- function(x, y, z) {
 #' @method print textmodel_wordscores
 print.textmodel_wordscores <- function(x, digits = 2, ...) {
     cat("Fitted wordscores model:\n")
-    cat("Call:\n")
     print(x@call)
-    cat("\n")
-    cat("Reference Documents and Reference Scores:\n\n")
-    temp <- data.frame(Document = docnames(x@x),
-                       Score = x@y, 
-                       stringsAsFactors = FALSE)
-    print(temp, digits = digits, row.names = FALSE)
     cat("\n")
 }
 
@@ -295,62 +286,26 @@ setMethod("show", signature(object = "textmodel_wordscores"),
 #' @method summary textmodel_wordscores
 summary.textmodel_wordscores <- function(object, n = 30L, ...) {
 
-    temp <- data.frame(Document = docnames(object@x),
-                       Score = object@y,
-                       Total = apply(object@x, 1, sum),
-                       Min = apply(object@x, 1, min),
-                       Max = apply(object@x, 1, max),
-                       Mean = apply(object@x, 1, mean),
-                       Median = apply(object@x, 1, stats::median),
+    stat <- data.frame(document = docnames(object@x),
+                       score = object@y,
+                       total = apply(object@x, 1, sum),
+                       min = apply(object@x, 1, min),
+                       max = apply(object@x, 1, max),
+                       mean = apply(object@x, 1, mean),
+                       median = apply(object@x, 1, stats::median),
                        stringsAsFactors = FALSE)
     result <- list('call' = object@call,
-                   'reference document statistics' = new('textmodel_wordscore_statistics', temp),
+                   'reference document statistics' = new('textmodel_statistics', stat),
                    'word scores' = new('textmodel_coefficients', head(object@Sw, n)))
     new('textmodel_summary', result)
 }
 
 #' @rdname textmodel-internal
 #' @export
-setMethod("coefficients", signature(object = "textmodel_wordscores"),
-          function(object, ...) cbind('Estimate' = object@Sw))
+setMethod("coef", signature(object = "textmodel_wordscores"),
+          function(object, ...) list(beta = object@Sw))
 
 #' @rdname textmodel-internal
 #' @export
-setMethod("coef", signature(object = "textmodel_wordscores"),
-          function(object, ...) cbind('Estimate' = object@Sw))
-
-#' Impliments print methods for textmodel_wordscore_statistics 
-#'
-#' @param x a textmodel_wordscore_statistics object
-#' @param ... additional arguments not used
-#' @export
-print.textmodel_wordscore_statistics <- function(x, digits = digits, ...) {
-    cat("(reference scores and feature count statistics)\n\n")
-    NextMethod(digits = digits, row.names = FALSE)
-}
-
-# #' Impliments print methods for textmodel_wordscore_predictions
-# #'
-# #' @param x a textmodel_wordscore_predictions object
-# #' @param ... additional arguments not used
-# #' @export
-# print.textmodel_wordscore_predictions <- function(x, ...) {
-#     
-#     label <- c('raw'= 'textscore',
-#                'raw_se' = 'LBG se',
-#                'raw_lo' = 'ci lo',
-#                'raw_hi' = 'ci hi',
-#                'mv' = 'MV rescaled',
-#                'mv_lo' = 'MV lo',
-#                'mv_hi' = 'MV hi',
-#                'lbg' = 'LBG rescaled',
-#                'lbg_lo' = 'LBG lo',
-#                'lbg_hi' = 'LBG hi')
-#     
-#     # pare down the output if rescaling has been specified
-#     #if (any(c("lbg", "mv") %in% names(x)))
-#     #    x$raw_lo <- x$raw_hi <- NULL
-#     names(x) <- label[names(x)]
-#     print(round(x, 4))
-#     cat('\n')
-# }
+setMethod("coefficients", signature(object = "textmodel_wordscores"),
+          function(object, ...) coef(object, ...))

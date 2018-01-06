@@ -4,7 +4,8 @@
 \alias{print.textmodel_coefficients}
 \title{Impliments print methods for textmodel_features}
 \usage{
-print.textmodel_coefficients(x, digits = 2, ...)
+print.textmodel_coefficients(x, digits = max(3L, getOption("digits") - 3L),
+  ...)
 }
 \arguments{
 \item{x}{a textmodel_features object}

@@ -25,19 +25,17 @@
 \alias{textmodel_lsa_predicted-class}
 \alias{coef,textmodel_lsa_fitted-method}
 \alias{coefficients,textmodel_lsa_fitted-method}
-\alias{textmodel_wordfish_fitted-class}
-\alias{textmodel_wordfish_predicted-class}
-\alias{print.textmodel_wordfish_fitted}
-\alias{show,textmodel_wordfish_fitted-method}
-\alias{show,textmodel_wordfish_predicted-method}
-\alias{coef,textmodel_wordfish_fitted-method}
-\alias{coefficients,textmodel_wordfish_fitted-method}
+\alias{textmodel_wordfish-class}
+\alias{print.textmodel_wordfish}
+\alias{show,textmodel_wordfish-method}
+\alias{coef,textmodel_wordfish-method}
+\alias{coefficients,textmodel_wordfish-method}
 \alias{textmodel_wordscores-class}
 \alias{predict.textmodel_wordscores}
 \alias{print.textmodel_wordscores}
 \alias{show,textmodel_wordscores-method}
-\alias{coefficients,textmodel_wordscores-method}
 \alias{coef,textmodel_wordscores-method}
+\alias{coefficients,textmodel_wordscores-method}
 \title{Internal functions for textmodel objects}
 \usage{
 \S4method{show}{textmodel_summary}(object)
@@ -72,15 +70,13 @@
 
 \S4method{coefficients}{textmodel_lsa_fitted}(object, ...)
 
-\method{print}{textmodel_wordfish_fitted}(x, n = 30L, ...)
+\method{print}{textmodel_wordfish}(x, ...)
 
-\S4method{show}{textmodel_wordfish_fitted}(object)
+\S4method{show}{textmodel_wordfish}(object)
 
-\S4method{show}{textmodel_wordfish_predicted}(object)
+\S4method{coef}{textmodel_wordfish}(object, ...)
 
-\S4method{coef}{textmodel_wordfish_fitted}(object, ...)
-
-\S4method{coefficients}{textmodel_wordfish_fitted}(object, ...)
+\S4method{coefficients}{textmodel_wordfish}(object, ...)
 
 \method{predict}{textmodel_wordscores}(object, newdata = NULL,
   se.fit = FALSE, interval = c("none", "confidence"), level = 0.95,
@@ -90,9 +86,9 @@
 
 \S4method{show}{textmodel_wordscores}(object)
 
-\S4method{coefficients}{textmodel_wordscores}(object, ...)
-
 \S4method{coef}{textmodel_wordscores}(object, ...)
+
+\S4method{coefficients}{textmodel_wordscores}(object, ...)
 }
 \arguments{
 \item{object}{wordfish fitted or predicted object to be shown}
