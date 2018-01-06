@@ -205,7 +205,7 @@ predict.textmodel_wordscores <- function(object,
     if (interval == 'none') {
         
         if (rescaling == "mv") {
-            result$se <- rep(NA, length(raw))
+            result$se <- rep(NA, length(raw)) # not sure how to compute se here KW
         } else if (rescaling == "lbg") {
             result$se <- raw_se
         } else {
