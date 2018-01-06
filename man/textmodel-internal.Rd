@@ -84,8 +84,7 @@
 
 \method{predict}{textmodel_wordscores}(object, newdata = NULL,
   se.fit = FALSE, interval = c("none", "confidence"), level = 0.95,
-  rescaling = c("none", "lbg", "mv"), verbose = quanteda_options("verbose"),
-  ...)
+  rescaling = c("none", "lbg", "mv"), ...)
 
 \method{print}{textmodel_wordscores}(x, digits = 2, ...)
 
@@ -117,8 +116,6 @@ extracted as coefficients}
 rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg 
 (2007).  (Note to authors: Provide full details here in documentation.)}
 
-\item{verbose}{If \code{TRUE}, output status messages}
-
 \item{digits}{number of decimal places to print for print methods}
 
 \item{doc_dim, feat_dim}{the document and feature dimension scores to be 
@@ -127,6 +124,8 @@ extracted as coefficients}
 \item{object}{a fitted Wordscores textmodel}
 
 \item{...}{additional arguments passed to other functions}
+
+\item{verbose}{If \code{TRUE}, output status messages}
 
 \item{x}{for print method, the object to be printed}
 

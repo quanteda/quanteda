@@ -156,7 +156,6 @@ predict.textmodel_wordscores <- function(object,
                                          se.fit = FALSE,
                                          interval = c("none", "confidence"), level = 0.95, 
                                          rescaling = c("none", "lbg", "mv"),
-                                         verbose = quanteda_options("verbose"), 
                                          ...) {
     
     if (length(list(...)) > 0) 
