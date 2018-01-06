@@ -1,5 +1,5 @@
 setClass("textmodel_summary", contains = "list")
-setClass("textmodel_features", contains = "numeric")
+setClass("textmodel_coefficients", contains = "numeric")
 
 #' @rdname textmodel-internal
 #' @keywords internal
@@ -25,7 +25,7 @@ print.textmodel_summary <- function(x, digits = 2, ...) {
 #' @param x a textmodel_features object
 #' @param ... additional arguments not used
 #' @export
-print.textmodel_features <- function(x, digits = 2, ...) {
+print.textmodel_coefficients <- function(x, digits = 2, ...) {
     cat("(showing first", length(x), "features)\n\n")
     print(unclass(x), digits = digits)
 }

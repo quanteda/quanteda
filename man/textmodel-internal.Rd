@@ -36,8 +36,8 @@
 \alias{predict.textmodel_wordscores}
 \alias{print.textmodel_wordscores}
 \alias{show,textmodel_wordscores-method}
-\alias{coef,textmodel_wordscores-method}
 \alias{coefficients,textmodel_wordscores-method}
+\alias{coef,textmodel_wordscores-method}
 \title{Internal functions for textmodel objects}
 \usage{
 \S4method{show}{textmodel_summary}(object)
@@ -90,9 +90,9 @@
 
 \S4method{show}{textmodel_wordscores}(object)
 
-\S4method{coef}{textmodel_wordscores}(object, ...)
-
 \S4method{coefficients}{textmodel_wordscores}(object, ...)
+
+\S4method{coef}{textmodel_wordscores}(object, ...)
 }
 \arguments{
 \item{object}{wordfish fitted or predicted object to be shown}

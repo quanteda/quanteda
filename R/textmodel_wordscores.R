@@ -164,9 +164,6 @@ predict.textmodel_wordscores <- function(object,
     interval <- match.arg(interval)
     rescaling <- match.arg(rescaling)
         
-    if (interval == 'confidence')
-        se.fit = TRUE
-    
     if (!is.null(newdata))
         data <- as.dfm(newdata)
     else {
@@ -198,7 +195,7 @@ predict.textmodel_wordscores <- function(object,
         result <- list(fit = raw)
     }
     
-    if (!se.fit)
+    if (!se.fit && interval == 'none')
         return(result[[1]])    
     
     # Compute standard error
@@ -308,69 +305,19 @@ summary.textmodel_wordscores <- function(object, n = 30L, ...) {
                        stringsAsFactors = FALSE)
     result <- list('call' = object@call,
                    'reference document statistics' = new('textmodel_wordscore_statistics', temp),
-                   'word scores' = new('textmodel_features', head(object@Sw, n)))
+                   'word scores' = new('textmodel_coefficients', head(object@Sw, n)))
     new('textmodel_summary', result)
 }
-
-# #' @export
-# #' @noRd
-# #' @method summary textmodel_wordscores_predicted
-# summary.textmodel_wordscores_predicted <- function(object, ...) {
-#     print(object)
-# }
-
-
-# #' @rdname textmodel_wordscores
-# #' @noRd
-# #' @export
-# #' @method print textmodel_wordscores_predicted
-# print.textmodel_wordscores_predicted <- function(x, ...) {
-#     cat("Predicted textmodel of type: wordscores\n\n")
-#     print(x@textscores)
-# }
-
-
-#' @rdname textmodel-internal
-#' @export
-setMethod("coef", signature(object = "textmodel_wordscores"),
-          function(object, ...) list(coef_feature = object@Sw,
-                                     coef_feature_se = NULL,
-                                     coef_document = NULL,
-                                     coef_document_se = NULL)
-)
 
 #' @rdname textmodel-internal
 #' @export
 setMethod("coefficients", signature(object = "textmodel_wordscores"),
-          function(object, ...) coef(object, ...))
+          function(object, ...) cbind('Estimate' = coef(object@Sw)))
 
-# #' @rdname textmodel-internal
-# #' @export
-# setMethod("coef", signature(object = "textmodel_wordscores"),
-#           function(object, ...) {
-#               if ("mv" %in% names(object@textscores)) {
-#                   coef_document <- object@textscores$mv
-#                   coef_document_se <- (object@textscores$mv - object@textscores$mv_lo) / qnorm((object@level + 1)/2)
-#               } else if ("lbg" %in% names(object@textscores)) {
-#                   coef_document <- object@textscores$lbg
-#                   coef_document_se <- (object@textscores$lbg - object@textscores$lbg_lo) / qnorm((object@level + 1)/2)
-#               } else {
-#                   coef_document <- object@textscores$raw
-#                   coef_document_se <- object@textscores$raw_se
-#               }
-#               
-#               list(coef_feature = object@Sw,
-#                    coef_feature_se = NULL,
-#                    coef_document = coef_document,
-#                    coef_document_se = coef_document_se)
-#           }
-# )
-
-# #' @rdname textmodel-internal
-# #' @export
-# setMethod("coefficients", signature(object = "textmodel_wordscores_predicted"),
-#           function(object, ...) coef(object, ...))
-
+#' @rdname textmodel-internal
+#' @export
+setMethod("coef", signature(object = "textmodel_wordscores"),
+          function(object, ...) cbind('Estimate' = coef(object@Sw)))
 
 #' Impliments print methods for textmodel_wordscore_statistics 
 #'
