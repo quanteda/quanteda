@@ -83,8 +83,9 @@
 \S4method{coefficients}{textmodel_wordfish_fitted}(object, ...)
 
 \method{predict}{textmodel_wordscores}(object, newdata = NULL,
-  se.fit = FALSE, rescaling = c("none", "lbg", "mv"), level = 0.95,
-  verbose = quanteda_options("verbose"), ...)
+  se.fit = FALSE, interval = c("none", "confidence"), level = 0.95,
+  rescaling = c("none", "lbg", "mv"), verbose = quanteda_options("verbose"),
+  ...)
 
 \method{print}{textmodel_wordscores}(x, digits = 2, ...)
 
@@ -110,11 +111,11 @@ extracted as coefficients}
 
 \item{newdata}{dfm on which prediction should be made}
 
+\item{level}{probability level for confidence interval width}
+
 \item{rescaling}{\code{"none"} for "raw" scores; \code{"lbg"} for LBG (2003) 
 rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg 
 (2007).  (Note to authors: Provide full details here in documentation.)}
-
-\item{level}{probability level for confidence interval width}
 
 \item{verbose}{If \code{TRUE}, output status messages}
 

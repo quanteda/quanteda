@@ -154,104 +154,108 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 predict.textmodel_wordscores <- function(object, 
                                          newdata = NULL, 
                                          se.fit = FALSE,
+                                         interval = c("none", "confidence"), level = 0.95, 
                                          rescaling = c("none", "lbg", "mv"),
-                                         level = 0.95, 
                                          verbose = quanteda_options("verbose"), 
                                          ...) {
     
-        if (length(list(...)) > 0) 
-            stop("Arguments:", names(list(...)), "not supported.\n")
+    if (length(list(...)) > 0) 
+        stop("Arguments:", names(list(...)), "not supported.\n")
         
-        rescaling <- match.arg(rescaling)
+    interval <- match.arg(interval)
+    rescaling <- match.arg(rescaling)
         
-        if (!is.null(newdata))
-            data <- as.dfm(newdata)
-        else {
-            data <- as.dfm(object@x)
-            newdata <- data
-        }
-        
-        featureIndex <- match(names(object@Sw), featnames(data))
-        
-        scorable <- which(colnames(data) %in% names(object@Sw))
-        Sw <- object@Sw[featnames(data)[scorable]]
-        if (verbose)
-            catm(paste(length(scorable), " of ", nfeat(data), " features (",
-                       round(100 * length(scorable) / nfeat(data), 2),
-                       "%) can be scored\n\n", sep = ""))
-        
-        # compute text scores as weighted mean of word scores in "virgin" document
-        scorable.newd <- data[, scorable]
-        # This is different from computing term weights on only the scorable words.
-        # It take rowSums() only to generates named vector.
-        textscore_raw <- rowSums(dfm_weight(scorable.newd, "prop") %*% Sw) 
-        textscore_raw_se <- rep(NA, length(textscore_raw))
-        
-        Fwv <- dfm_weight(scorable.newd, "prop")
-        for (i in seq_along(textscore_raw_se))
-            textscore_raw_se[i] <- sqrt(sum(as.numeric(Fwv[i,]) * (textscore_raw[i] - Sw) ^ 2)) / sqrt(rowSums(scorable.newd)[[i]])
-        
-        z <- stats::qnorm(1 - (1 - level) / 2)
-        
-        temp <- list(
-            textscore_raw = textscore_raw,
-            textscore_raw_se = textscore_raw_se,
-            textscore_raw_lo = unname(textscore_raw) - z * textscore_raw_se,
-            textscore_raw_hi = unname(textscore_raw) + z * textscore_raw_se
-        )
-
-        if (rescaling == "mv") {
-            if (sum(!is.na(object@y)) > 2)
-                warning("More than two reference scores found with MV rescaling; using only min, max values.")
-            result <- list(
-                textscore_mv = mv_transform(temp$textscore_raw, object@y, temp$textscore_raw),
-                textscore_mv_lo = mv_transform(temp$textscore_raw_lo, object@y, temp$textscore_raw),
-                textscore_mv_hi = mv_transform(temp$textscore_raw_hi, object@y, temp$textscore_raw)
-            )
-        } else if (rescaling == "lbg") {
-            SDr <- stats::sd(object@y, na.rm=TRUE)
-            Sv <- mean(textscore_raw, na.rm=TRUE)
-            SDv <- if (length(textscore_raw) < 2L) 0 else stats::sd(textscore_raw)
-            mult <- if (SDv == 0) 0 else SDr/SDv
-            
-            # borrowed the next few lines from https://github.com/conjugateprior/austin
-            if (mult == 0) {
-                result <- list(
-                    textscore_lbg = (temp$textscore_raw - Sv) * mult + Sv,
-                    textscore_lbg_lo = temp$textscore_raw + z * temp$textscore_raw_se,
-                    textscore_lbg_hi = temp$textscore_raw + z * temp$textscore_raw_se
-                )
-            } else {
-                result <- list(
-                    textscore_lbg = (temp$textscore_raw - Sv) * mult + Sv,
-                    textscore_lbg_lo = (temp$textscore_raw_lo - Sv) * mult + Sv,
-                    textscore_lbg_hi = (temp$textscore_raw_hi - Sv) * mult + Sv
-                )
-            }
-        } else {
-            result <- temp
-        }
-        if (se.fit) {
-            return(result)
-        } else {
-            return(result[[1]])
-        }
+    if (interval == 'confidence')
+        se.fit = TRUE
+    
+    if (!is.null(newdata))
+        data <- as.dfm(newdata)
+    else {
+        data <- as.dfm(object@x)
     }
+    
+    # Compute text scores as weighted mean of word scores in "virgin" document
+    data <- dfm_select(data, as.dfm(rbind(object@Sw)))
+    # This is different from computing term weights on only the scorable words.
+    # It take rowSums() only to generates named vector.
+    sw <- object@Sw[intersect(featnames(data), names(object@Sw))]
+    raw <- rowSums(dfm_weight(data, "prop") %*% sw)
+    
+    # if (verbose)
+    #    catm(sprintf('%d of %d features (%.2f%%) can be scored\n\n', 
+    #         length(sw), nfeat(data), 100 * length(sw) / nfeat(data)))
+    
+    if (rescaling == "mv") {
+        if (sum(!is.na(object@y)) > 2)
+            warning("More than two reference scores found with MV rescaling; using only min, max values.")
+        result <- list(fit = mv_transform(raw, object@y, raw))
+    } else if (rescaling == "lbg") {
+        lbg_sdr <- stats::sd(object@y, na.rm=TRUE)
+        lbg_sv <- mean(raw, na.rm=TRUE)
+        lbg_sdv <- if (length(raw) < 2L) 0 else stats::sd(raw)
+        lbg_mult <- if (lbg_sdr == 0) 0 else lbg_sdr / lbg_sdv
+        result <- list(fit = (raw - lbg_sv) * lbg_mult + lbg_sv)
+    } else {
+        result <- list(fit = raw)
+    }
+    
+    if (!se.fit)
+        return(result[[1]])    
+    
+    # Compute standard error
+    raw_se <- rep(NA, length(raw))
+    fwv <- dfm_weight(data, "prop")
+    for (i in seq_along(raw_se))
+        raw_se[i] <- sqrt(sum(as.numeric(fwv[i,]) * (raw[i] - sw) ^ 2)) / sqrt(rowSums(data)[[i]])
+    
+    if (rescaling == "mv") {
+        result$se <- rep(NA, length(raw))
+    } else if (rescaling == "lbg") {
+        result$se <- raw_se
+    } else {
+        result$se <- raw_se
+    }
+    
+    if (interval == 'none') 
+        return(result)
+    
+    # Compute confidence intervals
+    z <- stats::qnorm(1 - (1 - level) / 2)
+    raw <- unname(raw)
+    
+    if (rescaling == "mv") {
+        result$lo <- mv_transform(raw - z * raw_se, object@y, raw)
+        result$hi <- mv_transform(raw + z * raw_se, object@y, raw)
+    } else if (rescaling == "lbg") {
+        if (lbg_mult == 0) {
+            result$lwr <- raw - z * raw_se
+            result$upr <- raw + z * raw_se
+        } else {
+            result$lwr = ((raw - z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
+            result$upr = ((raw + z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
+        }
+    } else {
+        result$lwr <- raw - z * raw_se
+        result$upr <- raw + z * raw_se
+    }
+    
+    return(as.matrix(as.data.frame(result)))
+}
 
 
-## rescale a vector so that the endpoints match scale.min, scale.max
+## Rescale a vector so that the endpoints match scale.min, scale.max
 rescaler <- function(x, scale.min = -1, scale.max = 1) {
     scale.width <- scale.max - scale.min
     scale.factor <- scale.width / (max(x) - min(x))
-    return((x-min(x)) * scale.factor - scale.max)
+    return((x - min(x)) * scale.factor - scale.max)
 }
 
-## internal function for MV rescaling
+## Internal function for MV rescaling
 mv_transform <- function(x, y, z) {
-    i_low <- which(y == min(y, na.rm = TRUE))
-    i_high <- which(y == max(y, na.rm = TRUE))
-    as.numeric((x - z[i_low]) * (max(y, na.rm = TRUE) - min(y, na.rm = TRUE)) /
-               (z[i_high] - z[i_low]) + min(y, na.rm = TRUE))
+    y <- y[!is.na(y)]
+    i_low <- which(y == min(y))
+    i_high <- which(y == max(y))
+    return((x - z[i_low]) * (max(y) - min(y)) / (z[i_high] - z[i_low]) + min(y))
 }
 
 
@@ -340,17 +344,17 @@ setMethod("coefficients", signature(object = "textmodel_wordscores"),
 
 # #' @rdname textmodel-internal
 # #' @export
-# setMethod("coef", signature(object = "textmodel_wordscores_predicted"),
+# setMethod("coef", signature(object = "textmodel_wordscores"),
 #           function(object, ...) {
-#               if ("textscore_mv" %in% names(object@textscores)) {
-#                   coef_document <- object@textscores$textscore_mv
-#                   coef_document_se <- (object@textscores$textscore_mv - object@textscores$textscore_mv_lo) / qnorm((object@level + 1)/2)
-#               } else if ("textscore_lbg" %in% names(object@textscores)) {
-#                   coef_document <- object@textscores$textscore_lbg
-#                   coef_document_se <- (object@textscores$textscore_lbg - object@textscores$textscore_lbg_lo) / qnorm((object@level + 1)/2)
+#               if ("mv" %in% names(object@textscores)) {
+#                   coef_document <- object@textscores$mv
+#                   coef_document_se <- (object@textscores$mv - object@textscores$mv_lo) / qnorm((object@level + 1)/2)
+#               } else if ("lbg" %in% names(object@textscores)) {
+#                   coef_document <- object@textscores$lbg
+#                   coef_document_se <- (object@textscores$lbg - object@textscores$lbg_lo) / qnorm((object@level + 1)/2)
 #               } else {
-#                   coef_document <- object@textscores$textscore_raw
-#                   coef_document_se <- object@textscores$textscore_raw_se
+#                   coef_document <- object@textscores$raw
+#                   coef_document_se <- object@textscores$raw_se
 #               }
 #               
 #               list(coef_feature = object@Sw,
@@ -383,20 +387,20 @@ print.textmodel_wordscore_statistics <- function(x, digits = digits, ...) {
 # #' @export
 # print.textmodel_wordscore_predictions <- function(x, ...) {
 #     
-#     label <- c('textscore_raw'= 'textscore',
-#                'textscore_raw_se' = 'LBG se',
-#                'textscore_raw_lo' = 'ci lo',
-#                'textscore_raw_hi' = 'ci hi',
-#                'textscore_mv' = 'MV rescaled',
-#                'textscore_mv_lo' = 'MV lo',
-#                'textscore_mv_hi' = 'MV hi',
-#                'textscore_lbg' = 'LBG rescaled',
-#                'textscore_lbg_lo' = 'LBG lo',
-#                'textscore_lbg_hi' = 'LBG hi')
+#     label <- c('raw'= 'textscore',
+#                'raw_se' = 'LBG se',
+#                'raw_lo' = 'ci lo',
+#                'raw_hi' = 'ci hi',
+#                'mv' = 'MV rescaled',
+#                'mv_lo' = 'MV lo',
+#                'mv_hi' = 'MV hi',
+#                'lbg' = 'LBG rescaled',
+#                'lbg_lo' = 'LBG lo',
+#                'lbg_hi' = 'LBG hi')
 #     
 #     # pare down the output if rescaling has been specified
-#     #if (any(c("textscore_lbg", "textscore_mv") %in% names(x)))
-#     #    x$textscore_raw_lo <- x$textscore_raw_hi <- NULL
+#     #if (any(c("lbg", "mv") %in% names(x)))
+#     #    x$raw_lo <- x$raw_hi <- NULL
 #     names(x) <- label[names(x)]
 #     print(round(x, 4))
 #     cat('\n')
