@@ -186,8 +186,8 @@ predict.textmodel_wordscores <- function(object,
             warning("More than two reference scores found with MV rescaling; using only min, max values.")
         result <- list(fit = mv_transform(raw, object@y, raw))
     } else if (rescaling == "lbg") {
-        lbg_sdr <- stats::sd(object@y, na.rm=TRUE)
-        lbg_sv <- mean(raw, na.rm=TRUE)
+        lbg_sdr <- stats::sd(object@y, na.rm = TRUE)
+        lbg_sv <- mean(raw, na.rm = TRUE)
         lbg_sdv <- if (length(raw) < 2L) 0 else stats::sd(raw)
         lbg_mult <- if (lbg_sdr == 0) 0 else lbg_sdr / lbg_sdv
         result <- list(fit = (raw - lbg_sv) * lbg_mult + lbg_sv)
@@ -229,8 +229,8 @@ predict.textmodel_wordscores <- function(object,
                 result$lwr <- raw - z * raw_se
                 result$upr <- raw + z * raw_se
             } else {
-                result$lwr = ((raw - z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
-                result$upr = ((raw + z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
+                result$lwr <- ((raw - z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
+                result$upr <- ((raw + z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
             }
         } else {
             result$lwr <- raw - z * raw_se
