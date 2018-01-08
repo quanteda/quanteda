@@ -51,14 +51,13 @@ Fitting a \code{textmodel_wordscores} results in an object of class
 }
 
 \examples{
-ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
-
+(ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
 summary(ws)
 coef(ws)
 predict(ws)
-predict(ws, se.fit = TRUE)
 predict(ws, rescaling = "mv")
 predict(ws, rescaling = "lbg")
+predict(ws, se.fit = TRUE)
 }
 \references{
 Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 

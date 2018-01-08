@@ -60,11 +60,12 @@
 #'   21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
 #' @author Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit
 #' @examples
-#' wf <- textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5))
+#' (wf <- textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5)))
+#' summary(wf)
+#' coef(wf)
 #' predict(wf)
 #' predict(wf, se.fit = TRUE)
 #' predict(wf, interval = 'confidence')
-#' coef(wf)
 #' 
 #' \dontrun{
 #' ie2010dwf <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
@@ -249,7 +250,7 @@ predict.textmodel_wordfish <- function(object,
 #' @method print textmodel_wordfish
 print.textmodel_wordfish <- function(x, ...) {
     cat("Fitted wordfish model:\n")
-    print(x@call)
+    print(x$call)
     cat("\n")
 }
 
@@ -257,17 +258,22 @@ print.textmodel_wordfish <- function(x, ...) {
 #' @method summary textmodel_wordfish
 summary.textmodel_wordfish <- function(object, n = 30, ...) {
     
-    stat <- data.frame(document = object$docs,
-                       theta = object$theta,
-                       se = object$se.theta, 
-                       stringsAsFactors = FALSE)
+    stat <- data.frame(
+        theta = object$theta,
+        se = object$se.theta,
+        row.names = object$docs,
+        check.rows = FALSE,
+        stringsAsFactors = FALSE
+    )
     
     coef <- object$beta
     names(coef) <- object$features
-    result <- list('call' = object$call,
-                   'estimated document positions' = as.textmodel_statistics(stat),
-                   'estimated feature scores' = as.textmodel_coefficients(head(coef, n)))
-    as.textmodel_summary(result)
+    result <- list(
+        'call' = object$call,
+        'estimated.document.positions' = as.textmodel_statistics(stat),
+        'estimated.feature.scores' = as.textmodel_coefficients(head(coef, n))
+    )
+    return(as.textmodel_summary(result))
 }
 
 #' @rdname textmodel-internal

@@ -5,8 +5,9 @@
 #' @param ... additional arguments not used
 #' @export
 print.textmodel_summary <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+    label <- stri_trans_totitle(stri_replace_all_fixed(names(x), '.', ' '))
     for (i in seq_along(x)) {
-        cat(stri_trans_totitle(names(x[i])), ':\n', sep = '')
+        cat(label[i], ':\n', sep = '')
         print(x[[i]], digits = digits)
         cat('\n')
     }
@@ -27,7 +28,7 @@ as.textmodel_summary <- function(x) {
 #' @export
 print.textmodel_coefficients <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
     x <- unclass(x)
-    cat("(showing first", length(x), "features)\n\n")
+    cat("(showing first", length(x), "elements)\n")
     NextMethod(digits = digits)
 }
 
@@ -45,7 +46,7 @@ as.textmodel_coefficients <- function(x) {
 #' @param ... additional arguments not used
 #' @export
 print.textmodel_statistics <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
-    NextMethod(digits = digits, row.names = FALSE)
+    NextMethod(digits = digits, row.names = TRUE)
 }
 
 #' Assign the textmodel_coefficients class to a data.frame

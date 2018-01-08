@@ -29,8 +29,8 @@
 \alias{coefficient.textmodel_wordfish}
 \alias{predict.textmodel_wordscores}
 \alias{print.textmodel_wordscores}
-\alias{coef.textmodel_wordscore}
-\alias{coefficient.textmodel_wordscore}
+\alias{coef.textmodel_wordscores}
+\alias{coefficient.textmodel_wordscores}
 \title{Internal functions for textmodel objects}
 \usage{
 \S4method{show}{textmodel_affinity_fitted}(object)
@@ -73,11 +73,11 @@ coefficient.textmodel_wordfish(object, ...)
   se.fit = FALSE, interval = c("none", "confidence"), level = 0.95,
   rescaling = c("none", "lbg", "mv"), ...)
 
-\method{print}{textmodel_wordscores}(x, digits = 2, ...)
+\method{print}{textmodel_wordscores}(x, ...)
 
-coef.textmodel_wordscore(object, ...)
+coef.textmodel_wordscores(object, ...)
 
-coefficient.textmodel_wordscore(object, ...)
+coefficient.textmodel_wordscores(object, ...)
 }
 \arguments{
 \item{object}{a fitted Wordscores textmodel}
@@ -101,8 +101,6 @@ extracted as coefficients}
 rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg 
 (2007).  (Note to authors: Provide full details here in documentation.)}
 
-\item{digits}{number of decimal places to print for print methods}
-
 \item{doc_dim, feat_dim}{the document and feature dimension scores to be 
 extracted as coefficients}
 
@@ -113,6 +111,8 @@ extracted as coefficients}
 \item{x}{for print method, the object to be printed}
 
 \item{n}{max rows of dfm to print}
+
+\item{digits}{number of decimal places to print for print methods}
 }
 \value{
 The \code{predict} method for a wordscores fitted object returns a 

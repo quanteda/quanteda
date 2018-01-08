@@ -97,17 +97,18 @@ trainingset <- dfm(txt, tolower = FALSE)
 trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
  
 ## replicate IIR p261 prediction for test set (document 5)
-(nb.p261 <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
-predict(nb.p261, newdata = trainingset[5, ])
+(nb <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
+summary(nb)
+predict(nb)
 
 # contrast with other priors
 predict(textmodel_nb(trainingset, trainingclass, prior = "uniform"))
 predict(textmodel_nb(trainingset, trainingclass, prior = "termfreq"))
 
 ## replicate IIR p264 Bernoulli Naive Bayes
-(nb.p261.bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
+(nb_bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
                               prior = "docfreq"))
-predict(nb.p261.bern, newdata = trainingset[5, ])
+predict(nb_bern, newdata = trainingset[5, ])
 }
 \references{
 Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction

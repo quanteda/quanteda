@@ -25,14 +25,13 @@
 #'   \code{\link{predict.textmodel_wordscores}}.
 #' @author Kenneth Benoit
 #' @examples 
-#' ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
-#' 
+#' (ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
 #' summary(ws)
 #' coef(ws)
 #' predict(ws)
-#' predict(ws, se.fit = TRUE)
 #' predict(ws, rescaling = "mv")
 #' predict(ws, rescaling = "lbg")
+#' predict(ws, se.fit = TRUE)
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
 #'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy Positions From Political Texts Using Words as Data.}" 
 #'   \emph{American Political Science Review} 97(02): 311-31
@@ -246,7 +245,7 @@ mv_transform <- function(x, y, z) {
 #' @param digits number of decimal places to print for print methods
 #' @export
 #' @method print textmodel_wordscores
-print.textmodel_wordscores <- function(x, digits = 2, ...) {
+print.textmodel_wordscores <- function(x, ...) {
     cat("Fitted wordscores model:\n")
     print(x$call)
     cat("\n")
@@ -257,29 +256,34 @@ print.textmodel_wordscores <- function(x, digits = 2, ...) {
 #' @method summary textmodel_wordscores
 summary.textmodel_wordscores <- function(object, n = 30L, ...) {
 
-    stat <- data.frame(document = docnames(object$x),
-                       score = object$y,
-                       total = apply(object$x, 1, sum),
-                       min = apply(object$x, 1, min),
-                       max = apply(object$x, 1, max),
-                       mean = apply(object$x, 1, mean),
-                       median = apply(object$x, 1, stats::median),
-                       stringsAsFactors = FALSE)
-    result <- list('call' = object$call,
-                   'reference document statistics' = as.textmodel_statistics(stat),
-                   'word scores' = as.textmodel_coefficients(head(object$sw, n)))
+    stat <- data.frame(
+        score = object$y,
+        total = apply(object$x, 1, sum),
+        min = apply(object$x, 1, min),
+        max = apply(object$x, 1, max),
+        mean = apply(object$x, 1, mean),
+        median = apply(object$x, 1, stats::median),
+        row.names = docnames(object$x),
+        check.rows = FALSE,
+        stringsAsFactors = FALSE
+    )
+    result <- list(
+        'call' = object$call,
+        'reference.document.statistics' = as.textmodel_statistics(stat),
+        'word.scores' = as.textmodel_coefficients(head(object$sw, n))
+    )
     return(as.textmodel_summary(result))
 }
 
 
 #' @rdname textmodel-internal
 #' @export
-coef.textmodel_wordscore <- function(object, ...) {
+coef.textmodel_wordscores <- function(object, ...) {
     list(beta = object$sw)
 }
 
 #' @rdname textmodel-internal
 #' @export
-coefficient.textmodel_wordscore <- function(object, ...) {
+coefficient.textmodel_wordscores <- function(object, ...) {
     UseMethod('coef')   
 }

@@ -71,17 +71,18 @@
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #'  
 #' ## replicate IIR p261 prediction for test set (document 5)
-#' (nb.p261 <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
-#' predict(nb.p261, newdata = trainingset[5, ])
+#' (nb <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
+#' summary(nb)
+#' predict(nb)
 #' 
 #' # contrast with other priors
 #' predict(textmodel_nb(trainingset, trainingclass, prior = "uniform"))
 #' predict(textmodel_nb(trainingset, trainingclass, prior = "termfreq"))
 #' 
 #' ## replicate IIR p264 Bernoulli Naive Bayes
-#' (nb.p261.bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
+#' (nb_bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
 #'                               prior = "docfreq"))
-#' predict(nb.p261.bern, newdata = trainingset[5, ])
+#' predict(nb_bern, newdata = trainingset[5, ])
 #' @export
 textmodel_nb <- function(x, y, smooth = 1, 
                          prior = c("uniform", "docfreq", "termfreq"), 
@@ -173,15 +174,19 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     ## P(w)
     Pw <- t(PwGc) %*% as.numeric(Pc)
     
-    ll <- list(call = call, 
-               PwGc = as.matrix(PwGc), 
-               Pc = Pc, 
-               PcGw = as.matrix(PcGw), 
-               Pw = as.matrix(Pw), 
-               data = list(x = x, y = y), 
-               distribution = distribution, prior = prior, smooth = smooth)
-    class(ll) <- c("textmodel_nb", "list")
-    return(ll)
+    result <- list(
+        call = call,
+        PwGc = as.matrix(PwGc),
+        Pc = Pc,
+        PcGw = as.matrix(PcGw),
+        Pw = as.matrix(Pw),
+        data = list(x = x, y = y),
+        distribution = distribution,
+        prior = prior,
+        smooth = smooth
+    )
+    class(result) <- c("textmodel", "textmodel_nb", "list")
+    return(result)
 }
 
 #' Prediction method for Naive Bayes classifier objects
@@ -255,10 +260,8 @@ predict.textmodel_nb <- function(object, newdata = NULL, ...) {
             tmp1[is.infinite(tmp1)] <- 0
             tmp0 <- log(t(!newdata) * (1 - object$PwGc[c, ]))
             tmp0[is.infinite(tmp0)] <- 0
-            log.posterior.lik[, c] <- 
-                log.posterior.lik[, c] + colSums(tmp0) + colSums(tmp1)
+            log.posterior.lik[, c] <- log.posterior.lik[, c] + colSums(tmp0) + colSums(tmp1)
         }
-        
     } 
 
     
@@ -278,38 +281,38 @@ predict.textmodel_nb <- function(object, newdata = NULL, ...) {
             (1 + rowSums(exp(log.posterior.lik[, -j, drop = FALSE] - base.lpl)))
     }
 
-    result <- list(log.posterior.lik = log.posterior.lik, 
-                   posterior.prob = posterior.prob, 
-                   nb.predicted = nb.predicted, 
-                   Pc = object$Pc, 
-                   classlabels = names(object$Pc), 
-                   call = call)
+    result <- list(
+        log.posterior.lik = log.posterior.lik,
+        posterior.prob = posterior.prob,
+        nb.predicted = nb.predicted,
+        Pc = object$Pc,
+        classlabels = names(object$Pc),
+        call = call
+    )
     class(result) <- c("textmodel_nb_predicted", "list")
-    result
+    return(result)
 }
-
-# # not used any more
-# logsumexp <- function(x) {
-#     xmax <- which.max(x)
-#     log1p(sum(exp(x[-xmax] - x[xmax]))) + x[xmax]
-# }
 
 # @rdname print.textmodel
 #' @export
 #' @method print textmodel_nb
-print.textmodel_nb <- function(x, n=30L, ...) {
+print.textmodel_nb <- function(x, ...) {
     cat("Fitted Naive Bayes model:\n")
-    cat("Call:\n\t")
     print(x$call)
     cat("\n")
+}
+
+#' @export
+#' @method summary textmodel_nb
+summary.textmodel_nb <- function(object, n = 30, ...) {
     
-    cat("\nTraining classes and priors:\n")
-    print(x$Pc)
-    
-    cat("\n\t\t  Likelihoods:\t\tClass Posteriors:\n")
-    print(head(t(rbind(x$PwGc, x$PcGw)), n))
-    
-    cat("\n")
+    result <- list(
+        'call' = object$call,
+        'class.priors' = as.textmodel_coefficients(object$Pc),
+        'likelihoods' = as.textmodel_statistics(head(as.data.frame(object$PwGc), n)),
+        'class.posteriors' = as.textmodel_statistics(head(as.data.frame(object$PcGw), n))
+    )
+    return(as.textmodel_summary(result))
 }
 
 

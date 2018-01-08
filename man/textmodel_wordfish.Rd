@@ -78,9 +78,12 @@ In the rare situation where a warning message of "The algorithm did not
   converge." shows up, removing some documents may work.
 }
 \examples{
-wf <- textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5))
-predict(wf)
+(wf <- textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5)))
+summary(wf)
 coef(wf)
+predict(wf)
+predict(wf, se.fit = TRUE)
+predict(wf, interval = 'confidence')
 
 \dontrun{
 ie2010dwf <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
