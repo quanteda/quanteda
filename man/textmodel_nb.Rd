@@ -57,7 +57,7 @@ training labels.
 }
 \section{Predict Methods}{
  A \code{predict} method is also available for a 
-  fitted Naive Bayes object, see \code{\link{predict.textmodel_nb_fitted}}.
+  fitted Naive Bayes object, see \code{\link{predict.textmodel_nb}}.
 }
 
 \section{Prior distributions}{

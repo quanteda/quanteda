@@ -29,7 +29,7 @@
 #' @return \item{prior}{the prior argument}
 #' @return \item{smooth}{the value of the smoothing parameter}
 #' @section Predict Methods: A \code{predict} method is also available for a 
-#'   fitted Naive Bayes object, see \code{\link{predict.textmodel_nb_fitted}}.
+#'   fitted Naive Bayes object, see \code{\link{predict.textmodel_nb}}.
 #' @section Prior distributions:
 #' 
 #' Prior distributions refer to the prior probabilities assigned to the training
@@ -101,6 +101,8 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
                              prior = c("uniform", "docfreq", "termfreq"), 
                              distribution = c("multinomial", "Bernoulli"), ...) {
     
+    # TODO: probably, Bernoulli needs to be lowercased KW
+    
     x <- as.dfm(x)
     prior <- match.arg(prior)
     distribution <- match.arg(distribution)
@@ -141,7 +143,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
         Pc_names <- rownames(Pc)
         attributes(Pc) <- NULL
         names(Pc) <- Pc_names
-    } else stop("Prior must be either docfreq (default), wordfreq, or uniform")
+    }
     
     ## multinomial ikelihood: class x words, rows sum to 1
     # combine all of the class counts
@@ -178,7 +180,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
                Pw = as.matrix(Pw), 
                data = list(x = x, y = y), 
                distribution = distribution, prior = prior, smooth = smooth)
-    class(ll) <- c("textmodel_nb_fitted", class(ll))
+    class(ll) <- c("textmodel_nb", "list")
     return(ll)
 }
 
@@ -203,7 +205,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 #' (nbpred <- predict(nbfit))
 #' @keywords internal textmodel
 #' @export
-predict.textmodel_nb_fitted <- function(object, newdata = NULL, ...) {
+predict.textmodel_nb <- function(object, newdata = NULL, ...) {
     
     call <- match.call()
     if (is.null(newdata)) newdata <- as.dfm(object$data$x)
@@ -282,7 +284,7 @@ predict.textmodel_nb_fitted <- function(object, newdata = NULL, ...) {
                    Pc = object$Pc, 
                    classlabels = names(object$Pc), 
                    call = call)
-    class(result) <- c("textmodel_nb_predicted", class(result))
+    class(result) <- c("textmodel_nb_predicted", "list")
     result
 }
 
@@ -294,8 +296,8 @@ predict.textmodel_nb_fitted <- function(object, newdata = NULL, ...) {
 
 # @rdname print.textmodel
 #' @export
-#' @method print textmodel_nb_fitted
-print.textmodel_nb_fitted <- function(x, n=30L, ...) {
+#' @method print textmodel_nb
+print.textmodel_nb <- function(x, n=30L, ...) {
     cat("Fitted Naive Bayes model:\n")
     cat("Call:\n\t")
     print(x$call)
@@ -310,11 +312,6 @@ print.textmodel_nb_fitted <- function(x, n=30L, ...) {
     cat("\n")
 }
 
-
-# @param x for print method, the object to be printed
-# @param n max rows of dfm to print
-# @param digits number of decimal places to print for print methods
-# @param ... not used in \code{print.textmodel_wordscores_fitted}
 
 #' @export
 #' @method print textmodel_nb_predicted
@@ -344,7 +341,11 @@ print.textmodel_nb_predicted <- function(x, n = 30L, digits = 4, ...) {
 }
 
 
-## some helper functions
+
+
+## some helper functions 
+
+# TODO: outer generates dense matrix. Upgrade these to move to utils.R or delete KW
 
 ## make rows add up to one
 rowNorm <- function(x) {
