@@ -33,7 +33,7 @@ Fitting a \code{textmodel_wordscores} results in an object of class
 \item{\code{scale}}{\code{linear} or \code{logit}, according to the value of 
 \code{scale}}
 
-\item{\code{Sw}}{the scores computed for each word in the training set}
+\item{\code{sw}}{the scores computed for each word in the training set}
 
 \item{\code{x}}{the dfm on which the wordscores model was called}
 
@@ -54,7 +54,9 @@ Fitting a \code{textmodel_wordscores} results in an object of class
 ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
 
 summary(ws)
+coef(ws)
 predict(ws)
+predict(ws, se.fit = TRUE)
 predict(ws, rescaling = "mv")
 predict(ws, rescaling = "lbg")
 }

@@ -1,23 +1,3 @@
-#' @rdname textmodel-internal
-#' @keywords internal textmodel
-#' @export
-setClass("textmodel_wordfish",
-         slots = c(priors = "numeric", 
-                   tol = "numeric",
-                   dir = "numeric",
-                   theta = "numeric",
-                   beta = "numeric",
-                   psi = "numeric",
-                   alpha = "numeric",
-                   phi = "numeric",
-                   docs = "character",
-                   features = "character",
-                   sigma = "numeric",
-                   ll = "numeric",
-                   dispersion = "character",
-                   se.theta = "numeric"),
-         contains = "textmodel_fitted")
- 
 
 #' Wordfish text model
 #' 
@@ -80,29 +60,33 @@ setClass("textmodel_wordfish",
 #'   21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
 #' @author Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit
 #' @examples
-#' textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5))
+#' wf <- textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5))
+#' predict(wf)
+#' predict(wf, se.fit = TRUE)
+#' predict(wf, interval = 'confidence')
+#' coef(wf)
 #' 
 #' \dontrun{
-#' ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
-#' (wfm1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
-#' (wfm2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
+#' ie2010dwf <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
+#' (wf1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
+#' (wf2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
 #'                              dispersion = "quasipoisson", dispersion_floor = 0))
-#' (wfm2b <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
+#' (wf2b <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
 #'                              dispersion = "quasipoisson", dispersion_floor = .5))
-#' plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
+#' plot(wf2a$phi, wf2b$phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
 #'      xlim = c(0, 1.0), ylim = c(0, 1.0))
-#' plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
+#' plot(wf2a$phi, wf2b$phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
 #'      xlim = c(0, 1.0), ylim = c(0, 1.0), type = "n")
-#' underdispersedTerms <- sample(which(wfm2a@phi < 1.0), 5)
+#' underdispersedTerms <- sample(which(wf2a$phi < 1.0), 5)
 #' which(featnames(ie2010dfm) %in% names(topfeatures(ie2010dfm, 20)))
-#' text(wfm2a@phi, wfm2b@phi, wfm2a@features, 
+#' text(wf2a$phi, wf2b$phi, wf2a$features, 
 #'      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "grey90")
-#' text(wfm2a@phi[underdispersedTerms], wfm2b@phi[underdispersedTerms], 
-#'      wfm2a@features[underdispersedTerms], 
+#' text(wf2a$phi['underdispersedTerms'], wf2b$phi['underdispersedTerms'], 
+#'      wf2a$features['underdispersedTerms'], 
 #'      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "black")
 #' if (require(austin)) {
-#'     wfmodelAustin <- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
-#'     cor(wfm1@theta, wfmodelAustin$theta)
+#'     wf_austin <- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
+#'     cor(wf1$theta, wf_austin$theta)
 #' }}
 #' @export
 textmodel_wordfish <- function(x, dir = c(1, 2), 
@@ -210,9 +194,9 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2),
     if (any(is.nan(result$theta))) 
         warning("Warning: The algorithm did not converge.")
     
-    new("textmodel_wordfish", 
+    result <- list(
         x = x,
-        docs = docnames(x), 
+        docs = docnames(x),
         features = featnames(x),
         dir = dir,
         dispersion = dispersion,
@@ -223,7 +207,10 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2),
         alpha = as.numeric(result$alpha),
         phi = as.numeric(result$phi),
         se.theta = as.numeric(result$thetaSE) ,
-        call = match.call())
+        call = match.call()
+    )
+    class(result) <- c('textmodel_wordfish', 'list')
+    return(result)
 }
 
 #' @export
@@ -239,18 +226,18 @@ predict.textmodel_wordfish <- function(object,
         stop('Prediction by newdata is not yet implimented\n')
     
     z <- stats::qnorm(1 - (1 - level) / 2)
-    result <- list(fit = object@theta)
+    result <- list(fit = object$theta)
     
     if (!se.fit && interval == 'none')
         return(result[[1]])
     
     if (interval == 'none') {
-        result$se <- object@se.theta
+        result$se <- object$se.theta
         return(result)
     } else {
-        result$lwr <- object@theta - z * object@se.theta
-        result$upr <- object@theta + z * object@se.theta
-        return(result)
+        result$lwr <- object$theta - z * object$se.theta
+        result$upr <- object$theta + z * object$se.theta
+        return(as.matrix(as.data.frame(result)))
     }
 }
 
@@ -266,40 +253,35 @@ print.textmodel_wordfish <- function(x, ...) {
     cat("\n")
 }
 
-#' @rdname textmodel-internal
-#' @param object wordfish fitted or predicted object to be shown
-#' @export
-setMethod("show", signature(object = "textmodel_wordfish"), 
-          function(object) print(object))
-
 #' @export
 #' @method summary textmodel_wordfish
 summary.textmodel_wordfish <- function(object, n = 30, ...) {
     
-    stat <- data.frame(document = object@docs,
-                       theta = object@theta,
-                       se = object@se.theta, 
+    stat <- data.frame(document = object$docs,
+                       theta = object$theta,
+                       se = object$se.theta, 
                        stringsAsFactors = FALSE)
     
-    coef <- object@beta
-    names(coef) <- object@features
-    result <- list('call' = object@call,
-                   'estimated document positions' = new('textmodel_statistics', stat),
-                   'estimated feature scores' = new('textmodel_coefficients', head(coef, n)))
-    new('textmodel_summary', result)
+    coef <- object$beta
+    names(coef) <- object$features
+    result <- list('call' = object$call,
+                   'estimated document positions' = as.textmodel_statistics(stat),
+                   'estimated feature scores' = as.textmodel_coefficients(head(coef, n)))
+    as.textmodel_summary(result)
 }
 
 #' @rdname textmodel-internal
 #' @export
-setMethod("coef", signature(object = "textmodel_wordfish"),
-          function(object, ...) list(beta = object@beta,
-                                     theta = object@theta,
-                                     se.theta = object@se.theta,
-                                     psi = object@psi,
-                                     alpha = object@alpha)
-)
+coef.textmodel_wordfish <- function(object, ...) {
+    list(beta = object$beta,
+         theta = object$theta,
+         se.theta = object$se.theta,
+         psi = object$psi,
+         alpha = object$alpha)
+}
 
 #' @rdname textmodel-internal
 #' @export
-setMethod("coefficients", signature(object = "textmodel_wordfish"),
-          function(object, ...) coef(object, ...))
+coefficient.textmodel_wordfish <- function(object, ...) {
+    UseMethod('coef')   
+}

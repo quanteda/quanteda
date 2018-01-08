@@ -1,28 +1,3 @@
-### IN THIS FILE, THE MAIN METHOD and OBJECTS are S4.
-### This allows multiple dispatch, esp. for the S4 dfms, but also still
-### works on the S3 old-style matrix-based dfm.  
-###
-### textmodel creates S4 objects now inheriting from textmodel_fitted-class
-###
-### the print, summary, predict methods are STILL S3 -- which is why they 
-### do not dispatch properly unless print() (e.g.) is called specifically, 
-### but this could be easily solved by writing appropriate methods in S4.
-
-#' @rdname textmodel-internal
-#' @export
-setClass("textmodel_wordscores",
-         slots = c(scale = "character", Sw = "numeric"),
-         prototype = list(scale = "linear"),
-         contains = "textmodel_fitted")
-
-# #' @rdname textmodel-internal
-# #' @export
-# setClass("textmodel_wordscores_predicted",
-#          slots = c(newdata = "dfm", rescaling = "character", level = "numeric",
-#                    textscores = "textmodel_wordscore_predictions"),
-#          prototype = list(newdata = NULL, rescaling = "none", level = 0.95),
-#          contains = "textmodel_wordscores")
-
 
 #' Wordscores text model
 #' 
@@ -40,7 +15,7 @@ setClass("textmodel_wordscores",
 #'   \code{textmodel_wordscores} containing the following slots:
 #' @slot scale \code{linear} or \code{logit}, according to the value of 
 #'   \code{scale}
-#' @slot Sw the scores computed for each word in the training set
+#' @slot sw the scores computed for each word in the training set
 #' @slot x  the dfm on which the wordscores model was called
 #' @slot y  the reference scores
 #' @slot call  the function call that fitted the model
@@ -53,7 +28,9 @@ setClass("textmodel_wordscores",
 #' ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
 #' 
 #' summary(ws)
+#' coef(ws)
 #' predict(ws)
+#' predict(ws, se.fit = TRUE)
 #' predict(ws, rescaling = "mv")
 #' predict(ws, rescaling = "lbg")
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
@@ -120,8 +97,15 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
     Sw <- as.vector(Sw[which(colSums(x) > 0)])  # remove words with zero counts in ref set
     names(Sw) <- namesTemp[which(colSums(x) > 0)]
     
-    new("textmodel_wordscores", Sw = Sw, x = data, y = scores, 
-        method = "wordscores", scale = scale, call = match.call())
+    result <- list(
+        sw = Sw,
+        x = data,
+        y = scores,
+        scale = scale,
+        call = match.call()
+    )
+    class(result) <- c("textmodel_wordscores", "list")
+    return(result)
 }
 
 
@@ -162,17 +146,17 @@ predict.textmodel_wordscores <- function(object,
     interval <- match.arg(interval)
     rescaling <- match.arg(rescaling)
         
-    if (!is.null(newdata))
+    if (!is.null(newdata)) {
         data <- as.dfm(newdata)
-    else {
-        data <- as.dfm(object@x)
+    } else {
+        data <- as.dfm(object$x)
     }
     
     # Compute text scores as weighted mean of word scores in "virgin" document
-    data <- dfm_select(data, as.dfm(rbind(object@Sw)))
+    data <- dfm_select(data, as.dfm(rbind(object$sw)))
     # This is different from computing term weights on only the scorable words.
     # It take rowSums() only to generates named vector.
-    sw <- object@Sw[intersect(featnames(data), names(object@Sw))]
+    sw <- object$sw[intersect(featnames(data), names(object$sw))]
     raw <- rowSums(dfm_weight(data, "prop") %*% sw)
     
     # if (verbose)
@@ -180,11 +164,11 @@ predict.textmodel_wordscores <- function(object,
     #         length(sw), nfeat(data), 100 * length(sw) / nfeat(data)))
     
     if (rescaling == "mv") {
-        if (sum(!is.na(object@y)) > 2)
+        if (sum(!is.na(object$y)) > 2)
             warning("More than two reference scores found with MV rescaling; using only min, max values.")
-        result <- list(fit = mv_transform(raw, object@y, raw))
+        result <- list(fit = mv_transform(raw, object$y, raw))
     } else if (rescaling == "lbg") {
-        lbg_sdr <- stats::sd(object@y, na.rm = TRUE)
+        lbg_sdr <- stats::sd(object$y, na.rm = TRUE)
         lbg_sv <- mean(raw, na.rm = TRUE)
         lbg_sdv <- if (length(raw) < 2L) 0 else stats::sd(raw)
         lbg_mult <- if (lbg_sdr == 0) 0 else lbg_sdr / lbg_sdv
@@ -220,8 +204,8 @@ predict.textmodel_wordscores <- function(object,
         raw <- unname(raw)
         
         if (rescaling == "mv") {
-            result$lwr <- mv_transform(raw - z * raw_se, object@y, raw)
-            result$upr <- mv_transform(raw + z * raw_se, object@y, raw)
+            result$lwr <- mv_transform(raw - z * raw_se, object$y, raw)
+            result$upr <- mv_transform(raw + z * raw_se, object$y, raw)
         } else if (rescaling == "lbg") {
             if (lbg_mult == 0) {
                 result$lwr <- raw - z * raw_se
@@ -264,48 +248,38 @@ mv_transform <- function(x, y, z) {
 #' @method print textmodel_wordscores
 print.textmodel_wordscores <- function(x, digits = 2, ...) {
     cat("Fitted wordscores model:\n")
-    print(x@call)
+    print(x$call)
     cat("\n")
 }
-
-#' @rdname textmodel-internal
-#' @keywords internal
-#' @export
-setMethod("show", signature(object = "textmodel_wordscores"), 
-          function(object) print(object))
-
-# #' @rdname textmodel-internal
-# #' @keywords internal
-# #' @export
-# setMethod("show", signature(object = "textmodel_wordscores_predicted"), 
-#           function(object) print(object))
-
 
 #' @export
 #' @noRd
 #' @method summary textmodel_wordscores
 summary.textmodel_wordscores <- function(object, n = 30L, ...) {
 
-    stat <- data.frame(document = docnames(object@x),
-                       score = object@y,
-                       total = apply(object@x, 1, sum),
-                       min = apply(object@x, 1, min),
-                       max = apply(object@x, 1, max),
-                       mean = apply(object@x, 1, mean),
-                       median = apply(object@x, 1, stats::median),
+    stat <- data.frame(document = docnames(object$x),
+                       score = object$y,
+                       total = apply(object$x, 1, sum),
+                       min = apply(object$x, 1, min),
+                       max = apply(object$x, 1, max),
+                       mean = apply(object$x, 1, mean),
+                       median = apply(object$x, 1, stats::median),
                        stringsAsFactors = FALSE)
-    result <- list('call' = object@call,
-                   'reference document statistics' = new('textmodel_statistics', stat),
-                   'word scores' = new('textmodel_coefficients', head(object@Sw, n)))
-    new('textmodel_summary', result)
+    result <- list('call' = object$call,
+                   'reference document statistics' = as.textmodel_statistics(stat),
+                   'word scores' = as.textmodel_coefficients(head(object$sw, n)))
+    return(as.textmodel_summary(result))
+}
+
+
+#' @rdname textmodel-internal
+#' @export
+coef.textmodel_wordscore <- function(object, ...) {
+    list(beta = object$sw)
 }
 
 #' @rdname textmodel-internal
 #' @export
-setMethod("coef", signature(object = "textmodel_wordscores"),
-          function(object, ...) list(beta = object@Sw))
-
-#' @rdname textmodel-internal
-#' @export
-setMethod("coefficients", signature(object = "textmodel_wordscores"),
-          function(object, ...) coef(object, ...))
+coefficient.textmodel_wordscore <- function(object, ...) {
+    UseMethod('coef')   
+}

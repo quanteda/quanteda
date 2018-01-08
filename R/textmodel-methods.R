@@ -1,12 +1,3 @@
-setClass("textmodel_summary", contains = "list")
-setClass("textmodel_coefficients", contains = "numeric")
-setClass("textmodel_statistics", contains = "data.frame")
-
-#' @rdname textmodel-internal
-#' @keywords internal
-#' @export
-setMethod("show", signature(object = "textmodel_summary"), 
-       function(object) print(object))
 
 #' Impliments print methods for textmodel_summary 
 #'
@@ -21,6 +12,14 @@ print.textmodel_summary <- function(x, digits = max(3L, getOption("digits") - 3L
     }
 }
 
+#' Assign the textmodel_summary class to a list
+#' @param x a named list
+#' @keywords internal
+as.textmodel_summary <- function(x) {
+    class(x) <- c('textmodel_summary', 'list')
+    return(x)
+} 
+
 #' Impliments print methods for textmodel_features 
 #'
 #' @param x a textmodel_features object
@@ -32,6 +31,14 @@ print.textmodel_coefficients <- function(x, digits = max(3L, getOption("digits")
     NextMethod(digits = digits)
 }
 
+#' Assign the textmodel_coefficients class to a numeric vector
+#' @param x a numeric vector
+#' @keywords internal
+as.textmodel_coefficients <- function(x) {
+    class(x) <- c('textmodel_coefficients', 'numeric')
+    return(x)
+} 
+
 #' Impliments print methods for textmodel_statistics 
 #'
 #' @param x a textmodel_wordscore_statistics object
@@ -41,3 +48,10 @@ print.textmodel_statistics <- function(x, digits = max(3L, getOption("digits") -
     NextMethod(digits = digits, row.names = FALSE)
 }
 
+#' Assign the textmodel_coefficients class to a data.frame
+#' @param x a data.frame
+#' @keywords internal
+as.textmodel_statistics <- function(x) {
+    class(x) <- c('textmodel_statistics', 'data.frame')
+    return(x)
+} 

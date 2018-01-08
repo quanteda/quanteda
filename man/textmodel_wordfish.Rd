@@ -78,29 +78,31 @@ In the rare situation where a warning message of "The algorithm did not
   converge." shows up, removing some documents may work.
 }
 \examples{
-textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5))
+wf <- textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5))
+predict(wf)
+coef(wf)
 
 \dontrun{
-ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
-(wfm1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
-(wfm2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
+ie2010dwf <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
+(wf1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
+(wf2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
                              dispersion = "quasipoisson", dispersion_floor = 0))
-(wfm2b <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
+(wf2b <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
                              dispersion = "quasipoisson", dispersion_floor = .5))
-plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
+plot(wf2a$phi, wf2b$phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
      xlim = c(0, 1.0), ylim = c(0, 1.0))
-plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
+plot(wf2a$phi, wf2b$phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
      xlim = c(0, 1.0), ylim = c(0, 1.0), type = "n")
-underdispersedTerms <- sample(which(wfm2a@phi < 1.0), 5)
+underdispersedTerms <- sample(which(wf2a$phi < 1.0), 5)
 which(featnames(ie2010dfm) \%in\% names(topfeatures(ie2010dfm, 20)))
-text(wfm2a@phi, wfm2b@phi, wfm2a@features, 
+text(wf2a$phi, wf2b$phi, wf2a$features, 
      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "grey90")
-text(wfm2a@phi[underdispersedTerms], wfm2b@phi[underdispersedTerms], 
-     wfm2a@features[underdispersedTerms], 
+text(wf2a$phi['underdispersedTerms'], wf2b$phi['underdispersedTerms'], 
+     wf2a$features['underdispersedTerms'], 
      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "black")
 if (require(austin)) {
-    wfmodelAustin <- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
-    cor(wfm1@theta, wfmodelAustin$theta)
+    wf_austin <- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
+    cor(wf1$theta, wf_austin$theta)
 }}
 }
 \references{
