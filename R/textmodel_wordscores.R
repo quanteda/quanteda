@@ -217,7 +217,8 @@ predict.textmodel_wordscores <- function(object,
             result$lwr <- raw - z * raw_se
             result$upr <- raw + z * raw_se
         }
-        return(as.matrix(as.data.frame(result)))
+        result <- as.data.frame(result, row.names = names(raw), check.names = FALSE)
+        return(as.matrix(result))
         
     }
 }

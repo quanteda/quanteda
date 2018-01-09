@@ -226,19 +226,24 @@ predict.textmodel_wordfish <- function(object,
     if (!is.null(newdata))
         stop('Prediction by newdata is not yet implimented\n')
     
-    z <- stats::qnorm(1 - (1 - level) / 2)
-    result <- list(fit = object$theta)
+    fit <- object$theta
+    names(fit) <- object$docs
+    fit_se <- object$se.theta
+    
+    result <- list(fit = fit)
     
     if (!se.fit && interval == 'none')
         return(result[[1]])
     
     if (interval == 'none') {
-        result$se <- object$se.theta
+        result$se <- fit_se
         return(result)
     } else {
-        result$lwr <- object$theta - z * object$se.theta
-        result$upr <- object$theta + z * object$se.theta
-        return(as.matrix(as.data.frame(result)))
+        z <- stats::qnorm(1 - (1 - level) / 2)
+        result$lwr <- fit - z * fit_se
+        result$upr <- fit + z * fit_se
+        result <- as.data.frame(result, row.names = names(fit), check.names = FALSE)
+        return(as.matrix(result))
     }
 }
 
