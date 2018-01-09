@@ -29,6 +29,7 @@
 #'   multi-word patterns is to apply \code{\link{tokens_lookup}} to the tokens,
 #'   and then construct the dfm.
 #' @keywords dfm
+#' @seealso dfm_replace
 #' @examples
 #' myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
 #'                           opposition = c("Opposition", "reject", "notincorpus"),
