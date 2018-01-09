@@ -93,6 +93,7 @@ Collate:
     'dfm_compress.R'
     'dfm_group.R'
     'dfm_lookup.R'
+    'dfm_replace.R'
     'dfm_sample.R'
     'dfm_select.R'
     'dfm_sort.R'
