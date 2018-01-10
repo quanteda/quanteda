@@ -42,12 +42,10 @@
 #' ## wordscores
 #' refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 #' ws <- textmodel_wordscores(ie_dfm, refscores, smooth = 1)
-#' pred <- predict(ws)
 #' # plot estimated word positions
-#' textplot_scale1d(pred, margin = "features", 
-#'                  highlighted = c("minister", "have", "our", "budget"))
+#' textplot_scale1d(ws, highlighted = c("minister", "have", "our", "budget"))
 #' # plot estimated document positions
-#' textplot_scale1d(pred, margin = "documents",
+#' textplot_scale1d(predict(ws), 
 #'                  doclabels = doclab,
 #'                  groups = docvars(data_corpus_irishbudget2010, "party"))
 #'
@@ -94,28 +92,28 @@ textplot_scale1d.default <-  function(x,
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
 #' @importFrom ggplot2 facet_grid element_line
 #' @export
-textplot_scale1d.textmodel_wordfish_fitted <-  function(x, 
-                                                        margin = c("documents", "features"), 
-                                                        doclabels = NULL, 
-                                                        sort = TRUE, 
-                                                        groups = NULL, 
-                                                        highlighted = NULL, 
-                                                        alpha = 0.7, 
-                                                        highlighted_color = "black") {
+textplot_scale1d.textmodel_wordfish <-  function(x, 
+                                                 margin = c("documents", "features"), 
+                                                 doclabels = NULL, 
+                                                 sort = TRUE, 
+                                                 groups = NULL, 
+                                                 highlighted = NULL, 
+                                                 alpha = 0.7, 
+                                                 highlighted_color = "black") {
     margin <- match.arg(margin)
-    if (is.null(doclabels)) doclabels <- x@docs
+    if (is.null(doclabels)) doclabels <- x$docs
     
     if (margin == "documents") {
-        p <- textplot_scale1d_documents(coef(x)$coef_document, 
-                                        coef(x)$coef_document_se, 
+        p <- textplot_scale1d_documents(x$theta,
+                                        x$se.theta, 
                                         doclabels = doclabels, 
                                         sort = sort, 
                                         groups = groups) +
             ylab("Estimated theta")
     } else if (margin == "features") {
-        p <- textplot_scale1d_features(coef(x)$coef_feature, 
-                                       weight = coef(x)$coef_feature_offset, 
-                                       featlabels = x@features,
+        p <- textplot_scale1d_features(x$beta, 
+                                       weight = x$psi, 
+                                       featlabels = x$features,
                                        highlighted = highlighted, alpha = alpha,
                                        highlighted_color = highlighted_color) +
             xlab("Estimated beta") +
@@ -123,42 +121,61 @@ textplot_scale1d.textmodel_wordfish_fitted <-  function(x,
     } 
     apply_theme(p)
 } 
-
      
 #' @importFrom stats reorder aggregate
 #' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
 #' @importFrom ggplot2 facet_grid element_line
+#' @method textplot_scale1d predict.textmodel_wordscores
 #' @export
-textplot_scale1d.textmodel_wordscores_predicted <- function(x, 
-                                                            margin = c("documents", "features"), 
-                                                            doclabels = NULL, 
-                                                            sort = TRUE, 
-                                                            groups = NULL, 
-                                                            highlighted = NULL, 
-                                                            alpha = 0.7, 
-                                                            highlighted_color = "black") {
+textplot_scale1d.predict.textmodel_wordscores <- function(x, 
+                                                          margin = c("documents", "features"), 
+                                                          doclabels = NULL, 
+                                                          sort = TRUE, 
+                                                          groups = NULL, 
+                                                          highlighted = NULL, 
+                                                          alpha = 0.7, 
+                                                          highlighted_color = "black") {
     margin <- match.arg(margin)
-    if (is.null(doclabels)) doclabels <- docnames(x@newdata)
+    if (is.null(doclabels)) doclabels <- get_docnames(x)
     
     if (margin == "documents") {
-        p <- textplot_scale1d_documents(coef(x)$coef_document, 
-                                        coef(x)$coef_document_se, 
+        p <- textplot_scale1d_documents(get_fitted(x), 
+                                        get_sefit(x), 
                                         doclabels = doclabels, 
-                                        sort = sort, groups = groups) +
-            
+                                        sort = sort, 
+                                        groups = groups) +
               ylab("Document position")
         
     } else if (margin == "features") {
-        p <- textplot_scale1d_features(x@Sw, 
-                                       weight = log(colSums(x@x[, names(x@Sw)])),
-                                       featlabels = featnames(x@x[, names(x@Sw)]),
+        stop("This margin can only be run on a fitted wordscores object.")
+    } 
+    apply_theme(p)
+}
+
+
+#' @export
+textplot_scale1d.textmodel_wordscores <- function(x, 
+                                                  margin = c("features", "documents"), 
+                                                  doclabels = NULL, 
+                                                  sort = TRUE, 
+                                                  groups = NULL, 
+                                                  highlighted = NULL, 
+                                                  alpha = 0.7, 
+                                                  highlighted_color = "black") {
+    margin <- match.arg(margin)
+    if (margin == "documents") {
+        stop("This margin can only be run on a predicted wordscores object.")
+    } else if (margin == "features") {
+        p <- textplot_scale1d_features(x$wordscores, 
+                                       weight = log(colSums(x$x[, names(x$wordscores)])),
+                                       featlabels = names(x$wordscores),
                                        highlighted = highlighted, alpha = alpha,
                                        highlighted_color = highlighted_color) +
             xlab("Word score") +
             ylab("log(term frequency)") 
-    } 
-    apply_theme(p)
+        apply_theme(p)
+    }
 }
 
 #' @importFrom stats reorder aggregate
@@ -272,4 +289,38 @@ apply_theme <- function(p) {
               axis.ticks.y = element_blank(), 
               # panel.spacing = grid::unit(0.1, "lines"),
               panel.grid.major.y = element_line(linetype = "dotted"))
+}
+
+
+# internal functions --------
+
+get_docnames <- function(x) {
+    if (is.null(dim(x))) {
+        dnames <- names(x)
+    } else {
+        if (is.list(x)) 
+            dnames <- row.names(x$fit)
+        else
+            dnames <- row.names(x)
+    }
+    dnames
+}
+
+get_fitted <- function(x) {
+    if (is.list(x)) x <- x$fit
+    if (is.vector(x)) 
+        fit <- x
+    else
+        fit <- x[, "fit"]
+    fit
+}
+
+get_sefit <- function(x) {
+    # return point estimates if there is no se.fit or CIs
+    if (is.vector(x)) return(get_fitted(x))
+    if (is.list(x) && !is.null(x$se.fit)) {
+        return(x$se.fit)
+    } else {
+        return((x[, "fit"] - x[, "lwr"]) / 1.96)  
+    }
 }

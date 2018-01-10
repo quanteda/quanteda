@@ -140,7 +140,7 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 predict.textmodel_wordscores <- function(object, 
                                          newdata = NULL, 
                                          se.fit = FALSE,
-                                         interval = c("none", "confidence"), level = 0.95, 
+                                         interval = c("confidence", "none"), level = 0.95, 
                                          rescaling = c("none", "lbg", "mv"),
                                          ...) {
     
@@ -228,7 +228,9 @@ predict.textmodel_wordscores <- function(object,
         }
     }
     
-    if (length(result) == 1) result[[1]] else result
+    if (length(result) == 1) result <- result[[1]]
+    class(result) <- c("predict.textmodel_wordscores", class(result))
+    result
 }
 
 # internal methods -----------

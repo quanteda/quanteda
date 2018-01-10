@@ -2,15 +2,15 @@ context("test textmodel_wordscores")
 
 test_that("test wordscores on LBG data", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
-    pr <- predict(ws, newdata = data_dfm_lbgexample[6, ])
+    pr <- predict(ws, newdata = data_dfm_lbgexample[6, ], interval = "none")
     expect_equal(pr, c(V1 = -.45), tolerance = .01)
     
-    pr2 <- predict(ws)
+    pr2 <- predict(ws, interval = "none")
     expect_is(pr2, "numeric")
     expect_equal(names(pr2), docnames(data_dfm_lbgexample))
     expect_equal(pr2["V1"], c(V1 = -.45), tolerance = .01)
     
-    pr3 <- predict(ws, se.fit = TRUE)
+    pr3 <- predict(ws, se.fit = TRUE, interval = "none")
     expect_is(pr3, "list")
     expect_equal(names(pr3), c("fit", "se.fit"))
     expect_equal(pr3$se.fit[6], 0.01, tolerance = .01)
@@ -24,13 +24,13 @@ test_that("a warning occurs for mv with multiple ref scores", {
 
 test_that("test wordscores on LBG data, MV rescaling", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
-    pr <- suppressWarnings(predict(ws, rescaling = "mv"))
+    pr <- suppressWarnings(predict(ws, rescaling = "mv", interval = "none"))
     expect_equal(pr["V1"], c(V1 = -.51), tolerance = .001)
 })
 
 test_that("test wordscores on LBG data, LBG rescaling", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
-    pr <- predict(ws, rescaling = "lbg")
+    pr <- predict(ws, rescaling = "lbg", interval = "none")
     expect_equal(pr["V1"], c(V1 = -.53), tolerance = .01)
 })
 
@@ -86,7 +86,7 @@ test_that("coef works for wordscores fitted", {
 
 test_that("coef and coefficients are the same", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
-    pr <- predict(ws)
+    pr <- predict(ws, interval = "none")
     expect_equal(coef(ws), coefficients(ws))
     # expect_equal(coef(pr), coefficients(pr))
 })
