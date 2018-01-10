@@ -244,7 +244,7 @@ predict.textmodel_wordfish <- function(object,
         result$fit[, "upr"] <- fit + z * object$se.theta
     }
     
-    result
+    if (length(result) == 1) result[[1]] else result
 }
 
 #' print method for a wordfish model

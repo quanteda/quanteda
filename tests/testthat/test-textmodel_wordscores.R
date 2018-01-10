@@ -123,7 +123,7 @@ test_that("textmodel_wordscores print methods work", {
     sws <- summary(ws)
     expect_output(
         quanteda:::print.summary.textmodel(sws),
-        "^\\nCall:\\ntextmodel_wordscores\\.dfm\\(.*Reference Document Statistics:.*Wordscores:\\n\\(showing first 30 elements\\)"
+        "^\\nCall:\\ntextmodel_wordscores\\.dfm\\(.*Reference Document Statistics:.*Wordscores:\\n"
     )
 })
 
