@@ -79,3 +79,7 @@ tokens_lookup(toks, dict, levels = c(2,3))
 tokens_lookup(toks, dict, nomatch = "_UNMATCHED")
 
 }
+\seealso{
+tokens_replace
+}
+\keyword{tokens}

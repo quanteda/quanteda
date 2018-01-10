@@ -1,12 +1,12 @@
 ## Submission notes
 
-RESUBMISSION: Removes the "http://doi.org" from the doi in CITATION (as instructed 
-following earlier submission of v0.9.22).
+Fixes a problem noted by Brian Ripley on 2018-01-06 with regard to the order of the compiler flags in src/Makevars.
 
 ### Purpose
 
-- Bug fixes and stability improvements to existing 0.99.22 CRAN version.
-- Prepare for imminent transition soon to v1.0
+- Many additions, improvements to function consistency, stability enhancements, and bug fixes.
+- With the "1.0" designation, it means the package API will be stabilized for future development.
+- Fixes the src/Makevars problem notes above.
 
 
 ## Test environments
