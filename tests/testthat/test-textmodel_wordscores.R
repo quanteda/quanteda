@@ -130,5 +130,7 @@ test_that("textmodel_wordscores print methods work", {
 test_that("additional quanteda methods", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(-1.5, NA, NA, NA, .75, NA))
     expect_equal(ndoc(ws), 6)
-    expect_equal(nfeat(ws), 6)
+    expect_equal(nfeat(ws), 37)
+    expect_equal(docnames(ws), docnames(data_dfm_lbgexample))
+    expect_equal(featnames(ws), featnames(data_dfm_lbgexample))
 })
