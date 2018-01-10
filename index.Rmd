@@ -86,9 +86,9 @@ Once constructed, a **quanteda** dfm can be easily passed to other text-analysis
 
 ## System Requirements
 
-**quanteda** is cross-platform but we recommend MacOS or Linux as an operating system for their better handling of Unicode. RAM depends on the size and the structure of the textual data to analyze. Usually, a text file of 100MB on disk takes 500MB to 1GB on memory as a tokens object (short texts require more memory than long texts when the total numbers of words are the same). 
+**quanteda** is cross-platform but we recommend MacOS or Linux as an operating system for their better support for Unicode. RAM depends on the size and the structure of the textual data to analyze. Usually, a text file of 100MB on disk takes 500MB to 1GB on memory as a tokens object (short texts require more memory than long texts when the total numbers of words are the same). 
 
-|  | Minimum | Recommended |
+| | Minimum | Recommended |
 | --- | :---: | :---: |
 | OS | Windows/MacOS/Linux | MacOS/Linux |
 | CPU | 1 core | 4 cores or more |

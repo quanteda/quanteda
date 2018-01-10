@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Utility function to remove empty keys — remove_empty_keys • quanteda</title>
+<title>Replace features in dfm — dfm_replace • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -149,31 +149,68 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Utility function to remove empty keys</h1>
+    <h1>Replace features in dfm</h1>
     </div>
 
     
-    <p>Utility function to remove empty keys</p>
+    <p>Substitute features based on vectorized one-to-one matching for lemmatization
+or user-defined stemming.</p>
     
 
-    <pre class="usage"><span class='fu'>remove_empty_keys</span>(<span class='no'>dict</span>)</pre>
+    <pre class="usage"><span class='fu'>dfm_replace</span>(<span class='no'>x</span>, <span class='no'>pattern</span>, <span class='kw'>replacement</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dict</th>
-      <td><p>a flat or hierarchical dictionary</p></td>
+      <th>x</th>
+      <td><p><a href='dfm.html'>dfm</a> whose features will be replaced</p></td>
+    </tr>
+    <tr>
+      <th>pattern</th>
+      <td><p>a character vector or <a href='dictionary.html'>dictionary</a>.  See <a href='pattern.html'>pattern</a>
+for more details.</p></td>
+    </tr>
+    <tr>
+      <th>replacement</th>
+      <td><p>if <code>pattern</code> is a character vector, then
+<code>replacement</code> must be character vector of equal length, for a 1:1
+match.  If <code>pattern</code> is a <a href='dictionary.html'>dictionary</a>, then <code>replacement</code>
+should not be used.</p></td>
+    </tr>
+    <tr>
+      <th>case_insensitive</th>
+      <td><p>ignore case when matching, if <code>TRUE</code></p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>print status messages if <code>TRUE</code></p></td>
     </tr>
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>)
+
+<span class='co'># lemmatization</span>
+<span class='no'>infle</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"foci"</span>, <span class='st'>"focus"</span>, <span class='st'>"focused"</span>, <span class='st'>"focuses"</span>, <span class='st'>"focusing"</span>, <span class='st'>"focussed"</span>, <span class='st'>"focusses"</span>)
+<span class='no'>lemma</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='st'>"focus"</span>, <span class='fu'>length</span>(<span class='no'>infle</span>))
+<span class='no'>mydfm2</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_replace</span>(<span class='no'>mydfm</span>, <span class='no'>infle</span>, <span class='no'>lemma</span>)
+<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'><a href='dfm_select.html'>dfm_select</a></span>(<span class='no'>mydfm2</span>, <span class='no'>infle</span>))</div><div class='output co'>#&gt; [1] "focus"</div><div class='input'>
+<span class='co'># stemming</span>
+<span class='no'>feat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>mydfm</span>)
+<span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_wordstem.html'>char_wordstem</a></span>(<span class='no'>feat</span>, <span class='st'>"porter"</span>)
+<span class='no'>mydfm3</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_replace</span>(<span class='no'>mydfm</span>, <span class='no'>feat</span>, <span class='no'>stem</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>identical</span>(<span class='no'>mydfm3</span>, <span class='fu'><a href='tokens_wordstem.html'>dfm_wordstem</a></span>(<span class='no'>mydfm</span>, <span class='st'>"porter"</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

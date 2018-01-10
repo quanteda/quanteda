@@ -95,10 +95,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
+      <a href="../articles/pkgdown/examples/phrase.html">Multi-word expressions</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/plotting.html">Textual data visualization</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
@@ -192,14 +195,14 @@ or <code>"fixed"</code> for exact matching. See <a href='valuetype.html'>valuety
     <pre class="examples"><div class='input'><span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'>ifelse</span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&lt;</span> <span class='fl'>1945</span>, <span class='st'>"pre-war"</span>, <span class='st'>"post-war"</span>)
 <span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>period</span>)
 <span class='no'>keyness</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_keyness.html'>textstat_keyness</a></span>(<span class='no'>mydfm</span>)
-<span class='fu'>textstat_select</span>(<span class='no'>keyness</span>, <span class='st'>'america*'</span>)</div><div class='output co'>#&gt;          feature         chi2            p n_target n_reference
-#&gt; 3238 americanism    0.3721574 5.418307e-01        1           0
-#&gt; 7314  american's   -0.2648039 6.068389e-01        0           1
-#&gt; 8324    americas   -0.7944222 3.727663e-01        1           2
-#&gt; 9251    american  -19.0970791 1.242349e-05       94          69
-#&gt; 9342   america's  -94.0689468 0.000000e+00        0          35
-#&gt; 9349   americans -150.6479704 0.000000e+00        7          67
-#&gt; 9351     america -176.6114029 0.000000e+00       54         130</div><div class='input'>
+<span class='fu'>textstat_select</span>(<span class='no'>keyness</span>, <span class='st'>'america*'</span>)</div><div class='output co'>#&gt;          feature        chi2            p n_target n_reference
+#&gt; 7        america 176.6114029 0.000000e+00      130          54
+#&gt; 9      americans 150.6479704 0.000000e+00       67           7
+#&gt; 16     america's  94.0689468 0.000000e+00       35           0
+#&gt; 107     american  19.0970791 1.242349e-05       69          94
+#&gt; 1134    americas   0.7944222 3.727663e-01        2           1
+#&gt; 2290  american's   0.2648039 6.068389e-01        1           0
+#&gt; 6902 americanism  -0.3721574 5.418307e-01        0           1</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

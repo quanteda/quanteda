@@ -70,10 +70,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
+      <a href="../../../articles/pkgdown/examples/phrase.html">Multi-word expressions</a>
     </li>
     <li>
       <a href="../../../articles/pkgdown/examples/plotting.html">Textual data visualization</a>
+    </li>
+    <li>
+      <a href="../../../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
       <a href="../../../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
@@ -165,7 +168,7 @@ committee &lt;-<span class="st"> "外務"</span>
 
 <span class="co"># ファイルを結合して保存</span>
 file_all &lt;-<span class="st"> </span><span class="kw">list.files</span>(folder_download, <span class="dt">full =</span> <span class="ot">TRUE</span>, <span class="dt">pattern =</span> <span class="st">".rds"</span>)
-speech &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">as.list</span>(file_all), readRDS) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>()
+speech &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">as.list</span>(file_all), readRDS) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/bind">bind_rows</a></span>()
 <span class="kw">saveRDS</span>(speech, <span class="dt">file =</span> <span class="kw">paste0</span>(folder_download, <span class="st">"committee_speeches.rds"</span>))</code></pre></div>
 </div>
 <div id="create-corpus" class="section level4">

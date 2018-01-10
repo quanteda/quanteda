@@ -32,6 +32,10 @@ div#overview div.page-header h1 {
     color: dimgray;
 }
 
+div#system-requirements th {
+    text-align: center;
+}
+
 div.page-header h1 {
     font-size: 250%;
     color: dimgray;
