@@ -121,15 +121,12 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 #' @return 
 #'   \code{textmodel_wordscores()} returns a list that is also classed as a
 #'   \code{textmodel_wordscores} object, containing the following elements:
-#' \itemize{
-#' \item \code{wordscores} the scores computed for each word in the training set
-#' (\eqn{S_wd} from Laver, Benoit and Garry 2003)
-#' \item \code{scale} either \code{linear} or \code{logit}, according to the value of 
-#'   \code{scale}
-#' \item \code{x} the dfm on which the wordscores model was called
-#' \item \code{y} the vector of document reference values
-#' \item \code{call} the function call that fitted the model
-#' }
+#' @return \item{wordscores}{the scores computed for each word in the training set
+#' (\eqn{S_{wd}} from Laver, Benoit and Garry 2003)}
+#' @return \item{scale}{either \code{linear} or \code{logit}, according to the value of \code{scale}}
+#' @return \item{x}{the dfm on which the wordscores model was called}
+#' @return \item{y}{the vector of document reference values}
+#' @return \item{call}{the function call that fitted the model}
 #'
 #' \code{predict.textmodel_wordscores()} returns a named vector of predicted
 #' document scores ("text scores" \eqn{S_{vd}} in LBG 2003), or a named list if
@@ -260,9 +257,7 @@ mv_transform <- function(x, y, z) {
 print.textmodel_wordscores <- function(x, ...) {
     cat("\nCall:\n")
     print(x$call)
-    cat("\n")
-    
-    cat(
+    cat("\n",
         "Scale: ", x$scale, "; ", 
         length(na.omit(x$y)), " reference scores; ",
         length(na.omit(x$wordscores)), " scored features.",
@@ -288,7 +283,7 @@ summary.textmodel_wordscores <- function(object, n = 30L, ...) {
     )
     result <- list(
         'call' = object$call,
-        'reference.document.statistics' = as.textmodel_statistics(stat),
+        'reference.document.statistics' = as.statistics_textmodel(stat),
         'wordscores' = as.coef.textmodel(head(object$wordscores, n))
     )
     as.summary.textmodel(result)

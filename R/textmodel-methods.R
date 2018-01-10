@@ -9,12 +9,12 @@
 #' @method print summary.textmodel
 #' @export
 print.summary.textmodel <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
-    label <- stri_trans_totitle(stri_replace_all_fixed(names(x), '.', ' '))
-    cat("\n")
+    label <- stri_trans_totitle(stri_replace_all_fixed(names(x), ".", " "))
+    # print the formatted remaining elements
     for (i in seq_along(x)) {
+        cat("\n")
         cat(label[i], ':\n', sep = '')
         print(x[[i]], digits = digits)
-        cat("\n")
     }
 }
 
@@ -22,8 +22,8 @@ print.summary.textmodel <- function(x, digits = max(3L, getOption("digits") - 3L
 #' @param x a named list
 #' @keywords internal
 as.summary.textmodel <- function(x) {
-    class(x) <- c('summary.textmodel', 'list')
-    return(x)
+    class(x) <- c("summary.textmodel", "list")
+    x
 } 
 
 #' Print methods for textmodel features estimates
@@ -31,12 +31,14 @@ as.summary.textmodel <- function(x) {
 #' @param x a textmodel_features object
 #' @param digits minimal number of \emph{significant digits}, see
 #'   \code{\link{print.default}}
+#' @param n how many coefficients to print before truncating
 #' @param ... additional arguments not used
 #' @method print coef.textmodel
 #' @export
-print.coef.textmodel <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+print.coef.textmodel <- function(x, digits = max(3L, getOption("digits") - 3L), n = 30L, ...) {
     x <- unclass(x)
-    cat("(showing first", length(x), "elements)\n")
+    if (length(x) > n)
+        cat("(showing first", length(x), "elements)\n")
     NextMethod(digits = digits)
 }
 
@@ -44,7 +46,7 @@ print.coef.textmodel <- function(x, digits = max(3L, getOption("digits") - 3L), 
 #' @param x a numeric vector
 #' @keywords internal
 as.coef.textmodel <- function(x) {
-    class(x) <- c('coef.textmodel', 'numeric')
+    class(x) <- c("coef.textmodel", "numeric")
     return(x)
 } 
 
@@ -55,32 +57,32 @@ as.coef.textmodel <- function(x) {
 #'   \code{\link{print.default}}
 #' @param ... additional arguments not used
 #' @export
-print.textmodel_statistics <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+print.statistics_textmodel <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
     NextMethod(digits = digits, row.names = TRUE)
 }
 
 #' Assign the textmodel_coefficients class to a data.frame
 #' @param x a data.frame
 #' @keywords internal
-as.textmodel_statistics <- function(x) {
-    class(x) <- c('statistics.textmodel', 'data.frame')
-    return(x)
+as.statistics_textmodel <- function(x) {
+    class(x) <- c("statistics_textmodel", "data.frame")
+    x
 } 
 
 # extension of quanteda methods ---------------
 
-#' @noRd
 #' @export
-ndoc.textmodel <- function(x) ndoc(x$x)
+ndoc.textmodel <- function(x) 
+    ndoc(x$x)
 
-#' @noRd
 #' @export
-nfeat.textmodel <- function(x) nfeat(x$x)
+nfeat.textmodel <- function(x) 
+    nfeat(x$x)
 
-#' @noRd
 #' @export
-docnames.textmodel <- function(x) docnames(x$x)
+docnames.textmodel <- function(x) 
+    docnames(x$x)
 
-#' @noRd
 #' @export
-featnames.textmodel <- function(x) featnames(x$x)
+featnames.textmodel <- function(x) 
+    featnames(x$x)

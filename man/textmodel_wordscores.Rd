@@ -43,15 +43,17 @@ rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg
 \value{
 \code{textmodel_wordscores()} returns a list that is also classed as a
   \code{textmodel_wordscores} object, containing the following elements:
-\itemize{
-\item \code{wordscores} the scores computed for each word in the training set
-(\eqn{S_wd} from Laver, Benoit and Garry 2003)
-\item \code{scale} either \code{linear} or \code{logit}, according to the value of 
-  \code{scale}
-\item \code{x} the dfm on which the wordscores model was called
-\item \code{y} the vector of document reference values
-\item \code{call} the function call that fitted the model
-}
+
+\item{wordscores}{the scores computed for each word in the training set
+(\eqn{S_{wd}} from Laver, Benoit and Garry 2003)}
+
+\item{scale}{either \code{linear} or \code{logit}, according to the value of \code{scale}}
+
+\item{x}{the dfm on which the wordscores model was called}
+
+\item{y}{the vector of document reference values}
+
+\item{call}{the function call that fitted the model}
 
 \code{predict.textmodel_wordscores()} returns a named vector of predicted
 document scores ("text scores" \eqn{S_{vd}} in LBG 2003), or a named list if

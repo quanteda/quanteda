@@ -1,35 +1,37 @@
+# main methods --------------
+
 #' Naive Bayes classifier for texts
 #' 
 #' Fit a multinomial or Bernoulli Naive Bayes model, given a dfm and some
 #' training labels.
-#' @param x the \link{dfm} on which the model will be fit.  Does not need to contain 
-#'   only the training documents.
+#' @param x the \link{dfm} on which the model will be fit.  Does not need to
+#'   contain only the training documents.
 #' @param y vector of training labels associated with each document identified 
 #'   in \code{train}.  (These will be converted to factors if not already 
 #'   factors.)
 #' @param smooth smoothing parameter for feature counts by class
 #' @param prior prior distribution on texts; one of \code{"uniform"},
 #'   \code{"docfreq"}, or \code{"termfreq"}.  See Prior Distributions below.
-#' @param distribution count model for text features, can be \code{multinomial} 
-#'   or \code{Bernoulli}.  To fit a "binary multinomial" model, first convert the 
-#'   dfm to a binary matrix using \code{\link{tf}(x, "boolean")}.
-#' @param ... more arguments passed through
-#' @return A list of return values, consisting of (where \eqn{I} is the total
-#'   number of documents, \eqn{J} is the total number of features, and \eqn{k}
-#'   is the total number of training classes):
+#' @param distribution count model for text features, can be \code{multinomial}
+#'   or \code{Bernoulli}.  To fit a "binary multinomial" model, first convert
+#'   the dfm to a binary matrix using \code{\link{tf}(x, "boolean")}.
+#' @return 
+#' \code{textmodel_nb()} returns a list consisting of the following (where
+#' \eqn{I} is the total number of documents, \eqn{J} is the total number of
+#' features, and \eqn{k} is the total number of training classes):
 #' @return \item{call}{original function call}
-#' @return \item{PwGc}{\eqn{k \times J}; probability of the word given the class (empirical 
-#'   likelihood)}
-#' @return \item{Pc}{\eqn{k}-length named numeric vector of class prior probabilities}
-#' @return \item{PcGw}{\eqn{k \times J}; posterior class probability given the word}
+#' @return \item{PwGc}{\eqn{k \times J}; probability of the word given the class
+#'   (empirical likelihood)}
+#' @return \item{Pc}{\eqn{k}-length named numeric vector of class prior
+#'   probabilities}
+#' @return \item{PcGw}{\eqn{k \times J}; posterior class probability given the
+#'   word}
 #' @return \item{Pw}{\eqn{J \times 1}; baseline probability of the word}
-#' @return \item{data}{list consisting of the \eqn{I \times J} training dfm
-#'   \code{x}, and the \eqn{I}-length \code{y} training class vector}
+#' @return \item{x}{the \eqn{I \times J} training dfm \code{x}}
+#' @return \item{y}{the \eqn{I}-length \code{y} training class vector}
 #' @return \item{distribution}{the distribution argument}
 #' @return \item{prior}{the prior argument}
 #' @return \item{smooth}{the value of the smoothing parameter}
-#' @section Predict Methods: A \code{predict} method is also available for a 
-#'   fitted Naive Bayes object, see \code{\link{predict.textmodel_nb}}.
 #' @section Prior distributions:
 #' 
 #' Prior distributions refer to the prior probabilities assigned to the training
@@ -57,7 +59,8 @@
 #'   to Information Retrieval. Cambridge University Press.
 #'   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
 #'   
-#'   Jurafsky, Daniel and James H. Martin. (2016) \emph{Speech and Language Processing.}  Draft of November 7, 2016.
+#'   Jurafsky, Daniel and James H. Martin. (2016) \emph{Speech and Language
+#'   Processing.}  Draft of November 7, 2016.
 #'   \url{https://web.stanford.edu/~jurafsky/slp3/6.pdf}
 #' @author Kenneth Benoit
 #' @examples
@@ -86,23 +89,21 @@
 #' @export
 textmodel_nb <- function(x, y, smooth = 1, 
                          prior = c("uniform", "docfreq", "termfreq"), 
-                         distribution = c("multinomial", "Bernoulli"), ...) {
+                         distribution = c("multinomial", "Bernoulli")) {
     UseMethod("textmodel_nb")
 }
 
 #' @export
 textmodel_nb.default <- function(x, y, smooth = 1, 
                                  prior = c("uniform", "docfreq", "termfreq"), 
-                                 distribution = c("multinomial", "Bernoulli"), ...) {
+                                 distribution = c("multinomial", "Bernoulli")) {
     stop(friendly_class_undefined_message(class(x), "textmodel_nb"))
 }    
     
 #' @export
 textmodel_nb.dfm <- function(x, y, smooth = 1, 
                              prior = c("uniform", "docfreq", "termfreq"), 
-                             distribution = c("multinomial", "Bernoulli"), ...) {
-    
-    # TODO: probably, Bernoulli needs to be lowercased KW
+                             distribution = c("multinomial", "Bernoulli")) {
     
     x <- as.dfm(x)
     prior <- match.arg(prior)
@@ -152,7 +153,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     d <- dfm_compress(x.trset, margin = "both")
 
     if (distribution == "multinomial") {
-        PwGc <- rowNorm(d + smooth)
+        PwGc <- dfm_smooth(d, smooth) %>% dfm_weight(scheme = "prop")
     } else if (distribution == "Bernoulli") {
         # if (smooth != 1) {
         #     warning("smoothing of 0 makes little sense for Bernoulli NB", 
@@ -164,56 +165,57 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
         PwGc <- as(PwGc, "dgeMatrix")
     }
     
-    
     # order Pc so that these are the same order as rows of PwGc
     Pc <- Pc[rownames(PwGc)]
 
     ## posterior: class x words, cols sum to 1
     PcGw <- colNorm(PwGc * base::outer(Pc, rep(1, ncol(PwGc))))  
+
+    # rename row dimensions
+    names(dimnames(PcGw))[1] <- names(dimnames(PwGc))[1] <- "classes"
     
     ## P(w)
     Pw <- t(PwGc) %*% as.numeric(Pc)
-    
+
     result <- list(
         call = call,
         PwGc = as.matrix(PwGc),
         Pc = Pc,
         PcGw = as.matrix(PcGw),
         Pw = as.matrix(Pw),
-        data = list(x = x, y = y),
+        x = x, y = y,
         distribution = distribution,
         prior = prior,
         smooth = smooth
     )
-    class(result) <- c("textmodel", "textmodel_nb", "list")
-    return(result)
+    class(result) <- c("textmodel_nb", "textmodel", "list")
+    result
 }
 
-#' Prediction method for Naive Bayes classifier objects
-#'
-#' implements class predictions using trained Naive Bayes examples 
+#' \code{predict.textmodel_nb()} implements class predictions from a fitted Naive Bayes model.
+#' using trained Naive Bayes examples 
+#' @rdname textmodel_nb
 #' @param object a fitted Naive Bayes textmodel 
 #' @param newdata dfm on which prediction should be made
 #' @param ... not used
-#' @return A list of two data frames, named \code{docs} and \code{words}
-#'   corresponding to word- and document-level predicted quantities
+#' @return \code{predict.textmodel_nb} returns a list of two data frames, named
+#'   \code{docs} and \code{words} corresponding to word- and document-level
+#'   predicted quantities
 #' @return \item{docs}{data frame with document-level predictive quantities:
 #'   nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc,
 #'   bayesscore.doc, posterior.diff, posterior.logdiff.  Note that the diff
 #'   quantities are currently implemented only for two-class solutions.}
 #' @return \item{words}{data-frame with word-level predictive quantities: 
 #' wordscore.word, bayesscore.word}
-#' @author Kenneth Benoit
-#' @rdname predict.textmodel
 #' @examples 
+#' # application to LBG (2003) example data
 #' (nbfit <- textmodel_nb(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
 #' (nbpred <- predict(nbfit))
-#' @keywords internal textmodel
 #' @export
 predict.textmodel_nb <- function(object, newdata = NULL, ...) {
     
     call <- match.call()
-    if (is.null(newdata)) newdata <- as.dfm(object$data$x)
+    if (is.null(newdata)) newdata <- as.dfm(object$x)
 
     # remove any words for which zero probabilities exist in training set --
     # would happen if smooth=0
@@ -223,7 +225,7 @@ predict.textmodel_nb <- function(object, newdata = NULL, ...) {
         object$PwGc <- object$PwGc[-notinref]
         object$PcGw <- object$PcGw[-notinref]
         object$Pw   <- object$Pw[-notinref]
-        object$data$x <- object$data$x[, -notinref]
+        object$x <- object$x[, -notinref]
         newdata <- newdata[, -notinref] 
     }
 
@@ -289,36 +291,44 @@ predict.textmodel_nb <- function(object, newdata = NULL, ...) {
         classlabels = names(object$Pc),
         call = call
     )
-    class(result) <- c("textmodel_nb_predicted", "list")
-    return(result)
+    class(result) <- c("predict.textmodel_nb", "list")
+    result
 }
+
+# redefined generic methods -----------
 
 # @rdname print.textmodel
 #' @export
 #' @method print textmodel_nb
 print.textmodel_nb <- function(x, ...) {
-    cat("Fitted Naive Bayes model:\n")
+    cat("\nCall:\n")
     print(x$call)
-    cat("\n")
+    cat("\n",
+        "Distribution: ", x$distribution, "; ", 
+        "prior: ", x$prior, "; ",
+        "smoothing value: ", x$smooth, "\n",
+        length(na.omit(x$y)), " training documents and ",
+        nfeat(x), " fitted features.",
+        "\n",
+        sep = "")
 }
 
 #' @export
 #' @method summary textmodel_nb
 summary.textmodel_nb <- function(object, n = 30, ...) {
-    
     result <- list(
         'call' = object$call,
-        'class.priors' = as.textmodel_coefficients(object$Pc),
-        'likelihoods' = as.textmodel_statistics(head(as.data.frame(object$PwGc), n)),
-        'class.posteriors' = as.textmodel_statistics(head(as.data.frame(object$PcGw), n))
+        'class.priors' = as.coef.textmodel(object$Pc),
+        'likelihoods' = as.statistics_textmodel(head(as.data.frame(object$PwGc), n)),
+        'class.posteriors' = as.statistics_textmodel(head(as.data.frame(object$PcGw), n))
     )
-    return(as.textmodel_summary(result))
+    as.summary.textmodel(result)
 }
 
 
 #' @export
-#' @method print textmodel_nb_predicted
-print.textmodel_nb_predicted <- function(x, n = 30L, digits = 4, ...) {
+#' @method print predict.textmodel_nb
+print.predict.textmodel_nb <- function(x, n = 30L, digits = 4, ...) {
     
     cat("Predicted textmodel of type: Naive Bayes\n")
     # cat("Call:\n\t")
@@ -347,13 +357,6 @@ print.textmodel_nb_predicted <- function(x, n = 30L, digits = 4, ...) {
 
 
 ## some helper functions 
-
-# TODO: outer generates dense matrix. Upgrade these to move to utils.R or delete KW
-
-## make rows add up to one
-rowNorm <- function(x) {
-    x / outer(rowSums(x), rep(1, ncol(x)))
-}
 
 ## make cols add up to one
 colNorm <- function(x) {

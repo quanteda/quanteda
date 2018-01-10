@@ -5,13 +5,15 @@
 \title{Print methods for textmodel features estimates}
 \usage{
 \method{print}{coef.textmodel}(x, digits = max(3L, getOption("digits") - 3L),
-  ...)
+  n = 30L, ...)
 }
 \arguments{
 \item{x}{a textmodel_features object}
 
 \item{digits}{minimal number of \emph{significant digits}, see
 \code{\link{print.default}}}
+
+\item{n}{how many coefficients to print before truncating}
 
 \item{...}{additional arguments not used}
 }
