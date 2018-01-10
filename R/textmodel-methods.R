@@ -50,12 +50,14 @@ as.coef.textmodel <- function(x) {
     return(x)
 } 
 
-#' Impliments print methods for textmodel_statistics 
+#' Implements print methods for textmodel_statistics 
 #'
 #' @param x a textmodel_wordscore_statistics object
 #' @param digits minimal number of \emph{significant digits}, see
 #'   \code{\link{print.default}}
-#' @param ... additional arguments not used
+#' @param ...
+#' @method print statistics_textmodel
+#' @keywords internal textmodel
 #' @export
 print.statistics_textmodel <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
     NextMethod(digits = digits, row.names = TRUE)

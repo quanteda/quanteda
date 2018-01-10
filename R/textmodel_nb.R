@@ -356,7 +356,7 @@ print.predict.textmodel_nb <- function(x, n = 30L, digits = 4, ...) {
 
 
 
-## some helper functions 
+## some helper functions ---------
 
 ## make cols add up to one
 colNorm <- function(x) {
