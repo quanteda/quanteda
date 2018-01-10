@@ -1,3 +1,4 @@
+# generic methods -----------
 
 #' print method for summary.textmodel
 #'
@@ -65,3 +66,21 @@ as.textmodel_statistics <- function(x) {
     class(x) <- c('statistics.textmodel', 'data.frame')
     return(x)
 } 
+
+# extension of quanteda methods ---------------
+
+#' @noRd
+#' @export
+ndoc.textmodel <- function(x) ndoc(x$x)
+
+#' @noRd
+#' @export
+nfeat.textmodel <- function(x) nfeat(x$x)
+
+#' @noRd
+#' @export
+docnames.textmodel <- function(x) docnames(x$x)
+
+#' @noRd
+#' @export
+featnames.textmodel <- function(x) featnames(x$x)

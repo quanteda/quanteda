@@ -1,3 +1,5 @@
+# main methods --------------
+
 #' Wordscores text model
 #' 
 #' \code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003)
@@ -102,7 +104,7 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
         scale = scale,
         call = match.call()
     )
-    class(result) <- c("textmodel_wordscores", "list")
+    class(result) <- c("textmodel_wordscores", "textmodel", "list")
     result
 }
 

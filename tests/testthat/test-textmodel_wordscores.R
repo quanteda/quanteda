@@ -125,7 +125,10 @@ test_that("textmodel_wordscores print methods work", {
         quanteda:::print.summary.textmodel(sws),
         "^\\nCall:\\ntextmodel_wordscores\\.dfm\\(.*Reference Document Statistics:.*Wordscores:\\n\\(showing first 30 elements\\)"
     )
-
-    
 })
 
+test_that("additional quanteda methods", {
+    ws <- textmodel_wordscores(data_dfm_lbgexample, c(-1.5, NA, NA, NA, .75, NA))
+    expect_equal(ndoc(ws), 6)
+    expect_equal(nfeat(ws), 6)
+})
