@@ -83,3 +83,14 @@ Once constructed, a **quanteda** dfm can be easily passed to other text-analysis
 *  document classification methods, using (for example) Naive Bayes, k-nearest neighbour, or Support Vector Machines
 *  more sophisticated machine learning through a variety of other packages that take matrix or matrix-like inputs.
 *  graphical analysis, including word clouds and strip plots for selected themes or words.
+
+## System Requirements
+
+**quanteda** is cross-platform but we recommend MacOS or Linux as an operating system for their better handling of Unicode. RAM depends on the size and the structure of the textual data to analyze. Usually, a text file of 100MB on disk takes 500MB to 1GB on memory as a tokens object (short texts require more memory than long texts when the total numbers of words are the same). 
+
+|  | Minimum | Recommended |
+| --- | :---: | :---: |
+| OS | Windows/MacOS/Linux | MacOS/Linux |
+| CPU | 1 core | 4 cores or more |
+| RAM | 2GB | 8GB or more |
+| IDE | | R Studio |
