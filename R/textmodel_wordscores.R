@@ -117,7 +117,7 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 #'   (2007).  See References.
 #' @param interval type of confidence interval calculation
 #' @param level tolerance/confidence level for intervals
-#' @param ... additional arguments passed to other functions
+#' @param ... not used
 #' @return 
 #'   \code{textmodel_wordscores()} returns a list that is also classed as a
 #'   \code{textmodel_wordscores} object, containing the following elements:
@@ -144,8 +144,7 @@ predict.textmodel_wordscores <- function(object,
                                          rescaling = c("none", "lbg", "mv"),
                                          ...) {
     
-    #if (length(list(...)) > 0) 
-    #    stop("Arguments:", names(list(...)), "not supported.\n")
+    if (length(list(...)) > 0) stop("Arguments:", names(list(...)), "not supported.\n")
         
     interval <- match.arg(interval)
     rescaling <- match.arg(rescaling)

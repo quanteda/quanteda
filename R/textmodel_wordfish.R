@@ -1,3 +1,4 @@
+# main methods --------------
 
 #' Wordfish text model
 #' 
@@ -65,7 +66,7 @@
 #' coef(wf)
 #' predict(wf)
 #' predict(wf, se.fit = TRUE)
-#' predict(wf, interval = 'confidence')
+#' predict(wf, interval = "confidence")
 #' 
 #' \dontrun{
 #' ie2010dwf <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
@@ -210,57 +211,64 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2),
         se.theta = as.numeric(result$thetaSE) ,
         call = match.call()
     )
-    class(result) <- c('textmodel_wordfish', 'list')
-    return(result)
+    class(result) <- c("textmodel_wordfish", "textmodel", "list")
+    result
 }
 
+#' @rdname textmodel_wordfish
+#' @method predict textmodel_wordfish
+#' @param object a fitted wordfish model
+#' @inheritParams predict.textmodel_wordscores
+#' @return 
+#' \code{predict.textmodel_wordfish} returns estimated document scores and
+#' confidence intervals.  The method is provided for consistency with other
+#' \code{textmodel_*()} methods, but does not currently allow prediction on
+#' out-of-sample data.
 #' @export
 predict.textmodel_wordfish <- function(object, 
-                                       newdata = NULL, 
                                        se.fit = FALSE,
                                        interval = c("none", "confidence"), level = 0.95,
                                        ...) {
-    
+    if (length(list(...)) > 0) stop("Arguments:", names(list(...)), "not supported.\n")
     interval <- match.arg(interval)
-    
-    if (!is.null(newdata))
-        stop('Prediction by newdata is not yet implimented\n')
     
     fit <- object$theta
     names(fit) <- object$docs
-    fit_se <- object$se.theta
-    
     result <- list(fit = fit)
-    
-    if (!se.fit && interval == 'none')
-        return(result[[1]])
-    
-    if (interval == 'none') {
-        result$se <- fit_se
-        return(result)
-    } else {
+    if (se.fit) result$se.fit <- object$se.theta
+    if (interval == "confidence") {
+        result$fit <- matrix(result$fit, ncol = 3, nrow = length(result$fit),
+                             dimnames = list(names(result$fit), c("fit", "lwr", "upr")))
         z <- stats::qnorm(1 - (1 - level) / 2)
-        result$lwr <- fit - z * fit_se
-        result$upr <- fit + z * fit_se
-        result <- as.data.frame(result, row.names = names(fit), check.names = FALSE)
-        return(as.matrix(result))
+        result$fit[, "lwr"] <- fit - z * object$se.theta
+        result$fit[, "upr"] <- fit + z * object$se.theta
     }
+    
+    result
 }
 
-#' @rdname textmodel-internal
+#' print method for a wordfish model
 #' @param x for print method, the object to be printed
-#' @param n max rows of dfm to print
-#' @param ... additional arguments passed to \code{\link{print}}
-#' @export
+#' @param ... unused
 #' @method print textmodel_wordfish
+#' @keywords internal textmodel
+#' @export
 print.textmodel_wordfish <- function(x, ...) {
-    cat("Fitted wordfish model:\n")
+    cat("\nCall:\n")
     print(x$call)
-    cat("\n")
+    cat("\nWordfish model fitted to ",
+        ndoc(x), " documents and ",
+        nfeat(x), " features.\n",
+        sep = "")
 }
 
+#' summary method for textmodel_wordfish
+#' @param object a \link{textmodel_wordfish} object
+#' @param n maximum number of features to print in summary
+#' @param ... unused
 #' @export
 #' @method summary textmodel_wordfish
+#' @keywords internal textmodel
 summary.textmodel_wordfish <- function(object, n = 30, ...) {
     
     stat <- data.frame(
@@ -275,24 +283,36 @@ summary.textmodel_wordfish <- function(object, n = 30, ...) {
     names(coef) <- object$features
     result <- list(
         'call' = object$call,
-        'estimated.document.positions' = as.textmodel_statistics(stat),
-        'estimated.feature.scores' = as.textmodel_coefficients(head(coef, n))
+        'estimated.document.positions' = as.statistics_textmodel(stat),
+        'estimated.feature.scores' = as.statistics_textmodel(head(coef, n))
     )
-    return(as.textmodel_summary(result))
+    return(as.summary.textmodel(result))
 }
 
-#' @rdname textmodel-internal
+#' @rdname textmodel_wordfish
+#' @param margin which margin of parameter estimates to return: both (in a
+#'   list), or just document or feature parameters
+#' @method coef textmodel_wordfish
+#' @return \code{coef.textmodel_wordfish()} returns a matrix of estimated
+#'   parameters coefficients for the specified margin.
 #' @export
-coef.textmodel_wordfish <- function(object, ...) {
-    list(beta = object$beta,
-         theta = object$theta,
-         se.theta = object$se.theta,
-         psi = object$psi,
-         alpha = object$alpha)
+coef.textmodel_wordfish <- function(object, margin = c("both", "documents", "features"), ...) {
+    margin <- match.arg(margin)
+    result <- list(
+        documents = matrix(cbind(object$theta, object$alpha), ncol = 2,
+                           dimnames = list(docnames(object), c("theta", "alpha"))),
+        features = matrix(cbind(object$beta, object$psi), ncol = 2,
+                          dimnames = list(featnames(object), c("beta", "psi")))
+    )
+    if (margin == "documents") {
+        result[["documents"]] 
+    } else if (margin == "features") {
+        result[["features"]]
+    } else result
 }
 
-#' @rdname textmodel-internal
+#' @method coefficients textmodel_wordfish
 #' @export
-coefficient.textmodel_wordfish <- function(object, ...) {
-    UseMethod('coef')   
+coefficients.textmodel_wordfish <- function(object, ...) {
+    UseMethod("coef")   
 }

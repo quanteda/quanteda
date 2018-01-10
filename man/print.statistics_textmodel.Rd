@@ -2,9 +2,10 @@
 % Please edit documentation in R/textmodel-methods.R
 \name{print.statistics_textmodel}
 \alias{print.statistics_textmodel}
-\title{Impliments print methods for textmodel_statistics}
+\title{Implements print methods for textmodel_statistics}
 \usage{
-print.statistics_textmodel(x, digits = max(3L, getOption("digits") - 3L), ...)
+\method{print}{statistics_textmodel}(x, digits = max(3L, getOption("digits") -
+  3L), ...)
 }
 \arguments{
 \item{x}{a textmodel_wordscore_statistics object}
@@ -12,8 +13,10 @@ print.statistics_textmodel(x, digits = max(3L, getOption("digits") - 3L), ...)
 \item{digits}{minimal number of \emph{significant digits}, see
 \code{\link{print.default}}}
 
-\item{...}{additional arguments not used}
+\item{...}{further arguments passed to or from other methods}
 }
 \description{
-Impliments print methods for textmodel_statistics
+Implements print methods for textmodel_statistics
 }
+\keyword{internal}
+\keyword{textmodel}

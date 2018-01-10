@@ -55,7 +55,7 @@ as.coef.textmodel <- function(x) {
 #' @param x a textmodel_wordscore_statistics object
 #' @param digits minimal number of \emph{significant digits}, see
 #'   \code{\link{print.default}}
-#' @param ...
+#' @param ... further arguments passed to or from other methods
 #' @method print statistics_textmodel
 #' @keywords internal textmodel
 #' @export

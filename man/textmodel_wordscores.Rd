@@ -38,7 +38,7 @@ to match the LBG (2003) method.}
 rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg 
 (2007).  See References.}
 
-\item{...}{additional arguments passed to other functions}
+\item{...}{not used}
 }
 \value{
 \code{textmodel_wordscores()} returns a list that is also classed as a
