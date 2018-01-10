@@ -97,7 +97,7 @@ trainingset <- dfm(txt, tolower = FALSE)
 trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
  
 ## replicate IIR p261 prediction for test set (document 5)
-(nb <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
+nb <- textmodel_nb(trainingset, trainingclass, prior = "docfreq")
 summary(nb)
 predict(nb)
 
@@ -106,8 +106,8 @@ predict(textmodel_nb(trainingset, trainingclass, prior = "uniform"))
 predict(textmodel_nb(trainingset, trainingclass, prior = "termfreq"))
 
 ## replicate IIR p264 Bernoulli Naive Bayes
-(nb_bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
-                              prior = "docfreq"))
+nb_bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
+                        prior = "docfreq")
 predict(nb_bern, newdata = trainingset[5, ])
 }
 \references{

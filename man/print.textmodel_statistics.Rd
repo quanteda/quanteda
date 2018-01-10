@@ -9,6 +9,9 @@ print.textmodel_statistics(x, digits = max(3L, getOption("digits") - 3L), ...)
 \arguments{
 \item{x}{a textmodel_wordscore_statistics object}
 
+\item{digits}{minimal number of \emph{significant digits}, see
+\code{\link{print.default}}}
+
 \item{...}{additional arguments not used}
 }
 \description{

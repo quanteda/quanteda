@@ -1,8 +1,13 @@
-
 #' Wordscores text model
 #' 
-#' \code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003) 
-#' wordscores method for scaling of a single dimension.
+#' \code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003)
+#' "Wordscores" method for scaling texts on a single dimension, given a set of
+#' anchoring or \emph{reference} texts whose values are set through reference
+#' scores. This scale can be fitted in the linear space (as per LBG 2003) or in
+#' the logit space (as per Beauchamp 2012).  Estimates of \emph{virgin} or
+#' unknown texts are obtained using the \code{predict()} method to score
+#' documents from a fitted \code{textmodel_wordscores} object.
+#' 
 #' @param x the \link{dfm} on which the model will be trained
 #' @param y vector of training scores associated with each document 
 #'   in \code{x}
@@ -11,18 +16,11 @@
 #' @param scale scale on which to score the words; \code{"linear"} for classic 
 #'   LBG linear posterior weighted word class differences, or \code{"logit"}
 #'   for log posterior differences
-#' @details Fitting a \code{textmodel_wordscores} results in an object of class 
-#'   \code{textmodel_wordscores} containing the following slots:
-#' @slot scale \code{linear} or \code{logit}, according to the value of 
-#'   \code{scale}
-#' @slot sw the scores computed for each word in the training set
-#' @slot x  the dfm on which the wordscores model was called
-#' @slot y  the reference scores
-#' @slot call  the function call that fitted the model
-#' @slot method takes a value of \code{wordscores} for this model
-#' @section Predict Methods: A \code{predict} method is also available for a 
-#'   fitted wordscores object, see 
-#'   \code{\link{predict.textmodel_wordscores}}.
+#' @details The \code{textmodel_wordscores()} function and the associated
+#'   \code{predict()} method are designed to function in the same manner as
+#'   \code{\link[stats]{predict.lm}}.  \code{coef()} can also be used to extract
+#'   the word coefficients from the fitted \code{textmodel_wordscore} object,
+#'   and \code{summary()} will print a nice summary of the fitted object.
 #' @author Kenneth Benoit
 #' @examples 
 #' (ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
@@ -32,6 +30,8 @@
 #' predict(ws, rescaling = "mv")
 #' predict(ws, rescaling = "lbg")
 #' predict(ws, se.fit = TRUE)
+#' predict(ws, se.fit = TRUE, interval = "confidence")
+#' predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "mv")
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
 #'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Extracting Policy Positions From Political Texts Using Words as Data.}" 
 #'   \emph{American Political Science Review} 97(02): 311-31
@@ -41,7 +41,6 @@
 #'   
 #'   Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for 
 #'   Interpreting Political Text." \emph{Political Analysis} 16(1): 93-100.
-#' @seealso \code{\link{predict.textmodel_wordscores}}
 #' @export
 textmodel_wordscores <- function(x, y, scale = c("linear", "logit"), smooth = 0) {
     UseMethod("textmodel_wordscores")
@@ -76,10 +75,10 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
     tFwr <- t(Fwr)
     Pwr <- tFwr / rowSums(tFwr)    # posterior word probability Pwr
     # compute likelihoods "Pwr" Pr(this word | document)
-    if (scale=="linear") {
+    if (scale == "linear") {
         Sw <- Pwr %*% setscores
         Sw <- Sw[,1]
-    } else if (scale=="logit") {
+    } else if (scale == "logit") {
         if (length(setscores) > 2)
             stop("\nFor logit scale, only two training texts can be used.")
         if (!identical(c(-1,1), sort(setscores))) {
@@ -97,39 +96,46 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
     names(Sw) <- namesTemp[which(colSums(x) > 0)]
     
     result <- list(
-        sw = Sw,
+        wordscores = Sw,
         x = data,
         y = scores,
         scale = scale,
         call = match.call()
     )
     class(result) <- c("textmodel_wordscores", "list")
-    return(result)
+    result
 }
 
-
-#' @rdname textmodel-internal
+#' @rdname textmodel_wordscores
 #' @param object a fitted Wordscores textmodel
-#' @param level probability level for confidence interval width
+#' @param newdata dfm on which prediction should be made
+#' @param se.fit if \code{TRUE}, return standard errors as well
 #' @param rescaling \code{"none"} for "raw" scores; \code{"lbg"} for LBG (2003) 
 #'   rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg 
-#'   (2007).  (Note to authors: Provide full details here in documentation.)
-#' @param newdata dfm on which prediction should be made
+#'   (2007).  See References.
+#' @param interval type of confidence interval calculation
+#' @param level tolerance/confidence level for intervals
 #' @param ... additional arguments passed to other functions
-#' @param verbose If \code{TRUE}, output status messages
-#' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
-#' "Extracting Policy Positions From Political Texts Using Words as Data." 
-#' \emph{American Political Science Review} 97(02): 311-31.
-#' 
-#' Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for
-#' Interpreting Political Text." \emph{Political Analysis} 16(1): 93-100.
-#' @return The \code{predict} method for a wordscores fitted object returns a 
-#'   data.frame whose rows are the documents fitted and whose columns contain 
-#'   the scored textvalues, with the number of columns depending on the options 
-#'   called (for instance, how many rescaled scores, and whether standard errors
-#'   were requested.)  (Note: We may very well change this soon so that it is a 
-#'   list similar to other existing fitted objects.)
-#' @keywords internal textmodel
+#' @return 
+#'   \code{textmodel_wordscores()} returns a list that is also classed as a
+#'   \code{textmodel_wordscores} object, containing the following elements:
+#' \itemize{
+#' \item \code{wordscores} the scores computed for each word in the training set
+#' (\eqn{S_wd} from Laver, Benoit and Garry 2003)
+#' \item \code{scale} either \code{linear} or \code{logit}, according to the value of 
+#'   \code{scale}
+#' \item \code{x} the dfm on which the wordscores model was called
+#' \item \code{y} the vector of document reference values
+#' \item \code{call} the function call that fitted the model
+#' }
+#'
+#' \code{predict.textmodel_wordscores()} returns a named vector of predicted
+#' document scores ("text scores" \eqn{S_{vd}} in LBG 2003), or a named list if
+#' \code{se.fit = TRUE} consisting of the predicted scores (\code{$fit}) and the
+#' associated standard errors (\code{$se.fit}). When \code{interval =
+#' "confidence"}, the predicted values will be a matrix.  This behaviour matches
+#' that of \code{\link[stats]{predict.lm}}.
+#' @keywords textmodel
 #' @export
 #' @importFrom stats qnorm median sd
 predict.textmodel_wordscores <- function(object, 
@@ -152,10 +158,11 @@ predict.textmodel_wordscores <- function(object,
     }
     
     # Compute text scores as weighted mean of word scores in "virgin" document
-    data <- dfm_select(data, as.dfm(rbind(object$sw)))
+    sw <- coef(object)
+    data <- dfm_select(data, as.dfm(rbind(sw)))
     # This is different from computing term weights on only the scorable words.
     # It take rowSums() only to generates named vector.
-    sw <- object$sw[intersect(featnames(data), names(object$sw))]
+    sw <- sw[intersect(featnames(data), names(sw))]
     raw <- rowSums(dfm_weight(data, "prop") %*% sw)
     
     # if (verbose)
@@ -176,7 +183,7 @@ predict.textmodel_wordscores <- function(object,
         result <- list(fit = raw)
     }
     
-    if (!se.fit && interval == 'none')
+    if (!se.fit && interval == "none")
         return(result[[1]])
     
     # Compute standard error
@@ -185,44 +192,48 @@ predict.textmodel_wordscores <- function(object,
     for (i in seq_along(raw_se))
         raw_se[i] <- sqrt(sum(as.numeric(fwv[i,]) * (raw[i] - sw) ^ 2)) / sqrt(rowSums(data)[[i]])
     
-    if (interval == 'none') {
-        
+    if (se.fit) {
         if (rescaling == "mv") {
-            result$se <- rep(NA, length(raw)) # not sure how to compute se here KW
+            z <- stats::qnorm(1 - (1 - level) / 2)
+            upr <- mv_transform(raw + z * raw_se, object$y, raw)
+            result$se.fit <- (upr - result$fit) / z
         } else if (rescaling == "lbg") {
-            result$se <- raw_se
+            result$se.fit <- (raw_se - lbg_sv) * lbg_mult + lbg_sv
         } else {
-            result$se <- raw_se
+            result$se.fit <- raw_se
         }
-        return(result)
-        
-    } else {
+    } 
     
+    if (interval == "confidence") {
+        # make fit into a matrix
+        result$fit <- matrix(result$fit, ncol = 3, nrow = length(result$fit),
+                             dimnames = list(names(result$fit), c("fit", "lwr", "upr")))
+        
         # Compute confidence intervals
         z <- stats::qnorm(1 - (1 - level) / 2)
         raw <- unname(raw)
         
         if (rescaling == "mv") {
-            result$lwr <- mv_transform(raw - z * raw_se, object$y, raw)
-            result$upr <- mv_transform(raw + z * raw_se, object$y, raw)
+            result$fit[, "lwr"] <- mv_transform(raw - z * raw_se, object$y, raw)
+            result$fit[, "upr"] <- mv_transform(raw + z * raw_se, object$y, raw)
         } else if (rescaling == "lbg") {
             if (lbg_mult == 0) {
-                result$lwr <- raw - z * raw_se
-                result$upr <- raw + z * raw_se
+                result$fit[, "lwr"] <- raw - z * raw_se
+                result$fit[, "upr"] <- raw + z * raw_se
             } else {
-                result$lwr <- ((raw - z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
-                result$upr <- ((raw + z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
+                result$fit[, "lwr"] <- ((raw - z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
+                result$fit[, "upr"] <- ((raw + z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
             }
         } else {
-            result$lwr <- raw - z * raw_se
-            result$upr <- raw + z * raw_se
+            result$fit[, "lwr"] <- raw - z * raw_se
+            result$fit[, "upr"] <- raw + z * raw_se
         }
-        result <- as.data.frame(result, row.names = names(raw), check.names = FALSE)
-        return(as.matrix(result))
-        
     }
+    
+    if (length(result) == 1) result[[1]] else result
 }
 
+# internal methods -----------
 
 ## Rescale a vector so that the endpoints match scale.min, scale.max
 rescaler <- function(x, scale.min = -1, scale.max = 1) {
@@ -239,17 +250,22 @@ mv_transform <- function(x, y, z) {
     return((x - z[i_low]) * (max(y) - min(y)) / (z[i_high] - z[i_low]) + min(y))
 }
 
+# redefined generic methods -----------
 
-#' @rdname textmodel-internal
-#' @param x for print method, the object to be printed
-#' @param n max rows of dfm to print
-#' @param digits number of decimal places to print for print methods
 #' @export
 #' @method print textmodel_wordscores
+#' @noRd
 print.textmodel_wordscores <- function(x, ...) {
-    cat("Fitted wordscores model:\n")
+    cat("\nCall:\n")
     print(x$call)
     cat("\n")
+    
+    cat(
+        "Scale: ", x$scale, "; ", 
+        length(na.omit(x$y)), " reference scores; ",
+        length(na.omit(x$wordscores)), " scored features.",
+        "\n",
+        sep = "")
 }
 
 #' @export
@@ -271,20 +287,22 @@ summary.textmodel_wordscores <- function(object, n = 30L, ...) {
     result <- list(
         'call' = object$call,
         'reference.document.statistics' = as.textmodel_statistics(stat),
-        'word.scores' = as.textmodel_coefficients(head(object$sw, n))
+        'wordscores' = as.coef.textmodel(head(object$wordscores, n))
     )
-    return(as.textmodel_summary(result))
+    as.summary.textmodel(result)
 }
 
 
-#' @rdname textmodel-internal
+#' @noRd
+#' @method coef textmodel_wordscores
 #' @export
 coef.textmodel_wordscores <- function(object, ...) {
-    list(beta = object$sw)
+    object$wordscores
 }
 
-#' @rdname textmodel-internal
+#' @noRd
+#' @method coefficients textmodel_wordscores
 #' @export
-coefficient.textmodel_wordscores <- function(object, ...) {
-    UseMethod('coef')   
+coefficients.textmodel_wordscores <- function(object, ...) {
+    UseMethod("coef")   
 }
