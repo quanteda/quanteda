@@ -94,7 +94,7 @@ test_that("textmodel-wordfish (sparse) works as expected on another dataset", {
     expect_gt(cc, 0.99)
 })
 
-test_that("test wordscores on LBG data", {
+test_that("test wordfish predict methods", {
     pr <- predict(wfm)
     expect_equal(pr[1], c('2010_BUDGET_01_Brian_Lenihan_FF' = 1.82), tolerance = .01)
     
