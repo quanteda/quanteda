@@ -1,5 +1,5 @@
 ---
-title: "Example: Multi-word expressions"
+title: "Working with multi-word expressions"
 author: "Kohei Watanabe"
 output: 
   html_document:
@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-**quanteda** has functionality to select, remove or compound for multi-word expressions such as phrasal verbs ('try on', 'wake up' etc.) and place names ("New York", "South Korea" etc.). 
+**quanteda** has functionality to select, remove or compound for multi-word expressions such as phrasal verbs ("try on", "wake up" etc.) and place names ("New York", "South Korea" etc.). 
 
 ```{r, message = FALSE}
 library(quanteda)
@@ -79,7 +79,7 @@ head(tokens_lookup(toks, multiword_dict))
 
 ## Collocations
 
-If you use `textstat_collocations()`, you can discover multi-word expressions. 
+With `textstat_collocations()`, it is possible to discover multi-word expressions through statistical scoring of the associations of adjacent words. 
 
 ### Discover collocations
 
