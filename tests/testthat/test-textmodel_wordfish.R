@@ -25,7 +25,7 @@ test_that("textmodel-wordfish works as expected: dense vs sparse vs sparse+mt", 
 test_that("print/show/summary method works as expected", {
     expect_output(
         quanteda::print(wfm), 
-        "^\\nCall:\\ntextmodel_wordfish\\.dfm\\(.*Wordfish model fitted to 14 documents"
+        "^\\nCall:\\ntextmodel_wordfish\\.dfm\\(.*Dispersion.*14 documents; 5140 features\\.$"
     )
     expect_output(
         quanteda:::print.summary.textmodel(wfs),

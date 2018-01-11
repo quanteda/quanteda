@@ -8,7 +8,7 @@
 textmodel_wordscores(x, y, scale = c("linear", "logit"), smooth = 0)
 
 \method{predict}{textmodel_wordscores}(object, newdata = NULL,
-  se.fit = FALSE, interval = c("confidence", "none"), level = 0.95,
+  se.fit = FALSE, interval = c("none", "confidence"), level = 0.95,
   rescaling = c("none", "lbg", "mv"), ...)
 }
 \arguments{

@@ -311,19 +311,23 @@ print.textmodel_nb <- function(x, ...) {
         sep = "")
 }
 
-#' @export
+#' summary method for textmodel_nb objects
+#' @param object output from \code{\link{textmodel_nb}}
+#' @param n how many coefficients to print before truncating
+#' @param ... additional arguments not used
+#' @keywords internal
 #' @method summary textmodel_nb
+#' @export
 summary.textmodel_nb <- function(object, n = 30, ...) {
     result <- list(
         'call' = object$call,
         'class.priors' = as.coefficients_textmodel(object$Pc),
         'estimated.feature.scores' = as.coefficients_textmodel(head(coef(object), n))
     )
-    #'likelihoods' = as.statistics_textmodel(head(object$PwGc, n)),
-    #'class.posteriors' = as.statistics_textmodel(head(object$PcGw, n))
+    # 'likelihoods' = as.statistics_textmodel(head(object$PwGc, n)),
+    # 'class.posteriors' = as.statistics_textmodel(head(object$PcGw, n))
     as.summary.textmodel(result)
 }
-
 
 #' @export
 #' @method print predict.textmodel_nb
@@ -362,7 +366,7 @@ coef.textmodel_nb <- function(object, ...) {
 }
 
 #' @noRd
-#' @method coefficients textmodel_wordscores
+#' @method coefficients textmodel_nb
 #' @export
 coefficients.textmodel_nb <- function(object, ...) {
     UseMethod("coef")   

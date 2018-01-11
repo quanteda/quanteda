@@ -14,6 +14,7 @@ print.summary.textmodel <- function(x, digits = max(3L, getOption("digits") - 3L
     for (i in seq_along(x)) {
         cat("\n")
         cat(label[i], ':\n', sep = '')
+        if (grepl("Feature", label[i])) x[[i]] <- t(x[[i]])
         print(x[[i]], digits = digits)
     }
 }

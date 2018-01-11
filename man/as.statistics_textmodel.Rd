@@ -8,10 +8,11 @@ This is a helper function used in \code{summary.textmodel_*}.}
 as.statistics_textmodel(x)
 }
 \arguments{
-\item{x}{a data.frame}
+\item{x}{an object to be coerced}
 }
 \description{
 Coerce various objects to statistics_textmodel
 This is a helper function used in \code{summary.textmodel_*}.
 }
 \keyword{internal}
+\keyword{textmodel}

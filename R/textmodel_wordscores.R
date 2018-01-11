@@ -140,7 +140,7 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 predict.textmodel_wordscores <- function(object, 
                                          newdata = NULL, 
                                          se.fit = FALSE,
-                                         interval = c("confidence", "none"), level = 0.95, 
+                                         interval = c("none", "confidence"), level = 0.95, 
                                          rescaling = c("none", "lbg", "mv"),
                                          ...) {
     
@@ -303,4 +303,10 @@ coef.textmodel_wordscores <- function(object, ...) {
 #' @export
 coefficients.textmodel_wordscores <- function(object, ...) {
     UseMethod("coef")   
+}
+
+#' @export
+#' @method print predict.textmodel_wordscores
+print.predict.textmodel_wordscores <- function(x, ...) {
+    print(unclass(x))
 }
