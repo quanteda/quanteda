@@ -18,20 +18,20 @@ knitr::opts_chunk$set(collapse = FALSE,
 ```{r, eval = FALSE}
 install.packages("quanteda") 
 ```
-请参阅https://github.com/kbenoit/quanteda上的说明来安装GitHub版本。 
+请参阅https://github.com/quanteda/quanteda上的说明来安装GitHub版本。 
 
 ## 推荐安装 {#additional-recommended-packages}
 
 我们建议安装以下软件包，以便更好地支持和扩展**quanteda**的功能：
 
-*  [**readtext**](https://github.com/kbenoit/readtext): 可将几乎任何格式的文本文件读入R
-*  [**spacyr**](https://github.com/kbenoit/spacyr): 使用[spaCy](http://spacy.io)库的NLP，包括词性标注，命名实体和依存语法
-*  [**quantedaData**](https://github.com/kbenoit/quantedaData): 用于**quanteda**的附加文本数据
+*  [**readtext**](https://github.com/quanteda/readtext): 可将几乎任何格式的文本文件读入R
+*  [**spacyr**](https://github.com/quanteda/spacyr): 使用[spaCy](http://spacy.io)库的NLP，包括词性标注，命名实体和依存语法
+*  [**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora): 用于**quanteda**的附加文本数据
 
     ```{r eval = FALSE}
-    devtools::install_github("kbenoit/quantedaData")
+    devtools::install_github("quanteda/quanteda.corpora")
     ```
-*  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): R版[Linguistic Inquiry and Word Count](http://liwc.wpengine.com) 文本分析软件
+*  [**LIWCalike**](https://github.com/quanteda/LIWCalike): R版[Linguistic Inquiry and Word Count](http://liwc.wpengine.com) 文本分析软件
 
     ```{r eval = FALSE}
     devtools::install_github("kbenoit/LIWCalike")
@@ -214,7 +214,7 @@ head(docvars(data_corpus_inaugural))
 metacorpus(data_corpus_inaugural)
 ```
 
-[**quantedaData**](http://github.com/kbenoit/quantedaData)软件包提供更多语料库资源。
+[**quanteda.corpora**](http://github.com/quanteda/quanteda.corpora)软件包提供更多语料库资源。
 
 # 从语料库中提取特征 {#extracting-features-from-a-corpus}
 
@@ -369,7 +369,7 @@ obamaSimil
 
 我们可以用这些距离来绘制树状图，聚类分析总统：
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
-data(data_corpus_SOTU, package = "quantedaData")
+data(data_corpus_SOTU, package = "quanteda.corpora")
 presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english"))

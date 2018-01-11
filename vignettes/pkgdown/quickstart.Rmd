@@ -17,7 +17,7 @@ Since **quanteda** is available on [CRAN](https://CRAN.R-project.org/package=qua
 ```{r, eval = FALSE}
 install.packages("quanteda") 
 ```
-See an instructions at https://github.com/kbenoit/quanteda to install the GitHub version, 
+See an instructions at https://github.com/quanteda/quanteda to install the GitHub version, 
 
 ## Additional recommended packages:
 
@@ -25,9 +25,9 @@ The following packages work well with or extend **quanteda** and we recommend th
 
 *  [**readtext**](https://github.com/kbenoit/readtext):  An easy way to read text data into R, from almost any input format.
 *  [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library, including part-of-speech tagging, entity recognition, and dependency parsing.
-*  [**quantedaData**](https://github.com/kbenoit/quantedaData): Additional textual data for use with **quanteda**.
+*  [**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora): Additional textual data for use with **quanteda**.
     ```{r eval = FALSE}
-    devtools::install_github("kbenoit/quantedaData")
+    devtools::install_github("quanteda/quanteda.corpora")
     ```
 *  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): An R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
     ```{r eval = FALSE}
@@ -214,7 +214,7 @@ head(docvars(data_corpus_inaugural))
 metacorpus(data_corpus_inaugural)
 ```
 
-More corpora are available from the [quantedaData](http://github.com/kbenoit/quantedaData) package.
+More corpora are available from the [quanteda.corpora](http://github.com/quanteda/quanteda.corpora) package.
 
 # Extracting Features from a Corpus
 
@@ -369,7 +369,7 @@ obamaSimil
 
 We can use these distances to plot a dendrogram, clustering presidents:
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
-data(data_corpus_SOTU, package = "quantedaData")
+data(data_corpus_SOTU, package = "quanteda.corpora")
 presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english"))

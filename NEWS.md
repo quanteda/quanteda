@@ -27,6 +27,7 @@
 * `textmodel_wordshoal()` has been removed, and relocated to a new package (**wordshoal**).
 * The generic wrapper function `textmodel()`, which used to be a gateway to specific `textmodel_*()` functions, has been removed.
 * (Most of) the `textmodel_*()` have been reimplemented to make their behaviour consistent with the `lm/glm()` families of models, including especially how the `predict`, `summary`, and `coef` methods work (#1007, #108). 
+* The GitHub home for the repository has been moved to https://github.com/quanteda/quanteda.
 
 
 ## Changes since v0.99.12

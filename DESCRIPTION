@@ -62,7 +62,7 @@ Suggests:
     purrr
 URL: http://quanteda.io
 Encoding: UTF-8
-BugReports: https://github.com/kbenoit/quanteda/issues
+BugReports: https://github.com/quanteda/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
 Collate: 

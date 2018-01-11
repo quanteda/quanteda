@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 ## Grammatical rules
 
-The new "grammar" of the package is split between three basic types of functions and data objects:
+The "grammar" of the package is split between three basic types of functions and data objects:
 
 *  _object_: a constructor function named `object()` that returns an object of class _object_.  Example:  `corpus()` constructs a `corpus` class object.  
 
@@ -29,9 +29,9 @@ The new "grammar" of the package is split between three basic types of functions
 
 *  `data_`_class_`_`_descriptor_:  data objects are named this way to clearly distinguish them and to make them easy to identify in the index.  The first part identifies them as data, the second names their object class, and the third component is a descriptor.  Example: `data_corpus_inaugural` is the **quanteda** `corpus()` class object consisting of the US presidents' inaugural addresses.
 
-*  `text`_general_`_`_specific_:  functions that input a **quanteda** object and return the result of an analysis.  Only the underscored functions that begin with `text` break the previous rule about the first part of the name identifying the object class that is input and output.  Examples:  `textstat_readability()` takes a character or corpus as input, and returns a data.frame; `textplot_xray()` takes a `kwic` object as input, and generates a dispersion plot (named "x-ray" because of its similarity to the plot produced by Kindle).
+*  `text`_general_`_`_specific_:  functions that input a **quanteda** object and return the result of an analysis, as a new type of object.  Only the underscored functions that begin with `text` break the previous rule about the first part of the name identifying the object class that is input and output.  Examples:  `textstat_readability()` takes a character or corpus as input, and returns a data.frame; `textplot_xray()` takes a `kwic` object as input, and generates a dispersion plot (named "x-ray" because of its similarity to the plot produced by Kindle).
 
-*  Extensions of R functions:  These are commonly used R functions, such as `head()`, that are also defined for **quanteda** objects.  Examples:  `head.dfm()`, coercion functions such as `as.list.tokens`, and Boolean class type checking functions such as `is.dfm()`.
+*  Extensions of R functions:  These are commonly used R functions, such as `head()`, that are also defined for **quanteda** objects.  Examples:  `head.dfm()`, coercion functions such as `as.list.tokens`, and Boolean class type checking functions such as `is.dfm()`.  Many post-estimation methods defined for `lm` objects, for instance `predict()`, are also defined for most `textmodel` objects  
 
 *  R-like functions.  These are functions for **quanteda** objects that follow naming conventions and functionality that should be very familiar to users of R.  Example: `ndoc()` returns the number of documents in a corpus, tokens, or dfm object, similar to `base::nrow()`.  Note that like `nrow()`, `ndoc()` is not plural.  Other examples include `docnames()` and `featnames()` -- similar to `rownames()` and `colnames()`.
 
@@ -94,9 +94,9 @@ Additional functions have been defined for **quanteda** objects that are [very s
 
 3. **Objects should record histories of the operations applied to them.** This is for purposes of analytic transparency.  A tokens object and a dfm object, for instance, should have settings that record the processing options applied to the texts or corpus from which they were created.  These provide a record of what was done to the text, and where it came from.  Examples are `tokens_tolower()`, `dfm_wordstem()`, and settings such as `remove_twitter`.  They also include any objects used in feature selection, such as dictionaries or stopword lists.
 
-4. **A dfm should always be a  *documents* (or document groups) in rows by *features* in columns.**  Period.
+4. **A dfm should always be a  *documents* (or document groups) in rows by *features* in columns.**  A `dfm` object may be transposed but then it is no longer a `dfm` class object.
 
-5. **Encoding of texts** should always be UTF-8.  Period.
+5. **Encoding of texts** should always be UTF-8.  
 
 
 # Basic text analysis workflow 
@@ -116,23 +116,20 @@ Additional functions have been defined for **quanteda** objects that are [very s
     This step involves defining and extracting the relevant features from each document, using
     `tokens()`, the main function for this step, involves identifying instances of defined features ("tokens") and extracting them as vectors.  Usually these will consist of words, but may also consist of:
     *   `ngrams`: adjacent sequences of words, not separated by punctuation marks or sentence boundaries; including
-    *   multi-word expressions, through `tokens_compound`, for selected word ngrams as identified in selected lists rather than simply using all adjacent word pairs or n-sequences.
+    *   multi-word expressions, through `tokens_compound()`, for selected word ngrams as identified in selected lists rather than simply using all adjacent word pairs or n-sequences.
     
     `tokens()` returns a new object class of tokenized texts, a hashed list of index types, with each element in the list corresponding to a document, and each hash vector representing the tokens in that document. 
     
-    By defining the broad class of tokens we wish to extract, in this step we also apply rules that will keep or ignore elements such as punctuation or digits, or special aggregations of word and other characters that make up URLS, Twitter tags, or currency-prefixed digits.  This will involve adding the following options to `tokenize`:
-    *   `remove_numers`
+    By defining the broad class of tokens we wish to extract, in this step we also apply rules that will keep or ignore elements such as punctuation or digits, or special aggregations of word and other characters that make up URLs, Twitter tags, or currency-prefixed digits.  This will involve adding the following options to `tokens`:
+    *   `remove_numbers`
     *   `remove_punct`
     *   `remove_symbols`
     *   `remove_twitter`
     *   `remove_url`
 
-    **By default**, `tokens()` extracts word tokens, and only `remove_separators` is `TRUE`, meaning that `tokens()` will return a list including punctuation as tokens.  This follows a philosophy of minimal intervention, and one requiring that additional decisions be made explicit by the user when invoking `tokenize()`.  Note that in the `dfm()` method described below, however, we do turn on all of these options except `remove_twitter`, which is by default `FALSE`.
+    **By default**, `tokens()` extracts word tokens, and only `remove_separators` is `TRUE`, meaning that `tokens()` will return a list including punctuation as tokens.  This follows a philosophy of minimal intervention, and one requiring that additional decisions be made explicit by the user when invoking `tokens()`.
 
-    For converting to lowercase, it is actually *faster* to perform this step *before* tokenization, but logically it falls under the next workflow step.  However for efficiency, `*_tolower()` functions are defined for:
-    *   a character vector
-    *   a tokens object
-    *   a dfm object
+    For converting to lowercase, it is actually faster to perform this step *before* tokenization, but logically it falls under the next workflow step.  However for efficiency, `*_tolower()` functions are defined for `character`,`tokens`, and `dfm` objects.
     
     Since the tokenizer we will use may not distinguish the punctuation characters used in constructs such as URLs, email addresses, Twitter handles, or digits prefixed by currency symbols, we will mostly need to use a substitution strategy to replace these with alternative characters prior to tokenization, and then replace the substitutions with the original characters.  This will slow down processing but will only be active by explicit user request for this type of handling to take place. 
     
@@ -146,8 +143,8 @@ Additional functions have been defined for **quanteda** objects that are [very s
     *   *eliminated* through use of predefined lists or patterns of *stop words*, using `removeFeatures` or `ignoredFeatures` (`dfm` option)
     *   *kept* through through use of predefined lists or patterns of *stop words*, using `removeFeatures` or `keptFeatures` (`dfm` option)
     *   *collapsed* by:
-        *   considering morphological variations as equivalent to a stem or lemma, through `stem` option in `dfm` (or `dfm_wordstem`)
-        *   considering lists of features as equivalent to a *dictionary* key, either exclusively (`dfm` option `dictionary`) or as a supplement to uncollapsed features (`dfm` option `thesaurus`)
+        *   considering morphological variations as equivalent to a stem or lemma, through `stem` option in `dfm` (or `dfm_wordstem()`)
+        *   considering lists of features as equivalent to a *dictionary* key, either exclusively (`dfm()` option `dictionary`) or as a supplement to uncollapsed features (`dfm()` option `thesaurus`)
         *   `tolower` to consider as equivalent the same word features despite having different cases, by converting all features to lower case
         
     It will be sometimes possible to perform these steps separately from the `dfm` creating stage, but in most cases these steps will be performed as options to the `dfm` function.
@@ -161,14 +158,14 @@ Additional functions have been defined for **quanteda** objects that are [very s
         * `textstat_readability()`
         * `summary()`
         
-    2.  From a dfm -- after `dfm` on the processed document and features.
+    2.  From a `dfm` -- after `dfm()` on the processed document and features.
     
     
 ## dfm, the Swiss Army knife
 
 In most cases, users will use the default settings to create a dfm straight from a corpus.  `dfm()` will combine steps 3--4, even though basic functions will be available to perform these separately.  All options shown in steps 3--4 will be available in `dfm()`.
 
-`dfm()` objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens.  **quanteda** works well with `%>%` pipes, if that is your thing:
+`dfm` objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens.  **quanteda** integrates the **magrittr** `%>%` pipe operator, to make it easy to chain functions without creating intermediate objects:
 
 ```{r, eval=FALSE}
 mydfm <- texts(mycorpus, group = "party") %>% 
