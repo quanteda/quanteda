@@ -88,7 +88,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Replication
+    Replications
      
     <span class="caret"></span>
   </a>
@@ -168,7 +168,7 @@ committee &lt;-<span class="st"> "外務"</span>
 
 <span class="co"># ファイルを結合して保存</span>
 file_all &lt;-<span class="st"> </span><span class="kw">list.files</span>(folder_download, <span class="dt">full =</span> <span class="ot">TRUE</span>, <span class="dt">pattern =</span> <span class="st">".rds"</span>)
-speech &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">as.list</span>(file_all), readRDS) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/bind">bind_rows</a></span>()
+speech &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">as.list</span>(file_all), readRDS) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>()
 <span class="kw">saveRDS</span>(speech, <span class="dt">file =</span> <span class="kw">paste0</span>(folder_download, <span class="st">"committee_speeches.rds"</span>))</code></pre></div>
 </div>
 <div id="create-corpus" class="section level4">
@@ -712,124 +712,124 @@ size &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw"
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">外交</td>
-<td align="left">締結</td>
-<td align="left">お願い</td>
-<td align="left">時間</td>
-<td align="left">大きな</td>
-<td align="left">受け</td>
-<td align="left">米軍</td>
-<td align="left">同じ</td>
-<td align="left">時間</td>
-<td align="left">韓国</td>
-</tr>
-<tr class="even">
-<td align="left">当然</td>
 <td align="left">及び</td>
-<td align="left">当然</td>
+<td align="left">言葉</td>
 <td align="left">発言</td>
-<td align="left">解決</td>
-<td align="left">大きな</td>
+<td align="left">交渉</td>
 <td align="left">国民</td>
-<td align="left">国連</td>
-<td align="left">特に</td>
-<td align="left">重要</td>
-</tr>
-<tr class="odd">
-<td align="left">沖縄</td>
-<td align="left">協定</td>
-<td align="left">情報</td>
-<td align="left">世界</td>
 <td align="left">受け</td>
+<td align="left">大きな</td>
+<td align="left">お答え</td>
+<td align="left">事実</td>
 <td align="left">重要</td>
-<td align="left">日本政府</td>
+</tr>
+<tr class="even">
+<td align="left">締結</td>
+<td align="left">沖縄</td>
 <td align="left">言う</td>
+<td align="left">大きな</td>
+<td align="left">時間</td>
+<td align="left">大きな</td>
+<td align="left">国民</td>
+<td align="left">説明</td>
+<td align="left">合意</td>
+<td align="left">発言</td>
+</tr>
+<tr class="odd">
+<td align="left">に関する</td>
+<td align="left">特に</td>
+<td align="left">現在</td>
+<td align="left">調査</td>
+<td align="left">解決</td>
+<td align="left">今まで</td>
+<td align="left">お話</td>
+<td align="left">確認</td>
+<td align="left">十分</td>
+<td align="left">説明</td>
+</tr>
+<tr class="even">
+<td align="left">協定</td>
+<td align="left">外交</td>
+<td align="left">事実</td>
+<td align="left">大事</td>
+<td align="left">大事</td>
+<td align="left">現在</td>
+<td align="left">当然</td>
+<td align="left">重要</td>
+<td align="left">お願い</td>
+<td align="left">沖縄</td>
+</tr>
+<tr class="odd">
+<td align="left">承認</td>
+<td align="left">部分</td>
+<td align="left">感じ</td>
 <td align="left">言う</td>
+<td align="left">当然</td>
+<td align="left">国連</td>
+<td align="left">国連</td>
+<td align="left">部分</td>
+<td align="left">特に</td>
+<td align="left">世界</td>
+</tr>
+<tr class="even">
+<td align="left">次第</td>
+<td align="left">考え方</td>
+<td align="left">韓国</td>
+<td align="left">時間</td>
+<td align="left">お話</td>
+<td align="left">実は</td>
+<td align="left">考え方</td>
+<td align="left">検討</td>
+<td align="left">国連</td>
+<td align="left">承知</td>
+</tr>
+<tr class="odd">
+<td align="left">求める</td>
+<td align="left">お願い</td>
+<td align="left">受け</td>
+<td align="left">承知</td>
+<td align="left">説明</td>
+<td align="left">全く</td>
+<td align="left">確認</td>
+<td align="left">その後</td>
+<td align="left">当然</td>
 <td align="left">特に</td>
 </tr>
 <tr class="even">
-<td align="left">韓国</td>
-<td align="left">に関する</td>
-<td align="left">実は</td>
-<td align="left">協力</td>
-<td align="left">交渉</td>
-<td align="left">お話</td>
-<td align="left">協力</td>
-<td align="left">国民</td>
-<td align="left">お話</td>
-<td align="left">感じ</td>
-</tr>
-<tr class="odd">
-<td align="left">意見</td>
+<td align="left">改正</td>
 <td align="left">説明</td>
-<td align="left">支援</td>
-<td align="left">大事</td>
-<td align="left">お答え</td>
-<td align="left">合意</td>
-<td align="left">参加</td>
-<td align="left">時間</td>
-<td align="left">外交</td>
-<td align="left">発言</td>
-</tr>
-<tr class="even">
-<td align="left">発言</td>
-<td align="left">承認</td>
-<td align="left">重要</td>
-<td align="left">判断</td>
-<td align="left">総理</td>
-<td align="left">判断</td>
-<td align="left">世界</td>
-<td align="left">重要</td>
-<td align="left">大きな</td>
 <td align="left">交渉</td>
-</tr>
-<tr class="odd">
-<td align="left">自分</td>
-<td align="left">求める</td>
-<td align="left">承知</td>
-<td align="left">交渉</td>
-<td align="left">大事</td>
 <td align="left">外交</td>
-<td align="left">平和</td>
-<td align="left">情報</td>
-<td align="left">意見</td>
-<td align="left">沖縄</td>
-</tr>
-<tr class="even">
-<td align="left">枠組み</td>
-<td align="left">次第</td>
-<td align="left">国連</td>
-<td align="left">外交</td>
-<td align="left">結果</td>
-<td align="left">確認</td>
-<td align="left">委員会</td>
-<td align="left">当然</td>
-<td align="left">現在</td>
-<td align="left">事実</td>
-</tr>
-<tr class="odd">
-<td align="left">世界</td>
-<td align="left">行う</td>
-<td align="left">報道</td>
-<td align="left">基本的</td>
-<td align="left">発言</td>
-<td align="left">当然</td>
-<td align="left">同じ</td>
-<td align="left">日本政府</td>
-<td align="left">お答え</td>
-<td align="left">お話</td>
-</tr>
-<tr class="even">
 <td align="left">アジア</td>
-<td align="left">議定書</td>
-<td align="left">確認</td>
+<td align="left">発言</td>
+<td align="left">言葉</td>
+<td align="left">内容</td>
+<td align="left">お話</td>
+<td align="left">報道</td>
+</tr>
+<tr class="odd">
+<td align="left">目的</td>
+<td align="left">判断</td>
+<td align="left">沖縄</td>
+<td align="left">部分</td>
+<td align="left">基本的</td>
+<td align="left">大事</td>
 <td align="left">現在</td>
-<td align="left">観点</td>
+<td align="left">全く</td>
+<td align="left">言う</td>
+<td align="left">判断</td>
+</tr>
+<tr class="even">
 <td align="left">交渉</td>
-<td align="left">観点</td>
-<td align="left">お答え</td>
+<td align="left">お話</td>
+<td align="left">検討</td>
 <td align="left">同じ</td>
-<td align="left">考え方</td>
+<td align="left">全く</td>
+<td align="left">重要</td>
+<td align="left">意見</td>
+<td align="left">当然</td>
+<td align="left">お答え</td>
+<td align="left">言う</td>
 </tr>
 </tbody>
 </table>

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Example: Multi-word expressions • quanteda</title>
+<title>Working with multi-word expressions • quanteda</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../../../pkgdown.css" rel="stylesheet">
@@ -88,7 +88,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Replication
+    Replications
      
     <span class="caret"></span>
   </a>
@@ -124,7 +124,7 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Example: Multi-word expressions</h1>
+      <h1>Working with multi-word expressions</h1>
                         <h4 class="author">Kohei Watanabe</h4>
             
           </div>
@@ -132,7 +132,7 @@
     
     
 <div class="contents">
-<p><strong>quanteda</strong> has functionality to select, remove or compound for multi-word expressions such as phrasal verbs (‘try on’, ‘wake up’ etc.) and place names (“New York”, “South Korea” etc.).</p>
+<p><strong>quanteda</strong> has functionality to select, remove or compound for multi-word expressions such as phrasal verbs (“try on”, “wake up” etc.) and place names (“New York”, “South Korea” etc.).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
 <div id="tokenize" class="section level1">
 <h1 class="hasAnchor">
@@ -251,7 +251,7 @@
 <div id="collocations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#collocations" class="anchor"></a>Collocations</h2>
-<p>If you use <code><a href="../../../reference/textstat_collocations.html">textstat_collocations()</a></code>, you can discover multi-word expressions.</p>
+<p>With <code><a href="../../../reference/textstat_collocations.html">textstat_collocations()</a></code>, it is possible to discover multi-word expressions through statistical scoring of the associations of adjacent words.</p>
 <div id="discover-collocations" class="section level3">
 <h3 class="hasAnchor">
 <a href="#discover-collocations" class="anchor"></a>Discover collocations</h3>
