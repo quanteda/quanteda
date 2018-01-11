@@ -20,10 +20,12 @@ navbar:
       href: articles/pkgdown/comparison.html
     - text: "Examples"
       menu:
-        - text: "Latent Semantic Analysis (LSA)"
-          href: articles/pkgdown/examples/lsa.html
+        - text: "Multi-word expressions"
+          href: articles/pkgdown/examples/phrase.html
         - text: "Textual data visualization"
           href: articles/pkgdown/examples/plotting.html
+        - text: "Latent Semantic Analysis (LSA)"
+          href: articles/pkgdown/examples/lsa.html
         - text: "Chinese text analysis"
           href: articles/pkgdown/examples/chinese.html
         - text: "Social media analysis"
