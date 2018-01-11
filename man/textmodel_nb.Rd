@@ -131,8 +131,8 @@ nb_bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli",
                         prior = "docfreq")
 predict(nb_bern, newdata = trainingset[5, ])
 # application to LBG (2003) example data
-(nbfit <- textmodel_nb(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
-(nbpred <- predict(nbfit))
+(nb <- textmodel_nb(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
+predict(nb)
 }
 \references{
 Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction

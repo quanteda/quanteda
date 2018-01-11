@@ -4,18 +4,14 @@
 \docType{class}
 \name{textmodel-internal}
 \alias{textmodel-internal}
-\alias{textmodel_affinity_fitted-class}
-\alias{textmodel_affinity_predicted-class}
-\alias{show,textmodel_affinity_fitted-method}
-\alias{show,textmodel_affinity_predicted-method}
-\alias{coef,textmodel_affinity_predicted-method}
-\alias{coefficients,textmodel_affinity_predicted-method}
-\alias{residuals,textmodel_affinity_predicted-method}
-\alias{resid,textmodel_affinity_predicted-method}
-\alias{rstandard.textmodel_affinity_predicted}
+\alias{print.textmodel_affinity}
+\alias{print.predict.textmodel_affinity}
+\alias{residuals.predict.textmodel_affinity}
+\alias{resid}
+\alias{rstandard.predict.textmodel_affinity}
 \alias{print.affinity_influence}
 \alias{summary.affinity_influence}
-\alias{print.summary_affinity_influence}
+\alias{print.summary.affinity_influence}
 \alias{textmodel_ca_fitted-class}
 \alias{coef,textmodel_ca_fitted-method}
 \alias{coefficients,textmodel_ca_fitted-method}
@@ -25,26 +21,22 @@
 \alias{coefficients,textmodel_lsa_fitted-method}
 \title{Internal functions for textmodel objects}
 \usage{
-\S4method{show}{textmodel_affinity_fitted}(object)
+print.textmodel_affinity(x)
 
-\S4method{show}{textmodel_affinity_predicted}(object)
+\method{print}{predict.textmodel_affinity}(x, ...)
 
-\S4method{coef}{textmodel_affinity_predicted}(object, ...)
+\method{residuals}{predict.textmodel_affinity}(object, type = c("response",
+  "pearson"), ...)
 
-\S4method{coefficients}{textmodel_affinity_predicted}(object, ...)
+resid(object, ...)
 
-\S4method{residuals}{textmodel_affinity_predicted}(object,
-  type = c("response", "pearson"), ...)
-
-\S4method{resid}{textmodel_affinity_predicted}(object, ...)
-
-\method{rstandard}{textmodel_affinity_predicted}(model, ...)
+\method{rstandard}{predict.textmodel_affinity}(model, ...)
 
 \method{print}{affinity_influence}(x, n = 30, ...)
 
 \method{summary}{affinity_influence}(object, ...)
 
-\method{print}{summary_affinity_influence}(x, n = 30, ...)
+\method{print}{summary.affinity_influence}(x, n = 30, ...)
 
 \S4method{coef}{textmodel_ca_fitted}(object, doc_dim = 1, feat_dim = 1, ...)
 
