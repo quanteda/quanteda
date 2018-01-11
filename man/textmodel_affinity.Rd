@@ -4,8 +4,7 @@
 \alias{textmodel_affinity}
 \title{Class affinity maximum likelihood text scaling model}
 \usage{
-textmodel_affinity(x, y, exclude = NULL, smooth = 0.5, ref_smooth = 0.5,
-  verbose = FALSE)
+textmodel_affinity(x, y, exclude = NULL, smooth = 0.5, ref_smooth = 0.5)
 }
 \arguments{
 \item{x}{the \link{dfm} or \link{bootstrap_dfm} object on which the model
@@ -31,14 +30,14 @@ fitting.}
 scaling method described in Perry and Benoit (2017).
 }
 \examples{
-(fitted <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA)))
-predict(fitted)
-predict(fitted, newdata = data_dfm_lbgexample[6, ])
+(af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA)))
+predict(af)
+predict(af, newdata = data_dfm_lbgexample[6, ])
 
 \dontrun{
 # compute bootstrapped SEs
-bsdfm <- bootstrap_dfm(data_corpus_dailnoconf1991, n = 10, remove_punct = TRUE)
-textmodel_affinity(bsdfm, y = c("Govt", "Opp", "Opp", rep(NA, 55)))
+bs_dfm <- bootstrap_dfm(data_corpus_dailnoconf1991, n = 10, remove_punct = TRUE)
+textmodel_affinity(bs_dfm, y = c("Govt", "Opp", "Opp", rep(NA, 55)))
 }
 }
 \references{

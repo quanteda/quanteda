@@ -5,7 +5,7 @@
 \title{Prediction for a fitted affinity textmodel}
 \usage{
 \method{predict}{textmodel_affinity}(object, newdata = NULL, level = 0.95,
-  verbose = FALSE, ...)
+  ...)
 }
 \arguments{
 \item{object}{a fitted affinity textmodel}
@@ -14,9 +14,9 @@
 
 \item{level}{probability level for confidence interval width}
 
-\item{verbose}{If \code{TRUE}, output status messages}
-
 \item{...}{additional arguments passed to other functions}
+
+\item{verbose}{If \code{TRUE}, output status messages}
 }
 \value{
 The \code{predict} method for a affinity fitted object returns a
