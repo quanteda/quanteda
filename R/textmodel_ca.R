@@ -1,13 +1,3 @@
-#' @rdname textmodel-internal
-#' @keywords internal textmodel
-#' @export
-setClass("textmodel_ca_fitted",
-         slots = c(smooth = "numeric", 
-                   nd = "numeric",
-                   sparse = "logical",
-                   residual_floor = "numeric"),
-         contains = "textmodel_fitted")
-
 #' Correspondence analysis of a document-feature matrix
 #' 
 #' \code{textmodel_ca} implements correspondence analysis scaling on a 
@@ -144,23 +134,22 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA, sparse = FALSE,
              colcoord   = gam, 
              colsup     = logical(0),
              call       = match.call())
-    class(ca_model) <- c("textmodel_ca_fitted", "ca", "list")
+    class(ca_model) <- c("textmodel_ca", "ca", "list")
     return(ca_model)  
 }
 
 #' @rdname textmodel-internal
 #' @param doc_dim,feat_dim the document and feature dimension scores to be 
-#'   extracted as coefficients
 #' @export
-setMethod("coef", signature(object = "textmodel_ca_fitted"),
-          function(object, doc_dim = 1, feat_dim = 1, ...) 
-              list(coef_feature = object$colcoord[, feat_dim],
-                   coef_feature_se = rep(NA, length(object$colnames)),
-                   coef_document = object$rowcoord[, doc_dim],
-                   coef_document_se = rep(NA, length(object$rownames)))
-)
+coef.textmodel_ca <- function(object, doc_dim = 1, feat_dim = 1, ...) {
+    list(coef_feature = object$colcoord[, feat_dim],
+         coef_feature_se = rep(NA, length(object$colnames)),
+         coef_document = object$rowcoord[, doc_dim],
+         coef_document_se = rep(NA, length(object$rownames)))
+}
 
 #' @rdname textmodel-internal
 #' @export
-setMethod("coefficients", signature(object = "textmodel_ca_fitted"),
-          function(object, ...) coef(object, ...))
+coefficients.textmodel_ca <- function(object, ...) {
+    UseMethod('coef')
+}

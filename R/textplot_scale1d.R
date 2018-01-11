@@ -182,14 +182,14 @@ textplot_scale1d.textmodel_wordscores <- function(x,
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
 #' @importFrom ggplot2 facet_grid element_line
 #' @export
-textplot_scale1d.textmodel_ca_fitted <- function(x, 
-                                                 margin = c("documents", "features"), 
-                                                 doclabels = NULL, 
-                                                 sort = TRUE, 
-                                                 groups = NULL, 
-                                                 highlighted = NULL, 
-                                                 alpha = 0.7, 
-                                                 highlighted_color = "black") {
+textplot_scale1d.textmodel_ca <- function(x, 
+                                          margin = c("documents", "features"), 
+                                          doclabels = NULL, 
+                                          sort = TRUE, 
+                                          groups = NULL, 
+                                          highlighted = NULL, 
+                                          alpha = 0.7, 
+                                          highlighted_color = "black") {
     margin <- match.arg(margin)
     if (is.null(doclabels)) doclabels <- x$rownames
     
@@ -245,8 +245,7 @@ textplot_scale1d_documents <- function(x, se, doclabels, sort = TRUE,
                         lwd = .25, fatten = .4) +
         xlab(NULL)
     if (!is.null(groups)) {
-        p <- p + 
-            facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free")
+        p <- p + facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free")
     }  
     p
 }

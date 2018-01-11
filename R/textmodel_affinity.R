@@ -20,8 +20,8 @@
 #'   \href{http://arxiv.org/abs/1710.08963}{arXiv:1710.08963 [stat.ML]}.
 #' @examples
 #' (af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA)))
-#' predict(fitted)
-#' predict(fitted, newdata = data_dfm_lbgexample[6, ])
+#' predict(af)
+#' predict(af, newdata = data_dfm_lbgexample[6, ])
 #'
 #' \dontrun{
 #' # compute bootstrapped SEs
@@ -33,23 +33,20 @@
 #' @importFrom methods as
 #' @importFrom stats sd predict
 textmodel_affinity <- function(x, y, exclude = NULL,
-                             smooth = 0.5, ref_smooth = 0.5,
-                             verbose = FALSE) {
+                               smooth = 0.5, ref_smooth = 0.5) {
     UseMethod("textmodel_affinity")
 }
 
 #' @export
 textmodel_affinity.default <- function(x, y, exclude = NULL,
-                                   smooth = 0.5, ref_smooth = 0.5,
-                                   verbose = FALSE) {
+                                       smooth = 0.5, ref_smooth = 0.5) {
     stop(friendly_class_undefined_message(class(x), "textmodel_affinity"))
 }
     
 
 #' @export
 textmodel_affinity.dfm <- function(x, y, exclude = NULL,
-                                 smooth = 0.5, ref_smooth = 0.5,
-                                 verbose = FALSE) {
+                                   smooth = 0.5, ref_smooth = 0.5) {
     # estimate reference distributions
     yna <- is.na(y)
     counts <- dfm(x[which(!yna),], groups = y[!yna])
@@ -76,7 +73,7 @@ textmodel_affinity.dfm <- function(x, y, exclude = NULL,
 
     p <- t(probs) # affinity expects transposed probabilities
 
-    fitted <- affinity(p, t(x), smooth = smooth, verbose = verbose)
+    fitted <- affinity(p, t(x), smooth = smooth)
     result <- list(
         smooth = fitted$smooth,
         x = x,
@@ -92,37 +89,33 @@ textmodel_affinity.dfm <- function(x, y, exclude = NULL,
 
 #' @export
 textmodel_affinity.dfm_bootstrap <- function(x, y, exclude = NULL,
-                                           smooth = 0.5, ref_smooth = 0.5,
-                                           verbose = TRUE) {
+                                             smooth = 0.5, ref_smooth = 0.5,
+                                             verbose = TRUE) {
     if (verbose)
         message("Bootstrapping textmodel_affinity for ", ndoc(x[[1]]), " documents:")
 
     # compute the model for the original corpus
     if (verbose)
         message("   ...computing model for dfm from original texts")
-    fitted <- textmodel_affinity(x[[1]], y, exclude, smooth, ref_smooth, 
-                                 verbose = FALSE)
+    fitted <- textmodel_affinity(x[[1]], y, exclude, smooth, ref_smooth)
     predicted <- predict(fitted)
 
     # compute the replicates, save coefficients to an array
     coeff_replicates <- array(NA, dim = c(dim(coef(predicted)), length(x)))
     if (verbose)
-        message("   ...computing bootstrapped models and saving coefficients\n     ", 
-                appendLF = FALSE)
+        message("   ...computing bootstrapped models and saving coefficients: ", appendLF = FALSE)
     for (i in seq_len(length(x))) {
-        message(" ", i, appendLF = FALSE)
-        coeff_replicates[, , i] <-
-            coef(predict(textmodel_affinity(x[[i]], y, exclude, smooth, ref_smooth, verbose = FALSE)))
+        message(i, " ", appendLF = FALSE)
+        temp <- textmodel_affinity(x[[i]], y, exclude, smooth, ref_smooth)
+        coeff_replicates[,,i] <- coef(predict(temp))
     }
-
+    message("")
     if (verbose)
         message("   ...replacing original SEs with bootstrapped SEs")
     # replace analytical coefficients with sd of replicates of coefficients
-    predicted@se <- apply(coeff_replicates, c(1,2), sd)
-
+    predicted$se <- apply(coeff_replicates, c(1, 2), sd)
     if (verbose)
         message("   ...finished.")
-
     predicted
 }
 
@@ -225,7 +218,10 @@ affinity <- function(p, x, smooth = 0.5, verbose = FALSE) {
         cov <- cov[,,1, drop = FALSE]
     }
     
-    list(coefficients = coefficients, se = se, cov = cov, smooth = smooth,
+    list(coefficients = coefficients, 
+         se = se, 
+         cov = cov, 
+         smooth = smooth,
          support = support)
 }
 
@@ -234,7 +230,7 @@ affinity <- function(p, x, smooth = 0.5, verbose = FALSE) {
 # internal function to maximize the affinity likelihood
 # author: Patrick Perry
 #
-affinity1 <- function(p, x, smooth, verbose) {
+affinity1 <- function(p, x, smooth, verbose = FALSE) {
     ncat <- nrow(p)
     ndist <- ncol(p)
     
@@ -246,12 +242,15 @@ affinity1 <- function(p, x, smooth, verbose) {
         barrier <- -sum(log(theta))
         value <- (-loglik) + penalty + bweight * barrier
         
-        res <- list(loglik = loglik, penalty = penalty, barrier = barrier,
-                    bweight = bweight, value = value)
+        res <- list(loglik = loglik, 
+                    penalty = penalty, 
+                    barrier = barrier,
+                    bweight = bweight, 
+                    value = value)
         
         if (gradient || hessian) {
-            score <- drop(t(p) %*% ifelse(x == 0, 0, x/q))
-            grad <- (-score) - ((smooth + bweight)/theta)
+            score <- drop(t(p) %*% ifelse(x == 0, 0, x / q))
+            grad <- (-score) - ((smooth + bweight) / theta)
             
             res[["score"]] <- score
             res[["grad"]] <- grad
@@ -260,7 +259,7 @@ affinity1 <- function(p, x, smooth, verbose) {
         if (hessian) {
             imat_sqrt <- p * ifelse(x == 0, 0, sqrt(x) / q)
             imat <- t(imat_sqrt) %*% imat_sqrt
-            hess <- imat + diag((smooth + bweight)/theta^2, length(theta))
+            hess <- imat + diag((smooth + bweight) / theta ^ 2, length(theta))
             
             res[["imat"]] <- imat
             res[["hess"]] <- hess
@@ -307,7 +306,6 @@ affinity1 <- function(p, x, smooth, verbose) {
         beta <- 0.5
         
         resid <- residuals(theta, nu, bweight)
-        
         iter <- 0
         
         while (resid$norm > tol || max(abs(resid$primal)) > tol) {
@@ -326,15 +324,12 @@ affinity1 <- function(p, x, smooth, verbose) {
                 
                 if (all(theta1 > 0)) {
                     resid1 <- residuals(theta1, nu1, bweight)
-                    
                     if (resid1$norm <= (1 - alpha * t) * resid$norm) {
                         break
                     }
                 }
-                
                 t <- beta * t
             }
-            
             theta <- theta1
             nu <- nu1
             resid <- resid1
@@ -342,12 +337,15 @@ affinity1 <- function(p, x, smooth, verbose) {
         }
         
         obj <- objective(theta, bweight)
-        list(theta = theta, nu = nu, resid = resid, objective = obj, iter = iter)
+        list(theta = theta, 
+             nu = nu, 
+             resid = resid, 
+             objective = obj, 
+             iter = iter)
     }
     
     
-    shrink_barrier <- function(theta, nu, bweight = 0, verbose = FALSE)
-    {
+    shrink_barrier <- function(theta, nu, bweight = 0, verbose = FALSE) {
         shrink <- 0.1
         
         if (verbose) {
@@ -359,19 +357,17 @@ affinity1 <- function(p, x, smooth, verbose) {
             theta <- opt$theta
             nu <- opt$nu
             bweight <- shrink * bweight
-            
             if (verbose) {
                 cat("bweight: ", bweight, "\n", sep="")
             }
             opt <- optimize(theta, nu, bweight, verbose = verbose)
         }
-        
         opt[["bweight"]] <- bweight
         opt
     }
     
     
-    theta <- rep(1/ndist, ndist)
+    theta <- rep(1 / ndist, ndist)
     nu <- 0
     
     if (any(smooth == 0)) {
@@ -403,7 +399,7 @@ affinity1 <- function(p, x, smooth, verbose) {
     # Then substitute for C:
     #   C = H^{-1} - H^{-1} a (a^T H^{-1} a)^{-1} a^T H^{-1}
     #
-    cov <- Hi - (1/a_Hi_a) * (Hi_a %*% t(Hi_a))
+    cov <- Hi - (1 / a_Hi_a) * (Hi_a %*% t(Hi_a))
     
     res[["cov"]] <- cov
     res[["theta_se"]] <- sqrt(pmax(diag(cov), 0))
@@ -429,7 +425,7 @@ affinity1 <- function(p, x, smooth, verbose) {
 #' @keywords textmodel internal
 #' @export
 predict.textmodel_affinity <- function(object, newdata = NULL,
-                                       level = 0.95, verbose = FALSE, ...) {
+                                       level = 0.95, ...) {
     if (length(list(...)) > 0)
         stop("Arguments:", names(list(...)), "not supported.\n")
     
@@ -442,16 +438,7 @@ predict.textmodel_affinity <- function(object, newdata = NULL,
         train <- !is.na(object$y)
     }
     
-    featureIndex <- match(rownames(object$p), featnames(data))
-    scorable <- 
-        which(char_tolower(colnames(data)) %in% char_tolower(rownames(object$p)))
-    
-    if (verbose)
-        message(paste(length(scorable), " of ", nfeat(data), " features (",
-                      round(100*length(scorable) / nfeat(data), 2),
-                      "%) can be scored\n\n", sep=""))
-    
-    predicted <- affinity(object$p, t(newdata), smooth = object$smooth, verbose = verbose)
+    predicted <- affinity(object$p, t(newdata), smooth = object$smooth)
     
     result <- list(
         coefficients = predicted$coefficients,
@@ -726,14 +713,14 @@ summary.affinity_influence <- function(object, ...) {
     levels <- seq_along(labels)
     max_dir <- factor(max_dir, levels, labels)
     
-    ans <- list(word = words, count = count_val,
-                mean = mean_val, median = med_val,
-                sd = sd_val, max = max_val,
-                direction = max_dir,
-                rate = med_rate,
-                support = object$support)
-    class(ans) <- "summary.affinity_influence"
-    ans
+    result <- list(word = words, count = count_val,
+                   mean = mean_val, median = med_val,
+                   sd = sd_val, max = max_val,
+                   direction = max_dir,
+                   rate = med_rate,
+                   support = object$support)
+    class(result) <- "summary.affinity_influence"
+    result
 }
 
 #' @rdname textmodel-internal
@@ -756,7 +743,7 @@ print.summary.affinity_influence <- function(x, n = 30, ...) {
         n <- min(n, nrow(d))
         d <- d[seq_len(n),,drop=FALSE]
         
-        cat("Top ", n, " influential words:\n\n", sep="")
+        cat("Top ", n, " influential words:\n\n", sep = "")
     }
     print(d)
     

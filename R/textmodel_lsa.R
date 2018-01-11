@@ -1,17 +1,3 @@
-#' @rdname textmodel-internal
-#' @keywords internal textmodel
-#' @export
-setClass("textmodel_lsa_fitted",
-         slots = c(x = "dfm", nd = "numeric"),
-         contains = "textmodel_fitted")
-
-#' @rdname textmodel-internal
-#' @keywords internal textmodel
-#' @export
-setClass("textmodel_lsa_predicted",
-         slots = c(newdata = "dfm"),
-         contains = "textmodel_lsa_fitted")
-
 #' Latent Semantic Analysis
 #' 
 #' Fit the Latent Semantic Analysis scaling model to a \link{dfm}, which may be
@@ -105,7 +91,7 @@ textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "featu
     
     # keep the input matrix
     result$data <- x
-    class(result) <- c("textmodel_lsa_fitted")
+    class(result) <- c("textmodel_lsa")
     
     # return the LSA space
     return (result)
@@ -118,7 +104,7 @@ textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "featu
 #' @param object previously fitted lsa space
 #' @keywords internal textmodel
 #' @export
-predict.textmodel_lsa_fitted <- function(object, newdata = NULL, ...) {
+predict.textmodel_lsa <- function(object, newdata = NULL, ...) {
     
     call <- match.call()
     if (is.null(newdata)) newdata <- object$data
@@ -137,9 +123,9 @@ predict.textmodel_lsa_fitted <- function(object, newdata = NULL, ...) {
 }
 
 #' @rdname textmodel_lsa
-#' @method as.dfm textmodel_lsa_fitted
+#' @method as.dfm textmodel_lsa
 #' @export
-as.dfm.textmodel_lsa_fitted <- function(x) {
+as.dfm.textmodel_lsa <- function(x) {
     as.dfm(x$matrix_low_rank)
 }
 
@@ -147,16 +133,15 @@ as.dfm.textmodel_lsa_fitted <- function(x) {
 #' @param doc_dim,feat_dim the document and feature dimension scores to be 
 #'   extracted as coefficients
 #' @export
-setMethod("coef", signature(object = "textmodel_lsa_fitted"),
-          function(object, doc_dim = 1, feat_dim = 1,...) 
-              list(coef_feature = object$features[, feat_dim],
-                   coef_feature_se = rep(NA, dim(object$features)[1]),
-                   coef_document = object$docs[, doc_dim],
-                   coef_document_se = rep(NA, dim(object$docs)[1]))
-                   
-)
+coef.textmodel_lsa <- function(object, doc_dim = 1, feat_dim = 1, ...) {
+    list(coef_feature = object$features[, feat_dim],
+         coef_feature_se = rep(NA, dim(object$features)[1]),
+         coef_document = object$docs[, doc_dim],
+         coef_document_se = rep(NA, dim(object$docs)[1]))
+}
 
 #' @rdname textmodel-internal
 #' @export
-setMethod("coefficients", signature(object = "textmodel_lsa_fitted"),
-          function(object, ...) coef(object, ...))
+coefficient.textmodel_lsa <- function(object, ...) {
+    UseMethod('coef', ...)
+}
