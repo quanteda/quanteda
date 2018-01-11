@@ -170,19 +170,21 @@ predict.textmodel_wordscores <- function(object,
     if (rescaling == "mv") {
         if (sum(!is.na(object$y)) > 2)
             warning("More than two reference scores found with MV rescaling; using only min, max values.")
-        result <- list(fit = mv_transform(raw, object$y, raw))
+        fit <- mv_transform(raw, object$y, raw)
     } else if (rescaling == "lbg") {
         lbg_sdr <- stats::sd(object$y, na.rm = TRUE)
         lbg_sv <- mean(raw, na.rm = TRUE)
         lbg_sdv <- if (length(raw) < 2L) 0 else stats::sd(raw)
         lbg_mult <- if (lbg_sdr == 0) 0 else lbg_sdr / lbg_sdv
-        result <- list(fit = (raw - lbg_sv) * lbg_mult + lbg_sv)
+        fit <- (raw - lbg_sv) * lbg_mult + lbg_sv
     } else {
-        result <- list(fit = raw)
+        fit <- raw
     }
     
-    if (!se.fit && interval == "none")
-        return(result[[1]])
+    if (!se.fit && interval == "none") {
+        class(fit) <- c("predict.textmodel_wordscores", "numeric")
+        return(fit)
+    }
     
     # Compute standard error
     raw_se <- rep(NA, length(raw))
@@ -190,6 +192,7 @@ predict.textmodel_wordscores <- function(object,
     for (i in seq_along(raw_se))
         raw_se[i] <- sqrt(sum(as.numeric(fwv[i,]) * (raw[i] - sw) ^ 2)) / sqrt(rowSums(data)[[i]])
     
+    result <- list(fit = fit)
     if (se.fit) {
         if (rescaling == "mv") {
             z <- stats::qnorm(1 - (1 - level) / 2)
@@ -227,8 +230,6 @@ predict.textmodel_wordscores <- function(object,
             result$fit[, "upr"] <- raw + z * raw_se
         }
     }
-    
-    if (length(result) == 1) result <- result[[1]]
     class(result) <- c("predict.textmodel_wordscores", class(result))
     result
 }

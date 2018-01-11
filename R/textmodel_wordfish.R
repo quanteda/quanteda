@@ -234,6 +234,12 @@ predict.textmodel_wordfish <- function(object,
     
     fit <- object$theta
     names(fit) <- object$docs
+    
+    if (!se.fit && interval == "none") {
+        class(fit) <- c("predict.textmodel_wordfish", "numeric")
+        return(fit)
+    }
+    
     result <- list(fit = fit)
     if (se.fit) result$se.fit <- object$se.theta
     if (interval == "confidence") {
@@ -243,8 +249,8 @@ predict.textmodel_wordfish <- function(object,
         result$fit[, "lwr"] <- fit - z * object$se.theta
         result$fit[, "upr"] <- fit + z * object$se.theta
     }
-    
-    if (length(result) == 1) result[[1]] else result
+    class(result) <- c("predict.textmodel_wordscores", class(result))
+    result
 }
 
 #' print method for a wordfish model
