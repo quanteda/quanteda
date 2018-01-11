@@ -121,7 +121,7 @@ Additional functions have been defined for **quanteda** objects that are [very s
     `tokens()` returns a new object class of tokenized texts, a hashed list of index types, with each element in the list corresponding to a document, and each hash vector representing the tokens in that document. 
     
     By defining the broad class of tokens we wish to extract, in this step we also apply rules that will keep or ignore elements such as punctuation or digits, or special aggregations of word and other characters that make up URLS, Twitter tags, or currency-prefixed digits.  This will involve adding the following options to `tokenize`:
-    *   `remove_numers`
+    *   `remove_numbers`
     *   `remove_punct`
     *   `remove_symbols`
     *   `remove_twitter`
