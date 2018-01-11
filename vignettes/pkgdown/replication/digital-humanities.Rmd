@@ -6,7 +6,7 @@ output:
     toc: true
 ---
 
-In this vignette we show how the **quanteda** package can be used to replicate the analysis from Matthew Jockers' book [*Text Analysis with R for Students of Literature*](http://doi.org/10.1007/978-3-319-03164-4) (London: Springer, 2014). Most of the Jockers book consists of loading, transforming, and analyzing quantities derived from text and data from text.  Because **quanteda** has built in most of the code to perform these data transformations and analyses, it makes it possible to replicate the results from the book with far less code. Throughout this vignette, we name objects based on Jockers' book, but follow the **quanteda** [style guide](https://github.com/kbenoit/quanteda/wiki/Style-guide).
+In this vignette we show how the **quanteda** package can be used to replicate the analysis from Matthew Jockers' book [*Text Analysis with R for Students of Literature*](http://doi.org/10.1007/978-3-319-03164-4) (London: Springer, 2014). Most of the Jockers book consists of loading, transforming, and analyzing quantities derived from text and data from text.  Because **quanteda** has built in most of the code to perform these data transformations and analyses, it makes it possible to replicate the results from the book with far less code. Throughout this vignette, we name objects based on Jockers' book, but follow the **quanteda** [style guide](https://github.com/quanetda/quanteda/wiki/Style-guide).
 
 In what follows, each section corresponds to the respective chapter in the book.
 

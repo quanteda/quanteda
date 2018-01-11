@@ -136,7 +136,7 @@
 <a href="#installing-the-package" class="anchor"></a>Installing the package</h1>
 <p>Since <strong>quanteda</strong> is available on <a href="https://CRAN.R-project.org/package=quanteda">CRAN</a>, you can install by using your GUI’s R package installer, or execute:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>) </code></pre></div>
-<p>See an instructions at <a href="https://github.com/kbenoit/quanteda" class="uri">https://github.com/kbenoit/quanteda</a> to install the GitHub version,</p>
+<p>See an instructions at <a href="https://github.com/quanteda/quanteda" class="uri">https://github.com/quanteda/quanteda</a> to install the GitHub version,</p>
 <div id="additional-recommended-packages" class="section level2">
 <h2 class="hasAnchor">
 <a href="#additional-recommended-packages" class="anchor"></a>Additional recommended packages:</h2>
@@ -147,8 +147,8 @@
 <li>
 <a href="https://github.com/kbenoit/spacyr"><strong>spacyr</strong></a>: NLP using the <a href="http://spacy.io">spaCy</a> library, including part-of-speech tagging, entity recognition, and dependency parsing.</li>
 <li>
-<p><a href="https://github.com/kbenoit/quantedaData"><strong>quantedaData</strong></a>: Additional textual data for use with <strong>quanteda</strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"kbenoit/quantedaData"</span>)</code></pre></div>
+<p><a href="https://github.com/quanteda/quanteda.corpora"><strong>quanteda.corpora</strong></a>: Additional textual data for use with <strong>quanteda</strong>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</code></pre></div>
 </li>
 <li>
 <p><a href="https://github.com/kbenoit/LIWCalike"><strong>LIWCalike</strong></a>: An R implementation of the <a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a> approach to text analysis.</p>
@@ -201,8 +201,8 @@
 ##           SNP    88    134         4
 ##          UKIP   346    723        27
 ## 
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Jan 11 14:42:56 2018
+## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/pkgdown/* on x86_64 by kbenoit
+## Created: Thu Jan 11 15:01:49 2018
 ## Notes:</code></pre>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>names()</code> function to get the names of the character vector <code>data_char_ukimmig2010</code>, and assign this to a document variable (<code>docvar</code>).</p>
@@ -222,8 +222,8 @@
 ##           SNP    88    134         4          SNP 2010
 ##          UKIP   346    723        27         UKIP 2010
 ## 
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Jan 11 14:42:56 2018
+## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/pkgdown/* on x86_64 by kbenoit
+## Created: Thu Jan 11 15:01:49 2018
 ## Notes:</code></pre>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -252,8 +252,8 @@
 ##  data_char_ukimmig2010_8
 ##  data_char_ukimmig2010_9
 ## 
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/* on x86_64 by kbenoit
-## Created: Thu Jan 11 14:42:56 2018
+## Source:  /Users/kbenoit/GitHub/quanteda/docs/articles/pkgdown/* on x86_64 by kbenoit
+## Created: Thu Jan 11 15:01:49 2018
 ## Notes:</code></pre>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -389,7 +389,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Thu Jan 11 14:42:57 2018
+## Created: Thu Jan 11 15:01:50 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -498,7 +498,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ## 
 ## $created
 ## [1] "Tue Jun 13 14:51:47 2017"</code></pre>
-<p>More corpora are available from the <a href="http://github.com/kbenoit/quantedaData">quantedaData</a> package.</p>
+<p>More corpora are available from the <a href="http://github.com/quanteda/quanteda.corpora">quanteda.corpora</a> package.</p>
 </div>
 </div>
 <div id="extracting-features-from-a-corpus" class="section level1">
@@ -774,7 +774,7 @@ obamaSimil</code></pre></div>
 ## 2017-Trump    0.5192075  0.5160104</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")</span></code></pre></div>
 <p>We can use these distances to plot a dendrogram, clustering presidents:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quantedaData"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(data_corpus_SOTU, <span class="dt">package =</span> <span class="st">"quanteda.corpora"</span>)
 presDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_SOTU, Date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">"1980-01-01"</span>)), 
                <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">remove_punct =</span> <span class="ot">TRUE</span>,
                <span class="dt">remove =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stopwords/topics/stopwords">stopwords</a></span>(<span class="st">"english"</span>))
@@ -810,54 +810,54 @@ ieDfm &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/df
 ## Estimated document positions:
 ## 
 ##                                Documents      theta         SE      lower
-## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209501 0.02032337  1.7811163
-## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932805 0.02818845 -0.6485299
-## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136788 0.01540265 -1.1438680
-## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219290 0.02846329 -0.1777171
-## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724202 0.02364086  1.7260841
-## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145797 0.02650267 -0.7665249
-## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844833 0.04171491 -0.5662445
-## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616684 0.02967371 -0.6198289
-## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703126 0.03850565 -1.0457836
-## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589248 0.03892397 -1.0352158
-## 11     2010_BUDGET_11_John_Gormley_Green  1.1807221 0.07221442  1.0391819
-## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866472 0.06294126  0.0632823
-## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421928 0.07245424  0.6001825
-## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840752 0.03666276 -0.2559342
+## 1        2010_BUDGET_01_Brian_Lenihan_FF  1.8209577 0.02032356  1.7811235
+## 2       2010_BUDGET_02_Richard_Bruton_FG -0.5932747 0.02818824 -0.6485236
+## 3         2010_BUDGET_03_Joan_Burton_LAB -1.1136709 0.01540246 -1.1438597
+## 4        2010_BUDGET_04_Arthur_Morgan_SF -0.1219367 0.02846307 -0.1777243
+## 5          2010_BUDGET_05_Brian_Cowen_FF  1.7724253 0.02364110  1.7260887
+## 6           2010_BUDGET_06_Enda_Kenny_FG -0.7145768 0.02650237 -0.7665214
+## 7      2010_BUDGET_07_Kieran_ODonnell_FG -0.4844805 0.04171457 -0.5662411
+## 8       2010_BUDGET_08_Eamon_Gilmore_LAB -0.5616748 0.02967327 -0.6198344
+## 9     2010_BUDGET_09_Michael_Higgins_LAB -0.9703083 0.03850512 -1.0457783
+## 10       2010_BUDGET_10_Ruairi_Quinn_LAB -0.9589207 0.03892343 -1.0352106
+## 11     2010_BUDGET_11_John_Gormley_Green  1.1807219 0.07221490  1.0391807
+## 12       2010_BUDGET_12_Eamon_Ryan_Green  0.1866437 0.06294110  0.0632792
+## 13     2010_BUDGET_13_Ciaran_Cuffe_Green  0.7421854 0.07245451  0.6001745
+## 14 2010_BUDGET_14_Caoimhghin_OCaolain_SF -0.1840906 0.03666232 -0.2559487
 ##          upper
-## 1   1.86078392
-## 2  -0.53803114
-## 3  -1.08348959
-## 4  -0.06614099
-## 5   1.81875625
-## 6  -0.66263448
-## 7  -0.40272209
-## 8  -0.50350796
-## 9  -0.89484149
-## 10 -0.88263381
-## 11  1.32226237
-## 12  0.31001204
-## 13  0.88420310
-## 14 -0.11221622
+## 1   1.86079185
+## 2  -0.53802574
+## 3  -1.08348211
+## 4  -0.06614905
+## 5   1.81876181
+## 6  -0.66263213
+## 7  -0.40271998
+## 8  -0.50351521
+## 9  -0.89483825
+## 10 -0.88263076
+## 11  1.32226311
+## 12  0.31000830
+## 13  0.88419620
+## 14 -0.11223242
 ## 
 ## Estimated feature scores: showing first 30 beta-hats for features
 ## 
 ##            when               i       presented             the 
-##     -0.09921225      0.38801429      0.39878407      0.25593507 
+##     -0.09914114      0.38808871      0.39885275      0.25600837 
 ##   supplementary          budget              to            this 
-##      1.11585532      0.09914562      0.37007001      0.30692659 
+##      1.11592410      0.09921850      0.37014339      0.30699909 
 ##           house            last           april               , 
-##      0.19906162      0.28970903     -0.09527023      0.34534381 
+##      0.19913640      0.28978065     -0.09520011      0.34541731 
 ##            said              we           could            work 
-##     -0.71931842      0.47991420     -0.52977275      0.58226509 
+##     -0.71924753      0.47998717     -0.52970160      0.58233628 
 ##             our             way         through          period 
-##      0.74372577      0.33610714      0.65981952      0.55620975 
+##      0.74379718      0.33618036      0.65988873      0.55628174 
 ##              of          severe        economic        distress 
-##      0.33931409      1.27909987      0.47866221      1.84454114 
+##      0.33938742      1.27916709      0.47873442      1.84459427 
 ##               .           today             can          report 
-##      0.27351702      0.17418895      0.36377702      0.69175320 
+##      0.27359031      0.17426577      0.36384885      0.69182742 
 ##            that notwithstanding 
-##      0.08832655      1.84454114</code></pre>
+##      0.08840041      1.84459427</code></pre>
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
@@ -873,30 +873,30 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1   Topic 2      Topic 3       Topic 4    Topic 5    
-## [1,] "child"   "million"    "alternative" "measures" "taoiseach"
-## [2,] "benefit" "support"    "citizenship" "welfare"  "employees"
-## [3,] "day"     "welfare"    "wealth"      "details"  "problem"  
-## [4,] "today"   "investment" "adjustment"  "pension"  "terms"    
-## [5,] "bank"    "back"       "breaks"      "spending" "stimulus" 
-##      Topic 6      Topic 7    Topic 8     Topic 9   Topic 10    Topic 11  
-## [1,] "million"    "fianna"   "fáil"      "side"    "allowance" "welfare" 
-## [2,] "scheme"     "national" "fianna"    "levy"    "told"      "system"  
-## [3,] "reductions" "fáil"     "societies" "level"   "irish"     "taxation"
-## [4,] "pensions"   "support"  "know"      "third"   "hit"       "fianna"  
-## [5,] "investment" "strategy" "education" "million" "system"    "fáil"    
-##      Topic 12   Topic 13      Topic 14   Topic 15    Topic 16      
-## [1,] "national" "kind"        "child"    "taoiseach" "society"     
-## [2,] "energy"   "imagination" "welfare"  "fine"      "enterprising"
-## [3,] "spending" "policies"    "million"  "gael"      "sense"       
-## [4,] "welfare"  "wit"         "hospital" "may"       "equal"       
-## [5,] "bill"     "create"      "benefit"  "irish"     "nation"      
-##      Topic 17    Topic 18 Topic 19  Topic 20   
-## [1,] "failed"    "care"   "fáil"    "taoiseach"
-## [2,] "strategy"  "fianna" "fianna"  "proper"   
-## [3,] "needed"    "system" "irish"   "prsi"     
-## [4,] "ministers" "family" "whether" "referred" 
-## [5,] "system"    "féin"   "price"   "debate"</code></pre>
+<pre><code>##      Topic 1        Topic 2       Topic 3        Topic 4     Topic 5      
+## [1,] "equal"        "million"     "pension"      "care"      "alternative"
+## [2,] "society"      "investment"  "per"          "system"    "citizenship"
+## [3,] "enterprising" "support"     "contribution" "per"       "wealth"     
+## [4,] "nation"       "welfare"     "investment"   "allowance" "adjustment" 
+## [5,] "sense"        "development" "irish"        "told"      "breaks"     
+##      Topic 6    Topic 7    Topic 8   Topic 9       Topic 10 
+## [1,] "fáil"     "measures" "child"   "opportunity" "levy"   
+## [2,] "policies" "million"  "benefit" "efficiency"  "million"
+## [3,] "parties"  "scheme"   "day"     "authority"   "carbon" 
+## [4,] "welfare"  "spending" "today"   "products"    "change" 
+## [5,] "spent"    "welfare"  "bank"    "far"         "welfare"
+##      Topic 11       Topic 12   Topic 13    Topic 14   Topic 15   
+## [1,] "welfare"      "carers"   "taoiseach" "fianna"   "strategy" 
+## [2,] "system"       "proposed" "fine"      "fáil"     "failed"   
+## [3,] "taxation"     "supports" "gael"      "national" "ministers"
+## [4,] "fianna"       "hospital" "may"       "irish"    "confront" 
+## [5,] "government's" "future"   "day"       "support"  "system"   
+##      Topic 16     Topic 17 Topic 18      Topic 19   Topic 20   
+## [1,] "create"     "today"  "kind"        "welfare"  "taoiseach"
+## [2,] "confidence" "modern" "imagination" "families" "employees"
+## [3,] "energy"     "vision" "policies"    "measures" "rate"     
+## [4,] "measures"   "failed" "wit"         "fianna"   "referred" 
+## [5,] "support"    "reform" "create"      "workers"  "debate"</code></pre>
 </div>
 </div>
 </div>

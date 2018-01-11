@@ -113,7 +113,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Replication
+    Replications
      
     <span class="caret"></span>
   </a>
@@ -274,26 +274,26 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
 #&gt; 
 #&gt; Estimated document positions:
 #&gt; 
-#&gt;   Documents       theta         SE       lower       upper
-#&gt; 1        R1 -1.33130514 0.01573041 -1.36213675 -1.30047353
-#&gt; 2        R2 -0.60626219 0.01215635 -0.63008864 -0.58243573
-#&gt; 3        R3  0.06333357 0.01129470  0.04119595  0.08547119
-#&gt; 4        R4  0.70266714 0.01266605  0.67784167  0.72749260
-#&gt; 5        R5  1.50121664 0.01775936  1.46640829  1.53602499
-#&gt; 6        V1 -0.32965002 0.01194620 -0.35306457 -0.30623547
+#&gt;   Documents       theta         SE       lower      upper
+#&gt; 1        R1 -1.33144485 0.01573346 -1.36228244 -1.3006073
+#&gt; 2        R2 -0.60623679 0.01215892 -0.63006827 -0.5824053
+#&gt; 3        R3  0.06344547 0.01129481  0.04130763  0.0855833
+#&gt; 4        R4  0.70271028 0.01266384  0.67788916  0.7275314
+#&gt; 5        R5  1.50109568 0.01775619  1.46629354  1.5358978
+#&gt; 6        V1 -0.32956978 0.01194797 -0.35298781 -0.3061518
 #&gt; 
 #&gt; Estimated feature scores: showing first 30 beta-hats for features
 #&gt; 
 #&gt;           A           B           C           D           E           F 
-#&gt;  -7.4064174  -8.0776316  -9.7350155 -10.7146240 -11.5831869 -11.3612821 
+#&gt;  -7.4051972  -8.0761262  -9.7329707 -10.7123211 -11.5806712 -11.3585136 
 #&gt;           G           H           I           J           K           L 
-#&gt; -11.5594102 -10.4555631  -9.7338672  -8.6724697  -7.6191933  -6.6315828 
+#&gt; -11.5565365 -10.4527845  -9.7312182  -8.6700476  -7.6170124  -6.6296287 
 #&gt;           M           N           O           P           Q           R 
-#&gt;  -5.6178762  -4.6855609  -3.7792935  -2.7247087  -1.8090955  -0.7117930 
+#&gt;  -5.6161581  -4.6840494  -3.7779653  -2.7235664  -1.8080812  -0.7108978 
 #&gt;           S           T           U           V           W           X 
-#&gt;   0.2594617   1.2559761   2.3935677   3.3679791   4.4773647   5.2773663 
+#&gt;   0.2603037   1.2568211   2.3944812   3.3689859   4.4785207   5.2786537 
 #&gt;           Y           Z          ZA          ZB          ZC          ZD 
-#&gt;   6.1120994   6.9830005   7.8338350   8.8092087   9.7279008  10.4986554 </div><div class='input'>
+#&gt;   6.1135532   6.9846366   7.8356490   8.8112276   9.7300982  10.5009787 </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='no'>ie2010dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 (<span class='no'>wfm1</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>)))
@@ -313,7 +313,7 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
      <span class='no'>wfm2a</span>@<span class='kw'>features</span>[<span class='no'>underdispersedTerms</span>],
      <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.8</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>)
 <span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>austin</span>)) {
-    <span class='no'>wfmodelAustin</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>austin</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/austin/topics/wordfish'>wordfish</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/convert-wrappers'>as.wfm</a></span>(<span class='no'>ie2010dfm</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
+    <span class='no'>wfmodelAustin</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>austin</span><span class='kw ns'>::</span><span class='fu'>wordfish</span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/convert-wrappers'>as.wfm</a></span>(<span class='no'>ie2010dfm</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
     <span class='fu'>cor</span>(<span class='no'>wfm1</span>@<span class='kw'>theta</span>, <span class='no'>wfmodelAustin</span>$<span class='no'>theta</span>)
 }
 <span class='co'># }</span></pre>
