@@ -324,39 +324,8 @@ summary.textmodel_nb <- function(object, n = 30, ...) {
         'class.priors' = as.coefficients_textmodel(object$Pc),
         'estimated.feature.scores' = as.coefficients_textmodel(head(coef(object), n))
     )
-    # 'likelihoods' = as.statistics_textmodel(head(object$PwGc, n)),
-    # 'class.posteriors' = as.statistics_textmodel(head(object$PcGw, n))
     as.summary.textmodel(result)
 }
-
-#' @export
-#' @method print predict.textmodel_nb
-print.predict.textmodel_nb <- function(x, n = 30L, digits = 4, ...) {
-    
-    cat("Predicted textmodel of type: Naive Bayes\n")
-    # cat("Call:\n\t")
-    # print(x$call)
-    if (nrow(x$log.posterior.lik) > n)
-        cat("(showing", n, "of", nrow(x$docs), "documents)\n")
-    cat("\n")
-    
-    docsDf <- data.frame(x$log.posterior.lik, x$posterior.prob, x$nb.predicted)
-    names(docsDf) <- c(paste0("lp(", x$classlabels, ")"),
-                       paste0("Pr(", x$classlabels, ")"),
-                       "Predicted")
-    k <- length(x$classlabels)
-    docsDf[, 1:k] <- format(docsDf[, 1:k], nsmall = digits) 
-    docsDf[, (k+1):(2*k)] <- round(docsDf[, (k+1):(2*k)], digits)
-    docsDf[, (k+1):(2*k)] <- format(docsDf[, (k+1):(2*k)], nsmall = digits)
-    
-    # add a whitespace column for visual padding
-    docsDf <- cbind(docsDf[, 1:k], " " = rep("  ", nrow(docsDf)), docsDf[, (k+1):(2*k+1)])
-    
-    print(docsDf[1:(min(n, nrow(docsDf))), ], digits = digits)
-    cat("\n")
-}
-
-
 
 #' @noRd
 #' @method coef textmodel_nb
@@ -377,3 +346,8 @@ colNorm <- function(x) {
     x / outer(rep(1, nrow(x)), colSums(x))
 }
 
+#' @export
+#' @method print predict.textmodel_nb
+print.predict.textmodel_nb <- function(x, ...) {
+    print(unclass(x))
+}

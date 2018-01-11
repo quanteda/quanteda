@@ -317,3 +317,9 @@ coef.textmodel_wordfish <- function(object, margin = c("both", "documents", "fea
 coefficients.textmodel_wordfish <- function(object, ...) {
     UseMethod("coef")   
 }
+
+#' @export
+#' @method print predict.textmodel_wordfish
+print.predict.textmodel_wordfish <- function(x, ...) {
+    print(unclass(x))
+}
