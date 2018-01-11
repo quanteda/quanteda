@@ -285,7 +285,7 @@ summary.textmodel_wordscores <- function(object, n = 30L, ...) {
     result <- list(
         'call' = object$call,
         'reference.document.statistics' = as.statistics_textmodel(stat),
-        'wordscores' = as.coef.textmodel(head(object$wordscores, n))
+        'wordscores' = as.coefficients_textmodel(head(coef(object), n))
     )
     as.summary.textmodel(result)
 }

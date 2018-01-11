@@ -117,8 +117,9 @@ trainingset <- dfm(txt, tolower = FALSE)
 trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
  
 ## replicate IIR p261 prediction for test set (document 5)
-nb <- textmodel_nb(trainingset, trainingclass, prior = "docfreq")
+(nb <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
 summary(nb)
+coef(nb)
 predict(nb)
 
 # contrast with other priors

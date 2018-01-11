@@ -62,7 +62,7 @@
 #' @author Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit
 #' @examples
 #' (wf <- textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5)))
-#' summary(wf)
+#' summary(wf, n = 10)
 #' coef(wf)
 #' predict(wf)
 #' predict(wf, se.fit = TRUE)
@@ -256,9 +256,12 @@ predict.textmodel_wordfish <- function(object,
 print.textmodel_wordfish <- function(x, ...) {
     cat("\nCall:\n")
     print(x$call)
-    cat("\nWordfish model fitted to ",
-        ndoc(x), " documents and ",
-        nfeat(x), " features.\n",
+    cat("\n",
+        "Dispersion: ", x$dispersion, "; ",
+        "direction: ", x$dir[1], ' < ' , x$dir[2], "; ",
+        ndoc(x), " documents; ",
+        nfeat(x), " features.",
+        "\n",
         sep = "")
 }
 
@@ -279,12 +282,10 @@ summary.textmodel_wordfish <- function(object, n = 30, ...) {
         stringsAsFactors = FALSE
     )
     
-    coef <- object$beta
-    names(coef) <- object$features
     result <- list(
         'call' = object$call,
         'estimated.document.positions' = as.statistics_textmodel(stat),
-        'estimated.feature.scores' = as.statistics_textmodel(head(coef, n))
+        'estimated.feature.scores' = as.coefficients_textmodel(head(coef(object)$features, n))
     )
     return(as.summary.textmodel(result))
 }

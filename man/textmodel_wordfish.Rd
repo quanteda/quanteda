@@ -108,7 +108,7 @@ In the rare situation where a warning message of "The algorithm did not
 }
 \examples{
 (wf <- textmodel_wordfish(data_dfm_lbgexample, dir = c(1,5)))
-summary(wf)
+summary(wf, n = 10)
 coef(wf)
 predict(wf)
 predict(wf, se.fit = TRUE)

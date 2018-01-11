@@ -74,8 +74,9 @@
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #'  
 #' ## replicate IIR p261 prediction for test set (document 5)
-#' nb <- textmodel_nb(trainingset, trainingclass, prior = "docfreq")
+#' (nb <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
 #' summary(nb)
+#' coef(nb)
 #' predict(nb)
 #' 
 #' # contrast with other priors
@@ -221,7 +222,7 @@ predict.textmodel_nb <- function(object, newdata = NULL, ...) {
     # would happen if smooth=0
     # the condition assigns the index of zero occurring words to vector 
     # "notinref" and only trims the objects if this index has length > 0
-    if (length(notinref <- which(colSums(object$PwGc)==0))) {
+    if (length(notinref <- which(colSums(object$PwGc) == 0))) {
         object$PwGc <- object$PwGc[-notinref]
         object$PcGw <- object$PcGw[-notinref]
         object$Pw   <- object$Pw[-notinref]
@@ -295,9 +296,6 @@ predict.textmodel_nb <- function(object, newdata = NULL, ...) {
     result
 }
 
-# redefined generic methods -----------
-
-# @rdname print.textmodel
 #' @export
 #' @method print textmodel_nb
 print.textmodel_nb <- function(x, ...) {
@@ -306,9 +304,9 @@ print.textmodel_nb <- function(x, ...) {
     cat("\n",
         "Distribution: ", x$distribution, "; ", 
         "prior: ", x$prior, "; ",
-        "smoothing value: ", x$smooth, "\n",
-        length(na.omit(x$y)), " training documents and ",
-        nfeat(x), " fitted features.",
+        "smoothing value: ", x$smooth, "; ",
+        length(na.omit(x$y)), " training documents; ",
+        nfeat(na.omit(x)), " fitted features.",
         "\n",
         sep = "")
 }
@@ -318,10 +316,11 @@ print.textmodel_nb <- function(x, ...) {
 summary.textmodel_nb <- function(object, n = 30, ...) {
     result <- list(
         'call' = object$call,
-        'class.priors' = as.coef.textmodel(object$Pc),
-        'likelihoods' = as.statistics_textmodel(head(as.data.frame(object$PwGc), n)),
-        'class.posteriors' = as.statistics_textmodel(head(as.data.frame(object$PcGw), n))
+        'class.priors' = as.coefficients_textmodel(object$Pc),
+        'estimated.feature.scores' = as.coefficients_textmodel(head(coef(object), n))
     )
+    #'likelihoods' = as.statistics_textmodel(head(object$PwGc, n)),
+    #'class.posteriors' = as.statistics_textmodel(head(object$PcGw, n))
     as.summary.textmodel(result)
 }
 
@@ -355,8 +354,19 @@ print.predict.textmodel_nb <- function(x, n = 30L, digits = 4, ...) {
 
 
 
+#' @noRd
+#' @method coef textmodel_nb
+#' @export
+coef.textmodel_nb <- function(object, ...) {
+    t(object$PcGw)
+}
 
-## some helper functions ---------
+#' @noRd
+#' @method coefficients textmodel_wordscores
+#' @export
+coefficients.textmodel_nb <- function(object, ...) {
+    UseMethod("coef")   
+}
 
 ## make cols add up to one
 colNorm <- function(x) {
