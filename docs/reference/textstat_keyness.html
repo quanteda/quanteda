@@ -227,27 +227,27 @@ measures has no effect and produces a warning.</p></td>
     <pre class="examples"><div class='input'><span class='co'># compare pre- v. post-war terms using grouping</span>
 <span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'>ifelse</span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&lt;</span> <span class='fl'>1945</span>, <span class='st'>"pre-war"</span>, <span class='st'>"post-war"</span>)
 <span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>period</span>)
-<span class='fu'>head</span>(<span class='no'>mydfm</span>) <span class='co'># make sure 'post-war' is in the first row</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9,357 features (34.9% sparse).</div><div class='input'><span class='fu'>head</span>(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>mydfm</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;         feature      chi2            p n_target n_reference
-#&gt; 1           the 299.85716 0.000000e+00     8094        1988
-#&gt; 2            of 179.17847 0.000000e+00     5666        1437
-#&gt; 3         which 160.14560 0.000000e+00      911          95
-#&gt; 4        should  83.10741 0.000000e+00      309          15
-#&gt; 5            be  72.21927 0.000000e+00     1224         257
-#&gt; 6  constitution  61.16666 5.218048e-15      200           6
-#&gt; 7        states  59.13009 1.476597e-14      305          28
-#&gt; 8        public  55.99225 7.271961e-14      213          11
-#&gt; 9            it  52.69911 3.888001e-13     1132         257
-#&gt; 10         upon  51.91189 5.804246e-13      332          39</div><div class='input'><span class='fu'>tail</span>(<span class='no'>result</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;        feature      chi2 p n_target n_reference
-#&gt; 9348       new -141.3690 0       97         150
-#&gt; 9349 americans -150.6480 0        7          67
-#&gt; 9350     world -175.1354 0      123         188
-#&gt; 9351   america -176.6114 0       54         130
-#&gt; 9352         : -178.1283 0       29         105
-#&gt; 9353        us -186.0132 0      216         262
-#&gt; 9354       our -187.8329 0     1307         874
-#&gt; 9355         . -226.6654 0     3141        1804
-#&gt; 9356         - -395.1361 0      312         450
-#&gt; 9357        we -702.0019 0      779         960</div><div class='input'>
+<span class='fu'>head</span>(<span class='no'>mydfm</span>) <span class='co'># make sure 'post-war' is in the first row</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9,357 features (34.9% sparse).</div><div class='input'><span class='fu'>head</span>(<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>mydfm</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature     chi2 p n_target n_reference
+#&gt; 1         we 702.0019 0      960         779
+#&gt; 2          - 395.1361 0      450         312
+#&gt; 3          . 226.6654 0     1804        3141
+#&gt; 4        our 187.8329 0      874        1307
+#&gt; 5         us 186.0132 0      262         216
+#&gt; 6          : 178.1283 0      105          29
+#&gt; 7    america 176.6114 0      130          54
+#&gt; 8      world 175.1354 0      188         123
+#&gt; 9  americans 150.6480 0       67           7
+#&gt; 10       new 141.3690 0      150          97</div><div class='input'><span class='fu'>tail</span>(<span class='no'>result</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;           feature       chi2            p n_target n_reference
+#&gt; 9348         upon  -51.91189 5.804246e-13       39         332
+#&gt; 9349           it  -52.69911 3.888001e-13      257        1132
+#&gt; 9350       public  -55.99225 7.271961e-14       11         213
+#&gt; 9351       states  -59.13009 1.476597e-14       28         305
+#&gt; 9352 constitution  -61.16666 5.218048e-15        6         200
+#&gt; 9353           be  -72.21927 0.000000e+00      257        1224
+#&gt; 9354       should  -83.10741 0.000000e+00       15         309
+#&gt; 9355        which -160.14560 0.000000e+00       95         911
+#&gt; 9356           of -179.17847 0.000000e+00     1437        5666
+#&gt; 9357          the -299.85716 0.000000e+00     1988        8094</div><div class='input'>
 <span class='co'># compare pre- v. post-war terms using logical vector</span>
 <span class='no'>mydfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)
 <span class='fu'>textstat_keyness</span>(<span class='no'>mydfm2</span>, <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&gt;=</span> <span class='fl'>1945</span>)</div><div class='output co'>#&gt;                    feature          chi2            p n_target n_reference
