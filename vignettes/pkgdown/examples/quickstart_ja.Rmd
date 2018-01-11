@@ -23,7 +23,7 @@ knitr::opts_chunk$set(collapse = FALSE,
 install.packages("quanteda") 
 ```
 
-GitHubから最新の開発バージョンをインストールする方法については，https://github.com/kbenoit/quanteda を参照．
+GitHubから最新の開発バージョンをインストールする方法については，https://github.com/quanteda/quanteda を参照．
 
 ## インストールが推奨されるパッケージ {#additional-recommended-packages}
 
@@ -31,10 +31,10 @@ GitHubから最新の開発バージョンをインストールする方法に�
 
 * [**readtext**](https://github.com/kbenoit/readtext)：多くの入力形式からテキストデータをRに簡単に読み込むパッケージ
 * [**spacyr**](https://github.com/kbenoit/spacyr)：Pythonの[spaCy](http://spacy.io)ライブラリを使用した自然言語解析のためのパッケージで，品詞タグ付け，固有表現抽出，および係り受け関係の解析などができる
-* [**quantedaData**](https://github.com/kbenoit/quantedaData)：**quanteda**の本記事内の説明で使用する追加のテキストデータ
+* [**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora)：**quanteda**の本記事内の説明で使用する追加のテキストデータ
 
     ```{r eval = FALSE}
-    devtools::install_github("kbenoit/quantedaData")
+    devtools::install_github("quanteda/quanteda.corpora")
     ```
 *  [**LIWCalike**](https://github.com/kbenoit/LIWCalike): [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) (LIWC) アプローチによるテキスト分析のR実装
     ```{r eval = FALSE}
@@ -214,7 +214,7 @@ kwic(data_corpus_inaugural, "communist*")
 head(docvars(data_corpus_inaugural))
 ```
 
-[**quantedaData**](http://github.com/kbenoit/quantedaData)をインストールすることで，より多くのコーパスを試すことができる．
+[**quanteda.corpora**](http://github.com/quanteda/quanteda.corpora)をインストールすることで，より多くのコーパスを試すことができる．
 
 
 # コーパスから特長を抽出 {#extracting-features-from-a-corpus}
@@ -368,7 +368,7 @@ obamaSimil
 
 上記の文書間の類似性から樹形図を作成して，大統領を階層的に分類することができる．
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
-data(data_corpus_SOTU, package = "quantedaData")
+data(data_corpus_SOTU, package = "quanteda.corpora")
 presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")), 
                stem = TRUE, remove_punct = TRUE,
                remove = stopwords("english"))

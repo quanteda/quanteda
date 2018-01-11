@@ -26,6 +26,7 @@
 * `nfeat()` replaces `nfeature()`, which is now deprecated. (#1134)
 * `textmodel_wordshoal()` has been removed, and relocated to a new package (**wordshoal**).
 * The generic wrapper function `textmodel()`, which used to be a gateway to specific `textmodel_*()` functions, has been removed.
+* The GitHub home for the repository has been moved to https://github.com/quanteda/quanteda.
 
 
 ## Changes since v0.99.12
