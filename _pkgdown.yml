@@ -40,7 +40,7 @@ navbar:
       href: articles/design.html
   right:
     - icon: fa-github fa-lg
-      href: https://github.com/kbenoit/quanteda
+      href: https://github.com/quanteda/quanteda
 reference:
 - title: Package-level
   contents:

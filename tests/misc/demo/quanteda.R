@@ -69,7 +69,7 @@ presDfm
 docnames(presDfm)
 
 # need first to install quantedaData, using
-# devtools::install_github("kbenoit/quantedaData")
+# devtools::install_github("quanteda/quanteda.corpora")
 ## show some selection capabilities on Irish budget corpus
 data(iebudgetsCorpus, package = "quantedaData")
 summary(iebudgetsCorpus, 10)
