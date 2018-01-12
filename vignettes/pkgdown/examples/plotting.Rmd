@@ -215,17 +215,17 @@ refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 # Predict Wordscores model
 ws <- textmodel_wordscores(ie_dfm, refscores, smooth = 1)
 
-# Get predictions
-pred <- predict(ws)
-
 # Plot estimated word positions (highlight words and print them in red)
-textplot_scale1d(pred, margin = "features", 
+textplot_scale1d(ws,
                  highlighted = c("minister", "have", "our", "budget"), 
                  highlighted_color = "red")
 
 # Set document labels for y-axis
 doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
                 1, paste, collapse = " ")
+
+# Get predictions
+pred <- predict(ws)
 
 # Plot estimated document positions and group by "party" variable
 textplot_scale1d(pred, margin = "documents",
@@ -247,17 +247,17 @@ Wordfish is a Poisson scaling model that estimates one-dimension document positi
 
 ```{r eval=TRUE, fig.width=8, fig.height=6}
 # Estimate Wordfish model
-wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
+wf <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
 
 # Plot estimated word positions
-textplot_scale1d(wfm, margin = "features", 
+textplot_scale1d(wf, margin = "features", 
                  highlighted = c("government", "global", "children", 
                                  "bank", "economy", "the", "citizenship",
                                  "productivity", "deficit"), 
                  highlighted_color = "red")
 
 # Plot estimated document positions
-textplot_scale1d(wfm, doclabels = doclab,
+textplot_scale1d(wf, doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 ```
 
@@ -270,14 +270,14 @@ You can also plot the estimated document positions of a correspodence analysis (
 ie_dfm <- dfm(data_corpus_irishbudget2010)
 
 # Run correspondence analysis on dfm
-wca <- textmodel_ca(ie_dfm)
+ca <- textmodel_ca(ie_dfm)
 
 # Create doclabels for y-axis
 doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
                 1, paste, collapse = " ")
 
 # Plot estimated positions and group by party
-textplot_scale1d(wca, margin = "documents",
+textplot_scale1d(ca, margin = "documents",
                  doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 ```
