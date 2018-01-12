@@ -38,10 +38,8 @@ Only this from the results of testing on win-builder.r-project.org:
 
 ## Downstream dependencies
 
-Only the following was revelead by `devtools::revdep_check()` to confirm.
+No errors were caused in other packages, using `devtools::revdep_check()` to confirm.
 
-`Checked tidytext      : 1 error  | 0 warnings | 0 notes`
-
-This was because **tidytext** uses a function call that has been deprecated for over a year.  I have issues a [pull request](https://github.com/juliasilge/tidytext/pull/87) for **tidytext** and notified the package maintainers to fix this, nearly two months ago.
+We saw one warning in the **preText** package, because of an incorrect call to a **quanteda** function.  I notified the package maintainer of this in early December.
 
 
