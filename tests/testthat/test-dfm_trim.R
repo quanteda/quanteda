@@ -5,12 +5,16 @@ test_that("dfm_trim", {
     mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900 & Year < 2017)
     preDictDfm <- dfm(mycorpus, remove_punct = TRUE, remove_numbers = TRUE, remove_hyphens = FALSE)
     
-    nfeat(dfm_trim(preDictDfm, min_count = 7))
-    nfeat(dfm_trim(preDictDfm, min_count = 0.001))
+    feat_pt_50 <- quantile(colSums(preDictDfm), 0.5, type = 1)
+    expect_equal(nfeat(dfm_trim(preDictDfm, min_count = feat_pt_50)), 3326)
+    expect_equal(nfeat(dfm_trim(preDictDfm, min_count = 0.5)), 3326)
+    expect_equal(nfeat(dfm_trim(preDictDfm, min_count = 2)), 3326)
     
-    expect_equal(nfeat(dfm_trim(preDictDfm, min_count = 0.001)), 1045)
-    expect_equal(nfeat(dfm_trim(preDictDfm, min_count = 7)), 1045)
-    
+    feat_pt_80 <- quantile(colSums(preDictDfm), 0.8, type = 1)
+    expect_equal(nfeat(dfm_trim(preDictDfm, max_count = feat_pt_80)), 5074)
+    expect_equal(nfeat(dfm_trim(preDictDfm, max_count = 0.8)), 5074)
+    expect_equal(nfeat(dfm_trim(preDictDfm, max_count = 5)), 5074)
+
     expect_equal(nfeat(dfm_trim(preDictDfm, min_docfreq = 0.05)), 3077)
     expect_equal(nfeat(dfm_trim(preDictDfm, min_docfreq = 2)), 3077)
     
@@ -69,5 +73,16 @@ test_that("dfm_trim doesn't break because of duplicated feature names (#829)", {
     )
 })
 
+test_that("dfm_trim works with min_count larger than total number (#1181)", {
+    
+    testdfm <- dfm(c(d1 = "a a a a b b", d2 = "a b b c"))
+    expect_equal(dimnames(dfm_trim(testdfm, min_count = 6)), 
+                list(docs = c("d1", "d2"), features = character())
+    )
+    expect_equal(dimnames(dfm_trim(testdfm, min_docfreq = 3)), 
+                 list(docs = c("d1", "d2"), features = character())
+    )
+
+})
 
 
