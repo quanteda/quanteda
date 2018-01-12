@@ -1,0 +1,213 @@
+---
+title: "Replication: Quantitative Social Science: An Introduction"
+author: Stefan Müller and Kenneth Benoit
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, 
+                      comment = "##")
+```
+
+    
+```{r, message = FALSE}
+library(quanteda)
+```
+
+
+In this vignette we show how the **quanteda** package can be used to replicate the text analysis part (Chapter 5.1) from Kosuke Imai's book [*Quantitative Social Science: An Introduction*](http://qss.princeton.press) (Princeton University Press, 2017).
+
+## Download the corpus
+
+To get the textual data, you need to install and load the **qss** package first that comes with the book. 
+
+```{r eval = TRUE}
+# install_github("kosukeimai/qss-package", build_vignettes = TRUE)
+library(qss)
+```
+
+## Section 5.1.1: The Disputed Authorship of ‘The Federalist Papers’
+
+First, we use the **readtext** package to import the Federalist Papers as a data frame and create a **quanteda** corpus. 
+
+```{r}
+library(readtext)
+# use readtext package to import all documents as a dataframe
+corpus_texts <- readtext(system.file("extdata/federalist/", package = "qss"))
+
+# create docvar with number of paper
+corpus_texts$paper_number <- paste("No.", 1:nrow(corpus_texts), sep = " ")
+
+# transform to a quanteda corpus object
+corpus_raw <- corpus(corpus_texts, text_field = "text", docid_field = "paper_number")
+```
+
+```{r eval=FALSE}
+# inspect Paper No. 10 (output suppressed)
+texts(corpus_raw)[10]
+```
+
+
+## Section 5.1.2: Document-Term Matrix
+
+Next, we transform the corpus to a document-feature matrix. `dfm_prep` (used in sections 5.1.4 and 5.1.5) removes numbers and punctuation and transforms characters to lowercase. `dfm_papers` also stems the words and removes stopwords.
+
+```{r}
+# transform corpus to a document-feature matrix
+
+dfm_prep <- dfm(corpus_raw, remove_numbers = TRUE, tolower = TRUE,
+                 remove_punct = TRUE)
+
+# remove stop words and stem words
+dfm_papers <- dfm(dfm_prep, stem = TRUE, 
+                  remove = stopwords::stopwords("english"))
+
+# inspect some documents in the dfm
+dfm_papers[1:5, 1:8]
+```
+
+## Section 5.1.3: Topic Discovery
+
+We can use the `textplot_wordcloud()` function to plot word clouds of the most frequent words in Papers 12 and 24.
+
+```{r warning=FALSE, fig.width = 4, fig.height = 4}
+set.seed(100)
+textplot_wordcloud(dfm_papers[12], max.words = 20)
+  
+textplot_wordcloud(dfm_papers[24], max.words = 20)
+```
+
+Next, we identify clusters of similar essay based on term frequency-inverse document frequency (tf-idf) and apply the k-measn algorithm to the weighted dfm. 
+
+```{r}
+# tf-idf calculation
+
+dfm_papers_tfidf <- dfm_tfidf(dfm_papers, base = 2)
+
+# 10 most important words for Paper No. 12
+textstat_frequency(dfm_papers_tfidf[12], n = 10)
+
+# 10 most important words for Paper No. 24
+textstat_frequency(dfm_papers_tfidf[24], n = 10)
+```
+
+```{r}
+k <- 4  # number of clusters
+
+# subset The Federalist papers written by Hamilton
+hamilton <- c(1, 6:9, 11:13, 15:17, 21:36, 59:61, 65:85)
+
+dfm_papers_tfidf_hamilton <- dfm_papers_tfidf[hamilton, ]
+
+# run k-means
+km_out <- kmeans(dfm_papers_tfidf_hamilton, centers = k)
+
+km_out$iter # check the convergence; number of iterations may vary
+
+colnames(km_out$centers) <- colnames(dfm_papers_tfidf_hamilton)
+
+for (i in 1:k) { # loop for each cluster
+  cat("CLUSTER", i, "\n")
+  cat("Top 10 words:\n") # 10 most important terms at the centroid
+  print(head(sort(km_out$centers[i, ], decreasing = TRUE), n = 10))
+  cat("\n")
+  cat("Federalist Papers classified: \n") # extract essays classified
+  print(rownames(dfm_papers_tfidf_hamilton)[km_out$cluster == i])
+  cat("\n")
+}
+
+```
+
+## Section 5.1.4: Authorship Prediction
+
+In a next step, we want to predict authorship for the Federalist Papers whose authorship is unknown. As the topics of the Papers differs remarkably, Imai focuses on 10 articles, prepositions and conjunctions to predicte authorship.
+
+```{r}
+# document-term matrix converted to matrix for manipulation
+dtm1 <- convert(dfm_prep, to = "matrix")
+
+# term frequency per 1000 words
+tfm <- dtm1 / rowSums(dtm1) * 1000 
+
+# words of interest
+words <-  c("although", "always", "commonly", "consequently",
+           "considerable", "enough", "there", "upon", "while", "whilst")
+
+tfm <- tfm[, words]
+
+# essays written by Madison: 'hamilton' defined earlier
+madison <- c(10, 14, 37:48, 58)
+
+# average among Hamilton/Madison essays
+tfm_ave <- rbind(colSums(tfm[hamilton, ]) / length(hamilton),
+                 colSums(tfm[madison, ]) / length(madison))
+
+author <- rep(NA, nrow(tfm)) # a vector with missing values
+author[hamilton] <- 1  # 1 if Hamilton
+author[madison] <- -1  # -1 if Madison
+
+# data frame for regression
+author_data <- data.frame(author = author[c(hamilton, madison)],
+                          tfm[c(hamilton, madison), ])
+
+hm_fit <- lm(author ~ upon + there + consequently + whilst,
+             data = author_data)
+hm_fit
+
+hm_fitted <- fitted(hm_fit) # fitted values
+sd(hm_fitted)
+```
+
+## Section 5.1.5: Cross-Validation
+
+Finally, we assess how well the model fits the data by classifying each essay based on its fitted value.
+
+```{r}
+# proportion of correctly classified essays by Hamilton
+mean(hm_fitted[author_data$author == 1] > 0)
+
+# proportion of correctly classified essays by Madison
+mean(hm_fitted[author_data$author == -1] < 0)
+
+n <- nrow(author_data)
+hm_classify <- rep(NA, n) # a container vector with missing values
+
+for (i in 1:n) {
+  # fit the model to the data after removing the ith observation
+  sub_fit <- lm(author ~ upon + there + consequently + whilst,
+                data = author_data[-i, ]) # exclude ith row
+  # predict the authorship for the ith observation
+  hm_classify[i] <- predict(sub_fit, newdata = author_data[i, ])
+}
+
+# proportion of correctly classified essays by Hamilton
+mean(hm_classify[author_data$author == 1] > 0)
+
+# proportion of correctly classified essays by Madison
+mean(hm_classify[author_data$author == -1] < 0)
+
+disputed <- c(49, 50:57, 62, 63) # 11 essays with disputed authorship
+tf_disputed <- as.data.frame(dtm1[disputed, ])
+
+# prediction of disputed authorship
+pred <- predict(hm_fit, newdata = tf_disputed)
+
+pred # predicted values
+
+# plot the fitted values for each Federalist paper
+
+par(cex = 1.25)
+# fitted values for essays authored by Hamilton; red squares
+plot(hamilton, hm_fitted[author_data$author == 1], pch = 15,
+     xlim = c(1, 85), ylim  = c(-2, 2), col = "red",
+     xlab = "Federalist Papers", ylab = "Predicted values")
+abline(h = 0, lty = "dashed")
+
+# essays authored by Madison; blue circles
+points(madison, hm_fitted[author_data$author == -1],
+       pch = 16, col = "blue")
+# disputed authorship; black triangles
+points(disputed, pred, pch = 17)
+```
