@@ -78,6 +78,7 @@ reference:
     - tokens_remove
     - tokens_replace
     - tokens_select
+    - tokens_subset
     - tokens_tolower
     - tokens_toupper
     - tokens_wordstem
@@ -105,6 +106,7 @@ reference:
     - dfm_lookup
     - dfm_sample
     - dfm_remove
+    - dfm_replace
     - dfm_select
     - dfm_subset
     - dfm_sort
