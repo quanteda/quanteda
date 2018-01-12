@@ -1,21 +1,7 @@
-#' @rdname textmodel-internal
-#' @keywords internal textmodel
-#' @export
-setClass("textmodel_lsa_fitted",
-         slots = c(x = "dfm", nd = "numeric"),
-         contains = "textmodel_fitted")
-
-#' @rdname textmodel-internal
-#' @keywords internal textmodel
-#' @export
-setClass("textmodel_lsa_predicted",
-         slots = c(newdata = "dfm"),
-         contains = "textmodel_lsa_fitted")
-
 #' Latent Semantic Analysis
 #' 
 #' Fit the Latent Semantic Analysis scaling model to a \link{dfm}, which may be
-#' weighted (for instance using \code{\link{tfidf}}).
+#' weighted (for instance using \code{\link{dfm_tfidf}}).
 #' @param x the \link{dfm} on which the model will be fit
 #' @param nd  the number of dimensions to be included in output
 #' @param margin margin to be smoothed by the SVD
@@ -51,12 +37,12 @@ setClass("textmodel_lsa_predicted",
 #' new_lsa$docs_newspace
 #' 
 #' @keywords textmodel experimental
+#' @seealso \code{\link{predict.textmodel_lsa}}, \code{\link{coef.textmodel_lsa}}
 #' @export
 textmodel_lsa <- function(x, nd = 10, margin = c("both", "documents", "features")) {
     UseMethod("textmodel_lsa")
 }
 
-#' @noRd
 #' @export
 textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "features")) {
     
@@ -105,20 +91,26 @@ textmodel_lsa.dfm <- function(x, nd = 10, margin = c("both", "documents", "featu
     
     # keep the input matrix
     result$data <- x
-    class(result) <- c("textmodel_lsa_fitted")
+    class(result) <- c("textmodel_lsa")
     
     # return the LSA space
     return (result)
 }
 
-#' \code{predict} for fitted textmodel_lsa objects projects the patterns onto
-#' new data.
-#' @rdname textmodel_lsa
+# Post-estimation methods ---------------
+
+#' Post-estimations methods for textmodel_lsa
+#' 
+#' Post-estimation methods for fitted \link{textmodel_lsa} objects.
+#' @name textmodel_lsa-postestimation
+#' @param object,x previously fitted \link{textmodel_lsa} object
 #' @param newdata new matrix to be transformed into the lsa space
-#' @param object previously fitted lsa space
-#' @keywords internal textmodel
+#' @param ... unused
+#' @return \code{predict()} returns a predicted \link{textmodel_lsa} object, projecting the patterns onto
+#' new data.
+#' @keywords textmodel internal
 #' @export
-predict.textmodel_lsa_fitted <- function(object, newdata = NULL, ...) {
+predict.textmodel_lsa <- function(object, newdata = NULL, ...) {
     
     call <- match.call()
     if (is.null(newdata)) newdata <- object$data
@@ -136,27 +128,28 @@ predict.textmodel_lsa_fitted <- function(object, newdata = NULL, ...) {
     return (result)
 }
 
-#' @rdname textmodel_lsa
-#' @method as.dfm textmodel_lsa_fitted
+#' @rdname textmodel_lsa-postestimation
+#' @method as.dfm textmodel_lsa
 #' @export
-as.dfm.textmodel_lsa_fitted <- function(x) {
+as.dfm.textmodel_lsa <- function(x) {
     as.dfm(x$matrix_low_rank)
 }
 
-#' @rdname textmodel-internal
-#' @param doc_dim,feat_dim the document and feature dimension scores to be 
-#'   extracted as coefficients
+#' @rdname textmodel_lsa-postestimation
+#' @return \code{coef.textmodel_lsa} extracts model coefficients from a fitted
+#'   \link{textmodel_ca} object.
+#' @param doc_dim,feat_dim the document and feature dimension scores to be
+#'   extracted
 #' @export
-setMethod("coef", signature(object = "textmodel_lsa_fitted"),
-          function(object, doc_dim = 1, feat_dim = 1,...) 
-              list(coef_feature = object$features[, feat_dim],
-                   coef_feature_se = rep(NA, dim(object$features)[1]),
-                   coef_document = object$docs[, doc_dim],
-                   coef_document_se = rep(NA, dim(object$docs)[1]))
-                   
-)
+coef.textmodel_lsa <- function(object, doc_dim = 1, feat_dim = 1, ...) {
+    list(coef_feature = object$features[, feat_dim],
+         coef_feature_se = rep(NA, dim(object$features)[1]),
+         coef_document = object$docs[, doc_dim],
+         coef_document_se = rep(NA, dim(object$docs)[1]))
+}
 
-#' @rdname textmodel-internal
+#' @rdname textmodel_lsa-postestimation
 #' @export
-setMethod("coefficients", signature(object = "textmodel_lsa_fitted"),
-          function(object, ...) coef(object, ...))
+coefficients.textmodel_lsa <- function(object, doc_dim = 1, feat_dim = 1, ...) {
+    UseMethod('coef', ...)
+}

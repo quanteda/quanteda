@@ -120,11 +120,20 @@ test_that("test textplot_scale1d wordscores in the most basic way", {
     expect_silent(textplot_scale1d(pr, doclabels = apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
                                                          1, paste, collapse = " ")))
     
-    p1 <- textplot_scale1d(pr, margin = "features", sort = TRUE)
-    p2 <- textplot_scale1d(pr, margin = "features", sort = FALSE)
+    p1 <- textplot_scale1d(ws, margin = "features", sort = TRUE)
+    p2 <- textplot_scale1d(ws, margin = "features", sort = FALSE)
     p1$plot_env <- NULL
     p2$plot_env <- NULL
     expect_equivalent(p1, p2)
+    
+    expect_error(
+        textplot_scale1d(ws, margin = "documents"),
+        "This margin can only be run on a predicted wordscores object"
+    )
+    expect_error(
+        textplot_scale1d(predict(ws), margin = "features"),
+        "This margin can only be run on a fitted wordscores object"
+    )
 })
 
 test_that("test textplot_keyness ", {

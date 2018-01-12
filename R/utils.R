@@ -84,7 +84,7 @@ reassign_slots <- function(x_new, x_org, exceptions = NULL) {
     return(x)
 }
 
-#' utility function to create a object with new set of attributes
+#' Utility function to create a object with new set of attributes
 #' @param x an underlying R object of a new object
 #' @param attrs attributes of a new object
 #' @param overwrite_attributes overwrite attributes of the input object, if \code{TRUE}
