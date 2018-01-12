@@ -63,38 +63,35 @@ doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")),
 ## wordscores
 refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 ws <- textmodel_wordscores(ie_dfm, refscores, smooth = 1)
-pred <- predict(ws)
 # plot estimated word positions
-textplot_scale1d(pred, margin = "features", 
-                 highlighted = c("minister", "have", "our", "budget"))
+textplot_scale1d(ws, highlighted = c("minister", "have", "our", "budget"))
 # plot estimated document positions
-textplot_scale1d(pred, margin = "documents",
-                 doclabels = doclab,
+textplot_scale1d(predict(ws), doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 
 ## wordfish
-wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
+wf <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
 # plot estimated document positions
-textplot_scale1d(wfm, doclabels = doclab)
-textplot_scale1d(wfm, doclabels = doclab,
+textplot_scale1d(wf, doclabels = doclab)
+textplot_scale1d(wf, doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 # plot estimated word positions
-textplot_scale1d(wfm, margin = "features", 
+textplot_scale1d(wf, margin = "features", 
                  highlighted = c("government", "global", "children", 
                                  "bank", "economy", "the", "citizenship",
                                  "productivity", "deficit"))
 
 ## correspondence analysis
-wca <- textmodel_ca(ie_dfm)
+ca <- textmodel_ca(ie_dfm)
 # plot estimated document positions
-textplot_scale1d(wca, margin = "documents",
+textplot_scale1d(ca, margin = "documents",
                  doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
 }
 }
 \seealso{
 \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
-  \code{\link{coef.textmodel}}
+  \code{\link{textmodel_ca}}
 }
 \author{
 Kenneth Benoit, Stefan Müller, and Adam Obeng

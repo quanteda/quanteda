@@ -5,11 +5,11 @@
 \title{Naive Bayes classifier for texts}
 \usage{
 textmodel_nb(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"),
-  distribution = c("multinomial", "Bernoulli"), ...)
+  distribution = c("multinomial", "Bernoulli"))
 }
 \arguments{
-\item{x}{the \link{dfm} on which the model will be fit.  Does not need to contain 
-only the training documents.}
+\item{x}{the \link{dfm} on which the model will be fit.  Does not need to
+contain only the training documents.}
 
 \item{y}{vector of training labels associated with each document identified 
 in \code{train}.  (These will be converted to factors if not already 
@@ -20,30 +20,31 @@ factors.)}
 \item{prior}{prior distribution on texts; one of \code{"uniform"},
 \code{"docfreq"}, or \code{"termfreq"}.  See Prior Distributions below.}
 
-\item{distribution}{count model for text features, can be \code{multinomial} 
-or \code{Bernoulli}.  To fit a "binary multinomial" model, first convert the 
-dfm to a binary matrix using \code{\link{tf}(x, "boolean")}.}
-
-\item{...}{more arguments passed through}
+\item{distribution}{count model for text features, can be \code{multinomial}
+or \code{Bernoulli}.  To fit a "binary multinomial" model, first convert
+the dfm to a binary matrix using \code{\link{tf}(x, "boolean")}.}
 }
 \value{
-A list of return values, consisting of (where \eqn{I} is the total
-  number of documents, \eqn{J} is the total number of features, and \eqn{k}
-  is the total number of training classes):
+\code{textmodel_nb()} returns a list consisting of the following (where
+\eqn{I} is the total number of documents, \eqn{J} is the total number of
+features, and \eqn{k} is the total number of training classes):
 
 \item{call}{original function call}
 
-\item{PwGc}{\eqn{k \times J}; probability of the word given the class (empirical 
-  likelihood)}
+\item{PwGc}{\eqn{k \times J}; probability of the word given the class
+  (empirical likelihood)}
 
-\item{Pc}{\eqn{k}-length named numeric vector of class prior probabilities}
+\item{Pc}{\eqn{k}-length named numeric vector of class prior
+  probabilities}
 
-\item{PcGw}{\eqn{k \times J}; posterior class probability given the word}
+\item{PcGw}{\eqn{k \times J}; posterior class probability given the
+  word}
 
 \item{Pw}{\eqn{J \times 1}; baseline probability of the word}
 
-\item{data}{list consisting of the \eqn{I \times J} training dfm
-  \code{x}, and the \eqn{I}-length \code{y} training class vector}
+\item{x}{the \eqn{I \times J} training dfm \code{x}}
+
+\item{y}{the \eqn{I}-length \code{y} training class vector}
 
 \item{distribution}{the distribution argument}
 
@@ -55,11 +56,6 @@ A list of return values, consisting of (where \eqn{I} is the total
 Fit a multinomial or Bernoulli Naive Bayes model, given a dfm and some
 training labels.
 }
-\section{Predict Methods}{
- A \code{predict} method is also available for a 
-  fitted Naive Bayes object, see \code{\link{predict.textmodel_nb_fitted}}.
-}
-
 \section{Prior distributions}{
 
 
@@ -97,25 +93,31 @@ trainingset <- dfm(txt, tolower = FALSE)
 trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
  
 ## replicate IIR p261 prediction for test set (document 5)
-(nb.p261 <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
-predict(nb.p261, newdata = trainingset[5, ])
+(nb <- textmodel_nb(trainingset, trainingclass, prior = "docfreq"))
+summary(nb)
+coef(nb)
+predict(nb)
 
 # contrast with other priors
 predict(textmodel_nb(trainingset, trainingclass, prior = "uniform"))
 predict(textmodel_nb(trainingset, trainingclass, prior = "termfreq"))
 
 ## replicate IIR p264 Bernoulli Naive Bayes
-(nb.p261.bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
-                              prior = "docfreq"))
-predict(nb.p261.bern, newdata = trainingset[5, ])
+nb_bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
+                        prior = "docfreq")
+predict(nb_bern, newdata = trainingset[5, ])
 }
 \references{
 Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction
   to Information Retrieval. Cambridge University Press.
   \url{https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf}
   
-  Jurafsky, Daniel and James H. Martin. (2016) \emph{Speech and Language Processing.}  Draft of November 7, 2016.
+  Jurafsky, Daniel and James H. Martin. (2016) \emph{Speech and Language
+  Processing.}  Draft of November 7, 2016.
   \url{https://web.stanford.edu/~jurafsky/slp3/6.pdf}
+}
+\seealso{
+\code{\link{predict.textmodel_nb}}
 }
 \author{
 Kenneth Benoit

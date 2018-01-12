@@ -19,6 +19,7 @@
 * `dfm()` now correctly passes through all `...` arguments to `tokens()`.  (#1121)
 * All `dfm_*()` functions now work correctly with empty dfm objects.  (#1133)
 * Fixed a bug in `dfm_weight()` for named weight vectors (#1150)
+* Fixed a bug preventing `textplot_influence()` from working (#1116).
 
 ### Behaviour Changes
 
@@ -26,6 +27,7 @@
 * `nfeat()` replaces `nfeature()`, which is now deprecated. (#1134)
 * `textmodel_wordshoal()` has been removed, and relocated to a new package (**wordshoal**).
 * The generic wrapper function `textmodel()`, which used to be a gateway to specific `textmodel_*()` functions, has been removed.
+* (Most of) the `textmodel_*()` have been reimplemented to make their behaviour consistent with the `lm/glm()` families of models, including especially how the `predict`, `summary`, and `coef` methods work (#1007, #108). 
 * The GitHub home for the repository has been moved to https://github.com/quanteda/quanteda.
 
 
