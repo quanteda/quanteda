@@ -107,11 +107,11 @@ Additional functions have been defined for **quanteda** objects that are [very s
 
     Reading files, probably using `readtext()` from the **readtext** package, then creating a corpus using `corpus()`, making sure the texts have a common encoding, and adding document variables (`docvars()`) and metadata (`metadoc` and `metacorpus`).
 
-1.  **Defining and delimiting documents**
+2.  **Defining and delimiting documents**
 
     Defining what are "texts", for instance using `corpus_reshape()` or grouping (`corpus_segment()`).
  
-1.  **Defining and delimiting textual features**
+3.  **Defining and delimiting textual features**
 
     This step involves defining and extracting the relevant features from each document, using
     `tokens()`, the main function for this step, involves identifying instances of defined features ("tokens") and extracting them as vectors.  Usually these will consist of words, but may also consist of:
@@ -127,6 +127,7 @@ Additional functions have been defined for **quanteda** objects that are [very s
     *   `remove_twitter`
     *   `remove_url`
 
+    
     **By default**, `tokens()` extracts word tokens, and only `remove_separators` is `TRUE`, meaning that `tokens()` will return a list including punctuation as tokens.  This follows a philosophy of minimal intervention, and one requiring that additional decisions be made explicit by the user when invoking `tokens()`.
 
     For converting to lowercase, it is actually faster to perform this step *before* tokenization, but logically it falls under the next workflow step.  However for efficiency, `*_tolower()` functions are defined for `character`,`tokens`, and `dfm` objects.
@@ -136,20 +137,20 @@ Additional functions have been defined for **quanteda** objects that are [very s
     Note that that defining and delimiting features may also include their *parts of speech*, meaning we will need to add functionality for POS tagging and extraction in this step.
 
 
-1.  **Further feature selection**
+4.  **Further feature selection**
 
     Once features have been identified and separated from the texts in the tokenization step, features may be removed from token lists, or 
     handled as part of `dfm` construction.  Features may be:
-    *   *eliminated* through use of predefined lists or patterns of *stop words*, using `removeFeatures` or `ignoredFeatures` (`dfm` option)
-    *   *kept* through through use of predefined lists or patterns of *stop words*, using `removeFeatures` or `keptFeatures` (`dfm` option)
+    *   *eliminated* through use of predefined lists or patterns of *stop words*, using `dfm(x, remove = )` or `tokens_remove()`
+    *   *kept* through through use of predefined lists or patterns of *stop words*, using `dfm(x, select = )` or `tokens_select()`
     *   *collapsed* by:
         *   considering morphological variations as equivalent to a stem or lemma, through `stem` option in `dfm` (or `dfm_wordstem()`)
-        *   considering lists of features as equivalent to a *dictionary* key, either exclusively (`dfm()` option `dictionary`) or as a supplement to uncollapsed features (`dfm()` option `thesaurus`)
-        *   `tolower` to consider as equivalent the same word features despite having different cases, by converting all features to lower case
+        *   considering lists of features as equivalent to a *dictionary* key, either exclusively using `dfm(x, `dictionary = )` or as a supplement to uncollapsed features through `dfm(x, `thesaurus = )`
+        *   `tokens_tolower()` or `dfm_tolower()` to consider as equivalent the same word features despite having different cases, by converting all features to lower case
         
-    It will be sometimes possible to perform these steps separately from the `dfm` creating stage, but in most cases these steps will be performed as options to the `dfm` function.
+    It will be sometimes possible to perform these steps separately from the `dfm` creation stage, but in most cases these steps will be performed as options to the `dfm()` function.
     
-1.  **Analysis of the documents and features**
+5.  **Analysis of the documents and features**
 
     1.  From a corpus.  
     
