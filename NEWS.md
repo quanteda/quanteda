@@ -19,6 +19,7 @@
 * `dfm()` now correctly passes through all `...` arguments to `tokens()`.  (#1121)
 * All `dfm_*()` functions now work correctly with empty dfm objects.  (#1133)
 * Fixed a bug in `dfm_weight()` for named weight vectors (#1150)
+* Fixed a bug preventing `textplot_influence()` from working (#1116).
 
 ### Behaviour Changes
 

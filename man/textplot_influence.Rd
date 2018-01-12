@@ -17,6 +17,11 @@ textplot_influence(x, n = 30, ...)
 Plot the results of a fitted scaling model, from (e.g.) a predicted 
 \link{textmodel_affinity} model.
 }
+\examples{
+af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
+afpred <- predict(af) 
+textplot_influence(influence(afpred))
+}
 \seealso{
 \code{\link{textmodel_affinity}}
 }

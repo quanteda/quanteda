@@ -178,6 +178,13 @@ test_that("test textplot_network", {
                  'There is no co-occurence higher than the threshold')
 })
 
+test_that("test textplot_affinity", {
+    af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
+    afpred <- predict(af) 
+    expect_silent(textplot_influence(influence(afpred)))
+    expect_silent(textplot_influence(summary(influence(afpred))))
+})
+
 test_that("test textplot_network works with vectorlized argument", {
     txt <- "A D A C E A D F E B A C E D"
     
