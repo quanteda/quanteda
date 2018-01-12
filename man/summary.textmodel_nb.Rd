@@ -17,3 +17,4 @@
 summary method for textmodel_nb objects
 }
 \keyword{internal}
+\keyword{textmodel}

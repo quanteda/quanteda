@@ -62,6 +62,7 @@
 #'   Jurafsky, Daniel and James H. Martin. (2016) \emph{Speech and Language
 #'   Processing.}  Draft of November 7, 2016.
 #'   \url{https://web.stanford.edu/~jurafsky/slp3/6.pdf}
+#' @seealso \code{\link{predict.textmodel_nb}}
 #' @author Kenneth Benoit
 #' @examples
 #' ## Example from 13.1 of _An Introduction to Information Retrieval_
@@ -193,9 +194,10 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
     result
 }
 
-#' \code{predict.textmodel_nb()} implements class predictions from a fitted Naive Bayes model.
-#' using trained Naive Bayes examples 
-#' @rdname textmodel_nb
+#' Prediction from a fitted textmodel_nb object
+#' 
+#' \code{predict.textmodel_nb()} implements class predictions from a fitted
+#' Naive Bayes model. using trained Naive Bayes examples
 #' @param object a fitted Naive Bayes textmodel 
 #' @param newdata dfm on which prediction should be made
 #' @param ... not used
@@ -212,6 +214,7 @@ textmodel_nb.dfm <- function(x, y, smooth = 1,
 #' # application to LBG (2003) example data
 #' (nb <- textmodel_nb(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
 #' predict(nb)
+#' @keywords textmodel internal
 #' @export
 predict.textmodel_nb <- function(object, newdata = NULL, ...) {
     
@@ -315,7 +318,7 @@ print.textmodel_nb <- function(x, ...) {
 #' @param object output from \code{\link{textmodel_nb}}
 #' @param n how many coefficients to print before truncating
 #' @param ... additional arguments not used
-#' @keywords internal
+#' @keywords textmodel internal
 #' @method summary textmodel_nb
 #' @export
 summary.textmodel_nb <- function(object, n = 30, ...) {

@@ -2,13 +2,10 @@
 % Please edit documentation in R/textmodel_nb.R
 \name{textmodel_nb}
 \alias{textmodel_nb}
-\alias{predict.textmodel_nb}
 \title{Naive Bayes classifier for texts}
 \usage{
 textmodel_nb(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"),
   distribution = c("multinomial", "Bernoulli"))
-
-\method{predict}{textmodel_nb}(object, newdata = NULL, ...)
 }
 \arguments{
 \item{x}{the \link{dfm} on which the model will be fit.  Does not need to
@@ -26,12 +23,6 @@ factors.)}
 \item{distribution}{count model for text features, can be \code{multinomial}
 or \code{Bernoulli}.  To fit a "binary multinomial" model, first convert
 the dfm to a binary matrix using \code{\link{tf}(x, "boolean")}.}
-
-\item{object}{a fitted Naive Bayes textmodel}
-
-\item{newdata}{dfm on which prediction should be made}
-
-\item{...}{not used}
 }
 \value{
 \code{textmodel_nb()} returns a list consisting of the following (where
@@ -60,25 +51,10 @@ features, and \eqn{k} is the total number of training classes):
 \item{prior}{the prior argument}
 
 \item{smooth}{the value of the smoothing parameter}
-
-\code{predict.textmodel_nb} returns a list of two data frames, named
-  \code{docs} and \code{words} corresponding to word- and document-level
-  predicted quantities
-
-\item{docs}{data frame with document-level predictive quantities:
-  nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc,
-  bayesscore.doc, posterior.diff, posterior.logdiff.  Note that the diff
-  quantities are currently implemented only for two-class solutions.}
-
-\item{words}{data-frame with word-level predictive quantities: 
-wordscore.word, bayesscore.word}
 }
 \description{
 Fit a multinomial or Bernoulli Naive Bayes model, given a dfm and some
 training labels.
-
-\code{predict.textmodel_nb()} implements class predictions from a fitted Naive Bayes model.
-using trained Naive Bayes examples
 }
 \section{Prior distributions}{
 
@@ -130,9 +106,6 @@ predict(textmodel_nb(trainingset, trainingclass, prior = "termfreq"))
 nb_bern <- textmodel_nb(trainingset, trainingclass, distribution = "Bernoulli", 
                         prior = "docfreq")
 predict(nb_bern, newdata = trainingset[5, ])
-# application to LBG (2003) example data
-(nb <- textmodel_nb(data_dfm_lbgexample, c("A", "A", "B", "C", "C", NA)))
-predict(nb)
 }
 \references{
 Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction
@@ -142,6 +115,9 @@ Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction
   Jurafsky, Daniel and James H. Martin. (2016) \emph{Speech and Language
   Processing.}  Draft of November 7, 2016.
   \url{https://web.stanford.edu/~jurafsky/slp3/6.pdf}
+}
+\seealso{
+\code{\link{predict.textmodel_nb}}
 }
 \author{
 Kenneth Benoit

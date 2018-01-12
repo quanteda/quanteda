@@ -2,8 +2,6 @@
 % Please edit documentation in R/textmodel_wordfish.R
 \name{textmodel_wordfish}
 \alias{textmodel_wordfish}
-\alias{predict.textmodel_wordfish}
-\alias{coef.textmodel_wordfish}
 \title{Wordfish text model}
 \usage{
 textmodel_wordfish(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
@@ -11,12 +9,6 @@ textmodel_wordfish(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   dispersion_level = c("feature", "overall"), dispersion_floor = 0,
   sparse = TRUE, abs_err = FALSE, svd_sparse = TRUE,
   residual_floor = 0.5)
-
-\method{predict}{textmodel_wordfish}(object, se.fit = FALSE,
-  interval = c("none", "confidence"), level = 0.95, ...)
-
-\method{coef}{textmodel_wordfish}(object, margin = c("both", "documents",
-  "features"), ...)
 }
 \arguments{
 \item{x}{the dfm on which the model will be fit}
@@ -57,19 +49,6 @@ only applies when \code{sparse = TRUE}}
 
 \item{residual_floor}{specifies the threshold for residual matrix when 
 calculating the svds, only applies when \code{sparse = TRUE}}
-
-\item{object}{a fitted wordfish model}
-
-\item{se.fit}{if \code{TRUE}, return standard errors as well}
-
-\item{interval}{type of confidence interval calculation}
-
-\item{level}{tolerance/confidence level for intervals}
-
-\item{...}{not used}
-
-\item{margin}{which margin of parameter estimates to return: both (in a
-list), or just document or feature parameters}
 }
 \value{
 An object of class \code{textmodel_fitted_wordfish}.  This is a list 
@@ -81,14 +60,6 @@ An object of class \code{textmodel_fitted_wordfish}.  This is a list
   betas in Poisson form} \item{ll}{log likelihood at convergence} 
   \item{se.theta}{standard errors for theta-hats} \item{x}{dfm to which 
   the model was fit}
-
-\code{predict.textmodel_wordfish} returns estimated document scores and
-confidence intervals.  The method is provided for consistency with other
-\code{textmodel_*()} methods, but does not currently allow prediction on
-out-of-sample data.
-
-\code{coef.textmodel_wordfish()} returns a matrix of estimated
-  parameters coefficients for the specified margin.
 }
 \description{
 Estimate Slapin and Proksch's (2008) "wordfish" Poisson scaling model of 
@@ -145,6 +116,9 @@ Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model
   Lowe, Will and Kenneth Benoit. 2013. "Validating Estimates of Latent Traits
   from Textual Data Using Human Judgment as a Benchmark." \emph{Political Analysis}
   21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
+}
+\seealso{
+\code{\link{predict.textmodel_wordfish}}
 }
 \author{
 Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit

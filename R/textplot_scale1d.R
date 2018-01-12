@@ -31,7 +31,7 @@
 #' @export
 #' @author Kenneth Benoit, Stefan Müller, and Adam Obeng
 #' @seealso \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
-#'   \code{\link{coef.textmodel}}
+#'   \code{\link{textmodel_ca}}
 #' @keywords textplot
 #' @examples
 #' \dontrun{

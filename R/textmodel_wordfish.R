@@ -51,7 +51,7 @@
 #'   
 #' @note In the rare situation where a warning message of "The algorithm did not
 #'   converge." shows up, removing some documents may work.
-#'   
+#' @seealso \code{\link{predict.textmodel_wordfish}}  
 #' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
 #'   for Estimating Time-Series Party Positions from Texts." \emph{American 
 #'   Journal of Political Science} 52(3):705-772.
@@ -215,15 +215,15 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2),
     result
 }
 
-#' @rdname textmodel_wordfish
-#' @method predict textmodel_wordfish
-#' @param object a fitted wordfish model
-#' @inheritParams predict.textmodel_wordscores
-#' @return 
-#' \code{predict.textmodel_wordfish} returns estimated document scores and
+#' Prediction from a textmodel_wordfish method
+#'
+#' \code{predict.textmodel_wordfish()} returns estimated document scores and
 #' confidence intervals.  The method is provided for consistency with other
 #' \code{textmodel_*()} methods, but does not currently allow prediction on
 #' out-of-sample data.
+#' @param object a fitted wordfish model
+#' @inheritParams predict.textmodel_wordscores
+#' @keywords textmodel internal
 #' @export
 predict.textmodel_wordfish <- function(object, 
                                        se.fit = FALSE,
@@ -296,7 +296,7 @@ summary.textmodel_wordfish <- function(object, n = 30, ...) {
     return(as.summary.textmodel(result))
 }
 
-#' @rdname textmodel_wordfish
+#' @rdname predict.textmodel_wordfish
 #' @param margin which margin of parameter estimates to return: both (in a
 #'   list), or just document or feature parameters
 #' @method coef textmodel_wordfish
@@ -318,7 +318,6 @@ coef.textmodel_wordfish <- function(object, margin = c("both", "documents", "fea
     } else result
 }
 
-#' @method coefficients textmodel_wordfish
 #' @export
 coefficients.textmodel_wordfish <- function(object, ...) {
     UseMethod("coef")   

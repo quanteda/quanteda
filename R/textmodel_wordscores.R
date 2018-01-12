@@ -108,7 +108,7 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
     result
 }
 
-#' @rdname textmodel_wordscores
+#' Predict textmodel_wordscores
 #' @param object a fitted Wordscores textmodel
 #' @param newdata dfm on which prediction should be made
 #' @param se.fit if \code{TRUE}, return standard errors as well
@@ -134,7 +134,7 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 #' associated standard errors (\code{$se.fit}). When \code{interval =
 #' "confidence"}, the predicted values will be a matrix.  This behaviour matches
 #' that of \code{\link[stats]{predict.lm}}.
-#' @keywords textmodel
+#' @keywords textmodel internal
 #' @export
 #' @importFrom stats qnorm median sd
 predict.textmodel_wordscores <- function(object, 

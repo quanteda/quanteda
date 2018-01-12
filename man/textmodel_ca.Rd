@@ -2,16 +2,10 @@
 % Please edit documentation in R/textmodel_ca.R
 \name{textmodel_ca}
 \alias{textmodel_ca}
-\alias{coef.textmodel_ca}
-\alias{coefficients.textmodel_ca}
 \title{Correspondence analysis of a document-feature matrix}
 \usage{
 textmodel_ca(x, smooth = 0, nd = NA, sparse = FALSE,
   residual_floor = 0.1)
-
-\method{coef}{textmodel_ca}(object, doc_dim = 1, feat_dim = 1, ...)
-
-coefficients.textmodel_ca(object, doc_dim = 1, feat_dim = 1, ...)
 }
 \arguments{
 \item{x}{the dfm on which the model will be fit}
@@ -28,20 +22,10 @@ converting to dense}
 \item{residual_floor}{specifies the threshold for the residual matrix for 
 calculating the truncated svd.Larger value will reduce memory and time cost
 but might reduce accuracy; only applicable when \code{sparse = TRUE}}
-
-\item{object}{a fitted \link{textmodel_ca} object}
-
-\item{doc_dim, feat_dim}{the document and feature dimension scores to be
-extracted}
-
-\item{...}{unused}
 }
 \value{
 \code{textmodel_ca()} returns a fitted CA textmodel that is a special
 class of \pkg{ca} object.
-
-\code{coef()} extract model coefficients from a fitted \code{textmodel_ca}
-object.  \code{coefficients()} is an alias.
 }
 \description{
 \code{textmodel_ca} implements correspondence analysis scaling on a 

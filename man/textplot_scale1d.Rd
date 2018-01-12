@@ -91,7 +91,7 @@ textplot_scale1d(ca, margin = "documents",
 }
 \seealso{
 \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
-  \code{\link{coef.textmodel}}
+  \code{\link{textmodel_ca}}
 }
 \author{
 Kenneth Benoit, Stefan Müller, and Adam Obeng

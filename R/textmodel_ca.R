@@ -140,13 +140,15 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA, sparse = FALSE,
     return(ca_model)  
 }
 
-#' @rdname textmodel_ca
-#' @return \code{coef()} extract model coefficients from a fitted \code{textmodel_ca}
+#' Extract model coefficients from a fitted textmodel_ca object
+#' 
+#' \code{coef()} extract model coefficients from a fitted \code{textmodel_ca}
 #' object.  \code{coefficients()} is an alias.
 #' @param object a fitted \link{textmodel_ca} object
 #' @param doc_dim,feat_dim the document and feature dimension scores to be
 #'   extracted
 #' @param ... unused
+#' @keywords textmodel internal
 #' @export
 coef.textmodel_ca <- function(object, doc_dim = 1, feat_dim = 1, ...) {
     list(coef_feature = object$colcoord[, feat_dim],
@@ -155,7 +157,7 @@ coef.textmodel_ca <- function(object, doc_dim = 1, feat_dim = 1, ...) {
          coef_document_se = rep(NA, length(object$rownames)))
 }
 
-#' @rdname textmodel_ca
+#' @rdname coef.textmodel_ca
 #' @export
 coefficients.textmodel_ca <- function(object, doc_dim = 1, feat_dim = 1, ...) {
     UseMethod('coef')

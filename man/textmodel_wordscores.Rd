@@ -2,14 +2,9 @@
 % Please edit documentation in R/textmodel_wordscores.R
 \name{textmodel_wordscores}
 \alias{textmodel_wordscores}
-\alias{predict.textmodel_wordscores}
 \title{Wordscores text model}
 \usage{
 textmodel_wordscores(x, y, scale = c("linear", "logit"), smooth = 0)
-
-\method{predict}{textmodel_wordscores}(object, newdata = NULL,
-  se.fit = FALSE, interval = c("none", "confidence"), level = 0.95,
-  rescaling = c("none", "lbg", "mv"), ...)
 }
 \arguments{
 \item{x}{the \link{dfm} on which the model will be trained}
@@ -23,44 +18,6 @@ for log posterior differences}
 
 \item{smooth}{a smoothing parameter for word counts; defaults to zero for the
 to match the LBG (2003) method.}
-
-\item{object}{a fitted Wordscores textmodel}
-
-\item{newdata}{dfm on which prediction should be made}
-
-\item{se.fit}{if \code{TRUE}, return standard errors as well}
-
-\item{interval}{type of confidence interval calculation}
-
-\item{level}{tolerance/confidence level for intervals}
-
-\item{rescaling}{\code{"none"} for "raw" scores; \code{"lbg"} for LBG (2003) 
-rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg 
-(2007).  See References.}
-
-\item{...}{not used}
-}
-\value{
-\code{textmodel_wordscores()} returns a list that is also classed as a
-  \code{textmodel_wordscores} object, containing the following elements:
-
-\item{wordscores}{the scores computed for each word in the training set
-(\eqn{S_{wd}} from Laver, Benoit and Garry 2003)}
-
-\item{scale}{either \code{linear} or \code{logit}, according to the value of \code{scale}}
-
-\item{x}{the dfm on which the wordscores model was called}
-
-\item{y}{the vector of document reference values}
-
-\item{call}{the function call that fitted the model}
-
-\code{predict.textmodel_wordscores()} returns a named vector of predicted
-document scores ("text scores" \eqn{S_{vd}} in LBG 2003), or a named list if
-\code{se.fit = TRUE} consisting of the predicted scores (\code{$fit}) and the
-associated standard errors (\code{$se.fit}). When \code{interval =
-"confidence"}, the predicted values will be a matrix.  This behaviour matches
-that of \code{\link[stats]{predict.lm}}.
 }
 \description{
 \code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003)
@@ -103,4 +60,3 @@ Laver, Michael, Kenneth R Benoit, and John Garry. 2003.
 \author{
 Kenneth Benoit
 }
-\keyword{textmodel}
