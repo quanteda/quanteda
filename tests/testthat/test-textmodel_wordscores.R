@@ -3,7 +3,7 @@ context("test textmodel_wordscores")
 test_that("test wordscores on LBG data", {
     ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
     pr <- predict(ws, newdata = data_dfm_lbgexample[6, ], interval = "none")
-    expect_equal(pr, c(V1 = -.45), tolerance = .01)
+    expect_equal(unclass(pr), c(V1 = -.45), tolerance = .01)
     
     pr2 <- predict(ws, interval = "none")
     expect_is(pr2, "numeric")
