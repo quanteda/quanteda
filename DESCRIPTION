@@ -117,7 +117,6 @@ Collate:
     'settings.R'
     'spacyr-methods.R'
     'stopwords.R'
-    'textmodel-generics.R'
     'textmodel-methods.R'
     'textmodel_affinity.R'
     'textmodel_ca.R'

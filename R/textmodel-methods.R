@@ -7,6 +7,7 @@
 #'   \code{\link{print.default}}
 #' @param ... additional arguments not used
 #' @method print summary.textmodel
+#' @keywords textmodel internal
 #' @export
 print.summary.textmodel <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
     label <- stri_trans_totitle(stri_replace_all_fixed(names(x), ".", " "))
@@ -80,6 +81,8 @@ print.coefficients_textmodel <- function(x, digits = max(3L, getOption("digits")
 
 #' This is a helper function used in \code{summary.textmodel_*}.
 #' @param x an object to be coerced
+#' @importFrom stats coefficients
+#' @importFrom stats coef
 #' @keywords internal
 as.coefficients_textmodel <- function(x) {
     UseMethod('as.coefficients_textmodel')

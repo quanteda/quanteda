@@ -1,8 +1,7 @@
 #' Correspondence analysis of a document-feature matrix
 #' 
 #' \code{textmodel_ca} implements correspondence analysis scaling on a 
-#' \link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca}, and
-#' returns a special class of \pkg{ca} object.
+#' \link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca}. 
 #' @param x the dfm on which the model will be fit
 #' @param smooth a smoothing parameter for word counts; defaults to zero.
 #' @param nd  Number of dimensions to be included in output; if \code{NA} (the 
@@ -29,10 +28,13 @@
 #'   this is probably because of the memory demands of computing the \eqn{V
 #'   \times V} residual matrix.  To avoid this, consider increasing the value of
 #'   \code{residual_floor} by 0.1, until the model can be fit.
+#' @return \code{textmodel_ca()} returns a fitted CA textmodel that is a special
+#' class of \pkg{ca} object.
 #' @examples 
 #' ieDfm <- dfm(data_corpus_irishbudget2010)
 #' wca <- textmodel_ca(ieDfm)
-#' summary(wca) 
+#' summary(wca)
+#' @seealso \code{\link{coef.textmodel_lsa}}, \link[ca]{ca}
 #' @export
 textmodel_ca <- function(x, smooth = 0, nd = NA, sparse = FALSE, 
                          residual_floor = 0.1) {
@@ -138,8 +140,13 @@ textmodel_ca.dfm <- function(x, smooth = 0, nd = NA, sparse = FALSE,
     return(ca_model)  
 }
 
-#' @rdname textmodel-internal
-#' @param doc_dim,feat_dim the document and feature dimension scores to be 
+#' @rdname textmodel_ca
+#' @return \code{coef()} extract model coefficients from a fitted \code{textmodel_ca}
+#' object.  \code{coefficients()} is an alias.
+#' @param object a fitted \link{textmodel_ca} object
+#' @param doc_dim,feat_dim the document and feature dimension scores to be
+#'   extracted
+#' @param ... unused
 #' @export
 coef.textmodel_ca <- function(object, doc_dim = 1, feat_dim = 1, ...) {
     list(coef_feature = object$colcoord[, feat_dim],
@@ -148,8 +155,8 @@ coef.textmodel_ca <- function(object, doc_dim = 1, feat_dim = 1, ...) {
          coef_document_se = rep(NA, length(object$rownames)))
 }
 
-#' @rdname textmodel-internal
+#' @rdname textmodel_ca
 #' @export
-coefficients.textmodel_ca <- function(object, ...) {
+coefficients.textmodel_ca <- function(object, doc_dim = 1, feat_dim = 1, ...) {
     UseMethod('coef')
 }

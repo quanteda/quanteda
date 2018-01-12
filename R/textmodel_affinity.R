@@ -14,7 +14,7 @@
 #'   defaults to 0.5
 #' @param verbose logical; if \code{TRUE} print diagnostic information during
 #'   fitting.
-#' @author Patrick Perry
+#' @author Patrick Perry and Kenneth Benoit
 #' @references Perry, Patrick O. and Kenneth Benoit.  (2017) "Scaling Text with
 #'   the Class Affinity Model".
 #'   \href{http://arxiv.org/abs/1710.08963}{arXiv:1710.08963 [stat.ML]}.
@@ -32,21 +32,27 @@
 #' @keywords textmodel experimental
 #' @importFrom methods as
 #' @importFrom stats sd predict
+#' @seealso \code{\link{predict.textmodel_affinity}} for methods of applying a
+#'   fitted \link{textmodel_affinity} model. object to predict quantities from
+#'   (other) documents.
 textmodel_affinity <- function(x, y, exclude = NULL,
-                               smooth = 0.5, ref_smooth = 0.5) {
+                               smooth = 0.5, ref_smooth = 0.5,
+                               verbose = TRUE) {
     UseMethod("textmodel_affinity")
 }
 
 #' @export
 textmodel_affinity.default <- function(x, y, exclude = NULL,
-                                       smooth = 0.5, ref_smooth = 0.5) {
+                                       smooth = 0.5, ref_smooth = 0.5,
+                                       verbose = TRUE) {
     stop(friendly_class_undefined_message(class(x), "textmodel_affinity"))
 }
     
 
 #' @export
 textmodel_affinity.dfm <- function(x, y, exclude = NULL,
-                                   smooth = 0.5, ref_smooth = 0.5) {
+                                   smooth = 0.5, ref_smooth = 0.5,
+                                   verbose = TRUE) {
     # estimate reference distributions
     yna <- is.na(y)
     counts <- dfm(x[which(!yna),], groups = y[!yna])
@@ -406,23 +412,46 @@ affinity1 <- function(p, x, smooth, verbose = FALSE) {
     res
 }
 
+# supporting methods for textmodel_affinity ------------
 
-## ============== Helper Methods =======================================
+#' @method print textmodel_affinity
+#' @export
+print.textmodel_affinity <- function(x, ...) {
+    cat("Call:\n")
+    print(x$call)
+    
+    ref <- table(x$y)
+    namez <- names(ref)
+    namez[2:length(namez)] <- paste(",", namez[2:length(namez)])
+    
+    cat("\n",
+        "Training documents per class:", 
+        paste0(interleave(paste0(namez, ": "), as.integer(ref)), collapse = ""), "; ",
+        "total training features: ", nrow(x$p), "\n",
+        sep = "")
+}
+
+## ============== Prediction Methods =======================================
 
 #' Prediction for a fitted affinity textmodel
 #'
+#' @description
 #' Estimate \eqn{\theta_i} for each document, from a fitted
 #' \link{textmodel_affinity} object.
+#' 
+#' Other methods below provide standard ways to extract or compute quantities 
+#' from predicted \link{textmodel_affinity} objects.
 #' @param object a fitted affinity textmodel
 #' @param level probability level for confidence interval width
 #' @param newdata dfm on which prediction should be made
-#' @param ... additional arguments passed to other functions
-#' @param verbose If \code{TRUE}, output status messages
-#' @return The \code{predict} method for a affinity fitted object returns a
-#'   list of format...
-#' @method predict textmodel_affinity
+#' @param ... unused
+#' @return \code{predict()} returns a list of predicted affinity textmodel
+#'   quantities.
 #' @importFrom methods new
 #' @keywords textmodel internal
+#' @seealso \code{\link{influence.predict.textmodel_affinity}} for methods of
+#'   computing the influence of particular features from a predicted
+#'   \link{textmodel_affinity} model.
 #' @export
 predict.textmodel_affinity <- function(object, newdata = NULL,
                                        level = 0.95, ...) {
@@ -454,53 +483,34 @@ predict.textmodel_affinity <- function(object, newdata = NULL,
     return(result)
 }
 
-
-#' @rdname textmodel-internal
-#' @keywords internal
-#' @export
-print.textmodel_affinity <- function(x) {
-    cat("Call:\n")
-    print(x$call)
-    
-    ref <- table(x$y)
-    namez <- names(ref)
-    namez[2:length(namez)] <- paste(",", namez[2:length(namez)])
-    
-    cat("\n",
-        "Training documents per class:", 
-        paste0(interleave(paste0(namez, ": "), as.integer(ref)), collapse = ""), "; ",
-        "total training features: ", nrow(x$p), "\n",
-        sep = "")
-}
-
-#' @rdname textmodel-internal
-#' @keywords internal
-#' @export
 #' @method print predict.textmodel_affinity
+#' @export
 print.predict.textmodel_affinity <- function(x, ...) {
     print(unclass(x))
 }
 
-
-#' @noRd
+#' @rdname predict.textmodel_affinity
 #' @method coef predict.textmodel_affinity
+#' @return \code{coef()} returns a document \eqn{\times} class matrix of class
+#'   affinities for each document.
 #' @export
 coef.predict.textmodel_affinity <- function(object, ...) {
     object$coefficients
 }
 
-#' @noRd
 #' @method coefficients predict.textmodel_affinity
 #' @export
 coefficients.predict.textmodel_affinity <- function(object, ...) {
     UseMethod("coef")   
 }
 
-
-#' @rdname textmodel-internal
+#' @rdname predict.textmodel_affinity
+#' @return 
+#' \code{residuals()} returns a document-by-feature matrix of residuals.
+#' \code{resid()} is an alias.
 #' @method residuals predict.textmodel_affinity
-#' @keywords internal
 #' @param type see \link{residuals.lm}
+#' @importFrom stats residuals resid
 #' @export
 residuals.predict.textmodel_affinity <- function(object, type = c("response", "pearson"), ...) {
           
@@ -513,63 +523,57 @@ residuals.predict.textmodel_affinity <- function(object, type = c("response", "p
         res <- r / sqrt(expected)
     }
     res[,!object$support] <- NA
-    res
+    as.matrix(res)
 }
 
-#' @rdname textmodel-internal
-#' @keywords internal
 #' @export
-resid <- function(object, ...) {
-    UseMethod('rstandard', ...)
+#' @method resid predict.textmodel_affinity
+resid.predict.textmodel_affinity <- function(object, ...) {
+    UseMethod("residuals", ...)
 }
 
-#' @rdname textmodel-internal
-#' @keywords internal
+#' @rdname predict.textmodel_affinity
 #' @method rstandard predict.textmodel_affinity
+#' @return \code{rstandard()} is a shortcut to return the pearson residuals.
 #' @importFrom stats rstandard sd
 #' @export
 rstandard.predict.textmodel_affinity <- function(model, ...) {
     residuals(model, type = "pearson")
 }
 
-# compute chi^2 goodness of fit
-gof_chi2 <- function(x) {
-    UseMethod("gof_chi2")
-}
-gof_chi2.predict.textmodel_affinity <- function(x) {
-    rowSums(rstandard(x)[,x$support,drop=FALSE]^2)
-}
 
+# ============== Influence methods =============
 
 #' Compute feature influence from a predicted textmodel_affinity object
 #'
 #' Computes the influence of features on scaled \link{textmodel_affinity}
 #' applications.
-#' @param model a fitted \link{textmodel_affinity} object
+#' @param model a predicted
+#'   \link[=predict.textmodel_affinity]{textmodel_affinity} object
 #' @param subset whether to use all data or a subset (for instance, exclude the
 #'   training set)
 #' @param ... unused
 #' @seealso \code{\link{influence.lm}}
-#' @keywords textmodel_affinity
+#' @keywords textmodel internal
 #' @importFrom stats influence
 #' @method influence predict.textmodel_affinity
 #' @import Matrix
 #' @export
 influence.predict.textmodel_affinity <- function(model, subset = !train, ...) {
     # subset/training set
-    train <- model@train
+    train <- model$train
     
     # reference distributions
-    p <- model@p
+    p <- model$p
     levels <- colnames(p)
-    support <- model@support
+    support <- model$support
     
     # class affinity estimates
-    theta <- model@coefficients[subset,,drop=FALSE]
-    cov <- model@cov[,,subset,drop=FALSE]
+    theta <- model$coefficients[subset,,drop=FALSE]
+    cov <- model$cov[,,subset,drop=FALSE]
     
     # data
-    x <- model@newdata[subset,]
+    x <- model$newdata[subset,]
     x[,!support] <- 0
     x <- as(t(x), "dgCMatrix")
     nword <- nrow(x)
@@ -577,7 +581,7 @@ influence.predict.textmodel_affinity <- function(model, subset = !train, ...) {
     ntext <- ncol(x)
     texts <- colnames(x)
     
-    val <- x@x
+    val <- x$x
     row_ind <- x@i + 1 # switch from 0- to 1-based indexing
     col_ptr <- x@p + 1 #
     
@@ -633,23 +637,28 @@ influence.predict.textmodel_affinity <- function(model, subset = !train, ...) {
     res <- list(norm = norm, count = count, rate = rate,
                 mode = mode, levels = levels, subset = subset,
                 support = support)
-    class(res) <- "affinity_influence"
+    class(res) <- "influence.predict.textmodel_affinity"
     res
 }
 
-#' @rdname textmodel-internal
-#' @method print affinity_influence
+#' @title Internal methods for textmodel_affinity
+#' @description Internal print and summary methods for derivative
+#'   \link{textmodel_affinity} objects.
+#' @name textmodel_affinity-internal
+#' @keywords textmodel internal
+#' @method print influence.predict.textmodel_affinity
+#' @param n how many coefficients to print before truncating
 #' @export
-print.affinity_influence <- function(x, n = 30, ...) {
+print.influence.predict.textmodel_affinity <- function(x, n = 30, ...) {
     ans <- summary(x, ...)
     print(ans, n)
 }
 
-#' @rdname textmodel-internal
-#' @method summary affinity_influence
+#' @rdname textmodel_affinity-internal
+#' @method summary influence.predict.textmodel_affinity
 #' @importFrom stats median
 #' @export
-summary.affinity_influence <- function(object, ...) {
+summary.influence.predict.textmodel_affinity <- function(object, ...) {
     norm <- object$norm
     ntext <- nrow(norm)
     nword <- ncol(norm)
@@ -719,14 +728,15 @@ summary.affinity_influence <- function(object, ...) {
                    direction = max_dir,
                    rate = med_rate,
                    support = object$support)
-    class(result) <- "summary.affinity_influence"
+    class(result) <- "summary.influence.predict.textmodel_affinity"
     result
 }
 
-#' @rdname textmodel-internal
-#' @method print summary.affinity_influence
+#' @rdname textmodel_affinity-internal
+#' @method print summary.influence.predict.textmodel_affinity
+#' @param n how many coefficients to print before truncating
 #' @export
-print.summary.affinity_influence <- function(x, n = 30, ...) {
+print.summary.influence.predict.textmodel_affinity <- function(x, n = 30, ...) {
     ix <- sort(x$median, decreasing = TRUE, index.return = TRUE)$ix
     influence <- x$median[ix]
     
@@ -752,6 +762,14 @@ print.summary.affinity_influence <- function(x, n = 30, ...) {
 
 
 # ========= Internal functions =========
+
+# compute chi^2 goodness of fit
+gof_chi2 <- function(x) {
+    UseMethod("gof_chi2")
+}
+gof_chi2.predict.textmodel_affinity <- function(x) {
+    rowSums(rstandard(x)[,x$support,drop=FALSE]^2)
+}
 
 # function to interleave two vector objects
 # Example:

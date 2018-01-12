@@ -4,7 +4,8 @@
 \alias{textmodel_affinity}
 \title{Class affinity maximum likelihood text scaling model}
 \usage{
-textmodel_affinity(x, y, exclude = NULL, smooth = 0.5, ref_smooth = 0.5)
+textmodel_affinity(x, y, exclude = NULL, smooth = 0.5, ref_smooth = 0.5,
+  verbose = TRUE)
 }
 \arguments{
 \item{x}{the \link{dfm} or \link{bootstrap_dfm} object on which the model
@@ -45,8 +46,13 @@ Perry, Patrick O. and Kenneth Benoit.  (2017) "Scaling Text with
   the Class Affinity Model".
   \href{http://arxiv.org/abs/1710.08963}{arXiv:1710.08963 [stat.ML]}.
 }
+\seealso{
+\code{\link{predict.textmodel_affinity}} for methods of applying a
+  fitted \link{textmodel_affinity} model. object to predict quantities from
+  (other) documents.
+}
 \author{
-Patrick Perry
+Patrick Perry and Kenneth Benoit
 }
 \keyword{experimental}
 \keyword{textmodel}

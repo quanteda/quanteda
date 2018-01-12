@@ -18,3 +18,5 @@
 \description{
 print method for summary.textmodel
 }
+\keyword{internal}
+\keyword{textmodel}

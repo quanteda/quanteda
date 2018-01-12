@@ -7,7 +7,8 @@
 \method{influence}{predict.textmodel_affinity}(model, subset = !train, ...)
 }
 \arguments{
-\item{model}{a fitted \link{textmodel_affinity} object}
+\item{model}{a predicted
+\link[=predict.textmodel_affinity]{textmodel_affinity} object}
 
 \item{subset}{whether to use all data or a subset (for instance, exclude the
 training set)}
@@ -21,4 +22,5 @@ applications.
 \seealso{
 \code{\link{influence.lm}}
 }
-\keyword{textmodel_affinity}
+\keyword{internal}
+\keyword{textmodel}
