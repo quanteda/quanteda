@@ -107,7 +107,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/kbenoit/quanteda">
+  <a href="https://github.com/quanteda/quanteda">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -191,11 +191,11 @@ ch_fcm &lt;-<span class="st"> </span><span class="kw"><a href="../../../referenc
 <div id="unsupervised-document-scaling" class="section level2">
 <h2 class="hasAnchor">
 <a href="#unsupervised-document-scaling" class="anchor"></a>Unsupervised document scaling</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ch_dfm)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(ch_dfm)
 y &lt;-<span class="st"> </span><span class="dv">1954</span><span class="op">:</span><span class="dv">2017</span>
 y &lt;-<span class="st"> </span>y[y <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1964</span> <span class="op">|</span><span class="st"> </span>y <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1975</span>]
 y &lt;-<span class="st"> </span>y[<span class="op">!</span>y <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1963</span>, <span class="dv">1961</span>, <span class="dv">1962</span>, <span class="dv">1976</span>, <span class="dv">1977</span>)]
-<span class="kw">plot</span>(y, wfm<span class="op">@</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</code></pre></div>
+<span class="kw">plot</span>(y, wf<span class="op">$</span>theta, <span class="dt">xlab =</span> <span class="st">"Year"</span>, <span class="dt">ylab =</span> <span class="st">"Position"</span>)</code></pre></div>
 <p><img src="chinese_files/figure-html/fig2-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="collocations" class="section level2">

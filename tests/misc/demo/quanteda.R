@@ -68,10 +68,10 @@ presDfm <- dfm(inaugCorpus, groups="President")
 presDfm
 docnames(presDfm)
 
-# need first to install quantedaData, using
+# need first to install quanteda.corpora, using
 # devtools::install_github("quanteda/quanteda.corpora")
 ## show some selection capabilities on Irish budget corpus
-data(iebudgetsCorpus, package = "quantedaData")
+data(iebudgetsCorpus, package = "quanteda.corpora")
 summary(iebudgetsCorpus, 10)
 ieFinMin <- corpus_subset(iebudgetsCorpus, number=="01" & debate == "BUDGET")
 summary(ieFinMin)
@@ -81,7 +81,7 @@ plot(2008:2012, textstat_lexdiv(dfmFM, "C"), xlab="Year", ylab="Herndan's C", ty
 
 
 # plot some readability statistics
-data(SOTUCorpus, package = "quantedaData")
+data(SOTUCorpus, package = "quanteda.corpora")
 fk <- textstat_readability(SOTUCorpus, "Flesch.Kincaid")
 year <- lubridate::year(docvars(SOTUCorpus, "Date"))
 require(ggplot2)
