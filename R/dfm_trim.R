@@ -1,49 +1,49 @@
 #' Trim a dfm using frequency threshold-based feature selection
-#' 
-#' Returns a document by feature matrix reduced in size based on document and 
+#'
+#' Returns a document by feature matrix reduced in size based on document and
 #' term frequency, usually in terms of a minimum frequencies, but may also be in
-#' terms of maximum frequencies.  Setting a combination of minimum and maximum 
+#' terms of maximum frequencies.  Setting a combination of minimum and maximum
 #' frequencies will select features based on a range.
 #' @param x a \link{dfm} object
-#' @param min_count,max_count minimum/maximum count or percentile of features across all documents,
-#'   below/above which features will be removed
-#' @param min_docfreq,max_docfreq minimum/maximum number or fraction of documents in which a feature
-#'   appears, below/above which features will be removed
+#' @param min_count,max_count minimum/maximum count or percentile frequency of
+#'   features across all documents, below/above which features will be removed
+#' @param min_docfreq,max_docfreq minimum/maximum number or fraction of
+#'   documents in which a feature appears, below/above which features will be
+#'   removed
 #' @param sparsity equivalent to 1 - min_docfreq, included for comparison with
 #'   \pkg{tm}
 #' @param verbose print messages
-#' @return A \link{dfm} reduced in features (with the same number 
-#'   of documents)
+#' @return A \link{dfm} reduced in features (with the same number of documents)
 #' @export
 #' @note Trimming a \link{dfm} object is an operation based on the \emph{values}
-#'   in the document-feature matrix.  To select subsets of a dfm based on
-#'   the features themselves (meaning the feature labels from \code{\link{featnames}}) -- such as those   
-#'   matching a regular expression, or removing features matching a stopword 
-#'   list, use \code{\link{dfm_select}}.
+#'   in the document-feature matrix.  To select subsets of a dfm based on the
+#'   features themselves (meaning the feature labels from
+#'   \code{\link{featnames}}) -- such as those matching a regular expression, or
+#'   removing features matching a stopword list, use \code{\link{dfm_select}}.
 #' @seealso \code{\link{dfm_select}}, \code{\link{dfm_sample}}
 #' @examples
 #' (myDfm <- dfm(data_corpus_inaugural[1:5]))
-#' 
+#'
 #' # keep only words occurring >=10 times and in >=2 documents
-#' dfm_trim(myDfm, min_count = 10, min_docfreq = 2) 
-#' 
+#' dfm_trim(myDfm, min_count = 10, min_docfreq = 2)
+#'
 #' # keep only words occurring >=10 times and in at least 0.4 of the documents
 #' dfm_trim(myDfm, min_count = 10, min_docfreq = 0.4)
-#' 
+#'
 #' # keep only words occurring <=10 times and in <=2 documents
-#' dfm_trim(myDfm, max_count = 10, max_docfreq = 2) 
-#' 
+#' dfm_trim(myDfm, max_count = 10, max_docfreq = 2)
+#'
 #' # keep only words occurring <=10 times and in at most 3/4 of the documents
 #' dfm_trim(myDfm, max_count = 10, max_docfreq = 0.75)
 #'
 #' # keep only words occurring frequently (top 20%) and in <=2 documents
 #' dfm_trim(myDfm, min_count = 0.8, max_docfreq = 2)
-#' 
+#'
 #' # keep only words occurring 5 times in 1000, and in 2 of 5 of documents
 #' dfm_trim(myDfm, min_docfreq = 0.4, min_count = 0.005)
-#' 
+#'
 #' \dontrun{
-#' # compare to removeSparseTerms from the tm package 
+#' # compare to removeSparseTerms from the tm package
 #' (myDfmTM <- convert(myDfm, "tm"))
 #' tm::removeSparseTerms(myDfmTM, 0.7)
 #' dfm_trim(myDfm, min_docfreq = 0.3)
