@@ -2,13 +2,15 @@
 #' 
 #' Plot the results of a fitted scaling model, from (e.g.) a predicted 
 #' \link{textmodel_affinity} model.
-#' @param x the fitted or predicted scaling model object to be plotted
+#' @param x the object output from `influence()` run on the 
+#'   fitted or predicted scaling model object to be plotted
 #' @param n the number of features whose influence will be plotted
 #' @param ... additional arguments passed to \code{\link{plot}}
 #' @seealso \code{\link{textmodel_affinity}}
 #' @importFrom graphics plot
 #' @export
 #' @author Patrick Perry and Kenneth Benoit
+#' @seealso \code{\link{influence.predict.textmodel_affinity}}
 #' @keywords textplot
 #' @examples
 #' af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
