@@ -7,7 +7,8 @@
 textplot_influence(x, n = 30, ...)
 }
 \arguments{
-\item{x}{the fitted or predicted scaling model object to be plotted}
+\item{x}{the object output from `influence()` run on the 
+fitted or predicted scaling model object to be plotted}
 
 \item{n}{the number of features whose influence will be plotted}
 
@@ -17,8 +18,15 @@ textplot_influence(x, n = 30, ...)
 Plot the results of a fitted scaling model, from (e.g.) a predicted 
 \link{textmodel_affinity} model.
 }
+\examples{
+af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
+afpred <- predict(af) 
+textplot_influence(influence(afpred))
+}
 \seealso{
 \code{\link{textmodel_affinity}}
+
+\code{\link{influence.predict.textmodel_affinity}}
 }
 \author{
 Patrick Perry and Kenneth Benoit

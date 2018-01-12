@@ -2,15 +2,9 @@
 % Please edit documentation in R/textmodel_lsa.R
 \name{textmodel_lsa}
 \alias{textmodel_lsa}
-\alias{predict.textmodel_lsa_fitted}
-\alias{as.dfm.textmodel_lsa_fitted}
 \title{Latent Semantic Analysis}
 \usage{
 textmodel_lsa(x, nd = 10, margin = c("both", "documents", "features"))
-
-\method{predict}{textmodel_lsa_fitted}(object, newdata = NULL, ...)
-
-\method{as.dfm}{textmodel_lsa_fitted}(x)
 }
 \arguments{
 \item{x}{the \link{dfm} on which the model will be fit}
@@ -18,17 +12,10 @@ textmodel_lsa(x, nd = 10, margin = c("both", "documents", "features"))
 \item{nd}{the number of dimensions to be included in output}
 
 \item{margin}{margin to be smoothed by the SVD}
-
-\item{object}{previously fitted lsa space}
-
-\item{newdata}{new matrix to be transformed into the lsa space}
 }
 \description{
 Fit the Latent Semantic Analysis scaling model to a \link{dfm}, which may be
-weighted (for instance using \code{\link{tfidf}}).
-
-\code{predict} for fitted textmodel_lsa objects projects the patterns onto
-new data.
+weighted (for instance using \code{\link{dfm_tfidf}}).
 }
 \details{
 \link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
@@ -66,9 +53,11 @@ Rosario, Barbara.  2000.
   by latent semantic analysis}". \emph{Journal of the American society for 
   information science} 41(6), 391.
 }
+\seealso{
+\code{\link{predict.textmodel_lsa}}, \code{\link{coef.textmodel_lsa}}
+}
 \author{
 Haiyan Wang and Kohei Watanabe
 }
 \keyword{experimental}
-\keyword{internal}
 \keyword{textmodel}

@@ -154,19 +154,10 @@
 
     
     <p>Fit the Latent Semantic Analysis scaling model to a <a href='dfm.html'>dfm</a>, which may be
-weighted (for instance using <code><a href='tfidf.html'>tfidf</a></code>).
-
-    <code>predict</code> for fitted textmodel_lsa objects projects the patterns onto
-new data.</p>
+weighted (for instance using <code><a href='dfm_tfidf.html'>dfm_tfidf</a></code>).</p>
     
 
-    <pre class="usage"><span class='fu'>textmodel_lsa</span>(<span class='no'>x</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"both"</span>, <span class='st'>"documents"</span>, <span class='st'>"features"</span>))
-
-<span class='co'># S3 method for textmodel_lsa_fitted</span>
-<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for textmodel_lsa_fitted</span>
-<span class='fu'><a href='is.dfm.html'>as.dfm</a></span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>textmodel_lsa</span>(<span class='no'>x</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"both"</span>, <span class='st'>"documents"</span>, <span class='st'>"features"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -182,14 +173,6 @@ new data.</p>
     <tr>
       <th>margin</th>
       <td><p>margin to be smoothed by the SVD</p></td>
-    </tr>
-    <tr>
-      <th>object</th>
-      <td><p>previously fitted lsa space</p></td>
-    </tr>
-    <tr>
-      <th>newdata</th>
-      <td><p>new matrix to be transformed into the lsa space</p></td>
     </tr>
     </table>
     
@@ -215,6 +198,10 @@ new data.</p>
   "<a href='http://search.proquest.com/openview/a1907164bd88dfc38a4875b73a3f7b3d/1?pq-origsite=gscholar&amp;cbl=1818555'>Indexing
   by latent semantic analysis</a>". <em>Journal of the American society for 
   information science</em> 41(6), 391.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='textmodel_lsa-postestimation.html'>predict.textmodel_lsa</a></code>, <code><a href='textmodel_lsa-postestimation.html'>coef.textmodel_lsa</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -289,6 +276,8 @@ new data.</p>
       <li><a href="#note">Note</a></li>
 
       <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

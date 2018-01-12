@@ -158,7 +158,7 @@ scaling method described in Perry and Benoit (2017).</p>
     
 
     <pre class="usage"><span class='fu'>textmodel_affinity</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>ref_smooth</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -201,37 +201,217 @@ fitting.</p></td>
   the Class Affinity Model".
   <a href='http://arxiv.org/abs/1710.08963'>arXiv:1710.08963 [stat.ML]</a>.</p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='predict.textmodel_affinity.html'>predict.textmodel_affinity</a></code> for methods of applying a
+  fitted textmodel_affinity model. object to predict quantities from
+  (other) documents.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>fitted</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_affinity</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"L"</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>, <span class='st'>"R"</span>, <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; Call:	
+    <pre class="examples"><div class='input'>(<span class='no'>af</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_affinity</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"L"</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>, <span class='st'>"R"</span>, <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; Call:
 #&gt; textmodel_affinity.dfm(x = data_dfm_lbgexample, y = c("L", NA, 
 #&gt;     NA, NA, "R", NA))
 #&gt; 
-#&gt;     Training documents per class: L: 1, R: 1
-#&gt;          Total training features: 37</div><div class='input'><span class='fu'>predict</span>(<span class='no'>fitted</span>)</div><div class='output co'>#&gt; Predicted textmodel of type: affinity
+#&gt; Training documents per class:L: 1, R: 1; total training features: 37</div><div class='input'><span class='fu'>predict</span>(<span class='no'>af</span>)</div><div class='output co'>#&gt; $coefficients
+#&gt;               L            R
+#&gt; R1 0.9994964426 0.0005035574
+#&gt; R2 0.9994114959 0.0005885041
+#&gt; R3 0.5000000000 0.5000000000
+#&gt; R4 0.0005885041 0.9994114959
+#&gt; R5 0.0005035574 0.9994964426
+#&gt; V1 0.9986670961 0.0013329039
 #&gt; 
-#&gt; Estimated coefficients:
+#&gt; $se
+#&gt;               L            R
+#&gt; R1 0.0007119597 0.0007119597
+#&gt; R2 0.0008319957 0.0008319957
+#&gt; R3 0.0273371117 0.0273371117
+#&gt; R4 0.0008319957 0.0008319957
+#&gt; R5 0.0007119597 0.0007119597
+#&gt; V1 0.0018655335 0.0018655335
 #&gt; 
-#&gt;          L    s.e.       R    s.e.    chi2
-#&gt; R1 0.99950 0.00071 0.00050 0.00071     9.3
-#&gt; R2 0.99941 0.00083 0.00059 0.00083  9415.8
-#&gt; R3 0.50000 0.02734 0.50000 0.02734 24864.5
-#&gt; R4 0.00059 0.00083 0.99941 0.00083  9415.8
-#&gt; R5 0.00050 0.00071 0.99950 0.00071     9.3
-#&gt; V1 0.99867 0.00187 0.00133 0.00187 19458.5
+#&gt; $cov
+#&gt; , , R1
 #&gt; 
-#&gt; Some diagnostics here about how many words were not found in training vocabulary.</div><div class='input'><span class='fu'>predict</span>(<span class='no'>fitted</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='no'>data_dfm_lbgexample</span>[<span class='fl'>6</span>, ])</div><div class='output co'>#&gt; Predicted textmodel of type: affinity
+#&gt;               L             R
+#&gt; L  5.068867e-07 -5.068867e-07
+#&gt; R -5.068867e-07  5.068867e-07
 #&gt; 
-#&gt; Estimated coefficients:
+#&gt; , , R2
 #&gt; 
-#&gt;    L   s.e.      R   s.e.  chi2
-#&gt; V1 1 0.0019 0.0013 0.0019 19459
+#&gt;               L             R
+#&gt; L  6.922169e-07 -6.922169e-07
+#&gt; R -6.922169e-07  6.922169e-07
 #&gt; 
-#&gt; Some diagnostics here about how many words were not found in training vocabulary.</div><div class='input'>
+#&gt; , , R3
+#&gt; 
+#&gt;               L             R
+#&gt; L  0.0007473177 -0.0007473177
+#&gt; R -0.0007473177  0.0007473177
+#&gt; 
+#&gt; , , R4
+#&gt; 
+#&gt;               L             R
+#&gt; L  6.922169e-07 -6.922169e-07
+#&gt; R -6.922169e-07  6.922169e-07
+#&gt; 
+#&gt; , , R5
+#&gt; 
+#&gt;               L             R
+#&gt; L  5.068867e-07 -5.068867e-07
+#&gt; R -5.068867e-07  5.068867e-07
+#&gt; 
+#&gt; , , V1
+#&gt; 
+#&gt;               L             R
+#&gt; L  3.480215e-06 -3.480215e-06
+#&gt; R -3.480215e-06  3.480215e-06
+#&gt; 
+#&gt; 
+#&gt; $smooth
+#&gt; [1] 0.5 0.5
+#&gt; 
+#&gt; $newdata
+#&gt; Document-feature matrix of: 6 documents, 37 features (54.1% sparse).
+#&gt; 
+#&gt; $train
+#&gt; [1]  TRUE FALSE FALSE FALSE  TRUE FALSE
+#&gt; 
+#&gt; $level
+#&gt; [1] 0.95
+#&gt; 
+#&gt; $p
+#&gt; 37 x 2 sparse Matrix of class "dgCMatrix"
+#&gt;         docs
+#&gt; features            L            R
+#&gt;       a  0.0024582104 0.0004916421
+#&gt;       b  0.0034414946 0.0004916421
+#&gt;       c  0.0103244838 0.0004916421
+#&gt;       d  0.0221238938 0.0004916421
+#&gt;       e  0.0447394297 0.0004916421
+#&gt;       f  0.0771878073 0.0004916421
+#&gt;       g  0.1135693215 0.0004916421
+#&gt;       h  0.1440511308 0.0004916421
+#&gt;       i  0.1558505408 0.0004916421
+#&gt;       j  0.1440511308 0.0004916421
+#&gt;       k  0.1135693215 0.0004916421
+#&gt;       l  0.0771878073 0.0004916421
+#&gt;       m  0.0447394297 0.0004916421
+#&gt;       n  0.0221238938 0.0004916421
+#&gt;       o  0.0103244838 0.0004916421
+#&gt;       p  0.0034414946 0.0004916421
+#&gt;       q  0.0024582104 0.0004916421
+#&gt;       r  .            .           
+#&gt;       s  .            .           
+#&gt;       t  .            .           
+#&gt;       u  0.0004916421 0.0024582104
+#&gt;       v  0.0004916421 0.0034414946
+#&gt;       w  0.0004916421 0.0103244838
+#&gt;       x  0.0004916421 0.0221238938
+#&gt;       y  0.0004916421 0.0447394297
+#&gt;       z  0.0004916421 0.0771878073
+#&gt;       za 0.0004916421 0.1135693215
+#&gt;       zb 0.0004916421 0.1440511308
+#&gt;       zc 0.0004916421 0.1558505408
+#&gt;       zd 0.0004916421 0.1440511308
+#&gt;       ze 0.0004916421 0.1135693215
+#&gt;       zf 0.0004916421 0.0771878073
+#&gt;       zg 0.0004916421 0.0447394297
+#&gt;       zh 0.0004916421 0.0221238938
+#&gt;       zi 0.0004916421 0.0103244838
+#&gt;       zj 0.0004916421 0.0034414946
+#&gt;       zk 0.0004916421 0.0024582104
+#&gt; 
+#&gt; $support
+#&gt;     a     b     c     d     e     f     g     h     i     j     k     l     m 
+#&gt;  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE 
+#&gt;     n     o     p     q     r     s     t     u     v     w     x     y     z 
+#&gt;  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE 
+#&gt;    za    zb    zc    zd    ze    zf    zg    zh    zi    zj    zk 
+#&gt;  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE 
+#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>af</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='no'>data_dfm_lbgexample</span>[<span class='fl'>6</span>, ])</div><div class='output co'>#&gt; $coefficients
+#&gt;            L           R
+#&gt; V1 0.9986671 0.001332904
+#&gt; 
+#&gt; $se
+#&gt;              L           R
+#&gt; V1 0.001865533 0.001865533
+#&gt; 
+#&gt; $cov
+#&gt; , , V1
+#&gt; 
+#&gt;               L             R
+#&gt; L  3.480215e-06 -3.480215e-06
+#&gt; R -3.480215e-06  3.480215e-06
+#&gt; 
+#&gt; 
+#&gt; $smooth
+#&gt; [1] 0.5 0.5
+#&gt; 
+#&gt; $newdata
+#&gt; Document-feature matrix of: 1 document, 37 features (54.1% sparse).
+#&gt; 
+#&gt; $train
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $level
+#&gt; [1] 0.95
+#&gt; 
+#&gt; $p
+#&gt; 37 x 2 sparse Matrix of class "dgCMatrix"
+#&gt;         docs
+#&gt; features            L            R
+#&gt;       a  0.0024582104 0.0004916421
+#&gt;       b  0.0034414946 0.0004916421
+#&gt;       c  0.0103244838 0.0004916421
+#&gt;       d  0.0221238938 0.0004916421
+#&gt;       e  0.0447394297 0.0004916421
+#&gt;       f  0.0771878073 0.0004916421
+#&gt;       g  0.1135693215 0.0004916421
+#&gt;       h  0.1440511308 0.0004916421
+#&gt;       i  0.1558505408 0.0004916421
+#&gt;       j  0.1440511308 0.0004916421
+#&gt;       k  0.1135693215 0.0004916421
+#&gt;       l  0.0771878073 0.0004916421
+#&gt;       m  0.0447394297 0.0004916421
+#&gt;       n  0.0221238938 0.0004916421
+#&gt;       o  0.0103244838 0.0004916421
+#&gt;       p  0.0034414946 0.0004916421
+#&gt;       q  0.0024582104 0.0004916421
+#&gt;       r  .            .           
+#&gt;       s  .            .           
+#&gt;       t  .            .           
+#&gt;       u  0.0004916421 0.0024582104
+#&gt;       v  0.0004916421 0.0034414946
+#&gt;       w  0.0004916421 0.0103244838
+#&gt;       x  0.0004916421 0.0221238938
+#&gt;       y  0.0004916421 0.0447394297
+#&gt;       z  0.0004916421 0.0771878073
+#&gt;       za 0.0004916421 0.1135693215
+#&gt;       zb 0.0004916421 0.1440511308
+#&gt;       zc 0.0004916421 0.1558505408
+#&gt;       zd 0.0004916421 0.1440511308
+#&gt;       ze 0.0004916421 0.1135693215
+#&gt;       zf 0.0004916421 0.0771878073
+#&gt;       zg 0.0004916421 0.0447394297
+#&gt;       zh 0.0004916421 0.0221238938
+#&gt;       zi 0.0004916421 0.0103244838
+#&gt;       zj 0.0004916421 0.0034414946
+#&gt;       zk 0.0004916421 0.0024582104
+#&gt; 
+#&gt; $support
+#&gt;     a     b     c     d     e     f     g     h     i     j     k     l     m 
+#&gt;  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE 
+#&gt;     n     o     p     q     r     s     t     u     v     w     x     y     z 
+#&gt;  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE 
+#&gt;    za    zb    zc    zd    ze    zf    zg    zh    zi    zj    zk 
+#&gt;  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE 
+#&gt; </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># compute bootstrapped SEs</span>
-<span class='no'>bsdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bootstrap_dfm.html'>bootstrap_dfm</a></span>(<span class='no'>data_corpus_dailnoconf1991</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>textmodel_affinity</span>(<span class='no'>bsdfm</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Govt"</span>, <span class='st'>"Opp"</span>, <span class='st'>"Opp"</span>, <span class='fu'>rep</span>(<span class='fl'>NA</span>, <span class='fl'>55</span>)))
+<span class='no'>bs_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bootstrap_dfm.html'>bootstrap_dfm</a></span>(<span class='no'>data_corpus_dailnoconf1991</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>textmodel_affinity</span>(<span class='no'>bs_dfm</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Govt"</span>, <span class='st'>"Opp"</span>, <span class='st'>"Opp"</span>, <span class='fu'>rep</span>(<span class='fl'>NA</span>, <span class='fl'>55</span>)))
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -240,13 +420,15 @@ fitting.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
 
     <h2>Author</h2>
     
-Patrick Perry
+Patrick Perry and Kenneth Benoit
 
   </div>
 </div>
