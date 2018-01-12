@@ -49,6 +49,7 @@
 #' dfm_trim(myDfm, min_docfreq = 0.3)
 #' dfm_trim(myDfm, sparsity = 0.7)
 #' }
+#' 
 #' @export
 dfm_trim <- function(x, min_count = 1, min_docfreq = 1, 
                      max_count = NULL, max_docfreq = NULL, 
