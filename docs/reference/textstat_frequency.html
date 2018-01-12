@@ -95,10 +95,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
+      <a href="../articles/pkgdown/examples/phrase.html">Multi-word expressions</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/plotting.html">Textual data visualization</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
@@ -110,7 +113,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Replication
+    Replications
      
     <span class="caret"></span>
   </a>
@@ -225,8 +228,8 @@ column is omitted from the returned data.frame.</p></dd>
 #&gt; 9  america        14    9       2   all
 #&gt; 10     now        11   10       2   all</div><div class='input'>
 </div><div class='input'><span class='co'># plot 20 most frequent words</span>
-<span class='fu'>library</span>(<span class='st'>"ggplot2"</span>)
-<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>freq</span>[<span class='fl'>1</span>:<span class='fl'>20</span>, ], <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>reorder</span>(<span class='no'>feature</span>, <span class='no'>frequency</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>frequency</span>)) +
+<span class='fu'>library</span>(<span class='st'>"ggplot2"</span>)</div><div class='output co'>#&gt; <span class='message'>Find out what's changed in ggplot2 at</span>
+#&gt; <span class='message'>http://github.com/tidyverse/ggplot2/releases.</span></div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>freq</span>[<span class='fl'>1</span>:<span class='fl'>20</span>, ], <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>reorder</span>(<span class='no'>feature</span>, <span class='no'>frequency</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>frequency</span>)) +
     <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></span>() +
     <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/coord_flip'>coord_flip</a></span>() +
     <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Frequency"</span>)</div><div class='img'><img src='textstat_frequency-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
