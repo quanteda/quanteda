@@ -1,0 +1,106 @@
+---
+title: "Replication: word embedding (gloVe/word2vec)"
+author: Kenneth Benoit, Haiyan Wang and Kohei Watanabe
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, 
+                      comment = "##")
+```
+
+    
+```{r, message = FALSE}
+library(quanteda)
+```
+
+This is intended to show how **quanteda** can be used with the [**text2vec**](http://text2vec.org) package in order to replicate its [gloVe example](http://text2vec.org/glove.html).
+
+## Download the corpus
+
+Download a corpus comprised of the texts used in the [**text2vec** vignette](http://text2vec.org/glove.html):
+```{r eval = TRUE}
+wiki_corp <- quanteda.corpora::download(url = 'https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1')
+```
+
+## Select features
+
+First, we tokenize the corpus, and then get the names of the features that occur five times or more.
+Trimming the features before constructing the fcm:
+```{r}
+wiki_toks <- tokens(wiki_corp)
+feats <- dfm(wiki_toks, verbose = TRUE) %>% 
+    dfm_trim(min_count = 5) %>%
+    featnames()
+
+# leave the pads so that non-adjacent words will not become adjacent
+wiki_toks <- tokens_select(wiki_toks, feats, padding = TRUE)
+```
+
+## Construct the feature co-occurrence matrix
+
+```{r}
+wiki_fcm <- fcm(wiki_toks, context = "window", count = "weighted", weights = 1 / (1:5), tri = TRUE)
+```
+
+## Fit word embedding model
+
+Fit the [GloVe model](https://nlp.stanford.edu/pubs/glove.pdf) using [**text2vec**](http://text2vec.org).
+
+```{r, message = FALSE}
+library(text2vec)
+```
+
+GloVe is an unsupervised learning algorithm for obtaining vector representations for words. Training is performed on aggregated global word-word co-occurrence statistics from a corpus, and the resulting representations showcase interesting linear substructures of the word vector space.
+
+GloVe encodes the ratios of word-word co-occurrence probabilities, which is thought to represent some crude form of meaning associated with the abstract concept of the word, as vector difference. The training objective of GloVe is to learn word vectors such that their dot product equals the logarithm of the words' probability of co-occurrence.  
+
+```{r, cache=TRUE}
+glove <- GlobalVectors$new(word_vectors_size = 50, vocabulary = featnames(wiki_fcm), x_max = 10)
+wiki_main <- fit_transform(wiki_fcm, glove, n_iter = 20)
+```
+
+## Averaging learned word vectors
+
+The two vectors are main and context. According to the Glove paper, averaging the two word vectors results in more accurate representation.
+
+```{r}
+wiki_context <- glove$components
+dim(wiki_context)
+
+wiki_vectors = wiki_main + t(wiki_context)
+```
+
+## Examining term representations
+
+Now we can find the closest word vectors for `paris - france + germany`
+
+```{r}
+berlin <-  wiki_vectors["paris", , drop = FALSE] - 
+    wiki_vectors["france", , drop = FALSE] + 
+    wiki_vectors["germany", , drop = FALSE]
+
+# calculate the similarity
+wiki_vector_dfm <- as.dfm(rbind(wiki_vectors, berlin))
+wiki_vector_dfm@Dimnames$docs[dim(wiki_vector_dfm)[1]] <- "new_berlin"
+cos_sim <-  textstat_simil(wiki_vector_dfm, "new_berlin", 
+                           margin = "documents", method= "cosine")
+head(sort(cos_sim[,1], decreasing = TRUE), 5)
+```
+
+Here is another example for `london = paris - france + uk + england`
+
+```{r}
+london <-  wiki_vectors["paris", , drop = FALSE] - 
+    wiki_vectors["france", , drop = FALSE] + 
+    wiki_vectors["uk", , drop = FALSE] + 
+    wiki_vectors["england", , drop = FALSE] 
+
+wiki_vector_dfm <- as.dfm(rbind(wiki_vectors, london))
+wiki_vector_dfm@Dimnames$docs[dim(wiki_vector_dfm)[1]] <- "new_london"
+cos_sim <-  textstat_simil(wiki_vector_dfm, "new_london", 
+                           margin = "documents", method= "cosine")
+head(sort(cos_sim[,1], decreasing = TRUE), 5)
+```

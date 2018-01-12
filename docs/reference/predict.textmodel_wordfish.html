@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • quanteda</title>
+<title>Prediction from a textmodel_wordfish method — predict.textmodel_wordfish • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -49,7 +49,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -147,24 +147,72 @@
       </header>
 
       <div class="row">
-
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+    <h1>Prediction from a textmodel_wordfish method</h1>
     </div>
 
-    <div class="contents">
-    </div>
+    
+    <p><code>predict.textmodel_wordfish()</code> returns estimated document scores and
+confidence intervals.  The method is provided for consistency with other
+<code>textmodel_*()</code> methods, but does not currently allow prediction on
+out-of-sample data.</p>
+    
+
+    <pre class="usage"><span class='co'># S3 method for textmodel_wordfish</span>
+<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>interval</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"confidence"</span>), <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for textmodel_wordfish</span>
+<span class='fu'>coef</span>(<span class='no'>object</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"both"</span>, <span class='st'>"documents"</span>,
+  <span class='st'>"features"</span>), <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>a fitted wordfish model</p></td>
+    </tr>
+    <tr>
+      <th>se.fit</th>
+      <td><p>if <code>TRUE</code>, return standard errors as well</p></td>
+    </tr>
+    <tr>
+      <th>interval</th>
+      <td><p>type of confidence interval calculation</p></td>
+    </tr>
+    <tr>
+      <th>level</th>
+      <td><p>tolerance/confidence level for intervals</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>not used</p></td>
+    </tr>
+    <tr>
+      <th>margin</th>
+      <td><p>which margin of parameter estimates to return: both (in a
+list), or just document or feature parameters</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>coef.textmodel_wordfish()</code> returns a matrix of estimated
+  parameters coefficients for the specified margin.</p>
+    
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
+  </div>
 </div>
 
       <footer>

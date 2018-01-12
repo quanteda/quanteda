@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • quanteda</title>
+<title>Prediction from a fitted textmodel_nb object — predict.textmodel_nb • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -49,7 +49,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -147,24 +147,101 @@
       </header>
 
       <div class="row">
-
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+    <h1>Prediction from a fitted textmodel_nb object</h1>
     </div>
 
-    <div class="contents">
-    </div>
+    
+    <p><code>predict.textmodel_nb()</code> implements class predictions from a fitted
+Naive Bayes model. using trained Naive Bayes examples</p>
+    
+
+    <pre class="usage"><span class='co'># S3 method for textmodel_nb</span>
+<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>a fitted Naive Bayes textmodel</p></td>
+    </tr>
+    <tr>
+      <th>newdata</th>
+      <td><p>dfm on which prediction should be made</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>not used</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>predict.textmodel_nb</code> returns a list of two data frames, named
+  <code>docs</code> and <code>words</code> corresponding to word- and document-level
+  predicted quantities</p>
+<dt>docs</dt><dd><p>data frame with document-level predictive quantities:
+  nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc,
+  bayesscore.doc, posterior.diff, posterior.logdiff.  Note that the diff
+  quantities are currently implemented only for two-class solutions.</p></dd>
+
+<dt>words</dt><dd><p>data-frame with word-level predictive quantities: 
+wordscore.word, bayesscore.word</p></dd>
+
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># application to LBG (2003) example data</span>
+(<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_nb.html'>textmodel_nb</a></span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; 
+#&gt; Call:
+#&gt; textmodel_nb.dfm(x = data_dfm_lbgexample, y = c("A", "A", "B", 
+#&gt;     "C", "C", NA))
+#&gt; 
+#&gt; Distribution: multinomial; prior: uniform; smoothing value: 1; 5 training documents; 37 fitted features.</div><div class='input'><span class='fu'>predict</span>(<span class='no'>nb</span>)</div><div class='output co'>#&gt; $log.posterior.lik
+#&gt;            A         B         C
+#&gt; R1 -2687.853 -6472.926 -7614.264
+#&gt; R2 -2687.853 -4013.332 -7147.946
+#&gt; R3 -4671.788 -2368.923 -4671.788
+#&gt; R4 -7147.946 -4013.332 -2687.853
+#&gt; R5 -7614.264 -6472.926 -2687.853
+#&gt; V1 -3212.036 -3007.763 -6381.702
+#&gt; 
+#&gt; $posterior.prob
+#&gt;               A B C
+#&gt; R1 1.000000e+00 0 0
+#&gt; R2 1.000000e+00 0 0
+#&gt; R3 0.000000e+00 1 0
+#&gt; R4 0.000000e+00 0 1
+#&gt; R5 0.000000e+00 0 1
+#&gt; V1 1.929374e-89 1 0
+#&gt; 
+#&gt; $nb.predicted
+#&gt; [1] "A" "A" "B" "C" "C" "B"
+#&gt; 
+#&gt; $Pc
+#&gt;         A         B         C 
+#&gt; 0.3333333 0.3333333 0.3333333 
+#&gt; 
+#&gt; $classlabels
+#&gt; [1] "A" "B" "C"
+#&gt; 
+#&gt; $call
+#&gt; predict.textmodel_nb(object = nb)
+#&gt; </div></pre>
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
+  </div>
 </div>
 
       <footer>

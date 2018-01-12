@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • quanteda</title>
+<title>Compute feature influence from a predicted textmodel_affinity object — influence.predict.textmodel_affinity • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -49,7 +49,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -147,24 +147,53 @@
       </header>
 
       <div class="row">
-
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+    <h1>Compute feature influence from a predicted textmodel_affinity object</h1>
     </div>
 
-    <div class="contents">
-    </div>
+    
+    <p>Computes the influence of features on scaled <a href='textmodel_affinity.html'>textmodel_affinity</a>
+applications.</p>
+    
+
+    <pre class="usage"><span class='co'># S3 method for predict.textmodel_affinity</span>
+<span class='fu'>influence</span>(<span class='no'>model</span>, <span class='kw'>subset</span> <span class='kw'>=</span> !<span class='no'>train</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>model</th>
+      <td><p>a predicted
+<a href='predict.textmodel_affinity.html'>textmodel_affinity</a> object</p></td>
+    </tr>
+    <tr>
+      <th>subset</th>
+      <td><p>whether to use all data or a subset (for instance, exclude the
+training set)</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>unused</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code>influence.lm</code></p>
+    
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
+  </div>
 </div>
 
       <footer>

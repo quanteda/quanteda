@@ -266,55 +266,117 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
   from Textual Data Using Human Judgment as a Benchmark." <em>Political Analysis</em>
   21(3), 298-313. <a href='http://doi.org/10.1093/pan/mpt002'>http://doi.org/10.1093/pan/mpt002</a></p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='predict.textmodel_wordfish.html'>predict.textmodel_wordfish</a></code></p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>textmodel_wordfish</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>5</span>))</div><div class='output co'>#&gt; Fitted wordfish model:
+    <pre class="examples"><div class='input'>(<span class='no'>wf</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>5</span>)))</div><div class='output co'>#&gt; 
 #&gt; Call:
-#&gt; 	textmodel_wordfish.dfm(x = data_dfm_lbgexample, dir = c(1, 5))
+#&gt; textmodel_wordfish.dfm(x = data_dfm_lbgexample, dir = c(1, 5))
 #&gt; 
-#&gt; Estimated document positions:
+#&gt; Dispersion: poisson; direction: 1 &lt; 5; 6 documents; 37 features.</div><div class='input'><span class='fu'>summary</span>(<span class='no'>wf</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; 
+#&gt; Call:
+#&gt; textmodel_wordfish.dfm(x = data_dfm_lbgexample, dir = c(1, 5))
 #&gt; 
-#&gt;   Documents       theta         SE       lower      upper
-#&gt; 1        R1 -1.33144485 0.01573346 -1.36228244 -1.3006073
-#&gt; 2        R2 -0.60623679 0.01215892 -0.63006827 -0.5824053
-#&gt; 3        R3  0.06344547 0.01129481  0.04130763  0.0855833
-#&gt; 4        R4  0.70271028 0.01266384  0.67788916  0.7275314
-#&gt; 5        R5  1.50109568 0.01775619  1.46629354  1.5358978
-#&gt; 6        V1 -0.32956978 0.01194797 -0.35298781 -0.3061518
+#&gt; Estimated Document Positions:
+#&gt;       theta      se
+#&gt; R1 -1.33110 0.01573
+#&gt; R2 -0.60630 0.01215
+#&gt; R3  0.06317 0.01129
+#&gt; R4  0.70260 0.01267
+#&gt; R5  1.50140 0.01776
+#&gt; V1 -0.32977 0.01194
 #&gt; 
-#&gt; Estimated feature scores: showing first 30 beta-hats for features
+#&gt; Estimated Feature Scores:
+#&gt;           A      B      C       D       E       F       G       H      I      J
+#&gt; beta -7.407 -8.079 -9.737 -10.717 -11.586 -11.364 -11.562 -10.458 -9.736 -8.675
+#&gt; psi  -6.288 -6.540 -7.233  -7.679  -8.092  -7.234  -7.106  -5.398 -4.353 -3.015</div><div class='input'><span class='fu'>coef</span>(<span class='no'>wf</span>)</div><div class='output co'>#&gt; $documents
+#&gt;          theta     alpha
+#&gt; R1 -1.33110045 -3.629989
+#&gt; R2 -0.60629975  1.520349
+#&gt; R3  0.06317056  3.030993
+#&gt; R4  0.70260125  1.228522
+#&gt; R5  1.50139506 -4.692829
+#&gt; V1 -0.32976666  2.542954
 #&gt; 
-#&gt;           A           B           C           D           E           F 
-#&gt;  -7.4051972  -8.0761262  -9.7329707 -10.7123211 -11.5806712 -11.3585136 
-#&gt;           G           H           I           J           K           L 
-#&gt; -11.5565365 -10.4527845  -9.7312182  -8.6700476  -7.6170124  -6.6296287 
-#&gt;           M           N           O           P           Q           R 
-#&gt;  -5.6161581  -4.6840494  -3.7779653  -2.7235664  -1.8080812  -0.7108978 
-#&gt;           S           T           U           V           W           X 
-#&gt;   0.2603037   1.2568211   2.3944812   3.3689859   4.4785207   5.2786537 
-#&gt;           Y           Z          ZA          ZB          ZC          ZD 
-#&gt;   6.1135532   6.9846366   7.8356490   8.8112276   9.7300982  10.5009787 </div><div class='input'>
+#&gt; $features
+#&gt;           beta         psi
+#&gt; A   -7.4072412 -6.28837048
+#&gt; B   -8.0788104 -6.54037760
+#&gt; C   -9.7369058 -7.23329766
+#&gt; D  -10.7168707 -7.67912062
+#&gt; E  -11.5857325 -8.09152274
+#&gt; F  -11.3641325 -7.23353174
+#&gt; G  -11.5624006 -7.10609843
+#&gt; H  -10.4583799 -5.39751566
+#&gt; I   -9.7364860 -4.35330114
+#&gt; J   -8.6747516 -3.01539276
+#&gt; K   -7.6211209 -1.84690552
+#&gt; L   -6.6331785 -0.88859119
+#&gt; M   -5.6191275 -0.03822756
+#&gt; N   -4.6865121  0.61170044
+#&gt; O   -3.7799791  1.12200635
+#&gt; P   -2.7251263  1.54655595
+#&gt; Q   -1.8093283  1.78410563
+#&gt; R   -0.7118538  1.92745736
+#&gt; S    0.2594789  1.90792656
+#&gt; T    1.2559908  1.76587123
+#&gt; U    2.3934874  1.46756298
+#&gt; V    3.3677668  1.08879376
+#&gt; W    4.4769378  0.51797564
+#&gt; X    5.2767461  0.00254821
+#&gt; Y    6.1112326 -0.65896825
+#&gt; Z    6.9818624 -1.48962417
+#&gt; ZA   7.8324320 -2.41817808
+#&gt; ZB   8.8074993 -3.64712310
+#&gt; ZC   9.7259217 -4.95178771
+#&gt; ZD  10.4964796 -6.18935899
+#&gt; ZE  11.3242901 -7.67280991
+#&gt; ZF  11.1489965 -7.80054181
+#&gt; ZG  11.4334909 -8.78864949
+#&gt; ZH  10.6037432 -8.28502440
+#&gt; ZI   9.6608548 -7.72438545
+#&gt; ZJ   8.0529822 -6.81324773
+#&gt; ZK   7.4019659 -6.46986427
+#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>wf</span>)</div><div class='output co'>#&gt;          R1          R2          R3          R4          R5          V1 
+#&gt; -1.33110045 -0.60629975  0.06317056  0.70260125  1.50139506 -0.32976666 </div><div class='input'><span class='fu'>predict</span>(<span class='no'>wf</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $fit
+#&gt;          R1          R2          R3          R4          R5          V1 
+#&gt; -1.33110045 -0.60629975  0.06317056  0.70260125  1.50139506 -0.32976666 
+#&gt; 
+#&gt; $se.fit
+#&gt; [1] 0.01572591 0.01215267 0.01129451 0.01266924 0.01776413 0.01194364
+#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>wf</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"confidence"</span>)</div><div class='output co'>#&gt; $fit
+#&gt;            fit         lwr        upr
+#&gt; R1 -1.33110045 -1.36192266 -1.3002782
+#&gt; R2 -0.60629975 -0.63011855 -0.5824810
+#&gt; R3  0.06317056  0.04103373  0.0853074
+#&gt; R4  0.70260125  0.67776999  0.7274325
+#&gt; R5  1.50139506  1.46657800  1.5362121
+#&gt; V1 -0.32976666 -0.35317578 -0.3063576
+#&gt; </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
-<span class='no'>ie2010dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-(<span class='no'>wfm1</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>)))
-(<span class='no'>wfm2a</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>),
+<span class='no'>ie2010dwf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+(<span class='no'>wf1</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>)))
+(<span class='no'>wf2a</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>),
                              <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='st'>"quasipoisson"</span>, <span class='kw'>dispersion_floor</span> <span class='kw'>=</span> <span class='fl'>0</span>))
-(<span class='no'>wfm2b</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>),
+(<span class='no'>wf2b</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordfish</span>(<span class='no'>ie2010dfm</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>),
                              <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='st'>"quasipoisson"</span>, <span class='kw'>dispersion_floor</span> <span class='kw'>=</span> <span class='fl'>.5</span>))
-<span class='fu'>plot</span>(<span class='no'>wfm2a</span>@<span class='kw'>phi</span>, <span class='no'>wfm2b</span>@<span class='kw'>phi</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Min underdispersion = 0"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Min underdispersion = .5"</span>,
+<span class='fu'>plot</span>(<span class='no'>wf2a</span>$<span class='no'>phi</span>, <span class='no'>wf2b</span>$<span class='no'>phi</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Min underdispersion = 0"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Min underdispersion = .5"</span>,
      <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>))
-<span class='fu'>plot</span>(<span class='no'>wfm2a</span>@<span class='kw'>phi</span>, <span class='no'>wfm2b</span>@<span class='kw'>phi</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Min underdispersion = 0"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Min underdispersion = .5"</span>,
+<span class='fu'>plot</span>(<span class='no'>wf2a</span>$<span class='no'>phi</span>, <span class='no'>wf2b</span>$<span class='no'>phi</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Min underdispersion = 0"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Min underdispersion = .5"</span>,
      <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"n"</span>)
-<span class='no'>underdispersedTerms</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fu'>which</span>(<span class='no'>wfm2a</span>@<span class='kw'>phi</span> <span class='kw'>&lt;</span> <span class='fl'>1.0</span>), <span class='fl'>5</span>)
+<span class='no'>underdispersedTerms</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fu'>which</span>(<span class='no'>wf2a</span>$<span class='no'>phi</span> <span class='kw'>&lt;</span> <span class='fl'>1.0</span>), <span class='fl'>5</span>)
 <span class='fu'>which</span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>ie2010dfm</span>) <span class='kw'>%in%</span> <span class='fu'>names</span>(<span class='fu'><a href='topfeatures.html'>topfeatures</a></span>(<span class='no'>ie2010dfm</span>, <span class='fl'>20</span>)))
-<span class='fu'>text</span>(<span class='no'>wfm2a</span>@<span class='kw'>phi</span>, <span class='no'>wfm2b</span>@<span class='kw'>phi</span>, <span class='no'>wfm2a</span>@<span class='kw'>features</span>,
+<span class='fu'>text</span>(<span class='no'>wf2a</span>$<span class='no'>phi</span>, <span class='no'>wf2b</span>$<span class='no'>phi</span>, <span class='no'>wf2a</span>$<span class='no'>features</span>,
      <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.8</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"grey90"</span>)
-<span class='fu'>text</span>(<span class='no'>wfm2a</span>@<span class='kw'>phi</span>[<span class='no'>underdispersedTerms</span>], <span class='no'>wfm2b</span>@<span class='kw'>phi</span>[<span class='no'>underdispersedTerms</span>],
-     <span class='no'>wfm2a</span>@<span class='kw'>features</span>[<span class='no'>underdispersedTerms</span>],
+<span class='fu'>text</span>(<span class='no'>wf2a</span>$<span class='no'>phi</span>[<span class='st'>'underdispersedTerms'</span>], <span class='no'>wf2b</span>$<span class='no'>phi</span>[<span class='st'>'underdispersedTerms'</span>],
+     <span class='no'>wf2a</span>$<span class='no'>features</span>[<span class='st'>'underdispersedTerms'</span>],
      <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.8</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>)
 <span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>austin</span>)) {
-    <span class='no'>wfmodelAustin</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>austin</span><span class='kw ns'>::</span><span class='fu'>wordfish</span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/convert-wrappers'>as.wfm</a></span>(<span class='no'>ie2010dfm</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
-    <span class='fu'>cor</span>(<span class='no'>wfm1</span>@<span class='kw'>theta</span>, <span class='no'>wfmodelAustin</span>$<span class='no'>theta</span>)
+    <span class='no'>wf_austin</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>austin</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/austin/topics/wordfish'>wordfish</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/convert-wrappers'>as.wfm</a></span>(<span class='no'>ie2010dfm</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
+    <span class='fu'>cor</span>(<span class='no'>wf1</span>$<span class='no'>theta</span>, <span class='no'>wf_austin</span>$<span class='no'>theta</span>)
 }
 <span class='co'># }</span></pre>
   </div>
@@ -330,6 +392,8 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
       <li><a href="#note">Note</a></li>
 
       <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

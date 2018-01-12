@@ -1,0 +1,111 @@
+---
+title: "Working with multi-word expressions"
+author: "Kohei Watanabe"
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "##"
+)
+```
+
+**quanteda** has functionality to select, remove or compound for multi-word expressions such as phrasal verbs ("try on", "wake up" etc.) and place names ("New York", "South Korea" etc.). 
+
+```{r, message = FALSE}
+library(quanteda)
+```
+
+# Tokenize
+
+```{r}
+toks <- tokens(data_corpus_inaugural)
+```
+
+# Define multi-word expressions
+
+Functions for tokens objects take a character vector, a dictionary or collocations as `pattern`. All those three can be used for multi-word expressions, but you have to be aware their differences.
+
+## Character vector
+
+The most basic way to define multi-word expressions is separating words by whitespaces and wrap the character vector by `phrase()`.
+
+```{r}
+multiword <- c('United States', 'New York')
+```
+
+### Keyword-in-context
+
+`kwic()` is useful to find multi-word expressions in tokens. If you are not sure if 'United' and 'States' are separated, check their positions (e.g. '434:435').
+
+```{r}
+head(kwic(toks, phrase(multiword)))
+```
+
+### Select tokens
+
+Similarly, you can select or remove multi-word expression using `tokens_select()`.
+
+```{r}
+head(tokens_select(toks, phrase(multiword)))
+```
+
+### Compound tokens
+
+`tokens_compound()` joins elements of multi-word expressions by underscore, so they become 'United_States' and 'New_York'.
+
+```{r}
+comp_toks <- tokens_compound(toks, phrase(multiword))
+head(tokens_select(comp_toks, c('United_States', 'New_York')))
+```
+
+## Dictionary
+
+Elements of multi-word expressions should be separately by whitespaces in a dictionary, but you do use `phrase()` here.
+
+```{r}
+multiword_dict <- dictionary(list(country = 'United States', 
+                             city = 'New York'))
+```
+
+### Lookup dictionary
+
+```{r}
+head(tokens_lookup(toks, multiword_dict))
+```
+
+## Collocations
+
+With `textstat_collocations()`, it is possible to discover multi-word expressions through statistical scoring of the associations of adjacent words. 
+
+### Discover collocations
+
+If `textstat_collocations()` is applied to a tokens object comprised only of capitalize words, it usually returns multi-word proper names.
+
+```{r}
+col <- toks %>% 
+       tokens_remove(stopwords()) %>% 
+       tokens_select('^[A-Z]', valuetype = 'regex', case_insensitive = FALSE, padding = TRUE) %>% 
+       textstat_collocations(min_count = 5, tolower = FALSE)
+head(col)
+```
+
+### Compound collocations
+
+Collocations are automatically recognized as multi-word expressions by `tokens_compound()` in *case-sensitive fixed pattern matching*. This is the fastest way to compound large numbers of multi-word expressions, but make sure that `tolower = FALSE` in `textstat_collocations()` to do this.
+
+```{r}
+comp_toks2 <- tokens_compound(toks, col)
+head(kwic(comp_toks2, c('United_States', 'New_York')))
+```
+
+You can use `phrase()` on collocations if more flexibility is needed. This is usually the case if you compound tokens from different corpus.
+
+```{r}
+comp_toks3 <- tokens_compound(toks, phrase(col$collocation))
+head(kwic(comp_toks3, c('United_States', 'New_York')))
+```
+

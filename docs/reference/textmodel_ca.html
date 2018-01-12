@@ -154,8 +154,7 @@
 
     
     <p><code>textmodel_ca</code> implements correspondence analysis scaling on a 
-<a href='dfm.html'>dfm</a>.  The method is a fast/sparse version of function <a href='http://www.rdocumentation.org/packages/ca/topics/ca'>ca</a>, and
-returns a special class of <span class="pkg">ca</span> object.</p>
+<a href='dfm.html'>dfm</a>.  The method is a fast/sparse version of function <a href='http://www.rdocumentation.org/packages/ca/topics/ca'>ca</a>.</p>
     
 
     <pre class="usage"><span class='fu'>textmodel_ca</span>(<span class='no'>x</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -191,6 +190,11 @@ but might reduce accuracy; only applicable when <code>sparse = TRUE</code></p></
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>textmodel_ca()</code> returns a fitted CA textmodel that is a special
+class of <span class="pkg">ca</span> object.</p>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><a href='http://www.rdocumentation.org/packages/RSpectra/topics/svds'>svds</a> in the <span class="pkg">RSpectra</span> package is applied to 
@@ -212,6 +216,10 @@ but might reduce accuracy; only applicable when <code>sparse = TRUE</code></p></
     <p>Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in 
   R, with two- and three-dimensional graphics: The ca package. <em>Journal 
   of Statistical Software</em>, 20 (3), <a href='http://www.jstatsoft.org/v20/i03/'>http://www.jstatsoft.org/v20/i03/</a>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='textmodel_lsa-postestimation.html'>coef.textmodel_lsa</a></code>, <a href='http://www.rdocumentation.org/packages/ca/topics/ca'>ca</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -239,11 +247,15 @@ but might reduce accuracy; only applicable when <code>sparse = TRUE</code></p></
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
 
       <li><a href="#note">Note</a></li>
 
       <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

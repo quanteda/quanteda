@@ -163,7 +163,6 @@ reference:
   desc: Plot functions for fitting analytic models from text matrixes.
   contents:
     - starts_with("textmodel_")
-    - coef.textmodel
 - title: Utility functions
   desc: R-like functions to return counts and object information.
   contents:
