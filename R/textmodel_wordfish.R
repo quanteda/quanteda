@@ -319,6 +319,7 @@ coef.textmodel_wordfish <- function(object, margin = c("both", "documents", "fea
 }
 
 #' @export
+#' @rdname predict.textmodel_wordfish
 coefficients.textmodel_wordfish <- function(object, ...) {
     UseMethod("coef")   
 }
