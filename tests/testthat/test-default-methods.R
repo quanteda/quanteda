@@ -421,7 +421,7 @@ test_that("test default textstat methods", {
 test_that("test default textplot methods", {
     expect_error(
         textplot_influence(TRUE),
-        "textplot_influence\\(\\) only works on affinity_influence.*objects"
+        "textplot_influence\\(\\) only works on influence\\..*textmodel_affinity objects"
     )   
     expect_error(
         textplot_keyness(TRUE),
@@ -429,7 +429,7 @@ test_that("test default textplot methods", {
     )   
     expect_error(
         textplot_scale1d(TRUE),
-        "textplot_scale1d\\(\\) only works on textmodel.*objects"
+        "textplot_scale1d\\(\\) only works on predict\\.textmodel.*objects"
     )   
     expect_error(
         textplot_wordcloud(TRUE),

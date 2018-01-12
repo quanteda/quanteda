@@ -182,7 +182,7 @@ friendly_class_undefined_message <- function(object_class, function_name) {
     valid_object_types <- 
         utils::methods(function_name) %>% 
         as.character() %>% 
-        stringi::stri_extract_last_regex("(data\\.){0,1}\\w+$")
+        stringi::stri_replace_first_fixed(paste0(function_name, "."), "")
     valid_object_types <- valid_object_types[valid_object_types != "default"]
     paste0(function_name, "() only works on ", 
          paste(valid_object_types, collapse = ", "),

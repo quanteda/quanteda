@@ -10,6 +10,10 @@
 #' @export
 #' @author Patrick Perry and Kenneth Benoit
 #' @keywords textplot
+#' @examples
+#' af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
+#' afpred <- predict(af) 
+#' textplot_influence(influence(afpred))
 textplot_influence <- function(x, n = 30, ...) {
     UseMethod("textplot_influence")
 }
@@ -20,14 +24,16 @@ textplot_influence.default <- function(x, n = 30, ...) {
 }
 
 #' @export
-textplot_influence.affinity_influence <- function(x, n = 30, ...) {
+#' @method textplot_influence influence.predict.textmodel_affinity
+textplot_influence.influence.predict.textmodel_affinity <- function(x, n = 30, ...) {
     ans <- summary(x, ...)
-    plot(ans, n, ...)
+    textplot_influence(ans, n, ...)
 }
 
 #' @importFrom graphics legend text points
+#' @method textplot_influence summary.influence.predict.textmodel_affinity
 #' @export
-textplot_influence.summary_affinity_influence <- function(x, n = 30, ...) {
+textplot_influence.summary.influence.predict.textmodel_affinity <- function(x, n = 30, ...) {
     word <- x$word[x$support]
     rate <- x$rate[x$support]
     influence <- x$median[x$support]
@@ -37,7 +43,7 @@ textplot_influence.summary_affinity_influence <- function(x, n = 30, ...) {
     x <- log10(rate)
     y <- 100 * influence
     col <- as.integer(direction)
-    plot(x, y, type="n", xlab=expression(Log[10]("Median Rate")),
+    plot(x, y, type = "n", xlab=expression(Log[10]("Median Rate")),
          ylab=expression("Median Influence" %*% 100))
     
     if (!is.null(n) && !is.na(n)) {

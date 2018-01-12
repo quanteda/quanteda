@@ -558,6 +558,10 @@ rstandard.predict.textmodel_affinity <- function(model, ...) {
 #' @importFrom stats influence
 #' @method influence predict.textmodel_affinity
 #' @import Matrix
+#' @examples 
+#' af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
+#' afpred <- predict(af) 
+#' influence(afpred)
 #' @export
 influence.predict.textmodel_affinity <- function(model, subset = !train, ...) {
     # subset/training set
@@ -581,7 +585,7 @@ influence.predict.textmodel_affinity <- function(model, subset = !train, ...) {
     ntext <- ncol(x)
     texts <- colnames(x)
     
-    val <- x$x
+    val <- x@x
     row_ind <- x@i + 1 # switch from 0- to 1-based indexing
     col_ptr <- x@p + 1 #
     

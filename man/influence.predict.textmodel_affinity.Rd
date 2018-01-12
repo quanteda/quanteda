@@ -19,6 +19,11 @@ training set)}
 Computes the influence of features on scaled \link{textmodel_affinity}
 applications.
 }
+\examples{
+af <- textmodel_affinity(data_dfm_lbgexample, y = c("L", NA, NA, NA, "R", NA))
+afpred <- predict(af) 
+influence(afpred)
+}
 \seealso{
 \code{\link{influence.lm}}
 }
