@@ -24,31 +24,30 @@
 #' @examples
 #' (myDfm <- dfm(data_corpus_inaugural[1:5]))
 #' 
-#' # keep only words occurring >=10 times and in >=2 docs
+#' # keep only words occurring >=10 times and in >=2 documents
 #' dfm_trim(myDfm, min_count = 10, min_docfreq = 2) 
 #' 
 #' # keep only words occurring >=10 times and in at least 0.4 of the documents
 #' dfm_trim(myDfm, min_count = 10, min_docfreq = 0.4)
 #' 
-#' # keep only words occurring <=10 times and in <=2 docs
+#' # keep only words occurring <=10 times and in <=2 documents
 #' dfm_trim(myDfm, max_count = 10, max_docfreq = 2) 
 #' 
 #' # keep only words occurring <=10 times and in at most 3/4 of the documents
 #' dfm_trim(myDfm, max_count = 10, max_docfreq = 0.75)
 #'
-#' # keep only words occurring at least 0.01 times and in >=2 documents
-#' dfm_trim(myDfm, min_count = .01, min_docfreq = 2)
+#' # keep only words occurring frequently (top 20%) and in <=2 documents
+#' dfm_trim(myDfm, min_count = 0.8, max_docfreq = 2)
 #' 
 #' # keep only words occurring 5 times in 1000, and in 2 of 5 of documents
 #' dfm_trim(myDfm, min_docfreq = 0.4, min_count = 0.005)
 #' 
 #' \dontrun{
 #' # compare to removeSparseTerms from the tm package 
-#' if (require(tm)) {
-#'     (tmdtm <- convert(myDfm, "tm"))
-#'     removeSparseTerms(tmdtm, 0.7)
-#'     dfm_trim(td, min_docfreq = 0.3)
-#'     dfm_trim(td, sparsity = 0.7)
+#' (myDfmTM <- convert(myDfm, "tm"))
+#' tm::removeSparseTerms(myDfmTM, 0.7)
+#' dfm_trim(myDfm, min_docfreq = 0.3)
+#' dfm_trim(myDfm, sparsity = 0.7)
 #' }
 #' @export
 dfm_trim <- function(x, min_count = 1, min_docfreq = 1, 
