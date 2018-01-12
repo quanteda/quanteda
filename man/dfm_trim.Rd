@@ -67,6 +67,7 @@ tm::removeSparseTerms(myDfmTM, 0.7)
 dfm_trim(myDfm, min_docfreq = 0.3)
 dfm_trim(myDfm, sparsity = 0.7)
 }
+
 }
 \seealso{
 \code{\link{dfm_select}}, \code{\link{dfm_sample}}

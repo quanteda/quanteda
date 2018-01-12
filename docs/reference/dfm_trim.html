@@ -153,9 +153,9 @@
     </div>
 
     
-    <p>Returns a document by feature matrix reduced in size based on document and 
+    <p>Returns a document by feature matrix reduced in size based on document and
 term frequency, usually in terms of a minimum frequencies, but may also be in
-terms of maximum frequencies.  Setting a combination of minimum and maximum 
+terms of maximum frequencies.  Setting a combination of minimum and maximum
 frequencies will select features based on a range.</p>
     
 
@@ -172,13 +172,14 @@ frequencies will select features based on a range.</p>
     </tr>
     <tr>
       <th>min_count, max_count</th>
-      <td><p>minimum/maximum count or fraction of features across all documents,
-below/above which features will be removed</p></td>
+      <td><p>minimum/maximum count or percentile frequency of
+features across all documents, below/above which features will be removed</p></td>
     </tr>
     <tr>
       <th>min_docfreq, max_docfreq</th>
-      <td><p>minimum/maximum number or fraction of documents in which a feature
-appears, below/above which features will be removed</p></td>
+      <td><p>minimum/maximum number or fraction of
+documents in which a feature appears, below/above which features will be
+removed</p></td>
     </tr>
     <tr>
       <th>sparsity</th>
@@ -193,16 +194,15 @@ appears, below/above which features will be removed</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <a href='dfm.html'>dfm</a> reduced in features (with the same number 
-  of documents)</p>
+    <p>A <a href='dfm.html'>dfm</a> reduced in features (with the same number of documents)</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Trimming a <a href='dfm.html'>dfm</a> object is an operation based on the <em>values</em>
-  in the document-feature matrix.  To select subsets of a dfm based on
-  the features themselves (meaning the feature labels from <code><a href='featnames.html'>featnames</a></code>) -- such as those   
-  matching a regular expression, or removing features matching a stopword 
-  list, use <code><a href='dfm_select.html'>dfm_select</a></code>.</p>
+  in the document-feature matrix.  To select subsets of a dfm based on the
+  features themselves (meaning the feature labels from
+  <code><a href='featnames.html'>featnames</a></code>) -- such as those matching a regular expression, or
+  removing features matching a stopword list, use <code><a href='dfm_select.html'>dfm_select</a></code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -211,27 +211,26 @@ appears, below/above which features will be removed</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>(<span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,948 features (69.5% sparse).</div><div class='input'>
-<span class='co'># keep only words occurring &gt;=10 times and in &gt;=2 docs</span>
+<span class='co'># keep only words occurring &gt;=10 times and in &gt;=2 documents</span>
 <span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.3% sparse).</div><div class='input'>
 <span class='co'># keep only words occurring &gt;=10 times and in at least 0.4 of the documents</span>
 <span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.3% sparse).</div><div class='input'>
-<span class='co'># keep only words occurring &lt;=10 times and in &lt;=2 docs</span>
+<span class='co'># keep only words occurring &lt;=10 times and in &lt;=2 documents</span>
 <span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,675 features (76.5% sparse).</div><div class='input'>
 <span class='co'># keep only words occurring &lt;=10 times and in at most 3/4 of the documents</span>
 <span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,799 features (74% sparse).</div><div class='input'>
-<span class='co'># keep only words occurring at least 0.01 times and in &gt;=2 documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>.01</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 56 features (8.21% sparse).</div><div class='input'>
+<span class='co'># keep only words occurring frequently (top 20%) and in &lt;=2 documents</span>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 150 features (63.6% sparse).</div><div class='input'>
 <span class='co'># keep only words occurring 5 times in 1000, and in 2 of 5 of documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.3% sparse).</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 569 features (44.2% sparse).</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
-<span class='co'># compare to removeSparseTerms from the tm package </span>
-<span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>tm</span>)) {
-    (<span class='no'>tmdtm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>myDfm</span>, <span class='st'>"tm"</span>))
-    <span class='fu'><a href='http://www.rdocumentation.org/packages/tm/topics/removeSparseTerms'>removeSparseTerms</a></span>(<span class='no'>tmdtm</span>, <span class='fl'>0.7</span>)
-    <span class='fu'>dfm_trim</span>(<span class='no'>td</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
-    <span class='fu'>dfm_trim</span>(<span class='no'>td</span>, <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
-}
-<span class='co'># }</span></pre>
+<span class='co'># compare to removeSparseTerms from the tm package</span>
+(<span class='no'>myDfmTM</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>myDfm</span>, <span class='st'>"tm"</span>))
+<span class='kw pkg'>tm</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tm/topics/removeSparseTerms'>removeSparseTerms</a></span>(<span class='no'>myDfmTM</span>, <span class='fl'>0.7</span>)
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
