@@ -3,6 +3,7 @@
 \name{predict.textmodel_wordfish}
 \alias{predict.textmodel_wordfish}
 \alias{coef.textmodel_wordfish}
+\alias{coefficients.textmodel_wordfish}
 \title{Prediction from a textmodel_wordfish method}
 \usage{
 \method{predict}{textmodel_wordfish}(object, se.fit = FALSE,
@@ -10,6 +11,8 @@
 
 \method{coef}{textmodel_wordfish}(object, margin = c("both", "documents",
   "features"), ...)
+
+coefficients.textmodel_wordfish(object, ...)
 }
 \arguments{
 \item{object}{a fitted wordfish model}
