@@ -1,5 +1,5 @@
 ---
-title: "Replication: Quantitative Social Science: An Introduction"
+title: "Replication of Chapter 5 of _Quantitative Social Science: An Introduction_"
 author: Stefan Müller and Kenneth Benoit
 output: 
   html_document:
@@ -17,15 +17,14 @@ library(quanteda)
 ```
 
 
-In this vignette we show how the **quanteda** package can be used to replicate the text analysis part (Chapter 5.1) from Kosuke Imai's book [*Quantitative Social Science: An Introduction*](http://qss.princeton.press) (Princeton University Press, 2017).
+In this vignette we show how the **quanteda** package can be used to replicate the text analysis part (Chapter 5.1) from Kosuke Imai's book [*Quantitative Social Science: An Introduction*](http://qss.princeton.press) (Princeton: Princeton University Press, 2017).
 
 ## Download the corpus
 
 To get the textual data, you need to install and load the **qss** package first that comes with the book. 
 
-```{r eval = TRUE}
-# install_github("kosukeimai/qss-package", build_vignettes = TRUE)
-library(qss)
+```{r eval = FALSE}
+devtools::install_github("kosukeimai/qss-package", build_vignettes = TRUE)
 ```
 
 ## Section 5.1.1: The Disputed Authorship of ‘The Federalist Papers’
@@ -46,44 +45,43 @@ corpus_raw <- corpus(corpus_texts, text_field = "text", docid_field = "paper_num
 
 ```{r eval=FALSE}
 # inspect Paper No. 10 (output suppressed)
-texts(corpus_raw)[10]
+texts(corpus_raw)[10] %>% 
+    stringi::stri_sub(1, 1000) %>% 
+    cat()
 ```
 
 
 ## Section 5.1.2: Document-Term Matrix
 
-Next, we transform the corpus to a document-feature matrix. `dfm_prep` (used in sections 5.1.4 and 5.1.5) removes numbers and punctuation and transforms characters to lowercase. `dfm_papers` also stems the words and removes stopwords.
+Next, we transform the corpus to a document-feature matrix. `dfm_prep` (used in sections 5.1.4 and 5.1.5) is a dfm in which numbers and punctuation have been removed, and in which terms have been converted to lowercase. In `dfm_papers`, the words have also been stemmed and a standard set of stopwords removed.
 
 ```{r}
 # transform corpus to a document-feature matrix
-
 dfm_prep <- dfm(corpus_raw, remove_numbers = TRUE, tolower = TRUE,
-                 remove_punct = TRUE)
+                 remove_punct = TRUE, verbose = TRUE)
 
 # remove stop words and stem words
-dfm_papers <- dfm(dfm_prep, stem = TRUE, 
-                  remove = stopwords::stopwords("english"))
+dfm_papers <- dfm(dfm_prep, stem = TRUE, remove = stopwords("english"))
 
 # inspect some documents in the dfm
-dfm_papers[1:5, 1:8]
+head(dfm_papers, nf = 8)
 ```
 
 ## Section 5.1.3: Topic Discovery
 
 We can use the `textplot_wordcloud()` function to plot word clouds of the most frequent words in Papers 12 and 24.
 
-```{r warning=FALSE, fig.width = 4, fig.height = 4}
+```{r warning=FALSE, fig.width = 8, fig.height = 8}
 set.seed(100)
-textplot_wordcloud(dfm_papers[12], max.words = 20)
+textplot_wordcloud(dfm_papers["No. 12", ], max.words = 20)
   
-textplot_wordcloud(dfm_papers[24], max.words = 20)
+textplot_wordcloud(dfm_papers["No. 24", ], max.words = 20)
 ```
 
-Next, we identify clusters of similar essay based on term frequency-inverse document frequency (tf-idf) and apply the k-measn algorithm to the weighted dfm. 
+Next, we identify clusters of similar essay based on term frequency-inverse document frequency (*tf-idf*) and apply the $k$-means algorithm to the weighted dfm. 
 
 ```{r}
 # tf-idf calculation
-
 dfm_papers_tfidf <- dfm_tfidf(dfm_papers, base = 2)
 
 # 10 most important words for Paper No. 12
@@ -106,7 +104,7 @@ km_out <- kmeans(dfm_papers_tfidf_hamilton, centers = k)
 
 km_out$iter # check the convergence; number of iterations may vary
 
-colnames(km_out$centers) <- colnames(dfm_papers_tfidf_hamilton)
+colnames(km_out$centers) <- featnames(dfm_papers_tfidf_hamilton)
 
 for (i in 1:k) { # loop for each cluster
   cat("CLUSTER", i, "\n")
@@ -126,15 +124,14 @@ In a next step, we want to predict authorship for the Federalist Papers whose au
 
 ```{r}
 # document-term matrix converted to matrix for manipulation
-dtm1 <- convert(dfm_prep, to = "matrix")
+dtm1 <- as.matrix(dfm_prep)
 
 # term frequency per 1000 words
 tfm <- dtm1 / rowSums(dtm1) * 1000 
 
 # words of interest
-words <-  c("although", "always", "commonly", "consequently",
+words <- c("although", "always", "commonly", "consequently",
            "considerable", "enough", "there", "upon", "while", "whilst")
-
 tfm <- tfm[, words]
 
 # essays written by Madison: 'hamilton' defined earlier
