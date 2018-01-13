@@ -10,7 +10,7 @@ Stem features,Edit features,tokens_wordstem(),stemDocument(),,stem_snowball(),tr
 Define multi-word features,Edit features,phrase(),,,,,MWETokenizer
 Create document-feature matrix,Extract features,dfm(),TermDocumentMatrix(),cast_dfm(),term_matrix(),,
 Create a feature co-occurence matrix,Extract features,fcm(),,,,,
-Weight a dfm/fcm,Extract features,dfm_weight(); fcm_weight(),"weightTf(); weightTfIdf()
+Weight a dfm,Extract features,dfm_weight(),"weightTf(); weightTfIdf()
 ","bind_tf_idf()
 ",,,
 Create a custom dictionary,Dictionary analysis,dictionary(),,dictionary always a data.frame object,,,SentimentAnalyzer
