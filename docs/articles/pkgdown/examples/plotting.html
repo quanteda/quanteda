@@ -107,7 +107,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/kbenoit/quanteda">
+  <a href="https://github.com/quanteda/quanteda">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -305,17 +305,17 @@ refscores &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="k
 <span class="co"># Predict Wordscores model</span>
 ws &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordscores.html">textmodel_wordscores</a></span>(ie_dfm, refscores, <span class="dt">smooth =</span> <span class="dv">1</span>)
 
-<span class="co"># Get predictions</span>
-pred &lt;-<span class="st"> </span><span class="kw">predict</span>(ws)
-
 <span class="co"># Plot estimated word positions (highlight words and print them in red)</span>
-<span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(pred, <span class="dt">margin =</span> <span class="st">"features"</span>, 
+<span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(ws,
                  <span class="dt">highlighted =</span> <span class="kw">c</span>(<span class="st">"minister"</span>, <span class="st">"have"</span>, <span class="st">"our"</span>, <span class="st">"budget"</span>), 
                  <span class="dt">highlighted_color =</span> <span class="st">"red"</span>)</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Set document labels for y-axis</span>
 doclab &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="kw">c</span>(<span class="st">"name"</span>, <span class="st">"party"</span>)), 
                 <span class="dv">1</span>, paste, <span class="dt">collapse =</span> <span class="st">" "</span>)
+
+<span class="co"># Get predictions</span>
+pred &lt;-<span class="st"> </span><span class="kw">predict</span>(ws)
 
 <span class="co"># Plot estimated document positions and group by "party" variable</span>
 <span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(pred, <span class="dt">margin =</span> <span class="st">"documents"</span>,
@@ -336,17 +336,17 @@ pred_lbg &lt;-<span class="st"> </span><span class="kw">predict</span>(ws, <span
 <a href="#wordfish" class="anchor"></a>Wordfish</h2>
 <p>Wordfish is a Poisson scaling model that estimates one-dimension document positions using maximum likelihood (Slapin and Proksch, 2008). Both the estimated position of words and the positions of the documents can be plotted.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Estimate Wordfish model</span>
-wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010), <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">6</span>,<span class="dv">5</span>))
+wf &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010), <span class="dt">dir =</span> <span class="kw">c</span>(<span class="dv">6</span>,<span class="dv">5</span>))
 
 <span class="co"># Plot estimated word positions</span>
-<span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(wfm, <span class="dt">margin =</span> <span class="st">"features"</span>, 
+<span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(wf, <span class="dt">margin =</span> <span class="st">"features"</span>, 
                  <span class="dt">highlighted =</span> <span class="kw">c</span>(<span class="st">"government"</span>, <span class="st">"global"</span>, <span class="st">"children"</span>, 
                                  <span class="st">"bank"</span>, <span class="st">"economy"</span>, <span class="st">"the"</span>, <span class="st">"citizenship"</span>,
                                  <span class="st">"productivity"</span>, <span class="st">"deficit"</span>), 
                  <span class="dt">highlighted_color =</span> <span class="st">"red"</span>)</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-16-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot estimated document positions</span>
-<span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(wfm, <span class="dt">doclabels =</span> doclab,
+<span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(wf, <span class="dt">doclabels =</span> doclab,
                  <span class="dt">groups =</span> <span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-16-2.png" width="768"></p>
 </div>
@@ -358,14 +358,14 @@ wfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/t
 ie_dfm &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010)
 
 <span class="co"># Run correspondence analysis on dfm</span>
-wca &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_ca.html">textmodel_ca</a></span>(ie_dfm)
+ca &lt;-<span class="st"> </span><span class="kw"><a href="../../../reference/textmodel_ca.html">textmodel_ca</a></span>(ie_dfm)
 
 <span class="co"># Create doclabels for y-axis</span>
 doclab &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="kw">c</span>(<span class="st">"name"</span>, <span class="st">"party"</span>)), 
                 <span class="dv">1</span>, paste, <span class="dt">collapse =</span> <span class="st">" "</span>)
 
 <span class="co"># Plot estimated positions and group by party</span>
-<span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(wca, <span class="dt">margin =</span> <span class="st">"documents"</span>,
+<span class="kw"><a href="../../../reference/textplot_scale1d.html">textplot_scale1d</a></span>(ca, <span class="dt">margin =</span> <span class="st">"documents"</span>,
                  <span class="dt">doclabels =</span> doclab,
                  <span class="dt">groups =</span> <span class="kw"><a href="../../../reference/docvars.html">docvars</a></span>(data_corpus_irishbudget2010, <span class="st">"party"</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>

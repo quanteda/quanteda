@@ -64,7 +64,7 @@ head(tokens_select(comp_toks, c('United_States', 'New_York')))
 
 ## Dictionary
 
-Elements of multi-word expressions should be separately by whitespaces in a dictionary, but you do use `phrase()` here.
+Elements of multi-word expressions should be separately by whitespaces in a dictionary, but you do not use `phrase()` here.
 
 ```{r}
 multiword_dict <- dictionary(list(country = 'United States', 
