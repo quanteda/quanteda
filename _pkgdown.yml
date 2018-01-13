@@ -36,6 +36,8 @@ navbar:
           href: articles/pkgdown/replication/digital-humanities.html
         - text: "Word embedding (word2vec)"
           href: articles/pkgdown/replication/text2vec.html
+        - text: "Quantitative Social Science Ch. 5.1"
+          href: articles/pkgdown/replication/qss.html
     - text: "Design"
       href: articles/design.html
   right:
