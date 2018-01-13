@@ -19,7 +19,7 @@ library(quanteda)
 
 In this vignette we show how the **quanteda** package can be used to replicate the text analysis part (Chapter 5.1) from Kosuke Imai's book [*Quantitative Social Science: An Introduction*](http://qss.princeton.press) (Princeton: Princeton University Press, 2017).
 
-## Download the corpus
+## Download the Corpus
 
 To get the textual data, you need to install and load the **qss** package first that comes with the book. 
 
@@ -41,9 +41,22 @@ corpus_texts$paper_number <- paste("No.", 1:nrow(corpus_texts), sep = " ")
 
 # transform to a quanteda corpus object
 corpus_raw <- corpus(corpus_texts, text_field = "text", docid_field = "paper_number")
+
+# create docvar with authorship (used in Section  5.1.4)
+docvars(corpus_raw, "paper_numeric") <- 1:ndoc(corpus_raw)
+
+# essays written by Hamilton
+hamilton <- c(1, 6:9, 11:13, 15:17, 21:36, 59:61, 65:85)
+
+# essays written by Madison
+madison <- c(10, 14, 37:48, 58)
+
+docvars(corpus_raw, "author") <- ifelse(docvars(corpus_raw, "paper_numeric") %in% hamilton, "Hamilton",
+                                       ifelse(docvars(corpus_raw, "paper_numeric") %in% madison, "Madison", 
+                                              "Unknown"))
 ```
 
-```{r eval=FALSE}
+```{r}
 # inspect Paper No. 10 (output suppressed)
 texts(corpus_raw)[10] %>% 
     stringi::stri_sub(1, 1000) %>% 
@@ -95,7 +108,6 @@ textstat_frequency(dfm_papers_tfidf[24], n = 10)
 k <- 4  # number of clusters
 
 # subset The Federalist papers written by Hamilton
-hamilton <- c(1, 6:9, 11:13, 15:17, 21:36, 59:61, 65:85)
 
 dfm_papers_tfidf_hamilton <- dfm_papers_tfidf[hamilton, ]
 
@@ -134,9 +146,6 @@ words <- c("although", "always", "commonly", "consequently",
            "considerable", "enough", "there", "upon", "while", "whilst")
 tfm <- tfm[, words]
 
-# essays written by Madison: 'hamilton' defined earlier
-madison <- c(10, 14, 37:48, 58)
-
 # average among Hamilton/Madison essays
 tfm_ave <- rbind(colSums(tfm[hamilton, ]) / length(hamilton),
                  colSums(tfm[madison, ]) / length(madison))
@@ -145,12 +154,19 @@ author <- rep(NA, nrow(tfm)) # a vector with missing values
 author[hamilton] <- 1  # 1 if Hamilton
 author[madison] <- -1  # -1 if Madison
 
-# data frame for regression
-author_data <- data.frame(author = author[c(hamilton, madison)],
-                          tfm[c(hamilton, madison), ])
+# bind docvars from corpus and tfm to a data frame
+author_data <- data.frame(docvars(corpus_raw), tfm)
 
-hm_fit <- lm(author ~ upon + there + consequently + whilst,
-             data = author_data)
+# create numeric variable that takes value 1 for Hamilton's essays,
+# -1 for Madison's essays and NA for the essays with unknown authorship
+
+author_data$author_numeric <- ifelse(author_data$author == "Hamilton", 1, 
+                                     ifelse(author_data$author == "Madison", -1, NA))
+
+author_data_known <- subset(author_data, author %in% c("Hamilton", "Madison"))
+
+hm_fit <- lm(author_numeric ~ upon + there + consequently + whilst,
+             data = author_data_known)
 hm_fit
 
 hm_fitted <- fitted(hm_fit) # fitted values
@@ -163,48 +179,48 @@ Finally, we assess how well the model fits the data by classifying each essay ba
 
 ```{r}
 # proportion of correctly classified essays by Hamilton
-mean(hm_fitted[author_data$author == 1] > 0)
+mean(hm_fitted[author_data_known$author == "Hamilton"] > 0)
 
 # proportion of correctly classified essays by Madison
-mean(hm_fitted[author_data$author == -1] < 0)
+mean(hm_fitted[author_data_known$author == "Madison"] < 0)
 
-n <- nrow(author_data)
+n <- nrow(author_data_known)
 hm_classify <- rep(NA, n) # a container vector with missing values
 
 for (i in 1:n) {
   # fit the model to the data after removing the ith observation
-  sub_fit <- lm(author ~ upon + there + consequently + whilst,
-                data = author_data[-i, ]) # exclude ith row
+  sub_fit <- lm(author_numeric ~ upon + there + consequently + whilst,
+                data = author_data_known[-i, ]) # exclude ith row
   # predict the authorship for the ith observation
-  hm_classify[i] <- predict(sub_fit, newdata = author_data[i, ])
+  hm_classify[i] <- predict(sub_fit, newdata = author_data_known[i, ])
 }
 
 # proportion of correctly classified essays by Hamilton
-mean(hm_classify[author_data$author == 1] > 0)
+mean(hm_classify[author_data_known$author == "Hamilton"] > 0)
 
 # proportion of correctly classified essays by Madison
-mean(hm_classify[author_data$author == -1] < 0)
+mean(hm_classify[author_data_known$author == "Hamilton"] < 0)
 
 disputed <- c(49, 50:57, 62, 63) # 11 essays with disputed authorship
 tf_disputed <- as.data.frame(dtm1[disputed, ])
 
-# prediction of disputed authorship
-pred <- predict(hm_fit, newdata = tf_disputed)
+author_data$prediction <- predict(hm_fit, newdata = author_data)
 
-pred # predicted values
-
-# plot the fitted values for each Federalist paper
-
-par(cex = 1.25)
-# fitted values for essays authored by Hamilton; red squares
-plot(hamilton, hm_fitted[author_data$author == 1], pch = 15,
-     xlim = c(1, 85), ylim  = c(-2, 2), col = "red",
-     xlab = "Federalist Papers", ylab = "Predicted values")
-abline(h = 0, lty = "dashed")
-
-# essays authored by Madison; blue circles
-points(madison, hm_fitted[author_data$author == -1],
-       pch = 16, col = "blue")
-# disputed authorship; black triangles
-points(disputed, pred, pch = 17)
+author_data$prediction # predicted values
 ```
+
+Finally, we plot the fitted values for each Federalist paper with the **ggplot2** package.
+
+```{r, fig.width = 8, fig.height = 6}
+library(ggplot2)
+ggplot(data = author_data, aes(x = paper_numeric, 
+                               y = prediction, 
+                               shape = author, 
+                               colour = author)) +
+    geom_point(size = 2) +
+    geom_hline(yintercept = 0, linetype = "dotted") + 
+    labs(x = "Federalist Papers", y = "Predicted values") +
+    theme_minimal() + 
+    theme(legend.title=element_blank())
+```
+
