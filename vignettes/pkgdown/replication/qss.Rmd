@@ -37,23 +37,18 @@ library(readtext)
 corpus_texts <- readtext(system.file("extdata/federalist/", package = "qss"))
 
 # create docvar with number of paper
-corpus_texts$paper_number <- paste("No.", 1:nrow(corpus_texts), sep = " ")
+corpus_texts$paper_number <- paste("No.", seq_len(nrow(corpus_texts)), sep = " ")
 
 # transform to a quanteda corpus object
 corpus_raw <- corpus(corpus_texts, text_field = "text", docid_field = "paper_number")
 
 # create docvar with authorship (used in Section  5.1.4)
-docvars(corpus_raw, "paper_numeric") <- 1:ndoc(corpus_raw)
+docvars(corpus_raw, "paper_numeric") <- seq_len(ndoc(corpus_raw))
 
-# essays written by Hamilton
-hamilton <- c(1, 6:9, 11:13, 15:17, 21:36, 59:61, 65:85)
-
-# essays written by Madison
-madison <- c(10, 14, 37:48, 58)
-
-docvars(corpus_raw, "author") <- ifelse(docvars(corpus_raw, "paper_numeric") %in% hamilton, "Hamilton",
-                                       ifelse(docvars(corpus_raw, "paper_numeric") %in% madison, "Madison", 
-                                              "Unknown"))
+# create docvar with authorship (used in Section  5.1.4)
+docvars(corpus_raw, "author") <- factor(NA, levels = c("madison", "hamilton"))
+docvars(corpus_raw, "author")[c(1, 6:9, 11:13, 15:17, 21:36, 59:61, 65:85)] <- "hamilton"
+docvars(corpus_raw, "author")[c(10, 14, 37:48, 58)] <- "madison"
 ```
 
 ```{r}
@@ -86,9 +81,8 @@ We can use the `textplot_wordcloud()` function to plot word clouds of the most f
 
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
 set.seed(100)
-textplot_wordcloud(dfm_papers["No. 12", ], max.words = 20)
-  
-textplot_wordcloud(dfm_papers["No. 24", ], max.words = 20)
+textplot_wordcloud(dfm_papers[c("No. 12", "No. 24"), ], 
+                   max.words = 50, comparison = TRUE)
 ```
 
 Next, we identify clusters of similar essay based on term frequency-inverse document frequency (*tf-idf*) and apply the $k$-means algorithm to the weighted dfm. 
@@ -98,10 +92,10 @@ Next, we identify clusters of similar essay based on term frequency-inverse docu
 dfm_papers_tfidf <- dfm_tfidf(dfm_papers, base = 2)
 
 # 10 most important words for Paper No. 12
-textstat_frequency(dfm_papers_tfidf[12], n = 10)
+topfeatures(dfm_papers_tfidf[12, ], n = 10)
 
 # 10 most important words for Paper No. 24
-textstat_frequency(dfm_papers_tfidf[24], n = 10)
+topfeatures(dfm_papers_tfidf[24, ], n = 10)
 ```
 
 ```{r}
@@ -109,7 +103,7 @@ k <- 4  # number of clusters
 
 # subset The Federalist papers written by Hamilton
 
-dfm_papers_tfidf_hamilton <- dfm_papers_tfidf[hamilton, ]
+dfm_papers_tfidf_hamilton <- dfm_subset(dfm_papers_tfidf, author == "hamilton")
 
 # run k-means
 km_out <- kmeans(dfm_papers_tfidf_hamilton, centers = k)
@@ -124,7 +118,7 @@ for (i in 1:k) { # loop for each cluster
   print(head(sort(km_out$centers[i, ], decreasing = TRUE), n = 10))
   cat("\n")
   cat("Federalist Papers classified: \n") # extract essays classified
-  print(rownames(dfm_papers_tfidf_hamilton)[km_out$cluster == i])
+  print(docnames(dfm_papers_tfidf_hamilton)[km_out$cluster == i])
   cat("\n")
 }
 
@@ -135,35 +129,28 @@ for (i in 1:k) { # loop for each cluster
 In a next step, we want to predict authorship for the Federalist Papers whose authorship is unknown. As the topics of the Papers differs remarkably, Imai focuses on 10 articles, prepositions and conjunctions to predicte authorship.
 
 ```{r}
-# document-term matrix converted to matrix for manipulation
-dtm1 <- as.matrix(dfm_prep)
-
 # term frequency per 1000 words
-tfm <- dtm1 / rowSums(dtm1) * 1000 
+tfm <- dfm_weight(dfm_prep, "prop") * 1000
 
-# words of interest
+# select words of interest
 words <- c("although", "always", "commonly", "consequently",
            "considerable", "enough", "there", "upon", "while", "whilst")
-tfm <- tfm[, words]
+tfm <- dfm_select(tfm, words, valuetype = "fixed")
 
 # average among Hamilton/Madison essays
-tfm_ave <- rbind(colSums(tfm[hamilton, ]) / length(hamilton),
-                 colSums(tfm[madison, ]) / length(madison))
-
-author <- rep(NA, nrow(tfm)) # a vector with missing values
-author[hamilton] <- 1  # 1 if Hamilton
-author[madison] <- -1  # -1 if Madison
-
+tfm_ave <- dfm_group(dfm_subset(tfm, !is.na(author)), "author") /
+           as.numeric(table(docvars(tfm, "author")))
+    
 # bind docvars from corpus and tfm to a data frame
 author_data <- data.frame(docvars(corpus_raw), tfm)
 
 # create numeric variable that takes value 1 for Hamilton's essays,
 # -1 for Madison's essays and NA for the essays with unknown authorship
+author_data$author_numeric <- ifelse(author_data$author == "hamilton", 1, 
+                                     ifelse(author_data$author == "madison", -1, NA))
 
-author_data$author_numeric <- ifelse(author_data$author == "Hamilton", 1, 
-                                     ifelse(author_data$author == "Madison", -1, NA))
-
-author_data_known <- subset(author_data, author %in% c("Hamilton", "Madison"))
+# use only known authors for training set
+author_data_known <- na.omit(author_data)
 
 hm_fit <- lm(author_numeric ~ upon + there + consequently + whilst,
              data = author_data_known)
@@ -179,10 +166,10 @@ Finally, we assess how well the model fits the data by classifying each essay ba
 
 ```{r}
 # proportion of correctly classified essays by Hamilton
-mean(hm_fitted[author_data_known$author == "Hamilton"] > 0)
+mean(hm_fitted[author_data_known$author == "hamilton"] > 0)
 
 # proportion of correctly classified essays by Madison
-mean(hm_fitted[author_data_known$author == "Madison"] < 0)
+mean(hm_fitted[author_data_known$author == "madison"] < 0)
 
 n <- nrow(author_data_known)
 hm_classify <- rep(NA, n) # a container vector with missing values
@@ -196,13 +183,13 @@ for (i in 1:n) {
 }
 
 # proportion of correctly classified essays by Hamilton
-mean(hm_classify[author_data_known$author == "Hamilton"] > 0)
+mean(hm_classify[author_data_known$author == "hamilton"] > 0)
 
 # proportion of correctly classified essays by Madison
-mean(hm_classify[author_data_known$author == "Hamilton"] < 0)
+mean(hm_classify[author_data_known$author == "madison"] < 0)
 
 disputed <- c(49, 50:57, 62, 63) # 11 essays with disputed authorship
-tf_disputed <- as.data.frame(dtm1[disputed, ])
+tf_disputed <- as.data.frame(dfm_subset(tfm, is.na(author)))
 
 author_data$prediction <- predict(hm_fit, newdata = author_data)
 
