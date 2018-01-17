@@ -207,8 +207,8 @@
 ##           SNP    88    134         4
 ##          UKIP   346    723        27
 ## 
-## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Fri Jan 12 17:11:48 2018
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
+## Created: Wed Jan 17 10:00:28 2018
 ## Notes:</code></pre>
 <p>コーパスを作成したあとでも，<code>docvars</code>を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができる．</p>
 <p>たとえば，Rの<code>names()</code>関数を使って文字ベクトル（<code>data_char_ukimmig2010</code>）の名前を取得し，これを文書変数（<code>docvar()</code>）に追加することができる．</p>
@@ -228,8 +228,8 @@
 ##           SNP    88    134         4          SNP 2010
 ##          UKIP   346    723        27         UKIP 2010
 ## 
-## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Fri Jan 12 17:11:48 2018
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
+## Created: Wed Jan 17 10:00:28 2018
 ## Notes:</code></pre>
 <p>分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，<code><a href="../../../reference/docvars.html">docvars()</a></code>を使って，コーパスに追加することができる．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -258,8 +258,8 @@
 ##  data_char_ukimmig2010_8
 ##  data_char_ukimmig2010_9
 ## 
-## Source:  /home/kohei/packages/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kohei
-## Created: Fri Jan 12 17:11:48 2018
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
+## Created: Wed Jan 17 10:00:28 2018
 ## Notes:</code></pre>
 <p><code><a href="../../../reference/metadoc.html">metadoc()</a></code>を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（“english”）を文書変数（“language”）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意する必要がある．</p>
 <p>独自の文書メタデータのフィールド（<code>docsource</code>）を作成するために，<strong>quanteda</strong>の関数である<code><a href="../../../reference/ndoc.html">ndoc()</a></code>を使ってコーパスに含まれる文書の総数を取得している．<code><a href="../../../reference/ndoc.html">ndoc()</a></code>は，<code>nrow()</code>や<code>ncol()</code>などのRの標準の関数と同じような方法で動作するように設計されている．</p>
@@ -395,7 +395,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Fri Jan 12 17:11:54 2018
+## Created: Wed Jan 17 10:00:30 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -814,30 +814,30 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1     Topic 2        Topic 3      Topic 4     Topic 5  
-## [1,] "failed"    "society"      "investment" "taoiseach" "benefit"
-## [2,] "strategy"  "enterprising" "welfare"    "employees" "child"  
-## [3,] "needed"    "sense"        "million"    "rate"      "fianna" 
-## [4,] "ministers" "equal"        "back"       "referred"  "fáil"   
-## [5,] "system"    "nation"       "continue"   "debate"    "bank"   
-##      Topic 6      Topic 7       Topic 8     Topic 9         Topic 10  
-## [1,] "review"     "kind"        "system"    "support"       "fianna"  
-## [2,] "scheme"     "imagination" "child"     "confidence"    "fáil"    
-## [3,] "welfare"    "policies"    "education" "million"       "workers" 
-## [4,] "investment" "wit"         "much"      "key"           "real"    
-## [5,] "details"    "create"      "taxation"  "international" "families"
-##      Topic 11    Topic 12   Topic 13      Topic 14  Topic 15    
-## [1,] "taoiseach" "fianna"   "measures"    "child"   "million"   
-## [2,] "fine"      "fáil"     "sustainable" "day"     "spending"  
-## [3,] "gael"      "national" "investment"  "benefit" "system"    
-## [4,] "may"       "irish"    "reductions"  "today"   "measures"  
-## [5,] "irish"     "support"  "key"         "welfare" "reductions"
-##      Topic 16      Topic 17  Topic 18 Topic 19    Topic 20 
-## [1,] "alternative" "levy"    "fianna" "care"      "welfare"
-## [2,] "citizenship" "million" "fáil"   "welfare"   "fianna" 
-## [3,] "wealth"      "carbon"  "side"   "per"       "system" 
-## [4,] "adjustment"  "change"  "level"  "allowance" "high"   
-## [5,] "breaks"      "welfare" "third"  "hit"       "fáil"</code></pre>
+<pre><code>##      Topic 1    Topic 2     Topic 3     Topic 4    Topic 5   Topic 6   
+## [1,] "fianna"   "care"      "review"    "may"      "hit"     "welfare" 
+## [2,] "fáil"     "allowance" "details"   "irish"    "system"  "system"  
+## [3,] "national" "workers"   "reduction" "gael"     "welfare" "taxation"
+## [4,] "irish"    "per"       "recent"    "stimulus" "much"    "fianna"  
+## [5,] "support"  "child"     "spending"  "day"      "real"    "fáil"    
+##      Topic 7     Topic 8     Topic 9   Topic 10     Topic 11     
+## [1,] "fáil"      "taoiseach" "child"   "society"    "alternative"
+## [2,] "fianna"    "employees" "benefit" "measures"   "citizenship"
+## [3,] "side"      "rate"      "day"     "per"        "wealth"     
+## [4,] "levy"      "referred"  "today"   "introduced" "adjustment" 
+## [5,] "education" "debate"    "bank"    "irish"      "breaks"     
+##      Topic 12       Topic 13 Topic 14   Topic 15   Topic 16      
+## [1,] "society"      "start"  "failed"   "address"  "measures"    
+## [2,] "enterprising" "equal"  "sort"     "strategy" "bill"        
+## [3,] "sense"        "say"    "seen"     "welfare"  "pension"     
+## [4,] "difficult"    "yes"    "strategy" "failed"   "increases"   
+## [5,] "going"        "damage" "modern"   "per"      "contribution"
+##      Topic 17      Topic 18     Topic 19      Topic 20   
+## [1,] "support"     "million"    "kind"        "taoiseach"
+## [2,] "million"     "scheme"     "imagination" "local"    
+## [3,] "welfare"     "investment" "policies"    "road"     
+## [4,] "back"        "welfare"    "wit"         "fine"     
+## [5,] "development" "measures"   "create"      "back"</code></pre>
 </div>
 </div>
 </div>
