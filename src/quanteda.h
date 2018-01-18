@@ -127,7 +127,6 @@ namespace quanteda{
     
     struct hash_ngram {
             std::size_t operator() (const Ngram &vec) const {
-            unsigned int add = 0;
             unsigned int seed = 0;
             for (std::size_t i = 0; i < vec.size(); i++) {
                 seed += vec[i] * (256 ^ i);
