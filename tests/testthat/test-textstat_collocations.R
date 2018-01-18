@@ -278,17 +278,17 @@ test_that("textstat_collocations.tokens works ok with zero-length documents (#94
 
     expect_equal(
         textstat_collocations(txt, size = 2, min_count = 2, tolower = TRUE)$collocation,
-        c("ice cream", "like good", "i like", "good ice")
+        c("good ice", "i like", "ice cream", "like good")
     )
-    ##   collocation count length   lambda        z
-    ## 1   ice cream     2      2 4.317488 2.027787
-    ## 2   like good     2      2 4.317488 2.027787
-    ## 3      i like     2      2 4.317488 2.027787
-    ## 4    good ice     2      2 4.317488 2.027787
+    ##   collocation count count_nested length   lambda        z
+    ## 1    good ice     2            0      2 4.317488 2.027787
+    ## 2      i like     2            0      2 4.317488 2.027787
+    ## 3   ice cream     2            0      2 4.317488 2.027787
+    ## 4   like good     2            0      2 4.317488 2.027787
 
     expect_equal(
         textstat_collocations(toks, size = 2, min_count = 2)$collocation,
-        c("ice cream", "like good", "i like", "good ice")
+        c("good ice", "i like", "ice cream", "like good")
     )
 })
 
@@ -351,7 +351,7 @@ test_that("textstat_collocations counts sequences correctly when recursive = FAL
     toks4 <- tokens_keep(tokens(txt4), c("a", "b", "c", "d"), padding = TRUE)
     
     col4 <- textstat_collocations(toks4, size = c(2:4), min_count = 1)
-    expect_equal(col4$collocation, c('b c', 'a b', 'c d', 'a b c d', 'a b c', 'b c d'))
+    expect_equal(col4$collocation, c('a b', 'b c', 'c d', 'a b c d', 'a b c', 'b c d'))
     expect_equal(col4$count, c(2, 2, 1, 1, 2, 1))
     expect_equal(col4$count_nested, c(2, 2, 1, 0, 1, 1))
 
