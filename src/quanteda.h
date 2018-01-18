@@ -130,29 +130,12 @@ namespace quanteda{
             unsigned int add = 0;
             unsigned int seed = 0;
             for (std::size_t i = 0; i < vec.size(); i++) {
-                add = vec[i] << (8 * i);
-                if (seed <= UINT_MAX - add) { // check if addition will overflow seed
-                    seed += add;
-                } else {
-                    return std::hash<unsigned int>()(seed);
-                }
+                seed += vec[i] * (256 ^ i);
             }
             return std::hash<unsigned int>()(seed);
         }
     };
     
-    /*
-    struct hash_ngram {
-        std::size_t operator() (const Ngram &vec) const {
-            unsigned int hash = 0;
-            hash ^= std::hash<unsigned int>()(vec[1]) + 0x9e3779b9;
-            for (std::size_t i = 1; i < vec.size(); i++) {
-                hash ^= std::hash<unsigned int>()(vec[i]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-            }
-            return hash;
-        }
-    };
-    */
     struct equal_ngram {
         bool operator() (const Ngram &vec1, const Ngram &vec2) const { 
             return (vec1 == vec2);
