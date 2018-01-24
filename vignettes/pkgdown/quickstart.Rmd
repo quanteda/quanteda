@@ -375,7 +375,7 @@ presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")),
                remove = stopwords("english"))
 presDfm <- dfm_trim(presDfm, min_count = 5, min_docfreq = 3)
 # hierarchical clustering - get distances on normalized dfm
-presDistMat <- textstat_dist(dfm_weight(presDfm, "relfreq"))
+presDistMat <- textstat_dist(dfm_weight(presDfm, "prop"))
 # hiarchical clustering the distance object
 presCluster <- hclust(presDistMat)
 # label with document names

@@ -376,7 +376,7 @@ presDfm <- dfm(corpus_subset(data_corpus_SOTU, Date > as.Date("1980-01-01")),
 presDfm <- dfm_trim(presDfm, min_count = 5, min_docfreq = 3)
 
 #分层聚类 -  在归一化dfm上计算距离
-presDistMat <- textstat_dist(dfm_weight(presDfm, "relfreq"))
+presDistMat <- textstat_dist(dfm_weight(presDfm, "prop"))
 # 聚类分析文本距离
 presCluster <- hclust(presDistMat)
 # 按文档名标注
