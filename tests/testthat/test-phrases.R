@@ -36,7 +36,7 @@ test_that("test phrase for collocations", {
     colls <- textstat_collocations(toks, min_count = 1, tolower = FALSE)
     expect_equivalent(
         phrase(colls),
-        list(c("federal", "government"), c("United", "States"))
+        list(c("United", "States"), c("federal", "government"))
     )
     
     # seqs <- sequences(toks, min_count = 1)

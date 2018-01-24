@@ -282,79 +282,79 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
 #&gt; 
 #&gt; Estimated Document Positions:
 #&gt;       theta      se
-#&gt; R1 -1.33148 0.01573
-#&gt; R2 -0.60623 0.01216
-#&gt; R3  0.06347 0.01129
-#&gt; R4  0.70272 0.01266
-#&gt; R5  1.50107 0.01776
-#&gt; V1 -0.32955 0.01195
+#&gt; R1 -1.33131 0.01573
+#&gt; R2 -0.60626 0.01216
+#&gt; R3  0.06334 0.01129
+#&gt; R4  0.70267 0.01267
+#&gt; R5  1.50121 0.01776
+#&gt; V1 -0.32965 0.01195
 #&gt; 
 #&gt; Estimated Feature Scores:
-#&gt;           A      B      C       D       E      F       G       H      I      J
-#&gt; beta -7.406 -8.077 -9.733 -10.713 -11.581 -11.36 -11.557 -10.453 -9.732 -8.670
-#&gt; psi  -6.287 -6.539 -7.231  -7.677  -8.089  -7.23  -7.102  -5.394 -4.350 -3.012</div><div class='input'><span class='fu'>coef</span>(<span class='no'>wf</span>)</div><div class='output co'>#&gt; $documents
-#&gt;          theta     alpha
-#&gt; R1 -1.33147776 -3.630926
-#&gt; R2 -0.60623046  1.520180
-#&gt; R3  0.06347106  3.030810
-#&gt; R4  0.70272242  1.228497
-#&gt; R5  1.50106629 -4.691470
-#&gt; V1 -0.32955155  2.542908
+#&gt;           A      B      C       D      E       F       G       H      I      J
+#&gt; beta -7.406 -8.078 -9.735 -10.715 -11.58 -11.361 -11.559 -10.455 -9.734 -8.672
+#&gt; psi  -6.288 -6.540 -7.232  -7.678  -8.09  -7.231  -7.104  -5.395 -4.351 -3.014</div><div class='input'><span class='fu'>coef</span>(<span class='no'>wf</span>)</div><div class='output co'>#&gt; $documents
+#&gt;         theta     alpha
+#&gt; R1 -1.3313116 -3.630568
+#&gt; R2 -0.6062610  1.520229
+#&gt; R3  0.0633387  3.030893
+#&gt; R4  0.7026692  1.228537
+#&gt; R5  1.5012110 -4.692005
+#&gt; V1 -0.3296463  2.542915
 #&gt; 
 #&gt; $features
 #&gt;           beta          psi
-#&gt; A   -7.4056616 -6.287342603
-#&gt; B   -8.0765727 -6.539026323
-#&gt; C   -9.7333519 -7.231193879
-#&gt; D  -10.7126585 -7.676597943
-#&gt; E  -11.5809685 -8.088635210
-#&gt; F  -11.3588028 -7.229822718
-#&gt; G  -11.5568119 -7.102127834
-#&gt; H  -10.4531092 -5.393549038
-#&gt; I   -9.7315797 -4.349544198
-#&gt; J   -8.6704659 -3.012054132
-#&gt; K   -7.6174882 -1.844025903
-#&gt; L   -6.6301576 -0.886141079
-#&gt; M   -5.6167414 -0.036220698
-#&gt; N   -4.6846792  0.613322531
-#&gt; O   -3.7786358  1.123282661
-#&gt; P   -2.7242771  1.547467746
-#&gt; Q   -1.8088196  1.784735597
-#&gt; R   -0.7116621  1.927776133
-#&gt; S    0.2595271  1.907993628
-#&gt; T    1.2560437  1.765688168
-#&gt; U    2.3937160  1.467079446
-#&gt; V    3.3682392  1.088026854
-#&gt; W    4.4778063  0.516825126
-#&gt; X    5.2779710  0.001071918
-#&gt; Y    6.1129118 -0.660849864
-#&gt; Z    6.9840413 -1.491957182
-#&gt; ZA   7.8350989 -2.420953925
-#&gt; ZB   8.8107305 -3.650413209
-#&gt; ZC   9.7296495 -4.955515332
-#&gt; ZD  10.5005691 -6.193372980
-#&gt; ZE  11.3285987 -7.676879219
-#&gt; ZF  11.1530950 -7.804360220
-#&gt; ZG  11.4371452 -8.791719487
-#&gt; ZH  10.6069111 -8.287671264
-#&gt; ZI   9.6634407 -7.726540581
-#&gt; ZJ   8.0544224 -6.814514464
-#&gt; ZK   7.4028588 -6.470757738
-#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>wf</span>)</div><div class='output co'>#&gt;          R1          R2          R3          R4          R5          V1 
-#&gt; -1.33147776 -0.60623046  0.06347106  0.70272242  1.50106629 -0.32955155 </div><div class='input'><span class='fu'>predict</span>(<span class='no'>wf</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $fit
-#&gt;          R1          R2          R3          R4          R5          V1 
-#&gt; -1.33147776 -0.60623046  0.06347106  0.70272242  1.50106629 -0.32955155 
+#&gt; A   -7.4063891 -6.287786139
+#&gt; B   -8.0775920 -6.539613243
+#&gt; C   -9.7349533 -7.232113762
+#&gt; D  -10.7145505 -7.677702897
+#&gt; E  -11.5831039 -8.089901258
+#&gt; F  -11.3611894 -7.231453389
+#&gt; G  -11.5593131 -7.103874289
+#&gt; H  -10.4554714 -5.395295173
+#&gt; I   -9.7337817 -4.351198328
+#&gt; J   -8.6723948 -3.013524226
+#&gt; K   -7.6191295 -1.845293904
+#&gt; L   -6.6315295 -0.887219938
+#&gt; M   -5.6178337 -0.037104332
+#&gt; N   -4.6855279  0.612608372
+#&gt; O   -3.7792688  1.122720811
+#&gt; P   -2.7246925  1.547066454
+#&gt; Q   -1.8090851  1.784458432
+#&gt; R   -0.7117881  1.927636019
+#&gt; S    0.2594642  1.907964369
+#&gt; T    1.2559787  1.765769072
+#&gt; U    2.3935733  1.467292707
+#&gt; V    3.3679889  1.088364942
+#&gt; W    4.4773813  0.517332165
+#&gt; X    5.2773890  0.001722343
+#&gt; Y    6.1121298 -0.660021104
+#&gt; Z    6.9830394 -1.490929859
+#&gt; ZA   7.8338822 -2.419731830
+#&gt; ZB   8.8092656 -3.648964996
+#&gt; ZC   9.7279661 -4.953874892
+#&gt; ZD  10.4987269 -6.191607080
+#&gt; ZE  11.3266610 -7.675090483
+#&gt; ZF  11.1512503 -7.802682562
+#&gt; ZG  11.4354983 -8.790374558
+#&gt; ZH  10.6054787 -8.286513000
+#&gt; ZI   9.6622652 -7.725599402
+#&gt; ZJ   8.0537537 -6.813966179
+#&gt; ZK   7.4024330 -6.470374933
+#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>wf</span>)</div><div class='output co'>#&gt;         R1         R2         R3         R4         R5         V1 
+#&gt; -1.3313116 -0.6062610  0.0633387  0.7026692  1.5012110 -0.3296463 </div><div class='input'><span class='fu'>predict</span>(<span class='no'>wf</span>, <span class='kw'>se.fit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $fit
+#&gt;         R1         R2         R3         R4         R5         V1 
+#&gt; -1.3313116 -0.6062610  0.0633387  0.7026692  1.5012110 -0.3296463 
 #&gt; 
 #&gt; $se.fit
-#&gt; [1] 0.01573421 0.01215946 0.01129486 0.01266336 0.01775535 0.01194835
+#&gt; [1] 0.01573056 0.01215647 0.01129471 0.01266595 0.01775921 0.01194628
 #&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>wf</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"confidence"</span>)</div><div class='output co'>#&gt; $fit
-#&gt;            fit         lwr         upr
-#&gt; R1 -1.33147776 -1.36231625 -1.30063926
-#&gt; R2 -0.60623046 -0.63006258 -0.58239835
-#&gt; R3  0.06347106  0.04133354  0.08560858
-#&gt; R4  0.70272242  0.67790269  0.72754215
-#&gt; R5  1.50106629  1.46626644  1.53586615
-#&gt; V1 -0.32955155 -0.35296990 -0.30613321
+#&gt;           fit         lwr         upr
+#&gt; R1 -1.3313116 -1.36214291 -1.30048026
+#&gt; R2 -0.6062610 -0.63008725 -0.58243476
+#&gt; R3  0.0633387  0.04120148  0.08547593
+#&gt; R4  0.7026692  0.67784439  0.72749401
+#&gt; R5  1.5012110  1.46640361  1.53601845
+#&gt; V1 -0.3296463 -0.35306062 -0.30623207
 #&gt; </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='no'>ie2010dwf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -375,7 +375,7 @@ calculating the svds, only applies when <code>sparse = TRUE</code></p></td>
      <span class='no'>wf2a</span>$<span class='no'>features</span>[<span class='st'>'underdispersedTerms'</span>],
      <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>.8</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>)
 <span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>austin</span>)) {
-    <span class='no'>wf_austin</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>austin</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/austin/topics/wordfish'>wordfish</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/convert-wrappers'>as.wfm</a></span>(<span class='no'>ie2010dfm</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
+    <span class='no'>wf_austin</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>austin</span><span class='kw ns'>::</span><span class='fu'>wordfish</span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/quanteda/topics/convert-wrappers'>as.wfm</a></span>(<span class='no'>ie2010dfm</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
     <span class='fu'>cor</span>(<span class='no'>wf1</span>$<span class='no'>theta</span>, <span class='no'>wf_austin</span>$<span class='no'>theta</span>)
 }
 <span class='co'># }</span></pre>
