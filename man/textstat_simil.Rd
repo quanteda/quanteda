@@ -59,7 +59,7 @@ selected).  They are fast and robust because they operate directly on the sparse
 If you want to compute similarity on a "normalized" dfm object 
   (controlling for variable document lengths, for methods such as correlation
   for which different document lengths matter), then wrap the input dfm in 
-  \code{\link{dfm_weight}(x, "relfreq")}.
+  \code{\link{dfm_weight}(x, "prop")}.
 }
 \examples{
 # create a dfm from inaugural addresses from Reagan onwards
