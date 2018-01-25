@@ -99,6 +99,9 @@
     <li>
       <a href="../../../articles/pkgdown/replication/text2vec.html">Word embedding (word2vec)</a>
     </li>
+    <li>
+      <a href="../../../articles/pkgdown/replication/qss.html">Quantitative Social Science Ch. 5.1</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -203,7 +206,7 @@
 ##          UKIP   346    723        27
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Wed Jan 17 10:00:15 2018
+## Created: Thu Jan 25 10:57:39 2018
 ## Notes:</code></pre>
 <p>我们也可以添加一些文档变量– <strong>quanteda</strong> 称之为此语料库的<code><a href="../../../reference/docvars.html">docvars()</a></code>。</p>
 <p>我们可以使用R的<code>names()</code>函数来读取字符向量<code>data_char_ukimmig2010</code>的名称，并且将其给文档变量赋值。</p>
@@ -224,7 +227,7 @@
 ##          UKIP   346    723        27         UKIP 2010
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Wed Jan 17 10:00:15 2018
+## Created: Thu Jan 25 10:57:39 2018
 ## Notes:</code></pre>
 <p>如果我们想要为每个文档添加额外的元数据，而这些元数据是我们需要知道的文档属性，我们也可以添加到语料库中。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -254,7 +257,7 @@
 ##  data_char_ukimmig2010_9
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Wed Jan 17 10:00:15 2018
+## Created: Thu Jan 25 10:57:39 2018
 ## Notes:</code></pre>
 <p>上面的命令<code><a href="../../../reference/metadoc.html">metadoc()</a></code>允许您定义自己的文档元数据域。请注意，在赋值“英语”的值时，R会循环赋值，直到它匹配文集中的文档数量。在给上述定制的metadoc域<code>docsource</code>创建一个简单的标签时，我们使用了quanteda函数<code><a href="../../../reference/ndoc.html">ndoc()</a></code>来提取语料库中的文件数量。这个功能是我们有意设计的，提供类似于你可能已经在R中使用过的函数，比如<code>nrow()</code>和<code>ncol()</code>。</p>
 </div>
@@ -390,7 +393,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2017-Trump   582   1660        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Wed Jan 17 10:00:16 2018
+## Created: Thu Jan 25 10:57:40 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -827,30 +830,30 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1      Topic 2     Topic 3     Topic 4    Topic 5  
-## [1,] "spending"   "failed"    "taoiseach" "system"   "levy"   
-## [2,] "welfare"    "strategy"  "fine"      "welfare"  "million"
-## [3,] "million"    "needed"    "gael"      "taxation" "carbon" 
-## [4,] "measures"   "ministers" "may"       "sinn"     "change" 
-## [5,] "investment" "system"    "irish"     "high"     "welfare"
-##      Topic 6      Topic 7        Topic 8   Topic 9      Topic 10  
-## [1,] "investment" "society"      "benefit" "programme"  "fianna"  
-## [2,] "support"    "enterprising" "child"   "side"       "fáil"    
-## [3,] "million"    "sense"        "day"     "tough"      "national"
-## [4,] "back"       "equal"        "today"   "far"        "irish"   
-## [5,] "key"        "nation"       "bank"    "challenges" "support" 
-##      Topic 11  Topic 12   Topic 13      Topic 14   Topic 15   Topic 16   
-## [1,] "much"    "million"  "kind"        "welfare"  "system"   "care"     
-## [2,] "welfare" "welfare"  "imagination" "fianna"   "welfare"  "welfare"  
-## [3,] "power"   "continue" "policies"    "deficit"  "taxation" "per"      
-## [4,] "euro"    "scheme"   "wit"         "fáil"     "revenue"  "allowance"
-## [5,] "better"  "support"  "authority"   "recovery" "earners"  "hit"      
-##      Topic 17      Topic 18  Topic 19    Topic 20
-## [1,] "alternative" "details" "taoiseach" "fianna"
-## [2,] "citizenship" "reduce"  "employees" "fáil"  
-## [3,] "wealth"      "scheme"  "rate"      "side"  
-## [4,] "adjustment"  "pension" "referred"  "level" 
-## [5,] "breaks"      "per"     "debate"    "third"</code></pre>
+<pre><code>##      Topic 1   Topic 2    Topic 3    Topic 4        Topic 5   
+## [1,] "levy"    "welfare"  "million"  "equal"        "needed"  
+## [2,] "million" "system"   "welfare"  "society"      "strategy"
+## [3,] "carbon"  "taxation" "scheme"   "enterprising" "failed"  
+## [4,] "change"  "stimulus" "support"  "sense"        "face"    
+## [5,] "welfare" "high"     "measures" "nation"       "confront"
+##      Topic 6       Topic 7     Topic 8      Topic 9      Topic 10    
+## [1,] "kind"        "taoiseach" "back"       "million"    "review"    
+## [2,] "imagination" "fine"      "employment" "support"    "spending"  
+## [3,] "policies"    "gael"      "seen"       "continue"   "investment"
+## [4,] "wit"         "may"       "investment" "welfare"    "pension"   
+## [5,] "create"      "irish"     "measures"   "investment" "reduction" 
+##      Topic 11    Topic 12    Topic 13   Topic 14  Topic 15   
+## [1,] "part"      "strategy"  "fianna"   "child"   "taoiseach"
+## [2,] "failed"    "created"   "fáil"     "benefit" "referred" 
+## [3,] "ministers" "taoiseach" "national" "day"     "debate"   
+## [4,] "problems"  "workers"   "irish"    "today"   "employees"
+## [5,] "system"    "rich"      "support"  "bank"    "rate"     
+##      Topic 16      Topic 17       Topic 18   Topic 19  Topic 20      
+## [1,] "alternative" "fáil"         "families" "system"  "million"     
+## [2,] "citizenship" "fianna"       "million"  "care"    "contribution"
+## [3,] "wealth"      "recovery"     "hospital" "welfare" "credit"      
+## [4,] "adjustment"  "government's" "per"      "claims"  "measures"    
+## [5,] "breaks"      "care"         "child"    "per"     "national"</code></pre>
 <p>注：以上这个指南翻译于英文版<a href="http://docs.quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>
