@@ -216,11 +216,13 @@ author_data$prediction # predicted values
 Finally, we plot the fitted values for each Federalist paper with the **ggplot2** package.
 
 ```{r, fig.width = 8, fig.height = 6}
+author_data$author_plot <- ifelse(is.na(author_data$author), "unknown", as.character(author_data$author))
+
 library(ggplot2)
 ggplot(data = author_data, aes(x = paper_numeric, 
                                y = prediction, 
-                               shape = author, 
-                               colour = author)) +
+                               shape = author_plot, 
+                               colour = author_plot)) +
     geom_point(size = 2) +
     geom_hline(yintercept = 0, linetype = "dotted") + 
     labs(x = "Federalist Papers", y = "Predicted values") +
