@@ -1,0 +1,230 @@
+---
+title: "Replication of Chapter 5 of _Quantitative Social Science: An Introduction_"
+author: Stefan Müller and Kenneth Benoit
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, 
+                      comment = "##")
+```
+
+    
+```{r, message = FALSE}
+library("quanteda")
+```
+
+
+In this vignette we show how the **quanteda** package can be used to replicate the text analysis part (Chapter 5.1) from Kosuke Imai's book [*Quantitative Social Science: An Introduction*](http://qss.princeton.press) (Princeton: Princeton University Press, 2017).
+
+## Download the Corpus
+
+To get the textual data, you need to install and load the **qss** package first that comes with the book. 
+
+```{r eval = FALSE}
+devtools::install_github("kosukeimai/qss-package", build_vignettes = TRUE)
+```
+
+## Section 5.1.1: The Disputed Authorship of ‘The Federalist Papers’
+
+First, we use the **readtext** package to import the Federalist Papers as a data frame and create a **quanteda** corpus. 
+
+```{r}
+library("readtext")
+# use readtext package to import all documents as a dataframe
+corpus_texts <- readtext(system.file("extdata/federalist/", package = "qss"))
+
+# create docvar with number of paper
+corpus_texts$paper_number <- paste("No.", seq_len(nrow(corpus_texts)), sep = " ")
+
+# transform to a quanteda corpus object
+corpus_raw <- corpus(corpus_texts, text_field = "text", docid_field = "paper_number")
+
+# create docvar with authorship (used in Section  5.1.4)
+docvars(corpus_raw, "paper_numeric") <- seq_len(ndoc(corpus_raw))
+
+# create docvar with authorship (used in Section  5.1.4)
+docvars(corpus_raw, "author") <- factor(NA, levels = c("madison", "hamilton"))
+docvars(corpus_raw, "author")[c(1, 6:9, 11:13, 15:17, 21:36, 59:61, 65:85)] <- "hamilton"
+docvars(corpus_raw, "author")[c(10, 14, 37:48, 58)] <- "madison"
+```
+
+```{r}
+# inspect Paper No. 10 (output suppressed)
+texts(corpus_raw)[10] %>% 
+    stringi::stri_sub(1, 240) %>% 
+    cat()
+```
+
+
+## Section 5.1.2: Document-Term Matrix
+
+Next, we transform the corpus to a document-feature matrix. `dfm_prep` (used in sections 5.1.4 and 5.1.5) is a dfm in which numbers and punctuation have been removed, and in which terms have been converted to lowercase. In `dfm_papers`, the words have also been stemmed and a standard set of stopwords removed.
+
+```{r}
+# transform corpus to a document-feature matrix
+dfm_prep <- dfm(corpus_raw, remove_numbers = TRUE, tolower = TRUE,
+                remove_punct = TRUE, verbose = TRUE)
+
+# remove stop words and stem words
+dfm_papers <- dfm(dfm_prep, stem = TRUE, remove = stopwords("english"))
+
+# inspect
+dfm_papers
+
+# sort into alphabetical order of features, to match book example
+dfm_papers <- dfm_papers[, order(featnames(dfm_papers))]
+
+# inspect some documents in the dfm
+head(dfm_papers, nf = 8)
+```
+
+The **tm** package considers features such as "1st" to be numbers, whereas **quanteda** does not.  We can remove these easily using a wildcard removal:
+```{r}
+dfm_papers <- dfm_remove(dfm_papers, "[0-9]", valuetype = "regex", verbose = TRUE)
+head(dfm_papers, nf = 8)
+```
+
+
+## Section 5.1.3: Topic Discovery
+
+We can use the `textplot_wordcloud()` function to plot word clouds of the most frequent words in Papers 12 and 24.
+
+```{r warning=FALSE, fig.width = 8, fig.height = 8}
+set.seed(100)
+textplot_wordcloud(dfm_papers[c("No. 12", "No. 24"), ], 
+                   max.words = 50, comparison = TRUE)
+```
+
+Since **quanteda** cannot do stem completion, we will skip that part.
+
+Next, we identify clusters of similar essay based on term frequency-inverse document frequency (*tf-idf*) and apply the $k$-means algorithm to the weighted dfm. 
+
+```{r}
+# tf-idf calculation
+dfm_papers_tfidf <- dfm_tfidf(dfm_papers, base = 2)
+
+# 10 most important words for Paper No. 12
+topfeatures(dfm_papers_tfidf[12, ], n = 10)
+
+# 10 most important words for Paper No. 24
+topfeatures(dfm_papers_tfidf[24, ], n = 10)
+```
+
+We can match the clustering as follows:
+
+```{r}
+k <- 4  # number of clusters
+
+# subset The Federalist papers written by Hamilton
+
+dfm_papers_tfidf_hamilton <- dfm_subset(dfm_papers_tfidf, author == "hamilton")
+
+# run k-means
+km_out <- stats::kmeans(dfm_papers_tfidf_hamilton, centers = k)
+
+km_out$iter # check the convergence; number of iterations may vary
+
+colnames(km_out$centers) <- featnames(dfm_papers_tfidf_hamilton)
+
+for (i in 1:k) { # loop for each cluster
+  cat("CLUSTER", i, "\n")
+  cat("Top 10 words:\n") # 10 most important terms at the centroid
+  print(head(sort(km_out$centers[i, ], decreasing = TRUE), n = 10))
+  cat("\n")
+  cat("Federalist Papers classified: \n") # extract essays classified
+  print(docnames(dfm_papers_tfidf_hamilton)[km_out$cluster == i])
+  cat("\n")
+}
+
+```
+
+## Section 5.1.4: Authorship Prediction
+
+In a next step, we want to predict authorship for the Federalist Papers whose authorship is unknown. As the topics of the Papers differs remarkably, Imai focuses on 10 articles, prepositions and conjunctions to predicte authorship.
+
+```{r}
+# term frequency per 1000 words
+tfm <- dfm_weight(dfm_prep, "prop") * 1000
+
+# select words of interest
+words <- c("although", "always", "commonly", "consequently",
+           "considerable", "enough", "there", "upon", "while", "whilst")
+tfm <- dfm_select(tfm, words, valuetype = "fixed")
+
+# average among Hamilton/Madison essays
+tfm_ave <- dfm_group(dfm_subset(tfm, !is.na(author)), "author") /
+           as.numeric(table(docvars(tfm, "author")))
+    
+# bind docvars from corpus and tfm to a data frame
+author_data <- data.frame(docvars(corpus_raw), tfm)
+
+# create numeric variable that takes value 1 for Hamilton's essays,
+# -1 for Madison's essays and NA for the essays with unknown authorship
+author_data$author_numeric <- ifelse(author_data$author == "hamilton", 1, 
+                                     ifelse(author_data$author == "madison", -1, NA))
+
+# use only known authors for training set
+author_data_known <- na.omit(author_data)
+
+hm_fit <- lm(author_numeric ~ upon + there + consequently + whilst,
+             data = author_data_known)
+hm_fit
+
+hm_fitted <- fitted(hm_fit) # fitted values
+sd(hm_fitted)
+```
+
+## Section 5.1.5: Cross-Validation
+
+Finally, we assess how well the model fits the data by classifying each essay based on its fitted value.
+
+```{r}
+# proportion of correctly classified essays by Hamilton
+mean(hm_fitted[author_data_known$author == "hamilton"] > 0)
+
+# proportion of correctly classified essays by Madison
+mean(hm_fitted[author_data_known$author == "madison"] < 0)
+
+n <- nrow(author_data_known)
+hm_classify <- rep(NA, n) # a container vector with missing values
+
+for (i in 1:n) {
+  # fit the model to the data after removing the ith observation
+  sub_fit <- lm(author_numeric ~ upon + there + consequently + whilst,
+                data = author_data_known[-i, ]) # exclude ith row
+  # predict the authorship for the ith observation
+  hm_classify[i] <- predict(sub_fit, newdata = author_data_known[i, ])
+}
+
+# proportion of correctly classified essays by Hamilton
+mean(hm_classify[author_data_known$author == "hamilton"] > 0)
+
+# proportion of correctly classified essays by Madison
+mean(hm_classify[author_data_known$author == "madison"] < 0)
+
+disputed <- c(49, 50:57, 62, 63) # 11 essays with disputed authorship
+tf_disputed <- as.data.frame(dfm_subset(tfm, is.na(author)))
+
+author_data$prediction <- predict(hm_fit, newdata = author_data)
+
+author_data$prediction # predicted values
+```
+
+Finally, we plot the fitted values for each Federalist paper with the **ggplot2** package.
+
+```{r, fig.width = 8, fig.height = 6}
+library(ggplot2)
+ggplot(data = author_data, aes(x = paper_numeric, 
+                               y = prediction, 
+                               shape = author, 
+                               colour = author)) +
+    geom_point(size = 2) +
+    geom_hline(yintercept = 0, linetype = "dotted") + 
+    labs(x = "Federalist Papers", y = "Predicted values") +
+    theme_minimal() + 
+    theme(legend.title=element_blank())
+```
+
