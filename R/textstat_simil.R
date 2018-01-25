@@ -26,7 +26,7 @@
 #' @note If you want to compute similarity on a "normalized" dfm object 
 #'   (controlling for variable document lengths, for methods such as correlation
 #'   for which different document lengths matter), then wrap the input dfm in 
-#'   \code{\link{dfm_weight}(x, "relfreq")}.
+#'   \code{\link{dfm_weight}(x, "prop")}.
 #' @return \code{textstat_simil} and \code{textstat_dist} return \code{dist} class objects.
 #' @export
 #' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
