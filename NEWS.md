@@ -1,6 +1,12 @@
-# quanteda 0.99
+# quanteda v1.0.1
 
-## Changes since v0.99.22
+## Changes since v1.0.0.
+
+### Bug fixes and stability enhancements
+* Eliminated unnecessary dependency on the **digest** package.
+* Updated the vignette title to be less generic.
+
+# quanteda v1.0.0
 
 ### New Features
 
