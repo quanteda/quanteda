@@ -24,7 +24,6 @@ Depends:
 Imports:
     utils,
     extrafont,
-    digest,
     stats,
     Matrix (>= 1.2),
     data.table (>= 1.9.6),

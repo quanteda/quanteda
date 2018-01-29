@@ -1,9 +1,9 @@
 ---
-title: "The Structure of Quanteda"
+title: "The Structure of quanteda"
 author: Kenneth Benoit
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{The Structure of quanteda}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+See http://docs.quanteda.io for additional tutorials, examples, and general documentation.
 
 # Introduction
 
