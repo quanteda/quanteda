@@ -125,7 +125,7 @@ textstat_keyness.dfm <- function(x, target = 1L,
     }
     
     if (sort)
-        result <- result[order(result[, 2], decreasing = TRUE), ]
+        result <- result[order(result[[2]], decreasing = TRUE), ]
     
     attr(result, "documents") <- names(grouping[order(grouping)])
     class(result) <- c('keyness', 'textstat', 'data.frame')

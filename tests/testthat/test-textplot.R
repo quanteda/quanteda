@@ -157,14 +157,8 @@ test_that("test textplot_keyness: show_reference works correctly ", {
     p1 <- textplot_keyness(result, show_reference = FALSE, n = k)
     p2 <- textplot_keyness(result, show_reference = TRUE, n = k)
     
-    # Plot with two different fills when show_reference = TRUE
-    expect_equal(dim(table(ggplot2::ggplot_build(p1)$data[[1]]$fill)), 1)
-    expect_equal(dim(table(ggplot2::ggplot_build(p2)$data[[1]]$fill)), 2)
-
-    # number of words plotted doubled when show_reference = TRUE
     expect_equal(nrow(ggplot2::ggplot_build(p1)$data[[1]]), k)
-    expect_equal(nrow(ggplot2::ggplot_build(p2)$data[[1]]), 2 * k)
-    
+    expect_equal(nrow(ggplot2::ggplot_build(p2)$data[[1]]), k)
 
 })
 
