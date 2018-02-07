@@ -27,6 +27,7 @@ print.summary.textmodel <- function(x, digits = max(3L, getOption("digits") - 3L
 #' Assign the summary.textmodel class to a list
 #' @param x a named list
 #' @keywords internal
+#' @export
 as.summary.textmodel <- function(x) {
     class(x) <- c("summary.textmodel", "list")
     x
@@ -65,6 +66,7 @@ as.summary.textmodel <- function(x) {
 #'   \code{\link{print.default}}
 #' @method print coefficients_textmodel
 #' @keywords internal textmodel
+#' @export
 print.coefficients_textmodel <- function(x, digits = max(3L, getOption("digits") - 3L)) {
     if (is.data.frame(x)) {
         n <- nrow(x)
@@ -84,6 +86,7 @@ print.coefficients_textmodel <- function(x, digits = max(3L, getOption("digits")
 #' @importFrom stats coefficients
 #' @importFrom stats coef
 #' @keywords internal
+#' @export
 as.coefficients_textmodel <- function(x) {
     UseMethod('as.coefficients_textmodel')
 } 
@@ -91,6 +94,7 @@ as.coefficients_textmodel <- function(x) {
 #' @noRd
 #' @method as.coefficients_textmodel data.frame
 #' @keywords internal
+#' @export
 as.coefficients_textmodel.data.frame <- function(x) {
     class(x) <- c("coefficients_textmodel", "data.frame")
     return(x)
@@ -99,6 +103,7 @@ as.coefficients_textmodel.data.frame <- function(x) {
 #' @noRd
 #' @method as.coefficients_textmodel numeric
 #' @keywords internal
+#' @export
 as.coefficients_textmodel.numeric <- function(x) {
     class(x) <- c("coefficients_textmodel", "numeric")
     return(x)
@@ -107,6 +112,7 @@ as.coefficients_textmodel.numeric <- function(x) {
 #' @noRd
 #' @method as.coefficients_textmodel numeric
 #' @keywords internal
+#' @export
 as.coefficients_textmodel.matrix <- function(x) {
     as.coefficients_textmodel(as.data.frame(x))
 } 
@@ -119,6 +125,7 @@ as.coefficients_textmodel.matrix <- function(x) {
 #' @param ... further arguments passed to or from other methods
 #' @method print statistics_textmodel
 #' @keywords internal textmodel
+#' @export
 print.statistics_textmodel <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
     NextMethod(digits = digits, row.names = TRUE)
 }
@@ -128,6 +135,7 @@ print.statistics_textmodel <- function(x, digits = max(3L, getOption("digits") -
 #' This is a helper function used in \code{summary.textmodel_*}.
 #' @param x an object to be coerced
 #' @keywords internal textmodel
+#' @export
 as.statistics_textmodel <- function(x) {
     UseMethod("as.statistics_textmodel")
 } 
@@ -135,6 +143,7 @@ as.statistics_textmodel <- function(x) {
 #' @noRd
 #' @method as.statistics_textmodel data.frame
 #' @keywords internal textmodel
+#' @export
 as.statistics_textmodel.data.frame <- function(x) {
     class(x) <- c("statistics_textmodel", "data.frame")
     return(x)
@@ -143,6 +152,7 @@ as.statistics_textmodel.data.frame <- function(x) {
 #' @noRd
 #' @method as.statistics_textmodel matrix
 #' @keywords internal textmodel
+#' @export
 as.statistics_textmodel.matrix <- function(x) {
     as.statistics_textmodel(as.data.frame(x))
 } 
