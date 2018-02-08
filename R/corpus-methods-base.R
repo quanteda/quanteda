@@ -99,6 +99,8 @@ summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, .
 #' @method print summary.corpus
 print.summary.corpus <- function(x, ...) {
     ndoc_original <- attr(x, "ndoc_original")
+    if (is.null(ndoc_original))
+        ndoc_original <- nrow(x)
     cat("Corpus consisting of ", ndoc_original, " document", 
         if (ndoc_original > 1) "s" else "", 
         attr(x, "showing"), ":\n\n", sep = "")

@@ -300,3 +300,19 @@ test_that("corpus constructor works with tibbles", {
         c(text1 = "Hello", text2 = "quanteda", text3 = "world")
     )
 })
+
+test_that("summary original methods work", {
+    summ1 <- summary(data_corpus_inaugural + data_corpus_inaugural)
+    expect_output(
+        quanteda:::print.summary.corpus(summ1),
+        "Corpus consisting of 116 documents, showing 100 documents:"
+    )
+    expect_output(
+        quanteda:::print.summary.corpus(summ1[1:5, ]),
+        ""
+    )
+    expect_output(
+        quanteda:::print.summary.corpus(summ1[, c("Types", "Tokens")]),
+        ""
+    )
+})
