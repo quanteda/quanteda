@@ -309,10 +309,10 @@ test_that("summary original methods work", {
     )
     expect_output(
         quanteda:::print.summary.corpus(summ1[1:5, ]),
-        ""
+        "\\s+Text Types Tokens"
     )
     expect_output(
         quanteda:::print.summary.corpus(summ1[, c("Types", "Tokens")]),
-        ""
+        "^\\s+Types Tokens\\n\\s+625"
     )
 })

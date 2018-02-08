@@ -91,6 +91,7 @@ summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, .
                "\nCreated: ", unlist(metacorpus(object, "created")),
                "\nNotes:   ", unlist(metacorpus(object, "notes")))
     attr(outputdf, "ndoc_original") <- ndoc(object)
+    rownames(outputdf) <- NULL
     outputdf
 }
 
@@ -99,13 +100,23 @@ summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, .
 #' @method print summary.corpus
 print.summary.corpus <- function(x, ...) {
     ndoc_original <- attr(x, "ndoc_original")
-    if (is.null(ndoc_original))
-        ndoc_original <- nrow(x)
-    cat("Corpus consisting of ", ndoc_original, " document", 
-        if (ndoc_original > 1) "s" else "", 
-        attr(x, "showing"), ":\n\n", sep = "")
+    rownames(x) <- x[["Text"]]
+    if (!is.null(ndoc_original)) {
+        cat("Corpus consisting of ", ndoc_original, " document", 
+            if (ndoc_original > 1) "s" else "", 
+            attr(x, "showing"), ":\n\n", sep = "")
+    }
     print.data.frame(x, row.names = FALSE)
     cat(attr(x, "meta"), "\n")
+}
+
+#' @noRd
+#' @export
+#' @method [ summary.corpus
+`[.summary.corpus` <- function(x, i, j, ...) {
+    class(x) <- "data.frame"
+    row.names(x) <- NULL
+    NextMethod("[")
 }
 
 #' Return the first or last part of a corpus
