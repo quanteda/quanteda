@@ -64,10 +64,11 @@ as.summary.textmodel <- function(x) {
 #' @param x a coefficients_textmodel object
 #' @param digits minimal number of \emph{significant digits}, see
 #'   \code{\link{print.default}}
+#' @param ... additional arguments not used
 #' @method print coefficients_textmodel
 #' @keywords internal textmodel
 #' @export
-print.coefficients_textmodel <- function(x, digits = max(3L, getOption("digits") - 3L)) {
+print.coefficients_textmodel <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
     if (is.data.frame(x)) {
         n <- nrow(x)
         x <- as.data.frame(x)

@@ -6,13 +6,15 @@
 This is a helper function used in \code{print.summary.textmodel}.}
 \usage{
 \method{print}{coefficients_textmodel}(x, digits = max(3L, getOption("digits")
-  - 3L))
+  - 3L), ...)
 }
 \arguments{
 \item{x}{a coefficients_textmodel object}
 
 \item{digits}{minimal number of \emph{significant digits}, see
 \code{\link{print.default}}}
+
+\item{...}{additional arguments not used}
 }
 \description{
 Print methods for textmodel features estimates
