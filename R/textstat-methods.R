@@ -34,14 +34,15 @@ filter.textstat <- function(.data, ...,
     attrs <- attributes(.data)
     
     # call dplyr filter, if ... arguments are supplied
-    if (length(list(substitute(...)))) {
+    ndots <- function(...) nargs()
+    if (length(ndots)) {
         if (!requireNamespace("dplyr", quietly = TRUE)) 
             stop("You must install the dplyr package to use filter.textstat")
-        .data <- as.data.frame(dplyr::filter(dplyr::tbl_df(.data), ...))
+        .data <- dplyr:::filter.data.frame(.data, ...)
     }
 
     # select on features if specified
-    if (!missing(pattern)) {
+    if (!is.null(pattern)) {
         valuetype <- match.arg(valuetype)
         id <- unlist(regex2id(pattern, .data[[1]], valuetype, case_insensitive))
         .data <- .data[id, , drop = FALSE]
