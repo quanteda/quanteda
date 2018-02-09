@@ -15,9 +15,11 @@ dplyr::filter
 #' @inheritParams pattern
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
-#' @seealso  \code{\link{textstat_collocations}},
-#' \code{\link{textstat_keyness}}, \code{\link{textstat_frequency}}
-#' @keywords textstat internal
+#' @seealso  \code{\link[quanteda]{textstat_collocations}},
+#'   \code{\link[quanteda]{textstat_keyness}},
+#'   \code{\link[quanteda]{textstat_frequency}}
+#' @keywords textstat
+#' @importFrom utils getS3method
 #' @export
 #' @examples
 #' period <- ifelse(docvars(data_corpus_inaugural, "Year") < 1945, "pre-war", "post-war")
@@ -36,9 +38,7 @@ filter.textstat <- function(.data, ...,
     # call dplyr filter, if ... arguments are supplied
     ndots <- function(...) nargs()
     if (length(ndots)) {
-        if (!requireNamespace("dplyr", quietly = TRUE)) 
-            stop("You must install the dplyr package to use filter.textstat")
-        .data <- dplyr:::filter.data.frame(.data, ...)
+        .data <- getS3method("filter", "data.frame")(.data, ...)
     }
 
     # select on features if specified
