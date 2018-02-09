@@ -1,10 +1,16 @@
-# quanteda v1.0.1
+# quanteda v1.0.2
 
 ## Changes since v1.0.0.
 
 ### Bug fixes and stability enhancements
+
 * Eliminated unnecessary dependency on the **digest** package.
 * Updated the vignette title to be less generic.
+
+### Performance improvements
+
+* textmodel-methods are now exported, to facilitate extension packages for other textmodel methods (e.g. wordshoal).
+
 
 # quanteda v1.0.0
 

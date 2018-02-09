@@ -53,7 +53,8 @@ test_that("corpus_segment works with blank before tag", {
     corp_seg <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                pattern_position = "before", extract_pattern = TRUE)
     summ <- summary(corp_seg)
-    expect_equal(summ["text1.1", "Tokens"], 5)
+    expect_equal(summ[1, "Tokens"], 5)
+    expect_equal(as.character(summ[1, "Text"]), "text1.1")
 })
 
 
