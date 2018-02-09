@@ -74,11 +74,11 @@ topfeatures(ch_fcm["改革", ])
 ## Unsupervised document scaling
 
 ```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
-wfm <- textmodel_wordfish(ch_dfm)
+wf <- textmodel_wordfish(ch_dfm)
 y <- 1954:2017
 y <- y[y <= 1964 | y >= 1975]
 y <- y[!y %in% c(1963, 1961, 1962, 1976, 1977)]
-plot(y, wfm@theta, xlab = "Year", ylab = "Position")
+plot(y, wf$theta, xlab = "Year", ylab = "Position")
 ```
 
 ## Collocations

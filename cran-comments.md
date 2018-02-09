@@ -1,13 +1,10 @@
 ## Submission notes
 
-RESUBMISSION: Removes the "http://doi.org" from the doi in CITATION (as instructed 
-following earlier submission of v0.9.22).
 
-### Purpose
+## Purpose
 
-- Bug fixes and stability improvements to existing 0.99.22 CRAN version.
-- Prepare for imminent transition soon to v1.0
-
+- Minor bug fixes and improvements. 
+- Removed unnecessary import of the **digest** package.
 
 ## Test environments
 
@@ -19,9 +16,15 @@ following earlier submission of v0.9.22).
 
 ## R CMD check results
 
+### Note on UBSAN issues
+
+Our package has some recurring UBSAN issues.  These are warnings that occur in RcppParallel, because of code in the TBB (Intel Threading Building Blocks) library used by RcppParallel.  We have been in a wide discussion with the RcppParallel development team (see https://github.com/RcppCore/RcppParallel/issues/36) but they have identified the problem as an object call in TBB.  This seems to have no consequences for stability in packages that use these functions.  One of the RcppParallel developers, Kevin Ushey (kevinushey@gmail.com) has confirmed this.
+
+RcppParallel has the same UBSAN issues (https://www.stats.ox.ac.uk/pub/bdr/memtests/clang-UBSAN/RcppParallel/tests/doRUnit.Rout), as do other packages that use RcppParallel (e.g. gaston: https://cran.r-project.org/web/checks/check_results_gaston.html).
+
 ### ERRORs or WARNINGs
 
-None.
+None, although see above re: UBSAN.
 
 ### NOTES
 
@@ -38,10 +41,6 @@ Only this from the results of testing on win-builder.r-project.org:
 
 ## Downstream dependencies
 
-Only the following was revelead by `devtools::revdep_check()` to confirm.
-
-`Checked tidytext      : 1 error  | 0 warnings | 0 notes`
-
-This was because **tidytext** uses a function call that has been deprecated for over a year.  I have issues a [pull request](https://github.com/juliasilge/tidytext/pull/87) for **tidytext** and notified the package maintainers to fix this, nearly two months ago.
+No errors, warnings, or NOTES were caused in other packages, using `devtools::revdep_check()` to confirm.
 
 

@@ -20,25 +20,29 @@ navbar:
       href: articles/pkgdown/comparison.html
     - text: "Examples"
       menu:
-        - text: "Latent Semantic Analysis (LSA)"
-          href: articles/pkgdown/examples/lsa.html
+        - text: "Multi-word expressions"
+          href: articles/pkgdown/examples/phrase.html
         - text: "Textual data visualization"
           href: articles/pkgdown/examples/plotting.html
+        - text: "Latent Semantic Analysis (LSA)"
+          href: articles/pkgdown/examples/lsa.html
         - text: "Chinese text analysis"
           href: articles/pkgdown/examples/chinese.html
         - text: "Social media analysis"
           href: articles/pkgdown/examples/twitter.html
-    - text: "Replication"
+    - text: "Replications"
       menu:
         - text: "Text Analysis with R for Students of Literature"
           href: articles/pkgdown/replication/digital-humanities.html
         - text: "Word embedding (word2vec)"
           href: articles/pkgdown/replication/text2vec.html
+        - text: "Quantitative Social Science Ch. 5.1"
+          href: articles/pkgdown/replication/qss.html
     - text: "Design"
       href: articles/design.html
   right:
     - icon: fa-github fa-lg
-      href: https://github.com/kbenoit/quanteda
+      href: https://github.com/quanteda/quanteda
 reference:
 - title: Package-level
   contents:
@@ -76,6 +80,7 @@ reference:
     - tokens_remove
     - tokens_replace
     - tokens_select
+    - tokens_subset
     - tokens_tolower
     - tokens_toupper
     - tokens_wordstem
@@ -103,6 +108,7 @@ reference:
     - dfm_lookup
     - dfm_sample
     - dfm_remove
+    - dfm_replace
     - dfm_select
     - dfm_subset
     - dfm_sort
@@ -161,7 +167,6 @@ reference:
   desc: Plot functions for fitting analytic models from text matrixes.
   contents:
     - starts_with("textmodel_")
-    - coef.textmodel
 - title: Utility functions
   desc: R-like functions to return counts and object information.
   contents:

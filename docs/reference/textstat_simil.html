@@ -95,10 +95,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
+      <a href="../articles/pkgdown/examples/phrase.html">Multi-word expressions</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/plotting.html">Textual data visualization</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
@@ -110,7 +113,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Replication
+    Replications
      
     <span class="caret"></span>
   </a>
@@ -121,6 +124,9 @@
     <li>
       <a href="../articles/pkgdown/replication/text2vec.html">Word embedding (word2vec)</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/replication/qss.html">Quantitative Social Science Ch. 5.1</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -130,7 +136,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/kbenoit/quanteda">
+  <a href="https://github.com/quanteda/quanteda">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -224,7 +230,7 @@ matrix is recorded</p></td>
     <p>If you want to compute similarity on a "normalized" dfm object 
   (controlling for variable document lengths, for methods such as correlation
   for which different document lengths matter), then wrap the input dfm in 
-  <code><a href='dfm_weight.html'>dfm_weight</a>(x, "relfreq")</code>.</p>
+  <code><a href='dfm_weight.html'>dfm_weight</a>(x, "prop")</code>.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 

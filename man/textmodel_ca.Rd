@@ -23,10 +23,13 @@ converting to dense}
 calculating the truncated svd.Larger value will reduce memory and time cost
 but might reduce accuracy; only applicable when \code{sparse = TRUE}}
 }
+\value{
+\code{textmodel_ca()} returns a fitted CA textmodel that is a special
+class of \pkg{ca} object.
+}
 \description{
 \code{textmodel_ca} implements correspondence analysis scaling on a 
-\link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca}, and
-returns a special class of \pkg{ca} object.
+\link{dfm}.  The method is a fast/sparse version of function \link[ca]{ca}.
 }
 \details{
 \link[RSpectra]{svds} in the \pkg{RSpectra} package is applied to 
@@ -45,12 +48,15 @@ You may need to set \code{sparse = TRUE}) and
 \examples{
 ieDfm <- dfm(data_corpus_irishbudget2010)
 wca <- textmodel_ca(ieDfm)
-summary(wca) 
+summary(wca)
 }
 \references{
 Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in 
   R, with two- and three-dimensional graphics: The ca package. \emph{Journal 
   of Statistical Software}, 20 (3), \url{http://www.jstatsoft.org/v20/i03/}.
+}
+\seealso{
+\code{\link{coef.textmodel_lsa}}, \link[ca]{ca}
 }
 \author{
 Kenneth Benoit and Haiyan Wang

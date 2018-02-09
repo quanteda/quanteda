@@ -60,20 +60,41 @@ test_that("#459 extract the lower levels of a dictionary using a dfm", {
     txt <- c(d1 = "The United States has the Atlantic Ocean and the Pacific Ocean.",
              d2 = "Britain and Ireland have the Irish Sea and the English Channel.")
     dict <- dictionary(list('US'=list(
-        Countries = c("States"),
-        oceans = c("Atlantic", "Pacific")),
-        'Europe'=list(
-            Countries = c("Britain", "Ireland"),
-            oceans = list(west = "Sea", east = "Channel"))))
+                                Countries = c("States"),
+                                oceans = c("Atlantic", "Pacific")),
+                            'Europe'=list(
+                                Countries = c("Britain", "Ireland"),
+                                oceans = list(west = "Sea", east = "Channel"))))
+    
     testdfm <- dfm(txt)
-    dfm_lookup(testdfm, dict, levels = 1)
-    dfm_lookup(testdfm, dict, levels = 2)
-    dfm_lookup(testdfm, dict, levels = 1:2)
-    dfm_lookup(testdfm, dict, levels = 3)
-    dfm_lookup(testdfm, dict, levels = c(1,3))
-    dfm_lookup(testdfm, dict, levels = c(2,3))
-    dfm_lookup(testdfm, dict, levels = c(1,4))
-    dfm_lookup(testdfm, dict, levels = 4)
+    expect_equal(as.matrix(dfm_lookup(testdfm, dict, levels = 1)),
+                 matrix(c(3, 0, 0, 4), nrow = 2,
+                        dimnames = list(docs = c('d1', 'd2'), features = c('US', 'Europe'))))
+    expect_equal(as.matrix(dfm_lookup(testdfm, dict, levels = 2)),
+                 matrix(c(1, 2, 2, 2), nrow = 2,
+                        dimnames = list(docs = c('d1', 'd2'), features = c('Countries', 'oceans'))))
+    expect_equal(as.matrix(dfm_lookup(testdfm, dict, levels = 1:2)),
+                 matrix(c(1, 0, 2, 0, 0, 2, 0, 2), nrow = 2,
+                        dimnames = list(docs = c('d1', 'd2'), 
+                                        features = c('US.Countries', 'US.oceans', 'Europe.Countries', 'Europe.oceans'))))
+    expect_equal(as.matrix(dfm_lookup(testdfm, dict, levels = 3)),
+                 matrix(c(0, 1, 0, 1), nrow = 2,
+                        dimnames = list(docs = c('d1', 'd2'), features = c('west', 'east'))))
+    expect_equal(as.matrix(dfm_lookup(testdfm, dict, levels = c(1,3))),
+                 matrix(c(3, 0, 0, 2, 0, 1, 0, 1), nrow = 2,
+                        dimnames = list(docs = c('d1', 'd2'), 
+                                        features = c('US', 'Europe', 'Europe.west', 'Europe.east'))))
+    expect_equal(as.matrix(dfm_lookup(testdfm, dict, levels = c(2,3))),
+                 matrix(c(1, 2, 2, 0, 0, 1, 0, 1), nrow = 2,
+                        dimnames = list(docs = c('d1', 'd2'), 
+                                        features = c('Countries', 'oceans', 'oceans.west', 'oceans.east'))))
+    expect_equal(as.matrix(dfm_lookup(testdfm, dict, levels = c(1,4))),
+                 matrix(c(3, 0, 0, 4), nrow = 2,
+                        dimnames = list(docs = c('d1', 'd2'), features = c('US', 'Europe'))))
+    expect_equal(as.matrix(dfm_lookup(testdfm, dict, levels = 4)),
+                 matrix(numeric(), nrow = 2, ncol = 0,
+                        dimnames = list(docs = c('d1', 'd2'), features = NULL)))
+    
 })
 
 test_that("dfm_lookup raises error when dictionary has multi-word entries", {

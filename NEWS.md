@@ -1,6 +1,18 @@
-# quanteda 0.99
+# quanteda v1.0.2
 
-## Changes since v0.99.22
+## Changes since v1.0.0.
+
+### Bug fixes and stability enhancements
+
+* Eliminated unnecessary dependency on the **digest** package.
+* Updated the vignette title to be less generic.
+
+### Performance improvements
+
+* textmodel-methods are now exported, to facilitate extension packages for other textmodel methods (e.g. wordshoal).
+
+
+# quanteda v1.0.0
 
 ### New Features
 
@@ -11,6 +23,7 @@
 * Added a pkgdown vignette for applications in the Chinese language.
 * Added `textplot_network()` function.
 * The `stopwords()` function and the associated internal data object `data_char_stopwords` have been removed from **quanteda**, and replaced by equivalent functionality in the **stopwords** package.
+* Added `tokens_subset()`, now consistent with other `*_subset()` functions (#1149).
 
 ### Bug fixes and stability enhancements
 
@@ -18,12 +31,16 @@
 * `dfm()` now correctly passes through all `...` arguments to `tokens()`.  (#1121)
 * All `dfm_*()` functions now work correctly with empty dfm objects.  (#1133)
 * Fixed a bug in `dfm_weight()` for named weight vectors (#1150)
+* Fixed a bug preventing `textplot_influence()` from working (#1116).
 
 ### Behaviour Changes
 
 * The convenience wrappers to `convert()` are simplified and no longer exported.  To convert a dfm, `convert()` is now the only official function.
 * `nfeat()` replaces `nfeature()`, which is now deprecated. (#1134)
 * `textmodel_wordshoal()` has been removed, and relocated to a new package (**wordshoal**).
+* The generic wrapper function `textmodel()`, which used to be a gateway to specific `textmodel_*()` functions, has been removed.
+* (Most of) the `textmodel_*()` have been reimplemented to make their behaviour consistent with the `lm/glm()` families of models, including especially how the `predict`, `summary`, and `coef` methods work (#1007, #108). 
+* The GitHub home for the repository has been moved to https://github.com/quanteda/quanteda.
 
 
 ## Changes since v0.99.12

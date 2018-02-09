@@ -95,10 +95,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
+      <a href="../articles/pkgdown/examples/phrase.html">Multi-word expressions</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/plotting.html">Textual data visualization</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
@@ -110,7 +113,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Replication
+    Replications
      
     <span class="caret"></span>
   </a>
@@ -121,6 +124,9 @@
     <li>
       <a href="../articles/pkgdown/replication/text2vec.html">Word embedding (word2vec)</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/replication/qss.html">Quantitative Social Science Ch. 5.1</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -130,7 +136,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/kbenoit/quanteda">
+  <a href="https://github.com/quanteda/quanteda">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -170,7 +176,15 @@ be counted.)</p>
     </tr>
     <tr>
       <th>scheme</th>
-      <td><p>type of document frequency weighting</p></td>
+      <td><p>type of document frequency weighting, computed as
+follows, where \(N\) is defined as the number of documents in the dfm and
+\(s\) is the smoothing constant:</p><dl class='dl-horizontal'>
+<dt><code>count</code></dt><dd><p>\(df_j\), the number of documents for which \(n_{ij} &gt; threshold\)</p></dd>
+<dt><code>inverse</code></dt><dd><p>$$\textrm{log}_{base}\left(s + \frac{N}{k + df_j}\right)$$</p></dd>
+<dt><code>inversemax</code></dt><dd><p>$$\textrm{log}_{base}\left(s + \frac{\textrm{max}(df_j)}{k + df_j}\right)$$</p></dd>
+<dt><code>inverseprob</code></dt><dd><p>$$\textrm{log}_{base}\left(\frac{N - df_j}{k + df_j}\right)$$</p></dd>
+<dt><code>unary</code></dt><dd><p>1 for each feature</p></dd>
+</dl></td>
     </tr>
     <tr>
       <th>smoothing</th>

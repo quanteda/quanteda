@@ -20,42 +20,31 @@ for log posterior differences}
 to match the LBG (2003) method.}
 }
 \description{
-\code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003) 
-wordscores method for scaling of a single dimension.
+\code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003)
+"Wordscores" method for scaling texts on a single dimension, given a set of
+anchoring or \emph{reference} texts whose values are set through reference
+scores. This scale can be fitted in the linear space (as per LBG 2003) or in
+the logit space (as per Beauchamp 2012).  Estimates of \emph{virgin} or
+unknown texts are obtained using the \code{predict()} method to score
+documents from a fitted \code{textmodel_wordscores} object.
 }
 \details{
-Fitting a \code{textmodel_wordscores} results in an object of class 
-  \code{textmodel_wordscores_fitted} containing the following slots:
+The \code{textmodel_wordscores()} function and the associated
+  \code{predict()} method are designed to function in the same manner as
+  \code{\link[stats]{predict.lm}}.  \code{coef()} can also be used to extract
+  the word coefficients from the fitted \code{textmodel_wordscore} object,
+  and \code{summary()} will print a nice summary of the fitted object.
 }
-\section{Slots}{
-
-\describe{
-\item{\code{scale}}{\code{linear} or \code{logit}, according to the value of 
-\code{scale}}
-
-\item{\code{Sw}}{the scores computed for each word in the training set}
-
-\item{\code{x}}{the dfm on which the wordscores model was called}
-
-\item{\code{y}}{the reference scores}
-
-\item{\code{call}}{the function call that fitted the model}
-
-\item{\code{method}}{takes a value of \code{wordscores} for this model}
-}}
-
-\section{Predict Methods}{
- A \code{predict} method is also available for a 
-  fitted wordscores object, see 
-  \code{\link{predict.textmodel_wordscores_fitted}}.
-}
-
 \examples{
 (ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA)))
-
+summary(ws)
+coef(ws)
 predict(ws)
 predict(ws, rescaling = "mv")
 predict(ws, rescaling = "lbg")
+predict(ws, se.fit = TRUE)
+predict(ws, se.fit = TRUE, interval = "confidence")
+predict(ws, se.fit = TRUE, interval = "confidence", rescaling = "mv")
 }
 \references{
 Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
@@ -67,9 +56,6 @@ Laver, Michael, Kenneth R Benoit, and John Garry. 2003.
   
   Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for 
   Interpreting Political Text." \emph{Political Analysis} 16(1): 93-100.
-}
-\seealso{
-\code{\link{predict.textmodel_wordscores_fitted}}
 }
 \author{
 Kenneth Benoit

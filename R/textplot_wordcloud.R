@@ -24,8 +24,8 @@
 #'   \code{\link[wordcloud]{comparison.cloud}}
 #' @examples
 #' # plot the features (without stopwords) from Obama's two inaugural addresses
-#' mydfm <- dfm(corpus_subset(data_corpus_inaugural, President=="Obama"), 
-#'              remove = stopwords("english"))
+#' mydfm <- dfm(corpus_subset(data_corpus_inaugural, President == "Obama"), 
+#'              remove = stopwords("english"), remove_punct = TRUE)
 #' textplot_wordcloud(mydfm)
 #' 
 #' # plot in colors with some additional options passed to wordcloud
@@ -36,8 +36,8 @@
 #' # comparison plot of Irish government vs opposition
 #' docvars(data_corpus_irishbudget2010, "govtopp") <- 
 #'     factor(ifelse(data_corpus_irishbudget2010[, "party"] %in% c("FF", "Green"), "Govt", "Opp"))
-#' govtoppDfm <- dfm(data_corpus_irishbudget2010, groups = "govtopp", verbose = FALSE)
-#' textplot_wordcloud(tfidf(govtoppDfm), comparison = TRUE)
+#' govtoppDfm <- dfm(data_corpus_irishbudget2010, groups = "govtopp", remove_punct = TRUE)
+#' textplot_wordcloud(dfm_tfidf(govtoppDfm), comparison = TRUE)
 #' # compare to non-tf-idf version
 #' textplot_wordcloud(govtoppDfm, comparison = TRUE)
 #' }

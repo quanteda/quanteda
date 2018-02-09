@@ -95,10 +95,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
+      <a href="../articles/pkgdown/examples/phrase.html">Multi-word expressions</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/plotting.html">Textual data visualization</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
@@ -110,7 +113,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Replication
+    Replications
      
     <span class="caret"></span>
   </a>
@@ -121,6 +124,9 @@
     <li>
       <a href="../articles/pkgdown/replication/text2vec.html">Word embedding (word2vec)</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/replication/qss.html">Quantitative Social Science Ch. 5.1</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -130,7 +136,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/kbenoit/quanteda">
+  <a href="https://github.com/quanteda/quanteda">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -169,7 +175,7 @@
     <pre class="examples"><span class='co'># NOT RUN {</span>
 (<span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"this is a first matrix"</span>,
                 <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"this is second matrix as example"</span>)))
-<span class='kw pkg'>lsa</span><span class='kw ns'>::</span><span class='fu'>lsa</span>(<span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>mydfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lsa"</span>))
+<span class='kw pkg'>lsa</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/lsa/topics/lsa'>lsa</a></span>(<span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>mydfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lsa"</span>))
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

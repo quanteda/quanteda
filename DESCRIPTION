@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.99.33
+Version: 1.0.2
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -23,7 +23,7 @@ Depends:
     methods
 Imports:
     utils,
-    digest,
+    extrafont,
     stats,
     Matrix (>= 1.2),
     data.table (>= 1.9.6),
@@ -62,7 +62,7 @@ Suggests:
     purrr
 URL: http://quanteda.io
 Encoding: UTF-8
-BugReports: https://github.com/kbenoit/quanteda/issues
+BugReports: https://github.com/quanteda/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
 Collate: 
@@ -93,6 +93,7 @@ Collate:
     'dfm_compress.R'
     'dfm_group.R'
     'dfm_lookup.R'
+    'dfm_replace.R'
     'dfm_sample.R'
     'dfm_select.R'
     'dfm_sort.R'
@@ -116,8 +117,7 @@ Collate:
     'settings.R'
     'spacyr-methods.R'
     'stopwords.R'
-    'textmodel-generics.R'
-    'textmodel-internal.R'
+    'textmodel-methods.R'
     'textmodel_affinity.R'
     'textmodel_ca.R'
     'textmodel_lsa.R'
@@ -146,6 +146,7 @@ Collate:
     'tokens_replace.R'
     'tokens_segment.R'
     'tokens_select.R'
+    'tokens_subset.R'
     'utils.R'
     'wordstem.R'
     'zzz.R'

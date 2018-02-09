@@ -95,10 +95,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
+      <a href="../articles/pkgdown/examples/phrase.html">Multi-word expressions</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/plotting.html">Textual data visualization</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
@@ -110,7 +113,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Replication
+    Replications
      
     <span class="caret"></span>
   </a>
@@ -121,6 +124,9 @@
     <li>
       <a href="../articles/pkgdown/replication/text2vec.html">Word embedding (word2vec)</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/replication/qss.html">Quantitative Social Science Ch. 5.1</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -130,7 +136,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/kbenoit/quanteda">
+  <a href="https://github.com/quanteda/quanteda">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -151,19 +157,10 @@
 
     
     <p>Fit the Latent Semantic Analysis scaling model to a <a href='dfm.html'>dfm</a>, which may be
-weighted (for instance using <code><a href='tfidf.html'>tfidf</a></code>).
-
-    <code>predict</code> for fitted textmodel_lsa objects projects the patterns onto
-new data.</p>
+weighted (for instance using <code><a href='dfm_tfidf.html'>dfm_tfidf</a></code>).</p>
     
 
-    <pre class="usage"><span class='fu'>textmodel_lsa</span>(<span class='no'>x</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"both"</span>, <span class='st'>"documents"</span>, <span class='st'>"features"</span>))
-
-<span class='co'># S3 method for textmodel_lsa_fitted</span>
-<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for textmodel_lsa_fitted</span>
-<span class='fu'><a href='is.dfm.html'>as.dfm</a></span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>textmodel_lsa</span>(<span class='no'>x</span>, <span class='kw'>nd</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"both"</span>, <span class='st'>"documents"</span>, <span class='st'>"features"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -179,14 +176,6 @@ new data.</p>
     <tr>
       <th>margin</th>
       <td><p>margin to be smoothed by the SVD</p></td>
-    </tr>
-    <tr>
-      <th>object</th>
-      <td><p>previously fitted lsa space</p></td>
-    </tr>
-    <tr>
-      <th>newdata</th>
-      <td><p>new matrix to be transformed into the lsa space</p></td>
     </tr>
     </table>
     
@@ -212,6 +201,10 @@ new data.</p>
   "<a href='http://search.proquest.com/openview/a1907164bd88dfc38a4875b73a3f7b3d/1?pq-origsite=gscholar&amp;cbl=1818555'>Indexing
   by latent semantic analysis</a>". <em>Journal of the American society for 
   information science</em> 41(6), 391.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='textmodel_lsa-postestimation.html'>predict.textmodel_lsa</a></code>, <code><a href='textmodel_lsa-postestimation.html'>coef.textmodel_lsa</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -241,15 +234,15 @@ new data.</p>
 <span class='co'># matrix in low_rank LSA space</span>
 <span class='no'>ie_lsa</span>$<span class='no'>matrix_low_rank</span>[,<span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt;                                    when  i     presented the supplementary
 #&gt; 2010_BUDGET_01_Brian_Lenihan_FF       5 73  1.000000e+00 539  7.000000e+00
-#&gt; 2010_BUDGET_02_Richard_Bruton_FG      2  6  1.242458e-16 305  8.627818e-16
-#&gt; 2010_BUDGET_03_Joan_Burton_LAB       11 40 -2.408516e-14 428  6.777831e-15
-#&gt; 2010_BUDGET_04_Arthur_Morgan_SF      21 26 -5.587490e-14 501  1.000000e+00
-#&gt; 2010_BUDGET_05_Brian_Cowen_FF         4 17 -1.474158e-14 394  3.018880e-14
+#&gt; 2010_BUDGET_02_Richard_Bruton_FG      2  6  1.725749e-14 305  1.214406e-13
+#&gt; 2010_BUDGET_03_Joan_Burton_LAB       11 40  1.110657e-14 428  1.812092e-13
+#&gt; 2010_BUDGET_04_Arthur_Morgan_SF      21 26 -2.171103e-12 501  1.000000e+00
+#&gt; 2010_BUDGET_05_Brian_Cowen_FF         4 17 -1.101752e-12 394  7.704948e-14
 #&gt; 2010_BUDGET_06_Enda_Kenny_FG         12 25  1.000000e+00 304  1.000000e+00
-#&gt; 2010_BUDGET_07_Kieran_ODonnell_FG     5 11 -1.704008e-15 193 -3.192983e-15
-#&gt; 2010_BUDGET_08_Eamon_Gilmore_LAB      6 10  3.994574e-13 270  9.632551e-15
-#&gt; 2010_BUDGET_09_Michael_Higgins_LAB    3  7  1.119369e-13  78  1.236932e-14
-#&gt; 2010_BUDGET_10_Ruairi_Quinn_LAB       5 19  8.858290e-14  80  4.510847e-15</div><div class='input'>
+#&gt; 2010_BUDGET_07_Kieran_ODonnell_FG     5 11 -2.284291e-12 193  5.337258e-13
+#&gt; 2010_BUDGET_08_Eamon_Gilmore_LAB      6 10  2.470182e-12 270 -8.729094e-13
+#&gt; 2010_BUDGET_09_Michael_Higgins_LAB    3  7 -1.068381e-13  78 -4.569123e-13
+#&gt; 2010_BUDGET_10_Ruairi_Quinn_LAB       5 19  1.203898e-13  80  3.574918e-14</div><div class='input'>
 <span class='co'># fold queries into the space generated by ie_dfm[1:10,]</span>
 <span class='co'># and return its truncated versions of its representation in the new low-rank space</span>
 <span class='no'>new_lsa</span> <span class='kw'>&lt;-</span> <span class='fu'>predict</span>(<span class='no'>ie_lsa</span>, <span class='no'>ie_dfm</span>[<span class='fl'>11</span>:<span class='fl'>14</span>, ])
@@ -286,6 +279,8 @@ new data.</p>
       <li><a href="#note">Note</a></li>
 
       <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

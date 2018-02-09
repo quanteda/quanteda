@@ -1,7 +1,7 @@
 context("test spacyr methods")
 
 test_that("test quanteda methods for spacy_parsed objects", {
-    load("../data/data_spacy_parsed.RData")
+    load("../data/data_spacy_parsed.rda")
     expect_equal(docnames(data_spacy_parsed), "text1")
     expect_equal(ndoc(data_spacy_parsed), 1)
     expect_equal(ntype(data_spacy_parsed), c(text1 = 7))
@@ -9,7 +9,7 @@ test_that("test quanteda methods for spacy_parsed objects", {
 })
 
 test_that("test as.tokens works for spacy_parsed objects", {
-    load("../data/data_spacy_parsed.RData")
+    load("../data/data_spacy_parsed.rda")
     expect_equal(
         as.tokens(data_spacy_parsed) %>% as.list(),
         list(text1 = c("And", "now", "for", "something", "completely", "different", "."))

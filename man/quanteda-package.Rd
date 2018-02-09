@@ -75,14 +75,14 @@ methods.
 \section{Source code and additional information}{
 
 
-\url{http://github.com/kbenoit/quanteda}
+\url{http://github.com/quanteda/quanteda}
 }
 
 \seealso{
 Useful links:
 \itemize{
   \item \url{http://quanteda.io}
-  \item Report bugs at \url{https://github.com/kbenoit/quanteda/issues}
+  \item Report bugs at \url{https://github.com/quanteda/quanteda/issues}
 }
 
 }

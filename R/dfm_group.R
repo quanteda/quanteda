@@ -45,14 +45,10 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
     
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
-    if (is.character(groups) & all(groups %in% names(docvars(x)))) {
-        groups <- interaction(docvars(x)[, groups], drop = FALSE)
-    }
-    if (ndoc(x) != length(groups)) {
-        stop("groups must name docvars or provide data matching the documents in x\n")
-    }
-    if(!fill || !is.factor(groups))
-        groups <- factor(groups, levels = sort(unique(groups)))
+    if (!is.factor(groups))
+        groups <- generate_groups(x, groups)
+    if (!fill)
+        groups <- droplevels(groups)
     x <- group_dfm(x, documents = groups, fill = fill)
     if (!is.null(groups))
         x <- x[as.character(levels(groups)),]

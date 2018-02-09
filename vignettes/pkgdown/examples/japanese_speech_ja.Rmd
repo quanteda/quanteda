@@ -146,7 +146,7 @@ toks <- tokens_compound(toks, any_col[any_col$z > 3,], concatenator = '')
 speech_dfm <- 
     dfm(toks, remove = '') %>% 
     dfm_remove('^[ぁ-ん]+$', valuetype = 'regex', min_nchar = 2) %>% 
-    dfm_trim(min_count = 10, max_count = 0.1)
+    dfm_trim(min_count = 0.50, max_count = 0.99)
 ```
 
 # 分析 {#analysis}
@@ -173,10 +173,10 @@ head(key, 20) %>% knitr::kable()
 `fcm()`によって作成した共起行列に対して，`textplot_network()`を用いると語の関係が視覚化でき，文書の内容の全体像を容易に把握できる．
 
 ```{r}
-feat <- head(key$feature, 100)
+feat <- head(key$feature, 50)
 speech_fcm <- dfm_select(speech_dfm, feat) %>% fcm()
 size <- sqrt(rowSums(speech_fcm))
-textplot_network(speech_fcm, min_freq = 0.95, edge_alpha = 0.9, vertex_size = size / max(size) * 3)
+textplot_network(speech_fcm, min_freq = 0.85, edge_alpha = 0.9, vertex_size = size / max(size) * 3)
 ```
 
 ## トピックモデル {#topicmodel}

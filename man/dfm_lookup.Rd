@@ -79,4 +79,7 @@ dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
 dfm_lookup(myDfm, myDict, nomatch = "_UNMATCHED")
 
 }
+\seealso{
+dfm_replace
+}
 \keyword{dfm}

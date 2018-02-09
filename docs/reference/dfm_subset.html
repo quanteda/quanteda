@@ -95,10 +95,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
+      <a href="../articles/pkgdown/examples/phrase.html">Multi-word expressions</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/plotting.html">Textual data visualization</a>
+    </li>
+    <li>
+      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
     </li>
     <li>
       <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
@@ -110,7 +113,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Replication
+    Replications
      
     <span class="caret"></span>
   </a>
@@ -121,6 +124,9 @@
     <li>
       <a href="../articles/pkgdown/replication/text2vec.html">Word embedding (word2vec)</a>
     </li>
+    <li>
+      <a href="../articles/pkgdown/replication/qss.html">Quantitative Social Science Ch. 5.1</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -130,7 +136,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/kbenoit/quanteda">
+  <a href="https://github.com/quanteda/quanteda">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -174,8 +180,8 @@ values are taken as false</p></td>
     <tr>
       <th>select</th>
       <td><p>expression, indicating the docvars to select from the dfm; or a
-dfm, in which case the returned dfm will contain the same documents as the
-original dfm, even if these are empty.  See Details.</p></td>
+<a href='dfm.html'>dfm</a> object, in which case the returned dfm will contain the same
+documents as the original dfm, even if these are empty.  See Details.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -192,7 +198,7 @@ original dfm, even if these are empty.  See Details.</p></td>
 
     <p>To select or subset <em>features</em>, see <code><a href='dfm_select.html'>dfm_select</a></code> instead.</p>
 <p>When <code>select</code> is a dfm, then the returned dfm will be equal in
-  row dimensions and order to the dfm used for selection.  This is the
+  document dimension and order to the dfm used for selection.  This is the
   document-level version of using <code><a href='dfm_select.html'>dfm_select</a></code> where
   <code>pattern</code> is a dfm: that function matches features, while
   <code>dfm_subset</code> will match documents.</p>

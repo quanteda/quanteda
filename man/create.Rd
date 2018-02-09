@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{create}
 \alias{create}
-\title{utility function to create a object with new set of attributes}
+\title{Utility function to create a object with new set of attributes}
 \usage{
 create(x, what, attrs = NULL, overwrite_attributes = FALSE, ...)
 }
@@ -14,6 +14,6 @@ create(x, what, attrs = NULL, overwrite_attributes = FALSE, ...)
 \item{overwrite_attributes}{overwrite attributes of the input object, if \code{TRUE}}
 }
 \description{
-utility function to create a object with new set of attributes
+Utility function to create a object with new set of attributes
 }
 \keyword{internal}

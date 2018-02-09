@@ -68,7 +68,7 @@
 #'   
 #' @section Source code and additional information:
 #' 
-#' \url{http://github.com/kbenoit/quanteda}
+#' \url{http://github.com/quanteda/quanteda}
 #' @useDynLib quanteda, .registration = TRUE  
 "_PACKAGE"
 

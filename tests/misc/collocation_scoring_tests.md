@@ -4,9 +4,9 @@ collocations verification
 Example by Jouni, via Ken
 -------------------------
 
-This is follows up on [this thread](https://github.com/kbenoit/quanteda/issues/803).
+This is follows up on [this thread](https://github.com/quanteda/quanteda/issues/803).
 
-**Jouni**: Please see also the code here to produce a unit test from line 50 onward of [`tests/testthat/test-textstat_collocations.R`](https://github.com/kbenoit/quanteda/blob/collocations_verify/tests/testthat/test-textstat_collocations.R#L50-L159) from the `collocations_verify` branch. We want to make sure our tests are correct, and then make sure our code output matches the correct tests.
+**Jouni**: Please see also the code here to produce a unit test from line 50 onward of [`tests/testthat/test-textstat_collocations.R`](https://github.com/quanteda/quanteda/blob/collocations_verify/tests/testthat/test-textstat_collocations.R#L50-L159) from the `collocations_verify` branch. We want to make sure our tests are correct, and then make sure our code output matches the correct tests.
 
 Two models are fitted here: the one with all two-way interactions ((W1W2, W1W3, W2W3) in the log-linear models language) and the saturated model (W1W2W3). The models are fitted in two ways, which are equivalent: (1) as a Poisson log-linear model for the counts, (2) as a binomial logistic model for the third word given the other two; note here R wants the counts of both the "successes" (W3 is "tax") and "failures" (W3 is other) as part of the definition of the response variable.
 
