@@ -70,40 +70,69 @@ is.corpuszip <- function(x) {
 #' mysummary <- summary(mycorpus) # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens # crude type-token ratio
 summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, ...) {
-    outputdf <- data.frame(summary(texts(object), n, tolower = tolower, ...))
-    if (!is.null(docvars(object)))
-        outputdf <- cbind(outputdf, 
-                          docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
-    # if (detail) outputdf <- cbind(outputdf, metadoc(object))
-    if (showmeta)
-        outputdf[names(metadoc(object))] <- 
-            metadoc(object)[1:min(c(n, ndoc(object))),,drop=FALSE]
-    # invisibly pass the summary of the texts
-    class(outputdf) <- c("summary.corpus", class(outputdf))
     
-    attr(outputdf, "showing") <- 
-        paste0(
-            if (is.corpuszip(object)) paste0(" (compressed ", 100 - round(object$compression_rate, 1), "%)") else "", 
-            if (ndoc(object) <= n) "" else paste0(", showing ", n, " document", if (n > 1) "s" else "")
-        )
-    attr(outputdf, "meta") <- 
-        paste0("\nSource:  ", unlist(metacorpus(object, "source")),
-               "\nCreated: ", unlist(metacorpus(object, "created")),
-               "\nNotes:   ", unlist(metacorpus(object, "notes")))
-    attr(outputdf, "ndoc_original") <- ndoc(object)
-    outputdf
+    n_all <- ndoc(object)
+    object <- head(object, n)
+    result <- data.frame(summary(texts(object), tolower = tolower, ...))
+    dvars <- docvars_internal(object)
+    if (!is.null(dvars)) { 
+        if (showmeta) {
+            result <- cbind(result, select_fields(dvars, c('system', 'user')))
+        } else {
+            result <- cbind(result, select_fields(dvars, 'user'))
+        }
+    }
+    class(result) <- c("summary.corpus", "data.frame")
+    
+    if (is.corpuszip(object)) 
+        attr(result, "compression_rate") <- object$compression_rate
+    if (ndoc(object) >= n)
+        attr(result, "ndoc_show") <- n
+    attr(result, "meta") <- list(
+        source = unlist(metacorpus(object, "source")),
+        created = unlist(metacorpus(object, "created")),
+        notes = unlist(metacorpus(object, "notes"))
+    )
+    attr(result, "ndoc_all") <- n_all
+    rownames(result) <- NULL
+    result
 }
 
 #' @export
 #' @rdname corpus-class
 #' @method print summary.corpus
 print.summary.corpus <- function(x, ...) {
-    ndoc_original <- attr(x, "ndoc_original")
-    cat("Corpus consisting of ", ndoc_original, " document", 
-        if (ndoc_original > 1) "s" else "", 
-        attr(x, "showing"), ":\n\n", sep = "")
+    
+    ndoc_all <- attr(x, "ndoc_all")
+    ndoc_show <- attr(x, "ndoc_show")
+    compression <- attr(x, "compression_rate")
+    
+    cat("Corpus consisting of ", ndoc_all, " document", if (ndoc_all > 1) "s" else "", sep = "")
+    if (!is.null(compression))
+        cat(" (compressed ", 100 - round(compression, 1), "%)", sep = "")
+    if (!is.null(ndoc_show)) 
+        cat(", showing ", ndoc_show, " document", if (ndoc_show > 1) "s" else "", sep = "")
+    cat(":\n\n")
+    
+    rownames(x) <- x[["Text"]]
     print.data.frame(x, row.names = FALSE)
-    cat(attr(x, "meta"), "\n")
+    cat("\n")
+    
+    meta <- attr(x, "meta")
+    if (!is.null(meta)) {
+        cat('Source: ', meta$source, "\n", sep = "")
+        cat('Created: ', meta$created, "\n", sep = "")
+        cat('Notes: ', meta$notes, "\n", sep = "")
+    }
+}
+
+#' @noRd
+#' @export
+#' @method [ summary.corpus
+`[.summary.corpus` <- function(x, i, j, ...) {
+    class(x) <- "data.frame"
+    row.names(x) <- NULL
+    NextMethod("[")
 }
 
 #' Return the first or last part of a corpus

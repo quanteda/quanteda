@@ -300,3 +300,19 @@ test_that("corpus constructor works with tibbles", {
         c(text1 = "Hello", text2 = "quanteda", text3 = "world")
     )
 })
+
+test_that("print.summary.corpus work", {
+    summ1 <- summary(data_corpus_inaugural + data_corpus_inaugural)
+    expect_output(
+        print(summ1),
+        "Corpus consisting of 116 documents, showing 100 documents:"
+    )
+    expect_output(
+        print(summ1[1:5, ]),
+        "\\s+Text Types Tokens"
+    )
+    expect_output(
+        print(summ1[, c("Types", "Tokens")]),
+        "^\\s+Types Tokens\\n1\\s+625\\s+1538"
+    )
+})
