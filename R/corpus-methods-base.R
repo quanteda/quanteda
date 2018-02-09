@@ -71,8 +71,10 @@ is.corpuszip <- function(x) {
 #' mysummary$Types / mysummary$Tokens # crude type-token ratio
 summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, ...) {
     
-    result <- data.frame(summary(texts(object), n, tolower = tolower, ...))
-    dvars <- head(docvars_internal(object), n)
+    n_all <- ndoc(object)
+    object <- head(object, n)
+    result <- data.frame(summary(texts(object), tolower = tolower, ...))
+    dvars <- docvars_internal(object)
     if (!is.null(dvars)) { 
         if (showmeta) {
             result <- cbind(result, select_fields(dvars, c('system', 'user')))
@@ -91,7 +93,7 @@ summary.corpus <- function(object, n = 100, showmeta = FALSE, tolower = FALSE, .
         created = unlist(metacorpus(object, "created")),
         notes = unlist(metacorpus(object, "notes"))
     )
-    attr(result, "ndoc_all") <- ndoc(object)
+    attr(result, "ndoc_all") <- n_all
     rownames(result) <- NULL
     result
 }
