@@ -323,13 +323,13 @@ select_fields <- function(x, types = c('user', 'system')) {
     
     result <- data.frame(row.names = row.names(x))
     if ('text' %in% types) {
-        result <- cbind(result, x[,is_text, drop = FALSE])
+        result <- cbind(result, x[is_text])
     } 
     if ('system' %in% types) {
-        result <- cbind(result, x[,is_system & !is_text, drop = FALSE])
+        result <- cbind(result, x[is_system & !is_text])
     }
     if ('user' %in% types) {
-        result <- cbind(result, x[,!is_system & !is_text, drop = FALSE])
+        result <- cbind(result, x[!is_system & !is_text])
     } 
     return(result)
 }
