@@ -28,15 +28,15 @@ test_that("print/show/summary method works as expected", {
         "^\\nCall:\\ntextmodel_wordfish\\.dfm\\(.*Dispersion.*14 documents; 5140 features\\.$"
     )
     expect_output(
-        print.summary.textmodel(wfs),
+        quanteda:::print.summary.textmodel(wfs),
         "^\\nCall:\\ntextmodel_wordfish\\.dfm\\("
     )
     expect_output(
-        print.summary.textmodel(wfs),
+        quanteda:::print.summary.textmodel(wfs),
         "Estimated Document Positions:"
     )
     expect_output(
-        print.summary.textmodel(wfs),
+        quanteda:::print.summary.textmodel(wfs),
         "Estimated Feature Scores:"        
     )
 })
