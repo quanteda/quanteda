@@ -27,10 +27,13 @@
 #'   terms with rare term or document frequencies that appear to be severely 
 #'   underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 #'   "quasipoisson"}.
-#' @param sparse specifies whether the \code{"dfm"} is coerced to dense
+#' @param sparse specifies whether the \code{"dfm"} is coerced to dense.  While
+#'   setting this to \code{TRUE} will make it possible to handle larger dfm
+#'   objects (and make execution faster), it will generate slightly different
+#'   results each time, because the sparse SVD routine has a stochastic element.
 #' @param abs_err specifies how the convergence is considered
 #' @param svd_sparse uses svd to initialize the starting values of theta, 
-#'   only applies when \code{sparse = TRUE}
+#'   only applies when \code{sparse = TRUE} 
 #' @param residual_floor specifies the threshold for residual matrix when 
 #'   calculating the svds, only applies when \code{sparse = TRUE}
 #' @return An object of class \code{textmodel_fitted_wordfish}.  This is a list 
@@ -97,7 +100,7 @@ textmodel_wordfish <- function(x, dir = c(1, 2),
                                dispersion = c("poisson", "quasipoisson"), 
                                dispersion_level = c("feature", "overall"),
                                dispersion_floor = 0,
-                               sparse = TRUE, 
+                               sparse = FALSE, 
                                abs_err = FALSE,
                                svd_sparse = TRUE,
                                residual_floor = 0.5) {
@@ -111,7 +114,7 @@ textmodel_wordfish.default <- function(x, dir = c(1, 2),
                                        dispersion = c("poisson", "quasipoisson"), 
                                        dispersion_level = c("feature", "overall"),
                                        dispersion_floor = 0,
-                                       sparse = TRUE, 
+                                       sparse = FALSE, 
                                        abs_err = FALSE,
                                        svd_sparse = TRUE,
                                        residual_floor = 0.5) {
@@ -125,7 +128,7 @@ textmodel_wordfish.dfm <- function(x, dir = c(1, 2),
                                    dispersion = c("poisson", "quasipoisson"), 
                                    dispersion_level = c("feature", "overall"),
                                    dispersion_floor = 0,
-                                   sparse = TRUE, 
+                                   sparse = FALSE, 
                                    abs_err = FALSE,
                                    svd_sparse = TRUE,
                                    residual_floor = 0.5) {

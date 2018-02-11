@@ -2,6 +2,10 @@
 
 ## Changes since v1.0.0.
 
+### New Features
+
+* Added `as.dfm()` methods for **tm** `DocumentTermMatrix` and `TermDocumentMatrix` objects. (#1222)
+
 ### Bug fixes and stability enhancements
 
 * Eliminated unnecessary dependency on the **digest** package.
@@ -10,6 +14,10 @@
 ### Performance improvements
 
 * textmodel-methods are now exported, to facilitate extension packages for other textmodel methods (e.g. wordshoal).
+
+### Behaviour changes
+
+* Changed the default in `textmodel_wordfish()` to `sparse = FALSE`, in response to #1216.
 
 
 # quanteda v1.0.0

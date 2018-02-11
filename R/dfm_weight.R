@@ -10,7 +10,7 @@
 #'   counts (aka relative frequency), calculated as \eqn{tf_{ij} / \sum_j tf_{ij}}}
 #'   \item{\code{propmax}}{the proportion of the feature counts of the highest
 #'   feature count in a document, \eqn{tf_{ij} / \textrm{max}_j tf_{ij}}}
-#'   \item{\code{log}}{take the logarithm of 1 + each count, for base
+#'   \item{\code{logcount}}{take the logarithm of 1 + each count, for base
 #'   \code{base}: \eqn{\textrm{log}_{base}(1 + tf_{ij})}}
 #'   \item{\code{boolean}}{recode all non-zero counts as 1}
 #'   \item{\code{augmented}}{equivalent to \eqn{K + (1 - K) *} \code{dfm_weight(x,
