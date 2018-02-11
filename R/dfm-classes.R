@@ -48,7 +48,7 @@ setClass("dfm",
                           ngrams = 1L,
                           skip = 0L,
                           version = unlist(packageVersion("quanteda")),
-                          concatenator = ""),
+                          concatenator = "_"),
          contains = "dgCMatrix")
 
 # deprecated dfmSparse class for backward compatibility
