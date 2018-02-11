@@ -122,6 +122,39 @@ as.dfm.dfmSparse <- function(x) {
     as.dfm(as(x, 'dgCMatrix'))
 }
 
+#' @noRd
+#' @method as.dfm DocumentTermMatrix
+#' @export
+#' @importFrom Matrix spareMatrix
+as.dfm.DocumentTermMatrix <- function(x){
+
+    as.dfm(
+        Matrix::sparseMatrix(
+            i = x$i, 
+            j = x$j, 
+            x = x$v, 
+            dimnames = list(seq_len(nrow(x)), colnames(x))
+        )
+    )
+    
+}
+
+#' @noRd
+#' @method as.dfm TermDocumentMatrix
+#' @export
+as.dfm.TermDocumentMatrix <- function(x){
+
+    as.dfm(
+        Matrix::sparseMatrix(
+            i = x$j, 
+            j = x$i, 
+            x = x$v, 
+            dimnames = list(seq_len(ncol(x)), rownames(x))
+        )
+    )
+    
+}
+
 as_dfm_constructor <- function(x) {
     x <- Matrix(x, sparse = TRUE) # dimnames argument is not working
     names(dimnames(x)) <- c("docs", "features")
