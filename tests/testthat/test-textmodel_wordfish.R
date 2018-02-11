@@ -58,7 +58,7 @@ test_that("textmodel-wordfish works for quasipoisson - feature as expected: dens
     #ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
     wfm_d <- textmodel_wordfish(ie2010dfm, dir = c(6,5), sparse = FALSE,
                                 dispersion = "quasipoisson", dispersion_floor = 0)
-    wfm <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
+    wfm <- textmodel_wordfish(ie2010dfm, dir = c(6,5), sparse = TRUE,
                                  dispersion = "quasipoisson", dispersion_floor = 0)
     expect_equal(
         cor(wfm_d$theta, wfm$theta),
