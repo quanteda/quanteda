@@ -2,6 +2,10 @@
 
 ## Changes since v1.0.0.
 
+### New Features
+
+* Added `as.dfm()` methods for **tm** `DocumentTermMatrix` and `TermDocumentMatrix` objects. (#1222)
+
 ### Bug fixes and stability enhancements
 
 * Eliminated unnecessary dependency on the **digest** package.

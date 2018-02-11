@@ -1,8 +1,4 @@
-####################################################################
-## methods for dfm objects
-##
-## Ken Benoit
-####################################################################
+# featnames -----------
 
 #' Get the feature labels from a dfm
 #' 
@@ -43,6 +39,7 @@ featnames.dfm <- function(x) {
     }
 }
 
+# docnames -----------
 
 #' @noRd
 #' @export
@@ -60,23 +57,22 @@ docnames.dfm <- function(x) {
 docnames.NULL <- function(x) {
     NULL
 }
+
+# as.dfm -----------
+
 #' Coercion and checking functions for dfm objects
 #' 
-#' Check for a dfm, or convert
-#' a matrix into a dfm.
-#' @param x a \link{dfm} object
-#' @return 
-#' \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
-#' @seealso \code{\link{as.data.frame.dfm}}, \code{\link{as.matrix.dfm}}
-#' @export
-is.dfm <- function(x) {
-    is(x, "dfm")
-    # "dfm" %in% class(x)
-}
-
-#' @rdname is.dfm
-#' @return \code{as.dfm} coerces a matrix or data.frame to a dfm.  Row names are
-#'   used for docnames, and column names for featnames, of the resulting dfm.
+#' Convert an eligible input object into a dfm, or check whether an object is a
+#' dfm.  Current eligible inputs for coercion to a dfm are: \link{matrix},
+#' (sparse) \link[Matrix]{Matrix}, \link[tm]{TermDocumentMatrix},
+#' \link[tm]{DocumentTermMatrix}, \link{data.frame}, and other \link{dfm}
+#' objects.
+#' @param x a candidate object for checking or coercion to \link{dfm} 
+#' @return \code{as.dfm} converts an input object into a \link{dfm}.  Row names
+#'   are used for docnames, and column names for featnames, of the resulting
+#'   dfm.
+#' @seealso \code{\link{as.data.frame.dfm}}, \code{\link{as.matrix.dfm}},
+#'   \code{\link{convert}}
 #' @export
 as.dfm <- function(x) {
     UseMethod("as.dfm")
@@ -122,6 +118,26 @@ as.dfm.dfmSparse <- function(x) {
     as.dfm(as(x, 'dgCMatrix'))
 }
 
+#' @noRd
+#' @method as.dfm DocumentTermMatrix
+#' @export
+as.dfm.DocumentTermMatrix <- function(x){
+    as.dfm(
+        sparseMatrix(i = x$i, j = x$j, x = x$v, 
+                     dimnames = list(rownames(x), colnames(x)))
+    )
+}
+
+#' @noRd
+#' @method as.dfm TermDocumentMatrix
+#' @export
+as.dfm.TermDocumentMatrix <- function(x){
+    as.dfm(
+        sparseMatrix(i = x$j, j = x$i, x = x$v, 
+                     dimnames = list(colnames(x), rownames(x)))
+    )
+}
+
 as_dfm_constructor <- function(x) {
     x <- Matrix(x, sparse = TRUE) # dimnames argument is not working
     names(dimnames(x)) <- c("docs", "features")
@@ -129,8 +145,19 @@ as_dfm_constructor <- function(x) {
         rownames(x) <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
     if (ncol(x) > 0 && is.null(colnames(x)))
         colnames(x) <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
-    new("dfm", x)
+    new("dfm", x, docvars = data.frame(row.names = rownames(x)))
 }
+
+#' @rdname as.dfm
+#' @return 
+#' \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
+#' @export
+is.dfm <- function(x) {
+    is(x, "dfm")
+    # "dfm" %in% class(x)
+}
+
+# topfeatures -----------
 
 #' Identify the most frequent features in a dfm
 #' 
@@ -225,6 +252,7 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
     #}
 }
 
+# sparsity -----------
 
 #' Compute the sparsity of a document-feature matrix
 #'
@@ -251,7 +279,7 @@ sparsity.dfm <- function(x) {
 }
 
 
-# ------------ Internal --------
+#  Internal --------
 
 #' Internal functions for dfm objects
 #' 
