@@ -661,7 +661,7 @@ tokens_word <- function(txt,
     if (what=="fastestword") {
         tok <- stri_split_fixed(txt, " ")
     } else if (what=="fasterword") {
-        tok <- stri_split_charclass(txt, "\\p{WHITE_SPACE}")
+        tok <- stri_split_regex(txt, "\\p{Z}+")
     } else {
         txt <- stri_replace_all_regex(txt, "[\uFE00-\uFE0F]", '') # remove variant selector
         txt <- stri_replace_all_regex(txt, "\\s[\u0300-\u036F]", '') # remove whitespace with diacritical marks
