@@ -43,16 +43,23 @@ dfm_group.default <- function(x, groups = NULL, fill = FALSE) {
 #' @export
 dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
     
+    if (is.null(groups))
+        return(x)
+    
     x <- as.dfm(x)
+    dvars <- docvars_internal(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
     if (!is.factor(groups))
         groups <- generate_groups(x, groups)
     if (!fill)
         groups <- droplevels(groups)
     x <- group_dfm(x, documents = groups, fill = fill)
-    if (!is.null(groups))
-        x <- x[as.character(levels(groups)),]
-    x@docvars <- data.frame(row.names = docnames(x))
+    x <- x[as.character(levels(groups)),]
+    if (length(dvars)) {
+        x@docvars <- group_docvars(dvars, groups)
+    } else {
+        x@docvars <- data.frame(row.names = docnames(x))
+    }
     return(x)
 }
 
@@ -129,4 +136,17 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
         docvars(result) <- data.frame(row.names = documents_name)
     }
     return(result)
+}
+
+# select docvar fields that have all the same values within groups
+group_docvars <- function(x, group, fill) {
+    i_unique <- which(!duplicated(group))
+    result <- x[match(levels(group), group), sapply(x, is_grouped, group), drop = FALSE]
+    rownames(result) <- as.character(levels(group))
+    return(result)
+}
+
+# check if there is not within group variance
+is_grouped <- function(x, group) {
+    all(sapply(split(x, group), function(x) all(x[1] == x)), na.rm = TRUE)
 }

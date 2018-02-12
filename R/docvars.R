@@ -314,7 +314,7 @@ check_docvars <- function(x, fields) {
     return(fields %in% names(dvars))
 }
 
-## internal function to select docvara fields
+## internal function to select docvar fields
 select_fields <- function(x, types = c('user', 'system')) {
 
     names <- names(x)
