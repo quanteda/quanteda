@@ -1,19 +1,19 @@
 #' Combine documents in a dfm by a grouping variable
-#' 
-#' Combine documents in a \link{dfm} by a grouping variable, which can also be 
-#' one of the \link{docvars} attached to the dfm. This is identical in 
+#'
+#' Combine documents in a \link{dfm} by a grouping variable, which can also be
+#' one of the \link{docvars} attached to the dfm. This is identical in
 #' functionality to using the \code{"groups"} argument in \code{\link{dfm}}.
 #' @param x a \link{dfm}
 #' @inheritParams groups
-#' @param fill logical; if \code{TRUE} and \code{groups} is a factor, then use 
-#'   all levels of the factor when forming the new "documents" of the grouped 
+#' @param fill logical; if \code{TRUE} and \code{groups} is a factor, then use
+#'   all levels of the factor when forming the new "documents" of the grouped
 #'   dfm.  This will result in documents with zero feature counts for levels not
 #'   observed.  Has no effect if the \code{groups} variable(s) are not factors.
-#' @return \code{dfm_group} returns a \link{dfm} whose documents are equal to 
-#'   the unique group combinations, and whose cell values are the sums of the 
-#'   previous values summed by group.  This currently erases any docvars in the 
-#'   dfm.
-#'   
+#' @return \code{dfm_group} returns a \link{dfm} whose documents are equal to
+#'   the unique group combinations, and whose cell values are the sums of the
+#'   previous values summed by group. Document-level variables that have no
+#'   variation within groups are saved in \link{docvars}.
+#'
 #'   Setting the \code{fill = TRUE} offers a way to "pad" a dfm with document
 #'   groups that may not have been observed, but for which an empty document is
 #'   needed, for various reasons.  If \code{groups} is a factor of dates, for
@@ -22,12 +22,12 @@
 #'   previously existed with that date.
 #' @export
 #' @examples
-#' mycorpus <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"), 
+#' mycorpus <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
 #'                    docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
 #' mydfm <- dfm(mycorpus)
 #' dfm_group(mydfm, groups = "grp")
 #' dfm_group(mydfm, groups = c(1, 1, 2, 2))
-#' 
+#'
 #' # equivalent
 #' dfm(mydfm, groups = "grp")
 #' dfm(mydfm, groups = c(1, 1, 2, 2))
@@ -43,16 +43,23 @@ dfm_group.default <- function(x, groups = NULL, fill = FALSE) {
 #' @export
 dfm_group.dfm <- function(x, groups = NULL, fill = FALSE) {
     
+    if (is.null(groups))
+        return(x)
+    
     x <- as.dfm(x)
+    dvars <- docvars_internal(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
     if (!is.factor(groups))
         groups <- generate_groups(x, groups)
     if (!fill)
         groups <- droplevels(groups)
     x <- group_dfm(x, documents = groups, fill = fill)
-    if (!is.null(groups))
-        x <- x[as.character(levels(groups)),]
-    x@docvars <- data.frame(row.names = docnames(x))
+    x <- x[as.character(levels(groups)),]
+    if (length(dvars)) {
+        x@docvars <- group_docvars(dvars, groups)
+    } else {
+        x@docvars <- data.frame(row.names = docnames(x))
+    }
     return(x)
 }
 
@@ -129,4 +136,16 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
         docvars(result) <- data.frame(row.names = documents_name)
     }
     return(result)
+}
+
+# select docvar fields that have all the same values within groups
+group_docvars <- function(x, group) {
+    result <- x[match(levels(group), group), sapply(x, is_grouped, group), drop = FALSE]
+    rownames(result) <- as.character(levels(group))
+    return(result)
+}
+
+# check if there is not within group variance
+is_grouped <- function(x, group) {
+    all(sapply(split(x, group), function(x) all(x[1] == x)), na.rm = TRUE)
 }

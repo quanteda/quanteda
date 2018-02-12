@@ -148,3 +148,43 @@ test_that("test dfm_group with wrongly dimensioned groups variables", {
         "groups must name docvars or provide data matching the documents in x"
     )
 })
+
+
+test_that("test dfm_group keeps group-level variables", {
+    
+    corp <- corpus(c('a b c c', 'b c d', 'a', "b d d"),
+                   docvars = data.frame(grp = c("D", "D", "A", "C"), 
+                                        var1 = c(1, 1, 2, 2),
+                                        var2 = c(1, 2, 2, 3),
+                                        var3 = c('x', 'x', 'y', NA),
+                                        var4 = c('x', 'y', 'y', 'x'),
+                                        var5 = as.Date(c('2018-01-01', '2018-01-01', '2015-03-01', '2012-12-15')),
+                                        var6 = as.Date(c('2018-01-01', '2015-03-01', '2015-03-01', '2012-12-15')),
+                                        stringsAsFactors = FALSE))
+    testdfm <- dfm(corp)
+    
+    grp1 <- c("D", "D", "A", "C")
+    expect_equal(
+        docvars(dfm_group(testdfm, grp1)),
+                 data.frame(grp = c('A', 'C', 'D'),
+                            var1 = c(2, 2, 1),
+                            var3 = c('y', NA, 'x'),
+                            var5 = as.Date(c('2015-03-01', '2012-12-15', '2018-01-01')),
+                            row.names = c('A', 'C', 'D'),
+                            stringsAsFactors = FALSE)
+    )
+    
+    grp2 <- factor(c("D", "D", "A", "C"), levels = c('A', 'B', 'C', 'D'))
+    expect_equal(
+        docvars(dfm_group(testdfm, grp2, fill = TRUE)),
+        data.frame(grp = c('A', NA, 'C', 'D'),
+                   var1 = c(2, NA, 2, 1),
+                   var3 = c('y', NA, NA, 'x'),
+                   var5 = as.Date(c('2015-03-01', NA, '2012-12-15', '2018-01-01')),
+                   row.names = c('A', 'B', 'C', 'D'),
+                   stringsAsFactors = FALSE)
+    )
+})
+    
+
+

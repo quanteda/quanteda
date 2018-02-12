@@ -18,6 +18,7 @@
 ### Behaviour changes
 
 * Changed the default in `textmodel_wordfish()` to `sparse = FALSE`, in response to #1216.
+* `dfm_group()` now preserves docvars that are constant for the group aggregation (#1228).
 
 
 # quanteda v1.0.0
