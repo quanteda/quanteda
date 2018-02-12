@@ -29,6 +29,7 @@
 #' summary(ws)
 #' coef(ws)
 #' predict(ws)
+#' predict(ws, include_reftexts = FALSE)
 #' predict(ws, rescaling = "mv")
 #' predict(ws, rescaling = "lbg")
 #' predict(ws, se.fit = TRUE)
@@ -117,6 +118,7 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 #'   (2007).  See References.
 #' @param interval type of confidence interval calculation
 #' @param level tolerance/confidence level for intervals
+#' @param include_reftexts if \code{FALSE}, reference texts are removed from the prediction
 #' @param ... not used
 #' @return 
 #'   \code{textmodel_wordscores()} returns a list that is also classed as a
@@ -142,96 +144,101 @@ predict.textmodel_wordscores <- function(object,
                                          se.fit = FALSE,
                                          interval = c("none", "confidence"), level = 0.95, 
                                          rescaling = c("none", "lbg", "mv"),
+                                         include_reftexts = TRUE,
                                          ...) {
-    
-    if (length(list(...)) > 0) stop("Arguments:", names(list(...)), "not supported.\n")
-        
-    interval <- match.arg(interval)
-    rescaling <- match.arg(rescaling)
-        
-    if (!is.null(newdata)) {
-        data <- as.dfm(newdata)
+  
+  if (length(list(...)) > 0) stop("Arguments:", names(list(...)), "not supported.\n")
+  
+  interval <- match.arg(interval)
+  rescaling <- match.arg(rescaling)
+  
+  if (!is.null(newdata)) {
+    data <- as.dfm(newdata)
+  } else {
+    data <- as.dfm(object$x)
+  }
+  
+  if (!include_reftexts) {
+    data <- dfm_subset(data, is.na(object$y))
+  }
+  
+  # Compute text scores as weighted mean of word scores in "virgin" document
+  sw <- coef(object)
+  data <- dfm_select(data, as.dfm(rbind(sw)))
+  # This is different from computing term weights on only the scorable words.
+  # It take rowSums() only to generates named vector.
+  sw <- sw[intersect(featnames(data), names(sw))]
+  raw <- rowSums(dfm_weight(data, "prop") %*% sw)
+  
+  # if (verbose)
+  #    catm(sprintf('%d of %d features (%.2f%%) can be scored\n\n', 
+  #         length(sw), nfeat(data), 100 * length(sw) / nfeat(data)))
+  
+  if (rescaling == "mv") {
+    if (sum(!is.na(object$y)) > 2)
+      warning("More than two reference scores found with MV rescaling; using only min, max values.")
+    fit <- mv_transform(raw, object$y, raw)
+  } else if (rescaling == "lbg") {
+    lbg_sdr <- stats::sd(object$y, na.rm = TRUE)
+    lbg_sv <- mean(raw, na.rm = TRUE)
+    lbg_sdv <- if (length(raw) < 2L) 0 else stats::sd(raw)
+    lbg_mult <- if (lbg_sdr == 0) 0 else lbg_sdr / lbg_sdv
+    fit <- (raw - lbg_sv) * lbg_mult + lbg_sv
+  } else {
+    fit <- raw
+  }
+  
+  if (!se.fit && interval == "none") {
+    class(fit) <- c("predict.textmodel_wordscores", "numeric")
+    return(fit)
+  }
+  
+  # Compute standard error
+  raw_se <- rep(NA, length(raw))
+  fwv <- dfm_weight(data, "prop")
+  for (i in seq_along(raw_se))
+    raw_se[i] <- sqrt(sum(as.numeric(fwv[i,]) * (raw[i] - sw) ^ 2)) / sqrt(rowSums(data)[[i]])
+  
+  result <- list(fit = fit)
+  if (se.fit) {
+    if (rescaling == "mv") {
+      z <- stats::qnorm(1 - (1 - level) / 2)
+      upr <- mv_transform(raw + z * raw_se, object$y, raw)
+      result$se.fit <- (upr - result$fit) / z
+    } else if (rescaling == "lbg") {
+      result$se.fit <- (raw_se - lbg_sv) * lbg_mult + lbg_sv
     } else {
-        data <- as.dfm(object$x)
+      result$se.fit <- raw_se
     }
+  } 
+  
+  if (interval == "confidence") {
+    # make fit into a matrix
+    result$fit <- matrix(result$fit, ncol = 3, nrow = length(result$fit),
+                         dimnames = list(names(result$fit), c("fit", "lwr", "upr")))
     
-    # Compute text scores as weighted mean of word scores in "virgin" document
-    sw <- coef(object)
-    data <- dfm_select(data, as.dfm(rbind(sw)))
-    # This is different from computing term weights on only the scorable words.
-    # It take rowSums() only to generates named vector.
-    sw <- sw[intersect(featnames(data), names(sw))]
-    raw <- rowSums(dfm_weight(data, "prop") %*% sw)
-    
-    # if (verbose)
-    #    catm(sprintf('%d of %d features (%.2f%%) can be scored\n\n', 
-    #         length(sw), nfeat(data), 100 * length(sw) / nfeat(data)))
+    # Compute confidence intervals
+    z <- stats::qnorm(1 - (1 - level) / 2)
+    raw <- unname(raw)
     
     if (rescaling == "mv") {
-        if (sum(!is.na(object$y)) > 2)
-            warning("More than two reference scores found with MV rescaling; using only min, max values.")
-        fit <- mv_transform(raw, object$y, raw)
+      result$fit[, "lwr"] <- mv_transform(raw - z * raw_se, object$y, raw)
+      result$fit[, "upr"] <- mv_transform(raw + z * raw_se, object$y, raw)
     } else if (rescaling == "lbg") {
-        lbg_sdr <- stats::sd(object$y, na.rm = TRUE)
-        lbg_sv <- mean(raw, na.rm = TRUE)
-        lbg_sdv <- if (length(raw) < 2L) 0 else stats::sd(raw)
-        lbg_mult <- if (lbg_sdr == 0) 0 else lbg_sdr / lbg_sdv
-        fit <- (raw - lbg_sv) * lbg_mult + lbg_sv
+      if (lbg_mult == 0) {
+        result$fit[, "lwr"] <- raw - z * raw_se
+        result$fit[, "upr"] <- raw + z * raw_se
+      } else {
+        result$fit[, "lwr"] <- ((raw - z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
+        result$fit[, "upr"] <- ((raw + z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
+      }
     } else {
-        fit <- raw
+      result$fit[, "lwr"] <- raw - z * raw_se
+      result$fit[, "upr"] <- raw + z * raw_se
     }
-    
-    if (!se.fit && interval == "none") {
-        class(fit) <- c("predict.textmodel_wordscores", "numeric")
-        return(fit)
-    }
-    
-    # Compute standard error
-    raw_se <- rep(NA, length(raw))
-    fwv <- dfm_weight(data, "prop")
-    for (i in seq_along(raw_se))
-        raw_se[i] <- sqrt(sum(as.numeric(fwv[i,]) * (raw[i] - sw) ^ 2)) / sqrt(rowSums(data)[[i]])
-    
-    result <- list(fit = fit)
-    if (se.fit) {
-        if (rescaling == "mv") {
-            z <- stats::qnorm(1 - (1 - level) / 2)
-            upr <- mv_transform(raw + z * raw_se, object$y, raw)
-            result$se.fit <- (upr - result$fit) / z
-        } else if (rescaling == "lbg") {
-            result$se.fit <- (raw_se - lbg_sv) * lbg_mult + lbg_sv
-        } else {
-            result$se.fit <- raw_se
-        }
-    } 
-    
-    if (interval == "confidence") {
-        # make fit into a matrix
-        result$fit <- matrix(result$fit, ncol = 3, nrow = length(result$fit),
-                             dimnames = list(names(result$fit), c("fit", "lwr", "upr")))
-        
-        # Compute confidence intervals
-        z <- stats::qnorm(1 - (1 - level) / 2)
-        raw <- unname(raw)
-        
-        if (rescaling == "mv") {
-            result$fit[, "lwr"] <- mv_transform(raw - z * raw_se, object$y, raw)
-            result$fit[, "upr"] <- mv_transform(raw + z * raw_se, object$y, raw)
-        } else if (rescaling == "lbg") {
-            if (lbg_mult == 0) {
-                result$fit[, "lwr"] <- raw - z * raw_se
-                result$fit[, "upr"] <- raw + z * raw_se
-            } else {
-                result$fit[, "lwr"] <- ((raw - z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
-                result$fit[, "upr"] <- ((raw + z * raw_se) - lbg_sv) * lbg_mult + lbg_sv
-            }
-        } else {
-            result$fit[, "lwr"] <- raw - z * raw_se
-            result$fit[, "upr"] <- raw + z * raw_se
-        }
-    }
-    class(result) <- c("predict.textmodel_wordscores", class(result))
-    result
+  }
+  class(result) <- c("predict.textmodel_wordscores", class(result))
+  result
 }
 
 # internal methods -----------
