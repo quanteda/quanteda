@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Post-estimations methods for textmodel_lsa — textmodel_lsa-postestimation • quanteda</title>
+<title>Coercion and checking functions for dfm objects — as.dfm • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -152,53 +152,42 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Post-estimations methods for textmodel_lsa</h1>
+    <h1>Coercion and checking functions for dfm objects</h1>
     </div>
 
     
-    <p>Post-estimation methods for fitted <a href='textmodel_lsa.html'>textmodel_lsa</a> objects.</p>
+    <p>Convert an eligible input object into a dfm, or check whether an object is a
+dfm.  Current eligible inputs for coercion to a dfm are: matrix,
+(sparse) <a href='http://www.rdocumentation.org/packages/Matrix/topics/Matrix'>Matrix</a>, <a href='http://www.rdocumentation.org/packages/tm/topics/matrix'>TermDocumentMatrix</a>,
+<a href='http://www.rdocumentation.org/packages/tm/topics/matrix'>DocumentTermMatrix</a>, data.frame, and other <a href='dfm.html'>dfm</a>
+objects.</p>
     
 
-    <pre class="usage"><span class='co'># S3 method for textmodel_lsa</span>
-<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>as.dfm</span>(<span class='no'>x</span>)
 
-<span class='co'># S3 method for textmodel_lsa</span>
-<span class='fu'><a href='as.dfm.html'>as.dfm</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S3 method for textmodel_lsa</span>
-<span class='fu'>coef</span>(<span class='no'>object</span>, <span class='kw'>doc_dim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>feat_dim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)
-
-<span class='fu'>coefficients.textmodel_lsa</span>(<span class='no'>object</span>, <span class='kw'>doc_dim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>feat_dim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>is.dfm</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object, x</th>
-      <td><p>previously fitted <a href='textmodel_lsa.html'>textmodel_lsa</a> object</p></td>
-    </tr>
-    <tr>
-      <th>newdata</th>
-      <td><p>new matrix to be transformed into the lsa space</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>unused</p></td>
-    </tr>
-    <tr>
-      <th>doc_dim, feat_dim</th>
-      <td><p>the document and feature dimension scores to be
-extracted</p></td>
+      <th>x</th>
+      <td><p>a candidate object for checking or coercion to <a href='dfm.html'>dfm</a></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>predict()</code> returns a predicted <a href='textmodel_lsa.html'>textmodel_lsa</a> object, projecting the patterns onto
-new data.
+    <p><code>as.dfm</code> converts an input object into a <a href='dfm.html'>dfm</a>.  Row names
+  are used for docnames, and column names for featnames, of the resulting
+  dfm.
 
-<code>coef.textmodel_lsa</code> extracts model coefficients from a fitted
-  <a href='textmodel_ca.html'>textmodel_ca</a> object.</p>
+<code>is.dfm</code> returns <code>TRUE</code> if and only if its argument is a <a href='dfm.html'>dfm</a>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='as.matrix.dfm.html'>as.data.frame.dfm</a></code>, <code><a href='as.matrix.dfm.html'>as.matrix.dfm</a></code>,
+  <code><a href='convert.html'>convert</a></code></p>
     
 
   </div>
@@ -208,6 +197,8 @@ new data.
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>
