@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function to serialized list-of-character tokens — tokens_serialize • quanteda</title>
+<title>Coercion and checking functions for dfm objects — as.dfm • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -152,35 +152,42 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Function to serialized list-of-character tokens</h1>
+    <h1>Coercion and checking functions for dfm objects</h1>
     </div>
 
     
-    <p>Creates a serialized object of tokens, called by <code><a href='tokens.html'>tokens</a></code>.</p>
+    <p>Convert an eligible input object into a dfm, or check whether an object is a
+dfm.  Current eligible inputs for coercion to a dfm are: matrix,
+(sparse) <a href='http://www.rdocumentation.org/packages/Matrix/topics/Matrix'>Matrix</a>, <a href='http://www.rdocumentation.org/packages/tm/topics/matrix'>TermDocumentMatrix</a>,
+<a href='http://www.rdocumentation.org/packages/tm/topics/matrix'>DocumentTermMatrix</a>, data.frame, and other <a href='dfm.html'>dfm</a>
+objects.</p>
     
 
-    <pre class="usage"><span class='fu'>tokens_serialize</span>(<span class='no'>x</span>, <span class='kw'>types_reserved</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>as.dfm</span>(<span class='no'>x</span>)
+
+<span class='fu'>is.dfm</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a list of character vectors</p></td>
-    </tr>
-    <tr>
-      <th>types_reserved</th>
-      <td><p>optional pre-existing types for mapping of tokens</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>additional arguments</p></td>
+      <td><p>a candidate object for checking or coercion to <a href='dfm.html'>dfm</a></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list the serialized tokens found in each text</p>
+    <p><code>as.dfm</code> converts an input object into a <a href='dfm.html'>dfm</a>.  Row names
+  are used for docnames, and column names for featnames, of the resulting
+  dfm.
+
+<code>is.dfm</code> returns <code>TRUE</code> if and only if its argument is a <a href='dfm.html'>dfm</a>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='as.matrix.dfm.html'>as.data.frame.dfm</a></code>, <code><a href='as.matrix.dfm.html'>as.matrix.dfm</a></code>,
+  <code><a href='convert.html'>convert</a></code></p>
     
 
   </div>
@@ -190,6 +197,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

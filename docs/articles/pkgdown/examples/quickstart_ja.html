@@ -210,8 +210,8 @@
 ##           SNP    88    134         4
 ##          UKIP   346    723        27
 ## 
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Thu Jan 25 11:45:41 2018
+## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
+## Created: Mon Feb 12 14:38:00 2018
 ## Notes:</code></pre>
 <p>コーパスを作成したあとでも，<code>docvars</code>を用いると，必要に応じて文書に対応した変数をこのコーパスに追加することができる．</p>
 <p>たとえば，Rの<code>names()</code>関数を使って文字ベクトル（<code>data_char_ukimmig2010</code>）の名前を取得し，これを文書変数（<code>docvar()</code>）に追加することができる．</p>
@@ -231,8 +231,8 @@
 ##           SNP    88    134         4          SNP 2010
 ##          UKIP   346    723        27         UKIP 2010
 ## 
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Thu Jan 25 11:45:41 2018
+## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
+## Created: Mon Feb 12 14:38:00 2018
 ## Notes:</code></pre>
 <p>分析の対象となる文書変数ではではないけれども，文書の属性として残しておきたいと思うメタデータも，<code><a href="../../../reference/docvars.html">docvars()</a></code>を使って，コーパスに追加することができる．</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../../../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -240,29 +240,29 @@
 <span class="kw">summary</span>(myCorpus, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Corpus consisting of 9 documents:
 ## 
-##          Text Types Tokens Sentences        Party Year _language
-##           BNP  1125   3280        88          BNP 2010   english
-##     Coalition   142    260         4    Coalition 2010   english
-##  Conservative   251    499        15 Conservative 2010   english
-##        Greens   322    679        21       Greens 2010   english
-##        Labour   298    683        29       Labour 2010   english
-##        LibDem   251    483        14       LibDem 2010   english
-##            PC    77    114         5           PC 2010   english
-##           SNP    88    134         4          SNP 2010   english
-##          UKIP   346    723        27         UKIP 2010   english
-##               _docsource
-##  data_char_ukimmig2010_1
-##  data_char_ukimmig2010_2
-##  data_char_ukimmig2010_3
-##  data_char_ukimmig2010_4
-##  data_char_ukimmig2010_5
-##  data_char_ukimmig2010_6
-##  data_char_ukimmig2010_7
-##  data_char_ukimmig2010_8
-##  data_char_ukimmig2010_9
+##          Text Types Tokens Sentences _language              _docsource
+##           BNP  1125   3280        88   english data_char_ukimmig2010_1
+##     Coalition   142    260         4   english data_char_ukimmig2010_2
+##  Conservative   251    499        15   english data_char_ukimmig2010_3
+##        Greens   322    679        21   english data_char_ukimmig2010_4
+##        Labour   298    683        29   english data_char_ukimmig2010_5
+##        LibDem   251    483        14   english data_char_ukimmig2010_6
+##            PC    77    114         5   english data_char_ukimmig2010_7
+##           SNP    88    134         4   english data_char_ukimmig2010_8
+##          UKIP   346    723        27   english data_char_ukimmig2010_9
+##         Party Year
+##           BNP 2010
+##     Coalition 2010
+##  Conservative 2010
+##        Greens 2010
+##        Labour 2010
+##        LibDem 2010
+##            PC 2010
+##           SNP 2010
+##          UKIP 2010
 ## 
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
-## Created: Thu Jan 25 11:45:41 2018
+## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/pkgdown/examples/* on x86_64 by kbenoit
+## Created: Mon Feb 12 14:38:00 2018
 ## Notes:</code></pre>
 <p><code><a href="../../../reference/metadoc.html">metadoc()</a></code>を用いると，文書メタデータのフィールドを自由に定義することができますが，単一の値（“english”）を文書変数（“language”）に付与するときには，Rが値を繰り替えして全ての文書に同じ値を付与していることに注意する必要がある．</p>
 <p>独自の文書メタデータのフィールド（<code>docsource</code>）を作成するために，<strong>quanteda</strong>の関数である<code><a href="../../../reference/ndoc.html">ndoc()</a></code>を使ってコーパスに含まれる文書の総数を取得している．<code><a href="../../../reference/ndoc.html">ndoc()</a></code>は，<code>nrow()</code>や<code>ncol()</code>などのRの標準の関数と同じような方法で動作するように設計されている．</p>
@@ -348,7 +348,7 @@ mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocume
 ##      13     Ciaran    Cuffe Green
 ##      14 Caoimhghin OCaolain    SF
 ## 
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
+## Source: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
 ## Created: Wed Jun 28 22:04:18 2017
 ## Notes:</code></pre>
 <p><code>summary()</code>の出力をデータ・フレームとして保存し，基本的な記述統計を描画することができる．</p>
@@ -360,14 +360,8 @@ mytf7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocume
 <p><img src="quickstart_ja_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Longest inaugural address: William Henry Harrison</span>
 tokenInfo[<span class="kw">which.max</span>(tokenInfo<span class="op">$</span>Tokens), ] </code></pre></div>
-<pre><code>## Corpus consisting of 58 documents:
-## 
-##           Text Types Tokens Sentences Year President     FirstName
-##  1841-Harrison  1896   9144       210 1841  Harrison William Henry
-## 
-## Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
-## Created: Tue Jun 13 14:51:47 2017
-## Notes:   http://www.presidency.ucsb.edu/inaugurals.php</code></pre>
+<pre><code>##             Text Types Tokens Sentences Year President     FirstName
+## 14 1841-Harrison  1896   9144       210 1841  Harrison William Henry</code></pre>
 </div>
 </div>
 <div id="tools-for-handling-corpus-objects" class="section level2">
@@ -397,8 +391,8 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##       2013-Obama   814   2317        88
 ##       2017-Trump   582   1660        88
 ## 
-## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Thu Jan 25 11:45:43 2018
+## Source: Combination of corpuses mycorpus1 and mycorpus2
+## Created: Mon Feb 12 14:38:01 2018
 ## Notes:</code></pre>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -417,9 +411,9 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##    2013-Obama   814   2317        88 2013     Obama    Barack
 ##    2017-Trump   582   1660        88 2017     Trump Donald J.
 ## 
-## Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
+## Source: Gerhard Peters and John T. Woolley. The American Presidency Project.
 ## Created: Tue Jun 13 14:51:47 2017
-## Notes:   http://www.presidency.ucsb.edu/inaugurals.php</code></pre>
+## Notes: http://www.presidency.ucsb.edu/inaugurals.php</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, President <span class="op">==</span><span class="st"> "Adams"</span>))</code></pre></div>
 <pre><code>## Corpus consisting of 2 documents:
 ## 
@@ -427,9 +421,9 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 <span class="op">+</span><span
 ##  1797-Adams   826   2578        37 1797     Adams        John
 ##  1825-Adams  1003   3152        74 1825     Adams John Quincy
 ## 
-## Source:  Gerhard Peters and John T. Woolley. The American Presidency Project.
+## Source: Gerhard Peters and John T. Woolley. The American Presidency Project.
 ## Created: Tue Jun 13 14:51:47 2017
-## Notes:   http://www.presidency.ucsb.edu/inaugurals.php</code></pre>
+## Notes: http://www.presidency.ucsb.edu/inaugurals.php</code></pre>
 </div>
 </div>
 <div id="exploring-corpus-texts" class="section level2">
@@ -817,30 +811,30 @@ quantdfm</code></pre></div>
     <span class="kw"><a href="http://www.rdocumentation.org/packages/topicmodels/topics/get">get_terms</a></span>(myLDAfit20, <span class="dv">5</span>)
 }</code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1    Topic 2     Topic 3   Topic 4     Topic 5   Topic 6  
-## [1,] "fianna"   "taoiseach" "benefit" "care"      "banks"   "levy"   
-## [2,] "fáil"     "employees" "child"   "welfare"   "child"   "million"
-## [3,] "national" "rate"      "day"     "per"       "fáil"    "carbon" 
-## [4,] "irish"    "referred"  "today"   "allowance" "nama"    "change" 
-## [5,] "support"  "debate"    "bank"    "hit"       "benefit" "welfare"
-##      Topic 7      Topic 8    Topic 9     Topic 10   Topic 11     
-## [1,] "million"    "system"   "taoiseach" "confront" "irish"      
-## [2,] "support"    "child"    "fine"      "failed"   "opportunity"
-## [3,] "research"   "taxation" "gael"      "face"     "employment" 
-## [4,] "national"   "stimulus" "may"       "strategy" "fianna"     
-## [5,] "investment" "already"  "irish"     "system"   "even"       
-##      Topic 12   Topic 13      Topic 14  Topic 15     Topic 16     
-## [1,] "million"  "kind"        "vision"  "ministers"  "welfare"    
-## [2,] "review"   "imagination" "seen"    "cycle"      "continue"   
-## [3,] "spending" "alternative" "needed"  "failed"     "development"
-## [4,] "scheme"   "moral"       "address" "employment" "back"       
-## [5,] "reduced"  "citizenship" "modern"  "system"     "million"    
-##      Topic 17       Topic 18     Topic 19 Topic 20      
-## [1,] "society"      "measures"   "fianna" "welfare"     
-## [2,] "enterprising" "investment" "fáil"   "system"      
-## [3,] "sense"        "per"        "side"   "fianna"      
-## [4,] "equal"        "welfare"    "level"  "government's"
-## [5,] "nation"       "benefit"    "third"  "hope"</code></pre>
+<pre><code>##      Topic 1   Topic 2       Topic 3      Topic 4   Topic 5    
+## [1,] "child"   "million"     "confidence" "fine"    "level"    
+## [2,] "benefit" "support"     "increasing" "gael"    "measures" 
+## [3,] "day"     "welfare"     "million"    "irish"   "reduction"
+## [4,] "today"   "investment"  "irish"      "believe" "scheme"   
+## [5,] "bank"    "development" "investment" "banks"   "per"      
+##      Topic 6      Topic 7    Topic 8  Topic 9     Topic 10   Topic 11  
+## [1,] "review"     "fianna"   "child"  "taoiseach" "welfare"  "welfare" 
+## [2,] "million"    "fáil"     "fianna" "may"       "support"  "system"  
+## [3,] "investment" "national" "set"    "day"       "hospital" "taxation"
+## [4,] "spending"   "irish"    "irish"  "stimulus"  "level"    "worst"   
+## [5,] "measures"   "support"  "banks"  "gael"      "areas"    "stimulus"
+##      Topic 12      Topic 13       Topic 14  Topic 15    Topic 16   
+## [1,] "kind"        "society"      "levy"    "taoiseach" "failed"   
+## [2,] "imagination" "enterprising" "million" "employees" "strategy" 
+## [3,] "policies"    "sense"        "carbon"  "rate"      "needed"   
+## [4,] "wit"         "equal"        "change"  "referred"  "ministers"
+## [5,] "create"      "nation"       "welfare" "debate"    "system"   
+##      Topic 17   Topic 18 Topic 19    Topic 20     
+## [1,] "fianna"   "fianna" "care"      "alternative"
+## [2,] "per"      "fáil"   "welfare"   "citizenship"
+## [3,] "policies" "side"   "per"       "wealth"     
+## [4,] "workers"  "level"  "allowance" "adjustment" 
+## [5,] "much"     "third"  "hit"       "breaks"</code></pre>
 </div>
 </div>
 </div>
