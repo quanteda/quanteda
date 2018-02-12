@@ -139,7 +139,7 @@ test_that("tokens works with unusual hiragana #554", {
     skip_on_os("windows")
     txts <- c("づいﾞ", "゛んﾞ", "たーﾟ")
     expect_equivalent(as.list(tokens(txts)),
-                      list(c('づ', '', 'いﾞ'), c('゛', '', 'んﾞ'), c('た', '',  'ーﾟ')))
+                      list(c('づ', 'いﾞ'), c('゛', 'んﾞ'), c('た', 'ーﾟ')))
 })
 
 test_that("types attribute is a character vector", {
@@ -450,7 +450,7 @@ test_that("tokens works as expected with NA, and blanks", {
     )
     expect_equal(
         as.character(as.tokens(list(""))),
-        ""
+        character()
     )
 })
 
@@ -464,3 +464,31 @@ test_that("assignment operators are disabled for tokens object", {
     expect_error(toks[[1]] <- c(6, 100, 'z'), 'assignment to tokens objects is not allowed')
     expect_error(toks[1] <- list(c(6, 100, 'z')), 'assignment to tokens objects is not allowed')
 })
+
+test_that("assignment operators are disabled for tokens object", {
+    toks <- tokens(c(d1 = "a b c d", d2 = "c d e"))
+    
+    try(toks[[1]] <- c(6, 100, 'z'), silent = TRUE)
+    expect_equal(as.list(toks),
+                 list(d1 = c("a", "b", "c", "d"), d2 = c("c", "d", "e")))
+    
+    expect_error(toks[[1]] <- c(6, 100, 'z'), 'assignment to tokens objects is not allowed')
+    expect_error(toks[1] <- list(c(6, 100, 'z')), 'assignment to tokens objects is not allowed')
+})
+
+test_that("what = 'fasterword' works correctly", {
+    txt <- "\n \t  word"
+    expect_equal(as.list(tokens(txt, what = "fasterword", remove_separators = TRUE))[[1]],
+                 "word")
+    expect_equal(as.list(tokens(txt, what = "fasterword", remove_separators = FALSE))[[1]],
+                 c("\n", "\t", "word"))
+})
+
+test_that("empty tokens are removed correctly", {
+    txt <- 'a   b  c d e '
+    tok <- c('a', 'b', 'c', 'd', 'e')
+    expect_equal(as.list(tokens(txt, what = 'word'))[[1]], tok)
+    expect_equal(as.list(tokens(txt, what = 'fasterword'))[[1]], tok)
+    expect_equal(as.list(tokens(txt, what = 'fastestword'))[[1]], tok)
+})
+
