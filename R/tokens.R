@@ -383,26 +383,24 @@ is.tokens <- function(x) "tokens" %in% class(x)
 #' @return a list the serialized tokens found in each text
 #' @importFrom fastmatch fmatch
 #' @keywords internal tokens
-tokens_serialize <- function(x, types_reserved, ...) {
+tokens_serialize <- function(x, types_reserved = NULL, ...) {
     
     attrs <- attributes(x)
     types <- unique(unlist(x, use.names = FALSE))
+    types <- types[types != '']  # remove empty tokens
     
-    # special handling for "" pad
-    if (any(types[!is.na(types)] == "")) {
-        types <- c("", setdiff(types, ""))
-    }
-
-    if (!missing(types_reserved)) {
+    if (!is.null(types_reserved)) {
         types <- c(types_reserved, setdiff(types, types_reserved))
     }
     x <- lapply(x, function(x) {
         id <- fastmatch::fmatch(x, types)
-        if (length(types) && !is.na(types[1]) && types[1] == "") id <- id - 1
-        id[!is.na(id)]
+        is_na <- is.na(id)
+        if (length(is_na) > 0) {
+            id[!is_na]
+        } else {
+            integer()
+        }
     })
-    
-    types <- types[types != '']  # remove empty tokens
     
     attributes(x) <- attrs
     attr(x, "types") <- stri_trans_nfc(types) # unicode normalization
@@ -582,7 +580,7 @@ tokens_internal <- function(x, what = c("word", "sentence", "character", "fastes
         } else if (what == "fastestword") {
             temp <- tokens_word(x[[i]], what, FALSE, FALSE, FALSE, FALSE, verbose)
         } else if (what == "character") {
-            temp <- tokens_character(x[[i]],remove_punct, remove_symbols, remove_separators, verbose)
+            temp <- tokens_character(x[[i]], remove_punct, remove_symbols, remove_separators, verbose)
         } else if (what == "sentence") {
             temp <- tokens_sentence(x[[i]], verbose)
         } else {

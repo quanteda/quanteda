@@ -139,7 +139,7 @@ test_that("tokens works with unusual hiragana #554", {
     skip_on_os("windows")
     txts <- c("づいﾞ", "゛んﾞ", "たーﾟ")
     expect_equivalent(as.list(tokens(txts)),
-                      list(c('づ', '', 'いﾞ'), c('゛', '', 'んﾞ'), c('た', '',  'ーﾟ')))
+                      list(c('づ', 'いﾞ'), c('゛', 'んﾞ'), c('た', 'ーﾟ')))
 })
 
 test_that("types attribute is a character vector", {
@@ -450,7 +450,7 @@ test_that("tokens works as expected with NA, and blanks", {
     )
     expect_equal(
         as.character(as.tokens(list(""))),
-        ""
+        character()
     )
 })
 
@@ -483,3 +483,12 @@ test_that("what = 'fasterword' works correctly", {
     expect_equal(as.list(tokens(txt, what = "fasterword", remove_separators = FALSE))[[1]],
                  c("\n", "\t", "word"))
 })
+
+test_that("empty tokens are removed correctly", {
+    txt <- 'a   b  c d e '
+    tok <- c('a', 'b', 'c', 'd', 'e')
+    expect_equal(as.list(tokens(txt, what = 'word'))[[1]], tok)
+    expect_equal(as.list(tokens(txt, what = 'fasterword'))[[1]], tok)
+    expect_equal(as.list(tokens(txt, what = 'fastestword'))[[1]], tok)
+})
+
