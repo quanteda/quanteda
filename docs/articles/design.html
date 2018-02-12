@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Structure of Quanteda • quanteda</title>
+<title>The Structure of quanteda • quanteda</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -127,7 +127,7 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>The Structure of Quanteda</h1>
+      <h1>The Structure of quanteda</h1>
                         <h4 class="author">Kenneth Benoit</h4>
             
           </div>
@@ -135,6 +135,7 @@
     
     
 <div class="contents">
+<p>See <a href="http://docs.quanteda.io" class="uri">http://docs.quanteda.io</a> for additional tutorials, examples, and general documentation.</p>
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
@@ -151,7 +152,7 @@
 <li><p><em>object</em><code>_</code><em>verb</em>: a function that inputs an object of class <em>object</em>, and returns a a modified <em>object</em> class object. There are no exceptions to this naming rule, so that even functions that operate on character objects following this convention, such as <code><a href="../reference/char_tolower.html">char_tolower()</a></code>. (Ok, so there is a slight exception: we abbreviated <code>character</code> to <code>char</code>!)</p></li>
 <li><p><code>data_</code><em>class</em><code>_</code><em>descriptor</em>: data objects are named this way to clearly distinguish them and to make them easy to identify in the index. The first part identifies them as data, the second names their object class, and the third component is a descriptor. Example: <code>data_corpus_inaugural</code> is the <strong>quanteda</strong> <code><a href="../reference/corpus.html">corpus()</a></code> class object consisting of the US presidents’ inaugural addresses.</p></li>
 <li><p><code>text</code><em>general</em><code>_</code><em>specific</em>: functions that input a <strong>quanteda</strong> object and return the result of an analysis, as a new type of object. Only the underscored functions that begin with <code>text</code> break the previous rule about the first part of the name identifying the object class that is input and output. Examples: <code><a href="../reference/textstat_readability.html">textstat_readability()</a></code> takes a character or corpus as input, and returns a data.frame; <code><a href="../reference/textplot_xray.html">textplot_xray()</a></code> takes a <code>kwic</code> object as input, and generates a dispersion plot (named “x-ray” because of its similarity to the plot produced by Kindle).</p></li>
-<li><p>Extensions of R functions: These are commonly used R functions, such as <code>head()</code>, that are also defined for <strong>quanteda</strong> objects. Examples: <code><a href="../reference/head.dfm.html">head.dfm()</a></code>, coercion functions such as <code>as.list.tokens</code>, and Boolean class type checking functions such as <code><a href="../reference/is.dfm.html">is.dfm()</a></code>. Many post-estimation methods defined for <code>lm</code> objects, for instance <code>predict()</code>, are also defined for most <code>textmodel</code> objects</p></li>
+<li><p>Extensions of R functions: These are commonly used R functions, such as <code>head()</code>, that are also defined for <strong>quanteda</strong> objects. Examples: <code><a href="../reference/head.dfm.html">head.dfm()</a></code>, coercion functions such as <code>as.list.tokens</code>, and Boolean class type checking functions such as <code><a href="../reference/as.dfm.html">is.dfm()</a></code>. Many post-estimation methods defined for <code>lm</code> objects, for instance <code>predict()</code>, are also defined for most <code>textmodel</code> objects</p></li>
 <li><p>R-like functions. These are functions for <strong>quanteda</strong> objects that follow naming conventions and functionality that should be very familiar to users of R. Example: <code><a href="../reference/ndoc.html">ndoc()</a></code> returns the number of documents in a corpus, tokens, or dfm object, similar to <code><a href="http://www.rdocumentation.org/packages/base/topics/nrow">base::nrow()</a></code>. Note that like <code>nrow()</code>, <code><a href="../reference/ndoc.html">ndoc()</a></code> is not plural. Other examples include <code><a href="../reference/docnames.html">docnames()</a></code> and <code><a href="../reference/featnames.html">featnames()</a></code> – similar to <code>rownames()</code> and <code>colnames()</code>.</p></li>
 <li>
 <p>Grammatical exceptions: Every language has these, usually due to path dependency from historical development, and <strong>quanteda</strong> is no exception. The list, however, is short:</p>

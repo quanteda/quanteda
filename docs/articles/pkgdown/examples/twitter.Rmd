@@ -1,0 +1,66 @@
+---
+title: "Example: Social media analysis (Twitter)"
+author: "Kohei Watanabe"
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "##"
+)
+```
+
+Using **quanteda**'s `fcm()` and `textplot_network()`, you can perform visual analysis of social media posts in terms of cooccurances of hashtags or usernames in a few steps. The dataset for this example contains only 10,000 Twitter posts, but you can easily analyze more one million posts on your laptop computer.
+
+```{r, message = FALSE}
+library(quanteda)
+```
+
+## Load sample data
+```{r}
+load("data/data_corpus_tweets.rda")
+```
+
+## Construct a document-feature matrix of Twitter posts
+```{r}
+tweet_dfm <- dfm(data_corpus_tweets, remove_punct = TRUE)
+head(tweet_dfm)
+```
+
+# Hashtags
+
+## Extract most common hashtags
+```{r}
+tag_dfm <- dfm_select(tweet_dfm, ('#*'))
+toptag <- names(topfeatures(tag_dfm, 50))
+head(toptag)
+```
+
+## Construct feature-occurrence matrix of hashtags
+```{r}
+tag_fcm <- fcm(tag_dfm)
+head(tag_fcm)
+topgat_fcm <- fcm_select(tag_fcm, toptag)
+textplot_network(topgat_fcm, min_freq = 0.1, edge_alpha = 0.8, edge_size = 5)
+```
+
+# Usernames
+
+## Extract most frequently mentioned usernames 
+```{r}
+user_dfm <- dfm_select(tweet_dfm, ('@*'))
+topuser <- names(topfeatures(user_dfm, 50))
+head(topuser)
+```
+
+## Construct feature-occurrence matrix of usernames
+```{r}
+user_fcm <- fcm(user_dfm)
+head(user_fcm)
+user_fcm <- fcm_select(user_fcm, topuser)
+textplot_network(user_fcm, min_freq = 0.1, edge_color = 'orange', edge_alpha = 0.8, edge_size = 5)
+```
+
