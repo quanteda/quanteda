@@ -139,8 +139,7 @@ group_dfm <- function(x, features = NULL, documents = NULL, fill = FALSE) {
 }
 
 # select docvar fields that have all the same values within groups
-group_docvars <- function(x, group, fill) {
-    i_unique <- which(!duplicated(group))
+group_docvars <- function(x, group) {
     result <- x[match(levels(group), group), sapply(x, is_grouped, group), drop = FALSE]
     rownames(result) <- as.character(levels(group))
     return(result)
