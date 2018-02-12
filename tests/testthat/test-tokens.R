@@ -464,3 +464,22 @@ test_that("assignment operators are disabled for tokens object", {
     expect_error(toks[[1]] <- c(6, 100, 'z'), 'assignment to tokens objects is not allowed')
     expect_error(toks[1] <- list(c(6, 100, 'z')), 'assignment to tokens objects is not allowed')
 })
+
+test_that("assignment operators are disabled for tokens object", {
+    toks <- tokens(c(d1 = "a b c d", d2 = "c d e"))
+    
+    try(toks[[1]] <- c(6, 100, 'z'), silent = TRUE)
+    expect_equal(as.list(toks),
+                 list(d1 = c("a", "b", "c", "d"), d2 = c("c", "d", "e")))
+    
+    expect_error(toks[[1]] <- c(6, 100, 'z'), 'assignment to tokens objects is not allowed')
+    expect_error(toks[1] <- list(c(6, 100, 'z')), 'assignment to tokens objects is not allowed')
+})
+
+test_that("what = 'fasterword' works correctly", {
+    txt <- "\n \t  word"
+    expect_equal(as.list(tokens(txt, what = "fasterword", remove_separators = TRUE))[[1]],
+                 "word")
+    expect_equal(as.list(tokens(txt, what = "fasterword", remove_separators = FALSE))[[1]],
+                 c("\n", "\t", "word"))
+})
