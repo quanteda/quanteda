@@ -2,6 +2,11 @@
 
 ## Changes since v1.0.0.
 
+### New Features
+
+* Added `as.dfm()` methods for **tm** `DocumentTermMatrix` and `TermDocumentMatrix` objects. (#1222)
+* `predict.textmodel_wordscores()` nows includes an `include_reftexts` argument to exclude training texts from the predicted model object (#1229).  The default behaviour is `include_reftexts = TRUE`, producing the same behaviour as existed before the introduction of this argument.  This allows rescaling based on the reference documents (since rescaling requires prediction on the reference documents) but provides an easy way to exclude the reference documents from the predicted quantities.
+
 ### Bug fixes and stability enhancements
 
 * Eliminated unnecessary dependency on the **digest** package.
@@ -10,6 +15,11 @@
 ### Performance improvements
 
 * textmodel-methods are now exported, to facilitate extension packages for other textmodel methods (e.g. wordshoal).
+
+### Behaviour changes
+
+* Changed the default in `textmodel_wordfish()` to `sparse = FALSE`, in response to #1216.
+* `dfm_group()` now preserves docvars that are constant for the group aggregation (#1228).
 
 
 # quanteda v1.0.0

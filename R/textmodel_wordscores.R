@@ -29,6 +29,7 @@
 #' summary(ws)
 #' coef(ws)
 #' predict(ws)
+#' predict(ws, include_reftexts = FALSE)
 #' predict(ws, rescaling = "mv")
 #' predict(ws, rescaling = "lbg")
 #' predict(ws, se.fit = TRUE)
@@ -117,6 +118,7 @@ textmodel_wordscores.dfm <- function(x, y, scale = c("linear", "logit"), smooth 
 #'   (2007).  See References.
 #' @param interval type of confidence interval calculation
 #' @param level tolerance/confidence level for intervals
+#' @param include_reftexts if \code{FALSE}, reference texts are removed from the prediction
 #' @param ... not used
 #' @return 
 #'   \code{textmodel_wordscores()} returns a list that is also classed as a
@@ -142,13 +144,14 @@ predict.textmodel_wordscores <- function(object,
                                          se.fit = FALSE,
                                          interval = c("none", "confidence"), level = 0.95, 
                                          rescaling = c("none", "lbg", "mv"),
+                                         include_reftexts = TRUE,
                                          ...) {
     
-    if (length(list(...)) > 0) stop("Arguments:", names(list(...)), "not supported.\n")
-        
+    if (length(list(...)) > 0) stop("Arguments: ", names(list(...)), " not supported.\n")
+    
     interval <- match.arg(interval)
     rescaling <- match.arg(rescaling)
-        
+    
     if (!is.null(newdata)) {
         data <- as.dfm(newdata)
     } else {
@@ -182,6 +185,7 @@ predict.textmodel_wordscores <- function(object,
     }
     
     if (!se.fit && interval == "none") {
+        if (!include_reftexts) fit <- fit[is.na(object$y)]
         class(fit) <- c("predict.textmodel_wordscores", "numeric")
         return(fit)
     }
@@ -203,6 +207,8 @@ predict.textmodel_wordscores <- function(object,
         } else {
             result$se.fit <- raw_se
         }
+        
+        if (!include_reftexts) result$se.fit <- result$se.fit[is.na(object$y)]
     } 
     
     if (interval == "confidence") {
@@ -229,7 +235,13 @@ predict.textmodel_wordscores <- function(object,
             result$fit[, "lwr"] <- raw - z * raw_se
             result$fit[, "upr"] <- raw + z * raw_se
         }
+    } 
+    
+    # drop the reference texts if needed - handles both vector and matrix case 
+    if (!include_reftexts) {
+        result$fit <- as.matrix(result$fit)[is.na(object$y), , drop = interval == "none"]
     }
+    
     class(result) <- c("predict.textmodel_wordscores", class(result))
     result
 }

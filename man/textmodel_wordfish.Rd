@@ -7,7 +7,7 @@
 textmodel_wordfish(x, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
   dispersion_level = c("feature", "overall"), dispersion_floor = 0,
-  sparse = TRUE, abs_err = FALSE, svd_sparse = TRUE,
+  sparse = FALSE, abs_err = FALSE, svd_sparse = TRUE,
   residual_floor = 0.5)
 }
 \arguments{
@@ -40,7 +40,10 @@ terms with rare term or document frequencies that appear to be severely
 underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 "quasipoisson"}.}
 
-\item{sparse}{specifies whether the \code{"dfm"} is coerced to dense}
+\item{sparse}{specifies whether the \code{"dfm"} is coerced to dense.  While
+setting this to \code{TRUE} will make it possible to handle larger dfm
+objects (and make execution faster), it will generate slightly different
+results each time, because the sparse SVD routine has a stochastic element.}
 
 \item{abs_err}{specifies how the convergence is considered}
 

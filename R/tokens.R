@@ -33,12 +33,12 @@
 #'   \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is 
 #'   \code{FALSE} to preserve such words as is, with the hyphens.  Only applies 
 #'   if \code{what = "word"}.
-#' @param remove_separators remove Separators and separator characters (spaces 
+#' @param remove_separators remove separators and separator characters (spaces 
 #'   and variations of spaces, plus tab, newlines, and anything else in the 
 #'   Unicode "separator" category) when \code{remove_punct=FALSE}.  Only 
 #'   applicable for \code{what = "character"} (when you probably want it to be 
 #'   \code{FALSE}) and for \code{what = "word"} (when you probably want it to be
-#'   \code{TRUE}).  Note that if \code{what = "word"} and you set 
+#'   \code{TRUE}).  Note that if \code{what = "word"} and  
 #'   \code{remove_punct = TRUE}, then \code{remove_separators} has no effect.  Use
 #'   carefully.
 #' @param ngrams integer vector of the \emph{n} for \emph{n}-grams, defaulting 

@@ -4,7 +4,7 @@
 \alias{tokens_serialize}
 \title{Function to serialized list-of-character tokens}
 \usage{
-tokens_serialize(x, types_reserved, ...)
+tokens_serialize(x, types_reserved = NULL, ...)
 }
 \arguments{
 \item{x}{a list of character vectors}

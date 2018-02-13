@@ -76,3 +76,24 @@ test_that("is.dfm works as expected", {
     expect_true(is.dfm(as.dfm(m)))
     expect_false(is.dfm(m))
 })
+
+test_that("as.dfm for tm matrix objects", {
+    txt <- c(docA = "a a a b c c f",
+             docB = "a b b b c d",
+             docC = "c c c f f")
+    skip_if_not_installed("tm")
+    dtm <- tm::DocumentTermMatrix(tm::Corpus(tm::VectorSource(txt)),
+                                  control = list(wordLengths = c(1, Inf)))
+    expect_equal(
+        as.dfm(dtm),
+        dfm(txt)
+    )
+    
+    tdm <- tm::TermDocumentMatrix(tm::Corpus(tm::VectorSource(txt)),
+                                  control = list(wordLengths = c(1, Inf)))
+    expect_equal(
+        as.dfm(tdm),
+        dfm(txt)
+    )
+})
+
