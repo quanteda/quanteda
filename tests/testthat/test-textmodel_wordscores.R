@@ -78,6 +78,46 @@ test_that("test wordscores predict output without reftexts, but with standard er
     expect_true(!is.null(ws_predict$se.fit))
 })
 
+test_that("test wordscores predict is same for virgin texts with and without ref texts", {
+    y <- c(seq(-1.5, 1.5, .75), NA)
+    ws <- textmodel_wordscores(data_dfm_lbgexample, y)
+    
+    expect_equal(
+        predict(ws, include_reftexts = FALSE)["V1"],
+        predict(ws, include_reftexts = TRUE)["V1"]
+    )
+    expect_equal(
+        suppressWarnings(predict(ws, include_reftexts = FALSE, rescaling = "mv")["V1"]),
+        suppressWarnings(predict(ws, include_reftexts = TRUE, rescaling = "mv")["V1"])
+    )
+    expect_equal(
+        suppressWarnings(predict(ws, include_reftexts = FALSE, rescaling = "lbg")["V1"]),
+        suppressWarnings(predict(ws, include_reftexts = TRUE, rescaling = "lbg")["V1"])
+    )
+    
+    expect_equal(
+        predict(ws, include_reftexts = FALSE, se.fit = TRUE)["V1"],
+        predict(ws, include_reftexts = TRUE, se.fit = TRUE)["V1"]
+    )
+    expect_equal(
+        predict(ws, include_reftexts = FALSE, interval = "confidence", se.fit = TRUE)$fit["V1", , drop = FALSE],
+        predict(ws, include_reftexts = TRUE, interval = "confidence", se.fit = TRUE)$fit["V1", , drop = FALSE]
+    )
+    expect_equal(
+        predict(ws, include_reftexts = FALSE, interval = "confidence", 
+                se.fit = TRUE)$se.fit,
+        predict(ws, include_reftexts = TRUE, interval = "confidence", 
+                se.fit = TRUE)$se.fit[which(docnames(ws) == "V1")]
+    )
+    expect_equal(
+        predict(ws, include_reftexts = FALSE, interval = "confidence", 
+                rescaling = "lbg", se.fit = TRUE)$se.fit,
+        predict(ws, include_reftexts = TRUE, interval = "confidence", 
+                rescaling = "lbg", se.fit = TRUE)$se.fit[which(docnames(ws) == "V1")]
+    )
+})
+
+
 # test_that("coef works for wordscores predicted, rescaling = none", {
 #     ws <- textmodel_wordscores(data_dfm_lbgexample, c(seq(-1.5, 1.5, .75), NA))
 #     pr <- predict(ws, rescaling = "none")
