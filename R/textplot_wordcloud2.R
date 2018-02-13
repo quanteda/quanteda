@@ -58,9 +58,9 @@ textplot_wordcloud2.dfm <- function(x, comparison = FALSE, ...) {
     x <- as.dfm(x)
     if (comparison) {
         if (ndoc(x) > 8) stop("Too many documents to plot comparison, use 8 or fewer documents.")
-        quanteda:::comparison.cloud(t(as.matrix(x)), ...)
+        wordcloud_comparison(t(as.matrix(x)), ...)
     } else {
-        quanteda:::wordcloud(featnames(x), colSums(x), ...)
+        wordcloud(colSums(x), ...)
     }
 }
 

@@ -1,13 +1,14 @@
-
 #include "Rcpp.h"
+using namespace Rcpp;
 
 /*
  * Detect if a box at position (x11,y11), with width sw11 and height sh11 overlaps
  * with any of the boxes in boxes1
  */
-using namespace Rcpp;
 
-RcppExport SEXP is_overlap(SEXP x11,SEXP y11,SEXP sw11,SEXP sh11,SEXP boxes1){
+
+// [[Rcpp::export]]
+RcppExport SEXP qatd_cpp_is_overlap(SEXP x11,SEXP y11,SEXP sw11,SEXP sh11,SEXP boxes1){
 	double x1 = as<double>(x11);
 	double y1 =as<double>(y11);
 	double sw1 = as<double>(sw11);
