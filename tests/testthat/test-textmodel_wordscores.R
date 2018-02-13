@@ -48,11 +48,34 @@ test_that("coef works for wordscores fitted", {
     expect_equal(coef(ws), coefficients(ws))
 })
 
-test_that("test wordscores prediction when reference texts are excluded", {
+test_that("test wordscores prediction without reftexts", {
     y <- c(seq(-1.5, 1.5, .75), NA)
     ws <- textmodel_wordscores(data_dfm_lbgexample, y)
     ws_predict <- predict(ws, include_reftexts = FALSE)
     expect_equal(length(ws_predict), 1)
+})
+
+test_that("test wordscores predict output without reftexts, standard errors and intervals", {
+    y <- c(seq(-1.5, 1.5, .75), NA)
+    ws <- textmodel_wordscores(data_dfm_lbgexample, y)
+    ws_predict <- predict(ws, include_reftexts = FALSE, se.fit = FALSE, interval = "none")
+    expect_equal(length(ws_predict), 1)
+})
+
+test_that("test wordscores predict output without reftexts and interval, but with standard error", {
+    y <- c(seq(-1.5, 1.5, .75), NA)
+    ws <- textmodel_wordscores(data_dfm_lbgexample, y)
+    ws_predict <- predict(ws, include_reftexts = FALSE, se.fit = TRUE, interval = "none")
+    expect_equal(length(ws_predict), 2)
+    expect_true(!is.null(ws_predict$se.fit))
+})
+
+test_that("test wordscores predict output without reftexts, but with standard error and confidence interval", {
+    y <- c(seq(-1.5, 1.5, .75), NA)
+    ws <- textmodel_wordscores(data_dfm_lbgexample, y)
+    ws_predict <- predict(ws, include_reftexts = FALSE, se.fit = TRUE, interval = "confidence")
+    expect_equal(length(ws_predict$fit), 3)
+    expect_true(!is.null(ws_predict$se.fit))
 })
 
 # test_that("coef works for wordscores predicted, rescaling = none", {
