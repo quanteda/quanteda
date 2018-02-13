@@ -49,10 +49,10 @@ test_that("coef works for wordscores fitted", {
 })
 
 test_that("test wordscores prediction when reference texts are excluded", {
-  y <- c(seq(-1.5, 1.5, .75), NA)
-  ws <- textmodel_wordscores(data_dfm_lbgexample, y)
-  ws_predict <- predict(ws, include_reftexts = FALSE)
-  expect_equal(length(ws_predict), 1)
+    y <- c(seq(-1.5, 1.5, .75), NA)
+    ws <- textmodel_wordscores(data_dfm_lbgexample, y)
+    ws_predict <- predict(ws, include_reftexts = FALSE)
+    expect_equal(length(ws_predict), 1)
 })
 
 # test_that("coef works for wordscores predicted, rescaling = none", {
