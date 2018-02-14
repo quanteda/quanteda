@@ -24,7 +24,7 @@
 #' @param random_color choose colors randomly from the colors. If \code{FALSE},
 #'   the color is chosen based on the frequency
 #' @param rot_per proportion words with 90 degree rotation colors
-#' @param color words from least to most frequent
+#' @param colors words from least to most frequent
 #' @param ordered_colors if \code{TRUE}, then colors are assigned to words in
 #'   order
 #' @param comparison if \code{TRUE}, plot a wordclound that compares documents
@@ -96,7 +96,7 @@ textplot_wordcloud.dfm <- function(x, comparison = FALSE, ...) {
 #' @param min.freq deprecated argument
 #' @param max.words deprecated argument
 #' @param random.order deprecated argument
-#' @param random.color  deprecated argument
+#' @param random.color deprecated argument
 #' @param rot.per deprecated argument
 #' @param ordered.colors deprecated argument
 #' @param use.r.layout deprecated argument

@@ -27,8 +27,12 @@ the color is chosen based on the frequency}
 
 \item{rot_per}{proportion words with 90 degree rotation colors}
 
+\item{colors}{words from least to most frequent}
+
 \item{ordered_colors}{if \code{TRUE}, then colors are assigned to words in
 order}
+
+\item{min.freq}{deprecated argument}
 
 \item{max.words}{deprecated argument}
 

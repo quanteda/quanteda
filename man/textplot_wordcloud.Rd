@@ -25,6 +25,8 @@ the color is chosen based on the frequency}
 
 \item{rot_per}{proportion words with 90 degree rotation colors}
 
+\item{colors}{words from least to most frequent}
+
 \item{ordered_colors}{if \code{TRUE}, then colors are assigned to words in
 order}
 
@@ -33,11 +35,9 @@ in the same way as \code{\link[wordcloud]{comparison.cloud}}}
 
 \item{...}{additional parameters passed to \link{text} (and \link{strheight},
 \link{strwidth})}
-
-\item{color}{words from least to most frequent}
 }
 \description{
-Plot a \link{dfm} or \link{tokens} object as a wordcloud, where the feature
+Plot a \link{dfm} object as a wordcloud, where the feature
 labels are plotted with their sizes proportional to their numerical values in
 the dfm.  When \code{comparison = TRUE}, it plots comparison word clouds by
 document.
@@ -45,8 +45,7 @@ document.
 \details{
 The default is to plot the word cloud of all features, summed across
   documents.  To produce word cloud plots for specific document or set of
-  documents, you need to slice out the document(s) from the dfm or tokens
-  object.
+  documents, you need to slice out the document(s) from the dfm object.
 
   Comparison wordcloud plots may be plotted by setting \code{comparison =
   TRUE}, which plots a separate grouping for \emph{each document} in the dfm.

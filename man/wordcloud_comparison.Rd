@@ -22,6 +22,8 @@ plotted in decreasing frequency}
 
 \item{rot_per}{proportion words with 90 degree rotation colors}
 
+\item{colors}{words from least to most frequent}
+
 \item{min.freq}{deprecated argument}
 
 \item{max.words}{deprecated argument}
