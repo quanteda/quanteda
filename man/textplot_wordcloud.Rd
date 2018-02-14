@@ -6,7 +6,7 @@
 \usage{
 textplot_wordcloud(x, scale = c(4, 0.5), max_words = Inf,
   random_order = FALSE, random_color = FALSE, rot_per = 0.1,
-  colors = "black", ordered_colors = FALSE, comparison = FALSE, ...)
+  colors = "black", ordered_colors = FALSE, ..., comparison = FALSE)
 }
 \arguments{
 \item{x}{a dfm object}
@@ -30,11 +30,11 @@ the color is chosen based on the frequency}
 \item{ordered_colors}{if \code{TRUE}, then colors are assigned to words in
 order}
 
-\item{comparison}{if \code{TRUE}, plot a wordclound that compares documents
-in the same way as \code{\link[wordcloud]{comparison.cloud}}}
-
 \item{...}{additional parameters passed to \link{text} (and \link{strheight},
 \link{strwidth})}
+
+\item{comparison}{if \code{TRUE}, plot a wordclound that compares documents
+in the same way as \code{\link[wordcloud]{comparison.cloud}}}
 }
 \description{
 Plot a \link{dfm} object as a wordcloud, where the feature

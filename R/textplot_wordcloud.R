@@ -66,18 +66,18 @@ textplot_wordcloud <- function(x, scale = c(4, 0.5),
                                rot_per = 0.1,
                                colors = "black",
                                ordered_colors = FALSE,
-                               comparison = FALSE, 
-                               ...) {
+                               ...,
+                               comparison = FALSE) {
     UseMethod("textplot_wordcloud")
 }
 
 #' @export
-textplot_wordcloud.default <- function(x, comparison = FALSE, ...) {
+textplot_wordcloud.default <- function(x, ..., comparison = FALSE) {
     stop(friendly_class_undefined_message(class(x), "textplot_wordcloud"))
 }
 
 #' @export
-textplot_wordcloud.dfm <- function(x, comparison = FALSE, ...) {
+textplot_wordcloud.dfm <- function(x, ..., comparison = FALSE) {
 
     x <- as.dfm(x)
     if (comparison) {
@@ -192,26 +192,26 @@ wordcloud <- function(x,
 
     thetaStep <- 0.1
     rStep <- 0.05
-    plot.new()
+    graphics::plot.new()
     op <- par("mar")
     par(mar = c(0, 0, 0, 0))
     if (fixed_asp) {
-        plot.window(c(0, 1), c(0, 1), asp = 1)
+        graphics::plot.window(c(0, 1), c(0, 1), asp = 1)
     } else {
-        plot.window(c(0, 1), c(0, 1))
+        graphics::plot.window(c(0, 1), c(0, 1))
     }
     normedFreq <- freq / max(freq)
     size <- (scale[1] - scale[2]) * normedFreq + scale[2]
     boxes <- list()
     
     for (i in seq_along(words)) {
-        rotWord <- runif(1) < rot_per
+        rotWord <- stats::runif(1) < rot_per
         r <- 0
-        theta <- runif(1, 0, 2 * pi)
+        theta <- stats::runif(1, 0, 2 * pi)
         x1 <- 0.5
         y1 <- 0.5
-        wid <- strwidth(words[i], cex = size[i], ...)
-        ht <- strheight(words[i], cex = size[i], ...)
+        wid <- graphics::strwidth(words[i], cex = size[i], ...)
+        ht <- graphics::strheight(words[i], cex = size[i], ...)
         #mind your ps and qs
         if (grepl(tails, words[i]))
             ht <- ht + ht * 0.2
@@ -235,9 +235,7 @@ wordcloud <- function(x,
                 } else {
                     cc <- colors[sample(1:nc, 1)]
                 }
-                text(x1, y1, words[i], cex = size[i], offset = 0,
-                     srt = rotWord * 90, col = cc, ...
-                )
+                text(x1, y1, words[i], cex = size[i], offset = 0, srt = rotWord * 90, col = cc, ...)
                 boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
                 isOverlaped <- FALSE
             } else {
@@ -352,7 +350,7 @@ wordcloud_comparison <- function(x,
     group <- group[ord]
     thetaStep <- 0.05
     rStep <- 0.05
-    plot.new()
+    graphics::plot.new()
     op <- par("mar")
     par(mar = c(0, 0, 0, 0))
     plot.window(c(0, 1), c(0, 1), asp = 1)
@@ -362,31 +360,27 @@ wordcloud_comparison <- function(x,
     
     #add titles
     docnames <- colnames(term_matrix)
-    for (i in 1:ncol(term_matrix)) {
+    for (i in seq(ncol(term_matrix))) {
         th <- mean(thetaBins[i:(i + 1)])
         word <- docnames[i]
-        wid <- strwidth(word, cex = title_size) * 1.2
-        ht <- strheight(word, cex = title_size) * 1.2
+        wid <- graphics::strwidth(word, cex = title_size) * 1.2
+        ht <- graphics::strheight(word, cex = title_size) * 1.2
         x1 <- 0.5 + 0.45 * cos(th)
         y1 <- 0.5 + 0.45 * sin(th)
-        rect(x1 - 0.5 * wid,
-             y1 - 0.5 * ht,
-             x1 + 0.5 * wid,
-             y1 + 0.5 * ht,
-             col = "grey90",
-             border = "transparent")
+        rect(x1 - 0.5 * wid, y1 - 0.5 * ht, x1 + 0.5 * wid, y1 + 0.5 * ht,
+             col = "grey90", border = "transparent")
         text(x1, y1, word, cex = title_size)
         boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
     }
     
     for (i in 1:length(words)) {
-        rotWord <- runif(1) < rot_per
+        rotWord <- stats::runif(1) < rot_per
         r <- 0
-        theta <- runif(1, 0, 2 * pi)
+        theta <- stats::runif(1, 0, 2 * pi)
         x1 <- 0.5
         y1 <- 0.5
-        wid <- strwidth(words[i], cex = size[i], ...)
-        ht <- strheight(words[i], cex = size[i], ...)
+        wid <- graphics::strwidth(words[i], cex = size[i], ...)
+        ht <- graphics::strheight(words[i], cex = size[i], ...)
         #mind your ps and qs
         if (grepl(tails, words[i]))
             ht <- ht + ht * 0.2
@@ -406,8 +400,7 @@ wordcloud_comparison <- function(x,
                 isOverlaped <- FALSE
             } else {
                 if (r > sqrt(0.5)) {
-                    warning(paste(words[i], "could not be fit on page. It will not be plotted."
-                    ))
+                    warning(paste(words[i], "could not be fit on page. It will not be plotted."))
                     isOverlaped <- FALSE
                 }
                 theta <- theta + thetaStep
@@ -424,16 +417,8 @@ wordcloud_comparison <- function(x,
 }
 
 
-wordlayout <- function(x,
-                       y,
-                       words,
-                       cex = 1,
-                       rotate90 = FALSE,
-                       xlim = c(-Inf, Inf),
-                       ylim = c(-Inf, Inf),
-                       tstep = .1,
-                       rstep = .1,
-                       ...) {
+wordlayout <- function(x, y, words, cex = 1, rotate90 = FALSE, 
+                       xlim = c(-Inf, Inf),  ylim = c(-Inf, Inf), tstep = .1, rstep = .1, ...) {
     
     tails <- "g|j|p|q|y"
     n <- length(words)
@@ -448,16 +433,15 @@ wordlayout <- function(x,
     if (length(rotate90) == 1)
         rotate90 <- rep(rotate90, n)
     
-    
     boxes <- list()
     for (i in seq_along(words)) {
         rotWord <- rotate90[i]
         r <- 0
-        theta <- runif(1, 0, 2 * pi)
+        theta <- stats::runif(1, 0, 2 * pi)
         x1 <- xo <- x[i]
         y1 <- yo <- y[i]
-        wid <- strwidth(words[i], cex = cex[i], ...)
-        ht <- strheight(words[i], cex = cex[i], ...)
+        wid <- graphics::strwidth(words[i], cex = cex[i], ...)
+        ht <- graphics::strheight(words[i], cex = cex[i], ...)
         # mind your ps and qs
         if (grepl(tails, words[i]))
             ht <- ht + ht * 0.2
@@ -487,8 +471,7 @@ wordlayout <- function(x,
     result
 }
 
-textplot <- function(x, y, words, cex = 1, new = TRUE, show.lines = TRUE,
-                     ...) {
+textplot <- function(x, y, words, cex = 1, new = TRUE, show.lines = TRUE, ...) {
     
     if (new)
         plot(x, y, type = "n", ...)
