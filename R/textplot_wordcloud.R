@@ -60,7 +60,7 @@
 #' @export
 #' @keywords textplot
 textplot_wordcloud <- function(x, scale = c(4, 0.5),
-                               max_words = Inf,
+                               max_words = 1000,
                                random_order = FALSE,
                                random_color = FALSE,
                                rot_per = 0.1,
@@ -193,8 +193,8 @@ wordcloud <- function(x,
     thetaStep <- 0.1
     rStep <- 0.05
     graphics::plot.new()
-    op <- par("mar")
-    par(mar = c(0, 0, 0, 0))
+    op <- graphics::par("mar")
+    graphics::par(mar = c(0, 0, 0, 0))
     if (fixed_asp) {
         graphics::plot.window(c(0, 1), c(0, 1), asp = 1)
     } else {
@@ -252,7 +252,7 @@ wordcloud <- function(x,
             }
         }
     }
-    par(mar = op)
+    graphics::par(mar = op)
     invisible()
 }
 
@@ -351,9 +351,9 @@ wordcloud_comparison <- function(x,
     thetaStep <- 0.05
     rStep <- 0.05
     graphics::plot.new()
-    op <- par("mar")
-    par(mar = c(0, 0, 0, 0))
-    plot.window(c(0, 1), c(0, 1), asp = 1)
+    op <- graphics::par("mar")
+    graphics::par(mar = c(0, 0, 0, 0))
+    graphics::plot.window(c(0, 1), c(0, 1), asp = 1)
     normedFreq <- freq / max(freq)
     size <- (scale[1] - scale[2]) * normedFreq + scale[2]
     boxes <- list()
@@ -367,13 +367,13 @@ wordcloud_comparison <- function(x,
         ht <- graphics::strheight(word, cex = title_size) * 1.2
         x1 <- 0.5 + 0.45 * cos(th)
         y1 <- 0.5 + 0.45 * sin(th)
-        rect(x1 - 0.5 * wid, y1 - 0.5 * ht, x1 + 0.5 * wid, y1 + 0.5 * ht,
-             col = "grey90", border = "transparent")
+        graphics::rect(x1 - 0.5 * wid, y1 - 0.5 * ht, x1 + 0.5 * wid, y1 + 0.5 * ht,
+                       col = "grey90", border = "transparent")
         text(x1, y1, word, cex = title_size)
         boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
     }
     
-    for (i in 1:length(words)) {
+    for (i in seq_along(words)) {
         rotWord <- stats::runif(1) < rot_per
         r <- 0
         theta <- stats::runif(1, 0, 2 * pi)
@@ -412,7 +412,7 @@ wordcloud_comparison <- function(x,
             }
         }
     }
-    par(mar = op)
+    graphics::par(mar = op)
     invisible()
 }
 
@@ -484,12 +484,12 @@ textplot <- function(x, y, words, cex = 1, new = TRUE, show.lines = TRUE, ...) {
             h <- lay[i, 4]
             if (x[i] < xl || x[i] > xl + w ||
                 y[i] < yl || y[i] > yl + h) {
-                points(x[i], y[i], pch = 16, col = "red", cex = 0.5)
+                graphics::points(x[i], y[i], pch = 16, col = "red", cex = 0.5)
                 nx <- xl + 0.5 * w
                 ny <- yl + 0.5 * h
-                lines(c(x[i], nx), c(y[i], ny), col = "grey")
+                graphics::lines(c(x[i], nx), c(y[i], ny), col = "grey")
             }
         }
     }
-    text(lay[, 1] + 0.5 * lay[, 3], lay[, 2] + 0.5 * lay[, 4], words, cex = cex, ...)
+    graphics::text(lay[, 1] + 0.5 * lay[, 3], lay[, 2] + 0.5 * lay[, 4], words, cex = cex, ...)
 }
