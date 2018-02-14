@@ -169,21 +169,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_is_overlap
-RcppExport SEXP qatd_cpp_is_overlap(SEXP x11, SEXP y11, SEXP sw11, SEXP sh11, SEXP boxes1);
-RcppExport SEXP _quanteda_qatd_cpp_is_overlap(SEXP x11SEXP, SEXP y11SEXP, SEXP sw11SEXP, SEXP sh11SEXP, SEXP boxes1SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type x11(x11SEXP);
-    Rcpp::traits::input_parameter< SEXP >::type y11(y11SEXP);
-    Rcpp::traits::input_parameter< SEXP >::type sw11(sw11SEXP);
-    Rcpp::traits::input_parameter< SEXP >::type sh11(sh11SEXP);
-    Rcpp::traits::input_parameter< SEXP >::type boxes1(boxes1SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_is_overlap(x11, y11, sw11, sh11, boxes1));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_tokens_compound
 List qatd_cpp_tokens_compound(const List& texts_, const List& comps_, const CharacterVector& types_, const String& delim_, const bool& join);
 RcppExport SEXP _quanteda_qatd_cpp_tokens_compound(SEXP texts_SEXP, SEXP comps_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP joinSEXP) {
@@ -296,6 +281,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_is_overlap
+RcppExport SEXP qatd_cpp_is_overlap(SEXP x11, SEXP y11, SEXP sw11, SEXP sh11, SEXP boxes1);
+RcppExport SEXP _quanteda_qatd_cpp_is_overlap(SEXP x11SEXP, SEXP y11SEXP, SEXP sw11SEXP, SEXP sh11SEXP, SEXP boxes1SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x11(x11SEXP);
+    Rcpp::traits::input_parameter< SEXP >::type y11(y11SEXP);
+    Rcpp::traits::input_parameter< SEXP >::type sw11(sw11SEXP);
+    Rcpp::traits::input_parameter< SEXP >::type sh11(sh11SEXP);
+    Rcpp::traits::input_parameter< SEXP >::type boxes1(boxes1SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_is_overlap(x11, y11, sw11, sh11, boxes1));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_cpp_wordfish_dense
 Rcpp::List qatd_cpp_wordfish_dense(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor, bool abs_err);
 RcppExport SEXP _quanteda_qatd_cpp_wordfish_dense(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP, SEXP abs_errSEXP) {
@@ -346,7 +346,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_minkowski2", (DL_FUNC) &_quanteda_qatd_cpp_minkowski2, 4},
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 8},
     {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 4},
-    {"_quanteda_qatd_cpp_is_overlap", (DL_FUNC) &_quanteda_qatd_cpp_is_overlap, 5},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 5},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
@@ -355,6 +354,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_tokens_select", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select, 7},
     {"_quanteda_qatd_cpp_chars_remove", (DL_FUNC) &_quanteda_qatd_cpp_chars_remove, 2},
     {"_quanteda_qatd_cpp_tbb_enabled", (DL_FUNC) &_quanteda_qatd_cpp_tbb_enabled, 0},
+    {"_quanteda_qatd_cpp_is_overlap", (DL_FUNC) &_quanteda_qatd_cpp_is_overlap, 5},
     {"_quanteda_qatd_cpp_wordfish_dense", (DL_FUNC) &_quanteda_qatd_cpp_wordfish_dense, 7},
     {"_quanteda_qatd_cpp_wordfish", (DL_FUNC) &_quanteda_qatd_cpp_wordfish, 9},
     {NULL, NULL, 0}

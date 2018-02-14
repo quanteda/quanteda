@@ -49,10 +49,6 @@ qatd_cpp_kwic <- function(texts_, types_, words_, window) {
     .Call(`_quanteda_qatd_cpp_kwic`, texts_, types_, words_, window)
 }
 
-qatd_cpp_is_overlap <- function(x11, y11, sw11, sh11, boxes1) {
-    .Call(`_quanteda_qatd_cpp_is_overlap`, x11, y11, sw11, sh11, boxes1)
-}
-
 qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {
     .Call(`_quanteda_qatd_cpp_tokens_compound`, texts_, comps_, types_, delim_, join)
 }
@@ -83,6 +79,10 @@ qatd_cpp_chars_remove <- function(input_, char_remove) {
 
 qatd_cpp_tbb_enabled <- function() {
     .Call(`_quanteda_qatd_cpp_tbb_enabled`)
+}
+
+qatd_cpp_is_overlap <- function(x11, y11, sw11, sh11, boxes1) {
+    .Call(`_quanteda_qatd_cpp_is_overlap`, x11, y11, sw11, sh11, boxes1)
 }
 
 qatd_cpp_wordfish_dense <- function(wfm, dir, priors, tol, disp, dispfloor, abs_err) {
