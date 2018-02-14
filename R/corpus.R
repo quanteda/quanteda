@@ -257,6 +257,9 @@ corpus.data.frame <- function(x, docid_field = NULL, text_field = "text",
 
     args <- list(...)
 
+    # coerce data.frame variants to data.frame - for #1232
+    x <- as.data.frame(x)
+    
     # text field
     if (length(text_field) != 1)
         stop("text_field must refer to a single column")
