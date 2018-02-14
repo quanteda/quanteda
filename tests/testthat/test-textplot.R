@@ -85,11 +85,17 @@ test_that("test plot.kwic keeps order of keywords passed", {
 })
 
 test_that("test textplot_wordcloud works for dfm objects", {
-    expect_silent(textplot_wordcloud(dfm(data_corpus_inaugural[1:5]), min.freq = 10))
+    mt <- dfm(data_corpus_inaugural[1:5])
+    mt <- dfm_trim(mt, min_count = 10)
+    expect_silent(textplot_wordcloud(mt))
 })
 
-test_that("test textplot_wordcloud works for tokens objects", {
-    expect_silent(textplot_wordcloud(tokens(data_corpus_inaugural[1:5]), min.freq = 10))
+test_that("test textplot_wordcloud raise deprecation message", {
+    
+    mt <- dfm(data_corpus_inaugural[1:5])
+    mt <- dfm_trim(mt, min_count = 10)
+    expect_warning(textplot_wordcloud(mt, min.freq = 10), 'min.freq is deprecated')
+    expect_warning(textplot_wordcloud(mt, use.r.layout = 10), 'use.r.layout is no longer use')
 })
 
 test_that("test textplot_scale1d wordfish in the most basic way", {

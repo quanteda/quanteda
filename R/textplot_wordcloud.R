@@ -1,51 +1,62 @@
 #' Plot features as a wordcloud
-#' 
-#' Plot a \link{dfm} or \link{tokens} object as a wordcloud, where the feature 
+#'
+#' Plot a \link{dfm} object as a wordcloud, where the feature
 #' labels are plotted with their sizes proportional to their numerical values in
-#' the dfm.  When \code{comparison = TRUE}, it plots comparison word clouds by 
+#' the dfm.  When \code{comparison = TRUE}, it plots comparison word clouds by
 #' document.
 #' @details The default is to plot the word cloud of all features, summed across
-#'   documents.  To produce word cloud plots for specific document or set of 
-#'   documents, you need to slice out the document(s) from the dfm or tokens
-#'   object.
-#'   
+#'   documents.  To produce word cloud plots for specific document or set of
+#'   documents, you need to slice out the document(s) from the dfm object.
+#'
 #'   Comparison wordcloud plots may be plotted by setting \code{comparison =
 #'   TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
 #'   This means that you will need to slice out just a few documents from the
 #'   dfm, or to create a dfm where the "documents" represent a subset or a
 #'   grouping of documents by some document variable.
+#'   
 #' @param x a dfm object
-#' @param comparison if \code{TRUE}, plot a 
-#'   \code{\link[wordcloud]{comparison.cloud}} instead of a simple wordcloud, 
-#'   one grouping per document
-#' @param ... additional parameters passed to \link[wordcloud]{wordcloud} or 
-#'   to \link{text} (and \link{strheight}, \link{strwidth})
-#' @seealso \code{\link[wordcloud]{wordcloud}}, 
-#'   \code{\link[wordcloud]{comparison.cloud}}
+#' @param scale  vector of length 2 indicating the range of the size of the
+#'   words
+#' @param max_words maximum number of words to be plotted. least frequent terms
+#'   dropped
+#' @param random_order plot words in random order. If \code{FALSE}, they will be
+#'   plotted in decreasing frequency
+#' @param random_color choose colors randomly from the colors. If \code{FALSE},
+#'   the color is chosen based on the frequency
+#' @param rot_per proportion words with 90 degree rotation colors
+#' @param color words from least to most frequent
+#' @param ordered_colors if \code{TRUE}, then colors are assigned to words in
+#'   order
+#' @param comparison if \code{TRUE}, plot a wordclound that compares documents
+#'   in the same way as \code{\link[wordcloud]{comparison.cloud}}
+#' @param ... additional parameters passed to \link{text} (and \link{strheight},
+#'   \link{strwidth})
 #' @examples
-#' # plot the features (without stopwords) from Obama's two inaugural addresses
-#' mydfm <- dfm(corpus_subset(data_corpus_inaugural, President == "Obama"), 
-#'              remove = stopwords("english"), remove_punct = TRUE)
-#' mydfm <- dfm_trim(mydfm, min_count = 3)
-#' textplot_wordcloud(mydfm)
-#' 
-#' # plot in colors with some additional options passed to wordcloud
-#' textplot_wordcloud(mydfm, random_color = TRUE, rot_per = 0.25, 
-#'                    colors = sample(colors()[2:128], 5))
-#' 
-#' # old and new
-#' textplot_wordcloudold(mydfm, random.order = FALSE)
-#' textplot_wordcloud(mydfm)
-#' 
-#' \dontrun{
-#' # comparison plot of Irish government vs opposition
-#' docvars(data_corpus_irishbudget2010, "govtopp") <- 
-#'     factor(ifelse(data_corpus_irishbudget2010[, "party"] %in% c("FF", "Green"), "Govt", "Opp"))
-#' govtoppDfm <- dfm(data_corpus_irishbudget2010, groups = "govtopp", remove_punct = TRUE)
-#' textplot_wordcloud(dfm_tfidf(govtoppDfm), comparison = TRUE)
-#' # compare to non-tf-idf version
-#' textplot_wordcloud(govtoppDfm, comparison = TRUE)
-#' }
+#'   # plot the features (without stopwords) from Obama's two inaugural addresses 
+#'   mydfm <- dfm(corpus_subset(data_corpus_inaugural, President == "Obama"), 
+#'                remove = stopwords("english"), remove_punct = TRUE)
+#'   mydfm <- dfm_trim(mydfm, min_count = 3) 
+#'   textplot_wordcloud(mydfm)
+#'
+#'   # plot in colors with some additional options passed to wordcloud
+#'   textplot_wordcloud(mydfm, random_color = TRUE, rot_per = 0.25, 
+#'                      colors = sample(colors()[2:128], 5))
+#'
+#'   # old and new 
+#'   textplot_wordcloudold(mydfm, random.order = FALSE)
+#'   textplot_wordcloud(mydfm)
+#'
+#'   \dontrun{
+#'   # comparison plot of Irish government vs opposition
+#'   docvars(data_corpus_irishbudget2010, "govtopp") <-
+#'           factor(ifelse(data_corpus_irishbudget2010[, "party"] %in% 
+#'                  c("FF", "Green"), "Govt", "Opp"))
+#'   govtopp_dfm <- dfm(data_corpus_irishbudget2010, groups = "govtopp", 
+#'                      remove_punct = TRUE)
+#'   textplot_wordcloud(dfm_tfidf(govtopp_dfm), comparison = TRUE) 
+#'   # compare to non-tf-idf version
+#'   textplot_wordcloud(govtopp_dfm, comparison = TRUE)
+#'   }
 #' @export
 #' @keywords textplot
 textplot_wordcloud <- function(x, scale = c(4, 0.5),
@@ -77,11 +88,21 @@ textplot_wordcloud.dfm <- function(x, comparison = FALSE, ...) {
     }
 }
 
-#' @export
-textplot_wordcloud.tokens <- function(x, comparison = FALSE, ...) {
-    textplot_wordcloud(dfm(x, verbose = FALSE), comparison = comparison, ...)
-}
-
+#' Internal function for textplot_wordcloud
+#'
+#' This function impliments wordcloud without dependecies. Code is adopted from 
+#' \code{\link[wordcloud]{wordcloud}}.
+#' @inheritParams textplot_wordcloud
+#' @param min.freq deprecated argument
+#' @param max.words deprecated argument
+#' @param random.order deprecated argument
+#' @param random.color  deprecated argument
+#' @param rot.per deprecated argument
+#' @param ordered.colors deprecated argument
+#' @param use.r.layout deprecated argument
+#' @param fixed.asp deprecated argument
+#' @keywords internal
+#' @author Ian Fellows
 wordcloud <- function(x,
                       scale = c(4, 0.5),
                       max_words = Inf,
@@ -91,6 +112,7 @@ wordcloud <- function(x,
                       colors = "black",
                       ordered_colors = FALSE,
                       fixed_asp = TRUE,
+                      min.freq,
                       max.words, 
                       random.order, 
                       random.color, 
@@ -100,7 +122,10 @@ wordcloud <- function(x,
                       fixed.asp,
                       ...) {
     
-    # trap older arguments, issue a warning, and call with correct arguments
+    if (!missing(min.freq)) {
+        warning('min.freq is deprecated; use dfm_trim() before textplot_wordcloud()', call. = FALSE)
+        x <- dfm_trim(x, min_count = min.freq)
+    }
     arg_dep <- character()
     if (!missing(max.words)) {
         max_words <- max.words
@@ -123,8 +148,7 @@ wordcloud <- function(x,
         arg_dep <- c(arg_dep, 'ordered.colors')
     }
     if (!missing(use.r.layout)) {
-        use_r_layout <- use.r.layout
-        arg_dep <- c(arg_dep, 'use.r.layout')
+        warning('use.r.layout is no longer used', call. = FALSE)
     }
     if (!missing(fixed.asp)) {
         fixed_asp <- fixed.asp
@@ -234,7 +258,21 @@ wordcloud <- function(x,
     invisible()
 }
 
-#a cloud comparing the frequencies of words across documents
+#' Internal function for textplot_wordcloud
+#'
+#' This function impliments wordcloud that compares documents. Code is adopted from
+#' \code{\link[wordcloud]{comparison.cloud}}.
+#' @inheritParams textplot_wordcloud
+#' @param min.freq deprecated argument
+#' @param max.words deprecated argument
+#' @param random.order deprecated argument
+#' @param random.color  deprecated argument
+#' @param rot.per deprecated argument
+#' @param ordered.colors deprecated argument
+#' @param use.r.layout deprecated argument
+#' @param title.size deprecated argument
+#' @keywords internal
+#' @author Ian Fellows
 wordcloud_comparison <- function(x,
                                  scale = c(4, .5),
                                  max_words = Inf,
@@ -242,6 +280,7 @@ wordcloud_comparison <- function(x,
                                  rot_per = .1,
                                  colors = NULL,
                                  title_size = 3,
+                                 min.freq,
                                  max.words, 
                                  random.order,
                                  rot.per,
@@ -249,6 +288,10 @@ wordcloud_comparison <- function(x,
                                  title.size,
                                  ...) {
     
+    if (!missing(min.freq)) {
+        warning('min.freq is deprecated; use dfm_trim() before textplot_wordcloud()', call. = FALSE)
+        x <- dfm_trim(x, min_count = min.freq)
+    }
     arg_dep <- character()
     if (!missing(max.words)) {
         max_words <- max.words
@@ -263,8 +306,7 @@ wordcloud_comparison <- function(x,
         arg_dep <- c(arg_dep, 'rot.per')
     }
     if (!missing(use.r.layout)) {
-        use_r_layout <- use.r.layout
-        arg_dep <- c(arg_dep, 'use.r.layout')
+        warning('use.r.layout is no longer used', call. = FALSE)
     }
     if (!missing(title.size)) {
         title_size <- title.size
@@ -360,7 +402,6 @@ wordcloud_comparison <- function(x,
                 x1 - 0.5 * wid > 0 && y1 - 0.5 * ht > 0 &&
                 x1 + 0.5 * wid < 1 && y1 + 0.5 * ht < 1) {
                 text(x1, y1, words[i], cex = size[i], offset = 0, srt = rotWord * 90, col = colors[group[i]], ...)
-                #rect(x1-.5*wid,y1-.5*ht,x1+.5*wid,y1+.5*ht)
                 boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
                 isOverlaped <- FALSE
             } else {
@@ -409,7 +450,7 @@ wordlayout <- function(x,
     
     
     boxes <- list()
-    for (i in 1:length(words)) {
+    for (i in seq_along(words)) {
         rotWord <- rotate90[i]
         r <- 0
         theta <- runif(1, 0, 2 * pi)
@@ -417,7 +458,7 @@ wordlayout <- function(x,
         y1 <- yo <- y[i]
         wid <- strwidth(words[i], cex = cex[i], ...)
         ht <- strheight(words[i], cex = cex[i], ...)
-        #mind your ps and qs
+        # mind your ps and qs
         if (grepl(tails, words[i]))
             ht <- ht + ht * 0.2
         if (rotWord) {
@@ -446,18 +487,14 @@ wordlayout <- function(x,
     result
 }
 
-textplot <- function(x, y,
-                     words,
-                     cex = 1,
-                     new = TRUE,
-                     show.lines = TRUE,
+textplot <- function(x, y, words, cex = 1, new = TRUE, show.lines = TRUE,
                      ...) {
     
     if (new)
         plot(x, y, type = "n", ...)
     lay <- wordlayout(x, y, words, cex, ...)
     if (show.lines) {
-        for (i in 1:length(x)) {
+        for (i in seq_along(x)) {
             xl <- lay[i, 1]
             yl <- lay[i, 2]
             w <- lay[i, 3]

@@ -4,30 +4,50 @@
 \alias{textplot_wordcloud}
 \title{Plot features as a wordcloud}
 \usage{
-textplot_wordcloud(x, comparison = FALSE, ...)
+textplot_wordcloud(x, scale = c(4, 0.5), max_words = Inf,
+  random_order = FALSE, random_color = FALSE, rot_per = 0.1,
+  colors = "black", ordered_colors = FALSE, comparison = FALSE, ...)
 }
 \arguments{
 \item{x}{a dfm object}
 
-\item{comparison}{if \code{TRUE}, plot a 
-\code{\link[wordcloud]{comparison.cloud}} instead of a simple wordcloud, 
-one grouping per document}
+\item{scale}{vector of length 2 indicating the range of the size of the
+words}
 
-\item{...}{additional parameters passed to \link[wordcloud]{wordcloud} or 
-to \link{text} (and \link{strheight}, \link{strwidth})}
+\item{max_words}{maximum number of words to be plotted. least frequent terms
+dropped}
+
+\item{random_order}{plot words in random order. If \code{FALSE}, they will be
+plotted in decreasing frequency}
+
+\item{random_color}{choose colors randomly from the colors. If \code{FALSE},
+the color is chosen based on the frequency}
+
+\item{rot_per}{proportion words with 90 degree rotation colors}
+
+\item{ordered_colors}{if \code{TRUE}, then colors are assigned to words in
+order}
+
+\item{comparison}{if \code{TRUE}, plot a wordclound that compares documents
+in the same way as \code{\link[wordcloud]{comparison.cloud}}}
+
+\item{...}{additional parameters passed to \link{text} (and \link{strheight},
+\link{strwidth})}
+
+\item{color}{words from least to most frequent}
 }
 \description{
-Plot a \link{dfm} or \link{tokens} object as a wordcloud, where the feature 
+Plot a \link{dfm} or \link{tokens} object as a wordcloud, where the feature
 labels are plotted with their sizes proportional to their numerical values in
-the dfm.  When \code{comparison = TRUE}, it plots comparison word clouds by 
+the dfm.  When \code{comparison = TRUE}, it plots comparison word clouds by
 document.
 }
 \details{
 The default is to plot the word cloud of all features, summed across
-  documents.  To produce word cloud plots for specific document or set of 
+  documents.  To produce word cloud plots for specific document or set of
   documents, you need to slice out the document(s) from the dfm or tokens
   object.
-  
+
   Comparison wordcloud plots may be plotted by setting \code{comparison =
   TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
   This means that you will need to slice out just a few documents from the
@@ -35,27 +55,30 @@ The default is to plot the word cloud of all features, summed across
   grouping of documents by some document variable.
 }
 \examples{
-# plot the features (without stopwords) from Obama's two inaugural addresses
-mydfm <- dfm(corpus_subset(data_corpus_inaugural, President == "Obama"), 
-             remove = stopwords("english"), remove_punct = TRUE)
-textplot_wordcloud(mydfm)
+  # plot the features (without stopwords) from Obama's two inaugural addresses 
+  mydfm <- dfm(corpus_subset(data_corpus_inaugural, President == "Obama"), 
+               remove = stopwords("english"), remove_punct = TRUE)
+  mydfm <- dfm_trim(mydfm, min_count = 3) 
+  textplot_wordcloud(mydfm)
 
-# plot in colors with some additional options passed to wordcloud
-textplot_wordcloud(mydfm, random.color = TRUE, rot.per = .25, 
-                   colors = sample(colors()[2:128], 5))
+  # plot in colors with some additional options passed to wordcloud
+  textplot_wordcloud(mydfm, random_color = TRUE, rot_per = 0.25, 
+                     colors = sample(colors()[2:128], 5))
 
-\dontrun{
-# comparison plot of Irish government vs opposition
-docvars(data_corpus_irishbudget2010, "govtopp") <- 
-    factor(ifelse(data_corpus_irishbudget2010[, "party"] \%in\% c("FF", "Green"), "Govt", "Opp"))
-govtoppDfm <- dfm(data_corpus_irishbudget2010, groups = "govtopp", remove_punct = TRUE)
-textplot_wordcloud(dfm_tfidf(govtoppDfm), comparison = TRUE)
-# compare to non-tf-idf version
-textplot_wordcloud(govtoppDfm, comparison = TRUE)
-}
-}
-\seealso{
-\code{\link[wordcloud]{wordcloud}}, 
-  \code{\link[wordcloud]{comparison.cloud}}
+  # old and new 
+  textplot_wordcloudold(mydfm, random.order = FALSE)
+  textplot_wordcloud(mydfm)
+
+  \dontrun{
+  # comparison plot of Irish government vs opposition
+  docvars(data_corpus_irishbudget2010, "govtopp") <-
+          factor(ifelse(data_corpus_irishbudget2010[, "party"] \%in\% 
+                 c("FF", "Green"), "Govt", "Opp"))
+  govtopp_dfm <- dfm(data_corpus_irishbudget2010, groups = "govtopp", 
+                     remove_punct = TRUE)
+  textplot_wordcloud(dfm_tfidf(govtopp_dfm), comparison = TRUE) 
+  # compare to non-tf-idf version
+  textplot_wordcloud(govtopp_dfm, comparison = TRUE)
+  }
 }
 \keyword{textplot}
