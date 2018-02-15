@@ -1,9 +1,8 @@
 #' Plot features as a wordcloud
 #'
-#' Plot a \link{dfm} object as a wordcloud, where the feature
-#' labels are plotted with their sizes proportional to their numerical values in
-#' the dfm.  When \code{comparison = TRUE}, it plots comparison word clouds by
-#' document.
+#' Plot a \link{dfm} object as a wordcloud, where the feature labels are plotted
+#' with their sizes proportional to their numerical values in the dfm.  When
+#' \code{comparison = TRUE}, it plots comparison word clouds by document.
 #' @details The default is to plot the word cloud of all features, summed across
 #'   documents.  To produce word cloud plots for specific document or set of
 #'   documents, you need to slice out the document(s) from the dfm object.
@@ -13,7 +12,7 @@
 #'   This means that you will need to slice out just a few documents from the
 #'   dfm, or to create a dfm where the "documents" represent a subset or a
 #'   grouping of documents by some document variable.
-#'   
+#'
 #' @param x a dfm object
 #' @param scale  vector of length 2 indicating the range of the size of the
 #'   words
@@ -24,48 +23,51 @@
 #' @param random_color choose colors randomly from the colors. If \code{FALSE},
 #'   the color is chosen based on the frequency
 #' @param rot_per proportion words with 90 degree rotation colors
-#' @param colors words from least to most frequent
-#' @param ordered_colors if \code{TRUE}, then colors are assigned to words in
+#' @param color words from least to most frequent
+#' @param ordered_color if \code{TRUE}, then colors are assigned to words in
 #'   order
+#' @fixed_asp if \code{TRUE}, the aspect ratio is fixed. Variable aspect ratio
+#'   only supported if rot_per = 0
 #' @param comparison if \code{TRUE}, plot a wordclound that compares documents
 #'   in the same way as \code{\link[wordcloud]{comparison.cloud}}
 #' @param ... additional parameters passed to \link{text} (and \link{strheight},
 #'   \link{strwidth})
 #' @examples
-#'   # plot the features (without stopwords) from Obama's two inaugural addresses 
-#'   mydfm <- dfm(corpus_subset(data_corpus_inaugural, President == "Obama"), 
+#'   # plot the features (without stopwords) from Obama's two inaugural addresses
+#'   mydfm <- dfm(corpus_subset(data_corpus_inaugural, President == "Obama"),
 #'                remove = stopwords("english"), remove_punct = TRUE)
-#'   mydfm <- dfm_trim(mydfm, min_count = 3) 
+#'   mydfm <- dfm_trim(mydfm, min_count = 3)
 #'   textplot_wordcloud(mydfm)
 #'
 #'   # plot in colors with some additional options passed to wordcloud
-#'   textplot_wordcloud(mydfm, random_color = TRUE, rot_per = 0.25, 
-#'                      colors = sample(colors()[2:128], 5))
+#'   textplot_wordcloud(mydfm, random_color = TRUE, rot_per = 0.25,
+#'                      color = sample(colors()[2:128], 5))
 #'
-#'   # old and new 
+#'   # old and new
 #'   textplot_wordcloudold(mydfm, random.order = FALSE)
 #'   textplot_wordcloud(mydfm)
 #'
 #'   \dontrun{
 #'   # comparison plot of Irish government vs opposition
 #'   docvars(data_corpus_irishbudget2010, "govtopp") <-
-#'           factor(ifelse(data_corpus_irishbudget2010[, "party"] %in% 
+#'           factor(ifelse(data_corpus_irishbudget2010[, "party"] %in%
 #'                  c("FF", "Green"), "Govt", "Opp"))
-#'   govtopp_dfm <- dfm(data_corpus_irishbudget2010, groups = "govtopp", 
+#'   govtopp_dfm <- dfm(data_corpus_irishbudget2010, groups = "govtopp",
 #'                      remove_punct = TRUE)
-#'   textplot_wordcloud(dfm_tfidf(govtopp_dfm), comparison = TRUE) 
+#'   textplot_wordcloud(dfm_tfidf(govtopp_dfm), comparison = TRUE)
 #'   # compare to non-tf-idf version
 #'   textplot_wordcloud(govtopp_dfm, comparison = TRUE)
 #'   }
 #' @export
 #' @keywords textplot
 textplot_wordcloud <- function(x, scale = c(4, 0.5),
-                               max_words = Inf,
+                               max_words = 1000,
                                random_order = FALSE,
                                random_color = FALSE,
                                rot_per = 0.1,
-                               colors = "black",
-                               ordered_colors = FALSE,
+                               color = "black",
+                               ordered_color = FALSE,
+                               fixed_asp = TRUE,
                                ...,
                                comparison = FALSE) {
     UseMethod("textplot_wordcloud")
@@ -105,12 +107,12 @@ textplot_wordcloud.dfm <- function(x, ..., comparison = FALSE) {
 #' @author Ian Fellows
 wordcloud <- function(x,
                       scale = c(4, 0.5),
-                      max_words = Inf,
+                      max_words = 1000,
                       random_order = FALSE,
                       random_color = FALSE,
                       rot_per = 0.1,
-                      colors = "black",
-                      ordered_colors = FALSE,
+                      color = "black",
+                      ordered_color = FALSE,
                       fixed_asp = TRUE,
                       min.freq,
                       max.words, 
@@ -129,57 +131,56 @@ wordcloud <- function(x,
     arg_dep <- character()
     if (!missing(max.words)) {
         max_words <- max.words
-        arg_dep <- c(arg_dep, 'max.words')
+        arg_dep <- c(arg_dep, 'max_words' = 'max.words')
     }
     if (!missing(random.order)) {
         random_order <- random.order
-        arg_dep <- c(arg_dep, 'random.order')
+        arg_dep <- c(arg_dep, 'random_order' = 'random.order')
     }
     if (!missing(random.color)) {
         random_color <- random.color
-        arg_dep <- c(arg_dep, 'random.color')
+        arg_dep <- c(arg_dep, 'random_color' = 'random.color')
     }
     if (!missing(rot.per)) {
         rot_per <- rot.per
-        arg_dep <- c(arg_dep, 'rot.per')
+        arg_dep <- c(arg_dep, 'rot_per' = 'rot.per')
     }
     if (!missing(ordered.colors)) {
-        ordered_colors <- ordered.colors
-        arg_dep <- c(arg_dep, 'ordered.colors')
+        ordered_color <- ordered.colors
+        arg_dep <- c(arg_dep, 'ordered_color' = 'ordered.colors')
     }
     if (!missing(use.r.layout)) {
         warning('use.r.layout is no longer used', call. = FALSE)
     }
     if (!missing(fixed.asp)) {
         fixed_asp <- fixed.asp
-        arg_dep <- c(arg_dep, 'fixed.asp')
+        arg_dep <- c(arg_dep, 'fixed_asp' = 'fixed.asp')
     }
     if (length(arg_dep)) {
-        warning(paste(arg_dep), " is deprecated; use ",
-                paste(stri_replace_all_fixed(arg_dep, '.', '_')), " instead", call. = FALSE)
+        warning(paste(arg_dep), " is deprecated; use ", paste(names(arg_dep)), " instead", call. = FALSE)
     }
     
     if (!fixed_asp && rot_per > 0)
         stop("Variable aspect ratio not supported for rotated words. Set rot_per=0.")
     
     tails <- "g|j|p|q|y"
-    nc <- length(colors)
+    nc <- length(color)
     
     freq <- Matrix::colSums(x)
     words <- names(freq)
     freq <- unname(freq)
     
-    if (ordered_colors) {
-        if (length(colors) != 1 && length(colors) != length(words)) {
-            stop("Length of colors does not match length of words vector")
+    if (ordered_color) {
+        if (length(color) != 1 && length(color) != length(words)) {
+            stop("Length of color does not match length of words vector")
         }
     }
     
     ord <- rank(-freq, ties.method = "random")
     words <- words[ord <= max_words]
     freq <- freq[ord <= max_words]
-    if (ordered_colors) {
-        colors <- colors[ord <= max_words]
+    if (ordered_color) {
+        color <- color[ord <= max_words]
     }
     
     if (random_order) {
@@ -226,14 +227,14 @@ wordcloud <- function(x,
                 x1 - 0.5 * wid > 0 && y1 - 0.5 * ht > 0 &&
                 x1 + 0.5 * wid < 1 && y1 + 0.5 * ht < 1) {
                 if (!random_color) {
-                    if (ordered_colors) {
-                        cc <- colors[i]
+                    if (ordered_color) {
+                        cc <- color[i]
                     } else {
                         cc <- ceiling(nc * normedFreq[i])
-                        cc <- colors[cc]
+                        cc <- color[cc]
                     }
                 } else {
-                    cc <- colors[sample(1:nc, 1)]
+                    cc <- color[sample(1:nc, 1)]
                 }
                 text(x1, y1, words[i], cex = size[i], offset = 0, srt = rotWord * 90, col = cc, ...)
                 boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
@@ -272,11 +273,11 @@ wordcloud <- function(x,
 #' @keywords internal
 #' @author Ian Fellows
 wordcloud_comparison <- function(x,
-                                 scale = c(4, .5),
-                                 max_words = Inf,
+                                 scale = c(4, 0.5),
+                                 max_words = 1000,
                                  random_order = FALSE,
-                                 rot_per = .1,
-                                 colors = NULL,
+                                 rot_per = 0.1,
+                                 color = NULL,
                                  title_size = 3,
                                  min.freq,
                                  max.words, 
@@ -293,26 +294,25 @@ wordcloud_comparison <- function(x,
     arg_dep <- character()
     if (!missing(max.words)) {
         max_words <- max.words
-        arg_dep <- c(arg_dep, 'max.words')
+        arg_dep <- c(arg_dep, 'max_words' = 'max.words')
     }
     if (!missing(random.order)) {
         random_order <- random.order
-        arg_dep <- c(arg_dep, 'random.order')
+        arg_dep <- c(arg_dep, 'random_order' = 'random.order')
     }
     if (!missing(rot.per)) {
         rot_per <- rot.per
-        arg_dep <- c(arg_dep, 'rot.per')
+        arg_dep <- c(arg_dep, 'rot_per' = 'rot.per')
     }
     if (!missing(use.r.layout)) {
         warning('use.r.layout is no longer used', call. = FALSE)
     }
     if (!missing(title.size)) {
         title_size <- title.size
-        arg_dep <- c(arg_dep, 'title.size')
+        arg_dep <- c(arg_dep, 'title_size' = 'title.size')
     }
     if (length(arg_dep)) {
-        warning(paste(arg_dep), " is deprecated; use ",
-                paste(stri_replace_all_fixed(arg_dep, '.', '_')), " instead", call. = FALSE)
+        warning(paste(arg_dep), " is deprecated; use ", paste(names(arg_dep)), " instead", call. = FALSE)
     }
     
     term_matrix <- t(as.matrix(x))
@@ -326,14 +326,14 @@ wordcloud_comparison <- function(x,
         term_matrix[, i] <- term_matrix[, i] - mean.rates
     }
     
-    if (is.null(colors))
-        colors <- RColorBrewer::brewer.pal(ndoc, "Dark2")
+    if (is.null(color))
+        color <- RColorBrewer::brewer.pal(ndoc, "Dark2")
     group <- apply(term_matrix, 1, function(x) which.max(x))
     words <- rownames(term_matrix)
     freq <- apply(term_matrix, 1, function(x) max(x))
     
     tails <- "g|j|p|q|y"
-    nc <- length(colors)
+    nc <- length(color)
     
     ord <- rank(-freq, ties.method = "random")
     words <- words[ord <= max_words]
@@ -395,7 +395,7 @@ wordcloud_comparison <- function(x,
             if (inCorrectRegion && !qatd_cpp_is_overlap(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht, boxes) &&
                 x1 - 0.5 * wid > 0 && y1 - 0.5 * ht > 0 &&
                 x1 + 0.5 * wid < 1 && y1 + 0.5 * ht < 1) {
-                text(x1, y1, words[i], cex = size[i], offset = 0, srt = rotWord * 90, col = colors[group[i]], ...)
+                text(x1, y1, words[i], cex = size[i], offset = 0, srt = rotWord * 90, col = color[group[i]], ...)
                 boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
                 isOverlaped <- FALSE
             } else {
