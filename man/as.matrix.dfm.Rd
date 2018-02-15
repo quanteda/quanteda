@@ -7,28 +7,27 @@
 \usage{
 \method{as.matrix}{dfm}(x, ...)
 
-\method{as.data.frame}{dfm}(x, row.names = NULL, ...)
+\method{as.data.frame}{dfm}(x, document = docnames(x), row.names = NULL,
+  ...)
 }
 \arguments{
 \item{x}{dfm to be coerced}
 
 \item{...}{unused}
 
-\item{row.names}{if \code{FALSE}, do not set the row names of the data.frame
-to the docnames of the dfm (default); or a vector of values to which the
-row names will be set.}
+\item{document}{optional first column of mode \code{character} in the
+data.frame, defaults \code{docnames(x)}.  Set to \code{NULL} to exclude.}
 }
 \description{
 Methods for coercing a \link{dfm} object to a matrix or data.frame object.
 }
 \examples{
 # coercion to matrix
-mydfm <- dfm(data_corpus_inaugural)
-str(as.matrix(mydfm))
+as.matrix(data_dfm_lbgexample[, 1:10])
 
 # coercion to a data.frame
-inaugDfm <- dfm(data_corpus_inaugural[1:5])
-as.data.frame(inaugDfm[, 1:10])
-as.data.frame(inaugDfm[, 1:10], row.names = FALSE)
+as.data.frame(data_dfm_lbgexample[, 1:15])
+as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL)
+as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL, row.names = docnames(x))
 }
 \keyword{dfm}

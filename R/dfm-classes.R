@@ -121,8 +121,7 @@ setMethod("+", signature(e1 = "numeric", e2 = "dfm"),
 #' @method as.matrix dfm
 #' @examples
 #' # coercion to matrix
-#' mydfm <- dfm(data_corpus_inaugural)
-#' str(as.matrix(mydfm))
+#' as.matrix(data_dfm_lbgexample[, 1:10])
 #' 
 as.matrix.dfm <- function(x, ...) {
     as(x, "matrix")
@@ -131,19 +130,23 @@ as.matrix.dfm <- function(x, ...) {
 #           function(x) as(x, "matrix"))
 
 #' @rdname as.matrix.dfm
-#' @param row.names if \code{FALSE}, do not set the row names of the data.frame
-#'   to the docnames of the dfm (default); or a vector of values to which the
-#'   row names will be set.
+#' @param document optional first column of mode \code{character} in the
+#'   data.frame, defaults \code{docnames(x)}.  Set to \code{NULL} to exclude.
+#' @inheritParams base::as.data.frame row.names
 #' @param ... unused
 #' @method as.data.frame dfm
 #' @export
 #' @examples
 #' # coercion to a data.frame
-#' inaugDfm <- dfm(data_corpus_inaugural[1:5])
-#' as.data.frame(inaugDfm[, 1:10])
-#' as.data.frame(inaugDfm[, 1:10], row.names = FALSE)
-as.data.frame.dfm <- function(x, row.names = NULL, ...) {
-    as.data.frame(as.matrix(x), row.names = row.names, ...)
+#' as.data.frame(data_dfm_lbgexample[, 1:15])
+#' as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL)
+#' as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL, row.names = docnames(x))
+as.data.frame.dfm <- function(x, document = docnames(x), row.names = NULL, ...) {
+    if (!(is.character(document) || is.null(document)))
+        stop("document must be character or NULL")
+    df <- data.frame(as.matrix(x), row.names = row.names)
+    if (!is.null(document)) df <- cbind(document, df, stringsAsFactors = FALSE)
+    df
 }
 
 
