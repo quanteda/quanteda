@@ -132,7 +132,7 @@ as.matrix.dfm <- function(x, ...) {
 #' @rdname as.matrix.dfm
 #' @param document optional first column of mode \code{character} in the
 #'   data.frame, defaults \code{docnames(x)}.  Set to \code{NULL} to exclude.
-#' @inheritParams base::as.data.frame row.names
+#' @inheritParams base::as.data.frame
 #' @param ... unused
 #' @method as.data.frame dfm
 #' @export
@@ -140,8 +140,9 @@ as.matrix.dfm <- function(x, ...) {
 #' # coercion to a data.frame
 #' as.data.frame(data_dfm_lbgexample[, 1:15])
 #' as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL)
-#' as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL, row.names = docnames(x))
-as.data.frame.dfm <- function(x, document = docnames(x), row.names = NULL, ...) {
+#' as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL, 
+#'               row.names = docnames(data_dfm_lbgexample))
+as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x)) {
     if (!(is.character(document) || is.null(document)))
         stop("document must be character or NULL")
     df <- data.frame(as.matrix(x), row.names = row.names)

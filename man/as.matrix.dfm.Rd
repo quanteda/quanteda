@@ -7,13 +7,16 @@
 \usage{
 \method{as.matrix}{dfm}(x, ...)
 
-\method{as.data.frame}{dfm}(x, document = docnames(x), row.names = NULL,
-  ...)
+\method{as.data.frame}{dfm}(x, row.names = NULL, ...,
+  document = docnames(x))
 }
 \arguments{
 \item{x}{dfm to be coerced}
 
 \item{...}{unused}
+
+\item{row.names}{\code{NULL} or a character vector giving the row
+    names for the data frame.  Missing values are not allowed.}
 
 \item{document}{optional first column of mode \code{character} in the
 data.frame, defaults \code{docnames(x)}.  Set to \code{NULL} to exclude.}
@@ -28,6 +31,7 @@ as.matrix(data_dfm_lbgexample[, 1:10])
 # coercion to a data.frame
 as.data.frame(data_dfm_lbgexample[, 1:15])
 as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL)
-as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL, row.names = docnames(x))
+as.data.frame(data_dfm_lbgexample[, 1:15], document = NULL, 
+              row.names = docnames(data_dfm_lbgexample))
 }
 \keyword{dfm}
