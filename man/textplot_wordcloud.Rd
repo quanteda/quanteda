@@ -4,7 +4,7 @@
 \alias{textplot_wordcloud}
 \title{Plot features as a wordcloud}
 \usage{
-textplot_wordcloud(x, scale = c(4, 0.5), max_words = Inf,
+textplot_wordcloud(x, scale = c(4, 0.5), max_words = 1000,
   random_order = FALSE, random_color = FALSE, rot_per = 0.1,
   colors = "black", ordered_colors = FALSE, ..., comparison = FALSE)
 }
