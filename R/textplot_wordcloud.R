@@ -346,6 +346,7 @@ wordcloud_comparison <- function(x,
         warning(paste(arg_dep), " is deprecated; use ", paste(names(arg_dep)), " instead", call. = FALSE)
     }
     
+    #x <- dfm_weight(x, 'prop')
     term_matrix <- t(as.matrix(x))
     ndoc <- ncol(term_matrix)
     thetaBins <- seq(0, 2 * pi, length = ndoc + 1)
@@ -356,12 +357,13 @@ wordcloud_comparison <- function(x,
     for (i in seq(ndoc)) {
         term_matrix[, i] <- term_matrix[, i] - mean.rates
     }
+    #term_matrix <- term_matrix - rowMeans(term_matrix)
     
     if (is.null(color))
         color <- RColorBrewer::brewer.pal(ndoc, "Dark2")
-    group <- apply(term_matrix, 1, function(x) which.max(x))
+    group <- apply(term_matrix, 1, which.max)
     word <- rownames(term_matrix)
-    freq <- apply(term_matrix, 1, function(x) max(x))
+    freq <- apply(term_matrix, 1, max)
     
     tails <- "g|j|p|q|y"
     nc <- length(color)
@@ -384,6 +386,7 @@ wordcloud_comparison <- function(x,
     graphics::plot.new()
     op <- graphics::par("mar")
     #graphics::par(mar = c(1, 1, 1, 1))
+    graphics::par(mar = c(0, 0, 0, 0))
     graphics::plot.window(c(0, 1), c(0, 1), asp = 1)
     normedFreq <- freq / max(freq)
     size <- (scale[1] - scale[2]) * normedFreq + scale[2]
@@ -394,14 +397,16 @@ wordcloud_comparison <- function(x,
     if (!is.null(labelsize)) {
         for (i in seq(ncol(term_matrix))) {
             th <- mean(thetaBins[i:(i + 1)])
-            word <- docnames[i]
-            wid <- graphics::strwidth(word, cex = labelsize) * (offset + 1)
-            ht <- graphics::strheight(word, cex = labelsize) * (offset + 1)
-            x1 <- 0.5 + 0.45 * cos(th) * offset
-            y1 <- 0.5 + 0.45 * sin(th) * offset
+            label <- docnames[i]
+            wid <- graphics::strwidth(label, cex = labelsize)
+            ht <- graphics::strheight(label, cex = labelsize)
+            #x1 <- (0.5 + 0.45 * cos(th))
+            #y1 <- (0.5 + 0.45 * sin(th))
+            x1 <- 0.5 + ((0.45 + offset) * cos(th))
+            y1 <- 0.5 + ((0.45 + offset) * sin(th))
             graphics::rect(x1 - 0.5 * wid, y1 - 0.5 * ht, x1 + 0.5 * wid, y1 + 0.5 * ht,
                            col = labelcolor, border = "transparent")
-            text(x1, y1, word, cex = labelsize)
+            text(x1, y1, label, cex = labelsize)
             boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
         }
     }
