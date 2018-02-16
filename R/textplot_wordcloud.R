@@ -346,24 +346,28 @@ wordcloud_comparison <- function(x,
         warning(paste(arg_dep), " is deprecated; use ", paste(names(arg_dep)), " instead", call. = FALSE)
     }
     
-    #x <- dfm_weight(x, 'prop')
-    term_matrix <- t(as.matrix(x))
-    ndoc <- ncol(term_matrix)
+    x <- x / rowSums(x)
+    x <- x - rowMeans(x)
+    x <- t(as.matrix(x))
+    #x <- x[rowSums(x) > 0,]
+    #x <- t(x)
+    
+    ndoc <- ncol(x)
     thetaBins <- seq(0, 2 * pi, length = ndoc + 1)
-    for (i in seq(ndoc)) {
-        term_matrix[, i] <- term_matrix[, i] / sum(term_matrix[, i])
-    }
-    mean.rates <- rowMeans(term_matrix)
-    for (i in seq(ndoc)) {
-        term_matrix[, i] <- term_matrix[, i] - mean.rates
-    }
-    #term_matrix <- term_matrix - rowMeans(term_matrix)
+    # for (i in seq(ndoc)) {
+    #     term_matrix[, i] <- term_matrix[, i] / sum(term_matrix[, i])
+    # }
+    # mean.rates <- rowMeans(term_matrix)
+    # for (i in seq(ndoc)) {
+    #     term_matrix[, i] <- term_matrix[, i] - mean.rates
+    # }
+    
     
     if (is.null(color))
         color <- RColorBrewer::brewer.pal(ndoc, "Dark2")
-    group <- apply(term_matrix, 1, which.max)
-    word <- rownames(term_matrix)
-    freq <- apply(term_matrix, 1, max)
+    group <- apply(x, 1, which.max)
+    word <- rownames(x)
+    freq <- apply(x, 1, max)
     
     tails <- "g|j|p|q|y"
     nc <- length(color)
@@ -393,9 +397,9 @@ wordcloud_comparison <- function(x,
     boxes <- list()
     
     #add titles
-    docnames <- colnames(term_matrix)
+    docnames <- colnames(x)
     if (!is.null(labelsize)) {
-        for (i in seq(ncol(term_matrix))) {
+        for (i in seq(ncol(x))) {
             th <- mean(thetaBins[i:(i + 1)])
             label <- docnames[i]
             wid <- graphics::strwidth(label, cex = labelsize)
