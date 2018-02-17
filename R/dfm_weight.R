@@ -325,8 +325,8 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
         warning("smoothing not used for this scheme")
     if (k < 0)
         stop("k must be >= 0")
-    if (x@weightDf[["scheme"]] != "unary")
-        stop("this dfm has already been term weighted as:", x@weightDf)
+    # if (x@weightDf[["scheme"]] != "unary")
+    #     stop("this dfm has already been term weighted as: ", x@weightDf[[1]])
     
     if (scheme == "unary") {
         result <- rep(1, nfeat(x))
