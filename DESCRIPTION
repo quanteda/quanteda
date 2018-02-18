@@ -19,7 +19,7 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb") )
 License: GPL-3
 Depends:
-    R (>= 3.4.0),
+    R (>= 3.1.0),
     methods
 Imports:
     utils,
