@@ -67,13 +67,14 @@ textplot_wordcloud <- function(x,
                                max_size = 4,
                                max_words = 1000,
                                color = "skyblue",
+                               font = NULL,
                                adjust = 0,
                                rotation = 0.1,
                                random_order = TRUE,
                                random_color = FALSE,
                                ordered_color = FALSE,
-                               labelcolor = 'gray40',
-                               labelsize = NULL,
+                               labelcolor = 'black',
+                               labelsize = 1,
                                labeloffset = 0.1,
                                fixed_aspect = TRUE,
                                ...,
@@ -92,13 +93,14 @@ textplot_wordcloud.dfm <- function(x,
                                    max_size = 4,
                                    max_words = 1000,
                                    color = "skyblue",
+                                   font = NULL,
                                    adjust = 0,
                                    rotation = 0.1,
                                    random_order = TRUE,
                                    random_color = FALSE,
                                    ordered_color = FALSE,
-                                   labelcolor = "gray40",
-                                   labelsize = NULL,
+                                   labelcolor = 'black',
+                                   labelsize = 1,
                                    labeloffset = 0.1,
                                    fixed_aspect = TRUE,
                                    ...,
@@ -109,12 +111,12 @@ textplot_wordcloud.dfm <- function(x,
         if (ndoc(x) > 8) 
             stop("Too many documents to plot comparison, use 8 or fewer documents.")
         wordcloud_comparison(x, min_size , max_size, max_words,
-                             color, adjust, rotation,
+                             color, font, adjust, rotation,
                              random_order, random_color, ordered_color,
                              labelcolor, labelsize, labeloffset, fixed_aspect, ...)
     } else {
         wordcloud(x, min_size, max_size, max_words,
-                  color, adjust, rotation,
+                  color, font, adjust, rotation,
                   random_order, random_color, ordered_color,
                   labelcolor, labelsize, labeloffset, fixed_aspect, ...)
     }
@@ -137,7 +139,7 @@ textplot_wordcloud.dfm <- function(x,
 #' @keywords internal
 #' @author Ian Fellows
 wordcloud <- function(x, min_size, max_size, max_words,
-                      color, adjust, rotation,
+                      color, font, adjust, rotation,
                       random_order, random_color, ordered_color,
                       labelcolor, labelsize, labeloffset, fixed_aspect,
                       # deprecated arguments
@@ -186,9 +188,8 @@ wordcloud <- function(x, min_size, max_size, max_words,
         fixed_aspect <- fixed.asp
         arg_dep <- c(arg_dep, 'fixed_aspect' = 'fixed.asp')
     }
-    if (length(arg_dep)) {
+    if (length(arg_dep))
         warning(paste(arg_dep), " is deprecated; use ", paste(names(arg_dep)), " instead", call. = FALSE)
-    }
     
     if (!fixed_aspect && rotation > 0)
         stop("Variable aspect ratio not supported for rotated words. Set rotation=0.")
@@ -196,6 +197,7 @@ wordcloud <- function(x, min_size, max_size, max_words,
     tails <- "g|j|p|q|y"
     nc <- length(color)
     
+    font <- check_font(font)
     freq <- Matrix::colSums(x)
     word <- names(freq)
     freq <- unname(freq)
@@ -223,9 +225,10 @@ wordcloud <- function(x, min_size, max_size, max_words,
 
     thetaStep <- 0.1
     rStep <- 0.05
+    
     graphics::plot.new()
-    op <- graphics::par("mar")
-    graphics::par(mar = c(0, 0, 0, 0))
+    op <- graphics::par(no.readonly = TRUE)
+    graphics::par(mar = c(0, 0, 0, 0), usr = c(-1, 1, -1, 1), family = font)
     if (fixed_aspect) {
         graphics::plot.window(c(0, 1), c(0, 1), asp = 1)
     } else {
@@ -241,7 +244,7 @@ wordcloud <- function(x, min_size, max_size, max_words,
         theta <- stats::runif(1, 0, 2 * pi)
         x1 <- 0.5
         y1 <- 0.5
-        size <- numeric(2)
+        #size <- numeric(2)
         wid <- graphics::strwidth(word[i], cex = size[i], ...)
         ht <- graphics::strheight(word[i], cex = size[i], ...)
         #mind your ps and qs
@@ -267,11 +270,9 @@ wordcloud <- function(x, min_size, max_size, max_words,
                 } else {
                     cc <- color[sample(seq(nc), 1)]
                 }
+                text(x1, y1, word[i], cex = size[i], offset = 0, srt = rotWord * 90, col = cc,  ...)
                 words <- rbind(words, data.frame(x = x1, y = y1, word = word[i], size = size[i], 
                                                  offset = 0, srt = rotWord * 90, col = cc))
-                #text(x1, y1, word[i], cex = size[i], offset = 0, srt = rotWord * 90, col = cc, ...)
-                
-                
                 boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
                 is_overlaped <- FALSE
             } else {
@@ -286,19 +287,28 @@ wordcloud <- function(x, min_size, max_size, max_words,
             }
         }
     }
-    graphics::par(mar = op)
+    # abline(v=c(0, 1), h=c(0, 1))
+    # abline(v=c(0.25, 0.75), h=c(0.25, 0.75), col=2:3)
+    graphics::par(op)
+    dev.off()
     
     plot <- ggplot() + 
-        geom_text(data = words, aes(x, y, label = word), color = words$col,
-                  size = words$size * 5 * (1 + adjust), angle = words$srt) +
+        geom_text(data = words, aes(x, y, label = word), color = words$col, family = font,
+                  size = words$size * 4 * (1 + adjust), angle = words$srt, 
+                  lineheight = 1, vjust = "center") +
+        # geom_vline(xintercept = c(0, 0.25, 0.75, 1)) + # for debug
+        # geom_hline(yintercept = c(0, 0.25, 0.75, 1)) + # for debug
         coord_fixed() + 
-        scale_x_continuous(breaks = NULL) + scale_y_continuous(breaks = NULL) +
-        theme(panel.background = element_blank()) + 
-        theme(legend.position = "none") +
-        theme(axis.title.x = element_blank(), axis.title.y = element_blank()) +
-        theme(legend.background = element_rect(color = NA)) + 
-        theme(panel.background = element_rect(fill = "white", color = NA)) +
-        theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank())
+        scale_x_continuous(limits = c(0, 1), breaks = NULL) + 
+        scale_y_continuous(limits = c(0, 1), breaks = NULL) +
+        theme(
+            plot.margin = margin(0, 0, 0, 0),
+            panel.background = element_blank(), 
+            axis.title.x = element_blank(), 
+            axis.title.y = element_blank(),
+            legend.position = "none",
+            panel.grid.minor = element_blank(), 
+            panel.grid.major = element_blank())
     
     return(plot)
 }
@@ -320,7 +330,7 @@ wordcloud <- function(x, min_size, max_size, max_words,
 #' @keywords internal
 #' @author Ian Fellows
 wordcloud_comparison <- function(x, min_size, max_size, max_words,
-                                 color, adjust, rotation,
+                                 color, font, adjust, rotation,
                                  random_order, random_color, ordered_color,
                                  labelcolor, labelsize, labeloffset, fixed_aspect,
                                  # deprecated arguments
@@ -365,6 +375,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
         warning(paste(arg_dep), " is deprecated; use ", paste(names(arg_dep)), " instead", call. = FALSE)
     }
     
+    font <- check_font(font)
     x <- x / rowSums(x)
     x <- x - rowMeans(x)
     x <- t(as.matrix(x))
@@ -396,11 +407,12 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     group <- group[ord]
     thetaStep <- 0.05
     rStep <- 0.05
+    
     graphics::plot.new()
-    op <- graphics::par("mar")
-    #graphics::par(mar = c(1, 1, 1, 1))
-    graphics::par(mar = c(0, 0, 0, 0))
+    op <- graphics::par(no.readonly = TRUE)
+    graphics::par(mar = c(0, 0, 0, 0), family = font)
     graphics::plot.window(c(0, 1), c(0, 1), asp = 1)
+    
     normedFreq <- freq / max(freq)
     size <- (max_size - min_size) * normedFreq + min_size
     boxes <- list()
@@ -408,25 +420,24 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     #add titles
     docnames <- colnames(x)
     words <- data.frame()
-    if (!is.null(labelsize)) {
-        for (i in seq(ncol(x))) {
-            th <- mean(thetaBins[i:(i + 1)])
-            label <- docnames[i]
+    
+    for (i in seq(ncol(x))) {
+        th <- mean(thetaBins[seq(i, i + 1)])
+        label <- docnames[i]
+        if (labelsize > 0) {
             wid <- graphics::strwidth(label, cex = labelsize)
             ht <- graphics::strheight(label, cex = labelsize)
-            #x1 <- (0.5 + 0.45 * cos(th))
-            #y1 <- (0.5 + 0.45 * sin(th))
-            # leavs 5% margin around the cloud
+    
+            # leaves 5% margin around the cloud
             x1 <- 0.5 + ((0.45 + labeloffset) * cos(th))
             y1 <- 0.5 + ((0.45 + labeloffset) * sin(th))
-            #graphics::rect(x1 - 0.5 * wid, y1 - 0.5 * ht, x1 + 0.5 * wid, y1 + 0.5 * ht,
-            #               border = "transparent")
-            #text(x1, y1, label, cex = labelsize, col = labelcolor)
+    
             words <- rbind(words, data.frame(x = x1, y = y1, word = label, size = labelsize, 
                                              offset = 0, srt = 0, col = labelcolor))
             boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
         }
     }
+    
     for (i in seq_along(word)) {
         rotWord <- stats::runif(1) < rotation
         r <- 0
@@ -435,9 +446,9 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
         y1 <- 0.5
         wid <- graphics::strwidth(word[i], cex = size[i], ...)
         ht <- graphics::strheight(word[i], cex = size[i], ...)
-        #mind your ps and qs
+        
         if (grepl(tails, word[i]))
-            ht <- ht + ht * 0.2
+            ht <- ht + ht * 0.2 # extra height for g, j, p, q, y
         if (rotWord) {
             tmp <- ht
             ht <- wid
@@ -451,12 +462,12 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
                 x1 - 0.5 * wid > 0 && y1 - 0.5 * ht > 0 &&
                 x1 + 0.5 * wid < 1 && y1 + 0.5 * ht < 1) {
                 
+                # text(x1, y1, word[i], cex = size[i], offset = 0, srt = rotWord * 90, col = color[group[i]], ...)
                 words <- rbind(words, data.frame(x = x1, y = y1, word = word[i], size = size[i], 
                                                  offset = 0, srt = rotWord * 90, col = color[group[i]]))
-                
-                text(x1, y1, word[i], cex = size[i], offset = 0, srt = rotWord * 90, col = color[group[i]], ...)
                 boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
                 is_overlaped <- FALSE
+                
             } else {
                 if (r > sqrt(0.5)) {
                     warning(paste(word[i], "could not be fit on page. It will not be plotted."))
@@ -471,22 +482,28 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
             }
         }
     }
-    graphics::par(mar = op)
+    # abline(v=0:1, h=0:1)
+    # abline(v=c(0.25, 0,75), h=c(0.25, 0,75), col='red')
+    graphics::par(op)
+    dev.off()
     
     plot <- ggplot() + 
-        geom_text(data = words, aes(x, y, label = word), color = words$col,
-                  size = words$size * 5 * (1 + adjust) * 0.9, angle = words$srt) +
+        geom_text(data = words, aes(x, y, label = word), color = words$col, family = font,
+                  size = words$size * 4 * (1 + adjust), angle = words$srt, 
+                  lineheight = 1, vjust = "center") +
         coord_fixed() + 
-        scale_x_continuous(breaks = NULL) + scale_y_continuous(breaks = NULL) +
-        theme(#plot.margin = margin(0.05, 0.05, 0.05, 0.05, 'native'),
-              panel.background = element_blank(), 
-              axis.title.x = element_blank(), 
-              axis.title.y = element_blank(),
-              #legend.background = element_rect(color = NA),
-              #panel.background = element_rect(fill = "white", color = NA),
-              legend.position = "none",
-              panel.grid.minor = element_blank(), 
-              panel.grid.major = element_blank())
+        #geom_vline(xintercept = c(0, 0.25, 0.75, 1)) + # for debug
+        #geom_hline(yintercept = c(0, 0.25, 0.75, 1)) + # for debug
+        scale_x_continuous(limits = c(0, 1), breaks = NULL) + 
+        scale_y_continuous(limits = c(0, 1), breaks = NULL) +
+        theme(
+            plot.margin = margin(0, 0, 0, 0),
+            panel.background = element_blank(), 
+            axis.title.x = element_blank(), 
+            axis.title.y = element_blank(),
+            legend.position = "none",
+            panel.grid.minor = element_blank(), 
+            panel.grid.major = element_blank())
     
     return(plot)
 }
@@ -517,9 +534,9 @@ wordlayout <- function(x, y, word, cex = 1, rotate90 = FALSE,
         y1 <- yo <- y[i]
         wid <- graphics::strwidth(word[i], cex = cex[i], ...)
         ht <- graphics::strheight(word[i], cex = cex[i], ...)
-        # mind your ps and qs
+        
         if (grepl(tails, word[i]))
-            ht <- ht + ht * 0.2
+            ht <- ht + ht * 0.2 # extra height for g, j, p, q, y
         if (rotWord) {
             tmp <- ht
             ht <- wid
@@ -543,5 +560,5 @@ wordlayout <- function(x, y, word, cex = 1, rotate90 = FALSE,
     result <- do.call(rbind, boxes)
     colnames(result) <- c("x", "y", "width", "ht")
     rownames(result) <- word
-    result
+    return(result)
 }
