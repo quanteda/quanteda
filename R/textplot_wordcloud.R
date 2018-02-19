@@ -18,15 +18,16 @@
 #' @param max_size size of the largest word
 #' @param max_words maximum number of words to be plotted. least frequent terms
 #'   dropped
+#' @param color color of words from least to most frequent
+#' @param font font-family of words and labels. Use default font if \code{NULL}.
 #' @param random_order plot words in random order. If \code{FALSE}, they will be
 #'   plotted in decreasing frequency
 #' @param random_color choose colors randomly from the colors. If \code{FALSE},
 #'   the color is chosen based on the frequency
 #' @param ordered_color if \code{TRUE}, then colors are assigned to words in order
 #' @param rotation proportion words with 90 degree rotation colors
-#' @param color words from least to most frequent
-#' @param labelsize
-#' @param labeloffset  
+#' @param labelsize size of group labels. Only used when \code{compariosn=TRUE}.
+#' @param labeloffset  position of group labels. Only used when \code{compariosn=TRUE}.
 #' @param fixed_aspect if \code{TRUE}, the aspect ratio is fixed. Variable aspect ratio
 #'   only supported if rotation = 0
 #' @param comparison if \code{TRUE}, plot a wordclound that compares documents
@@ -244,17 +245,17 @@ wordcloud <- function(x, min_size, max_size, max_words,
         theta <- stats::runif(1, 0, 2 * pi)
         x1 <- 0.5
         y1 <- 0.5
-        #size <- numeric(2)
+
         wid <- graphics::strwidth(word[i], cex = size[i], ...)
         ht <- graphics::strheight(word[i], cex = size[i], ...)
-        #mind your ps and qs
         if (grepl(tails, word[i]))
-            ht <- ht + ht * 0.2
+            ht <- ht * 1.2 # extra height for g, j, p, q, y
         if (rotWord) {
             tmp <- ht
             ht <- wid
             wid <- tmp
         }
+        
         is_overlaped <- TRUE
         while (is_overlaped) {
             if (!qatd_cpp_is_overlap(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht, boxes) &&
@@ -448,7 +449,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
         ht <- graphics::strheight(word[i], cex = size[i], ...)
         
         if (grepl(tails, word[i]))
-            ht <- ht + ht * 0.2 # extra height for g, j, p, q, y
+            ht <- ht * 1.2 # extra height for g, j, p, q, y
         if (rotWord) {
             tmp <- ht
             ht <- wid
@@ -506,59 +507,4 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
             panel.grid.major = element_blank())
     
     return(plot)
-}
-
-
-wordlayout <- function(x, y, word, cex = 1, rotate90 = FALSE, 
-                       xlim = c(-Inf, Inf),  ylim = c(-Inf, Inf), tstep = 0.1, rstep = 0.1, ...) {
-    
-    tails <- "g|j|p|q|y"
-    n <- length(word)
-    sdx <- sd(x, na.rm = TRUE)
-    sdy <- sd(y, na.rm = TRUE)
-    if (sdx == 0)
-        sdx <- 1
-    if (sdy == 0)
-        sdy <- 1
-    if (length(cex) == 1)
-        cex <- rep(cex, n)
-    if (length(rotate90) == 1)
-        rotate90 <- rep(rotate90, n)
-    
-    boxes <- list()
-    for (i in seq_along(word)) {
-        rotWord <- rotate90[i]
-        r <- 0
-        theta <- stats::runif(1, 0, 2 * pi)
-        x1 <- xo <- x[i]
-        y1 <- yo <- y[i]
-        wid <- graphics::strwidth(word[i], cex = cex[i], ...)
-        ht <- graphics::strheight(word[i], cex = cex[i], ...)
-        
-        if (grepl(tails, word[i]))
-            ht <- ht + ht * 0.2 # extra height for g, j, p, q, y
-        if (rotWord) {
-            tmp <- ht
-            ht <- wid
-            wid <- tmp
-        }
-        is_overlaped <- TRUE
-        while (is_overlaped) {
-            if (!qatd_cpp_is_overlap(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht, boxes) &&
-                x1 - 0.5 * wid > xlim[1] && y1 - 0.5 * ht > ylim[1] &&
-                x1 + 0.5 * wid < xlim[2] && y1 + 0.5 * ht < ylim[2]) {
-                boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
-                is_overlaped <- FALSE
-            } else{
-                theta <- theta + tstep
-                r <- r + rstep * tstep / (2 * pi)
-                x1 <- xo + sdx * r * cos(theta)
-                y1 <- yo + sdy * r * sin(theta)
-            }
-        }
-    }
-    result <- do.call(rbind, boxes)
-    colnames(result) <- c("x", "y", "width", "ht")
-    rownames(result) <- word
-    return(result)
 }
