@@ -290,7 +290,7 @@ wordcloud <- function(x, min_size, max_size, max_words,
     # abline(v=c(0, 1), h=c(0, 1))
     # abline(v=c(0.25, 0.75), h=c(0.25, 0.75), col=2:3)
     graphics::par(op)
-    dev.off()
+    grDevices::dev.off()
     
     plot <- ggplot() + 
         geom_text(data = words, aes(x, y, label = word), color = words$col, family = font,
@@ -485,7 +485,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     # abline(v=0:1, h=0:1)
     # abline(v=c(0.25, 0,75), h=c(0.25, 0,75), col='red')
     graphics::par(op)
-    dev.off()
+    grDevices::dev.off()
     
     plot <- ggplot() + 
         geom_text(data = words, aes(x, y, label = word), color = words$col, family = font,
