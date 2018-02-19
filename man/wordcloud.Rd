@@ -4,20 +4,26 @@
 \alias{wordcloud}
 \title{Internal function for textplot_wordcloud}
 \usage{
-wordcloud(x, scale = c(4, 0.5), max_words = Inf, random_order = FALSE,
-  random_color = FALSE, rot_per = 0.1, colors = "black",
-  ordered_colors = FALSE, fixed_asp = TRUE, min.freq, max.words,
-  random.order, random.color, rot.per, ordered.colors, use.r.layout, fixed.asp,
-  ...)
+wordcloud(x, min_size, max_size, max_words, color, font, adjust, rotation,
+  random_order, random_color, ordered_color, labelcolor, labelsize, labeloffset,
+  fixed_aspect, colors, scale, min.freq, max.words, random.order, random.color,
+  rot.per, ordered.colors, use.r.layout, fixed.asp, ...)
 }
 \arguments{
 \item{x}{a dfm object}
 
-\item{scale}{vector of length 2 indicating the range of the size of the
-words}
+\item{min_size}{size of the smallest word}
+
+\item{max_size}{size of the largest word}
 
 \item{max_words}{maximum number of words to be plotted. least frequent terms
 dropped}
+
+\item{color}{words from least to most frequent}
+
+\item{font}{font-family of words and labels. Use default font if \code{NULL}.}
+
+\item{rotation}{proportion words with 90 degree rotation colors}
 
 \item{random_order}{plot words in random order. If \code{FALSE}, they will be
 plotted in decreasing frequency}
@@ -25,12 +31,16 @@ plotted in decreasing frequency}
 \item{random_color}{choose colors randomly from the colors. If \code{FALSE},
 the color is chosen based on the frequency}
 
-\item{rot_per}{proportion words with 90 degree rotation colors}
+\item{ordered_color}{if \code{TRUE}, then colors are assigned to words in order}
 
-\item{colors}{words from least to most frequent}
+\item{labelsize}{size of group labels. Only used when \code{compariosn=TRUE}.}
 
-\item{ordered_colors}{if \code{TRUE}, then colors are assigned to words in
-order}
+\item{labeloffset}{position of group labels. Only used when \code{compariosn=TRUE}.}
+
+\item{fixed_aspect}{if \code{TRUE}, the aspect ratio is fixed. Variable aspect ratio
+only supported if rotation = 0}
+
+\item{scale}{deprecated argument}
 
 \item{min.freq}{deprecated argument}
 
