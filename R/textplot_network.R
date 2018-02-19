@@ -83,19 +83,7 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
     
     label <- x1 <- x2 <- y <- y1 <- y2 <- NULL
     
-    if (is.null(vertex_labelfont)) {
-        vertex_labelfont <- ""
-    } else {
-        msg <- paste0(vertex_labelfont, ' is not found on your system.')
-        if (Sys.info()['sysname'] == 'Windows') {
-            if (!vertex_labelfont %in% names(grDevices::windowsFonts()))
-                stop(msg, ' Run extrafont::import_font() and extrafont::loadfonts(device = "win") to use custom fonts.')
-        } else {
-            if (!vertex_labelfont %in% c('sans', 'serif', 'mono', extrafont::fonts()))
-                stop(msg, ' Run extrafont::import_font() to use custom fonts.')
-        }
-    }
-    
+    vertex_labelfont <- check_font(vertex_labelfont)
     n <- as.network(x, min_freq = min_freq, omit_isolated = omit_isolated, ...)
 
     vertex <- data.frame(sna::gplot.layout.fruchtermanreingold(n, NULL))
