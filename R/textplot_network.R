@@ -134,13 +134,16 @@ textplot_network.fcm <- function(x, min_freq = 0.5, omit_isolated = TRUE,
         }
 
     plot <- plot + 
-        scale_x_continuous(breaks = NULL) + scale_y_continuous(breaks = NULL) +
-        theme(panel.background = element_blank()) + 
-        theme(legend.position = "none") +
-        theme(axis.title.x = element_blank(), axis.title.y = element_blank()) +
-        theme(legend.background = element_rect(color = NA)) + 
-        theme(panel.background = element_rect(fill = "white", color = NA)) +
-        theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank())
+        scale_x_continuous(breaks = NULL) + 
+        scale_y_continuous(breaks = NULL) +
+        theme(
+            plot.margin = margin(0, 0, 0, 0),
+            panel.background = element_blank(), 
+            axis.title.x = element_blank(), 
+            axis.title.y = element_blank(),
+            legend.position = "none",
+            panel.grid.minor = element_blank(), 
+            panel.grid.major = element_blank())
     
     return(plot)
 }

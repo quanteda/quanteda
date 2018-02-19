@@ -17,19 +17,24 @@
 #' @param min_size size of the smallest word
 #' @param max_size size of the largest word
 #' @param max_words maximum number of words to be plotted. least frequent terms
-#'   dropped
+#'   dropped.
 #' @param color color of words from least to most frequent
 #' @param font font-family of words and labels. Use default font if \code{NULL}.
+#' @param adjust ajust sizes of words by a constant. Useful for non-Engish words
+#'   for which R failes to obtaine sizes correctly.
+#' @param rotation proportion words with 90 degree rotation colors
 #' @param random_order plot words in random order. If \code{FALSE}, they will be
-#'   plotted in decreasing frequency
+#'   plotted in decreasing frequency.
 #' @param random_color choose colors randomly from the colors. If \code{FALSE},
 #'   the color is chosen based on the frequency
-#' @param ordered_color if \code{TRUE}, then colors are assigned to words in order
-#' @param rotation proportion words with 90 degree rotation colors
+#' @param ordered_color if \code{TRUE}, then colors are assigned to words in
+#'   order.
+#' @param labelcolor color of group labels. Only used when \code{compariosn=TRUE}.
 #' @param labelsize size of group labels. Only used when \code{compariosn=TRUE}.
-#' @param labeloffset  position of group labels. Only used when \code{compariosn=TRUE}.
-#' @param fixed_aspect if \code{TRUE}, the aspect ratio is fixed. Variable aspect ratio
-#'   only supported if rotation = 0
+#' @param labeloffset  position of group labels. Only used when
+#'   \code{compariosn=TRUE}.
+#' @param fixed_aspect if \code{TRUE}, the aspect ratio is fixed. Variable
+#'   aspect ratio only supported if rotation = 0
 #' @param comparison if \code{TRUE}, plot a wordclound that compares documents
 #'   in the same way as \code{\link[wordcloud]{comparison.cloud}}
 #' @param ... additional parameters passed to \link{text} (and \link{strheight},
@@ -224,8 +229,8 @@ wordcloud <- function(x, min_size, max_size, max_words,
     word <- word[ord]
     freq <- freq[ord]
 
-    thetaStep <- 0.1
-    rStep <- 0.05
+    theta_step <- 0.1
+    r_step <- 0.05
     
     graphics::plot.new()
     op <- graphics::par(no.readonly = TRUE)
@@ -235,12 +240,12 @@ wordcloud <- function(x, min_size, max_size, max_words,
     } else {
         graphics::plot.window(c(0, 1), c(0, 1))
     }
-    normedFreq <- freq / max(freq)
-    size <- (max_size - min_size) * normedFreq + min_size
+    freq <- freq / max(freq)
+    size <- (max_size - min_size) * freq + min_size
     boxes <- list()
     words <- data.frame()
     for (i in seq_along(word)) {
-        rotWord <- stats::runif(1) < rotation
+        rot <- stats::runif(1) < rotation
         r <- 0
         theta <- stats::runif(1, 0, 2 * pi)
         x1 <- 0.5
@@ -250,7 +255,7 @@ wordcloud <- function(x, min_size, max_size, max_words,
         ht <- graphics::strheight(word[i], cex = size[i], ...)
         if (grepl(tails, word[i]))
             ht <- ht * 1.2 # extra height for g, j, p, q, y
-        if (rotWord) {
+        if (rot) {
             tmp <- ht
             ht <- wid
             wid <- tmp
@@ -265,15 +270,15 @@ wordcloud <- function(x, min_size, max_size, max_words,
                     if (ordered_color) {
                         cc <- color[i]
                     } else {
-                        cc <- ceiling(nc * normedFreq[i])
+                        cc <- ceiling(nc * freq[i])
                         cc <- color[cc]
                     }
                 } else {
                     cc <- color[sample(seq(nc), 1)]
                 }
-                text(x1, y1, word[i], cex = size[i], offset = 0, srt = rotWord * 90, col = cc,  ...)
+                text(x1, y1, word[i], cex = size[i], offset = 0, srt = rot * 90, col = cc,  ...)
                 words <- rbind(words, data.frame(x = x1, y = y1, word = word[i], size = size[i], 
-                                                 offset = 0, srt = rotWord * 90, col = cc))
+                                                 offset = 0, srt = rot * 90, col = cc))
                 boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
                 is_overlaped <- FALSE
             } else {
@@ -281,8 +286,8 @@ wordcloud <- function(x, min_size, max_size, max_words,
                     warning(paste(word[i], "could not be fit on page. It will not be plotted."))
                     is_overlaped <- FALSE
                 }
-                theta <- theta + thetaStep
-                r <- r + rStep * thetaStep / (2 * pi)
+                theta <- theta + theta_step
+                r <- r + r_step * theta_step / (2 * pi)
                 x1 <- 0.5 + r * cos(theta)
                 y1 <- 0.5 + r * sin(theta)
             }
@@ -293,6 +298,7 @@ wordcloud <- function(x, min_size, max_size, max_words,
     graphics::par(op)
     grDevices::dev.off()
     
+    x <- y <- label <- NULL
     plot <- ggplot() + 
         geom_text(data = words, aes(x, y, label = word), color = words$col, family = font,
                   size = words$size * 4 * (1 + adjust), angle = words$srt, 
@@ -406,16 +412,16 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     word <- word[ord]
     freq <- freq[ord]
     group <- group[ord]
-    thetaStep <- 0.05
-    rStep <- 0.05
+    theta_step <- 0.05
+    r_step <- 0.05
     
     graphics::plot.new()
     op <- graphics::par(no.readonly = TRUE)
     graphics::par(mar = c(0, 0, 0, 0), family = font)
     graphics::plot.window(c(0, 1), c(0, 1), asp = 1)
     
-    normedFreq <- freq / max(freq)
-    size <- (max_size - min_size) * normedFreq + min_size
+    freq <- freq / max(freq)
+    size <- (max_size - min_size) * freq + min_size
     boxes <- list()
     
     #add titles
@@ -440,7 +446,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     }
     
     for (i in seq_along(word)) {
-        rotWord <- stats::runif(1) < rotation
+        rot <- stats::runif(1) < rotation
         r <- 0
         theta <- stats::runif(1, 0, 2 * pi)
         x1 <- 0.5
@@ -450,7 +456,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
         
         if (grepl(tails, word[i]))
             ht <- ht * 1.2 # extra height for g, j, p, q, y
-        if (rotWord) {
+        if (rot) {
             tmp <- ht
             ht <- wid
             wid <- tmp
@@ -463,9 +469,9 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
                 x1 - 0.5 * wid > 0 && y1 - 0.5 * ht > 0 &&
                 x1 + 0.5 * wid < 1 && y1 + 0.5 * ht < 1) {
                 
-                # text(x1, y1, word[i], cex = size[i], offset = 0, srt = rotWord * 90, col = color[group[i]], ...)
+                # text(x1, y1, word[i], cex = size[i], offset = 0, srt = rot * 90, col = color[group[i]], ...)
                 words <- rbind(words, data.frame(x = x1, y = y1, word = word[i], size = size[i], 
-                                                 offset = 0, srt = rotWord * 90, col = color[group[i]]))
+                                                 offset = 0, srt = rot * 90, col = color[group[i]]))
                 boxes[[length(boxes) + 1]] <- c(x1 - 0.5 * wid, y1 - 0.5 * ht, wid, ht)
                 is_overlaped <- FALSE
                 
@@ -474,10 +480,10 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
                     warning(paste(word[i], "could not be fit on page. It will not be plotted."))
                     is_overlaped <- FALSE
                 }
-                theta <- theta + thetaStep
+                theta <- theta + theta_step
                 if (theta > 2 * pi)
                     theta <- theta - 2 * pi
-                r <- r + rStep * thetaStep / (2 * pi)
+                r <- r + r_step * theta_step / (2 * pi)
                 x1 <- 0.5 + r * cos(theta)
                 y1 <- 0.5 + r * sin(theta)
             }
@@ -488,6 +494,7 @@ wordcloud_comparison <- function(x, min_size, max_size, max_words,
     graphics::par(op)
     grDevices::dev.off()
     
+    x <- y <- label <- NULL
     plot <- ggplot() + 
         geom_text(data = words, aes(x, y, label = word), color = words$col, family = font,
                   size = words$size * 4 * (1 + adjust), angle = words$srt, 

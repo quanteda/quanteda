@@ -17,28 +17,35 @@ wordcloud_comparison(x, min_size, max_size, max_words, color, font, adjust,
 \item{max_size}{size of the largest word}
 
 \item{max_words}{maximum number of words to be plotted. least frequent terms
-dropped}
+dropped.}
 
-\item{color}{words from least to most frequent}
+\item{color}{color of words from least to most frequent}
 
 \item{font}{font-family of words and labels. Use default font if \code{NULL}.}
+
+\item{adjust}{ajust sizes of words by a constant. Useful for non-Engish words
+for which R failes to obtaine sizes correctly.}
 
 \item{rotation}{proportion words with 90 degree rotation colors}
 
 \item{random_order}{plot words in random order. If \code{FALSE}, they will be
-plotted in decreasing frequency}
+plotted in decreasing frequency.}
 
 \item{random_color}{choose colors randomly from the colors. If \code{FALSE},
 the color is chosen based on the frequency}
 
-\item{ordered_color}{if \code{TRUE}, then colors are assigned to words in order}
+\item{ordered_color}{if \code{TRUE}, then colors are assigned to words in
+order.}
+
+\item{labelcolor}{color of group labels. Only used when \code{compariosn=TRUE}.}
 
 \item{labelsize}{size of group labels. Only used when \code{compariosn=TRUE}.}
 
-\item{labeloffset}{position of group labels. Only used when \code{compariosn=TRUE}.}
+\item{labeloffset}{position of group labels. Only used when
+\code{compariosn=TRUE}.}
 
-\item{fixed_aspect}{if \code{TRUE}, the aspect ratio is fixed. Variable aspect ratio
-only supported if rotation = 0}
+\item{fixed_aspect}{if \code{TRUE}, the aspect ratio is fixed. Variable
+aspect ratio only supported if rotation = 0}
 
 \item{scale}{deprecated argument}
 
